@@ -1,6 +1,5 @@
 import {
   createElement,
-  type KeyboardEvent,
   type ReactNode,
   useCallback,
   useEffect,
@@ -8,13 +7,9 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import {
-  filterOpenApiSchemaView,
-  getAllOpenApiSchemaExpandableIds,
-  type OpenApiSchemaPathItem,
-  type OpenApiSchemaViewNode,
+import type {
+  OpenApiSchemaPathItem,
+  OpenApiSchemaViewNode,
 } from '@/lib/openapi/schema-view';
 import {
   OpenApiSchemaFieldRow,
@@ -83,14 +78,7 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
   return base;
 }
 
-export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
-  collapseAll: string;
-  expandAll: string;
-  filter: string;
-  match: string;
-  matches: string;
-  noMatches: string;
-};
+export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {};
 
 export type OpenApiSchemaRevealTarget = {
   fieldName: string;
@@ -123,21 +111,12 @@ export function OpenApiSchemaTree({
   const [expandedIds, setExpandedIds] = useState<Set<string>>(() =>
     getInitialExpandedIds(nodes),
   );
-  const [query, setQuery] = useState('');
   const [copiedId, setCopiedId] = useState<string>();
   const copyTimer = useRef<number | undefined>(undefined);
   const [highlightedId, setHighlightedId] = useState<string>();
-  const [pendingFocusId, setPendingFocusId] = useState<string>();
-  const [searchExpandedIds, setSearchExpandedIds] = useState<Set<string>>(
-    () => new Set(),
-  );
-  const [searchCollapsedIds, setSearchCollapsedIds] = useState<Set<string>>(
-    () => new Set(),
-  );
   const latestNodesRef = useRef(nodes);
   const mountedRef = useRef(false);
   const copyRequestRef = useRef(0);
-  const preSearchExpandedIds = useRef<Set<string> | null>(null);
   const lastRevealTarget = useRef<string | undefined>(undefined);
   const treeRef = useRef<HTMLDivElement>(null);
 
@@ -155,13 +134,8 @@ export function OpenApiSchemaTree({
       copyTimer.current = undefined;
     }
     setExpandedIds(getInitialExpandedIds(latestNodesRef.current));
-    setQuery('');
     setCopiedId(undefined);
     setHighlightedId(undefined);
-    setPendingFocusId(undefined);
-    setSearchExpandedIds(new Set());
-    setSearchCollapsedIds(new Set());
-    preSearchExpandedIds.current = null;
     lastRevealTarget.current = undefined;
   }, [rootId, schemaIdentity]);
 
@@ -180,31 +154,6 @@ export function OpenApiSchemaTree({
     },
     [],
   );
-
-  const filterResult = useMemo(
-    () => filterOpenApiSchemaView(nodes, query),
-    [nodes, query],
-  );
-  const expandableIds = useMemo(
-    () => getAllOpenApiSchemaExpandableIds(nodes),
-    [nodes],
-  );
-  const isSearching = query.trim().length > 0;
-  const effectiveExpandedIds = useMemo(() => {
-    if (!isSearching) return expandedIds;
-
-    return new Set(
-      [...filterResult.expandedIds, ...searchExpandedIds].filter(
-        (id) => !searchCollapsedIds.has(id),
-      ),
-    );
-  }, [
-    expandedIds,
-    filterResult.expandedIds,
-    isSearching,
-    searchCollapsedIds,
-    searchExpandedIds,
-  ]);
 
   const findNodeChain = useCallback(
     (
@@ -234,24 +183,11 @@ export function OpenApiSchemaTree({
       const chain = findNodeChain((node) => node.id === nodeId);
       if (chain.length === 0) return;
 
-      if (isSearching) {
-        const chainIds = chain.map((node) => node.id);
-        setSearchExpandedIds((current) => new Set([...current, ...chainIds]));
-        setSearchCollapsedIds((current) => {
-          const next = new Set(current);
-          chainIds.forEach((id) => {
-            next.delete(id);
-          });
-          return next;
-        });
-        return;
-      }
-
       setExpandedIds(
         (current) => new Set([...current, ...chain.map((node) => node.id)]),
       );
     },
-    [findNodeChain, isSearching],
+    [findNodeChain],
   );
 
   const findNodeRow = useCallback((nodeId: string) => {
@@ -280,14 +216,8 @@ export function OpenApiSchemaTree({
     if (!target) return;
     lastRevealTarget.current = targetKey;
 
-    const restored = preSearchExpandedIds.current;
-    preSearchExpandedIds.current = null;
-    setSearchExpandedIds(new Set());
-    setSearchCollapsedIds(new Set());
-    setQuery('');
     setExpandedIds(
-      (current) =>
-        new Set([...(restored ?? current), ...chain.map((node) => node.id)]),
+      (current) => new Set([...current, ...chain.map((node) => node.id)]),
     );
     setHighlightedId(target.id);
   }, [findNodeChain, revealTarget]);
@@ -320,102 +250,17 @@ export function OpenApiSchemaTree({
     };
   }, [findNodeRow, highlightedId]);
 
-  useEffect(() => {
-    if (!pendingFocusId) return;
-
-    const chain = findNodeChain((node) => node.id === pendingFocusId);
-    if (
-      chain.length === 0 ||
-      !chain.slice(0, -1).every((node) => effectiveExpandedIds.has(node.id))
-    ) {
-      return;
-    }
-
-    const row = findNodeRow(pendingFocusId);
-    if (!row || row.closest('[hidden]')) return;
-
-    const originalTabIndex = row.getAttribute('tabindex');
-    row.tabIndex = -1;
-    row.focus();
-    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setPendingFocusId(undefined);
-
-    return () => restoreTabIndex(row, originalTabIndex);
-  }, [effectiveExpandedIds, findNodeChain, findNodeRow, pendingFocusId]);
-
-  function handleSearchChange(nextQuery: string) {
-    if (query.trim() && nextQuery.trim() && query.trim() !== nextQuery.trim()) {
-      setSearchExpandedIds(new Set());
-      setSearchCollapsedIds(new Set());
-    }
-
-    if (!query.trim() && nextQuery.trim()) {
-      preSearchExpandedIds.current = new Set(expandedIds);
-      setSearchExpandedIds(new Set());
-      setSearchCollapsedIds(new Set());
-    }
-
-    if (!nextQuery.trim()) {
-      const restored = preSearchExpandedIds.current;
-      if (restored) setExpandedIds(new Set(restored));
-      preSearchExpandedIds.current = null;
-      setSearchExpandedIds(new Set());
-      setSearchCollapsedIds(new Set());
-    }
-
-    setQuery(nextQuery);
-  }
-
-  function handleSearchKeyDown(event: KeyboardEvent<HTMLInputElement>) {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      handleSearchChange('');
-      return;
-    }
-
-    if (event.key !== 'Enter' || filterResult.directMatchIds.size === 0) return;
-
-    const firstMatchId = findFirstDirectMatchId(
-      nodes,
-      filterResult.directMatchIds,
-    );
-    if (!firstMatchId) return;
-
-    revealNode(firstMatchId);
-    setPendingFocusId(firstMatchId);
-  }
-
   function renderNodes(
     candidates: OpenApiSchemaViewNode[],
     seen: Set<string> = new Set(),
-    includeHiddenDescendants = false,
   ): ReactNode[] {
     return candidates.flatMap((node) => {
       if (seen.has(node.id)) return [];
-      if (
-        isSearching &&
-        !includeHiddenDescendants &&
-        node.depth !== 0 &&
-        !filterResult.visibleIds.has(node.id) &&
-        !searchExpandedIds.has(node.id)
-      ) {
-        return [
-          <HiddenDescendants
-            key={`${node.id}-search-hidden`}
-            onBeforeMatch={() => revealNode(node.id)}
-          >
-            {renderNodes([node], seen, true)}
-          </HiddenDescendants>,
-        ];
-      }
 
       const nextSeen = new Set(seen).add(node.id);
       const expandable = node.children.length > 0;
-      const expanded = expandable && effectiveExpandedIds.has(node.id);
-      const directMatch = filterResult.directMatchIds.has(node.id);
+      const expanded = expandable && expandedIds.has(node.id);
       const remainingInfoTags = renderRemainingInfoTags(node);
-      const revealHiddenDescendants =
-        includeHiddenDescendants || searchExpandedIds.has(node.id);
       const descendants = expandable
         ? expanded
           ? [
@@ -423,7 +268,7 @@ export function OpenApiSchemaTree({
                 className="openapi-schema-children"
                 key={`${node.id}-children`}
               >
-                {renderNodes(node.children, nextSeen, revealHiddenDescendants)}
+                {renderNodes(node.children, nextSeen)}
               </div>,
             ]
           : [
@@ -432,14 +277,13 @@ export function OpenApiSchemaTree({
                 key={`${node.id}-hidden`}
                 onBeforeMatch={() => revealNode(node.id)}
               >
-                {renderNodes(node.children, nextSeen, true)}
+                {renderNodes(node.children, nextSeen)}
               </HiddenDescendants>,
             ]
         : [];
 
       return [
         <div
-          data-openapi-schema-match={directMatch ? 'direct' : undefined}
           data-openapi-schema-node=""
           data-openapi-schema-node-id={node.id}
           data-openapi-schema-path={node.path}
@@ -455,29 +299,6 @@ export function OpenApiSchemaTree({
               void handleTreeCopy(node);
             }}
             onExpandedChange={(nextExpanded) => {
-              if (isSearching) {
-                if (nextExpanded) {
-                  setSearchExpandedIds(
-                    (current) => new Set([...current, node.id]),
-                  );
-                  setSearchCollapsedIds((current) => {
-                    const next = new Set(current);
-                    next.delete(node.id);
-                    return next;
-                  });
-                } else {
-                  setSearchExpandedIds((current) => {
-                    const next = new Set(current);
-                    next.delete(node.id);
-                    return next;
-                  });
-                  setSearchCollapsedIds(
-                    (current) => new Set([...current, node.id]),
-                  );
-                }
-                return;
-              }
-
               setExpandedIds((current) => {
                 const next = new Set(current);
                 if (nextExpanded) next.add(node.id);
@@ -487,14 +308,6 @@ export function OpenApiSchemaTree({
             }}
             remainingInfoTags={remainingInfoTags}
           />
-          {isSearching && directMatch ? (
-            <div
-              className="mt-1 break-words font-mono text-xs text-muted-foreground"
-              data-openapi-schema-match-path=""
-            >
-              {node.path}
-            </div>
-          ) : null}
           {descendants}
         </div>,
       ];
@@ -531,69 +344,7 @@ export function OpenApiSchemaTree({
       id={stableDomId(rootId, rootId)}
       ref={treeRef}
     >
-      <div className="mb-3 flex flex-wrap items-center gap-2">
-        <Input
-          aria-label={labels.filter}
-          onChange={(event) => handleSearchChange(event.target.value)}
-          onKeyDown={handleSearchKeyDown}
-          placeholder={labels.filter}
-          type="search"
-          value={query}
-        />
-        {isSearching ? (
-          <span
-            aria-live="polite"
-            className="whitespace-nowrap text-sm text-muted-foreground"
-            role="status"
-          >
-            {`${filterResult.matchCount} ${filterResult.matchCount === 1 ? labels.match : labels.matches}`}
-          </span>
-        ) : null}
-        <div className="flex gap-2">
-          <Button
-            disabled={expandableIds.size === 0}
-            onClick={() => {
-              if (isSearching) {
-                setSearchExpandedIds(new Set(expandableIds));
-                setSearchCollapsedIds(new Set());
-              } else {
-                setExpandedIds(new Set(expandableIds));
-              }
-            }}
-            type="button"
-            variant="outline"
-          >
-            {labels.expandAll}
-          </Button>
-          <Button
-            disabled={expandableIds.size === 0}
-            onClick={() => {
-              if (isSearching) {
-                setSearchExpandedIds(new Set());
-                setSearchCollapsedIds(
-                  new Set(
-                    [...expandableIds].filter(
-                      (id) => !filterResult.expandedIds.has(id),
-                    ),
-                  ),
-                );
-              } else {
-                setExpandedIds(new Set());
-              }
-            }}
-            type="button"
-            variant="outline"
-          >
-            {labels.collapseAll}
-          </Button>
-        </div>
-      </div>
-      <div data-openapi-schema-fields="">
-        {renderNodes(nodes)}
-        {isSearching && filterResult.matchCount === 0 ? (
-          <p>{`${labels.noMatches} ${query.trim()}`}</p>
-        ) : null}
-      </div>
+      <div data-openapi-schema-fields="">{renderNodes(nodes)}</div>
     </div>
   );
 }
@@ -630,27 +381,6 @@ function HiddenDescendants({
     },
     children,
   );
-}
-
-function findFirstDirectMatchId(
-  nodes: OpenApiSchemaViewNode[],
-  directMatchIds: Set<string>,
-) {
-  const seen = new Set<string>();
-
-  function visit(candidates: OpenApiSchemaViewNode[]): string | undefined {
-    for (const node of candidates) {
-      if (seen.has(node.id)) continue;
-      seen.add(node.id);
-      if (directMatchIds.has(node.id)) return node.id;
-
-      const childMatch = visit(node.children);
-      if (childMatch) return childMatch;
-    }
-    return undefined;
-  }
-
-  return visit(nodes);
 }
 
 function restoreTabIndex(row: HTMLElement, originalTabIndex: string | null) {

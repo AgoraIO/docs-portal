@@ -271,7 +271,7 @@ describe('FumadocsOpenApiContent', () => {
         ) as HTMLElement,
       ).queryByText('optional'),
     ).not.toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
     const select = screen.getByLabelText('Media type for 200 response');
     fireEvent.change(select, { target: { value: 'text/plain' } });
     expect(
@@ -432,45 +432,6 @@ describe('FumadocsOpenApiContent', () => {
       'aria-expanded',
       'true',
     );
-  });
-
-  it('localizes the official schema filter in zh-CN', async () => {
-    render(
-      <FumadocsOpenApiContent
-        locale="zh-CN"
-        pageProps={{
-          operations: [{ method: 'post', path: '/items' }],
-          payload: {
-            bundled: {
-              info: { title: 'Items API' },
-              openapi: '3.2.0',
-              paths: {
-                '/items': {
-                  post: {
-                    requestBody: {
-                      content: {
-                        'application/json': {
-                          schema: {
-                            properties: { name: { type: 'string' } },
-                            type: 'object',
-                          },
-                        },
-                      },
-                    },
-                    responses: { '200': { description: 'OK' } },
-                  },
-                },
-              },
-            } as unknown as Document,
-          },
-        }}
-      />,
-    );
-
-    const filter = await screen.findByPlaceholderText('筛选属性');
-    expect(filter).toBeVisible();
-    fireEvent.change(filter, { target: { value: 'name' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 个匹配项');
   });
 
   it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
@@ -786,9 +747,9 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    const schemaTree = screen
-      .getByPlaceholderText('Filter Properties')
-      .closest('.openapi-schema-tree') as HTMLElement;
+    const schemaTree = document.querySelector(
+      '.openapi-schema-tree',
+    ) as HTMLElement;
     const getSchemaRow = (name: string) =>
       within(schemaTree)
         .getAllByText(name, { exact: true })
@@ -848,18 +809,9 @@ describe('FumadocsOpenApiContent', () => {
       within(vendorRow).getByText('microsoft', { exact: true }),
     ).toBeVisible();
 
-    const filter = screen.getByPlaceholderText('Filter Properties');
-    fireEvent.change(filter, { target: { value: 'channel' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 match');
-    expect(
-      screen.getByText('properties.channel', { exact: true }),
-    ).toBeVisible();
-
-    fireEvent.change(filter, { target: { value: 'remote_rtc_uids' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 match');
-    expect(
-      screen.getByText('properties.remote_rtc_uids', { exact: true }),
-    ).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+    expect(screen.getByText('channel', { exact: true })).toBeVisible();
+    expect(screen.getByText('remote_rtc_uids', { exact: true })).toBeVisible();
 
     expect(
       document.querySelector('[data-openapi-method="POST"]'),
@@ -1870,7 +1822,6 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: 'Request Body' });
-    const filter = screen.getByPlaceholderText('Filter Properties');
     const getOfficialRow = (name: string) =>
       screen
         .getAllByText(name)
@@ -1879,7 +1830,7 @@ describe('FumadocsOpenApiContent', () => {
     const displayNameRow = getOfficialRow('displayName');
     const propertiesRow = getOfficialRow('properties');
 
-    expect(filter).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
     expect(within(displayNameRow).getByText('Optional')).toBeVisible();
     expect(screen.queryByText('optional')).not.toBeInTheDocument();
     expect(
@@ -1917,7 +1868,7 @@ describe('FumadocsOpenApiContent', () => {
       ) ?? '';
 
     expect(operationTopText).not.toContain('production callback URLs');
-    expect(filter).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 
   it('expands required join properties, keeps optional properties collapsed, and finds complete schema paths', async () => {
@@ -1993,32 +1944,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toHaveAttribute('aria-expanded', 'false');
     expect(screen.getByText('child', { exact: true })).not.toBeVisible();
 
-    const filter = screen.getByPlaceholderText('Filter Properties');
-    fireEvent.change(filter, { target: { value: 'channel' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 match');
-    expect(
-      screen.getByText('properties.channel', { exact: true }),
-    ).toBeVisible();
-
-    fireEvent.change(filter, { target: { value: 'properties.channel' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 match');
-    expect(
-      screen.getByText('properties.channel', { exact: true }),
-    ).toBeVisible();
-
-    fireEvent.change(filter, { target: { value: 'remote_rtc_uids' } });
-    expect(screen.getByRole('status')).toHaveTextContent('1 match');
-    expect(
-      screen.getByText('properties.remote_rtc_uids', { exact: true }),
-    ).toBeVisible();
-
-    fireEvent.change(filter, {
-      target: { value: 'properties.remote_rtc_uids' },
-    });
-    expect(screen.getByRole('status')).toHaveTextContent('1 match');
-    expect(
-      screen.getByText('properties.remote_rtc_uids', { exact: true }),
-    ).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 
   it('renders response body fields inherited through local refs and nested allOf schemas', async () => {
@@ -2117,7 +2043,7 @@ describe('FumadocsOpenApiContent', () => {
     await screen.findByRole('heading', {
       name: 'Response Body',
     });
-    expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
     expect(screen.getByText('cname')).toBeVisible();
     expect(
       screen.getByText('The name of the channel being recorded.'),
@@ -3239,7 +3165,7 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.queryByRole('heading', { name: 'Response schema' }),
     ).not.toBeInTheDocument();
-    expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
     expect(screen.getByText('agent_id')).toBeVisible();
   });
 

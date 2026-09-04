@@ -9,7 +9,6 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
-import type { ComponentProps } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   buildOpenApiSchemaView,
@@ -81,48 +80,19 @@ function getRenderedSchemaText(text: string) {
     .find((element) => !element.closest('[data-openapi-schema-find-index]'));
 }
 
-function queryRenderedSchemaText(text: string) {
-  return screen
-    .queryAllByText(text)
-    .filter((element) => !element.closest('[data-openapi-schema-find-index]'));
-}
-
 describe('OpenApiSchema', () => {
+  it('does not render a custom filter for a request schema', () => {
+    renderSchema();
+
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Expand all' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Collapse all' })).toBeNull();
+    expect(screen.getByText('name')).toBeVisible();
+  });
+
   afterEach(() => {
     window.history.replaceState(null, '', '/');
     vi.useRealTimers();
-  });
-
-  it('uses the official compact property filter and requiredness syntax', () => {
-    renderSchema();
-
-    const filter = screen.getByPlaceholderText('Filter Properties');
-    const requiredRow = getRenderedSchemaText('name')?.closest('div.border-t');
-    const optionalRow =
-      getRenderedSchemaText('advanced')?.closest('div.border-t');
-
-    expect(filter).toHaveAttribute('aria-label', 'Filter Properties');
-    expect(filter).toHaveAttribute('data-slot', 'input');
-    expect(filter).toHaveAttribute('type', 'search');
-    expect(filter.closest('.openapi-schema-tree')).toBeInTheDocument();
-    expect(requiredRow).toBeInstanceOf(HTMLElement);
-    expect(optionalRow).toBeInstanceOf(HTMLElement);
-    expect(
-      within(requiredRow as HTMLElement).getByText('Required'),
-    ).toBeVisible();
-    expect(
-      within(optionalRow as HTMLElement).getByText('Optional'),
-    ).toBeVisible();
-
-    fireEvent.change(filter, { target: { value: 'name' } });
-
-    expect(getRenderedSchemaText('name')).toBeVisible();
-    expect(queryRenderedSchemaText('config')[0]).toBeVisible();
-    expect(queryRenderedSchemaText('advanced')[0]).toBeVisible();
-
-    fireEvent.change(filter, { target: { value: '' } });
-    expect(getRenderedSchemaText('config')).toBeVisible();
-    expect(getRenderedSchemaText('advanced')).toBeVisible();
   });
 
   it('keeps nested request body wrappers, hidden descendants, and statuses integrated', () => {
@@ -157,9 +127,9 @@ describe('OpenApiSchema', () => {
       </AnchorSection>,
     );
 
-    const schemaTree = screen
-      .getByPlaceholderText('Filter Properties')
-      .closest('.openapi-schema-tree') as HTMLElement;
+    const schemaTree = document.querySelector(
+      '.openapi-schema-tree',
+    ) as HTMLElement;
     const propertiesNode = getRenderedSchemaText('properties')?.closest(
       '[data-openapi-schema-path]',
     ) as HTMLElement;
@@ -240,15 +210,6 @@ describe('OpenApiSchema', () => {
     expect(within(row as HTMLElement).getByText('Deprecated')).toHaveClass(
       'openapi-schema-status',
     );
-  });
-
-  it('uses the singular English match label for one result', () => {
-    renderSchema();
-
-    const filter = screen.getByPlaceholderText('Filter Properties');
-    fireEvent.change(filter, { target: { value: 'name' } });
-
-    expect(screen.getByRole('status')).toHaveTextContent('1 match');
   });
 
   it('renders raw enum metadata as allowed value code tokens', () => {
@@ -345,46 +306,6 @@ describe('OpenApiSchema', () => {
     ).toBeVisible();
     expect(screen.getByText(/"enum": "default-data"/)).toBeVisible();
     expect(screen.getByText(/"enum": "example-data"/)).toBeVisible();
-  });
-
-  it('keeps allowed values with the visible union branch after filtering', () => {
-    render(
-      <AnchorSection segments={['request-body', 'application-json']}>
-        <OpenApiSchema
-          client={{ as: 'body', name: 'body' }}
-          renderCodeblock={({ code }) => <pre>{code}</pre>}
-          renderMarkdown={(markdown) => <p>{markdown}</p>}
-          root={{
-            properties: {
-              variant: {
-                oneOf: [
-                  {
-                    properties: {
-                      mode: { enum: ['hidden'], type: 'string' },
-                    },
-                    readOnly: true,
-                    type: 'object',
-                  },
-                  {
-                    properties: {
-                      mode: { enum: ['visible'], type: 'string' },
-                    },
-                    type: 'object',
-                  },
-                ],
-              },
-            },
-            type: 'object',
-          }}
-        />
-      </AnchorSection>,
-    );
-
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand variant properties' }),
-    );
-    expect(screen.getByText('visible')).toBeVisible();
-    expect(screen.queryByText('hidden')).not.toBeInTheDocument();
   });
 
   it('keeps oneOf and anyOf branch values in their own generated branches', () => {
@@ -804,65 +725,6 @@ describe('OpenApiSchema', () => {
     ).toBeVisible();
   });
 
-  it('clears body tree copy feedback without resetting search or expansion state', async () => {
-    vi.useFakeTimers();
-    const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
-    const originalClipboard = Object.getOwnPropertyDescriptor(
-      window.navigator,
-      'clipboard',
-    );
-    Object.defineProperty(window.navigator, 'clipboard', {
-      configurable: true,
-      value: { writeText: clipboardWriteText },
-    });
-
-    try {
-      renderSchema();
-      fireEvent.click(
-        within(
-          getRenderedSchemaText('transport')?.closest(
-            'div.border-t',
-          ) as HTMLElement,
-        ).getByRole('button', { name: 'Expand transport properties' }),
-      );
-      const filter = screen.getByPlaceholderText('Filter Properties');
-      fireEvent.change(filter, { target: { value: 'codec' } });
-      expect(filter).toHaveValue('codec');
-      fireEvent.click(
-        within(
-          getRenderedSchemaText('transport')?.closest(
-            'div.border-t',
-          ) as HTMLElement,
-        ).getByRole('button', { name: 'Copy link to transport' }),
-      );
-      await act(async () => {
-        await Promise.resolve();
-        await Promise.resolve();
-      });
-      expect(
-        screen.getByRole('button', { name: 'Copied link to transport' }),
-      ).toBeVisible();
-
-      await act(async () => {
-        await vi.advanceTimersByTimeAsync(1000);
-      });
-      expect(
-        screen.getByRole('button', { name: 'Copy link to transport' }),
-      ).toBeVisible();
-      expect(filter).toHaveValue('codec');
-      expect(screen.getByText('codec')).toBeVisible();
-      expect(
-        screen.getByRole('button', { name: 'Collapse transport properties' }),
-      ).toHaveAttribute('aria-expanded', 'true');
-    } finally {
-      if (originalClipboard) {
-        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
-      } else {
-        Reflect.deleteProperty(window.navigator, 'clipboard');
-      }
-    }
-  });
-
   it('renders every nested object field inline without a popup', () => {
     renderSchema();
 
@@ -886,7 +748,7 @@ describe('OpenApiSchema', () => {
         (configRow as HTMLElement).firstElementChild as HTMLElement,
       ).getByText('object'),
     ).not.toHaveRole('button');
-    expect(screen.getAllByPlaceholderText('Filter Properties')).toHaveLength(1);
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
     expect(
       document.querySelector('[data-openapi-schema-popover]'),
     ).not.toBeInTheDocument();
@@ -1535,7 +1397,7 @@ describe('OpenApiSchema', () => {
     expect(getRenderedSchemaText('body')).toBeVisible();
     expect(getRenderedSchemaText('state')).toBeVisible();
     expect(screen.getAllByText('The array response.')).toHaveLength(1);
-    expect(screen.getByPlaceholderText('Filter Properties')).toBeVisible();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 
   it('encodes an official union selection when indexing nested fields', () => {
