@@ -4,6 +4,7 @@ export type SearchEntry = {
   description?: string;
   objectType?: 'docs' | 'openapi' | 'sdk-api';
   platform?: string[];
+  platformUrls?: Record<string, string>;
   product?: string;
   tab?: string;
   title: string;

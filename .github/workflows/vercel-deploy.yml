@@ -83,6 +83,8 @@ jobs:
       - name: Resolve preview context
         id: preview-context
         uses: actions/github-script@v7
+        env:
+          MANUAL_PR_NUMBER: ${{ inputs.pr_number }}
         with:
           script: |
             if (context.eventName === 'pull_request') {
@@ -94,8 +96,12 @@ jobs:
             }
 
             if (context.eventName === 'workflow_dispatch') {
-              const manualInput = `${{ toJson(inputs.pr_number) }}`;
+              const manualInput = process.env.MANUAL_PR_NUMBER?.trim() ?? '';
               if (manualInput && manualInput !== 'null' && manualInput !== '') {
+                if (!/^[1-9]\d*$/.test(manualInput)) {
+                  core.setFailed('pr_number must be a positive integer.');
+                  return;
+                }
                 core.setOutput('should_deploy', 'true');
                 core.setOutput('pr_number', manualInput);
                 core.setOutput('reason', 'manual preview deploy');
@@ -176,6 +182,9 @@ jobs:
           VITE_DOCS_REGION: global
           VITE_DEPLOY_ENVIRONMENT: preview
           VITE_DEPLOY_VERSION: ${{ github.event.pull_request.head.sha || github.sha }}
+          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
+          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          VITE_SEARCH_RANKING_V2: 'true'
           VITE_GTM_ID: ${{ secrets.VITE_GTM_ID }}
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
@@ -238,6 +247,7 @@ jobs:
         uses: actions/github-script@v7
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+          PR_NUMBER: ${{ steps.preview-context.outputs.pr_number }}
         with:
           script: |
             const body = [
@@ -247,7 +257,7 @@ jobs:
             ].join('\n');
 
             const { owner, repo } = context.repo;
-            const issue_number = Number('${{ steps.preview-context.outputs.pr_number }}');
+            const issue_number = Number(process.env.PR_NUMBER);
             const marker = '## Vercel Preview';
 
             const comments = await github.paginate(github.rest.issues.listComments, {
@@ -277,6 +287,23 @@ jobs:
               issue_number,
               body,
             });
+
+      - name: Replay Global search golden queries
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
+          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          VITE_ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+          VITE_SEARCH_RANKING_V2: 'true'
+        run: bun run search:replay -- --gate=preview-blockers --out=global-search-replay-preview.json
+
+      - name: Upload Global search replay evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-search-replay-preview
+          path: global-search-replay-preview.json
+          if-no-files-found: warn
 
   deploy-production:
     name: Deploy Production to Vercel
@@ -365,6 +392,22 @@ jobs:
           ALGOLIA_ADMIN_API_KEY: ${{ secrets.ALGOLIA_ADMIN_API_KEY }}
           ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
         run: bun run search:sync
+
+      - name: Replay Global search golden queries
+        env:
+          VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
+          VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
+          VITE_ALGOLIA_INDEX_NAME: ${{ vars.ALGOLIA_INDEX_NAME }}
+          VITE_SEARCH_RANKING_V2: 'true'
+        run: bun run search:replay -- --out=global-search-replay.json
+
+      - name: Upload Global search replay evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: global-search-replay
+          path: global-search-replay.json
+          if-no-files-found: warn
 
       - name: Verify Vercel output
         run: |

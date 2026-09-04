@@ -42,6 +42,95 @@ describe('buildAlgoliaContentDocsRecords', () => {
       records.find((record) => record.url === visibleUrl)?.breadcrumbs,
     ).toEqual(['RTC', 'Build Live Interaction', 'Voice Calling', 'Reference']);
   });
+
+  it('indexes hidden FAQ leaf pages with stable fallback breadcrumbs', () => {
+    const records = buildAlgoliaContentDocsRecords(
+      [
+        {
+          content: 'Troubleshoot a black screen.',
+          title: 'How can I fix black screen issues?',
+          url: '/en/api-reference/faq/quality/video_blank',
+        },
+        {
+          content: 'Troubleshoot Bluetooth devices on iOS.',
+          title: "Why can't I answer calls through a Bluetooth device?",
+          url: '/en/api-reference/faq/quality/ios_bluetooth',
+        },
+      ],
+      new Map([['en', new Map()]]),
+    );
+
+    expect(records.map(({ url }) => url)).toEqual([
+      '/en/api-reference/faq/quality/video_blank',
+      '/en/api-reference/faq/quality/ios_bluetooth',
+    ]);
+    expect(records.map(({ breadcrumbs }) => breadcrumbs)).toEqual([
+      ['Reference', 'FAQ', 'Quality'],
+      ['Reference', 'FAQ', 'Quality'],
+    ]);
+  });
+
+  it('indexes hidden product overviews with humanized RTC breadcrumbs', () => {
+    const records = buildAlgoliaContentDocsRecords(
+      [
+        {
+          content: 'Low-latency interactive streaming.',
+          title: 'Interactive Live Streaming Overview',
+          url: '/en/realtime-media/interactive-live-streaming/product-overview',
+        },
+        {
+          content: 'One-to-many broadcast delivery.',
+          title: 'Broadcast Streaming Overview',
+          url: '/en/realtime-media/broadcast-streaming/product-overview',
+        },
+      ],
+      new Map([['en', new Map()]]),
+    );
+
+    expect(records.map(({ url }) => url)).toEqual([
+      '/en/realtime-media/interactive-live-streaming/product-overview',
+      '/en/realtime-media/broadcast-streaming/product-overview',
+    ]);
+    expect(records.map(({ breadcrumbs }) => breadcrumbs)).toEqual([
+      ['RTC', 'Interactive Live Streaming'],
+      ['RTC', 'Broadcast Streaming'],
+    ]);
+  });
+
+  it('does not use fallback breadcrumbs for arbitrary hidden pages', () => {
+    const records = buildAlgoliaContentDocsRecords(
+      [
+        {
+          content: 'This hidden page is not explicitly searchable.',
+          title: 'Hidden draft',
+          url: '/en/realtime-media/rtc/build/hidden-draft',
+        },
+      ],
+      new Map([['en', new Map()]]),
+    );
+
+    expect(records).toEqual([]);
+  });
+
+  it('does not index undeclared private FAQ or product overview pages', () => {
+    const records = buildAlgoliaContentDocsRecords(
+      [
+        {
+          content: 'Internal support notes.',
+          title: 'Private incident notes',
+          url: '/en/api-reference/faq/quality/private_secret',
+        },
+        {
+          content: 'Internal product planning.',
+          title: 'Internal tools',
+          url: '/en/realtime-media/internal-tools/product-overview',
+        },
+      ],
+      new Map([['en', new Map()]]),
+    );
+
+    expect(records).toEqual([]);
+  });
 });
 
 describe('buildAlgoliaOpenApiRecord', () => {
