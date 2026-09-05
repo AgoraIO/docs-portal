@@ -69,7 +69,7 @@ Signaling 2.x is an enhanced version compared to 1.x with a wide range of new fe
 
     Open the `/app/proguard-rules.pro` file and add the following line to prevent code obfuscation:
 
-    ```java
+    ```text
     -keep class io.agora.**{*;}
     ```
 
@@ -80,10 +80,10 @@ Use either of the following methods to integrate Signaling SDK into your project
 **Using Maven Central**
 1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
 
-    ```java
+    ```text
     repositories {
-         mavenCentral()
-       }
+        mavenCentral()
+    }
     ```
 
     :::note
@@ -530,8 +530,7 @@ public class JavaActivity extends AppCompatActivity {
         if (mMessageHistory == null) {
             mMessageHistory = findViewById(R.id.message_history);
         }
-        mMessageHistory.append("- " + record + "
-");
+        mMessageHistory.append("- " + record + "\n");
     }
 
     private void showToast(String text) {

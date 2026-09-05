@@ -369,7 +369,7 @@ Refer to the following sample code for sending messages:
     String message = "Hello World"; // Declaring a string variable for the message content
     String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
     var options = new PublishOptions(); // Creating options for publishing the message
-    options.customType = "PlainTxt"; // Setting the custom message type to "PlainTxt"
+    options.setCustomType("PlainTxt"); // Setting the custom message type to "PlainTxt"
 
     mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
         @Override
@@ -410,7 +410,7 @@ Refer to the following sample code for sending messages:
     byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Defining a byte array for the binary message
     String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
     var options = new PublishOptions(); // Creating options for publishing the message
-    options.customType = "ByteArray"; // Setting the custom message type to "ByteArray"
+    options.setCustomType("ByteArray"); // Setting the custom message type to "ByteArray"
 
     mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
         @Override

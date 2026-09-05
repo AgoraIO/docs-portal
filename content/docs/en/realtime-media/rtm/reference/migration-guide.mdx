@@ -526,7 +526,7 @@ Signaling version `2.x` differs from `1.x` in the support of naming character se
 You can integrate the Signaling `2.x` SDK into your app either using a CDN or through Maven Central. The integration methods are as follows:
 
 - For `1.x`:
-    ```java
+    ```text
     dependencies {
         // Replace x.y.z with the specific SDK version, e.g., 1.5.1
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
@@ -534,7 +534,7 @@ You can integrate the Signaling `2.x` SDK into your app either using a CDN or th
     ```
 
 - For `2.x`:
-    ```java
+    ```text
     dependencies {
         // Replace x.y.z with the specific SDK version, e.g., 2.3.0
         implementation 'io.agora.rtm:rtm-sdk:x.y.z'
@@ -741,7 +741,7 @@ The disadvantage to this design is that you cannot independently send messages. 
     // Send message in Message Channel
     String message = "Hello world";
     PublishOptions options = new PublishOptions();
-    options.customType = 'PlainText';
+    options.setCustomType("PlainText");
     rtmClient.publish("channelName", message, options, new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -879,7 +879,7 @@ Call the `getOnlineUsers` method to query the number of online users in the spec
 
 ```java
 // 2.x
-PresenceOptions options = new PresenceOptions();
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
 options.setIncludeUserId(true);
 options.setIncludeState(true);
 options.setPage("yourBookMark");
@@ -918,8 +918,8 @@ To meet the user status requirements of business use-cases, Signaling `2.x` prov
 
 ```java
 // 2.x
-ArrayList<StateItem> stateItems = new ArrayList<>();
-stateItems.add(new StateItem("mood", "pumped"));
+HashMap<String, String> stateItems = new HashMap<>();
+stateItems.put("mood", "pumped");
 
 rtmClient.getPresence().setState("channelName", RtmChannelType.MESSAGE, stateItems, new ResultCallback<Void>() {
     @Override
@@ -986,13 +986,13 @@ In `2.x`, user attributes and channel attributes are mounted under the `Storage`
 ```java
 // 2.x
 // Create a Metadata instance
-Metadata metadata = rtmClient.getStorage().createMetadata();
+Metadata metadata = new Metadata();
 // Set Major Revision
 metadata.setMajorRevision(174298270);
 // Add a Metadata Item
-metadata.setMetadataItem(new MetadataItem("Apple", "100", 174298200));
+metadata.getItems().add(new MetadataItem("Apple", "100", 174298200));
 // Add another Metadata Item
-metadata.setMetadataItem(new MetadataItem("Banana", "200", 174298100));
+metadata.getItems().add(new MetadataItem("Banana", "200", 174298100));
 // Record the timestamp and user ID when setting Metadata Items
 MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);

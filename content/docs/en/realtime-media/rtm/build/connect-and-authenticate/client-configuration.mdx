@@ -212,11 +212,11 @@ Agora is committed to offering its customers flexible, secure, and customizable 
 Signaling provides `MESSAGE` and `STREAM` services. Choose one or both services based on your needs and budget. The following code shows you how to configure a private environment that deploys both services simultaneously:
 
 ```java tab="Java"
-ArrayList<String> hosts = new ArrayList&lt;&gt;();
+ArrayList<String> hosts = new ArrayList<>();
 hosts.add("x.x.x.x"); // your access point hosts list.
 RtmPrivateConfig privateConfig = new RtmPrivateConfig();
-privateConfig.serviceType = EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAMING);
-privateConfig.accessPointHosts = hosts;
+privateConfig.setServiceType(EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAM));
+privateConfig.setAccessPointHosts(hosts);
 
 RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
     .privateConfig(privateConfig)
@@ -268,16 +268,16 @@ In the development and testing phase of your app, you may need to output more de
 ```java tab="Java"
 RtmLogConfig logConfig = new RtmLogConfig();
 // Set log file path
-logConfig.filePath = "./logfile/";
+logConfig.setFilePath("./logfile/");
 // Set log file size
-logConfig.fileSizeInKB = 512;
+logConfig.setFileSize(512);
 // Set log report level
-logConfig.level = RtmLogLevel.INFO;
+logConfig.setLevel(RtmLogLevel.INFO);
 
-RtmConfig rtmConfig = new RtmConfig();
-rtmConfig.userId = "your_userId";
-rtmConfig.appId = "your_appId";
-rtmConfig.logConfig = logConfig; // Set log config
+// Replace your_appId with your App ID and your_userId with your User ID
+RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+    .logConfig(logConfig) // Set log config
+    .build();
 
 // Initialize the client instance
 try {

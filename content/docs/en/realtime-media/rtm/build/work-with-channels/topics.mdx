@@ -229,7 +229,7 @@ Use the following code to join a topic:
 
 ```java tab="Java"
 var options = new JoinTopicOptions();
-options.messageQos = RtmMessageQos.ORDERED;
+options.setMessageQos(RtmMessageQos.ORDERED);
 mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -302,7 +302,7 @@ Refer to the following code to subscribe to a topic:
 
 ```java tab="Java"
 TopicOptions options = new TopicOptions();
-options.users = new ArrayList&lt;&gt;(Arrays.asList("user_name"));
+options.setUsers(new ArrayList<>(Arrays.asList("user_name")));
 
 mStreamChannel.subscribeTopic("Motion", options, new ResultCallback<SubscribeTopicResult>() {
     @Override
@@ -347,7 +347,7 @@ Refer to the following code to unsubscribe:
 ```java tab="Java"
 var topicName = "Motion";
 var options = new TopicOptions();
-options.users = new ArrayList&lt;&gt;(Arrays.asList("Tony"));
+options.setUsers(new ArrayList<>(Arrays.asList("Tony")));
 
 mStreamChannel.unsubscribeTopic(topicName.toString(), options, new ResultCallback<Void>() {
     @Override

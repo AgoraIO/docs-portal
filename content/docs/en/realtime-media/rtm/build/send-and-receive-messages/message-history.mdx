@@ -170,7 +170,7 @@ options.setStoreInHistory(true);
 
 String channelName = "chatRoom";
 String message = "Hello world!";
-rtm.publish(channelName, message, options, new ResultCallback<Void>() {
+mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
         log(CALLBACK, "send message success");
@@ -193,7 +193,7 @@ options.setStoreInHistory(true);
 
 String userId = "Tony";
 String message = "Hello world!";
-rtm.publish(userId, message, options, new ResultCallback<Void>() {
+mRtmClient.publish(userId, message, options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
         log(CALLBACK, "send message success");
@@ -215,10 +215,10 @@ The following example retrieves the latest 50 messages sent before a specific ti
 ```java
 GetHistoryMessagesOptions options = new GetHistoryMessagesOptions();
 options.setMessageCount(50);
-options.setEnd(1688978391800);
+options.setEnd(1688978391800L);
 
 String channelName = "chatRoom";
-rtm.getHistory().getMessages(channelName, RtmChannelType.MESSAGE, options, new ResultCallback<GetMessagesResult>() {
+mRtmClient.getHistory().getMessages(channelName, RtmChannelType.MESSAGE, options, new ResultCallback<GetMessagesResult>() {
     @Override
     public void onSuccess(GetMessagesResult result) {
         log(CALLBACK, "get history messages! new start: " + result.getNewStart());

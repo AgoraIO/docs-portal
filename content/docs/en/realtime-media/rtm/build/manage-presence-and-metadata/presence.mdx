@@ -362,7 +362,7 @@ Refer to the following sample code to query the list of online users in a channe
 ```java tab="Java"
 // Set the channelType to MESSAGE or STREAM
 RtmChannelType channelType = RtmChannelType.MESSAGE;
-PresenceOptions options = new PresenceOptions();
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
 options.setIncludeUserId(true);
 options.setIncludeState(true);
 
@@ -388,7 +388,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new R
 ```kotlin tab="Kotlin"
 // Set the channelType to MESSAGE or STREAM
 val channelType = RtmChannelType.MESSAGE
-val options = PresenceOptions().apply {
+val options = GetOnlineUsersOptions().apply {
     setIncludeUserId(true)
     setIncludeState(true)
 }
@@ -417,7 +417,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```java tab="Java"
-PresenceOptions options =  new PresenceOptions();
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
 options.setIncludeUserId(true);
 options.setIncludeState(true);
 options.setPage("your_Next_Page_Bookmark");
@@ -446,7 +446,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new R
 ```
 
 ```kotlin tab="Kotlin"
-val options = PresenceOptions().apply {
+val options = GetOnlineUsersOptions().apply {
     setIncludeUserId(true)
     setIncludeState(true)
     setPage("your_Next_Page_Bookmark")
@@ -476,7 +476,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, objec
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```java tab="Java"
-PresenceOptions options = new PresenceOptions();
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
 options.setIncludeUserId(false);
 options.setIncludeState(false);
 
@@ -496,7 +496,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new R
 ```
 
 ```kotlin tab="Kotlin"
-val options = PresenceOptions().apply {
+val options = GetOnlineUsersOptions().apply {
     setIncludeUserId(false)
     setIncludeState(false)
 }
@@ -649,7 +649,7 @@ Starting from v2.3.0, if Presence is still starting up when `login` succeeds, th
 Each user can set up to 32 key-value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
 
 ```java tab="Java"
-ArrayList<String> keys = new ArrayList&lt;&gt;(Arrays.asList("Mode", "Mic"));
+ArrayList<String> keys = new ArrayList<>(Arrays.asList("Mode", "Mic"));
 mRtmClient.getPresence().removeState("Chat_room", RtmChannelType.MESSAGE, keys, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {

@@ -252,7 +252,7 @@ String message = "{"
 
 // Send message with customType
 PublishOptions options = new PublishOptions();
-options.customType = "image";
+options.setCustomType("image");
 mRtmClient.publish("channel_name", message, options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -270,10 +270,10 @@ new RtmEventListener() {
     @Override
     public void onMessageEvent(MessageEvent event) {
         log(INFO, "onMessageEvent");
-        if ("image".equals(event.customType)) {
+        if ("image".equals(event.getCustomType())) {
             log(INFO, "It is an image message!");
             // process message
-            log(INFO, "message: " + event.message.getData());
+            log(INFO, "message: " + event.getMessage().getData());
         }
     }
 };

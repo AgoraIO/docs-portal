@@ -194,10 +194,11 @@ RtmEventListener eventListener = new RtmEventListener() {
     }
 };
 
-// Configure RtmClient
-RtmConfig rtmConfig = new RtmConfig();
-// Specify the event listener in the client configuration
-rtmConfig.eventListener = eventListener;
+// Configure RtmClient and specify the event listener
+// Replace your_appId with your App ID and your_userId with your User ID
+RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .build();
 
 // Create an RtmClient instance
 RtmClient mRtmClient = RtmClient.create(rtmConfig);

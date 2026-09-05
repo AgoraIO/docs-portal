@@ -314,7 +314,7 @@ mStreamChannel.join(options, object : ResultCallback<Void> {
 When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console.
 
 ```java tab="Java"
-JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true);
+JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true, false);
 mStreamChannel.join(options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -363,7 +363,7 @@ Refer to the following sample code for sending messages:
     String message = "Hello Agora!"; // Message content
     String topicName = "chat_topic"; // Topic name for publishing
     var options = new TopicMessageOptions(); // Topic message sending options
-    options.customType = "PlainTxt"; // Set a custom type for the message
+    options.setCustomType("PlainTxt"); // Set a custom type for the message
     mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -402,10 +402,10 @@ Refer to the following sample code for sending messages:
 
 ```java tab="Java"
 // Send a binary message
-    byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
+    byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Binary message content
     String topicName = "chat_topic"; // Topic name for publishing
     var options = new TopicMessageOptions(); // Topic message sending options
-    options.customType = "ByteArray"; // Set a custom type for the message
+    options.setCustomType("ByteArray"); // Set a custom type for the message
     mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -423,7 +423,7 @@ Refer to the following sample code for sending messages:
 
 ```kotlin tab="Kotlin"
 // Send a binary message
-    val message = byteArrayOf(0, 1, 35, 196) // Binary message content
+    val message = byteArrayOf(0, 1, 35, 196.toByte()) // Binary message content
     val topicName = "chat_topic" // Topic name for publishing
     val options = TopicMessageOptions() // Topic message sending options
     options.customType = "ByteArray" // Set a custom type for the message
