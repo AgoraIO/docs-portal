@@ -360,7 +360,7 @@ metadata.getItems().add(new MetadataItem("Quantity", "20"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "100"));
 
-mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, new MetadataOptions(true, true), nullptr, new ResultCallback<Void>() {
+mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, new MetadataOptions(true, true), "", new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
         log(CALLBACK, "set channel metadata success");
@@ -635,7 +635,7 @@ metadata.setMajorRevision(734874892);
 metadata.getItems().add(new MetadataItem("Quantity", "30", 734874888));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "101", 734874222));
-MetadataOptions options = new MetadataOptions()
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
@@ -693,7 +693,7 @@ Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "40"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our Shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "300"));
-MetadataOptions options = new MetadataOptions()
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
@@ -3154,7 +3154,7 @@ metadata.setMajorRevision(734874892);
 metadata.getItems().add(new MetadataItem("Quantity", "30", 734874888));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "101", 734874222));
-MetadataOptions options = new MetadataOptions();
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
@@ -3191,7 +3191,7 @@ Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "40"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our Shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "300"));
-MetadataOptions options = new MetadataOptions();
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
