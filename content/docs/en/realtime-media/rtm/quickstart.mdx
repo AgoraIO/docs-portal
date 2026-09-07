@@ -1,5 +1,5 @@
 ---
-title: "Signaling Quickstart"
+title: "Quickstart"
 description: "Rapidly develop your first Signaling app."
 ---
 
@@ -3441,6 +3441,10 @@ public class RtmJavaDemo {
         });
     }
 
+    private void release() {
+        rtmClient.release();
+    }
+
     private void unsubscribe(String channelName) {
         rtmClient.unsubscribe(channelName, new ResultCallback<Void>() {
             @Override
@@ -3499,7 +3503,7 @@ public class RtmJavaDemo {
         demo.unsubscribe(channelName);
         demo.logout();
         Thread.sleep(1000);
-        RtmClient.release();
+        demo.release();
     }
 }
 ```
@@ -3641,7 +3645,7 @@ rtmClient.logout(new ResultCallback<Void>() {
     }
 });
 
-RtmClient.release();
+rtmClient.release();
 ```
 
 ## Test Signaling

@@ -51,9 +51,9 @@ RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
 | :------------------------------------------------: | :-------------------------------------------------------: | :------: | :--------------------------------------------------------: | -------------------------------------------------------------------------------- |
 | `appId` | string | Required | - | App ID obtained when creating a project in the Agora Console. |
 | `userId` | string | Required | - | User ID for identify a user or a device. To distinguish each user or device, you need to ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle. |
-| `areaCode` | `RtmAreaCode` | Optional | `GLOB` | Service area code, you can choose according to the region where your business is deployed. See [`RtmAreaCode`](#enumvareacod-e). |
+| `areaCode` | `RtmAreaCode` | Optional | `GLOB` | Service area code, you can choose according to the region where your business is deployed. See [`RtmAreaCode`](#rtmareacode). |
 | `eventListener` | `RtmEventListener` | Required | - | Signaling event notification listener settings. See [Event listeners](#event-listeners). |
-| `protocolType` | `RtmProtocolType` | Optional | `TCP_UDP` | Protocol types for message transmission. By default, Signaling utilizes one-way TCP and one-way UDP protocols for transmission. You have the flexibility to modify the protocol types based on your requirements. See [`RtmProtocolType`](#enumvprotocoltyp-e). |
+| `protocolType` | `RtmProtocolType` | Optional | `TCP_UDP` | Protocol types for message transmission. By default, Signaling utilizes one-way TCP and one-way UDP protocols for transmission. You have the flexibility to modify the protocol types based on your requirements. See [`RtmProtocolType`](#rtmprotocoltype). |
 | `presenceTimeout` | int | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers the delay imposed by the Signaling server before sending a `REMOTE_TIMEOUT` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `REMOTE_TIMEOUT` event notification to other participants or delete the temporary user data associated with the user. |
 | `heartbeatInterval` | int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
 | `reconnectTimeout` | int | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0` which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to thee Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK triggers the `onFailure` callback with `errorInfo` as `LOGIN_TIMEOUT`, and also triggers the `onLinkStateChanged` callback with `currentState` as `FAILED` and `reason` as `LOGIN_TIMEOUT`. <br />- If reconnection times out, the SDK triggers the `onLinkStateChanged` callback with `currentState` as `FAILED` and `reason` as `RECONNECT_TIMEOUT`. |
@@ -71,8 +71,8 @@ Use the `RtmLogConfig` instance to configure and store local log files named `ag
 | Properties | Type | Required | Default | Description |
 |:--------------:|:---------:|:--------:|:-------:| ---------- |
 | `filePath` | String | Optional | - | Log file storage paths. |
-| `fileSizeInKB` | int | Optional | `1024` | Log file size in KB, with a value range of [128,1024].<br />- If the value you enter is less than 128, the SDK sets the value to 128.<br />- If the value you enter is greater than 1024, the SDK sets the value to 1024. |
-| `level` | `RtmLogLevel` | Optional | `INFO` | Output level of log information. See [`RtmLogLevel`](#enumvlogleve-l). |
+| `fileSize` | int | Optional | `1024` | Log file size in KB, with a value range of [128,1024].<br />- If the value you enter is less than 128, the SDK sets the value to 128.<br />- If the value you enter is greater than 1024, the SDK sets the value to 1024. |
+| `level` | `RtmLogLevel` | Optional | `INFO` | Output level of log information. See [`RtmLogLevel`](#rtmloglevel). |
 
 ##### RtmProxyConfig
 
@@ -86,7 +86,7 @@ You need to keep your Proxy username and password safe. The Signaling SDK does n
 
 | Properties | Type | Required | Default | Description |
 |:-----------:|:----------------:|:--------:|:---------------------:| ------------------------------------------------------------------- |
-| `proxyType` | `RtmProxyType` | Optional | `NONE` | Proxy protocol type. See [`RtmProxyType`](#enumvproxytyp-e). |
+| `proxyType` | `RtmProxyType` | Optional | `NONE` | Proxy protocol type. See [`RtmProxyType`](#rtmproxytype). |
 | `server` | String | Optional | - | Proxy server domain name or IP address. |
 | `port` | int | Optional | - | Proxy listening port. |
 | `account` | String | Optional | - | Proxy login account. |
@@ -104,9 +104,9 @@ Once you set the encryption feature, all users must use the same encryption mode
 
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ---------------------- |
-| `encryptionMode` | `RtmEncryptionMode` | Optional | `NONE` | Encryption mode. See [`RtmEncryptionMode`](#enumvencryptionmod-e). |
+| `encryptionMode` | `RtmEncryptionMode` | Optional | `NONE` | Encryption mode. See [`RtmEncryptionMode`](#rtmencryptionmode). |
 | `encryptionKey` | String | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
-| `encryptionKdfSalt` | byte[] | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
+| `encryptionSalt` | byte[] | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
 
 ##### RtmPrivateConfig
 
@@ -116,8 +116,8 @@ Use the `RtmPrivateConfig` instance to set the properties required for the priva
 
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `serviceType` | `EnumSet&lt;RtmServiceType&gt;` | Optional | - | Service type. See [`RtmServiceType`](#enumvrtmservicetyp-e). |
-| `accessPointHosts` | `ArrayList&lt;String&gt;` | Optional | - | An array of server addresses, where you can fill in domain names or IP addresses. |
+| `serviceType` | `EnumSet<RtmServiceType>` | Optional | - | Service type. See [`RtmServiceType`](#rtmservicetype). |
+| `accessPointHosts` | `ArrayList<String>` | Optional | - | An array of server addresses, where you can fill in domain names or IP addresses. |
 
 #### Basic usage
 
@@ -203,12 +203,12 @@ Signaling has a total of 7 types of event notifications, as shown in the followi
 
 | Event Type | Description |
 |:----------:|------------------------------|
-| `onMessageEvent` | Receive message notifications from all subscribed Message Channels or topic message notifications subscribed to, in all Stream Channels you join. See [`MessageEvent`](#configmessageeven-t) . |
-| `onPresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. See [`PresenceEvent`](#configpresenceeven-t) |
-| `onTopicEvent` | Receive all topic event notifications in joined stream channels. See [`TopicEvent`](#configtopiceven-t) |
-| `onStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`StorageEvent`](#configstorageeven-t) |
-| `onLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`LockEvent`](#configlockeven-t) |
-| `onLinkStateEvent` | Receive event notifications when client connection status changes. See [`LinkStateEvent`](#configlinkstateeven-t). |
+| `onMessageEvent` | Receive message notifications from all subscribed Message Channels or topic message notifications subscribed to, in all Stream Channels you join. See [`MessageEvent`](#messageevent) . |
+| `onPresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. See [`PresenceEvent`](#presenceevent) |
+| `onTopicEvent` | Receive all topic event notifications in joined stream channels. See [`TopicEvent`](#topicevent) |
+| `onStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`StorageEvent`](#storageevent) |
+| `onLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`LockEvent`](#lockevent) |
+| `onLinkStateEvent` | Receive event notifications when client connection status changes. See [`LinkStateEvent`](#linkstateevent). |
 | `onTokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
 #### Add event listeners
@@ -304,11 +304,11 @@ rtmClient.removeEventListener(listener);
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ---------------------- |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `channelName` | String | Channel name. |
 | `topicName` | String | Topic name. |
 | `message` | `RtmMessage` | Message. |
-| `publisher` | String | User ID of the message publisher. |
+| `publisherId` | String | User ID of the message publisher. |
 | `customType` | String | A user-defined field. Only supports string type. |
 | `timestamp` | long | The timestamp when the event occurs. |
 
@@ -316,9 +316,8 @@ rtmClient.removeEventListener(listener);
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ---------------------- |
-| `message` | String | String type message. |
-| `data` | byte[] | Byte type message. |
-| `messageType` | `RtmMessageType` | Message type. See [`RtmMessageType`](#enumvmessagetyp-e). |
+| `data` | Object | Message content. Cast it to `String` or `byte[]` according to `type`. |
+| `type` | `RtmMessageType` | Message type. See [`RtmMessageType`](#rtmmessagetype). |
 
 ##### PresenceEvent
 
@@ -326,11 +325,11 @@ rtmClient.removeEventListener(listener);
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ---------------------- |
-| `type` | `RtmPresenceEventType` | Presence event type. See [`RtmPresenceEventType`](#enumvpresencetyp-e). |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `eventType` | `RtmPresenceEventType` | Presence event type. See [`RtmPresenceEventType`](#rtmpresenceeventtype). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `channelName` | String | Channel name. |
-| `publisher` | String | User ID of the message publisher. |
-| `stateItems` | `ArrayList&lt;StateItem&gt;` | Key-value pair that identifies the user's presence state. |
+| `publisherId` | String | User ID of the message publisher. |
+| `stateItems` | `HashMap<String, String>` | Key-value pairs that identify the user's presence state. |
 | `interval` | `IntervalInfo` | In the Interval state, the aggregated incremental information of event notifications such as user joining, leaving, timeout, and status change in the previous period of the current channel. |
 | `snapshot` | `SnapshotInfo` | When the user first joins the channel, the server pushes the snapshot data of all users in the current channel and their statuses to the user. |
 | `timestamp` | long | The timestamp when the event occurred. |
@@ -339,19 +338,19 @@ rtmClient.removeEventListener(listener);
 
 | Properties | Type | Description |
 | :------------------ | :--------------------: | :------------------------------------- |
-| `joinUserList` | `ArrayList&lt;String&gt;` | List of users who joined the channel in the previous cycle. |
-| `leaveUserList` | `ArrayList&lt;String&gt;` | List of users who left the channel in the previous cycle. |
-| `timeoutUserList` | `ArrayList&lt;String&gt;` | List of users who timed out joining the channel in the previous cycle. |
-| `userStateList` | `ArrayList&lt;UserState&gt;` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
+| `joinUserList` | `ArrayList<String>` | List of users who joined the channel in the previous cycle. |
+| `leaveUserList` | `ArrayList<String>` | List of users who left the channel in the previous cycle. |
+| `timeoutUserList` | `ArrayList<String>` | List of users who timed out joining the channel in the previous cycle. |
+| `userStateList` | `ArrayList<UserState>` | List of users whose status has changed in the previous cycle. Contains user ID and status key-value pairs. |
 | `totalOccupancy` | int | The total number of online users in the current channel. In large-channel optimization mode, this value represents the total number of online users in the channel and is not limited by the maximum of 512 user details that are continuously synchronized. This value may be delayed slightly. |
 
 `SnapshotInfo` contains the following properties:
 
 | Properties | Type | Description |
 | :------------------ | :--------------------: | :------------------------------------- |
-| `userStateList` | `ArrayList&lt;UserState&gt;` | Snapshot information of the user when first joining the channel, including user ID and key-value pairs of status. |
+| `userStateList` | `ArrayList<UserState>` | Snapshot information of the user when first joining the channel, including user ID and key-value pairs of status. |
 
-`StateItem` data type contains the following properties:
+Each entry in the `stateItems` map contains the following:
 
 | Properties | Type | Description |
 | :------------------ | :--------------------: | :------------------------------------- |
@@ -364,10 +363,10 @@ rtmClient.removeEventListener(listener);
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ---------------------- |
-| `type` | `RtmTopicEventType` | Topic event type. See [`RtmTopicEventType`](#enumvtopictyp-e). |
+| `type` | `RtmTopicEventType` | Topic event type. See [`RtmTopicEventType`](#rtmtopiceventtype). |
 | `channelName` | String | Channel name. |
 | `publisher` | String | User ID. |
-| `topicInfos` | `ArrayList&lt;TopicInfo&gt;` | Topic information. |
+| `topicInfos` | `ArrayList<TopicInfo>` | Topic information. |
 | `timestamp` | long | The timestamp when the event occurs. |
 
 `TopicInfo` data type contains the following properties:
@@ -375,7 +374,7 @@ rtmClient.removeEventListener(listener);
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ---------------------- |
 | `topicName` | String | Topic name. |
-| `publishers` | `ArrayList&lt;PublisherInfo&gt;` | Message publisher array. |
+| `publishers` | `ArrayList<PublisherInfo>` | Message publisher array. |
 
 `PublisherInfo` data type contains the following properties:
 
@@ -390,11 +389,11 @@ rtmClient.removeEventListener(listener);
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ---------------------- |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `storageType` | `RtmStorageType` | Storage type. See [`RtmStorageType`](#enumvstoragetyp-e). |
-| `eventType` | `RtmStorageEventType` | Storage event type. See [`RtmStorageEventType`](#enumvstorageeventtyp-e). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `storageType` | `RtmStorageType` | Storage type. See [`RtmStorageType`](#rtmstoragetype). |
+| `eventType` | `RtmStorageEventType` | Storage event type. See [`RtmStorageEventType`](#rtmstorageeventtype). |
 | `target` | String | User ID or channel name. |
-| `data` | `Metadata` | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `data` | `Metadata` | Metadata item. See [`Metadata`](#metadata). |
 | `timestamp` | long | The timestamp when the event occurs. |
 
 ##### LockEvent
@@ -403,10 +402,10 @@ rtmClient.removeEventListener(listener);
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ---------------------- |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `eventType` | `RtmLockEventType` | Lock event type. See [`RtmLockEventType`](#enumvlocktyp-e). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `eventType` | `RtmLockEventType` | Lock event type. See [`RtmLockEventType`](#rtmlockeventtype). |
 | `channelName` | String | Channel name. |
-| `lockDetailList` | `ArrayList&lt;LockDetail&gt;` | Details of lock. |
+| `lockDetailList` | `ArrayList<LockDetail>` | Details of lock. |
 | `timestamp` | long | The timestamp when the event occurs. |
 
 The `LockDetail` data type contains the following properties:
@@ -423,14 +422,14 @@ SDK link state event.
 
 | Parameters | Type | Description |
 |:----------:|:-----:|:--------------------------- |
-| `currentState` | `RtmLinkState` | The current link state. See [`RtmLinkState`](#enumvlinkstat-e). |
-| `previousState` | `RtmLinkState` | The previous link state. See [`RtmLinkState`](#enumvlinkstat-e). |
-| `serviceType` | `RtmServiceType` | The network connection type. See [`RtmServiceType`](#enumvrtmservicetyp-e). |
-| `operation` | `RtmLinkOperation` | The operation that triggered the current state transition. See [`RtmLinkOperation`](#enumvlinkoperatio-n). |
-| `reasonCode` | `AgoraRtmLinkStateChangeReason` | The reason for this state transition. See [`AgoraRtmLinkStateChangeReason`](#enumvlinkstatereaso-n). |
+| `currentState` | `RtmLinkState` | The current link state. See [`RtmLinkState`](#rtmlinkstate). |
+| `previousState` | `RtmLinkState` | The previous link state. See [`RtmLinkState`](#rtmlinkstate). |
+| `serviceType` | `RtmServiceType` | The network connection type. See [`RtmServiceType`](#rtmservicetype). |
+| `operation` | `RtmLinkOperation` | The operation that triggered the current state transition. See [`RtmLinkOperation`](#rtmlinkoperation). |
+| `reasonCode` | `RtmLinkStateChangeReason` | The reason for this state transition. See [`RtmLinkStateChangeReason`](#rtmlinkstatechangereason). |
 | `reason` | String | The reason for the current state transition. This parameter will be deprecated in the future, please use the `reasonCode` parameter instead. |
-| `affectedChannels` | `ArrayList&lt;String&gt;` | The channels affected by the current state transition. |
-| `unrestoredChannels` | `ArrayList&lt;String&gt;` | The information about the channels to which subscription or joining has not been restored, including the channel name, channel type, and temporary state data in the channel. Typically, this information is empty. |
+| `affectedChannels` | `ArrayList<String>` | The channels affected by the current state transition. |
+| `unrestoredChannels` | `ArrayList<String>` | The information about the channels to which subscription or joining has not been restored, including the channel name, channel type, and temporary state data in the channel. Typically, this information is empty. |
 | `isResumed` | boolean | Within 2 minutes of the disconnection, whether the state transitions from `DISCONNECTED` to `CONNECTED`. `true` refers to the state has transitioned. |
 | `timestamp` | long | The timestamp when the event occurs. |
 
@@ -457,7 +456,7 @@ void login(String token, ResultCallback<Void> resultCallback);
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------: | :------: | :----: | ---------------------------------------------------------- |
 | `token` | const char* | Required | - | The token used for logging in to Signaling.<br />- If you have enabled token authentication for your project, use either the [Signaling temporary token](https://agora-token-generator-demo.vercel.app/) or obtain a Signaling token generated by your [token server](/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow).<br />- If your project does not enable token authentication, use an empty string or the App ID of a project that has Signaling services enabled. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 After calling most of the APIs of the Signaling Java SDK, the SDK returns a `resultCallback` callback. Based on different invocation results, the SDK executes different methods in the `resultCallback` callback:
 - If the method call succeeds, the SDK executes the `onSuccess` method.
@@ -466,7 +465,7 @@ After calling most of the APIs of the Signaling Java SDK, the SDK returns a `res
 | Properties | Type | Description |
 | :------------------: | :--------------------: | ------------------------------------- |
 | `errorCode` | `RtmErrorCode` | Error code for this operation. |
-| `reason` | String | Error reason for this operation. |
+| `errorReason` | String | Error reason for this operation. |
 | `operation` | String | Operation type. |
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
@@ -500,7 +499,7 @@ void logout(ResultCallback<Void> resultCallback);
 
 | Parameters | Type | Required | Default | Description |
 |:----------:|:---------:|:--------:|:-------:| -------------------------------------------- |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -533,7 +532,7 @@ void release();
 #### Basic usage
 
 ```java
-RtmClient.release();
+rtmClient.release();
 ```
 
 ## User authentication
@@ -570,7 +569,7 @@ void renewToken(String token, ResultCallback<Void> resultCallback)
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------: | :------: | :----: | ------------------------------------- |
 | `token` | string | Required | - | The newly generated Signaling token. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -609,7 +608,7 @@ void renewToken(String token, ResultCallback<Void> resultCallback)
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------: | :------: | :----: | ------------------------------------- |
 | `token` | string | Required | - | The newly generated RTC token. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback: <br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback: <br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -669,7 +668,7 @@ void subscribe(
 | :--------------: | :--------------------------------------------------------------: | :------: | :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
 | `options` | `SubscribeOptions` | Required | - | Options for subscribing to a channel. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 `SubscribeOptions` contains the following properties:
 
@@ -727,7 +726,7 @@ void unsubscribe(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------: | :------: | :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -812,7 +811,7 @@ void join(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :----------------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `options` | `JoinChannelOptions` | Required | - | Options for joining a channel. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `JoinChannelOptions` data type contains the following properties:
 
@@ -868,7 +867,7 @@ void leave(ResultCallback<Void> resultCallback);
 
 | Parameters | Type | Required | Default | Description |
 | :-------: | :----: | :------: | :----: | ------------- |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -953,14 +952,14 @@ void StreamChannel.joinTopic(
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------- |
 | `topicName` | String | Required | - | Topic name. |
 | `options` | `JoinTopicOptions` | Required | - | Options for joining a topic. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `options` parameter contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :-------------: | :------------------------------------------------------: | :------: | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `messageQos` | `RtmMessageQos` | Optional | `UNORDERED` | Whether the data transmitted in the topic is ordered. See [`RtmMessageQos`](#enumvmessageqo-s). |
-| `priority` | `RtmMessagePriority` | Optional | `NORMAL` | The priority of data transmission in the topic compared to other topics in the same channel. See [`RtmMessagePriority`](#enumvpriorit-y). |
+| `messageQos` | `RtmMessageQos` | Optional | `UNORDERED` | Whether the data transmitted in the topic is ordered. See [`RtmMessageQos`](#rtmmessageqos). |
+| `priority` | `RtmMessagePriority` | Optional | `NORMAL` | The priority of data transmission in the topic compared to other topics in the same channel. See [`RtmMessagePriority`](#rtmmessagepriority). |
 | `topicMeta` | String | Optional | - | Adds additional metadata when joining the topic. |
 | `syncWithMedia` | boolean | Optional | `false` | Whether the data sent in this topic is synchronized (timestamp-aligned) with the RTC audio and video data stream of the common channel. |
 
@@ -1019,7 +1018,7 @@ void StreamChannel.publishTopicMessage(
 | `topicName` | String | Required | - | Topic name. |
 | `message` | String\byte[] | Required | - | Message payload. |
 | `options` | `TopicMessageOptions` | Required | - | Message options. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `TopicMessageOptions` data type contains the following properties:
 
@@ -1087,7 +1086,7 @@ void StreamChannel.leaveTopic(String topicName, ResultCallback<Void> resultCallb
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------: | :------: | :----: | -------------------------------------------------------------------------------------------------- |
 | `topicName` | String | Required | - | Topic name. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -1131,20 +1130,20 @@ void StreamChannel.subscribeTopic(
 | :--------------: | :--------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `topicName` | String | Required | - | Topic name. |
 | `options` | `TopicOptions` | Required | - | Options for subscribing to a topic. |
-| `resultCallback` | `ResultCallback&lt;SubscribeTopicResult&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `SubscribeTopicResult` data.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<SubscribeTopicResult>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `SubscribeTopicResult` data.<br />- Failure: Executes the `onFailure` method. |
 
 The `options` parameter contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :-----: | :-----------------: | :------: | :----: | ----------------------------------------------------------------------------------------------- |
-| `users` | `ArrayList&lt;String&gt;` | Optional | - | A list of `UserId` of message publishers that you want to subscribe to. If you do not set this property, you can randomly subscribe to up to 64 users by default. |
+| `users` | `ArrayList<String>` | Optional | - | A list of `UserId` of message publishers that you want to subscribe to. If you do not set this property, you can randomly subscribe to up to 64 users by default. |
 
 `SubscribeTopicResult` parameter contains the following properties:
 
 | Properties | Type | Description |
 | :------------- | :-----------------: | :------------------- |
-| `succeedUsers` | `ArrayList&lt;String&gt;` | A list of successfully subscribed users. |
-| `failedUsers` | `ArrayList&lt;String&gt;` | A list of users that the SDK fails to subscribe to. |
+| `succeedUsers` | `ArrayList<String>` | A list of successfully subscribed users. |
+| `failedUsers` | `ArrayList<String>` | A list of users that the SDK fails to subscribe to. |
 
 #### Basic usage
 
@@ -1205,13 +1204,13 @@ void StreamChannel.unsubscribeTopic(
 | :---------: | :----: | :------: | :----: | ---------------------------------------------------------- |
 | `topicName` | String | Required | - | Topic name. |
 | `options` | `TopicOptions` | Required | - | Options for unsubscribe from a topic. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `options` parameter contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :-----: | :------: | :------: | :----: | --------------------------------------------------------------------------------------------- |
-| `users` | `ArrayList&lt;String&gt;` | Optional | - | A list of `UserId` of message publishers that you want to unsubscribe from. If you do not set this property, you can randomly unsubscribe from up to 64 users by default. |
+| `users` | `ArrayList<String>` | Optional | - | A list of `UserId` of message publishers that you want to unsubscribe from. If you do not set this property, you can randomly unsubscribe from up to 64 users by default. |
 
 #### Basic usage
 
@@ -1306,13 +1305,13 @@ void publish(
 | `channelName` | String | Required | - | Fill in a channel name to send messages to a specified channel, or fill in a user ID to send messages to a specified user. |
 | `message` | String\byte[] | Required | - | Message payload. |
 | `options` | `TopicMessageOptions` | Required | - | Message options. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `options` parameter contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :----------: | :----: | :------: | :----: | ------------------------------------------------ |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `customType` | String | Optional | - | A user-defined field. Only supports string type. |
 
 #### Basic usage
@@ -1478,9 +1477,9 @@ void getOnlineUsers(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | string | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `options` | `GetOnlineUsersOptions` | Required | - | Query options. |
-| `resultCallback` | `ResultCallback&lt;GetOnlineUsersResult&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `GetOnlineUsersResult` query result.<br />- Failure: Executes the `onFailure` method and return an error result. |
+| `resultCallback` | `ResultCallback<GetOnlineUsersResult>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `GetOnlineUsersResult` query result.<br />- Failure: Executes the `onFailure` method and return an error result. |
 
 The `options` parameter contains the following properties:
 
@@ -1495,7 +1494,7 @@ The `options` parameter contains the following properties:
 | Properties | Type | Description |
 | :---------------: | :--------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `nextPage` | String | Page number of the next page. Confirm whether there is a next page:<br />- A null value indicates that next page does not exist.<br />- A non-null value indicates that there is a next page. You can fill this value in the `page` property of the `getOnlineUsers` method to query the next page results. |
-| `userStateList` | `ArrayList&lt;UserState&gt;` | List of online users and their temporary state information in a specified channel. |
+| `userStateList` | `ArrayList<UserState>` | List of online users and their temporary state information in a specified channel. |
 | `totalOccupancy` | long | The list length of `UserStateList`. When you set both `includeUserId `and `includeState `properties in the `getOnlineUsers` method to `false`, this value represents the total number of current online users in the channel. |
 
 The `UserState` data type contains the following properties:
@@ -1503,7 +1502,7 @@ The `UserState` data type contains the following properties:
 | Properties | Type | Description |
 | :------- | :--------------------: | --------------------------------------- |
 | `userId` | String | User ID. |
-| `states` | `HashMap&lt;String, String&gt;` | Temporary user state. |
+| `states` | `HashMap<String, String>` | Temporary user state. |
 
 #### Basic usage
 
@@ -1552,14 +1551,14 @@ void getUserChannels(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | string | Required | - | User ID. |
-| `resultCallback` | `ResultCallback&lt;ArrayList&lt;ChannelInfo&gt;&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `ArrayList&lt;ChannelInfo&gt;` query result.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<ArrayList<ChannelInfo>>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `ArrayList<ChannelInfo>` query result.<br />- Failure: Executes the `onFailure` method. |
 
 `ChannelInfo` data type contains the following properties:
 
 | Properties | Type | Description |
 | :------------: | :-------------------------------------------------------: | ------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Channel name. |
-| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 
 #### Basic usage
 
@@ -1606,11 +1605,11 @@ void setState(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `items` | `Map&lt;String, String&gt;` | Required | - | User state. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `items` | `Map<String, String>` | Required | - | User state. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
-`StateItem` data type contains the following properties:
+Each entry in the `items` map contains the following:
 
 | Properties | Type | Description |
 | :------------------ | :--------------------: | :------------------------------------- |
@@ -1658,16 +1657,16 @@ void getState(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `userId` | String | Required | - | User ID. |
-| `resultCallback` | `ResultCallback&lt;UserState&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `UserState` query result.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<UserState>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the `UserState` query result.<br />- Failure: Executes the `onFailure` method. |
 
 The `UserState` data type contains the following properties:
 
 | Properties | Type | Description |
 | :------- | :--------------------: | --------------------------------------- |
 | `userId` | String | User ID. |
-| `states` | `HashMap&lt;String, String&gt;` | Temporary user state. |
+| `states` | `HashMap<String, String>` | Temporary user state. |
 
 #### Basic usage
 
@@ -1710,9 +1709,9 @@ void removeState(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `keys` | `ArrayList&lt;String&gt;` | Required | - | List of keys to be deleted. If you do not provide this property, the SDK removes all states. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `keys` | `ArrayList<String>` | Required | - | List of keys to be deleted. If you do not provide this property, the SDK removes all states. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -1777,11 +1776,11 @@ void setChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----------------: | :------: | :-----------: | ----------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
+| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
 | `lockName` | String | Required | - | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `MetadataOptions` data type contains the following properties:
 
@@ -1841,8 +1840,8 @@ void getChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----------: | :------: | :----: | --------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `resultCallback` | `ResultCallback&lt;Metadata&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the [`Metadata `](#storagemetadat-a) query result.<br />- Failure: Executes the `onFailure` method. |
+| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
+| `resultCallback` | `ResultCallback<Metadata>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the [`Metadata`](#metadata) query result.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -1895,11 +1894,11 @@ void removeChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----------------: | :------: | :-----------: | ----------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata `](#storagemetadat-a). |
+| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
+| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
 | `lockName` | String | Required | - | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `MetadataOptions` data type contains the following properties:
 
@@ -1966,11 +1965,11 @@ void updateChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----------------: | :------: | :-----------: | ----------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata `](#storagemetadat-a). |
+| `channelType` | `RtmChannelType` | Required | - | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
+| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
 | `lockName` | String | Required | - | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `options` parameter contains the following properties:
 
@@ -2042,9 +2041,9 @@ void setUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----------------: | :------: | :-----------------: | ----------------------------------- |
 | `userId` | String | Required | - | User ID. |
-| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata `](#storagemetadat-a). |
+| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `options` parameter contains the following properties:
 
@@ -2098,7 +2097,7 @@ void getUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------: | :------: | :----: | ---------- |
 | `userId` | String | Required | - | User ID. |
-| `resultCallback` | `ResultCallback&lt;Metadata&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the [`Metadata `](#storagemetadat-a) query result.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Metadata>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method and return the [`Metadata`](#metadata) query result.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2144,9 +2143,9 @@ void removeUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----------------: | :------: | :-----------------: | ----------------------------------- |
 | `userId` | String | Required | - | User ID. |
-| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata `](#storagemetadat-a). |
+| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `options` parameter contains the following properties:
 
@@ -2209,9 +2208,9 @@ void updateUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-----------------: | :------: | :-----------------: | ----------------------------------- |
 | `userId` | String | Required | - | User ID. |
-| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata `](#storagemetadat-a). |
+| `data` | `Metadata` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `MetadataOptions` | Required | - | Options for setting the channel metadata. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 The `MetadataOptions` data type contains the following properties:
 
@@ -2266,7 +2265,7 @@ void subscribeUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :-------: | :-------------: | :------: | :----: | ------------ |
 | `userId` | String | Required | - | User ID. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2304,7 +2303,7 @@ void unsubscribeUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------: | :------: | :-----------------: | ----------------------------------- |
 | `userId` | String | Required | - | User ID. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2329,7 +2328,7 @@ Use the `Metadata` data type to set and manage metadata, containing the followin
 | Properties | Type | Required | Default | Description |
 | :------------: | :----: | :------: | :----: | --------- |
 | `majorRevision` | long | Optional | `-1` | The version control switch:<br />- `-1`: Disable the version verification.<br />- &gt; `0`: Enable the version verification. The operation can only be performed if the target version number matches this value. |
-| `items` | `ArrayList&lt;MetadataItem&gt;` | Optional | `null` | Metadata items. |
+| `items` | `ArrayList<MetadataItem>` | Optional | `null` | Metadata items. |
 
 The `MetadataItem` data type contains the following properties:
 
@@ -2374,10 +2373,10 @@ void setLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 | `ttl` | long | Required | - | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `onLockEvent` event receives the `RELEASED` event. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2419,10 +2418,10 @@ void acquireLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 | `retry` | boolean | Required | - | If the lock acquisition fails, whether to retry until the acquisition succeeds or the user leaves the channel. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2465,9 +2464,9 @@ void releaseLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2510,10 +2509,10 @@ void revokeLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
 | `owner` | String | Required | - | The ID of the user who has a lock. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2553,8 +2552,8 @@ void getLocks(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
-| `resultCallback` | `ResultCallback&lt;ArrayList&lt;LockDetail&gt;&gt;` | Required | - | <br />- Success: Executes the `onSuccess` method and return the `LockDetail` data type.<br />- Failure: Executes the `onFailure` method. |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
+| `resultCallback` | `ResultCallback<ArrayList<LockDetail>>` | Required | - | <br />- Success: Executes the `onSuccess` method and return the `LockDetail` data type.<br />- Failure: Executes the `onFailure` method. |
 
 The `LockDetail` data type contains the following properties:
 
@@ -2606,9 +2605,9 @@ void removeLock(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | String | Required | - | Channel name. |
-| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#enumvchanneltyp-e). |
+| `channelType` | `RtmChannelType` | Required | - | Channel types. See [`RtmChannelType`](#rtmchanneltype). |
 | `lockName` | String | Required | - | Lock name. |
-| `resultCallback` | `ResultCallback&lt;Void&gt;` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
+| `resultCallback` | `ResultCallback<Void>` | Required | - | Invocation result callback:<br />- Success: Executes the `onSuccess` method.<br />- Failure: Executes the `onFailure` method. |
 
 #### Basic usage
 
@@ -2878,7 +2877,7 @@ Refer to the following information for troubleshooting API calls.
 | Properties | Type | Description |
 | :------------------: | :--------------------: | ------------------------------------- |
 | `errorCode` | `RtmErrorCode` | Error code for this operation. |
-| `reason` | String | Error reason for this operation. |
+| `errorReason` | String | Error reason for this operation. |
 | `operation` | String | Operation type. |
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
