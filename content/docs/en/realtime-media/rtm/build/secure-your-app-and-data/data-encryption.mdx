@@ -104,16 +104,15 @@ mRtmClient = RtmClient.create(rtmConfig);
 
 ```kotlin tab="Kotlin"
 val config = RtmEncryptionConfig().apply {
-    encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM
+    setEncryptionMode(RtmEncryptionMode.AES_256_GCM)
     encryptionKey = "your_encryptionKey"
-    encryptionSalt = your_salt
+    encryptionSalt = byteArrayOf(1, 2, 3, 4, 5)
 }
 
-val rtmConfig = RtmConfig().apply {
-    encryptionConfig = config
-    appId = "your_appId" // Replace with your App ID
-    userId = "your_userId" // Replace with your User ID
-}
+// Replace your_appId with your App ID and your_userId with your User ID
+val rtmConfig = RtmConfig.Builder("your_appId", "your_userId")
+    .encryptionConfig(config)
+    .build()
 
 val mRtmClient = RtmClient.create(rtmConfig)
 ```

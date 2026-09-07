@@ -458,9 +458,9 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, objec
     override fun onSuccess(result: GetOnlineUsersResult) {
         // If nextPage exists, fill the value of nextPage into the page field of getOnlineUsersOptions for the next getOnlineUsers call
         log(CALLBACK, "getOnlineUsers success")
-        log(INFO, "next page: $\{result.nextPage\}")
+        log(INFO, "next page: ${result.nextPage}")
         for (state in result.userStateList) {
-            log(INFO, "user id: $\{state.userId\}")
+            log(INFO, "user id: ${state.userId}")
             state.states.forEach { (key, value) ->
                 log(INFO, "key: $key, value: $value")
             }
@@ -505,7 +505,7 @@ val options = GetOnlineUsersOptions().apply {
 val channelType = RtmChannelType.MESSAGE
 mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, object : ResultCallback<GetOnlineUsersResult> {
     override fun onSuccess(result: GetOnlineUsersResult) {
-        log(CALLBACK, "Total occupancy: $\{result.totalOccupancy\}")
+        log(CALLBACK, "Total occupancy: ${result.totalOccupancy}")
     }
 
     override fun onFailure(errorInfo: ErrorInfo) {
@@ -629,7 +629,7 @@ mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, n
 val userId = "Tony"
 mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, object : ResultCallback<UserState> {
     override fun onSuccess(state: UserState) {
-        log(CALLBACK, "get users($\{state.userId\}) state success, $\{state.toString()\}")
+        log(CALLBACK, "get users(${state.userId}) state success, ${state}")
     }
 
     override fun onFailure(errorInfo: ErrorInfo) {

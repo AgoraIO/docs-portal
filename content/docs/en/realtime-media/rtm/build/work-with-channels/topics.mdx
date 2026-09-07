@@ -245,7 +245,7 @@ mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
 
 ```kotlin tab="Kotlin"
 val options = JoinTopicOptions()
-options.messageQos = RtmMessageQos.ORDERED
+options.setMessageQos(RtmMessageQos.ORDERED)
 mStreamChannel.joinTopic("topic_name", options, object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
         log(CALLBACK, "join topic success")

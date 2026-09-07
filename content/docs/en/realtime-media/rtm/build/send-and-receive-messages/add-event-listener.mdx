@@ -235,10 +235,11 @@ val eventListener = object : RtmEventListener {
     }
 }
 
-// Configure RtmClient
-val rtmConfig = RtmConfig().apply {
-    eventListener = this@eventListener
-}
+// Configure RtmClient and specify the event listener
+// Replace your_appId with your App ID and your_userId with your User ID
+val rtmConfig = RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .build()
 
 // Create an RtmClient instance
 val mRtmClient = RtmClient.create(rtmConfig)

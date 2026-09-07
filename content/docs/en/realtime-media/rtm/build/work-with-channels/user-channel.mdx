@@ -126,7 +126,7 @@ Refer to the following sample code for sending messages:
 ```kotlin tab="Kotlin" tabGroup="language"
 // Send string message
     val options = PublishOptions()
-    options.channelType = RtmChannelType.USER
+    options.setChannelType(RtmChannelType.USER)
     options.customType = "PlainText"
     rtmClient.publish("Tony", "Hello world", options, object : ResultCallback<Void> {
         override fun onSuccess(responseInfo: Void?) {
@@ -164,7 +164,7 @@ Refer to the following sample code for sending messages:
 // Send binary message
     val message = byteArrayOf(1, 2, 3, 4)
     val options = PublishOptions()
-    options.channelType = RtmChannelType.USER
+    options.setChannelType(RtmChannelType.USER)
     options.customType = "ByteArray"
     rtmClient.publish("Tony", message, options, object : ResultCallback<Void> {
         override fun onSuccess(responseInfo: Void?) {

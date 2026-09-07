@@ -490,7 +490,7 @@ mRtmClient.subscribe(channelName, options, object : ResultCallback<Void> {
     }
 
     override fun onFailure(errorInfo: ErrorInfo) {
-        log(ERROR, "Failed to subscribe to channel: $channelName, Error: $\{errorInfo.toString()\}")
+        log(ERROR, "Failed to subscribe to channel: $channelName, Error: $errorInfo")
     }
 })
 ```

@@ -188,7 +188,7 @@ RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
 
 ```kotlin tab="Kotlin"
 val proxyConfig = RtmProxyConfig().apply {
-    proxyType = RtmProxyType.HTTP
+    setProxyType(RtmProxyType.HTTP)
     server = "your_proxy_server_ip"
     port = 8080
     account = "your_proxy_account"
@@ -226,7 +226,7 @@ RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
 ```kotlin tab="Kotlin"
 val hosts = arrayListOf("x.x.x.x") // your access point hosts list.
 val privateConfig = RtmPrivateConfig().apply {
-    serviceType = EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAMING)
+    setServiceType(EnumSet.of(RtmServiceType.MESSAGE, RtmServiceType.STREAM))
     accessPointHosts = hosts
 }
 
@@ -290,15 +290,14 @@ try {
 ```kotlin tab="Kotlin"
 val logConfig = RtmLogConfig().apply {
     filePath = "./logfile/" // Set log file path
-    fileSizeInKB = 512 // Set log file size
-    level = RtmLogLevel.INFO // Set log report level
+    setFileSize(512) // Set log file size
+    setLevel(RtmLogLevel.INFO) // Set log report level
 }
 
-val rtmConfig = RtmConfig().apply {
-    userId = "your_userId"
-    appId = "your_appId"
-    logConfig = logConfig // Set log config
-}
+// Replace your_appId with your App ID and your_userId with your User ID
+val rtmConfig = RtmConfig.Builder("your_appId", "your_userId")
+    .logConfig(logConfig) // Set log config
+    .build()
 
 // Initialize the client instance
 try {
