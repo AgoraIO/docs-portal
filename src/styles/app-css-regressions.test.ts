@@ -280,7 +280,7 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(valueContainer, 'background', 'var(--bg-sunken)');
     expectDeclaration(valueContainer, 'color', 'var(--docs-schema-value)');
     expectDeclaration(valueContainer, 'font-family', 'var(--font-mono)');
-    expectDeclaration(valueContainer, 'font-weight', '700');
+    expectDeclaration(valueContainer, 'font-weight', '400');
   });
 
   it('keeps the narrow response-header and browser-find adapter contracts', () => {
