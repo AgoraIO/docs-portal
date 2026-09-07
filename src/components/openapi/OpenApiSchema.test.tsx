@@ -240,14 +240,14 @@ describe('OpenApiSchema', () => {
     const row = getRenderedSchemaText('status')?.closest('div.border-t');
     expect(row).toBeInstanceOf(HTMLElement);
     expect(
-      within(row as HTMLElement).getByText('Allowed values'),
+      within(row as HTMLElement).getByText('Allowed values:'),
     ).toBeVisible();
     expect(within(row as HTMLElement).getByText('ready')).toHaveAttribute(
       'data-openapi-allowed-value-key',
     );
     expect(within(row as HTMLElement).getByText('running')).toBeVisible();
-    expect(within(row as HTMLElement).getByText('Default')).toBeVisible();
-    expect(within(row as HTMLElement).getByText('Format')).toBeVisible();
+    expect(within(row as HTMLElement).getByText('Default:')).toBeVisible();
+    expect(within(row as HTMLElement).getByText('Format:')).toBeVisible();
     expect(screen.queryByText('Value in')).not.toBeInTheDocument();
   });
 
@@ -282,7 +282,7 @@ describe('OpenApiSchema', () => {
       Array.from(
         (row as HTMLElement).querySelectorAll('.openapi-schema-metadata-label'),
       ).map((label) => label.textContent),
-    ).toEqual(['Default', 'Range', 'Allowed values', 'Match', 'Format']);
+    ).toEqual(['Default:', 'Range:', 'Allowed values:', 'Match:', 'Format:']);
     expect(
       within(row as HTMLElement)
         .getByText(/"mode": "managed"/)
@@ -304,7 +304,7 @@ describe('OpenApiSchema', () => {
 
     const metadata = document.querySelector('.openapi-schema-metadata');
     expect(metadata).toBeInTheDocument();
-    expect(within(metadata as HTMLElement).getByText('Default')).toBeVisible();
+    expect(within(metadata as HTMLElement).getByText('Default:')).toBeVisible();
   });
 
   it('preserves a property literally named enum while rendering its schema enum', () => {

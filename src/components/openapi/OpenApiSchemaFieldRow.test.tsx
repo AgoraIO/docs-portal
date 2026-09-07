@@ -213,6 +213,34 @@ describe('OpenApiSchemaFieldRow', () => {
     );
   });
 
+  it('places metadata below the field identity and above its description', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={node}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+        remainingInfoTags={[{ label: 'Default', value: 'byok' }]}
+      />,
+    );
+
+    const details = screen
+      .getByText('The user identifier.')
+      .closest('.openapi-schema-field-details');
+    expect(details?.firstElementChild).toHaveClass('openapi-schema-metadata');
+    expect(details?.lastElementChild).toHaveClass(
+      'openapi-schema-field-description',
+    );
+    expect(
+      details?.querySelector('.openapi-schema-metadata-label'),
+    ).toHaveTextContent('Default:');
+    expect(
+      details?.querySelector('.openapi-schema-value-container'),
+    ).toBeInTheDocument();
+  });
+
   it('identifies the union branch next to the field type', () => {
     render(
       <OpenApiSchemaFieldRow
@@ -481,7 +509,7 @@ describe('OpenApiSchemaFieldRow', () => {
       />,
     );
 
-    const allowedValuesLabel = screen.getByText('Allowed values');
+    const allowedValuesLabel = screen.getByText('Allowed values:');
     const allowedValuesRow = allowedValuesLabel.parentElement;
     const allowedValues = allowedValuesRow?.querySelector(
       '.openapi-schema-metadata-value',
@@ -502,7 +530,7 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(
       within(allowedValues as HTMLElement).getByText('{"key":"value"}'),
     ).toBeInTheDocument();
-    expect(allowedValues?.querySelectorAll('code')).toHaveLength(3);
+    expect(allowedValues?.querySelectorAll('code')).toHaveLength(0);
     expect(allowedValues?.querySelector('ul')).not.toBeInTheDocument();
     expect(allowedValues?.querySelector('ol, li')).not.toBeInTheDocument();
     expect(
@@ -511,12 +539,12 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(
       allowedValues?.querySelector('[class*="shadow"]'),
     ).not.toBeInTheDocument();
-    expect(screen.getByText('Format')).toBeInTheDocument();
+    expect(screen.getByText('Format:')).toBeInTheDocument();
     expect(screen.getByText('slug')).toBeInTheDocument();
-    expect(screen.getByText('Default')).toBeInTheDocument();
+    expect(screen.getByText('Default:')).toBeInTheDocument();
     expect(screen.getByText('byok')).toBeInTheDocument();
     expect(
-      screen.getByText('Default').closest('.openapi-schema-metadata'),
+      screen.getByText('Default:').closest('.openapi-schema-metadata'),
     ).toBeInTheDocument();
   });
 });
