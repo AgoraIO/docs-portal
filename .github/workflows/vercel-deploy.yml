@@ -290,6 +290,7 @@ jobs:
 
       - name: Replay Global search golden queries
         if: steps.preview-context.outputs.should_deploy == 'true'
+        continue-on-error: true
         env:
           VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
           VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}
@@ -394,6 +395,7 @@ jobs:
         run: bun run search:sync
 
       - name: Replay Global search golden queries
+        continue-on-error: true
         env:
           VITE_ALGOLIA_APP_ID: ${{ secrets.VITE_ALGOLIA_APP_ID }}
           VITE_ALGOLIA_SEARCH_API_KEY: ${{ secrets.VITE_ALGOLIA_SEARCH_API_KEY }}

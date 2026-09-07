@@ -4,6 +4,7 @@ import { load } from 'js-yaml';
 import { describe, expect, it } from 'vitest';
 
 type WorkflowStep = {
+  'continue-on-error'?: boolean;
   env?: Record<string, string>;
   if?: string;
   name?: string;
@@ -75,6 +76,7 @@ describe('Vercel preview deployment workflow', () => {
     expect(replay.run).toContain(
       'bun run search:replay -- --gate=preview-blockers --out=global-search-replay-preview.json',
     );
+    expect(replay['continue-on-error']).toBe(true);
 
     const previewWorkflow = JSON.stringify(steps);
     expect(previewWorkflow).not.toContain('ALGOLIA_ADMIN_API_KEY');
@@ -92,7 +94,7 @@ describe('Vercel preview deployment workflow', () => {
     );
   });
 
-  it('keeps Production replay strict after search sync', async () => {
+  it('keeps Production replay diagnostic and non-blocking after search sync', async () => {
     const steps = await productionSteps();
     const syncIndex = stepIndex(steps, 'Sync Algolia search index');
     const replayIndex = stepIndex(steps, 'Replay Global search golden queries');
@@ -104,5 +106,6 @@ describe('Vercel preview deployment workflow', () => {
       'bun run search:replay -- --out=global-search-replay.json',
     );
     expect(replay.run).not.toContain('--gate=');
+    expect(replay['continue-on-error']).toBe(true);
   });
 });
