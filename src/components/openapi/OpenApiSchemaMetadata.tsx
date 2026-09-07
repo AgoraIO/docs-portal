@@ -13,13 +13,10 @@ export function OpenApiSchemaAllowedValues({ values }: { values: unknown[] }) {
         const key = getAllowedValueKey(value, index);
 
         return (
-          <code
-            className="me-1 inline-block max-w-full break-words rounded border border-border px-1.5 py-0.5 font-mono text-xs [overflow-wrap:anywhere]"
-            data-openapi-allowed-value-key={key}
-            key={key}
-          >
+          <span data-openapi-allowed-value-key={key} key={key}>
+            {index > 0 ? ', ' : null}
             {formatAllowedValue(value)}
-          </code>
+          </span>
         );
       })}
     </span>
@@ -37,9 +34,9 @@ export function OpenApiSchemaMetadata({
     <div className="openapi-schema-metadata">
       {items.map(({ key, label, value }) => (
         <div className="openapi-schema-metadata-row" key={key ?? label}>
-          <div className="openapi-schema-metadata-label">{label}</div>
-          <div className="openapi-schema-metadata-value break-words">
-            {value}
+          <span className="openapi-schema-metadata-label">{label}:</span>
+          <div className="openapi-schema-metadata-value">
+            <div className="openapi-schema-value-container">{value}</div>
           </div>
         </div>
       ))}
