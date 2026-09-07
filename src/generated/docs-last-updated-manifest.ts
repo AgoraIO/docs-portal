@@ -989,7 +989,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/unity.mdx':
     '2026-08-06T11:42:18.000Z',
   'content/docs/en/api-reference/api-ref/signaling/web.mdx':
-    '2026-08-06T11:42:18.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/api-reference/api-ref/signaling/windows-cpp.mdx':
     '2026-08-06T11:42:18.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/api-callback-service.mdx':
@@ -5897,11 +5897,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.md':
     '2026-06-28T10:06:44.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.mdx':
-    '2026-07-31T02:34:43.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.mdx':
@@ -5935,7 +5935,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/meta.json':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.md':
@@ -5979,7 +5979,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx':
-    '2026-08-06T11:42:18.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.md':
     '2026-06-28T10:06:44.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx':
@@ -6031,7 +6031,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.mdx':
-    '2026-08-06T11:42:18.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/meta.json':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx':
@@ -6066,7 +6066,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/product-overview.md':
     '2026-06-18T08:34:22.000Z',
   'content/docs/en/realtime-media/rtm/quickstart.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/realtime-media/rtm/reference/account-settlement.md':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/rtm/reference/beginners-guide.md':
@@ -6106,7 +6106,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/release-notes.md':
     '2026-07-02T06:58:41.000Z',
   'content/docs/en/realtime-media/rtm/reference/release-notes.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-08-20T11:54:46.000Z',
   'content/docs/en/realtime-media/rtm/reference/rest-api.md':
     '2026-06-28T06:41:08.000Z',
   'content/docs/en/realtime-media/rtm/reference/security.md':

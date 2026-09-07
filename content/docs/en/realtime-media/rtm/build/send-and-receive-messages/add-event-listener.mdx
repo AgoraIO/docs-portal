@@ -82,6 +82,7 @@ rtm.addEventListener("linkState", event => {
     const serviceType = event.serviceType;            // Service type
     const operation = event.operation;                // Operation that triggered this event
     const reason = event.reason;                      // Reason for the state change
+    const reasonCode = event.reasonCode;               // Reason code for the state change
     const affectedChannels = event.affectedChannels;  // Affected channels
     const timestamp = event.timestamp;                // Event timestamp
     const isResumed = event.isResumed;                // Whether the connection resumed
