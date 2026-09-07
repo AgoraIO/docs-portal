@@ -278,7 +278,7 @@ describe('app prose CSS regressions', () => {
     expectDeclaration(valueContainer, 'max-width', '100%');
     expectDeclaration(valueContainer, 'border', '1px solid var(--line)');
     expectDeclaration(valueContainer, 'background', 'var(--bg-sunken)');
-    expectDeclaration(valueContainer, 'color', 'var(--accent-brand)');
+    expectDeclaration(valueContainer, 'color', 'var(--docs-info)');
     expectDeclaration(valueContainer, 'font-family', 'var(--font-mono)');
     expectDeclaration(valueContainer, 'font-weight', '700');
   });
