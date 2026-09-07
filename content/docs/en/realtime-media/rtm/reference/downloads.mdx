@@ -1,22 +1,9 @@
 ---
 title: "Manual install"
-description: "Links to the manual downloads for this product, and explanations on how to install them."
+description: "Install the Signaling SDK for your platform, using a package manager or a downloaded package."
 ---
 
-<Tabs defaultValue="web" groupId="platform">
-<TabsList>
-  <TabsTrigger value="web">Web</TabsTrigger>
-  <TabsTrigger value="android">Android</TabsTrigger>
-  <TabsTrigger value="ios">iOS</TabsTrigger>
-  <TabsTrigger value="macos">macOS</TabsTrigger>
-  <TabsTrigger value="linux-java">Linux Java</TabsTrigger>
-  <TabsTrigger value="linux-cpp">Linux C++</TabsTrigger>
-  <TabsTrigger value="windows">Windows</TabsTrigger>
-  <TabsTrigger value="unity">Unity</TabsTrigger>
-  <TabsTrigger value="flutter">Flutter</TabsTrigger>
-</TabsList>
-
-<TabsContent value="web">
+<PlatformStructured platform="web">
 To manually install the Signaling SDK for Web, do one of the following:
 
 ## Through the Agora website
@@ -86,31 +73,32 @@ To manually install the Signaling SDK for Web, do one of the following:
       console.log({ err }, 'error occurs at publish message');
     }
     ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="android">
+<PlatformStructured platform="android">
 To manually install the Signaling SDK for Android, do one of the following:
 
-## Automatically integrate the SDK with JitPack
+## Automatically integrate the SDK with Maven Central
 
-1. Add the JitPack repository in the `build.gradle` file under the root directory of your project:
+1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
 
     ```text
-    allprojects {
-        repositories {
-            ...
-            maven { url 'https://www.jitpack.io' }
-        }
+    repositories {
+        mavenCentral()
     }
     ```
 
-1. Add the `com.github.agorabuilder:rtm-sdk` dependency in the `/app/build.gradle` file under your project. For `X.Y.Z`, use the current SDK version number. You can visit JitPack.io to see the latest version number.
+1. Add the `io.agora.rtm:rtm-sdk` dependency in the `/app/build.gradle` file under your project. Replace `x.y.z` with the SDK version number, such as `2.3.0`. To get the latest version number, see the [Release notes](/en/realtime-media/rtm/reference/release-notes).
 
     ```text
     dependencies {
-        implementation 'com.github.agorabuilder:rtm-sdk:X.Y.Z'
+        implementation 'io.agora.rtm:rtm-sdk:x.y.z'
     }
     ```
+
+    :::note
+    To resolve integration issues when co-integrating with the RTC SDK, use `io.agora.rtm:rtm-sdk-lite` instead.
+    :::
 
 ## Manually copy the SDK files
 
@@ -118,19 +106,21 @@ To manually install the Signaling SDK for Android from a downloaded package:
 
 1. Extract [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=android) to a local directory, such as `<unzipped_package>`.
 
-1. Copy the following files or folders from the `libs` folder to your Android project.
+1. Copy the following files or folders from the `rtm/sdk` folder of the extracted package to your Android project.
 
     | File or folder | Path in your project |
     | --- | --- |
-    | `agora-rtm_sdk.jar` | `/app/libs/` |
-    | `/arm64-v8a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/arm64-v8a/` |
-    | `/armeabi-v7a/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/armeabi-v7a/` |
-    | `/x86/libagora-rtm-jni.so` | `~/app/src/main/jniLibs/x86/` |
-    | `/x86_64/libagora-rtm-sdk-jni.so` | `~/app/src/main/jniLibs/x86_64/` |
+    | `agora-rtm-sdk.jar` | `/app/libs/` |
+    | `/arm64-v8a/` | `~/app/src/main/jniLibs/arm64-v8a/` |
+    | `/armeabi-v7a/` | `~/app/src/main/jniLibs/armeabi-v7a/` |
+    | `/x86/` | `~/app/src/main/jniLibs/x86/` |
+    | `/x86_64/` | `~/app/src/main/jniLibs/x86_64/` |
 
-</TabsContent>
+    Each architecture folder contains `libagora-rtm-sdk.so` and `libaosl.so`. Copy both.
 
-<TabsContent value="ios">
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
 To manually install the Signaling SDK for iOS, do one of the following:
 
 ## Automatically integrate the SDK with CocoaPods
@@ -199,9 +189,9 @@ The steps to execute these scripts are as follows:
     - `libresolv.tbd`
     - `SystemConfiguration.framework`
     - `CoreTelephony.framework`
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="macos">
+<PlatformStructured platform="macos">
 To manually install the Signaling SDK for macOS, do one of the following:
 
 ## Automatically integrate the SDK with CocoaPods
@@ -270,9 +260,9 @@ The steps to execute these scripts are as follows:
     - `libresolv.tbd`
     - `SystemConfiguration.framework`
     - `CoreTelephony.framework`
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="linux-java">
+<PlatformStructured platform="linux-java">
 To install the Signaling SDK for Linux Java using Maven:
 
 1. Create a file named `pom.xml` in `RTM_quickstart` with the following content:
@@ -336,9 +326,9 @@ To install the Signaling SDK for Linux Java using Maven:
     The `artifactId` is architecture-specific. Use `rtm-java-aarch64` for aarch64 (arm64) devices, or `rtm-java-x86_64` for x86-64 devices.
 
 1. Maven doesn't distribute the native libraries the SDK depends on, so [download](/en/api-reference/sdks?product=signaling&platform=linux-java) the SDK package separately, unzip it, and copy the `*.so` files to the `lib` folder.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="linux-cpp">
+<PlatformStructured platform="linux-cpp">
 To manually install the Signaling SDK for Linux C++:
 
 1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=linux-cpp) to a local folder.
@@ -364,9 +354,9 @@ To manually install the Signaling SDK for Linux C++:
     add_executable(${TARGET_NAME} ${SOURCES} ${HEADERS})
     target_link_libraries(${TARGET_NAME} agora_rtm_sdk pthread)
     ```
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="windows">
+<PlatformStructured platform="windows">
 To manually install the Signaling SDK for Windows:
 
 1. Extract the files in Agora [Signaling SDK](/en/api-reference/sdks?product=signaling&platform=windows) to a local folder.
@@ -390,9 +380,9 @@ To manually install the Signaling SDK for Windows:
     1. Select **Linker > Input > Additional Dependencies**, then click **Edit**.
 
     1. In the window, input `agora_rtm_sdk.lib`.
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="unity">
+<PlatformStructured platform="unity">
 To manually install the Signaling SDK for Unity, do one of the following:
 
 ## Import the asset package
@@ -421,9 +411,9 @@ To manually install the Signaling SDK for Unity, do one of the following:
     | Windows | `Plugins/x86` | `/Assets/Plugins/x86` |
     | Windows | `Plugins/x86_64` | `/Assets/Plugins/x86_64` |
 
-</TabsContent>
+</PlatformStructured>
 
-<TabsContent value="flutter">
+<PlatformStructured platform="flutter">
 To manually install the Signaling SDK for Flutter:
 
 1. Open a terminal and execute the following command to create a new Flutter project:
@@ -449,5 +439,5 @@ To integrate Signaling SDK version 2.2.1 or above and RTC SDK version 4.3.0 or a
     ```bash
     flutter pub get
     ```
-</TabsContent>
-</Tabs>
+</PlatformStructured>
+

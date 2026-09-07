@@ -900,20 +900,29 @@ describe('docs content regressions', () => {
       'flutter',
     ];
 
-    expect(rtmDownloads).toContain(
-      '<Tabs defaultValue="web" groupId="platform">',
-    );
-    expect(rtmDownloads).not.toContain('<PlatformStructured platform=');
-    expect(rtmDownloads.match(/<TabsContent value=/g) ?? []).toHaveLength(
-      rtmDownloadPlatforms.length,
-    );
+    // The platform dimension belongs to PlatformStructured, which feeds the
+    // site-wide platform selector; a local <Tabs groupId="platform"> group does
+    // not sync with it. Every other Signaling page, and every other product's
+    // downloads page, uses PlatformStructured here.
+    expect(rtmDownloads).not.toContain('<Tabs ');
+    expect(
+      rtmDownloads.match(/<PlatformStructured platform=/g) ?? [],
+    ).toHaveLength(rtmDownloadPlatforms.length);
     for (const platform of rtmDownloadPlatforms) {
-      expect(rtmDownloads).toContain(`<TabsContent value="${platform}">`);
+      expect(rtmDownloads).toContain(
+        `<PlatformStructured platform="${platform}">`,
+      );
     }
-    expect(rtmDownloads).toContain('| `agora-rtm_sdk.jar` | `/app/libs/` |');
+    // Verified against Agora_RTM_JAVA_SDK_for_Android_v2.3.0.zip: the jar is
+    // agora-rtm-sdk.jar under rtm/sdk, and each ABI folder holds
+    // libagora-rtm-sdk.so plus libaosl.so.
+    expect(rtmDownloads).toContain('| `agora-rtm-sdk.jar` | `/app/libs/` |');
+    expect(rtmDownloads).toContain('io.agora.rtm:rtm-sdk');
+    expect(rtmDownloads).not.toContain('agorabuilder');
     expect(rtmDownloads).toContain("pod 'AgoraRtm_iOS'");
     expect(rtmDownloads).toContain("pod 'AgoraRtm_macOS'");
-    expect(rtmDownloads).toContain('<artifactId>agora-rtm-sdk</artifactId>');
+    // Renamed in #1013 when Linux Java shipped; the artifact is per-architecture.
+    expect(rtmDownloads).toContain('<artifactId>rtm-java-aarch64</artifactId>');
     expect(rtmDownloads).toContain(
       'target_link_libraries($' + '{TARGET_NAME} agora_rtm_sdk pthread)',
     );
