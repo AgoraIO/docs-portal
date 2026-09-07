@@ -67,6 +67,10 @@ describe('OpenApiResponses', () => {
     expect(heading.tagName).toBe('H2');
     expect(heading).toHaveClass('openapi-section-heading');
     expect(heading.querySelector('a[href="#test-responses"]')).toBeTruthy();
+    expect(document.querySelectorAll('#test-responses')).toHaveLength(1);
+    expect(
+      document.querySelector('[data-openapi-responses]'),
+    ).not.toHaveAttribute('id');
     expect(
       screen.getByRole('button', { name: '200 application/json' }),
     ).toBeInTheDocument();

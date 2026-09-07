@@ -69,7 +69,7 @@ export function OpenApiSchemaFieldRow({
     <>
       {node.required ? (
         <Badge
-          className="openapi-schema-status normal-case tracking-normal border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300"
+          className="openapi-schema-status normal-case tracking-normal border-fd-error/30 bg-fd-error/10 text-fd-error"
           variant="outline"
         >
           {labels.required}
@@ -77,7 +77,7 @@ export function OpenApiSchemaFieldRow({
       ) : null}
       {node.schema.deprecated ? (
         <Badge
-          className="openapi-schema-status normal-case tracking-normal border-orange-200 bg-orange-50 text-orange-800 dark:border-orange-900/60 dark:bg-orange-950/30 dark:text-orange-300"
+          className="openapi-schema-status normal-case tracking-normal border-fd-warning/30 bg-fd-warning/10 text-fd-warning"
           variant="outline"
         >
           {labels.deprecated}

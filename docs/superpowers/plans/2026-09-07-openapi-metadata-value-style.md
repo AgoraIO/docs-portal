@@ -179,10 +179,10 @@ Replace the current metadata rules with:
   border: 1px solid var(--line);
   border-radius: 0.375rem;
   background: var(--bg-sunken);
-  color: var(--accent-brand);
+  color: var(--docs-schema-value);
   font-family: var(--font-mono);
   font-size: 0.875rem;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.2;
   overflow-wrap: anywhere;
 }
@@ -197,7 +197,7 @@ node node_modules/vitest/vitest.mjs run src/components/openapi/OpenApiSchemaMeta
 ./node_modules/.bin/biome check src/components/openapi/OpenApiSchemaMetadata.tsx src/components/openapi/OpenApiSchemaFieldRow.tsx src/components/openapi/OpenApiSchemaMetadata.test.tsx src/components/openapi/OpenApiSchemaFieldRow.test.tsx src/components/openapi/OpenApiSchema.test.tsx src/styles/app.css
 ```
 
-Expected: focused tests and Biome pass. Spec review must confirm name/type → metadata → description, bold labels with colons, immediate adjacency, one Allowed values container, and unchanged schema semantics. Code-quality review must reject nested borders, fixed metadata columns, and unrelated tree changes.
+Expected: focused tests and Biome pass. Spec review must confirm name/type → metadata → description, bold labels with colons, immediate adjacency, one Allowed values container, the current theme-token regular-weight value style, and unchanged schema semantics. Code-quality review must reject nested borders, fixed metadata columns, and unrelated tree changes.
 
 - [ ] **Step 6: Commit the implementation.**
 
@@ -226,7 +226,7 @@ node node_modules/vitest/vitest.mjs run src/components/openapi/OpenApiSchemaMeta
 ./node_modules/.bin/biome check src/components/openapi src/styles/app.css src/styles/app-css-regressions.test.ts
 ```
 
-Expected: PASS with Required/Optional/Deprecated badges, deprecated strike-through, continuous logical guide lines, `hidden="until-found"`, section headings, no parameter filters, and the updated inline metadata CSS contract intact. Spec review must cover value style, order, wrapping, and non-goals. Code-quality review must use stable semantic hooks and avoid duplicating tree fixtures.
+Expected: PASS with Required/Deprecated badges, absent Optional badges, non-struck deprecated names, continuous logical guide lines, `hidden="until-found"`, section headings, no parameter filters, and the updated inline metadata CSS contract intact. Spec review must cover the current theme-token value style, order, wrapping, and non-goals. Code-quality review must use stable semantic hooks and avoid duplicating tree fixtures.
 
 - [ ] **Step 3: Commit regression coverage.**
 
@@ -262,7 +262,7 @@ URL: `http://127.0.0.1:3012/en/api-reference/api-ref/conversational-ai/join`
 
 - [ ] **Step 3: Validate desktop presentation.**
 
-At 1440px, verify metadata is immediately below name/type and above description; labels are bold with colons; values begin directly after their own colon; all values share border/background/blue monospace styling; Allowed values is one comma-separated container; sort order is unchanged; status badges and tree guides are unchanged. Capture a screenshot.
+At 1440px, verify metadata is immediately below name/type and above description; labels are bold with colons; values begin directly after their own colon; all values share border/background/current-theme-token monospace styling at regular weight; Allowed values is one comma-separated container; sort order is unchanged; status badges and tree guides are unchanged. Capture a screenshot.
 
 - [ ] **Step 4: Validate 390px behavior.**
 

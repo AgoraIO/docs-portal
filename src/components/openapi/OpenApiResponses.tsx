@@ -89,7 +89,7 @@ export function OpenApiResponses({
   );
 
   return (
-    <section className="mt-8" data-openapi-responses id={sectionId}>
+    <section className="mt-8" data-openapi-responses>
       <OpenApiSectionHeading id={sectionId}>
         Response Body
       </OpenApiSectionHeading>

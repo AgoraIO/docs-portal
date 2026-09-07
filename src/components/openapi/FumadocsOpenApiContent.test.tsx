@@ -2645,10 +2645,10 @@ describe('FumadocsOpenApiContent', () => {
     expect(pathHeading).toHaveAttribute('id', 'parameters-path');
     expect(requestBodyHeading).toHaveAttribute('id', 'request-body');
     expect(responseBodyHeading).toHaveClass('font-semibold', 'text-2xl');
-    expect(document.querySelector('[data-openapi-responses]')).toHaveAttribute(
-      'id',
-      'response-body',
-    );
+    expect(document.querySelectorAll('#response-body')).toHaveLength(1);
+    expect(
+      document.querySelector('[data-openapi-responses]'),
+    ).not.toHaveAttribute('id');
     for (const id of ['request-body', 'response-body']) {
       expect(document.getElementById(id)).toHaveClass(
         'openapi-section-heading',
