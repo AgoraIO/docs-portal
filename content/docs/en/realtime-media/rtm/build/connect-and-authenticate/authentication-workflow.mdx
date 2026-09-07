@@ -294,7 +294,7 @@ In the sample code:
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/web).
 
 ### Token expiration and renewal
 
@@ -592,7 +592,7 @@ rtmClient.login("your_token", object : ResultCallback<Void> {
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/android).
 
 ### Token expiration and renewal
 
@@ -881,11 +881,11 @@ rtm.login(token) {res, error in
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch the token from your token server and provide it to the SDK during the join process. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch the token from your token server and provide it to the SDK during the join process. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/ios).
 
 ### Token expiration and renewal
 
-You configure the validity period of an RTM token in your token generator according to your business needs. The maximum validity period of a token is 24 hours. When an RTM token is about to expire, the `tokenPrivilegeWillExpire` callback is triggered 30 seconds before the expiration time. When you receive this callback, retrieve a fresh RTM token from your token server, and call [`renewToken`](/en/api-reference/api-ref/signaling?platform=ios#tokenrenewrtmtokenpropsag_platform) to pass the new token to the SDK.
+You configure the validity period of an RTM token in your token generator according to your business needs. The maximum validity period of a token is 24 hours. When an RTM token is about to expire, the `tokenPrivilegeWillExpire` callback is triggered 30 seconds before the expiration time. When you receive this callback, retrieve a fresh RTM token from your token server, and call [`renewToken`](/en/api-reference/api-ref/signaling/ios#agorartmclientkitrenewtoken) to pass the new token to the SDK.
 
 If the token expires, the SDK triggers an `didReceiveLinkStateEvent` callback and reports the following information:
 
@@ -1189,11 +1189,11 @@ rtm.login(token) {res, error in
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch the token from your token server and provide it to the SDK during the join process. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch the token from your token server and provide it to the SDK during the join process. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/macos).
 
 ### Token expiration and renewal
 
-You configure the validity period of an RTM token in your token generator according to your business needs. The maximum validity period of a token is 24 hours. When an RTM token is about to expire, the `tokenPrivilegeWillExpire` callback is triggered 30 seconds before the expiration time. When you receive this callback, retrieve a fresh RTM token from your token server, and call [`renewToken`](/en/api-reference/api-ref/signaling?platform=ios#tokenrenewrtmtokenpropsag_platform) to pass the new token to the SDK.
+You configure the validity period of an RTM token in your token generator according to your business needs. The maximum validity period of a token is 24 hours. When an RTM token is about to expire, the `tokenPrivilegeWillExpire` callback is triggered 30 seconds before the expiration time. When you receive this callback, retrieve a fresh RTM token from your token server, and call [`renewToken`](/en/api-reference/api-ref/signaling/macos#agorartmclientkitrenewtoken) to pass the new token to the SDK.
 
 If the token expires, the SDK triggers an `didReceiveLinkStateEvent` callback and reports the following information:
 
@@ -1501,7 +1501,7 @@ if (status.error == true) {
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/flutter).
 
 ### Token expiration and renewal
 
@@ -2040,7 +2040,7 @@ rtmClient->login("your token", requestId);
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/windows-cpp).
 
 ### Token expiration and renewal
 
@@ -2325,7 +2325,7 @@ rtmClient->login("your token", requestId);
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/linux-cpp).
 
 ### Token expiration and renewal
 
@@ -2607,7 +2607,7 @@ rtmClient.login("your_token", new ResultCallback<Void>() {
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `join`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/linux-java).
 
 ### Token expiration and renewal
 
@@ -2888,7 +2888,7 @@ else
 
 ### Join a stream channel using a token
 
-To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `JoinAsync`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform).
+To join a stream channel using a token, fetch an **RTC** token from your token server and pass it to the SDK when you call `JoinAsync`. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/unity).
 
 ### Token expiration and renewal
 

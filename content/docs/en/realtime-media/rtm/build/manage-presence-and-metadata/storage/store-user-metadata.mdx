@@ -203,7 +203,7 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/web#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -298,16 +298,16 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/web#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/web#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/web#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/web#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/web#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/web#unsubscribeusermetadata)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Storage](/en/api-reference/api-ref/signaling/web#storage)
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/web#event-listeners)
 
 </PlatformStructured>
 
@@ -607,9 +607,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/android#storageevent) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling/android#rtmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/android#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -754,16 +754,16 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/android#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/android#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/android#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/android#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/android#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/android#unsubscribeusermetadata)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/android#metadata)
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/android#event-listeners)
 
 </PlatformStructured>
 
@@ -1134,9 +1134,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling/ios#agorartmstorageevent) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling/ios#agorartmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -1311,30 +1311,30 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageunsubscribeuserpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/ios#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/ios#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/ios#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/ios#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/ios#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/ios#unsubscribeusermetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/ios#agorartmmetadata)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageunsubscribeuserpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/ios#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/ios#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/ios#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/ios#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/ios#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/ios#unsubscribeusermetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/ios#agorartmmetadata)
 
 </TabsContent>
 </Tabs>
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
 
 </PlatformStructured>
 
@@ -1705,9 +1705,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling/macos#agorartmstorageevent) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling/macos#agorartmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -1882,30 +1882,30 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageunsubscribeuserpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/macos#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/macos#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/macos#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/macos#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/macos#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/macos#unsubscribeusermetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/macos#agorartmmetadata)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageunsubscribeuserpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/macos#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/macos#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/macos#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/macos#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/macos#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/macos#unsubscribeusermetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/macos#agorartmmetadata)
 
 </TabsContent>
 </Tabs>
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
 
 </PlatformStructured>
 
@@ -1980,7 +1980,7 @@ If the operation is successful, Signaling returns the following data structure:
 }
 ```
 
-Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users subscribed to this user's metadata. For details, see [event listeners](/en/api-reference/api-ref/signaling#event-listeners).
+Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users subscribed to this user's metadata. For details, see [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners).
 
 ### Get user metadata
 
@@ -2064,7 +2064,7 @@ try{
 }
 ```
 
-Signaling triggers a `storage` event notification within 100 ms of type `update` to notify other users subscribed to this user's metadata. For details, see [event listeners](/en/api-reference/api-ref/signaling#event-listeners).
+Signaling triggers a `storage` event notification within 100 ms of type `update` to notify other users subscribed to this user's metadata. For details, see [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners).
 
 ### Delete user metadata
 
@@ -2106,7 +2106,7 @@ try{
 }
 ```
 
-Signaling triggers a `storage` event notification within 100 ms of type `update` to notify other users subscribed to this user's metadata. For details, see [event listeners](/en/api-reference/api-ref/signaling#event-listeners).
+Signaling triggers a `storage` event notification within 100 ms of type `update` to notify other users subscribed to this user's metadata. For details, see [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners).
 
 :::info
 When terminating a user account, it is common to delete the entire set of user's metadata. Once user metadata is deleted, it cannot be recovered. If you need data restoration, back up the metadata before deleting it.
@@ -2114,9 +2114,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/flutter#storageevent) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling/flutter#rtmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -2224,16 +2224,16 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/flutter#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/flutter#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/flutter#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/flutter#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/flutter#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/flutter#unsubscribeusermetadata)
 
-- [MetadataItem](/en/api-reference/api-ref/signaling#storagemetadataitempropsag_platform)
+- [MetadataItem](/en/api-reference/api-ref/signaling/flutter#metadataitem)
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners)
 
 </PlatformStructured>
 
@@ -2451,9 +2451,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/windows-cpp#storageevent) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling/windows-cpp#rtm_storage_event_type) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -2562,16 +2562,16 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/windows-cpp#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#unsubscribeusermetadata)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/windows-cpp#metadata)
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners)
 
 </PlatformStructured>
 
@@ -2789,9 +2789,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/linux-cpp#storageevent) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling/linux-cpp#rtm_storage_event_type) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -2900,16 +2900,16 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/linux-cpp#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#unsubscribeusermetadata)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/linux-cpp#metadata)
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners)
 
 </PlatformStructured>
 
@@ -3111,9 +3111,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/linux-java#storageevent) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling/linux-java#rtmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -3215,16 +3215,16 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform)
-- [`getUserMetadata`](/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform)
-- [`removeUserMetadata`](/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform)
-- [`updateUserMetadata`](/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform)
-- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling#storagesubscribeuserpropsag_platform)
-- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling#storageunsubscribeuserpropsag_platform)
+- [`setUserMetaData`](/en/api-reference/api-ref/signaling/linux-java#setusermetadata)
+- [`getUserMetadata`](/en/api-reference/api-ref/signaling/linux-java#getusermetadata)
+- [`removeUserMetadata`](/en/api-reference/api-ref/signaling/linux-java#removeusermetadata)
+- [`updateUserMetadata`](/en/api-reference/api-ref/signaling/linux-java#updateusermetadata)
+- [`subscribeUserMetadata`](/en/api-reference/api-ref/signaling/linux-java#subscribeusermetadata)
+- [`unsubscribeUserMetadata`](/en/api-reference/api-ref/signaling/linux-java#unsubscribeusermetadata)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/linux-java#metadata)
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners)
 
 </PlatformStructured>
 
@@ -3463,9 +3463,9 @@ When terminating a user account, it is common to delete the entire set of user's
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/unity#storageevent) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling/unity#rtm_storage_event_type) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners) for details. You only receive user metadata update notifications for users that you have subscribed to.
 
 #### Event notification mode
 
@@ -3543,13 +3543,13 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`SetUserMetaDataAsync`](/en/api-reference/api-ref/signaling#storagesetuserpropsag_platform)
-- [`GetUserMetadataAsync`](/en/api-reference/api-ref/signaling#storagegetuserpropsag_platform)
-- [`RemoveUserMetadataAsync`](/en/api-reference/api-ref/signaling#storageremoveuserpropsag_platform)
-- [`UpdateUserMetadataAsync`](/en/api-reference/api-ref/signaling#storageupdateuserpropsag_platform)
+- [`SetUserMetaDataAsync`](/en/api-reference/api-ref/signaling/unity#setusermetadataasync)
+- [`GetUserMetadataAsync`](/en/api-reference/api-ref/signaling/unity#getusermetadataasync)
+- [`RemoveUserMetadataAsync`](/en/api-reference/api-ref/signaling/unity#removeusermetadataasync)
+- [`UpdateUserMetadataAsync`](/en/api-reference/api-ref/signaling/unity#updateusermetadataasync)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Storage](/en/api-reference/api-ref/signaling/unity#storage)
 
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [Event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners)
 
 </PlatformStructured>

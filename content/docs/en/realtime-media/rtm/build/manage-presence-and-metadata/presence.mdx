@@ -198,7 +198,7 @@ Both the `setState` and `removeState` methods trigger `REMOTE_STATE_CHANGED` eve
 
 ## Receive presence event notifications
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/web#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -304,12 +304,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/web#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/web#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/web#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/web#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/web#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/web#event-listeners)
 
 </PlatformStructured>
 
@@ -680,9 +680,9 @@ Both the `setState` and `removeState` methods trigger `REMOTE_STATE_CHANGED` eve
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/android#presenceevent) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling/android#rtmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/android#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -867,12 +867,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/android#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/android#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/android#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/android#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/android#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/android#event-listeners)
 
 </PlatformStructured>
 
@@ -1229,9 +1229,9 @@ Both the `setState` and `removeState` methods trigger `AgoraRtmPresenceEventType
 
 ## Receive presence event notifications
 
-A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling/ios#agorartmpresenceevent) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling/ios#agorartmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -1505,23 +1505,23 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/ios#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/ios#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/ios#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/ios#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/ios#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/ios#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/ios#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/ios#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/ios#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/ios#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
 
 </TabsContent>
 </Tabs>
@@ -1881,9 +1881,9 @@ Both the `setState` and `removeState` methods trigger `AgoraRtmPresenceEventType
 
 ## Receive presence event notifications
 
-A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling/macos#agorartmpresenceevent) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling/macos#agorartmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -2157,23 +2157,23 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/macos#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/macos#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/macos#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/macos#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/macos#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/macos#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/macos#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/macos#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/macos#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/macos#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
 
 </TabsContent>
 </Tabs>
@@ -2407,9 +2407,9 @@ Both the `setState` and `removeState` methods trigger `remoteStateChanged` event
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/flutter#presenceevent) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling/flutter#rtmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -2527,12 +2527,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/flutter#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/flutter#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/flutter#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/flutter#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/flutter#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners)
 
 </PlatformStructured>
 
@@ -2774,9 +2774,9 @@ Both the `setState` and `removeState` methods trigger `RTM_PRESENCE_EVENT_TYPE_R
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/windows-cpp#presenceevent) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling/windows-cpp#rtm_presence_event_type) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -2914,12 +2914,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/windows-cpp#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/windows-cpp#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/windows-cpp#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/windows-cpp#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/windows-cpp#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners)
 
 </PlatformStructured>
 
@@ -3161,9 +3161,9 @@ Both the `setState` and `removeState` methods trigger `RTM_PRESENCE_EVENT_TYPE_R
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/linux-cpp#presenceevent) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling/linux-cpp#rtm_presence_event_type) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -3301,12 +3301,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/linux-cpp#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/linux-cpp#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/linux-cpp#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/linux-cpp#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/linux-cpp#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners)
 
 </PlatformStructured>
 
@@ -3548,9 +3548,9 @@ Both the `setState` and `removeState` methods trigger `REMOTE_STATE_CHANGED` eve
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/linux-java#presenceevent) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling/linux-java#rtmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -3735,12 +3735,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/linux-java#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/linux-java#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/linux-java#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/linux-java#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/linux-java#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners)
 
 </PlatformStructured>
 
@@ -3963,9 +3963,9 @@ Both the `SetStateAsync` and `RemoveStateAsync` methods trigger `REMOTE_STATE_CH
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/unity#presenceevent) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE](/en/api-reference/api-ref/signaling/unity#rtm_presence_event_type) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -4058,11 +4058,11 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`GetOnlineUsersAsync`](/en/api-reference/api-ref/signaling/unity#getonlineusersasync)
+- [`GetUserChannelsAsync`](/en/api-reference/api-ref/signaling/unity#getuserchannelsasync)
+- [`SetStateAsync`](/en/api-reference/api-ref/signaling/unity#setstateasync)
+- [`GetStateAsync`](/en/api-reference/api-ref/signaling/unity#getstateasync)
+- [`RemoveStateAsync`](/en/api-reference/api-ref/signaling/unity#removestateasync)
+- [Event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners)
 
 </PlatformStructured>
