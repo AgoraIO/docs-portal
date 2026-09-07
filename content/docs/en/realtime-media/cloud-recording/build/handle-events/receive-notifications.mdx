@@ -717,13 +717,14 @@ The relevant fields of each Agora Cloud Recording callback event are listed belo
 
 - `msgName`: String. The message name, `recorder_leave`.
 - `leaveCode`: Number. The leave code. You can perform a bitwise AND operation on the code and each enum value, and those with non-zero results are the reason for the exit. For example, if you perform a bit-by-bit AND operation on code 6 (binary 110) and each enum value, only LEAVE_CODE_SIG (binary 10) and LEAVE_CODE_NO_USERS (binary 100) get a non-zero result. The reasons for exiting, in this case, include a timeout and a signal triggering the exit.
-| Enumerator              |                                                              |
-| :---------------------- | ------------------------------------------------------------ |
-| LEAVE_CODE_INIT         | 0: The initialization fails.                                 |
-| LEAVE_CODE_SIG          | 2 (binary 10): The AgoraCoreService process receives the SIGINT signal.  |
-| LEAVE_CODE_NO_USERS     | 4 (binary 100): The recording server automatically leaves the channel and stops recording because the channel has no user. |
-| LEAVE_CODE_TIMER_CATCH  | 8 (binary 1000): Ignore it.                                                |
-| LEAVE_CODE_CLIENT_LEAVE | 16 (binary 10000): The recording server calls the `leaveChannel` method to leave the channel. |
+
+| Enumerator | Description |
+| --- | --- |
+| `LEAVE_CODE_INIT` | 0: The initialization fails. |
+| `LEAVE_CODE_SIG` | 2 (binary 10): The AgoraCoreService process receives the SIGINT signal. |
+| `LEAVE_CODE_NO_USERS` | 4 (binary 100): The recording server automatically leaves the channel and stops recording because the channel has no user. |
+| `LEAVE_CODE_TIMER_CATCH` | 8 (binary 1000): Ignore it. |
+| `LEAVE_CODE_CLIENT_LEAVE` | 16 (binary 10000): The recording server calls the `leaveChannel` method to leave the channel. |
 
 #### recorder_slice_start
 
