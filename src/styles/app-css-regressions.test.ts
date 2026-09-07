@@ -21,11 +21,27 @@ function normalizeDeclarationValue(value: string) {
     .trim();
 }
 
+function getSelectorsContaining(selectorPart: string) {
+  const selectors: string[] = [];
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkRules((candidate) => {
+    const selector = normalizeSelector(candidate.selector);
+    if (selector.includes(normalizedSelectorPart)) selectors.push(selector);
+  });
+
+  return selectors;
+}
+
 function expectDeclaration(
   rule: postcss.Rule,
   prop: string,
   expectedValue: string,
 ) {
+  const expectedImportant = expectedValue.endsWith(' !important');
+  const normalizedExpectedValue = expectedImportant
+    ? expectedValue.slice(0, -' !important'.length)
+    : expectedValue;
   const declaration = rule.nodes.find(
     (node): node is postcss.Declaration =>
       node.type === 'decl' && node.prop === prop,
@@ -33,8 +49,9 @@ function expectDeclaration(
 
   expect(declaration).toBeDefined();
   expect(normalizeDeclarationValue(declaration?.value ?? '')).toBe(
-    normalizeDeclarationValue(expectedValue),
+    normalizeDeclarationValue(normalizedExpectedValue),
   );
+  expect(declaration?.important ?? false).toBe(expectedImportant);
 }
 
 function getRuleBody(selector: string) {
@@ -76,7 +93,270 @@ function getRuleBodyContaining(selectorPart: string) {
   };
 }
 
+function getRuleBodyOutsideContainer(selector: string) {
+  let rule: postcss.Rule | undefined;
+  const normalizedSelector = normalizeSelector(selector);
+
+  appCssRoot.walkRules((candidate) => {
+    if (
+      normalizeSelector(candidate.selector) === normalizedSelector &&
+      !(
+        candidate.parent?.type === 'atrule' &&
+        candidate.parent.name === 'container'
+      )
+    ) {
+      rule = candidate;
+    }
+  });
+
+  expect(rule?.type).toBe('rule');
+  return { rule: rule as postcss.Rule };
+}
+
+function getRuleBodyContainingInMedia(
+  selectorPart: string,
+  mediaQuery: string,
+) {
+  let rule: postcss.Rule | undefined;
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkAtRules('media', (media) => {
+    if (!media.params.includes(mediaQuery)) return;
+    media.walkRules((candidate) => {
+      if (
+        !rule &&
+        normalizeSelector(candidate.selector).includes(normalizedSelectorPart)
+      ) {
+        rule = candidate;
+      }
+    });
+  });
+
+  expect(rule?.type).toBe('rule');
+  return { rule: rule as postcss.Rule };
+}
+
+function getRuleBodyContainingInContainer(
+  selectorPart: string,
+  containerQuery: string,
+) {
+  let rule: postcss.Rule | undefined;
+  const normalizedSelectorPart = normalizeSelector(selectorPart);
+
+  appCssRoot.walkAtRules('container', (container) => {
+    if (!container.params.includes(containerQuery)) return;
+    container.walkRules((candidate) => {
+      if (
+        !rule &&
+        normalizeSelector(candidate.selector).includes(normalizedSelectorPart)
+      ) {
+        rule = candidate;
+      }
+    });
+  });
+
+  expect(rule?.type).toBe('rule');
+  return { rule: rule as postcss.Rule };
+}
+
 describe('app prose CSS regressions', () => {
+  it('keeps OpenAPI code scrollbars thin and hidden until interaction', () => {
+    const viewportSelector =
+      '.openapi-operation figure.shiki > .fd-scroll-container';
+    const viewport = getRuleBody(viewportSelector).rule;
+    expectDeclaration(viewport, 'scrollbar-width', 'thin');
+    expectDeclaration(viewport, 'scrollbar-color', 'transparent transparent');
+
+    const viewportSelectors = getSelectorsContaining(viewportSelector).flatMap(
+      (selector) => selector.split(',').map(normalizeSelector),
+    );
+    expect(viewportSelectors).toEqual(
+      expect.arrayContaining([
+        `${viewportSelector}:hover`,
+        `${viewportSelector}:focus-within`,
+        `${viewportSelector}[data-scrollbar-visible]`,
+      ]),
+    );
+    expectDeclaration(
+      getRuleBody(`${viewportSelector}::-webkit-scrollbar`).rule,
+      'width',
+      '6px',
+    );
+    expectDeclaration(
+      getRuleBody(`${viewportSelector}::-webkit-scrollbar`).rule,
+      'height',
+      '6px',
+    );
+    expectDeclaration(
+      getRuleBody(`${viewportSelector}::-webkit-scrollbar-corner`).rule,
+      'background',
+      'transparent',
+    );
+    const docsScrollbar = getRuleBody('.docs-scrollbar').rule;
+    expectDeclaration(docsScrollbar, 'scrollbar-width', 'thin');
+    expectDeclaration(
+      docsScrollbar,
+      'scrollbar-color',
+      'transparent transparent',
+    );
+  });
+
+  it('defines continuous logical guide lines for nested OpenAPI schema children', () => {
+    const children = getRuleBody('.openapi-schema-children').rule;
+    const nestedChildren = getRuleBody(
+      '.openapi-schema-children .openapi-schema-children',
+    ).rule;
+    const schemaGuideSelectors = getSelectorsContaining(
+      '.openapi-schema-children',
+    );
+
+    expectDeclaration(children, 'position', 'relative');
+    expectDeclaration(children, 'margin-inline-start', '16px');
+    expectDeclaration(children, 'padding-inline-start', '16px');
+    expectDeclaration(
+      children,
+      'border-inline-start',
+      '1px solid color-mix(in srgb, var(--ink-1) 14%, transparent)',
+    );
+    expectDeclaration(nestedChildren, 'margin-inline-start', '16px');
+    expectDeclaration(
+      getRuleBody('.openapi-schema-children[hidden]').rule,
+      'border-inline-start-color',
+      'transparent',
+    );
+    expect(schemaGuideSelectors).toEqual(
+      expect.arrayContaining([
+        '.openapi-schema-children',
+        '.openapi-schema-children .openapi-schema-children',
+      ]),
+    );
+    for (const selector of schemaGuideSelectors) {
+      expect(selector).not.toContain('::before');
+      expect(selector).not.toContain('::after');
+    }
+    expect(appCss).not.toContain('.openapi-schema-children::before');
+
+    const narrowChildren = getRuleBodyContainingInMedia(
+      '.openapi-schema-children',
+      'max-width: 48rem',
+    ).rule;
+    const narrowNestedChildren = getRuleBodyContainingInMedia(
+      '.openapi-schema-children .openapi-schema-children',
+      'max-width: 48rem',
+    ).rule;
+    expectDeclaration(narrowChildren, 'margin-inline-start', '8px');
+    expectDeclaration(narrowChildren, 'padding-inline-start', '8px');
+    expectDeclaration(narrowNestedChildren, 'margin-inline-start', '8px');
+    expectDeclaration(narrowNestedChildren, 'padding-inline-start', '8px');
+  });
+
+  it('defines the shared OpenAPI schema description offset', () => {
+    expectDeclaration(
+      getRuleBody('.openapi-schema-field-details').rule,
+      'padding-inline-start',
+      '1.125rem',
+    );
+  });
+
+  it('defines aligned OpenAPI schema metadata rows', () => {
+    const metadata = getRuleBodyContaining('.openapi-schema-metadata').rule;
+    const row = getRuleBody('.openapi-schema-metadata-row').rule;
+    const label = getRuleBody('.openapi-schema-metadata-label').rule;
+    const value = getRuleBody('.openapi-schema-metadata-value').rule;
+    const valueContainer = getRuleBody('.openapi-schema-value-container').rule;
+
+    expectDeclaration(metadata, 'display', 'flex');
+    expectDeclaration(metadata, 'min-width', '0');
+    expectDeclaration(row, 'display', 'inline-flex');
+    expectDeclaration(row, 'max-width', '100%');
+    expectDeclaration(label, 'font-weight', '700');
+    expectDeclaration(label, 'color', 'var(--foreground)');
+    expectDeclaration(value, 'display', 'inline-flex');
+    expectDeclaration(value, 'min-width', '0');
+    expectDeclaration(value, 'overflow-wrap', 'anywhere');
+    expectDeclaration(valueContainer, 'display', 'inline-flex');
+    expectDeclaration(valueContainer, 'max-width', '100%');
+    expectDeclaration(valueContainer, 'border', '1px solid var(--line)');
+    expectDeclaration(valueContainer, 'background', 'var(--bg-sunken)');
+    expectDeclaration(valueContainer, 'color', 'var(--docs-schema-value)');
+    expectDeclaration(valueContainer, 'font-family', 'var(--font-mono)');
+    expectDeclaration(valueContainer, 'font-weight', '400');
+  });
+
+  it('keeps the narrow response-header and browser-find adapter contracts', () => {
+    expectDeclaration(
+      getRuleBodyContaining(
+        '.openapi-response-header-row .openapi-field-anchor',
+      ).rule,
+      'opacity',
+      '0',
+    );
+    const visibleAnchorRule = getRuleBodyContaining(
+      '.openapi-response-header-row:hover .openapi-field-anchor',
+    ).rule;
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-response-header-row:hover .openapi-field-anchor',
+    );
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-response-header-row:focus-within .openapi-field-anchor',
+    );
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-response-header-row:target .openapi-field-anchor',
+    );
+    expect(visibleAnchorRule.selector).toContain(
+      '.openapi-field-anchor:focus-visible',
+    );
+    expectDeclaration(visibleAnchorRule, 'opacity', '1');
+    const reducedMotion = getRuleBodyContainingInMedia(
+      '.openapi-response-header-row .openapi-field-anchor',
+      'prefers-reduced-motion: reduce',
+    ).rule;
+    expectDeclaration(reducedMotion, 'transition', 'none');
+    expectDeclaration(
+      getRuleBody('.openapi-operation').rule,
+      'container-type',
+      'inline-size',
+    );
+  });
+
+  it('treats empty legacy anchors as transparent before the first heading', () => {
+    const leadingHeading = getRuleBody(
+      `.prose
+        :where(h2):not(:where(.not-prose, .not-prose *)):not(
+          :where(:not(a:empty) ~ h2)
+        )`,
+    );
+    const leadingHeadingSeparator = getRuleBody(
+      `.prose
+        :where(h2):not(:where(.not-prose, .not-prose *)):not(
+          :where(:not(a:empty) ~ h2)
+        )::before`,
+    );
+    const platformLeadingHeading = getRuleBody(
+      `.prose[data-platform-header-tabs="true"]
+        [data-platform-group="structured"]
+        > [data-platform-panel]:not([hidden])
+        .docs-body
+        > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2))`,
+    );
+    const platformLeadingHeadingSeparator = getRuleBody(
+      `.prose[data-platform-header-tabs="true"]
+        [data-platform-group="structured"]
+        > [data-platform-panel]:not([hidden])
+        .docs-body
+        > h2:not(:where(.not-prose, .not-prose *)):not(
+          :where(:not(a:empty) ~ h2)
+        )::before`,
+    );
+
+    expectDeclaration(leadingHeading.rule, 'margin-top', '0');
+    expectDeclaration(leadingHeading.rule, 'padding-top', '0');
+    expectDeclaration(leadingHeadingSeparator.rule, 'content', 'none');
+    expectDeclaration(platformLeadingHeading.rule, 'margin-top', '0.75rem');
+    expectDeclaration(platformLeadingHeading.rule, 'padding-top', '0');
+    expectDeclaration(platformLeadingHeadingSeparator.rule, 'content', 'none');
+  });
+
   it('uses decimal, alpha, and roman markers for nested ordered lists', () => {
     const topLevel = getRuleBody(
       '.prose :where(ol):not(:where(.not-prose, .not-prose *))',
@@ -685,17 +965,125 @@ describe('app prose CSS regressions', () => {
         value: 'thin',
       }),
     );
-    expect(webkitScrollbar.rule.nodes).toContainEqual(
-      expect.objectContaining({
-        prop: 'height',
-        value: '12px',
-      }),
-    );
+    expectDeclaration(webkitScrollbar.rule, 'height', '6px');
     expect(webkitThumb.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'background',
-        value: 'color-mix(in srgb, var(--ink-1) 38%, transparent)',
+        value: 'transparent',
       }),
     );
+  });
+
+  it('caps only marked OpenAPI code viewports with a stable desktop limit', () => {
+    const viewport = getRuleBodyContaining(
+      '.openapi-code-preview [data-openapi-code-viewport]',
+    );
+    const mobileViewport = getRuleBodyContainingInContainer(
+      '[data-openapi-code-viewport]',
+      '55.999rem',
+    );
+
+    expect(appCss).not.toContain(
+      '.openapi-request-examples\n    [role="region"].fd-scroll-container',
+    );
+    expectDeclaration(viewport.rule, 'max-block-size', '24rem !important');
+    expectDeclaration(viewport.rule, 'overflow', 'auto');
+    expectDeclaration(viewport.rule, 'overscroll-behavior', 'contain');
+    expect(viewport.rule.parent?.type).toBe('root');
+    expectDeclaration(
+      mobileViewport.rule,
+      'max-block-size',
+      'min(50dvh, 24rem) !important',
+    );
+    expect(mobileViewport.rule.parent?.type).toBe('atrule');
+    expect((mobileViewport.rule.parent as postcss.AtRule).name).toBe(
+      'container',
+    );
+  });
+
+  it('defines the independent desktop examples rail layout', () => {
+    const baseLayout = getRuleBodyOutsideContainer('.openapi-operation-layout');
+    const layout = getRuleBodyContainingInContainer(
+      '.openapi-operation-layout',
+      '56rem',
+    );
+    const rail = getRuleBodyContainingInContainer(
+      '.openapi-examples-rail',
+      '56rem',
+    );
+    const anchorInDesktop = getRuleBodyContainingInContainer(
+      '.openapi-examples-rail-anchor',
+      '56rem',
+    );
+    expectDeclaration(baseLayout.rule, 'display', 'flex');
+    expectDeclaration(baseLayout.rule, 'flex-direction', 'column');
+    expect(baseLayout.rule.nodes).not.toContainEqual(
+      expect.objectContaining({ prop: 'grid-template-columns' }),
+    );
+    expect(layout.rule.parent?.type).toBe('atrule');
+    expect((layout.rule.parent as postcss.AtRule).name).toBe('container');
+    expect((layout.rule.parent as postcss.AtRule).params).toContain('56rem');
+    expectDeclaration(
+      layout.rule,
+      'grid-template-columns',
+      'minmax(0, 1fr) 400px',
+    );
+    expectDeclaration(rail.rule, 'position', 'sticky');
+    expectDeclaration(anchorInDesktop.rule, 'align-self', 'stretch');
+    expectDeclaration(
+      rail.rule,
+      'top',
+      'var(--openapi-examples-sticky-top, 48px)',
+    );
+    const maxBlockSizes = rail.rule.nodes
+      .filter(
+        (node): node is postcss.Declaration =>
+          node.type === 'decl' && node.prop === 'max-block-size',
+      )
+      .map((declaration) => normalizeDeclarationValue(declaration.value));
+    expect(maxBlockSizes).toEqual([
+      'calc(100vh - var(--openapi-examples-sticky-top, 48px) - 1rem)',
+      'calc(100dvh - var(--openapi-examples-sticky-top, 48px) - 1rem)',
+    ]);
+    expectDeclaration(rail.rule, 'overflow-y', 'auto');
+    expectDeclaration(rail.rule, 'overscroll-behavior', 'contain');
+    expectDeclaration(rail.rule, 'scrollbar-width', 'thin');
+    expectDeclaration(
+      rail.rule,
+      'scrollbar-color',
+      'color-mix(in srgb, var(--ink-1) 16%, transparent) transparent',
+    );
+    const baseRail = getRuleBodyOutsideContainer('.openapi-examples-rail');
+    expectDeclaration(baseRail.rule, 'min-width', '0');
+    expectDeclaration(baseRail.rule, 'max-width', '100%');
+    expectDeclaration(baseRail.rule, 'overflow-x', 'clip');
+    const railContent = getRuleBodyOutsideContainer(
+      '.openapi-examples-rail-content',
+    );
+    expectDeclaration(railContent.rule, 'min-width', '0');
+    expectDeclaration(railContent.rule, 'max-width', '100%');
+    expectDeclaration(rail.rule, 'overflow-x', 'clip');
+    for (const prop of [
+      'overflow',
+      'overflow-y',
+      'overflow-block',
+      'max-block-size',
+      'overscroll-behavior',
+      'scrollbar-width',
+      'scrollbar-color',
+    ]) {
+      expect(baseRail.rule.nodes).not.toContainEqual(
+        expect.objectContaining({ prop }),
+      );
+    }
+    const anchor = getRuleBodyOutsideContainer('.openapi-examples-rail-anchor');
+    expectDeclaration(anchor.rule, 'position', 'relative');
+    expectDeclaration(anchor.rule, 'min-width', '0');
+    expect(anchor.rule.nodes).not.toContainEqual(
+      expect.objectContaining({ prop: 'display', value: 'contents' }),
+    );
+    expect(appCss).not.toContain('data-constrained');
+    expect(appCss).not.toContain('data-openapi-code-viewport-active');
+    expect(appCss).not.toContain('data-openapi-examples-rail-sentinel');
   });
 });

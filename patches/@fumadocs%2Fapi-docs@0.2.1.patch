@@ -1,0 +1,293 @@
+diff --git a/dist/components/schema/client.d.ts b/dist/components/schema/client.d.ts
+index 5aa59337c0ac911a33a866e76c7eab91d3f0be4b..3754c0a2d42fc4fa8ce9bb0dfa76ef05aeac641f 100644
+--- a/dist/components/schema/client.d.ts
++++ b/dist/components/schema/client.d.ts
+@@ -6,6 +6,7 @@ interface SchemaUIProps {
+   required?: boolean;
+   as?: 'property' | 'body';
+   generated: SchemaUIGeneratedData;
++  nestedDisplay?: 'popover' | 'inline';
+ }
+ declare function SchemaUI({ name, required, as, generated }: SchemaUIProps): import("react").JSX.Element;
+ declare function InlineTag({ label, children }: {
+diff --git a/dist/components/schema/client.js b/dist/components/schema/client.js
+index 52b7a0be65a5d99a53e28db41c4db3eaf0a0bb4b..677e12d83d08dd71d44643adeea69d96c226a2fd 100644
+--- a/dist/components/schema/client.js
++++ b/dist/components/schema/client.js
+@@ -18,7 +18,8 @@ function useStates() {
+ 	return use(Context);
+ }
+ const ExcludedFromAutoAnchor = /* @__PURE__ */ new Set();
+-function SchemaUI({ name, required = false, as = "property", generated }) {
++function SchemaUI({ name, required = false, as = "property", generated, nestedDisplay = "popover" }) {
++	const expandAll = nestedDisplay === "inline";
+ 	const rootId = useAnchorId([name]);
+ 	const [path, setPath] = useState(() => [{
+ 		$ref: generated.$root,
+@@ -47,8 +48,12 @@ function SchemaUI({ name, required = false, as = "property", generated }) {
+ 			rootId,
+ 			path,
+ 			generated,
++			expandAll,
+ 			setPath,
+-			renderTypeInfoTrigger: ({ $ref, children, pathName }) => /* @__PURE__ */ jsxs(Popover, {
++			renderTypeInfoTrigger: expandAll ? ({ children }) => /* @__PURE__ */ jsx("span", {
++				className: cn(typeVariants()),
++				children
++			}) : ({ $ref, children, pathName }) => /* @__PURE__ */ jsxs(Popover, {
+ 				open: path.length > 1 && path[1].$ref === $ref && path[1].name === pathName && !path[0].closed,
+ 				onOpenChange: (v) => {
+ 					if (v) setPath([{
+@@ -67,8 +72,14 @@ function SchemaUI({ name, required = false, as = "property", generated }) {
+ 					className: cn(typeVariants({ variant: "trigger" })),
+ 					children
+ 				}), /* @__PURE__ */ jsx(PopoverContent, {
++					"data-openapi-schema-popover": "",
+ 					ref: popoverRef,
+ 					className: "w-[600px] max-w-(--available-width) min-h-(--min-height,200px) fd-scroll-container max-h-[460px] px-3 pt-0",
++					style: {
++						borderRadius: "12px",
++						maxHeight: "min(440px, var(--available-height))",
++						width: "min(544px, var(--available-width))"
++					},
+ 					onScrollEnd: (e) => {
+ 						path.at(-1).scrollTop = e.target.scrollTop;
+ 					},
+@@ -76,6 +87,7 @@ function SchemaUI({ name, required = false, as = "property", generated }) {
+ 				})]
+ 			})
+ 		}), [
++			expandAll,
+ 			generated,
+ 			path,
+ 			rootId,
+@@ -87,6 +99,10 @@ function SchemaUI({ name, required = false, as = "property", generated }) {
+ 			name,
+ 			$type: generated.$root,
+ 			parentPathIndex: 0,
++			parentPath: [{
++				$ref: generated.$root,
++				name
++			}],
+ 			required
+ 		}) : /* @__PURE__ */ jsx("div", {
+ 			id: rootId,
+@@ -105,26 +121,28 @@ function SchemaDescription({ schema, ...props }) {
+ 		})]
+ 	});
+ }
+-function ObjectProperty({ name, $type, required, parentPathIndex, ...props }) {
++function ObjectProperty({ name, $type, required, parentPathIndex, parentPath, ancestors = [], ...props }) {
+ 	const t = useTranslations({ note: "schema UI" });
+-	const { path, generated: { refs }, rootId } = useStates();
++	const { path, generated: { refs }, rootId, expandAll } = useStates();
+ 	const schema = refs[$type];
+-	const parentItem = path[parentPathIndex];
++	const activeParentPath = parentPath ?? path.slice(0, parentPathIndex + 1);
++	const selectedPathItem = path.at(-1);
++	const isHighlighted = expandAll && pathsMatch(path, activeParentPath) ? selectedPathItem?.highlighted === name : path[parentPathIndex]?.highlighted === name;
+ 	const ref = useCallback((element) => {
+-		if (!element || parentItem.highlighted !== name) return;
++		if (!element || !isHighlighted) return;
+ 		window.setTimeout(() => {
+ 			element.scrollIntoView({
+ 				behavior: "smooth",
+ 				block: "end"
+ 			});
+-			delete parentItem.highlighted;
++			if (selectedPathItem) delete selectedPathItem.highlighted;
+ 		}, 300);
+-	}, [parentItem, name]);
++	}, [isHighlighted, selectedPathItem]);
+ 	const [isChecked, onClick] = useCopyButton(() => {
+ 		const url = new URL(window.location.href);
+ 		url.hash = `#${rootId}`;
+ 		url.searchParams.set("s-highlight", name);
+-		url.searchParams.set("path", encodePath(path));
++		url.searchParams.set("path", encodePath(activeParentPath));
+ 		return navigator.clipboard.writeText(url.href);
+ 	});
+ 	return /* @__PURE__ */ jsxs("div", {
+@@ -137,7 +155,7 @@ function ObjectProperty({ name, $type, required, parentPathIndex, ...props }) {
+ 				/* @__PURE__ */ jsxs("span", {
+ 					className: "font-medium font-mono",
+ 					children: [/* @__PURE__ */ jsx("span", {
+-						className: cn(parentItem.highlighted === name ? "bg-fd-primary text-fd-primary-foreground rounded-sm" : "text-fd-primary", schema.deprecated && "line-through opacity-80"),
++					className: cn(isHighlighted ? "bg-fd-primary text-fd-primary-foreground rounded-sm" : "text-fd-primary", schema.deprecated && "line-through opacity-80"),
+ 						children: name
+ 					}), required ? /* @__PURE__ */ jsx("span", {
+ 						className: "text-red-400",
+@@ -157,24 +175,92 @@ function ObjectProperty({ name, $type, required, parentPathIndex, ...props }) {
+ 				}),
+ 				/* @__PURE__ */ jsx("div", { className: "flex-1" }),
+ 				schema.deprecated && /* @__PURE__ */ jsx("span", {
+-					className: "text-xs font-mono text-yellow-600 dark:text-yellow-400",
++					className: "text-xs font-mono text-fd-warning",
+ 					children: t("Deprecated")
+ 				}),
+ 				/* @__PURE__ */ jsx("button", {
++					"aria-label": `${t(isChecked ? "Copied link to" : "Copy link to")} ${name}`,
+ 					className: cn(buttonVariants({
+ 						size: "icon-xs",
+ 						variant: "ghost"
+ 					}), "text-fd-muted-foreground [&_svg]:size-3.5"),
+ 					onClick,
++					style: {
++						minHeight: "24px",
++						minWidth: "24px"
++					},
++					type: "button",
+ 					children: isChecked ? /* @__PURE__ */ jsx(CheckIcon, {}) : /* @__PURE__ */ jsx(LinkIcon, {})
+ 				})
+ 			]
+ 		}), /* @__PURE__ */ jsx(SchemaDescription, {
+ 			schema,
+ 			className: "pb-0"
++		}), expandAll && schema.type !== "primitive" && /* @__PURE__ */ jsx(InlineTypeBody, {
++			$type,
++			ancestors,
++			parentPath: [...activeParentPath, {
++				$ref: $type,
++				name
++			}]
+ 		})]
+ 	});
+ }
++function InlineTypeBody({ $type, parentPath, ancestors }) {
++	const { generated: { refs } } = useStates();
++	const schema = refs[$type];
++	if (!schema || ancestors.includes($type)) return null;
++	const nextAncestors = [...ancestors, $type];
++	if (schema.type === "object") {
++		if (schema.props.length === 0) return null;
++		return /* @__PURE__ */ jsx("div", {
++			"data-openapi-schema-inline": "",
++			className: "ms-3 mt-3 border-s ps-3",
++			children: schema.props.map((item) => /* @__PURE__ */ jsx(ObjectProperty, {
++				name: item.name,
++				$type: item.$type,
++				required: item.required,
++				parentPath,
++				ancestors: nextAncestors
++			}, item.name))
++		});
++	}
++	if (schema.type === "array") {
++		const current = parentPath.at(-1);
++		if (!current) return null;
++		return /* @__PURE__ */ jsx(InlineTypeBody, {
++			$type: schema.item.$type,
++			ancestors: nextAncestors,
++			parentPath: [...parentPath.slice(0, -1), {
++				$ref: schema.item.$type,
++				name: `${current.name}[]`
++			}]
++		});
++	}
++	if (schema.type === "and" || schema.type === "or") return /* @__PURE__ */ jsx("div", {
++		"data-openapi-schema-inline-variants": schema.type,
++		className: "ms-3 mt-3 border-s ps-3",
++		children: schema.items.map((item) => {
++			const current = parentPath.at(-1);
++			if (!current) return null;
++			return /* @__PURE__ */ jsxs("section", {
++				className: "border-t first:border-t-0 py-2",
++				children: [/* @__PURE__ */ jsx("p", {
++					className: "not-prose mb-1 font-mono text-xs text-fd-muted-foreground",
++					children: item.name
++				}), /* @__PURE__ */ jsx(InlineTypeBody, {
++					$type: item.$type,
++					ancestors: nextAncestors,
++					parentPath: [...parentPath.slice(0, -1), {
++						...current,
++						tabValues: [...current.tabValues ?? [], item.$type]
++					}]
++				})]
++			}, item.$type);
++		})
++	});
++	return null;
++}
+ function PathItemBody({ pathIndex, asSchema, tabDepth = 0, objectSearchOverrides }) {
+ 	const { path, setPath, generated: { refs } } = useStates();
+ 	const schema = asSchema ?? refs[path[pathIndex].$ref];
+@@ -233,20 +319,26 @@ function PathItemBody({ pathIndex, asSchema, tabDepth = 0, objectSearchOverrides
+ 	return /* @__PURE__ */ jsx(SchemaDescription, { schema });
+ }
+ function ObjectSearch({ variant = "default", schema, pathIndex, children }) {
+-	const { path, setPath } = useStates();
++	const { path, setPath, expandAll } = useStates();
+ 	const [search, setSearch] = useState("");
+ 	const deferredValue = useDeferredValue(search);
+ 	const firstItemRef = useRef(null);
+ 	const t = useTranslations({ note: "schema UI" });
+ 	return /* @__PURE__ */ jsxs(Fragment$1, { children: [
+ 		/* @__PURE__ */ jsxs("div", {
+-			className: cn("flex items-center bg-fd-secondary text-fd-secondary-foreground transition-colors", variant === "in-popover" && "sticky top-10 -mx-3 ps-3 border-b focus-within:[&_svg]:text-fd-primary", variant === "default" && "border rounded-md ps-2 shadow-sm focus-within:ring-2 focus-within:ring-fd-ring"),
+-			children: [/* @__PURE__ */ jsx(FilterIcon, { className: "text-fd-muted-foreground size-3.5 transition-colors" }), /* @__PURE__ */ jsx("input", {
++			"data-openapi-schema-filter": "",
++			"data-variant": variant,
++			className: cn(variant === "in-popover" && "sticky top-11 -mx-3 border-b bg-fd-popover px-3 py-3 z-10", variant === "default" && "my-2"),
++			style: variant === "in-popover" ? { top: "44px" } : undefined,
++			children: [/* @__PURE__ */ jsx(FilterIcon, { className: "hidden" }), /* @__PURE__ */ jsx("input", {
++				"aria-label": t("Filter Properties"),
++				"data-slot": "input",
+ 				value: search,
+ 				"data-object-search-input": "",
+ 				onChange: (e) => setSearch(e.target.value),
+ 				placeholder: t("Filter Properties"),
+-				className: "text-sm ps-2 py-2 flex-1 outline-none placeholder:text-fd-muted-foreground",
++				type: "search",
++				className: "h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none selection:bg-primary selection:text-primary-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 md:text-sm dark:bg-input/30",
+ 				onKeyDown: (e) => {
+ 					if (e.key === "Enter") {
+ 						const item = firstItemRef.current;
+@@ -279,7 +371,8 @@ function ObjectSearch({ variant = "default", schema, pathIndex, children }) {
+ 				name: item.name,
+ 				$type: item.$type,
+ 				required: item.required,
+-				parentPathIndex: pathIndex
++				parentPathIndex: pathIndex,
++				parentPath: expandAll ? path.slice(0, pathIndex + 1) : undefined
+ 			}, item.name)
+ 		}) })
+ 	] });
+@@ -340,18 +433,21 @@ function SchemaUIPopover() {
+ 		children: /* @__PURE__ */ jsxs("div", {
+ 			ref,
+ 			children: [/* @__PURE__ */ jsx("div", {
+-				className: "sticky top-0 -mx-3 flex overflow-x-auto overflow-y-hidden items-center text-sm font-medium font-mono bg-fd-secondary text-fd-secondary-foreground px-3 h-10 border-b z-20",
++				"data-openapi-schema-breadcrumb": "",
++				className: "sticky top-0 -mx-3 flex gap-1 overflow-x-auto overflow-y-hidden items-center font-medium font-mono bg-fd-popover text-fd-muted-foreground px-3 border-b z-20",
++				style: { height: "44px" },
+ 				children: path.map((item, i) => {
+ 					if (i === 0) return;
+ 					const isDuplicated = path.some((other, j) => j !== i && other.$ref === item.$ref);
+ 					let text;
+ 					const indexItemMatch = /^\[(\w+): (\w+)]$/.exec(item.name);
+ 					if (indexItemMatch) text = `[${indexItemMatch[1]}]`;
+-					else if (i > 1) text = `.${item.name}`;
+ 					else text = item.name;
+ 					return /* @__PURE__ */ jsx("button", {
++						"aria-current": i === path.length - 1 ? "page" : undefined,
+ 						onClick: () => setPath(path.slice(0, i + 1)),
+-						className: cn("hover:underline hover:text-fd-accent-foreground", isDuplicated && "text-orange-400"),
++						className: cn("inline-flex min-h-7 items-center rounded-md px-1.5 text-[13px] no-underline transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring", i === path.length - 1 && "text-fd-foreground", isDuplicated && "text-fd-warning"),
++						type: "button",
+ 						children: text
+ 					}, i);
+ 				})
+@@ -405,6 +501,13 @@ function encodePath(path) {
+ 		...item.tabValues ?? []
+ 	].join("\0")).join("|");
+ }
++function pathsMatch(a, b) {
++	if (a.length !== b.length) return false;
++	return a.every((item, index) => {
++		const other = b[index];
++		return item.$ref === other?.$ref && item.name === other.name && (item.tabValues ?? []).join("\0") === (other.tabValues ?? []).join("\0");
++	});
++}
+ function decodePath(path, highlighted) {
+ 	const out = [];
+ 	for (const part of path.split("|")) {

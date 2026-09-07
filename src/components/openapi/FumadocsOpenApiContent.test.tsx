@@ -6,8 +6,7 @@ import {
   within,
 } from '@testing-library/react';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
-import { act } from 'react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
 type Document = Extract<
@@ -16,7 +15,577 @@ type Document = Extract<
 >['payload']['bundled'];
 type OpenApiOperationItem = NonNullable<OpenAPIPageProps['operations']>[number];
 
+function makeMinimalOpenApiPageProps(method: string): OpenAPIPageProps {
+  const path = `/method-${method.toLowerCase()}`;
+
+  return {
+    operations: [{ method, path } as OpenApiOperationItem],
+    payload: {
+      bundled: {
+        info: { title: 'Methods API' },
+        openapi: '3.2.0',
+        paths: {
+          [path]: {
+            [method.toLowerCase()]: {
+              responses: { '200': { description: 'OK' } },
+            },
+          },
+        },
+      } as unknown as Document,
+    },
+  };
+}
+
+function makeSectionHeadingPageProps(): OpenAPIPageProps {
+  const path = '/headings/{pathId}';
+
+  return {
+    operations: [{ method: 'post', path } as OpenApiOperationItem],
+    payload: {
+      bundled: {
+        info: { title: 'Section Heading API' },
+        openapi: '3.2.0',
+        paths: {
+          [path]: {
+            post: {
+              parameters: [
+                {
+                  in: 'path',
+                  name: 'pathId',
+                  required: true,
+                  schema: { type: 'string' },
+                },
+                {
+                  in: 'query',
+                  name: 'queryLimit',
+                  deprecated: true,
+                  schema: { type: 'integer' },
+                },
+                {
+                  in: 'header',
+                  name: 'traceId',
+                  schema: { type: 'string' },
+                },
+                {
+                  in: 'cookie',
+                  name: 'sessionId',
+                  schema: { type: 'string' },
+                },
+              ],
+              requestBody: {
+                content: {
+                  'application/json': {
+                    schema: {
+                      properties: {
+                        channel: { type: 'string' },
+                        provider: {
+                          properties: { enabled: { type: 'boolean' } },
+                          type: 'object',
+                        },
+                      },
+                      type: 'object',
+                    },
+                  },
+                },
+              },
+              responses: {
+                '200': {
+                  content: {
+                    'application/json': {
+                      schema: {
+                        properties: { ok: { type: 'boolean' } },
+                        type: 'object',
+                      },
+                    },
+                  },
+                  description: 'OK',
+                },
+              },
+            },
+          },
+        },
+      } as unknown as Document,
+    },
+  };
+}
+
 describe('FumadocsOpenApiContent', () => {
+  it('uses one section heading contract for all OpenAPI content sections', async () => {
+    render(
+      <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
+    );
+
+    const sections = [
+      ['parameters-path', 'Path Parameters'],
+      ['parameters-query', 'Query Parameters'],
+      ['parameters-header', 'Header Parameters'],
+      ['parameters-cookie', 'Cookie Parameters'],
+      ['request-body', 'Request Body'],
+      ['response-body', 'Response Body'],
+    ] as const;
+
+    for (const [id, title] of sections) {
+      const heading = await screen.findByRole('heading', { name: title });
+      const sectionHeading = document.getElementById(id);
+
+      expect(heading).toBeTruthy();
+      expect(sectionHeading?.tagName).toBe('H2');
+      expect(sectionHeading).toHaveClass(
+        'openapi-section-heading',
+        'font-semibold',
+        'text-2xl',
+        'leading-7',
+      );
+      expect(sectionHeading?.querySelector(`a[href="#${id}"]`)).toBeTruthy();
+    }
+
+    for (const [id, name] of [
+      ['parameters-path', 'pathId'],
+      ['parameters-query', 'queryLimit'],
+      ['parameters-header', 'traceId'],
+      ['parameters-cookie', 'sessionId'],
+    ]) {
+      const section = document.getElementById(id)?.nextElementSibling;
+      expect(section).toBeTruthy();
+      expect(section).toHaveTextContent(name);
+      expect(section).not.toHaveTextContent('Filter Properties');
+      expect(section).not.toHaveTextContent('Expand all');
+      expect(section).not.toHaveTextContent('Collapse all');
+    }
+
+    expect(
+      document.querySelectorAll('.openapi-schema-tree').length,
+    ).toBeGreaterThan(0);
+    expect(
+      document.querySelector('.openapi-schema-tree button[aria-expanded]'),
+    ).toBeTruthy();
+    expect(
+      screen.queryByPlaceholderText('Filter Properties'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Expand all' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Collapse all' }),
+    ).not.toBeInTheDocument();
+
+    const requiredRow = screen
+      .getByText('pathId')
+      .closest('.openapi-schema-field-row');
+    expect(requiredRow).toHaveTextContent('Required');
+    expect(
+      requiredRow?.querySelector('.openapi-schema-status'),
+    ).toBeInTheDocument();
+
+    const deprecatedRow = screen
+      .getByText('queryLimit')
+      .closest('.openapi-schema-field-row');
+    expect(deprecatedRow).toHaveTextContent('Deprecated');
+    expect(screen.getByText('queryLimit')).not.toHaveClass('line-through');
+  });
+
+  it('renders normalized method badges with semantic variants outside endpoint scrolling', () => {
+    const cases = [
+      {
+        input: 'get',
+        label: 'GET',
+        colorClasses: [
+          'bg-blue-100',
+          'text-blue-800',
+          'dark:bg-blue-900',
+          'dark:text-blue-100',
+        ],
+      },
+      {
+        input: 'post',
+        label: 'POST',
+        colorClasses: [
+          'bg-green-100',
+          'text-green-800',
+          'dark:bg-green-900',
+          'dark:text-green-100',
+        ],
+      },
+      {
+        input: 'put',
+        label: 'PUT',
+        colorClasses: [
+          'bg-amber-100',
+          'text-amber-800',
+          'dark:bg-amber-900',
+          'dark:text-amber-100',
+        ],
+      },
+      {
+        input: 'patch',
+        label: 'PATCH',
+        colorClasses: [
+          'bg-amber-100',
+          'text-amber-800',
+          'dark:bg-amber-900',
+          'dark:text-amber-100',
+        ],
+      },
+      {
+        input: 'delete',
+        label: 'DELETE',
+        colorClasses: [
+          'bg-red-100',
+          'text-red-800',
+          'dark:bg-red-900',
+          'dark:text-red-100',
+        ],
+      },
+      {
+        input: 'options',
+        label: 'OPTIONS',
+        colorClasses: ['bg-muted', 'text-muted-foreground'],
+      },
+    ] as const;
+
+    for (const { colorClasses, input, label } of cases) {
+      const { unmount } = render(
+        <FumadocsOpenApiContent
+          pageProps={makeMinimalOpenApiPageProps(input)}
+        />,
+      );
+      const badge = document.querySelector<HTMLElement>(
+        `[data-openapi-method="${label}"]`,
+      );
+      expect(badge, `missing badge for ${label}`).not.toBeNull();
+      expect(badge).toHaveTextContent(label);
+      expect(badge).toHaveAttribute('data-method', label);
+      expect(badge).toHaveClass(
+        'openapi-method-badge',
+        'normal-case',
+        'tracking-normal',
+        'shrink-0',
+        ...colorClasses,
+      );
+
+      const endpointBar = badge?.closest('.not-prose');
+      const endpointScroller = endpointBar?.querySelector(
+        '.flex-1.overflow-auto',
+      );
+      expect(endpointBar?.firstElementChild).toBe(badge);
+      expect(endpointScroller).not.toContainElement(badge);
+
+      unmount();
+    }
+  });
+
+  it('does not schedule endpoint copy feedback after unmount', async () => {
+    vi.useFakeTimers();
+    let resolveCopy!: () => void;
+    const clipboardWriteText = vi.fn(
+      () => new Promise<void>((resolve) => (resolveCopy = resolve)),
+    );
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+
+    try {
+      const { unmount } = render(
+        <FumadocsOpenApiContent
+          pageProps={{
+            operations: [{ method: 'get', path: '/copy-unmount' }],
+            payload: {
+              bundled: {
+                info: { title: 'Copy API' },
+                openapi: '3.2.0',
+                paths: {
+                  '/copy-unmount': {
+                    get: {
+                      responses: {
+                        '204': { description: 'No content' },
+                      },
+                    },
+                  },
+                },
+              } as unknown as Document,
+            },
+          }}
+        />,
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Copy endpoint URL' }),
+      );
+      unmount();
+      resolveCopy();
+      await Promise.resolve();
+
+      expect(vi.getTimerCount()).toBe(0);
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+      vi.useRealTimers();
+    }
+  });
+
+  it('renders one English response body accordion with status-local headers', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/responses' }],
+          payload: {
+            bundled: {
+              info: { title: 'Response API' },
+              openapi: '3.2.0',
+              paths: {
+                '/responses': {
+                  get: {
+                    responses: {
+                      default: {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: { error: { type: 'string' } },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'Fallback response',
+                      },
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: { result: { type: 'string' } },
+                              type: 'object',
+                            },
+                          },
+                          'text/plain': {
+                            schema: {
+                              properties: { message: { type: 'string' } },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        headers: {
+                          'x-request-id': {
+                            description: 'Correlation ID.',
+                            schema: { type: 'string' },
+                          },
+                        },
+                        description: 'Successful response',
+                      },
+                      '204': { description: 'No content' },
+                    },
+                    summary: 'Responses',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: 'Response Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getAllByRole('heading', { name: 'Response Body' }),
+    ).toHaveLength(1);
+    expect(
+      document.querySelector('[data-openapi-responses]'),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Response schema' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '200 application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      document.getElementById('response-headers-200-x-request-id'),
+    ).toBeInTheDocument();
+    expect(
+      document.querySelector(
+        '[data-openapi-responses] input[placeholder="Filter Properties"]',
+      ),
+    ).toBeNull();
+    expect(
+      within(
+        document.getElementById(
+          'response-headers-200-x-request-id',
+        ) as HTMLElement,
+      ).queryByText('optional'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+    const select = screen.getByLabelText('Media type for 200 response');
+    fireEvent.change(select, { target: { value: 'text/plain' } });
+    expect(
+      screen.getByRole('button', { name: '200 text/plain' }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '204' }));
+    expect(screen.getByText('Empty response body')).toBeInTheDocument();
+  });
+
+  it('opens a hashed English response panel and its schema ancestors', async () => {
+    window.location.hash = 'responses-default-data-id';
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/response-hash' }],
+          payload: {
+            bundled: {
+              info: { title: 'Response hash API' },
+              openapi: '3.2.0',
+              paths: {
+                '/response-hash': {
+                  get: {
+                    responses: {
+                      default: {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                data: {
+                                  properties: { id: { type: 'string' } },
+                                  type: 'object',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                      },
+                      '200': { description: 'OK' },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    await waitFor(() => {
+      expect(screen.getAllByText('id').length).toBeGreaterThan(0);
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('s-highlight')).toBe('id');
+      expect(url.searchParams.get('path')).toContain('data');
+    });
+    expect(window.location.hash).toBe('#response-default-application-json');
+    window.location.hash = '';
+  });
+
+  it('opens an English response panel targeted by a response-header hash', () => {
+    window.location.hash = 'response-headers-default-x-request-id';
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'get', path: '/response-header-hash' }],
+          payload: {
+            bundled: {
+              info: { title: 'Response header hash API' },
+              openapi: '3.2.0',
+              paths: {
+                '/response-header-hash': {
+                  get: {
+                    responses: {
+                      default: {
+                        headers: {
+                          'x-request-id': { schema: { type: 'string' } },
+                        },
+                      },
+                      '200': { description: 'OK' },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(screen.getByRole('button', { name: 'default' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    expect(
+      document.getElementById('response-headers-default-x-request-id'),
+    ).toBeInTheDocument();
+    window.location.hash = '';
+  });
+
+  it('preserves English response accordion state for unchanged response references', () => {
+    const responses = {
+      default: {
+        content: {
+          'application/json': { schema: { type: 'object' } },
+        },
+      },
+      '200': { description: 'OK' },
+    };
+    const bundled = {
+      info: { title: 'Response state API' },
+      openapi: '3.2.0',
+      paths: {
+        '/response-state': {
+          get: { responses },
+        },
+      },
+    };
+    const pageProps = {
+      operations: [{ method: 'get', path: '/response-state' }],
+      payload: { bundled },
+    } as unknown as OpenAPIPageProps;
+    const { rerender } = render(
+      <FumadocsOpenApiContent pageProps={pageProps} />,
+    );
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'default application/json' }),
+    );
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    rerender(<FumadocsOpenApiContent pageProps={pageProps} />);
+
+    expect(
+      screen.getByRole('button', { name: 'default application/json' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    const nextPageProps = {
+      operations: pageProps.operations,
+      payload: {
+        bundled: {
+          ...bundled,
+          paths: {
+            '/response-state': {
+              get: { responses: { '201': { description: 'Created' } } },
+            },
+          },
+        },
+      },
+    } as unknown as OpenAPIPageProps;
+    rerender(<FumadocsOpenApiContent pageProps={nextPageProps} />);
+
+    expect(screen.getByRole('button', { name: '201' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+  });
+
   it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
     render(
       <FumadocsOpenApiContent
@@ -72,6 +641,12 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('tab', { name: 'cURL' }),
     ).toBeInTheDocument();
     expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
+    const generatedPreview = screen.getByTestId('openapi-code-preview');
+    expect(
+      within(generatedPreview)
+        .getByRole('tabpanel')
+        .querySelector('.fd-scroll-container'),
+    ).toHaveAttribute('data-openapi-code-viewport', '');
     expect(
       screen
         .getByRole('tab', { name: 'cURL' })
@@ -168,12 +743,56 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Python' }));
-    expect(examplesScope.getByText('import requests')).toBeInTheDocument();
-    fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Node.js' }));
     expect(
-      examplesScope.getByText('fetch("https://example.com/join")'),
+      examplesScope.getByRole('tabpanel').querySelector('.token-command'),
     ).toBeInTheDocument();
+    const preview = examplesScope.getByTestId('openapi-code-preview');
+    expect(
+      within(preview)
+        .getByRole('tabpanel')
+        .querySelector('.fd-scroll-container'),
+    ).toHaveAttribute('data-openapi-code-viewport', '');
+    const viewport = within(preview)
+      .getByRole('tabpanel')
+      .querySelector('.fd-scroll-container');
+    expect(viewport).toHaveClass('fd-scroll-container', 'max-h-[600px]');
+    expect(viewport?.querySelector('pre')).toHaveClass('min-w-full', 'w-max');
+    expect(
+      screen.getByText('Response example').closest('.openapi-response-example'),
+    ).not.toContainElement(preview);
+    const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+    try {
+      fireEvent.click(
+        within(preview).getByRole('button', { name: 'Copy Text' }),
+      );
+      await waitFor(() => {
+        expect(clipboardWriteText).toHaveBeenCalledWith(
+          'curl --request POST https://example.com/join',
+        );
+      });
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
+    fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Python' }));
+    expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
+      'import requests',
+    );
+    fireEvent.mouseDown(examplesScope.getByRole('tab', { name: 'Node.js' }));
+    expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
+      'fetch("https://example.com/join")',
+    );
 
     expect(screen.queryByRole('tab', { name: 'cURL' })).not.toBeInTheDocument();
     expect(
@@ -184,7 +803,177 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.queryByRole('tab', { name: 'C#' })).not.toBeInTheDocument();
   });
 
-  it('renders authorization from global security and hides auth header parameters', async () => {
+  it('keeps the Conversational AI join request body readable', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      required: true,
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              name: {
+                                description:
+                                  'The unique identifier of the agent.',
+                                type: 'string',
+                              },
+                              pipeline_id: {
+                                description:
+                                  'The unique ID of a published agent.',
+                                type: 'string',
+                              },
+                              properties: {
+                                additionalProperties: true,
+                                properties: {
+                                  channel: {
+                                    description:
+                                      'The name of the channel to join.',
+                                    type: 'string',
+                                  },
+                                  remote_rtc_uids: {
+                                    description:
+                                      'A list of user IDs that the agent subscribes to in the channel.',
+                                    items: { type: 'string' },
+                                    type: 'array',
+                                  },
+                                  asr: {
+                                    additionalProperties: true,
+                                    description:
+                                      'Automatic Speech Recognition configuration.',
+                                    properties: {
+                                      vendor: {
+                                        enum: ['ares', 'microsoft'],
+                                        type: 'string',
+                                      },
+                                    },
+                                    type: 'object',
+                                  },
+                                  llm: {
+                                    additionalProperties: true,
+                                    properties: {
+                                      vendor: {
+                                        enum: ['openai', 'azure'],
+                                        type: 'string',
+                                      },
+                                    },
+                                    required: ['vendor'],
+                                    type: 'object',
+                                  },
+                                },
+                                required: ['channel', 'remote_rtc_uids', 'llm'],
+                                type: 'object',
+                              },
+                              preset: {
+                                deprecated: true,
+                                type: 'string',
+                              },
+                            },
+                            required: ['name', 'properties'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const schemaTree = document.querySelector(
+      '.openapi-schema-tree',
+    ) as HTMLElement;
+    const getSchemaRow = (name: string) =>
+      within(schemaTree)
+        .getAllByText(name, { exact: true })
+        .find((element) => !element.closest('[data-openapi-schema-find-index]'))
+        ?.closest('.openapi-schema-field-row') as HTMLElement;
+    const propertiesRow = getSchemaRow('properties');
+    const asrRow = getSchemaRow('asr');
+    const propertiesNode = propertiesRow.closest(
+      '[data-openapi-schema-node]',
+    ) as HTMLElement;
+
+    expect(propertiesRow).toBeInstanceOf(HTMLElement);
+    expect(
+      propertiesNode.querySelector(':scope > .openapi-schema-children'),
+    ).toBeInTheDocument();
+    expect(asrRow).toBeInstanceOf(HTMLElement);
+    expect(
+      within(propertiesRow).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(asrRow).getByRole('button', { name: 'Expand asr properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+
+    const propertiesName = within(propertiesRow).getByText('properties', {
+      exact: true,
+    });
+    expect(propertiesName.tagName).toBe('CODE');
+    expect(propertiesName).toHaveClass('font-semibold');
+    expect(
+      within(propertiesRow).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    ).not.toContainElement(
+      within(propertiesRow).getByText('object', { exact: true }),
+    );
+    expect(
+      within(propertiesRow).getByText('object', { exact: true }),
+    ).toHaveClass('text-muted-foreground');
+    expect(within(propertiesRow).getByText('Required')).toBeVisible();
+    expect(within(asrRow).queryByText('Optional')).not.toBeInTheDocument();
+
+    expect(
+      screen.queryByText('[key: string]', { exact: true }),
+    ).not.toBeInTheDocument();
+
+    fireEvent.click(
+      within(asrRow).getByRole('button', { name: 'Expand asr properties' }),
+    );
+    const vendorRow = getSchemaRow('vendor');
+    expect(within(vendorRow).getByText('Allowed values:')).toBeVisible();
+    expect(
+      within(vendorRow).getByText('ares', { exact: true }),
+    ).toHaveAttribute('data-openapi-allowed-value-key', 'string:"ares":0');
+    expect(within(vendorRow).getByText('ares', { exact: true }).tagName).toBe(
+      'SPAN',
+    );
+    expect(
+      vendorRow.querySelector('[data-openapi-allowed-value-key*="microsoft"]'),
+    ).toBeVisible();
+
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+    expect(screen.getByText('channel', { exact: true })).toBeVisible();
+    expect(screen.getByText('remote_rtc_uids', { exact: true })).toBeVisible();
+
+    expect(
+      document.querySelector('[data-openapi-method="POST"]'),
+    ).toHaveTextContent('POST');
+  });
+
+  it('renders authorization with official parameter sections', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -257,15 +1046,493 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(screen.getByText('basicAuth')).toBeInTheDocument();
     expect(
-      screen.queryByRole('heading', { name: 'Header Parameters' }),
+      screen.getByRole('heading', { name: 'Header Parameters' }),
+    ).toBeInTheDocument();
+    expect(screen.getAllByText('Authorization').length).toBeGreaterThan(0);
+    expect(
+      screen.getByRole('heading', { name: 'Path Parameters' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('appid')).toBeVisible();
+    const rail = screen.getByTestId('openapi-examples-rail');
+    expect(
+      rail.querySelector('.openapi-authorization-section'),
+    ).toBeInTheDocument();
+    expect(rail.querySelector('.openapi-request-examples')).toBeInTheDocument();
+    expect(rail.querySelector('.openapi-response-example')).toBeInTheDocument();
+    const layout = rail.closest('.openapi-operation-layout');
+    expect(layout?.firstElementChild).toHaveClass('min-w-0');
+    expect(layout?.lastElementChild).toHaveClass(
+      'openapi-examples-rail-anchor',
+    );
+    expect(layout?.lastElementChild?.lastElementChild).toBe(rail);
+    expect(layout?.children).toHaveLength(2);
+    expect(rail.className).not.toContain('w-[360px]');
+  });
+
+  it('renders localized operation security before parameters in zh-CN when no Authorization header parameter exists', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/apps/{appid}/cloud_recording/acquire',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Cloud Recording API',
+              },
+              openapi: '3.2.0',
+              components: {
+                securitySchemes: {
+                  'Basic Auth': {
+                    description:
+                      '发送请求时，你需要使用客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/doc/cloud-recording/restful/user-guides/http-basic-auth)。',
+                    scheme: 'basic',
+                    type: 'http',
+                  },
+                },
+              },
+              security: [
+                {
+                  'Basic Auth': [],
+                },
+              ],
+              paths: {
+                '/v1/apps/{appid}/cloud_recording/acquire': {
+                  post: {
+                    operationId: 'acquire',
+                    parameters: [
+                      {
+                        description: '项目的 App ID。',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: '获取云端录制资源',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: '路径参数' }),
+    ).toBeInTheDocument();
+    const authHeading = screen.getByRole('heading', { name: '鉴权' });
+    expect(authHeading).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: 'Basic Auth' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/客户 ID 和客户密钥/)).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: '实现 HTTP 基本认证' }),
+    ).toHaveAttribute(
+      'href',
+      'https://doc.shengwang.cn/doc/cloud-recording/restful/user-guides/http-basic-auth',
+    );
+    const pathHeading = screen.getByRole('heading', { name: '路径参数' });
+    expect(
+      authHeading.compareDocumentPosition(pathHeading) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+  });
+
+  it('prefers an explicit Authorization header parameter over localized securitySchemes in zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              components: {
+                securitySchemes: {
+                  'Basic Auth': {
+                    description:
+                      '发送请求时，你需要使用客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/doc/cloud-recording/restful/user-guides/http-basic-auth)。',
+                    scheme: 'basic',
+                    type: 'http',
+                  },
+                },
+              },
+              security: [
+                {
+                  'Basic Auth': [],
+                },
+              ],
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    parameters: [
+                      {
+                        description:
+                          '鉴权凭证。支持 RTC Token 或 HTTP 基本认证。',
+                        in: 'header',
+                        name: 'Authorization',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                      {
+                        description: '项目的 App ID。',
+                        in: 'path',
+                        name: 'appid',
+                        required: true,
+                        schema: {
+                          type: 'string',
+                        },
+                      },
+                    ],
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              name: {
+                                description: '智能体名称。',
+                                type: 'string',
+                              },
+                            },
+                            required: ['name'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                agent_id: {
+                                  description: '智能体 ID。',
+                                  type: 'string',
+                                },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                      },
+                    },
+                    summary: '启动智能体',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: '路径参数' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '鉴权' }),
     ).not.toBeInTheDocument();
-    const pathSection = screen
-      .getByRole('heading', { name: 'Path Parameters' })
-      .closest('section') as HTMLElement;
-    expect(within(pathSection).getByText('appid')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Basic Auth' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText(/客户 ID 和客户密钥/)).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: '请求 Header' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Authorization')).toBeVisible();
+    expect(screen.getByText(/支持 RTC Token/)).toBeVisible();
+    expect(
+      screen.getByRole('heading', { name: '请求 Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: '响应 Body' }),
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: 'Header Parameters' }),
     ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Request Body' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('renders OpenAPI blockquote descriptions as localized note callouts in zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              agent_rtc_uid: {
+                                description:
+                                  '智能体在 RTC 频道内的用户 ID。\n> 同一 `channel` 内的用户 ID 不可重复，否则智能体加入频道会失败。',
+                                type: 'string',
+                              },
+                              allowed_tools: {
+                                description:
+                                  '工具允许列表。\n> `allowed_tools` 字段生效规则:\n> - 不填写 `allowed_tools` 字段：所有工具都生效\n> - 填写为 `[]`：所有工具不生效',
+                                type: 'array',
+                                items: {
+                                  type: 'string',
+                                },
+                              },
+                              greeting_audio_url: {
+                                description:
+                                  '问候语音频地址。\n>- 配置 `greeting_audio_url` 时，必须同时配置 `greeting_message` 用于异常回退。\n>- 下载失败时，系统会自动使用 `greeting_message` 播报。',
+                                type: 'string',
+                              },
+                              enable_string_uid: {
+                                description:
+                                  '是否启用 String UID。\n> 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多信息请参考[如何使用 String UID](https://example.com/string-uid)。',
+                                type: 'boolean',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: '启动智能体',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(await screen.findAllByText('注意')).toHaveLength(4);
+    const channelCode = screen.getAllByText('channel').at(0);
+    expect(channelCode?.tagName).toBe('CODE');
+    const channelNote = screen.getByText((_content, node) =>
+      Boolean(
+        node?.textContent ===
+          '同一 channel 内的用户 ID 不可重复，否则智能体加入频道会失败。',
+      ),
+    );
+    expect(
+      channelNote.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    const allowedToolsRule = screen.getByText((_content, node) =>
+      Boolean(
+        node?.textContent === '不填写 allowed_tools 字段：所有工具都生效',
+      ),
+    );
+    expect(allowedToolsRule.tagName).toBe('LI');
+    expect(
+      allowedToolsRule.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    const greetingRule = screen.getByText((_content, node) =>
+      Boolean(
+        node?.tagName === 'LI' &&
+          node.textContent?.includes('配置 greeting_audio_url 时') &&
+          node.textContent?.includes('greeting_message 用于异常回退'),
+      ),
+    );
+    expect(greetingRule.tagName).toBe('LI');
+    expect(
+      greetingRule.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: '如何使用 String UID' }),
+    ).toHaveAttribute('href', 'https://example.com/string-uid');
+  });
+
+  it('keeps OpenAPI blockquote descriptions as blockquotes outside zh-CN', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              agent_rtc_uid: {
+                                description:
+                                  'Agent user ID.\n> User IDs must be unique in the same `channel`.',
+                                type: 'string',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Start agent',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const blockquoteText = await screen.findByText('User IDs must be unique', {
+      exact: false,
+    });
+    expect(blockquoteText.closest('blockquote')).toBeInTheDocument();
+    expect(screen.queryByText('Note')).not.toBeInTheDocument();
+    expect(
+      blockquoteText.closest('.openapi-markdown-blockquote'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('uses the official array type navigation without wrapper rows', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v2/projects/{appid}/join',
+            },
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Conversational AI API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              remote_rtc_uids: {
+                                description: '智能体订阅的用户 ID 列表。',
+                                items: {
+                                  type: 'string',
+                                },
+                                type: 'array',
+                              },
+                              tools: {
+                                items: {
+                                  properties: {
+                                    name: {
+                                      type: 'string',
+                                    },
+                                  },
+                                  type: 'object',
+                                },
+                                type: 'array',
+                              },
+                            },
+                            required: ['remote_rtc_uids'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: '启动智能体',
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const remoteRow = (await screen.findByText('remote_rtc_uids')).closest(
+      'div.border-t',
+    ) as HTMLElement;
+    const toolsRow = screen
+      .getByText('tools')
+      .closest('div.border-t') as HTMLElement;
+    expect(remoteRow).toHaveTextContent('array<string>');
+    expect(
+      within(toolsRow.firstElementChild as HTMLElement).getByText(
+        'array<object>',
+      ),
+    ).not.toHaveRole('button');
+    fireEvent.click(
+      within(toolsRow).getByRole('button', { name: '展开 tools 属性' }),
+    );
+    expect(screen.getByText('name')).toBeVisible();
   });
 
   it('renders operation callouts from the bundled source operation', async () => {
@@ -457,6 +1724,32 @@ describe('FumadocsOpenApiContent', () => {
         'https://api.agora.io/dev/v2/project/{appid}/rtm/vendor/user_events',
       ),
     ).toBeInTheDocument();
+    const copyEndpoint = screen.getByRole('button', {
+      name: 'Copy endpoint URL',
+    });
+    const clipboardWriteText = vi.fn().mockResolvedValue(undefined);
+    const originalClipboard = Object.getOwnPropertyDescriptor(
+      window.navigator,
+      'clipboard',
+    );
+    Object.defineProperty(window.navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboardWriteText },
+    });
+    try {
+      fireEvent.click(copyEndpoint);
+      await waitFor(() => {
+        expect(clipboardWriteText).toHaveBeenCalledWith(
+          'https://api.agora.io/dev/v2/project/{appid}/rtm/vendor/user_events',
+        );
+      });
+    } finally {
+      if (originalClipboard) {
+        Object.defineProperty(window.navigator, 'clipboard', originalClipboard);
+      } else {
+        Reflect.deleteProperty(window.navigator, 'clipboard');
+      }
+    }
     expect(
       screen.getByText(
         'This endpoint does not require any query parameters or a request body.',
@@ -566,23 +1859,28 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    const pathSection = screen
-      .getByRole('heading', { name: 'Path Parameters' })
-      .closest('section') as HTMLElement;
-    const headerSection = screen
-      .getByRole('heading', { name: 'Header Parameters' })
-      .closest('section') as HTMLElement;
+    const pathSection = screen.getByRole('heading', {
+      name: 'Path Parameters',
+    }).nextElementSibling as HTMLElement;
+    const headerSection = screen.getByRole('heading', {
+      name: 'Header Parameters',
+    }).nextElementSibling as HTMLElement;
 
     expect(within(pathSection).getByText('appid')).toBeInTheDocument();
     expect(within(pathSection).getByText('resourceid')).toBeInTheDocument();
     expect(within(pathSection).getByText('sid')).toBeInTheDocument();
     expect(within(pathSection).getByText('mode')).toBeInTheDocument();
+    expect(within(pathSection).getByText('individual')).toBeInTheDocument();
+    expect(within(pathSection).getByText(/mix/)).toBeInTheDocument();
+    const modeRow = within(pathSection)
+      .getByText('mode')
+      .closest('.openapi-schema-field-row');
     expect(
-      within(pathSection).getByText('individual | mix | web'),
+      modeRow?.querySelector('[data-openapi-allowed-value-key*="web"]'),
     ).toBeInTheDocument();
     expect(within(headerSection).getByText('Content-Type')).toBeInTheDocument();
     expect(
-      within(headerSection).getByText('application/json'),
+      within(headerSection).getAllByText('application/json')[0],
     ).toBeInTheDocument();
   });
 
@@ -684,25 +1982,25 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: 'Request Body' });
-    const schemaTreeEl = document.querySelector(
-      '.openapi-schema-tree',
-    ) as HTMLElement;
-    fireEvent.click(
-      within(schemaTreeEl).getByRole('button', {
-        name: 'Expand all Request Body schema fields',
-      }),
-    );
+    const getOfficialRow = (name: string) =>
+      screen
+        .getAllByText(name)
+        .find((element) => !element.closest('[data-openapi-schema-find-index]'))
+        ?.closest('div.border-t') as HTMLElement;
+    const displayNameRow = getOfficialRow('displayName');
+    const propertiesRow = getOfficialRow('properties');
 
-    const channelField = screen.getByText('channel');
-
-    expect(channelField).toHaveClass(
-      'openapi-schema-property-name',
-      'font-bold',
-      'text-fd-foreground',
-    );
-
-    expect(screen.getByText('llm')).toBeInTheDocument();
-    expect(screen.getByText('url')).toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+    expect(
+      within(displayNameRow).queryByText('Optional'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('optional')).not.toBeInTheDocument();
+    expect(
+      within(propertiesRow.firstElementChild as HTMLElement).getByText(
+        'object',
+      ),
+    ).not.toHaveRole('button');
+    expect(getOfficialRow('channel')).toBeVisible();
     expect(screen.getByRole('link', { name: 'Token docs' })).toHaveAttribute(
       'href',
       'https://example.com/token',
@@ -712,22 +2010,15 @@ describe('FumadocsOpenApiContent', () => {
       'https://doc.shengwang.cn/faq/list?category=integration-issues&platform=all&product=all',
     );
     expect(screen.getByText(/primary channel/)).toBeInTheDocument();
+    const llmRow = getOfficialRow('llm');
+    expect(
+      within(llmRow.firstElementChild as HTMLElement).getByText('object'),
+    ).not.toHaveRole('button');
+    fireEvent.click(
+      within(llmRow).getByRole('button', { name: 'Expand llm properties' }),
+    );
+    expect(getOfficialRow('url')).toBeVisible();
     expect(screen.getByText(/production callback URLs/)).toBeInTheDocument();
-
-    const schemaTreeElement = document.querySelector('.openapi-schema-tree');
-    expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
-    const schemaTree = within(schemaTreeElement as HTMLElement);
-    const optionalFieldRow = schemaTree
-      .getByText('displayName')
-      .closest('[style]');
-    expect(optionalFieldRow).toBeInstanceOf(HTMLElement);
-    expect(
-      within(optionalFieldRow as HTMLElement).getByText('optional'),
-    ).toBeInTheDocument();
-    expect(schemaTree.queryByText('?')).not.toBeInTheDocument();
-    expect(
-      schemaTree.getByText(/production callback URLs/),
-    ).toBeInTheDocument();
 
     const requestBodyHeading = screen.getByRole('heading', {
       name: 'Request Body',
@@ -739,9 +2030,83 @@ describe('FumadocsOpenApiContent', () => {
       ) ?? '';
 
     expect(operationTopText).not.toContain('production callback URLs');
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+  });
+
+  it('expands required join properties, keeps optional properties collapsed, and finds complete schema paths', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v2/projects/{appid}/join': {
+                  post: {
+                    operationId: 'join',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              properties: {
+                                additionalProperties: true,
+                                properties: {
+                                  channel: { type: 'string' },
+                                  remote_rtc_uids: {
+                                    items: { type: 'string' },
+                                    type: 'array',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                              advanced_features: {
+                                properties: {
+                                  child: { type: 'string' },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            required: ['properties'],
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    await screen.findByRole('heading', { name: 'Request Body' });
+    const propertiesRow = document.querySelector(
+      '[data-openapi-schema-path="properties"]',
+    );
+    expect(propertiesRow).toBeInTheDocument();
+
     expect(
-      schemaTree.queryByPlaceholderText('Filter Properties'),
-    ).not.toBeInTheDocument();
+      within(propertiesRow as HTMLElement).getByRole('button', {
+        name: 'Collapse properties properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('channel', { exact: true })).toBeVisible();
+    expect(screen.getByText('remote_rtc_uids', { exact: true })).toBeVisible();
+
+    expect(
+      screen.getByRole('button', {
+        name: 'Expand advanced_features properties',
+      }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByText('child', { exact: true })).not.toBeVisible();
+
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
   });
 
   it('renders response body fields inherited through local refs and nested allOf schemas', async () => {
@@ -840,38 +2205,38 @@ describe('FumadocsOpenApiContent', () => {
     await screen.findByRole('heading', {
       name: 'Response Body',
     });
-    fireEvent.click(screen.getByRole('button', { name: '200' }));
-
-    const schemaTreeElement = document.querySelector('.openapi-schema-tree');
-
-    expect(schemaTreeElement).toBeInstanceOf(HTMLElement);
-    fireEvent.click(
-      within(schemaTreeElement as HTMLElement).getByRole('button', {
-        name: 'Expand all Response Body schema fields',
-      }),
-    );
     expect(
-      within(schemaTreeElement as HTMLElement).getByText('cname'),
-    ).toBeInTheDocument();
-    expect(
-      within(schemaTreeElement as HTMLElement).getByText(
-        'The name of the channel being recorded.',
+      document.querySelector(
+        '[data-openapi-responses] input[placeholder="Filter Properties"]',
       ),
-    ).toBeInTheDocument();
+    ).toBeNull();
+    expect(screen.getByText('cname')).toBeVisible();
     expect(
-      within(schemaTreeElement as HTMLElement).getByText('uid'),
-    ).toBeInTheDocument();
+      screen.getByText('The name of the channel being recorded.'),
+    ).toBeVisible();
+    expect(screen.getByText('uid')).toBeVisible();
     expect(
-      within(schemaTreeElement as HTMLElement).getByText(
+      screen.getByText(
         'The UID used by the cloud recording service in the RTC channel.',
       ),
-    ).toBeInTheDocument();
+    ).toBeVisible();
     expect(
-      within(schemaTreeElement as HTMLElement).getByText('serverResponse'),
-    ).toBeInTheDocument();
+      screen
+        .getAllByText('status')
+        .find((element) => element.closest('div.border-t')),
+    ).not.toBeVisible();
+    fireEvent.click(
+      within(
+        screen
+          .getByText('serverResponse')
+          .closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: 'Expand serverResponse properties' }),
+    );
     expect(
-      within(schemaTreeElement as HTMLElement).getByText('status'),
-    ).toBeInTheDocument();
+      screen
+        .getAllByText('status')
+        .find((element) => element.closest('div.border-t')),
+    ).toBeVisible();
   });
 
   it('renders scalar parameters, response headers, callouts, and parameter metadata', async () => {
@@ -1075,10 +2440,10 @@ describe('FumadocsOpenApiContent', () => {
     const pathParameters = await screen.findByRole('heading', {
       name: 'Path Parameters',
     });
-    const pathSection = pathParameters.closest('section') as HTMLElement;
-    const headerSection = screen
-      .getByRole('heading', { name: 'Header Parameters' })
-      .closest('section') as HTMLElement;
+    const pathSection = pathParameters.nextElementSibling as HTMLElement;
+    const headerSection = screen.getByRole('heading', {
+      name: 'Header Parameters',
+    }).nextElementSibling as HTMLElement;
     const responseHeaderSection = screen
       .getByRole('heading', { name: 'Response Headers' })
       .closest('section') as HTMLElement;
@@ -1091,24 +2456,27 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(pathSection).getByText(/flow configuration template ID/),
     ).toBeInTheDocument();
-    expect(within(pathSection).getByText('Allowed')).toBeInTheDocument();
-    expect(within(pathSection).getByText('cn | na | eu')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Default')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Min length')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Max length')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Pattern')).toBeInTheDocument();
+    expect(
+      within(pathSection).getByText('Allowed values:'),
+    ).toBeInTheDocument();
+    expect(within(pathSection).getAllByText('cn').length).toBeGreaterThan(0);
+    expect(within(pathSection).getByText('Default:')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Length:')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Match:')).toBeInTheDocument();
     expect(within(pathSection).getAllByText('720p').length).toBeGreaterThan(0);
 
-    const querySection = screen
-      .getByRole('heading', { name: 'Query Parameters' })
-      .closest('section') as HTMLElement;
+    const querySection = screen.getByRole('heading', {
+      name: 'Query Parameters',
+    }).nextElementSibling as HTMLElement;
     expect(within(querySection).getByText('page_size')).toBeInTheDocument();
-    expect(within(querySection).getAllByText('Range')).toHaveLength(2);
-    expect(within(querySection).getByText('[1, 500]')).toBeInTheDocument();
+    expect(within(querySection).getAllByText('Range:')).toHaveLength(2);
+    expect(
+      within(querySection).getByText('1 <= value <= 500'),
+    ).toBeInTheDocument();
     expect(
       within(querySection).getByText('speech_threshold'),
     ).toBeInTheDocument();
-    expect(within(querySection).getByText('(0, 1)')).toBeInTheDocument();
+    expect(within(querySection).getByText('0 < value < 1')).toBeInTheDocument();
     expect(within(querySection).queryByText('Minimum')).not.toBeInTheDocument();
     expect(within(querySection).queryByText('Maximum')).not.toBeInTheDocument();
 
@@ -1116,7 +2484,9 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(headerSection).getByText(/provide for troubleshooting/),
     ).toBeInTheDocument();
-    expect(within(headerSection).getByText('request-123')).toBeInTheDocument();
+    expect(
+      within(headerSection).getByText('"request-123"'),
+    ).toBeInTheDocument();
 
     expect(
       within(responseHeaderSection).getByText('X-Request-ID'),
@@ -1133,7 +2503,7 @@ describe('FumadocsOpenApiContent', () => {
 
     expect(screen.getByText('Note')).toBeInTheDocument();
     expect(screen.getAllByText(/401 response/).length).toBeGreaterThan(1);
-    expect(screen.getAllByText('Important').length).toBeGreaterThan(1);
+    expect(screen.getAllByText('Important').length).toBeGreaterThan(0);
     expect(
       screen.getByText(/according to your business use case/),
     ).toBeInTheDocument();
@@ -1272,15 +2642,18 @@ describe('FumadocsOpenApiContent', () => {
       name: 'Response Body',
     });
 
-    expect(pathHeading).toHaveClass('font-semibold', 'text-2xl');
+    expect(pathHeading).toHaveAttribute('id', 'parameters-path');
     expect(requestBodyHeading).toHaveAttribute('id', 'request-body');
-    expect(responseBodyHeading).toHaveAttribute('id', 'response-body');
-    expect(operation).toHaveClass(
-      '[&_h2#request-body]:font-semibold',
-      '[&_h2#request-body]:text-2xl',
-      '[&_h2#response-body]:font-semibold',
-      '[&_h2#response-body]:text-2xl',
+    expect(responseBodyHeading).toHaveClass('font-semibold', 'text-2xl');
+    expect(document.querySelector('[data-openapi-responses]')).toHaveAttribute(
+      'id',
+      'response-body',
     );
+    for (const id of ['request-body', 'response-body']) {
+      expect(document.getElementById(id)).toHaveClass(
+        'openapi-section-heading',
+      );
+    }
   });
 
   it('scopes OpenAPI markdown prose across docs sections, schemas, and callouts without repeating operation descriptions', async () => {
@@ -1541,7 +2914,6 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-
     fireEvent.change(examplesScope.getByLabelText('Request example scenario'), {
       target: {
         value: 'Saved agent configuration',
@@ -1764,6 +3136,7 @@ describe('FumadocsOpenApiContent', () => {
   it('renders response body schema field descriptions', async () => {
     render(
       <FumadocsOpenApiContent
+        locale="zh-CN"
         pageProps={{
           operations: [
             {
@@ -1844,17 +3217,22 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    const responseBody = await screen.findByRole('heading', {
-      name: 'Response schema',
-    });
+    expect(
+      await screen.findByRole('heading', { name: '响应 Body' }),
+    ).toBeInTheDocument();
+    expect(document.querySelector('[data-openapi-responses]')).toBeNull();
+    expect(
+      screen.queryByRole('heading', { name: 'Response schema' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: '响应 Schema' }),
+    ).not.toBeInTheDocument();
     for (const button of screen.getAllByRole('button', {
-      name: /^Expand all .* schema fields$/,
+      name: /^(200|401)$/,
     })) {
       fireEvent.click(button);
     }
-    expect(responseBody).toBeInTheDocument();
     const responseScope = within(document.body);
-    const visibleText = document.body.textContent?.replace(/\s+/g, ' ') ?? '';
 
     expect(
       responseScope.getByText(
@@ -1862,10 +3240,24 @@ describe('FumadocsOpenApiContent', () => {
       ),
     ).toBeInTheDocument();
     expect(responseScope.getByText('status')).toBeInTheDocument();
-    expect(responseScope.getByText('data')).toBeInTheDocument();
-    expect(responseScope.getByText('channel')).toBeInTheDocument();
-    expect(responseScope.getByText('createdAt')).toBeInTheDocument();
-    expect(visibleText).toContain(
+    fireEvent.click(
+      within(
+        responseScope.getByText('data').closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: '展开 data 属性' }),
+    );
+    expect(
+      responseScope
+        .getAllByText('channel')
+        .find((element) => element.closest('div.border-t')),
+    ).toBeVisible();
+    expect(
+      responseScope
+        .getAllByText('createdAt')
+        .find(
+          (element) => !element.closest('[data-openapi-schema-find-index]'),
+        ),
+    ).toBeVisible();
+    expect(document.body).toHaveTextContent(
       'Request status. success means the request succeeds.',
     );
     expect(
@@ -1878,7 +3270,7 @@ describe('FumadocsOpenApiContent', () => {
         'Unix timestamp, in seconds, when the streaming key was created.',
       ),
     ).toBeInTheDocument();
-    expect(visibleText).toContain(
+    expect(document.body).toHaveTextContent(
       'A 401 (Unauthorized) response status code means the request is not authorized.',
     );
     expect(
@@ -1886,14 +3278,14 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
   });
 
-  it('applies 24px depth increments to nested response schema rows', async () => {
+  it('keeps English response schemas inside the response body accordion', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
           operations: [
             {
               method: 'get',
-              path: '/v1/projects/{appId}/agents/{agentId}',
+              path: '/v1/agents/{agentId}',
             },
           ],
           payload: {
@@ -1903,7 +3295,7 @@ describe('FumadocsOpenApiContent', () => {
               },
               openapi: '3.2.0',
               paths: {
-                '/v1/projects/{appId}/agents/{agentId}': {
+                '/v1/agents/{agentId}': {
                   get: {
                     operationId: 'get-agent',
                     responses: {
@@ -1912,18 +3304,9 @@ describe('FumadocsOpenApiContent', () => {
                           'application/json': {
                             schema: {
                               properties: {
-                                data: {
-                                  properties: {
-                                    agent: {
-                                      properties: {
-                                        voice: {
-                                          type: 'string',
-                                        },
-                                      },
-                                      type: 'object',
-                                    },
-                                  },
-                                  type: 'object',
+                                agent_id: {
+                                  description: 'Agent ID.',
+                                  type: 'string',
                                 },
                               },
                               type: 'object',
@@ -1943,39 +3326,19 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    await screen.findByRole('heading', { name: 'Response schema' });
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: 'Expand all Response schema fields',
-      }),
-    );
-
-    const expectResponseSchemaRowPadding = (
-      anchorId: string,
-      paddingInlineStart: string,
-    ) => {
-      const row = document.getElementById(anchorId);
-      const rowContent = row?.firstElementChild;
-
-      expect(row).toBeInstanceOf(HTMLElement);
-      expect(rowContent).toBeInstanceOf(HTMLElement);
-      expect((rowContent as HTMLElement).style.paddingInlineStart).toBe(
-        paddingInlineStart,
-      );
-    };
-
-    expectResponseSchemaRowPadding('responses-200-data', '1rem');
-    expectResponseSchemaRowPadding(
-      'responses-200-data-agent',
-      'calc(1rem + 24px)',
-    );
-    expectResponseSchemaRowPadding(
-      'responses-200-data-agent-voice',
-      'calc(1rem + 48px)',
-    );
+    expect(
+      await screen.findByRole('heading', { name: 'Response Body' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('heading', { name: 'Response schema' }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
+    expect(screen.getByText('agent_id')).toBeVisible();
   });
 
-  it('adds stable deep-link anchors to parameters and schema fields', async () => {
+  it('adds stable official root anchors and nested find paths', async () => {
+    window.history.replaceState(null, '', '#path-parameters-appid');
+
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -2060,28 +3423,34 @@ describe('FumadocsOpenApiContent', () => {
     );
 
     await screen.findByRole('heading', { name: /Path Parameters/ });
-
-    for (const button of screen.getAllByRole('button', {
-      name: /^Expand all .* schema fields$/,
-    })) {
-      fireEvent.click(button);
-    }
-
-    expect(document.getElementById('path-parameters-appid')).not.toBeNull();
+    await waitFor(() => {
+      const url = new URL(window.location.href);
+      expect(url.searchParams.get('s-highlight')).toBe('appid');
+      expect(url.searchParams.get('path')).toContain('appid');
+    });
+    expect(window.location.hash).toBe('#parameters.path.appid');
+    expect(document.getElementById('parameters.path.appid')).not.toBeNull();
     expect(
-      document.getElementById('query-parameters-page-token'),
-    ).not.toBeNull();
-    expect(document.getElementById('request-body-app-id')).not.toBeNull();
-    expect(document.getElementById('request-body-channel-name')).not.toBeNull();
-    expect(
-      document.getElementById('request-body-config-idle-timeout'),
+      document.getElementById('parameters.query.pagetoken'),
     ).not.toBeNull();
     expect(
-      document.getElementById('responses-200-data-agent-id'),
+      document.getElementById('request-body.applicationjson.body'),
     ).not.toBeNull();
+    fireEvent.click(
+      within(
+        screen.getByText('config').closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: 'Expand config properties' }),
+    );
+    fireEvent.click(
+      within(
+        screen.getByText('data').closest('div.border-t') as HTMLElement,
+      ).getByRole('button', { name: 'Expand data properties' }),
+    );
+    expect(screen.getByText('idleTimeout')).toBeVisible();
+    expect(screen.getByText('agentId')).toBeVisible();
     expect(
-      document.querySelector('a[href="#request-body-channel-name"]'),
-    ).not.toBeNull();
+      document.querySelector('[data-openapi-schema-find-index]'),
+    ).toBeNull();
   });
 
   it('shows parameter descriptions without any collapse control', async () => {
@@ -2118,7 +3487,7 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: 'Path Parameters' })
-    ).closest('section') as HTMLElement;
+    ).nextElementSibling as HTMLElement;
 
     expect(
       within(pathSection).getByText('The App ID used by this request.'),
@@ -2133,59 +3502,164 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
   });
 
-  async function renderNestedSchema() {
+  it('renders all parameter locations through the shared field row contract', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
-          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
+          operations: [{ method: 'get', path: '/v1/items/{itemId}' }],
           payload: {
             bundled: {
-              info: { title: 'Conversational AI API' },
+              info: { title: 'Items API' },
               openapi: '3.2.0',
               paths: {
-                '/v2/projects/{appid}/join': {
-                  post: {
-                    operationId: 'join',
-                    requestBody: {
-                      content: {
-                        'application/json': {
-                          schema: {
-                            properties: {
-                              name: {
-                                description: 'Unique agent name.',
-                                type: 'string',
+                '/v1/items/{itemId}': {
+                  get: {
+                    operationId: 'get-item',
+                    parameters: [
+                      {
+                        description: 'The item identifier.',
+                        in: 'path',
+                        name: 'itemId',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        description: 'Filter by item state.',
+                        in: 'query',
+                        name: 'state',
+                        required: false,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        description: 'Request trace identifier.',
+                        in: 'header',
+                        name: 'X-Trace-ID',
+                        required: false,
+                        deprecated: true,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        description: 'Session cookie.',
+                        in: 'cookie',
+                        name: 'session',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                    ],
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                        headers: {
+                          'X-Request-ID': {
+                            description: 'Response trace identifier.',
+                            deprecated: true,
+                            schema: { example: 'response-123', type: 'string' },
+                            'x-docs-callouts': [
+                              {
+                                markdown: 'Keep this value for support.',
+                                title: 'Note',
+                                type: 'info',
                               },
-                              config: {
-                                description: 'Agent runtime settings.',
-                                properties: {
-                                  audio: {
-                                    properties: {
-                                      sal: {
-                                        description: 'Speech activity level.',
-                                        type: 'number',
-                                      },
-                                    },
-                                    type: 'object',
-                                  },
-                                  idleTimeout: {
-                                    description: 'Idle timeout in seconds.',
-                                    type: 'integer',
-                                  },
-                                },
-                                type: 'object',
-                              },
-                              unrelated: {
-                                properties: {
-                                  secret: { type: 'string' },
-                                },
-                                type: 'object',
-                              },
-                            },
-                            type: 'object',
+                            ],
                           },
                         },
                       },
                     },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const pathSection = (
+      await screen.findByRole('heading', { name: 'Path Parameters' })
+    ).nextElementSibling as HTMLElement;
+    const querySection = screen.getByRole('heading', {
+      name: 'Query Parameters',
+    }).nextElementSibling as HTMLElement;
+    const headerSection = screen.getByRole('heading', {
+      name: 'Header Parameters',
+    }).nextElementSibling as HTMLElement;
+    const cookieSection = screen.getByRole('heading', {
+      name: 'Cookie Parameters',
+    }).nextElementSibling as HTMLElement;
+
+    const pathRow = within(pathSection)
+      .getByText('itemId')
+      .closest('div.border-t') as HTMLElement;
+    const queryRow = within(querySection)
+      .getByText('state')
+      .closest('div.border-t') as HTMLElement;
+    const headerRow = within(headerSection)
+      .getByText('X-Trace-ID')
+      .closest('div.border-t') as HTMLElement;
+    const cookieRow = within(cookieSection)
+      .getByText('session')
+      .closest('div.border-t') as HTMLElement;
+
+    expect(within(pathRow).getByText('Required')).toBeVisible();
+    expect(within(queryRow).queryByText('Optional')).not.toBeInTheDocument();
+    expect(within(headerRow).queryByText('Optional')).not.toBeInTheDocument();
+    expect(within(headerRow).getByText('Deprecated')).toBeVisible();
+    expect(within(cookieRow).getByText('Required')).toBeVisible();
+    expect(within(pathRow).getByText('The item identifier.')).toBeVisible();
+    expect(pathRow).toHaveAttribute('id', 'parameters.path.itemid');
+    expect(headerRow).toHaveAttribute('id', 'parameters.header.x-trace-id');
+
+    const responseSection = screen
+      .getByRole('heading', { name: 'Response Headers' })
+      .closest('section') as HTMLElement;
+    const responseRow = within(responseSection)
+      .getByText('X-Request-ID')
+      .closest('.openapi-response-header-row') as HTMLElement;
+    expect(within(responseRow).getByText('string')).toBeInTheDocument();
+    expect(
+      within(responseRow).getByText('Response trace identifier.'),
+    ).toBeInTheDocument();
+    expect(within(responseRow).queryByText('Status')).not.toBeInTheDocument();
+    expect(within(responseRow).getByText('Example')).toBeInTheDocument();
+    expect(within(responseRow).getByText('response-123')).toBeInTheDocument();
+    expect(within(responseRow).getByText('Note')).toBeInTheDocument();
+    expect(within(responseRow).getByText('Deprecated')).toBeInTheDocument();
+    expect(within(responseRow).queryByText('required')).not.toBeInTheDocument();
+    expect(within(responseRow).queryByText('optional')).not.toBeInTheDocument();
+    expect(
+      within(responseRow).getByRole('link', {
+        name: 'Copy link to response-headers-200-x-request-id',
+      }),
+    ).toHaveAttribute('href', '#response-headers-200-x-request-id');
+  });
+
+  it('localizes official parameter headings and keeps restrained requiredness', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'get', path: '/v1/items/{itemId}' }],
+          payload: {
+            bundled: {
+              info: { title: 'Items API' },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/items/{itemId}': {
+                  get: {
+                    parameters: [
+                      {
+                        in: 'path',
+                        name: 'itemId',
+                        required: true,
+                        schema: { type: 'string' },
+                      },
+                      {
+                        in: 'query',
+                        name: 'state',
+                        required: false,
+                        schema: { type: 'string' },
+                      },
+                    ],
                     responses: { '200': { description: 'OK' } },
                   },
                 },
@@ -2196,199 +3670,18 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    await screen.findByRole('heading', { name: 'Request Body' });
-    const tree = document.querySelector('.openapi-schema-tree') as HTMLElement;
-    return within(tree);
-  }
-
-  it('keeps collapsed schema children findable and reveals them on beforematch', async () => {
-    const tree = await renderNestedSchema();
-
-    expect(tree.getByText('name')).toBeVisible();
-    expect(tree.getByText('Unique agent name.')).toBeVisible();
-    expect(tree.getByText('config')).toBeVisible();
-    expect(tree.getByText('Agent runtime settings.')).toBeVisible();
-
-    const collapsedChild = tree
-      .getByText('sal')
-      .closest('[data-openapi-schema-row]');
-    const unrelatedChild = tree
-      .getByText('secret')
-      .closest('[data-openapi-schema-row]');
-    expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
-    expect(collapsedChild).not.toBeVisible();
-    expect(unrelatedChild).toHaveAttribute('hidden', 'until-found');
-
-    fireEvent(collapsedChild as HTMLElement, new Event('beforematch'));
-
-    expect(collapsedChild).not.toHaveAttribute('hidden');
-    expect(collapsedChild).toBeVisible();
+    const pathSection = (
+      await screen.findByRole('heading', { name: '路径参数' })
+    ).nextElementSibling as HTMLElement;
+    const querySection = screen.getByRole('heading', {
+      name: '查询参数',
+    }).nextElementSibling as HTMLElement;
+    expect(within(pathSection).getByText('必填')).toBeVisible();
+    expect(within(querySection).queryByText('可选')).not.toBeInTheDocument();
     expect(
-      tree.getByRole('button', { name: 'Collapse config properties' }),
-    ).toHaveAttribute('aria-expanded', 'true');
-    expect(
-      tree.getByRole('button', { name: 'Collapse audio properties' }),
-    ).toHaveAttribute('aria-expanded', 'true');
-    expect(unrelatedChild).toHaveAttribute('hidden', 'until-found');
-    expect(unrelatedChild).not.toBeVisible();
-
-    expect(
-      tree.queryByRole('button', { name: 'Expand name properties' }),
-    ).not.toBeInTheDocument();
-    expect(tree.getByText('idleTimeout')).toBeVisible();
-    expect(tree.getByText('Idle timeout in seconds.')).toBeVisible();
-
-    fireEvent.click(
-      tree.getByRole('button', { name: 'Collapse config properties' }),
-    );
-    expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
-    expect(collapsedChild).not.toBeVisible();
-  });
-
-  it('does not paint row dividers or spacing for collapsed findable fields', async () => {
-    const tree = await renderNestedSchema();
-    const collapsedChild = tree
-      .getByText('sal')
-      .closest('[data-openapi-schema-row]') as HTMLElement;
-
-    expect(collapsedChild).toHaveAttribute('hidden', 'until-found');
-    expect(collapsedChild).not.toHaveClass('border-t');
-    expect(collapsedChild).not.toHaveClass('py-3');
-    expect(collapsedChild).not.toHaveClass('pr-4');
-    expect(collapsedChild.style.paddingInlineStart).toBe('');
-
-    const visibleRowContent = collapsedChild.firstElementChild;
-    expect(visibleRowContent).toHaveClass('border-t', 'py-3', 'pr-4');
-    expect(visibleRowContent).toHaveStyle({
-      paddingInlineStart: 'calc(1rem + 48px)',
-    });
-  });
-
-  it('renders leaf schema rows without text placeholders in the property-name flow', async () => {
-    const tree = await renderNestedSchema();
-    const nameField = tree.getByText('name');
-    const nameHeading = nameField.closest(
-      '.openapi-schema-property-heading',
-    ) as HTMLElement;
-    const [gutter, nameColumn] = Array.from(nameHeading.children);
-
-    expect(nameHeading.textContent).not.toContain('\u00a0');
-    expect(nameHeading).not.toHaveAttribute('data-markdown-ignore');
-    expect(gutter).toHaveClass('openapi-schema-property-control-gutter');
-    expect(gutter.textContent).toBe('');
-    expect(gutter.querySelector('button')).toBeNull();
-    expect(nameColumn).toHaveClass('openapi-schema-property-name-column');
-    expect(nameColumn).toContainElement(nameField);
-  });
-
-  it('uses the same gutter and name column structure for expandable and leaf schema rows at the same depth', async () => {
-    const tree = await renderNestedSchema();
-
-    const getSchemaRowColumns = (name: string) => {
-      const field = tree.getByText(name);
-      const heading = field.closest(
-        '.openapi-schema-property-heading',
-      ) as HTMLElement;
-      const [gutter, nameColumn] = Array.from(heading.children);
-
-      return { field, gutter, heading, nameColumn };
-    };
-
-    const leafRow = getSchemaRowColumns('name');
-    const expandableRow = getSchemaRowColumns('config');
-
-    for (const row of [leafRow, expandableRow]) {
-      expect(row.gutter).toHaveClass('openapi-schema-property-control-gutter');
-      expect(row.nameColumn).toHaveClass('openapi-schema-property-name-column');
-      expect(row.nameColumn).toContainElement(row.field);
-      expect(row.heading.firstElementChild).toBe(row.gutter);
-      expect(row.gutter.nextElementSibling).toBe(row.nameColumn);
-    }
-
-    expect(
-      within(expandableRow.gutter as HTMLElement).getByRole('button', {
-        name: 'Expand config properties',
+      within(pathSection).getByRole('button', {
+        name: '复制字段链接到 itemId',
       }),
-    ).toHaveAttribute('aria-expanded', 'false');
-    expect(leafRow.gutter.querySelector('button')).toBeNull();
-  });
-
-  it('expands and collapses every nested field with the schema-wide control', async () => {
-    const tree = await renderNestedSchema();
-
-    expect(tree.getByText('idleTimeout')).not.toBeVisible();
-    fireEvent.click(
-      tree.getByRole('button', {
-        name: 'Expand all Request Body schema fields',
-      }),
-    );
-    expect(tree.getByText('idleTimeout')).toBeVisible();
-
-    fireEvent.click(
-      tree.getByRole('button', {
-        name: 'Collapse all Request Body schema fields',
-      }),
-    );
-    expect(tree.getByText('idleTimeout')).not.toBeVisible();
-    expect(tree.getByText('name')).toBeVisible();
-  });
-
-  it('expands nested ancestors when linking to a nested schema field', async () => {
-    window.history.replaceState(null, '', '#request-body-config-idle-timeout');
-
-    render(
-      <FumadocsOpenApiContent
-        pageProps={{
-          operations: [{ method: 'post', path: '/v2/projects/{appid}/join' }],
-          payload: {
-            bundled: {
-              info: { title: 'Conversational AI API' },
-              openapi: '3.2.0',
-              paths: {
-                '/v2/projects/{appid}/join': {
-                  post: {
-                    operationId: 'join',
-                    requestBody: {
-                      content: {
-                        'application/json': {
-                          schema: {
-                            properties: {
-                              config: {
-                                description: 'Agent runtime settings.',
-                                properties: {
-                                  idleTimeout: {
-                                    description: 'Idle timeout in seconds.',
-                                    type: 'integer',
-                                  },
-                                },
-                                type: 'object',
-                              },
-                            },
-                            type: 'object',
-                          },
-                        },
-                      },
-                    },
-                    responses: { '200': { description: 'OK' } },
-                  },
-                },
-              },
-            } as unknown as Document,
-          },
-        }}
-      />,
-    );
-
-    await screen.findByRole('heading', { name: 'Request Body' });
-    await act(async () => {
-      await new Promise((resolve) => window.requestAnimationFrame(resolve));
-    });
-
-    await waitFor(() => {
-      expect(screen.getByText('idleTimeout')).toBeVisible();
-    });
-    expect(screen.getByText('Idle timeout in seconds.')).toBeVisible();
-
-    window.history.replaceState(null, '', '/');
+    ).toBeVisible();
   });
 });

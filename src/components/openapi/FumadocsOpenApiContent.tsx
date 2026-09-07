@@ -1,4 +1,6 @@
+import { TranslationProvider } from '@fuma-translate/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
+import type { RenderContext } from 'fumadocs-openapi';
 import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
 import {
   type CreateOpenAPIPageOptions,
@@ -6,16 +8,23 @@ import {
   type OpenAPIPageProps,
 } from 'fumadocs-openapi/ui';
 import {
+  CodeBlock,
   CodeBlockTab,
   CodeBlockTabs,
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
+  Pre,
 } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
+import { Check, Clipboard } from 'lucide-react';
 import {
+  type ComponentProps,
   createContext,
+  isValidElement,
   type ReactNode,
+  type RefObject,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -25,13 +34,24 @@ import {
 import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
-  buildOpenApiSchemaRows,
-  getOpenApiSchemaRowLayout,
-  type OpenApiSchemaRow,
-} from '@/lib/openapi/schema-tree';
+  buildUniqueOpenApiAnchorIds,
+  slugOpenApiAnchorSegment,
+} from '@/lib/openapi/anchors';
+import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
+import {
+  buildOpenApiResponseViews,
+  type OpenApiResponseHeaderView,
+} from '@/lib/openapi/response-view';
+import { OpenApiCodePreview } from './OpenApiCodePreview';
+import { OpenApiExamplesRail } from './OpenApiExamplesRail';
+import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
+import { OpenApiResponses } from './OpenApiResponses';
+import { OpenApiSchema } from './OpenApiSchema';
+import { renderOpenApiHeading } from './OpenApiSectionHeading';
 
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
@@ -56,15 +76,87 @@ const OpenApiOperationContext = createContext<OpenApiOperation | undefined>(
 const OpenApiSourceOperationContext = createContext<
   OpenApiOperation | undefined
 >(undefined);
+const OpenApiLocaleContext = createContext<string | undefined>(undefined);
+const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
-const OPENAPI_GENERATED_BODY_HEADING_CLASSES = [
-  '[&_h2#request-body]:font-semibold',
-  '[&_h2#request-body]:text-2xl',
-  '[&_h2#response-body]:font-semibold',
-  '[&_h2#response-body]:text-2xl',
-] as const;
-const OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START = '1rem';
-const OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX = 24;
+const OPENAPI_METHOD_BADGE_CLASSES = {
+  GET: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100',
+  POST: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100',
+  PUT: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
+  PATCH: 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100',
+  DELETE: 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100',
+} as const;
+const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
+  Authorization: '鉴权',
+  'Collapse all': '折叠全部',
+  Collapse: '折叠',
+  'Copied endpoint URL': '已复制接口 URL',
+  'Cookie Parameters': 'Cookie 参数',
+  'Expand all': '展开全部',
+  Expand: '展开',
+  'Copy link to': '复制链接到',
+  'Copy endpoint URL': '复制接口 URL',
+  Deprecated: '已废弃',
+  optional: '可选',
+  required: '必填',
+  properties: '属性',
+  'Header Parameters': '请求 Header',
+  Note: '注意',
+  'Path Parameters': '路径参数',
+  'Query Parameters': '查询参数',
+  'Request Body': '请求 Body',
+  'Request Body schema fields': '请求 Body 字段',
+  'Request examples': '请求示例',
+  'Response Body': '响应 Body',
+  'Response Body schema fields': '响应 Body 字段',
+  'Response Headers': '响应 Header',
+  'Response example': '响应示例',
+  'Response schema': '响应 Schema',
+  'Response schema fields': '响应字段',
+  'schema fields': 'Schema 字段',
+  'This endpoint requires authentication.': '该接口需要鉴权。',
+};
+const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
+  'parameters-cookie': 'Cookie 参数',
+  'parameters-header': '请求 Header',
+  'parameters-path': '路径参数',
+  'parameters-query': '查询参数',
+  'request-body': '请求 Body',
+  'response-body': '响应 Body',
+};
+const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
+  'Allowed values(schema UI)': '可选值',
+  'Cookie Parameters': 'Cookie 参数',
+  'Collapse all(schema UI)': '折叠全部',
+  'Copied link to(schema UI)': '已复制字段链接到',
+  'Copy link to(schema UI)': '复制字段链接到',
+  'Default(schema UI)': '默认值',
+  'Deprecated(schema UI)': '已废弃',
+  'Example(schema UI)': '示例',
+  'Expand all(schema UI)': '展开全部',
+  'Filter Properties(schema UI)': '筛选属性',
+  'Format(schema UI)': '格式',
+  'Header Parameters': '请求 Header',
+  'Items(schema UI)': '元素',
+  'Length(schema UI)': '长度',
+  'Match(schema UI)': '匹配',
+  'match(schema UI)': '个匹配项',
+  'Multiple Of(schema UI)': '倍数',
+  'No property matching(schema UI)': '没有匹配的属性',
+  'Path Parameters': '路径参数',
+  'Properties(schema UI)': '属性',
+  'Query Parameters': '查询参数',
+  'Range(schema UI)': '范围',
+  'Request Body': '请求 Body',
+  'Response Body': '响应 Body',
+  'Required(schema UI)': '必填',
+  'Optional(schema UI)': '可选',
+  'Expand(schema UI)': '展开',
+  'Collapse(schema UI)': '折叠',
+  'properties(schema UI)': '属性',
+  'matches(schema UI)': '个匹配项',
+  'Value in(schema UI)': '可选值',
+} as const;
 
 const OpenAPIPage = createOpenAPIPage({
   content: {
@@ -78,11 +170,15 @@ const OpenAPIPage = createOpenAPIPage({
         }}
       />
     ),
-    renderOperationLayout: (slots, { ctx, operation }) => (
+    renderOperationLayout: (
+      slots,
+      { ctx, method: operationMethod, operation },
+    ) => (
       <OpenApiOperationLayoutWithSource
         method={
           {
             ...(operation as OpenApiOperation),
+            method: operationMethod,
             __documentSecurity: ctx.schema.dereferenced.security,
             __document: ctx.schema.dereferenced as OpenApiRecord,
           } as OpenApiOperation
@@ -96,18 +192,42 @@ const OpenAPIPage = createOpenAPIPage({
   playground: {
     enabled: false,
   },
+  renderHeading: renderOpenApiHeading,
   renderMarkdown: renderOpenApiMarkdown,
   schemaUI: {
-    render: (options, ctx) => (
-      <OpenApiSchemaRows
-        anchorPrefix={getOpenApiSchemaAnchorPrefix(options)}
-        document={ctx.schema.dereferenced}
-        readOnly={options.readOnly}
-        renderMarkdown={renderOpenApiMarkdown}
-        root={options.root}
-        writeOnly={options.writeOnly}
-      />
-    ),
+    render: (options, ctx) => {
+      const schemaOptions = options as typeof options & {
+        client: ComponentProps<RenderContext['SchemaUI']>['client'];
+        legacyAnchorPrefix?: string;
+        showExample?: boolean;
+      };
+
+      return (
+        <OpenApiSchema
+          client={schemaOptions.client}
+          document={ctx.schema.bundled}
+          legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
+          readOnly={schemaOptions.readOnly}
+          renderCodeblock={({ code, lang }) =>
+            renderOpenApiCodeBlock(lang, code)
+          }
+          renderExtraDescription={(schema) => {
+            const record = getRecord(schema);
+            return record ? (
+              <OpenApiInlineCallouts
+                callouts={getOpenApiDocsCallouts(record)}
+              />
+            ) : null;
+          }}
+          renderMarkdown={(markdown) =>
+            renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
+          }
+          root={schemaOptions.root}
+          showExample={schemaOptions.showExample ?? true}
+          writeOnly={schemaOptions.writeOnly}
+        />
+      );
+    },
   },
 });
 
@@ -123,32 +243,127 @@ function getGeneratedCodeSampleOverrides({
 
 export function FumadocsOpenApiContent({
   className,
+  locale,
   pageProps,
 }: {
   className?: string;
+  locale?: string;
   pageProps: OpenAPIPageProps;
 }) {
   const operation = getCurrentOperation(pageProps);
+  const adaptedPageProps = useMemo(
+    () => adaptOpenApiParameterSchemaExtensions(pageProps),
+    [pageProps],
+  );
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useOpenApiHashScroll();
+  useLocalizedOpenApiGeneratedChrome(containerRef, locale);
 
   return (
     <div
-      className={cn(
-        'not-prose openapi-operation',
-        ...OPENAPI_GENERATED_BODY_HEADING_CLASSES,
-        className,
-      )}
+      className={cn('not-prose openapi-operation', className)}
+      ref={containerRef}
     >
-      <OpenApiSourceOperationContext.Provider value={operation}>
-        <OpenApiDocsCallouts
-          operation={operation}
-          position="before-description"
-        />
-        <OpenAPIPage {...pageProps} />
-      </OpenApiSourceOperationContext.Provider>
+      <OpenApiLocaleContext.Provider value={locale}>
+        <TranslationProvider translations={getOpenApiFumaTranslations(locale)}>
+          <OpenApiSourceOperationContext.Provider value={operation}>
+            <OpenApiDocsCallouts
+              operation={operation}
+              position="before-description"
+            />
+            <OpenAPIPage {...adaptedPageProps} />
+          </OpenApiSourceOperationContext.Provider>
+        </TranslationProvider>
+      </OpenApiLocaleContext.Provider>
     </div>
   );
+}
+
+function adaptOpenApiParameterSchemaExtensions(
+  pageProps: OpenAPIPageProps,
+): OpenAPIPageProps {
+  if (!('payload' in pageProps)) return pageProps;
+  const document = pageProps.payload.bundled;
+  const paths = getRecord(document.paths);
+  const components = getRecord(document.components);
+  const componentParameters = getRecord(components?.parameters);
+  const nextPaths = paths
+    ? Object.fromEntries(
+        Object.entries(paths).map(([path, pathItem]) => [
+          path,
+          adaptOpenApiPathItemParameters(pathItem),
+        ]),
+      )
+    : document.paths;
+  const nextComponentParameters = componentParameters
+    ? Object.fromEntries(
+        Object.entries(componentParameters).map(([name, parameter]) => [
+          name,
+          adaptOpenApiParameterSchema(parameter),
+        ]),
+      )
+    : undefined;
+
+  return {
+    ...pageProps,
+    payload: {
+      ...pageProps.payload,
+      bundled: {
+        ...document,
+        components: components
+          ? {
+              ...components,
+              parameters: nextComponentParameters ?? components.parameters,
+            }
+          : document.components,
+        paths: nextPaths,
+      },
+    },
+  } as OpenAPIPageProps;
+}
+
+function adaptOpenApiPathItemParameters(value: unknown) {
+  if (!isRecord(value)) return value;
+  return Object.fromEntries(
+    Object.entries(value).map(([key, item]) => {
+      if (key === 'parameters' && Array.isArray(item)) {
+        return [key, item.map(adaptOpenApiParameterSchema)];
+      }
+      if (!isRecord(item) || !('responses' in item)) return [key, item];
+      return [
+        key,
+        {
+          ...item,
+          parameters: Array.isArray(item.parameters)
+            ? item.parameters.map(adaptOpenApiParameterSchema)
+            : item.parameters,
+        },
+      ];
+    }),
+  );
+}
+
+function adaptOpenApiParameterSchema(value: unknown) {
+  if (!isRecord(value) || isReferenceObject(value)) return value;
+  const schema = getRecord(value.schema);
+  if (!schema) return value;
+  const callouts = value['x-docs-callouts'];
+  const example = value.example ?? getFirstExample(value.examples);
+  const deprecated = value.deprecated === true;
+  if (callouts === undefined && example === undefined && !deprecated) {
+    return value;
+  }
+
+  return {
+    ...value,
+    schema: {
+      ...schema,
+      example: schema.example ?? example,
+      deprecated: schema.deprecated ?? deprecated,
+      'x-docs-callouts': schema['x-docs-callouts'] ?? callouts,
+    },
+  };
 }
 
 type OpenApiOperationLayoutSlots = {
@@ -170,15 +385,6 @@ type OpenApiOperation = OpenApiRecord & {
   __path?: string;
   parameters?: unknown[];
   responses?: OpenApiRecord;
-};
-type OpenApiParameter = OpenApiRecord & {
-  description?: string;
-  example?: unknown;
-  examples?: OpenApiRecord;
-  in?: string;
-  name?: string;
-  required?: boolean;
-  schema?: unknown;
 };
 type OpenApiCalloutItem = OpenApiRecord & {
   markdown?: string;
@@ -220,7 +426,6 @@ type OpenApiMetadataItem = {
   label: string;
   value: string;
 };
-
 function OpenApiOperationLayoutWithSource({
   method,
   slots,
@@ -245,23 +450,31 @@ function OpenApiOperationLayout({
   method: OpenApiOperation;
   slots: OpenApiOperationLayoutSlots;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
+
   return (
-    <div className="flex flex-col gap-x-6 gap-y-4 @3xl:flex-row @3xl:items-start">
+    <div className="openapi-operation-layout gap-6">
       <div className="min-w-0 flex-1">
         {slots.header}
         <OpenApiEndpointBar operation={method} />
         <OpenApiDocsSections operation={method} position="after-description" />
         <OpenApiDocsCallouts operation={method} position="after-description" />
-        <OpenApiParameters operation={method} />
+        <OpenApiInlineAuthorizationSection operation={method} />
+        {slots.parameters}
         <OpenApiDocsSections operation={method} position="after-parameters" />
         {slots.body}
         <OpenApiDocsSections
           operation={method}
           position="before-response-body"
         />
-        {slots.responses}
-        <OpenApiResponseBodySchemas operation={method} />
-        <OpenApiResponseHeaders operation={method} />
+        {isZhCnLocale(locale) ? (
+          <>
+            {slots.responses}
+            <OpenApiResponseHeaders operation={method} />
+          </>
+        ) : (
+          <OpenApiEnglishResponses operation={method} />
+        )}
         <OpenApiDocsSections
           operation={method}
           position="after-response-body"
@@ -273,12 +486,12 @@ function OpenApiOperationLayout({
         />
         {slots.callbacks}
       </div>
-      <div className="@3xl:sticky @3xl:top-[calc(var(--fd-docs-row-1,2rem)+1rem)] @3xl:w-[360px] @3xl:shrink-0">
+      <OpenApiExamplesRail>
         <OpenApiAuthorizationSection operation={method} />
         <OpenApiOperationContext.Provider value={method}>
           {slots.apiExample}
         </OpenApiOperationContext.Provider>
-      </div>
+      </OpenApiExamplesRail>
     </div>
   );
 }
@@ -304,6 +517,54 @@ function mergeOpenApiOperationExtensions(
   } satisfies OpenApiOperation;
 }
 
+function getOpenApiLabel(label: string, locale?: string) {
+  return isZhCnLocale(locale) ? (ZH_CN_OPENAPI_LABELS[label] ?? label) : label;
+}
+
+function getOpenApiFumaTranslations(locale?: string) {
+  return isZhCnLocale(locale) ? ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS : {};
+}
+
+function useLocalizedOpenApiGeneratedChrome(
+  containerRef: RefObject<HTMLDivElement | null>,
+  locale?: string,
+) {
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container || !isZhCnLocale(locale)) {
+      return;
+    }
+
+    const syncLabels = () => {
+      for (const [id, label] of Object.entries(
+        ZH_CN_OPENAPI_GENERATED_HEADING_LABELS,
+      )) {
+        const heading = container.querySelector<HTMLElement>(`h2#${id}`);
+        const link = heading?.querySelector<HTMLElement>('a');
+
+        if (link && link.textContent !== label) {
+          link.textContent = label;
+        }
+      }
+    };
+
+    syncLabels();
+
+    const observer = new MutationObserver(syncLabels);
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
+    });
+
+    return () => observer.disconnect();
+  }, [containerRef, locale]);
+}
+
+function isZhCnLocale(locale?: string) {
+  return locale === 'zh-CN';
+}
+
 function OpenApiRightExamplesLayout({
   slots,
 }: {
@@ -314,6 +575,7 @@ function OpenApiRightExamplesLayout({
   };
 }) {
   const operation = useContext(OpenApiOperationContext);
+  const locale = useContext(OpenApiLocaleContext);
   const hasGroupedSamples = getOpenApiCodeSampleGroups(operation).length > 0;
   const hasExplicitSamples =
     hasGroupedSamples || getOpenApiCodeSamples(operation).length > 0;
@@ -323,14 +585,14 @@ function OpenApiRightExamplesLayout({
       <OpenApiRightSection
         className="openapi-request-examples"
         excludeFromMarkdownParity={hasExplicitSamples}
-        title="Request examples"
+        title={getOpenApiLabel('Request examples', locale)}
       >
         {hasGroupedSamples ? null : slots.selector}
-        {slots.usageTabs}
+        <OpenApiCodePreview>{slots.usageTabs}</OpenApiCodePreview>
       </OpenApiRightSection>
       <OpenApiRightSection
         className="openapi-response-example"
-        title="Response example"
+        title={getOpenApiLabel('Response example', locale)}
       >
         {slots.responseTabs}
       </OpenApiRightSection>
@@ -368,7 +630,12 @@ function OpenApiAuthorizationSection({
 }: {
   operation?: OpenApiOperation;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const securityKeys = getOpenApiSecurityKeys(operation);
+
+  if (isZhCnLocale(locale)) {
+    return null;
+  }
 
   if (securityKeys.length === 0) {
     return null;
@@ -377,10 +644,10 @@ function OpenApiAuthorizationSection({
   return (
     <OpenApiRightSection
       className="openapi-authorization-section mb-3"
-      title="Authorization"
+      title={getOpenApiLabel('Authorization', locale)}
     >
       <p className="mb-2 text-fd-muted-foreground text-xs">
-        This endpoint requires authentication.
+        {getOpenApiLabel('This endpoint requires authentication.', locale)}
       </p>
       <div className="flex flex-wrap gap-1.5">
         {securityKeys.map((key) => (
@@ -396,9 +663,60 @@ function OpenApiAuthorizationSection({
   );
 }
 
+function OpenApiInlineAuthorizationSection({
+  operation,
+}: {
+  operation?: OpenApiOperation;
+}) {
+  const locale = useContext(OpenApiLocaleContext);
+  const schemes = getOpenApiSecuritySchemes(operation);
+
+  if (
+    !isZhCnLocale(locale) ||
+    schemes.length === 0 ||
+    hasOpenApiAuthorizationHeaderParameter(operation)
+  ) {
+    return null;
+  }
+
+  return (
+    <section className="mt-8">
+      <h2
+        className="mb-3 scroll-mt-24 font-semibold text-2xl"
+        id="authorization"
+      >
+        {getOpenApiLabel('Authorization', locale)}
+      </h2>
+      <div className="space-y-4 rounded-xl border border-fd-border bg-fd-card p-4 text-fd-card-foreground">
+        {schemes.map((scheme) => (
+          <div key={scheme.key}>
+            <h3 className="mb-2 font-semibold text-fd-foreground text-base">
+              {scheme.key}
+            </h3>
+            {scheme.description ? (
+              <div className="prose-no-margin text-fd-muted-foreground">
+                {renderOpenApiMarkdown(
+                  normalizeOpenApiDescriptionMarkdown(scheme.description),
+                )}
+              </div>
+            ) : null}
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   const endpoint = getOpenApiDisplayEndpoint(operation);
-  const method = typeof operation.method === 'string' ? operation.method : '';
+  const method =
+    typeof operation.method === 'string'
+      ? operation.method.trim().toUpperCase()
+      : '';
+  const locale = useContext(OpenApiLocaleContext);
+  const [endpointCopied, copyEndpoint] = useOpenApiCopyButton(() =>
+    navigator.clipboard.writeText(endpoint),
+  );
 
   if (!endpoint && !method) {
     return null;
@@ -407,18 +725,43 @@ function OpenApiEndpointBar({ operation }: { operation: OpenApiOperation }) {
   return (
     <div className="not-prose flex flex-row items-center gap-2.5 rounded-xl border bg-fd-card p-3 text-fd-card-foreground">
       {method ? (
-        <div>
-          <span className="rounded-md bg-fd-primary px-2 py-1 font-semibold text-[0.6875rem] text-fd-primary-foreground uppercase">
-            {method}
-          </span>
-        </div>
+        <Badge
+          className={cn(
+            'openapi-method-badge shrink-0 normal-case tracking-normal',
+            OPENAPI_METHOD_BADGE_CLASSES[
+              method as keyof typeof OPENAPI_METHOD_BADGE_CLASSES
+            ] ?? 'bg-muted text-muted-foreground',
+          )}
+          data-method={method}
+          data-openapi-method={method}
+        >
+          {method}
+        </Badge>
       ) : null}
       {endpoint ? (
-        <div className="flex-1 overflow-auto">
-          <code className="text-nowrap text-[0.8125rem] text-fd-muted-foreground">
-            {endpoint}
-          </code>
-        </div>
+        <>
+          <div className="flex-1 overflow-auto">
+            <code className="text-nowrap text-[0.8125rem] text-fd-muted-foreground">
+              {endpoint}
+            </code>
+          </div>
+          <button
+            aria-label={getOpenApiLabel(
+              endpointCopied ? 'Copied endpoint URL' : 'Copy endpoint URL',
+              locale,
+            )}
+            className="inline-flex size-8 shrink-0 items-center justify-center rounded-md text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
+            data-checked={endpointCopied || undefined}
+            onClick={copyEndpoint}
+            type="button"
+          >
+            {endpointCopied ? (
+              <Check aria-hidden="true" className="size-4" />
+            ) : (
+              <Clipboard aria-hidden="true" className="size-4" />
+            )}
+          </button>
+        </>
       ) : null}
     </div>
   );
@@ -467,6 +810,40 @@ function getOpenApiSecurityKeys(operation?: OpenApiOperation) {
   ];
 }
 
+function getOpenApiSecuritySchemes(operation?: OpenApiOperation) {
+  const schemes = getRecord(
+    getRecord(operation?.__document?.components)?.securitySchemes,
+  );
+
+  if (!schemes) {
+    return [];
+  }
+
+  return getOpenApiSecurityKeys(operation).flatMap((key) => {
+    const scheme = getRecord(schemes[key]);
+
+    if (!scheme) {
+      return [];
+    }
+
+    return [
+      {
+        description: getString(scheme?.description),
+        key,
+      },
+    ];
+  });
+}
+
+function hasOpenApiAuthorizationHeaderParameter(operation?: OpenApiOperation) {
+  return arrayOfRecords(operation?.parameters)
+    .map((parameter) => resolveLocalReference(operation?.__document, parameter))
+    .some(
+      (parameter) =>
+        isRecord(parameter) && isAuthenticationHeaderParameter(parameter),
+    );
+}
+
 function getCurrentOperation(
   pageProps: OpenAPIPageProps,
 ): OpenApiOperation | undefined {
@@ -494,57 +871,12 @@ function getCurrentOperation(
     : undefined;
 }
 
-function OpenApiParameters({ operation }: { operation?: OpenApiOperation }) {
-  const parameters = arrayOfRecords(operation?.parameters)
-    .map((parameter) => resolveLocalReference(operation?.__document, parameter))
-    .filter(isDisplayableParameter) as OpenApiParameter[];
-  const groups = [
-    ['path', 'Path Parameters'],
-    ['query', 'Query Parameters'],
-    ['header', 'Header Parameters'],
-    ['cookie', 'Cookie Parameters'],
-  ] as const;
-
-  if (parameters.length === 0) {
-    return null;
-  }
-
-  return (
-    <>
-      {groups.map(([location, title]) => {
-        const groupParameters = parameters.filter(
-          (parameter) => parameter.in === location,
-        );
-
-        if (groupParameters.length === 0) {
-          return null;
-        }
-
-        return (
-          <OpenApiFieldList
-            anchorPrefix={getOpenApiParameterGroupAnchorPrefix(location)}
-            fields={groupParameters.map((parameter) => ({
-              callouts: getOpenApiDocsCallouts(parameter),
-              description: parameter.description,
-              metadata: getOpenApiSchemaMetadata(parameter.schema, parameter),
-              name: parameter.name ?? '',
-              required: parameter.required === true,
-              type: getSchemaTypeLabel(parameter.schema),
-            }))}
-            key={location}
-            title={title}
-          />
-        );
-      })}
-    </>
-  );
-}
-
 function OpenApiResponseHeaders({
   operation,
 }: {
   operation?: OpenApiOperation;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const responseHeaders = Object.entries(
     getRecord(operation?.responses) ?? {},
   ).flatMap(([statusCode, response]) => {
@@ -567,13 +899,13 @@ function OpenApiResponseHeaders({
       return [
         {
           callouts: getOpenApiDocsCallouts(resolvedHeader),
+          deprecated: resolvedHeader.deprecated === true,
           description: getString(resolvedHeader.description),
           metadata: getOpenApiSchemaMetadata(
             resolvedHeader.schema,
             resolvedHeader,
           ),
           name,
-          required: false,
           statusCode,
           type: getSchemaTypeLabel(resolvedHeader.schema),
         },
@@ -586,11 +918,12 @@ function OpenApiResponseHeaders({
   }
 
   return (
-    <OpenApiFieldList
+    <OpenApiResponseHeaderList
       anchorPrefix="response-headers"
       fields={responseHeaders.map((header) => ({
         anchorSuffix: `${header.statusCode}-${header.name}`,
         callouts: header.callouts,
+        deprecated: header.deprecated,
         description: header.description,
         metadata: [
           {
@@ -600,77 +933,123 @@ function OpenApiResponseHeaders({
           ...header.metadata,
         ],
         name: header.name,
-        required: header.required,
         type: header.type,
       }))}
-      title="Response Headers"
+      title={getOpenApiLabel('Response Headers', locale)}
     />
   );
 }
 
-function OpenApiResponseBodySchemas({
+function OpenApiEnglishResponses({
   operation,
 }: {
   operation?: OpenApiOperation;
 }) {
-  const responses = Object.entries(getRecord(operation?.responses) ?? {})
-    .map(([statusCode, response]) => {
-      const resolvedResponse = getRecord(
-        resolveLocalReference(operation?.__document, response),
-      );
-      const content = getRecord(resolvedResponse?.content);
-      const jsonContent = getRecord(content?.['application/json']);
-      const schema = jsonContent?.schema;
-      const rows = buildOpenApiSchemaRows(schema, {
-        document: operation?.__document,
-        usage: 'response',
-      });
+  const responses = useMemo(
+    () =>
+      buildOpenApiResponseViews(operation?.responses, operation?.__document),
+    [operation?.responses, operation?.__document],
+  );
+  return (
+    <OpenApiResponses
+      renderDescription={(markdown) =>
+        renderOpenApiMarkdown(normalizeOpenApiDescriptionMarkdown(markdown))
+      }
+      renderHeaders={(headers, status) => (
+        <OpenApiEnglishResponseHeaders headers={headers} status={status} />
+      )}
+      renderSchema={({ mediaType, schema, status }) => {
+        return {
+          hasFields: schema !== undefined,
+          node: (
+            <OpenApiSchema
+              client={{
+                as: 'body',
+                name: `response-${slugOpenApiAnchorSegment(status)}-${slugOpenApiAnchorSegment(mediaType)}`,
+              }}
+              legacyAnchorPrefix={`responses-${slugOpenApiAnchorSegment(status)}`}
+              renderCodeblock={({ code, lang }) =>
+                renderOpenApiCodeBlock(lang, code)
+              }
+              renderExtraDescription={(source) => {
+                const record = getRecord(source);
+                return record ? (
+                  <OpenApiInlineCallouts
+                    callouts={getOpenApiDocsCallouts(record)}
+                  />
+                ) : null;
+              }}
+              renderMarkdown={(markdown) =>
+                renderOpenApiMarkdown(
+                  normalizeOpenApiDescriptionMarkdown(markdown),
+                )
+              }
+              readOnly
+              root={schema}
+              showExample
+            />
+          ),
+        };
+      }}
+      responses={responses}
+      sectionId="response-body"
+    />
+  );
+}
 
-      return {
-        description: getString(resolvedResponse?.description),
-        rows,
-        schema,
-        statusCode,
-      };
-    })
-    .filter((response) => response.description || response.rows.length > 0);
+function OpenApiEnglishResponseHeaders({
+  headers,
+  status,
+}: {
+  headers: OpenApiResponseHeaderView[];
+  status: string;
+}) {
+  const locale = useContext(OpenApiLocaleContext);
+  const anchorPrefix = `response-headers-${slugOpenApiAnchorSegment(status)}`;
+  const anchorIds = buildUniqueOpenApiAnchorIds(
+    anchorPrefix,
+    headers.map((header) => header.name),
+  );
 
-  if (responses.length === 0) {
-    return null;
-  }
+  if (headers.length === 0) return null;
 
   return (
-    <section className="mt-8">
-      <h3 className="mb-3 font-semibold text-xl">Response schema</h3>
-      <div className="space-y-4">
-        {responses.map((response) => (
-          <div key={response.statusCode}>
-            <div className="mb-2 flex min-w-0 flex-wrap items-center gap-2">
-              <div>
-                <code className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-1 font-medium text-fd-foreground text-xs">
-                  {response.statusCode}
-                </code>
-              </div>
-              <div className="font-mono text-fd-muted-foreground text-xs">
-                application/json
-              </div>
-            </div>
-            {response.description ? (
-              <div className="prose-no-margin mb-3 text-fd-muted-foreground text-sm">
-                {renderOpenApiMarkdown(
-                  normalizeOpenApiDescriptionMarkdown(response.description),
-                )}
-              </div>
-            ) : null}
-            {response.rows.length > 0 ? (
-              <OpenApiSchemaRows
-                anchorPrefix={`responses-${slugOpenApiAnchorSegment(response.statusCode)}`}
-                document={operation?.__document}
-                readOnly
-                renderMarkdown={renderOpenApiMarkdown}
-                root={response.schema}
-              />
-            ) : null}
+    <section>
+      <h3 className="mb-3 font-semibold text-base">Response Headers</h3>
+      <div className="openapi-field-list overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
+        {headers.map((header, index) => (
+          <div
+            className={index === 0 ? '' : 'border-fd-border border-t'}
+            key={anchorIds[index]}
+          >
+            <OpenApiResponseHeaderRow
+              anchorId={anchorIds[index]}
+              copyLinkLabel={getOpenApiLabel('Copy link to', locale)}
+              deprecated={header.deprecated}
+              deprecatedLabel={getOpenApiLabel('Deprecated', locale)}
+              details={
+                <>
+                  {header.description ? (
+                    <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                      {renderOpenApiMarkdown(
+                        normalizeOpenApiDescriptionMarkdown(header.description),
+                      )}
+                    </div>
+                  ) : null}
+                  <OpenApiInlineCallouts
+                    callouts={getOpenApiDocsCallouts(header.source)}
+                  />
+                  <OpenApiMetadata
+                    items={getOpenApiSchemaMetadata(
+                      header.schema,
+                      header.source,
+                    )}
+                  />
+                </>
+              }
+              name={header.name}
+              type={getSchemaTypeLabel(header.schema)}
+            />
           </div>
         ))}
       </div>
@@ -678,7 +1057,7 @@ function OpenApiResponseBodySchemas({
   );
 }
 
-function OpenApiFieldList({
+function OpenApiResponseHeaderList({
   anchorPrefix,
   fields,
   title,
@@ -687,14 +1066,15 @@ function OpenApiFieldList({
   fields: {
     anchorSuffix?: string;
     callouts?: OpenApiDisplayCallout[];
+    deprecated?: boolean;
     description?: string;
     metadata: OpenApiMetadataItem[];
     name: string;
-    required: boolean;
     type: string;
   }[];
   title: string;
 }) {
+  const locale = useContext(OpenApiLocaleContext);
   const titleId = anchorPrefix;
   const anchorIds = buildUniqueOpenApiAnchorIds(
     anchorPrefix,
@@ -709,46 +1089,33 @@ function OpenApiFieldList({
       >
         <OpenApiAnchorLink anchorId={titleId}>{title}</OpenApiAnchorLink>
       </h2>
-      <div className="overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
+      <div className="openapi-field-list overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
         {anchorIds.map((anchorId, index) => {
           const field = fields[index];
 
           return (
-            <div
-              className="scroll-mt-24 border-fd-border border-t px-4 py-3 text-sm first:border-t-0"
-              id={anchorId}
+            <OpenApiResponseHeaderRow
+              anchorId={anchorId}
+              copyLinkLabel={getOpenApiLabel('Copy link to', locale)}
+              details={
+                <>
+                  {field.description ? (
+                    <div className="openapi-schema-description prose-no-margin text-fd-muted-foreground">
+                      {renderOpenApiMarkdown(
+                        normalizeOpenApiDescriptionMarkdown(field.description),
+                      )}
+                    </div>
+                  ) : null}
+                  <OpenApiInlineCallouts callouts={field.callouts} />
+                  <OpenApiMetadata items={field.metadata} />
+                </>
+              }
+              deprecated={field.deprecated}
+              deprecatedLabel={getOpenApiLabel('Deprecated', locale)}
               key={`${title}:${field.name}`}
-            >
-              <div className="flex min-w-0 flex-wrap items-center gap-2">
-                <div>
-                  <code className="font-medium text-fd-primary">
-                    {field.name}
-                  </code>
-                </div>
-                <div>
-                  <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-                </div>
-                <div>
-                  {field.required ? (
-                    <span className="font-medium text-red-500">*</span>
-                  ) : (
-                    <span className="text-fd-muted-foreground">?</span>
-                  )}
-                </div>
-                <div className="font-mono text-fd-muted-foreground text-xs">
-                  {field.type}
-                </div>
-              </div>
-              {field.description ? (
-                <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-                  {renderOpenApiMarkdown(
-                    normalizeOpenApiDescriptionMarkdown(field.description),
-                  )}
-                </div>
-              ) : null}
-              <OpenApiInlineCallouts callouts={field.callouts} />
-              <OpenApiMetadata items={field.metadata} />
-            </div>
+              name={field.name}
+              type={field.type}
+            />
           );
         })}
       </div>
@@ -1155,483 +1522,6 @@ function useOpenApiHashScroll() {
   }, []);
 }
 
-function useOpenApiSchemaHashExpansion(
-  anchorIds: string[],
-  parentIndex: number[],
-  setExpandedIds: (updater: (current: Set<string>) => Set<string>) => void,
-) {
-  useEffect(() => {
-    const openCurrentHashTarget = () => {
-      const hashAnchorId = getCurrentOpenApiHashAnchorId();
-      const targetIndex = anchorIds.indexOf(hashAnchorId);
-
-      if (targetIndex === -1) {
-        return;
-      }
-
-      const ancestorAnchorIds: string[] = [];
-
-      for (
-        let parent = parentIndex[targetIndex];
-        parent !== -1;
-        parent = parentIndex[parent]
-      ) {
-        ancestorAnchorIds.push(anchorIds[parent]);
-      }
-
-      if (ancestorAnchorIds.length > 0) {
-        setExpandedIds((current) => {
-          if (ancestorAnchorIds.every((id) => current.has(id))) {
-            return current;
-          }
-
-          const next = new Set(current);
-          for (const id of ancestorAnchorIds) {
-            next.add(id);
-          }
-          return next;
-        });
-      }
-
-      window.requestAnimationFrame(() => {
-        syncDocsHashTargetFromLocation('auto');
-      });
-    };
-
-    const frame = window.requestAnimationFrame(openCurrentHashTarget);
-    window.addEventListener('hashchange', openCurrentHashTarget);
-
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener('hashchange', openCurrentHashTarget);
-    };
-  }, [anchorIds, parentIndex, setExpandedIds]);
-}
-
-function getCurrentOpenApiHashAnchorId() {
-  const hash = window.location.hash;
-
-  if (!hash.startsWith('#')) {
-    return '';
-  }
-
-  try {
-    return decodeURIComponent(hash.slice(1));
-  } catch {
-    return hash.slice(1);
-  }
-}
-
-function getOpenApiSchemaAnchorPrefix(options: {
-  readOnly?: boolean;
-  writeOnly?: boolean;
-}) {
-  if (options.writeOnly) {
-    return 'request-body';
-  }
-
-  if (options.readOnly) {
-    return 'response-body';
-  }
-
-  return 'schema';
-}
-
-function getOpenApiParameterGroupAnchorPrefix(location: string) {
-  return `${slugOpenApiAnchorSegment(location)}-parameters`;
-}
-
-function buildOpenApiAnchorId(prefix: string, value: string) {
-  return `${prefix}-${slugOpenApiAnchorSegment(value)}`;
-}
-
-function buildUniqueOpenApiAnchorIds(prefix: string, values: string[]) {
-  const baseIds = values.map((value) => buildOpenApiAnchorId(prefix, value));
-  const duplicateBaseIds = new Set(
-    baseIds.filter((baseId, index) => baseIds.indexOf(baseId) !== index),
-  );
-  const seen = new Map<string, number>();
-
-  return values.map((value, index) => {
-    const baseId = baseIds[index];
-
-    if (!duplicateBaseIds.has(baseId)) {
-      return baseId;
-    }
-
-    const occurrence = seen.get(baseId) ?? 0;
-    seen.set(baseId, occurrence + 1);
-
-    return `${baseId}-${hashOpenApiAnchorSegment(value)}${
-      occurrence > 0 ? `-${occurrence + 1}` : ''
-    }`;
-  });
-}
-
-function hashOpenApiAnchorSegment(value: string) {
-  let hash = 0;
-
-  for (let index = 0; index < value.length; index += 1) {
-    hash = (hash * 31 + value.charCodeAt(index)) >>> 0;
-  }
-
-  return hash.toString(36);
-}
-
-function slugOpenApiAnchorSegment(value: string) {
-  return value
-    .trim()
-    .replace(/([a-z0-9])([A-Z])/g, '$1-$2')
-    .replace(/[.[\]]+/g, '-')
-    .replace(/[^a-zA-Z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .toLowerCase();
-}
-
-function OpenApiSchemaRows({
-  anchorPrefix,
-  document,
-  readOnly,
-  renderMarkdown,
-  root,
-  writeOnly,
-}: {
-  anchorPrefix: string;
-  document?: unknown;
-  readOnly?: boolean;
-  renderMarkdown: (markdown: string) => ReactNode;
-  root: unknown;
-  writeOnly?: boolean;
-}) {
-  const rows = useMemo(
-    () =>
-      buildOpenApiSchemaRows(root, {
-        document,
-        usage: writeOnly ? 'request' : readOnly ? 'response' : undefined,
-      }),
-    [root, document, writeOnly, readOnly],
-  );
-  const anchorIds = useMemo(
-    () =>
-      buildUniqueOpenApiAnchorIds(
-        anchorPrefix,
-        rows.map((row) => row.path),
-      ),
-    [anchorPrefix, rows],
-  );
-  const layout = useMemo(() => getOpenApiSchemaRowLayout(rows), [rows]);
-  const collapsibleAnchorIds = useMemo(
-    () => anchorIds.filter((_, index) => layout.hasChildren[index]),
-    [anchorIds, layout],
-  );
-  const [expandedRowIds, setExpandedRowIds] = useState<Set<string>>(
-    () => new Set(),
-  );
-
-  useOpenApiSchemaHashExpansion(
-    anchorIds,
-    layout.parentIndex,
-    setExpandedRowIds,
-  );
-
-  const visibleFlags = useMemo(() => {
-    const flags: boolean[] = [];
-
-    rows.forEach((_row, index) => {
-      const parent = layout.parentIndex[index];
-
-      flags[index] =
-        parent === -1
-          ? true
-          : flags[parent] && expandedRowIds.has(anchorIds[parent]);
-    });
-
-    return flags;
-  }, [rows, layout, expandedRowIds, anchorIds]);
-
-  const allRowsExpanded =
-    collapsibleAnchorIds.length > 0 &&
-    collapsibleAnchorIds.every((id) => expandedRowIds.has(id));
-
-  function setAllRowsExpanded(expanded: boolean) {
-    setExpandedRowIds(expanded ? new Set(collapsibleAnchorIds) : new Set());
-  }
-
-  function setRowExpanded(anchorId: string, expanded: boolean) {
-    setExpandedRowIds((current) => {
-      const next = new Set(current);
-
-      if (expanded) {
-        next.add(anchorId);
-      } else {
-        next.delete(anchorId);
-      }
-
-      return next;
-    });
-  }
-
-  function revealRow(index: number) {
-    setExpandedRowIds((current) => {
-      const next = new Set(current);
-
-      for (
-        let parent = layout.parentIndex[index];
-        parent !== -1;
-        parent = layout.parentIndex[parent]
-      ) {
-        next.add(anchorIds[parent]);
-      }
-
-      return next;
-    });
-  }
-
-  if (rows.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="openapi-schema-tree not-prose my-4 overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
-      {collapsibleAnchorIds.length > 0 ? (
-        <div className="flex justify-end border-fd-border border-b px-4 py-2">
-          <button
-            aria-label={`${allRowsExpanded ? 'Collapse' : 'Expand'} all ${getOpenApiSchemaGroupLabel(anchorPrefix)}`}
-            className="rounded-md border border-fd-border px-2.5 py-1 font-medium text-fd-muted-foreground text-xs transition-colors hover:bg-fd-accent hover:text-fd-accent-foreground"
-            onClick={() => setAllRowsExpanded(!allRowsExpanded)}
-            type="button"
-          >
-            {allRowsExpanded ? 'Collapse all' : 'Expand all'}
-          </button>
-        </div>
-      ) : null}
-      {anchorIds.map((anchorId, index) => {
-        const row = rows[index];
-
-        return (
-          <OpenApiSchemaRowItem
-            anchorId={anchorId}
-            expandable={layout.hasChildren[index]}
-            expanded={expandedRowIds.has(anchorId)}
-            hiddenUntilFound={!visibleFlags[index]}
-            key={row.path}
-            onBeforeMatch={() => revealRow(index)}
-            onExpandedChange={(expanded) => setRowExpanded(anchorId, expanded)}
-            renderMarkdown={renderMarkdown}
-            row={row}
-            showTopBorder={collapsibleAnchorIds.length > 0 || index > 0}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
-function OpenApiSchemaRowItem({
-  anchorId,
-  expandable,
-  expanded,
-  hiddenUntilFound,
-  onBeforeMatch,
-  onExpandedChange,
-  renderMarkdown,
-  row,
-  showTopBorder,
-}: {
-  anchorId: string;
-  expandable: boolean;
-  expanded: boolean;
-  hiddenUntilFound: boolean;
-  onBeforeMatch: () => void;
-  onExpandedChange: (expanded: boolean) => void;
-  renderMarkdown: (markdown: string) => ReactNode;
-  row: OpenApiSchemaRow;
-  showTopBorder: boolean;
-}) {
-  const rowRef = useRef<HTMLDivElement>(null);
-  const paddingInlineStart = getOpenApiSchemaRowPaddingInlineStart(row.depth);
-  const chevronClass = cn(
-    'select-none text-fd-muted-foreground text-xs transition-transform',
-    expanded && 'rotate-90',
-  );
-  const nameCode = (
-    <code
-      className={cn(
-        'openapi-schema-property-name font-bold text-fd-foreground',
-        row.deprecated && 'line-through opacity-70',
-      )}
-    >
-      {row.name}
-    </code>
-  );
-
-  useEffect(() => {
-    const rowElement = rowRef.current;
-
-    if (!rowElement || !hiddenUntilFound) {
-      return;
-    }
-
-    rowElement.setAttribute('hidden', 'until-found');
-    rowElement.addEventListener('beforematch', onBeforeMatch);
-
-    return () => {
-      rowElement.removeEventListener('beforematch', onBeforeMatch);
-    };
-  }, [hiddenUntilFound, onBeforeMatch]);
-
-  return (
-    <div
-      className="scroll-mt-24 text-sm"
-      data-openapi-schema-row=""
-      hidden={hiddenUntilFound}
-      id={anchorId}
-      ref={rowRef}
-    >
-      <div
-        className={cn(
-          'border-fd-border py-3 pr-4',
-          showTopBorder && 'border-t',
-        )}
-        style={{ paddingInlineStart }}
-      >
-        <div className="openapi-schema-property-heading flex min-w-0 flex-wrap items-center gap-2">
-          <span
-            aria-hidden={!expandable}
-            className="openapi-schema-property-control-gutter relative flex h-5 w-3 shrink-0 items-center justify-center"
-          >
-            {expandable ? (
-              <button
-                aria-expanded={expanded}
-                aria-label={`${expanded ? 'Collapse' : 'Expand'} ${row.name} properties`}
-                className="-left-1.5 absolute flex h-6 w-6 items-center justify-center rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring"
-                onClick={() => onExpandedChange(!expanded)}
-                type="button"
-              >
-                <span aria-hidden="true" className={chevronClass}>
-                  ▶
-                </span>
-              </button>
-            ) : null}
-          </span>
-          <div className="openapi-schema-property-name-column min-w-0">
-            {nameCode}
-          </div>
-          <div>
-            <OpenApiAnchorLink anchorId={anchorId} className="text-xs" />
-          </div>
-          <div>
-            <OpenApiSchemaRequiredBadge required={row.required} />
-          </div>
-          <div className="font-mono text-fd-muted-foreground text-xs">
-            {row.type}
-            {row.nullable ? ' | null' : ''}
-          </div>
-          {row.deprecated ? (
-            <div>
-              <span className="rounded-md border border-yellow-500/25 bg-yellow-500/10 px-1.5 py-0.5 font-medium text-[11px] text-yellow-700 dark:text-yellow-300">
-                Deprecated
-              </span>
-            </div>
-          ) : null}
-        </div>
-        {row.description ? (
-          <div className="openapi-schema-description prose-no-margin mt-2 text-fd-muted-foreground">
-            {renderMarkdown(
-              normalizeOpenApiDescriptionMarkdown(row.description),
-            )}
-          </div>
-        ) : null}
-        <OpenApiInlineCallouts callouts={row.docsCallouts} />
-        <OpenApiSchemaMeta row={row} />
-      </div>
-    </div>
-  );
-}
-
-function getOpenApiSchemaRowPaddingInlineStart(depth: number) {
-  if (depth === 0) {
-    return OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START;
-  }
-
-  return `calc(${OPENAPI_SCHEMA_ROW_BASE_PADDING_INLINE_START} + ${
-    depth * OPENAPI_SCHEMA_ROW_DEPTH_INDENT_PX
-  }px)`;
-}
-
-function getOpenApiSchemaGroupLabel(anchorPrefix: string) {
-  if (anchorPrefix === 'request-body') {
-    return 'Request Body schema fields';
-  }
-
-  if (anchorPrefix.startsWith('responses-')) {
-    return 'Response schema fields';
-  }
-
-  if (anchorPrefix === 'response-body') {
-    return 'Response Body schema fields';
-  }
-
-  return 'schema fields';
-}
-
-function OpenApiSchemaRequiredBadge({ required }: { required: boolean }) {
-  return (
-    <span
-      className={cn(
-        'rounded border px-1.5 py-0.5 font-medium text-[0.68rem]',
-        required
-          ? 'border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300'
-          : 'border-fd-border bg-fd-muted/60 text-fd-muted-foreground',
-      )}
-    >
-      {required ? 'required' : 'optional'}
-    </span>
-  );
-}
-
-function OpenApiSchemaMeta({ row }: { row: OpenApiSchemaRow }) {
-  const rangeMetadata = getRangeMetadata({
-    exclusiveMaximum: row.exclusiveMaximum,
-    exclusiveMinimum: row.exclusiveMinimum,
-    maximum: row.maximum,
-    minimum: row.minimum,
-  });
-  const items = [
-    row.defaultValue !== undefined
-      ? ['Default', formatOpenApiSchemaValue(row.defaultValue)]
-      : null,
-    row.enumValues
-      ? ['Allowed', row.enumValues.map(formatOpenApiSchemaValue).join(' | ')]
-      : null,
-    row.format ? ['Format', row.format] : null,
-    rangeMetadata,
-    rangeMetadata ? null : getConstraintTuple('Minimum', row.minimum),
-    rangeMetadata ? null : getConstraintTuple('Maximum', row.maximum),
-    getConstraintTuple('Min length', row.minLength),
-    getConstraintTuple('Max length', row.maxLength),
-    getConstraintTuple('Min items', row.minItems),
-    getConstraintTuple('Max items', row.maxItems),
-    row.pattern ? ['Pattern', row.pattern] : null,
-    row.example !== undefined
-      ? ['Example', formatOpenApiSchemaValue(row.example)]
-      : null,
-  ].filter((item): item is [string, string] => Boolean(item));
-
-  if (items.length === 0) {
-    return null;
-  }
-
-  return (
-    <OpenApiMetadata
-      items={items.map(([label, value]) => ({
-        label,
-        value,
-      }))}
-    />
-  );
-}
-
 function formatOpenApiSchemaValue(value: unknown) {
   return typeof value === 'string' ? value : JSON.stringify(value);
 }
@@ -1718,13 +1608,6 @@ function getConstraintMetadata(label: string, value: unknown) {
         value: String(value),
       }
     : null;
-}
-
-function getConstraintTuple(
-  label: string,
-  value: unknown,
-): [string, string] | null {
-  return typeof value === 'number' ? [label, String(value)] : null;
 }
 
 function getRangeMetadata(
@@ -1838,7 +1721,133 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
 }
 
 function renderOpenApiCodeBlock(lang: string, source: string) {
-  return renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``);
+  return (
+    <OpenApiCodeSourceContext.Provider value={source}>
+      {renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``)}
+    </OpenApiCodeSourceContext.Provider>
+  );
+}
+
+function OpenApiMarkdownCodeBlock({
+  children,
+  ...props
+}: ComponentProps<'pre'>) {
+  const source = useContext(OpenApiCodeSourceContext);
+  const childClassName = isValidElement(children)
+    ? (children.props as { className?: string }).className
+    : undefined;
+  const language =
+    getCodeBlockLanguage(props.className) ??
+    getCodeBlockLanguage(childClassName);
+
+  return (
+    <CodeBlock
+      {...props}
+      Actions={
+        source === undefined
+          ? undefined
+          : ({ className }) => (
+              <div className={cn('empty:hidden', className)}>
+                <OpenApiCodeCopyButton source={source} />
+              </div>
+            )
+      }
+    >
+      <Pre>
+        {source === undefined || language === undefined
+          ? children
+          : highlightOpenApiCode({ language, source })}
+      </Pre>
+    </CodeBlock>
+  );
+}
+
+function getCodeBlockLanguage(className: string | undefined) {
+  const match = className?.match(/(?:^|\s)language-([^\s]+)/);
+
+  return match?.[1];
+}
+
+function OpenApiCodeCopyButton({ source }: { source: string }) {
+  const [checked, onClick] = useOpenApiCopyButton(() =>
+    navigator.clipboard.writeText(source),
+  );
+
+  return (
+    <button
+      aria-label={checked ? 'Copied Text' : 'Copy Text'}
+      className="inline-flex items-center justify-center rounded-md p-1 text-sm font-medium text-fd-muted-foreground transition-colors duration-100 hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50 data-checked:text-fd-accent-foreground [&_svg]:size-4"
+      data-checked={checked || undefined}
+      onClick={onClick}
+      type="button"
+    >
+      {checked ? <Check /> : <Clipboard />}
+    </button>
+  );
+}
+
+function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
+  const [checked, setChecked] = useState(false);
+  const callbackRef = useRef(onCopy);
+  const timeoutRef = useRef<number | undefined>(undefined);
+  const mountedRef = useRef(false);
+  const requestRef = useRef(0);
+  callbackRef.current = onCopy;
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+      requestRef.current += 1;
+      if (timeoutRef.current !== undefined) {
+        window.clearTimeout(timeoutRef.current);
+        timeoutRef.current = undefined;
+      }
+    };
+  }, []);
+
+  const onClick = useCallback(() => {
+    const requestId = requestRef.current + 1;
+    requestRef.current = requestId;
+    if (timeoutRef.current !== undefined) {
+      window.clearTimeout(timeoutRef.current);
+      timeoutRef.current = undefined;
+    }
+
+    void (async () => {
+      try {
+        await callbackRef.current();
+      } catch {
+        return;
+      }
+      if (!mountedRef.current || requestRef.current !== requestId) return;
+
+      setChecked(true);
+      timeoutRef.current = window.setTimeout(() => {
+        if (!mountedRef.current || requestRef.current !== requestId) return;
+        setChecked(false);
+        timeoutRef.current = undefined;
+      }, 1500);
+    })();
+  }, []);
+
+  return [checked, onClick] as const;
+}
+
+function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
+  const locale = useContext(OpenApiLocaleContext);
+
+  if (!isZhCnLocale(locale)) {
+    return <blockquote>{children}</blockquote>;
+  }
+
+  return (
+    <div className="openapi-markdown-blockquote">
+      <OpenApiCallout title={getOpenApiLabel('Note', locale)} type="info">
+        <div className="prose-no-margin">{children}</div>
+      </OpenApiCallout>
+    </div>
+  );
 }
 
 function createOpenApiMarkdownProcessor() {
@@ -1851,7 +1860,11 @@ function createOpenApiMarkdownProcessor() {
         development: false,
         filePath: file.path,
         ...JsxRuntime,
-        components: defaultMdxComponents,
+        components: {
+          ...defaultMdxComponents,
+          blockquote: OpenApiMarkdownBlockquote,
+          pre: OpenApiMarkdownCodeBlock,
+        },
       });
   }
 
@@ -1874,23 +1887,6 @@ function toCalloutType(type: string | undefined) {
     default:
       return 'info';
   }
-}
-
-function isDisplayableParameter(
-  parameter: unknown,
-): parameter is OpenApiParameter {
-  if (!isRecord(parameter)) {
-    return false;
-  }
-
-  return (
-    isRecord(parameter) &&
-    typeof parameter.name === 'string' &&
-    typeof parameter.in === 'string' &&
-    ['cookie', 'header', 'path', 'query'].includes(parameter.in) &&
-    !isAuthenticationHeaderParameter(parameter) &&
-    !isReferenceObject(parameter)
-  );
 }
 
 function isAuthenticationHeaderParameter(parameter: OpenApiRecord) {
