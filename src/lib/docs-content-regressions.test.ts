@@ -886,7 +886,7 @@ describe('docs content regressions', () => {
       '| `requestId` | Text | Request ID of the screenshot |',
     );
 
-    const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.md');
+    const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.mdx');
 
     const rtmDownloadPlatforms = [
       'web',
