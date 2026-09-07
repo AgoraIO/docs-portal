@@ -980,7 +980,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/linux-cpp.mdx':
     '2026-08-28T05:08:12.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-java.mdx':
-    '2026-09-02T04:56:58.000Z',
+    '2026-09-07T05:43:56.000Z',
   'content/docs/en/api-reference/api-ref/signaling/macos.mdx':
     '2026-08-28T05:08:12.000Z',
   'content/docs/en/api-reference/api-ref/signaling/meta.json':
@@ -6028,7 +6028,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.md':
     '2026-06-28T10:06:44.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx':
-    '2026-09-05T07:41:31.000Z',
+    '2026-09-07T05:43:56.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.mdx':
@@ -6111,7 +6111,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/product-overview.md':
     '2026-06-18T08:34:22.000Z',
   'content/docs/en/realtime-media/rtm/quickstart.mdx':
-    '2026-09-07T04:34:11.000Z',
+    '2026-09-07T05:43:56.000Z',
   'content/docs/en/realtime-media/rtm/reference/account-settlement.md':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/rtm/reference/beginners-guide.md':
