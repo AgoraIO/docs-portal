@@ -8,6 +8,8 @@
 
 **Tech Stack:** TypeScript, React 19, Tailwind utility classes, native details/summary and select, Vitest, Testing Library, agent-browser.
 
+**Latest adjustment:** 页面移除产品和平台筛选控件；保留 URL 参数兼容。所有 SDK Accordion 默认折叠，不预先展开任何产品。
+
 ---
 
 ## 文件结构
@@ -111,15 +113,15 @@ git commit -m "feat: align SDK groups with API reference capabilities"
 
 - [ ] **Step 3: 接入能力组数据。**
 
-在 SdksCatalog 中用 useMemo 调用 buildSdkCapabilityGroups。对现有 product/platform/version 过滤后的产品建立 productId 集合，再过滤每个能力组的 products；产品为空的能力组不渲染。使用能力组标题、产品数量和一组带 border/divide 的产品条目。
+在 SdksCatalog 中用 useMemo 调用 buildSdkCapabilityGroups。对现有 product/platform/version 过滤后的产品建立 productId 集合，再过滤每个能力组的 products；产品为空的能力组不渲染。使用能力组标题和一组带 border/divide 的产品条目，不在标题行显示产品数量。
 
 保持现有 ProductGroup 的合并版本逻辑，不复制 SDK 版本数据。若纯分组模块只提供平台聚合，则在 SdksCatalog 中通过 productId 映射回已合并 ProductGroup。
 
 - [ ] **Step 4: 改造 ProductCard 外壳。**
 
-增加 defaultOpen 属性；将 article 外壳改为原生 details/summary，保留 data-sdk-download-product-id 和现有 SDK 锚点。summary 只放箭头、产品图标、产品名、简短说明、平台数量，不能放 select、button 或 link。详情 body 放现有安装工具、版本、命令、下载和包管理器内容。
+增加 defaultOpen 属性；将 article 外壳改为原生 details/summary，保留 data-sdk-download-product-id 和现有 SDK 锚点。summary 只放箭头、产品图标、产品名和简短说明，不能放产品数量、平台数量、select、button 或 link。详情 body 放现有安装工具、版本、命令、下载和包管理器内容。
 
-每个能力组调用 ProductCard 时传入 defaultOpen 为该组产品索引是否为 0。details 内容必须直接渲染在 DOM 中，不能懒加载。
+每个能力组调用 ProductCard 时传入 defaultOpen={false}。details 内容必须直接渲染在 DOM 中，不能懒加载。
 
 - [ ] **Step 5: 运行测试并提交。**
 
@@ -130,7 +132,7 @@ git add src/components/docs-overview/SdksCatalog.tsx src/components/docs-overvie
 git commit -m "feat: group SDK downloads by capability"
 ~~~
 
-### Task 3: 增加顶部筛选并统一平台下拉
+### Task 3: 移除目录筛选并统一平台下拉
 
 **Files:**
 
@@ -139,7 +141,7 @@ git commit -m "feat: group SDK downloads by capability"
 
 - [ ] **Step 1: 编写失败测试。**
 
-断言完整中文 catalog 有名为“产品”和“平台”的顶部 combobox；页面不再有 role=tablist；每个产品有名为“产品名 平台”的 combobox。把已有点击平台 tab 的测试改成对产品内部 select 使用 fireEvent.change。
+断言完整中文 catalog 不渲染名为“产品”或“平台”的顶部 combobox；页面不再有 role=tablist；每个产品仍有“产品名 平台”的 combobox。把已有点击平台 tab 的测试改成对产品内部 select 使用 fireEvent.change。
 
 - [ ] **Step 2: 运行 focused test 确认失败。**
 
@@ -147,13 +149,13 @@ git commit -m "feat: group SDK downloads by capability"
 /Users/yejiayi/.bun/bin/bun x vitest run src/components/docs-overview/SdksCatalog.test.tsx
 ~~~
 
-预期：顶部筛选不存在，平台 tablist 仍存在。
+预期：顶部筛选不存在，平台 tablist 仍存在；新增反向断言失败。
 
-- [ ] **Step 3: 实现顶部筛选 URL 同步。**
+- [ ] **Step 3: 保留 URL 筛选兼容但删除可见控件。**
 
-从现有 productFilters 生成产品选项，从当前 locale 数据生成去重的平台 id/label 选项。只在非 embedded catalog 渲染两个 label/select；嵌入式产品卡片不渲染全局筛选器。
+继续使用现有 productFilters 和平台归一化逻辑解析 URL 参数；不渲染产品或平台全局 select。嵌入式产品卡片不渲染全局筛选器。
 
-实现 updateSdkCatalogSearch，读取 window.location.search，选择 all 时删除 product/platform 参数，否则写入选定值；保留其它参数和 hash；调用 history.replaceState 并派发现有 LOCATION_CHANGE_EVENT。select 值使用 queryFilters 的 productId/platformId，空值回退 all。
+保留 queryFilters 对 product/platform 的过滤效果，未知参数继续回退到全部产品或默认平台。
 
 - [ ] **Step 4: 替换所有平台 tablist。**
 
