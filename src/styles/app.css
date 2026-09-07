@@ -133,6 +133,7 @@
     --accent-brand-soft: oklch(0.32 0.02 270 / 0.08);
     --accent-brand-ring: oklch(0.32 0.02 270 / 0.22);
     --docs-overlay: rgb(14 15 18 / 0.18);
+    --docs-schema-value: #a16207;
     --docs-info: #2563eb;
     --docs-warning: #b45309;
     --docs-error: #dc2626;
@@ -222,6 +223,7 @@
     --accent-brand-soft: oklch(0.88 0.02 270 / 0.12);
     --accent-brand-ring: oklch(0.88 0.02 270 / 0.24);
     --docs-overlay: rgb(0 0 0 / 0.5);
+    --docs-schema-value: #f1fa8c;
     --docs-info: #60a5fa;
     --docs-warning: #f59e0b;
     --docs-error: #f87171;
@@ -508,32 +510,26 @@
     pointer-events: none;
   }
 
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child {
-    margin-top: 0.5rem;
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .prose :where(h2):not(:where(.not-prose, .not-prose *)):first-child::before {
-    content: none;
-  }
-
-  .prose[data-platform-header-tabs="true"]
-    [data-platform-group="structured"]:first-child
-    > [data-platform-panel]:not([hidden])
-    > h2.group\/heading:first-of-type:not(:where(.not-prose, .not-prose *)) {
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
+    ) {
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
   }
 
-  .prose[data-platform-header-tabs="true"]
-    [data-platform-group="structured"]:first-child
-    > [data-platform-panel]:not([hidden])
-    > h2.group\/heading:first-of-type:not(
-      :where(.not-prose, .not-prose *)
+  .prose
+    :where(h2):not(:where(.not-prose, .not-prose *)):not(
+      :where(:not(a:empty) ~ h2)
     )::before {
     content: none;
+  }
+
+  .prose[data-platform-header-tabs="true"]
+    [data-platform-group-shell]
+    > .docs-body:empty {
+    display: none;
   }
 
   .prose :where(h3):not(:where(.not-prose, .not-prose *)) {
@@ -699,9 +695,9 @@
   .prose
     :where([data-parameter-description] :not(pre) > code):not(
       :where(
-          [data-parameter-possible-values],
-          [data-parameter-possible-values] *
-        )
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
     ) {
     max-width: 100%;
     overflow-wrap: anywhere;
@@ -719,9 +715,9 @@
     .prose
     :where([data-parameter-description] :not(pre) > code):not(
       :where(
-          [data-parameter-possible-values],
-          [data-parameter-possible-values] *
-        )
+        [data-parameter-possible-values],
+        [data-parameter-possible-values] *
+      )
     ) {
     border-color: var(--docs-prose-inline-code-border);
     background: var(--docs-prose-inline-code-bg);
@@ -1095,7 +1091,174 @@
 
   .openapi-operation {
     --fd-docs-row-1: -0.5rem;
+    --openapi-examples-sticky-top: var(--docs-shell-header-offset, 48px);
+    container-type: inline-size;
     width: min(100%, 1120px);
+  }
+
+  .openapi-operation .openapi-section-heading {
+    margin-block: 0 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  .openapi-operation h2.openapi-section-heading > a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .openapi-operation-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .openapi-examples-rail-anchor {
+    position: relative;
+    min-width: 0;
+  }
+
+  .openapi-examples-rail {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .openapi-examples-rail-content {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .openapi-schema-hidden-children {
+    display: block;
+  }
+
+  .openapi-schema-field-details {
+    padding-inline-start: 1.125rem;
+  }
+
+  .openapi-schema-metadata {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-top: 0.5rem;
+  }
+
+  .openapi-schema-metadata-row {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .openapi-schema-metadata-label {
+    color: var(--foreground);
+    font-weight: 700;
+  }
+
+  .openapi-schema-metadata-value {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .openapi-schema-value-container {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.375rem;
+    background: var(--bg-sunken);
+    color: var(--docs-schema-value);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  .openapi-schema-children {
+    position: relative;
+    margin-inline-start: 16px;
+    padding-inline-start: 16px;
+    border-inline-start: 1px solid
+      color-mix(in srgb, var(--ink-1) 14%, transparent);
+  }
+
+  .openapi-schema-children[hidden] {
+    border-inline-start-color: transparent;
+  }
+
+  .openapi-schema-children .openapi-schema-children {
+    margin-inline-start: 16px;
+  }
+
+  @container (min-width: 56rem) {
+    .openapi-operation-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 400px;
+      align-items: start;
+    }
+
+    .openapi-examples-rail {
+      position: sticky;
+      top: var(--openapi-examples-sticky-top, 48px);
+      max-block-size: calc(
+        100vh -
+        var(--openapi-examples-sticky-top, 48px) -
+        1rem
+      );
+      /* biome-ignore lint/suspicious/noDuplicateProperties: The dynamic viewport fallback intentionally follows the legacy viewport declaration. */
+      max-block-size: calc(
+        100dvh -
+        var(--openapi-examples-sticky-top, 48px) -
+        1rem
+      );
+      overflow-y: auto;
+      overflow-x: clip;
+      overscroll-behavior: contain;
+      scrollbar-color: color-mix(in srgb, var(--ink-1) 16%, transparent)
+        transparent;
+      scrollbar-width: thin;
+    }
+
+    .openapi-examples-rail-anchor {
+      align-self: stretch;
+    }
+  }
+
+  .openapi-response-header-row .openapi-field-anchor {
+    opacity: 0;
+    transition: opacity 140ms ease;
+  }
+
+  .openapi-response-header-row:hover .openapi-field-anchor,
+  .openapi-response-header-row:focus-within .openapi-field-anchor,
+  .openapi-response-header-row:target .openapi-field-anchor,
+  .openapi-field-anchor:focus-visible {
+    opacity: 1;
+  }
+
+  [data-openapi-schema-breadcrumb] > button + button::before {
+    margin-right: 0.625rem;
+    color: var(--fd-muted-foreground);
+    content: "/";
+    opacity: 0.6;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .openapi-response-header-row .openapi-field-anchor {
+      transition: none;
+    }
   }
 
   .openapi-operation :where(h2, h3, h4) {
@@ -1230,13 +1393,17 @@
     font-size: 0.86em;
   }
 
-  .openapi-operation
-    .openapi-request-examples
-    [role="region"].fd-scroll-container {
-    max-height: min(20vh, 11rem) !important;
-  }
-
   @media (max-width: 48rem) {
+    .openapi-schema-tree .openapi-schema-children {
+      margin-inline-start: 8px;
+      padding-inline-start: 8px;
+    }
+
+    .openapi-schema-tree .openapi-schema-children .openapi-schema-children {
+      margin-inline-start: 8px;
+      padding-inline-start: 8px;
+    }
+
     .openapi-operation figure.shiki:has(> .fd-scroll-container) {
       isolation: isolate;
     }
@@ -1259,24 +1426,127 @@
         color-mix(in srgb, var(--ink-1) 58%, transparent);
       content: "";
     }
+  }
+}
 
-    .openapi-operation figure.shiki > .fd-scroll-container {
-      scrollbar-color: color-mix(in srgb, var(--ink-1) 40%, transparent)
-        transparent;
-      scrollbar-width: thin;
-    }
+/* These OpenAPI code rules intentionally remain unlayered so they win over
+   Fumadocs' utility classes (`max-h-[600px]`, `w-max`) without broad globals.
+   The !important declarations are limited to the marked viewport and are
+   required to override those generated utilities. */
+.openapi-code-preview [data-openapi-code-viewport] {
+  /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+  max-block-size: 24rem !important;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
 
-    .openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar {
-      height: 12px;
-    }
+.openapi-operation figure.shiki > .fd-scroll-container {
+  max-width: 100%;
+  scrollbar-color: transparent transparent;
+  scrollbar-width: thin;
+}
 
-    .openapi-operation
-      figure.shiki
-      > .fd-scroll-container::-webkit-scrollbar-thumb {
-      border: 3px solid transparent;
-      background: color-mix(in srgb, var(--ink-1) 38%, transparent);
-      background-clip: padding-box;
-    }
+.openapi-operation figure.shiki > .fd-scroll-container:hover,
+.openapi-operation figure.shiki > .fd-scroll-container:focus-within,
+.openapi-operation figure.shiki > .fd-scroll-container[data-scrollbar-visible] {
+  scrollbar-color: color-mix(in srgb, var(--ink-4) 48%, transparent) transparent;
+}
+
+.openapi-operation figure.shiki > .fd-scroll-container::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container::-webkit-scrollbar-thumb {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  background-clip: padding-box;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container:hover::-webkit-scrollbar-thumb,
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container:focus-within::-webkit-scrollbar-thumb,
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container[data-scrollbar-visible]::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--ink-4) 48%, transparent);
+  background-clip: padding-box;
+}
+
+.openapi-operation
+  figure.shiki
+  > .fd-scroll-container::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.openapi-operation figure.shiki code .token-command {
+  color: var(--shiki-light-token-command, #0f766e);
+}
+
+.openapi-operation figure.shiki code .token-flag {
+  color: var(--shiki-light-token-keyword, #be185d);
+}
+
+.openapi-operation figure.shiki code .token-url,
+.openapi-operation figure.shiki code .token-string {
+  color: var(--shiki-light-token-string, #a16207);
+}
+
+.openapi-operation figure.shiki code .token-key {
+  color: var(--shiki-light-token-key, #0369a1);
+}
+
+.openapi-operation figure.shiki code .token-number {
+  color: var(--shiki-light-token-number, #7c3aed);
+}
+
+.openapi-operation figure.shiki code .token-keyword,
+.openapi-operation figure.shiki code .token-function {
+  color: var(--shiki-light-token-keyword, #7c3aed);
+}
+
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  code
+  .token-command {
+  color: #f8f8f2;
+}
+
+:where(html.dark) .openapi-operation figure.shiki.not-prose code .token-flag {
+  color: #ff79c6;
+}
+
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  code
+  :is(.token-url, .token-string) {
+  color: #f1fa8c;
+}
+
+:where(html.dark) .openapi-operation figure.shiki.not-prose code .token-key {
+  color: #8be9fd;
+}
+
+:where(html.dark)
+  .openapi-operation
+  figure.shiki.not-prose
+  code
+  :is(.token-number, .token-keyword, .token-function) {
+  color: #bd93f9;
+}
+
+@container (max-width: 55.999rem) {
+  .openapi-code-preview [data-openapi-code-viewport] {
+    /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
+    max-block-size: min(50dvh, 24rem) !important;
   }
 }
 
@@ -1318,6 +1588,31 @@
   max-width: none;
   min-width: 0;
   overflow: visible;
+}
+
+@media (max-width: 767px) {
+  .prose
+    :where(.docs-table-container[data-table-overflow="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 2.75rem;
+    content: "";
+    pointer-events: none;
+    background: linear-gradient(to right, transparent, var(--bg-card));
+    opacity: 1;
+    transition: opacity 160ms ease;
+  }
+
+  .prose
+    :where(.docs-table-container[data-table-scroll-end="true"]):not(
+      :where(.not-prose, .not-prose *)
+    )::after {
+    opacity: 0;
+  }
 }
 
 /* Fumadocs emits paragraph/list margins outside Tailwind layers.
@@ -1592,4 +1887,46 @@
   .docs-search-overlay[data-state="open"] {
     animation: none;
   }
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 0.75rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
+  content: none;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-sdk-compliance="true"]
+  + [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2)) {
+  margin-top: 1.25rem;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.prose[data-platform-header-tabs="true"]
+  [data-sdk-compliance="true"]
+  + [data-platform-group="structured"]
+  > [data-platform-panel]:not([hidden])
+  .docs-body
+  > h2:not(:where(.not-prose, .not-prose *)):not(
+    :where(:not(a:empty) ~ h2)
+  )::before {
+  content: none;
 }
