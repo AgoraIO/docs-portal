@@ -118,17 +118,17 @@ In `OpenApiSchemaMetadata.tsx`, preserve item keys and render:
 ```tsx
 <div className="openapi-schema-metadata-row" key={key ?? label}>
   <span className="openapi-schema-metadata-label">{label}:</span>
-  <span className="openapi-schema-metadata-value">
-    <span className="openapi-schema-value-container">{value}</span>
-  </span>
+  <div className="openapi-schema-metadata-value">
+    <div className="openapi-schema-value-container">{value}</div>
+  </div>
 </div>
 ```
 
 Use inline elements so the value starts immediately after its own colon. Do not add a margin or CSS gap between label and value.
 
-- [ ] **Step 2: Make Allowed values one overall container.**
+- [ ] **Step 2: Make Allowed values use the metadata container.**
 
-Change `OpenApiSchemaAllowedValues` so its outer element is the single `openapi-schema-value-container openapi-schema-allowed-values`; each serialized value is an unbordered child with a comma separator before every item after the first. Preserve `data-openapi-allowed-value-key`, stable keys, serialization, and order. Avoid nested visual containers when this component is passed through `OpenApiSchemaMetadata`.
+Change `OpenApiSchemaAllowedValues` so it returns only an unbordered `.openapi-schema-allowed-values` content span; the surrounding `OpenApiSchemaMetadata` value wrapper is the single `openapi-schema-value-container`. Render each serialized value as an unbordered child with a comma separator before every item after the first. Preserve `data-openapi-allowed-value-key`, stable keys, serialization, and order. The final metadata DOM must contain one visual border/background for the complete Allowed values list, never nested borders.
 
 - [ ] **Step 3: Move metadata before description.**
 
