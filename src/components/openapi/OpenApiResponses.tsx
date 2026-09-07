@@ -16,8 +16,7 @@ import {
   type OpenApiResponseHeaderView,
   type OpenApiResponseView,
 } from '@/lib/openapi/response-view';
-
-const OPENAPI_MAJOR_SECTION_HEADING_CLASS = 'font-semibold text-2xl';
+import { OpenApiSectionHeading } from './OpenApiSectionHeading';
 
 export function OpenApiResponses({
   renderDescription,
@@ -91,11 +90,9 @@ export function OpenApiResponses({
 
   return (
     <section className="mt-8" data-openapi-responses id={sectionId}>
-      <h2
-        className={`mb-3 scroll-mt-24 ${OPENAPI_MAJOR_SECTION_HEADING_CLASS}`}
-      >
+      <OpenApiSectionHeading id={sectionId}>
         Response Body
-      </h2>
+      </OpenApiSectionHeading>
       <div className="border border-fd-border text-fd-card-foreground">
         {responses.map((response, index) => {
           const selectedMediaType =

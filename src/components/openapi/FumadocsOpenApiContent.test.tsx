@@ -36,7 +36,154 @@ function makeMinimalOpenApiPageProps(method: string): OpenAPIPageProps {
   };
 }
 
+function makeSectionHeadingPageProps(): OpenAPIPageProps {
+  const path = '/headings/{pathId}';
+
+  return {
+    operations: [{ method: 'post', path } as OpenApiOperationItem],
+    payload: {
+      bundled: {
+        info: { title: 'Section Heading API' },
+        openapi: '3.2.0',
+        paths: {
+          [path]: {
+            post: {
+              parameters: [
+                {
+                  in: 'path',
+                  name: 'pathId',
+                  required: true,
+                  schema: { type: 'string' },
+                },
+                {
+                  in: 'query',
+                  name: 'queryLimit',
+                  deprecated: true,
+                  schema: { type: 'integer' },
+                },
+                {
+                  in: 'header',
+                  name: 'traceId',
+                  schema: { type: 'string' },
+                },
+                {
+                  in: 'cookie',
+                  name: 'sessionId',
+                  schema: { type: 'string' },
+                },
+              ],
+              requestBody: {
+                content: {
+                  'application/json': {
+                    schema: {
+                      properties: {
+                        channel: { type: 'string' },
+                        provider: {
+                          properties: { enabled: { type: 'boolean' } },
+                          type: 'object',
+                        },
+                      },
+                      type: 'object',
+                    },
+                  },
+                },
+              },
+              responses: {
+                '200': {
+                  content: {
+                    'application/json': {
+                      schema: {
+                        properties: { ok: { type: 'boolean' } },
+                        type: 'object',
+                      },
+                    },
+                  },
+                  description: 'OK',
+                },
+              },
+            },
+          },
+        },
+      } as unknown as Document,
+    },
+  };
+}
+
 describe('FumadocsOpenApiContent', () => {
+  it('uses one section heading contract for all OpenAPI content sections', async () => {
+    render(
+      <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
+    );
+
+    const sections = [
+      ['parameters-path', 'Path Parameters'],
+      ['parameters-query', 'Query Parameters'],
+      ['parameters-header', 'Header Parameters'],
+      ['parameters-cookie', 'Cookie Parameters'],
+      ['request-body', 'Request Body'],
+      ['response-body', 'Response Body'],
+    ] as const;
+
+    for (const [id, title] of sections) {
+      const heading = await screen.findByRole('heading', { name: title });
+      const sectionHeading = document.getElementById(id);
+
+      expect(heading).toBeTruthy();
+      expect(sectionHeading?.tagName).toBe('H2');
+      expect(sectionHeading).toHaveClass(
+        'openapi-section-heading',
+        'font-semibold',
+        'text-2xl',
+        'leading-7',
+      );
+      expect(sectionHeading?.querySelector(`a[href="#${id}"]`)).toBeTruthy();
+    }
+
+    for (const [id, name] of [
+      ['parameters-path', 'pathId'],
+      ['parameters-query', 'queryLimit'],
+      ['parameters-header', 'traceId'],
+      ['parameters-cookie', 'sessionId'],
+    ]) {
+      const section = document.getElementById(id)?.nextElementSibling;
+      expect(section).toBeTruthy();
+      expect(section).toHaveTextContent(name);
+      expect(section).not.toHaveTextContent('Filter Properties');
+      expect(section).not.toHaveTextContent('Expand all');
+      expect(section).not.toHaveTextContent('Collapse all');
+    }
+
+    expect(
+      document.querySelectorAll('.openapi-schema-tree').length,
+    ).toBeGreaterThan(0);
+    expect(
+      document.querySelector('.openapi-schema-tree button[aria-expanded]'),
+    ).toBeTruthy();
+    expect(
+      screen.queryByPlaceholderText('Filter Properties'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Expand all' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Collapse all' }),
+    ).not.toBeInTheDocument();
+
+    const requiredRow = screen
+      .getByText('pathId')
+      .closest('.openapi-schema-field-row');
+    expect(requiredRow).toHaveTextContent('Required');
+    expect(
+      requiredRow?.querySelector('.openapi-schema-status'),
+    ).toBeInTheDocument();
+
+    const deprecatedRow = screen
+      .getByText('queryLimit')
+      .closest('.openapi-schema-field-row');
+    expect(deprecatedRow).toHaveTextContent('Deprecated');
+    expect(screen.getByText('queryLimit')).not.toHaveClass('line-through');
+  });
+
   it('renders normalized method badges with semantic variants outside endpoint scrolling', () => {
     const cases = [
       {
@@ -796,7 +943,7 @@ describe('FumadocsOpenApiContent', () => {
       within(propertiesRow).getByText('object', { exact: true }),
     ).toHaveClass('text-muted-foreground');
     expect(within(propertiesRow).getByText('Required')).toBeVisible();
-    expect(within(asrRow).getByText('Optional')).toBeVisible();
+    expect(within(asrRow).queryByText('Optional')).not.toBeInTheDocument();
 
     expect(
       screen.queryByText('[key: string]', { exact: true }),
@@ -806,15 +953,15 @@ describe('FumadocsOpenApiContent', () => {
       within(asrRow).getByRole('button', { name: 'Expand asr properties' }),
     );
     const vendorRow = getSchemaRow('vendor');
-    expect(within(vendorRow).getByText('Allowed values')).toBeVisible();
+    expect(within(vendorRow).getByText('Allowed values:')).toBeVisible();
     expect(
       within(vendorRow).getByText('ares', { exact: true }),
     ).toHaveAttribute('data-openapi-allowed-value-key', 'string:"ares":0');
     expect(within(vendorRow).getByText('ares', { exact: true }).tagName).toBe(
-      'CODE',
+      'SPAN',
     );
     expect(
-      within(vendorRow).getByText('microsoft', { exact: true }),
+      vendorRow.querySelector('[data-openapi-allowed-value-key*="microsoft"]'),
     ).toBeVisible();
 
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
@@ -1724,8 +1871,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(pathSection).getByText('sid')).toBeInTheDocument();
     expect(within(pathSection).getByText('mode')).toBeInTheDocument();
     expect(within(pathSection).getByText('individual')).toBeInTheDocument();
-    expect(within(pathSection).getByText('mix')).toBeInTheDocument();
-    expect(within(pathSection).getByText('web')).toBeInTheDocument();
+    expect(within(pathSection).getByText(/mix/)).toBeInTheDocument();
+    const modeRow = within(pathSection)
+      .getByText('mode')
+      .closest('.openapi-schema-field-row');
+    expect(
+      modeRow?.querySelector('[data-openapi-allowed-value-key*="web"]'),
+    ).toBeInTheDocument();
     expect(within(headerSection).getByText('Content-Type')).toBeInTheDocument();
     expect(
       within(headerSection).getAllByText('application/json')[0],
@@ -1839,7 +1991,9 @@ describe('FumadocsOpenApiContent', () => {
     const propertiesRow = getOfficialRow('properties');
 
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
-    expect(within(displayNameRow).getByText('Optional')).toBeVisible();
+    expect(
+      within(displayNameRow).queryByText('Optional'),
+    ).not.toBeInTheDocument();
     expect(screen.queryByText('optional')).not.toBeInTheDocument();
     expect(
       within(propertiesRow.firstElementChild as HTMLElement).getByText(
@@ -2302,18 +2456,20 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(pathSection).getByText(/flow configuration template ID/),
     ).toBeInTheDocument();
-    expect(within(pathSection).getByText('Allowed values')).toBeInTheDocument();
+    expect(
+      within(pathSection).getByText('Allowed values:'),
+    ).toBeInTheDocument();
     expect(within(pathSection).getAllByText('cn').length).toBeGreaterThan(0);
-    expect(within(pathSection).getByText('Default')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Length')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Match')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Default:')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Length:')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Match:')).toBeInTheDocument();
     expect(within(pathSection).getAllByText('720p').length).toBeGreaterThan(0);
 
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
     }).nextElementSibling as HTMLElement;
     expect(within(querySection).getByText('page_size')).toBeInTheDocument();
-    expect(within(querySection).getAllByText('Range')).toHaveLength(2);
+    expect(within(querySection).getAllByText('Range:')).toHaveLength(2);
     expect(
       within(querySection).getByText('1 <= value <= 500'),
     ).toBeInTheDocument();
@@ -2493,12 +2649,11 @@ describe('FumadocsOpenApiContent', () => {
       'id',
       'response-body',
     );
-    expect(operation).toHaveClass(
-      '[&_h2#request-body]:font-semibold',
-      '[&_h2#request-body]:text-2xl',
-      '[&_h2#response-body]:font-semibold',
-      '[&_h2#response-body]:text-2xl',
-    );
+    for (const id of ['request-body', 'response-body']) {
+      expect(document.getElementById(id)).toHaveClass(
+        'openapi-section-heading',
+      );
+    }
   });
 
   it('scopes OpenAPI markdown prose across docs sections, schemas, and callouts without repeating operation descriptions', async () => {
@@ -3446,8 +3601,8 @@ describe('FumadocsOpenApiContent', () => {
       .closest('div.border-t') as HTMLElement;
 
     expect(within(pathRow).getByText('Required')).toBeVisible();
-    expect(within(queryRow).getByText('Optional')).toBeVisible();
-    expect(within(headerRow).getByText('Optional')).toBeVisible();
+    expect(within(queryRow).queryByText('Optional')).not.toBeInTheDocument();
+    expect(within(headerRow).queryByText('Optional')).not.toBeInTheDocument();
     expect(within(headerRow).getByText('Deprecated')).toBeVisible();
     expect(within(cookieRow).getByText('Required')).toBeVisible();
     expect(within(pathRow).getByText('The item identifier.')).toBeVisible();
@@ -3522,7 +3677,7 @@ describe('FumadocsOpenApiContent', () => {
       name: '查询参数',
     }).nextElementSibling as HTMLElement;
     expect(within(pathSection).getByText('必填')).toBeVisible();
-    expect(within(querySection).getByText('可选')).toBeVisible();
+    expect(within(querySection).queryByText('可选')).not.toBeInTheDocument();
     expect(
       within(pathSection).getByRole('button', {
         name: '复制字段链接到 itemId',

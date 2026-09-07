@@ -133,6 +133,7 @@
     --accent-brand-soft: oklch(0.32 0.02 270 / 0.08);
     --accent-brand-ring: oklch(0.32 0.02 270 / 0.22);
     --docs-overlay: rgb(14 15 18 / 0.18);
+    --docs-schema-value: #a16207;
     --docs-info: #2563eb;
     --docs-warning: #b45309;
     --docs-error: #dc2626;
@@ -222,6 +223,7 @@
     --accent-brand-soft: oklch(0.88 0.02 270 / 0.12);
     --accent-brand-ring: oklch(0.88 0.02 270 / 0.24);
     --docs-overlay: rgb(0 0 0 / 0.5);
+    --docs-schema-value: #f1fa8c;
     --docs-info: #60a5fa;
     --docs-warning: #f59e0b;
     --docs-error: #f87171;
@@ -1094,6 +1096,19 @@
     width: min(100%, 1120px);
   }
 
+  .openapi-operation .openapi-section-heading {
+    margin-block: 0 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+
+  .openapi-operation h2.openapi-section-heading > a {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
   .openapi-operation-layout {
     display: flex;
     flex-direction: column;
@@ -1122,6 +1137,53 @@
 
   .openapi-schema-field-details {
     padding-inline-start: 1.125rem;
+  }
+
+  .openapi-schema-metadata {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-top: 0.5rem;
+  }
+
+  .openapi-schema-metadata-row {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .openapi-schema-metadata-label {
+    color: var(--foreground);
+    font-weight: 700;
+  }
+
+  .openapi-schema-metadata-value {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .openapi-schema-value-container {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 0.375rem;
+    background: var(--bg-sunken);
+    color: var(--docs-schema-value);
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
   }
 
   .openapi-schema-children {

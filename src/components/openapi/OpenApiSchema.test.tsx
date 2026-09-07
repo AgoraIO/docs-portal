@@ -169,10 +169,10 @@ describe('OpenApiSchema', () => {
     expect(
       providerNode.querySelector(':scope > .openapi-schema-children'),
     ).toHaveAttribute('hidden', 'until-found');
-    expect(within(providerRow).getByText('Optional')).toBeVisible();
+    expect(within(providerRow).queryByText('Optional')).not.toBeInTheDocument();
     expect(within(providerRow).getByText('Deprecated')).toBeVisible();
     expect(within(nameRow).getByText('Required')).toBeInTheDocument();
-    expect(within(channelNode).getByText('Optional')).toBeVisible();
+    expect(within(channelNode).queryByText('Optional')).not.toBeInTheDocument();
     expect(within(providerRow).getByText('Deprecated')).toHaveClass(
       'openapi-schema-status',
     );
@@ -240,15 +240,73 @@ describe('OpenApiSchema', () => {
     const row = getRenderedSchemaText('status')?.closest('div.border-t');
     expect(row).toBeInstanceOf(HTMLElement);
     expect(
-      within(row as HTMLElement).getByText('Allowed values'),
+      within(row as HTMLElement).getByText('Allowed values:'),
     ).toBeVisible();
     expect(within(row as HTMLElement).getByText('ready')).toHaveAttribute(
       'data-openapi-allowed-value-key',
     );
-    expect(within(row as HTMLElement).getByText('running')).toBeVisible();
-    expect(within(row as HTMLElement).getByText('Default')).toBeVisible();
-    expect(within(row as HTMLElement).getByText('Format')).toBeVisible();
+    expect(
+      row?.querySelector('[data-openapi-allowed-value-key*="running"]'),
+    ).toBeVisible();
+    expect(within(row as HTMLElement).getByText('Default:')).toBeVisible();
+    expect(within(row as HTMLElement).getByText('Format:')).toBeVisible();
     expect(screen.queryByText('Value in')).not.toBeInTheDocument();
+  });
+
+  it('renders schema metadata in a consistent order and value column', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              mode: {
+                default: { mode: 'managed' },
+                enum: ['managed', 'byok'],
+                format: 'credential-mode',
+                maximum: 120,
+                minimum: 1,
+                pattern: '^[a-z-]+$',
+                type: 'string',
+              },
+            },
+            type: 'object',
+          }}
+        />
+      </AnchorSection>,
+    );
+
+    const row = getRenderedSchemaText('mode')?.closest('div.border-t');
+    expect(row).toBeInstanceOf(HTMLElement);
+    expect(
+      Array.from(
+        (row as HTMLElement).querySelectorAll('.openapi-schema-metadata-label'),
+      ).map((label) => label.textContent),
+    ).toEqual(['Default:', 'Range:', 'Allowed values:', 'Match:', 'Format:']);
+    expect(
+      within(row as HTMLElement)
+        .getByText(/"mode": "managed"/)
+        .closest('.openapi-schema-metadata-value'),
+    ).toBeInTheDocument();
+  });
+
+  it('uses the shared metadata structure for primitive root schemas', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{ default: 'managed', type: 'string' }}
+        />
+      </AnchorSection>,
+    );
+
+    const metadata = document.querySelector('.openapi-schema-metadata');
+    expect(metadata).toBeInTheDocument();
+    expect(within(metadata as HTMLElement).getByText('Default:')).toBeVisible();
   });
 
   it('preserves a property literally named enum while rendering its schema enum', () => {

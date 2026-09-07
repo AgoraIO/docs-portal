@@ -60,6 +60,18 @@ describe('OpenApiResponses', () => {
     window.location.hash = '';
   });
 
+  it('renders the response body title as an anchored section heading', () => {
+    renderResponses([view('200')]);
+
+    const heading = screen.getByRole('heading', { name: 'Response Body' });
+    expect(heading.tagName).toBe('H2');
+    expect(heading).toHaveClass('openapi-section-heading');
+    expect(heading.querySelector('a[href="#test-responses"]')).toBeTruthy();
+    expect(
+      screen.getByRole('button', { name: '200 application/json' }),
+    ).toBeInTheDocument();
+  });
+
   it('defaults to the first 2xx response and keeps accordion panels independently expanded', () => {
     renderResponses([view('default'), view('200')]);
 
@@ -95,7 +107,9 @@ describe('OpenApiResponses', () => {
         sectionId="test-responses"
       />,
     );
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /application\/json/ }),
+    ).not.toBeInTheDocument();
   });
 
   it('distinguishes empty content, absent schemas, and an explicit false schema', () => {

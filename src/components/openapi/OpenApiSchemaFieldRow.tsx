@@ -1,19 +1,23 @@
 import { Check, ChevronRight, Link2 } from 'lucide-react';
-import type { ReactNode } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
 import type { OpenApiSchemaViewNode } from '@/lib/openapi/schema-view';
+import {
+  OpenApiSchemaMetadata,
+  type OpenApiSchemaMetadataItem,
+} from './OpenApiSchemaMetadata';
 
 export type OpenApiSchemaFieldRowLabels = {
   allowedValues: string;
   collapse: string;
   copiedLink: string;
   copyLink: string;
+  default: string;
   deprecated: string;
   expand: string;
-  optional: string;
   properties: string;
+  range: string;
   required: string;
 };
 
@@ -25,7 +29,7 @@ export type OpenApiSchemaFieldRowProps = {
   node: OpenApiSchemaViewNode;
   onCopy: () => void;
   onExpandedChange: (expanded: boolean) => void;
-  remainingInfoTags?: ReactNode[];
+  remainingInfoTags?: OpenApiSchemaMetadataItem[];
 };
 
 export function OpenApiSchemaFieldRow({
@@ -44,7 +48,6 @@ export function OpenApiSchemaFieldRow({
       <code
         className={cn(
           'min-w-0 break-words font-mono text-sm font-semibold [overflow-wrap:anywhere]',
-          node.schema.deprecated && 'line-through decoration-2',
         )}
       >
         {node.name}
@@ -59,6 +62,26 @@ export function OpenApiSchemaFieldRow({
         >
           ({node.variant})
         </span>
+      ) : null}
+    </>
+  );
+  const fieldStatuses = (
+    <>
+      {node.required ? (
+        <Badge
+          className="openapi-schema-status normal-case tracking-normal border-red-200 bg-red-50 text-red-700 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300"
+          variant="outline"
+        >
+          {labels.required}
+        </Badge>
+      ) : null}
+      {node.schema.deprecated ? (
+        <Badge
+          className="openapi-schema-status normal-case tracking-normal border-orange-200 bg-orange-50 text-orange-800 dark:border-orange-900/60 dark:bg-orange-950/30 dark:text-orange-300"
+          variant="outline"
+        >
+          {labels.deprecated}
+        </Badge>
       ) : null}
     </>
   );
@@ -99,6 +122,7 @@ export function OpenApiSchemaFieldRow({
               </span>
               <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                 {fieldIdentity}
+                {fieldStatuses}
               </span>
             </>
           ) : (
@@ -110,30 +134,12 @@ export function OpenApiSchemaFieldRow({
               />
               <span className="openapi-schema-field-content flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                 {fieldIdentity}
+                {fieldStatuses}
               </span>
             </div>
           )}
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-2">
-          <Badge
-            className={cn(
-              'openapi-schema-status ml-auto normal-case tracking-normal',
-              node.required
-                ? 'border-fd-error/30 bg-fd-error/10 text-fd-error'
-                : 'border-border bg-muted text-muted-foreground',
-            )}
-            variant="outline"
-          >
-            {node.required ? labels.required : labels.optional}
-          </Badge>
-          {node.schema.deprecated ? (
-            <Badge
-              className="openapi-schema-status border-fd-warning/30 bg-fd-warning/10 text-fd-warning normal-case tracking-normal"
-              variant="outline"
-            >
-              {labels.deprecated}
-            </Badge>
-          ) : null}
           <Button
             aria-label={`${copied ? labels.copiedLink : labels.copyLink} ${node.name}`}
             className="text-muted-foreground"
@@ -150,59 +156,18 @@ export function OpenApiSchemaFieldRow({
           </Button>
         </div>
       </div>
-      {node.schema.description ||
-      (node.schema.allowedValues && node.schema.allowedValues.length > 0) ||
-      remainingInfoTags.length > 0 ? (
+      {node.schema.description || remainingInfoTags.length > 0 ? (
         <div className="openapi-schema-field-details min-w-0">
+          {remainingInfoTags.length > 0 ? (
+            <OpenApiSchemaMetadata items={remainingInfoTags} />
+          ) : null}
           {node.schema.description ? (
             <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
               {node.schema.description}
             </div>
           ) : null}
-          {node.schema.allowedValues && node.schema.allowedValues.length > 0 ? (
-            <div className="mt-2 flex flex-wrap items-baseline gap-x-2 gap-y-1 text-sm">
-              <span className="text-muted-foreground">
-                {labels.allowedValues}
-              </span>
-              {node.schema.allowedValues.map((value, index) => {
-                const key = getAllowedValueKey(value, index);
-
-                return (
-                  <code
-                    className="max-w-full break-words rounded border border-border px-1.5 py-0.5 font-mono text-xs [overflow-wrap:anywhere]"
-                    data-openapi-allowed-value-key={key}
-                    key={key}
-                  >
-                    {formatAllowedValue(value)}
-                  </code>
-                );
-              })}
-            </div>
-          ) : null}
-          {remainingInfoTags.length > 0 ? (
-            <div className="mt-2 flex flex-wrap gap-2">{remainingInfoTags}</div>
-          ) : null}
         </div>
       ) : null}
     </div>
   );
-}
-
-function formatAllowedValue(value: unknown) {
-  if (typeof value === 'string') return value;
-  return serializeAllowedValue(value);
-}
-
-function getAllowedValueKey(value: unknown, index: number) {
-  return `${typeof value}:${serializeAllowedValue(value)}:${index}`;
-}
-
-function serializeAllowedValue(value: unknown) {
-  if (value === undefined) return 'undefined';
-
-  try {
-    return JSON.stringify(value) ?? String(value);
-  } catch {
-    return String(value);
-  }
 }

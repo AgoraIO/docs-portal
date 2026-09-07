@@ -258,6 +258,31 @@ describe('app prose CSS regressions', () => {
     );
   });
 
+  it('defines aligned OpenAPI schema metadata rows', () => {
+    const metadata = getRuleBodyContaining('.openapi-schema-metadata').rule;
+    const row = getRuleBody('.openapi-schema-metadata-row').rule;
+    const label = getRuleBody('.openapi-schema-metadata-label').rule;
+    const value = getRuleBody('.openapi-schema-metadata-value').rule;
+    const valueContainer = getRuleBody('.openapi-schema-value-container').rule;
+
+    expectDeclaration(metadata, 'display', 'flex');
+    expectDeclaration(metadata, 'min-width', '0');
+    expectDeclaration(row, 'display', 'inline-flex');
+    expectDeclaration(row, 'max-width', '100%');
+    expectDeclaration(label, 'font-weight', '700');
+    expectDeclaration(label, 'color', 'var(--foreground)');
+    expectDeclaration(value, 'display', 'inline-flex');
+    expectDeclaration(value, 'min-width', '0');
+    expectDeclaration(value, 'overflow-wrap', 'anywhere');
+    expectDeclaration(valueContainer, 'display', 'inline-flex');
+    expectDeclaration(valueContainer, 'max-width', '100%');
+    expectDeclaration(valueContainer, 'border', '1px solid var(--line)');
+    expectDeclaration(valueContainer, 'background', 'var(--bg-sunken)');
+    expectDeclaration(valueContainer, 'color', 'var(--docs-schema-value)');
+    expectDeclaration(valueContainer, 'font-family', 'var(--font-mono)');
+    expectDeclaration(valueContainer, 'font-weight', '400');
+  });
+
   it('keeps the narrow response-header and browser-find adapter contracts', () => {
     expectDeclaration(
       getRuleBodyContaining(

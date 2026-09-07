@@ -15,6 +15,7 @@ import {
   OpenApiSchemaFieldRow,
   type OpenApiSchemaFieldRowLabels,
 } from './OpenApiSchemaFieldRow';
+import type { OpenApiSchemaMetadataItem } from './OpenApiSchemaMetadata';
 
 export function stableDomId(rootId: string, nodeId: string) {
   if (nodeId === rootId) return rootId;
@@ -94,7 +95,9 @@ export type OpenApiSchemaTreeProps = {
   labels: OpenApiSchemaTreeLabels;
   nodes: OpenApiSchemaViewNode[];
   onCopyFieldLink: (node: OpenApiSchemaViewNode) => Promise<boolean>;
-  renderRemainingInfoTags: (node: OpenApiSchemaViewNode) => ReactNode[];
+  renderRemainingInfoTags: (
+    node: OpenApiSchemaViewNode,
+  ) => OpenApiSchemaMetadataItem[];
   revealTarget?: OpenApiSchemaRevealTarget;
   rootId: string;
 };
