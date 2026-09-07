@@ -531,7 +531,7 @@ You can log out as follows:
 }];
 ```
 
-### releaseLock
+### AgoraRtmClientKit.destroy
 
 #### Description
 
@@ -654,7 +654,7 @@ Based on capabilities of Agora, Signaling channels are divided into two types to
 
 AgoraRtmClientKit
 Signaling client instance
-### subscribeTopic
+### subscribeWithChannel
 
 #### Description
 
@@ -702,7 +702,7 @@ opt.features = AgoraRtmSubscribeChannelFeatureMessage|AgoraRtmSubscribeChannelFe
 }];
 ```
 
-### unsubscribeTopic
+### unsubscribeWithChannel
 
 #### Description
 
@@ -738,7 +738,7 @@ You can call the `unsubscribeTopic` method as follows:
 }];
 ```
 
-### initWithConfig
+### createStreamChannel
 
 #### Description
 
@@ -780,7 +780,7 @@ AgoraRtmStreamChannel* stream_channel = [rtm createStreamChannel:@"your_channel"
 
 AgoraRtmStreamChannel
 Stream channel instance
-### joinTopic
+### joinWithOption
 
 #### Description
 
@@ -832,7 +832,7 @@ join_opt.features = AgoraRtmSubscribeChannelFeaturePresence | AgoraRtmSubscribeC
 }];
 ```
 
-### leaveTopic
+### leave
 
 #### Description
 
@@ -868,7 +868,7 @@ You can call the `leaveTopic` method as follows:
 }];
 ```
 
-### releaseLock
+### AgoraRtmStreamChannel.destroy
 
 #### Description
 
@@ -1209,7 +1209,7 @@ This section introduces how to send and receive messages in a message channel or
 
 AgoraRtmClientKit
 Signaling client instance
-### publishTopicMessage
+### publish
 
 #### Description
 
@@ -2415,7 +2415,7 @@ You can call the `revokeLock` method as follows:
 }];
 ```
 
-### getMessages
+### getLocks
 
 #### Description
 

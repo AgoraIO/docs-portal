@@ -552,7 +552,7 @@ This operation returns the `RtmStatus` data type, including the following proper
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
 
-### ReleaseLockAsync
+### Dispose
 
 #### Description
 
@@ -596,7 +596,7 @@ Based on capabilities of Agora, Signaling channels are divided into two types to
 
 IRtmClient
 Signaling client instance
-### SubscribeTopicAsync
+### SubscribeAsync
 
 #### Description
 
@@ -673,7 +673,7 @@ The `SubscribeTopicResult` data type contains the following properties:
 | :------------ | :----: | :------------------------- |
 | `ChannelName` | string | The name of a message channel. |
 
-### UnsubscribeTopicAsync
+### UnsubscribeAsync
 
 #### Description
 
@@ -725,7 +725,7 @@ The `RtmStatus` data type contains the following properties:
 
 To find out the cause of the error and get the corresponding solution, use the `errorCode` field with the [error codes table](#error-codes-table).
 
-### CreateAgoraRtmClient
+### CreateStreamChannel
 
 #### Description
 
@@ -766,7 +766,7 @@ Returns an `IStreamChannel` instance.
 
 IStreamChannel
 Stream channel instance
-### JoinTopicAsync
+### JoinAsync
 
 #### Description
 
@@ -843,7 +843,7 @@ The `JoinTopicResult` data type contains the following properties:
 | `ChannelName` | string | Name of a message channel. |
 | `UserId` | string | User ID. |
 
-### LeaveTopicAsync
+### LeaveAsync
 
 #### Description
 
@@ -904,7 +904,7 @@ The `LeaveTopicResult` data type contains the following properties:
 | `ChannelName` | string | Name of a message channel. |
 | `UserId` | string | User ID. |
 
-### ReleaseLockAsync
+### StreamChannel.Dispose
 
 #### Description
 
@@ -1329,7 +1329,7 @@ This page introduces how to send and receive messages in a Message Channel.
 
 IRtmClient
 Signaling client instance
-### PublishTopicMessageAsync
+### PublishAsync
 
 #### Description
 
@@ -2987,7 +2987,7 @@ The `RevokeLockResult` data type contains the following properties:
 | `ChannelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `LockName` | string | Lock name. |
 
-###
+### GetLocksAsync
 
 #### Description
 

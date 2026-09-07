@@ -514,7 +514,7 @@ rtmClient.logout(new ResultCallback<Void>() {
 });
 ```
 
-### releaseLock
+### RtmClient.release
 
 #### Description
 
@@ -639,7 +639,7 @@ Based on capabilities of Agora, Signaling channels are divided into two types to
 
 RtmClient
 Signaling client instance
-### subscribeTopic
+### subscribe
 
 #### Description
 
@@ -701,7 +701,7 @@ rtmClient.subscribe("channel_name", options, new ResultCallback<Void>() {
 });
 ```
 
-### unsubscribeTopic
+### unsubscribe
 
 #### Description
 
@@ -743,7 +743,7 @@ rtmClient.unsubscribe("channel_name", new ResultCallback<Void>() {
 });
 ```
 
-### create
+### createStreamChannel
 
 #### Description
 
@@ -781,7 +781,7 @@ The `StreamChannel` instance.
 
 StreamChannel
 Stream channel instance
-### joinTopic
+### join
 
 #### Description
 
@@ -844,7 +844,7 @@ streamChannel.join(options, new ResultCallback<Void>() {
 });
 ```
 
-### leaveTopic
+### leave
 
 #### Description
 
@@ -884,7 +884,7 @@ streamChannel.leave(new ResultCallback<Void>() {
 });
 ```
 
-### releaseLock
+### StreamChannel.release
 
 #### Description
 
@@ -1263,7 +1263,7 @@ This section shows you how to send and receive messages in a message channel or 
 
 RtmClient
 Signaling client instance
-### publishTopicMessage
+### publish
 
 #### Description
 
@@ -2532,7 +2532,7 @@ rtmClient.getLock().revokeLock("chat_room", RtmChannelType.STREAM, lockName, loc
 });
 ```
 
-### getMessages
+### getLocks
 
 #### Description
 
