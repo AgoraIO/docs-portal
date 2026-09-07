@@ -6133,7 +6133,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/downloads.md':
     '2026-09-02T04:56:58.000Z',
   'content/docs/en/realtime-media/rtm/reference/downloads.mdx':
-    '2026-09-07T04:39:30.000Z',
+    '2026-09-07T05:13:59.000Z',
   'content/docs/en/realtime-media/rtm/reference/error-codes.md':
     '2026-06-28T06:33:56.000Z',
   'content/docs/en/realtime-media/rtm/reference/firewall.md':
