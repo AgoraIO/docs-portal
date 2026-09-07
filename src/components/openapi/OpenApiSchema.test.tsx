@@ -245,7 +245,9 @@ describe('OpenApiSchema', () => {
     expect(within(row as HTMLElement).getByText('ready')).toHaveAttribute(
       'data-openapi-allowed-value-key',
     );
-    expect(within(row as HTMLElement).getByText('running')).toBeVisible();
+    expect(
+      row?.querySelector('[data-openapi-allowed-value-key*="running"]'),
+    ).toBeVisible();
     expect(within(row as HTMLElement).getByText('Default:')).toBeVisible();
     expect(within(row as HTMLElement).getByText('Format:')).toBeVisible();
     expect(screen.queryByText('Value in')).not.toBeInTheDocument();

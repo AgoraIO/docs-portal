@@ -953,15 +953,15 @@ describe('FumadocsOpenApiContent', () => {
       within(asrRow).getByRole('button', { name: 'Expand asr properties' }),
     );
     const vendorRow = getSchemaRow('vendor');
-    expect(within(vendorRow).getByText('Allowed values')).toBeVisible();
+    expect(within(vendorRow).getByText('Allowed values:')).toBeVisible();
     expect(
       within(vendorRow).getByText('ares', { exact: true }),
     ).toHaveAttribute('data-openapi-allowed-value-key', 'string:"ares":0');
     expect(within(vendorRow).getByText('ares', { exact: true }).tagName).toBe(
-      'CODE',
+      'SPAN',
     );
     expect(
-      within(vendorRow).getByText('microsoft', { exact: true }),
+      vendorRow.querySelector('[data-openapi-allowed-value-key*="microsoft"]'),
     ).toBeVisible();
 
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
@@ -1871,8 +1871,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(within(pathSection).getByText('sid')).toBeInTheDocument();
     expect(within(pathSection).getByText('mode')).toBeInTheDocument();
     expect(within(pathSection).getByText('individual')).toBeInTheDocument();
-    expect(within(pathSection).getByText('mix')).toBeInTheDocument();
-    expect(within(pathSection).getByText('web')).toBeInTheDocument();
+    expect(within(pathSection).getByText(/mix/)).toBeInTheDocument();
+    const modeRow = within(pathSection)
+      .getByText('mode')
+      .closest('.openapi-schema-field-row');
+    expect(
+      modeRow?.querySelector('[data-openapi-allowed-value-key*="web"]'),
+    ).toBeInTheDocument();
     expect(within(headerSection).getByText('Content-Type')).toBeInTheDocument();
     expect(
       within(headerSection).getAllByText('application/json')[0],
@@ -2451,18 +2456,20 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       within(pathSection).getByText(/flow configuration template ID/),
     ).toBeInTheDocument();
-    expect(within(pathSection).getByText('Allowed values')).toBeInTheDocument();
+    expect(
+      within(pathSection).getByText('Allowed values:'),
+    ).toBeInTheDocument();
     expect(within(pathSection).getAllByText('cn').length).toBeGreaterThan(0);
-    expect(within(pathSection).getByText('Default')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Length')).toBeInTheDocument();
-    expect(within(pathSection).getByText('Match')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Default:')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Length:')).toBeInTheDocument();
+    expect(within(pathSection).getByText('Match:')).toBeInTheDocument();
     expect(within(pathSection).getAllByText('720p').length).toBeGreaterThan(0);
 
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
     }).nextElementSibling as HTMLElement;
     expect(within(querySection).getByText('page_size')).toBeInTheDocument();
-    expect(within(querySection).getAllByText('Range')).toHaveLength(2);
+    expect(within(querySection).getAllByText('Range:')).toHaveLength(2);
     expect(
       within(querySection).getByText('1 <= value <= 500'),
     ).toBeInTheDocument();

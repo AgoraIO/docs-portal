@@ -36,7 +36,9 @@ export function OpenApiSchemaMetadata({
         <div className="openapi-schema-metadata-row" key={key ?? label}>
           <span className="openapi-schema-metadata-label">{label}:</span>
           <div className="openapi-schema-metadata-value">
-            <div className="openapi-schema-value-container">{value}</div>
+            <div className="openapi-schema-value-container min-w-0 max-w-full [overflow-wrap:anywhere]">
+              {value}
+            </div>
           </div>
         </div>
       ))}

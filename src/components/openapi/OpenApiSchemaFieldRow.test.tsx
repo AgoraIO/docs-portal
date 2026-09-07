@@ -404,7 +404,16 @@ describe('OpenApiSchemaFieldRow', () => {
       'min-w-0',
       'break-words',
     );
-    expect(screen.getByText(longAllowedValue)).toHaveClass('break-words');
+    expect(
+      screen
+        .getByText(longAllowedValue)
+        .closest('.openapi-schema-value-container'),
+    ).toHaveClass(
+      'openapi-schema-value-container',
+      'min-w-0',
+      'max-w-full',
+      '[overflow-wrap:anywhere]',
+    );
     expect(
       screen
         .getByText(longAllowedValue)
@@ -519,16 +528,21 @@ describe('OpenApiSchemaFieldRow', () => {
       'openapi-schema-metadata',
     );
     expect(
-      within(allowedValues as HTMLElement).getByText('draft'),
+      allowedValues?.querySelector('[data-openapi-allowed-value-key*="draft"]'),
     ).toBeInTheDocument();
     expect(
       within(allowedValues as HTMLElement).queryByText('"draft"'),
     ).not.toBeInTheDocument();
     expect(
-      within(allowedValues as HTMLElement).getByText('published'),
+      allowedValues?.querySelector(
+        '[data-openapi-allowed-value-key*="published"]',
+      ),
     ).toBeInTheDocument();
     expect(
-      within(allowedValues as HTMLElement).getByText('{"key":"value"}'),
+      Array.from(
+        allowedValues?.querySelectorAll('[data-openapi-allowed-value-key]') ??
+          [],
+      ).find((element) => element.textContent?.includes('{"key":"value"}')),
     ).toBeInTheDocument();
     expect(allowedValues?.querySelectorAll('code')).toHaveLength(0);
     expect(allowedValues?.querySelector('ul')).not.toBeInTheDocument();

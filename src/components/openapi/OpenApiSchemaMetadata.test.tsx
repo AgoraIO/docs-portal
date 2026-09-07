@@ -83,7 +83,7 @@ describe('OpenApiSchemaMetadata', () => {
     expect(container?.querySelectorAll('code')).toHaveLength(0);
     expect(
       container?.querySelectorAll('.openapi-schema-value-container'),
-    ).toHaveLength(1);
+    ).toHaveLength(0);
   });
 
   it('returns no markup when there are no metadata items', () => {

@@ -18,6 +18,7 @@
 - Modify `src/components/openapi/OpenApiSchemaMetadata.test.tsx` — markup, adjacency, grouping, and value-content tests.
 - Modify `src/components/openapi/OpenApiSchemaFieldRow.test.tsx` — metadata-before-description test and status/copy regression.
 - Modify `src/components/openapi/OpenApiSchema.test.tsx` — metadata order/content and value-container regression.
+- Modify `src/styles/app-css-regressions.test.ts` — assert the inline metadata and value-container CSS contract.
 - Inspect `src/components/openapi/OpenApiSchemaTree.test.tsx`; existing tests cover continuous logical guide lines and `hidden="until-found"`, so leave it unchanged unless a selector must be updated.
 
 ## Task 1: Write the failing metadata and ordering tests
@@ -211,6 +212,7 @@ git commit -m "feat: unify OpenAPI metadata values"
 - Modify: `src/components/openapi/OpenApiSchemaMetadata.test.tsx`
 - Modify: `src/components/openapi/OpenApiSchemaFieldRow.test.tsx`
 - Modify: `src/components/openapi/OpenApiSchema.test.tsx`
+- Modify: `src/styles/app-css-regressions.test.ts`
 - Do not modify `src/components/openapi/OpenApiSchemaTree.tsx`; its existing tests cover guide lines and hidden descendants.
 
 - [ ] **Step 1: Add long-value wrapping coverage.**
@@ -221,10 +223,10 @@ Render a long enum/default/range value and assert its closest value container st
 
 ```bash
 node node_modules/vitest/vitest.mjs run src/components/openapi/OpenApiSchemaMetadata.test.tsx src/components/openapi/OpenApiSchemaFieldRow.test.tsx src/components/openapi/OpenApiSchema.test.tsx src/components/openapi/OpenApiSchemaTree.test.tsx src/components/openapi/FumadocsOpenApiContent.test.tsx
-./node_modules/.bin/biome check src/components/openapi src/styles/app.css
+./node_modules/.bin/biome check src/components/openapi src/styles/app.css src/styles/app-css-regressions.test.ts
 ```
 
-Expected: PASS with Required/Optional/Deprecated badges, deprecated strike-through, continuous logical guide lines, `hidden="until-found"`, section headings, and no parameter filters intact. Spec review must cover value style, order, wrapping, and non-goals. Code-quality review must use stable semantic hooks and avoid duplicating tree fixtures.
+Expected: PASS with Required/Optional/Deprecated badges, deprecated strike-through, continuous logical guide lines, `hidden="until-found"`, section headings, no parameter filters, and the updated inline metadata CSS contract intact. Spec review must cover value style, order, wrapping, and non-goals. Code-quality review must use stable semantic hooks and avoid duplicating tree fixtures.
 
 - [ ] **Step 3: Commit regression coverage.**
 

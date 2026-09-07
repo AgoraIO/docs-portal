@@ -263,28 +263,24 @@ describe('app prose CSS regressions', () => {
     const row = getRuleBody('.openapi-schema-metadata-row').rule;
     const label = getRuleBody('.openapi-schema-metadata-label').rule;
     const value = getRuleBody('.openapi-schema-metadata-value').rule;
+    const valueContainer = getRuleBody('.openapi-schema-value-container').rule;
 
-    expectDeclaration(metadata, 'display', 'grid');
-    expectDeclaration(
-      metadata,
-      'grid-template-columns',
-      'minmax(7rem, max-content) minmax(0, 1fr)',
-    );
+    expectDeclaration(metadata, 'display', 'flex');
     expectDeclaration(metadata, 'min-width', '0');
-    expectDeclaration(row, 'grid-template-columns', 'subgrid');
-    expectDeclaration(label, 'min-width', '7rem');
+    expectDeclaration(row, 'display', 'inline-flex');
+    expectDeclaration(row, 'max-width', '100%');
+    expectDeclaration(label, 'font-weight', '700');
+    expectDeclaration(label, 'color', 'var(--foreground)');
+    expectDeclaration(value, 'display', 'inline-flex');
     expectDeclaration(value, 'min-width', '0');
     expectDeclaration(value, 'overflow-wrap', 'anywhere');
-
-    const narrowMetadata = getRuleBodyContainingInMedia(
-      '.openapi-schema-metadata',
-      'max-width: 48rem',
-    ).rule;
-    expectDeclaration(
-      narrowMetadata,
-      'grid-template-columns',
-      'minmax(0, 1fr)',
-    );
+    expectDeclaration(valueContainer, 'display', 'inline-flex');
+    expectDeclaration(valueContainer, 'max-width', '100%');
+    expectDeclaration(valueContainer, 'border', '1px solid var(--line)');
+    expectDeclaration(valueContainer, 'background', 'var(--bg-sunken)');
+    expectDeclaration(valueContainer, 'color', 'var(--accent-brand)');
+    expectDeclaration(valueContainer, 'font-family', 'var(--font-mono)');
+    expectDeclaration(valueContainer, 'font-weight', '700');
   });
 
   it('keeps the narrow response-header and browser-find adapter contracts', () => {
