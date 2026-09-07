@@ -91,10 +91,12 @@ A Signaling client instance. Now you can call other Signaling APIs.
 
 #### Method
 
-You can create a `RTMConfig` instance as follows:
+`RTMConfig` is a plain object with the following shape. Pass it as the third argument when you create an `RTM` instance:
 
 ```javascript
-const { RTMConfig } = AgoraRTM;
+const rtmConfig = {
+    // Set any of the properties below.
+};
 ```
 
 | Property | Type | Required | Default | 描述 |
@@ -128,9 +130,9 @@ To upgrade the privately deployed Signaling Web SDK to v2.2.4 or later, set `dom
 #### Basic Usage
 
 ```javascript
-const { RTM, EncryptionMode } = AgoraRTM;
+const { RTM } = AgoraRTM;
 const rtmConfig = {
-    encryptionMode : EncryptionMode.AES_256_GCM,
+    encryptionMode : "AES_256_GCM",
     salt : yourSalt,
     cipherKey : "yourCipherKey",
     presenceTimeout : 300,
@@ -900,15 +902,7 @@ try {
 Example 2: Send Uint8Array messages to a specified channel.
 
 ```javascript
-const str2ab = function(str) {
-    var buf = new ArrayBuffer(str.length * 2); // Each character occupies 2 bytes.
-    var bufView = new Uint16Array(buf);
-    for (var i = 0, strLen = str.length; i < strLen; i++) {
-        bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-}
-var Message=str2ab("hello world")
+const Message = new TextEncoder().encode("hello world");
 try {
     const result = await stChannel.publishTopicMessage( "Gesture",Message);
     console.log(result);
@@ -1036,7 +1030,7 @@ Example 1: Subscribe to a specified message publisher in a topic.
 ```javascript
 var UIDs = ["zhangsan","lisi","wangwu"]
 try {
-    const result = await rtm.subscribeTopic( "Gesture", { users:UIDs } );
+    const result = await stChannel.subscribeTopic( "Gesture", { users:UIDs } );
     console.log(result);
 } catch (status) {
     console.log( status);
@@ -1121,10 +1115,10 @@ Example 1: Unsubscribe from a specified message publisher in a topic.
 
 ```javascript
 try {
-    const result = await rtm.unsubscribeTopic( "Gesture", { users:["Tony","Bo"] });
+    const result = await stChannel.unsubscribeTopic( "Gesture", { users:["Tony","Bo"] });
     console.log("unsubscribe Topic success: ", result);
 } catch (status) {
-    console.log("unsubscribe Topic failed: ", result);
+    console.log("unsubscribe Topic failed: ", status);
 }
 ```
 
@@ -1132,10 +1126,10 @@ Example 2: Randomly unsubscribe from 64 message publisher in a topic.
 
 ```javascript
 try {
-    const result = await rtm.unsubscribeTopic("Gesture");
+    const result = await stChannel.unsubscribeTopic("Gesture");
     console.log("unsubscribe topic success: ", result);
 } catch (status) {
-    console.log("unsubscribe topic failed: ", result);
+    console.log("unsubscribe topic failed: ", status);
 }
 ```
 
@@ -1226,15 +1220,7 @@ try {
 Example 2: Send Uint8Array messages to a specified channel.
 
 ```javascript
-const str2ab = function(str) {
-    var buf = new ArrayBuffer(str.length * 2); // Each character occupies 2 bytes.
-    var bufView = new Uint16Array(buf);
-    for (var i = 0, strLen = str.length; i < strLen; i++) {
-        bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-};
-var Message=str2ab("hello world");
+const Message = new TextEncoder().encode("hello world");
 try {
     const result = await rtm.publish("my_channel", Message );
     console.log(result);
@@ -1257,15 +1243,7 @@ try {
 Example 4: Send Uint8Array messages to a specified user.
 
 ```javascript
-const str2ab = function(str) {
-    var buf = new ArrayBuffer(str.length * 2); // 每个字符占用 2 个字节
-    var bufView = new Uint16Array(buf);
-    for (var i = 0, strLen = str.length; i < strLen; i++) {
-        bufView[i] = str.charCodeAt(i);
-    }
-    return buf;
-};
-var Message=str2ab("hello world");
+const Message = new TextEncoder().encode("hello world");
 try {
     const result = await rtm.publish("user_b", Message, { channelType: "USER"} );
     console.log(result);
@@ -1500,7 +1478,7 @@ The keys in the `state` property do not support containing `[`, `]`, and `.` cha
 var newState = { "mood":"pumped", "isTyping":false};
 
 try{
-    const result = await rtm.Presence.setState("chat_room", "MESSAGE", newState);
+    const result = await rtm.presence.setState("chat_room", "MESSAGE", newState);
     console.log(result);
 } catch(status){
     console.log(status);
@@ -1631,7 +1609,7 @@ const options = {
     states:["mode","Typing"]
 }
 try{
-    const result = await rtm.Presence.removeState("chat_room", "MESSAGE" , options);
+    const result = await rtm.presence.removeState("chat_room", "MESSAGE" , options);
     console.log(result);
 } catch (status) {
     console.log(status);
@@ -2521,10 +2499,10 @@ rtm.lock.setLock(
 
 ```javascript
 try{
-    const result = await rtm.Lock.setLock(
-        channel:"my_channel",
-        channelType:"STREAM",
-        lockName: "my_lock",
+    const result = await rtm.lock.setLock(
+        "my_channel",
+        "STREAM",
+        "my_lock",
         { ttl: 30 }
     );
     console.log(result);
@@ -2595,7 +2573,7 @@ rtm.lock.acquireLock(
 
 ```javascript
 try{
-    const result = await rtm.Lock.acquireLock(
+    const result = await rtm.lock.acquireLock(
         "chat_room",
         "STREAM",
         "my_lock",
@@ -2730,7 +2708,7 @@ rtm.lock.revokeLock(
 
 ```javascript
 try{
-    const result = await rtm.lock.revokeLockLock(
+    const result = await rtm.lock.revokeLock(
         "chat_room",
         "STREAM",
         "my_lock",
@@ -2858,7 +2836,7 @@ rtm.lock.removeLock(
 
 ```javascript
 try{
-    const result = await rtm.Lock.removeLockLock(
+    const result = await rtm.lock.removeLock(
         "chat_room",
         "STREAM",
         "my_lock"
