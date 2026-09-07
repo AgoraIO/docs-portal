@@ -72,7 +72,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling/web#publish)
 
 </PlatformStructured>
 
@@ -126,7 +126,7 @@ Refer to the following sample code for sending messages:
 ```kotlin tab="Kotlin" tabGroup="language"
 // Send string message
     val options = PublishOptions()
-    options.channelType = RtmChannelType.USER
+    options.setChannelType(RtmChannelType.USER)
     options.customType = "PlainText"
     rtmClient.publish("Tony", "Hello world", options, object : ResultCallback<Void> {
         override fun onSuccess(responseInfo: Void?) {
@@ -164,7 +164,7 @@ Refer to the following sample code for sending messages:
 // Send binary message
     val message = byteArrayOf(1, 2, 3, 4)
     val options = PublishOptions()
-    options.channelType = RtmChannelType.USER
+    options.setChannelType(RtmChannelType.USER)
     options.customType = "ByteArray"
     rtmClient.publish("Tony", message, options, object : ResultCallback<Void> {
         override fun onSuccess(responseInfo: Void?) {
@@ -201,8 +201,8 @@ To avoid sending failure due to excess message payload packet size, check the pa
 
 ### API reference
 
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
-- [`receive`](/en/api-reference/api-ref/signaling#receive)
+- [`publish`](/en/api-reference/api-ref/signaling/android#publish)
+- [`receive`](/en/api-reference/api-ref/signaling/android#receive)
 
 </PlatformStructured>
 
@@ -336,13 +336,13 @@ To avoid sending failure due to excess message payload packet size, check the pa
 
 **Swift**
 
-- [`publish`](/en/api-reference/api-ref/signaling?platform=objc&tab=swift#messagepublishpropsag_platform)
-- [Receive](/en/api-reference/api-ref/signaling?platform=objc&tab=swift#receive)
+- [`publish`](/en/api-reference/api-ref/signaling/ios#publish)
+- [Receive](/en/api-reference/api-ref/signaling/ios#receive)
 
 **Objective-C**
 
-- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform)
-- [Receive](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#receive)
+- [`publish`](/en/api-reference/api-ref/signaling/ios#publish)
+- [Receive](/en/api-reference/api-ref/signaling/ios#receive)
 
 </PlatformStructured>
 
@@ -476,13 +476,13 @@ To avoid sending failure due to excess message payload packet size, check the pa
 
 **Swift**
 
-- [`publish`](/en/api-reference/api-ref/signaling?platform=objc&tab=swift#messagepublishpropsag_platform)
-- [Receive](/en/api-reference/api-ref/signaling?platform=objc&tab=swift#receive)
+- [`publish`](/en/api-reference/api-ref/signaling/macos#publish)
+- [Receive](/en/api-reference/api-ref/signaling/macos#receive)
 
 **Objective-C**
 
-- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform)
-- [Receive](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#receive)
+- [`publish`](/en/api-reference/api-ref/signaling/macos#publish)
+- [Receive](/en/api-reference/api-ref/signaling/macos#receive)
 
 </PlatformStructured>
 
@@ -649,7 +649,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling/windows-cpp#publish)
 
 </PlatformStructured>
 
@@ -733,7 +733,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`publish`](/en/api-reference/api-ref/signaling/linux-cpp#publish)
 
 </PlatformStructured>
 
@@ -829,7 +829,7 @@ To avoid sending failure due to excess message payload packet size, check the pa
 
 ### API reference
 
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
-- [`receive`](/en/api-reference/api-ref/signaling#receive)
+- [`publish`](/en/api-reference/api-ref/signaling/linux-java#publish)
+- [`receive`](/en/api-reference/api-ref/signaling/linux-java#receive)
 
 </PlatformStructured>

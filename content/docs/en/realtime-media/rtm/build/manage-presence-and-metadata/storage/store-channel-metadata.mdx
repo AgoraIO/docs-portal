@@ -202,7 +202,7 @@ Once channel metadata is deleted, it cannot be recovered. If you need data resto
 
 ## Receive storage event notifications
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/web#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -305,7 +305,7 @@ try {
 }
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/web#lock).
 
 ## Reference
 
@@ -313,14 +313,14 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/web#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/web#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/web#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/web#updatechannelmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/web#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/web#lock)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Storage](/en/api-reference/api-ref/signaling/web#storage)
 
 </PlatformStructured>
 
@@ -360,7 +360,7 @@ metadata.getItems().add(new MetadataItem("Quantity", "20"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "100"));
 
-mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, new MetadataOptions(true, true), nullptr, new ResultCallback<Void>() {
+mRtmClient.getStorage().setChannelMetadata("channel1", RtmChannelType.MESSAGE, metadata, new MetadataOptions(true, true), "", new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
         log(CALLBACK, "set channel metadata success");
@@ -589,9 +589,9 @@ Once channel metadata is deleted, it cannot be recovered. If you need data resto
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/android#storageevent) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling/android#rtmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/android#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -635,7 +635,7 @@ metadata.setMajorRevision(734874892);
 metadata.getItems().add(new MetadataItem("Quantity", "30", 734874888));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "101", 734874222));
-MetadataOptions options = new MetadataOptions()
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
@@ -693,7 +693,7 @@ Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "40"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our Shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "300"));
-MetadataOptions options = new MetadataOptions()
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
@@ -732,7 +732,7 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
 })
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/android#lock).
 
 ## Reference
 
@@ -740,14 +740,14 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/android#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/android#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/android#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/android#updatechannelmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/android#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/android#lock)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/android#metadata)
 
 </PlatformStructured>
 
@@ -1109,9 +1109,9 @@ Once channel metadata is deleted, it cannot be recovered. To implement data rest
 
 ## Receive storage event notifications
 
-A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling/ios#agorartmstorageevent) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling/ios#agorartmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, add `metadata` to the `features` parameter under `options` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners) for details. In addition, add `metadata` to the `features` parameter under `options` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -1292,7 +1292,7 @@ metadata_opt.recordTs = true;
 }];
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/ios#lock).
 
 ## Reference
 
@@ -1308,25 +1308,25 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdatechannelpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/ios#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/ios#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/ios#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/ios#updatechannelmetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/ios#agorartmmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/ios#lock)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdatechannelpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/ios#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/ios#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/ios#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/ios#updatechannelmetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/ios#agorartmmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/ios#lock)
 
 </TabsContent>
 </Tabs>
@@ -1691,9 +1691,9 @@ Once channel metadata is deleted, it cannot be recovered. To implement data rest
 
 ## Receive storage event notifications
 
-A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [AgoraRtmStorageEvent](/en/api-reference/api-ref/signaling/macos#agorartmstorageevent) data structure, which includes the [AgoraRtmStorageEventType](/en/api-reference/api-ref/signaling/macos#agorartmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, add `metadata` to the `features` parameter under `options` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners) for details. In addition, add `metadata` to the `features` parameter under `options` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -1874,7 +1874,7 @@ metadata_opt.recordTs = true;
 }];
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/macos#lock).
 
 ## Reference
 
@@ -1890,25 +1890,25 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storageupdatechannelpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#storagemetadatapropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/macos#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/macos#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/macos#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/macos#updatechannelmetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/macos#agorartmmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/macos#lock)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storageupdatechannelpropsag_platform)
-- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#storagemetadatapropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/macos#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/macos#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/macos#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/macos#updatechannelmetadata)
+- [`AgoraRtmMetadata`](/en/api-reference/api-ref/signaling/macos#agorartmmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/macos#lock)
 
 </TabsContent>
 </Tabs>
@@ -1987,7 +1987,7 @@ If the operation is successful, Signaling returns the following data structure:
 }
 ```
 
-Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users in the channel. For details, see [event listeners](/en/api-reference/api-ref/signaling#event-listeners).
+Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users in the channel. For details, see [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners).
 
 ### Get channel metadata
 
@@ -2086,7 +2086,7 @@ If the update operation is successful, Signaling returns the following data stru
 }
 ```
 
-Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users in the channel. For details, see [event listeners](/en/api-reference/api-ref/signaling#event-listeners).
+Signaling also triggers a `storage` event notification within 100 ms of type `update` to notify other users in the channel. For details, see [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners).
 
 ### Delete channel metadata
 
@@ -2140,9 +2140,9 @@ Once channel metadata is deleted, it cannot be recovered. If you need data resto
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/flutter#storageevent) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling/flutter#rtmstorageeventtype) parameter.
 
-To receive storage event notifications, implement a `storage` event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+To receive storage event notifications, implement a `storage` event listener. See [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -2265,7 +2265,7 @@ try{
 }
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/flutter#lock).
 
 ## Reference
 
@@ -2273,14 +2273,14 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/flutter#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/flutter#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/flutter#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/flutter#updatechannelmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/flutter#lock)
 
-- [MetadataItem](/en/api-reference/api-ref/signaling#storagemetadataitempropsag_platform)
+- [MetadataItem](/en/api-reference/api-ref/signaling/flutter#metadataitem)
 
 </PlatformStructured>
 
@@ -2500,9 +2500,9 @@ Once channel metadata is deleted, it cannot be recovered. If you need data resto
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/windows-cpp#storageevent) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling/windows-cpp#rtm_storage_event_type) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -2585,7 +2585,7 @@ std::string lockName = "manage";
 rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName, requestId);
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/windows-cpp#lock).
 
 ## Reference
 
@@ -2593,14 +2593,14 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/windows-cpp#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#updatechannelmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/windows-cpp#lock)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/windows-cpp#metadata)
 
 </PlatformStructured>
 
@@ -2820,9 +2820,9 @@ Once channel metadata is deleted, it cannot be recovered. If you need data resto
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/linux-cpp#storageevent) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling/linux-cpp#rtm_storage_event_type) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -2905,7 +2905,7 @@ std::string lockName = "manage";
 rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName, requestId);
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/linux-cpp#lock).
 
 ## Reference
 
@@ -2913,14 +2913,14 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/linux-cpp#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#updatechannelmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/linux-cpp#lock)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/linux-cpp#metadata)
 
 </PlatformStructured>
 
@@ -3108,9 +3108,9 @@ Once channel metadata is deleted, it cannot be recovered. If you need data resto
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/linux-java#storageevent) data structure, which includes the [RtmStorageEventType](/en/api-reference/api-ref/signaling/linux-java#rtmstorageeventtype) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -3154,7 +3154,7 @@ metadata.setMajorRevision(734874892);
 metadata.getItems().add(new MetadataItem("Quantity", "30", 734874888));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "101", 734874222));
-MetadataOptions options = new MetadataOptions();
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
@@ -3191,7 +3191,7 @@ Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Quantity", "40"));
 metadata.getItems().add(new MetadataItem("Announcement", "Welcome to our Shop!"));
 metadata.getItems().add(new MetadataItem("T-shirt", "300"));
-MetadataOptions options = new MetadataOptions();
+MetadataOptions options = new MetadataOptions();
 options.setRecordTs(true);
 options.setRecordUserId(true);
 
@@ -3209,7 +3209,7 @@ mRtmClient.getStorage().updateChannelMetadata("channel1", RtmChannelType.MESSAGE
 });
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/linux-java#lock).
 
 ## Reference
 
@@ -3217,14 +3217,14 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
-- [`getChannelMetadata`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
-- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
-- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling#lock)
+- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/linux-java#setchannelmetadata)
+- [`getChannelMetadata`](/en/api-reference/api-ref/signaling/linux-java#getchannelmetadata)
+- [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/linux-java#removechannelmetadata)
+- [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/linux-java#updatechannelmetadata)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/linux-java#lock)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Metadata](/en/api-reference/api-ref/signaling/linux-java#metadata)
 
 </PlatformStructured>
 
@@ -3451,9 +3451,9 @@ Once channel metadata is deleted, it cannot be recovered. If you need data resto
 
 ## Receive storage event notifications
 
-A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling#configstorageeventpropsag_platform) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvstorageeventtypepropsag_platform) parameter.
+A storage event notification returns the [StorageEvent](/en/api-reference/api-ref/signaling/unity#storageevent) data structure, which includes the [RTM_STORAGE_EVENT_TYPE](/en/api-reference/api-ref/signaling/unity#rtm_storage_event_type) parameter.
 
-To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
+To receive storage event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners) for details. In addition, set the `withMetadata` parameter to `true` when subscribing to or joining a channel.
 
 #### Event notification mode
 
@@ -3577,7 +3577,7 @@ else
 }
 ```
 
-For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling#lock).
+For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/unity#lock).
 
 ## Reference
 
@@ -3585,13 +3585,13 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`SetChannelMetaDataAsync`](/en/api-reference/api-ref/signaling#storagesetchannelpropsag_platform)
-- [`GetChannelMetadataAsync`](/en/api-reference/api-ref/signaling#storagegetchannelpropsag_platform)
-- [`RemoveChannelMetadataAsync`](/en/api-reference/api-ref/signaling#storageremovechannelpropsag_platform)
-- [`UpdateChannelMetadataAsync`](/en/api-reference/api-ref/signaling#storageupdatechannelpropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
-- [Lock](/en/api-reference/api-ref/signaling#lock)
+- [`SetChannelMetaDataAsync`](/en/api-reference/api-ref/signaling/unity#setchannelmetadataasync)
+- [`GetChannelMetadataAsync`](/en/api-reference/api-ref/signaling/unity#getchannelmetadataasync)
+- [`RemoveChannelMetadataAsync`](/en/api-reference/api-ref/signaling/unity#removechannelmetadataasync)
+- [`UpdateChannelMetadataAsync`](/en/api-reference/api-ref/signaling/unity#updatechannelmetadataasync)
+- [Event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners)
+- [Lock](/en/api-reference/api-ref/signaling/unity#lock)
 
-- [Metadata](/en/api-reference/api-ref/signaling#storagemetadatapropsag_platform)
+- [Storage](/en/api-reference/api-ref/signaling/unity#storage)
 
 </PlatformStructured>

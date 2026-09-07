@@ -196,9 +196,9 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 ### API reference
 
-- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/web#subscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/web#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/web#publish)
 
 </PlatformStructured>
 
@@ -369,7 +369,7 @@ Refer to the following sample code for sending messages:
     String message = "Hello World"; // Declaring a string variable for the message content
     String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
     var options = new PublishOptions(); // Creating options for publishing the message
-    options.customType = "PlainTxt"; // Setting the custom message type to "PlainTxt"
+    options.setCustomType("PlainTxt"); // Setting the custom message type to "PlainTxt"
 
     mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
         @Override
@@ -410,7 +410,7 @@ Refer to the following sample code for sending messages:
     byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Defining a byte array for the binary message
     String channelName = "my_channel"; // Specifying the name of the channel to which the message will be sent
     var options = new PublishOptions(); // Creating options for publishing the message
-    options.customType = "ByteArray"; // Setting the custom message type to "ByteArray"
+    options.setCustomType("ByteArray"); // Setting the custom message type to "ByteArray"
 
     mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() { // Publishing the message to the channel
         @Override
@@ -490,7 +490,7 @@ mRtmClient.subscribe(channelName, options, object : ResultCallback<Void> {
     }
 
     override fun onFailure(errorInfo: ErrorInfo) {
-        log(ERROR, "Failed to subscribe to channel: $channelName, Error: $\{errorInfo.toString()\}")
+        log(ERROR, "Failed to subscribe to channel: $channelName, Error: $errorInfo")
     }
 })
 ```
@@ -553,9 +553,9 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 ### API reference
 
-- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/android#subscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/android#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/android#publish)
 
 </PlatformStructured>
 
@@ -891,17 +891,17 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 <TabsContent value="swift">
 
-- [`subscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/ios#subscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/ios#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/ios#publish)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`subscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelsubscribepropsag_platform)
-- [`unsubscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform)
+- [`subscribeWithChannel`](/en/api-reference/api-ref/signaling/ios#subscribe)
+- [`unsubscribeWithChannel`](/en/api-reference/api-ref/signaling/ios#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/ios#publish)
 
 </TabsContent>
 </Tabs>
@@ -1240,17 +1240,17 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 <TabsContent value="swift">
 
-- [`subscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/macos#subscribewithchannel)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/macos#unsubscribewithchannel)
+- [`publish`](/en/api-reference/api-ref/signaling/macos#publish)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`subscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelsubscribepropsag_platform)
-- [`unsubscribeWithChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#messagepublishpropsag_platform)
+- [`subscribeWithChannel`](/en/api-reference/api-ref/signaling/macos#subscribewithchannel)
+- [`unsubscribeWithChannel`](/en/api-reference/api-ref/signaling/macos#unsubscribewithchannel)
+- [`publish`](/en/api-reference/api-ref/signaling/macos#publish)
 
 </TabsContent>
 </Tabs>
@@ -1487,9 +1487,9 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 ### API reference
 
-- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/flutter#subscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/flutter#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/flutter#publish)
 
 </PlatformStructured>
 
@@ -1671,9 +1671,9 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 ### API reference
 
-- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/windows-cpp#subscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/windows-cpp#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/windows-cpp#publish)
 
 </PlatformStructured>
 
@@ -1855,9 +1855,9 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 ### API reference
 
-- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/linux-cpp#subscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/linux-cpp#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/linux-cpp#publish)
 
 </PlatformStructured>
 
@@ -2086,8 +2086,8 @@ To avoid sending failure due to message payload size exceeding the limit, check 
 
 ### API reference
 
-- [`subscribe`](/en/api-reference/api-ref/signaling#channelsubscribepropsag_platform)
-- [`unsubscribe`](/en/api-reference/api-ref/signaling#channelunsubscribepropsag_platform)
-- [`publish`](/en/api-reference/api-ref/signaling#messagepublishpropsag_platform)
+- [`subscribe`](/en/api-reference/api-ref/signaling/linux-java#subscribe)
+- [`unsubscribe`](/en/api-reference/api-ref/signaling/linux-java#unsubscribe)
+- [`publish`](/en/api-reference/api-ref/signaling/linux-java#publish)
 
 </PlatformStructured>

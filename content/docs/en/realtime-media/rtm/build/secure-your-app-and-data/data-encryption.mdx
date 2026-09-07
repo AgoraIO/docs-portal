@@ -56,7 +56,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`RTMConfig`](/en/api-reference/api-ref/signaling#configrtmpropsag_platform)
+- [`RTMConfig`](/en/api-reference/api-ref/signaling/web#rtmconfig)
 
 </PlatformStructured>
 
@@ -90,32 +90,29 @@ Refer to the following sample code to configure end-to-end encryption:
 RtmEncryptionConfig config = new RtmEncryptionConfig();
 // Set the encryption mode, which can be `AES_256_GCM`, `AES_128_GCM`, or `NONE`.
 // The default value is `NONE`, which means encryption is not enabled.
-config.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
-config.encryptionKey = "your_encryptionKey";
-byte[] salt = your_salt;
-config.encryptionSalt = salt;
+config.setEncryptionMode(RtmEncryptionMode.AES_256_GCM);
+config.setEncryptionKey("your_encryptionKey");
+byte[] salt = {1, 2, 3, 4, 5};
+config.setEncryptionSalt(salt);
 
-RtmConfig rtmConfig = new RtmConfig();
-rtmConfig.encryptionConfig = config;
-// Replace your_appId with your App ID
-rtmConfig.appId = "your_appId";
-// Replace your_userId with your User ID
-rtmConfig.userId = "your_userId";
+// Replace your_appId with your App ID and your_userId with your User ID
+RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+    .encryptionConfig(config)
+    .build();
 mRtmClient = RtmClient.create(rtmConfig);
 ```
 
 ```kotlin tab="Kotlin"
 val config = RtmEncryptionConfig().apply {
-    encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM
+    setEncryptionMode(RtmEncryptionMode.AES_256_GCM)
     encryptionKey = "your_encryptionKey"
-    encryptionSalt = your_salt
+    encryptionSalt = byteArrayOf(1, 2, 3, 4, 5)
 }
 
-val rtmConfig = RtmConfig().apply {
-    encryptionConfig = config
-    appId = "your_appId" // Replace with your App ID
-    userId = "your_userId" // Replace with your User ID
-}
+// Replace your_appId with your App ID and your_userId with your User ID
+val rtmConfig = RtmConfig.Builder("your_appId", "your_userId")
+    .encryptionConfig(config)
+    .build()
 
 val mRtmClient = RtmClient.create(rtmConfig)
 ```
@@ -132,7 +129,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling/android#rtmencryptionconfig)
 
 </PlatformStructured>
 
@@ -220,13 +217,13 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configencryptionpropsag_platform)
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling/ios#agorartmencryptionconfig)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configencryptionpropsag_platform)
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling/ios#agorartmencryptionconfig)
 
 </TabsContent>
 </Tabs>
@@ -317,13 +314,13 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#configencryptionpropsag_platform)
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling/macos#agorartmencryptionconfig)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#configencryptionpropsag_platform)
+* [`AgoraRtmEncryptionConfig`](/en/api-reference/api-ref/signaling/macos#agorartmencryptionconfig)
 
 </TabsContent>
 </Tabs>
@@ -393,7 +390,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling/flutter#rtmencryptionconfig)
 
 </PlatformStructured>
 
@@ -450,7 +447,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling/windows-cpp#rtmencryptionconfig)
 
 </PlatformStructured>
 
@@ -507,7 +504,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling/linux-cpp#rtmencryptionconfig)
 
 </PlatformStructured>
 
@@ -566,7 +563,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling/linux-java#rtmencryptionconfig)
 
 </PlatformStructured>
 
@@ -630,6 +627,6 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling#configencryptionpropsag_platform)
+- [`RtmEncryptionConfig`](/en/api-reference/api-ref/signaling/unity#rtmencryptionconfig)
 
 </PlatformStructured>

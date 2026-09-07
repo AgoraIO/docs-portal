@@ -136,7 +136,7 @@ Signaling offers the following events:
 | `linkState` | Receive notifications about changes in the client's network connection status, including information on the state before and after the change, service type, operation type, reason for the change, and channel list. |
 | `tokenPrivilegeWillExpire`  | Receive notifications when the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/web#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -194,10 +194,11 @@ RtmEventListener eventListener = new RtmEventListener() {
     }
 };
 
-// Configure RtmClient
-RtmConfig rtmConfig = new RtmConfig();
-// Specify the event listener in the client configuration
-rtmConfig.eventListener = eventListener;
+// Configure RtmClient and specify the event listener
+// Replace your_appId with your App ID and your_userId with your User ID
+RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .build();
 
 // Create an RtmClient instance
 RtmClient mRtmClient = RtmClient.create(rtmConfig);
@@ -234,10 +235,11 @@ val eventListener = object : RtmEventListener {
     }
 }
 
-// Configure RtmClient
-val rtmConfig = RtmConfig().apply {
-    eventListener = this@eventListener
-}
+// Configure RtmClient and specify the event listener
+// Replace your_appId with your App ID and your_userId with your User ID
+val rtmConfig = RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .build()
 
 // Create an RtmClient instance
 val mRtmClient = RtmClient.create(rtmConfig)
@@ -271,7 +273,7 @@ Signaling SDK offers the following events:
 | `onLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `onTokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/android#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -465,7 +467,7 @@ Signaling offers the following notification callbacks:
 | `didReceiveLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `tokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -659,7 +661,7 @@ Signaling offers the following notification callbacks:
 | `didReceiveLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `tokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -790,7 +792,7 @@ Signaling SDK offers the following events:
 | `linkState`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `token`| Receive event notifications when the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -964,7 +966,7 @@ Signaling SDK offers the following events:
 | `onLinkStateEvent`| Receive event notifications for client network connection status changes.  |
 | `onTokenPrivilegeWillExpire` | Receive event notifications that the client token is about to expire.   |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -1029,7 +1031,7 @@ Signaling SDK offers the following events:
 | `onLinkStateEvent`| Receive event notifications for client network connection status changes.  |
 | `onTokenPrivilegeWillExpire` | Receive event notifications that the client token is about to expire.   |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -1121,7 +1123,7 @@ Signaling SDK offers the following events:
 | `onLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `onTokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -1273,6 +1275,6 @@ Signaling SDK offers the following callbacks:
 | `OnConnectionStateChanged` | Receive event notifications for client network connection status changes, including channel name, connection status, reason for change, and other information. |
 | `OnTokenPrivilegeWillExpire`| Receive event notifications when the client token is about to expire.|
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners) in the API reference.
 
 </PlatformStructured>

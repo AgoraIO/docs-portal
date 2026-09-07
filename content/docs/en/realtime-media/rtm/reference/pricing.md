@@ -154,13 +154,13 @@ Additional usage cost over and above the fixed package limits:
 
 Each example shows how Signaling usage is billed.
 
-**Example 1: Billing calculation for the Pro package**
+#### Example 1: Billing calculation for the Pro package
 
 The Pro package has a fixed monthly fee of $279, which includes:
 
 - Up to 2,500 peak concurrent users (PCU)
 - Up to 150 million monthly messages
-- Up to 10GB average storage utilization. See [Example 3: Storage cost calculation](#storage-cost) for details on how storage use is calculated.
+- Up to 10GB average storage utilization. See [Example 3: Storage cost calculation](#example-3-storage-cost-calculation) for details on how storage use is calculated.
 
 If your usage stays within these thresholds, your monthly bill is the base subscription fee of $279 with no additional charges.
 
@@ -172,7 +172,7 @@ If you exceed these limits, additional usage is charged at the following overage
 | Message Volume        | 1 Million messages      | $3.00  |
 | Storage               | 1 GB                    | $15.00 |
 
-**Example 2: Billing calculation for the Enterprise Package (Pay-as-you-go)**
+#### Example 2: Billing calculation for the Enterprise Package (Pay-as-you-go)
 
 The Enterprise Package follows a pure consumption-based model where you pay only
 for what you use.
@@ -181,7 +181,7 @@ Example Scenario: Consider a customer with the following monthly usage:
 
 - 20,000 peak concurrent users
 - 800 million messages sent
-- 3.93 GB average storage utilization. See [Example 3: Storage cost calculation](#storage-cost) for details on how storage use is calculated.
+- 3.93 GB average storage utilization. See [Example 3: Storage cost calculation](#example-3-storage-cost-calculation) for details on how storage use is calculated.
 
 Detailed Billing Calculation:
 
@@ -205,9 +205,7 @@ Detailed Billing Calculation:
         - = $600.00 + $2,400.00 + $58.95
         - = $3,058.95
 
-**Example 3: Storage cost calculation**
-
-<a id="storage-cost"></a>
+#### Example 3: Storage cost calculation
 
 Storage is billed based on the average monthly utilization, calculated from hourly measurements.
 

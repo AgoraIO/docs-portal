@@ -502,7 +502,7 @@ class RtmEventHandler : public IRtmEventHandler {
 - 0: Success.
 - &lt; 0: Failure.
 
-### releaseLock
+### IRtmClient::release
 
 #### Description
 
@@ -632,7 +632,7 @@ Based on capabilities of Agora, Signaling channels are divided into two types to
 
 IRtmClient
 Signaling client instance
-### subscribeTopic
+### subscribe
 
 #### Description
 
@@ -706,7 +706,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### unsubscribeTopic
+### unsubscribe
 
 #### Description
 
@@ -760,7 +760,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### createAgoraRtmClient
+### createStreamChannel
 
 #### Description
 
@@ -802,7 +802,7 @@ if (streamChannel == nullptr || errorCode != 0) {
 
 IStreamChannel
 Stream channel instance
-### joinTopic
+### join
 
 #### Description
 
@@ -880,7 +880,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### leaveTopic
+### leave
 
 #### Description
 
@@ -936,7 +936,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### releaseLock
+### IStreamChannel::release
 
 #### Description
 
@@ -1425,7 +1425,7 @@ This page introduces how to send and receive messages in a message channel or a 
 
 IRtmClient
 Signaling client instance
-### publishTopicMessage
+### publish
 
 #### Description
 
@@ -2894,7 +2894,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### getMessages
+### getLocks
 
 #### Description
 

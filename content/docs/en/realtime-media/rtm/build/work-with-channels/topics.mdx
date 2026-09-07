@@ -179,11 +179,11 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 ### API reference
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/web#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/web#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/web#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/web#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/web#event-listeners)
 
 </PlatformStructured>
 
@@ -223,13 +223,13 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/android).
 
 Use the following code to join a topic:
 
 ```java tab="Java"
 var options = new JoinTopicOptions();
-options.messageQos = RtmMessageQos.ORDERED;
+options.setMessageQos(RtmMessageQos.ORDERED);
 mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -245,7 +245,7 @@ mStreamChannel.joinTopic("topic_name", options, new ResultCallback<Void>() {
 
 ```kotlin tab="Kotlin"
 val options = JoinTopicOptions()
-options.messageQos = RtmMessageQos.ORDERED
+options.setMessageQos(RtmMessageQos.ORDERED)
 mStreamChannel.joinTopic("topic_name", options, object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
         log(CALLBACK, "join topic success")
@@ -302,7 +302,7 @@ Refer to the following code to subscribe to a topic:
 
 ```java tab="Java"
 TopicOptions options = new TopicOptions();
-options.users = new ArrayList&lt;&gt;(Arrays.asList("user_name"));
+options.setUsers(new ArrayList<>(Arrays.asList("user_name")));
 
 mStreamChannel.subscribeTopic("Motion", options, new ResultCallback<SubscribeTopicResult>() {
     @Override
@@ -347,7 +347,7 @@ Refer to the following code to unsubscribe:
 ```java tab="Java"
 var topicName = "Motion";
 var options = new TopicOptions();
-options.users = new ArrayList&lt;&gt;(Arrays.asList("Tony"));
+options.setUsers(new ArrayList<>(Arrays.asList("Tony")));
 
 mStreamChannel.unsubscribeTopic(topicName.toString(), options, new ResultCallback<Void>() {
     @Override
@@ -441,11 +441,11 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 ### API reference
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/android#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/android#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/android#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/android#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/android#event-listeners)
 
 </PlatformStructured>
 
@@ -485,7 +485,7 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `option`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `option`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/ios).
 
 Use the following code to join a topic:
 
@@ -756,21 +756,21 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 <TabsContent value="swift">
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/ios#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/ios#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/ios#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/ios#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/ios#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/ios#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/ios#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/ios#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
 
 </TabsContent>
 </Tabs>
@@ -813,7 +813,7 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `option`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `option`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/macos).
 
 Use the following code to join a topic:
 
@@ -1084,21 +1084,21 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 <TabsContent value="swift">
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/macos#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/macos#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/macos#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/macos#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/macos#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/macos#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/macos#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/macos#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
 
 </TabsContent>
 </Tabs>
@@ -1141,7 +1141,7 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/flutter).
 
 Use the following code to join a topic:
 
@@ -1302,11 +1302,11 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 ### API reference
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/flutter#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/flutter#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/flutter#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/flutter#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners)
 
 </PlatformStructured>
 
@@ -1346,7 +1346,7 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/windows-cpp).
 
 Use the following code to join a topic:
 
@@ -1539,11 +1539,11 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 ### API reference
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/windows-cpp#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/windows-cpp#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/windows-cpp#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/windows-cpp#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners)
 
 </PlatformStructured>
 
@@ -1583,7 +1583,7 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/linux-cpp).
 
 Use the following code to join a topic:
 
@@ -1776,11 +1776,11 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 ### API reference
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/linux-cpp#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/linux-cpp#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/linux-cpp#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/linux-cpp#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners)
 
 </PlatformStructured>
 
@@ -1820,7 +1820,7 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/linux-java).
 
 Use the following code to join a topic:
 
@@ -1981,11 +1981,11 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 ### API reference
 
-- [`joinTopic`](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform)
-- [`leaveTopic`](/en/api-reference/api-ref/signaling#topicleavepropsag_platform)
-- [`subscribeTopic`](/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform)
-- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`joinTopic`](/en/api-reference/api-ref/signaling/linux-java#jointopic)
+- [`leaveTopic`](/en/api-reference/api-ref/signaling/linux-java#leavetopic)
+- [`subscribeTopic`](/en/api-reference/api-ref/signaling/linux-java#subscribetopic)
+- [`unsubscribeTopic`](/en/api-reference/api-ref/signaling/linux-java#unsubscribetopic)
+- [Event Listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners)
 
 </PlatformStructured>
 
@@ -2025,7 +2025,7 @@ This section shows you how to join, leave, subscribe, and unsubscribe from topic
 
 Joining a topic is a prerequisite for sending messages in a topic. Signaling allows a single client to join up to 8 topics in a channel concurrently.
 
-When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform).
+When joining a topic, set sending attributes using `options`. These parameters affect the sending behavior, such as whether the message order is preserved, the message priority, and synchronization of audio and video data transmitted on the same channel. For details, refer to the [API reference](/en/api-reference/api-ref/signaling/unity).
 
 Use the following code to join a topic:
 
@@ -2186,10 +2186,10 @@ Although the Signaling SDK does not require it, best practice when naming a topi
 
 ### API reference
 
-- [`JoinTopicAsync`](/en/api-reference/api-ref/signaling#topicjoinpropsag_platform)
-- [`LeaveTopicAsync`](/en/api-reference/api-ref/signaling#topicleavepropsag_platform)
-- [`SubscribeTopicAsync`](/en/api-reference/api-ref/signaling#topicsubscribepropsag_platform)
-- [`UnsubscribeTopicAsync`](/en/api-reference/api-ref/signaling#topicunsubscribepropsag_platform)
-- [Event Listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`JoinTopicAsync`](/en/api-reference/api-ref/signaling/unity#jointopicasync)
+- [`LeaveTopicAsync`](/en/api-reference/api-ref/signaling/unity#leavetopicasync)
+- [`SubscribeTopicAsync`](/en/api-reference/api-ref/signaling/unity#subscribetopicasync)
+- [`UnsubscribeTopicAsync`](/en/api-reference/api-ref/signaling/unity#unsubscribetopicasync)
+- [Event Listeners](/en/api-reference/api-ref/signaling/unity#event-listeners)
 
 </PlatformStructured>

@@ -186,10 +186,10 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/web#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/web#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/web#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/web#leave)
 
 </PlatformStructured>
 
@@ -314,7 +314,7 @@ mStreamChannel.join(options, object : ResultCallback<Void> {
 When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console.
 
 ```java tab="Java"
-JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true);
+JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true, false);
 mStreamChannel.join(options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -329,7 +329,7 @@ mStreamChannel.join(options, new ResultCallback<Void>() {
 ```
 
 ```kotlin tab="Kotlin"
-val options = JoinChannelOptions("your_token", true, true, true)
+val options = JoinChannelOptions("your_token", true, true, true, false)
 
 mStreamChannel.join(options, object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -363,7 +363,7 @@ Refer to the following sample code for sending messages:
     String message = "Hello Agora!"; // Message content
     String topicName = "chat_topic"; // Topic name for publishing
     var options = new TopicMessageOptions(); // Topic message sending options
-    options.customType = "PlainTxt"; // Set a custom type for the message
+    options.setCustomType("PlainTxt"); // Set a custom type for the message
     mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -402,10 +402,10 @@ Refer to the following sample code for sending messages:
 
 ```java tab="Java"
 // Send a binary message
-    byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
+    byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Binary message content
     String topicName = "chat_topic"; // Topic name for publishing
     var options = new TopicMessageOptions(); // Topic message sending options
-    options.customType = "ByteArray"; // Set a custom type for the message
+    options.setCustomType("ByteArray"); // Set a custom type for the message
     mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -423,7 +423,7 @@ Refer to the following sample code for sending messages:
 
 ```kotlin tab="Kotlin"
 // Send a binary message
-    val message = byteArrayOf(0, 1, 35, 196) // Binary message content
+    val message = byteArrayOf(0, 1, 35, 196.toByte()) // Binary message content
     val topicName = "chat_topic" // Topic name for publishing
     val options = TopicMessageOptions() // Topic message sending options
     options.customType = "ByteArray" // Set a custom type for the message
@@ -510,11 +510,11 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/android#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/android#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/android#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/android#leave)
+- [`release`](/en/api-reference/api-ref/signaling/android#rtmclientrelease)
 
 </PlatformStructured>
 
@@ -854,21 +854,21 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 <TabsContent value="swift">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/ios#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/ios#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/ios#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/ios#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/ios#agorartmclientkitdestroy)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform)
-- [`joinWithOption`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/ios#createstreamchannel)
+- [`joinWithOption`](/en/api-reference/api-ref/signaling/ios#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/ios#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/ios#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/ios#agorartmclientkitdestroy)
 
 </TabsContent>
 </Tabs>
@@ -1211,21 +1211,21 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 <TabsContent value="swift">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/macos#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/macos#joinwithoption)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/macos#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/macos#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/macos#agorartmclientkitdestroy)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform)
-- [`joinWithOption`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/macos#createstreamchannel)
+- [`joinWithOption`](/en/api-reference/api-ref/signaling/macos#joinwithoption)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/macos#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/macos#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/macos#agorartmclientkitdestroy)
 
 </TabsContent>
 </Tabs>
@@ -1443,11 +1443,12 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/flutter#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/flutter#join)
+- [`publishTextMessage`](/en/api-reference/api-ref/signaling/flutter#publishtextmessage)
+- [`publishBinaryMessage`](/en/api-reference/api-ref/signaling/flutter#publishbinarymessage)
+- [`leave`](/en/api-reference/api-ref/signaling/flutter#leave)
+- [`release`](/en/api-reference/api-ref/signaling/flutter#release)
 
 </PlatformStructured>
 
@@ -1677,11 +1678,11 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/windows-cpp#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/windows-cpp#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/windows-cpp#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/windows-cpp#leave)
+- [`release`](/en/api-reference/api-ref/signaling/windows-cpp#irtmclientrelease)
 
 </PlatformStructured>
 
@@ -1911,11 +1912,11 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/linux-cpp#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/linux-cpp#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/linux-cpp#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/linux-cpp#leave)
+- [`release`](/en/api-reference/api-ref/signaling/linux-cpp#irtmclientrelease)
 
 </PlatformStructured>
 
@@ -2137,11 +2138,11 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/linux-java#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/linux-java#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/linux-java#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/linux-java#leave)
+- [`release`](/en/api-reference/api-ref/signaling/linux-java#rtmclientrelease)
 
 </PlatformStructured>
 
@@ -2347,10 +2348,10 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`CreateStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`JoinAsync`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`PublishTopicMessageAsync`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`LeaveAsync`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`Dispose`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`CreateStreamChannel `](/en/api-reference/api-ref/signaling/unity#createstreamchannel)
+- [`JoinAsync`](/en/api-reference/api-ref/signaling/unity#joinasync)
+- [`PublishTopicMessageAsync`](/en/api-reference/api-ref/signaling/unity#publishtopicmessageasync)
+- [`LeaveAsync`](/en/api-reference/api-ref/signaling/unity#leaveasync)
+- [`Dispose`](/en/api-reference/api-ref/signaling/unity#dispose)
 
 </PlatformStructured>
