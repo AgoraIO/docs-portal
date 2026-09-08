@@ -524,7 +524,11 @@ export async function loadDocsPagePayload(
   if (zhCnProductIaRedirect) {
     return {
       redirectUrl: zhCnProductIaRedirect,
-      statusCode: 301,
+      ...(locale === 'zh-CN' &&
+      tab === 'realtime-media' &&
+      slugSegments[0] === 'rtm'
+        ? { statusCode: 301 }
+        : {}),
     };
   }
 

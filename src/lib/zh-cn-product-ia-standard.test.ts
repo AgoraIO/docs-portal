@@ -283,7 +283,8 @@ describe('zh-CN product IA standard', () => {
     [
       'realtime-media',
       ['rtm', 'user-guide', 'message', 'send-message'],
-      '/zh-CN/realtime-media/rtm/build/manage-messages/send-message',
+      '/zh-CN/realtime-media/rtm/build/messaging/send-message',
+      301,
     ],
     [
       'realtime-media',
@@ -308,10 +309,13 @@ describe('zh-CN product IA standard', () => {
     ],
   ] as const)(
     'redirects representative old %s path %j',
-    async (tab, slugSegments, redirectUrl) => {
+    async (tab, slugSegments, redirectUrl, statusCode) => {
       const result = await loadDocsPagePayload('zh-CN', tab, [...slugSegments]);
 
-      expect(result).toEqual({ redirectUrl });
+      expect(result).toEqual({
+        redirectUrl,
+        ...(statusCode === 301 ? { statusCode } : {}),
+      });
     },
   );
 
