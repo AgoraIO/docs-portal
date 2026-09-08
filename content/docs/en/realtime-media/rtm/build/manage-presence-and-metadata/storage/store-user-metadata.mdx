@@ -2272,7 +2272,7 @@ items.emplace_back(MetadataItem("Name", "Tony"));
 items.emplace_back(MetadataItem("Age", "40"));
 items.emplace_back(MetadataItem("Avatar", "https://your-domain/avatar/tong.png"));
 metadata.items = items.data();
-metadata.items = items.size();
+metadata.itemCount = items.size();
 
 MetadataOptions options;
 options.recordTs = true;
@@ -2521,7 +2521,7 @@ CAS version control is useful in use-cases that require concurrency management. 
 
 The CAS version control feature provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
 
-- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of user metadata.
+- `majorRevision` field of the `Metadata` struct: Enable version number verification of the entire set of user metadata.
 
 - `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
 
@@ -2562,7 +2562,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling/windows-cpp#setusermetadata)
+- [`setUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#setusermetadata)
 - [`getUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#getusermetadata)
 - [`removeUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#removeusermetadata)
 - [`updateUserMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#updateusermetadata)
@@ -2610,7 +2610,7 @@ items.emplace_back(MetadataItem("Name", "Tony"));
 items.emplace_back(MetadataItem("Age", "40"));
 items.emplace_back(MetadataItem("Avatar", "https://your-domain/avatar/tong.png"));
 metadata.items = items.data();
-metadata.items = items.size();
+metadata.itemCount = items.size();
 
 MetadataOptions options;
 options.recordTs = true;
@@ -2859,7 +2859,7 @@ CAS version control is useful in use-cases that require concurrency management. 
 
 The CAS version control feature provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
 
-- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of user metadata.
+- `majorRevision` field of the `Metadata` struct: Enable version number verification of the entire set of user metadata.
 
 - `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
 
@@ -2900,7 +2900,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setUserMetaData`](/en/api-reference/api-ref/signaling/linux-cpp#setusermetadata)
+- [`setUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#setusermetadata)
 - [`getUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#getusermetadata)
 - [`removeUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#removeusermetadata)
 - [`updateUserMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#updateusermetadata)
