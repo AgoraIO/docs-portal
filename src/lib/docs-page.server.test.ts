@@ -4067,6 +4067,7 @@ Web body
 
   it.each([
     ['get-started/enable-service', 'build/rtm-initialization/enable-service'],
+    ['error-codes', 'build/troubleshooting'],
     ['reference/link-state', 'build/authentication-and-connection/link-state'],
     ['reference/metadata-events', 'build/state-and-attributes/metadata-events'],
     ['reference/presence-events', 'build/state-and-attributes/presence-events'],
@@ -4171,6 +4172,19 @@ Web body
       });
     },
   );
+
+  it('keeps unmigrated RTM reference aliases on the default redirect payload', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', [
+        'rtm',
+        'overview',
+        'billing',
+        'billing-rules',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/rtm/reference/billing/billing-rules',
+    });
+  });
 
   it.each([
     [
