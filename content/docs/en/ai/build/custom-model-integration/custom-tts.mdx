@@ -51,7 +51,7 @@ Example request body:
   "speed": 1.0,
   "sample_rate": 16000,
   "response_format": "pcm",
-  "instruction": "calm"
+  "instructions": "calm"
 }
 ```
 
@@ -65,7 +65,7 @@ Request body fields:
 | `speed` | Number | The speech rate. |
 | `sample_rate` | Integer | The sample rate, in Hz, of the output audio. Default: `16000`. |
 | `response_format` | String | The output audio format. Default: `pcm`. Only `pcm` is supported. |
-| `instruction` | String | Instructions for voice style, emotion, or other playback directives. |
+| `instructions` | String | Instructions for voice style, emotion, or other playback directives. |
 
 :::info[Info]
 If your TTS service doesn't support multiple sample rates, make sure the sample rate of the audio it returns matches the `sample_rate` you configure in the next step.
@@ -216,7 +216,7 @@ Use the following `tts` configuration in your request:
       "speed": 1.0,
       "sample_rate": 16000,
       "response_format": "pcm",
-      "instruction": "calm",
+      "instructions": "calm",
       "enable_request_id": false
     }
   }
@@ -240,7 +240,7 @@ Use the following `tts` configuration in your request:
 | `tts.params.speed` | Number | No | - | The speech rate. |
 | `tts.params.sample_rate` | Integer | No | `16000` | The sample rate, in Hz, of the output audio. If your TTS service doesn't support multiple sample rates, make sure the sample rate of the returned audio matches this value. |
 | `tts.params.response_format` | String | No | `pcm` | The output audio format. Only `pcm` is supported. |
-| `tts.params.instruction` | String | No | - | Instructions for voice style, emotion, or other playback directives. |
+| `tts.params.instructions` | String | No | - | Instructions for voice style, emotion, or other playback directives. |
 | `tts.params.enable_request_id` | Boolean | No | `false` | Whether to include `request_id`, `request_seq_id`, and `request_end` in the TTS request body. |
 
 For the exact field names in each Agent SDK language, see the `GenericTTS` reference for [Go](/en/api-reference/api-ref/server-sdk/go#newgenerictts), [Python](/en/api-reference/api-ref/server-sdk/python#generictts), and [TypeScript](/en/api-reference/api-ref/server-sdk/typescript#generictts), or the full parameter reference at [Generic TTS](../../models/tts/generic-http).

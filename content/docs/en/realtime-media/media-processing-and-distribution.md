@@ -43,7 +43,7 @@ Fits teams that need hosted stream composition and output transformation.
 
 <div id="rm-rtmp-gateway"></div>
 
-## RTMP Gateway
+## Media Gateway
 
 Bridges standard live protocol flows with real-time interaction systems.
 

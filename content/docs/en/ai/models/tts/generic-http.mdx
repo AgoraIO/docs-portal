@@ -29,7 +29,7 @@ Use the following `tts` configuration when starting a conversational AI agent us
       "speed": 1.0,
       "sample_rate": 16000,
       "response_format": "pcm",
-      "instruction": "calm",
+      "instructions": "calm",
       "enable_request_id": false
     }
   }
@@ -48,7 +48,7 @@ Use the following `tts` configuration when starting a conversational AI agent us
       "speed": 1.0,
       "sample_rate": 16000,
       "response_format": "pcm",
-      "instruction": "calm",
+      "instructions": "calm",
       "enable_request_id": false
     }
   }
@@ -88,7 +88,7 @@ Your TTS service must implement the OpenAI TTS protocol. The parameters listed o
     <Parameter name="response_format" type="string" defaultValue="pcm" required={false}>
     The output audio format. Currently only `pcm` is supported.
     </Parameter>
-    <Parameter name="instruction" type="string" required={false}>
+    <Parameter name="instructions" type="string" required={false}>
     Instructions for voice style, emotion, or other playback directives.
     </Parameter>
     <Parameter name="enable_request_id" type="boolean" defaultValue="false" required={false}>

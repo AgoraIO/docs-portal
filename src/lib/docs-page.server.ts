@@ -59,6 +59,7 @@ import {
 } from './platforms/processed-text';
 import type { PlatformKey } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import { getRealtimeMediaApiReferenceLinks } from './realtime-media-api-reference-links';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
@@ -1292,7 +1293,7 @@ async function getDocsSidebarNodes({
     : sidebar;
 
   const sidebarWithRealtimeMediaApiReference =
-    addRealtimeMediaApiReferenceSidebarItem(
+    addRealtimeMediaApiReferenceSidebarItems(
       sidebarWithoutReferenceProductIcons,
       activePath,
     );
@@ -1314,95 +1315,45 @@ async function getDocsSidebarNodes({
   return openApiSidebar;
 }
 
-const REALTIME_MEDIA_API_REFERENCE_LINKS = [
-  {
-    productSlug: 'broadcast-streaming',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/rtc',
-  },
-  {
-    productSlug: 'cloud-recording',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/cloud-recording',
-  },
-  {
-    productSlug: 'im',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/im',
-  },
-  {
-    productSlug: 'media-pull',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/media-pull',
-  },
-  {
-    productSlug: 'media-push',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/media-push',
-  },
-  {
-    productSlug: 'on-premise-recording',
-    title: 'API reference',
-    url: '/en/api-reference/api-ref/on-premise-recording',
-  },
-  {
-    productSlug: 'rtc',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/rtc',
-  },
-  {
-    productSlug: 'rtm',
-    title: 'Signaling REST API',
-    url: '/en/api-reference/api-ref/signaling',
-  },
-  {
-    productSlug: 'rtmp-gateway',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/rtmp-gateway',
-  },
-  {
-    productSlug: 'speech-to-text',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/speech-to-text',
-  },
-  {
-    productSlug: 'video',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/rtc',
-  },
-  {
-    productSlug: 'voice',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/rtc',
-  },
-  {
-    productSlug: 'whiteboard',
-    title: 'RESTful API',
-    url: '/en/api-reference/api-ref/whiteboard',
-  },
-] as const;
-
-function addRealtimeMediaApiReferenceSidebarItem(
+function addRealtimeMediaApiReferenceSidebarItems(
   nodes: DocsSidebarNode[],
   activePath?: string,
 ): DocsSidebarNode[] {
-  const link = getRealtimeMediaApiReferenceLink(activePath);
+  const links = getRealtimeMediaApiReferenceLinks(activePath);
 
-  if (!link) {
+  if (!links) {
     return nodes;
   }
 
-  const pageNode = {
-    id: link.url,
-    linked: true,
-    title: link.title,
-    type: 'page',
-    url: link.url,
-  } satisfies DocsSidebarPageNode;
+  const jumpNodes: DocsSidebarPageNode[] = [];
+
+  if (links.restUrl) {
+    jumpNodes.push({
+      external: true,
+      href: links.restUrl,
+      id: links.restUrl,
+      linked: true,
+      title: 'RESTful API',
+      type: 'page',
+      url: links.restUrl,
+    });
+  }
+
+  if (links.sdkUrl) {
+    jumpNodes.push({
+      external: true,
+      href: links.sdkUrl,
+      id: links.sdkUrl,
+      linked: true,
+      title: 'SDK API reference',
+      type: 'page',
+      url: links.sdkUrl,
+    });
+  }
 
   const existingUrls = new Set([
-    link.url,
-    ...getRealtimeMediaLegacyApiReferenceUrls(link.productSlug),
+    ...jumpNodes.map((node) => node.url),
+    ...getRealtimeMediaLegacyApiReferenceUrls(links.productSlug),
   ]);
 
   return nodes.map((node) => {
@@ -1413,7 +1364,7 @@ function addRealtimeMediaApiReferenceSidebarItem(
     return {
       ...node,
       children: [
-        pageNode,
+        ...jumpNodes,
         ...filterSidebarNodes(
           node.children,
           (child) => child.type !== 'page' || !existingUrls.has(child.url),
@@ -1421,20 +1372,6 @@ function addRealtimeMediaApiReferenceSidebarItem(
       ],
     };
   });
-}
-
-function getRealtimeMediaApiReferenceLink(activePath?: string) {
-  if (!activePath?.startsWith('/en/realtime-media/')) {
-    return null;
-  }
-
-  const productSlug = activePath.split('/').filter(Boolean)[2];
-
-  return (
-    REALTIME_MEDIA_API_REFERENCE_LINKS.find(
-      (link) => link.productSlug === productSlug,
-    ) ?? null
-  );
 }
 
 function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
@@ -1451,7 +1388,6 @@ function getRealtimeMediaLegacyApiReferenceUrls(productSlug: string) {
       return [
         `${prefix}/reference/rest-api-overview`,
         `${prefix}/reference/restful-api`,
-        `${prefix}/reference/restful-authentication`,
       ];
     case 'im':
       return [`${prefix}/reference/server-api`];

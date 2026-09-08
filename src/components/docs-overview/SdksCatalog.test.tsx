@@ -24,7 +24,7 @@ describe('SdksCatalog', () => {
     // Default platform (Android, first in canonical order) → Gradle command.
     expect(
       within(videoCard).getByText(
-        "implementation 'io.agora.rtc:full-sdk:4.6.3'",
+        "implementation 'io.agora.rtc:full-sdk:4.6.4'",
       ),
     ).toBeVisible();
     expect(
@@ -49,7 +49,7 @@ describe('SdksCatalog', () => {
     fireEvent.click(within(videoCard).getByRole('tab', { name: 'Web' }));
 
     expect(
-      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.7'),
+      within(videoCard).getByText('npm i agora-rtc-sdk-ng@4.24.8'),
     ).toBeVisible();
     expect(within(videoCard).getByRole('tab', { name: 'Web' })).toHaveAttribute(
       'aria-selected',
@@ -79,7 +79,7 @@ describe('SdksCatalog', () => {
 
     expect(
       within(voiceCard).getByText(
-        "implementation 'io.agora.rtc:voice-sdk:4.6.2'",
+        "implementation 'io.agora.rtc:voice-sdk:4.6.3'",
       ),
     ).toBeVisible();
   });
@@ -122,6 +122,14 @@ describe('SdksCatalog', () => {
 
     const videoCard = screen.getByRole('article', { name: 'RTC SDK' });
     expect(videoCard.querySelector('svg')).toBeTruthy();
+  });
+
+  it('omits obsolete Media Player Kit downloads', () => {
+    render(<SdksCatalog />);
+
+    expect(
+      screen.queryAllByRole('article', { name: /mediaplayer kit sdk/i }),
+    ).toHaveLength(0);
   });
 
   it('lists the Agora Agents SDK with TypeScript, Python, and Go tabs', () => {
@@ -177,7 +185,9 @@ describe('SdksCatalog', () => {
     expect(
       screen.getByRole('link', { name: /show all sdks/i }),
     ).toHaveAttribute('href', '/en/api-reference/sdks');
-    expect(screen.getByRole('article', { name: 'RTC Voice SDK' })).toBeVisible();
+    expect(
+      screen.getByRole('article', { name: 'RTC Voice SDK' }),
+    ).toBeVisible();
     expect(
       screen.queryByRole('article', { name: 'RTC SDK' }),
     ).not.toBeInTheDocument();
@@ -193,9 +203,10 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog />);
 
     const voiceCard = screen.getByRole('article', { name: 'RTC Voice SDK' });
-    expect(
-      within(voiceCard).getByRole('tab', { name: 'iOS' }),
-    ).toHaveAttribute('aria-selected', 'true');
+    expect(within(voiceCard).getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
     expect(
       within(voiceCard).getByRole('tab', { name: 'Android' }),
     ).toHaveAttribute('aria-selected', 'false');
@@ -246,9 +257,10 @@ describe('SdksCatalog', () => {
     expect(
       screen.queryByRole('article', { name: 'RTC SDK' }),
     ).not.toBeInTheDocument();
-    expect(
-      within(voiceCard).getByRole('tab', { name: 'iOS' }),
-    ).toHaveAttribute('aria-selected', 'true');
+    expect(within(voiceCard).getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
   it('renders the unfiltered static catalog on the server', () => {

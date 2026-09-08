@@ -13,7 +13,6 @@ The following table lists the support of Agora products for the two solutions:
 |Signaling SDK (Native) | ✔ | ✘ |
 |Signaling SDK (Web) | ✔ | ✔ |
 |On-Premise Recording SDK | ✘ |✔| 
-|Interactive Gaming SDK | ✘ |✘|
 
 - When using the firewall whitelist, add the domains and ports to the firewall whitelist, and do not set restrictions on IP addresses.
 - When using Agora cloud proxy, refer to [Connect to Agora through a restricted network](/en/realtime-media/iot/reference/firewall)

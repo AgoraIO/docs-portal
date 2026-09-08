@@ -198,6 +198,21 @@ describe('overview entry links', () => {
     });
   });
 
+  it('uses current product names in Realtime Communication entry cards', () => {
+    const description =
+      'Voice calls, video calls, interactive live streaming, and broadcast streaming sessions.';
+
+    expect(readDoc('en/realtime-media/overview.mdx')).toContain(description);
+    expect(readDoc('en/introduction/index.mdx')).toContain(description);
+  });
+
+  it('uses an action label for the device navigation group', () => {
+    const metadata = readDoc('en/realtime-media/meta.json');
+
+    expect(metadata).toContain('---[Cpu]Connect Devices---');
+    expect(metadata).not.toContain('---[Cpu]Connected Devices---');
+  });
+
   it('uses product-specific titles for product overview pages', () => {
     const expectedTitles = {
       'en/realtime-media/overview.mdx': 'RTC overview',

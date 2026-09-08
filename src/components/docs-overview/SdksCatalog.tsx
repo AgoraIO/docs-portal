@@ -20,7 +20,10 @@ const platformGroups = [
     platformIds: ['android', 'ios', 'react-native', 'flutter'],
   },
   { label: 'Web', platformIds: ['web', 'react-js', 'electron'] },
-  { label: 'Desktop', platformIds: ['windows', 'macos', 'linux'] },
+  {
+    label: 'Desktop',
+    platformIds: ['windows', 'macos', 'linux', 'linux-cpp', 'linux-java'],
+  },
   { label: 'Game engines', platformIds: ['unity', 'unreal-engine'] },
 ] as const;
 
@@ -533,7 +536,7 @@ function productIconKind(productLabel: string): SolutionCardIconKind {
   if (normalized.includes('recording')) {
     return 'on-premise-recording';
   }
-  // Media Player Kit and anything else fall back to the overview's "tools" icon.
+  // Anything else falls back to the overview's "tools" icon.
   return 'tools';
 }
 

@@ -989,7 +989,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/unity.mdx':
     '2026-08-06T11:42:18.000Z',
   'content/docs/en/api-reference/api-ref/signaling/web.mdx':
-    '2026-08-20T11:54:46.000Z',
+    '2026-09-07T12:22:41.000Z',
   'content/docs/en/api-reference/api-ref/signaling/windows-cpp.mdx':
     '2026-08-06T11:42:18.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/api-callback-service.mdx':
@@ -5979,7 +5979,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx':
-    '2026-08-20T11:54:46.000Z',
+    '2026-09-07T12:22:41.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.md':
     '2026-06-28T10:06:44.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx':
@@ -6106,7 +6106,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/release-notes.md':
     '2026-07-02T06:58:41.000Z',
   'content/docs/en/realtime-media/rtm/reference/release-notes.mdx':
-    '2026-08-20T11:54:46.000Z',
+    '2026-09-08T08:12:05.000Z',
   'content/docs/en/realtime-media/rtm/reference/rest-api.md':
     '2026-06-28T06:41:08.000Z',
   'content/docs/en/realtime-media/rtm/reference/security.md':

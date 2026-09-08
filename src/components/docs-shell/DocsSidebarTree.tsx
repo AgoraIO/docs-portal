@@ -1,7 +1,7 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import { ChevronDownIcon } from 'lucide-react';
+import { ArrowUpRightIcon, ChevronDownIcon } from 'lucide-react';
 import {
   type AnchorHTMLAttributes,
   forwardRef,
@@ -728,6 +728,7 @@ function SidebarPageLink({
           url={url}
         >
           <SidebarPageLabel
+            external={external}
             linked={linked}
             method={method}
             title={getSidebarDisplayTitle(title, url)}
@@ -810,10 +811,12 @@ function sidebarEndpointButtonClassName(method?: string) {
 }
 
 function SidebarPageLabel({
+  external,
   linked,
   method,
   title,
 }: {
+  external?: boolean;
   linked?: boolean;
   method?: string;
   title: string;
@@ -832,8 +835,24 @@ function SidebarPageLabel({
         <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
           {method}
         </span>
+      ) : linked && external ? (
+        <>
+          <span className="sr-only"> (opens in a new tab)</span>
+          <span
+            className="ml-auto inline-flex shrink-0"
+            title="Opens in a new tab"
+          >
+            <ArrowUpRightIcon
+              aria-hidden="true"
+              className="size-4 text-[color:var(--ink-4)]"
+            />
+          </span>
+        </>
       ) : linked ? (
-        <ChevronDownIcon className="ml-auto size-4 shrink-0 -rotate-90 text-[color:var(--ink-4)]" />
+        <ChevronDownIcon
+          aria-hidden="true"
+          className="ml-auto size-4 shrink-0 -rotate-90 text-[color:var(--ink-4)]"
+        />
       ) : null}
     </>
   );

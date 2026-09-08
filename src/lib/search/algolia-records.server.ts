@@ -17,6 +17,7 @@ import { buildOpenApiSchemaTree } from '../openapi/schema-tree';
 import { getOpenApiOperations } from '../openapi/source.server';
 import { getPublishedDocsLocales } from '../site-region';
 import { getAlgoliaSearchNavigation } from './algolia-search-source.server';
+import { faqItems } from './faq-data';
 
 // Search-ranking category. Glossary pages cross-reference every term so they
 // match almost any query; legacy/deprecated pages are rarely the intent. Both
@@ -47,6 +48,11 @@ type AlgoliaContentDocsPage = {
 
 const MAX_CHUNK_LENGTH = 4500;
 const INDEXED_LOCALES: readonly AppLocale[] = getPublishedDocsLocales('global');
+const PUBLIC_FAQ_URLS = new Set(faqItems.map(({ href }) => href));
+const APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS = new Set([
+  '/en/realtime-media/interactive-live-streaming/product-overview',
+  '/en/realtime-media/broadcast-streaming/product-overview',
+]);
 
 // Classify a doc by its URL for search ranking. No taxonomy exists in
 // frontmatter, so this derives it once, at index time, from path conventions:
@@ -109,7 +115,9 @@ export function buildAlgoliaContentDocsRecords(
       return [];
     }
 
-    const breadcrumbs = navigationByLocale.get(route.locale)?.get(page.url);
+    const breadcrumbs =
+      navigationByLocale.get(route.locale)?.get(page.url) ??
+      getHiddenSearchablePageBreadcrumbs(page.url, route);
 
     if (!breadcrumbs) {
       return [];
@@ -142,6 +150,44 @@ export function buildAlgoliaContentDocsRecords(
       },
     ];
   });
+}
+
+function getHiddenSearchablePageBreadcrumbs(
+  url: string,
+  route: NonNullable<ReturnType<typeof parseDocsUrl>>,
+) {
+  if (route.locale !== 'en') return undefined;
+
+  const [firstSegment, secondSegment, thirdSegment] = route.slugSegments;
+  if (
+    route.tab === 'api-reference' &&
+    firstSegment === 'faq' &&
+    secondSegment &&
+    thirdSegment &&
+    PUBLIC_FAQ_URLS.has(url)
+  ) {
+    return ['Reference', 'FAQ', humanizeSlug(secondSegment)];
+  }
+
+  if (
+    route.tab === 'realtime-media' &&
+    firstSegment &&
+    secondSegment === 'product-overview' &&
+    route.slugSegments.length === 2 &&
+    APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS.has(url)
+  ) {
+    return ['RTC', humanizeSlug(firstSegment)];
+  }
+
+  return undefined;
+}
+
+function humanizeSlug(value: string) {
+  return value
+    .split(/[-_]+/u)
+    .filter(Boolean)
+    .map((word) => `${word.charAt(0).toUpperCase()}${word.slice(1)}`)
+    .join(' ');
 }
 
 export function buildAlgoliaOpenApiRecord({

@@ -5,7 +5,7 @@ description: Server-side media participation, SDK extension plugins, and ecosyst
 
 <div id="rm-rtc-server-sdk"></div>
 
-## RTC Server SDK
+## Server Gateway
 
 Lets the backend participate directly in RTC media send, receive, and control flows.
 
