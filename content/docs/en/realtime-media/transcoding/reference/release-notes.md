@@ -8,7 +8,7 @@ This document tracks important changes and improvements to the Cloud Transcoding
 
 ## Releases
 
-### 2026.8.30
+### 2026.09.08
 
 You can now enable Cloud Transcoding and configure notification events directly in Agora Console, without contacting support.
 
