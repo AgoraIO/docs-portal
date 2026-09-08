@@ -103,7 +103,7 @@ const options = {
 };
 try {
     const result = await rtm.presence.getOnlineUsers(channelName, channelType, options);
-    const { totalOccupancy, occupants, nextPage } = getOnlineUsersResult;
+    const { totalOccupancy, occupants, nextPage } = result;
     occupants.forEach((userInfo) => {
         const { states, userId, statesCount } = userInfo;
         console.log(`${userId} has states: ${states}`);

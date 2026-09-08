@@ -295,7 +295,7 @@ const price = {
 };
 
 const data = [properties, announcement, price];
-const options = { addTimeStamp : ture, addUserId : ture, lockName : "manage" };
+const options = { addTimeStamp : true, addUserId : true, lockName : "manage" };
 
 try {
     const result = await rtm.storage.updateChannelMetadata("channel1", "MESSAGE", data, options);

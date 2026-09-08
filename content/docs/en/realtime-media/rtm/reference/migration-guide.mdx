@@ -375,7 +375,7 @@ To meet the needs of business use-cases for user status settings, 2.x provides t
 var newState = { "mood":"pumped", "isTyping":false};
 
 try {
-  const result = await rtm.Presence.setState("chat_room", "MESSAGE", newState);
+  const result = await rtm.presence.setState("chat_room", "MESSAGE", newState);
   console.log(result);
 } catch (status) {
   console.log(status);

@@ -49,7 +49,7 @@ const Avatar = {
 
 const data = [Name, Age, avatar];
 
-const options = { userId : "Tony", addTimeStamp : ture, addUserId : true };
+const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
 
 try {
     const result = await rtm.storage.setUserMetadata(data, options);
@@ -139,7 +139,7 @@ const Age = {
 };
 
 const data = [Age];
-const options = { userId : "Tony", addTimeStamp : ture, addUserId : true };
+const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
 
 try {
     const result = await rtm.storage.updateUserMetadata(data, options);
@@ -272,7 +272,7 @@ const data = [sessionRequest];
 
 const options = {
     userId : "Tony",
-    addTimeStamp : ture,
+    addTimeStamp : true,
     addUserId: true,
     majorRevision : 734874892
 };

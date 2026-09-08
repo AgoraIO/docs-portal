@@ -2097,12 +2097,12 @@ This release removes the `token` parameter from the `RTMConfig` and adds a new `
 - Before v2.2.0
 
     ```javascript
-    const { RTM, EncryptionMode } = AgoraRTM;
+    const { RTM } = AgoraRTM;
 
     const rtmConfig = {
         token : "yourToken",
 
-        encryptionMode : EncryptionMode.AES_256_GCM,
+        encryptionMode : "AES_256_GCM",
         salt : yourSalt,
         cipherKey : "yourCipherKey",
         presenceTimeout : 300,
@@ -2129,11 +2129,11 @@ This release removes the `token` parameter from the `RTMConfig` and adds a new `
 
     ```javascript
     // v2.2.0 and later
-    const { RTM, EncryptionMode } = AgoraRTM;
+    const { RTM } = AgoraRTM;
 
     const rtmConfig = {
 
-        encryptionMode : EncryptionMode.AES_256_GCM,
+        encryptionMode : "AES_256_GCM",
         salt : yourSalt,
         cipherKey : "yourCipherKey",
         presenceTimeout : 300,
