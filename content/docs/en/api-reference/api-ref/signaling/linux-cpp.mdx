@@ -220,7 +220,7 @@ class RtmEventHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
     void onPresenceEvent(const PresenceEvent &event) {}
-    void onLoginResult(RTM_ERROR_CODE errorCode) {}
+    void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {}
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
     void onLinkStateEvent(const LinkStateEvent& event) {}

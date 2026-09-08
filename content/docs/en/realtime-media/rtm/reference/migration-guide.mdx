@@ -2337,7 +2337,7 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
-        void onLoginResult(RTM_ERROR_CODE errorCode) {
+        void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
             if (errorCode != RTM_ERROR_OK) {
                 // Login failed
             } else {
@@ -2926,7 +2926,7 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
-        void onLoginResult(RTM_ERROR_CODE errorCode) {
+        void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
             if (errorCode != RTM_ERROR_OK) {
                 // Login failed
             } else {
