@@ -590,10 +590,70 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/rtc/reference/events',
   'realtime-media/rtc/webhook/receive_webhook':
     '/zh-CN/realtime-media/rtc/build/monitor-events/receive_webhook',
+  'realtime-media/rtm/build/manage-channels/channel-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic',
+  'realtime-media/rtm/build/manage-channels/channel-name':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name',
+  'realtime-media/rtm/build/manage-channels/message-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel',
+  'realtime-media/rtm/build/manage-channels/stream-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/stream-channel',
+  'realtime-media/rtm/build/manage-connections/link-basic':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
+  'realtime-media/rtm/build/manage-connections/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  'realtime-media/rtm/build/manage-messages/add-event-listener':
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
+  'realtime-media/rtm/build/manage-messages/constructed':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/constructed',
+  'realtime-media/rtm/build/manage-messages/history-message':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/history-message',
+  'realtime-media/rtm/build/manage-messages/send-message':
+    '/zh-CN/realtime-media/rtm/build/messaging/send-message',
+  'realtime-media/rtm/build/manage-messages/serialized':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized',
+  'realtime-media/rtm/build/manage-metadata/channel-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata',
+  'realtime-media/rtm/build/manage-metadata/metadata-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
+  'realtime-media/rtm/build/manage-metadata/user-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata',
+  'realtime-media/rtm/build/manage-presence/presence-basic':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic',
+  'realtime-media/rtm/build/manage-presence/presence-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
+  'realtime-media/rtm/build/manage-presence/temporary-user-state':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state',
+  'realtime-media/rtm/build/manage-topics/topic-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic',
+  'realtime-media/rtm/build/manage-topics/topic-events':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
+  'realtime-media/rtm/build/manage-topics/usage':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/usage',
+  'realtime-media/rtm/build/security-and-auth/token-generation':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation',
+  'realtime-media/rtm/build/security-and-auth/user-authentication':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication',
+  'realtime-media/rtm/build/setup-and-access/add-event-listener':
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
+  'realtime-media/rtm/build/setup-and-access/application-setup':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
+  'realtime-media/rtm/build/setup-and-access/data-storage':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/data-storage',
+  'realtime-media/rtm/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+  'realtime-media/rtm/build/setup-and-access/link-basic':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
+  'realtime-media/rtm/build/setup-and-access/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  'realtime-media/rtm/build/setup-and-access/login':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/login',
+  'realtime-media/rtm/build/setup-and-access/private-setup':
+    '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup',
   'realtime-media/rtm/error-codes':
     '/zh-CN/realtime-media/rtm/build/troubleshooting',
   'realtime-media/rtm/get-started/enable-service':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
   'realtime-media/rtm/overview/billing/billing-rules':
     '/zh-CN/realtime-media/rtm/reference/billing/billing-rules',
   'realtime-media/rtm/overview/billing/billing-strategy':
@@ -611,75 +671,75 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/reference/error-codes':
     '/zh-CN/realtime-media/rtm/build/troubleshooting',
   'realtime-media/rtm/reference/link-state':
-    '/zh-CN/realtime-media/rtm/build/manage-connections/link-state',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
   'realtime-media/rtm/reference/metadata-events':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/metadata-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
   'realtime-media/rtm/reference/presence-events':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
   'realtime-media/rtm/reference/topic-events':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
   'realtime-media/rtm/security':
     '/zh-CN/introduction/security/sdk-compliance/rtm-sdk',
   'realtime-media/rtm/sunset-policy':
     '/zh-CN/realtime-media/rtm/reference/sunset-policy',
   'realtime-media/rtm/user-guide/channel/channel-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic',
   'realtime-media/rtm/user-guide/channel/channel-name':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/channel-name',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name',
   'realtime-media/rtm/user-guide/channel/message-channel':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/message-channel',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel',
   'realtime-media/rtm/user-guide/channel/stream-channel':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/stream-channel',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/stream-channel',
   'realtime-media/rtm/user-guide/link/link-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-connections/link-basic',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
   'realtime-media/rtm/user-guide/link/link-state':
-    '/zh-CN/realtime-media/rtm/build/manage-connections/link-state',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
   'realtime-media/rtm/user-guide/message/add-event-listener':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener',
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
   'realtime-media/rtm/user-guide/message/constructed':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/constructed',
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/constructed',
   'realtime-media/rtm/user-guide/message/history-message':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/history-message',
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/history-message',
   'realtime-media/rtm/user-guide/message/send-message':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/send-message',
+    '/zh-CN/realtime-media/rtm/build/messaging/send-message',
   'realtime-media/rtm/user-guide/message/serialized':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/serialized',
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized',
   'realtime-media/rtm/user-guide/presence/event':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
   'realtime-media/rtm/user-guide/presence/presence-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-basic',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic',
   'realtime-media/rtm/user-guide/presence/temporary-user-state':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state',
   'realtime-media/rtm/user-guide/setup/account-and-billing':
     '/zh-CN/realtime-media/rtm/reference/account-and-billing',
   'realtime-media/rtm/user-guide/setup/api-limits':
     '/zh-CN/realtime-media/rtm/reference/api-limits',
   'realtime-media/rtm/user-guide/setup/application-setup':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup',
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
   'realtime-media/rtm/user-guide/setup/data-security':
     '/zh-CN/realtime-media/rtm/reference/data-security',
   'realtime-media/rtm/user-guide/setup/data-storage':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/data-storage',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/data-storage',
   'realtime-media/rtm/user-guide/setup/login':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/login',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/login',
   'realtime-media/rtm/user-guide/setup/private-setup':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup',
+    '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup',
   'realtime-media/rtm/user-guide/storage/channel-metadata':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata',
   'realtime-media/rtm/user-guide/storage/event':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/metadata-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
   'realtime-media/rtm/user-guide/storage/user-metadata':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata',
   'realtime-media/rtm/user-guide/token/token-generation':
-    '/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation',
   'realtime-media/rtm/user-guide/token/user-authentication':
-    '/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication',
   'realtime-media/rtm/user-guide/topic/event':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
   'realtime-media/rtm/user-guide/topic/topic-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic',
   'realtime-media/rtm/user-guide/topic/usage':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/usage',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/usage',
   'realtime-media/rtmp-gateway/api/video-profile':
     '/zh-CN/realtime-media/rtmp-gateway/reference/video-profile',
   'realtime-media/rtmp-gateway/best-practices/checklist':

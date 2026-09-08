@@ -17,6 +17,7 @@ import {
   normalizeZhCnEmbeddedApiSidebar,
 } from './docs-page.server';
 import { type PageWithSource, source } from './source.server';
+import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
 
 vi.mock('./source.server', () => ({
   getPageMarkdownUrl: (page: { url: string }, platform?: string) => {
@@ -4166,6 +4167,125 @@ Web body
         ]),
       ).resolves.toEqual({
         redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it.each([
+    [
+      'build/setup-and-access/enable-service',
+      'build/rtm-initialization/enable-service',
+    ],
+    [
+      'build/setup-and-access/application-setup',
+      'build/rtm-initialization/application-setup',
+    ],
+    [
+      'build/setup-and-access/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+    [
+      'build/setup-and-access/login',
+      'build/authentication-and-connection/login',
+    ],
+    [
+      'build/setup-and-access/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'build/setup-and-access/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'build/setup-and-access/data-storage',
+      'build/state-and-attributes/data-storage',
+    ],
+    [
+      'build/setup-and-access/private-setup',
+      'build/network-and-private-deployment/private-setup',
+    ],
+    [
+      'build/manage-channels/channel-basic',
+      'build/channels-and-topics/channel-basic',
+    ],
+    [
+      'build/manage-channels/channel-name',
+      'build/channels-and-topics/channel-name',
+    ],
+    [
+      'build/manage-channels/message-channel',
+      'build/channels-and-topics/message-channel',
+    ],
+    [
+      'build/manage-channels/stream-channel',
+      'build/channels-and-topics/stream-channel',
+    ],
+    ['build/manage-messages/send-message', 'build/messaging/send-message'],
+    [
+      'build/manage-messages/constructed',
+      'build/message-design-and-history/constructed',
+    ],
+    [
+      'build/manage-messages/serialized',
+      'build/message-design-and-history/serialized',
+    ],
+    [
+      'build/manage-messages/history-message',
+      'build/message-design-and-history/history-message',
+    ],
+    [
+      'build/manage-topics/topic-basic',
+      'build/channels-and-topics/topics/topic-basic',
+    ],
+    ['build/manage-topics/usage', 'build/channels-and-topics/topics/usage'],
+    [
+      'build/manage-topics/topic-events',
+      'build/channels-and-topics/topics/topic-events',
+    ],
+    [
+      'build/manage-presence/presence-basic',
+      'build/state-and-attributes/presence-basic',
+    ],
+    [
+      'build/manage-presence/temporary-user-state',
+      'build/state-and-attributes/temporary-user-state',
+    ],
+    [
+      'build/manage-presence/presence-events',
+      'build/state-and-attributes/presence-events',
+    ],
+    [
+      'build/manage-metadata/user-metadata',
+      'build/state-and-attributes/user-metadata',
+    ],
+    [
+      'build/manage-metadata/channel-metadata',
+      'build/state-and-attributes/channel-metadata',
+    ],
+    [
+      'build/manage-metadata/metadata-events',
+      'build/state-and-attributes/metadata-events',
+    ],
+    [
+      'build/security-and-auth/token-generation',
+      'build/authentication-and-connection/token-generation',
+    ],
+    [
+      'build/security-and-auth/user-authentication',
+      'build/authentication-and-connection/user-authentication',
+    ],
+  ] as const)(
+    'redirects RTM current old page %s to %s with 301',
+    async (legacyPath, canonicalPath) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+        statusCode: 301,
       });
     },
   );
@@ -4196,9 +4316,28 @@ Web body
           'rtm',
           ...legacyPath.split('/'),
         ]),
-      ).resolves.toEqual({ redirectUrl });
+      ).resolves.toEqual({ redirectUrl, statusCode: 301 });
     },
   );
+
+  it('does not add redirects for RTM legacy category roots', () => {
+    for (const legacyPath of [
+      'build/setup-and-access',
+      'build/manage-channels',
+      'build/manage-messages',
+      'build/manage-topics',
+      'build/manage-presence',
+      'build/manage-metadata',
+      'build/security-and-auth',
+    ]) {
+      expect(
+        resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).toBeNull();
+    }
+  });
 
   it('redirects moved Reference pages to their new product paths', async () => {
     mockPagesByRequestedSlugs();

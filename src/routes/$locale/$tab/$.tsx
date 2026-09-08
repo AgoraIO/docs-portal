@@ -129,6 +129,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
       throw redirect({
         href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
+        statusCode: payload.statusCode ?? 307,
       });
     }
 

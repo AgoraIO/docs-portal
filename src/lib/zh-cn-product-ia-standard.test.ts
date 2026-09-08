@@ -332,6 +332,7 @@ describe('zh-CN product IA standard', () => {
         ]),
       ).resolves.toEqual({
         redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+        statusCode: 301,
       });
     },
   );

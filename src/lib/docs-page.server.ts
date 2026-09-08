@@ -524,6 +524,7 @@ export async function loadDocsPagePayload(
   if (zhCnProductIaRedirect) {
     return {
       redirectUrl: zhCnProductIaRedirect,
+      statusCode: 301,
     };
   }
 
@@ -1711,6 +1712,7 @@ export type DocsPagePayload = Exclude<
 export type DocsRedirectPayload = {
   preserveSearch?: boolean;
   redirectUrl: string;
+  statusCode?: 301 | 307 | 308;
 };
 
 async function readProcessedText(page: PageWithSource) {
