@@ -933,7 +933,7 @@ class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
     void onLinkStateEvent(const LinkStateEvent &event) {}
-    void onLoginResult(RTM_ERROR_CODE errorCode) {
+    void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
         if (errorCode != RTM_ERROR_OK) {
             printf("login rtm failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
         } else {
@@ -942,7 +942,7 @@ class RtmHandler: public IRtmEventHandler {
     }
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
-}
+};
 
 RtmConfig cfg;
 cfg.appId = "your_appid";
@@ -951,8 +951,8 @@ cfg.userId = "your_name";
 cfg.eventHandler = new RtmHandler();
 
 // Create an IRtmClient instance
-IRtmClient* rtm_client = createAgoraRtmClient();
-int ret = rtm_client->initialize(cfg);
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(cfg, errorCode);
 ```
 
 ### Remove event listeners
@@ -998,7 +998,7 @@ class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
     void onLinkStateEvent(const LinkStateEvent &event) {}
-    void onLoginResult(RTM_ERROR_CODE errorCode) {
+    void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
         if (errorCode != RTM_ERROR_OK) {
             printf("login rtm failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
         } else {
@@ -1007,7 +1007,7 @@ class RtmHandler: public IRtmEventHandler {
     }
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
-}
+};
 
 RtmConfig cfg;
 cfg.appId = "your_appid";
@@ -1016,8 +1016,8 @@ cfg.userId = "your_name";
 cfg.eventHandler = new RtmHandler();
 
 // Create an IRtmClient instance
-IRtmClient* rtm_client = createAgoraRtmClient();
-int ret = rtm_client->initialize(cfg);
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(cfg, errorCode);
 ```
 
 ### Remove event listeners

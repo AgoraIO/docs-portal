@@ -854,7 +854,7 @@ When the number of online users in the channel exceeds the **Max number of insta
 ```js
 {
       eventType: RtmPresenceEventType.INTERVAL,
-      channelTye: RtmChannelType.MESSAGE,
+      channelType: RtmChannelType.MESSAGE,
       channelName: "Chat_room",
       publisher: "",
       stateItems: {},
@@ -2524,7 +2524,7 @@ When the number of online users in the channel exceeds the **Max number of insta
 ```js
 {
     type : RtmPresenceEventType.interval,
-    channelTye : RtmChannelType.message,,
+    channelType : RtmChannelType.message,
     channelName : 'chat_room',
     publisher : 'Tony',
     interval : {
@@ -2607,7 +2607,7 @@ Starting from v2.3.0, if Presence is still initializing when a `login` call succ
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 
@@ -2642,7 +2642,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "your_Next_Page_Bookmark";
@@ -2654,7 +2654,7 @@ rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_MESSAGE
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = false;
 options.includeUserId =false;
 
@@ -2994,7 +2994,7 @@ Starting from v2.3.0, if Presence is still initializing when a `login` call succ
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 
@@ -3029,7 +3029,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "your_Next_Page_Bookmark";
@@ -3041,7 +3041,7 @@ rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_MESSAGE
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = false;
 options.includeUserId =false;
 
@@ -3722,7 +3722,7 @@ When the number of online users in the channel exceeds the **Max number of insta
 ```js
 {
       eventType: RtmPresenceEventType.INTERVAL,
-      channelTye: RtmChannelType.MESSAGE,
+      channelType: RtmChannelType.MESSAGE,
       channelName: "Chat_room",
       publisher: "",
       stateItems: {},
@@ -4007,7 +4007,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="Join"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_JOIN,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
 }
@@ -4016,7 +4016,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="Leave"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_LEAVE,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
 }
@@ -4025,7 +4025,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="Timeout"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_TIMEOUT,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
 }
@@ -4034,7 +4034,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="State change"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_STATE_CHANGED,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
       "stateItems" : [{"Mic":"False"},{"Position":" Washington"}],

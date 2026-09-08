@@ -1181,8 +1181,11 @@ This section explains how to set up and customize various features when you init
 To specify a geographical area for Agora SDRTN® connections, refer to the following code:
 
 ```cpp
-rtmConfig.areaCode = RTM_AREA_CODE_NA;
-int ret = signalingEngine->initialize(rtmConfig);
+RtmConfig config;
+config.areaCode = RTM_AREA_CODE_NA;
+
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(config, errorCode);
 ```
 
 ### Proxy configuration
@@ -1217,7 +1220,8 @@ hosts.push_back("xxx");
 RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_name";
-config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
+config.privateConfig.serviceType =
+    static_cast<RTM_SERVICE_TYPE>(RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM);
 config.privateConfig.accessPointHosts = hosts.data();
 config.privateConfig.accessPointHostsCount = hosts.size();
 ```
@@ -1321,8 +1325,11 @@ This section explains how to set up and customize various features when you init
 To specify a geographical area for Agora SDRTN® connections, refer to the following code:
 
 ```cpp
-rtmConfig.areaCode = RTM_AREA_CODE_NA;
-int ret = signalingEngine->initialize(rtmConfig);
+RtmConfig config;
+config.areaCode = RTM_AREA_CODE_NA;
+
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(config, errorCode);
 ```
 
 ### Proxy configuration
@@ -1357,7 +1364,8 @@ hosts.push_back("xxx");
 RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_name";
-config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
+config.privateConfig.serviceType =
+    static_cast<RTM_SERVICE_TYPE>(RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM);
 config.privateConfig.accessPointHosts = hosts.data();
 config.privateConfig.accessPointHostsCount = hosts.size();
 ```

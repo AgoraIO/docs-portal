@@ -350,8 +350,11 @@ Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/qui
 To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
 
 ```cpp
-rtmConfig.areaCode = RTM_AREA_CODE_NA;
-int ret = signalingEngine->initialize(rtmConfig);
+RtmConfig config;
+config.areaCode = RTM_AREA_CODE_NA;
+
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(config, errorCode);
 ```
 
 ## Reference
@@ -392,8 +395,11 @@ Ensure that you have implemented the [SDK quickstart](/en/realtime-media/rtm/qui
 To configure geographical access, specify area codes in the configuration when you initialize a Signaling client instance. You can combine the codes to include or exclude specific zones.
 
 ```cpp
-rtmConfig.areaCode = RTM_AREA_CODE_NA;
-int ret = signalingEngine->initialize(rtmConfig);
+RtmConfig config;
+config.areaCode = RTM_AREA_CODE_NA;
+
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(config, errorCode);
 ```
 
 ## Reference

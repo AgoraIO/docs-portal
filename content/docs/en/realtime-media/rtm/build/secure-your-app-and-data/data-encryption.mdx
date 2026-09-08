@@ -427,9 +427,9 @@ config.userId = "your_name";
 config.eventHandler = new RtmEventHandler();
 
 uint8_t salt[32] = {1,2,3,4,5};
-cfg.encryptionConfig.encryptionKey = "your_key";
-cfg.encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE_AES_256_GCM;
-memcpy(cfg.encryptionConfig.encryptionSalt, salt, 32);
+config.encryptionConfig.encryptionKey = "your_key";
+config.encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE_AES_256_GCM;
+memcpy(config.encryptionConfig.encryptionSalt, salt, 32);
 
 int errorCode = 0;
 IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
@@ -484,9 +484,9 @@ config.userId = "your_name";
 config.eventHandler = new RtmEventHandler();
 
 uint8_t salt[32] = {1,2,3,4,5};
-cfg.encryptionConfig.encryptionKey = "your_key";
-cfg.encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE_AES_256_GCM;
-memcpy(cfg.encryptionConfig.encryptionSalt, salt, 32);
+config.encryptionConfig.encryptionKey = "your_key";
+config.encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE_AES_256_GCM;
+memcpy(config.encryptionConfig.encryptionSalt, salt, 32);
 
 int errorCode = 0;
 IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
