@@ -31,7 +31,7 @@ description: "了解如何在实时消息 RTM 中消息负载结构化，包括�
 | `{message: "https://cdn.agora.io/assets/avatar.png"} ` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
 | `{message: { x =1 0, y = 100, z = 55 }}`               | `{type: "position", coordinate: { x: 10, y: 100, z: 55 }}`       |
 
-现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `message.publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/manage-messages/serialized)。
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `message.publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
 
 ```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-1" showLineNumbers
 // Define message structure

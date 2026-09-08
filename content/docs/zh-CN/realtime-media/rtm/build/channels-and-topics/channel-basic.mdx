@@ -8,9 +8,9 @@ description: "了解如何在实时消息 RTM 中频道基础，包括适用场�
 
 RTM 的频道，根据其使用方法和消息投递方式可以分为 3 种类型，分别是 Message Channel、User Channel 和 Stream Channel，在 API 中通过 `channelType` 参数加以区别。3 种频道类型的主要区别如下：
 
-- Message Channel：此频道类型使用了一种常见的通信方式，遵循发布-订阅模式以传递消息，类似于 MQTT 协议。使用时，无需提前创建频道，只需向指定频道发布消息，或者订阅指定频道以接收消息。由于其灵活性，用户可以轻松实现一对一频道、群组频道、广播频道、单播频道等不同拓扑结构。因为此频道类型通常有大量订阅者，所以无法保证所有订阅者在收到消息后都发送送达回执。详见 [Message Channel](/zh-CN/realtime-media/rtm/build/manage-channels/message-channel)。
+- Message Channel：此频道类型使用了一种常见的通信方式，遵循发布-订阅模式以传递消息，类似于 MQTT 协议。使用时，无需提前创建频道，只需向指定频道发布消息，或者订阅指定频道以接收消息。由于其灵活性，用户可以轻松实现一对一频道、群组频道、广播频道、单播频道等不同拓扑结构。因为此频道类型通常有大量订阅者，所以无法保证所有订阅者在收到消息后都发送送达回执。详见 [Message Channel](/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel)。
 - User Channel：此频道类型用于向指定用户（`userId`）发送点对点消息。在使用时，只需将 `message.publish` 方法中的 `channelType` 参数设为 `enumv.channeltypeuser`，将 `channelName` 参数设为对方的 `userId` 即可。接收消息无需订阅，只需实现`config.onmessageevent` 事件监听即可。因为是一对一的消息收发，所以此频道类型支持送达回执功能。即发送方发送消息后，如果接收方在线并成功接收到消息，则会返回成功；如果接收方不在线或接收失败，则会返回失败或超时。此频道类型只能实现一对一拓扑结构。虽然你可以通过返回值判断对方是否在线，但我们推荐通过 `Presence` 功能来实现。
-- Stream Channel：这是一种特殊的频道类型，遵循类似观察者模式的 Room（房间）概念，在此类型的频道中，用户不可以直接发送消息。用户需要先调用 `topic.join` 方法注册成为该 Topic 的发布者，然后才可以发送消息，详见[发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message)。如果用户要接收消息，则需订阅指定 Topic 中的指定消息发布者（通过 `userId` 标识），详见 [Topic](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)。此外，还支持客户端消息以更高的 QPS 进行投递，详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。此频道类型往往推荐在元宇宙、平行驾驶、云游戏等场景中使用。
+- Stream Channel：这是一种特殊的频道类型，遵循类似观察者模式的 Room（房间）概念，在此类型的频道中，用户不可以直接发送消息。用户需要先调用 `topic.join` 方法注册成为该 Topic 的发布者，然后才可以发送消息，详见[发送消息](/zh-CN/realtime-media/rtm/build/messaging/send-message)。如果用户要接收消息，则需订阅指定 Topic 中的指定消息发布者（通过 `userId` 标识），详见 [Topic](/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic)。此外，还支持客户端消息以更高的 QPS 进行投递，详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/api-limits)。此频道类型往往推荐在元宇宙、平行驾驶、云游戏等场景中使用。
 
 此外，在 Message Channel 和 Stream Channel 中，皆可根据实际需求启用 Presence、Storage 及 Lock 等功能。然而，User Channel 无法利用这些功能，可将其视为一种简单的消息直通通道。
 
@@ -24,7 +24,7 @@ RTM 的频道分为两种类型，分别是 **Message** 和 **Stream**，在 API
 可以认为频道是一种控制消息流动的管道。**Message** 和 **Stream** 频道在消息流的控制上采用了不同的策略：
 
 - 在 Message 频道中，发布者只需要将消息投递到特定频道中，那么任何订阅该频道的设备或用户都可以收到该消息或事件通知。
-- 在 Stream 频道中，用户不可以直接发送消息。用户需要先调用 `topic.join` 方法注册成为该 Topic 的发布者，然后才可以发送消息，详见[发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message)。如果用户要接收消息，则需订阅指定 Topic 中的特定消息发布者（通过用户 ID 标识），才能接收到该发布者发布的消息，详见[ Topic ](/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic)。
+- 在 Stream 频道中，用户不可以直接发送消息。用户需要先调用 `topic.join` 方法注册成为该 Topic 的发布者，然后才可以发送消息，详见[发送消息](/zh-CN/realtime-media/rtm/build/messaging/send-message)。如果用户要接收消息，则需订阅指定 Topic 中的特定消息发布者（通过用户 ID 标识），才能接收到该发布者发布的消息，详见[ Topic ](/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic)。
 
 除消息以外，Message 频道和 Stream 频道对于 Presence、Storage、Lock 等其他事件通知的机制和用法是相同的。
 
@@ -62,4 +62,4 @@ RTM 对同时存在的 Message 和 Stream 频道数量没有限制。然而，�
 
 ### 命名约定
 
-虽然 SDK 并未强制要求，但是声网建议你在为频道命名的时候，通过有意义的前缀字符来表征频道的业务用途或此频道中消息的类型等，以便于你更清晰地展示你的业务逻辑。点击[命名推荐](/zh-CN/realtime-media/rtm/build/manage-channels/channel-name)查看更多建议。
+虽然 SDK 并未强制要求，但是声网建议你在为频道命名的时候，通过有意义的前缀字符来表征频道的业务用途或此频道中消息的类型等，以便于你更清晰地展示你的业务逻辑。点击[命名推荐](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name)查看更多建议。
