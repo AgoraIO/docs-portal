@@ -2913,8 +2913,13 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Signaling',
         versions: [
           {
+            id: '2.2.6-signaling-sdk-flutter',
+            label: 'Version 2.2.6 (Latest)',
+            packageManager: 'https://pub.dev/packages/agora_rtm/versions/2.2.6',
+          },
+          {
             id: '2.2.5-signaling-sdk-flutter',
-            label: 'Version 2.2.5 (Latest)',
+            label: 'Version 2.2.5',
             packageManager: 'https://pub.dev/packages/agora_rtm/versions/2.2.5',
           },
           {

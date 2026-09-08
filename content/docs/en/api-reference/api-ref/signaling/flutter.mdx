@@ -34,6 +34,7 @@ You can create `RtmConfig` instances as follows:
 RtmConfig({
     int heartbeatInterval,
     int presenceTimeout,
+    int reconnectTimeout,
     bool useStringUserId,
     bool ispPolicyEnabled,
     RtmProtocolType protocolType,
@@ -51,6 +52,7 @@ RtmConfig({
 | `protocolType` | `RtmProtocolType` | Optional | `tcpUdp` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`RtmProtocolType`](#rtmprotocoltype). |
 | `presenceTimeout` | int | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers to the delay imposed by the Signaling server before sending a `remoteTimeout` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `remoteTimeout` event notification to other participants or delete the temporary user data associated with the user. |
 | `heartbeatInterval` | int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
+| `reconnectTimeout` | int | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0`, which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK returns `loginTimeout` as the `errorCode` in `RtmStatus`, and triggers the `linkState` event with `currentState` as `failed` and `reason` as `loginTimeout`. <br />- If reconnection times out, the SDK triggers the `linkState` event with `currentState` as `failed` and `reason` as `reconnectTimeout`. |
 | `useStringUserId` | bool | Optional | `true` | Whether to use string-type user IDs:<br />- `true`: Use string-type user IDs. <br />- `false`: Use int-type user IDs. The SDK automatically converts string-type user IDs to int-type ones. In this case, the `userId` parameter must be a numeric string (for example, `"123457"`), otherwise initialization fails.When using Agora RTC and Signaling products at the same time, it is necessary to ensure that the `userId` parameter is consistent. |
 | `ispPolicyEnabled` | bool | Optional | `false` | Whether to enable the ISP policy. In IoT scenarios, devices may be restricted by the Internet Service Provider (ISP). Use this field to configure the SDK connection mode. |
 | `logConfig` | `RtmLogConfig` | Optional | - | Log configuration properties such as the log storage size, storage path, and level. |
