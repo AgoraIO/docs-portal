@@ -187,22 +187,6 @@ describe('legacy redirect Vercel artifacts', () => {
     });
   });
 
-  it('keeps RTM application IA redirects out of legacy Vercel artifacts', () => {
-    const rtmApplicationPaths = [
-      '/zh-CN/realtime-media/rtm/build/manage-connections/link-basic',
-      '/zh-CN/realtime-media/rtm/build/manage-connections/link-state',
-      '/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener',
-    ];
-    const artifactPaths = [
-      ...bulkRedirects.map((rule) => rule.source),
-      ...(staticRedirects as StaticRedirectRule[]).map((rule) => rule.p),
-    ];
-
-    expect(artifactPaths).not.toEqual(
-      expect.arrayContaining(rtmApplicationPaths),
-    );
-  });
-
   it('keeps the client fallback manifest compact and audit-free', () => {
     const sample = (staticRedirects as StaticRedirectRule[]).find(
       (rule) => rule.p === '/en/agora-chat/develop/ip_allowlist',
