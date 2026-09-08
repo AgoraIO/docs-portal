@@ -18,11 +18,113 @@ const speechToTextRoot = resolve(
   'content/docs/zh-CN/realtime-media/speech-to-text',
 );
 const contentRoot = resolve(process.cwd(), 'content/docs/zh-CN');
+const rtmRoot = resolve(contentRoot, 'realtime-media/rtm');
 const standardFirstLevelPages = ['index', 'get-started', 'build', 'reference'];
 const standardFirstLevelPageSet = new Set(standardFirstLevelPages);
 const allowedProductFamilyEntries: Record<string, Set<string>> = {
   'realtime-media/whiteboard': new Set(['whiteboard-sdk', 'fastboard-sdk']),
 };
+const rtmBuildPageMoves = [
+  [
+    'build/setup-and-access/enable-service',
+    'build/rtm-initialization/enable-service',
+  ],
+  [
+    'build/setup-and-access/application-setup',
+    'build/rtm-initialization/application-setup',
+  ],
+  [
+    'build/setup-and-access/add-event-listener',
+    'build/messaging/add-event-listener',
+  ],
+  ['build/setup-and-access/login', 'build/authentication-and-connection/login'],
+  [
+    'build/setup-and-access/link-basic',
+    'build/authentication-and-connection/link-basic',
+  ],
+  [
+    'build/setup-and-access/link-state',
+    'build/authentication-and-connection/link-state',
+  ],
+  [
+    'build/setup-and-access/data-storage',
+    'build/state-and-attributes/data-storage',
+  ],
+  [
+    'build/setup-and-access/private-setup',
+    'build/network-and-private-deployment/private-setup',
+  ],
+  [
+    'build/manage-channels/channel-basic',
+    'build/channels-and-topics/channel-basic',
+  ],
+  [
+    'build/manage-channels/channel-name',
+    'build/channels-and-topics/channel-name',
+  ],
+  [
+    'build/manage-channels/message-channel',
+    'build/channels-and-topics/message-channel',
+  ],
+  [
+    'build/manage-channels/stream-channel',
+    'build/channels-and-topics/stream-channel',
+  ],
+  ['build/manage-messages/send-message', 'build/messaging/send-message'],
+  [
+    'build/manage-messages/constructed',
+    'build/message-design-and-history/constructed',
+  ],
+  [
+    'build/manage-messages/serialized',
+    'build/message-design-and-history/serialized',
+  ],
+  [
+    'build/manage-messages/history-message',
+    'build/message-design-and-history/history-message',
+  ],
+  [
+    'build/manage-topics/topic-basic',
+    'build/channels-and-topics/topics/topic-basic',
+  ],
+  ['build/manage-topics/usage', 'build/channels-and-topics/topics/usage'],
+  [
+    'build/manage-topics/topic-events',
+    'build/channels-and-topics/topics/topic-events',
+  ],
+  [
+    'build/manage-presence/presence-basic',
+    'build/state-and-attributes/presence-basic',
+  ],
+  [
+    'build/manage-presence/temporary-user-state',
+    'build/state-and-attributes/temporary-user-state',
+  ],
+  [
+    'build/manage-presence/presence-events',
+    'build/state-and-attributes/presence-events',
+  ],
+  [
+    'build/manage-metadata/user-metadata',
+    'build/state-and-attributes/user-metadata',
+  ],
+  [
+    'build/manage-metadata/channel-metadata',
+    'build/state-and-attributes/channel-metadata',
+  ],
+  [
+    'build/manage-metadata/metadata-events',
+    'build/state-and-attributes/metadata-events',
+  ],
+  [
+    'build/security-and-auth/token-generation',
+    'build/authentication-and-connection/token-generation',
+  ],
+  [
+    'build/security-and-auth/user-authentication',
+    'build/authentication-and-connection/user-authentication',
+  ],
+] as const;
 
 function readMeta(path: string): DocsMeta {
   return JSON.parse(readFileSync(path, 'utf8')) as DocsMeta;
@@ -160,14 +262,17 @@ describe('zh-CN product IA standard', () => {
       ['webhook', 'ncs-events'],
       '/zh-CN/realtime-media/speech-to-text/reference/ncs-events',
     ],
-  ] as const)('redirects old speech-to-text path %j', async (slugSegments, redirectUrl) => {
-    const result = await loadDocsPagePayload('zh-CN', 'realtime-media', [
-      'speech-to-text',
-      ...slugSegments,
-    ]);
+  ] as const)(
+    'redirects old speech-to-text path %j',
+    async (slugSegments, redirectUrl) => {
+      const result = await loadDocsPagePayload('zh-CN', 'realtime-media', [
+        'speech-to-text',
+        ...slugSegments,
+      ]);
 
-    expect(result).toEqual({ redirectUrl });
-  });
+      expect(result).toEqual({ redirectUrl });
+    },
+  );
 
   it.each([
     [
@@ -201,10 +306,91 @@ describe('zh-CN product IA standard', () => {
       ['smart-doorbell', 'product-overview'],
       '/zh-CN/solutions/smart-doorbell',
     ],
-  ] as const)('redirects representative old %s path %j', async (tab, slugSegments, redirectUrl) => {
-    const result = await loadDocsPagePayload('zh-CN', tab, [...slugSegments]);
+  ] as const)(
+    'redirects representative old %s path %j',
+    async (tab, slugSegments, redirectUrl) => {
+      const result = await loadDocsPagePayload('zh-CN', tab, [...slugSegments]);
 
-    expect(result).toEqual({ redirectUrl });
+      expect(result).toEqual({ redirectUrl });
+    },
+  );
+
+  it.each(rtmBuildPageMoves)(
+    'moves RTM build page %s to %s',
+    async (legacyPath, canonicalPath) => {
+      expect(pageExistsAtRelativePath('realtime-media/rtm', legacyPath)).toBe(
+        false,
+      );
+      expect(
+        pageExistsAtRelativePath('realtime-media/rtm', canonicalPath),
+      ).toBe(true);
+
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+      });
+    },
+  );
+
+  it('orders the RTM build IA groups by the new information architecture', () => {
+    expect(readMeta(resolve(rtmRoot, 'build/meta.json')).pages).toEqual([
+      'rtm-initialization',
+      'authentication-and-connection',
+      'channels-and-topics',
+      'messaging',
+      'message-design-and-history',
+      'state-and-attributes',
+      'network-and-private-deployment',
+      'troubleshooting',
+    ]);
+  });
+
+  it('keeps the RTM application setup anchor IDs stable', () => {
+    const pagePath = getContentPagePathForUrl(
+      '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
+    );
+
+    expect(pagePath).not.toBeNull();
+    if (!pagePath) {
+      return;
+    }
+
+    const content = readFileSync(pagePath, 'utf8');
+    for (const id of [
+      'servicetype',
+      'protocol',
+      'install',
+      'cloud-proxy-设置',
+      'proxy-设置',
+      '防火墙白名单设置',
+    ]) {
+      expect(content).toContain(`<a id="${id}"></a>`);
+    }
+  });
+
+  it('keeps the RTM network configuration chapters in order', () => {
+    const pagePath = getContentPagePathForUrl(
+      '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration',
+    );
+
+    expect(pagePath).not.toBeNull();
+    if (!pagePath) {
+      return;
+    }
+
+    const headings = (
+      readFileSync(pagePath, 'utf8').match(/^## .+$/gm) ?? []
+    ).map((heading) => heading.slice(3));
+    expect(headings).toEqual([
+      '连接协议配置',
+      'Cloud Proxy 设置',
+      'Proxy 设置',
+      '防火墙白名单设置',
+    ]);
   });
 
   it('serves canonical speech-to-text build and reference pages', async () => {

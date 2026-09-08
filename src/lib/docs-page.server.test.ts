@@ -4064,6 +4064,142 @@ Web body
     });
   });
 
+  it.each([
+    ['get-started/enable-service', 'build/rtm-initialization/enable-service'],
+    ['reference/link-state', 'build/authentication-and-connection/link-state'],
+    ['reference/metadata-events', 'build/state-and-attributes/metadata-events'],
+    ['reference/presence-events', 'build/state-and-attributes/presence-events'],
+    ['reference/topic-events', 'build/channels-and-topics/topics/topic-events'],
+    [
+      'user-guide/channel/channel-basic',
+      'build/channels-and-topics/channel-basic',
+    ],
+    [
+      'user-guide/channel/channel-name',
+      'build/channels-and-topics/channel-name',
+    ],
+    [
+      'user-guide/channel/message-channel',
+      'build/channels-and-topics/message-channel',
+    ],
+    [
+      'user-guide/channel/stream-channel',
+      'build/channels-and-topics/stream-channel',
+    ],
+    [
+      'user-guide/link/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'user-guide/link/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'user-guide/message/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+    [
+      'user-guide/message/constructed',
+      'build/message-design-and-history/constructed',
+    ],
+    [
+      'user-guide/message/history-message',
+      'build/message-design-and-history/history-message',
+    ],
+    ['user-guide/message/send-message', 'build/messaging/send-message'],
+    [
+      'user-guide/message/serialized',
+      'build/message-design-and-history/serialized',
+    ],
+    ['user-guide/presence/event', 'build/state-and-attributes/presence-events'],
+    [
+      'user-guide/presence/presence-basic',
+      'build/state-and-attributes/presence-basic',
+    ],
+    [
+      'user-guide/presence/temporary-user-state',
+      'build/state-and-attributes/temporary-user-state',
+    ],
+    [
+      'user-guide/setup/application-setup',
+      'build/rtm-initialization/application-setup',
+    ],
+    [
+      'user-guide/setup/data-storage',
+      'build/state-and-attributes/data-storage',
+    ],
+    ['user-guide/setup/login', 'build/authentication-and-connection/login'],
+    [
+      'user-guide/setup/private-setup',
+      'build/network-and-private-deployment/private-setup',
+    ],
+    [
+      'user-guide/storage/channel-metadata',
+      'build/state-and-attributes/channel-metadata',
+    ],
+    ['user-guide/storage/event', 'build/state-and-attributes/metadata-events'],
+    [
+      'user-guide/storage/user-metadata',
+      'build/state-and-attributes/user-metadata',
+    ],
+    [
+      'user-guide/token/token-generation',
+      'build/authentication-and-connection/token-generation',
+    ],
+    [
+      'user-guide/token/user-authentication',
+      'build/authentication-and-connection/user-authentication',
+    ],
+    ['user-guide/topic/event', 'build/channels-and-topics/topics/topic-events'],
+    [
+      'user-guide/topic/topic-basic',
+      'build/channels-and-topics/topics/topic-basic',
+    ],
+    ['user-guide/topic/usage', 'build/channels-and-topics/topics/usage'],
+  ] as const)(
+    'redirects RTM historical alias %s to %s',
+    async (legacyPath, canonicalPath) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+      });
+    },
+  );
+
+  it.each([
+    [
+      'build/manage-connections/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'build/manage-connections/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'build/manage-messages/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+  ] as const)(
+    'redirects the RTM intermediate path %s without retaining its old directory',
+    async (legacyPath, canonicalPath) => {
+      const redirectUrl = `/zh-CN/realtime-media/rtm/${canonicalPath}`;
+
+      expect(redirectUrl).not.toMatch(
+        /\/build\/(manage-connections|manage-messages)(\/|$)/,
+      );
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({ redirectUrl });
+    },
+  );
+
   it('redirects moved Reference pages to their new product paths', async () => {
     mockPagesByRequestedSlugs();
 
