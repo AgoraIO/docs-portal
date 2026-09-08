@@ -1655,7 +1655,7 @@ options.withMetadata = false;
 options.withLock = false;
 
 uint64_t requestId;
-streamChannel.join(options, requestId);
+stream_channel->join(options, requestId);
 ```
 
 When you call this method, the SDK triggers the `onJoinResult` callback and returns the API call result.
@@ -1811,7 +1811,7 @@ When you no longer need a stream connection, call the `leave` method to exit the
 
 ```cpp
 uint64_t requestId;
-streamChannel.leave(requestId);
+stream_channel->leave(requestId);
 ```
 
 When you call this method, the SDK triggers the `onLeaveResult` callback and returns the API call result.
@@ -1904,7 +1904,7 @@ options.withMetadata = false;
 options.withLock = false;
 
 uint64_t requestId;
-streamChannel.join(options, requestId);
+stream_channel->join(options, requestId);
 ```
 
 When you call this method, the SDK triggers the `onJoinResult` callback and returns the API call result.
@@ -2060,7 +2060,7 @@ When you no longer need a stream connection, call the `leave` method to exit the
 
 ```cpp
 uint64_t requestId;
-streamChannel.leave(requestId);
+stream_channel->leave(requestId);
 ```
 
 When you call this method, the SDK triggers the `onLeaveResult` callback and returns the API call result.

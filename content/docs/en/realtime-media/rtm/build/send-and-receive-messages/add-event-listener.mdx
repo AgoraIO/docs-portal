@@ -935,7 +935,7 @@ class RtmHandler: public IRtmEventHandler {
     }
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
-}
+};
 
 RtmConfig cfg;
 cfg.appId = "your_appid";
@@ -944,8 +944,8 @@ cfg.userId = "your_name";
 cfg.eventHandler = new RtmHandler();
 
 // Create an IRtmClient instance
-IRtmClient* rtm_client = createAgoraRtmClient();
-int ret = rtm_client->initialize(cfg);
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(cfg, errorCode);
 ```
 
 ### Remove event listeners
@@ -1000,7 +1000,7 @@ class RtmHandler: public IRtmEventHandler {
     }
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
-}
+};
 
 RtmConfig cfg;
 cfg.appId = "your_appid";
@@ -1009,8 +1009,8 @@ cfg.userId = "your_name";
 cfg.eventHandler = new RtmHandler();
 
 // Create an IRtmClient instance
-IRtmClient* rtm_client = createAgoraRtmClient();
-int ret = rtm_client->initialize(cfg);
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(cfg, errorCode);
 ```
 
 ### Remove event listeners

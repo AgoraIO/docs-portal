@@ -2289,16 +2289,15 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
         // ...
     };
 
-    // Create an RTM instance
-    IRtmClient* rtmClient = createAgoraRtmClient();
-
     RtmConfig config;
     config.appId = "your_appid";
     config.userId = "your_name";
     config.eventHandler = new RtmEventHandler();
-    // Initialize the RTM instance
-    int ret = rtmClient->initialize(config);
-    if (ret != RTM_ERROR_OK) {
+
+    // Create and initialize the RTM instance in a single call
+    int errorCode = 0;
+    IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+    if (!rtmClient || errorCode != RTM_ERROR_OK) {
         // Handle initialization errors
     }
     ```
@@ -2333,10 +2332,8 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
     ```cpp
     // Method call
-    ret = rtmClient->login("your_token");
-    if (ret != RTM_ERROR_OK) {
-        // Handle login errors
-    }
+    uint64_t requestId;
+    rtmClient->login("your_token", requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -2364,7 +2361,7 @@ Version `2.x` features the following event notification types:
 | `onTopicEvent` | Topic change event notification:<br />Receive all Topic change events in the Stream Channel joined by the user. |
 | `onStorageEvent` | Channel metadata and User metadata event notifications:<br />Receive all Channel metadata events in the Message channel subscribed by the user and the Stream channels joined. Receive user metadata events from subscribed users. |
 | `onLockEvent` | Lock change event notification:<br />Receive all Lock events in the Message channels subscribed by the user and the Stream channels joined. |
-| `onConnectionStateChanged`| Network connection status change event notification:<br />Receive events for client network connection status changes. |
+| `onLinkStateEvent` | Receives notifications of changes in the client's network connection state, including information such as the connection state before and after the change, service type, operation type that caused the change, reason for the change, and channel list. |
 | `onTokenPrivilegeWillExpire` |  Receive event notifications when the client token is about to expire. |
 
 For more information about event notifications and payload data structures, see [Event Listeners](/en/api-reference/api-ref/signaling).
@@ -2448,14 +2445,11 @@ The disadvantage to this design is that you cannot independently send messages. 
     // Send a channel message
     std::string message = "hello world";
     PublishOptions options;
-    options.type = RTM_MESSAGE_TYPE_STRING;
+    options.messageType = RTM_MESSAGE_TYPE_STRING;
     options.customType = "PlainText";
 
     uint64_t requestId;
-    int ret = rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to send channel message
-    }
+    rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
 
     // Asynchronous callback for sending channel message
     class RtmEventHandler : public IRtmEventHandler {
@@ -2470,15 +2464,15 @@ The disadvantage to this design is that you cannot independently send messages. 
         // ...
     };
 
+    ```
+
+    ```cpp
     // Subscribe to the channel
     SubscribeOptions options;
     options.withMessage = true;
 
     uint64_t requestId;
-    int ret = rtmClient->subscribe("channelName", options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to subscribe to the channel
-    }
+    rtmClient->subscribe("channelName", options, requestId);
 
     // Asynchronous callback for subscribing to the channel
     class RtmEventHandler : public IRtmEventHandler {
@@ -2552,10 +2546,7 @@ The following sample code shows how to use `2.x` and the Amazon S3 object storag
 
     PublishOptions options;
     uint64_t requestId;
-    int ret = rtmClient->publish("receiver", jsonObject.dump().c_str(), jsonObject.dump().size(), options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to send message
-    }
+    rtmClient->publish("receiver", jsonObject.dump().c_str(), jsonObject.dump().size(), options, requestId);
 ```
 :::info[Information]
 When using Amazon S3 for static file storage, go to the Amazon S3 console and set the correct user permissions and access policies. Refer to [Access Control Best Practices](https://docs.aws.amazon.com/us_en/AmazonS3/latest/userguide/access-control-best-practices.html) for more information.
@@ -2578,16 +2569,13 @@ Call the `getOnlineUsers` method to query the number of online users in the spec
 ```cpp
     // 2.x
     // Method invocation
-    PresenceOptions options;
+    GetOnlineUsersOptions options;
     options.includeState = true;
     options.includeUserId = true;
     options.page = "yourBookmark";
 
     uint64_t requestId;
-    int ret = rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_STREAM, options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to query online users
-    }
+    rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_STREAM, options, requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -2607,15 +2595,12 @@ Call `getUserChannels` method to instantly retrieve the list of channels a speci
     // 2.x
     // Method invocation
     uint64_t requestId;
-    int ret = rtmClient->getPresence()->whereNow("tony", requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to query user's channels
-    }
+    rtmClient->getPresence()->whereNow("tony", requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
         void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
-            if errorCode != RTM_ERROR_OK {
+            if (errorCode != RTM_ERROR_OK) {
                 // Failed to query user's channels
             } else {
                 // Handle whereNow results
@@ -2637,10 +2622,7 @@ To meet the user status requirements of business use-cases, Signaling `2.x` prov
     stateItems.push_back(item);
 
     uint64_t requestId;
-    int ret = rtmClient->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_STREAM, stateItems.data(), stateItems.size(), requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to set state
-    }
+    rtmClient->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_STREAM, stateItems.data(), stateItems.size(), requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -2678,10 +2660,7 @@ In `2.x`, real-time monitoring of user join, leave, timeout, or temporary state 
     options.withPresence = true;
 
     uint64_t requestId;
-    int ret = rtmClient->subscribe("channelName", options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to subscribe to the channel
-    }
+    rtmClient->subscribe("channelName", options, requestId);
 ```
 
 In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
@@ -2724,10 +2703,7 @@ In `2.x`, user attributes and channel attributes are mounted under the `Storage`
     options.recordUserId = true;
 
     uint64_t requestId;
-    int ret = rtmClient->getStorage()->setChannelMetadata("channelName", RTM_CHANNEL_TYPE_STREAM, metadata, options, "lockName", requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to set channel properties
-    }
+    rtmClient->getStorage()->setChannelMetadata("channelName", RTM_CHANNEL_TYPE_STREAM, metadata, options, "lockName", requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -2766,10 +2742,7 @@ Events for channel and user attributes are distributed to users through events o
     options.withMetadata = true;
 
     uint64_t requestId;
-    int ret = rtmClient->subscribe("channelName", options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to subscribe to the channel
-    }
+    rtmClient->subscribe("channelName", options, requestId);
 ```
 
 ## Restrict access area
@@ -2905,16 +2878,15 @@ Signaling `2.x` makes significant adjustments to initialization parameters. It i
         // ...
     };
 
-    // Create an RTM instance
-    IRtmClient* rtmClient = createAgoraRtmClient();
-
     RtmConfig config;
     config.appId = "your_appid";
     config.userId = "your_name";
     config.eventHandler = new RtmEventHandler();
-    // Initialize the RTM instance
-    int ret = rtmClient->initialize(config);
-    if (ret != RTM_ERROR_OK) {
+
+    // Create and initialize the RTM instance in a single call
+    int errorCode = 0;
+    IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+    if (!rtmClient || errorCode != RTM_ERROR_OK) {
         // Handle initialization errors
     }
     ```
@@ -2949,10 +2921,8 @@ The method for logging in to the `2.x` service is different from `1.x`:
 
     ```cpp
     // Method call
-    ret = rtmClient->login("your_token");
-    if (ret != RTM_ERROR_OK) {
-        // Handle login errors
-    }
+    uint64_t requestId;
+    rtmClient->login("your_token", requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -2980,7 +2950,7 @@ Version `2.x` features the following event notification types:
 | `onTopicEvent` | Topic change event notification:<br />Receive all Topic change events in the Stream Channel joined by the user. |
 | `onStorageEvent` | Channel metadata and User metadata event notifications:<br />Receive all Channel metadata events in the Message channel subscribed by the user and the Stream channels joined. Receive user metadata events from subscribed users. |
 | `onLockEvent` | Lock change event notification:<br />Receive all Lock events in the Message channels subscribed by the user and the Stream channels joined. |
-| `onConnectionStateChanged`| Network connection status change event notification:<br />Receive events for client network connection status changes. |
+| `onLinkStateEvent` | Receives notifications of changes in the client's network connection state, including information such as the connection state before and after the change, service type, operation type that caused the change, reason for the change, and channel list. |
 | `onTokenPrivilegeWillExpire` |  Receive event notifications when the client token is about to expire. |
 
 For more information about event notifications and payload data structures, see [Event Listeners](/en/api-reference/api-ref/signaling).
@@ -3064,14 +3034,11 @@ The disadvantage to this design is that you cannot independently send messages. 
     // Send a channel message
     std::string message = "hello world";
     PublishOptions options;
-    options.type = RTM_MESSAGE_TYPE_STRING;
+    options.messageType = RTM_MESSAGE_TYPE_STRING;
     options.customType = "PlainText";
 
     uint64_t requestId;
-    int ret = rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to send channel message
-    }
+    rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
 
     // Asynchronous callback for sending channel message
     class RtmEventHandler : public IRtmEventHandler {
@@ -3086,15 +3053,15 @@ The disadvantage to this design is that you cannot independently send messages. 
         // ...
     };
 
+    ```
+
+    ```cpp
     // Subscribe to the channel
     SubscribeOptions options;
     options.withMessage = true;
 
     uint64_t requestId;
-    int ret = rtmClient->subscribe("channelName", options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to subscribe to the channel
-    }
+    rtmClient->subscribe("channelName", options, requestId);
 
     // Asynchronous callback for subscribing to the channel
     class RtmEventHandler : public IRtmEventHandler {
@@ -3168,10 +3135,7 @@ The following sample code shows how to use `2.x` and the Amazon S3 object storag
 
     PublishOptions options;
     uint64_t requestId;
-    int ret = rtmClient->publish("receiver", jsonObject.dump().c_str(), jsonObject.dump().size(), options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to send message
-    }
+    rtmClient->publish("receiver", jsonObject.dump().c_str(), jsonObject.dump().size(), options, requestId);
 ```
 :::info[Information]
 When using Amazon S3 for static file storage, go to the Amazon S3 console and set the correct user permissions and access policies. Refer to [Access Control Best Practices](https://docs.aws.amazon.com/us_en/AmazonS3/latest/userguide/access-control-best-practices.html) for more information.
@@ -3194,16 +3158,13 @@ Call the `getOnlineUsers` method to query the number of online users in the spec
 ```cpp
     // 2.x
     // Method invocation
-    PresenceOptions options;
+    GetOnlineUsersOptions options;
     options.includeState = true;
     options.includeUserId = true;
     options.page = "yourBookmark";
 
     uint64_t requestId;
-    int ret = rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_STREAM, options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to query online users
-    }
+    rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_STREAM, options, requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -3223,15 +3184,12 @@ Call `getUserChannels` method to instantly retrieve the list of channels a speci
     // 2.x
     // Method invocation
     uint64_t requestId;
-    int ret = rtmClient->getPresence()->whereNow("tony", requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to query user's channels
-    }
+    rtmClient->getPresence()->whereNow("tony", requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
         void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
-            if errorCode != RTM_ERROR_OK {
+            if (errorCode != RTM_ERROR_OK) {
                 // Failed to query user's channels
             } else {
                 // Handle whereNow results
@@ -3253,10 +3211,7 @@ To meet the user status requirements of business use-cases, Signaling `2.x` prov
     stateItems.push_back(item);
 
     uint64_t requestId;
-    int ret = rtmClient->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_STREAM, stateItems.data(), stateItems.size(), requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to set state
-    }
+    rtmClient->getPresence()->setState("channelName", RTM_CHANNEL_TYPE_STREAM, stateItems.data(), stateItems.size(), requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -3294,10 +3249,7 @@ In `2.x`, real-time monitoring of user join, leave, timeout, or temporary state 
     options.withPresence = true;
 
     uint64_t requestId;
-    int ret = rtmClient->subscribe("channelName", options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to subscribe to the channel
-    }
+    rtmClient->subscribe("channelName", options, requestId);
 ```
 
 In Signaling `2.x` real-time notifications have been redesigned. The presence event notification mode refers to how subscribed users of presence events in the channel are notified. There are two available modes:
@@ -3340,10 +3292,7 @@ In `2.x`, user attributes and channel attributes are mounted under the `Storage`
     options.recordUserId = true;
 
     uint64_t requestId;
-    int ret = rtmClient->getStorage()->setChannelMetadata("channelName", RTM_CHANNEL_TYPE_STREAM, metadata, options, "lockName", requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to set channel properties
-    }
+    rtmClient->getStorage()->setChannelMetadata("channelName", RTM_CHANNEL_TYPE_STREAM, metadata, options, "lockName", requestId);
 
     // Asynchronous callback
     class RtmEventHandler : public IRtmEventHandler {
@@ -3382,10 +3331,7 @@ Events for channel and user attributes are distributed to users through events o
     options.withMetadata = true;
 
     uint64_t requestId;
-    int ret = rtmClient->subscribe("channelName", options, requestId);
-    if (ret != RTM_ERROR_OK) {
-        // Failed to subscribe to the channel
-    }
+    rtmClient->subscribe("channelName", options, requestId);
 ```
 
 ## Restrict access area

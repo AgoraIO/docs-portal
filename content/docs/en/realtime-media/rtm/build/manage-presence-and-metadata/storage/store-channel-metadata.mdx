@@ -2516,7 +2516,7 @@ To help resolve issues arising from concurrent updates to storage, Signaling off
 
 The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
 
-- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+- `majorRevision` field of the `Metadata` struct: Enable version number verification of the entire set of channel metadata.
 
 - `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
 
@@ -2582,7 +2582,7 @@ options.recordUserId = true;
 
 uint64_t requestId;
 std::string lockName = "manage";
-rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName, requestId);
+rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName.c_str(), requestId);
 ```
 
 For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/windows-cpp#lock).
@@ -2593,7 +2593,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/windows-cpp#setchannelmetadata)
+- [`setChannelMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#setchannelmetadata)
 - [`getChannelMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#getchannelmetadata)
 - [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#removechannelmetadata)
 - [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/windows-cpp#updatechannelmetadata)
@@ -2836,7 +2836,7 @@ To help resolve issues arising from concurrent updates to storage, Signaling off
 
 The Compare and Set (CAS) version control feature in channel metadata storage provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
 
-- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+- `majorRevision` field of the `Metadata` struct: Enable version number verification of the entire set of channel metadata.
 
 - `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
 
@@ -2902,7 +2902,7 @@ options.recordUserId = true;
 
 uint64_t requestId;
 std::string lockName = "manage";
-rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName, requestId);
+rtm_client->getStorage()->updateChannelMetadata("channel1", RTM_CHANNEL_TYPE_MESSAGE, metadata, options, lockName.c_str(), requestId);
 ```
 
 For more information on setting, acquiring, releasing, revoking, and removing locks, see [Locks](/en/api-reference/api-ref/signaling/linux-cpp#lock).
@@ -2913,7 +2913,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/linux-cpp#setchannelmetadata)
+- [`setChannelMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#setchannelmetadata)
 - [`getChannelMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#getchannelmetadata)
 - [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#removechannelmetadata)
 - [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/linux-cpp#updatechannelmetadata)

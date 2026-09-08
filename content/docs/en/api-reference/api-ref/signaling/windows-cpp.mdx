@@ -39,7 +39,7 @@ RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_name";
 config.eventHandler = new RtmHandler();
-config.areaCode = RTM_AREA_CODE_CN | RTM_AREA_CODE_AS;
+config.areaCode = static_cast<RTM_AREA_CODE>(RTM_AREA_CODE_CN | RTM_AREA_CODE_AS);
 config.protocolType = RTM_PROTOCOL_TYPE_TCP_UDP;
 config.presenceTimeout = 300;
 config.heartbeatInterval = 5;
@@ -60,7 +60,7 @@ config.privateConfig = privateConfig;
 | `protocolType` | `RTM_PROTOCOL_TYPE` | Optional | `RTM_PROTOCOL_TYPE_TCP_UDP` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`RTM_PROTOCOL_TYPE`](#rtm_protocol_type). |
 | `presenceTimeout` | uint32_t | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers the delay imposed by the Signaling server before sending a `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT` event notification to other participants or delete the temporary user data associated with the user. |
 | `heartbeatInterval` | int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
-| `reconnectTimeout` | uint32_t | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0` which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK triggers the `onLoginResult` callback with `errorCode` as `RTM_ERROR_LOGIN_TIMEOUT`, and also triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_CHANGE_REASON_LOGIN_TIMEOUT`. <br />- If reconnection times out, the SDK triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_CHANGE_REASON_RECONNECT_TIMEOUT`. |
+| `reconnectTimeout` | uint32_t | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0` which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK triggers the `onLoginResult` callback with `errorCode` as `RTM_ERROR_LOGIN_TIMEOUT`, and also triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_STATE_CHANGE_REASON_LOGIN_TIMEOUT`. <br />- If reconnection times out, the SDK triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_STATE_CHANGE_REASON_RECONNECT_TIMEOUT`. |
 | `context` | void* | Optional | `NULL` | <br />- For Android, it is the context of Android Activity. <br />- For Windows, it is the window handle of the app. Once set, this parameter enables you to connect or disconnect the video devices while they are powered. |
 | `useStringUserId` | bool | Optional | `true` | Whether to use string-type user IDs:<br />- `true`: Use string-type user IDs. <br />- `false`: Use number-type user IDs. The SDK automatically converts string-type user IDs to number-type ones. In this case, the `userId` parameter must be a numeric string (for example, `"123457"`), otherwise initialization fails.When using Agora RTC and Signaling products at the same time, it is necessary to ensure that the `userId` parameter is consistent. |
 | `ispPolicyEnabled` | Bool | Optional | `false` | Whether to enable the ISP domain policy restriction. In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). Use this field to set the SDK's connection mode to connect to servers with domains registered with the operator or those in the IP whitelist: <br />- `true`: Enable the ISP domain policy restriction. This setting applies to scenarios where IoT devices use IoT SIM cards for network access. The SDK will only connect to servers with domains registered with the operator or those in the IP whitelist. <br />- `false`: (Default) Disable the ISP domain policy restriction. This setting applies to most common scenarios. |
@@ -112,7 +112,7 @@ Once you set the encryption feature, all users must use the same encryption mode
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
 | `encryptionMode` | `RTM_ENCRYPTION_MODE` | Optional | `RTM_ENCRYPTION_MODE_NONE` | Encryption mode. See [`RTM_ENCRYPTION_MODE`](#rtm_encryption_mode). |
 | `encryptionKey` | const char* | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
-| `encryptionKdfSalt` | uint8_t | Optional | - | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
+| `encryptionSalt` | uint8_t[32] | Optional | - | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
 
  #### RtmPrivateConfig
 
@@ -152,7 +152,7 @@ std::vector<const char*> hosts;
 hosts.push_back("xxx");
 config.privateConfig.accessPointHosts = hosts.data();
 config.privateConfig.accessPointHostsCount = hosts.size();
-config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
+config.privateConfig.serviceType = static_cast<RTM_SERVICE_TYPE>(RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM);
 ```
 
 ### createAgoraRtmClient
@@ -181,7 +181,7 @@ AGORA_API IRtmClient* AGORA_CALL createAgoraRtmClient(const RtmConfig& config, i
 
 ```cpp
 RtmConfig config;
-config.appId = "your_appid"
+config.appId = "your_appid";
 config.userId = "your_name";
 config.eventHandler = eventHandler_.get();
 int errorCode = 0;
@@ -579,7 +579,8 @@ After calling this method, the SDK triggers the `onRenewTokenResult` callback an
 #### Basic usage
 
 ```cpp
-rtmClient->renewToken("your token");
+uint64_t requestId;
+rtmClient->renewToken("your token", requestId);
 ```
 
 ### IStreamChannel::renewToken
@@ -1034,7 +1035,7 @@ JoinTopicOptions options;
 options.qos = RTM_MESSAGE_QOS_ORDERED;
 
 uint64_t requestId;
-stream_channel->joinTopic("topicName", options, requestId);
+streamChannel->joinTopic("topicName", options, requestId);
 
 ```
 
@@ -1118,7 +1119,7 @@ options.customType = "ByteArray";
 char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
 uint64_t requestId;
-stream_channel->publishTopicMessage("topic_name", message, 5, options, requestId);
+streamChannel->publishTopicMessage("topic_name", message, 5, options, requestId);
 ```
 
 ### leaveTopic
@@ -1480,7 +1481,7 @@ Example 1: Send string messages to a specified channel.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
 options.customType = "PlainText";
-options.channelTye = RTM_CHANNEL_TYPE_MESSAGE;
+options.channelType = RTM_CHANNEL_TYPE_MESSAGE;
 std::string message =  "hello world";
 uint64_t requestId;
 rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
@@ -1492,7 +1493,7 @@ Example 2: Send byte messages to a specified channel.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_BINARY;
 options.customType = "ByteArray";
-options.channelTye = RTM_CHANNEL_TYPE_MESSAGE;
+options.channelType = RTM_CHANNEL_TYPE_MESSAGE;
 
 char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
@@ -1506,7 +1507,7 @@ Example 3: Send string messages to a specified user.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
 options.customType = "PlainText";
-options.channelTye = RTM_CHANNEL_TYPE_USER;
+options.channelType = RTM_CHANNEL_TYPE_USER;
 std::string message =  "hello world";
 uint64_t requestId;
 rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
@@ -1518,7 +1519,7 @@ Example 4: Send byte messages to a specified user.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_BINARY;
 options.customType = "ByteArray";
-options.channelTye = RTM_CHANNEL_TYPE_USER;
+options.channelType = RTM_CHANNEL_TYPE_USER;
 
 char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
@@ -1634,7 +1635,7 @@ The `UserState` data type contains the following properties:
 
 ```cpp
 // Method call
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "yourBookMark";
@@ -2305,7 +2306,7 @@ std::vector<agora::rtm::MetadataItem> items;
 items.emplace_back(MetadataItem("Name", "Tony", 174298200));
 items.emplace_back(MetadataItem("Mute", "true", 174298100));
 metadata.items = items.data();
-metadata.items = items.size();
+metadata.itemCount = items.size();
 
 MetadataOptions options;
 options.recordTs = true;
@@ -3271,7 +3272,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | Error code| Error description| Cause and solution |
 | :------ | :------------------|:---------------------------|
 | `0` | `RTM_ERROR_OK` | Correct call |
-| `-10001` | `RTM_ERROR_NOT_INITIALIZED` | The SDK is not initialized. Please initialize the `RtmClient` instance by calling the `createAgoraRtmClient` method before performing other operations. |
+| `-10001` | `RTM_ERROR_NOT_INITIALIZED` | The SDK is not initialized. Please initialize the `IRtmClient` instance by calling the `createAgoraRtmClient` method before performing other operations. |
 | `-10002` | `RTM_ERROR_NOT_LOGIN` | The user called the API without logging in to Signaling, disconnected due to timeout, or actively logged out. Please log in to Signaling first. |
 | `-10003` | `RTM_ERROR_INVALID_APP_ID` | Invalid App ID: <br /> - Check that the App ID is correct. <br /> - Ensure that Signaling has been activated for the App ID. |
 | `-10005` | `RTM_ERROR_INVALID_TOKEN` | Invalid Token: <br /> - The token is invalid, check whether the Token Provider generates a valid Signaling Token. |

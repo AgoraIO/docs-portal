@@ -687,11 +687,11 @@ This section shows how to store and retrieve messages from history.
 
 ### Store messages
 
-To store a message on the server, set `setStoreInHistory` to `true` in the `publish()` method. The following example shows the minimum code to store a message published to a message channel:
+To store a message on the server, set `storeInHistory` to `true` in the `PublishOptions` you pass to `publish()`. The following example shows the minimum code to store a message published to a message channel:
 
 ```cpp
 uint64_t requestId = 0;
-std::string channelName = "chatRoom"
+std::string channelName = "chatRoom";
 std::string message = "Hello world!";
 
 PublishOptions options;
@@ -707,7 +707,7 @@ To store a message in the history of a user channel, use the same parameter:
 
 ```cpp
 uint64_t requestId = 0;
-std::string userId = "Tony"
+std::string userId = "Tony";
 std::string message = "Hello world!";
 
 PublishOptions options;
@@ -715,7 +715,7 @@ options.storeInHistory = true;
 options.channelType = RTM_CHANNEL_TYPE_USER;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
 
-rtmClient_->(userId.c_str(), message.c_str(), message.size(), options,
+rtmClient_->publish(userId.c_str(), message.c_str(), message.size(), options,
             requestId);
 ```
 
@@ -810,11 +810,11 @@ This section shows how to store and retrieve messages from history.
 
 ### Store messages
 
-To store a message on the server, set `setStoreInHistory` to `true` in the `publish()` method. The following example shows the minimum code to store a message published to a message channel:
+To store a message on the server, set `storeInHistory` to `true` in the `PublishOptions` you pass to `publish()`. The following example shows the minimum code to store a message published to a message channel:
 
 ```cpp
 uint64_t requestId = 0;
-std::string channelName = "chatRoom"
+std::string channelName = "chatRoom";
 std::string message = "Hello world!";
 
 PublishOptions options;
@@ -830,7 +830,7 @@ To store a message in the history of a user channel, use the same parameter:
 
 ```cpp
 uint64_t requestId = 0;
-std::string userId = "Tony"
+std::string userId = "Tony";
 std::string message = "Hello world!";
 
 PublishOptions options;
@@ -838,7 +838,7 @@ options.storeInHistory = true;
 options.channelType = RTM_CHANNEL_TYPE_USER;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
 
-rtmClient_->(userId.c_str(), message.c_str(), message.size(), options,
+rtmClient_->publish(userId.c_str(), message.c_str(), message.size(), options,
             requestId);
 ```
 

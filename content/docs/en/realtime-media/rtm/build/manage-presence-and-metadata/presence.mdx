@@ -2583,7 +2583,7 @@ Starting from v2.3.0, if Presence is still initializing when a `login` call succ
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 
@@ -2618,7 +2618,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "your_Next_Page_Bookmark";
@@ -2630,7 +2630,7 @@ rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_MESSAGE
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = false;
 options.includeUserId =false;
 
@@ -2970,7 +2970,7 @@ Starting from v2.3.0, if Presence is still initializing when a `login` call succ
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 
@@ -3005,7 +3005,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "your_Next_Page_Bookmark";
@@ -3017,7 +3017,7 @@ rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_MESSAGE
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = false;
 options.includeUserId =false;
 
