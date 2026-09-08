@@ -522,14 +522,18 @@ export async function loadDocsPagePayload(
     slugSegments,
   );
   if (zhCnProductIaRedirect) {
-    return {
-      redirectUrl: zhCnProductIaRedirect,
-      ...(locale === 'zh-CN' &&
+    const statusCode: 301 | undefined =
+      locale === 'zh-CN' &&
       tab === 'realtime-media' &&
       slugSegments[0] === 'rtm'
-        ? { statusCode: 301 }
-        : {}),
-    };
+        ? 301
+        : undefined;
+
+    if (statusCode === undefined) {
+      return { redirectUrl: zhCnProductIaRedirect };
+    }
+
+    return { redirectUrl: zhCnProductIaRedirect, statusCode };
   }
 
   const realtimeMediaApiReferenceRedirect =

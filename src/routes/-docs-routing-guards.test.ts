@@ -1,6 +1,9 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
-import type { DocsPagePayload } from '@/lib/docs-page.server';
+import type {
+  DocsPagePayload,
+  DocsRedirectPayload,
+} from '@/lib/docs-page.server';
 
 const { docsPagePayloadOverride } = vi.hoisted(() => ({
   docsPagePayloadOverride: vi.fn(),
@@ -423,12 +426,12 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
-  it('redirects RTM old build pages with an explicit 301', async () => {
+  it('forwards an RTM 301 DocsRedirectPayload from the page route', async () => {
     docsPagePayloadOverride.mockReturnValueOnce({
       redirectUrl:
         '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
       statusCode: 301,
-    });
+    } satisfies DocsRedirectPayload);
 
     try {
       await getLoader(DocPageRoute)({
@@ -456,16 +459,16 @@ describe('docs route locale guards', () => {
       return;
     }
 
-    throw new Error('expected RTM old build page to redirect');
+    throw new Error('expected page route to forward a 301 redirect payload');
   });
 
-  it('redirects RTM payloads from the tab index with an explicit 301', async () => {
+  it('forwards an RTM 301 DocsRedirectPayload from the tab index route', async () => {
     docsTabIndexOverride.mockReturnValueOnce({ url: '/en/realtime-media' });
     docsPagePayloadOverride.mockReturnValueOnce({
       redirectUrl:
         '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
       statusCode: 301,
-    });
+    } satisfies DocsRedirectPayload);
 
     try {
       await getLoader(TabIndexRoute)({
@@ -491,7 +494,9 @@ describe('docs route locale guards', () => {
       return;
     }
 
-    throw new Error('expected RTM tab index payload to redirect');
+    throw new Error(
+      'expected tab index route to forward a 301 redirect payload',
+    );
   });
 
   it(

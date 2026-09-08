@@ -282,12 +282,6 @@ describe('zh-CN product IA standard', () => {
     ],
     [
       'realtime-media',
-      ['rtm', 'user-guide', 'message', 'send-message'],
-      '/zh-CN/realtime-media/rtm/build/messaging/send-message',
-      301,
-    ],
-    [
-      'realtime-media',
       [
         'recording',
         'cloud-recording',
@@ -309,15 +303,26 @@ describe('zh-CN product IA standard', () => {
     ],
   ] as const)(
     'redirects representative old %s path %j',
-    async (tab, slugSegments, redirectUrl, statusCode) => {
+    async (tab, slugSegments, redirectUrl) => {
       const result = await loadDocsPagePayload('zh-CN', tab, [...slugSegments]);
 
-      expect(result).toEqual({
-        redirectUrl,
-        ...(statusCode === 301 ? { statusCode } : {}),
-      });
+      expect(result).toEqual({ redirectUrl });
     },
   );
+
+  it('redirects the representative old RTM path with 301', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', [
+        'rtm',
+        'user-guide',
+        'message',
+        'send-message',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/rtm/build/messaging/send-message',
+      statusCode: 301,
+    });
+  });
 
   it.each(rtmBuildPageMoves)(
     'moves RTM build page %s to %s',
