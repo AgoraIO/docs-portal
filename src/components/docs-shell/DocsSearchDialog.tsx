@@ -86,6 +86,9 @@ export function DocsSearchDialog({
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
   );
+  const [resultPlatformSelections, setResultPlatformSelections] = useState<
+    Record<string, string>
+  >({});
   // Selected scope id (e.g. `product:video`), or null for all products.
   const [scopeId, setScopeId] = useState<string | null>(null);
   // Mirrors cmdk's highlighted item (keyboard ↑/↓ AND mouse hover both set it)
@@ -114,6 +117,7 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaApiReferenceIndexName = algoliaConfig?.apiReferenceIndexName;
   const algoliaIndexName = algoliaConfig?.indexName;
+  const algoliaRankingV2 = algoliaConfig?.rankingV2 ?? false;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
   const algoliaEnabled = Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
@@ -122,6 +126,7 @@ export function DocsSearchDialog({
   // flashes the empty message. Tracking every request keeps us "busy" until the
   // latest one actually resolves.
   const [pendingRequests, setPendingRequests] = useState(0);
+  const [apiSearchUnavailable, setApiSearchUnavailable] = useState(false);
   const currentSearchRef = useRef('');
   const latestSearchRequestRef = useRef(0);
   const localSearchStatusRef = useRef(localSearchStatus);
@@ -176,6 +181,7 @@ export function DocsSearchDialog({
             indexName: algoliaIndexName,
             locale: searchLocale,
             platform: platformFilter ?? undefined,
+            rankingV2: algoliaRankingV2,
             scope: searchScope,
             searchApiKey: algoliaSearchApiKey,
           })
@@ -189,9 +195,21 @@ export function DocsSearchDialog({
       async search(query: string) {
         const requestId = latestSearchRequestRef.current + 1;
         latestSearchRequestRef.current = requestId;
+        setApiSearchUnavailable(false);
         setPendingRequests((count) => count + 1);
         try {
           const results = await base.search(query);
+          if (isLatestSearch(query, requestId)) {
+            const searchStatus =
+              'getLastStatus' in base &&
+              typeof base.getLastStatus === 'function'
+                ? base.getLastStatus()
+                : undefined;
+
+            setApiSearchUnavailable(
+              searchStatus?.docs === 'success' && searchStatus.api === 'error',
+            );
+          }
           const completionStatus = algoliaEnabled
             ? 'success'
             : localSearchStatus === 'loading'
@@ -241,6 +259,7 @@ export function DocsSearchDialog({
     algoliaAppId,
     algoliaApiReferenceIndexName,
     algoliaIndexName,
+    algoliaRankingV2,
     algoliaSearchApiKey,
     algoliaEnabled,
     captureLatestCompletedSearch,
@@ -258,6 +277,7 @@ export function DocsSearchDialog({
             algoliaAppId,
             algoliaApiReferenceIndexName,
             algoliaIndexName,
+            algoliaRankingV2,
             algoliaSearchApiKey,
             searchLocale,
             platformFilter,
@@ -268,6 +288,7 @@ export function DocsSearchDialog({
       algoliaAppId,
       algoliaApiReferenceIndexName,
       algoliaIndexName,
+      algoliaRankingV2,
       algoliaSearchApiKey,
       pages,
       platformFilter,
@@ -385,7 +406,25 @@ export function DocsSearchDialog({
   const invalidateCurrentSearch = useCallback(() => {
     latestSearchRequestRef.current += 1;
     pendingLocalCompletionRef.current = null;
+    setApiSearchUnavailable(false);
+    setResultPlatformSelections({});
   }, []);
+  const handleSearchChange = useCallback(
+    (nextSearch: string) => {
+      setApiSearchUnavailable(false);
+      setResultPlatformSelections({});
+      setSearch(nextSearch);
+    },
+    [setSearch],
+  );
+  const closeAndReset = useCallback(() => {
+    setOpen(false);
+    setStaggerArmed(false);
+    setActiveValue(null);
+    setResultPlatformSelections({});
+    invalidateCurrentSearch();
+    setSearch('');
+  }, [invalidateCurrentSearch, setSearch]);
   const handleScopeChange = useCallback(
     (nextScopeId: string | null) => {
       if (nextScopeId === scopeId) {
@@ -420,7 +459,7 @@ export function DocsSearchDialog({
       });
     }
 
-    setOpen(false);
+    closeAndReset();
     if (isExternalUrl(url)) {
       window.open(url, '_blank', 'noopener,noreferrer');
       return;
@@ -433,9 +472,13 @@ export function DocsSearchDialog({
 
   const handleOpenChange = useCallback(
     async (nextOpen: boolean, trigger: 'button' | 'keyboard' = 'button') => {
-      setOpen(nextOpen);
-      // Re-arm the cascade each time the dialog opens; clear it on close.
-      setStaggerArmed(nextOpen);
+      if (nextOpen) {
+        setOpen(true);
+        // Re-arm the result cascade each time the dialog opens.
+        setStaggerArmed(true);
+      } else {
+        closeAndReset();
+      }
 
       if (nextOpen) {
         captureDocsSearchOpened({
@@ -452,13 +495,6 @@ export function DocsSearchDialog({
             .filter((page) => page.url !== currentPath)
             .slice(0, RECENT_VISIBLE),
         );
-      }
-
-      if (!nextOpen) {
-        setActiveValue(null);
-        // Reset the query on close so reopening lands on the recent list / prompt
-        // rather than the previous search's (possibly empty) results.
-        setSearch('');
       }
 
       if (algoliaConfig || !nextOpen || pages.length > 0) {
@@ -486,7 +522,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, mode, pages.length, searchLocale, setSearch],
+    [algoliaConfig, closeAndReset, loadPages, mode, pages.length, searchLocale],
   );
 
   useEffect(() => {
@@ -527,6 +563,28 @@ export function DocsSearchDialog({
   const rankedDocumentationEntries = resultEntries
     .map((page, index) => ({ page, rank: index + 1 }))
     .filter(({ page }) => page.objectType !== 'sdk-api');
+  const showApiFirst = resultEntries[0]?.objectType === 'sdk-api';
+  const searchSections = showApiFirst
+    ? [
+        {
+          entries: rankedApiReferenceEntries,
+          heading: t('docs.searchApiReference'),
+        },
+        {
+          entries: rankedDocumentationEntries,
+          heading: t('docs.searchDocumentation'),
+        },
+      ]
+    : [
+        {
+          entries: rankedDocumentationEntries,
+          heading: t('docs.searchDocumentation'),
+        },
+        {
+          entries: rankedApiReferenceEntries,
+          heading: t('docs.searchApiReference'),
+        },
+      ];
   const showRecent = !hasQuery && recentPages.length > 0;
   // Nothing typed and no history yet → a plain prompt instead of fake results.
   const showPrompt = !hasQuery && recentPages.length === 0;
@@ -608,7 +666,7 @@ export function DocsSearchDialog({
         value={activeValue ?? ''}
       >
         <CommandInput
-          onValueChange={setSearch}
+          onValueChange={handleSearchChange}
           placeholder={t('docs.searchPlaceholder')}
           value={search}
         />
@@ -632,6 +690,16 @@ export function DocsSearchDialog({
               searchPlaceholder={t('docs.searchFilterPlatforms')}
               value={platformFilter}
             />
+          </div>
+        ) : null}
+        {hasQuery && apiSearchUnavailable && !isSearchUnavailable ? (
+          <div
+            aria-live="polite"
+            className="border-b px-4 py-2 text-sm text-muted-foreground"
+            data-testid="search-api-unavailable"
+            role="status"
+          >
+            {t('docs.searchApiUnavailable')}
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
@@ -699,52 +767,79 @@ export function DocsSearchDialog({
             </CommandGroup>
           ) : null}
           {hasQuery
-            ? [
-                {
-                  entries: rankedApiReferenceEntries,
-                  heading: t('docs.searchApiReference'),
-                },
-                {
-                  entries: rankedDocumentationEntries,
-                  heading: t('docs.searchDocumentation'),
-                },
-              ].map(({ entries, heading }) =>
+            ? searchSections.map(({ entries, heading }) =>
                 entries.length > 0 ? (
                   <CommandGroup heading={heading} key={heading}>
                     {entries.map(({ page, rank }) => {
                       const stagger = staggerProps(rank - 1);
+                      const resultKey = page.id ?? page.url;
+                      const platformUrls = page.platformUrls ?? {};
+                      const platformOptions = Object.entries(platformUrls);
+                      const selectedUrl =
+                        resultPlatformSelections[resultKey] ?? page.url;
                       return (
-                        <CommandItem
-                          className={cn('items-start', stagger.className)}
-                          key={page.id ?? page.url}
-                          onSelect={() => void handleSelect(page.url, rank)}
-                          style={stagger.style}
-                          value={page.id ?? page.url}
-                        >
-                          <div className="min-w-0 flex-1 space-y-1.5">
-                            <HighlightedText
-                              className="line-clamp-1 font-medium"
-                              value={page.title}
-                            />
-                            {page.path.length > 0 ? (
-                              <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
-                                {page.path.join(' › ')}
-                              </div>
-                            ) : null}
-                            {page.context.length > 0 ? (
-                              <div className="flex flex-wrap gap-1">
-                                {page.context.map((item) => (
-                                  <span
-                                    className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
-                                    key={`${page.id ?? page.url}:${item}`}
-                                  >
-                                    <HighlightedText value={item} />
-                                  </span>
+                        <div key={resultKey}>
+                          <CommandItem
+                            className={cn('items-start', stagger.className)}
+                            onSelect={() =>
+                              void handleSelect(selectedUrl, rank)
+                            }
+                            style={stagger.style}
+                            value={resultKey}
+                          >
+                            <div className="min-w-0 flex-1 space-y-1.5">
+                              <HighlightedText
+                                className="line-clamp-1 font-medium"
+                                value={page.title}
+                              />
+                              {page.path.length > 0 ? (
+                                <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                                  {page.path.join(' › ')}
+                                </div>
+                              ) : null}
+                              {page.context.length > 0 ? (
+                                <div className="flex flex-wrap gap-1">
+                                  {page.context.map((item) => (
+                                    <span
+                                      className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
+                                      key={`${resultKey}:${item}`}
+                                    >
+                                      <HighlightedText value={item} />
+                                    </span>
+                                  ))}
+                                </div>
+                              ) : null}
+                            </div>
+                          </CommandItem>
+                          {page.objectType === 'sdk-api' &&
+                          platformOptions.length > 1 ? (
+                            <div className="px-2 pb-1">
+                              <select
+                                aria-label={t('docs.searchPlatformVariant')}
+                                className="h-6 max-w-full rounded border bg-background px-1 text-[0.68rem] text-muted-foreground"
+                                onChange={(event) => {
+                                  setResultPlatformSelections((current) => ({
+                                    ...current,
+                                    [resultKey]: event.target.value,
+                                  }));
+                                }}
+                                onKeyDown={(event) => event.stopPropagation()}
+                                value={selectedUrl}
+                              >
+                                {platformOptions.map(([platform, url]) => (
+                                  <option key={platform} value={url}>
+                                    {platform in platformRegistry
+                                      ? getPlatformLabel(
+                                          platform as PlatformKey,
+                                          searchLocale,
+                                        )
+                                      : platform}
+                                  </option>
                                 ))}
-                              </div>
-                            ) : null}
-                          </div>
-                        </CommandItem>
+                              </select>
+                            </div>
+                          ) : null}
+                        </div>
                       );
                     })}
                   </CommandGroup>
@@ -795,6 +890,7 @@ function searchResultToEntry(result: {
   objectType?: unknown;
   path?: unknown[];
   platform?: unknown;
+  platformUrls?: unknown;
   product?: unknown;
   section?: unknown;
   snippet?: unknown;
@@ -827,6 +923,15 @@ function searchResultToEntry(result: {
         ? objectType
         : undefined,
     path: getStringArray(result.path) ?? [],
+    platformUrls:
+      result.platformUrls && typeof result.platformUrls === 'object'
+        ? Object.fromEntries(
+            Object.entries(result.platformUrls).filter(
+              ([platform, url]) =>
+                typeof platform === 'string' && typeof url === 'string',
+            ),
+          )
+        : undefined,
     title:
       typeof result.title === 'string'
         ? result.title

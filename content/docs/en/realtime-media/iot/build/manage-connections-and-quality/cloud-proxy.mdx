@@ -1,0 +1,97 @@
+---
+title: "Connect with Cloud Proxy"
+description: "Use Agora's cloud proxy service to run IoT SDK in network environments that restrict direct access to Agora's SDRTN®."
+---
+If your device runs inside a network that restricts direct access to Agora SDRTN® (Software-Defined Real-Time Network), such as one behind a restrictive corporate or industrial firewall, use Agora's cloud proxy service to relay traffic through a set of Agora-owned IP addresses and ports that you add to your firewall allowlist.
+
+## Understand the tech
+
+When cloud proxy is enabled, IoT SDK sends and receives data through the following flow:
+
+1. IoT SDK requests proxy information from the Agora cloud proxy service.
+2. IoT SDK sends data to the cloud proxy, which relays it to Agora SDRTN®.
+3. Agora SDRTN® returns data to the cloud proxy, which relays it back to IoT SDK.
+
+## Enable cloud proxy
+
+Call `agora_rtc_set_cloud_proxy` before you join a channel to set the cloud proxy mode:
+
+```cpp
+int rval = agora_rtc_set_cloud_proxy(CLOUD_PROXY_UDP);
+if (rval < 0) {
+    printf("Failed to set cloud proxy, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+```
+
+`type` accepts the following values:
+
+| Value | Description |
+| :--- | :--- |
+| `CLOUD_PROXY_NONE` | Disables cloud proxy. |
+| `CLOUD_PROXY_UDP` | Sends and receives data through the cloud proxy over UDP. |
+
+Bandwidth through a cloud proxy is limited compared to a direct connection to Agora SDRTN®, so only enable cloud proxy for devices that need it.
+
+## Allowlist IP addresses and ports
+
+Before you enable cloud proxy, add the IP addresses and ports for your target regions to your firewall allowlist.
+
+### North America
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `128.14.195.192/28`, `128.14.245.16/28`, `128.14.72.80/28`, `128.14.200.208/28` | UDP | `4590-4600`, `8001-8010` |
+
+### Europe
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `104.166.160.208/28`, `23.236.110.32/28`, `104.166.142.134`, `104.166.161.4` | UDP | `4590-4600`, `8001-8010` |
+
+### Asia, excluding Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `128.1.186.240/28`, `129.227.73.32/28`, `103.193.127.208/28` | UDP | `4590-4600`, `8001-8010` |
+
+### Japan
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `129.227.113.112/28`, `129.227.55.96/28`, `122.10.153.74`, `129.227.234.123` | UDP | `4590-4600`, `8001-8010` |
+
+### India
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38`, `184.72.16.87`, `35.168.106.53`, `35.156.231.150`, `15.237.134.178`, `54.178.26.110`, `52.221.23.86`, `13.230.60.35`, `15.206.47.129`, `13.127.149.196`, `13.209.247.137`, `13.124.182.235`, `23.98.43.152`, `107.155.14.132`, `69.28.51.142` | UDP | `8443` |
+| Cloud Proxy | `129.227.217.128/28`, `129.227.108.208/28`, `128.1.105.112/28` | UDP | `4590-4600`, `8001-8010` |
+
+### Mainland China
+
+| Service type | IP addresses | Protocol | Port |
+|--------------|--------------|----------|------|
+| Signaling Service | `106.14.12.130`, `118.190.148.38` | UDP | `8443` |
+| Cloud Proxy | `14.29.38.144/28`, `27.45.161.144/28`, `183.232.200.144/28`, `115.238.206.0/28`, `106.3.209.0/28`, `112.13.216.0/28`, `219.153.111.128/28`, `221.178.42.0/28`, `113.207.12.0/28` | UDP | `4590-4600`, `8001-8010` |
+
+## Best practices
+
+- If you're uncertain which region your devices connect from, allowlist the IP addresses for all regions.
+- Open UDP port `53` for DNS resolution in addition to the ports listed above.
+
+## Validate your configuration
+
+Before deploying to production:
+
+1. Enable cloud proxy in your app.
+2. Join a channel and confirm the connection succeeds.
+3. Monitor network quality metrics from multiple geographic locations, if possible.
+
+## Reference
+
+- [agora_rtc_set_cloud_proxy](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)

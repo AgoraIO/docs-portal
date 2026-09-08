@@ -2832,6 +2832,24 @@ This release optimizes the handling logic for expired user status data during re
 
 </PlatformStructured>
 
+<PlatformStructured platform="linux-java">
+
+### v2.3.0
+
+Released on September 2, 2026.
+
+This is the first release of the Signaling SDK for Linux Java. This release includes the following features:
+
+- **Message channels**: Publish and subscribe to messages using the industry-standard Pub/Sub model, with no limit on the number of publishers or subscribers in a channel.
+- **User channels**: Send and receive point-to-point messages by specifying a user ID directly, without subscribing to a channel.
+- **Stream channels and topics**: Create stream channels and organize data streams into topics, with optional timestamp synchronization against RTC audio and video streams.
+- **Presence**: Query online users and their channels, and set, get, and remove temporary user state.
+- **Storage**: Set, get, remove, and subscribe to channel and user metadata.
+- **Lock**: Set, acquire, release, revoke, and remove distributed locks on a channel.
+- **Link state and token events**: Receive event notifications for connection state changes and upcoming token expiration through `onLinkStateEvent` and `onTokenPrivilegeWillExpire`.
+
+</PlatformStructured>
+
 <PlatformStructured platform="windows">
 
 ### Known issues and limitations
