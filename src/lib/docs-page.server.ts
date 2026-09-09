@@ -1509,9 +1509,7 @@ function isZhCnRtmBuildIaRedirect(redirectUrl: string) {
 }
 
 function isZhCnSpeechToTextBuildIaRedirect(redirectUrl: string) {
-  return redirectUrl.startsWith(
-    ZH_CN_SPEECH_TO_TEXT_BUILD_IA_REDIRECT_PREFIX,
-  );
+  return redirectUrl.startsWith(ZH_CN_SPEECH_TO_TEXT_BUILD_IA_REDIRECT_PREFIX);
 }
 
 function resolveRealtimeMediaApiReferenceRedirect(
