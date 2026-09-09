@@ -2,7 +2,7 @@
 
 ## 背景
 
-Speech-to-Text 产品文档中的部分页面仍然链接到旧的产品内 `reference/restful-authentication` 页面。RTMP Gateway 还有一处已经跳到 API Reference、但仍使用隐藏旧页面 `restful-authentication` 的链接。这些目标都不再是对应产品当前 API Reference 的 canonical route，因此用户会从产品文档进入失效或过时的目标。
+Speech-to-Text 产品文档中的部分页面仍然链接到旧的产品内 `reference/restful-authentication` 页面，另有一处 REST API 目录使用 `./restful-authentication` 指向同一旧页面。RTMP Gateway 还有一处已经跳到 API Reference、但仍使用隐藏旧页面 `restful-authentication` 的链接。这些目标都不再是对应产品当前 API Reference 的 canonical route，因此用户会从产品文档进入失效或过时的目标。
 
 仓库现有文档规范要求：跨产品或跨目录跳转使用带 locale 的站点根路径，例如 `/en/api-reference/api-ref/...`；完整域名仅用于外部链接，近邻产品页面才使用 `../...` 形式的路径相对链接。本次遵循该规范。
 
@@ -24,7 +24,7 @@ Speech-to-Text 产品文档中的部分页面仍然链接到旧的产品内 `ref
 
 ## 排查范围
 
-排查输入为 `content/docs/en` 下的 Markdown 和 MDX 产品文档，重点匹配旧的 `reference/restful-authentication` 链接，并核对已经指向 API Reference 但仍使用隐藏旧认证 route 的链接。基于当前仓库检查结果，共发现 12 个文件、26 处候选引用，全部位于 `content/docs/en/realtime-media`。
+排查输入为 `content/docs/en` 下的 Markdown 和 MDX 产品文档，重点匹配旧的 `reference/restful-authentication` 和 `./restful-authentication` 链接，并核对已经指向 API Reference 但仍使用隐藏旧认证 route 的链接。基于当前仓库检查结果，共发现 13 个文件、27 处候选引用，全部位于 `content/docs/en/realtime-media`。
 
 API Reference 源文件名不完全一致，因此不能做简单的字符串替换。修复时使用以下显式产品映射：
 
@@ -62,7 +62,7 @@ Cloud Transcoding 和 Agora Analytics 的英文产品入口当前已经使用各
 
 RTMP Gateway 和 Speech-to-Text 等存在隐藏旧页面或同名历史页面的产品，目标以 `meta.json` 中可见的 API Reference canonical 页面为准，不以旧文件名推导目标。
 
-其中 RTMP Gateway 的 `media-gateway-features.md` 已使用 API Reference 根路径，但仍指向隐藏的 `/restful-authentication`；该处也统一修正为 `/authentication`。Media Pull 和 Media Push 的 `restful-authentication` 页面仍在各自 API Reference 导航中可见，因此保留该 route。
+其中 RTMP Gateway 的 `media-gateway-features.md` 已使用 API Reference 根路径，但仍指向隐藏的 `/restful-authentication`；该处也统一修正为 `/authentication`。Speech-to-Text 的 `reference/rest-api.md` 使用 `./restful-authentication`，也统一修正为 `/authentication`。Media Pull 和 Media Push 的 `restful-authentication` 页面仍在各自 API Reference 导航中可见，因此保留该 route。
 
 ## 验证方案
 
@@ -77,9 +77,9 @@ RTMP Gateway 和 Speech-to-Text 等存在隐藏旧页面或同名历史页面的
 
 ## 验收标准
 
-- 26 处旧认证页引用或过时认证 route 全部指向映射表中的正确 API Reference 路由。
+- 27 处旧认证页引用或过时认证 route 全部指向映射表中的正确 API Reference 路由。
 - Speech-to-Text 示例链接最终指向 `/en/api-reference/api-ref/speech-to-text/authentication`。
 - 所有修改后的 API Reference 链接均不包含完整域名。
-- 修改仅发生在确认的 12 个英文产品文档文件中。
+- 修改仅发生在确认的 13 个英文产品文档文件中。
 - 链接文本和文档语义不变。
 - 定向检查、`bun run docs:links`、`bun run types:check` 和 `git diff --check` 均通过，或对既有无关失败作出明确记录。

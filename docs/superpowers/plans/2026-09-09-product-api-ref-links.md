@@ -12,10 +12,11 @@
 
 ## File map
 
-The implementation modifies exactly these 12 files:
+The implementation modifies exactly these 13 files:
 
 - `content/docs/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service.md` — two legacy Speech-to-Text authentication links.
 - `content/docs/en/realtime-media/speech-to-text/get-started/quickstart.md` — one legacy Speech-to-Text authentication link.
+- `content/docs/en/realtime-media/speech-to-text/reference/rest-api.md` — one legacy Speech-to-Text authentication link.
 - `content/docs/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx` — three legacy Cloud Recording authentication links.
 - `content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx` — three legacy Cloud Recording authentication links.
 - `content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx` — three legacy Cloud Recording authentication links.
@@ -63,11 +64,13 @@ Run:
 ```bash
 printf 'legacy references: '
 rg -o --glob '*.{md,mdx}' 'reference/restful-authentication' content/docs/en | wc -l
+printf 'standalone Speech-to-Text auth references: '
+rg -o --glob '*.{md,mdx}' '\./restful-authentication' content/docs/en | wc -l
 printf 'hidden RTMP route references: '
 rg -o --glob '*.{md,mdx}' '/en/api-reference/api-ref/rtmp-gateway/restful-authentication' content/docs/en | wc -l
 ```
 
-Expected: `legacy references: 25` and `hidden RTMP route references: 1`.
+Expected: `legacy references: 25`, `standalone Speech-to-Text auth references: 1`, and `hidden RTMP route references: 1`.
 
 - [ ] **Step 3: Confirm the route leaves in navigation metadata.**
 
@@ -86,6 +89,7 @@ Expected: Speech-to-Text, Cloud Recording, and RTMP Gateway expose `authenticati
 
 - Modify: `content/docs/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service.md`
 - Modify: `content/docs/en/realtime-media/speech-to-text/get-started/quickstart.md`
+- Modify: `content/docs/en/realtime-media/speech-to-text/reference/rest-api.md`
 - Modify: `content/docs/en/realtime-media/media-pull/build/integration-best-practices.md`
 - Modify: `content/docs/en/realtime-media/media-push/build/integration-best-practices.md`
 - Modify: `content/docs/en/realtime-media/rtmp-gateway/quickstart.md`
@@ -102,6 +106,13 @@ Apply these exact href replacements and leave all link text unchanged:
 ```
 
 The first replacement applies to `speech-to-text/get-started/quickstart.md`; the second applies twice to `speech-to-text/build/start-transcribing-and-translating/enable-service.md`.
+
+In `speech-to-text/reference/rest-api.md`, replace:
+
+```text
+./restful-authentication
+  -> /en/api-reference/api-ref/speech-to-text/authentication
+```
 
 - [ ] **Step 2: Replace Media Pull and Media Push legacy hrefs.**
 
@@ -131,17 +142,23 @@ content/docs/en/realtime-media/rtmp-gateway/reference/media-gateway-features.md
   -> /en/api-reference/api-ref/rtmp-gateway/authentication
 ```
 
-- [ ] **Step 4: Verify this task changed only the intended seven href occurrences.**
+- [ ] **Step 4: Verify this task changed only the intended eight href occurrences.**
 
 Run:
 
 ```bash
 rg -n --glob '*.{md,mdx}' \
-  'reference/restful-authentication|/en/api-reference/api-ref/rtmp-gateway/(restful-)?authentication' \
-  content/docs/en/realtime-media/{speech-to-text,media-pull,media-push,rtmp-gateway}
+  'reference/restful-authentication|\./restful-authentication|/en/api-reference/api-ref/rtmp-gateway/(restful-)?authentication' \
+  content/docs/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service.md \
+  content/docs/en/realtime-media/speech-to-text/get-started/quickstart.md \
+  content/docs/en/realtime-media/speech-to-text/reference/rest-api.md \
+  content/docs/en/realtime-media/media-pull/build/integration-best-practices.md \
+  content/docs/en/realtime-media/media-push/build/integration-best-practices.md \
+  content/docs/en/realtime-media/rtmp-gateway/quickstart.md \
+  content/docs/en/realtime-media/rtmp-gateway/reference/media-gateway-features.md
 ```
 
-Expected: the seven updated links point to the mapped canonical routes; no `reference/restful-authentication` href or RTMP `/restful-authentication` href remains in the six modified files.
+Expected: the eight updated links point to the mapped canonical routes; no `reference/restful-authentication` href, standalone `./restful-authentication` href, or RTMP `/restful-authentication` href remains in the seven modified files.
 
 - [ ] **Step 5: Commit the focused product-link updates.**
 
@@ -157,7 +174,18 @@ git add content/docs/en/realtime-media/speech-to-text/build/start-transcribing-a
 git commit -m "docs: fix product API authentication links"
 ```
 
-Expected: one commit containing only the six files and seven href updates from this task.
+Expected for a clean execution from the plan baseline: one commit containing the six initial files and seven href updates. In this worktree, that commit is already present as `70554f924`.
+
+- [ ] **Step 6: Commit the additional Speech-to-Text REST API index link found during canonical route review.**
+
+Run:
+
+```bash
+git add content/docs/en/realtime-media/speech-to-text/reference/rest-api.md
+git commit -m "docs: fix speech-to-text API reference link"
+```
+
+Expected: one follow-up commit containing only `speech-to-text/reference/rest-api.md` and one href update, bringing Task 2 to eight total href updates.
 
 ## Task 3: Update all Cloud Recording authentication links
 
@@ -207,7 +235,12 @@ Run:
 ```bash
 rg -n --glob '*.{md,mdx}' \
   'reference/restful-authentication|/en/api-reference/api-ref/cloud-recording/authentication' \
-  content/docs/en/realtime-media/cloud-recording
+  content/docs/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx \
+  content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx \
+  content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx \
+  content/docs/en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx \
+  content/docs/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx \
+  content/docs/en/realtime-media/cloud-recording/rest-quickstart.mdx
 ```
 
 Expected: 19 lines use `/en/api-reference/api-ref/cloud-recording/authentication`, and no old `reference/restful-authentication` href remains in the Cloud Recording product docs.
@@ -242,14 +275,14 @@ Run:
 git diff main...HEAD --name-only | sort
 ```
 
-Expected: the two committed spec/plan files plus exactly the 12 product-document files listed in the file map; no API Reference, OpenAPI, generated, Chinese, or runtime files appear.
+Expected: the two committed spec/plan files plus exactly the 13 product-document files listed in the file map; no API Reference, OpenAPI, generated, Chinese, or runtime files appear.
 
 - [ ] **Step 2: Confirm no legacy authentication href remains in English product docs.**
 
 Run:
 
 ```bash
-if rg -n --glob '*.{md,mdx}' 'reference/restful-authentication|/en/api-reference/api-ref/rtmp-gateway/restful-authentication' content/docs/en/realtime-media; then
+if rg -n --glob '*.{md,mdx}' 'reference/restful-authentication|\./restful-authentication|/en/api-reference/api-ref/rtmp-gateway/restful-authentication' content/docs/en/realtime-media; then
   exit 1
 else
   echo 'No legacy authentication hrefs remain in English product docs.'
@@ -276,7 +309,7 @@ Run:
 bun run docs:links
 ```
 
-Expected: the command completes successfully; its output contains no invalid-link row for any of the 12 modified product-document files. Existing unrelated API Reference anchor warnings, if reported, remain outside this plan.
+Expected: the command completes successfully; its output contains no invalid-link row for any of the 13 modified product-document files. Existing unrelated API Reference anchor warnings, if reported, remain outside this plan.
 
 - [ ] **Step 5: Run the content build/type check.**
 
@@ -302,7 +335,8 @@ Expected: Vitest completes successfully; no runtime source or test changes are e
 
 The implementation commits should be:
 
-1. `docs: fix product API authentication links`
-2. `docs: fix cloud recording authentication links`
+1. `70554f924 docs: fix product API authentication links`
+2. `docs: fix speech-to-text API reference link`
+3. `docs: fix cloud recording authentication links`
 
 The design and implementation-plan commits already exist on `codex/fix-product-api-ref-links`.
