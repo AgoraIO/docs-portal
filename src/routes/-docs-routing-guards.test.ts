@@ -483,6 +483,52 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
+  it(
+    'forwards a static RTSA migration alias as a 301 with query and hash',
+    async () => {
+      const isPublishedDocLocaleSpy = vi
+        .spyOn(docsRouting, 'isPublishedDocLocale')
+        .mockReturnValue(true);
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+      try {
+        try {
+          await getLoader(DocPageRoute)({
+            location: {
+              hash: '#section',
+              pathname:
+                '/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
+              searchStr: '?from=legacy',
+            },
+            params: {
+              _splat:
+                'rtsa/build/implement-core-features/implement-transmission',
+              locale: 'zh-CN',
+              tab: 'realtime-media',
+            },
+          } as never);
+        } catch (error) {
+          expect(isRedirect(error)).toBe(true);
+          expect(error).toMatchObject({
+            options: {
+              href: '/zh-CN/realtime-media/rtsa/build/implement-transmission?from=legacy#section',
+              statusCode: 301,
+            },
+            status: 301,
+          });
+          return;
+        }
+
+        throw new Error(
+          'expected static page route to forward a 301 redirect payload',
+        );
+      } finally {
+        isPublishedDocLocaleSpy.mockRestore();
+      }
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
   it('forwards an RTM 301 DocsRedirectPayload from the page route', async () => {
     docsPagePayloadOverride.mockReturnValueOnce({
       redirectUrl:
