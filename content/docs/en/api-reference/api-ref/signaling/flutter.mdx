@@ -34,6 +34,7 @@ You can create `RtmConfig` instances as follows:
 RtmConfig({
     int heartbeatInterval,
     int presenceTimeout,
+    int reconnectTimeout,
     bool useStringUserId,
     bool ispPolicyEnabled,
     RtmProtocolType protocolType,
@@ -51,6 +52,7 @@ RtmConfig({
 | `protocolType` | `RtmProtocolType` | Optional | `tcpUdp` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`RtmProtocolType`](#rtmprotocoltype). |
 | `presenceTimeout` | int | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers to the delay imposed by the Signaling server before sending a `remoteTimeout` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `remoteTimeout` event notification to other participants or delete the temporary user data associated with the user. |
 | `heartbeatInterval` | int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
+| `reconnectTimeout` | int | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0`, which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK returns `loginTimeout` as the `errorCode` in `RtmStatus`, and triggers the `linkState` event with `currentState` as `failed` and `reason` as `loginTimeout`. <br />- If reconnection times out, the SDK triggers the `linkState` event with `currentState` as `failed` and `reason` as `reconnectTimeout`. |
 | `useStringUserId` | bool | Optional | `true` | Whether to use string-type user IDs:<br />- `true`: Use string-type user IDs. <br />- `false`: Use int-type user IDs. The SDK automatically converts string-type user IDs to int-type ones. In this case, the `userId` parameter must be a numeric string (for example, `"123457"`), otherwise initialization fails.When using Agora RTC and Signaling products at the same time, it is necessary to ensure that the `userId` parameter is consistent. |
 | `ispPolicyEnabled` | bool | Optional | `false` | Whether to enable the ISP policy. In IoT scenarios, devices may be restricted by the Internet Service Provider (ISP). Use this field to configure the SDK connection mode. |
 | `logConfig` | `RtmLogConfig` | Optional | - | Log configuration properties such as the log storage size, storage path, and level. |
@@ -126,7 +128,7 @@ Once you set the encryption feature, all users must use the same encryption mode
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
 | `encryptionMode` | `RtmEncryptionMode` | Optional | `none` | Encryption mode. See [`RtmEncryptionMode`](#rtmencryptionmode). |
 | `encryptionKey` | String | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
-| `encryptionKdfSalt` | Uint8List | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
+| `encryptionSalt` | Uint8List | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
 
 ##### RtmPrivateConfig
 
@@ -150,7 +152,7 @@ Use the `RtmPrivateConfig` instance to set the properties required for the priva
 
 ```dart
 final proxyConfig = RtmProxyConfig(
-      protocolType : RtmProxyType.http,
+      proxyType : RtmProxyType.http,
       server : "x.x.x.x",
       port : 8080,
       account : "Tony",
@@ -158,20 +160,23 @@ final proxyConfig = RtmProxyConfig(
 
 final logConfig = RtmLogConfig(
       filePath : "xxxx",
-      fileSizeInKB : 1024;
-      leave : RtmLogLevel.info );
+      fileSizeInKB : 1024,
+      level : RtmLogLevel.info );
+
+// Use a 32-byte salt generated on your server
+final salt = Uint8List.fromList(List<int>.filled(32, 0));
 
 final encryptionConfig = RtmEncryptionConfig(
       encryptionMode : RtmEncryptionMode.aes256Gcm,
       encryptionKey : "XXXXX",
-      encryptionSalt : [1,2,3,4,5]);
+      encryptionSalt : salt);
 
 final rtmConfig = RtmConfig(
       heartbeatInterval : 10,
       presenceTimeout : 5,
       proxyConfig : proxyConfig,
       logConfig : logConfig,
-      areaCode : `RtmAreaCode.cn, RtmAreaCode.na`,
+      areaCode : {RtmAreaCode.cn, RtmAreaCode.na},
       encryptionConfig : encryptionConfig );
 
 ```
@@ -180,7 +185,7 @@ final rtmConfig = RtmConfig(
 
 #### Description
 
-Call the `RTM()` method to create and initialize the Signaling Client instance.
+Call the `RTM()` method to create and initialize the Signaling client instance.
 
 :::info[Information]
 <br />- You need to create and initialize a client instance before calling other Signaling APIs. <br />- To distinguish each user or device, you need to ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle.
@@ -195,7 +200,7 @@ Future<(RtmStatus,RtmClient)> RTM(
     String appId,
     String userId,
     {
-        RtmConfig rtmConfig
+        RtmConfig? config
     }
 )
 ```
@@ -204,13 +209,13 @@ Future<(RtmStatus,RtmClient)> RTM(
 | :------: | :------------------------------------------------: | :------: | :----: | --------------------------------------------------------------------------------------- |
 | `appId` | String | Required | - | App ID obtained when creating a project in the Agora Console. |
 | `userId` | String | Required | - | User ID for identifying a user or a device. To distinguish each user or device, you need to ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle. |
-| `rtmConfig` | `RtmConfig` | Optional | - | Initialize the configuration parameters of the Signaling Client. See `RtmConfig`. |
+| `config` | `RtmConfig` | Optional | - | Configuration parameters for the Signaling client. See [`RtmConfig`](#rtmconfig). |
 
 #### Basic usage
 
 ```dart
 final proxyConfig = RtmProxyConfig(
-      protocolType : RtmProxyType.http,
+      proxyType : RtmProxyType.http,
       server : "x.x.x.x",
       port : 8080,
       account : "Tony",
@@ -219,26 +224,29 @@ final proxyConfig = RtmProxyConfig(
 final logConfig = RtmLogConfig(
       filePath : "xxxx",
       fileSizeInKB : 1024,
-      leave : RtmLogLevel.info );
+      level : RtmLogLevel.info );
+
+// Use a 32-byte salt generated on your server
+final salt = Uint8List.fromList(List<int>.filled(32, 0));
 
 final encryptionConfig = RtmEncryptionConfig(
-      encryptionMode : RtmEncryptionMode.aes256gcm,
+      encryptionMode : RtmEncryptionMode.aes256Gcm,
       encryptionKey : "XXXXX",
-      encryptionSalt : [1,2,3,4,5]);
+      encryptionSalt : salt);
 
 final rtmConfig = RtmConfig(
       heartbeatInterval : 10,
       presenceTimeout : 5,
       proxyConfig : proxyConfig,
       logConfig : logConfig,
-      areaCode : `RtmAreaCode.cn, RtmAreaCode.na`,
+      areaCode : {RtmAreaCode.cn, RtmAreaCode.na},
       encryptionConfig : encryptionConfig );
 
-var (status,rtmClient) = await RTM("myAppId", "Tony", rtmConfig:rtmConfig);
+var (status,rtmClient) = await RTM("myAppId", "Tony", config:rtmConfig);
 if (status.error == true) {
     print(status);
 } else {
-    print(response);
+    print(rtmClient);
 }
 ```
 
@@ -411,7 +419,7 @@ Storage event.
 | `storageType` | `RtmStorageType` | Storage type. See [`RtmStorageType`](#rtmstoragetype). |
 | `eventType` | `RtmStorageEventType` | Storage event type. See [`RtmStorageEventType`](#rtmstorageeventtype). |
 | `target` | String | User ID or channel name. |
-| `data` | `IMetadata*` | Metadata item. See [`IMetadata`](../storage#IMetadata). |
+| `data` | `Metadata` | Metadata of the channel or user. Contains a list of [`MetadataItem`](#metadataitem). |
 | `timestamp` | int | The timestamp when the event occurs. |
 
 ##### LockEvent
@@ -426,7 +434,6 @@ Lock event.
 | `eventType` | `RtmLockEventType` | Lock event type. See [`RtmLockEventType`](#rtmlockeventtype). |
 | `channelName` | String | Channel name. |
 | `lockDetailList` | `List&lt;LockDetail&gt;` | Details of lock. |
-| `count` | int | Lock count. |
 | `timestamp` | int | The timestamp when the event occurs. |
 
 The `LockDetail` data type contains the following properties:
@@ -449,14 +456,14 @@ SDK link state event.
 | `previousState` | `RtmLinkState` | The previous link state. See [`RtmLinkState`](#rtmlinkstate). |
 | `serviceType` | `RtmServiceType` | The network connection type. See [`RtmServiceType`](#rtmservicetype). |
 | `operation` | `RtmLinkOperation` | The operation that triggered the current state transition. See [`RtmLinkOperation`](#rtmlinkoperation). |
-| `reason` | String | The reason of the current state transition. See [`RtmLinkStateChangeReason`](#rtmlinkstatechangereason). |
+| `reasonCode` | `RtmLinkStateChangeReason` | The reason code for the current state transition. See [`RtmLinkStateChangeReason`](#rtmlinkstatechangereason). |
+| `reason` | String | A human-readable description of the reason for the current state transition. |
 | `affectedChannels` | `List&lt;String&gt;` | The channels affected by the current state transition. |
 | `unrestoredChannels` | `List&lt;String&gt;` | The information about the channels to which subscription or joining has not been restored, including the channel name, channel type, and temporary state data in the channel. Typically, this information is empty. |
 | `isResumed` | bool | Within 2 minutes of the disconnection, whether the state transitions from `disconnected` to `connected`. `true` refers to the state has transitioned. |
 | `timestamp` | int | The timestamp when the event occurs. |
 
-RtmClient
-Signaling client instance.
+The methods in this section belong to the `RtmClient` instance.
 
 ### login
 
@@ -550,7 +557,7 @@ class RtmStatus {
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple returns a `LogoutResult` type data, which currently does not contain any fields.
 
-### releaseLock
+### RtmClient.release
 
 #### Description
 
@@ -682,16 +689,15 @@ Based on capabilities of Agora, Signaling channels are divided into three types 
 - User Channel: Based on the Pub/Sub (publish/subscribe) mode for point-to-point messaging. Users can directly send messages to a specified user without subscribing to a channel. To receive messages, users only need to listen to the `message` event.
 - Stream Channel: Follows a concept similar to the observer pattern in the industry, where users need to create and join a channel before sending and receiving messages. You can create different topics in the channel, and messages are organized and managed through topics.
 
-RtmClient
-Signaling client instance
+The methods in this section belong to the `RtmClient` instance.
 
-### subscribeTopic
+### subscribe
 
 #### Description
 
 Signaling provides event notification capabilities for messages and states. By listening for callbacks, you can receive messages and events within subscribed channels. For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
 
-By calling the `subscribeTopic` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `remoteJoinChannel` type of the `presence` event. See [Event Listeners](#event-listeners).
+By calling the `subscribe` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `remoteJoinChannel` type of the `presence` event. See [Event Listeners](#event-listeners).
 
 :::info[Information]
 This method only applies to message channels.
@@ -699,7 +705,7 @@ This method only applies to message channels.
 
 #### Method
 
-You can call the `subscribeTopic` method as follows:
+You can call the `subscribe` method as follows:
 
 ```dart
 Future<(RtmStatus, SubscribeResult?)> subscribe(
@@ -756,11 +762,11 @@ You can understand the error reason and find the corresponding solution by looki
     }
     ```
 
-### unsubscribeTopic
+### unsubscribe
 
 #### Description
 
-If you no longer need to subscribe to a channel, you can call the `unsubscribeTopic` method to unsubscribe from the channel. After successfully calling this method, users who subscribe to the channel and enable event listeners can receive the `remoteLeaveChannel` type of the `presence` event notification. See [Event Listeners](#event-listeners).
+If you no longer need to subscribe to a channel, you can call the `unsubscribe` method to unsubscribe from the channel. After successfully calling this method, users who subscribe to the channel and enable event listeners can receive the `remoteLeaveChannel` type of the `presence` event notification. See [Event Listeners](#event-listeners).
 
 :::info[Information]
 This method only applies to message channels.
@@ -768,7 +774,7 @@ This method only applies to message channels.
 
 #### Method
 
-You can call the `unsubscribeTopic` method as follows:
+You can call the `unsubscribe` method as follows:
 
 ```dart
 Future<(RtmStatus, UnsubscribeResult?)> unsubscribe(String channelName);
@@ -811,11 +817,11 @@ You can understand the error reason and find the corresponding solution by looki
     }
     ```
 
-### createAgoraRtmClient
+### createStreamChannel
 
 #### Description
 
-Before using a stream channel, you need to call the `createAgoraRtmClient` method to create a `StreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
+Before using a stream channel, you need to call the `createStreamChannel` method to create a `StreamChannel` instance. After successfully creating the instance, you can call its relevant methods to implement functions, such as joining the channel, leaving the channel, sending messages in a topic, and subscribing to messages in a topic.
 
 :::info[Information]
 This method only applies to stream channels.
@@ -823,7 +829,7 @@ This method only applies to stream channels.
 
 #### Method
 
-You can call the `createAgoraRtmClient` method as follows:
+You can call the `createStreamChannel` method as follows:
 
 ```dart
 Future<(RtmStatus, StreamChannel?)> createStreamChannel(String channelName);
@@ -861,14 +867,13 @@ class RtmStatus {
 You can understand the error reason and find the corresponding solution by looking up the error codes in the [error codes table](#error-codes-table).
 - If the method call succeeds, the second item of the tuple will return a `StreamChannel` instance object, which can be used to call related API of `StreamChannel`.
 
-StreamChannel
-Stream channel instance
+The methods in this section belong to the `StreamChannel` instance.
 
-### joinTopic
+### join
 
 #### Description
 
-After successfully creating a stream channel, you can call the `joinTopic` method to join the stream channel.
+After successfully creating a stream channel, you can call the `join` method to join the stream channel.
 
 Once you join the channel, you can implement channel-related functions. At this point, users who subscribe to the channel and add event listeners can receive the following event notifications:
 
@@ -883,7 +888,7 @@ This method only applies to stream channels.
 
 #### Method
 
-You can call the `joinTopic` method as follows:
+You can call the `join` method as follows:
 
 ```dart
 Future<(RtmStatus, JoinResult?)> join({
@@ -938,11 +943,11 @@ You can understand the error reason and find the corresponding solution by looki
     }
     ```
 
-### leaveTopic
+### leave
 
 #### Description
 
-If you no longer need to stay in a channel, you can call the `leaveTopic` method to leave the channel. After leaving the channel, you can no longer receive any messages, states, or event notifications from this channel. At the same time, you can no loger be the topic publisher or subscriber of all topics. If you want to restore your previous publisher role and subscribing relationship, you need to call `joinTopic`, `joinTopic` and `subscribeTopic` methods in order.
+If you no longer need to stay in a channel, you can call the `leave` method to leave the channel. After leaving the channel, you can no longer receive any messages, states, or event notifications from this channel. At the same time, you can no longer be the topic publisher or subscriber of all topics. If you want to restore your previous publisher role and subscribing relationship, you need to call `join`, `joinTopic` and `subscribeTopic` methods in order.
 
 After successfully leaving the channel, remote users in the channel can receive the `remoteLeaveChannel` type of the `presence` event notification. For details, see [Event Listeners](#event-listeners).
 
@@ -952,7 +957,7 @@ This method only applies to stream channels.
 
 #### Method
 
-You can call the `leaveTopic` method as follows:
+You can call the `leave` method as follows:
 
 ```dart
 Future<(RtmStatus, LeaveResult?)> leave();
@@ -992,11 +997,11 @@ You can understand the error reason and find the corresponding solution by looki
     }
     ```
 
-### releaseLock
+### release
 
 #### Description
 
-If you no longer need a channel, you can call the `releaseLock` method to destroy the corresponding stream channel instance and release resources. Calling the `releaseLock` method does not destroy the stream channel, and it can be re-joined later by calling `createAgoraRtmClient` and `joinTopic` again.
+If you no longer need a channel, you can call the `release` method to destroy the corresponding stream channel instance and release resources. Calling the `release` method does not destroy the stream channel, and it can be re-joined later by calling `createStreamChannel` and `join` again.
 
 :::info[Information]
 This method only applies to stream channels. If you don't call `leaveTopic` to leave the channel before directly calling `releaseLock` to destroy the stream channel instance, the SDK automatically calls the `leaveTopic` and triggers the corresponding event.
@@ -1004,7 +1009,7 @@ This method only applies to stream channels. If you don't call `leaveTopic` to l
 
 #### Method
 
-You can call the `releaseLock` method as follows:
+You can call the `release` method as follows:
 
 ```dart
 Future<RtmStatus> release();
@@ -1017,7 +1022,7 @@ var status = await stChannel.release();
 if (status.error == true) {
     print(status);
 } else {
-    print(response);
+    print('release success!');
 }
 ```
 
@@ -1044,8 +1049,7 @@ Topic is a data stream management mechanism in stream channels. Users can use to
 Topics only exist in stream channels. Therefore, before using relevant features, you need to create the `StreamChannel` instance.
 :::
 
-StreamChannel
-Stream channel instance
+The methods in this section belong to the `StreamChannel` instance.
 
 ### joinTopic
 
@@ -1070,8 +1074,8 @@ Future<(RtmStatus, JoinTopicResult?)> joinTopic(
     {
         RtmMessageQos qos = RtmMessageQos.unordered,
         RtmMessagePriority priority = RtmMessagePriority.normal,
-        String? meta = '',
-        bool? syncWithMedia = false
+        String meta = '',
+        bool syncWithMedia = false
     }
 );
 ```
@@ -1155,15 +1159,15 @@ Future<(RtmStatus, PublishTopicMessageResult?)> publishTextMessage(
 
 ```dart
 var message = {
-    type: "poll",
-    question: "Which option is right?",
-    answers: {
-        A: "Apple",
-        B: "Banana",
-        C: "Blackberry"
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers": {
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
     },
-    sender: "Max"
-}
+    "sender": "Max"
+};
 
 var payload = json.encode(message);
 var (status,response) =
@@ -1231,7 +1235,7 @@ Future<(RtmStatus, PublishTopicMessageResult?)> publishBinaryMessage(
 #### Basic usage
 
 ```dart
-var payload = [1,2,3,4];
+var payload = Uint8List.fromList([1,2,3,4]);
 var (status,response) = await stChannel.publishBinaryMessage(
       "myTopic",
       payload,
@@ -1350,7 +1354,7 @@ Future<(RtmStatus, SubscribeTopicResult?)> subscribeTopic(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :--------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `topic` | String | Required | - | Topic name. |
-| `users` | `List&lt;String&gt;` | Optional | - | A list of `UserId` of message publishers that you want to subscribe to. If you do not set this property, you can randomly subscribe to up to 64 users by default. |
+| `users` | `List&lt;String&gt;` | Optional | - | A list of user IDs of message publishers that you want to subscribe to. If you do not set this property, you can randomly subscribe to up to 64 users by default. |
 
 #### Basic usage
 
@@ -1425,7 +1429,7 @@ Future<(RtmStatus, UnsubscribeTopicResult?)> unsubscribeTopic(
 | Parameters | Type | Required | Default | Description |
 | :---------: | :----: | :------: | :----: | ---------------------------------------------------------- |
 | `topic` | String | Required | - | Topic name. |
-| `users` | `List&lt;String&gt;` | Optional | - | A list of `UserId` of message publishers that you want to unsubscribe from. If you do not set this property, you can randomly unsubscribe from up to 64 users. |
+| `users` | `List&lt;String&gt;` | Optional | - | A list of user IDs of message publishers that you want to unsubscribe from. If you do not set this property, you can randomly unsubscribe from up to 64 users. |
 
 #### Basic usage
 
@@ -1533,19 +1537,18 @@ You can understand the error reason and find the corresponding solution by looki
 Sending and receiving messages is the most basic function of the Signaling service. Any message sent by the Signaling server can be delivered to any online subscribing user within 100 ms. Depending on your business requirements, you can send messages to one user only or broadcast messages to multiple users.
 
 Signaling offers 3 types of channels: message channels, user channels, and stream channels. These channel types have the following differences in how messages are transmitted and methods are called:
-- Message Channel: The real-time channel. Messages are transmitted through the channel, and the channel is highly scalable. Local users can call the `publishTextMessage` method, set the `channelType` parameter to `message`, and set the `channelName` parameter to the channel name to send messages in the channel. The remote users can call the `subscribeTopic` method to subscribe to the channel and receive messages.
-- User Channel: The real-time channel. Messages are transmitted to the specified user. Local users can call the `publishTextMessage` method, set the `channelType` parameter to `user`, and set the `channelName` parameter to the user ID to send messages to the specified user. The specified remote users receive messages through the `message` event notifications.
+- Message Channel: The real-time channel. Messages are transmitted through the channel, and the channel is highly scalable. Local users can call the `publish` method, set the `channelType` parameter to `message`, and set the `channelName` parameter to the channel name to send messages in the channel. The remote users can call the `subscribeTopic` method to subscribe to the channel and receive messages.
+- User Channel: The real-time channel. Messages are transmitted to the specified user. Local users can call the `publish` method, set the `channelType` parameter to `user`, and set the `channelName` parameter to the user ID to send messages to the specified user. The specified remote users receive messages through the `message` event notifications.
 - Stream Channel: The streaming transmission channel. Messages are transmitted through the topic. Users need to join a channel first, and then join a topic. Local users can call the `publishTextMessage` method to send messages in the topic, and remote users can call the `subscribeTopic` method to subscribe to the topic and receive messages.
 
 This page introduces how to send and receive messages in a message channel or a user channel.
 
-RtmClient
-Signaling client instance
-### publishTextMessage
+The methods in this section belong to the `RtmClient` instance.
+### publish
 
 #### Description
 
-You can directly call the `publishTextMessage` method to send string messages to all online users subscribed to this channel. Even if you do not subscribe to the channel, you can still send messages in the channel.
+You can directly call the `publish` method to send string messages to all online users subscribed to this channel. Even if you do not subscribe to the channel, you can still send messages in the channel.
 
 :::info[Information]
 The following practices can effectively improve the reliability of message transmission:<br />- The message payload should be within 32 KB; otherwise, the sending will fail. <br />- The upper limit of the rate at which messages are sent to a single channel is 60 QPS. If the sending rate exceeds the limit, some messages will be discarded. A lower rate is better, as long as the requirements are met.
@@ -1555,7 +1558,7 @@ After successfully calling this method, the SDK triggers a `message` event notif
 
 #### Method
 
-You can call the `publishTextMessage` method as follows:
+You can call the `publish` method as follows:
 
 ```dart
 Future<(RtmStatus, PublishResult?)> publish(
@@ -1563,7 +1566,8 @@ Future<(RtmStatus, PublishResult?)> publish(
     String message,
     {
         RtmChannelType channelType = RtmChannelType.message,
-        String? customType
+        String? customType,
+        bool storeInHistory = false
     }
 );
 ```
@@ -1574,6 +1578,7 @@ Future<(RtmStatus, PublishResult?)> publish(
 | `message` | String | Required | - | Message payload. |
 | `channelType` | `RtmChannelType` | Optional | `message` | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
 | `customType` | String | Optional | - | A user-defined field. Only supports string type. |
+| `storeInHistory` | bool | Optional | `false` | Whether to store the message in history. When set to `true`, the message is stored on the server and users can query historical messages after joining the channel. |
 
 #### Basic usage
 
@@ -1581,15 +1586,15 @@ Example 1: Send string messages to a specified message channel.
 
 ```dart
 var message = {
-    type: "poll",
-    question: "Which option is right?",
-    answers: {
-        A: "Apple",
-        B: "Banana",
-        C: "Blackberry"
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers": {
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
     },
-    sender: "Max"
-}
+    "sender": "Max"
+};
 
 var payload = json.encode(message);
 var (status,response) =
@@ -1605,10 +1610,10 @@ Example 2: Send string messages to a specified user channel.
 
 ```dart
 var message = {
-    type: "chatInvite",
-    channel: "this is the channel you are being invited to",
-    message: "Hi Tony, welcome to the team!"
-}
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited to",
+    "message": "Hi Tony, welcome to the team!"
+};
 
 var payload = json.encode(message);
 var (status,response) =
@@ -1654,12 +1659,13 @@ After successfully calling this method, the SDK triggers a `message` event notif
 You can call the `publishBinaryMessage` method as follows:
 
 ```dart
-Future<PublishResult> publishBinaryMessage(
+Future<(RtmStatus, PublishResult?)> publishBinaryMessage(
     String channelName,
     Uint8List message,
     {
         RtmChannelType channelType = RtmChannelType.message,
-        String? customType
+        String? customType,
+        bool storeInHistory = false
     }
 );
 ```
@@ -1670,13 +1676,14 @@ Future<PublishResult> publishBinaryMessage(
 | `message` | Uint8List | Required | - | Message payload. |
 | `channelType` | `RtmChannelType` | Optional | `message` | Channel type. See [`RtmChannelType`](#rtmchanneltype). |
 | `customType` | String | Optional | - | A user-defined field. Only supports string type. |
+| `storeInHistory` | bool | Optional | `false` | Whether to store the message in history. When set to `true`, the message is stored on the server and users can query historical messages after joining the channel. |
 
 #### Basic usage
 
 Example 1: Send binary messages to a specified message channel.
 
 ```dart
-var payload = [1,2,3,4];
+var payload = Uint8List.fromList([1,2,3,4]);
 var (status,response) = await rtmClient.publishBinaryMessage(
       "myChannel",
       payload,
@@ -1693,7 +1700,7 @@ if (status.error == true) {
 Example 2: Send binary messages to a specified user channel.
 
 ```dart
-var payload = [1,2,3,4];
+var payload = Uint8List.fromList([1,2,3,4]);
 var (status,response) = await rtmClient.publishBinaryMessage(
       "myChannel",
       payload,
@@ -1731,9 +1738,9 @@ Signaling provides event notifications for messages, states, and event changes. 
 ```dart
 rtm.addListener(
     message: (event) {
-        print('Received a message from $`event.channelName`');
-        print('Message Type is $`event.messageType`');
-        print('Message : $`event.message`');
+        print('Received a message from ${event.channelName}');
+        print('Message Type is ${event.messageType}');
+        print('Message : ${event.message}');
       }
     );
 ```
@@ -1762,8 +1769,7 @@ The presence feature provides the ability to monitor user online, offline, and u
 **Presence** applies to both message channels and stream channels.
 :::
 
-RtmPresence
-Presence instance
+The methods in this section belong to the `RtmPresence` instance.
 
 ### getOnlineUsers
 
@@ -1798,7 +1804,7 @@ Future<(RtmStatus, GetOnlineUsersResult?)> getOnlineUsers(
 #### Basic usage
 
 ```dart
-var (status, response) = await rtmClient.getPresence.getOnlineUsers(
+var (status, response) = await rtmClient.getPresence().getOnlineUsers(
     "myChannel",
     RtmChannelType.message,
     includeUserId: true,
@@ -1858,7 +1864,7 @@ Future<(RtmStatus, GetUserChannelsResult?)> getUserChannels(String userId);
 #### Basic usage
 
 ```dart
-var (status, response) = await rtmClient.getPresence.getUserChannels("Tony");
+var (status, response) = await rtmClient.getPresence().getUserChannels("Tony");
 
 if (status.error == true) {
     print(status);
@@ -1922,7 +1928,7 @@ Future<(RtmStatus, SetStateResult?)> setState(
 
 ```dart
 var states = {"Name":"Tony","Mode":"Happy"};
-var (status, response) = await rtmClient.getPresence.setState(
+var (status, response) = await rtmClient.getPresence().setState(
     "myChannel",
     RtmChannelType.message,
     states
@@ -1979,7 +1985,7 @@ Future<(RtmStatus, GetStateResult?)> getState(
 #### Basic usage
 
 ```dart
-var (state, response) = await rtmClient.getPresence.getState(
+var (status, response) = await rtmClient.getPresence().getState(
     "myChannel",
     RtmChannelType.message,
     "Tony"
@@ -2044,10 +2050,10 @@ Future<(RtmStatus, RemoveStateResult?)> removeState(
 
 ```dart
 var states = ["Mode", "Position"];
-var (status, response) = await rtmClient.getPresence.removeState(
+var (status, response) = await rtmClient.getPresence().removeState(
     "channelName",
     RtmChannelType.message,
-    states
+    states: states
 );
 
 if (status.error == true) {
@@ -2078,8 +2084,7 @@ You can understand the error reason and find the corresponding solution by looki
 
 The storage feature provides a dynamic database mechanism that allows developers to dynamically set, store, update, and delete data such as channel metadata and user metadata.
 
-RtmStorage
-Storage instance
+The methods in this section belong to the `RtmStorage` instance.
 
 ### setChannelMetadata
 
@@ -2153,7 +2158,7 @@ var item2 = MetadataItem(
 
 var metadata = [item1,item2];
 
-var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+var (status,response) = await rtmClient.getStorage().setChannelMetadata(
     "myChannel",
     RtmChannelType.message,
     metadata,
@@ -2161,7 +2166,7 @@ var (status,response) = await rtmClient.getStorage.setChannelMetadata(
     recordTs: true,
     recordUserId: true,
     lockName: "myLock"
-)
+);
 
 if (status.error == true) {
     print(status);
@@ -2218,10 +2223,10 @@ Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(
 #### Basic usage
 
 ```dart
-var (status,response) = await rtmClient.getStorage.getChannelMetadata(
+var (status,response) = await rtmClient.getStorage().getChannelMetadata(
     "myChannel",
     RtmChannelType.message,
-)
+);
 
 if (status.error == true) {
     print(status);
@@ -2310,10 +2315,10 @@ var item2 = MetadataItem(
 
 var metadata = [item1,item2];
 
-var (status,response) = await rtmClient.getStorage.removeChannelMetadata(
+var (status,response) = await rtmClient.getStorage().removeChannelMetadata(
     "myChannel",
     RtmChannelType.message,
-    metadata,
+    metadata: metadata,
     majorRevision: 174298222,
     recordTs: true,
     recordUserId: true,
@@ -2407,7 +2412,7 @@ var item2 = MetadataItem(
 
 var metadata = [item1,item2];
 
-var (status,response) = await rtmClient.getStorage.updateChannelMetadata(
+var (status,response) = await rtmClient.getStorage().updateChannelMetadata(
     "myChannel",
     RtmChannelType.message,
     metadata,
@@ -2511,7 +2516,7 @@ var item2 = MetadataItem(
 
 var metadata = [item1,item2];
 
-var (status,response) = await rtmClient.getStorage.setUserMetadata(
+var (status,response) = await rtmClient.getStorage().setUserMetadata(
     "Tony",
     metadata,
     majorRevision: 174298222,
@@ -2569,7 +2574,7 @@ Future<(RtmStatus, GetUserMetadataResult?)> getUserMetadata(String userId);
 #### Basic usage
 
 ```dart
-var (status,response) = await rtmClient.getStorage.getUserMetadata( "Tony" );
+var (status,response) = await rtmClient.getStorage().getUserMetadata( "Tony" );
 
 if (status.error == true) {
     print(status);
@@ -2648,9 +2653,9 @@ var item2 = MetadataItem(
 
 var metadata = [item1,item2];
 
-var (status,response) = await rtmClient.getStorage.removeUserMetadata(
+var (status,response) = await rtmClient.getStorage().removeUserMetadata(
     "Tony",
-    metadata: metadata
+    metadata: metadata,
     majorRevision: 174298222,
     recordTs: true,
     recordUserId: true
@@ -2738,7 +2743,7 @@ var item2 = MetadataItem(
 
 var metadata = [item1,item2];
 
-var (status,response) = await rtmClient.getStorage.updateUserMetadata(
+var (status,response) = await rtmClient.getStorage().updateUserMetadata(
     "Sara",
     metadata,
     majorRevision: 174298222,
@@ -2798,7 +2803,7 @@ Future<(RtmStatus, SubscribeUserMetadataResult?)> subscribeUserMetadata(String u
 #### Basic usage
 
 ```dart
-var (status,response) = await rtmClient.getStorage.subscribeUserMetadata( "Sara");
+var (status,response) = await rtmClient.getStorage().subscribeUserMetadata( "Sara");
 
 if (status.error == true) {
     print(status);
@@ -2850,7 +2855,7 @@ Future<(RtmStatus, UnsubscribeUserMetadataResult?)> unsubscribeUserMetadata(Stri
 #### Basic usage
 
 ```dart
-var (status,response) = await rtmClient.getStorage.unsubscribeUserMetadata( "Sara");
+var (status,response) = await rtmClient.getStorage().unsubscribeUserMetadata( "Sara");
 
 if (status.error == true) {
     print(status);
@@ -2901,8 +2906,7 @@ A critical resource can only be used by one process at a time. If a critical res
 The client is able to set, remove, and revoke locks. We recommend that you control the permissions of these operations on the client side based on your business needs.
 :::
 
-RtmLock
-Lock instance
+The methods in this section belong to the `RtmLock` instance.
 
 ### setLock
 
@@ -2920,7 +2924,7 @@ Future<(RtmStatus, SetLockResult?)> setLock(
     RtmChannelType channelType,
     String lockName,
     {
-        int? ttl = 10
+        int ttl = 10
     }
 );
 ```
@@ -2936,7 +2940,7 @@ Future<(RtmStatus, SetLockResult?)> setLock(
 
 ```dart
 var (status,response) =
-    await rtmClient.getLock.setLock( "myChannel", RtmChannelType.message, "myLock", ttl:15);
+    await rtmClient.getLock().setLock( "myChannel", RtmChannelType.message, "myLock", ttl:15);
 
 if (status.error == true) {
     print(status);
@@ -3001,7 +3005,7 @@ Future<(RtmStatus, AcquireLockResult?)> acquireLock(
 
 ```dart
 var (status,response) =
-    await rtmClient.getLock.acquireLock("myChannel", RtmChannelType.message, "myLock", retry:true);
+    await rtmClient.getLock().acquireLock("myChannel", RtmChannelType.message, "myLock", retry:true);
 
 if (status.error == true) {
     print(status);
@@ -3065,7 +3069,7 @@ Future<(RtmStatus, ReleaseLockResult?)> releaseLock(
 
 ```dart
 var (status,response) =
-    await rtmClient.getLock.releaseLock("myChannel", RtmChannelType.message, "myLock");
+    await rtmClient.getLock().releaseLock("myChannel", RtmChannelType.message, "myLock");
 
 if (status.error == true) {
     print(status);
@@ -3129,7 +3133,7 @@ Future<(RtmStatus, RevokeLockResult?)> revokeLock(
 #### Basic usage
 
 ```dart
-var (status,response) = await rtmClient.getLock.revokeLock("myChannel", RtmChannelType.message, "myLock", "Tony");
+var (status,response) = await rtmClient.getLock().revokeLock("myChannel", RtmChannelType.message, "myLock", "Tony");
 
 if (status.error == true) {
     print(status);
@@ -3162,7 +3166,7 @@ You can understand the error reason and find the corresponding solution by looki
     }
     ```
 
-###
+### getLocks
 
 #### Description
 
@@ -3188,7 +3192,7 @@ Future<(RtmStatus, GetLocksResult?)> getLocks(
 
 ```dart
 var (status,response) =
-    await rtmClient.getLock.getLocks("myChannel", RtmChannelType.message);
+    await rtmClient.getLock().getLocks("myChannel", RtmChannelType.message);
 
 if (status.error == true) {
     print(status);
@@ -3250,7 +3254,7 @@ Future<(RtmStatus, RemoveLockResult?)> removeLock(
 
 ```dart
 var (status,response) =
-    await rtmClient.getLock.removeLock("myChannel", RtmChannelType.message, "myLock");
+    await rtmClient.getLock().removeLock("myChannel", RtmChannelType.message, "myLock");
 
 if (status.error == true) {
     print(status);
@@ -3550,12 +3554,12 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | Error code| Error description| Cause and solution |
 | :------ | :------------------|:---------------------------|
 | `0` | `ok` | Correct call |
-| `-10001` | `notInitialized` | The SDK is not initialized. Please initialize the `RtmClient` instance by calling the `createAgoraRtmClient` method before performing other operations. |
+| `-10001` | `notInitialized` | The SDK is not initialized. Please initialize the `RtmClient` instance by calling the `RTM()` method before performing other operations. |
 | `-10002` | `notLogin` | The user called the API without logging in to Signaling, disconnected due to timeout, or actively logged out. Please log in to Signaling first. |
 | `-10003` | `invalidAppId` | Invalid App ID: <br /> - Check that the App ID is correct. <br /> - Ensure that Signaling has been activated for the App ID. |
 | `-10005` | `invalidToken` | Invalid Token: <br /> - The token is invalid, check whether the Token Provider generates a valid Signaling Token. |
 | `-10006` | `invalidUserId` | Invalid User ID: <br /> - Check if user ID is empty. <br /> - Check if the user ID contains illegal characters. |
-| `-10007` | `initServiceFailed` | SDK initialization failed. Please reinitialize by calling the `createAgoraRtmClient` method. |
+| `-10007` | `initServiceFailed` | SDK initialization failed. Please reinitialize by calling the `RTM()` method. |
 | `-10008` | `invalidChannelName` | Invalid channel name: <br /> - Check if the channel name is empty. <br /> - Check if the channel name contains illegal characters. |
 | `-10009` | `tokenExpired` | Token expired. Call `renewToken` to reacquire the Token. |
 | `-10010` | `loginNoServerResources` | Server resources are limited. It is recommended to log in again. |
@@ -3566,9 +3570,9 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-10015` | `loginNotAuthorized` | No RTM service permissions. Check that the console opens Signaling services. |
 | `-10016` | `inconsistentAppid` | Inconsistent App ID. Please check whether the App ID used for initialization, login, and joining a channel are consistent. |
 | `-10017` | `duplicateOperation` | Duplicate operation. |
-| `-10018` | `instanceAlreadyReleased` | Repeat `rtm` instantiation or `RTMStreamChannel` instantiation. |
+| `-10018` | `instanceAlreadyReleased` | Repeat `RtmClient` instantiation or `StreamChannel` instantiation. |
 | `-10019` | `invalidChannelType` | Invalid channel type. The SDK only supports the following channel types. Please use the correct value: <br /> - `message`: Message Channel <br /> - `stream`: Stream Channel <br /> - `user`: User Channel |
-| `-10020` | `invalidEncryptionParameter` | Message encryption parameters are invalid. <br />- Check that the encryption key generated is a String. <br />- Check that the generated encryption salt is `Uint8Array` type and that the length is 32 bytes. <br />- Check that the encryption method matches the encryption key and the encryption salt. |
+| `-10020` | `invalidEncryptionParameter` | Message encryption parameters are invalid. <br />- Check that the encryption key generated is a String. <br />- Check that the generated encryption salt is `Uint8List` type and that the length is 32 bytes. <br />- Check that the encryption method matches the encryption key and the encryption salt. |
 | `-10021` | `operationRateExceedLimitation` | Channel metadata or User Metadata -related API call frequency is exceeding the limit. Please control the call frequency within 10/second. |
 | `-10022` | `serviceNotSupported` | The service type is not supported. Check whether the service type you set in `RtmServiceType` is correct. This error code is only applicable to the private deployment function. |
 | `-10023` | `loginCanceled` | The login operation has been canceled. Possible reasons are as follows: <br />- After calling the `login` method, if you call the method again before receiving the call result, the previous call operation will be canceled and the SDK will execute the next call. <br />- Calling the `logout` method to log out before successfully logging in. |
@@ -3583,7 +3587,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11006` | `channelInErrorState` | Channel is not available. Please recreate the Stream Channel or resubscribe to the Message Channel. |
 | `-11007` | `channelJoinFailed` | Failed to join this channel: <br /> - Check if the number of joined channels exceeds the limit. <br /> - Check if the channel name is illegal. <br /> - Check if the network is disconnected. |
 | `-11008` | `channelInvalidTopicName` | Invalid topic name: <br /> - Check whether the topic name contains illegal characters. <br /> - Check if the topic name is empty. |
-| `-11009` | `channelInvalidMessage` | Invalid message. Check whether the message type is legal, Signaling only supports `string`, `Uint8Array` type messages. |
+| `-11009` | `channelInvalidMessage` | Invalid message. Check whether the message type is legal, Signaling only supports `string`, `Uint8List` type messages. |
 | `-11010` | `channelMessageLengthExceedLimitation` | Message length exceeded limit. Check if the message payload size exceeds the limit: <br /> - Message Channel single message package limit is 32 KB. <br /> - Stream Channel single message package limit is 1 KB. |
 | `-11011` | `channelInvalidUserList` | Invalid user list: <br /> - Check if the user list is empty. <br /> - Check if the user list contains invalid entries. |
 | `-11012` | `channelNotAvailable` | Invalid user list: <br /> - Check if the user list is empty<br /> - Check if the user list contains illegal items. |
@@ -3597,7 +3601,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | `-11020` | `channelSubscribeTooFrequent` | The channel subscription operation is too frequent. Make sure that the subscription operation of the same channel within a 5 seconds interval does not exceed 2 attempts. |
 | `-11021` | `channelSubscribeFailed` | Channel subscription failed. Check if the number of subscribed channels exceeds the limit. |
 | `-11022` | `channelUnsubscribeFailed` | Failed to unsubscribe from the channel. Check if the connection is disconnected. |
-| `-11023` | `channelEncryptMessageFailed` | Message encryption failed: <br /> - Check that the `cipherKey` is valid. <br /> - Check that the `salt` is valid. <br /> - Check if `encryptionMode` mode matches the `cipherKey` and `salt`. |
+| `-11023` | `channelEncryptMessageFailed` | Message encryption failed: <br /> - Check that the `encryptionKey` is valid. <br /> - Check that the `encryptionSalt` is valid. <br /> - Check if `encryptionMode` mode matches the `encryptionKey` and `encryptionSalt`. |
 | `-11024` | `channelPublishMessageFailed` | Message publishing failed. Check for broken connections. |
 | `-11026` | `channelPublishMessageTimeout` | Message publishing timed out. Check for broken connections. |
 | `-11027` | `channelNotConnected` | The SDK is disconnected from the Signaling server. Please log in again. |

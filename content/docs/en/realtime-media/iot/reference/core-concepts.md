@@ -36,7 +36,7 @@ The App ID is a random string generated within [Agora Console](https://console.a
 
 Agora uses this App ID to identify each app, provide billing and other statistical data services.
 
-For applications requiring high security in a production environment, you must choose an **App ID + Token** mechanism for [user authentication](/en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow) when creating a new project. Without an authentication token, your environment is open to anyone with access to your App ID.
+For applications requiring high security in a production environment, you must choose an **App ID + Token** mechanism for [user authentication](/en/realtime-media/iot/build/authenticate-and-secure-channels/authentication-workflow) when creating a new project. Without an authentication token, your environment is open to anyone with access to your App ID.
 
 ### App certificate
 

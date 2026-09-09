@@ -40,6 +40,7 @@ rtm.addEventListener("presence", event => {
     const publisher = event.publisher;          // The user who triggered this event
     const states = event.stateChanged;          // User state payload, only for the stateChanged event
     const interval = event.interval;            // Interval payload, only for the interval event
+    const totalOccupancy = interval?.totalOccupancy; // Total occupancy of the channel, only for the interval event
     const snapshot = event.snapshot;            // Snapshot payload, only for the snapshot event
     const timestamp = event.timestamp;          // Event timestamp
 });
@@ -74,28 +75,35 @@ rtm.addEventListener("lock", event => {
     const owner = event.owner;                  // The owner of this lock
     const timestamp = event.timestamp;          // Event timestamp
 });
-// Handle connection state change event
-rtm.addEventListener("status", event => {
-    const currentState = event.state;           // Current connection state
-    const changeReason = event.reason;          // Why the event was triggered
-    const timestamp = event.timestamp;          // Event timestamp
-});
 // Handle link state change event
-rtm.addEventListener('linkState', event => {
-    const currentState = event.currentState;
-    const previousState = event.previousState;
-    const serviceType = event.serviceType;
-    const operation = event.operation;
-    const reason = event.reason;
-    const affectedChannels = event.affectedChannels;
-    const timestamp = event.timestamp;
-    const isResumed = event.isResumed;
+rtm.addEventListener("linkState", event => {
+    const currentState = event.currentState;          // Current link state
+    const previousState = event.previousState;        // Previous link state
+    const serviceType = event.serviceType;            // Service type
+    const operation = event.operation;                // Operation that triggered this event
+    const reason = event.reason;                      // Reason for the state change
+    const reasonCode = event.reasonCode;               // Reason code for the state change
+    const affectedChannels = event.affectedChannels;  // Affected channels
+    const timestamp = event.timestamp;                // Event timestamp
+    const isResumed = event.isResumed;                // Whether the connection resumed
 });
 // Handle token privilege will expire event
 rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {
     const channelName = channelName;            // The channel for which the token will expire
 });
 ```
+
+The type of `PresenceEvent.interval` is `IntervalDetail | null`. It has a value only when `eventType` is `INTERVAL`.
+
+The `IntervalDetail` data type contains the following properties:
+
+| Property | Type | Description |
+| ---- | ---- | ---- |
+| `join` | `UserList` | The list of users who joined the channel in the previous interval. |
+| `leave` | `UserList` | The list of users who left the channel in the previous interval. |
+| `timeout` | `UserList` | The list of users who timed out in the previous interval. |
+| `userStateList` | `UserState[]` | The list of users whose states changed in the previous interval. Each entry contains the user ID and state key-value pairs. |
+| `totalOccupancy` | number | The total occupancy of the current channel. In large-channel optimized mode, this value indicates the total number of online users in the channel and is not limited by the maximum of 512 user details that can be synchronized, but the value may have a short delay. |
 
 ### Remove event listeners
 
@@ -132,11 +140,10 @@ Signaling offers the following events:
 | `topic`| Receive notifications of topic change events in all the stream channels you have joined. The event payload data includes information such as channel name, event type, topic name, and event sender.  |
 | `storage`| Receive all channel metadata event notifications in the message channels you have subscribed to and stream channels you have joined, as well as user metadata event notifications from all subscribed users.  |
 | `lock` | Receive all lock event notifications in the message channels you have subscribed to and stream channels you have joined. The event payload data contains information such as channel name, channel type, event type, and lock details. |
-| `status` | Receive event notifications for client network connection status changes. This includes channel name, connection status, reason for change, and other information. |
 | `linkState` | Receive notifications about changes in the client's network connection status, including information on the state before and after the change, service type, operation type, reason for the change, and channel list. |
 | `tokenPrivilegeWillExpire`  | Receive notifications when the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/web#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -194,10 +201,11 @@ RtmEventListener eventListener = new RtmEventListener() {
     }
 };
 
-// Configure RtmClient
-RtmConfig rtmConfig = new RtmConfig();
-// Specify the event listener in the client configuration
-rtmConfig.eventListener = eventListener;
+// Configure RtmClient and specify the event listener
+// Replace your_appId with your App ID and your_userId with your User ID
+RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .build();
 
 // Create an RtmClient instance
 RtmClient mRtmClient = RtmClient.create(rtmConfig);
@@ -234,10 +242,11 @@ val eventListener = object : RtmEventListener {
     }
 }
 
-// Configure RtmClient
-val rtmConfig = RtmConfig().apply {
-    eventListener = this@eventListener
-}
+// Configure RtmClient and specify the event listener
+// Replace your_appId with your App ID and your_userId with your User ID
+val rtmConfig = RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .build()
 
 // Create an RtmClient instance
 val mRtmClient = RtmClient.create(rtmConfig)
@@ -271,7 +280,7 @@ Signaling SDK offers the following events:
 | `onLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `onTokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/android#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -465,7 +474,7 @@ Signaling offers the following notification callbacks:
 | `didReceiveLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `tokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -659,7 +668,7 @@ Signaling offers the following notification callbacks:
 | `didReceiveLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `tokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -677,72 +686,72 @@ This section shows how to use the Signaling SDK to implement event listeners.
 
 ### Add an event listener
 
-Signaling uses an `RtmEventListener` instance to process messages and event notifications. Each message and event notification has a corresponding event handler, where you implement your own processing logic. Refer to the following code to create and use an instance of `RtmEventListener`:
+Signaling uses the `addListener` method to process messages and event notifications. Each message and event notification has a corresponding named parameter, where you pass a callback that implements your own processing logic. Refer to the following code to register event handlers:
 
 ```dart
 rtmClient.addListener(
     // Handle message event
     message: (MessageEvent event) {
-        const channelType = event.channelType;      // The channel type, 'STREAM' 'MESSAGE', or 'USER'
-        const channelName = event.channelName;      // The name of the channel that this message came from
-        const topicName = event.channelTopic;       // (Stream channel only) The name of the topic that this message came from
-        const messageType = event.messageType;      // The message type, 'STRING' or 'BINARY'
-        const customType = event.customType;        // User defined type
-        const publisher = event.publisher;          // The message publisher
-        const message = event.message;              // The message payload
-        const timestamp = event.timestamp;          // Event timestamp
+        final channelType = event.channelType;      // The channel type, `stream` `message`, or `user`
+        final channelName = event.channelName;      // The name of the channel that this message came from
+        final topicName = event.channelTopic;       // (Stream channel only) The name of the topic that this message came from
+        final messageType = event.messageType;      // The message type, `string` or `binary`
+        final customType = event.customType;        // User defined type
+        final publisher = event.publisher;          // The message publisher
+        final message = event.message;              // The message payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle presence event
     presence: (PresenceEvent event) {
-        const action = event.type;                  // The event type, should be one of 'SNAPSHOT', 'INTERVAL', 'JOIN', 'LEAVE', 'TIMEOUT、'STATE_CHANGED', 'OUT_OF_SERVICE'.
-        const channelType = event.channelType;      // The channel type, should be "STREAM", "MESSAGE" or "USER"
-        const channelName = event.channelName;      // The name of the channel this event came from
-        const publisher = event.publisher;          // The user who triggered this even
-        const states = event.stateItems;            // User state payload, only for the stateChanged event
-        const interval = event.interval;            // Interval payload, only for the interval event
-        const snapshot = event.snapshot;            // Snapshot payload, only for the snapshot event
-        const timestamp = event.timestamp;          // Event timestamp
+        final action = event.type;                  // The event type, should be one of `snapshot`, `interval`, `remoteJoinChannel`, `remoteLeaveChannel`, `remoteTimeout`, `remoteStateChanged`, `errorOutOfService`.
+        final channelType = event.channelType;      // The channel type, should be `stream`, `message` or `user`
+        final channelName = event.channelName;      // The name of the channel this event came from
+        final publisher = event.publisher;          // The user who triggered this event
+        final states = event.stateItems;            // User state payload, only for the stateChanged event
+        final interval = event.interval;            // Interval payload, only for the interval event
+        final snapshot = event.snapshot;            // Snapshot payload, only for the snapshot event
+        final timestamp = event.timestamp;          // Event timestamp
     },
    // Handle topic event
     topic: (TopicEvent event) {
-        const action = event.type;                  // The event type, should be one of 'SNAPSHOT', 'JOIN', 'LEAVE'
-        const channelName = event.channelName;      // The name of the channel this event came from
-        const publisher = event.publisher;          // The user who triggered this even
-        const topicInfos = event.topicInfos;        // Topic information payload
-        const timestamp = event.timestamp;          // Event timestamp
+        final action = event.type;                  // The event type, should be one of `snapshot`, `remoteJoinTopic`, `remoteLeaveTopic`
+        final channelName = event.channelName;      // The name of the channel this event came from
+        final publisher = event.publisher;          // The user who triggered this event
+        final topicInfos = event.topicInfos;        // Topic information payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle storage event
     storage: (StorageEvent event) {
-        const channelType = event.channelType;      // The channel type, should be "STREAM", "MESSAGE" or "USER"
-        const target = event.target;                // Which channel or user triggered this event
-        const storageType = event.storageType;      // The storage type, should be 'USER'、'CHANNEL'
-        const action = event.eventType;             // The event type, should be one of "SNAPSHOT"、"SET"、"REMOVE"、"UPDATE" or "NONE"
-        const data = event.data;                    // USER_METADATA or CHANNEL_METADATA payload
-        const timestamp = event.timestamp;          // Event timestamp
+        final channelType = event.channelType;      // The channel type, should be `stream`, `message` or `user`
+        final target = event.target;                // Which channel or user triggered this event
+        final storageType = event.storageType;      // The storage type, should be `user`, `channel`
+        final action = event.eventType;             // The event type, should be one of `snapshot`, `set`, `remove`, `update` or `none`
+        final data = event.data;                    // USER_METADATA or CHANNEL_METADATA payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle lock event
     lock: (LockEvent event) {
-        const channelType = event.channelType;      // The channel type, should be "STREAM", "MESSAGE" or "USER"
-        const channelName = event.channelName;      // The name of the channel this event came from
-        const action = event.evenType;              // The action type, should be one of 'SET'、'REMOVED'、'ACQUIRED'、'RELEASED'、'EXPIRED'、'SNAPSHOT'
-        const lockDetailList = event.lockDetailList;    // Lock event payload
-    const timestamp = event.timestamp;              // Event timestamp
+        final channelType = event.channelType;      // The channel type, should be `stream`, `message` or `user`
+        final channelName = event.channelName;      // The name of the channel this event came from
+        final action = event.eventType;             // The action type, should be one of `lockSet`, `lockRemoved`, `lockAcquired`, `lockReleased`, `lockExpired`, `snapshot`
+        final lockDetailList = event.lockDetailList;    // Lock event payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle link state event
     linkState: (LinkStateEvent event) {
-        const currentState = event.currentState;    // The current link state
-        const previousState = event.previousState;  // The previous link state
-        const serviceType = event.serviceType;      // The service type, Should be "stream" or "message".
-        const operation = event.operation;          // Which operation triggered this state changed
-        const reason = event.reason;                // The reason for this state change
-        const affectedChannels = event.affectedChannels;  // Which channels are affected
-        const unrestoredChannels = event.unrestoredChannels;    // Which channels are unrestored
-        const isResumed = event.isResumed;
-        const timestamp = event.timestamp;          // Event timestamp
+        final currentState = event.currentState;    // The current link state
+        final previousState = event.previousState;  // The previous link state
+        final serviceType = event.serviceType;      // The service type, Should be "stream" or "message".
+        final operation = event.operation;          // Which operation triggered this state changed
+        final reason = event.reason;                // The reason for this state change
+        final affectedChannels = event.affectedChannels;  // Which channels are affected
+        final unrestoredChannels = event.unrestoredChannels;    // Which channels are unrestored
+        final isResumed = event.isResumed;
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle token event
     token : (TokenEvent event) {
-        const channelName = event.channelName;      // The channel for which the token will expire
+        final channelName = event.channelName;      // The channel for which the token will expire
     });
 ```
 
@@ -790,7 +799,7 @@ Signaling SDK offers the following events:
 | `linkState`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
 | `token`| Receive event notifications when the client token is about to expire.  |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -924,7 +933,7 @@ class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
     void onLinkStateEvent(const LinkStateEvent &event) {}
-    void onLoginResult(RTM_ERROR_CODE errorCode) {
+    void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
         if (errorCode != RTM_ERROR_OK) {
             printf("login rtm failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
         } else {
@@ -933,7 +942,7 @@ class RtmHandler: public IRtmEventHandler {
     }
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
-}
+};
 
 RtmConfig cfg;
 cfg.appId = "your_appid";
@@ -942,8 +951,8 @@ cfg.userId = "your_name";
 cfg.eventHandler = new RtmHandler();
 
 // Create an IRtmClient instance
-IRtmClient* rtm_client = createAgoraRtmClient();
-int ret = rtm_client->initialize(cfg);
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(cfg, errorCode);
 ```
 
 ### Remove event listeners
@@ -964,7 +973,7 @@ Signaling SDK offers the following events:
 | `onLinkStateEvent`| Receive event notifications for client network connection status changes.  |
 | `onTokenPrivilegeWillExpire` | Receive event notifications that the client token is about to expire.   |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -989,7 +998,7 @@ class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
     void onLinkStateEvent(const LinkStateEvent &event) {}
-    void onLoginResult(RTM_ERROR_CODE errorCode) {
+    void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {
         if (errorCode != RTM_ERROR_OK) {
             printf("login rtm failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
         } else {
@@ -998,7 +1007,7 @@ class RtmHandler: public IRtmEventHandler {
     }
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
-}
+};
 
 RtmConfig cfg;
 cfg.appId = "your_appid";
@@ -1007,8 +1016,8 @@ cfg.userId = "your_name";
 cfg.eventHandler = new RtmHandler();
 
 // Create an IRtmClient instance
-IRtmClient* rtm_client = createAgoraRtmClient();
-int ret = rtm_client->initialize(cfg);
+int errorCode = 0;
+IRtmClient* rtm_client = createAgoraRtmClient(cfg, errorCode);
 ```
 
 ### Remove event listeners
@@ -1029,7 +1038,99 @@ Signaling SDK offers the following events:
 | `onLinkStateEvent`| Receive event notifications for client network connection status changes.  |
 | `onTokenPrivilegeWillExpire` | Receive event notifications that the client token is about to expire.   |
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners) in the API reference.
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+To receive message and event notifications when you subscribe to or join channels, you add an event listener. An event listener is triggered by the SDK to inform the client about Signaling events and state changes. The listener enables you to respond to events like successful connection to Signaling, token expiration, received messages, and other presence, storage, and lock events.
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project and implemented the framework functionality from the [SDK quickstart](../../index) page.
+
+## Implement event listeners
+
+This section shows how to use the Signaling SDK to implement event listeners.
+
+### Add an event listener
+
+Signaling uses an `RtmEventListener` instance to process messages and event notifications. Each message and event notification has a corresponding event handler, where you implement your own processing logic. Refer to the following code to create and use an instance of `RtmEventListener`:
+
+```java
+// Create an RtmEventListener instance
+RtmEventListener eventListener = new RtmEventListener() {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        // Triggered when messages are received from remote users
+    }
+
+    @Override
+    public void onPresenceEvent(PresenceEvent event) {
+        // Triggered when the presence info changes
+    }
+
+    @Override
+    public void onTopicEvent(TopicEvent event) {
+    }
+
+    @Override
+    public void onLockEvent(LockEvent event) {
+        // Triggered when the channel lock info changes
+    }
+
+    @Override
+    public void onStorageEvent(StorageEvent event) {
+        // Triggered when the subscribed storage info changes
+    }
+
+    @Override
+    public void onLinkStateEvent(LinkStateEvent event) {
+        // Triggered when the link state changes
+    }
+
+    @Override
+    public void onTokenPrivilegeWillExpire(String channelName) {
+        // Triggered when the token is about to expire
+    }
+};
+
+// Configure RtmClient
+// Specify the event listener when building the client configuration
+RtmConfig rtmConfig = new RtmConfig.Builder("your_appId", "your_userId")
+    .eventListener(eventListener)
+    .build();
+
+// Create an RtmClient instance
+RtmClient mRtmClient = RtmClient.create(rtmConfig);
+```
+
+### Remove event listeners
+
+To avoid performance degradation caused by memory leaks, errors, and exceptions, best practice is to unregister an event handler when you no longer need to use it.
+
+```java
+mRtmClient.removeEventListener(eventListener);
+```
+
+The `RtmClient` automatically destroys event listeners when you call `release`.
+
+### Signaling events
+
+Signaling SDK offers the following events:
+
+| Event Listener            | Description             |
+|---------------------------|-------------------------|
+| `onMessageEvent`          | Receive message notifications from all the message channels you have subscribed to, or topic message notifications subscribed to from all the stream channels you have joined. The event payload data includes channel name, channel type, topic name, event sender, message payload data type, and other information. |
+| `onPresenceEvent`         | Receive online status event notifications from remote users in all message channels you have subscribed to and stream channels you have joined. The event payload data includes channel name, channel type, event type, event sender, user temporary status data, and other information.  |
+| `onTopicEvent`            | Receive notifications of topic change events in all the stream channels you have joined. The event payload data includes information such as channel name, event type, topic name, and event sender. |
+| `onStorageEvent`          | Receive all channel metadata event notifications in all message channels you have subscribed to and stream channels you have joined, as well as user metadata event notifications from all subscribed users. The event payload data includes information such as channel name, channel type, event type, and specific metadata. |
+| `onLockEvent`             | Receive all lock event notifications in the message channel you have subscribed to and stream channel you have joined. The event payload data contains information such as channel name, channel type, event type, and lock details. |
+| `onLinkStateEvent`          | Receive event notifications for client network connection status changes, including the connection status before and after the change, service type, operation type that caused the change, reason for the change, channel list, and other information. |
+| `onTokenPrivilegeWillExpire`| Receive event notifications that the client token is about to expire.  |
+
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners) in the API reference.
 
 </PlatformStructured>
 
@@ -1181,6 +1282,6 @@ Signaling SDK offers the following callbacks:
 | `OnConnectionStateChanged` | Receive event notifications for client network connection status changes, including channel name, connection status, reason for change, and other information. |
 | `OnTokenPrivilegeWillExpire`| Receive event notifications when the client token is about to expire.|
 
-For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling#event-listeners) in the API reference.
+For details on the parameters passed in by each event, refer to [Event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners) in the API reference.
 
 </PlatformStructured>

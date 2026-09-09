@@ -1904,6 +1904,48 @@ This release fixes the following issues:
 
 <PlatformStructured platform="web">
 
+### v2.3.0
+
+Released on September 8, 2026.
+
+#### Compatibility changes
+
+This release includes the following compatibility changes:
+
+- **Old connection state events removed**
+
+    This release removes the `status` and `connectionStateChange` event notifications. To listen for connection state changes, use the `linkState` event instead.
+
+- **Cloud Proxy must be explicitly enabled**
+
+    This release no longer automatically falls back to Cloud Proxy. To use Cloud Proxy, explicitly set `rtmConfig.cloudProxy` to `true` when initializing the RTM instance. Agora recommends that you give end users an option to enable Cloud Proxy based on your business needs.
+
+- **Duplicate instances restricted**
+
+    If an active RTM instance already uses the same `appId` and `userId`, creating another instance returns `RTM_ERROR_DUPLICATE_USER_ID` (-10027). Reuse the existing instance, or release the old instance before creating a new one.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+- You can now enable or disable Presence in Agora Console. Presence is enabled by default. Presence-related configuration and API calls take effect only when Presence is enabled in the console.
+- Optimizes reconnection and backoff strategies in weak-network environments, improving connection recovery reliability.
+- Adds full-link reporting for `login` and supports enabling log upload through cloud configuration, improving issue diagnosis.
+- Adds available access nodes for Geofencing scenarios, improving service availability.
+- Improves the availability of Presence queries after login. If the Presence service is still preparing when `login` succeeds, the SDK automatically waits and retries `getOnlineUsers`, `getUserChannels`, and remote user `getState` queries once the service becomes available. Your app does not need a fixed delay or a temporary subscription to detect readiness, and existing asynchronous result handling remains unchanged.
+- Optimizes Presence member synchronization in large channels. When the number of online users in a channel exceeds 512, the SDK automatically applies a large-channel optimization strategy: it continuously synchronizes details for up to 512 members and reports the total number of online users through `PresenceEvent.interval.totalOccupancy`. You can still use `getOnlineUsers` with pagination to query the complete member list and query remote user states as needed. No additional mode-switching code is required.
+- If an abnormal disconnection occurs after login, subscription requests made during the disconnection are resent after the connection recovers.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- Calling `get` immediately after setting or subscribing to Metadata occasionally returned `-12001`.
+- Logging in with an expired token incorrectly reported the `linkState` reason as `rejected`. After the fix, the SDK correctly reports token expiration and reflects `LOGIN_NOT_AUTHORIZED` in `linkState`.
+- Logging in with an invalid token occasionally returned `-10016` or `The appid is not consistent.`.
+- A user could still be returned by `getOnlineUsers` for a short period after calling `logout`.
+- Sending a topic message could return `-11024` after joining a stream channel topic and remaining idle for about one minute.
+
 ### v2.2.4
 
 Released on April 23, 2026.
@@ -2055,12 +2097,12 @@ This release removes the `token` parameter from the `RTMConfig` and adds a new `
 - Before v2.2.0
 
     ```javascript
-    const { RTM, EncryptionMode } = AgoraRTM;
+    const { RTM } = AgoraRTM;
 
     const rtmConfig = {
         token : "yourToken",
 
-        encryptionMode : EncryptionMode.AES_256_GCM,
+        encryptionMode : "AES_256_GCM",
         salt : yourSalt,
         cipherKey : "yourCipherKey",
         presenceTimeout : 300,
@@ -2087,11 +2129,11 @@ This release removes the `token` parameter from the `RTMConfig` and adds a new `
 
     ```javascript
     // v2.2.0 and later
-    const { RTM, EncryptionMode } = AgoraRTM;
+    const { RTM } = AgoraRTM;
 
     const rtmConfig = {
 
-        encryptionMode : EncryptionMode.AES_256_GCM,
+        encryptionMode : "AES_256_GCM",
         salt : yourSalt,
         cipherKey : "yourCipherKey",
         presenceTimeout : 300,
@@ -2832,6 +2874,24 @@ This release optimizes the handling logic for expired user status data during re
 
 </PlatformStructured>
 
+<PlatformStructured platform="linux-java">
+
+### v2.3.0
+
+Released on September 2, 2026.
+
+This is the first release of the Signaling SDK for Linux Java. This release includes the following features:
+
+- **Message channels**: Publish and subscribe to messages using the industry-standard Pub/Sub model, with no limit on the number of publishers or subscribers in a channel.
+- **User channels**: Send and receive point-to-point messages by specifying a user ID directly, without subscribing to a channel.
+- **Stream channels and topics**: Create stream channels and organize data streams into topics, with optional timestamp synchronization against RTC audio and video streams.
+- **Presence**: Query online users and their channels, and set, get, and remove temporary user state.
+- **Storage**: Set, get, remove, and subscribe to channel and user metadata.
+- **Lock**: Set, acquire, release, revoke, and remove distributed locks on a channel.
+- **Link state and token events**: Receive event notifications for connection state changes and upcoming token expiration through `onLinkStateEvent` and `onTokenPrivilegeWillExpire`.
+
+</PlatformStructured>
+
 <PlatformStructured platform="windows">
 
 ### Known issues and limitations
@@ -3369,9 +3429,18 @@ For more information, see [How do I handle issues when integrating the Signaling
 </TabsContent>
 </Tabs>
 
+### v2.2.6
+
+Released on November 18, 2025.
+
+#### Improvements
+
+- **New reconnection timeout configuration**
+  This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
+
 ### v2.2.5
 
-v2.2.5 was released on September 25, 2025.
+Released on September 25, 2025.
 
 #### Compatibility changes
 
@@ -3431,7 +3500,7 @@ v2.2.5 was released on September 25, 2025.
 
 ### v2.2.1
 
-v2.2.1 was released on October 15, 2024.
+Released on October 15, 2024.
 
 This is the first release of the Signaling SDK v2.x for Flutter, which brings innovation in functional coverage, performance improvement, and experience optimization.
 

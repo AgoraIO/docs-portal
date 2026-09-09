@@ -29,6 +29,10 @@ Ensure that you have integrated the Signaling SDK in your project, and implement
 Presence features require Signaling SDK version 2.2.0 or later.
 :::
 
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
 ## Implement presence features
 
 Using presence, you can implement the following features:
@@ -38,6 +42,10 @@ Using presence, you can implement the following features:
 To obtain a list of online users in a channel, call `getOnlineUsers`. Depending on your parameter settings, this method returns a list of online user IDs in a channel and their temporary status data, or just the number of online users in the channel. You do not need to join a channel to call this method. This method is applicable to both message channels and stream channels. Use the `channelType` parameter to specify the channel type.
 
 After obtaining the initial online users list, update it in real time through `presence` event notifications.
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
+:::
 
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
@@ -61,6 +69,10 @@ try {
 ```
 
 The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `nextPage` field in the returned `result` contains a bookmark for the next page. After each query, check if `result.nextPage` is not empty to determine if there is more data. To retrieve the next page, set the `page` field in `options` to the value of `result.nextPage`. Repeat this process until `result.nextPage` is empty. Refer to the following code:
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
 
 ```javascript
 const options = {
@@ -91,7 +103,7 @@ const options = {
 };
 try {
     const result = await rtm.presence.getOnlineUsers(channelName, channelType, options);
-    const { totalOccupancy, occupants, nextPage } = getOnlineUsersResult;
+    const { totalOccupancy, occupants, nextPage } = result;
     occupants.forEach((userInfo) => {
         const { states, userId, statesCount } = userInfo;
         console.log(`${userId} has states: ${states}`);
@@ -175,6 +187,10 @@ try {
 
 Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, a `RTM_ERROR_PRESENCE_USER_NOT_EXIST` error message is returned by the SDK.
 
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). Handle the result as you would any other asynchronous call, including failure.
+:::
+
 ### Delete status
 
 Each user can set up to 32 key/value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
@@ -198,7 +214,7 @@ Both the `setState` and `removeState` methods trigger `REMOTE_STATE_CHANGED` eve
 
 ## Receive presence event notifications
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/web#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -208,6 +224,14 @@ The presence event notification mode determines how subscribed users receive eve
 - `Interval`: Scheduled notification mode
 
 You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
 
 #### Real-time notification mode
 
@@ -304,12 +328,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/web#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/web#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/web#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/web#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/web#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/web#event-listeners)
 
 </PlatformStructured>
 
@@ -362,7 +386,7 @@ Refer to the following sample code to query the list of online users in a channe
 ```java tab="Java"
 // Set the channelType to MESSAGE or STREAM
 RtmChannelType channelType = RtmChannelType.MESSAGE;
-PresenceOptions options = new PresenceOptions();
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
 options.setIncludeUserId(true);
 options.setIncludeState(true);
 
@@ -388,7 +412,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new R
 ```kotlin tab="Kotlin"
 // Set the channelType to MESSAGE or STREAM
 val channelType = RtmChannelType.MESSAGE
-val options = PresenceOptions().apply {
+val options = GetOnlineUsersOptions().apply {
     setIncludeUserId(true)
     setIncludeState(true)
 }
@@ -417,7 +441,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```java tab="Java"
-PresenceOptions options =  new PresenceOptions();
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
 options.setIncludeUserId(true);
 options.setIncludeState(true);
 options.setPage("your_Next_Page_Bookmark");
@@ -446,7 +470,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new R
 ```
 
 ```kotlin tab="Kotlin"
-val options = PresenceOptions().apply {
+val options = GetOnlineUsersOptions().apply {
     setIncludeUserId(true)
     setIncludeState(true)
     setPage("your_Next_Page_Bookmark")
@@ -458,9 +482,9 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, objec
     override fun onSuccess(result: GetOnlineUsersResult) {
         // If nextPage exists, fill the value of nextPage into the page field of getOnlineUsersOptions for the next getOnlineUsers call
         log(CALLBACK, "getOnlineUsers success")
-        log(INFO, "next page: $\{result.nextPage\}")
+        log(INFO, "next page: ${result.nextPage}")
         for (state in result.userStateList) {
-            log(INFO, "user id: $\{state.userId\}")
+            log(INFO, "user id: ${state.userId}")
             state.states.forEach { (key, value) ->
                 log(INFO, "key: $key, value: $value")
             }
@@ -476,7 +500,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, objec
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```java tab="Java"
-PresenceOptions options = new PresenceOptions();
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
 options.setIncludeUserId(false);
 options.setIncludeState(false);
 
@@ -496,7 +520,7 @@ mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new R
 ```
 
 ```kotlin tab="Kotlin"
-val options = PresenceOptions().apply {
+val options = GetOnlineUsersOptions().apply {
     setIncludeUserId(false)
     setIncludeState(false)
 }
@@ -505,7 +529,7 @@ val options = PresenceOptions().apply {
 val channelType = RtmChannelType.MESSAGE
 mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, object : ResultCallback<GetOnlineUsersResult> {
     override fun onSuccess(result: GetOnlineUsersResult) {
-        log(CALLBACK, "Total occupancy: $\{result.totalOccupancy\}")
+        log(CALLBACK, "Total occupancy: ${result.totalOccupancy}")
     }
 
     override fun onFailure(errorInfo: ErrorInfo) {
@@ -629,7 +653,7 @@ mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, n
 val userId = "Tony"
 mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, object : ResultCallback<UserState> {
     override fun onSuccess(state: UserState) {
-        log(CALLBACK, "get users($\{state.userId\}) state success, $\{state.toString()\}")
+        log(CALLBACK, "get users(${state.userId}) state success, ${state}")
     }
 
     override fun onFailure(errorInfo: ErrorInfo) {
@@ -649,7 +673,7 @@ Starting from v2.3.0, if Presence is still starting up when `login` succeeds, th
 Each user can set up to 32 key-value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
 
 ```java tab="Java"
-ArrayList<String> keys = new ArrayList&lt;&gt;(Arrays.asList("Mode", "Mic"));
+ArrayList<String> keys = new ArrayList<>(Arrays.asList("Mode", "Mic"));
 mRtmClient.getPresence().removeState("Chat_room", RtmChannelType.MESSAGE, keys, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -680,9 +704,9 @@ Both the `setState` and `removeState` methods trigger `REMOTE_STATE_CHANGED` eve
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/android#presenceevent) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling/android#rtmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/android#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -830,7 +854,7 @@ When the number of online users in the channel exceeds the **Max number of insta
 ```js
 {
       eventType: RtmPresenceEventType.INTERVAL,
-      channelTye: RtmChannelType.MESSAGE,
+      channelType: RtmChannelType.MESSAGE,
       channelName: "Chat_room",
       publisher: "",
       stateItems: {},
@@ -867,12 +891,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/android#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/android#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/android#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/android#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/android#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/android#event-listeners)
 
 </PlatformStructured>
 
@@ -1229,9 +1253,9 @@ Both the `setState` and `removeState` methods trigger `AgoraRtmPresenceEventType
 
 ## Receive presence event notifications
 
-A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling/ios#agorartmpresenceevent) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling/ios#agorartmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -1505,23 +1529,23 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/ios#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/ios#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/ios#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/ios#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/ios#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/ios#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/ios#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/ios#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/ios#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/ios#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/ios#event-listeners)
 
 </TabsContent>
 </Tabs>
@@ -1881,9 +1905,9 @@ Both the `setState` and `removeState` methods trigger `AgoraRtmPresenceEventType
 
 ## Receive presence event notifications
 
-A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [AgoraRtmPresenceEvent](/en/api-reference/api-ref/signaling/macos#agorartmpresenceevent) data structure, which includes the [AgoraRtmPresenceEventType](/en/api-reference/api-ref/signaling/macos#agorartmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners) for details. In addition, include presence in the `features` parameter when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -2157,23 +2181,23 @@ This section contains content that completes the information on this page, or po
 
 <TabsContent value="swift">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/macos#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/macos#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/macos#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/macos#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/macos#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/macos#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/macos#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/macos#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/macos#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/macos#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/macos#event-listeners)
 
 </TabsContent>
 </Tabs>
@@ -2221,20 +2245,20 @@ Refer to the following sample code to query the list of online users in a channe
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getOnlineUsers(
+    var (status,response) = await rtmClient.getPresence().getOnlineUsers(
         channelName,
         RtmChannelType.message,
         includeUserId:true,
         includeState:true );
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
         // If a nextPage exists, the next time getOnlineUsers is called, the value of nextPage should be filled in the page field
-        var nextPage = response.nextPage;
+        var nextPage = response!.nextPage;
         var count = response.count;
         var userStateList = response.userStateList;
         userStateList.forEach((userState) {
-            print(`${userState.userId} has states: ${userState.states}`);
+            print('${userState.userId} has states: ${userState.states}');
         });
     }
 } catch (e) {
@@ -2247,21 +2271,21 @@ The `getOnlineUsers` method retrieves one page of data at a time. Each page cont
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getOnlineUsers(
+    var (status,response) = await rtmClient.getPresence().getOnlineUsers(
         channelName,
         RtmChannelType.message,
         includeUserId: true,
-        includeState: true
+        includeState: true,
         page: 'your_Next_Page_Bookmark'); // Next page bookmark from the previous call
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
         // If a nextPage exists, the next time getOnlineUsers is called, the value of nextPage should be filled in the page field
-        var nextPage = response.nextPage;
+        var nextPage = response!.nextPage;
         var count = response.count;
         var userStateList = response.userStateList;
         userStateList.forEach((userState) {
-            print(`${userState.userId} has states: ${userState.states}`);
+            print('${userState.userId} has states: ${userState.states}');
         });
     }
 } catch (e) {
@@ -2274,16 +2298,16 @@ When there is a large number of users in a channel, you may only care about the 
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getOnlineUsers(
+    var (status,response) = await rtmClient.getPresence().getOnlineUsers(
         channelName,
         RtmChannelType.message,
         includeUserId: false,
         includeState: false);
 
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
-        var nextPage = response.nextPage;
+        var nextPage = response!.nextPage;
         var count = response.count;
         print('There are $count occupants in $channelName channel');
     }
@@ -2304,14 +2328,14 @@ The `getUserChannels` method enables you to query which channels a user is curre
 
 ```dart
 try {
-    var (status,response) = await rtmClient.getPresence.getUserChannels("Tony");
-    if (status == true){
+    var (status,response) = await rtmClient.getPresence().getUserChannels("Tony");
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
-        var channels = response.channels;
+        var channels = response!.channels;
         var count = response.count;
         channels.forEach((channelInfo) {
-            print('${channelInfo.channelName}:${channelInfo.channelType}')
+            print('${channelInfo.channelName}:${channelInfo.channelType}');
         });
     }
 } catch (e) {
@@ -2340,11 +2364,11 @@ var states = {
 };
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.setState(
+    var (status,response) = await rtmClient.getPresence().setState(
         channelName,
         RtmChannelType.message,
         states);
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
     } else {
         print('set states success!');
@@ -2363,14 +2387,14 @@ To obtain the temporary user status set by a user in a specified channel, use th
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getState(
+    var (status,response) = await rtmClient.getPresence().getState(
         channelName,
         RtmChannelType.message,
         'Tony');
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
     } else {
-        var userState = response.state;
+        var userState = response!.state;
         print('States for ${userState.userId}: ${userState.states}');
     }
 } catch (e) {
@@ -2388,14 +2412,13 @@ Each user can set up to 32 key/value pairs in a channel. To remove items that ar
 final channelName = 'chat_room';
 final states = ['Mode','Mic'];
 try {
-    var (status,response) = await rtmClient.getPresence.removeState(
+    var (status,response) = await rtmClient.getPresence().removeState(
         channelName,
         RtmChannelType.message,
         states: states);
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
     } else {
-        var userState = response.state;
         print('remove states success!');
     }
 } catch (e) {
@@ -2407,9 +2430,9 @@ Both the `setState` and `removeState` methods trigger `remoteStateChanged` event
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/flutter#presenceevent) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling/flutter#rtmpresenceeventtype) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -2500,7 +2523,7 @@ When the number of online users in the channel exceeds the **Max number of insta
 ```js
 {
     type : RtmPresenceEventType.interval,
-    channelTye : RtmChannelType.message,,
+    channelType : RtmChannelType.message,
     channelName : 'chat_room',
     publisher : 'Tony',
     interval : {
@@ -2527,12 +2550,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/flutter#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/flutter#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/flutter#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/flutter#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/flutter#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/flutter#event-listeners)
 
 </PlatformStructured>
 
@@ -2583,7 +2606,7 @@ Starting from v2.3.0, if Presence is still initializing when a `login` call succ
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 
@@ -2618,7 +2641,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "your_Next_Page_Bookmark";
@@ -2630,7 +2653,7 @@ rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_MESSAGE
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = false;
 options.includeUserId =false;
 
@@ -2774,9 +2797,9 @@ Both the `setState` and `removeState` methods trigger `RTM_PRESENCE_EVENT_TYPE_R
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/windows-cpp#presenceevent) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling/windows-cpp#rtm_presence_event_type) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -2914,12 +2937,12 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/windows-cpp#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/windows-cpp#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/windows-cpp#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/windows-cpp#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/windows-cpp#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/windows-cpp#event-listeners)
 
 </PlatformStructured>
 
@@ -2970,7 +2993,7 @@ Starting from v2.3.0, if Presence is still initializing when a `login` call succ
 Refer to the following sample code to query the list of online users in a channel and their current status:
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 
@@ -3005,7 +3028,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 :::
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "your_Next_Page_Bookmark";
@@ -3017,7 +3040,7 @@ rtmClient->getPresence()->getOnlineUsers("channelName", RTM_CHANNEL_TYPE_MESSAGE
 When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `PresenceOptions` to `false`.
 
 ```cpp
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = false;
 options.includeUserId =false;
 
@@ -3161,9 +3184,9 @@ Both the `setState` and `removeState` methods trigger `RTM_PRESENCE_EVENT_TYPE_R
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/linux-cpp#presenceevent) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE.](/en/api-reference/api-ref/signaling/linux-cpp#rtm_presence_event_type) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -3301,12 +3324,446 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/linux-cpp#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/linux-cpp#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/linux-cpp#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/linux-cpp#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/linux-cpp#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-cpp#event-listeners)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+In Signaling solutions, it is often important to know a user's current online status. For example, in instant messaging, chat applications, and online collaboration tools, users need to see the availability of their contacts. This information is typically displayed as a status message or icon next to a user's name. Presence features in Signaling SDK enable you to monitor join, leave, and status change notifications for users in a channel. Using Presence, you can:
+
+- Get a list of users currently in a channel and their temporary status data.
+- Get a list of channels a specified user has joined or is subscribed to.
+- Get, set, or remove user statuses.
+- Receive real-time event notifications when users join or leave specified channels.
+- Receive user status change event notifications in real time.
+
+## Understand the tech
+
+Presence provides real-time information about the availability, and the current status of users, for effective communication and collaboration. It enables you to retrieve a list of users in a channel, or to query the list of channels for a specific user. The following figure illustrates how you integrate presence features into your app.
+
+**Presence workflow**
+
+![Presence workflow](https://assets-docs.agora.io/images/signaling/presence-workflow.svg)
+
+## Prerequisites
+
+Ensure that you have integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+:::info
+Presence features require Signaling SDK version 2.2.0 or later.
+:::
+
+:::info[Enable Presence in Agora Console]
+Starting from v2.3.0, you can enable or disable Presence in Agora Console. Presence is enabled by default. If you disable it, calls to Presence APIs and any subscription options that depend on Presence return an error.
+:::
+
+## Implement presence features
+
+Using presence, you can implement the following features:
+
+### Get channel users
+
+To obtain a list of online users in a channel, call `getOnlineUsers`. Depending on your parameter settings, this method returns a list of online user IDs in a channel and their temporary status data, or just the number of online users in the channel. You do not need to join a channel to call this method. This method is applicable to both message channels and stream channels. Use the `channelType` parameter to specify the channel type.
+
+After obtaining the initial online users list, update it in real time through `onPresenceEvent` event notifications.
+
+:::info[Querying Presence right after login]
+Starting from v2.3.0, if Presence is still initializing when a `login` call succeeds, the SDK waits and automatically runs your `getOnlineUsers`, `getUserChannels`, and remote-user `getState` queries once Presence becomes available. Your app does not need to add a fixed delay, temporarily subscribe to a channel, or wait for a Presence event to check whether Presence is ready. A request held in this waiting state may include a short initialization delay before it returns. The request fails if Presence does not become available within a reasonable time, or if a logout, instance release, or connection interruption occurs while the request is waiting.
+:::
+
+Refer to the following sample code to query the list of online users in a channel and their current status:
+
+```java
+// Set the channelType to MESSAGE or STREAM
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
+options.setIncludeUserId(true);
+options.setIncludeState(true);
+
+mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new ResultCallback<GetOnlineUsersResult>() {
+    @Override
+    public void onSuccess(GetOnlineUsersResult result) {
+        log(CALLBACK, "getOnlineUsers success");
+        for (UserState state : result.getUserStateList()) {
+            log(INFO, "user id: " + state.getUserId());
+            state.getStates().forEach((key, value) -> {
+                log(INFO, "key: " + key + ", value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `nextPage` field in the returned `result` contains a bookmark for the next page. After each query, check if `result.getNextPage` is empty to determine if there is more data. To retrieve the next page, set the `page` field in `GetOnlineUsersOptions` to the value of `result.getNextPage`. Repeat this process until `result.getNextPage` is null. Refer to the following code:
+
+:::info[Querying large channels]
+Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
+:::
+
+```java
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
+options.setIncludeUserId(true);
+options.setIncludeState(true);
+options.setPage("your_Next_Page_Bookmark");
+
+// Set the channelType to MESSAGE or STREAM
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new ResultCallback<GetOnlineUsersResult>() {
+    @Override
+    public void onSuccess(GetOnlineUsersResult result) {
+        // If nextPage exists, fill the value of nextPage into the page field of getOnlineUsersOptions for the next getOnlineUsers call
+        log(CALLBACK, "getOnlineUsers success");
+        log(INFO, "next page: " + result.getNextPage());
+        for (UserState state : result.getUserStateList()) {
+            log(INFO, "user id: " + state.getUserId());
+            state.getStates().forEach((key, value) -> {
+                log(INFO, "key: " + key + ", value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `GetOnlineUsersOptions` to `false`.
+
+```java
+GetOnlineUsersOptions options = new GetOnlineUsersOptions();
+options.setIncludeUserId(false);
+options.setIncludeState(false);
+
+// Set the channelType to MESSAGE or STREAM
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+mRtmClient.getPresence().getOnlineUsers(channelName, channelType, options, new ResultCallback<GetOnlineUsersResult>() {
+    @Override
+    public void onSuccess(GetOnlineUsersResult result) {
+        log(CALLBACK, "Total occupancy: " + result.getTotalOccupancy());
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+In this case, only the `totalOccupancy` property in the result is valid while all other fields are empty.
+:::info
+
+You cannot set `includeState` to `true` and `includeUserId` to `false` at the same time. To get the temporary status of users, you must also retrieve their user IDs.
+:::
+
+### Get user channels
+
+The `getUserChannels` method enables you to query which channels a user is currently in. This includes the message channels a user has subscribed to and the stream channels they have joined. This method is particularly useful for tracking user paths. Refer to the following sample code:
+
+```java
+mRtmClient.getPresence().getUserChannels("userid", new ResultCallback<ArrayList<ChannelInfo>>() {
+    @Override
+    public void onSuccess(ArrayList<ChannelInfo> channels) {
+        log(CALLBACK, "get getUserChannels success");
+        for (ChannelInfo channel : channels) {
+            log(INFO, channel.toString());
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+The `getUserChannels` method returns complete query results about the channels and their types that the queried user is in, without pagination.
+
+## User status management
+
+Signaling enables you to set and delete user status messages for the local user in each channel. The SDK notifies other online users in the channel of these changes through event notifications. This feature is useful in use-cases where user status sharing is required, such as real-time synchronization of the user's microphone status, mood, personal signature, score, and message input status.
+
+Signaling does not permanently save the status data. When a user unsubscribes from a channel, times out, or exits a channel, the data is deleted. To save user data permanently, use the [Store user metadata](storage/store-user-metadata) feature.
+
+When a user's temporary status changes, Signaling triggers a `REMOTE_STATE_CHANGED` event notification in real time. Users who set `withPresence = true` when joining the channel, receive the event notification.
+
+### Set status
+
+Using presence, you can set the temporary user status for the local user. When you set the status before subscribing to or joining a channel, the data is cached on the client and does not take effect immediately. The status is updated and corresponding event notifications are triggered when you subscribe to or join a channel. The `setState` method applies to both message and stream channels; use the `channelType` parameter to specify the channel type.
+
+```java
+HashMap<String, String> items = new HashMap<String, String>();
+items.put("Mode", "Happy");
+items.put("Mic", "False");
+
+mRtmClient.getPresence().setState("channel_name", RtmChannelType.MESSAGE, items, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "setState success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+When using `setState` to set temporary user status, if the specified key already exists, its value is overwritten by the new value. If the specified key does not exist, a new key-value pair is added.
+
+### Get status
+
+To obtain the temporary user status set by a user in a specified channel, use the `getState` method:
+
+```java
+String userId = "Tony";
+mRtmClient.getPresence().getState("Chat_room", RtmChannelType.MESSAGE, userId, new ResultCallback<UserState>() {
+    @Override
+    public void onSuccess(UserState state) {
+        log(CALLBACK, "get users(" + state.getUserId() + ") state success, " + state.toString());
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+Use the `getState` method to obtain the temporary status of other online users in the channel. If the queried user is not present in the specified channel, a `PRESENCE_USER_NOT_EXIST` error message is returned by the SDK.
+
+:::info[Querying remote user state]
+Starting from v2.3.0, if Presence is still starting up when `login` succeeds, the SDK automatically waits and retries a remote `getState` call once Presence becomes available, as described in [Querying Presence right after login](#get-channel-users). `getState` also resolves for users outside the synced 512-member set in large channels. Handle the result as you would any other asynchronous call, including failure.
+:::
+
+### Delete status
+
+Each user can set up to 32 key-value pairs in a channel. To remove items that are no longer needed, call `removeState` with a list of keys. The `removeState` method only deletes temporary user status data for the local user.
+
+```java
+ArrayList<String> keys = new ArrayList<>(Arrays.asList("Mode", "Mic"));
+mRtmClient.getPresence().removeState("Chat_room", RtmChannelType.MESSAGE, keys, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "removeState success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+Both the `setState` and `removeState` methods trigger `REMOTE_STATE_CHANGED` event notifications. Users who join the channel with `withPresence` set to `true` receive event notifications containing full data of the user's temporary status.
+
+## Receive presence event notifications
+
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/linux-java#presenceevent) data structure, which includes the [RtmPresenceEventType](/en/api-reference/api-ref/signaling/linux-java#rtmpresenceeventtype) parameter.
+
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+
+### Event notification modes
+
+The presence event notification mode determines how subscribed users receive event notifications. There are two notification modes:
+
+- `Announce`: Real-time notification mode
+- `Interval`: Scheduled notification mode
+
+You set the **Max number of instant event** value in Agora Console to specify the condition for switching between the two modes. The scheduled notification mode helps prevent event noise that results from a large number of online users in the channel. See [Presence configuration](../../enable-signaling#presence-configuration) for details.
+
+From v2.3.0, Signaling adds a large-channel optimization strategy on top of these notification modes, with a default threshold of 512 users:
+
+- When the number of online users is 512 or fewer, existing notification behavior applies.
+- When the number of online users exceeds 512, the SDK automatically applies the optimization strategy. Your app does not need to enable, disable, or listen for a mode switch.
+- In this mode, the client continuously synchronizes details for up to 512 members. Joins, leaves, timeouts, and status changes for other members are aggregated into a channel-wide occupancy change instead.
+- Your app receives the aggregated change through the existing `Interval` event and can read the total number of online users from `interval.totalOccupancy`. This value may be delayed slightly.
+- When the number of online users drops back down, the SDK automatically reverts to the standard notification behavior. Your app does not need to manage this transition.
+
+#### Real-time notification mode
+
+If the number of instant notifications in the channel is less than the **Max number of instant event** value, presence event notifications operate in real-time notification mode. In this mode, `REMOTE_JOIN`, `REMOTE_LEAVE`, `REMOTE_TIMEOUT`, and `REMOTE_STATE_CHANGED` notifications are sent to the client in real-time.
+
+```js tab="Join"
+{
+      eventType: RtmPresenceEventType.REMOTE_JOIN;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="Leave"
+{
+      eventType: RtmPresenceEventType.REMOTE_LEAVE;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="Timeout"
+{
+      eventType: RtmPresenceEventType.REMOTE_TIMEOUT;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="Snapshot"
+{
+      eventType: RtmPresenceEventType.SNAPSHOT;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "";
+      stateItems: {};
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[
+              {
+                  userId: "user_a",
+                  states: {}
+              },
+              {
+                  userId: "user_b",
+                  states: {
+                      key: "key_1";
+                      value: "value_1";
+                  }
+              },
+              {
+                  userId: "yourSelf",
+                  states: {}
+              },
+          ]
+      };
+      timestamp: 1710487149497;
+}
+```
+
+```js tab="State change"
+{
+      eventType: RtmPresenceEventType.REMOTE_STATE_CHANGED;
+      channelType: RtmChannelType.MESSAGE;
+      channelName: "test_channel";
+      publisher: "publisher_name";
+      stateItems: {
+          "key_1":"value_1";
+      };
+      interval: {
+          joinUserList:[],
+          leaveUserList:[],
+          timeoutUserList:[],
+          userStateList:[],
+      };
+      snapshot: {
+          userStateList:[]
+      };
+     timestamp: 1710487149497;
+}
+```
+
+#### Scheduled notification mode
+
+When the number of online users in the channel exceeds the **Max number of instant event** value, the channel switches to the scheduled notification mode. In this mode, `REMOTE_JOIN`, `REMOTE_LEAVE`, `REMOTE_TIMEOUT`, and `REMOTE_STATE_CHANGED` events are replaced by `INTERVAL` events and sent to all users in the channel at specific time intervals. Users receive the following notification:
+
+```js
+{
+      eventType: RtmPresenceEventType.INTERVAL,
+      channelType: RtmChannelType.MESSAGE,
+      channelName: "Chat_room",
+      publisher: "",
+      stateItems: {},
+      interval: {
+          joinUserList: ["Tony", "Lily"],
+          leaveUserList: ["Jason"],
+          timeoutUserList: ["Wang"],
+          userStateList: [
+              {
+                  userId: "Harvard",
+                  states: [
+                      {
+                          key: "Mic",
+                          value: "False"
+                      },
+                     {
+                          key: "Position",
+                          value: "Beijing"
+                      }
+                 ]
+              }
+          ]
+      },
+      snapshot: {
+          userStateList: []
+      },
+      timestamp: 1710487149497
+}
+```
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### API reference
+
+- [`getOnlineUsers`](/en/api-reference/api-ref/signaling/linux-java#getonlineusers)
+- [`getUserChannels`](/en/api-reference/api-ref/signaling/linux-java#getuserchannels)
+- [`setState`](/en/api-reference/api-ref/signaling/linux-java#setstate)
+- [`getState`](/en/api-reference/api-ref/signaling/linux-java#getstate)
+- [`removeState`](/en/api-reference/api-ref/signaling/linux-java#removestate)
+- [Event listeners](/en/api-reference/api-ref/signaling/linux-java#event-listeners)
 
 </PlatformStructured>
 
@@ -3529,9 +3986,9 @@ Both the `SetStateAsync` and `RemoveStateAsync` methods trigger `REMOTE_STATE_CH
 
 ## Receive presence event notifications
 
-A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling#configpresenceeventpropsag_platform) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE](/en/api-reference/api-ref/signaling#enumvpresencetypepropsag_platform) parameter.
+A presence event notification returns the [PresenceEvent](/en/api-reference/api-ref/signaling/unity#presenceevent) data structure, which includes the [RTM_PRESENCE_EVENT_TYPE](/en/api-reference/api-ref/signaling/unity#rtm_presence_event_type) parameter.
 
-To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
+To receive presence event notifications, implement an event listener. See [event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners) for details. In addition, set the `withPresence` parameter to `true` when subscribing to or joining a channel.
 
 ### Event notification modes
 
@@ -3549,7 +4006,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="Join"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_JOIN,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
 }
@@ -3558,7 +4015,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="Leave"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_LEAVE,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
 }
@@ -3567,7 +4024,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="Timeout"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_TIMEOUT,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
 }
@@ -3576,7 +4033,7 @@ If the number of instant notifications in the channel is less than the **Max num
 ```js tab="State change"
 {
       "type" : RTM_PRESENCE_EVENT_TYPE.REMOTE_STATE_CHANGED,
-      "channelTye" : RTM_CHANNEL_TYPE.MESSAGE,
+      "channelType" : RTM_CHANNEL_TYPE.MESSAGE,
       "channelName" : "Chat_room",
       "publisher" : "Tony",
       "stateItems" : [{"Mic":"False"},{"Position":" Washington"}],
@@ -3624,11 +4081,11 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`getOnlineUsers`](/en/api-reference/api-ref/signaling#getonlineusers)
-- [`getUserChannels`](/en/api-reference/api-ref/signaling#getuserchannels)
-- [`setState`](/en/api-reference/api-ref/signaling#presencesetstatepropsag_platform)
-- [`getState`](/en/api-reference/api-ref/signaling#presencegetstatepropsag_platform)
-- [`removeState`](/en/api-reference/api-ref/signaling#presenceremovestatepropsag_platform)
-- [Event listeners](/en/api-reference/api-ref/signaling#event-listeners)
+- [`GetOnlineUsersAsync`](/en/api-reference/api-ref/signaling/unity#getonlineusersasync)
+- [`GetUserChannelsAsync`](/en/api-reference/api-ref/signaling/unity#getuserchannelsasync)
+- [`SetStateAsync`](/en/api-reference/api-ref/signaling/unity#setstateasync)
+- [`GetStateAsync`](/en/api-reference/api-ref/signaling/unity#getstateasync)
+- [`RemoveStateAsync`](/en/api-reference/api-ref/signaling/unity#removestateasync)
+- [Event listeners](/en/api-reference/api-ref/signaling/unity#event-listeners)
 
 </PlatformStructured>

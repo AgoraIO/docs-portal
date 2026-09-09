@@ -527,7 +527,7 @@ rtmClient.logout { response, error in
 
 ```
 
-### releaseLock
+### AgoraRtmClientKit.destroy
 
 #### Description
 
@@ -685,7 +685,7 @@ Signaling provides the following channel types for different application use-cas
 
 AgoraRtmClientKit
 
-### subscribeTopic
+### subscribe
 
 #### Description
 
@@ -757,7 +757,7 @@ rtmClient.subscribe(channelName: "exampleChannel", option: subscribeOptions) { r
 }
 ```
 
-### unsubscribeTopic
+### unsubscribe
 
 #### Description
 
@@ -810,7 +810,7 @@ rtmClient.unsubscribe("exampleChannel") { response, error in
 }
 ```
 
-###
+### createStreamChannel
 
 #### Description
 
@@ -850,7 +850,7 @@ do {
 - Success: Returns an instance of `AgoraRtmStreamChannel` you can use for subsequent calls to other stream channel APIs.
 - Failure: `nil`.
 
-### joinTopic
+### join
 
 #### Description
 
@@ -922,7 +922,7 @@ streamChannel.join(joinOptions, completion: { (res, error) in
 })
 ```
 
-### leaveTopic
+### leave
 
 #### Description
 
@@ -975,7 +975,7 @@ streamChannel.leave({ res, error in
 
 ```
 
-### releaseLock
+### AgoraRtmStreamChannel.destroy
 
 #### Description
 
@@ -1599,7 +1599,7 @@ Signaling offers three types of channels. These channel types have the following
 
 This section introduces APIs to send and receive messages in a message channel or a user channel.
 
-### publishTopicMessage
+### publish
 
 #### Description
 
@@ -3685,7 +3685,7 @@ rtmClient.revokeLock(
 }
 ```
 
-### getMessages
+### getLocks
 
 #### Description
 
