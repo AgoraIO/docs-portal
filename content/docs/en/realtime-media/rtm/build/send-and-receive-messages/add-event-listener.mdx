@@ -686,72 +686,72 @@ This section shows how to use the Signaling SDK to implement event listeners.
 
 ### Add an event listener
 
-Signaling uses an `RtmEventListener` instance to process messages and event notifications. Each message and event notification has a corresponding event handler, where you implement your own processing logic. Refer to the following code to create and use an instance of `RtmEventListener`:
+Signaling uses the `addListener` method to process messages and event notifications. Each message and event notification has a corresponding named parameter, where you pass a callback that implements your own processing logic. Refer to the following code to register event handlers:
 
 ```dart
 rtmClient.addListener(
     // Handle message event
     message: (MessageEvent event) {
-        const channelType = event.channelType;      // The channel type, 'STREAM' 'MESSAGE', or 'USER'
-        const channelName = event.channelName;      // The name of the channel that this message came from
-        const topicName = event.channelTopic;       // (Stream channel only) The name of the topic that this message came from
-        const messageType = event.messageType;      // The message type, 'STRING' or 'BINARY'
-        const customType = event.customType;        // User defined type
-        const publisher = event.publisher;          // The message publisher
-        const message = event.message;              // The message payload
-        const timestamp = event.timestamp;          // Event timestamp
+        final channelType = event.channelType;      // The channel type, `stream` `message`, or `user`
+        final channelName = event.channelName;      // The name of the channel that this message came from
+        final topicName = event.channelTopic;       // (Stream channel only) The name of the topic that this message came from
+        final messageType = event.messageType;      // The message type, `string` or `binary`
+        final customType = event.customType;        // User defined type
+        final publisher = event.publisher;          // The message publisher
+        final message = event.message;              // The message payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle presence event
     presence: (PresenceEvent event) {
-        const action = event.type;                  // The event type, should be one of 'SNAPSHOT', 'INTERVAL', 'JOIN', 'LEAVE', 'TIMEOUT、'STATE_CHANGED', 'OUT_OF_SERVICE'.
-        const channelType = event.channelType;      // The channel type, should be "STREAM", "MESSAGE" or "USER"
-        const channelName = event.channelName;      // The name of the channel this event came from
-        const publisher = event.publisher;          // The user who triggered this even
-        const states = event.stateItems;            // User state payload, only for the stateChanged event
-        const interval = event.interval;            // Interval payload, only for the interval event
-        const snapshot = event.snapshot;            // Snapshot payload, only for the snapshot event
-        const timestamp = event.timestamp;          // Event timestamp
+        final action = event.type;                  // The event type, should be one of `snapshot`, `interval`, `remoteJoinChannel`, `remoteLeaveChannel`, `remoteTimeout`, `remoteStateChanged`, `errorOutOfService`.
+        final channelType = event.channelType;      // The channel type, should be `stream`, `message` or `user`
+        final channelName = event.channelName;      // The name of the channel this event came from
+        final publisher = event.publisher;          // The user who triggered this event
+        final states = event.stateItems;            // User state payload, only for the stateChanged event
+        final interval = event.interval;            // Interval payload, only for the interval event
+        final snapshot = event.snapshot;            // Snapshot payload, only for the snapshot event
+        final timestamp = event.timestamp;          // Event timestamp
     },
    // Handle topic event
     topic: (TopicEvent event) {
-        const action = event.type;                  // The event type, should be one of 'SNAPSHOT', 'JOIN', 'LEAVE'
-        const channelName = event.channelName;      // The name of the channel this event came from
-        const publisher = event.publisher;          // The user who triggered this even
-        const topicInfos = event.topicInfos;        // Topic information payload
-        const timestamp = event.timestamp;          // Event timestamp
+        final action = event.type;                  // The event type, should be one of `snapshot`, `remoteJoinTopic`, `remoteLeaveTopic`
+        final channelName = event.channelName;      // The name of the channel this event came from
+        final publisher = event.publisher;          // The user who triggered this event
+        final topicInfos = event.topicInfos;        // Topic information payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle storage event
     storage: (StorageEvent event) {
-        const channelType = event.channelType;      // The channel type, should be "STREAM", "MESSAGE" or "USER"
-        const target = event.target;                // Which channel or user triggered this event
-        const storageType = event.storageType;      // The storage type, should be 'USER'、'CHANNEL'
-        const action = event.eventType;             // The event type, should be one of "SNAPSHOT"、"SET"、"REMOVE"、"UPDATE" or "NONE"
-        const data = event.data;                    // USER_METADATA or CHANNEL_METADATA payload
-        const timestamp = event.timestamp;          // Event timestamp
+        final channelType = event.channelType;      // The channel type, should be `stream`, `message` or `user`
+        final target = event.target;                // Which channel or user triggered this event
+        final storageType = event.storageType;      // The storage type, should be `user`, `channel`
+        final action = event.eventType;             // The event type, should be one of `snapshot`, `set`, `remove`, `update` or `none`
+        final data = event.data;                    // USER_METADATA or CHANNEL_METADATA payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle lock event
     lock: (LockEvent event) {
-        const channelType = event.channelType;      // The channel type, should be "STREAM", "MESSAGE" or "USER"
-        const channelName = event.channelName;      // The name of the channel this event came from
-        const action = event.evenType;              // The action type, should be one of 'SET'、'REMOVED'、'ACQUIRED'、'RELEASED'、'EXPIRED'、'SNAPSHOT'
-        const lockDetailList = event.lockDetailList;    // Lock event payload
-    const timestamp = event.timestamp;              // Event timestamp
+        final channelType = event.channelType;      // The channel type, should be `stream`, `message` or `user`
+        final channelName = event.channelName;      // The name of the channel this event came from
+        final action = event.eventType;             // The action type, should be one of `lockSet`, `lockRemoved`, `lockAcquired`, `lockReleased`, `lockExpired`, `snapshot`
+        final lockDetailList = event.lockDetailList;    // Lock event payload
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle link state event
     linkState: (LinkStateEvent event) {
-        const currentState = event.currentState;    // The current link state
-        const previousState = event.previousState;  // The previous link state
-        const serviceType = event.serviceType;      // The service type, Should be "stream" or "message".
-        const operation = event.operation;          // Which operation triggered this state changed
-        const reason = event.reason;                // The reason for this state change
-        const affectedChannels = event.affectedChannels;  // Which channels are affected
-        const unrestoredChannels = event.unrestoredChannels;    // Which channels are unrestored
-        const isResumed = event.isResumed;
-        const timestamp = event.timestamp;          // Event timestamp
+        final currentState = event.currentState;    // The current link state
+        final previousState = event.previousState;  // The previous link state
+        final serviceType = event.serviceType;      // The service type, Should be "stream" or "message".
+        final operation = event.operation;          // Which operation triggered this state changed
+        final reason = event.reason;                // The reason for this state change
+        final affectedChannels = event.affectedChannels;  // Which channels are affected
+        final unrestoredChannels = event.unrestoredChannels;    // Which channels are unrestored
+        final isResumed = event.isResumed;
+        final timestamp = event.timestamp;          // Event timestamp
     },
     // Handle token event
     token : (TokenEvent event) {
-        const channelName = event.channelName;      // The channel for which the token will expire
+        final channelName = event.channelName;      // The channel for which the token will expire
     });
 ```
 

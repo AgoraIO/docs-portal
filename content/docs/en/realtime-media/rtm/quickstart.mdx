@@ -2912,7 +2912,7 @@ void main() async {
     // Create rtm client
     final (status, client) = await RTM( appId, userId);
     if (status.error == true) {
-        print('\${status.operation} failed due to \${status.reason}, error code: \${status.errorCode}');
+        print('${status.operation} failed due to ${status.reason}, error code: ${status.errorCode}');
     } else {
         rtmClient = client;
         print('Initialize success!');
@@ -2922,16 +2922,16 @@ void main() async {
     rtmClient.addListener(
     // Add message event handler
     message: (event) {
-      print('received a message from channel: \${event.channelName}, channel type : \${event.channelType}');
-      print('message content: \${utf8.decode(event.message!)}, custom type: \${event.customType}');
+      print('received a message from channel: ${event.channelName}, channel type : ${event.channelType}');
+      print('message content: ${utf8.decode(event.message!)}, custom type: ${event.customType}');
     },
     // add link state event handler
     linkState: (event) {
-      print('link state changed from \${event.previousState} to \${event.currentState}');
-      print('reason: \${event.reason}, due to operation \${event.operation}');
+      print('link state changed from ${event.previousState} to ${event.currentState}');
+      print('reason: ${event.reason}, due to operation ${event.operation}');
     });
   } catch (e) {
-    print('Initialize failed!:\${e}');
+    print('Initialize failed!:${e}');
   }
 
   // Login to Signaling
@@ -2939,7 +2939,7 @@ void main() async {
     // login rtm service
     var (status,response) = await rtmClient.login(token);
     if (status.error == true) {
-        print('\${status.operation} failed due to \${status.reason}, error code: \${status.errorCode}');
+        print('${status.operation} failed due to ${status.reason}, error code: ${status.errorCode}');
     } else {
         print('login RTM success!');
     }
@@ -2951,9 +2951,9 @@ void main() async {
   try {
     var (status,response) = await rtmClient.subscribe(channelName);
     if (status.error == true) {
-        print('\${status.operation} failed due to \${status.reason}, error code: \${status.errorCode}');
+        print('${status.operation} failed due to ${status.reason}, error code: ${status.errorCode}');
     } else {
-        print('subscribe channel: \${channelName} success!');
+        print('subscribe channel: ${channelName} success!');
     }
   } catch (e) {
     print('Failed to subscribe channel: $e');
@@ -2970,9 +2970,9 @@ void main() async {
           customType: 'PlainText'
           );
       if (status.error == true ){
-        print('\${status.operation} failed, errorCode: \${status.errorCode}, due to \${status.reason}');
+        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
       } else {
-        print('\${status.operation} success! message number:$i');
+        print('${status.operation} success! message number:$i');
       }
     } catch (e) {
       print('Failed to publish message: $e');
@@ -2984,7 +2984,7 @@ void main() async {
   try {
     var (status,response) = await rtmClient.unsubscribe(channelName);
     if (status.error == true) {
-        print('\${status.operation} failed due to \${status.reason}, error code: \${status.errorCode}');
+        print('${status.operation} failed due to ${status.reason}, error code: ${status.errorCode}');
     } else {
         print('unsubscribe success!');
     }
@@ -2997,7 +2997,7 @@ void main() async {
     // logout rtm service
     var (status,response) = await rtmClient.logout();
     if (status.error == true) {
-        print('\${status.operation} failed due to \${status.reason}, error code: \${status.errorCode}');
+        print('${status.operation} failed due to ${status.reason}, error code: ${status.errorCode}');
     } else {
         print('logout RTM success!');
     }
@@ -3058,7 +3058,7 @@ rtmClient.addListener(
   // Add message event handler
   message: (event) {
     print('received a message from channel: ${event.channelName}, channel type : ${event.channelType}');
-    print('message content: ${utf8.decode(event.message!)}, custome type: ${event.customType}');
+    print('message content: ${utf8.decode(event.message!)}, custom type: ${event.customType}');
   },
   // Add linkState event handler
   linkState: (event) {

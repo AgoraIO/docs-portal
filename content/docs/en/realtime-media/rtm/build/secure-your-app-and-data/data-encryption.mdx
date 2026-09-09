@@ -357,16 +357,19 @@ Refer to the following sample code to configure end-to-end encryption:
 final userId = 'your_userId';
 final appId = 'your_appId';
 late RtmClient rtmClient;
+// Use a 32-byte salt generated on your server
+final salt = Uint8List.fromList(List<int>.filled(32, 0));
+
 var encryptionConfig = RtmEncryptionConfig(
     // Set the encryption mode
     encryptionMode: RtmEncryptionMode.aes256Gcm,
     encryptionKey: 'your_encryptionKey',
-    encryptionSalt: [your_encryptionSalt]);
+    encryptionSalt: salt);
 
 var rtmConfig = RtmConfig( encryptionConfig:encryptionConfig );
 
 try {
-    var (status,client) = await RTM(appId, userId, rtmConfig:rtmConfig);
+    var (status,client) = await RTM(appId, userId, config:rtmConfig);
     if (status.error == true) {
         print(status);
     } else {
