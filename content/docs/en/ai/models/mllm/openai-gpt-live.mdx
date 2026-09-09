@@ -28,8 +28,7 @@ The following examples show how to configure OpenAI GPT-Live MLLM when starting 
 <TabsContent value="python">
 
 ```python
-from agora_agent import Agent
-from agora_agent.agentkit.preview import OpenAIGPTLive
+from agora_agent import Agent, OpenAIGPTLive
 
 # client is your configured Agora client
 agent = (
@@ -183,7 +182,7 @@ GPT-Live can call tools defined directly on the MLLM configuration. Set `mllm.mc
     The model identifier.
     </Parameter>
     <Parameter name="alpha_selector" type="string" required={false} defaultValue="quicksilver=v3">
-    The OpenAI-Alpha selector for this preview model. Include it explicitly in REST requests, since it is only applied automatically when using the Python, TypeScript, or Go SDKs.
+    The OpenAI-Alpha selector for this preview model.
     </Parameter>
     <Parameter name="voice" type="string" required={false} defaultValue="marin">
     The voice identifier for audio output.
