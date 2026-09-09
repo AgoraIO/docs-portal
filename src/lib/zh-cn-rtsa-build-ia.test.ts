@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { loadDocsPagePayload } from './docs-page.server';
 
 type DocsMeta = {
   collapsible?: boolean;
@@ -158,6 +159,14 @@ function hasOldBuildPrefix(value: string) {
 }
 
 describe('zh-CN RTSA Build IA migration invariants', () => {
+  it('routes the RTSA Build root to the canonical implementation guide', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', ['rtsa', 'build']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/rtsa/build/implement-transmission',
+    });
+  });
+
   it.each(approvedNewMdxPaths)('keeps the new MDX path %s', (pagePath) => {
     expect(existsSync(resolve(buildRoot, `${pagePath}.mdx`))).toBe(true);
   });
