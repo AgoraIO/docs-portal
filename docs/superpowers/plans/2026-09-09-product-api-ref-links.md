@@ -65,7 +65,7 @@ Run:
 printf 'legacy references: '
 rg -o --glob '*.{md,mdx}' 'reference/restful-authentication' content/docs/en | wc -l
 printf 'standalone Speech-to-Text auth references: '
-rg -o --glob '*.{md,mdx}' '\./restful-authentication' content/docs/en | wc -l
+rg -o --glob '*.{md,mdx}' '\./restful-authentication' content/docs/en/realtime-media | wc -l
 printf 'hidden RTMP route references: '
 rg -o --glob '*.{md,mdx}' '/en/api-reference/api-ref/rtmp-gateway/restful-authentication' content/docs/en | wc -l
 ```
