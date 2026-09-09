@@ -1306,7 +1306,7 @@ try {
         withPresence: true,
         withMetadata: true,
         withLock: true,
-        beQuite: false);
+        beQuiet: false);
 
     if (status.error == true ){
        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
@@ -1322,7 +1322,7 @@ To subscribe to multiple channels, call `subscribe` multiple times:
 
 ```dart
 final channel1 = 'chats.room1';
-final channel2 = 'chats.room2'
+final channel2 = 'chats.room2';
 try {
     var (status, response) = await rtmClient.subscribe(
         channel1,
@@ -1330,7 +1330,7 @@ try {
         withPresence: true,
         withMetadata: true,
         withLock: true,
-        beQuite: false);
+        beQuiet: false);
 
     if (status.error == true ){
        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
@@ -1348,7 +1348,7 @@ try {
         withPresence: true,
         withMetadata: true,
         withLock: true,
-        beQuite: false);
+        beQuiet: false);
 
     if (status.error == true ){
        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');

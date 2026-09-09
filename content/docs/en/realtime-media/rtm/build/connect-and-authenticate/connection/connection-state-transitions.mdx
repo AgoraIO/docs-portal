@@ -758,10 +758,17 @@ The event provides the following parameters:
 - `operation`: The operation responsible for the change.
 - `reason`: The reason behind the change.
 
-To remove the callback use:
+To remove the callback, register it as a named function and pass the same function reference to `removeListener`:
 
 ```dart
-rtmClient.removeEventListener(listener);
+void onLinkState(LinkStateEvent event) {
+    // Handle the state change
+}
+
+rtmClient.addListener(linkState: onLinkState);
+
+// Later, remove the callback
+rtmClient.removeListener(linkState: onLinkState);
 ```
 
 ## Connection restoration mechanism

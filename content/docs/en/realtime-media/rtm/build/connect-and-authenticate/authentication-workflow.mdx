@@ -1508,7 +1508,7 @@ To join a stream channel using a token, fetch an **RTC** token from your token s
 You configure the validity period of an RTM token in your token generator according to your business needs. The maximum validity period of a token is 24 hours. When an RTM token is about to expire, the `token` callback is triggered 30 seconds before the expiration time. When you receive this callback, retrieve a fresh token from your token server, and call `renewToken` to pass the new token to the SDK.
 
 ```dart
-rtmClient.addListener({
+rtmClient.addListener(
   token: (event) async {
     if (event.channelName == '') {
       // An empty channelName indicates that the MESSAGE service token has expired
@@ -1522,7 +1522,7 @@ rtmClient.addListener({
       streamChannel.renewToken(result.token);
     }
   }
-});
+);
 ```
 
 If the token expires, the SDK triggers an `onLinkStateEvent` callback and reports the following information:

@@ -2245,20 +2245,20 @@ Refer to the following sample code to query the list of online users in a channe
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getOnlineUsers(
+    var (status,response) = await rtmClient.getPresence().getOnlineUsers(
         channelName,
         RtmChannelType.message,
         includeUserId:true,
         includeState:true );
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
         // If a nextPage exists, the next time getOnlineUsers is called, the value of nextPage should be filled in the page field
-        var nextPage = response.nextPage;
+        var nextPage = response!.nextPage;
         var count = response.count;
         var userStateList = response.userStateList;
         userStateList.forEach((userState) {
-            print(`${userState.userId} has states: ${userState.states}`);
+            print('${userState.userId} has states: ${userState.states}');
         });
     }
 } catch (e) {
@@ -2271,21 +2271,21 @@ The `getOnlineUsers` method retrieves one page of data at a time. Each page cont
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getOnlineUsers(
+    var (status,response) = await rtmClient.getPresence().getOnlineUsers(
         channelName,
         RtmChannelType.message,
         includeUserId: true,
-        includeState: true
+        includeState: true,
         page: 'your_Next_Page_Bookmark'); // Next page bookmark from the previous call
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
         // If a nextPage exists, the next time getOnlineUsers is called, the value of nextPage should be filled in the page field
-        var nextPage = response.nextPage;
+        var nextPage = response!.nextPage;
         var count = response.count;
         var userStateList = response.userStateList;
         userStateList.forEach((userState) {
-            print(`${userState.userId} has states: ${userState.states}`);
+            print('${userState.userId} has states: ${userState.states}');
         });
     }
 } catch (e) {
@@ -2298,16 +2298,16 @@ When there is a large number of users in a channel, you may only care about the 
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getOnlineUsers(
+    var (status,response) = await rtmClient.getPresence().getOnlineUsers(
         channelName,
         RtmChannelType.message,
         includeUserId: false,
         includeState: false);
 
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
-        var nextPage = response.nextPage;
+        var nextPage = response!.nextPage;
         var count = response.count;
         print('There are $count occupants in $channelName channel');
     }
@@ -2328,14 +2328,14 @@ The `getUserChannels` method enables you to query which channels a user is curre
 
 ```dart
 try {
-    var (status,response) = await rtmClient.getPresence.getUserChannels("Tony");
-    if (status == true){
+    var (status,response) = await rtmClient.getPresence().getUserChannels("Tony");
+    if (status.error == true){
         print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
-        var channels = response.channels;
+        var channels = response!.channels;
         var count = response.count;
         channels.forEach((channelInfo) {
-            print('${channelInfo.channelName}:${channelInfo.channelType}')
+            print('${channelInfo.channelName}:${channelInfo.channelType}');
         });
     }
 } catch (e) {
@@ -2364,11 +2364,11 @@ var states = {
 };
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.setState(
+    var (status,response) = await rtmClient.getPresence().setState(
         channelName,
         RtmChannelType.message,
         states);
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
     } else {
         print('set states success!');
@@ -2387,14 +2387,14 @@ To obtain the temporary user status set by a user in a specified channel, use th
 ```dart
 final channelName = 'chat_room';
 try {
-    var (status,response) = await rtmClient.getPresence.getState(
+    var (status,response) = await rtmClient.getPresence().getState(
         channelName,
         RtmChannelType.message,
         'Tony');
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
     } else {
-        var userState = response.state;
+        var userState = response!.state;
         print('States for ${userState.userId}: ${userState.states}');
     }
 } catch (e) {
@@ -2412,14 +2412,13 @@ Each user can set up to 32 key/value pairs in a channel. To remove items that ar
 final channelName = 'chat_room';
 final states = ['Mode','Mic'];
 try {
-    var (status,response) = await rtmClient.getPresence.removeState(
+    var (status,response) = await rtmClient.getPresence().removeState(
         channelName,
         RtmChannelType.message,
         states: states);
-    if (status == true){
+    if (status.error == true){
         print('${status.operation} failed,errorCode: ${status.errorCode},due to ${status.reason}');
     } else {
-        var userState = response.state;
         print('remove states success!');
     }
 } catch (e) {

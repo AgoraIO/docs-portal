@@ -1961,7 +1961,7 @@ var price = MetadataItem(
 var metadata = [properties,announcement,price];
 
 try{
-    var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+    var (status,response) = await rtmClient.getStorage().setChannelMetadata(
         'channel1',
         RtmChannelType.message,
         metadata,
@@ -1995,7 +1995,7 @@ To retrieve all metadata items associated with a specific channel, call `getChan
 
 ```dart
 try{
-    var (status,response) = await rtmClient.getStorage.getChannelMetadata(
+    var (status,response) = await rtmClient.getStorage().getChannelMetadata(
         'channel1',
         RtmChannelType.message);
 
@@ -2060,7 +2060,7 @@ var price = MetadataItem(
 var metadata = [price];
 
 try{
-    var (status,response) = await rtmClient.getStorage.updateChannelMetadata(
+    var (status,response) = await rtmClient.getStorage().updateChannelMetadata(
         'channel1',
         RtmChannelType.message,
         metadata,
@@ -2097,7 +2097,7 @@ var announcement = MetadataItem(key: 'Announcement');
 var metadata = [announcement];
 
 try{
-    var (status,response) = await rtmClient.getStorage.removeChannelMetadata(
+    var (status,response) = await rtmClient.getStorage().removeChannelMetadata(
         'channel1',
         RtmChannelType.message,
         metadata: metadata);
@@ -2120,7 +2120,7 @@ To delete the entire set of metadata for a channel, do not specify any metadata 
 
 ```dart
 try{
-    var (status,response) = await rtmClient.getStorage.removeChannelMetadata(
+    var (status,response) = await rtmClient.getStorage().removeChannelMetadata(
         'channel1',
         RtmChannelType.message);
 
@@ -2168,7 +2168,7 @@ The following are some sample use-cases where CAS version control is useful:
 
 The CAS version control feature provides two independent version control parameters. Set one or more of these values according to the needs of your business use-case:
 
-- `majorRevision` parameter in the `setMajorRevision` method: Enable version number verification of the entire set of channel metadata.
+- `majorRevision` named parameter: Enable version number verification of the entire set of channel metadata.
 
 - `revision` parameter of a `MetadataItem`: Enable version number verification of a single metadata item.
 
@@ -2183,7 +2183,7 @@ The following sample shows how to use `majorRevision` and `revision` to update c
 ```dart
 var properties = MetadataItem(
   key: 'Quantity',
-  value: '20'
+  value: '20',
   revision:734874888);
 
 var announcement = MetadataItem(
@@ -2192,13 +2192,13 @@ var announcement = MetadataItem(
 
 var price = MetadataItem(
   key: 'T-shirt',
-  value: '200'
+  value: '200',
   revision:734874222);
 
 var metadata = [properties,announcement,price];
 
 try{
-    var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+    var (status,response) = await rtmClient.getStorage().setChannelMetadata(
         'channel1',
         RtmChannelType.message,
         metadata,
@@ -2247,7 +2247,7 @@ var price = MetadataItem(
 var metadata = [properties,announcement,price];
 
 try{
-    var (status,response) = await rtmClient.getStorage.setChannelMetadata(
+    var (status,response) = await rtmClient.getStorage().setChannelMetadata(
         'channel1',
         RtmChannelType.message,
         metadata,
@@ -2273,7 +2273,7 @@ This section contains content that completes the information on this page, or po
 
 ### API reference
 
-- [`setChannelMetaData`](/en/api-reference/api-ref/signaling/flutter#setchannelmetadata)
+- [`setChannelMetadata`](/en/api-reference/api-ref/signaling/flutter#setchannelmetadata)
 - [`getChannelMetadata`](/en/api-reference/api-ref/signaling/flutter#getchannelmetadata)
 - [`removeChannelMetadata`](/en/api-reference/api-ref/signaling/flutter#removechannelmetadata)
 - [`updateChannelMetadata`](/en/api-reference/api-ref/signaling/flutter#updatechannelmetadata)

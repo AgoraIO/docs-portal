@@ -1500,11 +1500,10 @@ To customize the heartbeat interval, refer to the following code:
 final userId = 'your_userId';
 final appId = 'your_appId';
 late RtmClient rtmClient;
-var privateConfig = RtmPrivateConfig(heartbeatInterval:30);
-var rtmConfig = RtmConfig( privateConfig:privateConfig );
+var rtmConfig = RtmConfig( heartbeatInterval:30 );
 
 try {
-    var (status,client) = await RTM(appId, userId, rtmConfig:rtmConfig);
+    var (status,client) = await RTM(appId, userId, config:rtmConfig);
     if (status.error == true) {
         print(status);
     } else {

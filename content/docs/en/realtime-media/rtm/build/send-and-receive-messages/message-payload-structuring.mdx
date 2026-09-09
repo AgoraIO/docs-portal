@@ -922,12 +922,12 @@ Signaling also provides the `customType` field in the `publish` method for sendi
 
 final channelName = 'chat_room';
 var message = {
-    type: 'image',
-    asset_url: 'https://my.app/image.png',
-    thumb_url: 'https://my.app/thumbnail/image.png',
-    mentionedUsers: ['Tony','Lily'],
-    sender: 'Max'
-}
+    'type': 'image',
+    'asset_url': 'https://my.app/image.png',
+    'thumb_url': 'https://my.app/thumbnail/image.png',
+    'mentionedUsers': ['Tony','Lily'],
+    'sender': 'Max'
+};
 // Message string serialization
 var payload = jsonEncode(message);
 // Send message with customType set

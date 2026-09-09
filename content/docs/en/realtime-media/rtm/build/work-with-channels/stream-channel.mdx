@@ -1281,11 +1281,11 @@ To use stream channel functionality, call `createStreamChannel` to create a `Str
 final channel = 'stream_room';
 late StreamChannel streamChannel;
 try {
-    var (status, channel) = await rtmClient.createStreamChannel(channel);
+    var (status, newChannel) = await rtmClient.createStreamChannel(channel);
     if (status.error == true ){
        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
-        streamChannel = channel ;
+        streamChannel = newChannel!;
         print('${status.operation} success!');
     }
 } catch (e) {

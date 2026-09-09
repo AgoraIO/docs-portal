@@ -794,7 +794,7 @@ var privateConfig = RtmPrivateConfig(
 var rtmConfig = RtmConfig( privateConfig:privateConfig );
 
 try {
-    final (status,client) = await RTM(appId, userId, rtmConfig:rtmConfig);
+    final (status,client) = await RTM(appId, userId, config:rtmConfig);
     if (status.error == true) {
         print(status);
     } else {
@@ -821,7 +821,7 @@ late RtmClient rtmClient;
 const protocolType = RtmProtocolType.tcpOnly;
 const rtmConfig = RtmConfig(protocolType:protocolType);
 try {
-    final (status,client) = await RTM("myAppId", "Tony", rtmConfig:rtmConfig);
+    final (status,client) = await RTM("myAppId", "Tony", config:rtmConfig);
     if (status.error == true) {
         print(status);
     } else {
@@ -845,7 +845,7 @@ In the development and testing phase of your app, you may need to output more de
 const logConfig = RtmLogConfig(
     filePath: './rtm_logfile/',
     fileSizeInKB: 1024,
-    level: warn );
+    level: RtmLogLevel.warn );
 
 const rtmConfig = RtmConfig( logConfig:logConfig );
 ```
