@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
+import { resolveStaticLegacySitemapRedirect } from './legacy-sitemap/static-redirects';
 
 type DocsMeta = {
   collapsible?: boolean;
@@ -15,6 +16,12 @@ type LegacyRedirectRule = {
   target: string;
 };
 
+type VercelRedirectRule = {
+  destination: string;
+  source: string;
+  statusCode: number;
+};
+
 const contentRoot = resolve(
   process.cwd(),
   'content/docs/zh-CN/realtime-media/rtsa',
@@ -23,6 +30,10 @@ const buildRoot = resolve(contentRoot, 'build');
 const legacyRedirectsPath = resolve(
   process.cwd(),
   'src/lib/legacy-sitemap/redirects.json',
+);
+const vercelRedirectsPath = resolve(
+  process.cwd(),
+  'vercel-legacy-redirects.json',
 );
 
 const approvedNewMdxPaths = [
@@ -120,23 +131,90 @@ const oldRtsaBuildPrefixes = [
   '/zh-CN/realtime-media/rtsa/build/optimize-and-operate/',
 ] as const;
 
-const oldRtsaBuildUrls = [
-  '/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service',
-  '/zh-CN/realtime-media/rtsa/build/setup-and-access/license',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/audio-codec',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/stream-state',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/key-frame',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/encryption',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream',
-  '/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel',
-  '/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc',
-  '/zh-CN/realtime-media/rtsa/build/setup-and-access/cloud-proxy',
-  '/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit',
+const oldRtsaBuildRedirects = [
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service',
+    target:
+      '/zh-CN/realtime-media/rtsa/build/project-preparation/enable-service',
+  },
+  {
+    legacyPath: '/zh-CN/realtime-media/rtsa/build/setup-and-access/license',
+    target: '/zh-CN/realtime-media/rtsa/build/project-preparation/license',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
+    target: '/zh-CN/realtime-media/rtsa/build/implement-transmission',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid',
+    target: '/zh-CN/realtime-media/rtsa/build/string-uid',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/audio-codec',
+    target: '/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/stream-state',
+    target: '/zh-CN/realtime-media/rtsa/build/media-transmission/stream-state',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption',
+    target:
+      '/zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/key-frame',
+    target: '/zh-CN/realtime-media/rtsa/build/media-transmission/key-frame',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel',
+    target: '/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/encryption',
+    target: '/zh-CN/realtime-media/rtsa/build/media-transmission/encryption',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream',
+    target: '/zh-CN/realtime-media/rtsa/build/data-communication/data-stream',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel',
+    target:
+      '/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc',
+    target: '/zh-CN/realtime-media/rtsa/build/interoperate-rtc',
+  },
+  {
+    legacyPath: '/zh-CN/realtime-media/rtsa/build/setup-and-access/cloud-proxy',
+    target:
+      '/zh-CN/realtime-media/rtsa/build/production-environment/cloud-proxy',
+  },
+  {
+    legacyPath:
+      '/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit',
+    target:
+      '/zh-CN/realtime-media/rtsa/build/production-environment/region-limit',
+  },
 ] as const;
+
+const oldRtsaBuildUrls = oldRtsaBuildRedirects.map(
+  ({ legacyPath }) => legacyPath,
+);
 
 function readMeta(path: string): DocsMeta {
   return JSON.parse(readFileSync(path, 'utf8')) as DocsMeta;
@@ -203,6 +281,33 @@ describe('zh-CN RTSA Build IA migration invariants', () => {
     }
   });
 
+  it('has a unique canonical URL for every approved Build page', () => {
+    const rootPages = readMeta(resolve(buildRoot, 'meta.json')).pages ?? [];
+    const canonicalUrls = rootPages.flatMap((page) => {
+      const category =
+        approvedCategoryMetadata[page as keyof typeof approvedCategoryMetadata];
+
+      if (category) {
+        return category.pages.map(
+          (child) => `/zh-CN/realtime-media/rtsa/build/${page}/${child}`,
+        );
+      }
+
+      return [`/zh-CN/realtime-media/rtsa/build/${page}`];
+    });
+
+    expect(canonicalUrls).toHaveLength(approvedNewMdxPaths.length);
+    expect(new Set(canonicalUrls).size).toBe(canonicalUrls.length);
+  });
+
+  it('keeps the product overview Build card on the canonical implementation guide', () => {
+    const overview = readFileSync(resolve(contentRoot, 'index.mdx'), 'utf8');
+
+    expect(overview).toContain(
+      '<Card title="构建功能" href="/zh-CN/realtime-media/rtsa/build/implement-transmission"',
+    );
+  });
+
   it('has no old RTSA Build path in RTSA MDX content', () => {
     const residualPaths = collectMdxFiles(contentRoot).flatMap((filePath) => {
       const source = readFileSync(filePath, 'utf8');
@@ -216,19 +321,35 @@ describe('zh-CN RTSA Build IA migration invariants', () => {
     expect(residualPaths).toEqual([]);
   });
 
-  it('keeps old RTSA Build paths on redirect sources but never on targets', () => {
+  it('keeps all old RTSA Build paths on 301 redirect sources and artifacts', () => {
     const redirects = JSON.parse(readFileSync(legacyRedirectsPath, 'utf8')) as {
       rules: LegacyRedirectRule[];
     };
-    const legacyPaths = new Set(redirects.rules.map((rule) => rule.legacyPath));
-    const missingLegacyPaths = oldRtsaBuildUrls.filter(
-      (legacyPath) => !legacyPaths.has(legacyPath),
-    );
-    const staleTargets = redirects.rules
-      .filter((rule) => hasOldBuildPrefix(rule.target))
-      .map((rule) => `${rule.legacyPath} -> ${rule.target}`);
+    const vercelRedirects = JSON.parse(
+      readFileSync(vercelRedirectsPath, 'utf8'),
+    ) as VercelRedirectRule[];
 
-    expect(missingLegacyPaths).toEqual([]);
-    expect(staleTargets).toEqual([]);
+    for (const { legacyPath, target } of oldRtsaBuildRedirects) {
+      expect(redirects.rules).toContainEqual(
+        expect.objectContaining({ legacyPath, target }),
+      );
+      expect(resolveStaticLegacySitemapRedirect(legacyPath)).toEqual({
+        preserveSearch: true,
+        redirectUrl: target,
+        statusCode: 301,
+      });
+      expect(vercelRedirects).toContainEqual(
+        expect.objectContaining({
+          destination: target,
+          source: legacyPath,
+          statusCode: 301,
+        }),
+      );
+    }
+
+    expect(oldRtsaBuildUrls).toHaveLength(15);
+    expect(
+      redirects.rules.filter((rule) => hasOldBuildPrefix(rule.target)),
+    ).toEqual([]);
   });
 });
