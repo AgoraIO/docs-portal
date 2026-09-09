@@ -222,14 +222,69 @@ describe('zh-CN product IA standard', () => {
     });
     expect(
       readMeta(resolve(speechToTextRoot, 'build/meta.json')),
-    ).toMatchObject({
-      title: '构建功能',
+    ).toEqual({
+      title: '构建实时转录翻译',
+      pages: [
+        'setup-and-access',
+        'start-and-manage',
+        'process-transcription-data',
+        'record-captions',
+        'receive-webhook',
+        'extend-and-optimize',
+      ],
     });
     expect(
       readMeta(resolve(speechToTextRoot, 'reference/meta.json')),
-    ).toMatchObject({
+    ).toEqual({
       title: '参考',
+      pages: [
+        '[服务端 API](/zh-CN/api-reference/api-ref/speech-to-text)',
+        '[响应状态码](/zh-CN/api-reference/speech-to-text/restful/api/response-code)',
+        'ncs-events',
+        '[支持的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)',
+        'third-party-services',
+      ],
     });
+  });
+
+  it('defines the Speech-to-Text build IA group pages and children', () => {
+    const buildRoot = resolve(speechToTextRoot, 'build');
+
+    expect(readMeta(resolve(buildRoot, 'setup-and-access/meta.json'))).toEqual({
+      title: '准备接入',
+      pages: ['enable-service', 'http-basic-auth'],
+    });
+    expect(readMeta(resolve(buildRoot, 'start-and-manage/meta.json'))).toEqual({
+      title: '启动和管理任务',
+      pages: [
+        'enable-from-client',
+        'transcribe-specified-hosts',
+        'translation',
+        'update-service',
+      ],
+    });
+    expect(
+      readMeta(resolve(buildRoot, 'process-transcription-data/meta.json')),
+    ).toEqual({
+      title: '处理转录翻译数据',
+      pages: ['how-to-use-protobuf', 'render-captions', 'encrypt-captions'],
+    });
+    expect(readMeta(resolve(buildRoot, 'extend-and-optimize/meta.json'))).toEqual(
+      {
+        title: '扩展与优化',
+        pages: ['optimize-quality', 'audio-modality'],
+      },
+    );
+
+    expect(
+      readMeta(resolve(speechToTextRoot, 'get-started/meta.json')),
+    ).toEqual({
+      title: '快速开始',
+      pages: ['quick-start'],
+    });
+    expect(
+      readMeta(resolve(speechToTextRoot, 'reference/meta.json')).pages,
+    ).toContain('ncs-events');
   });
 
   it('removes legacy speech-to-text top-level grouping folders', () => {
