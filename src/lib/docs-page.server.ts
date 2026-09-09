@@ -97,6 +97,17 @@ const ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES = [
 ] as const;
 const ZH_CN_RTM_TROUBLESHOOTING_REDIRECT =
   '/zh-CN/realtime-media/rtm/build/troubleshooting';
+const ZH_CN_RTSA_BUILD_IA_REDIRECT_PREFIXES = [
+  '/zh-CN/realtime-media/rtsa/build/project-preparation/',
+  '/zh-CN/realtime-media/rtsa/build/media-transmission/',
+  '/zh-CN/realtime-media/rtsa/build/data-communication/',
+  '/zh-CN/realtime-media/rtsa/build/production-environment/',
+] as const;
+const ZH_CN_RTSA_BUILD_IA_REDIRECTS = [
+  '/zh-CN/realtime-media/rtsa/build/implement-transmission',
+  '/zh-CN/realtime-media/rtsa/build/string-uid',
+  '/zh-CN/realtime-media/rtsa/build/interoperate-rtc',
+] as const;
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
@@ -533,7 +544,7 @@ export async function loadDocsPagePayload(
     slugSegments,
   );
   if (zhCnProductIaRedirect) {
-    const statusCode: 301 | undefined = isZhCnRtmBuildIaRedirect(
+    const statusCode: 301 | undefined = isZhCnBuildIaRedirect(
       zhCnProductIaRedirect,
     )
       ? 301
@@ -1431,6 +1442,9 @@ export function resolveLegacySitemapRedirect(
     ? {
         preserveSearch: rule.preserveSearch,
         redirectUrl: rule.target,
+        ...(isZhCnBuildIaRedirect(rule.target)
+          ? { statusCode: 301 as const }
+          : {}),
       }
     : null;
 }
@@ -1497,10 +1511,16 @@ function resolveRealtimeMediaRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
-function isZhCnRtmBuildIaRedirect(redirectUrl: string) {
+function isZhCnBuildIaRedirect(redirectUrl: string) {
   return (
     redirectUrl === ZH_CN_RTM_TROUBLESHOOTING_REDIRECT ||
     ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
+      redirectUrl.startsWith(prefix),
+    ) ||
+    ZH_CN_RTSA_BUILD_IA_REDIRECTS.includes(
+      redirectUrl as (typeof ZH_CN_RTSA_BUILD_IA_REDIRECTS)[number],
+    ) ||
+    ZH_CN_RTSA_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
       redirectUrl.startsWith(prefix),
     )
   );

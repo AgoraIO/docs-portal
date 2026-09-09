@@ -4,6 +4,7 @@ import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import * as docsRouting from '@/lib/docs-routing';
 
 const { docsPagePayloadOverride } = vi.hoisted(() => ({
   docsPagePayloadOverride: vi.fn(),
@@ -422,6 +423,62 @@ describe('docs route locale guards', () => {
       }
 
       throw new Error('expected moved PPT transcoding route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it.each([
+    [
+      'build/implement-core-features/implement-transmission',
+      '/zh-CN/realtime-media/rtsa/build/implement-transmission',
+    ],
+    [
+      'build/implement-core-features/audio-codec',
+      '/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec',
+    ],
+    [
+      'build/optimize-and-operate/interoperate-rtc',
+      '/zh-CN/realtime-media/rtsa/build/interoperate-rtc',
+    ],
+  ] as const)(
+    'redirects old RTSA Build page %s to its final canonical URL with 301',
+    async (legacyPath, canonicalUrl) => {
+      const isPublishedDocLocaleSpy = vi
+        .spyOn(docsRouting, 'isPublishedDocLocale')
+        .mockReturnValue(true);
+
+      try {
+        try {
+          await getLoader(DocPageRoute)({
+            location: {
+              hash: '#section',
+              pathname: `/zh-CN/realtime-media/rtsa/${legacyPath}`,
+              searchStr: '?from=legacy',
+            },
+            params: {
+              _splat: `rtsa/${legacyPath}`,
+              locale: 'zh-CN',
+              tab: 'realtime-media',
+            },
+          } as never);
+        } catch (error) {
+          expect(isRedirect(error)).toBe(true);
+          expect(error).toMatchObject({
+            options: {
+              href: `${canonicalUrl}?from=legacy#section`,
+              statusCode: 301,
+            },
+            status: 301,
+          });
+          return;
+        }
+
+        throw new Error(
+          'expected page route to forward a 301 redirect payload',
+        );
+      } finally {
+        isPublishedDocLocaleSpy.mockRestore();
+      }
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );

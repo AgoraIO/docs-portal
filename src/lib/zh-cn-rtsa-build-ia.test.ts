@@ -114,9 +114,9 @@ const directPages = [
 ] as const;
 
 const oldRtsaBuildPrefixes = [
-  '/build/setup-and-access/',
-  '/build/implement-core-features/',
-  '/build/optimize-and-operate/',
+  '/zh-CN/realtime-media/rtsa/build/setup-and-access/',
+  '/zh-CN/realtime-media/rtsa/build/implement-core-features/',
+  '/zh-CN/realtime-media/rtsa/build/optimize-and-operate/',
 ] as const;
 
 const oldRtsaBuildUrls = [
