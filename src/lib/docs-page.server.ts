@@ -653,7 +653,15 @@ export async function loadDocsPagePayload(
 
   if (!page) {
     const pageTree = getCanonicalPageTree(source, locale);
-    const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
+    const isZhCnRtsaBuildRoot =
+      locale === 'zh-CN' &&
+      tab === 'realtime-media' &&
+      slugSegments.length === 2 &&
+      slugSegments[0] === 'rtsa' &&
+      slugSegments[1] === 'build';
+    const fallbackUrl = isZhCnRtsaBuildRoot
+      ? '/zh-CN/realtime-media/rtsa/build/implement-transmission'
+      : getFirstChildPageUrl(pageTree, tab, slugSegments);
 
     if (fallbackUrl) {
       return {

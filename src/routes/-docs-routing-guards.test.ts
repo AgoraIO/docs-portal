@@ -276,6 +276,56 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
+  it.each([
+    {
+      hash: '',
+      searchStr: '',
+      suffix: '',
+    },
+    {
+      hash: '#section',
+      searchStr: '?from=card',
+      suffix: '?from=card#section',
+    },
+  ])(
+    'redirects the zh-CN RTSA Build root to implement-transmission',
+    async ({ hash, searchStr, suffix }) => {
+      const isPublishedDocLocaleSpy = vi
+        .spyOn(docsRouting, 'isPublishedDocLocale')
+        .mockReturnValue(true);
+
+      try {
+        try {
+          await getLoader(DocPageRoute)({
+            location: {
+              hash,
+              pathname: '/zh-CN/realtime-media/rtsa/build',
+              searchStr,
+            },
+            params: {
+              _splat: 'rtsa/build',
+              locale: 'zh-CN',
+              tab: 'realtime-media',
+            },
+          } as never);
+        } catch (error) {
+          expect(isRedirect(error)).toBe(true);
+          expect(error).toMatchObject({
+            options: {
+              href: `/zh-CN/realtime-media/rtsa/build/implement-transmission${suffix}`,
+            },
+          });
+          return;
+        }
+
+        throw new Error('expected RTSA Build root to redirect');
+      } finally {
+        isPublishedDocLocaleSpy.mockRestore();
+      }
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
   it('leaves static tab roots to the index route payload loader', async () => {
     vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
 
