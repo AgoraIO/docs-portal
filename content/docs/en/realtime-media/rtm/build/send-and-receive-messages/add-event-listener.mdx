@@ -1193,10 +1193,10 @@ rtmClient.OnTopicEvent += newTopicEvent =>
 // Add a storage event listener
 rtmClient.OnStorageEvent += newStorageEvent =>
 {
-    var channelName = newStorageEvent.channelName;
     var channelType = newStorageEvent.channelType;
+    var storageType = newStorageEvent.storageType;
     var eventType = newStorageEvent.eventType;
-    var category = newStorageEvent.target;
+    var target = newStorageEvent.target;
     var data = newStorageEvent.data;
     if (data != null)
     {
@@ -1220,7 +1220,7 @@ rtmClient.OnLockEvent += newLockEvent =>
 // Add a OnConnectionStateChange event listener
 rtmClient.OnConnectionStateChanged +=(channelName, state, reason ) =>
 {
-    Debug.Log(string.Format("OnConnectionStateChanged channelName {0}: state:{1} reason:{2}", channelName, state, reason);
+    Debug.Log(string.Format("OnConnectionStateChanged channelName {0}: state:{1} reason:{2}", channelName, state, reason));
     // your logic
 };
 

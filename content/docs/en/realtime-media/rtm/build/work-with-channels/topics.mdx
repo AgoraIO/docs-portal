@@ -2029,19 +2029,19 @@ When joining a topic, set sending attributes using `options`. These parameters a
 
 Use the following code to join a topic:
 
-```java
+```csharp
 string topic = "Chat";
 var options = new JoinTopicOptions();
 options.qos = RTM_MESSAGE_QOS.ORDERED;
 
-var (status,response) = await streamChannel.JoinTopicAsync(topic, options);
-if (status.Error)
+var result = await streamChannel.JoinTopicAsync(topic, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User {0} joined topic {1} successfully at channel {2}", response.UserId, response.Topic, response.ChannelName));
+    Debug.Log(string.Format("User {0} joined topic {1} successfully at channel {2}", result.Response.UserId, result.Response.Topic, result.Response.ChannelName));
 }
 ```
 
@@ -2053,15 +2053,15 @@ When you no longer need to send messages to a topic, or the number of topics cur
 
 Refer to the following code to leave a topic:
 
-```java
-var (status,response) = await streamChannel.LeaveTopicAsync("Motion");
-if (status.Error)
+```csharp
+var result = await streamChannel.LeaveTopicAsync("Motion");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Leave Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Leave Topic:{1} success! at Channel:{2}", result.Response.UserId, result.Response.Topic, result.Response.ChannelName));
 }
 ```
 
@@ -2074,7 +2074,7 @@ To subscribe to message publishers in a topic, specify the message publishers li
 
 Refer to the following code to subscribe to a topic:
 
-```java
+```csharp
 List<string> userList = new List<string>();
 userList.Add("Tony");
 userList.Add("Marry");
@@ -2084,14 +2084,14 @@ options.users = userList.ToArray();
 
 var topicName = "Motion";
 
-var (status,response) = await streamChannel.SubscribeTopicAsync(topicName, options);
+var result = await streamChannel.SubscribeTopicAsync(topicName, options);
 if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} failed. ErrorCode: {1}, due to {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("The user {0} successfully subscribes topic {1} at channel {2}", response.UserId, response.Topic, response.ChannelName));
+    Debug.Log(string.Format("The user {0} successfully subscribes topic {1} at channel {2}", result.Response.UserId, result.Response.Topic, result.Response.ChannelName));
 }
 ```
 
@@ -2107,20 +2107,20 @@ To stop receiving messages from a particular message publisher in a topic, or to
 
 Refer to the following code to unsubscribe:
 
-```java
+```csharp
 List<string> userList = new List<string>();
 userList.Add("Tony");
 userList.Add("Marry");
 
 var options = new TopicOptions();
-topicOptions.users = userList.ToArray();
+options.users = userList.ToArray();
 
 var topicName = "Motion";
 
-var (status,response) = await streamChannel.UnsubscribeTopicAsync(topicName, options);
+var result = await streamChannel.UnsubscribeTopicAsync(topicName, options);
 if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} failed. ErrorCode:{1}, due to {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} failed. ErrorCode:{1}, due to {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 ```
 

@@ -3279,14 +3279,14 @@ var metadataOptions = new MetadataOptions()
             };
 var lockName = "";
 
-var (status,response) = await rtmClient.GetStorage().SetChannelMetadataAsync("channel1", RTM_CHANNEL_TYPE.MESSAGE, metadata, metadataOptions, lockName);
-if (status.Error)
+var result = await rtmClient.GetStorage().SetChannelMetadataAsync("channel1", RTM_CHANNEL_TYPE.MESSAGE, metadata, metadataOptions, lockName);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Set Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Set Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -3297,19 +3297,19 @@ Signaling triggers an `OnStorageEvent` notification of event type `UPDATE` withi
 To retrieve all metadata items associated with a specific channel, call `GetChannelMetadataAsync` by specifying the channel name and the channel type. Refer to the following example:
 
 ```csharp
-var (status,respones) = await rtmClient.GetStorage().GetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE);
-if (status.Error)
+var result = await rtmClient.GetStorage().GetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Get Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
-    var data =  response.data;
+    Debug.Log(string.Format("Get Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
+    var data =  result.Response.Data;
     if (data.metadataItemsSize != 0)
     {
         Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
-        for ( int i =0; i < data.metadataItemsSize; i++)
+        for (int i = 0; i < (int)data.metadataItemsSize; i++)
         {
             Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
         }
@@ -3379,7 +3379,7 @@ var options = new MetadataOptions()
 
 var lockName = "";
 
-var (status, response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync(
+var result = await rtmClient.GetStorage().UpdateChannelMetadataAsync(
     "channel_name",
     RTM_CHANNEL_TYPE.MESSAGE,
     metadata,
@@ -3387,13 +3387,13 @@ var (status, response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync
     lockName
 );
 
-if (status.Error)
+if (result.Status.Error)
 {
-    Debug.LogError(string.Format("{0} failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.LogError(string.Format("{0} failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Update Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Update Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -3413,14 +3413,14 @@ metadata.metadataItems = new MetadataItem[] { metadataItem };
 metadata.metadataItemsSize = 1;
 var options = new MetadataOptions() { };
 
-var (status,response) = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, options, "");
-if (status.Error)
+var result = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, options, "");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -3434,14 +3434,14 @@ To delete the entire set of metadata for a channel, do not specify any metadata 
 var metadata = new RtmMetadata();
 var options = new MetadataOptions() { };
 
-var (status,response) = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, options,"");
-if (status.Error)
+var result = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, options, "");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -3504,14 +3504,14 @@ var options = new MetadataOptions()
 
 var lockName = "lockName";
 
-var (status,response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, data, options, lockName);
-if (status.Error)
+var result = await rtmClient.GetStorage().UpdateChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, options, lockName);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -3559,7 +3559,7 @@ var options = new MetadataOptions()
 
 var lockName = "lockName";
 
-var (status, response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync(
+var result = await rtmClient.GetStorage().UpdateChannelMetadataAsync(
     "channel_name",
     RTM_CHANNEL_TYPE.MESSAGE,
     metadata,
@@ -3567,13 +3567,13 @@ var (status, response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync
     lockName
 );
 
-if (status.Error)
+if (result.Status.Error)
 {
-    Debug.LogError(string.Format("{0} failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.LogError(string.Format("{0} failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Update Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Update Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 

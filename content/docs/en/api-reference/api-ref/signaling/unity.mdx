@@ -144,7 +144,7 @@ The `RtmEncryptionConfig` data type contains the following properties:
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
 | `encryptionMode` | `RTM_ENCRYPTION_MODE` | Optional | `NONE` | Encryption mode. See [`RTM_ENCRYPTION_MODE`](#rtm_encryption_mode). |
 | `encryptionKey` | string | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
-| `encryptionKdfSalt` | byte[32] | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
+| `encryptionSalt` | `byte[]` | Optional | `null` | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
 
 #### Basic usage
 
@@ -158,19 +158,19 @@ config.userId ="Tony";
 // set Presence Timeout
 config.presenceTimeout = 30;
 
-// Create a LogConfig instance.
-LogConfig logConfig = new LogConfig()
+// Create an RtmLogConfig instance.
+RtmLogConfig logConfig = new RtmLogConfig();
 // set log file path.
 logConfig.filePath = "./logfile/";
-// set agore.log file size.
+// set agora.log file size.
 logConfig.fileSizeInKB = 512;
 // set log report level.
-logConfig.level = LOG_LEVEL.INFO;
+logConfig.level = RTM_LOG_LEVEL.INFO;
 // initialize logconfig
 config.logConfig = logConfig;
 
 // Create an RtmProxyConfig instance.
-RtmProxyConfig proxyConfig = new RtmProxyConfig()
+RtmProxyConfig proxyConfig = new RtmProxyConfig();
 // set proxy type as HTTP.
 proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
 // set your Proxy Server address.
@@ -180,18 +180,19 @@ proxyConfig.port = 8080;
 // set your proxy account
 proxyConfig.account = "Tony";
 // set your proxy password
-proxyConfig.password = "my_password"
+proxyConfig.password = "my_password";
 // initialize proxyConfig
-config.proxy = proxyConfig;
+config.proxyConfig = proxyConfig;
 
 // Create an RtmEncryptionConfig instance.
-RtmEncryptionConfig encryptionConfig = new RtmEncryptionConfig()
+RtmEncryptionConfig encryptionConfig = new RtmEncryptionConfig();
 // set encryption Mode as RTM_ENCRYPTION_MODE_AES_128_GCM.
 encryptionConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_128_GCM;
 // set your cipherKey, you must keep your cipherKey safety.
 encryptionConfig.encryptionKey = "your_cerpherKey";
-// set your Salt.
-encryptionConfig.encryptionKdfSalt = "yourSalt";
+// Set your salt. It must be a 32-byte array.
+byte[] salt = new byte[32];
+encryptionConfig.encryptionSalt = salt;
 // when you set the config.encryptionConfig  parameter. the end-to-end encryption will be turned on automatically
 config.encryptionConfig = encryptionConfig;
 
@@ -235,15 +236,15 @@ You can add event listeners as follows:
 
 ```csharp
 // add message event listener
-rtmClient.OnMessageEvent += ( MessageEvent event ) =>
+rtmClient.OnMessageEvent += (MessageEvent @event) =>
 {
-    var channelName = event.channelName;
-    var channelType = event.channelType;
-    var topic = event.channelTopic;
-    var publisher = event.publiser;
-    var messageType = event.messageType;
-    var message = event.message;
-    var customType = event.customType;
+    var channelName = @event.channelName;
+    var channelType = @event.channelType;
+    var topic = @event.channelTopic;
+    var publisher = @event.publisher;
+    var messageType = @event.messageType;
+    var message = @event.message;
+    var customType = @event.customType;
     Debug.Log(string.Format("Received Message {0} from userId:{1} at channel:{2} with channel type of {3}. ", message, publisher , channelName, channelType));
     if (message != null)
     {
@@ -252,75 +253,75 @@ rtmClient.OnMessageEvent += ( MessageEvent event ) =>
 };
 
 // add presence event listener
-rtmClient.OnPresenceEvent += ( PresenceEvent event ) =>
+rtmClient.OnPresenceEvent += (PresenceEvent @event) =>
 {
-    var channelName = event.channelName;
-    var channelType = event.channelType;
-    var eventType = event.type;
-    var publisher = event.publiser;
-    var stateItems = event.stateItems;
-    var interval = event.interval;
-    var snapshot = event.snapshot;
+    var channelName = @event.channelName;
+    var channelType = @event.channelType;
+    var eventType = @event.type;
+    var publisher = @event.publisher;
+    var stateItems = @event.stateItems;
+    var interval = @event.interval;
+    var snapshot = @event.snapshot;
     Debug.Log(string.Format("Received presence Event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher , channelName, channelType));
-}
+};
 
 // add topic event listener
-rtmClient.OnTopicEvent += ( TopicEvent event ) =>
+rtmClient.OnTopicEvent += (TopicEvent @event) =>
 {
-    var channelName = event.channelName;
-    var eventType = event.type;
-    var publisher = event.publisher;
-    var topicInfos = event.topicInfos;
-    Debug.Log(string.Format("Received topic event {0} from userId:{1} at channel:{2} with channel type of {3}. ", eventType, publisher , channelName, channelType));
+    var channelName = @event.channelName;
+    var eventType = @event.type;
+    var publisher = @event.publisher;
+    var topicInfos = @event.topicInfos;
+    Debug.Log(string.Format("Received topic event {0} from userId:{1} at channel:{2}. ", eventType, publisher, channelName));
     if (topicInfos != null)
     {
         // your logic
     }
-}
+};
 
 // add storage event listener
-rtmClient.OnStorageEvent += ( StorageEvent event ) =>
+rtmClient.OnStorageEvent += (StorageEvent @event) =>
 {
-    var channelName = event.channelName;
-    var channelType = event.channelType;
-    var eventType = event.eventType;
-    var category = event.target;
-    var data = event.data;
-    Debug.Log(string.Format("Received storage event {0} at channel:{1} with channel type of {2}. ", category , channelName, channelType));
+    var channelType = @event.channelType;
+    var storageType = @event.storageType;
+    var eventType = @event.eventType;
+    var target = @event.target;
+    var data = @event.data;
+    Debug.Log(string.Format("Received storage event {0} for {1} with channel type of {2}. ", eventType, target, channelType));
     if (data != null)
     {
         // your logic
     }
-}
+};
 
 // add lock event listener
-rtmClient.OnLockEvent += ( LockEvent event ) =>
+rtmClient.OnLockEvent += (LockEvent @event) =>
 {
-    var channelName = event.channelName;
-    var channelType = event.channelType;
-    var eventType = event.type;
-    var LockDetail = event.lockDetailList;
-    Debug.Log(string.Format("Received lock event {0} at channel:{2} with channel type of {3}. ", eventType, publisher , channelName, channelType));
+    var channelName = @event.channelName;
+    var channelType = @event.channelType;
+    var eventType = @event.eventType;
+    var LockDetail = @event.lockDetailList;
+    Debug.Log(string.Format("Received lock event {0} at channel:{1} with channel type of {2}. ", eventType, channelName, channelType));
     if( LockDetail != null )
     {
         // your logic
     }
-}
+};
 
 // add OnConnectionStateChanged event listener
 rtmClient.OnConnectionStateChanged += ( string channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason ) =>
 {
-    Debug.Log(string.Format("OnConnectionStateChanged channelName {0}: state:{1} reason:{2}", channelName, state, reason);
-}
+    Debug.Log(string.Format("OnConnectionStateChanged channelName {0}: state:{1} reason:{2}", channelName, state, reason));
+};
 
 // add OnTokenPrivilegeWillExpire event listener
 rtmClient.OnTokenPrivilegeWillExpire += ( string channelName ) =>
 {
     Debug.Log(string.Format("OnTokenPrivilegeWillExpire channelName {0}", channelName));
-}
+};
 ```
 
-Message event. `MessageEvent` contains the following properties:
+Message @event. `MessageEvent` contains the following properties:
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -334,7 +335,7 @@ Message event. `MessageEvent` contains the following properties:
 
 ##### PresenceEvent
 
-User presence event. `PresenceEvent` contains the following properties:
+User presence @event. `PresenceEvent` contains the following properties:
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -364,7 +365,7 @@ User presence event. `PresenceEvent` contains the following properties:
 
 ##### TopicEvent
 
-Topic event.`TopicEvent` contains the following properties:
+Topic @event.`TopicEvent` contains the following properties:
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -389,7 +390,7 @@ Topic event.`TopicEvent` contains the following properties:
 
 ##### StorageEvent
 
-Storage event.`StorageEvent` contains the following properties:
+Storage @event.`StorageEvent` contains the following properties:
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -401,7 +402,7 @@ Storage event.`StorageEvent` contains the following properties:
 
 ##### LockEvent
 
-Lock event. `LockEvent` contains the following properties:
+Lock @event. `LockEvent` contains the following properties:
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
@@ -416,7 +417,7 @@ The `LockDetail` data type contains the following properties:
 | :------------------ | :--------------------: | :------------------------------------- |
 | `lockName` | string | Lock name. |
 | `owner` | string | The ID of the user who has a lock. |
-| `ttl` | uint | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` event. |
+| `ttl` | uint | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` @event. |
 
 #### Remove event listeners
 
@@ -448,17 +449,17 @@ private void RemoveEventsListener()
 private void OnMessageEvent( MessageEvent Event)
 {
     // your logic
- };
+}
 
 private void OnPresenceEvent( PresenceEvent Event)
 {
-    // your logic
-};
+    // your logic
+}
 
 private void OnTopicEvent( TopicEvent Event)
 {
-    // your logic
-};
+    // your logic
+}
 
 ...
 ```
@@ -488,14 +489,14 @@ RtmResult<LoginResult> LoginAsync(string token);
 #### Basic usage
 
 ```csharp
-var ( status,response ) = await rtmClient.LoginAsync(token);
-if (status.Error)
+var result = await rtmClient.LoginAsync(token);
+if (result.Status.Error)
 {
-   Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation , status.ErrorCode , status.Reason));
+   Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation , result.Status.ErrorCode , result.Status.Reason));
 }
 else
 {
-   Debug.Log("Login Successfully")
+   Debug.Log("Login Successfully");
 }
 ```
 
@@ -536,7 +537,7 @@ RtmResult<LogoutResult> LogoutAsync();
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.LogoutAsync();
+var result = await rtmClient.LogoutAsync();
 ```
 
 #### Return value
@@ -569,7 +570,7 @@ RtmStatus Dispose();
 #### Basic usage
 
 ```csharp
-var status = Dispose();
+var status = rtmClient.Dispose();
 ```
 
 #### Return value
@@ -602,7 +603,7 @@ Signaling client instance
 
 Signaling provides event notification capabilities for messages and states. By listening for callbacks, you can receive messages and events within subscribed channels. For information on how to add and set event listeners, see [Event Listeners](#event-listeners).
 
-By calling the `SubscribeTopicAsync` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `REMOTE_JOIN` type of the `OnPresenceEvent` event. See [Event Listeners](#event-listeners).
+By calling the `SubscribeTopicAsync` method, the client can subscribe to a message channel and start receiving messages and event notifications within the channel. After successfully calling this method, users who subscribe to the channel and enable the presence event listener can receive a `REMOTE_JOIN` type of the `OnPresenceEvent` @event. See [Event Listeners](#event-listeners).
 
 :::info[Information]
 This method only applies to the message channel.
@@ -636,14 +637,14 @@ RtmResult<SubscribeResult> SubscribeAsync(string channelName, SubscribeOptions o
 var options = new SubscribeOptions();
 options.withMessage = true;
 options.withPresence = true;
-var (status,response) = await rtmClient.SubscribeAsync("Chat_room", options);
-if (status.Error)
+var result = await rtmClient.SubscribeAsync("Chat_room", options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode:{1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode:{1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Subscribe channel success! at Channel:{0}", response.ChannelName));
+    Debug.Log(string.Format("Subscribe channel success! at Channel:{0}", result.Response.ChannelName));
 }
 ```
 
@@ -698,10 +699,10 @@ RtmResult<UnsubscribeResult> UnsubscribeAsync(string channelName);
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.UnsubscribeAsync(channelName);
-if (status.Error)
+var result = await rtmClient.UnsubscribeAsync(channelName);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 ```
 
@@ -773,9 +774,9 @@ Stream channel instance
 After successfully creating a stream channel, you can call the `JoinTopicAsync` method to join the stream channel. Once you join the channel, you can implement channel-related functions. At this point, users who subscribe to the channel and add event listeners can receive the following event notifications:
 
 - For the local user:
-   - The `SNAPSHOT` type of the `OnPresenceEvent` event.
-   - The `SNAPSHOT` type of the `OnTopicEvent` event.
-- For remote users: The `REMOTE_JOIN` type of the `OnPresenceEvent` event.
+   - The `SNAPSHOT` type of the `OnPresenceEvent` @event.
+   - The `SNAPSHOT` type of the `OnTopicEvent` @event.
+- For remote users: The `REMOTE_JOIN` type of the `OnPresenceEvent` @event.
 
 :::info[Information]
 This method only applies to the stream channel.
@@ -805,14 +806,14 @@ The `JoinChannelOptions` data type contains the following properties:
 #### Basic usage
 
 ```csharp
-var (status,response) = await streamChannel.JoinAsync(options);
-if (status.Error)
+var result = await streamChannel.JoinAsync(options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
@@ -866,14 +867,14 @@ RtmResult<LeaveResult> LeaveAsync();
 #### Basic usage
 
 ```csharp
-var (status,response) = await streamChannel.LeaveAsync();
-if (status.Error)
+var result = await streamChannel.LeaveAsync();
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode:{1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode:{1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
@@ -911,7 +912,7 @@ The `LeaveTopicResult` data type contains the following properties:
 If you no longer need a channel, you can call the `ReleaseLockAsync` method to destroy the corresponding stream channel instance and release resources. Calling the `ReleaseLockAsync` method does not destroy the stream channel, and it can be re-joined later by calling `CreateAgoraRtmClient` and `JoinTopicAsync` again.
 
 :::info[Information]
-This method only applies to the stream channel. If you don't call `LeaveTopicAsync` to leave the channel before directly calling `ReleaseLockAsync` to destroy the stream channel instance, the SDK automatically calls the `LeaveTopicAsync` and triggers the corresponding event.
+This method only applies to the stream channel. If you don't call `LeaveTopicAsync` to leave the channel before directly calling `ReleaseLockAsync` to destroy the stream channel instance, the SDK automatically calls the `LeaveTopicAsync` and triggers the corresponding @event.
 :::
 
 #### Method
@@ -1002,14 +1003,14 @@ The `JoinTopicOptions` data type contains the following properties:
 var options = new JoinTopicOptions();
 options.qos = RTM_MESSAGE_QOS.ORDERED;
 
-var (status,response) = await streamChannel.JoinTopicAsync(topic, options);
-if (status.Error)
+var result = await streamChannel.JoinTopicAsync(topic, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", result.Response.UserId, result.Response.Topic, result.Response.ChannelName));
 }
 ```
 
@@ -1084,10 +1085,10 @@ var message = "Hello World";
 var topic = "Motion";
 var options = new TopicMessageOptions();
 options.customType = "PlainText";
-var (status,response) = await streamChannel.PublishTopicMessageAsync(topic, message, options);
-if (status.Error)
+var result = await streamChannel.PublishTopicMessageAsync(topic, message, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 
 ```
@@ -1134,14 +1135,14 @@ RtmResult<LeaveTopicResult> LeaveTopicAsync(string topic);
 #### Basic usage
 
 ```csharp
-var (status,response) = await streamChannel.LeaveTopicAsync("Motion");
-if (status.Error)
+var result = await streamChannel.LeaveTopicAsync("Motion");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", result.Response.UserId, result.Response.Topic, result.Response.ChannelName));
 }
 
 ```
@@ -1214,14 +1215,14 @@ userList.Add("Marry");
 var options = new TopicOptions();
 options.users = userList.ToArray();
 
-var (status,response) = await streamChannel.SubscribeTopicAsync(subtopic, options);
-if (status.Error)
+var result = await streamChannel.SubscribeTopicAsync(subtopic, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", response.UserId, response.Topic, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join Topic:{1} success! at Channel:{2}", result.Response.UserId, result.Response.Topic, result.Response.ChannelName));
 }
 ```
 
@@ -1288,12 +1289,12 @@ userList.Add("Tony");
 userList.Add("Marry");
 
 var options = new TopicOptions();
-topicOptions.users = userList.ToArray();
+options.users = userList.ToArray();
 
-var (status,response) = await streamChannel.UnsubscribeTopicAsync(subtopic, options);
-if (status.Error)
+var result = await streamChannel.UnsubscribeTopicAsync(subtopic, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 ```
 
@@ -1376,10 +1377,10 @@ var channelName = "my_channel";
 var options = new PublishOptions();
 options.customType = "PlainText";
 
-var (status,response) = await rtmClient.PublishAsync(channelName, message, options);
-if (status.Error)
+var result = await rtmClient.PublishAsync(channelName, message, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
@@ -1469,18 +1470,18 @@ The `PresenceOptions` data type contains the following properties:
 
 #### Basic usage
 ```csharp
-var options = new PresenceOptions();
-options.withState = true;
+var options = new GetOnlineUsersOptions();
+options.includeState = true;
 
-var (status,response) = await rtmClient.GetPresence().GetOnlineUsersAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, options);
+var result = await rtmClient.GetPresence().GetOnlineUsersAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, options);
 if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("You have got {0} users information ", response.TotalOccupancy));
-    if (response.NextPage != null)
+    Debug.Log(string.Format("You have got {0} users information ", result.Response.TotalOccupancy));
+    if (result.Response.NextPage != null)
     {
         Debug.Log("you have the next page information waiting for read!");
     }
@@ -1550,19 +1551,19 @@ RtmResult<GetUserChannelsResult> rtmClient.GetPresence().GetUserChannelsAsync(st
 #### Basic usage
 
 ```csharp
-var (status,respones) = await rtmClient.GetPresence().GetUserChannelsAsync("Tony");
-if (status.Error)
+var result = await rtmClient.GetPresence().GetUserChannelsAsync("Tony");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User Tony is now in {0} channels ", response.Channels.Length));
-    if (response.Channels.Length > 0)
+    Debug.Log(string.Format("User Tony is now in {0} channels ", result.Response.Channels.Length));
+    if (result.Response.Channels.Length > 0)
     {
-        for (int i = 0; i < response.Channels.Length; i++)
+        for (int i = 0; i < result.Response.Channels.Length; i++)
         {
-            var channelInfo = response.Channels[i];
+            var channelInfo = result.Response.Channels[i];
             string infor = string.Format("Tony is in channelName:{0}, channelType:{1}", channelInfo.channelName, channelInfo.channelType);
             Debug.Log(infor);
         }
@@ -1643,10 +1644,10 @@ RtmResult<SetStateResult> rtmClient.GetPresence().SetStateAsync(
 ```csharp
 var stateItems = new StateItem[1];
 stateItems[0] = new StateItem("state", "Online");
-var (status,response) = await rtmClient.GetPresence().SetStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, stateItems);
-if (status.Error)
+var result = await rtmClient.GetPresence().SetStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, stateItems);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
@@ -1701,14 +1702,14 @@ RtmResult<GetStateResult> rtmClient.GetPresence().GetStateAsync(
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.GetPresence().GetStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, userId);
-if (status.Error)
+var result = await rtmClient.GetPresence().GetStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, userId);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0}, have stateCount:{1} states",response.State.userId, response.State.states.Length));
+    Debug.Log(string.Format("User:{0}, have stateCount:{1} states",result.Response.State.userId, result.Response.State.states.Length));
 }
 ```
 
@@ -1781,10 +1782,10 @@ RtmResult<RemoveStateResult> rtmClient.GetPresence().RemoveStateAsync(
 ```csharp
 var channelName = "Chat_room";
 string[] keys = new string[] { "mode" };
-var (status,respones) = await rtmClient.GetPresence().RemoveStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, keys);
-if (status.Error)
+var result = await rtmClient.GetPresence().RemoveStateAsync(channelName, RTM_CHANNEL_TYPE.MESSAGE, keys);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
@@ -1913,14 +1914,14 @@ var metadataOptions = new MetadataOptions()
             };
 var lockName = "lockName";
 
-var (status,respones) = await rtmClient.GetStorage().SetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, metadataOptions, lockName);
-if (status.Error)
+var result = await rtmClient.GetStorage().SetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, metadataOptions, lockName);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Set Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Set Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -1976,19 +1977,19 @@ RtmResult<GetChannelMetadataResult> rtmClient.GetStorage().GetChannelMetadataAsy
 #### Basic usage
 
 ```csharp
-var (status,respones) = await rtmClient.GetStorage().GetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE);
-if (status.Error)
+var result = await rtmClient.GetStorage().GetChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Get Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
-    var data =  response.data;
+    Debug.Log(string.Format("Get Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
+    var data =  result.Response.Data;
     if (data.metadataItemsSize != 0)
     {
         Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
-        for ( int i =0; i < data.metadataItemsSize; i++)
+        for (int i = 0; i < (int)data.metadataItemsSize; i++)
         {
             Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
         }
@@ -2122,14 +2123,14 @@ metadata.metadataItems = new MetadataItem[] { metadataItem };
 metadata.metadataItemsSize = 1;
 var options = new MetadataOptions() { };
 
-var (status,response) = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, oOptions,"");
-if (status.Error)
+var result = await rtmClient.GetStorage().RemoveChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, options, "");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -2242,14 +2243,14 @@ var options = new MetadataOptions()
 
 var lockName = "lockName";
 
-var (status,response) = await rtmClient.GetStorage().UpdateChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, data, options, lockName);
-if (status.Error)
+var result = await rtmClient.GetStorage().UpdateChannelMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, metadata, options, lockName);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Update Channel :{0} metadata success! Channel Type is :{1}! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -2369,14 +2370,14 @@ var options = new MetadataOptions()
                 recordTs = true
             };
 
-var (status,response) = await rtmClient.GetStorage().SetUserMetadataAsync("Tony",  rtmMetadata, options);
-if (status.Error)
+var result = await rtmClient.GetStorage().SetUserMetadataAsync("Tony", metadata, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Set user :{0} metadata success! ", response.UserId));
+    Debug.Log(string.Format("Set user :{0} metadata success! ", result.Response.UserId));
 }
 ```
 
@@ -2435,11 +2436,11 @@ if (result.Status.Error)
 else
 {
     Debug.Log(string.Format("Get User :{0} metadata success!  ", result.Response.UserId));
-    var data =  result.Response.data;
+    var data =  result.Response.Data;
     if (data.metadataItemsSize != 0)
     {
         Debug.Log(string.Format("Channel Metadata Major Revision is :{0} ! ", data.majorRevision));
-        for ( int i =0; i < data.metadataItemsSize; i++)
+        for (int i = 0; i < (int)data.metadataItemsSize; i++)
         {
             Debug.Log(string.Format("The {0}'th iterms Key is:{1}, Value is {2} ! ", i, data.metadataItems[i].key, data.metadataItems[i].value));
         }
@@ -2512,7 +2513,7 @@ After successfully removing user metadata, users who subscribe to the user and e
 You can call the `RemoveUserMetadataAsync` method as follows:
 
 ```csharp
-RtmResult<RemoveUserMetadataResult>rtmClient.GetStorage().RemoveUserMetadataAsync(string userId, RtmMetadata data, MetadataOptions options);
+RtmResult<RemoveUserMetadataResult> rtmClient.GetStorage().RemoveUserMetadataAsync(string userId, RtmMetadata data, MetadataOptions options);
 ```
 
 | Parameters | Type | Required | Default | Description |
@@ -2558,14 +2559,14 @@ var metadataItem = new MetadataItem()
             };
 var options = new MetadataOptions() {};
 
-var (status,response) = await rtmClient.GetStorage().RemoveUserMetadataAsync("channel_name", RTM_CHANNEL_TYPE.MESSAGE, options);
-if (status.Error)
+var result = await rtmClient.GetStorage().RemoveUserMetadataAsync("Tony", metadata, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Remove Channel :{0} metadata success! Channel Type is :{1}! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Remove User :{0} metadata success! ", result.Response.UserId));
 }
 ```
 
@@ -2667,14 +2668,14 @@ var options = new MetadataOptions()
                 recordTs = true
             };
 
-var (status,response) = await rtmClient.GetStorage().UpdateUserMetadataAsync("Tony", data, metadataOptions);
-if (status.Error)
+var result = await rtmClient.GetStorage().UpdateUserMetadataAsync("Tony", metadata, options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Update User :{0} metadata success! ", response.UserId));
+    Debug.Log(string.Format("Update User :{0} metadata success! ", result.Response.UserId));
 }
 ```
 
@@ -2738,19 +2739,19 @@ RtmResult<SetLockResult> rtmClient.GetLock().SetLockAsync(
 | `channelName` | string | Required | - | Channel name. |
 | `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | string | Required | - | Lock name. |
-| `ttl` | Number | Required | - | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` event. |
+| `ttl` | Number | Required | - | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` @event. |
 
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.GetLock().SetLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1", 30);
-if (status.Error)
+var result = await rtmClient.GetLock().SetLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1", 30);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode {1}, because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Set Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+    Debug.Log(string.Format("Set Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", result.Response.ChannelName, result.Response.ChannelType, result.Response.LockName));
 }
 ```
 #### Return value
@@ -2785,7 +2786,7 @@ The `SetLockResult` data type contains the following properties:
 
 #### Description
 
-After successfully configuring a lock, you can call the `AcquireLockAsync` method on the client to acquire the right to own the lock. When you acquire the lock, other users in the channel receives the `ACQUIRED` type of the `OnLockEvent` event. For details, see [Event Listeners](#event-listeners).
+After successfully configuring a lock, you can call the `AcquireLockAsync` method on the client to acquire the right to own the lock. When you acquire the lock, other users in the channel receives the `ACQUIRED` type of the `OnLockEvent` @event. For details, see [Event Listeners](#event-listeners).
 
 #### Method
 
@@ -2810,14 +2811,14 @@ RtmResult<AcquireLockResult> rtmClient.GetLock().AcquireLockAsync(
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.GetLock().AcquireLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1", false);
-if (status.Error)
+var result = await rtmClient.GetLock().AcquireLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1", false);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Acquire Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+    Debug.Log(string.Format("Acquire Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", result.Response.ChannelName, result.Response.ChannelType, result.Response.LockName));
 }
 ```
 
@@ -2853,7 +2854,7 @@ The `AcquireLockResult` data type contains the following properties:
 
 #### Description
 
-When a user no longer needs to own a lock, the user can call the `ReleaseLockAsync` method on the client side to release the lock. After successful release the lock, other users in the channel receives the `RELEASED` type of the `OnLockEvent` event. See [Event Listeners](#event-listeners).
+When a user no longer needs to own a lock, the user can call the `ReleaseLockAsync` method on the client side to release the lock. After successful release the lock, other users in the channel receives the `RELEASED` type of the `OnLockEvent` @event. See [Event Listeners](#event-listeners).
 
 At this time, if other users want to acquire the lock, they can call the `AcquireLockAsync` method on the client side to compete. New users acquiring locks have the same contention priority as the users who set the `retry` property to automatically retry to acquire locks.
 
@@ -2878,14 +2879,14 @@ RtmResult<ReleaseLockResult> rtmClient.GetLock().ReleaseLockAsync(
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.GetLock().ReleaseLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1");
-if (status.Error)
+var result = await rtmClient.GetLock().ReleaseLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Release Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+    Debug.Log(string.Format("Release Lock at Channel:{0} with Channel Type {1} success! Lock name is {2}", result.Response.ChannelName, result.Response.ChannelType, result.Response.LockName));
 }
 ```
 
@@ -2921,7 +2922,7 @@ The `ReleaseLockResult` data type contains the following properties:
 
 #### Description
 
-When the lock is occupied, to ensure that your business is not affected, you may need to revoke the lock and give other users a chance to obtain it. Revoke the occupied lock by calling `RevokeLockAsync`. When the lock is revoked, all users in the channel receives the `RELEASED` type of the `OnLockEvent` event. See [Event Listeners](#event-listeners).
+When the lock is occupied, to ensure that your business is not affected, you may need to revoke the lock and give other users a chance to obtain it. Revoke the occupied lock by calling `RevokeLockAsync`. When the lock is revoked, all users in the channel receives the `RELEASED` type of the `OnLockEvent` @event. See [Event Listeners](#event-listeners).
 
 At this time, if other users want to acquire the lock, they can call the `AcquireLockAsync` method on the client side to compete. New users acquiring locks have the same contention priority as the users who set the `retry` property to automatically retry to acquire locks.
 
@@ -2948,14 +2949,14 @@ RtmResult<RevokeLockResult> rtmClient.GetLock().RevokeLockAsync(
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.GetLock().RevokeLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1","Tony");
-if (status.Error)
+var result = await rtmClient.GetLock().RevokeLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1","Tony");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("RevokeLock at Channel:{0} with Channel Type {1} success! Lock name is {2}", response.ChannelName, response.ChannelType, response.LockName));
+    Debug.Log(string.Format("RevokeLock at Channel:{0} with Channel Type {1} success! Lock name is {2}", result.Response.ChannelName, result.Response.ChannelType, result.Response.LockName));
 }
 ```
 
@@ -3012,14 +3013,14 @@ RtmResult<GetLocksResult> rtmClient.GetLock().GetLocksAsync(
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.GetLock().GetLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE);
-if (status.Error)
+var result = await rtmClient.GetLock().GetLocksAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Get Lock at Channel:{0} with Channel Type {1} success! ", response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Get Lock at Channel:{0} with Channel Type {1} success! ", result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -3057,7 +3058,7 @@ The `LockDetail` data type contains the following properties:
 | :------------------ | :--------------------: | :------------------------------------- |
 | `LockName` | string | Lock name. |
 | `owner` | string | The ID of the user who has a lock. |
-| `ttl` | number | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` event. |
+| `ttl` | number | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `OnLockEvent` event receives the `RELEASED` @event. |
 
 ### RemoveLockAsync
 
@@ -3086,14 +3087,14 @@ RtmResult<RemoveLockResult> rtmClient.GetLock().RemoveLockAsync(
 #### Basic usage
 
 ```csharp
-var (status,response) = await rtmClient.GetLock().RemoveLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1");
-if (status.Error)
+var result = await rtmClient.GetLock().RemoveLockAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, "lock1");
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, The error code is {1}, because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("Remove Lock{0} at Channel:{1} with Channel Type {2} success! ",response.LocklName, response.ChannelName, response.ChannelType));
+    Debug.Log(string.Format("Remove Lock{0} at Channel:{1} with Channel Type {2} success! ",result.Response.LockName, result.Response.ChannelName, result.Response.ChannelType));
 }
 ```
 
@@ -3245,7 +3246,7 @@ Storage event type.
 
 | Value | Description |
 | :----------: | ---------------------------------------------------------- |
-| `SNAPSHOT` | `1`: When a user subscribes to channel metadata or user etadata for the first time, or joins a channel, the local user receives notifications of this type of event. |
+| `SNAPSHOT` | `1`: When a user subscribes to channel metadata or user etadata for the first time, or joins a channel, the local user receives notifications of this type of @event. |
 | `SET` | `2`: Occurs when calling `SetChannelMetadataAsync` or `SetUserMetadataAsync`. Caution: This event only occurs in incremental data update mode. |
 | `UPDATE` | `3`: Occurs when calling methods to set, update, or delete the channel metadata or user metadata. |
 | `REMOVE` | `4`: Occurs when calling `RemoveChannelMetadataAsync` or `RemoveUserMetadataAsync`. Caution: This event only occurs in incremental data update mode. |
@@ -3256,8 +3257,8 @@ Storage type.
 
 | Value | Description |
 | :----------: | ---------------------------------------------------------- |
-| `USER` | `1`: User metadata event. |
-| `CHANNEL` | `2`: Channel metadata event. |
+| `USER` | `1`: User metadata @event. |
+| `CHANNEL` | `2`: Channel metadata @event. |
 
 #### RTM_TOPIC_EVENT_TYPE
 
