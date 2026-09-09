@@ -121,11 +121,80 @@ content/docs/zh-CN/realtime-media/rtsa/build/
 
 ## 导航元数据
 
-`build/meta.json` 应表达已确认的直接页面和分组。分类分组使用仓库支持的 structured group 语法；分组可以引用新物理目录下的页面。旧的 `setup-and-access/meta.json`、`implement-core-features/meta.json` 和 `optimize-and-operate/meta.json` 不再保留。
+`build/meta.json` 和四个分类目录的 `meta.json` 使用以下确切结构。根导航中的目录顺序决定分类顺序；三个直接入口页面不放入下拉分组。
 
-项目准备、媒体传输、数据通信和生产环境配置是分组；三个直接入口页面位于 Build 根导航中，不放入下拉分组。
+`build/meta.json`：
 
-项目准备是第一阶段，应保持可见或默认展开。当前页面所属分组必须能正常自动展开，直接入口页面不应被折叠分类隐藏。
+```json
+{
+  "title": "开发与集成",
+  "pages": [
+    "project-preparation",
+    "implement-transmission",
+    "string-uid",
+    "media-transmission",
+    "data-communication",
+    "interoperate-rtc",
+    "production-environment"
+  ]
+}
+```
+
+`project-preparation/meta.json`：
+
+```json
+{
+  "title": "项目准备",
+  "collapsible": false,
+  "defaultOpen": true,
+  "pages": ["enable-service", "license"]
+}
+```
+
+`media-transmission/meta.json`：
+
+```json
+{
+  "title": "媒体传输",
+  "collapsible": true,
+  "defaultOpen": false,
+  "pages": [
+    "audio-codec",
+    "stream-state",
+    "bitrate-adaption",
+    "key-frame",
+    "multi-channel",
+    "encryption"
+  ]
+}
+```
+
+`data-communication/meta.json`：
+
+```json
+{
+  "title": "数据通信",
+  "collapsible": true,
+  "defaultOpen": false,
+  "pages": [
+    "data-stream",
+    "send-message-through-rdt-channel"
+  ]
+}
+```
+
+`production-environment/meta.json`：
+
+```json
+{
+  "title": "生产环境配置",
+  "collapsible": true,
+  "defaultOpen": false,
+  "pages": ["cloud-proxy", "region-limit"]
+}
+```
+
+“项目准备”不可折叠并默认展开。其他三个分类默认折叠；用户进入其中页面时，侧边栏必须根据当前页面自动展开对应分类。这个行为由页面树和侧边栏实现验证，不能只依赖 `defaultOpen` 的静态值。
 
 ## 链接迁移
 
@@ -166,43 +235,65 @@ content/docs/zh-CN/realtime-media/rtsa/build/
 
 站内 MDX 不得残留旧路径。重定向配置的匹配来源可以保留旧路径，但重定向目标必须直接指向新的最终 canonical URL，不得指向旧路径或中间路径。
 
+### 相对资源和文档依赖
+
+物理移动前后必须扫描所有被移动 MDX 中的相对依赖，包括：
+
+- 相对图片和其他媒体路径；
+- 相对 Markdown/MDX 链接；
+- 相对 MDX import；
+- include、snippet 或其他文件引用；
+- 相对代码示例路径。
+
+当前 RTSA Build 页面主要使用绝对资源 URL，但迁移不能以此作为假设。每个相对依赖都必须在新目录下重新解析；无效依赖必须在迁移完成前修复或明确记录为阻塞项。迁移后运行仓库现有的严格文档链接审计。
+
 ## 重定向策略
 
 所有旧页面 URL 都必须 301 到对应的新 URL。重定向目标不应形成链式跳转。
 
+本次需要同时更新两层 redirect source：
+
+1. 将 RTSA 新旧页面路径加入 `src/lib/legacy-sitemap/redirects.json`。该文件是 legacy redirect generator 的输入源。
+2. 将 RTSA 新旧路径纳入应用层 301 判定。当前应用层只对 RTM Build IA redirect 目标使用 301，RTSA 迁移不能假设新增 map 会自动获得 301。实现时应抽象通用的 Build IA 301 判定，或明确增加 RTSA Build 前缀判断。
+3. 运行 `bun run legacy-redirects:generate`，生成 `src/lib/legacy-sitemap/static-redirects.json`、`vercel-legacy-redirects.json` 和 `vercel.json`。
+4. 运行 `bun run legacy-redirects:check`，确认生成文件与 source 同步。
+5. 检查 `vercel.json` 和 `vercel-legacy-redirects.json` 中的 RTSA 规则均为 `statusCode: 301`，且目标是最终 canonical URL。
+
+`vercel.json`、`vercel-legacy-redirects.json` 和 `src/lib/legacy-sitemap/static-redirects.json` 都是生成文件，不手动编辑。应用层测试和部署层生成结果必须分别验证 301，不能用其中一层代替另一层。
+
 主要映射包括：
 
 ```text
-/build/setup-and-access/enable-service
-  -> /build/project-preparation/enable-service
-/build/setup-and-access/license
-  -> /build/project-preparation/license
-/build/implement-core-features/implement-transmission
-  -> /build/implement-transmission
-/build/implement-core-features/string-uid
-  -> /build/string-uid
-/build/optimize-and-operate/interoperate-rtc
-  -> /build/interoperate-rtc
-/build/implement-core-features/audio-codec
-  -> /build/media-transmission/audio-codec
-/build/implement-core-features/stream-state
-  -> /build/media-transmission/stream-state
-/build/implement-core-features/bitrate-adaption
-  -> /build/media-transmission/bitrate-adaption
-/build/implement-core-features/key-frame
-  -> /build/media-transmission/key-frame
-/build/implement-core-features/multi-channel
-  -> /build/media-transmission/multi-channel
-/build/implement-core-features/encryption
-  -> /build/media-transmission/encryption
-/build/implement-core-features/data-stream
-  -> /build/data-communication/data-stream
-/build/implement-core-features/send-message-through-rdt-channel
-  -> /build/data-communication/send-message-through-rdt-channel
-/build/setup-and-access/cloud-proxy
-  -> /build/production-environment/cloud-proxy
-/build/setup-and-access/region-limit
-  -> /build/production-environment/region-limit
+/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service
+  -> /zh-CN/realtime-media/rtsa/build/project-preparation/enable-service
+/zh-CN/realtime-media/rtsa/build/setup-and-access/license
+  -> /zh-CN/realtime-media/rtsa/build/project-preparation/license
+/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission
+  -> /zh-CN/realtime-media/rtsa/build/implement-transmission
+/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid
+  -> /zh-CN/realtime-media/rtsa/build/string-uid
+/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc
+  -> /zh-CN/realtime-media/rtsa/build/interoperate-rtc
+/zh-CN/realtime-media/rtsa/build/implement-core-features/audio-codec
+  -> /zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec
+/zh-CN/realtime-media/rtsa/build/implement-core-features/stream-state
+  -> /zh-CN/realtime-media/rtsa/build/media-transmission/stream-state
+/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption
+  -> /zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption
+/zh-CN/realtime-media/rtsa/build/implement-core-features/key-frame
+  -> /zh-CN/realtime-media/rtsa/build/media-transmission/key-frame
+/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel
+  -> /zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel
+/zh-CN/realtime-media/rtsa/build/implement-core-features/encryption
+  -> /zh-CN/realtime-media/rtsa/build/media-transmission/encryption
+/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream
+  -> /zh-CN/realtime-media/rtsa/build/data-communication/data-stream
+/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel
+  -> /zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel
+/zh-CN/realtime-media/rtsa/build/setup-and-access/cloud-proxy
+  -> /zh-CN/realtime-media/rtsa/build/production-environment/cloud-proxy
+/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit
+  -> /zh-CN/realtime-media/rtsa/build/production-environment/region-limit
 ```
 
 实际配置要同时审查现有 `src/lib/zh-cn-product-ia-redirects.ts` 中的 RTSA 历史 alias。历史 alias 必须直接指向新 URL。不要让 alias 先跳到旧 canonical URL，再跳到新 URL。
@@ -235,6 +326,17 @@ Build 根路径的最终行为固定为：
 
 RTSA 概览页的“构建功能”入口指向同一 canonical URL。项目准备页面仍通过侧边栏访问。
 
+该行为不能依赖 `meta.json` 中第一个目录或第一个 descendant page。当前通用逻辑会在没有 index 页面时选择第一个真实页面；迁移后第一个目录是 `project-preparation`，因此必须在通用无 index 跳转之前增加 RTSA Build 根路径的显式规则，直接返回 `implement-transmission`。
+
+根路径跳转必须保留 query string 和 hash，例如：
+
+```text
+/zh-CN/realtime-media/rtsa/build?from=card#section
+  -> /zh-CN/realtime-media/rtsa/build/implement-transmission?from=card#section
+```
+
+旧页面 URL 的 301 要求不适用于这个 Build 根路径规则；根路径沿用应用层 tab/folder root redirect 的状态码约定，但必须验证最终目标和参数保留行为。
+
 ## 验收和测试
 
 迁移完成后，至少验证以下内容：
@@ -254,6 +356,10 @@ RTSA 概览页的“构建功能”入口指向同一 canonical URL。项目准�
 - 重定向目标不再指向旧路径；
 - 旧 canonical URL 返回 301；
 - 历史 alias 直接指向最终新 URL；
+- `src/lib/legacy-sitemap/redirects.json` 中存在 RTSA source 到最终 target；
+- 应用层 RTSA Build redirect payload 的 `statusCode` 为 301；
+- `vercel.json` 和 `vercel-legacy-redirects.json` 中的 RTSA 规则为 301；
+- `bun run legacy-redirects:check` 通过；
 - 带 fragment 的链接保留 fragment；
 - 站内链接、产品概览入口、下载页、运行示例和 Release Notes 全部使用新 canonical URL。
 
@@ -263,6 +369,8 @@ RTSA 概览页的“构建功能”入口指向同一 canonical URL。项目准�
 - 面包屑和 previous/next 导航使用新页面关系；
 - 搜索结果仍可找到所有页面；
 - Sitemap、LLM 输出和静态路由包含新 URL；
+- `/zh-CN/realtime-media/rtsa/build` 跳转到 `implement-transmission`，并保留 query string 和 hash；
+- 移动后的 MDX 相对资源、相对链接、import 和 include 依赖全部可解析；
 - `bun run types:check` 通过；
 - `bun run test` 通过；
 - `bun run build` 通过。
