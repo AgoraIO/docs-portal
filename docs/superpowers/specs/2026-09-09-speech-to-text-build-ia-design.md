@@ -135,7 +135,7 @@ build/process-transcription-data/record-captions
   -> build/record-captions
 
 build/monitor-events/receive-webhook
-  -> build/receive-webhook-events
+  -> build/receive-webhook
 
 build/extend-and-optimize/enable-from-client
   -> build/start-and-manage/enable-from-client
