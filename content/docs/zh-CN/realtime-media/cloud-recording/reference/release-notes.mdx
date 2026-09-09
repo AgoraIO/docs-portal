@@ -219,7 +219,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 该版本进行了如下改进：
 
-- [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#73) 回调新增错误码及错误信息，用于提示页面录制异常退出原因，用户可以根据该信息采取相应措施。
+- [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#73) 回调新增错误码及错误信息，用于提示页面录制异常退出原因，用户可以根据该信息采取相应措施。
 - [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) 方法新增 `webRecordingConfig` 字段，用于在页面录制过程中更新相关字段。
 
 ## 2021.07.30
@@ -228,7 +228,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 #### 云端截图回调
 
-该版本增加了 [`recorder_snapshot_file`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#45) 回调，用于截图成功的通知，且返回截图文件名称。
+该版本增加了 [`recorder_snapshot_file`](/zh-CN/realtime-media/cloud-recording/build/handle-events/uploading#45) 回调，用于截图成功的通知，且返回截图文件名称。
 
 #### Amazon S3 云存储区域新增
 
@@ -283,8 +283,8 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 该版本 API 变更如下：
 
 - [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法新增 `region` 字段。
-- [`web_recorder_started`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#70) 回调中新增 `recorderStartTime` 字段。
-- 新增 [`web_recorder_reload`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#73) 回调。
+- [`web_recorder_started`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#70) 回调中新增 `recorderStartTime` 字段。
+- 新增 [`web_recorder_reload`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#73) 回调。
 
 ## 2021.04.29
 
@@ -312,7 +312,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 该版本 API 变更如下：
 
 - [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的 `decryptionMode` 字段新增枚举值 `5` 和 `6`。
-- [`uploaded`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#31) 和 [`backuped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#32) 回调中新增 `fileList` 字段。
+- [`uploaded`](/zh-CN/realtime-media/cloud-recording/build/handle-events/uploading#31) 和 [`backuped`](/zh-CN/realtime-media/cloud-recording/build/handle-events/uploading#32) 回调中新增 `fileList` 字段。
 
 ## 2021.03.31
 
@@ -338,7 +338,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 - [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的 `transcodingConfig` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
 - [`updateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/update-layout) 方法中的 `clientRequest` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
-- [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71) 回调中新增 `fileList` 字段。
+- [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#71) 回调中新增 `fileList` 字段。
 
 ## 2021.02.05
 
@@ -381,9 +381,9 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
  方法中的 `extensionServiceConfig` 新增 `"web_recorder_service"` 服务。
 
 - 新增以下回调，用于报告页面录制状态：
-  - [`web_recorder_started`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#70)
-  - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71)
-  - [`web_recorder_capability_limit`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#72)
+  - [`web_recorder_started`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#70)
+  - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#71)
+  - [`web_recorder_capability_limit`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#72)
 
 ## 2020.09.16
 
@@ -417,7 +417,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 #### 高可用的回调
 
-该版本增加了 [`session_failover`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service#12) 回调，在启用高可用机制后触发，返回启用高可用机制后的新录制用户 ID。
+该版本增加了 [`session_failover`](/zh-CN/realtime-media/cloud-recording/build/handle-events/service#12) 回调，在启用高可用机制后触发，返回启用高可用机制后的新录制用户 ID。
 
 ### API 变更
 
@@ -449,7 +449,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 - [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 方法中新增了 `resourceExpiredHour` 字段，用于设置云端录制 RESTful API 的调用时效。
 
-- RESTful API 回调通知中新增事件 [`session_exit`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service#11)，提供云端录制服务的退出状态。
+- RESTful API 回调通知中新增事件 [`session_exit`](/zh-CN/realtime-media/cloud-recording/build/handle-events/service#11)，提供云端录制服务的退出状态。
 
 ## 2019.11.15
 

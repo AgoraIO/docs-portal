@@ -253,7 +253,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/cloud-recording/get-started/enable-service':
     '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service',
   'realtime-media/recording/cloud-recording/get-started/quick-start-nodejs':
-    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/quick-start-nodejs',
+    '/zh-CN/realtime-media/cloud-recording/get-started/quick-start-nodejs',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/billing':
     '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/payment':
@@ -295,17 +295,17 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/cloud-recording/user-guides/web-mode/set-webpage-recording':
     '/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording',
   'realtime-media/recording/cloud-recording/webhook/enable-ncs':
-    '/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs',
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/enable-ncs',
   'realtime-media/recording/cloud-recording/webhook/ncs-events':
     '/zh-CN/realtime-media/cloud-recording/reference/ncs-events',
   'realtime-media/recording/cloud-recording/webhook/service':
-    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service',
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/service',
   'realtime-media/recording/cloud-recording/webhook/status':
-    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status',
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/status',
   'realtime-media/recording/cloud-recording/webhook/uploading':
-    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading',
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/uploading',
   'realtime-media/recording/cloud-recording/webhook/webpage':
-    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage',
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage',
   'realtime-media/recording/local-server-recording/best-practice/restore-files':
     '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files',
   'realtime-media/recording/local-server-recording/get-started/enable-service':

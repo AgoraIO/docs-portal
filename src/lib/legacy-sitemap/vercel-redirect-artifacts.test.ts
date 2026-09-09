@@ -176,6 +176,23 @@ const RTM_OLD_CATEGORY_SEGMENTS = [
   'security-and-auth',
 ];
 
+const CLOUD_RECORDING_DEPLOYMENT_REDIRECTS = {
+  '/zh-CN/realtime-media/cloud-recording/build/implement-core-features':
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events',
+  '/zh-CN/realtime-media/cloud-recording/build/monitor-events':
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events',
+  '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service':
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/service',
+  '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status':
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/status',
+  '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading':
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/uploading',
+  '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage':
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage',
+  '/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs':
+    '/zh-CN/realtime-media/cloud-recording/build/handle-events/enable-ncs',
+} as const;
+
 describe('legacy redirect Vercel artifacts', () => {
   const legacyRules = redirectsConfig.rules as LegacySitemapRedirectRule[];
   const vercelConfig = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
@@ -318,6 +335,23 @@ describe('legacy redirect Vercel artifacts', () => {
       for (const segment of RTM_OLD_CATEGORY_SEGMENTS) {
         expect(rule.destination).not.toContain(segment);
       }
+    }
+  });
+
+  it('redirects Cloud Recording IA pages and category roots with deployment 301s', () => {
+    const cloudRecordingRedirects = (vercelConfig.redirects ?? []).filter(
+      (rule) =>
+        rule.source.startsWith('/zh-CN/realtime-media/cloud-recording/build/'),
+    );
+
+    for (const [source, destination] of Object.entries(
+      CLOUD_RECORDING_DEPLOYMENT_REDIRECTS,
+    )) {
+      expect(cloudRecordingRedirects).toContainEqual({
+        destination,
+        source,
+        statusCode: 301,
+      });
     }
   });
 

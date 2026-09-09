@@ -41,6 +41,21 @@
 4. 管理录制文件
 5. 优化与运维
 
+对应的 `build/meta.json` 为：
+
+```json
+{
+  "title": "开发与集成",
+  "pages": [
+    "setup-and-access",
+    "recording-modes",
+    "handle-events",
+    "manage-recorded-files",
+    "optimize-and-operate"
+  ]
+}
+```
+
 ### 1. 开通与鉴权
 
 该阶段解决使用服务前的控制台配置、项目凭据和 RESTful API 鉴权。
@@ -79,6 +94,21 @@
 
 使用“处理录制事件”而不是“监控录制过程”，因为这些页面不仅描述状态监控，还包括文件生成、上传完成、页面能力限制和服务错误等回调。
 
+对应的 `handle-events/meta.json` 为：
+
+```json
+{
+  "title": "处理录制事件",
+  "pages": [
+    "enable-ncs",
+    "service",
+    "status",
+    "uploading",
+    "webpage"
+  ]
+}
+```
+
 ### 4. 管理录制文件
 
 保留“管理录制文件”分类，调整页面为“先了解产物，再消费和加工”的顺序：
@@ -99,15 +129,34 @@
 
 ## 导航和路径策略
 
-导航展示名称应采用上述生命周期分类。实现时将 `implement-core-features` 的分类 slug 迁移为 `handle-events`，并将 `monitor-events/enable-ncs` 移动为 `handle-events/enable-ncs`。其余分类保留现有 slug，以减少无必要的 URL 变化。
+导航展示名称应采用上述生命周期分类。实际文件迁移和导航配置如下：
 
-如果物理移动页面导致 URL 变化，必须为下列旧路径提供重定向：
+- `implement-core-features/service.mdx` → `handle-events/service.mdx`
+- `implement-core-features/status.mdx` → `handle-events/status.mdx`
+- `implement-core-features/uploading.mdx` → `handle-events/uploading.mdx`
+- `implement-core-features/webpage.mdx` → `handle-events/webpage.mdx`
+- `monitor-events/enable-ncs.mdx` → `handle-events/enable-ncs.mdx`
+- 删除旧的 `implement-core-features/meta.json` 和 `monitor-events/meta.json`。
+- 新增 `handle-events/meta.json`，并按 Webhook 入口、服务、录制、上传、页面录制排序。
+- `setup-and-access/meta.json` 的标题改为“开通与鉴权”。
+- `recording-modes/meta.json` 的标题改为“启动录制”，并将页面录制置于云端截图之前。
+- `build/meta.json` 移除旧分类和旧的 `monitor-events/enable-ncs` 直接页面项，按五个生命周期阶段排序。
+- `manage-recorded-files/meta.json` 调整为录制文件介绍、在线播放、同步回放、转换录制文件格式。
+
+其余分类保留现有 slug，以减少无必要的 URL 变化。
+
+如果物理移动页面导致 URL 变化，必须为下列 5 个旧页面路径提供 301 重定向：
 
 - `/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service`
 - `/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status`
 - `/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading`
 - `/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage`
 - `/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs`
+
+还必须为下列 2 个旧分类根路径提供 301 重定向，且两个路径都跳转到新的 `handle-events` 分类根路径：
+
+- `/zh-CN/realtime-media/cloud-recording/build/implement-core-features`
+- `/zh-CN/realtime-media/cloud-recording/build/monitor-events`
 
 所有站内引用应更新到新路径。至少需要检查产品首页、`reference/ncs-events.mdx`、快速开始、截图页、同步回放页、优化与运维页面以及发布说明。
 
@@ -118,5 +167,9 @@
 - “处理录制事件”下首先显示“接收 Webhook 事件”，随后按服务、录制、上传、页面录制顺序显示事件参考页。
 - “启动录制”下包含全部录制模式和云端截图页面，且每个录制模式的主流程页面位于高级配置页面之前。
 - “管理录制文件”和“优化与运维”符合本设计中的页面顺序。
-- 站内链接全部指向有效页面，旧公开路径访问时不会产生 404。
-- Fumadocs 生成、类型检查和相关导航测试通过。
+- 5 个旧页面路径均返回 301，并跳转到对应的新页面。
+- 2 个旧分类根路径均返回 301，并跳转到 `/zh-CN/realtime-media/cloud-recording/build/handle-events`。
+- 新分类根路径和所有新页面均能正常生成。
+- `reference/ncs-events.mdx` 中的事件链接全部指向 `handle-events/*`。
+- 其他受影响的站内链接全部指向有效的新路径，不再引用旧分类路径。
+- `bun run legacy-redirects:check`、`bun run types:check` 和相关 Vitest 测试通过。

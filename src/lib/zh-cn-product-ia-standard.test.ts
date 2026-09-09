@@ -19,6 +19,10 @@ const speechToTextRoot = resolve(
 );
 const contentRoot = resolve(process.cwd(), 'content/docs/zh-CN');
 const rtmRoot = resolve(contentRoot, 'realtime-media/rtm');
+const cloudRecordingRoot = resolve(
+  contentRoot,
+  'realtime-media/cloud-recording',
+);
 const standardFirstLevelPages = ['index', 'get-started', 'build', 'reference'];
 const standardFirstLevelPageSet = new Set(standardFirstLevelPages);
 const allowedProductFamilyEntries: Record<string, Set<string>> = {
@@ -357,6 +361,52 @@ describe('zh-CN product IA standard', () => {
       'network-and-private-deployment',
       'troubleshooting',
     ]);
+  });
+
+  it('orders Cloud Recording build IA groups by the recording lifecycle', () => {
+    const buildRoot = resolve(cloudRecordingRoot, 'build');
+
+    expect(readMeta(resolve(buildRoot, 'meta.json'))).toMatchObject({
+      pages: [
+        'setup-and-access',
+        'recording-modes',
+        'handle-events',
+        'manage-recorded-files',
+        'optimize-and-operate',
+      ],
+    });
+    expect(readMeta(resolve(buildRoot, 'setup-and-access/meta.json'))).toEqual({
+      title: '开通与鉴权',
+      pages: ['enable-service', 'http-basic-auth'],
+    });
+    expect(readMeta(resolve(buildRoot, 'recording-modes/meta.json'))).toEqual({
+      title: '启动录制',
+      pages: [
+        'individual-mode',
+        'mix-mode',
+        'web-mode/set-webpage-recording',
+        'snapshot',
+      ],
+    });
+    expect(readMeta(resolve(buildRoot, 'handle-events/meta.json'))).toEqual({
+      title: '处理录制事件',
+      pages: ['enable-ncs', 'service', 'status', 'uploading', 'webpage'],
+    });
+    expect(
+      readMeta(resolve(buildRoot, 'manage-recorded-files/meta.json')),
+    ).toEqual({
+      title: '管理录制文件',
+      pages: [
+        'introduce-recorded-files',
+        'play-online',
+        'playback',
+        'convert-format',
+      ],
+    });
+    expect(existsSync(resolve(buildRoot, 'implement-core-features'))).toBe(
+      false,
+    );
+    expect(existsSync(resolve(buildRoot, 'monitor-events'))).toBe(false);
   });
 
   it('keeps the RTM application setup anchor IDs stable', () => {
