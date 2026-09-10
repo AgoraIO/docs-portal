@@ -1589,7 +1589,7 @@ This section explains how to set up and customize various features when you init
 To specify a geographical area for Agora SDRTN® connections, refer to the following code:
 
 ```csharp
-rtmConfig.areaCode = Agora.Rtm.RTM_AREA_CODE.NA;
+config.areaCode = Agora.Rtm.RTM_AREA_CODE.NA;
 ```
 
 ### Proxy configuration
@@ -1620,7 +1620,7 @@ config.userId = "your_userId";
 try
 {
     rtmClient = RtmClient.CreateAgoraRtmClient(config);
-    Debug.Log("RTM Client Initialize Sucessfull");
+    Debug.Log("RTM Client Initialize Successful");
 }
 catch (RTMException e)
 {
@@ -1642,13 +1642,13 @@ using Agora.Rtm;
 
 private IRtmClient rtmClient;
 
-LogConfig logConfig = new LogConfig()
+RtmLogConfig logConfig = new RtmLogConfig();
 // Set log file path.
 logConfig.filePath = "./logfile/";
 // Set log file size.
 logConfig.fileSizeInKB = 512;
 // Set log report level.
-logConfig.level = LOG_LEVEL.INFO;
+logConfig.level = RTM_LOG_LEVEL.INFO;
 
 RtmConfig config = new RtmConfig();
 // Initialize logConfig.
@@ -1658,7 +1658,7 @@ config.userId = "your_userId";
 try
 {
     rtmClient = RtmClient.CreateAgoraRtmClient(config);
-    Debug.Log("RTM Client Initialize Sucessfull");
+    Debug.Log("RTM Client Initialize Successful");
 }
 catch (RTMException e)
 {

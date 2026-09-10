@@ -2214,14 +2214,14 @@ Call the `JoinAsync` method on the `IStreamChannel` instance with appropriate op
 ```csharp
 var options = new JoinChannelOptions();
 options.token = "your_token";
-var (status,response) = await streamChannel.JoinAsync(options);
-if (status.Error)
+var result = await streamChannel.JoinAsync(options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
@@ -2232,14 +2232,14 @@ var options = new JoinChannelOptions();
 options.token = "your_token";
 options.withLock = true;
 
-var (status,response) = await streamChannel.JoinAsync(options);
-if (status.Error)
+var result = await streamChannel.JoinAsync(options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed,The error code is {1},because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed,The error code is {1},because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
@@ -2265,10 +2265,10 @@ Refer to the following sample code for sending messages:
     string topic = "Motion"; // Topic to which the message is sent
     var options = new TopicMessageOptions(); // Options for sending the message
     options.customType = "PlainTxt"; // Set the custom message type to "PlainTxt"
-    var (status, response) = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
-    if (status.Error)
+    var result = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
+    if (result.Status.Error)
     {
-        Debug.Log(string.Format("{0} is failed, ErrorCode {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason)); // Log error information if message send fails
+        Debug.Log(string.Format("{0} is failed, ErrorCode {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason)); // Log error information if message send fails
     }
     ```
 
@@ -2280,10 +2280,10 @@ Refer to the following sample code for sending messages:
     string topic = "Motion"; // Topic to which the message is sent
     var options = new TopicMessageOptions(); // Options for sending the message
     options.customType = "ByteArray"; // Set the custom message type to "ByteArray"
-    var (status, response) = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
-    if (status.Error)
+    var result = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
+    if (result.Status.Error)
     {
-        Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason)); // Log error information if message send fails
+        Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason)); // Log error information if message send fails
     }
     ```
 
@@ -2294,14 +2294,14 @@ In Signaling, a user may register as a message publisher for up to 8 topics conc
 To leave a channel, call the `LeaveAsync` method on the `IStreamChannel` instance:
 
 ```csharp
-var (status,response) = await streamChannel.LeaveAsync();
-if (status.Error)
+var result = await streamChannel.LeaveAsync();
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
