@@ -93,7 +93,7 @@ const approvedCategoryMetadata = {
     pages: ['enable-service', 'license'],
   },
   'media-transmission': {
-    title: '媒体流传输',
+    title: '管理媒体流',
     collapsible: true,
     defaultOpen: false,
     pages: [
@@ -106,7 +106,7 @@ const approvedCategoryMetadata = {
     ],
   },
   'data-communication': {
-    title: '数据传输',
+    title: '传输业务数据',
     collapsible: true,
     defaultOpen: false,
     pages: ['data-stream', 'send-message-through-rdt-channel'],
