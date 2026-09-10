@@ -84,7 +84,7 @@ Agora recommends you run this project on a physical mobile device, as some simul
 
 2. [Generate a temporary token](/en/introduction/account) in Agora Console.
 
-3. In your browser, navigate to the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update `App ID`, `Channel`, and `Token` with the values for your temporary token, then click **Join**.
+3. In your browser, navigate to the [Agora web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) and update `App ID`, `Channel`, and `Token` with the values for your temporary token, then click **Join**.
 
 4. In Unity Editor, double-click **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Demo**.
 
