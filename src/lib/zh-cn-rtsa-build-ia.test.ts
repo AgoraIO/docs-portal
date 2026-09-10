@@ -93,7 +93,7 @@ const approvedCategoryMetadata = {
     pages: ['enable-service', 'license'],
   },
   'media-transmission': {
-    title: '媒体传输',
+    title: '媒体流传输',
     collapsible: true,
     defaultOpen: false,
     pages: [
@@ -106,13 +106,13 @@ const approvedCategoryMetadata = {
     ],
   },
   'data-communication': {
-    title: '数据通信',
+    title: '数据传输',
     collapsible: true,
     defaultOpen: false,
     pages: ['data-stream', 'send-message-through-rdt-channel'],
   },
   'production-environment': {
-    title: '生产环境配置',
+    title: '网络与区域访问',
     collapsible: true,
     defaultOpen: false,
     pages: ['cloud-proxy', 'region-limit'],
