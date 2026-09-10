@@ -143,5 +143,5 @@ If your primary-domain request fails, use a retry strategy with:
 | 3 | required | The number of concurrent tasks in a project is less than 50 |
 | 4 | required | The `region` is set to the geographical region of your media stream source, and the code is lowercase |
 | 5 | optional | If calling the RESTful API fails, use a back-off strategy and inspect the response status |
-| 6 | optional | If RTMP or SRT streaming fails, ensure that the stream key has not expired and that OBS frame loss is normal |
+| 6 | optional | If RTMP, SRT, or WHIP streaming fails, ensure that the stream key has not expired and that OBS frame loss is normal |
 | 7 | optional | If the streaming or REST service is unavailable due to a network failure, retry with the current primary domain first, then the backup domain |

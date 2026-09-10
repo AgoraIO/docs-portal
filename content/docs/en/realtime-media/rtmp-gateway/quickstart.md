@@ -1,6 +1,6 @@
 ---
 title: "Quickstart"
-description: "Obtain the server domain name and streaming key required to push RTMP or SRT streams into Agora channels."
+description: "Obtain the server domain name and streaming key required to push RTMP, SRT, or WHIP streams into Agora channels."
 ---
 
 
@@ -156,7 +156,7 @@ Taking OBS as an example, configure it as follows:
 
 ## Next steps
 
-After completing the configuration, you can push RTMP or SRT streams to Agora channels, and these streams will be published to the corresponding channels by the host.
+After completing the configuration, you can push RTMP, SRT, or WHIP streams to Agora channels, and these streams will be published to the corresponding channels by the host.
 
 By default, after Media Gateway receives the pushed stream, it will not transcode it and will directly publish it to the Agora channel. If you want to transcode the streams, use stream configuration templates to implement related functions.
 

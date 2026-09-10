@@ -5,6 +5,14 @@ description: "Past releases and notable updates for Media Gateway."
 
 This page provides the release notes for Media Gateway.
 
+## 2026.9.10
+
+### New features
+
+- **WHIP streaming protocol support**
+
+  Media Gateway now accepts the WHIP protocol for pushing streams, in addition to RTMP and SRT. WHIP is more resilient to weak network conditions than RTMP and has built-in load balancing. Supported codecs are H.264, H.265, and AV1 for video, and OPUS for audio. For configuration details, see [WHIP streaming](whip-streaming.md).
+
 ## 2026.8.12
 
 ### New features
