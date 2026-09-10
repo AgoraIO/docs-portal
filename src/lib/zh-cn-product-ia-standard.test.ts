@@ -154,6 +154,15 @@ function pageExistsAtRelativePath(productRoot: string, page: string) {
   return candidates.some((candidate) => existsSync(candidate));
 }
 
+function pageEntryExistsAtRelativePath(productRoot: string, page: string) {
+  const relativePath = resolve(contentRoot, productRoot, stripPagePrefix(page));
+
+  return (
+    pageExistsAtRelativePath(productRoot, page) ||
+    existsSync(resolve(relativePath, 'meta.json'))
+  );
+}
+
 function parseZhCnDocsUrl(url: string) {
   const [pathname] = url.split(/[?#]/, 1);
   const parts = pathname.replace(/^\/zh-CN\//, '').split('/');
@@ -220,16 +229,89 @@ describe('zh-CN product IA standard', () => {
       pages: ['quick-start'],
       title: '快速开始',
     });
-    expect(
-      readMeta(resolve(speechToTextRoot, 'build/meta.json')),
-    ).toMatchObject({
-      title: '构建功能',
+    expect(readMeta(resolve(speechToTextRoot, 'build/meta.json'))).toEqual({
+      title: '构建实时转录翻译',
+      pages: [
+        'setup-and-access',
+        'start-and-manage',
+        'process-transcription-data',
+        'record-captions',
+        'receive-webhook',
+        'extend-and-optimize',
+      ],
     });
-    expect(
-      readMeta(resolve(speechToTextRoot, 'reference/meta.json')),
-    ).toMatchObject({
+    expect(readMeta(resolve(speechToTextRoot, 'reference/meta.json'))).toEqual({
       title: '参考',
+      pages: [
+        '[服务端 API](/zh-CN/api-reference/api-ref/speech-to-text)',
+        '[响应状态码](/zh-CN/api-reference/speech-to-text/restful/api/response-code)',
+        'ncs-events',
+        '[支持的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)',
+        'third-party-services',
+      ],
     });
+  });
+
+  it('defines the Speech-to-Text build IA group pages and children', () => {
+    const buildRoot = resolve(speechToTextRoot, 'build');
+
+    expect(readMeta(resolve(buildRoot, 'setup-and-access/meta.json'))).toEqual({
+      title: '准备接入',
+      pages: ['enable-service', 'http-basic-auth'],
+    });
+    expect(readMeta(resolve(buildRoot, 'start-and-manage/meta.json'))).toEqual({
+      title: '启动和管理任务',
+      pages: [
+        'enable-from-client',
+        'transcribe-specified-hosts',
+        'translation',
+        'update-service',
+      ],
+    });
+    expect(
+      readMeta(resolve(buildRoot, 'process-transcription-data/meta.json')),
+    ).toEqual({
+      title: '处理转录翻译数据',
+      pages: ['how-to-use-protobuf', 'render-captions', 'encrypt-captions'],
+    });
+    expect(
+      readMeta(resolve(buildRoot, 'extend-and-optimize/meta.json')),
+    ).toEqual({
+      title: '扩展与优化',
+      pages: ['optimize-quality', 'audio-modality'],
+    });
+  });
+
+  it('maps every final Speech-to-Text Build entry to metadata or content', () => {
+    const buildRoot = resolve(speechToTextRoot, 'build');
+    const buildPages = readMeta(resolve(buildRoot, 'meta.json')).pages ?? [];
+
+    for (const page of buildPages) {
+      expect(
+        pageEntryExistsAtRelativePath(
+          'realtime-media/speech-to-text/build',
+          page,
+        ),
+      ).toBe(true);
+
+      const groupMetaPath = resolve(
+        buildRoot,
+        stripPagePrefix(page),
+        'meta.json',
+      );
+      if (!existsSync(groupMetaPath)) {
+        continue;
+      }
+
+      for (const childPage of readMeta(groupMetaPath).pages ?? []) {
+        expect(
+          pageEntryExistsAtRelativePath(
+            `realtime-media/speech-to-text/build/${stripPagePrefix(page)}`,
+            childPage,
+          ),
+        ).toBe(true);
+      }
+    }
   });
 
   it('removes legacy speech-to-text top-level grouping folders', () => {
@@ -244,15 +326,52 @@ describe('zh-CN product IA standard', () => {
     }
   });
 
+  it('removes old Speech-to-Text Build wrapper pages', () => {
+    for (const legacyPage of [
+      'build/start-transcribing-and-translating/enable-service',
+      'build/start-transcribing-and-translating/http-basic-auth',
+      'build/start-transcribing-and-translating/transcribe-specified-hosts',
+      'build/start-transcribing-and-translating/translation',
+      'build/start-transcribing-and-translating/update-service',
+      'build/process-transcription-data/record-captions',
+      'build/monitor-events/receive-webhook',
+      'build/extend-and-optimize/enable-from-client',
+    ]) {
+      expect(
+        pageExistsAtRelativePath('realtime-media/speech-to-text', legacyPage),
+      ).toBe(false);
+    }
+  });
+
   it.each([
     [['overview', 'product-overview'], '/zh-CN/realtime-media/speech-to-text'],
     [
       ['get-started', 'enable-service'],
-      '/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service',
+      '/zh-CN/realtime-media/speech-to-text/build/setup-and-access/enable-service',
+    ],
+    [
+      ['user-guides', 'http-basic-auth'],
+      '/zh-CN/realtime-media/speech-to-text/build/setup-and-access/http-basic-auth',
+    ],
+    [
+      ['user-guides', 'transcribe-specified-hosts'],
+      '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/transcribe-specified-hosts',
+    ],
+    [
+      ['user-guides', 'translation'],
+      '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/translation',
+    ],
+    [
+      ['user-guides', 'update-service'],
+      '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/update-service',
     ],
     [
       ['user-guides', 'record-captions'],
-      '/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/record-captions',
+      '/zh-CN/realtime-media/speech-to-text/build/record-captions',
+    ],
+    [
+      ['best-practices', 'enable-from-client'],
+      '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/enable-from-client',
     ],
     [
       ['best-practices', 'optimize-quality'],
@@ -265,6 +384,10 @@ describe('zh-CN product IA standard', () => {
     [
       ['webhook', 'ncs-events'],
       '/zh-CN/realtime-media/speech-to-text/reference/ncs-events',
+    ],
+    [
+      ['webhook', 'receive-webhook'],
+      '/zh-CN/realtime-media/speech-to-text/build/receive-webhook',
     ],
   ] as const)(
     'redirects old speech-to-text path %j',
@@ -457,7 +580,6 @@ describe('zh-CN product IA standard', () => {
     const buildResult = await loadDocsPagePayload('zh-CN', 'realtime-media', [
       'speech-to-text',
       'build',
-      'process-transcription-data',
       'record-captions',
     ]);
     const referenceResult = await loadDocsPagePayload(

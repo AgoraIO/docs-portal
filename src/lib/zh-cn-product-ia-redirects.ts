@@ -1,5 +1,21 @@
 const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording': '/zh-CN/realtime-media/cloud-recording',
+  'realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service':
+    '/zh-CN/realtime-media/speech-to-text/build/setup-and-access/enable-service',
+  'realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth':
+    '/zh-CN/realtime-media/speech-to-text/build/setup-and-access/http-basic-auth',
+  'realtime-media/speech-to-text/build/start-transcribing-and-translating/transcribe-specified-hosts':
+    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/transcribe-specified-hosts',
+  'realtime-media/speech-to-text/build/start-transcribing-and-translating/translation':
+    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/translation',
+  'realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service':
+    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/update-service',
+  'realtime-media/speech-to-text/build/process-transcription-data/record-captions':
+    '/zh-CN/realtime-media/speech-to-text/build/record-captions',
+  'realtime-media/speech-to-text/build/monitor-events/receive-webhook':
+    '/zh-CN/realtime-media/speech-to-text/build/receive-webhook',
+  'realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client':
+    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/enable-from-client',
   'realtime-media/danmaku/api/api-limits':
     '/zh-CN/realtime-media/danmaku/reference/api-limits',
   'realtime-media/danmaku/api/base-url':
