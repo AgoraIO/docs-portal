@@ -53,15 +53,15 @@ Interactive Whiteboard sets up five [data centers](../../reference/security#netw
     - **Docs to Picture**
     - **Docs to Web**
 
-    After enabling the file conversion features, you can call the [RESTful APIs](../../reference/rest-api/file-conversion.md) to launch a file conversion task or query the conversion progress.
+    After enabling the file conversion features, you can call the [RESTful APIs](/en/api-reference/api-ref/whiteboard/file-conversion) to launch a file conversion task or query the conversion progress.
 
     Agora charges for the file-conversion feature. See [Pricing](../../reference/pricing).
 
-- **Screenshot**. After enabling, you can call the [RESTful APIs](../../reference/rest-api/screenshots.md) to take screenshots.
+- **Screenshot**. After enabling, you can call the [RESTful APIs](/en/api-reference/api-ref/whiteboard/screenshots) to take screenshots.
 
 To enable one or more features and configure the storage settings:
 
-1. Under **Services Configuration**, select a data center and click **Configure**. The data center must be the same as the one you fill in the `region` field when calling the [Create a room](../../reference/rest-api/room-management.md#create-a-room-post) API; otherwise, the service configuration does not take effect.
+1. Under **Services Configuration**, select a data center and click **Configure**. The data center must be the same as the one you fill in the `region` field when calling the [Create a room](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post) API; otherwise, the service configuration does not take effect.
 
 2. Enable one or more of **Docs to Picture**, **Docs to Web**, or **Screenshot**.
 
@@ -94,4 +94,4 @@ To enable one or more features and configure the storage settings:
 ## Reference
 After enabling the Interactive Whiteboard, you can refer to the following documents to use its functions:
 - [Join a whiteboard room](get-started-sdk/)
-- [File conversion overview](../../reference/rest-api/file-conversion.md)
+- [File conversion overview](/en/api-reference/api-ref/whiteboard/file-conversion)

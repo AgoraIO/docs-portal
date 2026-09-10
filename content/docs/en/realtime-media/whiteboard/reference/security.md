@@ -29,7 +29,7 @@ Interactive Whiteboard also offers server-side file conversion and screenshottin
 Refer to the following articles for more information on file conversion and taking screenshots:
 
 - [Enable Interactive Whiteboard](../build/set-up-and-build-your-first-app/enable-whiteboard.md): The **Enable whiteboard server-side features** section describes how to configure the third-party storage space.
-- [File Conversion Overview](rest-api/file-conversion.md): The **Start file conversion** section describes the basic workflow for converting a file.
+- [File Conversion Overview](/en/api-reference/api-ref/whiteboard/file-conversion): The **Start file conversion** section describes the basic workflow for converting a file.
 
 ## Network geofencing
 
@@ -49,7 +49,7 @@ Interactive Whiteboard has implemented network geofencing in each server-side RE
 
 Refer to the following API references for more information:
 
-- [RESTful APIs](rest-api/overview.md)
+- [RESTful APIs](/en/api-reference/api-ref/whiteboard)
 - [Web SDK APIs](/en/api-reference/whiteboard/web)
 - [Android SDK APIs](/en/api-reference/whiteboard/android)
 - [iOS SDK APIs](/en/api-reference/whiteboard/ios)
