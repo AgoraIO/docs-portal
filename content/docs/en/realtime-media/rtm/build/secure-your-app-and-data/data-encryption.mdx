@@ -600,7 +600,9 @@ Refer to the following sample code to configure end-to-end encryption:
 var cipherConfig = new RtmEncryptionConfig();
 cipherConfig.encryptionMode = RTM_ENCRYPTION_MODE.AES_256_GCM;
 cipherConfig.encryptionKey = "your_encryptionKey";
-cipherConfig.encryptionKdfSalt = "your_salt";
+// The salt must be a 32-byte array. Agora recommends generating it with OpenSSL on your server.
+byte[] salt = new byte[32];
+cipherConfig.encryptionSalt = salt;
 
 RtmConfig config = new RtmConfig();
 config.encryptionConfig = cipherConfig;

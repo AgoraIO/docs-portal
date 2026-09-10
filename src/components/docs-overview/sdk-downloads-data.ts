@@ -3391,7 +3391,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Signaling',
         versions: [
           {
-            id: '2.1.8-rtm-sdk-unity',
+            id: '2.1.9-rtm-sdk-unity',
             label: 'Version 2.1.9 (Latest)',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Unity_RTM_SDK_v2.1.9.zip',

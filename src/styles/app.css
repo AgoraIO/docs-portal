@@ -491,7 +491,6 @@
     font-size: 1.375rem;
     font-weight: 600;
     color: var(--ink-1);
-    scroll-margin-top: 7rem;
   }
 
   .prose :where(h2):not(:where(.not-prose, .not-prose *))::before {
@@ -539,7 +538,6 @@
     font-size: 1rem;
     font-weight: 600;
     color: var(--ink-1);
-    scroll-margin-top: 7rem;
   }
 
   .prose :where(p, li):not(:where(.not-prose, .not-prose *)) {
@@ -1789,6 +1787,18 @@
 }
 
 @layer utilities {
+  /* The shell header is sticky and its height varies (the legacy docs banner
+     adds a row), so anchor targets clear whatever the header currently is.
+     Must live in `utilities` to beat the flat 7rem `scroll-m-28` utility
+     fumadocs puts on every heading: layer order outranks specificity. */
+  .prose
+    :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+    scroll-margin-top: max(
+      7rem,
+      calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
+    );
+  }
+
   .docs-body :where(*) {
     --tw-shadow: none;
     --tw-shadow-colored: none;

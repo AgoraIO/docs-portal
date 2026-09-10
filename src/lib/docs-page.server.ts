@@ -55,6 +55,7 @@ import {
 import {
   buildCanonicalPlatformTocText,
   buildPlatformMarkdownText,
+  buildPlatformTocText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
 import type { PlatformKey } from './platforms/registry';
@@ -1146,7 +1147,7 @@ async function resolvePageToc(
 
   try {
     const tocText = platform
-      ? buildPlatformMarkdownText(processedText, platform)
+      ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
     return normalizeToc(await getTableOfContents(tocText));

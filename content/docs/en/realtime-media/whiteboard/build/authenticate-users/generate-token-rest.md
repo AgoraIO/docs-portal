@@ -51,7 +51,7 @@ Content-Type: application/json
 
 ### HTTP response
 
-For details about all possible response status codes, see the [status code table](../../reference/rest-api/overview.md#status-codes).
+For details about all possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `201`, the request is successful. The response returns the generated `sdk token`.
 
@@ -90,7 +90,7 @@ The following parameters are required in the URL:
 
 | Parameter | Data type | Required/Optional | Description                                                  |
 | :-------- | :-------- | :---------------- | :----------------------------------------------------------- |
-| `uuid`    | string    | Required          | The Room UUID, which is the unique identifier of a room. You can get it by calling the [RESTful API to create a room](../../reference/rest-api/room-management.md#create-a-room-post) or the [RESTful API to get room information](../../reference/rest-api/room-management.md#get-room-information-get). |
+| `uuid`    | string    | Required          | The Room UUID, which is the unique identifier of a room. You can get it by calling the [RESTful API to create a room](/en/api-reference/api-ref/whiteboard/room-management#create-a-room-post) or the [RESTful API to get room information](/en/api-reference/api-ref/whiteboard/room-management#get-room-information-get). |
 
 ### Request body
 
@@ -116,7 +116,7 @@ Content-Type: application/json
 
 ### HTTP response
 
-For details about all possible response status codes, see the [status code table](../../reference/rest-api/overview.md#status-codes).
+For details about all possible response status codes, see the [status code table](/en/api-reference/api-ref/whiteboard#status-codes).
 
 If the status code is `201`, the request is successful. The response returns the generated `room token`.
 
@@ -155,7 +155,7 @@ The following parameters are required in the URL:
 
 | Parameter | Data type | Required/Optional | Description                                                  |
 | :-------- | :-------- | :---------------- | :----------------------------------------------------------- |
-| `uuid`    | string    | Required          | The task UUID, which is the unique identifier of a file-conversion task. You can get it by calling the [RESTful API to start a file-conversion task](../../reference/rest-api/file-conversion.md#start-file-conversion) or the [RESTful API to query the task progress](../../reference/rest-api/file-conversion.md#query-the-progress-of-a-file-conversion-task). |
+| `uuid`    | string    | Required          | The task UUID, which is the unique identifier of a file-conversion task. You can get it by calling the [RESTful API to start a file-conversion task](/en/api-reference/api-ref/whiteboard/file-conversion#start-file-conversion) or the [RESTful API to query the task progress](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task). |
 
 ### Request body
 
@@ -182,7 +182,7 @@ Content-Type: application/json
 
 ### HTTP response
 
-For details about all possible response status codes, see the [status code table.](../../reference/rest-api/overview.md#status-codes)
+For details about all possible response status codes, see the [status code table.](/en/api-reference/api-ref/whiteboard#status-codes)
 
 If the status code is `201`, the request is successful. The response returns the generated `task token`.
 
