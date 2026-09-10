@@ -886,7 +886,7 @@ describe('docs content regressions', () => {
       '| `requestId` | Text | Request ID of the screenshot |',
     );
 
-    const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.md');
+    const rtmDownloads = readDoc('realtime-media/rtm/reference/downloads.mdx');
 
     const rtmDownloadPlatforms = [
       'web',
@@ -900,20 +900,29 @@ describe('docs content regressions', () => {
       'flutter',
     ];
 
-    expect(rtmDownloads).toContain(
-      '<Tabs defaultValue="web" groupId="platform">',
-    );
-    expect(rtmDownloads).not.toContain('<PlatformStructured platform=');
-    expect(rtmDownloads.match(/<TabsContent value=/g) ?? []).toHaveLength(
-      rtmDownloadPlatforms.length,
-    );
+    // The platform dimension belongs to PlatformStructured, which feeds the
+    // site-wide platform selector; a local <Tabs groupId="platform"> group does
+    // not sync with it. Every other Signaling page, and every other product's
+    // downloads page, uses PlatformStructured here.
+    expect(rtmDownloads).not.toContain('<Tabs ');
+    expect(
+      rtmDownloads.match(/<PlatformStructured platform=/g) ?? [],
+    ).toHaveLength(rtmDownloadPlatforms.length);
     for (const platform of rtmDownloadPlatforms) {
-      expect(rtmDownloads).toContain(`<TabsContent value="${platform}">`);
+      expect(rtmDownloads).toContain(
+        `<PlatformStructured platform="${platform}">`,
+      );
     }
-    expect(rtmDownloads).toContain('| `agora-rtm_sdk.jar` | `/app/libs/` |');
+    // Verified against Agora_RTM_JAVA_SDK_for_Android_v2.3.0.zip: the jar is
+    // agora-rtm-sdk.jar under rtm/sdk, and each ABI folder holds
+    // libagora-rtm-sdk.so plus libaosl.so.
+    expect(rtmDownloads).toContain('| `agora-rtm-sdk.jar` | `/app/libs/` |');
+    expect(rtmDownloads).toContain('io.agora.rtm:rtm-sdk');
+    expect(rtmDownloads).not.toContain('agorabuilder');
     expect(rtmDownloads).toContain("pod 'AgoraRtm_iOS'");
     expect(rtmDownloads).toContain("pod 'AgoraRtm_macOS'");
-    expect(rtmDownloads).toContain('<artifactId>agora-rtm-sdk</artifactId>');
+    // Renamed in #1013 when Linux Java shipped; the artifact is per-architecture.
+    expect(rtmDownloads).toContain('<artifactId>rtm-java-aarch64</artifactId>');
     expect(rtmDownloads).toContain(
       'target_link_libraries($' + '{TARGET_NAME} agora_rtm_sdk pthread)',
     );
@@ -927,6 +936,8 @@ describe('docs content regressions', () => {
     const appSizeOptimizationDocs = [
       'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
       'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
+      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
     ];
 
     for (const relativePath of appSizeOptimizationDocs) {
@@ -998,6 +1009,49 @@ describe('docs content regressions', () => {
     expect(whiteboardReleaseNotes).not.toContain(
       '/interactive-whiteboard/get-started/get-started-sdk',
     );
+  });
+
+  it('keeps marketplace downloads extension lists collapsed across platforms', () => {
+    const marketplaceDownloads = readDoc(
+      'realtime-media/marketplace/reference/downloads.mdx',
+    );
+
+    expect(marketplaceDownloads.match(/<Accordions>/g) ?? []).toHaveLength(8);
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="AI Noise Suppression">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="AI Echo Cancellation">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="Audio Beauty">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="Video Enhancement">',
+    );
+    expect(marketplaceDownloads).toContain(
+      '<Accordion title="Local Screenshot Upload">',
+    );
+    expect(marketplaceDownloads).not.toContain('**AI Noise Suppression**');
+  });
+
+  it('keeps app size optimization extension lists collapsed across products', () => {
+    const appSizeOptimizationDocs = [
+      'realtime-media/rtc/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
+      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
+      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
+    ];
+
+    for (const relativePath of appSizeOptimizationDocs) {
+      const content = readDoc(relativePath);
+
+      expect(content.match(/<Accordions>/g) ?? []).toHaveLength(8);
+      expect(content.match(/<Accordion title=/g) ?? []).toHaveLength(144);
+      expect(content).not.toContain('**AI Noise Suppression**');
+      expect(content).not.toContain('**Voice Driver**');
+    }
   });
 
   it('keeps agora analytics call inspector headings free of inline raw anchors', () => {

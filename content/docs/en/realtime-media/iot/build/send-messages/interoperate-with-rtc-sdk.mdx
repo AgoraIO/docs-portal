@@ -1,0 +1,160 @@
+---
+title: "Communicate with RTC SDK"
+description: "Stream audio and video to and from RTC SDK."
+---
+If your business requires not only high-quality audio and video transmission, but also easy integration, low memory usage, and low power consumption, for applications such as smart cameras and smart doorbells, Agora recommends that you use the RTC SDK with the IoT SDK.
+
+The following table shows the data formats supported when the IoT SDK communicates with the RTC SDK (v4.x):
+
+| RTC SDK Type | Audio formats | Video formats |
+|:---|:---|:---|
+| Native/third-party frameworks (Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native) and Server SDK | G722, G711, Opus, AAC | H.264, JPEG |
+| Web (v4.x) | G722, G711, Opus | H.264 |
+| Embedded systems | G711, Opus | H.264, JPEG |
+
+The sending and receiving ends can communicate with each other only if the set data format is consistent and complies with the above table.
+
+The following sections describe how to set the audio and video data formats in the SDKs.
+
+## Set up IoT SDK
+
+**Audio**
+
+IoT SDK only supports mono audio data, and the data sending interval is 20 ms. If your device captures stereo audio, convert it to mono before encoding.
+
+To send and receive `AAC` audio data, set `audio_frame_info_t.data_type` to `AUDIO_DATA_TYPE_AACLC` or `AUDIO_DATA_TYPE_HEAAC` and specify the corresponding data size when calling the `agora_rtc_send_audio_data` method. The size of `AAC` audio data needs to be resolved by the user.
+
+To send and receive `Opus`, `G722`, or `G711` audio data:
+
+1. When calling `agora_rtc_join_channel`, set `rtc_channel_options_t.audio_codec_opt.audio_codec_type` to the codec type and sampling rate you want to use.
+2. When calling `agora_rtc_send_audio_data`, set `audio_frame_info_t.data_type` to `AUDIO_DATA_TYPE_PCM`.
+
+Use the following recommended sampling rates and data sizes:
+
+| Codec | Sampling rate | Data size |
+|---|---|---|
+| Opus | 16 kHz | 640 bytes |
+| Opus | 48 kHz | 1920 bytes |
+| G722 | 16 kHz | 640 bytes |
+| G711 | 8 kHz | 320 bytes |
+
+**Video**
+
+In IoT SDK, `H.264` video data is sent and received by default.
+
+To send and receive `JPEG` video data, when calling the `agora_rtc_send_video_data` method, set `video_frame_info_t.data_type` to `VIDEO_DATA_TYPE_GENERIC_JPEG`.
+
+## Set up RTC SDK for Native/third-party frameworks and RTC Server SDK
+
+**Audio**
+
+In Native/third-party framework SDKs (v4.x) and RTC Server SDKs, `Opus` or `AAC` audio data is sent and received by default.
+
+To send and receive `G722` or `G711` audio data, use the following methods:
+
+<Tabs defaultValue="g722">
+<TabsList>
+  <TabsTrigger value="g722">G722</TabsTrigger>
+  <TabsTrigger value="pcma">G711 (PCMA)</TabsTrigger>
+  <TabsTrigger value="pcmu">G711 (PCMU)</TabsTrigger>
+</TabsList>
+<TabsContent value="g722">
+
+| RTC SDK type | Configuration |
+|---|---|
+| Android | `agoraEngine.setAudioProfile(6)` or `agoraEngine.setParameters("{\"che.audio. custom_payload_type\":9}")` |
+| iOS/macOS | `agoraKit.setAudioProfile(6)` or `agoraKit.setParameters("{\"che.audio. custom_payload_type\":9}")` |
+| Windows | `agoraEngine->setAudioProfile(6)` or `agora::base::AParameter apm(agoraEngine); apm->setParameters("{\"che.audio. custom_payload_type\":9}")` |
+| Electron | `this.agoraEngine?.setAudioProfile(6)` or `this.agoraEngine?.setParameters("{\"che.audio. custom_payload_type\":9}")` |
+| Unity | `await agoraEngine.setAudioProfile(profile: AudioProfileType.audioProfileIot)` or `await agoraEngine.setParameters("{\"che.audio. custom_payload_type\":9}")` |
+| Flutter | `await agoraEngine.setAudioProfile(profile: AudioProfileType.audioProfileIot)` or `await agoraEngine.setParameters("{\"che.audio. custom_payload_type\":9}")` |
+| React Native | `await agoraEngine.current?.setAudioProfile(6)` or `await agoraEngine.current?.setParameters("{\"che.audio. custom_payload_type\":9}")` |
+| Server C++ | `connection->getAgoraParameter()->setParameters("{\"che.audio.custom_payload_type\":9}")` |
+| Server Java | `agoraParameter.setParameters("{\"che.audio.custom_payload_type\":9}")` |
+| Server Python | `connection.get_agora_parameter.set_parameters("{\"che.audio.custom_payload_type\":9}")` |
+| Server Go | `connection.GetAgoraParameter.SetParameters("{\"che.audio.custom_payload_type\":9}")` |
+
+</TabsContent>
+<TabsContent value="pcma">
+
+| RTC SDK type | Configuration |
+|---|---|
+| Android | `agoraEngine.setParameters("{\"che.audio. custom_payload_type\":8}")` |
+| iOS/macOS | `agoraKit.setParameters("{\"che.audio. custom_payload_type\":8}")` |
+| Windows | `agora::base::AParameter apm(agoraEngine);apm->agoraEngine->setParameters("{\"che.audio. custom_payload_type\":8}")` |
+| Electron | `this.agoraEngine?.setParameters("{\"rtc.audio. custom_payload_type\":8}")` |
+| Unity | `await agoraEngine.setParameters("{\"che.audio. custom_payload_type\":8}")` |
+| Flutter | `await agoraEngine.setParameters("{\"che.audio. custom_payload_type\":8}")` |
+| React Native | `await agoraEngine.current?.setParameters("{\"che.audio. custom_payload_type\":8}")` |
+| Server C++ | `connection->getAgoraParameter()->setParameters("{\"che.audio.custom_payload_type\":8}")` |
+| Server Java | `agoraParameter.setParameters("{\"che.audio.custom_payload_type\":8}")` |
+| Server Python | `connection.get_agora_parameter.set_parameters("{\"che.audio.custom_payload_type\":8}")` |
+| Server Go | `connection.GetAgoraParameter.SetParameters("{\"che.audio.custom_payload_type\":8}")` |
+
+</TabsContent>
+<TabsContent value="pcmu">
+
+| RTC SDK type | Configuration |
+|---|---|
+| Android | `agoraEngine.setParameters("{\"che.audio. custom_payload_type\":0}")` |
+| iOS/macOS | `agoraKit.setParameters("{\"che.audio. custom_payload_type\":0}")` |
+| Windows | `agora::base::AParameter apm(agoraEngine);apm->agoraEngine->setParameters("{\"che.audio. custom_payload_type\":0}")` |
+| Electron | `this.agoraEngine?.setParameters("{\"rtc.audio. custom_payload_type\":0}")` |
+| Unity | `await agoraEngine.setParameters("{\"che.audio. custom_payload_type\":0}")` |
+| Flutter | `await agoraEngine.setParameters("{\"che.audio. custom_payload_type\":0}")` |
+| React Native | `await agoraEngine.current?.setParameters("{\"che.audio. custom_payload_type\":0}")` |
+| Server C++ | `connection->getAgoraParameter()->setParameters("{\"che.audio.custom_payload_type\":0}")` |
+| Server Java | `agoraParameter.setParameters("{\"che.audio.custom_payload_type\":0}")` |
+| Server Python | `connection.get_agora_parameter.set_parameters("{\"che.audio.custom_payload_type\":0}")` |
+| Server Go | `connection.GetAgoraParameter.SetParameters("{\"che.audio.custom_payload_type\":0}")` |
+
+</TabsContent>
+</Tabs>
+
+**Video**
+
+In Native/third-party framework SDKs (v4.x) and RTC Server SDKs, `H.264` video data is sent and received by default.
+
+To send and receive `JPEG` video data, use the following methods:
+
+| RTC SDK type | Method |
+| --- | :----------- |
+| Android | `agoraEngine.setParameters("{\"engine.video.codec_type\": \"20\"}")` |
+| iOS/macOS | `agoraKit.setParameters("{\"engine.video.codec_type\": \"20\"}")` |
+| Windows | `agora::base::AParameter apm(agoraEngine);`<br/>`apm->setParameters("{\"engine.video.codec_type\": \"20\"}")` |
+| Electron | `this.agoraEngine.setParameters("{\"engine.video.codec_type\": \"20\"}");` |
+| Unity | `agoraEngine.SetParameters("{\"engine.video.codec_type\": \"20\"}");` |
+| Flutter | `await agoraEngine.setParameters("{\"engine.video.codec_type\": \"20\"}");` |
+| React Native | `this.engine.setParameters("{\"engine.video.codec_type\": \"20\"}");` |
+| Server C++ | `connection->getAgoraParameter()->setParameters("{\"engine.video.codec_type\": \"20\"}");` |
+| Server Java | `agoraParameter.setParameters("{\"engine.video.codec_type\": \"20\"}");` |
+| Server Python | `connection.get_agora_parameter.set_parameters("{\"engine.video.codec_type\": \"20\"}");` |
+| Server Go | `connection.GetAgoraParameter.SetParameters("{\"engine.video.codec_type\": \"20\"}");` |
+
+## Set up RTC SDK for Web
+
+**Audio**
+
+In RTC SDK for Web (v4.x), `Opus` audio data is sent and received by default.
+
+To send and receive `G722`, `G711` audio data, call the following method:
+
+* G711 (PCMA): `AgoraRTC.createClient({mode: "live", codec: "h264", audioCodec: "pcma"})`
+* G711 (PCMU): `AgoraRTC.createClient({mode: "live", codec: "h264", audioCodec: "pcmu"})`
+* G722: `AgoraRTC.createClient({mode: "live", codec: "h264", audioCodec: "g722"})`
+
+:::info
+Only the Web SDK version 4.9.0 or higher supports setting the audio encoding format.
+:::
+
+**Video**
+
+In Web SDK (v4.x), `VP8` video data is sent and received by default. You call `createClient` to set the video data format to `"h264"`.
+
+## Set up RTC SDK for embedded systems
+
+In RTC SDK for embedded systems, `Opus` audio data and `H.264` video data are sent and received by default. If you want to receive `JPEG` video data or send and receive `G711` audio data, contact support@agora.io for activation.
+
+:::info
+RTC SDK for embedded systems does not support sending `JPEG` video data.
+:::
