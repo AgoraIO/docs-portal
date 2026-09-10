@@ -4,6 +4,7 @@ import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import * as docsRouting from '@/lib/docs-routing';
 
 const { docsPagePayloadOverride } = vi.hoisted(() => ({
   docsPagePayloadOverride: vi.fn(),
@@ -275,6 +276,56 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
+  it.each([
+    {
+      hash: '',
+      searchStr: '',
+      suffix: '',
+    },
+    {
+      hash: '#section',
+      searchStr: '?from=card',
+      suffix: '?from=card#section',
+    },
+  ])(
+    'redirects the zh-CN RTSA Build root to implement-transmission',
+    async ({ hash, searchStr, suffix }) => {
+      const isPublishedDocLocaleSpy = vi
+        .spyOn(docsRouting, 'isPublishedDocLocale')
+        .mockReturnValue(true);
+
+      try {
+        try {
+          await getLoader(DocPageRoute)({
+            location: {
+              hash,
+              pathname: '/zh-CN/realtime-media/rtsa/build',
+              searchStr,
+            },
+            params: {
+              _splat: 'rtsa/build',
+              locale: 'zh-CN',
+              tab: 'realtime-media',
+            },
+          } as never);
+        } catch (error) {
+          expect(isRedirect(error)).toBe(true);
+          expect(error).toMatchObject({
+            options: {
+              href: `/zh-CN/realtime-media/rtsa/build/implement-transmission${suffix}`,
+            },
+          });
+          return;
+        }
+
+        throw new Error('expected RTSA Build root to redirect');
+      } finally {
+        isPublishedDocLocaleSpy.mockRestore();
+      }
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
   it('leaves static tab roots to the index route payload loader', async () => {
     vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
 
@@ -422,6 +473,163 @@ describe('docs route locale guards', () => {
       }
 
       throw new Error('expected moved PPT transcoding route to redirect');
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it.each([
+    [
+      'build/implement-core-features/implement-transmission',
+      '/zh-CN/realtime-media/rtsa/build/implement-transmission',
+    ],
+    [
+      'build/implement-core-features/audio-codec',
+      '/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec',
+    ],
+    [
+      'build/optimize-and-operate/interoperate-rtc',
+      '/zh-CN/realtime-media/rtsa/build/interoperate-rtc',
+    ],
+  ] as const)(
+    'redirects old RTSA Build page %s to its final canonical URL with 301',
+    async (legacyPath, canonicalUrl) => {
+      const isPublishedDocLocaleSpy = vi
+        .spyOn(docsRouting, 'isPublishedDocLocale')
+        .mockReturnValue(true);
+
+      try {
+        try {
+          await getLoader(DocPageRoute)({
+            location: {
+              hash: '#section',
+              pathname: `/zh-CN/realtime-media/rtsa/${legacyPath}`,
+              searchStr: '?from=legacy',
+            },
+            params: {
+              _splat: `rtsa/${legacyPath}`,
+              locale: 'zh-CN',
+              tab: 'realtime-media',
+            },
+          } as never);
+        } catch (error) {
+          expect(isRedirect(error)).toBe(true);
+          expect(error).toMatchObject({
+            options: {
+              href: `${canonicalUrl}?from=legacy#section`,
+              statusCode: 301,
+            },
+            status: 301,
+          });
+          return;
+        }
+
+        throw new Error(
+          'expected page route to forward a 301 redirect payload',
+        );
+      } finally {
+        isPublishedDocLocaleSpy.mockRestore();
+      }
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it.each([
+    {
+      hash: '',
+      searchStr: '',
+      suffix: '',
+    },
+    {
+      hash: '#section',
+      searchStr: '?from=card',
+      suffix: '?from=card#section',
+    },
+  ])(
+    'redirects the zh-CN RTSA Build root in static mode to implement-transmission',
+    async ({ hash, searchStr, suffix }) => {
+      const isPublishedDocLocaleSpy = vi
+        .spyOn(docsRouting, 'isPublishedDocLocale')
+        .mockReturnValue(true);
+      const shouldUseStaticDocsPayloadMock = vi.mocked(
+        shouldUseStaticDocsPayload,
+      );
+      shouldUseStaticDocsPayloadMock.mockReturnValue(true);
+
+      try {
+        try {
+          await getLoader(DocPageRoute)({
+            location: {
+              hash,
+              pathname: '/zh-CN/realtime-media/rtsa/build',
+              searchStr,
+            },
+            params: {
+              _splat: 'rtsa/build',
+              locale: 'zh-CN',
+              tab: 'realtime-media',
+            },
+          } as never);
+        } catch (error) {
+          expect(isRedirect(error)).toBe(true);
+          expect(error).toMatchObject({
+            options: {
+              href: `/zh-CN/realtime-media/rtsa/build/implement-transmission${suffix}`,
+            },
+          });
+          return;
+        }
+
+        throw new Error('expected static RTSA Build root to redirect');
+      } finally {
+        isPublishedDocLocaleSpy.mockRestore();
+        shouldUseStaticDocsPayloadMock.mockReturnValue(false);
+      }
+    },
+    REAL_DOCS_ROUTE_TIMEOUT,
+  );
+
+  it(
+    'forwards a static RTSA migration alias as a 301 with query and hash',
+    async () => {
+      const isPublishedDocLocaleSpy = vi
+        .spyOn(docsRouting, 'isPublishedDocLocale')
+        .mockReturnValue(true);
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+      try {
+        try {
+          await getLoader(DocPageRoute)({
+            location: {
+              hash: '#section',
+              pathname:
+                '/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
+              searchStr: '?from=legacy',
+            },
+            params: {
+              _splat:
+                'rtsa/build/implement-core-features/implement-transmission',
+              locale: 'zh-CN',
+              tab: 'realtime-media',
+            },
+          } as never);
+        } catch (error) {
+          expect(isRedirect(error)).toBe(true);
+          expect(error).toMatchObject({
+            options: {
+              href: '/zh-CN/realtime-media/rtsa/build/implement-transmission?from=legacy#section',
+              statusCode: 301,
+            },
+            status: 301,
+          });
+          return;
+        }
+
+        throw new Error(
+          'expected static page route to forward a 301 redirect payload',
+        );
+      } finally {
+        isPublishedDocLocaleSpy.mockRestore();
+      }
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );

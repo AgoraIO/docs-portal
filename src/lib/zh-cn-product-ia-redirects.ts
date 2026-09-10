@@ -785,37 +785,37 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtmp-gateway/webhook/ncs-events':
     '/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events',
   'realtime-media/rtsa/advanced-features/data-stream':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream',
+    '/zh-CN/realtime-media/rtsa/build/data-communication/data-stream',
   'realtime-media/rtsa/advanced-features/encryption':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/encryption',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/encryption',
   'realtime-media/rtsa/advanced-features/multi-channel':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel',
   'realtime-media/rtsa/advanced-features/region-limit':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit',
+    '/zh-CN/realtime-media/rtsa/build/production-environment/region-limit',
   'realtime-media/rtsa/advanced-features/send-message-through-rdt-channel':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel',
+    '/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel',
   'realtime-media/rtsa/advanced-features/string-uid':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid',
+    '/zh-CN/realtime-media/rtsa/build/string-uid',
   'realtime-media/rtsa/basic-features/audio-codec':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/audio-codec',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec',
   'realtime-media/rtsa/basic-features/bitrate-adaption':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption',
   'realtime-media/rtsa/basic-features/cloud-proxy':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/cloud-proxy',
+    '/zh-CN/realtime-media/rtsa/build/production-environment/cloud-proxy',
   'realtime-media/rtsa/basic-features/key-frame':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/key-frame',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/key-frame',
   'realtime-media/rtsa/basic-features/license':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/license',
+    '/zh-CN/realtime-media/rtsa/build/project-preparation/license',
   'realtime-media/rtsa/basic-features/stream-state':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/stream-state',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/stream-state',
   'realtime-media/rtsa/best-practices/interoperate-rtc':
-    '/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc',
+    '/zh-CN/realtime-media/rtsa/build/interoperate-rtc',
   'realtime-media/rtsa/error-codes':
     '/zh-CN/realtime-media/rtsa/reference/error-codes',
   'realtime-media/rtsa/get-started/enable-service':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/rtsa/build/project-preparation/enable-service',
   'realtime-media/rtsa/get-started/implement-transmission':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
+    '/zh-CN/realtime-media/rtsa/build/implement-transmission',
   'realtime-media/rtsa/overview/billing':
     '/zh-CN/realtime-media/rtsa/reference/billing',
   'realtime-media/rtsa/overview/product-overview': '/zh-CN/realtime-media/rtsa',

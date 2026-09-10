@@ -34,6 +34,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
             location,
             legacyRedirect.preserveSearch,
           ),
+          statusCode: legacyRedirect.statusCode ?? 307,
         });
       }
     }
