@@ -4,6 +4,7 @@ import {
   buildCanonicalPlatformTocText,
   buildPlatformLLMText,
   buildPlatformMarkdownText,
+  buildPlatformTocText,
   extractStructuredPlatformTabs,
 } from './processed-text';
 
@@ -266,5 +267,31 @@ Web follow-up
     expect(markdown).not.toContain('iOS follow-up');
     expect(markdown).toContain('Web follow-up');
     expect(markdown).toContain('Shared content');
+  });
+});
+
+describe('platform toc text', () => {
+  it('keeps generated heading anchors so the toc matches rendered heading ids', () => {
+    const processedText = `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="android" />
+## Prerequisites [#prerequisites]
+
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="web" />
+## Prerequisites [#prerequisites-1]
+
+Web body
+<_PlatformProcessedMarker close="true" />`;
+
+    expect(buildPlatformTocText(processedText, 'web')).toContain(
+      '## Prerequisites [#prerequisites-1]',
+    );
+    expect(buildPlatformTocText(processedText, 'web')).not.toContain(
+      'Android body',
+    );
+    expect(buildPlatformTocText(processedText, 'android')).toContain(
+      '## Prerequisites [#prerequisites]',
+    );
   });
 });
