@@ -84,6 +84,8 @@ ffmpeg -re -i input.mp4 -c:v libx264 -preset veryfast -tune zerolatency \
 
 ### Use a custom domain name
 
+Replace the Agora unified domain with your own domain; the same transcoding conditions apply.
+
 ```bash
 ffmpeg -re -i input.mp4 -c copy -f whip -authorization "{streamkey}" https://push.example.com/whip
 ```
