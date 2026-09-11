@@ -26,6 +26,7 @@ const analyticsMocks = vi.hoisted(() => ({
   captureDocsSearchCompleted: vi.fn(),
   captureDocsSearchOpened: vi.fn(),
   captureDocsSearchResultClicked: vi.fn(),
+  captureDocsSearchResultsImpressed: vi.fn(),
   queueDocsPageView: vi.fn(),
 }));
 const oramaClientMocks = vi.hoisted(() => ({
@@ -125,6 +126,7 @@ describe('DocsSearchDialog', () => {
     analyticsMocks.captureDocsSearchCompleted.mockReset();
     analyticsMocks.captureDocsSearchOpened.mockReset();
     analyticsMocks.captureDocsSearchResultClicked.mockReset();
+    analyticsMocks.captureDocsSearchResultsImpressed.mockReset();
     if (oramaClientMocks.actualCreate) {
       oramaClientMocks.create.mockReset();
       oramaClientMocks.create.mockImplementation(oramaClientMocks.actualCreate);
@@ -133,6 +135,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', '');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
     window.localStorage.clear();
+    window.sessionStorage.clear();
   });
 
   it('renders compact trigger variants and lets the mobile trigger navigate through the same dialog', async () => {
@@ -227,31 +230,65 @@ describe('DocsSearchDialog', () => {
     );
     expect(await screen.findByText('Quick Start')).toBeInTheDocument();
 
-    expect(analyticsMocks.captureDocsSearchOpened).toHaveBeenCalledWith({
-      locale: 'en',
-      mode: 'desktop',
-      trigger: 'button',
-    });
-    await waitFor(() => {
-      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
+    expect(analyticsMocks.captureDocsSearchOpened).toHaveBeenCalledWith(
+      expect.objectContaining({
         locale: 'en',
-        platformFilter: null,
-        productScope: null,
-        provider: 'local',
-        queryLength: 2,
-        resultCount: 1,
-        status: 'success',
-      });
+        mode: 'desktop',
+        searchSessionId: expect.any(String),
+        trigger: 'button',
+      }),
+    );
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          locale: 'en',
+          platformFilter: null,
+          productScope: null,
+          provider: 'local',
+          query: 'ai',
+          queryAttemptId: expect.any(String),
+          queryLength: 2,
+          resultCount: 1,
+          searchIntent: 'unknown',
+          searchSessionId: expect.any(String),
+          status: 'success',
+        }),
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        analyticsMocks.captureDocsSearchResultsImpressed,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          firstResultSource: 'local',
+          firstResultType: 'docs',
+          queryAttemptId: expect.any(String),
+          resultCount: 1,
+          searchSessionId: expect.any(String),
+        }),
+      );
     });
 
     fireEvent.click(screen.getByText('Quick Start'));
 
-    expect(analyticsMocks.captureDocsSearchResultClicked).toHaveBeenCalledWith({
-      href: '/en/ai/get-started/quickstart',
-      locale: 'en',
-      queryLength: 2,
-      rank: 1,
-    });
+    expect(analyticsMocks.captureDocsSearchResultClicked).toHaveBeenCalledWith(
+      expect.objectContaining({
+        clickDelayMs: expect.any(Number),
+        href: '/en/ai/get-started/quickstart',
+        locale: 'en',
+        queryAttemptId: expect.any(String),
+        queryLength: 2,
+        rank: 1,
+        resultSource: 'local',
+        resultType: 'docs',
+        searchSessionId: expect.any(String),
+      }),
+    );
+    const pendingLanding = window.sessionStorage.getItem(
+      'docs-portal:search-attribution:v1',
+    );
+    expect(pendingLanding).not.toBeNull();
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -397,14 +434,16 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
     });
-    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-      locale: 'en',
-      platformFilter: null,
-      productScope: null,
-      provider: 'local',
-      queryLength: 8,
-      status: 'error',
-    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+      expect.objectContaining({
+        locale: 'en',
+        platformFilter: null,
+        productScope: null,
+        provider: 'local',
+        queryLength: 8,
+        status: 'error',
+      }),
+    );
     await act(async () => {
       resolveLocalSearch[0]?.([]);
     });
@@ -949,15 +988,17 @@ describe('DocsSearchDialog', () => {
           analyticsMocks.captureDocsSearchCompleted,
         ).toHaveBeenCalledOnce();
       });
-      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-        locale: 'en',
-        platformFilter,
-        productScope,
-        provider: 'algolia',
-        queryLength: 3,
-        resultCount: 0,
-        status: 'success',
-      });
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          locale: 'en',
+          platformFilter,
+          productScope,
+          provider: 'algolia',
+          queryLength: 3,
+          resultCount: 0,
+          status: 'success',
+        }),
+      );
     },
   );
 
@@ -1188,15 +1229,17 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
     });
-    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-      locale: 'en',
-      platformFilter: null,
-      productScope: null,
-      provider: 'algolia',
-      queryLength: 4,
-      resultCount: 0,
-      status: 'success',
-    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+      expect.objectContaining({
+        locale: 'en',
+        platformFilter: null,
+        productScope: null,
+        provider: 'algolia',
+        queryLength: 4,
+        resultCount: 0,
+        status: 'success',
+      }),
+    );
   });
 
   it('updates the footer detail as the highlighted result changes', async () => {
