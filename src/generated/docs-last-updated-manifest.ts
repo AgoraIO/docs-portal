@@ -428,7 +428,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/asr/sarvam.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/sarvam.mdx': '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/models/asr/speechmatics.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/asr/speechmatics.mdx': '2026-09-11T22:24:06.000Z',
+  'content/docs/en/ai/models/asr/speechmatics.mdx': '2026-09-11T23:03:36.000Z',
   'content/docs/en/ai/models/asr/xai.mdx': '2026-06-29T15:19:33.000Z',
   'content/docs/en/ai/models/avatar/akool.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/avatar/akool.mdx': '2026-07-17T08:52:13.000Z',
