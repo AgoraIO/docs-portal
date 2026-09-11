@@ -4,18 +4,10 @@ description: >
  Integrate OpenAI GPT-Live into Conversational AI Engine.
 ---
 
-OpenAI GPT-Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components.
+OpenAI GPT-Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
 
-:::info[Info]
-Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
-:::
-
-:::caution[Caution]
+:::caution[Alpha preview]
 GPT-Live is an alpha preview built on `gpt-live-1-diamond-alpha`. It is not intended for production traffic.
-:::
-
-:::info[SDK version]
-The SDK examples require Agora Agent SDK v2.8.0 or later. The SDK automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header. Direct REST API requests must use the preview URL and header shown in the REST API tab.
 :::
 
 ### Sample configuration
@@ -30,6 +22,10 @@ The following examples show how to configure OpenAI GPT-Live MLLM when starting 
   <TabsTrigger value="rest-api">REST API</TabsTrigger>
 </TabsList>
 <TabsContent value="python">
+
+:::info[SDK version]
+This example requires Agora Agent Python SDK v2.8.0 or later, which automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header.
+:::
 
 ```python
 from agora_agent import Agent, OpenAIGPTLive
@@ -51,6 +47,10 @@ agent = (
 
 <TabsContent value="typescript">
 
+:::info[SDK version]
+This example requires Agora Agent TypeScript SDK v2.8.0 or later, which automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header.
+:::
+
 ```typescript
 import { Agent, OpenAIGPTLive } from 'agora-agents';
 
@@ -68,6 +68,10 @@ const agent = new Agent({ client })
 </TabsContent>
 
 <TabsContent value="go">
+
+:::info[SDK version]
+This example requires Agora Agent Go SDK v2.8.0 or later, which automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header.
+:::
 
 ```go
 import (
@@ -91,7 +95,7 @@ agent := agentkit.NewAgent(client).WithMllm(
 
 <TabsContent value="rest-api">
 
-:::info[Info]
+:::info[Preview endpoint]
 OpenAI GPT-Live is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
 
 - **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
