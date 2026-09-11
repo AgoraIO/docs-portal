@@ -6,13 +6,13 @@ description: >
 
 OpenAI GPT-Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components. Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
 
-:::caution[Alpha preview]
-GPT-Live is an alpha preview built on `gpt-live-1-diamond-alpha`. It is not intended for production traffic.
-:::
-
 ### Sample configuration
 
 The following examples show how to configure OpenAI GPT-Live MLLM when starting a conversational AI agent.
+
+:::info[Automatic preview routing]
+The Agora Agent SDKs automatically route GPT-Live sessions to the preview endpoint and include the `agora-feature: live-models` header.
+:::
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -23,10 +23,6 @@ The following examples show how to configure OpenAI GPT-Live MLLM when starting 
 </TabsList>
 <TabsContent value="python">
 
-:::info[SDK version]
-This example requires Agora Agent Python SDK v2.8.0 or later, which automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header.
-:::
-
 ```python
 from agora_agent import Agent, OpenAIGPTLive
 
@@ -36,7 +32,7 @@ agent = (
     .with_mllm(OpenAIGPTLive(
         api_key='your-openai-key',
         greeting="Hello! I'm GPT-live. How can I help you today?",
-        model='gpt-live-1-diamond-alpha',
+        model='gpt-live-1',
         voice='marin',
         prompt='your-system-prompt',
     ))
@@ -47,10 +43,6 @@ agent = (
 
 <TabsContent value="typescript">
 
-:::info[SDK version]
-This example requires Agora Agent TypeScript SDK v2.8.0 or later, which automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header.
-:::
-
 ```typescript
 import { Agent, OpenAIGPTLive } from 'agora-agents';
 
@@ -59,7 +51,7 @@ const agent = new Agent({ client })
   .withMllm(new OpenAIGPTLive({
     apiKey: 'your-openai-key',
     greeting: "Hello! I'm GPT-live. How can I help you today?",
-    model: 'gpt-live-1-diamond-alpha',
+    model: 'gpt-live-1',
     voice: 'marin',
     prompt: 'your-system-prompt',
   }));
@@ -68,10 +60,6 @@ const agent = new Agent({ client })
 </TabsContent>
 
 <TabsContent value="go">
-
-:::info[SDK version]
-This example requires Agora Agent Go SDK v2.8.0 or later, which automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header.
-:::
 
 ```go
 import (
@@ -84,7 +72,7 @@ agent := agentkit.NewAgent(client).WithMllm(
     vendors.NewOpenAIGPTLive(vendors.OpenAIGPTLiveOptions{
         APIKey:          "your-openai-key",
         GreetingMessage: "Hello! I'm GPT-live. How can I help you today?",
-        Model:           "gpt-live-1-diamond-alpha",
+        Model:           "gpt-live-1",
         Voice:           "marin",
         Prompt:          "your-system-prompt",
     }),
@@ -112,8 +100,7 @@ Use the following `mllm` configuration in your request:
   "url": "wss://api.openai.com/v1/live/sessions",
   "greeting_message": "Hello! I'm GPT-live. How can I help you today?",
   "params": {
-    "model": "gpt-live-1-diamond-alpha",
-    "alpha_selector": "quicksilver=v3",
+    "model": "gpt-live-1",
     "voice": "marin",
     "prompt": "<system_prompt>"
   }
@@ -155,7 +142,7 @@ GPT-Live can call tools defined directly on the MLLM configuration. Set `mllm.mc
     MLLM provider identifier. Set to `openai_gpt_live` for OpenAI GPT-Live.
   </Parameter>
   <Parameter name="api_key" type="string" required={true}>
-    The API key used for authentication. Requires an alpha-enabled OpenAI key.
+    The OpenAI API key used for authentication.
   </Parameter>
   <Parameter name="url" type="string" required={false} defaultValue="wss://api.openai.com/v1/live/sessions">
     The WebSocket URL for OpenAI GPT-Live.
@@ -189,11 +176,8 @@ GPT-Live can call tools defined directly on the MLLM configuration. Set `mllm.mc
   </Parameter>
   <Parameter name="params" type="object" required={false}>
     Additional MLLM configuration parameters.
-    <Parameter name="model" type="string" required={false} defaultValue="gpt-live-1-diamond-alpha">
-    The model identifier.
-    </Parameter>
-    <Parameter name="alpha_selector" type="string" required={false} defaultValue="quicksilver=v3">
-    The OpenAI-Alpha selector required by the GPT-Live v3 preview contract. Agent SDK v2.8.0 or later sends this value automatically. Include it explicitly in direct REST API requests.
+    <Parameter name="model" type="string" required={false} defaultValue="gpt-live-1">
+    The model identifier. Specify another supported model to override the default.
     </Parameter>
     <Parameter name="voice" type="string" required={false} defaultValue="marin">
     The voice identifier for audio output.
@@ -207,10 +191,8 @@ GPT-Live can call tools defined directly on the MLLM configuration. Set `mllm.mc
   </Parameter>
 </ParameterList>
 
-:::info[Info]
-GPT-Live does not support turn detection and input audio transcription.
-:::
+:::caution[Early access]
+GPT-Live is available in early access and is not intended for production traffic. It does not support turn detection or input audio transcription.
 
-:::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation.
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Additional parameters are passed through directly to the underlying vendor without validation.
 :::
