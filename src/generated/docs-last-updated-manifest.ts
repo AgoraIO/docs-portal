@@ -472,7 +472,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/mllm/index.md': '2026-06-25T08:42:31.000Z',
   'content/docs/en/ai/models/mllm/meta.json': '2026-09-11T01:10:07.000Z',
   'content/docs/en/ai/models/mllm/openai-gpt-live.mdx':
-    '2026-09-11T18:49:27.000Z',
+    '2026-09-11T22:16:55.000Z',
   'content/docs/en/ai/models/mllm/openai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/mllm/openai.mdx': '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/mllm/xai.mdx': '2026-09-11T11:31:00.000Z',
