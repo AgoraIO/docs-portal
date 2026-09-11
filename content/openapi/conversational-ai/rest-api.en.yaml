@@ -1559,9 +1559,9 @@ paths:
                           default: false
                           description: >-
                             Enable tool invocation. When enabled, the agent can invoke custom tools
-                            declared in `llm.tools` and MCP tools configured in `llm.mcp_servers` to
-                            perform tasks such as querying business data or executing external
-                            actions.
+                            declared in `llm.tools` and MCP tools configured in `llm.mcp_servers` or
+                            `mllm.mcp_servers` to perform tasks such as querying business data or
+                            executing external actions.
 
 
                             - `true`: Enable custom tool and MCP tool invocation.
@@ -2164,7 +2164,8 @@ paths:
                           description: >-
                             MCP (Model Context Protocol) server configuration. By configuring MCP
                             servers, agents can call tools provided by external services to
-                            implement advanced functionality.
+                            implement advanced functionality. See [Use MCP
+                            tools](/en/ai/build/mcp-tools).
                         tools:
                           type: array
                           maxItems: 32
@@ -2617,6 +2618,67 @@ paths:
                             AI)](/en/ai/models/mllm/google-vertex-ai)
 
                             - `xai`: [xAI Grok](/en/ai/models/mllm/xai)
+                        mcp_servers:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              name:
+                                type: string
+                                description: >-
+                                  A unique identifier for the MCP server. Maximum 48 characters.
+                                  Accepts only English letters and numbers.
+                              endpoint:
+                                type: string
+                                description: >-
+                                  The endpoint address of the MCP server. The agent uses this to
+                                  communicate with the MCP server.
+                              transport:
+                                type: string
+                                description: |-
+                                  Transport protocol type.
+                                  - `streamable_http`: Streaming HTTP protocol
+                              headers:
+                                type: object
+                                additionalProperties: true
+                                description: >-
+                                  HTTP header information to include when requesting the MCP server,
+                                  such as authentication information.
+                              allowed_tools:
+                                type: array
+                                items: {}
+                                description: >-
+                                  A list of tools that the agent is allowed to invoke. The agent can
+                                  only use tools on this list.
+
+
+                                  **Behavior:**
+
+                                  - **Empty or omitted**: All tools are enabled.
+
+                                  - **Empty array `[]`**: No tools are enabled.
+
+                                  - **`["*"]`**: All tools are enabled.
+
+                                  - **Specific tools `["aa", "bb", "cc"]`**: Only `aa`, `bb`, and
+                                  `cc` are enabled.
+
+                                  - **Mix with wildcard `["aa", "bb", "*"]`**: All tools are enabled
+                                  (wildcard takes precedence).
+                              timeout_ms:
+                                type: integer
+                                description: >-
+                                  The MCP server request timeout in milliseconds. After timeout, the
+                                  agent stops waiting for the MCP server's response and continues
+                                  executing subsequent logic.
+                            required:
+                              - name
+                              - endpoint
+                          description: >-
+                            MCP (Model Context Protocol) server configuration for the MLLM module.
+                            By configuring MCP servers, agents can call tools provided by external
+                            services to implement advanced functionality. See [Use MCP
+                            tools](/en/ai/build/mcp-tools).
                         turn_detection:
                           type: object
                           additionalProperties: true
@@ -3196,6 +3258,13 @@ paths:
                       description: >-
                         Interruption control configuration. Provides unified management of the
                         agent's behavior when interrupted by the user.
+                      x-docs-callouts:
+                        - type: info
+                          title: Note
+                          position: after-description
+                          markdown: |
+                            This object has no effect when `mllm.enable` is true. Use
+                            [mllm.turn_detection](#request-body-properties-mllm-turn-detection) instead.
                       properties:
                         enable:
                           type: boolean

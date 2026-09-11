@@ -16,7 +16,7 @@ Common use cases include:
 
 Each custom tool declares a `function` block with a name, description, and a JSON Schema for its parameters. It also declares a `server` block that describes the HTTPS request the Conversational AI Engine sends once the LLM has generated valid parameters. Tool calling supports only synchronous `GET` and `POST` requests to a single endpoint per tool.
 
-Custom tools, MCP tools, built-in tools, and model-native tools all share one tool namespace. Names are not case-sensitive. An agent can expose at most 32 tools to the LLM. If tool names conflict or the limit is exceeded, the agent fails to start.
+Custom tools, [MCP tools](../mcp-tools), built-in tools, and model-native tools all share one tool namespace. Names are not case-sensitive. An agent can expose at most 32 tools to the LLM. If tool names conflict or the limit is exceeded, the agent fails to start.
 
 The following aren't supported:
 
