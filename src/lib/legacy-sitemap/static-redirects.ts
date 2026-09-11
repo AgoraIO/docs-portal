@@ -1,3 +1,4 @@
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import staticRedirects from './static-redirects.json';
 
 type StaticLegacyRedirectRule = {
@@ -14,6 +15,11 @@ export type StaticLegacyRedirectPayload = {
 };
 
 const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
+export const ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES = new Set(
+  Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS).map(
+    (path) => `/zh-CN/${path}`,
+  ),
+);
 
 export function resolveStaticLegacySitemapRedirect(
   legacyPath: string,
@@ -35,40 +41,11 @@ export function resolveStaticLegacySitemapRedirect(
     ? {
         preserveSearch: rule.s !== 0,
         redirectUrl: rule.t,
-        ...(isZhCnSmallBuildFlatIaRedirect(rule) ? { statusCode: 301 } : {}),
+        ...(ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES.has(rule.p)
+          ? { statusCode: 301 }
+          : {}),
       }
     : null;
-}
-
-const ZH_CN_SMALL_BUILD_PRODUCT_PATHS = new Set([
-  'realtime-media/meeting',
-  'realtime-media/media-pull',
-  'realtime-media/rtmp-gateway',
-  'realtime-media/transcoding',
-  'realtime-media/rtc-server-sdk',
-  'realtime-media/fusion-cdn',
-  'solutions/art-class',
-  'solutions/chatroom/sdk',
-  'solutions/chatroom/uikit',
-  'solutions/game-voice',
-  'solutions/meta-world',
-  'solutions/smart-camera',
-  'solutions/teleoperation',
-  'solutions/voip-call',
-]);
-
-function isZhCnSmallBuildFlatIaRedirect(rule: StaticLegacyRedirectRule) {
-  const match = rule.p.match(/^\/zh-CN\/(.+)\/build\/[^/]+\/([^/]+)$/);
-
-  if (!match) {
-    return false;
-  }
-
-  const [, productPath, page] = match;
-  return (
-    ZH_CN_SMALL_BUILD_PRODUCT_PATHS.has(productPath) &&
-    rule.t === `/zh-CN/${productPath}/build/${page}`
-  );
 }
 
 function normalizeLegacyPath(path: string) {
