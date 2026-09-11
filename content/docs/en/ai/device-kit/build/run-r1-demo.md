@@ -68,7 +68,7 @@ Connect the repository to your Agora project:
 
 ```bash
 agora login
-agora project create my-first-voice-agent --feature rtc --feature convoai
+agora project create my-first-voice-agent
 agora project use my-first-voice-agent
 agora project env write server/.env.local --with-secrets
 ```

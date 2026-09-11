@@ -48,6 +48,8 @@ The [Android toolkit API](https://github.com/AgoraIO-Community/Conversational-AI
 | [`interrupt`](#interrupt)         | Interrupts the agent’s speech.                     |
 | [`manualSOS`](#manualsos) | Sends a manual Start of Speech (SoS) signal to the agent. |
 | [`manualEOS`](#manualeos) | Sends a manual End of Speech (EoS) signal to the agent. |
+| [`speak`](#speak) | Makes the agent speak text directly, bypassing the LLM. |
+| [`think`](#think) | Injects text as user input for the LLM to process. |
 | [`loadAudioSettings`](#loadaudiosettings) | Sets audio parameters to optimize agent conversation performance.           |
 | [`destroy`](#destroy)           | Destroys the API instance and releases resources.         |
 
@@ -174,6 +176,38 @@ Keep the following in mind when calling this method:
 |-----------|----------|-------------------------|
 | `agentUserId` | `String` | Agent user ID. |
 | `completion`  | `(requestId: String, error: ConversationalAIAPIError?) -> Unit` | Callback function. `requestId` is the unique identifier for this request. `error` is `null` if the call succeeds, and non-null if it fails. This callback only indicates whether the RTM publish succeeded. |
+
+### `speak`
+
+Bypasses the LLM and makes the agent speak text directly through its TTS pipeline.
+
+This method requires RTM. `completion` only indicates whether the RTM message was published successfully, not that the agent has finished speaking.
+
+```kotlin
+fun speak(agentUserId: String, message: SpeakMessage, completion: (error: ConversationalAIAPIError?) -> Unit)
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId` | `String` | Agent user ID. |
+| `message`	| `SpeakMessage` | The text to speak and its playback behavior. See [`SpeakMessage`](#speakmessage). |
+| `completion`	| `(error: ConversationalAIAPIError?) -> Unit` | Callback function. `error` is null if the call succeeds, and non-null if it fails. |
+
+### `think`
+
+Injects text as user input into the conversation for the LLM to process.
+
+This method requires RTM. `completion` only indicates whether the RTM message was published successfully, not that the LLM has finished processing the instruction.
+
+```kotlin
+fun think(agentUserId: String, message: ThinkMessage, completion: (error: ConversationalAIAPIError?) -> Unit)
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId` | `String` | Agent user ID. |
+| `message`	| `ThinkMessage` | The instruction text, state actions, and custom metadata. See [`ThinkMessage`](#thinkmessage). |
+| `completion`	| `(error: ConversationalAIAPIError?) -> Unit` | Callback function. `error` is null if the call succeeds, and non-null if it fails. |
 
 ### `loadAudioSettings`
 
@@ -689,6 +723,48 @@ data class AgentManualEosEvent(
 | `timestamp` | `Long` | Event timestamp in milliseconds. |
 | `payload` | `AgentManualEosPayload` | Event payload. See [`AgentManualEosPayload`](#agentmanualeospayload). |
 
+### `SpeakMessage`
+
+```kotlin
+data class SpeakMessage(
+    val text: String,
+    val priority: Priority = Priority.INTERRUPT,
+    val interruptable: Boolean = true,
+)
+```
+
+Used to bypass the LLM and speak text directly through the agent's TTS pipeline.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `text` | `String` | The text to speak. |
+| `priority` | [`Priority`](#priority) | The priority for handling this speak request. Defaults to `INTERRUPT`. See [`Priority`](#priority). |
+| `interruptable` | `Boolean` | Whether the user can interrupt this speech by talking. Defaults to `true`. |
+
+### `ThinkMessage`
+
+```kotlin
+data class ThinkMessage(
+    val text: String,
+    val onListeningAction: ThinkListeningAction = ThinkListeningAction.INTERRUPT,
+    val onThinkingAction: ThinkThinkingAction = ThinkThinkingAction.IGNORE,
+    val onSpeakingAction: ThinkSpeakingAction = ThinkSpeakingAction.IGNORE,
+    val interruptable: Boolean = true,
+    val metadata: Map<String, String>? = null,
+)
+```
+
+Used to inject text as user input for the LLM to process.
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `text` | `String` | The instruction text to inject for the LLM. |
+| `onListeningAction` | [`ThinkListeningAction`](#thinklisteningaction) | The action to take when the agent is in a listening state. Defaults to `INTERRUPT`. See [`ThinkListeningAction`](#thinklisteningaction). |
+| `onThinkingAction` | [`ThinkThinkingAction`](#thinkthinkingaction) | The action to take when the agent is in a thinking state. Defaults to `IGNORE`. See [`ThinkThinkingAction`](#thinkthinkingaction). |
+| `onSpeakingAction` | [`ThinkSpeakingAction`](#thinkspeakingaction) | The action to take when the agent is in a speaking state. Defaults to `IGNORE`. See [`ThinkSpeakingAction`](#thinkspeakingaction). |
+| `interruptable` | `Boolean` | Whether the user can interrupt the response generated by this instruction by talking. Defaults to `true`. |
+| `metadata` | `Map<String, String>?` | Optional custom key-value pairs. When `null`, no metadata is written to the RTM message. |
+
 ### `Transcript`
 Represents a full transcribed message used to render the UI.
 
@@ -777,6 +853,37 @@ Controls the priority with which the agent handles incoming messages during an i
 | `INTERRUPT` | High priority: Immediately interrupt the current interaction and process the message. Suitable for urgent or time-sensitive content. |
 | `APPEND`    | Medium priority: The message is queued for processing after the current interaction is completed and is suitable for subsequent questions. |
 | `IGNORE`    | Low priority: This message is only processed when the agent is idle, and will be discarded during ongoing interactions. Suitable for optional content. |
+
+### ThinkListeningAction
+
+The action to take when the agent is in a listening state when a Think instruction arrives.
+
+| Value | Description |
+|-------|-------------|
+| `INJECT` | Injects the instruction into the current turn without interrupting it. |
+| `INTERRUPT` | Interrupts the current interaction and processes the instruction. |
+| `APPEND` | Appends the instruction for processing after the current interaction completes. |
+| `IGNORE` | Ignores the instruction. |
+
+### ThinkThinkingAction
+
+The action to take when the agent is in a thinking state when a Think instruction arrives.
+
+| Value | Description |
+|-------|-------------|
+| `INTERRUPT` | Interrupts the current interaction and processes the instruction. |
+| `APPEND` | Appends the instruction for processing after the current interaction completes. |
+| `IGNORE` | Ignores the instruction. |
+
+### ThinkSpeakingAction
+
+The action to take when the agent is in a speaking state when a Think instruction arrives.
+
+| Value | Description |
+|-------|-------------|
+| `INTERRUPT` | Interrupts the current interaction and processes the instruction. |
+| `APPEND` | Appends the instruction for processing after the current interaction completes. |
+| `IGNORE` | Ignores the instruction. |
 
 ### AgentState
 
