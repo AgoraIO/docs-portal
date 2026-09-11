@@ -234,8 +234,15 @@ describe('DocsContent', () => {
       <DocsContent
         activePath="/en/realtime-media/video/get-started-sdk"
         analyticsPageContext={{
+          contentId: 'realtime-media/video/get-started-sdk',
+          journeyStage: 'get-started',
+          navSection: 'get-started',
+          navSectionTitle: 'Get started',
+          pageType: 'task-guide',
           pathname: '/en/realtime-media/video/get-started-sdk',
           product: 'video',
+          title: 'Quickstart',
+          version: 'current',
         }}
         contentPath="en/realtime-media/video/get-started-sdk.mdx"
         locale="en"

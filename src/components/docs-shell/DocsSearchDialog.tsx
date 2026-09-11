@@ -537,7 +537,7 @@ export function DocsSearchDialog({
           createdAt: Date.now(),
           href: url,
           queryAttemptId,
-          searchSessionId: searchSessionIdRef.current ?? undefined,
+          searchSessionId,
         });
       }
     }
