@@ -31,6 +31,10 @@ export type SearchIntent =
   | 'product'
   | 'unknown';
 
+export type SearchResultGroupOrder =
+  | 'api-reference,documentation'
+  | 'documentation,api-reference';
+
 type RegisteredDocsPageContext = {
   canonicalProduct?: string;
   contentId?: string;
@@ -272,7 +276,7 @@ export function captureDocsSearchResultsImpressed({
   locale: string;
   queryAttemptId: string;
   resultCount: number;
-  resultGroupOrder: string;
+  resultGroupOrder: SearchResultGroupOrder;
   searchSessionId: string;
   visibleResultCount: number;
 }) {
@@ -282,7 +286,7 @@ export function captureDocsSearchResultsImpressed({
     has_platform_variants: hasPlatformVariants,
     query_attempt_id: toSafePropertyValue(queryAttemptId),
     result_count: resultCount,
-    result_group_order: toSafePropertyValue(resultGroupOrder),
+    result_group_order: resultGroupOrder,
     search_session_id: toSafePropertyValue(searchSessionId),
     visible_result_count: visibleResultCount,
   });

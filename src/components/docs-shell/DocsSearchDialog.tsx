@@ -136,6 +136,7 @@ export function DocsSearchDialog({
     string | null
   >(null);
   const searchAttemptStartedAtRef = useRef<number | null>(null);
+  const resultDisplayedAtRef = useRef(new Map<string, number>());
   const searchAttemptsRef = useRef(
     new Map<number, { id: string; startedAt: number }>(),
   );
@@ -464,6 +465,7 @@ export function DocsSearchDialog({
     latestQueryAttemptIdRef.current = null;
     setLatestQueryAttemptId(null);
     searchAttemptStartedAtRef.current = null;
+    resultDisplayedAtRef.current.clear();
   }, []);
   const handleSearchChange = useCallback(
     (nextSearch: string) => {
@@ -517,10 +519,16 @@ export function DocsSearchDialog({
     if (hasQuery && rank !== undefined) {
       const queryAttemptId = latestQueryAttemptIdRef.current;
       const searchSessionId = searchSessionIdRef.current;
+      const resultDisplayedAt = queryAttemptId
+        ? resultDisplayedAtRef.current.get(queryAttemptId)
+        : undefined;
+      const clickStartTime =
+        resultDisplayedAt ?? searchAttemptStartedAtRef.current ?? undefined;
       captureDocsSearchResultClicked({
-        clickDelayMs: searchAttemptStartedAtRef.current
-          ? Date.now() - searchAttemptStartedAtRef.current
-          : undefined,
+        clickDelayMs:
+          clickStartTime === undefined
+            ? undefined
+            : Math.max(0, Date.now() - clickStartTime),
         href: url,
         locale: searchLocale,
         queryAttemptId: queryAttemptId ?? undefined,
@@ -695,6 +703,7 @@ export function DocsSearchDialog({
     }
 
     impressedAttemptIdsRef.current.add(latestQueryAttemptId);
+    resultDisplayedAtRef.current.set(latestQueryAttemptId, Date.now());
     captureDocsSearchResultsImpressed({
       firstResultSource: algoliaEnabled ? 'algolia' : 'local',
       firstResultType: resultEntries[0]?.objectType ?? 'docs',

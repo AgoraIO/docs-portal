@@ -13,6 +13,7 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
+import type { SortedResult } from 'fumadocs-core/search';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
@@ -73,10 +74,10 @@ const loadPages = async () => [
 ];
 
 function createDeferredSearch() {
-  const resolvers: Array<(value: never[]) => void> = [];
-  const search = vi.fn(
+  const resolvers: Array<(value: SortedResult[]) => void> = [];
+  const search = vi.fn<(query: string) => Promise<SortedResult[]>>(
     () =>
-      new Promise<never[]>((resolve) => {
+      new Promise<SortedResult[]>((resolve) => {
         resolvers.push(resolve);
       }),
   );
@@ -297,6 +298,83 @@ describe('DocsSearchDialog', () => {
         }),
       );
     });
+  });
+
+  it('measures click delay from result impression instead of request start', async () => {
+    let now = 1_000;
+    const dateNowSpy = vi.spyOn(Date, 'now').mockImplementation(() => now);
+
+    try {
+      const { resolvers, search } = createDeferredSearch();
+      oramaClientMocks.create.mockReturnValue({
+        deps: ['deferred-local'],
+        search,
+      });
+      const rootRoute = createRootRoute({ component: () => <Outlet /> });
+      const docsRoute = createRoute({
+        getParentRoute: () => rootRoute,
+        path: '/$locale/$tab/$slug',
+        component: () => (
+          <AppProviders>
+            <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+          </AppProviders>
+        ),
+      });
+      const router = createRouter({
+        routeTree: rootRoute.addChildren([docsRoute]),
+        history: createMemoryHistory({
+          initialEntries: ['/en/introduction/about-agora'],
+        }),
+      });
+
+      render(<RouterProvider router={router} />);
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'Search docs' }),
+      );
+      fireEvent.input(
+        await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+        { target: { value: 'ai' } },
+      );
+      await waitFor(() => expect(search).toHaveBeenCalledOnce());
+
+      now = 8_000;
+      await act(async () => {
+        resolvers[0]?.([
+          {
+            breadcrumbs: ['AI'],
+            content: 'Quick Start',
+            id: 'quick-start',
+            type: 'page',
+            url: '/en/ai/get-started/quickstart',
+          },
+        ]);
+        await Promise.resolve();
+      });
+      expect(
+        (await screen.findAllByText('Quick Start'))[0],
+      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(
+          analyticsMocks.captureDocsSearchResultsImpressed,
+        ).toHaveBeenCalledOnce();
+      });
+
+      now = 11_000;
+      await act(async () => {
+        fireEvent.click((await screen.findAllByText('Quick Start'))[0]);
+        await Promise.resolve();
+      });
+
+      expect(
+        analyticsMocks.captureDocsSearchResultClicked,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clickDelayMs: 3_000,
+        }),
+      );
+    } finally {
+      dateNowSpy.mockRestore();
+    }
   });
 
   it('opens from the command-k keyboard shortcut', async () => {
