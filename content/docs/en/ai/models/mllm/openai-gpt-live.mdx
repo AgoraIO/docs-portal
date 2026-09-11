@@ -14,6 +14,10 @@ Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles en
 GPT-Live is an alpha preview built on `gpt-live-1-diamond-alpha`. It is not intended for production traffic.
 :::
 
+:::info[SDK version]
+The SDK examples require Agora Agent SDK v2.8.0 or later. The SDK automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header. Direct REST API requests must use the preview URL and header shown in the REST API tab.
+:::
+
 ### Sample configuration
 
 The following examples show how to configure OpenAI GPT-Live MLLM when starting a conversational AI agent.
@@ -66,7 +70,10 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithMllm(
@@ -102,6 +109,7 @@ Use the following `mllm` configuration in your request:
   "greeting_message": "Hello! I'm GPT-live. How can I help you today?",
   "params": {
     "model": "gpt-live-1-diamond-alpha",
+    "alpha_selector": "quicksilver=v3",
     "voice": "marin",
     "prompt": "<system_prompt>"
   }
@@ -181,7 +189,7 @@ GPT-Live can call tools defined directly on the MLLM configuration. Set `mllm.mc
     The model identifier.
     </Parameter>
     <Parameter name="alpha_selector" type="string" required={false} defaultValue="quicksilver=v3">
-    The OpenAI-Alpha selector for this preview model.
+    The OpenAI-Alpha selector required by the GPT-Live v3 preview contract. Agent SDK v2.8.0 or later sends this value automatically. Include it explicitly in direct REST API requests.
     </Parameter>
     <Parameter name="voice" type="string" required={false} defaultValue="marin">
     The voice identifier for audio output.
