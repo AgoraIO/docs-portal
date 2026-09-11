@@ -12,6 +12,9 @@ const DOCS_JOURNEY_STORAGE_KEY = 'docs-portal:journey:v1';
 const LOCATION_DETAIL_PROPERTY_NAME = /(^|_)(hash|search)$/i;
 const SAFE_PROPERTY_VALUE = /^[a-z0-9][a-z0-9._:-]{0,63}$/i;
 const URL_PROPERTY_NAME = /(href|referrer|url)$/i;
+const SEARCH_QUERY_MAX_LENGTH = 100;
+const SEARCH_SENSITIVE_QUERY_PATTERN =
+  /(?:https?:\/\/|\b(?:token|secret|password|certificate|app[_ -]?id|appid|api[_ -]?key)\s*[:=]|\b[a-f0-9]{24,}\b)/iu;
 
 let posthogClientPromise: Promise<PostHogClient | null> | null = null;
 let registeredPageContext: RegisteredDocsPageContext | null = null;
@@ -19,6 +22,14 @@ let capturedPageViewPathname: string | null = null;
 let pendingPageViewPathname: string | null = null;
 
 export type DocsFeedbackValue = 'yes' | 'no';
+
+export type SearchIntent =
+  | 'api-symbol'
+  | 'api-task'
+  | 'task'
+  | 'support'
+  | 'product'
+  | 'unknown';
 
 type RegisteredDocsPageContext = {
   canonicalProduct?: string;
@@ -131,39 +142,73 @@ export function captureDocsPageViewed({
 export function captureDocsSearchOpened({
   locale,
   mode,
+  searchSessionId,
   trigger,
 }: {
   locale: string;
   mode: 'desktop' | 'mobile';
+  searchSessionId?: string;
   trigger: 'button' | 'keyboard';
 }) {
   captureStructuredDocsEvent('docs_search_opened', locale, {
+    current_path: window.location.pathname,
+    search_session_id: searchSessionId
+      ? toSafePropertyValue(searchSessionId)
+      : undefined,
     search_mode: mode,
     search_trigger: trigger,
   });
 }
 
 export function captureDocsSearchCompleted({
+  apiAvailable,
+  apiResultCount,
+  docsResultCount,
+  latencyMs,
   locale,
   platformFilter,
   productScope,
   provider,
+  query,
+  queryAttemptId,
   queryLength,
+  searchIntent,
+  searchSessionId,
   resultCount,
   status,
 }: {
+  apiAvailable?: boolean;
+  apiResultCount?: number;
+  docsResultCount?: number;
+  latencyMs?: number;
   locale: string;
   platformFilter?: string | null;
   productScope?: string | null;
   provider: 'algolia' | 'local';
+  query?: string;
+  queryAttemptId?: string;
   queryLength: number;
+  searchIntent?: SearchIntent;
+  searchSessionId?: string;
   resultCount?: number;
   status: 'error' | 'success';
 }) {
   captureStructuredDocsEvent('docs_search_completed', locale, {
+    api_available: apiAvailable,
+    api_result_count: apiResultCount,
+    docs_result_count: docsResultCount,
+    latency_ms: latencyMs,
     platform_filter: toSafePropertyValue(platformFilter),
     product_scope: toSafePropertyValue(productScope),
+    ...(query ? getSafeSearchQueryProperties(query) : {}),
+    query_attempt_id: queryAttemptId
+      ? toSafePropertyValue(queryAttemptId)
+      : undefined,
     query_length: queryLength,
+    search_intent: searchIntent,
+    search_session_id: searchSessionId
+      ? toSafePropertyValue(searchSessionId)
+      : undefined,
     result_count: resultCount,
     search_provider: provider,
     search_status: status,
@@ -171,20 +216,105 @@ export function captureDocsSearchCompleted({
 }
 
 export function captureDocsSearchResultClicked({
+  clickDelayMs,
   href,
   locale,
+  queryAttemptId,
   queryLength,
   rank,
+  resultSource,
+  resultType,
+  searchSessionId,
+  selectedPlatform,
 }: {
+  clickDelayMs?: number;
   href: string;
   locale: string;
+  queryAttemptId?: string;
   queryLength: number;
   rank: number;
+  resultSource?: string;
+  resultType?: string;
+  searchSessionId?: string;
+  selectedPlatform?: string;
 }) {
   captureStructuredDocsEvent('docs_search_result_clicked', locale, {
+    click_delay_ms: clickDelayMs,
     ...getSafeLinkTarget(href),
+    query_attempt_id: queryAttemptId
+      ? toSafePropertyValue(queryAttemptId)
+      : undefined,
     query_length: queryLength,
     result_rank: rank,
+    result_source: toSafePropertyValue(resultSource),
+    result_type: toSafePropertyValue(resultType),
+    search_session_id: searchSessionId
+      ? toSafePropertyValue(searchSessionId)
+      : undefined,
+    selected_platform: toSafePropertyValue(selectedPlatform),
+  });
+}
+
+export function captureDocsSearchResultsImpressed({
+  firstResultSource,
+  firstResultType,
+  hasPlatformVariants,
+  locale,
+  queryAttemptId,
+  resultCount,
+  resultGroupOrder,
+  searchSessionId,
+  visibleResultCount,
+}: {
+  firstResultSource?: string;
+  firstResultType?: string;
+  hasPlatformVariants: boolean;
+  locale: string;
+  queryAttemptId: string;
+  resultCount: number;
+  resultGroupOrder: string;
+  searchSessionId: string;
+  visibleResultCount: number;
+}) {
+  captureStructuredDocsEvent('docs_search_results_impressed', locale, {
+    first_result_source: toSafePropertyValue(firstResultSource),
+    first_result_type: toSafePropertyValue(firstResultType),
+    has_platform_variants: hasPlatformVariants,
+    query_attempt_id: toSafePropertyValue(queryAttemptId),
+    result_count: resultCount,
+    result_group_order: toSafePropertyValue(resultGroupOrder),
+    search_session_id: toSafePropertyValue(searchSessionId),
+    visible_result_count: visibleResultCount,
+  });
+}
+
+export function captureDocsSearchLandingEngaged({
+  codeCopied,
+  dwellTimeMs,
+  href,
+  locale,
+  nextPageClicked,
+  queryAttemptId,
+  scrollDepth,
+  searchSessionId,
+}: {
+  codeCopied: boolean;
+  dwellTimeMs: number;
+  href: string;
+  locale: string;
+  nextPageClicked: boolean;
+  queryAttemptId: string;
+  scrollDepth: number;
+  searchSessionId: string;
+}) {
+  captureStructuredDocsEvent('docs_search_landing_engaged', locale, {
+    code_copied: codeCopied,
+    dwell_time_ms: dwellTimeMs,
+    ...getSafeLinkTarget(href),
+    next_page_clicked: nextPageClicked,
+    query_attempt_id: toSafePropertyValue(queryAttemptId),
+    scroll_depth: Math.max(0, Math.min(1, scrollDepth)),
+    search_session_id: toSafePropertyValue(searchSessionId),
   });
 }
 
@@ -638,6 +768,31 @@ function toSafePropertyValue(
   return normalized && SAFE_PROPERTY_VALUE.test(normalized)
     ? normalized
     : fallback;
+}
+
+function getSafeSearchQueryProperties(query: string) {
+  const normalized = query.trim().replace(/\s+/gu, ' ');
+
+  if (!normalized || SEARCH_SENSITIVE_QUERY_PATTERN.test(normalized)) {
+    return {
+      query_hash: hashSearchQuery(normalized),
+    };
+  }
+
+  return {
+    query_text: normalized.slice(0, SEARCH_QUERY_MAX_LENGTH),
+  };
+}
+
+function hashSearchQuery(value: string) {
+  let hash = 2166136261;
+
+  for (const character of value) {
+    hash ^= character.codePointAt(0) ?? 0;
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return `fnv1a-${(hash >>> 0).toString(16).padStart(8, '0')}`;
 }
 
 function removeUndefinedProperties(properties: StructuredEventProperties) {
