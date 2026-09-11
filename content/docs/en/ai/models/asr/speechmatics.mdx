@@ -26,7 +26,7 @@ from agora_agent import Agent, SpeechmaticsSTT
 agent = (
     Agent(client)
     .with_stt(SpeechmaticsSTT(
-        api_key='your-speechmatics-key',
+        key='your-speechmatics-key',
         language='en',
         uri='wss://eu2.rt.speechmatics.com/v2',
     ))
@@ -45,7 +45,7 @@ import { Agent, SpeechmaticsSTT } from 'agora-agents';
 // client is your configured Agora client
 const agent = new Agent({ client })
   .withStt(new SpeechmaticsSTT({
-    apiKey: 'your-speechmatics-key',
+    key: 'your-speechmatics-key',
     language: 'en',
     uri: 'wss://eu2.rt.speechmatics.com/v2',
   }))
@@ -58,12 +58,15 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(
     vendors.NewSpeechmaticsSTT(vendors.SpeechmaticsSTTOptions{
-        APIKey:   "your-speechmatics-key",
+        Key:      "your-speechmatics-key",
         Language: "en",
         URI:      "wss://eu2.rt.speechmatics.com/v2",
     }),
