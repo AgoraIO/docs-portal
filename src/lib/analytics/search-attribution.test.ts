@@ -48,7 +48,10 @@ describe('search attribution storage', () => {
       null,
     );
     expect(
-      consumePendingSearchLanding('/en/introduction/quickstart?source=search', 2_000),
+      consumePendingSearchLanding(
+        '/en/introduction/quickstart?source=search',
+        2_000,
+      ),
     ).not.toBeNull();
   });
 
@@ -59,13 +62,15 @@ describe('search attribution storage', () => {
       queryAttemptId: 'attempt-1',
       searchSessionId: 'session-1',
     });
-    expect(consumePendingSearchLanding('/en/expired', 1_000 + 30 * 60 * 1000 + 1)).toBe(
-      null,
-    );
+    expect(
+      consumePendingSearchLanding('/en/expired', 1_000 + 30 * 60 * 1000 + 1),
+    ).toBe(null);
 
     window.sessionStorage.setItem('docs-portal:search-attribution:v1', '{bad');
     expect(consumePendingSearchLanding('/en/anything', 2_000)).toBeNull();
-    expect(window.sessionStorage.getItem('docs-portal:search-attribution:v1')).toBeNull();
+    expect(
+      window.sessionStorage.getItem('docs-portal:search-attribution:v1'),
+    ).toBeNull();
   });
 
   it('does not throw when session storage is unavailable', () => {
