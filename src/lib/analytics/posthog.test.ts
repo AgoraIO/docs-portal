@@ -316,6 +316,7 @@ describe('PostHog analytics', () => {
         first_result_source: 'algolia',
         first_result_type: 'guide',
         query_attempt_id: 'attempt-1',
+        result_group_order: 'documentation,api-reference',
         search_session_id: 'session-1',
       }),
     );
