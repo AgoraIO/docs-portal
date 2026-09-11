@@ -106,7 +106,12 @@ const migrations: Migration[] = [
 
 const readMeta = (path: string) => JSON.parse(readFileSync(path, 'utf8')) as { pages?: unknown[] };
 const pathFor = (productPath: string, relativePath: string) => resolve(contentRoot, productPath, relativePath);
-const parseOldUrl = (url: string) => { const [, tab, ...segments] = url.split('/'); return { tab, segments }; };
+const parseOldUrl = (url: string) => {
+  const [, locale, tab, ...segments] = url.split('/');
+  expect(locale).toBe('zh-CN');
+  expect(['realtime-media', 'solutions']).toContain(tab);
+  return { locale, tab, segments };
+};
 
  describe('zh-CN small Build flat IA migration invariants', () => {
   it.each(buildExpectations)('$productPath has the exact direct Build pages order', ({ productPath, pages }) => {
@@ -115,12 +120,12 @@ const parseOldUrl = (url: string) => { const [, tab, ...segments] = url.split('/
     expect(actual?.every((entry) => typeof entry === 'string' && !entry.includes('/'))).toBe(true);
   });
 
-  it.each(migrations)('$oldUrl has moved to its final canonical file', ({ productPath, oldRelativePath, newRelativePath }) => {
+  it.each(migrations)('$productPath $oldRelativePath has moved to its final canonical file', ({ productPath, oldRelativePath, newRelativePath }) => {
     expect(existsSync(pathFor(productPath, newRelativePath))).toBe(true);
     expect(existsSync(pathFor(productPath, oldRelativePath))).toBe(false);
   });
 
-  it.each(migrations)('$oldRelativePath leaves no source files in its old directory', ({ productPath, oldRelativePath }) => {
+  it.each(migrations)('$productPath $oldRelativePath leaves no source files in its old directory', ({ productPath, oldRelativePath }) => {
     const oldDirectory = pathFor(productPath, oldRelativePath.split('/').slice(0, -1).join('/'));
     if (!existsSync(oldDirectory)) {
       return;
@@ -134,16 +139,18 @@ const parseOldUrl = (url: string) => { const [, tab, ...segments] = url.split('/
   it.each(buildExpectations)('$productPath has only the approved flat Build files', ({ productPath, pages }) => {
     const buildRoot = pathFor(productPath, 'build');
     const expectedNames = ['meta.json', ...pages.map((page) => `${page}.mdx`)].sort();
-    const actualNames = readdirSync(buildRoot, { withFileTypes: true })
+    const actualEntries = readdirSync(buildRoot, { withFileTypes: true })
+      .filter((entry) => entry.name !== '.DS_Store');
+    const actualNames = actualEntries
       .map((entry) => entry.name)
       .sort();
     expect(actualNames).toEqual(expectedNames);
-    expect(readdirSync(buildRoot, { withFileTypes: true }).every((entry) => entry.isFile())).toBe(true);
+    expect(actualEntries.every((entry) => entry.isFile())).toBe(true);
   });
 
-  it.each(migrations)('$oldUrl redirects directly to $newUrl with HTTP 301', async ({ oldUrl, newUrl }) => {
-    const { tab, segments } = parseOldUrl(oldUrl);
-    await expect(loadDocsPagePayload('zh-CN', tab, segments)).resolves.toEqual({ redirectUrl: newUrl, statusCode: 301 });
+  it.each(migrations)('$productPath $oldRelativePath ($oldUrl) redirects directly to $newUrl with HTTP 301', async ({ productPath, oldRelativePath, oldUrl, newUrl }) => {
+    const { locale, tab, segments } = parseOldUrl(oldUrl);
+    await expect(loadDocsPagePayload(locale, tab, segments)).resolves.toEqual({ redirectUrl: newUrl, statusCode: 301 });
   });
 
   it('keeps every Build sidebar entry as a direct page, never a group object', () => {
