@@ -9,6 +9,18 @@ describe('static legacy sitemap redirects', () => {
       preserveSearch: true,
       redirectUrl:
         '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist',
+      statusCode: 301,
+    });
+  });
+
+  it('marks flattened zh-CN Build routes as permanent redirects', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect(
+        '/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service',
+      ),
+    ).toMatchObject({
+      redirectUrl: '/zh-CN/realtime-media/meeting/build/enable-service',
+      statusCode: 301,
     });
   });
 
@@ -20,6 +32,7 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: true,
       redirectUrl: '/en/realtime-media/cloud-recording/rest-quickstart',
+      statusCode: 301,
     });
   });
 
@@ -31,6 +44,7 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: true,
       redirectUrl: '/en/api-reference/api-ref/im',
+      statusCode: 301,
     });
   });
 
@@ -44,6 +58,7 @@ describe('static legacy sitemap redirects', () => {
       preserveSearch: false,
       redirectUrl:
         '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
+      statusCode: 301,
     });
   });
 
@@ -56,6 +71,7 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: true,
       redirectUrl: '/en/api-reference/api-ref/signaling/authentication',
+      statusCode: 301,
     });
   });
 

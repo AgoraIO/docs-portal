@@ -10,6 +10,7 @@ type StaticLegacyRedirectRule = {
 export type StaticLegacyRedirectPayload = {
   preserveSearch: boolean;
   redirectUrl: string;
+  statusCode: 301;
 };
 
 const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
@@ -34,6 +35,7 @@ export function resolveStaticLegacySitemapRedirect(
     ? {
         preserveSearch: rule.s !== 0,
         redirectUrl: rule.t,
+        statusCode: 301,
       }
     : null;
 }

@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
 
@@ -318,6 +319,22 @@ describe('legacy redirect Vercel artifacts', () => {
       for (const segment of RTM_OLD_CATEGORY_SEGMENTS) {
         expect(rule.destination).not.toContain(segment);
       }
+    }
+  });
+
+  it('ships every zh-CN small Build flattening redirect directly to its canonical URL', () => {
+    for (const [path, destination] of Object.entries(
+      ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+    )) {
+      const source = `/zh-CN/${path}`;
+
+      expect(bulkRedirects).toContainEqual({
+        destination,
+        preserveQueryParams: true,
+        source,
+        statusCode: 301,
+      });
+      expect(staticRedirects).toContainEqual({ p: source, t: destination });
     }
   });
 

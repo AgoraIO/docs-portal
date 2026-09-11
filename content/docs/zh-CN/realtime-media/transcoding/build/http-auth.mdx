@@ -13,7 +13,7 @@ description: "了解如何在云端转码中 HTTP 鉴权，包括适用场景、
 
 ### 前提条件
 
-已经从声网控制台获取客户 ID 和客户密钥，详见[开通转码服务](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service)。
+已经从声网控制台获取客户 ID 和客户密钥，详见[开通转码服务](/zh-CN/realtime-media/transcoding/build/enable-service)。
 
 ### 实现方法
 
@@ -23,15 +23,15 @@ description: "了解如何在云端转码中 HTTP 鉴权，包括适用场景、
 
 观众端多码率支持以下鉴权方式：
 
-- [HTTP 基本认证](/zh-CN/realtime-media/transcoding/build/setup-and-access/http-auth)。易用，但安全性较弱。
+- [HTTP 基本认证](/zh-CN/realtime-media/transcoding/build/http-auth)。易用，但安全性较弱。
 - HTTP HMAC（Hash-based Message Authentication Code）鉴权。安全性较高，推荐使用。
 
 本节介绍如何实现 HTTP HMAC 鉴权。
 
 发送请求时，你需要通过 HMAC-SHA256 算法生成签名，并在请求 Header 的 `Authorization` 字段中传入该签名。在生成签名的过程中，你需要用到以下声网账号的信息：
 
-- 声网项目的 App ID，详见[获取 App ID](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service#获取-app-id)。
-- 声网控制台 RESTful API 中提供的客户 ID 及客户密钥，详见[生成客户 ID 和密钥](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service#获取客户-id-和客户密钥)。
+- 声网项目的 App ID，详见[获取 App ID](/zh-CN/realtime-media/transcoding/build/enable-service#获取-app-id)。
+- 声网控制台 RESTful API 中提供的客户 ID 及客户密钥，详见[生成客户 ID 和密钥](/zh-CN/realtime-media/transcoding/build/enable-service#获取客户-id-和客户密钥)。
 
 ### 示例代码
 
@@ -258,5 +258,5 @@ public class Main {
 
 开通服务、实现 HTTP HMAC 鉴权后，你可以进行如下操作：
 
-1. 参考[实现观众端多码率](/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-multiple-bitrate)了解实现流程。
+1. 参考[实现观众端多码率](/zh-CN/realtime-media/transcoding/build/enable-multiple-bitrate)了解实现流程。
 2. 参考[多码率 RESTful API 说明](/zh-CN/api-reference/api-ref/cloud-transcoding/template-create)进行集成。

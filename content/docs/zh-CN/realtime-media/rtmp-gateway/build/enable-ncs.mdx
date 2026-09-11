@@ -132,7 +132,7 @@ public class Base64Encoding {
 开通服务并完成健康检查后，你需要注意以下事项：
 
 - 5 分钟后，该服务即会生效。你的服务器需要尽快响应消息通知服务器，响应的 Body 格式必须为 JSON。
-- 控制台会自动生成**密钥**，你需要复制并保存这个密钥以备后续验签，详见[验证签名](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)。
+- 控制台会自动生成**密钥**，你需要复制并保存这个密钥以备后续验签，详见[验证签名](/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs)。
 
 ## 消息通知回调格式
 
@@ -143,8 +143,8 @@ public class Base64Encoding {
 | 字段名            | 值                 |
 | ----------------- | ------------------ |
 | `Content-Type`    | `application/json` |
-| `Agora-Signature` |声网用密钥（`secret`）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)。          |
-| `Agora-Signature-V2` |声网用密钥（`secret`）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA256 算法来验证该签名值。 详见[验证签名](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)。            |
+| `Agora-Signature` |声网用密钥（`secret`）和 HMAC/SHA1 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA1 算法来验证该签名值。详见[验证签名](/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs)。          |
+| `Agora-Signature-V2` |声网用密钥（`secret`）和 HMAC/SHA256 算法生成的签名值。你需要使用密钥（`secret`）和 HMAC/SHA256 算法来验证该签名值。 详见[验证签名](/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs)。            |
 
 消息通知回调的 Body 中包含以下字段：
 

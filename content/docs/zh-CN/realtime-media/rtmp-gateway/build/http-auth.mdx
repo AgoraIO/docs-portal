@@ -13,7 +13,7 @@ TMP 网关服务 RESTful API 支持以下鉴权方式：
 
 ### 前提条件
 
-已经从声网控制台获取客户 ID 和客户密钥，详见[开通服务](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service)。
+已经从声网控制台获取客户 ID 和客户密钥，详见[开通服务](/zh-CN/realtime-media/rtmp-gateway/build/enable-service)。
 
 ### 实现方法
 
@@ -27,8 +27,8 @@ TMP 网关服务 RESTful API 支持以下鉴权方式：
 
 在生成认证字段过程中，你需要用到以下声网账号的信息：
 
-- 声网项目的 App ID，详见[获取 App ID](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service#获取-app-id)。
-- 声网控制台 RESTful API 中提供的客户 ID 及客户密钥，详见[获取客户 ID 和密钥](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service#获取客户-id-和客户密钥)。
+- 声网项目的 App ID，详见[获取 App ID](/zh-CN/realtime-media/rtmp-gateway/build/enable-service#获取-app-id)。
+- 声网控制台 RESTful API 中提供的客户 ID 及客户密钥，详见[获取客户 ID 和密钥](/zh-CN/realtime-media/rtmp-gateway/build/enable-service#获取客户-id-和客户密钥)。
 
 ### 实现方法
 
@@ -84,5 +84,5 @@ console.log(`Authorization: ${auth}`);
 开通服务、实现 HTTP 鉴权后，你可以进行如下操作：
 
 1. 参考 [API 文档](/zh-CN/api-reference/api-ref/rtmp-gateway/create-streaming-key)集成 rtmp-gateway服务。
-2. 参考[接收 Webhook 事件](/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs)开启消息通知服务，通过事件回调监听服务状态。
-3. 参考[最佳实践](/zh-CN/realtime-media/rtmp-gateway/build/manage-media-streams/rtmp-domain-switch)检查你的集成步骤，保障服务可靠性。
+2. 参考[接收 Webhook 事件](/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs)开启消息通知服务，通过事件回调监听服务状态。
+3. 参考[最佳实践](/zh-CN/realtime-media/rtmp-gateway/build/rtmp-domain-switch)检查你的集成步骤，保障服务可靠性。

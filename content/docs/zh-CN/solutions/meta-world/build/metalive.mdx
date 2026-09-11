@@ -36,7 +36,7 @@ MetaWorld 解决方案支持元语聊、元直播场景。本文介绍如何实�
 初始化 `IMetaService` 时，需要在 `MetaServiceConfig` 里设置如下重要的字段：
 
 - `mRtcEngine`：通过 `create` 方法创建的 `RtcEngine` 实例。
-- `mAppId`：在声网控制台获取的 App ID。详见[开通元语聊服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)。
+- `mAppId`：在声网控制台获取的 App ID。详见[开通元语聊服务](/zh-CN/solutions/meta-world/build/enable-service)。
 - `mUserId`：登录声网 RTM 系统的用户 ID。推荐取值详见 [`MetaServiceConfig`](/zh-CN/solutions/meta-world/reference/meta-api#metaserviceconfig)。
 - `mRtmToken`：用于登录声网 RTM 系统的动态密钥。开启动态鉴权后可用。详见[生成 Token](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - `mLocalDownloadPath`：场景资源下载到本地的保存路径。
@@ -266,7 +266,7 @@ public void onEnterSceneResult(int errorCode) {
 
 :::warning[注意]
 - 本小节展示在**进入场景前**设置用户和模型信息，如需在**进入场景后**变更设置，需调用 [`applyInfo`](/zh-CN/solutions/meta-world/reference/meta-api#applyinfo) 使设置生效。
-- 声网 Meta SDK 支持自定义装扮捏脸功能，详见[换装和捏脸](/zh-CN/solutions/meta-world/build/customize-and-extend/dress-face)。
+- 声网 Meta SDK 支持自定义装扮捏脸功能，详见[换装和捏脸](/zh-CN/solutions/meta-world/build/dress-face)。
 :::
 
 ### 5 加入频道并开启元直播
@@ -400,7 +400,7 @@ MetaWorld 解决方案支持元语聊、元直播场景。本文介绍如何实�
 初始化 `AgoraMetaServiceKit` 时，需要在 `AgoraMetaServiceConfig` 里设置如下重要的字段：
 
 - `rtcEngine`：通过 `sharedEngineWithConfig` 方法创建的 `AgoraRtcEngineKit` 实例。
-- `appId`：在声网控制台获取的 App ID。详见[开通元语聊服务](/zh-CN/solutions/meta-world/build/setup-and-access/enable-service)。
+- `appId`：在声网控制台获取的 App ID。详见[开通元语聊服务](/zh-CN/solutions/meta-world/build/enable-service)。
 - `userId`：登录声网 RTM 系统的用户 ID。推荐取值详见 [AgoraMetaServiceConfig](/zh-CN/solutions/meta-world/reference/meta-api#agorametaserviceconfig)。
 - `rtmToken`：用于登录声网 RTM 系统的动态密钥。开启动态鉴权后可用。详见[生成 Token](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - `localDownloadPath`：场景资源下载到本地的保存路径。
@@ -598,7 +598,7 @@ func metaScene(_ scene: AgoraMetaScene, onEnterSceneResult errorCode: Int) {}
 
 :::warning[注意]
 - 本小节展示在**进入场景前**设置用户和模型信息，如需在**进入场景后**变更设置，需调用 [`applyInfo`](/zh-CN/solutions/meta-world/reference/meta-api#applyinfo) 使设置生效。
-- 声网 Meta SDK 支持自定义装扮捏脸功能，详见[换装和捏脸](/zh-CN/solutions/meta-world/build/customize-and-extend/dress-face)。
+- 声网 Meta SDK 支持自定义装扮捏脸功能，详见[换装和捏脸](/zh-CN/solutions/meta-world/build/dress-face)。
 :::
 
 ### 5. 加入频道并开启元直播

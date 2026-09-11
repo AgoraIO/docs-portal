@@ -2224,7 +2224,7 @@ Web body
     const parentUrl = '/zh-CN/api-reference/api-ref/cloud-transcoding';
     const eventUrl = `${parentUrl}/ncs-events`;
     const guideUrl =
-      '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification';
+      '/zh-CN/realtime-media/transcoding/build/enable-event-notification';
     const makePage = (url: string, title: string) => ({
       ...createPage(),
       data: {

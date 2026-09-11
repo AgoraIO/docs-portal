@@ -28,8 +28,8 @@ description: "了解如何快速接入微呼叫，完成环境准备、参数配
 
 ### 开通微呼叫和 NCS 服务
 
-1. 参考[开通微呼叫服务](/zh-CN/solutions/voip-call/build/setup-and-access/enable-service)在声网控制台开通微呼叫服务，并完成授权。
-2. 声网微呼叫使用 License 校验呼叫的合法性。如果 License 不合法，会使用消息通知服务 NCS 将相关事件回调给开发者。因此在开发前，你还需要开通[声网消息通知服务](/zh-CN/solutions/voip-call/build/monitor-events/receive-webhook)。
+1. 参考[开通微呼叫服务](/zh-CN/solutions/voip-call/build/enable-service)在声网控制台开通微呼叫服务，并完成授权。
+2. 声网微呼叫使用 License 校验呼叫的合法性。如果 License 不合法，会使用消息通知服务 NCS 将相关事件回调给开发者。因此在开发前，你还需要开通[声网消息通知服务](/zh-CN/solutions/voip-call/build/receive-webhook)。
 
 ### 熟悉开发参数
 
@@ -55,7 +55,7 @@ description: "了解如何快速接入微呼叫，完成环境准备、参数配
 
 ### 1. 获取并激活许可证
 
-联系商务[申请并获取 License](/zh-CN/solutions/voip-call/build/setup-and-access/license)。然后调用 [`/active`](/zh-CN/api-reference/api-ref/voip-callkit/activate-license) 接口激活申请到的 License：
+联系商务[申请并获取 License](/zh-CN/solutions/voip-call/build/license)。然后调用 [`/active`](/zh-CN/api-reference/api-ref/voip-callkit/activate-license) 接口激活申请到的 License：
 
 :::warning[注意]
 请确保传入的 `licenseKey` 的值和发起呼叫接口中传入的 `wechat.deviceId` 一致。在调用发起呼叫接口时，SD-RTN™ 会对这两个值进行校验，如果一致且 License 在有效期，则呼叫成功，否则呼叫失败。

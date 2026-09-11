@@ -34,6 +34,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
             location,
             legacyRedirect.preserveSearch,
           ),
+          statusCode: legacyRedirect.statusCode,
         });
       }
     }
@@ -79,7 +80,14 @@ export const Route = createFileRoute('/$locale/$tab/')({
     if ('redirectUrl' in payload) {
       const { redirectUrl } = payload;
       const preserveSearch =
-        'preserveSearch' in payload ? payload.preserveSearch : true;
+        'preserveSearch' in payload &&
+        typeof payload.preserveSearch === 'boolean'
+          ? payload.preserveSearch
+          : true;
+      const statusCode =
+        'statusCode' in payload && typeof payload.statusCode === 'number'
+          ? payload.statusCode
+          : undefined;
 
       if (!redirectUrl) {
         throw notFound();
@@ -87,7 +95,7 @@ export const Route = createFileRoute('/$locale/$tab/')({
 
       throw redirect({
         href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
-        statusCode: payload.statusCode ?? 307,
+        statusCode: statusCode ?? 307,
       });
     }
 

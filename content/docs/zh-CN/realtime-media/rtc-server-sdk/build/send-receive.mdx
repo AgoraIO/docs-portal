@@ -18,7 +18,7 @@ description: "了解 RTC 服务端 SDK 在不同平台上的发送和接收媒�
 
 这个操作只需要进行一次，`IAgoraService` 对象的生命期和应用程序的生命期保持一致，只要应用程序没有退出，`IAgoraService` 可以一直存在。
 
-SDK 支持 `int` 型用户 ID 和 `String` 型用户 ID。本文仅演示 `int` 型用户 ID（即字符只能为数字）；`String` 型用户 ID（字符可以是数字、字母或特殊符号）的使用方法，参考 [使用 String 型用户 ID](/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/string-uid)。
+SDK 支持 `int` 型用户 ID 和 `String` 型用户 ID。本文仅演示 `int` 型用户 ID（即字符只能为数字）；`String` 型用户 ID（字符可以是数字、字母或特殊符号）的使用方法，参考 [使用 String 型用户 ID](/zh-CN/realtime-media/rtc-server-sdk/build/string-uid)。
 
 ```cpp
 // 创建 IAgoraService 对象
@@ -571,7 +571,7 @@ service = nullptr;
 
 这个操作只需要进行一次，`AgoraService` 对象的生命期和应用程序的生命期保持一致，只要应用程序没有退出，`AgoraService` 可以一直存在。
 
-SDK 支持 `int` 型和 `String` 型用户 ID。本文仅演示 `int` 型用户 ID（即字符只能为数字）；`String` 型用户 ID（字符可以是数字、字母或特殊符号）的使用方法请参考 [使用 String 型用户 ID](/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/string-uid)。
+SDK 支持 `int` 型和 `String` 型用户 ID。本文仅演示 `int` 型用户 ID（即字符只能为数字）；`String` 型用户 ID（字符可以是数字、字母或特殊符号）的使用方法请参考 [使用 String 型用户 ID](/zh-CN/realtime-media/rtc-server-sdk/build/string-uid)。
 
 ```java
 // Import SDK, AgoraService, and AgoraServiceConfig classes for initialization
@@ -1049,7 +1049,7 @@ service.destroy();
 
     </Slot>
 
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc-server-sdk/build/enable-service)从声网控制台获得以下信息：
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
 
@@ -1501,7 +1501,7 @@ agora_service.release()
 
     </Slot>
 
-- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/enable-service)从声网控制台获得以下信息：
+- 一个有效的声网账号以及声网项目。请参考[开通服务](/zh-CN/realtime-media/rtc-server-sdk/build/enable-service)从声网控制台获得以下信息：
   - App ID：声网随机生成的字符串，用于识别你的项目。
   - 临时 Token：Token 也称为动态密钥，在客户端加入频道时对用户鉴权。临时 Token 的有效期为 24 小时。
 
@@ -1630,7 +1630,7 @@ func main() {
 
 3. 调用 `Connect` 与声网 RTC 频道建立连接，你需要传入以下参数：
 
-   - `token`: RTC Token。如果你的项目开启了 App 证书，你需要传入 RTC Token，详见[获取临时 Token](/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/enable-service#get-temp-token)；如果你的项目未开启 App 证书，则只需传入空字符串。
+   - `token`: RTC Token。如果你的项目开启了 App 证书，你需要传入 RTC Token，详见[获取临时 Token](/zh-CN/realtime-media/rtc-server-sdk/build/enable-service#get-temp-token)；如果你的项目未开启 App 证书，则只需传入空字符串。
    - `channelName`: 你自行定义的频道名。
    - `userId`: 你自行定义的本地用户 ID。
 

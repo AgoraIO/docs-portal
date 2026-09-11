@@ -71,7 +71,10 @@ import {
   getPageMarkdownUrl,
   type PageWithSource,
 } from './source.server';
-import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
+import {
+  resolveZhCnProductIaRedirect,
+  ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+} from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
 const ZH_CN_RTM_REST_API_PARENT_URL = '/zh-CN/api-reference/api-ref/signaling';
@@ -533,11 +536,12 @@ export async function loadDocsPagePayload(
     slugSegments,
   );
   if (zhCnProductIaRedirect) {
-    const statusCode: 301 | undefined = isZhCnRtmBuildIaRedirect(
-      zhCnProductIaRedirect,
-    )
-      ? 301
-      : undefined;
+    const path = `${tab}/${slugSegments.join('/')}`;
+    const statusCode: 301 | undefined =
+      path in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS ||
+      isZhCnRtmBuildIaRedirect(zhCnProductIaRedirect)
+        ? 301
+        : undefined;
 
     if (statusCode === undefined) {
       return { redirectUrl: zhCnProductIaRedirect };
@@ -1427,12 +1431,25 @@ export function resolveLegacySitemapRedirect(
   const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
   const rule = resolveLegacySitemapRedirectPath(legacyPath, search);
 
-  return rule
-    ? {
-        preserveSearch: rule.preserveSearch,
-        redirectUrl: rule.target,
-      }
+  if (!rule) {
+    return null;
+  }
+
+  const zhCnProductPath = legacyPath.startsWith('/zh-CN/')
+    ? legacyPath.slice('/zh-CN/'.length)
     : null;
+
+  if (
+    zhCnProductPath &&
+    zhCnProductPath in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS
+  ) {
+    return { redirectUrl: rule.target, statusCode: 301 as const };
+  }
+
+  return {
+    preserveSearch: rule.preserveSearch,
+    redirectUrl: rule.target,
+  };
 }
 
 function resolveRealtimeMediaRedirect(
