@@ -169,15 +169,17 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/custom-model-integration/audio-output.mdx':
     '2026-06-30T04:09:37.000Z',
   'content/docs/en/ai/build/custom-model-integration/build-server-client.mdx':
-    '2026-07-21T03:37:31.000Z',
+    '2026-08-27T11:39:55.000Z',
   'content/docs/en/ai/build/custom-model-integration/custom-llm.mdx':
     '2026-07-17T08:52:13.000Z',
+  'content/docs/en/ai/build/custom-model-integration/custom-tools.mdx':
+    '2026-09-11T10:54:12.000Z',
   'content/docs/en/ai/build/custom-model-integration/custom-tts.mdx':
     '2026-08-24T09:06:02.000Z',
   'content/docs/en/ai/build/custom-model-integration/managed-mode.mdx':
     '2026-09-02T08:18:31.000Z',
   'content/docs/en/ai/build/custom-model-integration/meta.json':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/ai/build/custom-model-integration/presets.mdx':
     '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/build/debug-agent-failures.mdx':
@@ -206,7 +208,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/index.mdx': '2026-06-25T15:09:45.000Z',
   'content/docs/en/ai/build/interrupt-agent.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/interrupt-agent.mdx': '2026-06-24T10:50:33.000Z',
-  'content/docs/en/ai/build/meta.json': '2026-08-10T15:28:51.000Z',
+  'content/docs/en/ai/build/mcp-tools.mdx': '2026-09-11T10:54:12.000Z',
+  'content/docs/en/ai/build/meta.json': '2026-09-11T10:54:12.000Z',
   'content/docs/en/ai/build/monitor-agent-runtime.mdx':
     '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/build/presets.md': '2026-05-19T10:33:06.000Z',
@@ -224,7 +227,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/shape-the-conversation/custom-information.mdx':
     '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/build/shape-the-conversation/filler-words.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-09-11T10:54:12.000Z',
   'content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/ai/build/shape-the-conversation/meta.json':
@@ -234,7 +237,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/short-term-memory.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/short-term-memory.mdx': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/build/start-stop-agent.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/build/start-stop-agent.mdx': '2026-08-07T06:52:10.000Z',
+  'content/docs/en/ai/build/start-stop-agent.mdx': '2026-08-27T11:39:55.000Z',
   'content/docs/en/ai/build/transcripts.md': '2026-06-26T08:32:37.000Z',
   'content/docs/en/ai/build/transcripts.mdx': '2026-08-07T06:52:10.000Z',
   'content/docs/en/ai/build/webhooks.md': '2026-05-19T10:33:06.000Z',
@@ -286,7 +289,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/device-kit/build/meta.json': '2026-07-01T10:34:46.000Z',
   'content/docs/en/ai/device-kit/build/run-r1-demo.md':
-    '2026-07-16T05:47:26.000Z',
+    '2026-08-27T11:39:55.000Z',
   'content/docs/en/ai/device-kit/build/run-the-demo-server.md':
     '2026-06-29T15:19:33.000Z',
   'content/docs/en/ai/device-kit/build/run-the-r1-demo.mdx':
@@ -413,7 +416,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/asr/assembly-ai.mdx': '2026-07-31T07:35:49.000Z',
   'content/docs/en/ai/models/asr/deepgram.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/deepgram.mdx': '2026-08-27T04:48:33.000Z',
-  'content/docs/en/ai/models/asr/gemini.mdx': '2026-08-26T16:24:53.000Z',
+  'content/docs/en/ai/models/asr/gemini.mdx': '2026-09-11T12:41:57.000Z',
   'content/docs/en/ai/models/asr/google.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/google.mdx': '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/models/asr/index.md': '2026-06-25T08:42:31.000Z',
@@ -459,20 +462,20 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/llm/openai.mdx': '2026-08-06T05:01:51.000Z',
   'content/docs/en/ai/models/llm/xai.mdx': '2026-06-29T15:19:33.000Z',
   'content/docs/en/ai/models/meta.json': '2026-06-24T10:50:33.000Z',
-  'content/docs/en/ai/models/mllm/azure.mdx': '2026-08-11T06:17:07.000Z',
+  'content/docs/en/ai/models/mllm/azure.mdx': '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/mllm/gemini.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/mllm/gemini.mdx': '2026-07-30T09:20:29.000Z',
+  'content/docs/en/ai/models/mllm/gemini.mdx': '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/mllm/google-vertex-ai.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/mllm/google-vertex-ai.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/mllm/index.md': '2026-06-25T08:42:31.000Z',
   'content/docs/en/ai/models/mllm/meta.json': '2026-09-11T01:10:07.000Z',
   'content/docs/en/ai/models/mllm/openai-gpt-live.mdx':
-    '2026-09-11T01:10:07.000Z',
+    '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/mllm/openai.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/mllm/openai.mdx': '2026-07-30T09:20:29.000Z',
-  'content/docs/en/ai/models/mllm/xai.mdx': '2026-07-30T09:20:29.000Z',
+  'content/docs/en/ai/models/mllm/openai.mdx': '2026-09-11T11:31:00.000Z',
+  'content/docs/en/ai/models/mllm/xai.mdx': '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/tts/amazon.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/amazon.mdx': '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/models/tts/cartesia.md': '2026-05-19T10:33:06.000Z',
@@ -559,7 +562,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-08-11T06:17:07.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-09-11T10:54:12.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -790,13 +793,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/android.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-08-26T04:39:09.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/meta.json':
     '2026-06-26T08:32:37.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/web.mdx':
-    '2026-07-30T09:20:29.000Z',
+    '2026-08-27T11:39:55.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
@@ -958,13 +961,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-08-27T12:03:31.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-08-27T12:03:31.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
-    '2026-08-11T06:17:07.000Z',
+    '2026-08-27T12:03:31.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
     '2026-09-07T08:01:28.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
@@ -3284,7 +3287,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/about-agora.mdx': '2026-07-21T03:37:31.000Z',
   'content/docs/en/introduction/account.md': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/account.mdx': '2026-08-10T15:28:51.000Z',
-  'content/docs/en/introduction/agora-cli.mdx': '2026-07-17T06:39:01.000Z',
+  'content/docs/en/introduction/agora-cli.mdx': '2026-08-27T11:39:55.000Z',
   'content/docs/en/introduction/agora-mcp.mdx': '2026-07-20T06:11:39.000Z',
   'content/docs/en/introduction/agora-skills.mdx': '2026-06-25T02:32:26.000Z',
   'content/docs/en/introduction/ai-agents.md': '2026-05-21T09:41:55.000Z',
@@ -11642,7 +11645,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-09-11T01:10:07.000Z',
+    '2026-09-11T10:54:12.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
     '2026-07-03T04:07:10.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',
