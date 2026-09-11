@@ -32,24 +32,6 @@ const manualLegacyUrls = new Set([
   'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
 ]);
 
-const manualRtsaMigrationAliasUrls = new Set([
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/setup-and-access/license',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/audio-codec',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/stream-state',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/key-frame',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/encryption',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/setup-and-access/cloud-proxy',
-  'https://docs.agora.io/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit',
-]);
-
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
   const compatibilityUrls = [
@@ -138,8 +120,7 @@ describe('legacy sitemap compatibility audit', () => {
     const staleRules = legacySitemapRedirectConfig.rules.filter(
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
-        !manualLegacyUrls.has(rule.legacyUrl) &&
-        !manualRtsaMigrationAliasUrls.has(rule.legacyUrl),
+        !manualLegacyUrls.has(rule.legacyUrl),
     );
 
     expect(staleRules).toEqual([]);

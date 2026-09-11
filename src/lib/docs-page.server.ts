@@ -97,19 +97,6 @@ const ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES = [
 ] as const;
 const ZH_CN_RTM_TROUBLESHOOTING_REDIRECT =
   '/zh-CN/realtime-media/rtm/build/troubleshooting';
-const ZH_CN_SPEECH_TO_TEXT_BUILD_IA_REDIRECT_PREFIX =
-  '/zh-CN/realtime-media/speech-to-text/build/';
-const ZH_CN_RTSA_BUILD_IA_REDIRECT_PREFIXES = [
-  '/zh-CN/realtime-media/rtsa/build/project-preparation/',
-  '/zh-CN/realtime-media/rtsa/build/media-transmission/',
-  '/zh-CN/realtime-media/rtsa/build/data-communication/',
-  '/zh-CN/realtime-media/rtsa/build/production-environment/',
-] as const;
-const ZH_CN_RTSA_BUILD_IA_REDIRECTS = [
-  '/zh-CN/realtime-media/rtsa/build/implement-transmission',
-  '/zh-CN/realtime-media/rtsa/build/string-uid',
-  '/zh-CN/realtime-media/rtsa/build/interoperate-rtc',
-] as const;
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
@@ -546,11 +533,11 @@ export async function loadDocsPagePayload(
     slugSegments,
   );
   if (zhCnProductIaRedirect) {
-    const statusCode: 301 | undefined =
-      isZhCnBuildIaRedirect(zhCnProductIaRedirect) ||
-      isZhCnSpeechToTextBuildIaRedirect(zhCnProductIaRedirect)
-        ? 301
-        : undefined;
+    const statusCode: 301 | undefined = isZhCnRtmBuildIaRedirect(
+      zhCnProductIaRedirect,
+    )
+      ? 301
+      : undefined;
 
     if (statusCode === undefined) {
       return { redirectUrl: zhCnProductIaRedirect };
@@ -655,15 +642,7 @@ export async function loadDocsPagePayload(
 
   if (!page) {
     const pageTree = getCanonicalPageTree(source, locale);
-    const isZhCnRtsaBuildRoot =
-      locale === 'zh-CN' &&
-      tab === 'realtime-media' &&
-      slugSegments.length === 2 &&
-      slugSegments[0] === 'rtsa' &&
-      slugSegments[1] === 'build';
-    const fallbackUrl = isZhCnRtsaBuildRoot
-      ? '/zh-CN/realtime-media/rtsa/build/implement-transmission'
-      : getFirstChildPageUrl(pageTree, tab, slugSegments);
+    const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 
     if (fallbackUrl) {
       return {
@@ -1452,9 +1431,6 @@ export function resolveLegacySitemapRedirect(
     ? {
         preserveSearch: rule.preserveSearch,
         redirectUrl: rule.target,
-        ...(isZhCnBuildIaRedirect(rule.target)
-          ? { statusCode: 301 as const }
-          : {}),
       }
     : null;
 }
@@ -1477,25 +1453,25 @@ function resolveRealtimeMediaRedirect(
           'speech-to-text/overview/product-overview': `/${locale}/realtime-media/speech-to-text`,
           'speech-to-text/overview/release-notes': `/${locale}/realtime-media/speech-to-text/reference/release-notes`,
           'speech-to-text/overview/billing': `/${locale}/realtime-media/speech-to-text/reference/billing`,
-          'speech-to-text/get-started/enable-service': `/${locale}/realtime-media/speech-to-text/build/setup-and-access/enable-service`,
-          'speech-to-text/user-guides': `/${locale}/realtime-media/speech-to-text/build/setup-and-access/enable-service`,
-          'speech-to-text/user-guides/http-basic-auth': `/${locale}/realtime-media/speech-to-text/build/setup-and-access/http-basic-auth`,
-          'speech-to-text/user-guides/transcribe-specified-hosts': `/${locale}/realtime-media/speech-to-text/build/start-and-manage/transcribe-specified-hosts`,
-          'speech-to-text/user-guides/translation': `/${locale}/realtime-media/speech-to-text/build/start-and-manage/translation`,
-          'speech-to-text/user-guides/update-service': `/${locale}/realtime-media/speech-to-text/build/start-and-manage/update-service`,
+          'speech-to-text/get-started/enable-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service`,
+          'speech-to-text/user-guides/http-basic-auth': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth`,
+          'speech-to-text/user-guides/transcribe-specified-hosts': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/transcribe-specified-hosts`,
+          'speech-to-text/user-guides/translation': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/translation`,
+          'speech-to-text/user-guides/update-service': `/${locale}/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service`,
           'speech-to-text/user-guides/how-to-use-protobuf': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf`,
           'speech-to-text/user-guides/render-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/render-captions`,
-          'speech-to-text/user-guides/record-captions': `/${locale}/realtime-media/speech-to-text/build/record-captions`,
+          'speech-to-text/user-guides/record-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/record-captions`,
           'speech-to-text/user-guides/encrypt-captions': `/${locale}/realtime-media/speech-to-text/build/process-transcription-data/encrypt-captions`,
-          'speech-to-text/best-practices': `/${locale}/realtime-media/speech-to-text/build/start-and-manage/enable-from-client`,
-          'speech-to-text/best-practices/enable-from-client': `/${locale}/realtime-media/speech-to-text/build/start-and-manage/enable-from-client`,
+          'speech-to-text/best-practices': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
+          'speech-to-text/best-practices/enable-from-client': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client`,
           'speech-to-text/best-practices/optimize-quality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/optimize-quality`,
           'speech-to-text/audio-modality': `/${locale}/realtime-media/speech-to-text/build/extend-and-optimize/audio-modality`,
           'speech-to-text/api': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
           'speech-to-text/api/supported-languages': `/${locale}/realtime-media/speech-to-text/reference/supported-languages`,
           'speech-to-text/api/response-code': `/${locale}/realtime-media/speech-to-text/reference/response-code`,
-          'speech-to-text/webhook': `/${locale}/realtime-media/speech-to-text/build/receive-webhook`,
-          'speech-to-text/webhook/receive-webhook': `/${locale}/realtime-media/speech-to-text/build/receive-webhook`,
+          'speech-to-text/webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
+          'speech-to-text/webhook/receive-webhook': `/${locale}/realtime-media/speech-to-text/build/monitor-events/receive-webhook`,
           'speech-to-text/webhook/ncs-events': `/${locale}/realtime-media/speech-to-text/reference/ncs-events`,
         }
       : {};
@@ -1521,23 +1497,13 @@ function resolveRealtimeMediaRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
-function isZhCnBuildIaRedirect(redirectUrl: string) {
+function isZhCnRtmBuildIaRedirect(redirectUrl: string) {
   return (
     redirectUrl === ZH_CN_RTM_TROUBLESHOOTING_REDIRECT ||
     ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
       redirectUrl.startsWith(prefix),
-    ) ||
-    ZH_CN_RTSA_BUILD_IA_REDIRECTS.includes(
-      redirectUrl as (typeof ZH_CN_RTSA_BUILD_IA_REDIRECTS)[number],
-    ) ||
-    ZH_CN_RTSA_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
-      redirectUrl.startsWith(prefix),
     )
   );
-}
-
-function isZhCnSpeechToTextBuildIaRedirect(redirectUrl: string) {
-  return redirectUrl.startsWith(ZH_CN_SPEECH_TO_TEXT_BUILD_IA_REDIRECT_PREFIX);
 }
 
 function resolveRealtimeMediaApiReferenceRedirect(

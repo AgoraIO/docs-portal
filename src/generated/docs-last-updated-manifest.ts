@@ -8244,7 +8244,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/api-reference/api-ref/signaling/restful.md':
     '2026-07-28T03:11:10.000Z',
   'content/docs/zh-CN/api-reference/api-ref/speech-to-text/index.mdx':
-    '2026-07-28T03:12:09.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/api-reference/api-ref/speech-to-text/meta.json':
     '2026-07-28T03:13:55.000Z',
   'content/docs/zh-CN/api-reference/api-ref/voip-callkit/authentication.mdx':
@@ -21621,7 +21621,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/api-reference/speech-to-text/restful.md':
     '2026-06-13T10:37:20.000Z',
   'content/docs/zh-CN/api-reference/speech-to-text/restful/api/meta.json':
-    '2026-07-28T03:13:55.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/api-reference/speech-to-text/restful/api/response-code.mdx':
     '2026-07-28T03:13:55.000Z',
   'content/docs/zh-CN/api-reference/speech-to-text/restful/api/supported-languages.mdx':
@@ -26342,7 +26342,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/realtime-media/rtsa/build/data-communication/data-stream.mdx':
     '2026-09-09T14:43:29.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/data-communication/meta.json':
-    '2026-09-09T14:43:29.000Z',
+    '2026-09-10T05:08:24.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx':
     '2026-09-09T15:11:07.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/implement-core-features/audio-codec.mdx':
@@ -26380,7 +26380,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/key-frame.mdx':
     '2026-09-09T14:43:29.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/meta.json':
-    '2026-09-09T14:43:29.000Z',
+    '2026-09-10T05:08:24.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx':
     '2026-09-09T14:43:29.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/stream-state.mdx':
@@ -26394,7 +26394,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/realtime-media/rtsa/build/production-environment/cloud-proxy.mdx':
     '2026-09-09T14:43:29.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/production-environment/meta.json':
-    '2026-09-09T14:43:29.000Z',
+    '2026-09-10T04:00:57.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/production-environment/region-limit.mdx':
     '2026-09-09T14:43:29.000Z',
   'content/docs/zh-CN/realtime-media/rtsa/build/project-preparation/enable-service.mdx':
@@ -26587,25 +26587,45 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client.mdx':
     '2026-07-28T03:11:18.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/extend-and-optimize/meta.json':
-    '2026-07-28T03:04:34.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/extend-and-optimize/optimize-quality.mdx':
     '2026-07-28T03:11:15.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/meta.json':
-    '2026-07-28T03:11:20.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/monitor-events/meta.json':
-    '2026-07-28T03:01:45.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/monitor-events/receive-webhook.mdx':
     '2026-07-28T03:13:55.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/encrypt-captions.mdx':
-    '2026-07-28T03:11:15.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf.mdx':
-    '2026-08-04T03:41:32.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/meta.json':
-    '2026-07-28T03:04:34.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/record-captions.mdx':
     '2026-07-28T03:11:15.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/render-captions.mdx':
     '2026-07-28T03:13:55.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/receive-webhook.mdx':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/record-captions.mdx':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/setup-and-access/enable-service.mdx':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/setup-and-access/http-basic-auth.mdx':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/setup-and-access/meta.json':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/start-and-manage/enable-from-client.mdx':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/start-and-manage/meta.json':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/start-and-manage/transcribe-specified-hosts.mdx':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/start-and-manage/translation.mdx':
+    '2026-09-10T02:28:00.000Z',
+  'content/docs/zh-CN/realtime-media/speech-to-text/build/start-and-manage/update-service.mdx':
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service.mdx':
     '2026-07-28T03:12:10.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth.mdx':
@@ -26623,11 +26643,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/realtime-media/speech-to-text/get-started/meta.json':
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/get-started/quick-start.mdx':
-    '2026-08-17T02:42:42.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/index.md':
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/index.mdx':
-    '2026-08-17T02:42:42.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/mcp-integrate.mdx':
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/meta.json':
@@ -26645,9 +26665,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/realtime-media/speech-to-text/reference/meta.json':
     '2026-08-17T03:03:11.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/reference/ncs-events.mdx':
-    '2026-08-17T02:42:42.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/reference/release-notes.mdx':
-    '2026-08-04T03:41:32.000Z',
+    '2026-09-10T02:28:00.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/reference/response-code.mdx':
     '2026-07-28T03:11:15.000Z',
   'content/docs/zh-CN/realtime-media/speech-to-text/reference/supported-languages.mdx':
@@ -29268,8 +29288,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/speech-to-text/openapi.meta.json':
     '2026-06-14T08:17:36.000Z',
   'content/openapi/speech-to-text/v7.en.yaml': '2026-06-28T06:41:08.000Z',
-  'content/openapi/speech-to-text/v7.yaml': '2026-08-17T02:29:04.000Z',
-  'content/openapi/speech-to-text/v7.zh-CN.yaml': '2026-08-04T03:41:32.000Z',
+  'content/openapi/speech-to-text/v7.yaml': '2026-09-10T02:28:00.000Z',
+  'content/openapi/speech-to-text/v7.zh-CN.yaml': '2026-09-10T02:28:00.000Z',
   'content/openapi/voip-callkit/call.zh-CN.yaml': '2026-07-28T03:12:10.000Z',
   'content/openapi/whiteboard/restful-wb.zh-CN.yaml':
     '2026-07-28T03:13:58.000Z',

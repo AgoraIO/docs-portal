@@ -555,36 +555,6 @@ describe('DocsSidebarTree', () => {
     );
   });
 
-  it('opens a default-collapsed plain section when a child is active', async () => {
-    const tree: DocsSidebarNode[] = [
-      {
-        children: [
-          {
-            id: '/zh-CN/realtime-media/rtc/reference/billing',
-            title: '计费策略',
-            type: 'page',
-            url: '/zh-CN/realtime-media/rtc/reference/billing',
-          },
-        ],
-        collapsible: true,
-        defaultOpen: false,
-        id: 'billing',
-        title: '计费与限制',
-        type: 'section',
-      },
-    ];
-
-    renderSidebarTree(tree, '/zh-CN/realtime-media/rtc/reference/billing');
-
-    expect(
-      await screen.findByRole('link', { name: '计费策略' }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '计费与限制' })).toHaveAttribute(
-      'aria-expanded',
-      'true',
-    );
-  });
-
   it.each([
     ['rtc', '计费与限制', 'reference/billing-strategy', '计费策略'],
     ['rtm', '计费说明', 'reference/billing/billing-strategy', '计费说明'],
@@ -921,7 +891,7 @@ describe('DocsSidebarTree', () => {
     ).toHaveClass('border-[color:var(--line-strong)]', 'pl-3');
   });
 
-  it('opens a default-collapsed nested section when activePath moves into it', async () => {
+  it('opens a collapsed nested section when activePath moves into it', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -955,7 +925,6 @@ describe('DocsSidebarTree', () => {
               },
             ],
             collapsible: true,
-            defaultOpen: false,
             id: 'signaling',
             title: 'Signaling',
             type: 'section',
@@ -1051,7 +1020,7 @@ describe('DocsSidebarTree', () => {
     expect(signalingToggle).toHaveAttribute('aria-expanded', 'true');
   });
 
-  it('opens defaultOpen false linked sections when a child is active', async () => {
+  it('keeps defaultOpen false sections collapsed even when a child is active', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -1105,10 +1074,10 @@ describe('DocsSidebarTree', () => {
 
     const faqToggle = await screen.findByRole('button', { name: /FAQ/i });
 
-    expect(faqToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(faqToggle).toHaveAttribute('aria-expanded', 'false');
     expect(
-      screen.getByRole('link', { name: 'Integration' }),
-    ).toBeInTheDocument();
+      screen.queryByRole('link', { name: 'Integration' }),
+    ).not.toBeInTheDocument();
   });
 
   it('keeps the Build subsection collapsed by default inside Get started', async () => {

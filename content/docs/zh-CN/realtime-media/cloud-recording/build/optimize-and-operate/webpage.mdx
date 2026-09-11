@@ -14,7 +14,7 @@ description: "了解如何在云端录制中保障页面录制可靠性，包括
 - 网页使用的静态资源无法保证 100% 一次性加载成功。如加载失败，你需要自行检测并处理。
 
 :::info[信息]
-使用该功能需要[开启消息通知服务](/zh-CN/realtime-media/cloud-recording/build/handle-events/enable-ncs)，以便接收服务端事件回调。
+使用该功能需要[开启消息通知服务](/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs)，以便接收服务端事件回调。
 :::
 
 ## 录制启动时的保障
@@ -85,10 +85,10 @@ function notifyReady() {
 
 <TabsContent value="timeout">
 
-如果页面加载超时，即在设定的 `readyTimeout` 时间内未调用 `notifyReady` 方法通知浏览器，则浏览器自动重新加载页面。你会收到 [`web_recorder_reload`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#73) 事件回调，其中 `reason` 字段为 `page_load_timeout`。
+如果页面加载超时，即在设定的 `readyTimeout` 时间内未调用 `notifyReady` 方法通知浏览器，则浏览器自动重新加载页面。你会收到 [`web_recorder_reload`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#73) 事件回调，其中 `reason` 字段为 `page_load_timeout`。
 
 - 如果重新加载成功，则参考页面加载完成的逻辑，调用 `notifyReady` 方法通知浏览器。
-- 如果页面加载再次超时，则表示页面重新加载失败，录制服务停止。你会收到 [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#71) 事件回调，其中 `code` 为 `4`，`message` 为 `page_load_timeout`。
+- 如果页面加载再次超时，则表示页面重新加载失败，录制服务停止。你会收到 [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71) 事件回调，其中 `code` 为 `4`，`message` 为 `page_load_timeout`。
 
 工作原理如下图所示：
 
@@ -115,6 +115,6 @@ function notifyReady() {
 
 ## 录制异常停止的保障
 
-开通消息通知服务并订阅 [`71 web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage#71) 回调事件，当业务服务器收到 `web_recorder_stopped` 回调，且 `code` 不为 `0`，表示页面录制异常停止，声网推荐你重新发起新的录制。
+开通消息通知服务并订阅 [`71 web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71) 回调事件，当业务服务器收到 `web_recorder_stopped` 回调，且 `code` 不为 `0`，表示页面录制异常停止，声网推荐你重新发起新的录制。
 
 ![停止检测](https://web-cdn.agora.io/docs-portal/img/cloud-recording/webpage-load-stop.svg)

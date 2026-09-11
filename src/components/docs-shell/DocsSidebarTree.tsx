@@ -133,8 +133,11 @@ function SidebarSection({
     isNodeActive(child, activePath),
   );
   const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
-  const shouldRevealActivePath = hasActiveChild || shouldDefaultOpen;
-  const defaultOpen = !node.collapsible || shouldRevealActivePath;
+  const canAutoOpen = node.defaultOpen !== false;
+  const defaultOpen =
+    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || shouldDefaultOpen);
   const [isOpen, setIsOpen] = useActivePathDisclosure(
     defaultOpen,
     shouldRevealActivePath,
@@ -295,8 +298,9 @@ function SidebarLinkedSection({
   url: string;
 }) {
   const hasActiveChild = items.some((child) => isNodeActive(child, activePath));
+  const canAutoOpen = defaultOpenProp !== false;
   const shouldRevealActivePath =
-    hasActiveChild || (url === activePath && defaultOpenProp !== false);
+    canAutoOpen && (hasActiveChild || url === activePath);
   const defaultOpen = !collapsible || shouldRevealActivePath;
   const [isOpen, setIsOpen] = useActivePathDisclosure(
     defaultOpen,
@@ -474,8 +478,11 @@ function SidebarNestedSection({
     isNodeActive(child, activePath),
   );
   const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
-  const shouldRevealActivePath = hasActiveChild || shouldDefaultOpen;
-  const defaultOpen = !node.collapsible || shouldRevealActivePath;
+  const canAutoOpen = node.defaultOpen !== false;
+  const defaultOpen =
+    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+  const shouldRevealActivePath =
+    canAutoOpen && (hasActiveChild || shouldDefaultOpen);
   const [isOpen, setIsOpen] = useActivePathDisclosure(
     defaultOpen,
     shouldRevealActivePath,

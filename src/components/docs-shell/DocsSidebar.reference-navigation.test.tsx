@@ -75,7 +75,7 @@ describe('DocsSidebar Reference navigation', () => {
     });
   });
 
-  it('opens the active FAQ category in the standard Reference tree', () => {
+  it('folds FAQ categories into the standard Reference tree', () => {
     render(
       <SidebarProvider>
         <DocsSidebar
@@ -98,10 +98,9 @@ describe('DocsSidebar Reference navigation', () => {
     expect(primaryLinks.map((link) => link.textContent)).toEqual([
       'SDK 下载',
       'Demo',
-      '集成类',
     ]);
 
-    for (const item of [...primaryLinks.slice(0, 2), faqToggle]) {
+    for (const item of [...primaryLinks, faqToggle]) {
       expect(item.closest('[data-sidebar="menu-button"]')).toHaveClass(
         'text-[13px]',
         'font-medium',
@@ -109,22 +108,22 @@ describe('DocsSidebar Reference navigation', () => {
       );
     }
 
-    expect(faqToggle).toHaveAttribute('aria-expanded', 'true');
-    expect(
-      within(primaryGroup as HTMLElement).queryByRole('link', {
-        name: '集成类',
-      }),
-    ).toBeVisible();
-    expect(screen.queryByTestId('faq-category-nav')).not.toBeInTheDocument();
-
-    fireEvent.click(faqToggle);
-
     expect(faqToggle).toHaveAttribute('aria-expanded', 'false');
     expect(
       within(primaryGroup as HTMLElement).queryByRole('link', {
         name: '集成类',
       }),
     ).not.toBeInTheDocument();
+    expect(screen.queryByTestId('faq-category-nav')).not.toBeInTheDocument();
+
+    fireEvent.click(faqToggle);
+
+    expect(faqToggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      within(primaryGroup as HTMLElement).getByRole('link', {
+        name: '集成类',
+      }),
+    ).toBeVisible();
   });
 
   it('does not render the SDK product directory', () => {

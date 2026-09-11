@@ -64,17 +64,4 @@ describe('static legacy sitemap redirects', () => {
       resolveStaticLegacySitemapRedirect('/en/ai/get-started/quickstart'),
     ).toBeNull();
   });
-
-  it('marks an RTSA migration alias as an application-layer 301', () => {
-    expect(
-      resolveStaticLegacySitemapRedirect(
-        '/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
-        '?from=legacy',
-      ),
-    ).toEqual({
-      preserveSearch: true,
-      redirectUrl: '/zh-CN/realtime-media/rtsa/build/implement-transmission',
-      statusCode: 301,
-    });
-  });
 });

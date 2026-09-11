@@ -1,7 +1,5 @@
 import staticRedirects from './static-redirects.json';
 
-const RTSA_BUILD_REDIRECT_PREFIX = '/zh-CN/realtime-media/rtsa/build/';
-
 type StaticLegacyRedirectRule = {
   p: string;
   q?: string;
@@ -12,7 +10,6 @@ type StaticLegacyRedirectRule = {
 export type StaticLegacyRedirectPayload = {
   preserveSearch: boolean;
   redirectUrl: string;
-  statusCode?: 301 | 307 | 308;
 };
 
 const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
@@ -37,9 +34,6 @@ export function resolveStaticLegacySitemapRedirect(
     ? {
         preserveSearch: rule.s !== 0,
         redirectUrl: rule.t,
-        ...(rule.t.startsWith(RTSA_BUILD_REDIRECT_PREFIX)
-          ? { statusCode: 301 as const }
-          : {}),
       }
     : null;
 }

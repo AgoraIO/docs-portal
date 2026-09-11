@@ -48,12 +48,6 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     }
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
-    const isZhCnRtsaBuildRoot =
-      params.locale === 'zh-CN' &&
-      params.tab === 'realtime-media' &&
-      slugSegments.length === 2 &&
-      slugSegments[0] === 'rtsa' &&
-      slugSegments[1] === 'build';
     const movedDocsRedirect = resolveMovedDocsRedirect(
       params.locale,
       params.tab,
@@ -67,15 +61,6 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     }
 
     if (shouldUseStaticDocsPayload()) {
-      if (isZhCnRtsaBuildRoot) {
-        throw redirect({
-          href: preserveRedirectSearch(
-            '/zh-CN/realtime-media/rtsa/build/implement-transmission',
-            location,
-          ),
-        });
-      }
-
       const legacyRedirect = resolveStaticLegacySitemapRedirect(
         `/${[params.locale, params.tab, ...slugSegments].join('/')}`,
         location.searchStr,
@@ -88,7 +73,6 @@ export const Route = createFileRoute('/$locale/$tab/$')({
             location,
             legacyRedirect.preserveSearch,
           ),
-          statusCode: legacyRedirect.statusCode ?? 307,
         });
       }
     }

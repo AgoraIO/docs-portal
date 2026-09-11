@@ -1,21 +1,5 @@
 const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording': '/zh-CN/realtime-media/cloud-recording',
-  'realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service':
-    '/zh-CN/realtime-media/speech-to-text/build/setup-and-access/enable-service',
-  'realtime-media/speech-to-text/build/start-transcribing-and-translating/http-basic-auth':
-    '/zh-CN/realtime-media/speech-to-text/build/setup-and-access/http-basic-auth',
-  'realtime-media/speech-to-text/build/start-transcribing-and-translating/transcribe-specified-hosts':
-    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/transcribe-specified-hosts',
-  'realtime-media/speech-to-text/build/start-transcribing-and-translating/translation':
-    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/translation',
-  'realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service':
-    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/update-service',
-  'realtime-media/speech-to-text/build/process-transcription-data/record-captions':
-    '/zh-CN/realtime-media/speech-to-text/build/record-captions',
-  'realtime-media/speech-to-text/build/monitor-events/receive-webhook':
-    '/zh-CN/realtime-media/speech-to-text/build/receive-webhook',
-  'realtime-media/speech-to-text/build/extend-and-optimize/enable-from-client':
-    '/zh-CN/realtime-media/speech-to-text/build/start-and-manage/enable-from-client',
   'realtime-media/danmaku/api/api-limits':
     '/zh-CN/realtime-media/danmaku/reference/api-limits',
   'realtime-media/danmaku/api/base-url':
@@ -269,7 +253,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/cloud-recording/get-started/enable-service':
     '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service',
   'realtime-media/recording/cloud-recording/get-started/quick-start-nodejs':
-    '/zh-CN/realtime-media/cloud-recording/get-started/quick-start-nodejs',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/quick-start-nodejs',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/billing':
     '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/payment':
@@ -311,17 +295,17 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/cloud-recording/user-guides/web-mode/set-webpage-recording':
     '/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording',
   'realtime-media/recording/cloud-recording/webhook/enable-ncs':
-    '/zh-CN/realtime-media/cloud-recording/build/handle-events/enable-ncs',
+    '/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs',
   'realtime-media/recording/cloud-recording/webhook/ncs-events':
     '/zh-CN/realtime-media/cloud-recording/reference/ncs-events',
   'realtime-media/recording/cloud-recording/webhook/service':
-    '/zh-CN/realtime-media/cloud-recording/build/handle-events/service',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service',
   'realtime-media/recording/cloud-recording/webhook/status':
-    '/zh-CN/realtime-media/cloud-recording/build/handle-events/status',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status',
   'realtime-media/recording/cloud-recording/webhook/uploading':
-    '/zh-CN/realtime-media/cloud-recording/build/handle-events/uploading',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading',
   'realtime-media/recording/cloud-recording/webhook/webpage':
-    '/zh-CN/realtime-media/cloud-recording/build/handle-events/webpage',
+    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage',
   'realtime-media/recording/local-server-recording/best-practice/restore-files':
     '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files',
   'realtime-media/recording/local-server-recording/get-started/enable-service':
@@ -791,17 +775,17 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtsa/advanced-features/multi-channel':
     '/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel',
   'realtime-media/rtsa/advanced-features/region-limit':
-    '/zh-CN/realtime-media/rtsa/build/production-environment/region-limit',
+    '/zh-CN/realtime-media/rtsa/build/network-and-region-access/region-limit',
   'realtime-media/rtsa/advanced-features/send-message-through-rdt-channel':
     '/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel',
   'realtime-media/rtsa/advanced-features/string-uid':
-    '/zh-CN/realtime-media/rtsa/build/string-uid',
+    '/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/string-uid',
   'realtime-media/rtsa/basic-features/audio-codec':
     '/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec',
   'realtime-media/rtsa/basic-features/bitrate-adaption':
     '/zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption',
   'realtime-media/rtsa/basic-features/cloud-proxy':
-    '/zh-CN/realtime-media/rtsa/build/production-environment/cloud-proxy',
+    '/zh-CN/realtime-media/rtsa/build/network-and-region-access/cloud-proxy',
   'realtime-media/rtsa/basic-features/key-frame':
     '/zh-CN/realtime-media/rtsa/build/media-transmission/key-frame',
   'realtime-media/rtsa/basic-features/license':
@@ -809,13 +793,13 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtsa/basic-features/stream-state':
     '/zh-CN/realtime-media/rtsa/build/media-transmission/stream-state',
   'realtime-media/rtsa/best-practices/interoperate-rtc':
-    '/zh-CN/realtime-media/rtsa/build/interoperate-rtc',
+    '/zh-CN/realtime-media/rtsa/build/rtc-interoperability/interoperate-rtc',
   'realtime-media/rtsa/error-codes':
     '/zh-CN/realtime-media/rtsa/reference/error-codes',
   'realtime-media/rtsa/get-started/enable-service':
     '/zh-CN/realtime-media/rtsa/build/project-preparation/enable-service',
   'realtime-media/rtsa/get-started/implement-transmission':
-    '/zh-CN/realtime-media/rtsa/build/implement-transmission',
+    '/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/implement-transmission',
   'realtime-media/rtsa/overview/billing':
     '/zh-CN/realtime-media/rtsa/reference/billing',
   'realtime-media/rtsa/overview/product-overview': '/zh-CN/realtime-media/rtsa',
