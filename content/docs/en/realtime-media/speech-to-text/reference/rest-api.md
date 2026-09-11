@@ -9,7 +9,7 @@ Use the Speech-to-Text v7 REST API to start, query, update, list, and stop real-
 
 - [REST API overview](/en/api-reference/api-ref/speech-to-text)
 - [English OpenAPI YAML](/openapi/speech-to-text/v7.en.yaml)
-- [RESTful authentication](./restful-authentication)
+- [RESTful authentication](/en/api-reference/api-ref/speech-to-text/authentication)
 - [v6.x REST API reference (Deprecated)](./rest-api-v6/acquire)
 - [v5.x REST API reference (Deprecated)](./rest-api-v5/acquire)
 

@@ -1387,20 +1387,6 @@ paths:
                   description: >-
                     The unique identifier of the agent. The same identifier cannot be used
                     repeatedly.
-                preset:
-                  type: string
-                  description: >-
-                    Deprecated. Use `credential_mode: "managed"` within the `asr`, `llm`, or `tts`
-                    block instead. See [Use managed
-                    mode](/en/ai/build/custom-model-integration/managed-mode).
-
-
-                    A comma-separated string of one or more presets. Each preset provides a
-                    predefined configuration for ASR, LLM, and TTS. You can specify a preset for any
-                    or all of ASR, LLM, and TTS. When a preset is specified, you do not need to
-                    provide the endpoint URL, API key, or model for the preset providers. Use the
-                    `asr`, `llm`, and `tts` fields to configure additional settings.
-                  deprecated: true
                 pipeline_id:
                   type: string
                   description: >-
@@ -1409,12 +1395,6 @@ paths:
                     configuration is used as the base configuration. Any fields specified in
                     `properties` override the corresponding agent settings. When you specify a
                     `pipeline_id`, the `asr`, `tts`, and `llm` fields in `properties` are optional.
-
-
-                    The unique ID of a published agent in STUDIO. When provided, the saved agent
-                    configuration is used as the base configuration. Any fields specified in
-                    properties override the corresponding agent settings. When you specify a
-                    pipeline_id, the asr, tts, and llm fields in properties are optional.
                 properties:
                   type: object
                   additionalProperties: true
@@ -2605,6 +2585,7 @@ paths:
                             - gemini
                             - vertexai
                             - xai
+                            - openai_gpt_live
                           description: >-
                             MLLM provider. Currently supports:
 
@@ -2618,6 +2599,9 @@ paths:
                             AI)](/en/ai/models/mllm/google-vertex-ai)
 
                             - `xai`: [xAI Grok](/en/ai/models/mllm/xai)
+
+                            - `openai_gpt_live`: [OpenAI
+                            GPT-Live](/en/ai/models/mllm/openai-gpt-live)
                         mcp_servers:
                           type: array
                           items:
@@ -3844,6 +3828,20 @@ paths:
                     - remote_rtc_uids
                     - tts
                     - llm
+                preset:
+                  type: string
+                  description: >-
+                    Deprecated. Use `credential_mode: "managed"` within the `asr`, `llm`, or `tts`
+                    block instead. See [Use managed
+                    mode](/en/ai/build/custom-model-integration/managed-mode).
+
+
+                    A comma-separated string of one or more presets. Each preset provides a
+                    predefined configuration for ASR, LLM, and TTS. You can specify a preset for any
+                    or all of ASR, LLM, and TTS. When a preset is specified, you do not need to
+                    provide the endpoint URL, API key, or model for the preset providers. Use the
+                    `asr`, `llm`, and `tts` fields to configure additional settings.
+                  deprecated: true
               required:
                 - name
                 - properties

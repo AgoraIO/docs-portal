@@ -318,7 +318,3 @@ The REST API reference for this endpoint remains out of scope for this prose mig
 
 - Notifications does not guarantee that callbacks arrive in the same order as events occur.
 - Your server may receive more than one callback for a single event.
-
-:::tip
-To deduplicate callbacks, use a combination of the `noticeId` and `notifyMs` fields.
-:::

@@ -73,7 +73,7 @@ To verify the integration:
 
 1. Obtain an App ID with token enabled.
 2. [Generate a temporary token](/en/introduction/account#generate-temporary-tokens) in Agora Console.
-3. In your browser, open the [Agora web demo](https://webdemo.agora.io/basicVideoCall/index.html) and update `App ID`, `Channel`, and `Token` with the same values used for this project, then click **Join**.
+3. In your browser, open the [Agora web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) and update `App ID`, `Channel`, and `Token` with the same values used for this project, then click **Join**.
 4. In Unity Editor, double-click **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Demo**.
 5. In **Project**, open **Agora_MagicLeap2_Plugin** > **AgoraEngine** > **ML2Support** > **Scripts** > **Agora Controller**.
 6. Update `APP_ID`, `TOKEN`, and `CHANNEL_NAME` with the same values you used for the web demo.

@@ -10,13 +10,10 @@ This page explains how to call Agora Cloud Transcoding RESTful APIs to implement
 Before you start, ensure that you have:
 
 - An [Agora account and project](/en/introduction/account)
+- Cloud Transcoding [enabled](sdk-quickstart.md#enable-cloud-transcoding) for your project
 - Your [App ID](/en/introduction/account#get-the-app-id-and-app-certificate) from Agora Console
 - Your [Customer ID and Customer Secret](/en/api-reference/api-ref/cloud-transcoding/authentication) for REST API authentication
 - [RTC tokens](/en/introduction/account#generate-temporary-tokens) for your channels (valid for up to 24 hours)
-
-:::info
-Cloud Transcoding must be activated before you can call the RESTful APIs. Contact [Agora technical support](mailto:support@agora.io) to activate it for your project. If you want viewers to receive multiple bitrates, ask support to enable the multi-bitrate service at the same time.
-:::
 
 ## Call a Cloud Transcoding REST API
 
@@ -174,7 +171,7 @@ After sending a request, the server responds with:
 | Code  | Meaning | Action                                  |
 | ----- | ------- | --------------------------------------- |
 | 200   | Success | Proceed as normal.                      |
-| Non-200 | Error   | See [HTTP status codes](../reference/status-codes). |
+| Non-200 | Error   | See [HTTP status codes](/en/api-reference/api-ref/cloud-transcoding/status-codes). |
 
 #### Response headers (Optional)
 
@@ -210,6 +207,6 @@ If a request fails:
 2. **Validate parameters**: Ensure all required fields are included and properly formatted
 3. **Check rate limits**: Ensure you're not exceeding 10 requests per second
 4. **Inspect the response**: Use developer tools to examine the full error response
-5. **Check status codes**: Refer to [HTTP status codes](../reference/status-codes) for specific error meanings
+5. **Check status codes**: Refer to [HTTP status codes](/en/api-reference/api-ref/cloud-transcoding/status-codes) for specific error meanings
 
 For persistent issues, contact [technical support](mailto:support@agora.io) with your `X-Request-ID`.

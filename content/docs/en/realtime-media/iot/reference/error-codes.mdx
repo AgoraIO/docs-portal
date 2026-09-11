@@ -1,0 +1,82 @@
+---
+title: "Error codes"
+description: "Error codes returned by IoT SDK during runtime, their meanings, and solutions."
+---
+
+This page lists the error codes IoT SDK returns during runtime, along with their meanings and, where applicable, how to resolve them.
+
+## General errors
+
+| Code | Enum | Explanation | Solution |
+|---|---|---|---|
+| 0 | `ERR_OKAY` | No error. | |
+| 1 | `ERR_FAILED` | A generic error. Check the log files to troubleshoot the issue. | |
+| 2 | `ERR_INVALID_PARAM` | An API call used an invalid parameter, for example a channel name that contains illegal characters. | Correct the parameter and try again. |
+| 3 | `ERR_INVALID_STATE` | The API call is invalid in the current state, for example calling a publish method after disabling local capture. | |
+| 4 | `ERR_NOT_SUPPORTED` | The operation isn't supported in the current state. | |
+| 6 | `ERR_NOT_IN_CHANNEL` | The connection hasn't successfully joined a channel. | Join a channel first. |
+| 7 | `ERR_NOT_INITIALIZED` | The service isn't initialized. | Call `agora_rtc_init` first. |
+| 8 | `ERR_NOT_EXIST_CONNECTION` | The connection doesn't exist. | |
+| 10 | `ERR_TIMEDOUT` | The API call timed out because processing took longer than 10 seconds. | |
+| 11 | `ERR_NO_MEMORY` | The device is out of memory. | Free up memory. |
+| 12 | `ERR_CALL_FAILED` | The API call failed. | Retry with valid parameters. |
+| 14 | `ERR_NET_DOWN` | The network is unavailable. | Check the device's network connection. |
+| 17 | `ERR_JOIN_CHANNEL_REJECTED` | The join channel request was rejected. The local user may already be in the channel. | Avoid joining the same channel more than once. |
+| 18 | `ERR_LEAVE_CHANNEL_REJECTED` | The leave channel request was rejected. The local user has already left the channel. | |
+| 23 | `ERR_LICENSE_VERIFICATION_FAILURE` | SDK initialization failed because the license didn't pass verification. | Verify that the license is valid. |
+| 30 | `ERR_ENCRYPTION` | An encryption error occurred. | Check your encryption settings. |
+| 31 | `ERR_DECRYPTION` | A decryption error occurred. | Check your decryption configuration. |
+
+## Transmission-related errors
+
+| Code | Enum | Explanation | Solution |
+|---|---|---|---|
+| 101 | `ERR_INVALID_APP_ID` | The App ID isn't valid. | Replace it with a valid App ID and rejoin the channel. |
+| 102 | `ERR_INVALID_CHANNEL_NAME` | The channel name isn't valid, or the parameter's data type is incorrect. | Use a valid channel name and rejoin the channel. |
+| 103 | `ERR_NO_SERVER_RESOURCES` | IoT SDK can't obtain server resources for the specified region. | Retry, or select a different region. |
+| 105 | `ERR_LOOKUP_CHANNEL_REJECTED` | The Agora server rejected the request to look up the channel. | Check whether the RTC token is valid. |
+| 107 | `ERR_OPEN_CHANNEL_REJECTED` | The Agora server rejected the request to create the channel. | Check whether the RTC token is valid. |
+| 109 | `ERR_TOKEN_EXPIRED` | The RTC token has expired. | Generate a new RTC token on your server, and rejoin the channel with it. |
+| 110 | `ERR_INVALID_TOKEN` | The token isn't valid. | Make sure token authentication is enabled in Agora Console, and that the UID used to generate the token matches the UID used to join the channel. |
+| 115 | `ERR_DYNAMIC_TOKEN_BUT_USE_STATIC_KEY` | Token authentication is enabled, but the join channel call passed an App ID instead of a token. | Pass a token to the join channel call. |
+| 119 | `ERR_SET_CLIENT_ROLE_NOT_AUTHORIZED` | Switching the user role failed. | Rejoin the channel. |
+| 120 | `ERR_DECRYPTION_FAILED` | Decryption failed. The user may be using an incorrect encryption key or salt. | Check your encryption settings, or rejoin the channel. |
+| 121 | `ERR_OPEN_CHANNEL_INVALID_TICKET` | A signaling error occurred while opening the channel. | Rejoin the channel. |
+| 122 | `ERR_OPEN_CHANNEL_TRY_NEXT_VOS` | IoT SDK is switching servers. | No action is usually needed; IoT SDK retries automatically. |
+| 123 | `ERR_CLIENT_IS_BANNED_BY_SERVER` | The server banned this client. | Check whether the license is correct. |
+
+## Audio-related errors
+
+| Code | Enum | Explanation |
+|---|---|---|
+| 200 | `ERR_AUDIO_CODEC_NOT_SUPPORT` | IoT SDK doesn't support the audio codec you're using. |
+| 201 | `ERR_AUDIO_INVALID_PCM_LEN` | The PCM audio data length isn't valid. |
+| 202 | `ERR_AUDIO_INVALID_CODEC_PARAM` | The audio codec parameters aren't valid. |
+
+## Video-related errors
+
+| Code | Enum | Explanation |
+|---|---|---|
+| 300 | `ERR_VIDEO_SEND_OVER_BANDWIDTH_LIMIT` | Video data is sending too fast and exceeds the bandwidth limit. Packet loss is likely at the current sending rate. |
+| 301 | `ERR_VIDEO_SEND_PACKETIZE_FAILED` | Packetizing the video data failed. |
+
+## RDT-related errors
+
+| Code | Enum | Explanation | Solution |
+|---|---|---|---|
+| 600 | `ERR_RDT_USER_NOT_EXIST` | The peer user doesn't exist in the channel. | |
+| 601 | `ERR_RDT_USER_NOT_READY` | The RDT connection with the peer user isn't established yet. | Wait for the RDT channel state to become `RDT_STATE_OPENED`, then retry. |
+| 602 | `ERR_RDT_DATA_BLOCKED` | The send buffer is full. | Wait for the RDT channel state to become `RDT_STATE_OPENED`, then retry. |
+| 603 | `ERR_RDT_CMD_EXCEED_LIMIT` | The number of control messages exceeds the limit of 100 packets per second. | |
+| 604 | `ERR_RDT_DATA_EXCEED_LIMIT` | The data message traffic exceeds the limit of 4 Mbps per second. | |
+
+## RTM-related errors
+
+| Code | Enum | Explanation | Solution |
+|---|---|---|---|
+| 1001 | `ERR_RTM_NOT_LOGINED` | The device isn't logged in to the RTM system. | |
+| 1002 | `ERR_RTM_HAD_LOGINED` | The device is already logged in to the RTM system. | |
+| 1003 | `ERR_RTM_SEND_TO_SELF` | The `rtmUid` parameter was set to the local user's own user ID by mistake. | |
+| 1004 | `ERR_RTM_EXCEED_MSG_SIZE` | The RTM message exceeds the maximum length of 31 KB. | |
+| 1005 | `ERR_RTM_EXCEED_MSG_CNT` | The RTM message sending rate exceeds the limit of 60 messages per second. | |
+| 1006 | `ERR_RTM_EXCEED_SND_BUFFER` | The message channel is full. | Wait one second, then retry. |

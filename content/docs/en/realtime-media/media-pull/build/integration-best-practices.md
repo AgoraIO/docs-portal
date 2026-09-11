@@ -242,7 +242,7 @@ If you get three consecutive `404` or `5xx` error codes, or if the `state` field
 |Status code               |Possible error message |Possible reason of failure | Measures to take                                                     |
 |:-------------------------|:------------|:--------------|:---------------------------------------------------------------------|
 |`400` Bad Request	       |The 'streamUrl' parameter is incorrectly formatted. The `channelName` parameter is invalid. Fix it in your request and retry.|Wrong parameters| Check by referring to the `reason` field in the HTTP response body. |
-|`401` Unauthorized	       |Invalid authentication credentials.	|RESTful API authentication failed. | See [RESTful Authentication](../reference/restful-authentication).   |
+|`401` Unauthorized	       |Invalid authentication credentials.	|RESTful API authentication failed. | See [RESTful Authentication](/en/api-reference/api-ref/media-pull/restful-authentication).   |
 |`403` Forbidden	       |Cloud player is not enabled for this project. Contact us to enable it. This project's permission to use cloud player was revoked. Contact us for details.|The service is not enabled. | Enable the service.                                                  |
 |`404` Not Found	       |Resource is not found or destroyed.	|The task was not started or is in the process of failover or deletion. | Retry following the retreat strategy.                                |
 |`409` Conflict	           |Resource with the same name already exists.	|Resource with the same name already exists.| Delete the existing cloud player and create it again.                |

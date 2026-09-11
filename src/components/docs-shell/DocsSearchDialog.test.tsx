@@ -13,16 +13,22 @@ import {
   screen,
   waitFor,
 } from '@testing-library/react';
+import type { SortedResult } from 'fumadocs-core/search';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
-import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
+import {
+  type AlgoliaSearchStatus,
+  createAlgoliaDocsClient,
+} from '@/lib/search/algolia-client';
 import { DocsSearchDialog } from './DocsSearchDialog';
 
 const analyticsMocks = vi.hoisted(() => ({
   captureDocsSearchCompleted: vi.fn(),
   captureDocsSearchOpened: vi.fn(),
   captureDocsSearchResultClicked: vi.fn(),
+  captureDocsSearchResultsImpressed: vi.fn(),
+  queueDocsPageView: vi.fn(),
 }));
 const oramaClientMocks = vi.hoisted(() => ({
   actualCreate: undefined as
@@ -40,6 +46,10 @@ vi.mock('@/lib/analytics/posthog', () => ({
 vi.mock('@/lib/search/algolia-client', () => ({
   createAlgoliaDocsClient: vi.fn(() => ({
     deps: ['mock-algolia'],
+    getLastStatus: vi.fn(() => ({
+      api: 'not-requested' as const,
+      docs: 'success' as const,
+    })),
     search: vi.fn(),
   })),
 }));
@@ -64,10 +74,10 @@ const loadPages = async () => [
 ];
 
 function createDeferredSearch() {
-  const resolvers: Array<(value: never[]) => void> = [];
-  const search = vi.fn(
+  const resolvers: Array<(value: SortedResult[]) => void> = [];
+  const search = vi.fn<(query: string) => Promise<SortedResult[]>>(
     () =>
-      new Promise<never[]>((resolve) => {
+      new Promise<SortedResult[]>((resolve) => {
         resolvers.push(resolve);
       }),
   );
@@ -75,11 +85,49 @@ function createDeferredSearch() {
   return { resolvers, search };
 }
 
+function successfulAlgoliaStatus() {
+  return { api: 'not-requested' as const, docs: 'success' as const };
+}
+
+function renderAlgoliaSearchDialog() {
+  const rootRoute = createRootRoute({ component: () => <Outlet /> });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$slug',
+    component: () => (
+      <AppProviders>
+        <DocsSearchDialog loadPages={loadPages} locale="en" mode="desktop" />
+      </AppProviders>
+    ),
+  });
+  const router = createRouter({
+    routeTree: rootRoute.addChildren([docsRoute]),
+    history: createMemoryHistory({
+      initialEntries: ['/en/introduction/about-agora'],
+    }),
+  });
+
+  render(<RouterProvider router={router} />);
+  return router;
+}
+
+const apiFallbackDocsResult = {
+  content: 'Secure authentication with tokens',
+  id: 'renew-token-guide',
+  objectType: 'docs',
+  path: ['Voice Calling', 'Develop'],
+  snippet: 'Renew a token before it expires.',
+  type: 'page' as const,
+  url: '/en/video-calling/develop/authentication-workflow',
+};
+
 describe('DocsSearchDialog', () => {
   beforeEach(() => {
+    vi.restoreAllMocks();
     analyticsMocks.captureDocsSearchCompleted.mockReset();
     analyticsMocks.captureDocsSearchOpened.mockReset();
     analyticsMocks.captureDocsSearchResultClicked.mockReset();
+    analyticsMocks.captureDocsSearchResultsImpressed.mockReset();
     if (oramaClientMocks.actualCreate) {
       oramaClientMocks.create.mockReset();
       oramaClientMocks.create.mockImplementation(oramaClientMocks.actualCreate);
@@ -88,6 +136,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', '');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
     window.localStorage.clear();
+    window.sessionStorage.clear();
   });
 
   it('renders compact trigger variants and lets the mobile trigger navigate through the same dialog', async () => {
@@ -182,31 +231,65 @@ describe('DocsSearchDialog', () => {
     );
     expect(await screen.findByText('Quick Start')).toBeInTheDocument();
 
-    expect(analyticsMocks.captureDocsSearchOpened).toHaveBeenCalledWith({
-      locale: 'en',
-      mode: 'desktop',
-      trigger: 'button',
-    });
-    await waitFor(() => {
-      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
+    expect(analyticsMocks.captureDocsSearchOpened).toHaveBeenCalledWith(
+      expect.objectContaining({
         locale: 'en',
-        platformFilter: null,
-        productScope: null,
-        provider: 'local',
-        queryLength: 2,
-        resultCount: 1,
-        status: 'success',
-      });
+        mode: 'desktop',
+        searchSessionId: expect.any(String),
+        trigger: 'button',
+      }),
+    );
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          locale: 'en',
+          platformFilter: null,
+          productScope: null,
+          provider: 'local',
+          query: 'ai',
+          queryAttemptId: expect.any(String),
+          queryLength: 2,
+          resultCount: 1,
+          searchIntent: 'unknown',
+          searchSessionId: expect.any(String),
+          status: 'success',
+        }),
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        analyticsMocks.captureDocsSearchResultsImpressed,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          firstResultSource: 'local',
+          firstResultType: 'docs',
+          queryAttemptId: expect.any(String),
+          resultCount: 1,
+          searchSessionId: expect.any(String),
+        }),
+      );
     });
 
     fireEvent.click(screen.getByText('Quick Start'));
 
-    expect(analyticsMocks.captureDocsSearchResultClicked).toHaveBeenCalledWith({
-      href: '/en/ai/get-started/quickstart',
-      locale: 'en',
-      queryLength: 2,
-      rank: 1,
-    });
+    expect(analyticsMocks.captureDocsSearchResultClicked).toHaveBeenCalledWith(
+      expect.objectContaining({
+        clickDelayMs: expect.any(Number),
+        href: '/en/ai/get-started/quickstart',
+        locale: 'en',
+        queryAttemptId: expect.any(String),
+        queryLength: 2,
+        rank: 1,
+        resultSource: 'local',
+        resultType: 'docs',
+        searchSessionId: expect.any(String),
+      }),
+    );
+    const pendingLanding = window.sessionStorage.getItem(
+      'docs-portal:search-attribution:v1',
+    );
+    expect(pendingLanding).not.toBeNull();
 
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(
@@ -215,6 +298,83 @@ describe('DocsSearchDialog', () => {
         }),
       );
     });
+  });
+
+  it('measures click delay from result impression instead of request start', async () => {
+    let now = 1_000;
+    const dateNowSpy = vi.spyOn(Date, 'now').mockImplementation(() => now);
+
+    try {
+      const { resolvers, search } = createDeferredSearch();
+      oramaClientMocks.create.mockReturnValue({
+        deps: ['deferred-local'],
+        search,
+      });
+      const rootRoute = createRootRoute({ component: () => <Outlet /> });
+      const docsRoute = createRoute({
+        getParentRoute: () => rootRoute,
+        path: '/$locale/$tab/$slug',
+        component: () => (
+          <AppProviders>
+            <DocsSearchDialog loadPages={loadPages} mode="desktop" />
+          </AppProviders>
+        ),
+      });
+      const router = createRouter({
+        routeTree: rootRoute.addChildren([docsRoute]),
+        history: createMemoryHistory({
+          initialEntries: ['/en/introduction/about-agora'],
+        }),
+      });
+
+      render(<RouterProvider router={router} />);
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'Search docs' }),
+      );
+      fireEvent.input(
+        await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+        { target: { value: 'ai' } },
+      );
+      await waitFor(() => expect(search).toHaveBeenCalledOnce());
+
+      now = 8_000;
+      await act(async () => {
+        resolvers[0]?.([
+          {
+            breadcrumbs: ['AI'],
+            content: 'Quick Start',
+            id: 'quick-start',
+            type: 'page',
+            url: '/en/ai/get-started/quickstart',
+          },
+        ]);
+        await Promise.resolve();
+      });
+      expect(
+        (await screen.findAllByText('Quick Start'))[0],
+      ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(
+          analyticsMocks.captureDocsSearchResultsImpressed,
+        ).toHaveBeenCalledOnce();
+      });
+
+      now = 11_000;
+      await act(async () => {
+        fireEvent.click((await screen.findAllByText('Quick Start'))[0]);
+        await Promise.resolve();
+      });
+
+      expect(
+        analyticsMocks.captureDocsSearchResultClicked,
+      ).toHaveBeenCalledWith(
+        expect.objectContaining({
+          clickDelayMs: 3_000,
+        }),
+      );
+    } finally {
+      dateNowSpy.mockRestore();
+    }
   });
 
   it('opens from the command-k keyboard shortcut', async () => {
@@ -352,14 +512,16 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
     });
-    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-      locale: 'en',
-      platformFilter: null,
-      productScope: null,
-      provider: 'local',
-      queryLength: 8,
-      status: 'error',
-    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+      expect.objectContaining({
+        locale: 'en',
+        platformFilter: null,
+        productScope: null,
+        provider: 'local',
+        queryLength: 8,
+        status: 'error',
+      }),
+    );
     await act(async () => {
       resolveLocalSearch[0]?.([]);
     });
@@ -371,6 +533,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([]),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -425,6 +588,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([
         {
           content: '<mark>uplinkNetworkQuality</mark>',
@@ -488,6 +652,324 @@ describe('DocsSearchDialog', () => {
     expect(navigateSpy).not.toHaveBeenCalled();
   });
 
+  it('keeps documentation results and warns when an API-intent search loses only SDK API results', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => ({ api: 'error', docs: 'success' }),
+      search: vi.fn().mockResolvedValue([apiFallbackDocsResult]),
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'renew token' } },
+    );
+
+    expect(
+      await screen.findAllByText('Secure authentication with tokens'),
+    ).not.toHaveLength(0);
+    const warning = await screen.findByRole('status');
+    expect(warning).toHaveTextContent(
+      'SDK API results are temporarily unavailable.',
+    );
+    expect(warning).toHaveAttribute('aria-live', 'polite');
+    expect(warning.closest('[role="listbox"]')).toBeNull();
+    expect(warning.closest('[cmdk-item]')).toBeNull();
+  });
+
+  it('clears the API warning and query when a result closes the dialog', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => ({ api: 'error', docs: 'success' }),
+      search: vi.fn().mockResolvedValue([
+        {
+          ...apiFallbackDocsResult,
+          url: '/en/voice/authentication',
+        },
+      ]),
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'renew token' } });
+    await screen.findByRole('status');
+
+    fireEvent.click(await screen.findByRole('option'));
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+
+    expect(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+    ).toHaveValue('');
+    expect(screen.queryByRole('status')).toBeNull();
+  });
+
+  it.each([
+    { apiStatus: 'not-requested' as const, query: 'cloud recording' },
+    { apiStatus: 'not-requested' as const, query: 'voice agent quickstart' },
+  ])(
+    'does not show the SDK API warning for the natural-language query $query when API status is $apiStatus',
+    async ({ apiStatus, query }) => {
+      vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+      vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+      vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+        deps: ['mock-algolia'],
+        getLastStatus: () => ({ api: apiStatus, docs: 'success' }),
+        search: vi.fn().mockResolvedValue([apiFallbackDocsResult]),
+      });
+      renderAlgoliaSearchDialog();
+
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'Search docs' }),
+      );
+      fireEvent.input(
+        await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+        { target: { value: query } },
+      );
+
+      await screen.findAllByText('Secure authentication with tokens');
+      expect(
+        screen.queryByText('SDK API results are temporarily unavailable.'),
+      ).toBeNull();
+    },
+  );
+
+  it('warns when an unknown-intent API fallback request fails', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => ({ api: 'error', docs: 'success' }),
+      search: vi.fn().mockResolvedValue([]),
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'RTC engine method' } },
+    );
+
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      'SDK API results are temporarily unavailable.',
+    );
+    expect(screen.queryByRole('option')).toBeNull();
+  });
+
+  it('clears the SDK API warning for the next query and an empty query', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    let status: AlgoliaSearchStatus = { api: 'error', docs: 'success' };
+    const secondSearch = new Promise<never[]>(() => {});
+    const search = vi
+      .fn()
+      .mockResolvedValueOnce([apiFallbackDocsResult])
+      .mockReturnValueOnce(secondSearch);
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => status,
+      search,
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'renew token' } });
+    expect(
+      await screen.findByText('SDK API results are temporarily unavailable.'),
+    ).toBeInTheDocument();
+
+    status = { api: 'not-requested', docs: 'success' };
+    fireEvent.input(input, { target: { value: 'cloud recording' } });
+    expect(
+      screen.queryByText('SDK API results are temporarily unavailable.'),
+    ).toBeNull();
+
+    fireEvent.input(input, { target: { value: '' } });
+    expect(
+      screen.queryByText('SDK API results are temporarily unavailable.'),
+    ).toBeNull();
+  });
+
+  it('does not restore an SDK API warning from a stale request or after closing', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    let status: AlgoliaSearchStatus = successfulAlgoliaStatus();
+    let resolveApiSearch: ((value: never[]) => void) | undefined;
+    let resolveTaskSearch: ((value: never[]) => void) | undefined;
+    const search = vi.fn((query: string) => {
+      return new Promise<never[]>((resolve) => {
+        if (query === 'joinChannel') {
+          resolveApiSearch = resolve;
+        } else {
+          resolveTaskSearch = resolve;
+        }
+      });
+    });
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => status,
+      search,
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'joinChannel' } });
+    await waitFor(() => expect(search).toHaveBeenCalledOnce());
+    fireEvent.input(input, { target: { value: 'cloud recording' } });
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(2));
+
+    await act(async () => {
+      status = successfulAlgoliaStatus();
+      resolveTaskSearch?.([apiFallbackDocsResult] as never[]);
+    });
+    await screen.findAllByText('Secure authentication with tokens');
+    await act(async () => {
+      status = { api: 'error', docs: 'success' };
+      resolveApiSearch?.([apiFallbackDocsResult] as never[]);
+    });
+    expect(
+      screen.queryByText('SDK API results are temporarily unavailable.'),
+    ).toBeNull();
+
+    fireEvent.input(input, { target: { value: 'joinChannel' } });
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(3));
+    await act(async () => {
+      status = { api: 'error', docs: 'success' };
+      resolveApiSearch?.([apiFallbackDocsResult] as never[]);
+    });
+    expect(
+      await screen.findByText('SDK API results are temporarily unavailable.'),
+    ).toBeInTheDocument();
+    fireEvent.keyDown(input, { key: 'Escape' });
+    expect(
+      screen.queryByText('SDK API results are temporarily unavailable.'),
+    ).toBeNull();
+  });
+
+  it('renders one aggregated SDK API row with platform-aware navigation', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    const normalizedIosUrl =
+      'https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/setaudioprofile(_:)?language=objc#app-main';
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => ({ api: 'success', docs: 'success' }),
+      search: vi.fn().mockResolvedValue([
+        {
+          content: '<mark>joinChannel</mark>',
+          id: 'video-sdk:rtcengine:joinchannel:method',
+          objectType: 'sdk-api',
+          path: ['API Reference', 'Video SDK'],
+          platform: ['android', 'ios', 'web', 'linux'],
+          platformUrls: {
+            android:
+              'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#joinchannel',
+            ios: normalizedIosUrl,
+            linux:
+              'https://api-ref.agora.io/en/video-sdk/linux/4.x/API/class_irtcengine.html#joinchannel',
+            web: 'https://api-ref.agora.io/en/video-sdk/web/4.x/API/class_irtcengine.html#joinchannel',
+          },
+          type: 'page',
+          url: 'https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#joinchannel',
+        },
+      ]),
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'joinChannel' } },
+    );
+
+    await screen.findAllByText('joinChannel');
+    const platformSelector = screen.getByRole('combobox', {
+      name: 'Choose platform',
+    });
+    expect(platformSelector).toBeInTheDocument();
+    expect(screen.getByRole('option', { name: 'linux' })).toBeInTheDocument();
+    fireEvent.keyDown(platformSelector, { key: 'Enter' });
+    expect(openSpy).not.toHaveBeenCalled();
+    fireEvent.change(platformSelector, {
+      target: {
+        value: normalizedIosUrl,
+      },
+    });
+    expect(screen.getByText('android')).toBeInTheDocument();
+    expect(screen.getByText('ios')).toBeInTheDocument();
+    expect(screen.getByText('web')).toBeInTheDocument();
+    expect(screen.getByText('+1')).toBeInTheDocument();
+
+    fireEvent.click(screen.getAllByText('joinChannel')[0]);
+    expect(openSpy).toHaveBeenCalledWith(
+      normalizedIosUrl,
+      '_blank',
+      'noopener,noreferrer',
+    );
+  });
+
+  it('resets an API row platform selection when the query changes', async () => {
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    const openSpy = vi.spyOn(window, 'open').mockImplementation(() => null);
+    vi.mocked(createAlgoliaDocsClient).mockReturnValue({
+      deps: ['mock-algolia'],
+      getLastStatus: () => ({ api: 'success', docs: 'success' }),
+      search: vi.fn().mockResolvedValue([
+        {
+          content: '<mark>joinChannel</mark>',
+          id: 'join-channel',
+          objectType: 'sdk-api',
+          path: ['API Reference', 'Video SDK'],
+          platform: ['android', 'ios'],
+          platformUrls: {
+            android: 'https://api-ref.agora.io/android/joinchannel',
+            ios: 'https://api-ref.agora.io/ios/joinchannel',
+          },
+          type: 'page',
+          url: 'https://api-ref.agora.io/android/joinchannel',
+        },
+      ]),
+    });
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    const input = await screen.findByPlaceholderText(
+      'Search docs, APIs, guides...',
+    );
+    fireEvent.input(input, { target: { value: 'joinChannel' } });
+    const platformSelector = await screen.findByRole('combobox', {
+      name: 'Choose platform',
+    });
+    fireEvent.change(platformSelector, {
+      target: { value: 'https://api-ref.agora.io/ios/joinchannel' },
+    });
+
+    fireEvent.input(input, { target: { value: 'joinChannel method' } });
+    fireEvent.click((await screen.findAllByText('joinChannel'))[0]);
+
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://api-ref.agora.io/android/joinchannel',
+      '_blank',
+      'noopener,noreferrer',
+    );
+  });
+
   it.each([
     {
       filterKind: 'product',
@@ -517,6 +999,7 @@ describe('DocsSearchDialog', () => {
       const { resolvers, search } = createDeferredSearch();
       vi.mocked(createAlgoliaDocsClient).mockReturnValue({
         deps: ['mock-algolia'],
+        getLastStatus: successfulAlgoliaStatus,
         search,
       });
       const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -583,15 +1066,17 @@ describe('DocsSearchDialog', () => {
           analyticsMocks.captureDocsSearchCompleted,
         ).toHaveBeenCalledOnce();
       });
-      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-        locale: 'en',
-        platformFilter,
-        productScope,
-        provider: 'algolia',
-        queryLength: 3,
-        resultCount: 0,
-        status: 'success',
-      });
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          locale: 'en',
+          platformFilter,
+          productScope,
+          provider: 'algolia',
+          queryLength: 3,
+          resultCount: 0,
+          status: 'success',
+        }),
+      );
     },
   );
 
@@ -600,6 +1085,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([
         {
           content: 'Voice Activity Detection',
@@ -682,6 +1168,7 @@ describe('DocsSearchDialog', () => {
         indexName: 'docs_portal_en',
         locale: 'en',
         platform: undefined,
+        rankingV2: false,
         scope: undefined,
         searchApiKey: 'test-search-key',
       });
@@ -725,6 +1212,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn(() => new Promise<never>(() => {})),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -764,6 +1252,7 @@ describe('DocsSearchDialog', () => {
     const { resolvers, search } = createDeferredSearch();
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search,
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -818,15 +1307,17 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();
     });
-    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith({
-      locale: 'en',
-      platformFilter: null,
-      productScope: null,
-      provider: 'algolia',
-      queryLength: 4,
-      resultCount: 0,
-      status: 'success',
-    });
+    expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+      expect.objectContaining({
+        locale: 'en',
+        platformFilter: null,
+        productScope: null,
+        provider: 'algolia',
+        queryLength: 4,
+        resultCount: 0,
+        status: 'success',
+      }),
+    );
   });
 
   it('updates the footer detail as the highlighted result changes', async () => {
@@ -834,6 +1325,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([
         {
           content: 'Voice Activity Detection',
@@ -905,6 +1397,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([]),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -937,6 +1430,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search: vi.fn().mockResolvedValue([]),
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
@@ -1195,6 +1689,7 @@ describe('DocsSearchDialog', () => {
       .mockReturnValue(new Promise<never>(() => {}));
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: ['mock-algolia'],
+      getLastStatus: successfulAlgoliaStatus,
       search,
     });
     const rootRoute = createRootRoute({ component: () => <Outlet /> });

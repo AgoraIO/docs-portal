@@ -231,6 +231,7 @@ export function DocsShell({
       <div className="flex min-h-screen min-w-0 flex-1 flex-col">
         <header
           className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl"
+          data-testid="docs-shell-header"
           ref={headerRef}
         >
           {docsChromeLocaleLinks.length > 1 ? (

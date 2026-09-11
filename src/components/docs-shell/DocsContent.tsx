@@ -54,6 +54,7 @@ import {
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
+import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -121,6 +122,10 @@ export function DocsContent({
   const lastUpdatedMetadata = ensureDocsLastUpdatedMetadata(lastUpdated);
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
+  const searchLandingPathname =
+    analyticsPageContext?.pathname ??
+    activePath ??
+    (typeof window === 'undefined' ? '' : window.location.pathname);
   const articleReturnLink = useDocsArticleReturnLink(currentPageKey);
   const sourceLinks = getDocsSourceLinks(contentPath);
   const handleArticleBodyLinkClick = useTrackDocsArticleLinkNavigation({
@@ -206,6 +211,10 @@ export function DocsContent({
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
+      <DocsSearchLandingEngagement
+        locale={currentLocale}
+        pathname={searchLandingPathname}
+      />
       <header
         className={cn(
           'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
@@ -328,7 +337,10 @@ export function DocsContent({
       </header>
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
-          <FumadocsOpenApiContent pageProps={resolvedBody.pageProps} />
+          <FumadocsOpenApiContent
+            locale={currentLocale}
+            pageProps={resolvedBody.pageProps}
+          />
         </div>
       ) : (
         <div
