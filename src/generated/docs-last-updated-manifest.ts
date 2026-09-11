@@ -467,7 +467,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/mllm/google-vertex-ai.mdx':
     '2026-07-30T09:20:29.000Z',
   'content/docs/en/ai/models/mllm/index.md': '2026-06-25T08:42:31.000Z',
-  'content/docs/en/ai/models/mllm/meta.json': '2026-08-11T06:17:07.000Z',
+  'content/docs/en/ai/models/mllm/meta.json': '2026-09-01T09:20:11.000Z',
+  'content/docs/en/ai/models/mllm/openai-gpt-live.mdx':
+    '2026-09-09T15:13:20.000Z',
   'content/docs/en/ai/models/mllm/openai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/mllm/openai.mdx': '2026-07-30T09:20:29.000Z',
   'content/docs/en/ai/models/mllm/xai.mdx': '2026-07-30T09:20:29.000Z',
@@ -586,7 +588,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/studio/build/supported-vendors.md':
     '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/studio/build/supported-vendors.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-09-01T09:20:11.000Z',
   'content/docs/en/ai/studio/build/test-agent.md': '2026-06-30T07:00:49.000Z',
   'content/docs/en/ai/studio/build/test-agent.mdx': '2026-08-10T15:28:51.000Z',
   'content/docs/en/ai/studio/deploy/campaign.md': '2026-05-19T10:33:06.000Z',
@@ -11640,7 +11642,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-09-07T10:23:04.000Z',
+    '2026-09-09T13:00:40.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
     '2026-07-03T04:07:10.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',

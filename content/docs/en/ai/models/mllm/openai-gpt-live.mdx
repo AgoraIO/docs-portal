@@ -1,0 +1,212 @@
+---
+title: OpenAI GPT-Live
+description: >
+ Integrate OpenAI GPT-Live into Conversational AI Engine.
+---
+
+OpenAI GPT-Live provides multimodal large language model capabilities with real-time audio processing, enabling natural voice conversations without separate ASR/TTS components.
+
+:::info[Info]
+Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
+:::
+
+:::caution[Caution]
+GPT-Live is an alpha preview built on `gpt-live-1-diamond-alpha`. It is not intended for production traffic.
+:::
+
+:::info[SDK version]
+The SDK examples require Agora Agent SDK v2.8.0 or later. The SDK automatically routes GPT-Live sessions to the preview endpoint and includes the `agora-feature: live-models` header. Direct REST API requests must use the preview URL and header shown in the REST API tab.
+:::
+
+### Sample configuration
+
+The following examples show how to configure OpenAI GPT-Live MLLM when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, OpenAIGPTLive
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_mllm(OpenAIGPTLive(
+        api_key='your-openai-key',
+        greeting="Hello! I'm GPT-live. How can I help you today?",
+        model='gpt-live-1-diamond-alpha',
+        voice='marin',
+        prompt='your-system-prompt',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, OpenAIGPTLive } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withMllm(new OpenAIGPTLive({
+    apiKey: 'your-openai-key',
+    greeting: "Hello! I'm GPT-live. How can I help you today?",
+    model: 'gpt-live-1-diamond-alpha',
+    voice: 'marin',
+    prompt: 'your-system-prompt',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithMllm(
+    vendors.NewOpenAIGPTLive(vendors.OpenAIGPTLiveOptions{
+        APIKey:          "your-openai-key",
+        GreetingMessage: "Hello! I'm GPT-live. How can I help you today?",
+        Model:           "gpt-live-1-diamond-alpha",
+        Voice:           "marin",
+        Prompt:          "your-system-prompt",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+:::info[Info]
+OpenAI GPT-Live is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: live-models`
+:::
+
+Use the following `mllm` configuration in your request:
+
+```json
+"mllm": {
+  "enable": true,
+  "vendor": "openai_gpt_live",
+  "api_key": "<openai_api_key>",
+  "url": "wss://api.openai.com/v1/live/sessions",
+  "greeting_message": "Hello! I'm GPT-live. How can I help you today?",
+  "params": {
+    "model": "gpt-live-1-diamond-alpha",
+    "alpha_selector": "quicksilver=v3",
+    "voice": "marin",
+    "prompt": "<system_prompt>"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Tool calling
+
+GPT-Live can call tools defined directly on the MLLM configuration. Set `mllm.mcp_servers`, enable `advanced_features.enable_tools`, and set `params.tool_enabled` to `true` to advertise those tools to GPT-Live:
+
+```json
+"mllm": {
+  "mcp_servers": [
+    {
+      "name": "lookup",
+      "endpoint": "https://tools.example/mcp",
+      "transport": "streamable_http"
+    }
+  ],
+  "params": {
+    "tool_enabled": true
+  }
+},
+"advanced_features": {
+  "enable_tools": true
+}
+```
+
+### Key parameters
+
+<ParameterList title="mllm" required={true}>
+  <Parameter name="enable" type="boolean" required={false}>
+    Enables the MLLM module. Replaces the deprecated `advanced_features.enable_mllm`.
+  </Parameter>
+  <Parameter name="vendor" type="string" required={true}>
+    MLLM provider identifier. Set to `openai_gpt_live` for OpenAI GPT-Live.
+  </Parameter>
+  <Parameter name="api_key" type="string" required={true}>
+    The API key used for authentication. Requires an alpha-enabled OpenAI key.
+  </Parameter>
+  <Parameter name="url" type="string" required={false} defaultValue="wss://api.openai.com/v1/live/sessions">
+    The WebSocket URL for OpenAI GPT-Live.
+  </Parameter>
+  <Parameter name="messages" type="array[object]" required={false}>
+    An array of conversation history items passed to the model as context. Each item represents a single message in the conversation history.
+
+    <Parameter name="role" type="string" required={true}>
+      The role of the message author. For example, `system` or `user`.
+    </Parameter>
+    <Parameter name="content" type="string" required={true}>
+      The content of the message.
+    </Parameter>
+  </Parameter>
+  <Parameter name="input_modalities" type="array[string]" defaultValue='["audio"]' required={false}>
+    MLLM input modalities:
+    - `["audio"]`: Audio only
+    - `["audio", "text"]`: Audio plus text
+  </Parameter>
+  <Parameter name="output_modalities" type="array[string]" defaultValue='["text", "audio"]' required={false}>
+    Output format options: `["text", "audio"]` for both text and voice responses.
+  </Parameter>
+  <Parameter name="greeting_message" type="string" required={false}>
+    Initial message the agent speaks when a user joins the channel.
+  </Parameter>
+  <Parameter name="failure_message" type="string" required={false}>
+    The message the agent speaks when an error occurs.
+  </Parameter>
+  <Parameter name="mcp_servers" type="array[object]" required={false}>
+    MCP servers whose tools GPT-Live can call. See [Tool calling](#tool-calling).
+  </Parameter>
+  <Parameter name="params" type="object" required={false}>
+    Additional MLLM configuration parameters.
+    <Parameter name="model" type="string" required={false} defaultValue="gpt-live-1-diamond-alpha">
+    The model identifier.
+    </Parameter>
+    <Parameter name="alpha_selector" type="string" required={false} defaultValue="quicksilver=v3">
+    The OpenAI-Alpha selector required by the GPT-Live v3 preview contract. Agent SDK v2.8.0 or later sends this value automatically. Include it explicitly in direct REST API requests.
+    </Parameter>
+    <Parameter name="voice" type="string" required={false} defaultValue="marin">
+    The voice identifier for audio output.
+    </Parameter>
+    <Parameter name="prompt" type="string" required={false}>
+    Session instructions that define the assistant's behavior and personality.
+    </Parameter>
+    <Parameter name="tool_enabled" type="boolean" required={false} defaultValue="false">
+    Advertises the agent's graph tools to GPT-Live for tool calling. See [Tool calling](#tool-calling). Does not control delegate built-in tools.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::info[Info]
+GPT-Live does not support turn detection and input audio transcription.
+:::
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation.
+:::
