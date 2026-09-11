@@ -102,7 +102,7 @@ title: "发版说明"
 - [`on_user_joined_with_user_account`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa57af03ef9f26ab68917fa7a30f703bd)：远端用户使用 User Account 加入频道回调
 - [`on_user_offline_with_user_account`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af3a7f207010bafca7aa99fdba5a9b1ab)：使用 User Account 的场景下，远端用户离开频道回调
 
-详细实现步骤和开发注意事项可以参考[使用 String 型 UID](/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid)。
+详细实现步骤和开发注意事项可以参考[使用 String 型 UID](/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/string-uid)。
 
 :::warning[注意]
 使用 String 型 UID 首次加入频道时会略有延迟。我们更建议使用 Int 型 UID 实现相关功能。
@@ -116,7 +116,7 @@ title: "发版说明"
 - [`agora_rtc_send_stream_message`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aee89fa14447b4529d45275afe5b5a86f)：发送数据流消息
 - [`on_stream_message`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7c73b2bb0558e2b695d8838ee542c87a)：收到远端用户发送的数据流消息回调
 
-详细实现步骤和开发注意事项可以参考[发送和接收数据流 (Data Stream)](/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream)。
+详细实现步骤和开发注意事项可以参考[发送和接收数据流 (Data Stream)](/zh-CN/realtime-media/rtsa/build/data-communication/data-stream)。
 
 #### 媒体控制信息
 
@@ -225,7 +225,7 @@ title: "发版说明"
 - `on_rdt_state` 回调：RDT 通道的连接状态已改变。
 - `on_rdt_msg` 回调：在 RDT 通道中收到消息。
 
-具体使用方法见[通过 RDT 通道发送消息](/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel)。
+具体使用方法见[通过 RDT 通道发送消息](/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel)。
 
 #### 音频时长设置
 
@@ -418,7 +418,7 @@ title: "发版说明"
 
 ### 升级必看
 
-1.8.0 版相比 1.7.3 版，大部分 API 都发生了变更或重新设计。如果你将 SDK 从 1.7.3 版升级到该版本，你需要重新集成 SDK。集成方式详见[实现媒体流和信令传输](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission)。
+1.8.0 版相比 1.7.3 版，大部分 API 都发生了变更或重新设计。如果你将 SDK 从 1.7.3 版升级到该版本，你需要重新集成 SDK。集成方式详见[实现媒体流和信令传输](/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/implement-transmission)。
 
 自该版本起，SDK 不再支持 String 型用户 ID，相关接口也从 SDK 中删除。
 
@@ -436,7 +436,7 @@ SDK 将所有 `channel_name` 参数更新为 `connection_id` 参数（`agora_rtc
 
 Connection 通过 `agora_rtc_join_channel` 与 RTC 频道和用户 ID 进行绑定。在你调用 `agora_rtc_leave_channel` 之后，绑定结束。
 
-你可以通过  Connection ID 机制实现多频道推流和单频道推多路流，详见[多频道发流和单频道多路发流](/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel)。
+你可以通过  Connection ID 机制实现多频道推流和单频道推多路流，详见[多频道发流和单频道多路发流](/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel)。
 
 ### 问题修复
 
@@ -606,7 +606,7 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 ### 新增特性
 
-该版本支持在调用 `agora_rtc_init` 初始化 SDK 时指定服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。目前支持的区域有中国大陆、北美、欧洲、日本、印度、亚洲（中国大陆除外）和全球（默认）。详见[限定访问区域](/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit)。
+该版本支持在调用 `agora_rtc_init` 初始化 SDK 时指定服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。目前支持的区域有中国大陆、北美、欧洲、日本、印度、亚洲（中国大陆除外）和全球（默认）。详见[限定访问区域](/zh-CN/realtime-media/rtsa/build/network-and-region-access/region-limit)。
 
 ### 问题修复
 
@@ -819,7 +819,7 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 #### 配置 BWE
 
-该版本新增 `agora_rtc_set_bwe_param` 方法用于配置 BWE (Bandwidth Estimation) 参数。你可根据自己的实际带宽和码率需要调用此方法配置发送码率的最小值、最大值和起始值，详见[动态码率推荐](/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption)。
+该版本新增 `agora_rtc_set_bwe_param` 方法用于配置 BWE (Bandwidth Estimation) 参数。你可根据自己的实际带宽和码率需要调用此方法配置发送码率的最小值、最大值和起始值，详见[动态码率推荐](/zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption)。
 
 ### API 变更
 

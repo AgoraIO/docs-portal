@@ -86,6 +86,17 @@ const ZH_CN_RTM_REST_API_BACK_LINK = {
   backHref: '/zh-CN/realtime-media/rtm',
   backLabel: '实时消息 RTM',
 };
+const ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES = [
+  '/zh-CN/realtime-media/rtm/build/rtm-initialization/',
+  '/zh-CN/realtime-media/rtm/build/authentication-and-connection/',
+  '/zh-CN/realtime-media/rtm/build/channels-and-topics/',
+  '/zh-CN/realtime-media/rtm/build/messaging/',
+  '/zh-CN/realtime-media/rtm/build/message-design-and-history/',
+  '/zh-CN/realtime-media/rtm/build/state-and-attributes/',
+  '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/',
+] as const;
+const ZH_CN_RTM_TROUBLESHOOTING_REDIRECT =
+  '/zh-CN/realtime-media/rtm/build/troubleshooting';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
@@ -522,9 +533,17 @@ export async function loadDocsPagePayload(
     slugSegments,
   );
   if (zhCnProductIaRedirect) {
-    return {
-      redirectUrl: zhCnProductIaRedirect,
-    };
+    const statusCode: 301 | undefined = isZhCnRtmBuildIaRedirect(
+      zhCnProductIaRedirect,
+    )
+      ? 301
+      : undefined;
+
+    if (statusCode === undefined) {
+      return { redirectUrl: zhCnProductIaRedirect };
+    }
+
+    return { redirectUrl: zhCnProductIaRedirect, statusCode };
   }
 
   const realtimeMediaApiReferenceRedirect =
@@ -1478,6 +1497,15 @@ function resolveRealtimeMediaRedirect(
   return redirects[normalizedPath] ?? null;
 }
 
+function isZhCnRtmBuildIaRedirect(redirectUrl: string) {
+  return (
+    redirectUrl === ZH_CN_RTM_TROUBLESHOOTING_REDIRECT ||
+    ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
+      redirectUrl.startsWith(prefix),
+    )
+  );
+}
+
 function resolveRealtimeMediaApiReferenceRedirect(
   locale: string,
   tab: string,
@@ -1711,6 +1739,7 @@ export type DocsPagePayload = Exclude<
 export type DocsRedirectPayload = {
   preserveSearch?: boolean;
   redirectUrl: string;
+  statusCode?: 301 | 307 | 308;
 };
 
 async function readProcessedText(page: PageWithSource) {

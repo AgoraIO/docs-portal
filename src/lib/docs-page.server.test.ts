@@ -17,6 +17,7 @@ import {
   normalizeZhCnEmbeddedApiSidebar,
 } from './docs-page.server';
 import { type PageWithSource, source } from './source.server';
+import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
 
 vi.mock('./source.server', () => ({
   getPageMarkdownUrl: (page: { url: string }, platform?: string) => {
@@ -4062,6 +4063,294 @@ Web body
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
     });
+  });
+
+  it.each([
+    ['get-started/enable-service', 'build/rtm-initialization/enable-service'],
+    ['error-codes', 'build/troubleshooting'],
+    ['reference/link-state', 'build/authentication-and-connection/link-state'],
+    ['reference/metadata-events', 'build/state-and-attributes/metadata-events'],
+    ['reference/presence-events', 'build/state-and-attributes/presence-events'],
+    ['reference/topic-events', 'build/channels-and-topics/topics/topic-events'],
+    [
+      'user-guide/channel/channel-basic',
+      'build/channels-and-topics/channel-basic',
+    ],
+    [
+      'user-guide/channel/channel-name',
+      'build/channels-and-topics/channel-name',
+    ],
+    [
+      'user-guide/channel/message-channel',
+      'build/channels-and-topics/message-channel',
+    ],
+    [
+      'user-guide/channel/stream-channel',
+      'build/channels-and-topics/stream-channel',
+    ],
+    [
+      'user-guide/link/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'user-guide/link/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'user-guide/message/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+    [
+      'user-guide/message/constructed',
+      'build/message-design-and-history/constructed',
+    ],
+    [
+      'user-guide/message/history-message',
+      'build/message-design-and-history/history-message',
+    ],
+    ['user-guide/message/send-message', 'build/messaging/send-message'],
+    [
+      'user-guide/message/serialized',
+      'build/message-design-and-history/serialized',
+    ],
+    ['user-guide/presence/event', 'build/state-and-attributes/presence-events'],
+    [
+      'user-guide/presence/presence-basic',
+      'build/state-and-attributes/presence-basic',
+    ],
+    [
+      'user-guide/presence/temporary-user-state',
+      'build/state-and-attributes/temporary-user-state',
+    ],
+    [
+      'user-guide/setup/application-setup',
+      'build/rtm-initialization/application-setup',
+    ],
+    [
+      'user-guide/setup/data-storage',
+      'build/state-and-attributes/data-storage',
+    ],
+    ['user-guide/setup/login', 'build/authentication-and-connection/login'],
+    [
+      'user-guide/setup/private-setup',
+      'build/network-and-private-deployment/private-setup',
+    ],
+    [
+      'user-guide/storage/channel-metadata',
+      'build/state-and-attributes/channel-metadata',
+    ],
+    ['user-guide/storage/event', 'build/state-and-attributes/metadata-events'],
+    [
+      'user-guide/storage/user-metadata',
+      'build/state-and-attributes/user-metadata',
+    ],
+    [
+      'user-guide/token/token-generation',
+      'build/authentication-and-connection/token-generation',
+    ],
+    [
+      'user-guide/token/user-authentication',
+      'build/authentication-and-connection/user-authentication',
+    ],
+    ['user-guide/topic/event', 'build/channels-and-topics/topics/topic-events'],
+    [
+      'user-guide/topic/topic-basic',
+      'build/channels-and-topics/topics/topic-basic',
+    ],
+    ['user-guide/topic/usage', 'build/channels-and-topics/topics/usage'],
+  ] as const)(
+    'redirects RTM historical alias %s to %s',
+    async (legacyPath, canonicalPath) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it('keeps unmigrated RTM reference aliases on the default redirect payload', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', [
+        'rtm',
+        'overview',
+        'billing',
+        'billing-rules',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/rtm/reference/billing/billing-rules',
+    });
+  });
+
+  it.each([
+    [
+      'build/setup-and-access/enable-service',
+      'build/rtm-initialization/enable-service',
+    ],
+    [
+      'build/setup-and-access/application-setup',
+      'build/rtm-initialization/application-setup',
+    ],
+    [
+      'build/setup-and-access/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+    [
+      'build/setup-and-access/login',
+      'build/authentication-and-connection/login',
+    ],
+    [
+      'build/setup-and-access/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'build/setup-and-access/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'build/setup-and-access/data-storage',
+      'build/state-and-attributes/data-storage',
+    ],
+    [
+      'build/setup-and-access/private-setup',
+      'build/network-and-private-deployment/private-setup',
+    ],
+    [
+      'build/manage-channels/channel-basic',
+      'build/channels-and-topics/channel-basic',
+    ],
+    [
+      'build/manage-channels/channel-name',
+      'build/channels-and-topics/channel-name',
+    ],
+    [
+      'build/manage-channels/message-channel',
+      'build/channels-and-topics/message-channel',
+    ],
+    [
+      'build/manage-channels/stream-channel',
+      'build/channels-and-topics/stream-channel',
+    ],
+    ['build/manage-messages/send-message', 'build/messaging/send-message'],
+    [
+      'build/manage-messages/constructed',
+      'build/message-design-and-history/constructed',
+    ],
+    [
+      'build/manage-messages/serialized',
+      'build/message-design-and-history/serialized',
+    ],
+    [
+      'build/manage-messages/history-message',
+      'build/message-design-and-history/history-message',
+    ],
+    [
+      'build/manage-topics/topic-basic',
+      'build/channels-and-topics/topics/topic-basic',
+    ],
+    ['build/manage-topics/usage', 'build/channels-and-topics/topics/usage'],
+    [
+      'build/manage-topics/topic-events',
+      'build/channels-and-topics/topics/topic-events',
+    ],
+    [
+      'build/manage-presence/presence-basic',
+      'build/state-and-attributes/presence-basic',
+    ],
+    [
+      'build/manage-presence/temporary-user-state',
+      'build/state-and-attributes/temporary-user-state',
+    ],
+    [
+      'build/manage-presence/presence-events',
+      'build/state-and-attributes/presence-events',
+    ],
+    [
+      'build/manage-metadata/user-metadata',
+      'build/state-and-attributes/user-metadata',
+    ],
+    [
+      'build/manage-metadata/channel-metadata',
+      'build/state-and-attributes/channel-metadata',
+    ],
+    [
+      'build/manage-metadata/metadata-events',
+      'build/state-and-attributes/metadata-events',
+    ],
+    [
+      'build/security-and-auth/token-generation',
+      'build/authentication-and-connection/token-generation',
+    ],
+    [
+      'build/security-and-auth/user-authentication',
+      'build/authentication-and-connection/user-authentication',
+    ],
+  ] as const)(
+    'redirects RTM current old page %s to %s with 301',
+    async (legacyPath, canonicalPath) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it.each([
+    [
+      'build/manage-connections/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'build/manage-connections/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'build/manage-messages/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+  ] as const)(
+    'redirects the RTM intermediate path %s without retaining its old directory',
+    async (legacyPath, canonicalPath) => {
+      const redirectUrl = `/zh-CN/realtime-media/rtm/${canonicalPath}`;
+
+      expect(redirectUrl).not.toMatch(
+        /\/build\/(manage-connections|manage-messages)(\/|$)/,
+      );
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({ redirectUrl, statusCode: 301 });
+    },
+  );
+
+  it('does not add redirects for RTM legacy category roots', () => {
+    for (const legacyPath of [
+      'build/setup-and-access',
+      'build/manage-channels',
+      'build/manage-messages',
+      'build/manage-topics',
+      'build/manage-presence',
+      'build/manage-metadata',
+      'build/security-and-auth',
+    ]) {
+      expect(
+        resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).toBeNull();
+    }
   });
 
   it('redirects moved Reference pages to their new product paths', async () => {

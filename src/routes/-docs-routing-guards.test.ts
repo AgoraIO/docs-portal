@@ -1,6 +1,16 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
-import type { DocsPagePayload } from '@/lib/docs-page.server';
+import type {
+  DocsPagePayload,
+  DocsRedirectPayload,
+} from '@/lib/docs-page.server';
+
+const { docsPagePayloadOverride } = vi.hoisted(() => ({
+  docsPagePayloadOverride: vi.fn(),
+}));
+const { docsTabIndexOverride } = vi.hoisted(() => ({
+  docsTabIndexOverride: vi.fn(),
+}));
 
 vi.mock('@/lib/docs-route-preload', () => ({
   preloadDocsPageContent: vi.fn(),
@@ -17,6 +27,11 @@ vi.mock('@/lib/docs-page', () => ({
       tab: string;
     };
   }) => {
+    const override = docsPagePayloadOverride(data);
+    if (override !== undefined) {
+      return override;
+    }
+
     const { loadDocsPagePayload } = await import('@/lib/docs-page.server');
 
     return loadDocsPagePayload(
@@ -31,6 +46,11 @@ vi.mock('@/lib/docs-page', () => ({
   }: {
     data: { locale: string; tab: string };
   }) => {
+    const override = docsTabIndexOverride(data);
+    if (override !== undefined) {
+      return override;
+    }
+
     const { loadDocsTabIndex } = await import('@/lib/docs-page.server');
 
     return loadDocsTabIndex(data.locale, data.tab);
@@ -405,6 +425,79 @@ describe('docs route locale guards', () => {
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
+
+  it('forwards an RTM 301 DocsRedirectPayload from the page route', async () => {
+    docsPagePayloadOverride.mockReturnValueOnce({
+      redirectUrl:
+        '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+      statusCode: 301,
+    } satisfies DocsRedirectPayload);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#section',
+          pathname:
+            '/en/realtime-media/rtm/build/setup-and-access/enable-service',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'rtm/build/setup-and-access/enable-service',
+          locale: 'en',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service?from=legacy#section',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    }
+
+    throw new Error('expected page route to forward a 301 redirect payload');
+  });
+
+  it('forwards an RTM 301 DocsRedirectPayload from the tab index route', async () => {
+    docsTabIndexOverride.mockReturnValueOnce({ url: '/en/realtime-media' });
+    docsPagePayloadOverride.mockReturnValueOnce({
+      redirectUrl:
+        '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+      statusCode: 301,
+    } satisfies DocsRedirectPayload);
+
+    try {
+      await getLoader(TabIndexRoute)({
+        location: {
+          hash: '#section',
+          pathname: '/en/realtime-media',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          locale: 'en',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service?from=legacy#section',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    }
+
+    throw new Error(
+      'expected tab index route to forward a 301 redirect payload',
+    );
+  });
 
   it(
     'serves direct .md docs page URLs as markdown',
