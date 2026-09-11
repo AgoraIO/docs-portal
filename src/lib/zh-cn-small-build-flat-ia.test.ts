@@ -122,10 +122,23 @@ const parseOldUrl = (url: string) => { const [, tab, ...segments] = url.split('/
 
   it.each(migrations)('$oldRelativePath leaves no source files in its old directory', ({ productPath, oldRelativePath }) => {
     const oldDirectory = pathFor(productPath, oldRelativePath.split('/').slice(0, -1).join('/'));
+    if (!existsSync(oldDirectory)) {
+      return;
+    }
     const residual = readdirSync(oldDirectory, { withFileTypes: true, recursive: true })
       .filter((entry) => entry.isFile() && /\.(?:md|mdx|json)$/.test(entry.name))
       .map((entry) => entry.name);
     expect(residual).toEqual([]);
+  });
+
+  it.each(buildExpectations)('$productPath has only the approved flat Build files', ({ productPath, pages }) => {
+    const buildRoot = pathFor(productPath, 'build');
+    const expectedNames = ['meta.json', ...pages.map((page) => `${page}.mdx`)].sort();
+    const actualNames = readdirSync(buildRoot, { withFileTypes: true })
+      .map((entry) => entry.name)
+      .sort();
+    expect(actualNames).toEqual(expectedNames);
+    expect(readdirSync(buildRoot, { withFileTypes: true }).every((entry) => entry.isFile())).toBe(true);
   });
 
   it.each(migrations)('$oldUrl redirects directly to $newUrl with HTTP 301', async ({ oldUrl, newUrl }) => {
