@@ -24,7 +24,9 @@ import {
   captureDocsSearchCompleted,
   captureDocsSearchOpened,
   captureDocsSearchResultClicked,
+  captureDocsSearchResultsImpressed,
 } from '@/lib/analytics/posthog';
+import { savePendingSearchLanding } from '@/lib/analytics/search-attribution';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
@@ -42,6 +44,7 @@ import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
+import { classifySearchIntent } from '@/lib/search/search-intent';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -127,6 +130,17 @@ export function DocsSearchDialog({
   // latest one actually resolves.
   const [pendingRequests, setPendingRequests] = useState(0);
   const [apiSearchUnavailable, setApiSearchUnavailable] = useState(false);
+  const searchSessionIdRef = useRef<string | null>(null);
+  const latestQueryAttemptIdRef = useRef<string | null>(null);
+  const [latestQueryAttemptId, setLatestQueryAttemptId] = useState<
+    string | null
+  >(null);
+  const searchAttemptStartedAtRef = useRef<number | null>(null);
+  const resultDisplayedAtRef = useRef(new Map<string, number>());
+  const searchAttemptsRef = useRef(
+    new Map<number, { id: string; startedAt: number }>(),
+  );
+  const impressedAttemptIdsRef = useRef(new Set<string>());
   const currentSearchRef = useRef('');
   const latestSearchRequestRef = useRef(0);
   const localSearchStatusRef = useRef(localSearchStatus);
@@ -145,12 +159,16 @@ export function DocsSearchDialog({
     ({
       query,
       requestId,
+      apiAvailable,
       resultCount,
+      results,
       status,
     }: {
+      apiAvailable?: boolean;
       query: string;
       requestId: number;
       resultCount?: number;
+      results?: unknown;
       status: 'error' | 'success';
     }) => {
       const normalizedQuery = query.trim();
@@ -159,13 +177,38 @@ export function DocsSearchDialog({
         return;
       }
 
+      const attempt = searchAttemptsRef.current.get(requestId);
+      if (!attempt || !searchSessionIdRef.current) {
+        return;
+      }
+
+      latestQueryAttemptIdRef.current = attempt.id;
+      searchAttemptStartedAtRef.current = attempt.startedAt;
+      setLatestQueryAttemptId(attempt.id);
+      const resultItems = Array.isArray(results) ? results : [];
+      const docsResultCount = resultItems.filter(
+        (result) =>
+          typeof result !== 'object' ||
+          result === null ||
+          (result as { objectType?: unknown }).objectType !== 'sdk-api',
+      ).length;
+      const apiResultCount = resultItems.length - docsResultCount;
+
       captureDocsSearchCompleted({
+        apiAvailable,
+        apiResultCount: Array.isArray(results) ? apiResultCount : undefined,
+        docsResultCount: Array.isArray(results) ? docsResultCount : undefined,
         locale: searchLocale,
         platformFilter,
         productScope: scopeId,
         provider: algoliaEnabled ? 'algolia' : 'local',
+        query: normalizedQuery,
+        queryAttemptId: attempt.id,
         queryLength: normalizedQuery.length,
+        searchIntent: classifySearchIntent(normalizedQuery).intent,
+        searchSessionId: searchSessionIdRef.current,
         ...(resultCount === undefined ? {} : { resultCount }),
+        latencyMs: Date.now() - attempt.startedAt,
         status,
       });
       pendingLocalCompletionRef.current = null;
@@ -195,17 +238,21 @@ export function DocsSearchDialog({
       async search(query: string) {
         const requestId = latestSearchRequestRef.current + 1;
         latestSearchRequestRef.current = requestId;
+        if (query.trim()) {
+          searchAttemptsRef.current.set(requestId, {
+            id: createSearchAnalyticsId(),
+            startedAt: Date.now(),
+          });
+        }
         setApiSearchUnavailable(false);
         setPendingRequests((count) => count + 1);
         try {
           const results = await base.search(query);
+          const searchStatus =
+            'getLastStatus' in base && typeof base.getLastStatus === 'function'
+              ? base.getLastStatus()
+              : undefined;
           if (isLatestSearch(query, requestId)) {
-            const searchStatus =
-              'getLastStatus' in base &&
-              typeof base.getLastStatus === 'function'
-                ? base.getLastStatus()
-                : undefined;
-
             setApiSearchUnavailable(
               searchStatus?.docs === 'success' && searchStatus.api === 'error',
             );
@@ -222,11 +269,18 @@ export function DocsSearchDialog({
 
           if (completionStatus) {
             captureLatestCompletedSearch({
+              apiAvailable:
+                searchStatus?.api === 'success'
+                  ? true
+                  : searchStatus?.api === 'error'
+                    ? false
+                    : undefined,
               query,
               requestId,
               ...(completionStatus === 'success'
                 ? {
                     resultCount: Array.isArray(results) ? results.length : 0,
+                    results,
                   }
                 : {}),
               status: completionStatus,
@@ -408,6 +462,10 @@ export function DocsSearchDialog({
     pendingLocalCompletionRef.current = null;
     setApiSearchUnavailable(false);
     setResultPlatformSelections({});
+    latestQueryAttemptIdRef.current = null;
+    setLatestQueryAttemptId(null);
+    searchAttemptStartedAtRef.current = null;
+    resultDisplayedAtRef.current.clear();
   }, []);
   const handleSearchChange = useCallback(
     (nextSearch: string) => {
@@ -449,14 +507,47 @@ export function DocsSearchDialog({
     [invalidateCurrentSearch, platformFilter],
   );
 
-  async function handleSelect(url: string, rank?: number) {
+  async function handleSelect(
+    url: string,
+    rank?: number,
+    metadata?: {
+      resultSource?: string;
+      resultType?: string;
+      selectedPlatform?: string;
+    },
+  ) {
     if (hasQuery && rank !== undefined) {
+      const queryAttemptId = latestQueryAttemptIdRef.current;
+      const searchSessionId = searchSessionIdRef.current;
+      const resultDisplayedAt = queryAttemptId
+        ? resultDisplayedAtRef.current.get(queryAttemptId)
+        : undefined;
+      const clickStartTime =
+        resultDisplayedAt ?? searchAttemptStartedAtRef.current ?? undefined;
       captureDocsSearchResultClicked({
+        clickDelayMs:
+          clickStartTime === undefined
+            ? undefined
+            : Math.max(0, Date.now() - clickStartTime),
         href: url,
         locale: searchLocale,
+        queryAttemptId: queryAttemptId ?? undefined,
         queryLength: search.trim().length,
         rank,
+        resultSource: metadata?.resultSource,
+        resultType: metadata?.resultType,
+        searchSessionId: searchSessionId ?? undefined,
+        selectedPlatform: metadata?.selectedPlatform,
       });
+
+      if (queryAttemptId && searchSessionId && !isExternalUrl(url)) {
+        savePendingSearchLanding({
+          createdAt: Date.now(),
+          href: url,
+          queryAttemptId,
+          searchSessionId,
+        });
+      }
     }
 
     closeAndReset();
@@ -473,6 +564,11 @@ export function DocsSearchDialog({
   const handleOpenChange = useCallback(
     async (nextOpen: boolean, trigger: 'button' | 'keyboard' = 'button') => {
       if (nextOpen) {
+        const searchSessionId = createSearchAnalyticsId();
+        searchSessionIdRef.current = searchSessionId;
+        latestQueryAttemptIdRef.current = null;
+        setLatestQueryAttemptId(null);
+        impressedAttemptIdsRef.current.clear();
         setOpen(true);
         // Re-arm the result cascade each time the dialog opens.
         setStaggerArmed(true);
@@ -484,6 +580,7 @@ export function DocsSearchDialog({
         captureDocsSearchOpened({
           locale: searchLocale,
           mode,
+          searchSessionId: searchSessionIdRef.current ?? undefined,
           trigger,
         });
         // Refresh the recent list from storage on each open, dropping the page
@@ -592,6 +689,45 @@ export function DocsSearchDialog({
   // re-query is in flight the previous results stay visible, so the skeleton
   // must not render on top of them.
   const showSkeleton = hasQuery && isBusy && resultEntries.length === 0;
+
+  useEffect(() => {
+    if (
+      !hasQuery ||
+      isSearchUnavailable ||
+      resultEntries.length === 0 ||
+      !latestQueryAttemptId ||
+      !searchSessionIdRef.current ||
+      impressedAttemptIdsRef.current.has(latestQueryAttemptId)
+    ) {
+      return;
+    }
+
+    impressedAttemptIdsRef.current.add(latestQueryAttemptId);
+    resultDisplayedAtRef.current.set(latestQueryAttemptId, Date.now());
+    captureDocsSearchResultsImpressed({
+      firstResultSource: algoliaEnabled ? 'algolia' : 'local',
+      firstResultType: resultEntries[0]?.objectType ?? 'docs',
+      hasPlatformVariants: resultEntries.some(
+        (entry) => Object.keys(entry.platformUrls ?? {}).length > 1,
+      ),
+      locale: searchLocale,
+      queryAttemptId: latestQueryAttemptId,
+      resultCount: resultEntries.length,
+      resultGroupOrder: showApiFirst
+        ? 'api-reference,documentation'
+        : 'documentation,api-reference',
+      searchSessionId: searchSessionIdRef.current,
+      visibleResultCount: resultEntries.length,
+    });
+  }, [
+    algoliaEnabled,
+    hasQuery,
+    isSearchUnavailable,
+    latestQueryAttemptId,
+    resultEntries,
+    searchLocale,
+    showApiFirst,
+  ]);
 
   // One detail record per rendered item, in render order. `value` matches the
   // cmdk item value set on each CommandItem below. The empty state lists recent
@@ -782,7 +918,18 @@ export function DocsSearchDialog({
                           <CommandItem
                             className={cn('items-start', stagger.className)}
                             onSelect={() =>
-                              void handleSelect(selectedUrl, rank)
+                              void handleSelect(selectedUrl, rank, {
+                                resultSource: algoliaEnabled
+                                  ? 'algolia'
+                                  : 'local',
+                                resultType: page.objectType ?? 'docs',
+                                selectedPlatform: Object.entries(
+                                  platformUrls,
+                                ).find(
+                                  ([, variantUrl]) =>
+                                    variantUrl === selectedUrl,
+                                )?.[0],
+                              })
                             }
                             style={stagger.style}
                             value={resultKey}
@@ -979,6 +1126,14 @@ function truncateSearchSnippet(value: string | undefined) {
   }
 
   return `${value.slice(0, 360).trim()}...`;
+}
+
+function createSearchAnalyticsId() {
+  if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
+    return crypto.randomUUID();
+  }
+
+  return `search-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 }
 
 function HighlightedText({
