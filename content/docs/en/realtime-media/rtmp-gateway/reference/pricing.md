@@ -49,6 +49,8 @@ Depending on whether the video stream is pushed, the push duration is divided in
 
 ## Billing examples
 
+The following examples show how Media Gateway calculates cost for each streaming scenario.
+
 ### Video streaming
 
 Suppose that you use Media Gateway to push a video stream that does not require transcoding in a channel, and the push duration is 3000 minutes.

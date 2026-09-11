@@ -11,7 +11,7 @@ This page provides the release notes for Media Gateway.
 
 - **WHIP streaming protocol support**
 
-  Media Gateway now accepts the WHIP protocol for pushing streams, in addition to RTMP and SRT. WHIP is more resilient to weak network conditions than RTMP and has built-in load balancing. Supported codecs are H.264, H.265, and AV1 for video, and OPUS for audio. For configuration details, see [WHIP streaming](whip-streaming.md).
+  Media Gateway now accepts the WHIP protocol for pushing streams, in addition to RTMP and SRT. WHIP is more resilient to weak network conditions than RTMP and has built-in load balancing. Supported codecs are H.264, H.265, and AV1 for video, and OPUS for audio. For configuration details, see [WHIP streaming](../build/push-streams/whip-streaming.md).
 
 ## 2026.8.12
 
@@ -19,7 +19,7 @@ This page provides the release notes for Media Gateway.
 
 - **AV1 video transcoding**
 
-  Stream templates support AV1 as a transcoding output codec, in addition to H.264 and H.265. Use AV1 to reduce bitrate at the same visual quality, or to serve players that require AV1 playback. For configuration details, see [Enable AV1 transcoding](../build/optimize-quality-and-monitor-events/enable-av1-transcoding.md).
+  Stream templates support AV1 as a transcoding output codec, in addition to H.264 and H.265. Use AV1 to reduce bitrate at the same visual quality, or to serve players that require AV1 playback. For configuration details, see [Transcode to AV1](../build/optimize-quality-and-monitor-events/enable-av1-transcoding.md).
 
 - **G.711 audio ingest**
 
@@ -27,7 +27,7 @@ This page provides the release notes for Media Gateway.
 
 - **Adaptive transcoding**
 
-  Stream templates support conditional transcoding. You define an expression based on source stream properties, such as bitrate, frame rate, and B-frames, and Media Gateway transcodes a stream only when it doesn't already meet your target specification. For configuration details, see [Enable adaptive transcoding](../build/optimize-quality-and-monitor-events/enable-adaptive-transcoding.md).
+  Stream templates support conditional transcoding. You define an expression based on source stream properties, such as bitrate, frame rate, and B-frames, and Media Gateway transcodes a stream only when it doesn't already meet your target specification. For configuration details, see [Use adaptive transcoding](../build/optimize-quality-and-monitor-events/enable-adaptive-transcoding.md).
 
 - **Custom domains and TLS certificates**
 
@@ -39,7 +39,7 @@ This page provides the release notes for Media Gateway.
 
 - **Dual-stream high availability**
 
-  Bind two streaming keys to the same channel and user ID, then stream to a primary and a backup domain at the same time. Media Gateway can automatically fail over to the backup stream if the primary stream drops or degrades in quality. For details, see [Enable dual-stream high availability](integration.md#enable-dual-stream-high-availability).
+  Bind two streaming keys to the same channel and user ID, then stream to a primary and a backup domain at the same time. Media Gateway can automatically fail over to the backup stream if the primary stream drops or degrades in quality. For details, see [Enable dual-stream high availability](../build/configure-custom-domains/enable-dual-stream-ha.md).
 
 ## 2025.5.28
 
@@ -51,7 +51,7 @@ This page provides the release notes for Media Gateway.
 
 - **Adaptive Bitrate (ABR)**
 
-  Stream configuration templates now support ABR functionality. For configuration details, see [Enable adaptive bitrate](../build/optimize-quality-and-monitor-events/enable-adaptive-bitrate.md).
+  Stream configuration templates now support ABR functionality. For configuration details, see [Configure adaptive bitrate (ABR)](../build/optimize-quality-and-monitor-events/enable-adaptive-bitrate.md).
 
 - **SRT streaming protocol support**
 
@@ -60,7 +60,7 @@ This page provides the release notes for Media Gateway.
   - Video: H.264, H.265
   - Audio: AAC, OPUS
 
-  For configuration details, see [SRT streaming](srt-streaming.md).
+  For configuration details, see [SRT streaming](../build/push-streams/srt-streaming.md).
 
 ### Improvements
 

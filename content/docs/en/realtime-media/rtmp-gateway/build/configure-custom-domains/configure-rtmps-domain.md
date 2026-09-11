@@ -88,7 +88,7 @@ curl --request POST \
   }'
 ```
 
-`domainType` marks whether the domain is a primary (`0`) or backup (`1`) streaming domain. If you're not using [dual-stream high availability](../../reference/integration.md), use `0`.
+`domainType` marks whether the domain is a primary (`0`) or backup (`1`) streaming domain. If you're not using [dual-stream high availability](./enable-dual-stream-ha.md), use `0`.
 
 ### Push RTMPS to your domain
 

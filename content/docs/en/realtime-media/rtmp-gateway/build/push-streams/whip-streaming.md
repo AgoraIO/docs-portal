@@ -33,7 +33,7 @@ Set up WHIP streaming in OBS Studio by configuring the server and Bearer token s
      - `cn`: Mainland China
    - To use your own domain name, contact Agora [technical support](mailto:support@agora.io) for configuration before use.
 
-2. In the **Bearer token** field, enter the streaming key. To obtain a key, see [Get streaming key](../quickstart#get-streaming-key).
+2. In the **Bearer token** field, enter the streaming key. To obtain a key, see [Get streaming key](../../quickstart#get-streaming-key).
 
 :::note
 OBS lets you enable Simulcast for a WHIP stream, sending multiple resolution/frame rate layers in addition to the main stream. Media Gateway only receives the main stream and ignores the other layers, so enabling Simulcast in OBS has no effect on what the gateway does with the stream.

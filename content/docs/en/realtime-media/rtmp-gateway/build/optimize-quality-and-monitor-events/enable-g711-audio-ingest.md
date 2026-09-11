@@ -1,6 +1,6 @@
 ---
 title: "Push G.711 audio"
-description: "Push RTMP or RTMPS streams with G.711 audio into Agora channels."
+description: "Accept RTMP or RTMPS streams with G.711 audio into Agora channels."
 ---
 Media Gateway accepts G.711 A-law and u-law audio over RTMP and RTMPS, in addition to AAC. This is useful for sources that output G.711 natively, such as security cameras and hardware encoders, since you don't need to transcode to AAC on the device.
 

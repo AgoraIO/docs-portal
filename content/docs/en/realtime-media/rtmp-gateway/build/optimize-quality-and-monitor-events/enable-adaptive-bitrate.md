@@ -1,6 +1,6 @@
 ---
-title: "Enable adaptive bitrate"
-description: "Configure ABR layers for Media Gateway video transcoding."
+title: "Configure adaptive bitrate (ABR)"
+description: "Add ABR layers to a Media Gateway stream template."
 ---
 Adaptive Bitrate (ABR) streaming delivers multiple video quality levels from a single source, allowing viewers to automatically switch between different bitrates based on their network conditions and device capabilities. This ensures optimal viewing experience by reducing buffering and maintaining the highest possible quality for each viewer's situation.
 
@@ -216,6 +216,8 @@ Subscribers can choose ABR layers on the receiving side and let the SDK adapt to
 
 ### Native SDK: Subscriber-side APIs
 
+Use the following Native SDK APIs to control which ABR layer a subscriber receives.
+
 #### Configure remote subscriber fallback
 
 - API: `setRemoteSubscribeFallbackOption(StreamFallbackOptions option)`
@@ -278,6 +280,8 @@ Subscribers can choose ABR layers on the receiving side and let the SDK adapt to
     ```
 
 ### Web SDK: Subscriber-side APIs
+
+Use the following Web SDK APIs to control which ABR layer a subscriber receives.
 
 #### Enable bandwidth estimation
 

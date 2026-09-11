@@ -16,6 +16,7 @@ In order to follow this procedure you must:
 
 - Have a project that implements an RTC product:
   Interactive Live Streaming, Broadcast Streaming, Video Calling, or Voice Calling
+- [Enable Media Gateway](./build/set-up-and-authenticate/enable-media-gateway.md) for your project
 - Generate app ID, app certificate, customer ID, and customer secret
 - Pass basic HTTP or HMAC authentication
 
