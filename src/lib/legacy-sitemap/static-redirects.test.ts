@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import { resolveStaticLegacySitemapRedirect } from './static-redirects';
 
 describe('static legacy sitemap redirects', () => {
@@ -9,7 +10,6 @@ describe('static legacy sitemap redirects', () => {
       preserveSearch: true,
       redirectUrl:
         '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist',
-      statusCode: 301,
     });
   });
 
@@ -24,6 +24,19 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it('marks all 76 flattened zh-CN Build routes as permanent redirects', () => {
+    for (const [path, redirectUrl] of Object.entries(
+      ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+    )) {
+      expect(
+        resolveStaticLegacySitemapRedirect(`/zh-CN/${path}`),
+      ).toMatchObject({
+        redirectUrl,
+        statusCode: 301,
+      });
+    }
+  });
+
   it('redirects the legacy Cloud Recording getstarted shortcut to the REST quickstart', () => {
     expect(
       resolveStaticLegacySitemapRedirect(
@@ -32,7 +45,6 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: true,
       redirectUrl: '/en/realtime-media/cloud-recording/rest-quickstart',
-      statusCode: 301,
     });
   });
 
@@ -44,7 +56,6 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: true,
       redirectUrl: '/en/api-reference/api-ref/im',
-      statusCode: 301,
     });
   });
 
@@ -58,7 +69,6 @@ describe('static legacy sitemap redirects', () => {
       preserveSearch: false,
       redirectUrl:
         '/en/realtime-media/broadcast-streaming/reference/release-notes/javascript',
-      statusCode: 301,
     });
   });
 
@@ -71,7 +81,6 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: true,
       redirectUrl: '/en/api-reference/api-ref/signaling/authentication',
-      statusCode: 301,
     });
   });
 

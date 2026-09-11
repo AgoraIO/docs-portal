@@ -73,7 +73,9 @@ export const Route = createFileRoute('/$locale/$tab/$')({
             location,
             legacyRedirect.preserveSearch,
           ),
-          statusCode: legacyRedirect.statusCode,
+          ...(legacyRedirect.statusCode
+            ? { statusCode: legacyRedirect.statusCode }
+            : {}),
         });
       }
     }

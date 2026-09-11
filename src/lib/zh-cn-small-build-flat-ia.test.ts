@@ -161,4 +161,17 @@ const parseOldUrl = (url: string) => {
       expect(actual?.some((entry) => typeof entry === 'object')).toBe(false);
     }
   });
+
+  it('uses the flattened Meta World Build targets in both platform card groups', () => {
+    const page = readFileSync(
+      pathFor('solutions/meta-world', 'get-started/integrate-sdk.mdx'),
+      'utf8',
+    );
+
+    for (const slug of ['metachat', 'metalive', 'mixed-scenario']) {
+      expect(page.match(new RegExp(`href="../build/${slug}"`, 'g'))).toHaveLength(
+        2,
+      );
+    }
+  });
 });

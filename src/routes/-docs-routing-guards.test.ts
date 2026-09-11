@@ -11,6 +11,20 @@ const { docsPagePayloadOverride } = vi.hoisted(() => ({
 const { docsTabIndexOverride } = vi.hoisted(() => ({
   docsTabIndexOverride: vi.fn(),
 }));
+const { publishedLocaleOverride } = vi.hoisted(() => ({
+  publishedLocaleOverride: { value: false },
+}));
+const { staticLegacyRedirectOverride } = vi.hoisted(() => ({
+  staticLegacyRedirectOverride: {
+    value: undefined as
+      | {
+          preserveSearch: boolean;
+          redirectUrl: string;
+          statusCode?: 301;
+        }
+      | undefined,
+  },
+}));
 
 vi.mock('@/lib/docs-route-preload', () => ({
   preloadDocsPageContent: vi.fn(),
@@ -64,6 +78,34 @@ vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
   return {
     ...actual,
     shouldUseStaticDocsPayload: vi.fn(() => false),
+  };
+});
+
+vi.mock('@/lib/docs-routing', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/docs-routing')>();
+
+  return {
+    ...actual,
+    isPublishedDocLocale: (locale: string) =>
+      publishedLocaleOverride.value
+        ? locale === 'zh-CN'
+        : actual.isPublishedDocLocale(locale),
+  };
+});
+
+vi.mock('@/lib/legacy-sitemap/static-redirects', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('@/lib/legacy-sitemap/static-redirects')
+    >();
+
+  return {
+    ...actual,
+    resolveStaticLegacySitemapRedirect: (
+      ...args: Parameters<typeof actual.resolveStaticLegacySitemapRedirect>
+    ) =>
+      staticLegacyRedirectOverride.value ??
+      actual.resolveStaticLegacySitemapRedirect(...args),
   };
 });
 
@@ -291,6 +333,111 @@ describe('docs route locale guards', () => {
         },
       } as never),
     ).resolves.toBeNull();
+  });
+
+  it('uses a permanent static redirect for a flattened small Build route', async () => {
+    publishedLocaleOverride.value = true;
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(true);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#details',
+          pathname:
+            '/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'meeting/build/setup-and-access/enable-service',
+          locale: 'zh-CN',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/meeting/build/enable-service?from=legacy#details',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    } finally {
+      publishedLocaleOverride.value = false;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it('keeps a non-Build static legacy redirect at the default status', async () => {
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#details',
+          pathname: '/en/agora-chat/develop/ip_allowlist',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'develop/ip_allowlist',
+          locale: 'en',
+          tab: 'agora-chat',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist?from=legacy#details',
+          statusCode: 307,
+        },
+        status: 307,
+      });
+      return;
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it('forwards a static resolver 301 through the tab index loader', async () => {
+    staticLegacyRedirectOverride.value = {
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/im',
+      statusCode: 301,
+    };
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(true);
+
+    try {
+      await getLoader(TabIndexRoute)({
+        location: {
+          hash: '#details',
+          pathname: '/en/introduction',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          locale: 'en',
+          tab: 'introduction',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/en/realtime-media/im?from=legacy#details',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    } finally {
+      staticLegacyRedirectOverride.value = undefined;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+    }
+
+    throw new Error('expected loader to reject with redirect');
   });
 
   it('leaves child docs pages to child route loaders', async () => {
