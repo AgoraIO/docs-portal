@@ -59,6 +59,8 @@ The [iOS toolkit API](https://github.com/AgoraIO-Community/Conversational-AI-Dem
 | [`interrupt`](#interrupt)         | Interrupt the agent's current speech or task processing.                     |
 | [`manualSOS`](#manualsos) | Sends a manual Start of Speech (SoS) signal to the agent. |
 | [`manualEOS`](#manualeos) | Sends a manual End of Speech (EoS) signal to the agent. |
+| [`speak`](#speak) | Makes the agent speak text directly, bypassing the LLM. |
+| [`think`](#think) | Injects text as user input for the LLM to process. |
 | [`loadAudioSettings`[1/2]](#loadaudiosettings12) | Set audio best practice parameters for optimal performance.           |
 | [`loadAudioSettings`[2/2]](#loadaudiosettings22) | Set audio best practice parameters for specific scenarios.           |
 | [`destroy`](#destroy)           | Destroys the API instance and releases all resources.         |
@@ -195,6 +197,38 @@ Keep the following in mind when calling this method:
 |-----------------|-------|---------------------- |
 | `agentUserId`   | `String` | The RTM user ID of the agent. Must be globally unique. |
 | `completion`    | `@escaping (String, ConversationalAIAPIError?) -> Void` | Callback invoked when the operation completes. The first parameter is the `requestId` unique to this request; the second is error information, or `nil` on success. This callback only indicates whether the RTM publish succeeded. |
+
+### `speak`
+
+Bypasses the LLM and makes the agent speak text directly through its TTS pipeline.
+
+This method requires RTM. `completion` only indicates whether the RTM message was published successfully, not that the agent has finished speaking.
+
+```objc
+@objc func speak(agentUserId: String, message: SpeakMessage, completion: @escaping (ConversationalAIAPIError?) -> Void)
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId`  | `String`  | The RTM user ID of the agent. Must be globally unique. |
+| `message`      | `SpeakMessage`   | The text to speak and its playback behavior. See [`SpeakMessage`](#speakmessage). |
+| `completion`   | `@escaping (ConversationalAIAPIError?) -> Void`   | Callback function invoked when the operation completes. Returns `nil` on success, or error information on failure. See [`ConversationalAIAPIError`](#conversationalaiapierror). |
+
+### `think`
+
+Injects text as user input into the conversation for the LLM to process.
+
+This method requires RTM. `completion` only indicates whether the RTM message was published successfully, not that the LLM has finished processing the instruction.
+
+```objc
+@objc func think(agentUserId: String, message: ThinkMessage, completion: @escaping (ConversationalAIAPIError?) -> Void)
+```
+
+| Parameter | Type     | Description             |
+|-----------|----------|-------------------------|
+| `agentUserId`  | `String`  | The RTM user ID of the agent. Must be globally unique. |
+| `message`      | `ThinkMessage`   | The instruction text, state actions, and custom metadata. See [`ThinkMessage`](#thinkmessage). |
+| `completion`   | `@escaping (ConversationalAIAPIError?) -> Void`   | Callback function invoked when the operation completes. Returns `nil` on success, or error information on failure. See [`ConversationalAIAPIError`](#conversationalaiapierror). |
 
 ### `loadAudioSettings[1/2]`
 
@@ -671,6 +705,48 @@ Supports priority control and interruptibility settings, enabling fine-grained c
 | `responseInterruptable` | `Bool`          | Whether the response to this message can be interrupted by a higher-priority message. `YES` (default) means the response can be interrupted. `NO` means the response cannot be interrupted. |
 | `text`                | `String?`         | Text content of the message. |
 
+### `SpeakMessage`
+
+Used to bypass the LLM and speak text directly through the agent's TTS pipeline.
+
+```objc
+@objc public class SpeakMessage: NSObject {
+    @objc public let text: String
+    @objc public let priority: Priority
+    @objc public let interruptable: Bool
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `text` | `String` | The text to speak. |
+| `priority` | `Priority` | The priority for handling this speak request. Defaults to `.interrupt`. See [`Priority`](#priority). |
+| `interruptable` | `Bool` | Whether the user can interrupt this speech by talking. Defaults to `true`. |
+
+### `ThinkMessage`
+
+Used to inject text as user input for the LLM to process.
+
+```objc
+@objc public class ThinkMessage: NSObject {
+    @objc public let text: String
+    @objc public let onListeningAction: ThinkListeningAction
+    @objc public let onThinkingAction: ThinkThinkingAction
+    @objc public let onSpeakingAction: ThinkSpeakingAction
+    @objc public let interruptable: Bool
+    @objc public let metadata: [String: String]?
+}
+```
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `text` | `String` | The instruction text to inject for the LLM. |
+| `onListeningAction` | `ThinkListeningAction` | The action to take when the agent is in a listening state. Defaults to `.interrupt`. See [`ThinkListeningAction`](#thinklisteningaction). |
+| `onThinkingAction` | `ThinkThinkingAction` | The action to take when the agent is in a thinking state. Defaults to `.ignore`. See [`ThinkThinkingAction`](#thinkthinkingaction). |
+| `onSpeakingAction` | `ThinkSpeakingAction` | The action to take when the agent is in a speaking state. Defaults to `.ignore`. See [`ThinkSpeakingAction`](#thinkspeakingaction). |
+| `interruptable` | `Bool` | Whether the user can interrupt the response generated by this instruction by talking. Defaults to `true`. |
+| `metadata` | `[String: String]?` | Optional custom key-value pairs. When `nil`, no metadata is written to the RTM message. |
+
 
 ### `StateChangeEvent`
 
@@ -889,6 +965,37 @@ Controls the priority with which the agent processes messages.
 | `interrupt` | (0): High priority. The agent will immediately interrupt the current interaction and process the message. Suitable for urgent or time-sensitive messages. |
 | `append`    | (1): Medium priority. The agent will queue the message after the current interaction is completed, suitable for subsequent questions. |
 | `ignore`    | (2): Low priority. If the agent is currently interacting, the message will be discarded and only processed when idle, suitable for optional content. |
+
+### `ThinkListeningAction`
+
+The action to take when the agent is in a listening state when a Think instruction arrives.
+
+| Value | Description |
+|-------|-------------|
+| `inject` | (0): Injects the instruction into the current turn without interrupting it. |
+| `interrupt` | (1): Interrupts the current interaction and processes the instruction. |
+| `append` | (2): Appends the instruction for processing after the current interaction completes. |
+| `ignore` | (3): Ignores the instruction. |
+
+### `ThinkThinkingAction`
+
+The action to take when the agent is in a thinking state when a Think instruction arrives.
+
+| Value | Description |
+|-------|-------------|
+| `interrupt` | (0): Interrupts the current interaction and processes the instruction. |
+| `append` | (1): Appends the instruction for processing after the current interaction completes. |
+| `ignore` | (2): Ignores the instruction. |
+
+### `ThinkSpeakingAction`
+
+The action to take when the agent is in a speaking state when a Think instruction arrives.
+
+| Value | Description |
+|-------|-------------|
+| `interrupt` | (0): Interrupts the current interaction and processes the instruction. |
+| `append` | (1): Appends the instruction for processing after the current interaction completes. |
+| `ignore` | (2): Ignores the instruction. |
 
 ### `AgentState`
 

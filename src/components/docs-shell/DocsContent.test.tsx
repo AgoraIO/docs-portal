@@ -29,10 +29,12 @@ const {
   captureDocsLinkClickedMock,
   captureDocsPageFeedbackMock,
   registerDocsPageContextMock,
+  searchLandingEngagementMock,
 } = vi.hoisted(() => ({
   captureDocsLinkClickedMock: vi.fn(),
   captureDocsPageFeedbackMock: vi.fn(),
   registerDocsPageContextMock: vi.fn(),
+  searchLandingEngagementMock: vi.fn(),
 }));
 
 vi.mock('@/lib/analytics/posthog', () => ({
@@ -71,6 +73,10 @@ vi.mock('./DocsContentBody', () => ({
       </div>
     );
   },
+}));
+
+vi.mock('./DocsSearchLandingEngagement', () => ({
+  DocsSearchLandingEngagement: searchLandingEngagementMock,
 }));
 
 vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
@@ -155,6 +161,7 @@ describe('DocsContent', () => {
     captureDocsLinkClickedMock.mockReset();
     fetchMock.mockReset();
     registerDocsPageContextMock.mockReset();
+    searchLandingEngagementMock.mockReset();
     vi.stubGlobal('fetch', fetchMock);
     window.sessionStorage.clear();
     window.history.replaceState(null, '', '/en/introduction/about-agora');
@@ -219,6 +226,38 @@ describe('DocsContent', () => {
         title: 'Quickstart',
         version: 'current',
       });
+    });
+  });
+
+  it('mounts search landing engagement with the canonical page pathname', async () => {
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/realtime-media/video/get-started-sdk"
+        analyticsPageContext={{
+          contentId: 'realtime-media/video/get-started-sdk',
+          journeyStage: 'get-started',
+          navSection: 'get-started',
+          navSectionTitle: 'Get started',
+          pageType: 'task-guide',
+          pathname: '/en/realtime-media/video/get-started-sdk',
+          product: 'video',
+          title: 'Quickstart',
+          version: 'current',
+        }}
+        contentPath="en/realtime-media/video/get-started-sdk.mdx"
+        locale="en"
+        toc={[]}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(searchLandingEngagementMock).toHaveBeenCalledWith(
+        {
+          locale: 'en',
+          pathname: '/en/realtime-media/video/get-started-sdk',
+        },
+        undefined,
+      );
     });
   });
 
