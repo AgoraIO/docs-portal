@@ -1,5 +1,5 @@
 ---
-title: "Enable dual-stream high availability"
+title: "Dual-stream"
 description: "Automatically fail over to a backup stream if the primary drops or degrades in quality."
 ---
 
@@ -9,7 +9,7 @@ With dual-stream high availability, you push the same content to two independent
 
 ## Set up dual streaming
 
-1. Create two custom domains, one with `domainType: 0` (primary) and one with `domainType: 1` (backup). See [Configure a custom RTMPS domain](./configure-rtmps-domain.md).
+1. Create two custom domains, one with `domainType: 0` (primary) and one with `domainType: 1` (backup). See [RTMP and RTMPS streaming](./rtmp-streaming.md).
 2. Create two streaming keys bound to the same `channel` and `uid`.
 3. Enable `dualStreaming` for your project using adaptive mode (`switchStrategy: 2`), so Media Gateway also promotes the backup stream when the primary degrades in quality:
 

@@ -25,7 +25,7 @@ The limitation for concurrent streams is:
 
 For higher quotas, contact [Agora technical support](mailto:support@agora.io).
 
-If you use [dual-stream high availability](../build/configure-custom-domains/enable-dual-stream-ha.md), each protected source counts as two streams against this limit: one for the primary push and one for the backup, even while the backup is on standby.
+If you use [dual-stream high availability](../build/push-streams/enable-dual-stream-ha.md), each protected source counts as two streams against this limit: one for the primary push and one for the backup, even while the backup is on standby.
 
 ## Ensure high availability of streaming services
 
@@ -44,7 +44,7 @@ Best practice:
 2. If the request fails, retry using the same primary domain.
 3. If the retry still fails, try the alternate domain name.
 
-For continuous protection against a degraded connection or a mid-broadcast drop, rather than just a failed push, see [Enable dual-stream high availability](../build/configure-custom-domains/enable-dual-stream-ha.md).
+For continuous protection against a degraded connection or a mid-broadcast drop, rather than just a failed push, see [Dual-stream](../build/push-streams/enable-dual-stream-ha.md).
 
 ## Ensure high availability of REST services
 

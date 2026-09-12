@@ -1,5 +1,5 @@
 ---
-title: "Configure a custom RTMPS domain"
+title: "RTMP and RTMPS streaming"
 description: "Manage your own RTMPS streaming domain and TLS certificate through the Media Gateway REST API."
 ---
 To push streams over RTMPS using your own domain name, you need a TLS certificate bound to that domain. You can manage both through the Media Gateway REST API.

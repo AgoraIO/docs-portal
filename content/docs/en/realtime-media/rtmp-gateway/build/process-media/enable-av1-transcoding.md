@@ -1,5 +1,5 @@
 ---
-title: "Transcode to AV1"
+title: "AV1 transcoding"
 description: "Configure AV1 as the video transcoding output codec for Media Gateway."
 ---
 Media Gateway supports AV1 as a video transcoding output codec, in addition to H.264 and H.265. AV1 typically delivers the same visual quality at a lower bitrate than H.264, and lets you serve players that require AV1 playback.

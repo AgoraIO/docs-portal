@@ -1,8 +1,16 @@
 ---
 title: "Quickstart"
-description: "Obtain the server domain name and streaming key required to push RTMP, SRT, or WHIP streams into Agora channels."
+description: "Obtain the server domain name and streaming key required to push an RTMP stream into an Agora channel."
 ---
 
+
+This quickstart walks you through configuring Media Gateway and obtaining the domain name and streaming key you need to publish an RTMP stream into an Agora channel. The streaming key you generate here also works for SRT and WHIP streams; see [SRT streaming](./build/push-streams/srt-streaming.md) or [WHIP streaming](./build/push-streams/whip-streaming.md) for their own domain and client setup.
+
+## Understand the tech
+
+The following figure shows the overall architecture of Media Gateway:
+
+![Product Architecture](https://assets-docs.agora.io/images/media-gateway/media-gateway-flow.svg)
 
 To push online media streams as live video source streams into Agora channels using Media Gateway, you need to obtain a server domain name and streaming key. Taking the OBS streaming software as an example, you configure the server's domain name and streaming key in the following way:
 
@@ -12,11 +20,11 @@ This page explains how to obtain the server domain name and generate a streaming
 
 ## Prerequisites
 
-In order to follow this procedure you must:
+Before you begin, you must:
 
 - Have a project that implements an RTC product:
   Interactive Live Streaming, Broadcast Streaming, Video Calling, or Voice Calling
-- [Enable Media Gateway](./build/set-up-and-authenticate/enable-media-gateway.md) for your project
+- [Enable Media Gateway](./build/enable-media-gateway.md) for your project
 - Generate app ID, app certificate, customer ID, and customer secret
 - Pass basic HTTP or HMAC authentication
 
@@ -33,7 +41,7 @@ You can use Agora's unified domain name or your own one. The server appends the 
   - `ap`: Asia, except Mainland China
   - `cn`: Mainland China
 
-- To use your own domain name over RTMPS, see [Configure a custom RTMPS domain](./build/configure-custom-domains/configure-rtmps-domain.md).
+- To use your own domain name over RTMPS, see [RTMP and RTMPS streaming](./build/push-streams/rtmp-streaming.md).
 
 ## Get streaming key
 
@@ -136,9 +144,9 @@ const streamkey = encrypted
 console.log(`streamkey is ${streamkey}`);
 ```
 
-## Recommended config for web client communication
+## Recommended encoding settings for web client playback
 
-In case of intercommunication with the web client, transcoding is not enabled by default. To ensure the best experience for web viewers, make sure that the streaming software uses the following encoding parameters:
+Media Gateway doesn't transcode a stream by default, so if your channel includes web clients, your source stream must already use encoding parameters that web playback supports. Make sure your streaming software uses the following encoding parameters:
 
 - Key frame interval (GOP): `2s`
 - Video profile: `baseline`
@@ -157,10 +165,10 @@ Taking OBS as an example, configure it as follows:
 
 ## Next steps
 
-After completing the configuration, you can push RTMP, SRT, or WHIP streams to Agora channels, and these streams will be published to the corresponding channels by the host.
+After completing the configuration, you can push an RTMP stream to Agora channels. Media Gateway publishes the stream to the corresponding channel under the host's identity.
 
-By default, after Media Gateway receives the pushed stream, it will not transcode it and will directly publish it to the Agora channel. If you want to transcode the streams, use stream configuration templates to implement related functions.
+By default, Media Gateway doesn't transcode a pushed stream and publishes it directly to the Agora channel. To transcode streams instead, use a stream configuration template.
 
-### REST API middleware
+## Related resources
 
 [Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Media Gateway interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as middleware to bridge front-end applications using Agora's RTC SDK or Voice SDK with Agora's RESTful APIs.

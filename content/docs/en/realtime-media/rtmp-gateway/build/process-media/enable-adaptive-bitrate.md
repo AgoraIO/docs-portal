@@ -1,5 +1,5 @@
 ---
-title: "Configure adaptive bitrate (ABR)"
+title: "Adaptive bitrate (beta)"
 description: "Add ABR layers to a Media Gateway stream template."
 ---
 Adaptive Bitrate (ABR) streaming delivers multiple video quality levels from a single source, allowing viewers to automatically switch between different bitrates based on their network conditions and device capabilities. This ensures optimal viewing experience by reducing buffering and maintaining the highest possible quality for each viewer's situation.
@@ -130,7 +130,7 @@ If your source stream is 1080p and you want to output 1080p, 720p, 480p, and 360
 
 ## Webhook notifications
 
-To help you monitor the ABR configuration for each stream, Media Gateway provides this information through webhooks. When video transcoding is enabled, the `live_stream_connected` event includes the transcoding configuration details for your stream. See [Receive notifications about channel events](./receive-notifications.md).
+To help you monitor the ABR configuration for each stream, Media Gateway provides this information through webhooks. When video transcoding is enabled, the `live_stream_connected` event includes the transcoding configuration details for your stream. See [Receive webhook notifications](../receive-notifications.md).
 
 **Example notification payload**
 

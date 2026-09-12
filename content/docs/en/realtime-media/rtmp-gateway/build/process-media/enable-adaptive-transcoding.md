@@ -1,5 +1,5 @@
 ---
-title: "Use adaptive transcoding"
+title: "Adaptive transcoding"
 description: "Skip transcoding for source streams that already meet your target specification."
 ---
 By default, a stream template transcodes every stream bound to it, even if the source already matches your target codec, resolution, frame rate, and bitrate. Adaptive transcoding lets Media Gateway skip transcoding for streams that already meet your requirements, and transcode only the streams that don't. This reduces unnecessary transcoding cost and latency.
@@ -28,7 +28,7 @@ For example, the expression `bitrate > 4000 or bframes > 0` transcodes a stream 
 `codec` is numeric, not a string like `"H.264"`. For example, `codec == 12` matches an AV1 source stream.
 :::
 
-You can also apply an expression to individual ABR layers, so each layer transcodes only when needed. See [Configure adaptive bitrate (ABR)](./enable-adaptive-bitrate.md).
+You can also apply an expression to individual ABR layers, so each layer transcodes only when needed. See [Adaptive bitrate (beta)](./enable-adaptive-bitrate.md).
 
 ## Implementation
 

@@ -1,17 +1,26 @@
 ---
 title: "Media Gateway overview"
-description: "Publish RTMP, SRT, and WHIP streams into Agora RTC channels with low latency and optional edge transcoding."
+description: "Overview and capabilities of Agora's Media Gateway service, including supported protocols, transcoding features, and common use cases."
 ---
 
 Agora's Media Gateway service enables publishing RTMP, SRT, and WHIP streams into Agora's real-time voice and video channels. By performing advanced transcoding at the edge, it reduces latency compared to traditional RTMP streaming and unlocks new possibilities for publishing and controlling real-time media streams.
 
 Compatible with popular streaming tools, Media Gateway lets broadcasters maintain their existing setups while leveraging Agora SDRTN(R) for seamless and reliable delivery.
 
+## Applicable use cases
+
+| Use case | Description |
+| --- | --- |
+| Commentary from influencers and celebrities | Inject high-definition video streams into interactive channels. Multiple hosts can watch and interact in real time from different places. |
+| Low-latency distribution | Distribute content to viewers faster and more reliably than with a CDN. |
+| Recording and live broadcasting | A teacher records content in advance and injects it into a live classroom. Students and teaching assistants can watch the content and interact in real time. |
+| 24-hour chat room | Background music is played continuously and is not interrupted when switching hosts. |
+
 ## Start building
 
 <Cards>
-  <Card title="Media Gateway quickstart" href="./quickstart.md" description="Generate a streaming key and publish RTMP, SRT, or WHIP streams into Agora channels." />
-  <Card title="Integration best practices" href="./reference/integration.md" description="Review Media Gateway integration notes and constraints." />
+  <Card title="Enable Media Gateway" href="./build/enable-media-gateway.md" description="Turn on Media Gateway for your Agora project in Console." />
+  <Card title="Media Gateway quickstart" href="./quickstart.md" description="Generate a streaming key and publish an RTMP stream into Agora channels." />
 </Cards>
 
 ## Product features
@@ -36,3 +45,35 @@ Compatible with popular streaming tools, Media Gateway lets broadcasters maintai
     Works with several audio and video codecs, streaming protocols, and media formats.
   </FeatureCard>
 </CardGrid>
+
+## Feature details
+
+| Feature | Description |
+| --- | --- |
+| Media input | Supports generating a streaming key through a RESTful API or a local encryption algorithm, then pushing the source stream directly to Agora's gateway service. After a successful push, the media stream is automatically played in the channel for remote users. Streaming keys can be scoped to a single region or created as global keys that work across all Media Gateway regions. |
+| Multiple media streaming formats and protocols | Supports H.264, H.265, and AV1 video codecs, AAC, OPUS, and G.711 (A-law and u-law) audio codecs, RTMP, SRT, and WHIP push protocols, and FLV and MPEG-TS media formats. |
+| Custom transcoding parameters | Supports enabling transcoding for media streams input into the channel. If you enable transcoding, you can set parameters such as resolution, frame rate, bitrate, and whether to enable large and small streams. You can also transcode conditionally, so a stream is transcoded only when the source doesn't already meet your target specification. |
+| Custom domains and TLS certificates | Supports managing your own RTMPS streaming domain and TLS certificate through the REST API, either by requesting an Agora-issued certificate or importing your own. |
+| Dual-stream high availability | Supports binding two streaming keys to the same channel and user ID and pushing to a primary and backup domain simultaneously. Media Gateway can automatically fail over to the backup stream if the primary stream drops or degrades in quality. |
+| Restricted access area | When activating Media Gateway, you specify the access area to ensure the transmission quality of the media stream. |
+| Server event notification callback | Agora provides message notification services. After activating Media Gateway, you receive event notifications. |
+
+## Related APIs and implementation entry points
+
+Use the following references when you implement the core Media Gateway capabilities described in [Feature details](#feature-details):
+
+- [REST API overview](/en/api-reference/api-ref/rtmp-gateway): Review the base URL, authentication model, and the full API surface.
+- [RESTful authentication](/en/api-reference/api-ref/rtmp-gateway/authentication): Authenticate server-side requests before calling Media Gateway APIs.
+- [Query notification service IP address](/en/api-reference/api-ref/rtmp-gateway/query-ip-address): Retrieve the callback IP ranges used by notification services.
+
+The main API groups map to product features as follows:
+
+| Feature area | APIs or guides |
+| --- | --- |
+| Media input and stream key management | Use the streaming key APIs in the [REST API overview](/en/api-reference/api-ref/rtmp-gateway) to create, query, and delete stream keys. For a local stream key generation example or to create a global streaming key, see the [Quickstart](./quickstart.md). |
+| Online stream control | Use the online stream APIs in the [REST API overview](/en/api-reference/api-ref/rtmp-gateway) to query active streams, inspect stream details, force disconnect a stream, or mute and unmute audio or video. |
+| G.711 audio ingest | Push RTMP or RTMPS streams with G.711 audio by following [Push G.711 audio](./build/push-streams/enable-g711-audio-ingest.md). |
+| Custom transcoding parameters | Use template APIs in the [REST API overview](/en/api-reference/api-ref/rtmp-gateway) to create, update, delete, or set default transcoding templates for ingress streams. To transcode to AV1, see [AV1 transcoding](./build/process-media/enable-av1-transcoding.md). To transcode only when needed, see [Adaptive transcoding](./build/process-media/enable-adaptive-transcoding.md). |
+| Custom domains and TLS certificates | Manage your own RTMPS domain and certificate by following [RTMP and RTMPS streaming](./build/push-streams/rtmp-streaming.md). |
+| Dual-stream high availability | Set up automatic failover between a primary and backup stream by following [Dual-stream](./build/push-streams/enable-dual-stream-ha.md). |
+| Server event notification callback | Configure notifications by following [Receive webhook notifications](./build/receive-notifications.md), then use the [event type reference](/en/api-reference/api-ref/rtmp-gateway/media-gateway-event-types) to interpret callback payloads. |
