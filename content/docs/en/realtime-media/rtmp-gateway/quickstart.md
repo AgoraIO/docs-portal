@@ -1,8 +1,16 @@
 ---
 title: "Quickstart"
-description: "Obtain the server domain name and streaming key required to push RTMP or SRT streams into Agora channels."
+description: "Obtain the server domain name and streaming key required to push an RTMP stream into an Agora channel."
 ---
 
+
+This quickstart walks you through configuring Media Gateway and obtaining the domain name and streaming key you need to publish an RTMP stream into an Agora channel. The streaming key you generate here also works for SRT and WHIP streams; see [SRT streaming](./build/push-streams/srt-streaming.md) or [WHIP streaming](./build/push-streams/whip-streaming.md) for their own domain and client setup.
+
+## Understand the tech
+
+The following figure shows the overall architecture of Media Gateway:
+
+![Product Architecture](https://assets-docs.agora.io/images/media-gateway/media-gateway-flow.svg)
 
 To push online media streams as live video source streams into Agora channels using Media Gateway, you need to obtain a server domain name and streaming key. Taking the OBS streaming software as an example, you configure the server's domain name and streaming key in the following way:
 
@@ -12,10 +20,11 @@ This page explains how to obtain the server domain name and generate a streaming
 
 ## Prerequisites
 
-In order to follow this procedure you must:
+Before you begin, you must:
 
 - Have a project that implements an RTC product:
   Interactive Live Streaming, Broadcast Streaming, Video Calling, or Voice Calling
+- [Enable Media Gateway](./build/enable-media-gateway.md) for your project
 - Generate app ID, app certificate, customer ID, and customer secret
 - Pass basic HTTP or HMAC authentication
 
@@ -32,7 +41,7 @@ You can use Agora's unified domain name or your own one. The server appends the 
   - `ap`: Asia, except Mainland China
   - `cn`: Mainland China
 
-- To use your own domain name, [contact technical support](mailto:support@agora.io) for configuration.
+- To use your own domain name over RTMPS, see [RTMP and RTMPS streaming](./build/push-streams/rtmp-streaming.md).
 
 ## Get streaming key
 
@@ -53,10 +62,38 @@ For authentication details, see [RESTful authentication](/en/api-reference/api-r
 To explore the RESTful API parameters, obtain sample code in various client languages, or test Media Gateway requests, refer to the [Postman API reference](https://documenter.getpostman.com/view/6319646/SVSLr9AM#6aed9690-285e-45f0-a329-c995adbd0956).
 :::
 
+### Create a global streaming key
+
+The streaming key you create with the RESTful API endpoint is scoped to a single region. If you need a key that works across all Media Gateway regions, for example when your clients push streams from different parts of the world into the same region-agnostic setup, create a global streaming key instead. A global key carries its channel, user ID, and expiration directly in the key, so any region can validate it without a lookup.
+
+Create a global streaming key by calling the same endpoint without a region:
+
+```
+POST https://api.agora.io/v1/projects/:appId/rtls/ingress/streamkeys
+```
+
+To revoke a global streaming key in all regions at once, call:
+
+```
+DELETE https://api.agora.io/v1/projects/:appId/rtls/ingress/streamkeys/:streamKey
+```
+
+A regional streaming key and a global streaming key use different endpoints for both creation and revocation. A regional key can't be revoked using the global endpoint, and a global key doesn't appear in a regional key list.
+
+:::note
+Revoking a global streaming key isn't atomic across regions. The response is:
+
+- `200` if the revocation succeeds in every region.
+- `207` if it succeeds in some regions and fails in others. Check the response body for the per-region results.
+- `502` or another error status if it fails in every region.
+
+Handle the `207` case explicitly instead of treating the request as all-or-nothing.
+:::
+
 ### Generate streaming key locally
 
 :::note
-Before starting, make sure you have configured your domain name by contacting [technical support](mailto:support@agora.io).
+Before starting, make sure you have configured your domain name. See [Get server domain name](#get-server-domain-name).
 :::
 
 To generate a stream key locally, you use the following information:
@@ -107,16 +144,16 @@ const streamkey = encrypted
 console.log(`streamkey is ${streamkey}`);
 ```
 
-## Recommended config for web client communication
+## Recommended encoding settings for web client playback
 
-In case of intercommunication with the web client, transcoding is not enabled by default. To ensure the best experience for web viewers, make sure that the streaming software uses the following encoding parameters:
+Media Gateway doesn't transcode a stream by default, so if your channel includes web clients, your source stream must already use encoding parameters that web playback supports. Make sure your streaming software uses the following encoding parameters:
 
 - Key frame interval (GOP): `2s`
 - Video profile: `baseline`
 - x264 options: `threads=6`
 - Frame rate (FPS): At 1080 resolution, the frame rate must not exceed 30; for resolutions below that, the frame rate must not exceed 60. If not necessary, 30 is sufficient.
 
-Taking OBS as an example, configure it as shown below:
+Taking OBS as an example, configure it as follows:
 
 1. On the **Settings > Output > Live** page, configure the video profile, keyframe interval, and x264 options.
 
@@ -128,10 +165,10 @@ Taking OBS as an example, configure it as shown below:
 
 ## Next steps
 
-After completing the configuration, you can push RTMP or SRT streams to Agora channels, and these streams will be published to the corresponding channels by the host.
+After completing the configuration, you can push an RTMP stream to Agora channels. Media Gateway publishes the stream to the corresponding channel under the host's identity.
 
-By default, after Media Gateway receives the pushed stream, it will not transcode it and will directly publish it to the Agora channel. If you want to transcode the streams, use stream configuration templates to implement related functions.
+By default, Media Gateway doesn't transcode a pushed stream and publishes it directly to the Agora channel. To transcode streams instead, use a stream configuration template.
 
-### REST API middleware
+## Related resources
 
 [Agora Go Backend Middleware](https://github.com/AgoraIO-Community/agora-go-backend-middleware) is an open-source microservice that exposes a RESTful API designed to simplify Media Gateway interactions with Agora. Written in Golang and powered by the Gin framework, this community project serves as middleware to bridge front-end applications using Agora's RTC SDK or Voice SDK with Agora's RESTful APIs.

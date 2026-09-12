@@ -40,9 +40,13 @@ Cloud proxy is a proxy service that enables users to connect to Agora services t
 
 In real-time audio and video communication, delay refers to the time elapsed from when data is sent to when it is received.
 
+### Dual-stream high availability
+
+Dual-stream high availability is a Media Gateway feature that pushes the same content over a primary and a backup streaming key, so Media Gateway can automatically promote the backup stream if the primary fails or degrades. It's unrelated to [dual-stream mode](#dual-stream-mode).
+
 ### Dual-stream mode
 
-In dual-stream mode, the RTC SDK simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low-bitrate video stream.
+In dual-stream mode, the RTC SDK simultaneously transmits a higher-resolution video stream along with an additional low-resolution, low-bitrate video stream. It's unrelated to [dual-stream high availability](#dual-stream-high-availability).
 
 ## H
 
