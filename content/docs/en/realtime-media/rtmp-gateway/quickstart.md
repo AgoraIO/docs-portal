@@ -45,7 +45,7 @@ The stream key generation method depends on whether you use the Agora domain nam
 
 Create and publish the streaming key by calling the following endpoint:
 
-`PUT https://api.agora.io/:region/v1/projects/:appId/rtls/ingress/streamkeys`
+`POST https://api.agora.io/:region/v1/projects/:appId/rtls/ingress/streamkeys`
 
 For authentication details, see [RESTful authentication](/en/api-reference/api-ref/rtmp-gateway/authentication).
 
