@@ -126,6 +126,8 @@ If your total service minutes do not exceed 10,000 minutes, the service is free-
 
 :::info
 The 10,000 free-of-charge minutes policy does not apply to the Signaling SDK, the Chat SDK, or the IoT SDK.
+
+Conversational AI Engine has its own free minutes policy. For details, see [Conversational AI pricing](/en/ai/reference/pricing).
 :::
 
 ### How service minutes are calculated
