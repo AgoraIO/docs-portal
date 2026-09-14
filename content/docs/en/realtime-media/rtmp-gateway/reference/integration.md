@@ -1,6 +1,6 @@
 ---
-title: "Integration"
-description: "Best practices for integrating Media Gateway reliably in production."
+title: "Integration best practices"
+description: "Rate limits, high-availability domain strategy, and troubleshooting guidance for Media Gateway in production."
 ---
 
 This document presents best practices for reliably integrating Media Gateway in your app. Before reading this document, follow the [Media Gateway quickstart](../quickstart.md) to understand the basic process of using Media Gateway.
@@ -25,6 +25,8 @@ The limitation for concurrent streams is:
 
 For higher quotas, contact [Agora technical support](mailto:support@agora.io).
 
+If you use [dual-stream high availability](../build/push-streams/enable-dual-stream-ha.md), each protected source counts as two streams against this limit: one for the primary push and one for the backup, even while the backup is on standby.
+
 ## Ensure high availability of streaming services
 
 Agora provides alternate domain names to reduce outages caused by regional network failures.
@@ -41,6 +43,8 @@ Best practice:
 1. Use the primary domain based on the geographical location of your source stream.
 2. If the request fails, retry using the same primary domain.
 3. If the retry still fails, try the alternate domain name.
+
+For continuous protection against a degraded connection or a mid-broadcast drop, rather than just a failed push, see [Dual-stream](../build/push-streams/enable-dual-stream-ha.md).
 
 ## Ensure high availability of REST services
 
@@ -70,5 +74,5 @@ If your primary-domain request fails, use a retry strategy with:
 | 3 | required | The number of concurrent tasks in a project is less than 50 |
 | 4 | required | The `region` is set to the geographical region of your media stream source, and the code is lowercase |
 | 5 | optional | If calling the RESTful API fails, use a back-off strategy and inspect the response status |
-| 6 | optional | If RTMP or SRT streaming fails, ensure that the stream key has not expired and that OBS frame loss is normal |
+| 6 | optional | If RTMP, SRT, or WHIP streaming fails, ensure that the stream key has not expired and that OBS frame loss is normal |
 | 7 | optional | If the streaming or REST service is unavailable due to a network failure, retry with the current primary domain first, then the backup domain |
