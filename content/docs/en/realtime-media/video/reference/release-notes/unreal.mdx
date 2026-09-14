@@ -1,23 +1,27 @@
+---
+title: Video SDK release notes (Unreal)
+---
+
 This page provides the release notes for the Video SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [Video SDK](#video-sdk-10)
 - [Notifications](#notifications)
 
-## Video SDK
+## Video SDK [#video-sdk-10]
 
-### Known issues
+### Known issues [#known-issues-9]
 
 <section id="unreal-sdk-known-issues">
 
 The list of known issues is continuously updated as systems evolve. Agora recommends regularly upgrading to the latest SDK version, which includes new features, bug fixes, and improvements.
 
-#### Unreal SDK v4.4.0
+#### Unreal SDK v4.4.0 [#unreal-sdk-v440]
 
 **macOS 15 Sequoia beta system issue**
 
 When the app path, including the app name, contains non-English characters such as Chinese characters, the compiled `Metal shader library` might not contain any methods, causing the app to crash. See [App fails to run on macOS 15 Beta](/en/api-reference/faq/other/macos_15_beta) for the workaround.
 
-#### Unreal SDK v4.2.1
+#### Unreal SDK v4.2.1 [#unreal-sdk-v421]
 
 **Audio module incompatibility on iOS**
 
@@ -30,21 +34,21 @@ AudioMixerModuleName=
 
 </section>
 
-### v4.5.1
+### v4.5.1 [#v451-5]
 
 v4.5.1 was released on March 13, 2025.
 
-#### New features
+#### New features [#new-features-130]
 
 1. **AI conversation scenario**
 
    This version adds the `AUDIO_SCENARIO_AI_CLIENT` audio scenario specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](/en/introduction/conversational-ai). This scenario optimizes the audio transmission algorithm based on AI-generated voice characteristics, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. It enhances conversation continuity and reliability while adapting to complex network conditions.
 
-#### Improvements
+#### Improvements [#improvements-147]
 
 - Reduces the SDK initialization time on specific device models. (iOS)
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-157]
 
 This release fixes the following issues:
 
@@ -62,11 +66,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+### v4.5.0 [#v450-8]
 
 v4.5.0 was released on December 10, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-82]
 
 This version includes optimizations to some features, including changes to SDK behavior, API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -90,7 +94,7 @@ This version includes optimizations to some features, including changes to SDK b
     - In the [`COMPRESSION_PREFERENCE`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/enum_compressionpreference.html) enumeration class, a new `PREFER_COMPRESSION_AUTO (-1)` enumeration is added, replacing the original `PREFER_QUALITY (1)` as the default value. In this mode, the SDK will automatically choose between `PREFER_LOW_LATENCY` and `PREFER_QUALITY` based on your video scene settings to achieve the best user experience.
     - In the [`DEGRADATION_PREFERENCE`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/enum_degradationpreference.html) enumeration class, a new `MAINTAIN_AUTO (-1)` enumeration is added, replacing the original `MAINTAIN_QUALITY (1)` as the default value. In this mode, the SDK will automatically choose between `MAINTAIN_FRAMERATE`, `MAINTAIN_BALANCED`, and `MAINTAIN_RESOLUTION` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
 
-#### New features
+#### New features [#new-features-131]
 
 1. **Live show scenario**
 
@@ -134,7 +138,7 @@ This version includes optimizations to some features, including changes to SDK b
     - The [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged) callback adds the `LOCAL_VIDEO_STREAM_REASON_DEVICE_DISCONNECTED` enumeration, indicating that the currently used video capture device has been disconnected (e.g., unplugged). (Windows)
     - The [`MEDIA_DEVICE_STATE_TYPE`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/enum_mediadevicestatetype.html) adds the `MEDIA_DEVICE_STATE_PLUGGED_IN` enumeration, indicating that the device has been plugged in. (Windows)
 
-#### Improvements
+#### Improvements [#improvements-148]
 
 1. **Virtual background algorithm optimization**
 
@@ -156,7 +160,7 @@ This version includes optimizations to some features, including changes to SDK b
     - When calling `switchSrc` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `onPlayerEvent` callback will report the `PLAYER_EVENT_SWITCH_ERROR` event, indicating an error occurred during media resource switching.
     - When calling `setPlaybackSpeed` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-158]
 
 This version fixes the following issues:
 
@@ -173,11 +177,11 @@ This version fixes the following issues:
 - Occasional instances of no sound in audio capture after resuming from being interrupted by other system apps during audio and video interaction. (iOS)
 - Calling `startAudioMixing [1/2]` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0
+### v4.4.0 [#v440-8]
 
 v4.4.0 was released on August 29, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-83]
 
 1. **Changes to API usage**
 
@@ -198,7 +202,7 @@ v4.4.0 was released on August 29, 2024.
             AgoraUERtcEngine::Release();
             ```
 
-#### New features
+#### New features [#new-features-132]
 
 1. **Voice AI tuner**
 
@@ -275,7 +279,7 @@ For one `RtcConnection`, Agora supports publishing multiple audio streams and on
    :::
 
 
-#### Improvements
+#### Improvements [#improvements-149]
 
 1. **Header file management simplification**
 
@@ -285,7 +289,7 @@ For one `RtcConnection`, Agora supports publishing multiple audio streams and on
 
    The number of target channels for media relay has been increased to 6. When calling `startOrUpdateChannelMediaRelay` and `startOrUpdateChannelMediaRelayEx`, you can specify up to 6 target channels.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-159]
 
 In Unreal Engine 5.3 and 5.4, adding the following code to the `/Source/xxx.Target.cs` file in your project to solve iOS memory allocation issues may lead to missing iOS compilation symbols. To address this issue, this version adds three function definitions (`StdMalloc`, `StdRealloc`, and `StdFree`) related to the standard library in the `UnrealMemory.cpp` file, ensuring proper handling of memory management needs when using the standard memory allocator (iOS).
 
@@ -297,7 +301,7 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 }
 ```
 
-### v4.2.1
+### v4.2.1 [#v421-9]
 
 v4.2.1 was released on November 16, 2023.
 
@@ -324,7 +328,7 @@ If you have already integrated the 3.x version of the SDK and wish to upgrade to
 
 
 
-## Extensions
+## Extensions [#extensions]
 
 
 
@@ -333,9 +337,9 @@ If you have already integrated the 3.x version of the SDK and wish to upgrade to
 
 
 
-## Notifications
+## Notifications [#notifications]
 
-### 2022.10
+### 2022.10 [#202210]
 
 * After you enable Agora Notifications, your server receives the events that you subscribe to in the form of HTTPS requests.
 * To improve communication security between the Agora Notifications and your server, Agora backend uses signatures

@@ -51,6 +51,7 @@ vi.mock('@/lib/analytics/posthog', () => ({
 
 vi.mock('./DocsContentBody', () => ({
   DocsContentBody: ({ contentPath }: { contentPath: string }) => {
+    if (contentPath === 'pending.mdx') throw new Promise(() => {});
     const articleLink =
       contentPath === 'en/introduction/source-with-docs-link.mdx'
         ? {
@@ -436,6 +437,21 @@ describe('DocsContent', () => {
     expect(
       screen.queryByRole('button', { name: 'Copy Page' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('announces loading while document content is pending', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="pending.mdx"
+        slug="pending"
+        title="Release notes"
+        toc={[]}
+      />,
+      '/en/realtime-media/pending',
+    );
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      'Loading content',
+    );
   });
 
   it('renders MDX content in the server output without a skeleton', () => {

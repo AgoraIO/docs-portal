@@ -19,6 +19,7 @@ const enCommon = {
     },
   },
   docs: {
+    contentLoading: 'Loading content…',
     search: 'Search docs',
     searchDescription: 'Search tabs and pages in the current docs portal.',
     searchPlaceholder: 'Search docs, APIs, guides...',

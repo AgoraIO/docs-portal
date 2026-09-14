@@ -1,17 +1,21 @@
+---
+title: Video SDK release notes (macOS)
+---
+
 This page provides the release notes for the Video SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [Video SDK](#video-sdk-2)
 - [Notifications](#notifications)
 
-## Video SDK
+## Video SDK [#video-sdk-2]
 
-### Known issues
+### Known issues [#known-issues-2]
 
 <section id="macos-sdk-known-issues">
 
 The list of known issues is continuously updated as systems evolve. Agora recommends regularly upgrading to the latest SDK version, which includes new features, bug fixes, and improvements.
 
-#### macOS SDK v4.4.0
+#### macOS SDK v4.4.0 [#macos-sdk-v440]
 
 **macOS 15 Sequoia beta system issue**
 
@@ -23,11 +27,11 @@ Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include 
 
 </section>
 
-### v4.6.2
+### v4.6.2 [#v462-2]
 
 Released on January 19, 2026.
 
-#### New features
+#### New features [#new-features-33]
 
 Included in this release:
 
@@ -35,7 +39,7 @@ Included in this release:
 
    To address the issue where the main vocal and background accompaniment may be out of sync in karaoke scenarios, this release adds the `getAudioBufferDelay` method to the Media Player module to get the millisecond-level audio buffer delay when playing media files.
 
-#### Improvements
+#### Improvements [#improvements-35]
 
 This release includes the following enhancements:
 
@@ -63,7 +67,7 @@ This release includes the following enhancements:
 
     - Adds error codes `AgoraErrorCodePcmSendFormat (200)` and `AgoraErrorCodePcmSendBufferOverflow (201)` to report PCM data transmission errors.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-22]
 
 This release introduces the following compatibility changes:
 
@@ -75,7 +79,7 @@ This release introduces the following compatibility changes:
 
     The relevant decoder plugins are now built into the SDK to ensure overall decoding compatibility.
 
-### v4.6.0
+### v4.6.0 [#v460-2]
 
 Released on August 26, 2025.
 
@@ -86,7 +90,7 @@ The version of the aosl.xcframework library in the v4.6.0 SDK is 1.3.0. You can 
 :::
 
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-23]
 
 This version includes SDK behavior changes, API deprecations, and deletions. To ensure your app functions correctly, update your code after upgrading to this version.
 
@@ -148,7 +152,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
    - `*.rtnsvc.com`
    - `*.realtimemesh.com`
 
-#### New features
+#### New features [#new-features-34]
 
 - **Simulcasting multi-bitrate video streams (Beta)**
 
@@ -208,12 +212,12 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
  - Added the `position` member in `AgoraContentInspectModule` to choose the capture point for screenshot uploads from either the raw video data or the video stream before or after effects processing.
  - Added the `screenColorType` member to `AgoraSegmentationProperty` for specifying or auto-detecting background screen color (green, blue, or auto-detect) to improve the accuracy and stability of portrait segmentation when using virtual backgrounds.
 
-#### Improvements
+#### Improvements [#improvements-36]
 
 - Added support for G.711 and G.722 audio codecs when interoperating with the Web SDK for improved cross-platform audio compatibility and clarity.
 - Improved video clarity in screen sharing scenarios involving documents.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-39]
 
 This version fixes the following issues:
 
@@ -223,7 +227,7 @@ This version fixes the following issues:
 - Occasional crashes.
 - Media relay occasionally reported `AgoraChannelMediaRelayStateFailure` and `AgoraChannelMediaRelayErrorServerErrorResponse` after the following sequence: join, relay, unpublish, leave, rejoin, and start relay again.
 
-### v4.5.2
+### v4.5.2 [#v452-2]
 
 v4.5.2 was released on April 22, 2025.
 
@@ -234,7 +238,7 @@ The `aosl.xcframework` library version in Video SDK v4.5.2 is 1.2.13. You can ch
 :::
 
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-40]
 
 This release fixes the following issues:
 
@@ -248,7 +252,7 @@ This release fixes the following issues:
 - When you called `enableVideoImageSource:options:` to enable the video image source feature, the sender streamed successfully but the `rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:` callback occasionally did not return the expected result.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx:connection:` to initialize the remote user's view before successfully calling `joinChannelExByToken:connection:delegate:mediaOptions:`, the view failed to display correctly.
 
-### v4.5.1
+### v4.5.1 [#v451-2]
 
 v4.5.1 was released on March 4, 2025.
 
@@ -259,13 +263,13 @@ The `aosl.xcframework` library version in Video SDK v4.5.1 is 1.2.13. You can ch
 :::
 
 
-#### New Features
+#### New Features [#new-features-35]
 
 1. **AI Conversation Scenario**
 
    This version introduces the `AgoraAudioScenarioAiClient` audio scenario, specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](/en/introduction/conversational-ai). This scenario optimizes the audio transmission algorithm based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability, adapting to various challenging network environments.
 
-#### Issues Fixed
+#### Issues Fixed [#issues-fixed-41]
 
 This release resolves the following issues:
 
@@ -275,11 +279,11 @@ This release resolves the following issues:
 - In interactive live streaming scenarios, after joining a channel as an audience member using a `string` user ID, audio occasionally became unsynchronized with video.
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
 
-### v4.5.0
+### v4.5.0 [#v450-2]
 
 v4.5.0 was released on November 27, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-24]
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -309,7 +313,7 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
    - In the [`AgoraCompressionPreference`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoracompressionpreference) enumeration class, a new `AgoraCompressionAuto` (-1) enumeration is added, replacing the original `AgoraCompressionQuality` (1) as the default value. In this mode, the SDK will automatically choose between `AgoraCompressionLowLatency` or `AgoraCompressionQuality` based on your video scene settings to achieve the best user experience.
    - In the [`AgoraDegradationPreference`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoradegradationpreference) enumeration class, a new `AgoraDegradationMaintainAuto` (-1) enumeration is added, replacing the original `AgoraDegradationMaintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `AgoraDegradationMaintainFramerate`, `AgoraDegradationBalanced`, or `AgoraDegradationMaintainResolution` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
 
-#### New features
+#### New features [#new-features-36]
 
 1. **Live show scenario**
 
@@ -343,7 +347,7 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
 
    - The `rtcEngine:device:type:stateChanged:` callback supports reporting that the device has been plugged in.
 
-#### Improvements
+#### Improvements [#improvements-37]
 
 1. **Virtual background algorithm optimization**
 
@@ -363,17 +367,17 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `a
    - When calling `switchSrc:syncPts:` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `AgoraRtcMediaPlayer:didOccurEvent:elapsedTime:message:` callback will report the `AgoraMediaPlayerEventSwitchError` event, indicating that an error occurred during media resource switching.
    - When calling `setPlaybackSpeed:` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
 
-#### Bug fixes
+#### Bug fixes [#bug-fixes-2]
 
 This version fixes the following issue:
 
 - Calling `startAudioMixing:loopback:cycle:` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0
+### v4.4.0 [#v440-2]
 
 v4.4.0 was released on August 5, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-25]
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -393,7 +397,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
 
 1. This version renames the `receiveMetadata` callback to `didMetadataReceived` and removes the `data` and `timeStamp` parameters. You can get metadata-related information, including `timeStamp` (timestamp of the sent data), `uid` (user ID), and `channelId` (channel name) through the newly-added `metadata` parameter.
 
-#### New features
+#### New features [#new-features-37]
 
 1. **Alpha transparency effects**
 
@@ -409,7 +413,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
 
    This version introduces the voice AI tuner feature, which can enhance the sound quality and tone, similar to a physical sound card. You can enable the voice AI tuner feature by calling the `enableVoiceAITuner` method and passing in the sound effect types supported in the `AgoraVoiceAITunerType` enum to achieve effects like deep voice, cute voice, husky singing voice, and so on.
 
-#### Improvements
+#### Improvements [#improvements-38]
 
 1. **Facial region beautification**
 
@@ -424,15 +428,15 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
    - Optimizes the video link for window sharing, reducing CPU usage.
    - Deprecates redundant enumeration values `AgoraClientRoleChangeFailedRequestTimeout` and `AgoraClientRoleChangeFailedConnectionFailed` in `AgoraClientRoleChangeFailedReason`.
 
-### v4.3.2
+### v4.3.2 [#v432-2]
 
 v4.3.2 was released on June 4, 2024.
 
-#### Improvements
+#### Improvements [#improvements-39]
 
 This release enhances the usability of the [setRemoteSubscribeFallbackOption](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/setremotesubscribefallbackoption(_:)>) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-42]
 
 This version fixed the following issues:
 
@@ -440,11 +444,11 @@ This version fixed the following issues:
 - The app occasionally crashed when the decoded video resolution on the receiving end was an odd number.
 - The app occasionally crashed when remote users left the channel.
 
-### v4.3.1
+### v4.3.1 [#v431-2]
 
 v4.3.1 was released on April 29, 2024.
 
-#### New features
+#### New features [#new-features-38]
 
 1. **Portrait center stage**
 
@@ -473,7 +477,7 @@ v4.3.1 was released on April 29, 2024.
 
     - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
-#### Improvements
+#### Improvements [#improvements-40]
 
 1. **Optimization of local video status callbacks**
 
@@ -511,7 +515,7 @@ v4.3.1 was released on April 29, 2024.
    - In [AgoraAudioEffectPreset](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agoraaudioeffectpreset), a new enumeration `AgoraAudioEffectPresetRoomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
    - In [AgoraRtcRemoteAudioStats](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcremoteaudiostats), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending end to when the audio is played on the receiving end.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-43]
 
 This version fixed the following issues:
 
@@ -519,7 +523,7 @@ This version fixed the following issues:
 - When a user plugged and unplugged a Bluetooth or wired headset once, the audio state change callback `stateChanged` was triggered multiple times.
 - When the network conditions of the sender deteriorated (for example, in poor network environments), the receiver occasionally experienced a decrease in video smoothness and an increase in lag.
 
-#### API changes
+#### API changes [#api-changes-20]
 
 **Added**
 
@@ -551,11 +555,11 @@ This version fixed the following issues:
 
 - [pushExternalAudioFrameSampleBuffer [1/2]](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
 
-### v4.3.0
+### v4.3.0 [#v430-2]
 
 v4.3.0 was released on February 22, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-26]
 
 This release has optimized the implementation of some functions, involving renaming or deletion of some APIs. To ensure the normal operation of the project, you need to update the code in the app after upgrading to this release.
 
@@ -579,7 +583,7 @@ This release has optimized the implementation of some functions, involving renam
    | `AgoraMediaPlayerError`        | `AgoraMediaPlayerReason`        |
    | `AgoraRtmpStreamingError`      | `AgoraRtmpStreamingReason`      |
 
-   **Note:** For specific renaming of enumerations, please refer to [API changes](#api-changes).
+   **Note:** For specific renaming of enumerations, please refer to [API changes](#api-changes-20).
 
 2. **Channel media relay**
 
@@ -618,7 +622,7 @@ This release has optimized the implementation of some functions, involving renam
    - If you need to know the API call status, please check the API logs and print the SDK callback logs yourself.
    - For any other special requirements, please contact [technical support](mailto:support@agora.io) and provide the corresponding encrypted logs.
 
-#### New features
+#### New features [#new-features-39]
 
 1. **Local preview with multiple views**
 
@@ -645,7 +649,7 @@ This release has optimized the implementation of some functions, involving renam
    - [setPlayerOption [1/2\]](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcmediaplayerprotocol/setplayeroption(_:value:)) and [setPlayerOption [2/2\]](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcmediaplayerprotocol/setplayeroptionstring(_:value:)): Sets media player options for providing technical previews or special customization features.
    - [enableCustomAudioLocalPlayback](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/enablecustomaudiolocalplayback(_:enabled:)>): Sets whether to enable the local playback of external audio source.
 
-#### Improvements
+#### Improvements [#improvements-41]
 
 1. **SDK task processing scheduling optimization**
 
@@ -683,13 +687,13 @@ This release has optimized the implementation of some functions, involving renam
    - The [cacheStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:cachestats:)>) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
    - The [playbackStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcmediaplayerdelegate/agorartcmediaplayer(_:playbackstats:)>) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-44]
 
 This release fixed the following issues:
 
 - When sharing two screen sharing video streams simultaneously, the reported `captureFrameRate` in the [localVideoStats](<https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:localvideostats:sourcetype:)>) callback is 0, which is not as expected.
 
-#### API changes
+#### API changes [#api-changes-21]
 
 **Added**
 
@@ -775,21 +779,21 @@ This release fixed the following issues:
 - `didReceiveChannelMediaRelayEvent`
 - `AgoraChannelMediaRelayEvent`
 
-### v4.2.6
+### v4.2.6 [#v426-2]
 
 v4.2.6 was released on November 17, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-45]
 
 This release fixed the following issue:
 
 - In specific use-cases, such as when the network packet loss rate was high or when the broadcaster left the channel without destroying the engine and then re-joined the channel, the video on the receiving end stuttered or froze.
 
-### v4.2.3
+### v4.2.3 [#v423-2]
 
 v4.2.3 was released on October 11, 2023.
 
-#### New features
+#### New features [#new-features-40]
 
 1. **Update video screenshot and upload**
 
@@ -808,7 +812,7 @@ v4.2.3 was released on October 11, 2023.
 
    In addition, since this version, calling `enableVirtualBackground` and `setBeautyEffectOptions` automatically triggers a test on the capability of the current device. When the device is considered underperformed, the error code -4 is returned, indicating the device does not support the feature.
 
-#### Improvements
+#### Improvements [#improvements-42]
 
 1. **Optimize virtual background memory usage**
 
@@ -821,7 +825,7 @@ This release includes the following additional improvements:
 - Optimizes the logic of handling invalid parameters. When you call the `setPlaybackSpeed` method to set the playback speed of audio files, if you pass an invalid parameter, the SDK returns the error code -2, which means that you need to reset the parameter.
 - Optimizes the logic of Token parsing, in order to prevent an app from crash when an invalid token is passed in.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-46]
 
 This release fixed the following issues:
 
@@ -830,7 +834,7 @@ This release fixed the following issues:
 - When calling the `playEffect [3/3]` method to play two audio files using the same `soundId`, the first audio file was sometimes played repeatedly.
 - Calling `takeSnapshotEx` once receives the `snapshotTaken` callback for multiple times.
 
-#### API changes
+#### API changes [#api-changes-22]
 
 **Added**
 
@@ -841,11 +845,11 @@ This release fixed the following issues:
 - `AgoraFeatureType`
 
 
-### v4.2.2
+### v4.2.2 [#v422-3]
 
 v4.2.2 was released on july 27, 2023.
 
-#### New features
+#### New features [#new-features-41]
 
 1. **Wildcard token**
 
@@ -890,7 +894,7 @@ one video stream at the same time.
 :::
 
 
-#### Improvements
+#### Improvements [#improvements-43]
 
 1. **Virtual Background Algorithm Upgrade**
 
@@ -909,7 +913,7 @@ This release includes the following additional improvements:
 1. The SDK automatically adjusts the frame rate of the sending end based on the screen sharing use-case. Especially in document sharing use-cases, this feature avoids exceeding the expected video bitrate on the sending end to improve transmission efficiency and reduce network burden.
 2. To help users understand the reasons for more types of remote video state changes, the `AgoraVideoRemoteReasonCodecNotSupport` enumeration has been added to the `remoteVideoStateChangedOfUid` callback, indicating that the local video decoder does not support decoding the received remote video stream.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-47]
 
 This release fixed the following issues:
 
@@ -918,7 +922,7 @@ This release fixed the following issues:
 - In screen sharing use-cases, the delay of seeing the shared screen was occasionally higher than expected on some devices.
 - In custom video capturing use-cases, `setBeautyEffectOptions`, `setLowlightEnhanceOptions`, `setVideoDenoiserOptions`, and `setColorEnhanceOptions` could not load extensions automatically.
 
-#### API changes
+#### API changes [#api-changes-23]
 
 **Added**
 
@@ -939,15 +943,15 @@ This release fixed the following issues:
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
 
 
-### v4.2.1
+### v4.2.1 [#v421-3]
 
 This version was released on June 21, 2023.
 
-#### Improvements
+#### Improvements [#improvements-44]
 
 This version improves the network transmission strategy, enhancing the smoothness of audio and video interactions.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-48]
 
 This version fixed the following issues:
 
@@ -957,11 +961,11 @@ This version fixed the following issues:
 - After enabling the screen sharing function on the sending end, there was high delay until the receiving end could see the shared screen.
 
 
-### v4.2.0
+### v4.2.0 [#v420-3]
 
 v4.2.0 was released on May 24, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-27]
 
 If you use the features mentioned in this section, ensure that you modify the implementation of the relevant features after upgrading the SDK.
 
@@ -990,7 +994,7 @@ If you set AgoraALD or Soundflower as the default input or output device when jo
 - `enableDualStreamMode`[1/2] and `enableDualStreamMode`[2/2] are deprecated. Use `setDualStreamMode`[1/2] and `setDualStreamMode`[2/2] instead.
 - `startChannelMediaRelay`, `updateChannelMediaRelay`, `startChannelMediaRelayEx`, and `updateChannelMediaRelayEx` are deprecated. Use `startOrUpdateChannelMediaRelay` and `startOrUpdateChannelMediaRelayEx` instead.
 
-#### New features
+#### New features [#new-features-42]
 
 **1. AI Noise Suppression**
 
@@ -1035,7 +1039,7 @@ Local video mixing requires more CPU resources. Therefore, Agora recommends enab
 
 In real-time collaborative singing use-cases, network issues can cause inconsistencies in the downlinks of different client devices. To address this, this release introduces `getNtpWallTimeInMs` for obtaining the current Network Time Protocol (NTP) time. By using this method to synchronize lyrics and music across multiple client devices, users can achieve synchronized singing and lyrics progression, resulting in a better collaborative experience.
 
-#### Improvements
+#### Improvements [#improvements-45]
 
 **1. Voice changer**
 
@@ -1060,7 +1064,7 @@ To better meet the needs of custom audio capture use-cases, this release adds `c
 - Mixable audio track: Supports mixing multiple external audio sources and publishing them to the same channel, suitable for multi-channel audio capture use-cases.
 - Direct audio track: Only supports publishing one external audio source to a single channel, suitable for low-latency audio capture use-cases.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-49]
 
 This release fixed the following issues:
 
@@ -1069,7 +1073,7 @@ This release fixed the following issues:
 - Incorrect information in the `type` field of the return value after calling `getDefaultAudioDevice`.
 - Occasional screen jittering during screen sharing.
 
-#### API changes
+#### API changes [#api-changes-24]
 
 **Added**
 
@@ -1113,11 +1117,11 @@ This release fixed the following issues:
 - `didApiCallExecute`
 - `publishCustomAudioTrackEnableAec` in `AgoraRtcChannelMediaOptions`
 
-### v4.1.1
+### v4.1.1 [#v411-3]
 
 v4.1.1 was released on February 8, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-28]
 
 **1. Default video encoding resolution**
 
@@ -1134,7 +1138,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 
 This release changes the name of `setRemoteVideo` to `setRemoteVideoSubscriptionOptions`, and the name of `setRemoteVideoEx` to `setRemoteVideoSubscriptionOptionsEx`. If you upgrade the SDK to this version or later, to avoid affecting your service, ensure that you modify the names of these two methods.
 
-#### New features
+#### New features [#new-features-43]
 
 **1. Instant frame rendering**
 
@@ -1147,7 +1151,7 @@ This release adds the `startMediaRenderingTracing` and `startMediaRenderingTraci
 Agora recommends that you use this method in conjunction with the UI settings, such as buttons and sliders, in your app. For example, call this method when the user clicks **Join Channel** and then get the indicators in the video frame rendering process through the `videoRenderingTracingResultOfUid` callback.
 This enables developers to optimize the indicators to improve the user experience.
 
-#### Improvements
+#### Improvements [#improvements-46]
 
 **Video frame observer**
 
@@ -1156,7 +1160,7 @@ As of this release, the SDK optimizes the `onRenderVideoFrame` callback, and the
 - When the video processing mode is `AgoraVideoFrameProcessModeReadOnly`, the return value is reserved for future use.
 - When the video processing mode is `AgoraVideoFrameProcessModeReadWrite`, the SDK receives the video frame when the return value is `YES`. The video frame is discarded when the return value is `NO`.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-50]
 
 This release fixed the following issues:
 
@@ -1165,7 +1169,7 @@ This release fixed the following issues:
 - When joining a channel and accessing an external camera, calling `setDevice` to specify the video capture device as the external camera did not take effect.
 - When there were multiple video streams in a channel, calling some video enhancement APIs occasionally failed.
 
-#### API changes
+#### API changes [#api-changes-25]
 
 **Added**
 
@@ -1185,11 +1189,11 @@ This release fixed the following issues:
 - `enableRemoteSuperResolution`
 - `superResolutionType` in `AgoraRtcRemoteVideoStats`
 
-### v4.1.0
+### v4.1.0 [#v410-3]
 
 v4.1.0 was released on December 15, 2022.
 
-#### New features
+#### New features [#new-features-44]
 
 **1. Headphone equalization effect**
 
@@ -1248,7 +1252,7 @@ This release adds the following features applicable to spatial audio effect use-
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
 
-#### Improvements
+#### Improvements [#improvements-47]
 
 **1. Screen sharing**
 
@@ -1287,7 +1291,7 @@ This release includes the following additional improvements:
 - Reduces the CPU usage and power consumption of the local device when the host calls the `muteLocalVideoStream` method.
 - Enhances the ability to identify different network protocol stacks and improves the SDK's access capabilities in multiple-operator network scenarios.
 
-#### **Issues fixed**
+#### **Issues fixed** [#issues-fixed-51]
 
 This release fixed the following issues:
 
@@ -1302,7 +1306,7 @@ This release fixed the following issues:
 - The call `getExtensionProperty` failed and returned an empty string.
 - When entering a live streaming room that has been played for a long time as an audience, the time for the first frame to be rendered was shortened.
 
-#### **API changes**
+#### **API changes** [#api-changes-26]
 
 **Added**
 
@@ -1341,11 +1345,11 @@ This release fixed the following issues:
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent` callback.
 
 
-### v4.0.1
+### v4.0.1 [#v401-2]
 
 v4.0.1 was released on September 29, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-29]
 
 1. To improve code usability, this release changes the parameters in optional type in the following classes to basic data types such as ` bool` and `int`:
 
@@ -1357,7 +1361,7 @@ v4.0.1 was released on September 29, 2022.
 
 3. This release deletes the `sourceType` parameter in `enableDualStreamMode` [3/3] and `enableDualStreamModeEx`, and the `enableDualStreamMode` [2/3] method, because the SDK supports enabling dual-stream mode for various video sources captured by custom capture or SDK, you don't need to specify the video source type any more.
 
-#### New features
+#### New features [#new-features-45]
 
 **1. In-ear monitoring**
 
@@ -1393,13 +1397,13 @@ The implementation of subscribing low-quality video stream is expanded. The SDK 
 
 If you want to modify the default behavior above, you can call `setDualStreamMode`[1/2] or `setDualStreamMode`[2/2] and set the `mode` parameter to `AgoraDisableSimulcastStream` (always do not send low-quality video streams) or `AgoraEnableSimulcastStream` (always send low-quality video streams).
 
-#### Improvements
+#### Improvements [#improvements-48]
 
 **1. Video information change callback**
 
 This release optimizes the trigger logic of `videoSizeChangedOfUid`, which can also be triggered and report the local video size change when `startPreview` is called separately.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-52]
 
 This release fixed the following issues.
 
@@ -1408,7 +1412,7 @@ This release fixed the following issues.
 - When calling `setVideoEncoderConfigurationEx` in the channel to increase the resolution of the video, it occasionally failed.
 - When using the Agora media player to play videos, after you play and pause the video, and then call the seek method to specify a new position for playback, the video image might remain unchanged; if you call the resume method to resume playback, the video might be played in a speed faster than the original one.
 
-#### API changes
+#### API changes [#api-changes-27]
 
 **Added**
 
@@ -1442,11 +1446,11 @@ This release fixed the following issues.
 
 - `enableDualStreamMode` [2/3]
 
-### v4.0.0
+### v4.0.0 [#v400-3]
 
 v4.0.0 was released on September 15, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-30]
 
 **1. Integration change**
 
@@ -1459,7 +1463,7 @@ This release has optimized the implementation of some features, resulting in inc
 
 After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migrate from v3.7.x to v4.0.0](/en/realtime-media/video/reference/migration-guide).
 
-#### New features
+#### New features [#new-features-46]
 
 **1. Multiple media tracks**
 
@@ -1567,7 +1571,7 @@ To make it easier to change audio scenarios, this release adds the `setAudioScen
 
 This release supports replacing video feeds with images when publishing video streams. You can call the `enableVideoImageSource` method to enable this function and choose your own images through the `options` parameter. If you disable this function, the remote users see the video feeds that you publish.
 
-#### Improvements
+#### Improvements [#improvements-49]
 
 **1. Fast channel switching**
 
@@ -1608,7 +1612,7 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 
 
-## Extensions
+## Extensions [#extensions]
 
 
 
@@ -1617,9 +1621,9 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 
 
-## Notifications
+## Notifications [#notifications]
 
-### 2022.10
+### 2022.10 [#202210]
 
 * After you enable Agora Notifications, your server receives the events that you subscribe to in the form of HTTPS requests.
 * To improve communication security between the Agora Notifications and your server, Agora backend uses signatures

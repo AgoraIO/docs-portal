@@ -723,12 +723,15 @@ export type DocsContentBodyPayload =
   | { kind: 'openapi'; pageProps: OpenAPIPageProps };
 
 function DocsContentSkeleton() {
+  const { t } = useTranslation('common');
   return (
     <div
-      aria-hidden="true"
+      role="status"
+      aria-live="polite"
       className="not-prose flex flex-col gap-5 py-1"
       data-testid="docs-content-skeleton"
     >
+      <span className="sr-only">{t('docs.contentLoading')}</span>
       <div className="flex flex-col gap-2">
         <span
           className="h-4 w-24 rounded bg-[color:var(--surface-muted)]"

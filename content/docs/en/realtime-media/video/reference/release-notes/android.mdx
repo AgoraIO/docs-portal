@@ -1,3 +1,7 @@
+---
+title: Video SDK release notes (Android)
+---
+
 This page provides the release notes for the Video SDK release streams used by Video Calling.
 
 - [Video SDK](#video-sdk)
@@ -5,17 +9,17 @@ This page provides the release notes for the Video SDK release streams used by V
 - [Camera Movement extension](#camera-movement-extension)
 - [Notifications](#notifications)
 
-## Video SDK
+## Video SDK [#video-sdk]
 
 If your target platform is Android 12 or higher, add the `android.permission.BLUETOOTH_CONNECT` permission to the `AndroidManifest.xml` file of the Android project to enable the Bluetooth function of the Android system.
 
-### Known issues
+### Known issues [#known-issues]
 
 <section id="android-sdk-known-issues">
 
 The list of known issues is continuously updated as systems evolve. Agora recommends regularly upgrading to the latest SDK version, which includes new features, bug fixes, and improvements.
 
-#### Android SDK v4.2.3
+#### Android SDK v4.2.3 [#android-sdk-v423]
 
 **Android 14 screen sharing issue**
 
@@ -27,22 +31,22 @@ Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include 
 
 </section>
 
-### v4.6.3
+### v4.6.3 [#v463]
 
 Released on February 12, 2026.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed]
 
 This release fixed the following issues:
 
 - In audio/video interaction scenarios with the beauty effects enabled, the sender's screen turned black occasionally or the app crashed on certain device models.
 - The app occasionally crashed in audio/video interaction scenarios.
 
-### v4.6.2
+### v4.6.2 [#v462]
 
 Released on January 19, 2026.
 
-#### New features
+#### New features [#new-features]
 
 Included in this release:
 
@@ -58,7 +62,7 @@ Included in this release:
 
    To address the issue where the main vocal and background accompaniment may be out of sync in karaoke scenarios, this release adds the `getAudioBufferDelay` method to the Media Player module to get the millisecond-level audio buffer delay when playing media files.
 
-#### Improvements
+#### Improvements [#improvements]
 
 This release includes the following enhancements:
 
@@ -84,7 +88,7 @@ This release includes the following enhancements:
     - Improves video capture performance in low-light or dark environments on some devices, resulting in brighter images.
     - The Media Recorder module now supports recording audio from Media Player and Audio Mixing.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes]
 
 This release introduces the following compatibility changes:
 
@@ -100,7 +104,7 @@ This release introduces the following compatibility changes:
 
     The relevant decoder plugins are now built into the SDK to ensure overall decoding compatibility.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-1]
 
 This release fixed the following issues:
 
@@ -115,7 +119,7 @@ This release fixed the following issues:
 - Occasional crashes occurred during audio and video engagements.
 - Beauty effects did not work in some scenarios.
 
-### v4.6.1
+### v4.6.1 [#v461]
 
 Released on November 26, 2025.
 
@@ -126,7 +130,7 @@ This version of the SDK uses v1.3.0 of the libaosl.so library.
 :::
 
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-2]
 
 This version fixes the following issues:
 
@@ -137,7 +141,7 @@ This version fixes the following issues:
 - In multi-channel scenarios, the app occasionally crashed during audio and video communication with other devices.
 - When using the Voice SDK, the `onRtcStats` callback reported a `memoryAppUsageRatio` value that was always `0`.
 
-### v4.6.0
+### v4.6.0 [#v460]
 
 Released on August 26, 2025.
 
@@ -148,7 +152,7 @@ The version of the `libaosl.so` library in the v4.6.0 SDK is 1.3.0.
 :::
 
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-1]
 
 This version includes SDK behavior changes, API deprecations, and deletions. To ensure your app functions correctly, update your code after upgrading to this version.
 
@@ -207,7 +211,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
    - `*.rtnsvc.com`
    - `*.realtimemesh.com`
 
-#### New features
+#### New features [#new-features-1]
 
 - **Simulcasting multi-bitrate video streams (Beta)**
 
@@ -267,13 +271,13 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
   - Added the `position` member in `ContentInspectModule` to choose the capture point for screenshot uploads, allowing capture from raw video data or before/after effects processing.
   - Added the `screenColorType` member to `SegmentationProperty` for specifying or detecting background screen color (green, blue, or auto-detected) to improve virtual background segmentation accuracy.
 
-#### Improvements
+#### Improvements [#improvements-1]
 
 - Added support for G.711 and G.722 audio codecs when interoperating with the Web SDK to improve cross-platform audio compatibility and clarity.
 - Optimized the plugin loading mechanism to automatically load the SDK's dynamic library plugins for Android apps developed with C++.
 - Improved video clarity in screen sharing scenarios involving documents.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-3]
 
 This version fixes the following issues:
 
@@ -284,7 +288,7 @@ This version fixes the following issues:
 - Incorrect relay state (`RELAY_STATE_FAILURE`) and error (`RELAY_ERROR_SERVER_ERROR_RESPONSE`) reported after a specific join/relay sequence using `joinChannelEx`.
 - Occasional audio noise when using Bluetooth or wired headphones after setting `AUDIO_SCENARIO_CHATROOM` (Android).
 
-### v4.5.2
+### v4.5.2 [#v452]
 
 Released on April 22, 2025.
 
@@ -295,7 +299,7 @@ The `libaosl.so` library version in Video SDK v4.5.2 is 1.2.13.
 :::
 
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-4]
 
 This release fixes the following issues:
 
@@ -320,7 +324,7 @@ This release fixes the following issues:
 - After a failed attempt to join a channel, trying again without first calling `leaveChannel [1/2]` occasionally caused a crash.
 
 
-### v4.5.1
+### v4.5.1 [#v451]
 
 Released on March 4, 2025.
 
@@ -331,7 +335,7 @@ The `libaosl.so` library version in Video SDK v4.5.1 is 1.2.13.
 :::
 
 
-#### New features
+#### New features [#new-features-2]
 
 **AI conversation scenario**
 
@@ -339,7 +343,7 @@ This version introduces the `AUDIO_SCENARIO_AI_CLIENT` audio scenario option, sp
 
 This scenario optimizes audio transmission algorithms based on the characteristics of AI-generated voices, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. The optimization enhances conversation continuity and reliability across various network environments.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-5]
 
 This release fixes the following issues:
 
@@ -354,11 +358,11 @@ This release fixes the following issues:
 - In interactive live streaming, after joining a channel as an audience member using a `string` user ID, the audio and video occasionally became unsynchronized.
 - Plugins sometimes malfunctioned when using AI noise suppression and AI echo cancellation plugins simultaneously.
 
-### v4.5.0
+### v4.5.0 [#v450]
 
 Released on November 27, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-2]
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -386,7 +390,7 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
 
     Starting from Android 15, the system adds support for 16 KB memory page size, as detailed in [Support 16 KB page sizes](https://developer.android.com/guide/practices/page-sizes). To ensure the stability and performance of the app, starting from this version, the SDK supports 16 KB memory page size, ensuring seamless operation on devices with both 4 KB and 16 KB memory page sizes, enhancing compatibility and preventing crashes.
 
-#### New features
+#### New features [#new-features-3]
 
 1. **Live show scenario**
 
@@ -426,7 +430,7 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
 
     This version adds `getColorSpace` and `setColorSpace` to [`VideoFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_videoframe.html). You can use `getColorSpace` to obtain the color space properties of the video frame and use `setColorSpace` to customize the settings. By default, the color space uses Full Range and BT.709 standard configuration. Developers can flexibly adjust according to their own capture or rendering needs, further enhancing the customization capabilities of video processing.
 
-#### Improvements
+#### Improvements [#improvements-2]
 
 1. **Virtual background algorithm optimization**
 
@@ -447,7 +451,7 @@ As of v4.5.0, both Video SDK and Signaling SDK (v2.2.0 and above) include the `l
     - When calling `switchSrc` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `onPlayerEvent` callback will report the `PLAYER_EVENT_SWITCH_ERROR` event, indicating that an error has occurred during media resource switching.
     - When calling `setPlaybackSpeed` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
 
-#### Bug fixes
+#### Bug fixes [#bug-fixes]
 
 This version fixes the following issues:
 
@@ -458,19 +462,19 @@ This version fixes the following issues:
 - Calling `startAudioMixing [1/2]` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction.
 
-### v4.4.1
+### v4.4.1 [#v441]
 
 Released on August 8, 2024.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-6]
 
 This release fixes the issue where `io.agora.rtc:full-rtc-basic:4.4.0` and `io.agora.rtc:voice-rtc-basic:4.4.0` were not working properly on Maven Central due to an upload error.
 
-### v4.4.0
+### v4.4.0 [#v440]
 
 v4.4.0 was released on August 5, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-3]
 
 This version includes optimizations to some features, including changes to the SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -490,7 +494,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
 
 1. This version removes the `buffer`, `uid`, and `timeStampMs` parameters of the `onMetadataReceived` callback. You can get metadata-related information, including `timeStampMs` (timestamp of the sent data), `uid` (user ID), and `channelId` (channel name) through the newly-added `metadata` parameter.
 
-#### New features
+#### New features [#new-features-4]
 
 1. **Lite SDK**
 
@@ -515,7 +519,7 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
 
    This version introduces the voice AI tuner feature, which can enhance the sound quality and tone, similar to a physical sound card. You can enable the voice AI tuner feature by calling the `enableVoiceAITuner` method and passing in the sound effect types supported in the `VOICE_AI_TUNER_TYPE` enum to achieve effects like deep voice, cute voice, husky singing voice, and so on.
 
-#### Improvements
+#### Improvements [#improvements-3]
 
 1. **Adaptive hardware decoding support**
 
@@ -535,17 +539,17 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
    - Optimizes the transmission strategy: Calling `enableInstantMediaRendering` no longer impacts the security of the transmission link.
    - Deprecates redundant enumerations `CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT` and `CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED`.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-7]
 
 This release fixes the following issue:
 
 - Audio playback failed when pushing external audio data using `pushExternalAudioFrame` and the sample rate was not set as a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2
+### v4.3.2 [#v432]
 
 v4.3.2 was released on June 4, 2024.
 
-#### Improvements
+#### Improvements [#improvements-4]
 
 1. This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
@@ -553,7 +557,7 @@ v4.3.2 was released on June 4, 2024.
 
 1. The Agora media player now fully supports playing music files located in the `/assets/` directory or from URI starting with `content://`.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-8]
 
 This version fixed the following issues:
 
@@ -565,15 +569,15 @@ This version fixed the following issues:
 - The app occasionally crashed when remote users left the channel.
 - The values of `cameraDirection` and `focalLengthType` returned by [queryCameraFocalLengthCapability](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_querycamerafocallengthcapability) could not be read directly.
 
-### v4.3.1
+### v4.3.1 [#v431]
 
 v4.3.1 was released on April 29, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-4]
 
 To ensure parameter naming consistency, this version renames `channelName` to `channelId` and `optionalUid` to `uid` in `joinChannel` [1/2]. Update your app's code after upgrading to this version to ensure normal project operations.
 
-#### New features
+#### New features [#new-features-5]
 
 1. **Wide and ultra-wide cameras**
 
@@ -619,7 +623,7 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
     - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
 
-#### Improvements
+#### Improvements [#improvements-5]
 
 1. **Optimization of local video status callbacks**
 
@@ -653,7 +657,7 @@ To ensure parameter naming consistency, this version renames `channelName` to `c
    - New chorus effect `ROOM_ACOUSTICS_CHORUS` is added to enhance the spatial presence of vocals in chorus use-cases.
    - In [RemoteAudioStats](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending end to when the audio is played on the receiving end.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-9]
 
 This version fixed the following issues:
 
@@ -664,7 +668,7 @@ This version fixed the following issues:
 - In use-cases using camera capture for local video, when the app was moved to the background and [disableVideo](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo) or [stopPreview](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_stoppreview) was called to stop video capture, camera capture was unexpectedly activated when the app was brought back to the foreground.
 - When the network conditions of the sender deteriorated (for example, in poor network environments), the receiver occasionally experienced a decrease in video smoothness and an increase in lag.
 
-#### API changes
+#### API changes [#api-changes]
 
 **Added**
 
@@ -701,11 +705,11 @@ This version fixed the following issues:
 - [switchCamera [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_switchcamera2)
 - `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`
 
-### v4.3.0
+### v4.3.0 [#v430]
 
 v4.3.0 was released on February 22, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-5]
 
 This release has optimized the implementation of some functions, which involved renaming or deletion of some APIs. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -790,7 +794,7 @@ This release has optimized the implementation of some functions, which involved 
    This release deletes the `IAgoraEventHandler` interface class. All callback events that were previously managed under this class are now processed through the `IRtcEngineEventHandler` interface class.
 
 
-#### New features
+#### New features [#new-features-6]
 
 1. **Custom mixed video layout on the receiving end**
 
@@ -829,7 +833,7 @@ This release has optimized the implementation of some functions, which involved 
    - [setPlayerOption](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionString](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
    - [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
 
-#### Improvements
+#### Improvements [#improvements-6]
 
 1. **SDK task processing scheduling optimization**
 
@@ -871,7 +875,7 @@ This release has optimized the implementation of some functions, which involved 
    - The [onPlayerCacheStats](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
    - The [onPlayerPlaybackStats](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_playerplaybackstats.html).
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-10]
 
 This release fixed the following issues:
 
@@ -879,7 +883,7 @@ This release fixed the following issues:
  callback is 0, which is not as expected.
 - In an online meeting use-case, occasional audio freezes occurred when the local user was listening to remote users.
 
-#### API changes
+#### API changes [#api-changes-1]
 
 **Added**
 
@@ -966,11 +970,11 @@ This release fixed the following issues:
 - `updateChannelMediaRelayEx`
 - `onChannelMediaRelayEvent`
 
-### v4.2.6
+### v4.2.6 [#v426]
 
 v4.2.6 was released on November 17, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-11]
 
 This release fixed the following issues:
 
@@ -984,15 +988,15 @@ This release fixed the following issues:
 - In live streaming use-cases, the video on the audience end was occasionally distorted.
 - In specific use-cases, such as when the network packet loss rate was high or when the broadcaster left the channel without destroying the engine and then re-joined the channel, the video on the receiving end stuttered or froze.
 
-### v4.2.3
+### v4.2.3 [#v423]
 
 v4.2.3 was released on October 11, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-6]
 
 This version optimizes the management of Texture Buffer in the SDK capture and custom video capture use-cases, effectively eliminating the potential for frame loss and crashes. Starting from this version, the texture format of the `TextureBuffer` type no longer includes the OES format, only the RGB format. Add adaptation to the I420 and RGB texture formats when processing video data.
 
-#### New features
+#### New features [#new-features-7]
 
 1. **Update video screenshot and upload**
 
@@ -1011,7 +1015,7 @@ This version optimizes the management of Texture Buffer in the SDK capture and c
 
    In addition, since this version, calling `enableVirtualBackground` and `setBeautyEffectOptions` automatically triggers a test on the capability of the current device. When the device is considered underperformed, the error code `-4:ERR_NOT_SUPPORTED` is returned, indicating the device does not support the feature.
 
-#### Improvements
+#### Improvements [#improvements-7]
 
 1. **Optimize virtual background memory usage**
 
@@ -1029,7 +1033,7 @@ This release includes the following additional improvements:
 - Optimizes the logic of handling invalid parameters. When you call the `setPlaybackSpeed` method to set the playback speed of audio files, if you pass an invalid parameter, the SDK returns the error code -2, which means that you need to reset the parameter.
 - Optimizes the logic of Token parsing, in order to prevent an app from crash when an invalid token is passed in.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-12]
 
 This release fixed the following issues:
 
@@ -1041,7 +1045,7 @@ This release fixed the following issues:
 - Calling `takeSnapshotEx` once receives the `onSnapshotTaken` callback for multiple times.
 - In channels joined by calling `joinChannelEx` exclusively, calling `setEnableSpeakerphone` is unable to switch audio route from the speaker to the headphone.
 
-#### API changes
+#### API changes [#api-changes-2]
 
 **Added**
 
@@ -1051,11 +1055,11 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.2
+### v4.2.2 [#v422]
 
 v4.2.2 was released on july 27, 2023.
 
-#### New features
+#### New features [#new-features-8]
 
 1. **Wildcard token**
 
@@ -1076,7 +1080,7 @@ All 4.x SDKs support using wildcard tokens.
 
    In this release, the `backgroundColor` member has been added to `VideoCanvas`, which allows you to customize the background color of the video canvas when setting the properties of local or remote video display.
 
-#### Improvements
+#### Improvements [#improvements-8]
 
 1. **Improved camera capture effect**
 
@@ -1100,7 +1104,7 @@ This release includes the following additional improvements:
 2. The SDK automatically adjusts the frame rate of the sending end based on the screen sharing use-case. Especially in document sharing use-cases, this feature avoids exceeding the expected video bitrate on the sending end to improve transmission efficiency and reduce network burden.
 3. To help users understand the reasons for more types of remote video state changes, the `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT` enumeration has been added to the `onRemoteVideoStateChanged` callback, indicating that the local video decoder does not support decoding the received remote video stream.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-13]
 
 This release fixed the following issues:
 
@@ -1108,7 +1112,7 @@ This release fixed the following issues:
 - In screen sharing use-cases, the delay of seeing the shared screen was occasionally higher than expected on some devices.
 - In custom video capturing use-cases, `setBeautyEffectOptions`, `setLowlightEnhanceOptions`, `setVideoDenoiserOptions`, and `setColorEnhanceOptions` could not load extensions automatically.
 
-#### API changes
+#### API changes [#api-changes-3]
 
 **Added**
 
@@ -1125,15 +1129,15 @@ This release fixed the following issues:
 - `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT`
 
 
-### v4.2.1
+### v4.2.1 [#v421]
 
 This version was released on June 21, 2023.
 
-#### Improvements
+#### Improvements [#improvements-9]
 
 This version improves the network transmission strategy, enhancing the smoothness of audio and video interactions.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-14]
 
 This version fixed the following issues:
 - Inability to join channels caused by SDK's incompatibility with some older versions of AccessToken.
@@ -1142,11 +1146,11 @@ This version fixed the following issues:
 - In screen sharing use-cases, some Android devices experienced choppy video on the receiving end.
 
 
-### v4.2.0
+### v4.2.0 [#v420]
 
 v4.2.0 was released on May 24, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-7]
 
 If you use the features mentioned in this section, ensure that you modify the implementation of the relevant features after upgrading the SDK.
 
@@ -1166,7 +1170,7 @@ The `onCaptureVideoFrame` and `onPreEncodeVideoFrame` callbacks are added with a
 - `enableDualStreamMode`[1/2] and `enableDualStreamMode`[2/2] are deprecated. Use `setDualStreamMode`[1/2] and `setDualStreamMode`[2/2] instead.
 - `startChannelMediaRelay`, `updateChannelMediaRelay`, `startChannelMediaRelayEx`, and `updateChannelMediaRelayEx` are deprecated. Use `startOrUpdateChannelMediaRelay` and `startOrUpdateChannelMediaRelayEx` instead.
 
-#### New features
+#### New features [#new-features-9]
 
 **1. AI Noise Suppression**
 
@@ -1212,7 +1216,7 @@ Local video mixing requires more CPU resources. Therefore, Agora recommends enab
 In real-time collaborative singing use-cases, network issues can cause inconsistencies in the downlinks of different client devices. To address this, this release introduces `getNtpWallTimeInMs` for obtaining the current Network Time Protocol (NTP) time. By using this method to synchronize lyrics and music across multiple client devices, users can achieve synchronized singing and lyrics progression, resulting in a better collaborative experience.
 
 
-#### Improvements
+#### Improvements [#improvements-10]
 
 **1. Improved voice changer**
 
@@ -1252,7 +1256,7 @@ To better meet the needs of custom audio capture use-cases, this release adds `c
 - Direct audio track: Only supports publishing one external audio source to a single channel, suitable for low-latency audio capture use-cases.
 
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-15]
 
 This release fixed the following issues:
 
@@ -1262,7 +1266,7 @@ This release fixed the following issues:
 - Occasional echo.
 - Abnormal client status caused by an exception in the `onRemoteAudioStateChanged` callback.
 
-#### API changes
+#### API changes [#api-changes-4]
 
 **Added**
 
@@ -1305,11 +1309,11 @@ This release fixed the following issues:
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
 
 
-### v4.1.1
+### v4.1.1 [#v411]
 
 v4.1.1 was released on February 8, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-8]
 
 As of this release, the SDK optimizes the video encoder algorithm and upgrades the default video encoding resolution from 640 × 360 to 960 × 540 to accommodate improvements in device performance and network bandwidth, providing users with a full-link HD experience in various audio and video interaction use-cases.
 
@@ -1320,7 +1324,7 @@ The increase in the default resolution affects the aggregate resolution and thus
 :::
 
 
-#### New features
+#### New features [#new-features-10]
 
 **1. Instant frame rendering**
 
@@ -1333,7 +1337,7 @@ This release adds the `startMediaRenderingTracing` and `startMediaRenderingTraci
 Agora recommends that you use this method in conjunction with the UI settings, such as buttons and sliders, in your app. For example, call this method when the user clicks **Join Channel** and then get the indicators in the video frame rendering process through the `onVideoRenderingTracingResult` callback.
 This enables developers to optimize the indicators and improve the user experience.
 
-#### Improvements
+#### Improvements [#improvements-11]
 
 **1. Video frame observer**
 
@@ -1347,7 +1351,7 @@ As of this release, the SDK optimizes the `onRenderVideoFrame` callback, and the
 This release improves the performance of super resolution. To optimize the usability of super resolution, this
   release removes `enableRemoteSuperResolution`. Super resolution is now included in the online strategies of video quality enhancement which does not require extra configuration.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-16]
 
 This release fixes the following issues:
 
@@ -1361,7 +1365,7 @@ This release fixes the following issues:
 - When there were multiple video streams in a channel, calling some video enhancement APIs occasionally failed.
 - At the moment when a user left a channel, a request for leaving was not sent to the server and the leaving behavior was incorrectly determined by the server as timed out.
 
-#### API changes
+#### API changes [#api-changes-5]
 
 **Added**
 
@@ -1377,11 +1381,11 @@ This release fixes the following issues:
 - `enableRemoteSuperResolution`
 - `superResolutionType` in `RemoteVideoStats`
 
-### v4.1.0
+### v4.1.0 [#v410]
 
 v4.1.0 was released on December 15, 2022.
 
-#### New features
+#### New features [#new-features-11]
 
 **1. Headphone equalization effect**
 
@@ -1439,7 +1443,7 @@ This release adds the following features applicable to spatial audio effect use-
 - Doppler sound: You can enable Doppler sound by setting the `enable_doppler` parameter in `SpatialAudioParams`, and the receiver experiences noticeable tonal changes in the event of a high-speed relative displacement between the source and receiver (such as in a racing game use-case).
 - Headphone equalizer: You can use a preset headphone equalization effect by calling the `setHeadphoneEQPreset` method to improve the hearing of the headphones.
 
-#### Improvements
+#### Improvements [#improvements-12]
 
 **1. Bluetooth permissions**
 
@@ -1479,7 +1483,7 @@ This release includes the following additional improvements:
 - Improves the smoothness of SDK video rendering.
 - Enhances the ability to identify different network protocol stacks and improves the SDK's access capabilities in multiple-operator network scenarios.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-17]
 
 This release fixed the following issues:
 
@@ -1487,7 +1491,7 @@ This release fixed the following issues:
 - The call `getExtensionProperty` failed and returned an empty string.
 - When entering a live streaming room that has been played for a long time as an audience, the time for the first frame to be rendered was shortened.
 
-#### API changes
+#### API changes [#api-changes-6]
 
 **Added**
 
@@ -1562,16 +1566,16 @@ This release fixed the following issues:
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `LiveTranscoding` class.
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `onChannelMediaRelayEvent` callback.
 
-### v4.0.1
+### v4.0.1 [#v401]
 
 v4.0.1 was released on September 29, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-9]
 
 This release deletes the `sourceType` parameter in `enableDualStreamMode` [3/3] and `enableDualStreamModeEx`, and the `enableDualStreamMode` [2/3] method, because the SDK supports enabling dual-stream mode for various video sources captured by custom capture or SDK, you don't need to specify the video source type any more.
 
 
-#### New features
+#### New features [#new-features-12]
 
 **1. In-ear monitoring**
 
@@ -1605,13 +1609,13 @@ The implementation of subscribing low-quality video stream is expanded. The SDK 
 
 If you want to modify the default behavior above, you can call `setDualStreamMode` [1/2] or `setDualStreamMode` [2/2] and set the `mode` parameter to `DISABLE_SIMULCAST_STREAM` (always do not send low-quality video streams) or `ENABLE_SIMULCAST_STREAM` (always send low-quality video streams).
 
-#### Improvements
+#### Improvements [#improvements-13]
 
 **1. Video information change callback**
 
 This release optimizes the trigger logic of `onVideoSizeChanged`, which can also be triggered and report the local video size change when `startPreview` is called separately.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-18]
 
 This release fixed the following issues.
 
@@ -1620,7 +1624,7 @@ This release fixed the following issues.
 3. After calling `setCloudProxy` to set the cloud proxy, calling `joinChannelEx` to join multiple channels failed.
 4. When using the Agora media player to play videos, after you play and pause the video, and then call the seek method to specify a new position for playback, the video image might remain unchanged; if you call the resume method to resume playback, the video might be played in a speed faster than the original one.
 
-#### API changes
+#### API changes [#api-changes-7]
 
 **Added**
 
@@ -1658,11 +1662,11 @@ This release fixed the following issues.
 
 - `enableDualStreamMode` [2/3]
 
-### v4.0.0
+### v4.0.0 [#v400]
 
 v4.0.0 was released on September 15, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-10]
 
 **1. Integration change**
 
@@ -1679,7 +1683,7 @@ After upgrading the SDK, you need to update the code in your app according to yo
 
 To facilitate troubleshooting, as of this release, the SDK no longer catches exceptions that are thrown by your own code implementation when triggering callbacks in the `IRtcEngineEventHandler` class. You need to catch and handle the exceptions yourself; otherwise, it can cause a crash.
 
-#### New features
+#### New features [#new-features-13]
 
 **1. Multiple media tracks**
 
@@ -1784,7 +1788,7 @@ If a user is added in a blocklist and a allowlist at the same time, only the blo
 
 To make it easier to change audio scenarios, this release adds the `setAudioScenario` method. For example, if you want to change the audio scenario from `AUDIO_SCENARIO_DEFAULT` to `AUDIO_SCENARIO_GAME_STREAMING` when you are in a channel, you can call this method.
 
-#### Improvements
+#### Improvements [#improvements-14]
 
 **1. Fast channel switching**
 
@@ -1833,19 +1837,19 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 
 
-## Extensions
+## Extensions [#extensions]
 
 
 
 
 
-## MetaKit extension
+## MetaKit extension [#metakit-extension]
 
-### v2.2.0
+### v2.2.0 [#v220-1]
 
 v2.2.0 was released on September 13, 2024.
 
-#### New features
+#### New features [#new-features-144]
 
 **Stickers**
 
@@ -1859,7 +1863,7 @@ This release adds a new portrait edge light effect. To experience it, specify th
 
 This version adds a text-to-image feature for the advertising lights. When setting the advertising light effects, you can specify the text content through the `text` parameter and add animation effects through the `animation` parameter. This includes jumping, waving, or swaying, to make the text appear dynamically on the screen.
 
-#### Improvements
+#### Improvements [#improvements-157]
 
 This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensionProperty`.
 
@@ -1869,46 +1873,46 @@ This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensio
 
 This improvement significantly enhances the usability of the extension. You can quickly experience different functional use-cases by simply specifying different subpackage resource paths when loading.
 
-#### API changes
+#### API changes [#api-changes-84]
 
 **Added**
 
 - `loadMaterial`
 - `unloadMaterial`
 
-### v2.1.0
+### v2.1.0 [#v210-2]
 
 v2.1.0 was released on March 6, 2024.
 
-#### Improvements
+#### Improvements [#improvements-158]
 
 This update optimizes the performance of the MetaKit extension and adds support for two new keys in `setExtensionProperty`: [`requestTexture`](/en/realtime-media/video/build/add-advanced-video-features/metakit#enable-texture-request) and [`switchTextureAvatarMode`](/en/realtime-media/video/build/add-advanced-video-features/metakit#switch-texture-scene). These replace the original `addSceneView` and `switchAvatarMode` functions, respectively. The new interface supports automatic generation and return of texture data, which is then directly rendered, previewed, encoded, and transmitted through the SDK. This enhancement improves rendering performance, reduces latency, and ensures more efficient operation and a better user experience.
 
-#### API changes
+#### API changes [#api-changes-85]
 
 **Added**
 
 - [`requestTexture`](/en/realtime-media/video/build/add-advanced-video-features/metakit#enable-texture-request)
 - [`switchTextureAvatarMode`](/en/realtime-media/video/build/add-advanced-video-features/metakit#switch-texture-scene)
 
-### v2.0.0
+### v2.0.0 [#v200-3]
 
 v2.0.0 was released on February 23, 2024.
 
 This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
 
-## Camera Movement extension
+## Camera Movement extension [#camera-movement-extension]
 
-### v1.2.0
+### v1.2.0 [#v120-1]
 
 v1.2.0 was released on April 29, 2024.
 
-#### Improvements
+#### Improvements [#improvements-159]
 
 - Added support for Video SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
-### v1.0.0
+### v1.0.0 [#v100-3]
 
 v1.0.0 was released on February 23, 2024.
 
@@ -1921,9 +1925,9 @@ The extension uses AI technology and intelligent camera movement algorithms to p
 
 
 
-## Notifications
+## Notifications [#notifications]
 
-### 2022.10
+### 2022.10 [#202210]
 
 * After you enable Agora Notifications, your server receives the events that you subscribe to in the form of HTTPS requests.
 * To improve communication security between the Agora Notifications and your server, Agora backend uses signatures

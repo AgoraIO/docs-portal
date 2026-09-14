@@ -1,6 +1,10 @@
+---
+title: Video SDK release notes (Web)
+---
+
 This page provides the release notes for the Video SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [Video SDK](#video-sdk-3)
 - [AI Noise Suppression](#ai-noise-suppression)
 - [Virtual background](#virtual-background)
 - [Super Clarity extension](#super-clarity-extension)
@@ -9,21 +13,21 @@ This page provides the release notes for the Video SDK release streams used by V
 - [Beauty Effect extension](#beauty-effect-extension)
 - [Notifications](#notifications)
 
-## Video SDK
+## Video SDK [#video-sdk-3]
 
 Video Calling 4.x is a JavaScript and TypeScript library loaded by an HTML web page. The SDK library uses APIs in the web browser to establish connections and control the communication, Broadcast Streaming and Interactive Live Streaming services.
 
-### Compatibility
+### Compatibility [#compatibility]
 
 See [Supported platforms](/en/realtime-media/video/reference/supported-platforms).
 
-### Known issues
+### Known issues [#known-issues-3]
 
 <section id="web-sdk-known-issues">
 
 The list of known issues is continuously updated as systems evolve. Agora recommends regularly upgrading to the latest SDK version, which includes new features, bug fixes, and improvements.
 
-#### Desktop
+#### Desktop [#desktop]
 
 <Accordions>
 <Accordion title="Chrome">
@@ -79,7 +83,7 @@ The list of known issues is continuously updated as systems evolve. Agora recomm
 - On Macs with an Apple M1 chip, Firefox does not support H.264. For details, see [Bugzilla issue 1686470](https://bugzilla.mozilla.org/show_bug.cgi?id=1686470).
 - Firefox does not support getting `CodecType`, `sendFrameRate`, or `captureFrameRate`.
 
-##### Other desktop restrictions
+##### Other desktop restrictions [#other-desktop-restrictions]
 
 - On Chrome 81 or later, Safari, and Firefox, device IDs are available only after the user grants media device permission. This restriction affects the `getMicrophones`, `getCameras`, and `getPlaybackDevices` methods.
 - The `setPlaybackDevice` method is supported only on Chrome. Calling it on another browser throws the `NOT_SUPPORTED` error.
@@ -97,12 +101,12 @@ The list of known issues is continuously updated as systems evolve. Agora recomm
 </Accordion>
 </Accordions>
 
-#### Mobile
+#### Mobile [#mobile]
 
 <Accordions>
 <Accordion title="iOS">
 
-##### iOS known issues
+##### iOS known issues [#ios-known-issues]
 
 <Accordions type="multiple">
 <Accordion title="iOS 16.0: Video stretches after the screen orientation changes">
@@ -247,7 +251,7 @@ createClient({ codec: 'vp9', mode });
 </Accordion>
 </Accordions>
 
-##### iOS known limitations
+##### iOS known limitations [#ios-known-limitations]
 
 <Accordions type="multiple">
 <Accordion title="createScreenVideoTrack is not supported">
@@ -295,7 +299,7 @@ iOS and iOS WebView do not support changing media volume through `HTMLMediaEleme
 </Accordion>
 <Accordion title="Android">
 
-##### Android known issues
+##### Android known issues [#android-known-issues]
 
 <Accordions type="multiple">
 <Accordion title="Android 12: Video distortion on Chrome with hardware acceleration enabled">
@@ -378,7 +382,7 @@ iOS and iOS WebView do not support changing media volume through `HTMLMediaEleme
 </Accordion>
 </Accordions>
 
-##### Android known limitations
+##### Android known limitations [#android-known-limitations]
 
 <Accordions type="multiple">
 <Accordion title="createScreenVideoTrack is not supported">
@@ -400,7 +404,7 @@ The image enhancement algorithm can reduce mobile device performance below accep
 
 <section id="web-sdk-v4-24-8">
 
-### v4.24.8
+### v4.24.8 [#v4248]
 
 Released on August 31, 2026.
 
@@ -410,7 +414,7 @@ This release includes several internal improvements.
 
 <section id="web-sdk-v4-24-7">
 
-### v4.24.7
+### v4.24.7 [#v4247]
 
 Released on August 3, 2026.
 
@@ -420,13 +424,13 @@ This release includes several internal improvements.
 
 <section id="web-sdk-v4-24-6">
 
-### v4.24.6
+### v4.24.6 [#v4246]
 
 Released on July 13, 2026.
 
 This release adds automatic receiving and playback of remote audio and improves audio and connection stability in Safari and iOS environments.
 
-#### New features
+#### New features [#new-features-47]
 
 - **Automatically receive and play remote audio after joining a channel**
 
@@ -436,14 +440,14 @@ This release adds automatic receiving and playback of remote audio and improves 
 
   This option is disabled by default and does not change existing subscription or playback behavior.
 
-#### Fixed issues
+#### Fixed issues [#fixed-issues]
 
 This release fixed the following issues:
 
 - On Safari and iOS 26 or later, audio and video connections could fail in some scenarios due to compatibility issues.
 - When using Web Audio to play remote audio, some browsers could fail to resume audio after autoplay was blocked, even after the user interacted with the page.
 
-#### Upgrade considerations
+#### Upgrade considerations [#upgrade-considerations]
 
 Upgrade to v4.24.6 if your app:
 
@@ -457,11 +461,11 @@ Due to browser autoplay policies, users may still need to click or touch the pag
 
 </section>
 
-### v4.24.5
+### v4.24.5 [#v4245]
 
 Released on June 24, 2026.
 
-#### Upgrade considerations
+#### Upgrade considerations [#upgrade-considerations-1]
 
 - **Domain allowlist change**
 
@@ -480,13 +484,13 @@ Released on June 24, 2026.
 
   If you upgrade to v4.24.5, update your firewall allowlist so the SDK continues to work in restricted-network environments. See [Firewall requirements](/en/realtime-media/video/reference/firewall).
 
-#### New features
+#### New features [#new-features-48]
 
 - **Background voice removal in AI Noise Suppression**
 
   The AI Noise Suppression extension is enhanced to remove background human voices. In noisy environments or scenarios with multiple speakers, this capability further isolates the target speaker and improves audio capture. See [Extension release notes](#ai-noise-suppression).
 
-#### Improvements
+#### Improvements [#improvements-50]
 
 This release includes the following improvements:
 
@@ -494,7 +498,7 @@ This release includes the following improvements:
 - Optimized media-tracing links and jitter-buffer handling to reduce first-frame time and audio and video stuttering in certain scenarios.
 - The audio subscription flow now uses a presubscribe model by default, improving subscription efficiency and playback stability. When full-link feedback and frame-rate-priority mode are enabled, you can now set a lower bound for resolution downgrade.
 
-#### Fixed issues
+#### Fixed issues [#fixed-issues-1]
 
 This release fixed the following issues:
 
@@ -505,38 +509,38 @@ This release fixed the following issues:
 - Remote video could freeze briefly after the first `client.publish(video)` call.
 - TypeScript type definition files were missing and some exported symbols were incorrect in the npm package.
 
-### v4.24.4
+### v4.24.4 [#v4244]
 
 Released on May 27, 2026.
 
-#### Improvements
+#### Improvements [#improvements-51]
 
 This release includes internal optimizations for weak-network scenarios, improving the login success rate.
 
-### v4.24.3
+### v4.24.3 [#v4243]
 
 Released on April 1, 2026.
 
-#### New features
+#### New features [#new-features-49]
 
 - **AI Noise Suppression extension upgrade**
 
   The AI Noise Suppression extension ([agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)) is upgraded to v2.0.1. This version adds a low-latency mode and the ability to configure the log level of the WASM module. For details, see [Extension release notes](#ai-noise-suppression).
 
-#### Improvements
+#### Improvements [#improvements-52]
 
 This release includes the following improvements:
 
 - Optimizes the interactive video experience in H.264 encoding scenarios.
 - The [Super Clarity extension](#super-clarity-extension) is upgraded to v2.0.1, with sharpening algorithm improvements that provide better video experience in some scenarios.
 
-### v4.24.2
+### v4.24.2 [#v4242]
 
 Released on December 12, 2025.
 
 This release addresses a compatibility issue introduced in Chrome 143.
 
-#### Issue description
+#### Issue description [#issue-description]
 
 During a communication session between users A and B, if user A unsubscribes and stops publishing an audio stream and then tries to publish audio again, the SDK triggers the following error:
 
@@ -544,17 +548,17 @@ During a communication session between users A and B, if user A unsubscribes and
 
 A breaking change in Chrome causes this issue and affects all versions of the RTC Web SDK. See the [Chromium bug report](https://issues.chromium.org/issues/467468926) for details.
 
-#### Solution
+#### Solution [#solution]
 
 This version implements a compatibility fix that prevents the issue from interrupting republishing and subscription workflows. The fix remains in place until Chrome provides an official update.
 
 The Agora R&D team has reported the issue to the Chrome team and continues to monitor its progress.
 
-### v4.24.1
+### v4.24.1 [#v4241]
 
 Released on November 26, 2025.
 
-#### New Features
+#### New Features [#new-features-50]
 
 - **Pre-call network test**
 
@@ -580,7 +584,7 @@ Released on November 26, 2025.
 
   Adds support for H.265 decoding. Refer to the [API Reference](https://api-ref.agora.io/en/video-sdk/web/4.x/globals.html#sdk_codec) for supported browser versions and usage restrictions.
 
-#### Improvements
+#### Improvements [#improvements-53]
 
 - **Expanded screen sharing capabilities**
   This version further expands screen sharing capabilities. In the `createScreenVideoTrack` API, the following parameters are added to support audio sharing during screen sharing:
@@ -597,15 +601,15 @@ Released on November 26, 2025.
 
   This version upgrades the algorithm of [`agora-extension-super-clarity`](https://www.npmjs.com/package/agora-extension-super-clarity), with improvements in reducing plugin size, enhancing video experience, and expanding browser compatibility. The new version of the plugin requires a browser that supports SIMD to run properly. For detailed changes and improvements, refer to the [Extension release notes](#super-clarity-extension).
 
-#### Bug Fixes
+#### Bug Fixes [#bug-fixes-3]
 
 Fixes an issue on iOS where the system volume could not be set to `0` after destroying an audio stream.
 
-### v4.24.0
+### v4.24.0 [#v4240]
 
 Released on August 6, 2025
 
-#### New features
+#### New features [#new-features-51]
 
 - **Fast first-frame rendering**
 
@@ -620,7 +624,7 @@ Released on August 6, 2025
   :::
 
 
-#### Improvements
+#### Improvements [#improvements-54]
 
 - **Transmission optimization in poor network conditions**
 
@@ -636,13 +640,13 @@ Released on August 6, 2025
 
   This improvement requires enabling a private parameter. Contact support@agora.io for details.
 
-##### Other improvements
+##### Other improvements [#other-improvements-1]
 
 - Optimizes the default video bitrate under different encoding standards to allocate uplink bandwidth more efficiently and reduce stuttering in poor network conditions.
 - Improves the fallback mechanism for devices that do not support AV1 decoding.
 - Enhances the user experience in one-on-one calls in `rtc` mode when communicating between Web clients or between Web and Native clients.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-53]
 
 This version fixes the following issues:
 
@@ -652,13 +656,13 @@ This version fixes the following issues:
 - Occasional black screen in scenarios using Plan-B.
 
 
-### v4.23.4
+### v4.23.4 [#v4234]
 
 Released on June 5, 2025.
 
 This release includes internal improvements. It fixes an issue where calling `setMute` or `setEnable` under certain conditions could result in no sound. If you are using SDK version 4.23.0 or later, upgrade to this release for a better user experience.
 
-### v4.23.3
+### v4.23.3 [#v4233]
 
 Released on April 29, 2025.
 
@@ -667,7 +671,7 @@ This release updates the virtual background extension to [v2.1.0](https://www.np
 - Optimizes memory and CPU usage.
 - Fixes black screen issues at specific resolutions.
 
-### v4.23.2
+### v4.23.2 [#v4232]
 
 Released on March 4, 2025.
 
@@ -681,21 +685,21 @@ This release includes the following improvements:
 
 - Further reduced package size.
 
-### v4.23.1
+### v4.23.1 [#v4231]
 
 Released on January 17, 2025.
 
 This release includes several internal improvements.
 
-### v4.23.0
+### v4.23.0 [#v4230]
 
 Released on December 19, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-31]
 
 This release modified the calculation of [`freezeRate`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/remotevideotrackstats.html#freezerate) in `RemoteVideoTrackStats`. The calculation is changed from the cumulative average freeze rate to the freeze rate in the last second. You can use this parameter to determine whether the video is experiencing a momentary freeze. To calculate the cumulative average freeze rate for the current session, use [`totalFreezeTime`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/remotevideotrackstats.html#totalfreezetime) or [`totalDuration`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/remotevideotrackstats.html#totalduration).
 
-#### New features
+#### New features [#new-features-52]
 
 1. **`PeerConnection` state callback for the local media**
 
@@ -705,7 +709,7 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
 
     To improve the ease of use of screen sharing, this release adds the [`preferCurrentTab`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/screenvideotrackinitconfig.html#prefercurrenttab) parameter in `ScreenVideoTrackInitConfig`, which supports setting sharing the current tab as default when creating a screen sharing track.
 
-#### Improvements
+#### Improvements [#improvements-55]
 
 1. **Improved media reconnection strategy**
 
@@ -731,7 +735,7 @@ This release modified the calculation of [`freezeRate`](https://api-ref.agora.io
       :::
 
 
-#### Bug fixes
+#### Bug fixes [#bug-fixes-4]
 
 This release fixes the following issues:
 
@@ -739,18 +743,18 @@ This release fixes the following issues:
 - Occasional audio and video stream sending failures after network disconnection and reconnection.
 - Users with the role of `audience` can send streams in a 128-person scene.
 
-#### API changes
+#### API changes [#api-changes-28]
 
 **Added**
 
 - `AgoraRTC.on("peer-connection-state-change")`
 - `preferCurrentTab` in `ScreenVideoTrackInitConfig`
 
-### v4.22.2
+### v4.22.2 [#v4222]
 
 v4.22.2 was released on 29 October 2024.
 
-#### New features
+#### New features [#new-features-53]
 
 **Screen sharing audio 3A processing**
 
@@ -765,29 +769,29 @@ If your browser does not support audio sharing, passing `ScreenAudioTrackInitCon
 :::
 
 
-#### API changes
+#### API changes [#api-changes-29]
 
 This version introduces the following new APIs:
 
 - The `withAudio` parameter in the `createScreenVideoTrack` method supports passing `ScreenAudioTrackInitConfig`.
 
-### v4.22.1
+### v4.22.1 [#v4221]
 
 v4.22.1 was released on 23 September, 2024.
 
-#### Improvements
+#### Improvements [#improvements-56]
 
 This release includes several internal improvements.
 
-### v4.22.0
+### v4.22.0 [#v4220]
 
 v4.22.0 was released on 16 August, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-32]
 
 To further reduce the package size, this version splits the Channel Media Relay Service and the Live Streaming Service from the ESM-bundle format package into independent service modules. You can manually import these modules for integration based on your actual needs. See [Use tree shaking](/en/realtime-media/video/build/optimize-and-operate/app-size-optimization#use-tree-shaking) for details on how to integrate.
 
-#### New features
+#### New features [#new-features-54]
 
 **Optimize channel preload**
 
@@ -797,21 +801,21 @@ When using the channel preload feature, Agora recommends sending the host's medi
 
 The SDK supports the AV1 video encoding format. You can enable this encoding format by setting `ClientConfig.codec` to `av1`. Compared to H.264 at the same bitrate, AV1 offers over a 30% improvement in encoding efficiency and provides better video quality.
 
-#### Improvements
+#### Improvements [#improvements-57]
 
 This version includes the following improvements:
 
 - Optimizes the SVC (Scalable Video Coding) capability for VP9 encoding and decoding, which further enhances the video quality and transmission efficiency.
 - Improves VAD (Voice Activity Detection) with a new music detection feature, increasing the accuracy of voice detection.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-54]
 
 This version fixes the following issues:
 
 - The issue where Safari failed to retrieve `stats` in certain use-cases.
 - The issue with inaccurate bitrate settings under poor network conditions in certain use-cases.
 
-#### API changes
+#### API changes [#api-changes-30]
 
 This version introduces the following new APIs:
 
@@ -819,21 +823,21 @@ This version introduces the following new APIs:
 - `ClientConfig.codec` adds the `av1` enumeration.
 - The `AgoraRTC` module in the ESM-bundle adds the `use` method.
 
-### v4.21.0
+### v4.21.0 [#v4210]
 
 v4.21.0 was released on June 3, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-33]
 
 This release introduces the Video Quality Control (VQC) module. `ICameraVideoTrack` enables the `“motion”` mode by default to ensure the smoothness of the video under low bandwidth and high CPU usage to further improve the user experience. You can call the [setOptimizationMode](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setoptimizationmode) method to dynamically adjust the transmission mode of the video according to your needs.
 
-#### New features
+#### New features [#new-features-55]
 
 **Preload channels**
 
 This release adds the [AgoraRTC.preload](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#preload) method, which allows the user whose role is set to `audience` to preload channels before joining one. Calling the method can help shorten the time of joining a channel, thus reducing the time it takes for audience members to hear the host.
 
-#### Improvements
+#### Improvements [#improvements-58]
 
 This release includes the following improvements:
 
@@ -841,32 +845,32 @@ This release includes the following improvements:
 - Optimizes the SDK's browser compatibility detection scope to address the issue of inaccurate browser compatibility detection on certain devices.
 - To enhance the user experience of browsers under Safari 17.4, the video quality adaptive algorithm has been added to improve the adaptability of video quality in the case of limited network bandwidth, to further ensure the smoothness of video streaming.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-55]
 
 This release fixes the following issues:
 
 - On some Android devices, the video playback status returned by `isPlaying` was inaccurate.
 - On Safari mobile browsers, the resolution information of the local video track returned by the `getLocalVideoStats` method was inaccurate; the resolution set by `setLowStreamParameter` for the low stream resolution did not take effect.
 
-#### API changes
+#### API changes [#api-changes-31]
 
 **Added**
 
 - `AgoraRTC.preload`
 
-### v4.20.2
+### v4.20.2 [#v4202]
 
 v4.20.2 was released on March 21, 2024.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-56]
 
 This release fixes the issue where the browser would modify the captured video resolution when calling [createCustomVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomvideotrack) in certain use-cases.
 
-### v4.20.1
+### v4.20.1 [#v4201]
 
 v4.20.1 was released on February 28, 2024.
 
-#### New features
+#### New features [#new-features-56]
 
 This release adds the following new features:
 
@@ -887,20 +891,20 @@ v4.20.1 introduces the `"video-state-changed"` event, which enables real-time mo
 
 To enhance the security of data stream transmission, this version introduces a new `encryptDataStream` parameter in the `setEncryptionConfig` method for enabling data stream encryption. For more details, see [API documentation](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartcclient.html#setencryptionconfig).
 
-#### Improvements
+#### Improvements [#improvements-59]
 
 This release adds the following improvements:
 
 - Optimizes the audio reception experience on mobile devices, reducing issues such as electric noise or silence caused by browser defects in single audio stream use-cases.
 - Enhances video bitrate settings by adding a default setting for the minimum video bitrate. If you don't specify a value for `bitrateMin` when calling `setEncoderConfiguration`, the SDK will automatically set an appropriate bitrate based on the resolution and frame rate settings. This default setting only applies to Chrome and Edge browsers.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-57]
 
 This release fixes the following issue:
 
 - In a single channel with 128 concurrent online hosts, if a user left the channel during network reconnection, it could result in the failure to subscribe to other users' audio streams for the local user.
 
-#### API changes
+#### API changes [#api-changes-32]
 
 **Added**
 
@@ -909,17 +913,17 @@ This release fixes the following issue:
 - `RemoteVideoTrack.on("video-state-changed")`
 - `encryptDataStream` parameter to `AgoraRTCClient.setEncryptionConfig`
 
-### v4.20.0
+### v4.20.0 [#v4200]
 
 v4.20.0 was released on December 8, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-34]
 
 Prior to v4.20.0, the `IRemoteAudioTrack.setPlaybackDevice` method could be invoked on Firefox, but an echo issue would occur due to a Firefox [bug](https://bugzilla.mozilla.org/show_bug.cgi?id=1849108). To improve the user experience, starting from v4.20.0, the SDK throws a `NOT_SUPPORTED` error when this method is called.
 
 If you are using the `IRemoteAudioTrack.setPlaybackDevice` method, you need to make code modifications after upgrading to v4.20.0.
 
-#### New features
+#### New features [#new-features-57]
 
 On certain versions of iOS devices, the app call might not automatically resume after being interrupted by a WeChat call or system phone call. To address this issue, this release introduces the `"audio-context-state-changed"` event to monitor whether the app call has been interrupted, and the `resumeAudioContext` method to restore the app call.
 
@@ -927,14 +931,14 @@ On certain versions of iOS devices, the app call might not automatically resume 
 For usage details, refer to the [API documentation](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#resumeaudiocontext).
 
 
-#### Improvements
+#### Improvements [#improvements-60]
 
 This release includes the following improvements:
 
 - Reduces the time it takes to join a channel when the user ID is a string.
 - Supports audio sharing on the ChromeOS platform when sharing the entire screen or a Chrome tab.
 
-#### API changes
+#### API changes [#api-changes-33]
 
 **Added**
 
@@ -942,21 +946,21 @@ This release includes the following improvements:
 - `AgoraRTC.on("audio-context-state-changed")`
 
 
-### v4.19.3
+### v4.19.3 [#v4193]
 
 v4.19.3 was released on November 2, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-58]
 
 This release fixes a black screen issue when receiving H.264 encoded video streams on Safari prior to 16. Specifically, when a client using v4.19.2 SDK for Web made a video call on Safari prior to 16 to a client using the SDK for Android, iOS, Windows, or macOS, the web client displayed a black screen if the native client sent H.264 encoded video streams.
 
 If you have integrated v4.19.2 of the SDK, Agora recommends upgrading to v4.19.3 as soon as possible.
 
-### v4.19.2
+### v4.19.2 [#v4192]
 
 v4.19.2 was released on October 20, 2023.
 
-#### Improvements
+#### Improvements [#improvements-61]
 
 **VP9 codec (GA)**
 
@@ -973,21 +977,21 @@ Safari has a known issue where it does not automatically reduce video encoding r
 
 After upgrading to this version, if you are using a 720p video profile, Agora recommends switching to the `"720p_auto"` preset and setting the encoding format to `"vp9"` for optimal results.
 
-#### API changes
+#### API changes [#api-changes-34]
 
 **Added**
 
 - `"720p_auto"` to `VideoEncoderConfigurationPreset`
 
-### v4.19.1
+### v4.19.1 [#v4191]
 
 v4.19.1 was released on October 11, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-59]
 
 This release fixes the issue that an error occurred when using Webpack 4.x to bundle your app after integrating the SDK.
 
-### v4.19.0
+### v4.19.0 [#v4190]
 
 v4.19.0 was released on September 25, 2023.
 
@@ -999,7 +1003,7 @@ After integrating this version of the SDK into your app, you might encounter an 
 :::
 
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-35]
 
 **Dynamic low-quality video profile adjustment**
 
@@ -1007,7 +1011,7 @@ Before 4.19.0, you had to call `setLowStreamParameter` before `publish` to set t
 
 As of this release, you can call `setLowStreamParameter` after `publish` to dynamically adjust the resolution, bitrate, and frame rate of the low-quality video stream. Agora recommends modifying your `setLowStreamParameter` calls as needed after upgrading to this release. For example, in use-cases such as live streaming and video conferences, as the number of hosts in the channel increases, you can dynamically adjust the video profile of the low-quality video stream to relieve bandwidth pressure.
 
-#### New features
+#### New features [#new-features-58]
 
 **Tree shaking support**
 
@@ -1037,7 +1041,7 @@ See `setImageModeration` in the [API Reference](https://api-ref.agora.io/en/vide
 End-to-end media encryption and Super Clarity extension are released in beta.
 See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
-#### Improvements
+#### Improvements [#improvements-62]
 
 **Optimized automatic mode**
 
@@ -1051,7 +1055,7 @@ This release also includes the following improvements:
 - Adds token expiration as a reason for a user leaving a channel in the `AgoraRTCClient.on("connection-state-change")` callback for easier troubleshooting.
 - Adds `sendJitterMs` and `sendRttMs` to local audio track information, reporting jitter (ms) and round-trip time (ms) for sent audio packets.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-60]
 
 This release fixes the following issues:
 
@@ -1061,7 +1065,7 @@ This release fixes the following issues:
 - During the procedure of subscribing to remote media streams, instances arose where the absence of audio was sporadically encountered by the local user when the remote user republished the audio stream. Likewise, when the remote user republished the video stream, occasional occurrences of a black screen were observed by the local user.
 - Memory was not promptly released after calling `IBufferSourceAudioTrack.close`.
 
-#### API changes
+#### API changes [#api-changes-35]
 
 **Added**
 
@@ -1091,32 +1095,32 @@ This release fixes the following issues:
 
 - `AgoraRTCClient.on("join-fallback-to-proxy")`
 
-### v4.18.3
+### v4.18.3 [#v4183]
 
 v4.18.3 was released on September 20, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-61]
 
 v4.18.3 fixes the following issue:
 
 - The SDK failed to obtain audio and video statistics on Safari 17.
 
-### v4.18.2
+### v4.18.2 [#v4182]
 
 v4.18.2 was released on July 11, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-62]
 
 v4.18.2 fixes the following issues:
 
 - In certain circumstances, Video SDK for Web triggered microphone and camera device permission prompts after it
   finished loading.
 
-### v4.18.1
+### v4.18.1 [#v4181]
 
 v4.18.1 was released on July 03, 2023.
 
-#### Improvements
+#### Improvements [#improvements-63]
 
 **Error handling support for event listeners**
 
@@ -1135,18 +1139,18 @@ Taking `publish` and `unpublish` as an example, if you call `unpublish` immediat
 - In versions earlier than 4.18.1, `unpublish` might not take effect, which means the media track could remain published.
 - As of version 4.18.1, the actual result is consistent with the order of these method calls, which means the media track is correctly unpublished.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-63]
 
 This release fixed the issue that the following callbacks were not triggered when an external camera or microphone was initially connected to a device without any available cameras or microphones:
 
 - `onCameraChanged` or `AgoraRTC.on("camera-changed")`
 - `onMicrophoneChanged` or `AgoraRTC.on("microphone-changed")`
 
-### v4.18.0
+### v4.18.0 [#v4180]
 
 v4.18.0 was released on June 12, 2023.
 
-#### New features
+#### New features [#new-features-59]
 
 **Variable playback speed for audio files**
 
@@ -1188,7 +1192,7 @@ You can continue using the previous approach. However, for higher flexibility an
 Scalable Video Coding, access to encoded data, and enhanced connection experience in restricted networks are released in beta.
 See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
-#### Improvements
+#### Improvements [#improvements-64]
 
 **Shorter time to join channel**
 
@@ -1201,7 +1205,7 @@ v4.18.0 also includes the following improvements:
 - Improves the retry mechanism by adding a 3s retry rule to switch a downgraded video resolution to a higher one. This prevents the video resolution from remaining low when the network conditions improve, resulting in a better user experience.
 - Upgrades the Cloud Proxy service to enhance its stability in different network environments.
 
-#### API changes
+#### API changes [#api-changes-36]
 
 **Added**
 
@@ -1226,7 +1230,7 @@ These methods support the following event names as parameters:
 
 :::
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-64]
 
 v4.18.0 fixes the following issues:
 
@@ -1235,19 +1239,19 @@ v4.18.0 fixes the following issues:
 - Memory usage increased when using the SDK with the Virtual Background or Image Enhancer extension.
 - The SDK continued to use the expired token during reconnection attempts after generating a new token using the `renewToken` method.
 
-### v4.17.2
+### v4.17.2 [#v4172]
 
 v4.17.2 was released on April 20, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-65]
 
 This release fixes the issue where the `getCurrentFrameData` method returned abnormal data.
 
-### v4.17.1
+### v4.17.1 [#v4171]
 
 v4.17.1 was released on April 19, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-36]
 
 :::info
 Chrome 107 prevents users from sharing the current tab by default. If you need to allow users to share the current tab on Chrome 107 and later versions, please upgrade your SDK to v4.17.1 or later as soon as possible.
@@ -1263,7 +1267,7 @@ To accommodate changes related to screen sharing in Chrome 107 (refer to [Chrome
 For detailed explanations of these properties, see [ScreenVideoTrackInitConfig](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/screenvideotrackinitconfig.html) in the API reference.
 
 
-#### Improvements
+#### Improvements [#improvements-65]
 
 **Improved flexibility in setting video profiles**
 
@@ -1291,7 +1295,7 @@ This release also includes the following improvements:
 
 To enable this feature, contact technical support.
 
-#### API changes
+#### API changes [#api-changes-37]
 
 **Added**
 
@@ -1304,11 +1308,11 @@ To enable this feature, contact technical support.
 - `ILocalVideoTrack.setBeautyEffect`
 
 
-### v4.17.0
+### v4.17.0 [#v4170]
 
 v4.17.0 was released on March 22, 2023.
 
-#### New features
+#### New features [#new-features-60]
 
 **Dynamic switching of local video streams**
 
@@ -1318,7 +1322,7 @@ For example, to switch from one camera to another before v4.17.0, you needed to 
 unpublish the current track and then call `IAgoraRTCClient.publish` to publish a new track.
 As of v4.17.0, you can call `ILocalVideoTrack.replaceTrack` directly.
 
-#### Improvements
+#### Improvements [#improvements-66]
 
 **Optimized reconnection mechanism**
 
@@ -1332,7 +1336,7 @@ This release also includes the following improvements:
 - The accuracy of SDK-related quality metrics on [Analytics](/en/realtime-media/agora-analytics/product-overview) is improved.
 - The time required to join a channel is reduced. This optimization is not available on Firefox due to Firefox's limitations.
 
-#### API changes
+#### API changes [#api-changes-38]
 
 **Added**
 
@@ -1342,26 +1346,26 @@ This release also includes the following improvements:
 
 - `ILocalVideoTrack.setBeautyEffect`
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-66]
 
 On Safari on iOS 14.7 and later, performing subscribing and unsubscribing operations repeatedly to multiple audio streams could result in not hearing remote users.
 
 
-### v4.16.1
+### v4.16.1 [#v4161]
 
 Video Calling v4.16.1 was released on February 7, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-67]
 
 This release fixes the following issue:
 
 - When using Video SDK for Web v4.16.0, the video freeze rate showed in Agora Analytics is much higher than the correct value.
 
-### v4.16.0
+### v4.16.0 [#v4160]
 
 Video Calling v4.16.0 was released on January 5, 2023.
 
-#### Improvements
+#### Improvements [#improvements-67]
 
 This release adds the following enhancements:
 
@@ -1387,7 +1391,7 @@ This version of the SDK also includes the following improvements:
 is now recorded in the log.
 - The size of the SDK package is reduced.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-68]
 
 This release fixes the following issues:
 
@@ -1397,25 +1401,25 @@ could not set `uid` to `0` to identify the relay stream in the destination chann
 - Some known issues on iOS 14.x.
 
 
-### v4.15.1
+### v4.15.1 [#v4151]
 
 v4.15.1 was released on December 2, 2022.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-69]
 
 This release fixes the following issue:
 
 - No audio was received on iOS 13.7.
 
-### v4.15.0
+### v4.15.0 [#v4150]
 
 v4.15.0 was released on October 31, 2022.
 
-#### New features
+#### New features [#new-features-61]
 
 The latest features in this release are:
 
-##### Audio stream filter (Beta)
+##### Audio stream filter (Beta) [#audio-stream-filter-beta]
 
 v4.15.0 introduces filtering audio streams based on volume. Once this function is enabled, Agora backend ranks all subscribed audio streams by volume. By default, the three audio streams with the highest volume are transported to others in the channel. To change the number of audio streams to be transported, contact [support@agora.io](mailto:support@agora.io).
 
@@ -1423,7 +1427,7 @@ Agora enables channel hosts to control whether the audio streams being published
 
 To enable this function, contact [support@agora.io](mailto:support@agora.io).
 
-##### VP9 codec
+##### VP9 codec [#vp9-codec]
 
 Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browsers:
 
@@ -1440,42 +1444,42 @@ Video SDK for Web v4.15.0 adds support for the VP9 codec in the following browse
 :::
 To start a call using the VP9 codec, apps you connect to built using for Android, iOS, Windows, or macOS must use Video SDK v4.0.1 or greater.
 
-##### CSP violation callback
+##### CSP violation callback [#csp-violation-callback]
 
 v4.15.0 adds the `AgoraRTC.onSecurityPolicyViolation` callback. When Agora fails to load a resource or send a request due to Content Security Policy(CSP) violations, the Video SDK triggers this callback. When you receive this callback, modify your CSP configuration to ensure that you can access Agora-related services.
 
-#### Improvements
+#### Improvements [#improvements-68]
 
 The SDK has the following improvements:
 
 - The accuracy of network quality reported by `AgoraRTCClient.on("network-quality")` in certain use-cases has increased.
 - Resumption of audio or video streams when the user switches between Wi-Fi networks is faster.
 
-#### API changes
+#### API changes [#api-changes-39]
 
 **Added**
 
 - `IAgoraRTC.onSecurityPolicyViolation`
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-37]
 
 Cloud Proxy default mode has changed. In Video SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, Video SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy).
 
-### v4.14.2
+### v4.14.2 [#v4142]
 
 v4.14.2 was released on October 27, 2022.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-70]
 
 This release fixes the following issue:
 
 - When using WeChat browsers on iOS 14.x, no audio is received from the first channel the user subscribes to.
 
-### v4.14.1
+### v4.14.1 [#v4141]
 
 v4.14.1 was released on October 24, 2022.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-71]
 
 This release fixes the following issues:
 
@@ -1492,17 +1496,17 @@ This release fixes the following issues:
 - During a media stream relay, the SDK continued to send heartbeats after the user left the source channel.
 
 
-### v4.14.0
+### v4.14.0 [#v4140]
 
 v4.14.0 was released on August 31, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-38]
 
 **getVolumeLevel accuracy improvement**
 
 As of v4.14.0, the SDK calibrates the calculation of the volume returned in  `getVolumeLevel`. The volume range is still [0,1], where 1 represents the highest audio level. If your business use-case depends on the volume returned in `getVolumeLevel`  (for example, a speaker icon shows according to the volume), ensure that you check the returned volume after upgrading to v4.14.0.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-72]
 
 This release fixes the following issue:
 
@@ -1512,16 +1516,16 @@ This release fixes the following issue:
 - After calling `LocalVideoTrack.setBeautyEffect` to enable image enhancement, calling `LocalVideoTrack.unpipe` caused an error.
 - On Windows Chrome 103 and later versions, enabling the dual-stream mode did not take effect in certain use-cases.
 
-### v4.13.0
+### v4.13.0 [#v4130]
 
 v4.13.0 was released on July 25, 2022.
 
-#### New features
+#### New features [#new-features-62]
 
 
 **Adding support for media processing extensions**
 
-As of v4.13.0, the SDK supports using media processing extensions on remote audio and video tracks (extension support for local audio and video tracks was added in [v4.10.0](#v410)).
+As of v4.13.0, the SDK supports using media processing extensions on remote audio and video tracks (extension support for local audio and video tracks was added in [v4.10.0](#v410-4)).
 
 Currently, Agora provides the following extension for remote audio tracks:
 
@@ -1530,7 +1534,7 @@ Currently, Agora provides the following extension for remote audio tracks:
 | Spatial Audio Extension (Beta) | Enables a real-time audio blurring or air absorption effect for a user's audio based on the user's position relative to other users, which makes conversations more immersive. | Contact [support@agora.io](mailto:support@agora.io) for full details. |
 
 
-#### Improvements
+#### Improvements [#improvements-69]
 
 **AI Noise Suppression and virtual background**
 
@@ -1540,7 +1544,7 @@ The AI Noise Suppression extension and virtual background extension are converte
 
 v4.13.0 improved the logic of triggering the callback for token expiration. If a token expires when the user's device is in sleep mode or disconnected from network, the SDK triggers the `token-privilege-did-expire` event when the device resumes operation and attempts to reconnect to the SDK.
 
-#### API changes
+#### API changes [#api-changes-40]
 
 **Added**
 
@@ -1550,11 +1554,11 @@ v4.13.0 improved the logic of triggering the callback for token expiration. If a
 - `RemoteVideoTrack.pipe`
 - `RemoteVideoTrack.unpipe`
 
-### v4.12.2
+### v4.12.2 [#v4122]
 
 v4.12.2 was released on July 7, 2022. This release improved the automatic mode for SDK connectivity (In this mode, the SDK first attempts a direct connection to Agora backend; if the attempt fails, the SDK automatically switches to TCP/TLS 443).
 
-### v4.12.1
+### v4.12.1 [#v4121]
 
 v4.12.1 was released on June 27, 2022. This release fixed the following issues:
 
@@ -1563,11 +1567,11 @@ v4.12.1 was released on June 27, 2022. This release fixed the following issues:
 - On Firefox, performing subscribing and unsubscribing operations repeatedly to multiple video streams occasionally caused video freezing.
 
 
-### v4.12.0
+### v4.12.0 [#v4120]
 
 v4.12.0 was released on June 15, 2022.
 
-#### Improvements
+#### Improvements [#improvements-70]
 
 **Media processing extensions**
 
@@ -1577,26 +1581,26 @@ Media processing extensions have the following changes:
 
 - The [Virtual Background Extension (Beta)](https://www.npmjs.com/package/agora-extension-virtual-background) supports animated virtual backgrounds as of v1.0.0-beta-3. You can set a user's background as a short video. For details, see [Use the Virtual Background Extension](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-73]
 
 v4.12.0 fixed the issue that when dual-stream mode was enabled on Safari, calling methods such as `Track.setEnabled(false)` and `Track.close()` could not turn off the camera indicator light.
 
-### v4.11.1
+### v4.11.1 [#v4111]
 
 v4.11.1 was released on May 9, 2022. This release fixed the following issues:
 
 - Subscribing to audio streams might cause no sound on Firefox.
 - Compatibility issues occurred in Safari on iOS 12 and in the WeChat built-in browser on iOS 13.
 
-### v4.11.0
+### v4.11.0 [#v4110]
 
 v4.11.0 was released on April 1, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-39]
 
 As of v4.11.0, the SDK adopts an automatic mode by default to ensure connectivity. In this mode, the SDK first attempts a direct connection to Agora backend; if the attempt fails, the SDK automatically switches to TCP/TLS 443. You can listen for such auto-switch events through `client.on("join-fallback-to-proxy")`.
 
-#### Improvements
+#### Improvements [#improvements-71]
 
 **Channel capacity improvement**
 
@@ -1604,7 +1608,7 @@ As of v4.11.0, a single channel can support up to 128 concurrent online hosts, w
 
 To experience this improvement, contact support@agora.io.
 
-####  Fixed issues
+####  Fixed issues [#fixed-issues-2]
 
 v4.11.0 fixed the following issues:
 
@@ -1616,19 +1620,19 @@ v4.11.0 fixed the following issues:
 
 -   When dual-stream mode was enabled, calling `unpublish` without parameters caused the method call to fail.
 
-### v4.10.2
+### v4.10.2 [#v4102]
 
 v4.10.2 was released on March 24, 2022. This release fixed the issue that calling `join` in certain use-cases might cause proxy exceptions.
 
-### v4.10.1
+### v4.10.1 [#v4101]
 
 v4.10.1 was released on March 17, 2022 and added the dependency of TypeScript type definitions for Agora Extension `agora-rte-extension` in `package.json`. If you use TypeScript for type checking, Agora suggests that you update TypeScript to v4.3.2 or later.
 
-### v4.10.0
+### v4.10.0 [#v4100]
 
 v4.10.0 was released on March 11, 2022.
 
-#### New features
+#### New features [#new-features-63]
 
 
 **Adding support for media processing extensions**
@@ -1642,7 +1646,7 @@ v4.10.0 supports using media processing extensions in the Video Calling. The fol
 | AI Noise Suppression Extension (Beta)        | Reduces many types of sudden noise and reduces vocal distortion when multiple people speak at the same time.      | [AI Noise Suppression](/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression) |
 
 
-#### API changes
+#### API changes [#api-changes-41]
 
 **Added**
 
@@ -1655,23 +1659,23 @@ v4.10.0 supports using media processing extensions in the Video Calling. The fol
 -   `LocalTrack.processorDestination`
 
 
-### v4.9.4
+### v4.9.4 [#v494]
 
 v4.9.4 was released on March 16, 2022 and fixed the failure to access localStorage when loading the SDK in an iFrame in Chrome Incognito mode.
 
-### v4.9.3
+### v4.9.3 [#v493]
 
 v4.9.3 was released on March 3, 2022. This release fixed several internal issues.
 
-### v4.9.1
+### v4.9.1 [#v491]
 
 v4.9.1 was released on February 24, 2022. This release fixed several internal issues.
 
-### v4.9.0
+### v4.9.0 [#v490]
 
 v4.9.0 was released on February 17, 2022.
 
-#### New features
+#### New features [#new-features-64]
 
 **Setting the video stream type of all remote users**
 
@@ -1694,13 +1698,13 @@ After you call `play`, the SDK creates an `<video>` HTML tag for playing video t
 When `localTrack.isPlaying` or `remoteTrack.isPlaying` is `true` but you cannot see any video, the above methods or events can help you check whether the `<video>` tag is visible or not and learn the reason when the `<video>` tag is invisible.
 
 
-#### Improvements
+#### Improvements [#improvements-72]
 
 -   Improves the accuracy of the `client.on("is-using-cloud-proxy")` event.
 
 -   If you set the video resolution but do not set the bitrate, the SDK now can automatically calculate and set a reasonable bitrate according to the resolution and frame rate. This improvement helps to avoid bandwidth overload due to a high bitrate.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-74]
 
 v4.9.0 fixed the following issues:
 
@@ -1710,7 +1714,7 @@ v4.9.0 fixed the following issues:
 
 -   Several known issues on iOS.
 
-#### API changes
+#### API changes [#api-changes-42]
 
 **Added**
 
@@ -1722,19 +1726,19 @@ v4.9.0 fixed the following issues:
 
 -   `client.on("join-fallback-to-proxy")`
 
-### v4.8.2
+### v4.8.2 [#v482]
 
 v4.8.2 was released on January 27, 2022. This release fixed the issue that on iOS WeChat, the video playback might go black after being interrupted by a screen lock.
 
-### v4.8.1
+### v4.8.1 [#v481]
 
 v4.8.1 was released on January 6, 2022. This release fixed an internal issue.
 
-### v4.8.0
+### v4.8.0 [#v480]
 
 v4.8.0 was released on December 29, 2021.
 
-#### New features
+#### New features [#new-features-65]
 
 **Checking the visibility of the &lt;video&gt; HTML tag**
 
@@ -1750,11 +1754,11 @@ After you call `play`, the SDK creates an `<video>` HTML tag for playing video t
 
 When `localTrack.isPlaying` or `remoteTrack.isPlaying` is `true` but you cannot see any video, the above methods or events can help you check whether the `<video>` tag is visible or not and learn the reason when the `<video>` tag is invisible.
 
-#### Improvements
+#### Improvements [#improvements-73]
 
 v4.8.0 made some internal improvements.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-75]
 
 v4.8.0 fixed the following issues:
 
@@ -1762,7 +1766,7 @@ v4.8.0 fixed the following issues:
 
 -   When sending streams on iOS Safari, if you first call `setDevice` and then `setEncoderConfiguration`, the SDK returns an error.
 
-#### API changes
+#### API changes [#api-changes-43]
 
 **Added**
 
@@ -1775,11 +1779,11 @@ v4.8.0 fixed the following issues:
 -   `remoteVideoTrack.getVideoElementVisibleStatus`
 
 
-### v4.7.3
+### v4.7.3 [#v473]
 
 v4.7.3 was released on November 17, 2021. This release avoided the issue that on the Safari browser in iOS 15.1, after a call was interrupted, the Video Calling failed to resume playing the remote media.
 
-### v4.7.2
+### v4.7.2 [#v472]
 
 v4.7.2 was released on October 14, 2021, with the following changes:
 
@@ -1789,19 +1793,19 @@ v4.7.2 was released on October 14, 2021, with the following changes:
 
 -   Fixed the issue that calling `AgoraRTC.checkSystemRequirements()` on the Edge browser only returned `false`.
 
-### v4.7.1
+### v4.7.1 [#v471]
 
 v4.7.1 was released on September 13, 2021. This release fixed some issues on Safari 11 and iPad Chrome.
 
-### v4.7.0
+### v4.7.0 [#v470]
 
 v4.7.0 was released on September 1, 2021.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-40]
 
 As of v4.7.0, if you enable media stream encryption, the SDK automatically disables encryption and resets the encryption configurations after a user leaves the channel. To re-enable the encryption, call `setEncryptionConfig` before the user joins the channel again.
 
-#### Improvements
+#### Improvements [#improvements-74]
 
 This release makes the following improvements:
 
@@ -1811,7 +1815,7 @@ This release makes the following improvements:
 
 -   Adds the support of enabling dual-stream mode on Safari.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-76]
 
 This release fixed the following issues:
 
@@ -1821,23 +1825,23 @@ This release fixed the following issues:
 
 -   The promise returned by `LocalAudioTrack.setDevice` could get stuck in a pending state.
 
-### v4.6.3
+### v4.6.3 [#v463-1]
 
 v4.6.3 was released on August 10, 2021. This release fixed an occasional issue: After the user closes a tab or browser on the local client, the remote client does not receive the `user-left` event immediately.
 
-### v4.6.2
+### v4.6.2 [#v462-3]
 
 v4.6.2 was released on July 30, 2021. This release fixed the issue that the SDK did not destroy all the media players created during a call or live streaming. Chrome 92 introduced a limit on the number of media players that can be created in a particular tab: 75 for the desktop. After you play tracks several times, the undestroyed media players in the SDK might cause the playback failure in the tab.
 
-### v4.6.1
+### v4.6.1 [#v461-1]
 
 v4.6.1 was released on July 21, 2021. This release fixed an internal error.
 
-### v4.6.0
+### v4.6.0 [#v460-3]
 
 v4.6.0 was released on July 16, 2021.
 
-#### New features
+#### New features [#new-features-66]
 
 **Interactive Live Streaming Standard**
 
@@ -1863,7 +1867,7 @@ v4.6.0 adds the `localTrack.setMuted` method to stop sending the media data of l
 
 -   Calling `setEnabled(true)` takes longer to resume sending the media data than by than calling `setMuted(false)`.
 
-#### Improvements
+#### Improvements [#improvements-75]
 
 **Dealing with autoplay blocking**
 
@@ -1871,7 +1875,7 @@ To deal with the autoplay blocking of video on iOS, v4.6.0 deprecates the `onAud
 
 On most web browsers, inaudible media are not affected by autoplay blocking. However, on iOS Safari with low power mode enabled, or on other iOS in-app browsers that implement a custom autoplay policy, such as the WeChat browser, the autoplay of inaudible media is blocked.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-77]
 
 v4.6.0 fixes the following issues:
 
@@ -1881,7 +1885,7 @@ v4.6.0 fixes the following issues:
 
 -   The SDK did not check whether the App ID was a string of 1 to 256 bytes in size.
 
-#### API changes
+#### API changes [#api-changes-44]
 
 **Added**
 
@@ -1897,17 +1901,17 @@ v4.6.0 fixes the following issues:
 
 -   `onAudioAutoplayFailed`
 
-### v4.5.0
+### v4.5.0 [#v450-3]
 
 v4.5.0 was released on May 25, 2021.
 
-#### New features
+#### New features [#new-features-67]
 
 **AEC (Acoustic Echo Canceller) for the audio played on the local client**
 
 In a use-case where multiple users play a media file at the same time, such as watching a movie together, if the user A plays the media file through [HTMLMediaElement](https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement) on Chrome with a speaker, the SDK captures the audio played by a speaker together with the voice of the user A. The other users can hear the audio sent by the user A and the audio played locally, which sounds like an echo. To deal with this echo issue, v4.5.0 adds the `processExternalMediaAEC` method. You can call `processExternalMediaAEC` and pass in the `HTMLMediaElement` to enable the AEC for the audio played on the local client.
 
-#### Improvements
+#### Improvements [#improvements-76]
 
 **Channel encryption**
 
@@ -1928,7 +1932,7 @@ v4.5.0 adds the following preset video encoder configurations for screen sharing
 
 -   `"1080p_3`": The resolution is 1920 × 1080 and the frame rate is 15 fps.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-78]
 
 v4.5.0 fixes the following issues:
 
@@ -1942,7 +1946,7 @@ v4.5.0 fixes the following issues:
 
 -   On Chrome, the `LocalAudioTrack.setVolume` method did not take effect.
 
-#### API changes
+#### API changes [#api-changes-45]
 
 **Added**
 
@@ -1958,11 +1962,11 @@ v4.5.0 fixes the following issues:
 
 -   `excludedArea` in the `setArea` method
 
-### v4.4.0
+### v4.4.0 [#v440-3]
 
 v4.4.0 was released on April 2, 2021.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-41]
 
 **Firewall domain whitelist**
 
@@ -1975,7 +1979,7 @@ As of v4.4.0, the destination domains required for your firewall whitelist chang
 
 If you upgrade the SDK to v4.4.0, update your firewall domain whitelist to ensure you can use Agora products in environments with restricted network access.
 
-#### Improvements
+#### Improvements [#improvements-77]
 
 **AES-GCM encryption mode**
 
@@ -1995,7 +1999,7 @@ v4.4.0 adds the `client.on("is-using-cloud-proxy")` event. The SDK triggers this
 
 If you start media capturing after disabling the media capture device on Windows, the error thrown by the SDK changes from `UNEXPECTED_ERROR` to `NOT_READABLE`.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-79]
 
 v4.4.0 fixes the following issues:
 
@@ -2005,7 +2009,7 @@ v4.4.0 fixes the following issues:
 
 -   When the network had multiple IP addresses, the cloud proxy service did not take effect.
 
-#### API changes
+#### API changes [#api-changes-46]
 
 **Added**
 
@@ -2013,11 +2017,11 @@ v4.4.0 fixes the following issues:
 
 -   `"aes-128-gcm"` and `"aes-256-gcm"` in `EncryptionMode`
 
-### v4.3.0
+### v4.3.0 [#v430-3]
 
 v4.3.0 was released on January 26, 2021.
 
-#### New features
+#### New features [#new-features-68]
 
 **Cloud proxy**
 
@@ -2025,15 +2029,15 @@ This release optimizes the Agora cloud proxy architecture and enhances the conne
 
 You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](/en/realtime-media/video/build/manage-connection-and-quality/cloud-proxy).
 
-### v4.2.1
+### v4.2.1 [#v421-4]
 
 v4.2.1 was released on December 23, 2020. This release fixed the incorrect error that the SDK throws when you pass an illegal parameter in the client.publish method.
 
-### v4.2.0
+### v4.2.0 [#v420-4]
 
 v4.2.0 was released on December 1, 2020.
 
-#### New features
+#### New features [#new-features-69]
 
 **Regional connection**
 
@@ -2075,13 +2079,13 @@ This release adds the `AgoraRTCClient.getRemoteNetworkQuality` method for gettin
 
 This release changes the `mode` parameter of the `AgoraRTCClient.startProxyServer` method from `boolean` to `number`.
 
-#### Improvements
+#### Improvements [#improvements-78]
 
 -   After disabling an audio or video tracks by calling `setEnabled`, you can still call `setDevice` to switch devices.
 
 -   After you call `AgoraRTCClient.setEncryptionConfig` to enable the built-in encryption, when the user uses a weak secret, the SDK outputs a warning message to the Web Console and prompts the user to use a strong secret. A strong secret must contain at least eight characters and be a combination of uppercase and lowercase letters, numbers, and special characters.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-80]
 
 -   When you disabled a local video track, you could not publish another video track.
 
@@ -2097,7 +2101,7 @@ This release changes the `mode` parameter of the `AgoraRTCClient.startProxyServe
 
 -   When the SDK gained device permission for the first time, it did not trigger the media device change events (`onMicrophoneChanged`, `onCameraChanged`, or `onPlaybackDeviceChanged`). The SDK only triggered these events for a subsequent device change.
 
-#### API changes
+#### API changes [#api-changes-47]
 
 **Added**
 
@@ -2111,7 +2115,7 @@ This release changes the `mode` parameter of the `AgoraRTCClient.startProxyServe
 
 -   Changed the type of the `mode` parameter in `AgoraRTCClient.startProxyServer` from `boolean` to `number`
 
-### v4.1.1
+### v4.1.1 [#v411-4]
 
 v4.1.1 was released on October 27, 2020. This release fixed the following issues:
 
@@ -2125,11 +2129,11 @@ v4.1.1 was released on October 27, 2020. This release fixed the following issues
 
 -   Occasional errors when `client.getLocalVideoStats` was called on Safari.
 
-### v4.1.0
+### v4.1.0 [#v410-4]
 
 v4.1.0 was released on September 4, 2020.
 
-#### New features
+#### New features [#new-features-70]
 
 **Screenshot capture**
 
@@ -2145,7 +2149,7 @@ v4.1.0 adds the following APIs to manage audio playback devices:
 
 -   `onPlaybackDeviceChanged`: Occurs when an audio playback device is added or removed.
 
-#### Improvements
+#### Improvements [#improvements-79]
 
 -   Fully supports Chromium-based versions of Microsoft Edge (versions 80 and later).
 
@@ -2153,7 +2157,7 @@ v4.1.0 adds the following APIs to manage audio playback devices:
 
 -   Supports sharing audio when sharing Chrome tabs on macOS.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-81]
 
 -   Information retrieved by `checkVideoTrackIsActive` on Safari is inaccurate.
 
@@ -2169,7 +2173,7 @@ v4.1.0 adds the following APIs to manage audio playback devices:
 
 -   Occasional misreport on connection states due to frequent channel join and leave.
 
-#### API changes
+#### API changes [#api-changes-48]
 
 **Added**
 
@@ -2197,17 +2201,17 @@ v4.1.0 adds the following APIs to manage audio playback devices:
 
 -   The `LocalTrack.getStats` and `RemoteTrack.getStats` methods. Use the `Client.getLocalAudioStats`, `Client.getRemoteAudioStats`, `Client.getLocalVideoStats` and `Client.getRemoteVideoStats` methods instead.
 
-### v4.0.1
+### v4.0.1 [#v401-3]
 
 v4.0.1 was released on July 18, 2020. This release fixed the following issues:
 - Failure to publish local tracks on Chrome 70.
 - Publish operation may not be aborted when leaving the channel.
 
-### v4.0.0
+### v4.0.0 [#v400-4]
 
 v4.0.0 was released on July 15, 2020.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-42]
 
 v4.0.0 deletes the `LocalTrack.setMute` method and adds the `LocalTrack.setEnabled` method for enabling or disabling a local track. The advantages of this change are as follows:
 
@@ -2221,7 +2225,7 @@ v4.0.0 deletes the `LocalTrack.setMute` method and adds the `LocalTrack.setEnabl
 
 > The `setEnabled` method changes media input behaviors, so it is an asynchronous operation and returns the result through the `Promise` object.
 
-#### New features
+#### New features [#new-features-71]
 
 **Video encoding strategy**
 
@@ -2241,7 +2245,7 @@ v4.0.0 adds the `optimizationMode` property in the `CameraVideoTrackInitConfig`,
 
 > The `optimizationMode` property of the video track created by calling createScreenVideoTrack is set as `"detail"` by default.
 
-#### Improvements
+#### Improvements [#improvements-80]
 
 -   Redesigns the `withAudio` parameter in `AgoraRTC.createScreenVideoTrack`. In addition to `enable` and `disable`, you can also set `withAudio` as `auto`. In this setting, the SDK shares the audio, dependent on whether the browser supports this function.
 
@@ -2251,7 +2255,7 @@ v4.0.0 adds the `optimizationMode` property in the `CameraVideoTrackInitConfig`,
 
 -   The `Client.on("user-published")` and `Client.on("user-unpublished")` callbacks.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-82]
 
 v4.0.0 fixed the following issues:
 
@@ -2263,7 +2267,7 @@ v4.0.0 fixed the following issues:
 
 -   The `Client.on("network-quality")` callback was inaccurate.
 
-#### API changes
+#### API changes [#api-changes-49]
 
 **Added**
 
@@ -2321,55 +2325,55 @@ v4.0.0 fixed the following issues:
 
 
 
-## Extensions
+## Extensions [#extensions]
 
 
 
-## AI Noise Suppression
+## AI Noise Suppression [#ai-noise-suppression]
 
 :::info
 Agora charges additionally for this extension. See [Pricing](/en/realtime-media/video/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
-### v2.0.2
+### v2.0.2 [#v202]
 
 Released on June 24, 2026.
 
-#### New features
+#### New features [#new-features-137]
 
 - Added background voice removal.
 - Suitable for noisy environments or scenarios with multiple speakers to further highlight the target voice and improve audio capture.
 
-### v2.0.1
+### v2.0.1 [#v201]
 
 Released on April 1, 2026.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-86]
 
 This version no longer supports calling the `disable` method before `pipe` to disable the processor. Ensure that you call `pipe` before invoking `disable`.
 
-#### New features
+#### New features [#new-features-138]
 
 - Added the `setLogLevel` method to the `IAIDenoiserExtension` interface class to set the log level for the plugin and WASM module.
 - Added the `setLatency` method to the `IAIDenoiserProcessor` interface class to configure latency for noise reduction processing.
 
-#### Improvements
+#### Improvements [#improvements-153]
 
 - Updated the noise reduction algorithm for improved noise suppression, voice fidelity, and overall robustness.
 - Significantly improved voice fidelity after AI noise suppression in scenarios with sampling rates of 16 kHz and above.
 - Optimized CPU resource allocation strategy to enhance runtime efficiency.
 
-#### API changes
+#### API changes [#api-changes-82]
 
 The implementation of callbacks has been revised in this version. The original callbacks `onloaderror`, `onoverload`, `ondump`, and `ondumpend` are deprecated. Use the `on` method with event names `"pipeerror"`, `"overload"`, `"dump"`, or `"dumpend"` to listen for the corresponding events instead.
 
-### v1.1.0
+### v1.1.0 [#v110]
 
-#### Improvement
+#### Improvement [#improvement]
 
 This release improves the calculation performance of the AI-powered noise suppression algorithm.
 
-#### New features
+#### New features [#new-features-139]
 
 This release adds the following APIs and parameters:
 
@@ -2382,7 +2386,7 @@ This release adds the following APIs and parameters:
 
 For API details, see [AI Noise Suppression](/en/realtime-media/video/build/enhance-the-audio-experience/ai-noise-suppression).
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-87]
 
 This release brings the following changes:
 
@@ -2391,13 +2395,13 @@ This release brings the following changes:
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
 
-### v1.0.0
+### v1.0.0 [#v100]
 
 First release.
 
-## Noise suppression for use cases involving AI
+## Noise suppression for use cases involving AI [#noise-suppression-for-use-cases-involving-ai]
 
-### v1.0.0-beta2
+### v1.0.0-beta2 [#v100-beta2]
 
 [`agora-conversational-ai-denoiser`](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 was released on March 5, 2025, to enhance the user experience in applications powered by [Agora Conversational AI Engine](/en/introduction/conversational-ai).
 
@@ -2405,15 +2409,15 @@ First release.
 The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommends using it only for AI-related use cases.
 :::
 
-#### Key features
+#### Key features [#key-features]
 
 - Significantly improved voice protection, especially for singing.
 - Reduced risk of audio capture and playback stuttering during operation.
 - When AI noise suppression is enabled, the default maximum AGC gain is reduced from 24dB to 12dB.
 
-## Virtual background
+## Virtual background [#virtual-background]
 
-### Key features
+### Key features [#key-features-1]
 
 - Seamless integration.
   - Integrate directly through an HTML `<script>` tag or through npm using:
@@ -2429,7 +2433,7 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
   - Video background: Supports setting a video as the virtual background.
   - Solid color background: Allows setting a solid color as the background.
 
-### Browser support and limitations
+### Browser support and limitations [#browser-support-and-limitations]
 
 - Safari and Firefox: Limited support.
 
@@ -2439,30 +2443,30 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
 
   The virtual background feature requires significant CPU and GPU processing power, which exceeds the capabilities of most mobile devices. Due to these hardware-intensive requirements, performance on mobile browsers is inconsistent and varies across devices.
 
-### v2.1.0
+### v2.1.0 [#v210-1]
 
 v2.1.0 was released on April 29, 2025, with the following changes:
 
 - Optimizes memory and CPU usage.
 - Fixes black screen issues at specific resolutions.
 
-### v2.0.0
+### v2.0.0 [#v200-1]
 
 v2.0.0 was released on December 18, 2024.
 
 This release upgrades the extension algorithm to version 2.0.0. [Virtual Background 2.0.0](https://www.npmjs.com/package/agora-extension-virtual-background/v/2.0.0) provides a more distinct face edge and clearer and more stable video images.
 
-#### New features
+#### New features [#new-features-140]
 
 - Support for VP9 codec, which provides better video compression and quality.
 
-#### Improvements
+#### Improvements [#improvements-154]
 
 - Dynamic background switching. Users can change backgrounds without restarting the video stream.
 - Ability to disable or re-enable virtual backgrounds dynamically.
 - Processor optimization for better real-time segmentation.
 
-#### Upgrading considerations
+#### Upgrading considerations [#upgrading-considerations]
 
 Version 2.0.0 is suitable for users who prioritize quality over frame rate, especially in use-cases requiring:
 
@@ -2487,79 +2491,79 @@ Implementation guidelines:
 - For premium applications, implement device detection. Use 2.0.0 for capable devices and default to 1.3.0 for others.
 - For general applications, default to 1.3.0. Optionally, allow users to upgrade to 2.0.0 with a performance warning.
 
-### v1.2.0
+### v1.2.0 [#v120]
 
 v1.2.0 was released on December 10, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-88]
 
 As of this version, the Virtual Background extension incorporates the necessary Wasm module. You no longer need to publish the Wasm file separately, and pass the `wasmDir` parameter when calling the `init` method to initialize the extension.
 
 After upgrading to this version, please modify your code accordingly.
 
-#### Improvements
+#### Improvements [#improvements-155]
 
 This release upgrades the background segmentation algorithm of the extension, optimizing the segmentation effects on the subject, edges, and fingers in complex static and dynamic backgrounds.
 
-#### Fixed issues
+#### Fixed issues [#fixed-issues-3]
 
 This release fixed the issue that `checkCompatibility` could return inaccurate results on specific devices.
 
-#### API changes
+#### API changes [#api-changes-83]
 
 The `wasmDir` parameter of the `init` method is now optional.
 
-### v1.1.3
+### v1.1.3 [#v113]
 
-#### Fixed issues
+#### Fixed issues [#fixed-issues-4]
 
 This release fixes the occasional issue of jagged background images on Chrome for Android.
 
-### v1.1.2
+### v1.1.2 [#v112]
 
-#### New features
+#### New features [#new-features-141]
 
 You can now specify the `fit` property when calling `setOptions`. This sets how the background is resized to fit the container. For API details, see [Virtual background](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-89]
 
 Virtual Background supports Agora Video SDK for Web v4.15.0 or later.
 
-### v1.1.1
+### v1.1.1 [#v111]
 
-#### New features
+#### New features [#new-features-142]
 
 You can now call `checkCompatibility` and test if the Virtual Background extension is supported on the current browser. For API details, see [Virtual background](/en/realtime-media/video/build/apply-video-effects/virtual-background).
 
-#### Fixed issues
+#### Fixed issues [#fixed-issues-5]
 
 A black bar is no longer displayed to the left of the virtual background.
 
-### v1.1.0
+### v1.1.0 [#v110-1]
 
-#### New features
+#### New features [#new-features-143]
 
 You can create multiple `VirtualBackgroundProcessor` instances to process multiple video streams.
 
-### v1.0.0
+### v1.0.0 [#v100-1]
 
 First release.
 
-## Super Clarity extension
+## Super Clarity extension [#super-clarity-extension]
 
 This extension leverages Agora's AI quality enhancement algorithm to intelligently improve video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end. For integration steps, see [Super Clarity](/en/realtime-media/video/build/apply-video-effects/super-clarity).
 
-### v2.0.1
+### v2.0.1 [#v201-1]
 
 Released on April 1, 2026.
 
 This version optimizes the sharpening algorithm, improving video experience in some scenarios.
 
-### v2.0.0
+### v2.0.0 [#v200-2]
 
 Released on November 18, 2025.
 
-#### Improvements
+#### Improvements [#improvements-156]
 
 This version includes the following improvements:
 
@@ -2568,33 +2572,33 @@ This version includes the following improvements:
 - Improves smoothness when the sender app goes to the background by aligning frame rates.
 - Expands compatibility with Safari browser.
 
-### v1.0.1
+### v1.0.1 [#v101]
 
 Released on November 10, 2024. This is the first version of `agora-extension-super-clarity`.
 
-## Watermark extension
+## Watermark extension [#watermark-extension]
 
-### v1.0.0
+### v1.0.0 [#v100-2]
 
 Released on November 18, 2025.
 
 This is the first version of `agora-extension-video-watermark`. For integration steps, see [Watermark](/en/realtime-media/video/build/apply-video-effects/watermark).
 
-## Video Compositor extension
+## Video Compositor extension [#video-compositor-extension]
 
 This extension enables local users to seamlessly merge multiple video streams and images into a single video track. This feature allows for the simultaneous display of multiple video feeds in the same video container.
 
-### v1.0.0-beta
+### v1.0.0-beta [#v100-beta]
 
 Released on October 25, 2022.
 
 This is the first version of `agora-extension-videp-compositor`. For integration steps, see [Video Compositor](/en/realtime-media/video/build/apply-video-effects/video-compositor).
 
-## Beauty Effect extension
+## Beauty Effect extension [#beauty-effect-extension]
 
 This extension enables your users to apply beauty effects to their videos. They can adjust settings for whitening, skin smoothing, acne removal, and redness to achieve a natural beauty effect.
 
-### v1.0.2-beta
+### v1.0.2-beta [#v102-beta]
 
 Released on November 26, 2022.
 
@@ -2607,9 +2611,9 @@ This is the first version of `agora-extension-beauty-effect`. For integration st
 
 
 
-## Notifications
+## Notifications [#notifications]
 
-### 2022.10
+### 2022.10 [#202210]
 
 * After you enable Agora Notifications, your server receives the events that you subscribe to in the form of HTTPS requests.
 * To improve communication security between the Agora Notifications and your server, Agora backend uses signatures

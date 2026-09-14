@@ -1,17 +1,21 @@
+---
+title: Video SDK release notes (Electron)
+---
+
 This page provides the release notes for the Video SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [Video SDK](#video-sdk-5)
 - [Notifications](#notifications)
 
-## Video SDK
+## Video SDK [#video-sdk-5]
 
-### Known issues
+### Known issues [#known-issues-5]
 
 <section id="electron-sdk-known-issues">
 
 The list of known issues is continuously updated as systems evolve. Agora recommends regularly upgrading to the latest SDK version, which includes new features, bug fixes, and improvements.
 
-#### Electron SDK v4.4.0
+#### Electron SDK v4.4.0 [#electron-sdk-v440]
 
 **macOS 15 Sequoia beta system issue**
 
@@ -19,11 +23,11 @@ When the app path, including the app name, contains non-English characters such 
 
 </section>
 
-### v4.6.2
+### v4.6.2 [#v462-5]
 
 Released on March 14, 2026.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-52]
 
 This release introduces the following compatibility changes:
 
@@ -84,7 +88,7 @@ This release introduces the following compatibility changes:
 
     The `uid` parameter is removed from the `EncodedVideoFrameInfo` struct. You can retrieve `uid` information directly from the `onEncodedVideoFrameReceived` callback. Update your integration logic accordingly.
 
-#### New features
+#### New features [#new-features-86]
 
 Included in this release:
 
@@ -142,7 +146,7 @@ Included in this release:
     - The local screenshot upload feature now supports setting the video observation position for screenshots through the new `position` field in `ContentInspectModule`, enabling screenshots of original video data or video streams before or after effect processing.
     - Adds the `screenColorType` property to `SegmentationProperty` to improve portrait segmentation accuracy when using a green or blue screen for virtual backgrounds. You can specify the background color as green, blue, or set it to automatic recognition.
 
-#### Improvements
+#### Improvements [#improvements-96]
 
 This release includes the following enhancements:
 
@@ -179,7 +183,7 @@ This release includes the following enhancements:
     - Improves video clarity in screen sharing scenarios involving documents.
     - Adds error codes `ERR_PCMSEND_FORMAT (200)` and `ERR_PCMSEND_BUFFEROVERFLOW (201)` to report PCM data transmission errors.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-98]
 
 This release fixes the following issues:
 
@@ -203,7 +207,7 @@ This release fixes the following issues:
 - The second call to `enumerateVideoDevices` to retrieve the device list did not take effect.
 - On Windows 7 devices, when sharing a PowerPoint window running in full-screen auto-play mode with a large number of animations, the remote view occasionally flickered.
 
-### v4.5.2
+### v4.5.2 [#v452-4]
 
 v4.5.2 was released on March 13, 2025.
 
@@ -214,13 +218,13 @@ v4.5.2 for Electron is comparable to native version v.4.5.1.
 :::
 
 
-#### New features
+#### New features [#new-features-87]
 
 1. **AI conversation scenario**
 
    This version adds the `AudioScenarioAiClient` audio scenario specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](/en/introduction/conversational-ai). This scenario optimizes the audio transmission algorithm based on AI-generated voice characteristics, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. It enhances conversation continuity and reliability while adapting to complex network conditions.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-99]
 
 This release fixes the following issues:
 
@@ -230,11 +234,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+### v4.5.0 [#v450-5]
 
 v4.5.0 was released on December 10, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-53]
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -259,7 +263,7 @@ This version includes optimizations to some features, including changes to SDK b
    - In the [`CompressionPreference`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/enum_compressionpreference.html) enumeration class, a new `PreferCompressionAuto` (-1) enumeration is added, replacing the original `PreferQuality` (1) as the default value. In this mode, the SDK will automatically choose between `PreferLowLatency` and `PreferQuality` based on your video scene settings to achieve the best user experience.
    - In the [`DegradationPreference`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/enum_degradationpreference.html) enumeration class, a new `MaintainAuto` (-1) enumeration is added, replacing the original `MaintainQuality` (1) as the default value. In this mode, the SDK will automatically choose between `MaintainFramerate`, `MaintainBalanced`, and `MaintainResolution` based on your video scene settings to achieve the optimal overall quality of experience (QoE).
 
-#### New features
+#### New features [#new-features-88]
 
 1. **Live show scenario**
 
@@ -294,7 +298,7 @@ This version includes optimizations to some features, including changes to SDK b
    - [`onLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged) callback adds the `LocalVideoStreamReasonDeviceDisconnected` enumeration, indicating that the currently used video capture device has been disconnected (e.g., unplugged). (Windows)
    - [`MediaDeviceStateType`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/enum_mediadevicestatetype.html) adds the `MediaDeviceStatePluggedIn` enumeration, indicating that the device has been plugged in. (Windows)
 
-#### Improvements
+#### Improvements [#improvements-97]
 
 1. **Virtual background algorithm optimization**
 
@@ -315,7 +319,7 @@ This version includes optimizations to some features, including changes to SDK b
    - When calling `switchSrc` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `onPlayerEvent` callback will report the `PlayerEventSwitchError` event, indicating an error occurred during media resource switching.
    - When calling `setPlaybackSpeed` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-100]
 
 This version fixes the following issues:
 
@@ -323,11 +327,11 @@ This version fixes the following issues:
 - Occasional errors of not finding system files during audio and video interaction on Windows 7 systems. (Windows)
 - When calling `followSystemRecordingDevice` or `followSystemPlaybackDevice` to set the audio capture or playback device used by the SDK to not follow the default system audio playback device, the local audio state callback `onLocalAudioStateChanged` is not triggered when the audio device is removed, which is not as expected. (Windows)
 
-### v4.4.0
+### v4.4.0 [#v440-5]
 
 v4.4.0 was released on August 29, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-54]
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion.
 To ensure normal operation of the project, update the code in the app after upgrading to this release.
@@ -348,7 +352,7 @@ To ensure normal operation of the project, update the code in the app after upgr
    - `metadata_buffer` is renamed to `metadataBuffer`.
    - `metadata_size` is renamed to `metadataSize`.
 
-#### New features
+#### New features [#new-features-89]
 
 1. **Voice AI tuner**
 
@@ -358,7 +362,7 @@ To ensure normal operation of the project, update the code in the app after upgr
 
    This version adds `ApplicationScenario1v1`(1v1 video call) in `VideoApplicationScenarioType`. You can call `setVideoScenario` to set the video application scenario to 1v1 video call, the SDK optimizes performance to achieve low latency and high video quality, enhancing image quality, first frame rendering, latency on mid-to-low-end devices, and smoothness under poor network conditions.
 
-#### Improvements
+#### Improvements [#improvements-98]
 
 1. **Adaptive hardware decoding support (Windows)**
 
@@ -384,20 +388,20 @@ To ensure normal operation of the project, update the code in the app after upgr
    - Adds the `channelId` parameter to `Metadata`, which is used to get the channel name from which the metadata is sent.
    - Deprecates redundant enumeration values `ClientRoleChangeFailedRequestTimeOut` and `ClientRoleChangeFailedConnectionFailed` in `ClientRoleChangeFailedReason`.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-101]
 
 This release fixes the issue where the app crashed during audio and video interactions after the user actively denied
 the permission to use audio and video devices (macOS).
 
-### v4.3.2
+### v4.3.2 [#v432-4]
 
 v4.3.2 was released on June 6, 2024.
 
-#### Improvements
+#### Improvements [#improvements-99]
 
 This release enhances the usability of the [setRemoteSubscribeFallbackOption](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setremotesubscribefallbackoption) method by removing the timing requirements for invocation. It can now be called both before and after joining the channel to dynamically switch audio and video stream fallback options in weak network conditions.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-102]
 
 This version fixed the following issues:
 
@@ -410,11 +414,11 @@ This version fixed the following issues:
 - The specified window could not be brought to the foreground if it was covered by other windows when sharing a window using [startScreenCaptureByWindowId](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid) and setting `windowFocus` and `enableHighLight` in [ScreenCaptureParameters](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_screencaptureparameters.html) to `true` (Windows).
 - Clicking on the desktop widget caused the outlined part to flicker when sharing and highlighting a window on a Windows 7 device (Windows).
 
-### v4.3.1
+### v4.3.1 [#v431-4]
 
 v4.3.1 was released on May 9, 2024.
 
-#### New features
+#### New features [#new-features-90]
 
 1. **Portrait center stage (macOS)**
 
@@ -443,7 +447,7 @@ v4.3.1 was released on May 9, 2024.
 
     - Speech driven avatar is released in beta. See [beta documentation](/en/realtime-media/video/reference/release-notes) for details.
 
-#### Improvements
+#### Improvements [#improvements-100]
 
 1. **Optimization for game use-case screen sharing (Windows)**
 
@@ -474,7 +478,7 @@ v4.3.1 was released on May 9, 2024.
    - In [AudioEffectPreset](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/enum_audioeffectpreset.html), a new enumeration `RoomAcousticsChorus` (chorus effect) is added, enhancing the spatial presence of vocals in chorus use-cases.
    - In [RemoteAudioStats](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_remoteaudiostats.html), a new `e2eDelay` field is added to report the delay from when the audio is captured on the sending side to when the audio is played on the receiving side.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-103]
 
 This version fixed the following issues:
 
@@ -486,7 +490,7 @@ This version fixed the following issues:
 - On devices using Intel graphics cards, there was an occasional performance regression when publishing a low-quality video stream (Windows).
 - When the network conditions of the sender deteriorated (for example, in poor network environments), the receiver occasionally experienced a decrease in video smoothness and an increase in lag.
 
-#### API changes
+#### API changes [#api-changes-58]
 
 **Added**
 
@@ -512,11 +516,11 @@ This version fixed the following issues:
 - [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
 - [EarMonitoringFilterType](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EarMonitoringFilterBuiltInAudioFilters`
 
-### v4.3.0
+### v4.3.0 [#v430-5]
 
 v4.3.0 was released on February 28, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-55]
 
 This release has optimized the implementation of some functions, involving renaming or deletion of some APIs. To ensure the normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -539,7 +543,7 @@ This release has optimized the implementation of some functions, involving renam
    | `MediaPlayerError`           | `MediaPlayerReason`        |
    | `RtmpStreamPublishErrorType` | `RtmpStreamPublishReason`  |
 
-   **Note:** For specific renaming of enumerations, please refer to [API changes](#api-changes).
+   **Note:** For specific renaming of enumerations, please refer to [API changes](#api-changes-58).
 
 1. **Channel media relay**
 
@@ -573,7 +577,7 @@ This release has optimized the implementation of some functions, involving renam
    - Before v4.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will not be disabled.
    - As of v4.3.0, if you call the [disableAudio](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_disableaudio) method to disable the audio module, audio loopback capturing will be disabled as well. If you need to enable audio loopback capturing, you need to enable the audio module by calling the [enableAudio](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableaudio) method and then call [enableLoopbackRecording](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enableloopbackrecording).
 
-#### New features
+#### New features [#new-features-91]
 
 1. **Local preview with multiple views**
 
@@ -604,7 +608,7 @@ This release has optimized the implementation of some functions, involving renam
    - [setPlayerOptionInInt](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption) and [setPlayerOptionInString](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_imediaplayer.html#api_imediaplayer_setplayeroption2): Sets media player options for providing technical previews or special customization features.
    - [enableCustomAudioLocalPlayback](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enablecustomaudiolocalplayback): Sets whether to enable the local playback of external audio source.
 
-#### Improvements
+#### Improvements [#improvements-101]
 
 1. **SDK task processing scheduling optimization**
 
@@ -635,7 +639,7 @@ This release has optimized the implementation of some functions, involving renam
    - The [onPlayerCacheStats](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayercachestats) callback is added to report the statistics of the media file being cached. This callback is triggered once per second after file caching is started.
    - The [onPlayerPlaybackStats](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_imediaplayersourceobserver.html#callback_imediaplayersourceobserver_onplayerplaybackstats) callback is added to report the statistics of the media file being played. This callback is triggered once per second after the media file starts playing. You can obtain information like the audio and video bitrate of the media file through [PlayerPlaybackStats](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_playerplaybackstats.html).
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-104]
 
 This release fixed the following issues:
 
@@ -643,7 +647,7 @@ This release fixed the following issues:
 - When sharing in a specified screen area, the mouse coordinates within the shared area are inaccurate. When the mouse is near the border of the shared area, the mouse may not be visible in the shared screen.
 - The SDK failed to detect any changes in the audio routing after plugging in and out 3.5 mm earphones.
 
-#### API changes
+#### API changes [#api-changes-59]
 
 **Added**
 
@@ -729,29 +733,29 @@ This release fixed the following issues:
 - `onChannelMediaRelayEvent`
 - `ChannelMediaRelayEvent`
 
-### v4.2.6
+### v4.2.6 [#v426-4]
 
 v4.2.6 was released on November 24, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-105]
 
 This version fixed the issue of stuttering or frozen video on the receiving end in specific use-cases, such as when the network packet loss rate was high, or when the broadcaster left the channel without destroying the engine and then re-joined the channel.
 
-### v4.2.4
+### v4.2.4 [#v424]
 
 v4.2.4 was released on October 25, 2023.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-106]
 
 This release fixes the following issue:
 
 The `AgoraRtcWrapper` version number in `CFBundleShortVersionString` on macOS is wrong, which interferes with submitting the App to the App Store.
 
-### v4.2.3
+### v4.2.3 [#v423-4]
 
 v4.2.3 was released on October 20, 2023.
 
-#### New features
+#### New features [#new-features-92]
 
 1. **Update video screenshot and upload**
 
@@ -781,7 +785,7 @@ v4.2.3 was released on October 20, 2023.
 
    In addition, since this version, calling `enableVirtualBackground` and `setBeautyEffectOptions` automatically triggers a test on the capability of the current device. When the device is considered underperforming, the error code `-4: ErrNotSupported` is returned, indicating that the device does not support the feature.
 
-#### Improvements
+#### Improvements [#improvements-102]
 
 1. **Optimize virtual background memory usage**
 
@@ -798,7 +802,7 @@ This release includes the following additional improvements:
 - Optimizes the logic of handling invalid parameters. When you call the `setPlaybackSpeed` method to set the playback speed of audio files, if you pass an invalid parameter, the SDK returns the error code `-2`, which means that you need to reset the parameter.
 - Optimizes the logic of Token parsing, in order to prevent an app from crashing when an invalid token is passed in.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-107]
 
 This release fixed the following issues:
 
@@ -807,7 +811,7 @@ This release fixed the following issues:
 - When calling the `playEffect` method to play two audio files using the same `soundId`, the first audio file was sometimes played repeatedly.
 - Calling `takeSnapshotEx` once received the `onSnapshotTaken` callback for multiple times.
 
-#### API changes
+#### API changes [#api-changes-60]
 
 **Added**
 
@@ -828,11 +832,11 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.2
+### v4.2.2 [#v422-5]
 
 v4.2.2 was released on August 1, 2023.
 
-#### New features
+#### New features [#new-features-93]
 
 1. **Wildcard token**
 
@@ -849,14 +853,14 @@ All 4.x SDKs support using wildcard tokens.
 
    When preloading more than one channels, Agora recommends that you use a wildcard token for preloading to avoid repeated application of tokens every time you join a new channel, thus saving the time for switching between channels. See [Secure authentication with tokens](/en/realtime-media/video/build/authenticate-users/authentication-workflow).
 
-#### Improvements
+#### Improvements [#improvements-103]
 
 **Channel media relay**
 
 The number of target channels for media relay has been increased to 6. When calling `startOrUpdateChannelMediaRelay` and `startOrUpdateChannelMediaRelayEx`, you can specify up to 6 target channels.
 
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-108]
 
 This release fixed the following issues:
 
@@ -864,7 +868,7 @@ This release fixed the following issues:
 - Slow channel reconnection after the connection was interrupted due to network reasons.
 - In multi-device audio recording use-cases, after repeatedly plugging and unplugging or enabling/disabling the audio recording device, no sound could be heard occasionally when calling the `startRecordingDeviceTest` to start an audio capturing device test. (Windows)
 
-#### API changes
+#### API changes [#api-changes-61]
 
 **Added**
 
@@ -872,15 +876,15 @@ This release fixed the following issues:
 - `preloadChannelWithUserAccount`
 - `updatePreloadChannelToken`
 
-### v4.2.1
+### v4.2.1 [#v421-6]
 
 This version was released on June 21, 2023.
 
-#### Improvements
+#### Improvements [#improvements-104]
 
 This version improves the network transmission strategy, enhancing the smoothness of audio and video interactions.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-109]
 
 This version fixed the following issues:
 
@@ -890,11 +894,11 @@ This version fixed the following issues:
 - After enabling the screen sharing feature on the sending end, there was high delay until the receiving end could see the shared screen. (macOS)
 - When the sending end mixed and published two streams of video captured by two cameras locally, the video from the second camera was occasionally missing on the receiving end. (Windows)
 
-### v4.2.0
+### v4.2.0 [#v420-6]
 
 v4.2.0 was released on May 29, 2023.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-56]
 
 If you use the features mentioned in this section, ensure that you modify the implementation of the relevant features after upgrading the SDK.
 
@@ -954,7 +958,7 @@ The increase in the default resolution affects the aggregate resolution and thus
   - `registerAudioFrameObserver` and `unregisterAudioFrameObserver` in `IMediaPlayer`
 - `startChannelMediaRelay`, `updateChannelMediaRelay`, `startChannelMediaRelayEx`, and `updateChannelMediaRelayEx` are deprecated. Use `startOrUpdateChannelMediaRelay` and `startOrUpdateChannelMediaRelayEx` instead.
 
-#### New features
+#### New features [#new-features-94]
 
 **1. AI Noise Suppression**
 
@@ -1001,7 +1005,7 @@ This release adds the `startMediaRenderingTracing` and `startMediaRenderingTraci
 
 Agora recommends that you use this method in conjunction with the UI settings, such as buttons and sliders, in your app. For example, call this method when the user clicks **Join Channel** button and then get the indicators in the video frame rendering process through the `onVideoRenderingTracingResult` callback. This enables developers to optimize the indicators and improve the user experience.
 
-#### Improvements
+#### Improvements [#improvements-105]
 
 **1. Voice changer**
 
@@ -1038,7 +1042,7 @@ As of this release, the SDK optimizes the `onRenderVideoFrame` callback, and the
 When the video processing mode is `ProcessModeReadOnly`, the return value is reserved for future use.
 When the video processing mode is `ProcessModeReadWrite`, the SDK receives the video frame when the return value is `true`. The video frame is discarded when the return value is `false`.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-110]
 
 This release fixed the following issues:
 - When the host frequently switched the user role between broadcaster and audience in a short period of time, the audience members could not hear the audio of the host.
@@ -1055,7 +1059,7 @@ This release fixed the following issues:
 - When trying to outline the shared window and put it on top, the shared window did not stay on top of other windows (Windows).
 - When there were multiple video streams in a channel, calling some video enhancement APIs occasionally failed.
 
-#### API changes
+#### API changes [#api-changes-62]
 
 **Added**
 
@@ -1109,15 +1113,15 @@ This release fixed the following issues:
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
 
-### v4.1.0
+### v4.1.0 [#v410-6]
 
 v4.1.0 was released on December 20, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-57]
 
 This release deletes the `sourceType` parameter in `enableDualStreamMode`, because the SDK supports enabling dual-stream mode for various video sources captured by custom capture or SDK; you no longer need to specify the video source type.
 
-#### New features
+#### New features [#new-features-95]
 
 **1. In-ear monitoring**
 
@@ -1237,7 +1241,7 @@ The SDK supports a new version of AI noise reduction (in comparison to the basic
 
 To experience this feature, contact [support@agora.io](mailto:support@agora.io).
 
-#### Improvements
+#### Improvements [#improvements-106]
 
 **1. Video information change callback**
 
@@ -1249,7 +1253,7 @@ This release speeds up the first video frame rendering time to improve the video
 
 **3. Screen sharing**
 
-In addition to the usability enhancements detailed in the [fixed issued](#issues-fixed) section, this release includes a number of functional improvements to screen sharing, as follows:
+In addition to the usability enhancements detailed in the [fixed issued](#issues-fixed-98) section, this release includes a number of functional improvements to screen sharing, as follows:
 
 **All**
 
@@ -1298,7 +1302,7 @@ This release includes the following additional improvements:
 - Enhances the ability to identify different network protocol stacks and improves the SDK's access capabilities in multiple-operator network use-cases.
 
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-111]
 
 This release fixes the following issues:
 
@@ -1337,7 +1341,7 @@ sharing a screen.
 - After starting and stopping the audio capture device test, there was no sound when the audio playback device was subsequently started.
 - The `onVideoPublishStateChanged` callback reported an inaccurate video source type.
 
-#### API changes
+#### API changes [#api-changes-63]
 
 **Added**
 
@@ -1411,11 +1415,11 @@ sharing a screen.
 - `RelayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
 
 
-### v4.0.0
+### v4.0.0 [#v400-6]
 
 v4.0.0 was released on September 29, 2022.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-58]
 
 **Integration change**
 
@@ -1428,7 +1432,7 @@ This release has changed the SDK package name from `electron-agora-rtc-ng` to `a
 After upgrading the SDK, you need to update the code in your app according to your business use-cases. For details, see [Migration guide](/en/realtime-media/video/reference/migration-guide).
 
 
-#### New features
+#### New features [#new-features-96]
 
 **1. Multiple media tracks**
 
@@ -1537,7 +1541,7 @@ Video capture devices can support multiple video formats, each supporting a diff
 This release adds the `numberOfCapabilities` and `getCapability` methods for getting the number of video formats supported by the video capture device and the details of the video frames in the specified video format. When calling the `startPrimaryCameraCapture` or `startSecondaryCameraCapture` method to capture video using the camera, you can use the specified video format.
 > **_NOTE:_** The SDK automatically selects the best video format for the video capture device based on your settings in `VideoEncoderConfiguration`, so normally you should not need to use these new methods.
 
-#### Improvements
+#### Improvements [#improvements-107]
 
 **1. Fast channel switching**
 
@@ -1572,7 +1576,7 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 
 
-## Extensions
+## Extensions [#extensions]
 
 
 
@@ -1581,9 +1585,9 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 
 
-## Notifications
+## Notifications [#notifications]
 
-### 2022.10
+### 2022.10 [#202210]
 
 * After you enable Agora Notifications, your server receives the events that you subscribe to in the form of HTTPS requests.
 * To improve communication security between the Agora Notifications and your server, Agora backend uses signatures

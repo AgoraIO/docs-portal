@@ -1,23 +1,27 @@
+---
+title: Video SDK release notes (Blueprint)
+---
+
 This page provides the release notes for the Video SDK release streams used by Video Calling.
 
-- [Video SDK](#video-sdk)
+- [Video SDK](#video-sdk-11)
 - [Notifications](#notifications)
 
-## Video SDK
+## Video SDK [#video-sdk-11]
 
-### Known issues
+### Known issues [#known-issues-10]
 
 <section id="blueprint-sdk-known-issues">
 
 The list of known issues is continuously updated as systems evolve. Agora recommends regularly upgrading to the latest SDK version, which includes new features, bug fixes, and improvements.
 
-#### Blueprint SDK v4.4.0
+#### Blueprint SDK v4.4.0 [#blueprint-sdk-v440]
 
 **macOS 15 Sequoia beta system issue**
 
 When the app path, including the app name, contains non-English characters such as Chinese characters, the compiled `Metal shader library` might not contain any methods, causing the app to crash. See [App fails to run on macOS 15 Beta](/en/api-reference/faq/other/macos_15_beta) for the workaround.
 
-#### Blueprint SDK v4.2.1
+#### Blueprint SDK v4.2.1 [#blueprint-sdk-v421]
 
 **Audio module incompatibility on iOS**
 
@@ -30,21 +34,21 @@ AudioMixerModuleName=
 
 </section>
 
-### v4.5.1
+### v4.5.1 [#v451-6]
 
 v4.5.1 was released on March 13, 2025.
 
-#### New features
+#### New features [#new-features-133]
 
 1. **AI conversation scenario**
 
    This version adds the `AUDIO_SCENARIO_AI_CLIENT` audio scenario specifically designed for interacting with the conversational AI agent created by [Conversational AI Engine](/en/introduction/conversational-ai). This scenario optimizes the audio transmission algorithm based on AI-generated voice characteristics, ensuring stable voice data transmission even in weak network conditions with up to 80% packet loss. It enhances conversation continuity and reliability while adapting to complex network conditions.
 
-#### Improvements
+#### Improvements [#improvements-150]
 
 - Reduces the SDK initialization time on specific device models. (iOS)
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-160]
 
 This release fixes the following issues:
 
@@ -62,11 +66,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+### v4.5.0 [#v450-9]
 
 v4.5.0 was released on December 10, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-84]
 
 This version includes optimizations to some features, including changes to SDK behavior and API renaming and deletion. To ensure normal operation of the project, update the code in the app after upgrading to this release.
 
@@ -90,7 +94,7 @@ This version includes optimizations to some features, including changes to SDK b
 
     Starting from Android 15, the system adds support for 16 KB memory page size, as detailed in [Support 16 KB page sizes](https://developer.android.com/guide/practices/page-sizes). To ensure the stability and performance of the app, starting from this version, the SDK supports 16 KB memory page size, ensuring seamless operation on devices with both 4 KB and 16 KB memory page sizes, enhancing compatibility and preventing crashes.
 
-#### New features
+#### New features [#new-features-134]
 
 1. **Live show scenario**
 
@@ -111,7 +115,7 @@ This version includes optimizations to some features, including changes to SDK b
     - The [`OnLocalVideoStateChanged`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onlocalvideostatechanged) callback adds the `LOCAL_VIDEO_STREAM_REASON_DEVICE_DISCONNECTED` enumeration, indicating that the currently used video capture device has been disconnected (for example, unplugged). (Windows)
     - [`EMEDIA_DEVICE_STATE_TYPE`](https://api-ref.agora.io/en/video-sdk/blueprint/4.x/API/enum_mediadevicestatetype.html) adds the `MEDIA_DEVICE_STATE_PLUGGED_IN` enumeration, indicating that the device has been plugged in. (Windows)
 
-#### Improvements
+#### Improvements [#improvements-151]
 
 1. **Virtual background algorithm optimization**
 
@@ -129,7 +133,7 @@ This version includes optimizations to some features, including changes to SDK b
     - When calling `SwitchSrc` to switch between live streams or on-demand streams of different resolutions, smooth and seamless switching can be achieved. An automatic retry mechanism has been added in case of switching failures. The SDK will automatically retry 3 times after a failure. If it still fails, the `OnPlayerEvent` callback will report the `PLAYER_EVENT_SWITCH_ERROR` event, indicating an error occurred during media resource switching.
     - When calling `SetPlaybackSpeed` to set the playback speed of an audio file, the minimum supported speed is 0.3x.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-161]
 
 This version fixes the following issues:
 
@@ -147,11 +151,11 @@ This version fixes the following issues:
 - Calling `StartAudioMixing` and then immediately calling `PauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction. (Android)
 
-### v4.4.0
+### v4.4.0 [#v440-9]
 
 v4.4.0 was released on August 29, 2024.
 
-#### Compatibility changes
+#### Compatibility changes [#compatibility-changes-85]
 
 This version simplifies the way methods are called and callbacks are implemented in Blueprints.
 
@@ -180,7 +184,7 @@ This version simplifies the way methods are called and callbacks are implemented
 
     ![](https://assets-docs.agora.io/images/video-sdk/blueprint-assets/ue-bp-release440-04.png)
 
-#### New features
+#### New features [#new-features-135]
 
 1. **Voice AI tuner**
 
@@ -257,7 +261,7 @@ For one `RtcConnection`, Agora supports publishing multiple audio streams and on
    :::
 
 
-#### Improvements
+#### Improvements [#improvements-152]
 
 1. **Improved rendering usability**
 
@@ -269,7 +273,7 @@ For one `RtcConnection`, Agora supports publishing multiple audio streams and on
 
    The number of target channels for media relay has been increased to 6. When calling `StartOrUpdateChannelMediaRelay` and `StartOrUpdateChannelMediaRelayEx`, you can specify up to 6 target channels.
 
-#### Issues fixed
+#### Issues fixed [#issues-fixed-162]
 
 In Unreal Engine 5.3 and 5.4, adding the following code to the `/Source/xxx.Target.cs` file in your project to solve iOS memory allocation issues may lead to missing iOS compilation symbols. To address this issue, this version adds three function definitions (`StdMalloc`, `StdRealloc`, and `StdFree`) related to the standard library in the `UnrealMemory.cpp` file, ensuring proper handling of memory management needs when using the standard memory allocator (iOS).
 
@@ -281,13 +285,13 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 }
 ```
 
-### v4.2.1
+### v4.2.1 [#v421-10]
 
 This version was released on November 16, 2023.
 
 This the first release of Video SDK for Unreal Blueprint.
 
-#### New features
+#### New features [#new-features-136]
 
 Video SDK for Unreal Blueprint provides a simple and user-friendly real-time interactive solution for Unreal Engine users.
 
@@ -302,7 +306,7 @@ Agora provides the open source [example project](https://github.com/AgoraIO-Exte
 
 
 
-## Extensions
+## Extensions [#extensions]
 
 
 
@@ -311,9 +315,9 @@ Agora provides the open source [example project](https://github.com/AgoraIO-Exte
 
 
 
-## Notifications
+## Notifications [#notifications]
 
-### 2022.10
+### 2022.10 [#202210]
 
 * After you enable Agora Notifications, your server receives the events that you subscribe to in the form of HTTPS requests.
 * To improve communication security between the Agora Notifications and your server, Agora backend uses signatures
