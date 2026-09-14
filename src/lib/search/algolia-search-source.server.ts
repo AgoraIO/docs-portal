@@ -10,6 +10,7 @@ import {
   getOpenApiLoaderPlugin,
 } from '../openapi/fumadocs-source.server';
 import {
+  extendPlatformGroupPanelSearchNavigation,
   filterPlatformGroupPanelNodes,
   getPlatformGroupPanelUrls,
 } from '../platforms/platform-group-pages';
@@ -36,7 +37,13 @@ export async function getAlgoliaSearchNavigation() {
         getPlatformGroupPanelUrls(pages),
       );
 
-      return [locale, buildDocsSearchNavigation(pageTree)] as const;
+      return [
+        locale,
+        extendPlatformGroupPanelSearchNavigation(
+          buildDocsSearchNavigation(pageTree),
+          pages,
+        ),
+      ] as const;
     }),
   );
 }

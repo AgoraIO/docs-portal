@@ -1537,7 +1537,7 @@ describe('loadDocsSearchIndex', () => {
     await expect(loadDocsSearchIndex('zh-CN')).resolves.toEqual([]);
   });
 
-  it('excludes split-file platform panel pages from search entries', async () => {
+  it('indexes split-file platform panels at their deep links', async () => {
     const parentPage = createPlatformGroupPage();
     const iosPage = createPlatformPanelPage('ios');
     const androidPage = createPlatformPanelPage('android');
@@ -1557,12 +1557,16 @@ describe('loadDocsSearchIndex', () => {
     );
     const pages = await loadDocsSearchIndex('en');
 
-    expect(pages.map((page) => page.url)).not.toContain(
+    expect(pages.map((page) => page.url)).toContain(
       '/en/ai/get-started/platform-split/ios',
     );
-    expect(pages.map((page) => page.url)).not.toContain(
+    expect(pages.map((page) => page.url)).toContain(
       '/en/ai/get-started/platform-split/android',
     );
+    expect(
+      pages.find((page) => page.url === '/en/ai/get-started/platform-split/ios')
+        ?.breadcrumbs,
+    ).toEqual(['AI', 'Get started', 'Split platform page']);
   });
 });
 

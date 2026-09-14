@@ -3787,7 +3787,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/broadcast-streaming/reference/pricing.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/reference/release-notes.mdx':
-    '2026-09-01T03:14:31.000Z',
+    '2026-09-14T03:28:53.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/reference/release-notes/android/index.mdx':
     '2026-06-24T07:15:37.000Z',
   'content/docs/en/realtime-media/broadcast-streaming/reference/release-notes/ios/index.mdx':
@@ -4835,7 +4835,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/interactive-live-streaming/reference/pricing.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/reference/release-notes.mdx':
-    '2026-09-01T03:14:31.000Z',
+    '2026-09-14T03:28:53.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/reference/security.md':
     '2026-09-04T12:16:57.000Z',
   'content/docs/en/realtime-media/interactive-live-streaming/reference/service-limits.md':
@@ -6833,7 +6833,33 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/video/reference/pricing.test.ts':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/video/reference/release-notes.mdx':
-    '2026-09-01T03:14:31.000Z',
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/android.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/blueprint.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/electron.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/flutter.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/index.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/ios.mdx':
+    '2026-09-14T03:29:02.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/javascript.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/macos.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/react-native.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/unity.mdx':
+    '2026-09-14T03:29:02.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/unreal.mdx':
+    '2026-09-14T03:28:53.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/web.mdx':
+    '2026-09-14T03:29:02.000Z',
+  'content/docs/en/realtime-media/video/reference/release-notes/windows.mdx':
+    '2026-09-14T03:29:02.000Z',
   'content/docs/en/realtime-media/video/reference/security.mdx':
     '2026-09-04T12:16:57.000Z',
   'content/docs/en/realtime-media/video/reference/service-limits.mdx':
@@ -7090,7 +7116,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/voice/reference/pricing.test.ts':
     '2026-06-29T11:58:21.000Z',
   'content/docs/en/realtime-media/voice/reference/release-notes.mdx':
-    '2026-09-01T03:14:31.000Z',
+    '2026-09-14T03:28:53.000Z',
   'content/docs/en/realtime-media/voice/reference/security.md':
     '2026-09-04T12:16:57.000Z',
   'content/docs/en/realtime-media/voice/reference/service-limits.md':
