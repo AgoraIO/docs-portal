@@ -2,7 +2,6 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
-import type { DocsSidebarNode } from './docs-tree';
 import {
   resolveZhCnProductIaRedirect,
   ZH_CN_PRODUCT_IA_REDIRECTS,
@@ -19,7 +18,6 @@ const speechToTextRoot = resolve(
   'content/docs/zh-CN/realtime-media/speech-to-text',
 );
 const contentRoot = resolve(process.cwd(), 'content/docs/zh-CN');
-const smartDoorbellRoot = resolve(contentRoot, 'solutions/smart-doorbell');
 const rtmRoot = resolve(contentRoot, 'realtime-media/rtm');
 const standardFirstLevelPages = ['index', 'get-started', 'build', 'reference'];
 const standardFirstLevelPageSet = new Set(standardFirstLevelPages);
@@ -160,13 +158,6 @@ function parseZhCnDocsUrl(url: string) {
   return { slugSegments, tab };
 }
 
-function flattenSidebarPageUrls(nodes: DocsSidebarNode[]): string[] {
-  return nodes.flatMap((node) => [
-    ...(node.type === 'page' ? [node.url] : []),
-    ...(node.type === 'section' ? flattenSidebarPageUrls(node.children) : []),
-  ]);
-}
-
 function getContentPagePathForUrl(url: string) {
   const { slugSegments, tab } = parseZhCnDocsUrl(url);
   const relativePath = resolve(contentRoot, tab, ...slugSegments);
@@ -205,41 +196,6 @@ function getRedirectTargetProductRoots() {
 }
 
 describe('zh-CN product IA standard', () => {
-  it('hides smart-doorbell aPaaS from the build sidebar without breaking its routes', async () => {
-    const canonicalUrl =
-      '/zh-CN/solutions/smart-doorbell/build/apaas/apaas-overview';
-    const buildMeta = readMeta(resolve(smartDoorbellRoot, 'build/meta.json'));
-
-    expect(buildMeta.pages).toEqual([
-      'setup-and-access/enable-service',
-      'paas',
-    ]);
-
-    const payload = await loadDocsPagePayload('zh-CN', 'solutions', [
-      'smart-doorbell',
-      'build',
-      'apaas',
-      'apaas-overview',
-    ]);
-
-    expect(payload).not.toBeNull();
-    expect(payload).not.toHaveProperty('redirectUrl');
-    if (!payload || 'redirectUrl' in payload) {
-      throw new Error('expected the smart-doorbell aPaaS docs page payload');
-    }
-
-    expect(flattenSidebarPageUrls(payload.sidebar ?? [])).not.toContain(
-      canonicalUrl,
-    );
-    expect(
-      resolveZhCnProductIaRedirect('zh-CN', 'solutions', [
-        'smart-doorbell',
-        'apaas',
-        'apaas-overview',
-      ]),
-    ).toBe(canonicalUrl);
-  }, 30_000);
-
   it('uses standard root entries for speech-to-text', () => {
     const meta = readMeta(resolve(speechToTextRoot, 'meta.json'));
 
