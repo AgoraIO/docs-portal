@@ -56,10 +56,6 @@ Use the following `tts` configuration when starting a conversational AI agent us
 
   If you provide both `tts.headers.Authorization` and `tts.params.api_key`, the Conversational AI Engine uses `tts.headers.Authorization`.
 
-:::caution[Caution]
-Your TTS service must implement the OpenAI TTS protocol. The parameters listed on this page are validated for use with Conversational AI Engine. Any additional fields in `params` are passed through directly to your TTS service without validation.
-:::
-
 ### Key parameters
 
 <ParameterList title="tts" required={true}>
@@ -96,3 +92,7 @@ Your TTS service must implement the OpenAI TTS protocol. The parameters listed o
     </Parameter>
   </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+Your TTS service must implement the OpenAI TTS protocol. The parameters listed on this page are validated for use with Conversational AI Engine. Any additional fields in `params` are passed through directly to your TTS service without validation.
+:::

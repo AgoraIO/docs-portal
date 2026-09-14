@@ -127,10 +127,6 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 </TabsContent>
 </Tabs>
 
-:::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For advanced configuration options, available voices, and detailed parameter descriptions, see the [OpenAI TTS documentation](https://platform.openai.com/docs/guides/text-to-speech).
-:::
-
 ### Key parameters
 
 The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
@@ -158,4 +154,8 @@ The following parameters are required when using your own API key (BYOK). When u
 
 :::info[Info]
 OpenAI TTS models do not support changing the sample rate. The audio output is fixed at 24,000 Hz.
+:::
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For advanced configuration options, available voices, and detailed parameter descriptions, see the [OpenAI TTS documentation](https://platform.openai.com/docs/guides/text-to-speech).
 :::
