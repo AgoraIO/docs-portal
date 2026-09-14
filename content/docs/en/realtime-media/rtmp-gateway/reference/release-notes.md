@@ -19,11 +19,11 @@ This page provides the release notes for Media Gateway.
 
 - **AV1 video transcoding**
 
-  Stream templates support AV1 as a transcoding output codec, in addition to H.264 and H.265. Use AV1 to reduce bitrate at the same visual quality, or to serve players that require AV1 playback. For configuration details, see [AV1 transcoding](../build/process-media/enable-av1-transcoding.md).
+  Stream templates support AV1 as a transcoding output codec, in addition to H.264 and H.265. Use AV1 to reduce bitrate at the same visual quality, or to serve players that require AV1 playback. See [Feature details](../index.mdx#feature-details) for supported codecs.
 
 - **G.711 audio ingest**
 
-  RTMP and RTMPS ingest now accepts G.711 A-law and u-law audio, commonly used by security cameras and hardware encoders. Media Gateway maps G.711 audio to PCMA or PCMU without requiring a transcoding template. For details, see [Push G.711 audio](../build/push-streams/enable-g711-audio-ingest.md).
+  RTMP and RTMPS ingest now accepts G.711 A-law and u-law audio, commonly used by security cameras and hardware encoders. Media Gateway maps G.711 audio to PCMA or PCMU without requiring a transcoding template. See [Feature details](../index.mdx#feature-details) for supported codecs.
 
 - **Adaptive transcoding**
 
