@@ -68,6 +68,7 @@ describe('legacy redirect Vercel artifacts', () => {
       'unreal',
       'blueprint',
       'react-js',
+      'windows-cpp',
     ]) {
       const rule = rules.find((candidate) =>
         candidate.has?.some(
@@ -86,7 +87,7 @@ describe('legacy redirect Vercel artifacts', () => {
         groups?.platform ?? '',
       );
       expect(destination).toBe(
-        `${source}/${platform === 'react-js' ? 'javascript' : platform}`,
+        `${source}/${platform === 'react-js' ? 'javascript' : platform === 'windows-cpp' ? 'windows' : platform}`,
       );
       expect(rule?.statusCode).toBe(307);
     }
