@@ -349,25 +349,25 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 #### 新增私有化部署能力
 
 
-该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup)。
 
 
 #### 新增心跳时间配置
 
 
-该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic#heartbeatinterval-and-presencetimeout)。
 
 
 #### 新增双环境配置
 
 
-该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+该版本在 [<code>RtmConfig</code>](/zh-CN/api-reference/rtm/android/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration#protocol)。
 
 
 #### 新增用户频道类型
 
 
-该版本在 [<code>RtmChannelType</code>](/zh-CN/api-reference/rtm/android/enumv#channeltype) 中新增 <code>USER</code> 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [<code>RtmChannelType</code>](/zh-CN/api-reference/rtm/android/enumv#channeltype) 中新增 <code>USER</code> 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/messaging/send-message#userchannel)。
 
 
 #### 新增静默模式配置
@@ -383,7 +383,7 @@ description: "查看实时消息 RTM 的版本更新、问题修复、行为变�
 #### 改进连接状态管理逻辑
 
 
-该版本新增 [<code>onLinkStateEvent</code>](/zh-CN/api-reference/rtm/android/configuration#事件监听) 回调，用于替代废弃的 <code>onConnectionStateChanged</code> 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [<code>onLinkStateEvent</code>](/zh-CN/api-reference/rtm/android/configuration#事件监听) 回调，用于替代废弃的 <code>onConnectionStateChanged</code> 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic)。
 
 
 #### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
@@ -1036,7 +1036,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 ### 升级必看
 
 
-从该版本起，RTM SDK 支持通过 SPM (Swift Package Manager) 集成 SDK。你可以选择该方式进行集成，详见[安装 SDK](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#安装-sdk)。
+从该版本起，RTM SDK 支持通过 SPM (Swift Package Manager) 集成 SDK。你可以选择该方式进行集成，详见[安装 SDK](/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup#安装-sdk)。
 
 
 
@@ -1214,19 +1214,19 @@ end
 
 #### 新增私有化部署能力
 
-该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup)。
 
 #### 新增心跳时间配置
 
-该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增双环境配置
 
-该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+该版本在 [`AgoraRtmClientConfig`](/zh-CN/api-reference/rtm/ios/configuration#agorartmclientconfig) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration#protocol)。
 
 #### 新增用户频道类型
 
-该版本在 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype) 中新增 `AgoraRtmChannelTypeUser` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype) 中新增 `AgoraRtmChannelTypeUser` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/messaging/send-message#userchannel)。
 
 #### 新增静默模式配置
 
@@ -1236,7 +1236,7 @@ end
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`didReceiveLinkStateEvent`](/zh-CN/api-reference/rtm/ios/configuration#事件监听) 回调，用于替代废弃的 `connectionChangedToState` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [`didReceiveLinkStateEvent`](/zh-CN/api-reference/rtm/ios/configuration#事件监听) 回调，用于替代废弃的 `connectionChangedToState` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic)。
 
 #### 改进 AgoraRtmPresenceEventTypeRemoteStateChanged 事件通知逻辑
 
@@ -1872,15 +1872,15 @@ try {
 
 #### 新增私有化部署能力
 
-该版本在 [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup)。
 
 #### 新增心跳时间配置
 
-该版本在 [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`RTMConfig`](/zh-CN/api-reference/rtm/web/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增用户频道类型
 
-该版本在 [`channelType`](/zh-CN/api-reference/rtm/web/enumv) 中新增 `USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [`channelType`](/zh-CN/api-reference/rtm/web/enumv) 中新增 `USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/messaging/send-message#userchannel)。
 
 #### 新增静默模式配置
 
@@ -1890,7 +1890,7 @@ try {
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`linkState`](/zh-CN/api-reference/rtm/web/configuration#事件监听) 回调，用于替代废弃的 `status` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [`linkState`](/zh-CN/api-reference/rtm/web/configuration#事件监听) 回调，用于替代废弃的 `status` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic)。
 
 #### 改进 REMOTE_STATE_CHANGED 事件通知逻辑
 
@@ -2026,7 +2026,7 @@ try {
 
 #### 定时通知模式
 
-该版本支持定时通知模式。当频道中的在线人数超过 Announce Max 的值时，频道会进入定时通知模式。SDK 会以一定的时间间隔触发 `presence` 事件通知，并在 `interval` 属性中返回当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。详见[定时通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#定时通知模式)。
+该版本支持定时通知模式。当频道中的在线人数超过 Announce Max 的值时，频道会进入定时通知模式。SDK 会以一定的时间间隔触发 `presence` 事件通知，并在 `interval` 属性中返回当前频道在上一个周期内用户加入、离开、超时、状态变更等事件通知的聚合增量信息。详见[定时通知模式](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events#定时通知模式)。
 
 ### 改进
 
@@ -2776,7 +2776,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 #### 支持历史消息
 
-该版本在 `PublishOptions` 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口 [`getMessages`](/zh-CN/api-reference/rtm/flutter/message#getmessages) 获取。详细的使用指南可以参考[历史消息](/zh-CN/realtime-media/rtm/build/manage-messages/history-message)。
+该版本在 `PublishOptions` 中新增了 `storeInHistory` 属性，支持在频道中发送消息的同时，将消息存储到云端，后续用户可以通过历史消息接口 [`getMessages`](/zh-CN/api-reference/rtm/flutter/message#getmessages) 获取。详细的使用指南可以参考[历史消息](/zh-CN/realtime-media/rtm/build/message-design-and-history/history-message)。
 
 :::info[信息]
 该功能目前处于 Public Beta 阶段。如需使用，需要前往[控制台](https://console.shengwang.cn/product/RTM2?tab=config)开启。
@@ -3253,19 +3253,19 @@ Metadata data;
 
 #### 新增私有化部署能力
 
-该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup)。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `privateConfig` 参数，用于实现私有化部署功能。详见[私有化配置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup)。
 
 #### 新增心跳时间配置
 
-该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic#heartbeatinterval-and-presencetimeout)。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `heartbeatInterval` 参数，用于配置 SDK 向 RTM 服务器发送心跳包的时间间隔。详见 [Heartbeat Interval 与 Presence Timeout](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic#heartbeatinterval-and-presencetimeout)。
 
 #### 新增双环境配置
 
-该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#protocol)。
+该版本在 [`RtmConfig`](/zh-CN/api-reference/rtm/cpp/configuration) 中新增 `protocolType` 参数，用于自定义网络传输协议，以便于更好地适配你的网络环境。详见[连接协议配置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration#protocol)。
 
 #### 新增用户频道类型
 
-该版本在 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype) 中新增 `RTM_CHANNEL_TYPE_USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/manage-messages/send-message#userchannel)。
+该版本在 [`RTM_CHANNEL_TYPE`](/zh-CN/api-reference/rtm/cpp/enumv#channeltype) 中新增 `RTM_CHANNEL_TYPE_USER` 类型，用于向指定用户发送消息。该功能可以替代 v1 的点对点消息功能。详见[在 User Channel 中发送消息](/zh-CN/realtime-media/rtm/build/messaging/send-message#userchannel)。
 
 #### 新增静默模式配置
 
@@ -3275,7 +3275,7 @@ Metadata data;
 
 #### 改进连接状态管理逻辑
 
-该版本新增 [`onLinkStateEvent`](/zh-CN/api-reference/rtm/cpp/configuration#事件监听) 回调，用于替代废弃的 `onConnectionStateChanged` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic)。
+该版本新增 [`onLinkStateEvent`](/zh-CN/api-reference/rtm/cpp/configuration#事件监听) 回调，用于替代废弃的 `onConnectionStateChanged` 回调，以便更好地管理连接状态。详见[连接管理](/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic)。
 
 #### 改进 RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED 事件通知逻辑
 
@@ -3696,7 +3696,7 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 
 ### 升级必看
 
-从该版本起，RTM SDK 支持通过 SPM (Swift Package Manager) 集成 SDK。你可以选择该方式进行集成，详见[安装 SDK](/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup#安装-sdk)。
+从该版本起，RTM SDK 支持通过 SPM (Swift Package Manager) 集成 SDK。你可以选择该方式进行集成，详见[安装 SDK](/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup#安装-sdk)。
 
 ### 改进
 

@@ -23,7 +23,7 @@ description: "查询实时消息 RTM 的响应状态码、错误码含义、常�
 | --- | --- | --- | --- |
 | `200 OK` | / | 请求执行成功。 | 无需处理。 |
 | `400 Bad Request` | <Slot name="response-code-html-0-2-1" /> | 请求参数错误。 | 根据 `message` 字段的具体内容进行排查。 |
-| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 鉴权失败。 | 重新执行 [HTTP 鉴权](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/http-auth)。 |
+| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 鉴权失败。 | 重新执行 [HTTP 鉴权](/zh-CN/realtime-media/rtmp-gateway/build/http-auth)。 |
 | `403 Forbidden` | <Slot name="response-code-html-0-4-1" /> | <Slot name="response-code-html-0-4-2" /> | <Slot name="response-code-html-0-4-3" /> |
 | `404 Not Found` | Resource is not found and destroyed. | 请求的资源不存在。 | 检查传入的 `streamKey` 是否正确。 |
 | `409 Conflict` | Resource with the same name already exists. | 并发请求过多。 | 采取退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
@@ -84,7 +84,7 @@ description: "查询实时消息 RTM 的响应状态码、错误码含义、常�
 | --- | --- | --- | --- |
 | `200 OK` | / | 请求执行成功。 | 无需处理。 |
 | `400 Bad Request` | <Slot name="response-code-html-1-2-1" /> | 请求参数错误。 | 参考 HTTP 响应 Body 中的 `message` 字段进行排查。 |
-| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 鉴权失败。 | 重新执行 [HTTP 鉴权](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/http-auth)。 |
+| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 鉴权失败。 | 重新执行 [HTTP 鉴权](/zh-CN/realtime-media/rtmp-gateway/build/http-auth)。 |
 | `403 Forbidden` | <Slot name="response-code-html-1-4-1" /> | <Slot name="response-code-html-1-4-2" /> | <Slot name="response-code-html-1-4-3" /> |
 | `404 Not Found` | stream template not found. | 请求的资源不存在。 | 请检查传入的 `templateId` 是否正确。 |
 | `429 Too Many Requests` | <Slot name="response-code-html-1-6-1" /> | 并发请求过多。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |
@@ -146,7 +146,7 @@ description: "查询实时消息 RTM 的响应状态码、错误码含义、常�
 | --- | --- | --- | --- |
 | `200 OK` | / | 请求执行成功。 | 无需处理 |
 | `400 Bad Request` | <Slot name="response-code-html-2-2-1" /> | 请求参数错误。 | 参考 HTTP 响应 Body 中的 `message` 字段进行排查。 |
-| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 鉴权失败。 | 重新执行 [HTTP 鉴权](/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/http-auth)。 |
+| `401 Unauthorized` | Invalid authentication credentials. | RESTful API 鉴权失败。 | 重新执行 [HTTP 鉴权](/zh-CN/realtime-media/rtmp-gateway/build/http-auth)。 |
 | `403 Forbidden` | This project has not enabled RTMPG product yet. Contact us to enable it. | 未开通服务。 | [联系技术支持](https://ticket.shengwang.cn)开通 RTMP 网关服务。 |
 | `404 Not Found` | / | 请求的资源不存在。 | 请检查传入的 `sid` 是否正确。 |
 | `429 Too Many Requests` | <Slot name="response-code-html-2-6-1" /> | 并发请求过多。 | 采用退避策略重试。例如，第一次等待 1 秒后重试，第二次等待 3 秒后重试，第三次等待 6 秒后重试。 |

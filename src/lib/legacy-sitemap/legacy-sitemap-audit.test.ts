@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import {
   legacySitemapRedirectConfig,
   resolveLegacySitemapRedirectPath,
@@ -31,6 +32,14 @@ type DocsFilesystemIndex = {
 const manualLegacyUrls = new Set([
   'https://docs.agora.io/en/cloud-recording/get-started/getstarted',
 ]);
+const currentDocsIaMigrationRedirects = new Map(
+  Object.entries(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS).map(
+    ([sourcePath, target]) => [
+      `https://docs.agora.io/zh-CN/${sourcePath}`,
+      target,
+    ],
+  ),
+);
 
 describe('legacy sitemap compatibility audit', () => {
   const sitemapUrls = readLegacySitemapUrls();
@@ -115,12 +124,29 @@ describe('legacy sitemap compatibility audit', () => {
     expect(missingRedirects).toEqual([]);
   });
 
+  it('allows the current zh-CN small Build migration redirects outside the sitemap snapshot', () => {
+    expect(currentDocsIaMigrationRedirects.size).toBe(76);
+
+    for (const [legacyUrl, target] of currentDocsIaMigrationRedirects) {
+      expect(
+        legacySitemapRedirectConfig.rules.find(
+          (rule) => rule.legacyUrl === legacyUrl,
+        ),
+      ).toEqual(
+        expect.objectContaining({
+          target,
+        }),
+      );
+    }
+  });
+
   it('does not keep stale redirect records outside the sitemap snapshot', () => {
     const sitemapHrefs = new Set(sitemapUrls.map((url) => url.href));
     const staleRules = legacySitemapRedirectConfig.rules.filter(
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
-        !manualLegacyUrls.has(rule.legacyUrl),
+        !manualLegacyUrls.has(rule.legacyUrl) &&
+        !currentDocsIaMigrationRedirects.has(rule.legacyUrl),
     );
 
     expect(staleRules).toEqual([]);

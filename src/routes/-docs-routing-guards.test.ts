@@ -1,6 +1,31 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
-import type { DocsPagePayload } from '@/lib/docs-page.server';
+import type {
+  DocsPagePayload,
+  DocsRedirectPayload,
+} from '@/lib/docs-page.server';
+
+const { docsPagePayloadOverride } = vi.hoisted(() => ({
+  docsPagePayloadOverride: vi.fn(),
+}));
+const { docsTabIndexOverride } = vi.hoisted(() => ({
+  docsTabIndexOverride: vi.fn(),
+}));
+const { publishedLocaleOverride } = vi.hoisted(() => ({
+  publishedLocaleOverride: { value: false },
+}));
+const { staticLegacyRedirectOverride } = vi.hoisted(() => ({
+  staticLegacyRedirectOverride: {
+    value: undefined as
+      | {
+          preserveSearch: boolean;
+          redirectUrl: string;
+          statusCode?: 301;
+        }
+      | null
+      | undefined,
+  },
+}));
 
 vi.mock('@/lib/docs-route-preload', () => ({
   preloadDocsPageContent: vi.fn(),
@@ -17,6 +42,11 @@ vi.mock('@/lib/docs-page', () => ({
       tab: string;
     };
   }) => {
+    const override = docsPagePayloadOverride(data);
+    if (override !== undefined) {
+      return override;
+    }
+
     const { loadDocsPagePayload } = await import('@/lib/docs-page.server');
 
     return loadDocsPagePayload(
@@ -31,6 +61,11 @@ vi.mock('@/lib/docs-page', () => ({
   }: {
     data: { locale: string; tab: string };
   }) => {
+    const override = docsTabIndexOverride(data);
+    if (override !== undefined) {
+      return override;
+    }
+
     const { loadDocsTabIndex } = await import('@/lib/docs-page.server');
 
     return loadDocsTabIndex(data.locale, data.tab);
@@ -43,11 +78,46 @@ vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
 
   return {
     ...actual,
+    resolvePlatformStaticDocsPayload: vi.fn(
+      actual.resolvePlatformStaticDocsPayload,
+    ),
     shouldUseStaticDocsPayload: vi.fn(() => false),
   };
 });
 
-import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
+vi.mock('@/lib/docs-routing', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/docs-routing')>();
+
+  return {
+    ...actual,
+    isPublishedDocLocale: (locale: string) =>
+      publishedLocaleOverride.value
+        ? locale === 'zh-CN'
+        : actual.isPublishedDocLocale(locale),
+  };
+});
+
+vi.mock('@/lib/legacy-sitemap/static-redirects', async (importOriginal) => {
+  const actual =
+    await importOriginal<
+      typeof import('@/lib/legacy-sitemap/static-redirects')
+    >();
+
+  return {
+    ...actual,
+    resolveStaticLegacySitemapRedirect: (
+      ...args: Parameters<typeof actual.resolveStaticLegacySitemapRedirect>
+    ) =>
+      staticLegacyRedirectOverride.value !== undefined
+        ? staticLegacyRedirectOverride.value
+        : actual.resolveStaticLegacySitemapRedirect(...args),
+  };
+});
+
+import {
+  resolvePlatformStaticDocsPayload,
+  shouldUseStaticDocsPayload,
+} from '@/lib/docs-static-manifest';
 import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
@@ -273,6 +343,111 @@ describe('docs route locale guards', () => {
     ).resolves.toBeNull();
   });
 
+  it('uses a permanent static redirect for a flattened small Build route', async () => {
+    publishedLocaleOverride.value = true;
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(true);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#details',
+          pathname:
+            '/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'meeting/build/setup-and-access/enable-service',
+          locale: 'zh-CN',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/meeting/build/enable-service?from=legacy#details',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    } finally {
+      publishedLocaleOverride.value = false;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it('keeps a non-Build static legacy redirect at the default status', async () => {
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#details',
+          pathname: '/en/agora-chat/develop/ip_allowlist',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'develop/ip_allowlist',
+          locale: 'en',
+          tab: 'agora-chat',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist?from=legacy#details',
+          statusCode: 307,
+        },
+        status: 307,
+      });
+      return;
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
+  it('forwards a static resolver 301 through the tab index loader', async () => {
+    staticLegacyRedirectOverride.value = {
+      preserveSearch: true,
+      redirectUrl: '/en/realtime-media/im',
+      statusCode: 301,
+    };
+    vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(true);
+
+    try {
+      await getLoader(TabIndexRoute)({
+        location: {
+          hash: '#details',
+          pathname: '/en/introduction',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          locale: 'en',
+          tab: 'introduction',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/en/realtime-media/im?from=legacy#details',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    } finally {
+      staticLegacyRedirectOverride.value = undefined;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+    }
+
+    throw new Error('expected loader to reject with redirect');
+  });
+
   it('leaves child docs pages to child route loaders', async () => {
     await expect(
       getLoader(TabLayoutRoute)({
@@ -405,6 +580,145 @@ describe('docs route locale guards', () => {
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
+
+  it('forwards an RTM 301 DocsRedirectPayload from the page route', async () => {
+    docsPagePayloadOverride.mockReturnValueOnce({
+      redirectUrl:
+        '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+      statusCode: 301,
+    } satisfies DocsRedirectPayload);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#section',
+          pathname:
+            '/en/realtime-media/rtm/build/setup-and-access/enable-service',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'rtm/build/setup-and-access/enable-service',
+          locale: 'en',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service?from=legacy#section',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    }
+
+    throw new Error('expected page route to forward a 301 redirect payload');
+  });
+
+  it.each([false, true])(
+    'forwards a product Build 301 redirect with search and hash (static payload: %s)',
+    async (useStaticPayload) => {
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(useStaticPayload);
+      const redirectPayload = {
+        redirectUrl:
+          '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
+        statusCode: 301,
+      } satisfies DocsRedirectPayload;
+      if (useStaticPayload) {
+        // Exercise the static payload loader, not the earlier legacy resolver.
+        staticLegacyRedirectOverride.value = null;
+        vi.mocked(resolvePlatformStaticDocsPayload).mockResolvedValueOnce(
+          redirectPayload,
+        );
+      } else {
+        docsPagePayloadOverride.mockReturnValueOnce(redirectPayload);
+      }
+
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '#details',
+            pathname:
+              '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
+            searchStr: '?from=legacy',
+          },
+          params: {
+            _splat: 'media-push/build/setup-and-access/enable-service',
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        if (useStaticPayload) {
+          expect(resolvePlatformStaticDocsPayload).toHaveBeenCalledWith({
+            locale: 'zh-CN',
+            slugSegments: [
+              'media-push',
+              'build',
+              'setup-and-access',
+              'enable-service',
+            ],
+            tab: 'realtime-media',
+          });
+        }
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service?from=legacy#details',
+            statusCode: 301,
+          },
+          status: 301,
+        });
+        return;
+      } finally {
+        publishedLocaleOverride.value = false;
+        staticLegacyRedirectOverride.value = undefined;
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+
+      throw new Error('expected product Build route to redirect');
+    },
+  );
+
+  it('forwards an RTM 301 DocsRedirectPayload from the tab index route', async () => {
+    docsTabIndexOverride.mockReturnValueOnce({ url: '/en/realtime-media' });
+    docsPagePayloadOverride.mockReturnValueOnce({
+      redirectUrl:
+        '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+      statusCode: 301,
+    } satisfies DocsRedirectPayload);
+
+    try {
+      await getLoader(TabIndexRoute)({
+        location: {
+          hash: '#section',
+          pathname: '/en/realtime-media',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          locale: 'en',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service?from=legacy#section',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    }
+
+    throw new Error(
+      'expected tab index route to forward a 301 redirect payload',
+    );
+  });
 
   it(
     'serves direct .md docs page URLs as markdown',

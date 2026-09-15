@@ -23,7 +23,7 @@ description: "查看实时消息 RTM 的迁移指南，了解关键概念、参�
 3. 进入功能配置，开通 RTM 服务
 4. 获取开发所需参数，例如 App ID
 
-如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)。
+如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)。
 
 ## 集成 SDK
 
@@ -63,7 +63,7 @@ v2 的 SDK 包名为 `agora-rtm`，而 v1 的 SDK 包名为 `rtm-sdk`。
 相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/zh-CN/api-reference/rtm/android/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `ErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
-RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
+RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic#合法字符)。
 :::
 
 - v1 的示例代码如下：
@@ -487,7 +487,7 @@ rtmClient.getPresence().setState("channelName", RtmChannelType.MESSAGE, stateIte
 });
 ```
 
-你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知。具体用法见[临时用户状态](/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state)。
+你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知。具体用法见[临时用户状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state)。
 
 在 v2 中，实时监听频道中用户加入、离开、超时掉线或临时状态变更通知会更加方便，你只需实现如下步骤：
 
@@ -522,7 +522,7 @@ rtmClient.subscribe("channelName", options, new ResultCallback<Void>() {
 });
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 
@@ -557,7 +557,7 @@ rtmClient.getStorage().setChannelMetadata("channelName", RtmChannelType.MESSAGE,
 });
 ```
 
-如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata)。
+如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata)。
 
 v2 通过 `onStorageEvent` 类型的事件通知将频道属性和用户属性分发给用户，监听 `onStorageEvent` 事件通知的步骤如下：
 
@@ -644,7 +644,7 @@ RtmConfig rtmConfig = new RtmConfig.Builder(appId, userId)
 3. 进入功能配置，开通 RTM 服务
 4. 获取开发所需参数，例如 App ID
 
-如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)。
+如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)。
 
 ## 集成 SDK
 
@@ -681,7 +681,7 @@ v2 和 v1 的 SDK 包名不同，你需要注意区分。不变的是，二者�
 相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/zh-CN/api-reference/rtm/ios/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `AgoraRtmErrorInfo` 数据结构获取错误码、错误原因及 API 操作名称，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
-RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
+RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic#合法字符)。
 :::
 
 - v1 的示例代码如下：
@@ -1034,7 +1034,7 @@ NSDictionary *states = @{@"key1": @"value1", @"key2": @"value2"};
 }];
 ```
 
-你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `AgoraRtmPresenceEventTypeRemoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知。具体用法见[临时用户状态](/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state)。
+你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `AgoraRtmPresenceEventTypeRemoteStateChanged` 类型的 `didReceivePresenceEvent` 事件通知。具体用法见[临时用户状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state)。
 
 在 v2 中，实时监听频道中用户加入、离开、超时掉线或临时状态变更通知会更加方便，你只需实现如下步骤：
 
@@ -1068,7 +1068,7 @@ option.features = AgoraRtmSubscribeChannelFeaturePresence;
 }];
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 
@@ -1107,7 +1107,7 @@ metadata_opt.recordTs = true;
 }];
 ```
 
-如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata)。
+如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata)。
 
 v2 通过 `didReceiveStorageEvent` 类型的事件通知将频道属性和用户属性分发给用户，监听 `didReceiveStorageEvent` 事件通知的步骤如下：
 
@@ -1188,7 +1188,7 @@ AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_config de
 3. 进入功能配置，开通 RTM 服务
 4. 获取开发所需参数，例如 App ID
 
-如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)。
+如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)。
 
 ## 集成 SDK
 
@@ -1252,7 +1252,7 @@ v2 的 SDK 包名为 `agora-rtm`，而 v1 的 SDK 包名为 `agora-rtm-sdk`。
 相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/zh-CN/api-reference/rtm/web/configuration#Init)。此外，v2 还对 `try{...}catch{...}` 编程模式中捕获的错误信息进行了优化：将可能出现的错误进行了分类，并通过 `ErrorInfo` 数据结构回调，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
-RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
+RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic#合法字符)。
 :::
 
 - v1 的示例代码如下：
@@ -1590,7 +1590,7 @@ try{
 ```
 
 你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `REMOTE_STATE_CHANGED` 类型的 `presence` 事件通知。具体用法见[临时用户状态
-](/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state)。
+](/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state)。
 
 在 v2 中，实时监听频道中用户加入、离开、超时掉线或临时状态变更通知会更加方便，你只需实现如下步骤：
 
@@ -1621,7 +1621,7 @@ try {
 }
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 
@@ -1655,7 +1655,7 @@ try {
 }
 ```
 
-如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata)。
+如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata)。
 
 v2 通过 `storage` 类型的事件通知将频道属性和用户属性分发给用户，监听 `storage` 事件通知的步骤如下：
 
@@ -1722,7 +1722,7 @@ v2 同样支持限定访问区域功能，且用法完全一致。
 3. 进入功能配置，开通 RTM 服务
 4. 获取开发所需参数，例如 App ID
 
-如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)。
+如果你没有声网账号，点击[此处](https://sso.shengwang.cn/cn/v4/signup/with-sms)注册账号。关于如何开通服务和如何创建项目，详见[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)。
 
 ## 集成 SDK
 
@@ -1733,7 +1733,7 @@ v2 和 v1 的 SDK 包名、集成方式都不变。详见[项目配置](/zh-CN/r
 相比于 v1，v2 对初始化参数做了很大的调整，增加了很多新特性，例如端侧加密、云代理等，详见 [API 参考](/zh-CN/api-reference/rtm/cpp/configuration#create)。此外，v2 还丰富了接口调用的错误信息，你可以通过 `RTM_ERROR_CODE` 数据类型获取错误码，以便于你能更快地排查故障。结合[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)文档，你也可以快速找到解决方法。
 
 :::info[信息]
-RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic#合法字符)。
+RTM v2 版本在命名字符集的支持上与 v1 版本存在差异。例如，v2 版本不支持以 `"_"` 开头或包含 `"."` 字符的频道名、用户名和 Topic 名等。在从 v1 升级到 v2 或混合使用这两个版本时，需注意字符集差异可能导致的不兼容问题。建议在迁移时统一使用 v2 版本[支持的字符集](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic#合法字符)。
 :::
 
 - v1 的示例代码如下：
@@ -2128,7 +2128,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知。具体用法见[临时用户状态](/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state)。
+你也可以随时通过 `getState` 方法获取用户的在线状态，或者通过 `removeState` 方法删除用户的状态。用户临时状态变更后，RTM 服务器会触发 `RTM_PRESENCE_EVENT_TYPE_REMOTE_STATE_CHANGED` 类型的 `onPresenceEvent` 事件通知。具体用法见[临时用户状态](/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state)。
 
 在 v2 中，实时监听频道中用户加入、离开、超时掉线或临时状态变更通知会更加方便，你只需实现如下步骤：
 
@@ -2157,7 +2157,7 @@ uint64_t requestId;
 rtmClient->subscribe("channelName", options, requestId);
 ```
 
-v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/manage-presence/presence-events#事件通知模式)。
+v2 对实时通知进行了全新的设计，在频道中采取两种模式将 Presence 事件通知到订阅用户：**实时通知模式 (Announce)** 和**定时通知模式 (Interval)**。你可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。其中，定时通知模式可防止频道内在线用户过多而导致的事件嘈杂，详见[事件通知模式](/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events#事件通知模式)。
 
 ## 用户属性与频道属性
 
@@ -2202,7 +2202,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata)。
+如何获取、更新、删除频道属性，如何使用 CAS 控制、锁控制等可以参考[频道属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata)。用户属性的使用与频道属性是类似的，详见[用户属性](/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata)。
 
 v2 通过 `onStorageEvent` 类型的事件通知将频道属性和用户属性分发给用户，监听 `onStorageEvent` 事件通知的步骤如下：
 

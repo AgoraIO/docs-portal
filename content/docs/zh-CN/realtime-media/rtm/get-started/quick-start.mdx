@@ -15,7 +15,7 @@ description: "了解如何快速接入实时消息 RTM，完成环境准备、�
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -884,7 +884,7 @@ mRtmClient.logout(new ResultCallback<Void>() {
 本文将指导你如何利用 RTM Objective-C SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -1507,7 +1507,7 @@ self.channelMsg = self.GroupMsgTextField.text;
 本文将指导你如何利用 RTM JavaScript SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的浏览器是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的浏览器是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 获取 SDK
 
@@ -2062,7 +2062,7 @@ try {
 本文将指导你如何利用 RTM HarmonyOS SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -2876,7 +2876,7 @@ rtmManager.release();
 本文将指导你如何利用 RTM SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足如下要求：
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的开发环境和运行环境是否满足如下要求：
 
 - [Unity Hub](https://unity.com/download) 任意版本
 
@@ -3161,7 +3161,7 @@ byte[] message = System.Text.Encoding.Default.GetBytes("This message will be con
 
 根据你的应用场景需要，你可以选择字符串类型消息格式或者二进制类型消息格式，收到消息后通过 `MessageEvent` 中 `messageType` 字段加以区分。
 
-你也可以使用 `JSON` 或 `Protobuf` 等方式来构建你的负载结构以便于简化业务逻辑，此部分内容可以参考[消息负载序列化](/zh-CN/realtime-media/rtm/build/manage-messages/serialized)。但请记住在把消息负载转交给 RTM 发送前，需要对消息负载进行序列化。
+你也可以使用 `JSON` 或 `Protobuf` 等方式来构建你的负载结构以便于简化业务逻辑，此部分内容可以参考[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。但请记住在把消息负载转交给 RTM 发送前，需要对消息负载进行序列化。
 
 ## 初始化 RTM
 在 **HelloWorld.cs** 中调用 `CreateAgoraRtmClient` 方法初始化 `IRtmClient`。你需要提供如下信息：
@@ -4124,7 +4124,7 @@ public class HelloWorld : MonoBehaviour
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -4536,7 +4536,7 @@ void main() async {
 
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的开发环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 
@@ -5158,7 +5158,7 @@ int main(int argc, const char * argv[]) {
 本文将指导你如何利用 RTM Swift SDK 构建简单的应用程序，内容涵盖了集成和开发的基础知识：开通声网账号、获取 SDK、发送消息、接收消息等。
 ## 准备工作
 
-开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并检查你的开发环境和运行环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
+开始构建项目前，你需要完成[开通 RTM 服务](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service)，并检查你的开发环境和运行环境是否满足[平台支持](/zh-CN/realtime-media/rtm/reference/platform-support)中的最低版本要求。
 
 ## 构建项目
 

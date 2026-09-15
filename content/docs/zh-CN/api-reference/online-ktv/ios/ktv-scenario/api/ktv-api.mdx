@@ -125,7 +125,7 @@ func renewToken(
 
 #### 参数
 
-- `rtmToken`：用于音乐内容中心鉴权的 RTM Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+- `rtmToken`：用于音乐内容中心鉴权的 RTM Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - `chorusChannelRtcToken`：加入合唱子频道的 Token。在合唱场景下，领唱需要加入两个频道，主频道用于发布人声和播放器的混流，合唱子频道用于发布麦克风采集的音频流。伴唱需要加入合唱子频道来同步领唱的人声。
 
 <a id="renewinnerdatastreamid"></a>
@@ -812,7 +812,7 @@ K 歌的场景：
 - `rtmToken`：RTM Token，用于音乐内容中心鉴权。
 
 :::info[信息]
-你可以获取临时 RTM Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTM Token 服务器来生成、更新 Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+你可以获取临时 RTM Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTM Token 服务器来生成、更新 Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 :::
 
 - `engine`：[`AgoraRtcEngineKit`](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
@@ -885,7 +885,7 @@ open class KTVSongConfiguration: NSObject {
 - `rtmToken`：RTM Token，用于音乐内容中心鉴权。
 
    :::info[信息]
-   你可以获取临时 RTM Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTM Token 服务器来生成、更新 Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation)。
+   你可以获取临时 RTM Token 用于测试，但在正式生产环境中，你需要自己部署一个 RTM Token 服务器来生成、更新 Token，详见 [部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
    :::
 
 - `engine`：[`AgoraRtcEngineKit`](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。

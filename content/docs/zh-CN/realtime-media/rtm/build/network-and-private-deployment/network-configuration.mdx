@@ -1,0 +1,326 @@
+---
+title: "网络配置"
+description: "了解实时消息 RTM 的连接协议、代理和防火墙配置。"
+---
+<a id="protocol"></a>
+## 连接协议配置
+
+为保证连接的稳定性和服务的持续可用性，RTM 客户端与边缘服务器建立连接时会为每种服务（`MESSAGE` 服务和 `STREAM` 服务）分别建立两条传输链路。默认情况下，这两条链路分别基于 TCP 协议和 UDP 协议，这种设计使得任何一条链路出现网络问题都不会影响传输效果。相较于其他基于 WebSocket 的消息传输方案，RTM 的冗余链路设计能够最大程度地提升传输稳定性和消息到达率。
+
+在某些情况下，用户可能会发现他们的网络不支持 UDP 端口的传输，这可能是暂时的，也可能是永久性的。在这种情况下，为了确保双链路设计能够最大程度地发挥作用，SDK 允许用户将两条链路都配置成 TCP 协议，只需在 `config.rtm` 中设置 `protocolType` 字段即可。以下是一个将双链路都配置为 TCP 协议的代码示例：
+
+```java tab="Java" tabGroup="rtm-build-setup-and-access-application-setup-1"
+RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
+    .protocolType(RtmProtocolType.TCP_ONLY)
+    .build();
+```
+
+```swift tab="Swift" tabGroup="rtm-build-setup-and-access-application-setup-1"
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+rtmConfig.protocolType = .tcpOnly
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-application-setup-1"
+AgoraRtmClientConfig* rtm_config = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+rtm_config.protocolType = AgoraRtmProtocolTypeTcpOnly;
+```
+
+```cpp tab="C++" tabGroup="rtm-build-setup-and-access-application-setup-1"
+RtmConfig config;
+config.appId = "appid";
+config.userId = "userId";
+config.protocolType = RTM_PROTOCOL_TYPE_TCP_ONLY;
+```
+
+```dart tab="Dart" tabGroup="rtm-build-setup-and-access-application-setup-1"
+late RtmClient rtmClient;
+const protocolType = RtmProtocolType.tcpOnly;
+const rtmConfig = RtmConfig( protocolType:protocolType );
+try {
+    final (status,client) = await RTM("myAppId", "Tony", rtmConfig:rtmConfig);
+    if (status.error == true) {
+        print(status);
+    } else {
+        rtmClient = client;
+        print('Initialize success!');
+    }
+} catch (e) {
+    print('Failed to create RTM client: $e');
+}
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-application-setup-1"
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId",
+  protocolType: RtmProtocolType.TCP_ONLY
+};
+```
+
+:::info[信息]
+SDK 不支持将两条链路同时配置为 UDP 协议。
+:::
+
+
+<a id="cloud-proxy-设置"></a>
+## Cloud Proxy 设置
+
+在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Cloud Proxy 云端代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
+
+```javascript showLineNumbers
+const { RTM } = AgoraRTM;
+const appId = "your_appId";
+const userId = "your_userId";
+const rtmConfig = { cloudProxy: true };
+const rtm = new RTM(appId, userId, rtmConfig);
+```
+
+:::info[信息]
+该功能仅适用于 Message Channel。
+:::
+
+
+<a id="proxy-设置"></a>
+## Proxy 设置
+
+在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
+
+```csharp tab="C#" tabGroup="rtm-build-setup-and-access-application-setup-4" showLineNumbers
+using Agora.Rtm;
+
+private IRtmClient rtmClient;
+
+var proxyConfig = new RtmProxyConfig()
+// set proxy type as HTTP.
+proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
+// set your proxy server address.
+proxyConfig.server = "192.168.11.101";
+// set your listener port.
+proxyConfig.port = 8080;
+// set your proxy account
+proxyConfig.account = "Tony";
+// set your proxy password
+proxyConfig.password = "my_password"
+
+RtmConfig config = new RtmConfig();
+// initialize proxyConfig
+config.proxyConfig = proxyConfig;
+
+try
+{
+    rtmClient = RtmClient.CreateAgoraRtmClient(config);
+    Debug.Log("RTM Client Initialize Sucessfull");
+}
+catch (RTMException e)
+{
+    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
+    Debug.Log(string.Format("Error code: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
+}
+```
+
+```java tab="Java" tabGroup="rtm-build-setup-and-access-application-setup-4"
+RtmProxyConfig proxyConfig = new RtmProxyConfig()
+
+// set proxy type as HTTP.
+proxyConfig.proxyType = RtmProxyType.HTTP;
+// set your proxy server address.
+proxyConfig.server = "192.168.11.101";
+// set your listener port.
+proxyConfig.port = 8080;
+// set your proxy account
+proxyConfig.account = "your_account";
+// set your proxy password
+proxyConfig.password = "your_password"
+
+RtmConfig config = new RtmConfig();
+// initialize proxyConfig
+config.proxyConfig = proxyConfig;
+
+try {
+    mRtmClient = RtmClient.create(rtmConfig);
+} catch(Exception e) {
+    log(INFO, "create rtm client failed with exception: " e.toString());
+}
+```
+
+```swift tab="Swift" tabGroup="rtm-build-setup-and-access-application-setup-4"
+do {
+let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
+
+let proxyConfig = AgoraRtmProxyConfig()
+proxyConfig.proxyType = .http
+proxyConfig.server = "your_proxy_server"
+proxyConfig.port = 8080
+proxyConfig.account = "username"
+proxyConfig.password = "password"
+
+rtmConfig.proxyConfig = proxyConfig
+
+let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
+    if rtmClient != nil {
+        print("RTM Client initialized successfully!")
+    }
+} catch let error {
+    print("Failed to initialize RTM client. Error: \(error)")
+}
+```
+
+```objc tab="Objective-C" tabGroup="rtm-build-setup-and-access-application-setup-4"
+AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
+
+// set proxy config
+AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] init];
+proxy_config.proxyType = AgoraRtmProxyTypeHttp;
+proxy_config.server = @"your_proxy_server";
+proxy_config.port = 8080; //your server's port
+proxy_config.account = @"username";
+proxy_config.password = @"password";
+rtm_cfg.proxyConfig = proxy_config;
+rtm_cfg.logConfig = log_cfg;
+
+NSError* initError = nil;
+AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
+if (rtm != nil) {
+    NSLog(@"init rtm success!!");
+} else {
+    NSLog(@"init rtm failed!!");
+}
+```
+
+```cpp tab="C++" tabGroup="rtm-build-setup-and-access-application-setup-4"
+RtmConfig config;
+config.appId = "your_appid";
+config.userId = "your_name";
+config.eventHandler = new RtmEventHandler();
+
+config.proxyConfig.proxyType = RTM_PROXY_TYPE_HTTP;
+config.proxyConfig.server = "x.x.x.x";
+config.proxyConfig.port = 8080;
+config.proxyConfig.account = "user_name";
+config.proxyConfig.password = "password";
+
+int errorCode = 0;
+IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
+if (!rtmClient || errorCode != 0) {
+  // create rtm client failed
+}
+```
+
+```dart tab="Dart" tabGroup="rtm-build-setup-and-access-application-setup-4"
+const proxyConfig = RtmProxyConfig(
+    proxyType: RtmProxyType.http,
+    server: "x.x.x.x",
+    port: 8080,
+    account: "user_name",
+    password: "password");
+
+const rtmConfig = RtmConfig( proxyConfig:proxyConfig );
+```
+
+```typescript tab="TypeScript" tabGroup="rtm-build-setup-and-access-application-setup-4"
+import { RtmClient, RtmConfig, RtmProxyConfig, RtmProxyType } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const proxyConfig: RtmProxyConfig = {
+  proxyType: RtmProxyType.HTTP,
+  server: "192.168.11.101",
+  port: 8080,
+  account: "your_account",
+  password: "your_password"
+};
+
+const rtmConfig: RtmConfig = {
+  appId: "your_appId",
+  userId: "your_userId",
+  proxyConfig: proxyConfig
+};
+
+try {
+  const rtmClient = new RtmClient(rtmConfig);
+  console.log("RTM Client Initialize Successful");
+} catch (error) {
+  if (error instanceof RtmError) {
+    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
+  } else {
+    console.error("Failed to initialize RTM client:", error);
+  }
+}
+```
+
+
+<a id="防火墙白名单设置"></a>
+## 防火墙白名单设置
+
+大型企业、医院、高校、银行等安全需求较高的机构会部署防火墙将办公环境与外网隔离开来，保护内部信息安全。为避免这些企业用户因防火墙无法使用声网的服务，你需要设置防火墙白名单。
+
+:::info[信息]
+本节展示的目标端口可能会根据实际情况调整。如果遇到问题，联系 rtm-support@agora.io。
+:::
+
+### 消息频道
+
+Message Channel 是 RTM 的基础服务，只要你使用了 RTM，就需要将以下内容添加到防火墙白名单：
+
+#### 域名
+
+```shell
+.edge.agora.io
+.edge.sd-rtn.com
+web-1.ap.sd-rtn.com
+web-2.ap.sd-rtn.com
+web-3.ap.sd-rtn.com
+web-4.ap.sd-rtn.com
+ap-web-1.agora.io
+ap-web-2.agora.io
+ap-web-3.agora.io
+ap-web-4.agora.io
+webcollector-rtm.agora.io
+logservice-rtm.agora.io
+rtm.statscollector.sd-rtn.com
+rtm.logservice.sd-rtn.com
+```
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 443; 9591; 9593; 27387 | TCP | 允许 |
+
+#### 域名
+
+```shell
+.agora.io
+```
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
+| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
+
+### 流频道
+
+如果你还使用了 Stream Channel，你还需要将以下内容添加到防火墙白名单：
+
+#### 域名
+
+```shell
+.agora.io
+.edge.agora.io
+.sd-rtn.com
+.edge.sd-rtn.com
+```
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 80; 3433; 4700 - 5000; 5668; 5669; 6080; 6443; 8667; 9667 | TCP | 允许 |
+| 3478; 4700 - 5000 | UDP | 允许 |
+
+#### 端口
+
+| 目标端口 | 协议 | 操作 |
+| --------------- | ------------ | ------------ |
+| 4001 - 4150 | UDP | 允许 |
