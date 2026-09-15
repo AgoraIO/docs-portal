@@ -9,14 +9,15 @@ Google Gemini Live 提供原生实时音频处理能力，适合使用 Google AI
 
 | 模型 | 说明 |
 | --- | --- |
-| `gemini-3.1-flash-live-preview` | 通用 Gemini Live 模型。 |
-| `gemini-3.5-live` | Gemini Live 模型。 |
-| `gemini-3.5-live-thinking` | Gemini Live 思考模型。 |
+| `models/gemini-3.8-live` | 通用 Gemini Live 模型。 |
+| `models/gemini-3.8-live-extended-thinking` | 具有可调节推理预算的 Gemini Live 模型。 |
+
+当对话需要额外推理时，使用 `models/gemini-3.8-live-extended-thinking`。将 `thinking_level` 设置为 `low`、`medium` 或 `high`。若要使用 `models/gemini-3.8-live`，请省略 `thinking_level`。
 
 ## 示例配置
 
 :::info[预览端点]
-`gemini-3.5-live` 和 `gemini-3.5-live-thinking` 目前为早期访问预览版。使用任一模型时，请将[启动对话式 AI 智能体](/en/api-reference/api-ref/conversational-ai/join)请求发送至以下预览端点，而非标准端点，并包含所需请求头：
+`models/gemini-3.8-live` 和 `models/gemini-3.8-live-extended-thinking` 目前为早期访问预览版。使用任一模型时，请将[启动对话式 AI 智能体](/en/api-reference/api-ref/conversational-ai/join)请求发送至以下预览端点，而非标准端点，并包含所需请求头：
 
 - **URL**：`https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
 - **请求头**：`agora-feature: gemini-live`
@@ -27,7 +28,8 @@ Google Gemini Live 提供原生实时音频处理能力，适合使用 Google AI
   "enable": true,
   "api_key": "<gemini_key>",
   "params": {
-    "model": "gemini-3.5-live",
+    "model": "models/gemini-3.8-live-extended-thinking",
+    "thinking_level": "medium",
     "instructions": "You are a friendly assistant.",
     "voice": "Charon",
     "transcribe_agent": true,
@@ -42,6 +44,7 @@ Google Gemini Live 提供原生实时音频处理能力，适合使用 Google AI
 ## 关键参数
 
 - `api_key`：Gemini API key
-- `params.model`：Gemini Live 模型名。支持 `gemini-3.1-flash-live-preview`、`gemini-3.5-live` 和 `gemini-3.5-live-thinking`
+- `params.model`：Gemini Live 模型名。支持 `models/gemini-3.8-live` 和 `models/gemini-3.8-live-extended-thinking`。
+- `params.thinking_level`：仅适用于 `models/gemini-3.8-live-extended-thinking` 的推理预算。可设置为 `low`、`medium` 或 `high`；使用 `models/gemini-3.8-live` 时请勿设置此参数。
 - `params.voice`：语音风格
 - `transcribe_agent` / `transcribe_user`：是否实时转写
