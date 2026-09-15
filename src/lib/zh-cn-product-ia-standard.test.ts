@@ -925,6 +925,59 @@ describe('zh-CN product IA standard', () => {
     },
   );
 
+  it.each([
+    [
+      ['local-server-recording', 'build', 'setup-and-access', 'enable-service'],
+      '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service',
+    ],
+    [
+      ['usage-analytics', 'build', 'rtc', 'call-search', 'overview'],
+      '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview',
+    ],
+  ] as const)(
+    'redirects the representative old Build path %j directly to its canonical page with 301',
+    async (slugSegments, redirectUrl) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [...slugSegments]),
+      ).resolves.toEqual({ redirectUrl, statusCode: 301 });
+
+      const { slugSegments: canonicalSegments, tab } =
+        parseZhCnDocsUrl(redirectUrl);
+      expect(
+        resolveZhCnProductIaRedirect('zh-CN', tab, canonicalSegments),
+      ).toBeNull();
+    },
+  );
+
+  it('prioritizes an exact recording redirect over its matching prefix', () => {
+    const redirectUrl =
+      '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service';
+    const redirect = resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', [
+      'recording',
+      'local-server-recording',
+      'get-started',
+      'enable-service',
+    ]);
+
+    expect(redirect).toBe(redirectUrl);
+
+    const { slugSegments: canonicalSegments, tab } =
+      parseZhCnDocsUrl(redirectUrl);
+    expect(
+      resolveZhCnProductIaRedirect('zh-CN', tab, canonicalSegments),
+    ).toBeNull();
+  });
+
+  it('keeps prefix redirects for unmatched legacy recording paths', () => {
+    expect(
+      resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', [
+        'recording',
+        'local-server-recording',
+        'unmapped-legacy-page',
+      ]),
+    ).toBe('/zh-CN/realtime-media/local-server-recording/unmapped-legacy-page');
+  });
+
   it.each(productBuildPageMoves)(
     'loads the canonical %s page %s at %s without redirecting',
     async (productRoot, _legacyPath, canonicalPath) => {

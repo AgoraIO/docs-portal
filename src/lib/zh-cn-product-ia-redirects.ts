@@ -1793,6 +1793,13 @@ export function resolveZhCnProductIaRedirect(
 
   const path = `${tab}/${slugSegments.join('/')}`;
 
+  const exactRedirect =
+    ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS[path] ??
+    ZH_CN_PRODUCT_IA_REDIRECTS[path];
+  if (exactRedirect) {
+    return exactRedirect;
+  }
+
   for (const [
     sourcePrefix,
     targetPrefix,
@@ -1802,11 +1809,7 @@ export function resolveZhCnProductIaRedirect(
     }
   }
 
-  return (
-    ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS[path] ??
-    ZH_CN_PRODUCT_IA_REDIRECTS[path] ??
-    null
-  );
+  return null;
 }
 
 export { ZH_CN_PRODUCT_IA_REDIRECTS, ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS };
