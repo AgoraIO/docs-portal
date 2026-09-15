@@ -540,7 +540,7 @@ export async function loadDocsPagePayload(
     const path = `${tab}/${slugSegments.join('/')}`;
     const statusCode: 301 | undefined =
       path in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS ||
-      (path.includes('/build/') && path in ZH_CN_PRODUCT_IA_REDIRECTS) ||
+      path in ZH_CN_PRODUCT_IA_REDIRECTS ||
       isZhCnRtmBuildIaRedirect(zhCnProductIaRedirect)
         ? 301
         : undefined;

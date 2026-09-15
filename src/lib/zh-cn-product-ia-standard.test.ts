@@ -949,17 +949,19 @@ describe('zh-CN product IA standard', () => {
     },
   );
 
-  it('prioritizes an exact recording redirect over its matching prefix', () => {
+  it('prioritizes an exact recording redirect over its matching prefix', async () => {
     const redirectUrl =
       '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service';
-    const redirect = resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', [
+    const slugSegments = [
       'recording',
       'local-server-recording',
       'get-started',
       'enable-service',
-    ]);
+    ];
 
-    expect(redirect).toBe(redirectUrl);
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', slugSegments),
+    ).resolves.toEqual({ redirectUrl, statusCode: 301 });
 
     const { slugSegments: canonicalSegments, tab } =
       parseZhCnDocsUrl(redirectUrl);
@@ -968,14 +970,23 @@ describe('zh-CN product IA standard', () => {
     ).toBeNull();
   });
 
-  it('keeps prefix redirects for unmatched legacy recording paths', () => {
+  it('keeps unmatched legacy recording prefix redirects at the default status', async () => {
+    const slugSegments = [
+      'recording',
+      'local-server-recording',
+      'unmapped-legacy-page',
+    ];
+
     expect(
-      resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', [
-        'recording',
-        'local-server-recording',
-        'unmapped-legacy-page',
-      ]),
+      resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', slugSegments),
     ).toBe('/zh-CN/realtime-media/local-server-recording/unmapped-legacy-page');
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', slugSegments),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/zh-CN/realtime-media/local-server-recording/unmapped-legacy-page',
+    });
   });
 
   it.each(productBuildPageMoves)(
