@@ -38,7 +38,7 @@ agent = (
     Agent(client)
     .with_mllm(GeminiLive(
         api_key='your-google-api-key',
-        model='gemini-3.1-flash-live-preview',
+        model='gemini-3.5-live',
         voice='Charon',
         instructions='You are a friendly assistant.',
         transcribe_agent=True,
@@ -58,7 +58,7 @@ import { Agent, GeminiLive } from 'agora-agents';
 const agent = new Agent({ client })
   .withMllm(new GeminiLive({
     apiKey: 'your-google-api-key',
-    model: 'gemini-3.1-flash-live-preview',
+    model: 'gemini-3.5-live',
     voice: 'Charon',
     instructions: 'You are a friendly assistant.',
     transcribeAgent: true,
@@ -77,7 +77,7 @@ import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
 agent := agentkit.NewAgent(client).WithMllm(
     vendors.NewGeminiLive(vendors.GeminiLiveOptions{
         APIKey:         "your-google-api-key",
-        Model:          "gemini-3.1-flash-live-preview",
+        Model:          "gemini-3.5-live",
         Voice:          "Charon",
         Instructions:   "You are a friendly assistant.",
         TranscribeAgent: agora.Bool(true),
@@ -110,7 +110,7 @@ Use the following `mllm` configuration in your request:
     }
   ],
   "params": {
-    "model": "gemini-3.1-flash-live-preview",
+    "model": "gemini-3.5-live",
     "instructions": "You are a friendly assistant.",
     "voice": "Charon",
     "affective_dialog": false,
