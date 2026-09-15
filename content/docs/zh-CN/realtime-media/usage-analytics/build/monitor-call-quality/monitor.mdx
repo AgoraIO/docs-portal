@@ -49,7 +49,7 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 
 ### 实时规模
 
-实时规模通过曲线图展示最近 30 分钟内的在线用户数、在线频道数、云端录制任务数、输入在线流媒体任务数和旁路推流任务数共五项指标。其中，云端录制任务数、输入在线流媒体任务数和旁路推流任务数将根据项目的实际服务开通情况进行展示，三项服务均未开通时将不展示。各指标含义详见[规模指标](/zh-CN/realtime-media/usage-analytics/build/rtc/monitor)。
+实时规模通过曲线图展示最近 30 分钟内的在线用户数、在线频道数、云端录制任务数、输入在线流媒体任务数和旁路推流任务数共五项指标。其中，云端录制任务数、输入在线流媒体任务数和旁路推流任务数将根据项目的实际服务开通情况进行展示，三项服务均未开通时将不展示。各指标含义详见[规模指标](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor)。
 
 ![](https://web-cdn.agora.io/docs-files/1680504154135)
 
@@ -59,7 +59,7 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 
 ### 实时质量
 
-实时质量通过热力图展示最近 30 分钟内的平均用户登录频道时间、音频卡顿率、视频卡顿率、网络延迟率四项指标数据。四项指标的含义详见[质量指标](/zh-CN/realtime-media/usage-analytics/build/rtc/monitor)。
+实时质量通过热力图展示最近 30 分钟内的平均用户登录频道时间、音频卡顿率、视频卡顿率、网络延迟率四项指标数据。四项指标的含义详见[质量指标](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor)。
 
 ![](https://web-cdn.agora.io/docs-files/1634010357963)
 
@@ -69,8 +69,8 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 
 此外，热力图还提供数据采样功能：
 
-- 频道采样：在音频卡顿率、视频卡顿率或网络延迟率的热力图上，点击任一小方块，可以看到对应时间范围内的频道排行列表。列表按照指标数据从高到低排列，最多显示 20 个频道。如果需要对某个频道进行详细调查，点击**操作**下面的**查看通话详情**，跳转到[通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面。
-- 用户采样：在平均用户登录频道时间的热力图上，点击任一小方块，可以看到对应时间范围内的用户排行列表。列表按照指标数据从高到低排列，最多显示 50 个用户。如果需要对某个用户进行详细调查，点击**操作**下面的**查看通话详情**，跳转到[通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面。
+- 频道采样：在音频卡顿率、视频卡顿率或网络延迟率的热力图上，点击任一小方块，可以看到对应时间范围内的频道排行列表。列表按照指标数据从高到低排列，最多显示 20 个频道。如果需要对某个频道进行详细调查，点击**操作**下面的**查看通话详情**，跳转到[通话调查](/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview)页面。
+- 用户采样：在平均用户登录频道时间的热力图上，点击任一小方块，可以看到对应时间范围内的用户排行列表。列表按照指标数据从高到低排列，最多显示 50 个用户。如果需要对某个用户进行详细调查，点击**操作**下面的**查看通话详情**，跳转到[通话调查](/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview)页面。
 
 数据采样是快速定位问题频道或用户的一种有效途径。以视频卡顿率的热力图为例，当前看到过去 8 分钟视频卡顿率大于 5% 的频道数有 2 个：
 
@@ -86,16 +86,16 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 
 ### 告警通知
 
-开通水晶球的[告警通知](/zh-CN/realtime-media/usage-analytics/build/rtc/alarm)服务后，告警通知版块会展示所选项目最新的告警消息，最多显示三条。
+开通水晶球的[告警通知](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/alarm)服务后，告警通知版块会展示所选项目最新的告警消息，最多显示三条。
 
 ![](https://web-cdn.agora.io/docs-files/1634010420726)
 
 你可以在该版块进行以下操作：
 
 - 跳转到告警通知：版块右上角显示最近 3 小时内的告警消息数量，点击可以跳转到告警通知页面。
-- 跳转到通话调查：对于每一条告警消息，点击**前往调查**可以跳转到对应的[通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面，详细查看异常情况。
+- 跳转到通话调查：对于每一条告警消息，点击**前往调查**可以跳转到对应的[通话调查](/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview)页面，详细查看异常情况。
 
-开通和配置告警通知功能请参考[告警通知](/zh-CN/realtime-media/usage-analytics/build/rtc/alarm)。
+开通和配置告警通知功能请参考[告警通知](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/alarm)。
 
 ### 频道排行
 
@@ -121,7 +121,7 @@ description: "了解如何在水晶球中实时监控，包括适用场景、配
 - 选择指标：在地图右上角选择指标为**视频卡顿率**或**音频卡顿率**。
 - 选择地区：在地图右上角选择**全球地图**、**中国地图**、**美国地图**。
 - 查看数据：将鼠标悬浮在某一区域或气泡上，可以看到对应的指标数据和用户数。
-- 频道采样：点击任一区域或气泡，可以看到对应时间范围内的频道排行列表。列表按照指标数据从高到低排列，最多显示 20 个频道。如果需要对某个频道进行详细调查，点击**操作**下面的**查看通话详情**，跳转到[通话调查](/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview)页面。
+- 频道采样：点击任一区域或气泡，可以看到对应时间范围内的频道排行列表。列表按照指标数据从高到低排列，最多显示 20 个频道。如果需要对某个频道进行详细调查，点击**操作**下面的**查看通话详情**，跳转到[通话调查](/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview)页面。
 
 :::warning[注意]
 部分套餐包不支持数据采样的功能。详见套餐包详情。

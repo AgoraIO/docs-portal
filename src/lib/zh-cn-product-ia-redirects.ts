@@ -903,8 +903,34 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
   'realtime-media/transcoding/reference/ncs-events':
     '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+  'realtime-media/usage-analytics/build/fls/data':
+    '/zh-CN/realtime-media/usage-analytics/build/view-live-data',
+  'realtime-media/usage-analytics/build/rtc/monitor':
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor',
+  'realtime-media/usage-analytics/build/rtc/alarm':
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/alarm',
+  'realtime-media/usage-analytics/build/rtc/call-search/overview':
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview',
+  'realtime-media/usage-analytics/build/rtc/call-search/call-detail':
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/call-detail',
+  'realtime-media/usage-analytics/build/rtc/call-search/troubleshooting':
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/troubleshooting',
+  'realtime-media/usage-analytics/build/rtc/data-insight/basic':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/basic',
+  'realtime-media/usage-analytics/build/rtc/data-insight/plus':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/plus',
+  'realtime-media/usage-analytics/build/rtc/data-insight/troubleshooting':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/troubleshooting',
+  'realtime-media/usage-analytics/build/rtc/embeded':
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/embeded',
+  'realtime-media/usage-analytics/build/rtc/guarantee-rest':
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/guarantee-rest',
+  'realtime-media/usage-analytics/build/rtc/metric-ids':
+    '/zh-CN/realtime-media/usage-analytics/build/metric-ids',
+  'realtime-media/usage-analytics/build/rtm/data-insight':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-signaling-data',
   'realtime-media/usage-analytics/fls/data':
-    '/zh-CN/realtime-media/usage-analytics/build/fls/data',
+    '/zh-CN/realtime-media/usage-analytics/build/view-live-data',
   'realtime-media/usage-analytics/overview/billing':
     '/zh-CN/realtime-media/usage-analytics/reference/billing',
   'realtime-media/usage-analytics/overview/product-overview':
@@ -912,37 +938,37 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/usage-analytics/overview/release-notes':
     '/zh-CN/realtime-media/usage-analytics/reference/release-notes',
   'realtime-media/usage-analytics/rtc/alarm':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/alarm',
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/alarm',
   'realtime-media/usage-analytics/rtc/api-limits':
     '/zh-CN/realtime-media/usage-analytics/reference/api-limits',
   'realtime-media/usage-analytics/rtc/call-search/call-detail':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/call-detail',
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/call-detail',
   'realtime-media/usage-analytics/rtc/call-search/concept':
     '/zh-CN/realtime-media/usage-analytics/reference/concept',
   'realtime-media/usage-analytics/rtc/call-search/overview':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview',
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview',
   'realtime-media/usage-analytics/rtc/call-search/troubleshooting':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/troubleshooting',
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/troubleshooting',
   'realtime-media/usage-analytics/rtc/data-insight/basic':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/basic',
   'realtime-media/usage-analytics/rtc/data-insight/plus':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/plus',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/plus',
   'realtime-media/usage-analytics/rtc/data-insight/troubleshooting':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/troubleshooting',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/troubleshooting',
   'realtime-media/usage-analytics/rtc/embeded':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/embeded',
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/embeded',
   'realtime-media/usage-analytics/rtc/guarantee-rest':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/guarantee-rest',
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/guarantee-rest',
   'realtime-media/usage-analytics/rtc/metric-ids':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/metric-ids',
+    '/zh-CN/realtime-media/usage-analytics/build/metric-ids',
   'realtime-media/usage-analytics/rtc/monitor':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/monitor',
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor',
   'realtime-media/usage-analytics/rtc/response-code':
     '/zh-CN/realtime-media/usage-analytics/reference/response-code',
   'realtime-media/usage-analytics/rtm/concept':
     '/zh-CN/realtime-media/usage-analytics/reference/concept-rtm',
   'realtime-media/usage-analytics/rtm/data-insight':
-    '/zh-CN/realtime-media/usage-analytics/build/rtm/data-insight',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-signaling-data',
   'realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files',
   'realtime-media/whiteboard/fastboard-sdk/advanced-features/customize-widget':
