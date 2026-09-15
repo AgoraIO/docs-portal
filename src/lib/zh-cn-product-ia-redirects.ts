@@ -1454,40 +1454,74 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/ppt-transcoding/slide-api':
     '/zh-CN/solutions/ppt-transcoding/reference/slide-api',
   'solutions/showroom/advanced-features/audio-scenario':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/audio-scenario',
+    '/zh-CN/solutions/showroom/build/audio-scenario',
   'solutions/showroom/advanced-features/beauty/bytedance/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/bytedance/integrate',
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-integrate',
   'solutions/showroom/advanced-features/beauty/bytedance/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/bytedance/run-project',
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-run-project',
   'solutions/showroom/advanced-features/beauty/faceunity/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/faceunity/integrate',
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-integrate',
   'solutions/showroom/advanced-features/beauty/faceunity/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/faceunity/run-project',
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-run-project',
   'solutions/showroom/advanced-features/beauty/overview':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/overview',
+    '/zh-CN/solutions/showroom/build/beauty/overview',
   'solutions/showroom/advanced-features/beauty/sensetime/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/sensetime/integrate',
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-integrate',
   'solutions/showroom/advanced-features/beauty/sensetime/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/sensetime/run-project',
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-run-project',
   'solutions/showroom/advanced-features/hq-video':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/hq-video',
+    '/zh-CN/solutions/showroom/build/hq-video',
   'solutions/showroom/advanced-features/video-loader/guidance':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/guidance',
+    '/zh-CN/solutions/showroom/build/video-loader/guidance',
   'solutions/showroom/advanced-features/video-loader/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/integrate',
+    '/zh-CN/solutions/showroom/build/video-loader/integrate',
   'solutions/showroom/advanced-features/video-loader/overview':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/overview',
+    '/zh-CN/solutions/showroom/build/video-loader/overview',
   'solutions/showroom/advanced-features/video-loader/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/run-project',
+    '/zh-CN/solutions/showroom/build/video-loader/run-project',
   'solutions/showroom/advanced-features/video-moderation':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-moderation',
+    '/zh-CN/solutions/showroom/build/video-moderation',
   'solutions/showroom/api': '/zh-CN/solutions/showroom/reference/api',
   'solutions/showroom/basic-features/integrate-check-point':
-    '/zh-CN/solutions/showroom/build/implement-core-features/integrate-check-point',
+    '/zh-CN/solutions/showroom/build/integrate-check-point',
   'solutions/showroom/basic-features/integrate-showroom':
-    '/zh-CN/solutions/showroom/build/implement-core-features/integrate-showroom',
+    '/zh-CN/solutions/showroom/build/integrate-showroom',
   'solutions/showroom/get-started/enable-service':
-    '/zh-CN/solutions/showroom/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/showroom/build/enable-service',
+  'solutions/showroom/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/showroom/build/enable-service',
+  'solutions/showroom/build/implement-core-features/integrate-check-point':
+    '/zh-CN/solutions/showroom/build/integrate-check-point',
+  'solutions/showroom/build/implement-core-features/integrate-showroom':
+    '/zh-CN/solutions/showroom/build/integrate-showroom',
+  'solutions/showroom/build/customize-and-extend/audio-scenario':
+    '/zh-CN/solutions/showroom/build/audio-scenario',
+  'solutions/showroom/build/customize-and-extend/hq-video':
+    '/zh-CN/solutions/showroom/build/hq-video',
+  'solutions/showroom/build/customize-and-extend/video-moderation':
+    '/zh-CN/solutions/showroom/build/video-moderation',
+  'solutions/showroom/build/customize-and-extend/beauty/overview':
+    '/zh-CN/solutions/showroom/build/beauty/overview',
+  'solutions/showroom/build/customize-and-extend/beauty/bytedance/integrate':
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-integrate',
+  'solutions/showroom/build/customize-and-extend/beauty/bytedance/run-project':
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-run-project',
+  'solutions/showroom/build/customize-and-extend/beauty/faceunity/integrate':
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-integrate',
+  'solutions/showroom/build/customize-and-extend/beauty/faceunity/run-project':
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-run-project',
+  'solutions/showroom/build/customize-and-extend/beauty/sensetime/integrate':
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-integrate',
+  'solutions/showroom/build/customize-and-extend/beauty/sensetime/run-project':
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-run-project',
+  'solutions/showroom/build/customize-and-extend/video-loader/overview':
+    '/zh-CN/solutions/showroom/build/video-loader/overview',
+  'solutions/showroom/build/customize-and-extend/video-loader/integrate':
+    '/zh-CN/solutions/showroom/build/video-loader/integrate',
+  'solutions/showroom/build/customize-and-extend/video-loader/guidance':
+    '/zh-CN/solutions/showroom/build/video-loader/guidance',
+  'solutions/showroom/build/customize-and-extend/video-loader/run-project':
+    '/zh-CN/solutions/showroom/build/video-loader/run-project',
   'solutions/showroom/overview/product-overview': '/zh-CN/solutions/showroom',
   'solutions/showroom/resources':
     '/zh-CN/solutions/showroom/reference/downloads',
