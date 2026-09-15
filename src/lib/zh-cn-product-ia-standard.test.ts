@@ -460,6 +460,225 @@ const productBuildPageMoves = [
   ],
 ] as const;
 
+const productBuildMetas = [
+  [
+    'realtime-media/media-push/build/meta.json',
+    {
+      title: '开发与集成',
+      pages: [
+        'enable-media-push',
+        'configure-media-stream',
+        'monitor-and-maintain-media-push',
+      ],
+    },
+  ],
+  [
+    'realtime-media/media-push/build/enable-media-push/meta.json',
+    {
+      title: '开通旁路推流',
+      pages: ['enable-service', 'http-basic-auth', 'call-api'],
+    },
+  ],
+  [
+    'realtime-media/media-push/build/configure-media-stream/meta.json',
+    {
+      title: '配置推流媒体流',
+      pages: [
+        'set-no-transcode',
+        'set-transcode',
+        'update-transcode',
+        'vertical-streaming',
+        'set-volume',
+        'set-sei',
+      ],
+    },
+  ],
+  [
+    'realtime-media/media-push/build/monitor-and-maintain-media-push/meta.json',
+    {
+      title: '监控并保障推流',
+      pages: [
+        'enable-ncs',
+        'checklist',
+        'ensure-converter-created',
+        'rest-availability',
+      ],
+    },
+  ],
+  [
+    'realtime-media/local-server-recording/build/meta.json',
+    {
+      title: '开发与集成',
+      pages: [
+        'recording-preparation',
+        'configure-recording-output',
+        'best-practices',
+        'legacy',
+      ],
+    },
+  ],
+  [
+    'realtime-media/local-server-recording/build/recording-preparation/meta.json',
+    {
+      title: '接入准备',
+      pages: ['enable-service', 'generate-token', 'cloud-proxy'],
+    },
+  ],
+  [
+    'realtime-media/local-server-recording/build/configure-recording-output/meta.json',
+    {
+      title: '配置录制输出',
+      pages: ['recording-mode', 'set-layout', 'watermark', 'screen-capture'],
+    },
+  ],
+  [
+    'realtime-media/local-server-recording/build/best-practices/meta.json',
+    {
+      title: '最佳实践',
+      pages: ['restore-files'],
+    },
+  ],
+  [
+    'realtime-media/usage-analytics/build/meta.json',
+    {
+      title: '开发与集成',
+      pages: [
+        'view-live-data',
+        'monitor-call-quality',
+        'investigate-call-problems',
+        'analyze-call-data',
+        'embed-and-maintain-data-service',
+        '!metric-ids',
+        '!analyze-signaling-data',
+      ],
+    },
+  ],
+  [
+    'realtime-media/usage-analytics/build/monitor-call-quality/meta.json',
+    {
+      title: '监控通话质量',
+      pages: ['monitor', 'alarm'],
+    },
+  ],
+  [
+    'realtime-media/usage-analytics/build/investigate-call-problems/meta.json',
+    {
+      title: '调查通话问题',
+      pages: ['overview', 'call-detail', 'troubleshooting'],
+    },
+  ],
+  [
+    'realtime-media/usage-analytics/build/analyze-call-data/meta.json',
+    {
+      title: '分析通话数据',
+      pages: ['basic', 'plus', 'troubleshooting'],
+    },
+  ],
+  [
+    'realtime-media/usage-analytics/build/embed-and-maintain-data-service/meta.json',
+    {
+      title: '嵌入并保障数据服务',
+      pages: ['embeded', 'guarantee-rest'],
+    },
+  ],
+  [
+    'solutions/flexible-classroom/build/meta.json',
+    {
+      title: '开发与集成',
+      pages: [
+        'create-classroom',
+        'configure-teaching-resources-and-interactions',
+        'customize-classroom-experience',
+        'maintain-classroom-service',
+      ],
+    },
+  ],
+  [
+    'solutions/flexible-classroom/build/create-classroom/meta.json',
+    {
+      title: '创建可用课堂',
+      pages: [
+        'enable',
+        'configure',
+        'generate-token',
+        'http-token-auth',
+        'integrate-systems',
+      ],
+    },
+  ],
+  [
+    'solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/meta.json',
+    {
+      title: '配置教学资源与互动',
+      pages: [
+        'classroom-properties',
+        'courseware',
+        'whiteboard-on-off',
+        'proctor-online-exams',
+        'record',
+      ],
+    },
+  ],
+  [
+    'solutions/flexible-classroom/build/customize-classroom-experience/meta.json',
+    {
+      title: '定制课堂体验',
+      pages: [
+        'custom-ui',
+        'custom-ui-new',
+        'widget',
+        'widget-tech',
+        'widget-previous',
+      ],
+    },
+  ],
+  [
+    'solutions/flexible-classroom/build/maintain-classroom-service/meta.json',
+    {
+      title: '保障课堂服务',
+      pages: ['high-availability'],
+    },
+  ],
+  [
+    'solutions/showroom/build/meta.json',
+    {
+      title: '开发与集成',
+      pages: [
+        'enable-service',
+        'integrate-check-point',
+        'integrate-showroom',
+        'audio-scenario',
+        'hq-video',
+        'beauty',
+        'video-loader',
+        'video-moderation',
+      ],
+    },
+  ],
+  [
+    'solutions/showroom/build/beauty/meta.json',
+    {
+      title: '接入美颜能力',
+      pages: [
+        'overview',
+        'bytedance-integrate',
+        'bytedance-run-project',
+        'faceunity-integrate',
+        'faceunity-run-project',
+        'sensetime-integrate',
+        'sensetime-run-project',
+      ],
+    },
+  ],
+  [
+    'solutions/showroom/build/video-loader/meta.json',
+    {
+      title: '使用视频加载器',
+      pages: ['overview', 'integrate', 'guidance', 'run-project'],
+    },
+  ],
+] as const;
+
 function readMeta(path: string): DocsMeta {
   return JSON.parse(readFileSync(path, 'utf8')) as DocsMeta;
 }
@@ -530,6 +749,13 @@ function getRedirectTargetProductRoots() {
 }
 
 describe('zh-CN product IA standard', () => {
+  it.each(productBuildMetas)(
+    'uses the confirmed title and page order for %s',
+    (metaPath, expectedMeta) => {
+      expect(readMeta(resolve(contentRoot, metaPath))).toEqual(expectedMeta);
+    },
+  );
+
   it('uses standard root entries for speech-to-text', () => {
     const meta = readMeta(resolve(speechToTextRoot, 'meta.json'));
 
@@ -693,21 +919,86 @@ describe('zh-CN product IA standard', () => {
           ...legacyPath.split('/'),
         ]),
       ).resolves.toEqual({
-        redirectUrl: `/zh-CN/${tab}/${productRoot.split('/').slice(1).join('/')}/${canonicalPath}`,
+        redirectUrl: `/zh-CN/${productRoot}/${canonicalPath}`,
         statusCode: 301,
       });
     },
   );
 
-  it('does not move local-server-recording Legacy content', () => {
+  it.each(productBuildPageMoves)(
+    'loads the canonical %s page %s at %s without redirecting',
+    async (productRoot, _legacyPath, canonicalPath) => {
+      const [tab, ...productSegments] = productRoot.split('/');
+      const payload = await loadDocsPagePayload('zh-CN', tab, [
+        ...productSegments,
+        ...canonicalPath.split('/'),
+      ]);
+
+      expect(payload).toBeTruthy();
+      expect(payload).not.toHaveProperty('redirectUrl');
+    },
+    30_000,
+  );
+
+  it('preserves every Legacy recording MDX filename and both collapsible groups', () => {
+    const legacyRoot = resolve(
+      contentRoot,
+      'realtime-media/local-server-recording/build/legacy',
+    );
+
     expect(
-      existsSync(
-        resolve(
-          contentRoot,
-          'realtime-media/local-server-recording/build/legacy/meta.json',
-        ),
-      ),
-    ).toBe(true);
+      readdirSync(legacyRoot, { encoding: 'utf8', recursive: true })
+        .filter((file) => file.endsWith('.mdx'))
+        .sort(),
+    ).toEqual([
+      'collect-logs.mdx',
+      'composite-mode.mdx',
+      'docker.mdx',
+      'individual-mode.mdx',
+      'integrate-sdk.mdx',
+      'manage-files.mdx',
+      'merge-files.mdx',
+      'raw-data.mdx',
+      'record-by-api.mdx',
+      'record-by-cmd.mdx',
+      'restore-files.mdx',
+      'screenshot.mdx',
+      'set-layout.mdx',
+      'set-output-video.mdx',
+      'watermark.mdx',
+    ]);
+    expect(readMeta(resolve(legacyRoot, 'meta.json'))).toEqual({
+      title: 'Legacy 文档',
+      pages: [
+        {
+          type: 'group',
+          title: '功能指南',
+          collapsible: true,
+          pages: [
+            'integrate-sdk',
+            'record-by-cmd',
+            'record-by-api',
+            'docker',
+            'individual-mode',
+            'composite-mode',
+            'set-layout',
+            'raw-data',
+            'manage-files',
+            'merge-files',
+            'watermark',
+            'screenshot',
+            'collect-logs',
+            'restore-files',
+          ],
+        },
+        {
+          type: 'group',
+          title: '最佳实践',
+          collapsible: true,
+          pages: ['set-output-video'],
+        },
+      ],
+    });
   });
 
   it('orders the RTM build IA groups by the new information architecture', () => {

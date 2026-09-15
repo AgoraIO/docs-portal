@@ -22,6 +22,7 @@ const { staticLegacyRedirectOverride } = vi.hoisted(() => ({
           redirectUrl: string;
           statusCode?: 301;
         }
+      | null
       | undefined,
   },
 }));
@@ -77,6 +78,9 @@ vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
 
   return {
     ...actual,
+    resolvePlatformStaticDocsPayload: vi.fn(
+      actual.resolvePlatformStaticDocsPayload,
+    ),
     shouldUseStaticDocsPayload: vi.fn(() => false),
   };
 });
@@ -104,12 +108,16 @@ vi.mock('@/lib/legacy-sitemap/static-redirects', async (importOriginal) => {
     resolveStaticLegacySitemapRedirect: (
       ...args: Parameters<typeof actual.resolveStaticLegacySitemapRedirect>
     ) =>
-      staticLegacyRedirectOverride.value ??
-      actual.resolveStaticLegacySitemapRedirect(...args),
+      staticLegacyRedirectOverride.value !== undefined
+        ? staticLegacyRedirectOverride.value
+        : actual.resolveStaticLegacySitemapRedirect(...args),
   };
 });
 
-import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
+import {
+  resolvePlatformStaticDocsPayload,
+  shouldUseStaticDocsPayload,
+} from '@/lib/docs-static-manifest';
 import {
   Route as DocPageRoute,
   getKnownPlatformSearchParam,
@@ -609,44 +617,71 @@ describe('docs route locale guards', () => {
     throw new Error('expected page route to forward a 301 redirect payload');
   });
 
-  it('forwards a product Build 301 redirect with search and hash', async () => {
-    publishedLocaleOverride.value = true;
-    docsPagePayloadOverride.mockReturnValueOnce({
-      redirectUrl:
-        '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
-      statusCode: 301,
-    } satisfies DocsRedirectPayload);
+  it.each([false, true])(
+    'forwards a product Build 301 redirect with search and hash (static payload: %s)',
+    async (useStaticPayload) => {
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(useStaticPayload);
+      const redirectPayload = {
+        redirectUrl:
+          '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
+        statusCode: 301,
+      } satisfies DocsRedirectPayload;
+      if (useStaticPayload) {
+        // Exercise the static payload loader, not the earlier legacy resolver.
+        staticLegacyRedirectOverride.value = null;
+        vi.mocked(resolvePlatformStaticDocsPayload).mockResolvedValueOnce(
+          redirectPayload,
+        );
+      } else {
+        docsPagePayloadOverride.mockReturnValueOnce(redirectPayload);
+      }
 
-    try {
-      await getLoader(DocPageRoute)({
-        location: {
-          hash: '#details',
-          pathname:
-            '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
-          searchStr: '?from=legacy',
-        },
-        params: {
-          _splat: 'media-push/build/setup-and-access/enable-service',
-          locale: 'zh-CN',
-          tab: 'realtime-media',
-        },
-      } as never);
-    } catch (error) {
-      expect(isRedirect(error)).toBe(true);
-      expect(error).toMatchObject({
-        options: {
-          href: '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service?from=legacy#details',
-          statusCode: 301,
-        },
-        status: 301,
-      });
-      return;
-    } finally {
-      publishedLocaleOverride.value = false;
-    }
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '#details',
+            pathname:
+              '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
+            searchStr: '?from=legacy',
+          },
+          params: {
+            _splat: 'media-push/build/setup-and-access/enable-service',
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        if (useStaticPayload) {
+          expect(resolvePlatformStaticDocsPayload).toHaveBeenCalledWith({
+            locale: 'zh-CN',
+            slugSegments: [
+              'media-push',
+              'build',
+              'setup-and-access',
+              'enable-service',
+            ],
+            tab: 'realtime-media',
+          });
+        }
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service?from=legacy#details',
+            statusCode: 301,
+          },
+          status: 301,
+        });
+        return;
+      } finally {
+        publishedLocaleOverride.value = false;
+        staticLegacyRedirectOverride.value = undefined;
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
 
-    throw new Error('expected product Build route to redirect');
-  });
+      throw new Error('expected product Build route to redirect');
+    },
+  );
 
   it('forwards an RTM 301 DocsRedirectPayload from the tab index route', async () => {
     docsTabIndexOverride.mockReturnValueOnce({ url: '/en/realtime-media' });
