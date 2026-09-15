@@ -866,7 +866,7 @@ describe('zh-CN product IA standard', () => {
     async (tab, slugSegments, redirectUrl) => {
       const result = await loadDocsPagePayload('zh-CN', tab, [...slugSegments]);
 
-      expect(result).toEqual({ redirectUrl });
+      expect(result).toEqual({ redirectUrl, statusCode: 301 });
     },
   );
 
