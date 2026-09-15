@@ -72,6 +72,22 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it.each([
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=go'],
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=linux-cpp'],
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=linux-java'],
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=python'],
+  ])(
+    'redirects the removed Server Gateway Cloud Proxy path %s',
+    (path, search) => {
+      expect(resolveStaticLegacySitemapRedirect(path, search)).toEqual({
+        preserveSearch: true,
+        redirectUrl:
+          '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
+      });
+    },
+  );
+
   it('redirects legacy Agora Platform community resources to Discord', () => {
     expect(
       resolveStaticLegacySitemapRedirect('/en/AgoraPlatform/community/'),
