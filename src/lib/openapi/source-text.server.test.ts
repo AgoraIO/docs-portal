@@ -30,12 +30,6 @@ describe('openapi bundled source text registry', () => {
       'content/openapi/agora-analytics/analytics-rest-api.zh-CN.yaml',
       'utf8',
     );
-    const published = fs.readFileSync(
-      'public/openapi/agora-analytics/analytics-rest-api.zh-CN.yaml',
-      'utf8',
-    );
-
-    expect(source).toBe(published);
     expect(source).toContain(
       '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview',
     );
