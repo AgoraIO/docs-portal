@@ -1119,16 +1119,48 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/digital-learning/school-resource/build/implement-core-features/integration',
   'solutions/digital-learning/school-resource/overview':
     '/zh-CN/solutions/digital-learning/school-resource',
+  'solutions/flexible-classroom/build/customize-and-extend/custom-ui':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui',
+  'solutions/flexible-classroom/build/customize-and-extend/custom-ui-new':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui-new',
+  'solutions/flexible-classroom/build/customize-and-extend/widget':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget',
+  'solutions/flexible-classroom/build/customize-and-extend/widget-previous':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-previous',
+  'solutions/flexible-classroom/build/customize-and-extend/widget-tech':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-tech',
+  'solutions/flexible-classroom/build/manage-classroom/classroom-properties':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties',
+  'solutions/flexible-classroom/build/manage-classroom/courseware':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/courseware',
+  'solutions/flexible-classroom/build/manage-classroom/high-availability':
+    '/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/high-availability',
+  'solutions/flexible-classroom/build/manage-classroom/integrate-systems':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/integrate-systems',
+  'solutions/flexible-classroom/build/manage-classroom/proctor-online-exams':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/proctor-online-exams',
+  'solutions/flexible-classroom/build/manage-classroom/record':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/record',
+  'solutions/flexible-classroom/build/manage-classroom/whiteboard-on-off':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/whiteboard-on-off',
+  'solutions/flexible-classroom/build/setup-and-access/configure':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/configure',
+  'solutions/flexible-classroom/build/setup-and-access/enable':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/enable',
+  'solutions/flexible-classroom/build/setup-and-access/generate-token':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/generate-token',
+  'solutions/flexible-classroom/build/setup-and-access/http-token-auth':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/http-token-auth',
   'solutions/flexible-classroom/advanced-features/custom-ui':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui',
   'solutions/flexible-classroom/advanced-features/custom-ui-new':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui-new',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui-new',
   'solutions/flexible-classroom/advanced-features/widget':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget',
   'solutions/flexible-classroom/advanced-features/widget-previous':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-previous',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-previous',
   'solutions/flexible-classroom/advanced-features/widget-tech':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-tech',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-tech',
   'solutions/flexible-classroom/api/api-classroom':
     '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
   'solutions/flexible-classroom/api/api-recording':
@@ -1140,29 +1172,29 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/flexible-classroom/api/api-widget':
     '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
   'solutions/flexible-classroom/basic-features/generate-token':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/generate-token',
   'solutions/flexible-classroom/basic-features/http-token-auth':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/http-token-auth',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/http-token-auth',
   'solutions/flexible-classroom/basic-features/proctor-online-exams':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/proctor-online-exams',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/proctor-online-exams',
   'solutions/flexible-classroom/basic-features/whiteboard-on-off':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/whiteboard-on-off',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/whiteboard-on-off',
   'solutions/flexible-classroom/best-practices/classroom-properties':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/classroom-properties',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties',
   'solutions/flexible-classroom/best-practices/courseware':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/courseware',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/courseware',
   'solutions/flexible-classroom/best-practices/high-availability':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/high-availability',
+    '/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/high-availability',
   'solutions/flexible-classroom/best-practices/integrate-systems':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/integrate-systems',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/integrate-systems',
   'solutions/flexible-classroom/best-practices/record':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/record',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/record',
   'solutions/flexible-classroom/get-started/call-api':
     '/zh-CN/solutions/flexible-classroom/reference/call-api',
   'solutions/flexible-classroom/get-started/configure':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/configure',
   'solutions/flexible-classroom/get-started/enable':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/enable',
   'solutions/flexible-classroom/overview/basic-concept':
     '/zh-CN/solutions/flexible-classroom/reference/basic-concept',
   'solutions/flexible-classroom/overview/billing':

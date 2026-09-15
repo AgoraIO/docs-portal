@@ -18,7 +18,7 @@ title: "房间相关"
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | <Slot name="api-classroom-restful-html-0-1-3" /> |
-| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/create-classroom/enable#获取-app-id)。 |
 | `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
 
 <Slot for="api-classroom-restful-html-0-1-3">
@@ -51,7 +51,7 @@ title: "房间相关"
 | <Slot name="api-classroom-restful-html-1-9-0" /> | Object | 非必填 | 上台设置，包含上台人数上限等。 |
 | <Slot name="api-classroom-restful-html-1-10-0" /> | Integer | 非必填 | 上台人数上限。 |
 | <Slot name="api-classroom-restful-html-1-11-0" /> | String | 非必填 | 默认上台角色，若需要让学生进教室默认上台，则该属性传 `"audience"`；若不需要自动上台，该属性传 `""` 或不传。 |
-| `roomProperties.flexProps` | Object | 非必填 | 初始化房间属性。用户可以根据自己的业务需求为任何教室设置自定义属性。灵活的教室将把这些属性的更改同步到教室中的所有客户端，以实现自己的业务拓展。 详见[房间属性最佳实践](/zh-CN/solutions/flexible-classroom/build/manage-classroom/classroom-properties)。 |
+| `roomProperties.flexProps` | Object | 非必填 | 初始化房间属性。用户可以根据自己的业务需求为任何教室设置自定义属性。灵活的教室将把这些属性的更改同步到教室中的所有客户端，以实现自己的业务拓展。 详见[房间属性最佳实践](/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties)。 |
 | `roomProperties.widgets` | Object | 非必填 | 房间内组件设置。 |
 | <Slot name="api-classroom-restful-html-1-14-0" /> | Object | 非必填 | 房间内白板组件设置。 |
 | <Slot name="api-classroom-restful-html-1-15-0" /> | Integer | 非必填 | <Slot name="api-classroom-restful-html-1-15-3" /> |
@@ -324,7 +324,7 @@ curl -X POST 'https://api.agora.io/{region}/edu/apps/{YourAppId}/v2/rooms/test_r
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | <Slot name="api-classroom-restful-html-3-1-3" /> |
-| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/create-classroom/enable#获取-app-id)。 |
 | `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
 
 <Slot for="api-classroom-restful-html-3-1-3">
@@ -539,7 +539,7 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | <Slot name="api-classroom-restful-html-5-1-3" /> |
-| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/create-classroom/enable#获取-app-id)。 |
 | `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
 | `state` | Integer | 必填 | <Slot name="api-classroom-restful-html-5-4-3" /> |
 
@@ -621,7 +621,7 @@ curl -X PUT 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | <Slot name="api-classroom-restful-html-7-1-3" /> |
-| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/create-classroom/enable#获取-app-id)。 |
 | `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
 
 <Slot for="api-classroom-restful-html-7-1-3">
@@ -706,7 +706,7 @@ curl -X PUT 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | <Slot name="api-classroom-restful-html-9-1-3" /> |
-| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/create-classroom/enable#获取-app-id)。 |
 | `roomUuid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
 
 <Slot for="api-classroom-restful-html-9-1-3">
@@ -786,7 +786,7 @@ curl -X DELETE 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/te
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | <Slot name="api-classroom-restful-html-11-1-3" /> |
-| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable#获取-app-id)。 |
+| `appId` | String | 必填 | 你在声网控制台创建的项目的 App ID，详见[获取 App ID](/zh-CN/solutions/flexible-classroom/build/create-classroom/enable#获取-app-id)。 |
 | `roomUUid` | String | 必填 | 课堂 UUID。这是课堂的唯一标识符，也是加入 RTC 和 RTM 时所使用的频道名。长度在 64 字符以内。若该课堂需要使用页面录制，长度需在 50 字符内。 |
 | `state` | Integer | 必填 | <Slot name="api-classroom-restful-html-11-4-3" /> |
 
