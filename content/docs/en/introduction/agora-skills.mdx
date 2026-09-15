@@ -42,12 +42,26 @@ If you install Skills manually, place the files where your assistant already loo
 
 <Tabs>
 <TabsList>
+  <TabsTrigger value="antigravity">Antigravity</TabsTrigger>
   <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
   <TabsTrigger value="cursor">Cursor</TabsTrigger>
   <TabsTrigger value="windsurf">Windsurf</TabsTrigger>
   <TabsTrigger value="copilot">GitHub Copilot</TabsTrigger>
   <TabsTrigger value="other-tools">Other tools</TabsTrigger>
 </TabsList>
+
+<TabsContent value="antigravity">
+
+After cloning the Agora Skills repo to `~/agora-skills`, copy its Agora skill folder into your Antigravity workspace:
+
+```bash
+mkdir -p .agents/skills
+cp -R ~/agora-skills/skills/agora .agents/skills/agora
+```
+
+Antigravity reads `.agents/skills/agora/SKILL.md` as the skill entry point.
+
+</TabsContent>
 
 <TabsContent value="claude-code">
 
@@ -104,5 +118,3 @@ Check the official docs first, choose the right starter, and use the Agora CLI f
 ```
 
 From there, let your assistant choose the starter and setup path before it edits code.
-
-
