@@ -630,6 +630,10 @@ export function DocsSearchDialog({
 
   const handleOpenChange = useCallback(
     async (nextOpen: boolean, trigger: 'button' | 'keyboard' = 'button') => {
+      if (nextOpen && open) {
+        return;
+      }
+
       if (nextOpen) {
         const searchSessionId = createSearchAnalyticsId();
         searchSessionIdRef.current = searchSessionId;
@@ -688,7 +692,15 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, closeAndReset, loadPages, mode, pages.length, searchLocale],
+    [
+      algoliaConfig,
+      closeAndReset,
+      loadPages,
+      mode,
+      open,
+      pages.length,
+      searchLocale,
+    ],
   );
 
   useEffect(() => {

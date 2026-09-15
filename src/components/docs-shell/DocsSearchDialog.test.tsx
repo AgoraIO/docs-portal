@@ -391,6 +391,69 @@ describe('DocsSearchDialog', () => {
     expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledOnce();
   });
 
+  it('preserves the active session when the desktop shortcut is triggered again', async () => {
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'ai' } },
+    );
+    await screen.findByText('Quick Start');
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({ query: 'ai', status: 'success' }),
+      );
+    });
+    const originalSessionId =
+      analyticsMocks.captureDocsSearchOpened.mock.calls[0]?.[0]
+        ?.searchSessionId;
+
+    fireEvent.keyDown(document, { key: 'k', metaKey: true });
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledOnce();
+    });
+    expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: 'ai',
+        searchSessionId: originalSessionId,
+      }),
+    );
+  });
+
+  it('finalizes a zero-result query with resultCount zero', async () => {
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'no-such-query' } },
+    );
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: 'no-such-query',
+          resultCount: 0,
+          status: 'success',
+        }),
+      );
+    });
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: 'no-such-query',
+          resultCount: 0,
+          resultsImpressed: false,
+        }),
+      );
+    });
+  });
+
   it('measures click delay from result impression instead of request start', async () => {
     let now = 1_000;
     const dateNowSpy = vi.spyOn(Date, 'now').mockImplementation(() => now);
