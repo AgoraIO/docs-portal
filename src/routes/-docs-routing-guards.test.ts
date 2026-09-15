@@ -609,6 +609,45 @@ describe('docs route locale guards', () => {
     throw new Error('expected page route to forward a 301 redirect payload');
   });
 
+  it('forwards a product Build 301 redirect with search and hash', async () => {
+    publishedLocaleOverride.value = true;
+    docsPagePayloadOverride.mockReturnValueOnce({
+      redirectUrl:
+        '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
+      statusCode: 301,
+    } satisfies DocsRedirectPayload);
+
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#details',
+          pathname:
+            '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
+          searchStr: '?from=legacy',
+        },
+        params: {
+          _splat: 'media-push/build/setup-and-access/enable-service',
+          locale: 'zh-CN',
+          tab: 'realtime-media',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service?from=legacy#details',
+          statusCode: 301,
+        },
+        status: 301,
+      });
+      return;
+    } finally {
+      publishedLocaleOverride.value = false;
+    }
+
+    throw new Error('expected product Build route to redirect');
+  });
+
   it('forwards an RTM 301 DocsRedirectPayload from the tab index route', async () => {
     docsTabIndexOverride.mockReturnValueOnce({ url: '/en/realtime-media' });
     docsPagePayloadOverride.mockReturnValueOnce({
