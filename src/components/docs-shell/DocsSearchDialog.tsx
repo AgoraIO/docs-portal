@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/command';
 import {
   captureDocsSearchCompleted,
+  captureDocsSearchFinalized,
   captureDocsSearchOpened,
   captureDocsSearchResultClicked,
   captureDocsSearchResultsImpressed,
@@ -141,6 +142,15 @@ export function DocsSearchDialog({
     new Map<number, { id: string; startedAt: number }>(),
   );
   const impressedAttemptIdsRef = useRef(new Set<string>());
+  const latestSuccessfulSearchRef = useRef<{
+    firstResultSource?: string;
+    firstResultType?: string;
+    query: string;
+    queryAttemptId: string;
+    resultCount: number;
+    searchSessionId: string;
+  } | null>(null);
+  const sessionFinalizedRef = useRef(false);
   const currentSearchRef = useRef('');
   const latestSearchRequestRef = useRef(0);
   const localSearchStatusRef = useRef(localSearchStatus);
@@ -211,6 +221,25 @@ export function DocsSearchDialog({
         latencyMs: Date.now() - attempt.startedAt,
         status,
       });
+      if (status === 'success' && normalizedQuery) {
+        const firstResult = resultItems[0];
+        latestSuccessfulSearchRef.current = {
+          firstResultSource: algoliaEnabled ? 'algolia' : 'local',
+          firstResultType:
+            typeof firstResult === 'object' && firstResult !== null
+              ? typeof (firstResult as { objectType?: unknown }).objectType ===
+                'string'
+                ? (firstResult as { objectType: string }).objectType
+                : 'docs'
+              : resultItems.length > 0
+                ? 'docs'
+                : undefined,
+          query: normalizedQuery,
+          queryAttemptId: attempt.id,
+          resultCount: resultCount ?? resultItems.length,
+          searchSessionId: searchSessionIdRef.current,
+        };
+      }
       pendingLocalCompletionRef.current = null;
     },
     [algoliaEnabled, isLatestSearch, platformFilter, scopeId, searchLocale],
@@ -466,6 +495,7 @@ export function DocsSearchDialog({
     setLatestQueryAttemptId(null);
     searchAttemptStartedAtRef.current = null;
     resultDisplayedAtRef.current.clear();
+    latestSuccessfulSearchRef.current = null;
   }, []);
   const handleSearchChange = useCallback(
     (nextSearch: string) => {
@@ -475,14 +505,50 @@ export function DocsSearchDialog({
     },
     [setSearch],
   );
-  const closeAndReset = useCallback(() => {
-    setOpen(false);
-    setStaggerArmed(false);
-    setActiveValue(null);
-    setResultPlatformSelections({});
-    invalidateCurrentSearch();
-    setSearch('');
-  }, [invalidateCurrentSearch, setSearch]);
+  const finalizeLatestSearch = useCallback(
+    (finalizationReason: 'closed' | 'result_clicked') => {
+      if (sessionFinalizedRef.current) {
+        return;
+      }
+
+      const latestSuccessfulSearch = latestSuccessfulSearchRef.current;
+      const searchSessionId = searchSessionIdRef.current;
+      if (!latestSuccessfulSearch || !searchSessionId) {
+        return;
+      }
+
+      sessionFinalizedRef.current = true;
+      captureDocsSearchFinalized({
+        finalizationReason,
+        firstResultSource: latestSuccessfulSearch.firstResultSource,
+        firstResultType: latestSuccessfulSearch.firstResultType,
+        locale: searchLocale,
+        query: latestSuccessfulSearch.query,
+        queryAttemptId: latestSuccessfulSearch.queryAttemptId,
+        resultCount: latestSuccessfulSearch.resultCount,
+        resultsImpressed: impressedAttemptIdsRef.current.has(
+          latestSuccessfulSearch.queryAttemptId,
+        ),
+        searchSessionId,
+      });
+    },
+    [searchLocale],
+  );
+  const closeAndReset = useCallback(
+    (finalizationReason?: 'closed' | 'result_clicked') => {
+      if (finalizationReason) {
+        finalizeLatestSearch(finalizationReason);
+      }
+      setOpen(false);
+      setStaggerArmed(false);
+      setActiveValue(null);
+      setResultPlatformSelections({});
+      invalidateCurrentSearch();
+      setSearch('');
+      searchSessionIdRef.current = null;
+    },
+    [finalizeLatestSearch, invalidateCurrentSearch, setSearch],
+  );
   const handleScopeChange = useCallback(
     (nextScopeId: string | null) => {
       if (nextScopeId === scopeId) {
@@ -548,6 +614,7 @@ export function DocsSearchDialog({
           searchSessionId,
         });
       }
+      finalizeLatestSearch('result_clicked');
     }
 
     closeAndReset();
@@ -566,6 +633,8 @@ export function DocsSearchDialog({
       if (nextOpen) {
         const searchSessionId = createSearchAnalyticsId();
         searchSessionIdRef.current = searchSessionId;
+        sessionFinalizedRef.current = false;
+        latestSuccessfulSearchRef.current = null;
         latestQueryAttemptIdRef.current = null;
         setLatestQueryAttemptId(null);
         impressedAttemptIdsRef.current.clear();
@@ -573,7 +642,7 @@ export function DocsSearchDialog({
         // Re-arm the result cascade each time the dialog opens.
         setStaggerArmed(true);
       } else {
-        closeAndReset();
+        closeAndReset('closed');
       }
 
       if (nextOpen) {
