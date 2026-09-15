@@ -262,38 +262,6 @@ describe('normalizeDocsHref', () => {
     });
   });
 
-  it('normalizes common moved Voice and Video source routes', () => {
-    expect(
-      normalizeDocsHref('../index.mdx', {
-        contentPath:
-          'en/realtime-media/voice/build/control-audio-and-devices/configure-audio-encoding.mdx',
-      }),
-    ).toEqual({
-      href: '/en/realtime-media/rtc/voice-quickstart',
-      kind: 'internal-doc',
-    });
-
-    expect(
-      normalizeDocsHref('../manage-agora-account.mdx', {
-        contentPath:
-          'en/realtime-media/video/build/customize-audio-processing/use-an-extension.mdx',
-      }),
-    ).toEqual({
-      href: '/en/introduction/account',
-      kind: 'internal-doc',
-    });
-
-    expect(
-      normalizeDocsHref('screen-sharing.mdx', {
-        contentPath:
-          'en/realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
-      }),
-    ).toEqual({
-      href: '/en/realtime-media/rtc/build/capture-and-render-video/screen-sharing',
-      kind: 'internal-doc',
-    });
-  });
-
   it('normalizes legacy AI routes that still point at pre-grouped build pages', () => {
     expect(normalizeDocsHref('/en/ai/build/webhooks')).toEqual({
       href: '/en/ai/build/handle-runtime-events/webhooks',

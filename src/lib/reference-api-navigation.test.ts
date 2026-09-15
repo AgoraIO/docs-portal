@@ -11,9 +11,6 @@ const sdkApiReference = '/en/api-reference/api-ref';
 const sdkProductFilters = {
   rtc: 'realtime-communication',
   voice: 'realtime-communication',
-  video: 'realtime-communication',
-  'broadcast-streaming': 'realtime-communication',
-  'interactive-live-streaming': 'realtime-communication',
   rtm: 'signaling',
   im: 'chat',
   whiteboard: 'interactive-whiteboard',
@@ -37,10 +34,6 @@ function sdkCatalogUrl(product: keyof typeof sdkProductFilters) {
 
 const sdkAndRestProducts = {
   rtc: '/en/api-reference/api-ref/rtc',
-  voice: '/en/api-reference/api-ref/rtc',
-  video: '/en/api-reference/api-ref/rtc',
-  'broadcast-streaming': '/en/api-reference/api-ref/rtc',
-  'interactive-live-streaming': '/en/api-reference/api-ref/rtc',
   rtm: '/en/api-reference/api-ref/signaling',
   im: '/en/api-reference/api-ref/im',
   whiteboard: '/en/api-reference/api-ref/whiteboard',

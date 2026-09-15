@@ -404,30 +404,6 @@ const LEGACY_ABSOLUTE_PATHS: Record<string, string> = {
   '/en/api-reference/media-push': '/en/api-reference/api-ref/media-push',
   '/en/api-reference/rtc': '/en/api-reference/api-ref/rtc',
   '/en/realtime-media/sdks': '/en/api-reference/sdks',
-  '/en/realtime-media/voice/build': '/en/realtime-media/rtc/voice-quickstart',
-  '/en/realtime-media/voice/build/core-concepts':
-    '/en/realtime-media/rtc/core-concepts',
-  '/en/realtime-media/voice/build/control-audio-and-devices/custom-audio':
-    '/en/realtime-media/rtc/build/customize-audio-processing/custom-audio',
-  '/en/realtime-media/voice/build/secure-and-protect-channels/use-tokens':
-    '/en/realtime-media/rtc/build/authenticate-users/authentication-workflow',
-  '/en/realtime-media/voice/product-overview': '/en/realtime-media/rtc',
-  '/en/realtime-media/video/build/add-advanced-video-features/app-size-optimization':
-    '/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization',
-  '/en/realtime-media/voice/build/enhance-the-audio-experience/ai-noise-suppression/web':
-    '/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression',
-  '/en/realtime-media/voice/build/optimize-and-operate/app-size-optimization/android':
-    '/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization',
-  '/en/realtime-media/voice/build/optimize-and-operate/app-size-optimization/ios':
-    '/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization',
-  '/en/realtime-media/video/build/core-concepts':
-    '/en/realtime-media/rtc/core-concepts',
-  '/en/realtime-media/video/build/manage-agora-account':
-    '/en/introduction/account',
-  '/en/realtime-media/video/build/optimize-and-operate/screen-sharing':
-    '/en/realtime-media/rtc/build/capture-and-render-video/screen-sharing',
-  '/en/realtime-media/video/build/secure-and-protect-channels/authentication-workflow':
-    '/en/realtime-media/rtc/build/authenticate-users/authentication-workflow',
   '/en/3.x/video-calling/introduction/release-notes':
     '/en/realtime-media/rtc/reference/release-notes',
   '/media-push/product-overview': '/en/api-reference/api-ref/rtc',

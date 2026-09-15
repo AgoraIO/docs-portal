@@ -3377,13 +3377,13 @@ Web body
   });
 
   it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
-    const videoPayload = await loadRealtimeMediaProductPayload(
-      'video',
-      'Video Calling',
+    const rtcPayload = await loadRealtimeMediaProductPayload(
+      'rtc',
+      'Voice & Video',
     );
-    const videoReference = getSidebarSection(videoPayload, 'Reference');
+    const rtcReference = getSidebarSection(rtcPayload, 'Reference');
 
-    expect.soft(videoReference.children.slice(0, 2)).toEqual([
+    expect.soft(rtcReference.children.slice(0, 2)).toEqual([
       {
         external: true,
         href: '/en/api-reference/api-ref/rtc',
@@ -3403,11 +3403,11 @@ Web body
         url: '/en/api-reference/api-ref?product=realtime-communication',
       },
     ]);
-    expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
+    expect(flattenSidebarPageUrls(rtcPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
     );
-    expect(flattenSidebarPageUrls(videoPayload.sidebar)).toContain(
-      '/en/realtime-media/video/reference/release-notes',
+    expect(flattenSidebarPageUrls(rtcPayload.sidebar)).toContain(
+      '/en/realtime-media/rtc/reference/release-notes',
     );
 
     const voiceQuickstartPayload = await loadRealtimeMediaProductPayload(
@@ -3535,18 +3535,6 @@ Web body
     ).toBe(false);
     expect(flattenSidebarPageUrls(onPremiseRecordingPayload.sidebar)).toContain(
       '/en/realtime-media/on-premise-recording/reference/pricing',
-    );
-
-    const interactiveLiveStreamingPayload =
-      await loadRealtimeMediaProductPayload(
-        'interactive-live-streaming',
-        'Interactive Live Streaming',
-      );
-
-    expect(
-      flattenSidebarPageUrls(interactiveLiveStreamingPayload.sidebar),
-    ).toContain(
-      '/en/realtime-media/interactive-live-streaming/reference/agora-console-rest-api',
     );
 
     const rtmPayload = await loadRealtimeMediaProductPayload(
