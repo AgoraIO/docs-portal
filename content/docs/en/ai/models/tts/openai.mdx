@@ -95,7 +95,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
     "credential_mode": "managed",
     "vendor": "openai",
     "params": {
-      "base_url": "https://api.openai.com/v1",
+      "url": "https://api.openai.com/v1/audio/speech",
       "model": "tts-1",
       "voice": "coral",
       "instructions": "Please use standard American English, natural tone, moderate pace, and steady intonation",
@@ -110,7 +110,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   "tts": {
     "vendor": "openai",
     "params": {
-      "base_url": "https://api.openai.com/v1",
+      "url": "https://api.openai.com/v1/audio/speech",
       "api_key": "<your_openai_key>",
       "model": "gpt-4o-mini-tts",
       "voice": "coral",
@@ -128,14 +128,14 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
 
 <ParameterList title="params">
-  <Parameter name="base_url" type="string" required={true}>
-  The endpoint URL for the OpenAI TTS service. Required when using your own API key (BYOK). See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
+  <Parameter name="url" type="string" required={true}>
+  The full endpoint URL for the OpenAI speech API, for example `https://api.openai.com/v1/audio/speech`. See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).
   </Parameter>
   <Parameter name="api_key" type="string" required={false}>
   The API key used for authentication. Required when using your own API key (BYOK). Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
   </Parameter>
   <Parameter name="model" type="string" required={true}>
-  Identifier of the model to be used. Required when using your own API key (BYOK). For managed mode, use `tts-1`.
+  Identifier of the model to be used. For managed mode, use `tts-1`.
   </Parameter>
   <Parameter name="voice" type="string" required={true}>
   The voice identifier for speech synthesis.
