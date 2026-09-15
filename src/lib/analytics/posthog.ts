@@ -14,7 +14,7 @@ const SAFE_PROPERTY_VALUE = /^[a-z0-9][a-z0-9._:-]{0,63}$/i;
 const URL_PROPERTY_NAME = /(href|referrer|url)$/i;
 const SEARCH_QUERY_MAX_LENGTH = 100;
 const SEARCH_SENSITIVE_QUERY_PATTERN =
-  /(?:https?:\/\/|\b(?:token|secret|password|certificate|app[_ -]?id|appid|api[_ -]?key)\s*[:=]|\b[a-f0-9]{24,}\b)/iu;
+  /(?:https?:\/\/|\b(?:token|secret|password|certificate|app[_ -]?id|appid|api[_ -]?key)\s*[:=]|\bpassword\s+is\s+\S+|\b[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}\b|\beyJ[a-z0-9_-]*\.[a-z0-9_-]+\.[a-z0-9_-]+\b|\b[a-f0-9]{24,}\b)/iu;
 
 let posthogClientPromise: Promise<PostHogClient | null> | null = null;
 let registeredPageContext: RegisteredDocsPageContext | null = null;
