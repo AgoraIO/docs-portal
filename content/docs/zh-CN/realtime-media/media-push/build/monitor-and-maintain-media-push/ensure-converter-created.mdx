@@ -19,7 +19,7 @@ description: "了解如何在旁路推流中确保转码器创建成功，包括
 
 - 纯音频流或纯视频流场景下 `audioOptions` 和 `videoOptions` 设置如下：
   - 在纯视频流（无音频）场景中，无需设置 `audioOptions` 及其相关字段。
-  - 在纯音频流（无视频）场景中，默认情况下无需设置 `videoOptions` 及其相关字段。特殊情况请参考[纯音频场景中输出 SEI](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei#特例纯音频场景设置输出-sei)。
+  - 在纯音频流（无视频）场景中，默认情况下无需设置 `videoOptions` 及其相关字段。特殊情况请参考[纯音频场景中输出 SEI](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei#特例纯音频场景设置输出-sei)。
   - 在音视频场景中，`videoOptions` 为必填字段，不可设置为空；`audioOptions` 为必填字段，可以设置为空。
 
 - 请设置合理的 `idleTimeout` 参数值，推荐使用默认值 300 秒，表示当频道内所有订阅主播都离开频道 300 秒后 Converter 自动销毁，旁路推流停止。

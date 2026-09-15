@@ -18,7 +18,7 @@ description: "了解旁路推流中设置转码推流相关内容的适用场景
 
 该字段仅需在有音频的场景下设置。如果有音频但是无需自定义音频配置，那么将该字段设为空，即 `"audioOptions": {}`。
 
-该字段可用于设置 Converter 输出的音频编解码器规格，音频码率，音频声道数，混音音量等配置。混音和混音音量的设置详见[设置混音音量](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume)。
+该字段可用于设置 Converter 输出的音频编解码器规格，音频码率，音频声道数，混音音量等配置。混音和混音音量的设置详见[设置混音音量](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-volume)。
 
 ## videoOptions
 
@@ -28,7 +28,7 @@ description: "了解旁路推流中设置转码推流相关内容的适用场景
 
 ### 设置自定义布局
 
-自定义布局是转码推流时用户视频画面布局的一种样式。相比[垂直布局](/zh-CN/realtime-media/media-push/build/manage-media-streams/vertical-streaming)，自定义布局更加灵活，但是需要你填写的字段较多。设置自定义布局时，你需要调用 `Create` 方法并设置 `canvas`、`layout` 字段。
+自定义布局是转码推流时用户视频画面布局的一种样式。相比[垂直布局](/zh-CN/realtime-media/media-push/build/configure-media-stream/vertical-streaming)，自定义布局更加灵活，但是需要你填写的字段较多。设置自定义布局时，你需要调用 `Create` 方法并设置 `canvas`、`layout` 字段。
 
 - `canvas` 为 Object 类型，支持配置视频画布的配置。
 - `layout` 为 Object Array 类型，支持配置用户的视频画面布局，也支持配置图片（例如水印）的布局。
@@ -113,9 +113,9 @@ description: "了解旁路推流中设置转码推流相关内容的适用场景
 
 ### 更多设置
 
-- 视频垂直布局详见[设置垂直布局](/zh-CN/realtime-media/media-push/build/manage-media-streams/vertical-streaming)。
-- SEI 配置详见[设置 SEI](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei)。
-- 视频自定义布局详见[设置自定义布局](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-transcode)。
+- 视频垂直布局详见[设置垂直布局](/zh-CN/realtime-media/media-push/build/configure-media-stream/vertical-streaming)。
+- SEI 配置详见[设置 SEI](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei)。
+- 视频自定义布局详见[设置自定义布局](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-transcode)。
 
 ## API 参考
 

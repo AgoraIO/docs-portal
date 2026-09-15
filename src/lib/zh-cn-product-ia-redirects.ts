@@ -125,15 +125,41 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-push/api/video-profile':
     '/zh-CN/realtime-media/media-push/reference/video-profile',
   'realtime-media/media-push/best-practices/checklist':
-    '/zh-CN/realtime-media/media-push/build/optimize-and-operate/checklist',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/checklist',
   'realtime-media/media-push/best-practices/ensure-converter-created':
-    '/zh-CN/realtime-media/media-push/build/optimize-and-operate/ensure-converter-created',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/ensure-converter-created',
   'realtime-media/media-push/best-practices/rest-availability':
-    '/zh-CN/realtime-media/media-push/build/optimize-and-operate/rest-availability',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/rest-availability',
+  'realtime-media/media-push/build/manage-media-streams/set-no-transcode':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-no-transcode',
+  'realtime-media/media-push/build/manage-media-streams/set-sei':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei',
+  'realtime-media/media-push/build/manage-media-streams/set-transcode':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-transcode',
+  'realtime-media/media-push/build/manage-media-streams/set-volume':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-volume',
+  'realtime-media/media-push/build/manage-media-streams/update-transcode':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/update-transcode',
+  'realtime-media/media-push/build/manage-media-streams/vertical-streaming':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/vertical-streaming',
+  'realtime-media/media-push/build/monitor-events/enable-ncs':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs',
+  'realtime-media/media-push/build/optimize-and-operate/checklist':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/checklist',
+  'realtime-media/media-push/build/optimize-and-operate/ensure-converter-created':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/ensure-converter-created',
+  'realtime-media/media-push/build/optimize-and-operate/rest-availability':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/rest-availability',
+  'realtime-media/media-push/build/setup-and-access/call-api':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/call-api',
+  'realtime-media/media-push/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
+  'realtime-media/media-push/build/setup-and-access/http-basic-auth':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
   'realtime-media/media-push/get-started/call-api':
-    '/zh-CN/realtime-media/media-push/build/setup-and-access/call-api',
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/call-api',
   'realtime-media/media-push/get-started/enable-service':
-    '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
   'realtime-media/media-push/overview/billing':
     '/zh-CN/realtime-media/media-push/reference/billing',
   'realtime-media/media-push/overview/payment':
@@ -145,21 +171,21 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-push/response-code':
     '/zh-CN/realtime-media/media-push/reference/response-code',
   'realtime-media/media-push/user-guides/http-basic-auth':
-    '/zh-CN/realtime-media/media-push/build/setup-and-access/http-basic-auth',
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
   'realtime-media/media-push/user-guides/set-no-transcode':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-no-transcode',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-no-transcode',
   'realtime-media/media-push/user-guides/set-sei':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei',
   'realtime-media/media-push/user-guides/set-transcode':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-transcode',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-transcode',
   'realtime-media/media-push/user-guides/set-volume':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-volume',
   'realtime-media/media-push/user-guides/update-transcode':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/update-transcode',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/update-transcode',
   'realtime-media/media-push/user-guides/vertical-streaming':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/vertical-streaming',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/vertical-streaming',
   'realtime-media/media-push/webhook/enable-ncs':
-    '/zh-CN/realtime-media/media-push/build/monitor-events/enable-ncs',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs',
   'realtime-media/media-push/webhook/ncs-events':
     '/zh-CN/realtime-media/media-push/reference/ncs-events',
   'realtime-media/online-ktv/auikaraoke/advanced-features/lyrics-scoring':
@@ -307,9 +333,25 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/cloud-recording/webhook/webpage':
     '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage',
   'realtime-media/recording/local-server-recording/best-practice/restore-files':
-    '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files',
+    '/zh-CN/realtime-media/local-server-recording/build/best-practices/restore-files',
+  'realtime-media/local-server-recording/build/optimize-and-operate/restore-files':
+    '/zh-CN/realtime-media/local-server-recording/build/best-practices/restore-files',
+  'realtime-media/local-server-recording/build/recording-modes/recording-mode':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/recording-mode',
+  'realtime-media/local-server-recording/build/recording-modes/screen-capture':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/screen-capture',
+  'realtime-media/local-server-recording/build/recording-modes/set-layout':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/set-layout',
+  'realtime-media/local-server-recording/build/recording-modes/watermark':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/watermark',
+  'realtime-media/local-server-recording/build/setup-and-access/cloud-proxy':
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/cloud-proxy',
+  'realtime-media/local-server-recording/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service',
+  'realtime-media/local-server-recording/build/setup-and-access/generate-token':
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/generate-token',
   'realtime-media/recording/local-server-recording/get-started/enable-service':
-    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service',
   'realtime-media/recording/local-server-recording/legacy/collect-logs':
     '/zh-CN/realtime-media/local-server-recording/build/legacy/collect-logs',
   'realtime-media/recording/local-server-recording/legacy/composite-mode':
@@ -355,17 +397,17 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/local-server-recording/resources':
     '/zh-CN/realtime-media/local-server-recording/reference/downloads',
   'realtime-media/recording/local-server-recording/user-guides/cloud-proxy':
-    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/cloud-proxy',
   'realtime-media/recording/local-server-recording/user-guides/generate-token':
-    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/generate-token',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/generate-token',
   'realtime-media/recording/local-server-recording/user-guides/recording-mode':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/recording-mode',
   'realtime-media/recording/local-server-recording/user-guides/screen-capture':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/screen-capture',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/screen-capture',
   'realtime-media/recording/local-server-recording/user-guides/set-layout':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/set-layout',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/set-layout',
   'realtime-media/recording/local-server-recording/user-guides/watermark':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/watermark',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/watermark',
   'realtime-media/rtc-server-sdk/advanced-features/cloud-proxy':
     '/zh-CN/realtime-media/rtc-server-sdk/build/cloud-proxy',
   'realtime-media/rtc-server-sdk/advanced-features/encryption':

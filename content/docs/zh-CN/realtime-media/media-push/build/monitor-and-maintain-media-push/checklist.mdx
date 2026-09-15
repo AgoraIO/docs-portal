@@ -11,7 +11,7 @@ description: "了解旁路推流中集成检查清单相关内容的适用场景
 | 编号 | 重要程度 | 检查项 | 检查内容 |
 | --- | --- | --- | --- |
 | 1 | 必要 | 频道模式 | 所在频道场景为直播（`profile` 为 `BROADCASTING`）。 |
-| 2 | 必要 | 开通服务 | [开通旁路推流服务](/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service#开通旁路推流服务)。 |
+| 2 | 必要 | 开通服务 | [开通旁路推流服务](/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service#开通旁路推流服务)。 |
 | 3 | 必要 | QPS 限制条件 | 确保一个项目中，API 的调用速率低于最大限制。详见 [API 限速](/zh-CN/realtime-media/media-push/reference/quota#api-限速)。 |
 | 4 | 必要 | PCW 限制 | 确保一个项目中，并发任务数低于 300。详见 [PCW 限制](/zh-CN/realtime-media/media-push/reference/quota#pcw)。 |
 | 5 | 可选 | 管理 Converter | 使用 `name` 字段管理指定项目下的 Converter，以频道名和 Converter 特性组合来为 `name` 赋值。 |
@@ -19,7 +19,7 @@ description: "了解旁路推流中集成检查清单相关内容的适用场景
 | 7 | 必要 | 超时逻辑 | 设置合理的 `idleTimeout`，推荐设置为 300 秒。 |
 | 8 | 必要 | 更新 Converter | 对同一个 Converter 进行多次 `Update` 时，`sequence` 值递增。 |
 | 9 | 可选 | 问题排查 | <Slot name="checklist-markdown-0-9-3" /> |
-| 10 | 可选 | 消息通知 | 开通旁路推流[消息通知服务](/zh-CN/realtime-media/media-push/build/monitor-events/enable-ncs)，并监听旁路推流事件。 |
+| 10 | 可选 | 消息通知 | 开通旁路推流[消息通知服务](/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs)，并监听旁路推流事件。 |
 
 <Slot for="checklist-markdown-0-9-3">
 
