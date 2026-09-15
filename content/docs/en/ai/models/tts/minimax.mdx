@@ -129,10 +129,6 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 </TabsContent>
 </Tabs>
 
-:::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [MiniMax documentation](https://www.minimax.io/platform/document/t2a_http).
-:::
-
 ### Key parameters
 
 The following parameters are required when using your own API key (BYOK). When using managed mode, `key` and `group_id` are not required. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
@@ -157,3 +153,7 @@ The following parameters are required when using your own API key (BYOK). When u
     The audio sampling rate in Hz.
   </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [MiniMax documentation](https://www.minimax.io/platform/document/t2a_http).
+:::

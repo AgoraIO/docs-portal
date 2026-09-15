@@ -35,7 +35,7 @@ RtmConfig config;
 config.appId = "your_appid";
 config.userId = "your_name";
 config.eventHandler = new RtmHandler();
-config.areaCode = RTM_AREA_CODE_CN | RTM_AREA_CODE_AS;
+config.areaCode = static_cast<RTM_AREA_CODE>(RTM_AREA_CODE_CN | RTM_AREA_CODE_AS);
 config.protocolType = RTM_PROTOCOL_TYPE_TCP_UDP;
 config.presenceTimeout = 300;
 config.heartbeatInterval = 5;
@@ -52,11 +52,11 @@ config.privateConfig = privateConfig;
 | :------------------------------------------------: | :-------------------------------------------------------: | :------: | :--------------------------------------------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `appId` | const char* | Required | - | App ID obtained when creating a project in the Agora Console. |
 | `userId` | const char* | Required | - | User ID for identify a user or a device. To distinguish each user or device, you need to ensure that the `userId` parameter is globally unique and remains unchanged throughout the user or device's lifecycle. |
-| `areaCode` | `RTM_AREA_CODE` | Optional | `RTM_AREA_CODE_GLOB` | Service area code, you can choose according to the region where your business is deployed. See [`RTM_AREA_CODE`](#enumvareacod-e). |
-| `protocolType` | `RTM_PROTOCOL_TYPE` | Optional | `RTM_PROTOCOL_TYPE_TCP_UDP` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`RTM_PROTOCOL_TYPE`](#enumvprotocoltyp-e). |
+| `areaCode` | `RTM_AREA_CODE` | Optional | `RTM_AREA_CODE_GLOB` | Service area code, you can choose according to the region where your business is deployed. See [`RTM_AREA_CODE`](#rtm_area_code). |
+| `protocolType` | `RTM_PROTOCOL_TYPE` | Optional | `RTM_PROTOCOL_TYPE_TCP_UDP` | Protocol types for message transmission. Signaling by default utilizes one-way TCP and one-way UDP protocols for transmission, but you have the flexibility to modify the protocol types based on your requirements. See [`RTM_PROTOCOL_TYPE`](#rtm_protocol_type). |
 | `presenceTimeout` | uint32_t | Optional | `300` | Presence timeout in seconds, and the value range is [5,300]. This parameter refers the delay imposed by the Signaling server before sending a `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT` event notification to other users once it determines that a client has timed out. If the client reconnects and returns to the channel within the specified time, the Signaling server does not send the `RTM_PRESENCE_EVENT_TYPE_REMOTE_TIMEOUT` event notification to other participants or delete the temporary user data associated with the user. |
 | `heartbeatInterval` | int | Optional | `5` | Heartbeat interval in seconds, and the value range is [5,1800]. This parameter refers to the time interval at which the client sends heartbeat packets to the Signaling server. If the client fails to send heartbeat packets to the Signaling server within the specified time, the Signaling server determines that the client has timed out. Please note that this parameter affects the PCU count, which in turn affects billing.|
-| `reconnectTimeout` | uint32_t | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0` which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK triggers the `onLoginResult` callback with `errorCode` as `RTM_ERROR_LOGIN_TIMEOUT`, and also triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_CHANGE_REASON_LOGIN_TIMEOUT`. <br />- If reconnection times out, the SDK triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_CHANGE_REASON_RECONNECT_TIMEOUT`. |
+| `reconnectTimeout` | uint32_t | Optional | `0` | SDK connection timeout in seconds. The value range is [15,3600]. The default value is `0` which means no timeout; the SDK keeps retrying until successful. This parameter applies to both the initial login to the Signaling service and reconnection after disconnection: <br />- If the initial login times out, the SDK triggers the `onLoginResult` callback with `errorCode` as `RTM_ERROR_LOGIN_TIMEOUT`, and also triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_STATE_CHANGE_REASON_LOGIN_TIMEOUT`. <br />- If reconnection times out, the SDK triggers the `onLinkStateChanged` callback with `currentState` as `RTM_LINK_STATE_FAILED` and `reason` as `RTM_LINK_STATE_CHANGE_REASON_RECONNECT_TIMEOUT`. |
 | `context` | void* | Optional | `NULL` | <br />- For Android, it is the context of Android Activity. <br />- For Windows, it is the window handle of the app. Once set, this parameter enables you to connect or disconnect the video devices while they are powered. |
 | `useStringUserId` | bool | Optional | `true` | Whether to use string-type user IDs:<br />- `true`: Use string-type user IDs. <br />- `false`: Use number-type user IDs. The SDK automatically converts string-type user IDs to number-type ones. In this case, the `userId` parameter must be a numeric string (for example, `"123457"`), otherwise initialization fails.When using Agora RTC and Signaling products at the same time, it is necessary to ensure that the `userId` parameter is consistent. |
 | `ispPolicyEnabled` | Bool | Optional | `false` | Whether to enable the ISP domain policy restriction. In IoT scenarios, devices may be restricted by Internet Service Providers (ISPs). Use this field to set the SDK's connection mode to connect to servers with domains registered with the operator or those in the IP whitelist: <br />- `true`: Enable the ISP domain policy restriction. This setting applies to scenarios where IoT devices use IoT SIM cards for network access. The SDK will only connect to servers with domains registered with the operator or those in the IP whitelist. <br />- `false`: (Default) Disable the ISP domain policy restriction. This setting applies to most common scenarios. |
@@ -74,7 +74,7 @@ Use the `RtmLogConfig` instance to configure and store local log files named `ag
 |:--------------:|:---------:|:--------:|:-------:| ----------------------------------------------------------------------------------------------------------------------- |
 | `filePath` | const char* | Optional | `NULL` | Log file storage paths. |
 | `fileSizeInKB` | uint32_t | Optional | `1024` | Log file size in KB, with a value range of [128,1024].<br />- If the value you enter is less than 128, the SDK sets the value to 128.<br />- If the value you enter is greater than 1024, the SDK sets the value to 1024. |
-| `level` | `RTM_LOG_LEVEL` | Optional | `RTM_LOG_LEVEL_INFO` | Output level of log information. See [`RTM_LOG_LEVEL`](#enumvlogleve-l). |
+| `level` | `RTM_LOG_LEVEL` | Optional | `RTM_LOG_LEVEL_INFO` | Output level of log information. See [`RTM_LOG_LEVEL`](#rtm_log_level). |
 
 ##### RtmProxyConfig
 
@@ -91,7 +91,7 @@ You need to keep your Proxy username and password safe. The Signaling SDK does n
 | `server` | const char* | Required | - | Proxy server domain name or IP address. |
 | `account` | const char* | Required | - | Proxy login account. |
 | `password` | const char* | Required | - | Proxy login password. |
-| `proxyType` | `RTM_PROXY_TYPE` | Optional | `RTM_PROXY_TYPE_NONE` | Proxy protocol type. See [`RTM_PROXY_TYPE`](#enumvproxytyp-e). |
+| `proxyType` | `RTM_PROXY_TYPE` | Optional | `RTM_PROXY_TYPE_NONE` | Proxy protocol type. See [`RTM_PROXY_TYPE`](#rtm_proxy_type). |
 | `port` | uint16_t | Optional | `0` | Proxy listening port. |
 
 ##### RtmEncryptionConfig
@@ -106,9 +106,9 @@ Once you set the encryption feature, all users must use the same encryption mode
 
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `encryptionMode` | `RTM_ENCRYPTION_MODE` | Optional | `RTM_ENCRYPTION_MODE_NONE` | Encryption mode. See [`RTM_ENCRYPTION_MODE`](#enumvencryptionmod-e). |
+| `encryptionMode` | `RTM_ENCRYPTION_MODE` | Optional | `RTM_ENCRYPTION_MODE_NONE` | Encryption mode. See [`RTM_ENCRYPTION_MODE`](#rtm_encryption_mode). |
 | `encryptionKey` | const char* | Optional | - | User-defined encryption key, unlimited length. Agora recommends using a 32-byte key. |
-| `encryptionKdfSalt` | uint8_t | Optional | - | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
+| `encryptionSalt` | uint8_t[32] | Optional | - | User-defined encryption salt, length is 32 bytes. Agora recommends using OpenSSL to generate salt on the server side. |
 
  #### RtmPrivateConfig
 
@@ -118,7 +118,7 @@ Once you set the encryption feature, all users must use the same encryption mode
 
 | Properties | Type | Required | Default | Description |
 |:-------------------:|:---------------------:|:--------:|:--------------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `serviceType` | `RTM_SERVICE_TYPE` | Optional | - | Service type. See [`RTM_SERVICE_TYPE`](#enumvrtmservicetyp-e). |
+| `serviceType` | `RTM_SERVICE_TYPE` | Optional | - | Service type. See [`RTM_SERVICE_TYPE`](#rtm_service_type). |
 | `accessPointHosts` | const char** | Optional | - | An array of server addresses, where you can fill in domain names or IP addresses. |
 
 #### Basic usage
@@ -148,7 +148,7 @@ std::vector<const char*> hosts;
 hosts.push_back("xxx");
 config.privateConfig.accessPointHosts = hosts.data();
 config.privateConfig.accessPointHostsCount = hosts.size();
-config.privateConfig.serviceType = RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM;
+config.privateConfig.serviceType = static_cast<RTM_SERVICE_TYPE>(RTM_SERVICE_TYPE_MESSAGE | RTM_SERVICE_TYPE_STREAM);
 ```
 
 ### createAgoraRtmClient
@@ -177,7 +177,7 @@ AGORA_API IRtmClient* AGORA_CALL createAgoraRtmClient(const RtmConfig& config, i
 
 ```cpp
 RtmConfig config;
-config.appId = "your_appid"
+config.appId = "your_appid";
 config.userId = "your_name";
 config.eventHandler = eventHandler_.get();
 int errorCode = 0;
@@ -198,17 +198,16 @@ if (!rtmClient_ || errorCode != 0) {
 
 #### Description
 
-Signaling has a total of 8 types of event notifications, as shown in the following table:
+Signaling has a total of 7 types of event notifications, as shown in the following table:
 
 | Event Type | Description |
 |:----------:|------------------------------|
-| `onMessageEvent` | Receive message notifications from all subscribed Message Channels or topic message notifications subscribed to, in all Stream Channels you join. See [`MessageEvent`](#configmessageeven-t) . |
-| `onPresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. See [`PresenceEvent`](#configpresenceeven-t) |
-| `onTopicEvent` | Receive all topic event notifications in joined stream channels. See [`TopicEvent`](#configtopiceven-t) |
-| `onStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`StorageEvent`](#configstorageeven-t) |
-| `onLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`LockEvent`](#configlockeven-t) |
-| `onConnectionStateChanged` | (Deprecated) Receive event notifications when client connection status changes. For details, see [`RTM_CONNECTION_STATE`](#enumvconnectionstat-e) and [`RTM_CONNECTION_CHANGE_REASON`](#enumvconnectionreaso-n). |
-| `onLinkStateEvent` | Receive event notifications when client connection status changes. See [`LinkStateEvent`](#configlinkstateeven-t). |
+| `onMessageEvent` | Receive message notifications from all subscribed Message Channels or topic message notifications subscribed to, in all Stream Channels you join. See [`MessageEvent`](#messageevent) . |
+| `onPresenceEvent` | Receive presence event notifications in subscribed message channels and joined stream channels. See [`PresenceEvent`](#presenceevent) |
+| `onTopicEvent` | Receive all topic event notifications in joined stream channels. See [`TopicEvent`](#topicevent) |
+| `onStorageEvent` | Receive channel metadata event notifications in subscribed message channels and joined stream channels, and the user metadata event notification of the subscribed users. See [`StorageEvent`](#storageevent) |
+| `onLockEvent` | Receive lock event notifications in subscribed message channels and joined stream channels. See [`LockEvent`](#lockevent) |
+| `onLinkStateEvent` | Receive event notifications when client connection status changes. See [`LinkStateEvent`](#linkstateevent). |
 | `onTokenPrivilegeWillExpire` | Receive event notifications when the client tokens are about to expire. |
 
 #### Add event listeners
@@ -220,12 +219,11 @@ Add an event listener object as follows:
 class RtmEventHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) {}
     void onTopicEvent(const TopicEvent &event) {}
-    void onConnectionStateChanged(const char *channelName, RTM_CONNECTION_STATE state, RTM_CONNECTION_CHANGE_REASON reason) {}
-    void onLoginResult(RTM_ERROR_CODE errorCode) {}
+    void onPresenceEvent(const PresenceEvent &event) {}
+    void onLoginResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) {}
     void onStorageEvent(const StorageEvent &event) {}
     void onLockEvent(const LockEvent &event) {}
     void onLinkStateEvent(const LinkStateEvent& event) {}
-    ...
 };
 
 RtmConfig config;
@@ -240,8 +238,8 @@ Message event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `messageType` | `RTM_MESSAGE_TYPE` | Message type. See [`RTM_MESSAGE_TYPE`](#enumvmessagetyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `messageType` | `RTM_MESSAGE_TYPE` | Message type. See [`RTM_MESSAGE_TYPE`](#rtm_message_type). |
 | `channelName` | const char* | Channel name. |
 | `channelTopic` | const char* | Topic name. |
 | `message` | const char* | Message. |
@@ -258,8 +256,8 @@ User presence event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `type` | `RTM_PRESENCE_EVENT_TYPE` | Presence event type. See [`RTM_PRESENCE_EVENT_TYPE`](#enumvpresencetyp-e). |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `type` | `RTM_PRESENCE_EVENT_TYPE` | Presence event type. See [`RTM_PRESENCE_EVENT_TYPE`](#rtm_presence_event_type). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `channelName` | const char* | Channel name. |
 | `publisher` | const char* | User ID of the message publisher. |
 | `stateItems` | `const StateItem*` | Key-value pair that identifies the user's presence state. |
@@ -316,7 +314,7 @@ Topic event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `type` | `RTM_TOPIC_EVENT_TYPE` | Topic event type. See [`RTM_TOPIC_EVENT_TYPE`](#enumvtopictyp-e). |
+| `type` | `RTM_TOPIC_EVENT_TYPE` | Topic event type. See [`RTM_TOPIC_EVENT_TYPE`](#rtm_topic_event_type). |
 | `channelName` | const char* | Channel name. |
 | `publisher` | const char* | User ID. |
 | `topicInfos` | `const TopicInfo*` | Topic information. |
@@ -346,9 +344,9 @@ Storage event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `storageType` | `RTM_STORAGE_TYPE` | Storage type. See [`RTM_STORAGE_TYPE`](#enumvstoragetyp-e). |
-| `eventType` | `RTM_STORAGE_EVENT_TYPE` | Storage event type. See [`RTM_STORAGE_EVENT_TYPE`](#enumvstorageeventtyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `storageType` | `RTM_STORAGE_TYPE` | Storage type. See [`RTM_STORAGE_TYPE`](#rtm_storage_type). |
+| `eventType` | `RTM_STORAGE_EVENT_TYPE` | Storage event type. See [`RTM_STORAGE_EVENT_TYPE`](#rtm_storage_event_type). |
 | `target` | const char* | User ID or channel name. |
 | `data` | `Metadata*` | Metadata item. See [`Metadata`](../storage#IMetadata). |
 | `timestamp` | uint64_t | The timestamp when the event occurs. |
@@ -361,8 +359,8 @@ Lock event.
 
 | Properties | Type | Description |
 |:------------------:|:-------------------:| ----------------------------------------------------------------------------------------------------------------------------------- |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `eventType` | `RTM_LOCK_EVENT_TYPE` | Lock event type. See [`RTM_LOCK_EVENT_TYPE`](#enumvlocktyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `eventType` | `RTM_LOCK_EVENT_TYPE` | Lock event type. See [`RTM_LOCK_EVENT_TYPE`](#rtm_lock_event_type). |
 | `channelName` | const char* | Channel name. |
 | `lockDetailList` | `const LockDetail*` | Details of lock. |
 | `count` | size_t | Lock count. |
@@ -384,11 +382,11 @@ SDK link state event.
 
 | Parameters | Type | Description |
 |:----------:|:-----:|:--------------------------- |
-| `currentState` | `RTM_LINK_STATE` | The current link state. See [`RTM_LINK_STATE`](#enumvlinkstat-e). |
-| `previousState` | `RTM_LINK_STATE` | The previous link state. See [`RTM_LINK_STATE`](#enumvlinkstat-e). |
-| `serviceType` | `RTM_SERVICE_TYPE` | The network connection type. See [`RTM_SERVICE_TYPE`](#enumvrtmservicetyp-e). |
-| `operation` | `RTM_LINK_OPERATION` | The operation that triggered the current state transition. See [`RTM_LINK_OPERATION`](#enumvlinkoperatio-n). |
-| `reasonCode` | `RTM_LINK_STATE_CHANGE_REASON` | The reason for this state transition. See [`RTM_LINK_STATE_CHANGE_REASON`](#enumvlinkstatereaso-n). |
+| `currentState` | `RTM_LINK_STATE` | The current link state. See [`RTM_LINK_STATE`](#rtm_link_state). |
+| `previousState` | `RTM_LINK_STATE` | The previous link state. See [`RTM_LINK_STATE`](#rtm_link_state). |
+| `serviceType` | `RTM_SERVICE_TYPE` | The network connection type. See [`RTM_SERVICE_TYPE`](#rtm_service_type). |
+| `operation` | `RTM_LINK_OPERATION` | The operation that triggered the current state transition. See [`RTM_LINK_OPERATION`](#rtm_link_operation). |
+| `reasonCode` | `RTM_LINK_STATE_CHANGE_REASON` | The reason for this state transition. See [`RTM_LINK_STATE_CHANGE_REASON`](#rtm_link_state_change_reason). |
 | `reason` | const char* | The reason for the current state transition. This parameter will be deprecated in the future, please use the `reasonCode` parameter instead. |
 | `affectedChannels` | const char** | The channels affected by the current state transition. |
 | `affectedChannelCount` | size_t | The number of channels affected by the current state transition. |
@@ -502,7 +500,7 @@ class RtmEventHandler : public IRtmEventHandler {
 - 0: Success.
 - &lt; 0: Failure.
 
-### releaseLock
+### IRtmClient::release
 
 #### Description
 
@@ -570,14 +568,15 @@ After calling this method, the SDK triggers the `onRenewTokenResult` callback an
 | Parameters | Type | Description |
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
-| `serverType` | `RTM_SERVICE_TYPE` | Service type. See [`RTM_SERVICE_TYPE`](#enumvrtmservicetyp-e). |
+| `serverType` | `RTM_SERVICE_TYPE` | Service type. See [`RTM_SERVICE_TYPE`](#rtm_service_type). |
 | `channelName` | const char* | Channel name. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
 #### Basic usage
 
 ```cpp
-rtmClient->renewToken("your token");
+uint64_t requestId;
+rtmClient->renewToken("your token", requestId);
 ```
 
 ### IStreamChannel::renewToken
@@ -610,7 +609,7 @@ After calling this method, the SDK triggers the `onRenewTokenResult` callback an
 | Parameters | Type | Description |
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
-| `serverType` | `RTM_SERVICE_TYPE` | Service type. See [`RTM_SERVICE_TYPE`](#enumvrtmservicetyp-e). |
+| `serverType` | `RTM_SERVICE_TYPE` | Service type. See [`RTM_SERVICE_TYPE`](#rtm_service_type). |
 | `channelName` | const char* | Channel name. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
@@ -632,7 +631,7 @@ Based on capabilities of Agora, Signaling channels are divided into two types to
 
 IRtmClient
 Signaling client instance
-### subscribeTopic
+### subscribe
 
 #### Description
 
@@ -706,7 +705,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### unsubscribeTopic
+### unsubscribe
 
 #### Description
 
@@ -760,7 +759,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### createAgoraRtmClient
+### createStreamChannel
 
 #### Description
 
@@ -802,7 +801,7 @@ if (streamChannel == nullptr || errorCode != 0) {
 
 IStreamChannel
 Stream channel instance
-### joinTopic
+### join
 
 #### Description
 
@@ -880,7 +879,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### leaveTopic
+### leave
 
 #### Description
 
@@ -936,7 +935,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### releaseLock
+### IStreamChannel::release
 
 #### Description
 
@@ -1006,8 +1005,8 @@ The `JoinTopicOptions` data type contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :-------------: | :------------------------------------------------------: | :------: | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `qos` | `RTM_MESSAGE_QOS` | Optional | `RTM_MESSAGE_QOS_UNORDERED` | Whether the data transmitted in the topic is ordered. See [`RTM_MESSAGE_QOS`](#enumvmessageqo-s). |
-| `priority` | `RTM_MESSAGE_PRIORITY` | Optional | `RTM_MESSAGE_PRIORITY_NORMAL` | The priority of data transmission in the topic compared to other topics in the same channel. See [`RTM_MESSAGE_PRIORITY`](#enumvmessagepriorit-y). |
+| `qos` | `RTM_MESSAGE_QOS` | Optional | `RTM_MESSAGE_QOS_UNORDERED` | Whether the data transmitted in the topic is ordered. See [`RTM_MESSAGE_QOS`](#rtm_message_qos). |
+| `priority` | `RTM_MESSAGE_PRIORITY` | Optional | `RTM_MESSAGE_PRIORITY_NORMAL` | The priority of data transmission in the topic compared to other topics in the same channel. See [`RTM_MESSAGE_PRIORITY`](#rtm_message_priority). |
 | `meta` | const char* | Optional | `NULL` | Adds additional metadata when joining the topic. |
 | `syncWithMedia` | bool | Optional | `false` | Whether the data sent in this topic is synchronized (timestamp-aligned) with the RTC audio and video data stream of the common channel. |
 
@@ -1032,7 +1031,7 @@ JoinTopicOptions options;
 options.qos = RTM_MESSAGE_QOS_ORDERED;
 
 uint64_t requestId;
-stream_channel->joinTopic("topicName", options, requestId);
+streamChannel->joinTopic("topicName", options, requestId);
 
 ```
 
@@ -1077,7 +1076,7 @@ The `TopicMessageOptions` data type contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :----------: | :----: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `messageType` | `RTM_MESSAGE_TYPE` | Optional | `RTM_MESSAGE_TYPE_BINARY` | Message type. See [`RTM_MESSAGE_TYPE`](#enumvmessagetyp-e). |
+| `messageType` | `RTM_MESSAGE_TYPE` | Optional | `RTM_MESSAGE_TYPE_BINARY` | Message type. See [`RTM_MESSAGE_TYPE`](#rtm_message_type). |
 | `sendTs` | uint64_t | Optional | `0` | The timestamp when the SDK sends a message. This parameter is only valid when you set `syncWithMedia = true` in the `joinTopic` method. The SDK synchronizes data with RTC audio and video streams based on this timestamp. |
 | `customType` | const char* | Optional | `NULL` | A user-defined field. Only supports string type. |
 
@@ -1116,7 +1115,7 @@ options.customType = "ByteArray";
 char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
 uint64_t requestId;
-stream_channel->publishTopicMessage("topic_name", message, 5, options, requestId);
+streamChannel->publishTopicMessage("topic_name", message, 5, options, requestId);
 ```
 
 ### leaveTopic
@@ -1425,7 +1424,7 @@ This page introduces how to send and receive messages in a message channel or a 
 
 IRtmClient
 Signaling client instance
-### publishTopicMessage
+### publish
 
 #### Description
 
@@ -1457,8 +1456,8 @@ The `TopicMessageOptions` data type contains the following properties:
 
 | Properties | Type | Required | Default | Description |
 | :----------: | :----: | :------: | :----: | ------------------------------------------------ |
-| `channelType` | `RTM_CHANNEL_TYPE` | Optional | `RTM_CHANNEL_TYPE_MESSAGE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `messageType` | `RTM_MESSAGE_TYPE` | Optional | `RTM_MESSAGE_TYPE_BINARY` | Message type. See [`RTM_MESSAGE_TYPE`](#enumvmessagetyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Optional | `RTM_CHANNEL_TYPE_MESSAGE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `messageType` | `RTM_MESSAGE_TYPE` | Optional | `RTM_MESSAGE_TYPE_BINARY` | Message type. See [`RTM_MESSAGE_TYPE`](#rtm_message_type). |
 | `customType` | const char* | Optional | `NULL` | A user-defined field. Only supports string type. |
 
 #### Asynchronous callback
@@ -1478,7 +1477,7 @@ Example 1: Send string messages to a specified channel.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
 options.customType = "PlainText";
-options.channelTye = RTM_CHANNEL_TYPE_MESSAGE;
+options.channelType = RTM_CHANNEL_TYPE_MESSAGE;
 std::string message =  "hello world";
 uint64_t requestId;
 rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
@@ -1490,7 +1489,7 @@ Example 2: Send byte messages to a specified channel.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_BINARY;
 options.customType = "ByteArray";
-options.channelTye = RTM_CHANNEL_TYPE_MESSAGE;
+options.channelType = RTM_CHANNEL_TYPE_MESSAGE;
 
 char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
@@ -1504,7 +1503,7 @@ Example 3: Send string messages to a specified user.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
 options.customType = "PlainText";
-options.channelTye = RTM_CHANNEL_TYPE_USER;
+options.channelType = RTM_CHANNEL_TYPE_USER;
 std::string message =  "hello world";
 uint64_t requestId;
 rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
@@ -1516,7 +1515,7 @@ Example 4: Send byte messages to a specified user.
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_BINARY;
 options.customType = "ByteArray";
-options.channelTye = RTM_CHANNEL_TYPE_USER;
+options.channelType = RTM_CHANNEL_TYPE_USER;
 
 char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
@@ -1589,7 +1588,7 @@ virtual void getOnlineUsers(const char* channelName, RTM_CHANNEL_TYPE channelTyp
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `options` | `const PresenceOptions&` | Required | - | Query options. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
@@ -1632,7 +1631,7 @@ The `UserState` data type contains the following properties:
 
 ```cpp
 // Method call
-PresenceOptions options;
+GetOnlineUsersOptions options;
 options.includeState = true;
 options.includeUserId =true;
 options.page = "yourBookMark";
@@ -1694,7 +1693,7 @@ After calling this method, the SDK triggers the `onGetUserChannelsResult` callba
 | Properties | Type | Description |
 | :------------: | :-------------------------------------------------------: | ------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 
 #### Basic usage
 
@@ -1741,7 +1740,7 @@ virtual void setState(const char* channelName, RTM_CHANNEL_TYPE channelType, con
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `items` | `const StateItem*` | Required | - | User state. |
 | `count` | size_t | Required | - | Count of the user state. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -1806,7 +1805,7 @@ virtual void getState(const char* channelName, RTM_CHANNEL_TYPE channelType, con
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `userId` | const char* | Required | - | User ID. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
@@ -1878,7 +1877,7 @@ virtual void removeState(const char* channelName, RTM_CHANNEL_TYPE channelType, 
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `keys` | const char** | Required | - | List of keys to be deleted. If you do not provide this property, the SDK removes all states. |
 | `count` | size_t | Required | - | Key count. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -1959,8 +1958,8 @@ virtual void setChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `const MetadataOptions&` | Required | - | Options for setting the channel metadata. |
 | `lockName` | const char* | Required | - | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -1980,7 +1979,7 @@ After calling this method, the SDK triggers the `onSetChannelMetadataResult` cal
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
 #### Basic usage
@@ -2032,7 +2031,7 @@ virtual void getChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
 #### Asynchronous callback
@@ -2043,8 +2042,8 @@ After calling this method, the SDK triggers the `onGetChannelMetadataResult` cal
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `data` | `const Metadata&` | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `data` | `const Metadata&` | Metadata item. See [`Metadata`](#metadata). |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
 #### Basic usage
@@ -2098,8 +2097,8 @@ virtual void removeChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `const MetadataOptions&` | Required | - | Options for setting the channel metadata. |
 | `lockName` | const char* | Required | - | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -2119,7 +2118,7 @@ After calling this method, the SDK triggers the `onRemoveChannelMetadataResult` 
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
 #### Basic usage
@@ -2180,8 +2179,8 @@ virtual void updateChannelMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
-| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
+| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `const MetadataOptions&` | Required | - | Options for setting the channel metadata. |
 | `lockName` | const char* | Required | - | Lock name. If set, only users who call the `acquireLock` method to acquire the lock can perform operations. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -2201,7 +2200,7 @@ After calling this method, the SDK triggers the `onUpdateChannelMetadataResult` 
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
 #### Basic usage
@@ -2272,7 +2271,7 @@ virtual void setUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | const char* | Required | - | User ID. |
-| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `const MetadataOptions&` | Required | - | Options for setting the channel metadata. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
@@ -2303,7 +2302,7 @@ std::vector<agora::rtm::MetadataItem> items;
 items.emplace_back(MetadataItem("Name", "Tony", 174298200));
 items.emplace_back(MetadataItem("Mute", "true", 174298100));
 metadata.items = items.data();
-metadata.items = items.size();
+metadata.itemCount = items.size();
 
 MetadataOptions options;
 options.recordTs = true;
@@ -2353,7 +2352,7 @@ After calling this method, the SDK triggers the `onGetUserMetadataResult` callba
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `userId` | const char* | User ID. |
-| `data` | `const Metadata&` | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `data` | `const Metadata&` | Metadata item. See [`Metadata`](#metadata). |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
 #### Basic usage
@@ -2401,7 +2400,7 @@ virtual void removeUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | const char* | Required | - | User ID. |
-| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `const MetadataOptions&` | Required | - | Options for setting the channel metadata. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
@@ -2478,7 +2477,7 @@ virtual void updateUserMetadata(
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------------: | :------: | :-----------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `userId` | const char* | Required | - | User ID. |
-| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#storagemetadat-a). |
+| `data` | `const Metadata&` | Required | - | Metadata item. See [`Metadata`](#metadata). |
 | `options` | `const MetadataOptions&` | Required | - | Options for setting the channel metadata. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
@@ -2681,7 +2680,7 @@ virtual void setLock(const char* channelName, RTM_CHANNEL_TYPE channelType, cons
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Required | - | Lock name. |
 | `ttl` | uint32_t | Required | - | The expiration time of the lock. The value is in seconds, ranging from [10 to 300]. When the user who owns the lock goes offline, if the user returns to the channel within the time they can still use the lock; otherwise, the lock is released and the users who listen for the `onLockEvent` event receives the `RTM_LOCK_EVENT_TYPE_LOCK_RELEASED` event. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -2694,7 +2693,7 @@ After calling this method, the SDK triggers the `onSetLockResult` callback and r
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Lock name. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
@@ -2738,7 +2737,7 @@ virtual void acquireLock(const char* channelName, RTM_CHANNEL_TYPE channelType, 
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :-----: | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Required | - | Lock name. |
 | `retry` | bool | Required | - | If the lock acquisition fails, whether to retry until the acquisition succeeds or the user leaves the channel. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -2751,7 +2750,7 @@ After calling this method, the SDK triggers the `onAcquireLockResult` callback a
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Lock name. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 | `errorDetails` | const char* | Detailed error description. |
@@ -2798,7 +2797,7 @@ virtual void releaseLock(const char* channelName, RTM_CHANNEL_TYPE channelType, 
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Required | - | Lock name. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
@@ -2810,7 +2809,7 @@ After calling this method, the SDK triggers the `onReleaseLockResult` callback a
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Lock name. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
@@ -2856,7 +2855,7 @@ virtual void revokeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, c
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Required | - | Lock name. |
 | `owner` | const char* | Required | - | The ID of the user who has a lock. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
@@ -2869,7 +2868,7 @@ After calling this method, the SDK triggers the `onRevokeLockResult` callback an
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Lock name. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
@@ -2894,7 +2893,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-### getMessages
+### getLocks
 
 #### Description
 
@@ -2911,7 +2910,7 @@ virtual void getLocks(const char* channelName, RTM_CHANNEL_TYPE channelType, uin
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
 #### Asynchronous callback
@@ -2922,7 +2921,7 @@ After calling this method, the SDK triggers the `onGetLocksResult` callback and 
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockDetailList` | `const LockDetail*` | Details of lock. |
 | `count` | const size_t | Lock count. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
@@ -2978,7 +2977,7 @@ virtual void removeLock(const char* channelName, RTM_CHANNEL_TYPE channelType, c
 | Parameters | Type | Required | Default | Description |
 | :--------------: | :-------------------------------------------------------: | :------: | :----: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `channelName` | const char* | Required | - | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Required | - | Channel types. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Required | - | Lock name. |
 | `requestId` | uint64_t& | Required | - | (Output) Request identifier. Use this parameter to identify and process the corresponding request. |
 
@@ -2990,7 +2989,7 @@ After calling this method, the SDK triggers the `onRemoveLockResult` callback an
 | :--------------: | :--------------------: | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `requestId` | const uint64_t | Request identifier. |
 | `channelName` | const char* | Channel name. |
-| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#enumvchanneltyp-e). |
+| `channelType` | `RTM_CHANNEL_TYPE` | Channel type. See [`RTM_CHANNEL_TYPE`](#rtm_channel_type). |
 | `lockName` | const char* | Lock name. |
 | `errorCode` | `RTM_ERROR_CODE` | [Error codes](#error-codes-table). |
 
@@ -3269,7 +3268,7 @@ Refer to the following error codes table to identify and troubleshoot the proble
 | Error code| Error description| Cause and solution |
 | :------ | :------------------|:---------------------------|
 | `0` | `RTM_ERROR_OK` | Correct call |
-| `-10001` | `RTM_ERROR_NOT_INITIALIZED` | The SDK is not initialized. Please initialize the `RtmClient` instance by calling the `createAgoraRtmClient` method before performing other operations. |
+| `-10001` | `RTM_ERROR_NOT_INITIALIZED` | The SDK is not initialized. Please initialize the `IRtmClient` instance by calling the `createAgoraRtmClient` method before performing other operations. |
 | `-10002` | `RTM_ERROR_NOT_LOGIN` | The user called the API without logging in to Signaling, disconnected due to timeout, or actively logged out. Please log in to Signaling first. |
 | `-10003` | `RTM_ERROR_INVALID_APP_ID` | Invalid App ID: <br /> - Check that the App ID is correct. <br /> - Ensure that Signaling has been activated for the App ID. |
 | `-10005` | `RTM_ERROR_INVALID_TOKEN` | Invalid Token: <br /> - The token is invalid, check whether the Token Provider generates a valid Signaling Token. |

@@ -1,0 +1,50 @@
+---
+title: "Restrict media zones"
+description: "Restrict IoT SDK network traffic to a specified geographic region."
+---
+
+To conform to the laws and regulations of different countries and regions, IoT SDK lets you restrict the media zones your app connects to. Once you specify a region, IoT SDK only transmits your audio and video data to Agora servers within that region.
+
+## Understand the tech
+
+Once you restrict media zones, IoT SDK only accesses Agora servers in the region you specify, regardless of where the user is actually located. For example, if you specify North America as the region, and users connect from North America and Japan respectively:
+
+| Specified region | User's location | Region IoT SDK accesses | User experience |
+| --- | --- | --- | --- |
+| North America | North America | North America | Normal |
+| North America | Japan | North America | Quality may be affected |
+
+:::info
+Quality may be affected when restricting media zones because the user's traffic has to reach the specified region over the public internet, instead of connecting to the closest Agora server.
+:::
+
+## Set the area code
+
+Set the region when you initialize the engine, using the `area_code` field of `rtc_service_option_t`:
+
+```cpp
+rtc_service_option_t service_opt;
+service_opt.area_code = AREA_CODE_NA;
+...
+rval = agora_rtc_init(appid, &event_handler, &service_opt);
+```
+
+Choose area codes from the following table. Area codes support bitwise combination.
+
+| Area code | Region |
+|---|---|
+| `AREA_CODE_CN` | Mainland China |
+| `AREA_CODE_NA` | North America |
+| `AREA_CODE_EU` | Europe |
+| `AREA_CODE_AS` | Asia, excluding Mainland China |
+| `AREA_CODE_JP` | Japan |
+| `AREA_CODE_IN` | India |
+| `AREA_CODE_GLOB` | Global (default) |
+
+If the servers in your specified region become unavailable, IoT SDK returns an error instead of falling back to a server in another region.
+
+For a list of the cloud proxy IP ranges for each region, see [Allowlist IP addresses and ports](/en/realtime-media/iot/build/manage-connections-and-quality/cloud-proxy#allowlist-ip-addresses-and-ports).
+
+## Reference
+
+- [agora_rtc_init](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html)

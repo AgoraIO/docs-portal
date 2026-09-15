@@ -62,6 +62,68 @@ describe('scrollDocsHashTarget', () => {
     });
   });
 
+  it('clears the sticky shell header when it is taller than the base offset', () => {
+    document.body.innerHTML = `
+      <header data-testid="docs-shell-header" style="position: sticky"></header>
+      <div data-testid="docs-main-desktop-scroll">
+        <h2 id="target-heading">Target heading</h2>
+      </div>
+    `;
+    const header = document.querySelector<HTMLElement>(
+      '[data-testid="docs-shell-header"]',
+    );
+    const heading = document.getElementById('target-heading');
+    const windowScrollTo = vi.fn();
+
+    if (!header || !heading) {
+      throw new Error('expected hash scroll fixture nodes');
+    }
+
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 40,
+    });
+    Object.defineProperty(window, 'scrollTo', {
+      configurable: true,
+      value: windowScrollTo,
+      writable: true,
+    });
+    vi.spyOn(header, 'getBoundingClientRect').mockReturnValue({
+      bottom: 131,
+      height: 131,
+      left: 0,
+      right: 800,
+      top: 0,
+      width: 800,
+      x: 0,
+      y: 0,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(heading, 'getBoundingClientRect').mockReturnValue({
+      bottom: 328,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 300,
+      width: 800,
+      x: 0,
+      y: 300,
+      toJSON: () => ({}),
+    });
+
+    expect(
+      scrollDocsHashTarget('#target-heading', {
+        behavior: 'auto',
+        updateHistory: false,
+      }),
+    ).toBe(true);
+    // 40 + 300 - (131 header + 24 gap)
+    expect(windowScrollTo).toHaveBeenCalledWith({
+      behavior: 'auto',
+      top: 185,
+    });
+  });
+
   it('uses the desktop content wrapper only when it is configured as a scroll container', () => {
     document.body.innerHTML = `
       <div data-testid="docs-main-desktop-scroll" style="overflow-y: auto">

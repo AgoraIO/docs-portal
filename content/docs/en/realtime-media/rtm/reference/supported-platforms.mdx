@@ -1,0 +1,220 @@
+---
+title: "Supported platforms"
+description: "A list of platforms supported by Signaling SDK."
+---
+
+This section lists the platforms and products you use to develop apps that interact with Agora SDRTN®.
+
+<PlatformStructured platform="web">
+
+### Supported browsers
+
+Minimum supported versions:
+
+- Chrome
+  - macOS 90.0.4430.72
+  - Windows 90.0.4430.72
+  - Linux 93.0
+  - Android 97.0.4692.70
+  - iOS 120.0.6099.199
+- Safari
+  - macOS 15.6
+  - iOS 15.6
+- Microsoft Edge
+  - macOS 116.0.1938.81
+  - Windows 116.0.1938.81
+- Firefox
+  - macOS 85.0.1
+  - Windows 85.0.1 (x64)
+
+### Dependencies
+
+When you integrate Signaling features into your app, Signaling SDK has the following dependencies:
+
+| Name | Minimum version | License | Dependency |
+|:-----|:-----|:-----|:-----|
+| @thi.ng/cache | 1.0.70 | Apache 2.0 | Transitive |
+| @types/format-util | 1.0.1 | MIT | Transitive |
+| @types/google-closure-compiler | 0.0.18 | MIT | Transitive |
+| @types/node-forge | 1.3.1 | BSD 2-Clause | Transitive |
+| abortcontroller-polyfill | 1.7.1 | MIT | Transitive |
+| console-polyfill | 0.3.0 | MIT | Transitive |
+| core-js | 3.9.0 | MIT | Transitive |
+| debug | 4.3.4 | MIT | Transitive |
+| dotenv | 8.2.0 | BSD 2-Clause | Transitive |
+| events | 3.2.0 | MIT | Transitive |
+| format-util | 1.0.5 | MIT | Transitive |
+| gud | 1.0.0 | MIT | Transitive |
+| is-mobile | 3.1.1 | MIT | Transitive |
+| is-what | 3.14.1 | MIT | Transitive |
+| lodash | 4.17.21 | MIT | Transitive |
+| long | 4.0.0 | Apache 2.0 | Transitive |
+| lru-cache | 6.0.0 | ISC | Transitive |
+| never throw | 5.0.1 | MIT | Transitive |
+| node-forge | 1.3.1 | BSD 3-Clause or GPL 2 | Transitive |
+| promise-polyfill | 8.2.0 | MIT | Transitive |
+| protobufjs | 6.10.2 | MIT | Transitive |
+| regenerator-runtime | 0.13.9 | MIT | Transitive |
+| rxjs | 6.6.3 | Apache 2.0 | Transitive |
+| rxjs-etc | 10.6.0 | MIT | Transitive |
+| rxjs-websockets | 8.0.1 | ISC | Transitive |
+| safe-json-stringify | 1.2.0 | MIT | Transitive |
+| tslib | 2.1.0 | BSD Zero Clause | Transitive |
+| uuid | 3.4.0 | MIT | Transitive |
+| webcrypto-shim | 0.1.6 | MIT | Transitive |
+
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+| Target architecture | Minimum version of the operating environment | Minimum operating system version |
+|:------------|:---------|:----------------|
+| armeabi-v7, arm64-v8a, x86, x86-64 | JVM 8 | Android 7.0 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+| Platform | Target architecture | Minimum operating system version |
+|:---------|:----------------------|:---------------------------------|
+| iOS | armv7, arm64 | 11.0 |
+| macOS | x86-64, arm64 | 10.10 |
+| VisionOS | arm64 | 1.0 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="macos">
+
+| Platform | Target architecture | Minimum operating system version |
+|:---------|:----------------------|:---------------------------------|
+| iOS | armv7, arm64 | 11.0 |
+| macOS | x86-64, arm64 | 10.10 |
+| VisionOS | arm64 | 1.0 |
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+| Target Platform | Target architecture | Minimum version of the development environment |
+|:-------|:-------|:-------|
+| Android | <Slot name="rtm-supported-flutter-android-arch" /> | <Slot name="rtm-supported-flutter-android-env" /> |
+| iOS | - | macOS 10.15 |
+
+<Slot for="rtm-supported-flutter-android-arch">
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+
+</Slot>
+
+<Slot for="rtm-supported-flutter-android-env">
+
+- macOS 10.15
+- Windows 10
+
+</Slot>
+
+:::info
+- For further details on environment requirements, see [Install Flutter](https://docs.flutter.dev/get-started/install).
+- Execute the `flutter doctor` command to check that the development and running environments meet the requirements.
+:::
+
+### Licensing
+
+| Name | Minimum Version | License | How to Obtain a License |
+|---------------------|-----------------|---------------|----------------------------|
+| Flutter SDK | 3.10.0 | [BSD 3-Clause](https://github.com/flutter/flutter/blob/master/LICENSE) | Download it yourself |
+| Dart SDK | 3.0 | [BSD 3-Clause](https://github.com/dart-lang/sdk/blob/master/LICENSE) | Download it yourself |
+| json_annotation | 4.4.0 | [BSD-3-Clause](https://pub.dev/packages/json_annotation/license) | Transitive Dependencies |
+| ffi | 1.1.2 | [BSD 3-Clause](https://pub.dev/packages/ffi/license) | Transitive Dependencies |
+| async | 2.8.2 | [BSD 3-Clause](https://pub.dev/packages/async/license) | Transitive Dependencies |
+| meta | 1.7.0 | [BSD 3-Clause](https://pub.dev/packages/meta/license) | Transitive Dependencies |
+| iris_method_channel | 2.2.0 | [MIT](https://pub.dev/packages/iris_method_channel/license) | Transitive Dependencies |
+| flutter_lints | 1.0.0 | [BSD 3-Clause](https://pub.dev/packages/flutter_lints/license) | Transitive Dependencies |
+| build_runner | 2.1.7 | [BSD 3-Clause](https://pub.dev/packages/build_runner/license) | Transitive Dependencies |
+| json_serializable | 6.1.1 | [BSD 3-Clause](https://pub.dev/packages/json_serializable/license) | Transitive Dependencies |
+| ffigen | 4.1.2 | [BSD 3-Clause](https://pub.dev/packages/ffigen/license) | Transitive Dependencies |
+
+</PlatformStructured>
+
+<PlatformStructured platform="react-native">
+
+| Target Platform | Target architecture | Minimum version of the development environment |
+|:-------|:-------|:-------|
+| Android | <Slot name="rtm-supported-react-native-android-arch" /> | <Slot name="rtm-supported-react-native-android-env" /> |
+| iOS | - | macOS 10.15 |
+
+<Slot for="rtm-supported-react-native-android-arch">
+
+- armeabi-v7a
+- arm64-v8a
+- x86
+
+</Slot>
+
+<Slot for="rtm-supported-react-native-android-env">
+
+- macOS 10.15
+- Windows 10
+
+</Slot>
+
+</PlatformStructured>
+
+<PlatformStructured platform="windows">
+
+- *Platforms*:
+
+  | Target Platform | Operating system version | IDE version |
+  |:-----------------|:-------|:-----|
+  | Windows | <Slot name="rtm-supported-windows-architectures" /> | Microsoft Visual Studio 2017 or later |
+
+  <Slot for="rtm-supported-windows-architectures">
+
+  Windows 10 or later. Signaling SDK supports the following architectures:
+
+  - x86
+  - x86-64
+
+  </Slot>
+
+- C++ 11 and above
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-cpp">
+
+| Target architecture | Minimum version of the operating environment | Minimum operating system version |
+|:--------------------|:--------------------------------------------|:-------------------------------------------|
+| x86-64 | C++ 14 | Ubuntu 18.04 LTS (64-bit) or Debian 9.9 (64-bit) |
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+| Target architecture | Minimum version of the operating environment | Minimum operating system version |
+|:--------------------|:--------------------------------------------|:-------------------------------------------|
+| aarch64 (arm64), x86-64 | JVM 8 | Ubuntu 18.04 LTS (64-bit) or Debian 9.9 (64-bit) |
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+| Name | Minimum Version | License | How to Obtain a License |
+|---------------|-------------------|:------------|----------------------------------|
+| UnityEditor | 2018.4.26f1 | [Unity License](https://unity3d.com/legal) | User self-application |
+
+- Android
+
+  | Target Architecture | Scripting Runtime | Minimum Operating System Version |
+  |--------------------------------------|-------------------------|----------------------------------|
+  | armeabi-v7a, arm64-v8a, x86, x86-64 | .NET 4.x Equivalent | Android 4.1 |
+
+- iOS
+
+  | Target Architecture | Scripting Runtime | Minimum Operating System Version |
+  |---------------------|-----------------------|----------------------------------|
+  | arm64, armv7 | .NET 4.x Equivalent | iOS 9.0 |
+
+</PlatformStructured>

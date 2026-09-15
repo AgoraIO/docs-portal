@@ -35,8 +35,22 @@ Before you start, ensure that you have:
   - Implement the [Video Calling Quickstart](/en/realtime-media/rtc/get-started-sdk), or
   - Use the Agora [Web Demo](https://webdemo-global.agora.io/index.html) to simulate audio and video streams
 
+### Enable Cloud Transcoding
+
+You must enable Cloud Transcoding for your project before you can call the RESTful APIs.
+
 :::info
-Cloud Transcoding must be activated before you can call the RESTful APIs. Contact [Agora technical support](mailto:support@agora.io) to activate it for your project. If you want viewers to receive multiple bitrates, ask support to enable the multi-bitrate service at the same time.
+You cannot disable Cloud Transcoding for a project after you enable it.
+:::
+
+1. Go to [Agora Console](https://console.agora.io), select your project, then select **RTC Services** from the sidebar.
+2. Find the **Cloud Transcoding** card, then toggle the switch on.
+3. Read the confirmation dialog, then confirm. 
+
+:::tip[Tips]
+- Select the settings icon next to Cloud Transcoding to view your current usage and quota, or to open Postman and test the Cloud Transcoding APIs.
+
+- If you want viewers to receive multiple bitrates, contact [Agora technical support](mailto:support@agora.io) to enable the multi-bitrate service.
 :::
 
 ## Set up your project
@@ -416,7 +430,7 @@ If you see error messages, check that your App ID, tokens, and credentials are c
 This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
 
 - Refer to the [API documentation](/en/api-reference/cloud-transcoding/restful) for complete parameter details.
-- If you encounter any problems, refer to [Status and error codes](./reference/status-codes).
+- If you encounter any problems, refer to [Status and error codes](/en/api-reference/api-ref/cloud-transcoding/status-codes).
 
 ### Sample project
 

@@ -81,13 +81,6 @@ agent := agentkit.NewAgent(client).WithStt(
 
 <TabsContent value="rest-api">
 
-:::info[Info]
-Gemini ASR is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
-
-- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
-- **Header**: `agora-feature: gemini-live`
-:::
-
 Use the following `asr` configuration in your request:
 
 ```json
@@ -106,10 +99,6 @@ Use the following `asr` configuration in your request:
 
 </TabsContent>
 </Tabs>
-
-:::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Google Gemini API documentation](https://ai.google.dev/api/live).
-:::
 
 ### Key parameters
 
@@ -139,3 +128,7 @@ The parameters listed on this page are validated for use with Conversational AI 
   </Parameter>
  </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Google Gemini API documentation](https://ai.google.dev/api/live).
+:::

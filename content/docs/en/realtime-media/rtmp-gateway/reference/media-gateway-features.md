@@ -25,7 +25,7 @@ The following figure shows the overall architecture of Media Gateway:
 Use the following references when you implement the core Media Gateway capabilities described above:
 
 - [REST API overview](/en/api-reference/rtmp-gateway): Review the base URL, authentication model, and the full API surface.
-- [RESTful authentication](/en/api-reference/api-ref/rtmp-gateway/restful-authentication): Authenticate server-side requests before calling Media Gateway APIs.
+- [RESTful authentication](/en/api-reference/api-ref/rtmp-gateway/authentication): Authenticate server-side requests before calling Media Gateway APIs.
 - [Query notification service IP address](/en/api-reference/api-ref/rtmp-gateway/query-ip-address): Retrieve the callback IP ranges used by notification services.
 
 The main API groups map to product features as follows:

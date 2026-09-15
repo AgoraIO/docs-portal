@@ -5,7 +5,7 @@ description: "Understand how Interactive Whiteboard converts source files into i
 
 Interactive Whiteboard supports file conversion from PPT and PPTX files into dynamic HTML web pages. The generated web pages can be accessed directly or presented on the whiteboard.
 
-Interactive Whiteboard released a new version of file conversion service on July 27, 2022, that greatly improves conversion speed, content parsing, and stability. The new version also adds the ability to integrate with third-party whiteboard SDKs. Agora strongly recommends you use the new version of file conversion. See [File conversion RESTful API reference](../../reference/rest-api/file-conversion.md).
+Interactive Whiteboard released a new version of file conversion service on July 27, 2022, that greatly improves conversion speed, content parsing, and stability. The new version also adds the ability to integrate with third-party whiteboard SDKs. Agora strongly recommends you use the new version of file conversion. See [File conversion RESTful API reference](/en/api-reference/api-ref/whiteboard/file-conversion).
 
 ## Introduction
 
@@ -65,7 +65,7 @@ The new and the old versions of file conversion are **independent of each other*
 Although Agora Interactive Whiteboard continues to maintain the old version of file conversion, some issues could arise due to inherent limits in the architectural design. Agora recommends you choose an appropriate time to switch to the new file conversion. If you need support for the old version of file conversion, see the following resources:
 
 - [Old File Conversion Overview](../../reference/file-conversion-overview-deprecated.mdx)
-- [Old File Conversion API Reference](../../reference/rest-api/file-conversion-deprecated.mdx)
+- [Old File Conversion API Reference](/en/api-reference/api-ref/whiteboard/file-conversion-deprecated)
 
 ## Prerequisites
 
@@ -87,13 +87,13 @@ To convert documents on the whiteboard, enable the **Docs to Picture** and **Doc
 
 Take the following steps:
 
-1. To start a file-conversion task, call the RESTful API and pass in the URL address of the source file along with other parameters. See [Start file conversion](../../reference/rest-api/file-conversion.md#start-file-conversion).
+1. To start a file-conversion task, call the RESTful API and pass in the URL address of the source file along with other parameters. See [Start file conversion](/en/api-reference/api-ref/whiteboard/file-conversion#start-file-conversion).
 
-2. To query the progress of a file-conversion task, pass in the corresponding task UUID and Task Token. See [Query file-conversion progress](../../reference/rest-api/file-conversion.md#query-the-progress-of-a-file-conversion-task). Agora recommends that you implement an algorithm to regularly query the conversion progress so that your data is up to date.
+2. To query the progress of a file-conversion task, pass in the corresponding task UUID and Task Token. See [Query file-conversion progress](/en/api-reference/api-ref/whiteboard/file-conversion#query-the-progress-of-a-file-conversion-task). Agora recommends that you implement an algorithm to regularly query the conversion progress so that your data is up to date.
 
 ## PPT Conversion: Supported features, limitations, and troubleshooting
 
-When converting PPT or PPTX files created in Microsoft PowerPoint into dynamic HTML web pages using [File conversion](../../reference/rest-api/file-conversion.md), some elements—such as special effects, images, or animations—might not parse correctly. This can result in issues like missing or non-functional effects in the converted output. This section outlines the compatibility of the document conversion service with various PPT features, helping you identify and fix problematic elements in your presentations.
+When converting PPT or PPTX files created in Microsoft PowerPoint into dynamic HTML web pages using [File conversion](/en/api-reference/api-ref/whiteboard/file-conversion), some elements—such as special effects, images, or animations—might not parse correctly. This can result in issues like missing or non-functional effects in the converted output. This section outlines the compatibility of the document conversion service with various PPT features, helping you identify and fix problematic elements in your presentations.
 
 :::info
 - These notes are only applicable to PPT or PPTX files made with MS PowerPoint. For PPT files made with WPS, Agora does not guarantee the conversion effect.

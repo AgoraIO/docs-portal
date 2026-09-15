@@ -282,7 +282,7 @@ If you receive `404`, `429`, or `5xx` error codes, use a backoff strategy. For e
 |Status code               |Possible error message | Possible reason of failure                                                             |Measures to take|
 |:-------------------------|:------------------------|:---------------------------------------------------------------------------------------|:----------|
 |`400` Bad Request         |Invalid parameter: `rtmpUrl`. Replace and retry. Invalid parameter: `idleTimeout`. Replace and retry.	| Wrong parameters. | Check by referring to the `reason` field in the HTTP response body. |
-|`401` Unauthorized        |Invalid authentication credentials.	| RESTful API authentication failed.	                                                    |See [RESTful Authentication](../reference/restful-authentication)|
+|`401` Unauthorized        |Invalid authentication credentials.	| RESTful API authentication failed.	                                                    |See [RESTful Authentication](/en/api-reference/api-ref/media-push/restful-authentication)|
 |`403` Forbidden           |No valid permission to use this function. Contact us.	| Service is not enabled.	                                                               |Enable the service.|
 |`404` Not Found           |Resource is not found and destroyed. | The task was not started or is in the process of failover or deletion.                 |Retry following the retreat strategy.|
 |`409` Conflict            |Resource with the same name already exists. Use the existing resource or delete it and create a new resource.| 	Resource with the same name already exists.                                           |Delete the existing converter and create a new one.|

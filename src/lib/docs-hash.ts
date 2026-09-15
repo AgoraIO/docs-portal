@@ -1,7 +1,9 @@
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
+const DOCS_HEADER_SELECTOR = '[data-testid="docs-shell-header"]';
 const HASH_SCROLL_OFFSET = 24;
 const WINDOW_SCROLL_OFFSET = 96;
 const SCROLLABLE_OVERFLOW_VALUES = new Set(['auto', 'scroll', 'overlay']);
+const STICKY_POSITION_VALUES = new Set(['fixed', 'sticky']);
 
 export function scrollDocsHashTarget(
   url: string,
@@ -45,7 +47,7 @@ export function scrollDocsHashTarget(
 
   window.scrollTo({
     behavior,
-    top: window.scrollY + headingRect.top - WINDOW_SCROLL_OFFSET,
+    top: window.scrollY + headingRect.top - getWindowScrollOffset(),
   });
 
   return true;
@@ -97,6 +99,28 @@ export function getActiveDocsScrollContainer() {
   }
 
   return scrollContainer;
+}
+
+// The shell header is sticky, so a heading parked at a fixed offset from the
+// top of the viewport hides behind it whenever the header grows: the legacy
+// docs banner alone adds ~38px on top of the logo row and the tab strip.
+function getWindowScrollOffset() {
+  const header = document.querySelector<HTMLElement>(DOCS_HEADER_SELECTOR);
+
+  if (!header) {
+    return WINDOW_SCROLL_OFFSET;
+  }
+
+  const { position } = window.getComputedStyle(header);
+
+  if (!STICKY_POSITION_VALUES.has(position)) {
+    return WINDOW_SCROLL_OFFSET;
+  }
+
+  return Math.max(
+    WINDOW_SCROLL_OFFSET,
+    Math.ceil(header.getBoundingClientRect().height) + HASH_SCROLL_OFFSET,
+  );
 }
 
 function getHeadingForUrl(url: string) {

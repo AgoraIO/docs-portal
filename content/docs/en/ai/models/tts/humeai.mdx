@@ -6,10 +6,6 @@ description: >
 
 Hume AI provides emotion-aware text-to-speech technology that generates natural, expressive voices with emotional intelligence. The platform offers both curated voices from the Voice Library and support for custom voice creation, enabling personalized audio experiences.
 
-:::info[Info]
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
-:::
-
 ### Sample configuration
 
 The following examples show how to configure Hume AI TTS when starting a conversational AI agent.
@@ -100,10 +96,6 @@ Use the following `tts` configuration in your request:
 </TabsContent>
 </Tabs>
 
-:::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Hume AI TTS documentation](https://dev.hume.ai/docs/text-to-speech-tts/overview).
-:::
-
 ### Key parameters
 
 <ParameterList title="params" required={true}>
@@ -130,3 +122,9 @@ The parameters listed on this page are validated for use with Conversational AI 
  Duration of silence (in seconds) to add at the end of each utterance. Useful for natural conversation pacing.
  </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Hume AI TTS documentation](https://dev.hume.ai/docs/text-to-speech-tts/overview).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

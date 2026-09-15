@@ -33,6 +33,8 @@ export type OpenApiSchemaRow = Omit<OpenApiSchemaTreeNode, 'children'> & {
   depth: number;
 };
 
+export type OpenApiSchemaUsage = 'request' | 'response';
+
 export type OpenApiSchemaCallout = {
   markdown: string;
   position?: string;
@@ -42,11 +44,12 @@ export type OpenApiSchemaCallout = {
 
 export function buildOpenApiSchemaTree(
   schema: unknown,
-  options: { document?: unknown } = {},
+  options: { document?: unknown; omitArrayItemWrapperRows?: boolean } = {},
 ): OpenApiSchemaTreeNode[] {
   return buildSchemaChildren(schema, {
     depth: 0,
     document: options.document,
+    omitArrayItemWrapperRows: options.omitArrayItemWrapperRows === true,
     pathPrefix: '',
     requiredNames: new Set(),
     seen: new WeakSet(),
@@ -55,9 +58,16 @@ export function buildOpenApiSchemaTree(
 
 export function buildOpenApiSchemaRows(
   schema: unknown,
-  options: { document?: unknown; usage?: 'request' | 'response' } = {},
+  options: {
+    document?: unknown;
+    omitArrayItemWrapperRows?: boolean;
+    usage?: OpenApiSchemaUsage;
+  } = {},
 ): OpenApiSchemaRow[] {
-  return buildOpenApiSchemaTree(schema, { document: options.document })
+  return buildOpenApiSchemaTree(schema, {
+    document: options.document,
+    omitArrayItemWrapperRows: options.omitArrayItemWrapperRows,
+  })
     .flatMap((node) => flattenSchemaTreeNode(node, 0))
     .filter((row) => {
       if (options.usage === 'request') {
@@ -101,9 +111,42 @@ export function getOpenApiSchemaRowLayout(
   return { hasChildren, parentIndex };
 }
 
+export function getInitialOpenApiSchemaExpandedPaths(
+  rows: OpenApiSchemaRow[],
+  layout: OpenApiSchemaRowLayout,
+  usage: OpenApiSchemaUsage,
+): Set<string> {
+  if (usage !== 'request') {
+    return new Set();
+  }
+
+  const topLevelIndexes = rows.flatMap((row, index) =>
+    row.depth === 0 ? [index] : [],
+  );
+  const topLevelExpandableObjectIndexes = topLevelIndexes.filter(
+    (index) =>
+      isOpenApiObjectType(rows[index].type) && layout.hasChildren[index],
+  );
+  const expanded = new Set<string>();
+
+  for (const index of topLevelExpandableObjectIndexes) {
+    const row = rows[index];
+    if (row.required || topLevelExpandableObjectIndexes.length === 1) {
+      expanded.add(row.path);
+    }
+  }
+
+  return expanded;
+}
+
+function isOpenApiObjectType(type: string) {
+  return type.split(' | ').includes('object');
+}
+
 type BuildContext = {
   depth: number;
   document?: unknown;
+  omitArrayItemWrapperRows: boolean;
   pathPrefix: string;
   requiredNames: Set<string>;
   seen: WeakSet<object>;
@@ -113,7 +156,7 @@ function buildSchemaChildren(
   schema: unknown,
   context: BuildContext,
 ): OpenApiSchemaTreeNode[] {
-  const resolvedSchema = resolveLocalReference(context.document, schema);
+  const resolvedSchema = resolveLocalOpenApiReference(context.document, schema);
 
   if (!isRecord(resolvedSchema) || context.depth > MAX_SCHEMA_DEPTH) {
     return [];
@@ -132,6 +175,7 @@ function buildSchemaChildren(
     buildSchemaNode(name, childSchema, {
       depth: context.depth + 1,
       document: context.document,
+      omitArrayItemWrapperRows: context.omitArrayItemWrapperRows,
       pathPrefix: context.pathPrefix,
       requiredNames,
       seen: context.seen,
@@ -139,15 +183,22 @@ function buildSchemaChildren(
   );
 
   if (isRecord(merged.items)) {
-    nodes.push(
-      buildSchemaNode('items', merged.items, {
-        depth: context.depth + 1,
-        document: context.document,
-        pathPrefix: context.pathPrefix,
-        requiredNames: new Set(),
-        seen: context.seen,
-      }),
-    );
+    const itemNode = buildSchemaNode('items', merged.items, {
+      depth: context.depth + 1,
+      document: context.document,
+      omitArrayItemWrapperRows: context.omitArrayItemWrapperRows,
+      pathPrefix: context.pathPrefix,
+      requiredNames: new Set(),
+      seen: context.seen,
+    });
+
+    if (hasSchemaNodeDetails(itemNode)) {
+      nodes.push(itemNode);
+    } else if (context.omitArrayItemWrapperRows) {
+      nodes.push(...itemNode.children);
+    } else {
+      nodes.push(itemNode);
+    }
   }
 
   return nodes;
@@ -158,7 +209,7 @@ function buildSchemaNode(
   schema: unknown,
   context: BuildContext,
 ): OpenApiSchemaTreeNode {
-  const resolvedSchema = resolveLocalReference(context.document, schema);
+  const resolvedSchema = resolveLocalOpenApiReference(context.document, schema);
   const value = isRecord(resolvedSchema)
     ? mergeComposedSchemas(resolvedSchema, context.document)
     : {};
@@ -169,6 +220,7 @@ function buildSchemaNode(
     children: buildSchemaChildren(value, {
       depth: context.depth,
       document: context.document,
+      omitArrayItemWrapperRows: context.omitArrayItemWrapperRows,
       pathPrefix: path,
       requiredNames: new Set(arrayOfStrings(value.required)),
       seen: context.seen,
@@ -219,6 +271,26 @@ function buildSchemaNode(
   };
 }
 
+function hasSchemaNodeDetails(node: OpenApiSchemaTreeNode) {
+  return (
+    node.deprecated === true ||
+    node.description !== undefined ||
+    node.docsCallouts !== undefined ||
+    node.enumValues !== undefined ||
+    node.format !== undefined ||
+    node.nullable === true ||
+    node.pattern !== undefined ||
+    node.readOnly === true ||
+    node.writeOnly === true ||
+    'defaultValue' in node ||
+    'example' in node ||
+    'exclusiveMaximum' in node ||
+    'exclusiveMinimum' in node ||
+    'maximum' in node ||
+    'minimum' in node
+  );
+}
+
 function getDocsCallouts(schema: Record<string, unknown>) {
   const callouts = schema['x-docs-callouts'];
 
@@ -261,7 +333,7 @@ function mergeComposedSchemas(
   document?: unknown,
 ) {
   const originalSchema = isRecord(schema) ? schema : {};
-  const resolvedSchema = resolveLocalReference(document, schema);
+  const resolvedSchema = resolveLocalOpenApiReference(document, schema);
   const merged = isRecord(resolvedSchema)
     ? { ...resolvedSchema, ...originalSchema }
     : { ...originalSchema };
@@ -355,7 +427,7 @@ function arrayOfStrings(value: unknown) {
     : [];
 }
 
-function resolveLocalReference(
+export function resolveLocalOpenApiReference(
   document: unknown,
   value: unknown,
   seenRefs = new Set<string>(),
@@ -384,14 +456,24 @@ function resolveLocalReference(
     );
 
   const { $ref: _ref, ...siblings } = value;
-  const resolvedValue = resolveLocalReference(document, resolved, seenRefs);
+  const resolvedValue = resolveLocalOpenApiReference(
+    document,
+    resolved,
+    seenRefs,
+  );
 
-  return isRecord(resolvedValue)
-    ? {
-        ...resolvedValue,
-        ...siblings,
-      }
-    : resolvedValue;
+  if (isRecord(resolvedValue)) {
+    return {
+      ...resolvedValue,
+      ...siblings,
+    };
+  }
+
+  if (resolvedValue === undefined && Object.keys(siblings).length > 0) {
+    return siblings;
+  }
+
+  return resolvedValue;
 }
 
 function isReferenceObject(

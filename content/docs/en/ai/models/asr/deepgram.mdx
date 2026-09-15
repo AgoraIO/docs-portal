@@ -113,7 +113,7 @@ agent := agentkit.NewAgent(client).WithStt(
 ### Key parameters
 
 <ParameterList title="params" required={true}>
- <Parameter name="url" type="string" required={false}>
+ <Parameter name="url" type="string" required={true}>
  The WebSocket URL for Deepgram's streaming API.
  </Parameter>
  <Parameter name="api_key" type="string" required={false}>
@@ -130,9 +130,9 @@ agent := agentkit.NewAgent(client).WithStt(
  </Parameter>
 </ParameterList>
 
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For advanced configuration options, model selection, and detailed parameter descriptions, see the [Deepgram API documentation](https://developers.deepgram.com/docs/getting-started-with-live-streaming-audio).
-
 :::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Deepgram API documentation](https://developers.deepgram.com/docs/getting-started-with-live-streaming-audio).
+
 The following parameters are not passed through and instead use default values set by Agora:
 `callback`, `callback_method`, `channels`, `encoding`, `multichannel`, `sample_rate`
 :::

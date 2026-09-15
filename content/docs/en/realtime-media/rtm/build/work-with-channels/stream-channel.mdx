@@ -186,10 +186,10 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/web#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/web#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/web#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/web#leave)
 
 </PlatformStructured>
 
@@ -314,7 +314,7 @@ mStreamChannel.join(options, object : ResultCallback<Void> {
 When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console.
 
 ```java tab="Java"
-JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true);
+JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true, false);
 mStreamChannel.join(options, new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -329,7 +329,7 @@ mStreamChannel.join(options, new ResultCallback<Void>() {
 ```
 
 ```kotlin tab="Kotlin"
-val options = JoinChannelOptions("your_token", true, true, true)
+val options = JoinChannelOptions("your_token", true, true, true, false)
 
 mStreamChannel.join(options, object : ResultCallback<Void> {
     override fun onSuccess(responseInfo: Void?) {
@@ -363,7 +363,7 @@ Refer to the following sample code for sending messages:
     String message = "Hello Agora!"; // Message content
     String topicName = "chat_topic"; // Topic name for publishing
     var options = new TopicMessageOptions(); // Topic message sending options
-    options.customType = "PlainTxt"; // Set a custom type for the message
+    options.setCustomType("PlainTxt"); // Set a custom type for the message
     mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -402,10 +402,10 @@ Refer to the following sample code for sending messages:
 
 ```java tab="Java"
 // Send a binary message
-    byte[] message = new byte[] { 00, 01, 35, 196 }; // Binary message content
+    byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Binary message content
     String topicName = "chat_topic"; // Topic name for publishing
     var options = new TopicMessageOptions(); // Topic message sending options
-    options.customType = "ByteArray"; // Set a custom type for the message
+    options.setCustomType("ByteArray"); // Set a custom type for the message
     mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
         @Override
         public void onSuccess(Void responseInfo) {
@@ -423,7 +423,7 @@ Refer to the following sample code for sending messages:
 
 ```kotlin tab="Kotlin"
 // Send a binary message
-    val message = byteArrayOf(0, 1, 35, 196) // Binary message content
+    val message = byteArrayOf(0, 1, 35, 196.toByte()) // Binary message content
     val topicName = "chat_topic" // Topic name for publishing
     val options = TopicMessageOptions() // Topic message sending options
     options.customType = "ByteArray" // Set a custom type for the message
@@ -510,11 +510,11 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/android#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/android#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/android#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/android#leave)
+- [`release`](/en/api-reference/api-ref/signaling/android#rtmclientrelease)
 
 </PlatformStructured>
 
@@ -854,21 +854,21 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 <TabsContent value="swift">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/ios#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/ios#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/ios#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/ios#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/ios#agorartmclientkitdestroy)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform)
-- [`joinWithOption`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/ios#createstreamchannel)
+- [`joinWithOption`](/en/api-reference/api-ref/signaling/ios#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/ios#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/ios#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/ios#agorartmclientkitdestroy)
 
 </TabsContent>
 </Tabs>
@@ -1211,21 +1211,21 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 <TabsContent value="swift">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=swift#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/macos#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/macos#joinwithoption)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/macos#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/macos#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/macos#agorartmclientkitdestroy)
 
 </TabsContent>
 
 <TabsContent value="objc">
 
-- [`createStreamChannel`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelcreatepropsag_platform)
-- [`joinWithOption`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelleavepropsag_platform)
-- [`destroy`](/en/api-reference/api-ref/signaling?platform=ios&tab=objc#channelreleasepropsag_platform)
+- [`createStreamChannel`](/en/api-reference/api-ref/signaling/macos#createstreamchannel)
+- [`joinWithOption`](/en/api-reference/api-ref/signaling/macos#joinwithoption)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/macos#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/macos#leave)
+- [`destroy`](/en/api-reference/api-ref/signaling/macos#agorartmclientkitdestroy)
 
 </TabsContent>
 </Tabs>
@@ -1281,11 +1281,11 @@ To use stream channel functionality, call `createStreamChannel` to create a `Str
 final channel = 'stream_room';
 late StreamChannel streamChannel;
 try {
-    var (status, channel) = await rtmClient.createStreamChannel(channel);
+    var (status, newChannel) = await rtmClient.createStreamChannel(channel);
     if (status.error == true ){
        print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
     } else {
-        streamChannel = channel ;
+        streamChannel = newChannel!;
         print('${status.operation} success!');
     }
 } catch (e) {
@@ -1443,11 +1443,12 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/flutter#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/flutter#join)
+- [`publishTextMessage`](/en/api-reference/api-ref/signaling/flutter#publishtextmessage)
+- [`publishBinaryMessage`](/en/api-reference/api-ref/signaling/flutter#publishbinarymessage)
+- [`leave`](/en/api-reference/api-ref/signaling/flutter#leave)
+- [`release`](/en/api-reference/api-ref/signaling/flutter#release)
 
 </PlatformStructured>
 
@@ -1592,7 +1593,7 @@ Refer to the following sample code for sending messages:
     options.messageType = RTM_MESSAGE_TYPE_STRING;
     options.customType = "PainTxt";
     uint64_t requestId;
-    streamChannel.publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
+    stream_channel->publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
     ```
 
 * Binary message
@@ -1605,7 +1606,7 @@ Refer to the following sample code for sending messages:
     options.messageType = RTM_MESSAGE_TYPE_BINARY;
     options.customType = "ByteArray";
     uint64_t requestId;
-    streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
+    stream_channel->publishTopicMessage("topicName", message, 5, options, requestId);
     ```
 
 When you this method, the SDK triggers the `onPublishTopicMessageResult` callback and returns the API call result.
@@ -1632,7 +1633,7 @@ To leave a channel, call the `leave` method on the `IStreamChannel` instance:
 ```cpp
 // Leave the channel
 uint64_t requestId;
-streamChannel->leave(requestId);
+stream_channel->leave(requestId);
 ```
 
 When you call this method, the SDK triggers the `onLeaveResult` callback and returns the call result.
@@ -1658,7 +1659,7 @@ To destroy a stream channel instance, call `release`:
 
 ```cpp
 stream_channel->release();
-stream_channel = null;
+stream_channel = nullptr;
 ```
 
 :::info
@@ -1677,11 +1678,11 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/windows-cpp#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/windows-cpp#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/windows-cpp#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/windows-cpp#leave)
+- [`release`](/en/api-reference/api-ref/signaling/windows-cpp#irtmclientrelease)
 
 </PlatformStructured>
 
@@ -1826,7 +1827,7 @@ Refer to the following sample code for sending messages:
     options.messageType = RTM_MESSAGE_TYPE_STRING;
     options.customType = "PainTxt";
     uint64_t requestId;
-    streamChannel.publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
+    stream_channel->publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
     ```
 
 * Binary message
@@ -1839,7 +1840,7 @@ Refer to the following sample code for sending messages:
     options.messageType = RTM_MESSAGE_TYPE_BINARY;
     options.customType = "ByteArray";
     uint64_t requestId;
-    streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
+    stream_channel->publishTopicMessage("topicName", message, 5, options, requestId);
     ```
 
 When you this method, the SDK triggers the `onPublishTopicMessageResult` callback and returns the API call result.
@@ -1866,7 +1867,7 @@ To leave a channel, call the `leave` method on the `IStreamChannel` instance:
 ```cpp
 // Leave the channel
 uint64_t requestId;
-streamChannel->leave(requestId);
+stream_channel->leave(requestId);
 ```
 
 When you call this method, the SDK triggers the `onLeaveResult` callback and returns the call result.
@@ -1892,7 +1893,7 @@ To destroy a stream channel instance, call `release`:
 
 ```cpp
 stream_channel->release();
-stream_channel = null;
+stream_channel = nullptr;
 ```
 
 :::info
@@ -1911,11 +1912,237 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`createStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`join`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`publishTopicMessage`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`leave`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`release`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/linux-cpp#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/linux-cpp#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/linux-cpp#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/linux-cpp#leave)
+- [`release`](/en/api-reference/api-ref/signaling/linux-cpp#irtmclientrelease)
+
+</PlatformStructured>
+
+<PlatformStructured platform="linux-java">
+
+Stream channels are based on the room model. In Signaling, communication through stream channels requires use of specific APIs. This page shows you how to join, leave, and send messages in stream channels.
+
+## Understand the tech
+
+To use stream channels, you first create a stream channel object instance. The channel instance gives you access to all stream channel management methods. Use the stream channel instance to:
+
+* Join and leave a channel
+* Join and leave topics
+* Subscribe to and unsubscribe from topics
+* Send messages
+* Destroy the channel instance
+
+After joining a stream channel, you listen to event notifications in the channel. To send and receive messages in the channel, you use [topics](topics). Signaling allows thousands of stream channels to exist simultaneously in your app. However, due to client-side performance and bandwidth limitations, a single client may only join a limited number of channels concurrently. For details, see [API usage restrictions](../../reference/limitations).
+
+## Prerequisites
+
+Ensure that you have:
+
+* Integrated the Signaling SDK in your project, and implemented the framework functionality from the [SDK quickstart](../../quickstart) page.
+
+* Activated the stream channel capability.
+
+    :::warning[Important]
+
+    **Stream channel activation requirements**
+
+    Please note that the activation of Stream Channel functionality in Signaling directly depends on the activation of the 128-host feature in Real-Time Communication (RTC). To ensure proper activation:
+
+    - Submit a formal request to [support@agora.io](mailto:support@agora.io).
+    - Specifically request activation of the 128-host feature.
+    - Wait for confirmation before implementing Stream Channel features.
+
+    For further assistance or questions regarding this requirement, please contact [Agora Support](mailto:support@agora.io).
+    :::
+
+## Implement communication in a stream channel
+
+This section shows you how to use the Signaling SDK to implement stream channel communication in your app.
+
+### Create a stream channel
+
+To use stream channel functionality, call `createStreamChannel` to create a `StreamChannel` object instance.
+
+```java
+// Create a StreamChannel instance
+StreamChannel mStreamChannel = mRtmClient.createStreamChannel("chat_room");
+```
+
+This method creates only one `StreamChannel` instance at a time. If you need to create multiple instances, call the method multiple times.
+
+```java
+// Create the first instance
+StreamChannel mStreamChannel1 = mRtmClient.createStreamChannel("chat_room1");
+// Create the second instance
+StreamChannel mStreamChannel2 = mRtmClient.createStreamChannel("chat_room2");
+```
+
+:::info
+Signaling enables you to create unlimited stream channel instances in a single app. However, best practice is to create channels based on your actual requirements to maintain optimal client-side performance. For instance, if you hold multiple stream channel instances, destroy the ones that are no longer in use to prevent resource blocking, and recreate them when they are needed again.
+:::
+
+### Join a stream channel
+
+Call the `join` method on the `StreamChannel` instance with appropriate options as follows:
+
+```java
+JoinChannelOptions options = new JoinChannelOptions();
+options.setToken("your_token");
+options.setWithPresence(true);
+options.setWithLock(true);
+options.setWithMetadata(true);
+
+mStreamChannel.join(options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+When joining a channel, set the `token` parameter in `JoinChannelOptions` with a temporary token from Agora Console.
+
+```java
+JoinChannelOptions options = new JoinChannelOptions("your_token", true, true, true, false);
+mStreamChannel.join(options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "join stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+In stream channels, message flow is managed using topics. Even if you configure a global message listener, you must still join a topic to send messages. Similarly, to receive messages you must subscribe to a topic. See [Topics](topics) for more information.
+
+### Send a message
+
+To send a message to a stream channel:
+
+- Create a `StreamChannel` instance.
+- Use the `join` method to join a channel.
+- Call `joinTopic` to register as a message publisher for the specified topic. See [Topics](topics).
+
+Call `publishTopicMessage` to publish a message to a topic. This method sends a message to a single topic at a time. To deliver messages to multiple topics, call the method separately for each topic.
+
+Refer to the following sample code for sending messages:
+
+* String message
+
+```java
+// Send a string message
+    String message = "Hello Agora!"; // Message content
+    String topicName = "chat_topic"; // Topic name for publishing
+    var options = new TopicMessageOptions(); // Topic message sending options
+    options.setCustomType("PlainTxt"); // Set a custom type for the message
+    mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Log success
+            log(CALLBACK, "publish topic message success");
+        }
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Log failure
+            log(ERROR, errorInfo.toString());
+        }
+    });
+```
+
+* Binary message
+
+```java
+// Send a binary message
+    byte[] message = new byte[] { 00, 01, 35, (byte) 196 }; // Binary message content
+    String topicName = "chat_topic"; // Topic name for publishing
+    var options = new TopicMessageOptions(); // Topic message sending options
+    options.setCustomType("ByteArray"); // Set a custom type for the message
+    mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+        @Override
+        public void onSuccess(Void responseInfo) {
+            // Log success
+            log(CALLBACK, "publish topic message success");
+        }
+
+        @Override
+        public void onFailure(ErrorInfo errorInfo) {
+            // Log failure
+            log(ERROR, errorInfo.toString());
+        }
+    });
+```
+
+In Signaling, a user may register as a message publisher for up to 8 topics concurrently. However, there are no limitations on the number of users a single topic can accommodate. You can achieve a message transmission frequency to a topic of up to 120 QPS. This capability is useful in use-cases that demand high-frequency and high-concurrency data processing, such as Metaverse location status synchronization, collaborative office sketchpad applications, and parallel control operation-instructions transmission.
+
+### Leave a stream channel
+
+To leave a channel, call the `leave` method on the `StreamChannel` instance:
+
+```java
+mStreamChannel.leave(new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "leave stream channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+To rejoin a stream channel, call the `join` method again. You can join and leave as long as the corresponding `StreamChannel` instance remains active and has not been destroyed.
+
+### Destroy the stream channel instance
+
+To destroy a stream channel instance, call `release`:
+
+```java
+mStreamChannel.release();
+```
+
+:::info
+Destroying a stream channel removes the `StreamChannel` instance from your app. This action is local to your app and does not affect other users or the Signaling channel.
+:::
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+### Message packet size
+
+Signaling SDK imposes size limits on message payload packets sent in Message channels and Stream channels. The limit is 32 KB for Message channels and 1 KB for Stream channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
+
+```js
+ErrorInfo {
+    errorCode = -11010;
+    reason = "Publish too long message.";
+    operation = "publishTopicMessage"; // or "publish"
+}
+```
+
+To avoid sending failure due to message payload packet size exceeding the limit, check the packet size before sending.
+
+### API reference
+
+- [`createStreamChannel `](/en/api-reference/api-ref/signaling/linux-java#createstreamchannel)
+- [`join`](/en/api-reference/api-ref/signaling/linux-java#join)
+- [`publishTopicMessage`](/en/api-reference/api-ref/signaling/linux-java#publishtopicmessage)
+- [`leave`](/en/api-reference/api-ref/signaling/linux-java#leave)
+- [`release`](/en/api-reference/api-ref/signaling/linux-java#rtmclientrelease)
 
 </PlatformStructured>
 
@@ -1987,14 +2214,14 @@ Call the `JoinAsync` method on the `IStreamChannel` instance with appropriate op
 ```csharp
 var options = new JoinChannelOptions();
 options.token = "your_token";
-var (status,response) = await streamChannel.JoinAsync(options);
-if (status.Error)
+var result = await streamChannel.JoinAsync(options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
@@ -2005,14 +2232,14 @@ var options = new JoinChannelOptions();
 options.token = "your_token";
 options.withLock = true;
 
-var (status,response) = await streamChannel.JoinAsync(options);
-if (status.Error)
+var result = await streamChannel.JoinAsync(options);
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed,The error code is {1},because of: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed,The error code is {1},because of: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
@@ -2038,10 +2265,10 @@ Refer to the following sample code for sending messages:
     string topic = "Motion"; // Topic to which the message is sent
     var options = new TopicMessageOptions(); // Options for sending the message
     options.customType = "PlainTxt"; // Set the custom message type to "PlainTxt"
-    var (status, response) = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
-    if (status.Error)
+    var result = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
+    if (result.Status.Error)
     {
-        Debug.Log(string.Format("{0} is failed, ErrorCode {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason)); // Log error information if message send fails
+        Debug.Log(string.Format("{0} is failed, ErrorCode {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason)); // Log error information if message send fails
     }
     ```
 
@@ -2053,10 +2280,10 @@ Refer to the following sample code for sending messages:
     string topic = "Motion"; // Topic to which the message is sent
     var options = new TopicMessageOptions(); // Options for sending the message
     options.customType = "ByteArray"; // Set the custom message type to "ByteArray"
-    var (status, response) = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
-    if (status.Error)
+    var result = await streamChannel.PublishTopicMessageAsync(topic, message, options); // Send the message asynchronously
+    if (result.Status.Error)
     {
-        Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason)); // Log error information if message send fails
+        Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason)); // Log error information if message send fails
     }
     ```
 
@@ -2067,14 +2294,14 @@ In Signaling, a user may register as a message publisher for up to 8 topics conc
 To leave a channel, call the `LeaveAsync` method on the `IStreamChannel` instance:
 
 ```csharp
-var (status,response) = await streamChannel.LeaveAsync();
-if (status.Error)
+var result = await streamChannel.LeaveAsync();
+if (result.Status.Error)
 {
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", result.Status.Operation, result.Status.ErrorCode, result.Status.Reason));
 }
 else
 {
-    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", response.UserId, response.ChannelName));
+    Debug.Log(string.Format("User:{0} Join stream channel success! at Channel:{1}", result.Response.UserId, result.Response.ChannelName));
 }
 ```
 
@@ -2121,10 +2348,10 @@ To avoid sending failure due to message payload packet size exceeding the limit,
 
 ### API reference
 
-- [`CreateStreamChannel `](/en/api-reference/api-ref/signaling#channelcreatepropsag_platform)
-- [`JoinAsync`](/en/api-reference/api-ref/signaling#channeljoinpropsag_platform)
-- [`PublishTopicMessageAsync`](/en/api-reference/api-ref/signaling#topicpublishpropsag_platform)
-- [`LeaveAsync`](/en/api-reference/api-ref/signaling#channelleavepropsag_platform)
-- [`Dispose`](/en/api-reference/api-ref/signaling#channelreleasepropsag_platform)
+- [`CreateStreamChannel `](/en/api-reference/api-ref/signaling/unity#createstreamchannel)
+- [`JoinAsync`](/en/api-reference/api-ref/signaling/unity#joinasync)
+- [`PublishTopicMessageAsync`](/en/api-reference/api-ref/signaling/unity#publishtopicmessageasync)
+- [`LeaveAsync`](/en/api-reference/api-ref/signaling/unity#leaveasync)
+- [`Dispose`](/en/api-reference/api-ref/signaling/unity#dispose)
 
 </PlatformStructured>

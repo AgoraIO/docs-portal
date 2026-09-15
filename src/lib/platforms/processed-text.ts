@@ -30,6 +30,21 @@ export function buildCanonicalPlatformTocText(processedText: string) {
   );
 }
 
+// Keeps the ` [#id]` heading anchors fumadocs writes into the processed text.
+// Those ids are deduplicated across the whole page, so a heading repeated by
+// several platform blocks renders as `prerequisites`, `prerequisites-1`, and so
+// on. Stripping them here would let the TOC slugger re-derive `prerequisites`
+// for every platform, pointing each platform's TOC at the first block's heading.
+export function buildPlatformTocText(
+  processedText: string,
+  platform: PlatformKey,
+) {
+  return filterPlatformBlocks(
+    processedText,
+    (_mode, _canonical, blockPlatform) => blockPlatform === platform,
+  );
+}
+
 export function buildPlatformMarkdownText(
   processedText: string,
   platform: PlatformKey,

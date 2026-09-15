@@ -31,7 +31,7 @@ To set up and use Notifications, you must have:
 
 In order to handle notifications for the events you subscribe to, you need to:
 - [Create your webhook](#create-your-webhook)
-- [Enable Notifications](#enable-notifications)
+- [Set up Webhook notifications](#set-up-webhook-notifications)
 - [Verify Notifications signatures](#add-signature-verification)
 
 ### Create your webhook
@@ -302,7 +302,7 @@ To add signature verification to your server, take the following steps:
     }
     ```
 
-4. To test the server, follow the steps given in the [Enable notifications](#enable-notifications) section.
+4. To test the server, follow the steps given in the [Set up Webhook notifications](#set-up-webhook-notifications) section.
 
 5. When you receive an event from the console, and if the signature matches, the event details are displayed in your browser.
 
@@ -325,7 +325,7 @@ The request body of notification callbacks contains the following fields:
 | Field name | Type|  Description |
 |:--------|:-----|:------------|
 | `noticeId` | String | The notification ID, identifying the notification callback when the event occurs. |
-| `productId` | Number | The product ID. Common values are `1` for Realtime Communication (RTC), `3` for Cloud Recording, `4` for Media Pull, and `5` for Media Push. |
+| `productId` | Number | The product ID. Common values are `1` for Realtime Communication (RTC), `3` for Cloud Recording, `4` for Media Pull, `5` for Media Push, and `22` for Cloud Transcoding. |
 | `eventType` | Number | The type of event being notified. For details, see [event types](#event-types). |
 | `notifyMs` | Number | The Unix timestamp (ms) when Notifications sends a callback to your server. This value is updated when Notifications resends the notification callback. |
 | `payload` | JSON Object | The content of the event being notified. The payload varies with event type. |
@@ -345,6 +345,8 @@ The request body of notification callbacks contains the following fields:
 ```
 
 ### Event types
+
+For a list of Cloud Transcoding event types and their descriptions, see [Notification events](../reference/ncs-events.md).
 
 ### IP address query API
 
@@ -392,10 +394,6 @@ Each primary IP field shows an IP address of Notifications server. When you rece
 
 * Notifications does not guarantee that notification callbacks arrive at your server in the same order as events occur. Implement a strategy to handle messages arriving out of order.
 * For improved reliability of Notifications, your server may receive more than one notification callback for a single event. Your server must be able to handle repeated messages.
-
-  :::tip
-  To implement a strategy to ensure that you log only one callback event and ignore duplicate events, use a combination of the `noticeId` and `notifyMs` fields in the response body.
-  :::
 
 ### FAQs
 

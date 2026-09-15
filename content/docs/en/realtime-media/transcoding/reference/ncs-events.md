@@ -3,14 +3,18 @@ title: Notification events
 description: Learn about notification service events.
 ---
 
-When you set up a server to [receive webhook, notifications](../build/receive-ncs-events), Agora notifies your server of the following Cloud Transcoding events:
+When you set up a server to [receive webhook, notifications](../build/receive-ncs-events), Agora notifies your server of the following Cloud Transcoding events. 
+
+:::info
+Cloud Transcoding notification callbacks use `productId=22`.
+:::
 
 | Event Type | Event Name | Description |
 |------------|------------|-------------|
-| 110 | `cloud_transcoder_started` | Cloud transcoder has started successfully |
-| 111 | `cloud_transcoder_stopped` | Cloud transcoder has been destroyed |
-| 112 | `cloud_transcoder_status` | Cloud transcoder runtime state has changed |
-| 113 | `cloud_transcoder_updated` | Cloud transcoder configuration has been updated |
+| [110](#110-cloud_transcoder_started) | `cloud_transcoder_started` | Cloud transcoder has started successfully |
+| [111](#111-cloud_transcoder_stopped) | `cloud_transcoder_stopped` | Cloud transcoder has been destroyed |
+| [112](#112-cloud_transcoder_status) | `cloud_transcoder_status` | Cloud transcoder runtime state has changed |
+| [113](#113-cloud_transcoder_updated) | `cloud_transcoder_updated` | Cloud transcoder configuration has been updated |
 
 ## Common payload structure
 

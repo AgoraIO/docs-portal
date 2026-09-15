@@ -34,6 +34,20 @@ ALGOLIA_INDEX_NAME=docs_portal_en
 bun run search:sync
 ```
 
+After synchronization, replay the 54 approved Global queries against the live
+Docs and SDK API indexes:
+
+```shell
+bun run search:replay -- --out=global-search-replay.json
+```
+
+The command uses the same client-side credentials and V2 search path as the
+portal. Production runs it after sync with the default strict gate, so all 54
+cases determine the exit status. Preview also executes and reports all 54 cases,
+but passes `--gate=preview-blockers` so only the four review blockers determine
+its exit status. The optional JSON output is suitable for retaining as rollout
+evidence.
+
 `bun run build` runs this step after the static build. If
 `VITE_ALGOLIA_APP_ID` or `ALGOLIA_ADMIN_API_KEY` is not configured, the sync
 step is skipped so local and preview builds can still complete. This sync only

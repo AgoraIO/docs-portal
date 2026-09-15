@@ -1,0 +1,71 @@
+---
+title: "Configure the audio codec"
+description: "Configure the audio codec IoT SDK uses to stream media, and use a custom encoder."
+---
+
+In audio streaming, the choice of an encoding algorithm affects both quality and bit rate. Your goal is to lower the required bit rate while maintaining quality at the desired level. This page shows you how to configure the audio codec IoT SDK uses to stream media in your app.
+
+:::info
+IoT SDK does not provide audio capture. The device firmware must interface with the microphone hardware and capture raw audio data.
+:::
+
+## Prerequisites
+
+In order to follow this procedure you must have:
+
+* Implemented the basic IoT SDK functionality. See [Build from scratch](../../build-from-scratch.mdx).
+
+## Understand the tech
+
+IoT SDK offers the following built-in audio codecs:
+
+* `AUDIO_CODEC_TYPE_OPUS`
+* `AUDIO_CODEC_TYPE_G722`
+* `AUDIO_CODEC_TYPE_G711A`
+* `AUDIO_CODEC_TYPE_G711U`
+
+Specify an audio codec when you join a channel. Set the sampling rate and the number of channels based on your audio quality requirements. If your app needs a custom encoding algorithm, disable use of a built-in codec and implement your own encoder.
+
+Starting with v1.9.7, IoT SDK also supports 8 kHz AAC-LC audio. Configure the audio packet duration using `pcm_duration`.
+
+### Send audio data
+
+#### Use a built-in codec
+
+Set the audio codec, sampling rate, and the number of channels in `channel_options` that you pass to `agora_rtc_join_channel`. To set these parameters, use the `config` object or modify the following lines in `main()`:
+
+```cpp
+channel_options.audio_codec_opt.audio_codec_type = config->audio_codec_type;
+channel_options.audio_codec_opt.pcm_sample_rate = config->pcm_sample_rate;
+channel_options.audio_codec_opt.pcm_channel_num = config->pcm_channel_num;
+```
+
+When you call `agora_rtc_send_audio_data` to send audio, set `data_type` to `AUDIO_DATA_TYPE_PCM`:
+
+```cpp
+audio_frame_info_t info = { 0 };
+info.data_type = AUDIO_DATA_TYPE_PCM;
+int rval = agora_rtc_send_audio_data(g_conn_id, data, len, &info);
+if (rval < 0) {
+    printf("Failed to send audio data, reason: %s\n", agora_rtc_err_2_str(rval));
+    return -1;
+}
+```
+
+#### Use your own codec
+
+To use your own audio codec, set `channel_options.audio_codec_opt.audio_codec_type` to `AUDIO_CODEC_DISABLED`. When you call `agora_rtc_send_audio_data`, set the `data_type` parameter of `audio_frame_info` to your encoding format. This setting transmits the audio encoding format as is to the receiving end. When you disable use of a built-in audio codec, IoT SDK does not process the audio.
+
+### Receive audio data
+
+With a built-in codec, IoT SDK automatically decodes incoming audio. Use the `on_audio_data` callback you registered in [Listen for events](../../build-from-scratch.mdx#listen-for-events) to receive it; its `info_ptr->data_type` field is `AUDIO_DATA_TYPE_PCM`.
+
+With your own codec, the receiving end obtains the encoded audio data and the encoding format through the same `on_audio_data` callback, and decodes it using a custom decoder.
+
+## Reference
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+### API reference
+
+- [enum audio_codec_type_e](https://api-ref.agora.io/en/iot-sdk/linux/1.x/agora__rtc__api_8h.html#a307c5bae03eb9a318e247a97e6fb5d88)

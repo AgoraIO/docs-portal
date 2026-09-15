@@ -1,0 +1,47 @@
+@startuml 
+!include ../video-sdk/agora_skin.iuml
+
+actor "You" as USR
+
+box "Agora"
+participant "Agora Sales" as SAL
+participant "REST API" as API
+end box
+
+box "Your IoT device"
+participant "IoT SDK" as APP
+end box
+
+group Apply for a license
+USR -> SAL: Contact Agora sales to request a license
+USR <- SAL: Send license information
+end
+
+group Obtain pre-authorization
+USR -> SAL: Contact Agora sales to pre-authorize the device license
+USR <- SAL: Send pre-authorization information
+end
+
+group Activate the license
+USR -> API: Activate the license for the device
+end
+
+group Use the license
+USR -> APP: Write the activated license to the device
+end
+
+group Check for expiring licenses
+USR -> API: Check the list of licenses expiring soon
+end
+
+group Renew the license
+USR -> SAL: Contact Agora sales to request a license renewal
+USR <- SAL: Send the renewal ID
+USR -> API: Renew the license for the device
+end
+
+group Check renewal orders
+USR -> API: Query the license's renewal information
+end
+
+@enduml

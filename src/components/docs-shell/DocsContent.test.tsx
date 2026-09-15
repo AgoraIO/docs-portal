@@ -29,10 +29,12 @@ const {
   captureDocsLinkClickedMock,
   captureDocsPageFeedbackMock,
   registerDocsPageContextMock,
+  searchLandingEngagementMock,
 } = vi.hoisted(() => ({
   captureDocsLinkClickedMock: vi.fn(),
   captureDocsPageFeedbackMock: vi.fn(),
   registerDocsPageContextMock: vi.fn(),
+  searchLandingEngagementMock: vi.fn(),
 }));
 
 vi.mock('@/lib/analytics/posthog', () => ({
@@ -49,6 +51,7 @@ vi.mock('@/lib/analytics/posthog', () => ({
 
 vi.mock('./DocsContentBody', () => ({
   DocsContentBody: ({ contentPath }: { contentPath: string }) => {
+    if (contentPath === 'pending.mdx') throw new Promise(() => {});
     const articleLink =
       contentPath === 'en/introduction/source-with-docs-link.mdx'
         ? {
@@ -71,6 +74,10 @@ vi.mock('./DocsContentBody', () => ({
       </div>
     );
   },
+}));
+
+vi.mock('./DocsSearchLandingEngagement', () => ({
+  DocsSearchLandingEngagement: searchLandingEngagementMock,
 }));
 
 vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
@@ -101,11 +108,13 @@ vi.mock('@/components/mdx/PlatformTabsGroup', async (importOriginal) => {
 
 vi.mock('../openapi/FumadocsOpenApiContent', () => ({
   FumadocsOpenApiContent: ({
+    locale,
     pageProps,
   }: {
+    locale?: string;
     pageProps: { operations?: { path: string }[] };
   }) => (
-    <div data-testid="fumadocs-openapi-content">
+    <div data-locale={locale} data-testid="fumadocs-openapi-content">
       {pageProps.operations?.[0]?.path}
     </div>
   ),
@@ -153,6 +162,7 @@ describe('DocsContent', () => {
     captureDocsLinkClickedMock.mockReset();
     fetchMock.mockReset();
     registerDocsPageContextMock.mockReset();
+    searchLandingEngagementMock.mockReset();
     vi.stubGlobal('fetch', fetchMock);
     window.sessionStorage.clear();
     window.history.replaceState(null, '', '/en/introduction/about-agora');
@@ -217,6 +227,38 @@ describe('DocsContent', () => {
         title: 'Quickstart',
         version: 'current',
       });
+    });
+  });
+
+  it('mounts search landing engagement with the canonical page pathname', async () => {
+    renderWithRouter(
+      <DocsContent
+        activePath="/en/realtime-media/video/get-started-sdk"
+        analyticsPageContext={{
+          contentId: 'realtime-media/video/get-started-sdk',
+          journeyStage: 'get-started',
+          navSection: 'get-started',
+          navSectionTitle: 'Get started',
+          pageType: 'task-guide',
+          pathname: '/en/realtime-media/video/get-started-sdk',
+          product: 'video',
+          title: 'Quickstart',
+          version: 'current',
+        }}
+        contentPath="en/realtime-media/video/get-started-sdk.mdx"
+        locale="en"
+        toc={[]}
+      />,
+    );
+
+    await waitFor(() => {
+      expect(searchLandingEngagementMock).toHaveBeenCalledWith(
+        {
+          locale: 'en',
+          pathname: '/en/realtime-media/video/get-started-sdk',
+        },
+        undefined,
+      );
     });
   });
 
@@ -397,6 +439,21 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('announces loading while document content is pending', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="pending.mdx"
+        slug="pending"
+        title="Release notes"
+        toc={[]}
+      />,
+      '/en/realtime-media/pending',
+    );
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      'Loading content',
+    );
+  });
+
   it('renders MDX content in the server output without a skeleton', () => {
     const html = renderToString(
       <AppProviders>
@@ -438,15 +495,18 @@ describe('DocsContent', () => {
             },
           },
         }}
+        locale="zh-CN"
         slug="join"
         title="Start a conversational AI agent"
         toc={[]}
       />,
     );
 
-    expect(
-      await screen.findByTestId('fumadocs-openapi-content'),
-    ).toHaveTextContent('/v2/projects/{appid}/join');
+    const openApiContent = await screen.findByTestId(
+      'fumadocs-openapi-content',
+    );
+    expect(openApiContent).toHaveTextContent('/v2/projects/{appid}/join');
+    expect(openApiContent).toHaveAttribute('data-locale', 'zh-CN');
   });
 
   it('renders the generic header description for OpenAPI bodies', async () => {

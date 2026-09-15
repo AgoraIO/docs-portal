@@ -6,10 +6,6 @@ description: >
 
 Sarvam ASR provides real-time speech-to-text with low latency and reliable performance for Indian languages.
 
-:::info[Info]
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
-:::
-
 ### Sample configuration
 
 The following example shows how to configure Sarvam ASR when starting a conversational AI agent.
@@ -92,10 +88,6 @@ Use the following `asr` configuration in your request:
 </TabsContent>
 </Tabs>
 
-:::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/speech-to-text/transcribe).
-:::
-
 ### Key parameters
 
 <ParameterList title="params" required={true}>
@@ -106,3 +98,9 @@ The parameters listed on this page are validated for use with Conversational AI 
   The language code for transcription. Set to `unknown` for automatic language detection.
   </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/speech-to-text/transcribe).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

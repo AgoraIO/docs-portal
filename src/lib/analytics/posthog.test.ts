@@ -208,6 +208,131 @@ describe('PostHog analytics', () => {
     });
   });
 
+  it('captures correlated search completion metadata and redacts sensitive queries', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchCompleted } = await import('./posthog');
+
+    captureDocsSearchCompleted({
+      apiAvailable: true,
+      apiResultCount: 2,
+      docsResultCount: 4,
+      latencyMs: 180,
+      locale: 'en',
+      platformFilter: 'web',
+      productScope: 'product:video',
+      provider: 'algolia',
+      query: 'screen sharing',
+      queryAttemptId: 'attempt-1',
+      queryLength: 14,
+      searchIntent: 'task',
+      searchSessionId: 'session-1',
+      resultCount: 6,
+      status: 'success',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_search_completed',
+      expect.objectContaining({
+        api_available: true,
+        api_result_count: 2,
+        docs_result_count: 4,
+        latency_ms: 180,
+        query_attempt_id: 'attempt-1',
+        query_text: 'screen sharing',
+        search_intent: 'task',
+        search_session_id: 'session-1',
+      }),
+    );
+
+    captureMock.mockClear();
+    captureDocsSearchCompleted({
+      locale: 'en',
+      provider: 'algolia',
+      query: 'https://example.com?token=secret',
+      queryAttemptId: 'attempt-2',
+      queryLength: 33,
+      searchIntent: 'unknown',
+      searchSessionId: 'session-1',
+      status: 'success',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    const sensitivePayload = captureMock.mock.calls[0]?.[1];
+    expect(sensitivePayload).toEqual(
+      expect.objectContaining({
+        query_hash: expect.any(String),
+      }),
+    );
+    expect(sensitivePayload).not.toHaveProperty('query_text');
+    expect(JSON.stringify(sensitivePayload)).not.toContain('secret');
+  });
+
+  it('captures result impressions and landing engagement with search identity', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const {
+      captureDocsSearchLandingEngaged,
+      captureDocsSearchResultsImpressed,
+    } = await import('./posthog');
+
+    captureDocsSearchResultsImpressed({
+      firstResultSource: 'algolia',
+      firstResultType: 'guide',
+      hasPlatformVariants: false,
+      locale: 'en',
+      queryAttemptId: 'attempt-1',
+      resultCount: 3,
+      resultGroupOrder: 'documentation,api-reference',
+      searchSessionId: 'session-1',
+      visibleResultCount: 3,
+    });
+    captureDocsSearchLandingEngaged({
+      codeCopied: false,
+      dwellTimeMs: 12000,
+      href: '/en/realtime-media/rtc/quickstart',
+      locale: 'en',
+      nextPageClicked: false,
+      queryAttemptId: 'attempt-1',
+      scrollDepth: 0.42,
+      searchSessionId: 'session-1',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(2);
+    });
+
+    expect(captureMock).toHaveBeenNthCalledWith(
+      1,
+      'docs_search_results_impressed',
+      expect.objectContaining({
+        first_result_source: 'algolia',
+        first_result_type: 'guide',
+        query_attempt_id: 'attempt-1',
+        result_group_order: 'documentation,api-reference',
+        search_session_id: 'session-1',
+      }),
+    );
+    expect(captureMock).toHaveBeenNthCalledWith(
+      2,
+      'docs_search_landing_engaged',
+      expect.objectContaining({
+        dwell_time_ms: 12000,
+        query_attempt_id: 'attempt-1',
+        scroll_depth: 0.42,
+        search_session_id: 'session-1',
+        target_pathname: '/en/realtime-media/rtc/quickstart',
+      }),
+    );
+  });
+
   it('uses the explicit deployment environment for preview events', async () => {
     vi.stubEnv('VITE_DEPLOY_ENVIRONMENT', 'preview');
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');

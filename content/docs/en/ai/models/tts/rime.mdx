@@ -6,10 +6,6 @@ description: >
 
 Rime provides high-quality text-to-speech (TTS) with low latency, supporting multiple speakers and models.
 
-:::info[Info]
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
-:::
-
 ### Sample configuration
 
 The following examples show how to configure Rime TTS when starting a conversational AI agent.
@@ -98,10 +94,6 @@ Use the following `tts` configuration in your request:
 </TabsContent>
 </Tabs>
 
-:::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the Rime documentation for [Arcana](https://docs.rime.ai/api-reference/arcana/streaming-pcm) and [Mist v2](https://docs.rime.ai/api-reference/endpoint/streaming-pcm).
-:::
-
 ### Key parameters
 
 <ParameterList title="params" required={true}>
@@ -118,3 +110,9 @@ The parameters listed on this page are validated for use with Conversational AI 
     The WebSocket URL for the Rime streaming API. For example, `wss://users.rime.ai/ws2`.
   </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the Rime documentation for [Arcana](https://docs.rime.ai/api-reference/arcana/streaming-pcm) and [Mist v2](https://docs.rime.ai/api-reference/endpoint/streaming-pcm).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

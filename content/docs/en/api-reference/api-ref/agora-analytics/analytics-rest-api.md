@@ -41,21 +41,21 @@ The Starter, Standard, Premium, and Enterprise pricing plans have the following 
 
 - Endpoint is `/beta/analytics/call/lists`:
 
-    |                   | Starter | Standard                          | Premium                           | Enterprise                          |
-    | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
-    | Request frequency | N/A     | No more than 1/second and 1,000/day | No more than 3/second and 2,000/day | No more than 10/second and 10,000/day |
-    | Available data    | N/A     | Within the past 1 day        | Within the past 7 days    | Within the past 15 days        |
-    | Response content  | N/A     | A maximum of 8 hours of data          | A maximum of 16 hours of data      | A maximum of 24 hours of data        |
-    | Data delay        | N/A     | 60 seconds              | 20 seconds               | 20 seconds  |
+ |   | Starter | Standard          | Premium           | Enterprise          |
+ | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
+ | Request frequency | N/A  | No more than 1/second and 1,000/day | No more than 3/second and 2,000/day | No more than 10/second and 10,000/day |
+ | Available data | N/A  | Within the past 1 day     | Within the past 7 days | Within the past 15 days     |
+ | Response content  | N/A  | A maximum of 8 hours of data       | A maximum of 16 hours of data   | A maximum of 24 hours of data     |
+ | Data delay     | N/A  | 60 seconds | 20 seconds  | 20 seconds  |
 
 - Endpoint is `/beta/analytics/call/sessions` or `/beta/analytics/call/metrics`:
 
-    |                   | Starter | Standard                          | Premium                           | Enterprise                          |
-    | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
-    | Request frequency | N/A     | No more than 1/second and 1,000/day | No more than 3/second and 2,000/day | No more than 10/second and 10,000/day |
-    | Available data    | N/A     | Within the past 1 day        | Within the past 7 days    | Within the past 15 days        |
-    | Response content  | N/A     | A maximum of 1 hours of data          | A maximum of 3 hours of data      | A maximum of 6 hours of data        |
-    | Data delay        | N/A     | 300 seconds              | 150 seconds               | 100 seconds  |
+ |   | Starter | Standard          | Premium           | Enterprise          |
+ | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
+ | Request frequency | N/A  | No more than 1/second and 1,000/day | No more than 3/second and 2,000/day | No more than 10/second and 10,000/day |
+ | Available data | N/A  | Within the past 1 day     | Within the past 7 days | Within the past 15 days     |
+ | Response content  | N/A  | A maximum of 1 hours of data       | A maximum of 3 hours of data   | A maximum of 6 hours of data     |
+ | Data delay     | N/A  | 300 seconds | 150 seconds  | 100 seconds  |
 
 ### Get call list
 
@@ -68,13 +68,13 @@ This method gets a list of the calls that meet the search criteria.
 
 The following query string parameters are required in the URL as search criteria:
 
-| Parameter  | Type   | Description                                                  |
+| Parameter  | Type| Description                                  |
 | ---------- | ------ | ------------------------------------------------------------ |
-| `appid`    | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid` | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `start_ts` | Number | The starting time of the search time frame. Unix time (in seconds since 1 January 1970) in UTC. |
-| `end_ts`   | Number | The ending time of the search time frame. Unix time (in seconds since 1 January 1970) in UTC. |
-| `cname`    | String | (Optional) The channel name.                                 |
-| `page_no`  | Number | (Optional) The page number. The default is 1.                |
+| `end_ts`| Number | The ending time of the search time frame. Unix time (in seconds since 1 January 1970) in UTC. |
+| `cname` | String | (Optional) The channel name.                 |
+| `page_no`  | Number | (Optional) The page number. The default is 1.|
 | `page_size`| Number | (Optional) The number of calls on each page. The default is 20 and the maximum is 100. |
 
 #### HTTP request example
@@ -148,15 +148,15 @@ This method gets the detailed call statistics of users by specifying the unique 
 
 The following query string parameters are required in the URL to specify the call ID and statistics:
 
-| Parameter             | Type    | Description                                                  |
+| Parameter| Type | Description                                  |
 | --------------------- | ------- | ------------------------------------------------------------ |
-| `start_ts`            | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
-| `end_ts`              | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
-| `call_id`             | String  | The unique ID of the call.                                   |
-| `page_no`             | Number  | (Optional) The page number. The default is 1.                |
-| `page_size`           | Number  | (Optional) The number of user sessions on each page. The default is 20 and the maximum is 100. To implement pagination, specify values for both `page_no` and `page_size`. |
-| `uids`                | String  | (Optional) The list of user IDs separated by commas. For example, `uids=10001,10002,10003`. You can specify a maximum of 10 user IDs. A user ID may occur twice in the list according to the actual use-case. Therefore, if you specify 10 user IDs in the request, 10 or more user IDs are returned. |
-| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `start_ts`         | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `end_ts` | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `call_id`| String  | The unique ID of the call.                   |
+| `page_no`| Number  | (Optional) The page number. The default is 1.|
+| `page_size`        | Number  | (Optional) The number of user sessions on each page. The default is 20 and the maximum is 100. To implement pagination, specify values for both `page_no` and `page_size`. |
+| `uids`| String  | (Optional) The list of user IDs separated by commas. For example, `uids=10001,10002,10003`. You can specify a maximum of 10 user IDs. A user ID may occur twice in the list according to the actual use-case. Therefore, if you specify 10 user IDs in the request, 10 or more user IDs are returned. |
+| `appid`  | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 | `exclude_server_user` | Boolean | (Optional) Whether or not to exclude Linux users. `true` by default, which represents excluding Linux users. |
 
 #### HTTP request example
@@ -208,11 +208,11 @@ Where:
 - `code`: Number. The [status code](#status-codes).
 - `message`: String. The error message.
 - `requestId`: String. The unique identifier of the HTTP request corresponding to this HTTP response.
-- `has_more`: Boolean. Whether there are calls not included in `call_lists`. 
-    - `true` Indicates that some calls that meet the search criteria are not listed. 
-    - `false` Indicates that all calls that meet the query criteria are listed.
+- `has_more`: Boolean. Whether there are user sessions not included in `call_info`. 
+    - `true` Indicates that some user sessions that meet the search criteria are not listed. 
+    - `false` Indicates that all user sessions that meet the query criteria are listed.
     
-    If the call you need is not in `call_lists`, try narrowing the search and resend the request.
+    If the user session you need is not in `call_info`, try narrowing the search and resend the request.
 - `total_size`: Number. The total number of returned user sessions.
 - `page_no`: Number. The page number.
 - `page_size`: Number. The number of user sessions on each page.
@@ -230,11 +230,11 @@ Where:
   - `leave_ts`: Number. The time when the user leaves the call. Unix time (in seconds since 1 January 1970) in UTC.
   - `finished`: Boolean. Whether the user is in the call or has left it.
 
-  - `roles`: String. The user role ID reflects the user's role and the functions used in this call.
+  - `roles`: Array. The user role ID reflects the user's role and the functions used in this call.
     - `Audience`: Receiving user.
     - `Host`: The sending user.
     - `Screen Share`: Screen sharing.
-    - `Interative Live Streaming(ILS)`: Interactive live broadcast.
+    - `Interactive Live Streaming(ILS)`: Interactive live broadcast.
     - `Broadcast Streaming(BS)`: Live broadcast at high speed.
     - `Streaming robot`: Streaming robot.
     - `On-Premise Recording`: Local recording.
@@ -254,13 +254,13 @@ Gets the quality metrics of a specified call.
 
 The following query string parameters are required in the URL to specify the call:
 
-| Parameter  | Type   | Description                                                  |
+| Parameter  | Type| Description                                  |
 | ---------- | ------ | ------------------------------------------------------------ |
-| `appid`    | String | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `call_id`  | String | The unique ID of the call.                                   |
+| `appid` | String | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `call_id`  | String | The unique ID of the call.                   |
 | `start_ts` | Number | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
-| `end_ts`   | Number | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
-| `sids`     | String | The list of user session IDs separated by commas, for example,  `sids=SXXXXXXXXXXXXXXXX1,SXXXXXXXXXXXXXXXX2`. You can specify a maximum of 20 user session IDs. |
+| `end_ts`| Number | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `sids`  | String | The list of user session IDs separated by commas, for example,  `sids=SXXXXXXXXXXXXXXXX1,SXXXXXXXXXXXXXXXX2`. You can specify a maximum of 20 user session IDs. |
 
 #### HTTP request example
 
@@ -327,12 +327,12 @@ Retrieves statistics on the audio or video freeze rate for a specified call with
 
 The following query string parameters are required in the URL to specify the call ID and statistics:
 
-| Parameter             | Type    | Description                                                  |
+| Parameter| Type | Description                                  |
 | --------------------- | ------- | ------------------------------------------------------------ |
-| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `call_id`             | String  | The unique ID of the call.                                   |
-| `start_ts`            | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
-| `end_ts`              | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `appid`  | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `call_id`| String  | The unique ID of the call.                   |
+| `start_ts`         | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `end_ts` | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
 | `dimension` | String | Statistical dimension. Supported values: `country` (Nation); `region` (Area); `net` (Network type); `sdk` (SDK version); `os` (Operating system); `device` (Device model). |
 | `metric` | String | Supported values: `audio_freeze_rate` (Audio stuttering rate); `video_freeze_rate` (Video freeze rate). |
 
@@ -367,7 +367,7 @@ Where:
 - `code`: Number. The [status code](#status-codes).
 - `message`: String. The error message.
 - `requestId`: String. The unique identifier of the HTTP request corresponding to this HTTP response.
-- `data`: JSONArray. An array containing latitude, user count, and metric values:
+- `data`: JSONArray. An array containing the dimension value, user count, and metric values:
     - `dimension_value`: String. The value of the statistical dimension provided in the request.
     - `user_count`: Number. The number of users.
     - `value`: Number. The average metric value over the queried time range, matching the metric specified in the request.
@@ -383,12 +383,12 @@ This method gets audio or video freeze rate statistics for a specific call withi
 
 The following query string parameters are required in the URL to specify the call ID and statistics:
 
-| Parameter             | Type    | Description                                                  |
+| Parameter| Type | Description                                  |
 | --------------------- | ------- | ------------------------------------------------------------ |
-| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `call_id`             | String  | The unique ID of the call.                                   |
-| `start_ts`            | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
-| `end_ts`              | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `appid`  | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `call_id`| String  | The unique ID of the call.                   |
+| `start_ts`         | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `end_ts` | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
 | `metric` | String | Supported values: `audio_freeze_rate` (Audio stuttering rate); `video_freeze_rate` (Video freeze rate). |
 
 #### HTTP request example
@@ -435,7 +435,7 @@ Where:
 
 ### Retrieve insight statistics
 
-This method gets the insight statistics for a specific.
+This method gets the insight statistics for a specific call within a specified time range.
 
 - Method: `GET`
 - Endpoint: `/beta/analytics/call/statistics/time`
@@ -444,12 +444,12 @@ This method gets the insight statistics for a specific.
 
 The following query string parameters are required in the URL to specify the call ID and statistics:
 
-| Parameter             | Type    | Description                                                  |
+| Parameter| Type | Description                                  |
 | --------------------- | ------- | ------------------------------------------------------------ |
-| `appid`               | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `call_id`             | String  | The unique ID of the call.                                   |
-| `start_ts`            | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
-| `end_ts`              | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `appid`  | String  | [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `call_id`| String  | The unique ID of the call.                   |
+| `start_ts`         | Number  | The starting time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
+| `end_ts` | Number  | The ending time of the call. Unix time (in seconds since 1 January 1970) in UTC. |
 | `metric` | String | Supported values: `user_count` (Number of participants in a call. Each user ID counts as one participant per channel and as multiple participants across different channels); `audio_freeze_rate` (Audio stuttering rate); `video_freeze_rate` (Video freeze rate); `audio_freeze_user_count` (Number of participants experiencing audio freezes); `video_freeze_user_count` (Number of participants experiencing video freezes). |
 
 #### HTTP request example
@@ -523,41 +523,41 @@ The Starter, Standard, Premium, and Enterprise pricing plans have the following 
 
 - Endpoint is `/beta/insight/usage/by_time`:
 
-|                   | Starter | Standard                          | Premium                           | Enterprise                          |
+|   | Starter | Standard          | Premium           | Enterprise          |
 | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
-| Request frequency | N/A     | N/A | No more than 3/minute and 40/day | No more than 10/minute and 60/day |
-| Available data    | N/A     | N/A        | Within the past 14 days    | Within the past 30 days        |
-| Query time frame  | N/A     | N/A          | No longer than 3 days      | No longer than 7 days          |
-| Data granularity        | N/A     | N/A                      | Per day and hour                       | Per day and hour                         |
-| Data delay        | N/A     | N/A            | 12 hours                     | 6 hours              |
+| Request frequency | N/A  | N/A | No more than 3/minute and 40/day | No more than 10/minute and 60/day |
+| Available data | N/A  | N/A     | Within the past 14 days | Within the past 30 days     |
+| Query time frame  | N/A  | N/A       | No longer than 3 days   | No longer than 7 days       |
+| Data granularity     | N/A  | N/A      | Per day and hour       | Per day and hour         |
+| Data delay     | N/A  | N/A         | 12 hours     | 6 hours |
 
 - Endpoint is `/beta/insight/quality/by_time`:
 
-|                   | Starter | Standard                          | Premium                           | Enterprise                          |
+|   | Starter | Standard          | Premium           | Enterprise          |
 | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
-| Request frequency | N/A     | N/A| No more than 3/minute and 40/day | No more than 10/minute and 60/day |
-| Available data    | N/A     | N/A       | Within the past 14 days    | Within the past 30 days        |
-| Query time frame  | N/A     | N/A         | No longer than 3 days      | No longer than 7 days          |
-| Data granularity        | N/A     | N/A                     | Per day, hour, and minute                      | Per day, hour, and minute          |
-| Data delay        | N/A     | N/A         | 6 hours                     | 6 hours              |
+| Request frequency | N/A  | N/A| No more than 3/minute and 40/day | No more than 10/minute and 60/day |
+| Available data | N/A  | N/A    | Within the past 14 days | Within the past 30 days     |
+| Query time frame  | N/A  | N/A      | No longer than 3 days   | No longer than 7 days       |
+| Data granularity     | N/A  | N/A     | Per day, hour, and minute      | Per day, hour, and minute       |
+| Data delay     | N/A  | N/A      | 6 hours     | 6 hours |
 
 - Endpoint is `/beta/insight/usage/aggregation`:
 
-|                   | Starter | Standard                          | Premium                           | Enterprise                          |
+|   | Starter | Standard          | Premium           | Enterprise          |
 | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
-| Request frequency | N/A     | N/A| No more than 3/minute and 40/day | No more than 10/minute and 60/day |
-| Available data    | N/A     | N/A       | Within the past 14 days    | Within the past 30 days        |
-| Data granularity        | N/A     | N/A                     | Per day and hour                   | Per day and hour          |
-| Data delay        | N/A     | N/A         | 12 hours                     | 6 hours              |
+| Request frequency | N/A  | N/A| No more than 3/minute and 40/day | No more than 10/minute and 60/day |
+| Available data | N/A  | N/A    | Within the past 14 days | Within the past 30 days     |
+| Data granularity     | N/A  | N/A     | Per day and hour   | Per day and hour       |
+| Data delay     | N/A  | N/A      | 12 hours     | 6 hours |
 
 - Endpoint is `/beta/insight/quality/aggregation`:
 
-|                   | Starter | Standard                          | Premium                           | Enterprise                          |
+|   | Starter | Standard          | Premium           | Enterprise          |
 | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
-| Request frequency | N/A     | N/A| No more than 3/minute and 40/day | No more than 10/minute and 60/day |
-| Available data    | N/A     | N/A       | Within the past 14 days    | Within the past 30 days        |
-| Data granularity        | N/A     | N/A                     | Per day and hour                    | Per day and hour          |
-| Data delay        | N/A     | N/A         | 6 hours                     | 6 hours              |
+| Request frequency | N/A  | N/A| No more than 3/minute and 40/day | No more than 10/minute and 60/day |
+| Available data | N/A  | N/A    | Within the past 14 days | Within the past 30 days     |
+| Data granularity     | N/A  | N/A     | Per day and hour    | Per day and hour       |
+| Data delay     | N/A  | N/A      | 6 hours     | 6 hours |
 
 ### Query time-frame usage metrics
 
@@ -570,12 +570,12 @@ This method queries usage metrics for a specified time frame with granularity of
 
 The following query string parameters are required in the URL:
 
-| Parameter              | Type   | Description                                                  |
+| Parameter | Type| Description                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `startTs`              | Number | The start point (Unix timestamp) of the time frame to query. |
-| `endTs`                | Number | The end point (Unix timestamp) of the time frame to query.   |
-| `metric`               | String | Supported values: `userCount` (The total number of users across all channels. A user joining the same channel with different user IDs or joining different channels with the same user ID is counted multiple times); `sessionCount` (The total count of users joining channels. Each time any user ID joins any channel is counted); `channelCount` (The total number of channels. A channel is counted once for each period between the time when the first user joins it and the time when the last user leaves it); `peakCurrentChannels` (The maximum number of channels in use); `peakCurrentUsers` (The maximum number of in-call users across channels); `totalDuration` (The total duration of video and audio-only calls calculated by the number of users); `totalVideoDuration` (The total duration of video calls calculated by the number of users); `totalAudioDuration` (The total duration of audio-only calls calculated by the number of users). |
+| `appid`| String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `startTs` | Number | The start point (Unix timestamp) of the time frame to query. |
+| `endTs`| Number | The end point (Unix timestamp) of the time frame to query.|
+| `metric`  | String | Supported values: `userCount` (The total number of users across all channels. A user joining the same channel with different user IDs or joining different channels with the same user ID is counted multiple times); `sessionCount` (The total count of users joining channels. Each time any user ID joins any channel is counted); `channelCount` (The total number of channels. A channel is counted once for each period between the time when the first user joins it and the time when the last user leaves it); `peakCurrentChannels` (The maximum number of channels in use); `peakCurrentUsers` (The maximum number of in-call users across channels); `totalDuration` (The total duration of video and audio-only calls calculated by the number of users); `totalVideoDuration` (The total duration of video calls calculated by the number of users); `totalAudioDuration` (The total duration of audio-only calls calculated by the number of users). |
 | `aggregateGranularity` | String | Supported values: `1d` (By day. Returns data for the entire day starting from UTC 00:00 within the query time range); `1h` (By hour. Returns data for each whole UTC hour within the query time range). |
 
 :::info
@@ -616,11 +616,11 @@ The response for the previous HTTP request example is as follows:
 
 #### Response parameters
 
-| Parameter      | Type      | Description                                                         |
+| Parameter   | Type   | Description                                         |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes).          |
-| `message` | String    | The success or error message.                                             |
-| `data`    | JSONArray | Each JSON object contains a Unix timestamp representing 12:00 am (UTC) on each day within the specified time frame and the corresponding metric value. In the previous request example, two JSON objects are returned: one for 12:00 am on July 2, 2021, and one for 12:00 am on July 3, 2021. Fields: `userCount` (Number. The total number of users across all channels); `ts` (Number. Unix timestamp). |
+| `code` | Number | The [status code](#status-codes).       |
+| `message` | String | The success or error message.                             |
+| `data` | JSONArray | Each JSON object contains a Unix timestamp representing 12:00 am (UTC) on each day within the specified time frame and the corresponding metric value. In the previous request example, two JSON objects are returned: one for 12:00 am on July 2, 2021, and one for 12:00 am on July 3, 2021. Fields: `userCount` (Number. The total number of users across all channels); `ts` (Number. Unix timestamp). |
 
 ### Query time-series quality metrics
 
@@ -633,14 +633,14 @@ This method queries quality metrics for a specified time range with granularity 
 
 The following query string parameters are required in the URL:
 
-| Parameter              | Type   | Description                                                  |
+| Parameter | Type| Description                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `startTs`              | Number | The start point (Unix timestamp) of the time frame to query. |
-| `endTs`                | Number | The end point (Unix timestamp) of the time frame to query.   |
-| `metric`               | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
+| `appid`| String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `startTs` | Number | The start point (Unix timestamp) of the time frame to query. |
+| `endTs`| Number | The end point (Unix timestamp) of the time frame to query.|
+| `metric`  | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
 | `aggregateGranularity` | String | Supported values: `1d` (By day. Returns data for the entire day starting from UTC 00:00 within the query time range); `1h` (By hour. Returns data for each whole UTC hour within the query time range). |
-| `productType`          | String | Supported values: `Native` (The Agora RTC SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora RTC SDK for Web). |
+| `productType`       | String | Supported values: `Native` (The Agora RTC SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora RTC SDK for Web). |
 
 :::info
 For more information about calculating by the number of streams, see [How does Agora calculate service minutes?](/en/realtime-media/agora-analytics/reference/billing-policies#how-does-agora-calculate-service-minutes) 
@@ -685,11 +685,11 @@ The response for the previous HTTP request example is as follows:
 
 #### Response parameters
 
-| Parameter      | Type      | Description                                                         |
+| Parameter   | Type   | Description                                         |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes).          |
-| `message` | String    | The success or error message.                                             |
-| `data`    | JSONArray | Each JSON object contains a Unix timestamp for every hour within the specified time frame and the corresponding metric value. In the previous request example, 25 JSON objects are returned, from 8:00 am on July 1, 2021 through 8:00 am on July 2, 2021. Fields: `networkDelay` (Number. The network delay rate); `ts` (Number. Unix timestamp). |
+| `code` | Number | The [status code](#status-codes).       |
+| `message` | String | The success or error message.                             |
+| `data` | JSONArray | Each JSON object contains a Unix timestamp for every hour within the specified time frame and the corresponding metric value. In the previous request example, 25 JSON objects are returned, from 8:00 am on July 1, 2021 through 8:00 am on July 2, 2021. Fields: `networkDelay` (Number. The network delay rate); `ts` (Number. Unix timestamp). |
 
 ### Query aggregated usage metrics
 
@@ -702,22 +702,22 @@ This method queries aggregated usage metrics for a specified time range and dime
 
 The following query string parameters are required in the URL:
 
-| Parameter              | Type   | Description                                                  |
+| Parameter | Type| Description                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`| String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 
 #### Body parameters
 
 The following query string parameters are required in the URL:
 
-| Parameter              | Type   | Description                                                  |
+| Parameter | Type| Description                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `startTs`              | Number | The start point (Unix timestamp) of the time frame to query. |
-| `endTs`                | Number | The end point (Unix timestamp) of the time frame to query.   |
-| `metric`               | String | Supported values: `userCount` (The total number of users across all channels. A user joining the same channel with different user IDs or joining different channels with the same user ID is counted multiple times); `sessionCount` (The total count of users joining channels. Each time any user ID joins any channel is counted); `channelCount` (The total number of channels. A channel is counted once for each period between the time when the first user joins it and the time when the last user leaves it); `peakCurrentChannels` (The maximum number of channels in use); `peakCurrentUsers` (The maximum number of in-call users across channels); `totalDuration` (The total duration of video and audio-only calls calculated by the number of users); `totalVideoDuration` (The total duration of video calls calculated by the number of users); `totalAudioDuration` (The total duration of audio-only calls calculated by the number of users). |
-| `dimension`            | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. If you set this parameter, the request returns the top 20 values in the dimension by default, or the top 50 values for `device`. When `metric` is `peakConcurrentUsers` or `peakConcurrentChannels`, `dimension` and `dimensionValues` are not supported, and the request returns aggregated results only by App ID. |
-| `dimensionValues`      | String | (Optional) Values for the specified dimension. This parameter is valid only when `dimension` is set. Enclose all values in double quotes and separate them with commas. If you set this parameter, the request returns aggregated metric data for the specified values. To discover top values first, omit `dimensionValues` in an initial request, then choose values from the results for later requests. |
-| `filters`              | JSONArray | (Optional) Region filters used to filter results by country. This parameter is valid only when `dimension` is `region`. It includes `name` (String. Only `country` is supported) and `value` (String. The country to filter by. Only one country value is supported). |
+| `startTs` | Number | The start point (Unix timestamp) of the time frame to query. |
+| `endTs`| Number | The end point (Unix timestamp) of the time frame to query.|
+| `metric`  | String | Supported values: `userCount` (The total number of users across all channels. A user joining the same channel with different user IDs or joining different channels with the same user ID is counted multiple times); `sessionCount` (The total count of users joining channels. Each time any user ID joins any channel is counted); `channelCount` (The total number of channels. A channel is counted once for each period between the time when the first user joins it and the time when the last user leaves it); `peakCurrentChannels` (The maximum number of channels in use); `peakCurrentUsers` (The maximum number of in-call users across channels); `totalDuration` (The total duration of video and audio-only calls calculated by the number of users); `totalVideoDuration` (The total duration of video calls calculated by the number of users); `totalAudioDuration` (The total duration of audio-only calls calculated by the number of users). |
+| `dimension`         | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. If you set this parameter, the request returns the top 20 values in the dimension by default, or the top 50 values for `device`. When `metric` is `peakCurrentUsers` or `peakCurrentChannels`, `dimension` and `dimensionValues` are not supported, and the request returns aggregated results only by App ID. |
+| `dimensionValues`   | String | (Optional) Values for the specified dimension. This parameter is valid only when `dimension` is set. Enclose all values in double quotes and separate them with commas. If you set this parameter, the request returns aggregated metric data for the specified values. To discover top values first, omit `dimensionValues` in an initial request, then choose values from the results for later requests. |
+| `filters` | JSONArray | (Optional) Region filters used to filter results by country. This parameter is valid only when `dimension` is `region`. It includes `name` (String. Only `country` is supported) and `value` (String. The country to filter by. Only one country value is supported). |
 
 #### HTTP Request example
 
@@ -775,11 +775,11 @@ Authorization: Basic ZGJhZDMyNmFkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 #### Response parameters
 
-| Parameter      | Type      | Description                                                         |
+| Parameter   | Type   | Description                                         |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes).          |
-| `message` | String    | The success or error message.                                             |
-| `data`    | JSONArray | If the request does not include `dimension`, the response returns metric data aggregated by App ID. If the request includes `dimension`, the response returns an array containing the dimension values and metric data. |
+| `code` | Number | The [status code](#status-codes).       |
+| `message` | String | The success or error message.                             |
+| `data` | JSONArray | If the request does not include `dimension`, the response returns metric data aggregated by App ID. If the request includes `dimension`, the response returns an array containing the dimension values and metric data. |
 
 #### Response example
 
@@ -859,22 +859,22 @@ This method queries aggregated quality metrics for a specified time range and di
 
 The following query string parameters are required in the URL:
 
-| Parameter              | Type   | Description                                                  |
+| Parameter | Type| Description                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `appid`                | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `appid`| String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
 
 #### Body parameters
 
 The following query string parameters are required in the URL:
 
-| Parameter              | Type   | Description                                                  |
+| Parameter | Type| Description                                  |
 | :--------------------- | :----- | :----------------------------------------------------------- |
-| `startTs`              | Number | The start point (Unix timestamp) of the time frame to query. |
-| `endTs`                | Number | The end point (Unix timestamp) of the time frame to query.   |
-| `metric`               | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
-| `dimension`            | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`, `channelSize`. If you set this parameter, the request returns the top 20 values in the dimension by default, or the top 50 values for `device`. When `metric` is `peakConcurrentUsers` or `peakConcurrentChannels`, `dimension` and `dimensionValues` are not supported, and the request returns aggregated results only by App ID. |
-| `dimensionValues`      | String | (Optional) Values for the specified dimension. This parameter is valid only when `dimension` is set. Enclose all values in double quotes and separate them with commas. If you set this parameter, the request returns aggregated metric data for the specified values. To discover top values first, omit `dimensionValues` in an initial request, then choose values from the results for later requests. When `dimension` is `channelSize`, `dimensionValues` is not supported and the results are grouped by the preset gradient scale. |
-| `filters`              | JSONArray | (Optional) Region filters used to filter results by country. This parameter is valid only when `dimension` is `region`. It includes `name` (String. Only `country` is supported) and `value` (String. The country to filter by. Only one country value is supported). |
+| `startTs` | Number | The start point (Unix timestamp) of the time frame to query. |
+| `endTs`| Number | The end point (Unix timestamp) of the time frame to query.|
+| `metric`  | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
+| `dimension`         | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`, `channelSize`. If you set this parameter, the request returns the top 20 values in the dimension by default, or the top 50 values for `device`. |
+| `dimensionValues`   | String | (Optional) Values for the specified dimension. This parameter is valid only when `dimension` is set. Enclose all values in double quotes and separate them with commas. If you set this parameter, the request returns aggregated metric data for the specified values. To discover top values first, omit `dimensionValues` in an initial request, then choose values from the results for later requests. When `dimension` is `channelSize`, `dimensionValues` is not supported and the results are grouped by the preset gradient scale. |
+| `filters` | JSONArray | (Optional) Region filters used to filter results by country. This parameter is valid only when `dimension` is `region`. It includes `name` (String. Only `country` is supported) and `value` (String. The country to filter by. Only one country value is supported). |
 
 #### HTTP Request example
 
@@ -932,11 +932,11 @@ Authorization: Basic ZGJhZDMyNmFkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 #### Response parameters
 
-| Parameter      | Type      | Description                                                         |
+| Parameter   | Type   | Description                                         |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes).          |
-| `message` | String    | The success or error message.                                             |
-| `data`    | JSONArray | If the `dimension` field is not filled in the request, returns the metric data of the App ID dimension. If the `dimension` field is filled in the request, returns an array composed of dimensions, `refUsage`, and metric data. `refUsage` is auxiliary usage data. In each returned data group, each `metric` corresponds to auxiliary usage data used to assist in determining data validity. When `metric` is `joinSuccessRate` or `joinSuccessIn5sRate`, `refUsage` represents the number of attempts to join the channel. When `metric` is `audioFreezeRate` or `videoFreezeRate`, `refUsage` represents the duration of audio calls or video calls in minutes. When `metric` is `networkDelay`, `refUsage` represents the total duration of audio and video calls in minutes. |
+| `code` | Number | The [status code](#status-codes).       |
+| `message` | String | The success or error message.                             |
+| `data` | JSONArray | If the `dimension` field is not filled in the request, returns the metric data of the App ID dimension. If the `dimension` field is filled in the request, returns an array composed of dimensions, `refUsage`, and metric data. `refUsage` is auxiliary usage data. In each returned data group, each `metric` corresponds to auxiliary usage data used to assist in determining data validity. When `metric` is `joinSuccessRate` or `joinSuccessIn5sRate`, `refUsage` represents the number of attempts to join the channel. When `metric` is `audioFreezeRate` or `videoFreezeRate`, `refUsage` represents the duration of audio calls or video calls in minutes. When `metric` is `networkDelay`, `refUsage` represents the total duration of audio and video calls in minutes. |
 
 #### Response example
 
@@ -1023,12 +1023,12 @@ The limits of the Real-time Monitoring RESTful APIs depend on the [pricing plan]
 
 The Starter, Standard, Premium, and Enterprise pricing plans have the following differences in terms of API limits:
 
-|                   | Starter | Standard                          | Premium                           | Enterprise                          |
+|   | Starter | Standard          | Premium           | Enterprise          |
 | :---------------- | ------- | :-------------------------------- | :-------------------------------- | :---------------------------------- |
-| Request frequency | N/A     | N/A | No more than 3/minute and 480/day | No more than 10/minute and 1440/day |
-| Available data    | N/A     | N/A         | Within the past 40 minutes        | Within the past 60 minutes          |
-| Query time frame  | N/A     | N/A          | No longer than 40 minutes         | No longer than 60 minutes           |
-| Data delay        | N/A     | N/A                    | 40 seconds                        | 20 seconds                          |
+| Request frequency | N/A  | N/A | No more than 3/minute and 480/day | No more than 10/minute and 1440/day |
+| Available data | N/A  | N/A      | Within the past 40 minutes     | Within the past 60 minutes       |
+| Query time frame  | N/A  | N/A       | No longer than 40 minutes      | No longer than 60 minutes        |
+| Data delay     | N/A  | N/A    | 40 seconds        | 20 seconds          |
 
 :::info
 Request frequency is calculated using the server's UTC time.
@@ -1045,16 +1045,16 @@ This method queries the real-time number of users and channels.
 
 The following query string parameters are required in the URL:
 
-| **Parameter** | Type   | **Description**                                              |
+| **Parameter** | Type| **Description**                              |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `startTs`     | Number | The start point (Unix timestamp) of the time frame to query. The time window that  `startTs` falls in is included in the response. |
-| `endTs`       | Number | The end point (Unix timestamp) of the time frame to query.  The time window that  `endTs` falls in is *not* included in the response. |
+| `appid`    | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `startTs`  | Number | The start point (Unix timestamp) of the time frame to query. The time window that  `startTs` falls in is included in the response. |
+| `endTs`    | Number | The end point (Unix timestamp) of the time frame to query.  The time window that  `endTs` falls in is *not* included in the response. |
 | `productType` | String | Supported values: `Native` (The Agora RTC SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora RTC SDK for Web). |
-| `metric`      | String | Supported values: `userCount` (The total number of users across all in-use channels. A user joining multiple channels is counted multiple times); `channelCount` (The total number of channels. A channel is counted once for each period between the time when the first user joins it and the time when the last user leaves it). |
-| `dimension` | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. To obtain the top values for the current `dimension`, query [top 20 real-time scale metrics](#20scale), then choose values from the results and pass them in `dimensionValues` in later requests. |
+| `metric`   | String | Supported values: `userCount` (The total number of users across all in-use channels. A user joining multiple channels is counted multiple times); `channelCount` (The total number of channels. A channel is counted once for each period between the time when the first user joins it and the time when the last user leaves it). |
+| `dimension` | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. To obtain the top values for the current `dimension`, query [top 20 real-time scale metrics](#query-top-20-real-time-scale-metrics), then choose values from the results and pass them in `dimensionValues` in later requests. |
 | `dimensionValues` | String | (Optional) The values for the specified dimension. This parameter is only valid when the `dimension` parameter is set. All values must be enclosed in double quotes and separated by commas. If this parameter is set, the request will return the aggregated metric data corresponding to the values specified in `dimensionValues`.  |
-| `cname`       | String | (Optional)The channel name. If you do not specify this parameter, the metric data of your entire project (rather than a specific channel) is returned. |
+| `cname`    | String | (Optional)The channel name. If you do not specify this parameter, the metric data of your entire project (rather than a specific channel) is returned. |
 
 #### HTTP request example
 
@@ -1071,11 +1071,11 @@ Authorization: Basic ZGJhZDMyNmFkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 The response contains the following fields:
 
-| Field     | Type      | Description                                                  |
+| Field  | Type   | Description                                  |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes). `200` indicates that the request is successful. |
-| `message` | String    | The error message.                                           |
-| `data`    | JSONArray | An array consisting of the requested `metric` field and `ts`, which is the Unix timestamp of the start point of the corresponding time window. |
+| `code` | Number | The [status code](#status-codes). `200` indicates that the request is successful. |
+| `message` | String | The error message.                           |
+| `data` | JSONArray | An array consisting of the requested `metric` field and `ts`, which is the Unix timestamp of the start point of the corresponding time window. |
 
 #### Response example
 
@@ -1135,17 +1135,17 @@ This method queries the real-time values of quality metrics such as the audio or
 
 The following query string parameters are required in the URL:
 
-| Parameter     | Type   | Description                                                  |
+| Parameter  | Type| Description                                  |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `startTs`     | Number | The start point (Unix timestamp) of the time frame to query. The time window that  `startTs` falls in is included in the response. |
-| `endTs`       | Number | The end point (Unix timestamp) of the time frame to query.  The time window that  `endTs` falls in is *not* included in the response. |
+| `appid`    | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `startTs`  | Number | The start point (Unix timestamp) of the time frame to query. The time window that  `startTs` falls in is included in the response. |
+| `endTs`    | Number | The end point (Unix timestamp) of the time frame to query.  The time window that  `endTs` falls in is *not* included in the response. |
 | `productType` | String | Supported values: `Native` (The Agora RTC SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora RTC SDK for Web). |
-| `metric`      | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
-| `dimension` | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. To obtain the top values for the current `dimension`, query [top 20 real-time quality metrics](#20quality), then choose values from the results and pass them in `dimensionValues` in later requests. |
+| `metric`   | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
+| `dimension` | String | (Optional) Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. To obtain the top values for the current `dimension`, query [top 20 real-time quality metrics](#query-top-20-real-time-quality-metrics), then choose values from the results and pass them in `dimensionValues` in later requests. |
 | `dimensionValues` | String | (Optional) The values for the specified dimension. This parameter is only valid when the `dimension` parameter is set. All values must be enclosed in double quotes and separated by commas. If this parameter is set, the request will return the aggregated metric data corresponding to the values specified in `dimensionValues`.  |
-| `cname`       | String | (Optional) The channel name. If you do not specify this parameter, the metric data of your entire project (rather than a specific channel) is returned. |
-| `uids`        | String | (Optional) The list of user IDs (`uid`). You need to separate multiple user IDs with commas (for example, `uids=10001,10002,10003`). You can specify a maximum of 10 user IDs. The `uids` parameter takes effect only when you specify the `cname` parameter. |
+| `cname`    | String | (Optional) The channel name. If you do not specify this parameter, the metric data of your entire project (rather than a specific channel) is returned. |
+| `uids`     | String | (Optional) The list of user IDs (`uid`). You need to separate multiple user IDs with commas (for example, `uids=10001,10002,10003`). You can specify a maximum of 10 user IDs. The `uids` parameter takes effect only when you specify the `cname` parameter. |
 
 #### HTTP request example
 
@@ -1182,11 +1182,11 @@ Authorization: Basic ZGJhZDMyNmFkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 The response contains the following fields:
 
-| Field     | Type      | Description                                                  |
+| Field  | Type   | Description                                  |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes). `200` indicates that the request is successful. |
-| `message` | String    | The error message.                                           |
-| `data`    | JSONArray | - The request does not include the `uids` field: An array of metric data and Unix timestamps (in seconds).`; `The request includes the `uids` field: An array of `uid`, metric data, and Unix timestamps (in seconds).`; `The request includes the `dimension` and `dimensionValues` fields: Arrays of metric data, dimensions, and Unix timestamps (in seconds).  |
+| `code` | Number | The [status code](#status-codes). `200` indicates that the request is successful. |
+| `message` | String | The error message.                           |
+| `data` | JSONArray | - The request does not include the `uids` field: An array of metric data and Unix timestamps (in seconds).`; `The request includes the `uids` field: An array of `uid`, metric data, and Unix timestamps (in seconds).`; `The request includes the `dimension` and `dimensionValues` fields: Arrays of metric data, dimensions, and Unix timestamps (in seconds).  |
 
 #### Response example
 
@@ -1307,7 +1307,7 @@ For the previous HTTP request example, the response includes data of the followi
 
 ### Query top 20 real-time scale metrics
 
-This method queries the top 20 grouped data of real-time scale for a specified dimension and provides content input for the `dimensionValues` parameter in [Query real-time scale](#realtimescale).
+This method queries the top 20 grouped data of real-time scale for a specified dimension and provides content input for the `dimensionValues` parameter in [Query real-time scale](#query-real-time-scale-metrics).
 
  - Method: `GET`
  - Endpoint: `/beta/realtime/usage/dimension/top20`
@@ -1316,12 +1316,12 @@ This method queries the top 20 grouped data of real-time scale for a specified d
 
 The following query string parameters are required in the URL:
 
-| **Parameter** | Type   | **Description**                                              |
+| **Parameter** | Type| **Description**                              |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `ts`     | Number | The start point (Unix timestamp) of the time frame to query. The actual query range is [ts, ts + 20s]. |
+| `appid`    | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `ts`  | Number | The start point (Unix timestamp) of the time frame to query. The actual query range is [ts, ts + 20s]. |
 | `productType` | String | Supported values: `Native` (The Agora RTC SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora RTC SDK for Web). |
-| `metric`      | String | The metric you want to query. You can only set it `userCount`, namely the number of users. One user ID in one channel is counted as one user, while one user ID in multiple channels is counted as multiple users. |
+| `metric`   | String | The metric you want to query. You can only set it `userCount`, namely the number of users. One user ID in one channel is counted as one user, while one user ID in multiple channels is counted as multiple users. |
 | `dimension` | String | Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. The request returns the top 20 values in the dimension by default, or the top 50 values for `device`. |
 
 #### Request example
@@ -1339,11 +1339,11 @@ Authorization: Basic ZGJhZDMyNmFkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 The response contains the following fields:
 
-| Field     | Type      | Description                                                  |
+| Field  | Type   | Description                                  |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes). `200` indicates that the request is successful. |
-| `message` | String    | The error message.                                           |
-| `data`    | JSONArray | An array consists of dimensions, metric, and the starting and ending Unix timestamps (in seconds) of the time window.  |
+| `code` | Number | The [status code](#status-codes). `200` indicates that the request is successful. |
+| `message` | String | The error message.                           |
+| `data` | JSONArray | An array consists of dimensions, metric, and the starting and ending Unix timestamps (in seconds) of the time window.  |
 
 #### Response example
 
@@ -1382,7 +1382,7 @@ The response contains 20 sets of data, each representing the top 20 call volume 
 
 ### Query top 20 real-time quality metrics
 
-This method queries the top 20 grouped data of real-time call quality for a specified dimension and provides content input for the `dimensionValues` parameter in [Query real-time quality](#realtimequality).
+This method queries the top 20 grouped data of real-time call quality for a specified dimension and provides content input for the `dimensionValues` parameter in [Query real-time quality](#query-real-time-quality-metrics).
 
  - Method: `GET`
  - Endpoint: `/beta/realtime/quality/dimension/top20`
@@ -1391,14 +1391,14 @@ This method queries the top 20 grouped data of real-time call quality for a spec
 
 The following query string parameters are required in the URL:
 
-| **Parameter** | Type   | **Description**                                              |
+| **Parameter** | Type| **Description**                              |
 | :------------ | :----- | :----------------------------------------------------------- |
-| `appid`       | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
-| `ts`     | Number | The start point (Unix timestamp) of the time frame to query. The actual query range is [ts, ts + 20s]. |
+| `appid`    | String | The [App ID](/en/realtime-media/agora-analytics/reference/glossary#app-id) of your project. |
+| `ts`  | Number | The start point (Unix timestamp) of the time frame to query. The actual query range is [ts, ts + 20s]. |
 | `productType` | String | Supported values: `Native` (The Agora RTC SDK for Android, iOS, macOS, and Windows); `WebRTC` (The Agora RTC SDK for Web). |
-| `metric`      | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
+| `metric`   | String | Supported values: `joinSuccessRate` (The rate at which users attempting to join any channel succeed, equal to number of users who joined divided by number of attempts to join); `joinSuccessIn5sRate` (The rate at which users attempting to join any channel succeed within 5 seconds, equal to number of users who joined within 5 seconds divided by number of attempts to join); `audioFreezeRate` (The rate at which audio freezing occurs, equal to total audio freeze time divided by total audio minutes calculated by the number of streams. Only audio freezes longer than 200 milliseconds are counted); `videoFreezeRate` (The rate at which video freezing occurs, equal to total video freeze time divided by total video minutes calculated by the number of streams. Only video freezes longer than 600 milliseconds are counted); `networkDelay` (The rate at which network delay occurs, equal to total end-to-end network delay divided by total audio and video minutes calculated by the number of streams. Only end-to-end network delays longer than 400 milliseconds are counted). |
 | `dimension` | String | Aggregation dimension. Supported values: `country`, `region`, `net`, `sdk`, `os`, `device`. The request returns the top 20 values in the dimension by default, or the top 50 values for `device`. |
-| `extraMetrics`       | String | Additional indicator, used to help determine the validity of data. Only supports setting to `userCount`, that is, the number of users under the current dimension. |
+| `extraMetrics`    | String | Additional indicator, used to help determine the validity of data. Only supports setting to `userCount`, that is, the number of users under the current dimension. |
 
 #### Request example
 
@@ -1415,11 +1415,11 @@ Authorization: Basic ZGJhZDMyNmFkxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 The response contains the following fields:
 
-| Field     | Type      | Description                                                  |
+| Field  | Type   | Description                                  |
 | :-------- | :-------- | :----------------------------------------------------------- |
-| `code`    | Number    | The [status code](#status-codes). `200` indicates that the request is successful. |
-| `message` | String    | The error message.                                           |
-| `data`    | JSONArray | An array consists of dimensions, metric, and the starting and ending Unix timestamps (in seconds) of the time window.  |
+| `code` | Number | The [status code](#status-codes). `200` indicates that the request is successful. |
+| `message` | String | The error message.                           |
+| `data` | JSONArray | An array consists of dimensions, metric, and the starting and ending Unix timestamps (in seconds) of the time window.  |
 
 #### Response example
 
@@ -1461,62 +1461,64 @@ The response contains 50 sets of data, each representing the top 50 audio freeze
 
 ### Status codes
 
-| Code   | Description                                                |
+| Code| Description                                |
 | ------ | ---------------------------------------------------------- |
-| `200`  | The request is successful.                          |
+| `200`  | The request is successful.          |
 | `300`  | The API limits are exceeded ([Call Search](#call-inspector) only) |
-| `400`  | Invalid parameters.                         |
-| `401`  | Unauthorized.                                              |
+| `400`  | Invalid parameters.         |
+| `401`  | Unauthorized.                              |
 | `403`  | Wrong authorization information. The request is forbidden. |
-| `404`  | Wrong API invoked.                                         |
-| `500`  | Unknown error.           |
+| `404`  | Wrong API invoked.                         |
+| `500`  | Unknown error.        |
 
 When `300` is returned, you might get the following error messages:
 
-| Error message                     | Description                                 | Examples of error fix                   |
+| Error message     | Description                 | Examples of error fix   |
 | :----------------------------------------------------------- | ------------------------------------ | :-----------------------------------------------------|
-| `qps limit error`                                              | The limit on requests per second is exceeded.               | If qps limit = 10, ensure that current qps &lt; 10                    |
-| `qpd limit error`                                              | The limit on requests per day is exceeded.              | If qpd limit = 10000, ensure that current qpd &lt; 10000              |
-| `query latency limit error`                                    | The limit on data delay is exceeded.                     | If query latency limit = 10s and current time = 1623316864, ensure that  `end_ts` &lt; 1623316864 - 10 |
-| `query time range limit error`                                 | The limit on available calls is exceeded.               | If query time range limit = 3d and current time = 1623316864, ensure that  `start_ts` &gt; 1623316864 - 3 * 86400(s) |
-| `query time length limit error`                                | The limit on response content is exceeded. | If query time length limit = 3h, ensure that `end_ts` - `start_ts` &lt; 3 * 3600(s) |
-| `you have no auth to access this service, please buy or upgrade your service package` | You have no access to this service.          | N/A                                                          |
+| `qps limit error`                              | The limit on requests per second is exceeded.  | If qps limit = 10, ensure that current qps &lt; 10    |
+| `qpd limit error`                              | The limit on requests per day is exceeded. | If qpd limit = 10000, ensure that current qpd &lt; 10000 |
+| `query latency limit error`                    | The limit on data delay is exceeded.     | If query latency limit = 10s and current time = 1623316864, ensure that  `end_ts` &lt; 1623316864 - 10 |
+| `query time range limit error`                 | The limit on available calls is exceeded.  | If query time range limit = 3d and current time = 1623316864, ensure that  `start_ts` &gt; 1623316864 - 3 * 86400(s) |
+| `query time length limit error`                | The limit on response content is exceeded. | If query time length limit = 3h, ensure that `end_ts` - `start_ts` &lt; 3 * 3600(s) |
+| `you have no auth to access this service, please buy or upgrade your service package` | You have no access to this service.       | N/A                                          |
 
 ### Metrics ID
 
-| `mid` | Description                                                  | Unit | Example    |
-| :---- | :----------------------------------------------------------- | :--- | :--------- |
-| 20001 | App CPU usage.                                               | %    | 27%        |
-| 20002 | System CPU usage.                                            | %    | 15%        |
-| 20003 | The upstream bitrate of the audio.                           | Kbps | 126 Kbps   |
-| 20004 | The downstream bitrate of the audio.                         | Kbps | 108 Kbps   |
-| 20005 | The freeze time in rendering the audio.                      | ms   | 106.67 ms  |
-| 20006 | The upstream bitrate of the low-quality video stream.        | Kbps | 472 Kbps   |
-| 20007 | The capturing frame rate of the video.                       | fps  | 16 fps     |
-| 20008 | The upstream frame rate of the high-quality video stream.    | fps  | 12 fps     |
-| 20009 | The downstream bitrate of the high-quality video.            | Kbps | 309 Kbps   |
-| 20010 | The downstream frame rate of the high-quality  video.        | fps  | 6 fps      |
-| 20011 | The freeze time in rendering the video.                      | ms   | 2000.50 ms |
-| 20015 | The upstream packet loss rate of the audio.                  | %    | 1%         |
-| 20016 | The end-to-end packet loss rate of the audio.                | %    | 3%         |
-| 20017 | The upstream packet loss rate of the video.                  | %    | 5%         |
-| 20018 | The end-to-end packet loss rate of the video.                | %    | 7%         |
-| 20019 | The width of the received video.                             | ——   | 360        |
-| 20020 | The height of the received video.                            | ——   | 640        |
-| 20021 | The task scheduling delay.                                   | ms   | 2 ms       |
-| 20022 | The round-trip time delay from the client to the local router. | ms   | 3 ms       |
-| 20023 | The upstream frame rate of the low-quality video stream.     | fps  | 108 fps    |
-| 20024 | The upstream bitrate of the video stream.                    | Kbps | 126 Kbps   |
-| 20025 | The sampling volume of the sent audio.                       | dB   | 105 dB     |
-| 20026 | The playback volume of the received audio.                   | dB   | 98 dB      |
-| 20027 | The width of the sent video.                                 | ——   | 360        |
-| 20028 | The height of the sent video.                                | ——   | 640        |
-| 20030 | The downstream bitrate of the low-quality video stream.      | Kbps | 100 Kbps   |
-| 20031 | The downstream frame rate of the low-quality video stream.   | fps  | 6 fps      |
-| 20032 | The width of the received low-quality video.                 | ——   | 360        |
-| 20033 | The height of the received low-quality video.                | ——   | 640        |
-| 20034 | The width of the sent low-quality video.                     | ——   | 360        |
-| 20035 | The height of the sent low-quality video.                    | ——   | 640        |
-| 20036 | The WebRTC downstream packet loss rate of the video.         |      |            |
-| 20037 | The WebRTC upstream packet loss rate of the audio.           |      |            |
-| 20038 | The WebRTC upstream packet loss rate of the video.           |      |            |
+| `mid` | Description                                  | Unit | Example |
+| :---- | :------------------------------------------- | :--- | :------ |
+| 20001 | App CPU usage.                               | % | 27%     |
+| 20002 | System CPU usage.                            | % | 15%     |
+| 20003 | The upstream bitrate of the audio.           | Kbps | 126 Kbps|
+| 20004 | The downstream bitrate of the audio.         | Kbps | 108 Kbps|
+| 20005 | The freeze time in rendering the audio.      | ms| 106.67 ms  |
+| 20006 | The upstream bitrate of the low-quality video stream.     | Kbps | 472 Kbps|
+| 20007 | The capturing frame rate of the video.       | fps  | 16 fps  |
+| 20008 | The upstream frame rate of the high-quality video stream. | fps  | 12 fps  |
+| 20009 | The downstream bitrate of the high-quality video.         | Kbps | 309 Kbps|
+| 20010 | The downstream frame rate of the high-quality  video.     | fps  | 6 fps   |
+| 20011 | The freeze time in rendering the video.      | ms| 2000.50 ms |
+| 20015 | The upstream packet loss rate of the audio.  | % | 1%      |
+| 20016 | The end-to-end packet loss rate of the audio.| % | 3%      |
+| 20017 | The upstream packet loss rate of the video.  | % | 5%      |
+| 20018 | The end-to-end packet loss rate of the video.| % | 7%      |
+| 20019 | The width of the received video.             | -  | 360     |
+| 20020 | The height of the received video.            | -  | 640     |
+| 20021 | The task scheduling delay.                   | ms| 2 ms    |
+| 20022 | The round-trip time delay from the client to the local router. | ms| 3 ms    |
+| 20023 | The upstream frame rate of the low-quality video stream.  | fps  | 108 fps |
+| 20024 | The upstream bitrate of the video stream.    | Kbps | 126 Kbps|
+| 20025 | The sampling volume of the sent audio.       | dB| 105 dB  |
+| 20026 | The playback volume of the received audio.   | dB| 98 dB   |
+| 20027 | The width of the sent video.                 | -  | 360     |
+| 20028 | The height of the sent video.                | -  | 640     |
+| 20030 | The downstream bitrate of the low-quality video stream.   | Kbps | 100 Kbps|
+| 20031 | The downstream frame rate of the low-quality video stream.| fps  | 6 fps   |
+| 20032 | The width of the received low-quality video. | -  | 360     |
+| 20033 | The height of the received low-quality video.| -  | 640     |
+| 20034 | The width of the sent low-quality video.     | -  | 360     |
+| 20035 | The height of the sent low-quality video.    | -  | 640     |
+| 20036 | The WebRTC downstream packet loss rate of the video.      |   |         |
+| 20037 | The WebRTC upstream packet loss rate of the audio.        |   |         |
+| 20038 | The WebRTC upstream packet loss rate of the video.        |   |         |
+| 20039 | App memory usage. | % | 50% |
+| 20040 | System memory usage. | % | 70% |

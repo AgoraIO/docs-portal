@@ -20,6 +20,7 @@
     "openapi:sync": "node scripts/sync-openapi-assets.mjs",
     "assets:upload": "node scripts/upload-doc-assets.mjs",
     "search:sync": "bun scripts/sync-algolia-search.mjs",
+    "search:replay": "bun scripts/replay-algolia-search.ts",
     "docs:links": "node scripts/audit-doc-links.mjs",
     "docs:links:strict": "node scripts/audit-doc-links.mjs --fail-on-invalid",
     "docs:links:classify": "node scripts/classify-doc-link-audit.mjs --out=docs/agents/reports/2026-06-30-doc-link-strict-classification.md",
@@ -38,6 +39,7 @@
   },
   "dependencies": {
     "@apidevtools/swagger-parser": "^12.1.0",
+    "@fumadocs/api-docs": "0.2.1",
     "@orama/orama": "^3.1.18",
     "@tanstack/react-router": "1.170.18",
     "@tanstack/react-router-devtools": "1.167.0",
@@ -76,6 +78,7 @@
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.4",
     "happy-dom": "^20.11.1",
+    "js-yaml": "4.1.1",
     "nitro": "^3.0.260610-beta",
     "srvx": "^0.12.4",
     "tailwindcss": "^4.3.3",
@@ -85,5 +88,8 @@
   "engines": {
     "node": ">=22.12.0"
   },
-  "packageManager": "pnpm@8.6.4+sha512.4968d718da1be7dbba5efaab654ca00086b19175a0cddd70127fe25bca7be7f8f7410d3274bf2877523efe1a8568fe2f9e3d92a01a805dfdcf730945ed02d621"
+  "packageManager": "pnpm@8.6.4+sha512.4968d718da1be7dbba5efaab654ca00086b19175a0cddd70127fe25bca7be7f8f7410d3274bf2877523efe1a8568fe2f9e3d92a01a805dfdcf730945ed02d621",
+  "patchedDependencies": {
+    "@fumadocs/api-docs@0.2.1": "patches/@fumadocs%2Fapi-docs@0.2.1.patch"
+  }
 }

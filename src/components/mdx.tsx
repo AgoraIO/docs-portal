@@ -846,7 +846,7 @@ function Parameter({
           <ParameterBadges requiredState={requiredState} nullable={nullable} />
         </div>
         <div
-          className="min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0"
+          className="min-w-0 space-y-3 text-fd-muted-foreground [&>:first-child]:mt-0 [&>:last-child]:mb-0 [&_ol]:list-decimal [&_ol]:space-y-1 [&_ol]:pl-5 [&_ul]:list-disc [&_ul]:space-y-1 [&_ul]:pl-5"
           data-parameter-description=""
         >
           {defaultValue || possibleValues ? (

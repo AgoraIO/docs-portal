@@ -1,0 +1,29 @@
+@startuml
+!include ../video-sdk/agora_skin.iuml
+
+box "Your IoT device"
+participant "SDK" as SDK
+end box
+
+box "Agora"
+participant "Agora SDRTN®" as RTN
+end box
+
+SDK -> RTN: Initialize the SDK
+SDK -> RTN: Create an RTC Connection
+SDK -> RTN: Join the RTC channel and set whether to actively establish an RDT connection
+SDK <-- RTN: A remote user joins the RTC channel
+SDK <-- RTN: RDT connection state changes
+SDK -> RTN: Determine whether to send or receive RDT messages based on the connection state
+
+alt Connection state is RDT_STATE_OPENED
+SDK <-> RTN: Can send and receive RDT messages
+else Connection state is RDT_STATE_BLOCKED
+SDK <-> RTN: Can send control messages, can't send data messages
+else Connection state is anything else
+SDK <-> RTN: Can't send or receive RDT messages
+end
+
+SDK -> RTN: Leave the RTC channel, the RDT connection disconnects automatically
+
+@enduml

@@ -33,7 +33,7 @@ To set up and use Notifications, you must have:
 
 In order to handle notifications for the events you subscribe to, you need to:
 - [Create your webhook](#create-your-webhook)
-- [Enable Notifications](#enable-notifications)
+- [Set up Webhook notifications](#set-up-webhook-notifications)
 - [Verify Notifications signatures](#add-signature-verification)
 
 ### Create your webhook
@@ -306,7 +306,7 @@ To add signature verification to your server, take the following steps:
     }
     ```
 
-4. To test the server, follow the steps given in the [Enable notifications](#enable-notifications) section.
+4. To test the server, follow the steps given in the [Set up Webhook notifications](#set-up-webhook-notifications) section.
 
 5. When you receive an event from the console, and if the signature matches, the event details are displayed in your browser.
 
@@ -767,9 +767,3 @@ Each primary IP field shows an IP address of Notifications server. When you rece
 
 * Notifications does not guarantee that notification callbacks arrive at your server in the same order as events occur. Implement a strategy to handle messages arriving out of order.
 * For improved reliability of Notifications, your server may receive more than one notification callback for a single event. Your server must be able to handle repeated messages.
-
-
-
-:::info[Tip]
-To implement a strategy to ensure that you log only one callback event and ignore duplicate events, use a combination of the `noticeId` and `notifyMs` fields in the response body.
-:::

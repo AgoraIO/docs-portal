@@ -17,6 +17,10 @@ Peak Concurrent Workload (PCW) limits determine the maximum number of concurrent
 | Asia (excluding Mainland China) | 20      | 10                | 3  |
 | Mainland China         | 20               | 10                | 5  |
 
+:::info
+For higher PCW limits, contact [support@agora.io](mailto:support@agora.io).
+:::
+
 Video resolution are defined as follows:
 
 | Quality | Definition | Resolution Range |
@@ -54,7 +58,3 @@ In Asia, you can transcode up to:
 * 20 SD streams
 * 10 HD streams
 * A combination such as 10 SD + 10 HD (but not exceeding 20 streams total)
-
-### Requesting a quota increase
-
-To request a higher quota, contact [support@agora.io](mailto:support@agora.io).

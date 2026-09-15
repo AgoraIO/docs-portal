@@ -6,10 +6,6 @@ description: >
 
 The `generic_http` TTS vendor lets you integrate a custom TTS service that implements the OpenAI TTS protocol into the Conversational AI Engine. For a walkthrough of preparing and verifying a compatible TTS service, see [Connect your own TTS service](/en/ai/build/custom-model-integration/custom-tts).
 
-:::info[Info]
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
-:::
-
 ### Sample configuration
 
 Use the following `tts` configuration when starting a conversational AI agent using the REST API. `generic_http` requires `tts.url`, and at least one of `tts.headers.Authorization` or `tts.params.api_key` for authentication.
@@ -29,7 +25,7 @@ Use the following `tts` configuration when starting a conversational AI agent us
       "speed": 1.0,
       "sample_rate": 16000,
       "response_format": "pcm",
-      "instruction": "calm",
+      "instructions": "calm",
       "enable_request_id": false
     }
   }
@@ -48,17 +44,13 @@ Use the following `tts` configuration when starting a conversational AI agent us
       "speed": 1.0,
       "sample_rate": 16000,
       "response_format": "pcm",
-      "instruction": "calm",
+      "instructions": "calm",
       "enable_request_id": false
     }
   }
   ```
 
   If you provide both `tts.headers.Authorization` and `tts.params.api_key`, the Conversational AI Engine uses `tts.headers.Authorization`.
-
-:::caution[Caution]
-Your TTS service must implement the OpenAI TTS protocol. The parameters listed on this page are validated for use with Conversational AI Engine. Any additional fields in `params` are passed through directly to your TTS service without validation.
-:::
 
 ### Key parameters
 
@@ -88,7 +80,7 @@ Your TTS service must implement the OpenAI TTS protocol. The parameters listed o
     <Parameter name="response_format" type="string" defaultValue="pcm" required={false}>
     The output audio format. Currently only `pcm` is supported.
     </Parameter>
-    <Parameter name="instruction" type="string" required={false}>
+    <Parameter name="instructions" type="string" required={false}>
     Instructions for voice style, emotion, or other playback directives.
     </Parameter>
     <Parameter name="enable_request_id" type="boolean" defaultValue="false" required={false}>
@@ -96,3 +88,9 @@ Your TTS service must implement the OpenAI TTS protocol. The parameters listed o
     </Parameter>
   </Parameter>
 </ParameterList>
+
+:::caution[Caution]
+Your TTS service must implement the OpenAI TTS protocol. The parameters listed on this page are validated for use with Conversational AI Engine. Any additional fields in `params` are passed through directly to your TTS service without validation.
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
