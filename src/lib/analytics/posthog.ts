@@ -219,6 +219,39 @@ export function captureDocsSearchCompleted({
   });
 }
 
+export function captureDocsSearchFinalized({
+  finalizationReason,
+  firstResultSource,
+  firstResultType,
+  locale,
+  query,
+  queryAttemptId,
+  resultCount,
+  resultsImpressed,
+  searchSessionId,
+}: {
+  finalizationReason: 'closed' | 'result_clicked';
+  firstResultSource?: string;
+  firstResultType?: string;
+  locale: string;
+  query: string;
+  queryAttemptId: string;
+  resultCount: number;
+  resultsImpressed: boolean;
+  searchSessionId: string;
+}) {
+  captureStructuredDocsEvent('docs_search_query_finalized', locale, {
+    finalization_reason: finalizationReason,
+    first_result_source: toSafePropertyValue(firstResultSource),
+    first_result_type: toSafePropertyValue(firstResultType),
+    ...getSafeSearchQueryProperties(query),
+    query_attempt_id: toSafePropertyValue(queryAttemptId),
+    result_count: resultCount,
+    results_impressed: resultsImpressed,
+    search_session_id: toSafePropertyValue(searchSessionId),
+  });
+}
+
 export function captureDocsSearchResultClicked({
   clickDelayMs,
   href,

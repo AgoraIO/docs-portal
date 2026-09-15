@@ -275,6 +275,72 @@ describe('PostHog analytics', () => {
     expect(JSON.stringify(sensitivePayload)).not.toContain('secret');
   });
 
+  it('captures a finalized normal search query with its session outcome', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchFinalized } = await import('./posthog');
+
+    captureDocsSearchFinalized({
+      finalizationReason: 'closed',
+      firstResultSource: 'algolia',
+      firstResultType: 'guide',
+      locale: 'en',
+      query: 'screen sharing',
+      queryAttemptId: 'attempt-1',
+      resultCount: 6,
+      resultsImpressed: true,
+      searchSessionId: 'session-1',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_search_query_finalized',
+      expect.objectContaining({
+        finalization_reason: 'closed',
+        first_result_source: 'algolia',
+        first_result_type: 'guide',
+        query_attempt_id: 'attempt-1',
+        query_text: 'screen sharing',
+        result_count: 6,
+        results_impressed: true,
+        search_session_id: 'session-1',
+      }),
+    );
+  });
+
+  it('hashes sensitive finalized search queries', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchFinalized } = await import('./posthog');
+
+    captureDocsSearchFinalized({
+      finalizationReason: 'result_clicked',
+      locale: 'en',
+      query: 'https://example.com?token=secret',
+      queryAttemptId: 'attempt-2',
+      resultCount: 1,
+      resultsImpressed: true,
+      searchSessionId: 'session-1',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    const sensitivePayload = captureMock.mock.calls[0]?.[1];
+    expect(sensitivePayload).toEqual(
+      expect.objectContaining({
+        finalization_reason: 'result_clicked',
+        query_hash: expect.any(String),
+      }),
+    );
+    expect(sensitivePayload).not.toHaveProperty('query_text');
+    expect(JSON.stringify(sensitivePayload)).not.toContain('secret');
+  });
+
   it('captures result impressions and landing engagement with search identity', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
 
