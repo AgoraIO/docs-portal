@@ -8,7 +8,7 @@ Agora has [partnered with Google Gemini Live](https://ai.google.dev/gemini-api/d
 
 ### Supported models
 
-Set `params.model` to one of the following Gemini Live models:
+The following Gemini Live models are supported:
 
 | Model | Description |
 | --- | --- |
@@ -90,8 +90,8 @@ agent := agentkit.NewAgent(client).WithMllm(
 
 <TabsContent value="rest-api">
 
-:::info[Important]
-`gemini-3.5-live` and `gemini-3.5-live-thinking` are early access preview models. When using either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+:::info[Preview endpoint]
+`gemini-3.5-live` and `gemini-3.5-live-thinking` are available as an early access preview. When using either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
 
 - **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
 - **Header**: `agora-feature: gemini-live`
