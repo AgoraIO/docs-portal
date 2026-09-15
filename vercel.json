@@ -5,42 +5,6 @@
   "bulkRedirectsPath": "vercel-legacy-redirects.json",
   "redirects": [
     {
-      "source": "/en/realtime-media/video/reference/release-notes",
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "(?<platform>android|ios|macos|web|windows|electron|flutter|react-native|javascript|unity|unreal|blueprint)"
-        }
-      ],
-      "destination": "/en/realtime-media/video/reference/release-notes/:platform",
-      "statusCode": 307
-    },
-    {
-      "source": "/en/realtime-media/video/reference/release-notes",
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "react-js"
-        }
-      ],
-      "destination": "/en/realtime-media/video/reference/release-notes/javascript",
-      "statusCode": 307
-    },
-    {
-      "source": "/en/realtime-media/video/reference/release-notes",
-      "has": [
-        {
-          "type": "query",
-          "key": "platform",
-          "value": "windows-cpp"
-        }
-      ],
-      "destination": "/en/realtime-media/video/reference/release-notes/windows",
-      "statusCode": 307
-    },
-    {
       "source": "/doc/:path*",
       "destination": "https://doc.shengwang.cn/doc/:path*",
       "statusCode": 308
@@ -208,6 +172,676 @@
     {
       "source": "/en/ai/reference/enable-conversational-ai",
       "destination": "/en/ai/get-started/quickstart",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/video/quickstart/:platform(python)",
+      "destination": "/en/realtime-media/rtc-server-sdk/quickstart/python",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/video/reference/cloud-proxy-allowed-ips/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity|unreal|blueprint)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-allowed-ips",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/video/reference/cloud-proxy-migration-guide/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity|unreal|blueprint)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-migration-guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/control-audio-and-devices/volume-control-and-mute/:platform(python)",
+      "destination": "/en/realtime-media/rtc/build/control-audio-and-devices/volume-control-and-mute/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/customize-audio-processing/stream-raw-audio/:platform(electron|flutter|react-native)",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/stream-raw-audio/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/set-up-token-authentication/use-tokens/:platform(python|linux-cpp|linux-c)",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/authentication-workflow/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/set-up-your-project/compile-run-sample-project/:platform(python)",
+      "destination": "/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project/python",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/reference/cloud-proxy-allowed-ips/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-allowed-ips",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/reference/cloud-proxy-migration-guide/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-migration-guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/reference/error-codes/:platform(android|ios|macos|windows|electron|flutter|react-native|javascript|unity|unreal|blueprint|python|web)",
+      "destination": "/en/realtime-media/rtc/reference/error-codes",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/reference/service-limits/:platform(android|ios|macos|web|windows|electron|flutter|react-native|javascript|unity|unreal|blueprint|python)",
+      "destination": "/en/realtime-media/rtc/reference/service-limits",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/reference/supported-platforms/:platform(python)",
+      "destination": "/en/realtime-media/rtc/reference/supported-platforms/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/authenticate-users/use-tokens/:platform(python|linux-cpp|linux-c)",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/authentication-workflow/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/connect-across-channels/join-multiple-channels/:platform(electron|react-native)",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/join-multiple-channels/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/volume-control-and-mute/:platform(python)",
+      "destination": "/en/realtime-media/rtc/build/control-audio-and-devices/volume-control-and-mute/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/preload-channels/:platform(ios|macos)",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/preload-channels/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/stream-raw-audio/:platform(electron|flutter|react-native)",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/stream-raw-audio/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/set-up-your-project/compile-run-sample-project/:platform(python)",
+      "destination": "/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project/python",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/quickstart/:platform(python)",
+      "destination": "/en/realtime-media/rtc-server-sdk/quickstart/python",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/reference/cloud-proxy-allowed-ips/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-allowed-ips",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/reference/cloud-proxy-migration-guide/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-migration-guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/reference/error-codes/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity|unreal|blueprint)",
+      "destination": "/en/realtime-media/rtc/reference/error-codes",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/authenticate-users/use-tokens/:platform(python|linux-cpp|linux-c)",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/authentication-workflow/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/connect-across-channels/join-multiple-channels/:platform(electron|react-native)",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/join-multiple-channels/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/control-audio-and-devices/volume-control-and-mute/:platform(python)",
+      "destination": "/en/realtime-media/rtc/build/control-audio-and-devices/volume-control-and-mute/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/preload-channels/:platform(ios|macos)",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/preload-channels/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/process-raw-and-custom-media/stream-raw-audio/:platform(electron|flutter|react-native)",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/stream-raw-audio/android",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/set-up-your-project/compile-run-sample-project/:platform(python)",
+      "destination": "/en/realtime-media/rtc-server-sdk/build/set-up-your-project/compile-run-sample-project/python",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/quickstart/:platform(python)",
+      "destination": "/en/realtime-media/rtc-server-sdk/quickstart/python",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/reference/cloud-proxy-allowed-ips/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-allowed-ips",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/reference/cloud-proxy-migration-guide/:platform(android|ios|macos|web|windows|electron|flutter|react-native|unity)",
+      "destination": "/en/realtime-media/rtc/reference/cloud-proxy-migration-guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/video/build/add-advanced-video-features/metakit:rest(/.*)?",
+      "destination": "/en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/video/quickstart:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/get-started-sdk:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/set-up-token-authentication/deploy-token-server:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/deploy-token-server:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/set-up-token-authentication/integrate-token-generation:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/integrate-token-generation:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/set-up-token-authentication/middleware-token-server:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/middleware-token-server:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/set-up-token-authentication/use-tokens:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/authentication-workflow:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/build/set-up-your-project/compile-run-sample-project:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/compile-run-sample-project:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice/quickstart:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/voice-quickstart:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/ai-noise-suppression:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/alpha-transparency-effect:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/alpha-transparency-effect:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/beauty-effect:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/beauty-effect:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/face-capture:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/face-capture:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/metakit:rest(/.*)?",
+      "destination": "/en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/super-clarity:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/super-clarity:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/use-an-extension:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/use-an-extension:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/video-compositor:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/video-compositor:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/virtual-background:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/voice-activity-detection:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/voice-activity-detection:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/watermark:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/watermark:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/authenticate-users/use-tokens:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/authentication-workflow:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/connect-across-channels/cross-channel-media-relay:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/cross-channel-media-relay:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/connect-across-channels/join-multiple-channels:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/join-multiple-channels:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/connect-across-channels/receive-notifications:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/receive-notifications:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/audio-mixing-and-sound-effects:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/audio-mixing-and-sound-effects:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/audio-strength-stream-selection:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/audio-strength-stream-selection:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/autoplay:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/autoplay:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/spatial-audio:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/spatial-audio:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/control-audio-and-devices/voice-effects:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/voice-effects:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/manage-video-and-streaming/camera-movement:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/camera-movement:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/manage-video-and-streaming/configure-video-encoding:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/configure-video-encoding:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/manage-video-and-streaming/picture-in-picture:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/picture-in-picture:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/manage-video-and-streaming/play-media:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/play-media:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/manage-video-and-streaming/screen-sharing:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/screen-sharing:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/best-practices-sound-quality:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/best-practices-sound-quality:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/cloud-proxy:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/connection-status-management:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/connection-status-management:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/in-call-quality-monitoring:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/media-stream-fallback:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/media-stream-fallback:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-frame-rendering:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/optimize-frame-rendering:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/optimize-multihost-video:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/pre-call-tests:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/pre-call-tests:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/preload-channels:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/preload-channels:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/video-transmission-optimization:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/video-transmission-optimization:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/custom-audio:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/custom-audio:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/custom-video:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/custom-video:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/raw-video-processing:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/raw-video-processing:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/screenshot-upload:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/screenshot-upload:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/stream-raw-audio:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/stream-raw-audio:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/geofencing:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/build/set-up-your-project/compile-run-sample-project:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/compile-run-sample-project:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/product-overview:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/quickstart:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/get-started-sdk:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming/reference/agora-console-rest-api:rest(/.*)?",
+      "destination": "/en/api-reference/api-ref/console/solutions-agora-console-rest-api:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/ai-noise-suppression:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/ai-noise-suppression:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/alpha-transparency-effect:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/alpha-transparency-effect:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/beauty-effect:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/beauty-effect:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/face-capture:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/face-capture:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/metakit:rest(/.*)?",
+      "destination": "/en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/super-clarity:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/super-clarity:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/use-an-extension:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/use-an-extension:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/video-compositor:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/video-compositor:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/virtual-background:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/virtual-background:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/voice-activity-detection:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/voice-activity-detection:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/watermark:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/apply-video-effects/watermark:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/authenticate-users/use-tokens:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/authenticate-users/authentication-workflow:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/connect-across-channels/cross-channel-media-relay:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/cross-channel-media-relay:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/connect-across-channels/join-multiple-channels:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/join-multiple-channels:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/connect-across-channels/receive-notifications:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/receive-notifications:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/control-audio-and-devices/audio-mixing-and-sound-effects:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/audio-mixing-and-sound-effects:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/control-audio-and-devices/audio-strength-stream-selection:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/audio-strength-stream-selection:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/control-audio-and-devices/autoplay:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/autoplay:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/control-audio-and-devices/spatial-audio:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/spatial-audio:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/control-audio-and-devices/voice-effects:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/voice-effects:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/manage-video-and-streaming/camera-movement:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/camera-movement:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/manage-video-and-streaming/configure-video-encoding:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/configure-video-encoding:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/manage-video-and-streaming/picture-in-picture:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/picture-in-picture:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/manage-video-and-streaming/play-media:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/play-media:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/manage-video-and-streaming/screen-sharing:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/screen-sharing:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/best-practices-sound-quality:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/enhance-the-audio-experience/best-practices-sound-quality:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/cloud-proxy:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/connection-status-management:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/connection-status-management:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/in-call-quality-monitoring:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/in-call-quality-monitoring:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/media-stream-fallback:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/media-stream-fallback:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-frame-rendering:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/optimize-frame-rendering:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/optimize-multihost-video:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/pre-call-tests:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/pre-call-tests:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/preload-channels:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/preload-channels:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/optimize-quality-and-connection/video-transmission-optimization:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/video-transmission-optimization:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/process-raw-and-custom-media/custom-audio:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/custom-audio:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/process-raw-and-custom-media/custom-video:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/custom-video:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/process-raw-and-custom-media/raw-video-processing:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/capture-and-render-video/raw-video-processing:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/process-raw-and-custom-media/screenshot-upload:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/add-advanced-video-features/screenshot-upload:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/process-raw-and-custom-media/stream-raw-audio:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/customize-audio-processing/stream-raw-audio:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/geofencing:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/build/set-up-your-project/compile-run-sample-project:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/build/join-and-manage-channels/compile-run-sample-project:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/product-overview:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming/quickstart:rest(/.*)?",
+      "destination": "/en/realtime-media/rtc/get-started-sdk:rest",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/video:path(/.*)?",
+      "destination": "/en/realtime-media/rtc:path",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/voice:path(/.*)?",
+      "destination": "/en/realtime-media/rtc:path",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/interactive-live-streaming:path(/.*)?",
+      "destination": "/en/realtime-media/rtc:path",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/broadcast-streaming:path(/.*)?",
+      "destination": "/en/realtime-media/rtc:path",
       "statusCode": 301
     },
     {
