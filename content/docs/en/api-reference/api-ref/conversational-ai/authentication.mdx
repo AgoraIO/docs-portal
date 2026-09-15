@@ -37,28 +37,28 @@ Tokens expire after a maximum of 86400 seconds.
 If you already use the Conversational AI SDK in your project, use the SDK token generation utility to generate tokens. The token parameters must match the agent request:
 
 - `channelName` must match `properties.channel`.
-- `uid` must match `properties.agent_rtc_uid`.
-- The SDK token utility accepts only numeric UIDs. To use string UIDs, generate the token with the [token builder library](#using-the-token-builder-library) and set `enable_string_uid` to `true` in the request body.
+- `agentUid` must match `properties.agent_rtc_uid`.
+- To use string UIDs, pass a string value for `agentUid` and set `enable_string_uid` to `true` in the request body.
 
 Install the SDK for your language:
 
 ```bash tab="Node.js"
-npm install agora-agents
+npm install agora-agent-server-sdk
 ```
 
 ```bash tab="Golang"
-go get github.com/AgoraIO/agora-agents-go/v2
+go get github.com/AgoraIO-Conversational-AI/agent-server-sdk-go
 ```
 
 ```bash tab="Python"
-pip install agora-agents
+pip install agent-server-sdk-python
 ```
 
 The following example generates a token with the Node.js SDK and uses it in the REST API `Authorization` header:
 
 ```js
 const https = require('https');
-const { generateConvoAIToken } = require('agora-agents');
+const { generateConvoAIToken } = require('agora-agent-server-sdk');
 
 // Keep these credentials on the server and never expose them to clients.
 const appId = '<your_app_id>';
@@ -72,7 +72,7 @@ const token = generateConvoAIToken({
   appId,
   appCertificate,
   channelName,
-  uid: Number(agentUid),
+  account: agentUid,
   tokenExpire: tokenExpirationInSeconds,
 });
 

@@ -45,7 +45,7 @@ client = Agora(
 
 # Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
 agent = (
-    Agent(client=client)
+    Agent(name='my-managed-agent')
     .with_stt(DeepgramSTT(model='nova-3', language='en-US'))
     .with_llm(OpenAI(
         model='gpt-4o-mini',
@@ -61,7 +61,7 @@ agent = (
 )
 
 session = agent.create_session(
-    name='my-managed-agent',
+    client,
     channel='my-channel',
     agent_uid='1001',
     remote_uids=['1002'],
@@ -86,7 +86,7 @@ const client = new AgoraClient({
 });
 
 // Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
-const agent = new Agent({ client })
+const agent = new Agent({ name: 'my-managed-agent' })
   .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
   .withLlm(new OpenAI({
     model: 'gpt-4o-mini',
@@ -100,8 +100,7 @@ const agent = new Agent({ client })
     voiceId: 'English_captivating_female1',
   }));
 
-const session = agent.createSession({
-  name: 'my-managed-agent',
+const session = agent.createSession(client, {
   channel: 'my-channel',
   agentUid: '1001',
   remoteUids: ['1002'],
@@ -140,7 +139,9 @@ func main() {
     })
 
     // Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
-    agent := agentkit.NewAgent(client).WithStt(
+    agent := agentkit.NewAgent(
+        agentkit.WithName("my-managed-agent"),
+    ).WithStt(
         vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{
             Model:    "nova-3",
             Language: "en-US",
@@ -162,8 +163,7 @@ func main() {
         }),
     )
 
-    session := agent.CreateSession(agentkit.CreateSessionOptions{
-        Name:        "my-managed-agent",
+    session := agent.CreateSession(client, agentkit.CreateSessionOptions{
         Channel:     "my-channel",
         AgentUID:    "1001",
         RemoteUIDs:  []string{"1002"},

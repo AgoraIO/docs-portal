@@ -55,7 +55,6 @@ from agora_agent import OpenAI
 .with_llm(OpenAI(
     api_key='your-llm-api-key',
     model='gpt-4o-mini',
-    base_url='https://api.openai.com/v1/chat/completions',
     mcp_servers=[
         {
             'name': 'deepwiki',
@@ -81,7 +80,6 @@ import { OpenAI } from 'agora-agents';
 .withLlm(new OpenAI({
   apiKey: 'your-llm-api-key',
   model: 'gpt-4o-mini',
-  url: 'https://api.openai.com/v1/chat/completions',
   mcpServers: [
     {
       name: 'deepwiki',
@@ -104,9 +102,8 @@ import { OpenAI } from 'agora-agents';
 // ... other agent configuration ...
 .WithLlm(
     vendors.NewOpenAI(vendors.OpenAIOptions{
-        APIKey:  "your-llm-api-key",
-        Model:   "gpt-4o-mini",
-        BaseURL: "https://api.openai.com/v1/chat/completions",
+        APIKey: "your-llm-api-key",
+        Model:  "gpt-4o-mini",
         McpServers: []map[string]interface{}{
             {
                 "name":          "deepwiki",
