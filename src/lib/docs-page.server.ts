@@ -502,13 +502,18 @@ export async function loadDocsPagePayload(
       };
     }),
     navigation:
-      openApiRoute && supportedLocale
-        ? getOpenApiPrevNextLinks(
-            openApiRoute.lane,
-            supportedLocale,
-            openApiRoute.operationId,
-          )
-        : getPrevNextLinksFromNode(navScope?.sidebarRoot ?? pageTree, page.url),
+      'hideNavigation' in page.data && page.data.hideNavigation === true
+        ? { next: undefined, previous: undefined }
+        : openApiRoute && supportedLocale
+          ? getOpenApiPrevNextLinks(
+              openApiRoute.lane,
+              supportedLocale,
+              openApiRoute.operationId,
+            )
+          : getPrevNextLinksFromNode(
+              navScope?.sidebarRoot ?? pageTree,
+              page.url,
+            ),
     productScopes: getProductScopes(pageTree),
     sidebar,
     sidebarHeader,

@@ -1588,6 +1588,43 @@ describe('loadDocsPagePayload', () => {
     mockedGetNodeMeta.mockReturnValue(undefined);
   });
 
+  it.each([true, false, undefined])(
+    'respects hideNavigation=%s without removing sidebar destinations',
+    async (hideNavigation) => {
+      const page = createPage();
+      page.data = { ...page.data, hideNavigation } as typeof page.data;
+      mockedGetPage.mockReturnValue(page);
+      const tree: Root = {
+        name: 'Docs',
+        children: [
+          {
+            type: 'folder',
+            name: 'Introduction',
+            root: true,
+            children: [
+              { type: 'page', name: 'About Agora', url: page.url },
+              {
+                type: 'page',
+                name: 'Start with AI',
+                url: '/en/introduction/start-with-ai',
+              },
+            ],
+          },
+        ],
+      };
+      mockedGetPageTree.mockReturnValue(tree);
+      const payload = unwrapPayload(
+        await loadDocsPagePayload('en', 'introduction', ['about-agora']),
+      );
+      expect(payload.navigation.next?.url).toBe(
+        hideNavigation === true ? undefined : '/en/introduction/start-with-ai',
+      );
+      expect(flattenSidebarPageUrls(payload.sidebar)).toContain(
+        '/en/introduction/start-with-ai',
+      );
+    },
+  );
+
   it('falls back to generating TOC from processed markdown', async () => {
     await expect(
       loadDocsPagePayload('en', 'introduction', ['about-agora']),

@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+<title id="title">Two peer interaction models: human-to-human and human-to-agent</title>
+<desc id="desc">Two equally sized scenes. Two people exchange live audio or video through RTC. A person exchanges speech with an AI agent built with Conversational AI Engine. Opposing arrows represent two-way conversation; both scenarios use Agora's real-time media connection.</desc>
+<defs>
+<style>
+:root{--canvas:#fff;--field:#f5f9fc;--dots:#d6e3ec;--line:#d5e1ea;--card:#fff;--text:#182b3d;--icon:#234a60;--muted:#526578;--accent:#007e9a;--accent-soft:#dceef4;--return:#7896a7;--shadow:#24475e;}
+@media(prefers-color-scheme:dark){:root{--canvas:#090c0f;--field:#0d151d;--dots:#263640;--line:#2c414e;--card:#111c25;--text:#edf3f7;--icon:#e7f8fb;--muted:#a8b8c5;--accent:#52cde3;--accent-soft:#173743;--return:#7598ae;--shadow:#000;}}
+text{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;text-anchor:middle;fill:var(--text)}
+.heading{font-size:26px;font-weight:600}.product{font-size:25px;font-weight:600}.label{font-size:19px;font-weight:500}.detail{font-size:19px;fill:var(--muted)}
+</style>
+<pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="0.85" fill="var(--dots)"/></pattern>
+<radialGradient id="halo"><stop stop-color="var(--accent-soft)"/><stop offset="1" stop-color="var(--field)" stop-opacity="0"/></radialGradient>
+<filter id="shadow" x="-30%" y="-25%" width="170%" height="180%"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="var(--shadow)" flood-opacity="0.10"/></filter>
+<marker id="send" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--accent)" stroke-width="1.5"/></marker>
+<marker id="reply" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--return)" stroke-width="1.5"/></marker>
+<g id="person" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="0" cy="-7" r="5"/><path d="M-10 12c0-12 20-12 20 0Z"/></g>
+<g id="agent" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M-12-4V4M-6-10V10M0-15V15M6-9V9M12-3V3"/></g>
+</defs>
+<rect width="1200" height="470" rx="16" fill="var(--canvas)"/>
+<text x="300" y="48" class="heading">Human-to-human</text>
+<rect x="24" y="78" width="552" height="238" rx="24" fill="var(--field)"/><rect x="24" y="78" width="552" height="238" rx="24" fill="url(#dots)"/><ellipse cx="300" cy="195" rx="215" ry="118" fill="url(#halo)"/>
+<g transform="translate(86 100)"><rect width="142" height="158" rx="18" fill="var(--card)" stroke="var(--line)" filter="url(#shadow)"/><circle cx="122" cy="19" r="3" fill="var(--accent)"/><use href="#person" transform="translate(71 63) scale(1.8)" color="var(--icon)"/><path d="M21 113H121" stroke="var(--line)"/><text x="71" y="139" class="label">Person</text></g>
+<g transform="translate(372 130)"><rect width="142" height="158" rx="18" fill="var(--card)" stroke="var(--line)" filter="url(#shadow)"/><circle cx="122" cy="19" r="3" fill="var(--accent)"/><use href="#person" transform="translate(71 63) scale(1.8)" color="var(--icon)"/><path d="M21 113H121" stroke="var(--line)"/><text x="71" y="139" class="label">Person</text></g>
+<path d="M238 164C278 131 320 132 362 164" fill="none" stroke="var(--accent)" stroke-width="2.4" marker-end="url(#send)"/>
+<path d="M362 234C317 268 281 267 238 234" fill="none" stroke="var(--return)" stroke-width="2" marker-end="url(#reply)"/>
+<rect x="268" y="183" width="64" height="32" rx="16" fill="var(--card)" stroke="var(--line)"/>
+<path d="M282 197.0V201.0" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M289 194.0V204.0" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M296 190.5V207.5" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M303 195.0V203.0" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M310 192.5V205.5" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M317 196.5V201.5" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<text x="300" y="357" class="product">RTC</text>
+<text x="300" y="390" class="detail">Voice, video, live streaming</text>
+<text x="900" y="48" class="heading">Human-to-agent</text>
+<rect x="624" y="78" width="552" height="238" rx="24" fill="var(--field)"/><rect x="624" y="78" width="552" height="238" rx="24" fill="url(#dots)"/><ellipse cx="900" cy="195" rx="215" ry="118" fill="url(#halo)"/>
+<g transform="translate(686 100)"><rect width="142" height="158" rx="18" fill="var(--card)" stroke="var(--line)" filter="url(#shadow)"/><circle cx="122" cy="19" r="3" fill="var(--accent)"/><use href="#person" transform="translate(71 63) scale(1.8)" color="var(--icon)"/><path d="M21 113H121" stroke="var(--line)"/><text x="71" y="139" class="label">Person</text></g>
+<g transform="translate(972 130)"><rect width="142" height="158" rx="18" fill="var(--card)" stroke="var(--line)" filter="url(#shadow)"/><circle cx="122" cy="19" r="3" fill="var(--accent)"/><use href="#agent" transform="translate(71 65) scale(1.8)" color="var(--icon)"/><path d="M21 113H121" stroke="var(--line)"/><text x="71" y="139" class="label">AI agent</text></g>
+<path d="M838 164C878 131 920 132 962 164" fill="none" stroke="var(--accent)" stroke-width="2.4" marker-end="url(#send)"/>
+<path d="M962 234C917 268 881 267 838 234" fill="none" stroke="var(--return)" stroke-width="2" marker-end="url(#reply)"/>
+<rect x="868" y="183" width="64" height="32" rx="16" fill="var(--card)" stroke="var(--line)"/>
+<path d="M882 197.0V201.0" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M889 194.0V204.0" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M896 190.5V207.5" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M903 195.0V203.0" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M910 192.5V205.5" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<path d="M917 196.5V201.5" stroke="var(--accent)" stroke-width="2.3" stroke-linecap="round"/>
+<text x="900" y="357" class="product">Conversational AI Engine</text>
+<text x="900" y="390" class="detail">Real-time voice conversations</text>
+<path d="M600 82V309" stroke="var(--line)" stroke-dasharray="3 6"/>
+<path d="M160 423H1040" stroke="var(--line)"/>
+<text x="600" y="454" class="detail">Both use Agora’s real-time media connection.</text>
+</svg>
