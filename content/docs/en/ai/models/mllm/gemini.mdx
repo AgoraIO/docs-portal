@@ -6,6 +6,16 @@ description: >
 
 Agora has [partnered with Google Gemini Live](https://ai.google.dev/gemini-api/docs/live-api#partner-integrations) to bring frontier multimodal large language model capabilities to your app. Gemini Live provides real-time audio processing, enabling natural voice conversations without separate ASR and TTS components. This page explains how to integrate Gemini Live through the Gemini Developer API. Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
 
+### Supported models
+
+The following Gemini Live models are supported:
+
+| Model | Description |
+| --- | --- |
+| `gemini-3.1-flash-live-preview` | General-purpose Gemini Live model. |
+| `gemini-3.5-live` | Gemini Live model. |
+| `gemini-3.5-live-thinking` | Gemini Live thinking model. |
+
 ### Sample configuration
 
 The following examples show how to configure Google Gemini Live MLLM (Gemini Developer API) when starting a conversational AI agent.
@@ -79,6 +89,13 @@ agent := agentkit.NewAgent(client).WithMllm(
 </TabsContent>
 
 <TabsContent value="rest-api">
+
+:::info[Preview endpoint]
+`gemini-3.5-live` and `gemini-3.5-live-thinking` are available as an early access preview. When using either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
 
 Use the following `mllm` configuration in your request:
 
@@ -181,8 +198,8 @@ The following examples show the supported configurations for Google Gemini Live.
   </Parameter>
   <Parameter name="params" type="object" required={true}>
      Configuration object for the Gemini Live model.
-    <Parameter name="model" type="string" required={true}>
-      The Gemini Live model identifier.
+    <Parameter name="model" type="string" required={true} possibleValues="gemini-3.1-flash-live-preview, gemini-3.5-live, gemini-3.5-live-thinking">
+      The Gemini Live model identifier. See [Supported models](#supported-models) for available options.
     </Parameter>
     <Parameter name="instructions" type="string" required={false}>
       System instructions that define the agent's behavior or tone.
