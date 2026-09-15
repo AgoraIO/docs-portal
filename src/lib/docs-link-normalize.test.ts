@@ -241,7 +241,14 @@ describe('normalizeDocsHref', () => {
         '/help/integration-issues/token_cohost#enable-co-host-authentication',
       ),
     ).toEqual({
-      href: '/en/realtime-media/video/build/authenticate-users/deploy-token-server#enable-co-host-authentication',
+      href: '/en/realtime-media/rtc/build/authenticate-users/deploy-token-server#enable-co-host-authentication',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref('/help/account-and-billing/billing_account'),
+    ).toEqual({
+      href: '/en/api-reference/faq/account/billing_account',
       kind: 'root',
     });
 
@@ -252,38 +259,6 @@ describe('normalizeDocsHref', () => {
     ).toEqual({
       href: '/en/api-reference/api-ref/extensions-marketplace/provisioning',
       kind: 'root',
-    });
-  });
-
-  it('normalizes common moved Voice and Video source routes', () => {
-    expect(
-      normalizeDocsHref('../index.mdx', {
-        contentPath:
-          'en/realtime-media/voice/build/control-audio-and-devices/configure-audio-encoding.mdx',
-      }),
-    ).toEqual({
-      href: '/en/realtime-media/voice/quickstart',
-      kind: 'internal-doc',
-    });
-
-    expect(
-      normalizeDocsHref('../manage-agora-account.mdx', {
-        contentPath:
-          'en/realtime-media/video/build/customize-audio-processing/use-an-extension.mdx',
-      }),
-    ).toEqual({
-      href: '/en/realtime-media/video/manage-agora-account',
-      kind: 'internal-doc',
-    });
-
-    expect(
-      normalizeDocsHref('screen-sharing.mdx', {
-        contentPath:
-          'en/realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
-      }),
-    ).toEqual({
-      href: '/en/realtime-media/video/build/capture-and-render-video/screen-sharing',
-      kind: 'internal-doc',
     });
   });
 
@@ -359,10 +334,12 @@ describe('normalizeDocsHref', () => {
       kind: 'root',
     });
 
-    expect(normalizeDocsHref('/en/ai/best-practices/start-stop-agent')).toEqual({
-      href: '/en/ai/build/start-stop-agent',
-      kind: 'root',
-    });
+    expect(normalizeDocsHref('/en/ai/best-practices/start-stop-agent')).toEqual(
+      {
+        href: '/en/ai/build/start-stop-agent',
+        kind: 'root',
+      },
+    );
 
     expect(normalizeDocsHref('/en/ai/models/mllm/overview')).toEqual({
       href: '/en/ai/models/mllm/gemini',
@@ -381,9 +358,9 @@ describe('normalizeDocsHref', () => {
 
   it('normalizes index-suffixed docs routes', () => {
     expect(
-      normalizeDocsHref('/en/realtime-media/video/index#quickstart'),
+      normalizeDocsHref('/en/realtime-media/rtc/index#quickstart'),
     ).toEqual({
-      href: '/en/realtime-media/video#quickstart',
+      href: '/en/realtime-media/rtc#quickstart',
       kind: 'root',
     });
   });
@@ -394,14 +371,14 @@ describe('normalizeDocsHref', () => {
         '/video-calling/token-authentication/deploy-token-server#generate-wildcard-tokens',
       ),
     ).toEqual({
-      href: '/en/realtime-media/video/build/authenticate-users/deploy-token-server#generate-wildcard-tokens',
+      href: '/en/realtime-media/rtc/build/authenticate-users/deploy-token-server#generate-wildcard-tokens',
       kind: 'root',
     });
 
     expect(
       normalizeDocsHref('/video-calling/get-started/get-started-sdk'),
     ).toEqual({
-      href: '/en/realtime-media/video/quickstart',
+      href: '/en/realtime-media/rtc/get-started-sdk',
       kind: 'root',
     });
   });

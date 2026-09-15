@@ -90,10 +90,8 @@ const DOC_TARGET_ROUTE_BY_QUERY: Readonly<Record<string, string>> = {
   'real-time transcription': '/en/realtime-media/speech-to-text',
   'speech to text': '/en/realtime-media/speech-to-text',
   'video calling': '/en/api-reference/api-ref/rtc',
-  'interactive live streaming':
-    '/en/realtime-media/interactive-live-streaming/product-overview',
-  'broadcast streaming':
-    '/en/realtime-media/broadcast-streaming/product-overview',
+  'interactive live streaming': '/en/realtime-media/rtc',
+  'broadcast streaming': '/en/realtime-media/rtc',
   'flexible classroom':
     '/en/realtime-media/flexible-classroom/product-overview',
   'IoT SDK': '/en/realtime-media/iot/product-overview',
@@ -383,8 +381,6 @@ beforeAll(async () => {
     }>;
   };
   const hiddenUrls = new Set([
-    '/en/realtime-media/interactive-live-streaming/product-overview',
-    '/en/realtime-media/broadcast-streaming/product-overview',
     '/en/api-reference/faq/quality/video_blank',
     '/en/api-reference/faq/quality/ios_bluetooth',
   ]);
@@ -636,25 +632,17 @@ describe('Global search golden queries', () => {
     expect(NOISE_API_CORPUS).toHaveLength(5);
   });
 
-  it('sources the four formerly missing targets directly from search sync records', () => {
+  it('sources the two formerly missing FAQ targets directly from search sync records', () => {
     expect(hiddenSyncRecords.map(({ url }) => url)).toEqual([
       '/en/api-reference/faq/quality/ios_bluetooth',
       '/en/api-reference/faq/quality/video_blank',
-      '/en/realtime-media/broadcast-streaming/product-overview',
-      '/en/realtime-media/interactive-live-streaming/product-overview',
     ]);
     expect(
       [
-        '/en/realtime-media/interactive-live-streaming/product-overview',
-        '/en/realtime-media/broadcast-streaming/product-overview',
         '/en/api-reference/faq/quality/video_blank',
         '/en/api-reference/faq/quality/ios_bluetooth',
       ].map(indexedEntry),
     ).toEqual([
-      expect.objectContaining({
-        breadcrumbs: ['RTC', 'Interactive Live Streaming'],
-      }),
-      expect.objectContaining({ breadcrumbs: ['RTC', 'Broadcast Streaming'] }),
       expect.objectContaining({ breadcrumbs: ['Reference', 'FAQ', 'Quality'] }),
       expect.objectContaining({ breadcrumbs: ['Reference', 'FAQ', 'Quality'] }),
     ]);

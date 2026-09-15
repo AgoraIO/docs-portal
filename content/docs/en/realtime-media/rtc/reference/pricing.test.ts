@@ -5,9 +5,6 @@ import { describe, expect, it } from 'vitest';
 
 const englishRtcPricingPages = [
   'content/docs/en/realtime-media/rtc/reference/pricing.mdx',
-  'content/docs/en/realtime-media/voice/reference/pricing.mdx',
-  'content/docs/en/realtime-media/broadcast-streaming/reference/pricing.mdx',
-  'content/docs/en/realtime-media/interactive-live-streaming/reference/pricing.mdx',
 ];
 
 function readDocsFile(relativePath: string) {
@@ -24,7 +21,7 @@ function getStandardMinutesCalculatorSection(content: string) {
   return content.slice(start, end);
 }
 
-describe('video pricing doc', () => {
+describe('RTC pricing doc', () => {
   it('includes the RTC minutes calculator in the standard minutes section', () => {
     const content = readDocsFile(englishRtcPricingPages[0]);
     const calculatorSection = getStandardMinutesCalculatorSection(content);

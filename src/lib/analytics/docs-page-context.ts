@@ -92,40 +92,35 @@ const TARGET_PAGE_TAXONOMY = {
     navSection: 'overview',
     product: 'realtime-media',
   },
-  'realtime-media/video': {
+  'realtime-media/rtc': {
     journeyStage: 'overview',
     navSection: 'overview',
-    product: 'video',
+    product: 'rtc',
   },
-  'realtime-media/video/build/capture-and-render-video/screen-sharing': {
+  'realtime-media/rtc/build/capture-and-render-video/screen-sharing': {
     journeyStage: 'build',
     navSection: 'build',
-    product: 'video',
+    product: 'rtc',
   },
-  'realtime-media/video/get-started-sdk': {
+  'realtime-media/rtc/get-started-sdk': {
     journeyStage: 'get-started',
     navSection: 'get-started',
-    product: 'video',
+    product: 'rtc',
   },
-  'realtime-media/voice': {
-    journeyStage: 'overview',
-    navSection: 'overview',
-    product: 'voice',
-  },
-  'realtime-media/voice/quickstart': {
-    journeyStage: 'get-started',
-    navSection: 'get-started',
-    product: 'voice',
-  },
-  'realtime-media/voice/reference/pricing-legacy': {
+  'realtime-media/rtc/reference/pricing-legacy': {
     journeyStage: 'pricing',
     navSection: 'reference',
-    product: 'voice',
+    product: 'rtc',
   },
-  'realtime-media/voice/reference/release-notes': {
+  'realtime-media/rtc/reference/release-notes': {
     journeyStage: 'release-notes',
     navSection: 'reference',
-    product: 'voice',
+    product: 'rtc',
+  },
+  'realtime-media/rtc/voice-quickstart': {
+    journeyStage: 'get-started',
+    navSection: 'get-started',
+    product: 'rtc',
   },
 } as const satisfies Record<string, DocsPageTaxonomy>;
 
