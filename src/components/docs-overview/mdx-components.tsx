@@ -16,18 +16,18 @@ import {
   CpuIcon,
   CuboidIcon,
   FilmIcon,
+  GlobeIcon,
   GraduationCapIcon,
   HardDriveIcon,
   MessagesSquareIcon,
-  MonitorSmartphoneIcon,
   NetworkIcon,
   PhoneIcon,
   PresentationIcon,
   RadioIcon,
   RadioTowerIcon,
+  RssIcon,
   SearchIcon,
   ServerCogIcon,
-  SmartphoneChargingIcon,
   TerminalSquareIcon,
   TicketIcon,
   TvIcon,
@@ -45,6 +45,7 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { toolkitBrandPaths } from './toolkit-brand-icons';
 
 const SdksCatalog = lazy(() =>
   import('./SdksCatalog').then((module) => ({
@@ -154,7 +155,7 @@ type HelpHubCard = {
   cta: string;
   description: string;
   href: string;
-  icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+  icon: 'discord' | 'stack-overflow' | 'status' | 'ticket' | 'github' | 'blog';
   title: string;
 };
 
@@ -165,10 +166,12 @@ type HelpHubLink = {
 
 function HelpHub({
   cards,
+  description = 'Choose the fastest path for product questions, service health, and community support.',
   knowledgeBase,
   topics,
 }: {
   cards: HelpHubCard[];
+  description?: string;
   knowledgeBase: HelpHubLink[];
   topics: HelpHubLink[];
 }) {
@@ -177,12 +180,16 @@ function HelpHub({
       <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
         <div className="max-w-2xl">
           <p className="text-sm leading-6 text-muted-foreground">
-            Choose the fastest path for product questions, service health, and
-            community support.
+            {description}
           </p>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div
+          className={cn(
+            'mt-5 grid gap-3 sm:grid-cols-2',
+            cards.length === 5 ? 'xl:grid-cols-3' : 'xl:grid-cols-4',
+          )}
+        >
           {cards.map((card) => (
             <a
               className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
@@ -213,22 +220,48 @@ function HelpHub({
         </div>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
-        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
-          <div className="flex items-center justify-between gap-3">
+      {knowledgeBase.length + topics.length > 0 && (
+        <div className="grid gap-5 xl:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
+          <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+            <div className="flex items-center justify-between gap-3">
+              <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Popular Knowledge Base
+              </h4>
+              <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
+                Quick answers
+              </span>
+            </div>
+            <ul className="mt-4 space-y-2">
+              {knowledgeBase.map((item) => (
+                <li key={item.label}>
+                  <a
+                    className="group flex items-center justify-between gap-4 rounded-[16px] px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 hover:text-primary"
+                    href={item.href}
+                    rel={
+                      isExternalHref(item.href)
+                        ? 'noreferrer noopener'
+                        : undefined
+                    }
+                    target={isExternalHref(item.href) ? '_blank' : undefined}
+                  >
+                    <span className="leading-6">{item.label}</span>
+                    <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:text-foreground group-hover:opacity-100" />
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+
+          <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Popular Knowledge Base
+              Browse By Topic
             </h4>
-            <span className="hidden text-[11px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
-              Quick answers
-            </span>
-          </div>
-          <ul className="mt-4 space-y-2">
-            {knowledgeBase.map((item) => (
-              <li key={item.label}>
+            <div className="mt-4 space-y-2">
+              {topics.map((item) => (
                 <a
-                  className="group flex items-center justify-between gap-4 rounded-[16px] px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 hover:text-primary"
+                  className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
                   href={item.href}
+                  key={item.label}
                   rel={
                     isExternalHref(item.href)
                       ? 'noreferrer noopener'
@@ -236,41 +269,21 @@ function HelpHub({
                   }
                   target={isExternalHref(item.href) ? '_blank' : undefined}
                 >
-                  <span className="leading-6">{item.label}</span>
-                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:text-foreground group-hover:opacity-100" />
+                  <span>{item.label}</span>
+                  <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
                 </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-            Browse By Topic
-          </h4>
-          <div className="mt-4 space-y-2">
-            {topics.map((item) => (
-              <a
-                className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
-                href={item.href}
-                key={item.label}
-                rel={
-                  isExternalHref(item.href) ? 'noreferrer noopener' : undefined
-                }
-                target={isExternalHref(item.href) ? '_blank' : undefined}
-              >
-                <span>{item.label}</span>
-                <ArrowRightIcon className="size-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-              </a>
-            ))}
-          </div>
-        </section>
-      </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
     </section>
   );
 }
 
 function HelpHubIcon({ kind }: { kind: HelpHubCard['icon'] }) {
+  if (kind === 'github') return <Code2Icon className="size-4" />;
+  if (kind === 'blog') return <RssIcon className="size-4" />;
   if (kind === 'ticket') {
     return <TicketIcon className="size-4" />;
   }
@@ -511,19 +524,30 @@ function ToolkitItem({
 }
 
 function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
-  if (kind === 'python') {
-    return <BotIcon className="size-4" />;
+  const brandPath = toolkitBrandPaths[kind as keyof typeof toolkitBrandPaths];
+  if (brandPath) {
+    return (
+      <svg
+        aria-hidden="true"
+        focusable="false"
+        className={kind === 'go' ? 'size-5' : 'size-4'}
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path d={brandPath} />
+      </svg>
+    );
   }
 
-  if (kind === 'typescript' || kind === 'rest' || kind === 'go') {
-    return <Code2Icon className="size-4" />;
+  if (kind === 'web') {
+    return <GlobeIcon className="size-4" />;
   }
 
   if (kind === 'cli') {
     return <TerminalSquareIcon className="size-4" />;
   }
 
-  if (kind === 'studio' || kind === 'web') {
+  if (kind === 'studio') {
     return <AppWindowIcon className="size-4" />;
   }
 
@@ -535,14 +559,6 @@ function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
     return <BlocksIcon className="size-4" />;
   }
 
-  if (kind === 'android') {
-    return <SmartphoneChargingIcon className="size-4" />;
-  }
-
-  if (kind === 'ios') {
-    return <MonitorSmartphoneIcon className="size-4" />;
-  }
-
   if (kind === 'rtc') {
     return <AudioLinesIcon className="size-4" />;
   }
@@ -552,7 +568,7 @@ function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
   }
 
   if (kind === 'server') {
-    return <ServerCogIcon className="size-4" />;
+    return <NetworkIcon className="size-4" />;
   }
 
   return <Code2Icon className="size-4" />;

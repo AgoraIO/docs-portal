@@ -1787,12 +1787,96 @@
 }
 
 @layer utilities {
+  .prose .introduction-home > :is(h2, h3) {
+    text-wrap: balance;
+  }
+
+  .prose .introduction-home > p {
+    text-wrap: pretty;
+  }
+
+  .introduction-sdk-directory {
+    align-items: start;
+    column-gap: 2rem;
+    row-gap: 1.5rem;
+  }
+
+  .introduction-sdk-directory > section {
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  .introduction-sdk-directory > section > h3 {
+    font-size: 0.9375rem;
+  }
+
+  .introduction-sdk-directory > section > div {
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .introduction-sdk-stack {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+    gap: 1rem;
+  }
+
+  .introduction-sdk-section h4 {
+    margin: 0;
+    font-size: 0.6875rem;
+    line-height: 1.5;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  .introduction-sdk-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .introduction-sdk-directory
+    .introduction-sdk-section
+    .introduction-sdk-links
+    > a {
+    padding-inline: 0;
+    font-size: 0.8125rem;
+  }
+
+  .introduction-sdk-links > a > span:first-child {
+    flex-shrink: 0;
+  }
+
+  .introduction-sdk-more {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    font-size: 0.8125rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* Keep the introduction and its two product/build sections connected. */
+  .prose .introduction-home > :is(#what-to-build, #how-to-build) {
+    margin-top: 2rem;
+    padding-top: 0;
+  }
+
+  .prose .introduction-home > :is(#what-to-build, #how-to-build)::before {
+    content: none;
+  }
+
   /* The shell header is sticky and its height varies (the legacy docs banner
      adds a row), so anchor targets clear whatever the header currently is.
      Must live in `utilities` to beat the flat 7rem `scroll-m-28` utility
      fumadocs puts on every heading: layer order outranks specificity. */
-  .prose
-    :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
     scroll-margin-top: max(
       7rem,
       calc(var(--docs-shell-header-offset, 0px) + 1.5rem)

@@ -1,100 +1,116 @@
 ---
+analyticsPageType: task-guide
 title: Start with AI
-description: Install the Agora CLI, add Agora Skills, then give your assistant a precise prompt so it can choose the right starter and setup path.
+description: Use a coding assistant to run your first Agora interaction, understand the result, and continue building.
+hideNavigation: true
 ---
 
-Use this page when you want your coding assistant to help you get started without guessing. The steps are simple: install the CLI, add the Agora skill, then give the assistant a prompt with the product, platform, language, and goal.
+Use your coding assistant to build a real-time call or a Voice Agent with Agora's official guidance. Choose a concrete result: two people hearing each other, or a user speaking with an AI agent.
 
-If you also want live docs lookup while the assistant works, pair [Agora Skills](/en/introduction/agora-skills) with [Agora MCP](/en/introduction/agora-mcp). Skills handles workflow guidance, and MCP handles current documentation.
+For a **Voice Agent web app**, the starter runs a browser client and a backend in Python, TypeScript, or Go. The client captures speech and plays the response; the backend provides credentials and controls the agent session. Agora runs the Conversational AI Engine that connects the conversation to your configured models.
 
-## Quick start
+For a **voice call**, the RTC quickstart builds clients that exchange audio through Agora. The assistant follows the guide for your target platform.
 
-### 1. Install CLI
-<Tabs>
-<TabsList>
-  <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
-  <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
-</TabsList>
+<a id="quick-start" />
 
-<TabsContent value="mac-linux">
+<a id="1-install-cli" />
 
-```bash
+<a id="2-add-skill" />
+
+## Prepare your assistant
+
+Use a coding assistant that can work with your local project and terminal. If the CLI and Skills are already installed, continue to [Give your assistant a goal](#give-your-assistant-a-goal).
+
+<Steps>
+<Step>
+
+### Install the Agora CLI
+
+The CLI signs you in, prepares supported starters, and checks project configuration. Run the command for your operating system:
+
+```bash tab="macOS and Linux" tabGroup="install-os"
 curl -fsSL https://dl.agora.io/cli/install.sh | sh
 agora --help
 ```
 
-</TabsContent>
-
-<TabsContent value="windows-powershell">
-
-```powershell
+```powershell tab="Windows PowerShell" tabGroup="install-os"
 irm https://dl.agora.io/cli/install.ps1 | iex
 agora --help
 ```
 
-If your execution policy blocks inline scripts, download `install.ps1` and run:
+Confirm that `agora --help` works in the terminal your assistant uses. See [Agora CLI](/en/introduction/agora-cli) for installation alternatives and troubleshooting.
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\install.ps1
-```
+</Step>
+<Step>
 
-</TabsContent>
-</Tabs>
+### Add Agora Skills
 
-After installation, confirm `agora --help` works in the same shell.
-
-### 2. Add skill
-
-Install [Agora Skills](/en/introduction/agora-skills) so your assistant can choose the right Agora workflow, starter, and setup sequence before it edits code.
-
-<Tabs>
-<TabsList>
-  <TabsTrigger value="skills-cli">Skills CLI</TabsTrigger>
-  <TabsTrigger value="manual">Manual installation</TabsTrigger>
-</TabsList>
-
-<TabsContent value="skills-cli">
+Skills gives the assistant Agora-specific guidance for choosing and implementing a product path.
 
 ```bash
 npx skills add AgoraIO/skills
 ```
 
-</TabsContent>
+Follow the installer for your coding tool. See [Agora Skills](/en/introduction/agora-skills) for manual setup.
 
-<TabsContent value="manual">
+For documentation lookup, check whether Agora MCP is already connected in your coding tool. If it is not, follow [Agora MCP](/en/introduction/agora-mcp) to connect it. Skills provides workflow guidance; MCP lets the assistant search documentation.
 
-Clone the repository and point your coding assistant to the Agora skill files:
+</Step>
+</Steps>
+
+<a id="3-prompt" />
+
+## Give your assistant a goal
+
+Include what you want to build, the client platform, and a backend language if the path needs one. Choose one example and adapt it to your project:
+
+```text tab="Voice Agent web app" tabGroup="build-goal"
+Use Agora Skills to run the official Python Voice Agent starter locally.
+I want a browser client with a Python backend.
+The Agora CLI and Skills are already installed. Use the CLI to sign in
+and configure the project, then follow the official starter's run instructions.
+Help me start a conversation, hear the agent respond, and see the transcript.
+Explain which parts run locally and which are Agora services.
+```
+
+```text tab="Web voice call" tabGroup="build-goal"
+Use Agora Skills and the official Web RTC voice-only quickstart to build a call.
+Help me configure the project and run two clients in the same channel.
+Use distinct user IDs and verify that both clients can send and hear audio.
+Follow the Web quickstart's setup commands and explain how the call works.
+```
+
+The [Voice Agent apps quickstart](/en/ai/get-started/quickstart#sign-in-scaffold-and-run) provides the starter commands after tool preparation. The [Web voice-only quickstart](/en/realtime-media/rtc/voice-quickstart/web) provides the RTC implementation. Follow the selected guide for dependencies, credentials, and run commands.
+
+<a id="what-success-looks-like" />
+
+## Run and check the interaction
+
+Work through the selected guide with your assistant:
+
+1. **Configure the project.** Complete sign-in and credential setup. Ask the assistant to explain the local environment files it creates or changes. Use [Platform concepts](/en/introduction/core-concepts) if an unfamiliar project or credential term blocks you.
+2. **Run the application.** Install dependencies and start the client and any backend required by that guide.
+3. **Test the interaction.** Check the result below before customizing the code.
+
+| What you built | A successful first interaction |
+| --- | --- |
+| Voice Agent starter | Start a conversation, speak, hear a response, and see the transcript. End the conversation using the app's control. |
+| RTC voice application | Join the same project and channel from two clients with distinct user IDs. Each client can send audio and hear the other participant. Both can leave the call. |
+
+A development server starting successfully is only part of the setup. Verify the conversation itself.
+
+If project setup or agent startup fails, ask your assistant to inspect the error and use the starter's CLI diagnostic:
 
 ```bash
-git clone https://github.com/AgoraIO/skills.git ~/agora-skills
+agora project doctor
 ```
 
-Use `skills/agora/` as the directory entry point, or load `SKILL.md` directly if your tool expects a single root file.
+For client errors, inspect the application logs and follow the product guide. Continue from the failing step.
 
-</TabsContent>
-</Tabs>
+## Understand the result and make a change
 
-If your tool prefers local instruction files, point it at `skills/agora/` or the top-level `SKILL.md`.
+For a Voice Agent, read [What just happened](/en/ai/get-started/quickstart#what-just-happened) to connect the running app to its client, backend, and model roles. Then [manage agent sessions](/en/ai/build/start-stop-agent) or [configure the models](/en/ai/build/custom-model-integration/managed-mode).
 
-If you only want docs lookup and not workflow guidance, install [Agora MCP](/en/introduction/agora-mcp) instead. Many teams use both.
+For RTC, ask the assistant to show where your client joins, publishes, subscribes, and leaves. Keep using the guide for your selected platform. Before using the app in production, follow the [authentication workflow](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
 
-### 3. Prompt
-
-Now tell the assistant what you want it to build and how to approach the setup. A strong prompt includes the Agora product, the target platform, the language or starter preference, and the end goal.
-
-```text
-Use Agora Skills to help me build a web-based conversational AI demo in Python.
-```
-
-From there, let the assistant choose the starter, run `agora login`, initialize the project, and explain any environment values it writes locally.
-
-## What success looks like
-
-You are on the right path when the assistant can:
-
-- choose an official starter instead of inventing one
-- explain why that starter matches your product and platform
-- use the Agora CLI for setup instead of ad hoc manual steps
-- stay grounded in current Agora docs when platform details matter
-
-
+For either path, choose one change and verify it in the same application before adding more features. [Recipes](/en/api-reference/recipes) provides additional examples when you need a new capability.

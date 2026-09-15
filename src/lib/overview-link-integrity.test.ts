@@ -13,16 +13,40 @@ const overviewFiles = [
   'en/introduction/index.mdx',
   'en/ai/index.mdx',
   'en/realtime-media/overview.mdx',
+  'en/realtime-media/rtc/index.mdx',
   'en/api-reference/index.mdx',
+  'en/introduction/about-agora.mdx',
+  'en/introduction/core-concepts.mdx',
+  'en/introduction/start-with-ai.mdx',
 ] as const;
 
 const expectedExternalLinks = [
   {
-    href: 'https://agoraio.zendesk.com/hc/en-us',
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-mcp/blob/main/README.md',
     sourceFile: 'en/introduction/index.mdx',
   },
   {
-    href: 'https://stackoverflow.com/search?q=agora.io',
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-memory/blob/main/README.md',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-translator/blob/main/README.md',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-vision/blob/main/README.md',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/advanced/shareTheScreen',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/basic/basicLive',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO',
     sourceFile: 'en/introduction/index.mdx',
   },
   {
@@ -30,8 +54,40 @@ const expectedExternalLinks = [
     sourceFile: 'en/introduction/index.mdx',
   },
   {
+    href: 'https://agoraio.zendesk.com/hc/en-us',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://www.agora.io/en/blog/',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
     href: 'https://status.agora.io/',
     sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO/API-Examples-Web#readme',
+    sourceFile: 'en/introduction/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-tool-calling/blob/main/README.md',
+    sourceFile: 'en/ai/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-memory/blob/main/README.md',
+    sourceFile: 'en/ai/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-custom-llm/blob/main/README.md',
+    sourceFile: 'en/ai/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO-Conversational-AI/recipe-agent-rag/blob/main/README.md',
+    sourceFile: 'en/ai/index.mdx',
+  },
+  {
+    href: 'https://github.com/AgoraIO/API-Examples',
+    sourceFile: 'en/realtime-media/rtc/index.mdx',
   },
 ];
 
@@ -95,6 +151,10 @@ function isExternalHref(href: string) {
 }
 
 function resolveInternalHref({ href, sourceFile }: OverviewLink) {
+  if (href.startsWith('#')) {
+    return `/${sourceFile.replace(/\.mdx?$/, '').replace(/\/index$/, '')}${href}`;
+  }
+
   if (href.startsWith('/')) {
     return href;
   }
@@ -119,7 +179,19 @@ function getRouteCandidates(href: string) {
 }
 
 function findRouteFile(href: string) {
-  return getRouteCandidates(href).find((candidate) => existsSync(candidate));
+  const direct = getRouteCandidates(href).find((candidate) =>
+    existsSync(candidate),
+  );
+  if (direct) return direct;
+  const clean = href.split(/[?#]/, 1)[0];
+  const platform = clean.split('/').at(-1);
+  const parent = getRouteCandidates(
+    clean.slice(0, clean.lastIndexOf('/')),
+  ).find((candidate) => existsSync(candidate));
+  return parent &&
+    readFileSync(parent, 'utf8').includes(`platform="${platform}"`)
+    ? parent
+    : undefined;
 }
 
 function slugifyHeading(heading: string) {
@@ -148,6 +220,54 @@ function getHeadingAnchors(markdown: string) {
 describe('overview entry links', () => {
   const links = overviewFiles.flatMap((sourceFile) => extractLinks(sourceFile));
 
+  it('preserves interaction models across the platform and product introductions', () => {
+    for (const file of [
+      'en/introduction/index.mdx',
+      'en/introduction/about-agora.mdx',
+    ]) {
+      const content = readDoc(file);
+      expect(content).toContain('**human-to-human**');
+      expect(content).toContain('**human-to-agent**');
+    }
+    expect(readDoc('en/ai/index.mdx')).toContain('**human-to-agent**');
+    expect(readDoc('en/realtime-media/rtc/index.mdx')).toContain(
+      '**human-to-human**',
+    );
+    expect(readDoc('en/introduction/about-agora.mdx')).toContain(
+      '<a id="shared-real-time-foundation" />',
+    );
+  });
+
+  it('uses catalog names, descriptions, and destinations for featured Voice Agent recipes', () => {
+    const catalog = readDoc('en/api-reference/recipes.mdx');
+    const entries = [
+      ...catalog.matchAll(/\{\s*category:[\s\S]*?\n {4}\}/g),
+    ].map(([entry]) =>
+      Object.fromEntries(
+        ['title', 'description', 'href'].map((field) => [
+          field,
+          entry.match(new RegExp(`${field}: "([^"]+)"`))?.[1],
+        ]),
+      ),
+    );
+    const cards = [
+      ...readDoc('en/introduction/index.mdx').matchAll(
+        /<SolutionCard\b[^>]+\/>/g,
+      ),
+    ]
+      .map(([card]) =>
+        Object.fromEntries(
+          ['title', 'description', 'href'].map((field) => [
+            field,
+            card.match(new RegExp(`${field}="([^"]+)"`))?.[1],
+          ]),
+        ),
+      )
+      .filter((card) => card.href?.includes('/recipe-agent-'));
+    expect(cards.length).toBeGreaterThan(0);
+    for (const card of cards) expect(entries).toContainEqual(card);
+  });
+
   it('keeps all internal overview links pointed at existing content and anchors', () => {
     const brokenLinks = links
       .filter((link) => !isExternalHref(link.href))
@@ -173,6 +293,31 @@ describe('overview entry links', () => {
     expect(brokenLinks).toEqual([]);
   });
 
+  it('preserves concept and app-entry bookmarks after restructuring', () => {
+    const concepts = getHeadingAnchors(
+      readDoc('en/introduction/core-concepts.mdx'),
+    );
+    for (const anchor of [
+      'app-id',
+      'app-certificate',
+      'token',
+      'channel',
+      'publish',
+      'subscribe',
+      'user-id-uid',
+      'agora-sd-rtn',
+    ]) {
+      expect(concepts.has(anchor), anchor).toBe(true);
+    }
+    const agent = getHeadingAnchors(readDoc('en/ai/index.mdx'));
+    expect(agent.has('on-software-clients')).toBe(true);
+    expect(agent.has('for-software-clients')).toBe(true);
+    expect(extractLinks('en/introduction/start-with-ai.mdx')).toContainEqual({
+      href: '/en/ai/get-started/quickstart#sign-in-scaffold-and-run',
+      sourceFile: 'en/introduction/start-with-ai.mdx',
+    });
+  });
+
   it('keeps the external overview link inventory explicit', () => {
     expect(links.filter((link) => isExternalHref(link.href))).toEqual(
       expectedExternalLinks,
@@ -183,12 +328,7 @@ describe('overview entry links', () => {
     expect(
       extractSolutionCardTitlesByHeading('en/realtime-media/overview.mdx'),
     ).toMatchObject({
-      'Build live interaction': [
-        'Interactive Live Streaming',
-        'Broadcast Streaming',
-        'Video Calling',
-        'Voice Calling',
-      ],
+      'Build live interaction': ['Realtime Communication'],
       'Extend live interaction': [
         'Signaling',
         'Chat',
@@ -203,7 +343,10 @@ describe('overview entry links', () => {
       'Voice calls, video calls, interactive live streaming, and broadcast streaming sessions.';
 
     expect(readDoc('en/realtime-media/overview.mdx')).toContain(description);
-    expect(readDoc('en/introduction/index.mdx')).toContain(description);
+    expect(extractLinks('en/introduction/index.mdx')).toContainEqual({
+      href: '/en/realtime-media/rtc',
+      sourceFile: 'en/introduction/index.mdx',
+    });
   });
 
   it('uses an action label for the device navigation group', () => {
@@ -312,7 +455,7 @@ describe('overview entry links', () => {
       'en/realtime-media/rtmp-gateway/meta.json': 'Media Gateway overview',
       'en/realtime-media/speech-to-text/meta.json': 'Speech-to-Text overview',
       'en/realtime-media/transcoding/meta.json': 'Cloud Transcoding overview',
-      'en/realtime-media/video/meta.json': 'Video Calling overview',
+      'en/realtime-media/rtc/meta.json': 'Realtime Communication overview',
       'en/realtime-media/voice/meta.json': 'Voice Calling overview',
       'en/realtime-media/whiteboard/meta.json':
         'Interactive Whiteboard overview',

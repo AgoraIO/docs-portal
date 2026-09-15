@@ -279,3 +279,10 @@ Before finishing a docs content change, scan for these issues:
   blocks.
 
 For substantial `content/docs` edits, run `bun run types:check` before handoff.
+
+## Task-based next steps
+
+Set `hideNavigation: true` in frontmatter when a page provides explicit next steps
+and automatic Previous / Next links would imply an unrelated learning sequence.
+Keep the page in the sidebar and provide useful continuation links in its body.
+Omit this field to retain the normal navigation behavior.
