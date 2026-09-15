@@ -9,11 +9,10 @@ Google Gemini Live 提供原生实时音频处理能力，适合使用 Google AI
 
 | 模型 | 说明 |
 | --- | --- |
-| `gemini-3.1-flash-live-preview` | Gemini Live 预览模型。 |
 | `models/gemini-3.8-live` | 通用 Gemini Live 模型。 |
 | `models/gemini-3.8-live-extended-thinking` | 具有可调节推理预算的 Gemini Live 模型。 |
 
-当对话需要额外推理时，使用 `models/gemini-3.8-live-extended-thinking`。将 `thinking_level` 设置为 `low`、`medium` 或 `high`。使用 `gemini-3.1-flash-live-preview` 或 `models/gemini-3.8-live` 时，请省略 `thinking_level`。
+当对话需要额外推理时，使用 `models/gemini-3.8-live-extended-thinking`。将 `thinking_level` 设置为 `low`、`medium` 或 `high`。使用 `models/gemini-3.8-live` 时，请省略 `thinking_level`。
 
 ## 示例配置
 
@@ -45,7 +44,7 @@ Google Gemini Live 提供原生实时音频处理能力，适合使用 Google AI
 ## 关键参数
 
 - `api_key`：Gemini API key
-- `params.model`：Gemini Live 模型名。支持 `gemini-3.1-flash-live-preview`、`models/gemini-3.8-live` 和 `models/gemini-3.8-live-extended-thinking`。
-- `params.thinking_level`：仅适用于 `models/gemini-3.8-live-extended-thinking` 的推理预算。可设置为 `low`、`medium` 或 `high`；使用 `gemini-3.1-flash-live-preview` 或 `models/gemini-3.8-live` 时请勿设置此参数。
+- `params.model`：Gemini Live 模型名。支持 `models/gemini-3.8-live` 和 `models/gemini-3.8-live-extended-thinking`。
+- `params.thinking_level`：仅适用于 `models/gemini-3.8-live-extended-thinking` 的推理预算。可设置为 `low`、`medium` 或 `high`；使用 `models/gemini-3.8-live` 时请勿设置此参数。
 - `params.voice`：语音风格
 - `transcribe_agent` / `transcribe_user`：是否实时转写

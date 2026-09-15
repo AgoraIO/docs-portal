@@ -464,7 +464,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/meta.json': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/models/mllm/azure.mdx': '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/mllm/gemini.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/mllm/gemini.mdx': '2026-09-15T23:27:36.000Z',
+  'content/docs/en/ai/models/mllm/gemini.mdx': '2026-09-15T23:29:28.000Z',
   'content/docs/en/ai/models/mllm/google-vertex-ai.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/mllm/google-vertex-ai.mdx':
@@ -8227,7 +8227,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/ai/models/llm/meta.json': '2026-06-10T07:09:25.000Z',
   'content/docs/zh-CN/ai/models/llm/openai.mdx': '2026-06-10T07:09:25.000Z',
   'content/docs/zh-CN/ai/models/meta.json': '2026-06-10T07:09:25.000Z',
-  'content/docs/zh-CN/ai/models/mllm/gemini.mdx': '2026-09-15T23:27:36.000Z',
+  'content/docs/zh-CN/ai/models/mllm/gemini.mdx': '2026-09-15T23:29:28.000Z',
   'content/docs/zh-CN/ai/models/mllm/google-vertex-ai.mdx':
     '2026-06-10T07:09:25.000Z',
   'content/docs/zh-CN/ai/models/mllm/index.md': '2026-06-10T07:09:25.000Z',

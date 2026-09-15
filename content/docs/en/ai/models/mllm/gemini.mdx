@@ -12,11 +12,10 @@ The following Gemini Live models are supported:
 
 | Model | Description |
 | --- | --- |
-| `gemini-3.1-flash-live-preview` | Gemini Live preview model. |
 | `models/gemini-3.8-live` | General-purpose Gemini Live model. |
 | `models/gemini-3.8-live-extended-thinking` | Gemini Live model with an adjustable reasoning budget. |
 
-Use `models/gemini-3.8-live-extended-thinking` when the conversation benefits from additional reasoning. Set `thinking_level` to `low`, `medium`, or `high`. Omit `thinking_level` when using `gemini-3.1-flash-live-preview` or `models/gemini-3.8-live`.
+Use `models/gemini-3.8-live-extended-thinking` when the conversation benefits from additional reasoning. Set `thinking_level` to `low`, `medium`, or `high`. Omit `thinking_level` when using `models/gemini-3.8-live`.
 
 ### Sample configuration
 
@@ -204,11 +203,11 @@ The following examples show the supported configurations for Google Gemini Live.
   </Parameter>
   <Parameter name="params" type="object" required={true}>
      Configuration object for the Gemini Live model.
-    <Parameter name="model" type="string" required={true} possibleValues="gemini-3.1-flash-live-preview, models/gemini-3.8-live, models/gemini-3.8-live-extended-thinking">
+    <Parameter name="model" type="string" required={true} possibleValues="models/gemini-3.8-live, models/gemini-3.8-live-extended-thinking">
       The Gemini Live model identifier. Set to `models/gemini-3.8-live-extended-thinking` to enable Extended Thinking. See [Supported models](#supported-models) for all available options.
     </Parameter>
     <Parameter name="thinking_level" type="string" required={false} possibleValues="low, medium, high">
-      The reasoning budget for `models/gemini-3.8-live-extended-thinking`. Do not set this parameter with `gemini-3.1-flash-live-preview` or `models/gemini-3.8-live`.
+      The reasoning budget for `models/gemini-3.8-live-extended-thinking`. Do not set this parameter with `models/gemini-3.8-live`.
     </Parameter>
     <Parameter name="instructions" type="string" required={false}>
       System instructions that define the agent's behavior or tone.
