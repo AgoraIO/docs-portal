@@ -49,10 +49,6 @@ type AlgoliaContentDocsPage = {
 const MAX_CHUNK_LENGTH = 4500;
 const INDEXED_LOCALES: readonly AppLocale[] = getPublishedDocsLocales('global');
 const PUBLIC_FAQ_URLS = new Set(faqItems.map(({ href }) => href));
-const APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS = new Set([
-  '/en/realtime-media/interactive-live-streaming/product-overview',
-  '/en/realtime-media/broadcast-streaming/product-overview',
-]);
 
 // Classify a doc by its URL for search ranking. No taxonomy exists in
 // frontmatter, so this derives it once, at index time, from path conventions:
@@ -167,16 +163,6 @@ function getHiddenSearchablePageBreadcrumbs(
     PUBLIC_FAQ_URLS.has(url)
   ) {
     return ['Reference', 'FAQ', humanizeSlug(secondSegment)];
-  }
-
-  if (
-    route.tab === 'realtime-media' &&
-    firstSegment &&
-    secondSegment === 'product-overview' &&
-    route.slugSegments.length === 2 &&
-    APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS.has(url)
-  ) {
-    return ['RTC', humanizeSlug(firstSegment)];
   }
 
   return undefined;
