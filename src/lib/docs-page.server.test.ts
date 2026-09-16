@@ -3590,17 +3590,25 @@ Web body
           {
             children: [
               {
-                id: 'whiteboard-api-page',
-                search: { from: productPath, fromScope: whiteboardScope },
-                title: '创建房间',
-                type: 'page',
-                url: activeApiUrl,
+                children: [
+                  {
+                    id: 'whiteboard-api-page',
+                    search: { from: productPath, fromScope: whiteboardScope },
+                    title: '创建房间',
+                    type: 'page',
+                    url: activeApiUrl,
+                  },
+                ],
+                collapsible: true,
+                defaultOpen: false,
+                id: 'whiteboard-service-api',
+                title: '服务端 API',
+                type: 'section',
               },
             ],
             collapsible: true,
-            defaultOpen: false,
-            id: 'whiteboard-service-api',
-            title: '服务端 API',
+            id: 'whiteboard-reference',
+            title: '参考',
             type: 'section',
           },
         ],
@@ -3613,17 +3621,25 @@ Web body
           {
             children: [
               {
-                id: 'fastboard-api-page',
-                search: { from: productPath, fromScope: fastboardScope },
-                title: '创建房间',
-                type: 'page',
-                url: activeApiUrl,
+                children: [
+                  {
+                    id: 'fastboard-api-page',
+                    search: { from: productPath, fromScope: fastboardScope },
+                    title: '创建房间',
+                    type: 'page',
+                    url: activeApiUrl,
+                  },
+                ],
+                collapsible: true,
+                defaultOpen: false,
+                id: 'fastboard-service-api',
+                title: '服务端 API',
+                type: 'section',
               },
             ],
             collapsible: true,
-            defaultOpen: false,
-            id: 'fastboard-service-api',
-            title: '服务端 API',
+            id: 'fastboard-reference',
+            title: '参考',
             type: 'section',
           },
         ],
@@ -3641,10 +3657,20 @@ Web body
     );
 
     expect(revealed[0]).toMatchObject({
-      children: [{ defaultOpen: true }],
+      children: [
+        {
+          defaultOpen: true,
+          children: [{ defaultOpen: true }],
+        },
+      ],
     });
     expect(revealed[1]).toMatchObject({
-      children: [{ defaultOpen: false }],
+      children: [
+        {
+          defaultOpen: false,
+          children: [{ defaultOpen: false }],
+        },
+      ],
     });
   });
 

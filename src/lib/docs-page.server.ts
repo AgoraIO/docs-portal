@@ -2122,10 +2122,17 @@ export function revealActiveSidebarPath(
     const containsActivePath = children.some((child) =>
       sidebarNodeContainsPath(child, activePath, productPath, productScope),
     );
+    const containsUnscopedActivePath =
+      productScope !== undefined &&
+      children.some((child) =>
+        sidebarNodeContainsPath(child, activePath, productPath),
+      );
 
     return containsActivePath
       ? { ...node, children, defaultOpen: true }
-      : { ...node, children };
+      : containsUnscopedActivePath
+        ? { ...node, children, defaultOpen: false }
+        : { ...node, children };
   });
 }
 
