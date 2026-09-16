@@ -666,12 +666,24 @@ function main() {
       }
     }
 
+    // A block the docs label as pre-2.x is expected not to build against the
+    // current SDK. It is still compiled, because a legacy block that passes is
+    // worth knowing about, but it never counts as a defect.
+    const status = opts.dryRun
+      ? 'skipped'
+      : passed
+        ? 'pass'
+        : block.legacy
+          ? 'legacy'
+          : 'fail';
+
     results.push({
       id: block.id,
       lang: block.lang,
       file: block.file,
       lines: `${block.startLine}-${block.endLine}`,
-      status: opts.dryRun ? 'skipped' : passed ? 'pass' : 'fail',
+      status,
+      legacy: block.legacy ?? null,
       shape: passed?.shape ?? null,
       notes: passed?.notes ?? [],
       diagnostics: passed ? '' : bestDiagnostics(attempts, stubNames),
@@ -682,20 +694,27 @@ function main() {
     });
 
     if (!opts.dryRun) {
-      const mark = passed ? 'PASS' : 'FAIL';
+      const mark =
+        status === 'pass' ? 'PASS' : status === 'legacy' ? 'LEGACY' : 'FAIL';
+      const detail = passed?.shape ?? (block.legacy ? `pre-2.x sample` : '');
       console.log(
-        `${mark}  ${block.id}  ${block.file}:${block.startLine}  ${passed?.shape ?? ''}`,
+        `${mark}  ${block.id}  ${block.file}:${block.startLine}  ${detail}`,
       );
     }
   }
 
   const pass = results.filter((r) => r.status === 'pass').length;
   const fail = results.filter((r) => r.status === 'fail').length;
+  const legacy = results.filter((r) => r.status === 'legacy').length;
+  // Legacy blocks leave the denominator entirely: they document the old API on
+  // purpose, so neither passing nor failing is a verdict on the docs.
   const report = {
     platform: target,
     total: results.length,
+    judged: results.length - legacy,
     pass,
     fail,
+    legacy,
     results,
   };
 
@@ -710,7 +729,10 @@ function main() {
     return;
   }
 
-  console.log(`\n${pass}/${results.length} blocks compile (${fail} failing)`);
+  console.log(
+    `\n${pass}/${report.judged} blocks compile (${fail} failing` +
+      `${legacy ? `, ${legacy} pre-2.x samples not judged` : ''})`,
+  );
   if (!opts.keep) rmSync(work, { recursive: true, force: true });
   // A failing block is a finding to triage, not a broken harness, so the run
   // itself only fails when nothing could be checked at all.
@@ -721,7 +743,13 @@ function renderSummary(report) {
   const lines = [
     `# Signaling ${report.platform} code check`,
     '',
-    `**${report.pass}/${report.total} blocks compile** against the real SDK (${report.fail} failing).`,
+    `**${report.pass}/${report.judged} blocks compile** against the real SDK (${report.fail} failing).`,
+    ...(report.legacy
+      ? [
+          '',
+          `${report.legacy} further blocks document the pre-2.x API and are not judged against this SDK.`,
+        ]
+      : []),
     '',
     '| Block | Lang | Source | Shape | Result |',
     '| --- | --- | --- | --- | --- |',

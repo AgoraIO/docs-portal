@@ -158,3 +158,48 @@ describe('extractBlocks', () => {
     expect(block.code).toBe('let ios = 1');
   });
 });
+
+describe('legacy marking', () => {
+  async function extractOne(code: string) {
+    const file = await writeFixture(
+      [
+        '<PlatformStructured platform="ios">',
+        '```objc',
+        code,
+        '```',
+        '</PlatformStructured>',
+        '',
+      ].join('\n'),
+    );
+    return extractBlocks([file], 'ios', ['objc'])[0];
+  }
+
+  // Migration guides show the old API beside the new one. Judging the "before"
+  // half against the current SDK would report the page's whole purpose as a
+  // defect.
+  it('marks a block the docs label as pre-2.x', async () => {
+    expect((await extractOne('// 1.x\n[kit sendMessage:m];')).legacy).toBe(
+      '1.x',
+    );
+    expect((await extractOne('// Before v2.2.1\nlet x = 1;')).legacy).toBe(
+      'Before v2',
+    );
+  });
+
+  it('leaves current code unmarked', async () => {
+    expect(
+      (await extractOne('// 2.x\n[rtm publish:m];')).legacy,
+    ).toBeUndefined();
+    expect(
+      (await extractOne('// v2.2.1 and later\n[rtm publish:m];')).legacy,
+    ).toBeUndefined();
+    expect((await extractOne('[rtm publish:m];')).legacy).toBeUndefined();
+  });
+
+  it('only considers the first non-empty line', async () => {
+    const block = await extractOne(
+      '[rtm publish:m];\n// 1.x did it differently',
+    );
+    expect(block.legacy).toBeUndefined();
+  });
+});

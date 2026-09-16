@@ -19,6 +19,28 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { relative, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
+/**
+ * Migration guides and release notes show the old API beside the new one. A
+ * leading comment marks which is which, and the "before" half is expected not
+ * to compile against the current SDK. Judging those blocks against 2.x would
+ * report the documentation's whole purpose as a defect.
+ *
+ * Deliberately narrow: `// 2.x` and `// v2.2.1 and later` mark current code and
+ * must not match.
+ */
+const LEGACY_MARKER = /^\s*(?:\/\/|\/\*)\s*(1\.x\b|v?1\.\d|Before\s+v?\d)/i;
+
+function legacyMarkerOf(code) {
+  for (const line of code.split('\n')) {
+    if (!line.trim()) continue;
+    const match = LEGACY_MARKER.exec(line);
+    // Only the first non-empty line is considered, so a mid-block "// 1.x"
+    // comparison comment does not disqualify current code.
+    return match ? match[1] : null;
+  }
+  return null;
+}
+
 const PLATFORM_OPEN = /^\s*<PlatformStructured\s+platform="([^"]+)"/;
 const PLATFORM_CLOSE = /^\s*<\/PlatformStructured>/;
 const FENCE = /^(\s*)(`{3,}|~{3,})\s*([A-Za-z0-9_+-]*)/;
@@ -156,10 +178,14 @@ export function extractBlocks(files, platform, langs) {
   }
   // The id is part of the block rather than patched on afterwards, so the
   // shape callers see is the shape the extractor declares.
-  return blocks.map((block, index) => ({
-    id: `${block.lang}-${String(index + 1).padStart(3, '0')}`,
-    ...block,
-  }));
+  return blocks.map((block, index) => {
+    const legacy = legacyMarkerOf(block.code);
+    return {
+      id: `${block.lang}-${String(index + 1).padStart(3, '0')}`,
+      ...block,
+      ...(legacy ? { legacy } : {}),
+    };
+  });
 }
 
 function main() {
