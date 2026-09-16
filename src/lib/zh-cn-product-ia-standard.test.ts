@@ -475,7 +475,7 @@ const productBuildMetas = [
   [
     'realtime-media/media-push/build/enable-media-push/meta.json',
     {
-      title: '开通旁路推流',
+      title: '开通与接入',
       pages: ['enable-service', 'http-basic-auth', 'call-api'],
     },
   ],
@@ -496,7 +496,7 @@ const productBuildMetas = [
   [
     'realtime-media/media-push/build/monitor-and-maintain-media-push/meta.json',
     {
-      title: '监控并保障推流',
+      title: '最佳实践',
       pages: [
         'enable-ncs',
         'checklist',
@@ -635,7 +635,7 @@ const productBuildMetas = [
   [
     'solutions/flexible-classroom/build/maintain-classroom-service/meta.json',
     {
-      title: '保障课堂服务',
+      title: '最佳实践',
       pages: ['high-availability'],
     },
   ],

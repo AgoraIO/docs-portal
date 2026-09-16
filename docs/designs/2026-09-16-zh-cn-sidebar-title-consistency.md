@@ -35,6 +35,9 @@
 | 3 | 云端录制 | `content/docs/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/meta.json` | 优化与运维 | 最佳实践 | 综合保障 | 分组包含集成检查、录制状态监控、REST 高可用和页面录制可靠性，属于横向保障实践。 |
 | 4 | 旁路推流 | `content/docs/zh-CN/realtime-media/media-push/build/enable-media-push/meta.json` | 开通旁路推流 | 开通与接入 | 接入前置 | 分组内容为开通服务、HTTP 鉴权和调用 API，与其他云服务的“开通与接入”分组一致。 |
 | 5 | 旁路推流 | `content/docs/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/meta.json` | 监控并保障推流 | 最佳实践 | 综合保障 | 分组包含 Webhook、集成检查、Converter 创建保障和 REST 高可用，属于综合运维保障实践。 |
+| 6 | 对话式 AI | `content/docs/zh-CN/ai/build/harden-and-optimize/meta.json` | 性能优化 | 最佳实践 | 综合保障 | 分组包含音频设置、端到端延迟优化和区域访问限制，属于质量与运行保障实践。 |
+| 7 | 实时转录翻译 | `content/docs/zh-CN/realtime-media/speech-to-text/build/extend-and-optimize/meta.json` | 扩展与优化 | 最佳实践 | 综合保障 | 分组包含音频模态、客户端开启和质量/成本优化，统一归入综合实践。 |
+| 8 | 灵动课堂 | `content/docs/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/meta.json` | 保障课堂服务 | 最佳实践 | 综合保障 | 分组包含课堂服务高可用，统一使用跨产品的保障类命名。 |
 
 ## 明确保留
 
@@ -42,10 +45,7 @@
 
 | 产品 | 文件路径 | 当前标题 | 保留理由 |
 | --- | --- | --- | --- |
-| 对话式 AI | `content/docs/zh-CN/ai/build/harden-and-optimize/meta.json` | 性能优化 | 内容以音频设置和端到端延迟优化为主，“性能优化”比泛化为“最佳实践”更精确。 |
-| 实时转录翻译 | `content/docs/zh-CN/realtime-media/speech-to-text/build/extend-and-optimize/meta.json` | 扩展与优化 | 同时包含音频模态、客户端开启和质量/成本优化，不能单纯归类为最佳实践。 |
 | 水晶球 | `content/docs/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/meta.json` | 嵌入并保障数据服务 | 该分组同时承载水晶球嵌入和 REST 服务保障，保留“集成 + 保障”的任务语义。 |
-| 灵动课堂 | `content/docs/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/meta.json` | 保障课堂服务 | 仅包含课堂服务高可用任务，产品对象明确；暂不使用泛化的“最佳实践”。 |
 | RTC | `content/docs/zh-CN/realtime-media/rtc/build/optimize-and-operate/meta.json` | 最佳实践 | 已是目标命名，可作为质量、可靠性和性能保障类分组的现有样例。 |
 | 本地服务端录制 | `content/docs/zh-CN/realtime-media/local-server-recording/build/best-practices/meta.json` | 最佳实践 | 已是目标命名，无需调整。 |
 
