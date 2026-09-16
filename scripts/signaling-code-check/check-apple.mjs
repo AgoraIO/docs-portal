@@ -479,12 +479,24 @@ function isStructuralOnly(attempt, stubNames = []) {
     .filter((line) => line.includes('error:'));
   if (!errors.length) return false;
 
-  return errors.every((line) => {
-    if (STRUCTURAL_ERRORS.some((marker) => line.includes(marker))) return true;
-    if (!attempt.stubless) return false;
-    const missing = MISSING_SYMBOL.exec(line);
-    return Boolean(missing) && stubNames.includes(missing[1] ?? missing[2]);
-  });
+  // Errors that only describe the wrapping say nothing about the sample.
+  if (errors.every((line) => STRUCTURAL_ERRORS.some((m) => line.includes(m)))) {
+    return true;
+  }
+
+  // One missing running-example symbol is enough to condemn a stubless shape.
+  // It proves the wrapping was wrong for this block, and the errors after it
+  // are usually cascade from the symbol the compiler could not resolve. An
+  // earlier version required every error to be a stub miss, which let a
+  // stubless shape keep a narrow error-count lead over the shape that showed
+  // the real defect.
+  return (
+    attempt.stubless &&
+    errors.some((line) => {
+      const missing = MISSING_SYMBOL.exec(line);
+      return Boolean(missing) && stubNames.includes(missing[1] ?? missing[2]);
+    })
+  );
 }
 
 /**

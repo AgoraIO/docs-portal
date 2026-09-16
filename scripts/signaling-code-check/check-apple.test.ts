@@ -228,6 +228,35 @@ describe('bestAttempt with stubless shapes', () => {
     expect(bestAttempt(attempts, ['rtm']).shape).toBe('type-body');
   });
 
+  // The shape that showed the real defect must win even when the stubless
+  // shape has other, unrelated errors alongside its stub miss.
+  it('demotes a stubless shape on a single stub miss among other errors', () => {
+    const attempts = [
+      {
+        shape: 'file-level',
+        ok: false,
+        stubless: true,
+        diagnostics: [
+          "a.swift:1: error: cannot find 'streamChannel' in scope",
+          "a.swift:1: error: cannot find 'user' in scope",
+          "a.swift:1: error: 'nil' requires a contextual type",
+        ].join('\n'),
+      },
+      {
+        shape: 'method-body',
+        ok: false,
+        stubless: false,
+        diagnostics: [
+          "b.swift:1: error: cannot find 'user' in scope",
+          "b.swift:1: error: value of type 'X' has no member 'publish'",
+          "b.swift:1: error: 'nil' requires a contextual type",
+        ].join('\n'),
+      },
+    ];
+
+    expect(bestAttempt(attempts, ['streamChannel']).shape).toBe('method-body');
+  });
+
   it('still trusts a stubless shape for a symbol the harness never supplies', () => {
     const attempts = [
       {
