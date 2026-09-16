@@ -32,6 +32,10 @@ on:
         description: Space-separated .mdx paths to check
         type: string
         default: content/docs/en/realtime-media/rtm/quickstart.mdx
+      api_ref_files:
+        description: Space-separated api-ref .mdx paths (one file per platform, no PlatformStructured wrapper)
+        type: string
+        default: content/docs/en/api-reference/api-ref/signaling/ios.mdx
       rtm_version:
         description: AgoraRtmKit xcframework version
         type: string
@@ -51,6 +55,9 @@ env:
   # Set per batch while the pages are worked through; the dispatch form can
   # still override it. Reverts to the quickstart at cleanup time.
   FILES: ${{ inputs.files || 'content/docs/en/realtime-media/rtm/quickstart.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-state-transitions.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/topics.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/user-channel.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx content/docs/en/realtime-media/rtm/reference/migration-guide.mdx content/docs/en/realtime-media/rtm/reference/release-notes.mdx' }}
+  # The api-ref pages are one file per platform rather than one file holding
+  # every platform, so they are extracted with the platform filter switched off.
+  API_REF_FILES: ${{ inputs.api_ref_files || 'content/docs/en/api-reference/api-ref/signaling/ios.mdx' }}
   RTM_VERSION: ${{ inputs.rtm_version || '2.3.0' }}
   AOSL_VERSION: ${{ inputs.aosl_version || '1.3.5' }}
 
@@ -120,6 +127,18 @@ jobs:
             --out blocks.json \
             $FILES
 
+      # The api-ref pages are one file per platform, so there is no
+      # PlatformStructured wrapper to filter on and the whole file is in scope.
+      - name: Extract the api-ref blocks
+        if: env.API_REF_FILES != ''
+        run: |
+          node scripts/signaling-code-check/extract-blocks.mjs \
+            --platform "$PLATFORM" \
+            --langs swift,objc \
+            --whole-file \
+            --out api-ref-blocks.json \
+            $API_REF_FILES
+
       - name: Compile-check the blocks
         run: |
           node scripts/signaling-code-check/check-apple.mjs \
@@ -129,6 +148,17 @@ jobs:
             --out report.json \
             --summary summary.md
 
+      - name: Compile-check the api-ref blocks
+        if: env.API_REF_FILES != ''
+        run: |
+          node scripts/signaling-code-check/check-apple.mjs \
+            --blocks api-ref-blocks.json \
+            --frameworks .sdk \
+            --platform "$PLATFORM" \
+            --work .signaling-code-check-api-ref \
+            --out api-ref-report.json \
+            --summary api-ref-summary.md
+
       # Guarded because a harness failure, such as the smoke test rejecting the
       # SDK, exits before any summary is written.
       - name: Publish the summary
@@ -136,6 +166,7 @@ jobs:
         run: |
           if [ -f summary.md ]; then
             cat summary.md >> "$GITHUB_STEP_SUMMARY"
+            [ -f api-ref-summary.md ] && cat api-ref-summary.md >> "$GITHUB_STEP_SUMMARY"
           else
             echo 'The check did not get far enough to write a summary.' >> "$GITHUB_STEP_SUMMARY"
           fi
@@ -149,3 +180,6 @@ jobs:
             blocks.json
             report.json
             summary.md
+            api-ref-blocks.json
+            api-ref-report.json
+            api-ref-summary.md

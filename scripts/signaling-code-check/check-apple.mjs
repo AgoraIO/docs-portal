@@ -157,11 +157,15 @@ function stubNote(stubs, code) {
 /**
  * Resolve the running-example context for one file.
  *
- * The quickstart and the guide pages do not share a running example. The
- * quickstart builds its own view model, where `rtmKit` is a genuine optional;
- * the guide pages assume a client the reader already has and call it without
- * unwrapping. Neither is wrong, so the context is layered per page rather than
- * forced into one shape that would misreport whichever page lost.
+ * Every RTM page except the quickstart shares one running example: a client
+ * the reader already created, plus a stream channel and a listener object that
+ * sibling pages define. The quickstart is the exception, building its own view
+ * model where `rtmKit` is a genuine optional. Neither is wrong, so the context
+ * is layered per page rather than forced into one shape that would misreport
+ * whichever page lost.
+ *
+ * Overrides apply in order and the last match wins, so a broad match can set
+ * the shared default and a narrow one can carve out a single page.
  */
 export function resolveContext(ctx, file) {
   const path = file.split('\\').join('/');
@@ -807,6 +811,11 @@ function renderSummary(report) {
   return `${lines.join('\n')}\n`;
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+// process.argv[1] is undefined when the module is imported by an evaluated
+// script rather than run as one, so guard before resolving it.
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   main();
 }

@@ -124,16 +124,22 @@
   },
 
   "_overridesComment": [
-    "The quickstart and the build/ guide pages do not share a running example.",
-    "The quickstart builds its own view model, where rtmKit is a genuine",
-    "optional. The guide pages assume a client the reader already created and",
-    "call it without unwrapping, and they carry a stream channel and a listener",
-    "object that sibling pages define. Neither page is wrong, so the context is",
-    "layered per page rather than forced into one shape."
+    "Every RTM page except the quickstart shares one running example: a client",
+    "the reader already created, plus a stream channel and a listener object",
+    "that sibling pages define. The guide pages and the reference pages both",
+    "use it, so the shared override matches all of realtime-media/rtm/.",
+    "",
+    "The quickstart is the exception, because it builds its own view model and",
+    "declares rtmKit as a genuine optional. Its override comes second so it",
+    "wins. Overrides apply in order and the last match takes the field.",
+    "",
+    "The shared client is an implicitly-unwrapped optional because the docs use",
+    "BOTH `rtm.getPresence()` and `rtm?.subscribe(...)`. A plain type rejects",
+    "the second, an optional rejects the first, and neither page is wrong."
   ],
   "overrides": [
     {
-      "match": "realtime-media/rtm/build/",
+      "match": "realtime-media/rtm/",
       "swift": {
         "fileLevel": [
           "final class RtmListener: NSObject, AgoraRtmClientDelegate {}"
@@ -192,6 +198,19 @@
           { "name": "handlerEx", "code": "RtmListener *handlerEx;" },
           { "name": "listener", "code": "RtmListener *listener;" },
           { "name": "listenerEx", "code": "RtmListener *listenerEx;" }
+        ]
+      }
+    },
+    {
+      "_comment": [
+        "The quickstart is the exception: it builds its own view model, where",
+        "rtmKit is a genuine optional the page declares. Applied after the",
+        "shared override, so it wins."
+      ],
+      "match": "realtime-media/rtm/quickstart.mdx",
+      "swift": {
+        "members": [
+          { "name": "rtmKit", "code": "var rtmKit: AgoraRtmClientKit? = nil" }
         ]
       }
     }

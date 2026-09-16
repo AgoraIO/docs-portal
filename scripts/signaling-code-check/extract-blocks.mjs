@@ -46,13 +46,20 @@ const PLATFORM_CLOSE = /^\s*<\/PlatformStructured>/;
 const FENCE = /^(\s*)(`{3,}|~{3,})\s*([A-Za-z0-9_+-]*)/;
 
 function parseArgs(argv) {
-  const opts = { platform: null, langs: null, out: null, files: [] };
+  const opts = {
+    platform: null,
+    langs: null,
+    out: null,
+    wholeFile: false,
+    files: [],
+  };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--platform') opts.platform = argv[++i];
     else if (arg === '--langs')
       opts.langs = argv[++i].split(',').map((l) => l.trim());
     else if (arg === '--out') opts.out = argv[++i];
+    else if (arg === '--whole-file') opts.wholeFile = true;
     else if (arg.startsWith('--')) throw new Error(`Unknown flag: ${arg}`);
     else opts.files.push(arg);
   }
@@ -65,8 +72,13 @@ function parseArgs(argv) {
 /**
  * Walk a file line by line, tracking the platform range stack and the fence
  * state. Returns every fenced block that sits inside a matching platform range.
+ *
+ * With `wholeFile`, the platform filter is skipped and every fence in the file
+ * is taken. The api-ref pages are one file per platform (`ios.mdx`,
+ * `macos.mdx`) rather than one file with sibling platform ranges, so there is
+ * no `<PlatformStructured>` wrapper to match on.
  */
-function extractFromFile(path, platform, langs) {
+function extractFromFile(path, platform, langs, wholeFile = false) {
   // These .mdx files are CRLF. Strip the \r for matching; nothing here writes
   // the file back, so the line endings do not need to be preserved.
   const lines = readFileSync(path, 'utf8')
@@ -113,12 +125,13 @@ function extractFromFile(path, platform, langs) {
 
     if (fenceMatch && fenceMatch[3]) {
       const current = platformStack[platformStack.length - 1];
-      if (current === platform && (!langs || langs.includes(fenceMatch[3]))) {
+      const inScope = wholeFile || current === platform;
+      if (inScope && (!langs || langs.includes(fenceMatch[3]))) {
         fence = {
           indent: fenceMatch[1],
           marker: fenceMatch[2],
           lang: fenceMatch[3],
-          platform: current,
+          platform: wholeFile ? platform : current,
           startLine: i + 1,
           body: [],
         };
@@ -171,10 +184,10 @@ function extractFromFile(path, platform, langs) {
   return blocks;
 }
 
-export function extractBlocks(files, platform, langs) {
+export function extractBlocks(files, platform, langs, wholeFile = false) {
   const blocks = [];
   for (const file of files) {
-    blocks.push(...extractFromFile(resolve(file), platform, langs));
+    blocks.push(...extractFromFile(resolve(file), platform, langs, wholeFile));
   }
   // The id is part of the block rather than patched on afterwards, so the
   // shape callers see is the shape the extractor declares.
@@ -190,7 +203,12 @@ export function extractBlocks(files, platform, langs) {
 
 function main() {
   const opts = parseArgs(process.argv.slice(2));
-  const blocks = extractBlocks(opts.files, opts.platform, opts.langs);
+  const blocks = extractBlocks(
+    opts.files,
+    opts.platform,
+    opts.langs,
+    opts.wholeFile,
+  );
 
   const payload = { platform: opts.platform, langs: opts.langs, blocks };
   const json = `${JSON.stringify(payload, null, 2)}\n`;
@@ -212,6 +230,11 @@ function main() {
   }
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+// process.argv[1] is undefined when the module is imported by an evaluated
+// script rather than run as one, so guard before resolving it.
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
   main();
 }
