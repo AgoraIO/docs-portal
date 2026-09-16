@@ -2092,23 +2092,28 @@ async function getProductSidebarContextPayload({
 
   return {
     activeTab: context.tab,
-    sidebar: revealActiveSidebarPath(sidebar, activePath),
+    sidebar: revealActiveSidebarPath(sidebar, activePath, context.pathname),
     sidebarHeader,
   };
 }
 
-function revealActiveSidebarPath(
+export function revealActiveSidebarPath(
   nodes: DocsSidebarNode[],
   activePath: string,
+  productPath?: string,
 ): DocsSidebarNode[] {
   return nodes.map((node) => {
     if (node.type === 'page') {
       return node;
     }
 
-    const children = revealActiveSidebarPath(node.children, activePath);
+    const children = revealActiveSidebarPath(
+      node.children,
+      activePath,
+      productPath,
+    );
     const containsActivePath = children.some((child) =>
-      sidebarNodeContainsPath(child, activePath),
+      sidebarNodeContainsPath(child, activePath, productPath),
     );
 
     return containsActivePath
@@ -2120,14 +2125,20 @@ function revealActiveSidebarPath(
 function sidebarNodeContainsPath(
   node: DocsSidebarNode,
   activePath: string,
+  productPath?: string,
 ): boolean {
   if (node.type === 'page') {
-    return node.url === activePath;
+    return (
+      node.url === activePath &&
+      (productPath === undefined || node.search?.from === productPath)
+    );
   }
 
   return (
     node.url === activePath ||
-    node.children.some((child) => sidebarNodeContainsPath(child, activePath))
+    node.children.some((child) =>
+      sidebarNodeContainsPath(child, activePath, productPath),
+    )
   );
 }
 
