@@ -44,6 +44,40 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('opens sections with defaultOpen true on initial render', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: 'sdk-extensions-quick-start',
+                title: 'Quickstart',
+                type: 'page',
+                url: '/en/realtime-media/sdk-extensions/quickstart',
+              },
+            ],
+            collapsible: true,
+            defaultOpen: true,
+            id: 'sdk-extensions-build',
+            title: 'Build and integrate',
+            type: 'section',
+          },
+        ],
+        id: 'sdk-extensions',
+        title: 'SDK Extensions',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/realtime-media/sdk-extensions');
+
+    expect(
+      await screen.findByRole('button', { name: 'Build and integrate' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('link', { name: 'Quickstart' })).toBeInTheDocument();
+  });
+
   it('keeps embedded service API entries collapsed until clicked', async () => {
     const tree: DocsSidebarNode[] = [
       {

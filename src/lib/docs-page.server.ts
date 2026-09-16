@@ -2331,6 +2331,10 @@ const ZH_CN_SERVICE_API_ENTRY_TITLES = new Set([
   '设备端 API',
   '操控端 API',
 ]);
+const ZH_CN_SINGLE_PAGE_SERVICE_API_ENTRY_TITLES = new Set([
+  '设备端 API',
+  '操控端 API',
+]);
 const ZH_CN_RTM_EMBEDDED_API_PREFIX = '/zh-CN/api-reference/api-ref/signaling/';
 const ZH_CN_RTMP_GATEWAY_API_ENTRY_URL =
   '/zh-CN/api-reference/api-ref/rtmp-gateway';
@@ -2364,6 +2368,16 @@ async function embedZhCnServiceApiSidebars(
           !node.url.startsWith('/zh-CN/api-reference/')
         ) {
           return node;
+        }
+
+        if (ZH_CN_SINGLE_PAGE_SERVICE_API_ENTRY_TITLES.has(node.title)) {
+          return {
+            ...node,
+            search: {
+              ...node.search,
+              from: productPath,
+            },
+          };
         }
 
         const apiSidebar = await getApiReferenceSidebarNodes({

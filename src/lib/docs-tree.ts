@@ -548,9 +548,11 @@ export function pageTreeNodeToSidebarNodes(
     {
       children,
       collapsible: true,
-      // Honor an explicit `defaultOpen: false` from the folder's meta so hub
-      // folders (e.g. FAQ) stay collapsed even when active.
-      ...(node.defaultOpen === false ? { defaultOpen: false } : {}),
+      // Honor an explicit defaultOpen value from the folder's meta so hub
+      // folders (e.g. FAQ) can stay collapsed and selected sections can open.
+      ...(node.defaultOpen !== undefined
+        ? { defaultOpen: node.defaultOpen }
+        : {}),
       ...(icon ? { icon } : {}),
       // Rule: a folder whose index matches its title links the header to it.
       ...(indexLinksHeader && node.index ? { url: node.index.url } : {}),

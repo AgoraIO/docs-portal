@@ -4,6 +4,7 @@ import { loadDocsPagePayload } from './docs-page.server';
 
 type SidebarNode = {
   children?: SidebarNode[];
+  defaultOpen?: boolean;
   linked?: boolean;
   search?: Record<string, string>;
   title?: string;
@@ -119,26 +120,8 @@ const zhCnServiceApiEntries = [
   [
     'solutions',
     ['voip-call'],
-    '呼叫小程序 API',
+    '服务端 API',
     '/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app',
-  ],
-  [
-    'solutions',
-    ['voip-call'],
-    'License 管理 API',
-    '/zh-CN/api-reference/api-ref/voip-callkit/activate-license',
-  ],
-  [
-    'solutions',
-    ['teleoperation'],
-    '设备端 API',
-    '/zh-CN/api-reference/teleoperation/iot/api/device',
-  ],
-  [
-    'solutions',
-    ['teleoperation'],
-    '操控端 API',
-    '/zh-CN/api-reference/teleoperation/iot/api/operator',
   ],
 ] as const;
 
@@ -192,6 +175,13 @@ function collectUrls(nodes: SidebarNode[]): string[] {
   return nodes.flatMap((node) => [
     ...(node.url ? [node.url] : []),
     ...collectUrls(node.children ?? []),
+  ]);
+}
+
+function collectTitles(nodes: SidebarNode[]): string[] {
+  return nodes.flatMap((node) => [
+    ...(node.title ? [node.title] : []),
+    ...collectTitles(node.children ?? []),
   ]);
 }
 
@@ -549,34 +539,73 @@ describe('product API reference sidebar links', () => {
     },
   );
 
-  it('reads the two VoIP service API leaves from product metadata', async () => {
+  it('merges the VoIP service API leaves into one product sidebar section', async () => {
     const sidebar = await loadSidebar('zh-CN', 'solutions', ['voip-call']);
     const reference = findSection(sidebar, ['参考']);
+    const serviceApiSections =
+      reference?.children?.filter((child) => child.title === '服务端 API') ?? [];
 
-    expect(reference?.children?.slice(0, 2)).toMatchObject([
+    expect(serviceApiSections).toHaveLength(1);
+    expect(serviceApiSections[0]).toMatchObject({
+      collapsible: true,
+      defaultOpen: false,
+      title: '服务端 API',
+      type: 'section',
+    });
+    expect(collectTitles(serviceApiSections[0]?.children ?? [])).toEqual([
+      '微呼叫 API 概览',
+      'RESTful API 鉴权',
+      '设备呼叫小程序',
+      '挂断小程序',
+      '激活 License',
+      '查询即将到期的 License 列表',
+      'License 续期',
+      '查询 License 续期订单',
+    ]);
+    expect(reference?.children?.some((child) => child.title === '呼叫小程序 API')).toBe(
+      false,
+    );
+    expect(reference?.children?.some((child) => child.title === 'License 管理 API')).toBe(
+      false,
+    );
+  });
+
+  it('keeps single-page teleoperation API entries as direct product links', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'solutions', ['teleoperation']);
+    const reference = findSection(sidebar, ['参考']);
+    const apiEntries =
+      reference?.children?.filter((child) =>
+        ['设备端 API', '操控端 API'].includes(child.title ?? ''),
+      ) ?? [];
+
+    expect(apiEntries).toMatchObject([
       {
-        collapsible: true,
-        defaultOpen: false,
-        title: '呼叫小程序 API',
-        type: 'section',
+        search: { from: '/zh-CN/solutions/teleoperation' },
+        title: '设备端 API',
+        type: 'page',
+        url: '/zh-CN/api-reference/teleoperation/iot/api/device',
       },
       {
-        collapsible: true,
-        defaultOpen: false,
-        title: 'License 管理 API',
-        type: 'section',
+        search: { from: '/zh-CN/solutions/teleoperation' },
+        title: '操控端 API',
+        type: 'page',
+        url: '/zh-CN/api-reference/teleoperation/iot/api/operator',
       },
     ]);
-    expect(collectUrls(reference?.children?.[0]?.children ?? [])).toEqual(
-      expect.arrayContaining([
-        '/zh-CN/api-reference/api-ref/voip-callkit/call-mini-app',
-      ]),
-    );
-    expect(collectUrls(reference?.children?.[1]?.children ?? [])).toEqual(
-      expect.arrayContaining([
-        '/zh-CN/api-reference/api-ref/voip-callkit/activate-license',
-      ]),
-    );
+  });
+
+  it('opens the SDK extensions development section by default', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
+      'sdk-extensions',
+    ]);
+    const development = findSection(sidebar, ['开发与集成']);
+
+    expect(development).toMatchObject({
+      collapsible: true,
+      defaultOpen: true,
+      title: '开发与集成',
+      type: 'section',
+    });
   });
 
   it('keeps the existing English realtime-media RESTful API injection', async () => {
