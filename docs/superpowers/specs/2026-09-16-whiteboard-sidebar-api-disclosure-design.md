@@ -12,7 +12,7 @@
 
 ## 方案
 
-服务端 API 嵌入节点的页面已经通过 `search.from` 保存来源产品路径。API 详情页恢复产品 Sidebar 时，将当前 `from` 路径传入展开判断：对于 API 详情页，只有同时满足当前 URL 和 `search.from` 的页面节点才被视为活动节点；普通没有来源标记的节点继续按 URL 匹配。这样可以在重复 URL 的情况下区分两个 SDK 的导航分支，同时保持现有通用 Sidebar 树逻辑不变。
+服务端 API 嵌入节点的页面通过 `search.from` 保存产品 Sidebar 路径，并通过 `search.fromScope` 保存嵌入它们的 SDK 路径。API 详情页恢复产品 Sidebar 时，将两个上下文值传入展开判断：对于 API 详情页，只有同时满足当前 URL、`search.from` 和 `search.fromScope` 的页面节点才被视为活动节点；普通没有来源标记的节点继续按 URL 匹配。这样可以在根页面上两个 SDK 共享同一 `from` 路径时，仍区分两个导航分支，同时保持两个 SDK 共享的 API 内容和 Sidebar 结构不变。
 
 ## 验证
 

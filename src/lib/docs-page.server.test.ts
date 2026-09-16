@@ -3581,8 +3581,9 @@ Web body
   it('reveals only the embedded service API section matching the product source', () => {
     const activeApiUrl =
       '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room';
-    const whiteboardPath = '/zh-CN/realtime-media/whiteboard/whiteboard-sdk';
-    const fastboardPath = '/zh-CN/realtime-media/whiteboard/fastboard-sdk';
+    const productPath = '/zh-CN/realtime-media/whiteboard';
+    const whiteboardScope = '/zh-CN/realtime-media/whiteboard/whiteboard-sdk';
+    const fastboardScope = '/zh-CN/realtime-media/whiteboard/fastboard-sdk';
     const nodes: DocsSidebarNode[] = [
       {
         children: [
@@ -3590,7 +3591,7 @@ Web body
             children: [
               {
                 id: 'whiteboard-api-page',
-                search: { from: whiteboardPath },
+                search: { from: productPath, fromScope: whiteboardScope },
                 title: '创建房间',
                 type: 'page',
                 url: activeApiUrl,
@@ -3613,7 +3614,7 @@ Web body
             children: [
               {
                 id: 'fastboard-api-page',
-                search: { from: fastboardPath },
+                search: { from: productPath, fromScope: fastboardScope },
                 title: '创建房间',
                 type: 'page',
                 url: activeApiUrl,
@@ -3635,7 +3636,8 @@ Web body
     const revealed = revealActiveSidebarPath(
       nodes,
       activeApiUrl,
-      whiteboardPath,
+      productPath,
+      whiteboardScope,
     );
 
     expect(revealed[0]).toMatchObject({

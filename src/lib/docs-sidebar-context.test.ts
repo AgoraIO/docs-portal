@@ -16,6 +16,18 @@ describe('product sidebar context', () => {
     });
   });
 
+  it('preserves an optional embedded sidebar scope', () => {
+    expect(
+      parseProductSidebarContext(
+        '?from=%2Fzh-CN%2Frealtime-media%2Fwhiteboard&fromScope=%2Fzh-CN%2Frealtime-media%2Fwhiteboard%2Ffastboard-sdk',
+        'zh-CN',
+      ),
+    ).toMatchObject({
+      pathname: '/zh-CN/realtime-media/whiteboard',
+      sidebarScope: '/zh-CN/realtime-media/whiteboard/fastboard-sdk',
+    });
+  });
+
   it.each([
     '?from=https%3A%2F%2Fevil.example%2Fdocs',
     '?from=%2Fen%2Frealtime-media%2Frtc',

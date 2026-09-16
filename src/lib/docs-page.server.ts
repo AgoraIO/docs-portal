@@ -2092,7 +2092,12 @@ async function getProductSidebarContextPayload({
 
   return {
     activeTab: context.tab,
-    sidebar: revealActiveSidebarPath(sidebar, activePath, context.pathname),
+    sidebar: revealActiveSidebarPath(
+      sidebar,
+      activePath,
+      context.pathname,
+      context.sidebarScope,
+    ),
     sidebarHeader,
   };
 }
@@ -2101,6 +2106,7 @@ export function revealActiveSidebarPath(
   nodes: DocsSidebarNode[],
   activePath: string,
   productPath?: string,
+  productScope?: string,
 ): DocsSidebarNode[] {
   return nodes.map((node) => {
     if (node.type === 'page') {
@@ -2111,9 +2117,10 @@ export function revealActiveSidebarPath(
       node.children,
       activePath,
       productPath,
+      productScope,
     );
     const containsActivePath = children.some((child) =>
-      sidebarNodeContainsPath(child, activePath, productPath),
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
     );
 
     return containsActivePath
@@ -2126,18 +2133,20 @@ function sidebarNodeContainsPath(
   node: DocsSidebarNode,
   activePath: string,
   productPath?: string,
+  productScope?: string,
 ): boolean {
   if (node.type === 'page') {
     return (
       node.url === activePath &&
-      (productPath === undefined || node.search?.from === productPath)
+      (productPath === undefined || node.search?.from === productPath) &&
+      (productScope === undefined || node.search?.fromScope === productScope)
     );
   }
 
   return (
     node.url === activePath ||
     node.children.some((child) =>
-      sidebarNodeContainsPath(child, activePath, productPath),
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
     )
   );
 }
@@ -2330,6 +2339,7 @@ async function embedZhCnServiceApiSidebars(
   pageTree: ReturnType<typeof docsSource.getPageTree>,
   source: typeof docsSource,
   tab: string,
+  sourcePath?: string,
 ): Promise<DocsSidebarNode[]> {
   if (
     locale !== 'zh-CN' ||
@@ -2373,6 +2383,7 @@ async function embedZhCnServiceApiSidebars(
           children: addProductContextToApiSidebarNodes(
             normalizedApiSidebar,
             productPath,
+            sourcePath,
           ),
           collapsible: true,
           defaultOpen: false,
@@ -2381,6 +2392,9 @@ async function embedZhCnServiceApiSidebars(
           type: 'section' as const,
         };
       }
+
+      const resolvedSourcePath =
+        sourcePath ?? getEmbeddedSidebarSourcePath(node, productPath);
 
       return {
         ...node,
@@ -2391,6 +2405,7 @@ async function embedZhCnServiceApiSidebars(
           pageTree,
           source,
           tab,
+          resolvedSourcePath,
         ),
       };
     }),
@@ -2458,6 +2473,7 @@ function removeSidebarPageByUrl(
 function addProductContextToApiSidebarNodes(
   nodes: DocsSidebarNode[],
   productPath: string,
+  sourcePath?: string,
 ): DocsSidebarNode[] {
   return nodes.map((node) =>
     node.type === 'page'
@@ -2466,6 +2482,7 @@ function addProductContextToApiSidebarNodes(
           search: {
             ...node.search,
             from: productPath,
+            ...(sourcePath ? { fromScope: sourcePath } : {}),
           },
         }
       : {
@@ -2473,9 +2490,51 @@ function addProductContextToApiSidebarNodes(
           children: addProductContextToApiSidebarNodes(
             node.children,
             productPath,
+            sourcePath,
           ),
         },
   );
+}
+
+function getEmbeddedSidebarSourcePath(
+  node: DocsSidebarNode,
+  productPath: string,
+): string | undefined {
+  const firstPageUrl = getFirstSidebarPageUrl(node);
+  if (!firstPageUrl) {
+    return undefined;
+  }
+
+  if (firstPageUrl === productPath) {
+    return productPath;
+  }
+
+  if (!firstPageUrl.startsWith(`${productPath}/`)) {
+    return undefined;
+  }
+
+  const firstProductSegment = firstPageUrl
+    .slice(productPath.length + 1)
+    .split('/')[0];
+
+  return firstProductSegment
+    ? `${productPath}/${firstProductSegment}`
+    : undefined;
+}
+
+function getFirstSidebarPageUrl(node: DocsSidebarNode): string | undefined {
+  if (node.type === 'page') {
+    return node.url;
+  }
+
+  for (const child of node.children) {
+    const url = getFirstSidebarPageUrl(child);
+    if (url) {
+      return url;
+    }
+  }
+
+  return undefined;
 }
 
 function getLocaleSourcePageUrls(source: typeof docsSource, locale: AppLocale) {

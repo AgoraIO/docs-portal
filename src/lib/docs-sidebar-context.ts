@@ -3,6 +3,7 @@ const PRODUCT_TABS = new Set(['ai', 'realtime-media', 'solutions']);
 export type ProductSidebarContext = {
   locale: string;
   pathname: string;
+  sidebarScope?: string;
   slugSegments: string[];
   tab: string;
 };
@@ -12,6 +13,7 @@ export function parseProductSidebarContext(
   expectedLocale: string,
 ): ProductSidebarContext | null {
   const rawPathname = new URLSearchParams(search ?? '').get('from');
+  const sidebarScope = new URLSearchParams(search ?? '').get('fromScope');
 
   if (!rawPathname?.startsWith('/')) {
     return null;
@@ -33,6 +35,7 @@ export function parseProductSidebarContext(
   return {
     locale,
     pathname,
+    ...(sidebarScope ? { sidebarScope } : {}),
     slugSegments,
     tab,
   };

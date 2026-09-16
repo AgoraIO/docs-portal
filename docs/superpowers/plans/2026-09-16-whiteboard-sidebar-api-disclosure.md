@@ -4,7 +4,7 @@
 
 **Goal:** When a shared Chinese Whiteboard RESTful API page is opened from one SDK section, reveal only that SDK section's embedded service API disclosure.
 
-**Architecture:** Carry the validated product source path from the parsed `from` context into `revealActiveSidebarPath`. A sidebar page matches the active API URL only when its `search.from` also matches that source path, so duplicate API URLs remain isolated to their originating SDK section. Existing URL-only matching remains available when no product source is supplied.
+**Architecture:** Carry the product Sidebar path from the parsed `from` context and an optional SDK scope from `fromScope` into `revealActiveSidebarPath`. Embedded API pages receive the nearest SDK scope while retaining the shared product path, so duplicate API URLs remain isolated to their originating SDK section even when both links start from the Whiteboard root page.
 
 **Tech Stack:** TypeScript, Vitest, Fumadocs sidebar node types.
 
@@ -24,8 +24,9 @@ Import `revealActiveSidebarPath` from `./docs-page.server`, then add this test n
 it('reveals only the embedded service API section matching the product source', () => {
   const activeApiUrl =
     '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room';
-  const whiteboardPath = '/zh-CN/realtime-media/whiteboard/whiteboard-sdk';
-  const fastboardPath = '/zh-CN/realtime-media/whiteboard/fastboard-sdk';
+  const productPath = '/zh-CN/realtime-media/whiteboard';
+  const whiteboardScope = '/zh-CN/realtime-media/whiteboard/whiteboard-sdk';
+  const fastboardScope = '/zh-CN/realtime-media/whiteboard/fastboard-sdk';
   const nodes: DocsSidebarNode[] = [
     {
       children: [
@@ -33,7 +34,7 @@ it('reveals only the embedded service API section matching the product source', 
           children: [
             {
               id: 'whiteboard-api-page',
-              search: { from: whiteboardPath },
+              search: { from: productPath, fromScope: whiteboardScope },
               title: '创建房间',
               type: 'page',
               url: activeApiUrl,
@@ -56,7 +57,7 @@ it('reveals only the embedded service API section matching the product source', 
           children: [
             {
               id: 'fastboard-api-page',
-              search: { from: fastboardPath },
+              search: { from: productPath, fromScope: fastboardScope },
               title: '创建房间',
               type: 'page',
               url: activeApiUrl,
@@ -78,7 +79,8 @@ it('reveals only the embedded service API section matching the product source', 
   const revealed = revealActiveSidebarPath(
     nodes,
     activeApiUrl,
-    whiteboardPath,
+    productPath,
+    whiteboardScope,
   );
 
   expect((revealed[0] as Extract<DocsSidebarNode, { type: 'section' }>).children[0]).toMatchObject({
@@ -98,12 +100,13 @@ Run:
 bunx vitest run src/lib/docs-page.server.test.ts -t "matching the product source"
 ```
 
-Expected: the test cannot compile because `revealActiveSidebarPath` is not exported; after exposing the current URL-only behavior for the test, the assertion must fail with the Fastboard section also marked `defaultOpen: true`. The failure must identify the missing source-path filtering, not a fixture or import error.
+Expected: the test fails with the Fastboard section also marked `defaultOpen: true`. The failure must identify the missing SDK-scope filtering, not a fixture or import error.
 
 ### Task 2: Scope active sidebar restoration to the originating product
 
 **Files:**
-- Modify: `src/lib/docs-page.server.ts:890-895, 2095-2120`
+- Modify: `src/lib/docs-page.server.ts:890-895, 2095-2143, 2330-2515`
+- Modify: `src/lib/docs-sidebar-context.ts:3-42`
 
 - [ ] **Step 1: Pass the parsed product pathname into the reveal helper**
 
@@ -114,6 +117,7 @@ sidebar: revealActiveSidebarPath(
   sidebar,
   activePath,
   context.pathname,
+  context.sidebarScope,
 ),
 ```
 
@@ -126,6 +130,7 @@ export function revealActiveSidebarPath(
   nodes: DocsSidebarNode[],
   activePath: string,
   productPath?: string,
+  productScope?: string,
 ): DocsSidebarNode[] {
   return nodes.map((node) => {
     if (node.type === 'page') {
@@ -136,9 +141,10 @@ export function revealActiveSidebarPath(
       node.children,
       activePath,
       productPath,
+      productScope,
     );
     const containsActivePath = children.some((child) =>
-      sidebarNodeContainsPath(child, activePath, productPath),
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
     );
 
     return containsActivePath
@@ -151,32 +157,36 @@ function sidebarNodeContainsPath(
   node: DocsSidebarNode,
   activePath: string,
   productPath?: string,
+  productScope?: string,
 ): boolean {
   if (node.type === 'page') {
     return (
       node.url === activePath &&
-      (productPath === undefined || node.search?.from === productPath)
+      (productPath === undefined || node.search?.from === productPath) &&
+      (productScope === undefined || node.search?.fromScope === productScope)
     );
   }
 
   return (
     node.url === activePath ||
     node.children.some((child) =>
-      sidebarNodeContainsPath(child, activePath, productPath),
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
     )
   );
 }
 ```
+
+The embedded API-page mapping must also preserve the shared `from` product path while adding a distinct `fromScope` derived from the nearest SDK section. Parse that optional `fromScope` value into `ProductSidebarContext`, and match it in `sidebarNodeContainsPath`.
 
 - [ ] **Step 3: Run the focused test and verify it passes**
 
 Run:
 
 ```bash
-bunx vitest run src/lib/docs-page.server.test.ts -t "matching the product source"
+bunx vitest run src/lib/docs-page.server.test.ts src/lib/docs-sidebar-context.test.ts -t "matching the product source|optional embedded sidebar scope"
 ```
 
-Expected: PASS, with only the Whiteboard SDK branch marked `defaultOpen: true`.
+Expected: PASS.
 
 ### Task 3: Verify the complete affected surface
 
@@ -188,7 +198,7 @@ Expected: PASS, with only the Whiteboard SDK branch marked `defaultOpen: true`.
 Run:
 
 ```bash
-bunx vitest run src/lib/docs-page.server.test.ts src/components/docs-shell/DocsSidebarTree.test.tsx src/components/docs-shell/DocsShell.test.tsx
+bunx vitest run src/lib/docs-page.server.test.ts src/lib/docs-sidebar-context.test.ts src/components/docs-shell/DocsSidebarTree.test.tsx src/components/docs-shell/DocsShell.test.tsx
 ```
 
 Expected: all tests pass.
