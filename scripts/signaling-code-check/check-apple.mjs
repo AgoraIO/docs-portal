@@ -250,6 +250,43 @@ function swiftCandidates(block, ctx, platform) {
   ];
 }
 
+/**
+ * Some blocks teach two things at once: they declare a listener class, then
+ * instantiate it and call the SDK with it. No single wrapping holds that. The
+ * statements are invalid at file scope, and the `@interface` is invalid inside
+ * a method body, so both halves have to go where they belong.
+ *
+ * Returns nothing when the block has no trailing statements, so the ordinary
+ * shapes decide it.
+ */
+export function splitDeclarationsAndStatements(
+  code,
+  preamble,
+  extension,
+  base,
+  notes,
+) {
+  const lastEnd = code.lastIndexOf('@end');
+  if (lastEnd === -1) return [];
+
+  const declarations = code.slice(0, lastEnd + '@end'.length);
+  const statements = code.slice(lastEnd + '@end'.length);
+  if (!statements.trim()) return [];
+
+  return [
+    {
+      shape: 'declarations+statements',
+      source:
+        `${preamble}${declarations}\n\n${extension}@implementation ${base}\n` +
+        `- (void)__harnessRun {\n${indent(statements, 4)}\n}\n@end\n`,
+      notes: [
+        ...notes,
+        'block mixes declarations and statements; each half compiled where it belongs',
+      ],
+    },
+  ];
+}
+
 function objcCandidates(block, ctx, platform) {
   const notes = [];
   let code = block.code;
@@ -307,6 +344,7 @@ function objcCandidates(block, ctx, platform) {
       notes: [...notes, '`@end` appended to close the excerpt'],
     },
     { shape: 'file-level', source: `${preamble}${code}\n`, notes },
+    ...splitDeclarationsAndStatements(code, preamble, extension, base, notes),
     {
       shape: 'implementation-body',
       source: `${preamble}${extension}@implementation ${base}\n${code}\n@end\n`,

@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { bestAttempt, declaresSwift, resolveContext } from './check-apple.mjs';
+import {
+  bestAttempt,
+  declaresSwift,
+  resolveContext,
+  splitDeclarationsAndStatements,
+} from './check-apple.mjs';
 
 describe('declaresSwift', () => {
   it('recognises a real member declaration', () => {
@@ -158,5 +163,41 @@ describe('resolveContext', () => {
     expect(
       ctx.swift.members.find((m: Stub) => m.name === 'rtmKit')?.code,
     ).not.toContain('?');
+  });
+});
+
+describe('splitDeclarationsAndStatements', () => {
+  const args = ['PRE\n', 'EXT\n', 'Base', []] as const;
+
+  // The docs declare a listener class, then instantiate it and register it.
+  // The statements are invalid at file scope and the @interface is invalid in
+  // a method body, so neither half can carry the other.
+  it('sends declarations to file scope and statements to a method', () => {
+    const code = [
+      '@interface RtmListenerEx : NSObject',
+      '@end',
+      '',
+      'RtmListenerEx* handlerEx = [[RtmListenerEx alloc] init];',
+      '[rtm addDelegate:handlerEx];',
+    ].join('\n');
+
+    const [candidate] = splitDeclarationsAndStatements(code, ...args);
+
+    expect(candidate.shape).toBe('declarations+statements');
+    expect(candidate.source).toContain('@interface RtmListenerEx : NSObject');
+    expect(candidate.source).toContain('- (void)__harnessRun {');
+    expect(candidate.source.indexOf('@interface RtmListenerEx')).toBeLessThan(
+      candidate.source.indexOf('__harnessRun'),
+    );
+    expect(candidate.notes.join(' ')).toContain('mixes declarations');
+  });
+
+  it('declines a block with no trailing statements', () => {
+    const code = '@interface Foo : NSObject\n@end';
+    expect(splitDeclarationsAndStatements(code, ...args)).toEqual([]);
+  });
+
+  it('declines a block with no declarations at all', () => {
+    expect(splitDeclarationsAndStatements('[rtm login];', ...args)).toEqual([]);
   });
 });
