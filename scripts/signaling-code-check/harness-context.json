@@ -1,0 +1,107 @@
+{
+  "_comment": [
+    "Running-example context for the Signaling Apple code check.",
+    "The docs' per-step fragments assume the surrounding sample from the same page:",
+    "properties on the view model / view controller, and helper methods such as",
+    "addToMessageList. Declaring them here lets a fragment compile on its own.",
+    "",
+    "A stub is emitted ONLY when the block does not declare the same symbol itself,",
+    "so a block that defines `var rtmKit` is never flagged for redeclaration.",
+    "",
+    "Keep this list minimal. Every stub is a compile error the harness chooses not",
+    "to see, so anything added here should be a symbol the page genuinely defines",
+    "elsewhere, not a way to paper over a missing declaration in the docs."
+  ],
+
+  "swift": {
+    "imports": ["Foundation", "Combine", "SwiftUI", "UIKit", "AgoraRtmKit"],
+    "macosImports": [
+      "Foundation",
+      "Combine",
+      "SwiftUI",
+      "AppKit",
+      "AgoraRtmKit"
+    ],
+    "fileLevel": [
+      "struct Message: Identifiable, Equatable { let id = UUID(); var content: String = \"\" }"
+    ],
+    "members": [
+      { "name": "appid", "code": "var appid: String = \"\"" },
+      { "name": "token", "code": "var token: String = \"\"" },
+      { "name": "rtmKit", "code": "var rtmKit: AgoraRtmClientKit? = nil" },
+      { "name": "username", "code": "@Published var username: String = \"\"" },
+      { "name": "message", "code": "@Published var message: String = \"\"" },
+      { "name": "channel", "code": "@Published var channel: String = \"\"" },
+      { "name": "messages", "code": "@Published var messages: [Message] = []" },
+      {
+        "name": "addToMessageList",
+        "code": "func addToMessageList(str: String) {}"
+      },
+      { "name": "initializeEngine", "code": "func initializeEngine() {}" },
+      { "name": "login", "code": "func login() {}" },
+      { "name": "logout", "code": "func logout() {}" },
+      { "name": "subscribe", "code": "func subscribe() {}" },
+      { "name": "unsubscribe", "code": "func unsubscribe() {}" },
+      { "name": "sendMessage", "code": "func sendMessage() {}" }
+    ]
+  },
+
+  "objc": {
+    "imports": [
+      "<Foundation/Foundation.h>",
+      "<UIKit/UIKit.h>",
+      "<AgoraRtmKit/AgoraRtmKit.h>"
+    ],
+    "macosImports": [
+      "<Foundation/Foundation.h>",
+      "<AppKit/AppKit.h>",
+      "<AgoraRtmKit/AgoraRtmKit.h>"
+    ],
+    "baseClass": "ViewController",
+    "properties": [
+      {
+        "name": "kit",
+        "code": "@property (nonatomic, strong) AgoraRtmClientKit *kit;"
+      },
+      {
+        "name": "appID",
+        "code": "@property (nonatomic, strong) NSString *appID;"
+      },
+      {
+        "name": "token",
+        "code": "@property (nonatomic, strong) NSString *token;"
+      },
+      { "name": "uid", "code": "@property (nonatomic, strong) NSString *uid;" },
+      {
+        "name": "peerID",
+        "code": "@property (nonatomic, strong) NSString *peerID;"
+      },
+      {
+        "name": "channelID",
+        "code": "@property (nonatomic, strong) NSString *channelID;"
+      },
+      {
+        "name": "peerMsg",
+        "code": "@property (nonatomic, strong) NSString *peerMsg;"
+      },
+      {
+        "name": "channelMsg",
+        "code": "@property (nonatomic, strong) NSString *channelMsg;"
+      },
+      {
+        "name": "text",
+        "code": "@property (nonatomic, strong) NSString *text;"
+      },
+      {
+        "name": "textArray",
+        "code": "@property (nonatomic, strong) NSMutableArray *textArray;"
+      }
+    ],
+    "methods": [
+      {
+        "name": "AddMsgToRecord",
+        "code": "- (void)AddMsgToRecord:(NSString *)text;"
+      }
+    ]
+  }
+}
