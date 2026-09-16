@@ -239,6 +239,23 @@ describe('API Center scoped sidebars', () => {
     });
   });
 
+  it('keeps the Meeting RESTful API endpoints together in the API sidebar', async () => {
+    const payload = await loadApiReferencePayload([
+      'meeting',
+      'restful',
+      'api',
+      'create-room',
+    ]);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+
+    expect(titles).toEqual(['服务端 API', '创建房间', '查询录制列表']);
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: 'API 参考',
+      title: 'RESTful API',
+    });
+  });
+
   it('uses the Cloud Recording Go REST Client sidebar, not RESTful navigation', async () => {
     const sidebar = await loadApiReferenceSidebar([
       'cloud-recording',

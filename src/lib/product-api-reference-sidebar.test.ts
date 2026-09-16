@@ -441,18 +441,36 @@ describe('product API reference sidebar links', () => {
     return undefined;
   }
 
-  it('keeps ordinary API cross-links as page entries', async () => {
-    const sidebar = await loadSidebar('zh-CN', 'solutions', ['meeting']);
+  it('groups Meeting service API reference pages under a collapsed section', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['meeting']);
     const reference = findSection(sidebar, ['参考', '参考信息']);
-    const createRoom = reference?.children?.find(
-      (child) => child.title === '创建房间',
+    const serviceApi = reference?.children?.find(
+      (child) => child.title === '服务端 API',
     );
 
-    expect(createRoom).toMatchObject({
-      title: '创建房间',
-      type: 'page',
-      url: '/zh-CN/api-reference/meeting/restful/api/create-room',
+    expect(serviceApi).toMatchObject({
+      collapsible: true,
+      title: '服务端 API',
+      type: 'section',
     });
+    expect(serviceApi?.url).toBeUndefined();
+    expect(serviceApi?.children).toEqual([
+      expect.objectContaining({
+        title: '如何调用 API',
+        type: 'page',
+        url: '/zh-CN/realtime-media/meeting/reference/call-api',
+      }),
+      expect.objectContaining({
+        title: '创建房间',
+        type: 'page',
+        url: '/zh-CN/api-reference/meeting/restful/api/create-room?from=%2Fzh-CN%2Frealtime-media%2Fmeeting',
+      }),
+      expect.objectContaining({
+        title: '查询录制列表',
+        type: 'page',
+        url: '/zh-CN/api-reference/meeting/restful/api/query-recording?from=%2Fzh-CN%2Frealtime-media%2Fmeeting',
+      }),
+    ]);
   });
 
   it('does not add a client API link to products without a client API', async () => {
@@ -503,7 +521,6 @@ describe('product API reference sidebar links', () => {
       ['flexible-classroom'],
       '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
     ],
-    [['meeting'], '/zh-CN/api-reference/meeting/restful/api/create-room'],
     [
       ['online-ktv', 'ktv-scenario'],
       '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
@@ -515,8 +532,7 @@ describe('product API reference sidebar links', () => {
   ])(
     'reads the service API leaf from the Chinese %s product metadata',
     async (slugs, url) => {
-      const tab = slugs[0] === 'meeting' ? 'realtime-media' : 'solutions';
-      const sidebar = await loadSidebar('zh-CN', tab, slugs);
+      const sidebar = await loadSidebar('zh-CN', 'solutions', slugs);
       const restApiNode = findNode(sidebar, '服务端 API');
 
       expect(restApiNode).toMatchObject({
@@ -598,6 +614,48 @@ describe('product API reference sidebar links', () => {
       type: 'section',
     });
   });
+
+  it.each(['create-room', 'query-recording'])(
+    'keeps the Meeting product sidebar while loading the %s API document',
+    async (apiSlug) => {
+      const payload = await loadDocsPagePayload(
+        'zh-CN',
+        'api-reference',
+        ['meeting', 'restful', 'api', apiSlug],
+        '?from=%2Fzh-CN%2Frealtime-media%2Fmeeting',
+      );
+
+      if (!payload || 'redirectUrl' in payload) {
+        throw new Error('expected a Meeting API docs payload');
+      }
+
+      expect(payload.activePath).toBe(
+        `/zh-CN/api-reference/meeting/restful/api/${apiSlug}`,
+      );
+      expect(payload.activeTab).toBe('realtime-media');
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/realtime-media/overview',
+        backLabel: '实时互动',
+        title: '智能云会议引擎',
+      });
+      const reference = findSection(payload.sidebar, ['参考']);
+      const serviceApi = reference?.children?.find(
+        (child) => child.title === '服务端 API',
+      );
+
+      expect(serviceApi).toMatchObject({
+        collapsible: true,
+        type: 'section',
+      });
+      expect(
+        collectUrls(serviceApi?.children ?? []).some(
+          (url) =>
+            url === payload.activePath ||
+            url.startsWith(`${payload.activePath}?`),
+        ),
+      ).toBe(true);
+    },
+  );
 
   it('reads the service API leaf from Chinese AI engine metadata only', async () => {
     const sidebar = await loadSidebar('zh-CN', 'ai', []);
@@ -709,10 +767,6 @@ describe('product API reference sidebar links', () => {
     [
       'content/docs/zh-CN/solutions/flexible-classroom/reference/meta.json',
       '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
-    ],
-    [
-      'content/docs/zh-CN/realtime-media/meeting/reference/meta.json',
-      '/zh-CN/api-reference/meeting/restful/api/create-room',
     ],
     [
       'content/docs/zh-CN/solutions/online-ktv/ktv-scenario/reference/meta.json',
