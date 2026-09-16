@@ -154,10 +154,12 @@ export function extractBlocks(files, platform, langs) {
   for (const file of files) {
     blocks.push(...extractFromFile(resolve(file), platform, langs));
   }
-  blocks.forEach((block, index) => {
-    block.id = `${block.lang}-${String(index + 1).padStart(3, '0')}`;
-  });
-  return blocks;
+  // The id is part of the block rather than patched on afterwards, so the
+  // shape callers see is the shape the extractor declares.
+  return blocks.map((block, index) => ({
+    id: `${block.lang}-${String(index + 1).padStart(3, '0')}`,
+    ...block,
+  }));
 }
 
 function main() {

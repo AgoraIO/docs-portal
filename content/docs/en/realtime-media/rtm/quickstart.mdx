@@ -1368,11 +1368,9 @@ struct ContentView: View {
                 Button("Login") {
                     viewModel.login()
                 }
-                .buttonStyle(LoginButtonStyle())
                 Button("Logout") {
                     viewModel.logout()
                 }
-                .buttonStyle(LogoutButtonStyle())
             }
             TextField("Channel name", text: $viewModel.channel)
                 .padding()
@@ -1382,11 +1380,9 @@ struct ContentView: View {
                 Button("Subscribe") {
                     viewModel.subscribe()
                 }
-                .buttonStyle(SubscribeButtonStyle())
                 Button("Unsubscribe") {
                     viewModel.unsubscribe()
                 }
-                .buttonStyle(UnsubscribeButtonStyle())
             }
             TextField("Enter message", text: $viewModel.message)
                 .padding()
@@ -1395,7 +1391,6 @@ struct ContentView: View {
             Button("Send") {
                 viewModel.sendMessage()
             }
-            .buttonStyle(SendButtonStyle())
             // Display messages
             ScrollViewReader { scrollProxy in
                 List(viewModel.messages) { message in
@@ -1609,15 +1604,10 @@ class ChatViewModel: NSObject, ObservableObject, AgoraRtmClientDelegate {
     @Published var channel: String = ""
     @Published var messages: [Message] = []
 
-    override init() {
-        super.init()
-        initializeEngine()
-    }
-
-    // Initialization the engine
+    // Initialize the engine
     func initializeEngine() {
         if rtmKit == nil {
-            let config = AgoraRtmClientConfig(appId: appid)
+            let config = AgoraRtmClientConfig(appId: appid, userId: username)
             rtmKit = try? AgoraRtmClientKit(config, delegate: self)
         }
     }
@@ -1629,10 +1619,11 @@ class ChatViewModel: NSObject, ObservableObject, AgoraRtmClientDelegate {
             return
         }
 
-        let config = AgoraRtmClientConfig(appId: appid, userId: username)
-        rtmKit = try! AgoraRtmClientKit(config, delegate: self)
+        // The user ID is part of the client configuration, so create the
+        // client after the user enters a name.
+        initializeEngine()
 
-        rtmKit?.login(token, userId: username, completion: { response, error in
+        rtmKit?.login(token, completion: { response, error in
             if let error = error {
                 self.addToMessageList(str: "Login failed. Error code: \(error.errorCode.rawValue), reason: \(error.reason)")
             } else {
@@ -1749,7 +1740,6 @@ struct ContentView: View {
             Button("Send") {
                 viewModel.sendMessage()
             }
-            .buttonStyle(SendButtonStyle())
 
             // Display messages
             ScrollViewReader { scrollProxy in
@@ -1817,19 +1807,14 @@ struct ContentView_Previews: PreviewProvider {
 
 - (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
     NSLog(@"%@", self.text);
-    self.text = [NSString stringWithFormat:@"receive message
-From channel: %@
-publisher:%@
-message:%@
-", event.channelName, event.publisher, event.message.stringData];
+    self.text = [NSString stringWithFormat:@"receive message\nFrom channel: %@\npublisher: %@\nmessage: %@\n", event.channelName, event.publisher, event.message.stringData];
     [self AddMsgToRecord:(self.text)];
 }
 
 // Add message to the UI TextView
 - (void)AddMsgToRecord:(NSString*)text {
     [self.textArray addObject:(self.text)];
-    self.MsgTextView.text = [self.textArray componentsJoinedByString:(@"
-")];
+    self.MsgTextView.text = [self.textArray componentsJoinedByString:(@"\n")];
 }
 
 - (IBAction)Login:(id)sender {
@@ -1999,10 +1984,10 @@ Before calling any other Signaling SDK API, initialize an `AgoraRtmClientKit` ob
 <CodeBlockTab value="swift">
 
 ```swift
-// Initialization the engine
+// Initialize the engine
 func initializeEngine() {
     if rtmKit == nil {
-        let config = AgoraRtmClientConfig(appId: appid)
+        let config = AgoraRtmClientConfig(appId: appid, userId: username)
         rtmKit = try? AgoraRtmClientKit(config, delegate: self)
     }
 }
@@ -2050,8 +2035,7 @@ func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveLinkStateEvent event: AgoraRt
 }
 
 func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
-    addToMessageList(str: "Message received.
- channel: \(event.channelName), publisher: \(event.publisher),  message content: \(event.message.stringData!)")
+    addToMessageList(str: "Message received.\n channel: \(event.channelName), publisher: \(event.publisher), message content: \(event.message.stringData!)")
 }
 ```
 </CodeBlockTab>
@@ -2062,11 +2046,7 @@ func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmM
 // Add the event listener
 - (void)rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
     NSLog(@"%@", self.text);
-    self.text = [NSString stringWithFormat:@"receive message
-From channel: %@
-publisher:%@
-message:%@
-",event.channelName,event.publisher, event.message.stringData];
+    self.text = [NSString stringWithFormat:@"receive message\nFrom channel: %@\npublisher: %@\nmessage: %@\n", event.channelName, event.publisher, event.message.stringData];
     [self AddMsgToRecord:(self.text)];
 }
 ```
@@ -2097,10 +2077,11 @@ func login() {
         return
     }
 
-    let config = AgoraRtmClientConfig(appId: appid, userId: username)
-    rtmKit = try! AgoraRtmClientKit(config, delegate: self)
+    // The user ID is part of the client configuration, so create the
+    // client after the user enters a name.
+    initializeEngine()
 
-    rtmKit?.login(token, userId: username, completion: { response, error in
+    rtmKit?.login(token, completion: { response, error in
         if let error = error {
             self.addToMessageList(str: "Login failed. Error code: \(error.errorCode.rawValue), reason: \(error.reason)")
         } else {
@@ -2164,9 +2145,9 @@ func sendMessage() {
     guard !message.isEmpty, let rtmKit = rtmKit else { return }
     rtmKit.publish(channelName: channel, message: message, option: nil) { response, error in
         if let error = error {
-            self.addToMessageList(str: "Publish failed. Error code: (error.errorCode.rawValue), reason: (error.reason)")
+            self.addToMessageList(str: "Publish failed. Error code: \(error.errorCode.rawValue), reason: \(error.reason)")
         } else {
-            self.addToMessageList(str: "Message published to channel: (self.channel) successfully.")
+            self.addToMessageList(str: "Message published to channel: \(self.channel) successfully.")
         }
     }
     message = ""
@@ -2211,9 +2192,9 @@ func subscribe() {
     guard let rtmKit = rtmKit else { return }
     rtmKit.subscribe(channelName: channel, option: nil) { response, error in
         if let error = error {
-            self.addToMessageList(str: "Subscribe to channel '(self.channel)' failed. Error code: (error.errorCode.rawValue), reason: (error.reason)")
+            self.addToMessageList(str: "Subscribe to channel '\(self.channel)' failed. Error code: \(error.errorCode.rawValue), reason: \(error.reason)")
         } else {
-            self.addToMessageList(str: "Subscribed to channel: (self.channel) successfully.")
+            self.addToMessageList(str: "Subscribed to channel: \(self.channel) successfully.")
         }
     }
 }
@@ -2257,9 +2238,9 @@ func unsubscribe() {
     guard let rtmKit = rtmKit else { return }
     rtmKit.unsubscribe(channel) { response, error in
         if let error = error {
-            self.addToMessageList(str: "Unsubscribe from channel '(self.channel)' failed. Error code: (error.errorCode.rawValue), reason: (error.reason)")
+            self.addToMessageList(str: "Unsubscribe from channel '\(self.channel)' failed. Error code: \(error.errorCode.rawValue), reason: \(error.reason)")
         } else {
-            self.addToMessageList(str: "Unsubscribed from channel: (self.channel) successfully.")
+            self.addToMessageList(str: "Unsubscribed from channel: \(self.channel) successfully.")
         }
     }
 }
