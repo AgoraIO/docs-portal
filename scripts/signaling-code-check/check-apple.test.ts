@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bestAttempt, declaresSwift } from './check-apple.mjs';
+import { bestAttempt, declaresSwift, resolveContext } from './check-apple.mjs';
 
 describe('declaresSwift', () => {
   it('recognises a real member declaration', () => {
@@ -67,5 +67,96 @@ describe('bestAttempt', () => {
 
   it('returns null for an empty attempt list', () => {
     expect(bestAttempt([])).toBe(null);
+  });
+});
+
+type Stub = { name: string; code: string };
+
+describe('resolveContext', () => {
+  const base = {
+    swift: {
+      members: [
+        { name: 'rtmKit', code: 'var rtmKit: AgoraRtmClientKit? = nil' },
+        { name: 'token', code: 'var token: String = ""' },
+      ],
+      fileLevel: ['struct Message {}'],
+    },
+    objc: { ivars: [{ name: 'rtm', code: 'AgoraRtmClientKit *rtm;' }] },
+    overrides: [
+      {
+        match: 'rtm/build/',
+        swift: {
+          members: [
+            { name: 'rtmKit', code: 'var rtmKit: AgoraRtmClientKit = x' },
+            { name: 'handler', code: 'var handler = RtmListener()' },
+          ],
+          fileLevel: ['final class RtmListener {}'],
+        },
+      },
+    ],
+  };
+
+  it('leaves a non-matching file on the base context', () => {
+    const ctx = resolveContext(
+      base,
+      'content/docs/en/realtime-media/rtm/quickstart.mdx',
+    );
+    expect(
+      ctx.swift.members.find((m: Stub) => m.name === 'rtmKit')?.code,
+    ).toContain('?');
+    expect(ctx.swift.members).toHaveLength(2);
+  });
+
+  // The guide pages call the client without unwrapping; the quickstart's own
+  // optional would misreport every one of those blocks.
+  it('replaces a stub by name for a matching file', () => {
+    const ctx = resolveContext(
+      base,
+      'content/docs/en/realtime-media/rtm/build/x.mdx',
+    );
+    expect(
+      ctx.swift.members.find((m: Stub) => m.name === 'rtmKit')?.code,
+    ).not.toContain('?');
+  });
+
+  it('appends stubs the base context did not have', () => {
+    const ctx = resolveContext(
+      base,
+      'content/docs/en/realtime-media/rtm/build/x.mdx',
+    );
+    expect(ctx.swift.members.map((m: Stub) => m.name)).toEqual([
+      'rtmKit',
+      'token',
+      'handler',
+    ]);
+  });
+
+  it('accumulates plain-string declaration lists', () => {
+    const ctx = resolveContext(
+      base,
+      'content/docs/en/realtime-media/rtm/build/x.mdx',
+    );
+    expect(ctx.swift.fileLevel).toEqual([
+      'struct Message {}',
+      'final class RtmListener {}',
+    ]);
+  });
+
+  it('does not mutate the base context', () => {
+    resolveContext(base, 'content/docs/en/realtime-media/rtm/build/x.mdx');
+    expect(
+      base.swift.members.find((m: Stub) => m.name === 'rtmKit')?.code,
+    ).toContain('?');
+    expect(base.swift.fileLevel).toHaveLength(1);
+  });
+
+  it('normalises Windows path separators', () => {
+    const ctx = resolveContext(
+      base,
+      String.raw`content\docs\en\realtime-media\rtm\build\x.mdx`,
+    );
+    expect(
+      ctx.swift.members.find((m: Stub) => m.name === 'rtmKit')?.code,
+    ).not.toContain('?');
   });
 });

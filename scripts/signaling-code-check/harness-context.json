@@ -121,5 +121,76 @@
         "code": "- (void)AddMsgToRecord:(NSString *)text;"
       }
     ]
-  }
+  },
+
+  "_overridesComment": [
+    "The quickstart and the build/ guide pages do not share a running example.",
+    "The quickstart builds its own view model, where rtmKit is a genuine",
+    "optional. The guide pages assume a client the reader already created and",
+    "call it without unwrapping, and they carry a stream channel and a listener",
+    "object that sibling pages define. Neither page is wrong, so the context is",
+    "layered per page rather than forced into one shape."
+  ],
+  "overrides": [
+    {
+      "match": "realtime-media/rtm/build/",
+      "swift": {
+        "fileLevel": [
+          "final class RtmListener: NSObject, AgoraRtmClientDelegate {}"
+        ],
+        "members": [
+          {
+            "name": "rtmKit",
+            "code": "var rtmKit: AgoraRtmClientKit = __harnessPlaceholder()"
+          },
+          {
+            "name": "stream_channel",
+            "code": "var stream_channel: AgoraRtmStreamChannel = __harnessPlaceholder()"
+          },
+          {
+            "name": "streamChannel",
+            "code": "var streamChannel: AgoraRtmStreamChannel = __harnessPlaceholder()"
+          },
+          {
+            "name": "handler",
+            "code": "var handler: RtmListener = RtmListener()"
+          },
+          {
+            "name": "handlerEx",
+            "code": "var handlerEx: RtmListener = RtmListener()"
+          },
+          {
+            "name": "listener",
+            "code": "var listener: RtmListener = RtmListener()"
+          },
+          {
+            "name": "listenerEx",
+            "code": "var listenerEx: RtmListener = RtmListener()"
+          }
+        ]
+      },
+      "objc": {
+        "fileLevel": [
+          {
+            "name": "RtmListener",
+            "code": "@interface RtmListener : NSObject <AgoraRtmClientDelegate>\n@end"
+          }
+        ],
+        "ivars": [
+          {
+            "name": "stream_channel",
+            "code": "AgoraRtmStreamChannel *stream_channel;"
+          },
+          {
+            "name": "streamChannel",
+            "code": "AgoraRtmStreamChannel *streamChannel;"
+          },
+          { "name": "handler", "code": "RtmListener *handler;" },
+          { "name": "handlerEx", "code": "RtmListener *handlerEx;" },
+          { "name": "listener", "code": "RtmListener *listener;" },
+          { "name": "listenerEx", "code": "RtmListener *listenerEx;" }
+        ]
+      }
+    }
+  ]
 }

@@ -154,6 +154,48 @@ function stubNote(stubs, code) {
   return used.length ? [`relied on harness stubs for: ${used.join(', ')}`] : [];
 }
 
+/**
+ * Resolve the running-example context for one file.
+ *
+ * The quickstart and the guide pages do not share a running example. The
+ * quickstart builds its own view model, where `rtmKit` is a genuine optional;
+ * the guide pages assume a client the reader already has and call it without
+ * unwrapping. Neither is wrong, so the context is layered per page rather than
+ * forced into one shape that would misreport whichever page lost.
+ */
+export function resolveContext(ctx, file) {
+  const path = file.split('\\').join('/');
+  let resolved = ctx;
+
+  for (const override of ctx.overrides ?? []) {
+    if (!path.includes(override.match)) continue;
+    resolved = structuredClone(resolved);
+    for (const lang of ['swift', 'objc']) {
+      for (const [key, entries] of Object.entries(override[lang] ?? {})) {
+        const base = resolved[lang][key] ?? [];
+        // Plain-string lists, such as fileLevel declarations, have no key to
+        // merge on, so they simply accumulate.
+        if (entries.some((entry) => typeof entry === 'string')) {
+          resolved[lang][key] = [...base, ...entries];
+          continue;
+        }
+        // Replace by name so an override can change a stub's type, and append
+        // anything the base list did not have.
+        const merged = base.map(
+          (item) => entries.find((e) => e.name === item.name) ?? item,
+        );
+        const names = new Set(base.map((item) => item.name));
+        resolved[lang][key] = [
+          ...merged,
+          ...entries.filter((e) => !names.has(e.name)),
+        ];
+      }
+    }
+  }
+
+  return resolved;
+}
+
 function swiftCandidates(block, ctx, platform) {
   const notes = [];
   let code = block.code;
@@ -234,7 +276,17 @@ function objcCandidates(block, ctx, platform) {
   );
   notes.push(...stubNote([...ivars, ...properties, ...methods], code));
 
-  const preamble = [imports, `#import "${base}.h"`, ''].join('\n');
+  // A page that declares the listener class itself wins; the harness copy is
+  // only there for the pages that use it without repeating the declaration.
+  const fileLevel = (ctx.objc.fileLevel ?? []).filter(
+    (decl) => !new RegExp(`@interface\\s+${decl.name}\\b`).test(code),
+  );
+  const preamble = [
+    imports,
+    `#import "${base}.h"`,
+    ...fileLevel.map((decl) => decl.code),
+    '',
+  ].join('\n');
   const extension = [
     `@interface ${base} () <AgoraRtmClientDelegate> {`,
     ...ivars.map((v) => `    ${v.code}`),
@@ -501,8 +553,8 @@ function main() {
   for (const block of blocks) {
     const candidates =
       block.lang === 'swift'
-        ? swiftCandidates(block, ctx, target)
-        : objcCandidates(block, ctx, target);
+        ? swiftCandidates(block, resolveContext(ctx, block.file), target)
+        : objcCandidates(block, resolveContext(ctx, block.file), target);
     const ext = block.lang === 'swift' ? 'swift' : 'm';
     const attempts = [];
     let passed = null;
