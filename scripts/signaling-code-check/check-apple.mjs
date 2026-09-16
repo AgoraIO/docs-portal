@@ -670,15 +670,16 @@ function main() {
       }
     }
 
-    // A block the docs label as pre-2.x is expected not to build against the
-    // current SDK. It is still compiled, because a legacy block that passes is
-    // worth knowing about, but it never counts as a defect.
+    // A block the docs mark as a signature listing or as pre-2.x is not a
+    // candidate for compilation. It is still compiled, because such a block
+    // unexpectedly passing is worth knowing about, but it never counts as a
+    // defect.
     const status = opts.dryRun
       ? 'skipped'
       : passed
         ? 'pass'
-        : block.legacy
-          ? 'legacy'
+        : block.excluded
+          ? 'excluded'
           : 'fail';
 
     results.push({
@@ -687,7 +688,7 @@ function main() {
       file: block.file,
       lines: `${block.startLine}-${block.endLine}`,
       status,
-      legacy: block.legacy ?? null,
+      excluded: block.excluded ?? null,
       shape: passed?.shape ?? null,
       notes: passed?.notes ?? [],
       diagnostics: passed ? '' : bestDiagnostics(attempts, stubNames),
@@ -699,8 +700,8 @@ function main() {
 
     if (!opts.dryRun) {
       const mark =
-        status === 'pass' ? 'PASS' : status === 'legacy' ? 'LEGACY' : 'FAIL';
-      const detail = passed?.shape ?? (block.legacy ? `pre-2.x sample` : '');
+        status === 'pass' ? 'PASS' : status === 'excluded' ? 'SKIP' : 'FAIL';
+      const detail = passed?.shape ?? block.excluded ?? '';
       console.log(
         `${mark}  ${block.id}  ${block.file}:${block.startLine}  ${detail}`,
       );
@@ -709,16 +710,17 @@ function main() {
 
   const pass = results.filter((r) => r.status === 'pass').length;
   const fail = results.filter((r) => r.status === 'fail').length;
-  const legacy = results.filter((r) => r.status === 'legacy').length;
-  // Legacy blocks leave the denominator entirely: they document the old API on
-  // purpose, so neither passing nor failing is a verdict on the docs.
+  const excluded = results.filter((r) => r.status === 'excluded').length;
+  // Excluded blocks leave the denominator entirely: a signature listing or a
+  // pre-2.x sample is there on purpose, so neither passing nor failing is a
+  // verdict on the docs.
   const report = {
     platform: target,
     total: results.length,
-    judged: results.length - legacy,
+    judged: results.length - excluded,
     pass,
     fail,
-    legacy,
+    excluded,
     results,
   };
 
@@ -735,7 +737,7 @@ function main() {
 
   console.log(
     `\n${pass}/${report.judged} blocks compile (${fail} failing` +
-      `${legacy ? `, ${legacy} pre-2.x samples not judged` : ''})`,
+      `${excluded ? `, ${excluded} not judged` : ''})`,
   );
   if (!opts.keep) rmSync(work, { recursive: true, force: true });
   // A failing block is a finding to triage, not a broken harness, so the run
@@ -748,10 +750,10 @@ function renderSummary(report) {
     `# Signaling ${report.platform} code check`,
     '',
     `**${report.pass}/${report.judged} blocks compile** against the real SDK (${report.fail} failing).`,
-    ...(report.legacy
+    ...(report.excluded
       ? [
           '',
-          `${report.legacy} further blocks document the pre-2.x API and are not judged against this SDK.`,
+          `${report.excluded} further blocks are signature listings or pre-2.x samples, not judged against this SDK.`,
         ]
       : []),
     '',

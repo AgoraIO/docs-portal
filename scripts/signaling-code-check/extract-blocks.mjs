@@ -41,6 +41,7 @@ function legacyMarkerOf(code) {
   return null;
 }
 
+const HEADING = /^(#{1,6})\s+(.*?)\s*$/;
 const PLATFORM_OPEN = /^\s*<PlatformStructured\s+platform="([^"]+)"/;
 const PLATFORM_CLOSE = /^\s*<\/PlatformStructured>/;
 const FENCE = /^(\s*)(`{3,}|~{3,})\s*([A-Za-z0-9_+-]*)/;
@@ -51,6 +52,7 @@ function parseArgs(argv) {
     langs: null,
     out: null,
     wholeFile: false,
+    listingHeadings: [],
     files: [],
   };
   for (let i = 0; i < argv.length; i += 1) {
@@ -60,6 +62,8 @@ function parseArgs(argv) {
       opts.langs = argv[++i].split(',').map((l) => l.trim());
     else if (arg === '--out') opts.out = argv[++i];
     else if (arg === '--whole-file') opts.wholeFile = true;
+    else if (arg === '--listing-headings')
+      opts.listingHeadings = argv[++i].split(',').map((h) => h.trim());
     else if (arg.startsWith('--')) throw new Error(`Unknown flag: ${arg}`);
     else opts.files.push(arg);
   }
@@ -88,6 +92,7 @@ function extractFromFile(path, platform, langs, wholeFile = false) {
   const blocks = [];
   const platformStack = [];
   let fence = null;
+  let heading = null;
 
   for (let i = 0; i < lines.length; i += 1) {
     const line = lines[i];
@@ -108,6 +113,7 @@ function extractFromFile(path, platform, langs, wholeFile = false) {
           lang: fence.lang,
           startLine: fence.startLine,
           endLine: i + 1,
+          heading: fence.heading,
           code: fence.body.join('\n'),
         });
         fence = null;
@@ -133,6 +139,7 @@ function extractFromFile(path, platform, langs, wholeFile = false) {
           lang: fenceMatch[3],
           platform: wholeFile ? platform : current,
           startLine: i + 1,
+          heading,
           body: [],
         };
       } else if (fenceMatch[3]) {
@@ -165,6 +172,12 @@ function extractFromFile(path, platform, langs, wholeFile = false) {
       continue;
     }
 
+    const headingMatch = HEADING.exec(line);
+    if (headingMatch) {
+      heading = headingMatch[2];
+      continue;
+    }
+
     const open = PLATFORM_OPEN.exec(line);
     if (open) {
       platformStack.push(open[1]);
@@ -184,7 +197,29 @@ function extractFromFile(path, platform, langs, wholeFile = false) {
   return blocks;
 }
 
-export function extractBlocks(files, platform, langs, wholeFile = false) {
+/**
+ * Why a block is not a candidate for compilation.
+ *
+ * Both kinds exist on purpose, so counting them as failures would report the
+ * documentation's own conventions as defects. The Unity pass miscounted 17
+ * signature listings as failures before they were reclassified, which is the
+ * mistake this exists to prevent.
+ */
+function exclusionFor(block, listingHeadings) {
+  if (listingHeadings.includes(block.heading)) {
+    return `signature listing under "${block.heading}"`;
+  }
+  const legacy = legacyMarkerOf(block.code);
+  return legacy ? `pre-2.x sample (${legacy})` : null;
+}
+
+export function extractBlocks(
+  files,
+  platform,
+  langs,
+  wholeFile = false,
+  listingHeadings = [],
+) {
   const blocks = [];
   for (const file of files) {
     blocks.push(...extractFromFile(resolve(file), platform, langs, wholeFile));
@@ -192,11 +227,11 @@ export function extractBlocks(files, platform, langs, wholeFile = false) {
   // The id is part of the block rather than patched on afterwards, so the
   // shape callers see is the shape the extractor declares.
   return blocks.map((block, index) => {
-    const legacy = legacyMarkerOf(block.code);
+    const excluded = exclusionFor(block, listingHeadings);
     return {
       id: `${block.lang}-${String(index + 1).padStart(3, '0')}`,
       ...block,
-      ...(legacy ? { legacy } : {}),
+      ...(excluded ? { excluded } : {}),
     };
   });
 }
@@ -208,6 +243,7 @@ function main() {
     opts.platform,
     opts.langs,
     opts.wholeFile,
+    opts.listingHeadings,
   );
 
   const payload = { platform: opts.platform, langs: opts.langs, blocks };

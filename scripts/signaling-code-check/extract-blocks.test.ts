@@ -159,7 +159,7 @@ describe('extractBlocks', () => {
   });
 });
 
-describe('legacy marking', () => {
+describe('exclusions', () => {
   async function extractOne(code: string) {
     const file = await writeFixture(
       [
@@ -178,28 +178,57 @@ describe('legacy marking', () => {
   // half against the current SDK would report the page's whole purpose as a
   // defect.
   it('marks a block the docs label as pre-2.x', async () => {
-    expect((await extractOne('// 1.x\n[kit sendMessage:m];')).legacy).toBe(
-      '1.x',
-    );
-    expect((await extractOne('// Before v2.2.1\nlet x = 1;')).legacy).toBe(
-      'Before v2',
-    );
+    expect(
+      (await extractOne('// 1.x\n[kit sendMessage:m];')).excluded,
+    ).toContain('1.x');
+    expect(
+      (await extractOne('// Before v2.2.1\nlet x = 1;')).excluded,
+    ).toContain('Before v2');
   });
 
   it('leaves current code unmarked', async () => {
     expect(
-      (await extractOne('// 2.x\n[rtm publish:m];')).legacy,
+      (await extractOne('// 2.x\n[rtm publish:m];')).excluded,
     ).toBeUndefined();
     expect(
-      (await extractOne('// v2.2.1 and later\n[rtm publish:m];')).legacy,
+      (await extractOne('// v2.2.1 and later\n[rtm publish:m];')).excluded,
     ).toBeUndefined();
-    expect((await extractOne('[rtm publish:m];')).legacy).toBeUndefined();
+    expect((await extractOne('[rtm publish:m];')).excluded).toBeUndefined();
   });
 
   it('only considers the first non-empty line', async () => {
     const block = await extractOne(
       '[rtm publish:m];\n// 1.x did it differently',
     );
-    expect(block.legacy).toBeUndefined();
+    expect(block.excluded).toBeUndefined();
+  });
+
+  // The api-ref pages put signature listings under "Method" and real samples
+  // under "Basic usage". 79 of ios.mdx's 167 Swift blocks are listings, so
+  // judging them would make the number meaningless.
+  it('excludes blocks under a listing heading', async () => {
+    const file = await writeFixture(
+      [
+        '#### Method',
+        '```swift',
+        'login(_ token: String?) async -> (Response?, Error?)',
+        '```',
+        '',
+        '#### Basic usage',
+        '```swift',
+        'let (response, error) = await rtm.login("token")',
+        '```',
+        '',
+      ].join('\n'),
+    );
+
+    const blocks = extractBlocks(file ? [file] : [], 'ios', ['swift'], true, [
+      'Method',
+    ]);
+
+    expect(blocks[0].heading).toBe('Method');
+    expect(blocks[0].excluded).toContain('signature listing');
+    expect(blocks[1].heading).toBe('Basic usage');
+    expect(blocks[1].excluded).toBeUndefined();
   });
 });
