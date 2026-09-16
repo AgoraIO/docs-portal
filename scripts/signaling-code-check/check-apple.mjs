@@ -29,7 +29,7 @@ import {
   writeFileSync,
 } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 
@@ -114,10 +114,23 @@ function frameworkSearchPaths(root, platform) {
 
 const PLACEHOLDER = /<#([^#]*)#>/g;
 
-function declaresSwift(code, name) {
-  return new RegExp(`\\b(?:var|let|func|struct|class|enum)\\s+${name}\\b`).test(
-    code,
+// `if let rtmKit = rtmKit` and `guard let rtmKit = rtmKit else` bind a local
+// that shadows the member; they do not declare it. Treating them as a
+// declaration suppresses the stub the block actually needs, and the block then
+// fails with a misleading "cannot find 'rtmKit' in scope".
+const SWIFT_BINDING_CONTEXT = /\b(?:if|guard|while|for|case|catch)\b[^;{}]*$/;
+
+export function declaresSwift(code, name) {
+  const pattern = new RegExp(
+    `\\b(?:var|let|func|struct|class|enum)\\s+${name}\\b`,
+    'g',
   );
+  for (const match of code.matchAll(pattern)) {
+    const lineStart = code.lastIndexOf('\n', match.index) + 1;
+    const before = code.slice(lineStart, match.index);
+    if (!SWIFT_BINDING_CONTEXT.test(before)) return true;
+  }
+  return false;
 }
 
 function declaresObjcProperty(code, name) {
@@ -318,6 +331,33 @@ function summarizeDiagnostics(text) {
 }
 
 /**
+ * Pick the attempt whose diagnostics describe the block's real problem.
+ *
+ * The last shape tried is the most permissive one, so reporting it buries the
+ * answer under wrapping noise: a method definition forced into a method body
+ * reports "unexpected '@' in program" rather than the string literal that
+ * actually broke. The shape that got furthest produces the fewest errors.
+ */
+export function bestAttempt(attempts) {
+  const failures = attempts.filter((attempt) => !attempt.ok);
+  if (!failures.length) return null;
+  return failures.reduce((best, attempt) =>
+    errorCount(attempt.diagnostics) < errorCount(best.diagnostics)
+      ? attempt
+      : best,
+  );
+}
+
+function errorCount(diagnostics) {
+  return diagnostics.split('\n').filter((line) => line.includes('error:'))
+    .length;
+}
+
+function bestDiagnostics(attempts) {
+  return bestAttempt(attempts)?.diagnostics ?? '';
+}
+
+/**
  * Prove the framework is reachable from both compilers before judging any doc
  * sample. Without this, a wrong `-F` path would fail every block and read as
  * twenty documentation bugs.
@@ -444,11 +484,8 @@ function main() {
       status: opts.dryRun ? 'skipped' : passed ? 'pass' : 'fail',
       shape: passed?.shape ?? null,
       notes: passed?.notes ?? [],
-      // On failure the most informative attempt is the last one tried, which is
-      // the most permissive wrapping.
-      diagnostics: passed
-        ? ''
-        : (attempts[attempts.length - 1]?.diagnostics ?? ''),
+      diagnostics: passed ? '' : bestDiagnostics(attempts),
+      shapeDiagnosed: passed ? null : (bestAttempt(attempts)?.shape ?? null),
       attempts,
     });
 
@@ -511,6 +548,8 @@ function renderSummary(report) {
       lines.push(
         `### \`${r.id}\` — ${r.file}:${r.lines}`,
         '',
+        `Diagnostics from the \`${r.shapeDiagnosed ?? 'unknown'}\` shape, the wrapping that got furthest.`,
+        '',
         '```',
         r.diagnostics || '(no diagnostics)',
         '```',
@@ -529,4 +568,6 @@ function renderSummary(report) {
   return `${lines.join('\n')}\n`;
 }
 
-main();
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}
