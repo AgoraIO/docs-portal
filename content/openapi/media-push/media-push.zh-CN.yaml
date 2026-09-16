@@ -25,7 +25,7 @@ info:
     > 请确保声网频道的场景为直播，而非通信，否则旁路推流会失败。
 
 
-    为方便你监听旁路推流的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-push/build/monitor-events/enable-ncs)。开通该服务后，你可以通过
+    为方便你监听旁路推流的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs)。开通该服务后，你可以通过
     Webhook 接收如下事件：
 
 
@@ -323,13 +323,13 @@ paths:
 
 
             -
-            [设置不转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-no-transcode)
+            [设置不转码推流](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-no-transcode)
 
-            - [设置转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/update-transcode)
+            - [设置转码推流](/zh-CN/realtime-media/media-push/build/configure-media-stream/update-transcode)
 
-            - [设置混音音量](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume)
+            - [设置混音音量](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-volume)
 
-            - [设置 SEI 信息](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei)
+            - [设置 SEI 信息](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei)
   /{region}/v1/projects/{appId}/rtmp-converters/{converterId}:
     delete:
       summary: 销毁指定 Converter
@@ -513,13 +513,13 @@ paths:
 
 
             -
-            [更新不转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-no-transcode)
+            [更新不转码推流](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-no-transcode)
 
-            - [更新转码推流](/zh-CN/realtime-media/media-push/build/manage-media-streams/update-transcode)
+            - [更新转码推流](/zh-CN/realtime-media/media-push/build/configure-media-stream/update-transcode)
 
-            - [更新混音音量](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume)
+            - [更新混音音量](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-volume)
 
-            - [更新 SEI 信息](/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei)
+            - [更新 SEI 信息](/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei)
     get:
       summary: 获取指定 Converter 的推流状态
       description: 获取指定 Converter 的推流状态。
@@ -749,7 +749,7 @@ components:
       description: >-
         声网旁路推流 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的
         `Authorization` 字段中。详见[实现 HTTP
-        基本认证](/zh-CN/realtime-media/media-push/build/setup-and-access/http-basic-auth)。
+        基本认证](/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth)。
       scheme: basic
   responses:
     failure-message:
@@ -1215,7 +1215,7 @@ components:
         - `0` 或空：自定义布局，即通过 `layout` 自定义布局。
 
         - `1`：垂直布局，即通过 `vertical`
-        指定一个用户在屏幕左侧显示大视窗画面，其他用户以小视窗画面在屏幕右侧垂直排列，详见[设置垂直布局](/zh-CN/realtime-media/media-push/build/manage-media-streams/vertical-streaming)。垂直布局时，通过
+        指定一个用户在屏幕左侧显示大视窗画面，其他用户以小视窗画面在屏幕右侧垂直排列，详见[设置垂直布局](/zh-CN/realtime-media/media-push/build/configure-media-stream/vertical-streaming)。垂直布局时，通过
         `Update` 请求只能更新 `rtmpUrl`。
       default: 0
       x-stoplight:

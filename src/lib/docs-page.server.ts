@@ -71,7 +71,11 @@ import {
   getPageMarkdownUrl,
   type PageWithSource,
 } from './source.server';
-import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
+import {
+  resolveZhCnProductIaRedirect,
+  ZH_CN_PRODUCT_IA_REDIRECTS,
+  ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+} from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
 const ZH_CN_RTM_REST_API_PARENT_URL = '/zh-CN/api-reference/api-ref/signaling';
@@ -86,6 +90,17 @@ const ZH_CN_RTM_REST_API_BACK_LINK = {
   backHref: '/zh-CN/realtime-media/rtm',
   backLabel: '实时消息 RTM',
 };
+const ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES = [
+  '/zh-CN/realtime-media/rtm/build/rtm-initialization/',
+  '/zh-CN/realtime-media/rtm/build/authentication-and-connection/',
+  '/zh-CN/realtime-media/rtm/build/channels-and-topics/',
+  '/zh-CN/realtime-media/rtm/build/messaging/',
+  '/zh-CN/realtime-media/rtm/build/message-design-and-history/',
+  '/zh-CN/realtime-media/rtm/build/state-and-attributes/',
+  '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/',
+] as const;
+const ZH_CN_RTM_TROUBLESHOOTING_REDIRECT =
+  '/zh-CN/realtime-media/rtm/build/troubleshooting';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
@@ -522,9 +537,19 @@ export async function loadDocsPagePayload(
     slugSegments,
   );
   if (zhCnProductIaRedirect) {
-    return {
-      redirectUrl: zhCnProductIaRedirect,
-    };
+    const path = `${tab}/${slugSegments.join('/')}`;
+    const statusCode: 301 | undefined =
+      path in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS ||
+      path in ZH_CN_PRODUCT_IA_REDIRECTS ||
+      isZhCnRtmBuildIaRedirect(zhCnProductIaRedirect)
+        ? 301
+        : undefined;
+
+    if (statusCode === undefined) {
+      return { redirectUrl: zhCnProductIaRedirect };
+    }
+
+    return { redirectUrl: zhCnProductIaRedirect, statusCode };
   }
 
   const realtimeMediaApiReferenceRedirect =
@@ -1408,12 +1433,25 @@ export function resolveLegacySitemapRedirect(
   const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
   const rule = resolveLegacySitemapRedirectPath(legacyPath, search);
 
-  return rule
-    ? {
-        preserveSearch: rule.preserveSearch,
-        redirectUrl: rule.target,
-      }
+  if (!rule) {
+    return null;
+  }
+
+  const zhCnProductPath = legacyPath.startsWith('/zh-CN/')
+    ? legacyPath.slice('/zh-CN/'.length)
     : null;
+
+  if (
+    zhCnProductPath &&
+    zhCnProductPath in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS
+  ) {
+    return { redirectUrl: rule.target, statusCode: 301 as const };
+  }
+
+  return {
+    preserveSearch: rule.preserveSearch,
+    redirectUrl: rule.target,
+  };
 }
 
 function resolveRealtimeMediaRedirect(
@@ -1476,6 +1514,15 @@ function resolveRealtimeMediaRedirect(
   };
 
   return redirects[normalizedPath] ?? null;
+}
+
+function isZhCnRtmBuildIaRedirect(redirectUrl: string) {
+  return (
+    redirectUrl === ZH_CN_RTM_TROUBLESHOOTING_REDIRECT ||
+    ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
+      redirectUrl.startsWith(prefix),
+    )
+  );
 }
 
 function resolveRealtimeMediaApiReferenceRedirect(
@@ -1711,6 +1758,7 @@ export type DocsPagePayload = Exclude<
 export type DocsRedirectPayload = {
   preserveSearch?: boolean;
   redirectUrl: string;
+  statusCode?: 301 | 307 | 308;
 };
 
 async function readProcessedText(page: PageWithSource) {

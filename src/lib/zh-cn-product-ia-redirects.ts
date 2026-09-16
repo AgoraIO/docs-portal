@@ -21,9 +21,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/fusion-cdn/api/reference':
     '/zh-CN/realtime-media/fusion-cdn/reference/api-reference',
   'realtime-media/fusion-cdn/best-practices/rest-availability':
-    '/zh-CN/realtime-media/fusion-cdn/build/optimize-and-operate/rest-availability',
+    '/zh-CN/realtime-media/fusion-cdn/build/rest-availability',
   'realtime-media/fusion-cdn/get-started/enable-service':
-    '/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/fusion-cdn/build/enable-service',
   'realtime-media/fusion-cdn/overview/billing':
     '/zh-CN/realtime-media/fusion-cdn/reference/billing',
   'realtime-media/fusion-cdn/overview/product-overview':
@@ -33,17 +33,17 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/fusion-cdn/response-code':
     '/zh-CN/realtime-media/fusion-cdn/reference/response-code',
   'realtime-media/fusion-cdn/user-guides/analytics':
-    '/zh-CN/realtime-media/fusion-cdn/build/optimize-and-operate/analytics',
+    '/zh-CN/realtime-media/fusion-cdn/build/analytics',
   'realtime-media/fusion-cdn/user-guides/http-hmac-auth':
-    '/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/http-hmac-auth',
+    '/zh-CN/realtime-media/fusion-cdn/build/http-hmac-auth',
   'realtime-media/fusion-cdn/user-guides/obs-config':
-    '/zh-CN/realtime-media/fusion-cdn/build/setup-and-access/obs-config',
+    '/zh-CN/realtime-media/fusion-cdn/build/obs-config',
   'realtime-media/fusion-cdn/user-guides/stream-recording':
-    '/zh-CN/realtime-media/fusion-cdn/build/optimize-and-operate/stream-recording',
+    '/zh-CN/realtime-media/fusion-cdn/build/stream-recording',
   'realtime-media/fusion-cdn/user-guides/streaming-url':
-    '/zh-CN/realtime-media/fusion-cdn/build/manage-media-streams/streaming-url',
+    '/zh-CN/realtime-media/fusion-cdn/build/streaming-url',
   'realtime-media/fusion-cdn/webhook/enable-ncs':
-    '/zh-CN/realtime-media/fusion-cdn/build/monitor-events/enable-ncs',
+    '/zh-CN/realtime-media/fusion-cdn/build/enable-ncs',
   'realtime-media/fusion-cdn/webhook/ncs-event':
     '/zh-CN/realtime-media/fusion-cdn/reference/ncs-event',
   'realtime-media/marketplace/create-extensions/audio-filter':
@@ -95,15 +95,15 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-pull/api/video-profile':
     '/zh-CN/realtime-media/media-pull/reference/video-profile',
   'realtime-media/media-pull/best-practices/checklist':
-    '/zh-CN/realtime-media/media-pull/build/optimize-and-operate/checklist',
+    '/zh-CN/realtime-media/media-pull/build/checklist',
   'realtime-media/media-pull/best-practices/ensure-player-created':
-    '/zh-CN/realtime-media/media-pull/build/optimize-and-operate/ensure-player-created',
+    '/zh-CN/realtime-media/media-pull/build/ensure-player-created',
   'realtime-media/media-pull/best-practices/rest-availability':
-    '/zh-CN/realtime-media/media-pull/build/optimize-and-operate/rest-availability',
+    '/zh-CN/realtime-media/media-pull/build/rest-availability',
   'realtime-media/media-pull/get-started/call-api':
-    '/zh-CN/realtime-media/media-pull/build/setup-and-access/call-api',
+    '/zh-CN/realtime-media/media-pull/build/call-api',
   'realtime-media/media-pull/get-started/enable-service':
-    '/zh-CN/realtime-media/media-pull/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/media-pull/build/enable-service',
   'realtime-media/media-pull/overview/billing':
     '/zh-CN/realtime-media/media-pull/reference/billing',
   'realtime-media/media-pull/overview/payment':
@@ -117,23 +117,49 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-pull/response-code':
     '/zh-CN/realtime-media/media-pull/reference/response-code',
   'realtime-media/media-pull/user-guides/http-basic-auth':
-    '/zh-CN/realtime-media/media-pull/build/setup-and-access/http-basic-auth',
+    '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
   'realtime-media/media-pull/webhook/enable-event-notification':
-    '/zh-CN/realtime-media/media-pull/build/monitor-events/enable-event-notification',
+    '/zh-CN/realtime-media/media-pull/build/enable-event-notification',
   'realtime-media/media-pull/webhook/ncs-events':
     '/zh-CN/realtime-media/media-pull/reference/ncs-events',
   'realtime-media/media-push/api/video-profile':
     '/zh-CN/realtime-media/media-push/reference/video-profile',
   'realtime-media/media-push/best-practices/checklist':
-    '/zh-CN/realtime-media/media-push/build/optimize-and-operate/checklist',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/checklist',
   'realtime-media/media-push/best-practices/ensure-converter-created':
-    '/zh-CN/realtime-media/media-push/build/optimize-and-operate/ensure-converter-created',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/ensure-converter-created',
   'realtime-media/media-push/best-practices/rest-availability':
-    '/zh-CN/realtime-media/media-push/build/optimize-and-operate/rest-availability',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/rest-availability',
+  'realtime-media/media-push/build/manage-media-streams/set-no-transcode':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-no-transcode',
+  'realtime-media/media-push/build/manage-media-streams/set-sei':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei',
+  'realtime-media/media-push/build/manage-media-streams/set-transcode':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-transcode',
+  'realtime-media/media-push/build/manage-media-streams/set-volume':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-volume',
+  'realtime-media/media-push/build/manage-media-streams/update-transcode':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/update-transcode',
+  'realtime-media/media-push/build/manage-media-streams/vertical-streaming':
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/vertical-streaming',
+  'realtime-media/media-push/build/monitor-events/enable-ncs':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs',
+  'realtime-media/media-push/build/optimize-and-operate/checklist':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/checklist',
+  'realtime-media/media-push/build/optimize-and-operate/ensure-converter-created':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/ensure-converter-created',
+  'realtime-media/media-push/build/optimize-and-operate/rest-availability':
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/rest-availability',
+  'realtime-media/media-push/build/setup-and-access/call-api':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/call-api',
+  'realtime-media/media-push/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
+  'realtime-media/media-push/build/setup-and-access/http-basic-auth':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
   'realtime-media/media-push/get-started/call-api':
-    '/zh-CN/realtime-media/media-push/build/setup-and-access/call-api',
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/call-api',
   'realtime-media/media-push/get-started/enable-service':
-    '/zh-CN/realtime-media/media-push/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/enable-service',
   'realtime-media/media-push/overview/billing':
     '/zh-CN/realtime-media/media-push/reference/billing',
   'realtime-media/media-push/overview/payment':
@@ -145,21 +171,21 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/media-push/response-code':
     '/zh-CN/realtime-media/media-push/reference/response-code',
   'realtime-media/media-push/user-guides/http-basic-auth':
-    '/zh-CN/realtime-media/media-push/build/setup-and-access/http-basic-auth',
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
   'realtime-media/media-push/user-guides/set-no-transcode':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-no-transcode',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-no-transcode',
   'realtime-media/media-push/user-guides/set-sei':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-sei',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-sei',
   'realtime-media/media-push/user-guides/set-transcode':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-transcode',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-transcode',
   'realtime-media/media-push/user-guides/set-volume':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/set-volume',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/set-volume',
   'realtime-media/media-push/user-guides/update-transcode':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/update-transcode',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/update-transcode',
   'realtime-media/media-push/user-guides/vertical-streaming':
-    '/zh-CN/realtime-media/media-push/build/manage-media-streams/vertical-streaming',
+    '/zh-CN/realtime-media/media-push/build/configure-media-stream/vertical-streaming',
   'realtime-media/media-push/webhook/enable-ncs':
-    '/zh-CN/realtime-media/media-push/build/monitor-events/enable-ncs',
+    '/zh-CN/realtime-media/media-push/build/monitor-and-maintain-media-push/enable-ncs',
   'realtime-media/media-push/webhook/ncs-events':
     '/zh-CN/realtime-media/media-push/reference/ncs-events',
   'realtime-media/online-ktv/auikaraoke/advanced-features/lyrics-scoring':
@@ -307,9 +333,25 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/cloud-recording/webhook/webpage':
     '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage',
   'realtime-media/recording/local-server-recording/best-practice/restore-files':
-    '/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files',
+    '/zh-CN/realtime-media/local-server-recording/build/best-practices/restore-files',
+  'realtime-media/local-server-recording/build/optimize-and-operate/restore-files':
+    '/zh-CN/realtime-media/local-server-recording/build/best-practices/restore-files',
+  'realtime-media/local-server-recording/build/recording-modes/recording-mode':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/recording-mode',
+  'realtime-media/local-server-recording/build/recording-modes/screen-capture':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/screen-capture',
+  'realtime-media/local-server-recording/build/recording-modes/set-layout':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/set-layout',
+  'realtime-media/local-server-recording/build/recording-modes/watermark':
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/watermark',
+  'realtime-media/local-server-recording/build/setup-and-access/cloud-proxy':
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/cloud-proxy',
+  'realtime-media/local-server-recording/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service',
+  'realtime-media/local-server-recording/build/setup-and-access/generate-token':
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/generate-token',
   'realtime-media/recording/local-server-recording/get-started/enable-service':
-    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service',
   'realtime-media/recording/local-server-recording/legacy/collect-logs':
     '/zh-CN/realtime-media/local-server-recording/build/legacy/collect-logs',
   'realtime-media/recording/local-server-recording/legacy/composite-mode':
@@ -355,35 +397,35 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/local-server-recording/resources':
     '/zh-CN/realtime-media/local-server-recording/reference/downloads',
   'realtime-media/recording/local-server-recording/user-guides/cloud-proxy':
-    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/cloud-proxy',
   'realtime-media/recording/local-server-recording/user-guides/generate-token':
-    '/zh-CN/realtime-media/local-server-recording/build/setup-and-access/generate-token',
+    '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/generate-token',
   'realtime-media/recording/local-server-recording/user-guides/recording-mode':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/recording-mode',
   'realtime-media/recording/local-server-recording/user-guides/screen-capture':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/screen-capture',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/screen-capture',
   'realtime-media/recording/local-server-recording/user-guides/set-layout':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/set-layout',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/set-layout',
   'realtime-media/recording/local-server-recording/user-guides/watermark':
-    '/zh-CN/realtime-media/local-server-recording/build/recording-modes/watermark',
+    '/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/watermark',
   'realtime-media/rtc-server-sdk/advanced-features/cloud-proxy':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/cloud-proxy',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/cloud-proxy',
   'realtime-media/rtc-server-sdk/advanced-features/encryption':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/encryption',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/encryption',
   'realtime-media/rtc-server-sdk/advanced-features/mix-video':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/mix-video',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/mix-video',
   'realtime-media/rtc-server-sdk/advanced-features/set-region':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/set-region',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/set-region',
   'realtime-media/rtc-server-sdk/advanced-features/string-uid':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/string-uid',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/string-uid',
   'realtime-media/rtc-server-sdk/error-code':
     '/zh-CN/realtime-media/rtc-server-sdk/reference/error-code',
   'realtime-media/rtc-server-sdk/get-started/enable-service':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/enable-service',
   'realtime-media/rtc-server-sdk/get-started/send-receive':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/send-receive',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/send-receive',
   'realtime-media/rtc-server-sdk/get-started/send-receive.go':
-    '/zh-CN/realtime-media/rtc-server-sdk/build/implement-core-features/send-receive?platform=go',
+    '/zh-CN/realtime-media/rtc-server-sdk/build/send-receive?platform=go',
   'realtime-media/rtc-server-sdk/index.go':
     '/zh-CN/realtime-media/rtc-server-sdk',
   'realtime-media/rtc-server-sdk/overview/product-overview':
@@ -590,10 +632,70 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/rtc/reference/events',
   'realtime-media/rtc/webhook/receive_webhook':
     '/zh-CN/realtime-media/rtc/build/monitor-events/receive_webhook',
+  'realtime-media/rtm/build/manage-channels/channel-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic',
+  'realtime-media/rtm/build/manage-channels/channel-name':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name',
+  'realtime-media/rtm/build/manage-channels/message-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel',
+  'realtime-media/rtm/build/manage-channels/stream-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/stream-channel',
+  'realtime-media/rtm/build/manage-connections/link-basic':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
+  'realtime-media/rtm/build/manage-connections/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  'realtime-media/rtm/build/manage-messages/add-event-listener':
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
+  'realtime-media/rtm/build/manage-messages/constructed':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/constructed',
+  'realtime-media/rtm/build/manage-messages/history-message':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/history-message',
+  'realtime-media/rtm/build/manage-messages/send-message':
+    '/zh-CN/realtime-media/rtm/build/messaging/send-message',
+  'realtime-media/rtm/build/manage-messages/serialized':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized',
+  'realtime-media/rtm/build/manage-metadata/channel-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata',
+  'realtime-media/rtm/build/manage-metadata/metadata-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
+  'realtime-media/rtm/build/manage-metadata/user-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata',
+  'realtime-media/rtm/build/manage-presence/presence-basic':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic',
+  'realtime-media/rtm/build/manage-presence/presence-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
+  'realtime-media/rtm/build/manage-presence/temporary-user-state':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state',
+  'realtime-media/rtm/build/manage-topics/topic-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic',
+  'realtime-media/rtm/build/manage-topics/topic-events':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
+  'realtime-media/rtm/build/manage-topics/usage':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/usage',
+  'realtime-media/rtm/build/security-and-auth/token-generation':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation',
+  'realtime-media/rtm/build/security-and-auth/user-authentication':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication',
+  'realtime-media/rtm/build/setup-and-access/add-event-listener':
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
+  'realtime-media/rtm/build/setup-and-access/application-setup':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
+  'realtime-media/rtm/build/setup-and-access/data-storage':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/data-storage',
+  'realtime-media/rtm/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+  'realtime-media/rtm/build/setup-and-access/link-basic':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
+  'realtime-media/rtm/build/setup-and-access/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  'realtime-media/rtm/build/setup-and-access/login':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/login',
+  'realtime-media/rtm/build/setup-and-access/private-setup':
+    '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup',
   'realtime-media/rtm/error-codes':
     '/zh-CN/realtime-media/rtm/build/troubleshooting',
   'realtime-media/rtm/get-started/enable-service':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
   'realtime-media/rtm/overview/billing/billing-rules':
     '/zh-CN/realtime-media/rtm/reference/billing/billing-rules',
   'realtime-media/rtm/overview/billing/billing-strategy':
@@ -611,87 +713,87 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/reference/error-codes':
     '/zh-CN/realtime-media/rtm/build/troubleshooting',
   'realtime-media/rtm/reference/link-state':
-    '/zh-CN/realtime-media/rtm/build/manage-connections/link-state',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
   'realtime-media/rtm/reference/metadata-events':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/metadata-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
   'realtime-media/rtm/reference/presence-events':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
   'realtime-media/rtm/reference/topic-events':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
   'realtime-media/rtm/security':
     '/zh-CN/introduction/security/sdk-compliance/rtm-sdk',
   'realtime-media/rtm/sunset-policy':
     '/zh-CN/realtime-media/rtm/reference/sunset-policy',
   'realtime-media/rtm/user-guide/channel/channel-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic',
   'realtime-media/rtm/user-guide/channel/channel-name':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/channel-name',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name',
   'realtime-media/rtm/user-guide/channel/message-channel':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/message-channel',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel',
   'realtime-media/rtm/user-guide/channel/stream-channel':
-    '/zh-CN/realtime-media/rtm/build/manage-channels/stream-channel',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/stream-channel',
   'realtime-media/rtm/user-guide/link/link-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-connections/link-basic',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
   'realtime-media/rtm/user-guide/link/link-state':
-    '/zh-CN/realtime-media/rtm/build/manage-connections/link-state',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
   'realtime-media/rtm/user-guide/message/add-event-listener':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener',
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
   'realtime-media/rtm/user-guide/message/constructed':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/constructed',
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/constructed',
   'realtime-media/rtm/user-guide/message/history-message':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/history-message',
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/history-message',
   'realtime-media/rtm/user-guide/message/send-message':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/send-message',
+    '/zh-CN/realtime-media/rtm/build/messaging/send-message',
   'realtime-media/rtm/user-guide/message/serialized':
-    '/zh-CN/realtime-media/rtm/build/manage-messages/serialized',
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized',
   'realtime-media/rtm/user-guide/presence/event':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
   'realtime-media/rtm/user-guide/presence/presence-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/presence-basic',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic',
   'realtime-media/rtm/user-guide/presence/temporary-user-state':
-    '/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state',
   'realtime-media/rtm/user-guide/setup/account-and-billing':
     '/zh-CN/realtime-media/rtm/reference/account-and-billing',
   'realtime-media/rtm/user-guide/setup/api-limits':
     '/zh-CN/realtime-media/rtm/reference/api-limits',
   'realtime-media/rtm/user-guide/setup/application-setup':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup',
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
   'realtime-media/rtm/user-guide/setup/data-security':
     '/zh-CN/realtime-media/rtm/reference/data-security',
   'realtime-media/rtm/user-guide/setup/data-storage':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/data-storage',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/data-storage',
   'realtime-media/rtm/user-guide/setup/login':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/login',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/login',
   'realtime-media/rtm/user-guide/setup/private-setup':
-    '/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup',
+    '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup',
   'realtime-media/rtm/user-guide/storage/channel-metadata':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata',
   'realtime-media/rtm/user-guide/storage/event':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/metadata-events',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
   'realtime-media/rtm/user-guide/storage/user-metadata':
-    '/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata',
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata',
   'realtime-media/rtm/user-guide/token/token-generation':
-    '/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation',
   'realtime-media/rtm/user-guide/token/user-authentication':
-    '/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication',
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication',
   'realtime-media/rtm/user-guide/topic/event':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
   'realtime-media/rtm/user-guide/topic/topic-basic':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic',
   'realtime-media/rtm/user-guide/topic/usage':
-    '/zh-CN/realtime-media/rtm/build/manage-topics/usage',
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/usage',
   'realtime-media/rtmp-gateway/api/video-profile':
     '/zh-CN/realtime-media/rtmp-gateway/reference/video-profile',
   'realtime-media/rtmp-gateway/best-practices/checklist':
-    '/zh-CN/realtime-media/rtmp-gateway/build/optimize-and-operate/checklist',
+    '/zh-CN/realtime-media/rtmp-gateway/build/checklist',
   'realtime-media/rtmp-gateway/best-practices/rest-availability':
-    '/zh-CN/realtime-media/rtmp-gateway/build/optimize-and-operate/rest-availability',
+    '/zh-CN/realtime-media/rtmp-gateway/build/rest-availability',
   'realtime-media/rtmp-gateway/best-practices/rtmp-domain-switch':
-    '/zh-CN/realtime-media/rtmp-gateway/build/manage-media-streams/rtmp-domain-switch',
+    '/zh-CN/realtime-media/rtmp-gateway/build/rtmp-domain-switch',
   'realtime-media/rtmp-gateway/get-started/call-api':
-    '/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/call-api',
+    '/zh-CN/realtime-media/rtmp-gateway/build/call-api',
   'realtime-media/rtmp-gateway/get-started/enable-service':
-    '/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/rtmp-gateway/build/enable-service',
   'realtime-media/rtmp-gateway/overview/billing':
     '/zh-CN/realtime-media/rtmp-gateway/reference/billing',
   'realtime-media/rtmp-gateway/overview/payment':
@@ -703,43 +805,43 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtmp-gateway/response-code':
     '/zh-CN/realtime-media/rtmp-gateway/reference/response-code',
   'realtime-media/rtmp-gateway/user-guides/http-auth':
-    '/zh-CN/realtime-media/rtmp-gateway/build/setup-and-access/http-auth',
+    '/zh-CN/realtime-media/rtmp-gateway/build/http-auth',
   'realtime-media/rtmp-gateway/webhook/enable-ncs':
-    '/zh-CN/realtime-media/rtmp-gateway/build/monitor-events/enable-ncs',
+    '/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs',
   'realtime-media/rtmp-gateway/webhook/ncs-events':
     '/zh-CN/realtime-media/rtmp-gateway/reference/ncs-events',
   'realtime-media/rtsa/advanced-features/data-stream':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream',
+    '/zh-CN/realtime-media/rtsa/build/data-communication/data-stream',
   'realtime-media/rtsa/advanced-features/encryption':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/encryption',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/encryption',
   'realtime-media/rtsa/advanced-features/multi-channel':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel',
   'realtime-media/rtsa/advanced-features/region-limit':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit',
+    '/zh-CN/realtime-media/rtsa/build/network-and-region-access/region-limit',
   'realtime-media/rtsa/advanced-features/send-message-through-rdt-channel':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel',
+    '/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel',
   'realtime-media/rtsa/advanced-features/string-uid':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid',
+    '/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/string-uid',
   'realtime-media/rtsa/basic-features/audio-codec':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/audio-codec',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec',
   'realtime-media/rtsa/basic-features/bitrate-adaption':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption',
   'realtime-media/rtsa/basic-features/cloud-proxy':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/cloud-proxy',
+    '/zh-CN/realtime-media/rtsa/build/network-and-region-access/cloud-proxy',
   'realtime-media/rtsa/basic-features/key-frame':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/key-frame',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/key-frame',
   'realtime-media/rtsa/basic-features/license':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/license',
+    '/zh-CN/realtime-media/rtsa/build/project-preparation/license',
   'realtime-media/rtsa/basic-features/stream-state':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/stream-state',
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/stream-state',
   'realtime-media/rtsa/best-practices/interoperate-rtc':
-    '/zh-CN/realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc',
+    '/zh-CN/realtime-media/rtsa/build/rtc-interoperability/interoperate-rtc',
   'realtime-media/rtsa/error-codes':
     '/zh-CN/realtime-media/rtsa/reference/error-codes',
   'realtime-media/rtsa/get-started/enable-service':
-    '/zh-CN/realtime-media/rtsa/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/rtsa/build/project-preparation/enable-service',
   'realtime-media/rtsa/get-started/implement-transmission':
-    '/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission',
+    '/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/implement-transmission',
   'realtime-media/rtsa/overview/billing':
     '/zh-CN/realtime-media/rtsa/reference/billing',
   'realtime-media/rtsa/overview/product-overview': '/zh-CN/realtime-media/rtsa',
@@ -776,13 +878,13 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/transcoding/api/video-profile':
     '/zh-CN/realtime-media/transcoding/reference/video-profile',
   'realtime-media/transcoding/best-practices/check-service':
-    '/zh-CN/realtime-media/transcoding/build/optimize-and-operate/check-service',
+    '/zh-CN/realtime-media/transcoding/build/check-service',
   'realtime-media/transcoding/best-practices/rest-availability':
-    '/zh-CN/realtime-media/transcoding/build/optimize-and-operate/rest-availability',
+    '/zh-CN/realtime-media/transcoding/build/rest-availability',
   'realtime-media/transcoding/get-started/call-api':
-    '/zh-CN/realtime-media/transcoding/build/setup-and-access/call-api',
+    '/zh-CN/realtime-media/transcoding/build/call-api',
   'realtime-media/transcoding/get-started/enable-service':
-    '/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/transcoding/build/enable-service',
   'realtime-media/transcoding/overview/billing':
     '/zh-CN/realtime-media/transcoding/reference/billing',
   'realtime-media/transcoding/overview/product-overview':
@@ -792,17 +894,43 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/transcoding/response-code':
     '/zh-CN/realtime-media/transcoding/reference/response-code',
   'realtime-media/transcoding/user-guides/enable-multiple-bitrate':
-    '/zh-CN/realtime-media/transcoding/build/setup-and-access/enable-multiple-bitrate',
+    '/zh-CN/realtime-media/transcoding/build/enable-multiple-bitrate',
   'realtime-media/transcoding/user-guides/http-auth':
-    '/zh-CN/realtime-media/transcoding/build/setup-and-access/http-auth',
+    '/zh-CN/realtime-media/transcoding/build/http-auth',
   'realtime-media/transcoding/webhook/enable-event-notification':
-    '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification',
+    '/zh-CN/realtime-media/transcoding/build/enable-event-notification',
   'realtime-media/transcoding/webhook/ncs-events':
     '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
   'realtime-media/transcoding/reference/ncs-events':
     '/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events',
+  'realtime-media/usage-analytics/build/fls/data':
+    '/zh-CN/realtime-media/usage-analytics/build/view-live-data',
+  'realtime-media/usage-analytics/build/rtc/monitor':
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor',
+  'realtime-media/usage-analytics/build/rtc/alarm':
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/alarm',
+  'realtime-media/usage-analytics/build/rtc/call-search/overview':
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview',
+  'realtime-media/usage-analytics/build/rtc/call-search/call-detail':
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/call-detail',
+  'realtime-media/usage-analytics/build/rtc/call-search/troubleshooting':
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/troubleshooting',
+  'realtime-media/usage-analytics/build/rtc/data-insight/basic':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/basic',
+  'realtime-media/usage-analytics/build/rtc/data-insight/plus':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/plus',
+  'realtime-media/usage-analytics/build/rtc/data-insight/troubleshooting':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/troubleshooting',
+  'realtime-media/usage-analytics/build/rtc/embeded':
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/embeded',
+  'realtime-media/usage-analytics/build/rtc/guarantee-rest':
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/guarantee-rest',
+  'realtime-media/usage-analytics/build/rtc/metric-ids':
+    '/zh-CN/realtime-media/usage-analytics/build/metric-ids',
+  'realtime-media/usage-analytics/build/rtm/data-insight':
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-signaling-data',
   'realtime-media/usage-analytics/fls/data':
-    '/zh-CN/realtime-media/usage-analytics/build/fls/data',
+    '/zh-CN/realtime-media/usage-analytics/build/view-live-data',
   'realtime-media/usage-analytics/overview/billing':
     '/zh-CN/realtime-media/usage-analytics/reference/billing',
   'realtime-media/usage-analytics/overview/product-overview':
@@ -810,37 +938,37 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/usage-analytics/overview/release-notes':
     '/zh-CN/realtime-media/usage-analytics/reference/release-notes',
   'realtime-media/usage-analytics/rtc/alarm':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/alarm',
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/alarm',
   'realtime-media/usage-analytics/rtc/api-limits':
     '/zh-CN/realtime-media/usage-analytics/reference/api-limits',
   'realtime-media/usage-analytics/rtc/call-search/call-detail':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/call-detail',
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/call-detail',
   'realtime-media/usage-analytics/rtc/call-search/concept':
     '/zh-CN/realtime-media/usage-analytics/reference/concept',
   'realtime-media/usage-analytics/rtc/call-search/overview':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/overview',
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview',
   'realtime-media/usage-analytics/rtc/call-search/troubleshooting':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/call-search/troubleshooting',
+    '/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/troubleshooting',
   'realtime-media/usage-analytics/rtc/data-insight/basic':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/basic',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/basic',
   'realtime-media/usage-analytics/rtc/data-insight/plus':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/plus',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/plus',
   'realtime-media/usage-analytics/rtc/data-insight/troubleshooting':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/data-insight/troubleshooting',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/troubleshooting',
   'realtime-media/usage-analytics/rtc/embeded':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/embeded',
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/embeded',
   'realtime-media/usage-analytics/rtc/guarantee-rest':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/guarantee-rest',
+    '/zh-CN/realtime-media/usage-analytics/build/embed-and-maintain-data-service/guarantee-rest',
   'realtime-media/usage-analytics/rtc/metric-ids':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/metric-ids',
+    '/zh-CN/realtime-media/usage-analytics/build/metric-ids',
   'realtime-media/usage-analytics/rtc/monitor':
-    '/zh-CN/realtime-media/usage-analytics/build/rtc/monitor',
+    '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor',
   'realtime-media/usage-analytics/rtc/response-code':
     '/zh-CN/realtime-media/usage-analytics/reference/response-code',
   'realtime-media/usage-analytics/rtm/concept':
     '/zh-CN/realtime-media/usage-analytics/reference/concept-rtm',
   'realtime-media/usage-analytics/rtm/data-insight':
-    '/zh-CN/realtime-media/usage-analytics/build/rtm/data-insight',
+    '/zh-CN/realtime-media/usage-analytics/build/analyze-signaling-data',
   'realtime-media/whiteboard/fastboard-sdk/advanced-features/convert-files':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/extend-whiteboard/convert-files',
   'realtime-media/whiteboard/fastboard-sdk/advanced-features/customize-widget':
@@ -930,13 +1058,13 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/whiteboard-sdk/solution-compare':
     '/zh-CN/realtime-media/whiteboard#如何选择互动白板-sdk-和-fastboard-sdk',
   'solutions/art-class/advanced-features/brightness-correction':
-    '/zh-CN/solutions/art-class/build/customize-and-extend/brightness-correction',
+    '/zh-CN/solutions/art-class/build/brightness-correction',
   'solutions/art-class/advanced-features/trapezoid-correction':
-    '/zh-CN/solutions/art-class/build/customize-and-extend/trapezoid-correction',
+    '/zh-CN/solutions/art-class/build/trapezoid-correction',
   'solutions/art-class/api/correction':
     '/zh-CN/solutions/art-class/reference/correction',
   'solutions/art-class/get-started/enable-service':
-    '/zh-CN/solutions/art-class/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/art-class/build/enable-service',
   'solutions/art-class/overview/product-overview': '/zh-CN/solutions/art-class',
   'solutions/art-class/resources':
     '/zh-CN/solutions/art-class/reference/downloads',
@@ -954,26 +1082,26 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/chatroom/sdk/api/rtc-api':
     '/zh-CN/solutions/chatroom/sdk/reference/rtc-api',
   'solutions/chatroom/sdk/get-started/enable-service':
-    '/zh-CN/solutions/chatroom/sdk/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/chatroom/sdk/build/enable-service',
   'solutions/chatroom/sdk/get-started/quick-integration':
-    '/zh-CN/solutions/chatroom/sdk/build/implement-core-features/quick-integration',
+    '/zh-CN/solutions/chatroom/sdk/build/quick-integration',
   'solutions/chatroom/sdk/overview': '/zh-CN/solutions/chatroom/sdk',
   'solutions/chatroom/sdk/resources':
     '/zh-CN/solutions/chatroom/sdk/reference/downloads',
   'solutions/chatroom/sdk/solution-compare':
     '/zh-CN/solutions/chatroom/sdk/reference/solution-compare',
   'solutions/chatroom/sdk/user-guides/mic-seat-management':
-    '/zh-CN/solutions/chatroom/sdk/build/implement-core-features/mic-seat-management',
+    '/zh-CN/solutions/chatroom/sdk/build/mic-seat-management',
   'solutions/chatroom/sdk/user-guides/set-audio':
-    '/zh-CN/solutions/chatroom/sdk/build/implement-core-features/set-audio',
+    '/zh-CN/solutions/chatroom/sdk/build/set-audio',
   'solutions/chatroom/uikit/get-started/enable-service':
-    '/zh-CN/solutions/chatroom/uikit/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/chatroom/uikit/build/enable-service',
   'solutions/chatroom/uikit/get-started/quick-integration':
-    '/zh-CN/solutions/chatroom/uikit/build/implement-core-features/quick-integration',
+    '/zh-CN/solutions/chatroom/uikit/build/quick-integration',
   'solutions/chatroom/uikit/get-started/run-github-project':
-    '/zh-CN/solutions/chatroom/uikit/build/implement-core-features/run-github-project',
+    '/zh-CN/solutions/chatroom/uikit/build/run-github-project',
   'solutions/chatroom/uikit/get-started/run-github-project-backend':
-    '/zh-CN/solutions/chatroom/uikit/build/implement-core-features/run-github-project-backend',
+    '/zh-CN/solutions/chatroom/uikit/build/run-github-project-backend',
   'solutions/chatroom/uikit/overview': '/zh-CN/solutions/chatroom/uikit',
   'solutions/chatroom/uikit/resources':
     '/zh-CN/solutions/chatroom/uikit/reference/downloads',
@@ -991,16 +1119,48 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/digital-learning/school-resource/build/implement-core-features/integration',
   'solutions/digital-learning/school-resource/overview':
     '/zh-CN/solutions/digital-learning/school-resource',
+  'solutions/flexible-classroom/build/customize-and-extend/custom-ui':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui',
+  'solutions/flexible-classroom/build/customize-and-extend/custom-ui-new':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui-new',
+  'solutions/flexible-classroom/build/customize-and-extend/widget':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget',
+  'solutions/flexible-classroom/build/customize-and-extend/widget-previous':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-previous',
+  'solutions/flexible-classroom/build/customize-and-extend/widget-tech':
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-tech',
+  'solutions/flexible-classroom/build/manage-classroom/classroom-properties':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties',
+  'solutions/flexible-classroom/build/manage-classroom/courseware':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/courseware',
+  'solutions/flexible-classroom/build/manage-classroom/high-availability':
+    '/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/high-availability',
+  'solutions/flexible-classroom/build/manage-classroom/integrate-systems':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/integrate-systems',
+  'solutions/flexible-classroom/build/manage-classroom/proctor-online-exams':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/proctor-online-exams',
+  'solutions/flexible-classroom/build/manage-classroom/record':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/record',
+  'solutions/flexible-classroom/build/manage-classroom/whiteboard-on-off':
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/whiteboard-on-off',
+  'solutions/flexible-classroom/build/setup-and-access/configure':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/configure',
+  'solutions/flexible-classroom/build/setup-and-access/enable':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/enable',
+  'solutions/flexible-classroom/build/setup-and-access/generate-token':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/generate-token',
+  'solutions/flexible-classroom/build/setup-and-access/http-token-auth':
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/http-token-auth',
   'solutions/flexible-classroom/advanced-features/custom-ui':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui',
   'solutions/flexible-classroom/advanced-features/custom-ui-new':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui-new',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui-new',
   'solutions/flexible-classroom/advanced-features/widget':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget',
   'solutions/flexible-classroom/advanced-features/widget-previous':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-previous',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-previous',
   'solutions/flexible-classroom/advanced-features/widget-tech':
-    '/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget-tech',
+    '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-tech',
   'solutions/flexible-classroom/api/api-classroom':
     '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
   'solutions/flexible-classroom/api/api-recording':
@@ -1012,29 +1172,29 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/flexible-classroom/api/api-widget':
     '/zh-CN/api-reference/flexible-classroom/restful-api/api-widget',
   'solutions/flexible-classroom/basic-features/generate-token':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/generate-token',
   'solutions/flexible-classroom/basic-features/http-token-auth':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/http-token-auth',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/http-token-auth',
   'solutions/flexible-classroom/basic-features/proctor-online-exams':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/proctor-online-exams',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/proctor-online-exams',
   'solutions/flexible-classroom/basic-features/whiteboard-on-off':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/whiteboard-on-off',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/whiteboard-on-off',
   'solutions/flexible-classroom/best-practices/classroom-properties':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/classroom-properties',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties',
   'solutions/flexible-classroom/best-practices/courseware':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/courseware',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/courseware',
   'solutions/flexible-classroom/best-practices/high-availability':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/high-availability',
+    '/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/high-availability',
   'solutions/flexible-classroom/best-practices/integrate-systems':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/integrate-systems',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/integrate-systems',
   'solutions/flexible-classroom/best-practices/record':
-    '/zh-CN/solutions/flexible-classroom/build/manage-classroom/record',
+    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/record',
   'solutions/flexible-classroom/get-started/call-api':
     '/zh-CN/solutions/flexible-classroom/reference/call-api',
   'solutions/flexible-classroom/get-started/configure':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/configure',
   'solutions/flexible-classroom/get-started/enable':
-    '/zh-CN/solutions/flexible-classroom/build/setup-and-access/enable',
+    '/zh-CN/solutions/flexible-classroom/build/create-classroom/enable',
   'solutions/flexible-classroom/overview/basic-concept':
     '/zh-CN/solutions/flexible-classroom/reference/basic-concept',
   'solutions/flexible-classroom/overview/billing':
@@ -1057,9 +1217,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/flexible-classroom/reference/response-code',
   'solutions/game-voice/api': '/zh-CN/solutions/game-voice/reference/api',
   'solutions/game-voice/best-practices/audio-experience-optimization':
-    '/zh-CN/solutions/game-voice/build/implement-core-features/audio-experience-optimization',
+    '/zh-CN/solutions/game-voice/build/audio-experience-optimization',
   'solutions/game-voice/get-started/enable-service':
-    '/zh-CN/solutions/game-voice/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/game-voice/build/enable-service',
   'solutions/game-voice/overview/billing':
     '/zh-CN/solutions/game-voice/reference/billing',
   'solutions/game-voice/overview/product-overview':
@@ -1067,9 +1227,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/game-voice/resources':
     '/zh-CN/solutions/game-voice/reference/downloads',
   'solutions/game-voice/user-guides/spatial-audio-sdk':
-    '/zh-CN/solutions/game-voice/build/customize-and-extend/spatial-audio-sdk',
+    '/zh-CN/solutions/game-voice/build/spatial-audio-sdk',
   'solutions/game-voice/user-guides/spatial-audio-wwise':
-    '/zh-CN/solutions/game-voice/build/customize-and-extend/spatial-audio-wwise',
+    '/zh-CN/solutions/game-voice/build/spatial-audio-wwise',
   'solutions/iot-apaas/advanced-features/alarm':
     '/zh-CN/solutions/iot-apaas/build/customize-and-extend/alarm',
   'solutions/iot-apaas/advanced-features/cloud-storage':
@@ -1101,13 +1261,13 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/meeting/api/query-recording':
     '/zh-CN/api-reference/meeting/restful/api/query-recording',
   'solutions/meeting/best-practices/high-availability':
-    '/zh-CN/realtime-media/meeting/build/manage-classroom/high-availability',
+    '/zh-CN/realtime-media/meeting/build/high-availability',
   'solutions/meeting/get-started/call-api':
     '/zh-CN/realtime-media/meeting/reference/call-api',
   'solutions/meeting/get-started/configure-meeting':
-    '/zh-CN/realtime-media/meeting/build/manage-classroom/configure-meeting',
+    '/zh-CN/realtime-media/meeting/build/configure-meeting',
   'solutions/meeting/get-started/enable-service':
-    '/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service',
+    '/zh-CN/realtime-media/meeting/build/enable-service',
   'solutions/meeting/overview/platform-support':
     '/zh-CN/realtime-media/meeting/reference/platform-support',
   'solutions/meeting/overview/product-overview':
@@ -1118,31 +1278,31 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/meeting/response-code':
     '/zh-CN/realtime-media/meeting/reference/response-code',
   'solutions/meeting/user-guides/generate-token':
-    '/zh-CN/realtime-media/meeting/build/customize-and-extend/generate-token',
+    '/zh-CN/realtime-media/meeting/build/generate-token',
   'solutions/meeting/user-guides/http-token-auth':
-    '/zh-CN/realtime-media/meeting/build/customize-and-extend/http-token-auth',
+    '/zh-CN/realtime-media/meeting/build/http-token-auth',
   'solutions/meeting/webhook/webhook-events':
     '/zh-CN/realtime-media/meeting/reference/webhook-events',
   'solutions/meta-world/advanced-features/dress-face':
-    '/zh-CN/solutions/meta-world/build/customize-and-extend/dress-face',
+    '/zh-CN/solutions/meta-world/build/dress-face',
   'solutions/meta-world/advanced-features/share-audio-video':
-    '/zh-CN/solutions/meta-world/build/customize-and-extend/share-audio-video',
+    '/zh-CN/solutions/meta-world/build/share-audio-video',
   'solutions/meta-world/advanced-features/spatial-audio':
-    '/zh-CN/solutions/meta-world/build/customize-and-extend/spatial-audio',
+    '/zh-CN/solutions/meta-world/build/spatial-audio',
   'solutions/meta-world/api-ref/meta-api':
     '/zh-CN/solutions/meta-world/reference/meta-api',
   'solutions/meta-world/api-ref/rtc-api':
     '/zh-CN/solutions/meta-world/reference/rtc-api',
   'solutions/meta-world/basic-features/metachat':
-    '/zh-CN/solutions/meta-world/build/implement-core-features/metachat',
+    '/zh-CN/solutions/meta-world/build/metachat',
   'solutions/meta-world/basic-features/metalive':
-    '/zh-CN/solutions/meta-world/build/implement-core-features/metalive',
+    '/zh-CN/solutions/meta-world/build/metalive',
   'solutions/meta-world/basic-features/mixed-scenario':
-    '/zh-CN/solutions/meta-world/build/implement-core-features/mixed-scenario',
+    '/zh-CN/solutions/meta-world/build/mixed-scenario',
   'solutions/meta-world/get-started/enable-service':
-    '/zh-CN/solutions/meta-world/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/meta-world/build/enable-service',
   'solutions/meta-world/overview/demo':
-    '/zh-CN/solutions/meta-world/build/implement-core-features/demo',
+    '/zh-CN/solutions/meta-world/build/demo',
   'solutions/meta-world/overview/product-overview':
     '/zh-CN/solutions/meta-world',
   'solutions/meta-world/resources':
@@ -1294,40 +1454,74 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/ppt-transcoding/slide-api':
     '/zh-CN/solutions/ppt-transcoding/reference/slide-api',
   'solutions/showroom/advanced-features/audio-scenario':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/audio-scenario',
+    '/zh-CN/solutions/showroom/build/audio-scenario',
   'solutions/showroom/advanced-features/beauty/bytedance/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/bytedance/integrate',
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-integrate',
   'solutions/showroom/advanced-features/beauty/bytedance/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/bytedance/run-project',
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-run-project',
   'solutions/showroom/advanced-features/beauty/faceunity/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/faceunity/integrate',
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-integrate',
   'solutions/showroom/advanced-features/beauty/faceunity/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/faceunity/run-project',
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-run-project',
   'solutions/showroom/advanced-features/beauty/overview':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/overview',
+    '/zh-CN/solutions/showroom/build/beauty/overview',
   'solutions/showroom/advanced-features/beauty/sensetime/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/sensetime/integrate',
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-integrate',
   'solutions/showroom/advanced-features/beauty/sensetime/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/beauty/sensetime/run-project',
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-run-project',
   'solutions/showroom/advanced-features/hq-video':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/hq-video',
+    '/zh-CN/solutions/showroom/build/hq-video',
   'solutions/showroom/advanced-features/video-loader/guidance':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/guidance',
+    '/zh-CN/solutions/showroom/build/video-loader/guidance',
   'solutions/showroom/advanced-features/video-loader/integrate':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/integrate',
+    '/zh-CN/solutions/showroom/build/video-loader/integrate',
   'solutions/showroom/advanced-features/video-loader/overview':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/overview',
+    '/zh-CN/solutions/showroom/build/video-loader/overview',
   'solutions/showroom/advanced-features/video-loader/run-project':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-loader/run-project',
+    '/zh-CN/solutions/showroom/build/video-loader/run-project',
   'solutions/showroom/advanced-features/video-moderation':
-    '/zh-CN/solutions/showroom/build/customize-and-extend/video-moderation',
+    '/zh-CN/solutions/showroom/build/video-moderation',
   'solutions/showroom/api': '/zh-CN/solutions/showroom/reference/api',
   'solutions/showroom/basic-features/integrate-check-point':
-    '/zh-CN/solutions/showroom/build/implement-core-features/integrate-check-point',
+    '/zh-CN/solutions/showroom/build/integrate-check-point',
   'solutions/showroom/basic-features/integrate-showroom':
-    '/zh-CN/solutions/showroom/build/implement-core-features/integrate-showroom',
+    '/zh-CN/solutions/showroom/build/integrate-showroom',
   'solutions/showroom/get-started/enable-service':
-    '/zh-CN/solutions/showroom/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/showroom/build/enable-service',
+  'solutions/showroom/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/showroom/build/enable-service',
+  'solutions/showroom/build/implement-core-features/integrate-check-point':
+    '/zh-CN/solutions/showroom/build/integrate-check-point',
+  'solutions/showroom/build/implement-core-features/integrate-showroom':
+    '/zh-CN/solutions/showroom/build/integrate-showroom',
+  'solutions/showroom/build/customize-and-extend/audio-scenario':
+    '/zh-CN/solutions/showroom/build/audio-scenario',
+  'solutions/showroom/build/customize-and-extend/hq-video':
+    '/zh-CN/solutions/showroom/build/hq-video',
+  'solutions/showroom/build/customize-and-extend/video-moderation':
+    '/zh-CN/solutions/showroom/build/video-moderation',
+  'solutions/showroom/build/customize-and-extend/beauty/overview':
+    '/zh-CN/solutions/showroom/build/beauty/overview',
+  'solutions/showroom/build/customize-and-extend/beauty/bytedance/integrate':
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-integrate',
+  'solutions/showroom/build/customize-and-extend/beauty/bytedance/run-project':
+    '/zh-CN/solutions/showroom/build/beauty/bytedance-run-project',
+  'solutions/showroom/build/customize-and-extend/beauty/faceunity/integrate':
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-integrate',
+  'solutions/showroom/build/customize-and-extend/beauty/faceunity/run-project':
+    '/zh-CN/solutions/showroom/build/beauty/faceunity-run-project',
+  'solutions/showroom/build/customize-and-extend/beauty/sensetime/integrate':
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-integrate',
+  'solutions/showroom/build/customize-and-extend/beauty/sensetime/run-project':
+    '/zh-CN/solutions/showroom/build/beauty/sensetime-run-project',
+  'solutions/showroom/build/customize-and-extend/video-loader/overview':
+    '/zh-CN/solutions/showroom/build/video-loader/overview',
+  'solutions/showroom/build/customize-and-extend/video-loader/integrate':
+    '/zh-CN/solutions/showroom/build/video-loader/integrate',
+  'solutions/showroom/build/customize-and-extend/video-loader/guidance':
+    '/zh-CN/solutions/showroom/build/video-loader/guidance',
+  'solutions/showroom/build/customize-and-extend/video-loader/run-project':
+    '/zh-CN/solutions/showroom/build/video-loader/run-project',
   'solutions/showroom/overview/product-overview': '/zh-CN/solutions/showroom',
   'solutions/showroom/resources':
     '/zh-CN/solutions/showroom/reference/downloads',
@@ -1344,15 +1538,15 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/smart-camera/api/api-overview':
     '/zh-CN/solutions/smart-camera/reference/api-overview',
   'solutions/smart-camera/get-started/enable-service':
-    '/zh-CN/solutions/smart-camera/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/smart-camera/build/enable-service',
   'solutions/smart-camera/overview/product-overview':
     '/zh-CN/solutions/smart-camera',
   'solutions/smart-camera/resources':
     '/zh-CN/solutions/smart-camera/reference/downloads',
   'solutions/smart-camera/value-added-feature/amazon-alexa':
-    '/zh-CN/solutions/smart-camera/build/value-added-feature/amazon-alexa',
+    '/zh-CN/solutions/smart-camera/build/amazon-alexa',
   'solutions/smart-camera/value-added-feature/google-assistant':
-    '/zh-CN/solutions/smart-camera/build/value-added-feature/google-assistant',
+    '/zh-CN/solutions/smart-camera/build/google-assistant',
   'solutions/smart-doorbell/apaas/apaas-overview':
     '/zh-CN/solutions/smart-doorbell/build/apaas/apaas-overview',
   'solutions/smart-doorbell/enable-service':
@@ -1392,30 +1586,185 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/teleoperation/api/operator':
     '/zh-CN/solutions/teleoperation/reference/operator',
   'solutions/teleoperation/get-started/device-linux':
-    '/zh-CN/solutions/teleoperation/build/implement-core-features/device-linux',
+    '/zh-CN/solutions/teleoperation/build/device-linux',
   'solutions/teleoperation/get-started/enable-service':
-    '/zh-CN/solutions/teleoperation/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/teleoperation/build/enable-service',
   'solutions/teleoperation/get-started/operator-android':
-    '/zh-CN/solutions/teleoperation/build/implement-core-features/operator-android',
+    '/zh-CN/solutions/teleoperation/build/operator-android',
   'solutions/teleoperation/get-started/operator-linux':
-    '/zh-CN/solutions/teleoperation/build/implement-core-features/operator-linux',
+    '/zh-CN/solutions/teleoperation/build/operator-linux',
   'solutions/teleoperation/overview/product-overview':
     '/zh-CN/solutions/teleoperation',
   'solutions/teleoperation/resources':
     '/zh-CN/solutions/teleoperation/reference/downloads',
   'solutions/voip-call/get-started/enable-service':
-    '/zh-CN/solutions/voip-call/build/setup-and-access/enable-service',
+    '/zh-CN/solutions/voip-call/build/enable-service',
   'solutions/voip-call/overview/product-overview': '/zh-CN/solutions/voip-call',
   'solutions/voip-call/user-guide/http-basic-auth':
-    '/zh-CN/solutions/voip-call/build/setup-and-access/http-basic-auth',
+    '/zh-CN/solutions/voip-call/build/http-basic-auth',
   'solutions/voip-call/user-guide/license':
-    '/zh-CN/solutions/voip-call/build/setup-and-access/license',
+    '/zh-CN/solutions/voip-call/build/license',
   'solutions/voip-call/user-guide/set-source-sink':
-    '/zh-CN/solutions/voip-call/build/customize-and-extend/set-source-sink',
+    '/zh-CN/solutions/voip-call/build/set-source-sink',
   'solutions/voip-call/webhook/receive-webhook':
-    '/zh-CN/solutions/voip-call/build/monitor-events/receive-webhook',
+    '/zh-CN/solutions/voip-call/build/receive-webhook',
   'solutions/voip-call/webhook/voip-events':
     '/zh-CN/solutions/voip-call/reference/voip-events',
+};
+
+const ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS: Record<string, string> = {
+  'realtime-media/meeting/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/meeting/build/enable-service',
+  'realtime-media/meeting/build/customize-and-extend/http-token-auth':
+    '/zh-CN/realtime-media/meeting/build/http-token-auth',
+  'realtime-media/meeting/build/customize-and-extend/generate-token':
+    '/zh-CN/realtime-media/meeting/build/generate-token',
+  'realtime-media/meeting/build/manage-classroom/configure-meeting':
+    '/zh-CN/realtime-media/meeting/build/configure-meeting',
+  'realtime-media/meeting/build/manage-classroom/high-availability':
+    '/zh-CN/realtime-media/meeting/build/high-availability',
+  'realtime-media/media-pull/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/media-pull/build/enable-service',
+  'realtime-media/media-pull/build/setup-and-access/http-basic-auth':
+    '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+  'realtime-media/media-pull/build/setup-and-access/call-api':
+    '/zh-CN/realtime-media/media-pull/build/call-api',
+  'realtime-media/media-pull/build/optimize-and-operate/ensure-player-created':
+    '/zh-CN/realtime-media/media-pull/build/ensure-player-created',
+  'realtime-media/media-pull/build/monitor-events/enable-event-notification':
+    '/zh-CN/realtime-media/media-pull/build/enable-event-notification',
+  'realtime-media/media-pull/build/optimize-and-operate/checklist':
+    '/zh-CN/realtime-media/media-pull/build/checklist',
+  'realtime-media/media-pull/build/optimize-and-operate/rest-availability':
+    '/zh-CN/realtime-media/media-pull/build/rest-availability',
+  'realtime-media/rtmp-gateway/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/rtmp-gateway/build/enable-service',
+  'realtime-media/rtmp-gateway/build/setup-and-access/http-auth':
+    '/zh-CN/realtime-media/rtmp-gateway/build/http-auth',
+  'realtime-media/rtmp-gateway/build/setup-and-access/call-api':
+    '/zh-CN/realtime-media/rtmp-gateway/build/call-api',
+  'realtime-media/rtmp-gateway/build/manage-media-streams/rtmp-domain-switch':
+    '/zh-CN/realtime-media/rtmp-gateway/build/rtmp-domain-switch',
+  'realtime-media/rtmp-gateway/build/monitor-events/enable-ncs':
+    '/zh-CN/realtime-media/rtmp-gateway/build/enable-ncs',
+  'realtime-media/rtmp-gateway/build/optimize-and-operate/checklist':
+    '/zh-CN/realtime-media/rtmp-gateway/build/checklist',
+  'realtime-media/rtmp-gateway/build/optimize-and-operate/rest-availability':
+    '/zh-CN/realtime-media/rtmp-gateway/build/rest-availability',
+  'realtime-media/transcoding/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/transcoding/build/enable-service',
+  'realtime-media/transcoding/build/setup-and-access/http-auth':
+    '/zh-CN/realtime-media/transcoding/build/http-auth',
+  'realtime-media/transcoding/build/setup-and-access/call-api':
+    '/zh-CN/realtime-media/transcoding/build/call-api',
+  'realtime-media/transcoding/build/setup-and-access/enable-multiple-bitrate':
+    '/zh-CN/realtime-media/transcoding/build/enable-multiple-bitrate',
+  'realtime-media/transcoding/build/monitor-events/enable-event-notification':
+    '/zh-CN/realtime-media/transcoding/build/enable-event-notification',
+  'realtime-media/transcoding/build/optimize-and-operate/check-service':
+    '/zh-CN/realtime-media/transcoding/build/check-service',
+  'realtime-media/transcoding/build/optimize-and-operate/rest-availability':
+    '/zh-CN/realtime-media/transcoding/build/rest-availability',
+  'realtime-media/rtc-server-sdk/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/rtc-server-sdk/build/enable-service',
+  'realtime-media/rtc-server-sdk/build/implement-core-features/send-receive':
+    '/zh-CN/realtime-media/rtc-server-sdk/build/send-receive',
+  'realtime-media/rtc-server-sdk/build/implement-core-features/string-uid':
+    '/zh-CN/realtime-media/rtc-server-sdk/build/string-uid',
+  'realtime-media/rtc-server-sdk/build/implement-core-features/mix-video':
+    '/zh-CN/realtime-media/rtc-server-sdk/build/mix-video',
+  'realtime-media/rtc-server-sdk/build/implement-core-features/encryption':
+    '/zh-CN/realtime-media/rtc-server-sdk/build/encryption',
+  'realtime-media/rtc-server-sdk/build/setup-and-access/cloud-proxy':
+    '/zh-CN/realtime-media/rtc-server-sdk/build/cloud-proxy',
+  'realtime-media/rtc-server-sdk/build/setup-and-access/set-region':
+    '/zh-CN/realtime-media/rtc-server-sdk/build/set-region',
+  'realtime-media/fusion-cdn/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/fusion-cdn/build/enable-service',
+  'realtime-media/fusion-cdn/build/setup-and-access/http-hmac-auth':
+    '/zh-CN/realtime-media/fusion-cdn/build/http-hmac-auth',
+  'realtime-media/fusion-cdn/build/setup-and-access/obs-config':
+    '/zh-CN/realtime-media/fusion-cdn/build/obs-config',
+  'realtime-media/fusion-cdn/build/manage-media-streams/streaming-url':
+    '/zh-CN/realtime-media/fusion-cdn/build/streaming-url',
+  'realtime-media/fusion-cdn/build/optimize-and-operate/stream-recording':
+    '/zh-CN/realtime-media/fusion-cdn/build/stream-recording',
+  'realtime-media/fusion-cdn/build/monitor-events/enable-ncs':
+    '/zh-CN/realtime-media/fusion-cdn/build/enable-ncs',
+  'realtime-media/fusion-cdn/build/optimize-and-operate/analytics':
+    '/zh-CN/realtime-media/fusion-cdn/build/analytics',
+  'realtime-media/fusion-cdn/build/optimize-and-operate/rest-availability':
+    '/zh-CN/realtime-media/fusion-cdn/build/rest-availability',
+  'solutions/art-class/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/art-class/build/enable-service',
+  'solutions/art-class/build/customize-and-extend/brightness-correction':
+    '/zh-CN/solutions/art-class/build/brightness-correction',
+  'solutions/art-class/build/customize-and-extend/trapezoid-correction':
+    '/zh-CN/solutions/art-class/build/trapezoid-correction',
+  'solutions/chatroom/sdk/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/chatroom/sdk/build/enable-service',
+  'solutions/chatroom/sdk/build/implement-core-features/quick-integration':
+    '/zh-CN/solutions/chatroom/sdk/build/quick-integration',
+  'solutions/chatroom/sdk/build/implement-core-features/mic-seat-management':
+    '/zh-CN/solutions/chatroom/sdk/build/mic-seat-management',
+  'solutions/chatroom/sdk/build/implement-core-features/set-audio':
+    '/zh-CN/solutions/chatroom/sdk/build/set-audio',
+  'solutions/chatroom/uikit/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/chatroom/uikit/build/enable-service',
+  'solutions/chatroom/uikit/build/implement-core-features/run-github-project':
+    '/zh-CN/solutions/chatroom/uikit/build/run-github-project',
+  'solutions/chatroom/uikit/build/implement-core-features/run-github-project-backend':
+    '/zh-CN/solutions/chatroom/uikit/build/run-github-project-backend',
+  'solutions/chatroom/uikit/build/implement-core-features/quick-integration':
+    '/zh-CN/solutions/chatroom/uikit/build/quick-integration',
+  'solutions/game-voice/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/game-voice/build/enable-service',
+  'solutions/game-voice/build/implement-core-features/audio-experience-optimization':
+    '/zh-CN/solutions/game-voice/build/audio-experience-optimization',
+  'solutions/game-voice/build/customize-and-extend/spatial-audio-sdk':
+    '/zh-CN/solutions/game-voice/build/spatial-audio-sdk',
+  'solutions/game-voice/build/customize-and-extend/spatial-audio-wwise':
+    '/zh-CN/solutions/game-voice/build/spatial-audio-wwise',
+  'solutions/meta-world/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/meta-world/build/enable-service',
+  'solutions/meta-world/build/implement-core-features/demo':
+    '/zh-CN/solutions/meta-world/build/demo',
+  'solutions/meta-world/build/implement-core-features/metachat':
+    '/zh-CN/solutions/meta-world/build/metachat',
+  'solutions/meta-world/build/implement-core-features/metalive':
+    '/zh-CN/solutions/meta-world/build/metalive',
+  'solutions/meta-world/build/implement-core-features/mixed-scenario':
+    '/zh-CN/solutions/meta-world/build/mixed-scenario',
+  'solutions/meta-world/build/customize-and-extend/dress-face':
+    '/zh-CN/solutions/meta-world/build/dress-face',
+  'solutions/meta-world/build/customize-and-extend/share-audio-video':
+    '/zh-CN/solutions/meta-world/build/share-audio-video',
+  'solutions/meta-world/build/customize-and-extend/spatial-audio':
+    '/zh-CN/solutions/meta-world/build/spatial-audio',
+  'solutions/smart-camera/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/smart-camera/build/enable-service',
+  'solutions/smart-camera/build/value-added-feature/amazon-alexa':
+    '/zh-CN/solutions/smart-camera/build/amazon-alexa',
+  'solutions/smart-camera/build/value-added-feature/google-assistant':
+    '/zh-CN/solutions/smart-camera/build/google-assistant',
+  'solutions/teleoperation/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/teleoperation/build/enable-service',
+  'solutions/teleoperation/build/implement-core-features/device-linux':
+    '/zh-CN/solutions/teleoperation/build/device-linux',
+  'solutions/teleoperation/build/implement-core-features/operator-linux':
+    '/zh-CN/solutions/teleoperation/build/operator-linux',
+  'solutions/teleoperation/build/implement-core-features/operator-android':
+    '/zh-CN/solutions/teleoperation/build/operator-android',
+  'solutions/voip-call/build/setup-and-access/enable-service':
+    '/zh-CN/solutions/voip-call/build/enable-service',
+  'solutions/voip-call/build/setup-and-access/http-basic-auth':
+    '/zh-CN/solutions/voip-call/build/http-basic-auth',
+  'solutions/voip-call/build/setup-and-access/license':
+    '/zh-CN/solutions/voip-call/build/license',
+  'solutions/voip-call/build/customize-and-extend/set-source-sink':
+    '/zh-CN/solutions/voip-call/build/set-source-sink',
+  'solutions/voip-call/build/monitor-events/receive-webhook':
+    '/zh-CN/solutions/voip-call/build/receive-webhook',
 };
 
 const ZH_CN_PRODUCT_IA_PREFIX_REDIRECTS: Array<[string, string]> = [
@@ -1444,6 +1793,13 @@ export function resolveZhCnProductIaRedirect(
 
   const path = `${tab}/${slugSegments.join('/')}`;
 
+  const exactRedirect =
+    ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS[path] ??
+    ZH_CN_PRODUCT_IA_REDIRECTS[path];
+  if (exactRedirect) {
+    return exactRedirect;
+  }
+
   for (const [
     sourcePrefix,
     targetPrefix,
@@ -1453,7 +1809,7 @@ export function resolveZhCnProductIaRedirect(
     }
   }
 
-  return ZH_CN_PRODUCT_IA_REDIRECTS[path] ?? null;
+  return null;
 }
 
-export { ZH_CN_PRODUCT_IA_REDIRECTS };
+export { ZH_CN_PRODUCT_IA_REDIRECTS, ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS };
