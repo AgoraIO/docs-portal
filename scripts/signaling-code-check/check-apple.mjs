@@ -172,7 +172,13 @@ export function resolveContext(ctx, file) {
   let resolved = ctx;
 
   for (const override of ctx.overrides ?? []) {
-    if (!path.includes(override.match)) continue;
+    // `match` may be one path fragment or several, because the same running
+    // example is shared by the guide pages and the api-ref pages, which live
+    // under different trees.
+    const patterns = Array.isArray(override.match)
+      ? override.match
+      : [override.match];
+    if (!patterns.some((pattern) => path.includes(pattern))) continue;
     resolved = structuredClone(resolved);
     for (const lang of ['swift', 'objc']) {
       for (const [key, entries] of Object.entries(override[lang] ?? {})) {

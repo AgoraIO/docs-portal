@@ -279,3 +279,33 @@ describe('bestAttempt with stubless shapes', () => {
     expect(bestAttempt(attempts, ['rtm']).shape).toBe('file-level');
   });
 });
+
+describe('resolveContext with several match paths', () => {
+  const base = {
+    swift: { members: [{ name: 'rtm', code: 'var rtm: X? = nil' }] },
+    objc: {},
+    overrides: [
+      {
+        match: ['realtime-media/rtm/', 'api-ref/signaling/'],
+        swift: { members: [{ name: 'rtm', code: 'var rtm: X! = nil' }] },
+      },
+    ],
+  };
+
+  // The guide pages and the api-ref pages share a running example but live
+  // under different trees, so one override has to reach both.
+  it('applies to every listed path', () => {
+    for (const file of [
+      'content/docs/en/realtime-media/rtm/quickstart.mdx',
+      'content/docs/en/api-reference/api-ref/signaling/ios.mdx',
+    ]) {
+      const ctx = resolveContext(base, file);
+      expect(ctx.swift.members[0].code).toContain('!');
+    }
+  });
+
+  it('leaves an unrelated path alone', () => {
+    const ctx = resolveContext(base, 'content/docs/en/video-calling/index.mdx');
+    expect(ctx.swift.members[0].code).toContain('?');
+  });
+});
