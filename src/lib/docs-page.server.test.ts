@@ -2766,6 +2766,36 @@ Web body
     });
   });
 
+  it('redirects the removed Server Gateway Cloud Proxy page to the RTC guide', async () => {
+    const cloudProxyPage = {
+      ...createPage(),
+      path: 'en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy.mdx',
+      slugs: [
+        'en',
+        'realtime-media',
+        'rtc',
+        'build',
+        'manage-connection-and-quality',
+        'cloud-proxy',
+      ],
+      url: '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
+    } as PageWithSource;
+    mockedGetPage.mockReturnValue(cloudProxyPage);
+    mockedGetPages.mockReturnValue([cloudProxyPage]);
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'rtc-server-sdk',
+        'build',
+        'secure-and-optimize-connections',
+        'cloud-proxy',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
+    });
+  });
+
   it('does not expose locale links outside the deployment region', async () => {
     const page = createPage();
     const zhPageTree: Root = {

@@ -926,6 +926,14 @@ function resolveRealtimeMediaRedirect(
 
   const normalizedPath = slugSegments.join('/');
 
+  if (
+    locale === 'en' &&
+    normalizedPath ===
+      'rtc-server-sdk/build/secure-and-optimize-connections/cloud-proxy'
+  ) {
+    return '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy';
+  }
+
   const redirects: Record<string, string> = {
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
