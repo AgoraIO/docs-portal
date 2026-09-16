@@ -201,3 +201,52 @@ describe('splitDeclarationsAndStatements', () => {
     expect(splitDeclarationsAndStatements('[rtm login];', ...args)).toEqual([]);
   });
 });
+
+describe('bestAttempt with stubless shapes', () => {
+  // A shape that carries no running-example stubs will always fail to find
+  // them. Counting that as the clearest diagnosis let a single
+  // "cannot find 'rtm' in scope" outrank the shape showing the real defect.
+  it('ranks a stubless shape last when it only misses a stub symbol', () => {
+    const attempts = [
+      {
+        shape: 'file-level',
+        ok: false,
+        stubless: true,
+        diagnostics: "a.swift:1: error: cannot find 'rtm' in scope",
+      },
+      {
+        shape: 'type-body',
+        ok: false,
+        stubless: false,
+        diagnostics: [
+          "b.swift:3: error: type 'X' has no member 'storage'",
+          'b.swift:4: error: unterminated string literal',
+        ].join('\n'),
+      },
+    ];
+
+    expect(bestAttempt(attempts, ['rtm']).shape).toBe('type-body');
+  });
+
+  it('still trusts a stubless shape for a symbol the harness never supplies', () => {
+    const attempts = [
+      {
+        shape: 'file-level',
+        ok: false,
+        stubless: true,
+        diagnostics: "a.swift:1: error: cannot find 'RtmClient' in scope",
+      },
+      {
+        shape: 'type-body',
+        ok: false,
+        stubless: false,
+        diagnostics: [
+          "b.swift:1: error: cannot find 'RtmClient' in scope",
+          'b.swift:2: error: cascading noise',
+        ].join('\n'),
+      },
+    ];
+
+    expect(bestAttempt(attempts, ['rtm']).shape).toBe('file-level');
+  });
+});

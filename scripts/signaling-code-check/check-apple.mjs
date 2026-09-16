@@ -235,8 +235,13 @@ function swiftCandidates(block, ctx, platform) {
     // Self-contained samples bring their own imports; a prelude in front of
     // them is a syntax error in Swift only if it duplicates a declaration, but
     // trying the block untouched first keeps the reported result honest.
-    { shape: 'as-written', source: `${code}\n`, notes },
-    { shape: 'file-level', source: `${preamble}${code}\n`, notes },
+    { shape: 'as-written', source: `${code}\n`, notes, stubless: true },
+    {
+      shape: 'file-level',
+      source: `${preamble}${code}\n`,
+      notes,
+      stubless: true,
+    },
     {
       shape: 'type-body',
       source: `${preamble}${open}\n${members.join('\n')}\n\n${indent(code, 4)}\n}\n`,
@@ -335,15 +340,21 @@ function objcCandidates(block, ctx, platform) {
   ].join('\n');
 
   return [
-    { shape: 'as-written', source: `${code}\n`, notes },
+    { shape: 'as-written', source: `${code}\n`, notes, stubless: true },
     // The docs' "declare the variables you need" fragment is a class extension
     // with no closing @end; it is a real excerpt, not a broken sample.
     {
       shape: 'as-written+@end',
+      stubless: true,
       source: `${code}\n@end\n`,
       notes: [...notes, '`@end` appended to close the excerpt'],
     },
-    { shape: 'file-level', source: `${preamble}${code}\n`, notes },
+    {
+      shape: 'file-level',
+      source: `${preamble}${code}\n`,
+      notes,
+      stubless: true,
+    },
     ...splitDeclarationsAndStatements(code, preamble, extension, base, notes),
     {
       shape: 'implementation-body',
@@ -450,16 +461,30 @@ const STRUCTURAL_ERRORS = [
   'expected external declaration',
 ];
 
-function isStructuralOnly(diagnostics) {
-  const errors = diagnostics
+const MISSING_SYMBOL =
+  /cannot find '([^']+)' in scope|use of undeclared identifier '([^']+)'/;
+
+/**
+ * True when an attempt's errors say only that the block was wrapped the wrong
+ * way, not that the sample itself is wrong.
+ *
+ * The `as-written` and `file-level` shapes carry no running-example stubs, so
+ * when one of them cannot find a symbol the harness would have supplied, that
+ * is the wrapping talking. Ranking on error count alone let a single
+ * "cannot find 'rtm' in scope" outrank the shape showing the real defect.
+ */
+function isStructuralOnly(attempt, stubNames = []) {
+  const errors = attempt.diagnostics
     .split('\n')
     .filter((line) => line.includes('error:'));
-  return (
-    errors.length > 0 &&
-    errors.every((line) =>
-      STRUCTURAL_ERRORS.some((marker) => line.includes(marker)),
-    )
-  );
+  if (!errors.length) return false;
+
+  return errors.every((line) => {
+    if (STRUCTURAL_ERRORS.some((marker) => line.includes(marker))) return true;
+    if (!attempt.stubless) return false;
+    const missing = MISSING_SYMBOL.exec(line);
+    return Boolean(missing) && stubNames.includes(missing[1] ?? missing[2]);
+  });
 }
 
 /**
@@ -472,11 +497,11 @@ function isStructuralOnly(diagnostics) {
  * errors, but a shape that fails structurally can produce fewer still while
  * saying nothing, so those are ranked last regardless of count.
  */
-export function bestAttempt(attempts) {
+export function bestAttempt(attempts, stubNames = []) {
   const failures = attempts.filter((attempt) => !attempt.ok);
   if (!failures.length) return null;
   const rank = (attempt) => [
-    isStructuralOnly(attempt.diagnostics) ? 1 : 0,
+    isStructuralOnly(attempt, stubNames) ? 1 : 0,
     errorCount(attempt.diagnostics),
   ];
   return failures.reduce((best, attempt) => {
@@ -493,8 +518,8 @@ function errorCount(diagnostics) {
     .length;
 }
 
-function bestDiagnostics(attempts) {
-  return bestAttempt(attempts)?.diagnostics ?? '';
+function bestDiagnostics(attempts, stubNames) {
+  return bestAttempt(attempts, stubNames)?.diagnostics ?? '';
 }
 
 /**
@@ -589,10 +614,22 @@ function main() {
 
   const results = [];
   for (const block of blocks) {
+    const pageContext = resolveContext(ctx, block.file);
     const candidates =
       block.lang === 'swift'
-        ? swiftCandidates(block, resolveContext(ctx, block.file), target)
-        : objcCandidates(block, resolveContext(ctx, block.file), target);
+        ? swiftCandidates(block, pageContext, target)
+        : objcCandidates(block, pageContext, target);
+    // Every symbol the harness could have supplied, so a shape that carries no
+    // stubs is not credited with having found a real missing declaration.
+    const stubNames = [
+      ...(block.lang === 'swift'
+        ? pageContext.swift.members
+        : [
+            ...(pageContext.objc.ivars ?? []),
+            ...pageContext.objc.properties,
+            ...pageContext.objc.methods,
+          ]),
+    ].map((stub) => stub.name);
     const ext = block.lang === 'swift' ? 'swift' : 'm';
     const attempts = [];
     let passed = null;
@@ -608,6 +645,7 @@ function main() {
       attempts.push({
         shape: candidate.shape,
         ok,
+        stubless: Boolean(candidate.stubless),
         diagnostics: ok ? '' : summarizeDiagnostics(diagnostics),
       });
       if (ok) {
@@ -624,8 +662,10 @@ function main() {
       status: opts.dryRun ? 'skipped' : passed ? 'pass' : 'fail',
       shape: passed?.shape ?? null,
       notes: passed?.notes ?? [],
-      diagnostics: passed ? '' : bestDiagnostics(attempts),
-      shapeDiagnosed: passed ? null : (bestAttempt(attempts)?.shape ?? null),
+      diagnostics: passed ? '' : bestDiagnostics(attempts, stubNames),
+      shapeDiagnosed: passed
+        ? null
+        : (bestAttempt(attempts, stubNames)?.shape ?? null),
       attempts,
     });
 
