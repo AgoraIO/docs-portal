@@ -15,6 +15,7 @@ import {
   loadDocsSearchIndex,
   loadDocsTabIndex,
   normalizeZhCnEmbeddedApiSidebar,
+  revealActiveSidebarPath,
 } from './docs-page.server';
 import { type PageWithSource, source } from './source.server';
 import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
@@ -3574,6 +3575,102 @@ Web body
       loadDocsPagePayload('zh-CN', 'api-reference', ['api-ref', 'whiteboard']),
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/api-reference/api-ref/whiteboard/restful',
+    });
+  });
+
+  it('reveals only the embedded service API section matching the product source', () => {
+    const activeApiUrl =
+      '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room';
+    const productPath = '/zh-CN/realtime-media/whiteboard';
+    const whiteboardScope = '/zh-CN/realtime-media/whiteboard/whiteboard-sdk';
+    const fastboardScope = '/zh-CN/realtime-media/whiteboard/fastboard-sdk';
+    const nodes: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    id: 'whiteboard-api-page',
+                    search: { from: productPath, fromScope: whiteboardScope },
+                    title: '创建房间',
+                    type: 'page',
+                    url: activeApiUrl,
+                  },
+                ],
+                collapsible: true,
+                defaultOpen: false,
+                id: 'whiteboard-service-api',
+                title: '服务端 API',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'whiteboard-reference',
+            title: '参考',
+            type: 'section',
+          },
+        ],
+        id: 'whiteboard-sdk',
+        title: '互动白板 SDK',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    id: 'fastboard-api-page',
+                    search: { from: productPath, fromScope: fastboardScope },
+                    title: '创建房间',
+                    type: 'page',
+                    url: activeApiUrl,
+                  },
+                ],
+                collapsible: true,
+                defaultOpen: false,
+                id: 'fastboard-service-api',
+                title: '服务端 API',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'fastboard-reference',
+            title: '参考',
+            type: 'section',
+          },
+        ],
+        id: 'fastboard-sdk',
+        title: 'Fastboard SDK',
+        type: 'section',
+      },
+    ];
+
+    const revealed = revealActiveSidebarPath(
+      nodes,
+      activeApiUrl,
+      productPath,
+      whiteboardScope,
+    );
+
+    expect(revealed[0]).toMatchObject({
+      children: [
+        {
+          defaultOpen: true,
+          children: [{ defaultOpen: true }],
+        },
+      ],
+    });
+    expect(revealed[1]).toMatchObject({
+      children: [
+        {
+          defaultOpen: false,
+          children: [{ defaultOpen: false }],
+        },
+      ],
     });
   });
 
