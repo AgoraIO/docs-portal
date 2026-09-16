@@ -29,6 +29,14 @@
       { "name": "appid", "code": "var appid: String = \"\"" },
       { "name": "token", "code": "var token: String = \"\"" },
       { "name": "rtmKit", "code": "var rtmKit: AgoraRtmClientKit? = nil" },
+      {
+        "name": "rtm",
+        "code": "var rtm: AgoraRtmClientKit = __harnessPlaceholder()"
+      },
+      {
+        "name": "rtmClient",
+        "code": "var rtmClient: AgoraRtmClientKit = __harnessPlaceholder()"
+      },
       { "name": "username", "code": "@Published var username: String = \"\"" },
       { "name": "message", "code": "@Published var message: String = \"\"" },
       { "name": "channel", "code": "@Published var channel: String = \"\"" },
@@ -58,6 +66,16 @@
       "<AgoraRtmKit/AgoraRtmKit.h>"
     ],
     "baseClass": "ViewController",
+    "_ivarsComment": [
+      "Declared as instance variables, not properties, because the guide pages",
+      "write the bare name (`[rtm loginByToken:...]`). A @property synthesizes",
+      "`_rtm`, which would not resolve `rtm`."
+    ],
+    "ivars": [
+      { "name": "rtm", "code": "AgoraRtmClientKit *rtm;" },
+      { "name": "rtmClient", "code": "AgoraRtmClientKit *rtmClient;" },
+      { "name": "rtm_client", "code": "AgoraRtmClientKit *rtm_client;" }
+    ],
     "properties": [
       {
         "name": "kit",

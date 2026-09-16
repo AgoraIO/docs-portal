@@ -141,6 +141,19 @@ function declaresObjcMethod(code, name) {
   return new RegExp(`[-+]\\s*\\([^)]*\\)\\s*${name}\\b`).test(code);
 }
 
+/**
+ * Name the running-example symbols a block leaned on. Stubbing is how a
+ * per-step fragment gets to compile at all, but every stub is a declaration
+ * the harness supplied instead of the docs, so a pass that depended on one
+ * should say so rather than read as unqualified success.
+ */
+function stubNote(stubs, code) {
+  const used = stubs
+    .filter((stub) => new RegExp(`\\b${stub.name}\\b`).test(code))
+    .map((stub) => stub.name);
+  return used.length ? [`relied on harness stubs for: ${used.join(', ')}`] : [];
+}
+
 function swiftCandidates(block, ctx, platform) {
   const notes = [];
   let code = block.code;
@@ -166,9 +179,11 @@ function swiftCandidates(block, ctx, platform) {
     const name = /\b(?:struct|class|enum)\s+(\w+)/.exec(line)?.[1];
     return !name || !declaresSwift(code, name);
   });
-  const members = ctx.swift.members
-    .filter((m) => !declaresSwift(code, m.name))
-    .map((m) => `    ${m.code}`);
+  const declared = ctx.swift.members.filter(
+    (m) => !declaresSwift(code, m.name),
+  );
+  const members = declared.map((m) => `    ${m.code}`);
+  notes.push(...stubNote(declared, code));
 
   const preamble = [imports, '', placeholderFn, ...fileLevel, ''].join('\n');
   const open =
@@ -208,18 +223,24 @@ function objcCandidates(block, ctx, platform) {
     .map((name) => `#import ${name}`)
     .join('\n');
   const base = ctx.objc.baseClass;
-  const properties = ctx.objc.properties
-    .filter((p) => !declaresObjcProperty(code, p.name))
-    .map((p) => p.code);
-  const methods = ctx.objc.methods
-    .filter((m) => !declaresObjcMethod(code, m.name))
-    .map((m) => m.code);
+  const ivars = (ctx.objc.ivars ?? []).filter(
+    (v) => !new RegExp(`\\b\\w+\\s*\\*\\s*${v.name}\\b`).test(code),
+  );
+  const properties = ctx.objc.properties.filter(
+    (p) => !declaresObjcProperty(code, p.name),
+  );
+  const methods = ctx.objc.methods.filter(
+    (m) => !declaresObjcMethod(code, m.name),
+  );
+  notes.push(...stubNote([...ivars, ...properties, ...methods], code));
 
   const preamble = [imports, `#import "${base}.h"`, ''].join('\n');
   const extension = [
-    `@interface ${base} () <AgoraRtmClientDelegate>`,
-    ...properties,
-    ...methods,
+    `@interface ${base} () <AgoraRtmClientDelegate> {`,
+    ...ivars.map((v) => `    ${v.code}`),
+    '}',
+    ...properties.map((p) => p.code),
+    ...methods.map((m) => m.code),
     '@end',
     '',
   ].join('\n');
