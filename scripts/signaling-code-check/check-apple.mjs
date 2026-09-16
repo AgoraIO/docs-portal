@@ -330,22 +330,51 @@ function summarizeDiagnostics(text) {
   return (errors.length ? errors : lines).slice(0, 12).join('\n');
 }
 
+// Errors that only mean "this block was wrapped the wrong way". An attempt
+// reporting nothing but these has told us nothing about the sample itself,
+// however few errors it produced.
+const STRUCTURAL_ERRORS = [
+  'missing context for method declaration',
+  'declaration is only valid at file scope',
+  'expected external declaration',
+];
+
+function isStructuralOnly(diagnostics) {
+  const errors = diagnostics
+    .split('\n')
+    .filter((line) => line.includes('error:'));
+  return (
+    errors.length > 0 &&
+    errors.every((line) =>
+      STRUCTURAL_ERRORS.some((marker) => line.includes(marker)),
+    )
+  );
+}
+
 /**
  * Pick the attempt whose diagnostics describe the block's real problem.
  *
  * The last shape tried is the most permissive one, so reporting it buries the
  * answer under wrapping noise: a method definition forced into a method body
  * reports "unexpected '@' in program" rather than the string literal that
- * actually broke. The shape that got furthest produces the fewest errors.
+ * actually broke it. The shape that got furthest generally produces the fewest
+ * errors, but a shape that fails structurally can produce fewer still while
+ * saying nothing, so those are ranked last regardless of count.
  */
 export function bestAttempt(attempts) {
   const failures = attempts.filter((attempt) => !attempt.ok);
   if (!failures.length) return null;
-  return failures.reduce((best, attempt) =>
-    errorCount(attempt.diagnostics) < errorCount(best.diagnostics)
-      ? attempt
-      : best,
-  );
+  const rank = (attempt) => [
+    isStructuralOnly(attempt.diagnostics) ? 1 : 0,
+    errorCount(attempt.diagnostics),
+  ];
+  return failures.reduce((best, attempt) => {
+    const [aStructural, aCount] = rank(attempt);
+    const [bStructural, bCount] = rank(best);
+    if (aStructural !== bStructural)
+      return aStructural < bStructural ? attempt : best;
+    return aCount < bCount ? attempt : best;
+  });
 }
 
 function errorCount(diagnostics) {
@@ -555,6 +584,25 @@ function renderSummary(report) {
         '```',
         '',
       );
+      // Every shape is kept within reach: picking the clearest one is a
+      // heuristic, and triage sometimes needs the shape it passed over.
+      const others = r.attempts.filter(
+        (attempt) => !attempt.ok && attempt.shape !== r.shapeDiagnosed,
+      );
+      if (others.length) {
+        lines.push('<details><summary>Other shapes tried</summary>', '');
+        for (const attempt of others) {
+          lines.push(
+            `\`${attempt.shape}\`:`,
+            '',
+            '```',
+            attempt.diagnostics || '(no diagnostics)',
+            '```',
+            '',
+          );
+        }
+        lines.push('</details>', '');
+      }
     }
   }
 
