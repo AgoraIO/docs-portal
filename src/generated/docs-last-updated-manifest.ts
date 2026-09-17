@@ -173,11 +173,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/custom-model-integration/custom-llm.mdx':
     '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/build/custom-model-integration/custom-tools.mdx':
-    '2026-09-11T14:11:21.000Z',
+    '2026-09-15T09:23:46.000Z',
   'content/docs/en/ai/build/custom-model-integration/custom-tts.mdx':
     '2026-08-24T09:06:02.000Z',
   'content/docs/en/ai/build/custom-model-integration/managed-mode.mdx':
-    '2026-09-02T08:18:31.000Z',
+    '2026-09-15T09:23:46.000Z',
   'content/docs/en/ai/build/custom-model-integration/meta.json':
     '2026-09-11T14:11:21.000Z',
   'content/docs/en/ai/build/custom-model-integration/presets.mdx':
@@ -208,7 +208,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/index.mdx': '2026-06-25T15:09:45.000Z',
   'content/docs/en/ai/build/interrupt-agent.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/interrupt-agent.mdx': '2026-06-24T10:50:33.000Z',
-  'content/docs/en/ai/build/mcp-tools.mdx': '2026-09-11T14:11:21.000Z',
+  'content/docs/en/ai/build/mcp-tools.mdx': '2026-09-15T09:23:46.000Z',
   'content/docs/en/ai/build/meta.json': '2026-09-11T14:11:21.000Z',
   'content/docs/en/ai/build/monitor-agent-runtime.mdx':
     '2026-06-24T10:50:33.000Z',
@@ -227,7 +227,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/shape-the-conversation/custom-information.mdx':
     '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/build/shape-the-conversation/filler-words.mdx':
-    '2026-09-11T14:11:21.000Z',
+    '2026-09-15T09:23:46.000Z',
   'content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/ai/build/shape-the-conversation/meta.json':
@@ -464,7 +464,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/meta.json': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/models/mllm/azure.mdx': '2026-09-11T11:31:00.000Z',
   'content/docs/en/ai/models/mllm/gemini.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/mllm/gemini.mdx': '2026-09-15T23:29:28.000Z',
+  'content/docs/en/ai/models/mllm/gemini.mdx': '2026-09-15T23:50:34.000Z',
   'content/docs/en/ai/models/mllm/google-vertex-ai.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/mllm/google-vertex-ai.mdx':
@@ -562,7 +562,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-09-11T14:11:21.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-09-15T09:23:46.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -791,7 +791,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/authentication.md':
     '2026-07-27T09:08:03.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/authentication.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-09-15T09:23:46.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/android.mdx':
     '2026-09-11T14:11:21.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx':
@@ -961,13 +961,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
-    '2026-09-15T23:05:05.000Z',
+    '2026-09-15T23:50:34.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
-    '2026-09-15T23:05:05.000Z',
+    '2026-09-15T23:50:34.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
-    '2026-09-15T23:05:05.000Z',
+    '2026-09-15T23:50:34.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
     '2026-09-07T08:01:28.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
@@ -3913,7 +3913,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files.mdx':
     '2026-06-29T16:19:14.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-09-17T04:34:39.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/meta.json':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/online-play.mdx':
@@ -5452,13 +5452,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/cloud-proxy.md':
     '2026-07-31T02:34:43.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/cloud-proxy.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-09-16T07:59:08.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/media-stream-encryption.md':
     '2026-07-31T02:34:43.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/media-stream-encryption.mdx':
     '2026-07-31T02:34:43.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/meta.json':
-    '2026-06-26T09:28:42.000Z',
+    '2026-09-16T07:59:08.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/network-geofencing.md':
     '2026-07-31T02:34:43.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/network-geofencing.mdx':
@@ -8227,7 +8227,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/ai/models/llm/meta.json': '2026-06-10T07:09:25.000Z',
   'content/docs/zh-CN/ai/models/llm/openai.mdx': '2026-06-10T07:09:25.000Z',
   'content/docs/zh-CN/ai/models/meta.json': '2026-06-10T07:09:25.000Z',
-  'content/docs/zh-CN/ai/models/mllm/gemini.mdx': '2026-09-15T23:29:28.000Z',
+  'content/docs/zh-CN/ai/models/mllm/gemini.mdx': '2026-09-15T23:50:34.000Z',
   'content/docs/zh-CN/ai/models/mllm/google-vertex-ai.mdx':
     '2026-06-10T07:09:25.000Z',
   'content/docs/zh-CN/ai/models/mllm/index.md': '2026-06-10T07:09:25.000Z',
@@ -11671,7 +11671,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-09-11T14:11:21.000Z',
+    '2026-09-15T09:23:46.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
     '2026-07-03T04:07:10.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',
