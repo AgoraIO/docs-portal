@@ -957,12 +957,12 @@ Refer to the following sample code to query the list of online users in a channe
 <TabsContent value="swift">
 
 ```swift
-let presenceOptions = AgoraRtmPresenceOptions()
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
 presenceOptions.includeState = true
 presenceOptions.includeUserId = true
 
 // Retrieve the user state of the current channel
-rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+rtm.getPresence()?.getOnlineUser(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("getOnlineUsers success!!")
         let userCount = response?.totalOccupancy ?? 0
@@ -980,10 +980,10 @@ rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .mes
 <TabsContent value="objc">
 
 ```objc
-AgoraRmPresenceOptions* presence_opt = [[AgoraRtmPresenceOptions alloc] init];
+AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmGetOnlineUsersOptions alloc] init];
 presence_opt.includeState = true;
 presence_opt.includeUserId = true;
-[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmgetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getOnlineUsers success!!");
         int user_count = response.totalOccupancy;
@@ -994,7 +994,7 @@ presence_opt.includeUserId = true;
 }];
 ```
 
-The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `response.nextPage` field contains a bookmark for the next page. After each query, check `response.nextPage` to determine if there is more data. To retrieve the next page, set the `page` field in `AgoraRtmPresenceOptions` to the value of `response.nextPage`. Repeat this process until `response.nextPage` is empty.
+The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `response.nextPage` field contains a bookmark for the next page. After each query, check `response.nextPage` to determine if there is more data. To retrieve the next page, set the `page` field in `AgoraRtmGetOnlineUsersOptions` to the value of `response.nextPage`. Repeat this process until `response.nextPage` is empty.
 
 :::info[Querying large channels]
 Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
@@ -1004,7 +1004,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 </Tabs>
 
 ```swift tab="Swift"
-let presenceOptions = AgoraRtmPresenceOptions()
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
 presenceOptions.includeState = true
 presenceOptions.includeUserId = true
 presenceOptions.page = "your_Next_Page_Bookmark"
@@ -1026,12 +1026,12 @@ rtm.getPresence()?.getOnlineUsers("your_channel", channelType: .message, options
 ```
 
 ```objc tab="Objective-C"
-AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmGetOnlineUsersOptions alloc] init];
 presence_opt.includeState = true;
 presence_opt.includeUserId = true;
 presence_opt.page = @"your_Next_Page_Bookmark";
 
-[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmgetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getOnlineUsers success!!");
         int user_count = response.totalOccupancy;
@@ -1043,15 +1043,15 @@ presence_opt.page = @"your_Next_Page_Bookmark";
 }];
 ```
 
-When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `AgoraRtmPresenceOptions` to `false`.
+When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `AgoraRtmGetOnlineUsersOptions` to `false`.
 
 ```swift tab="Swift"
-let presenceOptions = AgoraRtmPresenceOptions()
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
 presenceOptions.includeState = false
 presenceOptions.includeUserId = false
 
 // Retrieve the user state of the current channel
-rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+rtm.getPresence()?.getOnlineUser(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("getOnlineUsers success!!")
 
@@ -1063,11 +1063,11 @@ rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .mes
 ```
 
 ```objc tab="Objective-C"
-AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmGetOnlineUsersOptions alloc] init];
 presence_opt.includeState = false;
 presence_opt.includeUserId = false;
 
-[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmgetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getOnlineUsers success!!");
         int user_count = response.totalOccupancy;
@@ -1088,7 +1088,7 @@ You cannot set `includeState` to `true` and `includeUserId` to `false` at the sa
 The `getUserChannels` method enables you to query which channels a user is currently in. This includes the message channels a user has subscribed to and the stream channels they have joined. This method is particularly useful for tracking user paths. Refer to the following sample code:
 
 ```swift tab="Swift"
-rtm.getPresence()?.getUserChannels("userId") { response, errorInfo in
+rtm.getPresence()?.getUserChannels(userId: "userId") { response, errorInfo in
     if errorInfo == nil {
         print("getUserChannels success!!")
 
@@ -1220,7 +1220,7 @@ Each user can set up to 32 key-value pairs in a channel. To remove items that ar
 ```swift
 let keys: [String] = ["key1", "key2"]
 
-rtm.getPresence()?.removeState("your_channel", channelType: .message, keys: keys) { response, errorInfo in
+rtm.getPresence()?.removeState(channelName: "your_channel", channelType: .message, keys: keys) { response, errorInfo in
     if errorInfo == nil {
         print("removeState success!!")
     } else {
@@ -1609,12 +1609,12 @@ Refer to the following sample code to query the list of online users in a channe
 <TabsContent value="swift">
 
 ```swift
-let presenceOptions = AgoraRtmPresenceOptions()
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
 presenceOptions.includeState = true
 presenceOptions.includeUserId = true
 
 // Retrieve the user state of the current channel
-rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+rtm.getPresence()?.getOnlineUser(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("getOnlineUsers success!!")
         let userCount = response?.totalOccupancy ?? 0
@@ -1632,10 +1632,10 @@ rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .mes
 <TabsContent value="objc">
 
 ```objc
-AgoraRmPresenceOptions* presence_opt = [[AgoraRtmPresenceOptions alloc] init];
+AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmGetOnlineUsersOptions alloc] init];
 presence_opt.includeState = true;
 presence_opt.includeUserId = true;
-[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmgetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getOnlineUsers success!!");
         int user_count = response.totalOccupancy;
@@ -1646,7 +1646,7 @@ presence_opt.includeUserId = true;
 }];
 ```
 
-The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `response.nextPage` field contains a bookmark for the next page. After each query, check `response.nextPage` to determine if there is more data. To retrieve the next page, set the `page` field in `AgoraRtmPresenceOptions` to the value of `response.nextPage`. Repeat this process until `response.nextPage` is empty.
+The `getOnlineUsers` method retrieves one page of data at a time. Each page contains up to 100 online users. If the channel has more than 100 users, the `response.nextPage` field contains a bookmark for the next page. After each query, check `response.nextPage` to determine if there is more data. To retrieve the next page, set the `page` field in `AgoraRtmGetOnlineUsersOptions` to the value of `response.nextPage`. Repeat this process until `response.nextPage` is empty.
 
 :::info[Querying large channels]
 Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatically applies large-channel optimization and continuously syncs details for only 512 members. This limit applies only to that continuous sync; a `getOnlineUsers` query still returns the full member list. Use pagination to retrieve it.
@@ -1656,7 +1656,7 @@ Starting from v2.3.0, once a channel exceeds 512 online users, the SDK automatic
 </Tabs>
 
 ```swift tab="Swift"
-let presenceOptions = AgoraRtmPresenceOptions()
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
 presenceOptions.includeState = true
 presenceOptions.includeUserId = true
 presenceOptions.page = "your_Next_Page_Bookmark"
@@ -1678,12 +1678,12 @@ rtm.getPresence()?.getOnlineUsers("your_channel", channelType: .message, options
 ```
 
 ```objc tab="Objective-C"
-AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmGetOnlineUsersOptions alloc] init];
 presence_opt.includeState = true;
 presence_opt.includeUserId = true;
 presence_opt.page = @"your_Next_Page_Bookmark";
 
-[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmgetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getOnlineUsers success!!");
         int user_count = response.totalOccupancy;
@@ -1695,15 +1695,15 @@ presence_opt.page = @"your_Next_Page_Bookmark";
 }];
 ```
 
-When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `AgoraRtmPresenceOptions` to `false`.
+When there is a large number of users in a channel, you may only care about the total number of online users, and not their identities or temporary status. To get the total channel occupancy, set `includeState` and `includeUserId` in `AgoraRtmGetOnlineUsersOptions` to `false`.
 
 ```swift tab="Swift"
-let presenceOptions = AgoraRtmPresenceOptions()
+let presenceOptions = AgoraRtmGetOnlineUsersOptions()
 presenceOptions.includeState = false
 presenceOptions.includeUserId = false
 
 // Retrieve the user state of the current channel
-rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+rtm.getPresence()?.getOnlineUser(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("getOnlineUsers success!!")
 
@@ -1715,11 +1715,11 @@ rtm.getPresence()?.getOnlineUsers(channelName: "your_channel", channelType: .mes
 ```
 
 ```objc tab="Objective-C"
-AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmGetOnlineUsersOptions alloc] init];
 presence_opt.includeState = false;
 presence_opt.includeUserId = false;
 
-[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmgetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[[rtm getPresence] getOnlineUsers:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmGetOnlineUsersResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getOnlineUsers success!!");
         int user_count = response.totalOccupancy;
@@ -1740,7 +1740,7 @@ You cannot set `includeState` to `true` and `includeUserId` to `false` at the sa
 The `getUserChannels` method enables you to query which channels a user is currently in. This includes the message channels a user has subscribed to and the stream channels they have joined. This method is particularly useful for tracking user paths. Refer to the following sample code:
 
 ```swift tab="Swift"
-rtm.getPresence()?.getUserChannels("userId") { response, errorInfo in
+rtm.getPresence()?.getUserChannels(userId: "userId") { response, errorInfo in
     if errorInfo == nil {
         print("getUserChannels success!!")
 
@@ -1872,7 +1872,7 @@ Each user can set up to 32 key-value pairs in a channel. To remove items that ar
 ```swift
 let keys: [String] = ["key1", "key2"]
 
-rtm.getPresence()?.removeState("your_channel", channelType: .message, keys: keys) { response, errorInfo in
+rtm.getPresence()?.removeState(channelName: "your_channel", channelType: .message, keys: keys) { response, errorInfo in
     if errorInfo == nil {
         print("removeState success!!")
     } else {

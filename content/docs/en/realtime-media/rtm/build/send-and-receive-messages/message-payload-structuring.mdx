@@ -493,13 +493,15 @@ Signaling also provides the `customType` field in the `publish` method for sendi
 ```swift tab="Swift" tabGroup="language"
 let option = AgoraRtmPublishOptions();
 option.customType = "image"
-let message = "{
-    \"type\": \"image\",
-    \"asset_url\": \"https://my.app/image.png\",
-    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
-    \"mentionedUsers\": [\"Tony\",\"Lily\"],
-    \"sender\": \"Max\"
-    }"
+let message = """
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+"""
 
 rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
     if error != nil {
@@ -707,13 +709,15 @@ Signaling also provides the `customType` field in the `publish` method for sendi
 ```swift tab="Swift" tabGroup="language"
 let option = AgoraRtmPublishOptions();
 option.customType = "image"
-let message = "{
-    \"type\": \"image\",
-    \"asset_url\": \"https://my.app/image.png\",
-    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
-    \"mentionedUsers\": [\"Tony\",\"Lily\"],
-    \"sender\": \"Max\"
-    }"
+let message = """
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+"""
 
 rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
     if error != nil {

@@ -629,7 +629,7 @@ Before establishing a `STREAM` connection, you establish a `MESSAGE` connection.
 ```swift tab="Swift"
 let join_option = AgoraRtmJoinChannelOption();
 join_option.token = "your_token"
-join_option.features = [.presence, .storage]
+join_option.features = [.presence, .metadata]
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
         print("\\(error?.operation) failed! error reason is \\(error?.reason)")
@@ -642,7 +642,7 @@ stream_channel.join(join_option, completion: { (res, error) in
 ```objc tab="Objective-C"
 AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
 join_opt.token =  @"yourToken";
-join_opt.features = Agora2RtmSubscribeChannelFeaturePresence | AgoraRtmSubscribeChannelFeatureMetadata;
+join_opt.features = AgoraRtmJoinChannelFeaturePresence | AgoraRtmJoinChannelFeatureMetadata;
 
 [stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
@@ -950,7 +950,7 @@ Take the following steps to integrate `CallAPI` into your project:
 
     If your current version is not compatible with `CallAPI`, modify the corresponding SDK version number in the `CallAPI.podspec` file.
 
-    ```swift
+    ```ruby
     s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.26'
     s.dependency 'AgoraRtm_iOS', '2.2.0'
     ```
@@ -1026,7 +1026,7 @@ Before establishing a `STREAM` connection, you establish a `MESSAGE` connection.
 ```swift tab="Swift"
 let join_option = AgoraRtmJoinChannelOption();
 join_option.token = "your_token"
-join_option.features = [.presence, .storage]
+join_option.features = [.presence, .metadata]
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
         print("\\(error?.operation) failed! error reason is \\(error?.reason)")
@@ -1039,7 +1039,7 @@ stream_channel.join(join_option, completion: { (res, error) in
 ```objc tab="Objective-C"
 AgoraRtmJoinChannelOption* join_opt =  [[AgoraRtmJoinChannelOption alloc] init];
 join_opt.token =  @"yourToken";
-join_opt.features = Agora2RtmSubscribeChannelFeaturePresence | AgoraRtmSubscribeChannelFeatureMetadata;
+join_opt.features = AgoraRtmJoinChannelFeaturePresence | AgoraRtmJoinChannelFeatureMetadata;
 
 [stream_channel joinWithOption:join_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
@@ -1347,7 +1347,7 @@ Take the following steps to integrate `CallAPI` into your project:
 
     If your current version is not compatible with `CallAPI`, modify the corresponding SDK version number in the `CallAPI.podspec` file.
 
-    ```swift
+    ```ruby
     s.dependency 'AgoraRtcEngine_Special_iOS', '4.1.1.26'
     s.dependency 'AgoraRtm_iOS', '2.2.0'
     ```

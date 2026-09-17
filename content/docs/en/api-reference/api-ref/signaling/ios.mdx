@@ -440,12 +440,10 @@ After calling most of the APIs of the Signaling Objective-C SDK, the SDK execute
 - Success: Returns the corresponding data in the `response` parameter, and the `nil` in the `errorInfo` parameter.
 - Failure: Returns `nil` in the `response` parameter, and error information in the `errorInfo` parameter.
 
-The `errorInfo` of `AgoraRtmErrorInfo` data type contains the error code, error reason, and API operation name for this call, as follows:
+The `errorInfo` of type `AgoraRtmErrorInfo` contains the error code, error reason, and API operation name for this call:
 
-The return value of the type `AgoraRtmErrorInfo` includes the error code, error reason, and API operation name of the call, as follows:
-
-```dart
-class AgoraRtmErrorInfo : NSError {
+```swift
+class AgoraRtmErrorInfo: NSError {
     var errorCode: AgoraRtmErrorCode  // Error code
     var operation: String  // API name
     var reason: String  // Brief description of the error reason
@@ -473,7 +471,7 @@ if let error = error {
 rtmClient.login(token) { response, error in
     if let errorInfo = error {
         print("Login failed with error: \(errorInfo.reason)")
-    } else let loginResponse = response {
+    } else if let loginResponse = response {
         print("Login successful: \(loginResponse)")
     }
 }
@@ -520,7 +518,7 @@ if let error = error {
 rtmClient.logout { response, error in
   if let errorInfo = error {
     print("Logout failed with error: \(errorInfo.reason)")
-  } else let logoutResponse = response {
+  } else if let logoutResponse = response {
     print("Logout successful: \(logoutResponse)")
   }
 }
@@ -598,7 +596,7 @@ renewToken(_ token: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo
 
 ```swift
 // async-await
-let (response, error) = await rtmClient.renewToken(token: "your_token_here")
+let (response, error) = await rtmClient.renewToken("your_token_here")
 if let error = error {
     print("Login failed with error: \(error.reason)")
 } else if let response = response {
@@ -610,10 +608,10 @@ if let error = error {
 
 ```swift
 // callback
-rtmClient.renewToken(token: "your_token_here") { response, error in
+rtmClient.renewToken("your_token_here") { response, error in
     if let errorInfo = error {
         print("renew token failed with error: \(errorInfo.reason)")
-    } else let loginResponse = response {
+    } else if let loginResponse = response {
         print("renew token successful: \(loginResponse)")
     }
 }
@@ -650,7 +648,7 @@ renewToken(_ token: String) async -> (AgoraRtmCommonResponse?, AgoraRtmErrorInfo
 
 ```swift
 // async-await
-let (response, error) = await streamChannel.renewToken(token: "your_token_here")
+let (response, error) = await streamChannel.renewToken("your_token_here")
 if let error = error {
     print("Login failed with error: \(error.reason)")
 } else if let response = response {
@@ -662,10 +660,10 @@ if let error = error {
 
 ```swift
 // callback
-streamChannel.renewToken(token: "your_token_here") { response, error in
+streamChannel.renewToken("your_token_here") { response, error in
     if let errorInfo = error {
         print("renew token failed with error: \(errorInfo.reason)")
-    } else let loginResponse = response {
+    } else if let loginResponse = response {
         print("renew token successful: \(loginResponse)")
     }
 }
@@ -751,7 +749,7 @@ subscribeOptions.features = [.presence, .message, .metadata]
 rtmClient.subscribe(channelName: "exampleChannel", option: subscribeOptions) { response, error in
     if let errorInfo = error {
         print("Subscription failed with error: \(errorInfo.reason)")
-    } else let SubscribeResponse = response {
+    } else if let SubscribeResponse = response {
         print("Subscription to \(SubscribeResponse.channelName) successful!")
     }
 }
@@ -804,7 +802,7 @@ if let error = error {
 rtmClient.unsubscribe("exampleChannel") { response, error in
     if let errorInfo = error {
         print("Unsubscribe failed with error: \(errorInfo.localizedDescription)")
-    } else let unsubscribeResponse = response {
+    } else if let unsubscribeResponse = response {
         print("Successfully unsubscribed from \(unsubscribeResponse.channelName).")
     }
 }
@@ -1172,7 +1170,7 @@ Example 1: Send string messages to a specified channel.
 let topic = "exampleTopic"
 let message = "Hello, Agora!"
 let messageOptions = AgoraRtmTopicMessageOptions()
-messageOption.customType = "PlainText"
+messageOptions.customType = "PlainText"
 
 let (response, error) = await stChannel.publishTopicMessage(
     topic: topic,
@@ -1196,7 +1194,7 @@ if let errorInfo = error {
 let topic = "exampleTopic"
 let message = "Hello, Agora!"
 let messageOptions = AgoraRtmTopicMessageOptions()
-messageOption.customType = "PlainText"
+messageOptions.customType = "PlainText"
 
 stChannel.publishTopicMessage(
     topic: topic,
@@ -1222,7 +1220,7 @@ Example 2: Send byte messages to a specified channel.
 // async-await
 let topic = "exampleTopic"
 let messageOptions = AgoraRtmTopicMessageOptions()
-messageOption.customType = "BinaryData"
+messageOptions.customType = "BinaryData"
 let byteArray: [UInt8] = [0x00, 0x01, 0x02, 0x03]
 let binaryData = Data(byteArray)
 
@@ -1247,7 +1245,7 @@ if let errorInfo = error {
 // callback
 let topic = "exampleTopic"
 let messageOptions = AgoraRtmTopicMessageOptions()
-messageOption.customType = "BinaryData"
+messageOptions.customType = "BinaryData"
 let byteArray: [UInt8] = [0x00, 0x01, 0x02, 0x03]
 let binaryData = Data(byteArray)
 
@@ -2343,7 +2341,8 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Set channel metadata
-let (response, error) = await rtmClient.setChannelMetadata(
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.setChannelMetadata(
     channelName: channelName,
     channelType: channelType,
     data: metadata,
@@ -2383,7 +2382,7 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Set channel metadata
-rtmClient.setChannelMetadata(
+rtmClient.getStorage()?.setChannelMetadata(
     channelName: channelName,
     channelType: channelType,
     data: metadata,
@@ -2448,7 +2447,8 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 
 // Retrieve channel metadata
-let (response, error) = await rtmClient.getChannelMetadata(
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.getChannelMetadata(
     channelName: channelName,
     channelType: channelType
 )
@@ -2473,7 +2473,7 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 
 // Retrieve channel metadata
-rtmClient.getChannelMetadata(
+rtmClient.getStorage()?.getChannelMetadata(
     channelName: channelName,
     channelType: channelType,
     completion: { (response, error) in
@@ -2565,7 +2565,8 @@ metadata.majorRevision = 174298270
 metadata.items = [itemToRemove]
 
 // Call removeChannelMetadata with async/await
-let (response, error) = await rtmClient.removeChannelMetadata(
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.removeChannelMetadata(
     channelName: channelName,
     channelType: channelType,
     data: metadata,
@@ -2598,7 +2599,7 @@ metadata.majorRevision = 174298270
 metadata.items = [itemToRemove]
 
 // Call removeChannelMetadata with callback
-rtmClient.removeChannelMetadata(
+rtmClient.getStorage()?.removeChannelMetadata(
     channelName: channelName,
     channelType: channelType,
     data: metadata,
@@ -2690,7 +2691,8 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Call updateChannelMetadata with async/await
-let (response, error) = await rtmClient.updateChannelMetadata(
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.updateChannelMetadata(
     channelName: channelName,
     channelType: channelType,
     data: metadata,
@@ -2728,7 +2730,7 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Call updateChannelMetadata with completion block (callback)
-rtmClient.updateChannelMetadata(
+rtmClient.getStorage()?.updateChannelMetadata(
     channelName: channelName,
     channelType: channelType,
     data: metadata,
@@ -2827,7 +2829,8 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Call setUserMetadata with async/await
-let (response, error) = await rtmClient.setUserMetadata(
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.setUserMetadata(
     userId: userId,
     data: metadata,
     options: metadataOptions
@@ -2862,7 +2865,7 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Call setUserMetadata with a callback
-rtmClient.setUserMetadata(
+rtmClient.getStorage()?.setUserMetadata(
     userId: userId,
     data: metadata,
     options: metadataOptions
@@ -2916,7 +2919,8 @@ The `AgoraRtmGetMetadataResponse` data type contains the following properties:
 let userId = "exampleUser"
 
 // Call getUserMetadata with async/await
-let (response, error) = await rtmClient.getUserMetadata(userId: userId)
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.getUserMetadata(userId: userId)
 if let errorInfo = error {
     // Handle error
     print("Failed to get user metadata with error: \(errorInfo.reason)")
@@ -2939,7 +2943,7 @@ if let errorInfo = error {
 let userId = "exampleUser"
 
 // Call getUserMetadata with a callback
-rtmClient.getUserMetadata(userId: userId) { (response, error) in
+rtmClient.getStorage()?.getUserMetadata(userId: userId) { (response, error) in
     if let errorInfo = error {
         // Handle error
         print("Failed to get user metadata with error: \(errorInfo.reason)")
@@ -3015,7 +3019,8 @@ let metadata = AgoraRtmMetadata()
 metadata.majorRevision = 12346
 metadata.items = [metadataItem]
 // Call removeUserMetadata with async/await
-let (response, error) = await rtmClient.removeUserMetadata(
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.removeUserMetadata(
     userId: userId,
     data: metadata,
     options: nil
@@ -3048,7 +3053,7 @@ metadata.majorRevision = 12346
 metadata.items = [metadataItem]
 
 // Call removeUserMetadata with a callback
-rtmClient.removeUserMetadata(userId: userId, data: metadata, options: nil) { (response, error) in
+rtmClient.getStorage()?.removeUserMetadata(userId: userId, data: metadata, options: nil) { (response, error) in
     if let errorInfo = error {
         // Handle error
         print("Failed to remove user metadata with error: \(errorInfo.reason)")
@@ -3127,7 +3132,8 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Call updateUserMetadata with async/await
-let (response, error) = await rtmClient.updateUserMetadata(
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.updateUserMetadata(
     userId: userId,
     data: metadata,
     options: metadataOptions
@@ -3162,7 +3168,7 @@ metadataOptions.recordTs = true
 metadataOptions.recordUserId = true
 
 // Call updateUserMetadata with a callback
-rtmClient.updateUserMetadata(userId: userId, data: metadata, options: metadataOptions) { (response, error) in
+rtmClient.getStorage()?.updateUserMetadata(userId: userId, data: metadata, options: metadataOptions) { (response, error) in
     if let errorInfo = error {
         // Handle error
         print("Failed to update user metadata with error: \(errorInfo.reason)")
@@ -3206,7 +3212,8 @@ subscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOperat
 let userId = "exampleUser"
 
 // Call subscribeUserMetadata with async/await
-let (response, error) = await rtmClient.subscribeUserMetadata(userId: userId)
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.subscribeUserMetadata(userId: userId)
 if let errorInfo = error {
     // Handle error
     print("Failed to subscribe to user metadata with error: \(errorInfo.reason)")
@@ -3224,7 +3231,7 @@ if let errorInfo = error {
 let userId = "exampleUser"
 
 // Call subscribeUserMetadata with a callback
-rtmClient.subscribeUserMetadata(userId: userId) { (response, error) in
+rtmClient.getStorage()?.subscribeUserMetadata(userId: userId) { (response, error) in
     if let errorInfo = error {
         // Handle error
         print("Failed to subscribe to user metadata with error: \(errorInfo.reason)")
@@ -3267,7 +3274,8 @@ unsubscribeUserMetadata(userId: String, completion completionBlock: AgoraRtmOper
 let userId = "exampleUser"
 
 // Call unsubscribeUserMetadata with async/await
-let (response, error) = await rtmClient.unsubscribeUserMetadata(userId: userId)
+guard let storage = rtmClient.getStorage() else { return }
+let (response, error) = await storage.unsubscribeUserMetadata(userId: userId)
 if let errorInfo = error {
     // Handle error
     print("Failed to unsubscribe from user metadata with error: \(errorInfo.reason)")
@@ -3285,7 +3293,7 @@ if let errorInfo = error {
 let userId = "exampleUser"
 
 // Call unsubscribeUserMetadata with a callback
-rtmClient.unsubscribeUserMetadata(userId: userId) { (response, error) in
+rtmClient.getStorage()?.unsubscribeUserMetadata(userId: userId) { (response, error) in
     if let errorInfo = error {
         // Handle error
         print("Failed to unsubscribe from user metadata with error: \(errorInfo.reason)")
@@ -3372,7 +3380,8 @@ let lockName = "myLock"
 // Lock for 1 hour
 let ttl: Int32 = 3600
 
-let (response, error) = await rtmClient.setLock(
+guard let lock = rtmClient.getLock() else { return }
+let (response, error) = await lock.setLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName,
@@ -3397,7 +3406,7 @@ let lockName = "myLock"
 // Lock for 1 hour
 let ttl: Int32 = 3600
 
-rtmClient.setLock(
+rtmClient.getLock()?.setLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName,
@@ -3463,7 +3472,8 @@ let lockName = "myLock"
 // Whether to retry acquiring the lock if it fails
 let retry = true
 
-let (response, error) = await rtmClient.acquireLock(
+guard let lock = rtmClient.getLock() else { return }
+let (response, error) = await lock.acquireLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName,
@@ -3490,7 +3500,7 @@ let lockName = "myLock"
 // Whether to retry acquiring the lock if it fails
 let retry = true
 
-rtmClient.acquireLock(
+rtmClient.getLock()?.acquireLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName,
@@ -3553,7 +3563,8 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 let lockName = "myLock"
 
-let (response, error) = await rtmClient.releaseLock(
+guard let lock = rtmClient.getLock() else { return }
+let (response, error) = await lock.releaseLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName
@@ -3577,7 +3588,7 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 let lockName = "myLock"
 
-rtmClient.releaseLock(
+rtmClient.getLock()?.releaseLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName
@@ -3642,7 +3653,8 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 let lockName = "myLock"
 let userId = "user123"// The ID of the user who holds the lock
-let (response, error) = await rtmClient.revokeLock(
+guard let lock = rtmClient.getLock() else { return }
+let (response, error) = await lock.revokeLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName,
@@ -3666,7 +3678,7 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 let lockName = "myLock"
 let userId = "user123" // The ID of the user who holds the lock
-rtmClient.revokeLock(
+rtmClient.getLock()?.revokeLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName,
@@ -3736,7 +3748,8 @@ The `AgoraRtmLockDetail` data type contains the following properties:
 // async-await
 let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
-let (response, error) = await rtmClient.getLocks(
+guard let lock = rtmClient.getLock() else { return }
+let (response, error) = await lock.getLocks(
     channelName: channelName,
     channelType: channelType
 )
@@ -3757,7 +3770,7 @@ if let errorInfo = error {
 // callback
 let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
-rtmClient.getLocks(
+rtmClient.getLock()?.getLocks(
     channelName: channelName,
     channelType: channelType
 ) { (response, error) in
@@ -3817,7 +3830,8 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 let lockName = "myLock"
 
-let (response, error) = await rtmClient.removeLock(
+guard let lock = rtmClient.getLock() else { return }
+let (response, error) = await lock.removeLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName
@@ -3841,7 +3855,7 @@ let channelName = "exampleChannel"
 let channelType: AgoraRtmChannelType = .message
 let lockName = "myLock"
 
-rtmClient.removeLock(
+rtmClient.getLock()?.removeLock(
     channelName: channelName,
     channelType: channelType,
     lockName: lockName

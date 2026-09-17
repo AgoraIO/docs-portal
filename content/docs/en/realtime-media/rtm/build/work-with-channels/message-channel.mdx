@@ -829,7 +829,7 @@ opt.features = AgoraRtmSubscribeChannelFeaturePresence;
 To stop receiving messages and other event notifications from a channel, call `unsubscribe`.
 
 ```swift
-RtmClient?.unsubscribe(channel) { res, error in
+rtmClient?.unsubscribe(channel) { res, error in
     if error != nil {
         print("\\(error?.operation) failed! error reason is \\(error?.reason)")
     } else {
@@ -867,12 +867,12 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
 
-```objc tab="Swift"
+```swift tab="Swift"
 // errorInfo
 {
-    errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
+    errorInfo.errorCode = .channelMessageLengthExceedLimitation
     errorInfo.reason = "Publish too long message."
-    errorInfo.operation = "publish"; // or "publishTopicMessage
+    errorInfo.operation = "publish"; // or publishTopicMessage
 }
 ```
 
@@ -1178,7 +1178,7 @@ opt.features = AgoraRtmSubscribeChannelFeaturePresence;
 To stop receiving messages and other event notifications from a channel, call `unsubscribe`.
 
 ```swift
-RtmClient?.unsubscribe(channel) { res, error in
+rtmClient?.unsubscribe(channel) { res, error in
     if error != nil {
         print("\\(error?.operation) failed! error reason is \\(error?.reason)")
     } else {
@@ -1216,12 +1216,12 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
 
-```objc tab="Swift"
+```swift tab="Swift"
 // errorInfo
 {
-    errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
+    errorInfo.errorCode = .channelMessageLengthExceedLimitation
     errorInfo.reason = "Publish too long message."
-    errorInfo.operation = "publish"; // or "publishTopicMessage
+    errorInfo.operation = "publish"; // or publishTopicMessage
 }
 ```
 

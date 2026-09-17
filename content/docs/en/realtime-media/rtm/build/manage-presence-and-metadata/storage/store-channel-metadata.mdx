@@ -872,7 +872,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
 
 ```swift tab="Swift"
-rtm.getStorage()?.getChannelMetadata(channelName: "channel1",, channelType: .message) { response, errorInfo in
+rtm.getStorage()?.getChannelMetadata(channelName: "channel1", channelType: .message) { response, errorInfo in
     if errorInfo == nil {
         print("getChannelMetadata success!!")
         if let data = response?.data {
@@ -1454,7 +1454,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
 
 ```swift tab="Swift"
-rtm.getStorage()?.getChannelMetadata(channelName: "channel1",, channelType: .message) { response, errorInfo in
+rtm.getStorage()?.getChannelMetadata(channelName: "channel1", channelType: .message) { response, errorInfo in
     if errorInfo == nil {
         print("getChannelMetadata success!!")
         if let data = response?.data {

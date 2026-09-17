@@ -399,7 +399,7 @@ do {
     }else if (event_type == AgoraRtmPresenceEventTypeSnapshot) {
         NSArray<AgoraRtmUserState *> * snapshot = event.snapshot;
     } else {
-        NSArray<AgoraRtmStateItem *> *states = event.states;
+        NSDictionary<NSString *, NSString *> *states = event.states;
     }
 }
 
@@ -593,7 +593,7 @@ do {
     }else if (event_type == AgoraRtmPresenceEventTypeSnapshot) {
         NSArray<AgoraRtmUserState *> * snapshot = event.snapshot;
     } else {
-        NSArray<AgoraRtmStateItem *> *states = event.states;
+        NSDictionary<NSString *, NSString *> *states = event.states;
     }
 }
 

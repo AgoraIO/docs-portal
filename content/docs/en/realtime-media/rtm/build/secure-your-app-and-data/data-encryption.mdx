@@ -165,7 +165,7 @@ let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
 
 let encryptionConfig = AgoraRtmEncryptionConfig()
 encryptionConfig.encryptionKey = "your_encryptionKey"
-encryptionConfig.encryptionMode = .aes256Gcm
+encryptionConfig.encryptionMode = .aes256GCM
 
 let saltValues: [UInt8] = [ /* your salt values */ ]
 let saltData = Data(bytes: saltValues, count: saltValues.count)
@@ -262,7 +262,7 @@ let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
 
 let encryptionConfig = AgoraRtmEncryptionConfig()
 encryptionConfig.encryptionKey = "your_encryptionKey"
-encryptionConfig.encryptionMode = .aes256Gcm
+encryptionConfig.encryptionMode = .aes256GCM
 
 let saltValues: [UInt8] = [ /* your salt values */ ]
 let saltData = Data(bytes: saltValues, count: saltValues.count)
@@ -362,7 +362,7 @@ final salt = Uint8List.fromList(List<int>.filled(32, 0));
 
 var encryptionConfig = RtmEncryptionConfig(
     // Set the encryption mode
-    encryptionMode: RtmEncryptionMode.aes256Gcm,
+    encryptionMode: RtmEncryptionMode.aes256GCM,
     encryptionKey: 'your_encryptionKey',
     encryptionSalt: salt);
 
