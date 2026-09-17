@@ -328,6 +328,8 @@ Public aliases over Fern-generated types include `LlmConfig`, `SttConfig`, `AsrC
 
 Think value constants: `ThinkOnListeningActionInject`, `ThinkOnListeningActionInterrupt`, `ThinkOnListeningActionIgnore`, `ThinkOnThinkingActionInterrupt`, `ThinkOnThinkingActionIgnore`, `ThinkOnSpeakingActionInterrupt`, `ThinkOnSpeakingActionIgnore`.
 
+`FillerWordsContentGeneratedConfig` sets the conversation context for generated filler words. Use `context_message_limit` (`1` to `6`, defaults to `1`) to set how many of the most recent conversation messages to use, counting the current turn's message, and `history_character_limit` (`0` to `10000`, defaults to `1000`) to cap the combined characters of the earlier messages. For details, see [Talking while waiting](/en/ai/build/shape-the-conversation/filler-words#widen-the-conversation-window).
+
 ## AgentSession
 
 `AgentSession` manages the full lifecycle of a running agent. Create sessions using [`agent.createSession()`](#createsessionclient-options); do not call the constructor directly.

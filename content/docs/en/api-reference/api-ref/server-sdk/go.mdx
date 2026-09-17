@@ -1754,6 +1754,8 @@ The `agentkit` package defines type aliases for common Fern-generated types. Use
 
 Additional SOS/EOS turn detection aliases: `TurnDetectionNestedConfig`, `StartOfSpeechConfig`, `EndOfSpeechConfig`, and related sub-types. Session/conversation aliases: `SessionListResponse`, `ConversationHistory`, `ConversationTurns`, etc. Think type aliases: `ThinkOnListeningAction`, `ThinkOnThinkingAction`, `ThinkOnSpeakingAction`.
 
+`FillerWordsContentGeneratedConfig` sets the conversation context for generated filler words. Use `ContextMessageLimit` (`*int`, `1` to `6`, defaults to `1`) to set how many of the most recent conversation messages to use, counting the current turn's message, and `HistoryCharacterLimit` (`*int`, `0` to `10000`, defaults to `1000`) to cap the combined characters of the earlier messages. For details, see [Talking while waiting](/en/ai/build/shape-the-conversation/filler-words#widen-the-conversation-window).
+
 ### `AgoraError`
 
 The Fern-generated error type returned when the API responds with a 4xx or 5xx status code. Use `errors.As` to inspect the error.

@@ -7,6 +7,85 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 ## Releases
 
+### v2.13
+
+Released on September 18, 2026.
+
+#### Improvements
+
+This release includes the following enhancement.
+
+- **Generated filler words use conversation context**
+
+  This release improves generated filler words so that they reflect the recent exchange, not just the current turn. You can now set the conversation context for the generation service using a message count and a character budget. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
+
+#### API changes
+
+This release introduces the following changes for conversation context in generated filler words.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/python#type-aliases)
+
+    - `context_message_limit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - `history_character_limit`: Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+
+- **Updated behavior**
+
+    - `prompt`: A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/typescript#type-aliases)
+
+    - `context_message_limit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - `history_character_limit`: Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+
+- **Updated behavior**
+
+    - `prompt`: A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/go#type-aliases), both `*int`
+
+    - `ContextMessageLimit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - `HistoryCharacterLimit`: Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+
+- **Updated behavior**
+
+    - `Prompt`: A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **New parameters**
+
+    - [`filler_words.content.generated_config.context_message_limit`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-context-message-limit): How many of the most recent conversation messages to use to generate a filler phrase, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - [`filler_words.content.generated_config.history_character_limit`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-history-character-limit): Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+
+  - **Updated parameters**
+
+    - [`filler_words.content.generated_config.prompt`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-prompt): A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+</Tabs>
+
 ### v2.12
 
 Released on September 10, 2026.

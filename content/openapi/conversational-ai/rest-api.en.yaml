@@ -459,7 +459,6 @@ paths:
                     "filler_words": {
                       "enable": true,
                       "trigger": {
-                        "mode": "fixed_time",
                         "fixed_time_config": {
                           "response_wait_ms": 1500
                         }
@@ -475,7 +474,8 @@ paths:
                         },
                         "generated_config": {
                           "prompt": "Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.",
-                          "fallback_strategy": "static"
+                          "context_message_limit": 4,
+                          "history_character_limit": 1000
                         }
                       }
                     },
@@ -615,7 +615,6 @@ paths:
                         "filler_words": {
                             "enable": True,
                             "trigger": {
-                                "mode": "fixed_time",
                                 "fixed_time_config": { "response_wait_ms": 1500 }
                             },
                             "content": {
@@ -626,7 +625,8 @@ paths:
                                 },
                                 "generated_config": {
                                     "prompt": "Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.",
-                                    "fallback_strategy": "static"
+                                    "context_message_limit": 4,
+                                    "history_character_limit": 1000
                                 }
                             }
                         },
@@ -754,11 +754,11 @@ paths:
                       },
                       filler_words: {
                         enable: true,
-                        trigger: {mode: 'fixed_time', fixed_time_config: {response_wait_ms: 1500}},
+                        trigger: {fixed_time_config: {response_wait_ms: 1500}},
                         content: {
                           mode: 'generated',
                           static_config: {phrases: ['Please wait a moment.', "I'm looking into it."], selection_rule: 'shuffle'},
-                          generated_config: {prompt: 'Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.', fallback_strategy: 'static'}
+                          generated_config: {prompt: 'Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.', context_message_limit: 4, history_character_limit: 1000}
                         }
                       },
                       parameters: {
@@ -3488,19 +3488,13 @@ paths:
                             Filler word trigger configuration. Defines when to trigger filler word
                             playback.
                           properties:
-                            mode:
-                              type: string
-                              description: >-
-                                Filler word trigger mode:
-
-                                - `fixed_time`: Fixed time trigger. Triggers filler word playback
-                                when LLM response wait time exceeds the threshold.
-                            "{mode}_config":
+                            fixed_time_config:
                               type: object
                               additionalProperties: true
                               description: >-
-                                Filler word trigger configuration parameters. The parameter name and
-                                structure vary depending on the trigger mode.
+                                Fixed time trigger configuration. Triggers filler word playback when
+                                the LLM response wait time exceeds the threshold. When omitted, the
+                                default `1500` ms wait threshold applies.
 
                                 **Configuration example:**
 
@@ -3513,19 +3507,6 @@ paths:
                                 }
 
                                 ```
-                              x-docs-callouts:
-                                - type: info
-                                  title: Note
-                                  position: after-description
-                                  markdown: >
-                                    - The configuration type must match `mode`. For example, when
-                                    `mode`
-
-                                    is `fixed_time`, you must provide `fixed_time_config`.
-
-
-                                    - You cannot provide multiple mode configurations
-                                    simultaneously.
                               properties:
                                 response_wait_ms:
                                   type: integer
@@ -3606,10 +3587,8 @@ paths:
 
                                     **Limits:**
                                     - Supports 1 to 100 non-empty strings.
-                                    - A phrase containing only Latin characters supports up to 50
-                                      space-separated words.
-                                    - A phrase containing any non-Latin character supports up to 50
-                                      Unicode code points.
+                                    - Each phrase supports up to 20 words (Latin scripts) or 20
+                                      characters (Chinese and other non-Latin scripts).
                                 selection_rule:
                                   type: string
                                   enum:
@@ -3640,26 +3619,59 @@ paths:
                                 - When `mode` is `generated`, Agora generates a context-relevant
                                 filler word phrase in parallel with the main LLM request.
 
+                                - By default, the generator reads only the message that triggered
+                                the current turn. Set `context_message_limit` to a value from `2` to
+                                `6` to reach further back in the conversation.
+
                                 - If the generated result isn't available by `response_wait_ms`, the
                                 static filler words in `static_config` are used as a fallback.
+
+                                - The static filler words are also used as a fallback when the
+                                current message has no usable text, the current message can't be
+                                located, or the input exceeds the effective capacity of the hosted
+                                model.
+
+                                - If you provide `generated_config` while `mode` is `static` or
+                                omitted, the request returns `InvalidFieldValue`.
                               properties:
                                 prompt:
                                   type: string
                                   description: >-
                                     The prompt used to generate the filler word phrase. This field is
-                                    an optional non-empty string; if provided, Agora uses this prompt
-                                    to generate the filler word.
-                                fallback_strategy:
-                                  type: string
-                                  enum:
-                                    - static
-                                  default: static
+                                    an optional non-empty string. If provided, it fully replaces
+                                    Agora's default prompt and applies over the same conversation
+                                    context window.
+                                context_message_limit:
+                                  type: integer
+                                  minimum: 1
+                                  maximum: 6
+                                  default: 1
                                   description: >-
-                                    The fallback strategy to use when the generated filler word isn't
-                                    available:
+                                    How many of the most recent conversation messages to use to
+                                    generate the filler word phrase, counting the message that
+                                    triggered the current turn:
 
-                                    - `static` (default): Use the static filler words in
-                                    `static_config`.
+                                    - `1` (default): Use only the current turn's message.
+
+                                    - `2` to `6`: Reach further back, using earlier user and agent
+                                    text messages in chronological order up to this limit.
+                                history_character_limit:
+                                  type: integer
+                                  minimum: 0
+                                  maximum: 10000
+                                  default: 1000
+                                  description: >-
+                                    Maximum combined characters of the earlier messages in the
+                                    window. Counts Unicode code points, and doesn't count the current
+                                    turn's message against the limit:
+
+                                    - `0`: Don't limit the earlier messages. The complete input is
+                                    still bounded by the effective input capacity of the hosted
+                                    model.
+
+                                    - `1` to `10000`: When the text exceeds this limit, the oldest
+                                    messages in the window are dropped whole. Messages are never
+                                    truncated.
                     parameters:
                       type: object
                       additionalProperties: true
