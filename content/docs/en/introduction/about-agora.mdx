@@ -14,29 +14,15 @@ Agora provides SDKs and cloud services for real-time voice, video, and AI conver
 
 ![Two peer scenarios: people communicate with each other using RTC, or with an AI agent built with Conversational AI Engine. Both use Agora's real-time media connection.](/images/developer-journey/interaction-models-overview.svg)
 
-<a id="what-agora-is" />
-<a id="what-problems-it-solves" />
-<a id="product-families" />
-<a id="common-solution-patterns" />
-<a id="interaction-models" />
-<a id="how-the-parts-fit-together" />
-<a id="how-these-products-fit-together" />
-
 ## How the Agora platform works
 
 Real-time conversations require continuous audio or video capture, delivery, and playback between connected participants. Your application provides the user interface and business logic: client SDKs capture and play media, your backend manages access and sessions, and Agora services carry media between participants. For voice agents, Conversational AI Engine also uses your configured models and tools to generate responses.
-
-<a id="connect-people-with-rtc" />
-<a id="human-to-human-realtime-communication" />
 
 ### How people connect with RTC
 
 ![RTC clients receive credentials from your backend, join the same channel, and publish and subscribe to live audio and video.](/images/developer-journey/rtc-connection.svg)
 
 Clients in the same Agora project join the same **channel**, a logical group for exchanging media. **Publishing** sends audio or video; **subscribing** receives it. In a two-way call, both people publish and subscribe. In a live stream, hosts publish and audiences subscribe. See the [RTC overview](/en/realtime-media/rtc) for the integration details.
-
-<a id="connect-people-with-a-voice-agent" />
-<a id="human-to-agent-voice-agent" />
 
 ### How people connect with a voice agent
 
@@ -47,8 +33,6 @@ Your backend uses the **Agent SDK** to start and stop a session. The Agora-hoste
 The same application can support **human-to-human** and **human-to-agent** interaction. See the [Voice Agent overview](/en/ai) for model options, business tools such as [MCP tools](/en/ai/build/mcp-tools), and app or device integrations.
 
 <a id="shared-real-time-foundation" />
-<a id="add-the-capabilities-your-application-needs" />
-<a id="extend-your-application-with-agora-services" />
 
 ## How all related products work together
 
@@ -73,13 +57,9 @@ Browse the [related services directory](/en/realtime-media/overview) for more op
 
 **Configuration and access.** Your project identifies your application; each service defines its authentication requirements. See [Platform concepts](/en/introduction/core-concepts) for project credentials and client/backend responsibilities.
 
-<a id="choose-how-to-build" />
-
 ## How to build
 
 Choose a development workflow after identifying the interaction your application needs. AI-assisted development and direct coding can both produce RTC or Voice Agent applications.
-
-<a id="with-a-coding-assistant" />
 
 ### Build with AI
 
@@ -93,21 +73,13 @@ Three tools support your coding assistant during development:
 
 [Start with AI](/en/introduction/start-with-ai) combines these tools into a development workflow. A **coding assistant** helps you write the application; a **voice agent** talks with users inside the application. Documentation MCP serves the coding assistant, while runtime MCP tools serve the voice agent.
 
-<a id="with-sdks-and-apis" />
-
 ### Build with code
 
 Use RTC client SDKs to connect people to media and Agent SDKs to control Conversational AI Engine sessions from your backend. Start with the [Voice Agent quickstart](/en/ai/get-started/quickstart), or the RTC [voice](/en/realtime-media/rtc/voice-quickstart) or [video](/en/realtime-media/rtc/get-started-sdk) quickstart.
 
-<a id="in-a-visual-workspace" />
-
 ### Build in Console
 
 The [Agora Console agent builder](/en/ai/studio/quickstart) lets you visually configure and test a voice agent. This workflow applies to Conversational AI Engine.
-
-<a id="where-to-start" />
-<a id="choose-your-next-step" />
-<a id="next-step" />
 
 ## Get started now
 
