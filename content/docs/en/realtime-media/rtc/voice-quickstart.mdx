@@ -76,24 +76,42 @@ Use either of the following methods to add RTC SDK to your project.
 
 <Tabs>
 <TabsList>
-  <TabsTrigger value="maven-central">Maven Central</TabsTrigger>
+  <TabsTrigger value="maven-central">Gradle automatic integration</TabsTrigger>
   <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
 </TabsList>
 
 <TabsContent value="maven-central">
 
-1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
+1. Open the `settings.gradle` file in the project's root directory and add the Agora Maven CDN repository to `dependencyResolutionManagement.repositories`.
+
+    Keep the existing Maven repositories in your project, especially `mavenCentral()`, and add the Agora Maven CDN repository.
 
     ```text
-    repositories {
-      mavenCentral()
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.agora.io/maven/' }
+        }
     }
     ```
 
-    :::note
-    If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+    :::caution[Note]
+    If you cannot find the `dependencyResolutionManagement` field in `settings.gradle`, your Android Gradle Plugin version might be earlier than v7.1.0.
+
+    For details, see [Android Gradle Plugin Release Note v7.1.0](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
     :::
 
+    If your Android Gradle Plugin version is earlier than v7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
+
+    ```text
+    allprojects {
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.agora.io/maven/' }
+        }
+    }
+    ```
 
 1. To integrate the RTC SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
@@ -112,7 +130,7 @@ Use either of the following methods to add RTC SDK to your project.
     Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
     :::note
-    To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+    To get the latest version number, check the [Release notes](/en/realtime-media/rtc/reference/release-notes).
     :::
 
 1. Prevent code obfuscation
