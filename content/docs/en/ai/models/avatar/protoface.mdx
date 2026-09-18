@@ -1,0 +1,140 @@
+---
+title: Protoface
+description: >
+ Integrate Protoface AI avatars into Conversational AI Engine.
+---
+
+Protoface renders an AI agent's spoken responses as synchronized avatar video
+and publishes the resulting stream to the Agora channel.
+
+:::info[Info]
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+:::
+
+### Sample configuration
+
+Add Protoface through the `generic` avatar vendor. Bring your Protoface API
+key, an avatar ID, and a dedicated Agora UID for the avatar. The following
+examples show how to configure a Protoface avatar when starting a conversational
+AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GenericAvatar
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_avatar(GenericAvatar(
+        api_key='<PROTOFACE_API_KEY>',
+        api_base_url='https://api.protoface.com/v1/agora',
+        avatar_id='<PROTOFACE_AVATAR_ID>',
+        agora_uid='<AVATAR_AGORA_UID>',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GenericAvatar } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withAvatar(new GenericAvatar({
+    apiKey: '<PROTOFACE_API_KEY>',
+    apiBaseUrl: 'https://api.protoface.com/v1/agora',
+    avatarId: '<PROTOFACE_AVATAR_ID>',
+    agoraUid: '<AVATAR_AGORA_UID>',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */).
+  WithAvatar(
+    vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
+        APIKey:     "<PROTOFACE_API_KEY>",
+        APIBaseURL: "https://api.protoface.com/v1/agora",
+        AvatarID:   "<PROTOFACE_AVATAR_ID>",
+        AgoraUID:   "<AVATAR_AGORA_UID>",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `avatar` configuration in your request:
+
+```json
+"avatar": {
+  "vendor": "generic",
+  "params": {
+    "api_key": "<PROTOFACE_API_KEY>",
+    "api_base_url": "https://api.protoface.com/v1/agora",
+    "avatar_id": "<PROTOFACE_AVATAR_ID>",
+    "agora_uid": "<AVATAR_AGORA_UID>"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+  Your Protoface API key. Acquire one for free at `https://app.protoface.com/dashboard`.
+  </Parameter>
+  <Parameter name="api_base_url" type="string" required={true}>
+  Protoface Agora endpoint. Set to `https://api.protoface.com/v1/agora` in production.
+  </Parameter>
+  <Parameter name="avatar_id" type="string" required={true}>
+  ID of the Protoface avatar to render, such as `av_stock_001` or an avatar you created in the Protoface dashboard.
+  </Parameter>
+  <Parameter name="agora_uid" type="string" required={true}>
+  Agora UID assigned to Protoface's published avatar tracks. It must differ from the AgentKit agent UID and every other channel participant UID.
+  </Parameter>
+  <Parameter name="agora_appid" type="string" required={false}>
+  Agora App ID. AgentKit supplies this automatically; set it only when your integration requires an explicit value.
+  </Parameter>
+  <Parameter name="agora_channel" type="string" required={false}>
+  Agora channel name. AgentKit supplies this automatically; set it only when your integration requires an explicit value.
+  </Parameter>
+  <Parameter name="agora_token" type="string" required={false}>
+  RTC token authorizing Protoface to join the channel. AgentKit generates and supplies it automatically; set it only when your integration requires an explicit token.
+  </Parameter>
+  <Parameter name="enable_string_uid" type="boolean" required={false}>
+  Set to `true` when `agora_uid` is a string UID. Defaults to `false` for numeric UIDs. In SDKs, pass this as an additional vendor parameter.
+  </Parameter>
+</ParameterList>
+
+Create and manage faces in the [Protoface dashboard](https://app.protoface.com),
+or start from the [Agora quickstart](https://github.com/protoface-ai/protoface-quickstart-agora).
