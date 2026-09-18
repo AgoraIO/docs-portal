@@ -168,6 +168,8 @@ describe('DocsSidebarTree', () => {
     expect(clientApiUrl.pathname).toBe('/zh-CN/api-reference/api');
     expect(clientApiUrl.searchParams.get('product')).toBe('rtc');
     expect(clientApiUrl.searchParams.get('apiType')).toBe('client');
+    expect(clientApiLink).toHaveAttribute('target', '_blank');
+    expect(clientApiLink).toHaveAttribute('rel', 'noreferrer noopener');
     expect(screen.getByRole('link', { name: 'RESTful API' })).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/api-ref/rtc',

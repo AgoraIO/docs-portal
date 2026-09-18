@@ -2217,6 +2217,7 @@ Web body
     expect(unscopedPayload.sidebarHeader).toEqual({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
+      productDocsHref: '/zh-CN/realtime-media/fusion-cdn',
       title: 'RESTful API',
     });
   });
@@ -3977,6 +3978,7 @@ Web body
     expect(payload.sidebarHeader).toEqual({
       backHref: '/zh-CN/realtime-media/rtm',
       backLabel: '实时消息 RTM',
+      productDocsHref: '/zh-CN/realtime-media/rtm',
       title: '实时消息 RTM',
     });
     expect(payload.breadcrumb).toEqual([

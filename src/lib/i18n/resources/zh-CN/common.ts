@@ -49,6 +49,7 @@ const zhCnCommon = {
     lastUpdated: '更新时间',
     lastUpdatedUnavailable: '更新时间不可用',
     returnToSource: '返回 {{title}}',
+    viewProductDocs: '查看普通文档',
     next: '下一页',
     previous: '上一页',
     copyPage: '复制页面',

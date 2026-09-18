@@ -261,6 +261,7 @@ function SidebarSection({
                   <SidebarPageAnchor
                     external={child.external}
                     href={child.href}
+                    linked={child.linked}
                     onSelectPath={onSelectPath}
                     search={child.search}
                     url={child.url}
@@ -774,6 +775,7 @@ function SidebarPageLink({
         <SidebarPageAnchor
           external={external}
           href={href}
+          linked={linked}
           onSelectPath={onSelectPath}
           search={search}
           url={url}
@@ -794,6 +796,7 @@ type SidebarPageAnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children: ReactNode;
   external?: boolean;
   href?: string;
+  linked?: boolean;
   onSelectPath: () => void;
   search?: Record<string, string>;
   url: string;
@@ -805,6 +808,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
       children,
       external,
       href,
+      linked,
       onClick,
       onSelectPath,
       rel,
@@ -844,7 +848,9 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
         onClick={handleClick}
         params={{}}
         ref={ref}
+        rel={linked ? 'noreferrer noopener' : rel}
         search={search ?? {}}
+        target={linked ? '_blank' : target}
         to={url}
       >
         {children}

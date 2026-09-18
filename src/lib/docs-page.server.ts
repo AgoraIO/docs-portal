@@ -4,6 +4,7 @@ import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
+import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import type { DocsMeta } from './docs-meta-schema';
@@ -3609,16 +3610,22 @@ function resolveDocsSidebarHeader({
         ...sidebarBackLink,
       }
     : navScope.header;
+  const headerWithProductDocs = addProductDocsHref(
+    baseHeader,
+    activePath,
+    locale,
+    tab,
+  );
 
   if (hidePlatformTabs) {
     return {
-      ...baseHeader,
+      ...headerWithProductDocs,
       versionSwitcher: undefined,
     };
   }
 
   if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
-    return baseHeader;
+    return headerWithProductDocs;
   }
 
   const versionLinks = getNavScopeVersionLinks({
@@ -3634,13 +3641,13 @@ function resolveDocsSidebarHeader({
     !versionLinks.some((link) => link.href === activePath)
   ) {
     return {
-      ...baseHeader,
+      ...headerWithProductDocs,
       versionSwitcher: undefined,
     };
   }
 
   return {
-    ...baseHeader,
+    ...headerWithProductDocs,
     versionSwitcher: {
       currentId:
         versionLinks.find((item) => item.href === activePath)?.id ??
@@ -3650,6 +3657,21 @@ function resolveDocsSidebarHeader({
       versions: versionLinks,
     },
   };
+}
+
+function addProductDocsHref(
+  header: DocsSidebarHeader,
+  activePath: string,
+  locale: AppLocale | string | null,
+  tab: string,
+): DocsSidebarHeader {
+  if (locale !== 'zh-CN' || tab !== OPENAPI_TAB) {
+    return header;
+  }
+
+  const productDocsHref = resolveZhCnApiReferenceProductDocsHref(activePath);
+
+  return productDocsHref ? { ...header, productDocsHref } : header;
 }
 
 function resolveFocusedOpenApiLaneSidebarHeader(
@@ -3662,10 +3684,15 @@ function resolveFocusedOpenApiLaneSidebarHeader(
   }
 
   if (isZhCnRtmRestApiPage(activePath, locale)) {
-    return {
-      ...ZH_CN_RTM_REST_API_BACK_LINK,
-      title: 'RESTful API',
-    };
+    return addProductDocsHref(
+      {
+        ...ZH_CN_RTM_REST_API_BACK_LINK,
+        title: 'RESTful API',
+      },
+      activePath,
+      locale,
+      tab,
+    );
   }
 
   const lane = findOpenApiLaneByUrl(locale, tab, activePath);
@@ -3676,11 +3703,16 @@ function resolveFocusedOpenApiLaneSidebarHeader(
 
   const referenceBackLink = getOpenApiReferenceBackLink(locale);
 
-  return {
-    backHref: referenceBackLink.href,
-    backLabel: referenceBackLink.label,
-    title: 'RESTful API',
-  };
+  return addProductDocsHref(
+    {
+      backHref: referenceBackLink.href,
+      backLabel: referenceBackLink.label,
+      title: 'RESTful API',
+    },
+    activePath,
+    locale,
+    tab,
+  );
 }
 
 function isZhCnRtmRestApiPage(
