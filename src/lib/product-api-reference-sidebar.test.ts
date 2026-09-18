@@ -5,6 +5,8 @@ import { loadDocsPagePayload } from './docs-page.server';
 type SidebarNode = {
   children?: SidebarNode[];
   defaultOpen?: boolean;
+  external?: boolean;
+  href?: string;
   linked?: boolean;
   search?: Record<string, string>;
   title?: string;
@@ -202,6 +204,21 @@ async function loadSidebar(
 }
 
 describe('product API reference sidebar links', () => {
+  it('keeps the external IM entry external in the realtime media overview sidebar', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
+      'overview',
+    ]);
+    const im = findNode(sidebar, '即时通讯 IM');
+
+    expect(im).toMatchObject({
+      external: true,
+      href: 'https://im.shengwang.cn',
+      title: '即时通讯 IM',
+      type: 'page',
+      url: 'https://im.shengwang.cn',
+    });
+  });
+
   it.each([
     ['rtc', '/zh-CN/api-reference/api-ref/rtc'],
     ['rtm', '/zh-CN/api-reference/api-ref/signaling/publish'],

@@ -5,6 +5,7 @@ import type { TOCItemType } from 'fumadocs-core/toc';
 import {
   CheckIcon,
   ChevronDownIcon,
+  ExternalLinkIcon,
   MenuIcon,
   MoonIcon,
   SunIcon,
@@ -54,6 +55,7 @@ import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
+import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
@@ -661,6 +663,14 @@ function MobileSidebar({
                 />
               ))}
             </div>
+            {sidebarHeader?.productDocsHref ? (
+              <DocsSidebarProductLink
+                href={sidebarHeader.productDocsHref}
+                locale={currentLocale}
+                mode="mobile"
+                onSelectPath={onSelectPath}
+              />
+            ) : null}
           </div>
           <div className="flex flex-col gap-2 border-t border-border pt-4">
             <div className="flex items-center gap-2">
@@ -707,6 +717,9 @@ function MobileSidebarNode({
             {node.method}
           </span>
         ) : null}
+        {node.external || node.linked ? (
+          <ExternalLinkIcon className="size-4 shrink-0 text-[color:var(--ink-4)]" />
+        ) : null}
       </>
     );
     const className = cn(
@@ -737,7 +750,9 @@ function MobileSidebarNode({
         className={className}
         onClick={onSelectPath}
         params={{}}
+        rel={node.linked ? 'noreferrer noopener' : undefined}
         search={node.search ?? {}}
+        target={node.linked ? '_blank' : undefined}
         to={node.url}
       >
         {content}

@@ -50,6 +50,20 @@ async function loadReferencePayload(slugs: string[]) {
 }
 
 describe('API Center scoped sidebars', () => {
+  it.each([
+    [['conversational-ai', 'android', 'overview'], '/zh-CN/ai'],
+    [['rtc', 'android', 'rtc-api-overview'], '/zh-CN/realtime-media/rtc'],
+    [['api-ref', 'console'], '/zh-CN/introduction/quickstart'],
+  ])(
+    'adds the ordinary docs destination for %s',
+    async (route, expectedHref) => {
+      const payload = await loadApiReferencePayload(route);
+
+      expect(payload.sidebarHeader).toMatchObject({
+        productDocsHref: expectedHref,
+      });
+    },
+  );
   it('places API Reference between Solutions and Reference in the zh-CN tabs', async () => {
     const payload = await loadApiReferencePayload(['api']);
 

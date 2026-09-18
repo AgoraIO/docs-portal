@@ -12,6 +12,7 @@ import type { AppLocale } from '@/lib/i18n/i18n-config';
 import { getDocsSidebarMode } from '@/lib/reference-center-navigation';
 import { ApiReferenceProductNav } from './ApiReferenceProductNav';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
+import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
@@ -99,6 +100,14 @@ export function DocsSidebar({
               />
             </div>
           )}
+          {header?.productDocsHref ? (
+            <DocsSidebarProductLink
+              href={header.productDocsHref}
+              locale={locale}
+              mode="desktop"
+              onSelectPath={onSelectPath}
+            />
+          ) : null}
         </div>
       </SidebarContent>
     </ShadcnSidebar>
