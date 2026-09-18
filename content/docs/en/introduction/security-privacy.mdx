@@ -515,88 +515,162 @@ Use this list to quickly check what measures you have or have not taken to best 
 
 ## Agora bug bounty program
 
-Agora is always looking to better protect our system and customers. Therefore, we invite security researchers to report any bugs or vulnerabilities they discover to us.
+Agora invites you to report bugs and vulnerabilities in the assets listed under [Testing scope](#testing-scope). Send your report to [security@agora.io](mailto:security@agora.io).
 
-Once we receive notice of a bug or vulnerability, Agora customer service and security teams will respond quickly to address the issue.
+The Agora security team responds promptly to every report it receives. Agora is grateful for all disclosures, and a valid report may also be eligible for a monetary bounty based on the risk associated with the vulnerability and the importance of the affected system.
 
-In addition to our gratitude, those who report a vulnerability may be eligible for a monetary “bounty” based on the risk associated with the vulnerability and the importance of the affected system.
+### Program rules
 
-### System importance classifications
-
-The following table shows system importance classifications (in descending order), along with some example Agora assets:
+Every report must demonstrate actual security impact. The vulnerability category doesn't change this requirement: whether you classify an issue as cross-site request forgery (CSRF), cross-site scripting (XSS), or another type, Agora evaluates it against the rules in this section. CSRF isn't eligible for rewards under this program. Independent security consequences such as cross-tenant data exposure, account takeover, or remote code execution are evaluated separately, according to the relevant vulnerability category and the security impact you demonstrate.
 
 <Accordions>
-<Accordion title="System importance classifications">
+<Accordion title="What your report must prove">
 
-|Classification |Asset Examples|
+**Actual impact (core requirement)**
+
+Your report must clearly describe the attack prerequisites, reproduction steps, and the specific harm that an attacker could cause to Agora's business, data, or users. Examples include obtaining sensitive data, taking control of an account, or affecting the availability of a project.
+
+Agora doesn't treat a report as a valid vulnerability if it only provides a vulnerability name, scanner output, or identifies a missing security best practice, but fails to demonstrate actual security impact after evaluation.
+
+For server-side request forgery (SSRF) vulnerabilities, your report must explain which protected resources an attacker can access or what actual business impact the issue causes. DNS or HTTP callbacks alone don't demonstrate security impact.
+
+**AI-generated reports**
+
+Agora rejects reports generated directly by AI without manual reproduction or valid verification evidence, and doesn't explain the rejection further.
+
+**Duplicate reports**
+
+Agora may treat multiple reports that arise from the same underlying root cause, security control failure, or substantially identical attack path as a single vulnerability. Variants that affect different endpoints, parameters, regions, or environments don't automatically qualify as separate vulnerabilities or for separate rewards.
+
+When several researchers independently report the same vulnerability, only the earliest valid and sufficiently reproducible report is normally eligible for a reward.
+
+</Accordion>
+<Accordion title="Issues that aren't eligible">
+
+**Authorization issues within the same organization (CID)**
+
+Authorization issues that occur within the same organization (CID) are known internal issues. Such a report is valid only if you can further demonstrate an authorization issue across different organizations (CIDs).
+
+**Credential exposure**
+
+Agora doesn't accept exposure of keys, passwords, or other credentials if the credentials are confirmed to be unusable for unauthorized access or sensitive operations.
+
+Provide the discovery location and sanitized supporting evidence. Agora verifies the validity and privileges of the exposed credentials internally. You aren't required to use the exposed credentials to log in or access real data.
+
+**Social engineering and user-interaction-based vulnerabilities**
+
+Agora doesn't accept reports that rely on phishing, impersonation, or inducing users to voluntarily provide passwords, verification codes, cookies, tokens, or other sensitive information, or that require active cooperation from another person to complete the attack.
+
+CSRF vulnerabilities are outside the scope of this program, regardless of whether they require the user to visit a page or click a link, and regardless of whether they result in a state-changing action. Agora may still remediate such issues internally, but they aren't valid vulnerabilities and aren't eligible for rewards under this program.
+
+XSS that triggers through normal user browsing isn't automatically excluded because of user interaction, and Agora still evaluates it against the actual impact requirement. However, Agora treats XSS, redirects, and similar issues that depend on phishing or on inducing the user to enter information as social engineering, and doesn't accept them.
+
+**Prepaid services and concurrency limit bypass**
+
+Agora operates under a prepaid service model, where services stop once the available balance is exhausted.
+
+Agora doesn't accept reports that merely use concurrent requests to bypass resource limits, concurrency limits, quotas, or similar restrictions.
+
+Agora considers such a report only if you can further demonstrate that an attacker can exploit the issue to cause Agora to incur significant resource costs that normal billing doesn't properly cover. Your report must provide a verifiable exploitation path and a reasonable basis for estimating the resulting cost.
+
+</Accordion>
+<Accordion title="Rules for testing">
+
+**Demonstrating impact doesn't require causing actual harm.** If your testing involves real sensitive data, credentials, or production services, stop further testing once you identify the risk and submit only the minimum necessary sanitized evidence. Agora performs any additional verification internally.
+
+**High-risk testing**
+
+You may use accounts, projects, and test data under your own control to verify authorization issues.
+
+Report any testing that may affect unrelated users, real business data, or service availability to Agora in advance, and perform it only after you receive explicit authorization from Agora.
+
+Without authorization, don't access, modify, or delete data belonging to unrelated users, and don't conduct denial-of-service or other destructive testing.
+
+Clean up any test data you generate during security testing promptly.
+
+**Command execution and other severe vulnerabilities**
+
+For severe vulnerabilities such as command execution, stop after you safely confirm only the minimum execution capability required to demonstrate the issue.
+
+Don't read sensitive data, install backdoors, perform lateral movement, or expand the scope of exploitation.
+
+Violating these testing boundaries may disqualify you from receiving a reward. Agora may refer activities suspected of violating applicable laws to its Legal team.
+
+</Accordion>
+</Accordions>
+
+### Testing scope
+
+This program covers only assets that Agora owns or operates. Assets belonging to Shengwang or other independent entities are outside the scope of this program.
+
+<Accordions>
+<Accordion title="Assets in scope">
+
+| Category | Asset description |
 |---|---|
-|Core system |Agora SDRTN®, the mail system, and official websites such as [www.agora.io](http://www.agora.io/), [sso2.agora.io](http://sso2.agora.io/), and `api.agora.io`|
-|General system |Forums and the Developer Portal ([docs.agora.io](https://docs.agora.io/))|
-|Fringe system |Test sites|
+| Core systems | `api.agora.io`, `console.agora.io`, `sso2.agora.io`, `www.agora.io`, and Agora SDKs |
+| General systems | Production systems other than the core systems, including systems under `*.agora.io`, `*.agoralab.co`, and other related domains confirmed to be owned or operated by Agora |
+| Edge systems | Non-production environments and demo sites owned or operated by Agora. Restrictions apply. |
+
+Some legacy domains still retain historical DNS records, and Agora verifies their current ownership. A domain suffix or a residual DNS record alone doesn't prove that an asset belongs to this program, and it doesn't demonstrate that the asset is vulnerable to takeover. If the ownership of an asset is unclear, contact Agora for confirmation before you begin testing.
+
+**Restrictions on edge systems**
+
+For non-production environments and demo sites, Agora accepts only the following three categories of issues:
+
+- Remote code execution (RCE) that exceeds the intended permission boundary.
+- Exposure of real personally identifiable information (PII), excluding test data.
+- Other vulnerabilities that demonstrably impact the production environment or pose a significant security risk.
+
+Code execution that the intended functionality or product design explicitly permits isn't an RCE vulnerability.
 
 </Accordion>
 </Accordions>
 
-### Vulnerability severity classifications
+### Vulnerability severity and rewards
 
-The following list outlines detailed examples of how various vulnerabilities would be classified:
+The acceptance requirements in [Program rules](#program-rules) apply to all reports. A report that involves bypassing concurrency or resource limits must first meet the prepaid services and concurrency limit bypass requirements before Agora assigns a severity rating.
+
+Actual security impact includes data exposure, unauthorized control, disruption or degradation of Agora services caused through exploitation of a vulnerability, impact on customer business functionality, unauthorized resource consumption, or financial loss.
+
+Severity depends on several factors:
+
+- Asset criticality
+- Attack prerequisites
+- Degree and scope of impact
+- Duration of impact
+- Recovery cost
+
+A severe impact that affects only a single customer or project may still be rated High. The vulnerability category or vulnerability name alone doesn't determine the severity.
 
 <Accordions>
-<Accordion title="Severity classification examples">
+<Accordion title="Severity levels and reference rewards">
 
-**Critical**
+The following examples are provided for reference only.
 
-1. Unauthorized system privileges
-   Examples include command injection (execution), code injection (execution), web shell execution, SQL injection, and buffer overflow that gains system privileges on the core system.
-2. Direct denial of service
-   Examples include actions that make service unavailable, reduce service quality, and so on.
-3. Sensitive information leakage
-   Examples include SQL injection of the core database (identity, order), unauthorized disclosure of sensitive information relating to a user, product order, or payment method, and so on.
-4. Serious logic design flaws and process defects
-   Examples include the ability to send batches of fraudulent messages, account consumption through a business interface, and large-scale modification of account passwords, and so on.
+| Severity | Impact description and examples | Reference reward (USD) |
+|---|---|---|
+| Critical | Control of a core production system, or widespread and severe impact on data, services, or financial interests. Examples include prolonged large-scale unavailability of core real-time communication services, large-scale exposure of sensitive data, or significant financial loss caused by resource abuse. | $300 to $3,000 |
+| High | Serious data, authorization, or business impact that doesn't reach the Critical level. Examples include account takeover, cross-tenant access to sensitive data, serious disruption to critical customer calling or recording services, or significant financial loss caused by unauthorized resource usage or billing abuse. | $200 to $2,000 |
+| Medium | Clear unauthorized access, operation, or service impact with limited severity or scope. Examples include unauthorized access to a limited amount of business data, or interruption of non-critical business functionality. | $150 |
+| Low | Minor and easily recoverable security impact. Examples include exposure of a small amount of low-sensitivity non-public information, short-term minor degradation of non-critical functionality, or reversible unauthorized operations with minimal impact. | $50 |
+| Info | Security observations or hardening recommendations where no actual harm has been demonstrated. These aren't valid vulnerabilities. Examples include version disclosure, path disclosure, internal IP address exposure, or component version alerts without exploitation evidence. | $0 |
 
-**High**
-
-1. Sensitive information leakage
-   Examples include unauthorized disclosure of sensitive information relating to source code, hardcoded passwords, and so on.
-2. Unauthorized access to sensitive information
-   Examples include bypassing authentication or backend password checks, leading to unauthorized access to sensitive intranet information.
-3. Unauthorized sensitive operations
-   Examples include manipulating important information without authorization, such as orders, major business configurations, and so on.
-
-**Medium**
-
-1. Vulnerabilities that require interaction and affect users
-   Examples include stored XSS (cross-site scripting).
-2. General unauthorized operations
-   Examples include incorrect direct object references, unauthorized access to orders, unauthorized access to user information, and so on.
-3. General information leakage
-   Examples include client-side stored plaintext passwords, system path traversal, and so on.
-4. General logic design flaws and process defects
-
-**Low**
-
-1. Local denial of service vulnerabilities, CSRF (cross-site request forgery), reflected XSS, and so on.
-2. Minor information leakage, such as path information, SVN information, exception information, the local SQL injection of a client-side application (limited to database name, field name, log print), and so on.
-3. Vulnerabilities that are difficult to exploit but still have security implications, such as plaintext transmission of passwords.
-
-**Info**
-
-1. Exposure of software banners, internal IP addresses, some public email addresses or phone numbers, and so on.
-
-2. Using outdated versions of a system, supporting outdated versions of encryption protocols, such as SSL (Secure Sockets Layer) or TLS (Transport Layer Security) 1.0, supporting low-strength encryption algorithms, and so on.
+Reports related to services or charges must identify a security flaw that an attacker can exploit. A single error condition, normal paid resource consumption, or simply sending a large volume of requests doesn't automatically constitute a valid vulnerability.
 
 </Accordion>
 </Accordions>
 
-### Bug Bounties
+Agora determines the final severity rating and reward amount based on its verification results. Accepting a report isn't a commitment to pay a reward.
 
-Please report any potential risks of Agora services that you may notice to security@agora.io. Any bounties awarded will conform roughly to the following ranges (based on the severity and system location of the bug or vulnerability, payable in USD):
+### Submit a report
 
-- Critical: $300 to $5000
-- High: $200 to $2000
-- Medium: $150
-- Low: $50
-- Info: $0
+Send your vulnerability report to [security@agora.io](mailto:security@agora.io). A valid report includes:
 
-Note: Agora reserves the sole right to determine any reward amount given.
+- The affected asset
+- Attack prerequisites
+- Reproduction steps
+- Sanitized supporting evidence
+- The specific security impact
+
+If any part of your report requires internal verification by Agora, identify it separately. Disclose vulnerability details publicly only after both parties complete the coordinated vulnerability disclosure process.
