@@ -452,9 +452,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -467,44 +469,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -550,31 +540,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -721,7 +732,7 @@ When integrating the Android SDK through Maven Central, you can modify the `depe
 - `libagora-fdkaac.so`
 - `libagora-ffmpeg.so`
 - `libagora-soundtouch.so`
-- `video_dec.so` (added since v4.6.2)
+- `libvideo_dec.so` (added since v4.6.2)
 - `libagora-core.so` (renamed to `libaosl.so` since v4.3.0; dependency since v4.5.0)
 - SDK header files
 
@@ -730,14 +741,14 @@ When integrating the Android SDK through Maven Central, you can modify the `depe
 <Slot for="optional">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="optional-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -1211,9 +1222,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -1226,44 +1239,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -1309,31 +1310,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -1948,9 +1970,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -1963,44 +1987,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -2046,31 +2058,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -2735,9 +2768,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -2750,44 +2785,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -2833,31 +2856,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -3368,9 +3412,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -3383,44 +3429,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -3466,31 +3500,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -4069,9 +4124,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -4084,44 +4141,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -4167,31 +4212,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -4770,9 +4836,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -4785,44 +4853,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -4868,31 +4924,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -5425,9 +5502,11 @@ The name of the extension for each platform and the increase in the size of your
 <Accordion title="Video Encoding">
 
 Since version 4.2.0, the SDK provides a Video Encoding extension. Compared to the native SDK encoding solution, this extension provides more encoding options and helps you achieve faster and higher compression video encoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
 :::note
 To use the Video Encoding extension, integrate **both** the libraries listed in the following table according to the target platform.
 :::
+
 | Platform | Architecture | Library name | App size increase (KB) |
 |:---------|:-------------|:-------------------------------------------- |:-----------------------|
 | Android | arm64-v8a | <Slot name="android" /> | 945 |
@@ -5440,44 +5519,32 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 | macOS | x86_64 | <Slot name="macos-2" /> | 2020 |
 | Windows | x86 | <Slot name="windows" /> | 2501 |
 | Windows | x86_64 | <Slot name="windows-2" /> | 2853 |
-| Platform | Architecture | Library name | App size increase (KB) |
-| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
-| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
-| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
-| Android | x86 | <Slot name="android-7" /> | 952 |
-| Android | x86_64 | <Slot name="android-8" /> | 976 |
-| iOS | arm64 | <Slot name="ios-3" /> | 635 |
-| iOS | armv7 | <Slot name="ios-4" /> | 662 |
-| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
-| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
-| Windows | x86 | <Slot name="windows-3" /> | 2115 |
-| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
 
 <Slot for="android">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-3">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="android-4">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -5523,31 +5590,52 @@ To use the Video Encoding extension, integrate **both** the libraries listed in 
 
 </Slot>
 
+**Video Decoding**
+
+Since version 4.2.0, the SDK provides a Video Decoding extension. Compared to the native SDK decoding solution, this extension provides more decoding options and helps you achieve faster and higher compression video decoding. To use this feature, please [contact technical support](mailto:support@agora.io).
+
+:::note
+To use the Video Decoding extension, integrate **both** the libraries listed in the following table according to the target platform.
+:::
+
+| Platform | Architecture | Library name | App size increase (KB) |
+| :--------- | :------------- | :-------------------------------------------- | :----------------------- |
+| Android | arm64-v8a | <Slot name="android-5" /> | 817 |
+| Android | armeabi-v7a | <Slot name="android-6" /> | 763 |
+| Android | x86 | <Slot name="android-7" /> | 952 |
+| Android | x86_64 | <Slot name="android-8" /> | 976 |
+| iOS | arm64 | <Slot name="ios-3" /> | 635 |
+| iOS | armv7 | <Slot name="ios-4" /> | 662 |
+| macOS | arm64 | <Slot name="macos-3" /> | 1296 |
+| macOS | x86_64 | <Slot name="macos-4" /> | 1848 |
+| Windows | x86 | <Slot name="windows-3" /> | 2115 |
+| Windows | x86_64 | <Slot name="windows-4" /> | 2421 |
+
 <Slot for="android-5">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-6">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-7">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="android-8">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 

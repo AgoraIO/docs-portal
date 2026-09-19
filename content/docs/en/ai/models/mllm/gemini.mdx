@@ -6,6 +6,17 @@ description: >
 
 Agora has [partnered with Google Gemini Live](https://ai.google.dev/gemini-api/docs/live-api#partner-integrations) to bring frontier multimodal large language model capabilities to your app. Gemini Live provides real-time audio processing, enabling natural voice conversations without separate ASR and TTS components. This page explains how to integrate Gemini Live through the Gemini Developer API. Enabling MLLM automatically disables ASR, LLM, and TTS since the MLLM handles end-to-end voice processing directly.
 
+### Supported models
+
+The following Gemini Live models are supported:
+
+| Model | Description |
+| --- | --- |
+| `models/gemini-3.8-live` | General-purpose Gemini Live model. |
+| `models/gemini-3.8-live-extended-thinking` | Gemini Live model with an adjustable reasoning budget. |
+
+Use `models/gemini-3.8-live-extended-thinking` when the conversation benefits from additional reasoning. Set `thinking_level` to `low`, `medium`, or `high`. Omit `thinking_level` when using `models/gemini-3.8-live`.
+
 ### Sample configuration
 
 The following examples show how to configure Google Gemini Live MLLM (Gemini Developer API) when starting a conversational AI agent.
@@ -28,7 +39,8 @@ agent = (
     Agent(client)
     .with_mllm(GeminiLive(
         api_key='your-google-api-key',
-        model='gemini-3.1-flash-live-preview',
+        model='models/gemini-3.8-live-extended-thinking',
+        thinking_level='medium',
         voice='Charon',
         instructions='You are a friendly assistant.',
         transcribe_agent=True,
@@ -48,7 +60,8 @@ import { Agent, GeminiLive } from 'agora-agents';
 const agent = new Agent({ client })
   .withMllm(new GeminiLive({
     apiKey: 'your-google-api-key',
-    model: 'gemini-3.1-flash-live-preview',
+    model: 'models/gemini-3.8-live-extended-thinking',
+    thinkingLevel: 'medium',
     voice: 'Charon',
     instructions: 'You are a friendly assistant.',
     transcribeAgent: true,
@@ -67,7 +80,8 @@ import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
 agent := agentkit.NewAgent(client).WithMllm(
     vendors.NewGeminiLive(vendors.GeminiLiveOptions{
         APIKey:         "your-google-api-key",
-        Model:          "gemini-3.1-flash-live-preview",
+        Model:          "models/gemini-3.8-live-extended-thinking",
+        ThinkingLevel:  vendors.GeminiThinkingLevelMedium,
         Voice:          "Charon",
         Instructions:   "You are a friendly assistant.",
         TranscribeAgent: agora.Bool(true),
@@ -79,6 +93,13 @@ agent := agentkit.NewAgent(client).WithMllm(
 </TabsContent>
 
 <TabsContent value="rest-api">
+
+:::info[Preview endpoint]
+`models/gemini-3.8-live` and `models/gemini-3.8-live-extended-thinking` are available as an early access preview. When using either model, send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+:::
 
 Use the following `mllm` configuration in your request:
 
@@ -93,7 +114,8 @@ Use the following `mllm` configuration in your request:
     }
   ],
   "params": {
-    "model": "gemini-3.1-flash-live-preview",
+    "model": "models/gemini-3.8-live-extended-thinking",
+    "thinking_level": "medium",
     "instructions": "You are a friendly assistant.",
     "voice": "Charon",
     "affective_dialog": false,
@@ -181,8 +203,11 @@ The following examples show the supported configurations for Google Gemini Live.
   </Parameter>
   <Parameter name="params" type="object" required={true}>
      Configuration object for the Gemini Live model.
-    <Parameter name="model" type="string" required={true}>
-      The Gemini Live model identifier.
+    <Parameter name="model" type="string" required={true} possibleValues="models/gemini-3.8-live, models/gemini-3.8-live-extended-thinking">
+      The Gemini Live model identifier. Set to `models/gemini-3.8-live-extended-thinking` to enable Extended Thinking. See [Supported models](#supported-models) for all available options.
+    </Parameter>
+    <Parameter name="thinking_level" type="string" required={false} possibleValues="low, medium, high">
+      The reasoning budget for `models/gemini-3.8-live-extended-thinking`. Do not set this parameter with `models/gemini-3.8-live`.
     </Parameter>
     <Parameter name="instructions" type="string" required={false}>
       System instructions that define the agent's behavior or tone.

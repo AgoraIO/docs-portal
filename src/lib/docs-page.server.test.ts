@@ -1537,7 +1537,7 @@ describe('loadDocsSearchIndex', () => {
     await expect(loadDocsSearchIndex('zh-CN')).resolves.toEqual([]);
   });
 
-  it('excludes split-file platform panel pages from search entries', async () => {
+  it('indexes split-file platform panels at their deep links', async () => {
     const parentPage = createPlatformGroupPage();
     const iosPage = createPlatformPanelPage('ios');
     const androidPage = createPlatformPanelPage('android');
@@ -1557,12 +1557,16 @@ describe('loadDocsSearchIndex', () => {
     );
     const pages = await loadDocsSearchIndex('en');
 
-    expect(pages.map((page) => page.url)).not.toContain(
+    expect(pages.map((page) => page.url)).toContain(
       '/en/ai/get-started/platform-split/ios',
     );
-    expect(pages.map((page) => page.url)).not.toContain(
+    expect(pages.map((page) => page.url)).toContain(
       '/en/ai/get-started/platform-split/android',
     );
+    expect(
+      pages.find((page) => page.url === '/en/ai/get-started/platform-split/ios')
+        ?.breadcrumbs,
+    ).toEqual(['AI', 'Get started', 'Split platform page']);
   });
 });
 
@@ -2759,6 +2763,36 @@ Web body
       loadDocsPagePayload('en', 'realtime-media', ['video', 'quickstart']),
     ).resolves.toEqual({
       redirectUrl: '/en/realtime-media/rtc/get-started-sdk',
+    });
+  });
+
+  it('redirects the removed Server Gateway Cloud Proxy page to the RTC guide', async () => {
+    const cloudProxyPage = {
+      ...createPage(),
+      path: 'en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy.mdx',
+      slugs: [
+        'en',
+        'realtime-media',
+        'rtc',
+        'build',
+        'manage-connection-and-quality',
+        'cloud-proxy',
+      ],
+      url: '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
+    } as PageWithSource;
+    mockedGetPage.mockReturnValue(cloudProxyPage);
+    mockedGetPages.mockReturnValue([cloudProxyPage]);
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'rtc-server-sdk',
+        'build',
+        'secure-and-optimize-connections',
+        'cloud-proxy',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
     });
   });
 

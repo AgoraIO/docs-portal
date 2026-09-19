@@ -465,6 +465,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service',
   },
   'server-gateway': {
+    'develop/cloud-proxy':
+      '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
     'get-started/integrate-sdk': '/en/realtime-media/rtc-server-sdk/quickstart',
     'get-started/mcp': '/en/realtime-media/rtc-server-sdk',
     'get-started/skills': '/en/realtime-media/rtc-server-sdk',

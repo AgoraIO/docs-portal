@@ -19,6 +19,7 @@ const zhCnCommon = {
     },
   },
   docs: {
+    contentLoading: '正在加载内容…',
     search: '搜索文档',
     searchDescription: '搜索当前文档门户中的 tabs 和页面。',
     searchPlaceholder: '搜索文档、API、指南...',

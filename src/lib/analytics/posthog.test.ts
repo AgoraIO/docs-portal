@@ -275,6 +275,141 @@ describe('PostHog analytics', () => {
     expect(JSON.stringify(sensitivePayload)).not.toContain('secret');
   });
 
+  it('captures a finalized normal search query with its session outcome', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchFinalized } = await import('./posthog');
+
+    captureDocsSearchFinalized({
+      finalizationReason: 'closed',
+      firstResultSource: 'algolia',
+      firstResultType: 'guide',
+      locale: 'en',
+      query: 'screen sharing',
+      queryAttemptId: 'attempt-1',
+      resultCount: 6,
+      resultsImpressed: true,
+      searchSessionId: 'session-1',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock).toHaveBeenCalledWith(
+      'docs_search_query_finalized',
+      expect.objectContaining({
+        finalization_reason: 'closed',
+        first_result_source: 'algolia',
+        first_result_type: 'guide',
+        query_attempt_id: 'attempt-1',
+        query_text: 'screen sharing',
+        result_count: 6,
+        results_impressed: true,
+        search_session_id: 'session-1',
+      }),
+    );
+  });
+
+  it('hashes sensitive finalized search queries', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchFinalized } = await import('./posthog');
+
+    captureDocsSearchFinalized({
+      finalizationReason: 'result_clicked',
+      locale: 'en',
+      query: 'https://example.com?token=secret',
+      queryAttemptId: 'attempt-2',
+      resultCount: 1,
+      resultsImpressed: true,
+      searchSessionId: 'session-1',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    const sensitivePayload = captureMock.mock.calls[0]?.[1];
+    expect(sensitivePayload).toEqual(
+      expect.objectContaining({
+        finalization_reason: 'result_clicked',
+        query_hash: expect.any(String),
+      }),
+    );
+    expect(sensitivePayload).not.toHaveProperty('query_text');
+    expect(JSON.stringify(sensitivePayload)).not.toContain('secret');
+  });
+
+  it.each([
+    {
+      description: 'an email address',
+      query: 'contact developer@example.com',
+    },
+    {
+      description: 'a JWT',
+      query:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+    },
+    {
+      description: 'a credential introduced with is',
+      query: 'password is hunter2',
+    },
+  ])('hashes finalized queries containing $description', async ({ query }) => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchFinalized } = await import('./posthog');
+
+    captureDocsSearchFinalized({
+      finalizationReason: 'closed',
+      locale: 'en',
+      query,
+      queryAttemptId: 'attempt-3',
+      resultCount: 0,
+      resultsImpressed: false,
+      searchSessionId: 'session-2',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    const sensitivePayload = captureMock.mock.calls[0]?.[1];
+    expect(sensitivePayload).toEqual(
+      expect.objectContaining({
+        query_hash: expect.any(String),
+      }),
+    );
+    expect(sensitivePayload).not.toHaveProperty('query_text');
+    expect(JSON.stringify(sensitivePayload)).not.toContain(query);
+  });
+
+  it('keeps ordinary token documentation queries as text', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+
+    const { captureDocsSearchFinalized } = await import('./posthog');
+
+    captureDocsSearchFinalized({
+      finalizationReason: 'closed',
+      locale: 'en',
+      query: 'token renewal',
+      queryAttemptId: 'attempt-4',
+      resultCount: 2,
+      resultsImpressed: true,
+      searchSessionId: 'session-3',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    expect(captureMock.mock.calls[0]?.[1]).toEqual(
+      expect.objectContaining({
+        query_text: 'token renewal',
+      }),
+    );
+  });
+
   it('captures result impressions and landing engagement with search identity', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
 

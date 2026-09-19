@@ -5,6 +5,47 @@
   "bulkRedirectsPath": "vercel-legacy-redirects.json",
   "redirects": [
     {
+      "source": "/en/realtime-media/rtc-server-sdk/build/secure-and-optimize-connections/cloud-proxy",
+      "destination": "/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/realtime-media/video/reference/release-notes",
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "(?<platform>android|ios|macos|web|windows|electron|flutter|react-native|javascript|unity|unreal|blueprint)"
+        }
+      ],
+      "destination": "/en/realtime-media/video/reference/release-notes/:platform",
+      "statusCode": 307
+    },
+    {
+      "source": "/en/realtime-media/video/reference/release-notes",
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "react-js"
+        }
+      ],
+      "destination": "/en/realtime-media/video/reference/release-notes/javascript",
+      "statusCode": 307
+    },
+    {
+      "source": "/en/realtime-media/video/reference/release-notes",
+      "has": [
+        {
+          "type": "query",
+          "key": "platform",
+          "value": "windows-cpp"
+        }
+      ],
+      "destination": "/en/realtime-media/video/reference/release-notes/windows",
+      "statusCode": 307
+    },
+    {
       "source": "/doc/:path*",
       "destination": "https://doc.shengwang.cn/doc/:path*",
       "statusCode": 308
