@@ -32,6 +32,7 @@ import {
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
+import { addAccordionHeadingsToTocText } from './mdx/accordion-toc';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -54,7 +55,6 @@ import {
 } from './platforms/platform-group-pages';
 import {
   buildCanonicalPlatformTocText,
-  buildPlatformMarkdownText,
   buildPlatformTocText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
@@ -1150,11 +1150,17 @@ async function resolvePageToc(
       ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getTableOfContents(tocText));
+    return normalizeToc(
+      await getTableOfContents(addAccordionHeadingsToTocText(tocText)),
+    );
   } catch {
     try {
       return normalizeToc(
-        await getTableOfContents(buildCanonicalPlatformTocText(processedText)),
+        await getTableOfContents(
+          addAccordionHeadingsToTocText(
+            buildCanonicalPlatformTocText(processedText),
+          ),
+        ),
       );
     } catch {
       return directToc;

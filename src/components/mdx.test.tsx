@@ -18,6 +18,7 @@ import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import {
   getMDXComponents,
@@ -87,6 +88,8 @@ type AccordionsComponent = ComponentType<{
 }>;
 type AccordionComponent = ComponentType<{
   children: ReactNode;
+  headingLevel?: 2 | 3 | 4;
+  id?: string;
   title: ReactNode;
   value?: string;
 }>;
@@ -495,6 +498,192 @@ describe('common MDX registry', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Default open' }));
 
     expect(screen.queryByText('Default body')).not.toBeInTheDocument();
+  });
+
+  it('renders an opt-in accordion title as a document heading', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions>
+          <Accordion headingLevel={3} id="v4-6-3" title="v4.6.3" value="v4-6-3">
+            Release body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    const heading = screen.getByRole('heading', {
+      level: 3,
+      name: 'v4.6.3',
+    });
+
+    expect(heading).toHaveAttribute('id', 'v4-6-3');
+    expect(heading).toHaveAttribute('data-accordion-value', 'v4-6-3');
+    expect(screen.getByRole('button', { name: 'v4.6.3' })).toBeInTheDocument();
+  });
+
+  it('opens the visible platform heading when hidden platforms reuse its anchor', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState({}, '', '/en/release-notes/web#v422');
+
+    render(
+      <MDXAccordionProvider>
+        <section aria-hidden="true" hidden>
+          <Accordions>
+            <Accordion headingLevel={3} id="v422" title="v4.2.2" value="v422">
+              Android body
+            </Accordion>
+          </Accordions>
+        </section>
+        <section>
+          <Accordions>
+            <Accordion headingLevel={3} id="v422" title="v4.2.2" value="v422">
+              Web body
+            </Accordion>
+          </Accordions>
+        </section>
+      </MDXAccordionProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Web body')).toBeVisible();
+    });
+    expect(screen.getByText('Android body')).not.toBeVisible();
+  });
+
+  it('opens a version when the docs TOC publishes its hash target', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            Second body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#v2' }),
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Second body')).toBeVisible();
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+    expect(
+      screen.getByText('Second body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('keeps closed version content in the DOM without displaying it', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="open">
+          <Accordion headingLevel={3} id="open" title="Open" value="open">
+            Open body
+          </Accordion>
+          <Accordion headingLevel={3} id="closed" title="Closed" value="closed">
+            Closed body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    const closedBody = screen.getByText('Closed body');
+    const closedContent = closedBody.closest('[role="region"]');
+
+    expect(closedBody).toBeInTheDocument();
+    expect(closedContent).toHaveAttribute('data-state', 'closed');
+    expect(closedContent).toHaveClass('data-[state=closed]:hidden');
+  });
+
+  it('keeps the clicked version heading in place while switching versions', async () => {
+    vi.useFakeTimers();
+
+    try {
+      const components = getMDXComponents();
+      const Accordions = components.Accordions as AccordionsComponent;
+      const Accordion = components.Accordion as AccordionComponent;
+      let targetTop = 240;
+      const windowScrollTo = vi.fn();
+
+      Object.defineProperty(window, 'scrollY', {
+        configurable: true,
+        value: 500,
+      });
+      Object.defineProperty(window, 'scrollTo', {
+        configurable: true,
+        value: windowScrollTo,
+        writable: true,
+      });
+
+      render(
+        <MDXAccordionProvider>
+          <Accordions defaultValue="v1">
+            <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+              First body
+            </Accordion>
+            <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+              Second body
+            </Accordion>
+          </Accordions>
+        </MDXAccordionProvider>,
+      );
+
+      const targetHeading = screen.getByRole('heading', {
+        level: 3,
+        name: 'v2',
+      });
+      vi.spyOn(targetHeading, 'getBoundingClientRect').mockImplementation(
+        () =>
+          ({
+            bottom: targetTop + 48,
+            height: 48,
+            left: 0,
+            right: 800,
+            top: targetTop,
+            width: 800,
+            x: 0,
+            y: targetTop,
+            toJSON: () => ({}),
+          }) as DOMRect,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: 'v2' }));
+      targetTop = 120;
+
+      await act(async () => {
+        vi.advanceTimersByTime(301);
+      });
+
+      expect(windowScrollTo).toHaveBeenCalledWith({
+        behavior: 'auto',
+        top: 380,
+      });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('renders headings with Fumadocs copy-anchor chrome', () => {
@@ -1090,11 +1279,11 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Android inline').closest('section')).toBeVisible();
   });
 
-  it('uses URL platform as initial selection and pushes platform paths on tab click', () => {
+  it('pushes platform paths without carrying a stale section hash', () => {
     window.history.replaceState(
       {},
       '',
-      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios',
+      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios?platform=ios&source=docs#setup',
     );
 
     const components = getMDXComponents() as Record<string, unknown>;
@@ -1135,6 +1324,8 @@ describe('common MDX registry', () => {
     expect(window.location.pathname).toBe(
       '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/android',
     );
+    expect(window.location.search).toBe('?source=docs');
+    expect(window.location.hash).toBe('');
     expect(
       screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();

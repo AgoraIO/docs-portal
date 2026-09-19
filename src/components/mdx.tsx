@@ -1,6 +1,7 @@
+import { useTranslations } from '@fuma-translate/react';
 import { createLink } from '@tanstack/react-router';
 import {
-  Accordion,
+  type Accordion as FumadocsAccordion,
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
@@ -18,7 +19,16 @@ import {
   TabsList as FumadocsTabsList,
   TabsTrigger as FumadocsTabsTrigger,
 } from 'fumadocs-ui/components/tabs';
+import {
+  AccordionContent as FumadocsAccordionContent,
+  AccordionHeader as FumadocsAccordionHeader,
+  AccordionItem as FumadocsAccordionItem,
+  AccordionTrigger as FumadocsAccordionTrigger,
+} from 'fumadocs-ui/components/ui/accordion';
+import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
+import { Check, LinkIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
@@ -26,9 +36,11 @@ import {
   type ComponentProps,
   type ComponentType,
   createContext,
+  createElement,
   type Dispatch,
   isValidElement,
   type ReactElement,
+  type MouseEvent as ReactMouseEvent,
   type ReactNode,
   type Ref,
   type SetStateAction,
@@ -49,6 +61,11 @@ import {
 } from '@/components/ui/dialog';
 import { captureDocsCodeTabChanged } from '@/lib/analytics/posthog';
 import { cn } from '@/lib/cn';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+  getActiveDocsScrollContainer,
+} from '@/lib/docs-hash';
 import {
   type NormalizedDocsHref,
   normalizeDocsHref,
@@ -94,6 +111,17 @@ type AccordionsRootProps = Omit<
   onValueChange?: (value: string | string[]) => void;
   type?: 'single' | 'multiple';
   value?: string | string[];
+};
+type AccordionHeadingLevel = 2 | 3 | 4;
+type AccordionProps = Omit<
+  ComponentProps<typeof FumadocsAccordion>,
+  'children' | 'id' | 'title' | 'value'
+> & {
+  children?: ReactNode;
+  headingLevel?: AccordionHeadingLevel;
+  id?: string;
+  title: ReactNode;
+  value?: string;
 };
 type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   children?: ReactNode;
@@ -143,6 +171,90 @@ type AccordionPageState = {
 const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
   undefined,
 );
+
+function Accordion({
+  children,
+  headingLevel,
+  id,
+  title,
+  value = String(title),
+  ...props
+}: AccordionProps) {
+  const titleContent = (
+    <FumadocsAccordionTrigger>{title}</FumadocsAccordionTrigger>
+  );
+  const headingTag = headingLevel
+    ? (`h${headingLevel}` as 'h2' | 'h3' | 'h4')
+    : undefined;
+  const headingTitle = headingTag
+    ? createElement(
+        headingTag,
+        {
+          className: 'm-0 flex flex-1 text-base font-medium',
+          'data-accordion-value': value,
+          id,
+        },
+        titleContent,
+      )
+    : null;
+  const header = headingTitle ? (
+    <div className="not-prose flex flex-row items-center text-fd-card-foreground font-medium has-focus-visible:bg-fd-accent">
+      {headingTitle}
+      {id ? <AccordionCopyButton id={id} /> : null}
+    </div>
+  ) : (
+    <FumadocsAccordionHeader id={id} data-accordion-value={value}>
+      {titleContent}
+      {id ? <AccordionCopyButton id={id} /> : null}
+    </FumadocsAccordionHeader>
+  );
+
+  return (
+    <FumadocsAccordionItem value={value} {...props}>
+      {header}
+      <FumadocsAccordionContent
+        data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
+        className={
+          headingLevel !== undefined ? 'data-[state=closed]:hidden' : undefined
+        }
+        forceMount={headingLevel !== undefined ? true : undefined}
+      >
+        <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">
+          {children}
+        </div>
+      </FumadocsAccordionContent>
+    </FumadocsAccordionItem>
+  );
+}
+
+function AccordionCopyButton({ id }: { id: string }) {
+  const t = useTranslations({ note: 'accordion' });
+  const [checked, onClick] = useCopyButton(() => {
+    const url = new URL(window.location.href);
+    url.hash = id;
+    return navigator.clipboard.writeText(url.toString());
+  });
+
+  return (
+    <button
+      type="button"
+      aria-label={t('Copy Link', { note: 'aria-label' })}
+      className={cn(
+        buttonVariants({
+          color: 'ghost',
+          className: 'text-fd-muted-foreground me-2',
+        }),
+      )}
+      onClick={onClick}
+    >
+      {checked ? (
+        <Check className="size-3.5" />
+      ) : (
+        <LinkIcon className="size-3.5" />
+      )}
+    </button>
+  );
+}
 
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
   const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
@@ -391,6 +503,7 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
 
 function Accordions({
   defaultValue,
+  onClickCapture,
   onValueChange,
   ref,
   type = 'single',
@@ -400,8 +513,12 @@ function Accordions({
   const rootId = useId();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const appliedDefaultValueRef = useRef(false);
-  const appliedHashRef = useRef(false);
+  const pendingScrollAnchorRef = useRef<{
+    element: HTMLElement;
+    top: number;
+  } | null>(null);
   const pageState = useContext(AccordionPageStateContext);
+  const setActiveAccordion = pageState?.setActiveAccordion;
   const defaultSingleValue =
     typeof defaultValue === 'string' ? defaultValue : undefined;
   const controlledSingleValue = typeof value === 'string' ? value : undefined;
@@ -420,6 +537,78 @@ function Accordions({
       : '';
   const selectedValue =
     controlledSingleValue ?? (pageState ? pageControlledValue : localValue);
+
+  const captureVersionScrollAnchor = useCallback(
+    (event: ReactMouseEvent<HTMLDivElement>) => {
+      if (event.target instanceof Element) {
+        const heading = event.target.closest<HTMLElement>(
+          'h2[data-accordion-value], h3[data-accordion-value], h4[data-accordion-value]',
+        );
+
+        if (heading && rootRef.current?.contains(heading)) {
+          pendingScrollAnchorRef.current = {
+            element: heading,
+            top: heading.getBoundingClientRect().top,
+          };
+        }
+      }
+
+      onClickCapture?.(event);
+    },
+    [onClickCapture],
+  );
+
+  const restoreVersionScrollAnchor = useCallback(() => {
+    const anchor = pendingScrollAnchorRef.current;
+
+    if (!anchor?.element.isConnected) {
+      pendingScrollAnchorRef.current = null;
+      return;
+    }
+
+    const delta = anchor.element.getBoundingClientRect().top - anchor.top;
+
+    if (Math.abs(delta) < 0.5) {
+      return;
+    }
+
+    const scrollContainer = getActiveDocsScrollContainer();
+
+    if (scrollContainer) {
+      scrollContainer.scrollTo({
+        behavior: 'auto',
+        top: scrollContainer.scrollTop + delta,
+      });
+    } else {
+      window.scrollTo({
+        behavior: 'auto',
+        top: window.scrollY + delta,
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (type !== 'single' || !pendingScrollAnchorRef.current) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      if (selectedValue !== undefined) {
+        restoreVersionScrollAnchor();
+      }
+    });
+    const finalCorrection = window.setTimeout(() => {
+      if (selectedValue !== undefined) {
+        restoreVersionScrollAnchor();
+      }
+      pendingScrollAnchorRef.current = null;
+    }, 300);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(finalCorrection);
+    };
+  }, [restoreVersionScrollAnchor, selectedValue, type]);
 
   useEffect(() => {
     if (
@@ -440,42 +629,66 @@ function Accordions({
     );
   }, [defaultSingleValue, pageState, rootId, type, value]);
 
-  useEffect(() => {
-    if (type !== 'single' || appliedHashRef.current) {
-      return;
-    }
+  const applyHash = useCallback(
+    (url: string) => {
+      const id = url.startsWith('#') ? url.substring(1) : url;
+      const element = rootRef.current;
 
-    appliedHashRef.current = true;
-
-    const id = window.location.hash.substring(1);
-    const element = rootRef.current;
-
-    if (!element || id.length === 0) {
-      return;
-    }
-
-    const selected = document.getElementById(id);
-
-    if (!selected || !element.contains(selected)) {
-      return;
-    }
-
-    const hashValue = selected.getAttribute('data-accordion-value');
-
-    if (!hashValue) {
-      return;
-    }
-
-    if (value === undefined) {
-      if (pageState) {
-        pageState.setActiveAccordion({ rootId, value: hashValue });
-      } else {
-        setLocalValue(hashValue);
+      if (!element || id.length === 0) {
+        return;
       }
+
+      const selected = findDocsHeadingForHash(`#${id}`);
+
+      if (!selected || !element.contains(selected)) {
+        return;
+      }
+
+      const hashValue = selected.getAttribute('data-accordion-value');
+
+      if (!hashValue) {
+        return;
+      }
+
+      if (value === undefined) {
+        if (setActiveAccordion) {
+          setActiveAccordion((current) =>
+            current?.rootId === rootId && current.value === hashValue
+              ? current
+              : { rootId, value: hashValue },
+          );
+        } else {
+          setLocalValue(hashValue);
+        }
+      }
+
+      onValueChange?.(hashValue);
+    },
+    [onValueChange, rootId, setActiveAccordion, value],
+  );
+
+  useEffect(() => {
+    if (type !== 'single') {
+      return;
     }
 
-    onValueChange?.(hashValue);
-  }, [onValueChange, pageState, rootId, type, value]);
+    const applyCurrentHash = () => {
+      applyHash(window.location.hash);
+    };
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      applyHash(typeof url === 'string' ? url : window.location.hash);
+    };
+
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, [applyHash, type]);
 
   function handleValueChange(nextValue: string | string[]) {
     const nextSingleValue = typeof nextValue === 'string' ? nextValue : '';
@@ -498,6 +711,7 @@ function Accordions({
       <ControlledFumadocsAccordions
         {...props}
         defaultValue={defaultValue}
+        onClickCapture={onClickCapture}
         onValueChange={onValueChange}
         ref={setRootRef}
         type={type}
@@ -510,6 +724,7 @@ function Accordions({
     <ControlledFumadocsAccordions
       {...props}
       defaultValue={defaultSingleValue}
+      onClickCapture={captureVersionScrollAnchor}
       onValueChange={handleValueChange}
       ref={setRootRef}
       type={type}

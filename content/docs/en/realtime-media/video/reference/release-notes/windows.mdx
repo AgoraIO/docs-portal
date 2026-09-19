@@ -19,7 +19,9 @@ Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include 
 
 </section>
 
-### v4.6.2 [#v462-4]
+<Accordions defaultValue="v462-4">
+
+<Accordion title="v4.6.2" id="v462-4" headingLevel={3} value="v462-4">
 
 Released on January 19, 2026.
 
@@ -82,7 +84,9 @@ This release fixed the following issues:
 - The second call to `enumerateVideoDevices` did not return the device list.
 - On Windows 7 devices, when sharing a PPT window in full-screen auto-play mode with many animations, the remote side saw flickering.
 
-### v4.6.0 [#v460-4]
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-4" headingLevel={3} value="v460-4">
 
 Released on August 26, 2025.
 
@@ -236,7 +240,9 @@ This version fixes the following issues:
 - Receivers occasionally heard echoes when the sender shared their screen and audio from certain laptop models with power-saving mode enabled.
 - In online education scenarios, the teacher's local view of multiple students' video and audio was occasionally out of sync.
 
-### v4.5.2 [#v452-3]
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-3" headingLevel={3} value="v452-3">
 
 v4.5.2 was released on April 22, 2025.
 
@@ -265,7 +271,9 @@ This release fixes the following issues:
 - When the app called `enableVideoImageSource` to enable the video image source feature, the sender appeared to stream successfully, but the `onVideoPublishStateChanged` callback did not return as expected.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx` to initialize the remote user’s view before successfully calling `joinChannelEx`, the first frame of the remote video was significantly delayed.
 
-### v4.5.1 [#v451-3]
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-3" headingLevel={3} value="v451-3">
 
 v4.5.1 was released on March 4, 2025.
 
@@ -292,7 +300,9 @@ This release resolves the following issues:
 - In interactive live streaming scenarios, after joining a channel as an audience member using a `string` user ID, audio occasionally became unsynchronized with video.
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
 
-### v4.5.0 [#v450-4]
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-4" headingLevel={3} value="v450-4">
 
 This version was released on November 27, 2024.
 
@@ -426,7 +436,9 @@ This version fixes the following issues:
 - When calling `followSystemRecordingDevice` or `followSystemPlaybackDevice` to set the audio capture or playback device used by the SDK to not follow the system default audio playback device, the local audio state callback `onLocalAudioStateChanged` is not triggered when the audio device is removed.
 - Calling `startAudioMixing [1/2]` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0 [#v440-4]
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-4" headingLevel={3} value="v440-4">
 
 v4.4.0 was released on August 5, 2024.
 
@@ -495,7 +507,9 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
    - Adds the `channelId` parameter to `Metadata`, which is used to get the channel name from which the metadata is sent.
    - Deprecates redundant enumeration values `CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT` and `CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED` in `CLIENT_ROLE_CHANGE_FAILED_REASON`.
 
-### v4.3.2 [#v432-3]
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-3" headingLevel={3} value="v432-3">
 
 v4.3.2 was released on June 4, 2024.
 
@@ -515,7 +529,9 @@ This version fixed the following issues:
 - The specified window could not be brought to the foreground if it was covered by other windows when sharing a window using [startScreenCaptureByWindowId](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_startscreencapturebywindowid) and setting `windowFocus` and `enableHighLight` in [ScreenCaptureParameters](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_screencaptureparameters.html) to `true`.
 - Clicking on the desktop widget caused the outlined part to flicker when sharing and highlighting a window on a Windows 7 device.
 
-### v4.3.1 [#v431-3]
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-3" headingLevel={3} value="v431-3">
 
 v4.3.1 was released on April 29, 2024.
 
@@ -603,7 +619,9 @@ This version fixed the following issues:
 - [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
 - [EAR_MONITORING_FILTER_TYPE](https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`
 
-### v4.3.0 [#v430-4]
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-4" headingLevel={3} value="v430-4">
 
 v4.3.0 was released on February 22, 2024.
 
@@ -843,7 +861,9 @@ This release fixed the following issues:
 - `CHANNEL_MEDIA_RELAY_EVENT`
 
 
-### v4.2.6 [#v426-3]
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-3" headingLevel={3} value="v426-3">
 
 v4.2.6 was released on November 17, 2023.
 
@@ -853,7 +873,9 @@ This release fixed the following issue:
 
 - In specific use-cases, such as when the network packet loss rate was high or when the broadcaster left the channel without destroying the engine and then re-joined the channel, the video on the receiving end stuttered or froze.
 
-### v4.2.3 [#v423-3]
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-3" headingLevel={3} value="v423-3">
 
 v4.2.3 was released on October 11, 2023.
 
@@ -934,7 +956,9 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.2 [#v422-4]
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-4" headingLevel={3} value="v422-4">
 
 v4.2.2 was released on july 27, 2023.
 
@@ -1019,7 +1043,9 @@ This release fixed the following issues:
 - `codecLevels` in `CodecCapInfo`
 - `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT` in `REMOTE_VIDEO_STATE_REASON`
 
-### v4.2.1 [#v421-5]
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-5" headingLevel={3} value="v421-5">
 
 This version was released on June 21, 2023.
 
@@ -1036,7 +1062,9 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - When the sending end mixed and published two streams of video captured by two cameras locally, the video from the second camera was occasionally missing on the receiving end.
 
-### v4.2.0 [#v420-5]
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-5" headingLevel={3} value="v420-5">
 
 v4.2.0 was released on May 24, 2023.
 
@@ -1208,7 +1236,9 @@ This release fixed the issue that when the host frequently switched the user rol
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec ` in ` ChannelMediaOptions`
 
-### v4.1.1 [#v411-5]
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-5" headingLevel={3} value="v411-5">
 
  v4.1.1 was released on February 8, 2023.
 
@@ -1275,7 +1305,9 @@ This release fixed the following issues:
 - `enableRemoteSuperResolution`
 - `superResolutionType` in `RemoteVideoStats`
 
-### v4.1.0 [#v410-5]
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-5" headingLevel={3} value="v410-5">
 
 v4.1.0 was released on December 15, 2022.
 
@@ -1489,7 +1521,9 @@ This release fixed the following issues:
 
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `onChannelMediaRelayEvent` callback.
 
-### v4.0.1 [#v401-4]
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-4" headingLevel={3} value="v401-4">
 
 v4.0.1 was released on September 29, 2022.
 
@@ -1611,7 +1645,9 @@ This release fixed the following issues.
 
 - `enableDualStreamMode` [2/3]
 
-### v4.0.0 [#v400-5]
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-5" headingLevel={3} value="v400-5">
 
 v4.0.0 was released on September 15, 2022.
 
@@ -1794,6 +1830,10 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 
 
+
+</Accordion>
+
+</Accordions>
 
 ## Extensions [#extensions]
 

@@ -697,6 +697,113 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('uses rendered headings when the payload TOC is incomplete', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h2 id="overview">Overview</h2>
+          <h2 id="guide">Guide</h2>
+          <h3 id="late-section">Late section</h3>
+          <h4 data-toc-hidden="true" id="parameter-details">
+            Parameter details
+          </h4>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Overview', url: '#overview' },
+              { depth: 2, title: 'Guide', url: '#guide' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Late section' }),
+    ).toHaveAttribute('href', '#late-section');
+    expect(
+      screen.queryByRole('link', { name: 'Parameter details' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('keeps platform and version headings in article order when the payload omits them', async () => {
+    render(
+      <AppProviders>
+        <article>
+          <h2 id="video-sdk-6">Video SDK</h2>
+          <h3 id="known-issues-6">Known issues</h3>
+          <h4 id="flutter-sdk-v632">Flutter SDK v6.3.2</h4>
+          <h3 id="v662">v6.6.2</h3>
+          <h3 id="v652">v6.5.2</h3>
+          <h3 id="v651">v6.5.1</h3>
+          <h2 id="extensions">Extensions</h2>
+          <h2 id="notifications">Notifications</h2>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Video SDK', url: '#video-sdk' },
+              { depth: 3, title: 'Known issues', url: '#known-issues' },
+              {
+                depth: 4,
+                title: 'Flutter SDK v6.3.2',
+                url: '#flutter-sdk-v632',
+              },
+              { depth: 3, title: 'v6.6.2', url: '#v662' },
+              { depth: 2, title: 'Extensions', url: '#extensions' },
+              { depth: 2, title: 'Notifications', url: '#notifications' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole('link').map((link) => link.getAttribute('href')),
+      ).toEqual([
+        '#video-sdk-6',
+        '#known-issues-6',
+        '#flutter-sdk-v632',
+        '#v662',
+        '#v652',
+        '#v651',
+        '#extensions',
+        '#notifications',
+      ]);
+    });
+  });
+
+  it('filters payload TOC entries that are inside closed accordion regions', async () => {
+    render(
+      <AppProviders>
+        <article>
+          <h2 id="video-sdk">Video SDK</h2>
+          <h3 data-accordion-value="v462" id="v462">
+            v4.6.2
+          </h3>
+          <section aria-label="Version content" data-state="closed">
+            <h4 id="issues-fixed">Issues fixed</h4>
+          </section>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Video SDK', url: '#video-sdk' },
+              { depth: 3, title: 'v4.6.2', url: '#v462' },
+              { depth: 4, title: 'Issues fixed', url: '#issues-fixed' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(await screen.findByRole('link', { name: 'v4.6.2' })).toHaveAttribute(
+      'href',
+      '#v462',
+    );
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('link', { name: 'Issues fixed' }),
+      ).not.toBeInTheDocument();
+    });
+  });
+
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {
     renderWithRouter(
       <DocsContent
@@ -1243,7 +1350,7 @@ describe('DocsTableOfContents', () => {
 
     fireEvent.click(link);
 
-    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'smooth', top: 126 });
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
     expect(link).toHaveAttribute('aria-current', 'location');
   });
 
@@ -1404,7 +1511,7 @@ describe('DocsTableOfContents', () => {
     fireEvent.click(toggle);
     fireEvent.click(screen.getByRole('link', { name: 'Target heading' }));
 
-    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'smooth', top: 126 });
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByRole('link', { name: 'Target heading' })).toBeNull();
   });
