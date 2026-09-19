@@ -1,94 +1,114 @@
 ---
-title: About Agora
-description: Understand Agora as a real-time platform, the problems it solves, how its product families fit together, and where to start.
+analyticsPageType: concept-explanation
+title: Agora Platform Overview
+description: Understand how RTC connects people, how Conversational AI Engine connects people with voice agents, and how to build with Agora.
+hideNavigation: true
 ---
 
-## What Agora is
+Agora provides SDKs and cloud services for real-time voice, video, and AI conversations. You can connect people with each other or with AI agents through two interaction models:
 
-Agora is a real-time platform for products where people, devices, services, and AI systems need to stay connected inside the same live session.
+- **Human-to-human** communication uses **Realtime Communication (RTC)** for voice calls, video calls, and live streaming.
+- **Human-to-agent** interaction connects a person with a **voice agent** for a live conversation.
 
-Instead of treating voice, video, messaging, AI orchestration, and media processing as separate stacks, Agora gives you a shared real-time foundation you can build on. You can start with one immediate use case, such as voice calling or an AI agent, and then extend the same session architecture into messaging, cloud processing, analytics, and production operations.
+**Conversational AI Engine** is Agora's product for building voice agents. It runs conversations using your configured models and tools, while **RTC** carries the live audio between the user and the agent.
 
-:::info[Think in live sessions, not isolated features]
-Agora is easiest to understand when you treat it as a shared real-time layer for interaction, coordination, AI participation, and media workflows.
-:::
+![Two peer scenarios: people communicate with each other using RTC, or with an AI agent built with Conversational AI Engine. Both use Agora's real-time media connection.](/images/developer-journey/interaction-models-overview.svg)
 
-## What problems it solves
+<a id="what-agora-is" />
+<a id="what-problems-it-solves" />
+<a id="product-families" />
+<a id="common-solution-patterns" />
+<a id="interaction-models" />
+<a id="how-the-parts-fit-together" />
+<a id="how-these-products-fit-together" />
 
-Teams usually come to Agora when they need to solve more than one live-product problem at the same time:
+## How the Agora platform works
 
-- Keep voice and video interactions usable under real-world network conditions.
-- Coordinate room state, presence, events, and messaging alongside live media.
-- Add voice AI into a live session instead of bolting AI onto a disconnected backend flow.
-- Record, transcribe, translate, transform, or distribute media after the session starts.
-- Operate production systems with the credentials, security, monitoring, and governance live products require.
+Real-time conversations require continuous audio or video capture, delivery, and playback between connected participants. Your application provides the user interface and business logic: client SDKs capture and play media, your backend manages access and sessions, and Agora services carry media between participants. For voice agents, Conversational AI Engine also uses your configured models and tools to generate responses.
 
-In practice, this means Agora is most useful when your product is not just sending a message or making a single API call, but managing an ongoing real-time experience.
+<a id="connect-people-with-rtc" />
+<a id="human-to-human-realtime-communication" />
 
-## Product families
+### How people connect with RTC
 
-Agora's docs are easier to navigate when you group the platform into four product families instead of reading it as a list of unrelated SKUs.
+![RTC clients receive credentials from your backend, join the same channel, and publish and subscribe to live audio and video.](/images/developer-journey/rtc-connection.svg)
 
-<CardGrid>
-  <FeatureCard title="Conversational AI">
-    Build voice agents, assistants, tutors, support flows, and multimodal AI experiences that participate in a live real-time session.
-  </FeatureCard>
-  <FeatureCard title="Real-Time Voice & Video">
-    Build calling, meetings, classrooms, livestream interaction, smart-device media flows, and other low-latency communication products.
-  </FeatureCard>
-  <FeatureCard title="Messaging & Presence">
-    Keep users, devices, and room state synchronized with chat, presence, metadata, signaling, and collaboration surfaces.
-  </FeatureCard>
-  <FeatureCard title="Cloud Media Services">
-    Extend live sessions with recording, speech-to-text, translation, push and pull workflows, transcoding, and distribution tooling.
-  </FeatureCard>
-</CardGrid>
+Clients in the same Agora project join the same **channel**, a logical group for exchanging media. **Publishing** sends audio or video; **subscribing** receives it. In a two-way call, both people publish and subscribe. In a live stream, hosts publish and audiences subscribe. See the [RTC overview](/en/realtime-media/rtc) for the integration details.
 
-## How these products fit together
+<a id="connect-people-with-a-voice-agent" />
+<a id="human-to-agent-voice-agent" />
 
-The most useful mental model is to think in layers of responsibility:
+### How people connect with a voice agent
 
-1. **Projects and credentials** define access, billing scope, and service boundaries.
-2. **Real-time sessions** connect users, devices, and agents inside a shared live context.
-3. **Voice, video, and messaging** carry interaction, room state, and events through that context.
-4. **AI and server-side control** add orchestration, automation, callbacks, and business logic.
-5. **Cloud media services** capture, transform, translate, distribute, and observe the live session.
+![Your backend uses the Agent SDK to start or stop the Agora-hosted Conversational AI Engine session. The agent joins the RTC channel and exchanges audio with the client.](/images/developer-journey/voice-agent-connection.svg)
 
-You do not need every layer on day one. The value of the platform is that these layers can be added over time without forcing you to replace the underlying session model.
+Your backend uses the **Agent SDK** to start and stop a session. The Agora-hosted **Conversational AI Engine** adds an agent to the RTC channel and uses your configured models and tools to respond. The person's client and the agent exchange audio through RTC.
 
-## Common solution patterns
+The same application can support **human-to-human** and **human-to-agent** interaction. See the [Voice Agent overview](/en/ai) for model options, business tools such as [MCP tools](/en/ai/build/mcp-tools), and app or device integrations.
 
-Most implementations start from a small number of repeatable patterns:
+<a id="shared-real-time-foundation" />
+<a id="add-the-capabilities-your-application-needs" />
+<a id="extend-your-application-with-agora-services" />
 
-<CardGrid>
-  <FeatureCard title="RTC only">
-    Start with live voice or video when the main requirement is low-latency communication between participants.
-  </FeatureCard>
-  <FeatureCard title="RTC + RTM">
-    Add room messaging, presence, and coordination when participants also need shared state, chat, or event-driven flows.
-  </FeatureCard>
-  <FeatureCard title="RTC + AI">
-    Add a voice agent when an AI system needs to join the session as a live participant instead of a separate backend service.
-  </FeatureCard>
-  <FeatureCard title="RTC + Recording or STT">
-    Extend a live session with archive, compliance, captions, transcripts, translation, or post-session processing.
-  </FeatureCard>
-  <FeatureCard title="AI + Device">
-    Build smart-device or embedded experiences where microphones, speakers, sensors, and agents operate through the same real-time path.
-  </FeatureCard>
-</CardGrid>
+## How all related products work together
 
-These patterns are helpful because they let you choose a narrow first milestone while keeping a clear path to the rest of the platform.
+RTC carries the live audio and video. Conversational AI Engine adds the voice agent. The services below extend that interaction with application data, media processing, or connections to other systems. Add the services your application needs.
 
-## Where to start
+| Product or integration | How it connects to your application |
+| --- | --- |
+| [Signaling](/en/realtime-media/rtm) | Exchanges application messages, presence, and shared state alongside RTC audio and video. |
+| [Chat](/en/realtime-media/im) | Adds persistent one-to-one or group messaging alongside voice and video calls. |
+| [Interactive Whiteboard](/en/realtime-media/whiteboard) | Adds a shared canvas for drawing and document collaboration while participants talk through RTC. |
+| [Cloud Recording](/en/realtime-media/cloud-recording) | Records RTC audio and video, including [agent conversations](/en/ai/best-practices/record-agent-conversation), to cloud storage. |
+| [Speech-to-Text](/en/realtime-media/speech-to-text) | Converts RTC audio into live transcripts, captions, or translated text. |
+| [Cloud Transcoding](/en/realtime-media/transcoding) | Mixes and transcodes RTC audio and video, then publishes processed streams back to RTC channels. |
+| [Media Pull](/en/realtime-media/media-pull) | Injects online media streams into RTC channels. |
+| [Media Gateway](/en/realtime-media/rtmp-gateway) | Connects RTMP or SRT media sources to RTC channels. |
+| [Media Push](/en/realtime-media/media-push) | Sends RTC audio and video to a CDN or external streaming platform. |
+| [Server Gateway](/en/realtime-media/rtc-server-sdk) | Lets your server application send and receive audio and video in RTC channels. |
+| [SIP integration](/en/ai/studio/deploy/sip-trunk) | Connects phone users with voice agents for inbound and outbound calls through a SIP trunk. |
+| [Agora Analytics](/en/realtime-media/agora-analytics/product-overview) | Analyzes RTC call usage and quality to help diagnose connection and media issues. |
 
-Choose the next page based on the first problem you need to solve:
+Browse the [related services directory](/en/realtime-media/overview) for more options.
 
-- Start with [Start with AI](/en/introduction/start-with-ai) if you want an AI-assisted path using Skills, MCP, and agent-friendly docs.
-- Go to [Conversational AI](/en/introduction/conversational-ai) if your main product is a voice agent, assistant, tutor, or spoken AI experience.
-- Go to [Real-Time Voice & Video](/en/introduction/realtime-audio-video) if your first milestone is calling, meetings, classrooms, livestream interaction, or device media transport.
-- Go to [Messaging & Presence](/en/introduction/messaging-presence) if chat, presence, signaling, or shared room state is your main coordination problem.
-- Go to [Cloud Media Services](/en/introduction/cloud-media-services) if you need recording, transcription, translation, media routing, or stream transformation around a live session.
-- Read [Core Concepts](/en/introduction/core-concepts) if you want the platform primitives before choosing a build path.
+**Configuration and access.** Your project identifies your application; each service defines its authentication requirements. See [Platform concepts](/en/introduction/core-concepts) for project credentials and client/backend responsibilities.
 
-When you move from prototype to production, continue with [Projects](/en/introduction/projects), [Console setup](/en/introduction/console-setup), [Billing](/en/introduction/billing), and [Security and privacy](/en/introduction/security-privacy).
+<a id="choose-how-to-build" />
+
+## How to build
+
+Choose a development workflow after identifying the interaction your application needs. AI-assisted development and direct coding can both produce RTC or Voice Agent applications.
+
+<a id="with-a-coding-assistant" />
+
+### Build with AI
+
+Three tools support your coding assistant during development:
+
+| Tool | Role |
+| --- | --- |
+| [Agora Skills](/en/introduction/agora-skills) | Provide Agora-specific workflow and implementation guidance. |
+| [Agora CLI](/en/introduction/agora-cli) | Prepare a supported starter, configure projects, and diagnose setup problems. |
+| [Agora MCP](/en/introduction/agora-mcp) | Look up Agora documentation from your coding assistant. |
+
+[Start with AI](/en/introduction/start-with-ai) combines these tools into a development workflow. A **coding assistant** helps you write the application; a **voice agent** talks with users inside the application. Documentation MCP serves the coding assistant, while runtime MCP tools serve the voice agent.
+
+<a id="with-sdks-and-apis" />
+
+### Build with code
+
+Use RTC client SDKs to connect people to media and Agent SDKs to control Conversational AI Engine sessions from your backend. Start with the [Voice Agent quickstart](/en/ai/get-started/quickstart), or the RTC [voice](/en/realtime-media/rtc/voice-quickstart) or [video](/en/realtime-media/rtc/get-started-sdk) quickstart.
+
+<a id="in-a-visual-workspace" />
+
+### Build in Console
+
+The [Agora Console agent builder](/en/ai/studio/quickstart) lets you visually configure and test a voice agent. This workflow applies to Conversational AI Engine.
+
+<a id="where-to-start" />
+<a id="choose-your-next-step" />
+<a id="next-step" />
+
+## Get started now
+
+Return to [Introduction](/en/introduction) to choose a quickstart, find SDK and API references, or explore recipes for your application.

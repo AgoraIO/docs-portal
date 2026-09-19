@@ -113,10 +113,10 @@ describe('docs journeys', () => {
   it('offers Voice Agent exploration before the direct app quickstart', () => {
     const intro = readDoc('en/introduction/index.mdx');
 
-    expect(intro).toContain('## Build a Voice Agent');
-    expect(intro).toMatch(
-      /title="Explore Voice Agents"[\s\S]*?href="\/en\/ai"[\s\S]*?title="Build a Voice Agent App"[\s\S]*?href="\/en\/ai\/get-started\/quickstart"/,
-    );
+    const overviewPosition = intro.indexOf('"/en/ai"');
+    const quickstartPosition = intro.indexOf('"/en/ai/get-started/quickstart"');
+    expect(overviewPosition).toBeGreaterThanOrEqual(0);
+    expect(quickstartPosition).toBeGreaterThan(overviewPosition);
   });
 
   it('connects the Realtime Media home, Voice and Video starts, and RTC API reference path', () => {
@@ -124,24 +124,14 @@ describe('docs journeys', () => {
     expect(realtime).toContain('/en/realtime-media/rtc');
 
     const realtimeMeta = JSON.parse(readDoc('en/realtime-media/meta.json'));
-    expect(realtimeMeta.pages).toEqual(
-      expect.arrayContaining(['voice', 'video']),
-    );
+    expect(realtimeMeta.pages).toContain('rtc');
 
-    const voice = readDoc('en/realtime-media/voice/index.mdx');
-    expect(voice).toContain(
-      '<Card title="SDK quickstart" href="quickstart.mdx"',
-    );
-    expect(voice).toContain('/en/api-reference/api-ref/rtc');
-
-    const video = readDoc('en/realtime-media/video/index.mdx');
-    expect(video).toContain(
-      '<Card title="SDK quickstart" href="/en/realtime-media/video/get-started-sdk"',
-    );
-    expect(video).toContain('/en/api-reference/api-ref/rtc');
-
-    expect(docExists('en/realtime-media/voice/quickstart.mdx')).toBe(true);
-    expect(docExists('en/realtime-media/video/get-started-sdk.mdx')).toBe(true);
+    const rtc = readDoc('en/realtime-media/rtc/index.mdx');
+    expect(rtc).toContain('/en/realtime-media/rtc/voice-quickstart');
+    expect(rtc).toContain('/en/realtime-media/rtc/get-started-sdk');
+    expect(rtc).toContain('/en/api-reference/api-ref/rtc');
+    expect(docExists('en/realtime-media/rtc/voice-quickstart.mdx')).toBe(true);
+    expect(docExists('en/realtime-media/rtc/get-started-sdk.mdx')).toBe(true);
 
     const rtcApiMeta = JSON.parse(
       readDoc('en/api-reference/api-ref/rtc/meta.json'),

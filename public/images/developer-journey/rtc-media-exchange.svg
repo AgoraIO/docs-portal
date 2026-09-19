@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="430" viewBox="0 0 1120 430" role="img" aria-labelledby="title desc">
+  <title id="title">Publishing and subscribing in a two-way RTC call</title>
+  <desc id="desc">Client A and Client B join the same logical RTC channel. A publishes audio or video that B subscribes to. B publishes audio or video that A subscribes to. Agora carries media between the clients. Authentication is not shown.</desc>
+  <defs>
+    <marker id="a-media" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#087eaf"/></marker>
+    <marker id="b-media" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10Z" fill="#8563a9"/></marker>
+  </defs>
+  <rect width="1120" height="430" fill="#fff"/>
+  <g font-family="system-ui, -apple-system, Segoe UI, sans-serif" fill="#20354e">
+    <text x="32" y="45" font-size="28" font-weight="650">Two clients, one conversation</text>
+    <rect x="24" y="76" width="1072" height="326" rx="16" fill="#f6f9fc" stroke="#a5b7ca" stroke-width="2" stroke-dasharray="8 6"/>
+    <text x="560" y="112" text-anchor="middle" font-size="24" font-weight="600">Shared RTC channel</text>
+    <text x="560" y="144" text-anchor="middle" font-size="19">Same project · Same channel name · Distinct user IDs</text>
+    <rect x="56" y="178" width="230" height="156" rx="12" fill="#fff" stroke="#d7e2eb"/>
+    <text x="171" y="231" text-anchor="middle" font-size="24" font-weight="600">Client A</text>
+    <text x="171" y="268" text-anchor="middle" font-size="20">RTC SDK</text>
+    <text x="171" y="304" text-anchor="middle" font-size="18">Capture and play</text>
+    <rect x="834" y="178" width="230" height="156" rx="12" fill="#fff" stroke="#d7e2eb"/>
+    <text x="949" y="231" text-anchor="middle" font-size="24" font-weight="600">Client B</text>
+    <text x="949" y="268" text-anchor="middle" font-size="20">RTC SDK</text>
+    <text x="949" y="304" text-anchor="middle" font-size="18">Capture and play</text>
+    <text x="560" y="208" text-anchor="middle" font-size="20" fill="#087eaf">A publishes · B subscribes</text>
+    <path d="M300 228 H820" stroke="#087eaf" stroke-width="3" marker-end="url(#a-media)"/>
+    <text x="560" y="276" text-anchor="middle" font-size="20" fill="#8563a9">B publishes · A subscribes</text>
+    <path d="M820 298 H300" stroke="#8563a9" stroke-width="3" marker-end="url(#b-media)"/>
+    <text x="560" y="375" text-anchor="middle" font-size="19">Both arrows carry live audio or video through Agora.</text>
+  </g>
+</svg>

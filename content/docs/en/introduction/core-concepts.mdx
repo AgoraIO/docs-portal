@@ -1,130 +1,85 @@
 ---
 analyticsPageType: concept-explanation
-title: Core concepts
-description: Ideas that are central to developing with Agora.
+title: Platform concepts
+description: Understand projects, credentials, and the client and backend responsibilities in an Agora integration.
+hideNavigation: true
 ---
 
-Voice Agents are real-time AI experiences where users speak naturally with an AI system. On Agora, voice agents listen, reason over the conversation, and respond with low-latency speech inside a live session.
+An Agora integration uses a project to identify the application and the credentials required by its services. Your client presents the experience to users; your backend handles the secret credentials and service operations the integration needs.
 
-RTC (Real-Time Communication) technology allows almost instant exchange of audio, video, and other media data between the sender and the receiver.
+Use these concepts when a quickstart asks you to create a project, supply an App ID, or configure authentication.
 
-Agora Signaling, formerly known as RTM, provides real-time delivery of messages, presence, metadata, transcripts, state updates, and control events. In many voice agent experiences, RTC carries the live audio path, while Signaling carries the events and data that coordinate the experience.
+<a id="set-up-your-agora-project" />
 
-Agora SDKs provide real-time audio, video, and messaging interaction services, with multi-platform and multi-device support. This includes high-definition video calls, voice-only calls, interactive live streaming, real-time messaging, as well as one-on-one and multi-group chats.
+<a id="using-the-agora-console" />
 
-This article introduces the key processes and concepts you need to know to use Agora SDKs.
+<a id="agora-console" />
 
-## Before you start
+## Account, project, and Console
 
-Most quickstarts and guides ask for the same values:
+Your **account** gives you access to Agora Console. A **project** holds an App ID, service configuration, and credentials for an application or environment. You can manage multiple projects from the same account.
 
-| Value | What it identifies |
+**Agora Console** is the management interface for accounts, projects, service settings, usage, and billing. It is where you create a project and retrieve its configuration.
+
+For the setup steps, follow [Account](/en/introduction/account). For detailed Console operations, see [Console Setup](/en/introduction/console-setup).
+
+<a id="before-you-start" />
+
+<a id="general-concepts" />
+
+<a id="app-id" />
+
+<a id="app-certificate" />
+
+<a id="token" />
+
+## Project credentials and authentication
+
+| Value | What it means | How it is used |
+| --- | --- | --- |
+| **App ID** | The identifier assigned to an Agora project | Used by clients and service requests to identify the project. It does not replace the authentication required by a service. |
+| **App Certificate** | A project credential used to generate authentication tokens | Used on your backend. Keep it out of client applications and public repositories. |
+| **Token** | An authentication value with permissions and an expiry | Supplied to the SDK or API that requires it. Its fields and scope depend on the product and operation. |
+
+For an RTC application, a client joins a channel using the identity and token required by its configuration. For a production integration, your backend generates the token; a temporary Console token is useful for testing.
+
+Service APIs have their own authentication requirements. For example, controlling a Voice Agent requires authentication for Conversational AI API requests. Follow the [Conversational AI authentication reference](/en/api-reference/api-ref/conversational-ai/authentication) when implementing that path.
+
+Use the authentication guide for the service you are integrating. Do not assume that one token or one set of request headers can be reused across every Agora API.
+
+## Client and backend responsibilities
+
+| Part of your application | Typical responsibilities |
 | --- | --- |
-| [App ID](#app-id) | The Agora project that your app belongs to. |
-| [App Certificate](#app-certificate) | The secret used to enable token authentication. |
-| [Token](#token) | A dynamic key that grants a user permission to access a channel. |
-| [Channel](#channel) | The live space, identified by a channel name, where users interact. |
-| [UID](#user-id-uid) | The unique user identity of one participant in a channel. |
+| **Client** | Present the UI, request microphone or camera access, connect with the appropriate SDK, and send or receive media and events. |
+| **Backend** | Keep secret credentials, provide the authentication required by clients, and call service APIs for operations such as starting or stopping a Voice Agent. |
 
-## Set up your Agora project
+The Agent SDKs help your backend call Conversational AI services. RTC client SDKs connect users to live media. These are different roles within the same application.
 
-To use Agora SDKs, first create a project in Agora Console. See [Agora account management](/en/introduction/account) for details.
+<a id="channel" />
 
-![Create project in Agora Console](https://assets-docs.agora.io/images/common/create-project.svg)
+<a id="channel-profile" />
 
-[Agora Console](https://console.agora.io/) is the main dashboard where you manage your Agora projects and services. After registering an [Agora account](https://console.agora.io/), use Agora Console to:
+<a id="stream" />
 
-- Manage the account
-- Create and configure Agora projects and services
-- Get an App ID
-- Manage members and roles
-- Check call quality and usage
-- Check bills and make payments
-- Access product resources
+<a id="publish" />
 
-Agora also provides REST APIs for tasks such as creating projects and retrieving usage data programmatically.
+<a id="subscribe" />
 
-## General concepts
+<a id="user-id-uid" />
 
-Agora uses the following basic concepts across its SDKs and cloud services:
+<a id="user-role" />
 
-### App ID
+<a id="connection-rtcconnection" />
 
-The App ID is a string generated in [Agora Console](https://console.agora.io) when you create a project. Each project has a unique App ID. Pass it when you initialize an Agora SDK, and use it when generating the authentication tokens that control access to a channel. You can [retrieve your App ID](https://console.agora.io/projects) in Agora Console.
+<a id="agora-sdrtn" />
 
-Agora uses the App ID to identify your project and associate usage and billing data with it.
+<a id="agora-sd-rtn" />
 
-For production environments, use the **App ID + token** authentication mechanism. Without a token, anyone with access to your App ID can join your channels.
+<a id="user-id" />
 
-### App Certificate
+## Product-specific concepts
 
-An App Certificate is a secret generated by Agora Console to enable token authentication. It is required when generating RTC or Signaling tokens.
+Channel, stream, publish, subscribe, user role, and RTC connection describe how realtime media works. Read [Realtime Communication concepts](/en/realtime-media/rtc/core-concepts) when you need those details. RTC media channels and Signaling messaging channels are separate; consult the [Signaling concepts](/en/realtime-media/rtm/core-concepts) for messaging identities and channels.
 
-To use your App Certificate to set up a token server, see [Deploy a token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server).
-
-### Token
-
-A token is a dynamic key that is used by the Agora authentication server to check user permissions. A token is usually scoped to a channel, a UID, a product capability, and an expiration time. You use Agora Console to generate a temporary token for testing purposes during the development process. In a production environment, you implement a token server in your security infrastructure to control access to your channels.
-
-After obtaining the App ID, App Certificate, and token in Agora Console, you can start implementing basic audio and video communication in your app.
-
-### Channel
-
-Agora uses the *channel name* to identify a channel. Users who specify the same *channel name* join a common channel and interact with each other. A channel is created when the first user joins. It ceases to exist when the last user leaves.
-
-You create a channel by calling the methods for transmitting real-time data. Agora uses different channels to transmit different types of data. The RTC SDK channel transmits audio or video data, while the Signaling channel transmits messaging or signaling data. The RTC SDK and Signaling channels are independent of each other.
-
-Additional components provided by Agora, such as On-Premise Recording and Cloud Recording, join the RTC SDK channel and provide real-time recording, transmission acceleration, media playback, and content moderation.
-
-### Channel profile
-
-The SDK applies different optimization methods according to the selected channel profile. Agora supports the following channel profiles:
-
-| Channel profile | Description |
-| --- | --- |
-| `COMMUNICATION` | This profile is suitable for one-on-one or group calls, where all users in the channel talk freely. |
-| `LIVE_BROADCASTING` | In a live streaming channel, users have two client roles: *host* and *audience*. The *host* sends and receives audio or video, while the *audience* only receives audio or video with the sending function disabled. |
-
-### Stream
-
-A stream is a sequence of digitally-encoded coherent signals that contains audio or video data. Users in a channel [publish](#publish) local streams and [subscribe](#subscribe) to remote streams from other users.
-
-### Publish
-
-Publishing is the act of sending a user's audio or video data to the channel. Usually, the published stream is created by the audio data sampled from a microphone or the video data captured by a camera. You can also publish media streams from other sources, such as an online music file or the user's screen.
-
-After successfully publishing a stream, the SDK continues sending media data to other users in the channel. By publishing the local stream and subscribing to remote streams, users communicate with each other in real time.
-
-### Subscribe
-
-Subscribing is the act of receiving media streams published by remote users in the channel. A user receives audio and video data from other users by subscribing to one or more of their streams. You either directly play the subscribed streams or process incoming data for other purposes such as recording or capturing screenshots.
-
-### User ID (UID)
-
-A User ID (UID) uniquely identifies a user within an Agora service. Both RTC and Signaling (formerly RTM) use UIDs, but the UID format, identity scope, and session behavior differ between the two services.
-
-In RTC, the UID is an integer that uniquely identifies a user within a channel. When joining a channel, you can assign a specific UID or let Agora generate one automatically by passing `0` or, where supported, `null`. Each user in the same channel must have a unique UID. If multiple users join the same channel with the same UID, unexpected behavior may occur. Agora services and components use the UID to identify and manage the user within that channel.
-
-In Signaling, the UID is a unique string supplied with the App ID when initializing the SDK. It identifies the user when logging in to Signaling and throughout the session, including for billing and online status notifications. Because the UID is associated with the user during initialization, the user only needs to provide the channel name when joining a channel. The same UID cannot be logged in to Signaling from multiple devices at the same time. If another client logs in with an active UID, the previously connected client is disconnected and receives a notification.
-
-### User role
-
-A user role is used to define whether users in the channel have permission to publish streams. There are two user roles:
-
-- Host: A user who can publish streams in a channel.
-- Audience: A user who cannot publish streams in a channel. Users with this role can only subscribe to remote audio and video streams.
-
-### Connection (RtcConnection)
-
-A connection is the link between the SDK and the channel. When you need to publish or receive multiple streams in multiple channels, use a connection to specify the target channel.
-
-<a name="agora-sd-rtn"></a>
-
-### Agora SDRTN®
-
-Agora's core engagement services are powered by its Software-Defined Real-Time Network (SDRTN®) that is accessible and available anytime, anywhere around the world. The software-defined network isn't confined by device, phone numbers, or a telecommunication provider's coverage area like traditional networks. Agora SDRTN® has data centers globally that cover over 200+ countries and regions. The network delivers sub-second latency and high availability of real-time video and audio anywhere on the globe. With Agora SDRTN®, Agora can deliver live user engagement experiences in the form of real-time communication (RTC) with the following advantages:
-
-- Unmatched quality of service
-- High availability and accessibility
-- True scalability
-- Low Cost
+A Voice Agent guide introduces the session concepts needed for its implementation. You can start with the [Voice Agent overview](/en/ai) and follow the relevant quickstart.
