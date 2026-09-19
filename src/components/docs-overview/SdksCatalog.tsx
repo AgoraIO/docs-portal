@@ -325,7 +325,11 @@ function ProductCard({
       </div>
 
       {activeVersion ? (
-        <InstallArea command={command} version={activeVersion} />
+        <InstallArea
+          command={command}
+          platformId={activePlatform.platformId}
+          version={activeVersion}
+        />
       ) : null}
     </article>
   );
@@ -418,11 +422,16 @@ function getVersionKey(platformId: string, version: SdkDownloadVersion) {
 
 function InstallArea({
   command,
+  platformId,
   version,
 }: {
   command: InstallCommand | null;
+  platformId: string;
   version: SdkDownloadVersion;
 }) {
+  const showAndroidGradleRepositoryNote =
+    platformId === 'android' && command?.tool === 'Gradle';
+
   if (command) {
     return (
       <div className="mt-3 flex flex-col gap-2">
@@ -432,6 +441,12 @@ function InstallArea({
           </code>
           <CopyButton value={command.command} />
         </div>
+        {showAndroidGradleRepositoryNote ? (
+          <p className="m-0 text-sm text-muted-foreground">
+            Add the Agora Maven CDN repository before syncing Gradle:{' '}
+            <code>https://download.agora.io/maven/</code>
+          </p>
+        ) : null}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
           {version.downloadLink ? (
             <a
