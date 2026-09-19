@@ -1003,7 +1003,7 @@ function syncPlatformPath(platform: PlatformKey) {
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.delete('platform');
   const nextSearch = searchParams.toString();
-  const nextUrl = `${nextPath}${nextSearch ? `?${nextSearch}` : ''}${window.location.hash}`;
+  const nextUrl = `${nextPath}${nextSearch ? `?${nextSearch}` : ''}`;
 
   if (
     nextUrl !==

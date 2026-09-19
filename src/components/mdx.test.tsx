@@ -1279,7 +1279,7 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Android inline').closest('section')).toBeVisible();
   });
 
-  it('uses URL platform as initial selection and pushes platform paths on tab click', () => {
+  it('pushes platform paths without carrying a stale section hash', () => {
     window.history.replaceState(
       {},
       '',
@@ -1325,7 +1325,7 @@ describe('common MDX registry', () => {
       '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/android',
     );
     expect(window.location.search).toBe('?source=docs');
-    expect(window.location.hash).toBe('#setup');
+    expect(window.location.hash).toBe('');
     expect(
       screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();
