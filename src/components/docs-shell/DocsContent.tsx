@@ -29,7 +29,7 @@ import { cn } from '@/lib/cn';
 import {
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
-  scrollDocsHashTarget,
+  scrollDocsHashTargetAfterLayout,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
 import {
@@ -773,13 +773,19 @@ export function DocsTableOfContents({
   const t = i18n.getFixedT(currentLocale, 'common');
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const items = useMemo(
-    () =>
-      (toc.length > 0 ? toc : derivedItems).filter(
-        (item) => typeof item.title === 'string',
-      ),
-    [derivedItems, toc],
-  );
+  const items = useMemo(() => {
+    if (derivedItems.length === 0) {
+      return toc.filter((item) => typeof item.title === 'string');
+    }
+
+    const sourceByUrl = new Map(toc.map((item) => [item.url, item]));
+
+    // Rendered headings define the reading order, including versions missing
+    // from the payload TOC and platform headings with different generated IDs.
+    return derivedItems
+      .map((item) => sourceByUrl.get(item.url) ?? item)
+      .filter((item) => typeof item.title === 'string');
+  }, [derivedItems, toc]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );
@@ -795,15 +801,10 @@ export function DocsTableOfContents({
       return next;
     });
     setIsMobileOpen(false);
-    scrollDocsHashTarget(url);
+    scrollDocsHashTargetAfterLayout(url, { behavior: 'auto' });
   }, []);
 
   useEffect(() => {
-    if (toc.length > 0) {
-      setDerivedItems([]);
-      return;
-    }
-
     let frame = 0;
     const updateDerivedItems = () => {
       if (frame) {
@@ -831,7 +832,7 @@ export function DocsTableOfContents({
 
       observer.disconnect();
     };
-  }, [toc]);
+  }, []);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -1118,7 +1119,11 @@ function isHiddenFromToc(element: HTMLElement) {
     if (
       current.hidden ||
       current.getAttribute('aria-hidden') === 'true' ||
-      current.hasAttribute('inert')
+      current.getAttribute('data-toc-hidden') === 'true' ||
+      current.hasAttribute('inert') ||
+      ((current.getAttribute('role') === 'region' ||
+        current.tagName === 'SECTION') &&
+        current.getAttribute('data-state') === 'closed')
     ) {
       return true;
     }

@@ -31,7 +31,9 @@ Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include 
 
 </section>
 
-### v4.6.3 [#v463]
+<Accordions defaultValue="v463">
+
+<Accordion title="v4.6.3" id="v463" headingLevel={3} value="v463">
 
 Released on February 12, 2026.
 
@@ -42,7 +44,9 @@ This release fixed the following issues:
 - In audio/video interaction scenarios with the beauty effects enabled, the sender's screen turned black occasionally or the app crashed on certain device models.
 - The app occasionally crashed in audio/video interaction scenarios.
 
-### v4.6.2 [#v462]
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462" headingLevel={3} value="v462">
 
 Released on January 19, 2026.
 
@@ -119,7 +123,9 @@ This release fixed the following issues:
 - Occasional crashes occurred during audio and video engagements.
 - Beauty effects did not work in some scenarios.
 
-### v4.6.1 [#v461]
+</Accordion>
+
+<Accordion title="v4.6.1" id="v461" headingLevel={3} value="v461">
 
 Released on November 26, 2025.
 
@@ -141,7 +147,9 @@ This version fixes the following issues:
 - In multi-channel scenarios, the app occasionally crashed during audio and video communication with other devices.
 - When using the Voice SDK, the `onRtcStats` callback reported a `memoryAppUsageRatio` value that was always `0`.
 
-### v4.6.0 [#v460]
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460" headingLevel={3} value="v460">
 
 Released on August 26, 2025.
 
@@ -288,7 +296,9 @@ This version fixes the following issues:
 - Incorrect relay state (`RELAY_STATE_FAILURE`) and error (`RELAY_ERROR_SERVER_ERROR_RESPONSE`) reported after a specific join/relay sequence using `joinChannelEx`.
 - Occasional audio noise when using Bluetooth or wired headphones after setting `AUDIO_SCENARIO_CHATROOM` (Android).
 
-### v4.5.2 [#v452]
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452" headingLevel={3} value="v452">
 
 Released on April 22, 2025.
 
@@ -324,7 +334,9 @@ This release fixes the following issues:
 - After a failed attempt to join a channel, trying again without first calling `leaveChannel [1/2]` occasionally caused a crash.
 
 
-### v4.5.1 [#v451]
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451" headingLevel={3} value="v451">
 
 Released on March 4, 2025.
 
@@ -358,7 +370,9 @@ This release fixes the following issues:
 - In interactive live streaming, after joining a channel as an audience member using a `string` user ID, the audio and video occasionally became unsynchronized.
 - Plugins sometimes malfunctioned when using AI noise suppression and AI echo cancellation plugins simultaneously.
 
-### v4.5.0 [#v450]
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450" headingLevel={3} value="v450">
 
 Released on November 27, 2024.
 
@@ -462,7 +476,9 @@ This version fixes the following issues:
 - Calling `startAudioMixing [1/2]` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction.
 
-### v4.4.1 [#v441]
+</Accordion>
+
+<Accordion title="v4.4.1" id="v441" headingLevel={3} value="v441">
 
 Released on August 8, 2024.
 
@@ -470,7 +486,9 @@ Released on August 8, 2024.
 
 This release fixes the issue where `io.agora.rtc:full-rtc-basic:4.4.0` and `io.agora.rtc:voice-rtc-basic:4.4.0` were not working properly on Maven Central due to an upload error.
 
-### v4.4.0 [#v440]
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440" headingLevel={3} value="v440">
 
 v4.4.0 was released on August 5, 2024.
 
@@ -545,7 +563,9 @@ This release fixes the following issue:
 
 - Audio playback failed when pushing external audio data using `pushExternalAudioFrame` and the sample rate was not set as a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2 [#v432]
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432" headingLevel={3} value="v432">
 
 v4.3.2 was released on June 4, 2024.
 
@@ -569,7 +589,9 @@ This version fixed the following issues:
 - The app occasionally crashed when remote users left the channel.
 - The values of `cameraDirection` and `focalLengthType` returned by [queryCameraFocalLengthCapability](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_querycamerafocallengthcapability) could not be read directly.
 
-### v4.3.1 [#v431]
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431" headingLevel={3} value="v431">
 
 v4.3.1 was released on April 29, 2024.
 
@@ -705,7 +727,9 @@ This version fixed the following issues:
 - [switchCamera [2/2]](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_switchcamera2)
 - `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`
 
-### v4.3.0 [#v430]
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430" headingLevel={3} value="v430">
 
 v4.3.0 was released on February 22, 2024.
 
@@ -970,7 +994,9 @@ This release fixed the following issues:
 - `updateChannelMediaRelayEx`
 - `onChannelMediaRelayEvent`
 
-### v4.2.6 [#v426]
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426" headingLevel={3} value="v426">
 
 v4.2.6 was released on November 17, 2023.
 
@@ -988,7 +1014,9 @@ This release fixed the following issues:
 - In live streaming use-cases, the video on the audience end was occasionally distorted.
 - In specific use-cases, such as when the network packet loss rate was high or when the broadcaster left the channel without destroying the engine and then re-joined the channel, the video on the receiving end stuttered or froze.
 
-### v4.2.3 [#v423]
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423" headingLevel={3} value="v423">
 
 v4.2.3 was released on October 11, 2023.
 
@@ -1055,7 +1083,9 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.2 [#v422]
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422" headingLevel={3} value="v422">
 
 v4.2.2 was released on july 27, 2023.
 
@@ -1129,7 +1159,9 @@ This release fixed the following issues:
 - `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT`
 
 
-### v4.2.1 [#v421]
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421" headingLevel={3} value="v421">
 
 This version was released on June 21, 2023.
 
@@ -1146,7 +1178,9 @@ This version fixed the following issues:
 - In screen sharing use-cases, some Android devices experienced choppy video on the receiving end.
 
 
-### v4.2.0 [#v420]
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420" headingLevel={3} value="v420">
 
 v4.2.0 was released on May 24, 2023.
 
@@ -1309,7 +1343,9 @@ This release fixed the following issues:
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
 
 
-### v4.1.1 [#v411]
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411" headingLevel={3} value="v411">
 
 v4.1.1 was released on February 8, 2023.
 
@@ -1381,7 +1417,9 @@ This release fixes the following issues:
 - `enableRemoteSuperResolution`
 - `superResolutionType` in `RemoteVideoStats`
 
-### v4.1.0 [#v410]
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410" headingLevel={3} value="v410">
 
 v4.1.0 was released on December 15, 2022.
 
@@ -1566,7 +1604,9 @@ This release fixed the following issues:
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `LiveTranscoding` class.
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `onChannelMediaRelayEvent` callback.
 
-### v4.0.1 [#v401]
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401" headingLevel={3} value="v401">
 
 v4.0.1 was released on September 29, 2022.
 
@@ -1662,7 +1702,9 @@ This release fixed the following issues.
 
 - `enableDualStreamMode` [2/3]
 
-### v4.0.0 [#v400]
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400" headingLevel={3} value="v400">
 
 v4.0.0 was released on September 15, 2022.
 
@@ -1837,6 +1879,10 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 
 
+</Accordion>
+
+</Accordions>
+
 ## Extensions [#extensions]
 
 
@@ -1845,7 +1891,9 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 
 ## MetaKit extension [#metakit-extension]
 
-### v2.2.0 [#v220-1]
+<Accordions defaultValue="v220-1">
+
+<Accordion title="v2.2.0" id="v220-1" headingLevel={3} value="v220-1">
 
 v2.2.0 was released on September 13, 2024.
 
@@ -1880,7 +1928,9 @@ This improvement significantly enhances the usability of the extension. You can 
 - `loadMaterial`
 - `unloadMaterial`
 
-### v2.1.0 [#v210-2]
+</Accordion>
+
+<Accordion title="v2.1.0" id="v210-2" headingLevel={3} value="v210-2">
 
 v2.1.0 was released on March 6, 2024.
 
@@ -1895,15 +1945,23 @@ This update optimizes the performance of the MetaKit extension and adds support 
 - [`requestTexture`](/en/realtime-media/video/build/add-advanced-video-features/metakit#enable-texture-request)
 - [`switchTextureAvatarMode`](/en/realtime-media/video/build/add-advanced-video-features/metakit#switch-texture-scene)
 
-### v2.0.0 [#v200-3]
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-3" headingLevel={3} value="v200-3">
 
 v2.0.0 was released on February 23, 2024.
 
 This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
 
+</Accordion>
+
+</Accordions>
+
 ## Camera Movement extension [#camera-movement-extension]
 
-### v1.2.0 [#v120-1]
+<Accordions defaultValue="v120-1">
+
+<Accordion title="v1.2.0" id="v120-1" headingLevel={3} value="v120-1">
 
 v1.2.0 was released on April 29, 2024.
 
@@ -1912,7 +1970,9 @@ v1.2.0 was released on April 29, 2024.
 - Added support for Video SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
-### v1.0.0 [#v100-3]
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-3" headingLevel={3} value="v100-3">
 
 v1.0.0 was released on February 23, 2024.
 
@@ -1924,6 +1984,10 @@ The extension uses AI technology and intelligent camera movement algorithms to p
 
 
 
+
+</Accordion>
+
+</Accordions>
 
 ## Notifications [#notifications]
 

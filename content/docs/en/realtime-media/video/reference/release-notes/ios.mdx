@@ -29,7 +29,9 @@ Starting from v4.5.0, both Video SDK and Signaling SDK v2.2.0 and later include 
 
 </section>
 
-### v4.6.2 [#v462-1]
+<Accordions defaultValue="v462-1">
+
+<Accordion title="v4.6.2" id="v462-1" headingLevel={3} value="v462-1">
 
 Released on January 19, 2026.
 
@@ -113,7 +115,9 @@ This release fixed the following issues:
 - On some iOS 16 devices, when a user joined a channel as a broadcaster with the audio scenario set to `AgoraAudioScenarioChatRoom` and called `enableLocalAudio` to disable local audio capture, the call volume could not be adjusted.
 - When switching video resolution under hardware exceptions, no encoded frames were output, causing the video to freeze.
 
-### v4.6.0 [#v460-1]
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-1" headingLevel={3} value="v460-1">
 
 Released on August 26, 2025.
 
@@ -265,7 +269,9 @@ This version fixes the following issues:
 - Occasional crashes (Android, iOS).
 - Media relay occasionally reported `AgoraChannelMediaRelayStateFailure` and `AgoraChannelMediaRelayErrorServerErrorResponse` after the following sequence: join, relay, unpublish, leave, rejoin, and start relay again.
 
-### v4.5.2 [#v452-1]
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-1" headingLevel={3} value="v452-1">
 
 v4.5.2 was released on April 22, 2025.
 
@@ -292,7 +298,9 @@ This release fixes the following issues:
 - When you called `enableVideoImageSource:options:` to enable the video image source feature, the sending side appeared to stream successfully, but the `rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:` callback reported a publish failure.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx:connection:` to initialize the remote user's view before successfully calling `joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`, the first frame of the remote video occasionally experienced significant delay.
 
-### v4.5.1 [#v451-1]
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-1" headingLevel={3} value="v451-1">
 
 v4.5.1 was released on March 4, 2025.
 
@@ -327,7 +335,9 @@ This release resolves the following issues:
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
 
 
-### v4.5.0 [#v450-1]
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-1" headingLevel={3} value="v450-1">
 
 v4.5.0 was released on November 27, 2024.
 
@@ -417,7 +427,9 @@ This version fixes the following issues:
 - Occasional instances of no sound in audio capture after resuming from being interrupted by other system apps.
 - Calling `startAudioMixing:loopback:cycle:` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0 [#v440-1]
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-1" headingLevel={3} value="v440-1">
 
 v4.4.0 was released on August 5, 2024.
 
@@ -493,7 +505,9 @@ This release fixes the following issues:
 - After the sender called `startDirectCdnStreaming` to start direct CDN streaming, frequent switching or toggling of the network occasionally resulted in a black screen on the receiver's end without a streaming failure callback on the sender's end.
 - Audio playback failed when pushing external audio data using `pushExternalAudioFrameRawData` and the sample rate was not set as a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2 [#v432-1]
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-1" headingLevel={3} value="v432-1">
 
 v4.3.2 was released on June 4, 2024.
 
@@ -516,7 +530,9 @@ This version fixed the following issues:
 - When calling the [playEffect [3/3\]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/playeffect(_:filepath:loopcount:pitch:pan:gain:publish:startpos:)) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound.
 - When using the Agora media player to play a video and stopping it during playing, sometimes there was no sound for a short time after the playback was resumed.
 
-### v4.3.1 [#v431-1]
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-1" headingLevel={3} value="v431-1">
 
 v4.3.1 was released on April 29, 2024.
 
@@ -642,7 +658,9 @@ This version fixed the following issue:
 **Deprecated**
 - [pushExternalAudioFrameSampleBuffer [1/2]](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
 
-### v4.3.0 [#v430-1]
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-1" headingLevel={3} value="v430-1">
 
 v4.3.0 was released on February 22, 2024.
 
@@ -911,7 +929,9 @@ This release fixed the following issues:
 - `didReceiveChannelMediaRelayEvent`
 - `AgoraChannelMediaRelayEvent`
 
-### v4.2.6 [#v426-1]
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-1" headingLevel={3} value="v426-1">
 
 v4.2.6 was released on November 17, 2023.
 
@@ -923,7 +943,9 @@ This release fixed the following issues:
 
 - In specific use-cases, such as when the network packet loss rate was high or when the broadcaster left the channel without destroying the engine and then re-joined the channel, the video on the receiving end stuttered or froze.
 
-### v4.2.3 [#v423-1]
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-1" headingLevel={3} value="v423-1">
 
 v4.2.3 was released on October 11, 2023.
 
@@ -977,7 +999,9 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `AgoraFeatureType`
 
-### v4.2.2 [#v422-1]
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-1" headingLevel={3} value="v422-1">
 
 v4.2.2 was released on July 27, 2023.
 
@@ -1073,7 +1097,9 @@ This release fixed the following issues:
 - `codecLevels` in `CodecCapAgoraVideoCodecCapInfoInfo`
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
 
-### v4.2.1 [#v421-1]
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-1" headingLevel={3} value="v421-1">
 
 This version was released on June 21, 2023.
 
@@ -1091,7 +1117,9 @@ This version fixed the following issues:
 - Occasional crash after calling the `destroyMediaPlayer` method.
 
 
-### v4.2.0 [#v420-1]
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-1" headingLevel={3} value="v420-1">
 
 v4.2.0 was released on May 23, 2023.
 
@@ -1251,7 +1279,9 @@ This release fixed the following issues:
 - `onScreenCaptureVideoFrame`
 - `onPreEncodeScreenVideoFrame`
 
-### v4.1.1 [#v411-1]
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-1" headingLevel={3} value="v411-1">
 
 v4.1.1 was released on January xx, 2023.
 
@@ -1327,7 +1357,9 @@ This release fixed the following issues:
 - `enableRemoteSuperResolution`
 - Deleted `superResolutionType` in `AgoraRtcRemoteVideoStats`
 
-### v4.1.0 [#v410-1]
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-1" headingLevel={3} value="v410-1">
 
 v4.1.0 was released on November xx, 2022.
 
@@ -1465,7 +1497,9 @@ This release fixed the following issues:
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent`.
 
 
-### v4.0.0 [#v400-1]
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-1" headingLevel={3} value="v400-1">
 
 v4.0.0 was released on September 15, 2022.
 
@@ -1484,7 +1518,9 @@ High resolution typically means higher performance consumption. To avoid a decre
 The increase in the default resolution affects the aggregate resolution and thus the billing rate. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
-### v4.2.2 [#v422-2]
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-2" headingLevel={3} value="v422-2">
 
 v4.2.2 was released on july 27, 2023.
 
@@ -1581,7 +1617,9 @@ This release fixed the following issues:
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
 
 
-### v4.2.1 [#v421-2]
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-2" headingLevel={3} value="v421-2">
 
 This version was released on June 21, 2023.
 
@@ -1598,7 +1636,9 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - Occasional crash after calling the `destroyMediaPlayer` method.
 
-### v4.2.0 [#v420-2]
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-2" headingLevel={3} value="v420-2">
 
 v4.2.0 was released on May 24, 2023.
 
@@ -1762,7 +1802,9 @@ This release fixed the following issues:
 - `didApiCallExecute`
 - `publishCustomAudioTrackEnableAec` in `AgoraRtcChannelMediaOptions`
 
-### v4.1.1 [#v411-2]
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-2" headingLevel={3} value="v411-2">
 
 v4.1.1 was released on February 8, 2023.
 
@@ -1836,7 +1878,9 @@ This release fixed the following issues:
 - `enableRemoteSuperResolution`
 - `superResolutionType` in `AgoraRtcRemoteVideoStats`
 
-### v4.1.0 [#v410-2]
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-2" headingLevel={3} value="v410-2">
 
 v4.1.0 was released on December 15, 2022.
 
@@ -1984,7 +2028,9 @@ This release fixed the following issues:
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent`.
 
 
-### v4.0.1 [#v401-1]
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-1" headingLevel={3} value="v401-1">
 
 v4.0.1 was released on September 29, 2022.
 
@@ -2033,7 +2079,9 @@ To enable this function, contact support@agora.io.
 
 - `startEchoTest` [2/3]
 
-### v4.0.0 [#v400-2]
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-2" headingLevel={3} value="v400-2">
 
 v4.0.0 was released on September 15, 2022.
 
@@ -2176,6 +2224,10 @@ This release adds `voicePitch` in `AgoraRtcAudioVolumeInfo` of `reportAudioVolum
 
 
 
+</Accordion>
+
+</Accordions>
+
 ## Extensions [#extensions]
 
 
@@ -2186,7 +2238,9 @@ This release adds `voicePitch` in `AgoraRtcAudioVolumeInfo` of `reportAudioVolum
 
 ## MetaKit extension [#metakit-extension-1]
 
-### v2.2.0 [#v220-2]
+<Accordions defaultValue="v220-2">
+
+<Accordion title="v2.2.0" id="v220-2" headingLevel={3} value="v220-2">
 
 v2.2.0 was released on September 13, 2024.
 
@@ -2221,21 +2275,31 @@ This improvement significantly enhances the usability of the extension. You can 
 - `loadMaterial`
 - `unloadMaterial`
 
-### v2.1.0 [#v210-3]
+</Accordion>
+
+<Accordion title="v2.1.0" id="v210-3" headingLevel={3} value="v210-3">
 
 v2.1.0 was released on March 6, 2024.
 
 This update focuses on optimizing the performance of the MetaKit extension, ensuring more efficient operation and a better user experience.
 
-### v2.0.0 [#v200-4]
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-4" headingLevel={3} value="v200-4">
 
 v2.0.0 was released on February 23, 2024.
 
 This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
 
+</Accordion>
+
+</Accordions>
+
 ## Camera Movement extension [#camera-movement-extension-1]
 
-### v1.2.0 [#v120-2]
+<Accordions defaultValue="v120-2">
+
+<Accordion title="v1.2.0" id="v120-2" headingLevel={3} value="v120-2">
 
 v1.2.0 was released on April 29, 2024.
 
@@ -2244,7 +2308,9 @@ v1.2.0 was released on April 29, 2024.
 - Added support for Video SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
-### v1.0.0 [#v100-4]
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-4" headingLevel={3} value="v100-4">
 
 v1.0.0 was released on February 23, 2024.
 
@@ -2254,6 +2320,10 @@ The extension uses AI technology and intelligent camera movement algorithms to p
 
 
 
+
+</Accordion>
+
+</Accordions>
 
 ## Notifications [#notifications]
 

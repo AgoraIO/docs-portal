@@ -237,6 +237,32 @@ describe('extractDocSearchContent', () => {
     // One record per heading section, not per paragraph.
     expect(result.contents).toHaveLength(2);
   });
+
+  it('indexes an opted-in accordion version as a heading', () => {
+    const result = extractDocSearchContent(
+      [
+        '<Accordions defaultValue="v463">',
+        '<Accordion title="v4.6.3" id="v463" headingLevel={3}>',
+        '',
+        'This release fixes camera stability.',
+        '</Accordion>',
+        '</Accordions>',
+      ].join('\n'),
+    );
+
+    expect(result.headings).toContainEqual({
+      content: 'v4.6.3',
+      id: 'v463',
+    });
+    expect(result.contents).toContainEqual(
+      expect.objectContaining({
+        content: expect.stringContaining(
+          'This release fixes camera stability.',
+        ),
+        heading: 'v463',
+      }),
+    );
+  });
 });
 
 describe('classifySearchCategory', () => {
