@@ -3552,15 +3552,15 @@ paths:
 
                                 - `generated`: Generated filler words. Agora-hosted generation produces
                                 one filler word phrase based on the current context. If the generated
-                                result isn't available in time, the static filler words in
-                                `static_config` are used as a fallback.
+                                result isn't available in time and you configured `static_config`, the
+                                agent plays a phrase from `static_config` instead.
                             static_config:
                               type: object
                               additionalProperties: true
                               description: >-
-                                Static filler word configuration. Required whenever filler words are
-                                enabled. When `mode` is `generated`, this configuration is used as the
-                                static fallback for when generation isn't available.
+                                Static filler word configuration. Required when `mode` is `static` or
+                                omitted. Optional when `mode` is `generated`. If configured, the agent uses
+                                it as a fallback when generation isn't available.
                               x-docs-callouts:
                                 - type: info
                                   title: Note
@@ -3640,8 +3640,9 @@ paths:
                                 - When `mode` is `generated`, Agora generates a context-relevant
                                 filler word phrase in parallel with the main LLM request.
 
-                                - If the generated result isn't available by `response_wait_ms`, the
-                                static filler words in `static_config` are used as a fallback.
+                                - If the generated result isn't available by `response_wait_ms` and
+                                you configured `static_config`, the agent plays a phrase from
+                                `static_config` instead.
                               properties:
                                 prompt:
                                   type: string
