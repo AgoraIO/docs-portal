@@ -1480,6 +1480,17 @@ describe('loadDocsPagePayload', () => {
     mockedGetNodeMeta.mockReturnValue(undefined);
   });
 
+  it('redirects an OpenAPI product root to its first endpoint when no index exists', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api-ref/conversational-ai/join',
+    });
+  });
+
   it('falls back to generating TOC from processed markdown', async () => {
     await expect(
       loadDocsPagePayload('en', 'introduction', ['about-agora']),

@@ -46,6 +46,7 @@ import {
   isOpenApiTab,
   type OpenApiLane,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRootRedirect,
   resolveOpenApiLaneRoute,
 } from './openapi/lanes';
 import { getOpenApiMarkdownPages } from './openapi/markdown';
@@ -648,6 +649,22 @@ export async function loadDocsPagePayload(
   }
 
   if (!page) {
+    const supportedLocale = toSupportedLocale(locale);
+    const openApiLaneRootRedirect =
+      supportedLocale && isOpenApiTab(tab)
+        ? resolveOpenApiLaneRootRedirect(
+            supportedLocale,
+            tab,
+            slugSegments,
+          )
+        : null;
+
+    if (openApiLaneRootRedirect) {
+      return {
+        redirectUrl: openApiLaneRootRedirect,
+      };
+    }
+
     const pageTree = getCanonicalPageTree(source, locale);
     const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 

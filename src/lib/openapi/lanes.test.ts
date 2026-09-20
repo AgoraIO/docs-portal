@@ -8,6 +8,7 @@ import {
   getOpenApiPrerenderPaths,
   getOpenApiReferenceBackLink,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRootRedirect,
   resolveOpenApiLaneRoute,
 } from './lanes';
 
@@ -177,6 +178,22 @@ describe('openapi lanes', () => {
       routeLeaf: 'join',
       url: '/en/api-reference/api-ref/conversational-ai/join',
     });
+  });
+
+  it('redirects an OpenAPI product root to its first endpoint', () => {
+    expect(
+      resolveOpenApiLaneRootRedirect('zh-CN', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+      ]),
+    ).toBe('/zh-CN/api-reference/api-ref/conversational-ai/join');
+    expect(
+      resolveOpenApiLaneRootRedirect('zh-CN', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+        'join',
+      ]),
+    ).toBeNull();
   });
 
   it('derives operation order and static paths from lane operations', () => {

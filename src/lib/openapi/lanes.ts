@@ -1702,6 +1702,34 @@ export function resolveOpenApiEndpointRoute(
   return null;
 }
 
+export function resolveOpenApiLaneRootRedirect(
+  locale: AppLocale,
+  tab: string,
+  slugSegments: string[],
+) {
+  for (const lane of getOpenApiLanes()) {
+    if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
+      continue;
+    }
+
+    const prefixSegments = lane.routePrefix.split('/').filter(Boolean).slice(1);
+
+    if (
+      slugSegments.length !== prefixSegments.length ||
+      !prefixSegments.every((segment, index) => slugSegments[index] === segment)
+    ) {
+      continue;
+    }
+
+    const firstOperationId = getOpenApiOperationIds(lane)[0];
+    return firstOperationId
+      ? getOpenApiEndpointUrl(lane, locale, firstOperationId)
+      : null;
+  }
+
+  return null;
+}
+
 export function resolveOpenApiLaneRoute(
   locale: AppLocale,
   tab: string,

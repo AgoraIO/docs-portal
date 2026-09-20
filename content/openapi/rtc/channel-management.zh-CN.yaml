@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   version: ''
   title: RTC 频道管理 REST API
-  description: 通过声网频道管理 RESTful API 在服务端查询频道信息、管理用户权限和获取消息通知服务器 IP。所有请求均使用 HTTPS，并通过 [RESTful 鉴权](/zh-CN/api-reference/api-ref/rtc/authentication) 进行认证。
+  description: 通过声网频道管理 RESTful API 在服务端查询频道信息、管理用户权限和获取消息通知服务器 IP。所有请求均使用 HTTPS，并通过 Basic HTTP 鉴权进行认证。
 servers:
 - url: https://api.sd-rtn.com
   description: 频道管理 REST API 的基础域名。
@@ -1039,7 +1039,7 @@ components:
   securitySchemes:
     Basic Auth:
       type: http
-      description: 声网频道管理 RESTful API 仅支持 HTTPS。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见 [RESTful 鉴权](/zh-CN/api-reference/api-ref/rtc/authentication)。
+      description: 声网频道管理 RESTful API 仅支持 HTTPS。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。
       scheme: basic
 security:
 - Basic Auth: []
