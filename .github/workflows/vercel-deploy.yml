@@ -177,7 +177,7 @@ jobs:
       - name: Build with Vercel
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
-          VITE_DOCS_REGION: cn
+          VITE_DOCS_REGION: global
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
           VERCEL_GIT_PROVIDER: github
