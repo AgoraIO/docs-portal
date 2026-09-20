@@ -685,7 +685,7 @@ const productReferenceMetas = [
     'solutions/showroom/reference/meta.json',
     {
       title: '参考',
-      pages: ['api', 'downloads', 'integrate-check-point'],
+      pages: ['downloads', 'api', 'integrate-check-point'],
     },
   ],
 ] as const;
