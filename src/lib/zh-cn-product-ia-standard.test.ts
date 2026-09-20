@@ -320,11 +320,6 @@ const productBuildPageMoves = [
   ],
   [
     'solutions/flexible-classroom',
-    'build/manage-classroom/classroom-properties',
-    'build/configure-teaching-resources-and-interactions/classroom-properties',
-  ],
-  [
-    'solutions/flexible-classroom',
     'build/manage-classroom/courseware',
     'build/configure-teaching-resources-and-interactions/courseware',
   ],
@@ -377,11 +372,6 @@ const productBuildPageMoves = [
     'solutions/showroom',
     'build/setup-and-access/enable-service',
     'build/enable-service',
-  ],
-  [
-    'solutions/showroom',
-    'build/implement-core-features/integrate-check-point',
-    'build/integrate-check-point',
   ],
   [
     'solutions/showroom',
@@ -457,6 +447,19 @@ const productBuildPageMoves = [
     'solutions/showroom',
     'build/customize-and-extend/video-loader/run-project',
     'build/video-loader/run-project',
+  ],
+] as const;
+
+const productPageMoves = [
+  [
+    'solutions/showroom',
+    'build/integrate-check-point',
+    'reference/integrate-check-point',
+  ],
+  [
+    'solutions/flexible-classroom',
+    'build/configure-teaching-resources-and-interactions/classroom-properties',
+    'build/maintain-classroom-service/classroom-properties',
   ],
 ] as const;
 
@@ -611,7 +614,6 @@ const productBuildMetas = [
     {
       title: '配置教学资源与互动',
       pages: [
-        'classroom-properties',
         'courseware',
         'whiteboard-on-off',
         'proctor-online-exams',
@@ -636,7 +638,7 @@ const productBuildMetas = [
     'solutions/flexible-classroom/build/maintain-classroom-service/meta.json',
     {
       title: '最佳实践',
-      pages: ['high-availability'],
+      pages: ['classroom-properties', 'high-availability'],
     },
   ],
   [
@@ -645,7 +647,6 @@ const productBuildMetas = [
       title: '开发与集成',
       pages: [
         'enable-service',
-        'integrate-check-point',
         'integrate-showroom',
         'audio-scenario',
         'hq-video',
@@ -675,6 +676,16 @@ const productBuildMetas = [
     {
       title: '使用视频加载器',
       pages: ['overview', 'integrate', 'guidance', 'run-project'],
+    },
+  ],
+] as const;
+
+const productReferenceMetas = [
+  [
+    'solutions/showroom/reference/meta.json',
+    {
+      title: '参考',
+      pages: ['api', 'downloads', 'integrate-check-point'],
     },
   ],
 ] as const;
@@ -750,6 +761,13 @@ function getRedirectTargetProductRoots() {
 
 describe('zh-CN product IA standard', () => {
   it.each(productBuildMetas)(
+    'uses the confirmed title and page order for %s',
+    (metaPath, expectedMeta) => {
+      expect(readMeta(resolve(contentRoot, metaPath))).toEqual(expectedMeta);
+    },
+  );
+
+  it.each(productReferenceMetas)(
     'uses the confirmed title and page order for %s',
     (metaPath, expectedMeta) => {
       expect(readMeta(resolve(contentRoot, metaPath))).toEqual(expectedMeta);
@@ -907,6 +925,25 @@ describe('zh-CN product IA standard', () => {
   );
 
   it.each(productBuildPageMoves)(
+    'moves %s page %s to %s and redirects the old URL',
+    async (productRoot, legacyPath, canonicalPath) => {
+      expect(pageExistsAtRelativePath(productRoot, legacyPath)).toBe(false);
+      expect(pageExistsAtRelativePath(productRoot, canonicalPath)).toBe(true);
+
+      const [tab, ...productSegments] = productRoot.split('/');
+      await expect(
+        loadDocsPagePayload('zh-CN', tab, [
+          ...productSegments,
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/${productRoot}/${canonicalPath}`,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it.each(productPageMoves)(
     'moves %s page %s to %s and redirects the old URL',
     async (productRoot, legacyPath, canonicalPath) => {
       expect(pageExistsAtRelativePath(productRoot, legacyPath)).toBe(false);

@@ -1129,8 +1129,10 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-previous',
   'solutions/flexible-classroom/build/customize-and-extend/widget-tech':
     '/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget-tech',
+  'solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties':
+    '/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/classroom-properties',
   'solutions/flexible-classroom/build/manage-classroom/classroom-properties':
-    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties',
+    '/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/classroom-properties',
   'solutions/flexible-classroom/build/manage-classroom/courseware':
     '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/courseware',
   'solutions/flexible-classroom/build/manage-classroom/high-availability':
@@ -1180,7 +1182,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/flexible-classroom/basic-features/whiteboard-on-off':
     '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/whiteboard-on-off',
   'solutions/flexible-classroom/best-practices/classroom-properties':
-    '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/classroom-properties',
+    '/zh-CN/solutions/flexible-classroom/build/maintain-classroom-service/classroom-properties',
   'solutions/flexible-classroom/best-practices/courseware':
     '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/courseware',
   'solutions/flexible-classroom/best-practices/high-availability':
@@ -1483,15 +1485,17 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/showroom/build/video-moderation',
   'solutions/showroom/api': '/zh-CN/solutions/showroom/reference/api',
   'solutions/showroom/basic-features/integrate-check-point':
-    '/zh-CN/solutions/showroom/build/integrate-check-point',
+    '/zh-CN/solutions/showroom/reference/integrate-check-point',
   'solutions/showroom/basic-features/integrate-showroom':
     '/zh-CN/solutions/showroom/build/integrate-showroom',
   'solutions/showroom/get-started/enable-service':
     '/zh-CN/solutions/showroom/build/enable-service',
   'solutions/showroom/build/setup-and-access/enable-service':
     '/zh-CN/solutions/showroom/build/enable-service',
+  'solutions/showroom/build/integrate-check-point':
+    '/zh-CN/solutions/showroom/reference/integrate-check-point',
   'solutions/showroom/build/implement-core-features/integrate-check-point':
-    '/zh-CN/solutions/showroom/build/integrate-check-point',
+    '/zh-CN/solutions/showroom/reference/integrate-check-point',
   'solutions/showroom/build/implement-core-features/integrate-showroom':
     '/zh-CN/solutions/showroom/build/integrate-showroom',
   'solutions/showroom/build/customize-and-extend/audio-scenario':
