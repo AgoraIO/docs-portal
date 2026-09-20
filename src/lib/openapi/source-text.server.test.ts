@@ -44,4 +44,14 @@ describe('openapi bundled source text registry', () => {
     );
     expect(source).not.toContain('/usage-analytics/build/rtc/');
   });
+
+  it('keeps the Conversational AI default request example spelling correct', () => {
+    const source = fs.readFileSync(
+      'content/openapi/conversational-ai/rest-api.zh-CN.yaml',
+      'utf8',
+    );
+
+    expect(source).toMatch(/\n\s+Default:/);
+    expect(source).not.toContain('Defalut:');
+  });
 });

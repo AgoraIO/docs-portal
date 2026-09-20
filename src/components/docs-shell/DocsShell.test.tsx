@@ -745,6 +745,7 @@ describe('DocsShell', () => {
 
     const docsTabsStrip = await screen.findByTestId('docs-tabs-strip');
 
+    expect(screen.getByTestId('docs-shell-header')).toHaveClass('sticky');
     expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
     expect(docsTabsStrip).not.toHaveClass('lg:block');
   });
