@@ -26,7 +26,10 @@ For more information, see [How do I handle issues when integrating the Signaling
 - Signaling SDK v2.2.1 `libaosl.so` version: 1.0.11.
 - Signaling SDK v2.2.0 `libaosl.so` version: 1.0.0.17.
 
-### v2.3.0
+<Accordions defaultValue="v230">
+
+<Accordion title="v2.3.0" id="v230" headingLevel={3} value="v230">
+
 
 Released on August 6, 2026.
 
@@ -58,7 +61,11 @@ This release fixes the following issues:
 - Connection state notifications could be incorrect when the app switched to the background before logging in.
 - Reconnecting after a network switch could take a long time.
 
-### v2.2.8
+
+</Accordion>
+
+<Accordion title="v2.2.8" id="v228" headingLevel={3} value="v228">
+
 
 Released on February 24, 2026.
 
@@ -86,7 +93,11 @@ This release fixes the following issues:
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
 - On some device models running Android 16, the permission request occasionally exceeded the necessary scope.
 
-### v2.2.6
+
+</Accordion>
+
+<Accordion title="v2.2.6" id="v226" headingLevel={3} value="v226">
+
 
 Released on November 15, 2025.
 
@@ -108,7 +119,11 @@ This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-referenc
 - In some scenarios, a peer-to-peer message was delivered to the recipient but the sender received a timeout error.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
 
-### v2.2.4
+
+</Accordion>
+
+<Accordion title="v2.2.4" id="v224" headingLevel={3} value="v224">
+
 
 v2.2.4 was released on April 10, 2025.
 
@@ -140,7 +155,11 @@ v2.2.4 was released on April 10, 2025.
 - Uncaught exceptions in callback functions could cause the SDK to crash.
 - Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
 
-### v2.2.2
+
+</Accordion>
+
+<Accordion title="v2.2.2" id="v222" headingLevel={3} value="v222">
+
 
 v2.2.2 was released on December 13, 2024.
 
@@ -178,7 +197,11 @@ This release fixes the following issues:
 - When the specified service is not activated, joining a channel does not return an error.
 - In some use-cases, abnormal property values may cause crashes.
 
-### v2.2.1
+
+</Accordion>
+
+<Accordion title="v2.2.1" id="v221" headingLevel={3} value="v221">
+
 
 v2.2.1 was released on August 9, 2024.
 
@@ -272,7 +295,11 @@ This release optimizes the implementation of the following features, which invol
 
 This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
-### v2.1.12
+
+</Accordion>
+
+<Accordion title="v2.1.12" id="v2112" headingLevel={3} value="v2112">
+
 
 v2.1.12 was released on July 2, 2024.
 
@@ -293,7 +320,11 @@ This release fixes the following issues:
 - After reconnecting from a disconnection, the SDK occasionally failed to restore subscription relationships in the stream channel.
 - Occasional failure to receive topic messages from web clients.
 
-### v2.1.11
+
+</Accordion>
+
+<Accordion title="v2.1.11" id="v2111" headingLevel={3} value="v2111">
+
 
 v2.1.11 was released on May 13, 2024.
 
@@ -309,7 +340,11 @@ This release fixes the following issues:
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, the remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
 - Occasional failures occurred when frequently calling the `subscribe` and `unsubscribe` methods.
 
-### v2.1.10
+
+</Accordion>
+
+<Accordion title="v2.1.10" id="v2110" headingLevel={3} value="v2110">
+
 
 v2.1.10 was released on March 11, 2024.
 
@@ -320,7 +355,11 @@ This release fixes the following issues:
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
 
-### v2.1.9
+
+</Accordion>
+
+<Accordion title="v2.1.9" id="v219" headingLevel={3} value="v219">
+
 
 v2.1.9 was released on February 22, 2024.
 
@@ -344,7 +383,11 @@ This release adds the following improvements:
 
 This release fixes the occasional crash issue when calling the `getOnlineUsers` method to retrieve paginated results.
 
-### v2.1.7
+
+</Accordion>
+
+<Accordion title="v2.1.7" id="v217" headingLevel={3} value="v217">
+
 
 v2.1.7 was released on January 22, 2024.
 
@@ -377,6 +420,10 @@ v2.1.7 was released on January 22, 2024.
 7. Locks
 
     Implement locks to maintain the sequence of messages, ensuring your data is processed in a specific order, preventing any data conflicts. When a client accesses a resource, it can acquire a lock on that resource to prevent other clients from accessing it.
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>
 
@@ -427,7 +474,10 @@ For more information, see [How do I handle issues when integrating the Signaling
 </TabsContent>
 </Tabs>
 
-### v2.3.0
+<Accordions defaultValue="v230-1">
+
+<Accordion title="v2.3.0" id="v230-1" headingLevel={3} value="v230-1">
+
 
 Released on August 6, 2026.
 
@@ -460,7 +510,11 @@ This release fixes the following issues:
 - Connection state notifications could be incorrect when the app switched to the background before logging in.
 - Reconnecting after a network switch could take a long time.
 
-### v2.2.8
+
+</Accordion>
+
+<Accordion title="v2.2.8" id="v228-1" headingLevel={3} value="v228-1">
+
 
 Released on February 24, 2026.
 
@@ -482,7 +536,11 @@ This release fixes the following issues:
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
 
-### v2.2.6
+
+</Accordion>
+
+<Accordion title="v2.2.6" id="v226-1" headingLevel={3} value="v226-1">
+
 
 Released on November 15, 2025.
 
@@ -539,7 +597,11 @@ This version adds the `reconnectTimeout` field to [`AgoraRtmClientConfig`](/en/a
 </TabsContent>
 </Tabs>
 
-### v2.2.4
+
+</Accordion>
+
+<Accordion title="v2.2.4" id="v224-1" headingLevel={3} value="v224-1">
+
 
 v2.2.4 was released on April 10, 2025.
 
@@ -614,7 +676,11 @@ v2.2.4 was released on April 10, 2025.
 </TabsContent>
 </Tabs>
 
-### v2.2.2
+
+</Accordion>
+
+<Accordion title="v2.2.2" id="v222-1" headingLevel={3} value="v222-1">
+
 
 v2.2.2 was released on December 13, 2024.
 
@@ -801,7 +867,11 @@ This release fixes the following issues:
 </TabsContent>
 </Tabs>
 
-### v2.2.1
+
+</Accordion>
+
+<Accordion title="v2.2.1" id="v221-1" headingLevel={3} value="v221-1">
+
 
 v2.2.1 was released on August 9, 2024.
 
@@ -906,7 +976,11 @@ This release optimizes the implementation of the following features, which invol
 
     This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
-### v2.1.12
+
+</Accordion>
+
+<Accordion title="v2.1.12" id="v2112-1" headingLevel={3} value="v2112-1">
+
 
 v2.1.12 was released on July 2, 2024.
 
@@ -927,7 +1001,11 @@ This release fixes the following issues:
 - After reconnecting from a disconnection, the SDK occasionally failed to restore subscription relationships in the stream channel.
 - Occasional failure to receive topic messages from web clients.
 
-### v2.1.11
+
+</Accordion>
+
+<Accordion title="v2.1.11" id="v2111-1" headingLevel={3} value="v2111-1">
+
 
 v2.1.11 was released on May 13, 2024.
 
@@ -953,7 +1031,11 @@ This release fixes the following issues:
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
 - Occasional failures occurred when frequently calling the `subscribe` and `unsubscribe` methods.
 
-### v2.1.10
+
+</Accordion>
+
+<Accordion title="v2.1.10" id="v2110-1" headingLevel={3} value="v2110-1">
+
 
 v2.1.10 was released on March 11, 2024.
 
@@ -964,7 +1046,11 @@ This release fixes the following issues:
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
 
-### v2.1.9
+
+</Accordion>
+
+<Accordion title="v2.1.9" id="v219-1" headingLevel={3} value="v219-1">
+
 
 v2.1.9 was released on February 22, 2024.
 
@@ -990,7 +1076,11 @@ This release fixes the following issues:
 - Occasional crashes occurred when calling the `getOnlineUsers` method to retrieve paginated results.
 - The memory leak issue during initialization.
 
-### v2.1.7
+
+</Accordion>
+
+<Accordion title="v2.1.7" id="v217-1" headingLevel={3} value="v217-1">
+
 
 v2.1.7 was released on January 22, 2024.
 
@@ -1138,6 +1228,10 @@ This release fixes the following issues:
 - Occasional inability to log in to Signaling after logging out when the network status changed.
 - When the network was disconnected, users occasionally did not receive the `Snapshot` event notification due to that the app did not clear data.
 - When a user joined a channel and switched the app to the background and then back to the foreground, the SDK occasionally triggered the `REMOTE_JOIN` event notification multiple times.
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>
 
@@ -1188,7 +1282,10 @@ For more information, see [How do I handle issues when integrating the Signaling
 </TabsContent>
 </Tabs>
 
-### v2.3.0
+<Accordions defaultValue="v230-2">
+
+<Accordion title="v2.3.0" id="v230-2" headingLevel={3} value="v230-2">
+
 
 Released on August 6, 2026.
 
@@ -1221,7 +1318,11 @@ This release fixes the following issues:
 - Connection state notifications could be incorrect when the app switched to the background before logging in.
 - Reconnecting after a network switch could take a long time.
 
-### v2.2.8
+
+</Accordion>
+
+<Accordion title="v2.2.8" id="v228-2" headingLevel={3} value="v228-2">
+
 
 Released on February 24, 2026.
 
@@ -1243,7 +1344,11 @@ This release fixes the following issues:
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
 
-### v2.2.6
+
+</Accordion>
+
+<Accordion title="v2.2.6" id="v226-2" headingLevel={3} value="v226-2">
+
 
 Released on November 15, 2025.
 
@@ -1300,7 +1405,11 @@ This version adds the `reconnectTimeout` field to [`AgoraRtmClientConfig`](/en/a
 </TabsContent>
 </Tabs>
 
-### v2.2.4
+
+</Accordion>
+
+<Accordion title="v2.2.4" id="v224-2" headingLevel={3} value="v224-2">
+
 
 v2.2.4 was released on April 10, 2025.
 
@@ -1375,7 +1484,11 @@ v2.2.4 was released on April 10, 2025.
 </TabsContent>
 </Tabs>
 
-### v2.2.2
+
+</Accordion>
+
+<Accordion title="v2.2.2" id="v222-2" headingLevel={3} value="v222-2">
+
 
 v2.2.2 was released on December 13, 2024.
 
@@ -1562,7 +1675,11 @@ This release fixes the following issues:
 </TabsContent>
 </Tabs>
 
-### v2.2.1
+
+</Accordion>
+
+<Accordion title="v2.2.1" id="v221-2" headingLevel={3} value="v221-2">
+
 
 v2.2.1 was released on August 9, 2024.
 
@@ -1667,7 +1784,11 @@ This release optimizes the implementation of the following features, which invol
 
     This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
-### v2.1.12
+
+</Accordion>
+
+<Accordion title="v2.1.12" id="v2112-2" headingLevel={3} value="v2112-2">
+
 
 v2.1.12 was released on July 2, 2024.
 
@@ -1688,7 +1809,11 @@ This release fixes the following issues:
 - After reconnecting from a disconnection, the SDK occasionally failed to restore subscription relationships in the stream channel.
 - Occasional failure to receive topic messages from web clients.
 
-### v2.1.11
+
+</Accordion>
+
+<Accordion title="v2.1.11" id="v2111-2" headingLevel={3} value="v2111-2">
+
 
 v2.1.11 was released on May 13, 2024.
 
@@ -1714,7 +1839,11 @@ This release fixes the following issues:
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
 - Occasional failures occurred when frequently calling the `subscribe` and `unsubscribe` methods.
 
-### v2.1.10
+
+</Accordion>
+
+<Accordion title="v2.1.10" id="v2110-2" headingLevel={3} value="v2110-2">
+
 
 v2.1.10 was released on March 11, 2024.
 
@@ -1725,7 +1854,11 @@ This release fixes the following issues:
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
 
-### v2.1.9
+
+</Accordion>
+
+<Accordion title="v2.1.9" id="v219-2" headingLevel={3} value="v219-2">
+
 
 v2.1.9 was released on February 22, 2024.
 
@@ -1751,7 +1884,11 @@ This release fixes the following issues:
 - Occasional crashes occurred when calling the `getOnlineUsers` method to retrieve paginated results.
 - The memory leak issue during initialization.
 
-### v2.1.7
+
+</Accordion>
+
+<Accordion title="v2.1.7" id="v217-2" headingLevel={3} value="v217-2">
+
 
 v2.1.7 was released on January 22, 2024.
 
@@ -1900,11 +2037,18 @@ This release fixes the following issues:
 - When the network was disconnected, users occasionally did not receive the `Snapshot` event notification due to that the app did not clear data.
 - When a user joined a channel and switched the app to the background and then back to the foreground, the SDK occasionally triggered the `REMOTE_JOIN` event notification multiple times.
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="web">
 
-### v2.3.0
+<Accordions defaultValue="v230-3">
+
+<Accordion title="v2.3.0" id="v230-3" headingLevel={3} value="v230-3">
+
 
 Released on September 8, 2026.
 
@@ -1946,7 +2090,11 @@ This release fixes the following issues:
 - A user could still be returned by `getOnlineUsers` for a short period after calling `logout`.
 - Sending a topic message could return `-11024` after joining a stream channel topic and remaining idle for about one minute.
 
-### v2.2.4
+
+</Accordion>
+
+<Accordion title="v2.2.4" id="v224-3" headingLevel={3} value="v224-3">
+
 
 Released on April 23, 2026.
 
@@ -1989,7 +2137,11 @@ This release fixes the following issues:
 - If a call to `subscribe` failed, the returned error code was incorrect.
 - Due to a network module issue in Chrome, network state detection was abnormal and Signaling login failed.
 
-### v2.2.3
+
+</Accordion>
+
+<Accordion title="v2.2.3" id="v223" headingLevel={3} value="v223">
+
 
 This version was released on November 15, 2025.
 
@@ -2017,7 +2169,11 @@ This version fixes the following issues:
 - Under poor network conditions, the SDK occasionally failed to resume the subscription after reconnecting.
 - When subscribing to a channel multiple times, Presence events were incorrect.
 
-### v2.2.2
+
+</Accordion>
+
+<Accordion title="v2.2.2" id="v222-3" headingLevel={3} value="v222-3">
+
 
 Released on April 30, 2025.
 
@@ -2059,7 +2215,11 @@ This release fixes the following issues:
 - Fixes the issue where channel messages could still be received after unsubscribing from the channel.
 - Fixes the issue where channel or user metadata could still be retrieved using the `get` method after being removed.
 
-### v2.2.1
+
+</Accordion>
+
+<Accordion title="v2.2.1" id="v221-3" headingLevel={3} value="v221-3">
+
 
 Released on December 13, 2024.
 
@@ -2086,7 +2246,11 @@ This release fixes the following issues:
 - When the SDK connection state is `FAILED`, calling the Lock and Storage methods causes the SDK to report an `RTM_ERROR_NOT_LOGIN` error. This release adjusts the error message. Starting from v2.2.1, the SDK reports an `RTM_ERROR_LOGIN_TIMEOUT` error.
 - The subscription to a channel fails during disconnection, and the subscription state is not reset to `unsubscribed` after the network recovers.
 
-### v2.2.0
+
+</Accordion>
+
+<Accordion title="v2.2.0" id="v220" headingLevel={3} value="v220">
+
 
 Released on September 10, 2024.
 
@@ -2218,7 +2382,11 @@ This release removes the `token` parameter from the `RTMConfig` and adds a new `
     - Enables local users to receive event notifications for messages they send, facilitating message transmission verification during the debugging phase.
     - Removes the `timeToken` parameter from the response objects of all methods.
 
-### v2.1.10
+
+</Accordion>
+
+<Accordion title="v2.1.10" id="v2110-3" headingLevel={3} value="v2110-3">
+
 
 Released on July 2, 2024.
 
@@ -2237,7 +2405,11 @@ This release addresses the following issues:
 - Occasional duplicate receipt of the `storage` event notifications with the `UPDATE` type when updating the user metadata.
 - Occasional duplicate receipt of the `lock` event notifications with the `REMOVED` type when removing locks.
 
-### v2.1.9
+
+</Accordion>
+
+<Accordion title="v2.1.9" id="v219-3" headingLevel={3} value="v219-3">
+
 
 Released on March 12, 2024.
 
@@ -2256,7 +2428,11 @@ This release fixes the following issues:
 - When a local user left the last topic the user joined, remote users occasionally received both the `REMOTE_JOIN` and `REMOTE_LEAVE` topic events.
 - The `messageType` parameter types of the `messageEvent` callbacks.
 
-### v2.1.7
+
+</Accordion>
+
+<Accordion title="v2.1.7" id="v217-3" headingLevel={3} value="v217-3">
+
 
 Released on January 22, 2024.
 
@@ -2272,7 +2448,11 @@ Released on January 22, 2024.
 - In the case of randomly subscribing to a Topic, what the user `message` received in the event notification `publisher` was inconsistent with the actual message sender.
 - After repeatedly subscribing to the same channel, unsubscribing or leaving the channel failed.
 
-### v2.1.5
+
+</Accordion>
+
+<Accordion title="v2.1.5" id="v215" headingLevel={3} value="v215">
+
 
 Released on December 22, 2023
 
@@ -2375,6 +2555,10 @@ This release fixes the following issues:
 - Calling the `login` method failed when the resource was not loaded.
 - If special characters such as Chinese were passed into the API of the presence module, messages sent to the remote client were truncated.
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="linux-cpp">
@@ -2391,7 +2575,10 @@ Starting from 2.2.0, the Signaling SDK and RTC SDK (version 4.3.0 or later) both
 - Signaling SDK v2.2.1 dynamic library version: 1.0.11.
 - Signaling SDK v2.2.0 dynamic library version: 1.0.0.17.
 
-### v2.3.0
+<Accordions defaultValue="v230-4">
+
+<Accordion title="v2.3.0" id="v230-4" headingLevel={3} value="v230-4">
+
 
 Released on August 6, 2026.
 
@@ -2423,7 +2610,11 @@ This release fixes the following issues:
 - Connection state notifications could be incorrect when the app switched to the background before logging in.
 - Reconnecting after a network switch could take a long time.
 
-### v2.2.8
+
+</Accordion>
+
+<Accordion title="v2.2.8" id="v228-3" headingLevel={3} value="v228-3">
+
 
 Released on February 24, 2026.
 
@@ -2434,7 +2625,11 @@ This release fixes the following issues:
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
 
-### v2.2.6
+
+</Accordion>
+
+<Accordion title="v2.2.6" id="v226-3" headingLevel={3} value="v226-3">
+
 
 v2.2.6 was released on November 15, 2025.
 
@@ -2457,7 +2652,11 @@ This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-referenc
 - In some scenarios, frequently creating and destroying the Signaling engine by repeatedly calling the C++ API caused a crash.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
 
-### v2.2.4
+
+</Accordion>
+
+<Accordion title="v2.2.4" id="v224-4" headingLevel={3} value="v224-4">
+
 
 v2.2.4 was released on April 10, 2025.
 
@@ -2489,7 +2688,11 @@ v2.2.4 was released on April 10, 2025.
 - Uncaught exceptions in callback functions could cause the SDK to crash.
 - Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
 
-### v2.2.2
+
+</Accordion>
+
+<Accordion title="v2.2.2" id="v222-4" headingLevel={3} value="v222-4">
+
 
 v2.2.2 was released on December 13, 2024.
 
@@ -2523,7 +2726,11 @@ This release fixes the following issues:
 - When the specified service is not activated, joining a channel does not return an error.
 - In some use-cases, abnormal property values may cause crashes.
 
-### v2.2.1
+
+</Accordion>
+
+<Accordion title="v2.2.1" id="v221-4" headingLevel={3} value="v221-4">
+
 
 v2.2.1 was released on August 9, 2024.
 
@@ -2673,7 +2880,11 @@ This release optimizes the implementation of certain features, which involves re
 
 This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
-### v2.1.12
+
+</Accordion>
+
+<Accordion title="v2.1.12" id="v2112-3" headingLevel={3} value="v2112-3">
+
 
 v2.1.12 was released on July 2, 2024.
 
@@ -2694,7 +2905,11 @@ This release fixes the following issues:
 - After reconnecting from a disconnection, the SDK occasionally failed to restore subscription relationships in the stream channel.
 - Occasional failure to receive topic messages from web clients.
 
-### v2.1.11
+
+</Accordion>
+
+<Accordion title="v2.1.11" id="v2111-3" headingLevel={3} value="v2111-3">
+
 
 v2.1.11 was released on May 13, 2024.
 
@@ -2710,7 +2925,11 @@ This release fixes the following issues:
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
 - Occasional failures occurred when frequently calling the `subscribe` and `unsubscribe` methods.
 
-### v2.1.10
+
+</Accordion>
+
+<Accordion title="v2.1.10" id="v2110-4" headingLevel={3} value="v2110-4">
+
 
 v2.1.10 was released on March 11, 2024.
 
@@ -2721,7 +2940,11 @@ This release fixes the following issues:
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
 
-### v2.1.9
+
+</Accordion>
+
+<Accordion title="v2.1.9" id="v219-4" headingLevel={3} value="v219-4">
+
 
 v2.1.9 was released on February 22, 2024.
 
@@ -2871,6 +3094,10 @@ Topics exist only in stream channels, not in message channels.
 #### Improvements
 
 This release optimizes the handling logic for expired user status data during reconnection.
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>
 
@@ -2906,7 +3133,10 @@ Starting from 2.2.0, the Signaling SDK and RTC SDK (version 4.3.0 or later) both
 - Signaling SDK v2.2.1 dynamic library version: 1.0.11.
 - Signaling SDK v2.2.0 dynamic library version: 1.0.0.17.
 
-### v2.3.0
+<Accordions defaultValue="v230-6">
+
+<Accordion title="v2.3.0" id="v230-6" headingLevel={3} value="v230-6">
+
 
 Released on August 6, 2026.
 
@@ -2938,7 +3168,11 @@ This release fixes the following issues:
 - Connection state notifications could be incorrect when the app switched to the background before logging in.
 - Reconnecting after a network switch could take a long time.
 
-### v2.2.8
+
+</Accordion>
+
+<Accordion title="v2.2.8" id="v228-4" headingLevel={3} value="v228-4">
+
 
 Released on February 24, 2026.
 
@@ -2949,7 +3183,11 @@ This release fixes the following issues:
 - In certain scenarios, abnormal service connection states occurred when an app resumed from the background to the foreground while a network switch was in progress.
 - In some cases, event notifications failed to be delivered properly after setting a temporary user presence state with Presence.
 
-### v2.2.6
+
+</Accordion>
+
+<Accordion title="v2.2.6" id="v226-4" headingLevel={3} value="v226-4">
+
 
 v2.2.6 was released on November 15, 2025.
 
@@ -2972,7 +3210,11 @@ This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-referenc
 - In some scenarios, frequently creating and destroying the Signaling engine by repeatedly calling the C++ API caused a crash.
 - In private deployment scenarios, frequent network switching caused abnormal connection states.
 
-### v2.2.4
+
+</Accordion>
+
+<Accordion title="v2.2.4" id="v224-5" headingLevel={3} value="v224-5">
+
 
 v2.2.4 was released on April 10, 2025.
 
@@ -3004,7 +3246,11 @@ v2.2.4 was released on April 10, 2025.
 - Uncaught exceptions in callback functions could cause the SDK to crash.
 - Subscribing to a topic could sometimes return an error indicating that the user was not in the channel.
 
-### v2.2.2
+
+</Accordion>
+
+<Accordion title="v2.2.2" id="v222-5" headingLevel={3} value="v222-5">
+
 
 v2.2.2 was released on December 13, 2024.
 
@@ -3038,7 +3284,11 @@ This release fixes the following issues:
 - When the specified service is not activated, joining a channel does not return an error.
 - In some use-cases, abnormal property values may cause crashes.
 
-### v2.2.1
+
+</Accordion>
+
+<Accordion title="v2.2.1" id="v221-5" headingLevel={3} value="v221-5">
+
 
 v2.2.1 was released on August 9, 2024.
 
@@ -3188,7 +3438,11 @@ This release optimizes the implementation of certain features, which involves re
 
 This release fixes the issue that remote users occasionally did not receive the `REMOTE_LEAVE` event notification when the local user directly called the `logout` method without calling the `leave` method.
 
-### v2.1.12
+
+</Accordion>
+
+<Accordion title="v2.1.12" id="v2112-4" headingLevel={3} value="v2112-4">
+
 
 v2.1.12 was released on July 2, 2024.
 
@@ -3209,7 +3463,11 @@ This release fixes the following issues:
 - After reconnecting from a disconnection, the SDK occasionally failed to restore subscription relationships in the stream channel.
 - Occasional failure to receive topic messages from web clients.
 
-### v2.1.11
+
+</Accordion>
+
+<Accordion title="v2.1.11" id="v2111-4" headingLevel={3} value="v2111-4">
+
 
 v2.1.11 was released on May 13, 2024.
 
@@ -3225,7 +3483,11 @@ This release fixes the following issues:
 - In cases where the connection was lost due to network issues and then restored, if the local user actively called the `leave` method to leave the channel, a remote user occasionally did not receive the `REMOTE_TIMEOUT` type of the `onPresenceEvent` event notification.
 - Occasional failures occurred when frequently calling the `subscribe` and `unsubscribe` methods.
 
-### v2.1.10
+
+</Accordion>
+
+<Accordion title="v2.1.10" id="v2110-5" headingLevel={3} value="v2110-5">
+
 
 v2.1.10 was released on March 11, 2024.
 
@@ -3236,7 +3498,11 @@ This release fixes the following issues:
 - When sending messages frequently, message sending occasionally timed out.
 - After calling `renewToken` to renew the token, some services were not functioning correctly, resulting in unexpected disconnection.
 
-### v2.1.9
+
+</Accordion>
+
+<Accordion title="v2.1.9" id="v219-5" headingLevel={3} value="v219-5">
+
 
 v2.1.9 was released on February 22, 2024.
 
@@ -3386,6 +3652,10 @@ Topics exist only in stream channels, not in message channels.
 #### Improvements
 
 This release optimizes the handling logic for expired user status data during reconnection.
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>
 
@@ -3429,7 +3699,10 @@ For more information, see [How do I handle issues when integrating the Signaling
 </TabsContent>
 </Tabs>
 
-### v2.2.6
+<Accordions defaultValue="v226-5">
+
+<Accordion title="v2.2.6" id="v226-5" headingLevel={3} value="v226-5">
+
 
 Released on November 18, 2025.
 
@@ -3438,7 +3711,11 @@ Released on November 18, 2025.
 - **New reconnection timeout configuration**
   This version adds the `reconnectTimeout` field to [`RtmConfig`](/en/api-reference/api-ref/signaling). Use this field to configure the timeout period in seconds for the SDK to return a timeout error during login or reconnection. When the login or reconnection exceeds the configured duration, the SDK reports the current connection state and reason through a callback.
 
-### v2.2.5
+
+</Accordion>
+
+<Accordion title="v2.2.5" id="v225" headingLevel={3} value="v225">
+
 
 Released on September 25, 2025.
 
@@ -3498,7 +3775,11 @@ Released on September 25, 2025.
 - When specified services were not enabled, joining channels did not return errors.
 - In some scenarios, abnormal property values caused crash issues.
 
-### v2.2.1
+
+</Accordion>
+
+<Accordion title="v2.2.1" id="v221-6" headingLevel={3} value="v221-6">
+
 
 Released on October 15, 2024.
 
@@ -3644,6 +3925,10 @@ Topics exist only in stream channels, not in message channels or user channels.
         - `removeLock`: Remove a specified lock in a specified channel.
 
     The lock setting, acquisition, release, revocation, and deletion operations trigger the corresponding `onLockEvent` event notification. You can make full use of this feature to optimize the implementation logic of your business.
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>
 

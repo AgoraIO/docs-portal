@@ -1806,7 +1806,7 @@ const KNOWN_LEGACY_HOSTED_LINKS = new Set([
   "en/realtime-media/speech-to-text/build/start-transcribing-and-translating/enable-service.md\u0000/en/realtime-media/speech-to-text/reference/restful-authentication",
   "en/realtime-media/speech-to-text/get-started/quickstart.md\u0000/en/realtime-media/speech-to-text/reference/restful-authentication",
   "en/realtime-media/speech-to-text/reference/firewall.md\u0000/en/realtime-media/video/build/cloud-proxy",
-  "en/realtime-media/speech-to-text/reference/release-notes.md\u0000/en/api-reference/speech-to-text/restful/list",
+  "en/realtime-media/speech-to-text/reference/release-notes.mdx\u0000/en/api-reference/speech-to-text/restful/list",
   "en/realtime-media/speech-to-text/reference/rest-api.md\u0000/en/realtime-media/speech-to-text/reference/rest-api-v5/acquire",
   "en/realtime-media/speech-to-text/reference/rest-api.md\u0000/en/realtime-media/speech-to-text/reference/rest-api-v6/acquire",
   "en/realtime-media/speech-to-text/reference/rest-api.md\u0000/en/realtime-media/speech-to-text/reference/restful-authentication",

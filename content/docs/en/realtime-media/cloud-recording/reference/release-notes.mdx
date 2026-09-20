@@ -19,7 +19,10 @@ This page provides the release notes for:
 
 ## Cloud Recording
 
-### 2025.06.27
+<Accordions defaultValue="20250627">
+
+<Accordion title="2025.06.27" id="20250627" headingLevel={3} value="20250627">
+
 
 #### New features
 
@@ -48,13 +51,21 @@ This page provides the release notes for:
   }
 ```
 
-### 2024.08.02
+
+</Accordion>
+
+<Accordion title="2024.08.02" id="20240802" headingLevel={3} value="20240802">
+
 
 This release adds the following improvement:
 
 To improve the security of Cloud Recording, this release adds optional `stsToken` and `stsExpiration` fields to the `storageConfig` of the `start` and `update` requests. You need to ensure that the validity period of `stsToken` and `stsExpiration` is long enough, so that Cloud Recording can successfully upload files to a third-party cloud storage. For details, see and [API reference](../reference/rest-api/rest).
 
-### 2023.07.05
+
+</Accordion>
+
+<Accordion title="2023.07.05" id="20230705" headingLevel={3} value="20230705">
+
 
 This release adds the following improvements:
 
@@ -67,21 +78,37 @@ This release adds the following improvements:
 
 - Updates the Agora transcoding script to reduce background noise.
 
-### 2022.11.20
+
+</Accordion>
+
+<Accordion title="2022.11.20" id="20221120" headingLevel={3} value="20221120">
+
 
 This release adds the following improvements:
 
 - Improves player compatibility for MPD files generated in individual recording `standard` mode, see [Recording configuration](/en/api-reference/api-ref/cloud-recording).
 - Optimizes the Agora Format Converter Script for individual recording, you can refer to [Merge audio and video files](/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files) to get the latest Agora Format Converter Script.
 
-### 2022.10.20
+
+</Accordion>
+
+<Accordion title="2022.10.20" id="20221020" headingLevel={3} value="20221020">
+
 
 This release supports the postpone transcoding feature globally. You need to set the scene field to `2` (postpone transcoding) when calling the `acquire`. After setting this scene, the recording service transcodes the recorded file within 24 hours after recording to generate an MP4 file, and uploads the MP4 file to the third-party cloud storage you specify. Please note that the `region` of the third-party cloud storage must be consistent with the `region` set when calling `acquire`. For details, see [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode).
 
-### 2022.8.12
+
+</Accordion>
+
+<Accordion title="2022.8.12" id="2022812" headingLevel={3} value="2022812">
+
 This release adds support for Amazon S3 in some regions. See [Cloud storage configuration](/en/realtime-media/cloud-recording/reference/region-vendor).
 
-### 2022.5.20
+
+</Accordion>
+
+<Accordion title="2022.5.20" id="2022520" headingLevel={3} value="2022520">
+
 
 This release adds the following new feature and API changes:
 
@@ -96,7 +123,11 @@ This release adds mobile web page mode for web page recording. The API changes a
 
 In composite recording mode, Agora provides a transcoder script for merging the old M3U8 file with the new M3U8 file generated after the service enables the high availability mechanism into an MP4 file. For details, see [Manage Recorded Files](./develop/manage-files#when-a-server-is-disconnected-or-the-process-killed).
 
-### 2022.1.20
+
+</Accordion>
+
+<Accordion title="2022.1.20" id="2022120" headingLevel={3} value="2022120">
+
 #### New features
 
 **Individual Audio Non-transcoding Recording**
@@ -114,7 +145,11 @@ You can play the combined audio and video index file directly without using scri
 **Support for the third-party cloud storage service encrypting and labeling recording files**
 
 This release adds the [`extensionParams`](/en/api-reference/api-ref/cloud-recording) field to support the third-party cloud storage service to encrypt and tag uploaded recording files. This feature is applicable to Amazon S3 and Alibaba Cloud OSS.
-### 2021.12.09
+
+</Accordion>
+
+<Accordion title="2021.12.09" id="20211209" headingLevel={3} value="20211209">
+
 
 #### New features
 
@@ -132,7 +167,11 @@ This release fixed the following issue:
 
 When a composite recording started, the user to be recorded did not send streams. When the user sent streams, the user could not display the customized background image or background color after they stopped sending streams or left the channel.
 
-### 2021.10.29
+
+</Accordion>
+
+<Accordion title="2021.10.29" id="20211029" headingLevel={3} value="20211029">
+
 
 #### Compatibility
 
@@ -170,7 +209,11 @@ To support a larger estimated maximum number of subscribed users, this release a
 - `4`: 17 to 32 user IDs
 - `5`: 32 to 49 user IDs
 
-### 2021.09.06
+
+</Accordion>
+
+<Accordion title="2021.09.06" id="20210906" headingLevel={3} value="20210906">
+
 
 #### Compatibility changes
 
@@ -199,7 +242,11 @@ This release adds support for recording and taking screenshots in a recording pr
 - [`The web_recorder_stopped`](../reference/rest-api-overview#71-web_recorder_stopped-web_recorder_stopped) callback adds error codes and error messages to indicate the reason for the abnormal stop of the web page recording. You can take corresponding measures based on the information.
 - The [`update`](/en/api-reference/api-ref/cloud-recording/update) method adds the `webRecordingConfig` parameter, which is used to update related parameters during a web page recording.
 
-### 2021.07.30
+
+</Accordion>
+
+<Accordion title="2021.07.30" id="20210730" headingLevel={3} value="20210730">
+
 This release includes the following new feature and API changes:
 
 **Screenshot event notification**
@@ -215,7 +262,11 @@ This release adds support for Amazon S3 in the following regions:
 - `22`: ME_SOUTH_1
 - `23`: US_GOV_EAST_1
 
-### 2021.07.07
+
+</Accordion>
+
+<Accordion title="2021.07.07" id="20210707" headingLevel={3} value="20210707">
+
 
 #### New features
 
@@ -229,7 +280,11 @@ When the page status is a `404` or `5XX` error, the page recording service autom
 
 This release fixes an issue where audio was occasionally lost during a web page recording.
 
-### 2021.06.10
+
+</Accordion>
+
+<Accordion title="2021.06.10" id="20210610" headingLevel={3} value="20210610">
+
 
 This version was released on June 10, 2021.
 
@@ -262,7 +317,11 @@ Fixed security issues caused by vulnerabilities in Chrome V8.
 - Adds `recorderStartTime` in the [`web_recorder_started`](../reference/rest-api-overview#70-web_recorder_started-web_recorder_started) callback.
 - Adds the [`web_recorder_reload`](../reference/rest-api-overview#73-web_recorder_reload) callback.
 
-### 2021.04.29
+
+</Accordion>
+
+<Accordion title="2021.04.29" id="20210429" headingLevel={3} value="20210429">
+
 
 This version was released on April 29, 2021.
 
@@ -290,7 +349,11 @@ From this release, the recording service automatically detects and resolves the 
 - Adds enumerators `5` and `6` for `decryptionMode` in the [`start`](/en/api-reference/api-ref/cloud-recording/start) method.
 - Adds the `fileList` field in the [`uploaded`](../reference/rest-api-overview#31-uploaded) and [`backuped`](../reference/rest-api-overview#32-backuped) callbacks.
 
-### 2021.03.31
+
+</Accordion>
+
+<Accordion title="2021.03.31" id="20210331" headingLevel={3} value="20210331">
+
 
 This version was released on March 31, 2021.
 
@@ -316,10 +379,18 @@ In composite recording mode, you can set the background image for both the video
 - Adds the `backgroundImage`, `defaultUserBackgroundImage` and `backgroundConfig` fields in the `clientRequest` parameter of the [`updateLayout`](/en/api-reference/api-ref/cloud-recording/update-layout) method.
 - Adds the `fileList` field in the [`web_recorder_stopped`](../reference/rest-api-overview#71-web_recorder_stopped) callback.
 
-### 2021.02.05
+
+</Accordion>
+
+<Accordion title="2021.02.05" id="20210205" headingLevel={3} value="20210205">
+
 This release raises the maximum resolution of video sources for [web page recording](/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode). The recorded web page can now contain video that has a resolution of up to 1920 × 1080.
 
-### 2020.12.10
+
+</Accordion>
+
+<Accordion title="2020.12.10" id="20201210" headingLevel={3} value="20201210">
+
 This release includes the following new feature and API changes:
 
 #### New feature
@@ -336,14 +407,22 @@ Adds [web page recording](/en/realtime-media/cloud-recording/build/start-a-recor
 - [`web_recorder_stopped`](../reference/rest-api-overview#71-web_recorder_stopped)
 - [`web_recorder_capability_limit`](../reference/rest-api-overview#72-web_recorder_capability_limit)
 
-### 2020.09.16
+
+</Accordion>
+
+<Accordion title="2020.09.16" id="20200916" headingLevel={3} value="20200916">
+
 
 This release improved the stability and performance of the recording service, and fixed the following issues:
 
 - Failure to subscribe to a low-quality stream.
 - Occasional failure to record a whole call.
 
-### 2020.07.21
+
+</Accordion>
+
+<Accordion title="2020.07.21" id="20200721" headingLevel={3} value="20200721">
+
 
 This release adds the following new feature and API changes:
 
@@ -356,7 +435,11 @@ In composite recording mode, you can now upload recorded files to [ApsaraVideo f
 - [`start`](/en/api-reference/api-ref/cloud-recording/start) adds the `extensionServiceConfig` parameter for specifying the configurations of ApsaraVideo for VoD.
 - Adds the [`vod_started`](../reference/rest-api-overview#60-vod_started) and the [`vod_triggered`](../reference/rest-api-overview#61-vod_triggered) callbacks, which report the status of uploading recorded files to ApsaraVideo for VoD.
 
-### 2020.06.12
+
+</Accordion>
+
+<Accordion title="2020.06.12" id="20200612" headingLevel={3} value="20200612">
+
 
 **New features**
 
@@ -374,13 +457,25 @@ This release adds the [`session_failover`](../reference/rest-api-overview#12-ses
 - Adds [`update`](/en/api-reference/api-ref/cloud-recording/update) for updating the subscription lists during the cloud recording.
 - Adds the `session_failover` event.
 
-### 2020.05.09
+
+</Accordion>
+
+<Accordion title="2020.05.09" id="20200509" headingLevel={3} value="20200509">
+
 This release adds support for Kingsoft Cloud.
 
-### 2020.04.17
+
+</Accordion>
+
+<Accordion title="2020.04.17" id="20200417" headingLevel={3} value="20200417">
+
 Cloud Recording now supports taking screenshots of the video streams in individual recording mode. See [Capture Screenshots](/en/realtime-media/cloud-recording/build/start-a-recording/screen-capture) for details.
 
-### 2019.12.16
+
+</Accordion>
+
+<Accordion title="2019.12.16" id="20191216" headingLevel={3} value="20191216">
+
 
 This release improved the availability of the cloud recording service. When a server is disconnected or when the process is killed, the cloud recording automatically switches to a new server to resume the service. See [Fault processing when a cloud recording server is disconnected or the process killed](/en/realtime-media/cloud-recording/product-overview) for more information.
 
@@ -390,15 +485,27 @@ In the [`acquire`](/en/api-reference/api-ref/cloud-recording/acquire) method, ad
 
 Adds the `session_exit` event, which reports the exit status of the cloud recording service.
 
-### 2019.11.15
+
+</Accordion>
+
+<Accordion title="2019.11.15" id="20191115" headingLevel={3} value="20191115">
+
 
 You can now use the `query` method to get the names of the recorded files immediately after the recording starts.
 
-### 2019.10.24
+
+</Accordion>
+
+<Accordion title="2019.10.24" id="20191024" headingLevel={3} value="20191024">
+
 
 This release supports Tencent Cloud as one of the third-party cloud storages.
 
-### 2019.10.08
+
+</Accordion>
+
+<Accordion title="2019.10.08" id="20191008" headingLevel={3} value="20191008">
+
 
 **New features**
 
@@ -434,7 +541,11 @@ When an error occurs, you receive the error message in the HTTP response body, i
 
 When uploading fails after you use the wrong `bucket` and `key` values of the third-party cloud storage, Agora Cloud Recording returns an error instead of uploading the recorded files to Agora Cloud Backup.
 
-### 2019.07.22
+
+</Accordion>
+
+<Accordion title="2019.07.22" id="20190722" headingLevel={3} value="20190722">
+
 
 **New features**
 
@@ -462,12 +573,20 @@ Optimizes the verification of whether `resourceId` corresponds with `uid` and `c
 
 Fixed minor issues in the default video layout (floating layout).
 
-### 2019.07.02
+
+</Accordion>
+
+<Accordion title="2019.07.02" id="20190702" headingLevel={3} value="20190702">
+
 
 - Changes the default background color in the composite layout to black.
 - Reduces video freeze under poor network conditions.
 
-### 2019.06.13
+
+</Accordion>
+
+<Accordion title="2019.06.13" id="20190613" headingLevel={3} value="20190613">
+
 
 This release supports RESTful APIs. With the RESTful APIs, you can use Agora Cloud Recording through HTTP requests without integrating the SDK.
 
@@ -477,7 +596,11 @@ See the following documents for details:
 - [RESTful API Reference](/en/api-reference/api-ref/cloud-recording): Details of the RESTful API methods.
 - [RESTful API Callback Service](../reference/rest-api-overview): Enable the callback service to receive notifications of Agora Cloud Recording.
 
-### 2019.04.30
+
+</Accordion>
+
+<Accordion title="2019.04.30" id="20190430" headingLevel={3} value="20190430">
+
 
 This is the first release of Agora Cloud Recording with the following functions:
 
@@ -488,6 +611,10 @@ This is the first release of Agora Cloud Recording with the following functions:
 - Provides C++ and Java SDK packages.
 
 <a id="notifications" />
+
+
+</Accordion>
+</Accordions>
 
 ## Notifications
 ### 2022.10
