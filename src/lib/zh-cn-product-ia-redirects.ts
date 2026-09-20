@@ -1551,8 +1551,6 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/smart-camera/build/amazon-alexa',
   'solutions/smart-camera/value-added-feature/google-assistant':
     '/zh-CN/solutions/smart-camera/build/google-assistant',
-  'solutions/smart-doorbell/apaas/apaas-overview':
-    '/zh-CN/solutions/smart-doorbell/build/apaas/apaas-overview',
   'solutions/smart-doorbell/enable-service':
     '/zh-CN/solutions/smart-doorbell/build/setup-and-access/enable-service',
   'solutions/smart-doorbell/paas/advanced-feature':
@@ -1560,15 +1558,15 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/smart-doorbell/paas/api/api-overview':
     '/zh-CN/solutions/smart-doorbell/reference/api-overview',
   'solutions/smart-doorbell/paas/get-started/quick-start':
-    '/zh-CN/solutions/smart-doorbell/build/paas/get-started/quick-start',
+    '/zh-CN/solutions/smart-doorbell/build/quick-start',
   'solutions/smart-doorbell/paas/overview/paas-overview':
-    '/zh-CN/solutions/smart-doorbell/build/paas/paas-overview',
+    '/zh-CN/solutions/smart-doorbell/build/paas-overview',
   'solutions/smart-doorbell/paas/resources':
     '/zh-CN/solutions/smart-doorbell/reference/downloads',
   'solutions/smart-doorbell/paas/value-added-feature/amazon-alexa':
-    '/zh-CN/solutions/smart-doorbell/build/paas/value-added-feature/amazon-alexa',
+    '/zh-CN/solutions/smart-doorbell/build/amazon-alexa',
   'solutions/smart-doorbell/paas/value-added-feature/google-assistant':
-    '/zh-CN/solutions/smart-doorbell/build/paas/value-added-feature/google-assistant',
+    '/zh-CN/solutions/smart-doorbell/build/google-assistant',
   'solutions/smart-doorbell/product-overview':
     '/zh-CN/solutions/smart-doorbell',
   'solutions/smart-watch/api/api-overview':
@@ -1751,6 +1749,20 @@ const ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/smart-camera/build/amazon-alexa',
   'solutions/smart-camera/build/value-added-feature/google-assistant':
     '/zh-CN/solutions/smart-camera/build/google-assistant',
+  'solutions/smart-doorbell/build/paas/paas-overview':
+    '/zh-CN/solutions/smart-doorbell/build/paas-overview',
+  'solutions/smart-doorbell/build/paas/get-started/quick-start':
+    '/zh-CN/solutions/smart-doorbell/build/quick-start',
+  'solutions/smart-doorbell/build/paas/value-added-feature/amazon-alexa':
+    '/zh-CN/solutions/smart-doorbell/build/amazon-alexa',
+  'solutions/smart-doorbell/build/paas/value-added-feature/google-assistant':
+    '/zh-CN/solutions/smart-doorbell/build/google-assistant',
+  'solutions/smart-doorbell/build/get-started/quick-start':
+    '/zh-CN/solutions/smart-doorbell/build/quick-start',
+  'solutions/smart-doorbell/build/value-added-feature/amazon-alexa':
+    '/zh-CN/solutions/smart-doorbell/build/amazon-alexa',
+  'solutions/smart-doorbell/build/value-added-feature/google-assistant':
+    '/zh-CN/solutions/smart-doorbell/build/google-assistant',
   'solutions/teleoperation/build/setup-and-access/enable-service':
     '/zh-CN/solutions/teleoperation/build/enable-service',
   'solutions/teleoperation/build/implement-core-features/device-linux':

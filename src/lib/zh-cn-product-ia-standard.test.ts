@@ -872,7 +872,54 @@ describe('zh-CN product IA standard', () => {
     [
       'solutions',
       ['smart-doorbell', 'paas', 'overview', 'paas-overview'],
-      '/zh-CN/solutions/smart-doorbell/build/paas/paas-overview',
+      '/zh-CN/solutions/smart-doorbell/build/paas-overview',
+    ],
+    [
+      'solutions',
+      ['smart-doorbell', 'build', 'paas', 'paas-overview'],
+      '/zh-CN/solutions/smart-doorbell/build/paas-overview',
+    ],
+    [
+      'solutions',
+      ['smart-doorbell', 'build', 'paas', 'get-started', 'quick-start'],
+      '/zh-CN/solutions/smart-doorbell/build/quick-start',
+    ],
+    [
+      'solutions',
+      [
+        'smart-doorbell',
+        'build',
+        'paas',
+        'value-added-feature',
+        'amazon-alexa',
+      ],
+      '/zh-CN/solutions/smart-doorbell/build/amazon-alexa',
+    ],
+    [
+      'solutions',
+      [
+        'smart-doorbell',
+        'build',
+        'paas',
+        'value-added-feature',
+        'google-assistant',
+      ],
+      '/zh-CN/solutions/smart-doorbell/build/google-assistant',
+    ],
+    [
+      'solutions',
+      ['smart-doorbell', 'build', 'get-started', 'quick-start'],
+      '/zh-CN/solutions/smart-doorbell/build/quick-start',
+    ],
+    [
+      'solutions',
+      ['smart-doorbell', 'build', 'value-added-feature', 'amazon-alexa'],
+      '/zh-CN/solutions/smart-doorbell/build/amazon-alexa',
+    ],
+    [
+      'solutions',
+      ['smart-doorbell', 'build', 'value-added-feature', 'google-assistant'],
+      '/zh-CN/solutions/smart-doorbell/build/google-assistant',
     ],
     [
       'solutions',
