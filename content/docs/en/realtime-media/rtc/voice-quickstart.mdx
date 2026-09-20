@@ -76,7 +76,7 @@ Use either of the following methods to add RTC SDK to your project.
 
 <Tabs>
 <TabsList>
-  <TabsTrigger value="maven-central">Gradle automatic integration</TabsTrigger>
+  <TabsTrigger value="maven-central">Gradle</TabsTrigger>
   <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
 </TabsList>
 
@@ -84,25 +84,39 @@ Use either of the following methods to add RTC SDK to your project.
 
 1. Open the `settings.gradle` file in the project's root directory and add the Agora Maven CDN repository to `dependencyResolutionManagement.repositories`.
 
-    Keep the existing Maven repositories in your project, especially `mavenCentral()`, and add the Agora Maven CDN repository.
+    Don't remove existing repositories such as `google()` and `mavenCentral()`.
 
-    ```text
-    dependencyResolutionManagement {
-        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-        repositories {
-            mavenCentral()
-            maven { url = 'https://download.agora.io/maven/' }
-        }
-    }
-    ```
+    - Groovy `settings.gradle`
 
-    :::caution[Note]
-    If you cannot find the `dependencyResolutionManagement` field in `settings.gradle`, your Android Gradle Plugin version might be earlier than v7.1.0.
+      ```groovy
+      dependencyResolutionManagement {
+          repositories {
+              google()
+              mavenCentral()
+              maven { url = 'https://download.agora.io/maven/' }
+          }
+      }
+      ```
 
-    For details, see [Android Gradle Plugin Release Note v7.1.0](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
+    - Kotlin `settings.gradle.kts`
+
+      ```kotlin
+      dependencyResolutionManagement {
+          repositories {
+              google()
+              mavenCentral()
+              maven { url = uri("https://download.agora.io/maven/") }
+          }
+      }
+      ```
+
+    :::note
+    If you cannot find the `dependencyResolutionManagement` field in `settings.gradle` or `settings.gradle.kts`, your Android Gradle plugin version might be earlier than 7.1.0.
+
+    For details, see [Android Gradle plugin 7.1.0 release notes](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
     :::
 
-    If your Android Gradle Plugin version is earlier than v7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
+    If your Android Gradle plugin version is earlier than 7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
 
     ```text
     allprojects {
@@ -117,7 +131,7 @@ Use either of the following methods to add RTC SDK to your project.
 
     - Groovy `build.gradle`
 
-        ```json
+        ```groovy
         implementation 'io.agora.rtc:voice-sdk:x.y.z'
         ```
 

@@ -31,6 +31,11 @@ describe('SdksCatalog', () => {
       within(videoCard).getByText(/Add the Agora Maven CDN repository/),
     ).toBeVisible();
     expect(
+      within(screen.getByRole('article', { name: 'Signaling SDK' })).queryByText(
+        /Add the Agora Maven CDN repository/,
+      ),
+    ).not.toBeInTheDocument();
+    expect(
       within(videoCard).getByRole('tab', { name: 'Android' }),
     ).toHaveAttribute('aria-selected', 'true');
     // Tabs list other platforms this product supports.

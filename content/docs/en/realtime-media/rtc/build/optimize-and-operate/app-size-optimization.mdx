@@ -32,11 +32,9 @@ RTC SDK provides optional extension dynamic libraries. The name of the extension
 #### Remove extensions when integrating manually
 When integrating through the [Direct download](../../../sdks.md) link, manually delete the extension files that you do not need to use.
 
-#### Remove extensions when integrating automatically with Gradle
+#### Remove extensions when installing with Gradle
 
-Before integrating the Android SDK automatically with Gradle, make sure you have added the Agora Maven CDN repository. For the configuration steps, see [Install the SDK](/en/realtime-media/rtc/get-started-sdk#install-the-sdk).
-
-When integrating the Android SDK automatically with Gradle, you can modify the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file to specify the dynamic libraries you need to integrate and exclude extensions you do not need to use. For details on the correspondence between each file in the Android SDK and the fields in `dependencies`, see [implementation fields](#integrating-extensions-into-your-project) for details.
+When you install the Android SDK with Gradle, you can modify the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file to specify the dynamic libraries you need and exclude extensions you don't use. Before you do, add the Agora Maven CDN repository as described in [Install the SDK](/en/realtime-media/rtc/get-started-sdk?platform=android#install-the-sdk). To see which `implementation` field corresponds to each file in the Android SDK, see [implementation fields](#integrating-extensions-into-your-project).
 
 Refer to the following samples to include, all, none, or selected extensions.
 
@@ -713,7 +711,7 @@ Since version 4.3.1, the SDK provides a Voice Driver extension that converts voi
 
 ### Integrating extensions into your project
 
-When integrating the Android SDK automatically with Gradle, you can modify the `dependencies` field in the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file to specify the dynamic libraries you need to integrate. The correspondence between each file and `implementation` field in the SDK is detailed in the table below:
+When you install the Android SDK with Gradle, you can modify the `dependencies` field in the `/Gradle Scripts/build.gradle(Module: <projectname>.app)` file to specify the dynamic libraries you need to integrate. The following table shows which `implementation` field corresponds to each file in the SDK:
 
 **Android RTC SDK**
 | File | Category | `implementation` field |

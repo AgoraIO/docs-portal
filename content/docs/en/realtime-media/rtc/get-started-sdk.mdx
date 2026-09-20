@@ -86,32 +86,46 @@ Use either of the following methods to add RTC SDK to your project.
 
 <Tabs defaultValue="maven">
 <TabsList>
-  <TabsTrigger value="maven">Gradle automatic integration</TabsTrigger>
+  <TabsTrigger value="maven">Gradle</TabsTrigger>
   <TabsTrigger value="manual">Manual download</TabsTrigger>
 </TabsList>
   <TabsContent value="maven">
 
     1. Open the `settings.gradle` file in the project's root directory and add the Agora Maven CDN repository to `dependencyResolutionManagement.repositories`.
 
-        Keep the existing Maven repositories in your project, especially `mavenCentral()`, and add the Agora Maven CDN repository.
+        Don't remove existing repositories such as `google()` and `mavenCentral()`.
 
-        :::caution[Note]
-        If you cannot find the `dependencyResolutionManagement` field in `settings.gradle`, your Android Gradle Plugin version might be earlier than v7.1.0.
+        - Groovy `settings.gradle`
 
-        For details, see [Android Gradle Plugin Release Note v7.1.0](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
+          ```groovy
+          dependencyResolutionManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  maven { url = 'https://download.agora.io/maven/' }
+              }
+          }
+          ```
+
+        - Kotlin `settings.gradle.kts`
+
+          ```kotlin
+          dependencyResolutionManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  maven { url = uri("https://download.agora.io/maven/") }
+              }
+          }
+          ```
+
+        :::note
+        If you cannot find the `dependencyResolutionManagement` field in `settings.gradle` or `settings.gradle.kts`, your Android Gradle plugin version might be earlier than 7.1.0.
+
+        For details, see [Android Gradle plugin 7.1.0 release notes](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
         :::
 
-        ```groovy
-        dependencyResolutionManagement {
-            repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-            repositories {
-                mavenCentral()
-                maven { url = 'https://download.agora.io/maven/' }
-            }
-        }
-        ```
-
-        If your Android Gradle Plugin version is earlier than v7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
+        If your Android Gradle plugin version is earlier than 7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
 
         ```groovy
         allprojects {
@@ -122,30 +136,40 @@ Use either of the following methods to add RTC SDK to your project.
         }
         ```
 
-    1. To integrate the RTC SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
+    1. To integrate the RTC SDK into your Android project, add one of the following to the `dependencies` block in your project module `build.gradle` file:
 
-        - Groovy `build.gradle`
+        - Full SDK
 
-          ```groovy
-          // Choose either the Full SDK or the Lite SDK based on your business needs.
-          implementation 'io.agora.rtc:full-sdk:x.y.z'
-          // Or integrate the Lite SDK
-          implementation 'io.agora.rtc:lite-sdk:x.y.z'
-          ```
+            - Groovy `build.gradle`
 
-        - Kotlin `build.gradle.kts`
+              ```groovy
+              implementation 'io.agora.rtc:full-sdk:x.y.z'
+              ```
 
-          ```kotlin
-          // Choose either the Full SDK or the Lite SDK based on your business needs.
-          implementation("io.agora.rtc:full-sdk:x.y.z")
-          // Or integrate the Lite SDK
-          implementation("io.agora.rtc:lite-sdk:x.y.z")
-          ```
+            - Kotlin `build.gradle.kts`
+
+              ```kotlin
+              implementation("io.agora.rtc:full-sdk:x.y.z")
+              ```
+
+        - Lite SDK
+
+            - Groovy `build.gradle`
+
+              ```groovy
+              implementation 'io.agora.rtc:lite-sdk:x.y.z'
+              ```
+
+            - Kotlin `build.gradle.kts`
+
+              ```kotlin
+              implementation("io.agora.rtc:lite-sdk:x.y.z")
+              ```
 
         Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
         :::info[Note]
-        To get the latest version number, check the [Release notes](/en/realtime-media/rtc/reference/release-notes). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+        To get the latest version number, check the [Release notes](/en/realtime-media/rtc/reference/release-notes).
         :::
 
     1. Prevent code obfuscation

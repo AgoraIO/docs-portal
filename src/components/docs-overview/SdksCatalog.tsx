@@ -328,6 +328,7 @@ function ProductCard({
         <InstallArea
           command={command}
           platformId={activePlatform.platformId}
+          productId={group.productId}
           version={activeVersion}
         />
       ) : null}
@@ -423,14 +424,18 @@ function getVersionKey(platformId: string, version: SdkDownloadVersion) {
 function InstallArea({
   command,
   platformId,
+  productId,
   version,
 }: {
   command: InstallCommand | null;
   platformId: string;
+  productId: string;
   version: SdkDownloadVersion;
 }) {
   const showAndroidGradleRepositoryNote =
-    platformId === 'android' && command?.tool === 'Gradle';
+    (productId === 'video' || productId === 'voice') &&
+    platformId === 'android' &&
+    command?.tool === 'Gradle';
 
   if (command) {
     return (
