@@ -1,3 +1,4 @@
+import { realpathSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 import tailwindcss from '@tailwindcss/vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
@@ -15,6 +16,11 @@ import {
 import { readPublishedDocsRoutes } from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
+// The experiment worktree may symlink node_modules to the saved checkout.
+// Allow Vite to read the resolved dependency path during local development.
+const resolvedNodeModules = realpathSync(
+  fileURLToPath(new URL('./node_modules', import.meta.url)),
+);
 const isStaticDeployment =
   process.env.TSS_STATIC_PRERENDER === 'true' ||
   process.env.TSS_SPA_STATIC_EXPERIMENT === 'true';
@@ -37,6 +43,9 @@ const prerenderPages = (
 
 export default defineConfig({
   server: {
+    fs: {
+      allow: [process.cwd(), resolvedNodeModules],
+    },
     host: '127.0.0.1',
     port: 3000,
   },
