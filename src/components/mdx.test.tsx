@@ -592,6 +592,73 @@ describe('common MDX registry', () => {
     ).toHaveAttribute('data-state', 'open');
   });
 
+  it('opens the containing version for an incoming subsection deep link', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState({}, '', '/en/release-notes/web#fix-details');
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            <h4 id="fix-details">Fix details</h4>
+            Second body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Second body')).toBeVisible();
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+  });
+
+  it('opens the containing version for a cross-version subsection link', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            <h4 id="compatibility-threshold">Compatibility threshold</h4>
+            Second body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.getByText('First body')).toBeVisible();
+
+    act(() => {
+      window.history.replaceState(
+        {},
+        '',
+        '/en/release-notes/web#compatibility-threshold',
+      );
+      window.dispatchEvent(new Event('hashchange'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Second body')).toBeVisible();
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+  });
+
   it('keeps closed version content in the DOM without displaying it', () => {
     const components = getMDXComponents();
     const Accordions = components.Accordions as AccordionsComponent;

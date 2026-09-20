@@ -644,7 +644,16 @@ function Accordions({
         return;
       }
 
-      const hashValue = selected.getAttribute('data-accordion-value');
+      const accordionContent = selected.closest<HTMLElement>(
+        '[role="region"][data-toc-hidden="true"]',
+      );
+      const accordionHeading =
+        accordionContent?.parentElement?.querySelector<HTMLElement>(
+          'h2[data-accordion-value], h3[data-accordion-value], h4[data-accordion-value]',
+        );
+      const hashValue =
+        selected.getAttribute('data-accordion-value') ??
+        accordionHeading?.getAttribute('data-accordion-value');
 
       if (!hashValue) {
         return;
