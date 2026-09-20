@@ -4,6 +4,7 @@ import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-
 describe('resolveZhCnApiReferenceProductDocsHref', () => {
   it.each([
     ['/zh-CN/api-reference/conversational-ai/android/overview', '/zh-CN/ai'],
+    ['/zh-CN/api-reference/conversational-ai/android/enum', '/zh-CN/ai'],
     [
       '/zh-CN/api-reference/rtc/android/rtc-api-overview',
       '/zh-CN/realtime-media/rtc',
