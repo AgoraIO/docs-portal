@@ -93,6 +93,7 @@ const RouterFumadocsCard = createLink(FumadocsCard);
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
 const MdxTabLabelsContext = createContext<Record<string, string>>({});
 const MdxTabLabelContext = createContext<string | undefined>(undefined);
+const MdxAccordionRootContext = createContext(false);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   children?: ReactNode;
@@ -180,6 +181,7 @@ function Accordion({
   value = String(title),
   ...props
 }: AccordionProps) {
+  const hasAccordionRoot = useContext(MdxAccordionRootContext);
   const titleContent = (
     <FumadocsAccordionTrigger>{title}</FumadocsAccordionTrigger>
   );
@@ -209,7 +211,7 @@ function Accordion({
     </FumadocsAccordionHeader>
   );
 
-  return (
+  const accordionItem = (
     <FumadocsAccordionItem value={value} {...props}>
       {header}
       <FumadocsAccordionContent
@@ -225,6 +227,16 @@ function Accordion({
       </FumadocsAccordionContent>
     </FumadocsAccordionItem>
   );
+
+  if (!hasAccordionRoot) {
+    return (
+      <ControlledFumadocsAccordions defaultValue={value} type="single">
+        {accordionItem}
+      </ControlledFumadocsAccordions>
+    );
+  }
+
+  return accordionItem;
 }
 
 function AccordionCopyButton({ id }: { id: string }) {
@@ -715,8 +727,8 @@ function Accordions({
     onValueChange?.(nextSingleValue);
   }
 
-  if (type === 'multiple') {
-    return (
+  const accordionRoot =
+    type === 'multiple' ? (
       <ControlledFumadocsAccordions
         {...props}
         defaultValue={defaultValue}
@@ -726,19 +738,20 @@ function Accordions({
         type={type}
         value={value}
       />
+    ) : (
+      <ControlledFumadocsAccordions
+        {...props}
+        defaultValue={defaultSingleValue}
+        onClickCapture={captureVersionScrollAnchor}
+        onValueChange={handleValueChange}
+        ref={setRootRef}
+        type={type}
+        value={selectedValue}
+      />
     );
-  }
 
   return (
-    <ControlledFumadocsAccordions
-      {...props}
-      defaultValue={defaultSingleValue}
-      onClickCapture={captureVersionScrollAnchor}
-      onValueChange={handleValueChange}
-      ref={setRootRef}
-      type={type}
-      value={selectedValue}
-    />
+    <MdxAccordionRootContext value>{accordionRoot}</MdxAccordionRootContext>
   );
 }
 

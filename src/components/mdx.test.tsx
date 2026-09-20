@@ -453,6 +453,26 @@ describe('common MDX registry', () => {
     });
   });
 
+  it('renders an accordion item included without its original root', () => {
+    const components = getMDXComponents();
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <section id="included-version">
+          <Accordion title="Included version" value="included-version">
+            Included body
+          </Accordion>
+        </section>
+      </MDXAccordionProvider>,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Included version' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Included body')).toBeVisible();
+  });
+
   it('keeps only one MDX accordion open across separate roots', () => {
     const components = getMDXComponents();
     const Accordions = components.Accordions as AccordionsComponent;
