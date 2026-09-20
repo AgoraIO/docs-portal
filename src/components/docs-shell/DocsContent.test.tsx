@@ -1294,6 +1294,44 @@ describe('DocsContent', () => {
 });
 
 describe('DocsTableOfContents', () => {
+  it('does not highlight a closed accordion heading', async () => {
+    render(
+      <AppProviders>
+        <div data-testid="docs-main-desktop-scroll">
+          <div className="prose">
+            <div data-state="closed">
+              <h3 data-accordion-value="v2022" id="v2022">
+                2022
+              </h3>
+            </div>
+            <div data-state="open">
+              <h3 data-accordion-value="v2025" id="v2025">
+                2025
+              </h3>
+            </div>
+          </div>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 3, title: '2022', url: '#v2022' },
+            { depth: 3, title: '2025', url: '#v2025' },
+          ]}
+        />
+      </AppProviders>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: '2025' })).toHaveAttribute(
+        'aria-current',
+        'location',
+      );
+    });
+
+    expect(screen.getByRole('link', { name: '2022' })).not.toHaveAttribute(
+      'aria-current',
+    );
+  });
+
   it('scrolls the desktop content container and marks the clicked item active', async () => {
     render(
       <AppProviders>

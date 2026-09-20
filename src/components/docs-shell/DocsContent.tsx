@@ -851,8 +851,18 @@ export function DocsTableOfContents({
           (scrollContainer?.getBoundingClientRect().top ?? 0) +
           TOC_ACTIVE_OFFSET;
         const viewportRect = getScrollViewportRect(scrollContainer);
-        const headings = items.map((item) => findDocsHeadingForHash(item.url));
-        let nextActiveUrl = items[0]?.url ?? '';
+        const headings = items.map((item) => {
+          const heading = findDocsHeadingForHash(item.url);
+
+          return heading && isHeadingActiveForToc(heading) ? heading : null;
+        });
+        const openAccordionIndex = headings.findIndex(
+          (heading) => heading && isOpenAccordionHeading(heading),
+        );
+        let nextActiveUrl =
+          openAccordionIndex >= 0
+            ? (items[openAccordionIndex]?.url ?? '')
+            : (items[0]?.url ?? '');
         const nextVisibleUrls = new Set<string>();
 
         for (const [index, item] of items.entries()) {
@@ -874,7 +884,7 @@ export function DocsTableOfContents({
             nextVisibleUrls.add(item.url);
           }
 
-          if (sectionTop <= boundary) {
+          if (openAccordionIndex < 0 && sectionTop <= boundary) {
             nextActiveUrl = item.url;
           }
         }
@@ -892,7 +902,12 @@ export function DocsTableOfContents({
     });
     window.addEventListener('scroll', updateActiveUrl, { passive: true });
     window.addEventListener('resize', updateActiveUrl);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, {
+      attributeFilter: ['data-state'],
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
     updateActiveUrl();
 
     return () => {
@@ -1108,6 +1123,25 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
       url: `#${heading.id}`,
     }))
     .filter((item) => item.title.length > 0);
+}
+
+function isHeadingActiveForToc(heading: HTMLElement) {
+  return (
+    !heading.hasAttribute('data-accordion-value') ||
+    isOpenAccordionHeading(heading)
+  );
+}
+
+function isOpenAccordionHeading(heading: HTMLElement) {
+  if (!heading.hasAttribute('data-accordion-value')) {
+    return false;
+  }
+
+  return (
+    heading.parentElement
+      ?.closest('[data-state]')
+      ?.getAttribute('data-state') === 'open'
+  );
 }
 
 function isHiddenFromToc(element: HTMLElement) {
