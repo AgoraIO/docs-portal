@@ -52,6 +52,7 @@ async function loadReferencePayload(slugs: string[]) {
 describe('API Center scoped sidebars', () => {
   it.each([
     [['conversational-ai', 'android', 'overview'], '/zh-CN/ai'],
+    [['conversational-ai', 'android', 'enum'], '/zh-CN/ai'],
     [['rtc', 'android', 'rtc-api-overview'], '/zh-CN/realtime-media/rtc'],
     [['api-ref', 'console'], '/zh-CN/introduction/quickstart'],
   ])(
