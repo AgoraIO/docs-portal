@@ -401,9 +401,7 @@ function navScopeParentNodeToSidebarNodes(
   }
 
   if (node.type === 'page') {
-    return [
-      pageTreePageToSidebarNode(node),
-    ];
+    return [pageTreePageToSidebarNode(node)];
   }
 
   if (node.type !== 'folder') {

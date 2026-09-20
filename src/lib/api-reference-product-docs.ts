@@ -1,4 +1,8 @@
 import { resolveZhCnApiReferenceEntry } from './api-reference-breadcrumb';
+import {
+  type ApiReferenceCardEntry,
+  zhCNApiReferenceCards,
+} from './api-reference-cards-data.zh-cn';
 import { isSamePathOrDescendant } from './docs-routing';
 
 const ZH_CN_API_REFERENCE_PRODUCT_DOCS = {
@@ -32,13 +36,35 @@ const ZH_CN_API_REFERENCE_PRODUCT_DOCS = {
 export function resolveZhCnApiReferenceProductDocsHref(
   activePath: string,
 ): string | undefined {
-  const entry = resolveZhCnApiReferenceEntry(activePath);
+  const entry =
+    resolveZhCnApiReferenceEntry(activePath) ??
+    resolveZhCnApiReferencePlatformEntry(activePath);
 
-  if (!entry || !isSamePathOrDescendant(activePath, entry.href)) {
+  if (!entry) {
     return undefined;
   }
 
   return ZH_CN_API_REFERENCE_PRODUCT_DOCS[
     entry.productId as keyof typeof ZH_CN_API_REFERENCE_PRODUCT_DOCS
   ];
+}
+
+function resolveZhCnApiReferencePlatformEntry(
+  activePath: string,
+): ApiReferenceCardEntry | undefined {
+  return zhCNApiReferenceCards.all
+    .map((entry) => ({
+      entry,
+      platformPath: getParentPath(entry.href),
+    }))
+    .filter(({ platformPath }) =>
+      isSamePathOrDescendant(activePath, platformPath),
+    )
+    .sort(
+      (left, right) => right.platformPath.length - left.platformPath.length,
+    )[0]?.entry;
+}
+
+function getParentPath(url: string) {
+  return url.slice(0, url.lastIndexOf('/'));
 }
