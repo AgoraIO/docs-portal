@@ -279,7 +279,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording/cloud-recording/get-started/enable-service':
     '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service',
   'realtime-media/recording/cloud-recording/get-started/quick-start-nodejs':
-    '/zh-CN/realtime-media/cloud-recording/build/implement-core-features/quick-start-nodejs',
+    '/zh-CN/realtime-media/cloud-recording/get-started/quick-start',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/billing':
     '/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing',
   'realtime-media/recording/cloud-recording/overview/billing-strategy/payment':
