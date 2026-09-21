@@ -94,4 +94,41 @@ describe('DocsContentBodyClient', () => {
     expect(screen.queryByText('First body')).not.toBeInTheDocument();
     expect(screen.getByText('Second body')).toBeVisible();
   });
+
+  it('resets the default accordion when the hydrated platform content changes', () => {
+    useDocsContentMock.mockImplementation((contentPath, options) => {
+      const Accordions = options.components.Accordions as ComponentType<{
+        children: ReactNode;
+        defaultValue: string;
+      }>;
+      const Accordion = options.components.Accordion as ComponentType<{
+        children: ReactNode;
+        title: ReactNode;
+        value: string;
+      }>;
+      const version = contentPath.endsWith('/android.mdx')
+        ? { label: 'Android v4.6.3', value: 'android-v463' }
+        : { label: 'Electron v4.6.2', value: 'electron-v462' };
+
+      return (
+        <Accordions defaultValue={version.value}>
+          <Accordion title={version.label} value={version.value}>
+            {version.label} body
+          </Accordion>
+        </Accordions>
+      );
+    });
+
+    const { rerender } = render(
+      <DocsContentBody contentPath="en/realtime-media/video/reference/release-notes/android.mdx" />,
+    );
+
+    expect(screen.getByText('Android v4.6.3 body')).toBeVisible();
+
+    rerender(
+      <DocsContentBody contentPath="en/realtime-media/video/reference/release-notes/electron.mdx" />,
+    );
+
+    expect(screen.getByText('Electron v4.6.2 body')).toBeVisible();
+  });
 });
