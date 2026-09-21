@@ -340,24 +340,35 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton
-        aria-expanded={isOpen}
-        className={cn(sidebarToggleClassName, 'overflow-visible')}
-        onClick={() => setIsOpen((value) => !value)}
-        type="button"
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          <span className={sidebarSectionTitleClassName}>
-            {getSidebarDisplayTitle(title, url)}
-          </span>
-        </span>
-        <ChevronDownIcon
-          className={cn(
-            'size-4 shrink-0 transition-transform',
-            isOpen ? 'rotate-0' : '-rotate-90',
-          )}
-        />
-      </SidebarMenuButton>
+      <div className="relative flex min-w-0 items-stretch">
+        <SidebarMenuButton
+          asChild
+          className={cn(sidebarToggleClassName, 'flex-1 overflow-visible pr-9')}
+          isActive={url === activePath}
+        >
+          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+            <span className="flex min-w-0 items-center gap-2">
+              <span className={sidebarSectionTitleClassName}>
+                {getSidebarDisplayTitle(title, url)}
+              </span>
+            </span>
+          </Link>
+        </SidebarMenuButton>
+        <button
+          aria-expanded={isOpen}
+          aria-label={`${title} 子页面`}
+          className="absolute top-1/2 right-3 flex size-4 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-[color:var(--ink-1)] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+          onClick={() => setIsOpen((value) => !value)}
+          type="button"
+        >
+          <ChevronDownIcon
+            className={cn(
+              'size-4 shrink-0 transition-transform',
+              isOpen ? 'rotate-0' : '-rotate-90',
+            )}
+          />
+        </button>
+      </div>
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>

@@ -232,7 +232,7 @@ function DocsCalloutContainer(props: CalloutContainerProps) {
   );
 }
 
-function createDocsTableComponent(locale?: string) {
+export function createDocsTableComponent(locale?: string) {
   const normalizedLocale = normalizeLocale(locale) ?? 'en';
   const copy = resources[normalizedLocale].common.docs;
 
@@ -1710,9 +1710,6 @@ export function getMDXComponents(
   components?: MDXComponents,
   context?: MDXContext,
 ) {
-  const DocsPlanCards = createPlanCardsComponent(context?.contentPath);
-  const DocsPricingCards = createPricingCardsComponent(context?.contentPath);
-
   return {
     ...defaultMdxComponents,
     Callout: DocsCallout,

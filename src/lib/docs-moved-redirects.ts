@@ -29,6 +29,17 @@ export function resolveMovedDocsRedirect(
     return '/zh-CN/realtime-media/rtc/build/audio/media-player';
   }
 
+  if (
+    tab === 'realtime-media' &&
+    [
+      'cloud-recording/get-started/quick-start-go',
+      'cloud-recording/get-started/quick-start-java',
+      'cloud-recording/get-started/quick-start-nodejs',
+    ].includes(slugSegments.join('/'))
+  ) {
+    return '/zh-CN/realtime-media/cloud-recording/get-started/quick-start';
+  }
+
   if (tab !== 'introduction') {
     return null;
   }

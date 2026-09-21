@@ -2975,8 +2975,7 @@ Web body
     await expect(
       loadDocsPagePayload('zh-CN', 'best-practices', ['http-basic-auth']),
     ).resolves.toEqual({
-      redirectUrl:
-        '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
+      redirectUrl: '/zh-CN/ai/build/http-basic-auth',
     });
 
     await expect(
@@ -2985,6 +2984,43 @@ Web body
       redirectUrl: '/zh-CN/ai/release-notes',
     });
   });
+
+  it.each([
+    [
+      'conversational-ai/authentication',
+      '/zh-CN/ai/build/http-basic-auth',
+    ],
+    [
+      'cloud-recording/authentication',
+      '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
+    ],
+    [
+      'media-pull/restful-authentication',
+      '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+    ],
+    [
+      'media-push/restful-authentication',
+      '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
+    ],
+    [
+      'rtc/authentication',
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+    ],
+    [
+      'voip-callkit/authentication',
+      '/zh-CN/solutions/voip-call/build/http-basic-auth',
+    ],
+  ] as const)(
+    'redirects deleted Chinese API authentication page %s to %s',
+    async (legacyPath, redirectUrl) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'api-reference', [
+          'api-ref',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({ redirectUrl });
+    },
+  );
 
   it('redirects merged platform suffix pages to the canonical page with platform selection', async () => {
     mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {

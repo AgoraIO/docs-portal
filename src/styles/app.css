@@ -1097,7 +1097,7 @@
   }
 
   .openapi-operation .openapi-section-heading {
-    margin-block: 0 0.75rem;
+    margin-block: 2.25rem 1rem;
     font-size: 1.5rem;
     font-weight: 600;
     line-height: 1.25;
@@ -1270,6 +1270,15 @@
   }
 
   .openapi-operation .openapi-markdown {
+    --docs-openapi-table-border: var(--docs-prose-table-border, var(--line));
+    --docs-openapi-table-head-bg: var(
+      --docs-prose-table-head-bg,
+      color-mix(in srgb, var(--bg-muted) 72%, var(--bg-card))
+    );
+    --docs-openapi-table-row-bg: var(
+      --docs-prose-table-row-bg,
+      color-mix(in srgb, var(--bg-muted) 28%, transparent)
+    );
     color: var(--ink-2);
     font-size: 0.9375rem;
     line-height: 1.7;
@@ -1391,6 +1400,10 @@
     padding: 0.0625rem 0.375rem;
     color: var(--ink-1);
     font-size: 0.86em;
+  }
+
+  .openapi-operation .openapi-markdown :where(.docs-table-container) {
+    margin-block: 1.1rem 1.35rem;
   }
 
   @media (max-width: 48rem) {
@@ -1588,6 +1601,81 @@
   max-width: none;
   min-width: 0;
   overflow: visible;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(.prose-no-margin.overflow-auto > table) {
+  display: table;
+  width: auto;
+  max-width: none;
+  min-width: 100%;
+  overflow: visible;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--docs-openapi-table-border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--docs-shadow-sm);
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(thead) {
+  background: var(--docs-openapi-table-head-bg);
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(th, td) {
+  min-width: 7.5rem;
+  border-bottom: 1px solid var(--docs-openapi-table-border);
+  padding: 0.85rem 1rem;
+  text-align: left;
+  vertical-align: top;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(th) {
+  color: var(--docs-text-primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td) {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(th:first-child, td:first-child) {
+  min-width: 9.5rem;
+  white-space: normal;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(tbody tr:last-child td) {
+  border-bottom: 0;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td > :first-child) {
+  margin-top: 0;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td > :last-child) {
+  margin-bottom: 0;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(tbody tr:nth-child(even)) {
+  background: var(--docs-openapi-table-row-bg);
 }
 
 @media (max-width: 767px) {

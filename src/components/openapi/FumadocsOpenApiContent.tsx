@@ -33,8 +33,10 @@ import {
   useState,
 } from 'react';
 import * as JsxRuntime from 'react/jsx-runtime';
+import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
@@ -54,7 +56,10 @@ import { OpenApiExamplesRail } from './OpenApiExamplesRail';
 import { OpenApiResponseHeaderRow } from './OpenApiResponseHeaderRow';
 import { OpenApiResponses } from './OpenApiResponses';
 import { OpenApiSchema } from './OpenApiSchema';
-import { renderOpenApiHeading } from './OpenApiSectionHeading';
+import {
+  OPENAPI_SECTION_HEADING_CLASS,
+  renderOpenApiHeading,
+} from './OpenApiSectionHeading';
 
 const LEGACY_DOC_ORIGIN = 'https://doc.shengwang.cn';
 const LEGACY_DOC_PATH_PATTERN =
@@ -686,10 +691,7 @@ function OpenApiInlineAuthorizationSection({
 
   return (
     <section className="mt-8">
-      <h2
-        className="mb-3 scroll-mt-24 font-semibold text-2xl"
-        id="authorization"
-      >
+      <h2 className={OPENAPI_SECTION_HEADING_CLASS} id="authorization">
         {getOpenApiLabel('Authorization', locale)}
       </h2>
       <div className="space-y-4 rounded-xl border border-fd-border bg-fd-card p-4 text-fd-card-foreground">
@@ -1724,6 +1726,13 @@ function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
   );
 }
 
+function OpenApiMarkdownTable(props: ComponentProps<'table'>) {
+  const locale = useContext(OpenApiLocaleContext);
+  const Table = useMemo(() => createDocsTableComponent(locale), [locale]);
+
+  return <Table {...props} />;
+}
+
 function createOpenApiMarkdownProcessor() {
   function rehypeReact(this: { compiler?: unknown }) {
     this.compiler = (
@@ -1738,11 +1747,16 @@ function createOpenApiMarkdownProcessor() {
           ...defaultMdxComponents,
           blockquote: OpenApiMarkdownBlockquote,
           pre: OpenApiMarkdownCodeBlock,
+          table: OpenApiMarkdownTable,
         },
       });
   }
 
-  return remark().use(remarkGfm).use(remarkRehype).use(rehypeReact);
+  return remark()
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeReact);
 }
 
 function toCalloutType(type: string | undefined) {

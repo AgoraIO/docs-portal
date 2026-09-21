@@ -32,11 +32,25 @@ export function parseProductSidebarContext(
     return null;
   }
 
+  const productSlugCount = tab === 'ai' ? Math.min(slugSegments.length, 1) : 1;
+  const productSlugSegments = slugSegments.slice(0, productSlugCount);
+  const productPathname = `/${[locale, tab, ...productSlugSegments].join('/')}`;
+  const derivedSidebarScope =
+    sidebarScope ??
+    (slugSegments.length > productSlugCount
+      ? `/${[
+          locale,
+          tab,
+          ...productSlugSegments,
+          slugSegments[productSlugCount],
+        ].join('/')}`
+      : undefined);
+
   return {
     locale,
-    pathname,
-    ...(sidebarScope ? { sidebarScope } : {}),
-    slugSegments,
+    pathname: productPathname,
+    ...(derivedSidebarScope ? { sidebarScope: derivedSidebarScope } : {}),
+    slugSegments: productSlugSegments,
     tab,
   };
 }
