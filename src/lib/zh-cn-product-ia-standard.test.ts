@@ -461,6 +461,56 @@ const productPageMoves = [
     'build/configure-teaching-resources-and-interactions/classroom-properties',
     'build/maintain-classroom-service/classroom-properties',
   ],
+  [
+    'realtime-media/rtm',
+    'reference/api-limits',
+    'reference/usage-limits-and-errors/api-limits',
+  ],
+  [
+    'realtime-media/rtm',
+    'reference/response-code',
+    'reference/usage-limits-and-errors/response-code',
+  ],
+  [
+    'realtime-media/rtm',
+    'reference/feature-list',
+    'reference/capabilities-and-compatibility/feature-list',
+  ],
+  [
+    'realtime-media/rtm',
+    'reference/platform-support',
+    'reference/capabilities-and-compatibility/platform-support',
+  ],
+  [
+    'solutions/flexible-classroom',
+    'reference/call-api',
+    'reference/api-usage-and-limits/call-api',
+  ],
+  [
+    'solutions/flexible-classroom',
+    'reference/response-code',
+    'reference/api-usage-and-limits/response-code',
+  ],
+  [
+    'solutions/flexible-classroom',
+    'reference/quota',
+    'reference/api-usage-and-limits/quota',
+  ],
+  [
+    'solutions/flexible-classroom',
+    'reference/basic-concept',
+    'reference/capabilities-and-compatibility/basic-concept',
+  ],
+  [
+    'solutions/flexible-classroom',
+    'reference/platform-support',
+    'reference/capabilities-and-compatibility/platform-support',
+  ],
+  [
+    'solutions/flexible-classroom',
+    'reference/tech-architect',
+    'reference/capabilities-and-compatibility/tech-architect',
+  ],
 ] as const;
 
 const productBuildMetas = [

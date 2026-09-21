@@ -701,23 +701,31 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/overview/billing/billing-strategy':
     '/zh-CN/realtime-media/rtm/reference/billing/billing-strategy',
   'realtime-media/rtm/overview/feature-list':
-    '/zh-CN/realtime-media/rtm/reference/feature-list',
+    '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list',
   'realtime-media/rtm/overview/migration-guide':
     '/zh-CN/realtime-media/rtm/reference/migration-guide',
   'realtime-media/rtm/overview/platform-support':
-    '/zh-CN/realtime-media/rtm/reference/platform-support',
+    '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support',
   'realtime-media/rtm/overview/release-notes':
     '/zh-CN/realtime-media/rtm/reference/release-notes',
   'realtime-media/rtm/resources':
     '/zh-CN/realtime-media/rtm/reference/downloads',
+  'realtime-media/rtm/reference/api-limits':
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits',
   'realtime-media/rtm/reference/error-codes':
     '/zh-CN/realtime-media/rtm/build/troubleshooting',
+  'realtime-media/rtm/reference/feature-list':
+    '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list',
   'realtime-media/rtm/reference/link-state':
     '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
   'realtime-media/rtm/reference/metadata-events':
     '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
+  'realtime-media/rtm/reference/platform-support':
+    '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support',
   'realtime-media/rtm/reference/presence-events':
     '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
+  'realtime-media/rtm/reference/response-code':
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
   'realtime-media/rtm/reference/topic-events':
     '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
   'realtime-media/rtm/security':
@@ -755,7 +763,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtm/user-guide/setup/account-and-billing':
     '/zh-CN/realtime-media/rtm/reference/account-and-billing',
   'realtime-media/rtm/user-guide/setup/api-limits':
-    '/zh-CN/realtime-media/rtm/reference/api-limits',
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits',
   'realtime-media/rtm/user-guide/setup/application-setup':
     '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
   'realtime-media/rtm/user-guide/setup/data-security':
@@ -1192,31 +1200,43 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/flexible-classroom/best-practices/record':
     '/zh-CN/solutions/flexible-classroom/build/configure-teaching-resources-and-interactions/record',
   'solutions/flexible-classroom/get-started/call-api':
-    '/zh-CN/solutions/flexible-classroom/reference/call-api',
+    '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
   'solutions/flexible-classroom/get-started/configure':
     '/zh-CN/solutions/flexible-classroom/build/create-classroom/configure',
   'solutions/flexible-classroom/get-started/enable':
     '/zh-CN/solutions/flexible-classroom/build/create-classroom/enable',
+  'solutions/flexible-classroom/reference/basic-concept':
+    '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/basic-concept',
+  'solutions/flexible-classroom/reference/call-api':
+    '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
+  'solutions/flexible-classroom/reference/platform-support':
+    '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support',
+  'solutions/flexible-classroom/reference/quota':
+    '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/quota',
+  'solutions/flexible-classroom/reference/response-code':
+    '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/response-code',
+  'solutions/flexible-classroom/reference/tech-architect':
+    '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect',
   'solutions/flexible-classroom/overview/basic-concept':
-    '/zh-CN/solutions/flexible-classroom/reference/basic-concept',
+    '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/basic-concept',
   'solutions/flexible-classroom/overview/billing':
     '/zh-CN/solutions/flexible-classroom/reference/billing',
   'solutions/flexible-classroom/overview/migration':
     '/zh-CN/solutions/flexible-classroom/reference/migration',
   'solutions/flexible-classroom/overview/platform-support':
-    '/zh-CN/solutions/flexible-classroom/reference/platform-support',
+    '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support',
   'solutions/flexible-classroom/overview/product':
     '/zh-CN/solutions/flexible-classroom',
   'solutions/flexible-classroom/overview/release-notes':
     '/zh-CN/solutions/flexible-classroom/reference/release-notes',
   'solutions/flexible-classroom/overview/tech-architect':
-    '/zh-CN/solutions/flexible-classroom/reference/tech-architect',
+    '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect',
   'solutions/flexible-classroom/quota':
-    '/zh-CN/solutions/flexible-classroom/reference/quota',
+    '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/quota',
   'solutions/flexible-classroom/resources':
     '/zh-CN/solutions/flexible-classroom/reference/downloads',
   'solutions/flexible-classroom/response-code':
-    '/zh-CN/solutions/flexible-classroom/reference/response-code',
+    '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/response-code',
   'solutions/game-voice/api': '/zh-CN/solutions/game-voice/reference/api',
   'solutions/game-voice/best-practices/audio-experience-optimization':
     '/zh-CN/solutions/game-voice/build/audio-experience-optimization',

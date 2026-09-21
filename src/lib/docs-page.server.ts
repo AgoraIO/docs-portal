@@ -277,7 +277,7 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
   'rtm/toc-message/publish': '/zh-CN/api-reference/api-ref/signaling/publish',
   'rtm/toc-message/receive': '/zh-CN/api-reference/api-ref/signaling/receive',
   'rtm/toc-message/response-code':
-    '/zh-CN/realtime-media/rtm/reference/response-code',
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
   'rtm/toc-presence/presence': '/zh-CN/api-reference/rtm/android/presence',
   'rtm/toc-storage/storage': '/zh-CN/api-reference/rtm/android/storage',
   'rtm/toc-token/token': '/zh-CN/api-reference/rtm/android/token',
@@ -286,7 +286,7 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
   'api-ref/signaling/index': '/zh-CN/api-reference/api-ref/signaling/publish',
   'api-ref/signaling/restful': '/zh-CN/api-reference/api-ref/signaling/publish',
   'api-ref/signaling/response-code':
-    '/zh-CN/realtime-media/rtm/reference/response-code',
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
   'api-ref/ppt-conversion-service/status-codes':
     '/zh-CN/solutions/ppt-transcoding/reference/response-code',
   'api-ref/whiteboard': '/zh-CN/api-reference/api-ref/whiteboard/restful',

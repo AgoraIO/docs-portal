@@ -100,12 +100,10 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   'realtime-media/rtm/reference/meta.json': [
     'downloads',
     '[服务端 API](/zh-CN/api-reference/api-ref/signaling/publish)',
-    'api-limits',
-    'response-code',
+    'usage-limits-and-errors',
     'migration-guide',
+    'capabilities-and-compatibility',
     'data-security',
-    'feature-list',
-    'platform-support',
     'sunset-policy',
   ],
   'realtime-media/rtmp-gateway/reference/meta.json': [
@@ -171,13 +169,9 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   'solutions/flexible-classroom/reference/meta.json': [
     'downloads',
     '[服务端 API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom)',
-    'call-api',
-    'response-code',
-    'quota',
+    'api-usage-and-limits',
     'migration',
-    'basic-concept',
-    'platform-support',
-    'tech-architect',
+    'capabilities-and-compatibility',
   ],
   'solutions/game-voice/reference/meta.json': [
     'downloads',
@@ -264,8 +258,32 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
 };
 
 const intentionallyChangedReferencePages = new Set([
+  'realtime-media/rtm/reference/meta.json',
+  'solutions/flexible-classroom/reference/meta.json',
   'solutions/teleoperation/reference/meta.json',
 ]);
+
+const expectedReferenceFolderMeta: Record<
+  string,
+  { title: string; pages: string[] }
+> = {
+  'realtime-media/rtm/reference/usage-limits-and-errors/meta.json': {
+    title: '使用限制与错误处理',
+    pages: ['api-limits', 'response-code'],
+  },
+  'realtime-media/rtm/reference/capabilities-and-compatibility/meta.json': {
+    title: '能力与兼容性',
+    pages: ['feature-list', 'platform-support'],
+  },
+  'solutions/flexible-classroom/reference/api-usage-and-limits/meta.json': {
+    title: 'API 使用与限制',
+    pages: ['call-api', 'response-code', 'quota'],
+  },
+  'solutions/flexible-classroom/reference/capabilities-and-compatibility/meta.json': {
+    title: '能力与兼容性',
+    pages: ['basic-concept', 'platform-support', 'tech-architect'],
+  },
+};
 
 function readPages(relativePath: string) {
   const file = resolve(process.cwd(), 'content/docs/zh-CN', relativePath);
@@ -323,6 +341,20 @@ describe('zh-CN product reference ordering', () => {
       }
       expect(groupContents(actualPages)).toEqual(groupContents(expectedPages));
       expect(actualPages).toEqual(expectedPages);
+    },
+  );
+
+  it.each(Object.entries(expectedReferenceFolderMeta))(
+    'keeps the approved physical folder metadata for %s',
+    (relativePath, expectedMeta) => {
+      const meta = JSON.parse(
+        readFileSync(
+          resolve(process.cwd(), 'content/docs/zh-CN', relativePath),
+          'utf8',
+        ),
+      );
+
+      expect(meta).toEqual(expectedMeta);
     },
   );
 });

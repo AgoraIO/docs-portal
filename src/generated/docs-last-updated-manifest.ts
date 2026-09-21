@@ -24809,7 +24809,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T02:58:52.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/account-and-billing.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/realtime-media/rtm/reference/api-limits.mdx':
+  'content/docs/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits.mdx':
     '2026-08-17T02:42:42.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/billing/billing-rules.mdx':
     '2026-09-08T12:51:48.000Z',
@@ -24841,8 +24841,10 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T03:06:07.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/error-codes.mdx':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/realtime-media/rtm/reference/feature-list.mdx':
+  'content/docs/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list.mdx':
     '2026-07-28T03:13:58.000Z',
+  'content/docs/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/meta.json':
+    '2026-09-21T10:42:48.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/link-state.mdx':
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/meta.json':
@@ -24851,14 +24853,16 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T03:06:08.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/migration-guide.mdx':
     '2026-09-08T12:51:48.000Z',
-  'content/docs/zh-CN/realtime-media/rtm/reference/platform-support.mdx':
+  'content/docs/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support.mdx':
     '2026-07-28T03:12:09.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/presence-events.mdx':
     '2026-07-28T03:06:08.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/release-notes.mdx':
     '2026-09-08T12:51:48.000Z',
-  'content/docs/zh-CN/realtime-media/rtm/reference/response-code.mdx':
+  'content/docs/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code.mdx':
     '2026-07-28T03:12:09.000Z',
+  'content/docs/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/meta.json':
+    '2026-09-21T10:42:48.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/security.mdx':
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/realtime-media/rtm/reference/sunset-policy.mdx':
@@ -27937,12 +27941,16 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T03:04:34.000Z',
   'content/docs/zh-CN/solutions/flexible-classroom/reference/api-widget.mdx':
     '2026-07-28T03:04:34.000Z',
-  'content/docs/zh-CN/solutions/flexible-classroom/reference/basic-concept.mdx':
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/basic-concept.mdx':
     '2026-07-28T03:12:09.000Z',
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/meta.json':
+    '2026-09-21T10:42:48.000Z',
   'content/docs/zh-CN/solutions/flexible-classroom/reference/billing.mdx':
     '2026-07-29T03:34:52.000Z',
-  'content/docs/zh-CN/solutions/flexible-classroom/reference/call-api.mdx':
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api.mdx':
     '2026-08-17T02:42:42.000Z',
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/meta.json':
+    '2026-09-21T10:42:48.000Z',
   'content/docs/zh-CN/solutions/flexible-classroom/reference/downloads.mdx':
     '2026-07-28T03:06:07.000Z',
   'content/docs/zh-CN/solutions/flexible-classroom/reference/downloads/android.mdx':
@@ -27959,15 +27967,15 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-04T09:46:36.000Z',
   'content/docs/zh-CN/solutions/flexible-classroom/reference/migration.mdx':
     '2026-07-28T03:13:58.000Z',
-  'content/docs/zh-CN/solutions/flexible-classroom/reference/platform-support.mdx':
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support.mdx':
     '2026-07-28T03:12:09.000Z',
-  'content/docs/zh-CN/solutions/flexible-classroom/reference/quota.mdx':
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/quota.mdx':
     '2026-07-28T03:12:10.000Z',
   'content/docs/zh-CN/solutions/flexible-classroom/reference/release-notes.mdx':
     '2026-07-28T08:18:12.000Z',
-  'content/docs/zh-CN/solutions/flexible-classroom/reference/response-code.mdx':
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/response-code.mdx':
     '2026-07-28T03:12:09.000Z',
-  'content/docs/zh-CN/solutions/flexible-classroom/reference/tech-architect.mdx':
+  'content/docs/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect.mdx':
     '2026-07-28T03:11:15.000Z',
   'content/docs/zh-CN/solutions/flexible-classroom/resources.mdx':
     '2026-07-28T02:56:19.000Z',
