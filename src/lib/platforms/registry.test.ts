@@ -52,6 +52,7 @@ describe('platform registry', () => {
     expect(isKnownPlatform('react-js')).toBe(true);
     expect(isKnownPlatform('typescript')).toBe(true);
     expect(isKnownPlatform('go')).toBe(true);
+    expect(isKnownPlatform('nodejs')).toBe(true);
     expect(isKnownPlatform('csharp')).toBe(true);
     expect(isKnownPlatform('cscrip')).toBe(true);
     expect(isKnownPlatform('windows')).toBe(true);
@@ -65,6 +66,7 @@ describe('platform registry', () => {
     expect(isKnownPlatform('linux-cpp')).toBe(true);
     expect(isKnownPlatform('linux-c')).toBe(true);
     expect(isKnownPlatform('linux-java')).toBe(true);
+    expect(isKnownPlatform('restful-api')).toBe(true);
     expect(isKnownPlatform('js')).toBe(false);
   });
 
@@ -82,6 +84,7 @@ describe('platform registry', () => {
     expect(getPlatformLabel('javascript', 'zh-CN')).toBe('JavaScript');
     expect(getPlatformLabel('typescript', 'en')).toBe('TypeScript');
     expect(getPlatformLabel('go', 'en')).toBe('Go');
+    expect(getPlatformLabel('nodejs', 'en')).toBe('Node.js');
     expect(getPlatformLabel('csharp', 'en')).toBe('C#');
     expect(getPlatformLabel('ios', 'en')).toBe('iOS');
     expect(getPlatformLabel('windows', 'en')).toBe('Windows');
@@ -95,6 +98,7 @@ describe('platform registry', () => {
     expect(getPlatformLabel('linux-cpp', 'en')).toBe('Linux C++');
     expect(getPlatformLabel('linux-c', 'en')).toBe('Linux C');
     expect(getPlatformLabel('linux-java', 'en')).toBe('Linux Java');
+    expect(getPlatformLabel('restful-api', 'en')).toBe('RESTful API');
   });
 
   it('uses a namespaced storage key', () => {
