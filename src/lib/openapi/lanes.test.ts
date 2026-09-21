@@ -247,7 +247,10 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(232);
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(254);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

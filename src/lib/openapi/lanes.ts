@@ -1620,11 +1620,12 @@ export function getOpenApiEndpointUrl(
 
 export function getOpenApiPrerenderPaths() {
   return getOpenApiLanes().flatMap((lane) =>
-    getOpenApiLaneLocales(lane).flatMap((locale) =>
-      getOpenApiOperationIds(lane).map((operationId) =>
+    getOpenApiLaneLocales(lane).flatMap((locale) => [
+      lane.parentUrl[locale],
+      ...getOpenApiOperationIds(lane).map((operationId) =>
         getOpenApiEndpointUrl(lane, locale, operationId),
       ),
-    ),
+    ]),
   );
 }
 

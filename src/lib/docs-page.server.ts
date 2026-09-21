@@ -152,8 +152,7 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
 };
 
 const ZH_CN_DELETED_API_REFERENCE_REDIRECTS: Record<string, string> = {
-  'api-ref/conversational-ai/authentication':
-    '/zh-CN/ai/build/http-basic-auth',
+  'api-ref/conversational-ai/authentication': '/zh-CN/ai/build/http-basic-auth',
   'api-ref/cloud-recording/authentication':
     '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
   'api-ref/media-pull/restful-authentication':
@@ -538,8 +537,11 @@ export async function loadDocsPagePayload(
     };
   }
 
-  const deletedApiReferenceRedirect =
-    resolveDeletedZhCnApiReferenceRedirect(locale, tab, slugSegments);
+  const deletedApiReferenceRedirect = resolveDeletedZhCnApiReferenceRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
   if (deletedApiReferenceRedirect) {
     return {
       redirectUrl: deletedApiReferenceRedirect,
@@ -676,11 +678,7 @@ export async function loadDocsPagePayload(
     const supportedLocale = toSupportedLocale(locale);
     const openApiLaneRootRedirect =
       supportedLocale && isOpenApiTab(tab)
-        ? resolveOpenApiLaneRootRedirect(
-            supportedLocale,
-            tab,
-            slugSegments,
-          )
+        ? resolveOpenApiLaneRootRedirect(supportedLocale, tab, slugSegments)
         : null;
 
     if (openApiLaneRootRedirect) {
@@ -1064,10 +1062,7 @@ function resolveDeletedZhCnApiReferenceRedirect(
     return null;
   }
 
-  return (
-    ZH_CN_DELETED_API_REFERENCE_REDIRECTS[slugSegments.join('/')]
-    ?? null
-  );
+  return ZH_CN_DELETED_API_REFERENCE_REDIRECTS[slugSegments.join('/')] ?? null;
 }
 
 function resolveZhCnSharedConceptRedirect(
@@ -1373,7 +1368,7 @@ function resolveLegacyConversationalAiRestRedirect(
 
   if (normalizedPath === `${prefix}/authentication`) {
     return locale === 'zh-CN'
-      ? '/zh-CN/api-reference/conversational-ai/rest-api/authentication'
+      ? '/zh-CN/ai/build/http-basic-auth'
       : `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
   }
 
@@ -3192,12 +3187,7 @@ function addRealtimeMediaApiReferenceSidebarItem(
         return { ...node, children: visitedChildren.nodes };
       }
 
-      if (
-        isProductReferenceSectionTitle(
-          node.title,
-          'zh-CN',
-        )
-      ) {
+      if (isProductReferenceSectionTitle(node.title, 'zh-CN')) {
         inserted = true;
         return { ...node, children: insertApiNodes(visitedChildren.nodes) };
       }

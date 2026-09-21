@@ -2375,6 +2375,16 @@ Web body
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/api-reference/api-ref/conversational-ai',
     });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'conversational-ai',
+        'rest-api',
+        'authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/build/http-basic-auth',
+    });
   });
 
   it('redirects the retired zh-CN aggregate API reference page to the merged API page', async () => {
@@ -2986,10 +2996,7 @@ Web body
   });
 
   it.each([
-    [
-      'conversational-ai/authentication',
-      '/zh-CN/ai/build/http-basic-auth',
-    ],
+    ['conversational-ai/authentication', '/zh-CN/ai/build/http-basic-auth'],
     [
       'cloud-recording/authentication',
       '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
