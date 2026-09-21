@@ -260,12 +260,10 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     'api-overview',
     'supported-platforms',
   ],
-  'solutions/teleoperation/reference/meta.json': [
-    'downloads',
-  ],
+  'solutions/teleoperation/reference/meta.json': ['downloads'],
 };
 
-const intentionallyHiddenReferencePages = new Set([
+const intentionallyChangedReferencePages = new Set([
   'solutions/teleoperation/reference/meta.json',
 ]);
 
@@ -315,7 +313,7 @@ describe('zh-CN product reference ordering', () => {
       const baselinePages = readPagesFromRevision(relativePath, 'HEAD');
       const actualPages = readPages(relativePath);
 
-      if (!intentionallyHiddenReferencePages.has(relativePath)) {
+      if (!intentionallyChangedReferencePages.has(relativePath)) {
         expect(serializePages(actualPages)).toEqual(
           serializePages(baselinePages),
         );
