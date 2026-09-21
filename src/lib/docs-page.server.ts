@@ -143,11 +143,26 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
     'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
   },
   'http-basic-auth': {
-    'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
+    'zh-CN': '/zh-CN/ai/build/http-basic-auth',
   },
   'release-notes': {
     'zh-CN': '/zh-CN/ai/release-notes',
   },
+};
+
+const ZH_CN_DELETED_API_REFERENCE_REDIRECTS: Record<string, string> = {
+  'api-ref/conversational-ai/authentication':
+    '/zh-CN/ai/build/http-basic-auth',
+  'api-ref/cloud-recording/authentication':
+    '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
+  'api-ref/media-pull/restful-authentication':
+    '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+  'api-ref/media-push/restful-authentication':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
+  'api-ref/rtc/authentication':
+    '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  'api-ref/voip-callkit/authentication':
+    '/zh-CN/solutions/voip-call/build/http-basic-auth',
 };
 
 const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
@@ -519,6 +534,14 @@ export async function loadDocsPagePayload(
   if (legacyRedirect) {
     return {
       redirectUrl: legacyRedirect,
+    };
+  }
+
+  const deletedApiReferenceRedirect =
+    resolveDeletedZhCnApiReferenceRedirect(locale, tab, slugSegments);
+  if (deletedApiReferenceRedirect) {
+    return {
+      redirectUrl: deletedApiReferenceRedirect,
     };
   }
 
@@ -1031,6 +1054,21 @@ function resolveLegacyBestPracticesRedirect(
   return redirect;
 }
 
+function resolveDeletedZhCnApiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'zh-CN' || tab !== 'api-reference') {
+    return null;
+  }
+
+  return (
+    ZH_CN_DELETED_API_REFERENCE_REDIRECTS[slugSegments.join('/')]
+    ?? null
+  );
+}
+
 function resolveZhCnSharedConceptRedirect(
   locale: string,
   tab: string,
@@ -1333,7 +1371,9 @@ function resolveLegacyConversationalAiRestRedirect(
   }
 
   if (normalizedPath === `${prefix}/authentication`) {
-    return `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
+    return locale === 'zh-CN'
+      ? '/zh-CN/api-reference/conversational-ai/rest-api/authentication'
+      : `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
   }
 
   if (normalizedPath === `${prefix}/status-codes`) {
@@ -3359,7 +3399,9 @@ function addAiApiReferenceSidebarItems(
   const existingUrls = new Set([
     ...(restApiPage ? [restApiUrl] : []),
     `/${locale}/ai/reference/restful-api`,
-    `/${locale}/api-reference/api-ref/conversational-ai/authentication`,
+    ...(locale === 'zh-CN'
+      ? []
+      : [`/${locale}/api-reference/api-ref/conversational-ai/authentication`]),
     `/${locale}/api-reference/conversational-ai/rest-api`,
     `/${locale}/api-reference/conversational-ai/rest-api/authentication`,
   ]);

@@ -97,7 +97,6 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
     const urls = flattenUrls(payload.sidebar as SidebarNode[]);
     expect(urls).toEqual(
       expect.arrayContaining([
-        '/zh-CN/api-reference/api-ref/conversational-ai',
         '/zh-CN/api-reference/api-ref/conversational-ai/join',
         '/zh-CN/api-reference/api-ref/conversational-ai/leave',
         '/zh-CN/api-reference/api-ref/conversational-ai/turns',
@@ -118,8 +117,6 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
     const urls = flattenUrls(payload.sidebar as SidebarNode[]);
     expect(urls).toEqual(
       expect.arrayContaining([
-        '/zh-CN/api-reference/api-ref/rtc',
-        '/zh-CN/api-reference/api-ref/rtc/authentication',
         '/zh-CN/api-reference/api-ref/rtc/query-channel-list',
         '/zh-CN/api-reference/api-ref/rtc/query-user-list',
         '/zh-CN/api-reference/api-ref/rtc/query-ip-address',
