@@ -1384,6 +1384,11 @@ describe('FumadocsOpenApiContent', () => {
                                   '是否启用 String UID。\n> 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多信息请参考[如何使用 String UID](https://example.com/string-uid)。',
                                 type: 'boolean',
                               },
+                              legacy_html_notice: {
+                                description:
+                                  '旧格式注意事项。\n> <ul><li>该字段已废弃。</li><li>解密方式必须与频道设置的加密方式一致。</li></ul>',
+                                type: 'integer',
+                              },
                             },
                             type: 'object',
                           },
@@ -1405,7 +1410,7 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(await screen.findAllByText('注意')).toHaveLength(4);
+    expect(await screen.findAllByText('注意')).toHaveLength(5);
     const channelCode = screen.getAllByText('channel').at(0);
     expect(channelCode?.tagName).toBe('CODE');
     const channelNote = screen.getByText((_content, node) =>
@@ -1440,6 +1445,14 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.getByRole('link', { name: '如何使用 String UID' }),
     ).toHaveAttribute('href', 'https://example.com/string-uid');
+    const deprecatedRule = screen.getByText('该字段已废弃。');
+    expect(deprecatedRule.tagName).toBe('LI');
+    expect(
+      deprecatedRule.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('解密方式必须与频道设置的加密方式一致。'),
+    ).toBeVisible();
   });
 
   it('keeps OpenAPI blockquote descriptions as blockquotes outside zh-CN', async () => {

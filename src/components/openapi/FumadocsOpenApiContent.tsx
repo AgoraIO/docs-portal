@@ -33,6 +33,7 @@ import {
   useState,
 } from 'react';
 import * as JsxRuntime from 'react/jsx-runtime';
+import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
 import { createDocsTableComponent } from '@/components/mdx';
@@ -1751,7 +1752,11 @@ function createOpenApiMarkdownProcessor() {
       });
   }
 
-  return remark().use(remarkGfm).use(remarkRehype).use(rehypeReact);
+  return remark()
+    .use(remarkGfm)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeReact);
 }
 
 function toCalloutType(type: string | undefined) {
