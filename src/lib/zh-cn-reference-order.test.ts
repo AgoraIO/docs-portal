@@ -262,10 +262,12 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'solutions/teleoperation/reference/meta.json': [
     'downloads',
-    '[设备端 API](/zh-CN/api-reference/teleoperation/iot/api/device)',
-    '[操控端 API](/zh-CN/api-reference/teleoperation/iot/api/operator)',
   ],
 };
+
+const intentionallyHiddenReferencePages = new Set([
+  'solutions/teleoperation/reference/meta.json',
+]);
 
 function readPages(relativePath: string) {
   const file = resolve(process.cwd(), 'content/docs/zh-CN', relativePath);
@@ -313,10 +315,14 @@ describe('zh-CN product reference ordering', () => {
       const baselinePages = readPagesFromRevision(relativePath, 'HEAD');
       const actualPages = readPages(relativePath);
 
-      expect(serializePages(actualPages)).toEqual(
-        serializePages(baselinePages),
-      );
-      expect(groupContents(actualPages)).toEqual(groupContents(baselinePages));
+      if (!intentionallyHiddenReferencePages.has(relativePath)) {
+        expect(serializePages(actualPages)).toEqual(
+          serializePages(baselinePages),
+        );
+        expect(groupContents(actualPages)).toEqual(
+          groupContents(baselinePages),
+        );
+      }
       expect(groupContents(actualPages)).toEqual(groupContents(expectedPages));
       expect(actualPages).toEqual(expectedPages);
     },
