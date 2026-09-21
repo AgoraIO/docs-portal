@@ -779,6 +779,59 @@ describe('product API reference sidebar links', () => {
     expect(titles).not.toContain('响应状态码');
   });
 
+  it('keeps the RTC product sidebar stable when entering a RESTful guide from a product child page', async () => {
+    const payload = await loadDocsPagePayload(
+      'zh-CN',
+      'api-reference',
+      ['rtc', 'restful', 'webhook', 'receive-webhook'],
+      '?from=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference%2Fdownloads',
+    );
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a RESTful API guide payload');
+    }
+
+    const serviceApi = findSectionWithChild(
+      payload.sidebar,
+      '服务端 API',
+      payload.activePath,
+    );
+    const webhook = findSectionWithChild(
+      serviceApi?.children ?? [],
+      'Webhook',
+      payload.activePath,
+    );
+    const receiveWebhook = findNode(
+      webhook?.children ?? [],
+      '接收 Webhook 事件',
+    );
+
+    expect(payload.activePath).toBe(
+      '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+    );
+    expect(payload.activeTab).toBe('realtime-media');
+    expect(serviceApi).toMatchObject({
+      defaultOpen: true,
+      title: '服务端 API',
+      type: 'section',
+      url: '/zh-CN/api-reference/api-ref/rtc/create-ban-rule?from=%2Fzh-CN%2Frealtime-media%2Frtc&fromScope=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference',
+    });
+    expect(webhook).toMatchObject({
+      defaultOpen: true,
+      title: 'Webhook',
+      type: 'section',
+    });
+    expect(receiveWebhook).toMatchObject({
+      search: {
+        from: '/zh-CN/realtime-media/rtc',
+        fromScope: '/zh-CN/realtime-media/rtc/reference',
+      },
+      title: '接收 Webhook 事件',
+      type: 'page',
+      url: '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+    });
+  });
+
   it.each(['create-room', 'query-recording'])(
     'keeps the Meeting product sidebar while loading the %s API document',
     async (apiSlug) => {
