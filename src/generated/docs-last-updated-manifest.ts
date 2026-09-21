@@ -3284,7 +3284,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/best-practices/security.md': '2026-06-24T07:15:37.000Z',
   'content/docs/en/best-practices/status-page.md': '2026-06-24T07:15:37.000Z',
   'content/docs/en/introduction/about-agora.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/introduction/about-agora.mdx': '2026-09-18T13:02:45.000Z',
+  'content/docs/en/introduction/about-agora.mdx': '2026-09-21T06:42:03.000Z',
   'content/docs/en/introduction/account.md': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/account.mdx': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/agora-cli.mdx': '2026-09-15T09:01:44.000Z',
@@ -3320,7 +3320,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/fusion-cdn.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/fusion-cdn.mdx': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/get-started/build-it-yourself.mdx':
-    '2026-09-18T13:02:45.000Z',
+    '2026-09-21T06:42:03.000Z',
   'content/docs/en/introduction/get-started/meta.json':
     '2026-06-08T06:31:03.000Z',
   'content/docs/en/introduction/get-started/start-with-ai.mdx':
@@ -3328,7 +3328,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/glossary.md': '2026-08-07T06:52:10.000Z',
   'content/docs/en/introduction/image.png': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/index.md': '2026-05-21T03:00:26.000Z',
-  'content/docs/en/introduction/index.mdx': '2026-09-18T13:02:45.000Z',
+  'content/docs/en/introduction/index.mdx': '2026-09-21T06:42:03.000Z',
   'content/docs/en/introduction/media-services.md': '2026-05-18T10:29:54.000Z',
   'content/docs/en/introduction/members-roles.md': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/messaging-presence.mdx':
@@ -3361,7 +3361,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/speech-to-text.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/speech-to-text.mdx': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/start-with-ai.md': '2026-05-20T08:41:55.000Z',
-  'content/docs/en/introduction/start-with-ai.mdx': '2026-09-18T13:02:45.000Z',
+  'content/docs/en/introduction/start-with-ai.mdx': '2026-09-21T06:42:03.000Z',
   'content/docs/en/introduction/support.md': '2026-05-20T08:41:55.000Z',
   'content/docs/en/introduction/usage-analytics.md': '2026-06-30T07:00:49.000Z',
   'content/docs/en/introduction/whiteboard.md': '2026-05-21T09:41:55.000Z',
@@ -5773,7 +5773,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/get-started-sdk.mdx':
     '2026-09-10T10:36:08.000Z',
   'content/docs/en/realtime-media/rtc/index.md': '2026-06-13T10:37:20.000Z',
-  'content/docs/en/realtime-media/rtc/index.mdx': '2026-09-18T13:02:45.000Z',
+  'content/docs/en/realtime-media/rtc/index.mdx': '2026-09-21T06:42:03.000Z',
   'content/docs/en/realtime-media/rtc/macOS/audio/audio-effects-and-mixing.md':
     '2026-06-13T10:37:20.000Z',
   'content/docs/en/realtime-media/rtc/macOS/audio/audio-profiles-and-quality.md':
