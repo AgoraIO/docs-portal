@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -23,7 +23,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'realtime-media/fusion-cdn/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/fusion-cdn)',
-    '[参考信息](/zh-CN/api-reference/fusion-cdn/restful/api/reference)',
+    '[参考信息](/zh-CN/api-reference/fusion-cdn/restful/api/reference?from=%2Fzh-CN%2Frealtime-media%2Ffusion-cdn)',
     'response-code',
     'ncs-event',
     'quota',
@@ -41,14 +41,14 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     '[服务端 API](/zh-CN/api-reference/api-ref/media-pull)',
     'response-code',
     'ncs-events',
-    '[常用视频属性](/zh-CN/api-reference/media-pull/restful/api/video-profile)',
+    '[常用视频属性](/zh-CN/api-reference/media-pull/restful/api/video-profile?from=%2Fzh-CN%2Frealtime-media%2Fmedia-pull)',
     'quota',
   ],
   'realtime-media/media-push/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/media-push)',
     'response-code',
     'ncs-events',
-    '[常用视频属性](/zh-CN/api-reference/media-push/restful/api/video-profile)',
+    '[常用视频属性](/zh-CN/api-reference/media-push/restful/api/video-profile?from=%2Fzh-CN%2Frealtime-media%2Fmedia-push)',
     'quota',
   ],
   'realtime-media/meeting/reference/meta.json': [
@@ -111,7 +111,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     'response-code',
     'ncs-events',
     'quota',
-    '[常用视频属性](/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile)',
+    '[常用视频属性](/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile?from=%2Fzh-CN%2Frealtime-media%2Frtmp-gateway)',
   ],
   'realtime-media/rtsa/reference/meta.json': [
     'downloads',
@@ -124,16 +124,16 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'realtime-media/speech-to-text/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/speech-to-text)',
-    '[响应状态码](/zh-CN/api-reference/speech-to-text/restful/api/response-code)',
+    '[响应状态码](/zh-CN/api-reference/speech-to-text/restful/api/response-code?from=%2Fzh-CN%2Frealtime-media%2Fspeech-to-text)',
     'ncs-events',
-    '[支持的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages)',
+    '[支持的语言](/zh-CN/api-reference/speech-to-text/restful/api/supported-languages?from=%2Fzh-CN%2Frealtime-media%2Fspeech-to-text)',
     'third-party-services',
   ],
   'realtime-media/transcoding/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/cloud-transcoding)',
-    '[常用视频属性](/zh-CN/api-reference/cloud-transcoding/restful/api/video-profile)',
+    '[常用视频属性](/zh-CN/api-reference/cloud-transcoding/restful/api/video-profile?from=%2Fzh-CN%2Frealtime-media%2Ftranscoding)',
     'response-code',
-    '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events)',
+    '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events?from=%2Fzh-CN%2Frealtime-media%2Ftranscoding)',
     'quota',
   ],
   'realtime-media/usage-analytics/reference/meta.json': [
@@ -209,24 +209,24 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'solutions/online-ktv/auikaraoke/reference/meta.json': [
     'downloads',
-    '[在线 K 歌房 API 参考](/zh-CN/api-reference/online-ktv)',
+    '[在线 K 歌房 API 参考](/zh-CN/api-reference/online-ktv?from=%2Fzh-CN%2Fsolutions%2Fonline-ktv&fromScope=%2Fzh-CN%2Fsolutions%2Fonline-ktv%2Fauikaraoke)',
     'solution-compare',
   ],
   'solutions/online-ktv/ktv-scenario/reference/meta.json': [
     'downloads',
     '[服务端 API](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center)',
-    '[在线 K 歌房 API 参考](/zh-CN/api-reference/online-ktv)',
+    '[在线 K 歌房 API 参考](/zh-CN/api-reference/online-ktv?from=%2Fzh-CN%2Fsolutions%2Fonline-ktv&fromScope=%2Fzh-CN%2Fsolutions%2Fonline-ktv%2Fktv-scenario)',
     'solution-compare',
   ],
   'solutions/online-ktv/online-ktv-sdk/reference/meta.json': [
     'downloads',
     '[服务端 API](/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center)',
-    '[在线 K 歌房 API 参考](/zh-CN/api-reference/online-ktv)',
+    '[在线 K 歌房 API 参考](/zh-CN/api-reference/online-ktv?from=%2Fzh-CN%2Fsolutions%2Fonline-ktv&fromScope=%2Fzh-CN%2Fsolutions%2Fonline-ktv%2Fonline-ktv-sdk)',
     'solution-compare',
   ],
   'solutions/online-music-class/reference/meta.json': [
     'downloads',
-    '[在线音乐教学 API 参考](/zh-CN/api-reference/online-music-teaching)',
+    '[在线音乐教学 API 参考](/zh-CN/api-reference/online-music-teaching?from=%2Fzh-CN%2Fsolutions%2Fonline-music-class)',
   ],
   'solutions/ppt-transcoding/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/ppt-conversion-service)',
@@ -258,9 +258,19 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
 };
 
 const intentionallyChangedReferencePages = new Set([
-  'realtime-media/rtm/reference/meta.json',
-  'solutions/flexible-classroom/reference/meta.json',
+  'realtime-media/fusion-cdn/reference/meta.json',
+  'realtime-media/media-pull/reference/meta.json',
+  'realtime-media/media-push/reference/meta.json',
   'realtime-media/rtc/reference/meta.json',
+  'realtime-media/rtm/reference/meta.json',
+  'realtime-media/rtmp-gateway/reference/meta.json',
+  'realtime-media/speech-to-text/reference/meta.json',
+  'realtime-media/transcoding/reference/meta.json',
+  'solutions/flexible-classroom/reference/meta.json',
+  'solutions/online-ktv/auikaraoke/reference/meta.json',
+  'solutions/online-ktv/ktv-scenario/reference/meta.json',
+  'solutions/online-ktv/online-ktv-sdk/reference/meta.json',
+  'solutions/online-music-class/reference/meta.json',
   'solutions/teleoperation/reference/meta.json',
 ]);
 
@@ -325,6 +335,66 @@ function groupContents(pages: MetaPage[]) {
     );
 }
 
+function collectMetaJsonFiles(directory: string): string[] {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const entryPath = resolve(directory, entry.name);
+
+    if (entry.isDirectory()) {
+      return collectMetaJsonFiles(entryPath);
+    }
+
+    return entry.name === 'meta.json' ? [entryPath] : [];
+  });
+}
+
+const productApiReferenceLinkPattern = /^\[([^\]]+)\]\(([^)]+)\)$/;
+const productApiReferenceContextExemptTitles = new Set([
+  '客户端 API',
+  '服务端 API',
+  '呼叫小程序 API',
+  'License 管理 API',
+  '设备端 API',
+  '操控端 API',
+]);
+
+function collectProductApiReferenceLinksWithoutContext(
+  value: unknown,
+  file: string,
+  findings: string[],
+) {
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      collectProductApiReferenceLinksWithoutContext(item, file, findings);
+    }
+    return;
+  }
+
+  if (value && typeof value === 'object') {
+    for (const child of Object.values(value)) {
+      collectProductApiReferenceLinksWithoutContext(child, file, findings);
+    }
+    return;
+  }
+
+  if (typeof value !== 'string') {
+    return;
+  }
+
+  const match = value.match(productApiReferenceLinkPattern);
+  if (!match) {
+    return;
+  }
+
+  const [, title, url] = match;
+  if (
+    url.startsWith('/zh-CN/api-reference/') &&
+    !url.includes('from=') &&
+    !productApiReferenceContextExemptTitles.has(title)
+  ) {
+    findings.push(`${file}: ${value}`);
+  }
+}
+
 describe('zh-CN product reference ordering', () => {
   it.each(Object.entries(expectedReferencePages))(
     'keeps the approved order for %s',
@@ -358,4 +428,18 @@ describe('zh-CN product reference ordering', () => {
       expect(meta).toEqual(expectedMeta);
     },
   );
+
+  it('keeps direct API reference links in Chinese product metadata scoped to their product sidebar', () => {
+    const roots = ['ai', 'realtime-media', 'solutions'].map((segment) =>
+      resolve(process.cwd(), 'content/docs/zh-CN', segment),
+    );
+    const findings: string[] = [];
+
+    for (const file of roots.flatMap(collectMetaJsonFiles)) {
+      const meta = JSON.parse(readFileSync(file, 'utf8')) as unknown;
+      collectProductApiReferenceLinksWithoutContext(meta, file, findings);
+    }
+
+    expect(findings).toEqual([]);
+  });
 });

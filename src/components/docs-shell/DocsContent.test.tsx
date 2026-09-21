@@ -500,6 +500,24 @@ describe('DocsContent', () => {
     expect(screen.getByText('en/ai/get-started/platform-split/ios.mdx'));
   });
 
+  it('renders title platform badges without changing the heading name', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="zh-CN/realtime-media/rtc/build/extensions/overview.mdx"
+        locale="zh-CN"
+        slug="overview"
+        title="插件概览"
+        titlePlatforms={['web']}
+        toc={[]}
+      />,
+    );
+
+    expect(
+      await screen.findByRole('heading', { name: '插件概览' }),
+    ).toBeInTheDocument();
+    expect(screen.getByLabelText('适用平台')).toHaveTextContent('Web');
+  });
+
   it('renders openapi-layout content without the article max-width or mobile TOC', async () => {
     renderWithRouter(
       <DocsContent
