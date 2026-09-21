@@ -1272,7 +1272,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders a linked section with children as a whole-row collapse toggle', async () => {
+  it('renders a linked section with children as a link and separate collapse toggle', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -1293,10 +1293,12 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/api-reference/other');
 
-    // The whole row is a single collapse toggle button — not a navigating link.
-    const toggle = await screen.findByRole('button', { name: 'FAQ' });
+    expect(await screen.findByRole('link', { name: 'FAQ' })).toHaveAttribute(
+      'href',
+      '/en/api-reference/faq',
+    );
+    const toggle = await screen.findByRole('button', { name: 'FAQ 子页面' });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('link', { name: 'FAQ' })).toBeNull();
 
     // Children stay hidden until the row is clicked.
     expect(
@@ -1308,7 +1310,7 @@ describe('DocsSidebarTree', () => {
     expect(
       await screen.findByRole('link', { name: 'Integration' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'FAQ' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'FAQ 子页面' })).toHaveAttribute(
       'aria-expanded',
       'true',
     );

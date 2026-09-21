@@ -114,6 +114,7 @@ const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
 ]);
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
+type ZhCnRtcRestSidebarLink = readonly [string, string];
 
 const LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES: Record<string, string> = {
   history: 'history',
@@ -2069,7 +2070,7 @@ async function getDocsSidebarNodes({
     );
 
   if (!isOpenApiTab(tab) || !locale) {
-    return embedZhCnServiceApiSidebars(
+    const embeddedSidebar = await embedZhCnServiceApiSidebars(
       sidebarWithRealtimeMediaApiReference,
       activePath ?? pageUrl,
       locale,
@@ -2077,6 +2078,10 @@ async function getDocsSidebarNodes({
       source,
       tab,
     );
+
+    return locale
+      ? markZhCnProductApiReferenceLinks(embeddedSidebar, locale)
+      : embeddedSidebar;
   }
 
   const openApiSidebar = await addOpenApiEndpointSidebarItems(
@@ -2085,11 +2090,11 @@ async function getDocsSidebarNodes({
     tab,
   );
 
-  if (isRecipesPath(activePath)) {
-    return restoreRecipesSidebarSections(openApiSidebar);
-  }
+  const restoredOpenApiSidebar = isRecipesPath(activePath)
+    ? restoreRecipesSidebarSections(openApiSidebar)
+    : openApiSidebar;
 
-  return openApiSidebar;
+  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
 }
 
 async function getProductSidebarContextPayload({
@@ -2294,9 +2299,41 @@ async function getApiReferenceSidebarNodes({
     tab,
   );
 
-  return isRecipesPath(activePath)
+  const restoredOpenApiSidebar = isRecipesPath(activePath)
     ? restoreRecipesSidebarSections(openApiSidebar)
     : openApiSidebar;
+
+  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+}
+
+function markZhCnProductApiReferenceLinks(
+  nodes: DocsSidebarNode[],
+  locale: AppLocale,
+): DocsSidebarNode[] {
+  if (locale !== 'zh-CN') {
+    return nodes;
+  }
+
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return shouldMarkZhCnClientApiReferenceLink(node)
+        ? { ...node, linked: true }
+        : node;
+    }
+
+    return {
+      ...node,
+      children: markZhCnProductApiReferenceLinks(node.children, locale),
+    };
+  });
+}
+
+function shouldMarkZhCnClientApiReferenceLink(
+  node: DocsSidebarPageNode,
+): boolean {
+  const [pathname] = node.url.split('?');
+
+  return node.title === '客户端 API' && pathname === '/zh-CN/api-reference/api';
 }
 
 function findApiNavScopeByPageUrl({
@@ -2398,8 +2435,70 @@ const ZH_CN_RTMP_GATEWAY_API_ENTRY_URL =
   '/zh-CN/api-reference/api-ref/rtmp-gateway';
 const ZH_CN_RTMP_GATEWAY_API_LANDING_URL =
   '/zh-CN/api-reference/api-ref/rtmp-gateway/restful';
+const ZH_CN_RTC_REST_API_ENTRY_URL = '/zh-CN/api-reference/api-ref/rtc';
+const ZH_CN_RTC_REST_DEFAULT_ENTRY_URL =
+  '/zh-CN/api-reference/api-ref/rtc/create-ban-rule';
 const ZH_CN_WHITEBOARD_API_ENTRY_URL =
   '/zh-CN/api-reference/api-ref/whiteboard/restful';
+const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
+  id: string;
+  links: readonly ZhCnRtcRestSidebarLink[];
+  title: string;
+}[] = [
+  {
+    id: 'zh-cn-rtc-rest-guides',
+    links: [
+      [
+        '调用 RESTful API',
+        '/zh-CN/api-reference/rtc/restful/user-guides/call-api',
+      ],
+      [
+        'HTTP 基本认证',
+        '/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth',
+      ],
+      [
+        '管理频道和用户',
+        '/zh-CN/api-reference/rtc/restful/user-guides/channel-management',
+      ],
+      [
+        '封禁用户权限',
+        '/zh-CN/api-reference/rtc/restful/user-guides/user-privilege',
+      ],
+    ],
+    title: '接入指南',
+  },
+  {
+    id: 'zh-cn-rtc-rest-webhook',
+    links: [
+      [
+        '接收 Webhook 事件',
+        '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+      ],
+      ['频道事件类型', '/zh-CN/api-reference/rtc/restful/webhook/events'],
+    ],
+    title: 'Webhook',
+  },
+  {
+    id: 'zh-cn-rtc-rest-best-practice',
+    links: [
+      [
+        '维护用户在线状态',
+        '/zh-CN/api-reference/rtc/restful/best-practice/online-user-status',
+      ],
+      [
+        'REST 服务高可用',
+        '/zh-CN/api-reference/rtc/restful/best-practice/rest-availability',
+      ],
+    ],
+    title: '最佳实践',
+  },
+];
+const ZH_CN_RTC_REST_REFERENCE_LINKS: readonly ZhCnRtcRestSidebarLink[] = [
+  [
+    '响应状态码',
+    '/zh-CN/api-reference/rtc/restful/reference/response-code',
+  ],
+];
 
 async function embedZhCnServiceApiSidebars(
   nodes: DocsSidebarNode[],
@@ -2469,6 +2568,11 @@ async function embedZhCnServiceApiSidebars(
           id: `${node.id}-embedded`,
           title: node.title,
           type: 'section' as const,
+          url: getEmbeddedServiceApiSectionUrl(
+            node.url,
+            productPath,
+            sourcePath,
+          ),
         };
       }
 
@@ -2491,6 +2595,24 @@ async function embedZhCnServiceApiSidebars(
   );
 }
 
+function getEmbeddedServiceApiSectionUrl(
+  apiEntryUrl: string,
+  productPath: string,
+  sourcePath?: string,
+): string | undefined {
+  if (apiEntryUrl !== ZH_CN_RTC_REST_API_ENTRY_URL) {
+    return undefined;
+  }
+
+  const search = new URLSearchParams({ from: productPath });
+
+  if (sourcePath) {
+    search.set('fromScope', sourcePath);
+  }
+
+  return `${ZH_CN_RTC_REST_DEFAULT_ENTRY_URL}?${search.toString()}`;
+}
+
 export function normalizeZhCnEmbeddedApiSidebar(
   nodes: DocsSidebarNode[],
   apiEntryUrl: string,
@@ -2498,6 +2620,10 @@ export function normalizeZhCnEmbeddedApiSidebar(
   const flattened = apiEntryUrl.startsWith(ZH_CN_RTM_EMBEDDED_API_PREFIX)
     ? flattenSidebarSectionByTitle(nodes, 'RESTful API')
     : nodes;
+  const withGuideLinks =
+    apiEntryUrl === ZH_CN_RTC_REST_API_ENTRY_URL
+      ? groupZhCnRtcRestSidebarNodes(flattened)
+      : flattened;
 
   const landingUrl =
     apiEntryUrl === ZH_CN_RTMP_GATEWAY_API_ENTRY_URL
@@ -2506,7 +2632,115 @@ export function normalizeZhCnEmbeddedApiSidebar(
         ? ZH_CN_WHITEBOARD_API_ENTRY_URL
         : null;
 
-  return landingUrl ? removeSidebarPageByUrl(flattened, landingUrl) : flattened;
+  return landingUrl
+    ? removeSidebarPageByUrl(withGuideLinks, landingUrl)
+    : withGuideLinks;
+}
+
+function getZhCnRtcRestGuideSidebarNodes(): DocsSidebarPageNode[] {
+  const links: ZhCnRtcRestSidebarLink[] = [];
+
+  for (const group of ZH_CN_RTC_REST_SIDEBAR_GROUPS) {
+    links.push(...group.links);
+  }
+
+  links.push(...ZH_CN_RTC_REST_REFERENCE_LINKS);
+
+  return links.map(([title, url]) => ({
+    id: url,
+    title,
+    type: 'page',
+    url,
+  }));
+}
+
+function groupZhCnRtcRestSidebarNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const existingPages = new Map(
+    flattenSidebarPageNodes(nodes).map((node) => [node.url, node]),
+  );
+  const groupedUrls = new Set(
+    getZhCnRtcRestGuideSidebarNodes().map((node) => node.url),
+  );
+  const endpointPages = flattenSidebarPageNodes(nodes).filter(
+    (node) => !groupedUrls.has(node.url),
+  );
+  const interfaceChildren = [
+    ...endpointPages,
+    ...ZH_CN_RTC_REST_REFERENCE_LINKS.map((link) =>
+      createZhCnRtcRestSidebarPage(link, existingPages),
+    ),
+  ];
+
+  return [
+    ...ZH_CN_RTC_REST_SIDEBAR_GROUPS.map((group) => ({
+      children: group.links.map((link) =>
+        createZhCnRtcRestSidebarPage(link, existingPages),
+      ),
+      collapsible: true,
+      defaultOpen: false,
+      id: group.id,
+      title: group.title,
+      type: 'section' as const,
+    })),
+    {
+      children: dedupeSidebarPagesByUrl(interfaceChildren),
+      collapsible: true,
+      defaultOpen: true,
+      id: 'zh-cn-rtc-rest-api-reference',
+      title: '接口参考',
+      type: 'section' as const,
+    },
+  ].filter((node) => node.children.length > 0);
+}
+
+function createZhCnRtcRestSidebarPage(
+  [title, url]: readonly [string, string],
+  existingPages: Map<string, DocsSidebarPageNode>,
+): DocsSidebarPageNode {
+  return {
+    ...existingPages.get(url),
+    id: url,
+    title,
+    type: 'page',
+    url,
+  };
+}
+
+function flattenSidebarPageNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarPageNode[] {
+  return nodes.flatMap((node) =>
+    node.type === 'page' ? [node] : flattenSidebarPageNodes(node.children),
+  );
+}
+
+function dedupeSidebarPagesByUrl(
+  nodes: DocsSidebarPageNode[],
+): DocsSidebarPageNode[] {
+  const seen = new Set<string>();
+
+  return nodes.filter((node) => {
+    if (seen.has(node.url)) {
+      return false;
+    }
+
+    seen.add(node.url);
+    return true;
+  });
+}
+
+function prependMissingSidebarNodes(
+  nodes: DocsSidebarNode[],
+  leadingNodes: DocsSidebarPageNode[],
+): DocsSidebarNode[] {
+  const existingUrls = collectSidebarPageUrls(nodes);
+
+  return [
+    ...leadingNodes.filter((node) => !existingUrls.has(node.url)),
+    ...nodes,
+  ];
 }
 
 function flattenSidebarSectionByTitle(
@@ -4108,7 +4342,10 @@ async function getFocusedOpenApiLaneSidebarNodes({
     })),
   );
 
-  const fallbackNodes = [parentNode, ...manualNodes, ...operationNodes];
+  const fallbackNodes =
+    lane.parentUrl[locale] === ZH_CN_RTC_REST_API_ENTRY_URL
+      ? operationNodes
+      : [parentNode, ...manualNodes, ...operationNodes];
   const laneFolder = findFolderByIndexUrl(pageTree, parentUrl);
   const laneMeta = laneFolder
     ? getDocsMetaData(source.getNodeMeta(laneFolder, locale))
@@ -4134,7 +4371,9 @@ async function getFocusedOpenApiLaneSidebarNodes({
 
   return [
     ...metaNodes,
-    ...fallbackNodes.filter((node) => !metaNodeUrls.has(node.url)),
+    ...fallbackNodes.filter(
+      (node) => node.type !== 'page' || !metaNodeUrls.has(node.url),
+    ),
   ];
 }
 
@@ -4204,9 +4443,7 @@ async function appendEndpointPagesToOpenApiParent(
   );
 
   if (lane) {
-    const existingUrls = new Set(
-      children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
-    );
+    const existingUrls = collectSidebarPageUrls(children);
     const endpointPages: DocsSidebarNode[] = (
       await Promise.all(
         getOpenApiOperationIds(lane).map(async (operationId) => ({
@@ -4218,10 +4455,14 @@ async function appendEndpointPagesToOpenApiParent(
         })),
       )
     ).filter((item) => !existingUrls.has(item.url));
+    const childrenWithEndpointPages =
+      lane.parentUrl[locale] === ZH_CN_RTC_REST_API_ENTRY_URL
+        ? groupZhCnRtcRestSidebarNodes([...children, ...endpointPages])
+        : [...children, ...endpointPages];
 
     return {
       ...node,
-      children: [...children, ...endpointPages],
+      children: childrenWithEndpointPages,
     };
   }
 

@@ -271,10 +271,22 @@ describe('product API reference sidebar links', () => {
     ['solutions', ['teleoperation'], 'teleoperation'],
   ])('adds the %s/%s client API link for %s', async (tab, slugs, productId) => {
     const sidebar = await loadSidebar('zh-CN', tab, slugs);
-    const reference = findSection(sidebar, ['参考', '参考信息']);
+    const reference = findSection(sidebar, ['参考', '参考信息', '开发资源']);
     const clientApiNode = reference?.children?.find(
       (child) => child.title === '客户端 API',
     );
+
+    if (productId === 'rtc') {
+      expect(clientApiNode).toMatchObject({
+        linked: true,
+        title: '客户端 API',
+        type: 'page',
+      });
+      expect(clientApiNode?.url).toMatch(
+        /^\/zh-CN\/api-reference\/api(?:\?|$)/,
+      );
+      return;
+    }
 
     expect(clientApiNode).toMatchObject({
       linked: true,
@@ -310,26 +322,49 @@ describe('product API reference sidebar links', () => {
 
   it('adds the RTC client API link before its metadata service API link', async () => {
     const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['rtc']);
-    const reference = findSection(sidebar, ['参考', '参考信息']);
-
-    expect(reference?.children?.slice(0, 2)).toMatchObject([
-      {
-        linked: true,
-        search: {
-          apiType: 'client',
-          product: 'rtc',
-        },
-        title: '客户端 API',
-        type: 'page',
-        url: '/zh-CN/api-reference/api',
-      },
-      {
-        collapsible: true,
-        defaultOpen: false,
-        title: '服务端 API',
-        type: 'section',
-      },
+    const reference = findSection(sidebar, [
+      '参考',
+      '参考信息',
+      '开发资源',
     ]);
+    const clientApiIndex =
+      reference?.children?.findIndex((child) => child.title === '客户端 API') ??
+      -1;
+    const serviceApiIndex =
+      reference?.children?.findIndex((child) => child.title === '服务端 API') ??
+      -1;
+    const clientApiNode = reference?.children?.[clientApiIndex];
+    const serviceApiNode = reference?.children?.[serviceApiIndex];
+
+    expect(clientApiIndex).toBeGreaterThanOrEqual(0);
+    expect(serviceApiIndex).toBeGreaterThan(clientApiIndex);
+    expect(clientApiNode).toMatchObject({
+      linked: true,
+      title: '客户端 API',
+      type: 'page',
+    });
+    expect(clientApiNode?.url).toMatch(/^\/zh-CN\/api-reference\/api(?:\?|$)/);
+    expect(serviceApiNode).toMatchObject({
+      collapsible: true,
+      defaultOpen: false,
+      title: '服务端 API',
+      type: 'section',
+    });
+  });
+
+  it('marks only the Chinese product client API hub entry as linked', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['rtc']);
+    const resources = findSection(sidebar, ['开发资源']);
+    const clientApi = resources?.children?.find(
+      (child) => child.title === '客户端 API',
+    );
+
+    expect(clientApi).toMatchObject({
+      linked: true,
+      title: '客户端 API',
+      type: 'page',
+    });
+    expect(clientApi?.url).toMatch(/^\/zh-CN\/api-reference\/api(?:\?|$)/);
   });
 
   it.each(zhCnServiceApiEntries)(
@@ -658,7 +693,90 @@ describe('product API reference sidebar links', () => {
     ).toMatchObject({
       defaultOpen: true,
       type: 'section',
+      url: '/zh-CN/api-reference/api-ref/rtc/create-ban-rule?from=%2Fzh-CN%2Frealtime-media%2Frtc&fromScope=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference',
     });
+    const serviceApi = findSectionWithChild(
+      payload.sidebar,
+      '服务端 API',
+      payload.activePath,
+    );
+    const serviceApiGroups = serviceApi?.children?.filter(
+      (child) => child.type === 'section',
+    );
+    const httpBasicAuth = findNode(
+      serviceApi?.children ?? [],
+      'HTTP 基本认证',
+    );
+    const interfaceReference = findSectionWithChild(
+      serviceApi?.children ?? [],
+      '接口参考',
+      payload.activePath,
+    );
+    const guideSection = serviceApi?.children?.find(
+      (child) => child.title === '接入指南',
+    );
+
+    expect(serviceApiGroups?.map((child) => child.title)).toEqual([
+      '接入指南',
+      'Webhook',
+      '最佳实践',
+      '接口参考',
+    ]);
+
+    expect(httpBasicAuth).toMatchObject({
+      title: 'HTTP 基本认证',
+      type: 'page',
+      url: '/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth',
+    });
+    expect(httpBasicAuth?.linked).toBeUndefined();
+    expect(guideSection).toMatchObject({
+      defaultOpen: false,
+      title: '接入指南',
+      type: 'section',
+    });
+    expect(interfaceReference).toMatchObject({
+      defaultOpen: true,
+      title: '接口参考',
+      type: 'section',
+    });
+    expect(interfaceReference?.children?.[0]).toMatchObject({
+      title: '创建规则',
+      type: 'page',
+      url: '/zh-CN/api-reference/api-ref/rtc/create-ban-rule',
+    });
+    expect(interfaceReference?.children?.at(-1)).toMatchObject({
+      title: '响应状态码',
+      type: 'page',
+      url: '/zh-CN/api-reference/rtc/restful/reference/response-code',
+    });
+  });
+
+  it('keeps the direct RTC API reference sidebar scoped to OpenAPI endpoints', async () => {
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'api-ref',
+      'rtc',
+      'create-ban-rule',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a RESTful API docs payload');
+    }
+
+    const titles = collectTitles(payload.sidebar);
+
+    expect(payload.activePath).toBe(
+      '/zh-CN/api-reference/api-ref/rtc/create-ban-rule',
+    );
+    expect(payload.activeTab).toBe('api-reference');
+    expect(payload.body.kind).toBe('openapi');
+    expect(titles).toContain('创建规则');
+    expect(titles).toContain('获取规则列表');
+    expect(titles).not.toContain('接入指南');
+    expect(titles).not.toContain('调用 RESTful API');
+    expect(titles).not.toContain('HTTP 基本认证');
+    expect(titles).not.toContain('Webhook');
+    expect(titles).not.toContain('最佳实践');
+    expect(titles).not.toContain('响应状态码');
   });
 
   it.each(['create-room', 'query-recording'])(
