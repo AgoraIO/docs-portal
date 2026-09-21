@@ -430,6 +430,7 @@ function HelpHub({
   locale?: 'en' | 'zh-CN';
   topics: HelpHubLink[];
 }) {
+  const compactCardLayout = cards.length <= 3;
   const copy =
     locale === 'zh-CN'
       ? {
@@ -448,14 +449,24 @@ function HelpHub({
 
   return (
     <section className="not-prose my-8 space-y-5">
-      <div className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+      <div
+        className={cn(
+          'rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6',
+          compactCardLayout && 'max-w-4xl',
+        )}
+      >
         <div className="max-w-2xl">
           <p className="text-sm leading-6 text-muted-foreground">
             {copy.intro}
           </p>
         </div>
 
-        <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <div
+          className={cn(
+            'mt-5 grid gap-3 sm:grid-cols-2',
+            compactCardLayout ? 'lg:grid-cols-3' : 'xl:grid-cols-4',
+          )}
+        >
           {cards.map((card) => (
             <a
               className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
