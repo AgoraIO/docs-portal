@@ -3909,8 +3909,8 @@ Web body
         ...createPage().data,
         info: {
           fullPath:
-            '/virtual/content/docs/zh-CN/solutions/flexible-classroom/reference/call-api.mdx',
-          path: 'zh-CN/solutions/flexible-classroom/reference/call-api.mdx',
+            '/virtual/content/docs/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api.mdx',
+          path: 'zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api.mdx',
         },
         title: '如何调用 API',
       },
@@ -3920,9 +3920,10 @@ Web body
         'solutions',
         'flexible-classroom',
         'reference',
+        'api-usage-and-limits',
         'call-api',
       ],
-      url: '/zh-CN/solutions/flexible-classroom/reference/call-api',
+      url: '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
     };
 
     mockedGetPage.mockReturnValue(page);
@@ -3959,10 +3960,17 @@ Web body
                           url: '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
                         },
                         {
-                          $id: 'call-api',
-                          name: '如何调用 API',
-                          type: 'page',
-                          url: '/zh-CN/solutions/flexible-classroom/reference/call-api',
+                          $id: 'api-usage-and-limits',
+                          children: [
+                            {
+                              $id: 'call-api',
+                              name: '如何调用 API',
+                              type: 'page',
+                              url: '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
+                            },
+                          ],
+                          name: 'API 使用与限制',
+                          type: 'folder',
                         },
                       ],
                       name: '参考',
@@ -4007,6 +4015,7 @@ Web body
     const payload = await loadDocsPagePayload('zh-CN', 'solutions', [
       'flexible-classroom',
       'reference',
+      'api-usage-and-limits',
       'call-api',
     ]);
 
