@@ -340,24 +340,35 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton
-        aria-expanded={isOpen}
-        className={cn(sidebarToggleClassName, 'overflow-visible')}
-        onClick={() => setIsOpen((value) => !value)}
-        type="button"
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          <span className={sidebarSectionTitleClassName}>
-            {getSidebarDisplayTitle(title, url)}
-          </span>
-        </span>
-        <ChevronDownIcon
-          className={cn(
-            'size-4 shrink-0 transition-transform',
-            isOpen ? 'rotate-0' : '-rotate-90',
-          )}
-        />
-      </SidebarMenuButton>
+      <div className="flex min-w-0 items-stretch gap-1">
+        <SidebarMenuButton
+          asChild
+          className={cn(sidebarToggleClassName, 'flex-1 overflow-visible')}
+          isActive={url === activePath}
+        >
+          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+            <span className="flex min-w-0 items-center gap-2">
+              <span className={sidebarSectionTitleClassName}>
+                {getSidebarDisplayTitle(title, url)}
+              </span>
+            </span>
+          </Link>
+        </SidebarMenuButton>
+        <button
+          aria-expanded={isOpen}
+          aria-label={`${title} 子页面`}
+          className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+          onClick={() => setIsOpen((value) => !value)}
+          type="button"
+        >
+          <ChevronDownIcon
+            className={cn(
+              'size-4 shrink-0 transition-transform',
+              isOpen ? 'rotate-0' : '-rotate-90',
+            )}
+          />
+        </button>
+      </div>
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>
