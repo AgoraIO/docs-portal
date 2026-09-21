@@ -354,8 +354,8 @@ describe('product API reference sidebar links', () => {
 
   it('marks only the Chinese product client API hub entry as linked', async () => {
     const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['rtc']);
-    const resources = findSection(sidebar, ['开发资源']);
-    const clientApi = resources?.children?.find(
+    const reference = findSection(sidebar, ['参考']);
+    const clientApi = reference?.children?.find(
       (child) => child.title === '客户端 API',
     );
 

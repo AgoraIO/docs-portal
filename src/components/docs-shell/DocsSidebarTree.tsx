@@ -340,10 +340,10 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <div className="flex min-w-0 items-stretch gap-1">
+      <div className="relative flex min-w-0 items-stretch">
         <SidebarMenuButton
           asChild
-          className={cn(sidebarToggleClassName, 'flex-1 overflow-visible')}
+          className={cn(sidebarToggleClassName, 'flex-1 overflow-visible pr-9')}
           isActive={url === activePath}
         >
           <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
@@ -357,7 +357,7 @@ function SidebarLinkedSection({
         <button
           aria-expanded={isOpen}
           aria-label={`${title} 子页面`}
-          className="flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-[color:var(--docs-soft-fill)] hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+          className="absolute top-1/2 right-3 flex size-4 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-[color:var(--ink-1)] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
           onClick={() => setIsOpen((value) => !value)}
           type="button"
         >

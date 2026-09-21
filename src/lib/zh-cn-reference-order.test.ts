@@ -75,24 +75,24 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'realtime-media/rtc/reference/meta.json': [
     'downloads',
+    '[客户端 API](/zh-CN/api-reference/api?product=rtc&apiType=client)',
     '[服务端 API](/zh-CN/api-reference/api-ref/rtc)',
-    {
-      type: 'group',
-      title: '错误码',
-      collapsible: true,
-      pages: ['error-code', 'response-code'],
-    },
+    'error-code',
     {
       type: 'group',
       title: '迁移升级',
       collapsible: true,
       pages: ['migration-guide', 'after-migrate', 'sunset-plan'],
     },
-    'key-concept',
-    'events',
     {
       type: 'group',
-      title: '平台支持',
+      title: '概念事件',
+      collapsible: true,
+      pages: ['key-concept', 'events'],
+    },
+    {
+      type: 'group',
+      title: '平台兼容性',
       collapsible: true,
       pages: ['supported-platforms', 'browser-compatibility'],
     },
@@ -264,6 +264,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
 };
 
 const intentionallyChangedReferencePages = new Set([
+  'realtime-media/rtc/reference/meta.json',
   'solutions/teleoperation/reference/meta.json',
 ]);
 
