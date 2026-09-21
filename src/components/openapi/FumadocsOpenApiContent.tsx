@@ -35,6 +35,7 @@ import {
 import * as JsxRuntime from 'react/jsx-runtime';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
@@ -1724,6 +1725,13 @@ function OpenApiMarkdownBlockquote({ children }: { children?: ReactNode }) {
   );
 }
 
+function OpenApiMarkdownTable(props: ComponentProps<'table'>) {
+  const locale = useContext(OpenApiLocaleContext);
+  const Table = useMemo(() => createDocsTableComponent(locale), [locale]);
+
+  return <Table {...props} />;
+}
+
 function createOpenApiMarkdownProcessor() {
   function rehypeReact(this: { compiler?: unknown }) {
     this.compiler = (
@@ -1738,6 +1746,7 @@ function createOpenApiMarkdownProcessor() {
           ...defaultMdxComponents,
           blockquote: OpenApiMarkdownBlockquote,
           pre: OpenApiMarkdownCodeBlock,
+          table: OpenApiMarkdownTable,
         },
       });
   }

@@ -2842,6 +2842,69 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
+  it('renders OpenAPI Markdown tables with the docs table wrapper and cells', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/kicking-rule',
+            } as OpenApiOperationItem,
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Channel Management API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/kicking-rule': {
+                  post: {
+                    operationId: 'create-ban-rule',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Create a ban rule',
+                    'x-docs-sections': [
+                      {
+                        markdown: [
+                          '| ip | cname | uid | 过滤规则 |',
+                          '| --- | --- | --- | --- |',
+                          '| ✔ | ✘ | ✘ | 所有使用该 `ip` 的用户都无法登录 App 中的任何频道。 |',
+                          '| ✘ | ✔ | ✔ | 该 `uid` 无法登录 App 中该 `cname` 对应的频道。 |',
+                        ].join('\n'),
+                        position: 'after-description',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const table = await screen.findByRole('table');
+    expect(table.closest('.docs-table-container')).toBeInstanceOf(HTMLElement);
+    expect(screen.getByRole('columnheader', { name: 'ip' })).toBeVisible();
+    expect(screen.getByRole('columnheader', { name: 'cname' })).toBeVisible();
+    expect(screen.getByRole('columnheader', { name: 'uid' })).toBeVisible();
+    expect(
+      screen.getByRole('columnheader', { name: '过滤规则' }),
+    ).toBeVisible();
+    expect(
+      screen.getByText('所有使用该', { exact: false }).closest('td'),
+    ).toHaveTextContent('所有使用该 ip 的用户都无法登录 App 中的任何频道。');
+    const rows = within(table).getAllByRole('row');
+    expect(within(rows[2]).getAllByRole('cell')[3]).toHaveTextContent(
+      '该 uid 无法登录 App 中该 cname 对应的频道。',
+    );
+  });
+
   it('renders structured docs code sample groups without mixing them into descriptions', async () => {
     render(
       <FumadocsOpenApiContent
