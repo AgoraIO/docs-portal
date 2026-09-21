@@ -1187,6 +1187,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     const authHeading = screen.getByRole('heading', { name: '鉴权' });
     expect(authHeading).toBeInTheDocument();
+    expect(authHeading).toHaveClass('openapi-section-heading');
     expect(
       screen.getByRole('heading', { name: 'Basic Auth' }),
     ).toBeInTheDocument();
@@ -1383,6 +1384,11 @@ describe('FumadocsOpenApiContent', () => {
                                   '是否启用 String UID。\n> 同一频道内，Int 型和 String 型的用户 ID 不可混用。更多信息请参考[如何使用 String UID](https://example.com/string-uid)。',
                                 type: 'boolean',
                               },
+                              legacy_html_notice: {
+                                description:
+                                  '旧格式注意事项。\n> <ul><li>该字段已废弃。</li><li>解密方式必须与频道设置的加密方式一致。</li></ul>',
+                                type: 'integer',
+                              },
                             },
                             type: 'object',
                           },
@@ -1404,7 +1410,7 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(await screen.findAllByText('注意')).toHaveLength(4);
+    expect(await screen.findAllByText('注意')).toHaveLength(5);
     const channelCode = screen.getAllByText('channel').at(0);
     expect(channelCode?.tagName).toBe('CODE');
     const channelNote = screen.getByText((_content, node) =>
@@ -1439,6 +1445,14 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.getByRole('link', { name: '如何使用 String UID' }),
     ).toHaveAttribute('href', 'https://example.com/string-uid');
+    const deprecatedRule = screen.getByText('该字段已废弃。');
+    expect(deprecatedRule.tagName).toBe('LI');
+    expect(
+      deprecatedRule.closest('.openapi-markdown-blockquote'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('解密方式必须与频道设置的加密方式一致。'),
+    ).toBeVisible();
   });
 
   it('keeps OpenAPI blockquote descriptions as blockquotes outside zh-CN', async () => {
@@ -2839,6 +2853,69 @@ describe('FumadocsOpenApiContent', () => {
     );
     expect(calloutLink.closest('.openapi-markdown')).toBeInstanceOf(
       HTMLElement,
+    );
+  });
+
+  it('renders OpenAPI Markdown tables with the docs table wrapper and cells', async () => {
+    render(
+      <FumadocsOpenApiContent
+        pageProps={{
+          operations: [
+            {
+              method: 'post',
+              path: '/v1/kicking-rule',
+            } as OpenApiOperationItem,
+          ],
+          payload: {
+            bundled: {
+              info: {
+                title: 'Channel Management API',
+              },
+              openapi: '3.2.0',
+              paths: {
+                '/v1/kicking-rule': {
+                  post: {
+                    operationId: 'create-ban-rule',
+                    responses: {
+                      '200': {
+                        description: 'OK',
+                      },
+                    },
+                    summary: 'Create a ban rule',
+                    'x-docs-sections': [
+                      {
+                        markdown: [
+                          '| ip | cname | uid | 过滤规则 |',
+                          '| --- | --- | --- | --- |',
+                          '| ✔ | ✘ | ✘ | 所有使用该 `ip` 的用户都无法登录 App 中的任何频道。 |',
+                          '| ✘ | ✔ | ✔ | 该 `uid` 无法登录 App 中该 `cname` 对应的频道。 |',
+                        ].join('\n'),
+                        position: 'after-description',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const table = await screen.findByRole('table');
+    expect(table.closest('.docs-table-container')).toBeInstanceOf(HTMLElement);
+    expect(screen.getByRole('columnheader', { name: 'ip' })).toBeVisible();
+    expect(screen.getByRole('columnheader', { name: 'cname' })).toBeVisible();
+    expect(screen.getByRole('columnheader', { name: 'uid' })).toBeVisible();
+    expect(
+      screen.getByRole('columnheader', { name: '过滤规则' }),
+    ).toBeVisible();
+    expect(
+      screen.getByText('所有使用该', { exact: false }).closest('td'),
+    ).toHaveTextContent('所有使用该 ip 的用户都无法登录 App 中的任何频道。');
+    const rows = within(table).getAllByRole('row');
+    expect(within(rows[2]).getAllByRole('cell')[3]).toHaveTextContent(
+      '该 uid 无法登录 App 中该 cname 对应的频道。',
     );
   });
 
