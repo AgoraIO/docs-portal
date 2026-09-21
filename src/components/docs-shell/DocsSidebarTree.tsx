@@ -51,7 +51,12 @@ const expandedSidebarChildrenClassName =
 const nestedExpandedSidebarChildrenClassName =
   'mt-0.5 flex flex-col gap-0.5 border-l border-[color:var(--line-strong)] pl-3';
 
-const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
+const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [
+  [
+    '/zh-CN/realtime-media/cloud-recording/reference/ncs-events',
+    '回调事件概览',
+  ],
+];
 
 export function DocsSidebarTree({
   activePath,
@@ -322,7 +327,9 @@ function SidebarLinkedSection({
         >
           <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
             <span className="flex min-w-0 items-center gap-2">
-              <span className={sidebarSectionTitleClassName}>{title}</span>
+              <span className={sidebarSectionTitleClassName}>
+                {getSidebarDisplayTitle(title, url)}
+              </span>
             </span>
             <ChevronDownIcon className="size-4 shrink-0 -rotate-90" />
           </Link>
@@ -340,7 +347,9 @@ function SidebarLinkedSection({
         type="button"
       >
         <span className="flex min-w-0 items-center gap-2">
-          <span className={sidebarSectionTitleClassName}>{title}</span>
+          <span className={sidebarSectionTitleClassName}>
+            {getSidebarDisplayTitle(title, url)}
+          </span>
         </span>
         <ChevronDownIcon
           className={cn(
@@ -898,14 +907,14 @@ function SidebarPageLabel({
 }
 
 function getSidebarDisplayTitle(title: string, url: string) {
-  if (isZhCnProductOverviewUrl(url) && title.endsWith('概览')) {
-    return '概览';
-  }
-
   for (const [suffix, shortTitle] of sidebarTitleOverrides) {
     if (url.endsWith(suffix)) {
       return shortTitle;
     }
+  }
+
+  if (isZhCnProductOverviewUrl(url) && title.endsWith('概览')) {
+    return '概览';
   }
 
   return title;
