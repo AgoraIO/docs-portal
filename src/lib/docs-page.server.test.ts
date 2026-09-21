@@ -1123,6 +1123,23 @@ Why teams use it.`,
   } as unknown as PageWithSource;
 }
 
+function createZhPage(): PageWithSource {
+  return {
+    ...createPage(),
+    data: {
+      ...createPage().data,
+      info: {
+        fullPath: '/virtual/content/docs/zh-CN/introduction/about-agora.mdx',
+        path: 'zh-CN/introduction/about-agora.mdx',
+      },
+    },
+    path: 'zh-CN/introduction/about-agora.mdx',
+    slugs: ['zh-CN', 'introduction', 'about-agora'],
+    type: 'docs',
+    url: '/zh-CN/introduction/about-agora',
+  } as unknown as PageWithSource;
+}
+
 function mockPagesByRequestedSlugs() {
   mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
     const slugPath = slugs.join('/');
@@ -1759,6 +1776,86 @@ Web body
     });
   });
 
+  it('adds title platform badges for zh-CN selected platform routes', async () => {
+    const page = createZhPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## 共享内容
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android 设置
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web 设置
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('zh-CN', 'introduction', [
+      'about-agora',
+      'web',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/zh-CN/introduction/about-agora',
+      markdownUrl: '/zh-CN/introduction/about-agora/web.md',
+      titlePlatforms: ['web'],
+    });
+  });
+
+  it('does not add title platform badges for non-zh-CN selected platform routes', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android setup
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'en') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('en', 'introduction', [
+      'about-agora',
+      'web',
+    ]);
+
+    expect(unwrapPayload(payload)).not.toHaveProperty('titlePlatforms');
+  });
+
   it('resolves platform alias URL segments to their canonical platform tabs', async () => {
     const page = createPage();
 
@@ -1951,6 +2048,31 @@ Web body
         },
       },
       markdownUrl: '/en/ai/get-started/platform-split/ios.md',
+    });
+  });
+
+  it('infers zh-CN title platform badges from API reference platform paths', async () => {
+    const page = {
+      ...createZhPage(),
+      path: 'zh-CN/api-reference/rtc/android/(current)/overview.mdx',
+      slugs: ['zh-CN', 'api-reference', 'rtc', 'android', 'overview'],
+      url: '/zh-CN/api-reference/rtc/android/overview',
+    } as unknown as PageWithSource;
+
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? page : undefined,
+    );
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'rtc',
+      'android',
+      'overview',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/zh-CN/api-reference/rtc/android/overview',
+      titlePlatforms: ['android'],
     });
   });
 

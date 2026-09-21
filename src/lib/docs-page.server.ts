@@ -62,9 +62,14 @@ import {
 import {
   buildCanonicalPlatformTocText,
   buildPlatformMarkdownText,
+  extractStructuredPlatformKeys,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
-import type { PlatformKey } from './platforms/registry';
+import {
+  isKnownPlatform,
+  normalizePlatformKey,
+  type PlatformKey,
+} from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
@@ -111,6 +116,25 @@ const SDKS_ROOT_SLUG = 'sdks';
 const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
   'mcp-integrate',
   'skills-integrate',
+]);
+const TITLE_PLATFORM_SEGMENT_MAP = new Map<string, PlatformKey>([
+  ['agent-go', 'go'],
+  ['agent-python', 'python'],
+  ['agent-typescript', 'typescript'],
+  ['cpp-all-platforms', 'cpp'],
+  ['csharp-windows', 'csharp'],
+  ['go-api', 'go'],
+  ['java-api', 'java'],
+  ['python-api', 'python'],
+  ['react-sdk', 'react'],
+  ['restclient-go', 'go'],
+  ['restclient-java', 'java'],
+  ['unreal-blueprint', 'blueprint'],
+  ['unreal-cpp', 'unreal'],
+]);
+const TITLE_PLATFORM_EXCLUDED_KEYS = new Set<PlatformKey>([
+  'restful',
+  'restful-api',
 ]);
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
@@ -853,6 +877,12 @@ export async function loadDocsPagePayload(
       ]),
     ),
   );
+  const titlePlatforms = getTitlePlatforms({
+    locale,
+    page,
+    processedText,
+    requestedPlatform,
+  });
 
   const apiPayload = {
     activePath: page.url,
@@ -919,6 +949,7 @@ export async function loadDocsPagePayload(
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
+    ...(titlePlatforms.length > 0 ? { titlePlatforms } : {}),
     toc,
   };
 
@@ -943,6 +974,82 @@ export async function loadDocsPagePayload(
         sidebarHeader: productSidebarPayload.sidebarHeader,
       }
     : apiPayload;
+}
+
+function getTitlePlatforms({
+  locale,
+  page,
+  processedText,
+  requestedPlatform,
+}: {
+  locale: string;
+  page: PageWithSource;
+  processedText: string;
+  requestedPlatform?: PlatformKey;
+}): PlatformKey[] {
+  if (locale !== 'zh-CN') {
+    return [];
+  }
+
+  const explicitTitlePlatforms = getExplicitTitlePlatforms(page);
+
+  if (explicitTitlePlatforms.length > 0) {
+    return explicitTitlePlatforms;
+  }
+
+  if (requestedPlatform) {
+    return [requestedPlatform];
+  }
+
+  const structuredPlatforms = extractStructuredPlatformKeys(processedText);
+
+  if (structuredPlatforms.length === 1) {
+    return structuredPlatforms;
+  }
+
+  return getPathTitlePlatforms(page);
+}
+
+function getExplicitTitlePlatforms(page: PageWithSource): PlatformKey[] {
+  if (
+    !('titlePlatforms' in page.data) ||
+    !Array.isArray(page.data.titlePlatforms)
+  ) {
+    return [];
+  }
+
+  return page.data.titlePlatforms
+    .map((platform) => normalizePlatformKey(platform))
+    .filter(isKnownPlatform);
+}
+
+function getPathTitlePlatforms(page: PageWithSource): PlatformKey[] {
+  const platforms: PlatformKey[] = [];
+
+  for (const segment of page.slugs.slice(2)) {
+    const mappedPlatform = TITLE_PLATFORM_SEGMENT_MAP.get(segment);
+    const platform = mappedPlatform ?? normalizePlatformSlugSegment(segment);
+
+    if (
+      platform &&
+      !TITLE_PLATFORM_EXCLUDED_KEYS.has(platform) &&
+      !platforms.includes(platform)
+    ) {
+      platforms.push(platform);
+    }
+  }
+
+  return platforms.length === 1 ? platforms : [];
+}
+
+function normalizePlatformSlugSegment(
+  segment: string,
+): PlatformKey | undefined {
+  const normalizedSegment = normalizePlatformKey(segment);
+
+  return isKnownPlatform(normalizedSegment)
+    ? (normalizedSegment as PlatformKey)
+    : undefined;
 }
 
 function canonicalizeZhCnProductIaRedirectUrl(

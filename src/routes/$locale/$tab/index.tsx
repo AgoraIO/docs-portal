@@ -128,6 +128,7 @@ function TabIndexPage() {
     slug,
     toc,
     title,
+    titlePlatforms,
   } = Route.useLoaderData();
 
   return (
@@ -144,6 +145,7 @@ function TabIndexPage() {
       sidebarHeader={sidebarHeader}
       slug={slug}
       title={title}
+      titlePlatforms={titlePlatforms}
       toc={toc}
     />
   );

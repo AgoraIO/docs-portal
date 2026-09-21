@@ -39,7 +39,7 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
-import type { PlatformKey } from '@/lib/platforms/registry';
+import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
   PlatformPanel,
@@ -83,6 +83,7 @@ export function DocsContent({
   sidebarHeader,
   slug,
   title,
+  titlePlatforms = [],
   toc,
 }: {
   body?: DocsContentBodyPayload;
@@ -97,6 +98,7 @@ export function DocsContent({
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
   title?: string;
+  titlePlatforms?: PlatformKey[];
   toc: TOCItemType[];
 }) {
   const { i18n } = useTranslation('common');
@@ -144,6 +146,9 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
+  const titlePlatformLabels = titlePlatforms.map((platform) =>
+    getPlatformLabel(platform, currentLocale),
+  );
 
   useEffect(() => {
     if (!isMdxBody) {
@@ -238,9 +243,28 @@ export function DocsContent({
           )}
         >
           <div className="min-w-0 flex-1">
-            <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
-              {displayTitle}
-            </h1>
+            <div className="flex max-w-4xl flex-wrap items-center gap-x-3 gap-y-2">
+              <h1 className="min-w-0 text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
+                {displayTitle}
+              </h1>
+              {titlePlatformLabels.length > 0 ? (
+                <ul
+                  aria-label={
+                    currentLocale === 'zh-CN' ? '适用平台' : 'Platforms'
+                  }
+                  className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
+                >
+                  {titlePlatformLabels.map((label) => (
+                    <li
+                      className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
+                      key={label}
+                    >
+                      {label}
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
+            </div>
             <p
               className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
               data-testid="docs-last-updated"

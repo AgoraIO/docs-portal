@@ -192,6 +192,7 @@ function Page() {
     slug,
     toc,
     title,
+    titlePlatforms,
   } = Route.useLoaderData();
 
   // Remember this page so the search dialog can offer it under "Recent". Keyed
@@ -221,6 +222,7 @@ function Page() {
       sidebarHeader={sidebarHeader}
       slug={slug}
       title={title}
+      titlePlatforms={titlePlatforms}
       toc={toc}
     />
   );

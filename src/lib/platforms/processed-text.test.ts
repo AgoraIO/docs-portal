@@ -4,6 +4,7 @@ import {
   buildCanonicalPlatformTocText,
   buildPlatformLLMText,
   buildPlatformMarkdownText,
+  extractStructuredPlatformKeys,
   extractStructuredPlatformTabs,
 } from './processed-text';
 
@@ -54,6 +55,17 @@ iOS inline body
       defaultPlatform: 'android',
       platforms: ['android', 'web'],
     });
+  });
+
+  it('extracts a single structured platform key', () => {
+    const processedText = `
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web body
+<_PlatformProcessedMarker close="true" />
+`;
+
+    expect(extractStructuredPlatformKeys(processedText)).toEqual(['web']);
+    expect(extractStructuredPlatformTabs(processedText)).toBeUndefined();
   });
 
   it('defaults structured platform tabs to Android when Android is present', () => {
