@@ -70,6 +70,7 @@ import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
+import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -163,6 +164,7 @@ type ActiveAccordion = {
 };
 
 type AccordionPageState = {
+  accordionResetKey: number;
   activeAccordion?: ActiveAccordion;
   codeBlockTabValues: Record<string, string>;
   setActiveAccordion: Dispatch<SetStateAction<ActiveAccordion | undefined>>;
@@ -270,17 +272,36 @@ function AccordionCopyButton({ id }: { id: string }) {
 
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
   const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
+  const [accordionResetKey, setAccordionResetKey] = useState(0);
   const [codeBlockTabValues, setCodeBlockTabValues] = useState<
     Record<string, string>
   >({});
+
+  useEffect(() => {
+    const resetActiveAccordion = () => {
+      setActiveAccordion(undefined);
+      setAccordionResetKey((current) => current + 1);
+    };
+
+    window.addEventListener(PLATFORM_PREFERENCE_EVENT, resetActiveAccordion);
+
+    return () => {
+      window.removeEventListener(
+        PLATFORM_PREFERENCE_EVENT,
+        resetActiveAccordion,
+      );
+    };
+  }, []);
+
   const value = useMemo(
     () => ({
+      accordionResetKey,
       activeAccordion,
       codeBlockTabValues,
       setActiveAccordion,
       setCodeBlockTabValues,
     }),
-    [activeAccordion, codeBlockTabValues],
+    [accordionResetKey, activeAccordion, codeBlockTabValues],
   );
 
   return (
@@ -535,6 +556,7 @@ function Accordions({
     typeof defaultValue === 'string' ? defaultValue : undefined;
   const controlledSingleValue = typeof value === 'string' ? value : undefined;
   const [localValue, setLocalValue] = useState(defaultSingleValue ?? '');
+  const appliedDefaultResetKeyRef = useRef(0);
   const setRootRef = useCallback(
     (element: HTMLDivElement | null) => {
       rootRef.current = element;
@@ -623,6 +645,14 @@ function Accordions({
   }, [restoreVersionScrollAnchor, selectedValue, type]);
 
   useEffect(() => {
+    if (
+      pageState &&
+      pageState.accordionResetKey !== appliedDefaultResetKeyRef.current
+    ) {
+      appliedDefaultValueRef.current = false;
+      appliedDefaultResetKeyRef.current = pageState.accordionResetKey;
+    }
+
     if (
       !(
         type === 'single' &&

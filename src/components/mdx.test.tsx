@@ -577,6 +577,40 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Android body')).not.toBeVisible();
   });
 
+  it('resets the active accordion when the platform preference changes', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    const { rerender } = render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="android-latest">
+          <Accordion title="Android latest" value="android-latest">
+            Android body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.getByText('Android body')).toBeVisible();
+
+    rerender(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="ios-latest">
+          <Accordion title="iOS latest" value="ios-latest">
+            iOS body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.queryByText('iOS body')).not.toBeInTheDocument();
+
+    fireEvent(window, new CustomEvent(PLATFORM_PREFERENCE_EVENT));
+
+    expect(screen.getByText('iOS body')).toBeVisible();
+  });
+
   it('opens a version when the docs TOC publishes its hash target', async () => {
     const components = getMDXComponents();
     const Accordions = components.Accordions as AccordionsComponent;
