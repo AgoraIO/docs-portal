@@ -2538,8 +2538,6 @@ const ZH_CN_RTMP_GATEWAY_API_ENTRY_URL =
 const ZH_CN_RTMP_GATEWAY_API_LANDING_URL =
   '/zh-CN/api-reference/api-ref/rtmp-gateway/restful';
 const ZH_CN_RTC_REST_API_ENTRY_URL = '/zh-CN/api-reference/api-ref/rtc';
-const ZH_CN_RTC_REST_DEFAULT_ENTRY_URL =
-  '/zh-CN/api-reference/api-ref/rtc/create-ban-rule';
 const ZH_CN_WHITEBOARD_API_ENTRY_URL =
   '/zh-CN/api-reference/api-ref/whiteboard/restful';
 const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
@@ -2670,11 +2668,6 @@ async function embedZhCnServiceApiSidebars(
           id: `${node.id}-embedded`,
           title: node.title,
           type: 'section' as const,
-          url: getEmbeddedServiceApiSectionUrl(
-            node.url,
-            productPath,
-            sourcePath,
-          ),
         };
       }
 
@@ -2695,24 +2688,6 @@ async function embedZhCnServiceApiSidebars(
       };
     }),
   );
-}
-
-function getEmbeddedServiceApiSectionUrl(
-  apiEntryUrl: string,
-  productPath: string,
-  sourcePath?: string,
-): string | undefined {
-  if (apiEntryUrl !== ZH_CN_RTC_REST_API_ENTRY_URL) {
-    return undefined;
-  }
-
-  const search = new URLSearchParams({ from: productPath });
-
-  if (sourcePath) {
-    search.set('fromScope', sourcePath);
-  }
-
-  return `${ZH_CN_RTC_REST_DEFAULT_ENTRY_URL}?${search.toString()}`;
 }
 
 export function normalizeZhCnEmbeddedApiSidebar(

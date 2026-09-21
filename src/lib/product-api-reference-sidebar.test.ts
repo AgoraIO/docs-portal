@@ -350,6 +350,14 @@ describe('product API reference sidebar links', () => {
       title: '服务端 API',
       type: 'section',
     });
+    expect(serviceApiNode?.url).toBeUndefined();
+    expect(collectUrls(serviceApiNode?.children ?? [])).toEqual(
+      expect.arrayContaining([
+        expect.stringMatching(
+          /^\/zh-CN\/api-reference\/api-ref\/rtc\//,
+        ),
+      ]),
+    );
   });
 
   it('marks only the Chinese product client API hub entry as linked', async () => {
@@ -693,13 +701,13 @@ describe('product API reference sidebar links', () => {
     ).toMatchObject({
       defaultOpen: true,
       type: 'section',
-      url: '/zh-CN/api-reference/api-ref/rtc/create-ban-rule?from=%2Fzh-CN%2Frealtime-media%2Frtc&fromScope=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference',
     });
     const serviceApi = findSectionWithChild(
       payload.sidebar,
       '服务端 API',
       payload.activePath,
     );
+    expect(serviceApi?.url).toBeUndefined();
     const serviceApiGroups = serviceApi?.children?.filter(
       (child) => child.type === 'section',
     );
@@ -814,8 +822,8 @@ describe('product API reference sidebar links', () => {
       defaultOpen: true,
       title: '服务端 API',
       type: 'section',
-      url: '/zh-CN/api-reference/api-ref/rtc/create-ban-rule?from=%2Fzh-CN%2Frealtime-media%2Frtc&fromScope=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference',
     });
+    expect(serviceApi?.url).toBeUndefined();
     expect(webhook).toMatchObject({
       defaultOpen: true,
       title: 'Webhook',
