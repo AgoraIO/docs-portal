@@ -1187,6 +1187,7 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     const authHeading = screen.getByRole('heading', { name: '鉴权' });
     expect(authHeading).toBeInTheDocument();
+    expect(authHeading).toHaveClass('openapi-section-heading');
     expect(
       screen.getByRole('heading', { name: 'Basic Auth' }),
     ).toBeInTheDocument();
