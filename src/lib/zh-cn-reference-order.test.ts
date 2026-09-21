@@ -9,10 +9,10 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   'realtime-media/cloud-recording/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/cloud-recording)',
     'api-reference',
-    'quota',
     'response-code',
-    'concepts',
     'ncs-events',
+    'quota',
+    'concepts',
   ],
   'realtime-media/danmaku/reference/meta.json': [
     'downloads',
@@ -24,9 +24,9 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   'realtime-media/fusion-cdn/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/fusion-cdn)',
     '[参考信息](/zh-CN/api-reference/fusion-cdn/restful/api/reference)',
-    'quota',
     'response-code',
     'ncs-event',
+    'quota',
   ],
   'realtime-media/marketplace/reference/meta.json': [
     'faceunity-ar-api',
@@ -39,17 +39,17 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'realtime-media/media-pull/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/media-pull)',
-    '[常用视频属性](/zh-CN/api-reference/media-pull/restful/api/video-profile)',
-    'quota',
     'response-code',
     'ncs-events',
+    '[常用视频属性](/zh-CN/api-reference/media-pull/restful/api/video-profile)',
+    'quota',
   ],
   'realtime-media/media-push/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/media-push)',
-    '[常用视频属性](/zh-CN/api-reference/media-push/restful/api/video-profile)',
-    'quota',
     'response-code',
     'ncs-events',
+    '[常用视频属性](/zh-CN/api-reference/media-push/restful/api/video-profile)',
+    'quota',
   ],
   'realtime-media/meeting/reference/meta.json': [
     'downloads',
@@ -63,9 +63,9 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
         '[查询录制列表](/zh-CN/api-reference/meeting/restful/api/query-recording?from=%2Fzh-CN%2Frealtime-media%2Fmeeting)',
       ],
     },
-    'quota',
     'response-code',
     'webhook-events',
+    'quota',
     'platform-support',
   ],
   'realtime-media/rtc-server-sdk/reference/meta.json': [
@@ -88,12 +88,8 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
       collapsible: true,
       pages: ['migration-guide', 'after-migrate', 'sunset-plan'],
     },
-    {
-      type: 'group',
-      title: '概念事件',
-      collapsible: true,
-      pages: ['key-concept', 'events'],
-    },
+    'key-concept',
+    'events',
     {
       type: 'group',
       title: '平台支持',
@@ -114,10 +110,10 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   ],
   'realtime-media/rtmp-gateway/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/rtmp-gateway)',
-    '[常用视频属性](/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile)',
-    'quota',
     'response-code',
     'ncs-events',
+    'quota',
+    '[常用视频属性](/zh-CN/api-reference/rtmp-gateway/restful/api/video-profile)',
   ],
   'realtime-media/rtsa/reference/meta.json': [
     'downloads',
@@ -138,9 +134,9 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   'realtime-media/transcoding/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/cloud-transcoding)',
     '[常用视频属性](/zh-CN/api-reference/cloud-transcoding/restful/api/video-profile)',
-    'quota',
     'response-code',
     '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events)',
+    'quota',
   ],
   'realtime-media/usage-analytics/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/agora-analytics)',
@@ -176,8 +172,8 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     'downloads',
     '[服务端 API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom)',
     'call-api',
-    'quota',
     'response-code',
+    'quota',
     'migration',
     'basic-concept',
     'platform-support',

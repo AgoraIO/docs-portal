@@ -2829,38 +2829,95 @@ function addRealtimeMediaApiReferenceSidebarItem(
       ])
     : new Set<string>();
 
-  return nodes.map((node) => {
-    if (node.type !== 'section') {
-      return node;
-    }
+  if (restApiLink) {
+    return nodes.map((node) => {
+      if (node.type !== 'section') {
+        return node;
+      }
 
-    if (
-      isProductReferenceSectionTitle(node.title, restApiLink?.locale ?? 'zh-CN')
-    ) {
+      if (isProductReferenceSectionTitle(node.title, restApiLink.locale)) {
+        return {
+          ...node,
+          children: [
+            ...(clientApiPageNode ? [clientApiPageNode] : []),
+            ...(restApiPageNode ? [restApiPageNode] : []),
+            ...filterSidebarNodes(
+              node.children,
+              (child) =>
+                child.type !== 'page' ||
+                (child.title !== '客户端 API' &&
+                  !existingRestApiUrls.has(child.url)),
+            ),
+          ],
+        };
+      }
+
       return {
         ...node,
-        children: [
-          ...(clientApiPageNode ? [clientApiPageNode] : []),
-          ...(restApiPageNode ? [restApiPageNode] : []),
-          ...filterSidebarNodes(
-            node.children,
-            (child) =>
-              child.type !== 'page' ||
-              (child.title !== '客户端 API' &&
-                !existingRestApiUrls.has(child.url)),
-          ),
-        ],
+        children: addRealtimeMediaApiReferenceSidebarItem(
+          node.children,
+          activePath,
+        ),
       };
-    }
+    });
+  }
 
-    return {
-      ...node,
-      children: addRealtimeMediaApiReferenceSidebarItem(
-        node.children,
-        activePath,
-      ),
-    };
-  });
+  const insertApiNodes = (children: DocsSidebarNode[]) => {
+    const filteredChildren = filterSidebarNodes(
+      children,
+      (child) =>
+        child.type !== 'page' ||
+        (child.title !== '客户端 API' && !existingRestApiUrls.has(child.url)),
+    );
+    const apiNodes = [clientApiPageNode, restApiPageNode].filter(
+      (node): node is DocsSidebarPageNode => node !== null,
+    );
+    const lastDownloadIndex = filteredChildren.reduce(
+      (lastIndex, child, index) =>
+        child.type === 'page' && child.title === '下载' ? index : lastIndex,
+      -1,
+    );
+    const insertionIndex = lastDownloadIndex + 1;
+
+    return [
+      ...filteredChildren.slice(0, insertionIndex),
+      ...apiNodes,
+      ...filteredChildren.slice(insertionIndex),
+    ];
+  };
+
+  const visit = (
+    currentNodes: DocsSidebarNode[],
+  ): { inserted: boolean; nodes: DocsSidebarNode[] } => {
+    let inserted = false;
+    const nextNodes = currentNodes.map((node) => {
+      if (node.type !== 'section') {
+        return node;
+      }
+
+      const visitedChildren = visit(node.children);
+      if (visitedChildren.inserted) {
+        inserted = true;
+        return { ...node, children: visitedChildren.nodes };
+      }
+
+      if (
+        isProductReferenceSectionTitle(
+          node.title,
+          'zh-CN',
+        )
+      ) {
+        inserted = true;
+        return { ...node, children: insertApiNodes(visitedChildren.nodes) };
+      }
+
+      return { ...node, children: visitedChildren.nodes };
+    });
+
+    return { inserted, nodes: nextNodes };
+  };
+
+  return visit(nodes).nodes;
 }
 
 function getProductClientApiReferenceLink(

@@ -3855,6 +3855,155 @@ Web body
     );
   });
 
+  it('places the dynamic client API after downloads in a Chinese product reference sidebar', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/zh-CN/solutions/flexible-classroom/reference/call-api.mdx',
+          path: 'zh-CN/solutions/flexible-classroom/reference/call-api.mdx',
+        },
+        title: '如何调用 API',
+      },
+      path: 'zh-CN/solutions/flexible-classroom/reference/call-api.mdx',
+      slugs: [
+        'zh-CN',
+        'solutions',
+        'flexible-classroom',
+        'reference',
+        'call-api',
+      ],
+      url: '/zh-CN/solutions/flexible-classroom/reference/call-api',
+    };
+
+    mockedGetPage.mockReturnValue(page);
+    mockedGetPages.mockReturnValue([page]);
+    mockedGetPageTree.mockReturnValue({
+      children: [
+        {
+          $id: 'zh-root',
+          children: [
+            {
+              $id: 'solutions-folder',
+              children: [
+                {
+                  $id: 'flexible-classroom-folder',
+                  children: [
+                    {
+                      $id: 'reference-separator',
+                      name: '参考',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'reference-folder',
+                      children: [
+                        {
+                          $id: 'downloads',
+                          name: '下载',
+                          type: 'page',
+                          url: '/zh-CN/solutions/flexible-classroom/reference/downloads',
+                        },
+                        {
+                          $id: 'service-api',
+                          name: '服务端 API',
+                          type: 'page',
+                          url: '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+                        },
+                        {
+                          $id: 'call-api',
+                          name: '如何调用 API',
+                          type: 'page',
+                          url: '/zh-CN/solutions/flexible-classroom/reference/call-api',
+                        },
+                      ],
+                      name: '参考',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'flexible-classroom-index',
+                    name: '灵动课堂',
+                    type: 'page',
+                    url: '/zh-CN/solutions/flexible-classroom',
+                  },
+                  name: '灵动课堂',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'solutions-index',
+                name: '解决方案',
+                type: 'page',
+                url: '/zh-CN/solutions/overview',
+              },
+              name: '解决方案',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    } as Root);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'flexible-classroom-folder'
+        ? ({
+            data: { navScope: {}, title: '灵动课堂' },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('zh-CN', 'solutions', [
+      'flexible-classroom',
+      'reference',
+      'call-api',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    const findReferenceSection = (
+      nodes: typeof payload.sidebar,
+    ): (typeof payload.sidebar)[number] | undefined => {
+      for (const node of nodes) {
+        if (node.type === 'section') {
+          if (
+            node.title === '参考' &&
+            node.children.some(
+              (child) => child.type === 'page' && child.title === '下载',
+            )
+          ) {
+            return node;
+          }
+
+          const nested = findReferenceSection(node.children);
+          if (nested) {
+            return nested;
+          }
+        }
+      }
+
+      return undefined;
+    };
+
+    const referenceSection = findReferenceSection(payload.sidebar);
+
+    if (!referenceSection || referenceSection.type !== 'section') {
+      throw new Error('expected the reference section');
+    }
+
+    expect(referenceSection.children.slice(0, 3)).toEqual([
+      expect.objectContaining({ title: '下载', type: 'page' }),
+      expect.objectContaining({ title: '客户端 API', type: 'page' }),
+      expect.objectContaining({ title: '服务端 API', type: 'page' }),
+    ]);
+  });
+
   it('removes deleted source-backed API directory indexes from scoped Chinese RESTful navigation', async () => {
     const basePage = createPage();
     const publishPage = {
