@@ -1,3 +1,4 @@
+import { ChevronRight } from 'lucide-react';
 import {
   type Dispatch,
   type MutableRefObject,
@@ -8,6 +9,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import {
   buildOpenApiResponseSchemaAnchorId,
@@ -147,14 +149,23 @@ export function OpenApiResponses({
                 }
                 type="button"
               >
-                <code className="font-medium text-fd-foreground text-sm">
-                  {response.statusCode}
-                </code>
-                {selectedMediaType ? (
-                  <span className="font-mono text-fd-muted-foreground text-xs">
-                    {selectedMediaType}
-                  </span>
-                ) : null}
+                <span className="flex min-w-0 items-center gap-2">
+                  <code className="font-medium text-fd-foreground text-sm">
+                    {response.statusCode}
+                  </code>
+                  {selectedMediaType ? (
+                    <span className="truncate font-mono text-fd-muted-foreground text-xs">
+                      {selectedMediaType}
+                    </span>
+                  ) : null}
+                </span>
+                <ChevronRight
+                  aria-hidden="true"
+                  className={cn(
+                    'size-4 shrink-0 text-fd-muted-foreground transition-transform',
+                    isExpanded ? 'rotate-90' : null,
+                  )}
+                />
               </button>
               {/* biome-ignore lint/a11y/useSemanticElements: The explicit region role is part of the accordion panel contract. */}
               <div

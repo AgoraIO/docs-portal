@@ -408,8 +408,11 @@ describe('OpenApiResponses', () => {
     const panel = document.getElementById(
       trigger.getAttribute('aria-controls') ?? '',
     );
+    const expandIcon = trigger.querySelector('svg');
     expect(panel).toBeInTheDocument();
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(expandIcon).toBeInTheDocument();
+    expect(expandIcon).toHaveClass('rotate-90');
   });
 
   it('keeps collapsed panels in the DOM with an accessible region relationship', () => {
@@ -424,6 +427,8 @@ describe('OpenApiResponses', () => {
     expect(panel).toHaveAttribute('role', 'region');
     expect(panel).toHaveAttribute('hidden');
     expect(panel).toHaveAttribute('aria-labelledby', trigger.id);
+    expect(trigger.querySelector('svg')).toBeInTheDocument();
+    expect(trigger.querySelector('svg')).not.toHaveClass('rotate-90');
   });
 
   it('generates distinct relationship and media IDs for separate instances', () => {
