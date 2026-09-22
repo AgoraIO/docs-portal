@@ -18,6 +18,7 @@ const speechToTextRoot = resolve(
   'content/docs/zh-CN/realtime-media/speech-to-text',
 );
 const contentRoot = resolve(process.cwd(), 'content/docs/zh-CN');
+const rtcRoot = resolve(contentRoot, 'realtime-media/rtc');
 const rtmRoot = resolve(contentRoot, 'realtime-media/rtm');
 const standardFirstLevelPages = ['index', 'get-started', 'build', 'reference'];
 const standardFirstLevelPageSet = new Set(standardFirstLevelPages);
@@ -855,6 +856,102 @@ describe('zh-CN product IA standard', () => {
       title: '参考',
     });
   });
+
+  it('organizes RTC plugin capabilities under the nested plugin IA', () => {
+    const buildMeta = JSON.parse(
+      readFileSync(resolve(rtcRoot, 'build/meta.json'), 'utf8'),
+    ) as {
+      pages: Array<{
+        pages?: string[];
+        title?: string;
+        type?: string;
+      }>;
+    };
+
+    expect(buildMeta.pages).toContainEqual({
+      collapsible: true,
+      pages: ['extensions/face-capture', 'extensions/web'],
+      title: '集成插件能力',
+      type: 'group',
+    });
+    expect(readMeta(resolve(rtcRoot, 'build/extensions/meta.json'))).toEqual({
+      title: '集成插件能力',
+      pages: ['face-capture', 'web'],
+    });
+    expect(
+      readMeta(resolve(rtcRoot, 'build/extensions/web/meta.json')),
+    ).toEqual({
+      title: 'Web 插件',
+      pages: [
+        'overview',
+        'release',
+        'image-enhancement',
+        'virtual-background',
+        'noise-reduction',
+        'super-clarity',
+        'video-compositing',
+        'voice-activity-detection',
+        'watermark',
+      ],
+    });
+  });
+
+  it.each([
+    [
+      ['rtc', 'build', 'extensions', 'overview'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/overview',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'release'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/release',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'image-enhancement'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'virtual-background'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'noise-reduction'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'super-clarity'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'video-compositing'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'voice-activity-detection'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection',
+    ],
+    [
+      ['rtc', 'build', 'extensions', 'watermark'],
+      '/zh-CN/realtime-media/rtc/build/extensions/web/watermark',
+    ],
+    [
+      ['rtc', 'build', 'video', 'face-capture'],
+      '/zh-CN/realtime-media/rtc/build/extensions/face-capture',
+    ],
+  ] as const)(
+    'redirects superseded RTC plugin Build path %j directly to %s',
+    async (slugSegments, redirectUrl) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', slugSegments),
+      ).resolves.toEqual({ redirectUrl, statusCode: 301 });
+
+      expect(getContentPagePathForUrl(redirectUrl)).not.toBeNull();
+      const { slugSegments: targetSegments, tab } =
+        parseZhCnDocsUrl(redirectUrl);
+      expect(
+        resolveZhCnProductIaRedirect('zh-CN', tab, targetSegments),
+      ).toBeNull();
+    },
+  );
 
   it('removes legacy speech-to-text top-level grouping folders', () => {
     for (const legacyFolder of [

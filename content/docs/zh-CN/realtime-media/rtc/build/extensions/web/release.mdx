@@ -48,7 +48,7 @@ titlePlatforms:
 升级到 v1.1.0 后，你需要关注 AI 降噪插件的以下变更：
 
 - 必须和 v4.15.0 或以上版本的 Web SDK 搭配使用。
-- 只需要动态加载 Wasm 文件。由于不再依赖外部 JS 文件，你需要重新发布 `node_modules/agora-extension-ai-denoiser/external` 目录下的 Wasm 文件。如果你开启了 CSP（Content Security Policy），还需要修改 CSP 配置。详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction#实现步骤)。
+- 只需要动态加载 Wasm 文件。由于不再依赖外部 JS 文件，你需要重新发布 `node_modules/agora-extension-ai-denoiser/external` 目录下的 Wasm 文件。如果你开启了 CSP（Content Security Policy），还需要修改 CSP 配置。详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction#实现步骤)。
 - 转储的音频数据以 PCM 格式保存，而不是 WAV。
 - 调整降噪强度时推荐调用 `setLevel`，而非其它接口。
 
@@ -61,7 +61,7 @@ titlePlatforms:
 - `setLevel`：调整降噪强度。
 - `onoverload` 增加回调参数 `elapsedTime`：报告插件处理一帧音频的时间。
 
-API 描述详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction)。
+API 描述详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction)。
 
 #### 改进
 
@@ -98,7 +98,7 @@ AI 场景专用降噪插件 [agora-conversational-ai-denoiser](https://www.npmjs
 
 ### v1.0.0-beta.2
 
-VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package/agora-extension-vad) v1.0.0-beta.2 于 2024 年 10 月 15 日发布，是 VAD 插件的第一个版本。详细集成步骤可以参考[使用 VAD 插件](/zh-CN/realtime-media/rtc/build/extensions/voice-activity-detection)。
+VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package/agora-extension-vad) v1.0.0-beta.2 于 2024 年 10 月 15 日发布，是 VAD 插件的第一个版本。详细集成步骤可以参考[使用 VAD 插件](/zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection)。
 
 ## 虚拟背景插件
 
@@ -147,13 +147,13 @@ VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package
 
 #### 新增特性
 
-该版本支持在调用 `setOptions` 方法时设置 `fit` 属性，用于设置虚拟背景的填充方式。API 描述详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)。
+该版本支持在调用 `setOptions` 方法时设置 `fit` 属性，用于设置虚拟背景的填充方式。API 描述详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background)。
 
 ### v1.1.1
 
 #### 新增特性
 
-该版本新增 `checkCompatibility` 方法，用于快速测试当前浏览器是否支持虚拟背景插件。API 描述详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)。
+该版本新增 `checkCompatibility` 方法，用于快速测试当前浏览器是否支持虚拟背景插件。API 描述详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background)。
 
 #### 问题修复
 
@@ -173,13 +173,13 @@ VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package
 
 ### v1.0.2-beta
 
-美颜插件 [agora-extension-beauty-effect](https://www.npmjs.com/package/agora-extension-beauty-effect) v1.0.2 于 2022 年 11 月 26 日发布。这是美颜插件的第一个版本，详细集成步骤可以参考[使用美颜插件](/zh-CN/realtime-media/rtc/build/extensions/image-enhancement)。
+美颜插件 [agora-extension-beauty-effect](https://www.npmjs.com/package/agora-extension-beauty-effect) v1.0.2 于 2022 年 11 月 26 日发布。这是美颜插件的第一个版本，详细集成步骤可以参考[使用美颜插件](/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement)。
 
 ## 合图插件
 
 ### v1.0.0-beta
 
-合图插件 [agora-extension-videp-compositor](https://www.npmjs.com/package/agora-extension-video-compositor) v1.0.0-beta 该版本于 2022 年 10 月 25 日发布。这是合图插件的第一个版本，详细集成步骤可以参考[使用合图插件](/zh-CN/realtime-media/rtc/build/extensions/video-compositing)。
+合图插件 [agora-extension-videp-compositor](https://www.npmjs.com/package/agora-extension-video-compositor) v1.0.0-beta 该版本于 2022 年 10 月 25 日发布。这是合图插件的第一个版本，详细集成步骤可以参考[使用合图插件](/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing)。
 
 ## AI 画质插件
 
@@ -202,10 +202,10 @@ VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package
 
 ### v1.0.1
 
-AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) v1.0.1 于 2024 年 11 月 10 日发布，这是 AI 画质插件的第一个版本，详细集成步骤可以参考[使用 AI 画质插件](/zh-CN/realtime-media/rtc/build/extensions/super-clarity)。
+AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) v1.0.1 于 2024 年 11 月 10 日发布，这是 AI 画质插件的第一个版本，详细集成步骤可以参考[使用 AI 画质插件](/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity)。
 
 ## 水印插件 (BETA)
 
 ### v1.0.0-beta
 
-水印插件 [agora-extension-video-watermark](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0-beta 于 2025 年 11 月 25 日发布。这是水印插件的第一个版本，与 Web SDK v4.24.0 及以上搭配使用，可以实现在视频流中添加图像水印的功能。更详细的插件能力和集成步骤可以参考[使用水印插件](/zh-CN/realtime-media/rtc/build/extensions/watermark)。
+水印插件 [agora-extension-video-watermark](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0-beta 于 2025 年 11 月 25 日发布。这是水印插件的第一个版本，与 Web SDK v4.24.0 及以上搭配使用，可以实现在视频流中添加图像水印的功能。更详细的插件能力和集成步骤可以参考[使用水印插件](/zh-CN/realtime-media/rtc/build/extensions/web/watermark)。

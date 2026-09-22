@@ -461,25 +461,45 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/advanced-features/e2e-encryption':
     '/zh-CN/realtime-media/rtc/build/security-and-auth/e2e-encryption',
   'realtime-media/rtc/advanced-features/extensions/image-enhancement':
-    '/zh-CN/realtime-media/rtc/build/extensions/image-enhancement',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement',
   'realtime-media/rtc/advanced-features/extensions/noise-reduction':
-    '/zh-CN/realtime-media/rtc/build/extensions/noise-reduction',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction',
   'realtime-media/rtc/advanced-features/extensions/overview':
-    '/zh-CN/realtime-media/rtc/build/extensions/overview',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/overview',
   'realtime-media/rtc/advanced-features/extensions/release':
-    '/zh-CN/realtime-media/rtc/build/extensions/release',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/release',
   'realtime-media/rtc/advanced-features/extensions/super-clarity':
-    '/zh-CN/realtime-media/rtc/build/extensions/super-clarity',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity',
   'realtime-media/rtc/advanced-features/extensions/video-compositing':
-    '/zh-CN/realtime-media/rtc/build/extensions/video-compositing',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing',
   'realtime-media/rtc/advanced-features/extensions/virtual-background':
-    '/zh-CN/realtime-media/rtc/build/extensions/virtual-background',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background',
   'realtime-media/rtc/advanced-features/extensions/voice-activity-detection':
-    '/zh-CN/realtime-media/rtc/build/extensions/voice-activity-detection',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection',
   'realtime-media/rtc/advanced-features/extensions/watermark':
-    '/zh-CN/realtime-media/rtc/build/extensions/watermark',
+    '/zh-CN/realtime-media/rtc/build/extensions/web/watermark',
   'realtime-media/rtc/advanced-features/face-capture':
-    '/zh-CN/realtime-media/rtc/build/video/face-capture',
+    '/zh-CN/realtime-media/rtc/build/extensions/face-capture',
+  'realtime-media/rtc/build/extensions/image-enhancement':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement',
+  'realtime-media/rtc/build/extensions/noise-reduction':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction',
+  'realtime-media/rtc/build/extensions/overview':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/overview',
+  'realtime-media/rtc/build/extensions/release':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/release',
+  'realtime-media/rtc/build/extensions/super-clarity':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity',
+  'realtime-media/rtc/build/extensions/video-compositing':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing',
+  'realtime-media/rtc/build/extensions/virtual-background':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background',
+  'realtime-media/rtc/build/extensions/voice-activity-detection':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection',
+  'realtime-media/rtc/build/extensions/watermark':
+    '/zh-CN/realtime-media/rtc/build/extensions/web/watermark',
+  'realtime-media/rtc/build/video/face-capture':
+    '/zh-CN/realtime-media/rtc/build/extensions/face-capture',
   'realtime-media/rtc/advanced-features/in-call-quality':
     '/zh-CN/realtime-media/rtc/build/quality-and-operations/in-call-quality',
   'realtime-media/rtc/advanced-features/media-fallback':

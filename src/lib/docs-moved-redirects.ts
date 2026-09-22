@@ -11,7 +11,7 @@ export function resolveMovedDocsRedirect(
     tab === 'realtime-media' &&
     slugSegments.join('/') === 'rtc/reference/release'
   ) {
-    return '/zh-CN/realtime-media/rtc/build/extensions/release';
+    return '/zh-CN/realtime-media/rtc/build/extensions/web/release';
   }
 
   if (

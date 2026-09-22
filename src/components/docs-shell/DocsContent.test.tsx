@@ -503,7 +503,7 @@ describe('DocsContent', () => {
   it('renders title platform badges without changing the heading name', async () => {
     renderWithRouter(
       <DocsContent
-        contentPath="zh-CN/realtime-media/rtc/build/extensions/overview.mdx"
+        contentPath="zh-CN/realtime-media/rtc/build/extensions/web/overview.mdx"
         locale="zh-CN"
         slug="overview"
         title="插件概览"

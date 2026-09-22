@@ -4,7 +4,7 @@
 
 **Goal:** Move the zh-CN RTC plugin documentation into a nested 「集成插件能力 → Web 插件」 information architecture, update all canonical links, and preserve old URLs with permanent redirects.
 
-**Architecture:** Use the existing Fumadocs folder metadata model. `rtc/build/meta.json` will expose the `extensions` folder as the 「集成插件能力」 entry; `extensions/meta.json` will contain the face-capture page and the `web` child folder; `extensions/web/meta.json` will own the existing Web plugin pages. Product IA redirects will cover both the old migrated paths and the pre-migration `/build/...` paths, returning the existing 301 payload for zh-CN Build moves.
+**Architecture:** Use the existing Fumadocs folder metadata model. The 「集成插件能力」 group in `rtc/build/meta.json` will directly list `extensions/face-capture` and the `extensions/web` folder; `extensions/meta.json` will retain the physical folder's page order; `extensions/web/meta.json` will own the nested Web plugin pages. Product IA redirects will cover both the old migrated paths and the pre-migration `/build/...` paths, returning the existing 301 payload for zh-CN Build moves.
 
 **Tech Stack:** Fumadocs `meta.json`, MDX content, TypeScript/Vitest, generated docs-last-updated manifest, CSV migration path maps.
 
@@ -34,9 +34,15 @@ done
 
 Expected: no source file remains at the old physical path.
 
-- [ ] **Step 2: Make `extensions` the nested 「集成插件能力」 folder**
+- [ ] **Step 2: Make the RTC build group expose the new nested IA**
 
-Change the final group entry in `content/docs/zh-CN/realtime-media/rtc/build/meta.json` to the folder string `"extensions"`. Set `content/docs/zh-CN/realtime-media/rtc/build/extensions/meta.json` to:
+Set the final group entry in `content/docs/zh-CN/realtime-media/rtc/build/meta.json` to use these direct child paths:
+
+```json
+"pages": ["extensions/face-capture", "extensions/web"]
+```
+
+Keep `content/docs/zh-CN/realtime-media/rtc/build/extensions/meta.json` as the physical folder metadata:
 
 ```json
 {
@@ -116,7 +122,9 @@ Run `pnpm exec vitest run src/lib/zh-cn-product-ia-standard.test.ts`. Expected: 
 **Files:**
 - Modify: matching live MDX/source fixtures under `content/docs/zh-CN` and `src`
 - Modify: `docs/migration/path-map.csv`
+- Modify: `docs/migration/migration-ledger.csv`
 - Modify: `docs/2026-07-03-legacy-file-redirects.csv`
+- Modify: `docs/migration/build-issues.md`
 
 - [ ] **Step 1: Update live documentation links**
 

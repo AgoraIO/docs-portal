@@ -184,7 +184,7 @@ async function leave() {
 
 - 屏幕共享视频轨道。
 - 两张本地图片。
-- 源视频轨道 1：通过摄像头采集的视频流创建，并且使用[虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)移除该轨道的背景。
+- 源视频轨道 1：通过摄像头采集的视频流创建，并且使用[虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background)移除该轨道的背景。
 - 源视频轨道 2：通过本地视频文件创建。
 
 本节以这个场景为例，介绍本地合图功能的实现步骤。
@@ -193,7 +193,7 @@ async function leave() {
 
 你需要同时集成虚拟背景插件和合图插件。
 
-1. 集成虚拟背景插件并了解注意事项。具体请参考[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)。
+1. 集成虚拟背景插件并了解注意事项。具体请参考[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background)。
 2. 运行以下命令，通过 npm 将合图插件 [agora-extension-video-compositor](https://www.npmjs.com/package/agora-extension-video-compositor) 集成到你的项目中：
 
    ```bash
