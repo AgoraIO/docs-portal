@@ -5607,7 +5607,7 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 
 #### AI 降噪插件低延迟模式
 
-AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser) 升级至 v2.0.1 版本，新增低延迟模式和设置 WASM 模块的日志等级等特性，详见 [AI 降噪插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/release#ai-降噪插件)。
+AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser) 升级至 v2.0.1 版本，新增低延迟模式和设置 WASM 模块的日志等级等特性，详见 [AI 降噪插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/web/release#ai-降噪插件)。
 
 ### 改进
 
@@ -5665,7 +5665,7 @@ A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新
 
 该版本新增发布水印插件 (BETA) [agora-extension-video-watermark](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0，支持通过插件的方式向实时互动的视频流中添加图像水印。
 
-水印插件支持自定义水印的位置、大小、透明度等属性，可应用于本地和远端的视频轨道。相关集成和使用步骤可以参考[使用水印插件 (BETA)](/zh-CN/realtime-media/rtc/build/extensions/watermark)。
+水印插件支持自定义水印的位置、大小、透明度等属性，可应用于本地和远端的视频轨道。相关集成和使用步骤可以参考[使用水印插件 (BETA)](/zh-CN/realtime-media/rtc/build/extensions/web/watermark)。
 
 #### 其他新增特性
 
@@ -5686,7 +5686,7 @@ A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新
 
 #### AI 画质插件升级
 
-该版本对 AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) 的算法进行了升级，在减小插件体积、提升视频体验、扩展浏览器兼容性等方面均有改进。新版本的插件需要在支持 SIMD 的浏览器中才能正常运行。具体变更及改进点可以参考 [AI 画质插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/release#ai-画质插件)。
+该版本对 AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) 的算法进行了升级，在减小插件体积、提升视频体验、扩展浏览器兼容性等方面均有改进。新版本的插件需要在支持 SIMD 的浏览器中才能正常运行。具体变更及改进点可以参考 [AI 画质插件发版说明](/zh-CN/realtime-media/rtc/build/extensions/web/release#ai-画质插件)。
 
 ### 问题修复
 
@@ -6087,7 +6087,7 @@ Safari 存在已知问题，不能在网络条件较差或者视频发送帧率�
 
 #### AI 画质插件 (Beta)
 
-自该版本起，SDK 可以与 AI 画质插件搭配使用，在不改变分辨率的条件下智能提升视频画质，优化观看体验。详见[使用 AI 画质插件](/zh-CN/realtime-media/rtc/build/extensions/super-clarity)。
+自该版本起，SDK 可以与 AI 画质插件搭配使用，在不改变分辨率的条件下智能提升视频画质，优化观看体验。详见[使用 AI 画质插件](/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity)。
 
 #### 第三方视频审核
 
@@ -6345,7 +6345,7 @@ v4.18.0 修复了以下问题：
 
 ### 升级必看
 
-为进一步减小包体积，该版本移除了 SDK 内置的美颜模块，并且删除了 `setBeautyEffect`。如果你需要实现美颜功能，声网推荐你使用效果升级、性能更优的美颜插件。详见[使用美颜插件 (Beta) ](/zh-CN/realtime-media/rtc/build/extensions/image-enhancement)。
+为进一步减小包体积，该版本移除了 SDK 内置的美颜模块，并且删除了 `setBeautyEffect`。如果你需要实现美颜功能，声网推荐你使用效果升级、性能更优的美颜插件。详见[使用美颜插件 (Beta) ](/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement)。
 
 ### 新增特性
 
@@ -6357,7 +6357,7 @@ v4.18.0 修复了以下问题：
 
 #### 本地合图 (Beta)
 
-自 v4.17.0 起，SDK 可以与合图插件搭配使用，在发送端将多路视频流以及图片合为一路视频流。你还可以同时使用合图插件和虚拟背景插件，实现人像画中画效果。详见[使用合图插件](/zh-CN/realtime-media/rtc/build/extensions/video-compositing)。
+自 v4.17.0 起，SDK 可以与合图插件搭配使用，在发送端将多路视频流以及图片合为一路视频流。你还可以同时使用合图插件和虚拟背景插件，实现人像画中画效果。详见[使用合图插件](/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing)。
 
 #### 动态切换本地视频流
 
@@ -6660,8 +6660,8 @@ v4.13.0 完善了 token 过期回调的触发逻辑。如果 token 在设备休�
 
 媒体处理插件有以下改动：
 
-- 新增[美颜插件 (Beta) ](https://www.npmjs.com/package/agora-extension-beauty-effect)。美颜插件封装了 Web SDK 4.x 内置的美颜功能（通过 `setBeautyEffect`），并且升级了美颜算法。通过该插件可以调节对比度、亮度、平滑度等参数，实现美白、磨皮、红润肤色等美颜效果。详见[使用美颜插件](/zh-CN/realtime-media/rtc/build/extensions/image-enhancement)。
-- [虚拟背景插件 (Beta) ](https://www.npmjs.com/package/agora-extension-virtual-background)自 v1.0.0-beta-3 起支持动态虚拟背景，可以将用户的背景设置为一段视频。详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background)。
+- 新增[美颜插件 (Beta) ](https://www.npmjs.com/package/agora-extension-beauty-effect)。美颜插件封装了 Web SDK 4.x 内置的美颜功能（通过 `setBeautyEffect`），并且升级了美颜算法。通过该插件可以调节对比度、亮度、平滑度等参数，实现美白、磨皮、红润肤色等美颜效果。详见[使用美颜插件](/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement)。
+- [虚拟背景插件 (Beta) ](https://www.npmjs.com/package/agora-extension-virtual-background)自 v1.0.0-beta-3 起支持动态虚拟背景，可以将用户的背景设置为一段视频。详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background)。
 
 ### 问题修复
 
@@ -6730,8 +6730,8 @@ v4.10.0 支持在 SDK 内使用媒体处理插件。声网当前提供以下插�
 
 | 插件                | 说明                                               | 相关文档                                                     |
 | :------------------ | :------------------------------------------------- | :----------------------------------------------------------- |
-| 虚拟背景插件 (Beta) | 支持将用户的背景设为纯色、自定义图片或虚化。       | [使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/virtual-background) |
-| AI 降噪插件 (Beta)  | 支持降低上百种噪声，减少多人同时说话时的人声失真。 | [使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/noise-reduction) |
+| 虚拟背景插件 (Beta) | 支持将用户的背景设为纯色、自定义图片或虚化。       | [使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background) |
+| AI 降噪插件 (Beta)  | 支持降低上百种噪声，减少多人同时说话时的人声失真。 | [使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction) |
 
 ### API 变更
 

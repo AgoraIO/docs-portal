@@ -24193,25 +24193,27 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/channel-and-connection/publish-subscribe.mdx':
     '2026-07-28T03:06:08.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/image-enhancement.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement.mdx':
     '2026-08-17T02:42:42.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/extensions/meta.json':
     '2026-07-28T03:12:11.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/noise-reduction.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/meta.json':
+    '2026-09-22T09:27:25.000Z',
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/overview.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/overview.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/release.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/release.mdx':
     '2026-07-28T03:12:11.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/super-clarity.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/video-compositing.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/virtual-background.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/voice-activity-detection.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/extensions/watermark.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/watermark.mdx':
     '2026-08-17T02:42:42.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/implement-core-features/create-track.mdx':
     '2026-07-28T03:06:08.000Z',
@@ -24353,7 +24355,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-17T02:42:42.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/video/experimental-features/meta.json':
     '2026-07-28T03:12:11.000Z',
-  'content/docs/zh-CN/realtime-media/rtc/build/video/face-capture.mdx':
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/face-capture.mdx':
     '2026-07-28T03:13:58.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/video/first-frame-rendering.mdx':
     '2026-07-29T03:34:52.000Z',

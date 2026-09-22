@@ -50,7 +50,7 @@
 | 20 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/build/extend-karaoke/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 21 | `content/docs/zh-CN/solutions/voip-call/build/monitor-events/receive-webhook.mdx` | `37:6-37:18` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 22 | `content/docs/zh-CN/realtime-media/online-ktv/auikaraoke/get-started/integrate.mdx` | `133:4-133:16` Expected closing tag for `<Accordions>` before end of `listItem`. |
-| 23 | `content/docs/zh-CN/realtime-media/rtc/build/extensions/virtual-background.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
+| 23 | `content/docs/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
 | 24 | `content/docs/zh-CN/realtime-media/online-ktv/ktv-scenario/build/extend-karaoke/lyrics-syncing.mdx` | `19:3-19:15` Expected closing tag for `<Accordions>` before end of `listItem`. |
 | 25 | `content/docs/zh-CN/realtime-media/usage-analytics/reference/release-notes.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
 | 26 | `content/docs/zh-CN/realtime-media/usage-analytics/reference/api-limits.mdx` | Unexpected closing slash `/` in tag; expected an open tag first. |
