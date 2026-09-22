@@ -5,7 +5,7 @@ description: Understand projects, credentials, and the client and backend respon
 hideNavigation: true
 ---
 
-An Agora integration uses a project to identify the application and the credentials required by its services. Your client presents the experience to users; your backend handles the secret credentials and service operations the integration needs.
+An Agora integration uses a project to identify the application and the credentials required by its services. Your client presents the experience to users. Your backend handles the secret credentials and service operations the integration needs.
 
 Use these concepts when a quickstart asks you to create a project, supply an App ID, or configure authentication.
 
@@ -15,7 +15,7 @@ Your **account** gives you access to Agora Console. A **project** holds an App I
 
 **Agora Console** is the management interface for accounts, projects, service settings, usage, and billing. It is where you create a project and retrieve its configuration.
 
-For the setup steps, follow [Account](/en/introduction/account). For detailed Console operations, see [Console Setup](/en/introduction/console-setup).
+For the setup steps, follow [Account](/en/introduction/account). For detailed Console operations, see [Console overview](/en/introduction/console-setup).
 
 <a id="app-id" />
 <a id="app-certificate" />
@@ -29,7 +29,7 @@ For the setup steps, follow [Account](/en/introduction/account). For detailed Co
 | **App Certificate** | A project credential used to generate authentication tokens | Used on your backend. Keep it out of client applications and public repositories. |
 | **Token** | An authentication value with permissions and an expiry | Supplied to the SDK or API that requires it. Its fields and scope depend on the product and operation. |
 
-For an RTC application, a client joins a channel using the identity and token required by its configuration. For a production integration, your backend generates the token; a temporary Console token is useful for testing.
+For an RTC application, a client joins a channel using the identity and token required by its configuration. For a production integration, your backend generates the token. A temporary Console token is useful for testing.
 
 Service APIs have their own authentication requirements. For example, controlling a Voice Agent requires authentication for Conversational AI API requests. Follow the [Conversational AI authentication reference](/en/api-reference/api-ref/conversational-ai/authentication) when implementing that path.
 
@@ -52,6 +52,8 @@ The Agent SDKs help your backend call Conversational AI services. RTC client SDK
 
 ## Product-specific concepts
 
-Channel, stream, publish, subscribe, user role, and RTC connection describe how realtime media works. Read [Realtime Communication concepts](/en/realtime-media/rtc/core-concepts) when you need those details. RTC media channels and Signaling messaging channels are separate; consult the [Signaling concepts](/en/realtime-media/rtm/core-concepts) for messaging identities and channels.
+[Channel](/en/realtime-media/rtc/core-concepts#channel), [stream](/en/realtime-media/rtc/core-concepts#stream), [publish](/en/realtime-media/rtc/core-concepts#publish), [subscribe](/en/realtime-media/rtc/core-concepts#subscribe), [user role](/en/realtime-media/rtc/core-concepts#user-role), and [RTC connection](/en/realtime-media/rtc/core-concepts#rtc-connection) describe how real-time media works. See Realtime Communication [Core concepts](/en/realtime-media/rtc/core-concepts) for details.
 
-A Voice Agent guide introduces the session concepts needed for its implementation. You can start with the [Voice Agent overview](/en/ai) and follow the relevant quickstart.
+RTC media channels and Signaling messaging channels are separate. For messaging identities and channels, see Signaling [Core concepts](/en/realtime-media/rtm/core-concepts).
+
+Voice Agent adds its own session concepts. Start with the [Voice Agent overview](/en/ai), then follow the quickstart for an app or a device.

@@ -1,6 +1,6 @@
 ---
 title: "Core concepts"
-description: "Ideas that are central to developing with Agora."
+description: "Channels, credentials, and identities that are central to building with Signaling."
 ---
 
 Agora’s Signaling SDK enables real-time metadata synchronization and low-latency event notifications between edge devices, servers and channel attributes in your apps.
