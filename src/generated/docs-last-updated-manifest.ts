@@ -3315,7 +3315,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/console-setup.mdx': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/conversational-ai.mdx':
     '2026-09-18T13:02:45.000Z',
-  'content/docs/en/introduction/core-concepts.mdx': '2026-09-18T13:02:45.000Z',
+  'content/docs/en/introduction/core-concepts.mdx': '2026-09-22T05:00:16.000Z',
   'content/docs/en/introduction/firewall.md': '2026-08-21T06:13:24.000Z',
   'content/docs/en/introduction/fusion-cdn.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/fusion-cdn.mdx': '2026-06-01T06:30:44.000Z',
@@ -5769,7 +5769,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/channel-and-connection/region-restriction.md':
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/core-concepts.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-09-22T05:00:16.000Z',
   'content/docs/en/realtime-media/rtc/get-started-sdk.mdx':
     '2026-09-10T10:36:08.000Z',
   'content/docs/en/realtime-media/rtc/index.md': '2026-06-13T10:37:20.000Z',
@@ -5817,7 +5817,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/media/meta.json':
     '2026-06-02T03:20:10.000Z',
-  'content/docs/en/realtime-media/rtc/meta.json': '2026-08-10T15:28:51.000Z',
+  'content/docs/en/realtime-media/rtc/meta.json': '2026-09-22T05:00:16.000Z',
   'content/docs/en/realtime-media/rtc/quality-and-diagnostics/audio-stream-filter.md':
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/quality-and-diagnostics/in-call-quality-monitoring.md':
@@ -6097,7 +6097,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/console-overview.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtm/core-concepts.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-09-22T05:00:16.000Z',
   'content/docs/en/realtime-media/rtm/enable-signaling.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtm/get-started/authentication-workflow.md':
@@ -6112,7 +6112,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/index.mdx': '2026-07-21T03:37:31.000Z',
   'content/docs/en/realtime-media/rtm/manage-agora-account.md':
     '2026-08-10T15:28:51.000Z',
-  'content/docs/en/realtime-media/rtm/meta.json': '2026-07-03T14:28:36.000Z',
+  'content/docs/en/realtime-media/rtm/meta.json': '2026-09-22T05:00:16.000Z',
   'content/docs/en/realtime-media/rtm/product-overview.md':
     '2026-06-18T08:34:22.000Z',
   'content/docs/en/realtime-media/rtm/quickstart.mdx':
