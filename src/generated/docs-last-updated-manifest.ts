@@ -24197,6 +24197,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-17T02:42:42.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/extensions/meta.json':
     '2026-07-28T03:12:11.000Z',
+  'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/meta.json':
+    '2026-09-22T09:27:25.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction.mdx':
     '2026-08-17T02:42:42.000Z',
   'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/overview.mdx':
