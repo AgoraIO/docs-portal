@@ -1,67 +1,123 @@
 ---
 title: 声网接入基础
+description: 了解实时互动 RTC 如何连接用户，对话式 AI 引擎如何连接用户与语音智能体，以及如何开始使用声网构建应用。
 ---
 
-声网提供构建实时互动应用所需的 API、SDK 和云服务。你可以用它实现音视频通话、互动直播、实时协作，也可以把用户和语音智能体接入同一个实时会话。
+声网提供用于实时语音、视频和 AI 对话的 SDK 与云服务。你可以通过两种互动模型，把用户彼此连接起来，或把用户连接到 AI 智能体：
 
-这些能力运行在声网自建的实时传输网络 SD-RTN™ 上，负责实时音视频和数据流的传输、路由、同步与会话管理。
+- **人与人互动**：使用**实时互动 RTC** 实现语音通话、视频通话和互动直播。
+- **人与智能体互动**：让用户与**语音智能体**进行实时对话。
 
-## 接入前需要理解的核心概念
+**对话式 AI 引擎**是声网用于构建语音智能体的产品。它会使用你配置的模型和工具运行对话，而**实时互动 RTC** 负责在用户和智能体之间传输实时音频。
 
-声网项目用于管理应用接入所需的 App ID、鉴权配置、服务开通状态和用量数据。客户端使用项目参数加入会话；服务端保存密钥，生成 Token，并调用需要服务端权限的 API。
+![两种对等互动场景：用户通过实时互动 RTC 彼此通信，或与通过对话式 AI 引擎构建的 AI 智能体通信。两种场景都使用声网实时媒体连接。](/images/developer-journey/interaction-models-overview.svg)
 
-开始接入前，需要先区分项目、App ID、App 证书、Token、客户端和服务端各自承担的职责。
+<a id="what-agora-is" />
+<a id="what-problems-it-solves" />
+<a id="product-families" />
+<a id="common-solution-patterns" />
+<a id="interaction-models" />
+<a id="how-the-parts-fit-together" />
+<a id="how-these-products-fit-together" />
 
-### 账号、项目和控制台
+## 声网平台如何工作
 
-**账号**用于登录声网控制台。你可以在同一个账号下创建多个**项目**，分别对应不同应用、环境或业务线。每个项目都有自己的 App ID、鉴权配置、服务开通状态和用量数据。
+实时对话需要在已连接的参与者之间持续采集、传输和播放音频或视频。你的应用提供用户界面和业务逻辑：客户端 SDK 负责采集和播放媒体，你的后端负责管理访问权限和会话，声网服务负责在参与者之间传输媒体。在语音智能体场景中，对话式 AI 引擎还会使用你配置的模型和工具生成回复。
 
-**声网控制台**用于创建项目、开通服务、查看用量和计费，并获取 App ID 或临时 Token。
+### 接入前需要准备什么
 
-如需完成控制台配置，参考[控制台指南](/zh-CN/introduction/quickstart)。
+声网项目用于管理 App ID、鉴权配置、服务开通状态和用量数据。客户端和服务端使用项目参数识别应用；你的服务端负责保存密钥、生成鉴权信息，并调用需要服务端权限的 API。
 
-### 项目凭证和鉴权
-
-| 参数 | 含义 | 用途 |
+| 参数 | 含义 | 使用方式 |
 | --- | --- | --- |
-| **App ID** | 声网为项目分配的唯一标识 | 客户端 SDK 和服务端请求用它识别项目；访问权限通常由 Token 或对应服务的鉴权机制控制。 |
+| **App ID** | 声网为项目分配的唯一标识 | 客户端 SDK 和服务端请求用它识别项目。访问权限通常由 Token 或对应服务的鉴权机制控制。 |
 | **App 证书** | 用于生成 Token 的项目密钥 | 只应保存在你的服务端，不能写入客户端应用或公开仓库。 |
 | **Token** | 带有权限和有效期的鉴权字符串 | 提供给需要鉴权的 SDK 或 API。Token 的字段和作用范围取决于具体产品和操作。 |
 
-RTC SDK 通常使用 App ID、频道名、用户 ID 和 Token 加入频道。生产环境中，Token 应由你的业务服务端生成；控制台临时 Token 适合测试和排障。
+生产环境中，Token 应由你的业务服务端生成。控制台临时 Token 适合本地测试和排查问题。
 
-RESTful API 的鉴权方式由具体服务决定。例如，调用对话式 AI 引擎 RESTful API 需要遵循[HTTP 基本认证](/zh-CN/ai/build/http-basic-auth)。各服务的 Token 范围、签名方式和请求 Header 以对应 API 参考为准。
+<a id="connect-people-with-rtc" />
+<a id="human-to-human-realtime-communication" />
 
-### 客户端和服务端职责
+### 用户如何通过实时互动 RTC 连接
 
-| 应用部分 | 常见职责 |
+![RTC 客户端从你的后端获取凭证，加入同一个频道，并发布和订阅实时音视频。](/images/developer-journey/rtc-connection.svg)
+
+同一个声网项目中的客户端加入同一个**频道**。频道是一组用于交换媒体的逻辑空间。**发布**表示发送音频或视频，**订阅**表示接收音频或视频。在双向通话中，双方都会发布和订阅。在互动直播中，主播发布媒体，观众订阅媒体。集成细节见[实时互动 RTC 概览](/zh-CN/realtime-media/rtc)。
+
+<a id="connect-people-with-a-voice-agent" />
+<a id="human-to-agent-voice-agent" />
+
+### 用户如何连接到语音智能体
+
+![你的后端使用 Agents SDK 启动或停止声网托管的对话式 AI 引擎会话。智能体加入 RTC 频道并与客户端交换音频。](/images/developer-journey/voice-agent-connection.svg)
+
+你的后端使用 **Agents SDK** 启动和停止会话。声网托管的**对话式 AI 引擎**会把智能体加入 RTC 频道，并使用你配置的模型和工具生成回复。用户客户端和智能体通过实时互动 RTC 交换音频。
+
+同一个应用可以同时支持**人与人互动**和**人与智能体互动**。如果需要了解模型选项、业务工具和 App 或设备集成方式，参考[对话式 AI 引擎概览](/zh-CN/ai)。
+
+<a id="shared-real-time-foundation" />
+<a id="add-the-capabilities-your-application-needs" />
+<a id="extend-your-application-with-agora-services" />
+
+## 相关产品如何协同
+
+实时互动 RTC 负责传输实时音频和视频。对话式 AI 引擎负责加入语音智能体。下面这些服务可以在实时互动基础上增加应用数据、媒体处理能力，或连接外部系统。按你的应用需要选择即可。
+
+| 产品或集成 | 如何连接到你的应用 |
 | --- | --- |
-| **客户端** | 展示界面，请求麦克风或摄像头权限，使用对应 SDK 加入会话，采集、播放或接收媒体和事件。 |
-| **服务端** | 保存密钥，生成客户端所需的鉴权信息，调用服务端 API 管理会话、任务或服务端资源。 |
+| [实时消息 RTM](/zh-CN/realtime-media/rtm) | 在 RTC 音视频之外交换应用消息、在线状态和共享状态。 |
+| [即时通讯 IM](https://im.shengwang.cn) | 在语音和视频通话之外增加持久化的一对一或群组消息。 |
+| [互动白板](/zh-CN/realtime-media/whiteboard) | 在参与者通过 RTC 交流时，提供共享画布、绘图和文档协作能力。 |
+| [云端录制](/zh-CN/realtime-media/cloud-recording) | 将 RTC 音视频和语音智能体对话录制到云存储。 |
+| [语音转写](/zh-CN/realtime-media/speech-to-text) | 将 RTC 音频转换为实时字幕、转写文本或翻译文本。 |
+| [云端转码](/zh-CN/realtime-media/transcoding) | 对 RTC 音视频进行合流和转码，再把处理后的流发布回 RTC 频道。 |
+| [输入在线媒体流](/zh-CN/realtime-media/media-pull) | 将在线媒体流输入 RTC 频道。 |
+| [RTMP 网关](/zh-CN/realtime-media/rtmp-gateway) | 将 RTMP 或 SRT 媒体源接入 RTC 频道。 |
+| [旁路推流](/zh-CN/realtime-media/media-push) | 将 RTC 音视频发送到 CDN 或外部直播平台。 |
+| [RTC 服务端 SDK](/zh-CN/realtime-media/rtc-server-sdk) | 让你的服务端应用在 RTC 频道中发送和接收音视频。 |
+| [水晶球](/zh-CN/realtime-media/usage-analytics) | 分析 RTC 通话用量和质量，帮助定位连接和媒体问题。 |
 
-RTC 客户端 SDK 负责把用户接入实时音视频会话。在对话式 AI 场景中，服务端还会使用 Agents SDK（用于在服务端管理智能体会话的 SDK）或 RESTful API 创建、停止和管理智能体会话。
+更多选项见[实时互动概览](/zh-CN/realtime-media/overview)。
 
-## 实时会话与智能体如何协同
+**配置和访问权限。** 项目用于标识你的应用，每项服务都有自己的鉴权要求。项目凭证、客户端和服务端职责见[核心概念](/zh-CN/introduction/glossary)。
 
-RTC 中的**频道**是一组参与者交换实时媒体的逻辑空间。用户加入同一个频道后，可以根据角色和业务逻辑发布或订阅音视频。
+<a id="choose-how-to-build" />
 
-- **发布**：发送本地采集的音频或视频。
-- **订阅**：接收其他用户发布的音频或视频。
-- **用户 ID**：频道内用户的身份标识，同一频道中应保持唯一。有些 SDK 或 API 字段会写作 `uid` 或 `UID`。
-- **用户角色**：在直播场景中，主播通常可以发布和订阅，观众通常只订阅。
+## 如何构建
 
-在对话式 AI 场景中，用户侧客户端通常先加入 RTC 频道。你的服务端再使用 Agents SDK 或 RESTful API 创建智能体，让智能体加入同一个频道，与用户进行实时语音互动。
+先确认应用需要哪种互动方式，再选择开发流程。使用 AI 辅助开发或直接写代码，都可以构建实时互动 RTC 或语音智能体应用。
 
-在这个流程中：
+<a id="with-a-coding-assistant" />
 
-1. 客户端负责采集用户音频并播放智能体回复。
-2. 服务端负责准备项目凭证、控制智能体生命周期，并配置 STT（语音转文字）、LLM（大语言模型）、TTS（文字转语音）等模型能力。
-3. 声网提供 RTC 实时传输能力和对话式 AI 引擎运行能力。
+### 使用 AI 构建
 
-如需了解更完整的 RTC 概念，参考 [RTC 关键概念](/zh-CN/realtime-media/rtc/reference/key-concept)。
+三个工具可以在开发过程中辅助你的 AI Coding Agent：
 
-## 继续阅读
+| 工具 | 作用 |
+| --- | --- |
+| [Agora Skills](/zh-CN/introduction/skills-integrate) | 提供声网相关的工作流和实现指导。 |
+| [Agora CLI](/zh-CN/introduction/agora-cli) | 准备受支持的 Starter，配置项目，并诊断接入问题。 |
+| [Agora MCP](/zh-CN/introduction/mcp-integrate) | 让 AI Coding Agent 查询声网文档。 |
 
-- 了解 RTC、RTM、IM、RTSA 等实时互动产品，阅读[实时互动概览](/zh-CN/realtime-media/overview)。
-- 接入语音智能体或端到端 AI 对话流程，阅读[对话式 AI](/zh-CN/ai)。
-- 查询 SDK、RESTful API 或服务端接口，查看 [API 参考](/zh-CN/api-reference/overview)。
+[AI 快速接入](/zh-CN/introduction/start-with-ai)会把这些工具串成一个开发流程。**AI Coding Agent** 帮你编写应用，**语音智能体**则在应用中与用户对话。文档 MCP 服务于 AI Coding Agent，运行时 MCP 工具服务于语音智能体。
+
+<a id="with-sdks-and-apis" />
+
+### 使用代码构建
+
+使用 RTC 客户端 SDK 让用户接入实时媒体，使用 Agents SDK 从后端控制对话式 AI 引擎会话。你可以从[对话式 AI 引擎快速开始](/zh-CN/ai/get-started/quick-start-agent)开始，也可以从[实时互动 RTC 快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start)开始。
+
+<a id="in-a-visual-workspace" />
+
+### 在控制台中构建
+
+[声网控制台 Playground](https://console.shengwang.cn/product/ConversationAI?tab=Playground) 支持可视化配置和测试语音智能体。这个流程适用于对话式 AI 引擎。
+
+<a id="where-to-start" />
+<a id="choose-your-next-step" />
+<a id="next-step" />
+
+## 现在开始
+
+返回[声网文档](/zh-CN/introduction)，选择快速开始、查找 SDK 和 API 参考，或查看适合你的应用场景的方案文档。
