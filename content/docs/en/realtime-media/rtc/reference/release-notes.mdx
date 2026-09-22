@@ -38,6 +38,63 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 </section>
 
+### v4.7.0
+
+Released on September 21, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    This release adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact Agora Support.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    This release optimizes the audio and video pipeline and thread scheduling mechanism, significantly reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Optimized FFmpeg plugin integration for the Voice SDK**
+
+    This release changes how the FFmpeg player plugin is loaded in the Voice SDK. `libagora-ffmpeg.so` is renamed to `libagora_ffmpeg_extension.so` and changed from a required library to an optional plugin. The SDK package includes this plugin by default, and you can decide whether to integrate it based on your business needs. When the FFmpeg player plugin is not loaded, MediaPlayer uses the system's native playback capability. Supported audio file formats depend on the container formats and audio codecs supported by the system, and may vary by system version or device vendor. After you integrate and load the FFmpeg player plugin, MediaPlayer supports more audio formats and playback capabilities.
+
+* **Improved first video frame experience**
+
+    This release optimizes video frame transmission scheduling, improving the speed at which the first subscribed stream in a channel renders video.
+
+* **Optimized R8/ProGuard obfuscation rules**
+
+    This release optimizes the R8/ProGuard obfuscation rules for the Android SDK. If your app does not enable R8/ProGuard shrinking and obfuscation, no additional configuration is required. If your app enables R8/ProGuard shrinking and obfuscation, configure the obfuscation rules for the Agora SDK to prevent Java classes, members, or methods accessed by the native layer through JNI from being removed or renamed. You can continue to use `-keep class io.agora.**{*;}` for quick configuration, or use the SDK-provided `consumer-proguard-rules.pro` for more precise configuration.
+
+* **Improved latency in one-to-one co-hosting**
+
+    This release optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting. It reduces end-to-end latency while maintaining video quality, and improves playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    This release optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    This release optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+* **Improved media file playback compatibility**
+
+    This release adds targeted compatibility handling for non-standard MP3 files, improving the robustness of media file playback.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- After raw audio data was enabled, residual audio from a previous segment could occasionally remain when a user switched from audience to host.
+- On some Android devices, after an upgrade, electrical noise or other noise could occasionally be heard during audio playback when downstream pressure was high in multi-user audio scenarios.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- When the device was in a system call or the audio device was occupied, the local audio state callback could behave abnormally, preventing the app from accurately detecting the local audio state.
+
 ### v4.6.4
 
 Released on September 2, 2026.
@@ -1886,6 +1943,64 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 :::
 
 </section>
+
+### v4.7.0
+
+Released on September 21, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    This release adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact Agora Support.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    This release optimizes the audio and video pipeline and thread scheduling mechanism, significantly reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Optimized FFmpeg plugin integration for the Voice SDK**
+
+    This release changes how the FFmpeg player plugin is loaded in the Voice SDK. `Agoraffmpeg.xcframework` is changed to the optional plugin `AgoraffmpegExtension.xcframework`. The SDK package includes this plugin by default, and you can decide whether to integrate it based on your business needs. When the FFmpeg player plugin is not loaded, MediaPlayer uses the system's native playback capability. Supported audio file formats depend on the container formats and audio codecs supported by the system. After you integrate and load the FFmpeg player plugin, MediaPlayer supports more audio formats and playback capabilities.
+
+* **Improved first video frame experience**
+
+    This release optimizes video frame transmission scheduling, improving the speed at which the first subscribed stream in a channel renders video.
+
+* **Improved latency in one-to-one co-hosting**
+
+    This release optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting. It reduces end-to-end latency while maintaining video quality, and improves playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    This release optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved video orientation handling**
+
+    This release improves video orientation handling during portrait and landscape switching, reducing the probability of delayed or abnormal video UI rotation after device rotation.
+
+* **Improved background camera capture and stream republishing experience**
+
+    This release improves camera capture state handling after the app enters the background, fixing occasional black screens in local or remote video when the host republishes the stream.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    This release optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- On iOS 26, after system keyboard speech-to-text was triggered, the playback side could occasionally have no audio.
+- After a Bluetooth audio device was used to publish audio, the audio route could switch abnormally or remote audio could be silent.
+- In chatroom scenarios where users switch between audience and host roles, if local audio was disabled, the role was switched, and local audio was then enabled again, remote audio could occasionally be silent.
+- With AI QoS configuration, the first words at the beginning of a call could occasionally be lost or abnormal.
+- The app could occasionally crash in scenarios involving audio and video interaction, screen sharing, video frame data access, or audio and video statistics. This release improves SDK stability in these scenarios.
 
 ### v4.6.4
 
@@ -4062,6 +4177,51 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 :::
 
 </section>
+
+### v4.7.0
+
+Released on September 21, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    This release adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact Agora Support.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    This release optimizes the audio and video pipeline and thread scheduling mechanism, significantly reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Improved first video frame experience**
+
+    This release optimizes video frame transmission scheduling, improving the speed at which the first subscribed stream in a channel renders video.
+
+* **Improved latency in one-to-one co-hosting**
+
+    This release optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting. It reduces end-to-end latency while maintaining video quality, and improves playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    This release optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    This release optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- On macOS 26 devices connected to an external HDMI display, calling screen sharing APIs to enumerate the screen list could fail to enumerate the extended display.
+- In AI Client scenarios, when receiving long TTS audio, remote audio data could occasionally become disordered.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- The app could occasionally crash in scenarios involving mirror rendering, custom rendering, or screen sharing source enumeration. This release improves SDK stability in these scenarios.
 
 ### v4.6.2
 
@@ -7951,6 +8111,56 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 :::
 
 </section>
+
+### v4.7.0
+
+Released on September 21, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    This release adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact Agora Support.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    This release optimizes the audio and video pipeline and thread scheduling mechanism, significantly reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Improved first video frame experience**
+
+    This release optimizes video frame transmission scheduling, improving the speed at which the first subscribed stream in a channel renders video.
+
+* **Improved latency in one-to-one co-hosting**
+
+    This release optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting. It reduces end-to-end latency while maintaining video quality, and improves playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    This release optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved screen sharing window exclusion**
+
+    This release optimizes the implementation of window exclusion during screen sharing on Windows. When you call `startScreenCaptureByDisplayId` to start screen sharing and use `excludeWindowList` in `ScreenCaptureParameters` to exclude specified windows, the SDK uses an independent capture process for MAG capture when conditions are met. This reduces the risk of window exclusion failures or capture exceptions in scenarios such as multi-screen setups, negative coordinates, screen scaling, or secure desktop switching, and improves screen sharing stability.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    This release optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- When the microphone was occupied by another app while the SDK was running, the app could not detect the microphone occupancy state. After this fix, when the audio capture device is occupied, the SDK notifies the app through warning code `WARN_ADM_RECORD_IS_OCCUPIED` (1033).
+- After connecting a USB camera and enabling sound card capture, if the number of loopback audio channels was fewer than two, post-processing could be incorrect, occasionally causing electrical noise or other noise.
+- In some scenarios, the camera could occasionally show a black screen, causing video capture to fail.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- The app could occasionally crash when started as an administrator or during screen capture. This release improves SDK stability in these scenarios.
 
 ### v4.6.2
 
