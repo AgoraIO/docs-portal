@@ -941,7 +941,7 @@ describe('zh-CN product IA standard', () => {
     'redirects superseded RTC plugin Build path %j directly to %s',
     async (slugSegments, redirectUrl) => {
       await expect(
-        loadDocsPagePayload('zh-CN', 'realtime-media', slugSegments),
+        loadDocsPagePayload('zh-CN', 'realtime-media', [...slugSegments]),
       ).resolves.toEqual({ redirectUrl, statusCode: 301 });
 
       expect(getContentPagePathForUrl(redirectUrl)).not.toBeNull();
