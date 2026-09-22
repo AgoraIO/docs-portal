@@ -118,16 +118,20 @@ Use the following `tts` configuration in your request:
     The name of the prebuilt voice to use. For example, `Puck`. For the full list of voices, see [Voice options](https://ai.google.dev/gemini-api/docs/speech-generation#voices) in the Gemini API documentation.
   </Parameter>
   <Parameter name="style" type="string" required={false}>
-    A natural-language instruction that controls how the agent speaks, such as its tone, pace, or accent. For example, `warm and reassuring`. If you don't set this parameter, the model uses its default delivery. For guidance on writing style instructions, see [Control speech style with prompts](https://ai.google.dev/gemini-api/docs/speech-generation#controllable).
+    A natural-language instruction that controls how the agent speaks, such as its tone, pace, accent, or whether it whispers. For example, `warm and reassuring`. If you don't set this parameter, the model uses its default delivery. For guidance on writing style instructions, see [Control speech style with prompts](https://ai.google.dev/gemini-api/docs/speech-generation#controllable).
   </Parameter>
 </ParameterList>
 
-:::tip[Add expressive cues]
-Gemini TTS supports inline audio tags that change how the agent speaks, such as `[whispers]`, or add non-verbal sounds, such as `[laughs]` and `[sighs]`. Gemini TTS interprets these tags instead of reading them aloud. To use them, instruct your LLM in its system prompt to include tags sparingly in its replies.
-
-The tags remain in the agent's text transcript. If your app displays the transcript, remove the tags before showing it to users. For more about audio tags, see [Audio tags](https://ai.google.dev/gemini-api/docs/speech-generation#audio-tags) in the Gemini API documentation.
-:::
-
 :::caution[Caution]
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Gemini API speech generation documentation](https://ai.google.dev/gemini-api/docs/speech-generation).
+:::
+
+### Add vocal sounds and pauses
+
+Gemini TTS supports inline tags for momentary vocal sounds and pauses, such as `<laugh>`, `<sigh>`, `<cough>`, `<breath>`, and `<short pause>`. Gemini TTS interprets these tags instead of reading them aloud. To use them, instruct your LLM in its system prompt to include tags sparingly in its replies.
+
+Don't use tags for sound effects, such as applause, or to change how the agent speaks, such as whispering. To set the delivery style, use the `style` parameter.
+
+:::info
+The vocal tags inserted by the LLM remain in the agent's text transcript. If your app displays the transcript, remove the tags before showing it to users.
 :::
