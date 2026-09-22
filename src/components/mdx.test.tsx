@@ -85,6 +85,7 @@ type CardComponent = ComponentType<{
 type AccordionsComponent = ComponentType<{
   children: ReactNode;
   defaultValue?: string;
+  type?: 'single' | 'multiple';
 }>;
 type AccordionComponent = ComponentType<{
   children: ReactNode;
@@ -641,6 +642,47 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('First body').closest('[role="region"]'),
     ).toHaveAttribute('data-state', 'closed');
+    expect(
+      screen.getByText('Second body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('keeps previously opened versions expanded when the TOC opens another version', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1" type="multiple">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            Second body
+          </Accordion>
+          <Accordion headingLevel={3} id="v3" title="v3" value="v3">
+            Third body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'v2' }));
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#v3' }),
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Third body').closest('[role="region"]'),
+      ).toHaveAttribute('data-state', 'open');
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
     expect(
       screen.getByText('Second body').closest('[role="region"]'),
     ).toHaveAttribute('data-state', 'open');

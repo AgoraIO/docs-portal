@@ -725,6 +725,48 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('keeps headings inside known issues sections out of the TOC', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h3 id="known-issues">Known issues</h3>
+          <p>Included known-issue content.</p>
+          <h4 id="bluetooth-issue">Bluetooth issue</h4>
+          <h3 id="versions">Versions</h3>
+          <h3 data-accordion-value="v462" id="v462">
+            v4.6.2
+          </h3>
+          <DocsTableOfContents toc={[]} />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Known issues' }),
+    ).toHaveAttribute('href', '#known-issues');
+    expect(
+      screen.queryByRole('link', { name: 'Bluetooth issue' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('places version accordion headings one level below Versions', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h3 id="versions">Versions</h3>
+          <h3 data-accordion-value="v462" id="v462">
+            v4.6.2
+          </h3>
+          <DocsTableOfContents toc={[]} />
+        </article>
+      </AppProviders>,
+    );
+
+    const versionLink = await screen.findByRole('link', { name: 'v4.6.2' });
+
+    expect(versionLink).toHaveClass('pl-8');
+  });
+
   it('keeps platform and version headings in article order when the payload omits them', async () => {
     render(
       <AppProviders>
@@ -761,7 +803,6 @@ describe('DocsContent', () => {
       ).toEqual([
         '#video-sdk-6',
         '#known-issues-6',
-        '#flutter-sdk-v632',
         '#v662',
         '#v652',
         '#v651',
@@ -1328,6 +1369,92 @@ describe('DocsTableOfContents', () => {
     });
 
     expect(screen.getByRole('link', { name: '2022' })).not.toHaveAttribute(
+      'aria-current',
+    );
+  });
+
+  it('highlights the open accordion heading reached by scrolling', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          <div data-state="open">
+            <h3 data-accordion-value="v4-5-0" id="v4-5-0">
+              v4.5.0
+            </h3>
+          </div>
+          <div data-state="open">
+            <h3 data-accordion-value="v4-4-0" id="v4-4-0">
+              v4.4.0
+            </h3>
+          </div>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 3, title: 'v4.5.0', url: '#v4-5-0' },
+            { depth: 3, title: 'v4.4.0', url: '#v4-4-0' },
+          ]}
+        />
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const latestHeading = document.getElementById('v4-5-0');
+    const olderHeading = document.getElementById('v4-4-0');
+
+    expect(latestHeading).toBeInstanceOf(HTMLElement);
+    expect(olderHeading).toBeInstanceOf(HTMLElement);
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 500,
+      height: 400,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      latestHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 80,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 50,
+      width: 800,
+      x: 0,
+      y: 50,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      olderHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 180,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 150,
+      width: 800,
+      x: 0,
+      y: 150,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.scroll(scrollContainer);
+
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: 'v4.4.0' })).toHaveAttribute(
+        'aria-current',
+        'location',
+      );
+    });
+    expect(screen.getByRole('link', { name: 'v4.5.0' })).not.toHaveAttribute(
       'aria-current',
     );
   });

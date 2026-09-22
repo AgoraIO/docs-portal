@@ -12,7 +12,9 @@ export function addAccordionHeadingsToTocText(markdown: string) {
       return accordion;
     }
 
-    return `\n\n${'#'.repeat(headingLevel)} ${title} [#${id}]\n\n${accordion}\n`;
+    const tocHeadingLevel = Math.min(headingLevel + 1, 4);
+
+    return `\n\n${'#'.repeat(tocHeadingLevel)} ${title} [#${id}]\n\n${accordion}\n`;
   });
 }
 

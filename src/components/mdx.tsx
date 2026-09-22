@@ -554,8 +554,16 @@ function Accordions({
   const setActiveAccordion = pageState?.setActiveAccordion;
   const defaultSingleValue =
     typeof defaultValue === 'string' ? defaultValue : undefined;
+  const defaultMultipleValue = Array.isArray(defaultValue)
+    ? defaultValue
+    : typeof defaultValue === 'string'
+      ? [defaultValue]
+      : [];
   const controlledSingleValue = typeof value === 'string' ? value : undefined;
+  const controlledMultipleValue = Array.isArray(value) ? value : undefined;
   const [localValue, setLocalValue] = useState(defaultSingleValue ?? '');
+  const [localMultipleValue, setLocalMultipleValue] =
+    useState(defaultMultipleValue);
   const appliedDefaultResetKeyRef = useRef(0);
   const setRootRef = useCallback(
     (element: HTMLDivElement | null) => {
@@ -571,6 +579,7 @@ function Accordions({
       : '';
   const selectedValue =
     controlledSingleValue ?? (pageState ? pageControlledValue : localValue);
+  const selectedMultipleValue = controlledMultipleValue ?? localMultipleValue;
 
   const captureVersionScrollAnchor = useCallback(
     (event: ReactMouseEvent<HTMLDivElement>) => {
@@ -701,6 +710,19 @@ function Accordions({
         return;
       }
 
+      if (type === 'multiple') {
+        const nextValues = selectedMultipleValue.includes(hashValue)
+          ? selectedMultipleValue
+          : [...selectedMultipleValue, hashValue];
+
+        if (value === undefined) {
+          setLocalMultipleValue(nextValues);
+        }
+
+        onValueChange?.(nextValues);
+        return;
+      }
+
       if (value === undefined) {
         if (setActiveAccordion) {
           setActiveAccordion((current) =>
@@ -715,11 +737,18 @@ function Accordions({
 
       onValueChange?.(hashValue);
     },
-    [onValueChange, rootId, setActiveAccordion, value],
+    [
+      onValueChange,
+      rootId,
+      selectedMultipleValue,
+      setActiveAccordion,
+      type,
+      value,
+    ],
   );
 
   useEffect(() => {
-    if (type !== 'single') {
+    if (type !== 'single' && type !== 'multiple') {
       return;
     }
 
@@ -742,6 +771,17 @@ function Accordions({
   }, [applyHash, type]);
 
   function handleValueChange(nextValue: string | string[]) {
+    if (type === 'multiple') {
+      const nextMultipleValue = Array.isArray(nextValue) ? nextValue : [];
+
+      if (value === undefined) {
+        setLocalMultipleValue(nextMultipleValue);
+      }
+
+      onValueChange?.(nextMultipleValue);
+      return;
+    }
+
     const nextSingleValue = typeof nextValue === 'string' ? nextValue : '';
 
     if (value === undefined) {
@@ -761,12 +801,12 @@ function Accordions({
     type === 'multiple' ? (
       <ControlledFumadocsAccordions
         {...props}
-        defaultValue={defaultValue}
+        defaultValue={defaultMultipleValue}
         onClickCapture={onClickCapture}
-        onValueChange={onValueChange}
+        onValueChange={handleValueChange}
         ref={setRootRef}
         type={type}
-        value={value}
+        value={selectedMultipleValue}
       />
     ) : (
       <ControlledFumadocsAccordions

@@ -856,12 +856,10 @@ export function DocsTableOfContents({
 
           return heading && isHeadingActiveForToc(heading) ? heading : null;
         });
-        const openAccordionIndex = headings.findIndex(
-          (heading) => heading && isOpenAccordionHeading(heading),
-        );
+        const firstActiveHeadingIndex = headings.findIndex(Boolean);
         let nextActiveUrl =
-          openAccordionIndex >= 0
-            ? (items[openAccordionIndex]?.url ?? '')
+          firstActiveHeadingIndex >= 0
+            ? (items[firstActiveHeadingIndex]?.url ?? '')
             : (items[0]?.url ?? '');
         const nextVisibleUrls = new Set<string>();
 
@@ -884,7 +882,7 @@ export function DocsTableOfContents({
             nextVisibleUrls.add(item.url);
           }
 
-          if (openAccordionIndex < 0 && sectionTop <= boundary) {
+          if (sectionTop <= boundary) {
             nextActiveUrl = item.url;
           }
         }
@@ -1115,13 +1113,41 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     return [];
   }
 
+  let knownIssuesDepth: number | undefined;
+
   return Array.from(article.querySelectorAll<HTMLHeadingElement>('h2, h3, h4'))
-    .filter((heading) => heading.id && !isHiddenFromToc(heading))
-    .map((heading) => ({
-      depth: Number(heading.tagName.slice(1)),
-      title: heading.textContent?.trim() ?? '',
-      url: `#${heading.id}`,
-    }))
+    .filter((heading) => {
+      if (!(heading.id && !isHiddenFromToc(heading))) {
+        return false;
+      }
+
+      const headingDepth = Number(heading.tagName.slice(1));
+
+      if (knownIssuesDepth !== undefined) {
+        if (headingDepth > knownIssuesDepth) {
+          return false;
+        }
+
+        knownIssuesDepth = undefined;
+      }
+
+      if (/^known issues\b/i.test(heading.textContent?.trim() ?? '')) {
+        knownIssuesDepth = headingDepth;
+      }
+
+      return true;
+    })
+    .map((heading) => {
+      const headingDepth = Number(heading.tagName.slice(1));
+
+      return {
+        depth: heading.hasAttribute('data-accordion-value')
+          ? Math.min(headingDepth + 1, 4)
+          : headingDepth,
+        title: heading.textContent?.trim() ?? '',
+        url: `#${heading.id}`,
+      };
+    })
     .filter((item) => item.title.length > 0);
 }
 
@@ -1145,6 +1171,17 @@ function isOpenAccordionHeading(heading: HTMLElement) {
 }
 
 function isHiddenFromToc(element: HTMLElement) {
+  const knownIssuesSection = element.closest<HTMLElement>(
+    'section[id$="known-issues"]',
+  );
+
+  if (
+    knownIssuesSection &&
+    knownIssuesSection.querySelector('h2, h3, h4') !== element
+  ) {
+    return true;
+  }
+
   for (
     let current: HTMLElement | null = element;
     current;

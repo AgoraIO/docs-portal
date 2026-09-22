@@ -11,7 +11,7 @@ Release details.
 </Accordions>`;
 
     expect(addAccordionHeadingsToTocText(source)).toContain(
-      '### v4.6.3 [#v4-6-3]',
+      '#### v4.6.3 [#v4-6-3]',
     );
   });
 
@@ -64,7 +64,7 @@ Answer.
     );
 
     expect(toc).toContainEqual({
-      depth: 3,
+      depth: 4,
       title: 'v4.6.3',
       url: '#v4-6-3',
     });
