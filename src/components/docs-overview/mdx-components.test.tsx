@@ -86,11 +86,18 @@ type OverviewImageCardComponent = ComponentType<{
   title: string;
 }>;
 type HelpHubComponent = ComponentType<{
+  description?: string;
   cards: Array<{
     cta: string;
     description: string;
     href: string;
-    icon: 'discord' | 'stack-overflow' | 'status' | 'ticket';
+    icon:
+      | 'discord'
+      | 'stack-overflow'
+      | 'status'
+      | 'ticket'
+      | 'github'
+      | 'blog';
     title: string;
   }>;
   knowledgeBase: Array<{
@@ -204,6 +211,34 @@ describe('overview MDX components', () => {
       'href',
       '/en/ai/get-started/quickstart',
     );
+  });
+
+  it('supports a resource introduction without empty help panels', () => {
+    const HelpHub = getOverviewMDXComponents().HelpHub as HelpHubComponent;
+    render(
+      <HelpHub
+        description="Explore code and community resources."
+        cards={[
+          {
+            title: 'Support',
+            description: 'Get help.',
+            cta: 'Create a ticket',
+            href: 'https://agoraio.zendesk.com/hc/en-us',
+            icon: 'ticket',
+          },
+        ]}
+        knowledgeBase={[]}
+        topics={[]}
+      />,
+    );
+    expect(screen.getByRole('link', { name: /Support/ })).toBeVisible();
+    expect(
+      screen.getByText('Explore code and community resources.'),
+    ).toBeVisible();
+    expect(
+      screen.queryByText('Popular Knowledge Base'),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Browse By Topic')).not.toBeInTheDocument();
   });
 
   it('renders the help hub layout for introduction resources', () => {

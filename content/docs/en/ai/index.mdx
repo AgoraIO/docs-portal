@@ -1,45 +1,81 @@
 ---
 analyticsPageType: navigation-landing
 title: Voice Agent overview
-description: Understand what a voice agent is, how this section is organized, and which path to follow in the sidebar.
+description: Understand a voice conversation, then build it for an app or supported device.
+hideNavigation: true
 ---
 
-A Voice Agent is a real-time system that listens to a user, reasons over the conversation, and responds with speech. On Agora, that experience is built from a shared foundation: real-time transport, an agent runtime, AI models, and the endpoint where the conversation is delivered.
+Voice Agent supports **human-to-agent** interaction: a person speaks with an AI agent that uses models to generate a spoken response. You define its instructions, model configuration, and access to your data or tools. Agora provides the real-time connection and the **Conversational AI Engine** that runs the conversation.
 
-Agora supports two Voice Agent paths: **in apps** and **on dedicated devices**. Choose **In apps** if your agent lives in a web, mobile, desktop, or backend-assisted app experience. Choose **On dedicated devices** if your endpoint is embedded or hardware-first, such as a toy, wearable, kiosk, or companion. Use the quickstart that matches your endpoint to jump directly into the right implementation path.
-
-<Cards>
-  <Card
-    title="In apps quickstart"
-    href="/en/ai/get-started/quickstart"
-    description="Build the minimal backend-plus-client flow and get a working voice agent running quickly."
-  />
-  <Card
-    title="Dedicated devices quickstart"
-    href="/en/ai/device-kit/start-here/quickstart"
-    description="Bring up the Convo AI Device Kit quickly and verify the end-to-end device workflow."
-  />
-</Cards>
-
-## Capabilities
-
-No matter where you ship it, a Voice Agent usually has the same core layers:
-
-- **Real-time transport**: moves audio, events, and conversation state between the user and the agent with low latency.
-- **Agent runtime**: manages the session lifecycle, turn taking, interruptions, memory, and tool orchestration.
-- **Models**: provide ASR, LLM, TTS, and optional multimodal capabilities.
-- **Endpoint**: presents the experience to the user, either through an app or a dedicated device.
-
-The first three layers stay conceptually similar across the docs. The main split in the sidebar happens at the **endpoint** layer, because app teams and device teams need different implementation workflows.
-
-## How this section is organized
-
-The AI sidebar is structured in two paths:
-
-- **In apps**: for web, mobile, desktop, and backend-assisted app experiences.
-- **On dedicated devices**: for embedded or hardware-first endpoints such as toys, wearables, kiosks, and companions.
-
-Both paths share the same Voice Agent idea, but they differ in what teams need to build next. App teams usually care first about session orchestration, UI, model behavior, and runtime events. Device teams usually care first about bring-up, networking, firmware, controls, and hardware integration.
-
+<a id="how-this-section-is-organized" />
 <a id="on-software-clients" />
 <a id="for-software-clients" />
+<a id="run-your-first-conversation" />
+
+## Build for an app or a device
+
+<Cards>
+  <Card title="In apps quickstart" href="/en/ai/get-started/quickstart" description="Run a browser client and backend, then start your first voice conversation." />
+  <Card title="Dedicated devices quickstart" href="/en/ai/device-kit/start-here/quickstart" description="Set up the supported Convo AI Device Kit and verify a conversation on the device." />
+</Cards>
+
+Choose Apps for a software client and backend, or Devices for a workflow that includes hardware setup and connectivity. For a visual workflow, [create an agent in Agora Console](/en/ai/studio/quickstart). To build with a coding assistant, use [Start with AI](/en/introduction/start-with-ai).
+
+For your first app conversation, speak and listen for a response, check the transcript, then end the session. Once that works, change one part of the experience below.
+
+<a id="capabilities" />
+
+## What you can build
+
+<SolutionCardGrid size="small">
+  <SolutionCard title="Define the agent's role" href="/en/ai/build/start-stop-agent" icon="ai" tone="purple" size="small" description="Set instructions when you start the agent to guide its responses and behavior." />
+  <SolutionCard title="Choose your models" href="/en/ai/build/custom-model-integration/managed-mode" icon="tools" tone="blue" size="small" description="Configure managed model services, or follow the model guides to connect your own endpoint." />
+  <SolutionCard title="Connect business actions" href="/en/ai/build/custom-model-integration/custom-tools" icon="tools" tone="sand" size="small" description="Let the agent look up information or take action through your HTTPS tools." />
+  <SolutionCard title="Use context from your app" href="/en/ai/build/shape-the-conversation/custom-information" icon="signaling" tone="green" size="small" description="Pass information such as selected text or user state to help the agent respond in context." />
+</SolutionCardGrid>
+
+For tools exposed through MCP, follow [Connect MCP tools](/en/ai/build/mcp-tools). These tools are called during a conversation; [Agora MCP](/en/introduction/agora-mcp) helps your coding assistant look up documentation during development.
+
+## How an app conversation works
+
+Your **client** is the application on the user's browser or device. Your **backend** supplies credentials and starts or stops the agent. The **Conversational AI Engine** connects the agent to the conversation and uses the configured models to respond.
+
+![An app conversation starts with the client joining RTC and requesting an agent from its backend. The backend calls the Agora Engine, which joins an agent to the channel. Audio passes through RTC; the backend stops the agent when the conversation ends.](/images/developer-journey/voice-agent-session.svg)
+
+*This is the basic app flow. The backend controls the session; the client and agent exchange audio through RTC. Model calls, transcripts, and runtime notifications are omitted from the sequence.*
+
+1. The client joins an RTC channel with the credentials provided by your backend.
+2. Your backend uses an **Agent SDK or the REST API** to start an agent in the same channel.
+3. The engine receives speech and uses your model configuration to produce a response. The agent's audio returns to the client through RTC.
+4. When the user ends the conversation, your backend stops the agent and the client leaves the channel.
+
+The Agent SDK runs in your backend and calls the Agora service. It does not replace the client's RTC SDK or host the engine on your server.
+
+For a speech-to-text, language model, and text-to-speech configuration, the models turn speech into text, generate an answer, and turn that answer into speech. Supported realtime multimodal models provide another model path. The model guides explain the configuration for each provider.
+
+<a id="change-the-part-you-need" />
+
+## Extend your agent
+
+### Try a recipe
+
+Choose a runnable example with one concrete change. These links open the recipe's code and setup instructions on GitHub.
+
+<SolutionCardGrid size="small">
+  <SolutionCard title="Tool Calling" href="https://github.com/AgoraIO-Conversational-AI/recipe-agent-tool-calling/blob/main/README.md" icon="tools" tone="sand" size="small" description="Save and retrieve notes through tools implemented inside a custom LLM endpoint." />
+  <SolutionCard title="Cross-Session Memory" href="https://github.com/AgoraIO-Conversational-AI/recipe-agent-memory/blob/main/README.md" icon="ai" tone="purple" size="small" description="Restore a returning user's conversation history as context for the next session." />
+  <SolutionCard title="Custom LLM" href="https://github.com/AgoraIO-Conversational-AI/recipe-agent-custom-llm/blob/main/README.md" icon="tools" tone="blue" size="small" description="Connect your own OpenAI-compatible LLM endpoint while keeping managed speech services." />
+  <SolutionCard title="Retrieval-Augmented Generation" href="https://github.com/AgoraIO-Conversational-AI/recipe-agent-rag/blob/main/README.md" icon="ai" tone="green" size="small" description="Explore document retrieval with a small sample corpus and mocked response generation." />
+</SolutionCardGrid>
+
+[Browse all recipes](/en/api-reference/recipes) for more client platforms, features, and scenarios. The custom LLM examples provide mock endpoints you can replace with your own implementation.
+
+### Continue your integration
+
+| Your next change | Guide |
+| --- | --- |
+| Show the conversation in your app | [Display live transcripts](/en/ai/build/transcripts). |
+| React to agent state or inspect failures | [Monitor agent runtime](/en/ai/build/handle-runtime-events/monitor-agent-runtime). |
+| Record a conversation | [Record agent conversations](/en/ai/best-practices/record-agent-conversation). |
+
+For exact SDK methods, use the [Python](/en/api-reference/api-ref/server-sdk/python), [TypeScript](/en/api-reference/api-ref/server-sdk/typescript), or [Go](/en/api-reference/api-ref/server-sdk/go) reference. Read the [Agora Platform Overview](/en/introduction/about-agora) for the wider relationship between Voice Agent, RTC, and development tools.

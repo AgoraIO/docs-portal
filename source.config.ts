@@ -23,6 +23,7 @@ const rawDocSchema = z.object({
   icon: z.string().optional(),
   hidePlatformTabs: z.boolean().optional(),
   hideToc: z.boolean().optional(),
+  hideNavigation: z.boolean().optional(),
   layout: z.enum(['platform-group']).optional(),
   platforms: z.array(z.string()).optional(),
   defaultPlatform: z.string().optional(),
