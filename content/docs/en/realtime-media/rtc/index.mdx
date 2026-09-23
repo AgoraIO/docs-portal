@@ -1,13 +1,11 @@
 ---
-title: "Realtime Communication Overview"
+title: "Realtime Communication overview"
 analyticsPageType: concept-explanation
 hideNavigation: true
 description: "Build a voice or video call, understand how participants exchange media, and extend your application."
 ---
 
-Realtime Communication (RTC) supports **human-to-human** interaction through live audio and video. Your client application captures and plays media using the RTC SDK; Agora carries it between participants. You control the user experience and which media each participant sends and receives.
-
-<a id="start-building" />
+Realtime Communication (RTC) supports **human-to-human** interaction through live audio and video. Your client application captures and plays media using the RTC SDK. Agora carries it between participants. You control the user experience and which media each participant sends and receives.
 
 ## Start a call
 
@@ -16,9 +14,7 @@ Realtime Communication (RTC) supports **human-to-human** interaction through liv
   <Card title="Video quickstart" href="/en/realtime-media/rtc/get-started-sdk" description="Join a channel and send and receive live audio and video." />
 </Cards>
 
-Choose your target platform in the quickstart. For your first call, connect two clients, confirm that they can hear or see each other, and leave the channel when finished. If you prefer to work with a coding assistant, use [Start with AI](/en/introduction/start-with-ai).
-
-<a id="use-cases" />
+Choose your target platform in the quickstart. For your first call, connect two clients, confirm that they can hear or see each other, and leave the channel when finished. If you prefer to work with a coding assistant, see [Start with AI](/en/introduction/start-with-ai).
 
 ## What you can build
 
@@ -26,35 +22,33 @@ Choose your target platform in the quickstart. For your first call, connect two 
   <SolutionCard title="Voice conversations" href="/en/realtime-media/rtc/voice-quickstart" icon="voice-calling" tone="blue" size="small" description="Connect people in social audio, gaming, or customer-support conversations." />
   <SolutionCard title="Video conversations" href="/en/realtime-media/rtc/get-started-sdk" icon="video-calling" tone="purple" size="small" description="Bring live audio and video into meetings, lessons, and collaboration apps." />
   <SolutionCard title="Interactive live streaming" href="/en/realtime-media/interactive-live-streaming/product-overview" icon="video-calling" tone="sand" size="small" description="Build sessions where hosts publish media and audiences watch, listen, or join as hosts." />
-  <SolutionCard title="Broadcast streaming" href="/en/realtime-media/broadcast-streaming" icon="video-calling" tone="green" size="small" description="Follow the broadcast guides for one-to-many live video delivery." />
+  <SolutionCard title="Broadcast streaming" href="/en/realtime-media/broadcast-streaming" icon="video-calling" tone="green" size="small" description="Deliver one-to-many live video to large audiences with low latency." />
 </SolutionCardGrid>
 
-## How a realtime session works
+## How a real-time session works
 
-A **channel** groups participants who can exchange media. **Publishing** sends local audio or video; **subscribing** receives another participant's media. In a two-way call, both clients publish and subscribe.
+A **channel** groups participants who can exchange media. It is a logical group, not a server you deploy.
+
+Within a channel, **publish** to send local audio or video, and **subscribe** to receive another participant's media. In a two-way call, both clients do both. In a live stream, hosts publish and audiences only subscribe.
 
 ![Two RTC clients join the same channel. Client A publishes audio or video that Client B subscribes to; Client B publishes media that Client A subscribes to.](/images/developer-journey/rtc-media-exchange.svg)
-
-*The arrows show media direction in a two-way call. A channel is a logical group, not a server you deploy. Backend authentication is omitted from this diagram. In a live stream, audience members subscribe without publishing.*
 
 1. **Prepare the client.** Initialize the SDK with your App ID and obtain credentials from your backend.
 2. **Join a channel.** Participants in the same project use the same channel name and distinct user IDs.
 3. **Publish and subscribe.** Send the local media and receive the remote media required by your application.
 4. **Leave the session.** Disconnect the client when the user leaves.
 
-Your backend keeps secret credentials and provides client authentication. Read [RTC concepts](/en/realtime-media/rtc/core-concepts) when you need details about channels, streams, roles, or connections.
-
-<a id="product-features" />
+Your backend keeps secret credentials and provides client authentication. See Realtime Communication [Core concepts](/en/realtime-media/rtc/core-concepts) when you need details about channels, streams, roles, or connections.
 
 ## Extend your application
 
 | Your next change | Guide |
 | --- | --- |
-| Let users mute or adjust audio | [Volume control and mute](/en/realtime-media/rtc/build/control-audio-and-devices/volume-control-and-mute). |
-| Share a screen | [Screen sharing](/en/realtime-media/rtc/build/capture-and-render-video/screen-sharing). |
-| Record calls | [Cloud Recording](/en/realtime-media/cloud-recording). |
-| Synchronize messages, presence, or shared state | [Signaling](/en/realtime-media/rtm). |
-| Protect access before production | [Authentication](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow). |
+| Let users mute or adjust audio | [Volume control and mute](/en/realtime-media/rtc/build/control-audio-and-devices/volume-control-and-mute) |
+| Share a screen | [Screen sharing](/en/realtime-media/rtc/build/capture-and-render-video/screen-sharing) |
+| Record calls | [Cloud Recording](/en/realtime-media/cloud-recording) |
+| Synchronize messages, presence, or shared state | [Signaling](/en/realtime-media/rtm) |
+| Protect access before production | [Authentication](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow) |
 
 <OverviewLinkBanner
   title="Explore RTC code examples"
@@ -62,4 +56,4 @@ Your backend keeps secret credentials and provides client authentication. Read [
   description="Find sample projects for specific SDK features and follow the setup instructions for your platform."
 />
 
-Use the [SDK catalog](/en/api-reference/sdks?product=rtc) to find packages and the [RTC API reference](/en/api-reference/api-ref/rtc) to look up exact methods. Explore the [realtime capability directory](/en/realtime-media/overview) for additional media services, or the [Agora Platform Overview](/en/introduction/about-agora) to see how RTC and Voice Agent fit together.
+Use the [SDK catalog](/en/api-reference/sdks?product=rtc) to find packages and the [RTC API reference](/en/api-reference/api-ref/rtc) to look up exact methods. Explore [RTC products and services](/en/realtime-media/overview) for more capabilities, or the [Agora platform overview](/en/introduction/about-agora) to see how RTC and Voice Agent fit together.

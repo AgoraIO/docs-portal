@@ -1,39 +1,45 @@
 ---
 analyticsPageType: task-guide
 hideNavigation: true
-title: Voice agent quickstart
-description: Build a working voice agent in under five minutes without writing any server code by cloning an officially maintained starter project.
+title: Voice Agent quickstart
+description: Run an officially maintained starter project to get a working voice agent with a browser client and a Python, TypeScript, or Go backend.
 ---
-Run an official starter with a browser client and a Python, TypeScript, or Go backend. You will start a conversation, hear the agent respond, and see the transcript. The backend provides credentials and session control; Agora runs the Conversational AI Engine.
+Run an official starter with a browser client and a Python, TypeScript, or Go backend. You start a conversation, hear the agent respond, and see the transcript. The backend provides credentials and session control. Agora runs the Conversational AI Engine.
 
-You can ask your coding assistant to handle setup, or run the CLI commands yourself. If you already prepared your assistant with [Start with AI](/en/introduction/start-with-ai), continue to [Sign in, scaffold, and run](#sign-in-scaffold-and-run). If you are following the commands yourself, start with [Install the Agora CLI](#install-the-agora-cli).
+Choose how you want to set up:
 
-Use [Platform concepts](/en/introduction/core-concepts) when you need to understand an App ID, certificate, or token during setup.
+- **Let your coding assistant do it.** Start with [Set up with your assistant](#set-up-with-your-assistant).
+- **Run the commands yourself.** Start with [Install the Agora CLI](#install-the-agora-cli).
+- **Already followed [Start with AI](/en/introduction/start-with-ai)?** Your CLI and Skills are ready. Go to [Sign in, scaffold, and run](#sign-in-scaffold-and-run).
 
-### Install Agora Skills
+For definitions of App ID, App Certificate, and token, see [Platform concepts](/en/introduction/core-concepts#project-credentials-and-authentication).
 
-Agora Skills teach your AI coding assistant how to work with Conversational AI projects using official starter repos and the Agora CLI, including signing in, project binding, generating environment files, and running diagnostics. Install the CLI in the next section, or ask your assistant to run the installer for you.
+## Set up with your assistant
+
+Agora Skills teaches your AI coding assistant how to work with Conversational AI projects using official starter repos and the Agora CLI. It covers signing in, project binding, generating environment files, and running diagnostics.
 
 ```bash
 npx skills add AgoraIO/skills
 ```
 
-Paste the following prompt into your assistant's chat. You can replace Python with TypeScript or Go depending on your language preference:
+Paste this prompt into your assistant's chat. To use a different language, replace Python with TypeScript or Go:
 
 ```text
 Set up and run the Agora Conversational AI Python starter project locally.
 ```
 
-Your assistant installs the CLI, signs you in, scaffolds the official starter, and guides you through the remaining steps. Follow the manual CLI steps below if you prefer to run each command yourself.
+Your assistant installs the CLI, signs you in, scaffolds the official starter, and runs it. When the app is running at `http://localhost:3000`, continue to [What just happened](#what-just-happened). If the agent does not start, see [If the agent does not start](#if-the-agent-does-not-start).
 
-### Install the Agora CLI
+To run each command yourself instead, continue with [Install the Agora CLI](#install-the-agora-cli).
+
+## Install the Agora CLI
 
 The Agora CLI is a native Go binary available at [AgoraIO-Community/cli](https://github.com/AgoraIO-Community/cli).
 
 <Tabs defaultValue="mac-linux" groupId="ai-install-os" persist>
 <TabsList>
   <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
-  <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
+  <TabsTrigger value="windows-powershell">Windows PowerShell</TabsTrigger>
 </TabsList>
 
 <TabsContent value="mac-linux">
@@ -43,7 +49,7 @@ curl -fsSL https://dl.agora.io/cli/install.sh | sh
 agora --help
 ```
 
-If the `agora` command is not found after installation, re-run with `--add-to-path` or
+If the `agora` command is not found after installation, rerun it with `--add-to-path`, or
 manually add the install directory to your shell profile.
 
 </TabsContent>
@@ -68,62 +74,68 @@ powershell -ExecutionPolicy Bypass -File .\install.ps1
 
 Sign in with the Agora CLI, clone the starter project, and configure it for your chosen language.
 
-Sign in to Agora Console:
+1. Sign in to Agora Console:
+
+    ```bash
+    agora login
+    ```
+
+2. Use `agora init` to clone the official starter for your chosen template, bind it to your Agora project, and write the runtime-specific environment file:
+
+    <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+    <TabsList>
+      <TabsTrigger value="python">Python</TabsTrigger>
+      <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+      <TabsTrigger value="go">Go</TabsTrigger>
+    </TabsList>
+
+    <TabsContent value="python">
+
+    ```bash
+    agora init my-python-demo --template python
+    cd my-python-demo
+    # Set up the web client and Python backend.
+    bun run setup
+    # Start the web client and Python backend.
+    bun run dev
+    ```
+
+    </TabsContent>
+
+    <TabsContent value="typescript">
+
+    ```bash
+    agora init my-nextjs-demo --template nextjs
+    cd my-nextjs-demo
+    pnpm install
+    pnpm dev
+    ```
+
+    </TabsContent>
+
+    <TabsContent value="go">
+
+    ```bash
+    agora init my-go-demo --template go
+    cd my-go-demo
+    make setup
+    make dev
+    ```
+
+    </TabsContent>
+    </Tabs>
+
+3. Open `http://localhost:3000` and click **Start conversation**. Allow microphone access, speak, and confirm that you hear a response and see the transcript. End the conversation in the app when you are finished.
+
+## If the agent does not start
+
+If the agent does not join the channel, or transcripts do not appear, run the CLI diagnostic:
 
 ```bash
-agora login
+agora project doctor
 ```
 
-Use `agora init` to clone the official starter for your chosen template, bind it to your Agora project, and write the runtime-specific environment file:
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
-  <TabsTrigger value="go">Go</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-```bash
-agora init my-python-demo --template python
-cd my-python-demo
-# Set up the web client and Python backend.
-bun run setup
-# Start the web client and Python backend.
-bun run dev
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```bash
-agora init my-nextjs-demo --template nextjs
-cd my-nextjs-demo
-pnpm install
-pnpm dev
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```bash
-agora init my-go-demo --template go
-cd my-go-demo
-make setup
-make dev
-```
-
-</TabsContent>
-</Tabs>
-
-
-Open `http://localhost:3000` and click **Start conversation**. Allow microphone access, speak, and confirm that you hear a response and see the transcript. End the conversation using the app's control.
-
-If the agent does not join or transcripts do not appear, run `agora project doctor` to
-check credential validity, feature enablement, and network reachability.
+It checks credential validity, feature enablement, and network reachability.
 
 :::info
 Conversational AI Engine is enabled by default for new projects and can't be disabled. If you're using an older project and the agent fails to start, verify that Conversational AI Engine is enabled on the **RTC Services** page in [Agora Console](https://console.agora.io/).
@@ -137,10 +149,10 @@ the environment configuration required to run the demo locally.
 The demo runs a local browser app and server-side agent controls:
 
 - **Browser app**: Captures microphone audio and plays the agent response.
-- **Server-side controls**: Generate tokens and use the Agent SDK to start or stop the agent session. The SDK runs in your backend and calls the Agora service.
+- **Server-side controls**: Generate tokens and use the Agent SDK to start or stop the agent session.
 
 Agora provides the real-time path between the user and the agent. The user and
-agent join the same Agora channel, and Agora transports the live audio between them. The starter also receives the data needed to show transcripts in the browser.
+agent join the same Agora channel, and Agora transports the live audio between them. The starter also receives the session events that it uses to show transcripts in the browser.
 
 The configured models handle the speech pipeline:
 
@@ -148,9 +160,11 @@ The configured models handle the speech pipeline:
 2. The LLM reasons over the conversation and generates a response.
 3. TTS converts the response back to speech.
 
-See [How an app conversation works](/en/ai#how-an-app-conversation-works) for the sequence and component responsibilities.
+For a diagram of this flow, see [How an app conversation works](/en/ai#how-an-app-conversation-works).
 
 ## Next steps
+
+Choose the guide that matches what you want to do next.
 
 ### Build and customize
 

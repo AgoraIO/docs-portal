@@ -1,5 +1,4 @@
 ---
-hideNavigation: true
 title: Agora CLI
 description: Install the Agora CLI to log in, initialize official starters, write environment files, and run diagnostics for local Agora workflows.
 ---
@@ -10,10 +9,10 @@ If you want to get a demo running before you fine-tune prompts or architecture, 
 
 ## Install the Agora CLI
 
-<Tabs>
+<Tabs defaultValue="mac-linux" groupId="ai-install-os" persist>
 <TabsList>
   <TabsTrigger value="mac-linux">macOS and Linux</TabsTrigger>
-  <TabsTrigger value="windows-powershell">Windows (PowerShell)</TabsTrigger>
+  <TabsTrigger value="windows-powershell">Windows PowerShell</TabsTrigger>
 </TabsList>
 
 <TabsContent value="mac-linux">
@@ -35,11 +34,11 @@ agora --help
 </TabsContent>
 </Tabs>
 
-## Quick start
+## Quickstart
 
 Follow this path if you want to get an official starter running as quickly as possible.
 
-<Tabs>
+<Tabs defaultValue="typescript" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="python">Python</TabsTrigger>
@@ -89,9 +88,9 @@ make dev
 2. `agora init` clones an official starter, binds it to your Agora project, and writes the environment you need locally.
 3. The runtime-specific install and dev commands start the application.
 
-If the starter runs, move on to application-specific work. If not, troubleshoot in the same order you experienced the setup below.
+If the starter runs, move on to application-specific work. If not, see [Troubleshooting](#troubleshooting).
 
-## If something fails
+## Troubleshooting
 
 ### The `agora` command is not available
 
@@ -136,7 +135,7 @@ This is the right check when the local app starts but the agent does not join, t
 
 If you are not using an official starter, create or switch projects first, then export credentials into the local environment.
 
-<Tabs>
+<Tabs defaultValue="typescript" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="typescript">TypeScript</TabsTrigger>
   <TabsTrigger value="python">Python</TabsTrigger>
@@ -185,8 +184,3 @@ agora project use my-project
 ```
 
 The CLI gives your assistant reproducible local steps it can execute and verify, especially during starter bootstrapping, project binding, environment generation, and first-line diagnosis.
-
-
-## Continue your build
-
-Return to [Start with AI](/en/introduction/start-with-ai#give-your-assistant-a-goal) to run and verify an interaction. If you already have a working application, continue with the guide for the feature you are implementing.

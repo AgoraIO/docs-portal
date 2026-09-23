@@ -9,14 +9,7 @@ hideNavigation: true
 
 Agora supports **human-to-agent** conversations through Voice Agent and **human-to-human** communication through RTC.
 
-See [Platform overview](/en/introduction/about-agora) for the SDK and service architecture, or [Platform concepts](/en/introduction/core-concepts) for projects, App IDs, certificates, and tokens.
-
-<a id="build-a-voice-agent" />
-<a id="voice-agent" />
-<a id="build-real-time-applications" />
-<a id="real-time-use-cases" />
-<a id="realtime-communication" />
-<a id="products" />
+See the [Agora platform overview](/en/introduction/about-agora) for the SDK and service architecture. For definitions of App ID, App Certificate, and token, see [Platform concepts](/en/introduction/core-concepts#project-credentials-and-authentication).
 
 ## What to build
 
@@ -25,19 +18,15 @@ See [Platform overview](/en/introduction/about-agora) for the SDK and service ar
   <SolutionCard title="RTC" href="/en/realtime-media/rtc" icon="video-calling" tone="blue" size="small" tags={["Human-to-human"]} description="Real-time audio and video between people, including calls and live streaming." />
 </SolutionCardGrid>
 
-<a id="get-started" />
-
 ## How to build
 
 Start with an AI-assisted workflow, or follow a quickstart in code. Both paths cover project setup and a first working session.
 
-<a id="start-with-ai-tools" />
-
 ### Build with AI
 
-[Start with AI](/en/introduction/start-with-ai) explains how to prepare your coding assistant and run an official starter. **Skills** provides integration guidance, the **CLI** handles project setup and diagnostics, and **MCP** provides documentation lookup.
+[Start with AI](/en/introduction/start-with-ai) explains how to prepare your coding assistant and run an official starter. [Agora Skills](/en/introduction/agora-skills) provides integration guidance, [Agora CLI](/en/introduction/agora-cli) handles project setup and diagnostics, and [Agora MCP](/en/introduction/agora-mcp) provides documentation lookup.
 
-### Build with Code
+### Build with code
 
 <SolutionCardGrid size="small">
   <SolutionCard
@@ -66,68 +55,42 @@ Start with an AI-assisted workflow, or follow a quickstart in code. Both paths c
 ### Build in Console
 
 <OverviewLinkBanner
-  title="Agent builder"
+  title="Agent Studio"
   href="/en/ai/studio/quickstart"
   description="Configure and test a voice agent in Agora Console."
 />
 
-<a id="sdks-and-apis" />
-
-## SDK & APIs
+## SDKs and APIs
 
 Use the SDK and API references as you integrate and extend your application.
 
-<div className="introduction-sdk-directory not-prose my-8 grid gap-4 sm:grid-cols-2">
-  <ToolkitGroup title="Voice Agent">
-    <div className="introduction-sdk-section">
-      <h4>Agent SDKs</h4>
-      <div className="introduction-sdk-links">
-        <ToolkitItem href="/en/api-reference/api-ref/server-sdk/python" icon="python" label="Python" />
-        <ToolkitItem href="/en/api-reference/api-ref/server-sdk/typescript" icon="typescript" label="TypeScript" />
-        <ToolkitItem href="/en/api-reference/api-ref/server-sdk/go" icon="go" label="Go" />
-      </div>
-    </div>
-    <div className="introduction-sdk-section">
-      <h4>Client toolkit</h4>
-      <div className="introduction-sdk-links">
-        <ToolkitItem href="/en/api-reference/api-ref/conversational-ai/client-toolkit/web" icon="web" label="Web" />
-        <ToolkitItem href="/en/api-reference/api-ref/conversational-ai/client-toolkit/android" icon="android" label="Android" />
-        <ToolkitItem href="/en/api-reference/api-ref/conversational-ai/client-toolkit/ios" icon="ios" label="iOS" />
-      </div>
-    </div>
+<div className="not-prose my-8 grid gap-4 sm:grid-cols-2">
+  <ToolkitGroup title="Agent SDKs">
+    <ToolkitItem href="/en/api-reference/api-ref/server-sdk/python" icon="python" label="Python" />
+    <ToolkitItem href="/en/api-reference/api-ref/server-sdk/typescript" icon="typescript" label="TypeScript" />
+    <ToolkitItem href="/en/api-reference/api-ref/server-sdk/go" icon="go" label="Go" />
   </ToolkitGroup>
-  <ToolkitGroup title="RTC">
-    <div className="introduction-sdk-section">
-      <h4>Client SDKs</h4>
-      <div className="introduction-sdk-links">
-        <ToolkitItem href="/en/api-reference/sdks?product=rtc&platform=web" icon="web" label="Web" />
-        <ToolkitItem href="/en/api-reference/sdks?product=rtc&platform=android" icon="android" label="Android" />
-        <ToolkitItem href="/en/api-reference/sdks?product=rtc&platform=ios" icon="ios" label="iOS" />
-      </div>
-      <a className="introduction-sdk-more" href="/en/api-reference/sdks?product=rtc">More platforms →</a>
-    </div>
-    <div className="introduction-sdk-stack">
-    <div className="introduction-sdk-section">
-      <h4>Server SDK</h4>
-      <div className="introduction-sdk-links">
-        <ToolkitItem href="/en/realtime-media/rtc-server-sdk" icon="server" label="Server Gateway" />
-      </div>
-    </div>
-    <div className="introduction-sdk-section">
-      <h4>REST API</h4>
-      <div className="introduction-sdk-links">
-        <ToolkitItem href="/en/api-reference/api-ref/rtc" icon="rest" label="Channel management" />
-      </div>
-    </div>
-    </div>
+
+  <ToolkitGroup title="Voice Agent client toolkit">
+    <ToolkitItem href="/en/api-reference/api-ref/conversational-ai/client-toolkit/web" icon="web" label="Web" />
+    <ToolkitItem href="/en/api-reference/api-ref/conversational-ai/client-toolkit/android" icon="android" label="Android" />
+    <ToolkitItem href="/en/api-reference/api-ref/conversational-ai/client-toolkit/ios" icon="ios" label="iOS" />
+  </ToolkitGroup>
+
+  <ToolkitGroup title="RTC client SDKs">
+    <ToolkitItem href="/en/api-reference/sdks?product=rtc&platform=web" icon="web" label="Web" />
+    <ToolkitItem href="/en/api-reference/sdks?product=rtc&platform=android" icon="android" label="Android" />
+    <ToolkitItem href="/en/api-reference/sdks?product=rtc&platform=ios" icon="ios" label="iOS" />
+    <ToolkitItem href="/en/api-reference/sdks?product=rtc" icon="rtc" label="More platforms" />
+  </ToolkitGroup>
+
+  <ToolkitGroup title="RTC server SDK and REST API">
+    <ToolkitItem href="/en/realtime-media/rtc-server-sdk" icon="server" label="Server Gateway" />
+    <ToolkitItem href="/en/api-reference/api-ref/rtc" icon="rest" label="Channel management" />
   </ToolkitGroup>
 </div>
 
-[Browse all SDKs](/en/api-reference/sdks) · [Browse all APIs](/en/api-reference/api-ref)
-
-<a id="get-help" />
-<a id="reference-and-help" />
-<a id="developer-resources" />
+Browse [all SDKs](/en/api-reference/sdks) and [all APIs](/en/api-reference/api-ref).
 
 ## Resources to build
 
@@ -176,8 +139,6 @@ Use the SDK and API references as you integrate and extend your application.
 
 For documented answers, see [FAQ](/en/api-reference/faq), [Account and billing](/en/api-reference/faq/account), and [Glossary](/en/introduction/glossary).
 
-<a id="recipes-and-examples" />
-
 ## Ideas to build
 
 Extend your application with these recipes and examples. Each repository provides its own setup instructions.
@@ -200,8 +161,8 @@ These recipes use a Python backend.
 These examples use the Web SDK.
 
 <SolutionCardGrid size="small">
-  <SolutionCard title="shareTheScreen" href="https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/advanced/shareTheScreen" icon="video-calling" tone="blue" size="small" tags={["RTC", "Web SDK example"]} description="Capture a screen video track and publish it to participants in the channel." />
-  <SolutionCard title="basicLive" href="https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/basic/basicLive" icon="live-streaming" tone="blue" size="small" tags={["RTC", "Web SDK example"]} description="Explore the host and audience roles in a live audio and video session." />
+  <SolutionCard title="Screen sharing" href="https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/advanced/shareTheScreen" icon="video-calling" tone="blue" size="small" tags={["RTC", "Web SDK example"]} description="Capture a screen video track and publish it to participants in the channel." />
+  <SolutionCard title="Live streaming roles" href="https://github.com/AgoraIO/API-Examples-Web/tree/main/src/example/basic/basicLive" icon="live-streaming" tone="blue" size="small" tags={["RTC", "Web SDK example"]} description="Explore the host and audience roles in a live audio and video session." />
 </SolutionCardGrid>
 
 [RTC sample setup and examples](https://github.com/AgoraIO/API-Examples-Web#readme)
