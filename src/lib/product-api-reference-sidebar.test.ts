@@ -905,6 +905,17 @@ describe('product API reference sidebar links', () => {
       title: '服务端 API',
       type: 'section',
     });
+    const joinApi = findNode(
+      reference?.children?.[1]?.children ?? [],
+      '创建对话式智能体',
+    );
+    expect(joinApi).toMatchObject({
+      search: { from: '/zh-CN/ai' },
+      title: '创建对话式智能体',
+      type: 'page',
+      url: '/zh-CN/api-reference/api-ref/conversational-ai/join',
+    });
+    expect(joinApi?.search?.fromScope).toBeUndefined();
     expect(collectUrls(reference?.children?.[1]?.children ?? [])).toEqual(
       expect.arrayContaining([
         '/zh-CN/api-reference/api-ref/conversational-ai/join',
@@ -926,6 +937,17 @@ describe('product API reference sidebar links', () => {
             child.title === '客户端 API'),
       ) ?? false,
     ).toBe(false);
+  });
+
+  it('keeps the AI product root as context from a nested product page', async () => {
+    const sidebar = await loadSidebar('zh-CN', 'ai', [
+      'reference',
+      'pricing',
+    ]);
+    const joinApi = findNode(sidebar, '创建对话式智能体');
+
+    expect(joinApi?.search).toMatchObject({ from: '/zh-CN/ai' });
+    expect(joinApi?.search?.from).not.toBe('/zh-CN/ai/reference/pricing');
   });
 
   it.each([

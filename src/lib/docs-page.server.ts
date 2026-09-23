@@ -2049,6 +2049,11 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
+  const productSidebarPath = getZhCnProductSidebarPath(
+    activePath ?? pageUrl,
+    tab,
+  );
+
   if (tab === 'ai') {
     const aiNodes = getNavScopeSidebarNodes({
       getNodeMeta: (node) =>
@@ -2068,7 +2073,7 @@ async function getDocsSidebarNodes({
 
     return embedZhCnServiceApiSidebars(
       buildAiProductSidebar(aiNodes, apiReferenceNodes),
-      activePath ?? pageUrl,
+      productSidebarPath,
       locale,
       pageTree,
       source,
@@ -2093,7 +2098,7 @@ async function getDocsSidebarNodes({
         tab,
         activePath,
       }),
-      activePath ?? pageUrl,
+      productSidebarPath,
       locale,
       pageTree,
       source,
@@ -2174,7 +2179,7 @@ async function getDocsSidebarNodes({
   if (!isOpenApiTab(tab) || !locale) {
     const embeddedSidebar = await embedZhCnServiceApiSidebars(
       sidebarWithRealtimeMediaApiReference,
-      activePath ?? pageUrl,
+      productSidebarPath,
       locale,
       pageTree,
       source,
@@ -2197,6 +2202,30 @@ async function getDocsSidebarNodes({
     : openApiSidebar;
 
   return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+}
+
+function getZhCnProductSidebarPath(
+  path: string | undefined,
+  tab: string,
+): string | undefined {
+  if (!path || !path.startsWith('/zh-CN/')) {
+    return path;
+  }
+
+  const [, pathTab, productSlug] = path.split('/').filter(Boolean);
+  if (pathTab !== tab || !['ai', 'realtime-media', 'solutions'].includes(tab)) {
+    return path;
+  }
+
+  if (tab === 'ai') {
+    return '/zh-CN/ai';
+  }
+
+  if (productSlug && productSlug !== 'overview') {
+    return `/zh-CN/${tab}/${productSlug}`;
+  }
+
+  return path;
 }
 
 async function getProductSidebarContextPayload({
@@ -2661,7 +2690,7 @@ async function embedZhCnServiceApiSidebars(
           children: addProductContextToApiSidebarNodes(
             normalizedApiSidebar,
             productPath,
-            sourcePath,
+            tab === 'ai' ? undefined : sourcePath,
           ),
           collapsible: true,
           defaultOpen: false,
