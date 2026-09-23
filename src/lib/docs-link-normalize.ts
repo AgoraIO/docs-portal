@@ -31,7 +31,10 @@ export function normalizeDocsHref(
     }
 
     return {
-      href: normalizeRootDocsHref(href, context),
+      href: addChineseProductSidebarContext(
+        normalizeRootDocsHref(href, context),
+        context.contentPath,
+      ),
       kind: 'root',
     };
   }
@@ -69,9 +72,56 @@ export function normalizeDocsHref(
   const docPath = `${buildDocPath(locale, tab, slugSegments)}${parsed.search}${parsed.hash}`;
 
   return {
-    href: normalizeLegacyRootDocsHref(docPath),
+    href: addChineseProductSidebarContext(
+      normalizeLegacyRootDocsHref(docPath),
+      context.contentPath,
+    ),
     kind: 'internal-doc',
   };
+}
+
+function addChineseProductSidebarContext(href: string, contentPath?: string) {
+  const productPath = getChineseProductPath(contentPath);
+  if (!productPath) {
+    return href;
+  }
+
+  const parsed = splitHref(href);
+  if (
+    !parsed.path.startsWith('/zh-CN/api-reference/api-ref/') ||
+    new URLSearchParams(parsed.search).has('from')
+  ) {
+    return href;
+  }
+
+  const separator = parsed.search ? '&' : '?';
+
+  return `${parsed.path}${parsed.search}${separator}from=${encodeURIComponent(productPath)}${parsed.hash}`;
+}
+
+function getChineseProductPath(contentPath?: string) {
+  if (!contentPath) {
+    return undefined;
+  }
+
+  const [locale, tab, productSlug] = contentPath.split('/').filter(Boolean);
+  if (locale !== 'zh-CN') {
+    return undefined;
+  }
+
+  if (tab === 'ai') {
+    return '/zh-CN/ai';
+  }
+
+  if (
+    (tab === 'realtime-media' || tab === 'solutions') &&
+    productSlug &&
+    !/\.mdx?$/i.test(productSlug)
+  ) {
+    return `/${locale}/${tab}/${productSlug}`;
+  }
+
+  return undefined;
 }
 
 function normalizeRootDocsHref(
