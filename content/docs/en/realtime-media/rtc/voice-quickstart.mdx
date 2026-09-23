@@ -149,12 +149,18 @@ Use either of the following methods to add RTC SDK to your project.
 
 1. Prevent code obfuscation
 
-    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+    If your app does not enable R8/ProGuard shrinking and obfuscation, no additional configuration is required. If your app enables R8/ProGuard shrinking and obfuscation, choose one of the following configurations:
 
-    ```java
-    -keep class io.agora.** { *; }
-      -dontwarn io.agora.**
-    ```
+    - Quick configuration: Open the `/app/proguard-rules.pro` file and add the following rules to keep all RTC SDK classes:
+
+        ```java
+        -keep class io.agora.** { *; }
+        -dontwarn io.agora.**
+        ```
+
+    - Fine-grained configuration: If you have stricter requirements for app size, code shrinking, or obfuscation, use the `consumer-proguard-rules.pro` file provided with the SDK. This file keeps only the Java classes, members, and methods that the native layer accesses through JNI, so the rest of the SDK Java code can still be shrunk, optimized, and obfuscated by R8/ProGuard.
+
+        `consumer-proguard-rules.pro` is included in the AAR and takes effect automatically when you build your app. You do not need to copy it manually.
 
 </TabsContent>
 
@@ -177,12 +183,31 @@ Use either of the following methods to add RTC SDK to your project.
 
 1. Prevent code obfuscation
 
-    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+    If your app does not enable R8/ProGuard shrinking and obfuscation, no additional configuration is required. If your app enables R8/ProGuard shrinking and obfuscation, choose one of the following configurations:
 
-    ```java
-    -keep class io.agora.** { *; }
-      -dontwarn io.agora.**
-    ```
+    - Quick configuration: Open the `/app/proguard-rules.pro` file and add the following rules to keep all RTC SDK classes:
+
+        ```java
+        -keep class io.agora.** { *; }
+        -dontwarn io.agora.**
+        ```
+
+    - Fine-grained configuration: If you have stricter requirements for app size, code shrinking, or obfuscation, use the `consumer-proguard-rules.pro` file provided with the SDK. This file keeps only the Java classes, members, and methods that the native layer accesses through JNI, so the rest of the SDK Java code can still be shrunk, optimized, and obfuscated by R8/ProGuard.
+
+        Copy `consumer-proguard-rules.pro` into your project and add it to `build.gradle`:
+
+        ```groovy
+        android {
+            buildTypes {
+                release {
+                    minifyEnabled true
+                    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                            'proguard-rules.pro',
+                            'consumer-proguard-rules.pro'
+                }
+            }
+        }
+        ```
 
 </TabsContent>
 </Tabs>
