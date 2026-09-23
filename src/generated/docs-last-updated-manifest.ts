@@ -364,7 +364,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/get-started/test-mdx-comps.mdx':
     '2026-06-30T06:39:15.000Z',
   'content/docs/en/ai/index.md': '2026-06-05T07:04:35.000Z',
-  'content/docs/en/ai/index.mdx': '2026-09-18T13:02:45.000Z',
+  'content/docs/en/ai/index.mdx': '2026-09-23T07:43:18.000Z',
   'content/docs/en/ai/integrations/meta.json': '2026-05-21T03:58:55.000Z',
   'content/docs/en/ai/integrations/openai-realtime/get-started/manage-agora-account.md':
     '2026-05-19T10:33:06.000Z',
@@ -3284,12 +3284,12 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/best-practices/security.md': '2026-06-24T07:15:37.000Z',
   'content/docs/en/best-practices/status-page.md': '2026-06-24T07:15:37.000Z',
   'content/docs/en/introduction/about-agora.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/introduction/about-agora.mdx': '2026-09-21T06:42:03.000Z',
+  'content/docs/en/introduction/about-agora.mdx': '2026-09-23T07:43:18.000Z',
   'content/docs/en/introduction/account.md': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/account.mdx': '2026-08-10T15:28:51.000Z',
-  'content/docs/en/introduction/agora-cli.mdx': '2026-09-15T09:01:44.000Z',
-  'content/docs/en/introduction/agora-mcp.mdx': '2026-09-15T09:01:44.000Z',
-  'content/docs/en/introduction/agora-skills.mdx': '2026-09-15T09:01:44.000Z',
+  'content/docs/en/introduction/agora-cli.mdx': '2026-09-23T07:43:18.000Z',
+  'content/docs/en/introduction/agora-mcp.mdx': '2026-09-23T07:43:18.000Z',
+  'content/docs/en/introduction/agora-skills.mdx': '2026-09-23T07:43:18.000Z',
   'content/docs/en/introduction/ai-agents.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/ai-agents.mdx': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/billing/account-settlement.md':
@@ -3328,7 +3328,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/glossary.md': '2026-08-07T06:52:10.000Z',
   'content/docs/en/introduction/image.png': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/index.md': '2026-05-21T03:00:26.000Z',
-  'content/docs/en/introduction/index.mdx': '2026-09-21T06:42:03.000Z',
+  'content/docs/en/introduction/index.mdx': '2026-09-23T07:43:18.000Z',
   'content/docs/en/introduction/media-services.md': '2026-05-18T10:29:54.000Z',
   'content/docs/en/introduction/members-roles.md': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/messaging-presence.mdx':
@@ -5311,7 +5311,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-05-18T10:29:54.000Z',
   'content/docs/en/realtime-media/online-ktv/uikit/meta.json':
     '2026-05-18T10:29:54.000Z',
-  'content/docs/en/realtime-media/overview.mdx': '2026-09-15T09:01:44.000Z',
+  'content/docs/en/realtime-media/overview.mdx': '2026-09-23T07:43:18.000Z',
   'content/docs/en/realtime-media/recording.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/recording/best-practices/index.md':
     '2026-06-10T09:05:02.000Z',
@@ -5773,7 +5773,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/get-started-sdk.mdx':
     '2026-09-10T10:36:08.000Z',
   'content/docs/en/realtime-media/rtc/index.md': '2026-06-13T10:37:20.000Z',
-  'content/docs/en/realtime-media/rtc/index.mdx': '2026-09-21T06:42:03.000Z',
+  'content/docs/en/realtime-media/rtc/index.mdx': '2026-09-23T07:43:18.000Z',
   'content/docs/en/realtime-media/rtc/macOS/audio/audio-effects-and-mixing.md':
     '2026-06-13T10:37:20.000Z',
   'content/docs/en/realtime-media/rtc/macOS/audio/audio-profiles-and-quality.md':
