@@ -35,7 +35,7 @@ Take the following steps to give your agent access to an MCP server.
 Add one or more servers then enable tool calling.
 
 :::note
-MLLM agents currently support MCP tool-use, through the RESTful API only. The Agent SDKs don't yet expose an equivalent field on their MLLM vendor classes. For an MLLM agent, add `mcp_servers` under `mllm` instead of `llm`.
+MLLM agents support MCP tool-use. For an MLLM agent, add `mcp_servers` under `mllm` instead of `llm`. All three Agents SDKs accept MCP servers on every MLLM vendor class. In the Go SDK, use the `McpServers` field, except on `NewOpenAIGPTLive`, where the equivalent field is `McpServerConfigs`.
 :::
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>

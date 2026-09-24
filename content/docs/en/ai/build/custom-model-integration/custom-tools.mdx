@@ -18,6 +18,8 @@ Each custom tool declares a `function` block with a name, description, and a JSO
 
 Custom tools, [MCP tools](../mcp-tools), built-in tools, and model-native tools all share one tool namespace. Names are not case-sensitive. An agent can expose at most 32 tools to the LLM. If tool names conflict or the limit is exceeded, the agent fails to start.
 
+MLLM agents support custom tools as well. Declare them in `mllm.tools`, which takes the same tool definitions as `llm.tools`, so the rest of this page applies to both. For an MLLM agent, read `llm.tools` as `mllm.tools` and the LLM as the MLLM.
+
 The following aren't supported:
 
 - `PUT`, `PATCH`, or `DELETE` requests, automatic retries, or following HTTP redirects.
@@ -27,7 +29,7 @@ The following aren't supported:
 ## Prerequisites
 
 - Implemented the basic logic for interacting with a conversational AI agent by following the [quickstart](../../get-started/quickstart).
-- A standard text LLM that supports function calling. MLLMs and realtime voice models aren't supported.
+- A text LLM or MLLM that supports function calling. Custom LLMs and Dify aren't supported.
 - An HTTPS endpoint your agent can call to fulfill the tool.
 
 ## Implementation

@@ -2179,9 +2179,10 @@ paths:
                               markdown: >
                                 - Set `advanced_features.enable_tools` to `true` before using tools.
 
-                                - Only supported for synchronous calls to standard text LLMs. Custom
-                                LLMs, MLLMs, Dify, asynchronous tools, and stored tool references
-                                aren't supported.
+                                - Only supported for synchronous calls to standard text LLMs.
+                                Custom LLMs, Dify, asynchronous tools, and stored tool references
+                                aren't supported. For an MLLM agent, configure `mllm.tools`
+                                instead.
                           items:
                             type: object
                             required:
@@ -2672,6 +2673,338 @@ paths:
                             By configuring MCP servers, agents can call tools provided by external
                             services to implement advanced functionality. See [Use MCP
                             tools](/en/ai/build/mcp-tools).
+                        tools:
+                          type: array
+                          maxItems: 32
+                          description: >-
+                            A list of custom tools. When configured, the MLLM can select a tool based
+                            on the conversation and generate its parameters. The Conversational AI
+                            Engine then validates the parameters, calls the corresponding HTTPS
+                            endpoint, and returns the result to the MLLM to continue generating a
+                            response.
+
+
+                            Custom tools, MCP tools, built-in tools, and model-native tools share the
+                            same tool name namespace. Name comparisons aren't case-sensitive and use
+                            ASCII rules. After MCP discovery and filtering, a maximum of 32 tools
+                            total can be exposed to the MLLM. If names conflict or the limit is
+                            exceeded, agent startup fails. The engine doesn't automatically overwrite,
+                            rename, or truncate tools.
+                          x-docs-callouts:
+                            - type: info
+                              title: Note
+                              position: after-description
+                              markdown: >
+                                - Set `advanced_features.enable_tools` to `true` before using tools.
+
+                                - Only supported for synchronous calls. Asynchronous tools and
+                                stored tool references aren't supported. For a cascading agent,
+                                configure `llm.tools` instead.
+                          items:
+                            type: object
+                            required:
+                              - type
+                              - function
+                              - server
+                            additionalProperties: false
+                            description: >-
+                              A custom tool definition. The MLLM decides whether to call the tool and
+                              generates its parameters; the Conversational AI Engine validates the
+                              parameters, makes one synchronous HTTP request, and returns the result
+                              to the MLLM.
+
+
+                              - Only synchronous `GET` and `POST` requests are supported.
+                              Asynchronous calls, automatic retries, and HTTP redirects aren't
+                              supported.
+
+                              - The raw response body size is capped at 1 MiB and must be UTF-8 text.
+
+                              - `application/json` and `+json` responses preserve their original JSON
+                              type, including object, array, scalar, and `null`. Other responses are
+                              treated as UTF-8 strings.
+
+                              - An empty response body is returned as `[]`. A 2xx response is reported
+                              as `success` and a non-2xx response as `failed`. In both cases, the
+                              response content is returned to the MLLM.
+                            properties:
+                              type:
+                                type: string
+                                enum:
+                                  - function
+                                description: The tool type. Only `function` is supported.
+                              function:
+                                type: object
+                                required:
+                                  - name
+                                  - description
+                                  - parameters
+                                additionalProperties: false
+                                properties:
+                                  name:
+                                    type: string
+                                    pattern: '^[a-zA-Z][a-zA-Z0-9]{0,63}$'
+                                    description: >-
+                                      The tool name visible to the model. Must start with a letter and
+                                      contain only letters and numbers, 1 to 64 characters long.
+
+
+                                      Custom tools, MCP tools, built-in tools, and model-native tools
+                                      can't share a name. Name comparisons aren't case-sensitive and
+                                      use ASCII rules. Names can't use the `mcp` prefix or the value
+                                      `ragsearch_tool`.
+                                  description:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 1024
+                                    description: >-
+                                      A description of the tool, used to help the MLLM decide when to
+                                      call it and what it returns. Don't include sensitive information
+                                      such as secrets.
+                                  parameters:
+                                    type: object
+                                    additionalProperties: true
+                                    description: >-
+                                      The tool's parameters, defined as JSON Schema and passed to the
+                                      MLLM using OpenAI's non-strict function-calling mode. See [OpenAI
+                                      Function Calling](https://platform.openai.com/docs/guides/function-calling).
+
+
+                                      Usage rules:
+
+                                      - The root `type` must be `object`.
+
+                                      - Common JSON Schema types are supported: `object`, `array`,
+                                      `string`, `integer`, `number`, `boolean`, and `null`.
+
+                                      - Standard JSON Schema keywords relevant to tool parameters are
+                                      supported, such as `type`, `description`, `enum`, `properties`,
+                                      `required`, `additionalProperties`, and `items`.
+
+                                      - Objects can use `properties`, `required`, and
+                                      `additionalProperties`. `additionalProperties` can be omitted;
+                                      when omitted, extra properties are allowed per JSON Schema
+                                      semantics. To disallow undeclared extra parameters, set it to
+                                      `false` explicitly.
+
+                                      - Array parameters should specify an element schema with
+                                      `items`. Support for tuple schemas depends on the selected MLLM.
+
+                                      - Don't add optional parameters to `required`. Don't rely on a
+                                      specific model's support for advanced keywords such as `$ref`,
+                                      `$defs`, `format`, `pattern`, range constraints, or composition
+                                      schemas. Confirm your MLLM's compatibility before using them.
+
+                                      - The serialized schema size is capped at 64 KiB.
+
+
+                                      Example:
+
+                                      ```json
+
+                                      {
+
+                                        "type": "object",
+                                        "properties": {
+                                          "order_id": {
+                                            "type": "string",
+                                            "description": "Order ID"
+                                          }
+                                        },
+                                        "required": ["order_id"],
+                                        "additionalProperties": false
+                                      }
+
+                                      ```
+                              execution:
+                                type: object
+                                additionalProperties: false
+                                description: The tool's execution mode.
+                                properties:
+                                  mode:
+                                    type: string
+                                    enum:
+                                      - sync
+                                    default: sync
+                                    description: The execution mode. Only synchronous `sync` execution is supported.
+                              server:
+                                type: object
+                                required:
+                                  - method
+                                  - url
+                                additionalProperties: false
+                                description: >-
+                                  The HTTP request configuration for the custom tool.
+
+
+                                  Templates use single-pass substitution; they aren't expanded
+                                  recursively. The following variables are supported:
+
+                                  - `{{args.<name>}}`: A validated tool parameter. Can be used in
+                                  the URL path or query parameters and in the request body, but not in
+                                  headers.
+
+                                  - `{{template_variables.<name>}}`: A template variable configured
+                                  when creating the agent. Can be used in the URL path or query
+                                  parameters, header values, and the request body.
+
+                                  - `{{tool_call_id}}`: The ID correlating this tool call. Can be used
+                                  in the URL, header values, or the request body.
+
+
+                                  Template variable rules:
+
+                                  - **Headers and request body**: Each value must be either a fixed
+                                  value or one complete placeholder, such as `{{args.order_id}}`.
+                                  Concatenating a placeholder with other text, such as
+                                  `order-{{args.order_id}}`, isn't supported, and nested fields, array
+                                  indexes, and recursive references aren't supported either.
+
+                                  - **URL path and query parameters**: Placeholders can be used within
+                                  a fixed URL, such as `/orders/{{args.order_id}}`.
+
+                                  - If a placeholder references a variable that doesn't exist or is
+                                  `null`, the tool call returns `UnresolvedTemplate`.
+
+                                  - Variable values in the URL and headers must be a string, number, or
+                                  boolean.
+
+
+                                  Authentication information may only be passed as a complete header
+                                  value. Don't put authentication information in the URL or request
+                                  body. All header values are treated as sensitive and aren't passed to
+                                  the MLLM or written to regular logs, events, subtitles, or TTS output.
+                                properties:
+                                  method:
+                                    type: string
+                                    enum:
+                                      - GET
+                                      - POST
+                                    description: >-
+                                      The HTTP request method:
+
+                                      - `GET`: For querying data. Doesn't support a request body;
+                                      configuring `body` causes request validation to fail.
+
+                                      - `POST`: For submitting data. Supports URL query parameters,
+                                      request headers, and a request body together.
+                                  url:
+                                    type: string
+                                    minLength: 1
+                                    maxLength: 2048
+                                    pattern: '^https://'
+                                    description: >-
+                                      The absolute HTTPS URL for the custom tool request.
+
+
+                                      The URL path and query parameters can embed single-level
+                                      placeholders:
+
+                                      - `{{args.<name>}}`
+
+                                      - `{{template_variables.<name>}}`
+
+                                      - `{{tool_call_id}}`
+
+
+                                      For example:
+                                      `https://api.example.com/orders/{{args.order_id}}?tenant={{template_variables.tenant_id}}`.
+
+
+                                      Usage limits:
+
+                                      - Placeholder names must be complete; nested fields, array
+                                      indexes, and recursive expansion aren't supported.
+
+                                      - Only the URL path and query parameters can use placeholders;
+                                      the scheme, userinfo, host, and port can't be templated.
+
+                                      - Usernames, passwords, or other authentication information can't
+                                      be embedded in the URL.
+
+                                      - Placeholder values in the URL must be a string, number, or
+                                      boolean.
+
+                                      - Each rendered path variable is capped at 1024 UTF-8 bytes, each
+                                      query variable at 4096 UTF-8 bytes, and the final URL at 8192
+                                      UTF-8 bytes.
+                                  headers:
+                                    type: object
+                                    maxProperties: 32
+                                    additionalProperties:
+                                      oneOf:
+                                        - type: string
+                                        - type: number
+                                        - type: boolean
+                                    description: >-
+                                      Custom headers to send with the tool request, up to 32 entries.
+
+
+                                      Header values support:
+
+                                      - A static string, number, or boolean.
+
+                                      - A complete `{{template_variables.<name>}}` placeholder.
+
+                                      - A complete `{{tool_call_id}}` placeholder.
+
+
+                                      Usage limits:
+
+                                      - Header names must be 1 to 128 characters and must conform to
+                                      the HTTP token specification.
+
+                                      - Header names can't be templated, and header values don't
+                                      support `{{args.<name>}}`.
+
+                                      - A placeholder must be the entire header value; it can't be
+                                      concatenated with other text, and nested fields, array indexes,
+                                      or recursive expansion aren't supported.
+
+                                      - Each rendered header value is capped at 4096 UTF-8 bytes, and
+                                      all headers combined are capped at 16 KiB.
+
+                                      - If a custom header name conflicts with a system-generated
+                                      header, the system-generated value takes precedence.
+
+
+                                      All header values are treated as sensitive: they aren't passed to
+                                      the MLLM and aren't written to regular logs, events, subtitles, or
+                                      TTS output.
+                                  body:
+                                    description: >-
+                                      The HTTP request body for the custom tool. Only used with `POST`;
+                                      configuring this field for `GET` causes request validation to
+                                      fail.
+
+
+                                      The request body supports object, array, string, number, boolean,
+                                      and `null`, in any level of JSON structure. Leaf values in the
+                                      request body can be:
+
+                                      - A JSON constant.
+
+                                      - A complete `{{args.<name>}}` placeholder.
+
+                                      - A complete `{{template_variables.<name>}}` placeholder.
+
+                                      - A complete `{{tool_call_id}}` placeholder.
+
+
+                                      A placeholder must be the entire leaf value; it can't be
+                                      concatenated with other text, and nested fields, array indexes,
+                                      or recursive expansion aren't supported. After substitution, a
+                                      placeholder keeps the variable's original JSON type; tool
+                                      parameters are automatically escaped when serialized into the
+                                      JSON request body.
+                                  timeout_ms:
+                                    type: integer
+                                    minimum: 1000
+                                    maximum: 100000
+                                    default: 10000
+                                    description: >-
+                                      The HTTP request timeout in milliseconds, in the range [1000,
+                                      100000]. Defaults to 10000.
                         turn_detection:
                           type: object
                           additionalProperties: true

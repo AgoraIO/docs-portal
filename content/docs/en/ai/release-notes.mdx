@@ -9,11 +9,15 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 ### v2.13
 
-Released on September 18, 2026.
+Released on September 25, 2026.
 
 #### New features
 
 Included in this release:
+
+- **Custom tools for MLLM agents**
+
+  MLLM agents can call your own HTTPS endpoints as tools. Tool definitions use the same format as for cascading LLM agents, so an existing tool works with either agent type. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/custom-model-integration/custom-tools).
 
 - **New ASR provider**
 
@@ -25,19 +29,23 @@ Included in this release:
 
 - **New MLLM provider**
 
-  - [OpenAI GPT-Live](models/mllm/openai-gpt-live), as an early access preview. Preview agents use a separate endpoint and request header, so see the vendor page before you start one.
+  - [OpenAI GPT-Live](models/mllm/openai-gpt-live)
 
 #### Improvements
 
-This release includes the following enhancement.
+This release includes the following enhancements.
+
+- **MCP tool-use for MLLM agents in the Agora Agents SDKs**
+
+  MLLM agents have supported MCP tool-use through the RESTful API since v2.12. This release adds the same support to the Agora Agents SDKs, which accept MCP servers on their MLLM vendor classes, so you can configure MCP tool-use without calling the RESTful API directly. For details, see [Use MCP tools](build/mcp-tools).
 
 - **Generated filler words use conversation context**
 
-  This release improves generated filler words so that they reflect the recent exchange, not just the current turn. You can now set the conversation context for the generation service using a message count and a character budget. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
+  This release improves generated filler words so that they reflect the recent exchange, not just the current turn. You can set the conversation context for the generation service using a message count and a character budget. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
 
 #### API changes
 
-This release introduces the following changes for the new Smallest AI and OpenAI GPT-Live providers, Gemini ASR, and conversation context in generated filler words.
+This release introduces the following changes for the new Smallest AI and OpenAI GPT-Live providers, Gemini ASR, MLLM tool-use, and generated filler words.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -52,6 +60,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
 - [`SmallestAISTT`](/en/api-reference/api-ref/server-sdk/python#stt-vendors): New ASR vendor class for Smallest AI.
 - [`GeminiSTT`](/en/api-reference/api-ref/server-sdk/python#stt-vendors): New ASR vendor class for Gemini.
 - [`OpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/python#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [MLLM vendor classes](/en/api-reference/api-ref/server-sdk/python#mllm-vendors): New `tools` option for custom tool definitions, and new `mcp_servers` option for MCP tool-use.
 - [`SmallestAITTS`](/en/api-reference/api-ref/server-sdk/python#tts-vendors): New TTS vendor class for Smallest AI.
 - **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/python#type-aliases)
 
@@ -60,7 +69,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
 
 - **Updated behavior**
 
-    - `prompt`: A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+    - `prompt`: A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
 
 </TabsContent>
 
@@ -69,6 +78,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
 - [`SmallestAISTT`](/en/api-reference/api-ref/server-sdk/typescript#stt-vendors): New ASR vendor class for Smallest AI.
 - [`GeminiSTT`](/en/api-reference/api-ref/server-sdk/typescript#stt-vendors): New ASR vendor class for Gemini.
 - [`OpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/typescript#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [MLLM vendor classes](/en/api-reference/api-ref/server-sdk/typescript#mllm-vendors): New `tools` option for custom tool definitions, and new `mcpServers` option for MCP tool-use.
 - [`SmallestAITTS`](/en/api-reference/api-ref/server-sdk/typescript#tts-vendors): New TTS vendor class for Smallest AI.
 - **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/typescript#type-aliases)
 
@@ -77,7 +87,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
 
 - **Updated behavior**
 
-    - `prompt`: A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+    - `prompt`: A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
 
 </TabsContent>
 
@@ -86,6 +96,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
 - [`NewSmallestAISTT`](/en/api-reference/api-ref/server-sdk/go#stt-vendors): New ASR vendor class for Smallest AI.
 - [`NewGeminiSTT`](/en/api-reference/api-ref/server-sdk/go#stt-vendors): New ASR vendor class for Gemini.
 - [`NewOpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/go#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [MLLM vendor classes](/en/api-reference/api-ref/server-sdk/go#mllm-vendors): New `Tools` option for custom tool definitions, and new `McpServers` option for MCP tool-use. `NewOpenAIGPTLive` uses `McpServerConfigs` for the same purpose.
 - [`NewSmallestAITTS`](/en/api-reference/api-ref/server-sdk/go#tts-vendors): New TTS vendor class for Smallest AI.
 - **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/go#type-aliases), both `*int`
 
@@ -94,7 +105,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
 
 - **Updated behavior**
 
-    - `Prompt`: A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+    - `Prompt`: A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
 
 </TabsContent>
 
@@ -106,6 +117,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
 
     - [`filler_words.content.generated_config.context_message_limit`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-context-message-limit): How many of the most recent conversation messages to use to generate a filler phrase, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
     - [`filler_words.content.generated_config.history_character_limit`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-history-character-limit): Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+    - [`mllm.tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-tools): Custom tool definitions an MLLM agent can call. Takes the same format as `llm.tools`, and requires `advanced_features.enable_tools`.
 
   - **Updated parameters**
 
@@ -113,7 +125,7 @@ This release introduces the following changes for the new Smallest AI and OpenAI
     - [`asr.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-vendor) value `gemini`: Use Gemini as the ASR provider. See [Gemini](/en/ai/models/asr/gemini).
     - [`mllm.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-vendor) value `openai_gpt_live`: Use OpenAI GPT-Live as the MLLM provider. See [OpenAI GPT-Live](/en/ai/models/mllm/openai-gpt-live).
     - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `smallestai`: Use Smallest AI as the TTS provider. See [Smallest AI](/en/ai/models/tts/smallest-ai).
-    - [`filler_words.content.generated_config.prompt`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-prompt): A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
+    - [`filler_words.content.generated_config.prompt`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-prompt): A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
 
 </TabsContent>
 </Tabs>
