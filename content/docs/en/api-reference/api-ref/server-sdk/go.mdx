@@ -1169,6 +1169,33 @@ Panics if `APIKey` or `Language` is empty.
 | `SampleRate` | `*SampleRate` | No | Audio sample rate |
 | `SkipPatterns` | `[]int` | No | Patterns to skip |
 
+#### `NewSmallestAITTS`
+
+```go
+func NewSmallestAITTS(opts SmallestAITTSOptions) *SmallestAITTS
+```
+
+Panics if `APIKey` is empty.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Smallest AI API key |
+| `URL` | `string` | No | Streaming TTS endpoint |
+| `Model` | `string` | No | TTS model name, for example `"lightning_v3.1_pro"` |
+| `VoiceID` | `string` | No | Voice identifier, for example `"hazel"` |
+| `SampleRate` | `*int` | No | Output audio sample rate in Hz |
+| `Speed` | `*float64` | No | Speech rate multiplier |
+| `Language` | `string` | No | Language code for speech synthesis |
+| `NumberPronunciationLanguage` | `string` | No | Language code used when reading numbers aloud |
+| `MathNotation` | `*bool` | No | Read mathematical notation as spoken mathematics |
+| `PronunciationDicts` | `[]string` | No | Pronunciation dictionaries to apply |
+| `SessionID` | `string` | No | Caller-supplied session identifier |
+| `RequestID` | `string` | No | Caller-supplied request identifier |
+| `SkipPatterns` | `[]int` | No | Patterns to skip |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional Smallest AI parameters |
+
+Voice identifiers are model-specific, so `VoiceID` must belong to the model set in `Model`. For details, see [Smallest AI](/en/ai/models/tts/smallest-ai).
+
 ### STT vendors
 
 Use with [`WithStt()`](#withsttvendor).
@@ -1314,6 +1341,42 @@ Panics if `APIKey` or `Language` is empty.
 | `Language` | `string` | Yes | Language code |
 | `Model` | `string` | No | Model identifier |
 | `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
+
+#### `NewSmallestAISTT`
+
+```go
+func NewSmallestAISTT(opts SmallestAISTTOptions) *SmallestAISTT
+```
+
+Panics if `APIKey` is empty.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Smallest AI API key |
+| `URL` | `string` | No | Streaming ASR WebSocket endpoint |
+| `Language` | `string` | No | Language code for speech recognition |
+| `SampleRate` | `*int` | No | Input audio sample rate in Hz |
+| `Encoding` | `string` | No | Input audio encoding, for example `"linear16"` |
+| `WordTimestamps` | `bool` | No | Include word-level timestamps |
+| `SentenceTimestamps` | `bool` | No | Include sentence-level timestamps |
+| `Diarize` | `bool` | No | Enable speaker diarization |
+| `VADEvents` | `bool` | No | Emit voice activity detection events |
+| `Endpointing` | `bool` | No | Enable automatic end-of-utterance detection |
+| `EOUTimeoutMs` | `*int` | No | End-of-utterance timeout in milliseconds |
+| `Format` | `bool` | No | Enable Smallest AI's transcript formatting |
+| `FinalizeOnWords` | `bool` | No | Finalize results based on word count |
+| `MaxWords` | `string` | No | Maximum words per result, as a string |
+| `Punctuate` | `bool` | No | Add punctuation to results |
+| `Capitalize` | `bool` | No | Apply capitalization to results |
+| `ITNNormalize` | `bool` | No | Apply inverse text normalization |
+| `FullTranscript` | `bool` | No | Return the full accumulated transcript |
+| `Keywords` | `string` | No | Keyword boosts, comma-separated in `keyword:weight` format |
+| `RedactPII` | `bool` | No | Redact personally identifiable information |
+| `RedactPCI` | `bool` | No | Redact payment card information |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional Smallest AI parameters |
+
+Boolean options are serialized as the strings `"true"` or `"false"` for the Smallest AI wire protocol. Unlike the other SDKs, these fields are plain `bool` rather than pointers, so every one of
+them is sent on each request. For details, see [Smallest AI](/en/ai/models/asr/smallest-ai).
 
 ### MLLM vendors
 

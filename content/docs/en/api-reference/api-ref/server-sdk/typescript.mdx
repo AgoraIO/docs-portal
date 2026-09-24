@@ -761,6 +761,9 @@ new CartesiaTTS<SR extends CartesiaSampleRate>(options: CartesiaTTSOptions<SR>)
 | `MistralTTS` | `apiKey`, `model?`, `voice?`, `additionalParams?` |
 | `TypecastTTS` | `apiKey`, `voiceId`, `model`, `additionalParams?` |
 | `XAiTTS` | `apiKey`, `language`, `voiceId?`, `sampleRate?`, `additionalParams?` |
+| `SmallestAITTS` | `apiKey`, `url?`, `model?`, `voiceId?`, `sampleRate?`, `speed?`, `language?`, `additionalParams?` |
+
+`SmallestAITTS` also accepts `numberPronunciationLanguage?`, `mathNotation?`, `pronunciationDicts?`, `sessionId?`, and `requestId?`. Voice identifiers are model-specific, so `voiceId` must belong to the model set in `model`. For details, see [Smallest AI](/en/ai/models/tts/smallest-ai).
 
 For `MiniMaxTTS`, `key` is optional only for reseller-backed models: `speech-2.6-turbo`, `speech-2.8-turbo`. If `key` is omitted for one of those models, AgentKit infers the matching session preset. In that preset-backed path, `groupId`, `voiceId`, and `url` are optional overrides rather than required fields. If `key` is provided, AgentKit uses BYOK.
 
@@ -822,6 +825,9 @@ For `nova-2` and `nova-3`, omit `apiKey` to use Agora-managed credentials. For a
 | `AssemblyAISTT` | `apiKey`, `language`, `uri?` |
 | `AresSTT` | `keywords?`, `additionalParams?` |
 | `SarvamSTT` | `apiKey`, `language`, `model?` |
+| `SmallestAISTT` | `apiKey`, `language?`, `url?`, `sampleRate?`, `encoding?`, `keywords?`, `additionalParams?` |
+
+`SmallestAISTT` also accepts the boolean options `wordTimestamps?`, `sentenceTimestamps?`, `diarize?`, `vadEvents?`, `endpointing?`, `format?`, `finalizeOnWords?`, `punctuate?`, `capitalize?`, `itnNormalize?`, `fullTranscript?`, `redactPii?`, and `redactPci?`, plus `eouTimeoutMs?` and `maxWords?`. Boolean options are serialized as the strings `"true"` or `"false"` for the Smallest AI wire protocol. For details, see [Smallest AI](/en/ai/models/asr/smallest-ai).
 
 For `OpenAISTT`, the serialized configuration requires a transcription `prompt` and `language` — provide them through the `prompt` and `language` options or within `inputAudioTranscription`. `model` defaults to `gpt-4o-mini-transcribe`.
 

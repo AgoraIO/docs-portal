@@ -1085,6 +1085,31 @@ from agora_agent.agentkit.vendors import XaiTTS
 | `additional_params` | `Dict[str, Any]` | No | `None` | Additional xAI TTS parameters |
 | `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
 
+#### SmallestAITTS
+
+```python
+from agora_agent.agentkit.vendors import SmallestAITTS
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | Smallest AI API key |
+| `url` | `str` | No | `None` | Streaming TTS endpoint |
+| `model` | `str` | No | `None` | TTS model name, for example `'lightning_v3.1_pro'` |
+| `voice_id` | `str` | No | `None` | Voice identifier, for example `'hazel'` |
+| `sample_rate` | `int` | No | `None` | Output audio sample rate in Hz |
+| `speed` | `float` | No | `None` | Speech rate multiplier |
+| `language` | `str` | No | `None` | Language code for speech synthesis |
+| `number_pronunciation_language` | `str` | No | `None` | Language code used when reading numbers aloud |
+| `math_notation` | `bool` | No | `None` | Read mathematical notation as spoken mathematics |
+| `pronunciation_dicts` | `List[str]` | No | `None` | Pronunciation dictionaries to apply |
+| `session_id` | `str` | No | `None` | Caller-supplied session identifier |
+| `request_id` | `str` | No | `None` | Caller-supplied request identifier |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional Smallest AI parameters |
+| `skip_patterns` | `List[int]` | No | `None` | Skip patterns for bracketed content |
+
+Voice identifiers are model-specific, so `voice_id` must belong to the model set in `model`. For details, see [Smallest AI](/en/ai/models/tts/smallest-ai).
+
 ### STT vendors
 
 Use with [`with_stt()`](#with_sttvendor).
@@ -1216,6 +1241,39 @@ from agora_agent.agentkit.vendors import SarvamSTT
 | `language` | `str` | Yes | — | Language code, for example `'en'` or `'hi'` |
 | `model` | `str` | No | `None` | Model name |
 | `additional_params` | `Dict[str, Any]` | No | `None` | Additional parameters |
+
+#### SmallestAISTT
+
+```python
+from agora_agent.agentkit.vendors import SmallestAISTT
+```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `api_key` | `str` | Yes | — | Smallest AI API key |
+| `language` | `str` | No | `None` | Language code for speech recognition |
+| `url` | `str` | No | `None` | Streaming ASR WebSocket endpoint |
+| `sample_rate` | `int` | No | `None` | Input audio sample rate in Hz |
+| `encoding` | `str` | No | `None` | Input audio encoding, for example `'linear16'` |
+| `word_timestamps` | `bool` | No | `None` | Include word-level timestamps |
+| `sentence_timestamps` | `bool` | No | `None` | Include sentence-level timestamps |
+| `diarize` | `bool` | No | `None` | Enable speaker diarization |
+| `vad_events` | `bool` | No | `None` | Emit voice activity detection events |
+| `endpointing` | `bool` | No | `None` | Enable automatic end-of-utterance detection |
+| `eou_timeout_ms` | `int` | No | `None` | End-of-utterance timeout in milliseconds |
+| `format` | `bool` | No | `None` | Enable Smallest AI's transcript formatting |
+| `finalize_on_words` | `bool` | No | `None` | Finalize results based on word count |
+| `max_words` | `str` | No | `None` | Maximum words per result, as a string |
+| `punctuate` | `bool` | No | `None` | Add punctuation to results |
+| `capitalize` | `bool` | No | `None` | Apply capitalization to results |
+| `itn_normalize` | `bool` | No | `None` | Apply inverse text normalization |
+| `full_transcript` | `bool` | No | `None` | Return the full accumulated transcript |
+| `keywords` | `str` | No | `None` | Keyword boosts, comma-separated in `keyword:weight` format |
+| `redact_pii` | `bool` | No | `None` | Redact personally identifiable information |
+| `redact_pci` | `bool` | No | `None` | Redact payment card information |
+| `additional_params` | `Dict[str, Any]` | No | `None` | Additional Smallest AI parameters |
+
+Boolean options are serialized as the strings `"true"` or `"false"` for the Smallest AI wire protocol. For details, see [Smallest AI](/en/ai/models/asr/smallest-ai).
 
 ### MLLM vendors
 

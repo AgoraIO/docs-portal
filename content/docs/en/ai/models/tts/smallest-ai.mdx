@@ -1,0 +1,180 @@
+---
+title: Smallest AI
+description: >
+ Integrate Smallest AI TTS with the Conversational AI Engine.
+---
+
+Smallest AI provides low-latency streaming text-to-speech (TTS) through its Lightning model family, with voices across a broad set of languages.
+
+### Sample configuration
+
+The following examples show how to configure Smallest AI TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import SmallestAITTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(SmallestAITTS(
+        url='https://api.smallest.ai/waves/v1/tts/live',
+        api_key='your-smallest-ai-key',
+        model='lightning_v3.1_pro',
+        voice_id='hazel',
+        sample_rate=16000,
+        speed=1.0,
+        language='zh',
+        number_pronunciation_language='zh',
+        math_notation=True,
+        pronunciation_dicts=[],
+        session_id='session_001',
+        request_id='request_001',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, SmallestAITTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new SmallestAITTS({
+    url: 'https://api.smallest.ai/waves/v1/tts/live',
+    apiKey: 'your-smallest-ai-key',
+    model: 'lightning_v3.1_pro',
+    voiceId: 'hazel',
+    sampleRate: 16000,
+    speed: 1.0,
+    language: 'zh',
+    numberPronunciationLanguage: 'zh',
+    mathNotation: true,
+    pronunciationDicts: [],
+    sessionId: 'session_001',
+    requestId: 'request_001',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewSmallestAITTS(vendors.SmallestAITTSOptions{
+        URL:                         "https://api.smallest.ai/waves/v1/tts/live",
+        APIKey:                      "your-smallest-ai-key",
+        Model:                       "lightning_v3.1_pro",
+        VoiceID:                     "hazel",
+        SampleRate:                  Agora.Int(16000),
+        Speed:                       Agora.Float64(1.0),
+        Language:                    "zh",
+        NumberPronunciationLanguage: "zh",
+        MathNotation:                Agora.Bool(true),
+        PronunciationDicts:          []string{},
+        SessionID:                   "session_001",
+        RequestID:                   "request_001",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request. Only `api_key` is required:
+
+```json
+"tts": {
+  "vendor": "smallestai",
+  "params": {
+    "url": "https://api.smallest.ai/waves/v1/tts/live",
+    "api_key": "<smallest_ai_api_key>",
+    "model": "lightning_v3.1_pro",
+    "voice_id": "hazel",
+    "sample_rate": 16000,
+    "speed": 1.0,
+    "language": "zh",
+    "number_pronunciation_language": "zh",
+    "math_notation": true,
+    "pronunciation_dicts": [],
+    "session_id": "session_001",
+    "request_id": "request_001"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Smallest AI API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The Smallest AI streaming TTS endpoint. For example, `https://api.smallest.ai/waves/v1/tts/live`.
+  </Parameter>
+  <Parameter name="model" type="string" required={false}>
+    The Smallest AI TTS model to use, such as `lightning_v3.1_pro` or `lightning_v3.1`. Voice identifiers are model-specific, so `voice_id` must belong to the model you select.
+  </Parameter>
+  <Parameter name="voice_id" type="string" required={false}>
+    The Smallest AI voice identifier to use. For example, `hazel`.
+  </Parameter>
+  <Parameter name="sample_rate" type="integer" required={false}>
+    Output audio sample rate in Hz. For example, `16000`.
+  </Parameter>
+  <Parameter name="speed" type="number" required={false}>
+    Speech rate multiplier, where `1.0` is the model's default pace.
+  </Parameter>
+  <Parameter name="language" type="string" required={false}>
+    Language code used for speech synthesis. For example, `zh`.
+  </Parameter>
+  <Parameter name="number_pronunciation_language" type="string" required={false}>
+    Language code used when reading numbers aloud. Set this when numbers should be spoken in a different language from the surrounding text.
+  </Parameter>
+  <Parameter name="math_notation" type="boolean" required={false}>
+    Whether to read mathematical notation as spoken mathematics rather than as literal symbols.
+  </Parameter>
+  <Parameter name="pronunciation_dicts" type="array[string]" required={false}>
+    Identifiers of Smallest AI pronunciation dictionaries to apply, used to override how specific terms are spoken.
+  </Parameter>
+  <Parameter name="session_id" type="string" required={false}>
+    Caller-supplied session identifier, passed through to Smallest AI for tracing.
+  </Parameter>
+  <Parameter name="request_id" type="string" required={false}>
+    Caller-supplied request identifier, passed through to Smallest AI for tracing.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Smallest AI documentation](https://docs.smallest.ai/models/documentation/text-to-speech-lightning/overview).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

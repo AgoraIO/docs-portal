@@ -11,6 +11,22 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 Released on September 18, 2026.
 
+#### New features
+
+Included in this release:
+
+- **New ASR provider**
+
+  - [Smallest AI](models/asr/smallest-ai)
+
+- **New TTS provider**
+
+  - [Smallest AI](models/tts/smallest-ai)
+
+- **New MLLM provider**
+
+  - [OpenAI GPT-Live](models/mllm/openai-gpt-live), as an early access preview. Preview agents use a separate endpoint and request header, so see the vendor page before you start one.
+
 #### Improvements
 
 This release includes the following enhancement.
@@ -21,7 +37,7 @@ This release includes the following enhancement.
 
 #### API changes
 
-This release introduces the following changes for conversation context in generated filler words.
+This release introduces the following changes for the new Smallest AI and OpenAI GPT-Live providers, Gemini ASR, and conversation context in generated filler words.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -33,6 +49,10 @@ This release introduces the following changes for conversation context in genera
 
 <TabsContent value="python">
 
+- [`SmallestAISTT`](/en/api-reference/api-ref/server-sdk/python#stt-vendors): New ASR vendor class for Smallest AI.
+- [`GeminiSTT`](/en/api-reference/api-ref/server-sdk/python#stt-vendors): New ASR vendor class for Gemini.
+- [`OpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/python#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [`SmallestAITTS`](/en/api-reference/api-ref/server-sdk/python#tts-vendors): New TTS vendor class for Smallest AI.
 - **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/python#type-aliases)
 
     - `context_message_limit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
@@ -46,6 +66,10 @@ This release introduces the following changes for conversation context in genera
 
 <TabsContent value="typescript">
 
+- [`SmallestAISTT`](/en/api-reference/api-ref/server-sdk/typescript#stt-vendors): New ASR vendor class for Smallest AI.
+- [`GeminiSTT`](/en/api-reference/api-ref/server-sdk/typescript#stt-vendors): New ASR vendor class for Gemini.
+- [`OpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/typescript#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [`SmallestAITTS`](/en/api-reference/api-ref/server-sdk/typescript#tts-vendors): New TTS vendor class for Smallest AI.
 - **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/typescript#type-aliases)
 
     - `context_message_limit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
@@ -59,6 +83,10 @@ This release introduces the following changes for conversation context in genera
 
 <TabsContent value="go">
 
+- [`NewSmallestAISTT`](/en/api-reference/api-ref/server-sdk/go#stt-vendors): New ASR vendor class for Smallest AI.
+- [`NewGeminiSTT`](/en/api-reference/api-ref/server-sdk/go#stt-vendors): New ASR vendor class for Gemini.
+- [`NewOpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/go#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [`NewSmallestAITTS`](/en/api-reference/api-ref/server-sdk/go#tts-vendors): New TTS vendor class for Smallest AI.
 - **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/go#type-aliases), both `*int`
 
     - `ContextMessageLimit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
@@ -81,6 +109,10 @@ This release introduces the following changes for conversation context in genera
 
   - **Updated parameters**
 
+    - [`asr.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-vendor) value `smallestai`: Use Smallest AI as the ASR provider. See [Smallest AI](/en/ai/models/asr/smallest-ai).
+    - [`asr.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-vendor) value `gemini`: Use Gemini as the ASR provider. See [Gemini](/en/ai/models/asr/gemini).
+    - [`mllm.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-vendor) value `openai_gpt_live`: Use OpenAI GPT-Live as the MLLM provider. See [OpenAI GPT-Live](/en/ai/models/mllm/openai-gpt-live).
+    - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `smallestai`: Use Smallest AI as the TTS provider. See [Smallest AI](/en/ai/models/tts/smallest-ai).
     - [`filler_words.content.generated_config.prompt`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-prompt): A custom prompt now fully replaces Agora's default prompt, and applies over the same conversation context window.
 
 </TabsContent>
