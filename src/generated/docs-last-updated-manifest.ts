@@ -420,13 +420,14 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/asr/google.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/google.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/asr/index.md': '2026-06-25T08:42:31.000Z',
-  'content/docs/en/ai/models/asr/meta.json': '2026-08-26T16:24:53.000Z',
+  'content/docs/en/ai/models/asr/meta.json': '2026-09-24T06:33:05.000Z',
   'content/docs/en/ai/models/asr/microsoft.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/microsoft.mdx': '2026-09-12T12:34:07.000Z',
   'content/docs/en/ai/models/asr/openai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/openai.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/asr/sarvam.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/sarvam.mdx': '2026-09-14T09:50:45.000Z',
+  'content/docs/en/ai/models/asr/smallest-ai.mdx': '2026-09-24T06:33:05.000Z',
   'content/docs/en/ai/models/asr/speechmatics.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/speechmatics.mdx': '2026-09-12T12:34:07.000Z',
   'content/docs/en/ai/models/asr/xai.mdx': '2026-09-14T09:50:45.000Z',
@@ -494,7 +495,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/tts/humeai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/humeai.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/index.md': '2026-06-25T08:42:31.000Z',
-  'content/docs/en/ai/models/tts/meta.json': '2026-09-23T16:35:44.000Z',
+  'content/docs/en/ai/models/tts/meta.json': '2026-09-24T06:33:05.000Z',
   'content/docs/en/ai/models/tts/microsoft.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/microsoft.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/minimax.md': '2026-05-19T10:33:06.000Z',
@@ -508,6 +509,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/tts/rime.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/sarvam.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/sarvam.mdx': '2026-09-14T09:50:45.000Z',
+  'content/docs/en/ai/models/tts/smallest-ai.mdx': '2026-09-24T06:33:05.000Z',
   'content/docs/en/ai/models/tts/typecast.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/xai.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/openai-realtime/get-started/manage-agora-account.md':
@@ -563,7 +565,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-09-17T08:13:28.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-09-24T06:33:05.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -962,13 +964,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
-    '2026-09-17T08:13:28.000Z',
+    '2026-09-24T06:33:05.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
-    '2026-09-17T08:13:28.000Z',
+    '2026-09-24T06:33:05.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
-    '2026-09-17T08:13:28.000Z',
+    '2026-09-24T06:33:05.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
     '2026-09-07T08:01:28.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
@@ -11672,7 +11674,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-09-23T16:35:44.000Z',
+    '2026-09-24T06:33:05.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
     '2026-07-03T04:07:10.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',

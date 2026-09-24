@@ -128,15 +128,15 @@ Included in this release:
 
 - **Call custom tools**
 
-  You can now declare custom tools for the LLM to call during a conversation, directly through the RESTful API. Set `advanced_features.enable_tools` and declare a tool's name, description, parameters, and a synchronous `GET` or `POST` HTTPS endpoint using the `llm.tools` parameter. The LLM selects a tool and generates its parameters based on the conversation. The Conversational AI Engine then calls your endpoint and returns the result to the LLM to continue generating a response. For details, see [Call custom tools](build/custom-model-integration/custom-tools).
+  Agents can now call your own HTTPS endpoints as tools during a conversation. The LLM decides when to call a tool and generates its parameters from the conversation. The Conversational AI Engine then calls your endpoint and returns the result to the LLM to continue generating a response. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/custom-model-integration/custom-tools).
 
 - **Generated filler words**
 
-  `filler_words.content` now supports a `generated` mode that produces a context-relevant filler phrase instead of a fixed phrase list, directly through the RESTful API. If a generated phrase isn't ready in time, the agent falls back to your configured static phrases. Generation is Agora-hosted, so no additional model, endpoint, or credentials are required. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
+  Agents can now generate filler words from the current conversation instead of selecting them from a fixed phrase list. Agora hosts the generation service, so you don't need your own model, endpoint, or credentials. You can optionally keep a static phrase list as a fallback. Available in the Agora Agents SDKs and the RESTful API. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
 
-- **Defer custom instructions with the `append` action**
+- **Defer custom instructions**
 
-  The `think` API's state actions now support `append`. Setting `on_listening_action`, `on_thinking_action`, or `on_speaking_action` to `append` doesn't interrupt the current interaction. Instead, the custom instruction is appended as a separate user message once the current turn's LLM output finishes, then starts a new turn. Available through the [**Send custom instructions**](/en/api-reference/api-ref/conversational-ai/think) endpoint.
+  Custom instructions now support an `append` action. Instead of interrupting the current interaction, the agent waits for the current turn to finish, then adds the instruction to the conversation and starts a new turn. Available in the Agora Agents SDKs and the RESTful API. For details, see [Send custom instructions](/en/api-reference/api-ref/conversational-ai/think).
 
 - **Client component support for direct speech and instruction injection**
 
@@ -144,7 +144,7 @@ Included in this release:
 
 - **MCP tool-use for MLLM agents**
 
-  MLLM agents now support MCP tool-use, in addition to cascading LLM agents. Configure [`mllm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-mcp-servers) and set `advanced_features.enable_tools` to `true`, the same switch used for cascading LLM agents. Available directly through the RESTful API. For details, see [Use MCP tools](build/mcp-tools).
+  MLLM agents now support MCP tool-use, in addition to cascading LLM agents. Available only in the RESTful API. For details, see [Use MCP tools](build/mcp-tools).
 
 - **New ASR provider**
 
@@ -153,6 +153,46 @@ Included in this release:
 #### API changes
 
 This release introduces the following changes for custom tool calling, generated filler words, MCP tool-use for MLLM agents, and the `think` API's `append` action.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- [`OpenAI`](/en/api-reference/api-ref/server-sdk/python#openai) and other LLM vendor classes: New `tools` parameter for custom tool definitions.
+- [`with_tools()`](/en/api-reference/api-ref/server-sdk/python#other-builder-methods): Now also enables custom tools declared in `tools`, in addition to MCP tools.
+- [`FillerWordsConfig`](/en/api-reference/api-ref/server-sdk/python#type-aliases): New `generated` content mode and `FillerWordsContentGeneratedConfig` for generated filler words.
+- [`AgentSession.think()`](/en/api-reference/api-ref/server-sdk/python#thinktext): `on_listening_action`, `on_thinking_action`, and `on_speaking_action` accept the new value `append`.
+- New custom tool type aliases: `LlmToolConfig`, `LlmToolFunctionConfig`, `LlmToolFunctionParametersConfig`, `LlmToolExecutionConfig`, and `LlmToolServerConfig`.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [`OpenAI`](/en/api-reference/api-ref/server-sdk/typescript#openai) and other LLM vendor classes: New `tools` option for custom tool definitions.
+- [`withTools()`](/en/api-reference/api-ref/server-sdk/typescript#other-builder-methods): Now also enables custom tools declared in `tools`, in addition to MCP tools.
+- [`FillerWordsConfig`](/en/api-reference/api-ref/server-sdk/typescript#type-aliases): New `generated` content mode and `FillerWordsContentGeneratedConfig` for generated filler words.
+- [`AgentSession.think()`](/en/api-reference/api-ref/server-sdk/typescript#thinktext-options): `on_listening_action`, `on_thinking_action`, and `on_speaking_action` accept the new value `append`.
+- New custom tool type aliases: `LlmTool`, `LlmToolFunction`, `LlmToolServer`, and `LlmToolExecution`.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- [`NewOpenAI`](/en/api-reference/api-ref/server-sdk/go#newopenai) and other LLM vendor constructors: New `Tools` field for custom tool definitions.
+- [`WithTools()`](/en/api-reference/api-ref/server-sdk/go#other-builder-methods): Now also enables custom tools declared in `Tools`, in addition to MCP tools.
+- [`FillerWordsConfig`](/en/api-reference/api-ref/server-sdk/go#type-aliases): New `FillerWordsContentModeGenerated` content mode and `FillerWordsContentGeneratedConfig` for generated filler words.
+- [`Think()`](/en/api-reference/api-ref/server-sdk/go#thinkctx): Each state action accepts the new value `append`.
+- New type aliases: `LlmTool`, `LlmToolFunction`, `LlmToolFunctionParameters`, `LlmToolExecution`, `LlmToolServer`, `FillerWordsContentMode`, and `FillerWordsContentGeneratedConfig`.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 - Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
@@ -165,7 +205,7 @@ This release introduces the following changes for custom tool calling, generated
   - **Updated parameters**
 
     - [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools): Now also enables custom tools declared in `llm.tools` and MCP tools declared in `mllm.mcp_servers`, in addition to MCP tools configured in `llm.mcp_servers`.
-    - [`filler_words.content.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-mode) value `generated`: Generate a filler phrase from the current context, with `filler_words.content.static_config` used as a fallback.
+    - [`filler_words.content.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-mode) value `generated`: Generate a filler phrase from the current context, with an optional `filler_words.content.static_config` fallback.
     - [`filler_words.content.static_config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-static-config): Now a named sibling property of `content` instead of the `"{mode}_config"` key.
 
 - Changes to [**Send custom instructions**](/en/api-reference/api-ref/conversational-ai/think)
@@ -173,6 +213,9 @@ This release introduces the following changes for custom tool calling, generated
   - **Updated parameters**
 
     - [`on_listening_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-listening-action), [`on_thinking_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-thinking-action), and [`on_speaking_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-speaking-action) value `append`: Don't interrupt the current interaction; append the instruction as a separate user message once the current turn's LLM output finishes.
+
+</TabsContent>
+</Tabs>
 
 #### Toolkit API
 
