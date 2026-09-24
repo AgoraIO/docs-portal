@@ -13,7 +13,10 @@ This page provides release notes for the Extensions Marketplace SDK extensions.
 Agora charges additionally for this extension. See [Pricing](/en/realtime-media/rtc/reference/pricing-legacy#ai-noise-suppression-pricing).
 :::
 
-### v2.0.2
+<Accordions type="multiple" defaultValue="v202">
+
+<Accordion title="v2.0.2" id="v202" headingLevel={3} value="v202">
+
 
 Released on June 24, 2026.
 
@@ -22,7 +25,11 @@ Released on June 24, 2026.
 - Added background voice removal.
 - Suitable for noisy environments or scenarios with multiple speakers to further highlight the target voice and improve audio capture. 
 
-### v2.0.1
+
+</Accordion>
+
+<Accordion title="v2.0.1" id="v201" headingLevel={3} value="v201">
+
 
 Released on April 1, 2026.
 
@@ -45,7 +52,11 @@ This version no longer supports calling the `disable` method before `pipe` to di
 
 The implementation of callbacks has been revised in this version. The original callbacks `onloaderror`, `onoverload`, `ondump`, and `ondumpend` are deprecated. Use the `on` method with event names `"pipeerror"`, `"overload"`, `"dump"`, or `"dumpend"` to listen for the corresponding events instead.
 
-### v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110" headingLevel={3} value="v110">
+
 
 #### Improvement
 
@@ -73,9 +84,17 @@ This release brings the following changes:
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
 
-### v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100" headingLevel={3} value="v100">
+
 
 First release.
+
+
+</Accordion>
+</Accordions>
 
 ## Noise suppression for use cases involving AI
 
@@ -121,14 +140,21 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
 
     The virtual background feature requires significant CPU and GPU processing power, which exceeds the capabilities of most mobile devices. Due to these hardware-intensive requirements, performance on mobile browsers is inconsistent and varies across devices.
 
-### v2.1.0
+<Accordions type="multiple" defaultValue="v210">
+
+<Accordion title="v2.1.0" id="v210" headingLevel={3} value="v210">
+
 
 v2.1.0 was released on April 29, 2025, with the following changes:
 
 - Optimizes memory and CPU usage.
 - Fixes black screen issues at specific resolutions.
 
-### v2.0.0
+
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200" headingLevel={3} value="v200">
+
 
 v2.0.0 was released on December 18, 2024.
 
@@ -156,7 +182,11 @@ It is recommended for high-end devices such as Apple M1/M2, latest iPhones (A13 
 
 Version 1.3.0 is suitable for mid-range devices and is recommended for users who prioritize smooth performance over edge precision such as in standard video conferencing.
 
-### v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120" headingLevel={3} value="v120">
+
 
 v1.2.0 was released on December 10, 2023.
 
@@ -176,13 +206,21 @@ This release fixed the issue that `checkCompatibility` could return inaccurate r
 
 The `wasmDir` parameter of the `init` method is now optional.
 
-### v1.1.3
+
+</Accordion>
+
+<Accordion title="v1.1.3" id="v113" headingLevel={3} value="v113">
+
 
 #### Fixed issues
 
 This release fixes the occasional issue of jagged background images on Chrome for Android.
 
-### v1.1.2
+
+</Accordion>
+
+<Accordion title="v1.1.2" id="v112" headingLevel={3} value="v112">
+
 
 #### New features
 
@@ -192,7 +230,11 @@ You can now specify the `fit` property when calling `setOptions`. This sets how 
 
 Virtual Background supports Agora RTC SDK for Web v4.15.0 or later.
 
-### v1.1.1
+
+</Accordion>
+
+<Accordion title="v1.1.1" id="v111" headingLevel={3} value="v111">
+
 
 #### New features
 
@@ -202,27 +244,46 @@ You can now call `checkCompatibility` and test if the extension is supported on 
 
 A black bar is no longer displayed to the left of the virtual background.
 
-### v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-1" headingLevel={3} value="v110-1">
+
 
 #### New features
 
 You can create multiple `VirtualBackgroundProcessor` instances to process multiple video streams.
 
-### v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-1" headingLevel={3} value="v100-1">
+
 
 First release.
+
+
+</Accordion>
+</Accordions>
 
 ## Super Clarity extension
 
 This extension leverages Agora's AI quality enhancement algorithm to intelligently improve video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end.
 
-### v2.0.1
+<Accordions type="multiple" defaultValue="v201-1">
+
+<Accordion title="v2.0.1" id="v201-1" headingLevel={3} value="v201-1">
+
 
 Released on April 1, 2026.
 
 This version optimizes the sharpening algorithm, improving video experience in some scenarios.
 
-### v2.0.0
+
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-1" headingLevel={3} value="v200-1">
+
 
 Released on November 18, 2025.
 
@@ -235,9 +296,17 @@ This version includes the following improvements:
 - Improves smoothness when the sender app goes to the background by aligning frame rates.
 - Expands compatibility with Safari browser.
 
-### v1.0.1
+
+</Accordion>
+
+<Accordion title="v1.0.1" id="v101" headingLevel={3} value="v101">
+
 
 Released on November 10, 2024. This is the first version of `agora-extension-super-clarity`.
+
+
+</Accordion>
+</Accordions>
 
 ## Watermark extension
 
@@ -273,7 +342,10 @@ This is the first version of `agora-extension-beauty-effect`.
 
 ## MetaKit extension
 
-### v2.2.0
+<Accordions type="multiple" defaultValue="v220">
+
+<Accordion title="v2.2.0" id="v220" headingLevel={3} value="v220">
+
 
 v2.2.0 was released on September 13, 2024.
 
@@ -306,7 +378,11 @@ This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensio
 - `loadMaterial`
 - `unloadMaterial`
 
-### v2.1.0
+
+</Accordion>
+
+<Accordion title="v2.1.0" id="v210-1" headingLevel={3} value="v210-1">
+
 
 v2.1.0 was released on March 6, 2024.
 
@@ -321,15 +397,26 @@ This update optimizes the performance of the MetaKit extension and adds support 
 - `requestTexture`
 - `switchTextureAvatarMode`
 
-### v2.0.0
+
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-2" headingLevel={3} value="v200-2">
+
 
 v2.0.0 was released on February 23, 2024.
 
 This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
 
+
+</Accordion>
+</Accordions>
+
 ## Camera Movement extension
 
-### v1.2.0
+<Accordions type="multiple" defaultValue="v120-1">
+
+<Accordion title="v1.2.0" id="v120-1" headingLevel={3} value="v120-1">
+
 
 v1.2.0 was released on April 29, 2024.
 
@@ -338,11 +425,19 @@ v1.2.0 was released on April 29, 2024.
 - Added support for RTC SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
-### v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-3" headingLevel={3} value="v100-3">
+
 
 v1.0.0 was released on February 23, 2024.
 
 This is the initial release of the Agora Camera Movement extension. The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>
 
@@ -350,7 +445,10 @@ This is the initial release of the Agora Camera Movement extension. The extensio
 
 ## MetaKit extension
 
-### v2.2.0
+<Accordions type="multiple" defaultValue="v220-1">
+
+<Accordion title="v2.2.0" id="v220-1" headingLevel={3} value="v220-1">
+
 
 v2.2.0 was released on September 13, 2024.
 
@@ -379,21 +477,36 @@ This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensio
 - `loadMaterial`
 - `unloadMaterial`
 
-### v2.1.0
+
+</Accordion>
+
+<Accordion title="v2.1.0" id="v210-2" headingLevel={3} value="v210-2">
+
 
 v2.1.0 was released on March 6, 2024.
 
 This update focuses on optimizing the performance of the MetaKit extension, ensuring more efficient operation and a better user experience.
 
-### v2.0.0
+
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-3" headingLevel={3} value="v200-3">
+
 
 v2.0.0 was released on February 23, 2024.
 
 This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
 
+
+</Accordion>
+</Accordions>
+
 ## Camera Movement extension
 
-### v1.2.0
+<Accordions type="multiple" defaultValue="v120-2">
+
+<Accordion title="v1.2.0" id="v120-2" headingLevel={3} value="v120-2">
+
 
 v1.2.0 was released on April 29, 2024.
 
@@ -402,10 +515,18 @@ v1.2.0 was released on April 29, 2024.
 - Added support for RTC SDK v4.3.x.
 - Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
 
-### v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-4" headingLevel={3} value="v100-4">
+
 
 v1.0.0 was released on February 23, 2024.
 
 This is the initial release of the Agora Camera Movement extension. The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>

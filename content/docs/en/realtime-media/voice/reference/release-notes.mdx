@@ -13,7 +13,13 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 :::note
 Starting from v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `libaosl.so` library. If you manually integrate Voice SDK via CDN and also use the Signaling SDK, delete the earlier version of the `libaosl.so` library to avoid conflicts.
 :::
-### v4.6.3
+
+### Versions
+
+<Accordions type="multiple" defaultValue="v463">
+
+<Accordion title="v4.6.3" id="v463" headingLevel={3} value="v463">
+
 
 Released on February 12, 2026.
 
@@ -23,7 +29,11 @@ This release fixed the following issues:
 
 - The app occasionally crashed in audio interaction scenarios.
 
-### v4.6.2
+
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462" headingLevel={3} value="v462">
+
 
 Released on January 19, 2026.
 
@@ -79,7 +89,11 @@ This release fixed the following issues:
 - The app occasionally became unresponsive (ANR) during audio engagements.
 - Occasional crashes occurred during audio engagements.
 
-### v4.6.1
+
+</Accordion>
+
+<Accordion title="v4.6.1" id="v461" headingLevel={3} value="v461">
+
 
 Released on November 26, 2025.
 :::note
@@ -93,7 +107,11 @@ This version fixes the following issues:
 - The app occasionally crashed during audio communication.
 - In multi-channel scenarios, the app occasionally crashed during audio communication with other devices.
 
-### v4.6.0
+
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460" headingLevel={3} value="v460">
+
 
 Released on August 26, 2025.
 :::note
@@ -185,7 +203,11 @@ This version fixes the following issues:
 - Incorrect relay state (`RELAY_STATE_FAILURE`) and error (`RELAY_ERROR_SERVER_ERROR_RESPONSE`) reported after a specific join/relay sequence using `joinChannelEx`.
 - Occasional audio noise when using Bluetooth or wired headphones after setting `AUDIO_SCENARIO_CHATROOM` (Android).
 
-### v4.5.2
+
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452" headingLevel={3} value="v452">
+
 
 v4.5.2 was released on April 22, 2025.
 
@@ -217,7 +239,11 @@ This release fixes the following issues:
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx` before successfully calling `joinChannelEx`, the first frame of the remote video occasionally experienced significant delay.
 - After a failed attempt to join a channel, trying again without first calling `leaveChannel [1/2]` occasionally caused a crash.
 
-### v4.5.1
+
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451" headingLevel={3} value="v451">
+
 
 v4.5.1 was released on March 6, 2025.
 
@@ -247,7 +273,11 @@ This release fixes the following issues:
 - In interactive live streaming, after joining a channel as an audience member using a `string` user ID, the audio and video occasionally became unsynchronized.
 - Plugins sometimes malfunctioned when using AI noise suppression and AI echo cancellation plugins simultaneously.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450" headingLevel={3} value="v450">
+
 
 v4.5.0 was released on November 27, 2024.
 
@@ -299,7 +329,11 @@ This version fixes the following issues:
 - Calling `startAudioMixing [1/2]` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction.
 
-### v4.4.1
+
+</Accordion>
+
+<Accordion title="v4.4.1" id="v441" headingLevel={3} value="v441">
+
 
 v4.4.1 was released on August 8, 2024.
 
@@ -307,7 +341,11 @@ v4.4.1 was released on August 8, 2024.
 
 This release fixes the issue where `io.agora.rtc:full-rtc-basic:4.4.0` and `io.agora.rtc:voice-rtc-basic:4.4.0` were not working properly on Maven Central due to an upload error.
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440" headingLevel={3} value="v440">
+
 
 v4.4.0 was released on August 5, 2024.
 
@@ -356,7 +394,11 @@ This release fixes the following issue:
 
 - Audio playback failed when pushing external audio data using `pushExternalAudioFrame` and the sample rate was not set as a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2
+
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432" headingLevel={3} value="v432">
+
 
 v4.3.2 was released on June 4, 2024.
 
@@ -374,7 +416,11 @@ This version fixed the following issues:
 - During the interaction process on certain devices (for example, Redmi Note8), after answering and hanging up a system call, local media files were played without sound and no sound was heard from the remote end (Android).
 - The app occasionally crashed when remote users left the channel.
 
-### v4.3.1
+
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431" headingLevel={3} value="v431">
+
 
 v4.3.1 was released on April 29, 2024.
 
@@ -438,7 +484,11 @@ This version fixed the following issues:
 - [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
 - `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430" headingLevel={3} value="v430">
+
 
 v4.3.0 was released on February 22, 2024.
 
@@ -649,7 +699,11 @@ This release fixed the following issue:
 - `updateChannelMediaRelayEx`
 - `onChannelMediaRelayEvent`
 
-### v4.2.6
+
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426" headingLevel={3} value="v426">
+
 
 v4.2.6 was released on November 17, 2023.
 
@@ -659,7 +713,11 @@ This release fixed the following issues occurring when using Android 14:
 
 - When integrating the SDK, setting the Android `targetSdkVersion` to `34` could cause screen sharing to be unavailable or even the app to crash.
 
-### v4.2.3
+
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423" headingLevel={3} value="v423">
+
 
 v4.2.3 was released on October 11, 2023.
 
@@ -682,7 +740,11 @@ This release fixed the following issues:
 - Occasional crashes occurred on certain Android devices.
 - In channels joined by calling `joinChannelEx` exclusively, calling `setEnableSpeakerphone` is unable to switch audio route from the speaker to the headphone.
 
-### v4.2.2
+
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422" headingLevel={3} value="v422">
+
 
 v4.2.2 was released on july 27, 2023.
 
@@ -731,7 +793,11 @@ This release fixed the following issues:
 - `updatePreloadChannelToken`
 - `setRouteInCommunicationMode`
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421" headingLevel={3} value="v421">
+
 
 This version was released on June 21, 2023.
 
@@ -746,7 +812,11 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420" headingLevel={3} value="v420">
+
 
 v4.2.0 was released on May 24, 2023.
 
@@ -838,7 +908,11 @@ This release fixed the following issues:
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
 
-### v4.1.1
+
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411" headingLevel={3} value="v411">
+
 
 v4.1.1 was released on February 8, 2023.
 
@@ -863,7 +937,11 @@ This release fixed the following issues:
 
 `enableInstantMediaRendering`
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410" headingLevel={3} value="v410">
+
 
 v4.1.0 was released on December 15, 2022.
 
@@ -976,7 +1054,11 @@ This release fixed the following issues:
 
 -  The package manager download is listed as 4.1.0-1. This the correct download for Voice SDK for Android v4.1.0.
 
-### v4.0.1
+
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401" headingLevel={3} value="v401">
+
 
 v4.0.1 was released on September 29, 2022.
 
@@ -1038,7 +1120,11 @@ This release fixed the following issues.
 
 - `startEchoTest` [2/3]
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400" headingLevel={3} value="v400">
+
 
 v4.0.0 was released on September 15, 2022.
 
@@ -1152,6 +1238,10 @@ This release adds `voicePitch` in `AudioVolumeInfo` of `onAudioVolumeIndication`
 
 This release adds the `onPermissionError` method, which is automatically reported when the audio capture device or camera does not obtain the appropriate permission. You can enable the corresponding device permission according to the prompt of the callback.
 
+
+</Accordion>
+</Accordions>
+
 ## Notifications
 
 ### 2022.10
@@ -1176,7 +1266,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 :::note
 As of v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Voice SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in Voice SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
 :::
-### v4.6.2
+### Versions
+
+<Accordions type="multiple" defaultValue="v462-1">
+
+<Accordion title="v4.6.2" id="v462-1" headingLevel={3} value="v462-1">
+
 
 Released on January 19, 2026.
 
@@ -1223,7 +1318,11 @@ This release fixed the following issues:
 - Beauty effects did not work in some scenarios.
 - When calling `leaveChannel` and `destroy` on a sub-thread while the UI orientation changed simultaneously, the app crashed.
 
-### v4.6.0
+
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-1" headingLevel={3} value="v460-1">
+
 
 Released on August 26, 2025.
 :::note
@@ -1320,7 +1419,11 @@ This version fixes the following issues:
 - Occasional crashes (Android, iOS).
 - Media relay occasionally reported `AgoraChannelMediaRelayStateFailure` and `AgoraChannelMediaRelayErrorServerErrorResponse` after the following sequence: join, relay, unpublish, leave, rejoin, and start relay again.
 
-### v4.5.2
+
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-1" headingLevel={3} value="v452-1">
+
 
 v4.5.2 was released on April 22, 2025.
 
@@ -1344,7 +1447,11 @@ This release fixes the following issues:
 - When you called `enableVideoImageSource:options:` to enable the video image source feature, the sending side appeared to stream successfully, but the `rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:` callback reported a publish failure.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx:connection:` to initialize the remote user's view before successfully calling `joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`, the first frame of the remote video occasionally experienced significant delay.
 
-### v4.5.1
+
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-1" headingLevel={3} value="v451-1">
+
 
 v4.5.1 was released on March 6, 2025.
 
@@ -1374,7 +1481,11 @@ This release resolves the following issues:
 - In interactive live streaming scenarios, after joining a channel as an audience member using a `string` user ID, audio occasionally became unsynchronized with video.
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-1" headingLevel={3} value="v450-1">
+
 
 v4.5.0 was released on November 27, 2024.
 
@@ -1418,7 +1529,11 @@ This version fixes the following issues:
 - Occasional instances of no sound in audio capture after resuming from being interrupted by other system apps.
 - Calling `startAudioMixing:loopback:cycle:` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-1" headingLevel={3} value="v440-1">
+
 
 v4.4.0 was released on August 5, 2024.
 
@@ -1464,7 +1579,11 @@ This release fixes the following issues:
 - After the sender called `startDirectCdnStreaming` to start direct CDN streaming, frequent switching or toggling of the network occasionally resulted in a black screen on the receiver's end without a streaming failure callback on the sender's end.
 - Audio playback failed when pushing external audio data using `pushExternalAudioFrameRawData` and the sample rate was not set as a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2
+
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-1" headingLevel={3} value="v432-1">
+
 
 v4.3.2 was released on June 4, 2024.
 
@@ -1482,7 +1601,11 @@ This version fixed the following issues:
 - When playing an audio file using [startAudioMixing [1/2\]](https://api-ref.agora.io/en/voice-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/startaudiomixing(_:loopback:cycle:)) and the playing finished, the SDK sometimes failed to trigger the [audioMixingStateChanged](https://api-ref.agora.io/en/voice-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate/rtcengine(_:audiomixingstatechanged:reasoncode:)) (`AgoraAudioMixingStateTypeStopped`, `AgoraAudioMixingReasonAllLoopsCompleted`) callback which reports that the playing is completed.
 - When calling the [playEffect [3/3\]](https://api-ref.agora.io/en/voice-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/playeffect(_:filepath:loopcount:pitch:pan:gain:publish:startpos:)) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound.
 
-### v4.3.1
+
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-1" headingLevel={3} value="v431-1">
+
 
 v4.3.1 was released on April 29, 2024.
 
@@ -1552,7 +1675,11 @@ v4.3.1 was released on April 29, 2024.
 **Deprecated**
 - [pushExternalAudioFrameSampleBuffer [1/2]](https://api-ref.agora.io/en/voice-sdk/ios/4.x/documentation/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-1" headingLevel={3} value="v430-1">
+
 
 v4.3.0 was released on February 22, 2024.
 
@@ -1779,7 +1906,11 @@ This release has optimized the implementation of some functions, involving renam
 - `didReceiveChannelMediaRelayEvent`
 - `AgoraChannelMediaRelayEvent`
 
-### v4.2.6
+
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-1" headingLevel={3} value="v426-1">
+
 
 v4.2.6 was released on November 17, 2023.
 
@@ -1789,7 +1920,11 @@ This release fixed the following issue:
 
 - When using an iOS 16 or later device with Bluetooth headphones connected before joining the channel, the audio routing after joining the channel was not as expected: Audio was played from the speaker, not the Bluetooth headphones.
 
-### v4.2.3
+
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-1" headingLevel={3} value="v423-1">
+
 
 v4.2.3 was released on October 11, 2023.
 
@@ -1809,7 +1944,11 @@ This release fixed the following issues:
 - Occasional failure of joining a channel when the local system time was not set correctly.
 - When calling the `playEffect [3/3]` method to play two audio files using the same `soundId`, the first audio file was sometimes played repeatedly.
 
-### v4.2.2
+
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-1" headingLevel={3} value="v422-1">
+
 
 v4.2.2 was released on july 27, 2023.
 
@@ -1861,7 +2000,11 @@ This release fixed slow channel reconnection after the connection was interrupte
 - `codecLevels` in `CodecCapAgoraVideoCodecCapInfoInfo`
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-1" headingLevel={3} value="v421-1">
+
 
 This version was released on June 21, 2023.
 
@@ -1878,7 +2021,11 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - Occasional crash after calling the `destroyMediaPlayer` method.
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-1" headingLevel={3} value="v420-1">
+
 
 v4.2.0 was released on May 24, 2023.
 
@@ -1962,7 +2109,11 @@ This release fixed the following issues:
 - `didApiCallExecute`
 - `publishCustomAudioTrackEnableAec` in `AgoraRtcChannelMediaOptions`
 
-### v4.1.1
+
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-1" headingLevel={3} value="v411-1">
+
 
 v4.1.1 was released on February 8, 2023.
 
@@ -1982,7 +2133,11 @@ This release fixed the issue that playing audio files with a sample rate of 48 k
 
 `enableInstantMediaRendering`
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-1" headingLevel={3} value="v410-1">
+
 
 v4.1.0 was released on December 15, 2022.
 
@@ -2079,7 +2234,11 @@ This release fixed the following issues:
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `AgoraLiveTranscoding` class.
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent`.
 
-### v4.0.1
+
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-1" headingLevel={3} value="v401-1">
+
 
 v4.0.1 was released on September 29, 2022.
 
@@ -2136,7 +2295,11 @@ This release adds the following features applicable to spatial audio effect use-
 
 - `startEchoTest` [2/3]
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-1" headingLevel={3} value="v400-1">
+
 
 v4.0.0 was released on September 15, 2022.
 
@@ -2244,6 +2407,10 @@ This release can achieve the same switching speed as `switchChannelByToken` in v
 **2. Voice pitch of the local user**
 This release adds `voicePitch` in `AgoraRtcAudioVolumeInfo` of `reportAudioVolumeIndicationOfSpeakers`. You can use `voicePitch` to get the local user's voice pitch and perform business functions such as rating for singing.
 
+
+</Accordion>
+</Accordions>
+
 ## Notifications
 
 ### 2022.10
@@ -2270,7 +2437,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
 :::note
 As of v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `aosl.xcframework` library. If you manually integrate Voice SDK via CDN and also use Signaling SDK, delete the earlier version of the `aosl.xcframework` library to avoid conflicts. The `aosl.xcframework` library version in Voice SDK v4.5.0 is 1.2.13. You can check the version in the `Info.plist` file.
 :::
-### v4.6.2
+### Versions
+
+<Accordions type="multiple" defaultValue="v462-2">
+
+<Accordion title="v4.6.2" id="v462-2" headingLevel={3} value="v462-2">
+
 
 Released on January 19, 2026.
 
@@ -2302,7 +2474,11 @@ This release introduces the following compatibility changes:
 
     The relevant decoder plugins are now built into the SDK to ensure overall decoding compatibility.
 
-### v4.6.0
+
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-2" headingLevel={3} value="v460-2">
+
 
 Released on August 26, 2025.
 
@@ -2397,7 +2573,11 @@ This version fixes the following issues:
 - Occasional crashes.
 - Media relay occasionally reported `AgoraChannelMediaRelayStateFailure` and `AgoraChannelMediaRelayErrorServerErrorResponse` after the following sequence: join, relay, unpublish, leave, rejoin, and start relay again.
 
-### v4.5.2
+
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-2" headingLevel={3} value="v452-2">
+
 
 v4.5.2 was released on April 22, 2025.
 
@@ -2419,7 +2599,11 @@ This release fixes the following issues:
 - When you called `enableVideoImageSource:options:` to enable the video image source feature, the sender streamed successfully but the `rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:` callback occasionally did not return the expected result.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx:connection:` to initialize the remote user's view before successfully calling `joinChannelExByToken:connection:delegate:mediaOptions:`, the view failed to display correctly.
 
-### v4.5.1
+
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-2" headingLevel={3} value="v451-2">
+
 
 v4.5.1 was released on March 6, 2025.
 
@@ -2442,7 +2626,11 @@ This release resolves the following issues:
 - In interactive live streaming scenarios, after joining a channel as an audience member using a `string` user ID, audio occasionally became unsynchronized with video.
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-2" headingLevel={3} value="v450-2">
+
 
 v4.5.0 was released on November 27, 2024.
 
@@ -2492,7 +2680,11 @@ This version fixes the following issue:
 
 - Calling `startAudioMixing:loopback:cycle:` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-2" headingLevel={3} value="v440-2">
+
 
 v4.4.0 was released on August 5, 2024.
 
@@ -2528,7 +2720,11 @@ This version includes the following improvements:
    - Optimizes transmission strategy: Calling `enableInstantMediaRendering` no longer impacts the security of the transmission link.
    - Deprecates redundant enumeration values `AgoraClientRoleChangeFailedRequestTimeout` and `AgoraClientRoleChangeFailedConnectionFailed` in `AgoraClientRoleChangeFailedReason`.
 
-### v4.3.2
+
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-2" headingLevel={3} value="v432-2">
+
 
 v4.3.2 was released on June 4, 2024.
 
@@ -2543,7 +2739,11 @@ This version fixed the following issues:
 - Occasional video smoothness issues during audio and video interactions.
 - The app occasionally crashed when remote users left the channel.
 
-### v4.3.1
+
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-2" headingLevel={3} value="v431-2">
+
 
 v4.3.1 was released on April 29, 2024.
 
@@ -2615,7 +2815,11 @@ This version fixed the following issues:
 
 - [pushExternalAudioFrameSampleBuffer](https://api-ref.agora.io/en/voice-sdk/macos/4.x/API/agorartckit/agorartcenginekit/pushexternalaudioframesamplebuffer(_:))
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-2" headingLevel={3} value="v430-2">
+
 
 v4.3.0 was released on February 22, 2024.
 
@@ -2826,7 +3030,11 @@ This release has optimized the implementation of some functions, involving renam
 - `didReceiveChannelMediaRelayEvent`
 - `AgoraChannelMediaRelayEvent`
 
-### v4.2.6
+
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-2" headingLevel={3} value="v426-2">
+
 
 v4.2.6 was released on November 17, 2023.
 
@@ -2836,7 +3044,11 @@ This release fixed the following issue:
 
 - When using an iOS 16 or later device with Bluetooth headphones connected before joining the channel, the audio routing after joining the channel was not as expected: Audio was played from the speaker, not the Bluetooth headphones.
 
-### v4.2.3
+
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-2" headingLevel={3} value="v423-2">
+
 
 v4.2.3 was released on October 11, 2023.
 
@@ -2857,7 +3069,11 @@ This release fixed the following issues:
 - Occasional failure of joining a channel when the local system time was not set correctly.
 - When calling the `playEffect [3/3]` method to play two audio files using the same `soundId`, the first audio file was sometimes played repeatedly.
 
-### v4.2.2
+
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-2" headingLevel={3} value="v422-2">
+
 
 v4.2.2 was released on july 27, 2023.
 
@@ -2902,7 +3118,11 @@ This release fixed the following issues:
 - `preloadChannelByToken [2/2]`
 - `updatePreloadChannelToken`
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-2" headingLevel={3} value="v421-2">
+
 
 This version was released on June 21, 2023.
 
@@ -2918,7 +3138,11 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-2" headingLevel={3} value="v420-2">
+
 
 v4.2.0 was released on May 24, 2023.
 
@@ -3011,7 +3235,11 @@ This release fixed the following issues:
 - `didApiCallExecute`
 - `publishCustomAudioTrackEnableAec` in `AgoraRtcChannelMediaOptions`
 
-### v4.1.1
+
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-2" headingLevel={3} value="v411-2">
+
 
 v4.1.1 was released on February 8, 2023.
 
@@ -3031,7 +3259,11 @@ This release fixed the issue that playing audio files with a sample rate of 48 k
 
 `enableInstantMediaRendering`
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-2" headingLevel={3} value="v410-2">
+
 
 v4.1.0 was released on December 15, 2022.
 
@@ -3124,7 +3356,11 @@ This release fixed the following issues:
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `AgoraLiveTranscoding` class.
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent` callback.
 
-### v4.0.1
+
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-2" headingLevel={3} value="v401-2">
+
 
 v4.0.1 was released on September 29, 2022.
 
@@ -3188,7 +3424,11 @@ This release adds the following features applicable to spatial audio effect use-
 
 - `startEchoTest` [2/3]
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-2" headingLevel={3} value="v400-2">
+
 
 v4.0.0 was released on September 15, 2022.
 
@@ -3294,6 +3534,10 @@ This release can achieve the same switching speed as `switchChannelByToken` in v
 
 **2. Voice pitch of the local user**
 This release adds `voicePitch` in `AgoraRtcAudioVolumeInfo` of `reportAudioVolumeIndicationOfSpeakers`. You can use `voicePitch` to get the local user's voice pitch and perform business functions such as rating for singing.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -3677,13 +3921,18 @@ Reason: The image enhancement algorithm can reduce the system performance of mob
 </Accordion>
 </Accordions>
 
+### Versions
+
+<Accordions type="multiple" defaultValue="v4248">
+
 <include>../../video/reference/release-notes/web.mdx#web-sdk-v4-24-8</include>
 
 <include>../../video/reference/release-notes/web.mdx#web-sdk-v4-24-7</include>
 
 <include>../../video/reference/release-notes/web.mdx#web-sdk-v4-24-6</include>
 
-### v4.24.5
+<Accordion title="v4.24.5" id="v4245" headingLevel={3} value="v4245">
+
 
 Released on June 24, 2026.
 
@@ -3731,7 +3980,11 @@ This release fixed the following issues:
 - Remote video could freeze briefly after the first `client.publish(video)` call.
 - TypeScript type definition files were missing and some exported symbols were incorrect in the npm package.
 
-### v4.24.4
+
+</Accordion>
+
+<Accordion title="v4.24.4" id="v4244" headingLevel={3} value="v4244">
+
 
 Released on May 27, 2026.
 
@@ -3739,7 +3992,11 @@ Released on May 27, 2026.
 
 This release includes internal optimizations for weak-network scenarios, improving the login success rate.
 
-### v4.24.3
+
+</Accordion>
+
+<Accordion title="v4.24.3" id="v4243" headingLevel={3} value="v4243">
+
 
 Released on April 1, 2026.
 
@@ -3756,7 +4013,11 @@ This release includes the following improvements:
 - Optimizes the interactive video experience in H.264 encoding scenarios.
 - The [Super Clarity extension](#super-clarity-extension) is upgraded to v2.0.1, with sharpening algorithm improvements that provide better video experience in some scenarios.
 
-### v4.24.2
+
+</Accordion>
+
+<Accordion title="v4.24.2" id="v4242" headingLevel={3} value="v4242">
+
 
 Released on December 12, 2025.
 
@@ -3776,7 +4037,11 @@ This version implements a compatibility fix that prevents the issue from interru
 
 The Agora R&D team has reported the issue to the Chrome team and continues to monitor its progress.
 
-### v4.24.1
+
+</Accordion>
+
+<Accordion title="v4.24.1" id="v4241" headingLevel={3} value="v4241">
+
 Released on November 26, 2025.
 
 #### New Features
@@ -3824,7 +4089,11 @@ Released on November 26, 2025.
 
 Fixes an issue on iOS where the system volume could not be set to `0` after destroying an audio stream.
 
-### v4.24.0
+
+</Accordion>
+
+<Accordion title="v4.24.0" id="v4240" headingLevel={3} value="v4240">
+
 
 Released on August 6, 2025
 
@@ -3871,13 +4140,21 @@ This version fixes the following issues:
 - Encoding failure when the resolution was too low.
 - Occasional black screen in scenarios using Plan-B.
 
-### v4.23.4
+
+</Accordion>
+
+<Accordion title="v4.23.4" id="v4234" headingLevel={3} value="v4234">
+
 
 Released on June 5, 2025.
 
 This release includes internal improvements. It fixes an issue where calling `setMute` or `setEnable` under certain conditions could result in no sound. If you are using SDK version 4.23.0 or later, upgrade to this release for a better user experience.
 
-### v4.23.3
+
+</Accordion>
+
+<Accordion title="v4.23.3" id="v4233" headingLevel={3} value="v4233">
+
 
 Released on April 29, 2025.
 
@@ -3886,7 +4163,11 @@ This release updates the virtual background extension to [v2.1.0](https://www.np
 - Optimizes memory and CPU usage.
 - Fixes black screen issues at specific resolutions.
 
-### v4.23.2
+
+</Accordion>
+
+<Accordion title="v4.23.2" id="v4232" headingLevel={3} value="v4232">
+
 
 Released on March 4, 2025.
 
@@ -3900,13 +4181,21 @@ This release includes the following improvements:
 
 - Further reduced package size.
 
-### v4.23.1
+
+</Accordion>
+
+<Accordion title="v4.23.1" id="v4231" headingLevel={3} value="v4231">
+
 
 Released on January 17, 2025.
 
 This release includes several internal improvements.
 
-### v4.23.0
+
+</Accordion>
+
+<Accordion title="v4.23.0" id="v4230" headingLevel={3} value="v4230">
+
 
 Released on December 19, 2024.
 
@@ -3962,7 +4251,11 @@ This release fixes the following issues:
 - `AgoraRTC.on("peer-connection-state-change")`
 - `preferCurrentTab` in `ScreenVideoTrackInitConfig`
 
-### v4.22.2
+
+</Accordion>
+
+<Accordion title="v4.22.2" id="v4222" headingLevel={3} value="v4222">
+
 
 v4.22.2 was released on 29 October 2024.
 
@@ -3982,7 +4275,11 @@ This version introduces the following new APIs:
 
 - The `withAudio` parameter in the `createScreenVideoTrack` method supports passing `ScreenAudioTrackInitConfig`.
 
-### v4.22.1
+
+</Accordion>
+
+<Accordion title="v4.22.1" id="v4221" headingLevel={3} value="v4221">
+
 
 v4.22.1 was released on 23 September, 2024.
 
@@ -3990,7 +4287,11 @@ v4.22.1 was released on 23 September, 2024.
 
 This release includes several internal improvements.
 
-### v4.22.0
+
+</Accordion>
+
+<Accordion title="v4.22.0" id="v4220" headingLevel={3} value="v4220">
+
 
 v4.22.0 was released on 16 August, 2024.
 
@@ -4030,7 +4331,11 @@ This version introduces the following new APIs:
 - `ClientConfig.codec` adds the `av1` enumeration.
 - The `AgoraRTC` module in the ESM-bundle adds the `use` method.
 
-### v4.21.0
+
+</Accordion>
+
+<Accordion title="v4.21.0" id="v4210" headingLevel={3} value="v4210">
+
 
 v4.21.0 was released on June 3, 2024.
 
@@ -4065,7 +4370,11 @@ This release fixes the following issues:
 
 - `AgoraRTC.preload`
 
-### v4.20.2
+
+</Accordion>
+
+<Accordion title="v4.20.2" id="v4202" headingLevel={3} value="v4202">
+
 
 v4.20.2 was released on March 21, 2024.
 
@@ -4073,7 +4382,11 @@ v4.20.2 was released on March 21, 2024.
 
 This release fixes the issue where the browser would modify the captured video resolution when calling [createCustomVideoTrack](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/iagorartc.html#createcustomvideotrack) in certain use-cases.
 
-### v4.20.1
+
+</Accordion>
+
+<Accordion title="v4.20.1" id="v4201" headingLevel={3} value="v4201">
+
 
 v4.20.1 was released on February 28, 2024.
 
@@ -4120,7 +4433,11 @@ This release fixes the following issue:
 - `RemoteVideoTrack.on("video-state-changed")`
 - `encryptDataStream` parameter to `AgoraRTCClient.setEncryptionConfig`
 
-### v4.20.0
+
+</Accordion>
+
+<Accordion title="v4.20.0" id="v4200" headingLevel={3} value="v4200">
+
 
 v4.20.0 was released on December 8, 2023.
 
@@ -4150,7 +4467,11 @@ This release includes the following improvements:
 - `resumeAudioContext`
 - `AgoraRTC.on("audio-context-state-changed")`
 
-### v4.19.3
+
+</Accordion>
+
+<Accordion title="v4.19.3" id="v4193" headingLevel={3} value="v4193">
+
 
 v4.19.3 was released on November 2, 2023.
 
@@ -4160,7 +4481,11 @@ This release fixes a black screen issue when receiving H.264 encoded video strea
 
 If you have integrated v4.19.2 of the SDK, Agora recommends upgrading to v4.19.3 as soon as possible.
 
-### v4.19.2
+
+</Accordion>
+
+<Accordion title="v4.19.2" id="v4192" headingLevel={3} value="v4192">
+
 
 v4.19.2 was released on October 20, 2023.
 
@@ -4187,7 +4512,11 @@ After upgrading to this version, if you are using a 720p video profile, Agora re
 
 - `"720p_auto"` to `VideoEncoderConfigurationPreset`
 
-### v4.19.1
+
+</Accordion>
+
+<Accordion title="v4.19.1" id="v4191" headingLevel={3} value="v4191">
+
 
 v4.19.1 was released on October 11, 2023.
 
@@ -4195,7 +4524,11 @@ v4.19.1 was released on October 11, 2023.
 
 This release fixes the issue that an error occurred when using Webpack 4.x to bundle your app after integrating the SDK.
 
-### v4.19.0
+
+</Accordion>
+
+<Accordion title="v4.19.0" id="v4190" headingLevel={3} value="v4190">
+
 
 v4.19.0 was released on September 25, 2023.
 
@@ -4292,7 +4625,11 @@ This release fixes the following issues:
 
 - `AgoraRTCClient.on("join-fallback-to-proxy")`
 
-### v4.18.3
+
+</Accordion>
+
+<Accordion title="v4.18.3" id="v4183" headingLevel={3} value="v4183">
+
 
 v4.18.3 was released on September 20, 2023.
 
@@ -4302,7 +4639,11 @@ v4.18.3 fixes the following issue:
 
 - The SDK failed to obtain audio and video statistics on Safari 17.
 
-### v4.18.2
+
+</Accordion>
+
+<Accordion title="v4.18.2" id="v4182" headingLevel={3} value="v4182">
+
 
 v4.18.2 was released on July 11, 2023.
 
@@ -4313,7 +4654,11 @@ v4.18.2 fixes the following issues:
 - In certain circumstances, Video SDK for Web triggered microphone and camera device permission prompts after it
  finished loading.
 
-### v4.18.1
+
+</Accordion>
+
+<Accordion title="v4.18.1" id="v4181" headingLevel={3} value="v4181">
+
 
 v4.18.1 was released on July 03, 2023.
 
@@ -4343,7 +4688,11 @@ This release fixed the issue that the following callbacks were not triggered whe
 - `onCameraChanged` or `AgoraRTC.on("camera-changed")`
 - `onMicrophoneChanged` or `AgoraRTC.on("microphone-changed")`
 
-### v4.18.0
+
+</Accordion>
+
+<Accordion title="v4.18.0" id="v4180" headingLevel={3} value="v4180">
+
 
 v4.18.0 was released on June 12, 2023.
 
@@ -4434,7 +4783,11 @@ v4.18.0 fixes the following issues:
 - Memory usage increased when using the SDK with the Virtual Background or Image Enhancer extension.
 - The SDK continued to use the expired token during reconnection attempts after generating a new token using the `renewToken` method.
 
-### v4.17.2
+
+</Accordion>
+
+<Accordion title="v4.17.2" id="v4172" headingLevel={3} value="v4172">
+
 
 v4.17.2 was released on April 20, 2023.
 
@@ -4442,7 +4795,11 @@ v4.17.2 was released on April 20, 2023.
 
 This release fixes the issue where the `getCurrentFrameData` method returned abnormal data.
 
-### v4.17.1
+
+</Accordion>
+
+<Accordion title="v4.17.1" id="v4171" headingLevel={3} value="v4171">
+
 
 v4.17.1 was released on April 19, 2023.
 
@@ -4497,7 +4854,11 @@ To enable this feature, contact technical support.
 
 - `ILocalVideoTrack.setBeautyEffect`
 
-### v4.17.0
+
+</Accordion>
+
+<Accordion title="v4.17.0" id="v4170" headingLevel={3} value="v4170">
+
 
 v4.17.0 was released on March 22, 2023.
 
@@ -4539,7 +4900,11 @@ This release also includes the following improvements:
 
 On Safari on iOS 14.7 and later, performing subscribing and unsubscribing operations repeatedly to multiple audio streams could result in not hearing remote users.
 
-### v4.16.1
+
+</Accordion>
+
+<Accordion title="v4.16.1" id="v4161" headingLevel={3} value="v4161">
+
 
 Voice Calling v4.16.1 was released on February 7, 2023.
 
@@ -4549,7 +4914,11 @@ This release fixes the following issue:
 
 - When using Video SDK for Web v4.16.0, the video freeze rate showed in Agora Analytics is much higher than the correct value.
 
-### v4.16.0
+
+</Accordion>
+
+<Accordion title="v4.16.0" id="v4160" headingLevel={3} value="v4160">
+
 
 Voice Calling v4.16.0 was released on January 5, 2023.
 
@@ -4620,7 +4989,11 @@ This release fixes the following issues:
 could not set `uid` to `0` to identify the relay stream in the destination channel.
 - Some known issues on iOS 14.x.
 
-### v4.15.1
+
+</Accordion>
+
+<Accordion title="v4.15.1" id="v4151" headingLevel={3} value="v4151">
+
 
 v4.15.1 was released on December 2, 2022.
 
@@ -4630,7 +5003,11 @@ This release fixes the following issue:
 
 - No audio was received on iOS 13.7.
 
-### v4.15.0
+
+</Accordion>
+
+<Accordion title="v4.15.0" id="v4150" headingLevel={3} value="v4150">
+
 
 v4.15.0 was released on October 31, 2022.
 
@@ -4705,7 +5082,11 @@ The SDK has the following improvements:
 
 Cloud Proxy default mode has changed. In Video SDK for Web v4.15.0, the `mode` parameter in `startProxyServer` defaults to `3`. This represents the Force UDP cloud proxy mode. In this mode, Video SDK always transmits data over UDP. For details, see [Restricted network connection with Cloud Proxy](../build/manage-connection-and-quality/cloud-proxy.mdx).
 
-### v4.14.2
+
+</Accordion>
+
+<Accordion title="v4.14.2" id="v4142" headingLevel={3} value="v4142">
+
 
 v4.14.2 was released on October 27, 2022.
 
@@ -4715,7 +5096,11 @@ This release fixes the following issue:
 
 - When using WeChat browsers on iOS 14.x, no audio is received from the first channel the user subscribes to.
 
-### v4.14.1
+
+</Accordion>
+
+<Accordion title="v4.14.1" id="v4141" headingLevel={3} value="v4141">
+
 
 v4.14.1 was released on October 24, 2022.
 
@@ -4735,7 +5120,11 @@ This release fixes the following issues:
 - Media stream relay failed after the SDK resumed connection to the network.
 - During a media stream relay, the SDK continued to send heartbeats after the user left the source channel.
 
-### v4.14.0
+
+</Accordion>
+
+<Accordion title="v4.14.0" id="v4140" headingLevel={3} value="v4140">
+
 
 v4.14.0 was released on August 31, 2022.
 
@@ -4755,7 +5144,11 @@ This release fixes the following issue:
 - After calling `LocalVideoTrack.setBeautyEffect` to enable image enhancement, calling `LocalVideoTrack.unpipe` caused an error.
 - On Windows Chrome 103 and later versions, enabling the dual-stream mode did not take effect in certain use-cases.
 
-### v4.13.0
+
+</Accordion>
+
+<Accordion title="v4.13.0" id="v4130" headingLevel={3} value="v4130">
+
 
 v4.13.0 was released on July 25, 2022.
 
@@ -4778,15 +5171,27 @@ v4.13.0 improved the logic of triggering the callback for token expiration. If a
 - `RemoteAudioTrack.pipe`
 - `RemoteAudioTrack.unpipe`
 
-### v4.12.2
+
+</Accordion>
+
+<Accordion title="v4.12.2" id="v4122" headingLevel={3} value="v4122">
+
 v4.12.2 was released on July 7, 2022. This release improved the automatic mode for SDK connectivity (In this mode, the SDK first attempts a direct connection to Agora SDRTN®; if the attempt fails, the SDK automatically switches to TCP/TLS 443).
 
-### v4.12.1
+
+</Accordion>
+
+<Accordion title="v4.12.1" id="v4121" headingLevel={3} value="v4121">
+
 v4.12.1 was released on June 27, 2022. This release fixed the following issues:
 
 - Subscribing to remote streams occasionally failed after disconnection.
 
-### v4.12.0
+
+</Accordion>
+
+<Accordion title="v4.12.0" id="v4120" headingLevel={3} value="v4120">
+
 v4.12.0 was released on June 15, 2022.
 
 #### Improvements
@@ -4801,13 +5206,21 @@ Media processing extensions have the following changes:
 
 v4.12.0 fixed the issue that when dual-stream mode was enabled on Safari, calling methods such as `Track.setEnabled(false)` and `Track.close()` could not turn off the camera indicator light.
 
-### v4.11.1
+
+</Accordion>
+
+<Accordion title="v4.11.1" id="v4111" headingLevel={3} value="v4111">
+
 v4.11.1 was released on May 9, 2022. This release fixed the following issues:
 
 - Subscribing to audio streams might cause no sound on Firefox.
 - Compatibility issues occurred in Safari on iOS 12 and in the WeChat built-in browser on iOS 13.
 
-### v4.11.0
+
+</Accordion>
+
+<Accordion title="v4.11.0" id="v4110" headingLevel={3} value="v4110">
+
 
 v4.11.0 was released on April 1, 2022.
 
@@ -4835,15 +5248,27 @@ v4.11.0 fixed the following issues:
 
 -  When dual-stream mode was enabled, calling `unpublish` without parameters caused the method call to fail.
 
-### v4.10.2
+
+</Accordion>
+
+<Accordion title="v4.10.2" id="v4102" headingLevel={3} value="v4102">
+
 
 v4.10.2 was released on March 24, 2022. This release fixed the issue that calling `join` in certain use-cases might cause proxy exceptions.
 
-### v4.10.1
+
+</Accordion>
+
+<Accordion title="v4.10.1" id="v4101" headingLevel={3} value="v4101">
+
 
 v4.10.1 was released on March 17, 2022 and added the dependency of TypeScript type definitions for Agora Extension `agora-rte-extension` in `package.json`. If you use TypeScript for type checking, Agora suggests that you update TypeScript to v4.3.2 or later.
 
-### v4.10.0
+
+</Accordion>
+
+<Accordion title="v4.10.0" id="v4100" headingLevel={3} value="v4100">
+
 
 v4.10.0 was released on March 11, 2022.
 
@@ -4861,19 +5286,35 @@ v4.10.0 was released on March 11, 2022.
 
 -  `LocalTrack.processorDestination`
 
-### v4.9.4
+
+</Accordion>
+
+<Accordion title="v4.9.4" id="v494" headingLevel={3} value="v494">
+
 
 v4.9.4 was released on March 16, 2022 and fixed the failure to access localStorage when loading the SDK in an iFrame in Chrome Incognito mode.
 
-### v4.9.3
+
+</Accordion>
+
+<Accordion title="v4.9.3" id="v493" headingLevel={3} value="v493">
+
 
 v4.9.3 was released on March 3, 2022. This release fixed several internal issues.
 
-### v4.9.1
+
+</Accordion>
+
+<Accordion title="v4.9.1" id="v491" headingLevel={3} value="v491">
+
 
 v4.9.1 was released on February 24, 2022. This release fixed several internal issues.
 
-### v4.9.0
+
+</Accordion>
+
+<Accordion title="v4.9.0" id="v490" headingLevel={3} value="v490">
+
 
 v4.9.0 was released on February 17, 2022.
 
@@ -4901,13 +5342,25 @@ v4.9.0 fixed the following issues:
 
 -  `client.on("join-fallback-to-proxy")`
 
-### v4.8.2
 
-### v4.8.1
+</Accordion>
+
+<Accordion title="v4.8.2" id="v482" headingLevel={3} value="v482">
+
+
+
+</Accordion>
+
+<Accordion title="v4.8.1" id="v481" headingLevel={3} value="v481">
+
 
 v4.8.1 was released on January 6, 2022. This release fixed an internal issue.
 
-### v4.8.0
+
+</Accordion>
+
+<Accordion title="v4.8.0" id="v480" headingLevel={3} value="v480">
+
 
 v4.8.0 was released on December 29, 2021.
 
@@ -4927,21 +5380,37 @@ v4.8.0 fixed the following issues:
 
 #### API changes
 
-### v4.7.3
+
+</Accordion>
+
+<Accordion title="v4.7.3" id="v473" headingLevel={3} value="v473">
+
 
 v4.7.3 was released on November 17, 2021. This release avoided the issue that on the Safari browser in iOS 15.1, after a call was interrupted, the Voice Calling failed to resume playing the remote media.
 
-### v4.7.2
+
+</Accordion>
+
+<Accordion title="v4.7.2" id="v472" headingLevel={3} value="v472">
+
 
 v4.7.2 was released on October 14, 2021, with the following changes:
 
 -  Fixed the issue that calling `AgoraRTC.checkSystemRequirements()` on the Edge browser only returned `false`.
 
-### v4.7.1
+
+</Accordion>
+
+<Accordion title="v4.7.1" id="v471" headingLevel={3} value="v471">
+
 
 v4.7.1 was released on September 13, 2021. This release fixed some issues on Safari 11 and iPad Chrome.
 
-### v4.7.0
+
+</Accordion>
+
+<Accordion title="v4.7.0" id="v470" headingLevel={3} value="v470">
+
 
 v4.7.0 was released on September 1, 2021.
 
@@ -4969,19 +5438,35 @@ This release fixed the following issues:
 
 -  The promise returned by `LocalAudioTrack.setDevice` could get stuck in a pending state.
 
-### v4.6.3
+
+</Accordion>
+
+<Accordion title="v4.6.3" id="v463-1" headingLevel={3} value="v463-1">
+
 
 v4.6.3 was released on August 10, 2021. This release fixed an occasional issue: After the user closes a tab or browser on the local client, the remote client does not receive the `user-left` event immediately.
 
-### v4.6.2
+
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462-3" headingLevel={3} value="v462-3">
+
 
 v4.6.2 was released on July 30, 2021. This release fixed the issue that the SDK did not destroy all the media players created during a call or live streaming. Chrome 92 introduced a limit on the number of media players that can be created in a particular tab: 75 for the desktop. After you play tracks several times, the undestroyed media players in the SDK might cause the playback failure in the tab.
 
-### v4.6.1
+
+</Accordion>
+
+<Accordion title="v4.6.1" id="v461-1" headingLevel={3} value="v461-1">
+
 
 v4.6.1 was released on July 21, 2021. This release fixed an internal error.
 
-### v4.6.0
+
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-3" headingLevel={3} value="v460-3">
+
 
 v4.6.0 was released on July 16, 2021.
 
@@ -5041,7 +5526,11 @@ v4.6.0 fixes the following issues:
 
 -  `onAudioAutoplayFailed`
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-3" headingLevel={3} value="v450-3">
+
 
 v4.5.0 was released on May 25, 2021.
 
@@ -5089,7 +5578,11 @@ v4.5.0 fixes the following issues:
 
 -  `excludedArea` in the `setArea` method
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-3" headingLevel={3} value="v440-3">
+
 
 v4.4.0 was released on April 2, 2021.
 
@@ -5142,7 +5635,11 @@ v4.4.0 fixes the following issues:
 
 -  `"aes-128-gcm"` and `"aes-256-gcm"` in `EncryptionMode`
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-3" headingLevel={3} value="v430-3">
+
 
 v4.3.0 was released on January 26, 2021.
 
@@ -5154,11 +5651,19 @@ This release optimizes the Agora cloud proxy architecture and enhances the conne
 
 You can contact (mailto:support@agora.io) to apply for using the optimized Agora cloud proxy service and set the `mode` parameter as `3` when calling `startProxyServer`. For details, see [Cloud proxy service](../build/manage-connection-and-quality/cloud-proxy.mdx).
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-3" headingLevel={3} value="v421-3">
+
 
 v4.2.1 was released on December 23, 2020. This release fixed the incorrect error that the SDK throws when you pass an illegal parameter in the client.publish method.
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-3" headingLevel={3} value="v420-3">
+
 
 v4.2.0 was released on December 1, 2020.
 
@@ -5218,7 +5723,11 @@ This release changes the `mode` parameter of the `AgoraRTCClient.startProxyServe
 
 -  Changed the type of the `mode` parameter in `AgoraRTCClient.startProxyServer` from `boolean` to `number`
 
-### v4.1.1
+
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-3" headingLevel={3} value="v411-3">
+
 
 v4.1.1 was released on October 27, 2020. This release fixed the following issues:
 
@@ -5226,7 +5735,11 @@ v4.1.1 was released on October 27, 2020. This release fixed the following issues
 
 -  After calling `unsubscribe` to unsubscribing from an unpublished track of a remote user, the subsequent subscribing and unsubscribing operations failed to take effect.
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-3" headingLevel={3} value="v410-3">
+
 
 v4.1.0 was released on September 4, 2020.
 
@@ -5282,13 +5795,21 @@ v4.1.0 adds the following APIs to manage audio playback devices:
 
 **Deprecated**
 
-### v4.0.1
+
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-3" headingLevel={3} value="v401-3">
+
 
 v4.0.1 was released on July 18, 2020. This release fixed the following issues:
 - Failure to publish local tracks on Chrome 70.
 - Publish operation may not be aborted when leaving the channel.
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-3" headingLevel={3} value="v400-3">
+
 
 v4.0.0 was released on July 15, 2020.
 
@@ -5352,13 +5873,20 @@ v4.0.0 fixed the following issues:
 
 -  The `LocalTrack.getUserId` method
 
+
+</Accordion>
+</Accordions>
+
 ## AI Noise Suppression
 
 :::note
 Agora charges additionally for this extension. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
 
-### v2.0.2
+<Accordions type="multiple" defaultValue="v202">
+
+<Accordion title="v2.0.2" id="v202" headingLevel={3} value="v202">
+
 
 Released on June 24, 2026.
 
@@ -5367,7 +5895,11 @@ Released on June 24, 2026.
 - Added background voice removal.
 - Suitable for noisy environments or scenarios with multiple speakers to further highlight the target voice and improve audio capture. 
 
-### v2.0.1
+
+</Accordion>
+
+<Accordion title="v2.0.1" id="v201" headingLevel={3} value="v201">
+
 
 Released on April 1, 2026.
 
@@ -5390,7 +5922,11 @@ This version no longer supports calling the `disable` method before `pipe` to di
 
 The implementation of callbacks has been revised in this version. The original callbacks `onloaderror`, `onoverload`, `ondump`, and `ondumpend` are deprecated. Use the `on` method with event names `"pipeerror"`, `"overload"`, `"dump"`, or `"dumpend"` to listen for the corresponding events instead.
 
-### v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110" headingLevel={3} value="v110">
+
 
 #### Improvement
 
@@ -5418,9 +5954,17 @@ This release brings the following changes:
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
 
-### v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100" headingLevel={3} value="v100">
+
 
 First release.
+
+
+</Accordion>
+</Accordions>
 
 ## Noise suppression for use cases involving AI
 
@@ -5465,14 +6009,21 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
 
   The virtual background feature requires significant CPU and GPU processing power, which exceeds the capabilities of most mobile devices. Due to these hardware-intensive requirements, performance on mobile browsers is inconsistent and varies across devices.
 
-### v2.1.0
+<Accordions type="multiple" defaultValue="v210">
+
+<Accordion title="v2.1.0" id="v210" headingLevel={3} value="v210">
+
 
  v2.1.0 was released on April 29, 2025, with the following changes:
 
  - Optimizes memory and CPU usage.
  - Fixes black screen issues at specific resolutions.
 
-### v2.0.0
+
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200" headingLevel={3} value="v200">
+
 
 v2.0.0 was released on December 18, 2024.
 
@@ -5514,7 +6065,11 @@ Version 1.3.0 is suitable for mid-range devices and is recommended for users who
 
 - For General applications, default to 1.3.0. Optionally, allow users to upgrade to 2.0.0 with a performance warning.
 
-### v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120" headingLevel={3} value="v120">
+
 
 v1.2.0 was released on December 10, 2023.
 
@@ -5536,13 +6091,21 @@ This release fixed the issue that `checkCompatibility` could return inaccurate r
 
 The `wasmDir` parameter of the `init` method is now optional.
 
-### v1.1.3
+
+</Accordion>
+
+<Accordion title="v1.1.3" id="v113" headingLevel={3} value="v113">
+
 
 #### Fixed issues
 
 This release fixes the occasional issue of jagged background images on Chrome for Android.
 
-### v1.1.2
+
+</Accordion>
+
+<Accordion title="v1.1.2" id="v112" headingLevel={3} value="v112">
+
 
 #### New features
 
@@ -5552,7 +6115,11 @@ You can now specify the `fit` property when calling `setOptions`. This sets how 
 
 Virtual Background supports Agora Video SDK for Web v4.15.0 or later.
 
-### v1.1.1
+
+</Accordion>
+
+<Accordion title="v1.1.1" id="v111" headingLevel={3} value="v111">
+
 
 #### New features
 
@@ -5562,27 +6129,46 @@ You can now call `checkCompatibility` and test if AI Noise Suppression extension
 
 A black bar is no longer displayed to the left of the virtual background.
 
-### v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-1" headingLevel={3} value="v110-1">
+
 
 #### New features
 
 You can create multiple `VirtualBackgroundProcessor` instances to process multiple video streams.
 
-### v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-1" headingLevel={3} value="v100-1">
+
 
 First release.
+
+
+</Accordion>
+</Accordions>
 
 ## Super clarity extension
 
 This extension leverages Agora's AI quality enhancement algorithm to intelligently improves video quality without altering the resolution, thereby optimizing the viewing experience at the receiving end. For detailed integration steps, refer to the [Super Clarity integration guide](/en/realtime-media/video/build/apply-video-effects/super-clarity).
 
-### v2.0.1
+<Accordions type="multiple" defaultValue="v201-1">
+
+<Accordion title="v2.0.1" id="v201-1" headingLevel={3} value="v201-1">
+
 
 Released on April 1, 2026.
 
 This version optimizes the sharpening algorithm, improving video experience in some scenarios.
 
-### v2.0.0
+
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-1" headingLevel={3} value="v200-1">
+
 
 Released on November 18, 2025
 
@@ -5595,9 +6181,17 @@ This version includes the following improvements:
 - Improves smoothness when the sender app goes to the background by aligning frame rates.
 - Expands compatibility with Safari browser.
 
-### v1.0.1
+
+</Accordion>
+
+<Accordion title="v1.0.1" id="v101" headingLevel={3} value="v101">
+
 
 Released on November 10, 2024, this the first version of `agora-extension-super-clarity`. For detailed integration steps, refer to Super Clarity.
+
+
+</Accordion>
+</Accordions>
 
 ## Watermark extension
 
@@ -5638,7 +6232,10 @@ for identity verification.
 :::note
 Agora charges additionally for this extension. See [Pricing](/en/realtime-media/video/reference/pricing).
 :::
-### v2.0.1
+<Accordions type="multiple" defaultValue="v201-2">
+
+<Accordion title="v2.0.1" id="v201-2" headingLevel={3} value="v201-2">
+
 
 Released on April 1, 2026.
 
@@ -5661,7 +6258,11 @@ This version no longer supports calling the `disable` method before `pipe` to di
 
 The implementation of callbacks has been revised in this version. The original callbacks `onloaderror`, `onoverload`, `ondump`, and `ondumpend` are deprecated. Use the `on` method with event names `"pipeerror"`, `"overload"`, `"dump"`, or `"dumpend"` to listen for the corresponding events instead.
 
-### v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-2" headingLevel={3} value="v110-2">
+
 
 #### Improvement
 
@@ -5689,9 +6290,17 @@ This release brings the following changes:
 - The audio data is dumped in PCM format instead of WAV format.
 - To adjust the intensity of noise suppression, best practice is to call `setLevel`.
 
-### v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-3" headingLevel={3} value="v100-3">
+
 
 First release.
+
+
+</Accordion>
+</Accordions>
 
 ## Noise suppression for use cases involving AI
 
@@ -5715,7 +6324,12 @@ The `agora-conversational-ai-denoiser` plugin has high CPU usage. Agora recommen
 :::note
 Starting from v4.5.0, both Voice SDK and Signaling SDK (v2.2.0 and above) include the `libaosl.dll` library. If you manually integrate Voice SDK via CDN and also use Signaling SDK, delete the earlier version of the `libaosl.dll` library to avoid conflicts. You can check the version by viewing the `libaosl.dll` file properties.
 :::
-### v4.6.2
+### Versions
+
+<Accordions type="multiple" defaultValue="v462-4">
+
+<Accordion title="v4.6.2" id="v462-4" headingLevel={3} value="v462-4">
+
 
 Released on January 19, 2026.
 
@@ -5747,7 +6361,11 @@ This release introduces the following compatibility changes:
 
     The relevant decoder plugins are now built into the SDK to ensure overall decoding compatibility.
 
-### v4.6.0
+
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-4" headingLevel={3} value="v460-4">
+
 
 Released on August 26, 2025.
 
@@ -5844,7 +6462,11 @@ This version fixes the following issues:
 - Receivers occasionally heard echoes when the sender shared their screen and audio from certain laptop models with power-saving mode enabled.
 - In online education scenarios, the teacher's local view of multiple students' video and audio was occasionally out of sync.
 
-### v4.5.2
+
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-3" headingLevel={3} value="v452-3">
+
 
 v4.5.2 was released on April 22, 2025.
 
@@ -5870,7 +6492,11 @@ This release fixes the following issues:
 - When the app called `enableVideoImageSource` to enable the video image source feature, the sender appeared to stream successfully, but the `onVideoPublishStateChanged` callback did not return as expected.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx` to initialize the remote user’s view before successfully calling `joinChannelEx`, the first frame of the remote video was significantly delayed.
 
-### v4.5.1
+
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-3" headingLevel={3} value="v451-3">
+
 
 v4.5.1 was released on March 6, 2025.
 
@@ -5893,7 +6519,11 @@ This release resolves the following issues:
 - In interactive live streaming scenarios, after joining a channel as an audience member using a `string` user ID, audio occasionally became unsynchronized with video.
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-4" headingLevel={3} value="v450-4">
+
 
 This version was released on November 27, 2024.
 
@@ -5984,7 +6614,11 @@ This version fixes the following issues:
 - When calling `followSystemRecordingDevice` or `followSystemPlaybackDevice` to set the audio capture or playback device used by the SDK to not follow the system default audio playback device, the local audio state callback `onLocalAudioStateChanged` is not triggered when the audio device is removed.
 - Calling `startAudioMixing [1/2]` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-4" headingLevel={3} value="v440-4">
+
 
 v4.4.0 was released on August 5, 2024.
 
@@ -6029,7 +6663,11 @@ Starting from v4.4.0, the SDK provides an API sunset notice, which includes info
     - Adds the `channelId` parameter to `Metadata`, which is used to get the channel name from which the metadata is sent.
     - Deprecates redundant enumeration values `CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT` and `CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED` in `CLIENT_ROLE_CHANGE_FAILED_REASON`.
 
-### v4.3.2
+
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-3" headingLevel={3} value="v432-3">
+
 
 v4.3.2 was released on June 4, 2024.
 
@@ -6043,7 +6681,11 @@ This version fixed the following issue:
 
 - The app occasionally crashed when remote users left the channel.
 
-### v4.3.1
+
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-3" headingLevel={3} value="v431-3">
+
 
 v4.3.1 was released on April 29, 2024.
 
@@ -6104,7 +6746,11 @@ This version fixed the following issues:
 - [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/cpp/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
 - [EAR_MONITORING_FILTER_TYPE](https://api-ref.agora.io/en/voice-sdk/cpp/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-4" headingLevel={3} value="v430-4">
+
 
 v4.3.0 was released on February 22, 2024.
 
@@ -6322,7 +6968,11 @@ This release fixed the following issue:
 - `onChannelMediaRelayEvent`
 - `CHANNEL_MEDIA_RELAY_EVENT`
 
-### v4.2.6
+
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-3" headingLevel={3} value="v426-3">
+
 
 v4.2.6 was released on November 17, 2023.
 
@@ -6332,7 +6982,11 @@ This release fixed the following issue:
 
 - In specific use-cases, such as when the network packet loss rate was high or when the broadcaster left the channel without destroying the engine and then re-joined the channel, the video on the receiving end stuttered or froze.
 
-### v4.2.3
+
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-3" headingLevel={3} value="v423-3">
+
 
 v4.2.3 was released on October 11, 2023.
 
@@ -6377,7 +7031,11 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.2
+
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-3" headingLevel={3} value="v422-3">
+
 
 v4.2.2 was released on july 27, 2023.
 
@@ -6418,7 +7076,11 @@ This release fixed the following issues:
 - `preloadChannel[2/2]`
 - `updatePreloadChannelToken`
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-4" headingLevel={3} value="v421-4">
+
 
 This version was released on June 21, 2023.
 
@@ -6434,7 +7096,11 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-4" headingLevel={3} value="v420-4">
+
 
 v4.2.0 was released on May 24, 2023.
 
@@ -6519,7 +7185,11 @@ This release fixed the issue that when the host frequently switched the user rol
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec ` in ` ChannelMediaOptions`
 
-### v4.1.1
+
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-4" headingLevel={3} value="v411-4">
+
 
 v4.1.1 was released on February 8, 2023.
 
@@ -6539,7 +7209,11 @@ This release fixed the issue that playing audio files with a sample rate of 48 k
 
 `enableInstantMediaRendering`
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-4" headingLevel={3} value="v410-4">
+
 
 v4.1.0 was released on December 15, 2022.
 
@@ -6661,7 +7335,11 @@ This release fixed the following issues:
 
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `onChannelMediaRelayEvent callback`
 
-### v4.0.1
+
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-4" headingLevel={3} value="v401-4">
+
 
 v4.0.1 was released on September 29, 2022.
 
@@ -6735,7 +7413,11 @@ This release adds the following features applicable to spatial audio effect use-
 
 - `startEchoTest` [2/3]
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-4" headingLevel={3} value="v400-4">
+
 
 v4.0.0 was released on September 15, 2022.
 
@@ -6843,6 +7525,10 @@ This release can achieve the same switching speed as `SwitchChannel` in v3.7.x t
 
 **2. Voice pitch of the local user**
 This release adds `voicePitch` in `AudioVolumeInfo` of `onAudioVolumeIndication`. You can use `voicePitch` to get the local user's voice pitch and perform business functions such as rating for singing.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
@@ -6855,7 +7541,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
     **MacOS 15 Sequoia beta system issue**
 
     When the app path (including the App name) contains non-English characters (such as Chinese characters), the compiled `Metal shader library` may not contain any methods, causing the app to crash. See [this article](/en/api-reference/faq/other/macos_15_beta) for the workaround.
-### v4.6.2
+### Versions
+
+<Accordions type="multiple" defaultValue="v462-5">
+
+<Accordion title="v4.6.2" id="v462-5" headingLevel={3} value="v462-5">
+
 
 Released on March 14, 2026.
 
@@ -6967,7 +7658,11 @@ This release fixes the following issues:
 - After calling `joinChannelEx` to join a channel and `startOrUpdateChannelMediaRelay` to start cross-channel media relay, rejoining the channel after going offline and leaving occasionally caused `onChannelMediaRelayStateChanged` to report `state` as `RelayStateFailure` with `code` as `RelayErrorServerErrorResponse`.
 - On some laptop models with power-saving mode enabled, receivers occasionally heard echo when the sender shared screen and audio.
 
-### v4.5.1
+
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-4" headingLevel={3} value="v451-4">
+
 
 v4.5.1 was released on March 13, 2025.
 
@@ -6987,7 +7682,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-5" headingLevel={3} value="v450-5">
+
 
 v4.5.0 was released on December 10, 2024.
 
@@ -7080,7 +7779,11 @@ This version fixes the following issues:
 - Occasional errors of not finding system files during audio and video interaction on Windows 7 systems. (Windows)
 - When calling `followSystemRecordingDevice` or `followSystemPlaybackDevice` to set the audio capture or playback device used by the SDK to not follow the default system audio playback device, the local audio state callback `onLocalAudioStateChanged` is not triggered when the audio device is removed, which is not as expected. (Windows)
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-5" headingLevel={3} value="v440-5">
+
 
 v4.4.0 was released on August 29, 2024.
 
@@ -7129,7 +7832,11 @@ To ensure normal operation of the project, update the code in the app after upgr
 
 This release fixes the issue where the app crashed during audio and video interactions after the user actively denied the permission to use audio and video devices (macOS).
 
-### v4.3.2
+
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-4" headingLevel={3} value="v432-4">
+
 
 v4.3.2 was released on June 6, 2024.
 
@@ -7144,7 +7851,11 @@ This version fixed the following issue:
 - The app occasionally crashed when remote users left the channel.
 - Calling `leaveChannelEx` without passing in the `options` parameter occasionally led to app crashes.
 
-### v4.3.1
+
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-4" headingLevel={3} value="v431-4">
+
 
 v4.3.1 was released on May 9, 2024.
 
@@ -7209,7 +7920,11 @@ This version fixed the following issues:
 - [setAudioMixingPlaybackSpeed](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_setaudiomixingplaybackspeed)
 - [EarMonitoringFilterType](https://api-ref.agora.io/en/voice-sdk/electron/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EarMonitoringFilterBuiltInAudioFilters`
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-5" headingLevel={3} value="v430-5">
+
 
 v4.3.0 was released on February 28, 2024.
 
@@ -7401,7 +8116,11 @@ This release fixed the following issue:
 - `onChannelMediaRelayEvent`
 - `ChannelMediaRelayEvent`
 
-### v4.2.6
+
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-4" headingLevel={3} value="v426-4">
+
 
 v4.2.6 was released on November 24, 2023.
 
@@ -7409,7 +8128,11 @@ v4.2.6 was released on November 24, 2023.
 
 This version fixed the issue of stuttering or frozen video on the receiving end in specific use-cases, such as when the network packet loss rate was high, or when the broadcaster left the channel without destroying the engine and then re-joined the channel.
 
-### v4.2.4
+
+</Accordion>
+
+<Accordion title="v4.2.4" id="v424" headingLevel={3} value="v424">
+
 
 v4.2.4 was released on October 25, 2023.
 
@@ -7419,7 +8142,11 @@ This release fixes the following issue:
 
 The `AgoraRtcWrapper` version number in `CFBundleShortVersionString` on macOS is wrong, which interferes with submitting the App to the App Store.
 
-### v4.2.3
+
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-4" headingLevel={3} value="v423-4">
+
 
 v4.2.3 was released on October 20, 2023.
 
@@ -7458,7 +8185,11 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-5" headingLevel={3} value="v421-5">
+
 
 This version was released on June 21, 2023.
 
@@ -7474,7 +8205,11 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-5" headingLevel={3} value="v420-5">
+
 
 v4.2.0 was released on May 29, 2023.
 
@@ -7568,7 +8303,11 @@ This release fixed the following issues:
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-5" headingLevel={3} value="v410-5">
+
 
 v4.1.0 was released on December 20, 2022.
 
@@ -7728,7 +8467,11 @@ After starting and stopping the audio capture device test, there was no sound wh
 - `onApiCallExecuted`: Use the callbacks triggered by specific methods instead.
 - `RelayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-5" headingLevel={3} value="v400-5">
+
 
 v4.0.0 was released on September 29, 2022.
 
@@ -7873,6 +8616,10 @@ This release improves the implementation logic of `startPreview`. You can call t
 **5. Video types of subscription**
 
 You can call the `setRemoteDefaultVideoStreamType` method to choose the video stream type when subscribing to streams.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -7891,7 +8638,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
     **AirPods Pro Bluetooth connection issue (iOS)**
 
     AirPods Pro does not support the A2DP protocol in the communication audio mode, which may lead to connection failure in this mode.
-### v6.6.2
+### Versions
+
+<Accordions type="multiple" defaultValue="v662">
+
+<Accordion title="v6.6.2" id="v662" headingLevel={3} value="v662">
+
 
 Released on March 18, 2026. Corresponds to Native SDK v4.6.2
 
@@ -7997,7 +8749,11 @@ This release fixes the following issues:
 - After calling `joinChannelEx` to join a channel and `startOrUpdateChannelMediaRelay` to start cross-channel media relay, rejoining the channel after going offline and leaving occasionally caused `onChannelMediaRelayStateChanged` to report `state` as `relayStateFailure` with `code` as `relayErrorServerErrorResponse`.
 - On some laptop models with power-saving mode enabled, receivers occasionally heard echo when the sender shared screen and audio.
 
-### v6.5.2
+
+</Accordion>
+
+<Accordion title="v6.5.2" id="v652" headingLevel={3} value="v652">
+
 Released on May 6, 2025.
 
 #### Issues fixed
@@ -8015,7 +8771,11 @@ This release includes the following fixes:
 - After failing to join a channel, attempting to rejoin without first calling `leaveChannel` occasionally caused a crash. (Android)
 - When opening a nonexistent local media file, the `onPlayerSourceStateChanged` callback did not report `PLAYER_STATE_FAILED` as expected. (Android)
 
-### v6.5.1
+
+</Accordion>
+
+<Accordion title="v6.5.1" id="v651" headingLevel={3} value="v651">
+
 
 v6.5.1 was released on March 13, 2025.
 
@@ -8047,7 +8807,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v6.5.0
+
+</Accordion>
+
+<Accordion title="v6.5.0" id="v650" headingLevel={3} value="v650">
+
 
 v6.5.0 was released on December 10, 2024.
 
@@ -8200,7 +8964,11 @@ This version fixes the following issues:
 - After the sender called `startDirectCdnStreaming` to start direct CDN streaming, frequent switching or toggling of the network occasionally resulted in a black screen on the receiver's end without a streaming failure callback on the sender's end. (iOS)
 - Audio playback failed when pushing external audio data using `pushAudioFrame` and the sample rate was not set as a recommended value, such as 22050 Hz and 11025 Hz. (Android, iOS)
 
-### v6.4.0
+
+</Accordion>
+
+<Accordion title="v6.4.0" id="v640" headingLevel={3} value="v640">
+
 
 v6.4.0 was released on August 29, 2024.
 
@@ -8257,7 +9025,11 @@ interaction (iOS).
 - Audio playback failed when pushing external audio data using `pushAudioFrame` and the sample rate was not set as a
 recommended value, such as 22050 Hz and 11025 Hz (Android, iOS).
 
-### v6.3.2
+
+</Accordion>
+
+<Accordion title="v6.3.2" id="v632" headingLevel={3} value="v632">
+
 
 v6.3.2 was released on June 6, 2024.
 
@@ -8275,7 +9047,11 @@ This version fixed the following issues:
 - When playing an audio file finished, the SDK sometimes failed to trigger the [onAudioMixingStateChanged](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`audioMixingStateStopped`, `audioMixingReasonAllLoopsCompleted`) callback that reports that the playing is completed (iOS).
 - When calling the [playEffect](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
 
-### v6.3.1
+
+</Accordion>
+
+<Accordion title="v6.3.1" id="v631" headingLevel={3} value="v631">
+
 
 v4.3.1 was released on May 9, 2024.
 
@@ -8356,7 +9132,11 @@ This version fixed the following issues:
 - [CameraCapturerConfiguration](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
 - [EarMonitoringFilterType](https://api-ref.agora.io/en/voice-sdk/flutter/6.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `earMonitoringFilterBuiltInAudioFilters`
 
-### v6.3.0
+
+</Accordion>
+
+<Accordion title="v6.3.0" id="v630" headingLevel={3} value="v630">
+
 
 v6.3.0 was released on February 28, 2024.
 
@@ -8590,7 +9370,11 @@ This release fixed the following issue:
 - `onChannelMediaRelayEvent`
 - `ChannelMediaRelayEvent`
 
-### v6.2.6
+
+</Accordion>
+
+<Accordion title="v6.2.6" id="v626" headingLevel={3} value="v626">
+
 
 v6.2.6 was released on November 24, 2023.
 
@@ -8600,7 +9384,11 @@ This release fixed the following issue:
 
 - When using an iOS 16 or later device with Bluetooth headphones connected before joining the channel, the audio routing after joining the channel was not as expected: Audio was played from the speaker, not the Bluetooth headphones (iOS).
 
-### v6.2.4
+
+</Accordion>
+
+<Accordion title="v6.2.4" id="v624" headingLevel={3} value="v624">
+
 
 v6.2.4 was released on October 25, 2023.
 
@@ -8610,7 +9398,11 @@ This release fixes the following issue:
 
 The `AgoraRtcWrapper` version number in `CFBundleShortVersionString` on iOS and macOS is wrong, which interferes with submitting the App to the App Store.
 
-### v6.2.3
+
+</Accordion>
+
+<Accordion title="v6.2.3" id="v623" headingLevel={3} value="v623">
+
 
 v6.2.3 was released on October 20, 2023.
 
@@ -8647,7 +9439,11 @@ This release fixed the following issues:
 - `isFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v6.2.2
+
+</Accordion>
+
+<Accordion title="v6.2.2" id="v622" headingLevel={3} value="v622">
+
 
 v6.2.2 was released on August 1, 2023.
 
@@ -8694,7 +9490,11 @@ This release fixed the following issues:
 - `updatePreloadChannelToken`
 - `setRouteInCommunicationMode` (Android)
 
-### v6.2.1
+
+</Accordion>
+
+<Accordion title="v6.2.1" id="v621" headingLevel={3} value="v621">
+
 
 This version was released on June 21, 2023.
 
@@ -8710,7 +9510,11 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - Occasional crash after calling the `destroyMediaPlayer` method. (iOS)
 
-### v6.2.0
+
+</Accordion>
+
+<Accordion title="v6.2.0" id="v620" headingLevel={3} value="v620">
+
 
 v6.2.0 was released on May 29, 2023.
 
@@ -8817,7 +9621,11 @@ This release fixed the following issues:
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
 
-### v6.1.0
+
+</Accordion>
+
+<Accordion title="v6.1.0" id="v610" headingLevel={3} value="v610">
+
 
 v6.1.0 was released on December 20, 2022.
 
@@ -9015,7 +9823,11 @@ This release fixes the following issues:
 - `onApiCallExecuted`: Use the callbacks triggered by specific methods instead.
 - `relayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
 
-### v6.0.0
+
+</Accordion>
+
+<Accordion title="v6.0.0" id="v600" headingLevel={3} value="v600">
+
 
 v6.0.0 was released on September 29, 2022.
 
@@ -9114,6 +9926,10 @@ This release can achieve the same switching speed as `switchChannel` in agora_rt
 **2. Voice pitch of the local user**
 
 This release adds `voicePitch` in `AudioVolumeInfo` of `onAudioVolumeIndication`. You can use `voicePitch` to get the local user's voice pitch and perform business functions such as rating for singing.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
@@ -9126,7 +9942,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
     **AirPods Pro Bluetooth connection issue (iOS)**
 
     AirPods Pro does not support the A2DP protocol in the communication audio mode, which may lead to connection failure in this mode.
-### v4.6.2
+### Versions
+
+<Accordions type="multiple" defaultValue="v462-6">
+
+<Accordion title="v4.6.2" id="v462-6" headingLevel={3} value="v462-6">
+
 
 Released on March 14, 2026.
 
@@ -9238,7 +10059,11 @@ This release fixes the following issues:
 - After calling `joinChannelEx` to join a channel and `startOrUpdateChannelMediaRelay` to start cross-channel media relay, rejoining the channel after going offline and leaving occasionally caused `onChannelMediaRelayStateChanged` to report `state` as `RelayStateFailure` with `code` as `RelayErrorServerErrorResponse`.
 - On some laptop models with power-saving mode enabled, receivers occasionally heard echo when the sender shared screen and audio.
 
-### v4.5.1
+
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-5" headingLevel={3} value="v451-5">
+
 
 v4.5.1 was released on March 13, 2025.
 
@@ -9270,7 +10095,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-6" headingLevel={3} value="v450-6">
+
 
 v4.5.0 was released on December 10, 2024.
 
@@ -9372,7 +10201,11 @@ This version fixes the following issues:
 - Calling `startAudioMixing` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction. (Android)
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-6" headingLevel={3} value="v440-6">
+
 
 v4.4.0 was released on August 29, 2024.
 
@@ -9417,7 +10250,11 @@ This release fixed the following issues:
 - After the sender called `startDirectCdnStreaming` to start direct CDN streaming, frequent switching or toggling of the network occasionally resulted in a black screen on the receiver's end without a streaming failure callback on the sender's end (iOS).
 - Audio playback failed when pushing external audio data using `pushAudioFrame` and the sample rate was not set to a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2
+
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-5" headingLevel={3} value="v432-5">
+
 
 v4.3.2 was released on June 6, 2024.
 
@@ -9435,7 +10272,11 @@ This version fixed the following issues:
 - When playing an audio file finished, the SDK sometimes failed to trigger the [onAudioMixingStateChanged](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AudioMixingStateStopped`, `AudioMixingReasonAllLoopsCompleted`) callback that reports that the playing is completed (iOS).
 - When calling the [playEffect](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
 
-### v4.3.1
+
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-5" headingLevel={3} value="v431-5">
+
 
 v4.3.1 was released on May 9, 2024.
 
@@ -9511,7 +10352,11 @@ This version fixed the following issues:
 - [CameraCapturerConfiguration](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
 - [EarMonitoringFilterType](https://api-ref.agora.io/en/voice-sdk/react-native/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EarMonitoringFilterBuiltInAudioFilters`
 
-### v4.3.0-build.1
+
+</Accordion>
+
+<Accordion title="v4.3.0-build.1" id="v430-build1" headingLevel={3} value="v430-build1">
+
 
 v4.3.0-build.1 was released on March 19, 2024.
 
@@ -9521,7 +10366,11 @@ This release fixed the following issue:
 
 Directly calling `engine.release` to destroy the engine without prior call of `engine.unregisterEventHandler` to remove all callback events could lead to App crashes (Android).
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-6" headingLevel={3} value="v430-6">
+
 
 v4.3.0 was released on February 28, 2024.
 
@@ -9713,7 +10562,11 @@ This release fixed the following issue:
 - `onChannelMediaRelayEvent`
 - `ChannelMediaRelayEvent`
 
-### v4.2.6
+
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-5" headingLevel={3} value="v426-5">
+
 
 v4.2.6 was released on November 24, 2023.
 
@@ -9723,7 +10576,11 @@ This release fixed the following issue:
 
 - When using an iOS 16 or later device with Bluetooth headphones connected before joining the channel, the audio routing after joining the channel was not as expected: Audio was played from the speaker, not the Bluetooth headphones (iOS).
 
-### v4.2.5
+
+</Accordion>
+
+<Accordion title="v4.2.5" id="v425" headingLevel={3} value="v425">
+
 
 v4.2.5 was released on October 31, 2023.
 
@@ -9731,7 +10588,11 @@ v4.2.5 was released on October 31, 2023.
 
 This release fixed an incorrect path in the `types` field in `package.json`, which caused the error `Could not find a declaration file for module 'react-native-agora'` when integrating the SDK into a TypeScript project.
 
-### v4.2.4
+
+</Accordion>
+
+<Accordion title="v4.2.4" id="v424-1" headingLevel={3} value="v424-1">
+
 
 v4.2.4 was released on October 25, 2023.
 
@@ -9741,7 +10602,11 @@ This release fixes the following issue:
 
 The `AgoraRtcWrapper` version number in `CFBundleShortVersionString` on iOS is wrong, which interferes with submitting the App to the App Store.
 
-### v4.2.3
+
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-5" headingLevel={3} value="v423-5">
+
 
 v4.2.3 was released on October 20, 2023.
 
@@ -9802,7 +10667,11 @@ This release fixed the following issues:
 - `codecLevels` in `CodecCapInfo`
 - `remoteVideoStateReasonCodecNotSupport` in `RemoteVideoStateReason`
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-6" headingLevel={3} value="v421-6">
+
 
 This version was released on June 21, 2023.
 
@@ -9819,7 +10688,11 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - occasional crash after calling the `destroyMediaPlayer` method. (iOS)
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-6" headingLevel={3} value="v420-6">
+
 
 v4.2.0 was released on May 29, 2023.
 
@@ -9914,7 +10787,11 @@ This release fixed the following issues:
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-6" headingLevel={3} value="v410-6">
+
 
 v4.1.0 was released on December 20, 2022.
 
@@ -10051,7 +10928,11 @@ Calling `startAudioMixing` to play music files in the `ipod-library://item` path
 - `onApiCallExecuted`: Use the callbacks triggered by specific methods instead.
 - `RelayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-6" headingLevel={3} value="v400-6">
+
 
 v4.0.0 was released on September 29, 2022.
 
@@ -10156,10 +11037,17 @@ This release can achieve the same switching speed as `SwitchChannel` in v3.7.0 t
 
 **2. Voice pitch of the local user**
 This release adds `voicePitch` in `AudioVolumeInfo` of `onAudioVolumeIndication`. You can use `voicePitch` to get the local user's voice pitch and perform business functions such as rating for singing.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="react-js">
-### v2.4.0
+<Accordions type="multiple" defaultValue="v240">
+
+<Accordion title="v2.4.0" id="v240" headingLevel={3} value="v240">
+
 
 v2.4.0 was released on March 19, 2025. This release includes the following changes:
 
@@ -10167,26 +11055,42 @@ v2.4.0 was released on March 19, 2025. This release includes the following chang
 - Updates the built-in Web SDK to v4.23.2. For details on the changes between Web SDK v4.22.0 to v4.23.2, see the [Web SDK release notes](release-notes.mdx).
 - Fixes an issue where network state changes could unexpectedly create new tracks.
 
-### v2.3.0
+
+</Accordion>
+
+<Accordion title="v2.3.0" id="v230" headingLevel={3} value="v230">
+
 
 v2.3.0 was released on August 21, 2024.
 
 This version updates the built-in Web SDK to v4.22.0. For more details on the changes between Web SDK v4.21.0 and 4.22
 .0, see the [Web SDK release notes](release-notes.mdx).
 
-### v2.2.0
+
+</Accordion>
+
+<Accordion title="v2.2.0" id="v220" headingLevel={3} value="v220">
+
 
 v2.2.0 was released on June 13, 2024.
 
 This version updates the built-in Web SDK to v4.21.0. For more details on the changes between Web SDK v4.20.0 and 4.21.0, see the [Web SDK release notes](release-notes.mdx).
 
-### v2.1.0
+
+</Accordion>
+
+<Accordion title="v2.1.0" id="v210-1" headingLevel={3} value="v210-1">
+
 
 v2.1.0 was released on January 5, 2024.
 
 This version updates the built-in SDK for Web in the SDK for React JS to version 4.20.0. Check the related changes in the [Web SDK release notes](release-notes.mdx).
 
-### v2.0.0
+
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-2" headingLevel={3} value="v200-2">
+
 
 v2.0.0 was released on December 22, 2023.
 
@@ -10245,6 +11149,10 @@ This version fixed the issue that the SDK threw the error `CAN_NOT_PUBLISH_MULTI
 - `NetworkQuality` to `NetworkQualityEx`
   - `uplink`  to `uplinkNetworkQuality`
   - `downlink` to `downlinkNetworkQuality`
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -10263,7 +11171,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
     **AirPods Pro Bluetooth connection issue (iOS)**
 
     AirPods Pro does not support A2DP protocol in communication audio mode, which may lead to connection failure in that mode.
-### v4.6.2
+### Versions
+
+<Accordions type="multiple" defaultValue="v462-7">
+
+<Accordion title="v4.6.2" id="v462-7" headingLevel={3} value="v462-7">
+
 
 Released on March 14, 2026.
 
@@ -10375,7 +11288,11 @@ This release fixes the following issues:
 - After calling `JoinChannelEx` to join a channel and `StartOrUpdateChannelMediaRelay` to start cross-channel media relay, rejoining the channel after going offline and leaving occasionally caused `OnChannelMediaRelayStateChanged` to report `state` as `RELAY_STATE_FAILURE` with `code` as `RELAY_ERROR_SERVER_ERROR_RESPONSE`.
 - On some laptop models with power-saving mode enabled, receivers occasionally heard echo when the sender shared screen and audio.
 
-### v4.5.1
+
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-6" headingLevel={3} value="v451-6">
+
 
 v4.5.1 was released on March 13, 2025.
 
@@ -10411,7 +11328,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-7" headingLevel={3} value="v450-7">
+
 
 v4.5.0 was released on December 10, 2024.
 
@@ -10551,7 +11472,11 @@ This version fixes the following issues:
 - Calling `StartAudioMixing [1/2]` and then immediately calling `PauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction. (Android)
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-7" headingLevel={3} value="v440-7">
+
 
 v4.4.0 was released on August 29, 2024.
 
@@ -10605,7 +11530,11 @@ interaction (iOS).
  network occasionally resulted in a black screen on the receiver's end without a streaming failure callback on the sender's end (iOS).
 - Audio playback failed when pushing external audio data using `PushAudioFrame` and the sample rate was not set to a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2
+
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-6" headingLevel={3} value="v432-6">
+
 
 v4.3.2 was released on June 6, 2024.
 
@@ -10623,7 +11552,11 @@ This version fixed the following issues:
 - When playing an audio file using [StartAudioMixing [1/2]](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_startaudiomixing) and the playing finished, the SDK sometimes failed to trigger the [OnAudioMixingStateChanged](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_irtcengineeventhandler.html#callback_irtcengineeventhandler_onaudiomixingstatechanged) (`AUDIO_MIXING_STATE_STOPPED`, `AUDIO_MIXING_REASON_ALL_LOOPS_COMPLETED`) callback that reports that the playing is completed (iOS).
 - When calling the [PlayEffect](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
 
-### v4.3.1
+
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-6" headingLevel={3} value="v431-6">
+
 
 v4.3.1 was released on May 9, 2024.
 
@@ -10712,7 +11645,11 @@ This version fixed the following issues:
 - [CameraCapturerConfiguration](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
 - [EAR_MONITORING_FILTER_TYPE](https://api-ref.agora.io/en/voice-sdk/unity/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`
 
-### v4.3.0
+
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-7" headingLevel={3} value="v430-7">
+
 
 v4.3.0 was released on February 28, 2024.
 
@@ -10933,7 +11870,11 @@ This release fixed the following issues:
 - `OnChannelMediaRelayEvent`
 - `CHANNEL_MEDIA_RELAY_EVENT`
 
-### v4.2.6
+
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-6" headingLevel={3} value="v426-6">
+
 
 v4.2.6 was released on November 24, 2023.
 
@@ -10943,7 +11884,11 @@ This release fixed the following issue:
 
 - When using an iOS 16 or later device with Bluetooth headphones connected before joining the channel, the audio routing after joining the channel was not as expected: Audio was played from the speaker, not the Bluetooth headphones (iOS).
 
-### v4.2.4
+
+</Accordion>
+
+<Accordion title="v4.2.4" id="v424-2" headingLevel={3} value="v424-2">
+
 
 v4.2.4 was released on October 25, 2023.
 
@@ -10953,7 +11898,11 @@ This release fixes the following issue:
 
 The `AgoraRtcWrapper` version number in `CFBundleShortVersionString` on iOS and macOS is wrong, which interferes with submitting the App to the App Store.
 
-### v4.2.3
+
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-6" headingLevel={3} value="v423-6">
+
 
 v4.2.3 was released on October 20, 2023.
 
@@ -10993,7 +11942,11 @@ This release fixed the following issues:
 - `IsFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.2
+
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-4" headingLevel={3} value="v422-4">
+
 
 This version was released on August 1, 2023.
 
@@ -11069,7 +12022,11 @@ This release fixed the following issues:
 - `GetMaxMetadataSize`
 - `OnReadyToSendMetadata`
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-7" headingLevel={3} value="v421-7">
+
 
 This version was released on June 21, 2023.
 
@@ -11086,7 +12043,11 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - Occasional crash after calling the `DestroyMediaPlayer` method. (iOS)
 
-### v4.2.0
+
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-7" headingLevel={3} value="v420-7">
+
 
 v4.2.0 was released on May 29, 2023.
 
@@ -11210,7 +12171,11 @@ This release fixed the following issues:
 - `OnApiCallExecuted`
 - `PublishCustomAudioTrackEnableAec ` in ` ChannelMediaOptions`
 
-### v4.1.0
+
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-7" headingLevel={3} value="v410-7">
+
 
 v4.1.0 was released on December 20, 2022.
 
@@ -11400,7 +12365,11 @@ This release fixed the following issues:
 
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `OnChannelMediaRelayEvent` callback.
 
-### v4.0.0
+
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-7" headingLevel={3} value="v400-7">
+
 
 v4.0.0 was released on September 28, 2022.
 
@@ -11567,6 +12536,10 @@ This release improves the implementation logic of `StartPreview`. You can call t
  **6. Video types of subscription**
 
 You can call the `SetRemoteDefaultVideoStreamType ` method to choose the video stream type when subscribing streams.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
@@ -11591,7 +12564,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
     [Audio]
     AudioMixerModuleName=
     ```
-### v4.5.1
+### Versions
+
+<Accordions type="multiple" defaultValue="v451-7">
+
+<Accordion title="v4.5.1" id="v451-7" headingLevel={3} value="v451-7">
+
 
 v4.5.1 was released on March 13, 2025.
 
@@ -11623,7 +12601,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-8" headingLevel={3} value="v450-8">
+
 
 v4.5.0 was released on December 10, 2024.
 
@@ -11734,7 +12716,11 @@ This version fixes the following issues:
 - Occasional instances of no sound in audio capture after resuming from being interrupted by other system apps during audio and video interaction. (iOS)
 - Calling `startAudioMixing [1/2]` and then immediately calling `pauseAudioMixing` to pause the music file playback does not take effect.
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-8" headingLevel={3} value="v440-8">
+
 
 v4.4.0 was released on August 29, 2024.
 
@@ -11859,7 +12845,11 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 }
 ```
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-8" headingLevel={3} value="v421-8">
+
 
 v4.2.1 was released on November 16, 2023.
 
@@ -11881,6 +12871,10 @@ Read more:
 Agora provides an [open source example project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) on GitHub for your reference.
 
 If you have already integrated the 3.x version of the SDK and wish to upgrade to this version, please refer to [Migration Guide](./migration-guide) for upgrade instructions.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="blueprint">
@@ -11905,7 +12899,12 @@ The list of known issues page is continuously updated as the systems evolve. Ago
     [Audio]
     AudioMixerModuleName=
     ```
-### v4.5.1
+### Versions
+
+<Accordions type="multiple" defaultValue="v451-8">
+
+<Accordion title="v4.5.1" id="v451-8" headingLevel={3} value="v451-8">
+
 
 v4.5.1 was released on March 13, 2025.
 
@@ -11937,7 +12936,11 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0
+
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-9" headingLevel={3} value="v450-9">
+
 
 v4.5.0 was released on December 10, 2024.
 
@@ -12022,7 +13025,11 @@ This version fixes the following issues:
 - Calling `StartAudioMixing` and then immediately calling `PauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction. (Android)
 
-### v4.4.0
+
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-9" headingLevel={3} value="v440-9">
+
 
 v4.4.0 was released on August 29, 2024.
 
@@ -12153,7 +13160,11 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 }
 ```
 
-### v4.2.1
+
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-9" headingLevel={3} value="v421-9">
+
 
 This version was released on November 16, 2023.
 
@@ -12171,4 +13182,8 @@ To integrate real-time engagement functionality into your app using Video SDK fo
 - [API reference](/en/api-reference/api-ref/rtc?platform=blueprint)
 
 Agora provides the open source [example project](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) on GitHub for your reference.
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>

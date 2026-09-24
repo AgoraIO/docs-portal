@@ -5,7 +5,10 @@ description: "New features, improvements and resolved issues for Real-time STT."
 
 ## Releases
 
-### v7.2.3
+<Accordions type="multiple" defaultValue="v723">
+
+<Accordion title="v7.2.3" id="v723" headingLevel={3} value="v723">
+
 
 Released on July 30, 2026
 
@@ -31,7 +34,11 @@ Included in this release:
 
   If your client uses the JSON protocol, iterate over `results[]` to process each segment, and handle messages where `results[]` is an empty array. The Protobuf protocol fields are unchanged, but a single message can now also carry multiple segments. For field descriptions and examples, see [JSON protocol data structure](/en/realtime-media/speech-to-text/build/process-transcription-data/parse-data#json-protocol-data-structure).
 
-### v7.2.2
+
+</Accordion>
+
+<Accordion title="v7.2.2" id="v722" headingLevel={3} value="v722">
+
 
 Released on May 18, 2026
 
@@ -53,7 +60,11 @@ Included in this release:
 
   - **Mixed-language input**: If you set the source language to mixed-language input, you can set the target language to one of the source languages. For example, if you set the source languages to Spanish and English, setting the target language to English translates both into English.
 
-### v7.2.1
+
+</Accordion>
+
+<Accordion title="v7.2.1" id="v721" headingLevel={3} value="v721">
+
 
 Released on April 20, 2026
 
@@ -69,7 +80,11 @@ Included in this release:
 
   This version adds a [List Real-time STT agents](../../../api-reference/speech-to-text/restful/list) API. Use it to retrieve real-time transcription and translation tasks that meet specified criteria by channel, time range, and task status.
 
-### v7.2
+
+</Accordion>
+
+<Accordion title="v7.2" id="v72" headingLevel={3} value="v72">
+
 
 Released on March 30, 2026
 
@@ -85,7 +100,11 @@ Included in this release:
 
   When parsing transcription data, each subtitle carries a unique identifier `sentence_id`. When both original and translated subtitles are enabled, use this ID to match original and translated subtitles for the same sentence, ensuring accurate subtitle alignment.
 
-### v7.0
+
+</Accordion>
+
+<Accordion title="v7.0" id="v70" headingLevel={3} value="v70">
+
 
 Released on May 1, 2025
 
@@ -96,3 +115,7 @@ This release includes the following enhancements:
 - Supports updating the configuration of the STT agent.
 - Enhances the scalability of STT by supporting multiple endpoints.
 - API deprecations. Refer to the API reference for details.
+
+
+</Accordion>
+</Accordions>

@@ -38,7 +38,11 @@ Because of changes to screen sharing in Android 14, the following issues can occ
 
 </section>
 
-### v4.6.2 [#v462-7]
+### Versions
+
+<Accordions type="multiple" defaultValue="v462-7">
+
+<Accordion title="v4.6.2" id="v462-7" headingLevel={3} value="v462-7">
 
 Released on March 14, 2026.
 
@@ -232,7 +236,9 @@ This release fixes the following issues:
 - On Windows 7 devices, when sharing a PowerPoint window running in full-screen auto-play mode with a large number of animations, the remote view occasionally flickered.
 
 
-### v4.5.1 [#v451-4]
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-4" headingLevel={3} value="v451-4">
 
 v4.5.1 was released on March 13, 2025.
 
@@ -268,7 +274,9 @@ This release fixes the following issues:
 - In the interactive live streaming scenario, after joining a channel to watch live streams using `string` user id, the audience members occasionally saw that the audio was not synchronized with the video.
 - Plugins sometimes did not work when using AI noise suppression and AI echo cancellation plugins at the same time.
 
-### v4.5.0 [#v450-7]
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-7" headingLevel={3} value="v450-7">
 
 v4.5.0 was released on December 10, 2024.
 
@@ -405,7 +413,9 @@ This version fixes the following issues:
 - Calling `StartAudioMixing [1/2]` and then immediately calling `PauseAudioMixing` to pause the music file playback does not take effect.
 - Occasional crashes during audio and video interaction. (Android)
 
-### v4.4.0 [#v440-7]
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-7" headingLevel={3} value="v440-7">
 
 v4.4.0 was released on August 29, 2024.
 
@@ -496,7 +506,9 @@ the background for a while (iOS).
  network occasionally resulted in a black screen on the receiver's end without a streaming failure callback on the sender's end (iOS).
 - Audio playback failed when pushing external audio data using `PushAudioFrame` and the sample rate was not set to a recommended value, such as 22050 Hz and 11025 Hz.
 
-### v4.3.2 [#v432-6]
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-6" headingLevel={3} value="v432-6">
 
 v4.3.2 was released on June 6, 2024.
 
@@ -524,7 +536,9 @@ This version fixed the following issues:
 - When calling the [PlayEffect](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_playeffect3) method to play sound effect files shorter than 1 second with `loopCount` set to `0`, there was no sound (iOS).
 - When using the Agora media player to play a video and stopping it during playing, sometimes there was no sound for a short time after the playback was resumed (iOS).
 
-### v4.3.1 [#v431-6]
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-6" headingLevel={3} value="v431-6">
 
 v4.3.1 was released on May 9, 2024.
 
@@ -673,7 +687,9 @@ This version fixed the following issues:
 - [CameraCapturerConfiguration](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_cameracapturerconfiguration.html) adds a new member `cameraId` (Android)
 - [EAR_MONITORING_FILTER_TYPE](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/enum_earmonitoringfiltertype.html) adds a new enumeration `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`
 
-### v4.3.0 [#v430-7]
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-7" headingLevel={3} value="v430-7">
 
 v4.3.0 was released on February 28, 2024.
 
@@ -922,7 +938,9 @@ This release fixed the following issues:
 - `OnChannelMediaRelayEvent`
 - `CHANNEL_MEDIA_RELAY_EVENT`
 
-### v4.2.6 [#v426-6]
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-6" headingLevel={3} value="v426-6">
 
 v4.2.6 was released on November 24, 2023.
 
@@ -941,7 +959,9 @@ This release fixed the following issues:
 - In live streaming use-cases, the video on the audience end was occasionally distorted (Android).
 - In specific use-cases, such as when the network packet loss rate was high or when the broadcaster left the channel without destroying the engine and then re-joined the channel, the video on the receiving end stuttered or froze.
 
-### v4.2.4 [#v424-2]
+</Accordion>
+
+<Accordion title="v4.2.4" id="v424-2" headingLevel={3} value="v424-2">
 
 v4.2.4 was released on October 25, 2023.
 
@@ -951,7 +971,9 @@ This release fixes the following issue:
 
 The `AgoraRtcWrapper` version number in `CFBundleShortVersionString` on iOS and macOS is wrong, which interferes with submitting the App to the App Store.
 
-### v4.2.3 [#v423-6]
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-6" headingLevel={3} value="v423-6">
 
 v4.2.3 was released on October 20, 2023.
 
@@ -1036,7 +1058,9 @@ This release fixed the following issues:
 - `IsFeatureAvailableOnDevice`
 - `FeatureType`
 
-### v4.2.2 [#v422-6]
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-6" headingLevel={3} value="v422-6">
 
 This version was released on August 1, 2023.
 
@@ -1181,7 +1205,9 @@ This release fixed the following issues:
 - `OnReadyToSendMetadata`
 
 
-### v4.2.1 [#v421-8]
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-8" headingLevel={3} value="v421-8">
 
 This version was released on June 21, 2023.
 
@@ -1201,7 +1227,9 @@ This version fixed the following issues:
 - When the sending end mixed and published two streams of video captured by two cameras locally, the video from the second camera was occasionally missing on the receiving end. (Windows)
 - In screen sharing use-cases, some Android devices experienced choppy video on the receiving end. (Android)
 
-### v4.2.0 [#v420-8]
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-8" headingLevel={3} value="v420-8">
 
 v4.2.0 was released on May 29, 2023.
 
@@ -1477,7 +1505,9 @@ This release fixed the following issues:
 - `EnableRemoteSuperResolution`
 - `superResolutionType` in `RemoteVideoStats`
 
-### v4.1.0 [#v410-8]
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-8" headingLevel={3} value="v410-8">
 
 v4.1.0 was released on December 20, 2022.
 
@@ -1803,7 +1833,9 @@ This release fixes the following issues:
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `OnChannelMediaRelayEvent callback`
 
 
-### v4.0.0 [#v400-8]
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-8" headingLevel={3} value="v400-8">
 
 v4.0.0 was released on September 28, 2022.
 
@@ -1984,6 +2016,10 @@ You can call the `SetRemoteDefaultVideoStreamType ` method to choose the video s
 
 
 
+
+</Accordion>
+
+</Accordions>
 
 ## Extensions [#extensions]
 

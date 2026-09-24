@@ -12,7 +12,10 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
-## v1.4.0
+<Accordions type="multiple" defaultValue="v140">
+
+<Accordion title="v1.4.0" id="v140" headingLevel={2} value="v140">
+
 
 Released on July 3, 2026.
 
@@ -76,7 +79,11 @@ Released on July 3, 2026.
 A compilation error may occur when you use Agora Chat SDK with Signaling SDK 2.2.0 or later, or RTC SDK 4.3.0 or later. For the fix, see [Integration issues](../get-started-sdk#integration-issues).
 :::
 
-## v1.3.2
+
+</Accordion>
+
+<Accordion title="v1.3.2" id="v132" headingLevel={2} value="v132">
+
 
 v1.3.2 was released on April 7, 2025.
 
@@ -90,7 +97,11 @@ v1.3.2 was released on April 7, 2025.
 
 - Crash in rare occasions upon network changes
 
-## v1.3.1
+
+</Accordion>
+
+<Accordion title="v1.3.1" id="v131" headingLevel={2} value="v131">
+
 
 v1.3.1 was released on December 20, 2024.
 
@@ -107,7 +118,11 @@ v1.3.1 was released on December 20, 2024.
 - The number of unread messages is inconsistent among multiple devices in certain use-cases.
 - The specified image thumbnail size does not take effect during message sending.
 
-## v1.3.0
+
+</Accordion>
+
+<Accordion title="v1.3.0" id="v130" headingLevel={2} value="v130">
+
 
 v1.3.0 was released on December 11, 2024.
 
@@ -174,7 +189,11 @@ v1.3.0 was released on December 11, 2024.
 - The data reporting module crashes occasionally.
 - The SDK is instantiated repeatedly when the `ChatClient#init` method is called frequently for SDK initialization in multi-thread use-cases.
 
-## v1.2.1
+
+</Accordion>
+
+<Accordion title="v1.2.1" id="v121" headingLevel={2} value="v121">
+
 
 v1.2.1 was released on December 8, 2023.
 
@@ -187,7 +206,11 @@ v1.2.1 was released on December 8, 2023.
 - Fixed the problem of losing chat room listener in some use-cases after logging out and logging in again.
 - Fixed the problem of occasionally failing to save the token when logging in manually.
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120" headingLevel={2} value="v120">
+
 
 v1.2.0 was released on December 6, 2023.
 
@@ -243,7 +266,11 @@ v1.2.0 was released on December 6, 2023.
 - When `ChatManager#deleteMessagesBeforeTimestamp` is called, messages in the local database are deleted, but those in the cache remain.
 - The app crashes when you send a video message and set the first frame to be empty.
 
-## v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110" headingLevel={2} value="v110">
+
 
 v1.1.0 was released on April 28, 2023.
 
@@ -259,7 +286,11 @@ v1.1.0 was released on April 28, 2023.
 
 Improved code security.
 
-## v1.0.9
+
+</Accordion>
+
+<Accordion title="v1.0.9" id="v109" headingLevel={2} value="v109">
+
 
 v1.0.9 was released on December 19, 2022.
 
@@ -269,7 +300,11 @@ v1.0.9 was released on December 19, 2022.
 - The inconsistency of messages in the memory and the database due to a call to the `updateMessage` method in rare use-cases.
 - Crashes in rare use-cases.
 
-## v1.0.8
+
+</Accordion>
+
+<Accordion title="v1.0.8" id="v108" headingLevel={2} value="v108">
+
 
 v1.0.8 was released on November 22, 2022.
 
@@ -279,7 +314,11 @@ v1.0.8 was released on November 22, 2022.
 - An issue with incorrect data statistics.
 - Crashes caused by log printing in rare use-cases.
 
-## v1.0.7
+
+</Accordion>
+
+<Accordion title="v1.0.7" id="v107" headingLevel={2} value="v107">
+
 
 v1.0.7 was released on September 7, 2022.
 
@@ -305,7 +344,11 @@ v1.0.7 was released on September 7, 2022.
 - Occasional crashes during login with user IDs and passwords.
 - Once the `fetchHistoryMessages()` method in `ChatManager` was called, the method was repeatedly called to get messages from the server.
 
-## v1.0.6
+
+</Accordion>
+
+<Accordion title="v1.0.6" id="v106" headingLevel={2} value="v106">
+
 
 v1.0.6 was released on Jul 22, 2022.
 
@@ -329,7 +372,11 @@ v1.0.6 was released on Jul 22, 2022.
 - The retrieved reaction object was empty.
 - Devices running earlier Android versions failed to load the database.
 
-## v1.0.4
+
+</Accordion>
+
+<Accordion title="v1.0.4" id="v104" headingLevel={2} value="v104">
+
 
 v1.0.4 was released on May 17, 2022.
 
@@ -353,11 +400,19 @@ v1.0.4 was released on May 17, 2022.
 - Issues reported when uploading the app to Google Play caused by encryption algorithm.
 - The translation API did not take effect.
 
-## v1.0.3.1
+
+</Accordion>
+
+<Accordion title="v1.0.3.1" id="v1031" headingLevel={2} value="v1031">
+
 
 v1.0.3.1 was released on April 27, 2022. This release fixed the occasional issue of not being to display the retrieved historical messages.
 
-## v1.0.3
+
+</Accordion>
+
+<Accordion title="v1.0.3" id="v103" headingLevel={2} value="v103">
+
 
 v1.0.3 was released on April 19, 2022.
 
@@ -375,7 +430,11 @@ Supports the presence feature, which indicates the online status of the user.
 
 Fixed PendingIntent, which caused warnings when uploading apps to Google Play.
 
-## v1.0.2
+
+</Accordion>
+
+<Accordion title="v1.0.2" id="v102" headingLevel={2} value="v102">
+
 
 v1.0.2 was released on Feb 22, 2022.
 
@@ -396,13 +455,21 @@ Reduced the time for preparing to send messages under poor network conditions.
 - Memory leak.
 - Crashes caused by incorrect time calculation.
 
-## v1.0.1.1
+
+</Accordion>
+
+<Accordion title="v1.0.1.1" id="v1011" headingLevel={2} value="v1011">
+
 
 v1.0.1.1 was released on December 30, 2021.
 
 This release fixed an issue where the database failed to load under extreme conditions.
 
-## v1.0.1
+
+</Accordion>
+
+<Accordion title="v1.0.1" id="v101" headingLevel={2} value="v101">
+
 
 v1.0.1 was released on December 27, 2021.
 
@@ -429,7 +496,11 @@ v1.0.1 adds the following APIs:
 - `deleteMessagesBeforeTimestamp`
 - `getAllMsgCount`
 
-## v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100" headingLevel={2} value="v100">
+
 
 v1.0.0 was released on December 6, 2021.
 
@@ -458,6 +529,10 @@ This release fixed the following issues:
 - Crashes occurred in certain use-cases.
 - An issue occurred in displaying the unread status of messages.
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -469,7 +544,10 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
-## v1.4.0
+<Accordions type="multiple" defaultValue="v140-1">
+
+<Accordion title="v1.4.0" id="v140-1" headingLevel={2} value="v140-1">
+
 
 Released on July 3, 2026.
 
@@ -535,7 +613,11 @@ Released on July 3, 2026.
 A compilation error may occur when you use Agora Chat SDK with Signaling SDK 2.2.0 or later, or RTC SDK 4.3.0 or later. For the fix, see [Integration issues](../get-started-sdk#integration-issues).
 :::
 
-## v1.3.1
+
+</Accordion>
+
+<Accordion title="v1.3.1" id="v131-1" headingLevel={2} value="v131-1">
+
 
 v1.3.1 was released on December 20, 2024.
 
@@ -550,7 +632,11 @@ v1.3.1 was released on December 20, 2024.
 - The number of unread messages is inconsistent among multiple devices in certain use-cases.
 - The specified image thumbnail size does not take effect during message sending.
 
-## v1.3.0
+
+</Accordion>
+
+<Accordion title="v1.3.0" id="v130-1" headingLevel={2} value="v130-1">
+
 
 v1.3.0 was released on December 11, 2024.
 
@@ -610,7 +696,11 @@ v1.3.0 was released on December 11, 2024.
 - The SDK reconnects to the server twice after the network is back to normal.
 - For a modified message, the `from` property is missing from the body of the message pulled from the server by an offline user that gets online.
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120-1" headingLevel={2} value="v120-1">
+
 
 v1.2.0 was released on December 6, 2023.
 
@@ -657,7 +747,11 @@ v1.2.0 was released on December 6, 2023.
 - Supported the ARM64 simulator on macOS.
 - Optimized the `loadMessagesWithKeyword` method to include custom messages in the search scope.
 
-## v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-1" headingLevel={2} value="v110-1">
+
 
 v1.1.0 was released on April 28, 2023.
 
@@ -673,7 +767,11 @@ v1.1.0 was released on April 28, 2023.
 
 Improved code security.
 
-## v1.0.9
+
+</Accordion>
+
+<Accordion title="v1.0.9" id="v109-1" headingLevel={2} value="v109-1">
+
 
 v1.0.9 was released on December 19, 2022.
 
@@ -683,7 +781,11 @@ v1.0.9 was released on December 19, 2022.
 method in rare use-cases.
 - Crashes in rare use-cases.
 
-## v1.0.8
+
+</Accordion>
+
+<Accordion title="v1.0.8" id="v108-1" headingLevel={2} value="v108-1">
+
 
 v1.0.8 was released on November 22, 2022.
 
@@ -693,7 +795,11 @@ v1.0.8 was released on November 22, 2022.
 - An issue with incorrect data statistics.
 - Crashes caused by log printing in rare use-cases.
 
-##  v1.0.7
+
+</Accordion>
+
+<Accordion title="v1.0.7" id="v107-1" headingLevel={2} value="v107-1">
+
 
 v1.0.7 was released on September 7, 2022.
 
@@ -715,7 +821,11 @@ v1.0.7 was released on September 7, 2022.
 - When users logged out and the push certificate was unbinded from the device, crashes occurred if the push certificate was not set during SDK initialization.
 - Typos in some methods.
 
-## v1.0.6
+
+</Accordion>
+
+<Accordion title="v1.0.6" id="v106-1" headingLevel={2} value="v106-1">
+
 
 v1.0.6 was released on Jul 22, 2022.
 
@@ -737,7 +847,11 @@ v1.0.6 was released on Jul 22, 2022.
 
 - The retrieved reaction object was empty.
 
-## v1.0.4
+
+</Accordion>
+
+<Accordion title="v1.0.4" id="v104-1" headingLevel={2} value="v104-1">
+
 
 v1.0.4 was released on May 15, 2022.
 
@@ -753,11 +867,19 @@ v1.0.4 was released on May 15, 2022.
 - Improved data reports.
 - Changed openssl to boringssl.
 
-## v1.0.3.1
+
+</Accordion>
+
+<Accordion title="v1.0.3.1" id="v1031-1" headingLevel={2} value="v1031-1">
+
 
 v1.0.3.1 was released on April 27, 2022. This release fixed the occasional issue of not being to display the retrieved historical messages.
 
-## v1.0.3
+
+</Accordion>
+
+<Accordion title="v1.0.3" id="v103-1" headingLevel={2} value="v103-1">
+
 
 v1.0.3 was released on April 19th, 2022.
 
@@ -771,7 +893,11 @@ v1.0.3 was released on April 19th, 2022.
 - Shortened the time out for sending messages.
 - Enhanced the request success rate.
 
-## v1.0.2
+
+</Accordion>
+
+<Accordion title="v1.0.2" id="v102-1" headingLevel={2} value="v102-1">
+
 
 v1.0.2 was released on Feb 23, 2022.
 
@@ -794,13 +920,21 @@ v1.0.2 was released on Feb 23, 2022.
 - Memory leak.
 - Crashes caused by incorrect time calculation.
 
-## v1.0.1.1
+
+</Accordion>
+
+<Accordion title="v1.0.1.1" id="v1011-1" headingLevel={2} value="v1011-1">
+
 
 v1.0.1.1 was released on December 30, 2021.
 
 This release fixed an issue where the database failed to load under extreme conditions.
 
-## v1.0.1
+
+</Accordion>
+
+<Accordion title="v1.0.1" id="v101-1" headingLevel={2} value="v101-1">
+
 
 v1.0.1 was released on December 27, 2021.
 
@@ -828,7 +962,11 @@ v1.0.1 adds the following APIs:
 - `deleteMessagesBeforeTimestamp`
 - `getAllMsgCount`
 
-## v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-1" headingLevel={2} value="v100-1">
+
 
 v1.0.0 was released on December 6, 2021.
 
@@ -857,6 +995,10 @@ This release fixed the following issues:
 - Crashes occurred in certain use-cases.
 - The callbacks for token expirations were not triggered accurately.
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -868,7 +1010,10 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
-## v1.4.0
+<Accordions type="multiple" defaultValue="v140-2">
+
+<Accordion title="v1.4.0" id="v140-2" headingLevel={2} value="v140-2">
+
 
 Released on July 3, 2026.
 
@@ -905,7 +1050,11 @@ Released on July 3, 2026.
 - The `conversationId` parameter value was incorrect in the message pinning event `onMessagePinEvent`.
 - Message retrieval occasionally failed.
 
-## v1.3.1
+
+</Accordion>
+
+<Accordion title="v1.3.1" id="v131-2" headingLevel={2} value="v131-2">
+
 
 v1.3.1 was released on December 20, 2024.
 
@@ -916,7 +1065,11 @@ v1.3.1 was released on December 20, 2024.
 - Added the callback for DNS request failures.
 - Added the reason for requesting to join the group to the `requestToJoin` event that is received by the group owner and administrators that approved the join request.
 
-## v1.3.0
+
+</Accordion>
+
+<Accordion title="v1.3.0" id="v130-2" headingLevel={2} value="v130-2">
+
 
 v1.3.0 was released on December 11, 2024.
 
@@ -966,7 +1119,11 @@ v1.3.0 was released on December 11, 2024.
 
 - Some types in the SDK are incorrect.
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120-2" headingLevel={2} value="v120-2">
+
 
 v1.2.0 was released on December 6, 2023.
 
@@ -1000,7 +1157,11 @@ v1.2.0 was released on December 6, 2023.
 
 - A user, when pulling historical messages, sends a reception receipt to the server.
 
-## v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-2" headingLevel={2} value="v110-2">
+
 
 v1.1.0 was released on April 28, 2023.
 
@@ -1020,7 +1181,11 @@ Reduces the size of MiniCore.
 
 Type-related issues in TypeScript code.
 
-## v1.0.8
+
+</Accordion>
+
+<Accordion title="v1.0.8" id="v108-2" headingLevel={2} value="v108-2">
+
 
 v1.0.8 was released on December 19, 2022.
 
@@ -1034,7 +1199,11 @@ immediately when the network is disconnected.
 The `file_length` parameter in the `create` method did not work when this method was called
 to create an attachment message.
 
-## v1.0.7
+
+</Accordion>
+
+<Accordion title="v1.0.7" id="v107-2" headingLevel={2} value="v107-2">
+
 
 v1.0.7 was released on November 22, 2022.
 
@@ -1049,7 +1218,11 @@ v1.0.7 was released on November 22, 2022.
 - A compatibility issue with Internet Explorer.
 - A lack of the longest validity period of a token.
 
-## v1.0.6
+
+</Accordion>
+
+<Accordion title="v1.0.6" id="v106-2" headingLevel={2} value="v106-2">
+
 
 v1.0.6 was released on August 26, 2022.
 
@@ -1068,7 +1241,11 @@ v1.0.6 was released on August 26, 2022.
 
 Some type definition errors.
 
-## v1.0.5
+
+</Accordion>
+
+<Accordion title="v1.0.5" id="v105" headingLevel={2} value="v105">
+
 
 v1.0.5 was released on Jul 22, 2022.
 
@@ -1081,7 +1258,11 @@ v1.0.5 was released on Jul 22, 2022.
 
 - Supported retrieving the information of multiple chat groups using `getGroupInfo`.
 
-## v1.0.3
+
+</Accordion>
+
+<Accordion title="v1.0.3" id="v103-2" headingLevel={2} value="v103-2">
+
 
 v1.0.3 was released on May 16, 2022.
 
@@ -1102,7 +1283,11 @@ v1.0.3 was released on May 16, 2022.
 
 When the user switched the user ID, cache remains in the group message.
 
-## v1.0.2
+
+</Accordion>
+
+<Accordion title="v1.0.2" id="v102-2" headingLevel={2} value="v102-2">
+
 
 v1.0.2 was released on April 19, 2022.
 
@@ -1117,7 +1302,11 @@ v1.0.2 was released on April 19, 2022.
 - The user cannot modify the group description when creating a chat group.
 - The compatibility of SSR.
 
-## v1.0.1.1
+
+</Accordion>
+
+<Accordion title="v1.0.1.1" id="v1011-2" headingLevel={2} value="v1011-2">
+
 
 v1.0.1.1 was released on January 19, 2022.
 
@@ -1128,7 +1317,11 @@ This release adds the following features:
 - Supports downloading group shared files using the `downloadGroupSharedFile` method.
 - Supports retrieving group shared files by pagination using the `fecthGroupSharedFileList` method.
 
-## v1.0.1
+
+</Accordion>
+
+<Accordion title="v1.0.1" id="v101-2" headingLevel={2} value="v101-2">
+
 
 v1.0.1 was released on January 14, 2022.
 
@@ -1148,7 +1341,11 @@ The release made the following improvements:
 
 This release fixe the issue that the `onChanelMessage` callback was not triggered and other known issues.
 
-## v1.0.0
+
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-2" headingLevel={2} value="v100-2">
+
 
 v1.0.0 was released on December 10, 2021.
 
@@ -1166,6 +1363,10 @@ This release fixed the following issues:
 - The group announcement could not be set as null.
 - An error was reported when muting a specified user during chat.
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -1177,7 +1378,10 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
-## v1.4.0
+<Accordions type="multiple" defaultValue="v140-3">
+
+<Accordion title="v1.4.0" id="v140-3" headingLevel={2} value="v140-3">
+
 
 Released on July 3, 2026.
 
@@ -1230,7 +1434,11 @@ Released on July 3, 2026.
 - The latest message in a conversation retrieved from the server with `ChatManager#fetchConversationsByOptions` did not contain translations or message reactions.
 - A crash occurred under extreme network conditions.
 
-## v1.3.3
+
+</Accordion>
+
+<Accordion title="v1.3.3" id="v133" headingLevel={2} value="v133">
+
 
 Released on July 10, 2025.
 
@@ -1242,7 +1450,11 @@ Released on July 10, 2025.
 
 - Incorrect return result format of `GroupManager.fetchMemberAttributes` on the Android platform.
 
-## v1.3.2
+
+</Accordion>
+
+<Accordion title="v1.3.2" id="v132-1" headingLevel={2} value="v132-1">
+
 
 Released on May 2, 2025.
 
@@ -1264,7 +1476,11 @@ Released on May 2, 2025.
 
 - Build issue for Android platform on Flutter 3.29.0.
 
-## v1.3.1
+
+</Accordion>
+
+<Accordion title="v1.3.1" id="v131-3" headingLevel={2} value="v131-3">
+
 
 Released on December 20, 2024.
 
@@ -1282,7 +1498,11 @@ The following issues are fixed on native platforms:
 - The cache is not updated upon the addition of contacts to the block list.
 - The official push feature may not work after users log out and log in again.
 
-## v1.3.0
+
+</Accordion>
+
+<Accordion title="v1.3.0" id="v130-3" headingLevel={2} value="v130-3">
+
 
 Released on December 11, 2024.
 
@@ -1348,7 +1568,11 @@ Released on December 11, 2024.
 - The data reporting module crashes occasionally.
 - The SDK is instantiated repeatedly when the `ChatManager#updateMessage` method is called frequently for SDK initialization in multi-thread use-cases.
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120-3" headingLevel={2} value="v120-3">
+
 
 Released on December 6, 2023.
 
@@ -1405,7 +1629,11 @@ Released on December 6, 2023.
 - The Android platform crashes when a user is removed from a thread.
 - An error occurs when `ChatThreadManager#fetchChatThreadMembers` is called.
 
-## v1.1.1
+
+</Accordion>
+
+<Accordion title="v1.1.1" id="v111" headingLevel={2} value="v111">
+
 
 Released on June 21, 2023.
 
@@ -1413,7 +1641,11 @@ Released on June 21, 2023.
 
 Unexpected execution of callback methods due to multiple initializations of an Android environment.
 
-## v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-3" headingLevel={2} value="v110-3">
+
 
 Released on April 28, 2023.
 
@@ -1434,7 +1666,11 @@ Changes the message sending result callback from `ChatMessage#setMessageStatusCa
 
 `ChatManager#deleteMessagesBeforeTimestamp` execution failures.
 
-## v1.0.9
+
+</Accordion>
+
+<Accordion title="v1.0.9" id="v109-2" headingLevel={2} value="v109-2">
+
 
 Released on December 19, 2022.
 
@@ -1449,7 +1685,11 @@ destroyed did not work on the Android platform.
 user's group invitation is accepted automatically did not work on the Android platform.
 - Crashes in rare use-cases.
 
-## v1.0.8
+
+</Accordion>
+
+<Accordion title="v1.0.8" id="v108-3" headingLevel={2} value="v108-3">
+
 
 Released on November 22, 2022.
 
@@ -1463,7 +1703,11 @@ Removed redundant SDK logs.
 - The issue with incorrect data statistics.
 - Crashes caused by log printing in rare use-cases.
 
-## v1.0.7
+
+</Accordion>
+
+<Accordion title="v1.0.7" id="v107-3" headingLevel={2} value="v107-3">
+
 
 Released on September 7, 2022.
 
@@ -1479,7 +1723,11 @@ Released on September 7, 2022.
 - Marked `AddXXXManagerListener` methods (such as `addChatManagerListener`  and `addContactManagerListener`) as deprecated.
 - Enhanced API reference documentation.
 
-## v1.0.6
+
+</Accordion>
+
+<Accordion title="v1.0.6" id="v106-3" headingLevel={2} value="v106-3">
+
 
 Released on July 21.
 
@@ -1489,7 +1737,11 @@ Released on July 21.
 - The callbacks for reaction were not triggered in iOS.
 - Occasional crashes occurred on Android when retrieving conversations from the server.
 
-## v1.0.5
+
+</Accordion>
+
+<Accordion title="v1.0.5" id="v105-1" headingLevel={2} value="v105-1">
+
 
 Released on June 17.
 
@@ -1513,6 +1765,10 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 - [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - [RESTful API overview](/en/api-reference/api-ref/im)
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
@@ -1524,7 +1780,10 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
-## v1.4.0
+<Accordions type="multiple" defaultValue="v140-4">
+
+<Accordion title="v1.4.0" id="v140-4" headingLevel={2} value="v140-4">
+
 
 Released on July 3, 2026.
 
@@ -1600,7 +1859,11 @@ Released on July 3, 2026.
 - No API was available to check whether the current user was on a chat room's mute list.
 - Circular dependencies existed between files.
 
-## v1.3.6
+
+</Accordion>
+
+<Accordion title="v1.3.6" id="v136" headingLevel={2} value="v136">
+
 
 Released on May 7, 2026.
 
@@ -1610,7 +1873,11 @@ This release includes the following enhancements:
 
 - Enhanced security by adding access checks for message attachments. For example, if you receive an image message in a group and forward it to others outside the group, they cannot download the image.
 
-## v1.3.5
+
+</Accordion>
+
+<Accordion title="v1.3.5" id="v135" headingLevel={2} value="v135">
+
 
 Released on November 24, 2025.
 
@@ -1623,7 +1890,11 @@ Released on November 24, 2025.
 
 - Fixed bugs related to the chatroom mute list.
 
-## v1.3.4
+
+</Accordion>
+
+<Accordion title="v1.3.4" id="v134" headingLevel={2} value="v134">
+
 
 Released on June 05, 2025.
 
@@ -1631,7 +1902,11 @@ Released on June 05, 2025.
 
 - The app occasionally crashed when handling recall notifications on the iOS platform.
 
-## v1.3.2
+
+</Accordion>
+
+<Accordion title="v1.3.2" id="v132-2" headingLevel={2} value="v132-2">
+
 
 Released on February 11, 2025.
 
@@ -1639,7 +1914,11 @@ Released on February 11, 2025.
 
 - Compilation error on the Android platform when using React Native 0.76.
 
-## v1.3.1
+
+</Accordion>
+
+<Accordion title="v1.3.1" id="v131-4" headingLevel={2} value="v131-4">
+
 
 Released on December 20, 2024.
 
@@ -1662,7 +1941,11 @@ Released on December 20, 2024.
 - The error that `CMakeLists.txt` could not be found is reported during compilation on the Android platform.
 - The data conversion issue on the Android platform.
 
-## v1.3.0
+
+</Accordion>
+
+<Accordion title="v1.3.0" id="v130-4" headingLevel={2} value="v130-4">
+
 
 Released on December 11, 2024.
 
@@ -1734,7 +2017,11 @@ Released on December 11, 2024.
 - The data reporting module crashes occasionally.
 - The app crashes when the `ChatManager#updateMessage` method is called in certain use-cases.
 
-## v1.2.1
+
+</Accordion>
+
+<Accordion title="v1.2.1" id="v121-1" headingLevel={2} value="v121-1">
+
 
 Released on February 2, 2024.
 
@@ -1742,7 +2029,11 @@ Released on February 2, 2024.
 
 - Updated native Android dependencies to support Android 14 (API34).
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120-4" headingLevel={2} value="v120-4">
+
 
 Released on December 6, 2023.
 
@@ -1808,7 +2099,11 @@ Released on December 6, 2023.
 
 The app crashes when a Reaction is added for a message on Android.
 
-## v1.1.3
+
+</Accordion>
+
+<Accordion title="v1.1.3" id="v113" headingLevel={2} value="v113">
+
 
 Released on July 21, 2023.
 
@@ -1818,7 +2113,11 @@ Released on July 21, 2023.
 - Updated the value of `homepage` in the `package.json` file to `https://www.npmjs.com/package/react-native-agora-chat`.
 - Updated the value of `author` in the `package.json` file to `Asterisk  (https://github.com/asteriskzuo)`.
 
-## v1.1.2
+
+</Accordion>
+
+<Accordion title="v1.1.2" id="v112" headingLevel={2} value="v112">
+
 
 Released on June 30, 2023.
 
@@ -1830,7 +2129,11 @@ Released on June 30, 2023.
 - No new token is returned when you call the `renewAgoraToken` method.
 - Issues with sending video messages on the Android platform.
 
-## v1.1.1
+
+</Accordion>
+
+<Accordion title="v1.1.1" id="v111-1" headingLevel={2} value="v111-1">
+
 
 Released on April 28, 2023.
 
@@ -1838,7 +2141,11 @@ Released on April 28, 2023.
 
 Upon a call to the `ChatGroupManager#fetchJoinedGroupsFromServer` method, the returned extension field was empty for the joined public groups.
 
-## v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-4" headingLevel={2} value="v110-4">
+
 
 Released on April 28, 2023.
 
@@ -1864,7 +2171,11 @@ Released on April 28, 2023.
 - The issue of failing to retrieve conversations.
 - The potential deadlock issue caused by a callback method that repeatedly enters the main thread for execution. This issue occurs only on the iOS platform.
 
-## v1.0.11
+
+</Accordion>
+
+<Accordion title="v1.0.11" id="v1011-3" headingLevel={2} value="v1011-3">
+
 
 Released on December 19, 2022.
 
@@ -1875,7 +2186,11 @@ Released on December 19, 2022.
 `updateMessage` method in rare use-cases.
 - Crashes in rare use-cases.
 
-## v1.0.10
+
+</Accordion>
+
+<Accordion title="v1.0.10" id="v1010" headingLevel={2} value="v1010">
+
 
 Released on November 22, 2022.
 
@@ -1893,7 +2208,11 @@ Added two events to the `ChatGroupEventListener` class:
 - The issue with incorrect data statistics.
 - Crashes caused by log printing in rare use-cases.
 
-## v1.0.7
+
+</Accordion>
+
+<Accordion title="v1.0.7" id="v107-4" headingLevel={2} value="v107-4">
+
 
 Released on September 7, 2022.
 
@@ -1924,7 +2243,11 @@ The `unSubscribe` method is renamed `unsubscribe`.
 
 JSON parsing error of the `type` field in several methods.
 
-## v1.0.6
+
+</Accordion>
+
+<Accordion title="v1.0.6" id="v106-4" headingLevel={2} value="v106-4">
+
 
 Released on July 22, 2022.
 
@@ -1965,7 +2288,11 @@ The following API are removed:
 
 - Type declaration entry point was incorrect.
 
-## v1.0.5
+
+</Accordion>
+
+<Accordion title="v1.0.5" id="v105-2" headingLevel={2} value="v105-2">
+
 
 Released on June 17.
 
@@ -1989,6 +2316,10 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 - [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - [RESTful API overview](/en/api-reference/api-ref/im)
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
@@ -2000,7 +2331,10 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
-## v1.4.0
+<Accordions type="multiple" defaultValue="v140-5">
+
+<Accordion title="v1.4.0" id="v140-5" headingLevel={2} value="v140-5">
+
 
 Released on July 3, 2026.
 
@@ -2053,7 +2387,11 @@ Released on July 3, 2026.
 - The latest message in a conversation retrieved from the server with `ChatManager#GetConversationsFromServerWithCursor` or `ChatManager#GetConversationsFromServerWithPage` did not contain translations or message reactions.
 - A crash occurred under extreme network conditions.
 
-## v1.3.1
+
+</Accordion>
+
+<Accordion title="v1.3.1" id="v131-5" headingLevel={2} value="v131-5">
+
 
 v1.3.1 was released on March 10, 2025.
 
@@ -2075,7 +2413,11 @@ v1.3.1 was released on March 10, 2025.
 
 - Adds the `info` parameter to `OnLoggedOtherDevice` to provide device extension information. If a newly logged-in device forces an existing device offline due to exceeding the login limit, the offline device can identify the responsible device through the logout callback containing the device extension information.
 
-## v1.3.0
+
+</Accordion>
+
+<Accordion title="v1.3.0" id="v130-5" headingLevel={2} value="v130-5">
+
 
 v1.3.0 was released on December 11, 2024.
 
@@ -2145,7 +2487,11 @@ v1.3.0 was released on December 11, 2024.
 - The data reporting module crashes occasionally.
 - The SDK is instantiated repeatedly when the `ChatManager#UpdateMessage` method is called frequently for SDK initialization in multi-thread use-cases.
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120-5" headingLevel={2} value="v120-5">
+
 
 v1.2.0 was released on December 6, 2023.
 
@@ -2207,7 +2553,11 @@ v1.2.0 was released on December 6, 2023.
 - The callback handler cannot be found when an SDK callback is triggered.
 - The transcoding issue of character sets handled by the SDK.
 
-## v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-5" headingLevel={2} value="v110-5">
+
 
 v1.1.0 was released on April 28, 2023.
 
@@ -2229,7 +2579,11 @@ Modifies the `SDKClient#InitWithOptionsInitWithOptions` method by adding the ret
 - The issue with the read flag for the sent messages being set to `false`. After this issue is fixed, the SDK sets the read flag of a sent message to `true`.
 - The names of encrypted database files are not properly generated. If you need historical messages upon upgrade to v1.1.0, first pull data from the server.
 
-## v1.0.9
+
+</Accordion>
+
+<Accordion title="v1.0.9" id="v109-3" headingLevel={2} value="v109-3">
+
 
 v1.0.9 was released on February 1, 2023.
 
@@ -2292,7 +2646,11 @@ v1.0.9 was released on February 1, 2023.
     - The `reason` parameter was removed from the `OnInvitationAcceptedFromGroup` method.
     - The `groupName` and `decliner` parameters were removed from the `OnRequestToJoinDeclinedFromGroup` method.
 
-## v1.0.8
+
+</Accordion>
+
+<Accordion title="v1.0.8" id="v108-4" headingLevel={2} value="v108-4">
+
 
 v1.0.8 was released on November 22, 2022.
 
@@ -2308,7 +2666,11 @@ v1.0.8 was released on November 22, 2022.
 - Crashes caused by log printing in rare use-cases.
 - The issue with the connection listener occasionally failing to receive connection callbacks.
 
-## v1.0.5
+
+</Accordion>
+
+<Accordion title="v1.0.5" id="v105-3" headingLevel={2} value="v105-3">
+
 
 v1.0.5 was released on August 12, 2022.
 
@@ -2332,7 +2694,11 @@ v1.0.5 was released on August 12, 2022.
 - The JSON data was not properly converted into HTTP parameters.
 - Crashes caused by incompatible characters passed to parameters in HTTP requests.
 
-## v1.0.2
+
+</Accordion>
+
+<Accordion title="v1.0.2" id="v102-3" headingLevel={2} value="v102-3">
+
 
 v1.0.2 was released on June 17.
 
@@ -2356,6 +2722,10 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 - [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - API Reference
 
+
+</Accordion>
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
@@ -2367,7 +2737,10 @@ This page provides release notes for Chat SDK for Web.
 
 ## Client API
 
-## v1.4.0
+<Accordions type="multiple" defaultValue="v140-6">
+
+<Accordion title="v1.4.0" id="v140-6" headingLevel={2} value="v140-6">
+
 
 Released on July 3, 2026.
 
@@ -2420,7 +2793,11 @@ Released on July 3, 2026.
 - The latest message in a conversation retrieved from the server with `ChatManager#GetConversationsFromServerWithCursor` or `ChatManager#GetConversationsFromServerWithPage` did not contain translations or message reactions.
 - A crash occurred under extreme network conditions.
 
-## v1.3.1
+
+</Accordion>
+
+<Accordion title="v1.3.1" id="v131-6" headingLevel={2} value="v131-6">
+
 
 v1.3.1 was released on March 10, 2025.
 
@@ -2442,7 +2819,11 @@ v1.3.1 was released on March 10, 2025.
 
 - Adds the `info` parameter to `OnLoggedOtherDevice` to provide device extension information. If a newly logged-in device forces an existing device offline due to exceeding the login limit, the offline device can identify the responsible device through the logout callback containing the device extension information.
 
-## v1.3.0
+
+</Accordion>
+
+<Accordion title="v1.3.0" id="v130-6" headingLevel={2} value="v130-6">
+
 
 v1.3.0 was released on December 11, 2024.
 
@@ -2512,7 +2893,11 @@ v1.3.0 was released on December 11, 2024.
 - The data reporting module crashes occasionally.
 - The SDK is instantiated repeatedly when the `ChatManager#UpdateMessage` method is called frequently for SDK initialization in multi-thread use-cases.
 
-## v1.2.2
+
+</Accordion>
+
+<Accordion title="v1.2.2" id="v122" headingLevel={2} value="v122">
+
 
 v1.2.2 was released on November 12, 2024.
 
@@ -2527,7 +2912,11 @@ v1.2.2 was released on November 12, 2024.
 
 - Modified the error code for fetching chatroom info from the server: Changed `SERVER_NOT_REACHABLE` to `EXCEED_SERVICE_LIMIT` when meeting the QPS limit for Windows and Mac.
 
-## v1.2.1
+
+</Accordion>
+
+<Accordion title="v1.2.1" id="v121-2" headingLevel={2} value="v121-2">
+
 
 v1.2.1 was released on February 8, 2024.
 
@@ -2536,7 +2925,11 @@ v1.2.1 was released on February 8, 2024.
 - Marked `DeInit` function as obsolete.
 - Added support for the iOS platform setting in the `UNITY_EDITOR` mode.
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120-6" headingLevel={2} value="v120-6">
+
 
 v1.2.0 was released on December 6, 2023.
 
@@ -2600,7 +2993,11 @@ v1.2.0 was released on December 6, 2023.
 - The underlying resources are not released when the SDK is not initialized.
 - The issues in user attribute updates on Android and iOS systems.
 
-## v1.1.4
+
+</Accordion>
+
+<Accordion title="v1.1.4" id="v114" headingLevel={2} value="v114">
+
 
 v1.1.4 was released on February 8, 2024.
 
@@ -2609,7 +3006,11 @@ v1.1.4 was released on February 8, 2024.
 - Marked `DeInit` function as obsolete.
 - Added support for the iOS platform setting in the `UNITY_EDITOR` mode.
 
-## v1.1.3
+
+</Accordion>
+
+<Accordion title="v1.1.3" id="v113-1" headingLevel={2} value="v113-1">
+
 
 v1.1.3 was released on October 2, 2023.
 
@@ -2619,7 +3020,11 @@ v1.1.3 was released on October 2, 2023.
 - Supports setting the **Managed Code Stripping Level** property to **High**
 - Supports changing the AppKey without restarting the IDE
 
-## v1.1.2
+
+</Accordion>
+
+<Accordion title="v1.1.2" id="v112-1" headingLevel={2} value="v112-1">
+
 
 v1.1.2 was released on August 24, 2023.
 
@@ -2635,7 +3040,11 @@ v1.1.2 was released on August 24, 2023.
     enable the app user to retrieve their history locally, set `SDKDatapath` to ".".
 - The new `IsInit` API helps you to check if you need to clear a resource in Chat SDK.
 
-## v1.1.1
+
+</Accordion>
+
+<Accordion title="v1.1.1" id="v111-2" headingLevel={2} value="v111-2">
+
 
 v1.1.1 was released on June 8, 2023.
 
@@ -2644,7 +3053,11 @@ v1.1.1 was released on June 8, 2023.
 - Using the `SDKClient.Instance.ChatManager.FetchHistoryMessagesFromServer` method on Android devices returned a `No value for type` error message.
 - Callback-related bugs when sending video files on Android devices.
 
-## v1.1.0
+
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-6" headingLevel={2} value="v110-6">
+
 
 v1.1.0 was released on April 28, 2023.
 
@@ -2667,7 +3080,11 @@ Modified the `SDKClient#InitWithOptionsInitWithOptions` method by adding the ret
 - The issue that the read flag for the sent messages is set to `false`. After this issue is fixed, the SDK sets the read flag of a sent message to `true`.
 - The names of encrypted database files are not properly generated. This issue is specific only to the Mac and Windows platforms for the Unity framework. If you need historical messages upon upgrade to v1.1.0, you are advised to first pull data from the server.
 
-## v1.0.9
+
+</Accordion>
+
+<Accordion title="v1.0.9" id="v109-4" headingLevel={2} value="v109-4">
+
 
 v1.0.9 was released on February 1, 2023.
 
@@ -2730,7 +3147,11 @@ v1.0.9 was released on February 1, 2023.
     - The `reason` parameter was removed from the `OnInvitationAcceptedFromGroup` method.
     - The `groupName` and `decliner` parameters were removed from the `OnRequestToJoinDeclinedFromGroup` method.
 
-## v1.0.8
+
+</Accordion>
+
+<Accordion title="v1.0.8" id="v108-5" headingLevel={2} value="v108-5">
+
 
 v1.0.8 was released on November 22, 2022.
 
@@ -2746,7 +3167,11 @@ v1.0.8 was released on November 22, 2022.
 - Crashes caused by log printing in rare use-cases.
 - The issue with the connection listener occasionally failing to receive connection callbacks.
 
-## v1.0.5
+
+</Accordion>
+
+<Accordion title="v1.0.5" id="v105-4" headingLevel={2} value="v105-4">
+
 
 v1.0.5 was released on August 12, 2022.
 
@@ -2770,7 +3195,11 @@ v1.0.5 was released on August 12, 2022.
 - The JSON data was not properly converted into HTTP parameters.
 - Crashes caused by incompatible characters passed to parameters in HTTP requests.
 
-## v1.0.2
+
+</Accordion>
+
+<Accordion title="v1.0.2" id="v102-4" headingLevel={2} value="v102-4">
+
 
 v1.0.2 was released on June 17.
 
@@ -2794,8 +3223,15 @@ Refer to the following documentations to enable Chat and use the Chat SDK to imp
 - [Chat Room](/en/realtime-media/im/build/build-groups-rooms-and-threads/chat-room/chatroom-overview)
 - [RESTful API overview](/en/api-reference/api-ref/im)
 
+
+</Accordion>
+</Accordions>
+
 ## RESTful API
-## v1.3.0
+<Accordions type="multiple" defaultValue="v130-7">
+
+<Accordion title="v1.3.0" id="v130-7" headingLevel={2} value="v130-7">
+
 
 Added the following RESTful APIs:
 
@@ -2807,7 +3243,11 @@ Added the following RESTful APIs:
 - Querying the callback data stored on the Chat server
 - Resending the callback data stored on the Chat server
 
-## v1.2.0
+
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120-7" headingLevel={2} value="v120-7">
+
 
 1. Added new REST APIs for management of custom attributes of group members:
 
@@ -2816,5 +3256,9 @@ Added the following RESTful APIs:
     * Retrieving custom attributes of multiple group members by attribute key
 
 1. Removed the `nickname` parameter from the RESTful APIs for adding one user or multiple users
+
+
+</Accordion>
+</Accordions>
 
 </PlatformStructured>

@@ -697,6 +697,154 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('uses rendered headings when the payload TOC is incomplete', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h2 id="overview">Overview</h2>
+          <h2 id="guide">Guide</h2>
+          <h3 id="late-section">Late section</h3>
+          <h4 data-toc-hidden="true" id="parameter-details">
+            Parameter details
+          </h4>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Overview', url: '#overview' },
+              { depth: 2, title: 'Guide', url: '#guide' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Late section' }),
+    ).toHaveAttribute('href', '#late-section');
+    expect(
+      screen.queryByRole('link', { name: 'Parameter details' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('keeps headings inside known issues sections out of the TOC', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h3 id="known-issues">Known issues</h3>
+          <p>Included known-issue content.</p>
+          <h4 id="bluetooth-issue">Bluetooth issue</h4>
+          <h3 id="versions">Versions</h3>
+          <h3 data-accordion-value="v462" id="v462">
+            v4.6.2
+          </h3>
+          <DocsTableOfContents toc={[]} />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(
+      await screen.findByRole('link', { name: 'Known issues' }),
+    ).toHaveAttribute('href', '#known-issues');
+    expect(
+      screen.queryByRole('link', { name: 'Bluetooth issue' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('places version accordion headings one level below Versions', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h3 id="versions">Versions</h3>
+          <h3 data-accordion-value="v462" id="v462">
+            v4.6.2
+          </h3>
+          <DocsTableOfContents toc={[]} />
+        </article>
+      </AppProviders>,
+    );
+
+    const versionLink = await screen.findByRole('link', { name: 'v4.6.2' });
+
+    expect(versionLink).toHaveClass('pl-8');
+  });
+
+  it('keeps platform and version headings in article order when the payload omits them', async () => {
+    render(
+      <AppProviders>
+        <article>
+          <h2 id="video-sdk-6">Video SDK</h2>
+          <h3 id="known-issues-6">Known issues</h3>
+          <h4 id="flutter-sdk-v632">Flutter SDK v6.3.2</h4>
+          <h3 id="v662">v6.6.2</h3>
+          <h3 id="v652">v6.5.2</h3>
+          <h3 id="v651">v6.5.1</h3>
+          <h2 id="extensions">Extensions</h2>
+          <h2 id="notifications">Notifications</h2>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Video SDK', url: '#video-sdk' },
+              { depth: 3, title: 'Known issues', url: '#known-issues' },
+              {
+                depth: 4,
+                title: 'Flutter SDK v6.3.2',
+                url: '#flutter-sdk-v632',
+              },
+              { depth: 3, title: 'v6.6.2', url: '#v662' },
+              { depth: 2, title: 'Extensions', url: '#extensions' },
+              { depth: 2, title: 'Notifications', url: '#notifications' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getAllByRole('link').map((link) => link.getAttribute('href')),
+      ).toEqual([
+        '#video-sdk-6',
+        '#known-issues-6',
+        '#v662',
+        '#v652',
+        '#v651',
+        '#extensions',
+        '#notifications',
+      ]);
+    });
+  });
+
+  it('filters payload TOC entries that are inside closed accordion regions', async () => {
+    render(
+      <AppProviders>
+        <article>
+          <h2 id="video-sdk">Video SDK</h2>
+          <h3 data-accordion-value="v462" id="v462">
+            v4.6.2
+          </h3>
+          <section aria-label="Version content" data-state="closed">
+            <h4 id="issues-fixed">Issues fixed</h4>
+          </section>
+          <DocsTableOfContents
+            toc={[
+              { depth: 2, title: 'Video SDK', url: '#video-sdk' },
+              { depth: 3, title: 'v4.6.2', url: '#v462' },
+              { depth: 4, title: 'Issues fixed', url: '#issues-fixed' },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    expect(await screen.findByRole('link', { name: 'v4.6.2' })).toHaveAttribute(
+      'href',
+      '#v462',
+    );
+    await waitFor(() => {
+      expect(
+        screen.queryByRole('link', { name: 'Issues fixed' }),
+      ).not.toBeInTheDocument();
+    });
+  });
+
   it('renders scope tabs in the content header when the sidebar header requests tabs presentation', async () => {
     renderWithRouter(
       <DocsContent
@@ -1187,6 +1335,130 @@ describe('DocsContent', () => {
 });
 
 describe('DocsTableOfContents', () => {
+  it('does not highlight a closed accordion heading', async () => {
+    render(
+      <AppProviders>
+        <div data-testid="docs-main-desktop-scroll">
+          <div className="prose">
+            <div data-state="closed">
+              <h3 data-accordion-value="v2022" id="v2022">
+                2022
+              </h3>
+            </div>
+            <div data-state="open">
+              <h3 data-accordion-value="v2025" id="v2025">
+                2025
+              </h3>
+            </div>
+          </div>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 3, title: '2022', url: '#v2022' },
+            { depth: 3, title: '2025', url: '#v2025' },
+          ]}
+        />
+      </AppProviders>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: '2025' })).toHaveAttribute(
+        'aria-current',
+        'location',
+      );
+    });
+
+    expect(screen.getByRole('link', { name: '2022' })).not.toHaveAttribute(
+      'aria-current',
+    );
+  });
+
+  it('highlights the open accordion heading reached by scrolling', async () => {
+    render(
+      <AppProviders>
+        <div
+          data-testid="docs-main-desktop-scroll"
+          style={{ height: 400, overflow: 'auto' }}
+        >
+          <div data-state="open">
+            <h3 data-accordion-value="v4-5-0" id="v4-5-0">
+              v4.5.0
+            </h3>
+          </div>
+          <div data-state="open">
+            <h3 data-accordion-value="v4-4-0" id="v4-4-0">
+              v4.4.0
+            </h3>
+          </div>
+        </div>
+        <DocsTableOfContents
+          toc={[
+            { depth: 3, title: 'v4.5.0', url: '#v4-5-0' },
+            { depth: 3, title: 'v4.4.0', url: '#v4-4-0' },
+          ]}
+        />
+      </AppProviders>,
+    );
+
+    const scrollContainer = screen.getByTestId('docs-main-desktop-scroll');
+    const latestHeading = document.getElementById('v4-5-0');
+    const olderHeading = document.getElementById('v4-4-0');
+
+    expect(latestHeading).toBeInstanceOf(HTMLElement);
+    expect(olderHeading).toBeInstanceOf(HTMLElement);
+    vi.spyOn(scrollContainer, 'getBoundingClientRect').mockReturnValue({
+      bottom: 500,
+      height: 400,
+      left: 0,
+      right: 800,
+      top: 100,
+      width: 800,
+      x: 0,
+      y: 100,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      latestHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 80,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 50,
+      width: 800,
+      x: 0,
+      y: 50,
+      toJSON: () => ({}),
+    });
+    vi.spyOn(
+      olderHeading as HTMLElement,
+      'getBoundingClientRect',
+    ).mockReturnValue({
+      bottom: 180,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 150,
+      width: 800,
+      x: 0,
+      y: 150,
+      toJSON: () => ({}),
+    });
+
+    fireEvent.scroll(scrollContainer);
+
+    await waitFor(() => {
+      expect(screen.getByRole('link', { name: 'v4.4.0' })).toHaveAttribute(
+        'aria-current',
+        'location',
+      );
+    });
+    expect(screen.getByRole('link', { name: 'v4.5.0' })).not.toHaveAttribute(
+      'aria-current',
+    );
+  });
+
   it('scrolls the desktop content container and marks the clicked item active', async () => {
     render(
       <AppProviders>
@@ -1243,7 +1515,7 @@ describe('DocsTableOfContents', () => {
 
     fireEvent.click(link);
 
-    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'smooth', top: 126 });
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
     expect(link).toHaveAttribute('aria-current', 'location');
   });
 
@@ -1404,7 +1676,7 @@ describe('DocsTableOfContents', () => {
     fireEvent.click(toggle);
     fireEvent.click(screen.getByRole('link', { name: 'Target heading' }));
 
-    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'smooth', top: 126 });
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByRole('link', { name: 'Target heading' })).toBeNull();
   });

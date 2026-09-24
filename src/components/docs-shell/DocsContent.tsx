@@ -29,7 +29,7 @@ import { cn } from '@/lib/cn';
 import {
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
-  scrollDocsHashTarget,
+  scrollDocsHashTargetAfterLayout,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
 import {
@@ -773,13 +773,19 @@ export function DocsTableOfContents({
   const t = i18n.getFixedT(currentLocale, 'common');
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const items = useMemo(
-    () =>
-      (toc.length > 0 ? toc : derivedItems).filter(
-        (item) => typeof item.title === 'string',
-      ),
-    [derivedItems, toc],
-  );
+  const items = useMemo(() => {
+    if (derivedItems.length === 0) {
+      return toc.filter((item) => typeof item.title === 'string');
+    }
+
+    const sourceByUrl = new Map(toc.map((item) => [item.url, item]));
+
+    // Rendered headings define the reading order, including versions missing
+    // from the payload TOC and platform headings with different generated IDs.
+    return derivedItems
+      .map((item) => sourceByUrl.get(item.url) ?? item)
+      .filter((item) => typeof item.title === 'string');
+  }, [derivedItems, toc]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );
@@ -795,15 +801,10 @@ export function DocsTableOfContents({
       return next;
     });
     setIsMobileOpen(false);
-    scrollDocsHashTarget(url);
+    scrollDocsHashTargetAfterLayout(url, { behavior: 'auto' });
   }, []);
 
   useEffect(() => {
-    if (toc.length > 0) {
-      setDerivedItems([]);
-      return;
-    }
-
     let frame = 0;
     const updateDerivedItems = () => {
       if (frame) {
@@ -831,7 +832,7 @@ export function DocsTableOfContents({
 
       observer.disconnect();
     };
-  }, [toc]);
+  }, []);
 
   useEffect(() => {
     if (items.length === 0) {
@@ -850,8 +851,16 @@ export function DocsTableOfContents({
           (scrollContainer?.getBoundingClientRect().top ?? 0) +
           TOC_ACTIVE_OFFSET;
         const viewportRect = getScrollViewportRect(scrollContainer);
-        const headings = items.map((item) => findDocsHeadingForHash(item.url));
-        let nextActiveUrl = items[0]?.url ?? '';
+        const headings = items.map((item) => {
+          const heading = findDocsHeadingForHash(item.url);
+
+          return heading && isHeadingActiveForToc(heading) ? heading : null;
+        });
+        const firstActiveHeadingIndex = headings.findIndex(Boolean);
+        let nextActiveUrl =
+          firstActiveHeadingIndex >= 0
+            ? (items[firstActiveHeadingIndex]?.url ?? '')
+            : (items[0]?.url ?? '');
         const nextVisibleUrls = new Set<string>();
 
         for (const [index, item] of items.entries()) {
@@ -891,7 +900,12 @@ export function DocsTableOfContents({
     });
     window.addEventListener('scroll', updateActiveUrl, { passive: true });
     window.addEventListener('resize', updateActiveUrl);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, {
+      attributeFilter: ['data-state'],
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
     updateActiveUrl();
 
     return () => {
@@ -1099,17 +1113,75 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     return [];
   }
 
+  let knownIssuesDepth: number | undefined;
+
   return Array.from(article.querySelectorAll<HTMLHeadingElement>('h2, h3, h4'))
-    .filter((heading) => heading.id && !isHiddenFromToc(heading))
-    .map((heading) => ({
-      depth: Number(heading.tagName.slice(1)),
-      title: heading.textContent?.trim() ?? '',
-      url: `#${heading.id}`,
-    }))
+    .filter((heading) => {
+      if (!(heading.id && !isHiddenFromToc(heading))) {
+        return false;
+      }
+
+      const headingDepth = Number(heading.tagName.slice(1));
+
+      if (knownIssuesDepth !== undefined) {
+        if (headingDepth > knownIssuesDepth) {
+          return false;
+        }
+
+        knownIssuesDepth = undefined;
+      }
+
+      if (/^known issues\b/i.test(heading.textContent?.trim() ?? '')) {
+        knownIssuesDepth = headingDepth;
+      }
+
+      return true;
+    })
+    .map((heading) => {
+      const headingDepth = Number(heading.tagName.slice(1));
+
+      return {
+        depth: heading.hasAttribute('data-accordion-value')
+          ? Math.min(headingDepth + 1, 4)
+          : headingDepth,
+        title: heading.textContent?.trim() ?? '',
+        url: `#${heading.id}`,
+      };
+    })
     .filter((item) => item.title.length > 0);
 }
 
+function isHeadingActiveForToc(heading: HTMLElement) {
+  return (
+    !heading.hasAttribute('data-accordion-value') ||
+    isOpenAccordionHeading(heading)
+  );
+}
+
+function isOpenAccordionHeading(heading: HTMLElement) {
+  if (!heading.hasAttribute('data-accordion-value')) {
+    return false;
+  }
+
+  return (
+    heading.parentElement
+      ?.closest('[data-state]')
+      ?.getAttribute('data-state') === 'open'
+  );
+}
+
 function isHiddenFromToc(element: HTMLElement) {
+  const knownIssuesSection = element.closest<HTMLElement>(
+    'section[id$="known-issues"]',
+  );
+
+  if (
+    knownIssuesSection &&
+    knownIssuesSection.querySelector('h2, h3, h4') !== element
+  ) {
+    return true;
+  }
+
   for (
     let current: HTMLElement | null = element;
     current;
@@ -1118,7 +1190,11 @@ function isHiddenFromToc(element: HTMLElement) {
     if (
       current.hidden ||
       current.getAttribute('aria-hidden') === 'true' ||
-      current.hasAttribute('inert')
+      current.getAttribute('data-toc-hidden') === 'true' ||
+      current.hasAttribute('inert') ||
+      ((current.getAttribute('role') === 'region' ||
+        current.tagName === 'SECTION') &&
+        current.getAttribute('data-state') === 'closed')
     ) {
       return true;
     }

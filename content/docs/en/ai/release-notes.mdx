@@ -5,9 +5,12 @@ description: Information about changes in each release of the Conversational AI 
 
 This document tracks notable changes and improvements to the Conversational AI Engine.
 
-## Releases
+## Versions
 
-### v2.12
+<Accordions type="multiple" defaultValue="v212">
+
+<Accordion title="v2.12" id="v212" headingLevel={3} value="v212">
+
 
 Released on September 10, 2026.
 
@@ -109,7 +112,11 @@ These changes may affect your existing integration. Review each change and updat
 - **Legacy `turn_detection` fields and the `keywords`/`disabled` start-of-speech modes lose their support guarantee in a future release.** Migrate to [`turn_detection.config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config) and [`interruption`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-interruption), introduced in v2.6.
 - **`advanced_features.enable_mllm` loses its support guarantee in a future release.** The MLLM switch may stop working. Migrate to [`mllm.enable`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-enable), introduced in v2.6.
 
-### v2.11
+
+</Accordion>
+
+<Accordion title="v2.11" id="v211" headingLevel={3} value="v211">
+
 
 Released on August 11, 2026.
 
@@ -189,7 +196,11 @@ This release introduces the following changes for ASR keywords and the new TTS a
 </TabsContent>
 </Tabs>
 
-### v2.10
+
+</Accordion>
+
+<Accordion title="v2.10" id="v210" headingLevel={3} value="v210">
+
 
 Released on July 30, 2026. 
 
@@ -317,7 +328,11 @@ This release adds the following TTS vendor constructors:
 </TabsContent>
 </Tabs>
 
-### v2.9
+
+</Accordion>
+
+<Accordion title="v2.9" id="v29" headingLevel={3} value="v29">
+
 
 Released on July 1, 2026.
 
@@ -378,7 +393,11 @@ This release introduces the following changes to the RESTful API.
 
     - [`110 agent error`](/en/ai/reference/event-types#110-agent-error): Now reports greeting audio URL errors when the greeting audio file fails to download, times out, is in an unsupported format, or fails to decode. The agent automatically falls back to TTS synthesis using `greeting_message`. When `parameters.enable_error_message` is `true`, these errors are also delivered to the client via the `onMessageError` RTM callback.
 
-### v2.8
+
+</Accordion>
+
+<Accordion title="v2.8" id="v28" headingLevel={3} value="v28">
+
 
 Released on June 11, 2026.
 
@@ -459,7 +478,11 @@ This release introduces the following changes to the RESTful API.
 
     - `state`: Now accepts a comma-separated list of values to filter by multiple agent states in a single request. For example, `state=0,1,2`.
 
-### v2.7
+
+</Accordion>
+
+<Accordion title="v2.7" id="v27" headingLevel={3} value="v27">
+
 
 Released on May 20, 2026.
 
@@ -543,7 +566,11 @@ This release introduces the following changes to the RESTful API.
 
     - `112 turns finished`: Triggered after a session ends, delivering conversation turn data in batches for post-session analysis and processing.
 
-### v2.6
+
+</Accordion>
+
+<Accordion title="v2.6" id="v26" headingLevel={3} value="v26">
+
 
 Released on April 22, 2026.
 
@@ -629,7 +656,11 @@ This release introduces the following changes to the RESTful API.
 
     - Added `name` to all [NCS event payloads](reference/event-types). Returns the agent name provided when starting the agent.
 
-### v2.5
+
+</Accordion>
+
+<Accordion title="v2.5" id="v25" headingLevel={3} value="v25">
+
 
 Released on March 31, 2026.
 
@@ -703,7 +734,11 @@ This release introduces the following changes to the RESTful API.
     - `properties.advanced_features.enable_aivad`
     - `properties.llm.silence_message`
 
-### v2.4
+
+</Accordion>
+
+<Accordion title="v2.4" id="v24" headingLevel={3} value="v24">
+
 
 Released on February 2, 2026.
 
@@ -782,7 +817,11 @@ This release introduces the following changes to the RESTful API.
     - [`turn_detection.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-mode)
     - [`turn_detection.config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-turn-detection-config)
 
-### v2.3
+
+</Accordion>
+
+<Accordion title="v2.3" id="v23" headingLevel={3} value="v23">
+
 
 Released on January 7, 2026.
 
@@ -832,7 +871,11 @@ This release introduces the following changes to the RESTful API.
 
     - `properties.rtc`
 
-### v2.2
+
+</Accordion>
+
+<Accordion title="v2.2" id="v22" headingLevel={3} value="v22">
+
 
 Released on December 15, 2025.
 
@@ -874,7 +917,11 @@ This release introduces the following changes to the RESTful API.
     - `properties.geofence`
     - `llm.greeting_configs.mode`
 
-### v2.1
+
+</Accordion>
+
+<Accordion title="v2.1" id="v21" headingLevel={3} value="v21">
+
 
 Released on December 5, 2025.
 
@@ -903,7 +950,11 @@ This release introduces the following changes to the RESTful API.
     - `properties.labels`
     - `llm.template_variables`
 
-### v2.0
+
+</Accordion>
+
+<Accordion title="v2.0" id="v20" headingLevel={3} value="v20">
+
 
 Released on November 15, 2025.
 
@@ -1047,7 +1098,11 @@ This release renames all APIs and parameters containing the word `transcription`
 
 - `TRANSCRIPTION_UPDATED` renamed to `TRANSCRIPT_UPDATED`
 
-### v1.7
+
+</Accordion>
+
+<Accordion title="v1.7" id="v17" headingLevel={3} value="v17">
+
 
 Released on July 31, 2025.
 
@@ -1108,7 +1163,11 @@ This release introduces the following modifications to the RESTful API.
   - `IChatMessageBase`
   - `IChatMessageImage`
 
-### v1.6
+
+</Accordion>
+
+<Accordion title="v1.6" id="v16" headingLevel={3} value="v16">
+
 
 Released on July 15, 2025.
 
@@ -1193,7 +1252,11 @@ This release introduces several important modifications to the RESTful API.
 - [iOS SDK](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios)
 - [Web SDK](/en/api-reference/api-ref/conversational-ai/client-toolkit/web)
 
-### v1.5
+
+</Accordion>
+
+<Accordion title="v1.5" id="v15" headingLevel={3} value="v15">
+
 
 Released on June 9, 2025.
 
@@ -1223,7 +1286,11 @@ This release introduces several important modifications to the RESTful API.
     - `parameters.silence_config`
     - `tts.skip_patterns`
 
-### v1.4
+
+</Accordion>
+
+<Accordion title="v1.4" id="v14" headingLevel={3} value="v14">
+
 
 Released on May 29, 2025.
 
@@ -1266,7 +1333,11 @@ This release introduces several important modifications to the RESTful API.
     - `llm.system_messages`
     - `llm.params`
 
-### v1.3
+
+</Accordion>
+
+<Accordion title="v1.3" id="v13" headingLevel={3} value="v13">
+
 
 Released on April 16, 2025.
 
@@ -1292,7 +1363,11 @@ Released on April 16, 2025.
 - Adds the [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history) method.
 - Adds `priority` and `interruptable` parameters to the [Broadcast a message using TTS](/en/api-reference/api-ref/conversational-ai/speak) method.
 
-### v1.2
+
+</Accordion>
+
+<Accordion title="v1.2" id="v12" headingLevel={3} value="v12">
+
 
 Released on April 10, 2025.
 
@@ -1309,7 +1384,11 @@ This version adds the following APIs:
 - [Broadcast a message using TTS](/en/api-reference/api-ref/conversational-ai/speak)
 - [Interrupt the agent](/en/api-reference/api-ref/conversational-ai/interrupt)
 
-### v1.1
+
+</Accordion>
+
+<Accordion title="v1.1" id="v11" headingLevel={3} value="v11">
+
 
 Released on March 27, 2025.
 
@@ -1325,7 +1404,11 @@ To help you quickly integrate a custom large language model (LLM), this version 
 
 The `POST` method to [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) now includes the `enable_rtm` and `agent_rtm_uid` parameters.
 
-### v1.0 (Public Beta)
+
+</Accordion>
+
+<Accordion title="v1.0 (Public Beta)" id="v10-public-beta" headingLevel={3} value="v10-public-beta">
+
 
 This version, released on March 4, 2025, adds pricing information for the Agora Conversational AI Engine. For more information, see [Pricing](reference/pricing).
 
@@ -1344,7 +1427,11 @@ To achieve the best conversation experience, use Agora Conversational AI Engine 
 
 - **Keywords**: Enhances recognition accuracy of Conversational AI Engine for proprietary words by adding keywords. This feature is currently in Beta stage. For details, [contact technical support](https://agoraio.zendesk.com/hc/en-us).
 
-### v1.0 (Private Beta)
+
+</Accordion>
+
+<Accordion title="v1.0 (Private Beta)" id="v10-private-beta" headingLevel={3} value="v10-private-beta">
+
 
 Released on February 18, 2025. The first beta release of the Conversational AI Engine brings natural, smooth, low-latency, and highly reliable real-time voice conversations with AI agents to Agora channels. It enables you to efficiently build intelligent and immersive interactive experiences. See [Product overview](/en/ai) for details.
 
@@ -1382,3 +1469,7 @@ Released on February 18, 2025. The first beta release of the Conversational AI E
 
 - For the best conversational experience, Agora recommends using Conversational AI Engine with specific Agora Video/Voice SDK versions. For details, [contact technical support](mailto:support@agora.io).
 - The number of Peak Concurrent Users (PCU) allowed to call the server API under a single App ID is limited to 20. If you need to increase this limit, [contact technical support](mailto:support@agora.io).
+
+
+</Accordion>
+</Accordions>
