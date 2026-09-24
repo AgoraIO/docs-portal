@@ -57,7 +57,113 @@ Configure static or generated filler words, depending on the mode you want to us
 
 ### Configure static filler words
 
-The following example configures filler words to play a random phrase when the LLM takes longer than 1.5 seconds to respond. Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request body:
+The following example configures filler words to play a random phrase when the LLM takes longer than 1.5 seconds to respond:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import (
+    FillerWordsConfig,
+    FillerWordsContent,
+    FillerWordsContentStaticConfig,
+    FillerWordsTrigger,
+    FillerWordsTriggerFixedTimeConfig,
+)
+
+# ... other agent configuration ...
+.with_filler_words(FillerWordsConfig(
+    enable=True,
+    trigger=FillerWordsTrigger(
+        fixed_time_config=FillerWordsTriggerFixedTimeConfig(response_wait_ms=1500),
+    ),
+    content=FillerWordsContent(
+        mode='static',
+        static_config=FillerWordsContentStaticConfig(
+            phrases=[
+                'Let me look into that.',
+                'One moment, please.',
+                'Sure, give me a second.',
+                'Hmmm, let me check.',
+            ],
+            selection_rule='shuffle',
+        ),
+    ),
+))
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import type { FillerWordsConfig } from 'agora-agents';
+
+const fillerWords: FillerWordsConfig = {
+  enable: true,
+  trigger: {
+    fixed_time_config: { response_wait_ms: 1500 },
+  },
+  content: {
+    mode: 'static',
+    static_config: {
+      phrases: [
+        'Let me look into that.',
+        'One moment, please.',
+        'Sure, give me a second.',
+        'Hmmm, let me check.',
+      ],
+      selection_rule: 'shuffle',
+    },
+  },
+};
+
+// ... other agent configuration ...
+.withFillerWords(fillerWords);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+fillerWords := &agentkit.FillerWordsConfig{
+    Enable: Agora.Bool(true),
+    Trigger: &agentkit.FillerWordsTrigger{
+        FixedTimeConfig: &agentkit.FillerWordsTriggerFixedTimeConfig{
+            ResponseWaitMs: Agora.Int(1500),
+        },
+    },
+    Content: &agentkit.FillerWordsContent{
+        Mode: agentkit.FillerWordsContentModeStatic.Ptr(),
+        StaticConfig: &agentkit.FillerWordsContentStaticConfig{
+            Phrases: []string{
+                "Let me look into that.",
+                "One moment, please.",
+                "Sure, give me a second.",
+                "Hmmm, let me check.",
+            },
+            SelectionRule: agentkit.FillerWordsSelectionRuleShuffle.Ptr(),
+        },
+    },
+}
+
+// ... other agent configuration ...
+WithFillerWords(fillerWords)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request body:
 
 ```json
 "filler_words": {
@@ -82,6 +188,9 @@ The following example configures filler words to play a random phrase when the L
 }
 ```
 
+</TabsContent>
+</Tabs>
+
 **Field reference**
 
 | Parameter | Type | Required | Description |
@@ -102,7 +211,114 @@ Choose a response wait threshold based on your use case:
 
 ### Configure generated filler words
 
-Set the content mode to generated, and keep a static fallback configured. Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request body:
+Set the content mode to generated, and keep a static fallback configured:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import (
+    FillerWordsConfig,
+    FillerWordsContent,
+    FillerWordsContentGeneratedConfig,
+    FillerWordsContentStaticConfig,
+    FillerWordsTrigger,
+    FillerWordsTriggerFixedTimeConfig,
+)
+
+# ... other agent configuration ...
+.with_filler_words(FillerWordsConfig(
+    enable=True,
+    trigger=FillerWordsTrigger(
+        fixed_time_config=FillerWordsTriggerFixedTimeConfig(response_wait_ms=1500),
+    ),
+    content=FillerWordsContent(
+        mode='generated',
+        static_config=FillerWordsContentStaticConfig(
+            phrases=['Let me look into that.', "I'm on it."],
+            selection_rule='shuffle',
+        ),
+        generated_config=FillerWordsContentGeneratedConfig(
+            prompt='Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.',
+            context_message_limit=4,
+            history_character_limit=1000,
+        ),
+    ),
+))
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import type { FillerWordsConfig } from 'agora-agents';
+
+const fillerWords: FillerWordsConfig = {
+  enable: true,
+  trigger: {
+    fixed_time_config: { response_wait_ms: 1500 },
+  },
+  content: {
+    mode: 'generated',
+    static_config: {
+      phrases: ['Let me look into that.', "I'm on it."],
+      selection_rule: 'shuffle',
+    },
+    generated_config: {
+      prompt: 'Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly.',
+      context_message_limit: 4,
+      history_character_limit: 1000,
+    },
+  },
+};
+
+// ... other agent configuration ...
+.withFillerWords(fillerWords);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+fillerWords := &agentkit.FillerWordsConfig{
+    Enable: Agora.Bool(true),
+    Trigger: &agentkit.FillerWordsTrigger{
+        FixedTimeConfig: &agentkit.FillerWordsTriggerFixedTimeConfig{
+            ResponseWaitMs: Agora.Int(1500),
+        },
+    },
+    Content: &agentkit.FillerWordsContent{
+        Mode: agentkit.FillerWordsContentModeGenerated.Ptr(),
+        StaticConfig: &agentkit.FillerWordsContentStaticConfig{
+            Phrases:       []string{"Let me look into that.", "I'm on it."},
+            SelectionRule: agentkit.FillerWordsSelectionRuleShuffle.Ptr(),
+        },
+        GeneratedConfig: &agentkit.FillerWordsContentGeneratedConfig{
+            Prompt:                Agora.String("Generate a short, natural filler phrase indicating you are processing the request. Do not answer the question directly."),
+            ContextMessageLimit:   Agora.Int(4),
+            HistoryCharacterLimit: Agora.Int(1000),
+        },
+    },
+}
+
+// ... other agent configuration ...
+WithFillerWords(fillerWords)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Add the following `filler_words` object to `properties` in your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request body:
 
 ```json
 "filler_words": {
@@ -129,6 +345,9 @@ Set the content mode to generated, and keep a static fallback configured. Add th
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 **Field reference**
 
