@@ -38,6 +38,63 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 </section>
 
+### v4.7.0
+
+Released on September 24, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact [technical support](mailto:support@agora.io).
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimizes the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Optimized FFmpeg plugin integration for the Voice SDK**
+
+    Changes how the FFmpeg player plugin is loaded in the Voice SDK. `libagora-ffmpeg.so` is renamed to `libagora_ffmpeg_extension.so` and changed from a required library to an optional plugin. The SDK package includes this plugin by default, and you can choose whether to integrate it. When the FFmpeg player plugin is not loaded, the media player uses the system's native playback capability. Supported audio file formats depend on the container formats and audio codecs supported by the system, and may vary by system version or device vendor. After you integrate and load the FFmpeg player plugin, the media player supports more audio formats and provides more playback capabilities.
+
+* **Improved first video frame experience**
+
+    Optimizes video frame transmission scheduling, improving how quickly the first subscribed stream in a channel renders video.
+
+* **Optimized R8/ProGuard obfuscation rules**
+
+    Optimizes the R8/ProGuard obfuscation rules for the Android SDK. If your app does not enable R8/ProGuard shrinking and obfuscation, no additional configuration is required. If your app enables R8/ProGuard shrinking and obfuscation, configure the obfuscation rules for the Agora SDK to prevent Java classes, members, or methods accessed by the native layer through JNI from being removed or renamed. You can continue to use `-keep class io.agora.** { *; }` for quick configuration, or use the SDK-provided `consumer-proguard-rules.pro` for fine-grained configuration.
+
+* **Improved latency in one-to-one co-hosting**
+
+    Optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting, reducing end-to-end latency while maintaining video quality and improving playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    Optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+* **Improved media file playback compatibility**
+
+    Adds compatibility handling for non-standard MP3 files, making media file playback more robust.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- After raw audio data was enabled, residual audio from a previous segment could occasionally remain when a user switched from audience to host.
+- After a system update on some Android devices, static or other noise could occasionally be heard during audio playback when downlink load was high in multi-user audio scenarios.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- When the device was in a system call or the audio device was occupied, the local audio state callback could behave abnormally, preventing the app from accurately detecting the local audio state.
+
 ### v4.6.4
 
 Released on September 2, 2026.
@@ -48,7 +105,7 @@ Included in this release:
 
 * **New event types for wide-angle and ultra-wide-angle camera capture on Android**
 
-    This release adds the `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_APPLIED` and `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_FALLBACK_TO_DEFAULT` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
+    Adds the `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_APPLIED` and `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_FALLBACK_TO_DEFAULT` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
 
 #### Issues fixed
 
@@ -1887,6 +1944,64 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 </section>
 
+### v4.7.0
+
+Released on September 24, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact [technical support](mailto:support@agora.io).
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimizes the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Optimized FFmpeg plugin integration for the Voice SDK**
+
+    Changes how the FFmpeg player plugin is loaded in the Voice SDK. `Agoraffmpeg.xcframework` is changed to the optional plugin `AgoraffmpegExtension.xcframework`. The SDK package includes this plugin by default, and you can choose whether to integrate it. When the FFmpeg player plugin is not loaded, the media player uses the system's native playback capability. Supported audio file formats depend on the container formats and audio codecs supported by the system. After you integrate and load the FFmpeg player plugin, the media player supports more audio formats and provides more playback capabilities.
+
+* **Improved first video frame experience**
+
+    Optimizes video frame transmission scheduling, improving how quickly the first subscribed stream in a channel renders video.
+
+* **Improved latency in one-to-one co-hosting**
+
+    Optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting, reducing end-to-end latency while maintaining video quality and improving playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    Optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved video orientation handling**
+
+    Improves video orientation handling during portrait and landscape switching, reducing delayed or incorrect video rotation after the device rotates.
+
+* **Improved background camera capture and stream republishing experience**
+
+    Improves camera capture state handling after the app enters the background, fixing occasional black screens in local or remote video when the host republishes the stream.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- On iOS 26, after system keyboard speech-to-text was triggered, the receiving user could occasionally hear no audio.
+- After a Bluetooth audio device was used to publish audio, the audio route could switch unexpectedly or remote audio could be silent.
+- In chatroom scenarios where users switch between audience and host roles, if local audio was disabled, the role was switched, and local audio was then enabled again, remote audio could occasionally be silent.
+- With AI QoS configuration, the first sentence of a call could occasionally be clipped or sound distorted.
+- The app could occasionally crash in scenarios involving audio and video interaction, screen sharing, video frame data access, or audio and video statistics. This release improves SDK stability in these scenarios.
+
 ### v4.6.4
 
 Released on September 2, 2026.
@@ -2072,7 +2187,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Default log path change**
 
-   This release changes the default log path from `AppSandbox/Library/documents/agorasdk.log` to `AppSandbox/Library/caches/agorasdk.log`. If you upgrade the SDK from v4.3.1 or later to v4.6.0, ensure that you use the new path to access the log file.
+   Changes the default log path from `AppSandbox/Library/documents/agorasdk.log` to `AppSandbox/Library/caches/agorasdk.log`. If you upgrade the SDK from v4.3.1 or later to v4.6.0, ensure that you use the new path to access the log file.
 
 #### New features
 
@@ -4062,6 +4177,51 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 :::
 
 </section>
+
+### v4.7.0
+
+Released on September 24, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact [technical support](mailto:support@agora.io).
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimizes the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Improved first video frame experience**
+
+    Optimizes video frame transmission scheduling, improving how quickly the first subscribed stream in a channel renders video.
+
+* **Improved latency in one-to-one co-hosting**
+
+    Optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting, reducing end-to-end latency while maintaining video quality and improving playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    Optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- On macOS 26 devices connected to an external HDMI display, calling screen sharing APIs to list the available screens could omit the extended display.
+- When using the `AUDIO_SCENARIO_AI_CLIENT` audio scenario and receiving long TTS audio, remote audio data could occasionally become disordered.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- The app could occasionally crash in scenarios involving mirror rendering, custom rendering, or screen sharing source enumeration. This release improves SDK stability in these scenarios.
 
 ### v4.6.2
 
@@ -7952,6 +8112,56 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 </section>
 
+### v4.7.0
+
+Released on September 24, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Adds support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. To enable software-based H.265, contact [technical support](mailto:support@agora.io).
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimizes the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Improved first video frame experience**
+
+    Optimizes video frame transmission scheduling, improving how quickly the first subscribed stream in a channel renders video.
+
+* **Improved latency in one-to-one co-hosting**
+
+    Optimizes audio and video strategies for real-time interaction scenarios such as one-to-one video co-hosting, reducing end-to-end latency while maintaining video quality and improving playback smoothness in weak network scenarios such as sudden jitter.
+
+* **Optimized audio bitrate**
+
+    Optimizes bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved screen sharing window exclusion**
+
+    Optimizes the implementation of window exclusion during screen sharing on Windows. When you call `startScreenCaptureByDisplayId` to start screen sharing and use `excludeWindowList` in `ScreenCaptureParameters` to exclude specified windows, the SDK uses an independent capture process for MAG capture when conditions are met. This reduces the risk of window exclusion failures or capture exceptions in scenarios such as multi-screen setups, negative coordinates, screen scaling, or secure desktop switching, and improves screen sharing stability.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimizes the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- When the microphone was occupied by another app while the SDK was running, the app could not detect the microphone occupancy state. After this fix, when the audio capture device is occupied, the SDK notifies the app through warning code `WARN_ADM_RECORD_IS_OCCUPIED` (1033).
+- After connecting a USB camera and enabling sound card capture, if the number of loopback audio channels was fewer than two, post-processing could be incorrect, occasionally causing static or other noise.
+- In some scenarios, the camera could occasionally show a black screen, causing video capture to fail.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- The app could occasionally crash when started as an administrator or during screen capture. This release improves SDK stability in these scenarios.
+
 ### v4.6.2
 
 Released on January 19, 2026.
@@ -9806,13 +10016,13 @@ Included in this release:
 
 * **Multi-resolution video streams**
 
-    This release introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
+    Introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
 
     After enabling ABR, you can configure up to four video stream layers (one main stream at the highest resolution and up to three lower-resolution streams), and set options such as resolution, bitrate, and layered streaming fallback. When layered streaming fallback is enabled, the SDK automatically switches to lower-resolution streams under poor network conditions to maintain a smooth viewing experience. This feature is suited for meetings, large classes, interactive live streaming, and other multi-device or multi-network environments.
 
 * **Multi-path network transmission**
 
-    This release introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
+    Introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
 
     Enable multi-path transmission by setting `enableMultipath` to `true` in `ChannelMediaOptions`. Two transmission modes are supported through `MultipathMode`:
 
@@ -9823,15 +10033,15 @@ Included in this release:
 
 * **Video quality scoring**
 
-    This release adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
+    Adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
 
 * **Support for adding multiple watermarks**
 
-    This release deprecates `addVideoWatermark` and `addVideoWatermarkEx`, and introduces `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
+    Deprecates `addVideoWatermark` and `addVideoWatermarkEx`, and introduces `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
 
 * **Token renewal result callback**
 
-    This release introduces the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
+    Introduces the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
 
 * **Media Player support for getting audio buffer delay**
 
@@ -9870,7 +10080,7 @@ This release includes the following enhancements:
 
     Before v4.6.2, configuring window exclusion (`excludeWindowList` in `ScreenCaptureParameters`) was not supported in multi-screen scenarios when sharing by screen ID (`startScreenCaptureByDisplayId`). This release adds support for this configuration.
 
-    This release also adds `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
+    Also adds `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
 
 * **Improved trigger timing of `onVideoDeviceStateChanged`**
 
@@ -13326,7 +13536,7 @@ Included in this release:
 
 * **New event types for wide-angle and ultra-wide-angle camera capture on Android**
 
-    This release adds the `LocalVideoEventTypeCameraFocalLengthApplied` and `LocalVideoEventTypeCameraFocalLengthFallbackToDefault` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
+    Adds the `LocalVideoEventTypeCameraFocalLengthApplied` and `LocalVideoEventTypeCameraFocalLengthFallbackToDefault` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
 
 #### Issues fixed
 
@@ -13417,13 +13627,13 @@ Included in this release:
 
 * **Multi-resolution video streams**
 
-    This release introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
+    Introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
 
     After enabling ABR, you can configure up to four video stream layers (one main stream at the highest resolution and up to three lower-resolution streams), and set options such as resolution, bitrate, and layered streaming fallback. When layered streaming fallback is enabled, the SDK automatically switches to lower-resolution streams under poor network conditions to maintain a smooth viewing experience. This feature is suited for meetings, large classes, interactive live streaming, and other multi-device or multi-network environments.
 
 * **Multi-path network transmission**
 
-    This release introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
+    Introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
 
     Enable multi-path transmission by setting `enableMultipath` to `true` in `ChannelMediaOptions`. Two transmission modes are supported through `MultipathMode`:
 
@@ -13434,15 +13644,15 @@ Included in this release:
 
 * **Video quality scoring**
 
-    This release adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
+    Adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
 
 * **Support for adding multiple watermarks**
 
-    This release deprecates `addVideoWatermark` and `addVideoWatermarkEx`, and introduces `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
+    Deprecates `addVideoWatermark` and `addVideoWatermarkEx`, and introduces `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
 
 * **Token renewal result callback**
 
-    This release introduces the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
+    Introduces the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
 
 * **App-level screen sharing support on Android**
 
@@ -13454,7 +13664,7 @@ Included in this release:
 
 * **Picture-in-Picture**
 
-    This release introduces the Picture-in-Picture (PiP) feature, which supports displaying video call windows in PiP mode so users can continue watching video calls when switching apps or returning to the home screen.
+    Introduces the Picture-in-Picture (PiP) feature, which supports displaying video call windows in PiP mode so users can continue watching video calls when switching apps or returning to the home screen.
 
     This feature supports automatically entering PiP mode and provides rich configuration options. On Android, you can configure parameters such as the aspect ratio, initial position, and seamless resizing of the PiP window. On iOS, you can configure the video stream layout (flow layout, with video streams arranged left to right and top to bottom), PiP window size, and system control button styles. The feature also supports listening to PiP state changes through `AgoraPipStateChangedObserver` to handle scenarios such as entering, exiting, or failure. This feature is suited for video calls, online education, live streaming, and other scenarios that require multitasking.
 
@@ -13495,7 +13705,7 @@ This release includes the following enhancements:
 
     Before v4.6.2, configuring window exclusion (`excludeWindowList` in `ScreenCaptureParameters`) was not supported in multi-screen scenarios when sharing by screen ID (`startScreenCaptureByDisplayId`). This release adds support for this configuration.
 
-    This release also adds `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
+    Also adds `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
 
 * **Improved trigger timing of `onVideoDeviceStateChanged`**
 
@@ -15116,13 +15326,13 @@ Included in this release:
 
 * **Multi-resolution video streams**
 
-    This release introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
+    Introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
 
     After enabling ABR, you can configure up to four video stream layers (one main stream at the highest resolution and up to three lower-resolution streams), and set options such as resolution, bitrate, and layered streaming fallback. When layered streaming fallback is enabled, the SDK automatically switches to lower-resolution streams under poor network conditions to maintain a smooth viewing experience. This feature is suited for meetings, large classes, interactive live streaming, and other multi-device or multi-network environments.
 
 * **Multi-path network transmission**
 
-    This release introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
+    Introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
 
     Enable multi-path transmission by setting `enableMultipath` to `true` in `ChannelMediaOptions`. Two transmission modes are supported through `MultipathMode`:
 
@@ -15133,15 +15343,15 @@ Included in this release:
 
 * **Video quality scoring**
 
-    This release adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
+    Adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
 
 * **Support for adding multiple watermarks**
 
-    This release deprecates `AddVideoWatermark` [2/3] and `AddVideoWatermarkEx` [1/2], and introduces `AddVideoWatermarkWithConfig` [3/3] and `AddVideoWatermarkWithConfigEx` [2/2], which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `RemoveVideoWatermark`.
+    Deprecates `AddVideoWatermark` [2/3] and `AddVideoWatermarkEx` [1/2], and introduces `AddVideoWatermarkWithConfig` [3/3] and `AddVideoWatermarkWithConfigEx` [2/2], which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `RemoveVideoWatermark`.
 
 * **Token renewal result callback**
 
-    This release introduces the `onRenewTokenResult` callback and the `RENEW_TOKEN_ERROR_CODE` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RENEW_TOKEN_ERROR_CODE`, allowing you to handle token renewal failure scenarios accordingly.
+    Introduces the `onRenewTokenResult` callback and the `RENEW_TOKEN_ERROR_CODE` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RENEW_TOKEN_ERROR_CODE`, allowing you to handle token renewal failure scenarios accordingly.
 
 * **App-level screen sharing support on Android**
 
@@ -15188,7 +15398,7 @@ This release includes the following enhancements:
 
     Before v4.6.2, configuring window exclusion (`excludeWindowList` in `ScreenCaptureParameters`) was not supported in multi-screen scenarios when sharing by screen ID (`StartScreenCaptureByDisplayId`). This release adds support for this configuration.
 
-    This release also adds a new member to `LOCAL_VIDEO_STREAM_REASON` to report cases where window exclusion fails during screen sharing.
+    Also adds a new member to `LOCAL_VIDEO_STREAM_REASON` to report cases where window exclusion fails during screen sharing.
 
 * **Improved trigger timing of `OnVideoDeviceStateChanged`**
 

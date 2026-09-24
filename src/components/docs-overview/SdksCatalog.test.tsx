@@ -24,7 +24,7 @@ describe('SdksCatalog', () => {
     // Default platform (Android, first in canonical order) → Gradle command.
     expect(
       within(videoCard).getByText(
-        "implementation 'io.agora.rtc:full-sdk:4.6.4'",
+        "implementation 'io.agora.rtc:full-sdk:4.7.0'",
       ),
     ).toBeVisible();
     expect(
@@ -87,7 +87,7 @@ describe('SdksCatalog', () => {
 
     expect(
       within(voiceCard).getByText(
-        "implementation 'io.agora.rtc:voice-sdk:4.6.3'",
+        "implementation 'io.agora.rtc:voice-sdk:4.6.4'",
       ),
     ).toBeVisible();
   });

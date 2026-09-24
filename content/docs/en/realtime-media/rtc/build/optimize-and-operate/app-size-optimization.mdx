@@ -26,6 +26,12 @@ Other extensions and related functions in the [Extension list](#extension-list) 
 ### Use the Voice SDK
 RTC SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
 
+### Integrate the FFmpeg plugin as needed
+
+Since v4.7.0, the Voice SDK provides FFmpeg as an optional plugin, `libagora_ffmpeg_extension.so`. The SDK package includes this plugin by default.
+
+The FFmpeg plugin extends the audio file playback capabilities of the media player and depends on `libaosl.so`. If your app does not need the playback capabilities that FFmpeg provides, remove the plugin or do not link it when you integrate the SDK, to reduce your app size. After you remove it, the media player uses the system's native playback capability, and the audio file formats it supports depend on the container formats and audio codecs that the system supports. To play audio formats that the system does not support natively, keep the FFmpeg plugin integrated.
+
 ### Remove unnecessary extensions
 RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
 
@@ -762,7 +768,7 @@ When you install the Android SDK with Gradle, you can modify the `dependencies` 
 - `libagora-fdkaac.so`
 - `libagora-ffmpeg.so`
 - `libagora-soundtouch.so`
-- `libvideo_dec.so` (added since v4.6.2)
+- `libvideo_dec.so` (since v4.6.2)
 - `libagora-core.so` (renamed to `libaosl.so` since v4.3.0; dependency since v4.5.0)
 - SDK header files
 
@@ -801,6 +807,7 @@ When you install the Android SDK with Gradle, you can modify the `dependencies` 
 - `agora-rtc-sdk.jar`
 - `libagora-rtc-sdk.so`
 - `libagora-fdkaac.so`
+- `libagora_ffmpeg_extension.so` (since v4.7.0)
 - `libagora-soundtouch.so`
 - `libagora-core.so` (renamed to `libaosl.so` since v4.3.0; dependency since v4.5.0)
 - SDK header files
@@ -838,6 +845,12 @@ Other extensions and related functions in the [Extension list](#extension-list) 
 
 ### Use the Voice SDK
 RTC SDK supports both audio and video functions, and the package size is large. If you only need to use audio features, best practice is to integrate the [Voice SDK](../../../sdks.md). For details, see [Voice SDK Quickstart](/en/realtime-media/rtc/voice-quickstart).
+
+### Integrate the FFmpeg plugin as needed
+
+Since v4.7.0, the Voice SDK provides FFmpeg as an optional plugin, `AgoraffmpegExtension.xcframework`. The SDK package includes this plugin by default.
+
+The FFmpeg plugin extends the audio file playback capabilities of the media player and depends on `aosl.xcframework`. If your audio-only use case does not need the playback capabilities that FFmpeg provides, remove the plugin or do not link it when you integrate the SDK, to reduce your app size. After you remove it, the media player uses the system's native playback capability, and the audio file formats it supports depend on the container formats and audio codecs that the system supports. To play audio formats that the system does not support natively, keep the FFmpeg plugin integrated.
 
 ### Remove unnecessary extensions
 RTC SDK provides optional extension dynamic libraries. The name of the extension is suffixed with `extension`. See the [extension list](#extension-list) for details on the function and size of the extensions. Refer to the following ways to exclude these extensions to reduce the size of the app.
@@ -1562,7 +1575,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 - `Agorafdkaac.xcframework`
 - `AgoraSoundTouch.xcframework`
 - `Agoraffmpeg.xcframework`
-- `video_dec.xcframework` (added since v4.6.2)
+- `video_dec.xcframework` (since v4.6.2)
 - `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))
 
 </Slot>
@@ -1598,6 +1611,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 - `AgoraRtcKit.xcframework`
 - `Agorafdkaac.xcframework`
 - `AgoraSoundTouch.xcframework`
+- `AgoraffmpegExtension.xcframework` (since v4.7.0)
 - `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_iOS](https://cocoapods.org/pods/AgoraInfra_iOS))
 
 </Slot>
@@ -2342,7 +2356,7 @@ When integrating the iOS/macOS SDK through CocoaPods, you can use the `subspecs`
 - `Agorafdkaac.xcframework`
 - `AgoraSoundTouch.xcframework`
 - `Agoraffmpeg.xcframework`
-- `video_dec.xcframework` (added since v4.6.2)
+- `video_dec.xcframework` (since v4.6.2)
 - `AgoraCore.xcframework` (renamed to `aosl.xcframework` since v4.3.0; dependency since v4.5.0, see [AgoraInfra_macOS](https://cocoapods.org/pods/AgoraInfra_macOS))
 
 </Slot>
