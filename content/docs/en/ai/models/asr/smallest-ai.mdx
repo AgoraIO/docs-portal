@@ -1,0 +1,256 @@
+---
+title: Smallest AI
+description: >
+ Integrate Smallest AI ASR into Conversational AI Engine.
+---
+
+Smallest AI provides real-time streaming transcription through its Pulse model. Use it as the ASR component in a cascading pipeline with any supported LLM and TTS vendor.
+
+### Sample configuration
+
+The following example shows how to configure Smallest AI ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import SmallestAISTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(SmallestAISTT(
+        api_key='your-smallest-ai-key',
+        url='wss://api.us.smallest.ai/waves/v1/stt/live',
+        language='zh',
+        sample_rate=16000,
+        encoding='linear16',
+        word_timestamps=True,
+        sentence_timestamps=True,
+        diarize=True,
+        vad_events=True,
+        endpointing=True,
+        eou_timeout_ms=480,
+        format=True,
+        finalize_on_words=True,
+        max_words='100',
+        punctuate=True,
+        capitalize=True,
+        itn_normalize=True,
+        full_transcript=True,
+        keywords='Codex:2,Smallest AI:2',
+        redact_pii=False,
+        redact_pci=False,
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, SmallestAISTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new SmallestAISTT({
+    apiKey: 'your-smallest-ai-key',
+    url: 'wss://api.us.smallest.ai/waves/v1/stt/live',
+    language: 'zh',
+    sampleRate: 16000,
+    encoding: 'linear16',
+    wordTimestamps: true,
+    sentenceTimestamps: true,
+    diarize: true,
+    vadEvents: true,
+    endpointing: true,
+    eouTimeoutMs: 480,
+    format: true,
+    finalizeOnWords: true,
+    maxWords: '100',
+    punctuate: true,
+    capitalize: true,
+    itnNormalize: true,
+    fullTranscript: true,
+    keywords: 'Codex:2,Smallest AI:2',
+    redactPii: false,
+    redactPci: false,
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewSmallestAISTT(vendors.SmallestAISTTOptions{
+        APIKey:             "your-smallest-ai-key",
+        URL:                "wss://api.us.smallest.ai/waves/v1/stt/live",
+        Language:           "zh",
+        SampleRate:         Agora.Int(16000),
+        Encoding:           "linear16",
+        WordTimestamps:     true,
+        SentenceTimestamps: true,
+        Diarize:            true,
+        VADEvents:          true,
+        Endpointing:        true,
+        EOUTimeoutMs:       Agora.Int(480),
+        Format:             true,
+        FinalizeOnWords:    true,
+        MaxWords:           "100",
+        Punctuate:          true,
+        Capitalize:         true,
+        ITNNormalize:       true,
+        FullTranscript:     true,
+        Keywords:           "Codex:2,Smallest AI:2",
+        RedactPII:          false,
+        RedactPCI:          false,
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request. Only `params.api_key` is required:
+
+```json
+"asr": {
+  "vendor": "smallestai",
+  "language": "zh",
+  "params": {
+    "language": "zh",
+    "url": "wss://api.us.smallest.ai/waves/v1/stt/live",
+    "api_key": "<smallest_ai_api_key>",
+    "sample_rate": 16000,
+    "encoding": "linear16",
+    "word_timestamps": "true",
+    "sentence_timestamps": "true",
+    "diarize": "true",
+    "vad_events": "true",
+    "endpointing": "true",
+    "eou_timeout_ms": 480,
+    "format": "true",
+    "finalize_on_words": "true",
+    "max_words": "100",
+    "punctuate": "true",
+    "capitalize": "true",
+    "itn_normalize": "true",
+    "full_transcript": "true",
+    "keywords": "Codex:2,Smallest AI:2",
+    "redact_pii": "false",
+    "redact_pci": "false"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+:::info[Info]
+Smallest AI expects its boolean options as the strings `"true"` and `"false"`, as shown in the REST example. The Agora Agents SDKs accept real boolean values and convert them for you.
+:::
+
+### Key parameters
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ ASR provider. Set to `smallestai` to use Smallest AI.
+ </Parameter>
+ <Parameter name="language" type="string" required={false}>
+  The language tag identifying the primary language used for agent interaction.
+ </Parameter>
+ <Parameter name="params" type="object" required={true}>
+  Configuration object for the Smallest AI ASR model.
+  <Parameter name="api_key" type="string" required={true}>
+   The Smallest AI API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+   The Smallest AI streaming ASR WebSocket endpoint. For example, `wss://api.us.smallest.ai/waves/v1/stt/live`.
+  </Parameter>
+  <Parameter name="language" type="string" required={false}>
+   The language code for speech recognition, for example, `zh`. If set, this takes precedence over the top-level `asr.language` value.
+  </Parameter>
+  <Parameter name="sample_rate" type="integer" required={false}>
+   Input audio sample rate in Hz. Defaults to `16000`.
+  </Parameter>
+  <Parameter name="encoding" type="string" required={false}>
+   Input audio encoding. Defaults to `linear16`.
+  </Parameter>
+  <Parameter name="word_timestamps" type="string" required={false}>
+   Whether to include word-level timestamps in the transcription results.
+  </Parameter>
+  <Parameter name="sentence_timestamps" type="string" required={false}>
+   Whether to include sentence-level timestamps in the transcription results.
+  </Parameter>
+  <Parameter name="diarize" type="string" required={false}>
+   Whether to enable speaker diarization. Speaker labels are emitted on final transcription results.
+  </Parameter>
+  <Parameter name="vad_events" type="string" required={false}>
+   Whether to emit voice activity detection events.
+  </Parameter>
+  <Parameter name="endpointing" type="string" required={false}>
+   Whether to enable automatic end-of-utterance detection.
+  </Parameter>
+  <Parameter name="eou_timeout_ms" type="integer" required={false}>
+   End-of-utterance timeout in milliseconds. For example, `480`.
+  </Parameter>
+  <Parameter name="format" type="string" required={false}>
+   Whether to enable Smallest AI's transcript formatting. Smallest AI defines the formatting applied.
+  </Parameter>
+  <Parameter name="finalize_on_words" type="string" required={false}>
+   Whether to finalize transcription results based on word count, together with `max_words`.
+  </Parameter>
+  <Parameter name="max_words" type="string" required={false}>
+   Maximum number of words per transcription result, passed as a string. For example, `"100"`.
+  </Parameter>
+  <Parameter name="punctuate" type="string" required={false}>
+   Whether to add punctuation to transcription results.
+  </Parameter>
+  <Parameter name="capitalize" type="string" required={false}>
+   Whether to apply capitalization to transcription results.
+  </Parameter>
+  <Parameter name="itn_normalize" type="string" required={false}>
+   Whether to apply inverse text normalization, which converts spoken forms such as numbers and dates into written form. Smallest AI applies it only to finalized transcripts, before redaction.
+  </Parameter>
+  <Parameter name="full_transcript" type="string" required={false}>
+   Whether to return the full accumulated transcript.
+  </Parameter>
+  <Parameter name="keywords" type="string" required={false}>
+   Keyword boosts that improve recognition accuracy for specific terms, as a comma-separated list in `keyword:weight` format. For example, `Codex:2,Smallest AI:2`.
+  </Parameter>
+  <Parameter name="redact_pii" type="string" required={false}>
+   Whether to redact personally identifiable information from transcription results.
+  </Parameter>
+  <Parameter name="redact_pci" type="string" required={false}>
+   Whether to redact payment card information from transcription results.
+  </Parameter>
+ </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Smallest AI documentation](https://docs.smallest.ai/models/documentation/speech-to-text-pulse/overview).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

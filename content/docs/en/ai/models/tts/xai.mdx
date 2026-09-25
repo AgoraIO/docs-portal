@@ -10,6 +10,66 @@ xAI provides text-to-speech (TTS) with a range of expressive voices for conversa
 
 The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import XaiTTS
+
+# ... other agent configuration ...
+.with_tts(XaiTTS(
+    api_key='your-xai-api-key',
+    voice_id='eve',
+    language='en',
+    sample_rate=16000,
+))
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { XAiTTS } from 'agora-agents';
+
+// ... other agent configuration ...
+.withTts(new XAiTTS({
+  apiKey: 'your-xai-api-key',
+  voiceId: 'eve',
+  language: 'en',
+  sampleRate: 16000,
+}));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+sampleRate := vendors.SampleRate16kHz
+
+// ... other agent configuration ...
+WithTts(
+    vendors.NewXaiTTS(vendors.XaiTTSOptions{
+        APIKey:     "your-xai-api-key",
+        VoiceID:    "eve",
+        Language:   "en",
+        SampleRate: &sampleRate,
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
 ```json
 "tts": {
   "vendor": "xai",
@@ -21,6 +81,9 @@ The following example shows a starting `tts` parameter configuration you can use
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 
