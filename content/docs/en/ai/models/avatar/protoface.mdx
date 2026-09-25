@@ -1,0 +1,126 @@
+---
+title: Protoface
+description: >
+  Integrate Protoface AI avatars into Conversational AI Engine.
+---
+
+Protoface provides real-time AI avatars that add a talking, lip-synced face to your voice agents, enabling natural video conversations with your AI agents.
+
+### Sample configuration
+
+Protoface integrates through the `generic` avatar vendor. The following examples show how to configure a Protoface avatar when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import GenericAvatar
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_avatar(GenericAvatar(
+        api_key='<PROTOFACE_API_KEY>',
+        api_base_url='https://api.protoface.com/v1/agora',
+        avatar_id='<PROTOFACE_AVATAR_ID>',
+        agora_uid='<AGORA_UID>',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GenericAvatar } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withAvatar(new GenericAvatar({
+    apiKey: '<PROTOFACE_API_KEY>',
+    apiBaseUrl: 'https://api.protoface.com/v1/agora',
+    avatarId: '<PROTOFACE_AVATAR_ID>',
+    agoraUid: '<AGORA_UID>',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */).
+  WithAvatar(
+    vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
+        APIKey:     "<PROTOFACE_API_KEY>",
+        APIBaseURL: "https://api.protoface.com/v1/agora",
+        AvatarID:   "<PROTOFACE_AVATAR_ID>",
+        AgoraUID:   "<AGORA_UID>",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `avatar` configuration in your request:
+
+```json
+"avatar": {
+  "vendor": "generic",
+  "params": {
+    "api_key": "<PROTOFACE_API_KEY>",
+    "api_base_url": "https://api.protoface.com/v1/agora",
+    "avatar_id": "<PROTOFACE_AVATAR_ID>",
+    "agora_token": "<AGORA_TOKEN>",
+    "agora_uid": "<AGORA_UID>"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The API key used for authentication with Protoface. Get your API key from the [Protoface dashboard](https://app.protoface.com).
+  </Parameter>
+  <Parameter name="api_base_url" type="string" required={true}>
+    The base URL of the Protoface API endpoint. Set to `https://api.protoface.com/v1/agora`.
+  </Parameter>
+  <Parameter name="avatar_id" type="string" required={true}>
+    The ID of the Protoface avatar to use, for example, `av_stock_001`. Find a stock avatar or create your own in the [Protoface dashboard](https://app.protoface.com).
+  </Parameter>
+  <Parameter name="agora_token" type="string" required={false}>
+    The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+  </Parameter>
+  <Parameter name="agora_uid" type="string" required={true}>
+    The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+  </Parameter>
+</ParameterList>
+
+For more information about avatars, refer to the [Protoface avatar documentation](https://docs.protoface.com/guides/avatars). For a complete working project, see the [Protoface Agora quickstart](https://github.com/protoface-ai/protoface-quickstart-agora).
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
