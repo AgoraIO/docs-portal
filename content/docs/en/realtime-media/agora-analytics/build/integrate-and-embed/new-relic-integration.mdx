@@ -1,0 +1,93 @@
+---
+title: "Integrate Analytics with New Relic"
+description: "Configure Agora Analytics to push data directly to your New Relic account."
+---
+
+[New Relic](https://docs.newrelic.com/) is an observability platform that you can use to monitor applications and infrastructure, query metrics, set up alerts, and build dashboards. To analyze Agora product data alongside your other telemetry, you can push Agora Analytics usage, quality, and performance statistics directly to your New Relic account.
+
+This page shows you how to set up the New Relic integration with Agora Analytics.
+
+## Prerequisites
+
+To use the New Relic integration, you need:
+
+- An Agora Analytics **Premium** or **Enterprise** [pricing plan](/en/realtime-media/agora-analytics/reference/pricing).
+- A New Relic account and a [license key](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/#license-key) for the account that receives the data.
+
+## Enable and configure New Relic
+
+To enable the Agora Analytics integration with New Relic:
+
+1. In [Agora Analytics](https://analytics-lab.agora.io/), go to **Integration > New Relic**.
+
+2. Click **Apply** to request access to the New Relic integration. The Agora support team contacts you when the feature is enabled.
+
+3. On the configuration page, select the **Metrics** you want to push to New Relic. For the full list, see [Reference](#reference).
+
+4. Enter your New Relic license key and click **Save**.
+
+5. Check that the **Configuration Status** changes to **Online**.
+
+    The configuration page also shows the following information:
+
+    - **Updated at**: The time of the last data push, in your local time zone.
+    - **Updated by**: The last user to enable or disable the feature.
+    - **Expiration date**: The time remaining before your package expires.
+
+    :::info
+    After you change the status, it can take up to five minutes for the data push to start or stop.
+    :::
+
+6. To confirm that data is arriving, open the New Relic query builder and run the following NRQL query:
+
+    ```sql
+    FROM Metric
+    SELECT max(agora.rtc.app_id.online_user) AS 'Online users'
+    FACET product_type
+    SINCE 1 hour ago
+    TIMESERIES 1 minute
+    ```
+
+    Agora Analytics stores metrics in New Relic as the `Metric` event type. The `product_type` attribute breaks the results down by Agora product.
+
+You are now ready to use New Relic to analyze the use of your Agora products.
+
+## Reference
+
+This section lists the metrics that Agora Analytics pushes to New Relic.
+
+### RTC metrics
+
+Agora Analytics provides the following RTC metrics to New Relic:
+
+| Metric name | Description |
+|:------------|:------------|
+| `agora.rtc.app_id.online_user` (count) | Number of online users aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.online_channel` (count) | Number of online channels aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.join_success_rate` (rate) | Join success rate aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.join_success_in_5s_rate` (rate) | Join success rate within 5 seconds aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.join_attempt` (count) | Number of join attempts aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.join_success_count` (count) | Number of successful joins aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.audio_freeze_rate` (rate) | Audio freeze rate aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.video_freeze_rate` (rate) | Video freeze rate aggregated by App ID, calculated every minute. |
+| `agora.rtc.app_id.network_delay_rate` (rate) | Network delay rate aggregated by App ID, calculated every minute. |
+
+### Chat metrics
+
+Agora Analytics provides the following Chat metrics to New Relic:
+
+| Metric name | Description |
+|:------------|:------------|
+| `agora.chat.group.total` (count) | Total chat groups. |
+| `agora.chat.group.new` (count) | Daily new chat groups. |
+| `agora.chat.group.disbanded` (count) | Daily disbanded chat groups. |
+| `agora.chat.group.active` (count) | Daily active chat groups. |
+| `agora.chat.room.total` (count) | Total chat rooms. |
+| `agora.chat.room.new` (count) | Daily new chat rooms. |
+| `agora.chat.room.disbanded` (count) | Daily disbanded chat rooms. |
+| `agora.chat.room.active` (count) | Daily active chat rooms. |
+| `agora.chat.room.pcu` (count) | Daily chat room peak concurrent users. |
+| `agora.chat.user.total` (count) | Total registered users. |
+| `agora.chat.user.dnu` (count) | Daily new users. |
+| `agora.chat.user.dau` (count) | Daily active users. |
+| `agora.chat.user.maxdau` (count) | Monthly maximum daily active users. |
