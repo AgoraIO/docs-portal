@@ -159,7 +159,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/audio-output.mdx': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/build/build-server-client.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/build-server-client.mdx':
-    '2026-06-24T10:50:33.000Z',
+    '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/build/code-first-architecture.mdx':
     '2026-06-01T06:29:37.000Z',
   'content/docs/en/ai/build/custom-information.md': '2026-05-19T10:33:06.000Z',
@@ -179,7 +179,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/custom-model-integration/managed-mode.mdx':
     '2026-09-25T12:51:42.000Z',
   'content/docs/en/ai/build/custom-model-integration/meta.json':
-    '2026-09-26T06:25:39.000Z',
+    '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/build/custom-model-integration/presets.mdx':
     '2026-07-01T14:02:18.000Z',
   'content/docs/en/ai/build/debug-agent-failures.mdx':
@@ -208,8 +208,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/index.mdx': '2026-06-25T15:09:45.000Z',
   'content/docs/en/ai/build/interrupt-agent.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/interrupt-agent.mdx': '2026-06-24T10:50:33.000Z',
+  'content/docs/en/ai/build/managed-mode.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/build/mcp-tools.mdx': '2026-09-25T12:51:42.000Z',
-  'content/docs/en/ai/build/meta.json': '2026-09-26T06:25:39.000Z',
+  'content/docs/en/ai/build/meta.json': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/build/monitor-agent-runtime.mdx':
     '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/build/presets.md': '2026-05-19T10:33:06.000Z',
@@ -237,7 +238,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/short-term-memory.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/short-term-memory.mdx': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/build/start-stop-agent.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/build/start-stop-agent.mdx': '2026-09-11T14:11:21.000Z',
+  'content/docs/en/ai/build/start-stop-agent.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/build/tools/custom-tools.mdx': '2026-09-26T06:25:39.000Z',
   'content/docs/en/ai/build/tools/mcp-tools.mdx': '2026-09-26T06:25:39.000Z',
   'content/docs/en/ai/build/tools/meta.json': '2026-09-26T06:25:39.000Z',
@@ -361,7 +362,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-29T14:43:43.000Z',
   'content/docs/en/ai/get-started/meta.json': '2026-06-30T06:39:15.000Z',
   'content/docs/en/ai/get-started/quickstart.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/get-started/quickstart.mdx': '2026-08-11T07:22:09.000Z',
+  'content/docs/en/ai/get-started/quickstart.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/get-started/skills-integrate.mdx':
     '2026-06-29T14:43:43.000Z',
   'content/docs/en/ai/get-started/test-mdx-comps.mdx':
@@ -418,7 +419,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/asr/assembly-ai.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/assembly-ai.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/asr/deepgram.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/asr/deepgram.mdx': '2026-09-14T09:50:45.000Z',
+  'content/docs/en/ai/models/asr/deepgram.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/models/asr/gemini.mdx': '2026-09-12T12:34:07.000Z',
   'content/docs/en/ai/models/asr/google.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/asr/google.mdx': '2026-09-14T09:50:45.000Z',
@@ -463,7 +464,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/llm/index.md': '2026-06-25T08:42:31.000Z',
   'content/docs/en/ai/models/llm/meta.json': '2026-06-27T03:57:33.000Z',
   'content/docs/en/ai/models/llm/openai.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/llm/openai.mdx': '2026-08-06T05:01:51.000Z',
+  'content/docs/en/ai/models/llm/openai.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/models/llm/xai.mdx': '2026-06-29T15:19:33.000Z',
   'content/docs/en/ai/models/meta.json': '2026-06-24T10:50:33.000Z',
   'content/docs/en/ai/models/mllm/azure.mdx': '2026-09-11T11:31:00.000Z',
@@ -502,12 +503,12 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/tts/microsoft.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/microsoft.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/minimax.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/tts/minimax.mdx': '2026-09-12T12:34:07.000Z',
+  'content/docs/en/ai/models/tts/minimax.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/models/tts/mistral.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/murf.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/murf.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/openai.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/tts/openai.mdx': '2026-09-14T09:50:45.000Z',
+  'content/docs/en/ai/models/tts/openai.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/models/tts/rime.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/rime.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/sarvam.md': '2026-05-19T10:33:06.000Z',
@@ -568,7 +569,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-09-26T06:25:39.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-09-26T07:12:18.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
