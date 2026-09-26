@@ -8,7 +8,7 @@ MCP is an open protocol for connecting LLMs to external tools and data sources. 
 This page explains how to attach an MCP server to an agent using the REST API and Agent SDKs.
 
 :::info[Info]
-Building your agent in Agent Studio? See [Manage integrations](../studio/build/integrations#mcp-servers).
+Building your agent in Agent Studio? See [Manage integrations](../../studio/build/integrations#mcp-servers).
 :::
 
 ## Understand the tech
@@ -23,7 +23,7 @@ To configure MCP tool-use:
 
 ## Prerequisites
 
-- Implemented the basic logic for interacting with a conversational AI agent. See the [quickstart](../get-started/quickstart).
+- Implemented the basic logic for interacting with a conversational AI agent. See the [quickstart](../../get-started/quickstart).
 - An MCP server reachable over HTTP or HTTPS.
 
 ## Implementation
@@ -35,7 +35,7 @@ Take the following steps to give your agent access to an MCP server.
 Add one or more servers then enable tool calling.
 
 :::note
-MLLM agents currently support MCP tool-use, through the RESTful API only. The Agent SDKs don't yet expose an equivalent field on their MLLM vendor classes. For an MLLM agent, add `mcp_servers` under `mllm` instead of `llm`.
+MLLM agents support MCP tool-use. For an MLLM agent, add `mcp_servers` under `mllm` instead of `llm`. All three Agents SDKs accept MCP servers on every MLLM vendor class. In the Go SDK, use the `McpServers` field, except on `NewOpenAIGPTLive`, where the equivalent field is `McpServerConfigs`.
 :::
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
@@ -55,6 +55,7 @@ from agora_agent import OpenAI
 .with_llm(OpenAI(
     api_key='your-llm-api-key',
     model='gpt-4o-mini',
+    base_url='https://api.openai.com/v1/chat/completions',
     mcp_servers=[
         {
             'name': 'deepwiki',
@@ -80,6 +81,7 @@ import { OpenAI } from 'agora-agents';
 .withLlm(new OpenAI({
   apiKey: 'your-llm-api-key',
   model: 'gpt-4o-mini',
+  url: 'https://api.openai.com/v1/chat/completions',
   mcpServers: [
     {
       name: 'deepwiki',
@@ -102,8 +104,9 @@ import { OpenAI } from 'agora-agents';
 // ... other agent configuration ...
 .WithLlm(
     vendors.NewOpenAI(vendors.OpenAIOptions{
-        APIKey: "your-llm-api-key",
-        Model:  "gpt-4o-mini",
+        APIKey:  "your-llm-api-key",
+        Model:   "gpt-4o-mini",
+        BaseURL: "https://api.openai.com/v1/chat/completions",
         McpServers: []map[string]interface{}{
             {
                 "name":          "deepwiki",
@@ -203,7 +206,7 @@ Each item in the MCP servers array accepts the following fields.
 To connect multiple MCP servers, add multiple entries to the MCP servers array. Each server must have a unique `name`.
 
 :::tip[Filler words during tool calls]
-Tool calls add latency while the MCP server processes the request. Configure [filler words](shape-the-conversation/filler-words) so the agent acknowledges the user's request while it waits for a tool result.
+Tool calls add latency while the MCP server processes the request. Configure [filler words](../shape-the-conversation/filler-words) so the agent acknowledges the user's request while it waits for a tool result.
 :::
 
 ## Reference

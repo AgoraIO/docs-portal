@@ -7,6 +7,129 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 ## Releases
 
+### v2.13
+
+Released on September 25, 2026.
+
+#### New features
+
+Included in this release:
+
+- **Custom tools for MLLM agents**
+
+  MLLM agents can call your own HTTPS endpoints as tools. Tool definitions use the same format as for cascading LLM agents, so an existing tool works with either agent type. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/tools/custom-tools).
+
+- **New ASR provider**
+
+  - [Smallest AI](models/asr/smallest-ai)
+
+- **New TTS provider**
+
+  - [Smallest AI](models/tts/smallest-ai)
+
+- **New MLLM provider**
+
+  - [OpenAI GPT-Live](models/mllm/openai-gpt-live)
+
+#### Improvements
+
+This release includes the following enhancements.
+
+- **MCP tool-use for MLLM agents in the Agora Agents SDKs**
+
+  MLLM agents have supported MCP tool-use through the RESTful API since v2.12. This release adds the same support to the Agora Agents SDKs, which accept MCP servers on their MLLM vendor classes, so you can configure MCP tool-use without calling the RESTful API directly. For details, see [Use MCP tools](build/tools/mcp-tools).
+
+- **Generated filler words use conversation context**
+
+  This release improves generated filler words so that they reflect the recent exchange, not just the current turn. You can set the conversation context for the generation service using a message count and a character budget. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
+
+#### API changes
+
+This release introduces the following changes for the new Smallest AI and OpenAI GPT-Live providers, Gemini ASR, MLLM tool-use, and generated filler words.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- [`SmallestAISTT`](/en/api-reference/api-ref/server-sdk/python#stt-vendors): New ASR vendor class for Smallest AI.
+- [`GeminiSTT`](/en/api-reference/api-ref/server-sdk/python#stt-vendors): New ASR vendor class for Gemini.
+- [`OpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/python#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [MLLM vendor classes](/en/api-reference/api-ref/server-sdk/python#mllm-vendors): New `tools` option for custom tool definitions, and new `mcp_servers` option for MCP tool-use.
+- [`SmallestAITTS`](/en/api-reference/api-ref/server-sdk/python#tts-vendors): New TTS vendor class for Smallest AI.
+- **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/python#type-aliases)
+
+    - `context_message_limit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - `history_character_limit`: Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+
+- **Updated behavior**
+
+    - `prompt`: A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [`SmallestAISTT`](/en/api-reference/api-ref/server-sdk/typescript#stt-vendors): New ASR vendor class for Smallest AI.
+- [`GeminiSTT`](/en/api-reference/api-ref/server-sdk/typescript#stt-vendors): New ASR vendor class for Gemini.
+- [`OpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/typescript#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [MLLM vendor classes](/en/api-reference/api-ref/server-sdk/typescript#mllm-vendors): New `tools` option for custom tool definitions, and new `mcpServers` option for MCP tool-use.
+- [`SmallestAITTS`](/en/api-reference/api-ref/server-sdk/typescript#tts-vendors): New TTS vendor class for Smallest AI.
+- **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/typescript#type-aliases)
+
+    - `context_message_limit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - `history_character_limit`: Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+
+- **Updated behavior**
+
+    - `prompt`: A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- [`NewSmallestAISTT`](/en/api-reference/api-ref/server-sdk/go#stt-vendors): New ASR vendor class for Smallest AI.
+- [`NewGeminiSTT`](/en/api-reference/api-ref/server-sdk/go#stt-vendors): New ASR vendor class for Gemini.
+- [`NewOpenAIGPTLive`](/en/api-reference/api-ref/server-sdk/go#mllm-vendors): New MLLM vendor class for OpenAI GPT-Live.
+- [MLLM vendor classes](/en/api-reference/api-ref/server-sdk/go#mllm-vendors): New `Tools` option for custom tool definitions, and new `McpServers` option for MCP tool-use. `NewOpenAIGPTLive` uses `McpServerConfigs` for the same purpose.
+- [`NewSmallestAITTS`](/en/api-reference/api-ref/server-sdk/go#tts-vendors): New TTS vendor class for Smallest AI.
+- **New fields** on [`FillerWordsContentGeneratedConfig`](/en/api-reference/api-ref/server-sdk/go#type-aliases), both `*int`
+
+    - `ContextMessageLimit`: How many of the most recent conversation messages to use, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - `HistoryCharacterLimit`: Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+
+- **Updated behavior**
+
+    - `Prompt`: A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **New parameters**
+
+    - [`filler_words.content.generated_config.context_message_limit`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-context-message-limit): How many of the most recent conversation messages to use to generate a filler phrase, counting the current turn's message. Accepts `1` to `6`, and defaults to `1`.
+    - [`filler_words.content.generated_config.history_character_limit`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-history-character-limit): Maximum combined characters of the earlier messages in the window. Accepts `0` to `10000`, and defaults to `1000`.
+    - [`mllm.tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-tools): Custom tool definitions an MLLM agent can call. Takes the same format as `llm.tools`, and requires `advanced_features.enable_tools`.
+
+  - **Updated parameters**
+
+    - [`asr.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-vendor) value `smallestai`: Use Smallest AI as the ASR provider. See [Smallest AI](/en/ai/models/asr/smallest-ai).
+    - [`asr.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-vendor) value `gemini`: Use Gemini as the ASR provider. See [Gemini](/en/ai/models/asr/gemini).
+    - [`mllm.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-vendor) value `openai_gpt_live`: Use OpenAI GPT-Live as the MLLM provider. See [OpenAI GPT-Live](/en/ai/models/mllm/openai-gpt-live).
+    - [`tts.vendor`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-tts-vendor) value `smallestai`: Use Smallest AI as the TTS provider. See [Smallest AI](/en/ai/models/tts/smallest-ai).
+    - [`filler_words.content.generated_config.prompt`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-generated-config-prompt): A custom prompt fully replaces Agora's default prompt, and applies over the same conversation context window.
+
+</TabsContent>
+</Tabs>
+
 ### v2.12
 
 Released on September 10, 2026.
@@ -17,15 +140,15 @@ Included in this release:
 
 - **Call custom tools**
 
-  You can now declare custom tools for the LLM to call during a conversation, directly through the RESTful API. Set `advanced_features.enable_tools` and declare a tool's name, description, parameters, and a synchronous `GET` or `POST` HTTPS endpoint using the `llm.tools` parameter. The LLM selects a tool and generates its parameters based on the conversation. The Conversational AI Engine then calls your endpoint and returns the result to the LLM to continue generating a response. For details, see [Call custom tools](build/custom-model-integration/custom-tools).
+  Agents can now call your own HTTPS endpoints as tools during a conversation. The LLM decides when to call a tool and generates its parameters from the conversation. The Conversational AI Engine then calls your endpoint and returns the result to the LLM to continue generating a response. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/tools/custom-tools).
 
 - **Generated filler words**
 
-  `filler_words.content` now supports a `generated` mode that produces a context-relevant filler phrase instead of a fixed phrase list, directly through the RESTful API. If a generated phrase isn't ready in time, the agent falls back to your configured static phrases. Generation is Agora-hosted, so no additional model, endpoint, or credentials are required. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
+  Agents can now generate filler words from the current conversation instead of selecting them from a fixed phrase list. Agora hosts the generation service, so you don't need your own model, endpoint, or credentials. You can optionally keep a static phrase list as a fallback. Available in the Agora Agents SDKs and the RESTful API. For details, see [Talking while waiting](build/shape-the-conversation/filler-words).
 
-- **Defer custom instructions with the `append` action**
+- **Defer custom instructions**
 
-  The `think` API's state actions now support `append`. Setting `on_listening_action`, `on_thinking_action`, or `on_speaking_action` to `append` doesn't interrupt the current interaction. Instead, the custom instruction is appended as a separate user message once the current turn's LLM output finishes, then starts a new turn. Available through the [**Send custom instructions**](/en/api-reference/api-ref/conversational-ai/think) endpoint.
+  Custom instructions now support an `append` action. Instead of interrupting the current interaction, the agent waits for the current turn to finish, then adds the instruction to the conversation and starts a new turn. Available in the Agora Agents SDKs and the RESTful API. For details, see [Send custom instructions](/en/api-reference/api-ref/conversational-ai/think).
 
 - **Client component support for direct speech and instruction injection**
 
@@ -33,7 +156,7 @@ Included in this release:
 
 - **MCP tool-use for MLLM agents**
 
-  MLLM agents now support MCP tool-use, in addition to cascading LLM agents. Configure [`mllm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-mllm-mcp-servers) and set `advanced_features.enable_tools` to `true`, the same switch used for cascading LLM agents. Available directly through the RESTful API. For details, see [Use MCP tools](build/mcp-tools).
+  MLLM agents now support MCP tool-use, in addition to cascading LLM agents. Available only in the RESTful API. For details, see [Use MCP tools](build/tools/mcp-tools).
 
 - **New ASR provider**
 
@@ -42,6 +165,46 @@ Included in this release:
 #### API changes
 
 This release introduces the following changes for custom tool calling, generated filler words, MCP tool-use for MLLM agents, and the `think` API's `append` action.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+- [`OpenAI`](/en/api-reference/api-ref/server-sdk/python#openai) and other LLM vendor classes: New `tools` parameter for custom tool definitions.
+- [`with_tools()`](/en/api-reference/api-ref/server-sdk/python#other-builder-methods): Now also enables custom tools declared in `tools`, in addition to MCP tools.
+- [`FillerWordsConfig`](/en/api-reference/api-ref/server-sdk/python#type-aliases): New `generated` content mode and `FillerWordsContentGeneratedConfig` for generated filler words.
+- [`AgentSession.think()`](/en/api-reference/api-ref/server-sdk/python#thinktext): `on_listening_action`, `on_thinking_action`, and `on_speaking_action` accept the new value `append`.
+- New custom tool type aliases: `LlmToolConfig`, `LlmToolFunctionConfig`, `LlmToolFunctionParametersConfig`, `LlmToolExecutionConfig`, and `LlmToolServerConfig`.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+- [`OpenAI`](/en/api-reference/api-ref/server-sdk/typescript#openai) and other LLM vendor classes: New `tools` option for custom tool definitions.
+- [`withTools()`](/en/api-reference/api-ref/server-sdk/typescript#other-builder-methods): Now also enables custom tools declared in `tools`, in addition to MCP tools.
+- [`FillerWordsConfig`](/en/api-reference/api-ref/server-sdk/typescript#type-aliases): New `generated` content mode and `FillerWordsContentGeneratedConfig` for generated filler words.
+- [`AgentSession.think()`](/en/api-reference/api-ref/server-sdk/typescript#thinktext-options): `on_listening_action`, `on_thinking_action`, and `on_speaking_action` accept the new value `append`.
+- New custom tool type aliases: `LlmTool`, `LlmToolFunction`, `LlmToolServer`, and `LlmToolExecution`.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+- [`NewOpenAI`](/en/api-reference/api-ref/server-sdk/go#newopenai) and other LLM vendor constructors: New `Tools` field for custom tool definitions.
+- [`WithTools()`](/en/api-reference/api-ref/server-sdk/go#other-builder-methods): Now also enables custom tools declared in `Tools`, in addition to MCP tools.
+- [`FillerWordsConfig`](/en/api-reference/api-ref/server-sdk/go#type-aliases): New `FillerWordsContentModeGenerated` content mode and `FillerWordsContentGeneratedConfig` for generated filler words.
+- [`Think()`](/en/api-reference/api-ref/server-sdk/go#thinkctx): Each state action accepts the new value `append`.
+- New type aliases: `LlmTool`, `LlmToolFunction`, `LlmToolFunctionParameters`, `LlmToolExecution`, `LlmToolServer`, `FillerWordsContentMode`, and `FillerWordsContentGeneratedConfig`.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
 
 - Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
 
@@ -54,7 +217,7 @@ This release introduces the following changes for custom tool calling, generated
   - **Updated parameters**
 
     - [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools): Now also enables custom tools declared in `llm.tools` and MCP tools declared in `mllm.mcp_servers`, in addition to MCP tools configured in `llm.mcp_servers`.
-    - [`filler_words.content.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-mode) value `generated`: Generate a filler phrase from the current context, with `filler_words.content.static_config` used as a fallback.
+    - [`filler_words.content.mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-mode) value `generated`: Generate a filler phrase from the current context, with an optional `filler_words.content.static_config` fallback.
     - [`filler_words.content.static_config`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-filler-words-content-static-config): Now a named sibling property of `content` instead of the `"{mode}_config"` key.
 
 - Changes to [**Send custom instructions**](/en/api-reference/api-ref/conversational-ai/think)
@@ -62,6 +225,9 @@ This release introduces the following changes for custom tool calling, generated
   - **Updated parameters**
 
     - [`on_listening_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-listening-action), [`on_thinking_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-thinking-action), and [`on_speaking_action`](/en/api-reference/api-ref/conversational-ai/think#request-body-properties-on-speaking-action) value `append`: Don't interrupt the current interaction; append the instruction as a separate user message once the current turn's LLM output finishes.
+
+</TabsContent>
+</Tabs>
 
 #### Toolkit API
 
@@ -713,7 +879,7 @@ Included in this release:
 
 - **MCP integration**
 
-  Adds a [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers) field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools) to `true` to enable tool calls. This allows the agent to call tools provided by external services to extend functionality. For details, see [Use MCP tools](build/mcp-tools).
+  Adds a [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers) field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools) to `true` to enable tool calls. This allows the agent to call tools provided by external services to extend functionality. For details, see [Use MCP tools](build/tools/mcp-tools).
 
 - **Filler phrases**
 

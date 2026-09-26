@@ -79,13 +79,6 @@ agent := agentkit.NewAgent(client).WithMllm(
 
 <TabsContent value="rest-api">
 
-:::info[Preview endpoint]
-OpenAI GPT-Live is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
-
-- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
-- **Header**: `agora-feature: live-models`
-:::
-
 Use the following `mllm` configuration in your request:
 
 ```json
@@ -187,8 +180,8 @@ GPT-Live can call tools defined directly on the MLLM configuration. Set `mllm.mc
   </Parameter>
 </ParameterList>
 
-:::caution[Early access]
-GPT-Live is available in early access and is not intended for production traffic. It does not support turn detection or input audio transcription.
+:::caution[Limitations]
+GPT-Live doesn't support turn detection or input audio transcription.
 
 The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Additional parameters are passed through directly to the underlying vendor without validation.
 :::
