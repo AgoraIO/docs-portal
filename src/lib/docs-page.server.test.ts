@@ -3925,6 +3925,25 @@ Web body
                   name: 'Convo AI Device Kit',
                   type: 'folder',
                 },
+                {
+                  $id: 'ai-studio-folder',
+                  children: [
+                    {
+                      $id: 'ai-studio-quickstart',
+                      name: 'Create your first agent',
+                      type: 'page',
+                      url: '/en/ai/studio/quickstart',
+                    },
+                  ],
+                  index: {
+                    $id: 'ai-studio-index',
+                    name: 'Overview',
+                    type: 'page',
+                    url: '/en/ai/studio',
+                  },
+                  name: 'Agent Studio',
+                  type: 'folder',
+                },
               ],
               index: {
                 $id: 'ai-index',
@@ -4005,7 +4024,21 @@ Web body
     expect(payload.sidebar.map((node) => node.title)).toEqual([
       'Voice Agent overview',
       'Voice agent in apps',
+      'Agent Studio',
       'Voice agent on dedicated devices',
+    ]);
+
+    const agentStudioSection = payload.sidebar.find(
+      (node) => node.type === 'section' && node.title === 'Agent Studio',
+    );
+
+    if (!agentStudioSection || agentStudioSection.type !== 'section') {
+      throw new Error('expected the Agent Studio section');
+    }
+
+    expect(flattenSidebarPageUrls([agentStudioSection])).toEqual([
+      '/en/ai/studio',
+      '/en/ai/studio/quickstart',
     ]);
 
     const softwareSection = payload.sidebar.find(

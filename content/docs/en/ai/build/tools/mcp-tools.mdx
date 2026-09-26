@@ -8,7 +8,7 @@ MCP is an open protocol for connecting LLMs to external tools and data sources. 
 This page explains how to attach an MCP server to an agent using the REST API and Agent SDKs.
 
 :::info[Info]
-Building a no-code agent in the Agora Console? See [Manage integrations](../studio/build/integrations#mcp-servers).
+Building your agent in Agent Studio? See [Manage integrations](../../studio/build/integrations#mcp-servers).
 :::
 
 ## Understand the tech
@@ -23,7 +23,7 @@ To configure MCP tool-use:
 
 ## Prerequisites
 
-- Implemented the basic logic for interacting with a conversational AI agent. See the [quickstart](../get-started/quickstart).
+- Implemented the basic logic for interacting with a conversational AI agent. See the [quickstart](../../get-started/quickstart).
 - An MCP server reachable over HTTP or HTTPS.
 
 ## Implementation
@@ -206,7 +206,7 @@ Each item in the MCP servers array accepts the following fields.
 To connect multiple MCP servers, add multiple entries to the MCP servers array. Each server must have a unique `name`.
 
 :::tip[Filler words during tool calls]
-Tool calls add latency while the MCP server processes the request. Configure [filler words](shape-the-conversation/filler-words) so the agent acknowledges the user's request while it waits for a tool result.
+Tool calls add latency while the MCP server processes the request. Configure [filler words](../shape-the-conversation/filler-words) so the agent acknowledges the user's request while it waits for a tool result.
 :::
 
 ## Reference

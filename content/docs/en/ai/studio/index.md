@@ -1,15 +1,15 @@
 ---
-title: Overview
+title: Agent Studio overview
 description: Build, deploy, and monitor conversational AI voice agents in Agora Console without managing infrastructure.
 ---
 
-The no-code agent builder is a visual workspace in Agora Console for building and operating conversational AI voice agents. You configure agent behavior, connect telephony, and monitor production calls from a single interface, without writing integration code.
+Agent Studio is a visual workspace in Agora Console for building and operating conversational AI voice agents. You configure agent behavior, connect telephony, and monitor production calls from a single interface, without writing integration code.
 
-It abstracts the underlying AI stack. You configure your ASR, LLM, and TTS providers, or a single realtime MLLM; the console handles the orchestration between them. Instead of managing API integrations across multiple services, you focus on what your agent should say and do.
+Agent Studio abstracts the underlying AI stack. You configure your ASR, LLM, and TTS providers, or a single realtime MLLM; Agent Studio handles the orchestration between them. Instead of managing API integrations across multiple services, you focus on what your agent should say and do.
 
 ## How it's organized
 
-The no-code agent builder is structured around four areas:
+Agent Studio is structured around four areas:
 
 **Concierge:** Explore, configure, and troubleshoot your agents using natural language, instead of navigating each page individually. See [Concierge](build/concierge).
 
@@ -21,7 +21,7 @@ The no-code agent builder is structured around four areas:
 
 ## How it works
 
-The no-code agent builder sits between your telephony provider and the AI models that power your agent. For inbound calls, it receives the call from your carrier via Elastic SIP Trunk, processes the conversation through your configured ASR, LLM, and TTS providers (or a realtime MLLM), and delivers the agent's response back to the caller. For outbound calls, it initiates the call through the same SIP trunk, connects to the recipient, and handles the conversation in the same way.
+Agent Studio sits between your telephony provider and the AI models that power your agent. For inbound calls, it receives the call from your carrier via Elastic SIP Trunk, processes the conversation through your configured ASR, LLM, and TTS providers (or a realtime MLLM), and delivers the agent's response back to the caller. For outbound calls, it initiates the call through the same SIP trunk, connects to the recipient, and handles the conversation in the same way.
 
 In both cases, it manages the full call lifecycle. No SIP servers to manage, no voice recognition to train, no telephony protocols to debug.
 
@@ -52,7 +52,7 @@ For outbound use cases, create campaigns with contact lists, scheduling, and cal
 
 ## Who should use this
 
-The no-code agent builder is designed for developers and technical users who want to build and operate voice agents without managing the underlying AI infrastructure. If you need capabilities beyond what it exposes, such as advanced API parameters or custom orchestration logic, you can use agent SDKs or the [Conversational AI REST API](/en/api-reference/api-ref/conversational-ai) for full programmatic control.
+Agent Studio is designed for developers and technical users who want to build and operate voice agents without managing the underlying AI infrastructure. If you need capabilities beyond what Agent Studio exposes, such as advanced API parameters or custom orchestration logic, you can use agent SDKs or the [Conversational AI REST API](/en/api-reference/api-ref/conversational-ai) for full programmatic control.
 
 ## Get started
 

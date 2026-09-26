@@ -91,7 +91,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 - **Managed mode**
 
-  To use an OpenAI LLM with Agora-managed credentials, set `credential_mode` to `"managed"` in the `llm` block. When using managed mode, `api_key` is not required. You can still use the `llm` field to configure additional settings such as `system_messages` and `greeting_message`. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+  To use an OpenAI LLM with Agora-managed credentials, set `credential_mode` to `"managed"` in the `llm` block. When using managed mode, `api_key` is not required. You can still use the `llm` field to configure additional settings such as `system_messages` and `greeting_message`. For more information, see [Use managed mode](/en/ai/build/managed-mode).
 
   ```json
   "llm": {
@@ -140,7 +140,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 ### Key parameters
 
-The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/managed-mode).
 
 <ParameterList title="llm">
   <Parameter name="api_key" type="string">

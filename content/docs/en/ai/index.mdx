@@ -6,13 +6,18 @@ description: Understand what a voice agent is, how this section is organized, an
 
 A Voice Agent is a real-time system that listens to a user, reasons over the conversation, and responds with speech. On Agora, that experience is built from a shared foundation: real-time transport, an agent runtime, AI models, and the endpoint where the conversation is delivered.
 
-Agora supports two Voice Agent paths: **in apps** and **on dedicated devices**. Choose **In apps** if your agent lives in a web, mobile, desktop, or backend-assisted app experience. Choose **On dedicated devices** if your endpoint is embedded or hardware-first, such as a toy, wearable, kiosk, or companion. Use the quickstart that matches your endpoint to jump directly into the right implementation path.
+Agora supports three Voice Agent paths: **in apps**, **Agent Studio**, and **on dedicated devices**. Choose **In apps** if your agent lives in a web, mobile, desktop, or backend-assisted app experience that you build with code. Choose **Agent Studio** if you want to build, deploy, and monitor agents in Agora Console without writing integration code, including agents that handle phone calls. Choose **On dedicated devices** if your endpoint is embedded or hardware-first, such as a toy, wearable, kiosk, or companion. Use the quickstart that matches your path to jump directly into the right implementation workflow.
 
 <Cards>
   <Card
     title="In apps quickstart"
     href="/en/ai/get-started/quickstart"
     description="Build the minimal backend-plus-client flow and get a working voice agent running quickly."
+  />
+  <Card
+    title="Agent Studio quickstart"
+    href="/en/ai/studio/quickstart"
+    description="Create and test your first agent in Agora Console from a pre-built template."
   />
   <Card
     title="Dedicated devices quickstart"
@@ -30,16 +35,17 @@ No matter where you ship it, a Voice Agent usually has the same core layers:
 - **Models**: provide ASR, LLM, TTS, and optional multimodal capabilities.
 - **Endpoint**: presents the experience to the user, either through an app or a dedicated device.
 
-The first three layers stay conceptually similar across the docs. The main split in the sidebar happens at the **endpoint** layer, because app teams and device teams need different implementation workflows.
+The first three layers stay conceptually similar across the docs. The sidebar splits by how you build the agent and where it runs, because app teams, Agent Studio users, and device teams need different implementation workflows.
 
 ## How this section is organized
 
-The AI sidebar is structured in two paths:
+The AI sidebar is structured in three paths:
 
-- **In apps**: for web, mobile, desktop, and backend-assisted app experiences.
+- **In apps**: for web, mobile, desktop, and backend-assisted app experiences that you build with code.
+- **Agent Studio**: for building, deploying, and monitoring agents in Agora Console, including inbound and outbound phone calls through Elastic SIP Trunk.
 - **On dedicated devices**: for embedded or hardware-first endpoints such as toys, wearables, kiosks, and companions.
 
-Both paths share the same Voice Agent idea, but they differ in what teams need to build next. App teams usually care first about session orchestration, UI, model behavior, and runtime events. Device teams usually care first about bring-up, networking, firmware, controls, and hardware integration.
+All three paths share the same Voice Agent idea, but they differ in what teams need to build next. App teams usually care first about session orchestration, UI, model behavior, and runtime events. Agent Studio users usually care first about prompts, model configuration, telephony, and call analytics. Device teams usually care first about bring-up, networking, firmware, controls, and hardware integration.
 
 <a id="on-software-clients" />
 <a id="for-software-clients" />

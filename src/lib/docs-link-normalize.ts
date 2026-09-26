@@ -342,6 +342,7 @@ const LEGACY_AI_BUILD_GROUP_ROUTE_LEAVES: Record<string, string> = {
   'debug-agent-failures': 'handle-runtime-events/debug-agent-failures',
   'event-notifications': 'handle-runtime-events/event-notifications',
   'get-runtime-events': 'handle-runtime-events/get-runtime-events',
+  'mcp-tools': 'tools/mcp-tools',
   'monitor-agent-runtime': 'handle-runtime-events/monitor-agent-runtime',
   presets: 'custom-model-integration/presets',
   'retrieve-session-history': 'handle-runtime-events/retrieve-session-history',
@@ -349,6 +350,9 @@ const LEGACY_AI_BUILD_GROUP_ROUTE_LEAVES: Record<string, string> = {
 };
 
 const LEGACY_AI_BUILD_CUSTOM_MODEL_ROUTE_LEAVES: Record<string, string> = {
+  'build-server-client': 'build-server-client',
+  'custom-tools': 'tools/custom-tools',
+  'managed-mode': 'managed-mode',
   transcripts: 'transcripts',
 };
 
