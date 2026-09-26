@@ -364,7 +364,7 @@ const reviewedRedirectTargets = [
   },
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/develop/presets',
-    target: '/en/ai/build/custom-model-integration/managed-mode',
+    target: '/en/ai/build/managed-mode',
   },
   {
     legacyUrl: 'https://docs.agora.io/en/conversational-ai/models/asr/amazon',

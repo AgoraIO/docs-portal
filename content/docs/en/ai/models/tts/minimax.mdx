@@ -85,7 +85,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 - **Managed mode**
 
-  To use MiniMax TTS with Agora-managed credentials, set `credential_mode` to `"managed"` in the `tts` block. When using managed mode, `params.key` and `params.group_id` are not required. You can still use the `tts` field to configure additional settings such as `voice_setting`. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+  To use MiniMax TTS with Agora-managed credentials, set `credential_mode` to `"managed"` in the `tts` block. When using managed mode, `params.key` and `params.group_id` are not required. You can still use the `tts` field to configure additional settings such as `voice_setting`. For more information, see [Use managed mode](/en/ai/build/managed-mode).
 
   ```json
   "tts": {
@@ -131,7 +131,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 ### Key parameters
 
-The following parameters are required when using your own API key (BYOK). When using managed mode, `key` and `group_id` are not required. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+The following parameters are required when using your own API key (BYOK). When using managed mode, `key` and `group_id` are not required. For more information, see [Use managed mode](/en/ai/build/managed-mode).
 
 <ParameterList title="params">
   <Parameter name="key" type="string" required={false}>

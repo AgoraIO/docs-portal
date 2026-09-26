@@ -393,7 +393,7 @@ describe('docs content regressions', () => {
 
   it('keeps custom model integration tutorial prerequisites focused on Agora-managed presets', () => {
     const content = readDoc(
-      'ai/build/custom-model-integration/build-server-client.mdx',
+      'ai/build/build-server-client.mdx',
     );
 
     expect(content).toContain('- An active [Agora account]');
