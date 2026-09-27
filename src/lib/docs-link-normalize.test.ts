@@ -312,6 +312,36 @@ describe('normalizeDocsHref', () => {
       href: '/en/ai/build/custom-model-integration/presets',
       kind: 'root',
     });
+
+    expect(normalizeDocsHref('/en/ai/build/mcp-tools')).toEqual({
+      href: '/en/ai/build/tools/mcp-tools',
+      kind: 'root',
+    });
+  });
+
+  it('normalizes AI routes for pages moved out of custom model integration', () => {
+    expect(
+      normalizeDocsHref('/en/ai/build/custom-model-integration/custom-tools'),
+    ).toEqual({
+      href: '/en/ai/build/tools/custom-tools',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref('/en/ai/build/custom-model-integration/managed-mode'),
+    ).toEqual({
+      href: '/en/ai/build/managed-mode',
+      kind: 'root',
+    });
+
+    expect(
+      normalizeDocsHref(
+        '/en/ai/build/custom-model-integration/build-server-client',
+      ),
+    ).toEqual({
+      href: '/en/ai/build/build-server-client',
+      kind: 'root',
+    });
   });
 
   it('normalizes misplaced AI relative links that resolve under build or ai/api-reference', () => {

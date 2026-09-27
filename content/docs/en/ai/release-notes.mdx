@@ -17,7 +17,7 @@ Included in this release:
 
 - **Custom tools for MLLM agents**
 
-  MLLM agents can call your own HTTPS endpoints as tools. Tool definitions use the same format as for cascading LLM agents, so an existing tool works with either agent type. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/custom-model-integration/custom-tools).
+  MLLM agents can call your own HTTPS endpoints as tools. Tool definitions use the same format as for cascading LLM agents, so an existing tool works with either agent type. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/tools/custom-tools).
 
 - **New ASR provider**
 
@@ -37,7 +37,7 @@ This release includes the following enhancements.
 
 - **MCP tool-use for MLLM agents in the Agora Agents SDKs**
 
-  MLLM agents have supported MCP tool-use through the RESTful API since v2.12. This release adds the same support to the Agora Agents SDKs, which accept MCP servers on their MLLM vendor classes, so you can configure MCP tool-use without calling the RESTful API directly. For details, see [Use MCP tools](build/mcp-tools).
+  MLLM agents have supported MCP tool-use through the RESTful API since v2.12. This release adds the same support to the Agora Agents SDKs, which accept MCP servers on their MLLM vendor classes, so you can configure MCP tool-use without calling the RESTful API directly. For details, see [Use MCP tools](build/tools/mcp-tools).
 
 - **Generated filler words use conversation context**
 
@@ -140,7 +140,7 @@ Included in this release:
 
 - **Call custom tools**
 
-  Agents can now call your own HTTPS endpoints as tools during a conversation. The LLM decides when to call a tool and generates its parameters from the conversation. The Conversational AI Engine then calls your endpoint and returns the result to the LLM to continue generating a response. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/custom-model-integration/custom-tools).
+  Agents can now call your own HTTPS endpoints as tools during a conversation. The LLM decides when to call a tool and generates its parameters from the conversation. The Conversational AI Engine then calls your endpoint and returns the result to the LLM to continue generating a response. Available in the Agora Agents SDKs and the RESTful API. For details, see [Call custom tools](build/tools/custom-tools).
 
 - **Generated filler words**
 
@@ -156,7 +156,7 @@ Included in this release:
 
 - **MCP tool-use for MLLM agents**
 
-  MLLM agents now support MCP tool-use, in addition to cascading LLM agents. Available only in the RESTful API. For details, see [Use MCP tools](build/mcp-tools).
+  MLLM agents now support MCP tool-use, in addition to cascading LLM agents. Available only in the RESTful API. For details, see [Use MCP tools](build/tools/mcp-tools).
 
 - **New ASR provider**
 
@@ -505,7 +505,7 @@ Included in this release:
 
 - **Managed mode**
 
-  You can now use supported ASR, LLM, and TTS providers with Agora-managed credentials, without supplying your own API keys. Set [`credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-credential-mode) to `"managed"` within the `asr`, `llm`, or `tts` block when starting an agent. Managed mode replaces the deprecated `preset` parameter. For details, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+  You can now use supported ASR, LLM, and TTS providers with Agora-managed credentials, without supplying your own API keys. Set [`credential_mode`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-asr-credential-mode) to `"managed"` within the `asr`, `llm`, or `tts` block when starting an agent. Managed mode replaces the deprecated `preset` parameter. For details, see [Use managed mode](/en/ai/build/managed-mode).
 
 #### Improvements
 
@@ -536,7 +536,7 @@ This release introduces the following changes to the RESTful API.
 
   - **Deprecated parameters**
 
-    - [`preset`](/en/api-reference/api-ref/conversational-ai/join#preset): Deprecated in favor of setting `credential_mode` to `"managed"` within the `asr`, `llm`, or `tts` block. See [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+    - [`preset`](/en/api-reference/api-ref/conversational-ai/join#preset): Deprecated in favor of setting `credential_mode` to `"managed"` within the `asr`, `llm`, or `tts` block. See [Use managed mode](/en/ai/build/managed-mode).
 
 - Changes to [**Notification event types**](/en/ai/reference/event-types)
 
@@ -879,7 +879,7 @@ Included in this release:
 
 - **MCP integration**
 
-  Adds a [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers) field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools) to `true` to enable tool calls. This allows the agent to call tools provided by external services to extend functionality. For details, see [Use MCP tools](build/mcp-tools).
+  Adds a [`llm.mcp_servers`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm-mcp-servers) field to the [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) API to connect the LLM to an MCP (Model Context Protocol) server. Set [`advanced_features.enable_tools`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-advanced-features-enable-tools) to `true` to enable tool calls. This allows the agent to call tools provided by external services to extend functionality. For details, see [Use MCP tools](build/tools/mcp-tools).
 
 - **Filler phrases**
 

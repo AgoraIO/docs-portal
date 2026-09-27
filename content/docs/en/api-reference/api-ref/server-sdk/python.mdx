@@ -875,7 +875,7 @@ These helpers also accept common LLM fields, such as `system_messages`, `greetin
 
 The LLM vendor `template_variables` parameter declares fixed string values known when you create the agent. Custom tools can reference these values in `server.url`, `server.headers`, or `server.body` with `{{template_variables.<name>}}`. The model and engine supply `{{args.<name>}}` and `{{tool_call_id}}` at runtime, so you don't need to declare them in `template_variables`.
 
-The LLM vendor `tools` parameter declares synchronous custom tools. Each tool includes a function definition and the server request configuration. The SDK enables tool calling for `tools` and `mcp_servers` only after you call `with_tools()` or `with_tools(True)`. For more information, see [Call custom tools](/en/ai/build/custom-model-integration/custom-tools).
+The LLM vendor `tools` parameter declares synchronous custom tools. Each tool includes a function definition and the server request configuration. The SDK enables tool calling for `tools` and `mcp_servers` only after you call `with_tools()` or `with_tools(True)`. For more information, see [Call custom tools](/en/ai/build/tools/custom-tools).
 
 ### TTS vendors
 

@@ -99,7 +99,7 @@ describe('docs journeys', () => {
       /(\.\.\/build\/start-stop-agent(?:\.md)?|\/en\/ai\/build\/start-stop-agent)/,
     );
     expect(quickstart).toMatch(
-      /(\.\.\/build\/custom-model-integration\/managed-mode|\/en\/ai\/build\/custom-model-integration\/managed-mode)/,
+      /(\.\.\/build\/managed-mode|\/en\/ai\/build\/managed-mode)/,
     );
     expect(quickstart).toMatch(
       /(\.\.\/best-practices\/optimize-latency(?:\.md)?|\/en\/ai\/best-practices\/optimize-latency)/,
@@ -191,25 +191,26 @@ describe('docs journeys', () => {
     expect(shapeMeta).toEqual({
       title: 'Shape the conversation',
       pages: [
-        'interrupt-agent',
-        'short-term-memory',
         'custom-information',
+        'short-term-memory',
+        'interrupt-agent',
         'filler-words',
+        'asr-keywords',
       ],
+    });
+
+    const toolsMeta = JSON.parse(readDoc('en/ai/build/tools/meta.json'));
+    expect(toolsMeta).toEqual({
+      title: 'Add tools',
+      pages: ['custom-tools', 'mcp-tools'],
     });
 
     const customModelMeta = JSON.parse(
       readDoc('en/ai/build/custom-model-integration/meta.json'),
     );
     expect(customModelMeta).toEqual({
-      title: 'Custom model integration',
-      pages: [
-        'custom-llm',
-        'custom-tts',
-        'audio-output',
-        'build-server-client',
-        'managed-mode',
-      ],
+      title: 'Integrate custom models',
+      pages: ['custom-llm', 'audio-output', 'custom-tts'],
     });
 
     const runtimeMeta = JSON.parse(
@@ -219,9 +220,9 @@ describe('docs journeys', () => {
       title: 'Handle runtime events',
       pages: [
         'get-runtime-events',
-        'monitor-agent-runtime',
-        'webhooks',
         'event-notifications',
+        'webhooks',
+        'monitor-agent-runtime',
         'debug-agent-failures',
         'retrieve-session-history',
       ],
