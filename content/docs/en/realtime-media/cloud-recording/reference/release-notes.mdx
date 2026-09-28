@@ -121,7 +121,7 @@ This release adds mobile web page mode for web page recording. The API changes a
 
 **Transcoder script for high availability mechanism**
 
-In composite recording mode, Agora provides a transcoder script for merging the old M3U8 file with the new M3U8 file generated after the service enables the high availability mechanism into an MP4 file. For details, see [Manage Recorded Files](./develop/manage-files#when-a-server-is-disconnected-or-the-process-killed).
+In composite recording mode, Agora provides a transcoder script for merging the old M3U8 file with the new M3U8 file generated after the service enables the high availability mechanism into an MP4 file. For details, see [Manage Recorded Files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files#server-disconnected-or-process-killed).
 
 
 </Accordion>
@@ -135,7 +135,7 @@ In composite recording mode, Agora provides a transcoder script for merging the 
 In order to meet the diverse recording needs of users, this release adds the [`streamMode`](/en/realtime-media/cloud-recording/reference/stream-mode) parameter in the `start` method to support [Individual Audio Non-transcoding Recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding).
 
 **Postpone Audio Mixing**
-For voice chat use-cases, this release adds the [`appsCollection`](/en/api-reference/api-ref/cloud-recording) and [`transcodeOptions`](/en/api-reference/api-ref/cloud-recording) parameters in the `start` method to support [Postpone Audio Mixing](../develop/individual-nontranscoding#implement-an-postpone-audio-mixing). If you enable this function, the recording service merges and transcodes the recorded files of all user IDs in the specified channel within 24 hours after the recording ends to generate an MP3/M4A/AAC file, and then uploads the recording file to your specified third-party cloud storage.
+For voice chat use-cases, this release adds the [`appsCollection`](/en/api-reference/api-ref/cloud-recording) and [`transcodeOptions`](/en/api-reference/api-ref/cloud-recording) parameters in the `start` method to support [Postpone Audio Mixing](/en/api-reference/api-ref/cloud-recording/start). If you enable this function, the recording service merges and transcodes the recorded files of all user IDs in the specified channel within 24 hours after the recording ends to generate an MP3/M4A/AAC file, and then uploads the recording file to your specified third-party cloud storage.
 
 **A Combined audio and video file after individual recording**
 
@@ -361,7 +361,7 @@ This version was released on March 31, 2021.
 
 #### Background images
 
-In composite recording mode, you can set the background image for both the video canvas and an individual user region. You can update the background image during a recording session. See [Set the background color or background image](../develop/layout#set-the-background-color-or-background-image) for details.
+In composite recording mode, you can set the background image for both the video canvas and an individual user region. You can update the background image during a recording session. See [Set the background color or background image](/en/realtime-media/cloud-recording/build/customize-the-recording/layout#set-the-background-color-or-background-image) for details.
 
 **Improvement**
 
@@ -551,7 +551,7 @@ When uploading fails after you use the wrong `bucket` and `key` values of the th
 
 #### Customized video layout
 
-The RESTful API adds a customized layout for the recording video. See [Set Video Layout](../develop/layout#customize-the-video-layout) for details.
+The RESTful API adds a customized layout for the recording video. See [Set Video Layout](/en/realtime-media/cloud-recording/build/customize-the-recording/layout#customize-the-video-layout) for details.
 
 You can set the `mixedVideoLayout` parameter as `3` and set the regions for each user in the `layoutConfig` parameter when starting a recording.
 

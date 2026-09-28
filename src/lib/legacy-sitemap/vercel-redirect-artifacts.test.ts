@@ -211,6 +211,23 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('matches legacy Agora Platform URLs with encoded spaces in production', () => {
+    expect(bulkRedirects).toEqual(
+      expect.arrayContaining([
+        {
+          source: '/en/Agora%20Platform/downloads',
+          destination: '/en/api-reference/sdks',
+          statusCode: 301,
+          preserveQueryParams: true,
+        },
+        {
+          source: '/en/Agora%20Platform/sampleapps',
+          destination: '/en/api-reference/recipes',
+          statusCode: 301,
+          preserveQueryParams: true,
+        },
+      ]),
+    );
+
     expect(vercelConfig.routes).toEqual(
       expect.arrayContaining([
         {
