@@ -35,14 +35,28 @@ Clone the repository once and point your AI coding assistant to the skill files 
 
 Follow the instructions for your AI coding assistant:
 
-<Tabs defaultValue="claude">
+<Tabs defaultValue="antigravity">
 <TabsList>
+  <TabsTrigger value="antigravity">Antigravity</TabsTrigger>
   <TabsTrigger value="claude">Claude Code</TabsTrigger>
   <TabsTrigger value="cursor">Cursor</TabsTrigger>
   <TabsTrigger value="windsurf">Windsurf</TabsTrigger>
   <TabsTrigger value="copilot">GitHub Copilot</TabsTrigger>
   <TabsTrigger value="other">Other tools</TabsTrigger>
 </TabsList>
+
+<TabsContent value="antigravity">
+
+After cloning the Agora Skills repo to `~/agora-skills`, copy its Agora skill folder into your Antigravity workspace:
+
+```bash
+mkdir -p .agents/skills
+cp -R ~/agora-skills/skills/agora .agents/skills/agora
+```
+
+Antigravity reads `.agents/skills/agora/SKILL.md` as the skill entry point. For more information, see [Antigravity skills](https://www.antigravity.google/docs/ide/skills/).
+
+</TabsContent>
 
 <TabsContent value="claude">
 
