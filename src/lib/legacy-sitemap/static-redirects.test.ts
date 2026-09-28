@@ -52,6 +52,29 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it.each([
+    [
+      '/en/cloud-recording/overview/pricing',
+      undefined,
+      '/en/realtime-media/cloud-recording/reference/pricing',
+    ],
+    [
+      '/en/on-premise-recording/overview/billing',
+      '?platform=linux-cpp',
+      '/en/realtime-media/on-premise-recording/reference/pricing',
+    ],
+    [
+      '/en/cloud-recording/overview/pricing-webpage-recording',
+      undefined,
+      '/en/realtime-media/cloud-recording/reference/pricing-webpage-recording',
+    ],
+  ])('redirects %s to its current pricing page', (path, search, target) => {
+    expect(resolveStaticLegacySitemapRedirect(path, search)).toEqual({
+      preserveSearch: true,
+      redirectUrl: target,
+    });
+  });
+
   it('redirects the legacy Chat RESTful overview to the API reference overview', () => {
     expect(
       resolveStaticLegacySitemapRedirect(
