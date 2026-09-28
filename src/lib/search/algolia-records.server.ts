@@ -4,9 +4,11 @@ import { structure } from 'fumadocs-core/mdx-plugins';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
 import remarkDirective from 'remark-directive';
+import remarkMdx from 'remark-mdx';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
+import { remarkAccordionHeadings } from '../mdx/accordion-toc';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -249,7 +251,10 @@ export function buildAlgoliaOpenApiRecord({
  * the scanned node types so identifiers inside fenced blocks stay searchable.
  */
 export function extractDocSearchContent(markdown: string) {
-  const extracted = structure(markdown, [remarkDirective], {
+  const plugins = markdown.includes('<Accordion')
+    ? [remarkMdx, remarkDirective, remarkAccordionHeadings]
+    : [remarkDirective];
+  const extracted = structure(markdown, plugins, {
     types: STRUCTURE_CONTENT_TYPES,
   });
 
