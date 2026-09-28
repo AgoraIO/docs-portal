@@ -1572,6 +1572,9 @@ function buildAiProductSidebar(
   const _deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
     'Convo AI Device Kit',
   ]);
+  const agentStudioSection = findTopLevelSidebarSection(nodes, [
+    'Agent Studio',
+  ]);
 
   if (
     !aiOverview ||
@@ -1701,6 +1704,20 @@ function buildAiProductSidebar(
       title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
       type: 'section',
     },
+    ...(agentStudioSection
+      ? [
+          {
+            ...stripSidebarSectionMeta(agentStudioSection),
+            children: stripSidebarSectionMetaFromNodes(
+              agentStudioSection.children,
+            ),
+            icon: 'LayoutDashboard',
+            id: 'ai-product-agent-studio',
+            title: 'Agent Studio',
+            type: 'section',
+          } satisfies DocsSidebarSectionNode,
+        ]
+      : []),
     {
       ...stripSidebarSectionMeta(deviceKitSection),
       children: [

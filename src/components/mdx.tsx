@@ -110,6 +110,7 @@ type AccordionsRootProps = Omit<
 > & {
   children?: ReactNode;
   defaultValue?: string | string[];
+  openFirst?: boolean;
   onValueChange?: (value: string | string[]) => void;
   type?: 'single' | 'multiple';
   value?: string | string[];
@@ -268,6 +269,27 @@ function AccordionCopyButton({ id }: { id: string }) {
       )}
     </button>
   );
+}
+
+function firstVersionValue(children: ReactNode): string | undefined {
+  let first: string | undefined;
+
+  Children.forEach(children, (child) => {
+    if (first || !isValidElement<{ children?: ReactNode }>(child)) {
+      return;
+    }
+
+    if (child.type === Accordion) {
+      const { headingLevel, title, value } = child.props as AccordionProps;
+      if (headingLevel) {
+        first = value ?? String(title);
+      }
+    } else {
+      first = firstVersionValue(child.props.children);
+    }
+  });
+
+  return first;
 }
 
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
@@ -536,11 +558,13 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
 
 function Accordions({
   defaultValue,
+  openFirst = false,
   onClickCapture,
   onValueChange,
   ref,
   type = 'single',
   value,
+  children,
   ...props
 }: AccordionsRootProps) {
   const rootId = useId();
@@ -552,13 +576,23 @@ function Accordions({
   } | null>(null);
   const pageState = useContext(AccordionPageStateContext);
   const setActiveAccordion = pageState?.setActiveAccordion;
+  const firstValue = useMemo(
+    () => (openFirst ? firstVersionValue(children) : undefined),
+    [children, openFirst],
+  );
   const defaultSingleValue =
     typeof defaultValue === 'string' ? defaultValue : undefined;
-  const defaultMultipleValue = Array.isArray(defaultValue)
-    ? defaultValue
-    : typeof defaultValue === 'string'
-      ? [defaultValue]
-      : [];
+  const defaultMultipleValue = useMemo(
+    () =>
+      Array.isArray(defaultValue)
+        ? defaultValue
+        : typeof defaultValue === 'string'
+          ? [defaultValue]
+          : firstValue
+            ? [firstValue]
+            : [],
+    [defaultValue, firstValue],
+  );
   const controlledSingleValue = typeof value === 'string' ? value : undefined;
   const controlledMultipleValue = Array.isArray(value) ? value : undefined;
   const [localValue, setLocalValue] = useState(defaultSingleValue ?? '');
@@ -660,6 +694,9 @@ function Accordions({
     ) {
       appliedDefaultValueRef.current = false;
       appliedDefaultResetKeyRef.current = pageState.accordionResetKey;
+      if (type === 'multiple' && openFirst && value === undefined) {
+        setLocalMultipleValue(defaultMultipleValue);
+      }
     }
 
     if (
@@ -678,7 +715,15 @@ function Accordions({
     pageState.setActiveAccordion(
       (current) => current ?? { rootId, value: defaultSingleValue },
     );
-  }, [defaultSingleValue, pageState, rootId, type, value]);
+  }, [
+    defaultMultipleValue,
+    defaultSingleValue,
+    openFirst,
+    pageState,
+    rootId,
+    type,
+    value,
+  ]);
 
   const applyHash = useCallback(
     (url: string) => {
@@ -807,7 +852,9 @@ function Accordions({
         ref={setRootRef}
         type={type}
         value={selectedMultipleValue}
-      />
+      >
+        {children}
+      </ControlledFumadocsAccordions>
     ) : (
       <ControlledFumadocsAccordions
         {...props}
@@ -817,7 +864,9 @@ function Accordions({
         ref={setRootRef}
         type={type}
         value={selectedValue}
-      />
+      >
+        {children}
+      </ControlledFumadocsAccordions>
     );
 
   return (

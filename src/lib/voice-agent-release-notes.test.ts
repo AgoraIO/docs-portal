@@ -10,8 +10,9 @@ const releaseNotes = readFileSync(
 describe('Voice Agent release notes', () => {
   it('uses the shared multi-open version history structure', () => {
     expect(releaseNotes).toContain('## Versions');
+    expect(releaseNotes).toContain('<Accordions type="multiple" openFirst>');
     expect(releaseNotes).toContain(
-      '<Accordions type="multiple" defaultValue="v212">',
+      '<Accordion title="v2.13" id="v213" headingLevel={3} value="v213">',
     );
     expect(releaseNotes).toContain(
       '<Accordion title="v2.12" id="v212" headingLevel={3} value="v212">',

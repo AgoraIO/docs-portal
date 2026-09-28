@@ -85,6 +85,7 @@ type CardComponent = ComponentType<{
 type AccordionsComponent = ComponentType<{
   children: ReactNode;
   defaultValue?: string;
+  openFirst?: boolean;
   type?: 'single' | 'multiple';
 }>;
 type AccordionComponent = ComponentType<{
@@ -685,6 +686,67 @@ describe('common MDX registry', () => {
     ).toHaveAttribute('data-state', 'open');
     expect(
       screen.getByText('Second body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('opens the first release automatically while allowing other versions to stay open', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <section id="latest-release">
+            <Accordion headingLevel={3} id="v213" title="v2.13" value="v213">
+              Latest body
+            </Accordion>
+          </section>
+          <Accordion headingLevel={3} id="v212" title="v2.12" value="v212">
+            Previous body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(
+      screen.getByText('Latest body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+    expect(
+      screen.getByText('Previous body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+    fireEvent.click(screen.getByRole('button', { name: 'v2.12' }));
+    expect(
+      screen.getByText('Latest body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+    expect(
+      screen.getByText('Previous body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('resets the first release when switching platforms', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    const renderPlatform = (latest: string) => (
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <Accordion headingLevel={3} id={latest} title={latest} value={latest}>
+            {latest} body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>
+    );
+
+    const { rerender } = render(renderPlatform('android-latest'));
+    expect(screen.getByText('android-latest body')).toBeVisible();
+
+    rerender(renderPlatform('ios-latest'));
+    fireEvent(window, new CustomEvent(PLATFORM_PREFERENCE_EVENT));
+
+    expect(
+      screen.getByText('ios-latest body').closest('[role="region"]'),
     ).toHaveAttribute('data-state', 'open');
   });
 
