@@ -689,6 +689,39 @@ describe('common MDX registry', () => {
     ).toHaveAttribute('data-state', 'open');
   });
 
+  it('lets readers close a version after following its hash', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState({}, '', '/en/ai/release-notes#v213');
+    render(
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <Accordion headingLevel={3} id="v213" title="v2.13" value="v213">
+            Latest body
+          </Accordion>
+          <Accordion headingLevel={3} id="v212" title="v2.12" value="v212">
+            Previous body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.getByRole('button', { name: 'v2.13' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'v2.13' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'v2.13' })).toHaveAttribute(
+        'aria-expanded',
+        'false',
+      );
+    });
+  });
+
   it('opens the first release automatically while allowing other versions to stay open', () => {
     const components = getMDXComponents();
     const Accordions = components.Accordions as AccordionsComponent;
@@ -777,6 +810,55 @@ describe('common MDX registry', () => {
     expect(
       screen.getByText('First body').closest('[role="region"]'),
     ).toHaveAttribute('data-state', 'closed');
+  });
+
+  it('opens a release when an old anchor points to its enclosing section', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState(
+      {},
+      '',
+      '/en/realtime-media/video/reference/release-notes/web#web-sdk-v4-24-7',
+    );
+    render(
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <section id="web-sdk-v4-24-8">
+            <Accordion
+              headingLevel={3}
+              id="v4248"
+              title="v4.24.8"
+              value="v4248"
+            >
+              Latest body
+            </Accordion>
+          </section>
+          <section id="web-sdk-v4-24-7">
+            <Accordion
+              headingLevel={3}
+              id="v4247"
+              title="v4.24.7"
+              value="v4247"
+            >
+              Previous body
+            </Accordion>
+          </section>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'v4.24.7' })).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+    });
+    expect(screen.getByRole('button', { name: 'v4.24.8' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
   });
 
   it('opens the containing version for a cross-version subsection link', async () => {

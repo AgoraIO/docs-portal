@@ -183,6 +183,18 @@ describe('extractDocSearchContent', () => {
   const { contents, headings } = extractDocSearchContent(markdown);
   const joined = contents.map((block) => block.content).join('\n');
 
+  it('keeps ordinary MDX indexing unchanged when no version accordions exist', () => {
+    const result = extractDocSearchContent(
+      '## Compatibility\n\nRead <Slot name="example" /> for details.',
+    );
+
+    expect(result.contents).toContainEqual(
+      expect.objectContaining({
+        content: 'Read <Slot name="example" /> for details.',
+      }),
+    );
+  });
+
   it('strips Markdown syntax, keeping readable text', () => {
     expect(joined).toContain('Use bold text');
     expect(joined).not.toMatch(/\*\*/); // no bold markers

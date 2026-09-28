@@ -1113,30 +1113,10 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     return [];
   }
 
-  let knownIssuesDepth: number | undefined;
-
-  return Array.from(article.querySelectorAll<HTMLHeadingElement>('h2, h3, h4'))
-    .filter((heading) => {
-      if (!(heading.id && !isHiddenFromToc(heading))) {
-        return false;
-      }
-
-      const headingDepth = Number(heading.tagName.slice(1));
-
-      if (knownIssuesDepth !== undefined) {
-        if (headingDepth > knownIssuesDepth) {
-          return false;
-        }
-
-        knownIssuesDepth = undefined;
-      }
-
-      if (/^known issues\b/i.test(heading.textContent?.trim() ?? '')) {
-        knownIssuesDepth = headingDepth;
-      }
-
-      return true;
-    })
+  return Array.from(
+    article.querySelectorAll<HTMLHeadingElement>('h2, h3, h4, h5, h6'),
+  )
+    .filter((heading) => heading.id && !isHiddenFromToc(heading))
     .map((heading) => {
       const headingDepth = Number(heading.tagName.slice(1));
 
@@ -1171,17 +1151,6 @@ function isOpenAccordionHeading(heading: HTMLElement) {
 }
 
 function isHiddenFromToc(element: HTMLElement) {
-  const knownIssuesSection = element.closest<HTMLElement>(
-    'section[id$="known-issues"]',
-  );
-
-  if (
-    knownIssuesSection &&
-    knownIssuesSection.querySelector('h2, h3, h4') !== element
-  ) {
-    return true;
-  }
-
   for (
     let current: HTMLElement | null = element;
     current;

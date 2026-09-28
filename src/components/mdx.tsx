@@ -47,6 +47,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useEffectEvent,
   useId,
   useMemo,
   useRef,
@@ -556,6 +557,9 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
   }
 }
 
+const VERSION_HEADING_SELECTOR =
+  'h2[data-accordion-value], h3[data-accordion-value], h4[data-accordion-value]';
+
 function Accordions({
   defaultValue,
   openFirst = false,
@@ -619,7 +623,7 @@ function Accordions({
     (event: ReactMouseEvent<HTMLDivElement>) => {
       if (event.target instanceof Element) {
         const heading = event.target.closest<HTMLElement>(
-          'h2[data-accordion-value], h3[data-accordion-value], h4[data-accordion-value]',
+          VERSION_HEADING_SELECTOR,
         );
 
         if (heading && rootRef.current?.contains(heading)) {
@@ -725,72 +729,68 @@ function Accordions({
     value,
   ]);
 
-  const applyHash = useCallback(
-    (url: string) => {
-      const id = url.startsWith('#') ? url.substring(1) : url;
-      const element = rootRef.current;
+  const applyHash = useEffectEvent((url: string) => {
+    const id = url.startsWith('#') ? url.substring(1) : url;
+    const element = rootRef.current;
 
-      if (!element || id.length === 0) {
-        return;
-      }
+    if (!element || id.length === 0) {
+      return;
+    }
 
-      const selected = findDocsHeadingForHash(`#${id}`);
+    const selected = findDocsHeadingForHash(`#${id}`);
 
-      if (!selected || !element.contains(selected)) {
-        return;
-      }
+    if (!selected || !element.contains(selected)) {
+      return;
+    }
 
-      const accordionContent = selected.closest<HTMLElement>(
-        '[role="region"][data-toc-hidden="true"]',
+    const accordionContent = selected.closest<HTMLElement>(
+      '[role="region"][data-toc-hidden="true"]',
+    );
+    const accordionHeading =
+      accordionContent?.parentElement?.querySelector<HTMLElement>(
+        VERSION_HEADING_SELECTOR,
       );
-      const accordionHeading =
-        accordionContent?.parentElement?.querySelector<HTMLElement>(
-          'h2[data-accordion-value], h3[data-accordion-value], h4[data-accordion-value]',
-        );
-      const hashValue =
-        selected.getAttribute('data-accordion-value') ??
-        accordionHeading?.getAttribute('data-accordion-value');
+    const sectionHeadings = selected.matches('section')
+      ? selected.querySelectorAll<HTMLElement>(VERSION_HEADING_SELECTOR)
+      : [];
+    const hashValue =
+      selected.getAttribute('data-accordion-value') ??
+      accordionHeading?.getAttribute('data-accordion-value') ??
+      (sectionHeadings.length === 1
+        ? sectionHeadings[0].getAttribute('data-accordion-value')
+        : null);
 
-      if (!hashValue) {
-        return;
-      }
+    if (!hashValue) {
+      return;
+    }
 
-      if (type === 'multiple') {
-        const nextValues = selectedMultipleValue.includes(hashValue)
-          ? selectedMultipleValue
-          : [...selectedMultipleValue, hashValue];
-
-        if (value === undefined) {
-          setLocalMultipleValue(nextValues);
-        }
-
-        onValueChange?.(nextValues);
-        return;
-      }
+    if (type === 'multiple') {
+      const nextValues = selectedMultipleValue.includes(hashValue)
+        ? selectedMultipleValue
+        : [...selectedMultipleValue, hashValue];
 
       if (value === undefined) {
-        if (setActiveAccordion) {
-          setActiveAccordion((current) =>
-            current?.rootId === rootId && current.value === hashValue
-              ? current
-              : { rootId, value: hashValue },
-          );
-        } else {
-          setLocalValue(hashValue);
-        }
+        setLocalMultipleValue(nextValues);
       }
 
-      onValueChange?.(hashValue);
-    },
-    [
-      onValueChange,
-      rootId,
-      selectedMultipleValue,
-      setActiveAccordion,
-      type,
-      value,
-    ],
-  );
+      onValueChange?.(nextValues);
+      return;
+    }
+
+    if (value === undefined) {
+      if (setActiveAccordion) {
+        setActiveAccordion((current) =>
+          current?.rootId === rootId && current.value === hashValue
+            ? current
+            : { rootId, value: hashValue },
+        );
+      } else {
+        setLocalValue(hashValue);
+      }
+    }
+
+    onValueChange?.(hashValue);
+  });
 
   useEffect(() => {
     if (type !== 'single' && type !== 'multiple') {
@@ -813,7 +813,7 @@ function Accordions({
       window.removeEventListener('hashchange', applyCurrentHash);
       window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
     };
-  }, [applyHash, type]);
+  }, [type]);
 
   function handleValueChange(nextValue: string | string[]) {
     if (type === 'multiple') {

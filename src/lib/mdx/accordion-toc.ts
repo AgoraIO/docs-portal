@@ -1,44 +1,111 @@
-const ACCORDION_HEADING = /<Accordion\b[^>]*>/g;
+import type { Root } from 'mdast';
+import type { MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
+import remarkMdx from 'remark-mdx';
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 
-type AccordionAttribute = 'headingLevel' | 'id' | 'title';
+const parser = unified().use(remarkParse).use(remarkMdx);
 
 export function addAccordionHeadingsToTocText(markdown: string) {
-  return markdown.replace(ACCORDION_HEADING, (accordion) => {
-    const headingLevel = getNumericAttribute(accordion, 'headingLevel');
-    const id = getStringAttribute(accordion, 'id');
-    const title = getStringAttribute(accordion, 'title');
+  if (!markdown.includes('<Accordion')) {
+    return markdown;
+  }
 
-    if (!headingLevel || !id || !title) {
-      return accordion;
+  const insertions: { offset: number; heading: string }[] = [];
+  let tree: ReturnType<typeof parser.parse>;
+
+  try {
+    tree = parser.parse(markdown);
+  } catch {
+    return markdown;
+  }
+
+  visit(tree, 'mdxJsxFlowElement', (node) => {
+    if (node.position?.start.offset === undefined) {
+      return;
     }
 
-    const tocHeadingLevel = Math.min(headingLevel + 1, 4);
+    const version = getAccordionVersion(node);
+    if (!version) {
+      return;
+    }
 
-    return `\n\n${'#'.repeat(tocHeadingLevel)} ${title} [#${id}]\n\n${accordion}\n`;
+    insertions.push({
+      offset: node.position.start.offset,
+      heading: `\n\n${'#'.repeat(version.depth)} ${version.title} [#${version.id}]\n\n`,
+    });
   });
+
+  for (const { offset, heading } of insertions.reverse()) {
+    markdown = markdown.slice(0, offset) + heading + markdown.slice(offset);
+  }
+
+  return markdown;
 }
 
-function getNumericAttribute(tag: string, name: AccordionAttribute) {
-  const value = getAttribute(tag, name);
+export function remarkAccordionHeadings() {
+  return (tree: Root) => {
+    visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
+      if (index === undefined || !parent) {
+        return;
+      }
 
-  if (!value) {
+      const version = getAccordionVersion(node);
+      if (!version) {
+        return;
+      }
+
+      parent.children.splice(index, 0, {
+        type: 'heading',
+        depth: version.depth,
+        children: [{ type: 'text', value: version.title }],
+        data: { hProperties: { id: version.id } },
+      });
+      return index + 2;
+    });
+  };
+}
+
+function getAccordionVersion(node: MdxJsxFlowElement) {
+  if (node.name !== 'Accordion') {
     return undefined;
   }
 
-  const number = Number(value);
+  const headingLevel = getHeadingLevel(node);
+  const id = getStaticAttribute(node, 'id');
+  const title = getStaticAttribute(node, 'title');
+
+  if (!headingLevel || !id || !title) {
+    return undefined;
+  }
+
+  return {
+    depth: Math.min(headingLevel + 1, 4) as 3 | 4,
+    id,
+    title,
+  };
+}
+
+function getHeadingLevel(node: MdxJsxFlowElement) {
+  const attribute = node.attributes.find(
+    (candidate) =>
+      candidate.type === 'mdxJsxAttribute' && candidate.name === 'headingLevel',
+  );
+  const value = attribute?.value;
+  const text = typeof value === 'string' ? value : value?.value;
+  const number = Number(text);
+
   return Number.isInteger(number) && number >= 2 && number <= 4
     ? number
     : undefined;
 }
 
-function getStringAttribute(tag: string, name: AccordionAttribute) {
-  return getAttribute(tag, name);
-}
+function getStaticAttribute(node: MdxJsxFlowElement, name: string) {
+  const attribute = node.attributes.find(
+    (candidate) =>
+      candidate.type === 'mdxJsxAttribute' && candidate.name === name,
+  );
 
-function getAttribute(tag: string, name: AccordionAttribute) {
-  const attribute = new RegExp(
-    `\\b${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|\\{\\s*([^{}]+?)\\s*\\})`,
-  ).exec(tag);
-
-  return attribute?.[1] ?? attribute?.[2] ?? attribute?.[3];
+  return typeof attribute?.value === 'string' ? attribute.value : undefined;
 }

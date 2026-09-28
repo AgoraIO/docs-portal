@@ -725,7 +725,7 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('keeps headings inside known issues sections out of the TOC', async () => {
+  it('keeps navigable subsections under known issues in the TOC', async () => {
     renderWithRouter(
       <AppProviders>
         <article>
@@ -745,8 +745,41 @@ describe('DocsContent', () => {
       await screen.findByRole('link', { name: 'Known issues' }),
     ).toHaveAttribute('href', '#known-issues');
     expect(
-      screen.queryByRole('link', { name: 'Bluetooth issue' }),
-    ).not.toBeInTheDocument();
+      await screen.findByRole('link', { name: 'Bluetooth issue' }),
+    ).toHaveAttribute('href', '#bluetooth-issue');
+  });
+
+  it('retains deep headings from the page TOC after deriving rendered order', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <h2 id="build-dependencies">Build dependencies</h2>
+          <h3 id="generated-section">Generated section</h3>
+          <h5 id="fix-mbedtls">Fix for linking mbedtls on Windows</h5>
+          <DocsTableOfContents
+            toc={[
+              {
+                depth: 2,
+                title: 'Build dependencies',
+                url: '#build-dependencies',
+              },
+              {
+                depth: 5,
+                title: 'Fix for linking mbedtls on Windows',
+                url: '#fix-mbedtls',
+              },
+            ]}
+          />
+        </article>
+      </AppProviders>,
+    );
+
+    await screen.findByRole('link', { name: 'Generated section' });
+    expect(
+      screen.getByRole('link', {
+        name: 'Fix for linking mbedtls on Windows',
+      }),
+    ).toHaveAttribute('href', '#fix-mbedtls');
   });
 
   it('places version accordion headings one level below Versions', async () => {
@@ -803,6 +836,7 @@ describe('DocsContent', () => {
       ).toEqual([
         '#video-sdk-6',
         '#known-issues-6',
+        '#flutter-sdk-v632',
         '#v662',
         '#v652',
         '#v651',
