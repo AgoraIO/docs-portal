@@ -129,6 +129,16 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it.each([
+    ['/en/Agora%20Platform/downloads', '/en/api-reference/sdks'],
+    ['/en/Agora%20Platform/sampleapps', '/en/api-reference/recipes'],
+  ])('redirects the encoded legacy Agora Platform path %s', (path, target) => {
+    expect(resolveStaticLegacySitemapRedirect(path)).toEqual({
+      preserveSearch: true,
+      redirectUrl: target,
+    });
+  });
+
   it.each(legacyHelpFaqRedirects)(
     'redirects %s to %s',
     (legacyPath, redirectUrl) => {
