@@ -26,7 +26,10 @@ export function assertValidSearchSection(record: SearchSection): void {
     throw new Error('section ID must not be empty');
   }
 
-  if (!record.url.includes('#') || record.url.endsWith('#')) {
+  if (
+    record.headingPath.length > 1 &&
+    (!record.url.includes('#') || record.url.endsWith('#'))
+  ) {
     throw new Error('section URL must include an anchor');
   }
 
