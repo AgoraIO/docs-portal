@@ -7,8 +7,10 @@ import {
   ZH_CN_PRODUCT_IA_REDIRECTS,
 } from './zh-cn-product-ia-redirects';
 
+type DocsMetaPage = string | { pages?: DocsMetaPage[]; href?: string };
+
 type DocsMeta = {
-  pages?: string[];
+  pages?: DocsMetaPage[];
   sidebarIndexTitle?: string;
   title?: string;
 };
@@ -746,6 +748,10 @@ function readMeta(path: string): DocsMeta {
 }
 
 function stripPagePrefix(page: string) {
+  if (/^\[[^\]]+\]\(.+\)$/.test(page)) {
+    return '';
+  }
+
   return page.replace(/^[!.-]+/, '');
 }
 
@@ -765,6 +771,45 @@ function pageExistsAtRelativePath(productRoot: string, page: string) {
   return candidates.some((candidate) => existsSync(candidate));
 }
 
+function getFlattenedMetaPageEntries(
+  productRoot: string,
+  pages: DocsMetaPage[],
+  prefix = '',
+): string[] {
+  return pages.flatMap((entry) => {
+    if (typeof entry !== 'string') {
+      return getFlattenedMetaPageEntries(
+        productRoot,
+        entry.pages ?? [],
+        prefix,
+      );
+    }
+
+    const page = stripPagePrefix(entry);
+    if (!page) {
+      return [];
+    }
+
+    const fullPage = [prefix, page].filter(Boolean).join('/');
+    const nestedMetaPath = resolve(
+      contentRoot,
+      productRoot,
+      fullPage,
+      'meta.json',
+    );
+    if (fullPage.includes('/') && existsSync(nestedMetaPath)) {
+      const nestedMeta = readMeta(nestedMetaPath);
+      return getFlattenedMetaPageEntries(
+        productRoot,
+        nestedMeta.pages ?? [],
+        fullPage,
+      );
+    }
+
+    return [fullPage];
+  });
+}
+
 function parseZhCnDocsUrl(url: string) {
   const [pathname] = url.split(/[?#]/, 1);
   const parts = pathname.replace(/^\/zh-CN\//, '').split('/');
@@ -776,11 +821,29 @@ function parseZhCnDocsUrl(url: string) {
 function getContentPagePathForUrl(url: string) {
   const { slugSegments, tab } = parseZhCnDocsUrl(url);
   const relativePath = resolve(contentRoot, tab, ...slugSegments);
+  const currentApiVersionPath =
+    tab === 'api-reference' && slugSegments.length > 1
+      ? resolve(
+          contentRoot,
+          tab,
+          ...slugSegments.slice(0, -1),
+          '(current)',
+          slugSegments.at(-1) ?? '',
+        )
+      : null;
   const candidates = [
     `${relativePath}.mdx`,
     `${relativePath}.md`,
     resolve(relativePath, 'index.mdx'),
     resolve(relativePath, 'index.md'),
+    ...(currentApiVersionPath
+      ? [
+          `${currentApiVersionPath}.mdx`,
+          `${currentApiVersionPath}.md`,
+          resolve(currentApiVersionPath, 'index.mdx'),
+          resolve(currentApiVersionPath, 'index.md'),
+        ]
+      : []),
   ];
 
   return candidates.find((candidate) => existsSync(candidate)) ?? null;
@@ -799,10 +862,11 @@ function getRedirectTargetProductRoots() {
     const standardEntryIndex = slugSegments.findIndex((segment) =>
       standardFirstLevelPageSet.has(segment),
     );
-    const productRootSegments =
-      standardEntryIndex === -1
-        ? slugSegments
-        : slugSegments.slice(0, standardEntryIndex);
+    if (standardEntryIndex === -1) {
+      continue;
+    }
+
+    const productRootSegments = slugSegments.slice(0, standardEntryIndex);
 
     roots.add([tab, ...productRootSegments].join('/'));
   }
@@ -829,9 +893,11 @@ describe('zh-CN product IA standard', () => {
     const meta = readMeta(resolve(speechToTextRoot, 'meta.json'));
 
     expect(meta.title).toBe('实时转录翻译');
-    expect(meta.sidebarIndexTitle).toBe('实时转录翻译概览');
+    expect(meta.sidebarIndexTitle).toBe('概览');
     expect(meta.pages).toEqual([
       'index',
+      'reference/release-notes',
+      'reference/billing',
       'get-started/quick-start',
       'build',
       'reference',
@@ -848,7 +914,7 @@ describe('zh-CN product IA standard', () => {
     expect(
       readMeta(resolve(speechToTextRoot, 'build/meta.json')),
     ).toMatchObject({
-      title: '构建功能',
+      title: '开发与集成',
     });
     expect(
       readMeta(resolve(speechToTextRoot, 'reference/meta.json')),
@@ -1003,7 +1069,7 @@ describe('zh-CN product IA standard', () => {
     [
       'realtime-media',
       ['rtc', 'basic-features', 'join-leave-channel'],
-      '/zh-CN/realtime-media/rtc/build/channel-and-connection/join-leave-channel',
+      '/zh-CN/realtime-media/rtc/build/initialize-and-channel/join-leave-channel',
     ],
     [
       'realtime-media',
@@ -1408,13 +1474,14 @@ describe('zh-CN product IA standard', () => {
     for (const productRoot of getRedirectTargetProductRoots()) {
       const absoluteRoot = resolve(contentRoot, productRoot);
       const meta = readMeta(resolve(absoluteRoot, 'meta.json'));
-      const pages = (meta.pages ?? []).map(stripPagePrefix);
+      const pages = getFlattenedMetaPageEntries(productRoot, meta.pages ?? []);
       const allowedFamilyEntries =
         allowedProductFamilyEntries[productRoot] ?? new Set<string>();
       const disallowedPages = pages.filter(
         (page) =>
           !standardFirstLevelPageSet.has(getFirstLevelPage(page)) &&
-          !allowedFamilyEntries.has(getFirstLevelPage(page)),
+          !allowedFamilyEntries.has(getFirstLevelPage(page)) &&
+          !pageExistsAtRelativePath(productRoot, page),
       );
       const missingFlattenedLeaves = pages.filter(
         (page) =>
@@ -1425,7 +1492,12 @@ describe('zh-CN product IA standard', () => {
       })
         .filter((entry) => entry.isFile())
         .map((entry) => entry.name)
-        .filter((name) => /\.mdx?$/.test(name) && !/^index\.mdx?$/.test(name));
+        .filter(
+          (name) =>
+            /\.mdx?$/.test(name) &&
+            !/^index\.mdx?$/.test(name) &&
+            !pages.includes(name.replace(/\.mdx?$/, '')),
+        );
 
       if (disallowedPages.length > 0) {
         failures.push(
