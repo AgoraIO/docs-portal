@@ -41,3 +41,24 @@ bun run search-demo:index
 The command reads the fixed 25-document manifest, validates the extracted public CN sections, then waits for the index creation, settings, and document-upload tasks. It uses `cn-kb-demo-v1` and upserts stable document IDs, so rerunning it does not duplicate records. A failed task exits nonzero. The source section ID is preserved in `sourceId`; the Meilisearch primary key `id` is a SHA-256 value because the original ID can contain Chinese characters and colons.
 
 You can inspect the document count in Docker Desktop's Meilisearch container or with an authenticated request to `/indexes/cn-kb-demo-v1/stats`. Golden query examples for future search evaluation live in `scripts/search-demo/fixtures/cn-kb-golden-queries.json`; they are not a claim that the UI or ranking is implemented yet. Keep the master key in the local ignored `.env`, not in browser code or screenshots.
+
+## Run the `search_docs` tool backend
+
+Task 7 adds a small local backend for the future Bailian tool call. It uses the Meilisearch master key only on the server side, always queries the fixed `cn-kb-demo-v1` index, and returns at most five public CN sections with at most 1200 characters per section.
+
+After Meilisearch is healthy and the KB has been indexed, run:
+
+```bash
+bun run search-demo:tool
+```
+
+In another terminal, verify the endpoint:
+
+```bash
+curl --fail --silent --show-error \
+  -X POST http://127.0.0.1:8787/api/search-docs \
+  -H 'content-type: application/json' \
+  --data '{"query":"manualSOS","platform":["web"]}'
+```
+
+The response contains section URLs such as `...#manualsos`. This endpoint is a local tool adapter, not the Bailian API and not a replacement for the browser's normal CN search client.
