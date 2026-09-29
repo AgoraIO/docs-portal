@@ -2,6 +2,9 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
+import { getContentDocsPrerenderPaths } from './prerender-content-routes';
+import { createPublishedDocsRoutes } from './published-docs-routes';
+import { getPagePlatformKeys, source } from './source.server';
 import {
   resolveZhCnProductIaRedirect,
   ZH_CN_PRODUCT_IA_REDIRECTS,
@@ -24,6 +27,63 @@ const rtcRoot = resolve(contentRoot, 'realtime-media/rtc');
 const rtmRoot = resolve(contentRoot, 'realtime-media/rtm');
 const standardFirstLevelPages = ['index', 'get-started', 'build', 'reference'];
 const standardFirstLevelPageSet = new Set(standardFirstLevelPages);
+const priorStagingRouteUrls = [
+  '/zh-CN/api-reference/rtc/restful/user-guides/call-api',
+  '/zh-CN/api-reference/rtc/restful/reference/response-code',
+  '/zh-CN/api-reference/rtc/restful/user-guides/user-privilege',
+  '/zh-CN/api-reference/rtc/restful/webhook/events',
+  '/zh-CN/realtime-media/cloud-recording/get-started/quick-start/go',
+  '/zh-CN/realtime-media/cloud-recording/get-started/quick-start/java',
+  '/zh-CN/realtime-media/cloud-recording/get-started/quick-start/nodejs',
+  '/zh-CN/realtime-media/cloud-recording/get-started/quick-start/restful-api',
+  '/zh-CN/realtime-media/rtc/build/extensions/face-capture',
+  '/zh-CN/realtime-media/rtc/build/extensions/face-capture/android',
+  '/zh-CN/realtime-media/rtc/build/extensions/face-capture/ios',
+  '/zh-CN/realtime-media/rtc/build/extensions/face-capture/macos',
+  '/zh-CN/realtime-media/rtc/build/extensions/face-capture/windows',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/overview',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/release',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection',
+  '/zh-CN/realtime-media/rtc/build/extensions/web/watermark',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/android',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/cpp',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/flutter',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/harmonyos',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/ios',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/swift',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/web',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/android',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/cpp',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/flutter',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/harmonyos',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/ios',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/swift',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/unity',
+  '/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/platform-support/web',
+  '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits',
+  '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
+  '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
+  '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/quota',
+  '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/response-code',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/basic-concept',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support/android',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support/electron',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support/ios',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/platform-support/web',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect/android',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect/electron',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect/ios',
+  '/zh-CN/solutions/flexible-classroom/reference/capabilities-and-compatibility/tech-architect/web',
+] as const;
 const allowedProductFamilyEntries: Record<string, Set<string>> = {
   'realtime-media/whiteboard': new Set(['whiteboard-sdk', 'fastboard-sdk']),
 };
@@ -875,6 +935,45 @@ function getRedirectTargetProductRoots() {
 }
 
 describe('zh-CN product IA standard', () => {
+  it('keeps every route from the prior staging manifest publishable', async () => {
+    expect(priorStagingRouteUrls).toHaveLength(55);
+    expect(new Set(priorStagingRouteUrls).size).toBe(55);
+
+    const canonicalRoutes = new Set(getContentDocsPrerenderPaths());
+    const pagesByUrl = new Map(
+      source.getPages('zh-CN').map((page) => [page.url, page]),
+    );
+    const platformPages = new Map<string, string[]>();
+
+    for (const url of priorStagingRouteUrls) {
+      if (canonicalRoutes.has(url)) {
+        continue;
+      }
+
+      const parentUrl = url.slice(0, url.lastIndexOf('/'));
+      const page = pagesByUrl.get(parentUrl);
+
+      if (page && !platformPages.has(parentUrl)) {
+        platformPages.set(parentUrl, await getPagePlatformKeys(page));
+      }
+    }
+
+    const publishedRoutes = new Set(
+      createPublishedDocsRoutes({
+        canonicalPaths: canonicalRoutes,
+        platformPages: [...platformPages].map(([url, platforms]) => ({
+          platforms,
+          url,
+        })),
+      }).map((route) => route.url),
+    );
+    const missingRoutes = priorStagingRouteUrls.filter(
+      (url) => !publishedRoutes.has(url),
+    );
+
+    expect(missingRoutes).toEqual([]);
+  });
+
   it.each(productBuildMetas)(
     'uses the confirmed title and page order for %s',
     (metaPath, expectedMeta) => {
