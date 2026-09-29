@@ -1,0 +1,110 @@
+---
+analyticsPageType: task-guide
+title: CLI quickstart
+description: Run a working Next.js video calling app in your browser in a few minutes with the Agora CLI, without writing any code.
+---
+
+Use the [Agora CLI](/en/introduction/agora-cli) to get a working video call running on your computer in a few minutes. The CLI creates an Agora project, clones an official Next.js video calling app, and writes the app's credentials for you. You then start the app and test a call between two browser tabs.
+
+To build video calling into your own app, or on another platform such as Android, iOS, or Flutter, see the [SDK quickstart](/en/realtime-media/rtc/get-started-sdk).
+
+## Prerequisites
+
+- An [Agora account](/en/introduction/account).
+- The [Agora CLI](/en/introduction/agora-cli#install-the-agora-cli).
+- [Node.js](https://nodejs.org/) 22 or 24.
+- npm, which comes with Node.js, or [pnpm](https://pnpm.io/installation).
+- [Git](https://git-scm.com/downloads).
+- A computer with a camera and a microphone, and a supported browser such as Google Chrome.
+
+## Create and run the app
+
+Sign in with the CLI, create the app, and start it locally:
+
+1. Sign in to Agora Console:
+
+    ```bash
+    agora login
+    ```
+
+    The CLI opens your browser. Sign in, then return to the terminal.
+
+1. Create the video calling app:
+
+    ```bash
+    agora init my-video-demo --template nextjs --scenario video-call --new-project
+    ```
+
+    This command creates a new Agora project named `my-video-demo` with Realtime Communication enabled, clones the app into the `my-video-demo` folder, and writes your App ID and App Certificate to `my-video-demo/.env.local`.
+
+    To use an existing Agora project, replace `--new-project` with `--project <project-name>`:
+
+    ```bash
+    agora init my-video-demo --template nextjs --scenario video-call --project my-video-demo
+    ```
+
+1. Install the dependencies and start the app using the commands that `agora init` lists:
+
+    ```bash tab="npm" tabGroup="package-manager"
+    cd my-video-demo
+    npm install --package-lock=false
+    npm run dev
+    ```
+
+    ```bash tab="pnpm" tabGroup="package-manager"
+    cd my-video-demo
+    pnpm install --frozen-lockfile
+    pnpm dev
+    ```
+
+1. Open the **Local** URL that the development server prints, for example `http://localhost:3000`.
+
+## Test the call
+
+Start and join a call from two tabs in the same browser:
+
+1. Select **Create Channel**.
+1. In **Your name**, enter a name, then select **Join Call**. When your browser asks, allow access to the camera and microphone.
+
+    You see yourself in the call.
+
+1. Select **Invite participant** to copy the invite link.
+1. Open a new tab in the same browser, paste the link, enter a different name, and select **Join Call**.
+
+    Both tabs show two participants, and each tab plays the other participant's video.
+
+:::warning[Testing notes]
+The invite link points to `localhost`, so it only works on your computer. To test from another device, deploy the app over HTTPS. See [Deployment](https://github.com/AgoraIO-Community/agora-rtc-quickstart-nextjs#deployment) in the app's README.
+
+If you start a test call with both participants on the same computer, expect the following:
+
+- **Camera**: Use two tabs in the same browser. If you open the invite link in a different browser, or another app is using your camera, the second tab joins without video and shows **Your camera is off**.
+- **Audio**: Both tabs use the same microphone and speakers. To avoid echo, wear headphones or mute one tab.
+:::
+
+## How it works
+
+The app uses the credentials and project that `agora init` set up to connect participants through Agora:
+
+- **Credentials**: The App Certificate in `.env.local` stays on the app's server and never reaches the browser.
+- **Tokens**: When a participant joins, the app's server route generates a token for that participant and channel using the App Certificate. Agora uses the token to [authenticate the user](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
+- **Media**: For each participant, the Agora RTC SDK joins the channel, publishes the camera and microphone, and plays the other participant's audio and video. Agora's SDRTN® carries the media between the tabs.
+
+## Troubleshooting
+
+If something doesn't work as expected, try the following:
+
+- If `agora init` reports `Project my-video-demo already exists`, reuse the existing Agora project by replacing `--new-project` with `--project my-video-demo`.
+- If the app doesn't start or the call doesn't connect, run `agora project doctor --feature rtc` from the app folder to check your sign-in session, the project, its credentials, and that Realtime Communication is enabled.
+- To check your Node.js version and that `.env.local` contains the App ID and App Certificate, run `npm run doctor` or `pnpm run doctor` from the app folder.
+- If a CLI command fails with an authentication error, run `agora login` again.
+
+For more CLI commands and troubleshooting, see [Agora CLI](/en/introduction/agora-cli).
+
+## Next steps
+
+After the app works, choose how to continue:
+
+- **[SDK quickstart](/en/realtime-media/rtc/get-started-sdk)**: Build a video call step by step on your platform with the Agora RTC SDK.
+- **[Voice-only quickstart](/en/realtime-media/rtc/voice-quickstart)**: Build an app that sends and receives audio only.
+- **[Use tokens](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow)**: Learn how tokens work before you move to production.
