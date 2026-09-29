@@ -5918,7 +5918,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/migration-guide.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/migration-guide.mdx':
-    '2026-08-11T07:18:33.000Z',
+    '2026-09-29T08:36:52.000Z',
   'content/docs/en/realtime-media/rtc/reference/pricing-legacy.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/reference/pricing.mdx':
