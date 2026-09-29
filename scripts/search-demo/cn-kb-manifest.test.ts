@@ -2,16 +2,28 @@ import { describe, expect, it } from 'vitest';
 import { cnKbManifest } from './cn-kb-manifest';
 
 describe('CN KB manifest', () => {
-  it('covers the representative document shapes', () => {
-    const routes = cnKbManifest.map((entry) => entry.route);
+  it('has five distinct, curated pages in each document shape', () => {
+    const groups = new Map<string, string[]>();
+    for (const entry of cnKbManifest) {
+      groups.set(entry.kind, [...(groups.get(entry.kind) ?? []), entry.route]);
+    }
 
-    expect(routes).toEqual([
-      '/zh-CN/introduction/quickstart',
-      '/zh-CN/ai/overview/product-overview',
-      '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi',
-      '/zh-CN/reference/faq/product/call_api_in_browser',
-      '/zh-CN/realtime-media/rtc/get-started/quick-start',
+    expect([...groups.keys()].sort()).toEqual([
+      'api-reference',
+      'faq',
+      'overview',
+      'platform-version',
+      'tutorial',
     ]);
+    expect(cnKbManifest).toHaveLength(25);
+    expect([...groups.values()].map((routes) => routes.length)).toEqual([
+      5, 5, 5, 5, 5,
+    ]);
+    expect(
+      cnKbManifest.some((entry) =>
+        entry.route.endsWith('/conversationalaiapi'),
+      ),
+    ).toBe(true);
   });
 
   it('contains no duplicate routes and every entry has a query fixture', () => {
@@ -19,7 +31,10 @@ describe('CN KB manifest', () => {
 
     expect(new Set(routes).size).toBe(routes.length);
     expect(cnKbManifest.every((entry) => entry.reason.length > 0)).toBe(true);
-    expect(cnKbManifest.every((entry) => entry.sourcePath.endsWith('.mdx'))).toBe(true);
+    expect(
+      cnKbManifest.every((entry) => entry.sourcePath.endsWith('.mdx')),
+    ).toBe(true);
     expect(cnKbManifest.every((entry) => entry.queryIds.length > 0)).toBe(true);
+    expect(cnKbManifest.every((entry) => entry.product.length > 0)).toBe(true);
   });
 });
