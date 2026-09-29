@@ -87,8 +87,15 @@ export function resolveRtcLongGuideLegacyTarget(
 
   params.delete('platform');
   const query = params.toString();
+  // The old React Native migration link used Flutter's numbered heading ID.
+  const hash =
+    guide === 'get-started-sdk' &&
+    matchingPlatform === 'react-native' &&
+    anchor === 'set-up-your-project-6'
+      ? '#set-up-your-project-7'
+      : location.hash;
   return {
     platform: matchingPlatform as PlatformKey,
-    url: `${location.pathname}/${matchingPlatform}${query ? `?${query}` : ''}${location.hash}`,
+    url: `${location.pathname}/${matchingPlatform}${query ? `?${query}` : ''}${hash}`,
   };
 }

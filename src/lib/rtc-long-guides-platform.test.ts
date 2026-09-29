@@ -115,7 +115,10 @@ describe('RTC long guide platform split', () => {
         '?platform=React%20Native',
         '#set-up-your-project-6',
       )?.url,
-    ).toBe(`${rtcRoot}get-started-sdk/react-native#set-up-your-project-6`);
+    ).toBe(`${rtcRoot}get-started-sdk/react-native#set-up-your-project-7`);
+    expect(resolve('get-started-sdk', '', '#set-up-your-project-6')?.platform).toBe(
+      'flutter',
+    );
     expect(resolve('voice-quickstart', '?platform=python', '')?.platform).toBe(
       'python',
     );
