@@ -68,6 +68,12 @@ const SdksCatalog = lazy(() =>
   })),
 );
 
+const RtcSdkDownloads = lazy(() =>
+  import('./RtcSdkDownloads').then((module) => ({
+    default: module.RtcSdkDownloads,
+  })),
+);
+
 const ApiReferenceCards = lazy(() =>
   import('./ApiReferenceCards').then((module) => ({
     default: module.ApiReferenceCards,
@@ -155,6 +161,7 @@ export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
     OverviewToolkits,
     RecipesCatalog,
     RecipesGallery,
+    RtcSdkDownloads,
     SdksCatalog,
     SolutionCard,
     SolutionCardGrid,
