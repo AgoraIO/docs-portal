@@ -5,6 +5,7 @@ import { useDocsSearch } from 'fumadocs-core/search/client';
 import { SearchIcon, SendIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiMarkdown } from '@/components/docs-shell/AiMarkdown';
 import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
 import {
   type FilterGroup,
@@ -770,7 +771,7 @@ function AskDocsAnswer({
 
   return (
     <div className="space-y-4 px-4 py-4 text-sm" data-testid="ask-docs-answer">
-      <div className="whitespace-pre-wrap leading-6">{state.answer}</div>
+      <AiMarkdown>{state.answer}</AiMarkdown>
       {state.citations.length > 0 ? (
         <div className="space-y-2 border-t pt-3">
           <div className="font-medium">{citationsLabel}</div>
