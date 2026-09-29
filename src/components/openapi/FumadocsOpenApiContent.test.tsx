@@ -2947,8 +2947,8 @@ describe('FumadocsOpenApiContent', () => {
                   },
                 },
               },
-            },
-          } as unknown as OpenAPIPageProps,
+            } as unknown as Document,
+          },
         }}
       />,
     );

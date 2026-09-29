@@ -137,7 +137,7 @@ const linkCases = [
     href: '/zh-CN/realtime-media/rtc/get-started/quick-start?platform=web',
     expectedTitle: '实现音视频互动',
     source:
-      'content/docs/zh-CN/realtime-media/rtc/build/extensions/image-enhancement.mdx',
+      'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement.mdx',
     target: '/zh-CN/realtime-media/rtc/get-started/quick-start',
   },
   {

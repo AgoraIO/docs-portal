@@ -7,11 +7,7 @@ import {
   RouterProvider,
 } from '@tanstack/react-router';
 import { render, screen } from '@testing-library/react';
-import type {
-  AnchorHTMLAttributes,
-  ComponentType,
-  ReactNode,
-} from 'react';
+import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
 import { describe, expect, it } from 'vitest';
 import { getMDXComponents } from './mdx';
 
@@ -54,7 +50,9 @@ describe('legacy MDX API anchors', () => {
     );
 
     expect(
-      await screen.findByRole('link', { name: 'addHighFrequencyEventListener' }),
+      await screen.findByRole('link', {
+        name: 'addHighFrequencyEventListener',
+      }),
     ).toHaveAttribute('href', href);
   });
 });
