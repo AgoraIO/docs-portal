@@ -88,6 +88,8 @@ export function createMeilisearchClient({
             ? { filter: options.filters.join(' AND ') }
             : {}),
           attributesToHighlight: ['sectionTitle', 'content'],
+          highlightPreTag: '<mark>',
+          highlightPostTag: '</mark>',
           attributesToCrop: ['content'],
           cropLength: 30,
           limit: 10,

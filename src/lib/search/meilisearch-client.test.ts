@@ -1,10 +1,14 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   createMeilisearchClient,
   normalizeMeilisearchQuery,
 } from './meilisearch-client';
 
 describe('createMeilisearchClient', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it('normalizes a section-anchor query before searching', () => {
     expect(normalizeMeilisearchQuery('  #manualsos  ')).toBe('manualsos');
     expect(normalizeMeilisearchQuery('manualSOS')).toBe('manualSOS');
@@ -55,6 +59,8 @@ describe('createMeilisearchClient', () => {
           q: 'manualSOS',
           filter: 'platform = web',
           attributesToHighlight: ['sectionTitle', 'content'],
+          highlightPreTag: '<mark>',
+          highlightPostTag: '</mark>',
           attributesToCrop: ['content'],
           cropLength: 30,
           limit: 10,
