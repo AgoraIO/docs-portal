@@ -1,6 +1,6 @@
 # CN search demo: local Meilisearch
 
-Task 3 only starts an empty Meilisearch service. The 25-document KB is not uploaded until Task 4. This service is for local development, not production or PR preview.
+The Compose service starts empty. Task 4 uploads only the 25 selected CN source documents (723 section records at the time of this demo). This service is for local development, not production or PR preview.
 
 ## Start
 
@@ -28,4 +28,16 @@ Install Docker Desktop with Docker Compose, then from the repository root:
    docker compose --env-file search-demo/.env -f search-demo/docker-compose.yml down
    ```
 
-`MEILI_HOST` and `MEILI_INDEX_UID` are reserved for the Task 4 indexer. Never use `MEILI_MASTER_KEY` in browser code. The future browser search client must use a restricted search-only key.
+`MEILI_HOST` and `MEILI_INDEX_UID` configure the local Task 4 indexer. Never use `MEILI_MASTER_KEY` in browser code. The future browser search client must use a restricted search-only key.
+
+## Index the selected KB
+
+From the repository root, after the container reports healthy:
+
+```bash
+bun run search-demo:index
+```
+
+The command reads the fixed 25-document manifest, validates the extracted public CN sections, then waits for the index creation, settings, and document-upload tasks. It uses `cn-kb-demo-v1` and upserts stable document IDs, so rerunning it does not duplicate records. A failed task exits nonzero. The source section ID is preserved in `sourceId`; the Meilisearch primary key `id` is a SHA-256 value because the original ID can contain Chinese characters and colons.
+
+You can inspect the document count in Docker Desktop's Meilisearch container or with an authenticated request to `/indexes/cn-kb-demo-v1/stats`. Golden query examples for future search evaluation live in `scripts/search-demo/fixtures/cn-kb-golden-queries.json`; they are not a claim that the UI or ranking is implemented yet. Keep the master key in the local ignored `.env`, not in browser code or screenshots.
