@@ -36,6 +36,10 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
+import {
+  createMeilisearchClient,
+  getMeilisearchSearchConfig,
+} from '@/lib/search/meilisearch-client';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
@@ -107,6 +111,9 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
+  const meilisearchConfig =
+    searchLocale === 'zh-CN' ? getMeilisearchSearchConfig() : null;
+  const remoteSearchEnabled = Boolean(algoliaConfig || meilisearchConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
   // moment ANY request settles — including a superseded one whose result it then
   // discards — which briefly reads as "settled with no results" mid-typing and
@@ -124,11 +131,25 @@ export function DocsSearchDialog({
             scope: searchScope,
             searchApiKey: algoliaSearchApiKey,
           })
-        : createOramaDocsClient({
-            pages,
-            platform: platformFilter ?? undefined,
-            scope: searchScope,
-          });
+        : meilisearchConfig
+          ? (() => {
+              const client = createMeilisearchClient(meilisearchConfig);
+              return {
+                ...client,
+                search: (query: string) =>
+                  client.searchCnDocuments(query, {
+                    filters: buildMeilisearchFilters({
+                      platform: platformFilter,
+                      scope: searchScope,
+                    }),
+                  }),
+              };
+            })()
+          : createOramaDocsClient({
+              pages,
+              platform: platformFilter ?? undefined,
+              scope: searchScope,
+            });
     return {
       ...base,
       async search(query: string) {
@@ -144,6 +165,7 @@ export function DocsSearchDialog({
     algoliaAppId,
     algoliaIndexName,
     algoliaSearchApiKey,
+    meilisearchConfig,
     pages,
     platformFilter,
     searchScope,
@@ -151,7 +173,7 @@ export function DocsSearchDialog({
   ]);
   const searchDeps = useMemo(
     () =>
-      algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+      remoteSearchEnabled
         ? [
             algoliaAppId,
             algoliaIndexName,
@@ -167,6 +189,7 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
+      remoteSearchEnabled,
       searchScope,
       searchLocale,
     ],
@@ -178,7 +201,7 @@ export function DocsSearchDialog({
   } = useDocsSearch(
     {
       client: searchClient,
-      delayMs: algoliaConfig ? SEARCH_DEBOUNCE_MS : 0,
+      delayMs: remoteSearchEnabled ? SEARCH_DEBOUNCE_MS : 0,
     },
     searchDeps,
   );
@@ -191,11 +214,11 @@ export function DocsSearchDialog({
   // the previous/initial value, which briefly flashes the empty state after a
   // keystroke. Treat the debounce window as busy so the skeleton bridges the gap.
   const [debouncePending, setDebouncePending] = useState(false);
-  // `algoliaConfig` is a fresh object every render, so depend on a stable
+  // The remote config objects are recreated on render, so depend on a stable
   // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
-  const algoliaEnabled = Boolean(algoliaConfig);
+  const remoteSearchConfigured = remoteSearchEnabled;
   useEffect(() => {
-    if (!algoliaEnabled || search.trim() === '') {
+    if (!remoteSearchConfigured || search.trim() === '') {
       setDebouncePending(false);
       return;
     }
@@ -205,7 +228,7 @@ export function DocsSearchDialog({
       SEARCH_DEBOUNCE_MS + 30,
     );
     return () => window.clearTimeout(id);
-  }, [algoliaEnabled, search]);
+  }, [remoteSearchConfigured, search]);
   useEffect(() => {
     if (isLoading) {
       setDebouncePending(false);
@@ -294,7 +317,7 @@ export function DocsSearchDialog({
         setSearch('');
       }
 
-      if (algoliaConfig || !nextOpen || pages.length > 0) {
+      if (remoteSearchEnabled || !nextOpen || pages.length > 0) {
         return;
       }
 
@@ -319,7 +342,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, pages.length, searchLocale, setSearch],
+    [loadPages, pages.length, remoteSearchEnabled, searchLocale, setSearch],
   );
 
   useEffect(() => {
@@ -440,7 +463,7 @@ export function DocsSearchDialog({
           placeholder={t('docs.searchPlaceholder')}
           value={search}
         />
-        {algoliaConfig ? (
+        {remoteSearchEnabled ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
             {productScopes.length > 0 ? (
               <SearchFilterDropdown
@@ -757,4 +780,17 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
+}
+
+function buildMeilisearchFilters({
+  platform,
+  scope,
+}: {
+  platform: PlatformKey | null;
+  scope?: { field: 'product' | 'tab'; value: string };
+}) {
+  return [
+    platform ? `platform = ${JSON.stringify(platform)}` : undefined,
+    scope ? `${scope.field} = ${JSON.stringify(scope.value)}` : undefined,
+  ].filter((filter): filter is string => Boolean(filter));
 }

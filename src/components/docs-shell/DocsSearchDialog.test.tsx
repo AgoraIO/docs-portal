@@ -17,6 +17,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
+import {
+  createMeilisearchClient,
+  getMeilisearchSearchConfig,
+} from '@/lib/search/meilisearch-client';
 import { DocsSearchDialog } from './DocsSearchDialog';
 
 vi.mock('@/lib/search/algolia-client', () => ({
@@ -24,6 +28,15 @@ vi.mock('@/lib/search/algolia-client', () => ({
     deps: ['mock-algolia'],
     search: vi.fn(),
   })),
+}));
+
+vi.mock('@/lib/search/meilisearch-client', () => ({
+  createMeilisearchClient: vi.fn(() => ({
+    deps: ['mock-meilisearch'],
+    search: vi.fn(),
+    searchCnDocuments: vi.fn(),
+  })),
+  getMeilisearchSearchConfig: vi.fn(() => null),
 }));
 
 const loadPages = async () => [
@@ -928,5 +941,73 @@ describe('DocsSearchDialog', () => {
     expect(
       screen.getAllByText('Voice Activity Detection').length,
     ).toBeGreaterThan(0);
+  });
+
+  it('uses Meilisearch for CN and navigates to the matched section anchor', async () => {
+    vi.mocked(createMeilisearchClient).mockReturnValue({
+      deps: ['mock-meilisearch'],
+      search: vi.fn(),
+      searchCnDocuments: vi.fn().mockResolvedValue([
+        {
+          content: '<mark>manualSOS</mark>',
+          id: 'manual-sos',
+          objectType: 'docs',
+          path: ['Conversational AI API', 'manualSOS'],
+          platform: ['web'],
+          product: 'conversational-ai',
+          snippet: '手动触发 <mark>SOS</mark>。',
+          title: '<mark>manualSOS</mark>',
+          type: 'page',
+          url: '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos',
+        },
+      ]),
+    });
+    vi.mocked(getMeilisearchSearchConfig).mockReturnValue({
+      host: 'http://127.0.0.1:7700',
+      indexUid: 'cn-kb-demo-v1',
+      searchOnlyKey: 'search-only-key',
+    });
+
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={vi.fn().mockRejectedValue(new Error('not needed'))}
+            locale="zh-CN"
+            mode="desktop"
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'manualSOS' } },
+    );
+
+    expect(getMeilisearchSearchConfig).toHaveBeenCalled();
+    expect(createMeilisearchClient).toHaveBeenCalled();
+    const manualSosLabels = await screen.findAllByText('manualSOS');
+    expect(manualSosLabels.length).toBeGreaterThan(0);
+    fireEvent.click(manualSosLabels[0]);
+    await waitFor(() => {
+      expect(navigateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos',
+        }),
+      );
+    });
   });
 });

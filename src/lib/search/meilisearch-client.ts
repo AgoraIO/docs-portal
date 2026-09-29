@@ -34,6 +34,16 @@ export type MeilisearchClientConfig = {
   searchOnlyKey: string;
 };
 
+export function getMeilisearchSearchConfig(): MeilisearchClientConfig | null {
+  const env = import.meta.env as Record<string, string | undefined>;
+  const host = env.VITE_MEILI_HOST;
+  const indexUid = env.VITE_MEILI_INDEX_UID;
+  const searchOnlyKey = env.VITE_MEILI_SEARCH_API_KEY;
+
+  if (!host || !indexUid || !searchOnlyKey) return null;
+  return { host, indexUid, searchOnlyKey };
+}
+
 export function createMeilisearchClient({
   host,
   indexUid,
