@@ -44,6 +44,10 @@ export function getMeilisearchSearchConfig(): MeilisearchClientConfig | null {
   return { host, indexUid, searchOnlyKey };
 }
 
+export function normalizeMeilisearchQuery(query: string): string {
+  return query.trim().replace(/^#+/, '');
+}
+
 export function createMeilisearchClient({
   host,
   indexUid,
@@ -67,7 +71,8 @@ export function createMeilisearchClient({
     query: string,
     options: { filters?: string[] } = {},
   ): Promise<SearchResult[]> => {
-    if (!query.trim()) return [];
+    const normalizedQuery = normalizeMeilisearchQuery(query);
+    if (!normalizedQuery) return [];
 
     const response = await fetch(
       `${host.replace(/\/$/, '')}/indexes/${encodeURIComponent(indexUid)}/search`,
@@ -78,7 +83,7 @@ export function createMeilisearchClient({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          q: query,
+          q: normalizedQuery,
           ...(options.filters?.length
             ? { filter: options.filters.join(' AND ') }
             : {}),

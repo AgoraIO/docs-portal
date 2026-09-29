@@ -113,7 +113,8 @@ export function DocsSearchDialog({
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
   const meilisearchConfig =
     searchLocale === 'zh-CN' ? getMeilisearchSearchConfig() : null;
-  const remoteSearchEnabled = Boolean(algoliaConfig || meilisearchConfig);
+  const remoteSearchEnabled =
+    searchLocale === 'zh-CN' || Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
   // moment ANY request settles — including a superseded one whose result it then
   // discards — which briefly reads as "settled with no results" mid-typing and
@@ -145,11 +146,18 @@ export function DocsSearchDialog({
                   }),
               };
             })()
-          : createOramaDocsClient({
-              pages,
-              platform: platformFilter ?? undefined,
-              scope: searchScope,
-            });
+          : searchLocale === 'zh-CN'
+            ? {
+                deps: ['missing-cn-meilisearch-config'],
+                search: async () => {
+                  throw new Error('CN Meilisearch is not configured');
+                },
+              }
+            : createOramaDocsClient({
+                pages,
+                platform: platformFilter ?? undefined,
+                scope: searchScope,
+              });
     return {
       ...base,
       async search(query: string) {

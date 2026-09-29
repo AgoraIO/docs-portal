@@ -1010,4 +1010,41 @@ describe('DocsSearchDialog', () => {
       );
     });
   });
+
+  it('does not silently load the Orama page index when CN Meilisearch is missing', async () => {
+    vi.mocked(getMeilisearchSearchConfig).mockReturnValue(null);
+    const loadPagesSpy = vi.fn().mockResolvedValue(loadPages());
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPagesSpy}
+            locale="zh-CN"
+            mode="desktop"
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'manualSOS' } },
+    );
+
+    expect(
+      (await screen.findAllByText('搜索索引不可用。')).length,
+    ).toBeGreaterThan(0);
+    expect(loadPagesSpy).not.toHaveBeenCalled();
+  });
 });

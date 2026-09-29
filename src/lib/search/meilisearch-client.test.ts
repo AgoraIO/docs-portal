@@ -1,7 +1,15 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createMeilisearchClient } from './meilisearch-client';
+import {
+  createMeilisearchClient,
+  normalizeMeilisearchQuery,
+} from './meilisearch-client';
 
 describe('createMeilisearchClient', () => {
+  it('normalizes a section-anchor query before searching', () => {
+    expect(normalizeMeilisearchQuery('  #manualsos  ')).toBe('manualsos');
+    expect(normalizeMeilisearchQuery('manualSOS')).toBe('manualSOS');
+  });
+
   it('maps section hits, highlights, and filters without exposing a master key', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
