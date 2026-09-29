@@ -6,10 +6,10 @@ production URLs were checked with GET requests on September 28, 2026. Internal
 redirect targets were checked against the current local docs build; external
 destinations were checked directly.
 
-Forty-eight URLs receive exact Vercel 301 rules. Two URLs already resolve to
-published pages in the current repository and return HTTP 200 from the local
-docs build, so they intentionally have no redirect rule; their production 404s
-are resolved when this content build is deployed.
+All 50 URLs receive exact Vercel 301 rules. The two IoT paths at ranks 23 and
+35 no longer have source pages or section metadata in the current `main`
+branch, so they use low-confidence product-level fallbacks rather than
+self-redirects.
 
 | # | Pageviews | Sessions | Source URL path | Action / destination | Confidence |
 |---:|---:|---:|---|---|---|
@@ -35,7 +35,7 @@ are resolved when this content build is deployed.
 | 20 | 43 | 42 | `/en/solutions/agora-analytics/build/integrate-and-embed/datadog-integration` | 301 → `/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration` | High — same article |
 | 21 | 42 | 41 | `/en/solutions/agora-analytics/product-overview` | 301 → `/en/realtime-media/agora-analytics/product-overview` | High — same article |
 | 22 | 34 | 33 | `/en/solutions/iot/product-overview` | 301 → `/en/realtime-media/iot/product-overview` | High — same article |
-| 23 | 33 | 29 | `/en/realtime-media/iot/reference/licensing` | Current route returns 200 locally; no redirect | High — content route exists in current build |
+| 23 | 33 | 29 | `/en/realtime-media/iot/reference/licensing` | 301 → `/en/realtime-media/iot/product-overview` | Low — current branch no longer contains this article |
 | 24 | 33 | 32 | `/en/realtime-media/fusion-cdn` | 301 → `/en/realtime-media/media-push/get-started/enable-media-push` | Low — retired product; closest current setup guide |
 | 25 | 32 | 32 | `/en/solutions/iot/quickstart` | 301 → `/en/realtime-media/iot/quickstart` | High — same quickstart |
 | 26 | 30 | 30 | `/en/api-reference/faq/integration/log` | 301 → `/en/api-reference/faq/integration/set_log_file` | High — matching logging FAQ |
@@ -47,7 +47,7 @@ are resolved when this content build is deployed.
 | 32 | 22 | 11 | `/en/Agora%20Platform/ticket` | 301 → `https://agora-ticket.agora.io/` | High — official support ticket portal |
 | 33 | 22 | 20 | `/en/video-calling/get-started/authentication-workflow` | 301 → `/en/realtime-media/video/build/authenticate-users/authentication-workflow` | High — same topic |
 | 34 | 18 | 13 | `/en/Agora%20Platform/community` | 301 → `/en/introduction/community-resources` | Medium — current community resources entry |
-| 35 | 18 | 14 | `/en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming` | Current route returns 200 locally; no redirect | High — content route exists in current build |
+| 35 | 18 | 14 | `/en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming` | 301 → `/en/realtime-media/iot/quickstart` | Low — current branch no longer contains this article or section |
 | 36 | 18 | 16 | `/en/Agora%20Platform/token` | 301 → `/en/introduction/account` | High — account setup and token instructions |
 | 37 | 17 | 15 | `/en/Agora%20Platform/terms` | 301 → `https://www.agora.io/en/terms-of-service/` | High — official terms page |
 | 38 | 16 | 15 | `/en/Agora%20Platform/firewall` | 301 → `/en/introduction/firewall` | High — current firewall guidance |

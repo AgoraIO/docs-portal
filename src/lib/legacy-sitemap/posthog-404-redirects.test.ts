@@ -85,10 +85,18 @@ const reviewedRedirects = [
     '/en/realtime-media/iot/product-overview',
   ],
   [
+    '/en/realtime-media/iot/reference/licensing',
+    '/en/realtime-media/iot/product-overview',
+  ],
+  [
     '/en/realtime-media/fusion-cdn',
     '/en/realtime-media/media-push/get-started/enable-media-push',
   ],
   ['/en/solutions/iot/quickstart', '/en/realtime-media/iot/quickstart'],
+  [
+    '/en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming',
+    '/en/realtime-media/iot/quickstart',
+  ],
   [
     '/en/api-reference/faq/integration/log',
     '/en/api-reference/faq/integration/set_log_file',
@@ -151,11 +159,6 @@ const reviewedRedirects = [
   ],
 ] as const;
 
-const existingRoutes = [
-  '/en/realtime-media/iot/reference/licensing',
-  '/en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming',
-] as const;
-
 describe('PostHog-discovered English 404 redirects', () => {
   const baseConfig = JSON.parse(readFileSync('vercel.base.json', 'utf8')) as {
     redirects: VercelRedirect[];
@@ -168,23 +171,12 @@ describe('PostHog-discovered English 404 redirects', () => {
   ) as { routes: Array<{ routePath: string }> };
 
   it('keeps every reviewed 301 rule in the source and generated Vercel config', () => {
-    expect(reviewedRedirects).toHaveLength(48);
+    expect(reviewedRedirects).toHaveLength(50);
 
     for (const [source, destination] of reviewedRedirects) {
       const expected = { source, destination, statusCode: 301 };
       expect(baseConfig.redirects).toContainEqual(expected);
       expect(generatedConfig.redirects).toContainEqual(expected);
-    }
-  });
-
-  it('does not add redirects for pages already available in the current docs build', () => {
-    for (const source of existingRoutes) {
-      expect(
-        baseConfig.redirects.some((redirect) => redirect.source === source),
-      ).toBe(false);
-      expect(
-        docsInventory.routes.some((route) => route.routePath === source),
-      ).toBe(true);
     }
   });
 
