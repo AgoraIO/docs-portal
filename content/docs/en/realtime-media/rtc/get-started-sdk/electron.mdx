@@ -1,0 +1,772 @@
+---
+title: Quickstart (Electron)
+---
+
+This page provides a step-by-step guide on how to create a basic real-time app using the Agora RTC SDK. The same steps apply whether you're building voice calling, video calling, interactive live streaming, or broadcast streaming — only a few configuration values change based on your use case.
+
+## Understand the tech [#understand-the-tech-5]
+
+To start a real-time session, implement the following steps in your app:
+
+- **Initialize the engine**: Before calling other APIs, create and initialize an engine instance.
+
+- **Join a channel**: Call methods to create and join a channel.
+
+  - **Join as a host**: A live streaming event has one or more hosts. A host publishes audio and video to the channel and can also subscribe to streams from other hosts.
+
+  - **Join as audience**: Audience members can only subscribe to streams published by hosts.
+
+  :::info[Note]
+  For the voice calling and video calling use cases, each user joins as a host.
+  :::
+
+- **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
+
+- For streaming applications, set the latency level based on your use case:
+
+  - **Interactive live streaming**: Optimized for real-time interaction with ultra-low latency. Use this when hosts and audience need to interact quickly, such as in live Q&A sessions, interactive classrooms, or auctions.
+
+  - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
+
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+
+## Prerequisites [#prerequisites-5]
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
+- [Node.js](https://nodejs.org/en/download/) 14 or higher.
+
+## Set up your project [#set-up-your-project-5]
+
+1. Create a new directory for your Electron project in a local folder. Add the following files to the root of the project directory:
+
+    - `package.json`: Manages project dependencies and scripts.
+    - `index.html`: Defines the app's user interface.
+    - `main.js`: The main process entry point.
+    - `renderer.js`: The renderer process script, responsible for interacting with the Agora Electron SDK.
+
+1. Create a user interface for your app based on your use-case.
+
+    A basic user interface consists of an element for local video and an element for remote video. Refer to [Create a user interface](#create-a-user-interface-5) to get a bare bones sample layout.
+
+### Install the SDK [#install-the-sdk-5]
+
+<Tabs defaultValue="new">
+<TabsList>
+  <TabsTrigger value="new">npm integration</TabsTrigger>
+  <TabsTrigger value="manual">Manual Integration</TabsTrigger>
+</TabsList>
+<TabsContent value="new">
+
+Add the RTC SDK to your project using `npm`:
+
+1. Configure `package.json`
+
+    * macOS
+
+        ```json
+        {
+          "name": "electron-demo-app",
+          "version": "0.1.0",
+          "author": "your name",
+          "description": "My Electron app",
+          "main": "main.js",
+          "scripts": {
+            "start": "electron ."
+          },
+          "agora_electron": {
+            "platform": "darwin",
+            "prebuilt": true
+          },
+          "dependencies": {
+            "agora-electron-sdk": "latest"
+          },
+          "devDependencies": {
+            "electron": "latest"
+          }
+        }
+        ```
+
+    * Windows
+
+        ```json
+        {
+          "name": "electron-demo-app",
+          "version": "0.1.0",
+          "author": "your name",
+          "description": "My Electron app",
+          "main": "main.js",
+          "scripts": {
+            "start": "electron ."
+          },
+          "agora_electron": {
+            "platform": "win32",
+            "prebuilt": true,
+            "arch": "ia32"
+          },
+          "dependencies": { "agora-electron-sdk": "latest" },
+          "devDependencies": {"electron": "latest" }
+        }
+        ```
+
+        **Configuration parameters**
+
+        - `agora-electron-sdk`: Version number of the Agora Electron SDK. Set to latest for the most recent version, or specify a version number. See [`agora-electron-sdk`](https://www.npmjs.com/package/agora-electron-sdk) on npm for available versions.
+        - `electron`: Electron version number. Versions 5.0.0 and above are supported. For macOS devices with M1 chips, use version 11.0.0 or higher.
+        - `platform` (Optional): Target platform. Set to `darwin` for macOS or `win32` for Windows.
+        - `prebuilt` (Optional): Set to `true` by default to prevent compatibility issues between Electron, Node.js, and the SDK.
+        - `arch` (Optional): Target architecture. Defaults to your system architecture.
+
+    :::info[Note]
+    Different versions of Electron have different environment requirements. If you see errors due to a mismatched environment when running the project, refer to the official [Electron documentation](https://releases.electronjs.org/releases/stable) to choose the appropriate Electron and Node.js versions.
+    :::
+
+1. To install the dependencies, open a terminal in your project root directory and run the following commands::
+
+    * macOS
+
+        ```bash
+        npm install
+        ```
+
+    * Windows
+
+        ```bash
+        npm install -D --arch=ia32 electron
+        npm install
+        ```
+
+        :::info[Note]
+        - On Windows, you must first install the 32-bit version of Electron by running `npm install -D --arch=ia32 electron`, and then run `npm install`. Otherwise, you may encounter the error: “Not a valid Win32 application.”
+
+        - If a `node_modules` folder exists in the project root directory, delete it before running `npm install` to avoid potential errors.
+        :::
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+Compile the latest SDK from the [Electron SDK repository](https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/) and integrate it into your application.
+
+</TabsContent>
+
+</Tabs>
+
+## Implement Realtime Communication [#implement-realtime-communication-5]
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
+
+The following figure illustrates the essential steps:
+
+<Accordions>
+<Accordion title="Quick start sequence">
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
+
+This guide includes [complete sample code](#complete-sample-code-5) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
+
+### Set up the main process [#set-up-the-main-process]
+
+The `main.js` file is the entry point for your Electron application. It defines the main process, which is responsible for creating and managing browser windows. This script initializes the app, loads the UI from `index.html`, and ensures proper behavior across platforms.
+
+```js
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+
+// If using Electron 9.x or later, set allowRendererProcessReuse to false
+app.allowRendererProcessReuse = false;
+
+function createWindow() {
+    // Create the browser window
+    const mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            // preload: path.join(__dirname, "renderer.js"),
+            // Enable Node integration and disable context isolation
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+    });
+
+    // Load the contents of the index.html file
+    mainWindow.loadFile("./index.html");
+    // Open the Developer Tools
+    mainWindow.webContents.openDevTools();
+}
+
+// Manage the browser window for the Electron app
+app.whenReady().then(() => {
+    createWindow();
+    // On macOS, create a new window if none are open
+    app.on("activate", function () {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+});
+
+// Quit the Electron app when all windows are closed (except on macOS)
+app.on("window-all-closed", function () {
+    if (process.platform !== "darwin") app.quit();
+});
+```
+
+### Handle permissions [#handle-permissions-3]
+
+Perform this step only when the target platform is macOS. Starting with macOS v10.14, you must check and obtain permission before accessing the camera or microphone. Use Electron’s `askForMediaAccess` method to request these permissions from the user.
+
+Add the following code to the `main.js` file:
+
+```js
+// Check and request device permissions
+async function checkAndApplyDeviceAccessPrivilege() {
+    // Check and request camera permission
+    const cameraPrivilege = systemPreferences.getMediaAccessStatus('camera');
+    console.log(`Camera privilege before applying: ${cameraPrivilege}`);
+    if (cameraPrivilege !== 'granted') {
+        await systemPreferences.askForMediaAccess('camera');
+        console.log('Requested camera access from user');
+    }
+
+    // Check and request microphone permission
+    const micPrivilege = systemPreferences.getMediaAccessStatus('microphone');
+    console.log(`Microphone privilege before applying: ${micPrivilege}`);
+    if (micPrivilege !== 'granted') {
+        await systemPreferences.askForMediaAccess('microphone');
+        console.log('Requested microphone access from user');
+    }
+}
+
+checkAndApplyDeviceAccessPrivilege();
+```
+
+### Import dependencies [#import-dependencies]
+
+Import the modules and functions required to build the app using RTC SDK. Add the following code to `renderer.js`:
+
+```js
+const {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+    VideoSourceType,
+    VideoViewSetupMode
+} = require("agora-electron-sdk");
+```
+
+### Specify connection parameters [#specify-connection-parameters]
+
+Provide the App ID, temporary token, and the channel name you used when generating the token. The engine uses these values to initialize and join the channel.
+
+```json
+// Enter your App ID
+const APPID = "<-- Insert App Id -->";
+// Enter your temporary token
+let token = "<-- Insert Token -->";
+// Enter the channel name used when generating the token
+const channel = "<-- Insert Channel Name -->";
+// Specify a unique user ID for this session
+let uid = 123;
+```
+
+### Initialize the engine [#initialize-the-engine-4]
+
+For real-time communication, create an `IRtcEngine` object by calling `createAgoraRtcEngine` and then call `initialize` with `RtcEngineContext` to specify the [App ID](/en/introduction/account#get-the-app-id-and-app-certificate). Call `registerEventHandler` to register a custom [event handler](#register-event-handlers) for managing user interactions within the channel.
+
+```js
+let rtcEngine;
+const os = require("os");
+const path = require("path");
+const sdkLogPath = path.resolve(os.homedir(), "./test.log");
+
+// Create RtcEngine instance
+rtcEngine = createAgoraRtcEngine();
+
+// Initialize RtcEngine instance
+rtcEngine.initialize({
+    appId: APPID,
+    logConfig: { filePath: sdkLogPath }
+});
+```
+
+### Enable the video module [#enable-the-video-module-4]
+
+Call the `enableVideo` method to enable the video module, and then call `startPreview` to start the local video preview.
+
+```js
+// Enable the video module
+rtcEngine.enableVideo();
+// Start the local video preview
+rtcEngine.startPreview();
+```
+
+### Join a channel [#join-a-channel-5]
+
+To join a channel, call `joinChannel` with the following parameters:
+
+- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
+
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
+
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
+
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
+
+Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevelType` according to your use case:
+
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|--------------|----------------|
+| Voice calling | `ChannelProfileCommunication` | `ClientRoleBroadcaster` | N/A |
+| Video calling | `ChannelProfileCommunication` | `ClientRoleBroadcaster` | N/A |
+| Interactive live streaming | `ChannelProfileLiveBroadcasting` | `ClientRoleBroadcaster` or `ClientRoleAudience` | `AudienceLatencyLevelUltraLowLatency` (default) |
+| Broadcast streaming | `ChannelProfileLiveBroadcasting` | `ClientRoleBroadcaster` or `ClientRoleAudience` | `AudienceLatencyLevelLowLatency` |
+
+:::info[Note]
+- Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
+- Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
+- The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
+:::
+
+The following example shows the configuration for interactive live streaming with the broadcaster role:
+
+```js
+// Join the channel using a temporary token
+rtcEngine.joinChannel(token, channel, uid, {
+    // Set the channel profile according to your use case (see table above)
+    channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+    // Set the user role to ClientRoleBroadcaster (host) or ClientRoleAudience according to your use case
+    clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+    // Only takes effect when clientRoleType is ClientRoleAudience
+    audienceLatencyLevelType: AudienceLatencyLevelType.AudienceLatencyLevelLowLatency,
+    // Publish audio collected from the microphone
+    publishMicrophoneTrack: true,
+    // Publish video collected from the camera
+    publishCameraTrack: true,
+    // Automatically subscribe to all audio streams
+    autoSubscribeAudio: true,
+    // Automatically subscribe to all video streams
+    autoSubscribeVideo: true,
+});
+```
+
+### Register event handlers [#register-event-handlers]
+
+Call the `registerEventHandler` method to register the following callback events:
+
+- `onJoinChannelSuccess`: Triggered when the local user successfully joins a channel. After joining, call `setupLocalVideo` to configure the local video window.
+- `onUserJoined`: Triggered when a remote user joins the current channel. After the remote user joins, call `setupRemoteVideo` to configure the remote video window.
+- `onUserOffline`: Triggered when a remote user leaves the current channel. After the remote user leaves, call `setupRemoteVideo` to close the remote video window.
+
+```js
+const EventHandles = {
+    // Listen for the local user joining the channel
+    onJoinChannelSuccess: ({ channelId, localUid }, elapsed) => {
+        console.log('Successfully joined channel: ' + channelId);
+        // After the local user joins the channel, set up the local video view
+        rtcEngine.setupLocalVideo({
+             sourceType: VideoSourceType.VideoSourceCameraPrimary,
+             uid: uid,
+             view: localVideoContainer,
+             setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+        });
+    },
+
+    // Listen for remote users joining the channel
+    onUserJoined: ({ channelId, localUid }, remoteUid, elapsed) => {
+        console.log('Remote user ' + remoteUid + ' joined');
+        // After a remote user joins the channel, set up the remote video view
+        rtcEngine.setupRemoteVideo(
+            {
+                sourceType: VideoSourceType.VideoSourceRemote,
+                uid: remoteUid,
+                view: remoteVideoContainer,
+                setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+            },
+            { channelId },
+        );
+    },
+
+    // Listen for users leaving the channel
+    onUserOffline: ( { channelId, localUid }, remoteUid, reason ) => {
+        console.log('Remote user ' + remoteUid + ' left the channel');
+        // After a remote user leaves the channel, remove the remote video view
+        rtcEngine.setupRemoteVideo(
+            {
+                sourceType: VideoSourceType.VideoSourceRemote,
+                uid: remoteUid,
+                view: remoteVideoContainer,
+                setupMode: VideoViewSetupMode.VideoViewSetupRemove,
+            },
+        );
+    },
+};
+
+// Register the event handler
+rtcEngine.registerEventHandler(EventHandles);
+```
+
+:::info[Note]
+To ensure that you receive all RTC SDK events, set the engine event handler before joining a channel.
+:::
+
+### Display the local video [#display-the-local-video-5]
+To display the local video:
+
+```js
+// Set up the local video view
+rtcEngine.setupLocalVideo({
+      sourceType: VideoSourceType.VideoSourceCameraPrimary,
+      uid: uid,
+      view: localVideoContainer,
+      setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+});
+```
+
+### Display remote video [#display-remote-video-5]
+
+To display the remote video, call `setupRemoteVideo` to configure the remote video feed.
+
+```js
+// Set up the remote video view
+rtcEngine.setupRemoteVideo(
+    {
+        sourceType: VideoSourceType.VideoSourceRemote,
+        uid: remoteUid,
+        view: remoteVideoContainer,
+        setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+    },
+    { channelId },
+);
+
+// Remove the remote video view
+rtcEngine.setupRemoteVideo(
+    {
+        sourceType: VideoSourceType.VideoSourceRemote,
+        uid: remoteUid,
+        view: remoteVideoContainer,
+        setupMode: VideoViewSetupMode.VideoViewSetupRemove,
+    },
+);
+```
+
+Call this method when the client receives the `onUserJoined` callback.
+
+### Start and close the app [#start-and-close-the-app-3]
+
+When a user launches your app, start Realtime Communication. When a user closes the app, stop Realtime Communication and release resources.
+
+1. To start Realtime Communication, [initialize the engine](#initialize-the-engine-4), [display the local video](#display-the-local-video-5) and [join a channel](#join-a-channel-5).
+
+2. When Realtime Communication ends, leave the channel and clean up resources:
+
+    ```javascript
+    // Stop the preview
+    rtcEngine.stopPreview();
+    // Leave the channel
+    rtcEngine.leaveChannel();
+    ```
+
+    When you no longer need to interact, unregister the event handler and call `release` to release engine resources.
+
+    ```javascript
+    // Unregister the event handler
+    rtcEngine.unregisterEventHandler(EventHandles);
+    // Release the engine
+    rtcEngine.release();
+    ```
+
+    :::caution[caution]
+    After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine instance. See [Initialize the engine](#initialize-the-engine-4) for details.
+    :::
+
+### Complete sample code [#complete-sample-code-5]
+
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Replace the entire contents of the `main.js` and `renderer.js` with the following code samples:
+
+### `main.js` [#mainjs]
+
+<Accordions>
+<Accordion title="Complete sample code for Realtime Communication">
+```javascript
+const { app, BrowserWindow, systemPreferences } = require("electron");
+const path = require("path");
+
+// If using Electron 9.x or later, set allowRendererProcessReuse to false
+app.allowRendererProcessReuse = false;
+
+// Check and request device permissions (macOS only)
+async function checkAndApplyDeviceAccessPrivilege() {
+    if (process.platform === "darwin") {
+        // Check and request camera permission
+        const cameraPrivilege = systemPreferences.getMediaAccessStatus('camera');
+        console.log(`Camera privilege before applying: ${cameraPrivilege}`);
+        if (cameraPrivilege !== 'granted') {
+            await systemPreferences.askForMediaAccess('camera');
+            console.log('Requested camera access from user');
+        }
+
+        // Check and request microphone permission
+        const micPrivilege = systemPreferences.getMediaAccessStatus('microphone');
+        console.log(`Microphone privilege before applying: ${micPrivilege}`);
+        if (micPrivilege !== 'granted') {
+            await systemPreferences.askForMediaAccess('microphone');
+            console.log('Requested microphone access from user');
+        }
+    }
+}
+
+function createWindow() {
+    // Create a browser window
+    const mainWindow = new BrowserWindow({
+        width: 800,
+        height: 600,
+        webPreferences: {
+            // preload: path.join(__dirname, "renderer.js"),
+            // Set nodeIntegration to true and contextIsolation to false
+            nodeIntegration: true,
+            contextIsolation: false,
+        },
+    });
+
+    // Load the content of the index.html file
+    mainWindow.loadFile("./index.html");
+    // Open Developer Tools
+    mainWindow.webContents.openDevTools();
+}
+
+// Manage the browser window for the Electron app
+app.whenReady().then(async () => {
+    await checkAndApplyDeviceAccessPrivilege();
+    createWindow();
+
+    // Create a new window if none are open (macOS specific)
+    app.on("activate", function () {
+        if (BrowserWindow.getAllWindows().length === 0) {
+            createWindow();
+        }
+    });
+});
+
+// Quit the Electron app when all windows are closed (Windows specific)
+app.on("window-all-closed", function () {
+    if (process.platform !== "darwin") app.quit();
+});
+```
+
+### `renderer.js` [#rendererjs]
+
+```javascript
+const {
+    createAgoraRtcEngine,
+    ChannelProfileType,
+    ClientRoleType,
+    VideoSourceType,
+    VideoViewSetupMode,
+    } = require("agora-electron-sdk");
+
+let rtcEngine;
+let localVideoContainer;
+let remoteVideoContainer;
+// Enter your App ID
+const APPID = "<-- Insert App Id -->";
+// Enter your temporary token
+let token = "<-- Insert Token -->";
+// Enter the channel name used when generating the token
+const channel = "<-- Insert Channel Name -->";
+// User ID, must be unique within the channel
+let uid = 123;
+
+const EventHandles = {
+    // Listen for the local user joining the channel
+    onJoinChannelSuccess: ({ channelId, localUid }, elapsed) => {
+        console.log('Successfully joined channel: ' + channelId);
+        // After the local user joins the channel, set up the local video window
+        rtcEngine.setupLocalVideo({
+             sourceType: VideoSourceType.VideoSourceCameraPrimary,
+             uid: uid,
+             view: localVideoContainer,
+             setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+        });
+    },
+
+    // Listen for remote users joining the channel
+    onUserJoined: ({ channelId, localUid }, remoteUid, elapsed) => {
+        console.log('Remote user ' + remoteUid + ' joined');
+        // After the remote user joins the channel, set up the remote video window
+        rtcEngine.setupRemoteVideo(
+            {
+                sourceType: VideoSourceType.VideoSourceRemote,
+                uid: remoteUid,
+                view: remoteVideoContainer,
+                setupMode: VideoViewSetupMode.VideoViewSetupAdd,
+            },
+            { channelId },
+        );
+    },
+
+    // Listen for users leaving the channel
+    onUserOffline: ( { channelId, localUid }, remoteUid, reason ) => {
+        console.log('Remote user ' + remoteUid + ' left the channel');
+        // After the remote user leaves the channel, remove the remote video window
+        rtcEngine.setupRemoteVideo(
+            {
+                sourceType: VideoSourceType.VideoSourceRemote,
+                uid: remoteUid,
+                view: remoteVideoContainer,
+                setupMode: VideoViewSetupMode.VideoViewSetupRemove,
+            },
+        );
+    },
+};
+
+window.onload = () => {
+    const os = require("os");
+    const path = require("path");
+    localVideoContainer = document.getElementById("join-channel-local-video");
+    remoteVideoContainer = document.getElementById("join-channel-remote-video");
+    const sdkLogPath = path.resolve(os.homedir(), "./test.log");
+
+    // Create an instance of RtcEngine
+    rtcEngine = createAgoraRtcEngine();
+
+    // Initialize the RtcEngine instance
+    rtcEngine.initialize({
+        appId: APPID,
+        logConfig: { filePath: sdkLogPath }
+    });
+
+    // Register the event callbacks
+    rtcEngine.registerEventHandler(EventHandles);
+
+    // Enable the video module
+    rtcEngine.enableVideo();
+
+    // Start local video preview
+    rtcEngine.startPreview();
+
+    // Join the channel using a temporary token
+    rtcEngine.joinChannel(token, channel, uid, {
+        // Set the channel profile according to your use case (see the table in Join a channel)
+        channelProfile: ChannelProfileType.ChannelProfileLiveBroadcasting,
+        // Set the user role to ClientRoleBroadcaster (host) or ClientRoleAudience according to your use case
+        clientRoleType: ClientRoleType.ClientRoleBroadcaster,
+        // Only takes effect when clientRoleType is ClientRoleAudience
+        audienceLatencyLevelType: AudienceLatencyLevelType.AudienceLatencyLevelLowLatency,
+        // Publish audio captured by the microphone
+        publishMicrophoneTrack: true,
+        // Publish video captured by the camera
+        publishCameraTrack: true,
+        // Automatically subscribe to all audio streams
+        autoSubscribeAudio: true,
+        // Automatically subscribe to all video streams
+        autoSubscribeVideo: true,
+    });
+};
+```
+</Accordion>
+</Accordions>
+
+:::info[Note]
+- In `renderer.js`, replace the values for `APPID`, `token`, and `channel` with your App ID, the temporary token from Agora Console, and the channel name you used to generate the token.
+- If you're targeting macOS v10.14 or later, add the device permission code to `main.js`. For more details, see [Get device permissions](#set-up-the-main-process).
+:::
+
+To test the complete code, see [Test the sample code](#test-the-sample-code-5).
+
+### Create a user interface [#create-a-user-interface-5]
+
+To connect the sample code to your existing UI, ensure that your `index.html` file includes the HTML elements used to [Display the local video](#display-the-local-video-5) and [Display remote video](#display-remote-video-5).
+
+Alternatively, use the following sample to create a minimal interface. Add the following code to `index.html`:
+
+### Sample code to create the user interface [#sample-code-to-create-the-user-interface-4]
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Electron Quickstart</title>
+  </head>
+  <body>
+    <h1>Electron Quickstart</h1>
+    <!-- Add the local video view to the interface -->
+    <div
+      id="join-channel-local-video"
+      style="width: 300px; height: 300px; float: left"
+    ></div>
+    <!-- Add the remote video view to the interface -->
+    <div
+      id="join-channel-remote-video"
+      style="width: 300px; height: 300px; float: left"
+    ></div>
+  </body>
+  <script src="./renderer.js"></script>
+</html>
+```
+
+## Test the sample code [#test-the-sample-code-5]
+
+Take the following steps to test the sample code:
+
+1. Update the `APPID`, `token`, and `channel` parameter values in your code.
+
+1. To run the app, execute the following command in the project root directory:
+
+    ```bash
+    npm start
+    ```
+
+    You see a window pop up showing the local video.
+
+1. Invite a friend to run the demo app on a second device. Alternatively, use the [Web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) to join the same channel.
+
+    * If users on both devices join the channel as hosts, they can see and hear each other.
+    * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+
+## Reference [#reference-5]
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps [#next-steps-5]
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
+
+### Sample project [#sample-project-5]
+
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Electron-SDK/tree/main/example/src/renderer/examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Electron-SDK/blob/main/example/src/renderer/examples/basic/JoinChannelVideo/JoinChannelVideo.tsx) project for a more detailed example.
+
+### API Reference [#api-reference-5]
+
+- [`createAgoraRtcEngine`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_createagorartcengine)
+
+- [`joinChannel`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
+
+- [`enableVideo`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_enablevideo)
+
+- [`startPreview`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_startpreview)
+
+- [`leaveChannel`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel2)
+
+- [`release`](https://api-ref.agora.io/en/video-sdk/electron/4.x/API/class_irtcengine.html#api_irtcengine_release)
+
+### Frequently asked questions [#frequently-asked-questions-5]
+
+* [How can I resolve common development issues on Electron?](/en/api-reference/faq/integration/electron_faq)
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
+* [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
+
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
+
+### See also [#see-also-5]
+
+* [SDK error codes](/en/realtime-media/rtc/reference/error-codes)
+* [Connection status management](/en/realtime-media/rtc/build/manage-connection-and-quality/connection-status-management)

@@ -1,0 +1,706 @@
+---
+title: Quickstart (Unity)
+---
+
+This page provides a step-by-step guide on how to create a basic real-time app using the Agora RTC SDK. The same steps apply whether you're building voice calling, video calling, interactive live streaming, or broadcast streaming — only a few configuration values change based on your use case.
+
+## Understand the tech [#understand-the-tech-9]
+
+To start a real-time session, implement the following steps in your app:
+
+- **Initialize the engine**: Before calling other APIs, create and initialize an engine instance.
+
+- **Join a channel**: Call methods to create and join a channel.
+
+  - **Join as a host**: A live streaming event has one or more hosts. A host publishes audio and video to the channel and can also subscribe to streams from other hosts.
+
+  - **Join as audience**: Audience members can only subscribe to streams published by hosts.
+
+  :::info[Note]
+  For the voice calling and video calling use cases, each user joins as a host.
+  :::
+
+- **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
+
+- For streaming applications, set the latency level based on your use case:
+
+  - **Interactive live streaming**: Optimized for real-time interaction with ultra-low latency. Use this when hosts and audience need to interact quickly, such as in live Q&A sessions, interactive classrooms, or auctions.
+
+  - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
+
+![Realtime communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+
+## Prerequisites [#prerequisites-9]
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
+- [Unity Hub](https://unity.com/download) and [Unity Editor](https://unity.com/releases/editor/archive) 2018.4.0 or higher.
+- A suitable operating system and compiler for your development platform:
+
+  | Development platform | Operating system version | Compiler version |
+  | :------------------- | :----------------------- | :--------------- |
+  | Android | Android 4.1 or later | Android Studio 4.1 or later |
+  | iOS | iOS 10.15 or later | Xcode 9.0 or later |
+  | macOS | macOS 10.15 or later | Xcode 9.0 or later |
+  | Windows | Windows 7 or later | Microsoft Visual Studio 2017 or later |
+
+## Set up your project [#set-up-your-project-9]
+
+<Tabs defaultValue="new">
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
+<TabsContent value="new">
+
+Refer to the following steps or the [Official Unity documentation](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects) to create a Unity project.
+
+1. Open Unity and click **New**.
+1. Enter the following details:
+    * **Project name** : The name of the project.
+    * **Location** : Project storage path.
+    * **Template** : The project type. Select **3D**.
+
+1. Click **Create project**.
+
+</TabsContent>
+
+<TabsContent value="existing">
+
+To open your existing project:
+
+1. In the **Projects** window, click the **Open** button in the top-right corner.
+
+1. Browse your file manager and select the folder of the project you want to open.
+
+1. Confirm your selection to add the project to the **Projects** window and open it in the Unity Editor.
+
+</TabsContent>
+</Tabs>
+
+### Install the SDK [#install-the-sdk-9]
+
+1. Go to the [Download SDKs](/en/api-reference/sdks?platform=unity) page and download the latest version of the Unity SDK.
+
+1. In Unity Editor, navigate to **Assets** > **Import Package** > **Custom Package**, and select the unzipped SDK.
+
+    All plugins are selected by default. Deselect any plugins you don't need, then click **Import**.
+
+## Implement Realtime Communication [#implement-realtime-communication-9]
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
+
+The following figure illustrates the essential steps:
+
+<Accordions>
+<Accordion title="Quick start sequence">
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
+
+This guide includes [complete sample code](#complete-sample-code-9) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
+
+Before proceeding, create and set up a script to implement Video Calling and bind the script to the canvas.
+
+### Steps to set up a script [#steps-to-set-up-a-script]
+
+1. Create a new script and import the UI library.
+
+    1. In the **Project** tab, navigate to **Assets > Agora-Unity-RTC-SDK > Code > Rtc**, right-click and select **Create > C# Script**. A new file named `NewBehaviourScript.cs` appears in your Assets.
+
+    1. Rename the file to `JoinChannel.cs` and open it.
+
+    1. Import the Unity namespaces to access UI components by adding the following code at the top of the file:
+
+        ```c#
+        using UnityEngine;
+        using UnityEngine.UI;
+        ```
+1. Bind the script to the canvas.
+
+    In `Assets/Agora-Unity-RTC-SDK/Code/Rtc` , select the `JoinChannel.cs` file, and drag it to the Canvas. In the **Inspector** panel, ensure that the file is bound to the Canvas.
+
+### Import Agora classes [#import-agora-classes-1]
+
+Import the `Agora.Rtc` namespace, which contains various classes and interfaces required to implement real-time audio and video functions.
+
+```c#
+using Agora.Rtc;
+```
+
+### Initialize the engine [#initialize-the-engine-7]
+
+For real-time communication, create an `IRtcEngine` instance using `RtcEngine.CreateAgoraRtcEngine()`. Then, configure it using `Initialize(context)` with an `RtcEngineContext`, specifying the application context, App ID, and channel profile. In your `JoinChannel.cs` file, add the following code:
+
+```c#
+internal IRtcEngine RtcEngine;
+// Fill in your app ID
+private string _appID= "";
+
+private void SetupVideoSDKEngine()
+{
+    // Create an IRtcEngine instance
+    RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+    RtcEngineContext context = new RtcEngineContext();
+    context.appId = _appID;
+    context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+    context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+    // Initialize the instance
+    RtcEngine.Initialize(context);
+}
+```
+
+### Join a channel [#join-a-channel-9]
+
+To join a channel, call `JoinChannel` with the following parameters:
+
+- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
+
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
+
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `OnJoinChannelSuccess` callback.
+
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
+
+Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
+
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|--------------|----------------|
+| Voice calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Video calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Interactive live streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Broadcast streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` |
+
+:::info[Note]
+
+- Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
+- Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
+- The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
+
+:::
+
+The following example shows the configuration for interactive live streaming with the broadcaster role:
+
+```c#
+// Fill in your channel name
+private string _channelName = "";
+// Fill in a temporary token
+private string _token = "";
+
+public void Join() {
+    // Set channel media options
+    ChannelMediaOptions options = new ChannelMediaOptions();
+    // Start video rendering
+    LocalView.SetEnable(true);
+    // Automatically subscribe to all audio streams
+    options.autoSubscribeAudio.SetValue(true);
+    // Automatically subscribe to all video streams
+    options.autoSubscribeVideo.SetValue(true);
+    // Set the channel profile to live broadcast
+    options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
+    // Set the user role as host
+    options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+    // If setting the client role to audience, uncomment the following line to configure the latency level
+    // options.audienceLatencyLevel.SetValue(AUDIENCE_LATENCY_LEVEL_TYPE.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY);
+    // Join a channel
+    RtcEngine.JoinChannel(_token, _channelName, 0, options);
+}
+```
+
+### Subscribe to RTC SDK events [#subscribe-to-rtc-sdk-events-6]
+
+Create an instance of the `UserEventHandler` class and set it as the engine event handler. Override the callbacks based on your use-case.
+
+```c#
+// Implement your own callback class by inheriting from the IRtcEngineEventHandler interface
+internal class UserEventHandler : IRtcEngineEventHandler
+{
+    private readonly JoinChannelVideo _videoSample;
+    internal UserEventHandler(JoinChannelVideo videoSample)
+    {
+        _videoSample = videoSample;
+    }
+
+    // Triggered when the local user successfully joins a channel
+    public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed)
+    {
+    }
+
+    // Triggered when the SDK receives and successfully decodes the first frame of a remote video
+    public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
+    {
+        // Set the display for the remote video
+        _videoSample.RemoteView.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+        // Start video rendering
+        _videoSample.RemoteView.SetEnable(true);
+        Debug.Log("Remote user joined");
+    }
+
+    // Triggered when the remote user leaves the channel
+    public override void OnUserOffline(RtcConnection connection, uint uid, USER_OFFLINE_REASON_TYPE reason)
+    {
+        // Stop displaying the remote video
+        _videoSample.RemoteView.SetEnable(false);
+    }
+}
+```
+
+Create an instance of the user callback class and call `InitEventHandler` to register the event handler.
+
+```csharp
+private void InitEventHandler()
+{
+    UserEventHandler handler = new UserEventHandler(this);
+    RtcEngine.InitEventHandler(handler);
+}
+```
+
+:::info[Note]
+To ensure that you receive all RTC SDK events, register the event handler before joining a channel.
+:::
+
+### Display the local video [#display-the-local-video-9]
+
+Use the following code to set up the local video view:
+
+```csharp
+internal VideoSurface LocalView;
+
+private void PreviewSelf()
+{
+    // Enable the video module
+    RtcEngine.EnableVideo();
+    // Enable local video preview
+    RtcEngine.StartPreview();
+    // Set up local video display
+    LocalView.SetForUser(0, "");
+    // Render the video
+    LocalView.SetEnable(true);
+}
+```
+
+###  Display remote video [#display-remote-video-9]
+When a remote user joins the channel, the `OnUserJoined` callback is triggered. Call  `SetForUser` to set the remote video display and call `SetEnable(true)` to render the video.
+
+```c#
+internal VideoSurface RemoteView;
+// When the SDK receives the first frame of a remote video stream and successfully decodes it, the OnUserJoined callback is triggered.
+public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed) {
+    // Set the remote video display
+    _videoSample.RemoteView.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+    // Start video rendering
+    _videoSample.RemoteView.SetEnable(true);
+    Debug.Log("Remote user joined");
+}
+```
+
+### Leave the channel [#leave-the-channel-4]
+
+Call `LeaveChannel` to leave the current channel.
+
+    ```c#
+    public void Leave() {
+        Debug.Log("Leaving " + _channelName);
+        // Leave the channel
+        RtcEngine.LeaveChannel();
+        // Disable the video module
+        RtcEngine.DisableVideo();
+        // Stop remote video rendering0
+        RemoteView.SetEnable(false);
+        // Stop local video rendering
+        LocalView.SetEnable(false);
+    }
+    ```
+
+### Handle permissions [#handle-permissions-6]
+
+To access the media devices, add device permissions to your project according to your target platform.
+
+<Tabs defaultValue="android">
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="apple">iOS/macOS</TabsTrigger>
+</TabsList>
+<TabsContent value="android">
+
+Since version 2018.3, Unity does not actively obtain device permissions from the user. Call `CheckPermission` to check for and obtain the necessary permissions.
+
+1. Include the `UnityEngine.Android` namespace, which contains Android-specific classes for interacting with Android devices from Unity:
+
+    ```c#
+    #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+    using UnityEngine.Android;
+    #endif
+    ```
+
+2. Create a list of permissions to be obtained.
+
+    ```c#
+    #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+    private ArrayList permissionList = new ArrayList() { Permission.Camera, Permission.Microphone };
+    #endif
+    ```
+
+3. Check if the required permissions have been granted. If not, prompt the user to grant the necessary permissions.
+
+    ```c#
+    private void CheckPermissions() {
+        #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+        foreach (string permission in permissionList) {
+            if (!Permission.HasUserAuthorizedPermission(permission)) {
+                Permission.RequestUserPermission(permission);
+            }
+        }
+        #endif
+    }
+    ```
+
+</TabsContent>
+<TabsContent value="apple">
+
+For iOS and macOS platforms, the RTC SDK includes a post-build script named `BL_BuildPostProcess.cs`. When you build and export your Unity project as an iOS project, this script automatically inserts camera and microphone permission entries into the `Info.plist` file, eliminating the need for manual updates.
+
+</TabsContent>
+</Tabs>
+
+### Start and stop your client [#start-and-stop-your-client]
+
+1. When the client starts, ensure that device permissions have been granted.
+
+    ```c#
+    void Update() {
+        CheckPermissions();
+    }
+    ```
+
+1. To start Realtime Communication, initialize the engine and set up the event handler.
+
+    ```c#
+    void Start()
+    {
+        SetupVideoSDKEngine();
+        InitEventHandler();
+        PreviewSelf();
+    }
+    ```
+
+1. To clean up all session-related resources when a user exits the client, call the `Dispose` method of the `IRtcEngine`.
+
+    ```c#
+    void OnApplicationQuit() {
+        if (RtcEngine != null) {
+            Leave();
+            // Destroy IRtcEngine
+            RtcEngine.Dispose();
+            RtcEngine = null;
+        }
+    }
+    ```
+
+    :::info[Note]
+
+    After calling `Dispose`, you can no longer use any methods or callbacks of the SDK. To use Realtime Communication features again, create a new engine instance.
+
+    :::
+
+### Complete sample code [#complete-sample-code-9]
+
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To quickly implement the basic functions of Realtime Communication, copy the following sample code into your project:
+
+### Sample code to implement Realtime Communication in your client [#sample-code-to-implement-realtime-communication-in-your-client]
+
+<Accordions>
+<Accordion title="Complete sample code for Realtime Communication">
+```csharp
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+using Agora.Rtc;
+
+#if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+using UnityEngine.Android;
+#endif
+
+public class JoinChannelVideo : MonoBehaviour
+{
+    // Fill in your app ID
+    private string _appID= "";
+    // Fill in your channel name
+    private string _channelName = "";
+    // Fill in your Token
+    private string _token = "";
+    internal VideoSurface LocalView;
+    internal VideoSurface RemoteView;
+    internal IRtcEngine RtcEngine;
+
+    #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+    private ArrayList permissionList = new ArrayList() { Permission.Camera, Permission.Microphone };
+    #endif
+
+    void Start()
+    {
+        SetupVideoSDKEngine();
+        InitEventHandler();
+        SetupUI();
+        PreviewSelf();
+    }
+
+    void Update()
+    {
+        CheckPermissions();
+    }
+
+    void OnApplicationQuit()
+    {
+        if (RtcEngine != null)
+        {
+            Leave();
+            // Destroy IRtcEngine
+            RtcEngine.Dispose();
+            RtcEngine = null;
+        }
+    }
+
+    private void CheckPermissions() {
+    #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
+            foreach (string permission in permissionList)
+            {
+                if (!Permission.HasUserAuthorizedPermission(permission))
+                {
+                    Permission.RequestUserPermission(permission);
+                }
+            }
+    #endif
+    }
+
+    private void PreviewSelf()
+    {
+        // Enable video module
+        RtcEngine.EnableVideo();
+        // Start local video preview
+        RtcEngine.StartPreview();
+        // Set local video display
+        LocalView.SetForUser(0, "");
+        // Start rendering video
+        LocalView.SetEnable(true);
+    }
+
+    private void SetupUI()
+    {
+        GameObject go = GameObject.Find("LocalView");
+        LocalView = go.AddComponent<VideoSurface>();
+        go.transform.Rotate(0.0f, 0.0f, -180.0f);
+        go = GameObject.Find("RemoteView");
+        RemoteView = go.AddComponent<VideoSurface>();
+        go.transform.Rotate(0.0f, 0.0f, -180.0f);
+        go = GameObject.Find("Leave");
+        go.GetComponent<Button>().onClick.AddListener(Leave);
+        go = GameObject.Find("Join");
+        go.GetComponent<Button>().onClick.AddListener(Join);
+    }
+
+    private void SetupVideoSDKEngine()
+    {
+        // Create IRtcEngine instance
+        RtcEngine = Agora.Rtc.RtcEngine.CreateAgoraRtcEngine();
+        RtcEngineContext context = new RtcEngineContext();
+            context.appId = _appID;
+            context.channelProfile = CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING;
+            context.audioScenario = AUDIO_SCENARIO_TYPE.AUDIO_SCENARIO_DEFAULT;
+        // Initialize IRtcEngine
+        RtcEngine.Initialize(context);
+    }
+
+    // Create an instance of the user callback class and set the callback
+    private void InitEventHandler()
+    {
+        UserEventHandler handler = new UserEventHandler(this);
+        RtcEngine.InitEventHandler(handler);
+    }
+
+    public void Join()
+    {
+        // Set channel media options
+        ChannelMediaOptions options = new ChannelMediaOptions();
+        // Start video rendering
+        LocalView.SetEnable(true);
+        // Publish microphone audio stream
+        options.publishMicrophoneTrack.SetValue(true);
+        // Publish camera video stream
+        options.publishCameraTrack.SetValue(true);
+        // Automatically subscribe to all audio streams
+        options.autoSubscribeAudio.SetValue(true);
+        // Automatically subscribe to all video streams
+        options.autoSubscribeVideo.SetValue(true);
+        // Set the channel profile to live broadcasting
+        options.channelProfile.SetValue(CHANNEL_PROFILE_TYPE.CHANNEL_PROFILE_LIVE_BROADCASTING);
+        // Set the user role to broadcaster
+        options.clientRoleType.SetValue(CLIENT_ROLE_TYPE.CLIENT_ROLE_BROADCASTER);
+        // Join the channel
+        RtcEngine.JoinChannel(_token, _channelName, 0, options);
+    }
+
+    public void Leave()
+    {
+        Debug.Log("Leaving _channelName");
+        // Disable video module
+        RtcEngine.StopPreview();
+        // Leave the channel
+        RtcEngine.LeaveChannel();
+        // Stop remote video rendering
+        RemoteView.SetEnable(false);
+    }
+
+    // Implement your own callback class by inheriting from the IRtcEngineEventHandler interface class
+    internal class UserEventHandler : IRtcEngineEventHandler
+    {
+        private readonly JoinChannelVideo _videoSample;
+
+        internal UserEventHandler(JoinChannelVideo videoSample)
+        {
+            _videoSample = videoSample;
+        }
+
+        // Callback triggered when an error occurs
+        public override void OnError(int err, string msg)
+        {
+        }
+
+        // Callback triggered when the local user successfully joins the channel
+        public override void OnJoinChannelSuccess(RtcConnection connection, int elapsed)
+        {
+        }
+
+        // OnUserJoined callback is triggered when the SDK receives and successfully decodes the first frame of remote video
+        public override void OnUserJoined(RtcConnection connection, uint uid, int elapsed)
+        {
+            // Set remote video display
+            _videoSample.RemoteView.SetForUser(uid, connection.channelId, VIDEO_SOURCE_TYPE.VIDEO_SOURCE_REMOTE);
+            // Start video rendering
+            _videoSample.RemoteView.SetEnable(true);
+            Debug.Log("Remote user joined");
+        }
+
+        // Callback triggered when a remote user leaves the current channel
+        public override void OnUserOffline(RtcConnection connection, uint uid, USER_OFFLINE_REASON_TYPE reason)
+        {
+            _videoSample.RemoteView.SetEnable(false);
+            Debug.Log("Remote user offline");
+        }
+    }
+}
+```
+</Accordion>
+</Accordions>
+
+### Create a user interface [#create-a-user-interface-8]
+
+Follow these steps to set up a basic UI for your project or to integrate essential UI elements into your existing interface. A basic UI consists of the following components:
+
+* Local view window
+* Remote view window
+* Buttons to join and leave the channel
+
+### Create a basic UI [#create-a-basic-ui]
+
+1. Create buttons to join and leave channel
+
+    1. In your Unity project, right-click the **Sample Scene** and select **Game Object > UI > Button**. You see a button on the scene canvas.
+
+    1. In the **Inspector** panel, rename the button to `Join` and adjust the position coordinates as needed. For example:
+
+        * **Pos X**：`-329`
+        * **Pos Y**: `-172`
+
+    1. Select the **Text** control of the **Join** button , and change the text to `Join` in the **Inspector** panel.
+
+    1. Repeat the steps to create a **Leave** button, using the following positions:
+
+        * **Pos X**：`329`
+        * **Pos Y**: `-172`
+
+2. Create local and remote view windows
+
+    1. Right-click the Canvas and select **UI > Raw Image**.
+
+    1. In the **Inspector** panel, rename `Raw Image` to `LocalView` and adjust its size and position on the canvas. For example:
+
+        * **PosX**：`-250`
+        * **Pos Y**: `0`
+        * **Width**: `250`
+        * **Height**: `250`
+
+    1. Repeat the above steps to create a remote view window, name it `RemoteView` , and adjust its position on the canvas:
+
+        * **PosX**：`250`
+        * **Pos Y**: `0`
+        * **Width**: `250`
+        * **Height**: `250`
+
+        Save the changes.
+
+At this point your UI looks similar to the following:
+
+![](https://assets-docs.agora.io/images/video-sdk/video-call-ui-unity.png)
+
+## Test the sample code [#test-the-sample-code-9]
+
+Take the following steps to test the sample code:
+
+1. Obtain a temporary token from Agora Console.
+
+1. In `JoinChannel.cs`, update `_appID`, `_channelName`, and `_token` with the app ID, channel name, and temporary token for your project.
+
+1. In Unity Editor, click **Play** to run your project.
+
+1. Click **Join** to join a channel.
+
+1. Invite a friend to run the demo client on a second device. Use the same `_appID_`, `_token`, and `_channelName` to join. Alternatively, use the [Web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) to join the same channel.
+
+    After your friend joins successfully, you can hear and see each other.
+
+## Reference [#reference-9]
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps [#next-steps-9]
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
+
+### Sample project [#sample-project-9]
+
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Extensions/Agora-Unity-Quickstart/tree/main/API-Example-Unity/Assets/API-Example/Examples/Basic/JoinChannelVideo) project for a more detailed example.
+
+### API reference [#api-reference-9]
+
+- [`JoinChannel`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel)
+
+- [`EnableVideo`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_enablevideo)
+
+- [`CreateAgoraRtcEngine`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_createagorartcengine)
+
+- [`InitEventHandler`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_addhandler)
+
+- [`SetClientRole`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_setclientrole)
+
+- [`LeaveChannel`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel)
+
+- [`DisableVideo`](https://api-ref.agora.io/en/video-sdk/unity/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo)
+
+### Frequently asked questions [#frequently-asked-questions-8]
+
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
+* [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
+
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+
+### See also [#see-also-8]
+
+* [SDK error codes](/en/realtime-media/rtc/reference/error-codes)
+* [Connection status management](/en/realtime-media/rtc/build/manage-connection-and-quality/connection-status-management)

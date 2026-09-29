@@ -5743,6 +5743,26 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization.mdx':
     '2026-09-22T06:05:35.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/android.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/electron.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/flutter.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/index.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/ios.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/macos.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/react-native.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/unity.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/web.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/build/optimize-and-operate/app-size-optimization/windows.mdx':
+    '2026-09-29T08:19:12.000Z',
   'content/docs/en/realtime-media/rtc/build/optimize-and-operate/audio-strength-stream-selection.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/build/optimize-and-operate/autoplay.md':
@@ -5779,6 +5799,32 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtc/get-started-sdk.mdx':
     '2026-09-22T06:05:35.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/android.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/blueprint.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/electron.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/flutter.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/index.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/ios.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/javascript.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/macos.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/react-native.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/unity.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/unreal.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/web.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/get-started-sdk/windows.mdx':
+    '2026-09-29T08:19:12.000Z',
   'content/docs/en/realtime-media/rtc/index.md': '2026-06-13T10:37:20.000Z',
   'content/docs/en/realtime-media/rtc/index.mdx': '2026-08-16T05:52:59.000Z',
   'content/docs/en/realtime-media/rtc/macOS/audio/audio-effects-and-mixing.md':
@@ -5872,7 +5918,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/migration-guide.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/migration-guide.mdx':
-    '2026-08-11T07:18:33.000Z',
+    '2026-09-29T08:36:52.000Z',
   'content/docs/en/realtime-media/rtc/reference/pricing-legacy.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/reference/pricing.mdx':
@@ -5883,6 +5929,32 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/release-notes.mdx':
     '2026-09-22T06:05:35.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/android.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/blueprint.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/electron.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/flutter.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/index.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/ios.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/javascript.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/macos.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/react-native.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/unity.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/unreal.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/web.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/windows.mdx':
+    '2026-09-29T07:07:14.000Z',
   'content/docs/en/realtime-media/rtc/reference/rest-api.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/sdk-downloads.md':
@@ -5924,6 +5996,34 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/voice-quickstart.mdx':
     '2026-09-22T06:05:35.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/android.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/blueprint.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/electron.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/flutter.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/index.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/ios.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/javascript.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/macos.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/python.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/react-native.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/unity.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/unreal.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/web.mdx':
+    '2026-09-29T08:19:12.000Z',
+  'content/docs/en/realtime-media/rtc/voice-quickstart/windows.mdx':
+    '2026-09-29T08:19:12.000Z',
   'content/docs/en/realtime-media/rtm.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/rtm/beginners-guide.md':
     '2026-08-10T15:28:51.000Z',

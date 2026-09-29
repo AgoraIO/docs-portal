@@ -1,0 +1,1301 @@
+---
+title: Quickstart (Android)
+---
+
+This page provides a step-by-step guide on how to create a basic real-time app using the Agora RTC SDK. The same steps apply whether you're building voice calling, video calling, interactive live streaming, or broadcast streaming — only a few configuration values change based on your use case.
+
+## Understand the tech [#understand-the-tech]
+
+To start a real-time session, implement the following steps in your app:
+
+- **Initialize the engine**: Before calling other APIs, create and initialize an engine instance.
+
+- **Join a channel**: Call methods to create and join a channel.
+
+  - **Join as a host**: A live streaming event has one or more hosts. A host publishes audio and video to the channel and can also subscribe to streams from other hosts.
+
+  - **Join as audience**: Audience members can only subscribe to streams published by hosts.
+
+  :::info[Note]
+  For the voice calling and video calling use cases, each user joins as a host.
+  :::
+
+- **Send and receive audio and video**: Hosts publish streams to the channel. Audience members subscribe to audio and video streams published by hosts.
+
+- For streaming applications, set the latency level based on your use case:
+
+  - **Interactive live streaming**: Optimized for real-time interaction with ultra-low latency. Use this when hosts and audience need to interact quickly, such as in live Q&A sessions, interactive classrooms, or auctions.
+
+  - **Broadcast streaming**: Optimized for scalability with slightly higher latency. Use this for large-scale events where one-way broadcasting is sufficient, such as concerts, sports events, or news broadcasts.
+
+![Realtime Communication workflow](https://assets-docs.agora.io/images/video-sdk/video-call.svg)
+
+## Prerequisites [#prerequisites]
+
+- A camera and a microphone.
+- A valid Agora account and project. See [Agora account management](/en/introduction/account) for details.
+- [Android Studio](https://developer.android.com/studio) 4.2 or higher.
+- Android SDK API Level 21 or higher.
+- Two mobile devices running Android 5.0 or higher.
+
+## Set up your project [#set-up-your-project]
+
+<Tabs defaultValue="new">
+<TabsList>
+  <TabsTrigger value="new">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing">Add to an existing project</TabsTrigger>
+</TabsList>
+<TabsContent value="new">
+
+1. Create a [new project](https://developer.android.com/studio/projects/create-project).
+
+    1. Open Android Studio and select **File > New > New Project...**.
+    1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
+    1. Set the project name and storage path.
+    1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
+
+        :::info[Note]
+        After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+        :::
+
+</TabsContent>
+
+<TabsContent value="existing">
+
+ 1. Add a new activity to your project.
+
+    1. Open your project in Android Studio.
+    1. Right-click on the `app/src/main/java/<your.package.name>` folder.
+    1. Select **New → Activity → Empty Activity**.
+    1. Enter an activity name and click **Finish**.
+        This guide uses `MainActivity` as the activity name in the sample code. Replace it with your activity name where required.
+
+</TabsContent>
+</Tabs>
+
+2. Add a layout file for your activity.
+
+    Set up two container elements in your activity to display local and remote video streams. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
+
+### Install the SDK [#install-the-sdk]
+
+Use either of the following methods to add RTC SDK to your project.
+
+<Tabs defaultValue="maven">
+<TabsList>
+  <TabsTrigger value="maven">Gradle</TabsTrigger>
+  <TabsTrigger value="manual">Manual download</TabsTrigger>
+</TabsList>
+  <TabsContent value="maven">
+
+    1. Open the `settings.gradle` file in the project's root directory and add the Agora Maven CDN repository to `dependencyResolutionManagement.repositories`.
+
+        Don't remove existing repositories such as `google()` and `mavenCentral()`.
+
+        - Groovy `settings.gradle`
+
+          ```groovy
+          dependencyResolutionManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  maven { url = 'https://download.agora.io/maven/' }
+              }
+          }
+          ```
+
+        - Kotlin `settings.gradle.kts`
+
+          ```kotlin
+          dependencyResolutionManagement {
+              repositories {
+                  google()
+                  mavenCentral()
+                  maven { url = uri("https://download.agora.io/maven/") }
+              }
+          }
+          ```
+
+        :::note
+        If you cannot find the `dependencyResolutionManagement` field in `settings.gradle` or `settings.gradle.kts`, your Android Gradle plugin version might be earlier than 7.1.0.
+
+        For details, see [Android Gradle plugin 7.1.0 release notes](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
+        :::
+
+        If your Android Gradle plugin version is earlier than 7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
+
+        ```groovy
+        allprojects {
+            repositories {
+                mavenCentral()
+                maven { url = 'https://download.agora.io/maven/' }
+            }
+        }
+        ```
+
+    1. To integrate the RTC SDK into your Android project, add one of the following to the `dependencies` block in your project module `build.gradle` file:
+
+        - Full SDK
+
+            - Groovy `build.gradle`
+
+              ```groovy
+              implementation 'io.agora.rtc:full-sdk:x.y.z'
+              ```
+
+            - Kotlin `build.gradle.kts`
+
+              ```kotlin
+              implementation("io.agora.rtc:full-sdk:x.y.z")
+              ```
+
+        - Lite SDK
+
+            - Groovy `build.gradle`
+
+              ```groovy
+              implementation 'io.agora.rtc:lite-sdk:x.y.z'
+              ```
+
+            - Kotlin `build.gradle.kts`
+
+              ```kotlin
+              implementation("io.agora.rtc:lite-sdk:x.y.z")
+              ```
+
+        Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
+
+        :::info[Note]
+        To get the latest version number, check the [Release notes](/en/realtime-media/rtc/reference/release-notes).
+        :::
+
+    1. Prevent code obfuscation
+
+        Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+
+        ```java
+        -keep class io.agora.** { *; }
+        -dontwarn io.agora.**
+        ```
+
+</TabsContent>
+  <TabsContent value="manual">
+
+    1. Download the latest version of RTC SDK from the [SDKs](/en/api-reference/sdks?platform=android) page and unzip it.
+
+    1. Open the unzipped file and copy the following files or subfolders to your project path.
+
+        | File or folder                | Project path        |
+        | :---------------------------- | :----------------------- |
+        | `agora-rtc-sdk.jar` file      | `/app/libs/`             |
+        | `arm64-v8a` folder            | `/app/src/main/jniLibs/` |
+        | `armeabi-v7a` folder          | `/app/src/main/jniLibs/` |
+        | `x86` folder                  | `/app/src/main/jniLibs/` |
+        | `x86_64` folder               | `/app/src/main/jniLibs/` |
+        | `high_level_api` in `include` folder  | `/app/src/main/jniLibs/`  |
+
+    1. Select the file `/app/libs/agora-rtc-sdk.jar` in the left navigation bar of Android Studio project files, right-click, and select **add as a library** from the drop-down menu.
+
+    1. Prevent code obfuscation
+
+        Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+
+        ```java
+        -keep class io.agora.** { *; }
+        -dontwarn io.agora.**
+        ```
+
+</TabsContent>
+</Tabs>
+
+## Implement Realtime Communication [#implement-realtime-communication]
+
+This section guides you through the implementation of basic real-time audio and video interaction in your app.
+
+The following figure illustrates the essential steps:
+
+<Accordions>
+<Accordion title="Quick start sequence">
+![Realtime Communication quick start sequence](https://assets-docs.agora.io/images/video-sdk/quick-start-sequence.svg)
+</Accordion>
+</Accordions>
+
+This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `MainActivity` file.
+
+### Import Agora classes [#import-agora-classes]
+
+Import the relevant Agora classes and interfaces:
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+import io.agora.rtc2.video.VideoCanvas;
+import io.agora.rtc2.ChannelMediaOptions;
+```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+```kotlin
+import io.agora.rtc2.Constants
+import io.agora.rtc2.IRtcEngineEventHandler
+import io.agora.rtc2.RtcEngine
+import io.agora.rtc2.RtcEngineConfig
+import io.agora.rtc2.video.VideoCanvas
+import io.agora.rtc2.ChannelMediaOptions
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Initialize the engine [#initialize-the-engine]
+
+For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/introduction/account#get-the-app-id-and-app-certificate), and custom [event handler](#subscribe-to-rtc-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+// Fill in the app ID from Agora Console
+private String myAppId = "<Your app ID>";
+private RtcEngine mRtcEngine;
+
+private void initializeAgoraVideoSDK() {
+    try {
+        RtcEngineConfig config = new RtcEngineConfig();
+        config.mContext = getBaseContext();
+        config.mAppId = myAppId;
+        config.mEventHandler = mRtcEventHandler;
+        mRtcEngine = RtcEngine.create(config);
+    } catch (Exception e) {
+        throw new RuntimeException("Error initializing RTC engine: " + e.getMessage());
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+```kotlin
+// Fill in the App ID obtained from the Agora Console
+private val myAppId = "<Your app ID>"
+private var mRtcEngine: RtcEngine? = null
+
+private fun initializeRtcEngine() {
+    try {
+        val config = RtcEngineConfig().apply {
+            mContext = applicationContext
+            mAppId = myAppId
+            mEventHandler = mRtcEventHandler
+        }
+        mRtcEngine = RtcEngine.create(config)
+    } catch (e: Exception) {
+        throw RuntimeException("Error initializing RTC engine: ${e.message}")
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Join a channel [#join-a-channel]
+
+To join a channel, call `joinChannel` with the following parameters:
+
+- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
+
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](/en/realtime-media/rtc/build/authenticate-users/deploy-token-server) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account#generate-temporary-tokens).
+
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
+
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
+
+Set the `channelProfile`, `clientRoleType`, and `audienceLatencyLevel` according to your use case:
+
+| Use case | Channel profile | Client role | Latency level |
+|----------|-----------------|--------------|----------------|
+| Voice calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | N/A |
+| Video calling | `CHANNEL_PROFILE_COMMUNICATION` | `CLIENT_ROLE_BROADCASTER` | N/A |
+| Interactive live streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY` (default) |
+| Broadcast streaming | `CHANNEL_PROFILE_LIVE_BROADCASTING` | `CLIENT_ROLE_BROADCASTER` or `CLIENT_ROLE_AUDIENCE` | `AUDIENCE_LATENCY_LEVEL_LOW_LATENCY` |
+
+:::info[Note]
+- Only broadcasters can publish media. Audience members cannot publish until promoted to broadcaster.
+- Choose Communication mode for calls where every user publishes, typically fewer than 17 participants. Choose Live Broadcasting mode for larger events with separate hosts and audience.
+- The latency level only applies to the audience role, and affects your [pricing](/en/realtime-media/rtc/reference/pricing#subscription-packages) tier.
+:::
+
+The following example shows the configuration for interactive live streaming with the broadcaster role:
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+// Fill in the channel name
+private String channelName = "<Your channel name>";
+// Fill in the temporary token generated from Agora Console
+private String token = "<Your token>";
+
+private void joinChannel() {
+    ChannelMediaOptions options = new ChannelMediaOptions();
+    // Set the user role to BROADCASTER (host) or AUDIENCE according to your use case
+    options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+    // Set the channel profile according to your use case (see table above)
+    options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+    // Only takes effect when clientRoleType is CLIENT_ROLE_AUDIENCE
+    options.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY;
+    options.publishCameraTrack = true;
+    options.publishMicrophoneTrack = true;
+    mRtcEngine.joinChannel(token, channelName, 0, options);
+}
+```
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+```kotlin
+// Fill in the channel name
+private val channelName = "<Your channel name>"
+// Fill in the temporary token generated from Agora Console
+private val token = "<Your token>"
+
+private fun joinChannel() {
+    val options = ChannelMediaOptions().apply {
+        // Set the user role to BROADCASTER (host) or AUDIENCE according to your use case
+        clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+        // Set the channel profile according to your use case (see table above)
+        channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
+        // Only takes effect when clientRoleType is AUDIENCE
+        audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_LOW_LATENCY
+        publishMicrophoneTrack = true
+        publishCameraTrack = true
+    }
+    mRtcEngine.joinChannel(token, channelName, 0, options)
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Subscribe to RTC SDK events [#subscribe-to-rtc-sdk-events]
+
+The RTC SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle.
+
+:::info[Note]
+To ensure that you receive all RTC SDK events, set the engine event handler before joining a channel.
+:::
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+    // Triggered when the local user successfully joins the specified channel.
+    @Override
+    public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+        super.onJoinChannelSuccess(channel, uid, elapsed);
+        showToast("Joined channel " + channel);
+    }
+
+    // Triggered when a remote user/host joins the channel.
+    @Override
+    public void onUserJoined(int uid, int elapsed) {
+        super.onUserJoined(uid, elapsed);
+        runOnUiThread(() -> {
+            // Initialize and display remote video view for the new user.
+            setupRemoteVideo(uid);
+            showToast("User joined: " + uid);
+        });
+    }
+
+    // Triggered when a remote user/host leaves the channel.
+    @Override
+    public void onUserOffline(int uid, int reason) {
+        super.onUserOffline(uid, reason);
+        runOnUiThread(() -> {
+            showToast("User offline: " + uid);
+        });
+    }
+};
+```
+
+</TabsContent>
+<TabsContent value="kotlin">
+
+```kotlin
+private val mRtcEventHandler = object : IRtcEngineEventHandler() {
+    override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
+        super.onJoinChannelSuccess(channel, uid, elapsed)
+        runOnUiThread {
+            showToast("Joined channel $channel")
+        }
+    }
+    override fun onUserJoined(uid: Int, elapsed: Int) {
+        runOnUiThread {
+            showToast("User joined: $uid")
+        }
+    }
+    override fun onUserOffline(uid: Int, reason: Int) {
+        super.onUserOffline(uid, reason)
+        runOnUiThread {
+            showToast("User offline: $uid")
+        }
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Enable the video module [#enable-the-video-module]
+
+Follow these steps to enable the video module:
+
+1. Call `enableVideo` to enable the video module.
+1. Call `startPreview` to enable local video preview.
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+private void enableVideo() {
+    mRtcEngine.enableVideo();
+    mRtcEngine.startPreview();
+}
+```
+
+</TabsContent>
+<TabsContent value="kotlin">
+
+```kotlin
+private fun enableVideo() {
+    mRtcEngine?.apply {
+        enableVideo()
+        startPreview()
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Display the local video [#display-the-local-video]
+
+Call `setupLocalVideo` to initialize the local view and set the local video display properties.
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+private void setupLocalVideo() {
+    FrameLayout container = findViewById(R.id.local_video_view_container);
+    SurfaceView surfaceView = new SurfaceView(getBaseContext());
+    container.addView(surfaceView);
+    mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+}
+```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+```kotlin
+/**
+ * Initializes the local video view and sets the display properties.
+ * This method adds a SurfaceView to the local video container and configures it.
+ */
+private fun setupLocalVideo() {
+    val container: FrameLayout = findViewById(R.id.local_video_view_container)
+    val surfaceView = SurfaceView(baseContext)
+    container.addView(surfaceView)
+    mRtcEngine.setupLocalVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0))
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Display remote video [#display-remote-video]
+
+When a remote user joins the channel, call `setupRemoteVideo` and pass in the remote user's `uid`, obtained from the `onUserJoined` callback, to display the remote video.
+
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+private void setupRemoteVideo(int uid) {
+    FrameLayout container = findViewById(R.id.remote_video_view_container);
+    SurfaceView surfaceView = new SurfaceView(getBaseContext());
+    surfaceView.setZOrderMediaOverlay(true);
+    container.addView(surfaceView);
+    mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
+}
+```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+```kotlin
+private fun setupRemoteVideo(uid: Int) {
+    val container = findViewById<FrameLayout>(R.id.remote_video_view_container)
+    val surfaceView = SurfaceView(baseContext).apply {
+        setZOrderMediaOverlay(true)
+    }
+    container.addView(surfaceView)
+    mRtcEngine.setupRemoteVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid))
+}
+```
+
+</TabsContent>
+
+</Tabs>
+
+### Handle permissions [#handle-permissions]
+
+To access the media devices on Android devices, declare the necessary permissions in the app's manifest and ensure that the user grants these permissions when the client starts.
+
+1. Open your project's `AndroidManifest.xml` file and add the following permissions before `<application>`:
+
+    ```xml
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <!--Required permissions-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <!--Optional permissions-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <!-- For devices running Android 12 (API level 32) or higher and integrating Agora RTC SDK version v4.1.0 or lower, you also need to add the following permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <!-- For Android 12.0 or higher, the following permissions are also required -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    ```
+
+1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Realtime Communication. In your `MainActivity` file, add the following code:
+
+    <Tabs defaultValue="java">
+    <TabsList>
+    <TabsTrigger value="java">Java</TabsTrigger>
+    <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+    </TabsList>
+    <TabsContent value="java">
+
+    ```java
+    private static final int PERMISSION_REQ_ID = 22;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (checkPermissions()) {
+            startLiveStreaming();
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private boolean checkPermissions() {
+        for (String permission : getRequiredPermissions()) {
+            int permissionCheck = ContextCompat.checkSelfPermission(this, permission);
+            if (permissionCheck != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Get the permissions required for real-time audio interaction experience
+    private String[] getRequiredPermissions() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            return new String[]{
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            };
+        } else {
+            return new String[]{
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA
+            };
+        }
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
+            startLiveStreaming();
+        }
+    }
+    ```
+
+    </TabsContent>
+
+    <TabsContent value="kotlin">
+
+    ```kotlin
+    private val PERMISSION_REQ_ID = 22
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
+    }
+
+    private fun checkPermissions(): Boolean {
+        for (permission in getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun getRequiredPermissions(): Array<String> {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
+            startLiveStreaming()
+        }
+    }
+    ```
+
+    </TabsContent>
+    </Tabs>
+
+### Start and close the app [#start-and-close-the-app]
+
+When a user launches your client, start real-time interaction. When a user closes the app, stop the interaction.
+
+1. In the `onCreate` callback, check whether the client has been granted the required permissions. If the permissions have not been granted, request the required permissions from the user. If permissions are granted, initialize `RtcEngine` and join a channel.
+
+    <Tabs defaultValue="java">
+    <TabsList>
+    <TabsTrigger value="java">Java</TabsTrigger>
+    <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+    </TabsList>
+    <TabsContent value="java">
+
+    ```java
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (checkPermissions()) {
+            startLiveStreaming();
+        } else {
+            requestPermissions();
+        }
+    }
+    ```
+
+    </TabsContent>
+
+    <TabsContent value="kotlin">
+
+    ```kotlin
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        if (checkPermissions()) {
+            startLiveStreaming()
+        } else {
+            requestPermissions()
+        }
+    }
+    ```
+
+    </TabsContent>
+    </Tabs>
+
+1. When a user closes the client, or switches the client to the background, call `stopPreview` to stop the video preview and then call `leaveChannel` to leave the current channel and release all session-related resources.
+
+    <Tabs defaultValue="java">
+    <TabsList>
+    <TabsTrigger value="java">Java</TabsTrigger>
+    <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+    </TabsList>
+    <TabsContent value="java">
+
+    ```java
+    private void cleanupAgoraEngine() {
+            if (mRtcEngine != null) {
+                mRtcEngine.stopPreview();
+                mRtcEngine.leaveChannel();
+                mRtcEngine = null;
+            }
+        }
+    ```
+
+    </TabsContent>
+    <TabsContent value="kotlin">
+
+    ```kotlin
+    private fun cleanupAgoraEngine() {
+            mRtcEngine?.apply {
+                stopPreview()
+                leaveChannel()
+            }
+            mRtcEngine = null
+        }
+    ```
+
+    </TabsContent>
+    </Tabs>
+
+### Complete sample code [#complete-sample-code]
+
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following lines into the `MainActivity` file in your project. Then, replace `<projectname>` in package `com.example.<projectname>` with your project's name.
+
+<Accordions>
+<Accordion title="Complete sample code for Realtime Communication">
+<Tabs defaultValue="java">
+<TabsList>
+  <TabsTrigger value="java">Java</TabsTrigger>
+  <TabsTrigger value="kotlin">Kotlin</TabsTrigger>
+</TabsList>
+<TabsContent value="java">
+
+```java
+package com.example.<projectname>
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.view.SurfaceView;
+import android.widget.FrameLayout;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import io.agora.rtc2.ChannelMediaOptions;
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+import io.agora.rtc2.video.VideoCanvas;
+
+public class MainActivity extends AppCompatActivity {
+    private static final int PERMISSION_REQ_ID = 22;
+    // Fill in the app ID from Agora Console
+    private String myAppId = "<Your app ID>";
+    // Fill in the channel name
+    private String channelName = "<Your channel name>";
+    // Fill in the temporary token generated from Agora Console
+    private String token = "<Your token>";
+
+    private RtcEngine mRtcEngine;
+
+    private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+        // Callback when successfully joining the channel
+        @Override
+        public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+            super.onJoinChannelSuccess(channel, uid, elapsed);
+            showToast("Joined channel " + channel);
+        }
+
+        // Callback when a remote user or host joins the current channel
+        @Override
+        public void onUserJoined(int uid, int elapsed) {
+            super.onUserJoined(uid, elapsed);
+            runOnUiThread(() -> {
+                // When a remote user joins the channel, display the remote video stream for the specified uid
+                setupRemoteVideo(uid);
+                showToast("User joined: " + uid); // Show toast for user joining
+            });
+        }
+
+        // Callback when a remote user or host leaves the current channel
+        @Override
+        public void onUserOffline(int uid, int reason) {
+            super.onUserOffline(uid, reason);
+            runOnUiThread(() -> {
+                showToast("User offline: " + uid); // Show toast for user going offline
+            });
+        }
+    };
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (checkPermissions()) {
+            startLiveStreaming();
+        } else {
+            requestPermissions();
+        }
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+    }
+
+    private boolean checkPermissions() {
+        for (String permission : getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private String[] getRequiredPermissions() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            return new String[]{
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            };
+        } else {
+            return new String[]{
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA
+            };
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
+            startLiveStreaming();
+        }
+    }
+
+    private void startLiveStreaming() {
+        initializeAgoraVideoSDK();
+        enableVideo();
+        setupLocalVideo();
+        joinChannel();
+    }
+
+    private void initializeAgoraVideoSDK() {
+        try {
+            RtcEngineConfig config = new RtcEngineConfig();
+            config.mContext = getBaseContext();
+            config.mAppId = myAppId;
+            config.mEventHandler = mRtcEventHandler;
+            mRtcEngine = RtcEngine.create(config);
+        } catch (Exception e) {
+            throw new RuntimeException("Error initializing RTC engine: " + e.getMessage());
+        }
+    }
+
+    private void enableVideo() {
+        mRtcEngine.enableVideo();
+        mRtcEngine.startPreview();
+    }
+
+    private void setupLocalVideo() {
+        FrameLayout container = findViewById(R.id.local_video_view_container);
+        SurfaceView surfaceView = new SurfaceView(getBaseContext());
+        container.addView(surfaceView);
+        mRtcEngine.setupLocalVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0));
+    }
+
+    private void joinChannel() {
+        // Create an instance of ChannelMediaOptions and configure it
+        ChannelMediaOptions options = new ChannelMediaOptions();
+        // Set the user role to BROADCASTER or AUDIENCE according to the use-case
+        options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+        // In the live broadcast use-case, set the channel profile to BROADCASTING (live broadcast use-case)
+        options.channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING;
+        // If setting the client role to audience, uncomment the following line to configure the latency level
+        // options.audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY;
+        // Publish local media
+        options.publishCameraTrack = true;
+        options.publishMicrophoneTrack = true;
+        mRtcEngine.joinChannel(token, channelName, 0, options);
+    }
+
+    private void setupRemoteVideo(int uid) {
+        FrameLayout container = findViewById(R.id.remote_video_view_container);
+        SurfaceView surfaceView = new SurfaceView(getBaseContext());
+        surfaceView.setZOrderMediaOverlay(true);
+        container.addView(surfaceView);
+        mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cleanupAgoraEngine();
+    }
+
+    private void cleanupAgoraEngine() {
+        if (mRtcEngine != null) {
+            mRtcEngine.stopPreview();
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+        }
+    }
+
+    private void showToast(String message) {
+        runOnUiThread(() -> Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show());
+    }
+}
+```
+
+</TabsContent>
+
+<TabsContent value="kotlin">
+
+```kotlin
+package com.example.<projectname>
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import android.view.SurfaceView
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import io.agora.rtc2.ChannelMediaOptions
+import io.agora.rtc2.Constants
+import io.agora.rtc2.IRtcEngineEventHandler
+import io.agora.rtc2.RtcEngine
+import io.agora.rtc2.RtcEngineConfig
+import io.agora.rtc2.video.VideoCanvas
+
+class MainActivity : AppCompatActivity() {
+    private val PERMISSION_REQ_ID = 22
+    private val myAppId = "<Your app ID>"
+    private val channelName = "<Your channel name>"
+    private val token = "<Your token>"
+
+    private var mRtcEngine: RtcEngine? = null
+
+    private val mRtcEventHandler = object : IRtcEngineEventHandler() {
+        override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
+            super.onJoinChannelSuccess(channel, uid, elapsed)
+            runOnUiThread {
+                showToast("Joined channel $channel")
+            }
+        }
+
+        override fun onUserJoined(uid: Int, elapsed: Int) {
+            runOnUiThread {
+                setupRemoteVideo(uid)
+            }
+        }
+
+        override fun onUserOffline(uid: Int, reason: Int) {
+            super.onUserOffline(uid, reason)
+            runOnUiThread {
+                showToast("User offline: $uid")
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+        if (checkPermissions()) {
+            startLiveStreaming()
+        } else {
+            requestPermissions()
+        }
+    }
+
+    private fun requestPermissions() {
+        ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
+    }
+
+    private fun checkPermissions(): Boolean {
+        for (permission in getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return false
+            }
+        }
+        return true
+    }
+
+    private fun getRequiredPermissions(): Array<String> {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.CAMERA
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == PERMISSION_REQ_ID && checkPermissions()) {
+            startLiveStreaming()
+        }
+    }
+
+    private fun startLiveStreaming() {
+        initializeAgoraVideoSDK()
+        enableVideo()
+        setupLocalVideo()
+        joinChannel()
+    }
+
+    private fun initializeAgoraVideoSDK() {
+        try {
+            val config = RtcEngineConfig().apply {
+                mContext = applicationContext
+                mAppId = myAppId
+                mEventHandler = mRtcEventHandler
+            }
+            mRtcEngine = RtcEngine.create(config)
+        } catch (e: Exception) {
+            throw RuntimeException("Error initializing RTC engine: ${e.message}")
+        }
+    }
+
+    private fun enableVideo() {
+        mRtcEngine?.apply {
+            enableVideo()
+            startPreview()
+        }
+    }
+
+    private fun setupLocalVideo() {
+        val container = findViewById<FrameLayout>(R.id.local_video_view_container)
+        val surfaceView = SurfaceView(this)
+        container.addView(surfaceView)
+        mRtcEngine?.setupLocalVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, 0))
+    }
+
+    private fun joinChannel() {
+        val options = ChannelMediaOptions().apply {
+            clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+            channelProfile = Constants.CHANNEL_PROFILE_LIVE_BROADCASTING
+            // If setting the client role to audience, uncomment the following line to configure the latency level
+            // audienceLatencyLevel = Constants.AUDIENCE_LATENCY_LEVEL_ULTRA_LOW_LATENCY
+            publishMicrophoneTrack = true
+            publishCameraTrack = true
+        }
+        mRtcEngine?.joinChannel(token, channelName, 0, options)
+    }
+
+    private fun setupRemoteVideo(uid: Int) {
+        val container = findViewById<FrameLayout>(R.id.remote_video_view_container)
+        val surfaceView = SurfaceView(this).apply {
+            setZOrderMediaOverlay(true)
+        }
+        container.addView(surfaceView)
+        mRtcEngine?.setupRemoteVideo(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cleanupAgoraEngine()
+    }
+
+    private fun cleanupAgoraEngine() {
+        mRtcEngine?.apply {
+            stopPreview()
+            leaveChannel()
+        }
+        mRtcEngine = null
+    }
+
+    private fun showToast(message: String) {
+        runOnUiThread {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        }
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+</Accordion>
+</Accordions>
+
+:::info[Note]
+
+For the `myAppId` and `token` variables, replace the placeholders with the values you obtained from Agora Console. Ensure you enter the same `channelName` you used when generating the temporary token.
+
+:::
+
+### Create a user interface [#create-a-user-interface]
+
+To connect the sample code to your existing UI, ensure that your XML layout includes the container UI element IDs used to [Display the local video](#display-the-local-video) and [Display remote video](#display-remote-video).
+
+Alternatively, use the following sample code to generate a basic user interface. Replace the existing content in `/app/src/main/res/layout/activity_main.xml` with this code.
+
+![UI design](https://assets-docs.agora.io/images/video-sdk/quickstart-ui-android-design.png)
+
+### Sample code to create the user interface [#sample-code-to-create-the-user-interface]
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <FrameLayout
+        android:id="@+id/local_video_view_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white" />
+
+    <FrameLayout
+        android:id="@+id/remote_video_view_container"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+```
+
+## Test the sample code [#test-the-sample-code]
+
+Take the following steps to test the sample code:
+
+1. In `MainActivity` update the values for `myAppId`, and `token` with values from Agora Console. Fill in the same `channelName` you used to generate the token.
+
+1. Enable developer options on your Android test device. Turn on USB debugging, connect the Android device to your development machine through a USB cable, and check that your device appears in the Android device options.
+
+1. In Android Studio, click **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
+
+1. After synchronization is successful, click **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
+
+5. Launch the App, grant recording and camera permissions. If you set the user role to host, you will see yourself in the local view.
+
+6. On a second Android device, repeat the previous steps to install and launch the client. Alternatively, use the [Web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) to join the same channel and test the following use-cases:
+
+    * If users on both devices join the channel as hosts, they can see and hear each other.
+    * If one user joins as host and the other as audience, the host can see themselves in the local video window; the audience can see the host in the remote video window and hear the host.
+
+## Reference [#reference]
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+
+* If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy) to use Agora services normally.
+
+### Next steps [#next-steps]
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
+
+### Sample project [#sample-project]
+
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples) for your reference. Download or view the [JoinChannelVideo](https://github.com/AgoraIO-Community/Agora-RTC-QuickStart/tree/main/Android/Agora-RTC-QuickStart-Android) project for a more detailed example.
+
+### API reference [#api-reference]
+
+- [`RtcEngineConfig`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_rtcengineconfig.html)
+
+- [`create`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_create)
+
+- [`ChannelMediaOptions`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_channelmediaoptions.html)
+
+- [`joinChannel`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
+
+- [`enableVideo`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_enablevideo)
+
+- [`startPreview`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_startpreview)
+
+- [`leaveChannel`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel)
+
+- [`IRtcEngineEventHandler`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengineeventhandler.html#class_irtcengineeventhandler)
+
+### Frequently asked questions [#frequently-asked-questions]
+
+* [How can I fix black screen issues?](/en/api-reference/faq/quality/video_blank#black-screen-on-the-local-side)
+* [Why can't I turn on the camera?](/en/api-reference/faq/quality/video_camera)
+
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
+* [Why do apps on some Android versions fail to capture audio and video after screen locking or switching to the background?](/en/api-reference/faq/quality/android_background)
+
+### See also [#see-also]
+
+* [SDK error codes](/en/realtime-media/rtc/reference/error-codes)
+* [Connection status management](/en/realtime-media/rtc/build/manage-connection-and-quality/connection-status-management)

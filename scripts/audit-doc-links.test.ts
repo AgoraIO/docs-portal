@@ -336,6 +336,7 @@ describe('auditDocsLinks', () => {
         '[valid target hash](guide#target-heading)',
         '[valid code hash](guide#loadaudiosettings)',
         '[valid explicit hash](guide#explicit-anchor)',
+        '[fumadocs heading hash](guide#historical-heading-5)',
         '[valid local hash](#local-section)',
         '[missing target hash](guide#missing-anchor)',
         '[missing local hash](#missing-local)',
@@ -353,6 +354,12 @@ describe('auditDocsLinks', () => {
         '### `loadAudioSettings`',
         '',
         '<a id="explicit-anchor" />',
+        '',
+        '```ts',
+        'const sample = true;',
+        '    ```',
+        '',
+        '## Historical heading [#historical-heading-5]',
       ].join('\n'),
     );
 
@@ -372,6 +379,7 @@ describe('auditDocsLinks', () => {
         'target-heading',
         'loadaudiosettings',
         'explicit-anchor',
+        'historical-heading-5',
         'local-section',
       ]),
     );

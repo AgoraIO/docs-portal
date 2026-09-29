@@ -3,6 +3,12 @@ import path from 'node:path';
 import process from 'node:process';
 import { setTimeout as wait } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
+import remarkMdx from 'remark-mdx';
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
+
+const markdownParser = unified().use(remarkParse).use(remarkMdx);
 
 const DEFAULT_MAX_SAMPLES = 30;
 const DEFAULT_EXTERNAL_CONCURRENCY = 8;
@@ -431,6 +437,12 @@ function extractAnchors(markdown) {
 
   for (const match of scannableMarkdown.matchAll(headingPattern)) {
     const rawHeading = match[2] ?? '';
+    const fumadocsAnchor = rawHeading.match(/\s+\[#([^\]\s]+)\]\s*$/)?.[1];
+
+    if (fumadocsAnchor) {
+      anchors.add(fumadocsAnchor);
+      continue;
+    }
     const customAnchor = rawHeading.match(/\s+\{#([^}\s]+)\}\s*$/)?.[1];
 
     if (customAnchor) {
@@ -448,12 +460,22 @@ function extractAnchors(markdown) {
     anchors.add(slugifyHeading(headingText, slugCounts));
   }
 
+  if (markdown.includes('[#')) {
+    visit(markdownParser.parse(markdown), 'heading', (heading) => {
+      const start = heading.position?.start.offset;
+      const end = heading.position?.end.offset;
+      if (start === undefined || end === undefined) return;
+      const id = markdown.slice(start, end).match(/\[#([^\]\s]+)\]\s*$/)?.[1];
+      if (id) anchors.add(id);
+    });
+  }
+
   return anchors;
 }
 
 function maskMarkdownCode(markdown) {
   return markdown.replace(
-    /(^|\n)(`{3,}|~{3,})[\s\S]*?\n\2[^\n]*(?=\n|$)/g,
+    /(^|\n)[ \t]{0,3}(`{3,}|~{3,})[^\n]*\n[\s\S]*?\n[ \t]{0,3}\2[^\n]*(?=\n|$)/g,
     (match) => '\n'.repeat(match.split('\n').length - 1),
   );
 }
