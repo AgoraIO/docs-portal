@@ -157,6 +157,61 @@ type SearchSection = {
 
 Meilisearch 的 typo tolerance 可以处理部分拼写错误，但不能代替中文语义理解。中文描述和英文 API 名称之间的关系，第一阶段只使用少量可审核的 aliases，不自动生成大量翻译。
 
+## CN 搜索适配器边界契约
+
+本阶段只改中文 `zh-CN` 搜索为 Meilisearch；英文搜索继续使用现有 Algolia 链路，Algolia 的配置、排序、请求字段和高亮行为不在本阶段修改范围内。
+
+搜索引擎的原始返回格式不能直接暴露给界面或未来的 AI 工具。CN 适配器分成两层：
+
+```text
+Meilisearch hit（可能带 _formatted 和引擎标签）
+  → CN SearchHit（给 search_docs / AI 的规范化结构）
+  → Fumadocs SearchResult（给现有搜索界面的兼容格式）
+```
+
+给 AI 和工具使用的 `SearchHit` 契约如下：
+
+```ts
+type HighlightSegment = {
+  text: string;
+  highlighted: boolean;
+};
+
+type SearchHit = {
+  id: string;
+  sourceId: string;
+  pageTitle: string;
+  sectionTitle: string;
+  content: string;       // 原始 Markdown/纯文本，不包含 HTML 高亮标签
+  snippet: string;       // 原始摘要，不包含 HTML 高亮标签
+  url: string;           // 必须保留正确的 #anchor
+  headingPath: string[];
+  locale: string;
+  product?: string;
+  platform?: string[];
+  version?: string;
+  docType: 'docs' | 'openapi';
+  audience: string[];
+  status: 'published' | 'deprecated' | 'internal';
+  hidden: boolean;
+  highlights: {
+    sectionTitle: HighlightSegment[];
+    content: HighlightSegment[];
+  };
+};
+```
+
+边界规则：
+
+- Meilisearch 的 `<em>`、`<mark>` 或其他高亮标签必须在适配器内转换为 `HighlightSegment`，不能进入 `SearchHit.content` 或 `SearchHit.snippet`。
+- 只有最后面向现有 Fumadocs 搜索界面时，才将结构化片段转换为界面约定的 `<mark>...</mark>`；界面不能依赖 Meilisearch 默认的 `<em>`。
+- CN 浏览器搜索请求固定附带 `locale = "zh-CN"`、`hidden = false` 和 `status = "published"`；适配器收到不符合这些条件的结果时仍要丢弃，作为第二道防线。
+- `url` 必须是章节 URL；API 属性命中时必须保留 `#anchor`，不能退化为 overview 页面 URL。
+- 平台、产品和版本过滤只能通过适配器生成的受控过滤条件传入，不能拼接未经验证的任意查询语句。
+- 浏览器只能使用 Meilisearch search-only key；master key 只允许存在于索引脚本或服务端环境变量中。
+- 401、403、5xx 等搜索服务错误转换为有限的搜索错误状态，不能把原始响应、密钥或服务端配置返回给浏览器。
+- Task 7 的 `search_docs` 只能消费规范化的 `SearchHit`，不能直接消费 Meilisearch 原始 hit。
+
 ## 百炼和 RAM 账号接入边界
 
 RAM 账号解决的是“谁可以登录和操作阿里云资源”，不等于代码调用模型时直接使用 RAM 登录密码。

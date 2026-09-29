@@ -11,6 +11,34 @@ export type SearchResult = {
   highlights?: Record<string, string>;
 };
 
+export type HighlightSegment = {
+  text: string;
+  highlighted: boolean;
+};
+
+export type SearchHit = {
+  id: string;
+  sourceId: string;
+  pageTitle: string;
+  sectionTitle: string;
+  content: string;
+  snippet: string;
+  url: string;
+  headingPath: string[];
+  locale: string;
+  product?: string;
+  platform?: string[];
+  version?: string;
+  docType: 'docs' | 'openapi';
+  audience: string[];
+  status: 'published' | 'deprecated' | 'internal';
+  hidden: boolean;
+  highlights: {
+    sectionTitle: HighlightSegment[];
+    content: HighlightSegment[];
+  };
+};
+
 type MeilisearchHit = {
   id: string;
   sourceId?: string;
@@ -21,6 +49,12 @@ type MeilisearchHit = {
   headingPath: string[];
   platform?: string[];
   product?: string;
+  locale: string;
+  version?: string;
+  docType: 'docs' | 'openapi';
+  audience: string[];
+  status: 'published' | 'deprecated' | 'internal';
+  hidden: boolean;
   _formatted?: Record<string, string>;
 };
 
@@ -84,9 +118,12 @@ export function createMeilisearchClient({
         },
         body: JSON.stringify({
           q: normalizedQuery,
-          ...(options.filters?.length
-            ? { filter: options.filters.join(' AND ') }
-            : {}),
+          filter: [
+            'locale = "zh-CN"',
+            'hidden = false',
+            'status = "published"',
+            ...(options.filters ?? []),
+          ].join(' AND '),
           attributesToHighlight: ['sectionTitle', 'content'],
           highlightPreTag: '<mark>',
           highlightPostTag: '</mark>',
@@ -101,7 +138,14 @@ export function createMeilisearchClient({
     }
 
     const result = (await response.json()) as MeilisearchResponse;
-    return result.hits.map(mapHit);
+    return result.hits
+      .filter(
+        (hit) =>
+          hit.locale === 'zh-CN' &&
+          hit.status === 'published' &&
+          hit.hidden === false,
+      )
+      .map(mapHit);
   };
 
   return {
@@ -112,16 +156,19 @@ export function createMeilisearchClient({
 }
 
 function mapHit(hit: MeilisearchHit): SearchResult & Record<string, unknown> {
-  const formatted = hit._formatted ?? {};
-  const title = formatted.sectionTitle ?? hit.sectionTitle;
-  const content = formatted.content ?? hit.content;
+  const normalized = normalizeMeilisearchHit(hit);
+  const title = segmentsToMarkup(normalized.highlights.sectionTitle);
+  const content = segmentsToMarkup(normalized.highlights.content);
   return {
     id: hit.id,
     title,
     content: title,
     url: hit.url,
     headingPath: hit.headingPath,
-    highlights: formatted,
+    highlights: {
+      sectionTitle: title,
+      content,
+    },
     section: title,
     snippet: content,
     path: hit.headingPath,
@@ -130,4 +177,57 @@ function mapHit(hit: MeilisearchHit): SearchResult & Record<string, unknown> {
     type: 'page',
     objectType: 'docs',
   };
+}
+
+export function normalizeMeilisearchHit(hit: MeilisearchHit): SearchHit {
+  return {
+    id: hit.id,
+    sourceId: hit.sourceId ?? hit.id,
+    pageTitle: hit.pageTitle,
+    sectionTitle: hit.sectionTitle,
+    content: hit.content,
+    snippet: hit.content,
+    url: hit.url,
+    headingPath: hit.headingPath,
+    locale: hit.locale,
+    product: hit.product,
+    platform: hit.platform,
+    version: hit.version,
+    docType: hit.docType,
+    audience: hit.audience,
+    status: hit.status,
+    hidden: hit.hidden,
+    highlights: {
+      sectionTitle: parseHighlightSegments(
+        hit._formatted?.sectionTitle ?? hit.sectionTitle,
+      ),
+      content: parseHighlightSegments(hit._formatted?.content ?? hit.content),
+    },
+  };
+}
+
+function parseHighlightSegments(value: string): HighlightSegment[] {
+  const segments: HighlightSegment[] = [];
+  const pattern = /<(?:mark|em)>(.*?)<\/(?:mark|em)>/g;
+  let cursor = 0;
+  for (const match of value.matchAll(pattern)) {
+    const start = match.index;
+    if (start > cursor) {
+      segments.push({ text: value.slice(cursor, start), highlighted: false });
+    }
+    segments.push({ text: match[1], highlighted: true });
+    cursor = start + match[0].length;
+  }
+  if (cursor < value.length) {
+    segments.push({ text: value.slice(cursor), highlighted: false });
+  }
+  return segments.length ? segments : [{ text: value, highlighted: false }];
+}
+
+function segmentsToMarkup(segments: HighlightSegment[]): string {
+  return segments
+    .map((segment) =>
+      segment.highlighted ? `<mark>${segment.text}</mark>` : segment.text,
+    )
+    .join('');
 }
