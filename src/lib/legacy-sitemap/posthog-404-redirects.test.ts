@@ -174,13 +174,24 @@ describe('PostHog-discovered English 404 redirects', () => {
     readFileSync('src/lib/legacy-sitemap/new-docs-inventory.json', 'utf8'),
   ) as { routes: Array<{ routePath: string }> };
 
-  it('keeps every reviewed 301 rule in the source and generated Vercel config', () => {
+  it('keeps one exact 301 rule per reviewed source in both Vercel configs', () => {
     expect(reviewedRedirects).toHaveLength(51);
+    expect(new Set(reviewedRedirects.map(([source]) => source)).size).toBe(
+      reviewedRedirects.length,
+    );
 
     for (const [source, destination] of reviewedRedirects) {
       const expected = { source, destination, statusCode: 301 };
-      expect(baseConfig.redirects).toContainEqual(expected);
-      expect(generatedConfig.redirects).toContainEqual(expected);
+      expect(
+        baseConfig.redirects.filter(
+          (redirect) => redirect.source === source && !('has' in redirect),
+        ),
+      ).toEqual([expected]);
+      expect(
+        generatedConfig.redirects.filter(
+          (redirect) => redirect.source === source && !('has' in redirect),
+        ),
+      ).toEqual([expected]);
     }
   });
 
