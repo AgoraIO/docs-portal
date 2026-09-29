@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 
 type VercelRedirect = {
@@ -14,6 +14,10 @@ const reviewedRedirects = [
   ],
   [
     '/en/video-calling/get-started/get-started-sdk',
+    '/en/realtime-media/video/quickstart',
+  ],
+  [
+    '/en/video-calling/get-started/get-started-sdk/',
     '/en/realtime-media/video/quickstart',
   ],
   [
@@ -86,7 +90,7 @@ const reviewedRedirects = [
   ],
   [
     '/en/realtime-media/iot/reference/licensing',
-    '/en/realtime-media/iot/product-overview',
+    '/en/realtime-media/iot/build/authenticate-and-secure-channels/license',
   ],
   [
     '/en/realtime-media/fusion-cdn',
@@ -95,7 +99,7 @@ const reviewedRedirects = [
   ['/en/solutions/iot/quickstart', '/en/realtime-media/iot/quickstart'],
   [
     '/en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming',
-    '/en/realtime-media/iot/quickstart',
+    '/en/realtime-media/iot/build/manage-connections-and-quality/multi-channel-streaming',
   ],
   [
     '/en/api-reference/faq/integration/log',
@@ -171,7 +175,7 @@ describe('PostHog-discovered English 404 redirects', () => {
   ) as { routes: Array<{ routePath: string }> };
 
   it('keeps every reviewed 301 rule in the source and generated Vercel config', () => {
-    expect(reviewedRedirects).toHaveLength(50);
+    expect(reviewedRedirects).toHaveLength(51);
 
     for (const [source, destination] of reviewedRedirects) {
       const expected = { source, destination, statusCode: 301 };
@@ -184,9 +188,24 @@ describe('PostHog-discovered English 404 redirects', () => {
     const inventoryPaths = new Set(
       docsInventory.routes.map((route) => route.routePath),
     );
+    const migratedArticleFiles = new Map([
+      [
+        '/en/realtime-media/iot/build/authenticate-and-secure-channels/license',
+        'content/docs/en/realtime-media/iot/build/authenticate-and-secure-channels/license.mdx',
+      ],
+      [
+        '/en/realtime-media/iot/build/manage-connections-and-quality/multi-channel-streaming',
+        'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/multi-channel-streaming.mdx',
+      ],
+    ]);
     for (const [, destination] of reviewedRedirects) {
       if (destination.startsWith('/en/')) {
-        expect(inventoryPaths.has(destination)).toBe(true);
+        const migratedArticleFile = migratedArticleFiles.get(destination);
+        expect(
+          inventoryPaths.has(destination) ||
+            (migratedArticleFile !== undefined &&
+              existsSync(migratedArticleFile)),
+        ).toBe(true);
       }
     }
   });
