@@ -707,10 +707,10 @@ export function DocsSearchDialog({
             the height-varying flow, so the dialog doesn't resize on focus change. */}
         <SearchDetailPanel
           activeValue={activeValue}
-          description={activeDetail?.primary}
+          description={hasQuery ? activeDetail?.primary : undefined}
           open={open}
           renderText={(value) => <HighlightedText value={value} />}
-          title={activeDetail?.title}
+          title={hasQuery ? activeDetail?.title : undefined}
         />
         <SearchKeyboardHints
           closeLabel={t('docs.searchHintClose')}

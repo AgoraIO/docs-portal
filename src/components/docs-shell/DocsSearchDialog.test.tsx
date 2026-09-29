@@ -872,6 +872,7 @@ describe('DocsSearchDialog', () => {
     expect((await rowFor('Recent Page')).className).toContain(
       'search-result-enter',
     );
+    expect(screen.queryByTestId('search-active-detail')).toBeNull();
 
     // Typing disarms the stagger, so results render instantly — no cascade on
     // every keystroke.
