@@ -5883,6 +5883,32 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/release-notes.mdx':
     '2026-09-22T06:05:35.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/android.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/blueprint.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/electron.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/flutter.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/index.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/ios.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/javascript.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/macos.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/react-native.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/unity.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/unreal.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/web.mdx':
+    '2026-09-29T07:07:14.000Z',
+  'content/docs/en/realtime-media/rtc/reference/release-notes/windows.mdx':
+    '2026-09-29T07:07:14.000Z',
   'content/docs/en/realtime-media/rtc/reference/rest-api.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/sdk-downloads.md':
