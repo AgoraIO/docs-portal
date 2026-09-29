@@ -83,3 +83,17 @@ curl --fail --silent --show-error \
 ```
 
 The response contains `answer` and `citations`. A live request requires a valid Bailian API key and may consume model quota; the automated Task 8 tests use a mocked provider response and do not call Bailian.
+
+## Verify CN Golden Queries
+
+Task 9 checks both ordinary Meilisearch results and, when `ASK_DOCS_URL` is set,
+the AI response citations:
+
+```bash
+bun run search-demo:verify
+ASK_DOCS_URL=http://127.0.0.1:8788 bun run search-demo:verify
+```
+
+The live AI check requires the `ask-docs` server and a valid server-side
+`DASHSCOPE_API_KEY`. It verifies that `manualSOS` and `removeHandler` resolve
+to their expected section anchors, not only their parent pages.

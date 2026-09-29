@@ -33,6 +33,8 @@ type ChatCompletion = {
   }>;
 };
 
+type ToolChoice = 'auto' | 'required';
+
 export type AnswerCitation = {
   title: string;
   url: string;
@@ -66,11 +68,25 @@ const toolDefinition = {
       properties: {
         query: {
           type: 'string',
-          description: 'The documentation question or keywords.',
+          description:
+            'The documentation question or exact API keywords. Keep product names and platform names from the user question.',
         },
-        product: { type: 'string' },
-        platform: { type: 'array', items: { type: 'string' } },
-        version: { type: 'string' },
+        product: {
+          type: 'string',
+          description:
+            'Optional product filter. Only set it when the user explicitly names a product; otherwise omit it.',
+        },
+        platform: {
+          type: 'array',
+          items: { type: 'string' },
+          description:
+            'Optional platform filter. Use values such as web, android, ios, java, or expo only when the user specifies one.',
+        },
+        version: {
+          type: 'string',
+          description:
+            'Optional version filter. Only set it when the user explicitly names a version; otherwise omit it.',
+        },
         audience: { type: 'string', enum: ['developer', 'customer-support'] },
       },
       required: ['query'],
@@ -81,6 +97,7 @@ const toolDefinition = {
 
 const systemPrompt = [
   '你是中文文档问答助手。',
+  '回答前必须调用 search_docs。只检索当前 Agora 中文文档知识库，不要猜测或改写产品名称。',
   '只能依据 search_docs 返回的文档片段回答，不要编造 API 参数或行为。',
   '如果检索结果不足以回答，请明确说文档片段不足，并建议用户查看引用链接。',
   '回答应简洁，并说明适用的平台或版本（如果文档提供了这些信息）。',
@@ -114,7 +131,7 @@ export function createBailianSearchAnswer({
         model,
         messages: initialMessages,
         tools: [toolDefinition],
-        tool_choice: 'auto',
+        tool_choice: 'required',
       });
       const initialMessage = getAssistantMessage(initial);
       const toolCalls = initialMessage.tool_calls ?? [];
@@ -185,7 +202,7 @@ async function requestChat({
   model: string;
   messages: ChatMessage[];
   tools?: [typeof toolDefinition];
-  tool_choice?: 'auto';
+  tool_choice?: ToolChoice;
 }): Promise<ChatCompletion> {
   let response: Response;
   try {
@@ -229,7 +246,34 @@ function parseSearchDocsArguments(value: string): SearchDocsInput {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
     throw new Error('invalid search_docs arguments');
   }
-  return input as SearchDocsInput;
+  const candidate = input as Partial<SearchDocsInput>;
+  if (typeof candidate.query !== 'string' || !candidate.query.trim()) {
+    throw new Error('invalid search_docs arguments');
+  }
+
+  const normalized: SearchDocsInput = {
+    query: candidate.query.trim(),
+  };
+  if (typeof candidate.product === 'string' && candidate.product.trim()) {
+    normalized.product = candidate.product.trim();
+  }
+  if (Array.isArray(candidate.platform)) {
+    const platforms = candidate.platform
+      .filter((value): value is string => typeof value === 'string')
+      .map((value) => value.trim().toLowerCase())
+      .filter(Boolean);
+    if (platforms.length) normalized.platform = [...new Set(platforms)];
+  }
+  if (typeof candidate.version === 'string' && candidate.version.trim()) {
+    normalized.version = candidate.version.trim();
+  }
+  if (
+    candidate.audience === 'developer' ||
+    candidate.audience === 'customer-support'
+  ) {
+    normalized.audience = candidate.audience;
+  }
+  return normalized;
 }
 
 function deduplicateCitations(

@@ -120,6 +120,69 @@ describe('createBailianSearchAnswer', () => {
     ]);
   });
 
+  it('requires document search and normalizes model-generated filters', async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  role: 'assistant',
+                  content: null,
+                  tool_calls: [
+                    {
+                      id: 'call-2',
+                      type: 'function',
+                      function: {
+                        name: 'search_docs',
+                        arguments: JSON.stringify({
+                          query: 'removeHandler Android',
+                          product: '',
+                          platform: ['Android'],
+                        }),
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          }),
+          { status: 200 },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            choices: [
+              {
+                message: {
+                  role: 'assistant',
+                  content: '检索到 removeHandler。',
+                },
+              },
+            ],
+          }),
+          { status: 200 },
+        ),
+      );
+    const service = createBailianSearchAnswer({
+      apiKey: 'bailian-secret',
+      model: 'qwen-plus',
+      searchDocs,
+    });
+
+    await service.ask('如何在 Android 平台调用 removeHandler？');
+
+    const firstRequest = JSON.parse(String(fetchMock.mock.calls[0]?.[1]?.body));
+    expect(firstRequest.tool_choice).toBe('required');
+    expect(searchDocs.searchDocs).toHaveBeenCalledWith({
+      query: 'removeHandler Android',
+      platform: ['android'],
+    });
+  });
+
   it('returns a direct model answer without searching when no tool call is requested', async () => {
     vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
