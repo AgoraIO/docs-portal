@@ -250,7 +250,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'rest-api/update': '/en/api-reference/api-ref/cloud-transcoding',
   },
   'conversational-ai': {
-    'develop/presets': '/en/ai/build/custom-model-integration/managed-mode',
+    'develop/presets': '/en/ai/build/managed-mode',
     'models/asr/amazon': '/en/ai/models/asr/openai',
     'best-practices/cloud-recording':
       '/en/ai/best-practices/record-agent-conversation',
@@ -261,11 +261,11 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'models/tts/overview': '/en/ai/models/tts/openai',
     'overview/release-notes': '/en/ai/release-notes',
     'reference/sdk/go':
-      '/en/ai/build/custom-model-integration/build-server-client',
+      '/en/ai/build/build-server-client',
     'reference/sdk/python':
-      '/en/ai/build/custom-model-integration/build-server-client',
+      '/en/ai/build/build-server-client',
     'reference/sdk/typescript':
-      '/en/ai/build/custom-model-integration/build-server-client',
+      '/en/ai/build/build-server-client',
     'reference/toolkot/android':
       '/en/api-reference/api-ref/conversational-ai/client-toolkit/android',
     'reference/toolkot/ios':
@@ -465,6 +465,8 @@ const PRODUCT_SPECIFIC_TARGETS = {
       '/en/realtime-media/speech-to-text/build/start-transcribing-and-translating/update-service',
   },
   'server-gateway': {
+    'develop/cloud-proxy':
+      '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
     'get-started/integrate-sdk': '/en/realtime-media/rtc-server-sdk/quickstart',
     'get-started/mcp': '/en/realtime-media/rtc-server-sdk',
     'get-started/skills': '/en/realtime-media/rtc-server-sdk',

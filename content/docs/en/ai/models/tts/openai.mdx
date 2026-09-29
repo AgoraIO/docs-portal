@@ -88,7 +88,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 - **Managed mode**
 
-  To use OpenAI TTS with Agora-managed credentials, set `credential_mode` to `"managed"` in the `tts` block. When using managed mode, `params.api_key` is not required. You can still use the `tts` field to configure additional settings such as `voice` and `instructions`. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+  To use OpenAI TTS with Agora-managed credentials, set `credential_mode` to `"managed"` in the `tts` block. When using managed mode, `params.api_key` is not required. You can still use the `tts` field to configure additional settings such as `voice` and `instructions`. For more information, see [Use managed mode](/en/ai/build/managed-mode).
 
   ```json
   "tts": {
@@ -125,7 +125,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 ### Key parameters
 
-The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/build/managed-mode).
 
 <ParameterList title="params">
   <Parameter name="base_url" type="string" required={true}>

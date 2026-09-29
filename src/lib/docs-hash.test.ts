@@ -33,6 +33,10 @@ describe('scrollDocsHashTarget', () => {
       value: windowScrollTo,
       writable: true,
     });
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 40,
+    });
     Object.defineProperty(scrollWrapper, 'scrollTo', {
       configurable: true,
       value: wrapperScrollTo,
@@ -146,6 +150,10 @@ describe('scrollDocsHashTarget', () => {
       value: windowScrollTo,
       writable: true,
     });
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 0,
+    });
     Object.defineProperty(scrollWrapper, 'scrollTop', {
       configurable: true,
       value: 20,
@@ -188,6 +196,67 @@ describe('scrollDocsHashTarget', () => {
     expect(wrapperScrollTo).toHaveBeenCalledWith({
       behavior: 'auto',
       top: 196,
+    });
+  });
+
+  it('prefers the rendered heading when multiple platforms share an anchor id', () => {
+    document.body.innerHTML = `
+      <section hidden aria-hidden="true">
+        <h3 id="v422">Android v4.2.2</h3>
+      </section>
+      <section>
+        <h3 id="v422">Web v4.2.2</h3>
+      </section>
+    `;
+    const heading = document.querySelectorAll<HTMLElement>('#v422')[1];
+    const windowScrollTo = vi.fn();
+
+    if (!heading) {
+      throw new Error('expected visible hash fixture heading');
+    }
+
+    Object.defineProperty(window, 'scrollTo', {
+      configurable: true,
+      value: windowScrollTo,
+      writable: true,
+    });
+    const clientRect = {
+      bottom: 328,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 300,
+      width: 800,
+      x: 0,
+      y: 300,
+      toJSON: () => ({}),
+    } as DOMRect;
+    vi.spyOn(heading, 'getClientRects').mockReturnValue({
+      0: clientRect,
+      item: () => clientRect,
+      length: 1,
+    } as unknown as DOMRectList);
+    vi.spyOn(heading, 'getBoundingClientRect').mockReturnValue({
+      bottom: 328,
+      height: 28,
+      left: 0,
+      right: 800,
+      top: 300,
+      width: 800,
+      x: 0,
+      y: 300,
+      toJSON: () => ({}),
+    });
+
+    expect(
+      scrollDocsHashTarget('#v422', {
+        behavior: 'auto',
+        updateHistory: false,
+      }),
+    ).toBe(true);
+    expect(windowScrollTo).toHaveBeenCalledWith({
+      behavior: 'auto',
+      top: 204,
     });
   });
 });

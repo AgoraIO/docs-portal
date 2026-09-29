@@ -2766,6 +2766,36 @@ Web body
     });
   });
 
+  it('redirects the removed Server Gateway Cloud Proxy page to the RTC guide', async () => {
+    const cloudProxyPage = {
+      ...createPage(),
+      path: 'en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy.mdx',
+      slugs: [
+        'en',
+        'realtime-media',
+        'rtc',
+        'build',
+        'manage-connection-and-quality',
+        'cloud-proxy',
+      ],
+      url: '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
+    } as PageWithSource;
+    mockedGetPage.mockReturnValue(cloudProxyPage);
+    mockedGetPages.mockReturnValue([cloudProxyPage]);
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'rtc-server-sdk',
+        'build',
+        'secure-and-optimize-connections',
+        'cloud-proxy',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
+    });
+  });
+
   it('does not expose locale links outside the deployment region', async () => {
     const page = createPage();
     const zhPageTree: Root = {
@@ -3880,6 +3910,25 @@ Web body
                   name: 'Convo AI Device Kit',
                   type: 'folder',
                 },
+                {
+                  $id: 'ai-studio-folder',
+                  children: [
+                    {
+                      $id: 'ai-studio-quickstart',
+                      name: 'Create your first agent',
+                      type: 'page',
+                      url: '/en/ai/studio/quickstart',
+                    },
+                  ],
+                  index: {
+                    $id: 'ai-studio-index',
+                    name: 'Overview',
+                    type: 'page',
+                    url: '/en/ai/studio',
+                  },
+                  name: 'Agent Studio',
+                  type: 'folder',
+                },
               ],
               index: {
                 $id: 'ai-index',
@@ -3960,7 +4009,21 @@ Web body
     expect(payload.sidebar.map((node) => node.title)).toEqual([
       'Voice Agent overview',
       'Voice agent in apps',
+      'Agent Studio',
       'Voice agent on dedicated devices',
+    ]);
+
+    const agentStudioSection = payload.sidebar.find(
+      (node) => node.type === 'section' && node.title === 'Agent Studio',
+    );
+
+    if (!agentStudioSection || agentStudioSection.type !== 'section') {
+      throw new Error('expected the Agent Studio section');
+    }
+
+    expect(flattenSidebarPageUrls([agentStudioSection])).toEqual([
+      '/en/ai/studio',
+      '/en/ai/studio/quickstart',
     ]);
 
     const softwareSection = payload.sidebar.find(

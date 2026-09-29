@@ -1,6 +1,7 @@
 import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import remarkMdx from 'remark-mdx';
 import { createDocsPageAnalyticsContext } from './analytics/docs-page-context';
 import {
   type DocsPageType,
@@ -32,6 +33,7 @@ import {
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
+import { remarkAccordionHeadings } from './mdx/accordion-toc';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -54,7 +56,6 @@ import {
 } from './platforms/platform-group-pages';
 import {
   buildCanonicalPlatformTocText,
-  buildPlatformMarkdownText,
   buildPlatformTocText,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
@@ -926,6 +927,14 @@ function resolveRealtimeMediaRedirect(
 
   const normalizedPath = slugSegments.join('/');
 
+  if (
+    locale === 'en' &&
+    normalizedPath ===
+      'rtc-server-sdk/build/secure-and-optimize-connections/cloud-proxy'
+  ) {
+    return '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy';
+  }
+
   const redirects: Record<string, string> = {
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
@@ -1142,16 +1151,24 @@ async function resolvePageToc(
       ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getTableOfContents(tocText));
+    return normalizeToc(await getAccordionTableOfContents(tocText));
   } catch {
     try {
       return normalizeToc(
-        await getTableOfContents(buildCanonicalPlatformTocText(processedText)),
+        await getAccordionTableOfContents(
+          buildCanonicalPlatformTocText(processedText),
+        ),
       );
     } catch {
       return directToc;
     }
   }
+}
+
+function getAccordionTableOfContents(markdown: string) {
+  return markdown.includes('<Accordion')
+    ? getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings])
+    : getTableOfContents(markdown);
 }
 
 function normalizeToc(toc: TOCItemType[] | undefined) {
@@ -1558,6 +1575,9 @@ function buildAiProductSidebar(
   const _deviceKitTopLevelSection = findTopLevelSidebarSection(nodes, [
     'Convo AI Device Kit',
   ]);
+  const agentStudioSection = findTopLevelSidebarSection(nodes, [
+    'Agent Studio',
+  ]);
 
   if (
     !aiOverview ||
@@ -1687,6 +1707,20 @@ function buildAiProductSidebar(
       title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
       type: 'section',
     },
+    ...(agentStudioSection
+      ? [
+          {
+            ...stripSidebarSectionMeta(agentStudioSection),
+            children: stripSidebarSectionMetaFromNodes(
+              agentStudioSection.children,
+            ),
+            icon: 'LayoutDashboard',
+            id: 'ai-product-agent-studio',
+            title: 'Agent Studio',
+            type: 'section',
+          } satisfies DocsSidebarSectionNode,
+        ]
+      : []),
     {
       ...stripSidebarSectionMeta(deviceKitSection),
       children: [

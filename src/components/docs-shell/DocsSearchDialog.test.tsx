@@ -25,6 +25,7 @@ import { DocsSearchDialog } from './DocsSearchDialog';
 
 const analyticsMocks = vi.hoisted(() => ({
   captureDocsSearchCompleted: vi.fn(),
+  captureDocsSearchFinalized: vi.fn(),
   captureDocsSearchOpened: vi.fn(),
   captureDocsSearchResultClicked: vi.fn(),
   captureDocsSearchResultsImpressed: vi.fn(),
@@ -125,6 +126,7 @@ describe('DocsSearchDialog', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     analyticsMocks.captureDocsSearchCompleted.mockReset();
+    analyticsMocks.captureDocsSearchFinalized.mockReset();
     analyticsMocks.captureDocsSearchOpened.mockReset();
     analyticsMocks.captureDocsSearchResultClicked.mockReset();
     analyticsMocks.captureDocsSearchResultsImpressed.mockReset();
@@ -295,6 +297,158 @@ describe('DocsSearchDialog', () => {
       expect(navigateSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           to: '/en/ai/get-started/quickstart',
+        }),
+      );
+    });
+  });
+
+  it('finalizes the latest successful query when the dialog closes', async () => {
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'ai' } },
+    );
+    await screen.findByText('Quick Start');
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({ query: 'ai', status: 'success' }),
+      );
+    });
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledOnce();
+    });
+    expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledWith(
+      expect.objectContaining({
+        finalizationReason: 'closed',
+        firstResultSource: 'local',
+        firstResultType: 'docs',
+        locale: 'en',
+        query: 'ai',
+        queryAttemptId: expect.any(String),
+        resultCount: 1,
+        resultsImpressed: true,
+        searchSessionId: expect.any(String),
+      }),
+    );
+  });
+
+  it('finalizes the successful query after a result click', async () => {
+    const router = renderAlgoliaSearchDialog();
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'ai' } },
+    );
+    fireEvent.click(await screen.findByText('Quick Start'));
+
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledOnce();
+      expect(navigateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({ to: '/en/ai/get-started/quickstart' }),
+      );
+    });
+    expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledWith(
+      expect.objectContaining({
+        finalizationReason: 'result_clicked',
+        query: 'ai',
+      }),
+    );
+  });
+
+  it('does not finalize a session without a successful completed query', async () => {
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull();
+    });
+    expect(analyticsMocks.captureDocsSearchFinalized).not.toHaveBeenCalled();
+  });
+
+  it('does not finalize twice when clicking a result also closes the dialog', async () => {
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'ai' } },
+    );
+    fireEvent.click(await screen.findByText('Quick Start'));
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledOnce();
+    });
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledOnce();
+  });
+
+  it('preserves the active session when the desktop shortcut is triggered again', async () => {
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'ai' } },
+    );
+    await screen.findByText('Quick Start');
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({ query: 'ai', status: 'success' }),
+      );
+    });
+    const originalSessionId =
+      analyticsMocks.captureDocsSearchOpened.mock.calls[0]?.[0]
+        ?.searchSessionId;
+
+    fireEvent.keyDown(document, { key: 'k', metaKey: true });
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledOnce();
+    });
+    expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledWith(
+      expect.objectContaining({
+        query: 'ai',
+        searchSessionId: originalSessionId,
+      }),
+    );
+  });
+
+  it('finalizes a zero-result query with resultCount zero', async () => {
+    renderAlgoliaSearchDialog();
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Search docs' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('Search docs, APIs, guides...'),
+      { target: { value: 'no-such-query' } },
+    );
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: 'no-such-query',
+          resultCount: 0,
+          status: 'success',
+        }),
+      );
+    });
+
+    fireEvent.keyDown(document, { key: 'Escape' });
+
+    await waitFor(() => {
+      expect(analyticsMocks.captureDocsSearchFinalized).toHaveBeenCalledWith(
+        expect.objectContaining({
+          query: 'no-such-query',
+          resultCount: 0,
+          resultsImpressed: false,
         }),
       );
     });

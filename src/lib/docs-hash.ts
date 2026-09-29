@@ -4,6 +4,7 @@ const HASH_SCROLL_OFFSET = 24;
 const WINDOW_SCROLL_OFFSET = 96;
 const SCROLLABLE_OVERFLOW_VALUES = new Set(['auto', 'scroll', 'overlay']);
 const STICKY_POSITION_VALUES = new Set(['fixed', 'sticky']);
+export const DOCS_HASH_TARGET_EVENT = 'docs-portal:hash-target';
 
 export function scrollDocsHashTarget(
   url: string,
@@ -53,6 +54,45 @@ export function scrollDocsHashTarget(
   return true;
 }
 
+/**
+ * Scroll after React has committed accordion state changes. Opening one
+ * version and closing another can move the target heading, so scrolling in
+ * the click handler alone leaves the browser at the old offset.
+ */
+export function scrollDocsHashTargetAfterLayout(
+  url: string,
+  options: {
+    behavior?: ScrollBehavior;
+    updateHistory?: boolean;
+  } = {},
+) {
+  if (typeof window === 'undefined' || !url.startsWith('#')) {
+    return false;
+  }
+
+  if (options.updateHistory !== false) {
+    updateHash(url);
+  }
+
+  notifyDocsHashTarget(url);
+
+  const didScroll = scrollDocsHashTarget(url, {
+    behavior: options.behavior ?? 'smooth',
+    updateHistory: false,
+  });
+
+  window.requestAnimationFrame(() => {
+    window.requestAnimationFrame(() => {
+      scrollDocsHashTarget(url, {
+        behavior: options.behavior ?? 'smooth',
+        updateHistory: false,
+      });
+    });
+  });
+
+  return didScroll;
+}
+
 export function syncDocsHashTargetFromLocation(
   behavior: ScrollBehavior = 'auto',
 ) {
@@ -60,7 +100,7 @@ export function syncDocsHashTargetFromLocation(
     return false;
   }
 
-  return scrollDocsHashTarget(window.location.hash, {
+  return scrollDocsHashTargetAfterLayout(window.location.hash, {
     behavior,
     updateHistory: false,
   });
@@ -133,10 +173,34 @@ function getHeadingForUrl(url: string) {
   const selector = `#${escapeCssIdentifier(id)}`;
   const headings = document.querySelectorAll<HTMLElement>(selector);
   const visibleHeading = Array.from(headings).find(
-    (heading) => heading.getClientRects().length > 0,
+    (heading) =>
+      !isHiddenFromDocs(heading) && heading.getClientRects().length > 0,
+  );
+  const renderedHeading = Array.from(headings).find(
+    (heading) => !isHiddenFromDocs(heading),
   );
 
-  return visibleHeading ?? headings[0] ?? null;
+  return visibleHeading ?? renderedHeading ?? headings[0] ?? null;
+}
+
+function isHiddenFromDocs(element: HTMLElement) {
+  for (
+    let current: HTMLElement | null = element;
+    current;
+    current = current.parentElement
+  ) {
+    if (
+      current.hidden ||
+      current.getAttribute('aria-hidden') === 'true' ||
+      current.hasAttribute('inert') ||
+      (current.getAttribute('role') === 'region' &&
+        current.getAttribute('data-state') === 'closed')
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function escapeCssIdentifier(value: string) {
@@ -152,5 +216,13 @@ function updateHash(url: string) {
     null,
     '',
     `${window.location.pathname}${window.location.search}${url}`,
+  );
+}
+
+function notifyDocsHashTarget(url: string) {
+  window.dispatchEvent(
+    new CustomEvent(DOCS_HASH_TARGET_EVENT, {
+      detail: url,
+    }),
   );
 }
