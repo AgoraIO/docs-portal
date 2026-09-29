@@ -318,6 +318,7 @@ export function DocsContent({
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
           <FumadocsOpenApiContent
+            contentPath={contentPath}
             locale={currentLocale}
             pageProps={resolvedBody.pageProps}
           />

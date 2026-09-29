@@ -93,6 +93,7 @@ export type OpenApiSchemaTreeProps = {
     required?: boolean;
   };
   labels: OpenApiSchemaTreeLabels;
+  legacyAnchorIdsByFieldPath?: ReadonlyMap<string, string[]>;
   nodes: OpenApiSchemaViewNode[];
   onCopyFieldLink: (node: OpenApiSchemaViewNode) => Promise<boolean>;
   renderRemainingInfoTags: (
@@ -105,6 +106,7 @@ export type OpenApiSchemaTreeProps = {
 export function OpenApiSchemaTree({
   client,
   labels,
+  legacyAnchorIdsByFieldPath,
   nodes,
   onCopyFieldLink,
   renderRemainingInfoTags,
@@ -304,6 +306,7 @@ export function OpenApiSchemaTree({
             domId={stableDomId(rootId, node.id)}
             expanded={expanded}
             labels={labels}
+            legacyAnchorIds={legacyAnchorIdsByFieldPath?.get(node.path)}
             node={node}
             onCopy={() => {
               void handleTreeCopy(node);

@@ -238,6 +238,18 @@ describe('normalizeDocsHref', () => {
     });
   });
 
+  it('keeps the Chinese REST authentication article on its published route', () => {
+    expect(
+      normalizeDocsHref(
+        '../../api-reference/conversational-ai/rest-api/authentication.mdx',
+        { contentPath: 'zh-CN/ai/reference/enable-conversational-ai.md' },
+      ),
+    ).toEqual({
+      href: '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
+      kind: 'internal-doc',
+    });
+  });
+
   it('normalizes legacy absolute docs links from imported content', () => {
     expect(
       normalizeDocsHref('/doc/convoai/restful/webhook/ncs-events'),

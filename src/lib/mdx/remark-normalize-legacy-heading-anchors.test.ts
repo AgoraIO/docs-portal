@@ -1,3 +1,5 @@
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { compile } from '@mdx-js/mdx';
 import { remarkHeading } from 'fumadocs-core/mdx-plugins';
 import { describe, expect, it } from 'vitest';
@@ -7,12 +9,46 @@ async function compileWithLegacyHeadingAnchorNormalization(source: string) {
   return String(
     await compile(source, {
       jsx: true,
-      remarkPlugins: [remarkNormalizeLegacyHeadingAnchors, remarkHeading],
+      remarkPlugins: [remarkHeading, remarkNormalizeLegacyHeadingAnchors],
     }),
   );
 }
 
 describe('remarkNormalizeLegacyHeadingAnchors', () => {
+  it('runs once after Fumadocs heading plugins in the content config', () => {
+    const config = readFileSync(
+      resolve(process.cwd(), 'source.config.ts'),
+      'utf8',
+    );
+    const pluginConfig = config.match(
+      /remarkPlugins: \(plugins\) => \[([\s\S]*?)\n {6}\],/,
+    )?.[1];
+
+    expect(pluginConfig).toBeDefined();
+    expect(
+      pluginConfig?.match(/remarkNormalizeLegacyHeadingAnchors/g),
+    ).toHaveLength(1);
+    const defaultPluginsIndex = pluginConfig?.indexOf('...plugins');
+    const normalizerIndex = pluginConfig?.indexOf(
+      'remarkNormalizeLegacyHeadingAnchors',
+    );
+    expect(defaultPluginsIndex).toBeDefined();
+    expect(normalizerIndex).toBeDefined();
+    expect(defaultPluginsIndex).toBeLessThan(normalizerIndex ?? -1);
+  });
+
+  it('keeps a legacy anchor and the generated slug for the same heading', async () => {
+    const result = await compileWithLegacyHeadingAnchorNormalization(`
+<a id="111"></a>
+### 111 agent metrics
+`);
+
+    expect(result).toContain('<a id="111" />');
+    expect(result).toContain(
+      '<_components.h3 id="111-agent-metrics">{"111 agent metrics"}</_components.h3>',
+    );
+  });
+
   it('moves an adjacent empty anchor id onto its heading', async () => {
     const result = await compileWithLegacyHeadingAnchorNormalization(`
 <a id="moduletype"></a>
@@ -25,15 +61,15 @@ describe('remarkNormalizeLegacyHeadingAnchors', () => {
     );
   });
 
-  it('preserves a legacy id that differs from the generated heading slug', async () => {
+  it('preserves a legacy id alongside the generated heading slug', async () => {
     const result = await compileWithLegacyHeadingAnchorNormalization(`
 <a id="rtc_api_overview__toc_initialize"></a>
 ## initialize
 `);
 
-    expect(result).not.toContain('<a id="rtc_api_overview__toc_initialize" />');
+    expect(result).toContain('<a id="rtc_api_overview__toc_initialize" />');
     expect(result).toContain(
-      '<_components.h2 id="rtc_api_overview__toc_initialize">{"initialize"}</_components.h2>',
+      '<_components.h2 id="initialize">{"initialize"}</_components.h2>',
     );
   });
 

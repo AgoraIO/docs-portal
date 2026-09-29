@@ -2919,6 +2919,122 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
+  it('resolves relative endpoint links against the OpenAPI lane route', async () => {
+    const path = '/v1/apps/{appid}/cloud_recording/acquire';
+
+    render(
+      <FumadocsOpenApiContent
+        contentPath="zh-CN/api-reference/api-ref/cloud-recording/acquire.mdx"
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'post', path }],
+          payload: {
+            bundled: {
+              info: { title: 'Cloud Recording API' },
+              openapi: '3.2.0',
+              paths: {
+                [path]: {
+                  post: {
+                    operationId: 'acquire-cloud-recording-resource',
+                    responses: { '200': { description: 'OK' } },
+                    'x-docs-sections': [
+                      {
+                        markdown: 'Call [start](start) immediately.',
+                        position: 'after-description',
+                        title: 'Next step',
+                      },
+                    ],
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    expect(await screen.findByRole('link', { name: 'start' })).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api-ref/cloud-recording/start',
+    );
+  });
+
+  it('renders the legacy nested-schema fragment beside its matching field', async () => {
+    const path = '/v2/projects/{appid}/agents/{agentId}/join';
+
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'post', path }],
+          payload: {
+            bundled: {
+              info: { title: 'Conversational AI API' },
+              openapi: '3.2.0',
+              paths: {
+                [path]: {
+                  post: {
+                    operationId: 'start-agent',
+                    requestBody: {
+                      content: {
+                        'application/json': {
+                          schema: {
+                            properties: {
+                              properties: {
+                                properties: {
+                                  llm: {
+                                    properties: {
+                                      max_history: { type: 'integer' },
+                                    },
+                                    type: 'object',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                              request: {
+                                properties: {
+                                  body: {
+                                    properties: {
+                                      maxIdleTime: { type: 'integer' },
+                                    },
+                                    type: 'object',
+                                  },
+                                },
+                                type: 'object',
+                              },
+                            },
+                            type: 'object',
+                          },
+                        },
+                      },
+                    },
+                    responses: { '200': { description: 'OK' } },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    const alias = await waitFor(() => {
+      const element = document.getElementById('llm-max_history');
+      expect(element).toBeInTheDocument();
+      return element;
+    });
+
+    expect(alias?.closest('[data-openapi-schema-path]')).toHaveAttribute(
+      'data-openapi-schema-path',
+      'properties.llm.max_history',
+    );
+    expect(
+      document
+        .getElementById('request.body.maxIdleTime')
+        ?.closest('[data-openapi-schema-path]'),
+    ).toHaveAttribute('data-openapi-schema-path', 'request.body.maxIdleTime');
+  });
+
   it('renders structured docs code sample groups without mixing them into descriptions', async () => {
     render(
       <FumadocsOpenApiContent

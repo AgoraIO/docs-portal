@@ -1655,6 +1655,14 @@ function shouldUseRouterLink(
     return false;
   }
 
+  const hashIndex = normalized.href.indexOf('#');
+  if (
+    hashIndex !== -1 &&
+    normalized.href.slice(hashIndex + 1).startsWith('//')
+  ) {
+    return false;
+  }
+
   if (normalized.kind === 'internal-doc') {
     return true;
   }

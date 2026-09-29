@@ -17,7 +17,10 @@ import {
   useRef,
   useState,
 } from 'react';
-import { buildOpenApiAnchorId } from '@/lib/openapi/anchors';
+import {
+  buildOpenApiAnchorId,
+  getOpenApiSchemaFieldAnchorAliases,
+} from '@/lib/openapi/anchors';
 import {
   buildOpenApiSchemaView,
   flattenOpenApiSchemaView,
@@ -61,6 +64,7 @@ export type OpenApiSchemaProps = {
 type OpenApiSchemaFindTarget = {
   fieldPath: string;
   legacyAnchorId?: string;
+  legacyAnchorIds?: string[];
   name: string;
   parentPath: OpenApiSchemaPathItem[];
 };
@@ -134,6 +138,17 @@ export function OpenApiSchema({
       buildOpenApiSchemaFindTargets(generated, client.name, legacyNavigation),
     [client.name, generated, legacyNavigation],
   );
+  const legacyAnchorIdsByFieldPath = useMemo(() => {
+    const idsByPath = new Map<string, string[]>();
+
+    for (const target of findTargets) {
+      if (target.legacyAnchorIds?.length) {
+        idsByPath.set(target.fieldPath, target.legacyAnchorIds);
+      }
+    }
+
+    return idsByPath;
+  }, [findTargets]);
   const schemaView = useMemo(
     () =>
       buildOpenApiSchemaView(generated, client.name, {
@@ -179,7 +194,9 @@ export function OpenApiSchema({
       if (!hash) return;
 
       const target = findTargets.find(
-        (candidate) => candidate.legacyAnchorId === hash,
+        (candidate) =>
+          candidate.legacyAnchorId === hash ||
+          candidate.legacyAnchorIds?.includes(hash),
       );
       if (target) revealTargetInLocation(target);
 
@@ -236,6 +253,7 @@ export function OpenApiSchema({
           client={client}
           key={navigationKey}
           labels={labels}
+          legacyAnchorIdsByFieldPath={legacyAnchorIdsByFieldPath}
           nodes={schemaView}
           onCopyFieldLink={(node) => copyOpenApiSchemaFieldLink(rootId, node)}
           renderRemainingInfoTags={renderRemainingInfoTags}
@@ -245,6 +263,7 @@ export function OpenApiSchema({
       ) : (
         <OpenApiSchemaParameterFields
           labels={labels}
+          legacyAnchorIdsByFieldPath={legacyAnchorIdsByFieldPath}
           nodes={[
             rootNode,
             ...flattenOpenApiSchemaView(schemaView).map((node) => ({
@@ -278,6 +297,7 @@ function renderOpenApiSchemaDetails(
 }
 
 function OpenApiSchemaParameterFields({
+  legacyAnchorIdsByFieldPath,
   labels,
   nodes,
   onCopyFieldLink,
@@ -285,6 +305,7 @@ function OpenApiSchemaParameterFields({
   revealTarget,
   rootId,
 }: {
+  legacyAnchorIdsByFieldPath: ReadonlyMap<string, string[]>;
   labels: OpenApiSchemaFieldRowLabels;
   nodes: OpenApiSchemaViewNode[];
   onCopyFieldLink: (node: OpenApiSchemaViewNode) => Promise<boolean>;
@@ -367,6 +388,7 @@ function OpenApiSchemaParameterFields({
           expanded={false}
           labels={labels}
           key={node.id}
+          legacyAnchorIds={legacyAnchorIdsByFieldPath.get(node.path)}
           node={node}
           onCopy={() => {
             const requestId = copyRequestRef.current + 1;
@@ -1071,7 +1093,10 @@ export function buildOpenApiSchemaFindTargets(
   }
 
   visitSchema(generated.$root, rootPath, [], new Set());
-  return targets;
+  return addUniqueLegacySchemaAnchorIds(
+    targets,
+    legacyAnchorPrefix === 'request-body' ? 'request.body' : undefined,
+  );
 
   function visitSchema(
     ref: string,
@@ -1129,6 +1154,37 @@ export function buildOpenApiSchemaFindTargets(
       visitSchema(schema.item.$type, nextParentPath, fieldPath, nextAncestors);
     }
   }
+}
+
+function addUniqueLegacySchemaAnchorIds(
+  targets: OpenApiSchemaFindTarget[],
+  legacyRootPath?: string,
+) {
+  const candidates = targets.map((target) =>
+    Array.from(
+      new Set(
+        [
+          target.legacyAnchorId,
+          ...getOpenApiSchemaFieldAnchorAliases(
+            target.fieldPath,
+            legacyRootPath,
+          ),
+        ].filter((id): id is string => Boolean(id)),
+      ),
+    ),
+  );
+  const counts = new Map<string, number>();
+
+  for (const ids of candidates) {
+    for (const id of ids) {
+      counts.set(id, (counts.get(id) ?? 0) + 1);
+    }
+  }
+
+  return targets.map((target, index) => ({
+    ...target,
+    legacyAnchorIds: candidates[index].filter((id) => counts.get(id) === 1),
+  }));
 }
 
 function getLegacySchemaNavigation(rootId: string, explicitPrefix?: string) {

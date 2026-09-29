@@ -49,7 +49,7 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
 
 以下参数为必填。请确保你在命令行中对其设值：
 
-- `appId`：App ID，必须和声网 RTC SDK 的 App ID 一致，详见[获取 App ID](/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service)。
+- `appId`：App ID，必须和声网 RTC SDK 的 App ID 一致，详见[获取 App ID](/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service)。
 - `uid`：标识录制实例的用户 ID，32 位无符号整数。建议设置范围：1 到（232-1），并保证唯一性。有两种设置方式：
   - 设置为 `0`，系统将自动分配一个用户 ID。
   - 设置一个唯一的用户 ID（不能与频道内的任何用户 ID 重复）。
@@ -208,7 +208,7 @@ java RecordingSample --appId {你的 App ID} --channel {频道名} --uid 0 --cha
 
 - `proxyServer`：代理服务器的 IP 地址和端口号，如 `127.0.0.1:1080`。成功部署声网混合云、私有化平台后，你需要指定 Local Access Point 来设置本地代理。你可以联系 sales@shengwang.cn 了解和部署声网混合云或声网私有化平台。
 
-- `enableCloudProxy`：是否启用云代理服务。使用云代理需要先联系声网申请开通，详见[应对防火墙限制](/zh-CN/realtime-media/local-server-recording/build/setup-and-access/cloud-proxy)。
+- `enableCloudProxy`：是否启用云代理服务。使用云代理需要先联系声网申请开通，详见[应对防火墙限制](/zh-CN/realtime-media/local-server-recording/build/recording-preparation/cloud-proxy)。
 
   - `0`：（默认）关闭云代理服务。
   - `1`：启用云代理服务。

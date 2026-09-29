@@ -94,10 +94,10 @@ export const docs = defineDocs({
             types: directiveCalloutTypes,
           },
         ],
-        remarkNormalizeLegacyHeadingAnchors,
         remarkPlatformContent,
         remarkTableSlots,
         ...plugins,
+        remarkNormalizeLegacyHeadingAnchors,
       ],
     }),
     postprocess: {

@@ -2076,10 +2076,47 @@ Web body
     });
   });
 
-  it('returns OpenAPI content inside the existing docs shell payload from the merged source', async () => {
+  it('keeps lane-authored pages beside generated operations in the docs shell', async () => {
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? createZhOpenApiPage() : createOpenApiPage(),
     );
+    const conversationalAiPage = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/api-reference/api-ref/conversational-ai/index.mdx',
+          path: 'en/api-reference/api-ref/conversational-ai/index.mdx',
+        },
+        title: 'Conversational AI',
+      },
+      path: 'en/api-reference/api-ref/conversational-ai/index.mdx',
+      slugs: ['en', 'api-reference', 'api-ref', 'conversational-ai', 'index'],
+      url: '/en/api-reference/api-ref/conversational-ai',
+    } as unknown as PageWithSource;
+    const authenticationPage = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/api-reference/api-ref/conversational-ai/authentication.md',
+          path: 'en/api-reference/api-ref/conversational-ai/authentication.md',
+        },
+        title: 'RESTful authentication',
+      },
+      path: 'en/api-reference/api-ref/conversational-ai/authentication.md',
+      slugs: [
+        'en',
+        'api-reference',
+        'api-ref',
+        'conversational-ai',
+        'authentication',
+      ],
+      url: '/en/api-reference/api-ref/conversational-ai/authentication',
+    } as unknown as PageWithSource;
+    mockedGetPages.mockReturnValue([conversationalAiPage, authenticationPage]);
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
 
     const payload = await loadDocsPagePayload('en', 'api-reference', [
@@ -2140,7 +2177,6 @@ Web body
 
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
-        '/en/api-reference',
         '/en/api-reference/api-ref/conversational-ai',
         '/en/api-reference/api-ref/conversational-ai/authentication',
         '/en/api-reference/api-ref/conversational-ai/join',
@@ -4607,7 +4643,7 @@ Web body
     },
   );
 
-  it('keeps unmigrated RTM reference aliases on the default redirect payload', async () => {
+  it('uses a permanent redirect for the moved RTM billing reference alias', async () => {
     await expect(
       loadDocsPagePayload('zh-CN', 'realtime-media', [
         'rtm',
@@ -4617,6 +4653,7 @@ Web body
       ]),
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/realtime-media/rtm/reference/billing/billing-rules',
+      statusCode: 301,
     });
   });
 
