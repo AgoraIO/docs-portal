@@ -45,7 +45,12 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { isMachineReadableLocale } from '@/lib/machine-readable-docs';
+import { setStoredPlatformPreference } from '@/lib/platforms/preference';
 import type { PlatformKey } from '@/lib/platforms/registry';
+import {
+  RTC_RELEASE_NOTES_PATH,
+  resolveRtcReleaseNotesLegacyTarget,
+} from '@/lib/rtc-release-notes-compat';
 import {
   PlatformHeaderTabs,
   PlatformPanel,
@@ -202,6 +207,53 @@ export function DocsContent({
       window.removeEventListener('hashchange', handleHashChange);
     };
   }, [isMdxBody]);
+
+  useEffect(() => {
+    if (
+      resolvedBody?.kind !== 'platform-group' ||
+      !currentPageKey?.startsWith(RTC_RELEASE_NOTES_PATH)
+    )
+      return;
+
+    let cancelled = false;
+    let scrollFrame = 0;
+    const resolveLegacyLocation = async () => {
+      if (window.location.pathname !== RTC_RELEASE_NOTES_PATH) return;
+      window.cancelAnimationFrame(scrollFrame);
+      const { rtcReleaseNotesAnchorPlatform } = await import(
+        '@/lib/rtc-release-notes-anchors'
+      );
+      if (cancelled) return;
+      const target = resolveRtcReleaseNotesLegacyTarget(
+        window.location,
+        rtcReleaseNotesAnchorPlatform,
+      );
+      if (!target) return;
+
+      window.history.replaceState(window.history.state, '', target.url);
+      setStoredPlatformPreference(target.platform);
+
+      if (window.location.hash) {
+        let attempts = 0;
+        const syncWhenVisible = () => {
+          if (cancelled) return;
+          syncDocsHashTargetFromLocation('auto');
+          const heading = findDocsHeadingForHash(window.location.hash);
+          if (heading?.getClientRects().length || ++attempts >= 180) return;
+          scrollFrame = window.requestAnimationFrame(syncWhenVisible);
+        };
+        scrollFrame = window.requestAnimationFrame(syncWhenVisible);
+      }
+    };
+
+    void resolveLegacyLocation();
+    window.addEventListener('hashchange', resolveLegacyLocation);
+    return () => {
+      cancelled = true;
+      window.cancelAnimationFrame(scrollFrame);
+      window.removeEventListener('hashchange', resolveLegacyLocation);
+    };
+  }, [currentPageKey, resolvedBody?.kind]);
 
   return (
     <article
