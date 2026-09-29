@@ -1,0 +1,21 @@
+services:
+  meilisearch:
+    image: getmeili/meilisearch:v1.12.8
+    environment:
+      MEILI_ENV: production
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:?Set MEILI_MASTER_KEY in search-demo/.env}
+      MEILI_DB_PATH: /meili_data/data.ms
+      MEILI_NO_ANALYTICS: 'true'
+    ports:
+      - '127.0.0.1:7700:7700'
+    volumes:
+      - meili-data:/meili_data
+    healthcheck:
+      test: ['CMD-SHELL', 'curl --fail --silent http://127.0.0.1:7700/health > /dev/null || exit 1']
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
+
+volumes:
+  meili-data:

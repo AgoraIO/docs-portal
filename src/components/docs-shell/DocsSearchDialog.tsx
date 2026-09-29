@@ -2,9 +2,10 @@
 
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { SearchIcon } from 'lucide-react';
+import { SearchIcon, SendIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AiMarkdown } from '@/components/docs-shell/AiMarkdown';
 import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
 import {
   type FilterGroup,
@@ -20,6 +21,12 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import {
+  type AskDocsResponse,
+  askDocs,
+  getAskDocsUrl,
+} from '@/lib/ai/ask-docs-client';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
@@ -36,6 +43,10 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
+import {
+  createMeilisearchClient,
+  getMeilisearchSearchConfig,
+} from '@/lib/search/meilisearch-client';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
@@ -62,6 +73,13 @@ type PagesState =
       status: 'error';
     };
 
+type SearchMode = 'search' | 'answer';
+type AskDocsState =
+  | { status: 'idle' }
+  | { status: 'loading' }
+  | { message: string; status: 'error' }
+  | ({ status: 'loaded' } & AskDocsResponse);
+
 export function DocsSearchDialog({
   loadPages,
   locale = DEFAULT_LOCALE,
@@ -78,6 +96,10 @@ export function DocsSearchDialog({
   const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [searchMode, setSearchMode] = useState<SearchMode>('search');
+  const [askDocsState, setAskDocsState] = useState<AskDocsState>({
+    status: 'idle',
+  });
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
   );
@@ -107,6 +129,11 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
+  const meilisearchConfig =
+    searchLocale === 'zh-CN' ? getMeilisearchSearchConfig() : null;
+  const askDocsUrl = searchLocale === 'zh-CN' ? getAskDocsUrl() : null;
+  const remoteSearchEnabled =
+    searchLocale === 'zh-CN' || Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
   // moment ANY request settles — including a superseded one whose result it then
   // discards — which briefly reads as "settled with no results" mid-typing and
@@ -115,20 +142,46 @@ export function DocsSearchDialog({
   const [pendingRequests, setPendingRequests] = useState(0);
   const searchClient = useMemo(() => {
     const base =
-      algoliaAppId && algoliaIndexName && algoliaSearchApiKey
-        ? createAlgoliaDocsClient({
-            appId: algoliaAppId,
-            indexName: algoliaIndexName,
-            locale: searchLocale,
-            platform: platformFilter ?? undefined,
-            scope: searchScope,
-            searchApiKey: algoliaSearchApiKey,
-          })
-        : createOramaDocsClient({
-            pages,
-            platform: platformFilter ?? undefined,
-            scope: searchScope,
-          });
+      searchMode === 'answer'
+        ? {
+            deps: ['ai-answer-mode'],
+            search: async () => [],
+          }
+        : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+          ? createAlgoliaDocsClient({
+              appId: algoliaAppId,
+              indexName: algoliaIndexName,
+              locale: searchLocale,
+              platform: platformFilter ?? undefined,
+              scope: searchScope,
+              searchApiKey: algoliaSearchApiKey,
+            })
+          : meilisearchConfig
+            ? (() => {
+                const client = createMeilisearchClient(meilisearchConfig);
+                return {
+                  ...client,
+                  search: (query: string) =>
+                    client.searchCnDocuments(query, {
+                      filters: buildMeilisearchFilters({
+                        platform: platformFilter,
+                        scope: searchScope,
+                      }),
+                    }),
+                };
+              })()
+            : searchLocale === 'zh-CN'
+              ? {
+                  deps: ['missing-cn-meilisearch-config'],
+                  search: async () => {
+                    throw new Error('CN Meilisearch is not configured');
+                  },
+                }
+              : createOramaDocsClient({
+                  pages,
+                  platform: platformFilter ?? undefined,
+                  scope: searchScope,
+                });
     return {
       ...base,
       async search(query: string) {
@@ -144,14 +197,16 @@ export function DocsSearchDialog({
     algoliaAppId,
     algoliaIndexName,
     algoliaSearchApiKey,
+    meilisearchConfig,
     pages,
     platformFilter,
     searchScope,
     searchLocale,
+    searchMode,
   ]);
   const searchDeps = useMemo(
     () =>
-      algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+      remoteSearchEnabled
         ? [
             algoliaAppId,
             algoliaIndexName,
@@ -159,6 +214,7 @@ export function DocsSearchDialog({
             searchLocale,
             platformFilter,
             searchScope,
+            searchMode,
           ]
         : [pages, searchLocale],
     [
@@ -167,8 +223,10 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
+      remoteSearchEnabled,
       searchScope,
       searchLocale,
+      searchMode,
     ],
   );
   const {
@@ -178,24 +236,25 @@ export function DocsSearchDialog({
   } = useDocsSearch(
     {
       client: searchClient,
-      delayMs: algoliaConfig ? SEARCH_DEBOUNCE_MS : 0,
+      delayMs: remoteSearchEnabled ? SEARCH_DEBOUNCE_MS : 0,
     },
     searchDeps,
   );
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
+  const isAnswerMode = searchMode === 'answer';
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
   // During that pre-fetch window `isLoading` is false and `results` still holds
   // the previous/initial value, which briefly flashes the empty state after a
   // keystroke. Treat the debounce window as busy so the skeleton bridges the gap.
   const [debouncePending, setDebouncePending] = useState(false);
-  // `algoliaConfig` is a fresh object every render, so depend on a stable
+  // The remote config objects are recreated on render, so depend on a stable
   // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
-  const algoliaEnabled = Boolean(algoliaConfig);
+  const remoteSearchConfigured = remoteSearchEnabled;
   useEffect(() => {
-    if (!algoliaEnabled || search.trim() === '') {
+    if (!remoteSearchConfigured || search.trim() === '') {
       setDebouncePending(false);
       return;
     }
@@ -205,7 +264,7 @@ export function DocsSearchDialog({
       SEARCH_DEBOUNCE_MS + 30,
     );
     return () => window.clearTimeout(id);
-  }, [algoliaEnabled, search]);
+  }, [remoteSearchConfigured, search]);
   useEffect(() => {
     if (isLoading) {
       setDebouncePending(false);
@@ -219,6 +278,28 @@ export function DocsSearchDialog({
     }
   }, [search]);
   const isBusy = isLoading || debouncePending || pendingRequests > 0;
+  const submitQuestion = useCallback(async () => {
+    const question = search.trim();
+    if (!question || askDocsState.status === 'loading') return;
+    if (!askDocsUrl) {
+      setAskDocsState({
+        message: 'AI service unavailable',
+        status: 'error',
+      });
+      return;
+    }
+    setAskDocsState({ status: 'loading' });
+    try {
+      const result = await askDocs(question, askDocsUrl);
+      setAskDocsState({ status: 'loaded', ...result });
+    } catch (error) {
+      setAskDocsState({
+        message:
+          error instanceof Error ? error.message : 'AI service unavailable',
+        status: 'error',
+      });
+    }
+  }, [askDocsState.status, askDocsUrl, search]);
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
@@ -289,12 +370,14 @@ export function DocsSearchDialog({
 
       if (!nextOpen) {
         setActiveValue(null);
+        setSearchMode('search');
+        setAskDocsState({ status: 'idle' });
         // Reset the query on close so reopening lands on the recent list / prompt
         // rather than the previous search's (possibly empty) results.
         setSearch('');
       }
 
-      if (algoliaConfig || !nextOpen || pages.length > 0) {
+      if (remoteSearchEnabled || !nextOpen || pages.length > 0) {
         return;
       }
 
@@ -319,7 +402,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, pages.length, searchLocale, setSearch],
+    [loadPages, pages.length, remoteSearchEnabled, searchLocale, setSearch],
   );
 
   useEffect(() => {
@@ -351,7 +434,7 @@ export function DocsSearchDialog({
   // list (or a prompt). Section tabs are navigation, not search results, so
   // they no longer appear here; their landing pages surface as normal results.
   const resultEntries: RenderedSearchEntry[] =
-    !hasQuery || isSearchUnavailable
+    isAnswerMode || !hasQuery || isSearchUnavailable
       ? []
       : normalizedSearchResults.map(searchResultToEntry);
   const showRecent = !hasQuery && recentPages.length > 0;
@@ -360,7 +443,8 @@ export function DocsSearchDialog({
   // Only show the loading skeleton when there's nothing else to show. While a
   // re-query is in flight the previous results stay visible, so the skeleton
   // must not render on top of them.
-  const showSkeleton = hasQuery && isBusy && resultEntries.length === 0;
+  const showSkeleton =
+    !isAnswerMode && hasQuery && isBusy && resultEntries.length === 0;
 
   // One detail record per rendered item, in render order. `value` matches the
   // cmdk item value set on each CommandItem below. The empty state lists recent
@@ -435,12 +519,58 @@ export function DocsSearchDialog({
         title={t('docs.search')}
         value={activeValue ?? ''}
       >
+        {searchLocale === 'zh-CN' ? (
+          <ToggleGroup
+            aria-label={t('docs.searchMode')}
+            className="w-full justify-center border-b px-3 py-2"
+            onValueChange={(value) => {
+              if (value !== 'search' && value !== 'answer') return;
+              setSearchMode(value);
+              setAskDocsState({ status: 'idle' });
+            }}
+            type="single"
+            value={searchMode}
+            variant="outline"
+          >
+            <ToggleGroupItem value="search">
+              {t('docs.searchModeSearch')}
+            </ToggleGroupItem>
+            <ToggleGroupItem value="answer">
+              {t('docs.searchModeAnswer')}
+            </ToggleGroupItem>
+          </ToggleGroup>
+        ) : null}
         <CommandInput
+          onKeyDown={(event) => {
+            if (isAnswerMode && event.key === 'Enter') {
+              event.preventDefault();
+              void submitQuestion();
+            }
+          }}
           onValueChange={setSearch}
-          placeholder={t('docs.searchPlaceholder')}
+          placeholder={
+            isAnswerMode
+              ? t('docs.askDocsPlaceholder')
+              : t('docs.searchPlaceholder')
+          }
           value={search}
         />
-        {algoliaConfig ? (
+        {isAnswerMode ? (
+          <div className="flex justify-end border-b px-3 py-2">
+            <Button
+              aria-label={t('docs.askDocsSubmit')}
+              disabled={!hasQuery || askDocsState.status === 'loading'}
+              onClick={() => void submitQuestion()}
+              size="sm"
+              title={t('docs.askDocsSubmit')}
+              type="button"
+            >
+              <SendIcon />
+              <span>{t('docs.askDocsSubmit')}</span>
+            </Button>
+          </div>
+        ) : null}
+        {!isAnswerMode && remoteSearchEnabled ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
             {productScopes.length > 0 ? (
               <SearchFilterDropdown
@@ -463,7 +593,14 @@ export function DocsSearchDialog({
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
-          {showSkeleton ? (
+          {isAnswerMode ? (
+            <AskDocsAnswer
+              citationsLabel={t('docs.askDocsCitations')}
+              loadingLabel={t('docs.askDocsLoading')}
+              onSelect={handleSelect}
+              state={askDocsState}
+            />
+          ) : showSkeleton ? (
             <div className="space-y-1 p-2" data-testid="search-loading">
               {[0, 1, 2].map((row) => (
                 <div className="space-y-2 rounded-md px-2 py-2.5" key={row}>
@@ -519,7 +656,7 @@ export function DocsSearchDialog({
               })}
             </CommandGroup>
           ) : null}
-          {hasQuery ? (
+          {!isAnswerMode && hasQuery ? (
             <CommandGroup>
               {isSearchUnavailable ? (
                 <div className="px-2 py-3 text-sm text-muted-foreground">
@@ -571,10 +708,10 @@ export function DocsSearchDialog({
             the height-varying flow, so the dialog doesn't resize on focus change. */}
         <SearchDetailPanel
           activeValue={activeValue}
-          description={activeDetail?.primary}
+          description={hasQuery ? activeDetail?.primary : undefined}
           open={open}
           renderText={(value) => <HighlightedText value={value} />}
-          title={activeDetail?.title}
+          title={hasQuery ? activeDetail?.title : undefined}
         />
         <SearchKeyboardHints
           closeLabel={t('docs.searchHintClose')}
@@ -601,6 +738,69 @@ type DetailEntry = {
   title: string;
   value: string;
 };
+
+function AskDocsAnswer({
+  citationsLabel,
+  loadingLabel,
+  onSelect,
+  state,
+}: {
+  citationsLabel: string;
+  loadingLabel: string;
+  onSelect: (url: string) => Promise<void>;
+  state: AskDocsState;
+}) {
+  if (state.status === 'idle') return null;
+  if (state.status === 'loading') {
+    return (
+      <div className="px-4 py-8 text-center text-sm text-muted-foreground">
+        {loadingLabel}
+      </div>
+    );
+  }
+  if (state.status === 'error') {
+    return (
+      <div
+        className="px-4 py-8 text-center text-sm text-destructive"
+        data-testid="ask-docs-error"
+      >
+        {state.message}
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4 px-4 py-4 text-sm" data-testid="ask-docs-answer">
+      <AiMarkdown>{state.answer}</AiMarkdown>
+      {state.citations.length > 0 ? (
+        <div className="space-y-2 border-t pt-3">
+          <div className="font-medium">{citationsLabel}</div>
+          <ul className="space-y-1">
+            {state.citations.map((citation) => (
+              <li key={citation.url}>
+                <a
+                  className="text-primary underline underline-offset-2"
+                  href={citation.url}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    void onSelect(citation.url);
+                  }}
+                >
+                  {citation.title}
+                </a>
+                {citation.headingPath.length > 0 ? (
+                  <span className="ml-2 text-muted-foreground">
+                    {citation.headingPath.join(' › ')}
+                  </span>
+                ) : null}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+    </div>
+  );
+}
 
 function searchResultToEntry(result: {
   breadcrumbs?: unknown[];
@@ -757,4 +957,17 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
+}
+
+function buildMeilisearchFilters({
+  platform,
+  scope,
+}: {
+  platform: PlatformKey | null;
+  scope?: { field: 'product' | 'tab'; value: string };
+}) {
+  return [
+    platform ? `platform = ${JSON.stringify(platform)}` : undefined,
+    scope ? `${scope.field} = ${JSON.stringify(scope.value)}` : undefined,
+  ].filter((filter): filter is string => Boolean(filter));
 }
