@@ -1,0 +1,978 @@
+---
+title: Voice-only quickstart (Android)
+---
+
+This Android quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+
+## Understand the tech [#understand-the-tech]
+
+To start a Voice Calling session, implement the following steps in your app:
+
+- **Initialize the Agora Engine**: Before calling other APIs, create and initialize an Agora Engine instance.
+
+- **Join a channel**: Call methods to create and join a channel.
+
+- **Send and receive audio**: All users can publish streams to the channel and subscribe to audio streams published by other users in the channel.
+
+![Video calling workflow](https://assets-docs.agora.io/images/voice-sdk/get-started-sdk-voice.svg)
+
+## Prerequisites [#prerequisites]
+
+- [Android Studio](https://developer.android.com/studio) 4.2 or higher.
+- Android SDK API Level 21 or higher.
+- Two mobile devices running Android 5.0 or higher.
+
+- A microphone
+
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
+
+## Set up your project [#set-up-your-project]
+
+This section shows you how to set up your Android project and install the Agora RTC SDK.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
+1. Create a [new project](https://developer.android.com/studio/projects/create-project).
+
+    1. Open Android Studio and select **File > New > New Project...**.
+    1. Select **Phone and Tablet** > **Empty Activity** and click **Next**.
+    1. Set the project name and storage path.
+    1. Select **Java** or **Kotlin** as the language, and click **Finish** to create the Android project.
+
+        :::note
+        After you create a project, Android Studio automatically starts gradle sync. Ensure that the synchronization is successful before proceeding to the next step.
+        :::
+
+</TabsContent>
+
+<TabsContent value="existing-project">
+
+1. Add a new activity to your project.
+
+    1. Open your project in Android Studio.
+    1. Right-click on the `app/src/main/java/<your.package.name>` folder.
+    1. Select **New → Activity → Empty Activity**.
+    1. Enter an activity name and click **Finish**.
+    This guide uses `MainActivity` as the activity name in the sample code. Replace it with your activity name where required.
+
+</TabsContent>
+</Tabs>
+
+2. Add a layout file for your activity.
+
+    Set up a basic layout for your activity. Refer to [Create a user interface](#create-a-user-interface) to get a bare bones sample layout.
+
+### Install the SDK [#install-the-sdk]
+
+Use either of the following methods to add RTC SDK to your project.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="maven-central">Gradle</TabsTrigger>
+  <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
+</TabsList>
+
+<TabsContent value="maven-central">
+
+1. Open the `settings.gradle` file in the project's root directory and add the Agora Maven CDN repository to `dependencyResolutionManagement.repositories`.
+
+    Don't remove existing repositories such as `google()` and `mavenCentral()`.
+
+    - Groovy `settings.gradle`
+
+      ```groovy
+      dependencyResolutionManagement {
+          repositories {
+              google()
+              mavenCentral()
+              maven { url = 'https://download.agora.io/maven/' }
+          }
+      }
+      ```
+
+    - Kotlin `settings.gradle.kts`
+
+      ```kotlin
+      dependencyResolutionManagement {
+          repositories {
+              google()
+              mavenCentral()
+              maven { url = uri("https://download.agora.io/maven/") }
+          }
+      }
+      ```
+
+    :::note
+    If you cannot find the `dependencyResolutionManagement` field in `settings.gradle` or `settings.gradle.kts`, your Android Gradle plugin version might be earlier than 7.1.0.
+
+    For details, see [Android Gradle plugin 7.1.0 release notes](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
+    :::
+
+    If your Android Gradle plugin version is earlier than 7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
+
+    ```text
+    allprojects {
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.agora.io/maven/' }
+        }
+    }
+    ```
+
+1. To integrate the RTC SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
+
+    - Groovy `build.gradle`
+
+        ```groovy
+        implementation 'io.agora.rtc:voice-sdk:x.y.z'
+        ```
+
+    - Kotlin `build.gradle.kts`
+
+        ```kotlin
+        implementation("io.agora.rtc:voice-sdk:x.y.z")
+        ```
+
+    Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
+
+    :::note
+    To get the latest version number, check the [Release notes](/en/realtime-media/rtc/reference/release-notes).
+    :::
+
+1. Prevent code obfuscation
+
+    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+
+    ```java
+    -keep class io.agora.** { *; }
+      -dontwarn io.agora.**
+    ```
+
+</TabsContent>
+
+<TabsContent value="manual-integration">
+
+1. Download the latest version of RTC SDK from the [SDKs](/en/api-reference/sdks?product=voice&platform=android) page and unzip it.
+
+1. Open the unzipped file and copy the following files or subfolders to your project path.
+
+    | File or folder        | Project path    |
+    | :---------------------------- | :----------------------- |
+    | `agora-rtc-sdk.jar` file   | `/app/libs/`       |
+    | `arm64-v8a` folder      | `/app/src/main/jniLibs/` |
+    | `armeabi-v7a` folder     | `/app/src/main/jniLibs/` |
+    | `x86` folder         | `/app/src/main/jniLibs/` |
+    | `x86_64` folder        | `/app/src/main/jniLibs/` |
+    | `high_level_api` in `include` folder | `/app/src/main/jniLibs/` |
+
+1. Select the file `/app/libs/agora-rtc-sdk.jar` in the left navigation bar of Android Studio project files, right-click, and select **add as a library** from the drop-down menu.
+
+1. Prevent code obfuscation
+
+    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+
+    ```java
+    -keep class io.agora.** { *; }
+      -dontwarn io.agora.**
+    ```
+
+</TabsContent>
+</Tabs>
+
+## Implement Voice Calling [#implement-voice-calling]
+
+This section guides you through the implementation of basic real-time audio interaction in your app.
+
+The following figure illustrates the essential steps:
+
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quickstart-voice-call-sequence.svg)
+</Accordion>
+</Accordions>
+
+This guide includes [complete sample code](#complete-sample-code) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps and use the code in your `MainActivity` file.
+
+### Import Agora classes [#import-agora-classes]
+
+Import the relevant Agora classes and interfaces:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+import io.agora.rtc2.ChannelMediaOptions;
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+import io.agora.rtc2.ChannelMediaOptions
+import io.agora.rtc2.Constants
+import io.agora.rtc2.IRtcEngineEventHandler
+import io.agora.rtc2.RtcEngine
+import io.agora.rtc2.RtcEngineConfig
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Initialize the engine [#initialize-the-engine]
+
+For real-time communication, initialize an `RtcEngine` instance and set up event handlers to manage user interactions within the channel. Use `RtcEngineConfig` to specify the application context, [App ID](/en/introduction/account), and custom [event handler](#subscribe-to-rtc-sdk-events), then call `RtcEngine.create(config)` to initialize the engine, enabling further channel operations. In your `MainActivity` file, add the following code:
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Fill in the app ID from Agora Console
+private String myAppId = "<Your app ID>";
+private RtcEngine mRtcEngine;
+
+private void initializeAgoraVoiceSDK() {
+  try {
+    RtcEngineConfig config = new RtcEngineConfig();
+    config.mContext = getBaseContext();
+    config.mAppId = myAppId;
+    config.mEventHandler = mRtcEventHandler;
+    mRtcEngine = RtcEngine.create(config);
+  } catch (Exception e) {
+    throw new RuntimeException("Error initializing RTC engine: " + e.getMessage());
+  }
+}
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Fill in the App ID obtained from the Agora Console
+private val myAppId = "<Your app ID>"
+private var mRtcEngine: RtcEngine? = null
+
+private fun initializeAgoraVoiceSDK() {
+  try {
+    val config = RtcEngineConfig().apply {
+      mContext = baseContext
+      mAppId = myAppId
+      mEventHandler = mRtcEventHandler
+    }
+    mRtcEngine = RtcEngine.create(config)
+  } catch (e: Exception) {
+    throw RuntimeException("Error initializing RTC engine: ${e.message}")
+  }
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Join a channel [#join-a-channel]
+
+To join a channel, call `joinChannel` with the following parameters:
+
+- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
+
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](../build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
+
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
+
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
+
+For Voice Calling, set the `channelProfile` to `CHANNEL_PROFILE_COMMUNICATION` and the user role to `CLIENT_ROLE_BROADCASTER`.
+
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+// Fill in the channel name
+private String channelName = "<Your channel name>";
+// Fill in the temporary token generated from Agora Console
+private String token = "<Your token>";
+
+private void joinChannel() {
+  ChannelMediaOptions options = new ChannelMediaOptions();
+  options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+  options.channelProfile = Constants.CHANNEL_PROFILE_COMMUNICATION;
+  options.publishCameraTrack = true;
+  mRtcEngine.joinChannel(token, channelName, 0, options);
+}
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+// Fill in the channel name
+private val channelName = "<Your channel name>"
+// Fill in the temporary token generated from Agora Console
+private val token = "<Your token>"
+
+private fun joinChannel() {
+  val options = ChannelMediaOptions().apply {
+    clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+    channelProfile = Constants.CHANNEL_PROFILE_COMMUNICATION
+    publishMicrophoneTrack = true;
+  }
+  mRtcEngine?.joinChannel(token, channelName, 0, options)
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Subscribe to RTC SDK events [#subscribe-to-rtc-sdk-events]
+
+The RTC SDK provides an interface for subscribing to channel events. To use it, create an instance of `IRtcEngineEventHandler` and implement the event methods you want to handle.
+:::note
+To ensure that you receive all RTC SDK events, set the Agora Engine event handler before joining a channel.
+:::
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+ <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+ <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+```java
+private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+  // Callback when successfully joining the channel
+  @Override
+  public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+    super.onJoinChannelSuccess(channel, uid, elapsed);
+    showToast("Joined channel " + channel);
+  }
+  // Callback when a remote user or host joins the current channel
+  @Override
+  public void onUserJoined(int uid, int elapsed) {
+    super.onUserJoined(uid, elapsed);
+    runOnUiThread(() -> {
+      showToast("User joined: " + uid); // Show toast for user joining
+    });
+  }
+  // Callback when a remote user or host leaves the current channel
+  @Override
+  public void onUserOffline(int uid, int reason) {
+    super.onUserOffline(uid, reason);
+    runOnUiThread(() -> {
+      showToast("User offline: " + uid); // Show toast for user going offline
+    });
+  }
+};
+```
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+```kotlin
+private val mRtcEventHandler = object : IRtcEngineEventHandler() {
+  override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
+    super.onJoinChannelSuccess(channel, uid, elapsed)
+    runOnUiThread {
+      showToast("Joined channel $channel")
+    }
+  }
+  override fun onUserJoined(uid: Int, elapsed: Int) {
+    runOnUiThread {
+      showToast("User joined: $uid")
+    }
+  }
+  override fun onUserOffline(uid: Int, reason: Int) {
+    super.onUserOffline(uid, reason)
+    runOnUiThread {
+      showToast("User offline: $uid")
+    }
+  }
+}
+```
+</CodeBlockTab>
+
+</CodeBlockTabs>
+### Handle permissions [#handle-permissions]
+
+To access the microphone on Android devices, declare the necessary permissions in the app's manifest and ensure that the user grants these permissions when the app starts.
+
+1. Open your project's `AndroidManifest.xml` file and add the following permissions before `<application>`:
+
+    ```xml
+    <!--Required permissions-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!--Optional permissions-->
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <!-- For devices running Android 12 (API level 32) or higher and integrating Agora RTC SDK version v4.1.0 or lower, you also need to add the following permissions -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT"/>
+    <!-- For Android 12 or higher, the following permissions are also required -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN"/>
+    ```
+
+1. Use the following code to handle runtime permissions in your Android app. The logic ensures that the necessary permissions are granted before starting Voice Calling. In your `MainActivity` file, add the following code:
+
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
+      ```java
+      private static final int PERMISSION_REQ_ID = 22;
+
+        private boolean checkPermissions() {
+          for (String permission : getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+              return false;
+            }
+          }
+          return true;
+        }
+
+        private void requestPermissions() {
+          ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+        }
+
+        private String[] getRequiredPermissions() {
+          if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            return new String[]{
+              Manifest.permission.RECORD_AUDIO,
+              Manifest.permission.READ_PHONE_STATE,
+              Manifest.permission.BLUETOOTH_CONNECT
+            };
+          } else {
+            return new String[]{Manifest.permission.RECORD_AUDIO};
+          }
+        }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+          super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+          if (checkPermissions()) {
+            startVoiceCalling();
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      private val permissionReqId = 22
+
+        private fun checkPermissions(): Boolean {
+          for (permission in getRequiredPermissions()) {
+            if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+              return false
+            }
+          }
+          return true
+        }
+        private fun requestPermissions() {
+          ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
+        }
+        private fun getRequiredPermissions(): Array<String> {
+          return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+              Manifest.permission.RECORD_AUDIO,
+              Manifest.permission.READ_PHONE_STATE,
+              Manifest.permission.BLUETOOTH_CONNECT
+            )
+          } else {
+            arrayOf(Manifest.permission.RECORD_AUDIO)
+          }
+        }
+        override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+          super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+          if (checkPermissions()) {
+            startVoiceCalling()
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    </CodeBlockTabs>
+### Start and close the app [#start-and-close-the-app]
+
+When a user launches your app, start real-time interaction. When a user closes the app, stop the interaction.
+
+1. In the `onCreate` callback, check whether the app has been granted the required permissions. If the permissions have not been granted, request the required permissions from the user. If permissions are granted, initialize `RtcEngine` and join a channel.
+
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
+      ```java
+      @Override
+        protected void onCreate(Bundle savedInstanceState) {
+          super.onCreate(savedInstanceState);
+          setContentView(R.layout.activity_main);
+          if (checkPermissions()) {
+            startVoiceCalling();
+          } else {
+            requestPermissions();
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      override fun onCreate(savedInstanceState: Bundle?) {
+          super.onCreate(savedInstanceState)
+          setContentView(R.layout.activity_main)
+          if (checkPermissions()) {
+            startVoiceCalling()
+          } else {
+            requestPermissions()
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    </CodeBlockTabs>
+2. When a user closes the app, or switches the app to the background, call `leaveChannel` to leave the current channel and release all session-related resources.
+
+    <CodeBlockTabs defaultValue="java">
+    <CodeBlockTabsList>
+     <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+     <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+    </CodeBlockTabsList>
+
+    <CodeBlockTab value="java">
+      ```java
+      private void cleanupAgoraEngine() {
+          if (mRtcEngine != null) {
+            mRtcEngine.leaveChannel();
+            mRtcEngine = null;
+          }
+        }
+      ```
+    </CodeBlockTab>
+
+    <CodeBlockTab value="kotlin">
+      ```kotlin
+      private fun cleanupAgoraEngine() {
+          mRtcEngine?.apply {
+            leaveChannel()
+          }
+          mRtcEngine = null
+        }
+      ```
+    </CodeBlockTab>
+
+    </CodeBlockTabs>
+### Complete sample code [#complete-sample-code]
+
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy the following lines into the `MainActivity` file in your project. Then, replace `<projectname>` in package `com.example.<projectname>` with your project's name.
+
+<Accordions>
+<Accordion title="Complete sample code for real-time Voice Calling">
+<CodeBlockTabs defaultValue="java">
+<CodeBlockTabsList>
+  <CodeBlockTabsTrigger value="java">Java</CodeBlockTabsTrigger>
+  <CodeBlockTabsTrigger value="kotlin">Kotlin</CodeBlockTabsTrigger>
+</CodeBlockTabsList>
+
+<CodeBlockTab value="java">
+
+```java
+package com.example.<projectname>;
+
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
+import io.agora.rtc2.ChannelMediaOptions;
+import io.agora.rtc2.Constants;
+import io.agora.rtc2.IRtcEngineEventHandler;
+import io.agora.rtc2.RtcEngine;
+import io.agora.rtc2.RtcEngineConfig;
+
+public class MainActivity extends AppCompatActivity {
+
+  private static final int PERMISSION_REQ_ID = 22;
+
+  private final String myAppId = "<Your app ID>";
+  private final String channelName = "<Your channel name>";
+  private final String token = "<Your token>";
+
+  private RtcEngine mRtcEngine;
+
+  private final IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+    // Callback when successfully joining the channel
+    @Override
+    public void onJoinChannelSuccess(String channel, int uid, int elapsed) {
+      super.onJoinChannelSuccess(channel, uid, elapsed);
+      showToast("Joined channel " + channel);
+    }
+    // Callback when a remote user or host joins the current channel
+    @Override
+    public void onUserJoined(int uid, int elapsed) {
+      super.onUserJoined(uid, elapsed);
+      runOnUiThread(() -> {
+        showToast("User joined: " + uid); // Show toast for user joining
+      });
+    }
+    // Callback when a remote user or host leaves the current channel
+    @Override
+    public void onUserOffline(int uid, int reason) {
+      super.onUserOffline(uid, reason);
+      runOnUiThread(() -> {
+        showToast("User offline: " + uid); // Show toast for user going offline
+      });
+    }
+  };
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+
+    if (checkPermissions()) {
+      startVoiceCalling();
+    } else {
+      requestPermissions();
+    }
+  }
+
+  private boolean checkPermissions() {
+    for (String permission : getRequiredPermissions()) {
+      if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private void requestPermissions() {
+    ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID);
+  }
+
+  private String[] getRequiredPermissions() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      return new String[]{
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.BLUETOOTH_CONNECT
+      };
+    } else {
+      return new String[]{Manifest.permission.RECORD_AUDIO};
+    }
+  }
+
+  @Override
+  public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    if (checkPermissions()) {
+      startVoiceCalling();
+    }
+  }
+
+  private void startVoiceCalling() {
+    initializeAgoraVoiceSDK();
+    joinChannel();
+  }
+
+  private void initializeAgoraVoiceSDK() {
+    try {
+      RtcEngineConfig config = new RtcEngineConfig();
+      config.mContext = getApplicationContext();
+      config.mAppId = myAppId;
+      config.mEventHandler = mRtcEventHandler;
+      mRtcEngine = RtcEngine.create(config);
+    } catch (Exception e) {
+      throw new RuntimeException("Error initializing RTC engine: " + e.getMessage());
+    }
+  }
+
+  private void joinChannel() {
+    ChannelMediaOptions options = new ChannelMediaOptions();
+    options.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+    options.channelProfile = Constants.CHANNEL_PROFILE_COMMUNICATION;
+    options.publishMicrophoneTrack = true;
+    mRtcEngine.joinChannel(token, channelName, 0, options);
+  }
+
+  @Override
+  protected void onDestroy() {
+    super.onDestroy();
+    cleanupAgoraEngine();
+  }
+
+  private void cleanupAgoraEngine() {
+    if (mRtcEngine != null) {
+      mRtcEngine.leaveChannel();
+      mRtcEngine = null;
+    }
+  }
+
+  private void showToast(String message) {
+    runOnUiThread(() -> Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show());
+  }
+}
+```
+
+</CodeBlockTab>
+
+<CodeBlockTab value="kotlin">
+
+```kotlin
+package com.example.<projectname>
+
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import io.agora.rtc2.ChannelMediaOptions
+import io.agora.rtc2.Constants
+import io.agora.rtc2.IRtcEngineEventHandler
+import io.agora.rtc2.RtcEngine
+import io.agora.rtc2.RtcEngineConfig
+
+class MainActivity : AppCompatActivity() {
+
+  private val PERMISSION_REQ_ID = 22
+
+  private val myAppId = "<Your app ID>"
+  private val channelName = "<Your channel name>"
+  private val token = "<Your token>"
+
+  private var mRtcEngine: RtcEngine? = null
+
+  private val mRtcEventHandler = object : IRtcEngineEventHandler() {
+    override fun onJoinChannelSuccess(channel: String?, uid: Int, elapsed: Int) {
+      super.onJoinChannelSuccess(channel, uid, elapsed)
+      runOnUiThread {
+        showToast("Joined channel $channel")
+      }
+    }
+    override fun onUserJoined(uid: Int, elapsed: Int) {
+      runOnUiThread {
+        showToast("A user joined")
+      }
+    }
+    override fun onUserOffline(uid: Int, reason: Int) {
+      super.onUserOffline(uid, reason)
+      runOnUiThread {
+        showToast("User offline: $uid")
+      }
+    }
+  }
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    if (checkPermissions()) {
+      startVoiceCalling()
+    } else {
+      requestPermissions()
+    }
+  }
+
+  private fun checkPermissions(): Boolean {
+    for (permission in getRequiredPermissions()) {
+      if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
+        return false
+      }
+    }
+    return true
+  }
+
+  private fun requestPermissions() {
+    ActivityCompat.requestPermissions(this, getRequiredPermissions(), PERMISSION_REQ_ID)
+  }
+
+  private fun getRequiredPermissions(): Array<String> {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+      arrayOf(
+        Manifest.permission.RECORD_AUDIO,
+        Manifest.permission.READ_PHONE_STATE,
+        Manifest.permission.BLUETOOTH_CONNECT
+      )
+    } else {
+      arrayOf(Manifest.permission.RECORD_AUDIO)
+    }
+  }
+
+  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    if (checkPermissions()) {
+      startVoiceCalling()
+    }
+  }
+
+  private fun startVoiceCalling() {
+    initializeAgoraVoiceSDK()
+    joinChannel()
+  }
+
+  private fun initializeAgoraVoiceSDK() {
+    try {
+      val config = RtcEngineConfig().apply {
+        mContext = baseContext
+        mAppId = myAppId
+        mEventHandler = mRtcEventHandler
+      }
+      mRtcEngine = RtcEngine.create(config)
+    } catch (e: Exception) {
+      throw RuntimeException("Error initializing RTC engine: ${e.message}")
+    }
+  }
+
+  private fun joinChannel() {
+    val options = ChannelMediaOptions().apply {
+      clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+      channelProfile = Constants.CHANNEL_PROFILE_COMMUNICATION
+      publishMicrophoneTrack = true
+    }
+    mRtcEngine?.joinChannel(token, channelName, 0, options)
+  }
+
+  override fun onDestroy() {
+    super.onDestroy()
+    cleanupAgoraEngine()
+  }
+
+  private fun cleanupAgoraEngine() {
+    mRtcEngine?.apply {
+      stopPreview()
+      leaveChannel()
+    }
+    mRtcEngine = null
+  }
+
+  private fun showToast(message: String) {
+    runOnUiThread {
+      Toast.makeText(this@MainActivity, message, Toast.LENGTH_SHORT).show()
+    }
+  }
+}
+```
+
+</CodeBlockTab>
+
+</CodeBlockTabs>
+</Accordion>
+</Accordions>
+:::note
+For the `myAppId` and `token` variables, replace the placeholders with the values you obtained from Agora Console. Ensure you enter the same `channelName` you used when generating the temporary token.
+:::
+### Create a user interface [#create-a-user-interface]
+
+Use the following code to generate a basic user interface. Paste the code into the `/app/src/main/res/layout/activity_main.xml` file, replacing the existing content.
+**Sample code to create the user interface**
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/activity_main"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@android:color/darker_gray"
+  tools:context=".MainActivity">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:text="Welcome to Agora Voice Calling." />
+
+</RelativeLayout>
+```
+
+## Test the sample code [#test-the-sample-code]
+
+Take the following steps to test the sample code:
+
+1. In `MainActivity` update the values for `myAppId`, and `token` with values from Agora Console. Fill in the same `channelName` you used to generate the token.
+
+1. Enable developer options on your Android test device. Turn on USB debugging, connect the Android device to your development machine through a USB cable, and check that your device appears in the Android device options.
+
+1. In Android Studio, click **Sync Project with Gradle Files** to resolve project dependencies and update the configuration.
+
+1. After synchronization is successful, click **Run app**. Android Studio starts compilation. After a few moments, the app is installed on your Android device.
+
+1. Launch the App, grant the recording permission.
+
+1. On a second Android device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) to join the same channel and test the following use-cases:
+
+    * If users on both devices join the channel as hosts, they can hear each other.
+    * If one user joins as host and the other as audience, the audience can hear the host.
+
+## Reference [#reference]
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+- If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](../build/manage-connection-and-quality/cloud-proxy.mdx) to use Agora services normally.
+
+### Next steps [#next-steps]
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](../build/authenticate-users/authentication-workflow.mdx).
+
+### Sample project [#sample-project]
+
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples) for your reference. Download or view the [JoinChannelAudio](https://github.com/AgoraIO/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/basic/JoinChannelAudio.java) project for a more detailed example.
+
+### API reference [#api-reference]
+
+- [`RtcEngineConfig`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_rtcengineconfig.html)
+
+- [`create`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_create)
+
+- [`ChannelMediaOptions`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_channelmediaoptions.html)
+
+- [`joinChannel`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel2)
+
+- [`leaveChannel`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel)
+
+- [`IRtcEngineEventHandler`](https://api-ref.agora.io/en/voice-sdk/android/4.x/API/class_irtcengineeventhandler.html#class_irtcengineeventhandler)
+
+### Frequently asked questions [#frequently-asked-questions]
+
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
+* [Why do apps on some Android versions fail to capture audio and video after screen locking or switching to the background?](/en/api-reference/faq/quality/android_background)
+
+### See also [#see-also]
+
+* [Error codes](../reference/error-codes.mdx)
+
+* [Connection status management](../build/manage-connection-and-quality/connection-status-management.mdx)

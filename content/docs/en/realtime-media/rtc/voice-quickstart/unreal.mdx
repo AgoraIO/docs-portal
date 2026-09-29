@@ -1,0 +1,746 @@
+---
+title: Voice-only quickstart (Unreal)
+---
+
+This Unreal Engine quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+
+## Understand the tech [#understand-the-tech-10]
+
+To start a Voice Calling session, implement the following steps in your app:
+
+- **Initialize the Agora Engine**: Before calling other APIs, create and initialize an Agora Engine instance.
+
+- **Join a channel**: Call methods to create and join a channel.
+
+- **Send and receive audio**: All users can publish streams to the channel and subscribe to audio streams published by other users in the channel.
+
+![Video calling workflow](https://assets-docs.agora.io/images/voice-sdk/get-started-sdk-voice.svg)
+
+## Prerequisites [#prerequisites-10]
+
+- Unreal Engine 4.27 or higher
+- Prepare your development environment according to your target platform and engine version:
+
+    | Dev environment requirements | Other requirements |
+    | :------------------- | :------ |
+    | [Android](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/Android/AndroidSDKRequirements/) | - |
+    | [iOS](https://docs.unrealengine.com/4.27/us-EN/SharingAndReleasing/Mobile/iOS/SDKRequirements/) | A valid Apple developer signature. |
+    | [macOS](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) | A valid Apple developer signature. |
+    | [Windows](https://docs.unrealengine.com/4.27/us-EN/Basics/InstallingUnrealEngine/RecommendedSpecifications/) |32-bit Windows only supports Unreal Engine 4 and below. To use Unreal Engine with 32-bit Windows, uncomment the code relating to `Win32` in the `AgoraPluginLibrary.Build.cs` file. |
+
+- Two physical devices for testing
+
+- A microphone
+
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
+
+## Set up your project [#set-up-your-project-10]
+
+This section shows you how to set up your Unreal Engine project and install the Agora RTC SDK.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
+Refer to the following steps or the [Unreal official guide](https://docs.unrealengine.com/4.27/us-EN/Basics/Projects/Browser/) to create a new project. If you already have an Unreal project, skip to the next section.
+
+1. Open Unreal Engine. Select **Games** under **New Project Categories**, and click **Next**.
+
+1. Configure your project as follows:
+
+    * **Template**: Select **Blank**.
+    * **Project Defaults**:
+        * **Language**: Select **C++**.
+        * **Target Platform**: Select **Desktop**.
+    * **Project Location**: Enter the project files storage path.
+    * **Project Name**: Type a suitable name for your project.
+
+    Click **Create**.
+
+    ![create-project-unreal](https://assets-docs.agora.io/images/video-sdk/create-project-unreal.jpg)
+
+</TabsContent>
+
+<TabsContent value="existing-project">
+
+1. In the Unreal Project Browser, click on **Browse** and locate the `.uproject` file.
+
+1. Select the project and click **Open**.
+
+1. Add the Agora dependency library
+
+    In `Project/Source/Project/Project.Build.cs`, add the `AgoraPlugin` using `PublicDependencyModuleNames.AddRange()`.
+
+    ```cpp
+    // Add the AgoraPlugin library
+    PublicDependencyModuleNames.AddRange(new string[]
+    {
+      "Core",
+      "CoreUObject",
+      "Engine",
+      "InputCore",
+      "AgoraPlugin"
+    });
+    ```
+
+1. Create a new C++ class and generate header and library files
+
+    In the Unreal Editor, select **Tools > New C++ Class**, then select **All Classes**, find **UserWidget** and name it `AgoraWidget`. Click **Create Class**. A new C++ class is added to your project and you see `AgoraWidget.h` and `AgoraWidget.cpp` files.
+
+1. Initialize custom Widget
+
+    Add the following code to your widget header file:
+
+    ```cpp
+    protected:
+    // Initialize custom Widget
+    void NativeConstruct() override;
+    ```
+
+1. Associate C++ classes and Widgets
+
+    In Unreal Editor, click **Content Drawer**, select **Class Settings > Graph**, and set the **Parent Class** under **Class Options** to **AgoraWidget**.
+
+    ![image](https://assets-docs.agora.io/images/video-sdk/associate-classes-unreal.png)
+
+1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface-9) to create a bare bones UI. A basic user interface consists of the following elements:
+
+    * A button to join a channel.
+    * A button to leave the channel.
+
+</TabsContent>
+</Tabs>
+
+### Install the SDK [#install-the-sdk-10]
+
+Take the following steps to add the Unreal Engine RTC SDK to your project:
+
+1. Download the latest version of Agora Unreal RTC SDK from [Download SDKs](/en/api-reference/sdks?product=video&platform=unreal-engine) and unzip it.
+1. In your project root folder, create a `Plugins` folder.
+1. Copy `AgoraPlugin` from the Unreal SDK folder to `Plugins`.
+
+## Implement Voice Calling [#implement-voice-calling-10]
+
+This section guides you through the implementation of basic real-time audio interaction in your game.
+
+The following figure illustrates the essential steps:
+
+<Accordions>
+<Accordion title="Quick start sequence">
+![Quick start sequence](https://assets-docs.agora.io/images/video-sdk/quickstart-voice-call-sequence.svg)
+</Accordion>
+</Accordions>
+
+This guide includes [complete sample code](#complete-sample-code-10) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
+
+### Import Agora libraries [#import-agora-libraries]
+
+To import Agora library, add the following to `AgoraWidget.h`:
+
+```cpp
+#include "AgoraPluginInterface.h"
+```
+
+### Initialize the engine [#initialize-the-engine-8]
+
+For real-time communication, initialize an `IRtcEngine` instance and set up an event handler to manage user interactions within the channel. Use `RtcEngineContext` to specify [App ID](/en/introduction/account), and custom [event handler](#subscribe-to-rtc-sdk-events-7), then call `RtcEngineProxy->initialize(RtcEngineContext)` to initialize the engine, enabling further channel operations.
+
+Add the `SetupSDKEngine` method declaration and implementation to the following files:
+
+* `AgoraWidget.h`
+
+    ```cpp
+    // Fill in your app ID
+    FString _appID = "";
+    // Define a global variable for IRtcEngine
+    agora::rtc::IRtcEngine* RtcEngineProxy;
+
+    private:
+      // Create and initialize IRtcEngine
+      void SetupSDKEngine();
+    ```
+
+* `AgoraWidget.cpp`
+
+    ```cpp
+    void UAgoraWidget::SetupSDKEngine()
+    {
+      agora::rtc::RtcEngineContext RtcEngineContext;
+
+      RtcEngineContext.appId = TCHAR_TO_ANSI(*_appID);
+      RtcEngineContext.eventHandler = this;
+
+      // Create IRtcEngine instance
+      RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngine();
+
+      // Initialize IRtcEngine
+      RtcEngineProxy->initialize(RtcEngineContext);
+    }
+    ```
+
+### Join a channel [#join-a-channel-10]
+
+To join a channel, call `joinChannel` with the following parameters:
+
+- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
+
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](../build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
+
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `onJoinChannelSuccess` callback.
+
+- **Channel media options**: Configure `ChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
+
+Add the `Join` method declaration and implementation to the following files:
+
+* `AgoraWidget.h`
+
+    ```cpp
+    // Fill in your channel name
+    FString _channelName = "";
+    // Fill in a valid token
+    FString _token = "";
+
+    UFUNCTION(BlueprintCallable)
+    void Join();
+    UFUNCTION(BlueprintCallable)
+    void Leave();
+    ```
+
+* `AgoraWidget.cpp`
+
+  For Voice Calling, set the `channelProfile` to `CHANNEL_PROFILE_COMMUNICATION` and the user role to `CLIENT_ROLE_BROADCASTER`.
+
+    ```cpp
+    void UAgoraWidget::Join()
+    {
+      // Set channel media options
+      agora::rtc::ChannelMediaOptions options;
+      // Automatically subscribe to all audio streams
+      options.autoSubscribeAudio = true;
+      // Publish video captured by the camera
+      options.publishMicrophoneTrack = true;
+      // Set the channel profile to live broadcasting
+      options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_COMMUNICATION;
+      // Set the user role as host or audience
+      options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_AUDIENCE;
+      // Join a channel
+      RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(*_token), TCHAR_TO_ANSI(*_channelName), 0, options);
+    }
+    ```
+
+### Subscribe to RTC SDK events [#subscribe-to-rtc-sdk-events-7]
+
+The RTC SDK provides an interface for subscribing to channel events. To use it, inherit from the `IRtcEngineEventHandler` class and override the event handler methods for the events you want to process.
+
+* `AgoraWidget.h`
+
+    ```cpp
+    // Triggered when the local user leaves a channel
+    void onLeaveChannel(const agora::rtc::RtcStats& stats) override;
+
+    // Triggered when a remote user joins a channel
+    void onUserJoined(agora::rtc::uid_t uid, int elapsed) override;
+
+    // Triggered when a remote user leaves a channel
+    void onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason) override;
+
+    // Triggered when the local user joins a channel
+    void onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed) override;
+    ```
+
+* `AgoraWidget.cpp`
+
+    ```cpp
+    void UAgoraWidget::onUserJoined(agora::rtc::uid_t uid, int elapsed)
+    {
+      // Callback when a remote user joins the channel
+      agora::rtc::RtcConnection connection;
+      connection.channelId = TCHAR_TO_ANSI(*_channelName);
+    }
+
+    void UAgoraWidget::onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason)
+    {
+      // Callback when a remote user leaves the channel
+      agora::rtc::RtcConnection connection;
+      connection.channelId = TCHAR_TO_ANSI(*_channelName);
+    }
+
+    void UAgoraWidget::onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed)
+    {
+      // Callback when the local user successfully joins the channel
+      AsyncTask(ENamedThreads::GameThread, =
+      {
+        UE_LOG(LogTemp, Warning, TEXT("JoinChannelSuccess uid: %u"), uid);
+      });
+    }
+    void UAgoraWidget::onLeaveChannel(const agora::rtc::RtcStats& stats)
+    {
+      // Callback when the local user successfully leaves the channel
+
+    }
+    ```
+
+ ### Handle permissions [#handle-permissions-7]
+
+To access the microphone, follow the steps for your target platform:
+
+**Android**
+Add the `AndroidPermission` library to obtain device and network permissions:
+
+1. Add the following code to your header file:
+
+    ```cpp
+    #if PLATFORM_ANDROID
+      #include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
+      #endif
+    ```
+
+1. Add the `AndroidPermission` library to the `Project/Source/Project/Project.Build.cs` file:
+
+    ```cpp
+    if (Target.Platform == UnrealTargetPlatform.Android)
+      {
+        PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
+      }
+    ```
+
+1. To check whether Android permissions have been granted, add the `CheckAndroidPermission` method and its implementation to the `AgoraWidget.h` and `AgoraWidget.cpp` files.
+
+    * `AgoraWidget.h`
+
+        ```cpp
+        private:
+            // Get Android permissions
+            void CheckAndroidPermission();
+        ```
+
+    * `AgoraWidget.cpp`
+
+        ```cpp
+        void UAgoraWidget::CheckAndroidPermission()
+            {
+            #if PLATFORM_ANDROID
+              FString pathfromName = UGameplayStatics::GetPlatformName();
+              if (pathfromName == "Android")
+              {
+                TArray<FString> AndroidPermission;
+                AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
+                AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
+                AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
+                AndroidPermission.Add(FString("android.permission.ACCESS_WIFI_STATE"));
+                AndroidPermission.Add(FString("android.permission.ACCESS_NETWORK_STATE"));
+                UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
+              }
+            #endif
+            }
+
+            void UAgoraWidget::NativeConstruct()
+            {
+              Super::NativeConstruct();
+            #if PLATFORM_ANDROID
+              CheckAndroidPermission()
+            #endif
+            }
+        ```
+
+**iOS and macOS**
+1. Refer to [How to add the permissions required for real-time interaction to an Unreal Engine project?](/en/realtime-media/rtc/voice-quickstart)
+
+1. In `Project/Source/Project.Target.cs`, add the following code:
+
+    ```cpp
+    public class unrealstartTarget : TargetRules
+      {
+        public unrealstartTarget( TargetInfo Target) : base(Target)
+        {
+          Type = TargetType.Game;
+          DefaultBuildSettings = BuildSettingsVersion.V2;
+          if (Target.Platform == UnrealTargetPlatform.IOS)
+          {
+            bOverrideBuildEnvironment = true;
+            GlobalDefinitions.Add("FORCE_ANSI_ALLOCATOR=1")
+          }
+          ExtraModuleNames.AddRange( new string[] { "unrealstart" } );
+        }
+      }
+    ```
+
+### Leave a channel [#leave-a-channel]
+
+To leave a channel call `leaveChannel`. Implement the following method:
+
+* `AgoraWidget.h`
+
+    ```cpp
+    UFUNCTION(BlueprintCallable)
+    void Leave();
+    ```
+
+* `AgoraWidget.cpp`
+
+    ```cpp
+    void UAgoraWidget::Leave()
+    {
+      // Leave the channel
+      RtcEngineProxy->leaveChannel();
+    }
+    ```
+
+### Release resources [#release-resources-1]
+
+When the local user leaves the channel, or exits the game, release memory by calling the `release` method of `IRtcEngine`. Override the `NativeDestruct()` method and add its implementation as follows:
+
+* `AgoraWidget.h`
+
+    ```cpp
+    void NativeDestruct() override;
+    ```
+
+* `AgoraWidget.cpp`
+
+    ```cpp
+    void UAgoraWidget::NativeDestruct()
+    {
+      Super::NativeDestruct();
+      if (RtcEngineProxy != nullptr)
+      {
+        RtcEngineProxy->unregisterEventHandler(this);
+        RtcEngineProxy->release();
+        delete RtcEngineProxy;
+
+        RtcEngineProxy = nullptr;
+      }
+    }
+    ```
+
+### Complete sample code [#complete-sample-code-10]
+
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. To use the sample code, copy each of the following code blocks and paste it in the corresponding file.
+
+**`Project/Source/Project/AgoraWidget.h`**
+
+<Accordions>
+<Accordion title="Complete sample code for real-time Voice Calling">
+```cpp
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Blueprint/UserWidget.h"
+
+#if PLATFORM_ANDROID
+#include "AndroidPermission/Classes/AndroidPermissionFunctionLibrary.h"
+#endif
+
+#include "AgoraPluginInterface.h"
+#include "Components/Image.h"
+#include "Components/Button.h"
+#include "AgoraWidget.generated.h"
+
+UCLASS()
+class UNREALLEARNING_API UAgoraWidget : public UUserWidget, public agora::rtc::IRtcEngineEventHandler
+{
+  GENERATED_BODY()
+
+public:
+  // Fill in your App ID
+  FString _appID = "";
+  // Fill in your channel name
+  FString _channelName = "";
+  // Fill in Token
+  FString _token = "";
+
+  UPROPERTY(VisibleAnywhere, BlueprintReadWrite, meta = (BindWidget))
+  UButton* JoinBtn = nullptr;
+
+  UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (BindWidget))
+  UButton* LeaveBtn = nullptr;
+
+  UFUNCTION(BlueprintCallable)
+  void Join();
+
+  UFUNCTION(BlueprintCallable)
+  void Leave();
+
+  agora::rtc::IRtcEngine* RtcEngineProxy;
+
+  // Callback triggered when the local user leaves the channel
+  void onLeaveChannel(const agora::rtc::RtcStats& stats) override;
+  // Callback triggered when a remote broadcaster successfully joins the channel
+  void onUserJoined(agora::rtc::uid_t uid, int elapsed) override;
+  // Callback triggered when a remote broadcaster leaves the channel
+  void onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason) override;
+  // Callback triggered when the local user successfully joins the channel
+  void onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed) override;
+
+private:
+  void CheckAndroidPermission(); // Get Android permissions
+  void SetupSDKEngine(); // Create and initialize IRtcEngine
+  void SetupUI(); // Set up UI elements
+
+protected:
+  void NativeConstruct() override; // Initialize the custom Widget
+  void NativeDestruct() override; // Clean up all session-related resources
+};
+```
+
+**`Project/Source/Project/AgoraWidget.cpp`**
+
+```cpp
+#include "AgoraWidget.h"
+
+void UAgoraWidget::CheckAndroidPermission()
+{
+#if PLATFORM_ANDROID
+  // Get the platform name
+  FString pathfromName = UGameplayStatics::GetPlatformName();
+  // Check if the platform is Android
+  if (pathfromName == "Android")
+  {
+    // Array to store Android permissions
+    TArray AndroidPermission;
+    // Add required permissions
+    AndroidPermission.Add(FString("android.permission.RECORD_AUDIO"));
+    AndroidPermission.Add(FString("android.permission.READ_PHONE_STATE"));
+    AndroidPermission.Add(FString("android.permission.WRITE_EXTERNAL_STORAGE"));
+    // Request permissions
+    UAndroidPermissionFunctionLibrary::AcquirePermissions(AndroidPermission);
+  }
+#endif
+}
+
+void UAgoraWidget::SetupSDKEngine()
+{
+  // Create RtcEngineContext
+  agora::rtc::RtcEngineContext RtcEngineContext;
+  // Set App ID
+  RtcEngineContext.appId = TCHAR_TO_ANSI(*_appID);
+  // Set event handler
+  RtcEngineContext.eventHandler = this;
+  // Create and initialize RtcEngineProxy
+  RtcEngineProxy = agora::rtc::ue::createAgoraRtcEngine();
+  RtcEngineProxy->initialize(RtcEngineContext);
+}
+
+void UAgoraWidget::SetupUI()
+{
+  // Bind event handlers to UI buttons
+  JoinBtn->OnClicked.AddDynamic(this, &UAgoraWidget::Join);
+  LeaveBtn->OnClicked.AddDynamic(this, &UAgoraWidget::Leave);
+}
+
+void UAgoraWidget::Join()
+{
+  // Set channel media options
+  agora::rtc::ChannelMediaOptions options;
+  // Automatically subscribe to all audio streams
+  options.autoSubscribeAudio = true;
+  // Publish the audio collected by the microphone
+  options.publishMicrophoneTrack = true;
+  // Set channel profile to live broadcasting
+  options.channelProfile = agora::CHANNEL_PROFILE_TYPE::CHANNEL_PROFILE_COMMUNICATION;
+  // Set user role to broadcaster
+  options.clientRoleType = agora::rtc::CLIENT_ROLE_TYPE::CLIENT_ROLE_BROADCASTER;
+  // Join the channel
+  RtcEngineProxy->joinChannel(TCHAR_TO_ANSI(_token), TCHAR_TO_ANSI(_channelName), 0 , options);
+}
+
+void UAgoraWidget::Leave()
+{
+  // Leave the channel
+  RtcEngineProxy->leaveChannel();
+}
+
+void UAgoraWidget::NativeConstruct()
+{
+  Super::NativeConstruct();
+#if PLATFORM_ANDROID
+  // Check and request Android permissions
+  CheckAndroidPermission();
+#endif
+  // Setup UI elements
+  SetupUI();
+  // Setup Agora SDK engine
+  SetupSDKEngine();
+}
+
+void UAgoraWidget::NativeDestruct()
+{
+  Super::NativeDestruct();
+  // Clean up resources
+  if (RtcEngineProxy != nullptr)
+  {
+    RtcEngineProxy->unregisterEventHandler(this);
+    RtcEngineProxy->release();
+    delete RtcEngineProxy;
+    RtcEngineProxy = nullptr;
+  }
+}
+
+void UAgoraWidget::onUserJoined(agora::rtc::uid_t uid, int elapsed)
+{
+  // Callback when a remote user joins the channel
+  agora::rtc::RtcConnection connection;
+  connection.channelId = TCHAR_TO_ANSI(*_channelName);
+}
+
+void UAgoraWidget::onUserOffline(agora::rtc::uid_t uid, agora::rtc::USER_OFFLINE_REASON_TYPE reason)
+{
+  // Callback when a remote user leaves the channel
+  agora::rtc::RtcConnection connection;
+  connection.channelId = TCHAR_TO_ANSI(*_channelName);
+}
+
+void UAgoraWidget::onJoinChannelSuccess(const char* channel, agora::rtc::uid_t uid, int elapsed)
+{
+  // Callback when the local user successfully joins the channel
+  AsyncTask(ENamedThreads::GameThread, =
+  {
+    UE_LOG(LogTemp, Warning, TEXT("JoinChannelSuccess uid: %u"), uid);
+  });
+}
+```
+
+**`Project/Source/Project/Project.Build.cs`**
+
+```csharp
+using UnrealBuildTool;
+
+public class UnrealLearning : ModuleRules
+{
+  public UnrealLearning(ReadOnlyTargetRules Target) : base(Target)
+  {
+    PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
+
+    PublicDependencyModuleNames.AddRange(new string[]
+    {
+      "Core",
+      "CoreUObject",
+      "Engine",
+      "InputCore",
+      "AgoraPlugin"
+    });
+
+    if (Target.Platform == UnrealTargetPlatform.Android)
+    {
+      PrivateDependencyModuleNames.AddRange(new string[] { "AndroidPermission" });
+    }
+
+    PrivateDependencyModuleNames.AddRange(new string[] { });
+
+    // Uncomment if you are using Slate UI
+    // PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+
+    // Uncomment if you are using online features
+    // PrivateDependencyModuleNames.Add("OnlineSubsystem");
+
+    // To include OnlineSubsystemSteam, add it to the plugins section in your uproject file with the Enabled attribute set to true
+  }
+}
+```
+</Accordion>
+</Accordions>
+
+### Create a user interface [#create-a-user-interface-9]
+
+Follow these steps to set up a basic UI for your project or to integrate essential UI elements into your existing interface.
+
+**Create a basic UI**
+
+1. Create **Widget Blueprint**
+
+    In Unreal Editor, click **Content Drawer > Content**, right-click and select **User Interface > Widget Blueprint**. Name the new Widget Blueprint **AgoraWidget** and double-click it to open.
+
+    ![image](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-1.png)
+
+1. Create a view canvas.
+
+    Select **Palette > PANEL > Canvas Panel** and drag it to **AgoraWidget**.
+
+    ![image](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-2.png)
+
+1. Create join and leave channel buttons in Widget Blueprint
+
+    1. In **AgoraWidget**, select **COMMON > Button**, drag it to the **Canvas Panel**, and rename it to **JoinBtn**. Adjust the button's size and position on the canvas or use the following sample settings:
+
+        * **Position X**：`300`
+        * **Position Y**: `700`
+        * **Size X**：`240`
+        * **Size Y**: `120`
+
+    1. Select **COMMON > Text** and drag it to **JoinBtn**. Select the **Text** control of **JoinBtn**, and change the text content of **Text** to **Join** in the **Details** panel.
+
+    1. Repeat the above steps to create a **LeaveBtn**. Adjust the button size and position according to your layout design.
+
+4. Save your changes.
+
+5. Create a **Level Blueprint** and associate it with the created **Widget Blueprint**
+
+    1. In **Unreal Editor**, click **Content Drawer**, right-click to select **Level**, and name it **agoraLevel**.
+
+    1. Double-click to open **agoraLevel** and click **Open Level Blueprint**.
+
+        ![image](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-4.png)
+
+    1. Right-click and enter **Create Widget** in the search box. Select the created **AgoraWidget**, create **Event BeginPlay** and **Add to Viewport** in the same way. Connect them as follows:
+
+        ![image](https://assets-docs.agora.io/images/video-sdk/unreal-setup-ui-5.png)
+
+    3. Save your changes and run the project.
+
+## Test the sample code [#test-the-sample-code-10]
+
+Take the following steps to test the sample code:
+
+1. Obtain a temporary token from Agora Console.
+
+1. In `AgoraWidget.h`, update `_appID`, `_channelName`, and `_token` with the app ID, channel name, and temporary token for your project.
+
+1. In the Unreal Editor, click the play button to run your project, then click **Join** to join a channel.
+
+1. Invite a friend to run the demo game on a second device. Alternatively, use the [Web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) to join the same channel.
+
+    After your friend joins successfully, you can hear each other.
+
+## Reference [#reference-10]
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+- If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](../build/manage-connection-and-quality/cloud-proxy.mdx) to use Agora services normally.
+
+### Next steps [#next-steps-10]
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](../build/authenticate-users/authentication-workflow.mdx).
+
+### Sample project [#sample-project-10]
+
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) for your reference. Download or view the [JoinChannelAudio](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example/Source/AgoraExample/Examples/Basic/JoinChannelAudio) project for a more detailed example.
+
+To learn about Agora Unreal Blueprint development, refer to the [Unreal (Blueprint) Quickstart](../index.mdx).
+
+### API reference [#api-reference-10]
+
+- [`JoinChannel`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_joinchannel)
+
+- [`CreateAgoraRtcEngine`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_createagorartcengine)
+
+- [`SetClientRole`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_setclientrole)
+
+- [`LeaveChannel`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_leavechannel)
+
+### Frequently asked questions [#frequently-asked-questions-8]
+
+* [How can I listen for audience joining or leaving a channel?](/en/api-reference/faq/integration/audience_event)
+* [How can I solve channel-related issues?](/en/api-reference/faq/integration/channel)
+* [How can I set the log file?](/en/api-reference/faq/integration/set_log_file)
+
+### See also [#see-also-10]
+
+* [Error codes](../reference/error-codes.mdx)
+
+* [Connection status management](../build/manage-connection-and-quality/connection-status-management.mdx)

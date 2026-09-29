@@ -48,6 +48,10 @@ import { isMachineReadableLocale } from '@/lib/machine-readable-docs';
 import { setStoredPlatformPreference } from '@/lib/platforms/preference';
 import type { PlatformKey } from '@/lib/platforms/registry';
 import {
+  isRtcLongGuidePath,
+  resolveRtcLongGuideLegacyTarget,
+} from '@/lib/rtc-long-guides-compat';
+import {
   RTC_RELEASE_NOTES_PATH,
   resolveRtcReleaseNotesLegacyTarget,
 } from '@/lib/rtc-release-notes-compat';
@@ -211,23 +215,30 @@ export function DocsContent({
   useEffect(() => {
     if (
       resolvedBody?.kind !== 'platform-group' ||
-      !currentPageKey?.startsWith(RTC_RELEASE_NOTES_PATH)
+      !currentPageKey?.startsWith('/en/realtime-media/rtc/')
     )
       return;
 
     let cancelled = false;
     let scrollFrame = 0;
     const resolveLegacyLocation = async () => {
-      if (window.location.pathname !== RTC_RELEASE_NOTES_PATH) return;
+      const isReleaseNotes =
+        window.location.pathname === RTC_RELEASE_NOTES_PATH;
+      if (!isReleaseNotes && !isRtcLongGuidePath(window.location.pathname))
+        return;
       window.cancelAnimationFrame(scrollFrame);
-      const { rtcReleaseNotesAnchorPlatform } = await import(
-        '@/lib/rtc-release-notes-anchors'
-      );
+      const target = isReleaseNotes
+        ? resolveRtcReleaseNotesLegacyTarget(
+            window.location,
+            (await import('@/lib/rtc-release-notes-anchors'))
+              .rtcReleaseNotesAnchorPlatform,
+          )
+        : resolveRtcLongGuideLegacyTarget(
+            window.location,
+            (await import('@/lib/rtc-long-guides-anchors'))
+              .rtcLongGuideAnchorPlatforms,
+          );
       if (cancelled) return;
-      const target = resolveRtcReleaseNotesLegacyTarget(
-        window.location,
-        rtcReleaseNotesAnchorPlatform,
-      );
       if (!target) return;
 
       window.history.replaceState(window.history.state, '', target.url);

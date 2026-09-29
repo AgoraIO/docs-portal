@@ -1,0 +1,514 @@
+---
+title: Voice-only quickstart (macOS)
+---
+
+This macOS quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+
+## Understand the tech [#understand-the-tech-2]
+
+To start a Voice Calling session, implement the following steps in your app:
+
+- **Initialize the Agora Engine**: Before calling other APIs, create and initialize an Agora Engine instance.
+
+- **Join a channel**: Call methods to create and join a channel.
+
+- **Send and receive audio**: All users can publish streams to the channel and subscribe to audio streams published by other users in the channel.
+
+![Video calling workflow](https://assets-docs.agora.io/images/voice-sdk/get-started-sdk-voice.svg)
+
+## Prerequisites [#prerequisites-2]
+
+- Xcode 13.0 or higher.
+- An Apple developer account.
+- If you need to use CocoaPods integrated SDK, make sure [CocoaPods is installed](https://guides.cocoapods.org/using/getting-started.html#getting-started).
+- Two devices running macOS 10.10 or higher.
+
+- A microphone
+
+- A valid Agora account and project. Please refer to [Agora account management](/en/introduction/account) for details.
+
+## Set up your project [#set-up-your-project-2]
+
+This section shows you how to set up your macOS project and install the Agora RTC SDK.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="new-project">Create a new project</TabsTrigger>
+  <TabsTrigger value="existing-project">Add to an existing project</TabsTrigger>
+</TabsList>
+
+<TabsContent value="new-project">
+
+Follow these steps to create a project in Xcode:
+
+1. Refer to [Create a project](https://help.apple.com/xcode/mac/current/#/dev07db0e578). Under **Application** select **App**. Use **Storyboard** for the user interface and choose **Swift** as the programming language.
+
+    :::note
+    If you have not added the development team information, you see the **Add account...** button. Click the button and follow the on-screen prompts to log in to your Apple ID. Once login is complete, click **Next**, and choose your Apple account as the development team.
+    :::
+
+1. [Set up automatic signing](https://help.apple.com/xcode/mac/current/#/dev23aab79b4) for your projects.
+
+1. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
+
+1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface-2) to create a bare bones UI.
+
+</TabsContent>
+
+<TabsContent value="existing-project">
+
+Follow these steps to add Voice Calling to your Xcode project:
+
+1. Open your project in Xcode.
+
+1. [Set the target devices](https://help.apple.com/xcode/mac/current/#/deve69552ee5) where your app will be deployed.
+
+1. Create a user interface for your app. Refer to [Create a user interface](#create-a-user-interface-2) to create a bare bones UI.
+
+</TabsContent>
+</Tabs>
+### Install the SDK [#install-the-sdk-2]
+
+Use one of the following methods to install RTC SDK.
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="swift-package-manager">Swift Package Manager</TabsTrigger>
+  <TabsTrigger value="cocoapods">CocoaPods</TabsTrigger>
+  <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
+</TabsList>
+
+<TabsContent value="swift-package-manager">
+
+1. In Xcode, go to **File** > **Add Package Dependencies**.
+1. In the search bar, past the following URL:
+
+    ```json
+    {`https://github.com/AgoraIO/AgoraRtcEngine_macOS.git`}
+    ```
+
+1. Click **Add Package**, select the latest version, and click **Next**.
+1. For basic Voice Calling, select **RtcBasic**.
+
+    If needed, also select:
+    - **`SpatialAudio`** for spatial audio effects.
+    - **`VirtualBackground`** for virtual background.
+1. Under **Add to Target**, select your project and click **Add Package**.
+
+    For further information, refer to [Apple's official documentation](https://help.apple.com/xcode/mac/current/#/devb83d64851).
+
+</TabsContent>
+
+<TabsContent value="cocoapods">
+
+1. Go to the project root directory in the terminal and run the `pod init` command. A text file named `Podfile` is generated in the project folder.
+
+1. Open `Podfile` and modify the content as follows. Replace `Your App` with your target name.
+
+    ```ruby
+    platform :macos, '10.11'
+      target 'Your App' do
+       # For x.y.z fill in the specific SDK version number, such as 4.4.0.
+       pod 'AgoraRtcEngine_macOS', 'x.y.z'
+      end
+    ```
+
+    Obtain the latest version number from the [release notes](/en/realtime-media/rtc/reference/release-notes/macos).
+
+1. Run the `pod install` command in the terminal to install the RTC SDK. After successful installation, the terminal shows **Pod installation complete!**.
+
+1. After successful installation, a file with the suffix `.xcworkspace` is generated in the project folder. Open the file through Xcode for subsequent operations.
+
+</TabsContent>
+
+<TabsContent value="manual-integration">
+
+1. Download the latest version of the SDK from [SDKs download](/en/api-reference/sdks?product=video&platform=macos) and extract the contents.
+
+1. Copy the files in the `libs` folder of the SDK package to your project directory.
+
+1. Open Xcode and [add the corresponding dynamic library](https://help.apple.com/xcode/mac/current/#/dev51a648b07). Make sure the **Embed** property of the added dynamic library is set to **Embed & Sign**.
+
+    :::note
+    Agora SDK uses `libc++` (LLVM) by default. If you need to use `libstdc++` (GNU), please contact support@agora.io. The library provided by the SDK is a FAT Image, which includes 32/64-bit simulator and 32/64-bit real machine versions.
+    :::
+</TabsContent>
+</Tabs>
+
+:::note
+The [privacy updates for App Store submissions](https://developer.apple.com/news/?id=r1henawx) released by Apple, require developers to declare approved reasons for using a set of APIs in their app’s privacy manifest. Agora provides a [`PrivacyInfo.xcprivacy`](https://download.agora.io/sdk/release/PrivacyInfo.xcprivacy) file that you can include in your project.
+:::
+## Implement Voice Calling [#implement-voice-calling-2]
+
+This section guides you through the implementation of basic real-time audio interaction in your app.
+
+The following figure illustrates the essential steps:
+
+![image](https://assets-docs.agora.io/images/video-sdk/quickstart-voice-call-sequence.svg)
+
+This guide includes [complete sample code](#complete-sample-code-2) that demonstrates implementing basic real-time interaction. To understand the core API calls in the sample code, review the following implementation steps.
+
+### Import Agora framework [#import-agora-framework-1]
+
+Add the following import to your swift file:
+
+```swift
+import AgoraRtcKit
+```
+
+### Initialize the engine [#initialize-the-engine-2]
+
+Call `sharedEngine(withAppId:delegate:)` to create and initialize an `AgoraRtcEngineKit` instance. Provide your [App ID](/en/introduction/account) and an `AgoraRtcEngineDelegate` implementation to [handle SDK events](#subscribe-to-rtc-sdk-events-2).
+
+```swift
+var agoraKit: AgoraRtcEngineKit!
+let appId = "YOUR_AGORA_APP_ID"
+
+// Initialize the Agora engine
+func initializeAgoraVoiceSDK() {
+  agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
+}
+```
+
+### Join a channel [#join-a-channel-2]
+
+To join a channel, call `joinChannel` with the following parameters:
+
+- **Channel name**: The name of the channel to join. Clients that pass the same channel name join the same channel. If a channel with the specified name does not exist, it is created when the first user joins.
+
+- **Authentication token**: A dynamic key that authenticates a user when the client joins a channel. In a production environment, you obtain a token from a [token server](../build/authenticate-users/deploy-token-server.mdx) in your security infrastructure. For the purpose of this guide [Generate a temporary token](/en/introduction/account).
+
+- **User ID**: A 32-bit signed integer that identifies a user in the channel. You can specify a unique user ID for each user yourself. If you set the user ID to `0` when joining a channel, the SDK generates a random number for the user ID and returns the value in the `didJoinChannel` callback.
+
+- **Channel media options**: Configure `AgoraRtcChannelMediaOptions` to define publishing and subscription settings, optimize performance for your specific use-case, and set optional parameters.
+
+For Voice Calling, set the `channelProfile` to `.communication` and the `clientRoleType` to `.broadcaster`.
+
+```swift
+let channelName = "demo"  // Replace with your actual channel name
+let token = "<Authentication token>" // Replace with your token
+
+func joinChannel() {
+  let options = AgoraRtcChannelMediaOptions()
+  options.channelProfile = .communication
+  // Set user role to broadcaster; to set user role to audience, keep the default value
+  options.clientRoleType = .broadcaster
+  // Publish microphone audio
+  options.publishMicrophoneTrack = true
+  // Automatically subscribe to all audio streams
+  options.autoSubscribeAudio = true
+  // Join the channel using a temporary token and channel name
+  agoraKit.joinChannel(
+    byToken: token,
+    channelId: channelName,
+    uid: 0,
+    mediaOptions: options
+  )
+}
+```
+
+### Subscribe to RTC SDK events [#subscribe-to-rtc-sdk-events-2]
+
+The RTC SDK provides a delegate for handling channel events. To use it, conform to the `AgoraRtcEngineDelegate` protocol in your class and implement the event methods you want to handle. The following code implements the `didJoinChannel`, `didOfflineOfUid`, and `didJoinedOfUid` callbacks:
+:::note
+To ensure that you receive all RTC SDK events, set the Agora Engine event handler before joining a channel.
+:::
+```swift
+// Extension for handling Agora SDK callbacks
+extension ViewController: AgoraRtcEngineDelegate {
+
+  // Triggered when the local user successfully joins a channel
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
+    print("Successfully joined channel: \(channel) with UID: \(uid)")
+  }
+
+  // Triggered when a remote user joins the channel
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+    print("User \(uid) joined after \(elapsed) milliseconds")
+  }
+  // Triggered when a remote user leaves the channel
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+    print("User \(uid) left: Reason -> \(reason)")
+  }
+}
+```
+
+To learn about the other SDK events, see [`AgoraRtcEngineDelegate`](https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit/agorartcenginedelegate).
+
+### Display the local video [#display-the-local-video-1]
+
+Call `setupLocalVideo` to initialize the local view and set the local video display properties.
+
+```swift
+// Configures and starts displaying the local video feed
+func setupLocalVideo() {
+  let videoCanvas = AgoraRtcVideoCanvas()
+  videoCanvas.view = localView
+  videoCanvas.uid = 0 // UID 0 is assigned to the local user
+  videoCanvas.renderMode = .hidden
+  agoraKit.setupLocalVideo(videoCanvas)
+}
+```
+
+### Display remote video [#display-remote-video-1]
+To initialize the remote user view, call `setupRemoteVideo` and set the local display properties for the remote user. Use the `didJoinedOfUid` callback to get the UID of the remote user.
+
+```swift
+func setupRemoteVideo(uid: UInt, view: UIView?) {
+  let videoCanvas = AgoraRtcVideoCanvas()
+  videoCanvas.uid = uid
+  videoCanvas.view = view // Assign view for joining, set to nil for leaving
+  videoCanvas.renderMode = .hidden
+  agoraKit.setupRemoteVideo(videoCanvas)
+}
+```
+
+### Handle permissions [#handle-permissions-2]
+To access the camera and microphone on macOS devices, add the required permissions for real-time interaction. Open the `info.plist` file from the project navigation bar, [edit the property list](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6), to add the required permissions. These permissions are optional. However, if you do not add these permissions, you will not be able to use the corresponding devices.
+
+| Key | Type | Value |
+|:----|:-----|:------|
+| Privacy - Microphone Usage Description | String | For the purpose of using the microphone. For example, for a call or live interactive streaming session. |
+
+:::note
+- If your project depends on third-party plugins or libraries, such as a third-party camera library, and the signature of the plug-in or library is inconsistent with the signature of the project, check the **Hardened Runtime** settings. Specifically, review and potentially disable **Runtime Exceptions** and **Library Validation** in the project configuration.
+- For further information, refer to [Preparing your app for distribution](https://developer.apple.com/documentation/xcode/preparing_your_app_for_distribution).
+:::
+Configure your macOS project settings by navigating to **TARGETS > Project Name > Signing & Capabilities**. Enable **App Sandbox and Hardened Runtime**, and add the necessary permissions as follows:
+
+| Capability | Category | Permission |
+|:-----------|:---------|:----------------|
+| App Sandbox | Network | <Slot name="app-sandbox" /> |
+| App Sandbox | Hardware | <Slot name="app-sandbox-2" /> |
+| Hardened Runtime | Resource Access | <Slot name="hardened-runtime" /> |
+
+<Slot for="app-sandbox">
+
+- Incoming Connections (Server)
+- Outgoing Connections (Client)
+
+</Slot>
+
+<Slot for="app-sandbox-2">
+
+- Camera
+- Audio Input
+
+</Slot>
+
+<Slot for="hardened-runtime">
+
+- Camera
+- Audio Input
+
+</Slot>
+
+### Start and close the app [#start-and-close-the-app-2]
+
+When the user launches the app, it joins the channel and starts Voice Calling. When the user closes the app, it leaves the channel and ends Voice Calling.
+
+1. To start Voice Calling, call the following methods:
+
+    ```swift
+    // Initialize the Agora engine
+    initializeAgoraVoiceSDK()
+    // Join the channel
+    joinChannel()
+    ```
+
+1. To leave the channel and release SDK resources when the app is closed, call the following methods:
+
+    ```swift
+    // Leave the channel and release session-related resources
+    agoraKit.leaveChannel(nil)
+    // Release all resources used by the Agora SDK
+    AgoraRtcEngineKit.destroy()
+    ```
+
+:::warning
+After destroying the engine, you can no longer use SDK methods and callbacks. To use the real-time interaction functions again, create a new engine. See [Initialize the engine](#initialize-the-engine-2) for details.
+:::
+
+### Complete sample code [#complete-sample-code-2]
+
+A complete code sample demonstrating the basic process of real-time interaction is provided for your reference. Copy the following code into your `ViewController.swift` file:
+
+<Accordions>
+<Accordion title="Complete sample code for real-time Voice Calling">
+```swift
+// ViewController.swift
+import Cocoa
+import AgoraRtcKit
+
+class ViewController: NSViewController {
+  private var statusLabel: NSTextField!
+
+  let appId = "<Your app ID>" // Replace with your actual App ID
+  let channelName = "demo"  // Replace with your actual channel name
+  let token = "<Authentication token>" // Replace with your token
+
+  var agoraKit: AgoraRtcEngineKit!
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    // Initialize the Agora engine
+    initializeAgoraVoiceSDK()
+    // Set up the user interface
+    setupUI()
+    // Join an Agora channel
+    joinChannel()
+  }
+
+  func setupUI(){
+    let mainView = NSView(frame: view.bounds)
+    mainView.wantsLayer = true
+
+    statusLabel = NSTextField(labelWithString: "Waiting for other user")
+    statusLabel.alignment = .center
+    statusLabel.font = .systemFont(ofSize: 20)
+    statusLabel.translatesAutoresizingMaskIntoConstraints = false
+
+    mainView.addSubview(statusLabel)
+    view.addSubview(mainView)
+
+    NSLayoutConstraint.activate([
+      statusLabel.centerXAnchor.constraint(equalTo: mainView.centerXAnchor),
+      statusLabel.centerYAnchor.constraint(equalTo: mainView.centerYAnchor)
+    ])
+  }
+
+  // Initializes the Voice SDK instance
+  func initializeAgoraVoiceSDK() {
+    // Create an instance of AgoraRtcEngineKit and set the delegate
+    agoraKit = AgoraRtcEngineKit.sharedEngine(withAppId: appId, delegate: self)
+  }
+
+  // Join the channel with specified options
+  func joinChannel() {
+    let options = AgoraRtcChannelMediaOptions()
+    // In voice calling, set the channel use-case to communication
+    options.channelProfile = .communication
+    // Set the user role as broadcaster (default is audience)
+    options.clientRoleType = .broadcaster
+    // Publish audio captured by microphone
+    options.publishMicrophoneTrack = true
+    // Auto subscribe to all audio streams
+    options.autoSubscribeAudio = true
+    // If you set uid=0, the engine generates a uid internally; on success, it triggers didJoinChannel callback
+    // Join the channel with a temporary token
+    agoraKit.joinChannel(
+      byToken: token,
+      channelId: channelName,
+      uid: 0,
+      mediaOptions: options
+    )
+  }
+}
+
+// Extension for handling Agora SDK callbacks
+extension ViewController: AgoraRtcEngineDelegate {
+
+  // Triggered when the local user successfully joins a channel
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinChannel channel: String, withUid uid: UInt, elapsed: Int) {
+    print("Successfully joined channel: \(channel) with UID: \(uid)")
+    statusLabel.stringValue = "You Successfully joined. Waiting for other users"
+  }
+
+  // Triggered when a remote user joins the channel
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didJoinedOfUid uid: UInt, elapsed: Int) {
+    print("User \(uid) joined after \(elapsed) milliseconds")
+    statusLabel.stringValue = "User \(uid) joined"
+  }
+  // Triggered when a remote user leaves the channel
+  func rtcEngine(_ engine: AgoraRtcEngineKit, didOfflineOfUid uid: UInt, reason: AgoraUserOfflineReason) {
+    print("User \(uid) left: Reason -> \(reason)")
+    statusLabel.stringValue = "User \(uid) left"
+  }
+}
+```
+</Accordion>
+</Accordions>
+
+### Create a user interface [#create-a-user-interface-2]
+
+Based on your use-case, create a user interface for your project.
+
+The following example uses a `UILabel` to display the current app status. To use this interface, replace the contents of the `ViewController.swift` file with the following code:
+
+**Sample code to create the user interface**
+
+```swift
+import UIKit
+
+class ViewController: UIViewController {
+  var statusLabel: UILabel!
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    // Set up user interface
+    setupUI();
+  }
+
+  func setupUI() {
+    let mainView = UIView(frame: view.bounds)
+    mainView.backgroundColor = .black
+
+    statusLabel = UILabel(frame: mainView.bounds)
+    statusLabel.text = "Waiting for other user"
+    statusLabel.textColor = .white
+    statusLabel.textAlignment = .center
+    statusLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+    mainView.addSubview(statusLabel)
+    view.addSubview(mainView)
+  }
+}
+```
+
+## Test the sample code [#test-the-sample-code-2]
+
+Take the following steps to test the sample code:
+
+1. In your code update the `appId` and `token`, with the app ID and temporary token you obtained from Agora Console. Use the same `channelName` you filled in when generating the temporary token.
+
+1. Click **Build** to run your project and wait a few seconds for the app installation to complete.
+
+3. Allow the app to access the device's microphone.
+
+4. On a second macOS device, repeat the previous steps to install and launch the app. Alternatively, use the [Web demo](https://webdemo-global.agora.io/example/quickStart/videoAndVoiceCalling/index.html) to join the same channel and test the following use-cases:
+
+    * If users on both devices join the channel as hosts, they can hear each other.
+    * If one user joins as host and the other as audience, the audience can hear the host.
+
+## Reference [#reference-2]
+
+This section contains content that completes the information on this page, or points you to documentation that explains other aspects to this product.
+
+- If a firewall is deployed in your network environment, refer to [Connect with Cloud Proxy](../build/manage-connection-and-quality/cloud-proxy.mdx) to use Agora services normally.
+
+### Next steps [#next-steps-2]
+
+After implementing the quickstart sample, read the following documents to learn more:
+
+* To ensure communication security in a test or production environment, best practice is to obtain and use a token from an authentication server. For details, see [Secure authentication with tokens](../build/authenticate-users/authentication-workflow.mdx).
+
+### Sample project [#sample-project-2]
+
+Agora provides open source sample projects on [GitHub](https://github.com/AgoraIO/API-Examples) for your reference. Download or view the [JoinChannelAudio](https://github.com/AgoraIO/API-Examples/blob/main/macOS/APIExample/Examples/Basic/JoinChannelAudio) project for a more detailed example.
+
+### API reference [#api-reference-2]
+
+- [`sharedEngine`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/sharedengine(withappid:delegate:))
+
+- [`joinChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/joinchannel(bytoken:channelid:info:uid:joinsuccess:))
+
+- [`leaveChannel`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginekit/leavechannel(_:))
+
+- [`AgoraRtcEngineDelegate`](https://api-ref.agora.io/en/video-sdk/macos/4.x/documentation/agorartckit/agorartcenginedelegate)
+
+### See also [#see-also-2]
+
+* [Error codes](../reference/error-codes.mdx)
+
+* [Connection status management](../build/manage-connection-and-quality/connection-status-management.mdx)
