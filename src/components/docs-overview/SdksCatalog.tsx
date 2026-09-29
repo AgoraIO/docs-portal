@@ -79,14 +79,14 @@ const productFilters = {
     productIds: ['video'],
   },
   voice: {
-    label: 'RTC Voice SDK',
+    label: 'RTC (Voice Only) SDK',
     aliases: ['voice', 'voice-calling', 'rtc-voice'],
-    productIds: ['voice'],
+    productIds: ['voice-android', 'voice-ios'],
   },
   rtc: {
     label: 'RTC SDK',
     aliases: ['rtc', 'realtime-communication'],
-    productIds: ['video', 'voice'],
+    productIds: ['video', 'voice-android', 'voice-ios'],
   },
   whiteboard: {
     label: 'Whiteboard SDKs',
@@ -132,7 +132,7 @@ function buildProductGroups(): ProductGroup[] {
   for (const platform of sdkDownloadPlatforms) {
     for (const kind of ['core', 'addOns'] as const) {
       for (const product of platform[kind] ?? []) {
-        const productId = getProductCatalogId(product);
+        const productId = getProductCatalogId(product, platform.id);
         let entries = entriesByProductId.get(productId);
         if (!entries) {
           entries = [];
@@ -173,9 +173,19 @@ export function SdksCatalog() {
     ? new Set<string>(productFilter.productIds)
     : null;
   const visibleProductGroups = productFilter
-    ? productGroups.filter((group) =>
-        productFilterProductIds?.has(group.productId),
-      )
+    ? productGroups.filter((group) => {
+        if (!productFilterProductIds?.has(group.productId)) return false;
+
+        // Voice SDKs are separate Android/iOS cards. When both query filters
+        // are present, keep only the requested platform's voice card.
+        if (queryFilters.platformId && group.productId.startsWith('voice-')) {
+          return group.platforms.some(
+            (entry) => entry.platformId === queryFilters.platformId,
+          );
+        }
+
+        return true;
+      })
     : queryFilters.platformId
       ? productGroups.filter((group) =>
           group.platforms.some(
@@ -263,36 +273,38 @@ function ProductCard({
         </div>
       </div>
 
-      <div
-        aria-label={`${group.label} platform`}
-        className="mt-4 flex flex-wrap gap-1 border-border border-b"
-        role="tablist"
-      >
-        {group.platforms.map((entry) => {
-          const isActive = entry.platformId === platformId;
+      {group.platforms.length > 1 || !group.productId.startsWith('voice-') ? (
+        <div
+          aria-label={`${group.label} platform`}
+          className="mt-4 flex flex-wrap gap-1 border-border border-b"
+          role="tablist"
+        >
+          {group.platforms.map((entry) => {
+            const isActive = entry.platformId === platformId;
 
-          return (
-            <button
-              aria-selected={isActive}
-              className={cn(
-                '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
-                isActive
-                  ? 'border-primary font-semibold text-foreground'
-                  : 'border-transparent text-muted-foreground hover:text-foreground',
-              )}
-              key={entry.platformId}
-              onClick={() => {
-                setPlatformId(entry.platformId);
-                setVersionIndex('0');
-              }}
-              role="tab"
-              type="button"
-            >
-              {entry.platformLabel}
-            </button>
-          );
-        })}
-      </div>
+            return (
+              <button
+                aria-selected={isActive}
+                className={cn(
+                  '-mb-px border-b-2 px-3 py-1.5 text-sm transition-colors',
+                  isActive
+                    ? 'border-primary font-semibold text-foreground'
+                    : 'border-transparent text-muted-foreground hover:text-foreground',
+                )}
+                key={entry.platformId}
+                onClick={() => {
+                  setPlatformId(entry.platformId);
+                  setVersionIndex('0');
+                }}
+                role="tab"
+                type="button"
+              >
+                {entry.platformLabel}
+              </button>
+            );
+          })}
+        </div>
+      ) : null}
 
       <div className="mt-4 flex items-center justify-between gap-3">
         <span className="text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
@@ -368,14 +380,14 @@ function readQueryFilters(search: string) {
   return { platformId, productId };
 }
 
-function getProductCatalogId(product: SdkDownloadProduct) {
+function getProductCatalogId(product: SdkDownloadProduct, platformId: string) {
   const normalizedId = product.id.toLowerCase();
 
   if (normalizedId.includes('agents-sdk')) {
     return 'agents';
   }
   if (normalizedId.includes('voice-sdk')) {
-    return 'voice';
+    return `voice-${platformId}`;
   }
   if (normalizedId.includes('video-sdk')) {
     return 'video';
@@ -433,7 +445,7 @@ function InstallArea({
   version: SdkDownloadVersion;
 }) {
   const showAndroidGradleRepositoryNote =
-    (productId === 'video' || productId === 'voice') &&
+    (productId === 'video' || productId === 'voice-android') &&
     platformId === 'android' &&
     command?.tool === 'Gradle';
 

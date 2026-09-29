@@ -31,9 +31,9 @@ describe('SdksCatalog', () => {
       within(videoCard).getByText(/Add the Agora Maven CDN repository/),
     ).toBeVisible();
     expect(
-      within(screen.getByRole('article', { name: 'Signaling SDK' })).queryByText(
-        /Add the Agora Maven CDN repository/,
-      ),
+      within(
+        screen.getByRole('article', { name: 'Signaling SDK' }),
+      ).queryByText(/Add the Agora Maven CDN repository/),
     ).not.toBeInTheDocument();
     expect(
       within(videoCard).getByRole('tab', { name: 'Android' }),
@@ -49,7 +49,7 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('switches the install command when the platform tab changes', () => {
+  it('lists Android and iOS voice SDKs as separate platform-specific cards', () => {
     render(<SdksCatalog />);
 
     const videoCard = screen.getByRole('article', { name: 'RTC SDK' });
@@ -64,23 +64,39 @@ describe('SdksCatalog', () => {
       'true',
     );
 
-    // Voice only ships a distinct SDK on Android and iOS; every other
-    // platform shares the RTC SDK, so exercise the tab switch on iOS.
-    const voiceCard = screen.getByRole('article', { name: 'RTC Voice SDK' });
-
-    fireEvent.click(within(voiceCard).getByRole('tab', { name: 'iOS' }));
+    const androidVoiceCard = screen.getByRole('article', {
+      name: 'RTC (Voice Only) SDK for Android',
+    });
+    const iosVoiceCard = screen.getByRole('article', {
+      name: 'RTC (Voice Only) SDK for iOS',
+    });
 
     expect(
-      within(voiceCard).getByText('https://github.com/AgoraIO/AgoraAudio_iOS'),
+      within(androidVoiceCard).getByText(
+        "implementation 'io.agora.rtc:voice-sdk:4.6.4'",
+      ),
     ).toBeVisible();
+    expect(
+      within(iosVoiceCard).getByText(
+        'https://github.com/AgoraIO/AgoraAudio_iOS',
+      ),
+    ).toBeVisible();
+    expect(screen.getAllByRole('article')).toContain(androidVoiceCard);
+    expect(screen.getAllByRole('article')).toContain(iosVoiceCard);
+    expect(
+      within(androidVoiceCard).queryByRole('tablist'),
+    ).not.toBeInTheDocument();
+    expect(within(iosVoiceCard).queryByRole('tablist')).not.toBeInTheDocument();
   });
 
   it('updates the command when the version changes', () => {
     render(<SdksCatalog />);
 
-    const voiceCard = screen.getByRole('article', { name: 'RTC Voice SDK' });
+    const voiceCard = screen.getByRole('article', {
+      name: 'RTC (Voice Only) SDK for Android',
+    });
     const select = within(voiceCard).getByRole('combobox', {
-      name: 'RTC Voice SDK version',
+      name: 'RTC (Voice Only) SDK for Android version',
     });
 
     fireEvent.change(select, { target: { value: '1' } });
@@ -95,9 +111,11 @@ describe('SdksCatalog', () => {
   it('does not append Previous to older SDK version options', () => {
     render(<SdksCatalog />);
 
-    const voiceCard = screen.getByRole('article', { name: 'RTC Voice SDK' });
+    const voiceCard = screen.getByRole('article', {
+      name: 'RTC (Voice Only) SDK for Android',
+    });
     const select = within(voiceCard).getByRole('combobox', {
-      name: 'RTC Voice SDK version',
+      name: 'RTC (Voice Only) SDK for Android version',
     }) as HTMLSelectElement;
     const optionLabels = Array.from(select.options).map(
       (option) => option.textContent,
@@ -189,19 +207,41 @@ describe('SdksCatalog', () => {
 
     render(<SdksCatalog />);
 
-    expect(screen.getByText('Showing SDKs for RTC Voice SDK')).toBeVisible();
+    expect(
+      screen.getByText('Showing SDKs for RTC (Voice Only) SDK'),
+    ).toBeVisible();
     expect(
       screen.getByRole('link', { name: /show all sdks/i }),
     ).toHaveAttribute('href', '/en/api-reference/sdks');
     expect(
-      screen.getByRole('article', { name: 'RTC Voice SDK' }),
+      screen.getByRole('article', {
+        name: 'RTC (Voice Only) SDK for Android',
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('article', {
+        name: 'RTC (Voice Only) SDK for iOS',
+      }),
     ).toBeVisible();
     expect(
       screen.queryByRole('article', { name: 'RTC SDK' }),
     ).not.toBeInTheDocument();
   });
 
-  it('preselects the requested platform for a product-specific SDK link', () => {
+  it('includes both platform-specific voice cards in the RTC product filter', () => {
+    window.history.replaceState(null, '', '/en/api-reference/sdks?product=rtc');
+
+    render(<SdksCatalog />);
+
+    expect(
+      screen.getByRole('article', { name: 'RTC (Voice Only) SDK for Android' }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('article', { name: 'RTC (Voice Only) SDK for iOS' }),
+    ).toBeVisible();
+  });
+
+  it('filters to the requested platform for a product-specific SDK link', () => {
     window.history.replaceState(
       null,
       '',
@@ -210,14 +250,15 @@ describe('SdksCatalog', () => {
 
     render(<SdksCatalog />);
 
-    const voiceCard = screen.getByRole('article', { name: 'RTC Voice SDK' });
-    expect(within(voiceCard).getByRole('tab', { name: 'iOS' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
+    const iosVoiceCard = screen.getByRole('article', {
+      name: 'RTC (Voice Only) SDK for iOS',
+    });
+    expect(iosVoiceCard).toBeVisible();
     expect(
-      within(voiceCard).getByRole('tab', { name: 'Android' }),
-    ).toHaveAttribute('aria-selected', 'false');
+      screen.queryByRole('article', {
+        name: 'RTC (Voice Only) SDK for Android',
+      }),
+    ).not.toBeInTheDocument();
   });
 
   it('uses a platform-only query to show SDKs available on that platform', () => {
@@ -240,7 +281,9 @@ describe('SdksCatalog', () => {
       screen.queryByRole('article', { name: 'Agora Agents SDK' }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole('article', { name: 'RTC Voice SDK' }),
+      screen.queryByRole('article', {
+        name: 'RTC (Voice Only) SDK for Android',
+      }),
     ).not.toBeInTheDocument();
   });
 
@@ -258,17 +301,23 @@ describe('SdksCatalog', () => {
     });
 
     await waitFor(() => {
-      expect(screen.getByText('Showing SDKs for RTC Voice SDK')).toBeVisible();
+      expect(
+        screen.getByText('Showing SDKs for RTC (Voice Only) SDK'),
+      ).toBeVisible();
     });
 
-    const voiceCard = screen.getByRole('article', { name: 'RTC Voice SDK' });
+    const voiceCard = screen.getByRole('article', {
+      name: 'RTC (Voice Only) SDK for iOS',
+    });
     expect(
       screen.queryByRole('article', { name: 'RTC SDK' }),
     ).not.toBeInTheDocument();
-    expect(within(voiceCard).getByRole('tab', { name: 'iOS' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
+    expect(voiceCard).toBeVisible();
+    expect(
+      screen.queryByRole('article', {
+        name: 'RTC (Voice Only) SDK for Android',
+      }),
+    ).not.toBeInTheDocument();
   });
 
   it('renders the unfiltered static catalog on the server', () => {
@@ -280,8 +329,9 @@ describe('SdksCatalog', () => {
 
     const html = renderToString(<SdksCatalog />);
 
-    expect(html).not.toContain('Showing SDKs for RTC Voice SDK');
-    expect(html).toContain('RTC Voice SDK');
+    expect(html).not.toContain('Showing SDKs for RTC (Voice Only) SDK');
+    expect(html).toContain('RTC (Voice Only) SDK for Android');
+    expect(html).toContain('RTC (Voice Only) SDK for iOS');
     expect(html).toContain('RTC SDK');
   });
 
@@ -302,7 +352,9 @@ describe('SdksCatalog', () => {
       screen.getByRole('article', { name: 'Interactive Whiteboard Fastboard' }),
     ).toBeVisible();
     expect(
-      screen.queryByRole('article', { name: 'RTC Voice SDK' }),
+      screen.queryByRole('article', {
+        name: 'RTC (Voice Only) SDK for Android',
+      }),
     ).not.toBeInTheDocument();
   });
 
