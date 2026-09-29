@@ -131,5 +131,7 @@ describe('RTC release notes platform split', () => {
     expect(resolve('', '#notifications')).toBeNull();
     expect(resolve('?platform=ios', '#notifications')).toBeNull();
     expect(resolve('', '#unknown')).toBeNull();
+    expect(resolve('?platform=python', '')).toBeNull();
+    expect(resolve('?platform=toString', '')).toBeNull();
   });
 });
