@@ -62,3 +62,24 @@ curl --fail --silent --show-error \
 ```
 
 The response contains section URLs such as `...#manualsos`. This endpoint is a local tool adapter, not the Bailian API and not a replacement for the browser's normal CN search client.
+
+## Run the Bailian answer demo
+
+Task 8 adds a separate question endpoint. The backend makes the first Bailian request with the `search_docs` tool definition, executes the tool against the selected KB, then makes a second Bailian request with only the returned sections. The server appends stable document links to the answer.
+
+Configure `DASHSCOPE_API_KEY` and `BAILIAN_MODEL` in the ignored `search-demo/.env` file. The key must remain server-only; do not put it in a `VITE_*` variable or browser code. Then run:
+
+```bash
+bun run search-demo:ask
+```
+
+In another terminal, ask a question:
+
+```bash
+curl --fail --silent --show-error \
+  -X POST http://127.0.0.1:8788/api/ask-docs \
+  -H 'content-type: application/json' \
+  --data '{"question":"如何调用 manualSOS？"}'
+```
+
+The response contains `answer` and `citations`. A live request requires a valid Bailian API key and may consume model quota; the automated Task 8 tests use a mocked provider response and do not call Bailian.
