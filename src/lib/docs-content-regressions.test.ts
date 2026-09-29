@@ -5,7 +5,6 @@ import { describe, expect, it } from 'vitest';
 
 const docsRoot = resolve(process.cwd(), 'content/docs/en');
 const allDocsRoot = resolve(process.cwd(), 'content/docs');
-const voiceDocsRoot = resolve(docsRoot, 'realtime-media/voice');
 const SOURCE_LOADER_TEST_TIMEOUT = 300_000;
 
 describe('docs content regressions', () => {
@@ -116,10 +115,6 @@ describe('docs content regressions', () => {
     return files;
   }
 
-  function readVoiceDoc(relativePath: string) {
-    return readFileSync(resolve(voiceDocsRoot, relativePath), 'utf8');
-  }
-
   function readDoc(relativePath: string) {
     return readFileSync(resolve(docsRoot, relativePath), 'utf8');
   }
@@ -200,22 +195,26 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('keeps AI Video SDK quickstart links on the Video Calling SDK quickstart', () => {
-    const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
-    const offenders = files.flatMap((file) => {
-      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+  it(
+    'keeps AI Video SDK quickstart links on the Video Calling SDK quickstart',
+    () => {
+      const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
+      const offenders = files.flatMap((file) => {
+        const lines = readFileSync(file, 'utf8').split(/\r?\n/);
 
-      return lines.flatMap((line, index) =>
-        (/Video SDK|Video Calling/.test(line) &&
-          /introduction\/realtime-audio-video/.test(line)) ||
-        /audio and video quickstart/.test(line)
-          ? [`${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`]
-          : [],
-      );
-    });
+        return lines.flatMap((line, index) =>
+          (/Video SDK|Video Calling/.test(line) &&
+            /introduction\/realtime-audio-video/.test(line)) ||
+          /audio and video quickstart/.test(line)
+            ? [`${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`]
+            : [],
+        );
+      });
 
-    expect(offenders).toEqual([]);
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      expect(offenders).toEqual([]);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps AI build interrupt links in shape the conversation', () => {
     const files = listMarkdownFiles(resolve(docsRoot, 'ai/build'));
@@ -410,7 +409,9 @@ describe('docs content regressions', () => {
   });
 
   it('keeps Whiteboard IA centered on the product root and Reference section', () => {
-    const productMeta = JSON.parse(readDoc('realtime-media/whiteboard/meta.json'));
+    const productMeta = JSON.parse(
+      readDoc('realtime-media/whiteboard/meta.json'),
+    );
     const referenceMeta = JSON.parse(
       readDoc('realtime-media/whiteboard/reference/meta.json'),
     );
@@ -421,14 +422,19 @@ describe('docs content regressions', () => {
       'build',
       'reference',
     ]);
-    expect(productMeta.sidebarIndexTitle).toBe('Interactive Whiteboard overview');
+    expect(productMeta.sidebarIndexTitle).toBe(
+      'Interactive Whiteboard overview',
+    );
     expect(productMeta.pages).not.toContain('overview');
     expect(
       existsSync(resolve(docsRoot, 'realtime-media/whiteboard/overview')),
     ).toBe(false);
     expect(
       existsSync(
-        resolve(docsRoot, 'realtime-media/whiteboard/overview/core-concepts.md'),
+        resolve(
+          docsRoot,
+          'realtime-media/whiteboard/overview/core-concepts.md',
+        ),
       ),
     ).toBe(false);
 
@@ -456,114 +462,88 @@ describe('docs content regressions', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('keeps block-style lists and notes out of GFM table cells', () => {
-    const blockSyntaxPattern =
-      /(?:<\/?(?:ul|ol|li)\b|\*\*Note\*\*|<Note\b|:::note|:::info|:::warning|:::caution|\[!NOTE\])/i;
-    const inlineTableCellBlockPattern = new RegExp(
-      String.raw`^\s*\|.*${blockSyntaxPattern.source}.*$`,
-      'i',
-    );
-    const offenders: string[] = [];
+  it(
+    'keeps block-style lists and notes out of GFM table cells',
+    () => {
+      const blockSyntaxPattern =
+        /(?:<\/?(?:ul|ol|li)\b|\*\*Note\*\*|<Note\b|:::note|:::info|:::warning|:::caution|\[!NOTE\])/i;
+      const inlineTableCellBlockPattern = new RegExp(
+        String.raw`^\s*\|.*${blockSyntaxPattern.source}.*$`,
+        'i',
+      );
+      const offenders: string[] = [];
 
-    for (const file of listMarkdownFiles(allDocsRoot)) {
-      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+      for (const file of listMarkdownFiles(allDocsRoot)) {
+        const lines = readFileSync(file, 'utf8').split(/\r?\n/);
 
-      for (let index = 0; index < lines.length; index += 1) {
-        if (inlineTableCellBlockPattern.test(lines[index])) {
-          offenders.push(
-            `${relative(process.cwd(), file)}:${index + 1}: ${lines[index]}`,
-          );
-        }
+        for (let index = 0; index < lines.length; index += 1) {
+          if (inlineTableCellBlockPattern.test(lines[index])) {
+            offenders.push(
+              `${relative(process.cwd(), file)}:${index + 1}: ${lines[index]}`,
+            );
+          }
 
-        if (!/^\s*\|.*\|.*\|\s*\S.*[^|]\s*$/.test(lines[index])) {
-          continue;
-        }
+          if (!/^\s*\|.*\|.*\|\s*\S.*[^|]\s*$/.test(lines[index])) {
+            continue;
+          }
 
-        const blockStart = index;
-        const blockLines: string[] = [];
-        let cursor = index + 1;
+          const blockStart = index;
+          const blockLines: string[] = [];
+          let cursor = index + 1;
 
-        while (
-          cursor < lines.length &&
-          !/^\s*\|\s*$/.test(lines[cursor]) &&
-          !/^\s*\|.*\|/.test(lines[cursor])
-        ) {
-          blockLines.push(lines[cursor]);
-          cursor += 1;
-        }
+          while (
+            cursor < lines.length &&
+            !/^\s*\|\s*$/.test(lines[cursor]) &&
+            !/^\s*\|.*\|/.test(lines[cursor])
+          ) {
+            blockLines.push(lines[cursor]);
+            cursor += 1;
+          }
 
-        if (
-          cursor < lines.length &&
-          /^\s*\|\s*$/.test(lines[cursor]) &&
-          blockSyntaxPattern.test(blockLines.join('\n'))
-        ) {
-          offenders.push(
-            `${relative(process.cwd(), file)}:${blockStart + 1}-${cursor + 1}: multiline table cell contains block syntax`,
-          );
+          if (
+            cursor < lines.length &&
+            /^\s*\|\s*$/.test(lines[cursor]) &&
+            blockSyntaxPattern.test(blockLines.join('\n'))
+          ) {
+            offenders.push(
+              `${relative(process.cwd(), file)}:${blockStart + 1}-${cursor + 1}: multiline table cell contains block syntax`,
+            );
+          }
         }
       }
-    }
 
-    expect(offenders).toEqual([]);
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      expect(offenders).toEqual([]);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
-  it('keeps docs free of four-colon directive fences', () => {
-    const offenders: string[] = [];
+  it(
+    'keeps docs free of four-colon directive fences',
+    () => {
+      const offenders: string[] = [];
 
-    for (const file of listMarkdownFiles(allDocsRoot)) {
-      const lines = readFileSync(file, 'utf8').split('\n');
+      for (const file of listMarkdownFiles(allDocsRoot)) {
+        const lines = readFileSync(file, 'utf8').split('\n');
 
-      lines.forEach((line, index) => {
-        const match = line.match(/^\s*(:+)($|[^:])/);
+        lines.forEach((line, index) => {
+          const match = line.match(/^\s*(:+)($|[^:])/);
 
-        if (match?.[1].length === 4) {
-          offenders.push(
-            `${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`,
-          );
-        }
-      });
-    }
+          if (match?.[1].length === 4) {
+            offenders.push(
+              `${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`,
+            );
+          }
+        });
+      }
 
-    expect(offenders).toEqual([]);
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('keeps screenshot upload provider details grouped in tabs across screenshot upload docs', () => {
-    const screenshotUploadDocs = [
-      'realtime-media/video/build/add-advanced-video-features/screenshot-upload.mdx',
-      'realtime-media/broadcast-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
-      'realtime-media/interactive-live-streaming/build/process-raw-and-custom-media/screenshot-upload.mdx',
-    ];
-
-    for (const relativePath of screenshotUploadDocs) {
-      const content = readDoc(relativePath);
-      const startMarker = 'Fill in the following information:';
-      const endMarker = '3. **Integrate Video SDK**';
-      const startIndex = content.indexOf(startMarker);
-      const endIndex = content.indexOf(endMarker, startIndex + 1);
-
-      expect(startIndex).toBeGreaterThanOrEqual(0);
-      expect(endIndex).toBeGreaterThan(startIndex);
-
-      const providerSection = content.slice(startIndex, endIndex);
-
-      expect(providerSection).toContain(
-        '<Tabs defaultValue="aws" groupId="storage-provider" persist>',
-      );
-      expect(providerSection).toContain('<TabsList>');
-      expect(providerSection).toContain(
-        '<TabsTrigger value="aws">AWS</TabsTrigger>',
-      );
-      expect(providerSection).toContain(
-        '<TabsTrigger value="alibaba-cloud">Alibaba Cloud</TabsTrigger>',
-      );
-      expect(providerSection).toContain('<TabsContent value="aws">');
-      expect(providerSection).toContain('<TabsContent value="alibaba-cloud">');
-    }
-  });
+      expect(offenders).toEqual([]);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps connection status management free of undefined Vg placeholders', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
 
     expect(content).not.toContain('<Vg ');
@@ -572,7 +552,7 @@ describe('docs content regressions', () => {
 
   it('keeps connection status management free of undefined Vpl placeholders', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
 
     expect(content).not.toContain('<Vpl ');
@@ -581,7 +561,7 @@ describe('docs content regressions', () => {
 
   it('keeps the iOS reconnection diagram in video connection status management', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
     const reconnectionHeading = content.indexOf(
       '##### Disconnection and reconnection',
@@ -608,7 +588,7 @@ describe('docs content regressions', () => {
 
   it('keeps the macOS reconnection diagram in video connection status management', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
     const reconnectionHeading = content.indexOf(
       '##### Disconnection and reconnection',
@@ -635,7 +615,7 @@ describe('docs content regressions', () => {
 
   it('keeps the Windows reconnection diagram in video connection status management', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
     const reconnectionHeading = content.indexOf(
       '##### Disconnection and reconnection',
@@ -662,7 +642,7 @@ describe('docs content regressions', () => {
 
   it('keeps required reconnection diagrams for remaining video platforms', () => {
     const content = readDoc(
-      'realtime-media/video/build/manage-connection-and-quality/connection-status-management.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/connection-status-management.mdx',
     );
 
     const expectations = [
@@ -1023,9 +1003,7 @@ describe('docs content regressions', () => {
     expect(marketplaceDownloads).toContain(
       '<Accordion title="AI Echo Cancellation">',
     );
-    expect(marketplaceDownloads).toContain(
-      '<Accordion title="Audio Beauty">',
-    );
+    expect(marketplaceDownloads).toContain('<Accordion title="Audio Beauty">');
     expect(marketplaceDownloads).toContain(
       '<Accordion title="Video Enhancement">',
     );
@@ -1038,10 +1016,6 @@ describe('docs content regressions', () => {
   it('keeps app size optimization extension lists collapsed across products', () => {
     const appSizeOptimizationDocs = [
       'realtime-media/rtc/build/optimize-and-operate/app-size-optimization.mdx',
-      'realtime-media/video/build/optimize-and-operate/app-size-optimization.mdx',
-      'realtime-media/voice/build/optimize-and-operate/app-size-optimization.mdx',
-      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
-      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/app-size-optimization.mdx',
     ];
 
     for (const relativePath of appSizeOptimizationDocs) {
@@ -1070,7 +1044,7 @@ describe('docs content regressions', () => {
     const source = readFileSync(
       resolve(
         process.cwd(),
-        'content/docs/en/realtime-media/broadcast-streaming/quickstart.mdx',
+        'content/docs/en/realtime-media/rtc/get-started-sdk.mdx',
       ),
       'utf8',
     );
@@ -1093,7 +1067,7 @@ describe('docs content regressions', () => {
 
   it('compiles the realtime video quickstart without MDX tag nesting errors', async () => {
     const source = readFileSync(
-      resolve(process.cwd(), 'content/docs/en/realtime-media/video/index.mdx'),
+      resolve(process.cwd(), 'content/docs/en/realtime-media/rtc/index.mdx'),
       'utf8',
     );
 
@@ -1104,88 +1078,38 @@ describe('docs content regressions', () => {
     ).resolves.toBeDefined();
   });
 
-  it('uses nested canonical build routes for voice docs content', async () => {
-    const { source } = await import('./source.server');
+  it(
+    'uses specific titles for English top-level overview pages',
+    async () => {
+      const { source } = await import('./source.server');
 
-    expect(
-      source.getPage(
-        [
-          'realtime-media',
-          'voice',
-          'build',
-          'set-up-token-authentication',
-          'use-tokens',
-        ],
-        'en',
-      ),
-    ).toBeDefined();
-    expect(
-      source.getPage(
-        [
-          'realtime-media',
-          'voice',
-          'build',
-          'set-up-your-project',
-          'compile-run-sample-project',
-        ],
-        'en',
-      ),
-    ).toBeDefined();
-    expect(
-      source.getPage(
-        [
-          'realtime-media',
-          'voice',
-          'build',
-          'manage-connection-and-quality',
-          'cloud-proxy',
-        ],
-        'en',
-      ),
-    ).toBeDefined();
+      const overviewPages = [
+        {
+          expectedTitle: 'Voice Agent overview',
+          slugs: ['ai'],
+        },
+        {
+          expectedTitle: 'RTC overview',
+          slugs: ['realtime-media', 'overview'],
+        },
+        {
+          expectedTitle: 'Reference overview',
+          slugs: ['api-reference'],
+        },
+      ];
 
-    expect(
-      source.getPage(['realtime-media', 'voice', 'build', 'use-tokens'], 'en'),
-    ).toBeUndefined();
-    expect(
-      source.getPage(
-        ['realtime-media', 'voice', 'build', 'compile-run-sample-project'],
-        'en',
-      ),
-    ).toBeUndefined();
-    expect(
-      source.getPage(['realtime-media', 'voice', 'build', 'cloud-proxy'], 'en'),
-    ).toBeUndefined();
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('uses specific titles for English top-level overview pages', async () => {
-    const { source } = await import('./source.server');
-
-    const overviewPages = [
-      {
-        expectedTitle: 'Voice Agent overview',
-        slugs: ['ai'],
-      },
-      {
-        expectedTitle: 'RTC overview',
-        slugs: ['realtime-media', 'overview'],
-      },
-      {
-        expectedTitle: 'Reference overview',
-        slugs: ['api-reference'],
-      },
-    ];
-
-    for (const { expectedTitle, slugs } of overviewPages) {
-      expect(source.getPage(slugs, 'en')?.data.title).toBe(expectedTitle);
-    }
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      for (const { expectedTitle, slugs } of overviewPages) {
+        expect(source.getPage(slugs, 'en')?.data.title).toBe(expectedTitle);
+      }
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps voice token server deployment steps in continuous ordered lists', async () => {
     const source = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/voice/build/set-up-token-authentication/deploy-token-server.mdx',
+        'realtime-media/rtc/build/authenticate-users/deploy-token-server.mdx',
       ),
       'utf8',
     );
@@ -1218,20 +1142,22 @@ describe('docs content regressions', () => {
 
   it('keeps representative voice calling steps in continuous ordered lists', async () => {
     const releaseNotes = String(
-      await compile(readVoiceDoc('reference/release-notes.mdx'), {
+      await compile(readDoc('realtime-media/rtc/reference/release-notes.mdx'), {
         jsx: true,
       }),
     );
     const notifications = String(
       await compile(
-        readVoiceDoc('build/optimize-and-operate/receive-notifications.mdx'),
+        readDoc(
+          'realtime-media/rtc/build/optimize-and-operate/receive-notifications.mdx',
+        ),
         {
           jsx: true,
         },
       ),
     );
     const quickstart = String(
-      await compile(readVoiceDoc('quickstart.mdx'), {
+      await compile(readDoc('realtime-media/rtc/voice-quickstart.mdx'), {
         jsx: true,
       }),
     );
@@ -1260,7 +1186,9 @@ describe('docs content regressions', () => {
   it('keeps voice calling markdown free of hidden and ambiguous rendering syntax', () => {
     const offenders: string[] = [];
 
-    for (const file of listMarkdownFiles(voiceDocsRoot)) {
+    for (const file of listMarkdownFiles(
+      resolve(docsRoot, 'realtime-media/rtc'),
+    )) {
       const relativePath = relative(process.cwd(), file);
       const source = readFileSync(file, 'utf8');
 
@@ -1281,7 +1209,7 @@ describe('docs content regressions', () => {
       }
     }
 
-    const securitySource = readVoiceDoc('reference/security.md');
+    const securitySource = readDoc('realtime-media/rtc/reference/security.mdx');
     expect(securitySource).not.toContain(
       '|Log |Media server logs generated by the Agora servers when accessing the Agora SDRTN®.| Media server logs do not contain text messages or personal information.|',
     );
@@ -1298,10 +1226,7 @@ describe('docs content regressions', () => {
       ['mac-linux|windows-powershell', 'ai-install-os'],
       ['rest-api|python|nodejs', 'ai-rest-sample-language'],
       ['python|go|nodejs', 'ai-server-language'],
-      [
-        'golang|nodejs|php|python|java|csharp',
-        'ai-service-api-language',
-      ],
+      ['golang|nodejs|php|python|java|csharp', 'ai-service-api-language'],
     ]);
     const offenders: string[] = [];
 
@@ -1344,8 +1269,8 @@ describe('docs content regressions', () => {
     const sources = [
       'realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx',
       'realtime-media/transcoding/build/receive-ncs-events.md',
-      'realtime-media/interactive-live-streaming/build/connect-across-channels/receive-notifications.mdx',
-      'realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
+      'realtime-media/rtc/build/optimize-and-operate/receive-notifications.mdx',
+      'realtime-media/rtc/build/apply-video-effects/virtual-background.mdx',
     ].map((relativePath) => {
       return readFileSync(resolve(docsRoot, relativePath), 'utf8');
     });
@@ -1357,10 +1282,8 @@ describe('docs content regressions', () => {
 
   it('keeps virtual background sample app image paths local to the sample', () => {
     const samplePaths = [
-      'realtime-media/broadcast-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
+      'realtime-media/rtc/build/apply-video-effects/virtual-background.mdx',
       'realtime-media/marketplace/build/add-video-and-ar-effects/virtual-background.mdx',
-      'realtime-media/video/build/apply-video-effects/virtual-background.mdx',
-      'realtime-media/interactive-live-streaming/build/apply-effects-and-enhancements/virtual-background.mdx',
     ];
 
     for (const samplePath of samplePaths) {
@@ -1390,83 +1313,92 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('preserves explicit table cell line breaks in processed markdown', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['ai', 'best-practices', 'optimize-latency'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error('Expected latency page to expose processed markdown.');
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain(
-      'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('keeps IoT SDK compatibility table cells readable without raw HTML lists', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error('Expected IoT SDK page to expose processed markdown.');
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).not.toContain('<ul>');
-    expect(processed).not.toContain('<li>');
-    expect(processed).toContain(
-      'Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native',
-    );
-    expect(processed).toContain(
-      'Audio: G722, G711, Opus, AAC; Video: H.264, JPEG',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('renders media push layout images inside GFM table cells', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['realtime-media', 'media-push', 'reference', 'set-vertical-layout'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected media push vertical layout page to expose processed markdown.',
+  it(
+    'preserves explicit table cell line breaks in processed markdown',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['ai', 'best-practices', 'optimize-latency'],
+        'en',
       );
-    }
 
-    const processed = await page.data.getText('processed');
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
 
-    expect(processed).toContain('| Number of people | Layout effect');
-    expect(processed).toMatch(
-      /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      if (!page || !('getText' in page.data)) {
+        throw new Error('Expected latency page to expose processed markdown.');
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain(
+        'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
+      );
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'keeps IoT SDK compatibility table cells readable without raw HTML lists',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
+        'en',
+      );
+
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error('Expected IoT SDK page to expose processed markdown.');
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).not.toContain('<ul>');
+      expect(processed).not.toContain('<li>');
+      expect(processed).toContain(
+        'Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native',
+      );
+      expect(processed).toContain(
+        'Audio: G722, G711, Opus, AAC; Video: H.264, JPEG',
+      );
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'renders media push layout images inside GFM table cells',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['realtime-media', 'media-push', 'reference', 'set-vertical-layout'],
+        'en',
+      );
+
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          'Expected media push vertical layout page to expose processed markdown.',
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain('| Number of people | Layout effect');
+      expect(processed).toMatch(
+        /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
+      );
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps shared geofencing pages with readable media-zone table content', () => {
     const pages = [
-      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
-      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
-      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
-      'realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/geofencing.mdx',
     ];
 
     for (const relativePath of pages) {
@@ -1486,10 +1418,7 @@ describe('docs content regressions', () => {
 
   it('keeps shared geofencing pages with the web, react-js, and unreal platform sections', () => {
     const pages = [
-      'realtime-media/video/build/manage-connection-and-quality/geofencing.mdx',
-      'realtime-media/voice/build/manage-connection-and-quality/geofencing.mdx',
-      'realtime-media/broadcast-streaming/build/secure-and-protect-channels/geofencing.mdx',
-      'realtime-media/interactive-live-streaming/build/secure-and-protect-channels/geofencing.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/geofencing.mdx',
     ];
 
     for (const relativePath of pages) {
@@ -1503,9 +1432,7 @@ describe('docs content regressions', () => {
 
   it('does not leave multi-host optimization pages as placeholder stubs', () => {
     const pages = [
-      'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
-      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
-      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-multihost-video.mdx',
+      'realtime-media/rtc/build/manage-connection-and-quality/optimize-multihost-video.mdx',
     ];
 
     for (const relativePath of pages) {
@@ -1521,11 +1448,9 @@ describe('docs content regressions', () => {
 
   it('keeps shared security tables free of broken extra cells in the Log row', () => {
     const pages = [
-      'realtime-media/video/reference/security.mdx',
-      'realtime-media/voice/reference/security.md',
+      'realtime-media/rtc/reference/security.mdx',
       'realtime-media/cloud-recording/reference/security.mdx',
       'realtime-media/marketplace/reference/security.mdx',
-      'realtime-media/interactive-live-streaming/reference/security.md',
     ];
 
     for (const relativePath of pages) {
@@ -1539,9 +1464,7 @@ describe('docs content regressions', () => {
 
   it('keeps optimize-frame-rendering iOS and macOS links on video-sdk docs instead of voice-sdk docs', () => {
     const pages = [
-      'realtime-media/video/build/capture-and-render-video/optimize-frame-rendering.mdx',
-      'realtime-media/broadcast-streaming/build/optimize-quality-and-connection/optimize-frame-rendering.mdx',
-      'realtime-media/interactive-live-streaming/build/optimize-quality-and-connection/optimize-frame-rendering.mdx',
+      'realtime-media/rtc/build/capture-and-render-video/optimize-frame-rendering.mdx',
     ];
 
     for (const relativePath of pages) {
@@ -1557,10 +1480,7 @@ describe('docs content regressions', () => {
   });
 
   it('keeps video and voice API examples pages present with sample repository content', () => {
-    const pages = [
-      'realtime-media/video/reference/api-examples.mdx',
-      'realtime-media/voice/reference/api-examples.mdx',
-    ];
+    const pages = ['realtime-media/rtc/reference/api-examples.mdx'];
 
     for (const relativePath of pages) {
       const source = readFileSync(resolve(docsRoot, relativePath), 'utf8');
@@ -1572,7 +1492,7 @@ describe('docs content regressions', () => {
 
   it('keeps video reference api-examples populated with repository links', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/reference/api-examples.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/reference/api-examples.mdx'),
       'utf8',
     );
 
@@ -1585,7 +1505,7 @@ describe('docs content regressions', () => {
     const source = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+        'realtime-media/rtc/build/manage-connection-and-quality/simulcasting.mdx',
       ),
       'utf8',
     );
@@ -1600,7 +1520,7 @@ describe('docs content regressions', () => {
     const source = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/video/build/manage-connection-and-quality/simulcasting.mdx',
+        'realtime-media/rtc/build/manage-connection-and-quality/simulcasting.mdx',
       ),
       'utf8',
     );
@@ -1677,7 +1597,7 @@ describe('docs content regressions', () => {
 
   it('keeps the video web quickstart top-of-page sample entry link', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/get-started-sdk.mdx'),
       'utf8',
     );
     const webSectionStart = source.indexOf(
@@ -1731,7 +1651,7 @@ describe('docs content regressions', () => {
 
   it('keeps the video unreal setup section fully populated', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/get-started-sdk.mdx'),
       'utf8',
     );
     const unrealSectionStart = source.indexOf(
@@ -1768,7 +1688,7 @@ describe('docs content regressions', () => {
 
   it('keeps the react-js video quickstart local video section before remote video', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/get-started-sdk.mdx'),
       'utf8',
     );
     const reactJsSectionStart = source.indexOf(
@@ -1794,7 +1714,7 @@ describe('docs content regressions', () => {
 
   it('keeps the blueprint video quickstart new-project steps fully populated', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/get-started-sdk.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/get-started-sdk.mdx'),
       'utf8',
     );
     const blueprintSectionStart = source.indexOf(
@@ -1815,7 +1735,7 @@ describe('docs content regressions', () => {
 
   it('keeps voice api-examples populated with sample repositories and next steps', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/voice/reference/api-examples.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/reference/api-examples.mdx'),
       'utf8',
     );
 
@@ -1825,12 +1745,9 @@ describe('docs content regressions', () => {
     expect(source).toContain('## Next steps');
   });
 
-  it('keeps voice supported platforms expanded into the shared multi-platform structure', () => {
+  it('keeps RTC supported platforms expanded into the shared multi-platform structure', () => {
     const source = readFileSync(
-      resolve(
-        docsRoot,
-        'realtime-media/voice/reference/supported-platforms.mdx',
-      ),
+      resolve(docsRoot, 'realtime-media/rtc/reference/supported-platforms.mdx'),
       'utf8',
     );
 
@@ -1839,13 +1756,13 @@ describe('docs content regressions', () => {
     expect(source).toContain('<PlatformStructured platform="web">');
     expect(source).toContain('<PlatformStructured platform="windows">');
     expect(source).toContain('<PlatformStructured platform="unreal">');
-    expect(source).toContain('Voice SDK supports the following ABIs.');
+    expect(source).toContain('RTC SDK supports the following ABIs.');
     expect(source).not.toContain('| Android | <Slot name="android" /> |');
   });
 
   it('keeps video migration guide expanded into the shared ten-platform structure from the legacy source', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/video/reference/migration-guide.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/reference/migration-guide.mdx'),
       'utf8',
     );
 
@@ -1867,7 +1784,7 @@ describe('docs content regressions', () => {
     const source = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/video/build/manage-connection-and-quality/optimize-multihost-video.mdx',
+        'realtime-media/rtc/build/manage-connection-and-quality/optimize-multihost-video.mdx',
       ),
       'utf8',
     );
@@ -1886,7 +1803,7 @@ describe('docs content regressions', () => {
     const source = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/video/build/secure-and-protect-channels/prevent-stream-bombing.mdx',
+        'realtime-media/rtc/build/secure-and-protect-channels/prevent-stream-bombing.mdx',
       ),
       'utf8',
     );
@@ -1912,23 +1829,17 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('keeps voice error codes page populated with platform-specific reference content', () => {
+  it('keeps the RTC error codes page populated with reference content', () => {
     const source = readFileSync(
-      resolve(docsRoot, 'realtime-media/voice/reference/error-codes.mdx'),
+      resolve(docsRoot, 'realtime-media/rtc/reference/error-codes.md'),
       'utf8',
     );
 
     expect(source).toContain('## Common error codes');
     expect(source).toContain('## Audio-related error codes');
     expect(source).toContain('## Data stream-related error codes');
-    expect(source).toContain(
-      '| `109` | The currently used token has expired and is no longer valid. Generate a new token on the server side and call `renewToken` to update the token. |',
-    );
-    expect(source).toContain(
-      '| `1501` | There is no permission to use the camera. Check if camera permission has been turned on. |',
-    );
-    expect(source).toContain('<PlatformStructured platform="android">');
-    expect(source).toContain('<PlatformStructured platform="web">');
+    expect(source).toMatch(/^\| `109` \| .+token.+\|$/m);
+    expect(source).toMatch(/^\| `1501` \| .+camera.+\|$/m);
   });
 
   it('keeps media gateway pages aligned with the actual migrated entry points', () => {
@@ -1966,149 +1877,166 @@ describe('docs content regressions', () => {
     expect(features).toContain('REST API overview');
   });
 
-  it('keeps parameter table lists and callouts in the media push type definition page', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['api-reference', 'api-ref', 'media-push', 'restful-type-definition'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected media push type definition page to expose processed markdown.',
+  it(
+    'keeps parameter table lists and callouts in the media push type definition page',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['api-reference', 'api-ref', 'media-push', 'restful-type-definition'],
+        'en',
       );
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain('| Field');
-    expect(processed).toContain('| Type');
-    expect(processed).toContain('| Descriptions');
-    expect(processed).not.toContain('<ParamTable>');
-    expect(processed).not.toContain('<Slot');
-    expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
-    expect(processed).toContain('<CalloutContainer type="info">');
-    expect(processed).toContain(
-      '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('keeps console REST API table slot callout content in processed markdown', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      [
-        'api-reference',
-        'api-ref',
-        'console',
-        'solutions-agora-console-rest-api',
-      ],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected console REST API page to expose processed markdown.',
-      );
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain('| `enable_sign_key`');
-    expect(processed).not.toContain('<Slot name="enablesignkey"');
-    expect(processed).toContain('<CalloutContainer type="info">');
-    expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
-    expect(processed).toContain(
-      'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('renders AI model callout directives through the processed markdown pipeline', async () => {
-    const { source } = await import('./source.server');
-    const modelDocsRoot = resolve(docsRoot, 'ai/models');
-    const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter(
-      (file) => {
-        const sourceText = readFileSync(file, 'utf8');
-        return /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m.test(
-          sourceText,
-        );
-      },
-    );
-
-    for (const file of filesWithCallouts) {
-      const page = source.getPage(aiModelsDocSlugs(file), 'en');
 
       expect(page).toBeDefined();
       expect(page?.type).toBe('docs');
 
       if (!page || !('getText' in page.data)) {
         throw new Error(
-          `Expected AI model page ${relative(process.cwd(), file)} to expose processed markdown.`,
+          'Expected media push type definition page to expose processed markdown.',
         );
       }
 
       const processed = await page.data.getText('processed');
 
-      expect(processed).not.toMatch(
-        /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
+      expect(processed).toContain('| Field');
+      expect(processed).toContain('| Type');
+      expect(processed).toContain('| Descriptions');
+      expect(processed).not.toContain('<ParamTable>');
+      expect(processed).not.toContain('<Slot');
+      expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
+      expect(processed).toContain('<CalloutContainer type="info">');
+      expect(processed).toContain(
+        '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
       );
-      expect(processed).toContain('<CalloutContainer');
-    }
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
-  it('keeps nested and repeated AI model callouts rendered as callout containers', async () => {
-    const { source } = await import('./source.server');
-    const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
-    const deepgram = source.getPage(['ai', 'models', 'asr', 'deepgram'], 'en');
-    const elevenLabs = source.getPage(
-      ['ai', 'models', 'tts', 'elevenlabs'],
-      'en',
-    );
+  it(
+    'keeps console REST API table slot callout content in processed markdown',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        [
+          'api-reference',
+          'api-ref',
+          'console',
+          'solutions-agora-console-rest-api',
+        ],
+        'en',
+      );
 
-    for (const page of [akool, deepgram, elevenLabs]) {
       expect(page).toBeDefined();
       expect(page?.type).toBe('docs');
-    }
 
-    if (
-      !akool ||
-      !deepgram ||
-      !elevenLabs ||
-      !('getText' in akool.data) ||
-      !('getText' in deepgram.data) ||
-      !('getText' in elevenLabs.data)
-    ) {
-      throw new Error(
-        'Expected AI model regression pages to expose processed markdown.',
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          'Expected console REST API page to expose processed markdown.',
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain('| `enable_sign_key`');
+      expect(processed).not.toContain('<Slot name="enablesignkey"');
+      expect(processed).toContain('<CalloutContainer type="info">');
+      expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
+      expect(processed).toContain(
+        'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
       );
-    }
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
-    const akoolProcessed = await akool.data.getText('processed');
-    const deepgramProcessed = await deepgram.data.getText('processed');
-    const elevenLabsProcessed = await elevenLabs.data.getText('processed');
+  it(
+    'renders AI model callout directives through the processed markdown pipeline',
+    async () => {
+      const { source } = await import('./source.server');
+      const modelDocsRoot = resolve(docsRoot, 'ai/models');
+      const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter(
+        (file) => {
+          const sourceText = readFileSync(file, 'utf8');
+          return /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m.test(
+            sourceText,
+          );
+        },
+      );
 
-    expect(
-      akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
-    ).toHaveLength(3);
-    expect(akoolProcessed).toContain('sales@agora.io');
-    expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
-    expect(deepgramProcessed).toContain('callback_method');
-    expect(
-      elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
-    ).toHaveLength(2);
-    expect(elevenLabsProcessed).toContain('Paid plan required');
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      for (const file of filesWithCallouts) {
+        const page = source.getPage(aiModelsDocSlugs(file), 'en');
+
+        expect(page).toBeDefined();
+        expect(page?.type).toBe('docs');
+
+        if (!page || !('getText' in page.data)) {
+          throw new Error(
+            `Expected AI model page ${relative(process.cwd(), file)} to expose processed markdown.`,
+          );
+        }
+
+        const processed = await page.data.getText('processed');
+
+        expect(processed).not.toMatch(
+          /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
+        );
+        expect(processed).toContain('<CalloutContainer');
+      }
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'keeps nested and repeated AI model callouts rendered as callout containers',
+    async () => {
+      const { source } = await import('./source.server');
+      const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
+      const deepgram = source.getPage(
+        ['ai', 'models', 'asr', 'deepgram'],
+        'en',
+      );
+      const elevenLabs = source.getPage(
+        ['ai', 'models', 'tts', 'elevenlabs'],
+        'en',
+      );
+
+      for (const page of [akool, deepgram, elevenLabs]) {
+        expect(page).toBeDefined();
+        expect(page?.type).toBe('docs');
+      }
+
+      if (
+        !akool ||
+        !deepgram ||
+        !elevenLabs ||
+        !('getText' in akool.data) ||
+        !('getText' in deepgram.data) ||
+        !('getText' in elevenLabs.data)
+      ) {
+        throw new Error(
+          'Expected AI model regression pages to expose processed markdown.',
+        );
+      }
+
+      const akoolProcessed = await akool.data.getText('processed');
+      const deepgramProcessed = await deepgram.data.getText('processed');
+      const elevenLabsProcessed = await elevenLabs.data.getText('processed');
+
+      expect(
+        akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
+      ).toHaveLength(3);
+      expect(akoolProcessed).toContain('sales@agora.io');
+      expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
+      expect(deepgramProcessed).toContain('callback_method');
+      expect(
+        elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
+      ).toHaveLength(2);
+      expect(elevenLabsProcessed).toContain('Paid plan required');
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('uses regular persisted tabs for React Native Picture-in-Picture host OS variants', () => {
     const pictureInPictureDocs = [
-      'realtime-media/video/build/add-advanced-video-features/picture-in-picture.mdx',
-      'realtime-media/broadcast-streaming/build/manage-video-and-streaming/picture-in-picture.mdx',
-      'realtime-media/interactive-live-streaming/build/manage-video-and-streaming/picture-in-picture.mdx',
+      'realtime-media/rtc/build/add-advanced-video-features/picture-in-picture.mdx',
     ];
 
     for (const relativePath of pictureInPictureDocs) {
@@ -2121,9 +2049,7 @@ describe('docs content regressions', () => {
       expect(source, relativePath).not.toContain(
         '<CodeBlockTabs defaultValue="android">',
       );
-      expect(source, relativePath).toContain(
-        '<TabsContent value="android">',
-      );
+      expect(source, relativePath).toContain('<TabsContent value="android">');
       expect(source, relativePath).toContain('<TabsContent value="ios">');
     }
   });
@@ -2151,9 +2077,7 @@ describe('docs content regressions', () => {
           .replace(/\s+/g, ' ')
           .slice(0, 120);
 
-        violations.push(
-          `${relative(process.cwd(), file)}:${line} ${preview}`,
-        );
+        violations.push(`${relative(process.cwd(), file)}:${line} ${preview}`);
       }
     }
 

@@ -14,11 +14,11 @@ const reviewedRedirects = [
   ],
   [
     '/en/video-calling/get-started/get-started-sdk',
-    '/en/realtime-media/video/quickstart',
+    '/en/realtime-media/rtc/get-started-sdk',
   ],
   [
     '/en/video-calling/get-started/get-started-sdk/',
-    '/en/realtime-media/video/quickstart',
+    '/en/realtime-media/rtc/get-started-sdk',
   ],
   [
     '/en/solutions/flexible-classroom/product-overview',
@@ -118,14 +118,11 @@ const reviewedRedirects = [
     '/en/cloud-recording/reference/restful-api',
     '/en/api-reference/api-ref/cloud-recording',
   ],
-  [
-    '/en/Interactive%20Broadcast/product_live',
-    '/en/realtime-media/interactive-live-streaming/product-overview',
-  ],
+  ['/en/Interactive%20Broadcast/product_live', '/en/realtime-media/rtc'],
   ['/en/Agora%20Platform/ticket', 'https://agora-ticket.agora.io/'],
   [
     '/en/video-calling/get-started/authentication-workflow',
-    '/en/realtime-media/video/build/authenticate-users/authentication-workflow',
+    '/en/realtime-media/rtc/build/authenticate-users/authentication-workflow',
   ],
   ['/en/Agora%20Platform/community', '/en/introduction/community-resources'],
   ['/en/Agora%20Platform/token', '/en/introduction/account'],
@@ -137,10 +134,10 @@ const reviewedRedirects = [
     '/en/video-calling/reference/restful-authentication',
     '/en/api-reference/api-ref/rtc/authentication',
   ],
-  ['/en/Video/start_call_ios', '/en/realtime-media/video/quickstart'],
+  ['/en/Video/start_call_ios', '/en/realtime-media/rtc/get-started-sdk'],
   [
     '/en/video-calling/reference/release-notes',
-    '/en/realtime-media/video/reference/release-notes',
+    '/en/realtime-media/rtc/reference/release-notes',
   ],
   [
     '/en/solutions/flexible-classroom/quickstart/ios',
@@ -149,14 +146,14 @@ const reviewedRedirects = [
   ['/en/video-calling/reference/downloads', '/en/api-reference/sdks'],
   [
     '/en/Interactive%20Broadcast/game_streaming_video_profile',
-    '/en/realtime-media/interactive-live-streaming/product-overview',
+    '/en/realtime-media/rtc',
   ],
   [
     '/en/solutions/flexible-classroom/quickstart/web',
     '/en/realtime-media/flexible-classroom/quickstart',
   ],
   ['/en/Voice/downloads', '/en/api-reference/sdks'],
-  ['/en/Video/start_call_android', '/en/realtime-media/video/quickstart'],
+  ['/en/Video/start_call_android', '/en/realtime-media/rtc/get-started-sdk'],
   [
     '/en/realtime-media/reference/restful-authentication',
     '/en/api-reference/api-ref/rtc/authentication',
@@ -207,6 +204,23 @@ describe('PostHog-discovered English 404 redirects', () => {
       [
         '/en/realtime-media/iot/build/manage-connections-and-quality/multi-channel-streaming',
         'content/docs/en/realtime-media/iot/build/manage-connections-and-quality/multi-channel-streaming.mdx',
+      ],
+      // The rtc folder postdates the inventory snapshot.
+      [
+        '/en/realtime-media/rtc',
+        'content/docs/en/realtime-media/rtc/index.mdx',
+      ],
+      [
+        '/en/realtime-media/rtc/get-started-sdk',
+        'content/docs/en/realtime-media/rtc/get-started-sdk.mdx',
+      ],
+      [
+        '/en/realtime-media/rtc/build/authenticate-users/authentication-workflow',
+        'content/docs/en/realtime-media/rtc/build/authenticate-users/authentication-workflow.mdx',
+      ],
+      [
+        '/en/realtime-media/rtc/reference/release-notes',
+        'content/docs/en/realtime-media/rtc/reference/release-notes.mdx',
       ],
     ]);
     for (const [, destination] of reviewedRedirects) {

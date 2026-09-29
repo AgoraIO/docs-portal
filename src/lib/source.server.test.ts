@@ -128,9 +128,9 @@ ${processed}`);
     const page = source.getPage(
       [
         'realtime-media',
-        'broadcast-streaming',
+        'rtc',
         'build',
-        'manage-video-and-streaming',
+        'capture-and-render-video',
         'configure-video-encoding',
       ],
       'en',
@@ -153,9 +153,9 @@ ${processed}`);
     const page = source.getPage(
       [
         'realtime-media',
-        'interactive-live-streaming',
+        'rtc',
         'build',
-        'optimize-quality-and-connection',
+        'enhance-the-audio-experience',
         'best-practices-sound-quality',
       ],
       'en',
