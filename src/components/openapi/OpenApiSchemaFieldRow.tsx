@@ -26,6 +26,7 @@ export type OpenApiSchemaFieldRowProps = {
   domId?: string;
   expanded: boolean;
   labels: OpenApiSchemaFieldRowLabels;
+  legacyAnchorIds?: string[];
   node: OpenApiSchemaViewNode;
   onCopy: () => void;
   onExpandedChange: (expanded: boolean) => void;
@@ -37,6 +38,7 @@ export function OpenApiSchemaFieldRow({
   domId,
   expanded,
   labels,
+  legacyAnchorIds = [],
   node,
   onCopy,
   onExpandedChange,
@@ -88,7 +90,7 @@ export function OpenApiSchemaFieldRow({
 
   return (
     <div
-      className="openapi-schema-field-row min-w-0 scroll-mt-24 border-t border-border py-3 first:border-t-0 [overflow-wrap:anywhere]"
+      className="openapi-schema-field-row relative min-w-0 scroll-mt-24 border-t border-border py-3 first:border-t-0 [overflow-wrap:anywhere]"
       id={domId ?? node.id}
     >
       <div className="flex min-w-0 items-start gap-2 text-sm">
@@ -156,6 +158,16 @@ export function OpenApiSchemaFieldRow({
           </Button>
         </div>
       </div>
+      {legacyAnchorIds
+        .filter((id) => id !== (domId ?? node.id))
+        .map((id) => (
+          <span
+            aria-hidden="true"
+            className="absolute left-0 top-0 size-0 scroll-mt-24"
+            id={id}
+            key={id}
+          />
+        ))}
       {node.schema.description || remainingInfoTags.length > 0 ? (
         <div className="openapi-schema-field-details min-w-0">
           {remainingInfoTags.length > 0 ? (

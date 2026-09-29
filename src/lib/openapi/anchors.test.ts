@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import {
   buildOpenApiAnchorId,
   buildUniqueOpenApiAnchorIds,
+  getOpenApiSchemaFieldAnchorAliases,
   slugOpenApiAnchorSegment,
 } from './anchors';
 
@@ -17,6 +18,18 @@ describe('openapi anchors', () => {
     expect(buildOpenApiAnchorId('request-body', 'agentId')).toBe(
       'request-body-agent-id',
     );
+  });
+
+  it('derives legacy aliases for nested OpenAPI schema field paths', () => {
+    expect(
+      getOpenApiSchemaFieldAnchorAliases('properties.llm.max_history'),
+    ).toEqual(['properties.llm.max_history', 'llm-max_history']);
+    expect(
+      getOpenApiSchemaFieldAnchorAliases('request.body.maxIdleTime'),
+    ).toEqual(['request.body.maxIdleTime']);
+    expect(
+      getOpenApiSchemaFieldAnchorAliases('maxIdleTime', 'request.body'),
+    ).toEqual(['request.body.maxIdleTime']);
   });
 
   it('disambiguates duplicate slugs with stable encoded identities', () => {

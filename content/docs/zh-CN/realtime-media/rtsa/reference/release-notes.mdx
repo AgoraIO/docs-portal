@@ -20,7 +20,7 @@ title: "发版说明"
 
 #### 删除错误码 221 和 222
 
-该版本删除了[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agoraerrcodee)中的 `ERR_AUDIO_DECODER_NOT_MATCH`(221) 和 `ERR_AUDIO_DECODER_NOT_ENABLE`(222)。
+该版本删除了[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_err_code_e)中的 `ERR_AUDIO_DECODER_NOT_MATCH`(221) 和 `ERR_AUDIO_DECODER_NOT_ENABLE`(222)。
 
 ### 改进
 
@@ -55,7 +55,7 @@ title: "发版说明"
 
 #### 区域码清理
 
-该版本对 [`area_code_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#areacodee) 中不支持的区域进行了清理，并作为预览特性放置在 `area_code_ex_e` 中。声网对预览特性不做可用性保证。
+该版本对 [`area_code_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#area_code_e) 中不支持的区域进行了清理，并作为预览特性放置在 `area_code_ex_e` 中。声网对预览特性不做可用性保证。
 
 清理后的 `area_code_e` 支持如下区域：
 
@@ -162,7 +162,7 @@ title: "发版说明"
 
 #### 规整错误码
 
-为提升 SDK 易用性，该版本对错误码进行了规整。API 调用时返回的错误和 `on_error` 回调中报告的错误都收口进了 `agora_err_code_e` 中，并细分为通用、RTN、音频、视频、RDT、RTM 模块，方便开发者快速定位问题。你可以在 [API 参考](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agoraerrcodee)或[错误码文档](/zh-CN/realtime-media/rtsa/reference/error-codes)中了解详情。
+为提升 SDK 易用性，该版本对错误码进行了规整。API 调用时返回的错误和 `on_error` 回调中报告的错误都收口进了 `agora_err_code_e` 中，并细分为通用、RTN、音频、视频、RDT、RTM 模块，方便开发者快速定位问题。你可以在 [API 参考](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_err_code_e)或[错误码文档](/zh-CN/realtime-media/rtsa/reference/error-codes)中了解详情。
 
 在之前的版本中，API 调用时返回的错误没有对外开放，开发者需要调用 `agora_rtc_err2str` 才能获取描述信息。你可以参考最新的 API 代码调整相关逻辑。
 
@@ -627,7 +627,7 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 ### 改进
 
-- 该版本对 API 返回的错误码进行了整理。以确保开发者能够得到清晰且准确的报错信息。详见[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agoraerrcodee)。
+- 该版本对 API 返回的错误码进行了整理。以确保开发者能够得到清晰且准确的报错信息。详见[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_err_code_e)。
 - 该版本优化了 debug log，减少了 log 文件写入操作的系统资源占用。
 - 自该版本起，你可以略过申请 License 和激活步骤直接免费试用 RTSA SDK。试用期时效为 90 天且存在 10 路并发限制。
 

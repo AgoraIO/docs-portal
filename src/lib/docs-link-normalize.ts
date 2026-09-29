@@ -232,6 +232,10 @@ function getLegacyConversationalAiRestPath(segments: string[]) {
   }
 
   if (group === 'authentication' || group === 'status-codes') {
+    if (group === 'authentication' && locale === 'zh-CN') {
+      return `/${locale}/api-reference/conversational-ai/rest-api/authentication`;
+    }
+
     return group === 'status-codes' && locale === 'zh-CN'
       ? `/${locale}/ai/api/response-code`
       : `/${locale}/api-reference/api-ref/conversational-ai/${group}`;

@@ -40,6 +40,7 @@ import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
+import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 import {
   buildOpenApiResponseSchemaAnchorId,
   buildUniqueOpenApiAnchorIds,
@@ -85,6 +86,7 @@ const OpenApiSourceOperationContext = createContext<
   OpenApiOperation | undefined
 >(undefined);
 const OpenApiLocaleContext = createContext<string | undefined>(undefined);
+const OpenApiContentPathContext = createContext<string | undefined>(undefined);
 const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OpenApiRequestCodeContext = createContext(false);
 const OPENAPI_METHOD_BADGE_CLASSES = {
@@ -260,10 +262,12 @@ function getGeneratedCodeSampleOverrides({
 
 export function FumadocsOpenApiContent({
   className,
+  contentPath,
   locale,
   pageProps,
 }: {
   className?: string;
+  contentPath?: string;
   locale?: string;
   pageProps: OpenAPIPageProps;
 }) {
@@ -282,17 +286,21 @@ export function FumadocsOpenApiContent({
       className={cn('not-prose openapi-operation', className)}
       ref={containerRef}
     >
-      <OpenApiLocaleContext.Provider value={locale}>
-        <TranslationProvider translations={getOpenApiFumaTranslations(locale)}>
-          <OpenApiSourceOperationContext.Provider value={operation}>
-            <OpenApiDocsCallouts
-              operation={operation}
-              position="before-description"
-            />
-            <OpenAPIPage {...adaptedPageProps} />
-          </OpenApiSourceOperationContext.Provider>
-        </TranslationProvider>
-      </OpenApiLocaleContext.Provider>
+      <OpenApiContentPathContext.Provider value={contentPath}>
+        <OpenApiLocaleContext.Provider value={locale}>
+          <TranslationProvider
+            translations={getOpenApiFumaTranslations(locale)}
+          >
+            <OpenApiSourceOperationContext.Provider value={operation}>
+              <OpenApiDocsCallouts
+                operation={operation}
+                position="before-description"
+              />
+              <OpenAPIPage {...adaptedPageProps} />
+            </OpenApiSourceOperationContext.Provider>
+          </TranslationProvider>
+        </OpenApiLocaleContext.Provider>
+      </OpenApiContentPathContext.Provider>
     </div>
   );
 }
@@ -1733,6 +1741,14 @@ function OpenApiMarkdownTable(props: ComponentProps<'table'>) {
   return <Table {...props} />;
 }
 
+function OpenApiMarkdownAnchor({ href, ...props }: ComponentProps<'a'>) {
+  const contentPath = useContext(OpenApiContentPathContext);
+  const normalized =
+    typeof href === 'string' ? normalizeDocsHref(href, { contentPath }) : null;
+
+  return <a {...props} href={normalized?.href ?? href} />;
+}
+
 function createOpenApiMarkdownProcessor() {
   function rehypeReact(this: { compiler?: unknown }) {
     this.compiler = (
@@ -1745,6 +1761,7 @@ function createOpenApiMarkdownProcessor() {
         ...JsxRuntime,
         components: {
           ...defaultMdxComponents,
+          a: OpenApiMarkdownAnchor,
           blockquote: OpenApiMarkdownBlockquote,
           pre: OpenApiMarkdownCodeBlock,
           table: OpenApiMarkdownTable,

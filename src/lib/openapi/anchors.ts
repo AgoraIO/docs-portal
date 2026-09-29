@@ -18,6 +18,28 @@ export function buildOpenApiAnchorId(prefix: string, value: string) {
   return `${prefix}-${slugOpenApiAnchorSegment(value)}`;
 }
 
+export function getOpenApiSchemaFieldAnchorAliases(
+  fieldPath: string,
+  legacyRootPath?: string,
+) {
+  const segments = fieldPath.split('.').filter(Boolean);
+  const aliases = new Set<string>();
+
+  if (legacyRootPath && segments.length > 0) {
+    aliases.add(`${legacyRootPath}.${segments.join('.')}`);
+  }
+
+  if (segments.length > 1) {
+    aliases.add(segments.join('.'));
+  }
+
+  if (segments[0] === 'properties' && segments.length > 2) {
+    aliases.add(segments.slice(1).join('-'));
+  }
+
+  return [...aliases];
+}
+
 export function buildUniqueOpenApiAnchorIds(prefix: string, values: string[]) {
   const baseIds = values.map((value) => buildOpenApiAnchorId(prefix, value));
   const duplicateBaseIds = new Set(
