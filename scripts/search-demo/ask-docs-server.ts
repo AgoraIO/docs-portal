@@ -11,24 +11,43 @@ export type {
 } from '../../src/lib/ai/bailian-search-answer';
 export type AskDocsService = BailianSearchAnswerService;
 
+const corsHeaders = {
+  'Access-Control-Allow-Headers': 'content-type',
+  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+  'Access-Control-Allow-Origin': '*',
+};
+
+function jsonResponse(
+  body: unknown,
+  status = 200,
+  headers: Record<string, string> = {},
+) {
+  return Response.json(body, {
+    status,
+    headers: { ...corsHeaders, ...headers },
+  });
+}
+
 export function createAskDocsRequestHandler(service: AskDocsService) {
   return async (request: Request): Promise<Response> => {
     const url = new URL(request.url);
     if (url.pathname !== '/api/ask-docs') {
-      return Response.json({ error: 'not found' }, { status: 404 });
+      return jsonResponse({ error: 'not found' }, 404);
+    }
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { status: 204, headers: corsHeaders });
     }
     if (request.method !== 'POST') {
-      return Response.json(
-        { error: 'method not allowed' },
-        { status: 405, headers: { Allow: 'POST' } },
-      );
+      return jsonResponse({ error: 'method not allowed' }, 405, {
+        Allow: 'POST, OPTIONS',
+      });
     }
 
     let input: unknown;
     try {
       input = await request.json();
     } catch {
-      return Response.json({ error: 'invalid JSON body' }, { status: 400 });
+      return jsonResponse({ error: 'invalid JSON body' }, 400);
     }
     if (
       !input ||
@@ -37,21 +56,18 @@ export function createAskDocsRequestHandler(service: AskDocsService) {
       typeof (input as { question?: unknown }).question !== 'string' ||
       !(input as { question: string }).question.trim()
     ) {
-      return Response.json({ error: 'question is required' }, { status: 400 });
+      return jsonResponse({ error: 'question is required' }, 400);
     }
 
     try {
-      return Response.json(
+      return jsonResponse(
         await service.ask((input as { question: string }).question),
       );
     } catch (error) {
       if (error instanceof Error && /question/.test(error.message)) {
-        return Response.json({ error: error.message }, { status: 400 });
+        return jsonResponse({ error: error.message }, 400);
       }
-      return Response.json(
-        { error: 'AI service unavailable' },
-        { status: 502 },
-      );
+      return jsonResponse({ error: 'AI service unavailable' }, 502);
     }
   };
 }

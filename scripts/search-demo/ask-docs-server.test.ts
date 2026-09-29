@@ -5,6 +5,25 @@ import {
 } from './ask-docs-server';
 
 describe('createAskDocsRequestHandler', () => {
+  it('supports browser CORS preflight requests', async () => {
+    const handler = createAskDocsRequestHandler({
+      ask: vi.fn(),
+    });
+
+    const response = await handler(
+      new Request('http://localhost/api/ask-docs', {
+        method: 'OPTIONS',
+        headers: { Origin: 'http://127.0.0.1:3003' },
+      }),
+    );
+
+    expect(response.status).toBe(204);
+    expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
+    expect(response.headers.get('Access-Control-Allow-Methods')).toContain(
+      'POST',
+    );
+  });
+
   it('returns the answer and citations for a question', async () => {
     const service: AskDocsService = {
       ask: vi.fn(async () => ({
@@ -28,6 +47,7 @@ describe('createAskDocsRequestHandler', () => {
     );
 
     expect(response.status).toBe(200);
+    expect(response.headers.get('Access-Control-Allow-Origin')).toBe('*');
     await expect(response.json()).resolves.toEqual({
       answer: 'manualSOS 用于发送手动 SoS 信令。',
       citations: [expect.objectContaining({ title: 'manualSOS' })],

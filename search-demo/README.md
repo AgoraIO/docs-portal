@@ -84,6 +84,27 @@ curl --fail --silent --show-error \
 
 The response contains `answer` and `citations`. A live request requires a valid Bailian API key and may consume model quota; the automated Task 8 tests use a mocked provider response and do not call Bailian.
 
+## Run the CN AI search UI
+
+Task 10 adds an AI question mode to the CN search dialog. Start the answer
+backend in one terminal:
+
+```bash
+bun run search-demo:ask
+```
+
+Then start the CN docs UI in another terminal:
+
+```bash
+VITE_DOCS_REGION=cn bun run dev
+```
+
+In the CN search dialog, choose `AI 问答`, enter a question, and submit it.
+During local development the UI uses `http://127.0.0.1:8788` by default. A
+deployed UI must set `VITE_ASK_DOCS_URL` to the server-side ask-docs endpoint.
+The browser only receives the answer and citations; `DASHSCOPE_API_KEY` and
+`MEILI_MASTER_KEY` remain server-side.
+
 ## Verify CN Golden Queries
 
 Task 9 checks both ordinary Meilisearch results and, when `ASK_DOCS_URL` is set,
