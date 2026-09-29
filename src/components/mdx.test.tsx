@@ -16,7 +16,12 @@ import {
 } from '@testing-library/react';
 import * as fumadocsTabs from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import type { AnchorHTMLAttributes, ComponentType, ReactNode } from 'react';
+import type {
+  AnchorHTMLAttributes,
+  ComponentProps,
+  ComponentType,
+  ReactNode,
+} from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
@@ -73,6 +78,7 @@ type ImageComponent = ComponentType<{
   alt?: string;
   src?: string;
 }>;
+type TableComponent = ComponentType<ComponentProps<'table'>>;
 type LegacyLinkComponent = ComponentType<{
   children: ReactNode;
   to: string;
@@ -262,6 +268,80 @@ describe('common MDX registry', () => {
     expect(components.TabsList).toBe(fumadocsTabs.TabsList);
     expect(components.TabsTrigger).toBe(fumadocsTabs.TabsTrigger);
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
+  });
+
+  it('marks only the seven-column IM pricing table for compact layout', () => {
+    const targetComponents = getMDXComponents(undefined, {
+      contentPath: 'en/realtime-media/im/reference/pricing-plan-details.md',
+    });
+    const TargetTable = targetComponents.table as TableComponent;
+    const headers = [
+      'Category',
+      'Description',
+      'Quota',
+      'Overage',
+      'Charge',
+      'Method',
+      'Endpoint',
+    ];
+    const { container, rerender } = render(
+      <TargetTable>
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th key={header}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            {headers.map((header) => (
+              <td key={header}>{header}</td>
+            ))}
+          </tr>
+        </tbody>
+      </TargetTable>,
+    );
+
+    expect(container.querySelector('table')).toHaveClass(
+      'im-pricing-api-table',
+    );
+
+    rerender(
+      <TargetTable>
+        <thead>
+          <tr>
+            {headers.slice(0, 5).map((header) => (
+              <th key={header}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+      </TargetTable>,
+    );
+
+    expect(container.querySelector('table')).not.toHaveClass(
+      'im-pricing-api-table',
+    );
+
+    const otherPageComponents = getMDXComponents(undefined, {
+      contentPath: 'en/realtime-media/im/reference/pricing.md',
+    });
+    const OtherPageTable = otherPageComponents.table as TableComponent;
+    rerender(
+      <OtherPageTable>
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th key={header}>{header}</th>
+            ))}
+          </tr>
+        </thead>
+      </OtherPageTable>,
+    );
+
+    expect(container.querySelector('table')).not.toHaveClass(
+      'im-pricing-api-table',
+    );
   });
 
   it('opens MDX images in a zoom dialog', async () => {

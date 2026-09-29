@@ -2159,4 +2159,34 @@ describe('docs content regressions', () => {
 
     expect(violations).toEqual([]);
   });
+
+  it('keeps the IM RESTful API pricing table content stable', () => {
+    const source = readDoc('realtime-media/im/reference/pricing-plan-details.md');
+    const tableStart = source.indexOf('| Category | Rest API Description |');
+    const tableEnd = source.indexOf('\n\n## SDK support', tableStart);
+    const tableLines = source
+      .slice(tableStart, tableEnd)
+      .split(/\r?\n/)
+      .filter((line) => line.startsWith('|'));
+
+    expect(tableStart).toBeGreaterThanOrEqual(0);
+    expect(tableLines).toHaveLength(138);
+    expect(tableLines[0]).toBe(
+      '| Category | Rest API Description | API calls included in the package/application  (times/second) | Allows "pay for overage" | API Call Overage Charge | Http Method | Endpoint |',
+    );
+
+    for (const line of tableLines.slice(2)) {
+      expect(line.split('|').length, line).toBe(9);
+    }
+
+    expect(source).toContain(
+      '| User Management | Get user token | 100 | Y | $0/month | GET | `/app-id/{app_id}/token` |',
+    );
+    expect(source).toContain(
+      '| User Management | Delete users in bulk | 30 | Y | $50/month/additional 50 QPS | DELETE | `/app-id/{app_id}/users` |',
+    );
+    expect(source).toContain(
+      '| User online & offline status | Set user online status | 50 | Y | $50/month/additional 50 QPS | POST | `/app-id/{app_id}/users/{uid}/presence/{resource}/{status}` |',
+    );
+  });
 });
