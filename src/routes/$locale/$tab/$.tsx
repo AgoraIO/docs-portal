@@ -2,7 +2,10 @@ import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
-import { resolveMovedDocsRedirect } from '@/lib/docs-moved-redirects';
+import {
+  isPermanentMovedDocsRedirect,
+  resolveMovedDocsRedirect,
+} from '@/lib/docs-moved-redirects';
 import { getDocsPagePayload } from '@/lib/docs-page';
 import type {
   DocsPagePayload,
@@ -57,6 +60,13 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     if (movedDocsRedirect) {
       throw redirect({
         href: preserveRedirectSearch(movedDocsRedirect, location),
+        ...(isPermanentMovedDocsRedirect(
+          params.locale,
+          params.tab,
+          slugSegments,
+        )
+          ? { statusCode: 301 }
+          : {}),
       });
     }
 

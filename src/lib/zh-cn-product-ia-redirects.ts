@@ -1,3 +1,5 @@
+import { ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS } from './zh-cn-moved-solution-product-redirects';
+
 const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/recording': '/zh-CN/realtime-media/cloud-recording',
   'realtime-media/danmaku/api/api-limits':
@@ -1483,18 +1485,6 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/online-music-class',
   'solutions/online-music-class/resources':
     '/zh-CN/solutions/online-music-class/reference/downloads',
-  'solutions/ppt-transcoding/billing':
-    '/zh-CN/solutions/ppt-transcoding/reference/billing',
-  'solutions/ppt-transcoding/convert-ppt':
-    '/zh-CN/solutions/ppt-transcoding/reference/convert-ppt',
-  'solutions/ppt-transcoding/get-started/enable-service':
-    '/zh-CN/solutions/ppt-transcoding/build/setup-and-access/enable-service',
-  'solutions/ppt-transcoding/product-overview':
-    '/zh-CN/solutions/ppt-transcoding',
-  'solutions/ppt-transcoding/response-code':
-    '/zh-CN/solutions/ppt-transcoding/reference/response-code',
-  'solutions/ppt-transcoding/slide-api':
-    '/zh-CN/solutions/ppt-transcoding/reference/slide-api',
   'solutions/showroom/advanced-features/audio-scenario':
     '/zh-CN/solutions/showroom/build/audio-scenario',
   'solutions/showroom/advanced-features/beauty/bytedance/integrate':
@@ -1617,12 +1607,6 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/solutions/smart-watch',
   'solutions/smart-watch/resources':
     '/zh-CN/solutions/smart-watch/reference/downloads',
-  'solutions/status-page/overview/product-overview':
-    '/zh-CN/solutions/status-page',
-  'solutions/status-page/overview/release-notes':
-    '/zh-CN/solutions/status-page/reference/release-notes',
-  'solutions/status-page/user-guide':
-    '/zh-CN/solutions/status-page/build/implement-core-features/user-guide',
   'solutions/teleoperation/api/device':
     '/zh-CN/api-reference/teleoperation/iot/api/device',
   'solutions/teleoperation/api/operator':
@@ -1851,7 +1835,8 @@ export function resolveZhCnProductIaRedirect(
 
   const exactRedirect =
     ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS[path] ??
-    ZH_CN_PRODUCT_IA_REDIRECTS[path];
+    ZH_CN_PRODUCT_IA_REDIRECTS[path] ??
+    ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS[path];
   if (exactRedirect) {
     return exactRedirect;
   }

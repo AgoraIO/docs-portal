@@ -143,9 +143,9 @@ const overviewActionContentPaths = new Set([
   'zh-CN/solutions/online-ktv/auikaraoke/index.mdx',
   'zh-CN/solutions/online-ktv/ktv-scenario/index.mdx',
   'zh-CN/solutions/online-ktv/online-ktv-sdk/index.mdx',
-  'zh-CN/solutions/ppt-transcoding/index.mdx',
+  'zh-CN/realtime-media/ppt-transcoding/index.mdx',
   'zh-CN/solutions/showroom/index.mdx',
-  'zh-CN/solutions/status-page/index.mdx',
+  'zh-CN/realtime-media/status-page/index.mdx',
   'zh-CN/solutions/voip-call/index.mdx',
 ]);
 

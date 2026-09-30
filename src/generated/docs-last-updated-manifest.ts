@@ -28874,41 +28874,41 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/solutions/overview.mdx': '2026-08-27T02:31:06.000Z',
   'content/docs/zh-CN/solutions/ppt-transcoding/billing.mdx':
     '2026-07-28T02:59:45.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/build/meta.json':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/build/meta.json':
     '2026-07-28T03:11:20.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/build/setup-and-access/enable-service.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/build/setup-and-access/enable-service.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/build/setup-and-access/meta.json':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/build/setup-and-access/meta.json':
     '2026-07-28T03:01:45.000Z',
   'content/docs/zh-CN/solutions/ppt-transcoding/convert-ppt.mdx':
     '2026-07-28T02:59:45.000Z',
   'content/docs/zh-CN/solutions/ppt-transcoding/get-started/enable-service.mdx':
     '2026-07-28T02:59:45.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/get-started/meta.json':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/get-started/meta.json':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/get-started/quick-start.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start.mdx':
     '2026-07-28T03:13:55.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/get-started/render-ppt.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/get-started/render-ppt.mdx':
     '2026-07-28T03:13:55.000Z',
   'content/docs/zh-CN/solutions/ppt-transcoding/index.md':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/index.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/index.mdx':
     '2026-08-04T09:46:36.000Z',
   'content/docs/zh-CN/solutions/ppt-transcoding/mcp-integrate.mdx':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/meta.json':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/meta.json':
     '2026-07-28T03:12:09.000Z',
   'content/docs/zh-CN/solutions/ppt-transcoding/product-overview.mdx':
     '2026-07-28T02:59:45.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/reference/billing.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/reference/billing.mdx':
     '2026-07-29T03:34:52.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/reference/convert-ppt.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/reference/convert-ppt.mdx':
     '2026-07-28T03:12:09.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/reference/meta.json':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/reference/meta.json':
     '2026-08-17T02:05:44.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/reference/response-code.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/reference/response-code.mdx':
     '2026-07-28T03:13:55.000Z',
-  'content/docs/zh-CN/solutions/ppt-transcoding/reference/slide-api.mdx':
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/reference/slide-api.mdx':
     '2026-07-28T03:13:58.000Z',
   'content/docs/zh-CN/solutions/ppt-transcoding/response-code.mdx':
     '2026-07-28T02:59:45.000Z',
@@ -29252,19 +29252,19 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T02:56:19.000Z',
   'content/docs/zh-CN/solutions/smart-watch/skills-integrate.mdx':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/status-page/build/implement-core-features/meta.json':
+  'content/docs/zh-CN/realtime-media/status-page/build/implement-core-features/meta.json':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/status-page/build/implement-core-features/user-guide.mdx':
+  'content/docs/zh-CN/realtime-media/status-page/build/implement-core-features/user-guide.mdx':
     '2026-08-17T02:42:42.000Z',
-  'content/docs/zh-CN/solutions/status-page/build/meta.json':
+  'content/docs/zh-CN/realtime-media/status-page/build/meta.json':
     '2026-07-28T03:11:20.000Z',
   'content/docs/zh-CN/solutions/status-page/index.md':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/status-page/index.mdx':
+  'content/docs/zh-CN/realtime-media/status-page/index.mdx':
     '2026-08-04T09:46:36.000Z',
   'content/docs/zh-CN/solutions/status-page/mcp-integrate.mdx':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/status-page/meta.json':
+  'content/docs/zh-CN/realtime-media/status-page/meta.json':
     '2026-07-28T03:12:09.000Z',
   'content/docs/zh-CN/solutions/status-page/overview/meta.json':
     '2026-07-28T03:01:45.000Z',
@@ -29272,9 +29272,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-28T02:56:19.000Z',
   'content/docs/zh-CN/solutions/status-page/overview/release-notes.mdx':
     '2026-07-28T02:56:19.000Z',
-  'content/docs/zh-CN/solutions/status-page/reference/meta.json':
+  'content/docs/zh-CN/realtime-media/status-page/reference/meta.json':
     '2026-07-28T03:01:45.000Z',
-  'content/docs/zh-CN/solutions/status-page/reference/release-notes.mdx':
+  'content/docs/zh-CN/realtime-media/status-page/reference/release-notes.mdx':
     '2026-07-28T08:18:12.000Z',
   'content/docs/zh-CN/solutions/status-page/skills-integrate.mdx':
     '2026-07-28T03:01:45.000Z',

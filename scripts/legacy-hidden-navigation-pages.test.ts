@@ -20,7 +20,7 @@ const hiddenPagesByMeta = {
   ],
   'content/docs/zh-CN/solutions/chatroom/sdk/reference/meta.json': ['api'],
   'content/docs/zh-CN/solutions/game-voice/meta.json': ['reference/billing'],
-  'content/docs/zh-CN/solutions/ppt-transcoding/reference/meta.json': [
+  'content/docs/zh-CN/realtime-media/ppt-transcoding/reference/meta.json': [
     'slide-api',
   ],
 } as const;

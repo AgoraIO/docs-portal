@@ -4521,7 +4521,7 @@ Web body
     await expect(
       loadDocsPagePayload('zh-CN', 'introduction', ['ppt-transcoding']),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/solutions/ppt-transcoding',
+      redirectUrl: '/zh-CN/realtime-media/ppt-transcoding',
     });
 
     await expect(
@@ -4531,7 +4531,37 @@ Web body
         'quick-start',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
+      redirectUrl:
+        '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
+    });
+  });
+
+  it.each(['ppt-transcoding', 'status-page'])(
+    'redirects old zh-CN Solutions %s page paths to Realtime Media',
+    async (product) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'solutions', [product, 'index']),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/${product}`,
+      });
+      await expect(
+        loadDocsPagePayload('zh-CN', 'solutions', [
+          product,
+          'reference',
+          'release-notes',
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/${product}/reference/release-notes`,
+      });
+    },
+  );
+
+  it('keeps moved solution-product aliases as permanent redirects', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'solutions', ['ppt-transcoding', 'billing']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/ppt-transcoding/reference/billing',
+      statusCode: 301,
     });
   });
 
