@@ -44,6 +44,32 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('shows a same-tab navigation arrow for marked internal page links', async () => {
+    const demoLink: DocsSidebarNode = {
+      id: 'introduction-demo-gallery',
+      showNavigationArrow: true,
+      title: '体验 Demo',
+      type: 'page',
+      url: '/zh-CN/reference/demo',
+    };
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [demoLink],
+        defaultOpen: true,
+        id: 'general-references',
+        title: '通用参考',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/introduction');
+
+    const link = await screen.findByRole('link', { name: '体验 Demo' });
+    expect(link.querySelector('.lucide-arrow-right')).toBeInTheDocument();
+    expect(link.querySelector('.lucide-external-link')).not.toBeInTheDocument();
+    expect(link).not.toHaveAttribute('target', '_blank');
+  });
+
   it('opens sections with defaultOpen true on initial render', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -75,7 +101,9 @@ describe('DocsSidebarTree', () => {
     expect(
       await screen.findByRole('button', { name: 'Build and integrate' }),
     ).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('link', { name: 'Quickstart' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: 'Quickstart' }),
+    ).toBeInTheDocument();
   });
 
   it('keeps embedded service API entries collapsed until clicked', async () => {

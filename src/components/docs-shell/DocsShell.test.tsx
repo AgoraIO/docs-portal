@@ -1882,6 +1882,47 @@ describe('DocsShell', () => {
     );
   });
 
+  it('shows an internal navigation arrow without opening marked mobile links in a new tab', async () => {
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/introduction',
+        activeTab: 'introduction',
+        locale: 'zh-CN',
+        sidebar: [
+          {
+            id: 'introduction-demo-gallery',
+            showNavigationArrow: true,
+            title: '体验 Demo',
+            type: 'page',
+            url: '/zh-CN/reference/demo',
+          },
+        ],
+        tabs: [
+          {
+            id: 'introduction',
+            title: '介绍',
+            url: '/zh-CN/introduction',
+          },
+        ],
+      },
+      '/zh-CN/introduction',
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const demoLink = within(mobileSheet).getByRole('link', {
+      name: '体验 Demo',
+    });
+
+    expect(demoLink).toHaveAttribute('href', '/zh-CN/reference/demo');
+    expect(demoLink).not.toHaveAttribute('target', '_blank');
+    expect(demoLink.querySelector('.lucide-arrow-right')).toBeInTheDocument();
+    expect(
+      demoLink.querySelector('.lucide-external-link'),
+    ).not.toBeInTheDocument();
+  });
+
   it('keeps linked hub sections collapsed when defaultOpen is false', async () => {
     renderDocsShell(
       {
