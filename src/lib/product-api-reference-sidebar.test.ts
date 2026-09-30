@@ -90,7 +90,7 @@ const zhCnServiceApiEntries = [
     '/zh-CN/api-reference/api-ref/whiteboard/restful',
   ],
   [
-    'solutions',
+    'realtime-media',
     ['ppt-transcoding'],
     '服务端 API',
     '/zh-CN/api-reference/api-ref/ppt-conversion-service',
@@ -271,7 +271,11 @@ describe('product API reference sidebar links', () => {
     ['solutions', ['teleoperation'], 'teleoperation'],
   ])('adds the %s/%s client API link for %s', async (tab, slugs, productId) => {
     const sidebar = await loadSidebar('zh-CN', tab, slugs);
-    const reference = findSection(sidebar, ['参考', '参考信息', '开发资源']);
+    const reference = findSection(sidebar, [
+      '参考',
+      '参考信息',
+      '开发资源',
+    ]);
     const clientApiNode = reference?.children?.find(
       (child) => child.title === '客户端 API',
     );
@@ -322,11 +326,7 @@ describe('product API reference sidebar links', () => {
 
   it('adds the RTC client API link before its metadata service API link', async () => {
     const sidebar = await loadSidebar('zh-CN', 'realtime-media', ['rtc']);
-    const reference = findSection(sidebar, [
-      '参考',
-      '参考信息',
-      '开发资源',
-    ]);
+    const reference = findSection(sidebar, ['参考', '参考信息', '开发资源']);
     const clientApiIndex =
       reference?.children?.findIndex((child) => child.title === '客户端 API') ??
       -1;
@@ -564,25 +564,29 @@ describe('product API reference sidebar links', () => {
 
   it.each([
     [
+      'realtime-media',
       ['ppt-transcoding'],
       '/zh-CN/api-reference/api-ref/ppt-conversion-service',
     ],
     [
+      'solutions',
       ['flexible-classroom'],
       '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
     ],
     [
+      'solutions',
       ['online-ktv', 'ktv-scenario'],
       '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
     ],
     [
+      'solutions',
       ['online-ktv', 'online-ktv-sdk'],
       '/zh-CN/api-reference/online-ktv/android/online-ktv-sdk/api/music-content-center',
     ],
   ])(
     'reads the service API leaf from the Chinese %s product metadata',
-    async (slugs, url) => {
-      const sidebar = await loadSidebar('zh-CN', 'solutions', slugs);
+    async (tab, slugs, url) => {
+      const sidebar = await loadSidebar('zh-CN', tab, slugs);
       const restApiNode = findNode(sidebar, '服务端 API');
 
       expect(restApiNode).toMatchObject({
@@ -1008,7 +1012,7 @@ describe('product API reference sidebar links', () => {
       '/zh-CN/api-reference/api-ref/whiteboard/restful',
     ],
     [
-      'content/docs/zh-CN/solutions/ppt-transcoding/reference/meta.json',
+      'content/docs/zh-CN/realtime-media/ppt-transcoding/reference/meta.json',
       '/zh-CN/api-reference/api-ref/ppt-conversion-service',
     ],
     [

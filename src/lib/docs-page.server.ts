@@ -8,7 +8,10 @@ import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import type { DocsMeta } from './docs-meta-schema';
-import { resolveMovedDocsRedirect } from './docs-moved-redirects';
+import {
+  isPermanentMovedDocsRedirect,
+  resolveMovedDocsRedirect,
+} from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
   type DocsSidebarHeader,
@@ -327,7 +330,7 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
   'api-ref/signaling/response-code':
     '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
   'api-ref/ppt-conversion-service/status-codes':
-    '/zh-CN/solutions/ppt-transcoding/reference/response-code',
+    '/zh-CN/realtime-media/ppt-transcoding/reference/response-code',
   'api-ref/whiteboard': '/zh-CN/api-reference/api-ref/whiteboard/restful',
   'api-ref/fastboard/android/fastboard-api':
     '/zh-CN/api-reference/whiteboard/fastboard/android',
@@ -492,6 +495,9 @@ export async function loadDocsPagePayload(
         locale,
         movedDocsRedirect,
       ),
+      ...(isPermanentMovedDocsRedirect(locale, tab, slugSegments)
+        ? { statusCode: 301 as const }
+        : {}),
     };
   }
 

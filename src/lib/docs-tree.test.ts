@@ -1332,10 +1332,10 @@ describe('docs tree helpers', () => {
           url: '/zh-CN/introduction/recording',
         },
         {
-          id: '/zh-CN/solutions/ppt-transcoding',
+          id: '/zh-CN/realtime-media/ppt-transcoding',
           title: 'PPT 转码',
           type: 'page',
-          url: '/zh-CN/solutions/ppt-transcoding',
+          url: '/zh-CN/realtime-media/ppt-transcoding',
         },
       ]),
     ).toEqual([
@@ -1354,10 +1354,10 @@ describe('docs tree helpers', () => {
             url: '/zh-CN/introduction/recording',
           },
           {
-            id: '/zh-CN/solutions/ppt-transcoding',
+            id: '/zh-CN/realtime-media/ppt-transcoding',
             title: 'PPT 转码',
             type: 'page',
-            url: '/zh-CN/solutions/ppt-transcoding',
+            url: '/zh-CN/realtime-media/ppt-transcoding',
           },
         ],
         collapsible: true,

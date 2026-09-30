@@ -239,7 +239,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     'downloads',
     '[在线音乐教学 API 参考](/zh-CN/api-reference/online-music-teaching?from=%2Fzh-CN%2Fsolutions%2Fonline-music-class)',
   ],
-  'solutions/ppt-transcoding/reference/meta.json': [
+  'realtime-media/ppt-transcoding/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/ppt-conversion-service)',
     '!slide-api',
     'response-code',
@@ -411,7 +411,11 @@ describe('zh-CN product reference ordering', () => {
   it.each(Object.entries(expectedReferencePages))(
     'keeps the approved order for %s',
     (relativePath, expectedPages) => {
-      const baselinePages = readPagesFromRevision(relativePath, 'HEAD');
+      const baselinePath =
+        relativePath === 'realtime-media/ppt-transcoding/reference/meta.json'
+          ? 'solutions/ppt-transcoding/reference/meta.json'
+          : relativePath;
+      const baselinePages = readPagesFromRevision(baselinePath, 'HEAD');
       const actualPages = readPages(relativePath);
 
       if (!intentionallyChangedReferencePages.has(relativePath)) {

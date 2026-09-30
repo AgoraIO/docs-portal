@@ -524,6 +524,7 @@ describe('docs route locale guards', () => {
   it(
     'redirects moved zh-CN Introduction routes before page fallback',
     async () => {
+      publishedLocaleOverride.value = true;
       try {
         await getLoader(DocPageRoute)({
           location: {
@@ -543,6 +544,7 @@ describe('docs route locale guards', () => {
             href: '/zh-CN/realtime-media/usage-analytics',
           },
         });
+        publishedLocaleOverride.value = false;
         return;
       }
 
@@ -554,6 +556,7 @@ describe('docs route locale guards', () => {
   it(
     'redirects moved zh-CN PPT transcoding routes before page fallback',
     async () => {
+      publishedLocaleOverride.value = true;
       try {
         await getLoader(DocPageRoute)({
           location: {
@@ -570,9 +573,10 @@ describe('docs route locale guards', () => {
         expect(isRedirect(error)).toBe(true);
         expect(error).toMatchObject({
           options: {
-            href: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
+            href: '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
           },
         });
+        publishedLocaleOverride.value = false;
         return;
       }
 
@@ -580,6 +584,35 @@ describe('docs route locale guards', () => {
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
+
+  it('preserves search and hash when redirecting old Solutions product URLs', async () => {
+    publishedLocaleOverride.value = true;
+    try {
+      await getLoader(DocPageRoute)({
+        location: {
+          hash: '#billing',
+          searchStr: '?source=legacy',
+        },
+        params: {
+          _splat: 'ppt-transcoding/billing',
+          locale: 'zh-CN',
+          tab: 'solutions',
+        },
+      } as never);
+    } catch (error) {
+      expect(isRedirect(error)).toBe(true);
+      expect(error).toMatchObject({
+        options: {
+          href: '/zh-CN/realtime-media/ppt-transcoding/reference/billing?source=legacy#billing',
+          statusCode: 301,
+        },
+      });
+      publishedLocaleOverride.value = false;
+      return;
+    }
+
+    throw new Error('expected old Solutions product URL to redirect');
+  });
 
   it('forwards an RTM 301 DocsRedirectPayload from the page route', async () => {
     docsPagePayloadOverride.mockReturnValueOnce({

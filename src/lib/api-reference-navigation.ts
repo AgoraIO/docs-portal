@@ -59,7 +59,7 @@ export const API_REFERENCE_CAPABILITY_GROUPS: readonly ApiReferenceCapabilityGro
     {
       id: 'extensions-ecosystem',
       label: '扩展能力与生态',
-      productIds: ['rtc-server-sdk', 'whiteboard'],
+      productIds: ['rtc-server-sdk', 'whiteboard', 'ppt-conversion-service'],
     },
     {
       id: 'social-entertainment',
@@ -73,7 +73,6 @@ export const API_REFERENCE_CAPABILITY_GROUPS: readonly ApiReferenceCapabilityGro
         'flexible-classroom',
         'online-art-teaching',
         'online-music-teaching',
-        'ppt-conversion-service',
       ],
     },
     {

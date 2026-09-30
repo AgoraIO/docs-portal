@@ -22,7 +22,7 @@ const ZH_CN_API_REFERENCE_PRODUCT_DOCS = {
   'cloud-transcoding': '/zh-CN/realtime-media/transcoding',
   'rtmp-gateway': '/zh-CN/realtime-media/rtmp-gateway',
   'rtc-server-sdk': '/zh-CN/realtime-media/rtc-server-sdk',
-  'ppt-conversion-service': '/zh-CN/solutions/ppt-transcoding',
+  'ppt-conversion-service': '/zh-CN/realtime-media/ppt-transcoding',
   console: '/zh-CN/introduction/quickstart',
   meeting: '/zh-CN/realtime-media/meeting',
   'online-ktv': '/zh-CN/solutions/online-ktv',
