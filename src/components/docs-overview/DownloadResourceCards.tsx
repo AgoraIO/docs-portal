@@ -127,6 +127,7 @@ function DemoResourceCard({ item }: { item: DownloadResource }) {
         alt={`${item.title} Demo 封面`}
         className="aspect-[4/3] w-24 shrink-0 rounded-md object-cover sm:w-28"
         loading="lazy"
+        referrerPolicy="no-referrer"
         src={item.coverSrc}
       />
       <div className="flex min-w-0 flex-1 flex-col">
@@ -206,6 +207,7 @@ function DownloadQrCode({ alt, src }: { alt: string; src: string }) {
       className="size-28 object-contain"
       loading="lazy"
       onError={() => setFailed(true)}
+      referrerPolicy="no-referrer"
       src={src}
     />
   );

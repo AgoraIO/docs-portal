@@ -64,10 +64,12 @@ describe('DownloadResourceCards', () => {
       <DownloadResourceCards
         items={[
           {
-            coverSrc: '/img/landing-page/demo/showroom-demo.png',
+            coverSrc:
+              'https://web-cdn.agora.io/docs-portal/img/landing-page/demo/showroom-demo.png',
             description: '体验秀场直播',
             href: 'https://example.com/demo',
-            qrSrc: '/img/showroom/demo-android-solo.png',
+            qrSrc:
+              'https://web-cdn.agora.io/docs-portal/img/showroom/demo-android-solo.png',
             title: '纯秀场场景',
           },
         ]}
@@ -77,7 +79,11 @@ describe('DownloadResourceCards', () => {
     const card = screen.getByRole('article', { name: '纯秀场场景' });
     expect(within(card).getByAltText('纯秀场场景 Demo 封面')).toHaveAttribute(
       'src',
-      '/img/landing-page/demo/showroom-demo.png',
+      'https://web-cdn.agora.io/docs-portal/img/landing-page/demo/showroom-demo.png',
+    );
+    expect(within(card).getByAltText('纯秀场场景 Demo 封面')).toHaveAttribute(
+      'referrerpolicy',
+      'no-referrer',
     );
     expect(within(card).getByText('体验秀场直播')).toBeVisible();
     expect(
@@ -88,7 +94,11 @@ describe('DownloadResourceCards', () => {
     expect(qrToggle.closest('details')).toHaveAttribute('open');
     expect(within(card).getByAltText('纯秀场场景 下载二维码')).toHaveAttribute(
       'src',
-      '/img/showroom/demo-android-solo.png',
+      'https://web-cdn.agora.io/docs-portal/img/showroom/demo-android-solo.png',
+    );
+    expect(within(card).getByAltText('纯秀场场景 下载二维码')).toHaveAttribute(
+      'referrerpolicy',
+      'no-referrer',
     );
   });
 

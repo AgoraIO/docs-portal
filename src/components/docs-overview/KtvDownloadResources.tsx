@@ -5,7 +5,7 @@ const demoResources = [
     href: 'https://apps.apple.com/cn/app/声动互娱-声网泛娱乐全场景应用/id1537528920',
     platform: 'ios',
     qrAlt: '声动 iOS',
-    qrSrc: '/img/multi-usecase/ios-entertainment.png',
+    qrSrc: 'https://web-cdn.agora.io/docs-files/1685428598975',
     title: '声动互娱',
   },
   {
@@ -18,7 +18,7 @@ const demoResources = [
     href: 'https://www.pgyer.com/Grizis',
     platform: 'android',
     qrAlt: '声动 Android',
-    qrSrc: '/img/multi-usecase/android-entertainment.png',
+    qrSrc: 'https://web-cdn.agora.io/docs-files/1688623597225',
     title: '声动互娱',
   },
   {
