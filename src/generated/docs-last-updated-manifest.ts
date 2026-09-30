@@ -3386,11 +3386,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/agora-analytics/build/explore-and-analyze-data/meta.json':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration.md':
-    '2026-07-28T10:29:29.000Z',
+    '2026-09-25T06:07:21.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/embedded.md':
     '2026-07-27T09:08:03.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/meta.json':
-    '2026-07-04T12:05:16.000Z',
+    '2026-09-25T06:07:21.000Z',
+  'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/new-relic-integration.mdx':
+    '2026-09-25T06:07:21.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/manage-agora-account.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/meta.json':
@@ -3404,7 +3406,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/agora-analytics/meta.json':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/agora-analytics/product-overview.mdx':
-    '2026-07-04T12:05:16.000Z',
+    '2026-09-25T06:07:21.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/agora-console-rest-api.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/api.md':
@@ -3428,9 +3430,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/agora-analytics/reference/meta.json':
     '2026-08-27T03:13:28.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/pricing.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-09-25T06:07:21.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/release-notes.md':
-    '2026-08-07T06:52:10.000Z',
+    '2026-09-25T06:07:21.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/restful-authentication.md':
     '2026-07-04T12:05:16.000Z',
   'content/docs/en/realtime-media/agora-analytics/reference/security.md':

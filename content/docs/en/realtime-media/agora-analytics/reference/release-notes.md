@@ -11,7 +11,7 @@ Released on September 30, 2026.
 
 **New features**
 
-[New Relic integration](/en/realtime-media/agora-analytics/build/integrate-and-embed/new-relic-integration) pushes Agora Analytics usage, quality, and performance metrics to your New Relic account. Premium and Enterprise subscribers can select the RTC and Chat metrics to push, then query and monitor them in New Relic alongside their other telemetry.
+[New Relic integration](/en/realtime-media/agora-analytics/build/integrate-and-embed/new-relic-integration) pushes Agora Analytics usage, quality, and performance metrics to your New Relic account. Premium and Enterprise subscribers can select the RTC metrics to push, then query and monitor them in New Relic alongside their other telemetry.
 
 ## 2023.08
 
