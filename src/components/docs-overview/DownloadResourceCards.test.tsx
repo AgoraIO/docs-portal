@@ -102,6 +102,68 @@ describe('DownloadResourceCards', () => {
     );
   });
 
+  it('keeps old-site Demo links and multiple QR codes visible by default', () => {
+    render(
+      <DownloadResourceCards
+        items={[
+          {
+            coverSrc: 'https://example.com/cover.png',
+            demoLinks: [
+              {
+                href: 'https://example.com/android',
+                label: 'Android Demo 体验',
+              },
+              { href: 'https://example.com/ios', label: 'iOS Demo 体验' },
+            ],
+            qrCodes: [
+              {
+                alt: 'Android Demo 二维码',
+                src: 'https://example.com/android.png',
+              },
+              { alt: 'iOS Demo 二维码', src: 'https://example.com/ios.png' },
+            ],
+            qrExpanded: true,
+            title: '声动互娱',
+          },
+        ]}
+      />,
+    );
+
+    const card = screen.getByRole('article', { name: '声动互娱' });
+    expect(
+      within(card).getByRole('link', { name: 'Android Demo 体验' }),
+    ).toHaveAttribute('href', 'https://example.com/android');
+    expect(
+      within(card).getByRole('link', { name: 'iOS Demo 体验' }),
+    ).toHaveAttribute('href', 'https://example.com/ios');
+    expect(within(card).getByAltText('Android Demo 二维码')).toBeVisible();
+    expect(within(card).getByAltText('iOS Demo 二维码')).toBeVisible();
+    expect(
+      within(card).queryByText('查看声动互娱二维码'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('shows one QR code directly when the old site expands it', () => {
+    render(
+      <DownloadResourceCards
+        items={[
+          {
+            coverSrc: 'https://example.com/cover.png',
+            href: 'https://example.com/demo',
+            qrSrc: 'https://example.com/qr.png',
+            qrExpanded: true,
+            title: '1v1 私密房',
+          },
+        ]}
+      />,
+    );
+    const card = screen.getByRole('article', { name: '1v1 私密房' });
+    expect(within(card).getByAltText('1v1 私密房 下载二维码')).toBeVisible();
+    expect(
+      within(card).queryByLabelText('查看1v1 私密房二维码'),
+    ).not.toBeInTheDocument();
+  });
+
   it('shows QR-only demos and both desktop experience links', () => {
     render(
       <DownloadResourceCards

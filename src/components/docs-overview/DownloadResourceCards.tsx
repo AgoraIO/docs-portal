@@ -9,6 +9,8 @@ type DownloadResource = {
   href?: string;
   platform?: string;
   qrAlt?: string;
+  qrCodes?: readonly { alt: string; src: string }[];
+  qrExpanded?: boolean;
   qrSrc?: string;
   title: string;
   version?: string;
@@ -28,6 +30,7 @@ export function DownloadResourceCards({
               <DemoResourceCard
                 item={item}
                 key={`${item.title}-${item.platform ?? ''}-${item.href ?? ''}`}
+                wide={items.length === 1}
               />
             );
           }
@@ -113,75 +116,91 @@ export function DownloadResourceCards({
   );
 }
 
-function DemoResourceCard({ item }: { item: DownloadResource }) {
+function DemoResourceCard({
+  item,
+  wide,
+}: {
+  item: DownloadResource;
+  wide: boolean;
+}) {
   const links =
     item.demoLinks ??
     (item.href ? [{ href: item.href, label: 'Demo 体验' }] : []);
+  const qrCodes =
+    item.qrCodes ??
+    (item.qrSrc
+      ? [{ alt: item.qrAlt ?? `${item.title} 下载二维码`, src: item.qrSrc }]
+      : []);
 
   return (
     <article
       aria-label={item.title}
-      className="flex min-w-0 gap-3 rounded-md border border-border bg-background p-3"
+      className={`flex min-w-0 gap-3 rounded-md border border-border bg-background p-3 ${wide ? 'md:col-span-2' : ''}`}
     >
       <img
         alt={`${item.title} Demo 封面`}
-        className="aspect-[4/3] w-24 shrink-0 rounded-md object-cover sm:w-28"
+        className="aspect-[4/3] w-24 shrink-0 self-start rounded-md object-cover sm:w-28"
         loading="lazy"
         referrerPolicy="no-referrer"
         src={item.coverSrc}
       />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <div className="flex items-start justify-between gap-1">
-          <h3 className="m-0 min-w-0 break-words text-base font-semibold text-foreground">
-            {item.title}
-          </h3>
-          {item.qrSrc && links.length > 0 ? (
-            <details className="relative shrink-0">
-              <summary
-                aria-label={`查看${item.title}二维码`}
-                className="flex size-8 cursor-pointer list-none items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
-                title={`查看${item.title}二维码`}
-              >
-                <QrCodeIcon aria-hidden="true" className="size-5" />
-              </summary>
-              <div className="absolute top-9 right-0 z-20 w-36 rounded-md border border-border bg-background p-3 shadow-md">
-                <DownloadQrCode
-                  alt={item.qrAlt ?? `${item.title} 下载二维码`}
-                  src={item.qrSrc}
-                />
-              </div>
-            </details>
+      <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
+        <div className="flex min-w-0 flex-1 flex-col">
+          <div className="flex items-start justify-between gap-1">
+            <h3 className="m-0 min-w-0 break-words text-base font-semibold text-foreground">
+              {item.title}
+            </h3>
+            {qrCodes.length > 0 && links.length > 0 && !item.qrExpanded ? (
+              <details className="relative shrink-0">
+                <summary
+                  aria-label={`查看${item.title}二维码`}
+                  className="flex size-8 cursor-pointer list-none items-center justify-center rounded-md text-muted-foreground hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring [&::-webkit-details-marker]:hidden"
+                  title={`查看${item.title}二维码`}
+                >
+                  <QrCodeIcon aria-hidden="true" className="size-5" />
+                </summary>
+                <div className="absolute top-9 right-0 z-20 flex w-36 flex-wrap gap-2 rounded-md border border-border bg-background p-3 shadow-md">
+                  {qrCodes.map((code) => (
+                    <DownloadQrCode
+                      alt={code.alt}
+                      key={code.src}
+                      src={code.src}
+                    />
+                  ))}
+                </div>
+              </details>
+            ) : null}
+          </div>
+          {item.description ? (
+            <p className="mb-0 mt-2 text-sm text-muted-foreground">
+              {item.description}
+            </p>
+          ) : null}
+          {links.length > 0 ? (
+            <div className="mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-3">
+              {links.map((link) => {
+                const isExternal = /^https?:\/\//.test(link.href);
+                return (
+                  <a
+                    className="inline-flex w-fit items-center gap-1 text-sm font-medium text-primary hover:underline"
+                    href={link.href}
+                    key={link.href}
+                    rel={isExternal ? 'noopener noreferrer' : undefined}
+                    target={isExternal ? '_blank' : undefined}
+                  >
+                    {link.label}
+                    <ExternalLinkIcon aria-hidden="true" className="size-4" />
+                  </a>
+                );
+              })}
+            </div>
           ) : null}
         </div>
-        {item.description ? (
-          <p className="mb-0 mt-2 text-sm text-muted-foreground">
-            {item.description}
-          </p>
-        ) : null}
-        {links.length > 0 ? (
-          <div className="mt-auto flex flex-wrap gap-x-3 gap-y-1 pt-3">
-            {links.map((link) => {
-              const isExternal = /^https?:\/\//.test(link.href);
-              return (
-                <a
-                  className="inline-flex w-fit items-center gap-1 text-sm font-medium text-primary hover:underline"
-                  href={link.href}
-                  key={link.href}
-                  rel={isExternal ? 'noopener noreferrer' : undefined}
-                  target={isExternal ? '_blank' : undefined}
-                >
-                  {link.label}
-                  <ExternalLinkIcon aria-hidden="true" className="size-4" />
-                </a>
-              );
-            })}
-          </div>
-        ) : item.qrSrc ? (
-          <div className="mt-3">
-            <DownloadQrCode
-              alt={item.qrAlt ?? `${item.title} 下载二维码`}
-              src={item.qrSrc}
-            />
+        {qrCodes.length > 0 && (item.qrExpanded || links.length === 0) ? (
+          <div className="flex flex-wrap gap-3">
+            {qrCodes.map((code) => (
+              <DownloadQrCode alt={code.alt} key={code.src} src={code.src} />
+            ))}
           </div>
         ) : null}
       </div>
