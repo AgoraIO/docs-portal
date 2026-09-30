@@ -1261,6 +1261,28 @@ describe('zh-CN product IA standard', () => {
     });
   });
 
+  it('removes the synthesized Meeting download page and redirects its legacy resource path', async () => {
+    const root = 'realtime-media/meeting';
+    for (const page of [
+      'reference/downloads',
+      'reference/downloads/android',
+      'reference/downloads/ios',
+      'reference/downloads/electron',
+    ]) {
+      expect(pageExistsAtRelativePath(root, page)).toBe(false);
+    }
+    expect(
+      readMeta(resolve(contentRoot, root, 'reference/meta.json')).pages,
+    ).not.toContain('downloads');
+    await expect(
+      loadDocsPagePayload('zh-CN', 'solutions', ['meeting', 'resources']),
+    ).resolves.toEqual({
+      redirectUrl:
+        '/zh-CN/realtime-media/meeting/get-started/integrate-meeting',
+      statusCode: 301,
+    });
+  });
+
   it.each(rtmBuildPageMoves)(
     'moves RTM build page %s to %s',
     async (legacyPath, canonicalPath) => {

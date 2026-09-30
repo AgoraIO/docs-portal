@@ -74,6 +74,24 @@ const RtcSdkDownloads = lazy(() =>
   })),
 );
 
+const ProductSdkDownloads = lazy(() =>
+  import('./ProductSdkDownloads').then((module) => ({
+    default: module.ProductSdkDownloads,
+  })),
+);
+
+const DownloadResourceCards = lazy(() =>
+  import('./DownloadResourceCards').then((module) => ({
+    default: module.DownloadResourceCards,
+  })),
+);
+
+const KtvDownloadResources = lazy(() =>
+  import('./KtvDownloadResources').then((module) => ({
+    default: module.KtvDownloadResources,
+  })),
+);
+
 const ApiReferenceCards = lazy(() =>
   import('./ApiReferenceCards').then((module) => ({
     default: module.ApiReferenceCards,
@@ -151,6 +169,8 @@ export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
     DemoMedia,
     DemoPlatform,
     DemoPlatformTabs,
+    DownloadResourceCards,
+    KtvDownloadResources,
     HelpHub,
     OverviewImageCard,
     OverviewImageCardGrid,
@@ -161,6 +181,7 @@ export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
     OverviewToolkits,
     RecipesCatalog,
     RecipesGallery,
+    ProductSdkDownloads,
     RtcSdkDownloads,
     SdksCatalog,
     SolutionCard,
