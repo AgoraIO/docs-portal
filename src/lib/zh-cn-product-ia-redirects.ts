@@ -1316,7 +1316,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
     '/zh-CN/realtime-media/meeting',
   'solutions/meeting/quota': '/zh-CN/realtime-media/meeting/reference/quota',
   'solutions/meeting/resources':
-    '/zh-CN/realtime-media/meeting/reference/downloads',
+    '/zh-CN/realtime-media/meeting/get-started/integrate-meeting',
   'solutions/meeting/response-code':
     '/zh-CN/realtime-media/meeting/reference/response-code',
   'solutions/meeting/user-guides/generate-token':
