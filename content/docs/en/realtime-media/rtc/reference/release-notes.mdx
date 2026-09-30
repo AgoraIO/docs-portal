@@ -8,7 +8,6 @@ description: "Information about changes in each release of Video Calling."
 This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
 - [RTC SDK](#rtc-sdk)
-- [Camera Movement extension](#camera-movement-extension)
 - [Notifications](#notifications)
 
 :::caution
@@ -43,7 +42,7 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordion title="v4.7.0" id="v470-1" headingLevel={3} value="v470-1">
 
-Released on October 1, 2026.
+Released on September 30, 2026.
 
 #### New features
 
@@ -442,7 +441,6 @@ This release fixes the following issues:
 - When the app called `enableVideoImageSource` to enable the video image source feature, streaming succeeded, but occasionally `onVideoPublishStateChanged` did not return the expected results.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx` before successfully calling `joinChannelEx`, the first frame of the remote video occasionally experienced significant delay.
 - After a failed attempt to join a channel, trying again without first calling `leaveChannel [1/2]` occasionally caused a crash.
-
 
 
 </Accordion>
@@ -1289,7 +1287,6 @@ This release fixes the following issues:
 - `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.1" id="v421" headingLevel={3} value="v421">
@@ -1308,7 +1305,6 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 - In screen sharing use-cases, some Android devices experienced choppy video on the receiving end.
-
 
 
 </Accordion>
@@ -1475,7 +1471,6 @@ This release fixes the following issues:
 
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
-
 
 
 </Accordion>
@@ -2008,7 +2003,6 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
 - [RTC SDK](#rtc-sdk)
-- [Camera Movement extension](#camera-movement-extension)
 - [Notifications](#notifications)
 
 ## RTC SDK
@@ -2043,7 +2037,7 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordion title="v4.7.0" id="v470-2" headingLevel={3} value="v470-2">
 
-Released on October 1, 2026.
+Released on September 30, 2026.
 
 #### New features
 
@@ -2440,7 +2434,6 @@ This release resolves the following issues:
 - In screen-sharing scenarios, the receiving user saw a green line on the shared image.
 - In interactive live streaming scenarios, after joining a channel as an audience member using a `string` user ID, audio occasionally became unsynchronized with video.
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
-
 
 
 </Accordion>
@@ -3241,7 +3234,6 @@ This version fixed the following issues:
 - Occasional crash after calling the `destroyMediaPlayer` method.
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.0" id="v420-1" headingLevel={3} value="v420-1">
@@ -3625,7 +3617,6 @@ This release fixes the following issues:
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent`.
 
 
-
 </Accordion>
 
 <Accordion title="v4.0.0" id="v400-1" headingLevel={3} value="v400-1">
@@ -3746,7 +3737,6 @@ This release fixes the following issues:
 - `backgroundColor` in `AgoraRtcVideoCanvas`
 - `codecLevels` in `CodecCapAgoraVideoCodecCapInfoInfo`
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
-
 
 
 </Accordion>
@@ -4167,7 +4157,6 @@ This release fixes the following issues:
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent`.
 
 
-
 </Accordion>
 
 <Accordion title="v4.0.1" id="v401-1" headingLevel={3} value="v401-1">
@@ -4384,7 +4373,7 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordion title="v4.7.0" id="v470-3" headingLevel={3} value="v470-3">
 
-Released on October 1, 2026.
+Released on September 30, 2026.
 
 #### New features
 
@@ -5288,7 +5277,6 @@ This release fixes the following issues:
 - `AgoraFeatureType`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.2" id="v422-3" headingLevel={3} value="v422-3">
@@ -5390,7 +5378,6 @@ This release fixes the following issues:
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.1" id="v421-3" headingLevel={3} value="v421-3">
@@ -5410,7 +5397,6 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 - After enabling the screen sharing function on the sending end, there was high delay until the receiving end could see the shared screen.
-
 
 
 </Accordion>
@@ -5806,7 +5792,6 @@ This release fixes the following issues:
 
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `AgoraLiveTranscoding` class.
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent` callback.
-
 
 
 </Accordion>
@@ -6679,7 +6664,6 @@ Released on November 26, 2025.
   In screen sharing scenarios with co-hosting, Agora does not recommend sharing system or window audio, as it may cause echo. You can disable audio sharing by setting both `windowAudio` and `systemAudio` in `ScreenVideoTrackInitConfig` to `"exclude"`.
 
 
-
 - **New release of the Super Clarity extension**
 
   This version upgrades the algorithm of [`agora-extension-super-clarity`](https://www.npmjs.com/package/agora-extension-super-clarity), with improvements in reducing plugin size, enhancing video experience, and expanding browser compatibility. The new version of the plugin requires a browser that supports SIMD to run properly. For detailed changes and improvements, refer to the [Extension release notes](#super-clarity-extension).
@@ -6741,7 +6725,6 @@ This version fixes the following issues:
 - Video stuttering caused by Safari 18.4 and 18.5.
 - Encoding failure when the resolution was too low.
 - Occasional black screen in scenarios using Plan-B.
-
 
 
 </Accordion>
@@ -7079,7 +7062,6 @@ This release includes the following improvements:
 
 - `resumeAudioContext`
 - `AgoraRTC.on("audio-context-state-changed")`
-
 
 
 </Accordion>
@@ -7482,7 +7464,6 @@ To enable this feature, contact technical support.
 - `ILocalVideoTrack.setBeautyEffect`
 
 
-
 </Accordion>
 
 <Accordion title="v4.17.0" id="v4170" headingLevel={3} value="v4170">
@@ -7527,7 +7508,6 @@ This release also includes the following improvements:
 #### Issues fixed
 
 On Safari on iOS 14.7 and later, performing subscribing and unsubscribing operations repeatedly to multiple audio streams could result in not hearing remote users.
-
 
 
 </Accordion>
@@ -7585,7 +7565,6 @@ This release fixes the following issues:
 - When relaying media streams across channels, [`ChannelMediaRelayConfiguration.addDestChannelInfo`](https://api-ref.agora.io/en/voice-sdk/web/4.x/interfaces/ichannelmediarelayconfiguration.html#adddestchannelinfo)
 could not set `uid` to `0` to identify the relay stream in the destination channel.
 - Some known issues on iOS 14.x.
-
 
 
 </Accordion>
@@ -7698,7 +7677,6 @@ This release fixes the following issues:
 - During a media stream relay, the SDK continued to send heartbeats after the user left the source channel.
 
 
-
 </Accordion>
 
 <Accordion title="v4.14.0" id="v4140" headingLevel={3} value="v4140">
@@ -7781,7 +7759,6 @@ v4.12.1 was released on June 27, 2022. This release fixes the following issues:
 - Subscribing to remote streams occasionally failed after disconnection.
 
 - On Firefox, performing subscribing and unsubscribing operations repeatedly to multiple video streams occasionally caused video freezing.
-
 
 
 </Accordion>
@@ -7895,7 +7872,6 @@ v4.10.0 supports using media processing extensions in the Video Calling. The fol
 -   `LocalTrack.unpipe`
 
 -   `LocalTrack.processorDestination`
-
 
 
 </Accordion>
@@ -8043,7 +8019,6 @@ v4.8.0 fixed the following issues:
 -   `localVideoTrack.getVideoElementVisibleStatus`
 
 -   `remoteVideoTrack.getVideoElementVisibleStatus`
-
 
 
 </Accordion>
@@ -8672,7 +8647,7 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordion title="v4.7.0" id="v470-4" headingLevel={3} value="v470-4">
 
-Released on October 1, 2026.
+Released on September 30, 2026.
 
 #### New features
 
@@ -9577,7 +9552,6 @@ This release fixes the following issues:
 - `updateChannelMediaRelayEx`
 - `onChannelMediaRelayEvent`
 - `CHANNEL_MEDIA_RELAY_EVENT`
-
 
 
 </Accordion>
@@ -12027,7 +12001,6 @@ sharing a screen.
 - `RelayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
 
 
-
 </Accordion>
 
 <Accordion title="v4.0.0" id="v400-6" headingLevel={3} value="v400-6">
@@ -13430,7 +13403,6 @@ This release fixes the following issues:
 - `remoteVideoStateReasonCodecNotSupport` in `RemoteVideoStateReason`
 
 
-
 </Accordion>
 
 <Accordion title="v6.2.1" id="v621" headingLevel={3} value="v621">
@@ -14535,7 +14507,6 @@ This release fixes the following issues:
 - On Windows 7 devices, when sharing a PowerPoint window running in full-screen auto-play mode with a large number of animations, the remote view occasionally flickered.
 
 
-
 </Accordion>
 
 <Accordion title="v4.5.2" id="v452-5" headingLevel={3} value="v452-5">
@@ -15147,7 +15118,6 @@ This release fixes the following issue:
 - `ChannelMediaRelayEvent`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.6" id="v426-5" headingLevel={3} value="v426-5">
@@ -15338,7 +15308,6 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - Occasional crash after calling the `destroyMediaPlayer` method. (iOS)
 - In screen sharing use-cases, some Android devices experienced choppy video on the receiving end. (Android)
-
 
 
 </Accordion>
@@ -15788,7 +15757,6 @@ This release fixes the following issues:
 - `RelayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
 
 
-
 </Accordion>
 
 <Accordion title="v4.0.0" id="v400-7" headingLevel={3} value="v400-7">
@@ -15963,7 +15931,6 @@ Released on December 18, 2025.
 This release includes the following changes:
 
 - Updates the built-in Web SDK to v4.24.1. For details on the changes between Web SDK v4.24.0 to v4.24.1, see the [Web SDK release notes](/en/realtime-media/rtc/reference?platform=web).
-
 
 
 </Accordion>
@@ -16327,7 +16294,6 @@ This release fixes the following issues:
 - In online education scenarios, teachers occasionally observed audio and video out of sync for multiple students in the local view.
 - The second call to `EnumerateVideoDevices` to retrieve the device list did not take effect.
 - On Windows 7 devices, when sharing a PowerPoint window running in full-screen auto-play mode with a large number of animations, the remote view occasionally flickered.
-
 
 
 </Accordion>
@@ -17317,7 +17283,6 @@ This release fixes the following issues:
 - `OnReadyToSendMetadata`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.1" id="v421-8" headingLevel={3} value="v421-8">
@@ -17949,7 +17914,6 @@ This release fixes the following issues:
 - `EnableDualStreamMode` [2/3]
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `LiveTranscoding` class (Android/iOS/macOS)
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `OnChannelMediaRelayEvent callback`
-
 
 
 </Accordion>
@@ -19160,74 +19124,6 @@ This extension enables your users to apply beauty effects to their videos. They 
 Released on November 26, 2022.
 
 This is the first version of `agora-extension-beauty-effect`. For integration steps, see [Beauty Effect](/en/realtime-media/rtc/build/apply-video-effects/beauty-effect).
-
-</PlatformStructured>
-
-<PlatformStructured platform="android">
-
-## Camera Movement extension
-
-<Accordions type="multiple" openFirst>
-
-<Accordion title="v1.2.0" id="v120-1" headingLevel={3} value="v120-1">
-
-
-v1.2.0 was released on April 29, 2024.
-
-#### Improvements
-
-- Added support for RTC SDK v4.3.x.
-- Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
-
-
-</Accordion>
-
-<Accordion title="v1.0.0" id="v100-3" headingLevel={3} value="v100-3">
-
-
-v1.0.0 was released on February 23, 2024.
-
-This is the initial release of the Agora Camera Movement extension.
-
-The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
-
-
-</Accordion>
-</Accordions>
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-## Camera Movement extension
-
-<Accordions type="multiple" openFirst>
-
-<Accordion title="v1.2.0" id="v120-2" headingLevel={3} value="v120-2">
-
-
-v1.2.0 was released on April 29, 2024.
-
-#### Improvements
-
-- Added support for RTC SDK v4.3.x.
-- Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
-
-
-</Accordion>
-
-<Accordion title="v1.0.0" id="v100-4" headingLevel={3} value="v100-4">
-
-
-v1.0.0 was released on February 23, 2024.
-
-This is the initial release of the Agora Camera Movement extension.
-
-The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
-
-
-</Accordion>
-</Accordions>
 
 </PlatformStructured>
 
