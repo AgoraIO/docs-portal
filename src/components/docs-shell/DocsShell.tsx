@@ -43,6 +43,7 @@ import type {
   ProductScope,
   TabSummary,
 } from '@/lib/docs-tree';
+import { addIntroductionResourceLinks } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
@@ -564,6 +565,11 @@ function MobileSidebar({
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(currentLocale, 'common');
   const currentTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
+  const sidebarNodes = addIntroductionResourceLinks({
+    activePath,
+    locale: currentLocale,
+    nodes: sidebar,
+  });
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
@@ -651,7 +657,7 @@ function MobileSidebar({
               />
             ) : null}
             <div className="flex min-w-0 flex-col gap-1">
-              {sidebar.map((node) => (
+              {sidebarNodes.map((node) => (
                 <MobileSidebarNode
                   activePath={activePath}
                   depth={0}

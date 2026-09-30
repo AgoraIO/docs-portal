@@ -1,6 +1,7 @@
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
 import {
+  addIntroductionResourceLinks,
   getPrevNextLinks,
   getProductScopes,
   getSidebarBreadcrumb,
@@ -228,6 +229,59 @@ const groupedSidebarTree: Root = {
 };
 
 describe('docs tree helpers', () => {
+  it('adds SDK and Demo shortcuts inside the General References section for Chinese introduction pages', () => {
+    const nodes = [
+      {
+        children: [
+          {
+            id: '/zh-CN/introduction/glossary',
+            title: '术语库',
+            type: 'page' as const,
+            url: '/zh-CN/introduction/glossary',
+          },
+        ],
+        id: 'separator-通用参考',
+        title: '通用参考',
+        type: 'section' as const,
+      },
+    ];
+
+    const result = addIntroductionResourceLinks({
+      activePath: '/zh-CN/introduction/about',
+      locale: 'zh-CN',
+      nodes,
+    });
+    const section = result[0];
+
+    expect(section.type).toBe('section');
+    if (section.type !== 'section') return;
+
+    expect(section.children).toEqual([
+      nodes[0].children[0],
+      {
+        id: 'introduction-sdk-download',
+        search: { product: 'video' },
+        title: 'SDK 下载',
+        type: 'page',
+        url: '/zh-CN/reference/sdks',
+      },
+      {
+        id: 'introduction-demo-gallery',
+        title: '体验 Demo',
+        type: 'page',
+        url: '/zh-CN/reference/demo',
+      },
+    ]);
+
+    expect(
+      addIntroductionResourceLinks({
+        activePath: '/zh-CN/realtime-media/rtc',
+        locale: 'zh-CN',
+        nodes,
+      }),
+    ).toBe(nodes);
+  });
+
   it('deduplicates repeated URLs in previous and next links', () => {
     const tree: Root = {
       children: [
