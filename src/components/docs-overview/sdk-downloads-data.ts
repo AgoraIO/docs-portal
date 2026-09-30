@@ -82,7 +82,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     core: [
       {
         id: 'voice-sdk-android',
-        label: 'RTC Voice SDK',
+        label: 'RTC (Voice Only) SDK',
         info: 'Voice only SDK for Calling, Interactive Live Streaming, and Broadcast Streaming',
         versions: [
           {
@@ -847,7 +847,7 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     core: [
       {
         id: 'voice-sdk-ios',
-        label: 'RTC Voice SDK',
+        label: 'RTC (Voice Only) SDK',
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {

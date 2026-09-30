@@ -2,6 +2,25 @@ import { describe, expect, it } from 'vitest';
 import { getLLMText, getPlatformLLMText, source } from './source.server';
 
 describe('fumadocs source loader', () => {
+  it('keeps RTC extensions and notes within their platform markdown', async () => {
+    const page = source.getPage(
+      ['realtime-media', 'rtc', 'reference', 'release-notes'],
+      'en',
+    );
+    expect(page).toBeDefined();
+    if (!page) return;
+
+    const unreal = await getPlatformLLMText(page, 'unreal');
+    const web = await getPlatformLLMText(page, 'web');
+    expect(unreal).toContain('All 4.x SDKs support using wildcard tokens.');
+    expect(unreal).not.toMatch(
+      /All 4\.x SDKs support using wildcard tokens\.[\s\S]{0,40}\\:::/,
+    );
+    expect(unreal).not.toMatch(/For one `RtcConnection`[\s\S]{0,120}\\:::/);
+    expect(unreal).not.toContain('## Extensions');
+    expect(web).toContain('## Extensions');
+    expect(web).toContain('## AI Noise Suppression');
+  }, 30_000);
   it('resolves localized OpenAPI operation pages from the merged source', () => {
     const page = source.getPage(
       ['api-reference', 'api-ref', 'conversational-ai', 'join'],
@@ -109,9 +128,9 @@ ${processed}`);
     const page = source.getPage(
       [
         'realtime-media',
-        'broadcast-streaming',
+        'rtc',
         'build',
-        'manage-video-and-streaming',
+        'capture-and-render-video',
         'configure-video-encoding',
       ],
       'en',
@@ -134,9 +153,9 @@ ${processed}`);
     const page = source.getPage(
       [
         'realtime-media',
-        'interactive-live-streaming',
+        'rtc',
         'build',
-        'optimize-quality-and-connection',
+        'enhance-the-audio-experience',
         'best-practices-sound-quality',
       ],
       'en',

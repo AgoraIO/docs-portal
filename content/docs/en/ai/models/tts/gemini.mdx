@@ -1,0 +1,137 @@
+---
+title: Gemini
+description: >
+ Integrate Gemini TTS with the Conversational AI Engine.
+---
+
+Google Gemini provides text-to-speech (TTS) with expressive voices that you can steer using natural-language style instructions. Use it as the TTS component in a cascading pipeline with any supported ASR and LLM vendor.
+
+### Sample configuration
+
+The following examples show how to configure Gemini TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GeminiTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(GeminiTTS(
+        api_key='your-google-api-key',
+        model='gemini-3.8-flash-tts',
+        voice='Puck',
+        style='warm and reassuring',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GeminiTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new GeminiTTS({
+    apiKey: 'your-google-api-key',
+    model: 'gemini-3.8-flash-tts',
+    voice: 'Puck',
+    style: 'warm and reassuring',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewGeminiTTS(vendors.GeminiTTSOptions{
+        APIKey: "your-google-api-key",
+        Model:  "gemini-3.8-flash-tts",
+        Voice:  "Puck",
+        Style:  "warm and reassuring",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+:::info[Preview endpoint]
+Gemini TTS is available as an early access preview. Send your [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) request to the following preview endpoint instead of the standard endpoint, and include the required header:
+
+- **URL**: `https://partner.ai.agora.io/preview/api/conversational-ai-agent/v2/projects/<APP_ID>/join`
+- **Header**: `agora-feature: gemini-live`
+
+Send all later requests for the same agent, such as stopping the agent, to the preview endpoint with the same header.
+:::
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "gemini",
+  "params": {
+    "api_key": "<GOOGLE_GEMINI_API_KEY>",
+    "model": "gemini-3.8-flash-tts",
+    "voice": "Puck",
+    "style": "warm and reassuring"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Google Gemini API key used to authenticate requests. You can generate an API key in [Google AI Studio](https://aistudio.google.com/apikey).
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    The Gemini TTS model identifier. Set to `gemini-3.8-flash-tts` to use Gemini 3.8 Flash TTS.
+  </Parameter>
+  <Parameter name="voice" type="string" required={true}>
+    The name of the prebuilt voice to use. For example, `Puck`. For the full list of voices, see [Voice options](https://ai.google.dev/gemini-api/docs/speech-generation#voices) in the Gemini API documentation.
+  </Parameter>
+  <Parameter name="style" type="string" required={false}>
+    A natural-language instruction that controls how the agent speaks, such as its tone, pace, accent, or whether it whispers. For example, `warm and reassuring`. If you don't set this parameter, the model uses its default delivery. For guidance on writing style instructions, see [Control speech style with prompts](https://ai.google.dev/gemini-api/docs/speech-generation#controllable).
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Gemini API speech generation documentation](https://ai.google.dev/gemini-api/docs/speech-generation).
+:::
+
+### Add vocal sounds and pauses
+
+Gemini TTS supports inline tags for momentary vocal sounds and pauses, such as `<laugh>`, `<sigh>`, `<cough>`, `<breath>`, and `<short pause>`. Gemini TTS interprets these tags instead of reading them aloud. To use them, instruct your LLM in its system prompt to include tags sparingly in its replies.
+
+Don't use tags for sound effects, such as applause, or to change how the agent speaks, such as whispering. To set the delivery style, use the `style` parameter.
+
+:::info
+The vocal tags inserted by the LLM remain in the agent's text transcript. If your app displays the transcript, remove the tags before showing it to users.
+:::

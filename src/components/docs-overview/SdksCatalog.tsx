@@ -79,7 +79,7 @@ const productFilters = {
     productIds: ['video'],
   },
   voice: {
-    label: 'RTC Voice SDK',
+    label: 'RTC (Voice Only) SDK',
     aliases: ['voice', 'voice-calling', 'rtc-voice'],
     productIds: ['voice'],
   },
@@ -294,16 +294,16 @@ function ProductCard({
         })}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-3">
+      <div className="mt-4 flex min-w-0 items-center justify-between gap-3">
         <span className="text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
           {command ? command.tool : ' '}
         </span>
-        <span className="relative shrink-0">
+        <span className="relative min-w-0 max-w-full">
           <label className="sr-only" htmlFor={versionId}>
             {`${group.label} version`}
           </label>
           <select
-            className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+            className="h-9 max-w-full appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
             id={versionId}
             onChange={(event) => setVersionIndex(event.target.value)}
             value={versionIndex}

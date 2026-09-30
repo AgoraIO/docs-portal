@@ -7,7 +7,7 @@ first; use MDX only for the repo-approved primitives listed here.
 ## Core Rules
 
 - Put a blank line before and after every block element: headings, lists,
-  callouts, code fences, tabs, platform blocks, tables, and images.
+  callouts, code fences, tabs, accordions, platform blocks, tables, and images.
 - Keep block delimiters aligned with the block they belong to. If a block is
   nested in a list item, align every line of that block to the list content
   column.
@@ -151,6 +151,52 @@ Rules:
   page-level SDK platform preference.
 - Do not invent `PlatformTabs`, `CodeTabs`, or Docusaurus `TabItem` syntax.
 
+## Accordions
+
+Use `<Accordions>` and `<Accordion>` for collapsible content. For a version
+history, use `type="multiple"` so readers can compare releases, and `openFirst`
+to open the first version in the source when the page or platform changes.
+Keep version heading anchors needed by historical links in `id`; set
+`headingLevel` to the level of the heading it replaces and give each version a
+unique `value`.
+
+```mdx
+### Versions [#versions]
+
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.24.8" id="v4248" headingLevel={3} value="v4248">
+
+Released on August 31, 2026.
+
+</Accordion>
+
+<Accordion title="v4.24.7" id="v4247" headingLevel={3} value="v4247">
+
+Released on August 3, 2026.
+
+</Accordion>
+
+</Accordions>
+```
+
+Rules:
+
+- Keep accordion tags at column 0, with blank lines around Markdown blocks
+  inside each `<Accordion>`. Close each accordion before starting the next.
+- Use `openFirst` for a version history instead of hard-coding a release in
+  `defaultValue`. Preserve version IDs and any enclosing `<section id="...">`
+  needed by historical links. Section heading anchors may change intentionally
+  when renaming the section.
+- For other collapsible content, omit `headingLevel` and `openFirst` unless it
+  is a navigable version history. Use plain headings and prose when content
+  does not need to collapse.
+- When the Web release notes need spacing between known issues and the version
+  histories, a top-level `<div className="mt-10 pt-8">` may wrap the Versions
+  and Extensions sections. Close it before Notifications; use Markdown for
+  the content inside. This is a layout exception, not a general-purpose raw
+  HTML pattern.
+
 ## Platform Variants
 
 Prefer separate files or folders when the whole page differs by platform. When
@@ -230,6 +276,25 @@ and keep a blank line before it. Do not use a fixed four-space rule:
 Do not outdent nested media or code unless the list item is finished. Do not
 indent it past the list content column.
 
+When a note is intentionally a standalone callout between list items, close
+the preceding item with a blank line and put both the callout fences and its
+body at column 0. Do not indent only the fences: the body may render outside
+the callout. This pattern is used by the Unreal release notes.
+
+```mdx
+1. **Wildcard token**
+
+   Wildcard tokens work across channels.
+
+:::info[Note]
+All 4.x SDKs support using wildcard tokens.
+:::
+
+1. **Preloading channels**
+
+   Preloading reduces join time.
+```
+
 ## Images
 
 Use Markdown image syntax.
@@ -271,6 +336,7 @@ Before finishing a docs content change, scan for these issues:
 
 - Unclosed or misaligned `:::` fences.
 - Consecutive code blocks that should be code tabs, or code tabs split by prose.
+- Accordion tags that are unclosed, nested in lists, or missing version anchors.
 - `PlatformStructured` or `PlatformInline` nested below top-level page flow.
 - Images, callouts, or code blocks after a list marker that are not aligned to
   the list content column.

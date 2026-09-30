@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -8,8 +8,8 @@ const orderedListTargets = [
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files.mdx',
   'content/docs/en/realtime-media/cloud-recording/build/set-up-authentication/authentication-workflow.mdx',
   'content/docs/en/realtime-media/cloud-recording/build/set-up-authentication/integrate-token-generation.mdx',
-  'content/docs/en/realtime-media/cloud-recording/manage-agora-account.mdx',
   'content/docs/en/realtime-media/cloud-recording/middleware-quickstart.mdx',
+  'content/docs/en/realtime-media/cloud-recording/rest-quickstart.mdx',
 ];
 
 const tokenTargets = [
@@ -107,6 +107,45 @@ function findBareTokenOutsideCode(source: string, pattern: RegExp) {
 }
 
 describe('cloud recording audit regressions', () => {
+  it('keeps ordered-procedure audit targets on existing docs pages', () => {
+    const missingTargets = orderedListTargets.filter(
+      (path) => !existsSync(resolve(process.cwd(), path)),
+    );
+
+    expect(missingTargets).toEqual([]);
+  });
+
+  it('keeps Cloud Recording guide and release-note links on current routes', () => {
+    const integrationBestPractices = readContent(
+      'content/docs/en/realtime-media/cloud-recording/build/best-practices/integration-best-practices.mdx',
+    );
+    const releaseNotes = readContent(
+      'content/docs/en/realtime-media/cloud-recording/reference/release-notes.mdx',
+    );
+    const layout = readContent(
+      'content/docs/en/realtime-media/cloud-recording/build/customize-the-recording/layout.mdx',
+    );
+
+    expect(integrationBestPractices).toContain(
+      '[Slicing](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files#slicing)',
+    );
+    expect(releaseNotes).toContain(
+      '[Manage Recorded Files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files#server-disconnected-or-process-killed)',
+    );
+    expect(releaseNotes).toContain(
+      '[Postpone Audio Mixing](/en/api-reference/api-ref/cloud-recording/start)',
+    );
+    expect(releaseNotes).toContain(
+      '[Set the background color or background image](/en/realtime-media/cloud-recording/build/customize-the-recording/layout#set-the-background-color-or-background-image)',
+    );
+    expect(releaseNotes).toContain(
+      '[Set Video Layout](/en/realtime-media/cloud-recording/build/customize-the-recording/layout#customize-the-video-layout)',
+    );
+    expect(layout).toContain(
+      '[Considerations](/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode#considerations)',
+    );
+  });
+
   it('keeps ordered procedures source-numbered after the first step', () => {
     const repeatedRuns = [];
 
