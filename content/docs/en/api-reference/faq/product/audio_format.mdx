@@ -23,7 +23,7 @@ As of v3.6.2, the SDK provides a full-format audio decoding extension library, w
 
 The Agora RTC SDK supports single-track audio files in the following formats:
 
-- On Android, the SDK supports local and online files in Ogg, 3GP, ASF, AV1, TS, MKV, MP4, WMA, WAV, M4A, MP3, AAC, and ADTS formats.
+- On Android, the SDK supports local and online files in Ogg, 3GP, TS, MKV, MP4, WAV, M4A, MP3, AAC, and ADTS formats.
 - On iOS or macOS, the SDK supports local and online files in WAV, M4A, MP3, MP4, AAC, and ADTS formats. For online MP4 and M4A files, the MOOV atom must be before the MDAT atom.
 - On Windows, the SDK supports local and online files in MP4, TS, WMA, and AAC formats.
 
@@ -31,7 +31,7 @@ The Agora RTC SDK supports single-track audio files in the following formats:
 
 The Agora RTC SDK supports multi-track audio files in the following formats:
 
-- On Android, the SDK supports local and online files in M4A, MP4, and MKV formats. The SDK does not support switching to a second audio track when playing a multi-track audio file in MP4 format.
+- On Android, the SDK supports local and online files in M4A, MP4, and MKV formats. When playing a multi-track audio file in MP4 format, the SDK supports switching to the second audio track.
 
 :::warning[Note]
 If you are using Lite SDK, when playing multi-track files in the MP4 format, switching to the second track is **not supported**.
@@ -46,13 +46,12 @@ If you use the SDK v3.6.2 or later and have integrated the full-format audio dec
 
 | Platform                         | File source      | Audio track                  | File container                                                            | Audio codec                                        |
 | -------------------------------- | ---------------- | ---------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------- |
-| Android, iOS, macOS, and Windows | Local and online | Single-track and multi-track | 3GP, AAC, AMR, ASF, AVI, FLAC, M4A, M4V, MOV, MP3, MP4, TS, Ogg, WAV, WMA | AAC, ARM, FALC, MP2, MP3, PCM, Vorbis, WMAV2, OPUS |
+| Android, iOS, macOS, and Windows | Local and online | Single-track and multi-track | 3GP, AAC, AMR, ASF, AVI, FLAC, M4A, M4V, MOV, MP3, MP4, TS, Ogg, WAV, WMA | AAC, AMR, FLAC, MP2, MP3, PCM, Vorbis, WMAV2, OPUS |
 
 For the extension library name for each platform, see [Reduce App Size](/en/api-reference/faq/integration/reduce_app_size_rtc).
 
 ## Considerations
 
 - For iOS, Lite SDK does not support playing audio files without suffixes.
-- For Android, Lite SDK does not support playing audio files that are not supported by the Android system.
+- For Android, Lite SDK does not support playing audio files that the Android system's native media capabilities do not support. Some Android devices do not support the WMA format, so playing WMA files on those devices using the Agora APIs can fail.
 - Due to system compatibility issues, some Android devices, such as Xiaomi, may have problems when using `playEffect` or `preloadEffect` to read 3GP format files.
-- Because some Android devices do not support the WMA format, using Agora API to play WMA files on these devices can fail.
