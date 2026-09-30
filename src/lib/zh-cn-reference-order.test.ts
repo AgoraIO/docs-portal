@@ -6,6 +6,17 @@ import { describe, expect, it } from 'vitest';
 type MetaPage = string | Record<string, unknown>;
 
 const expectedReferencePages: Record<string, MetaPage[]> = {
+  'reference/meta.json': [
+    'sdks',
+    '[体验 Demo](/zh-CN/reference/demo)',
+    {
+      type: 'group',
+      title: 'Demo pages',
+      sidebarHidden: true,
+      pages: ['demo'],
+    },
+    'faq',
+  ],
   'realtime-media/cloud-recording/reference/meta.json': [
     '[服务端 API](/zh-CN/api-reference/api-ref/cloud-recording)',
     'api-reference',
@@ -258,6 +269,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
 };
 
 const intentionallyChangedReferencePages = new Set([
+  'reference/meta.json',
   'realtime-media/fusion-cdn/reference/meta.json',
   'realtime-media/media-pull/reference/meta.json',
   'realtime-media/media-push/reference/meta.json',

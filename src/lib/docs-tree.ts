@@ -67,6 +67,73 @@ export type DocsSidebarSectionNode = {
 
 export type DocsSidebarNode = DocsSidebarPageNode | DocsSidebarSectionNode;
 
+const INTRODUCTION_RESOURCE_SIDEBAR_LINKS: DocsSidebarPageNode[] = [
+  {
+    id: 'introduction-sdk-download',
+    search: { product: 'video' },
+    title: 'SDK 下载',
+    type: 'page',
+    url: '/zh-CN/reference/sdks',
+  },
+  {
+    id: 'introduction-demo-gallery',
+    title: '体验 Demo',
+    type: 'page',
+    url: '/zh-CN/reference/demo',
+  },
+];
+
+export function addIntroductionResourceLinks({
+  activePath,
+  locale,
+  nodes,
+}: {
+  activePath: string;
+  locale: string;
+  nodes: DocsSidebarNode[];
+}): DocsSidebarNode[] {
+  const isIntroductionPage =
+    locale === 'zh-CN' &&
+    (activePath === '/zh-CN/introduction' ||
+      activePath.startsWith('/zh-CN/introduction/'));
+
+  if (!isIntroductionPage) {
+    return nodes;
+  }
+
+  let didAppend = false;
+  const appendToGeneralReferences = (
+    sidebarNodes: DocsSidebarNode[],
+  ): DocsSidebarNode[] =>
+    sidebarNodes.map((node) => {
+      if (node.type !== 'section') {
+        return node;
+      }
+
+      if (node.title === '通用参考') {
+        didAppend = true;
+        const existingIds = new Set(node.children.map((child) => child.id));
+        const missingLinks = INTRODUCTION_RESOURCE_SIDEBAR_LINKS.filter(
+          (link) => !existingIds.has(link.id),
+        );
+
+        return missingLinks.length > 0
+          ? { ...node, children: [...node.children, ...missingLinks] }
+          : node;
+      }
+
+      const children: DocsSidebarNode[] = appendToGeneralReferences(
+        node.children,
+      );
+      return children.some((child, index) => child !== node.children[index])
+        ? { ...node, children }
+        : node;
+    });
+
+  const result = appendToGeneralReferences(nodes);
+  return didAppend ? result : nodes;
+}
+
 export type DocsBreadcrumbItem = {
   title: string;
   url?: string;

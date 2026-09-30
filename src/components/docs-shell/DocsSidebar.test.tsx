@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
 import { type AnchorHTMLAttributes, createRef, type ReactNode } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { SidebarProvider } from '@/components/ui/sidebar';
@@ -38,11 +38,36 @@ vi.mock('@tanstack/react-router', async (importOriginal) => {
 });
 
 vi.mock('./DocsSidebarTree', () => ({
-  DocsSidebarTree: ({ nodes }: { nodes: DocsSidebarNode[] }) => (
-    <div data-testid="docs-sidebar-tree">
-      {nodes.map((node) => `${node.type}:${node.title}`).join(',')}
-    </div>
-  ),
+  DocsSidebarTree: ({ nodes }: { nodes: DocsSidebarNode[] }) => {
+    function renderNode(node: DocsSidebarNode): ReactNode {
+      if (node.type === 'page') {
+        const search = new URLSearchParams(node.search).toString();
+        const href = `${node.href ?? node.url}${search ? `?${search}` : ''}`;
+
+        return (
+          <a data-sidebar-node={node.id} href={href} key={node.id}>
+            {node.title}
+          </a>
+        );
+      }
+
+      return (
+        <section data-testid={`sidebar-section-${node.id}`} key={node.id}>
+          <h3>{node.title}</h3>
+          {node.children.map(renderNode)}
+        </section>
+      );
+    }
+
+    return (
+      <div data-testid="docs-sidebar-tree">
+        <span aria-hidden="true">
+          {nodes.map((node) => `${node.type}:${node.title}`).join(',')}
+        </span>
+        {nodes.map(renderNode)}
+      </div>
+    );
+  },
 }));
 
 vi.mock('./DocsSidebarHeaderBlock', () => ({
@@ -179,6 +204,45 @@ describe('DocsSidebar', () => {
   afterEach(() => {
     scrollToTop.mockClear();
     useTransientScrollbarMock.mockReset();
+  });
+
+  it('places SDK and Demo links under General References on the Chinese introduction pages', () => {
+    useTransientScrollbarMock.mockReturnValue({
+      isScrollbarVisible: false,
+      scrollContainerRef: createRef<HTMLDivElement>(),
+      scrollToTop,
+    });
+
+    const generalReferences: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            id: 'glossary',
+            title: '术语库',
+            type: 'page',
+            url: '/zh-CN/introduction/glossary',
+          },
+        ],
+        id: 'separator-通用参考',
+        title: '通用参考',
+        type: 'section',
+      },
+    ];
+
+    renderDocsSidebar({
+      activePath: '/zh-CN/introduction',
+      locale: 'zh-CN',
+      sidebarNodes: generalReferences,
+    });
+
+    const section = screen.getByTestId('sidebar-section-separator-通用参考');
+    expect(within(section).getByRole('link', { name: '术语库' })).toBeVisible();
+    expect(
+      within(section).getByRole('link', { name: 'SDK 下载' }),
+    ).toHaveAttribute('href', '/zh-CN/reference/sdks?product=video');
+    expect(
+      within(section).getByRole('link', { name: '体验 Demo' }),
+    ).toHaveAttribute('href', '/zh-CN/reference/demo');
   });
 
   it('resets scroll on initial render and when resetKey changes', () => {

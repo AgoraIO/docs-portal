@@ -7,7 +7,10 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
-import type { DocsSidebarNode } from '@/lib/docs-tree';
+import {
+  addIntroductionResourceLinks,
+  type DocsSidebarNode,
+} from '@/lib/docs-tree';
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import { getDocsSidebarMode } from '@/lib/reference-center-navigation';
 import { ApiReferenceProductNav } from './ApiReferenceProductNav';
@@ -36,6 +39,11 @@ export function DocsSidebar({
   const sidebarMode = getDocsSidebarMode(activePath, locale);
   const hasPrimaryResourceLinks = sidebarMode === 'reference';
   const hasApiProductNav = sidebarMode === 'api';
+  const sidebarNodes = addIntroductionResourceLinks({
+    activePath,
+    locale,
+    nodes,
+  });
 
   useEffect(() => {
     void resetKey;
@@ -76,7 +84,7 @@ export function DocsSidebar({
                 <div className="shrink-0">
                   <DocsSidebarTree
                     activePath={activePath}
-                    nodes={nodes}
+                    nodes={sidebarNodes}
                     onSelectPath={onSelectPath}
                   />
                 </div>
@@ -95,7 +103,7 @@ export function DocsSidebar({
               ) : null}
               <DocsSidebarTree
                 activePath={activePath}
-                nodes={nodes}
+                nodes={sidebarNodes}
                 onSelectPath={onSelectPath}
               />
             </div>

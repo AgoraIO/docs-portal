@@ -137,7 +137,6 @@ export function getOverviewMDXComponents(contentPath?: string): MDXComponents {
   )
     ? OverviewActions
     : HiddenOverviewActions;
-
   return {
     ApiReferenceCards,
     CardGrid,

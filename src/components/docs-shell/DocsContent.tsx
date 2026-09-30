@@ -18,6 +18,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import {
@@ -301,6 +302,9 @@ export function DocsContent({
             />
           ) : null}
         </div>
+        {contentPath === 'zh-CN/introduction/index.mdx' ? (
+          <IntroductionSdkDemoActions />
+        ) : null}
         {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
         ) : null}
