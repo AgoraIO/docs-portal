@@ -239,7 +239,7 @@ describe('DocsSidebar', () => {
     expect(within(section).getByRole('link', { name: '术语库' })).toBeVisible();
     expect(
       within(section).getByRole('link', { name: 'SDK 下载' }),
-    ).toHaveAttribute('href', '/zh-CN/reference/sdks?product=video');
+    ).toHaveAttribute('href', '/zh-CN/reference/sdks');
     expect(
       within(section).getByRole('link', { name: '体验 Demo' }),
     ).toHaveAttribute('href', '/zh-CN/reference/demo');

@@ -71,7 +71,6 @@ export type DocsSidebarNode = DocsSidebarPageNode | DocsSidebarSectionNode;
 const INTRODUCTION_RESOURCE_SIDEBAR_LINKS: DocsSidebarPageNode[] = [
   {
     id: 'introduction-sdk-download',
-    search: { product: 'video' },
     showNavigationArrow: true,
     title: 'SDK 下载',
     type: 'page',

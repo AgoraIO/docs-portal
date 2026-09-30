@@ -260,7 +260,6 @@ describe('docs tree helpers', () => {
       nodes[0].children[0],
       {
         id: 'introduction-sdk-download',
-        search: { product: 'video' },
         showNavigationArrow: true,
         title: 'SDK 下载',
         type: 'page',

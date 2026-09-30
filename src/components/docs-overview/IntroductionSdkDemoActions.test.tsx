@@ -12,7 +12,7 @@ describe('IntroductionSdkDemoActions', () => {
     );
     expect(screen.getByRole('link', { name: /下载 SDK/ })).toHaveAttribute(
       'href',
-      '/zh-CN/reference/sdks?product=video',
+      '/zh-CN/reference/sdks',
     );
   });
 });

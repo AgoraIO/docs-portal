@@ -1,6 +1,6 @@
 import { ArrowDownToLineIcon, ArrowRightIcon, PlayIcon } from 'lucide-react';
 
-const SDK_HREF = '/zh-CN/reference/sdks?product=video';
+const SDK_HREF = '/zh-CN/reference/sdks';
 const DEMO_HREF = '/zh-CN/reference/demo';
 
 export function IntroductionSdkDemoActions() {
