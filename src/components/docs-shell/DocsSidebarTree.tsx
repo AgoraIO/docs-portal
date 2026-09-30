@@ -1,7 +1,11 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import { ChevronDownIcon, ExternalLinkIcon } from 'lucide-react';
+import {
+  ArrowRightIcon,
+  ChevronDownIcon,
+  ExternalLinkIcon,
+} from 'lucide-react';
 import {
   type AnchorHTMLAttributes,
   forwardRef,
@@ -119,6 +123,7 @@ function SidebarNodeRenderer({
       method={node.method}
       onSelectPath={onSelectPath}
       search={node.search}
+      showNavigationArrow={node.showNavigationArrow}
       title={node.title}
       url={node.url}
     />
@@ -259,7 +264,10 @@ function SidebarSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
-                  className={sidebarEndpointButtonClassName(child.method)}
+                  className={cn(
+                    sidebarEndpointButtonClassName(child.method),
+                    child.showNavigationArrow && 'group',
+                  )}
                   isActive={child.url === activePath}
                   size="md"
                 >
@@ -275,6 +283,7 @@ function SidebarSection({
                       external={child.external}
                       linked={child.linked}
                       method={child.method}
+                      showNavigationArrow={child.showNavigationArrow}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
                   </SidebarPageAnchor>
@@ -384,7 +393,10 @@ function SidebarLinkedSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
-                  className={sidebarEndpointButtonClassName(child.method)}
+                  className={cn(
+                    sidebarEndpointButtonClassName(child.method),
+                    child.showNavigationArrow && 'group',
+                  )}
                   isActive={child.url === activePath}
                   size="md"
                 >
@@ -399,6 +411,7 @@ function SidebarLinkedSection({
                       external={child.external}
                       linked={child.linked}
                       method={child.method}
+                      showNavigationArrow={child.showNavigationArrow}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
                   </SidebarPageAnchor>
@@ -463,7 +476,10 @@ function SidebarQuickstartGroup({
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
                 asChild
-                className={sidebarEndpointButtonClassName(child.method)}
+                className={cn(
+                  sidebarEndpointButtonClassName(child.method),
+                  child.showNavigationArrow && 'group',
+                )}
                 isActive={child.url === activePath}
                 size="md"
               >
@@ -477,6 +493,7 @@ function SidebarQuickstartGroup({
                     external={child.external}
                     linked={child.linked}
                     method={child.method}
+                    showNavigationArrow={child.showNavigationArrow}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
                 </Link>
@@ -548,7 +565,10 @@ function SidebarNestedSection({
             ) : (
               <SidebarMenuSubButton
                 asChild
-                className={sidebarEndpointButtonClassName(child.method)}
+                className={cn(
+                  sidebarEndpointButtonClassName(child.method),
+                  child.showNavigationArrow && 'group',
+                )}
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
@@ -563,6 +583,7 @@ function SidebarNestedSection({
                   <SidebarPageLabel
                     linked={child.linked}
                     method={child.method}
+                    showNavigationArrow={child.showNavigationArrow}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
                 </SidebarPageAnchor>
@@ -769,6 +790,7 @@ function SidebarPageLink({
   method,
   onSelectPath,
   search,
+  showNavigationArrow,
   title,
   url,
 }: {
@@ -779,6 +801,7 @@ function SidebarPageLink({
   method?: string;
   onSelectPath: () => void;
   search?: Record<string, string>;
+  showNavigationArrow?: boolean;
   title: string;
   url: string;
 }) {
@@ -789,6 +812,7 @@ function SidebarPageLink({
         className={cn(
           sidebarPageButtonClassName,
           method && openApiSidebarButtonClassName,
+          showNavigationArrow && 'group',
         )}
         isActive={url === activePath}
       >
@@ -804,6 +828,7 @@ function SidebarPageLink({
             external={external}
             linked={linked}
             method={method}
+            showNavigationArrow={showNavigationArrow}
             title={getSidebarDisplayTitle(title, url)}
           />
         </SidebarPageAnchor>
@@ -889,11 +914,13 @@ function SidebarPageLabel({
   external,
   linked,
   method,
+  showNavigationArrow,
   title,
 }: {
   external?: boolean;
   linked?: boolean;
   method?: string;
+  showNavigationArrow?: boolean;
   title: string;
 }) {
   return (
@@ -910,6 +937,11 @@ function SidebarPageLabel({
         <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
           {method}
         </span>
+      ) : showNavigationArrow ? (
+        <ArrowRightIcon
+          aria-hidden="true"
+          className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"
+        />
       ) : external || linked ? (
         <ExternalLinkIcon className="ml-auto size-4 shrink-0 text-[color:var(--ink-4)]" />
       ) : null}

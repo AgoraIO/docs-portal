@@ -261,12 +261,14 @@ describe('docs tree helpers', () => {
       {
         id: 'introduction-sdk-download',
         search: { product: 'video' },
+        showNavigationArrow: true,
         title: 'SDK 下载',
         type: 'page',
         url: '/zh-CN/reference/sdks',
       },
       {
         id: 'introduction-demo-gallery',
+        showNavigationArrow: true,
         title: '体验 Demo',
         type: 'page',
         url: '/zh-CN/reference/demo',

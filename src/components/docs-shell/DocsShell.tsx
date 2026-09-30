@@ -3,6 +3,7 @@
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import {
+  ArrowRightIcon,
   CheckIcon,
   ChevronDownIcon,
   ExternalLinkIcon,
@@ -724,13 +725,19 @@ function MobileSidebarNode({
             {node.method}
           </span>
         ) : null}
-        {node.external || node.linked ? (
+        {node.showNavigationArrow ? (
+          <ArrowRightIcon
+            aria-hidden="true"
+            className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"
+          />
+        ) : node.external || node.linked ? (
           <ExternalLinkIcon className="size-4 shrink-0 text-[color:var(--ink-4)]" />
         ) : null}
       </>
     );
     const className = cn(
       mobilePageLinkClassName,
+      node.showNavigationArrow && 'group',
       isActive
         ? mobileActivePageLinkClassName
         : mobileInactivePageLinkClassName,

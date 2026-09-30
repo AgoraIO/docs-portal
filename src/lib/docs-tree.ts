@@ -45,6 +45,7 @@ export type DocsSidebarPageNode = {
   id: string;
   linked?: boolean;
   method?: string;
+  showNavigationArrow?: boolean;
   search?: Record<string, string>;
   title: string;
   type: 'page';
@@ -71,12 +72,14 @@ const INTRODUCTION_RESOURCE_SIDEBAR_LINKS: DocsSidebarPageNode[] = [
   {
     id: 'introduction-sdk-download',
     search: { product: 'video' },
+    showNavigationArrow: true,
     title: 'SDK 下载',
     type: 'page',
     url: '/zh-CN/reference/sdks',
   },
   {
     id: 'introduction-demo-gallery',
+    showNavigationArrow: true,
     title: '体验 Demo',
     type: 'page',
     url: '/zh-CN/reference/demo',
