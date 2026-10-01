@@ -71,11 +71,11 @@ describe('fumadocs source loader', () => {
     );
     expect(markdown).toContain('#### RTC SDK');
     expect(markdown).toContain(
-      'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.4_FULL.zip',
+      'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.0_FULL.zip',
     );
-    expect(markdown).toContain('Version 4.6.4 Lite (Latest)');
+    expect(markdown).toContain('Version 4.7.0 Lite (Latest)');
     expect(markdown).toContain(
-      'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.4_LITE.zip',
+      'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.7.0_LITE.zip',
     );
     expect(Buffer.byteLength(markdown)).toBeLessThan(50_000);
   });
@@ -128,9 +128,9 @@ ${processed}`);
     const page = source.getPage(
       [
         'realtime-media',
-        'broadcast-streaming',
+        'rtc',
         'build',
-        'manage-video-and-streaming',
+        'capture-and-render-video',
         'configure-video-encoding',
       ],
       'en',
@@ -153,9 +153,9 @@ ${processed}`);
     const page = source.getPage(
       [
         'realtime-media',
-        'interactive-live-streaming',
+        'rtc',
         'build',
-        'optimize-quality-and-connection',
+        'enhance-the-audio-experience',
         'best-practices-sound-quality',
       ],
       'en',

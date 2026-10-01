@@ -85,7 +85,10 @@ type MDXContext = {
   contentPath?: string;
 };
 
+const IM_PRICING_DETAILS_CONTENT_PATH =
+  'en/realtime-media/im/reference/pricing-plan-details.md';
 const FumadocsAnchor = defaultMdxComponents.a;
+const FumadocsTable = defaultMdxComponents.table;
 const FumadocsCodeBlockTab = defaultMdxComponents.CodeBlockTab;
 const FumadocsCodeBlockTabs = defaultMdxComponents.CodeBlockTabs;
 const FumadocsCodeBlockTabsList = defaultMdxComponents.CodeBlockTabsList;
@@ -291,6 +294,40 @@ function firstVersionValue(children: ReactNode): string | undefined {
   });
 
   return first;
+}
+
+function hasSevenColumnHeader(children: ReactNode) {
+  return Children.toArray(children).some((section) => {
+    if (
+      !isValidElement<{ children?: ReactNode }>(section) ||
+      section.type !== 'thead'
+    ) {
+      return false;
+    }
+
+    return Children.toArray(section.props.children).some(
+      (row) =>
+        isValidElement<{ children?: ReactNode }>(row) &&
+        row.type === 'tr' &&
+        Children.count(row.props.children) === 7,
+    );
+  });
+}
+
+function createDocsTableComponent(contentPath?: string) {
+  const isPricingDetailsPage = contentPath === IM_PRICING_DETAILS_CONTENT_PATH;
+
+  return function DocsTable({ className, ...props }: ComponentProps<'table'>) {
+    const isDensePricingTable =
+      isPricingDetailsPage && hasSevenColumnHeader(props.children);
+
+    return (
+      <FumadocsTable
+        {...props}
+        className={cn(className, isDensePricingTable && 'im-pricing-api-table')}
+      />
+    );
+  };
 }
 
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
@@ -1510,6 +1547,10 @@ export function getMDXComponents(
 
   return {
     ...defaultMdxComponents,
+    table:
+      context?.contentPath === IM_PRICING_DETAILS_CONTENT_PATH
+        ? createDocsTableComponent(context.contentPath)
+        : defaultMdxComponents.table,
     img: ZoomableImage,
     h2: (props) => <TabAwareHeading as="h2" {...props} />,
     h3: (props) => <TabAwareHeading as="h3" {...props} />,

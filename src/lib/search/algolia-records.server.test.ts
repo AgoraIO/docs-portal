@@ -70,7 +70,7 @@ describe('buildAlgoliaContentDocsRecords', () => {
     ]);
   });
 
-  it('indexes hidden product overviews with humanized RTC breadcrumbs', () => {
+  it('does not index product overviews from the retired RTC folders', () => {
     const records = buildAlgoliaContentDocsRecords(
       [
         {
@@ -87,14 +87,7 @@ describe('buildAlgoliaContentDocsRecords', () => {
       new Map([['en', new Map()]]),
     );
 
-    expect(records.map(({ url }) => url)).toEqual([
-      '/en/realtime-media/interactive-live-streaming/product-overview',
-      '/en/realtime-media/broadcast-streaming/product-overview',
-    ]);
-    expect(records.map(({ breadcrumbs }) => breadcrumbs)).toEqual([
-      ['RTC', 'Interactive Live Streaming'],
-      ['RTC', 'Broadcast Streaming'],
-    ]);
+    expect(records).toEqual([]);
   });
 
   it('does not use fallback breadcrumbs for arbitrary hidden pages', () => {

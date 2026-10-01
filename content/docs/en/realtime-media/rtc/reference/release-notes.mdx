@@ -8,8 +8,6 @@ description: "Information about changes in each release of Video Calling."
 This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
 - [RTC SDK](#rtc-sdk)
-- [MetaKit extension](#metakit-extension)
-- [Camera Movement extension](#camera-movement-extension)
 - [Notifications](#notifications)
 
 :::caution
@@ -42,6 +40,65 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v4.7.0" id="v470-1" headingLevel={3} value="v470-1">
+
+Released on September 30, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Added support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. Contact [technical support](mailto:support@agora.io) for more information.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimized the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Optimized FFmpeg plugin integration for the Voice SDK**
+
+    Changed how the FFmpeg player plugin is loaded in the Voice SDK. `libagora-ffmpeg.so` is renamed to `libagora_ffmpeg_extension.so` and changed from a required library to an optional plugin. The SDK package includes this plugin by default, and you can choose whether to integrate it. When the FFmpeg player plugin is not loaded, the media player uses the system's native playback capability. Supported audio file formats depend on the container formats and audio codecs supported by the system, and may vary by system version or device vendor. After you integrate and load the FFmpeg player plugin, the media player supports more audio formats and provides more playback capabilities.
+
+* **Faster first video frame rendering**
+
+    Optimized video frame transmission scheduling to reduce time-to-first-frame for subscribed streams in a channel.
+
+* **Optimized R8/ProGuard obfuscation rules**
+
+    Optimized the R8/ProGuard obfuscation rules for the Android SDK. If your app does not enable R8/ProGuard shrinking and obfuscation, no additional configuration is required. If your app enables R8/ProGuard shrinking and obfuscation, configure the obfuscation rules for the Agora SDK to prevent Java classes, members, or methods accessed by the native layer through JNI from being removed or renamed. You can continue to use `-keep class io.agora.** { *; }` for quick configuration, or use the SDK-provided `consumer-proguard-rules.pro` for fine-grained configuration.
+
+* **Improved latency and playback smoothness in one-to-one co-hosting**
+
+    Optimized audio and video transmission strategies for real-time interaction scenarios such as one-to-one co-hosting, reducing end-to-end latency and improving playback smoothness under weak network conditions, while maintaining video quality.
+
+* **Optimized audio bitrate**
+
+    Optimized bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimized the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+* **Improved media file playback compatibility**
+
+    Added compatibility handling for non-standard MP3 files, making media file playback more robust.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- After raw audio data was enabled, residual audio from a previous segment could occasionally remain when a user switched from audience to host.
+- After a system update on some Android devices, static or other noise could occasionally be heard during audio playback when downlink load was high in multi-user audio scenarios.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- When the device was in a system call or the audio device was occupied, the local audio state callback could behave abnormally, preventing the app from accurately detecting the local audio state.
+
+</Accordion>
+
 <Accordion title="v4.6.4" id="v464" headingLevel={3} value="v464">
 
 
@@ -53,7 +110,7 @@ Included in this release:
 
 * **New event types for wide-angle and ultra-wide-angle camera capture on Android**
 
-    This release adds the `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_APPLIED` and `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_FALLBACK_TO_DEFAULT` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
+    Added the `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_APPLIED` and `LOCAL_VIDEO_EVENT_TYPE_CAMERA_FOCAL_LENGTH_FALLBACK_TO_DEFAULT` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
 
 #### Issues fixed
 
@@ -118,19 +175,19 @@ This release includes the following enhancements:
 
 * **Seamless switching for sound effect files**
 
-    Adds support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
+    Added support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
 
 * **Improved accuracy of network quality evaluation**
 
-    Improves the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
+    Improved the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
 
 * **Support for 24kHz sampling rate for audio playback**
 
-    Adds support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
+    Added support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
 
 * **`onEncodedVideoFrameReceived` supports `channelId`**
 
-    Adds the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
+    Added the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
 
 * **Additional improvements**
 
@@ -218,7 +275,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of direct CDN streaming APIs**
 
-   Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push/get-started/enable-media-push) instead.
+   Deprecated the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push/get-started/enable-media-push) instead.
 
    - `setDirectCdnStreamingAudioConfiguration`
    - `setDirectCdnStreamingVideoConfiguration`
@@ -232,7 +289,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of virtual metronome APIs**
 
-   Deprecates the APIs for the virtual metronome feature, which will be removed in a future release.
+   Deprecated the APIs for the virtual metronome feature, which will be removed in a future release.
 
    - `startRhythmPlayer`
    - `configRhythmPlayer`
@@ -240,7 +297,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of watermark APIs**
 
-   Deprecates the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
+   Deprecated the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
 
    - `addVideoWatermark [2/2]`
    - `addVideoWatermarkEx`
@@ -384,7 +441,6 @@ This release fixes the following issues:
 - When the app called `enableVideoImageSource` to enable the video image source feature, streaming succeeded, but occasionally `onVideoPublishStateChanged` did not return the expected results.
 - In multi-channel scenarios, if the app called `setupRemoteVideoEx` before successfully calling `joinChannelEx`, the first frame of the remote video occasionally experienced significant delay.
 - After a failed attempt to join a channel, trying again without first calling `leaveChannel [1/2]` occasionally caused a crash.
-
 
 
 </Accordion>
@@ -1231,7 +1287,6 @@ This release fixes the following issues:
 - `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.1" id="v421" headingLevel={3} value="v421">
@@ -1250,7 +1305,6 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 - In screen sharing use-cases, some Android devices experienced choppy video on the receiving end.
-
 
 
 </Accordion>
@@ -1417,7 +1471,6 @@ This release fixes the following issues:
 
 - `onApiCallExecuted`
 - `publishCustomAudioTrackEnableAec` in `ChannelMediaOptions`
-
 
 
 </Accordion>
@@ -1950,8 +2003,6 @@ You can call the `setRemoteDefaultVideoStreamType` method to choose the video st
 This page provides the release notes for the RTC SDK release streams used by Video Calling.
 
 - [RTC SDK](#rtc-sdk)
-- [MetaKit extension](#metakit-extension)
-- [Camera Movement extension](#camera-movement-extension)
 - [Notifications](#notifications)
 
 ## RTC SDK
@@ -1983,6 +2034,66 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 ### Versions
 
 <Accordions type="multiple" openFirst>
+
+<Accordion title="v4.7.0" id="v470-2" headingLevel={3} value="v470-2">
+
+Released on September 30, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Added support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. Contact [technical support](mailto:support@agora.io) for more information.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimized the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Optimized FFmpeg plugin integration for the Voice SDK**
+
+    Changed how the FFmpeg player plugin is loaded in the Voice SDK. `Agoraffmpeg.xcframework` is changed to the optional plugin `AgoraffmpegExtension.xcframework`. The SDK package includes this plugin by default, and you can choose whether to integrate it. When the FFmpeg player plugin is not loaded, the media player uses the system's native playback capability. Supported audio file formats depend on the container formats and audio codecs supported by the system. After you integrate and load the FFmpeg player plugin, the media player supports more audio formats and provides more playback capabilities.
+
+* **Faster first video frame rendering**
+
+    Optimized video frame transmission scheduling to reduce time-to-first-frame for subscribed streams in a channel.
+
+* **Improved latency and playback smoothness in one-to-one co-hosting**
+
+    Optimized audio and video transmission strategies for real-time interaction scenarios such as one-to-one co-hosting, reducing end-to-end latency and improving playback smoothness under weak network conditions, while maintaining video quality.
+
+* **Optimized audio bitrate**
+
+    Optimized bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved video orientation handling**
+
+    Improved video orientation handling during portrait and landscape switching, reducing delayed or incorrect video rotation after the device rotates.
+
+* **Improved background camera capture and stream republishing experience**
+
+    Improved camera capture state handling after the app enters the background, fixing occasional black screens in local or remote video when the host republishes the stream.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimized the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- On iOS 26, after system keyboard speech-to-text was triggered, the receiving user could occasionally hear no audio.
+- After a Bluetooth audio device was used to publish audio, the audio route could switch unexpectedly or remote audio could be silent.
+- In chatroom scenarios where users switch between audience and host roles, if local audio was disabled, the role was switched, and local audio was then enabled again, remote audio could occasionally be silent.
+- With AI QoS configuration, the first sentence of a call could occasionally be clipped or sound distorted.
+- The app could occasionally crash in scenarios involving audio and video interaction, screen sharing, video frame data access, or audio and video statistics. This release improves SDK stability in these scenarios.
+
+</Accordion>
 
 <Accordion title="v4.6.4" id="v464-1" headingLevel={3} value="v464-1">
 
@@ -2048,19 +2159,19 @@ This release includes the following enhancements:
 
 * **Seamless switching for sound effect files**
 
-    Adds support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
+    Added support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
 
 * **Improved accuracy of network quality evaluation**
 
-    Improves the accuracy of network quality evaluation in the `networkQuality` callback, making the reported data better reflect the user's perceived experience.
+    Improved the accuracy of network quality evaluation in the `networkQuality` callback, making the reported data better reflect the user's perceived experience.
 
 * **Support for 24kHz sampling rate for audio playback**
 
-    Adds support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
+    Added support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
 
 * **`onEncodedVideoFrameReceived` supports `channelId`**
 
-    Adds the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
+    Added the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
 
 * **Additional improvements**
 
@@ -2072,7 +2183,7 @@ This release introduces the following compatibility changes:
 
 - **Support for custom encoding frame rate**
 
-    Changes the data type of the `frameRate` parameter in `AgoraVideoEncoderConfiguration` from an enumeration to an `Int`. During integration, refer to the original `AgoraVideoFrameRate` enum values for configuration.
+    Changed the data type of the `frameRate` parameter in `AgoraVideoEncoderConfiguration` from an enumeration to an `Int`. During integration, refer to the original `AgoraVideoFrameRate` enum values for configuration.
 
 - **Audio Spectrum removed from Lite and Voice packages**
 
@@ -2122,7 +2233,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of direct CDN streaming APIs**
 
-   Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push) instead.
+   Deprecated the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push) instead.
 
    - `setDirectCdnStreamingAudioConfiguration:`
    - `setDirectCdnStreamingVideoConfiguration:`
@@ -2136,7 +2247,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of virtual metronome APIs**
 
-   Deprecates the APIs for the virtual metronome feature, which will be removed in a future release.
+   Deprecated the APIs for the virtual metronome feature, which will be removed in a future release.
 
    - `startRhythmPlayer:sound2:config:`
    - `configRhythmPlayer:`
@@ -2144,7 +2255,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of watermark APIs**
 
-   Deprecates the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
+   Deprecated the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
 
    - `addVideoWatermark:options:`
    - `addVideoWatermarkEx:options:connection:`
@@ -2178,7 +2289,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Default log path change**
 
-   This release changes the default log path from `AppSandbox/Library/documents/agorasdk.log` to `AppSandbox/Library/caches/agorasdk.log`. If you upgrade the SDK from v4.3.1 or later to v4.6.0, ensure that you use the new path to access the log file.
+   Changed the default log path from `AppSandbox/Library/documents/agorasdk.log` to `AppSandbox/Library/caches/agorasdk.log`. If you upgrade the SDK from v4.3.1 or later to v4.6.0, ensure that you use the new path to access the log file.
 
 #### New features
 
@@ -2323,7 +2434,6 @@ This release resolves the following issues:
 - In screen-sharing scenarios, the receiving user saw a green line on the shared image.
 - In interactive live streaming scenarios, after joining a channel as an audience member using a `string` user ID, audio occasionally became unsynchronized with video.
 - AI noise suppression and AI echo cancellation plugins sometimes failed when used together.
-
 
 
 </Accordion>
@@ -3124,7 +3234,6 @@ This version fixed the following issues:
 - Occasional crash after calling the `destroyMediaPlayer` method.
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.0" id="v420-1" headingLevel={3} value="v420-1">
@@ -3508,7 +3617,6 @@ This release fixes the following issues:
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent`.
 
 
-
 </Accordion>
 
 <Accordion title="v4.0.0" id="v400-1" headingLevel={3} value="v400-1">
@@ -3629,7 +3737,6 @@ This release fixes the following issues:
 - `backgroundColor` in `AgoraRtcVideoCanvas`
 - `codecLevels` in `CodecCapAgoraVideoCodecCapInfoInfo`
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
-
 
 
 </Accordion>
@@ -4050,7 +4157,6 @@ This release fixes the following issues:
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent`.
 
 
-
 </Accordion>
 
 <Accordion title="v4.0.1" id="v401-1" headingLevel={3} value="v401-1">
@@ -4265,6 +4371,53 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v4.7.0" id="v470-3" headingLevel={3} value="v470-3">
+
+Released on September 30, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Added support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. Contact [technical support](mailto:support@agora.io) for more information.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimized the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Faster first video frame rendering**
+
+    Optimized video frame transmission scheduling to reduce time-to-first-frame for subscribed streams in a channel.
+
+* **Improved latency and playback smoothness in one-to-one co-hosting**
+
+    Optimized audio and video transmission strategies for real-time interaction scenarios such as one-to-one co-hosting, reducing end-to-end latency and improving playback smoothness under weak network conditions, while maintaining video quality.
+
+* **Optimized audio bitrate**
+
+    Optimized bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimized the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- On macOS 26 devices connected to an external HDMI display, calling screen sharing APIs to list the available screens could omit the extended display.
+- When using the `AUDIO_SCENARIO_AI_CLIENT` audio scenario and receiving long TTS audio, remote audio data could occasionally become disordered.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- The app could occasionally crash in scenarios involving mirror rendering, custom rendering, or screen sharing source enumeration. This release improves SDK stability in these scenarios.
+
+</Accordion>
+
 <Accordion title="v4.6.2" id="v462-2" headingLevel={3} value="v462-2">
 
 
@@ -4284,23 +4437,23 @@ This release includes the following enhancements:
 
 * **Seamless switching for sound effect files**
 
-    Adds support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
+    Added support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
 
 * **Improved accuracy of network quality evaluation**
 
-    Improves the accuracy of network quality evaluation in the `networkQuality` callback, making the reported data better reflect the user's perceived experience.
+    Improved the accuracy of network quality evaluation in the `networkQuality` callback, making the reported data better reflect the user's perceived experience.
 
 * **Support for 24kHz sampling rate for audio playback**
 
-    Adds support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
+    Added support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
 
 * **Support for window foreground sharing**
 
-    Fixes an issue where window foreground sharing did not work on macOS 14 and above. Add the `NSAccessibilityUsageDescription` permission in your project's `plist`. After adding, the system prompts the user to grant accessibility access, enabling window foreground sharing.
+    Fixed an issue where window foreground sharing did not work on macOS 14 and above. Add the `NSAccessibilityUsageDescription` permission in your project's `plist`. After adding, the system prompts the user to grant accessibility access, enabling window foreground sharing.
 
 * **`onEncodedVideoFrameReceived` supports `channelId`**
 
-    Adds the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
+    Added the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
 
 * **Additional improvements**
 
@@ -4341,7 +4494,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of direct CDN streaming APIs**
 
-   Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push) instead.
+   Deprecated the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push) instead.
 
    - `setDirectCdnStreamingAudioConfiguration:`
    - `setDirectCdnStreamingVideoConfiguration:`
@@ -4355,7 +4508,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of virtual metronome APIs**
 
-   Deprecates the APIs for the virtual metronome feature, which will be removed in a future release.
+   Deprecated the APIs for the virtual metronome feature, which will be removed in a future release.
 
    - `startRhythmPlayer:sound2:config:`
    - `configRhythmPlayer:`
@@ -4363,7 +4516,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of watermark APIs**
 
-   Deprecates the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
+   Deprecated the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
 
    - `addVideoWatermark:options:`
    - `addVideoWatermarkEx:options:connection:`
@@ -5124,7 +5277,6 @@ This release fixes the following issues:
 - `AgoraFeatureType`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.2" id="v422-3" headingLevel={3} value="v422-3">
@@ -5226,7 +5378,6 @@ This release fixes the following issues:
 - `AgoraVideoRemoteReasonCodecNotSupport` in `AgoraVideoRemoteReason`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.1" id="v421-3" headingLevel={3} value="v421-3">
@@ -5246,7 +5397,6 @@ This version fixed the following issues:
 - After the sending end called `setAINSMode` to activate AI noise reduction, occasional echo was observed by the receiving end.
 - Brief noise occurred while playing media files using the media player.
 - After enabling the screen sharing function on the sending end, there was high delay until the receiving end could see the shared screen.
-
 
 
 </Accordion>
@@ -5642,7 +5792,6 @@ This release fixes the following issues:
 
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `AgoraLiveTranscoding` class.
 - Removes `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8) in `didReceiveChannelMediaRelayEvent` callback.
-
 
 
 </Accordion>
@@ -6515,7 +6664,6 @@ Released on November 26, 2025.
   In screen sharing scenarios with co-hosting, Agora does not recommend sharing system or window audio, as it may cause echo. You can disable audio sharing by setting both `windowAudio` and `systemAudio` in `ScreenVideoTrackInitConfig` to `"exclude"`.
 
 
-
 - **New release of the Super Clarity extension**
 
   This version upgrades the algorithm of [`agora-extension-super-clarity`](https://www.npmjs.com/package/agora-extension-super-clarity), with improvements in reducing plugin size, enhancing video experience, and expanding browser compatibility. The new version of the plugin requires a browser that supports SIMD to run properly. For detailed changes and improvements, refer to the [Extension release notes](#super-clarity-extension).
@@ -6577,7 +6725,6 @@ This version fixes the following issues:
 - Video stuttering caused by Safari 18.4 and 18.5.
 - Encoding failure when the resolution was too low.
 - Occasional black screen in scenarios using Plan-B.
-
 
 
 </Accordion>
@@ -6915,7 +7062,6 @@ This release includes the following improvements:
 
 - `resumeAudioContext`
 - `AgoraRTC.on("audio-context-state-changed")`
-
 
 
 </Accordion>
@@ -7318,7 +7464,6 @@ To enable this feature, contact technical support.
 - `ILocalVideoTrack.setBeautyEffect`
 
 
-
 </Accordion>
 
 <Accordion title="v4.17.0" id="v4170" headingLevel={3} value="v4170">
@@ -7363,7 +7508,6 @@ This release also includes the following improvements:
 #### Issues fixed
 
 On Safari on iOS 14.7 and later, performing subscribing and unsubscribing operations repeatedly to multiple audio streams could result in not hearing remote users.
-
 
 
 </Accordion>
@@ -7421,7 +7565,6 @@ This release fixes the following issues:
 - When relaying media streams across channels, [`ChannelMediaRelayConfiguration.addDestChannelInfo`](https://api-ref.agora.io/en/voice-sdk/web/4.x/interfaces/ichannelmediarelayconfiguration.html#adddestchannelinfo)
 could not set `uid` to `0` to identify the relay stream in the destination channel.
 - Some known issues on iOS 14.x.
-
 
 
 </Accordion>
@@ -7534,7 +7677,6 @@ This release fixes the following issues:
 - During a media stream relay, the SDK continued to send heartbeats after the user left the source channel.
 
 
-
 </Accordion>
 
 <Accordion title="v4.14.0" id="v4140" headingLevel={3} value="v4140">
@@ -7617,7 +7759,6 @@ v4.12.1 was released on June 27, 2022. This release fixes the following issues:
 - Subscribing to remote streams occasionally failed after disconnection.
 
 - On Firefox, performing subscribing and unsubscribing operations repeatedly to multiple video streams occasionally caused video freezing.
-
 
 
 </Accordion>
@@ -7731,7 +7872,6 @@ v4.10.0 supports using media processing extensions in the Video Calling. The fol
 -   `LocalTrack.unpipe`
 
 -   `LocalTrack.processorDestination`
-
 
 
 </Accordion>
@@ -7879,7 +8019,6 @@ v4.8.0 fixed the following issues:
 -   `localVideoTrack.getVideoElementVisibleStatus`
 
 -   `remoteVideoTrack.getVideoElementVisibleStatus`
-
 
 
 </Accordion>
@@ -8506,6 +8645,58 @@ Starting from v4.5.0, both RTC SDK and Signaling SDK v2.2.0 and later include th
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v4.7.0" id="v470-4" headingLevel={3} value="v470-4">
+
+Released on September 30, 2026.
+
+#### New features
+
+Included in this release:
+
+* **H.265/HEVC support**
+
+    Added support for H.265/HEVC encoding and decoding. H.265 is enabled when hardware support is available on the device; otherwise, the SDK automatically falls back to AV1 or H.264. Contact [technical support](mailto:support@agora.io) for more information.
+
+#### Improvements
+
+This release includes the following enhancements:
+
+* **Improved audio and video pipeline performance**
+
+    Optimized the audio and video pipeline and thread scheduling mechanism, reducing CPU usage across audio and video scenarios and improving stability during long-running sessions.
+
+* **Faster first video frame rendering**
+
+    Optimized video frame transmission scheduling to reduce time-to-first-frame for subscribed streams in a channel.
+
+* **Improved latency and playback smoothness in one-to-one co-hosting**
+
+    Optimized audio and video transmission strategies for real-time interaction scenarios such as one-to-one co-hosting, reducing end-to-end latency and improving playback smoothness under weak network conditions, while maintaining video quality.
+
+* **Optimized audio bitrate**
+
+    Optimized bitrate usage in audio scenarios, improving audio stream transmission efficiency while maintaining audio quality.
+
+* **Improved screen sharing window exclusion**
+
+    Optimized the implementation of window exclusion during screen sharing on Windows. When you call `startScreenCaptureByDisplayId` to start screen sharing and use `excludeWindowList` in `ScreenCaptureParameters` to exclude specified windows, the SDK uses an independent capture process for MAG capture when conditions are met. This reduces the risk of window exclusion failures or capture exceptions in scenarios such as multi-screen setups, negative coordinates, screen scaling, or secure desktop switching, and improves screen sharing stability.
+
+* **Improved Native and Web interoperability under weak network conditions**
+
+    Optimized the audio and video experience for Native and Web interoperability in one-to-one video scenarios under weak network conditions.
+
+#### Issues fixed
+
+This release fixes the following issues:
+
+- When the microphone was occupied by another app while the SDK was running, the app could not detect the microphone occupancy state. After this fix, when the audio capture device is occupied, the SDK notifies the app through warning code `WARN_ADM_RECORD_IS_OCCUPIED` (1033).
+- After connecting a USB camera and enabling sound card capture, if the number of loopback audio channels was fewer than two, post-processing could be incorrect, occasionally causing static or other noise.
+- In some scenarios, the camera could occasionally show a black screen, causing video capture to fail.
+- In sound effect preloading scenarios, after calling `stopEffect` to stop playback and then calling `playEffect` again, residual audio from the previous sound effect could still be heard.
+- The app could occasionally crash when started as an administrator or during screen capture. This release improves SDK stability in these scenarios.
+
+</Accordion>
+
 <Accordion title="v4.6.2" id="v462-4" headingLevel={3} value="v462-4">
 
 
@@ -8525,7 +8716,7 @@ This release includes the following enhancements:
 
 * **Seamless switching for sound effect files**
 
-    Adds support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
+    Added support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
 
 * **Window exclusion support for second screen sharing**
 
@@ -8537,15 +8728,15 @@ This release includes the following enhancements:
 
 * **Improved accuracy of network quality evaluation**
 
-    Improves the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
+    Improved the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
 
 * **Support for 24kHz sampling rate for audio playback**
 
-    Adds support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
+    Added support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
 
 * **`onEncodedVideoFrameReceived` supports `channelId`**
 
-    Adds the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
+    Added the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
 
 * **Additional improvements**
 
@@ -8593,7 +8784,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of direct CDN streaming APIs**
 
-   Deprecates the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push) instead.
+   Deprecated the APIs related to direct CDN streaming, which will be removed in a future release. Agora recommends using [Media Push](/en/realtime-media/media-push) instead.
 
    - `setDirectCdnStreamingAudioConfiguration`
    - `setDirectCdnStreamingVideoConfiguration`
@@ -8607,7 +8798,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of virtual metronome APIs**
 
-   Deprecates the APIs for the virtual metronome feature, which will be removed in a future release.
+   Deprecated the APIs for the virtual metronome feature, which will be removed in a future release.
 
    - `startRhythmPlayer`
    - `configRhythmPlayer`
@@ -8615,7 +8806,7 @@ For details on deprecated and deleted APIs in each version, see the [API Sunset 
 
 - **Deprecation of watermark APIs**
 
-   Deprecates the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
+   Deprecated the old watermark APIs. Agora recommends using the new watermark APIs introduced in this version.
 
    - `addVideoWatermark2`
    - `addVideoWatermarkEx`
@@ -9361,7 +9552,6 @@ This release fixes the following issues:
 - `updateChannelMediaRelayEx`
 - `onChannelMediaRelayEvent`
 - `CHANNEL_MEDIA_RELAY_EVENT`
-
 
 
 </Accordion>
@@ -10438,13 +10628,13 @@ Included in this release:
 
 * **Multi-resolution video streams**
 
-    This release introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
+    Introduced the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
 
     After enabling ABR, you can configure up to four video stream layers (one main stream at the highest resolution and up to three lower-resolution streams), and set options such as resolution, bitrate, and layered streaming fallback. When layered streaming fallback is enabled, the SDK automatically switches to lower-resolution streams under poor network conditions to maintain a smooth viewing experience. This feature is suited for meetings, large classes, interactive live streaming, and other multi-device or multi-network environments.
 
 * **Multi-path network transmission**
 
-    This release introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
+    Introduced multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
 
     Enable multi-path transmission by setting `enableMultipath` to `true` in `ChannelMediaOptions`. Two transmission modes are supported through `MultipathMode`:
 
@@ -10455,15 +10645,15 @@ Included in this release:
 
 * **Video quality scoring**
 
-    This release adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
+    Added the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
 
 * **Support for adding multiple watermarks**
 
-    This release deprecates `addVideoWatermark` and `addVideoWatermarkEx`, and introduces `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
+    Deprecated `addVideoWatermark` and `addVideoWatermarkEx`, and introduced `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
 
 * **Token renewal result callback**
 
-    This release introduces the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
+    Introduced the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
 
 * **Media Player support for getting audio buffer delay**
 
@@ -10496,13 +10686,13 @@ This release includes the following enhancements:
 
 * **Seamless switching for sound effect files**
 
-    Adds support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
+    Added support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
 
 * **Window exclusion support for secondary displays**
 
     Before v4.6.2, configuring window exclusion (`excludeWindowList` in `ScreenCaptureParameters`) was not supported in multi-screen scenarios when sharing by screen ID (`startScreenCaptureByDisplayId`). This release adds support for this configuration.
 
-    This release also adds `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
+    Also added `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
 
 * **Improved trigger timing of `onVideoDeviceStateChanged`**
 
@@ -10510,15 +10700,15 @@ This release includes the following enhancements:
 
 * **Improved accuracy of network quality evaluation**
 
-    Improves the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
+    Improved the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
 
 * **Support for 24kHz sampling rate for audio playback**
 
-    Adds support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
+    Added support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
 
 * **`onEncodedVideoFrameReceived` supports `channelId`**
 
-    Adds the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
+    Added the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
 
 * **Additional improvements**
 
@@ -11809,7 +11999,6 @@ sharing a screen.
 
 - `onApiCallExecuted`: Use the callbacks triggered by specific methods instead.
 - `RelayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
-
 
 
 </Accordion>
@@ -13214,7 +13403,6 @@ This release fixes the following issues:
 - `remoteVideoStateReasonCodecNotSupport` in `RemoteVideoStateReason`
 
 
-
 </Accordion>
 
 <Accordion title="v6.2.1" id="v621" headingLevel={3} value="v621">
@@ -14096,7 +14284,7 @@ Included in this release:
 
 * **New event types for wide-angle and ultra-wide-angle camera capture on Android**
 
-    This release adds the `LocalVideoEventTypeCameraFocalLengthApplied` and `LocalVideoEventTypeCameraFocalLengthFallbackToDefault` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
+    Added the `LocalVideoEventTypeCameraFocalLengthApplied` and `LocalVideoEventTypeCameraFocalLengthFallbackToDefault` event types to the `onLocalVideoEvent` callback, to report whether the requested wide-angle or ultra-wide-angle camera capture is applied successfully, or whether the SDK falls back to the default camera.
 
 #### Issues fixed
 
@@ -14191,13 +14379,13 @@ Included in this release:
 
 * **Multi-resolution video streams**
 
-    This release introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
+    Introduced the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
 
     After enabling ABR, you can configure up to four video stream layers (one main stream at the highest resolution and up to three lower-resolution streams), and set options such as resolution, bitrate, and layered streaming fallback. When layered streaming fallback is enabled, the SDK automatically switches to lower-resolution streams under poor network conditions to maintain a smooth viewing experience. This feature is suited for meetings, large classes, interactive live streaming, and other multi-device or multi-network environments.
 
 * **Multi-path network transmission**
 
-    This release introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
+    Introduced multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
 
     Enable multi-path transmission by setting `enableMultipath` to `true` in `ChannelMediaOptions`. Two transmission modes are supported through `MultipathMode`:
 
@@ -14208,15 +14396,15 @@ Included in this release:
 
 * **Video quality scoring**
 
-    This release adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
+    Added the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
 
 * **Support for adding multiple watermarks**
 
-    This release deprecates `addVideoWatermark` and `addVideoWatermarkEx`, and introduces `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
+    Deprecated `addVideoWatermark` and `addVideoWatermarkEx`, and introduced `addVideoWatermarkWithConfig` and `addVideoWatermarkWithConfigEx`, which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `removeVideoWatermark`.
 
 * **Token renewal result callback**
 
-    This release introduces the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
+    Introduced the `onRenewTokenResult` callback and the `RenewTokenErrorCode` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RenewTokenErrorCode`, allowing you to handle token renewal failure scenarios accordingly.
 
 * **App-level screen sharing support on Android**
 
@@ -14228,7 +14416,7 @@ Included in this release:
 
 * **Picture-in-Picture**
 
-    This release introduces the Picture-in-Picture (PiP) feature, which supports displaying video call windows in PiP mode so users can continue watching video calls when switching apps or returning to the home screen.
+    Introduced the Picture-in-Picture (PiP) feature, which supports displaying video call windows in PiP mode so users can continue watching video calls when switching apps or returning to the home screen.
 
     This feature supports automatically entering PiP mode and provides rich configuration options. On Android, you can configure parameters such as the aspect ratio, initial position, and seamless resizing of the PiP window. On iOS, you can configure the video stream layout (flow layout, with video streams arranged left to right and top to bottom), PiP window size, and system control button styles. The feature also supports listening to PiP state changes through `AgoraPipStateChangedObserver` to handle scenarios such as entering, exiting, or failure. This feature is suited for video calls, online education, live streaming, and other scenarios that require multitasking.
 
@@ -14263,13 +14451,13 @@ This release includes the following enhancements:
 
 * **Seamless switching for sound effect files**
 
-    Adds support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
+    Added support for seamless switching of sound effect files. For the same sound effect file, if you call `preloadEffect` followed by `playEffect`, the SDK does not close the file after playback completes or when `stopEffect` is called. When you call `playEffect` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
 
 * **Window exclusion support for secondary displays**
 
     Before v4.6.2, configuring window exclusion (`excludeWindowList` in `ScreenCaptureParameters`) was not supported in multi-screen scenarios when sharing by screen ID (`startScreenCaptureByDisplayId`). This release adds support for this configuration.
 
-    This release also adds `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
+    Also added `LocalVideoStreamReasonScreenCaptureExcludeWindowFailed` to `LocalVideoStreamReason` to report cases where window exclusion fails during screen sharing.
 
 * **Improved trigger timing of `onVideoDeviceStateChanged`**
 
@@ -14277,15 +14465,15 @@ This release includes the following enhancements:
 
 * **Improved accuracy of network quality evaluation**
 
-    Improves the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
+    Improved the accuracy of network quality evaluation in the `onNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
 
 * **Support for 24kHz sampling rate for audio playback**
 
-    Adds support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
+    Added support for audio data with a sample rate of 24000 Hz in `onPlaybackAudioFrame`. When calling `setPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
 
 * **`onEncodedVideoFrameReceived` supports `channelId`**
 
-    Adds the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
+    Added the `channelId` parameter to the `onEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
 
 * **Additional improvements**
 
@@ -14317,7 +14505,6 @@ This release fixes the following issues:
 - In online education scenarios, teachers occasionally observed audio and video out of sync for multiple students in the local view.
 - The second call to `enumerateVideoDevices` to retrieve the device list did not take effect.
 - On Windows 7 devices, when sharing a PowerPoint window running in full-screen auto-play mode with a large number of animations, the remote view occasionally flickered.
-
 
 
 </Accordion>
@@ -14931,7 +15118,6 @@ This release fixes the following issue:
 - `ChannelMediaRelayEvent`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.6" id="v426-5" headingLevel={3} value="v426-5">
@@ -15122,7 +15308,6 @@ This version fixed the following issues:
 - Brief noise occurred while playing media files using the media player.
 - Occasional crash after calling the `destroyMediaPlayer` method. (iOS)
 - In screen sharing use-cases, some Android devices experienced choppy video on the receiving end. (Android)
-
 
 
 </Accordion>
@@ -15572,7 +15757,6 @@ This release fixes the following issues:
 - `RelayEventPacketUpdateDestChannelRefused (8)` in `ChannelMediaRelayEvent`
 
 
-
 </Accordion>
 
 <Accordion title="v4.0.0" id="v400-7" headingLevel={3} value="v400-7">
@@ -15747,7 +15931,6 @@ Released on December 18, 2025.
 This release includes the following changes:
 
 - Updates the built-in Web SDK to v4.24.1. For details on the changes between Web SDK v4.24.0 to v4.24.1, see the [Web SDK release notes](/en/realtime-media/rtc/reference?platform=web).
-
 
 
 </Accordion>
@@ -15990,13 +16173,13 @@ Included in this release:
 
 * **Multi-resolution video streams**
 
-    This release introduces the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
+    Introduced the Adaptive Bitrate Video Streaming (ABR) feature, which supports sending multiple video streams at different resolutions from the same video source simultaneously, including in multi-channel scenarios. Receivers can automatically or manually subscribe to streams at their preferred resolution.
 
     After enabling ABR, you can configure up to four video stream layers (one main stream at the highest resolution and up to three lower-resolution streams), and set options such as resolution, bitrate, and layered streaming fallback. When layered streaming fallback is enabled, the SDK automatically switches to lower-resolution streams under poor network conditions to maintain a smooth viewing experience. This feature is suited for meetings, large classes, interactive live streaming, and other multi-device or multi-network environments.
 
 * **Multi-path network transmission**
 
-    This release introduces multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
+    Introduced multi-path transmission for devices that support multiple network interfaces (such as 5G, Wi-Fi, and LAN). This feature reduces or eliminates experience degradation caused by poor network conditions, making it suitable for real-time audio and video communication in challenging environments such as vehicles, IoT devices, trains, and highways.
 
     Enable multi-path transmission by setting `enableMultipath` to `true` in `ChannelMediaOptions`. Two transmission modes are supported through `MultipathMode`:
 
@@ -16007,15 +16190,15 @@ Included in this release:
 
 * **Video quality scoring**
 
-    This release adds the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
+    Added the `mosValue` field to `RemoteVideoStats`, reporting the quality score of the received remote video stream as evaluated by the Agora real-time video MOS (Mean Opinion Score) system. Scores range from 1 to 5, where 5 indicates excellent video quality and 1 indicates extremely poor quality. Use this field to monitor subjective video quality in real time, adjust video parameters dynamically, or integrate into quality monitoring and alerting workflows. [Contact technical support](mailto:support@agora.io) to enable this feature.
 
 * **Support for adding multiple watermarks**
 
-    This release deprecates `AddVideoWatermark` [2/3] and `AddVideoWatermarkEx` [1/2], and introduces `AddVideoWatermarkWithConfig` [3/3] and `AddVideoWatermarkWithConfigEx` [2/2], which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `RemoveVideoWatermark`.
+    Deprecated `AddVideoWatermark` [2/3] and `AddVideoWatermarkEx` [1/2], and introduced `AddVideoWatermarkWithConfig` [3/3] and `AddVideoWatermarkWithConfigEx` [2/2], which support adding multiple watermarks to a video using watermark IDs and controlling their display order. To remove a specific watermark, call `RemoveVideoWatermark`.
 
 * **Token renewal result callback**
 
-    This release introduces the `onRenewTokenResult` callback and the `RENEW_TOKEN_ERROR_CODE` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RENEW_TOKEN_ERROR_CODE`, allowing you to handle token renewal failure scenarios accordingly.
+    Introduced the `onRenewTokenResult` callback and the `RENEW_TOKEN_ERROR_CODE` error code enum. After calling `renewToken` to update the token, the SDK reports the result through `onRenewTokenResult` and returns detailed error codes defined in `RENEW_TOKEN_ERROR_CODE`, allowing you to handle token renewal failure scenarios accordingly.
 
 * **App-level screen sharing support on Android**
 
@@ -16056,13 +16239,13 @@ This release includes the following enhancements:
 
 * **Seamless switching for sound effect files**
 
-    Adds support for seamless switching of sound effect files. For the same sound effect file, if you call `PreloadEffectEx` followed by `PlayEffectEx`, the SDK does not close the file after playback completes or when `StopEffect` is called. When you call `PlayEffectEx` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
+    Added support for seamless switching of sound effect files. For the same sound effect file, if you call `PreloadEffectEx` followed by `PlayEffectEx`, the SDK does not close the file after playback completes or when `StopEffect` is called. When you call `PlayEffectEx` again, the SDK reuses the loaded file to enable loop playback and seamless switching. This feature also works in multi-channel scenarios.
 
 * **Window exclusion support for secondary displays**
 
     Before v4.6.2, configuring window exclusion (`excludeWindowList` in `ScreenCaptureParameters`) was not supported in multi-screen scenarios when sharing by screen ID (`StartScreenCaptureByDisplayId`). This release adds support for this configuration.
 
-    This release also adds a new member to `LOCAL_VIDEO_STREAM_REASON` to report cases where window exclusion fails during screen sharing.
+    Also added a new member to `LOCAL_VIDEO_STREAM_REASON` to report cases where window exclusion fails during screen sharing.
 
 * **Improved trigger timing of `OnVideoDeviceStateChanged`**
 
@@ -16070,15 +16253,15 @@ This release includes the following enhancements:
 
 * **Improved accuracy of network quality evaluation**
 
-    Improves the accuracy of network quality evaluation in the `OnNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
+    Improved the accuracy of network quality evaluation in the `OnNetworkQuality` callback, making the reported data better reflect the user's perceived experience.
 
 * **Support for 24kHz sampling rate for audio playback**
 
-    Adds support for audio data with a sample rate of 24000 Hz in `OnPlaybackAudioFrame`. When calling `SetPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
+    Added support for audio data with a sample rate of 24000 Hz in `OnPlaybackAudioFrame`. When calling `SetPlaybackAudioFrameParameters` to set the playback audio format, you can set `sampleRate` to `24000`.
 
 * **`OnEncodedVideoFrameReceived` supports `channelId`**
 
-    Adds the `channelId` parameter to the `OnEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
+    Added the `channelId` parameter to the `OnEncodedVideoFrameReceived` callback, helping you identify which channel the encoded video data belongs to.
 
 * **Additional improvements**
 
@@ -16111,7 +16294,6 @@ This release fixes the following issues:
 - In online education scenarios, teachers occasionally observed audio and video out of sync for multiple students in the local view.
 - The second call to `EnumerateVideoDevices` to retrieve the device list did not take effect.
 - On Windows 7 devices, when sharing a PowerPoint window running in full-screen auto-play mode with a large number of animations, the remote view occasionally flickered.
-
 
 
 </Accordion>
@@ -17101,7 +17283,6 @@ This release fixes the following issues:
 - `OnReadyToSendMetadata`
 
 
-
 </Accordion>
 
 <Accordion title="v4.2.1" id="v421-8" headingLevel={3} value="v421-8">
@@ -17733,7 +17914,6 @@ This release fixes the following issues:
 - `EnableDualStreamMode` [2/3]
 - Removes deprecated member parameters `backgroundImage` and `watermark` in `LiveTranscoding` class (Android/iOS/macOS)
 - Removes `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8) in `OnChannelMediaRelayEvent callback`
-
 
 
 </Accordion>
@@ -18944,211 +19124,6 @@ This extension enables your users to apply beauty effects to their videos. They 
 Released on November 26, 2022.
 
 This is the first version of `agora-extension-beauty-effect`. For integration steps, see [Beauty Effect](/en/realtime-media/rtc/build/apply-video-effects/beauty-effect).
-
-</PlatformStructured>
-
-<PlatformStructured platform="android">
-
-## MetaKit extension
-
-<Accordions type="multiple" openFirst>
-
-<Accordion title="v2.2.0" id="v220-1" headingLevel={3} value="v220-1">
-
-
-v2.2.0 was released on September 13, 2024.
-
-#### New features
-
-**Stickers**
-
-This version adds the sticker feature that uses the face capture driver and follows the character's head movements. The SDK provides subpackages for glasses (`material_sticker_glass`), masks (`material_sticker_facemask`), veils (`material_sticker_veil`), and dragon head hats (`material_sticker_dragonhat`). You can load the corresponding scene resources to quickly experience the effects of different stickers.
-
-**Portrait edge light**
-
-This release adds a new portrait edge light effect. To experience it, specify the subpackage resource as `material_effect_ray` when loading scene resources.
-
-**Advertising light text-to-image**
-
-This version adds a text-to-image feature for the advertising lights. When setting the advertising light effects, you can specify the text content through the `text` parameter and add animation effects through the `animation` parameter. This includes jumping, waving, or swaying, to make the text appear dynamically on the screen.
-
-#### Improvements
-
-This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensionProperty`.
-
-- When using `loadMaterial` to load scene resources, you can specify the resource path of the required subpackage. The engine will automatically request the scene texture and render the scene.
-- If you need to switch to another scene, just use `loadMaterial` again to pass in another subpackage resource path. The engine will automatically switch to the new scene.
-- When you no longer need to experience the scene, use `unloadMaterial` to uninstall scene resources.
-
-This improvement significantly enhances the usability of the extension. You can quickly experience different functional use-cases by simply specifying different subpackage resource paths when loading.
-
-#### API changes
-
-**Added**
-
-- `loadMaterial`
-- `unloadMaterial`
-
-
-</Accordion>
-
-<Accordion title="v2.1.0" id="v210-2" headingLevel={3} value="v210-2">
-
-
-v2.1.0 was released on March 6, 2024.
-
-#### Improvements
-
-This update optimizes the performance of the MetaKit extension and adds support for two new keys in `setExtensionProperty`: `requestTexture` and `switchTextureAvatarMode`. These replace the original `addSceneView` and `switchAvatarMode` functions, respectively. The new interface supports automatic generation and return of texture data, which is then directly rendered, previewed, encoded, and transmitted through the SDK. This enhancement improves rendering performance, reduces latency, and ensures more efficient operation and a better user experience.
-
-#### API changes
-
-**Added**
-
-- `requestTexture`
-- `switchTextureAvatarMode`
-
-
-</Accordion>
-
-<Accordion title="v2.0.0" id="v200-3" headingLevel={3} value="v200-3">
-
-
-v2.0.0 was released on February 23, 2024.
-
-This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
-
-
-</Accordion>
-</Accordions>
-
-## Camera Movement extension
-
-<Accordions type="multiple" openFirst>
-
-<Accordion title="v1.2.0" id="v120-1" headingLevel={3} value="v120-1">
-
-
-v1.2.0 was released on April 29, 2024.
-
-#### Improvements
-
-- Added support for RTC SDK v4.3.x.
-- Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
-
-
-</Accordion>
-
-<Accordion title="v1.0.0" id="v100-3" headingLevel={3} value="v100-3">
-
-
-v1.0.0 was released on February 23, 2024.
-
-This is the initial release of the Agora Camera Movement extension.
-
-The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
-
-
-</Accordion>
-</Accordions>
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-## MetaKit extension
-
-<Accordions type="multiple" openFirst>
-
-<Accordion title="v2.2.0" id="v220-2" headingLevel={3} value="v220-2">
-
-
-v2.2.0 was released on September 13, 2024.
-
-#### New features
-
-**Stickers**
-
-This version adds the sticker feature that uses the face capture driver and follows the character's head movements. The SDK provides subpackages for glasses (`material_sticker_glass`), masks (`material_sticker_facemask`), veils (`material_sticker_veil`), and dragon head hats (`material_sticker_dragonhat`). You can load the corresponding scene resources to quickly experience the effects of different stickers.
-
-**Portrait edge light**
-
-This release adds a new portrait edge light effect. To experience it, specify the subpackage resource as `material_effect_ray` when loading scene resources.
-
-**Advertising light text-to-image**
-
-This version adds a text-to-image feature for the advertising lights. When setting the advertising light effects, you can specify the text content through the `text` parameter and add animation effects through the `animation` parameter. This includes jumping, waving, or swaying, to make the text appear dynamically on the screen.
-
-#### Improvements
-
-This update adds support for `loadMaterial` and `unloadMaterial` in `setExtensionPropertyWithVendor`.
-
-- When using `loadMaterial` to load scene resources, you can specify the resource path of the required subpackage. The engine will automatically request the scene texture and render the scene.
-- If you need to switch to another scene, just use `loadMaterial` again to pass in another subpackage resource path. The engine will automatically switch to the new scene.
-- When you no longer need to experience the scene, use `unloadMaterial` to uninstall scene resources.
-
-This improvement significantly enhances the usability of the extension. You can quickly experience different functional use-cases by simply specifying different subpackage resource paths when loading.
-
-#### API changes
-
-**Added**
-
-- `loadMaterial`
-- `unloadMaterial`
-
-
-</Accordion>
-
-<Accordion title="v2.1.0" id="v210-3" headingLevel={3} value="v210-3">
-
-
-v2.1.0 was released on March 6, 2024.
-
-This update focuses on optimizing the performance of the MetaKit extension, ensuring more efficient operation and a better user experience.
-
-
-</Accordion>
-
-<Accordion title="v2.0.0" id="v200-4" headingLevel={3} value="v200-4">
-
-
-v2.0.0 was released on February 23, 2024.
-
-This is the first release of the MetaKit extension. This extension integrates multiple AI technologies to provide users with diverse video enhancement functions in audio and video interaction use-cases.
-
-
-</Accordion>
-</Accordions>
-
-## Camera Movement extension
-
-<Accordions type="multiple" openFirst>
-
-<Accordion title="v1.2.0" id="v120-2" headingLevel={3} value="v120-2">
-
-
-v1.2.0 was released on April 29, 2024.
-
-#### Improvements
-
-- Added support for RTC SDK v4.3.x.
-- Improved the performance of the Camera Movement extension, reducing potential stuttering issues on low-end devices.
-
-
-</Accordion>
-
-<Accordion title="v1.0.0" id="v100-4" headingLevel={3} value="v100-4">
-
-
-v1.0.0 was released on February 23, 2024.
-
-This is the initial release of the Agora Camera Movement extension.
-
-The extension uses AI technology and intelligent camera movement algorithms to provide various features for audio and video interaction use-cases.
-
-
-</Accordion>
-</Accordions>
 
 </PlatformStructured>
 
