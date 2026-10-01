@@ -25,9 +25,9 @@ If you use an AI coding assistant, such as Claude Code, Cursor, or GitHub Copilo
 Use Agora Skills to set up and run the Agora RTC Next.js video call quickstart locally.
 ```
 
-Your assistant installs the Agora CLI, signs you in, creates the app, and starts it. When the app is running, [test the call](#test-the-call). To run each step yourself instead, follow [Create and run the app](#create-and-run-the-app).
+Your assistant installs the Agora CLI, signs you in, creates the app, and starts it. When the app is running, [test the call](#test-the-call). To run each step instead, follow [Create and run the app yourself](#create-and-run-the-app-yourself).
 
-## Create and run the app
+## Create and run the app yourself
 
 Sign in with the CLI, create the app, and start it locally:
 
@@ -81,12 +81,12 @@ Start and join a call from two tabs in the same browser:
 1. Select **Invite participant** to copy the invite link.
 1. Open a new tab in the same browser, paste the link, enter a different name, and select **Join Call**.
 
-    Both tabs show two participants, and each tab plays the other participant's video.
+    Both tabs show two participants, and each tab plays the other user's video.
 
 :::warning[Testing notes]
 The invite link points to `localhost`, so it only works on your computer. To test from another device, deploy the app over HTTPS. See [Deployment](https://github.com/AgoraIO-Community/agora-rtc-quickstart-nextjs#deployment) in the app's README.
 
-If you start a test call with both participants on the same computer, expect the following:
+If you start a test call with both users on the same computer, expect the following:
 
 - **Camera**: Use two tabs in the same browser. If you open the invite link in a different browser, or another app is using your camera, the second tab joins without video and shows **Your camera is off**.
 - **Audio**: Both tabs use the same microphone and speakers. To avoid echo, wear headphones or mute one tab.
@@ -94,11 +94,11 @@ If you start a test call with both participants on the same computer, expect the
 
 ## How it works
 
-The app uses the credentials and project that `agora init` set up to connect participants through Agora:
+The app uses the credentials and project that `agora init` set up to connect users through Agora:
 
 - **Credentials**: The App Certificate in `.env.local` stays on the app's server and never reaches the browser.
-- **Tokens**: When a participant joins, the app's server route generates a token for that participant and channel using the App Certificate. Agora uses the token to [authenticate the user](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
-- **Media**: For each participant, the Agora RTC SDK joins the channel, publishes the camera and microphone, and plays the other participant's audio and video. Agora's SDRTN® carries the media between the tabs.
+- **Tokens**: When a user joins, the app's server route generates a token for that user and channel using the App Certificate. Agora uses the token to [authenticate the user](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
+- **Media**: For each user, the Agora RTC SDK joins the channel, publishes the camera and microphone, and plays the other user's audio and video. Agora's SDRTN® carries the media between the tabs.
 
 ## Troubleshooting
 
