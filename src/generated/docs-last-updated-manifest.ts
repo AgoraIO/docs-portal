@@ -5780,7 +5780,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/channel-and-connection/region-restriction.md':
     '2026-06-02T03:20:10.000Z',
   'content/docs/en/realtime-media/rtc/cli-quickstart.mdx':
-    '2026-09-29T09:31:54.000Z',
+    '2026-10-01T07:43:02.000Z',
   'content/docs/en/realtime-media/rtc/core-concepts.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtc/get-started-sdk.mdx':
