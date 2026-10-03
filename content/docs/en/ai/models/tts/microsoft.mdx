@@ -63,7 +63,10 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
@@ -73,8 +76,8 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
         Key:       "your-azure-key",
         Region:    "eastus",
         VoiceName: "en-US-AndrewMultilingualNeural",
-        Speed:     agora.Float64(1.0),
-        Volume:    agora.Float64(70),
+        Speed:     Agora.Float64(1.0),
+        Volume:    Agora.Float64(70),
     }),
 )
 ```
