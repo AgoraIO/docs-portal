@@ -29,7 +29,7 @@ agent = (
     .with_stt(...)  # configure your STT vendor
     .with_llm(...)  # configure your LLM vendor
     .with_tts(OpenAITTS(
-        api_key='your-openai-key',  # omit api_key and base_url to use Agora-managed mode
+        api_key='your-openai-key',  # to use Agora-managed mode, omit api_key and base_url and set model to 'tts-1'
         base_url='https://api.openai.com/v1',
         model='gpt-4o-mini-tts',
         voice='coral',
@@ -51,7 +51,7 @@ const agent = new Agent({ client })
   .withStt(/* configure your STT vendor */)
   .withLlm(/* configure your LLM vendor */)
   .withTts(new OpenAITTS({
-    apiKey: 'your-openai-key',  // omit apiKey and baseUrl to use Agora-managed mode
+    apiKey: 'your-openai-key',  // to use Agora-managed mode, omit apiKey and baseUrl and set model to 'tts-1'
     baseUrl: 'https://api.openai.com/v1',
     model: 'gpt-4o-mini-tts',
     voice: 'coral',
@@ -75,7 +75,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(/* configure your LLM vendor */).
   WithTts(
     vendors.NewOpenAITTS(vendors.OpenAITTSOptions{
-        APIKey:       "your-openai-key", // omit APIKey and BaseURL to use Agora-managed mode
+        APIKey:       "your-openai-key", // to use Agora-managed mode, omit APIKey and BaseURL and set Model to "tts-1"
         BaseURL:      "https://api.openai.com/v1",
         Model:        "gpt-4o-mini-tts",
         Voice:        "coral",
