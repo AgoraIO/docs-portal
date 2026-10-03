@@ -508,7 +508,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/tts/murf.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/murf.mdx': '2026-10-03T07:26:51.000Z',
   'content/docs/en/ai/models/tts/openai.md': '2026-05-19T10:33:06.000Z',
-  'content/docs/en/ai/models/tts/openai.mdx': '2026-10-03T07:26:51.000Z',
+  'content/docs/en/ai/models/tts/openai.mdx': '2026-10-03T07:59:53.000Z',
   'content/docs/en/ai/models/tts/rime.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/tts/rime.mdx': '2026-09-14T09:50:45.000Z',
   'content/docs/en/ai/models/tts/sarvam.md': '2026-05-19T10:33:06.000Z',
