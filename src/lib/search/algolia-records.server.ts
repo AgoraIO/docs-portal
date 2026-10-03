@@ -4,9 +4,11 @@ import { structure } from 'fumadocs-core/mdx-plugins';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
 import remarkDirective from 'remark-directive';
+import remarkMdx from 'remark-mdx';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
+import { remarkAccordionHeadings } from '../mdx/accordion-toc';
 import {
   getOpenApiEndpointUrl,
   getOpenApiLaneLocales,
@@ -49,10 +51,6 @@ type AlgoliaContentDocsPage = {
 const MAX_CHUNK_LENGTH = 4500;
 const INDEXED_LOCALES: readonly AppLocale[] = getPublishedDocsLocales('global');
 const PUBLIC_FAQ_URLS = new Set(faqItems.map(({ href }) => href));
-const APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS = new Set([
-  '/en/realtime-media/interactive-live-streaming/product-overview',
-  '/en/realtime-media/broadcast-streaming/product-overview',
-]);
 
 // Classify a doc by its URL for search ranking. No taxonomy exists in
 // frontmatter, so this derives it once, at index time, from path conventions:
@@ -169,16 +167,6 @@ function getHiddenSearchablePageBreadcrumbs(
     return ['Reference', 'FAQ', humanizeSlug(secondSegment)];
   }
 
-  if (
-    route.tab === 'realtime-media' &&
-    firstSegment &&
-    secondSegment === 'product-overview' &&
-    route.slugSegments.length === 2 &&
-    APPROVED_HIDDEN_PRODUCT_OVERVIEW_URLS.has(url)
-  ) {
-    return ['RTC', humanizeSlug(firstSegment)];
-  }
-
   return undefined;
 }
 
@@ -249,7 +237,10 @@ export function buildAlgoliaOpenApiRecord({
  * the scanned node types so identifiers inside fenced blocks stay searchable.
  */
 export function extractDocSearchContent(markdown: string) {
-  const extracted = structure(markdown, [remarkDirective], {
+  const plugins = markdown.includes('<Accordion')
+    ? [remarkMdx, remarkDirective, remarkAccordionHeadings]
+    : [remarkDirective];
+  const extracted = structure(markdown, plugins, {
     types: STRUCTURE_CONTENT_TYPES,
   });
 

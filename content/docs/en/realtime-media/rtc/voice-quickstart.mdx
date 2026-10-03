@@ -4,7 +4,7 @@ description: "Build a voice-only app using the Agora RTC SDK."
 ---
 
 <PlatformStructured platform="android">
-This Android quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK. 
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -76,30 +76,62 @@ Use either of the following methods to add RTC SDK to your project.
 
 <Tabs>
 <TabsList>
-  <TabsTrigger value="maven-central">Maven Central</TabsTrigger>
+  <TabsTrigger value="maven-central">Gradle</TabsTrigger>
   <TabsTrigger value="manual-integration">Manual integration</TabsTrigger>
 </TabsList>
 
 <TabsContent value="maven-central">
 
-1. Open the `settings.gradle` file in the project's root directory and add the Maven Central dependency, if it doesn't already exist:
+1. Open the `settings.gradle` file in the project's root directory and add the Agora Maven CDN repository to `dependencyResolutionManagement.repositories`.
 
-    ```text
-    repositories {
-      mavenCentral()
-    }
-    ```
+    Don't remove existing repositories such as `google()` and `mavenCentral()`.
+
+    - Groovy `settings.gradle`
+
+      ```groovy
+      dependencyResolutionManagement {
+          repositories {
+              google()
+              mavenCentral()
+              maven { url = 'https://download.agora.io/maven/' }
+          }
+      }
+      ```
+
+    - Kotlin `settings.gradle.kts`
+
+      ```kotlin
+      dependencyResolutionManagement {
+          repositories {
+              google()
+              mavenCentral()
+              maven { url = uri("https://download.agora.io/maven/") }
+          }
+      }
+      ```
 
     :::note
-    If your Android project uses <a href="https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration">dependencyResolutionManagement</a>, the method of adding the Maven Central dependency may differ.
+    If you cannot find the `dependencyResolutionManagement` field in `settings.gradle` or `settings.gradle.kts`, your Android Gradle plugin version might be earlier than 7.1.0.
+
+    For details, see [Android Gradle plugin 7.1.0 release notes](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes).
     :::
 
+    If your Android Gradle plugin version is earlier than 7.1.0, open the project-level `build.gradle` file and add the following configuration to `allprojects.repositories`:
+
+    ```text
+    allprojects {
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.agora.io/maven/' }
+        }
+    }
+    ```
 
 1. To integrate the RTC SDK into your Android project, add the following to the `dependencies` block in your project module `build.gradle` file:
 
     - Groovy `build.gradle`
 
-        ```json
+        ```groovy
         implementation 'io.agora.rtc:voice-sdk:x.y.z'
         ```
 
@@ -112,17 +144,23 @@ Use either of the following methods to add RTC SDK to your project.
     Replace `x.y.z` with the specific SDK version number, such as `4.5.0`.
 
     :::note
-    To get the latest version number, check the [Release notes](reference/release-notes.mdx). To integrate the Lite SDK, use `io.agora.rtc:lite-sdk` instead.
+    To get the latest version number, check the [Release notes](/en/realtime-media/rtc/reference/release-notes).
     :::
 
 1. Prevent code obfuscation
 
-    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+    If your app does not enable R8/ProGuard shrinking and obfuscation, no additional configuration is required. If your app enables R8/ProGuard shrinking and obfuscation, choose one of the following configurations:
 
-    ```java
-    -keep class io.agora.** { *; }
-      -dontwarn io.agora.**
-    ```
+    - Quick configuration: Open the `/app/proguard-rules.pro` file and add the following rules to keep all RTC SDK classes:
+
+        ```java
+        -keep class io.agora.** { *; }
+        -dontwarn io.agora.**
+        ```
+
+    - Fine-grained configuration: If you have stricter requirements for app size, code shrinking, or obfuscation, use the `consumer-proguard-rules.pro` file provided with the SDK. This file keeps only the Java classes, members, and methods that the native layer accesses through JNI, so the rest of the SDK Java code can still be shrunk, optimized, and obfuscated by R8/ProGuard.
+
+        `consumer-proguard-rules.pro` is included in the AAR and takes effect automatically when you build your app. You do not need to copy it manually.
 
 </TabsContent>
 
@@ -145,12 +183,31 @@ Use either of the following methods to add RTC SDK to your project.
 
 1. Prevent code obfuscation
 
-    Open the `/app/proguard-rules.pro` file and add the following lines to prevent the RTC SDK code from being obfuscated:
+    If your app does not enable R8/ProGuard shrinking and obfuscation, no additional configuration is required. If your app enables R8/ProGuard shrinking and obfuscation, choose one of the following configurations:
 
-    ```java
-    -keep class io.agora.** { *; }
-      -dontwarn io.agora.**
-    ```
+    - Quick configuration: Open the `/app/proguard-rules.pro` file and add the following rules to keep all RTC SDK classes:
+
+        ```java
+        -keep class io.agora.** { *; }
+        -dontwarn io.agora.**
+        ```
+
+    - Fine-grained configuration: If you have stricter requirements for app size, code shrinking, or obfuscation, use the `consumer-proguard-rules.pro` file provided with the SDK. This file keeps only the Java classes, members, and methods that the native layer accesses through JNI, so the rest of the SDK Java code can still be shrunk, optimized, and obfuscated by R8/ProGuard.
+
+        Copy `consumer-proguard-rules.pro` into your project and add it to `build.gradle`:
+
+        ```groovy
+        android {
+            buildTypes {
+                release {
+                    minifyEnabled true
+                    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                            'proguard-rules.pro',
+                            'consumer-proguard-rules.pro'
+                }
+            }
+        }
+        ```
 
 </TabsContent>
 </Tabs>
@@ -949,7 +1006,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
-This iOS quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -1509,7 +1566,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-This macOS quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -2022,7 +2079,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="web">
-This Web quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK. Switch to the [Android](/en/realtime-media/rtc/voice-quickstart/android) or [iOS](/en/realtime-media/rtc/voice-quickstart/ios) quickstart, or choose another platform from the selector.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 * [RTC SDK API examples](https://github.com/AgoraIO/API-Examples-Web): Sample projects for the Agora RTC Web SDK 4.x, covering basic, advanced examples for Vue and React.
 
@@ -2475,7 +2532,7 @@ Use one of the following solutions to resolve the issue:
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
-This Windows quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -3121,7 +3178,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
-This Electron quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -3687,7 +3744,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
-This Flutter quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -4166,7 +4223,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
-This React Native quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -4844,7 +4901,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="react-js">
-This JavaScript quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -5191,7 +5248,7 @@ Agora provides an open source [sample project on GitHub](https://github.com/Agor
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
-This Unity quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -5740,7 +5797,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
-This Unreal Engine quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -6485,7 +6542,7 @@ To learn about Agora Unreal Blueprint development, refer to the [Unreal (Bluepri
 </PlatformStructured>
 
 <PlatformStructured platform="blueprint">
-This Unreal Blueprint quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 
@@ -6796,7 +6853,7 @@ Agora provides open source sample projects on [GitHub](https://github.com/AgoraI
 </PlatformStructured>
 
 <PlatformStructured platform="python">
-This Python quickstart shows you how to create a basic Voice Calling app using the Agora RTC SDK.
+This page provides a step-by-step guide on how to create a voice-only app using the Agora RTC SDK.
 
 ## Understand the tech
 

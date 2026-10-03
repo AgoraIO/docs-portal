@@ -52,6 +52,29 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it.each([
+    [
+      '/en/cloud-recording/overview/pricing',
+      undefined,
+      '/en/realtime-media/cloud-recording/reference/pricing',
+    ],
+    [
+      '/en/on-premise-recording/overview/billing',
+      '?platform=linux-cpp',
+      '/en/realtime-media/on-premise-recording/reference/pricing',
+    ],
+    [
+      '/en/cloud-recording/overview/pricing-webpage-recording',
+      undefined,
+      '/en/realtime-media/cloud-recording/reference/pricing-webpage-recording',
+    ],
+  ])('redirects %s to its current pricing page', (path, search, target) => {
+    expect(resolveStaticLegacySitemapRedirect(path, search)).toEqual({
+      preserveSearch: true,
+      redirectUrl: target,
+    });
+  });
+
   it('redirects the legacy Chat RESTful overview to the API reference overview', () => {
     expect(
       resolveStaticLegacySitemapRedirect(
@@ -72,6 +95,22 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
+  it.each([
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=go'],
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=linux-cpp'],
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=linux-java'],
+    ['/en/server-gateway/develop/cloud-proxy', '?platform=python'],
+  ])(
+    'redirects the removed Server Gateway Cloud Proxy path %s',
+    (path, search) => {
+      expect(resolveStaticLegacySitemapRedirect(path, search)).toEqual({
+        preserveSearch: true,
+        redirectUrl:
+          '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy',
+      });
+    },
+  );
+
   it('redirects legacy Agora Platform community resources to Discord', () => {
     expect(
       resolveStaticLegacySitemapRedirect('/en/AgoraPlatform/community/'),
@@ -87,6 +126,16 @@ describe('static legacy sitemap redirects', () => {
     ).toEqual({
       preserveSearch: true,
       redirectUrl: '/en/api-reference/recipes',
+    });
+  });
+
+  it.each([
+    ['/en/Agora%20Platform/downloads', '/en/api-reference/sdks'],
+    ['/en/Agora%20Platform/sampleapps', '/en/api-reference/recipes'],
+  ])('redirects the encoded legacy Agora Platform path %s', (path, target) => {
+    expect(resolveStaticLegacySitemapRedirect(path)).toEqual({
+      preserveSearch: true,
+      redirectUrl: target,
     });
   });
 

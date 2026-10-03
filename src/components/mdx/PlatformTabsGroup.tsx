@@ -1000,7 +1000,10 @@ function syncPlatformPath(platform: PlatformKey) {
   }
 
   const nextPath = buildDocPath(locale, tab, [...pathSlugSegments, platform]);
-  const nextUrl = `${nextPath}${window.location.search}${window.location.hash}`;
+  const searchParams = new URLSearchParams(window.location.search);
+  searchParams.delete('platform');
+  const nextSearch = searchParams.toString();
+  const nextUrl = `${nextPath}${nextSearch ? `?${nextSearch}` : ''}`;
 
   if (
     nextUrl !==
