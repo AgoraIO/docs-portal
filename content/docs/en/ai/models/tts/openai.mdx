@@ -65,7 +65,10 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
@@ -77,7 +80,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
         Model:        "gpt-4o-mini-tts",
         Voice:        "coral",
         Instructions: "Please use standard American English, natural tone, moderate pace, and steady intonation",
-        Speed:        agora.Float64(1),
+        Speed:        Agora.Float64(1),
     }),
 )
 ```
