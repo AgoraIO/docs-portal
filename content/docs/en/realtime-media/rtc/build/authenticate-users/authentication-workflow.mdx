@@ -1214,10 +1214,10 @@ class ViewController: UIViewController {
         fetchToken(channelName: "test", userId: 1234, role: 1) { result in
             switch result {
                 case .success(let token):
-                    print("token is: \\(token)")
+                    print("token is: \(token)")
                     self.joinChannel(token: token)
                 case .failure(let err):
-                    print("Could not fetch token: \\(err)")
+                    print("Could not fetch token: \(err)")
             }
         }
     }
@@ -1339,11 +1339,11 @@ extension ViewController: AgoraRtcEngineDelegate {
         self.fetchToken(channelName: "test", userId: 1234, role: 1) { result in
             switch result {
                 case .success(let token):
-                    print("token is: \\(token)")
+                    print("token is: \(token)")
                     self.agoraKit.renewToken(token)
                     print("Renewed the token")
                 case .failure(let err):
-                    print("Could not fetch token: \\(err)")
+                    print("Could not fetch token: \(err)")
             }
         }
     }
@@ -1361,10 +1361,10 @@ extension ViewController: AgoraRtcEngineDelegate {
         fetchToken(channelName: "test", userId: 1234, role: 1) { result in
             switch result {
                 case .success(let token):
-                    print("token is: \\(token)")
+                    print("token is: \(token)")
                     self.joinChannel(token: token)
                 case .failure(let err):
-                    print("Could not fetch token: \\(err)")
+                    print("Could not fetch token: \(err)")
             }
         }
     }

@@ -92,7 +92,7 @@ logConfig.level = AgoraLogLevel.error
 let formatter = DateFormatter()
 formatter.dateFormat = "ddMMyyyyHHmm"
 let folder = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-logConfig.filePath = "\\(folder[0])/logs/\\(formatter.string(from: Date())).log"
+logConfig.filePath = "\(folder[0])/logs/\(formatter.string(from: Date())).log"
 // Set log file size to 2 MB
 logConfig.fileSizeInKB = 2 * 1024
 
