@@ -804,7 +804,7 @@ The following example saves a set of metadata items for a specified user. It con
 <TabsContent value="swift">
 
 ```swift
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let name = AgoraRtmMetadataItem()
 name.key = "Name"
@@ -979,7 +979,7 @@ The following example updates the value of an existing metadata item:
 <TabsContent value="swift">
 
 ```swift
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -1049,7 +1049,7 @@ To delete metadata items that are no longer required, call `removeUserMetadata`.
 <TabsContent value="swift">
 
 ```swift
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -1103,7 +1103,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To delete the entire set of metadata for a user, do not add any metadata items when calling `removeUserMetadata`. Refer to the following sample code:
 
 ```swift tab="Swift"
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Remove user metadata
 rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
@@ -1238,7 +1238,7 @@ When setting user metadata, or a single user metadata item, use the revision att
 The following code snippet demonstrates how to employ `majorRevision` and `revision` for updating user metadata and metadata items:
 
 ```swift tab="Swift"
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let sessionRequest = AgoraRtmMetadataItem()
 // Set user avatar URL as metadata
@@ -1375,7 +1375,7 @@ The following example saves a set of metadata items for a specified user. It con
 <TabsContent value="swift">
 
 ```swift
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let name = AgoraRtmMetadataItem()
 name.key = "Name"
@@ -1550,7 +1550,7 @@ The following example updates the value of an existing metadata item:
 <TabsContent value="swift">
 
 ```swift
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -1620,7 +1620,7 @@ To delete metadata items that are no longer required, call `removeUserMetadata`.
 <TabsContent value="swift">
 
 ```swift
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -1674,7 +1674,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To delete the entire set of metadata for a user, do not add any metadata items when calling `removeUserMetadata`. Refer to the following sample code:
 
 ```swift tab="Swift"
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Remove user metadata
 rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
@@ -1809,7 +1809,7 @@ When setting user metadata, or a single user metadata item, use the revision att
 The following code snippet demonstrates how to employ `majorRevision` and `revision` for updating user metadata and metadata items:
 
 ```swift tab="Swift"
-guard let metadata = AgoraRtmMetadata() else { return }!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let sessionRequest = AgoraRtmMetadataItem()
 // Set user avatar URL as metadata
