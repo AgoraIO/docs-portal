@@ -597,7 +597,7 @@ To establish a `MESSAGE` connection, refer to the following code:
 ```swift tab="Swift"
 rtm.login(token) {res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -632,7 +632,7 @@ join_option.token = "your_token"
 join_option.features = [.presence, .metadata]
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -840,7 +840,7 @@ In a message channel, the connection status affects measurement of the peak numb
 ```swift tab="Swift"
 rtm.logout() {res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -868,7 +868,7 @@ When you no longer need a stream connection, call the `leave` method to exit the
 ```swift tab="Swift"
 stream_channel.leave({ res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -994,7 +994,7 @@ To establish a `MESSAGE` connection, refer to the following code:
 ```swift tab="Swift"
 rtm.login(token) {res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1029,7 +1029,7 @@ join_option.token = "your_token"
 join_option.features = [.presence, .metadata]
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1237,7 +1237,7 @@ In a message channel, the connection status affects measurement of the peak numb
 ```swift tab="Swift"
 rtm.logout() {res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1265,7 +1265,7 @@ When you no longer need a stream connection, call the `leave` method to exit the
 ```swift tab="Swift"
 stream_channel.leave({ res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }

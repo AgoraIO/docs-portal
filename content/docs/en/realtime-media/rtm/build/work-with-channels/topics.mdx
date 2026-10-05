@@ -502,7 +502,7 @@ streamChannel.joinTopic("your_topic", option: nil) { response, errorInfo in
     if errorInfo == nil {
         print("Join topic success!!")
     } else {
-        print("Join topic failed, errorCode: \\(errorInfo?.errorCode), reason: \\(errorInfo?.reason)")
+        print("Join topic failed, errorCode: \(errorInfo?.errorCode), reason: \(errorInfo?.reason)")
     }
 }
 ```
@@ -549,7 +549,7 @@ streamChannel.leaveTopic("your_topic", completion: { response, errorInfo in
             print("Leave topic success!!")
         } else {
             if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-                print("Leave topic failed, errorCode: \\(errorCode), reason: \\(reason)")
+                print("Leave topic failed, errorCode: \(errorCode), reason: \(reason)")
             }
         }
 })
@@ -595,8 +595,8 @@ if errorInfo == nil {
     if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
         let successUsers = response?.succeedUsers ?? []
         let failedUsers = response?.failedUsers ?? []
-        print("Subscribe topic failed, errorCode: \\(errorCode), reason: \\(reason)")
-        print("Succeeded users: \\(successUsers), Failed users: \\(failedUsers)")
+        print("Subscribe topic failed, errorCode: \(errorCode), reason: \(reason)")
+        print("Succeeded users: \(successUsers), Failed users: \(failedUsers)")
     }
 }
 })
@@ -646,7 +646,7 @@ streamChannel.unsubscribeTopic("your_topic", option: topicOpt,  completion:{ res
         print("Unsubscribe topic success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("Unsubscribe topic failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("Unsubscribe topic failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 });
@@ -830,7 +830,7 @@ streamChannel.joinTopic("your_topic", option: nil) { response, errorInfo in
     if errorInfo == nil {
         print("Join topic success!!")
     } else {
-        print("Join topic failed, errorCode: \\(errorInfo?.errorCode), reason: \\(errorInfo?.reason)")
+        print("Join topic failed, errorCode: \(errorInfo?.errorCode), reason: \(errorInfo?.reason)")
     }
 }
 ```
@@ -877,7 +877,7 @@ streamChannel.leaveTopic("your_topic", completion: { response, errorInfo in
             print("Leave topic success!!")
         } else {
             if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-                print("Leave topic failed, errorCode: \\(errorCode), reason: \\(reason)")
+                print("Leave topic failed, errorCode: \(errorCode), reason: \(reason)")
             }
         }
 })
@@ -923,8 +923,8 @@ if errorInfo == nil {
     if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
         let successUsers = response?.succeedUsers ?? []
         let failedUsers = response?.failedUsers ?? []
-        print("Subscribe topic failed, errorCode: \\(errorCode), reason: \\(reason)")
-        print("Succeeded users: \\(successUsers), Failed users: \\(failedUsers)")
+        print("Subscribe topic failed, errorCode: \(errorCode), reason: \(reason)")
+        print("Succeeded users: \(successUsers), Failed users: \(failedUsers)")
     }
 }
 })
@@ -974,7 +974,7 @@ streamChannel.unsubscribeTopic("your_topic", option: topicOpt,  completion:{ res
         print("Unsubscribe topic success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("Unsubscribe topic failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("Unsubscribe topic failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 });

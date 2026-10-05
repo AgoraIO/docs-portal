@@ -610,7 +610,7 @@ Use the `subscribe` method to subscribe to a message channel. After you subscrib
 ```swift
 rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -649,7 +649,7 @@ To subscribe to multiple channels, call `subscribe` multiple times:
 ```swift
 rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -657,7 +657,7 @@ rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
 
 rtm?.subscribe(channelName: channel2, option: nil, completion: { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -713,7 +713,7 @@ Refer to the following sample code for sending messages:
 
         rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
             if error != nil {
-                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+                print("\(error?.operation) failed! error reason is \(error?.reason)")
             } else {
                 print("success")
             }
@@ -744,7 +744,7 @@ Refer to the following sample code for sending messages:
         // Publish the binary data to the specified channel
         rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
             if error != nil {
-                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+                print("\(error?.operation) failed! error reason is \(error?.reason)")
             } else {
                 print("success")
             }
@@ -787,7 +787,7 @@ let option = AgoraRtmSubscribeOptions();
 option.features = [.presence, .metadata, .lock]
 rtm?.subscribe(channelName: channel, option: option, completion: { res, error in
         if error != nil {
-            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+            print("\(error?.operation) failed! error reason is \(error?.reason)")
         } else {
             print("success")
         }
@@ -831,7 +831,7 @@ To stop receiving messages and other event notifications from a channel, call `u
 ```swift
 rtmClient?.unsubscribe(channel) { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -867,7 +867,7 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
 
-```swift tab="Swift"
+```text tab="Swift"
 // errorInfo
 {
     errorInfo.errorCode = .channelMessageLengthExceedLimitation
@@ -959,7 +959,7 @@ Use the `subscribe` method to subscribe to a message channel. After you subscrib
 ```swift
 rtm?.subscribe(channelName: channel, option: nil, completion: { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -998,7 +998,7 @@ To subscribe to multiple channels, call `subscribe` multiple times:
 ```swift
 rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1006,7 +1006,7 @@ rtm?.subscribe(channelName: channel1, option: nil, completion: { res, error in
 
 rtm?.subscribe(channelName: channel2, option: nil, completion: { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1062,7 +1062,7 @@ Refer to the following sample code for sending messages:
 
         rtm.publish(channelName: channel, message: message, option: nil, completion: { res, error in
             if error != nil {
-                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+                print("\(error?.operation) failed! error reason is \(error?.reason)")
             } else {
                 print("success")
             }
@@ -1093,7 +1093,7 @@ Refer to the following sample code for sending messages:
         // Publish the binary data to the specified channel
         rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion: { res, error in
             if error != nil {
-                print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+                print("\(error?.operation) failed! error reason is \(error?.reason)")
             } else {
                 print("success")
             }
@@ -1136,7 +1136,7 @@ let option = AgoraRtmSubscribeOptions();
 option.features = [.presence, .metadata, .lock]
 rtm?.subscribe(channelName: channel, option: option, completion: { res, error in
         if error != nil {
-            print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+            print("\(error?.operation) failed! error reason is \(error?.reason)")
         } else {
             print("success")
         }
@@ -1180,7 +1180,7 @@ To stop receiving messages and other event notifications from a channel, call `u
 ```swift
 rtmClient?.unsubscribe(channel) { res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1216,7 +1216,7 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes limits on the size of the message payload sent in message channels and stream channels. The limit is 32 KB for message channels and 1 KB for stream channels. The message payload size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
 
-```swift tab="Swift"
+```text tab="Swift"
 // errorInfo
 {
     errorInfo.errorCode = .channelMessageLengthExceedLimitation
