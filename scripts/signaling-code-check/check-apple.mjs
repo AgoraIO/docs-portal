@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Compile-check extracted Swift and Objective-C documentation samples against a
  * real AgoraRtmKit xcframework. macOS only: it shells out to `xcrun swiftc` and

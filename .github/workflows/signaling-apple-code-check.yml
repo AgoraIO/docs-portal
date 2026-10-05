@@ -171,6 +171,24 @@ jobs:
             echo '::endgroup::'
           done
 
+      # TEMPORARY DIAGNOSTIC, REMOVE WITH THE REST OF THE SCAFFOLDING.
+      # Swift renames imported NS_ENUM cases, and the result is not reliably
+      # guessable from the Objective-C spelling. An inexhaustive switch makes
+      # the compiler list every case by its real Swift name.
+      - name: Probe the Swift spelling of imported enum cases
+        continue-on-error: true
+        run: |
+          SDK_PATH=$(xcrun --sdk iphonesimulator --show-sdk-path)
+          SLICE=$(find .sdk -type d -name 'ios-*-simulator' | head -1)
+          cat > /tmp/probe.swift <<'SWIFT'
+          import AgoraRtmKit
+          func __probeEncryption(_ mode: AgoraRtmEncryptionMode) { switch mode {} }
+          func __probeArea(_ code: AgoraRtmAreaCode) { switch code {} }
+          SWIFT
+          xcrun --sdk iphonesimulator swiftc -typecheck \
+            -target arm64-apple-ios14.0-simulator -sdk "$SDK_PATH" \
+            -F "$SLICE" /tmp/probe.swift 2>&1 | head -40
+
       # Guarded because a harness failure, such as the smoke test rejecting the
       # SDK, exits before any summary is written.
       - name: Publish the summary

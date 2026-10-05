@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Extract fenced code blocks from Signaling docs, filtered by the enclosing
  * `<PlatformStructured platform="...">` range and by fence language.
