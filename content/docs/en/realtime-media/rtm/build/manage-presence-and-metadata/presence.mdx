@@ -1010,7 +1010,7 @@ presenceOptions.includeUserId = true
 presenceOptions.page = "your_Next_Page_Bookmark"
 
 // Retrieve the user state of the current channel
-rtm.getPresence()?.getOnlineUsers("your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+rtm.getPresence()?.getOnlineUser(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("getOnlineUsers success!!")
 
@@ -1662,7 +1662,7 @@ presenceOptions.includeUserId = true
 presenceOptions.page = "your_Next_Page_Bookmark"
 
 // Retrieve the user state of the current channel
-rtm.getPresence()?.getOnlineUsers("your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+rtm.getPresence()?.getOnlineUser(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
     if errorInfo == nil {
         print("getOnlineUsers success!!")
 
