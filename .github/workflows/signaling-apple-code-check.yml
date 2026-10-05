@@ -12,13 +12,6 @@ name: Signaling Apple code check
 # exits 0 when blocks fail, so it would report without blocking.
 
 on:
-  # TEMPORARY, REMOVE BEFORE MERGING. GitHub only offers workflow_dispatch for
-  # workflows that already exist on the default branch, so until this lands on
-  # main the only way to run it is a push trigger scoped to its own branch.
-  push:
-    branches:
-      - signaling-ios-code-check
-
   workflow_dispatch:
     inputs:
       platform:
@@ -31,11 +24,11 @@ on:
       files:
         description: Space-separated .mdx paths to check
         type: string
-        default: content/docs/en/realtime-media/rtm/quickstart.mdx
+        default: content/docs/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-state-transitions.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/channel-basics.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/topics.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/user-channel.mdx content/docs/en/realtime-media/rtm/quickstart.mdx content/docs/en/realtime-media/rtm/reference/downloads.mdx content/docs/en/realtime-media/rtm/reference/migration-guide.mdx content/docs/en/realtime-media/rtm/reference/release-notes.mdx content/docs/en/realtime-media/rtm/reference/supported-platforms.mdx
       api_ref_files:
         description: Space-separated api-ref .mdx paths (one file per platform, no PlatformStructured wrapper)
         type: string
-        default: content/docs/en/api-reference/api-ref/signaling/ios.mdx
+        default: content/docs/en/api-reference/api-ref/signaling/ios.mdx content/docs/en/api-reference/api-ref/signaling/macos.mdx
       rtm_version:
         description: AgoraRtmKit xcframework version
         type: string
@@ -51,10 +44,8 @@ permissions:
 # A push event carries no inputs, so every setting falls back to the same
 # default the dispatch form offers.
 env:
-  PLATFORM: ${{ inputs.platform || 'macos' }}
-  # Set per batch while the pages are worked through; the dispatch form can
-  # still override it. Reverts to the quickstart at cleanup time.
-  FILES: ${{ inputs.files || 'content/docs/en/realtime-media/rtm/quickstart.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-state-transitions.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/topics.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/user-channel.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx content/docs/en/realtime-media/rtm/reference/migration-guide.mdx content/docs/en/realtime-media/rtm/reference/release-notes.mdx' }}
+  PLATFORM: ${{ inputs.platform || 'ios' }}
+  FILES: ${{ inputs.files || 'content/docs/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-state-transitions.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/channel-basics.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/topics.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/user-channel.mdx content/docs/en/realtime-media/rtm/quickstart.mdx content/docs/en/realtime-media/rtm/reference/downloads.mdx content/docs/en/realtime-media/rtm/reference/migration-guide.mdx content/docs/en/realtime-media/rtm/reference/release-notes.mdx content/docs/en/realtime-media/rtm/reference/supported-platforms.mdx' }}
   # The api-ref pages are one file per platform rather than one file holding
   # every platform, so they are extracted with the platform filter switched off.
   API_REF_FILES: ${{ inputs.api_ref_files || 'content/docs/en/api-reference/api-ref/signaling/ios.mdx content/docs/en/api-reference/api-ref/signaling/macos.mdx' }}
@@ -109,14 +100,6 @@ jobs:
             "https://download.agora.io/rtm2/release/aosl.xcframework_${AOSL_VERSION}.zip"
           unzip -q /tmp/aosl.zip -d .sdk
 
-      # The first run is also a reconnaissance run: print the slice names, the
-      # headers and the Swift module map, so the layout is on the record.
-      - name: Show what the SDK archives contain
-        run: |
-          find .sdk -maxdepth 3 -type d | sort
-          echo '--- headers and module maps ---'
-          find .sdk -name '*.h' -o -name 'module.modulemap' -o -name '*.swiftinterface' | sort
-
       # The inputs go through the environment rather than straight into the
       # script body, so a crafted input cannot inject shell.
       - name: Extract the documented code blocks
@@ -170,24 +153,6 @@ jobs:
               --summary "api-ref-summary-$slice.md"
             echo '::endgroup::'
           done
-
-      # TEMPORARY DIAGNOSTIC, REMOVE WITH THE REST OF THE SCAFFOLDING.
-      # Swift renames imported NS_ENUM cases, and the result is not reliably
-      # guessable from the Objective-C spelling. An inexhaustive switch makes
-      # the compiler list every case by its real Swift name.
-      - name: Probe the Swift spelling of imported enum cases
-        continue-on-error: true
-        run: |
-          SDK_PATH=$(xcrun --sdk iphonesimulator --show-sdk-path)
-          SLICE=$(find .sdk -type d -name 'ios-*-simulator' | head -1)
-          cat > /tmp/probe.swift <<'SWIFT'
-          import AgoraRtmKit
-          func __probeEncryption(_ mode: AgoraRtmEncryptionMode) { switch mode {} }
-          func __probeArea(_ code: AgoraRtmAreaCode) { switch code {} }
-          SWIFT
-          xcrun --sdk iphonesimulator swiftc -typecheck \
-            -target arm64-apple-ios14.0-simulator -sdk "$SDK_PATH" \
-            -F "$SLICE" /tmp/probe.swift 2>&1 | head -40
 
       # Guarded because a harness failure, such as the smoke test rejecting the
       # SDK, exits before any summary is written.

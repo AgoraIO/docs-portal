@@ -112,3 +112,31 @@ needed separate audits, both worth running here:
   `onLoginResult`.
 - **Section headings that name a different method than the section documents.**
   76 of those were wrong across the Signaling platform pages.
+- **Broken string interpolation.** A doubled backslash, as in
+  `print("Error: \\(error)")`, escapes the backslash itself, so Swift prints a
+  literal `\(error)` rather than the value. It compiles, so no run will ever
+  flag it. 192 of these were found in the Signaling docs only by reading the
+  rendered page. Grep for `\\(` inside swift fences.
+
+## Finding the Swift spelling of an imported enum case
+
+Swift renames `NS_ENUM` cases, and the result is not guessable from the
+Objective-C spelling: it does **not** lowercase an all-caps remainder, so
+`AgoraRtmEncryptionAES256GCM` imports as `.AES256GCM`, not `.aes256GCM`. Rather
+than guess, make the compiler list them with an inexhaustive switch:
+
+```swift
+import AgoraRtmKit
+func probe(_ mode: AgoraRtmEncryptionMode) { switch mode {} }
+```
+
+Each missing case is reported by its real Swift name. This does not work for
+`NS_OPTIONS` types such as `AgoraRtmAreaCode`, which import as an `OptionSet`.
+
+## Rewriting samples in bulk
+
+Match on more than the text you intend to replace. Replacing
+`AgoraRtmMetadata()` broke 18 samples that already wrote `AgoraRtmMetadata()!`,
+because the trailing `!` survived the substitution. Check what follows a match,
+and re-run the check afterwards: these failures look like new defects rather
+than edits.
