@@ -693,7 +693,7 @@ You can call the `subscribeTopic` method as follows:
 ```objc
 AgoraRtmSubscribeOptions* opt = [[AgoraRtmSubscribeOptions alloc] init];
 opt.features = AgoraRtmSubscribeChannelFeatureMessage|AgoraRtmSubscribeChannelFeaturePresence;
-[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[rtm subscribeWithChannel:@"your_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe success!!");
     } else {
@@ -729,11 +729,11 @@ You can call the `unsubscribeTopic` method as follows:
 #### Basic usage
 
 ```objc
-[rtm unsubscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[rtm unsubscribeWithChannel:@"your_channel" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
-        NSLog(@"subscribe success!!");
+        NSLog(@"unsubscribe success!!");
     } else {
-        NSLog(@"subscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+        NSLog(@"unsubscribe failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
     }
 }];
 ```
@@ -765,12 +765,13 @@ You can call the `initWithConfig` method as follows:
 #### Basic usage
 
 ```objc
-AgoraRtmStreamChannel* stream_channel = [rtm createStreamChannel:@"your_channel"];
-    if (stream_channel == nil) {
-        NSLog("create stream channel failed");
-    } else {
-        NSLog("create stream channel success");
-    };
+NSError* create_error = nil;
+AgoraRtmStreamChannel* stream_channel = [rtm createStreamChannel:@"your_channel" error:&create_error];
+if (stream_channel == nil) {
+    NSLog(@"create stream channel failed: %@", create_error);
+} else {
+    NSLog(@"create stream channel success");
+}
 ```
 
 #### Return Value
@@ -1009,7 +1010,7 @@ Example 1: Send string messages to a specified channel.
 ```objc
 NSString* message = @"Hello Agora!";
 NSString* channel = @"your_channel";
-[stream_channel publishTopicMessage:@"your_topic" message:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[stream_channel publishTopicMessage:@"your_topic" message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"publish success!!");
     } else {
@@ -1305,6 +1306,7 @@ publish_option.channelType = AgoraRtmChannelTypeUser;
 ```
 Example 4: Send byte messages to a specified user.
 ```objc
+unsigned char byte_array[5] = {0,1,2,3,4};
 NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
 NSString* user = @"Tony";
 
@@ -1447,7 +1449,7 @@ The `AgoraRtmUserState` data type contains the following properties:
 #### Basic usage
 
 ```objc
-AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+AgoraRtmGetOnlineUsersOptions* presence_opt = [[AgoraRtmGetOnlineUsersOptions alloc] init];
 presence_opt.includeState = false;
 presence_opt.includeUserId = false;
 
@@ -1781,7 +1783,7 @@ The `AgoraRtmGetMetadataResponse` data type contains the following properties:
     if (errorInfo == nil) {
         NSLog(@"getChannelMetadata success!!");
         AgoraRtmMetadata* data = response.data; //get storage data;
-        NSArray<AgoraRtmMetadataItem *> * items = [data getMetadataItems];
+        NSArray<AgoraRtmMetadataItem *> * items = data.items;
         for (int i = 0; i < items.count; i++) {
             NSLog(@"key: %@ value: %@ revision: %lld", items[i].key, items[i].value, items[i].revision);
         }
@@ -1846,6 +1848,8 @@ apple.revision = 174298200;
 NSArray *item_array = [NSArray arrayWithObjects:apple];
 metadata.items = item_array;
 metadata.majorRevision = 174298100;
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
 
 [[rtm getStorage] removeChannelMetadata:@"channel_name" channelType:AgoraRtmChannelTypeMessage data:metadata options:metadata_opt lock:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
@@ -2039,7 +2043,7 @@ The `AgoraRtmGetMetadataResponse` data type contains the following properties:
     if (errorInfo == nil) {
         NSLog(@"getUserMetadata success!!");
         AgoraRtmMetadata* data = response.data; //get storage data;
-        NSArray<AgoraRtmMetadataItem *> * items = [data getMetadataItems];
+        NSArray<AgoraRtmMetadataItem *> * items = data.items;
         for (int i = 0; i < items.count; i++) {
             NSLog(@"key: %@ value: %@ revison: %lld", items[i].key, items[i].value, items[i].revision);
         }
