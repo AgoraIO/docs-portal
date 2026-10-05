@@ -51,13 +51,13 @@ permissions:
 # A push event carries no inputs, so every setting falls back to the same
 # default the dispatch form offers.
 env:
-  PLATFORM: ${{ inputs.platform || 'ios' }}
+  PLATFORM: ${{ inputs.platform || 'macos' }}
   # Set per batch while the pages are worked through; the dispatch form can
   # still override it. Reverts to the quickstart at cleanup time.
   FILES: ${{ inputs.files || 'content/docs/en/realtime-media/rtm/quickstart.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/authentication-workflow.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/client-configuration.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-management.mdx content/docs/en/realtime-media/rtm/build/connect-and-authenticate/connection/connection-state-transitions.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/topics.mdx content/docs/en/realtime-media/rtm/build/work-with-channels/user-channel.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/presence.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/data-encryption.mdx content/docs/en/realtime-media/rtm/build/secure-your-app-and-data/geofencing.mdx content/docs/en/realtime-media/rtm/reference/migration-guide.mdx content/docs/en/realtime-media/rtm/reference/release-notes.mdx' }}
   # The api-ref pages are one file per platform rather than one file holding
   # every platform, so they are extracted with the platform filter switched off.
-  API_REF_FILES: ${{ inputs.api_ref_files || 'content/docs/en/api-reference/api-ref/signaling/ios.mdx' }}
+  API_REF_FILES: ${{ inputs.api_ref_files || 'content/docs/en/api-reference/api-ref/signaling/macos.mdx' }}
   RTM_VERSION: ${{ inputs.rtm_version || '2.3.0' }}
   AOSL_VERSION: ${{ inputs.aosl_version || '1.3.5' }}
 
