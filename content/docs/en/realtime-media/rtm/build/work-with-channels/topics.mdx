@@ -606,7 +606,7 @@ if errorInfo == nil {
 AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
 topic_opt.users = @[@"user1", @"user2"];
 
-[stream_channel subscribeTopic:@"your_topic" withOption:topic_opt completion:^(AgoraRtmTopicSubscriptionResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[stream_channel subscribeTopic:@"your_topic" option:topic_opt completion:^(AgoraRtmTopicSubscriptionResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe topic success!!");
     } else {
@@ -672,7 +672,7 @@ When a user joins a channel for the first time, the SDK delivers a topic event n
 AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
 topic_opt.users = @[@"user1", @"user2"];
 
-[stream_channel unsubscribeTopic:@"your_topic" withOption:topic_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[stream_channel unsubscribeTopic:@"your_topic" option:topic_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe topic success!!");
     } else {
@@ -934,7 +934,7 @@ if errorInfo == nil {
 AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
 topic_opt.users = @[@"user1", @"user2"];
 
-[stream_channel subscribeTopic:@"your_topic" withOption:topic_opt completion:^(AgoraRtmTopicSubscriptionResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[stream_channel subscribeTopic:@"your_topic" option:topic_opt completion:^(AgoraRtmTopicSubscriptionResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe topic success!!");
     } else {
@@ -1000,7 +1000,7 @@ When a user joins a channel for the first time, the SDK delivers a topic event n
 AgoraRtmTopicOption* topic_opt = [[AgoraRtmTopicOption alloc] init];
 topic_opt.users = @[@"user1", @"user2"];
 
-[stream_channel unsubscribeTopic:@"your_topic" withOption:topic_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[stream_channel unsubscribeTopic:@"your_topic" option:topic_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe topic success!!");
     } else {

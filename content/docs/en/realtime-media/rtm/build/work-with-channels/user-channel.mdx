@@ -272,15 +272,18 @@ let message = "Hello Agora!"
 
 ```swift tab="Swift" tabGroup="language"
 let bytes: [UInt8] = [ /* your raw values */ ]
-    let rawMessage = Data(bytes: bytes, count: bytes.count)
+let rawMessage = Data(bytes: bytes, count: bytes.count)
 
-    streamChannel.publish(channelName: user, data: rawMessage, option: nil) { response, errorInfo in
-        if errorInfo == nil {
-            print("publish success!!")
-        } else {
-            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-        }
+let publishOption = AgoraRtmPublishOptions()
+publishOption.channelType = .user
+
+rtm.publish(channelName: user, data: rawMessage, option: publishOption) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
     }
+}
 ```
 
 ```objc tab="Objective-C" tabGroup="language"
@@ -412,15 +415,18 @@ let message = "Hello Agora!"
 
 ```swift tab="Swift" tabGroup="language"
 let bytes: [UInt8] = [ /* your raw values */ ]
-    let rawMessage = Data(bytes: bytes, count: bytes.count)
+let rawMessage = Data(bytes: bytes, count: bytes.count)
 
-    streamChannel.publish(channelName: user, data: rawMessage, option: nil) { response, errorInfo in
-        if errorInfo == nil {
-            print("publish success!!")
-        } else {
-            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-        }
+let publishOption = AgoraRtmPublishOptions()
+publishOption.channelType = .user
+
+rtm.publish(channelName: user, data: rawMessage, option: publishOption) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
     }
+}
 ```
 
 ```objc tab="Objective-C" tabGroup="language"
