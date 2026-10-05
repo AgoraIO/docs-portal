@@ -99,7 +99,7 @@ describe('docs journeys', () => {
       /(\.\.\/build\/start-stop-agent(?:\.md)?|\/en\/ai\/build\/start-stop-agent)/,
     );
     expect(quickstart).toMatch(
-      /(\.\.\/build\/custom-model-integration\/managed-mode|\/en\/ai\/build\/custom-model-integration\/managed-mode)/,
+      /(\.\.\/build\/managed-mode|\/en\/ai\/build\/managed-mode)/,
     );
     expect(quickstart).toMatch(
       /(\.\.\/best-practices\/optimize-latency(?:\.md)?|\/en\/ai\/best-practices\/optimize-latency)/,
@@ -119,29 +119,22 @@ describe('docs journeys', () => {
     );
   });
 
-  it('connects the Realtime Media home, Voice and Video starts, and RTC API reference path', () => {
+  it('connects the Realtime Media home, RTC voice and video starts, and RTC API reference path', () => {
     const realtime = readDoc('en/realtime-media/index.md');
     expect(realtime).toContain('/en/realtime-media/rtc');
 
     const realtimeMeta = JSON.parse(readDoc('en/realtime-media/meta.json'));
-    expect(realtimeMeta.pages).toEqual(
-      expect.arrayContaining(['voice', 'video']),
-    );
+    expect(realtimeMeta.pages).toContain('rtc');
 
-    const voice = readDoc('en/realtime-media/voice/index.mdx');
-    expect(voice).toContain(
-      '<Card title="SDK quickstart" href="quickstart.mdx"',
+    const rtc = readDoc('en/realtime-media/rtc/index.mdx');
+    expect(rtc).toContain(
+      '<Card title="SDK quickstart" href="/en/realtime-media/rtc/get-started-sdk"',
     );
-    expect(voice).toContain('/en/api-reference/api-ref/rtc');
+    expect(rtc).toContain('href="/en/realtime-media/rtc/voice-quickstart"');
+    expect(rtc).toContain('/en/api-reference/api-ref/rtc');
 
-    const video = readDoc('en/realtime-media/video/index.mdx');
-    expect(video).toContain(
-      '<Card title="SDK quickstart" href="/en/realtime-media/video/get-started-sdk"',
-    );
-    expect(video).toContain('/en/api-reference/api-ref/rtc');
-
-    expect(docExists('en/realtime-media/voice/quickstart.mdx')).toBe(true);
-    expect(docExists('en/realtime-media/video/get-started-sdk.mdx')).toBe(true);
+    expect(docExists('en/realtime-media/rtc/voice-quickstart.mdx')).toBe(true);
+    expect(docExists('en/realtime-media/rtc/get-started-sdk.mdx')).toBe(true);
 
     const rtcApiMeta = JSON.parse(
       readDoc('en/api-reference/api-ref/rtc/meta.json'),
@@ -151,7 +144,7 @@ describe('docs journeys', () => {
     );
   });
 
-  it('keeps zh-CN RTC API navigation versioned while English uses canonical Voice and Video reference docs', () => {
+  it('keeps zh-CN RTC API navigation versioned while English uses canonical RTC reference docs', () => {
     const realtimeRtcMeta = JSON.parse(
       readDoc('zh-CN/realtime-media/rtc/meta.json'),
     );
@@ -164,14 +157,10 @@ describe('docs journeys', () => {
       expect.arrayContaining(['api-reference', 'release-notes']),
     );
 
-    const englishVoiceReferenceMeta = JSON.parse(
-      readDoc('en/realtime-media/voice/reference/meta.json'),
+    const englishRtcReferenceMeta = JSON.parse(
+      readDoc('en/realtime-media/rtc/reference/meta.json'),
     );
-    const englishVideoReferenceMeta = JSON.parse(
-      readDoc('en/realtime-media/video/reference/meta.json'),
-    );
-    expect(englishVoiceReferenceMeta.pages).toContain('supported-platforms');
-    expect(englishVideoReferenceMeta.pages).toContain('supported-platforms');
+    expect(englishRtcReferenceMeta.pages).toContain('supported-platforms');
 
     const androidApiMeta = JSON.parse(
       readDoc('zh-CN/api-reference/rtc/android/meta.json'),
@@ -191,25 +180,26 @@ describe('docs journeys', () => {
     expect(shapeMeta).toEqual({
       title: 'Shape the conversation',
       pages: [
-        'interrupt-agent',
-        'short-term-memory',
         'custom-information',
+        'short-term-memory',
+        'interrupt-agent',
         'filler-words',
+        'asr-keywords',
       ],
+    });
+
+    const toolsMeta = JSON.parse(readDoc('en/ai/build/tools/meta.json'));
+    expect(toolsMeta).toEqual({
+      title: 'Add tools',
+      pages: ['custom-tools', 'mcp-tools'],
     });
 
     const customModelMeta = JSON.parse(
       readDoc('en/ai/build/custom-model-integration/meta.json'),
     );
     expect(customModelMeta).toEqual({
-      title: 'Custom model integration',
-      pages: [
-        'custom-llm',
-        'custom-tts',
-        'audio-output',
-        'build-server-client',
-        'managed-mode',
-      ],
+      title: 'Integrate custom models',
+      pages: ['custom-llm', 'audio-output', 'custom-tts'],
     });
 
     const runtimeMeta = JSON.parse(
@@ -219,9 +209,9 @@ describe('docs journeys', () => {
       title: 'Handle runtime events',
       pages: [
         'get-runtime-events',
-        'monitor-agent-runtime',
-        'webhooks',
         'event-notifications',
+        'webhooks',
+        'monitor-agent-runtime',
         'debug-agent-failures',
         'retrieve-session-history',
       ],

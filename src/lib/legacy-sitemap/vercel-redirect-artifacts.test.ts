@@ -50,47 +50,22 @@ describe('legacy redirect Vercel artifacts', () => {
     rewrites?: unknown[];
     routes?: VercelRoute[];
   };
-  it('routes legacy Video platform queries to static platform pages before serving HTML', () => {
-    const source = '/en/realtime-media/video/reference/release-notes';
-    const rules =
-      vercelConfig.redirects?.filter((rule) => rule.source === source) ?? [];
-    for (const platform of [
-      'android',
-      'ios',
-      'macos',
-      'web',
-      'windows',
-      'electron',
-      'flutter',
-      'react-native',
-      'javascript',
-      'unity',
-      'unreal',
-      'blueprint',
-      'react-js',
-      'windows-cpp',
-    ]) {
-      const rule = rules.find((candidate) =>
-        candidate.has?.some(
-          (condition) =>
-            condition.key === 'platform' &&
-            new RegExp(`^${condition.value}$`).test(platform),
-        ),
-      );
-      expect(rule, platform).toBeDefined();
-      const condition = rule?.has?.find((item) => item.key === 'platform');
-      const groups = condition
-        ? new RegExp(`^${condition.value}$`).exec(platform)?.groups
-        : undefined;
-      const destination = rule?.destination.replace(
-        ':platform',
-        groups?.platform ?? '',
-      );
-      expect(destination).toBe(
-        `${source}/${platform === 'react-js' ? 'javascript' : platform === 'windows-cpp' ? 'windows' : platform}`,
-      );
-      expect(rule?.statusCode).toBe(307);
-    }
+  it('does not redirect into the retired RTC product folders', () => {
+    const retiredFolder =
+      /^\/en\/realtime-media\/(video|voice|interactive-live-streaming|broadcast-streaming)(\/|$)/;
+    const destinations = [
+      ...(vercelConfig.redirects ?? []).map((rule) => rule.destination),
+      ...(vercelConfig.routes ?? []).flatMap((route) => [
+        route.dest ?? '',
+        route.headers?.Location ?? '',
+      ]),
+      ...bulkRedirects.map((rule) => rule.destination),
+      ...(staticRedirects as StaticRedirectRule[]).map((rule) => rule.t),
+    ];
+
+    expect(
+      destinations.filter((destination) => retiredFolder.test(destination)),
+    ).toEqual([]);
   });
 
   const bulkRedirects = JSON.parse(
@@ -211,6 +186,23 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('matches legacy Agora Platform URLs with encoded spaces in production', () => {
+    expect(bulkRedirects).toEqual(
+      expect.arrayContaining([
+        {
+          source: '/en/Agora%20Platform/downloads',
+          destination: '/en/api-reference/sdks',
+          statusCode: 301,
+          preserveQueryParams: true,
+        },
+        {
+          source: '/en/Agora%20Platform/sampleapps',
+          destination: '/en/api-reference/recipes',
+          statusCode: 301,
+          preserveQueryParams: true,
+        },
+      ]),
+    );
+
     expect(vercelConfig.routes).toEqual(
       expect.arrayContaining([
         {

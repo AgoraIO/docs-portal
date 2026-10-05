@@ -1086,4 +1086,84 @@ describe('app prose CSS regressions', () => {
     expect(appCss).not.toContain('data-openapi-code-viewport-active');
     expect(appCss).not.toContain('data-openapi-examples-rail-sentinel');
   });
+
+  it('keeps the IM pricing API table dense and width-controlled', () => {
+    const table = getRuleBodyContaining(
+      '.prose-no-margin.overflow-auto > table.im-pricing-api-table',
+    );
+    const cells = getRuleBody(
+      '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th, td)',
+    );
+    const headers = getRuleBody(
+      '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th)',
+    );
+    const endpoint = getRuleBody(
+      '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(td:nth-child(7) code)',
+    );
+
+    expectDeclaration(table.rule, 'table-layout', 'fixed');
+    expectDeclaration(table.rule, 'width', '100%');
+    expectDeclaration(table.rule, 'min-width', '0');
+    expectDeclaration(cells.rule, 'min-width', '0');
+    expectDeclaration(cells.rule, 'padding', '0.45rem 0.35rem');
+    expectDeclaration(cells.rule, 'line-height', '1.45');
+    expectDeclaration(headers.rule, 'white-space', 'normal');
+    expectDeclaration(headers.rule, 'line-height', '1.35');
+    expectDeclaration(endpoint.rule, 'overflow-wrap', 'anywhere');
+    expectDeclaration(endpoint.rule, 'word-break', 'break-word');
+
+    const columnWidths = [
+      [
+        '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th:nth-child(1), td:nth-child(1))',
+        '15%',
+      ],
+      [
+        '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th:nth-child(2), td:nth-child(2))',
+        '16%',
+      ],
+      [
+        '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th:nth-child(3), td:nth-child(3))',
+        '17%',
+      ],
+      [
+        '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th:nth-child(4), td:nth-child(4))',
+        '11%',
+      ],
+      [
+        '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th:nth-child(5), td:nth-child(5))',
+        '17%',
+      ],
+      [
+        '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th:nth-child(6), td:nth-child(6))',
+        '10%',
+      ],
+      [
+        '.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th:nth-child(7), td:nth-child(7))',
+        '14%',
+      ],
+    ] as const;
+
+    for (const [selector, width] of columnWidths) {
+      const column = getRuleBody(selector);
+      expectDeclaration(column.rule, 'width', width);
+    }
+
+    const mobileAtRule = appCssRoot.nodes.find(
+      (node): node is postcss.AtRule =>
+        node.type === 'atrule' &&
+        node.name === 'media' &&
+        node.params === '(max-width: 767px)',
+    );
+    expect(mobileAtRule).toBeDefined();
+
+    const mobileTableRule = mobileAtRule?.nodes?.find(
+      (node): node is postcss.Rule =>
+        node.type === 'rule' &&
+        normalizeSelector(node.selector) ===
+          '.prose-no-margin.overflow-auto > table.im-pricing-api-table',
+    );
+    expect(mobileTableRule).toBeDefined();
+    expectDeclaration(mobileTableRule as postcss.Rule, 'width', '60rem');
+    expectDeclaration(mobileTableRule as postcss.Rule, 'min-width', '60rem');
+  });
 });

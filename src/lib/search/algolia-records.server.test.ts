@@ -70,7 +70,7 @@ describe('buildAlgoliaContentDocsRecords', () => {
     ]);
   });
 
-  it('indexes hidden product overviews with humanized RTC breadcrumbs', () => {
+  it('does not index product overviews from the retired RTC folders', () => {
     const records = buildAlgoliaContentDocsRecords(
       [
         {
@@ -87,14 +87,7 @@ describe('buildAlgoliaContentDocsRecords', () => {
       new Map([['en', new Map()]]),
     );
 
-    expect(records.map(({ url }) => url)).toEqual([
-      '/en/realtime-media/interactive-live-streaming/product-overview',
-      '/en/realtime-media/broadcast-streaming/product-overview',
-    ]);
-    expect(records.map(({ breadcrumbs }) => breadcrumbs)).toEqual([
-      ['RTC', 'Interactive Live Streaming'],
-      ['RTC', 'Broadcast Streaming'],
-    ]);
+    expect(records).toEqual([]);
   });
 
   it('does not use fallback breadcrumbs for arbitrary hidden pages', () => {
@@ -183,6 +176,18 @@ describe('extractDocSearchContent', () => {
   const { contents, headings } = extractDocSearchContent(markdown);
   const joined = contents.map((block) => block.content).join('\n');
 
+  it('keeps ordinary MDX indexing unchanged when no version accordions exist', () => {
+    const result = extractDocSearchContent(
+      '## Compatibility\n\nRead <Slot name="example" /> for details.',
+    );
+
+    expect(result.contents).toContainEqual(
+      expect.objectContaining({
+        content: 'Read <Slot name="example" /> for details.',
+      }),
+    );
+  });
+
   it('strips Markdown syntax, keeping readable text', () => {
     expect(joined).toContain('Use bold text');
     expect(joined).not.toMatch(/\*\*/); // no bold markers
@@ -236,6 +241,32 @@ describe('extractDocSearchContent', () => {
     expect(setupBlock?.content).toContain('Second paragraph about setup.');
     // One record per heading section, not per paragraph.
     expect(result.contents).toHaveLength(2);
+  });
+
+  it('indexes an opted-in accordion version as a heading', () => {
+    const result = extractDocSearchContent(
+      [
+        '<Accordions defaultValue="v463">',
+        '<Accordion title="v4.6.3" id="v463" headingLevel={3}>',
+        '',
+        'This release fixes camera stability.',
+        '</Accordion>',
+        '</Accordions>',
+      ].join('\n'),
+    );
+
+    expect(result.headings).toContainEqual({
+      content: 'v4.6.3',
+      id: 'v463',
+    });
+    expect(result.contents).toContainEqual(
+      expect.objectContaining({
+        content: expect.stringContaining(
+          'This release fixes camera stability.',
+        ),
+        heading: 'v463',
+      }),
+    );
   });
 });
 
