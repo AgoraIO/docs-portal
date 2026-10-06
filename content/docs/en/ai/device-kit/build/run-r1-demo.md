@@ -20,12 +20,15 @@ By the end of this workshop, you will have:
 
 Before you begin, prepare the following:
 
-- Node.js, Bun or npm, Git, and your preferred AI coding tool
+- A macOS or Linux computer. On Windows, use WSL, because the quickstart scripts require a Bash shell.
+- [Bun](https://bun.sh), [Python](https://www.python.org) 3.10 or later with the `venv` module, Node.js, Git, and your preferred AI coding tool
 - The [Agora CLI](https://www.npmjs.com/package/agoraio-cli)
+- An [ngrok](https://ngrok.com) account and the ngrok agent installed
+- A GitHub account that can create GitHub Codespaces
 - An R1 development board based on BK7258
 - A 2.4 GHz Wi-Fi network that the R1 device can join
 - A USB cable for the `USB TO UART` interface
-- A firmware flashing tool, such as BKFIL for desktop or a workshop-provided web flashing flow
+- A Mac to run the BKFIL flashing tool
 
 ## Install Agora Skills and CLI
 
@@ -46,56 +49,45 @@ After installing the skills and CLI, you can ask your AI coding tool to inspect 
 
 ## Clone and run the voice agent quickstart
 
-Clone the workshop repository and check out the workshop branch:
+1. Clone the quickstart repository and check out the `r1-demo` branch. This branch adds the backend routes that the R1 firmware calls:
 
-```bash
-git clone https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python.git
-cd agent-quickstart-python
-git checkout r1-workshop
-```
+    ```bash
+    git clone https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python.git
+    cd agent-quickstart-python
+    git checkout r1-demo
+    ```
 
-Install dependencies:
+2. Sign in to Agora and select the project to use. If you already have a project with Conversational AI enabled, skip `agora project create` and pass your project name to `agora project use`:
 
-```bash tab="Bun" tabGroup="package-manager"
-bun install
-```
+    ```bash
+    agora login
+    agora project create my-first-voice-agent
+    agora project use my-first-voice-agent
+    ```
 
-```bash tab="npm" tabGroup="package-manager"
-npm install
-```
+3. Install dependencies, write your project credentials to `server/.env`, and check the setup:
 
-Connect the repository to your Agora project:
+    ```bash
+    bun run setup
+    agora quickstart env write .
+    bun run doctor:local
+    ```
 
-```bash
-agora login
-agora project create my-first-voice-agent
-agora project use my-first-voice-agent
-agora project env write server/.env.local --with-secrets
-```
+4. Start the local quickstart:
 
-Start the local quickstart:
+    ```bash
+    bun run dev
+    ```
 
-```bash tab="Bun" tabGroup="package-manager"
-bun run dev
-```
+    The quickstart serves the web app at `http://localhost:3000` and the local backend at `http://localhost:8000`.
 
-```bash tab="npm" tabGroup="package-manager"
-npm run dev
-```
+5. Verify the quickstart:
 
-The quickstart exposes two local services:
+    - Open `http://localhost:3000` and confirm the web app loads.
+    - Open `http://localhost:3000/api/get_config` and confirm it returns JSON.
+    - Click **Start Conversation**, allow microphone access, and confirm that the agent greets you and answers a question.
 
-| Service | URL |
-| --- | --- |
-| Web app | `http://localhost:3000` |
-| Local backend | `http://localhost:8000` |
-
-Before continuing:
-
-1. Open `http://localhost:3000` and confirm the web app loads.
-2. Open `http://localhost:3000/api/get_config` and confirm it returns JSON.
-3. Start a conversation session from the web app.
-4. Keep this terminal running. You will start ngrok in another terminal.
+Keep this terminal running. You start ngrok in another terminal in the next section.
 
 ## Configure ngrok URLs
 
@@ -108,7 +100,7 @@ Keep these URLs separate. The frontend URL is for browser users. The backend URL
 
 Copy your ngrok auth token from the ngrok dashboard, then authenticate ngrok locally:
 
-![Copy ngrok auth token](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-workshop/.github/workshop/images/0783dd7d-f647-49cb-aa31-923aac9d346f.png?raw=1)
+![Copy ngrok auth token](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-demo/.github/workshop/images/0783dd7d-f647-49cb-aa31-923aac9d346f.png?raw=1)
 
 ```bash
 ngrok config add-authtoken <YOUR_AUTH_TOKEN>
@@ -124,7 +116,7 @@ ngrok http 3000
 
 Copy the HTTPS forwarding URL and treat it as `YOUR_FRONTEND_NGROK_URL`.
 
-![ngrok forwarding URL](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-workshop/.github/workshop/images/645b7270-d503-4464-90ce-aa46f7da5d3a.png?raw=1)
+![ngrok forwarding URL](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-demo/.github/workshop/images/645b7270-d503-4464-90ce-aa46f7da5d3a.png?raw=1)
 
 ### Expose the backend for R1
 
@@ -143,6 +135,8 @@ Before continuing:
 1. Open `YOUR_FRONTEND_NGROK_URL` and confirm it loads the same web app as `http://localhost:3000`.
 2. Open `YOUR_BACKEND_NGROK_URL/get_config` and confirm it returns JSON for the IoT device protocol.
 3. Keep both ngrok tunnels running while the device is connected.
+
+On a free ngrok plan, the browser shows an ngrok warning page the first time you open each URL. Click **Visit Site** to continue. The warning page does not affect requests from the R1 device.
 
 :::warning
 Do not use `localhost`, `http://localhost:3000`, or `YOUR_FRONTEND_NGROK_URL` as the firmware server URL. The firmware must use `YOUR_BACKEND_NGROK_URL` from `ngrok http 8000`.
@@ -183,7 +177,7 @@ Download the setup script:
 
 ```bash
 curl -fL -o bk_aidk_codespaces_setup.sh \
-  https://raw.githubusercontent.com/AgoraIO-Conversational-AI/agent-quickstart-python/r1-workshop/.github/workshop/bk_aidk_codespaces_setup.sh
+  https://raw.githubusercontent.com/AgoraIO-Conversational-AI/agent-quickstart-python/r1-demo/.github/workshop/bk_aidk_codespaces_setup.sh
 ```
 
 Make the script executable and run it with your 2.4 GHz Wi-Fi credentials and backend ngrok URL:
@@ -197,6 +191,9 @@ chmod +x bk_aidk_codespaces_setup.sh
 ```
 
 Replace `YOUR_BACKEND_NGROK_URL` with the full HTTPS forwarding URL from `ngrok http 8000`, for example `https://abc123.ngrok-free.app`.
+:::warning
+The setup script writes your Wi-Fi credentials and server URL into the firmware configuration. Do not commit these files back to GitHub.
+:::
 
 ## Compile the firmware
 
@@ -240,39 +237,26 @@ for path in Path("build/beken_genie").rglob("all-app.bin"):
 PY
 ```
 
-For lower-level flashing details, see the [Beken firmware flashing documentation](https://docs.bekencorp.com/arminodoc/bk_idk/bk7258/en/v_ai_2.0.1/get-started/index.html#burn-code).
-
 ## Flash the firmware
 
-Use either desktop BKFIL or the workshop-provided web flashing flow.
+Flash the firmware with the Beken Flash Image Loader (BKFIL) for macOS. Download the `all-app.bin` file from your Codespace to your computer first. In the Codespaces file explorer, right-click the file and select **Download**.
 
-### Option A: Desktop BKFIL
+If you use Windows, see the [Beken firmware flashing documentation](https://docs.bekencorp.com/arminodoc/bk_idk/bk7258/en/v_ai_2.0.1/get-started/index.html#burn-code).
 
-For macOS, use the [BKFIL macOS package](https://agora-packages.s3.us-west-2.amazonaws.com/BKFIL_macos_4.0.1.25123002.zip), unless your workshop host provides a different version.
+1. Download and unzip the [BKFIL macOS package](https://agora-packages.s3.us-west-2.amazonaws.com/BKFIL_macos_4.0.1.25123002.zip), then open BKFIL.
+2. Connect the board to your computer using the `USB TO UART` interface.
+3. Click **Select Port** and choose the USB serial port, for example `/dev/cu.usbserial-1130`.
+4. Set **Baud** to `1500000` and **AppResetBaud** to `115200`, then click **OK**.
 
-1. Connect the board over USB.
-2. Choose the correct serial port.
-3. Select the generated `all-app.bin` file, or a workshop-provided firmware binary.
-4. Set the baudrate, commonly `1500000`.
-5. Start flashing.
-6. If prompted, press reset on the board.
-7. Wait for the success message before unplugging or rebooting the device.
+    ![Select serial port and baud](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-demo/.github/workshop/images/f64ace50-88d1-4314-b123-9a8e4c9b3c99.png?raw=1)
 
-![Desktop BKFIL successful flash](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-workshop/.github/workshop/images/1de54204-d760-4976-ab8c-6cbfaabc8216.png?raw=1)
+5. In the **BIN** section, select your `all-app.bin` file.
+6. Click **Download**.
+7. If the log shows `Please reset the chip` and `Waiting reset`, press the reset button on the board once.
 
-### Option B: Web BKFIL
+    ![BKFIL erase and download progress](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-demo/.github/workshop/images/45652655-5c11-4e19-bd40-b3b33e3605b9.png?raw=1)
 
-1. Open the BKFIL web UI provided by the workshop host.
-2. Select the serial port from the dropdown.
-3. Confirm the baud settings, such as `1500000` and `AppResetBaud 115200` when required.
-4. Select the generated `all-app.bin` file.
-5. Start download or flash.
-6. Reset the chip if prompted.
-7. Wait for erase and download progress to complete.
-
-![Select serial port and baud](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-workshop/.github/workshop/images/f64ace50-88d1-4314-b123-9a8e4c9b3c99.png?raw=1)
-
-![Web BKFIL download and erase flow](https://github.com/AgoraIO-Conversational-AI/agent-quickstart-python/blob/r1-workshop/.github/workshop/images/45652655-5c11-4e19-bd40-b3b33e3605b9.png?raw=1)
+8. Wait for erase and download to reach 100% before you unplug or restart the device.
 
 ## Validate the workshop
 
@@ -299,7 +283,8 @@ Confirm each item before considering the workshop complete:
 | Flashing hangs at reset or check | Press the reset button on the board, then retry flashing. |
 | No frontend tunnel URL | Verify the ngrok auth token and restart `ngrok http 3000`. |
 | No backend tunnel URL | Verify the ngrok auth token and restart `ngrok http 8000`. |
-| Agent does not start | Verify that Agora project environment variables were written to `server/.env.local`. |
+| Agent does not start | Run `bun run doctor:local` to confirm that your credentials are in `server/.env`. If they are missing, run `agora quickstart env write .`. To check your sign-in, project, Conversational AI setup, and local env files, run `agora project doctor --deep`. |
+| Agent does not respond in the web app | Allow microphone access in the browser and confirm that the correct input device is selected. Use headphones: continuous sound, such as speaker echo or background noise, keeps interrupting the agent before it can reply. |
 | Web app cannot reach backend | Ensure the backend is running and port `8000` is free. |
 | Device cannot reach the agent | Verify the firmware setup used `YOUR_BACKEND_NGROK_URL`, not the frontend URL. |
 
@@ -307,7 +292,7 @@ Confirm each item before considering the workshop complete:
 
 Use these commands from the `agent-quickstart-python` repository:
 
-```bash tab="Bun" tabGroup="package-manager"
+```bash
 # full local stack
 bun run dev
 
@@ -318,19 +303,4 @@ bun run doctor:local
 # verification
 bun run verify
 bun run verify:local
-bun run verify:web
-```
-
-```bash tab="npm" tabGroup="package-manager"
-# full local stack
-npm run dev
-
-# health checks
-npm run doctor
-npm run doctor:local
-
-# verification
-npm run verify
-npm run verify:local
-npm run verify:web
 ```
