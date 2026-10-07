@@ -468,6 +468,60 @@ describe('overview MDX components', () => {
     ).toBeVisible();
   });
 
+  // The Signaling Swift API reference covers both iOS and macOS, so a single
+  // platform value would either hide one platform from the filter or show a
+  // combined label matching neither.
+  it('treats a comma separated stack as one option per platform', () => {
+    const components = getOverviewMDXComponents();
+    const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
+
+    render(
+      <RecipesCatalog
+        allCategoriesLabel="All reference types"
+        allProductsLabel="All products"
+        allStacksLabel="All platforms"
+        categoryFilterLabel="Reference type"
+        clearFiltersLabel="Clear filters"
+        emptyMessage="No references match the current filters."
+        items={[
+          {
+            category: 'In-portal',
+            description: 'Signaling Swift SDK API reference for iOS and macOS.',
+            href: '/en/api-reference/api-ref/signaling/ios',
+            product: 'Signaling',
+            stack: 'iOS, macOS',
+            title: 'iOS/macOS Swift',
+            tone: 'blue',
+          },
+        ]}
+        productFilterLabel="Product"
+        searchPlaceholder="Search references"
+        stackFilterLabel="Platform"
+      />,
+    );
+
+    // Both platforms are offered separately, and the combined string is not.
+    const platformGroup = screen.getByRole('group', { name: 'Platform' });
+    expect(
+      within(platformGroup).getByRole('button', { name: 'iOS' }),
+    ).toBeVisible();
+    expect(
+      within(platformGroup).getByRole('button', { name: 'macOS' }),
+    ).toBeVisible();
+    expect(
+      within(platformGroup).queryByRole('button', { name: 'iOS, macOS' }),
+    ).not.toBeInTheDocument();
+
+    // And the card carries a tag for each platform rather than one combined
+    // tag, so a reader can see at a glance that it covers both. Filter buttons
+    // carry the same text, so only the non-button matches are the card's tags.
+    const tags = screen
+      .getAllByText(/^(iOS|macOS)$/)
+      .filter((element) => element.tagName !== 'BUTTON')
+      .map((element) => element.textContent);
+    expect(tags).toEqual(expect.arrayContaining(['iOS', 'macOS']));
+  });
+
   it('names recipe catalog filter groups and selected filter controls', () => {
     const components = getOverviewMDXComponents();
     const RecipesCatalog = components.RecipesCatalog as RecipesCatalogComponent;
