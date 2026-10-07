@@ -988,7 +988,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/signaling/ios.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-cpp.mdx':
     '2026-09-08T11:24:57.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-java.mdx':
@@ -6004,11 +6004,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-channel-metadata.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.md':
     '2026-06-26T09:28:42.000Z',
   'content/docs/en/realtime-media/rtm/build/manage-presence-and-metadata/storage/store-user-metadata.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/realtime-media/rtm/build/message-channel.md':
     '2026-06-16T05:32:41.000Z',
   'content/docs/en/realtime-media/rtm/build/message-history.md':
@@ -6042,11 +6042,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/add-event-listener.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.md':
     '2026-06-28T10:06:44.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-history.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/send-and-receive-messages/message-payload-structuring.mdx':
@@ -6094,11 +6094,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/message-channel.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/meta.json':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/topics.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/topics.mdx':
@@ -6106,7 +6106,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/build/work-with-channels/user-channel.md':
     '2026-06-26T15:56:17.000Z',
   'content/docs/en/realtime-media/rtm/build/work-with-channels/user-channel.mdx':
-    '2026-10-07T10:26:06.000Z',
+    '2026-10-07T11:48:02.000Z',
   'content/docs/en/realtime-media/rtm/console-overview.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtm/core-concepts.md':
