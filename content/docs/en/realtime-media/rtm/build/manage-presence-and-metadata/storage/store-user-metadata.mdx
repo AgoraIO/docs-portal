@@ -804,7 +804,7 @@ The following example saves a set of metadata items for a specified user. It con
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let name = AgoraRtmMetadataItem()
 name.key = "Name"
@@ -830,7 +830,7 @@ rtm.getStorage()?.setUserMetadata(userId: "Tony", data: metadata, options: metad
         print("setUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("setUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("setUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -885,11 +885,11 @@ rtm.getStorage()?.getUserMetadata(userId: "Tony") { response, errorInfo in
     if errorInfo == nil {
         print("getUserMetadata success!!")
         if let data = response?.data {
-            print("Retrieved metadata: \\(data)")
+            print("Retrieved metadata: \(data)")
         }
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("getUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("getUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -916,7 +916,7 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
         }
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("getUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("getUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -979,7 +979,7 @@ The following example updates the value of an existing metadata item:
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -997,7 +997,7 @@ rtm.getStorage()?.updateUserMetadata(userId: "Tony", data: metadata, options: me
         print("updateUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1049,7 +1049,7 @@ To delete metadata items that are no longer required, call `removeUserMetadata`.
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -1062,7 +1062,7 @@ rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: ni
         print("removeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1103,7 +1103,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To delete the entire set of metadata for a user, do not add any metadata items when calling `removeUserMetadata`. Refer to the following sample code:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Remove user metadata
 rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
@@ -1111,7 +1111,7 @@ rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: ni
         print("removeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1160,7 +1160,7 @@ rtm.getStorage()?.subscribeUserMetadata(userId: "Tony") { response, errorInfo in
         print("subscribeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("subscribeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("subscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1197,7 +1197,7 @@ rtm.getStorage()?.unsubscribeUserMetadata(userId: "Tony") { response, errorInfo 
         print("unsubscribeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("unsubscribeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("unsubscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1238,7 +1238,7 @@ When setting user metadata, or a single user metadata item, use the revision att
 The following code snippet demonstrates how to employ `majorRevision` and `revision` for updating user metadata and metadata items:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let sessionRequest = AgoraRtmMetadataItem()
 // Set user avatar URL as metadata
@@ -1262,7 +1262,7 @@ rtm.getStorage().updateUserMetadata(userId: "Tony", data: metadata, options: met
         print("updateUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1375,7 +1375,7 @@ The following example saves a set of metadata items for a specified user. It con
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let name = AgoraRtmMetadataItem()
 name.key = "Name"
@@ -1401,7 +1401,7 @@ rtm.getStorage()?.setUserMetadata(userId: "Tony", data: metadata, options: metad
         print("setUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("setUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("setUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1456,11 +1456,11 @@ rtm.getStorage()?.getUserMetadata(userId: "Tony") { response, errorInfo in
     if errorInfo == nil {
         print("getUserMetadata success!!")
         if let data = response?.data {
-            print("Retrieved metadata: \\(data)")
+            print("Retrieved metadata: \(data)")
         }
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("getUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("getUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1487,7 +1487,7 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
         }
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("getUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("getUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1550,7 +1550,7 @@ The following example updates the value of an existing metadata item:
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -1568,7 +1568,7 @@ rtm.getStorage()?.updateUserMetadata(userId: "Tony", data: metadata, options: me
         print("updateUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1620,7 +1620,7 @@ To delete metadata items that are no longer required, call `removeUserMetadata`.
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let age = AgoraRtmMetadataItem()
 age.key = "Age"
@@ -1633,7 +1633,7 @@ rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: ni
         print("removeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1674,7 +1674,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To delete the entire set of metadata for a user, do not add any metadata items when calling `removeUserMetadata`. Refer to the following sample code:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Remove user metadata
 rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
@@ -1682,7 +1682,7 @@ rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: ni
         print("removeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1731,7 +1731,7 @@ rtm.getStorage()?.subscribeUserMetadata(userId: "Tony") { response, errorInfo in
         print("subscribeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("subscribeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("subscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1768,7 +1768,7 @@ rtm.getStorage()?.unsubscribeUserMetadata(userId: "Tony") { response, errorInfo 
         print("unsubscribeUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("unsubscribeUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("unsubscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1809,7 +1809,7 @@ When setting user metadata, or a single user metadata item, use the revision att
 The following code snippet demonstrates how to employ `majorRevision` and `revision` for updating user metadata and metadata items:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let sessionRequest = AgoraRtmMetadataItem()
 // Set user avatar URL as metadata
@@ -1833,7 +1833,7 @@ rtm.getStorage().updateUserMetadata(userId: "Tony", data: metadata, options: met
         print("updateUserMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateUserMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }

@@ -566,10 +566,10 @@ To use stream channel functionality, call `createStreamChannel` to create a `Ago
 ```swift tab="Swift"
 do {
     let streamChannel = try rtmClient.createStreamChannel("exampleChannel")
-    print("Stream channel created successfully: \\(streamChannel)")
+    print("Stream channel created successfully: \(streamChannel)")
     // You can now use the streamChannel instance
 } catch {
-    print("Failed to create stream channel: \\(error)")
+    print("Failed to create stream channel: \(error)")
 }
 ```
 
@@ -582,21 +582,21 @@ This method creates only one `AgoraRtmStreamChannel` instance at a time. If you 
 
 ```swift tab="Swift"
 do {
-    let stream_channel = try RtmClient?.createStreamChannel(channelName1)
+    let stream_channel = try rtmClient?.createStreamChannel(channelName1)
     if stream_channel != nil {
         print("create stream channel success");
     }
  } catch let error {
-    print("error\\(error)")
+    print("error\(error)")
 }
 
 do {
-    let stream_channel = try RtmClient?.createStreamChannel(channelName2)
+    let stream_channel = try rtmClient?.createStreamChannel(channelName2)
     if stream_channel != nil {
         print("create stream channel success");
     }
  } catch let error {
-    print("error\\(error)")
+    print("error\(error)")
 }
 ```
 
@@ -629,7 +629,7 @@ let join_option = AgoraRtmJoinChannelOption();
 join_option.token = "your_token"
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -662,10 +662,10 @@ When joining a channel, set the `token` parameter in `AgoraRtmJoinChannelOption`
 ```swift tab="Swift"
 let join_option = AgoraRtmJoinChannelOption();
 join_option.token = "your_token"
-join_option.features = [.presence, .storage]
+join_option.features = [.presence, .metadata]
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -704,11 +704,11 @@ Refer to the following sample code for sending messages:
 ```swift tab="Swift"
 let message = "Hello Agora!"
 
-    streamChannel.publishTopicMessage("your_topic", message: message, option: nil) { response, errorInfo in
+    streamChannel.publishTopicMessage(topic: "your_topic", message: message, option: nil) { response, errorInfo in
         if errorInfo == nil {
             print("publish success!!")
         } else {
-            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
         }
     }
 ```
@@ -731,11 +731,11 @@ let message = "Hello Agora!"
 let bytes: [UInt8] = [ /* your raw values */ ]
     let rawMessage = Data(bytes: bytes, count: bytes.count)
 
-    streamChannel.publishTopicMessage("your_topic", data: rawMessage, option: nil) { response, errorInfo in
+    streamChannel.publishTopicMessage(topic: "your_topic", data: rawMessage, option: nil) { response, errorInfo in
         if errorInfo == nil {
             print("publish success!!")
         } else {
-            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
         }
     }
 ```
@@ -770,7 +770,7 @@ To leave a channel, call the `leave` method on the `AgoraRtmStreamChannel` insta
 ```swift
 stream_channel.leave({ res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -824,12 +824,12 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes size limits on message payload packets sent in Message channels and Stream channels. The limit is 32 KB for Message channels and 1 KB for Stream channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
 
-```objc tab="Swift"
+```text tab="Swift"
 // errorInfo
 {
     errorInfo.errorCode = .channelMessageLengthExceedLimitation
     errorInfo.reason = "Publish too long message."
-    errorInfo.operation = "publish"; // or "publishTopicMessage
+    errorInfo.operation = "publish"; // or publishTopicMessage
 }
 ```
 
@@ -923,10 +923,10 @@ To use stream channel functionality, call `createStreamChannel` to create a `Ago
 ```swift tab="Swift"
 do {
     let streamChannel = try rtmClient.createStreamChannel("exampleChannel")
-    print("Stream channel created successfully: \\(streamChannel)")
+    print("Stream channel created successfully: \(streamChannel)")
     // You can now use the streamChannel instance
 } catch {
-    print("Failed to create stream channel: \\(error)")
+    print("Failed to create stream channel: \(error)")
 }
 ```
 
@@ -939,21 +939,21 @@ This method creates only one `AgoraRtmStreamChannel` instance at a time. If you 
 
 ```swift tab="Swift"
 do {
-    let stream_channel = try RtmClient?.createStreamChannel(channelName1)
+    let stream_channel = try rtmClient?.createStreamChannel(channelName1)
     if stream_channel != nil {
         print("create stream channel success");
     }
  } catch let error {
-    print("error\\(error)")
+    print("error\(error)")
 }
 
 do {
-    let stream_channel = try RtmClient?.createStreamChannel(channelName2)
+    let stream_channel = try rtmClient?.createStreamChannel(channelName2)
     if stream_channel != nil {
         print("create stream channel success");
     }
  } catch let error {
-    print("error\\(error)")
+    print("error\(error)")
 }
 ```
 
@@ -986,7 +986,7 @@ let join_option = AgoraRtmJoinChannelOption();
 join_option.token = "your_token"
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1019,10 +1019,10 @@ When joining a channel, set the `token` parameter in `AgoraRtmJoinChannelOption`
 ```swift tab="Swift"
 let join_option = AgoraRtmJoinChannelOption();
 join_option.token = "your_token"
-join_option.features = [.presence, .storage]
+join_option.features = [.presence, .metadata]
 stream_channel.join(join_option, completion: { (res, error) in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1061,11 +1061,11 @@ Refer to the following sample code for sending messages:
 ```swift tab="Swift"
 let message = "Hello Agora!"
 
-    streamChannel.publishTopicMessage("your_topic", message: message, option: nil) { response, errorInfo in
+    streamChannel.publishTopicMessage(topic: "your_topic", message: message, option: nil) { response, errorInfo in
         if errorInfo == nil {
             print("publish success!!")
         } else {
-            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
         }
     }
 ```
@@ -1088,11 +1088,11 @@ let message = "Hello Agora!"
 let bytes: [UInt8] = [ /* your raw values */ ]
     let rawMessage = Data(bytes: bytes, count: bytes.count)
 
-    streamChannel.publishTopicMessage("your_topic", data: rawMessage, option: nil) { response, errorInfo in
+    streamChannel.publishTopicMessage(topic: "your_topic", data: rawMessage, option: nil) { response, errorInfo in
         if errorInfo == nil {
             print("publish success!!")
         } else {
-            print("publish failed, errorCode \\(errorInfo!.errorCode), reason \\(errorInfo!.reason)")
+            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
         }
     }
 ```
@@ -1127,7 +1127,7 @@ To leave a channel, call the `leave` method on the `AgoraRtmStreamChannel` insta
 ```swift
 stream_channel.leave({ res, error in
     if error != nil {
-        print("\\(error?.operation) failed! error reason is \\(error?.reason)")
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
         print("success")
     }
@@ -1181,12 +1181,12 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes size limits on message payload packets sent in Message channels and Stream channels. The limit is 32 KB for Message channels and 1 KB for Stream channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive an error message.
 
-```objc tab="Swift"
+```text tab="Swift"
 // errorInfo
 {
     errorInfo.errorCode = .channelMessageLengthExceedLimitation
     errorInfo.reason = "Publish too long message."
-    errorInfo.operation = "publish"; // or "publishTopicMessage
+    errorInfo.operation = "publish"; // or publishTopicMessage
 }
 ```
 

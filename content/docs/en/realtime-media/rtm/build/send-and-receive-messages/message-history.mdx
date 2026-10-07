@@ -413,7 +413,7 @@ option.end = 1688978391800;
     if (response != nil) {
         NSLog(@"total message count is: %lu", (unsigned long)response.messageList.count);
 
-        for (AgoraRtmMessage *msg in response.messageList) {
+        for (AgoraRtmHistoryMessage *msg in response.messageList) {
             NSLog(@"publisher: %@message content: %@time stamp: %lld", msg.publisher, msg.message.stringData, msg.timestamp);
         }
 
@@ -603,7 +603,7 @@ option.end = 1688978391800;
     if (response != nil) {
         NSLog(@"total message count is: %lu", (unsigned long)response.messageList.count);
 
-        for (AgoraRtmMessage *msg in response.messageList) {
+        for (AgoraRtmHistoryMessage *msg in response.messageList) {
             NSLog(@"publisher: %@message content: %@time stamp: %lld", msg.publisher, msg.message.stringData, msg.timestamp);
         }
 
