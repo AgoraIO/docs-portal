@@ -1161,7 +1161,7 @@ metadata.majorRevision = 734874892
 
 let metadataOpt = AgoraRtmMetadataOptions()
 metadataOpt.recordUserId = true
-metadataOpt.records = true
+metadataOpt.recordTs = true
 
 rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
     if errorInfo == nil {
@@ -1743,7 +1743,7 @@ metadata.majorRevision = 734874892
 
 let metadataOpt = AgoraRtmMetadataOptions()
 metadataOpt.recordUserId = true
-metadataOpt.records = true
+metadataOpt.recordTs = true
 
 rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
     if errorInfo == nil {

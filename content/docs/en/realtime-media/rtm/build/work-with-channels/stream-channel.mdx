@@ -582,7 +582,7 @@ This method creates only one `AgoraRtmStreamChannel` instance at a time. If you 
 
 ```swift tab="Swift"
 do {
-    let stream_channel = try rtmClient?.createStreamChannel(channelName1)
+    let stream_channel = try rtmClient?.createStreamChannel("your_channel1")
     if stream_channel != nil {
         print("create stream channel success");
     }
@@ -591,7 +591,7 @@ do {
 }
 
 do {
-    let stream_channel = try rtmClient?.createStreamChannel(channelName2)
+    let stream_channel = try rtmClient?.createStreamChannel("your_channel2")
     if stream_channel != nil {
         print("create stream channel success");
     }
@@ -833,12 +833,12 @@ Signaling SDK imposes size limits on message payload packets sent in Message cha
 }
 ```
 
-```objc tab="Objective-C"
+```text tab="Objective-C"
 // errorInfo
 {
     errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
     errorInfo.reason = @"Publish too long message.";
-    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+    errorInfo.operation = @"publish"; // or "publishTopicMessage"
 }
 ```
 
@@ -939,7 +939,7 @@ This method creates only one `AgoraRtmStreamChannel` instance at a time. If you 
 
 ```swift tab="Swift"
 do {
-    let stream_channel = try rtmClient?.createStreamChannel(channelName1)
+    let stream_channel = try rtmClient?.createStreamChannel("your_channel1")
     if stream_channel != nil {
         print("create stream channel success");
     }
@@ -948,7 +948,7 @@ do {
 }
 
 do {
-    let stream_channel = try rtmClient?.createStreamChannel(channelName2)
+    let stream_channel = try rtmClient?.createStreamChannel("your_channel2")
     if stream_channel != nil {
         print("create stream channel success");
     }
@@ -1190,12 +1190,12 @@ Signaling SDK imposes size limits on message payload packets sent in Message cha
 }
 ```
 
-```objc tab="Objective-C"
+```text tab="Objective-C"
 // errorInfo
 {
     errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
     errorInfo.reason = @"Publish too long message.";
-    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+    errorInfo.operation = @"publish"; // or "publishTopicMessage"
 }
 ```
 
