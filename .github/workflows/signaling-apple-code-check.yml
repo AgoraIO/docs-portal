@@ -12,6 +12,14 @@ name: Signaling Apple code check
 # exits 0 when blocks fail, so it would report without blocking.
 
 on:
+  # This branch is where the harness lives. The workflow is deliberately not on
+  # the default branch, so GitHub will not offer workflow_dispatch for it and a
+  # push trigger scoped to this branch is the only way to run a check. Push
+  # here to re-run the harness against the current docs.
+  push:
+    branches:
+      - signaling-ios-code-check
+
   workflow_dispatch:
     inputs:
       platform:
