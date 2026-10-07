@@ -406,7 +406,7 @@ AgoraRtmGetHistoryMessagesOptions *option = [[AgoraRtmGetHistoryMessagesOptions 
 option.messageCount = 50;
 option.end = 1688978391800;
 
-[_kit getMessages:@"channel_name"
+[[_kit getHistory] getMessages:@"channel_name"
             channelType:AgoraRtmChannelTypeMessage
                 options:option
              completion:^(AgoraRtmGetHistoryMessagesResponse *response, NSError *error) {
@@ -596,7 +596,7 @@ AgoraRtmGetHistoryMessagesOptions *option = [[AgoraRtmGetHistoryMessagesOptions 
 option.messageCount = 50;
 option.end = 1688978391800;
 
-[_kit getMessages:@"channel_name"
+[[_kit getHistory] getMessages:@"channel_name"
             channelType:AgoraRtmChannelTypeMessage
                 options:option
              completion:^(AgoraRtmGetHistoryMessagesResponse *response, NSError *error) {

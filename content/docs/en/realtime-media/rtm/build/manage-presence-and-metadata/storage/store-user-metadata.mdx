@@ -1257,7 +1257,7 @@ metadataOptions.recordUserId = true
 metadataOptions.recordTs = true
 
 // Update user metadata
-rtm.getStorage().updateUserMetadata(userId: "Tony", data: metadata, options: metadataOptions) { response, errorInfo in
+rtm.getStorage()?.updateUserMetadata(userId: "Tony", data: metadata, options: metadataOptions) { response, errorInfo in
     if errorInfo == nil {
         print("updateUserMetadata success!!")
     } else {
@@ -1828,7 +1828,7 @@ metadataOptions.recordUserId = true
 metadataOptions.recordTs = true
 
 // Update user metadata
-rtm.getStorage().updateUserMetadata(userId: "Tony", data: metadata, options: metadataOptions) { response, errorInfo in
+rtm.getStorage()?.updateUserMetadata(userId: "Tony", data: metadata, options: metadataOptions) { response, errorInfo in
     if errorInfo == nil {
         print("updateUserMetadata success!!")
     } else {
