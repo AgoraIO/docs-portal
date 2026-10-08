@@ -28,6 +28,7 @@ AI programming tools can consume published Markdown and LLMS indexes. These expo
 - The `cn` deployment publishes Chinese documentation; the `global` deployment publishes the other locales. Publication scope and presentation branding do not automatically change technical identifiers, repositories, or link destinations.
 - The Chinese homepage provides product and resource entry points, including SDK downloads and demos. Its visible content starts with those entry points, without a repeated page title, article copy/AI controls, or a right-hand table of contents. Individual documentation pages retain their reading and copy tools.
 - Package names, commands, API identifiers, and URLs remain technically accurate when surrounding labels and prose are localized.
+- Chinese AI documentation actions use DeepSeek, 豆包, 千问, and Kimi. Chinese MCP and Skills integration guides use TRAE and Kimi Code. Keep overseas assistant promotions out of Chinese menus, guides, and machine-readable exports; configure integrations using each tool's documented capabilities rather than renaming commands from another tool.
 
 ## Brand Commitments
 

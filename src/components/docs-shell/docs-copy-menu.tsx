@@ -44,6 +44,20 @@ function buildMarkdownPageUrl(markdownUrl: string) {
   return buildDocsPageUrl(markdownUrl);
 }
 
+async function readMarkdownPage(markdownUrl: string) {
+  const response = await fetch(markdownUrl, {
+    credentials: 'same-origin',
+    headers: { Accept: 'text/markdown, text/html;q=0.9' },
+  });
+  if (
+    !response.ok ||
+    response.headers?.get('content-type')?.includes('text/html')
+  ) {
+    throw new Error('Failed to load page Markdown');
+  }
+  return response.text();
+}
+
 function buildDocsPageUrl(path: string) {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
   const origin =
@@ -123,7 +137,7 @@ function getMcpDocParams(locale: string) {
   };
 }
 
-function getCursorMcpConfig(locale = DEFAULT_LOCALE) {
+function getMcpConfig(locale = DEFAULT_LOCALE) {
   const server = getMcpServer(locale);
 
   return JSON.stringify(
@@ -159,13 +173,46 @@ export function DocsCopyMenu({
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(currentLocale, 'common');
   const [copiedAction, setCopiedAction] = useState<
-    'page' | 'config' | 'command' | null
+    'page' | 'prompt' | 'config' | 'command' | null
   >(null);
+  const [isCopyingPrompt, setIsCopyingPrompt] = useState(false);
+  const [copyPromptError, setCopyPromptError] = useState(false);
   const pageUrl = buildCanonicalPageUrl(locale, slug);
   const mcpDocParams = getMcpDocParams(currentLocale);
   const isPrimaryCopied = copiedAction === 'page';
+  const isChinese = currentLocale === 'zh-CN';
+  const aiTools = isChinese
+    ? [
+        { href: 'https://chat.deepseek.com/', label: t('docs.openInDeepSeek') },
+        { href: 'https://www.doubao.com/chat/', label: t('docs.openInDoubao') },
+        { href: 'https://www.qianwen.com/', label: t('docs.openInQianwen') },
+        { href: 'https://www.kimi.com/', label: t('docs.openInKimi') },
+      ]
+    : [
+        {
+          href: buildChatGptUrl({
+            locale: currentLocale,
+            markdownUrl,
+            pageUrl,
+            title,
+          }),
+          label: t('docs.openInChatGpt'),
+        },
+        {
+          href: buildClaudeUrl({
+            locale: currentLocale,
+            markdownUrl,
+            pageUrl,
+            title,
+          }),
+          label: t('docs.openInClaude'),
+        },
+      ];
 
-  const copy = async (kind: 'page' | 'config' | 'command', value: string) => {
+  const copy = async (
+    kind: 'page' | 'prompt' | 'config' | 'command',
+    value: string,
+  ) => {
     await navigator.clipboard.writeText(value);
     setCopiedAction(kind);
     window.setTimeout(() => {
@@ -175,16 +222,30 @@ export function DocsCopyMenu({
 
   const copyMarkdownPage = async () => {
     try {
-      const response = await fetch(markdownUrl, { credentials: 'same-origin' });
-
-      if (!response.ok) {
-        return;
-      }
-
-      const markdown = await response.text();
+      const markdown = await readMarkdownPage(markdownUrl);
       await copy('page', markdown);
     } catch {
       return;
+    }
+  };
+
+  const copyAiPrompt = async () => {
+    setIsCopyingPrompt(true);
+    setCopyPromptError(false);
+    try {
+      const markdown = await readMarkdownPage(markdownUrl);
+      await copy(
+        'prompt',
+        [
+          buildAiPrompt({ locale: currentLocale, markdownUrl, pageUrl, title }),
+          `文档内容：\n${markdown}`,
+          '请根据以上文档回答我的问题：\n',
+        ].join('\n\n'),
+      );
+    } catch {
+      setCopyPromptError(true);
+    } finally {
+      setIsCopyingPrompt(false);
     }
   };
 
@@ -233,57 +294,61 @@ export function DocsCopyMenu({
         className="w-64 rounded-lg p-1"
       >
         <DropdownMenuLabel>{t('docs.copyMenuAiTools')}</DropdownMenuLabel>
+        {isChinese ? (
+          <p className="px-2 pb-2 text-xs text-[color:var(--ink-3)]">
+            {t('docs.copyMenuAiHint')}
+          </p>
+        ) : null}
         <DropdownMenuGroup>
-          <DropdownMenuItem asChild>
-            <a
-              href={buildChatGptUrl({
-                locale: currentLocale,
-                markdownUrl,
-                pageUrl,
-                title,
-              })}
-              rel="noreferrer"
-              target="_blank"
+          {isChinese ? (
+            <DropdownMenuItem
+              disabled={isCopyingPrompt}
+              onSelect={(event) => {
+                event.preventDefault();
+                void copyAiPrompt();
+              }}
             >
-              {t('docs.openInChatGpt')}
-              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
-            </a>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild>
-            <a
-              href={buildClaudeUrl({
-                locale: currentLocale,
-                markdownUrl,
-                pageUrl,
-                title,
-              })}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {t('docs.openInClaude')}
-              <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
-            </a>
-          </DropdownMenuItem>
+              {copiedAction === 'prompt' ? (
+                <CheckIcon className="size-3.5" />
+              ) : (
+                <CopyIcon className="size-3.5" />
+              )}
+              {copiedAction === 'prompt'
+                ? t('docs.aiPromptCopied')
+                : t('docs.copyAiPrompt')}
+            </DropdownMenuItem>
+          ) : null}
+          {copyPromptError ? (
+            <p className="px-2 py-1 text-xs text-destructive" role="alert">
+              {t('docs.copyAiPromptError')}
+            </p>
+          ) : null}
+          {aiTools.map((tool) => (
+            <DropdownMenuItem asChild key={tool.href}>
+              <a href={tool.href} rel="noreferrer" target="_blank">
+                {tool.label}
+                <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
+              </a>
+            </DropdownMenuItem>
+          ))}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuLabel>{t('docs.copyMenuMcp')}</DropdownMenuLabel>
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
             <Link params={mcpDocParams} to={AGORA_MCP_DOC_ROUTE}>
-              {t('docs.connectToCursor')}
+              {t(isChinese ? 'docs.connectToTrae' : 'docs.connectToCursor')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
             <Link params={mcpDocParams} to={AGORA_MCP_DOC_ROUTE}>
-              {t('docs.connectToVsCode')}
+              {t(isChinese ? 'docs.connectToKimiCode' : 'docs.connectToVsCode')}
               <ExternalLinkIcon className="ml-auto size-3.5 opacity-60" />
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
-            onClick={() =>
-              void copy('config', getCursorMcpConfig(currentLocale))
-            }
+            onClick={() => void copy('config', getMcpConfig(currentLocale))}
           >
             {copiedAction === 'config' ? (
               <CheckIcon className="size-3.5" />
@@ -294,20 +359,22 @@ export function DocsCopyMenu({
               ? t('docs.copied')
               : t('docs.copyMcpConfig')}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            onClick={() =>
-              void copy('command', getVsCodeMcpCommand(currentLocale))
-            }
-          >
-            {copiedAction === 'command' ? (
-              <CheckIcon className="size-3.5" />
-            ) : (
-              <CopyIcon className="size-3.5" />
-            )}
-            {copiedAction === 'command'
-              ? t('docs.copied')
-              : t('docs.copyMcpCommand')}
-          </DropdownMenuItem>
+          {!isChinese ? (
+            <DropdownMenuItem
+              onClick={() =>
+                void copy('command', getVsCodeMcpCommand(currentLocale))
+              }
+            >
+              {copiedAction === 'command' ? (
+                <CheckIcon className="size-3.5" />
+              ) : (
+                <CopyIcon className="size-3.5" />
+              )}
+              {copiedAction === 'command'
+                ? t('docs.copied')
+                : t('docs.copyMcpCommand')}
+            </DropdownMenuItem>
+          ) : null}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuLabel>{t('docs.copyMenuOther')}</DropdownMenuLabel>
@@ -331,6 +398,6 @@ export {
   buildClaudeUrl,
   buildDocsPageUrl,
   buildMarkdownPageUrl,
-  getCursorMcpConfig,
+  getMcpConfig,
   getVsCodeMcpCommand,
 };
