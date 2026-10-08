@@ -1,6 +1,6 @@
 const zhCnCommon = {
   app: {
-    name: '声网文档',
+    name: '声网文档中心',
     tagline: '像产品界面一样工作的文档系统',
     endorsement: 'Developer Surface',
   },
@@ -90,7 +90,7 @@ const zhCnCommon = {
   },
   home: {
     eyebrow: '声网开发者文档',
-    title: '声网文档',
+    title: '声网文档中心',
     description: '对话式 AI / 语音通话 / 视频通话 / 互动直播 / 实时消息',
     shellLabel: 'Overview',
     askAi: 'AI 入口',
@@ -252,7 +252,7 @@ const zhCnCommon = {
       platformOverview: {
         title: '声网平台总览',
         description:
-          '声网文档以能力域优先组织，把 AI、RTC、消息、媒体服务和解决方案收敛成稳定的阅读入口，降低首次接入和长期维护的成本。。。',
+          '声网文档中心以能力域优先组织，把 AI、RTC、消息、媒体服务和解决方案收敛成稳定的阅读入口，降低首次接入和长期维护的成本。。。',
         section1: {
           title: '平台能力结构',
           body: '底层是 RTC、RTM、媒体服务等通用能力，上层是对话式 AI、会议、课堂和行业方案。文档应该反映这种分层关系，而不是直接暴露原始仓库目录。',

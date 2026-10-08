@@ -39,7 +39,7 @@ describe('root head favicon metadata', () => {
     vi.stubEnv('VITE_DOCS_REGION', 'cn');
     try {
       const { rootHead: cnHead } = await import('./__root');
-      expect(cnHead.meta).toContainEqual({ title: '声网文档' });
+      expect(cnHead.meta).toContainEqual({ title: '声网文档中心' });
       expect(cnHead.links).toContainEqual({
         rel: 'icon',
         href: '/shengwang-favicon.svg',

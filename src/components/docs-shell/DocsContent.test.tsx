@@ -154,14 +154,14 @@ describe('DocsContent', () => {
         contentPath="zh-CN/introduction/index.mdx"
         locale="zh-CN"
         markdownUrl="/zh-CN/introduction.md"
-        title="声网文档"
+        title="声网文档中心"
         toc={[{ title: '集成语音智能体', url: '#ai', depth: 2 }]}
       />,
       '/zh-CN/introduction',
     );
 
     expect(await screen.findByTestId('docs-content-body')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: '声网文档' })).toHaveClass(
+    expect(screen.getByRole('heading', { name: '声网文档中心' })).toHaveClass(
       'sr-only',
     );
     expect(container.querySelector('article')).toHaveClass('max-w-none');

@@ -233,7 +233,7 @@ function renderRootIndex(
   locale: string,
 ) {
   return [
-    locale === 'zh-CN' ? '# 声网文档' : '# Agora Documentation',
+    locale === 'zh-CN' ? '# 声网文档中心' : '# Agora Documentation',
     '',
     '> Machine-readable indexes for the complete documentation published on this site.',
     '',

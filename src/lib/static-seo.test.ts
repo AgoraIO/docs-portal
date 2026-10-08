@@ -42,24 +42,24 @@ describe('static SEO metadata', () => {
       title: '快速开始',
       url: '/zh-CN/ai/get-started/quick-start',
     });
-    expect(head.meta).toContainEqual({ title: '快速开始 | 声网文档' });
+    expect(head.meta).toContainEqual({ title: '快速开始 | 声网文档中心' });
     expect(head.meta).toContainEqual({
       property: 'og:site_name',
-      content: '声网文档',
+      content: '声网文档中心',
     });
     expect(head.meta).toContainEqual({
       property: 'og:image',
       content: 'https://docs.agora.io/shengwang-docs-og.png',
     });
     const homeHead = createStaticSeoHead({
-      title: '声网文档',
+      title: '声网文档中心',
       url: '/zh-CN/introduction',
     });
-    expect(homeHead.meta).toContainEqual({ title: '声网文档' });
+    expect(homeHead.meta).toContainEqual({ title: '声网文档中心' });
     expect(homeHead.meta).toContainEqual({
       name: 'description',
       content:
-        '声网开发者文档：对话式 AI、实时音视频、实时消息、SDK 下载与 API 参考。',
+        '声网文档中心：对话式 AI、实时音视频、实时消息、SDK 下载与 API 参考。',
     });
   });
 

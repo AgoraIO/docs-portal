@@ -102,7 +102,7 @@ describe('machine-readable docs indexes', () => {
         `https://docs.example.com/${locale}/introduction.md`,
       ]);
       expect(files[0]?.content).toContain(
-        locale === 'zh-CN' ? '# 声网文档' : '# Agora Documentation',
+        locale === 'zh-CN' ? '# 声网文档中心' : '# Agora Documentation',
       );
       if (locale === 'zh-CN') {
         expect(
