@@ -194,6 +194,10 @@ _Avoid_: permanent suppression, per-click prompt, cross-session suppression
 An anonymous analytics event describing the display or interaction with an Account guidance prompt, carrying only non-identifying context such as product, platform, version, Demo, and source page.
 _Avoid_: lead event, contact record, authentication-success event
 
+**Attributed account completion**:
+Successful login or registration linked to an earlier Account guidance event and identified by a stable account identifier. It represents authentication completion rather than another click and excludes contact details.
+_Avoid_: non-anonymous duplicate click, contact record, anonymous login click
+
 ## Relationships
 
 - **Content staging** contains both **MDX-authored pages** and **OpenAPI sources**.
