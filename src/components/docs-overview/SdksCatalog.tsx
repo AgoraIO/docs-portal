@@ -10,12 +10,15 @@ import {
 } from 'react';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
+import { getPlatformIconSrc } from './platform-icon-src';
+import { SdkDownloadCard } from './SdkDownloadCard';
 import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
 import {
   getSdkDownloadProductCatalogId,
   getSdkDownloadProductGroupRank,
   getSdkDownloadProductSectionId,
 } from './sdk-download-navigation';
+import { getZhCNSdkDownloadPageHref } from './sdk-download-page-links';
 import {
   getZhCNSdkDownloadProductCopy,
   ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY,
@@ -548,6 +551,10 @@ function ProductCard({
   const versions = getLatestVersions(activePlatform.product.versions);
   const activeVersion = versions[Number(versionIndex)] ?? versions[0];
   const command = activeVersion ? deriveInstallCommand(activeVersion) : null;
+  const downloadPageHref =
+    locale === 'zh-CN'
+      ? getZhCNSdkDownloadPageHref(group.productId, platformId)
+      : null;
 
   const titleId = `sdk-${group.defaultProduct.id}-title`;
   const versionId = `sdk-${group.defaultProduct.id}-version`;
@@ -584,6 +591,15 @@ function ProductCard({
               {group.info}
             </span>
           </span>
+          {downloadPageHref ? (
+            <a
+              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md border border-primary/30 px-3 text-xs font-medium text-primary hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              href={downloadPageHref}
+              onClick={(event) => event.stopPropagation()}
+            >
+              查看下载页 ↗
+            </a>
+          ) : null}
         </summary>
         <div className="border-border border-t px-4 py-4 sm:pl-16">
           <div className="flex items-end justify-between gap-3">
@@ -613,52 +629,94 @@ function ProductCard({
             </span>
           </div>
 
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <span className="sr-only">{copy.versionLabel(group.label)}</span>
-            {versions.length > 1 ? (
-              <span className="relative ml-auto shrink-0">
-                <label className="sr-only" htmlFor={versionId}>
-                  {copy.versionLabel(group.label)}
-                </label>
-                <select
-                  className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-                  id={versionId}
-                  onChange={(event) => setVersionIndex(event.target.value)}
-                  value={versionIndex}
-                >
-                  {versions.map((version, index) => (
-                    <option
-                      key={getVersionKey(activePlatform.platformId, version)}
-                      value={String(index)}
-                    >
-                      {getVersionMeta(version, locale).optionLabel}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDownIcon
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+          {redesigned && downloadPageHref ? (
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {versions.map((version) => (
+                <SdkDownloadCard
+                  iconSrc={getPlatformIconSrc(platformId)}
+                  key={getVersionKey(activePlatform.platformId, version)}
+                  title={getDownloadCardTitle(group, activePlatform, version)}
+                  version={version}
                 />
-              </span>
-            ) : activeVersion ? (
-              <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
-                {getVersionMeta(activeVersion, locale).optionLabel}
-              </span>
-            ) : null}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <>
+              <div className="mt-4 flex items-center justify-between gap-3">
+                <span className="sr-only">
+                  {copy.versionLabel(group.label)}
+                </span>
+                {versions.length > 1 ? (
+                  <span className="relative ml-auto shrink-0">
+                    <label className="sr-only" htmlFor={versionId}>
+                      {copy.versionLabel(group.label)}
+                    </label>
+                    <select
+                      className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                      id={versionId}
+                      onChange={(event) => setVersionIndex(event.target.value)}
+                      value={versionIndex}
+                    >
+                      {versions.map((version, index) => (
+                        <option
+                          key={getVersionKey(
+                            activePlatform.platformId,
+                            version,
+                          )}
+                          value={String(index)}
+                        >
+                          {getVersionMeta(version, locale).optionLabel}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDownIcon
+                      aria-hidden="true"
+                      className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                    />
+                  </span>
+                ) : activeVersion ? (
+                  <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
+                    {getVersionMeta(activeVersion, locale).optionLabel}
+                  </span>
+                ) : null}
+              </div>
 
-          {activeVersion ? (
-            <InstallArea
-              command={command}
-              copy={copy}
-              redesigned={redesigned}
-              version={activeVersion}
-            />
-          ) : null}
+              {activeVersion ? (
+                <InstallArea
+                  command={command}
+                  copy={copy}
+                  redesigned={redesigned}
+                  version={activeVersion}
+                />
+              ) : null}
+            </>
+          )}
         </div>
       </details>
     </article>
   );
+}
+
+function getDownloadCardTitle(
+  group: ProductGroup,
+  platform: ProductPlatformEntry,
+  version: SdkDownloadVersion,
+) {
+  if (group.productId === 'video' || group.productId === 'voice') {
+    if (/\bFull\b/i.test(version.label)) {
+      return `${platform.platformLabel} Full`;
+    }
+    if (/\bLite\b/i.test(version.label)) {
+      return `${platform.platformLabel} Lite`;
+    }
+    return `${platform.platformLabel} ${group.productId === 'video' ? '视频' : '音频'} SDK`;
+  }
+
+  const variant = version.label
+    .replace(/^(?:版本|Version)\s+[^\s（(]+/i, '')
+    .replace(/[（(]\s*(?:最新|Latest)\s*[）)]/gi, '')
+    .trim();
+  return `${platform.platformLabel} ${group.label}${variant ? ` ${variant}` : ''}`;
 }
 
 function useSdkCatalogQueryFilters(

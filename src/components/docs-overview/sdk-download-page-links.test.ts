@@ -18,6 +18,8 @@ describe('getZhCNSdkDownloadPageHref', () => {
     expect(getZhCNSdkDownloadPageHref('whiteboard', 'web')).toBe(
       '/zh-CN/realtime-media/whiteboard/whiteboard-sdk/reference/downloads/web',
     );
+    expect(getZhCNSdkDownloadPageHref('signaling', 'macos')).toBeNull();
+    expect(getZhCNSdkDownloadPageHref('whiteboard', 'macos')).toBeNull();
   });
 
   it('uses product download indexes for server products and omits unsupported products', () => {

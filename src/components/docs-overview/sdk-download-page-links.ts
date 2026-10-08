@@ -5,28 +5,64 @@ const platformRouteAliases: Record<string, string> = {
 
 const rtcProducts = new Set(['video', 'voice']);
 const whiteboardProducts = new Set(['whiteboard', 'fastboard']);
+const rtcPlatforms = new Set([
+  'android',
+  'ios',
+  'web',
+  'macos',
+  'windows',
+  'harmonyos',
+  'mini-program',
+  'electron',
+  'flutter',
+  'react-native',
+  'unity',
+  'unreal-engine',
+  'react-js',
+]);
+const signalingPlatforms = new Set([
+  'android',
+  'ios',
+  'web',
+  'windows',
+  'harmonyos',
+  'flutter',
+  'unity',
+  'linux',
+]);
+const whiteboardPlatforms = new Set(['android', 'ios', 'web']);
+const flexibleClassroomPlatforms = new Set([
+  'android',
+  'ios',
+  'web',
+  'electron',
+]);
 
 export function getZhCNSdkDownloadPageHref(
   productId: string,
   platformId: string,
 ): string | null {
   if (rtcProducts.has(productId)) {
+    if (!rtcPlatforms.has(platformId)) return null;
     const platform = platformRouteAliases[platformId] ?? platformId;
     return `/zh-CN/realtime-media/rtc/reference/downloads/${platform}`;
   }
 
   if (productId === 'signaling') {
+    if (!signalingPlatforms.has(platformId)) return null;
     const platform = platformId === 'linux' ? 'linux-cpp' : platformId;
     return `/zh-CN/realtime-media/rtm/reference/downloads/${platform}`;
   }
 
   if (whiteboardProducts.has(productId)) {
+    if (!whiteboardPlatforms.has(platformId)) return null;
     const productPath =
       productId === 'fastboard' ? 'fastboard-sdk' : 'whiteboard-sdk';
     return `/zh-CN/realtime-media/whiteboard/${productPath}/reference/downloads/${platformId}`;
   }
 
   if (productId === 'flexible-classroom') {
+    if (!flexibleClassroomPlatforms.has(platformId)) return null;
     return `/zh-CN/solutions/flexible-classroom/reference/downloads/${platformId}`;
   }
 

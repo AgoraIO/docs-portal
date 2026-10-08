@@ -63,14 +63,74 @@ describe('SdksCatalog', () => {
     );
   });
 
-  it('keeps version metadata under a labeled version-details disclosure', () => {
+  it('shows download-card metadata in Chinese overview products', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const voiceCard = openProductCard('语音 SDK');
-    expect(within(voiceCard).getByText('版本详情')).toBeVisible();
-    expect(within(voiceCard).getByText('发布日期')).toBeInTheDocument();
-    expect(within(voiceCard).getByText('包名')).toBeInTheDocument();
-    expect(within(voiceCard).getByText('MD5')).toBeInTheDocument();
+    const downloadCard = within(voiceCard).getByRole('article', {
+      name: 'Android 音频 SDK',
+    });
+    expect(within(downloadCard).getByText('io.agora.rtc2.voice')).toBeVisible();
+    expect(
+      within(downloadCard).getByText('2801dfea3c96a32e6aaaa354d819ec71'),
+    ).toBeVisible();
+    expect(
+      within(downloadCard).getByText('发布日期：2026 年 2 月 9 日'),
+    ).toBeVisible();
+  });
+
+  it('uses download-page cards in Chinese overview products', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = openProductCard('视频 SDK');
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Full' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台' }),
+    ).toHaveValue('android');
+    expect(
+      within(videoCard).getByRole('link', { name: '查看下载页 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc/reference/downloads/android',
+    );
+    expect(
+      within(videoCard).queryByText(
+        "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
+      ),
+    ).not.toBeInTheDocument();
+  });
+
+  it('updates overview download cards and page links when the platform changes', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = openProductCard('视频 SDK');
+    fireEvent.change(
+      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台' }),
+      { target: { value: 'ios' } },
+    );
+
+    expect(
+      within(videoCard).getByRole('article', { name: 'iOS Full' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('link', { name: '查看下载页 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc/reference/downloads/ios',
+    );
+  });
+
+  it('does not show a download-page link when a product has no dedicated page', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const agentsCard = screen.getByRole('article', {
+      name: '对话式 AI 引擎 SDK',
+    });
+    expect(
+      within(agentsCard).queryByRole('link', { name: '查看下载页 ↗' }),
+    ).not.toBeInTheDocument();
   });
 
   it('renders SDK products under API reference capability headings', () => {
@@ -519,8 +579,13 @@ describe('SdksCatalog', () => {
         name: '实时消息 SDK 平台',
       }),
     ).toHaveValue('harmonyos');
+    const downloadCard = within(signalingCard).getByRole('article', {
+      name: 'HarmonyOS 实时消息 SDK',
+    });
     expect(
-      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+      within(downloadCard).getByRole('link', {
+        name: '下载 HarmonyOS 实时消息 SDK',
+      }),
     ).toHaveAttribute(
       'href',
       'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip',
@@ -541,15 +606,19 @@ describe('SdksCatalog', () => {
         name: '实时消息 SDK 平台',
       }),
     ).toHaveValue('linux');
+    const downloadCard = within(signalingCard).getByRole('article', {
+      name: 'Linux 实时消息 SDK C++',
+    });
     expect(
-      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+      within(downloadCard).getByRole('link', {
+        name: '下载 Linux 实时消息 SDK C++',
+      }),
     ).toHaveAttribute(
       'href',
       'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
     );
-    fireEvent.click(within(signalingCard).getByText('版本详情'));
     expect(
-      within(signalingCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
+      within(downloadCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
     ).toBeVisible();
   });
 
@@ -594,7 +663,9 @@ describe('SdksCatalog', () => {
     const signalingCard = openProductCard('实时消息 SDK');
 
     expect(
-      within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
+      within(signalingCard).getByRole('article', {
+        name: 'Flutter 实时消息 SDK',
+      }),
     ).toBeVisible();
     expect(
       within(signalingCard).queryByRole('combobox', { name: /版本/ }),
@@ -625,17 +696,18 @@ describe('SdksCatalog', () => {
 
     const voiceCard = openProductCard('语音 SDK');
 
+    const downloadCard = within(voiceCard).getByRole('article', {
+      name: 'Web 音频 SDK',
+    });
+    expect(within(downloadCard).getByText('v4.24.6')).toBeVisible();
     expect(
-      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
-    ).toBeVisible();
-    expect(
-      within(voiceCard).getByRole('link', { name: '下载 SDK' }),
+      within(downloadCard).getByRole('link', { name: '下载 Web 音频 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
     );
     expect(
-      within(voiceCard).getByRole('link', { name: '包管理器 ↗' }),
+      within(downloadCard).getByRole('link', { name: '包管理器' }),
     ).toHaveAttribute(
       'href',
       'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
@@ -644,7 +716,7 @@ describe('SdksCatalog', () => {
       within(voiceCard).queryByRole('combobox', { name: /版本/ }),
     ).not.toBeInTheDocument();
     expect(
-      within(voiceCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
+      within(downloadCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
     ).not.toBeInTheDocument();
   });
 
@@ -652,27 +724,24 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const videoCard = openProductCard('视频 SDK');
-    const videoOptions = within(videoCard)
-      .getByRole('combobox', { name: '视频 SDK 版本' })
-      .querySelectorAll('option');
-    const videoOptionLabels = [...videoOptions].map(
-      (option) => option.textContent,
-    );
-    expect(videoOptionLabels).toEqual([
-      'v4.6.3 完整版 - 最新',
-      'v4.6.3 轻量版 - 最新',
-    ]);
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Full' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Lite' }),
+    ).toBeVisible();
 
     const serverCard = openProductCard('RTC 服务端 SDK');
-    const serverOptions = within(serverCard)
-      .getByRole('combobox', { name: 'RTC 服务端 SDK 版本' })
-      .querySelectorAll('option');
-    const serverOptionLabels = [...serverOptions].map(
-      (option) => option.textContent,
-    );
-    expect(serverOptionLabels).toContain('v2.2.8 Go - 最新');
-    expect(serverOptionLabels).toContain('v2.2.4 Python - 最新');
-    expect(serverOptionLabels.join(' ')).not.toContain(' for ');
+    expect(
+      within(serverCard).getByRole('article', {
+        name: 'Linux RTC 服务端 SDK for Go',
+      }),
+    ).toBeVisible();
+    expect(
+      within(serverCard).getByRole('article', {
+        name: 'Linux RTC 服务端 SDK for Python',
+      }),
+    ).toBeVisible();
   });
 
   it('orders zh-CN SDK capability groups like the API reference', () => {
@@ -734,11 +803,11 @@ describe('SdksCatalog', () => {
       .map((article) => article.textContent)
       .join('\n');
     expect(catalogText).not.toMatch(
-      /SDK for:?|Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK/,
+      /Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK/,
     );
   });
 
-  it('derives zh-CN Android install commands from confirmed package versions', () => {
+  it('uses the confirmed zh-CN Android download-card versions', () => {
     window.history.replaceState(
       null,
       '',
@@ -749,24 +818,17 @@ describe('SdksCatalog', () => {
 
     const videoCard = openProductCard('视频 SDK');
     expect(
-      within(videoCard).getByText(
-        "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
-      ),
+      within(videoCard).getByRole('article', { name: 'Android Full' }),
     ).toBeVisible();
-    const downloadLink = within(videoCard).getByRole('link', {
-      name: '下载 SDK',
-    });
-    expect(downloadLink).toHaveAttribute(
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Lite' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('link', { name: '查看下载页 ↗' }),
+    ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip',
+      '/zh-CN/realtime-media/rtc/reference/downloads/android',
     );
-    expect(downloadLink).toHaveClass('bg-primary', 'min-h-11');
-    expect(
-      within(videoCard).getByRole('combobox', { name: '视频 SDK 版本' }),
-    ).toHaveClass('min-h-11');
-    expect(
-      within(videoCard).getByRole('link', { name: '包管理器 ↗' }),
-    ).toHaveClass('min-h-11');
   });
 
   it('ignores invalid product and platform query values', () => {
