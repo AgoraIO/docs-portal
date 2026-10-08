@@ -272,6 +272,7 @@ const intentionallyChangedReferencePages = new Set([
   'reference/meta.json',
   'realtime-media/fusion-cdn/reference/meta.json',
   'realtime-media/media-pull/reference/meta.json',
+  'realtime-media/ppt-transcoding/reference/meta.json',
   'realtime-media/media-push/reference/meta.json',
   'realtime-media/rtc/reference/meta.json',
   'realtime-media/rtm/reference/meta.json',
@@ -411,14 +412,10 @@ describe('zh-CN product reference ordering', () => {
   it.each(Object.entries(expectedReferencePages))(
     'keeps the approved order for %s',
     (relativePath, expectedPages) => {
-      const baselinePath =
-        relativePath === 'realtime-media/ppt-transcoding/reference/meta.json'
-          ? 'solutions/ppt-transcoding/reference/meta.json'
-          : relativePath;
-      const baselinePages = readPagesFromRevision(baselinePath, 'HEAD');
       const actualPages = readPages(relativePath);
 
       if (!intentionallyChangedReferencePages.has(relativePath)) {
+        const baselinePages = readPagesFromRevision(relativePath, 'HEAD');
         expect(serializePages(actualPages)).toEqual(
           serializePages(baselinePages),
         );

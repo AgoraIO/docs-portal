@@ -4543,6 +4543,7 @@ Web body
         loadDocsPagePayload('zh-CN', 'solutions', [product, 'index']),
       ).resolves.toEqual({
         redirectUrl: `/zh-CN/realtime-media/${product}`,
+        statusCode: 301,
       });
       await expect(
         loadDocsPagePayload('zh-CN', 'solutions', [
@@ -4552,6 +4553,7 @@ Web body
         ]),
       ).resolves.toEqual({
         redirectUrl: `/zh-CN/realtime-media/${product}/reference/release-notes`,
+        statusCode: 301,
       });
     },
   );
@@ -4564,6 +4566,29 @@ Web body
       statusCode: 301,
     });
   });
+
+  it.each([
+    ['ppt-transcoding', '/zh-CN/realtime-media/ppt-transcoding'],
+    [
+      'ppt-transcoding/get-started/quick-start',
+      '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
+    ],
+    ['status-page', '/zh-CN/realtime-media/status-page'],
+    [
+      'status-page/reference/release-notes',
+      '/zh-CN/realtime-media/status-page/reference/release-notes',
+    ],
+  ])(
+    'keeps the old Solutions path %s permanently redirected',
+    async (path, target) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'solutions', path.split('/')),
+      ).resolves.toEqual({
+        redirectUrl: target,
+        statusCode: 301,
+      });
+    },
+  );
 
   it.each([
     ['get-started/enable-service', 'build/rtm-initialization/enable-service'],

@@ -585,6 +585,51 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 
+  it.each([
+    ['ppt-transcoding', '/zh-CN/realtime-media/ppt-transcoding'],
+    [
+      'ppt-transcoding/get-started/quick-start',
+      '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
+    ],
+    ['status-page', '/zh-CN/realtime-media/status-page'],
+    [
+      'status-page/reference/release-notes',
+      '/zh-CN/realtime-media/status-page/reference/release-notes',
+    ],
+  ])(
+    'keeps moved Solutions root/normal path %s as a permanent redirect',
+    async (path, target) => {
+      publishedLocaleOverride.value = true;
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '',
+            pathname: `/zh-CN/solutions/${path}`,
+            searchStr: '',
+          },
+          params: {
+            _splat: path,
+            locale: 'zh-CN',
+            tab: 'solutions',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: target,
+            statusCode: 301,
+          },
+        });
+        return;
+      } finally {
+        publishedLocaleOverride.value = false;
+      }
+
+      throw new Error('expected moved Solutions path to redirect permanently');
+    },
+  );
+
   it('preserves search and hash when redirecting old Solutions product URLs', async () => {
     publishedLocaleOverride.value = true;
     try {
