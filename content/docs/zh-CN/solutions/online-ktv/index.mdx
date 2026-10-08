@@ -32,6 +32,22 @@ description: "了解在线 K 歌房的核心能力、适用场景、接入路径
 | 场景化 API 方案 | 想快速接入典型 K 歌玩法，同时保留一定业务定制空间 | 场景化 API、玩法实现、版权音乐、歌词打分和 Token 鉴权 |
 | PaaS 方案 | 已有较完整的业务系统，需要自行设计 UI、房间状态和服务端逻辑 | RTC 能力组合、内容中心、歌词组件、音效和业务状态同步 |
 
+## 技术架构
+
+在线 K 歌房的整体架构取决于你选择的接入路径。三种方案都围绕实时音频和歌曲内容展开，但 UI、玩法逻辑、房间状态和服务端能力的归属不同。
+
+### UIKit 开源方案
+
+应用层集成 AUIKaraoke，场景组装层使用 AScenesKit，基础层使用 AUIKit。AUIKit 提供 UI、Service，以及房间、实时消息等 Manager，适合快速搭建完整 K 歌房并在源码基础上定制。详见 [UIKit 架构说明](/zh-CN/solutions/online-ktv/auikaraoke/build/manage-karaoke/uikitkaraoke)。
+
+### 场景化 API 方案
+
+场景化 API 方案由实时互动 SDK、K 歌场景化 API、声网内容中心和歌词组件共同组成。RTC 频道负责音频发布与订阅，场景化 API 负责歌曲播放、角色切换和歌词进度同步，业务服务负责房间和麦位状态。独唱和合唱的频道与角色流程详见 [独唱实现](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/solo) 和 [合唱实现](/zh-CN/solutions/online-ktv/ktv-scenario/build/implementation/chorus)。
+
+### PaaS 方案
+
+PaaS 方案直接组合实时互动 SDK、声网内容中心和歌词组件，房间、麦位、用户状态及 UI 由业务侧自行实现。该方案适合已有业务系统、需要深度定制 K 歌流程和服务端逻辑的团队，架构图和产品职责详见 [PaaS 方案介绍](/zh-CN/solutions/online-ktv/online-ktv-sdk)，主唱、合唱者和听众的实现流程详见 [PaaS 快速集成](/zh-CN/solutions/online-ktv/online-ktv-sdk/get-started/karaoke)。
+
 ## 核心能力
 
 - **实时音频互动**：支持房主、主唱、合唱者和听众在房间内低延时互动。
