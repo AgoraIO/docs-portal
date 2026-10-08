@@ -164,10 +164,7 @@ describe('FumadocsOpenApiContent', () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('button', { name: 'Expand all' }),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole('button', { name: 'Collapse all' }),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
 
     const requiredRow = screen
       .getByText('pathId')

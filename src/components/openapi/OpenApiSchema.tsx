@@ -522,11 +522,13 @@ function getOpenApiSchemaLabels(
   return {
     allowedValues: translate('Allowed values', 'Allowed values'),
     collapse: translate('Collapse', 'Collapse'),
+    collapseAll: translate('Collapse all', 'Collapse all'),
     copiedLink: translate('Copied link to', 'Copied link to'),
     copyLink: translate('Copy link to', 'Copy link to'),
     default: translate('Default', 'Default'),
     deprecated: translate('Deprecated', 'Deprecated'),
     expand: translate('Expand', 'Expand'),
+    expandAll: translate('Expand all', 'Expand all'),
     properties: translate('properties', 'properties'),
     range: translate('Range', 'Range'),
     required: translate('Required', 'Required'),
