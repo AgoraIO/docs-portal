@@ -1,3 +1,4 @@
+import { ChevronsDownUp } from 'lucide-react';
 import {
   createElement,
   type ReactNode,
@@ -7,6 +8,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { Button } from '@/components/ui/button';
 import type {
   OpenApiSchemaPathItem,
   OpenApiSchemaViewNode,
@@ -34,6 +36,13 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
       )
       .map((node) => node.id),
   );
+}
+
+function getExpandableNodeIds(nodes: OpenApiSchemaViewNode[]): string[] {
+  return nodes.flatMap((node) => [
+    ...(node.children.length > 0 ? [node.id] : []),
+    ...getExpandableNodeIds(node.children),
+  ]);
 }
 
 export function getOpenApiSchemaTreeIdentity(nodes: OpenApiSchemaViewNode[]) {
@@ -79,7 +88,10 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
   return base;
 }
 
-export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {};
+export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
+  collapseAll: string;
+  expandAll: string;
+};
 
 export type OpenApiSchemaRevealTarget = {
   fieldName: string;
@@ -124,6 +136,10 @@ export function OpenApiSchemaTree({
   const copyRequestRef = useRef(0);
   const lastRevealTarget = useRef<string | undefined>(undefined);
   const treeRef = useRef<HTMLDivElement>(null);
+  const expandableNodeIds = useMemo(() => getExpandableNodeIds(nodes), [nodes]);
+  const allExpanded =
+    expandableNodeIds.length > 0 &&
+    expandableNodeIds.every((nodeId) => expandedIds.has(nodeId));
 
   latestNodesRef.current = nodes;
   const schemaIdentity = useMemo(
@@ -349,6 +365,18 @@ export function OpenApiSchemaTree({
     }, 1000);
   }
 
+  function handleToggleAll() {
+    setExpandedIds((current) => {
+      if (allExpanded) {
+        const next = new Set(current);
+        for (const nodeId of expandableNodeIds) next.delete(nodeId);
+        return next;
+      }
+
+      return new Set([...current, ...expandableNodeIds]);
+    });
+  }
+
   return (
     <div
       className="openapi-schema-tree"
@@ -357,6 +385,20 @@ export function OpenApiSchemaTree({
       id={stableDomId(rootId, rootId)}
       ref={treeRef}
     >
+      {expandableNodeIds.length > 0 ? (
+        <div className="flex justify-end pb-2">
+          <Button
+            aria-label={allExpanded ? labels.collapseAll : labels.expandAll}
+            onClick={handleToggleAll}
+            size="xs"
+            type="button"
+            variant="ghost"
+          >
+            <ChevronsDownUp aria-hidden="true" data-icon="inline-start" />
+            {allExpanded ? labels.collapseAll : labels.expandAll}
+          </Button>
+        </div>
+      ) : null}
       <div data-openapi-schema-fields="">{renderNodes(nodes)}</div>
     </div>
   );

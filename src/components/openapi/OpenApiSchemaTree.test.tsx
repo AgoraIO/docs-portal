@@ -18,11 +18,13 @@ import { OpenApiSchemaTree, stableDomId } from './OpenApiSchemaTree';
 const labels = {
   allowedValues: 'Allowed values',
   collapse: 'Collapse',
+  collapseAll: 'Collapse all',
   copiedLink: 'Copied link to',
   copyLink: 'Copy link to',
   default: 'Default',
   deprecated: 'Deprecated',
   expand: 'Expand',
+  expandAll: 'Expand all',
   properties: 'properties',
   range: 'Range',
   required: 'Required',
@@ -151,17 +153,55 @@ function getRow(node: OpenApiSchemaViewNode) {
 }
 
 describe('OpenApiSchemaTree', () => {
-  it('does not render a custom filter or global expansion toolbar', () => {
+  it('renders a request body bulk expansion toolbar', () => {
     renderTree();
 
     expect(
       screen.queryByRole('searchbox', { name: 'Filter properties' }),
     ).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Expand all' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Collapse all' })).toBeNull();
+    expect(
+      screen.getByRole('button', { name: 'Expand all' }),
+    ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: 'Expand advanced properties' }),
     ).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Expand all' }));
+
+    expect(
+      screen.getByRole('button', { name: 'Collapse all' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Collapse config properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'Collapse advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('button', { name: 'Collapse unrelated properties' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Collapse all' }));
+
+    expect(
+      screen.getByRole('button', { name: 'Expand all' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Expand config properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.getByRole('button', { name: 'Expand advanced properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.getByRole('button', { name: 'Expand unrelated properties' }),
+    ).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('does not render a bulk expansion toolbar for a leaf-only tree', () => {
+    renderTree({ nodes: [channel] });
+
+    expect(screen.queryByRole('button', { name: 'Expand all' })).toBeNull();
+    expect(screen.queryByRole('button', { name: 'Collapse all' })).toBeNull();
   });
 
   it('initially expands required root fields and keeps optional roots collapsed', () => {

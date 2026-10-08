@@ -86,8 +86,9 @@ describe('OpenApiSchema', () => {
     renderSchema();
 
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Expand all' })).toBeNull();
-    expect(screen.queryByRole('button', { name: 'Collapse all' })).toBeNull();
+    expect(
+      screen.getByRole('button', { name: 'Expand all' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('name')).toBeVisible();
   });
 
