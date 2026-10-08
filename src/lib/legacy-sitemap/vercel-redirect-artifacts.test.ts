@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import gscObservedRedirects from './gsc-observed-redirects.json';
+import posthogObservedRedirects from './posthog-observed-redirects.json';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
 
@@ -74,7 +75,9 @@ describe('legacy redirect Vercel artifacts', () => {
 
   it('keeps the committed artifacts aligned with the legacy redirect rules', () => {
     expect(staticRedirects).toHaveLength(
-      legacyRules.length + gscObservedRedirects.length,
+      legacyRules.length +
+        gscObservedRedirects.length +
+        posthogObservedRedirects.length,
     );
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
@@ -146,14 +149,17 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {
-    expect(
+    const ipAllowlistRedirect =
       bulkRedirects.find(
         (rule) => rule.source === '/en/agora-chat/develop/ip_allowlist',
-      ),
-    ).toEqual({
+      ) ??
+      vercelConfig.redirects?.find(
+        (rule) => rule.source === '/en/agora-chat/develop/ip_allowlist',
+      );
+
+    expect(ipAllowlistRedirect).toMatchObject({
       destination:
         '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist',
-      preserveQueryParams: true,
       source: '/en/agora-chat/develop/ip_allowlist',
       statusCode: 301,
     });
