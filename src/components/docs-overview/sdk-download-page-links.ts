@@ -54,6 +54,10 @@ export function getZhCNSdkDownloadPageHref(
     return `/zh-CN/realtime-media/rtm/reference/downloads/${platform}`;
   }
 
+  if (productId === 'chat') {
+    return 'https://im.shengwang.cn/';
+  }
+
   if (whiteboardProducts.has(productId)) {
     if (!whiteboardPlatforms.has(platformId)) return null;
     const productPath =

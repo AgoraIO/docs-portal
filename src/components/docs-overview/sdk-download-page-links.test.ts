@@ -31,4 +31,10 @@ describe('getZhCNSdkDownloadPageHref', () => {
     );
     expect(getZhCNSdkDownloadPageHref('agents', 'python')).toBeNull();
   });
+
+  it('links the Chinese Instant Messaging SDK to its dedicated site', () => {
+    expect(getZhCNSdkDownloadPageHref('chat', 'android')).toBe(
+      'https://im.shengwang.cn/',
+    );
+  });
 });
