@@ -34,7 +34,7 @@ AI programming tools can consume published Markdown and LLMS indexes. These expo
 
 - The Chinese site is **声网文档中心**. The header pairs the Shengwang wordmark with **文档中心**; page titles and sharing metadata use the full site name.
 - The English site remains **Agora Docs**, with the Agora wordmark and **Docs** header label.
-- The Chinese wordmark uses the official SVG geometry from [the current Shengwang documentation site](https://doc.shengwang.cn/). Its brand blue is `#0085FF`, matching that site's `--brand-600` / `--blue-60` value. Keep the logo blue in both light and dark themes rather than inheriting the body text color.
+- The Chinese wordmark uses the official SVG geometry from [the current Shengwang documentation site](https://doc.shengwang.cn/). Its brand blue is `#00C2FF`, aligned with the supplied Agora RGB Digital blue SVG (`agora-logo-rgb-blue.svg`). Use this logo color consistently in the header, footer, favicon, and sharing image, in both light and dark themes.
 - Voice remains clear, technical, and restrained.
 
 ## Evidence on Hand

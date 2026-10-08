@@ -24,7 +24,7 @@ export function SiteLogoMark({
     <svg
       aria-hidden={ariaHidden}
       aria-label={alt ?? '声网'}
-      className={cn('h-[22px] w-[43px] shrink-0 text-[#0085ff]', className)}
+      className={cn('h-[22px] w-[43px] shrink-0 text-[#00c2ff]', className)}
       fill="currentColor"
       role="img"
       viewBox="0 0 43 22"
