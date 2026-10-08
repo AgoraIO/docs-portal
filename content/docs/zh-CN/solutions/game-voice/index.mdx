@@ -22,9 +22,7 @@ description: "了解游戏语音的核心能力、适用场景、接入路径和
 游戏语音方案通过集成声网实时互动（RTC）SDK、游戏业务服务端和可选的 Wwise 插件，为游戏提供低时延语音、小队与开黑语音、空间音频和范围音频等核心能力：
 
 - **声网实时互动（RTC）SDK**：负责玩家音频的采集、发布、订阅和播放，实现频道内的实时语音互动。
-- **游戏业务服务端**：负责生成 Token，并按需同步玩家位置等游戏状态；客户端 SDK 根据位置计算相对距离和方向，完成空间音频处理。
-- **Unity / Unreal 客户端**：将 RTC SDK 集成到游戏引擎中，连接游戏内的玩家状态、音频设备和频道控制逻辑。详见[实现纯语音互动](/zh-CN/solutions/game-voice/get-started/audio-quick-start)和[平台支持](/zh-CN/solutions/game-voice/reference/supported-platforms)。
-- **可选音频扩展**：可以使用[SDK 实现空间音频](/zh-CN/solutions/game-voice/build/spatial-audio-sdk)，或使用[Wwise 插件实现空间音频](/zh-CN/solutions/game-voice/build/spatial-audio-wwise)处理高级空间音效；云端录制和内容安全审核可作为配套服务按需接入。
+- **游戏业务服务端**：负责 Token 鉴权和玩家位置等游戏状态同步。
 
 
 ## 功能列表
