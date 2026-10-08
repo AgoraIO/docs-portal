@@ -1,8 +1,18 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouterState } from '@tanstack/react-router';
 import { ArrowLeft } from 'lucide-react';
+import { useEffect } from 'react';
 import { buttonVariants } from '@/components/ui/button';
+import { captureDocsPageNotFound } from '@/lib/analytics/posthog';
 
 export function NotFound() {
+  const pathname = useRouterState({
+    select: (state) => state.location.pathname,
+  });
+
+  useEffect(() => {
+    captureDocsPageNotFound({ pathname });
+  }, [pathname]);
+
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-20">
       <div aria-hidden className="home-grid absolute inset-0 opacity-70" />

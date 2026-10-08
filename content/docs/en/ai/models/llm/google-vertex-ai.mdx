@@ -68,22 +68,27 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(
     vendors.NewVertexAILLM(vendors.VertexAILLMOptions{
-        APIKey:    "your-gcp-access-token",
         ProjectID: "your-gcp-project-id",
         Location:  "us-central1",
-        Model:     "gemini-2.0-flash-001",
-        SystemMessages: []map[string]interface{}{
-            {"parts": []map[string]interface{}{{"text": "You are a helpful chatbot."}}, "role": "user"},
+        GeminiOptions: vendors.GeminiOptions{
+            APIKey: "your-gcp-access-token",
+            Model:  "gemini-2.0-flash-001",
+            SystemMessages: []map[string]interface{}{
+                {"parts": []map[string]interface{}{{"text": "You are a helpful chatbot."}}, "role": "user"},
+            },
+            GreetingMessage: "Good to see you!",
+            FailureMessage:  "Hold on a second.",
+            MaxHistory:      Agora.Int(32),
         },
-        GreetingMessage: "Good to see you!",
-        FailureMessage:  "Hold on a second.",
-        MaxHistory:      agora.Int(32),
     }),
 ).WithTts(/* configure your TTS vendor */)
 ```

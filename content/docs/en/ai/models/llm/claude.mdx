@@ -70,7 +70,10 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
@@ -79,7 +82,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
         APIKey:    "your-anthropic-key",
         URL:       "https://api.anthropic.com/v1/messages",
         Model:     "claude-opus-4-8",
-        MaxTokens: agora.Int(1024),
+        MaxTokens: Agora.Int(1024),
         Headers:   map[string]string{"anthropic-version": "2023-06-01"},
         SystemMessages: []map[string]interface{}{
             {"role": "system", "content": "You are a helpful chatbot."},
