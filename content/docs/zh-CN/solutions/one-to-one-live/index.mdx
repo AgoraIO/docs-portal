@@ -1,5 +1,5 @@
 ---
-title: 1v1 私密房
+title: 1v1 私密房概览
 description: 选择基于自定义信令或声网 RTM 的 1v1 私密房接入方案。
 ---
 
@@ -9,3 +9,15 @@ description: 选择基于自定义信令或声网 RTM 的 1v1 私密房接入方
 
 - [自定义信令方案](/zh-CN/solutions/one-to-one-live/custom-signaling)：适用于使用自定义或第三方信令的项目。
 - [RTM 方案](/zh-CN/solutions/one-to-one-live/rtm)：适用于使用声网 RTM 的项目。
+
+## 技术架构
+
+1v1 私密房由 RTC 音视频能力、1v1 呼叫业务封装和信令服务共同组成。两套方案的主要区别在于信令层的实现方式，RTC 通话和业务侧的用户、可通话列表、计费等逻辑需要结合你的应用自行实现。
+
+### RTM 方案
+
+RTM 方案使用 `CallRtmManager` 管理 RTM 登录、登出、Token 续期和网络状态，使用 `CallRtmSignalClient` 实现信令消息收发，再由 `CallAPI` 统一封装 RTC 通话、呼叫状态和业务流程。详细模块关系和呼叫时序见[实现 1v1 私密房](/zh-CN/solutions/one-to-one-live/rtm/build/implement-core-features/start-one-to-one)。
+
+### 自定义信令方案
+
+自定义信令方案由 `CallAPI` 负责 RTC 和呼叫逻辑，业务侧实现 `ISignalClient`，接入自研或第三方信令服务，并自行维护登录、登出、Token 续期和消息收发。详细接入方式见[实现自定义信令](/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/implement-custom-signaling)。
