@@ -428,7 +428,9 @@ describe('docs route locale guards', () => {
       await expect(response.text()).resolves.toContain(
         '# Talking while waiting (/en/ai/build/shape-the-conversation/filler-words)',
       );
-      expect(response.headers.get('Content-Type')).toBe('text/markdown');
+      expect(response.headers.get('Content-Type')).toBe(
+        'text/markdown; charset=utf-8',
+      );
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
@@ -453,7 +455,9 @@ describe('docs route locale guards', () => {
     await expect(response.text()).resolves.toContain(
       '# 声网 MCP (/zh-CN/introduction/mcp-integrate)',
     );
-    expect(response.headers.get('Content-Type')).toBe('text/markdown');
+    expect(response.headers.get('Content-Type')).toBe(
+      'text/markdown; charset=utf-8',
+    );
   });
 
   it(
@@ -478,7 +482,9 @@ describe('docs route locale guards', () => {
       } as never)) as Response;
       const markdown = await response.text();
 
-      expect(response.headers.get('Content-Type')).toBe('text/markdown');
+      expect(response.headers.get('Content-Type')).toBe(
+        'text/markdown; charset=utf-8',
+      );
       expect(markdown).toContain(
         '# Fastboard API (/en/api-reference/api-ref/uikit-sdk/android)',
       );
@@ -508,7 +514,9 @@ describe('docs route locale guards', () => {
     } as never)) as Response;
     const markdown = await response.text();
 
-    expect(response.headers.get('Content-Type')).toBe('text/markdown');
+    expect(response.headers.get('Content-Type')).toBe(
+      'text/markdown; charset=utf-8',
+    );
     expect(markdown).toContain(
       '/zh-CN/api-reference/api-ref/uikit-sdk/android',
     );
