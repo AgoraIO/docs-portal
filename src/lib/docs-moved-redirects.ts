@@ -88,10 +88,11 @@ export function isPermanentMovedDocsRedirect(
   tab: string,
   slugSegments: string[],
 ) {
+  const root = slugSegments[0];
+
   return (
     locale === 'zh-CN' &&
     tab === 'solutions' &&
-    `solutions/${slugSegments.join('/')}` in
-      ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS
+    (root === 'ppt-transcoding' || root === 'status-page')
   );
 }

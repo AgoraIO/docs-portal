@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 
@@ -34,13 +35,25 @@ describe('resolveMovedDocsRedirect', () => {
   );
 
   it('redirects the old Introduction PPT migration route to Realtime Media', () => {
+    const target = resolveMovedDocsRedirect('zh-CN', 'introduction', [
+      'ppt-transcoding',
+      'get-started',
+      'quick-start',
+    ]);
+
+    expect(target).toBe(
+      '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
+    );
+    const realtimeMedia = JSON.parse(
+      readFileSync('content/docs/zh-CN/realtime-media/meta.json', 'utf8'),
+    ) as { pages: string[] };
+    expect(realtimeMedia.pages).toContain('ppt-transcoding');
     expect(
-      resolveMovedDocsRedirect('zh-CN', 'introduction', [
-        'ppt-transcoding',
-        'get-started',
-        'quick-start',
-      ]),
-    ).toBe('/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start');
+      readFileSync(
+        'content/docs/zh-CN/realtime-media/ppt-transcoding/index.mdx',
+        'utf8',
+      ),
+    ).toContain('title: PPT 转码服务概览');
   });
 
   it('redirects merged Cloud Recording quickstart language pages to the shared quickstart', () => {
