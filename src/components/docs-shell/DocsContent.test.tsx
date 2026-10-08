@@ -148,6 +148,29 @@ describe('DocsContent', () => {
     vi.unstubAllGlobals();
   });
 
+  it('gives the Chinese home page the full content area without article tools', async () => {
+    const { container } = renderWithRouter(
+      <DocsContent
+        contentPath="zh-CN/introduction/index.mdx"
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction.md"
+        title="声网文档中心"
+        toc={[{ title: '集成语音智能体', url: '#ai', depth: 2 }]}
+      />,
+      '/zh-CN/introduction',
+    );
+
+    expect(await screen.findByTestId('docs-content-body')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '声网文档中心' })).toHaveClass(
+      'sr-only',
+    );
+    expect(container.querySelector('article')).toHaveClass('max-w-none');
+    expect(container.querySelector('article > header')).toBeNull();
+    expect(screen.queryByRole('button', { name: '复制页面' })).toBeNull();
+    expect(screen.queryByTestId('docs-last-updated')).toBeNull();
+    expect(screen.queryByRole('complementary')).toBeNull();
+  });
+
   it('hides a single-item breadcrumb that just repeats the page title', async () => {
     renderWithRouter(
       <DocsContent
@@ -1041,18 +1064,38 @@ describe('DocsContent', () => {
     expect(await screen.findByText('AI 工具')).toBeInTheDocument();
     expect(screen.getByText('MCP')).toBeInTheDocument();
     expect(screen.getByText('其他')).toBeInTheDocument();
+    for (const [name, href] of [
+      ['打开 DeepSeek', 'https://chat.deepseek.com/'],
+      ['打开豆包', 'https://www.doubao.com/chat/'],
+      ['打开千问', 'https://www.qianwen.com/'],
+      ['打开 Kimi', 'https://www.kimi.com/'],
+    ]) {
+      expect(screen.getByRole('menuitem', { name })).toHaveAttribute(
+        'href',
+        href,
+      );
+    }
+    expect(screen.getByRole('menu')).not.toHaveTextContent(
+      /ChatGPT|Claude|Codex|Cursor|Copilot/i,
+    );
+    expect(screen.getByRole('menu').innerHTML).not.toMatch(
+      /chatgpt\.com|claude\.ai/,
+    );
     expect(
-      screen.getByRole('menuitem', { name: '连接到 Cursor' }),
+      screen.queryByRole('menuitem', { name: '复制 MCP 命令' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('menuitem', { name: '连接到 TRAE' }),
     ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate');
     expect(
-      screen.getByRole('menuitem', { name: '连接到 VS Code' }),
+      screen.getByRole('menuitem', { name: '连接到 Kimi Code' }),
     ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate');
     expect(
       screen.getByRole('menuitem', { name: '查看 Markdown' }),
     ).toHaveAttribute('href', '/zh-CN/introduction/mcp-integrate.md');
   });
 
-  it('copies zh-CN MCP config and command from the copy page menu', async () => {
+  it('copies zh-CN MCP config without an unsupported CLI command', async () => {
     clipboardWriteText.mockReset();
     clipboardWriteText.mockResolvedValue(undefined);
 
@@ -1083,20 +1126,77 @@ describe('DocsContent', () => {
   }
 }`);
     });
+  });
 
+  it('copies the full Chinese page for domestic AI assistants and keeps their links available', async () => {
+    const markdown = '# 声网 MCP\n\n使用声网官方文档配置 AI 编程助手。';
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      text: vi.fn().mockResolvedValue(markdown),
+    });
+    clipboardWriteText.mockReset();
+    clipboardWriteText.mockResolvedValue(undefined);
+    renderWithRouter(
+      <DocsCopyMenu
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+        slug="introduction/mcp-integrate"
+        title="声网 MCP"
+      />,
+      '/zh-CN/introduction/mcp-integrate',
+    );
     fireEvent.pointerDown(
-      screen.getByRole('button', { name: '复制页面更多操作' }),
+      await screen.findByRole('button', { name: '复制页面更多操作' }),
       { button: 0 },
     );
     fireEvent.click(
-      await screen.findByRole('menuitem', { name: '复制 MCP 命令' }),
+      await screen.findByRole('menuitem', { name: '复制 AI 提问内容' }),
     );
-    await waitFor(() => {
-      expect(clipboardWriteText).toHaveBeenLastCalledWith(
-        `code --add-mcp '{"name":"shengwang-docs","url":"https://doc-mcp.shengwang.cn/mcp"}'`,
-      );
-    });
+    expect(
+      await screen.findByRole('menuitem', { name: '已复制提问内容' }),
+    ).toBeInTheDocument();
+    expect(clipboardWriteText).toHaveBeenCalledWith(
+      expect.stringContaining(markdown),
+    );
+    expect(clipboardWriteText).toHaveBeenCalledWith(
+      expect.stringContaining('/zh-CN/introduction/mcp-integrate.md'),
+    );
+    expect(
+      screen.getByRole('menuitem', { name: '打开豆包' }),
+    ).toBeInTheDocument();
   });
+
+  it.each([
+    { ok: false },
+    { ok: true, headers: new Headers({ 'content-type': 'text/html' }) },
+  ])(
+    'shows a retry message when the Chinese AI prompt cannot be copied (%j)',
+    async (response) => {
+      fetchMock.mockResolvedValueOnce(response);
+      clipboardWriteText.mockReset();
+      renderWithRouter(
+        <DocsCopyMenu
+          locale="zh-CN"
+          markdownUrl="/zh-CN/introduction/mcp-integrate.md"
+          slug="introduction/mcp-integrate"
+          title="声网 MCP"
+        />,
+        '/zh-CN/introduction/mcp-integrate',
+      );
+      fireEvent.pointerDown(
+        await screen.findByRole('button', { name: '复制页面更多操作' }),
+        { button: 0 },
+      );
+      fireEvent.click(
+        await screen.findByRole('menuitem', { name: '复制 AI 提问内容' }),
+      );
+      expect(await screen.findByRole('alert')).toHaveTextContent('复制失败');
+      expect(clipboardWriteText).not.toHaveBeenCalled();
+      expect(
+        screen.getByRole('menuitem', { name: '查看 Markdown' }),
+      ).toBeInTheDocument();
+    },
+  );
 
   it('copies MCP config and command from the copy page menu', async () => {
     clipboardWriteText.mockReset();
@@ -1173,6 +1273,7 @@ describe('DocsContent', () => {
     });
     expect(fetchMock).toHaveBeenCalledWith('/en/introduction/about-agora.md', {
       credentials: 'same-origin',
+      headers: { Accept: 'text/markdown, text/html;q=0.9' },
     });
   });
 
@@ -1201,6 +1302,7 @@ describe('DocsContent', () => {
         '/en/introduction/about-agora.md',
         {
           credentials: 'same-origin',
+          headers: { Accept: 'text/markdown, text/html;q=0.9' },
         },
       );
     });

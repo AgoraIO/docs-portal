@@ -51,8 +51,25 @@
   ],
   "routes": [
     {
+      "src": "^/.*\\.md/?$",
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8"
+      },
+      "continue": true
+    },
+    {
+      "src": "^/(?:llms(?:-full)?\\.txt|llms/.*\\.txt)/?$",
+      "headers": {
+        "Content-Type": "text/plain; charset=utf-8"
+      },
+      "continue": true
+    },
+    {
       "src": "^/en/((?!.*\\.md/?$).+?)/?$",
       "dest": "/en/$1.md",
+      "headers": {
+        "Content-Type": "text/markdown; charset=utf-8"
+      },
       "has": [
         {
           "type": "header",

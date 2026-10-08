@@ -19,6 +19,7 @@ import {
   TabsTrigger as FumadocsTabsTrigger,
 } from 'fumadocs-ui/components/tabs';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
+import { ArrowRightIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
@@ -1576,13 +1577,28 @@ function createLegacyDocsLink(contentPath?: string) {
 }
 
 function createDocsCard(contentPath?: string) {
-  function DocsCard({ className, href, ...props }: DocsCardProps) {
+  function DocsCard({ children, className, href, ...props }: DocsCardProps) {
     const normalized =
       typeof href === 'string'
         ? normalizeDocsHref(href, { contentPath })
         : null;
     const normalizedHref = normalized?.href ?? href;
-    const cardClassName = cn(href && 'docs-card-link', className);
+    const cardClassName = cn(
+      'docs-card-surface docs-mdx-card',
+      href && 'docs-card-interactive docs-card-link',
+      className,
+    );
+    const content = (
+      <>
+        {children}
+        {href ? (
+          <ArrowRightIcon
+            aria-hidden="true"
+            className="docs-card-arrow absolute right-4 top-4 size-4 text-muted-foreground"
+          />
+        ) : null}
+      </>
+    );
 
     if (normalized && shouldUseRouterLink(normalized, props)) {
       return (
@@ -1590,16 +1606,16 @@ function createDocsCard(contentPath?: string) {
           {...props}
           className={cardClassName}
           to={normalized.href}
-        />
+        >
+          {content}
+        </RouterFumadocsCard>
       );
     }
 
     return (
-      <FumadocsCard
-        {...props}
-        className={cardClassName}
-        href={normalizedHref}
-      />
+      <FumadocsCard {...props} className={cardClassName} href={normalizedHref}>
+        {content}
+      </FumadocsCard>
     );
   }
 

@@ -36,7 +36,9 @@ describe('legacy redirect Vercel artifacts', () => {
     redirects?: VercelRedirect[];
     rewrites?: unknown[];
     routes?: Array<{
-      dest: string;
+      continue?: boolean;
+      dest?: string;
+      headers?: Record<string, string>;
       has?: Array<{
         key: string;
         type: string;
@@ -58,6 +60,7 @@ describe('legacy redirect Vercel artifacts', () => {
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
     expect(vercelConfig.routes).toContainEqual({
       dest: '/en/$1.md',
+      headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
       has: [
         {
           key: 'Accept',
@@ -73,6 +76,41 @@ describe('legacy redirect Vercel artifacts', () => {
         expect.objectContaining({ src: expect.stringContaining('zh-CN') }),
       ]),
     );
+  });
+
+  it('declares UTF-8 for static Markdown and LLMS files without stopping filesystem routing', () => {
+    for (const pathname of [
+      '/zh-CN/introduction.md',
+      '/zh-CN/introduction/mcp-integrate.md',
+      '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+      '/en/introduction/about-agora.md',
+      '/llms.txt',
+      '/llms-full.txt',
+      '/llms/introduction.txt',
+    ]) {
+      const rule = vercelConfig.routes?.find(
+        (route) => !route.has && new RegExp(route.src).test(pathname),
+      );
+      expect(rule?.continue).toBe(true);
+      expect(rule?.dest).toBeUndefined();
+      expect(rule?.headers?.['Content-Type']).toBe(
+        pathname.endsWith('.md')
+          ? 'text/markdown; charset=utf-8'
+          : 'text/plain; charset=utf-8',
+      );
+    }
+
+    for (const pathname of [
+      '/zh-CN/introduction/mcp-integrate',
+      '/shengwang-docs-og.png',
+      '/robots.txt',
+    ]) {
+      expect(
+        vercelConfig.routes?.some(
+          (route) => route.headers && new RegExp(route.src).test(pathname),
+        ),
+      ).toBe(false);
+    }
   });
 
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {

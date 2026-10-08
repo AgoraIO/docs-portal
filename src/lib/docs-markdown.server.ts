@@ -13,7 +13,7 @@ import {
 } from './platforms/registry';
 
 const MARKDOWN_RESPONSE_HEADERS = {
-  'Content-Type': 'text/markdown',
+  'Content-Type': 'text/markdown; charset=utf-8',
 };
 
 export async function getPublicDocsMarkdownResponse({
