@@ -8,7 +8,7 @@ Tavus provides lifelike AI avatars that see, hear, and respond in real time, ena
 
 ### Sample configuration
 
-Tavus integrates through the `generic` avatar vendor. The following examples show how to configure a Tavus avatar when starting a conversational AI agent.
+The following examples show how to configure a Tavus avatar when starting a conversational AI agent.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -21,7 +21,7 @@ Tavus integrates through the `generic` avatar vendor. The following examples sho
 
 ```python
 from agora_agent import Agent
-from agora_agent.agentkit.vendors import GenericAvatar
+from agora_agent.agentkit.vendors import Tavus
 
 # client is your configured Agora client
 agent = (
@@ -29,7 +29,7 @@ agent = (
     .with_stt(...)  # configure your STT vendor
     .with_llm(...)  # configure your LLM vendor
     .with_tts(...)  # configure your TTS vendor
-    .with_avatar(GenericAvatar(
+    .with_avatar(Tavus(
         api_key='<TAVUS_API_KEY>',
         api_base_url='https://tavusapi.com/v2/conversations/agora',
         avatar_id='<TAVUS_FACE_ID>',
@@ -43,14 +43,14 @@ agent = (
 <TabsContent value="typescript">
 
 ```typescript
-import { Agent, GenericAvatar } from 'agora-agents';
+import { Agent, Tavus } from 'agora-agents';
 
 // client is your configured Agora client
 const agent = new Agent({ client })
   .withStt(/* configure your STT vendor */)
   .withLlm(/* configure your LLM vendor */)
   .withTts(/* configure your TTS vendor */)
-  .withAvatar(new GenericAvatar({
+  .withAvatar(new Tavus({
     apiKey: '<TAVUS_API_KEY>',
     apiBaseUrl: 'https://tavusapi.com/v2/conversations/agora',
     avatarId: '<TAVUS_FACE_ID>',
@@ -73,7 +73,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(/* configure your LLM vendor */).
   WithTts(/* configure your TTS vendor */).
   WithAvatar(
-    vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
+    vendors.NewTavus(vendors.TavusOptions{
         APIKey:     "<TAVUS_API_KEY>",
         APIBaseURL: "https://tavusapi.com/v2/conversations/agora",
         AvatarID:   "<TAVUS_FACE_ID>",
@@ -86,7 +86,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 <TabsContent value="rest-api">
 
-Use the following `avatar` configuration in your request:
+Set `vendor` to `generic` and use the following `avatar` configuration in your request:
 
 ```json
 "avatar": {

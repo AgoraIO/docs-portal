@@ -1806,6 +1806,50 @@ Generic avatars do not enforce a fixed TTS sample rate. Use the sample rate requ
 | `Enable` | `*bool` | No | Enable or disable the avatar |
 | `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
 
+#### `NewTavus`
+
+```go
+func NewTavus(opts TavusOptions) *Tavus
+```
+
+Panics if `APIKey`, `APIBaseURL`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Tavus](/en/ai/models/avatar/tavus).
+
+Tavus avatars do not enforce a fixed TTS sample rate.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Tavus API key |
+| `APIBaseURL` | `string` | Yes | Tavus API endpoint |
+| `AvatarID` | `string` | Yes | Tavus avatar identifier |
+| `AgoraUID` | `string` | Yes | UID for avatar video stream; use a different UID from `AgentUID` |
+| `AgoraToken` | `string` | No | Avatar token; auto-generated with the same token format as agent tokens when omitted |
+| `AgoraAppID` | `string` | No | Overrides session App ID |
+| `AgoraChannel` | `string` | No | Overrides session channel |
+| `Enable` | `*bool` | No | Enable or disable the avatar |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
+
+#### `NewProtoface`
+
+```go
+func NewProtoface(opts ProtofaceOptions) *Protoface
+```
+
+Panics if `APIKey`, `APIBaseURL`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Protoface](/en/ai/models/avatar/protoface).
+
+Protoface avatars do not enforce a fixed TTS sample rate.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | Protoface API key |
+| `APIBaseURL` | `string` | Yes | Protoface API endpoint |
+| `AvatarID` | `string` | Yes | Protoface avatar identifier |
+| `AgoraUID` | `string` | Yes | UID for avatar video stream; use a different UID from `AgentUID` |
+| `AgoraToken` | `string` | No | Avatar token; auto-generated with the same token format as agent tokens when omitted |
+| `AgoraAppID` | `string` | No | Overrides session App ID |
+| `AgoraChannel` | `string` | No | Overrides session channel |
+| `Enable` | `*bool` | No | Enable or disable the avatar |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
+
 #### `NewHeyGenAvatar` (deprecated)
 
 Requires TTS at **24,000 Hz** (`SampleRate24kHz`).

@@ -8,7 +8,7 @@ Protoface provides real-time AI avatars that add a talking, lip-synced face to y
 
 ### Sample configuration
 
-Protoface integrates through the `generic` avatar vendor. The following examples show how to configure a Protoface avatar when starting a conversational AI agent.
+The following examples show how to configure a Protoface avatar when starting a conversational AI agent.
 
 <Tabs defaultValue="python" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -21,7 +21,7 @@ Protoface integrates through the `generic` avatar vendor. The following examples
 
 ```python
 from agora_agent import Agent
-from agora_agent.agentkit.vendors import GenericAvatar
+from agora_agent.agentkit.vendors import Protoface
 
 # client is your configured Agora client
 agent = (
@@ -29,7 +29,7 @@ agent = (
     .with_stt(...)  # configure your STT vendor
     .with_llm(...)  # configure your LLM vendor
     .with_tts(...)  # configure your TTS vendor
-    .with_avatar(GenericAvatar(
+    .with_avatar(Protoface(
         api_key='<PROTOFACE_API_KEY>',
         api_base_url='https://api.protoface.com/v1/agora',
         avatar_id='<PROTOFACE_AVATAR_ID>',
@@ -43,14 +43,14 @@ agent = (
 <TabsContent value="typescript">
 
 ```typescript
-import { Agent, GenericAvatar } from 'agora-agents';
+import { Agent, Protoface } from 'agora-agents';
 
 // client is your configured Agora client
 const agent = new Agent({ client })
   .withStt(/* configure your STT vendor */)
   .withLlm(/* configure your LLM vendor */)
   .withTts(/* configure your TTS vendor */)
-  .withAvatar(new GenericAvatar({
+  .withAvatar(new Protoface({
     apiKey: '<PROTOFACE_API_KEY>',
     apiBaseUrl: 'https://api.protoface.com/v1/agora',
     avatarId: '<PROTOFACE_AVATAR_ID>',
@@ -73,7 +73,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithLlm(/* configure your LLM vendor */).
   WithTts(/* configure your TTS vendor */).
   WithAvatar(
-    vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
+    vendors.NewProtoface(vendors.ProtofaceOptions{
         APIKey:     "<PROTOFACE_API_KEY>",
         APIBaseURL: "https://api.protoface.com/v1/agora",
         AvatarID:   "<PROTOFACE_AVATAR_ID>",
@@ -86,7 +86,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
 
 <TabsContent value="rest-api">
 
-Use the following `avatar` configuration in your request:
+Set `vendor` to `generic` and use the following `avatar` configuration in your request:
 
 ```json
 "avatar": {

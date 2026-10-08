@@ -394,7 +394,7 @@ start(): Promise<string>
 - Throws if MLLM is enabled together with an enabled avatar — avatars are only supported with the cascading ASR + LLM + TTS pipeline
 - Applies explicit `preset` values when provided and sends Agora-managed configuration when supported vendor credentials are omitted
 - Fills generic avatar `agora_appid` and `agora_channel` from the session when omitted
-- Generates avatar `agora_token` for `HeyGenAvatar`, `LiveAvatarAvatar`, and `GenericAvatar` when `agoraToken` is omitted and the client has an `appCertificate`. Other vendors (`AkoolAvatar`, `AnamAvatar`) never receive an auto-generated token.
+- Generates avatar `agora_token` for `HeyGenAvatar`, `LiveAvatarAvatar`, `GenericAvatar`, `Tavus`, and `Protoface` when `agoraToken` is omitted and the client has an `appCertificate`. Other vendors (`AkoolAvatar`, `AnamAvatar`) never receive an auto-generated token.
 
 #### `stop()`
 
@@ -1127,6 +1127,47 @@ new GenericAvatar(options: GenericAvatarOptions)
 | `agoraChannel` | `string` | No | Agora channel override |
 | `agoraToken` | `string` | No | Avatar token override |
 | `enable` | `boolean` | No | Enable or disable the avatar. Default: `true` |
+| `additionalParams` | `Record<string, unknown>` | No | Additional vendor parameters. Explicit options take precedence over matching keys. |
+
+#### Tavus
+
+Tavus avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Tavus](/en/ai/models/avatar/tavus).
+
+```typescript
+new Tavus(options: TavusOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | Tavus API key |
+| `apiBaseUrl` | `string` | Yes | Tavus API base URL |
+| `avatarId` | `string` | Yes | Tavus avatar ID |
+| `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
+| `agoraAppId` | `string` | No | Agora App ID override |
+| `agoraChannel` | `string` | No | Agora channel override |
+| `agoraToken` | `string` | No | Avatar token override |
+| `enable` | `boolean` | No | Enable or disable the avatar. Default: `true` |
+| `additionalParams` | `Record<string, unknown>` | No | Additional vendor parameters. Explicit options take precedence over matching keys. |
+
+#### Protoface
+
+Protoface avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [Protoface](/en/ai/models/avatar/protoface).
+
+```typescript
+new Protoface(options: ProtofaceOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | Protoface API key |
+| `apiBaseUrl` | `string` | Yes | Protoface API base URL |
+| `avatarId` | `string` | Yes | Protoface avatar ID |
+| `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
+| `agoraAppId` | `string` | No | Agora App ID override |
+| `agoraChannel` | `string` | No | Agora channel override |
+| `agoraToken` | `string` | No | Avatar token override |
+| `enable` | `boolean` | No | Enable or disable the avatar. Default: `true` |
+| `additionalParams` | `Record<string, unknown>` | No | Additional vendor parameters. Explicit options take precedence over matching keys. |
 
 ## Token utilities
 
