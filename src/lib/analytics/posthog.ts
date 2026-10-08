@@ -143,6 +143,21 @@ export function captureDocsPageViewed({
   captureDocsJourneyStep(context, pageViewProperties);
 }
 
+export function captureDocsPageNotFound({ pathname }: { pathname: string }) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const safePathname = stripUrlQueryAndHash(pathname);
+  const locale = safePathname.split('/').filter(Boolean)[0] ?? 'unknown';
+  const context = getDocsPageContext(locale, safePathname);
+
+  captureStructuredDocsEvent('docs_page_not_found', locale, {
+    ...getDocsPageViewProperties(context),
+    not_found_type: 'route',
+  });
+}
+
 export function captureDocsSearchOpened({
   locale,
   mode,

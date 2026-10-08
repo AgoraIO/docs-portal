@@ -21,6 +21,7 @@ const FIXTURE_PATHS = [
   'src/lib/legacy-sitemap/redirects.json',
   'src/lib/legacy-sitemap/gsc-observed-redirects.json',
   'src/lib/legacy-sitemap/posthog-observed-redirects.json',
+  'src/lib/legacy-sitemap/rtc-folder-redirects.json',
   'src/lib/legacy-sitemap/static-redirects.json',
   'vercel-legacy-redirects.json',
   'vercel.base.json',

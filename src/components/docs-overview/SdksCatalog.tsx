@@ -79,7 +79,7 @@ const productFilters = {
     productIds: ['video'],
   },
   voice: {
-    label: 'RTC Voice SDK',
+    label: 'RTC (Voice Only) SDK',
     aliases: ['voice', 'voice-calling', 'rtc-voice'],
     productIds: ['voice'],
   },
@@ -294,16 +294,16 @@ function ProductCard({
         })}
       </div>
 
-      <div className="mt-4 flex items-center justify-between gap-3">
+      <div className="mt-4 flex min-w-0 items-center justify-between gap-3">
         <span className="text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
           {command ? command.tool : ' '}
         </span>
-        <span className="relative shrink-0">
+        <span className="relative min-w-0 max-w-full">
           <label className="sr-only" htmlFor={versionId}>
             {`${group.label} version`}
           </label>
           <select
-            className="h-9 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+            className="h-9 max-w-full appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
             id={versionId}
             onChange={(event) => setVersionIndex(event.target.value)}
             value={versionIndex}
@@ -325,7 +325,12 @@ function ProductCard({
       </div>
 
       {activeVersion ? (
-        <InstallArea command={command} version={activeVersion} />
+        <InstallArea
+          command={command}
+          platformId={activePlatform.platformId}
+          productId={group.productId}
+          version={activeVersion}
+        />
       ) : null}
     </article>
   );
@@ -418,11 +423,20 @@ function getVersionKey(platformId: string, version: SdkDownloadVersion) {
 
 function InstallArea({
   command,
+  platformId,
+  productId,
   version,
 }: {
   command: InstallCommand | null;
+  platformId: string;
+  productId: string;
   version: SdkDownloadVersion;
 }) {
+  const showAndroidGradleRepositoryNote =
+    (productId === 'video' || productId === 'voice') &&
+    platformId === 'android' &&
+    command?.tool === 'Gradle';
+
   if (command) {
     return (
       <div className="mt-3 flex flex-col gap-2">
@@ -432,6 +446,12 @@ function InstallArea({
           </code>
           <CopyButton value={command.command} />
         </div>
+        {showAndroidGradleRepositoryNote ? (
+          <p className="m-0 text-sm text-muted-foreground">
+            Add the Agora Maven CDN repository before syncing Gradle:{' '}
+            <code>https://download.agora.io/maven/</code>
+          </p>
+        ) : null}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
           {version.downloadLink ? (
             <a

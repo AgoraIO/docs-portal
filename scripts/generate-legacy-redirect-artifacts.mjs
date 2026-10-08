@@ -23,6 +23,10 @@ const posthogObservedRedirectsPath = path.join(
   repoRoot,
   'src/lib/legacy-sitemap/posthog-observed-redirects.json',
 );
+const rtcFolderRedirectsPath = path.join(
+  repoRoot,
+  'src/lib/legacy-sitemap/rtc-folder-redirects.json',
+);
 const bulkRedirectsPath = path.join(repoRoot, 'vercel-legacy-redirects.json');
 const vercelBasePath = path.join(repoRoot, 'vercel.base.json');
 const vercelPath = path.join(repoRoot, 'vercel.json');
@@ -36,6 +40,9 @@ const gscObservedRedirects = JSON.parse(
 );
 const posthogObservedRedirects = JSON.parse(
   await readFile(posthogObservedRedirectsPath, 'utf8'),
+);
+const rtcFolderRedirects = JSON.parse(
+  await readFile(rtcFolderRedirectsPath, 'utf8'),
 );
 const baseConfig = JSON.parse(await readFile(vercelBasePath, 'utf8'));
 const artifactRules = [
@@ -57,7 +64,10 @@ const vercelConfig = {
   outputDirectory: baseConfig.outputDirectory,
   framework: baseConfig.framework,
   bulkRedirectsPath: 'vercel-legacy-redirects.json',
-  ...createRedirectsConfig(baseConfig.redirects, configRedirects),
+  ...createRedirectsConfig(
+    [...baseConfig.redirects, ...rtcFolderRedirects.redirects],
+    configRedirects,
+  ),
   ...createRoutesConfig(queryRedirectRoutes, baseConfig.routes),
   ...(baseConfig.rewrites ? { rewrites: baseConfig.rewrites } : {}),
 };
