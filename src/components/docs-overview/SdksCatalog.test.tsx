@@ -63,6 +63,13 @@ describe('SdksCatalog', () => {
     );
   });
 
+  it('does not show an install-tool badge beside Chinese platform selectors', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const voiceCard = openProductCard('语音 SDK');
+    expect(within(voiceCard).queryByText('Gradle')).not.toBeInTheDocument();
+  });
+
   it('shows download-card metadata in Chinese overview products', () => {
     render(<SdksCatalog locale="zh-CN" />);
 

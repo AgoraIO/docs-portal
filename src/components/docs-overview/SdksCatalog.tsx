@@ -630,9 +630,11 @@ function ProductCard({
                 ))}
               </select>
             </label>
-            <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
-              {command ? command.tool : ' '}
-            </span>
+            {!redesigned ? (
+              <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
+                {command ? command.tool : ' '}
+              </span>
+            ) : null}
           </div>
 
           {redesigned && downloadPageHref ? (
