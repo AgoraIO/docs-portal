@@ -124,6 +124,12 @@ const productFilters = {
     aliases: ['agents', 'agora-agents', 'ai-agents'],
     productIds: ['agents'],
   },
+  'client-toolkit': {
+    label: 'Conversational AI Client Toolkit',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY['client-toolkit'].label,
+    aliases: ['client-toolkit', 'client-component', 'conversational-ai-client'],
+    productIds: ['client-toolkit'],
+  },
   chat: {
     label: 'Chat SDK',
     zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.chat.label,

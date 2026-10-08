@@ -656,6 +656,19 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "packageManager": "gradle://io.github.agora-apaas/FcrUIScene/3.1.0"
           }
         ]
+      },
+      {
+        "id": "client-toolkit-sdk-android",
+        "label": "客户端组件 SDK",
+        "info": "用于在 Android 客户端集成对话式 AI 引擎能力的组件",
+        "versions": [
+          {
+            "id": "2.9.0-client-toolkit-sdk-android",
+            "label": "版本 2.9.0（最新）",
+            "packageName": "io.agora.agents:agora-agent-client-toolkit",
+            "packageManager": "gradle://io.agora.agents/agora-agent-client-toolkit/2.9.0"
+          }
+        ]
       }
     ]
   },
@@ -1210,6 +1223,19 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "id": "3.1.0-meeting-sdk-ios",
             "label": "版本 3.1.0（最新）",
             "packageManager": "cocoapods://FcrUIScene?version=3.1.0"
+          }
+        ]
+      },
+      {
+        "id": "client-toolkit-sdk-ios",
+        "label": "客户端组件 SDK",
+        "info": "用于在 iOS 客户端集成对话式 AI 引擎能力的组件",
+        "versions": [
+          {
+            "id": "2.9.0-client-toolkit-sdk-ios",
+            "label": "版本 2.9.0（最新）",
+            "packageName": "agent-client-toolkit-swift",
+            "packageManager": "cocoapods://agent-client-toolkit-swift?version=2.9.0"
           }
         ]
       }
@@ -1910,6 +1936,19 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "label": "版本 1.0.40（最新）",
             "downloadLink": "https://download.agora.io/edu-apaas/release/scene_sdk@1.0.40.bundle.js",
             "packageManager": "npm://fcr-ui-scene?version=1.0.40"
+          }
+        ]
+      },
+      {
+        "id": "client-toolkit-sdk-web",
+        "label": "客户端组件 SDK",
+        "info": "用于在 Web 客户端集成对话式 AI 引擎能力的组件",
+        "versions": [
+          {
+            "id": "2.9.0-client-toolkit-sdk-web",
+            "label": "版本 2.9.0（最新）",
+            "packageName": "agora-agent-client-toolkit",
+            "packageManager": "https://www.npmjs.com/package/agora-agent-client-toolkit/v/2.9.0"
           }
         ]
       }

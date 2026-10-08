@@ -32,6 +32,12 @@ const platforms: readonly SdkDownloadPlatform[] = [
         info: 'agents',
         versions: [],
       },
+      {
+        id: 'client-toolkit-sdk-android',
+        label: 'Client Toolkit SDK',
+        info: 'client toolkit',
+        versions: [],
+      },
     ],
   },
 ];
@@ -65,7 +71,7 @@ describe('buildSdkCapabilityGroups', () => {
       groups
         .find((group) => group.id === 'conversational-ai')
         ?.products.map((product) => product.productId),
-    ).toEqual(['agents']);
+    ).toEqual(['agents', 'client-toolkit']);
     expect(
       groups
         .find((group) => group.id === 'realtime-core')

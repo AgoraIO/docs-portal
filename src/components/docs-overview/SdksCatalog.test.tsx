@@ -59,7 +59,7 @@ describe('SdksCatalog', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      15,
+      16,
     );
   });
 
@@ -126,11 +126,36 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const agentsCard = screen.getByRole('article', {
-      name: '对话式 AI 引擎 SDK',
+      name: 'Agora Agents SDK',
     });
     expect(
       within(agentsCard).queryByRole('link', { name: '查看下载页 ↗' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('separates Agora Agents SDK from the conversational AI client toolkit', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(
+      screen.getByRole('article', { name: 'Agora Agents SDK' }),
+    ).toBeVisible();
+    const clientToolkit = openProductCard('客户端组件 SDK');
+    const platform = within(clientToolkit).getByRole('combobox', {
+      name: '客户端组件 SDK 平台',
+    });
+
+    expect(platform).toHaveValue('android');
+    expect(
+      within(platform).getByRole('option', { name: 'iOS' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).getByRole('option', { name: 'Web' }),
+    ).toBeInTheDocument();
+    expect(
+      within(clientToolkit).getByText(
+        "implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'",
+      ),
+    ).toBeVisible();
   });
 
   it('renders SDK products under API reference capability headings', () => {
@@ -162,7 +187,7 @@ describe('SdksCatalog', () => {
     ).toHaveLength(0);
     expect(
       container.querySelectorAll('[data-sdk-download-product-id] > details'),
-    ).toHaveLength(15);
+    ).toHaveLength(16);
   });
 
   it('does not show product or platform counts in the Chinese catalog', () => {
@@ -262,9 +287,9 @@ describe('SdksCatalog', () => {
   it('keeps long install commands horizontally inspectable with mobile-sized controls', async () => {
     render(<SdksCatalog locale="zh-CN" />);
 
-    const agentsCard = openProductCard('对话式 AI 引擎 SDK');
+    const agentsCard = openProductCard('Agora Agents SDK');
     const typescriptPlatform = within(agentsCard).getByRole('combobox', {
-      name: '对话式 AI 引擎 SDK 平台',
+      name: 'Agora Agents SDK 平台',
     });
 
     fireEvent.change(typescriptPlatform, { target: { value: 'typescript' } });
@@ -766,7 +791,11 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const expectedProducts = [
-      ['对话式 AI 引擎 SDK', '用于在服务端构建和运行语音智能体的 SDK'],
+      ['Agora Agents SDK', '用于在服务端构建和运行语音智能体的 SDK'],
+      [
+        '客户端组件 SDK',
+        '用于在 Android、iOS 和 Web 客户端集成对话式 AI 引擎能力的组件',
+      ],
       [
         '语音 SDK',
         '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
