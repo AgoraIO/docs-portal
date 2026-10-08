@@ -19,6 +19,10 @@ const gscObservedRedirectsPath = path.join(
   repoRoot,
   'src/lib/legacy-sitemap/gsc-observed-redirects.json',
 );
+const posthogRevalidatedRedirectsPath = path.join(
+  repoRoot,
+  'src/lib/legacy-sitemap/posthog-revalidated-404s.json',
+);
 const rtcFolderRedirectsPath = path.join(
   repoRoot,
   'src/lib/legacy-sitemap/rtc-folder-redirects.json',
@@ -34,11 +38,18 @@ const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
 const gscObservedRedirects = JSON.parse(
   await readFile(gscObservedRedirectsPath, 'utf8'),
 );
+const posthogRevalidatedRedirects = JSON.parse(
+  await readFile(posthogRevalidatedRedirectsPath, 'utf8'),
+);
 const baseConfig = JSON.parse(await readFile(vercelBasePath, 'utf8'));
 const rtcFolderRedirects = JSON.parse(
   await readFile(rtcFolderRedirectsPath, 'utf8'),
 );
-const artifactRules = [...redirectsConfig.rules, ...gscObservedRedirects];
+const artifactRules = [
+  ...redirectsConfig.rules,
+  ...gscObservedRedirects,
+  ...posthogRevalidatedRedirects,
+];
 
 const staticRedirects = createStaticRedirects(artifactRules);
 const {
