@@ -1,21 +1,21 @@
 ---
 title: "AI 快速接入"
-description: "安装 Agora CLI，配置 Agora Skills 和 Agora MCP，让 AI Coding Agent 快速接入声网。"
+description: "安装 声网 CLI，配置 声网 Skills 和 声网 MCP，让 AI Coding Agent 快速接入声网。"
 ---
 
 使用 AI 编程工具接入声网产品前，建议先完成以下配置：
 
-- 安装 Agora CLI。
-- 配置 Agora Skills。
-- 接入 Agora MCP。
+- 安装 声网 CLI。
+- 配置 声网 Skills。
+- 接入 声网 MCP。
 
 完成配置后，AI Coding Agent 可以创建项目、查询官方文档、选择合适的接入流程，并生成更符合声网产品规范的代码。
 
 ## 接入流程
 
-### 1. 安装 Agora CLI
+### 1. 安装 声网 CLI
 
-Agora CLI 需要 Node.js 18 或更高版本。使用 npm 全局安装：
+声网 CLI 需要 Node.js 18 或更高版本。使用 npm 全局安装：
 
 ```bash
 npm install -g agoraio-cli
@@ -33,9 +33,9 @@ agora version
 agora login --region cn
 ```
 
-### 2. 配置 Agora Skills
+### 2. 配置 声网 Skills
 
-安装 [Agora Skills](/zh-CN/introduction/skills-integrate)，让 AI Coding Agent 在编辑代码前选择正确的声网工作流、Starter 和接入步骤。
+安装 [声网 Skills](/zh-CN/introduction/skills-integrate)，让 AI Coding Agent 在编辑代码前选择正确的声网工作流、Starter 和接入步骤。
 
 <Tabs>
 <TabsList>
@@ -53,7 +53,7 @@ npx skills add AgoraIO/skills
 
 <TabsContent value="manual">
 
-克隆仓库，并将 AI Coding Agent 指向 Agora Skills 文件：
+克隆仓库，并将 AI Coding Agent 指向 声网 Skills 文件：
 
 ```bash
 git clone https://github.com/AgoraIO/skills.git ~/agora-skills
@@ -66,7 +66,7 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 
 如果你的工具偏好本地指令文件，请将它指向 `skills/agora/` 或顶层 `SKILL.md`。
 
-如果你只需要文档查询能力，不需要工作流指导，可以只安装 [Agora MCP](/zh-CN/introduction/mcp-integrate)。如果希望 Agent 同时具备工作流选择和官方文档查询能力，建议同时配置 Agora Skills 和 Agora MCP。
+如果你只需要文档查询能力，不需要工作流指导，可以只安装 [声网 MCP](/zh-CN/introduction/mcp-integrate)。如果希望 Agent 同时具备工作流选择和官方文档查询能力，建议同时配置 声网 Skills 和 声网 MCP。
 
 ### 3. 提示词
 
@@ -84,7 +84,7 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 当 AI Coding Agent 能完成以下任务时，说明工作流已经进入正确状态：
 
 - 使用 `agora login --region cn` 登录中国区。
-- 使用 Agora CLI 创建或切换项目，并启用 `rtc` 和 `convoai` 能力。
+- 使用 声网 CLI 创建或切换项目，并启用 `rtc` 和 `convoai` 能力。
 - 将项目凭证写入本地 `.env` 文件。
-- 在生成代码前通过 Agora MCP 查询声网官方文档。
-- 按 Agora Skills 提供的流程选择合适的示例、SDK、Token 和服务端接入方式。
+- 在生成代码前通过 声网 MCP 查询声网官方文档。
+- 按 声网 Skills 提供的流程选择合适的示例、SDK、Token 和服务端接入方式。

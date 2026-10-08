@@ -37,6 +37,32 @@ describe('static SEO metadata', () => {
     ]);
   });
 
+  it('brands Chinese titles and sharing metadata as Shengwang', () => {
+    const head = createStaticSeoHead({
+      title: '快速开始',
+      url: '/zh-CN/ai/get-started/quick-start',
+    });
+    expect(head.meta).toContainEqual({ title: '快速开始 | 声网文档' });
+    expect(head.meta).toContainEqual({
+      property: 'og:site_name',
+      content: '声网文档',
+    });
+    expect(head.meta).toContainEqual({
+      property: 'og:image',
+      content: 'https://docs.agora.io/shengwang-docs-og.png',
+    });
+    const homeHead = createStaticSeoHead({
+      title: '声网文档',
+      url: '/zh-CN/introduction',
+    });
+    expect(homeHead.meta).toContainEqual({ title: '声网文档' });
+    expect(homeHead.meta).toContainEqual({
+      name: 'description',
+      content:
+        '声网开发者文档：对话式 AI、实时音视频、实时消息、SDK 下载与 API 参考。',
+    });
+  });
+
   it('injects route metadata into the static SPA shell', () => {
     const html = [
       '<html>',
@@ -86,7 +112,7 @@ describe('static SEO metadata', () => {
       'https://assets-docs.agora.io/og/agora-docs-og-voice-agent.png',
     );
     expect(getDocsOgImageUrl('/zh-CN/realtime-media/rtc/android')).toBe(
-      'https://assets-docs.agora.io/og/agora-docs-og-realtime-media.png',
+      'https://docs.agora.io/shengwang-docs-og.png',
     );
     expect(
       getDocsOgImageUrl('/en/api-reference/api-ref/server-sdk/python'),

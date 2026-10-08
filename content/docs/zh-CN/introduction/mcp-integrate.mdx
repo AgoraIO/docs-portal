@@ -1,17 +1,17 @@
 ---
-title: "Agora MCP"
-description: "配置 Agora MCP，让 AI Coding Agent 在生成代码前搜索和读取最新声网官方文档。"
+title: "声网 MCP"
+description: "配置 声网 MCP，让 AI Coding Agent 在生成代码前搜索和读取最新声网官方文档。"
 ---
 
-配置 Agora MCP 后，AI Coding Agent 可以在回答问题、生成代码或排查问题前搜索声网官方文档，确认当前 SDK 方法、参数、快速开始流程和平台差异。
+配置 声网 MCP 后，AI Coding Agent 可以在回答问题、生成代码或排查问题前搜索声网官方文档，确认当前 SDK 方法、参数、快速开始流程和平台差异。
 
-当任务的风险主要来自文档是否最新时，优先使用 Agora MCP。如果还需要 Agent 判断“先做什么”或“该走哪条官方路径”，可以同时配置 [Agora Skills](/zh-CN/introduction/skills-integrate)。
+当任务的风险主要来自文档是否最新时，优先使用 声网 MCP。如果还需要 Agent 判断“先做什么”或“该走哪条官方路径”，可以同时配置 [声网 Skills](/zh-CN/introduction/skills-integrate)。
 
-## 连接 Agora MCP
+## 连接 声网 MCP
 
-Agora MCP 的服务地址为 `https://mcp.agora.io`。
+声网 MCP 的服务地址为 `https://mcp.agora.io`。
 
-选择你的 AI 编程工具，并按对应方式连接 Agora MCP：
+选择你的 AI 编程工具，并按对应方式连接 声网 MCP：
 
 <Tabs defaultValue="trae">
 <TabsList>
@@ -164,7 +164,7 @@ code --add-mcp '{"name":"shengwang-docs","type":"http","url":"https://doc-mcp.sh
 
 ## 在工作流中使用
 
-在 Agent Mode 下，你可以直接描述需求，由 AI Coding Agent 判断是否调用 Agora MCP。
+在 Agent Mode 下，你可以直接描述需求，由 AI Coding Agent 判断是否调用 声网 MCP。
 
 如果你的 AI 编程工具支持在提示词中指定工具，也可以显式要求它先搜索并读取文档：
 

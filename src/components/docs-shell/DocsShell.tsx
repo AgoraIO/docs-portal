@@ -47,8 +47,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { legacyDocsBannerConfig } from '@/lib/shared';
-import { AgoraLogoMark } from './AgoraLogoMark';
+import { getAppBranding, legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
@@ -57,6 +56,7 @@ import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
+import { SiteLogoMark } from './SiteLogoMark';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
@@ -168,6 +168,7 @@ export function DocsShell({
   const [isLegacyDocsBannerVisible, setIsLegacyDocsBannerVisible] =
     useState(true);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
+  const branding = getAppBranding(currentLocale);
   const homeHref = buildDocPath(currentLocale, 'introduction');
   const legacyDocsHref = legacyDocsBannerConfig.hrefs[currentLocale];
   const dismissLegacyDocsBannerLabel = t('docs.dismissLegacyDocsBanner');
@@ -224,7 +225,8 @@ export function DocsShell({
   // openapi and hideToc drop the toc rail and let content fill the grid; every
   // layout shares the same outer shell footprint so the sidebar/nav/content
   // align across page types.
-  const contentFillsWidth = isOpenApiLayout || hideToc;
+  const isHomePage = currentLocale === 'zh-CN' && activePath === homeHref;
+  const contentFillsWidth = isOpenApiLayout || hideToc || isHomePage;
   const shellWidthClassName = DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
   const desktopGridClassName = contentFillsWidth
     ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
@@ -320,15 +322,20 @@ export function DocsShell({
                         to={homeHref}
                       >
                         <span className="sr-only">{t('app.name')}</span>
-                        <AgoraLogoMark
+                        <SiteLogoMark
                           aria-hidden="true"
-                          className="h-8 shrink-0 translate-y-2"
+                          className={
+                            currentLocale === 'en'
+                              ? 'h-8 shrink-0 translate-y-2'
+                              : undefined
+                          }
+                          locale={currentLocale}
                         />
                         <span
                           aria-hidden="true"
                           className="truncate text-[15px] font-semibold"
                         >
-                          Docs
+                          {branding.docsLabel}
                         </span>
                       </Link>
                     </SheetTitle>
@@ -361,12 +368,17 @@ export function DocsShell({
                   to={homeHref}
                 >
                   <span className="sr-only">{t('app.name')}</span>
-                  <AgoraLogoMark
+                  <SiteLogoMark
                     aria-hidden="true"
-                    className="h-8 shrink-0 translate-y-2"
+                    className={
+                      currentLocale === 'en'
+                        ? 'h-8 shrink-0 translate-y-2'
+                        : undefined
+                    }
+                    locale={currentLocale}
                   />
                   <span aria-hidden="true" className="truncate">
-                    Docs
+                    {branding.docsLabel}
                   </span>
                 </Link>
               </div>

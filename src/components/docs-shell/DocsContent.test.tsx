@@ -148,6 +148,29 @@ describe('DocsContent', () => {
     vi.unstubAllGlobals();
   });
 
+  it('gives the Chinese home page the full content area without article tools', async () => {
+    const { container } = renderWithRouter(
+      <DocsContent
+        contentPath="zh-CN/introduction/index.mdx"
+        locale="zh-CN"
+        markdownUrl="/zh-CN/introduction.md"
+        title="声网文档"
+        toc={[{ title: '集成语音智能体', url: '#ai', depth: 2 }]}
+      />,
+      '/zh-CN/introduction',
+    );
+
+    expect(await screen.findByTestId('docs-content-body')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: '声网文档' })).toHaveClass(
+      'sr-only',
+    );
+    expect(container.querySelector('article')).toHaveClass('max-w-none');
+    expect(container.querySelector('article > header')).toBeNull();
+    expect(screen.queryByRole('button', { name: '复制页面' })).toBeNull();
+    expect(screen.queryByTestId('docs-last-updated')).toBeNull();
+    expect(screen.queryByRole('complementary')).toBeNull();
+  });
+
   it('hides a single-item breadcrumb that just repeats the page title', async () => {
     renderWithRouter(
       <DocsContent

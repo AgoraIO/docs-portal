@@ -1,6 +1,6 @@
 const zhCnCommon = {
   app: {
-    name: 'Agora Docs',
+    name: '声网文档',
     tagline: '像产品界面一样工作的文档系统',
     endorsement: 'Developer Surface',
   },
@@ -89,8 +89,8 @@ const zhCnCommon = {
     opensInNewTab: '在新标签页打开',
   },
   home: {
-    eyebrow: 'Agora 开发者文档',
-    title: 'Agora 文档',
+    eyebrow: '声网开发者文档',
+    title: '声网文档',
     description: '对话式 AI / 语音通话 / 视频通话 / 互动直播 / 实时消息',
     shellLabel: 'Overview',
     askAi: 'AI 入口',

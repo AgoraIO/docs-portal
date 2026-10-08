@@ -101,6 +101,14 @@ describe('machine-readable docs indexes', () => {
       expect(targets).toEqual([
         `https://docs.example.com/${locale}/introduction.md`,
       ]);
+      expect(files[0]?.content).toContain(
+        locale === 'zh-CN' ? '# 声网文档' : '# Agora Documentation',
+      );
+      if (locale === 'zh-CN') {
+        expect(
+          files.slice(1).every((file) => !file.content.includes('Agora')),
+        ).toBe(true);
+      }
     }
   });
 

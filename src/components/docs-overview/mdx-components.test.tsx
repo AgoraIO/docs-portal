@@ -11,7 +11,7 @@ import { getOverviewMDXComponents } from './mdx-components';
 
 type SolutionCardGridComponent = ComponentType<{
   children: ReactNode;
-  size?: 'compact' | 'large' | 'small';
+  size?: 'compact' | 'large' | 'small' | 'resource';
 }>;
 type SolutionCardComponent = ComponentType<{
   actions?: Array<{ href: string; label: string }>;
@@ -20,13 +20,15 @@ type SolutionCardComponent = ComponentType<{
   icon?:
     | 'ai'
     | 'classroom'
+    | 'download'
+    | 'play'
     | 'device'
     | 'meeting'
     | 'messaging'
     | 'rtc'
     | 'whiteboard';
   showDescription?: boolean;
-  size?: 'compact' | 'large' | 'small';
+  size?: 'compact' | 'large' | 'small' | 'resource';
   tags?: string[];
   title: string;
   titlePlacement?: 'below-icon' | 'beside-icon';
@@ -286,9 +288,44 @@ describe('overview MDX components', () => {
     expect(screen.getByText('Build realtime voice experiences.')).toBeVisible();
     expect(screen.getByText('Voice')).toBeVisible();
     expect(container.querySelector('section')).toHaveClass(
-      'w-[var(--content-max)]',
+      'w-full',
       'max-w-full',
     );
+  });
+
+  it('renders compact resource cards with their destinations and descriptions', () => {
+    const components = getOverviewMDXComponents();
+    const SolutionCardGrid =
+      components.SolutionCardGrid as SolutionCardGridComponent;
+    const SolutionCard = components.SolutionCard as SolutionCardComponent;
+    render(
+      <SolutionCardGrid size="resource">
+        <SolutionCard
+          title="SDK 下载"
+          href="/zh-CN/reference/sdks"
+          description="查找各平台 SDK 与集成资源"
+          icon="download"
+          size="resource"
+        />
+        <SolutionCard
+          title="体验 Demo"
+          href="/zh-CN/reference/demo"
+          description="运行示例，体验声网能力"
+          icon="play"
+          size="resource"
+        />
+      </SolutionCardGrid>,
+    );
+    expect(screen.getByRole('link', { name: /SDK 下载/ })).toHaveAttribute(
+      'href',
+      '/zh-CN/reference/sdks',
+    );
+    expect(screen.getByRole('link', { name: /体验 Demo/ })).toHaveAttribute(
+      'href',
+      '/zh-CN/reference/demo',
+    );
+    expect(screen.getByText('查找各平台 SDK 与集成资源')).toBeVisible();
+    expect(screen.getByText('运行示例，体验声网能力')).toBeVisible();
   });
 
   it('places the title beside the icon only when requested', () => {
@@ -333,7 +370,7 @@ describe('overview MDX components', () => {
     expect(defaultContent).not.toHaveClass('justify-center');
 
     expect(inlineCard).toHaveAttribute('href', '/inline');
-    expect(inlineCard).toHaveClass('min-h-36');
+    expect(inlineCard).toHaveClass('min-h-32');
     expect(inlineChildren[0].children).toHaveLength(3);
     expect(
       Array.from(inlineChildren[0].children).map((child) => child.localName),
@@ -382,7 +419,7 @@ describe('overview MDX components', () => {
     expect(compactChildren).toHaveLength(3);
     expect(compactChildren.map((child) => child.localName)).toEqual([
       'span',
-      'h3',
+      'div',
       'svg',
     ]);
     expect(compactChildren[0].querySelector('svg')).not.toBeNull();

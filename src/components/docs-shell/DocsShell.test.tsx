@@ -339,7 +339,7 @@ describe('DocsShell', () => {
 
     const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
     const brandHomeLink = within(mainHeaderRow).getByRole('link', {
-      name: 'Agora Docs',
+      name: '声网文档',
     });
 
     expect(brandHomeLink).toHaveAttribute('href', '/zh-CN/introduction');

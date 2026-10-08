@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { rootHead } from './__root';
 
 const faviconPngPath = join(process.cwd(), 'public/favicon-32x32.png');
@@ -32,6 +32,26 @@ describe('root head favicon metadata', () => {
         },
       ]),
     );
+  });
+
+  it('uses Shengwang branding and a theme-aware favicon in CN builds', async () => {
+    vi.resetModules();
+    vi.stubEnv('VITE_DOCS_REGION', 'cn');
+    try {
+      const { rootHead: cnHead } = await import('./__root');
+      expect(cnHead.meta).toContainEqual({ title: '声网文档' });
+      expect(cnHead.links).toContainEqual({
+        rel: 'icon',
+        href: '/shengwang-favicon.svg',
+        type: 'image/svg+xml',
+      });
+      expect(
+        existsSync(join(process.cwd(), 'public/shengwang-favicon.svg')),
+      ).toBe(true);
+    } finally {
+      vi.unstubAllEnvs();
+      vi.resetModules();
+    }
   });
 
   it('keeps the configured favicon files in public assets', () => {
