@@ -443,7 +443,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/models/avatar/heygen.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/models/avatar/heygen.mdx': '2026-10-08T04:55:30.000Z',
   'content/docs/en/ai/models/avatar/index.md': '2026-06-25T08:42:31.000Z',
-  'content/docs/en/ai/models/avatar/lemonslice.mdx': '2026-10-08T04:55:30.000Z',
+  'content/docs/en/ai/models/avatar/lemonslice.mdx': '2026-10-08T14:07:28.000Z',
   'content/docs/en/ai/models/avatar/meta.json': '2026-09-25T10:58:22.000Z',
   'content/docs/en/ai/models/avatar/protoface.mdx': '2026-10-08T05:04:40.000Z',
   'content/docs/en/ai/models/avatar/tavus.mdx': '2026-10-08T05:04:40.000Z',
@@ -970,13 +970,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
-    '2026-10-08T05:04:40.000Z',
+    '2026-10-08T14:07:28.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
-    '2026-10-08T05:04:40.000Z',
+    '2026-10-08T14:07:28.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
-    '2026-10-08T05:04:40.000Z',
+    '2026-10-08T14:07:28.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
     '2026-09-07T08:01:28.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
