@@ -1850,6 +1850,28 @@ Protoface avatars do not enforce a fixed TTS sample rate.
 | `Enable` | `*bool` | No | Enable or disable the avatar |
 | `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
 
+#### `NewLemonSlice`
+
+```go
+func NewLemonSlice(opts LemonSliceOptions) *LemonSlice
+```
+
+Panics if `APIKey`, `APIBaseURL`, `AvatarID`, or `AgoraUID` is empty. `AgoraAppID`, `AgoraChannel`, and `AgoraToken` are optional; AgentKit fills them from the session on `Start()` when omitted. Serializes `vendor: "generic"`. For the endpoint and a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
+
+LemonSlice avatars do not enforce a fixed TTS sample rate.
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `APIKey` | `string` | Yes | LemonSlice API key |
+| `APIBaseURL` | `string` | Yes | LemonSlice API endpoint |
+| `AvatarID` | `string` | Yes | Always `lemonslice` |
+| `AgoraUID` | `string` | Yes | UID for avatar video stream; use a different UID from `AgentUID` |
+| `AgoraToken` | `string` | No | Avatar token; auto-generated with the same token format as agent tokens when omitted |
+| `AgoraAppID` | `string` | No | Overrides session App ID |
+| `AgoraChannel` | `string` | No | Overrides session channel |
+| `Enable` | `*bool` | No | Enable or disable the avatar |
+| `AdditionalParams` | `map[string]interface{}` | No | Additional vendor params |
+
 #### `NewHeyGenAvatar` (deprecated)
 
 Requires TTS at **24,000 Hz** (`SampleRate24kHz`).

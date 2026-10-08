@@ -394,7 +394,7 @@ start(): Promise<string>
 - Throws if MLLM is enabled together with an enabled avatar — avatars are only supported with the cascading ASR + LLM + TTS pipeline
 - Applies explicit `preset` values when provided and sends Agora-managed configuration when supported vendor credentials are omitted
 - Fills generic avatar `agora_appid` and `agora_channel` from the session when omitted
-- Generates avatar `agora_token` for `HeyGenAvatar`, `LiveAvatarAvatar`, `GenericAvatar`, `Tavus`, and `Protoface` when `agoraToken` is omitted and the client has an `appCertificate`. Other vendors (`AkoolAvatar`, `AnamAvatar`) never receive an auto-generated token.
+- Generates avatar `agora_token` for `HeyGenAvatar`, `LiveAvatarAvatar`, `GenericAvatar`, `Tavus`, `Protoface`, and `LemonSlice` when `agoraToken` is omitted and the client has an `appCertificate`. Other vendors (`AkoolAvatar`, `AnamAvatar`) never receive an auto-generated token.
 
 #### `stop()`
 
@@ -1162,6 +1162,26 @@ new Protoface(options: ProtofaceOptions)
 | `apiKey` | `string` | Yes | Protoface API key |
 | `apiBaseUrl` | `string` | Yes | Protoface API base URL |
 | `avatarId` | `string` | Yes | Protoface avatar ID |
+| `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
+| `agoraAppId` | `string` | No | Agora App ID override |
+| `agoraChannel` | `string` | No | Agora channel override |
+| `agoraToken` | `string` | No | Avatar token override |
+| `enable` | `boolean` | No | Enable or disable the avatar. Default: `true` |
+| `additionalParams` | `Record<string, unknown>` | No | Additional vendor parameters. Explicit options take precedence over matching keys. |
+
+#### LemonSlice
+
+LemonSlice avatars can omit `agoraAppId`, `agoraChannel`, and `agoraToken`. AgentKit fills them from the session at `start()`. Serializes `vendor: "generic"`. For the endpoint and a full example, see [LemonSlice](/en/ai/models/avatar/lemonslice).
+
+```typescript
+new LemonSlice(options: LemonSliceOptions)
+```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `apiKey` | `string` | Yes | LemonSlice API key |
+| `apiBaseUrl` | `string` | Yes | LemonSlice API base URL |
+| `avatarId` | `string` | Yes | Always `lemonslice` |
 | `agoraUid` | `string` | Yes | RTC UID for the avatar stream |
 | `agoraAppId` | `string` | No | Agora App ID override |
 | `agoraChannel` | `string` | No | Agora channel override |
