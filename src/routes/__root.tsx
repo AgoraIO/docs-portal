@@ -27,18 +27,22 @@ export const rootHead = {
     },
   ],
   links: [
-    {
-      rel: 'icon',
-      href: '/favicon-32x32.png',
-      type: 'image/png',
-      sizes: '32x32',
-    },
-    {
-      rel: 'icon',
-      href: '/favicon.ico',
-      type: 'image/png',
-      sizes: '32x32',
-    },
+    ...(DEFAULT_LOCALE === 'zh-CN'
+      ? [{ rel: 'icon', href: '/shengwang-favicon.svg', type: 'image/svg+xml' }]
+      : [
+          {
+            rel: 'icon',
+            href: '/favicon-32x32.png',
+            type: 'image/png',
+            sizes: '32x32',
+          },
+          {
+            rel: 'icon',
+            href: '/favicon.ico',
+            type: 'image/png',
+            sizes: '32x32',
+          },
+        ]),
     { rel: 'stylesheet', href: appCss },
   ],
 };

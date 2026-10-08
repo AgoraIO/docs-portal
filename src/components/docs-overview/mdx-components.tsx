@@ -27,6 +27,7 @@ import {
   NetworkIcon,
   NewspaperIcon,
   PhoneIcon,
+  PlayIcon,
   PresentationIcon,
   RadioIcon,
   RadioTowerIcon,
@@ -387,7 +388,7 @@ function FeatureCard({
   title: string;
 }) {
   return (
-    <section className="rounded-lg border border-border bg-card p-5 shadow-sm">
+    <section className="docs-card-surface p-5">
       <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
       <div className="mt-2 text-sm leading-6 text-muted-foreground">
         {children}
@@ -414,7 +415,7 @@ function CapabilityGroupCard({
   title: string;
 }) {
   return (
-    <section className="rounded-[24px] border border-border bg-card p-6 shadow-sm">
+    <section className="docs-card-surface p-6">
       <h3 className="m-0 text-base font-semibold text-foreground">{title}</h3>
       <p className="mt-2 text-sm leading-6 text-muted-foreground">
         {description}
@@ -457,7 +458,6 @@ function HelpHub({
   locale?: 'en' | 'zh-CN';
   topics: HelpHubLink[];
 }) {
-  const compactCardLayout = cards.length <= 3;
   const copy =
     locale === 'zh-CN'
       ? {
@@ -476,27 +476,17 @@ function HelpHub({
 
   return (
     <section className="not-prose my-8 space-y-5">
-      <div
-        className={cn(
-          'rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6',
-          compactCardLayout && 'max-w-4xl',
-        )}
-      >
+      <div>
         <div className="max-w-2xl">
           <p className="text-sm leading-6 text-muted-foreground">
             {copy.intro}
           </p>
         </div>
 
-        <div
-          className={cn(
-            'mt-5 grid gap-3 sm:grid-cols-2',
-            compactCardLayout ? 'lg:grid-cols-3' : 'xl:grid-cols-4',
-          )}
-        >
+        <div className="mt-4 grid gap-3 sm:grid-cols-3">
           {cards.map((card) => (
             <a
-              className="group flex min-h-[11.5rem] flex-col rounded-[22px] border border-border bg-background px-4 py-4 transition-colors hover:border-primary/35 hover:bg-accent/35"
+              className="docs-card-surface docs-card-interactive group flex flex-col p-4"
               href={card.href}
               key={card.title}
               rel={
@@ -516,7 +506,7 @@ function HelpHub({
               <p className="mt-2 text-sm leading-6 text-muted-foreground">
                 {card.description}
               </p>
-              <span className="mt-auto pt-4 text-[11px] font-semibold uppercase tracking-[0.14em] text-primary">
+              <span className="mt-auto pt-3 text-xs font-medium text-foreground">
                 {card.cta}
               </span>
             </a>
@@ -525,7 +515,7 @@ function HelpHub({
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.12fr)_minmax(18rem,0.88fr)]">
-        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <section className="docs-card-surface p-5">
           <div className="flex items-center justify-between gap-3">
             <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               {copy.popularKnowledgeBase}
@@ -548,21 +538,21 @@ function HelpHub({
                   target={isExternalHref(item.href) ? '_blank' : undefined}
                 >
                   <span className="leading-6">{item.label}</span>
-                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:text-foreground group-hover:opacity-100" />
+                  <ArrowUpRightIcon className="size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:text-foreground group-hover:opacity-100" />
                 </a>
               </li>
             ))}
           </ul>
         </section>
 
-        <section className="rounded-[28px] border border-border bg-card p-5 shadow-sm sm:p-6">
+        <section className="docs-card-surface p-5">
           <h4 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             {copy.browseByTopic}
           </h4>
           <div className="mt-4 space-y-2">
             {topics.map((item) => (
               <a
-                className="group flex items-center justify-between gap-4 rounded-[16px] border border-border bg-background px-4 py-3.5 text-sm text-foreground transition-colors hover:border-primary/40 hover:bg-accent/35 hover:text-primary"
+                className="group flex items-center justify-between gap-4 rounded-lg px-3 py-3 text-sm text-foreground transition-colors hover:bg-accent/45 focus-visible:outline-2 focus-visible:outline-ring"
                 href={item.href}
                 key={item.label}
                 rel={
@@ -613,7 +603,7 @@ type CapabilityMatrixRow = {
 
 function CapabilityMatrix({ rows }: { rows: CapabilityMatrixRow[] }) {
   return (
-    <section className="not-prose my-8 overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
+    <section className="not-prose my-8 overflow-hidden docs-card-surface">
       <div className="grid grid-cols-1 border-b border-border bg-muted/30 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-muted-foreground sm:grid-cols-[220px_minmax(0,1fr)_260px] sm:gap-6 sm:px-6">
         <span>Capability area</span>
         <span>What it covers</span>
@@ -720,15 +710,13 @@ function OverviewImageCard({
 
   if (!href) {
     return (
-      <section className="overflow-hidden rounded-[24px] border border-border bg-card shadow-sm">
-        {content}
-      </section>
+      <section className="overflow-hidden docs-card-surface">{content}</section>
     );
   }
 
   return (
     <a
-      className="group overflow-hidden rounded-[24px] border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      className="group overflow-hidden docs-card-surface docs-card-interactive"
       href={href}
     >
       {content}
@@ -747,7 +735,7 @@ function OverviewLinkBanner({
 }) {
   return (
     <a
-      className="group not-prose my-6 flex items-center justify-between gap-4 rounded-[24px] border border-border bg-card px-6 py-5 shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+      className="group not-prose my-6 flex items-center justify-between gap-4 docs-card-surface docs-card-interactive px-5 py-4"
       href={href}
     >
       <div className="min-w-0">
@@ -873,28 +861,34 @@ function ToolkitIcon({ kind }: { kind: ToolkitIconKind }) {
   return <Code2Icon className="size-4" />;
 }
 
-export type SolutionCardSize = 'compact' | 'large' | 'small';
+export type SolutionCardSize = 'compact' | 'large' | 'small' | 'resource';
 type SolutionCardTitlePlacement = 'below-icon' | 'beside-icon';
 
 function SolutionCardGrid({
   children,
+  columns,
   size = 'large',
 }: {
   children: ReactNode;
+  columns?: 2;
   size?: SolutionCardSize;
 }) {
   return (
     <section
       className={cn(
-        'not-prose grid w-[var(--content-max)] max-w-full',
-        size === 'compact'
-          ? 'my-6 grid-cols-1 gap-3 md:grid-cols-3'
-          : cn(
-              'my-8 gap-4',
-              size === 'small'
-                ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
-                : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
-            ),
+        'not-prose grid w-full max-w-full',
+        size === 'resource'
+          ? 'my-0 grid-cols-1 gap-3 sm:grid-cols-2'
+          : size === 'compact'
+            ? 'my-6 grid-cols-1 gap-3 md:grid-cols-3'
+            : cn(
+                'my-5 gap-3',
+                columns === 2
+                  ? 'grid-cols-1 sm:grid-cols-2'
+                  : size === 'small'
+                    ? 'grid-cols-[repeat(auto-fit,minmax(min(100%,19rem),1fr))]'
+                    : 'grid-cols-[repeat(auto-fit,minmax(min(100%,18rem),1fr))]',
+              ),
       )}
     >
       {children}
@@ -910,6 +904,8 @@ export type SolutionCardIconKind =
   | 'classroom'
   | 'cloud-recording'
   | 'device'
+  | 'download'
+  | 'play'
   | 'iot'
   | 'live-streaming'
   | 'media-pull'
@@ -994,148 +990,158 @@ function SolutionCard({
   tone?: SolutionCardTone;
 }) {
   const isCompact = size === 'compact';
+  const isResource = size === 'resource';
   const hasBesideIconTitle =
     titlePlacement === 'beside-icon' && !imageSrc && !isCompact;
   const cardClasses = cn(
-    'group relative rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
-    isCompact
-      ? 'flex min-h-14 flex-row items-center gap-3 p-3'
-      : hasBesideIconTitle
-        ? 'flex min-h-36 flex-col p-5'
-        : 'flex min-h-40 flex-col p-5',
+    'docs-card-surface group relative',
+    href && actions.length === 0 && 'docs-card-interactive',
+    isResource
+      ? 'flex min-h-20 items-center gap-3 px-4 py-3.5'
+      : isCompact
+        ? 'flex min-h-14 flex-row items-center gap-3 p-3'
+        : hasBesideIconTitle
+          ? 'flex min-h-32 flex-col p-5'
+          : 'flex min-h-40 flex-col p-5',
     size === 'small' && 'min-h-32 p-4',
   );
 
-  const content = isCompact ? (
-    <>
-      {icon ? (
-        <span
-          className={cn(
-            'flex size-8 shrink-0 items-center justify-center rounded-lg',
-            getSolutionToneClasses(tone),
-          )}
-        >
-          <SolutionCardIcon kind={icon} />
-        </span>
-      ) : null}
-      <h3 className="m-0 min-w-0 flex-1 text-sm font-semibold text-foreground">
-        {title}
-      </h3>
-      {href ? (
-        <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
-      ) : null}
-    </>
-  ) : (
-    <>
-      {imageSrc ? (
-        <div className="mb-4 aspect-[39/20] overflow-hidden rounded-md bg-muted">
-          <img
-            alt={imageAlt ?? title}
-            className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
-            loading="lazy"
-            src={imageSrc}
-          />
-        </div>
-      ) : null}
-      {imageSrc && href ? (
-        <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-background/85 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
-          <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
-        </span>
-      ) : null}
-      {imageSrc ? null : (
-        <div
-          className={cn(
-            'flex justify-between gap-3',
-            hasBesideIconTitle ? 'items-center' : 'items-start',
-          )}
-        >
-          {icon ? (
-            <span
-              className={cn(
-                'flex size-10 items-center justify-center rounded-lg',
-                hasBesideIconTitle && 'shrink-0',
-                getSolutionToneClasses(tone),
-                size === 'small' && 'size-9',
-              )}
-            >
-              <SolutionCardIcon kind={icon} />
-            </span>
-          ) : (
-            <span className={hasBesideIconTitle ? 'shrink-0' : undefined} />
-          )}
-          {hasBesideIconTitle ? (
-            <h3 className="m-0 min-w-0 flex-1 text-base font-semibold text-foreground">
-              {title}
-            </h3>
-          ) : null}
-          {href ? (
-            <ArrowRightIcon
-              className={cn(
-                'size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground',
-                hasBesideIconTitle && 'shrink-0',
-              )}
-            />
-          ) : null}
-        </div>
-      )}
-      <div
-        className={cn(
-          hasBesideIconTitle
-            ? 'mt-3 flex flex-1 flex-col justify-center'
-            : 'mt-4 flex-1',
-          imageSrc && 'mt-0',
-        )}
-      >
-        {hasBesideIconTitle ? null : (
-          <h3 className="m-0 text-base font-semibold text-foreground">
-            {title}
-          </h3>
-        )}
-        {showDescription && description ? (
-          <p
+  const content =
+    isCompact || isResource ? (
+      <>
+        {icon ? (
+          <span
             className={cn(
-              hasBesideIconTitle ? 'mt-0' : 'mt-2',
-              'text-sm leading-6 text-muted-foreground',
+              'flex size-8 shrink-0 items-center justify-center rounded-lg',
+              getSolutionToneClasses(tone),
             )}
           >
-            {description}
-          </p>
+            <SolutionCardIcon kind={icon} />
+          </span>
         ) : null}
-      </div>
-      {actions.length > 0 ? (
-        <div className="mt-4 flex flex-wrap gap-2">
-          {actions.map((action) => (
-            <a
-              className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-              href={action.href}
-              key={`${action.href}\u001f${action.label}`}
-              rel={
-                action.href.startsWith('http')
-                  ? 'noreferrer noopener'
-                  : undefined
-              }
-              target={action.href.startsWith('http') ? '_blank' : undefined}
-            >
-              <span>{action.label}</span>
-              <ArrowRightIcon className="size-3.5" />
-            </a>
-          ))}
+        <div className="min-w-0 flex-1">
+          <h3 className="m-0 text-sm font-semibold text-foreground">{title}</h3>
+          {isResource && showDescription ? (
+            <p className="m-0 mt-1 text-xs leading-5 text-muted-foreground">
+              {description}
+            </p>
+          ) : null}
         </div>
-      ) : null}
-      {tags.length > 0 ? (
-        <div className="mt-4 flex flex-wrap gap-1.5">
-          {tags.map((tag) => (
-            <span
-              className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
-              key={tag}
+        {href ? (
+          <ArrowRightIcon className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
+        ) : null}
+      </>
+    ) : (
+      <>
+        {imageSrc ? (
+          <div className="mb-4 aspect-[39/20] overflow-hidden rounded-md bg-muted">
+            <img
+              alt={imageAlt ?? title}
+              className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
+              loading="lazy"
+              src={imageSrc}
+            />
+          </div>
+        ) : null}
+        {imageSrc && href ? (
+          <span className="absolute top-4 right-4 flex size-7 items-center justify-center rounded-full bg-background/85 text-muted-foreground shadow-sm ring-1 ring-border backdrop-blur transition-colors group-hover:text-foreground">
+            <ArrowRightIcon className="size-4 transition-transform group-hover:translate-x-0.5" />
+          </span>
+        ) : null}
+        {imageSrc ? null : (
+          <div
+            className={cn(
+              'flex justify-between gap-3',
+              hasBesideIconTitle ? 'items-center' : 'items-start',
+            )}
+          >
+            {icon ? (
+              <span
+                className={cn(
+                  'flex size-10 items-center justify-center rounded-lg',
+                  hasBesideIconTitle && 'shrink-0',
+                  getSolutionToneClasses(tone),
+                  size === 'small' && 'size-9',
+                )}
+              >
+                <SolutionCardIcon kind={icon} />
+              </span>
+            ) : (
+              <span className={hasBesideIconTitle ? 'shrink-0' : undefined} />
+            )}
+            {hasBesideIconTitle ? (
+              <h3 className="m-0 min-w-0 flex-1 text-base font-semibold text-foreground">
+                {title}
+              </h3>
+            ) : null}
+            {href ? (
+              <ArrowRightIcon
+                className={cn(
+                  'size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:text-foreground',
+                  hasBesideIconTitle && 'shrink-0',
+                )}
+              />
+            ) : null}
+          </div>
+        )}
+        <div
+          className={cn(
+            hasBesideIconTitle
+              ? 'mt-3 flex flex-1 flex-col justify-center'
+              : 'mt-4 flex-1',
+            imageSrc && 'mt-0',
+          )}
+        >
+          {hasBesideIconTitle ? null : (
+            <h3 className="m-0 text-base font-semibold text-foreground">
+              {title}
+            </h3>
+          )}
+          {showDescription && description ? (
+            <p
+              className={cn(
+                hasBesideIconTitle ? 'mt-0' : 'mt-2',
+                'text-sm leading-6 text-muted-foreground',
+              )}
             >
-              {tag}
-            </span>
-          ))}
+              {description}
+            </p>
+          ) : null}
         </div>
-      ) : null}
-    </>
-  );
+        {actions.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-2">
+            {actions.map((action) => (
+              <a
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+                href={action.href}
+                key={`${action.href}\u001f${action.label}`}
+                rel={
+                  action.href.startsWith('http')
+                    ? 'noreferrer noopener'
+                    : undefined
+                }
+                target={action.href.startsWith('http') ? '_blank' : undefined}
+              >
+                <span>{action.label}</span>
+                <ArrowRightIcon className="size-3.5" />
+              </a>
+            ))}
+          </div>
+        ) : null}
+        {tags.length > 0 ? (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {tags.map((tag) => (
+              <span
+                className="rounded-md bg-muted px-2 py-1 text-[11px] font-medium text-muted-foreground"
+                key={tag}
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </>
+    );
 
   if (!href || actions.length > 0) {
     return <section className={cardClasses}>{content}</section>;
@@ -1322,7 +1328,7 @@ export function DemoGallery({
         <div className="grid gap-4 sm:grid-cols-2">
           {filteredItems.map((item) => (
             <a
-              className="group relative overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35"
+              className="group relative overflow-hidden docs-card-surface docs-card-interactive"
               href={item.href}
               key={item.href}
             >
@@ -2071,6 +2077,8 @@ export function SolutionCardIcon({ kind }: { kind: SolutionCardIconKind }) {
     classroom: <GraduationCapIcon className="size-5" />,
     'cloud-recording': <CloudIcon className="size-5" />,
     device: <CuboidIcon className="size-5" />,
+    download: <ArrowDownToLineIcon className="size-5" />,
+    play: <PlayIcon className="size-5" />,
     iot: <CpuIcon className="size-5" />,
     'live-streaming': <RadioIcon className="size-5" />,
     'media-pull': <ArrowDownToLineIcon className="size-5" />,
@@ -2132,7 +2140,7 @@ function OverviewSpotlightCard({
   return (
     <a
       className={cn(
-        'group overflow-hidden rounded-lg border border-border bg-card shadow-sm transition-colors hover:border-primary/40 hover:bg-accent/35',
+        'group overflow-hidden docs-card-surface docs-card-interactive',
         size === 'small' && 'text-sm',
       )}
       href={href}

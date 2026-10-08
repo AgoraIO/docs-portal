@@ -1,7 +1,7 @@
 import { cn } from '@/lib/cn';
 import { getDocsFooterContent } from '@/lib/footer-content';
 import { DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
-import { AgoraLogoMark } from './AgoraLogoMark';
+import { SiteLogoMark } from './SiteLogoMark';
 
 export function DocsSiteFooter({
   className,
@@ -127,7 +127,7 @@ export function DocsSiteFooter({
           </div>
 
           <div className="flex flex-col items-center justify-center gap-3 text-center text-sm sm:flex-row sm:gap-4">
-            <AgoraLogoMark alt={docsFooterContent.logoAlt} />
+            <SiteLogoMark alt={docsFooterContent.logoAlt} locale={locale} />
             <span>{docsFooterContent.copyright}</span>
             <span aria-hidden="true" className="hidden sm:inline">
               |
