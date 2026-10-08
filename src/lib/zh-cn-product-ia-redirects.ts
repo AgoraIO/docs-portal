@@ -1410,7 +1410,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/one-to-one-classroom/paas/integration-guide':
     '/zh-CN/solutions/one-to-one-classroom/build/paas/integration-guide',
   'solutions/one-to-one-live/custom-signaling/advanced-features/app-billing-policy':
-    '/zh-CN/solutions/one-to-one-live/custom-signaling/reference/app-billing-policy',
+    '/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/app-billing-policy',
+  'solutions/one-to-one-live/custom-signaling/reference/app-billing-policy':
+    '/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/app-billing-policy',
   'solutions/one-to-one-live/custom-signaling/advanced-features/audio-scenario':
     '/zh-CN/solutions/one-to-one-live/custom-signaling/build/customize-and-extend/audio-scenario',
   'solutions/one-to-one-live/custom-signaling/advanced-features/integration-guideline':
@@ -1434,7 +1436,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'solutions/one-to-one-live/custom-signaling/solution-compare':
     '/zh-CN/solutions/one-to-one-live/custom-signaling/reference/solution-compare',
   'solutions/one-to-one-live/rtm/advanced-features/app-billing-policy':
-    '/zh-CN/solutions/one-to-one-live/rtm/reference/app-billing-policy',
+    '/zh-CN/solutions/one-to-one-live/rtm/build/customize-and-extend/app-billing-policy',
+  'solutions/one-to-one-live/rtm/reference/app-billing-policy':
+    '/zh-CN/solutions/one-to-one-live/rtm/build/customize-and-extend/app-billing-policy',
   'solutions/one-to-one-live/rtm/advanced-features/audio-scenario':
     '/zh-CN/solutions/one-to-one-live/rtm/build/customize-and-extend/audio-scenario',
   'solutions/one-to-one-live/rtm/advanced-features/integration-guideline':
