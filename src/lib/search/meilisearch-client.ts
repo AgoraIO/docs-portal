@@ -68,16 +68,6 @@ export type MeilisearchClientConfig = {
   searchOnlyKey: string;
 };
 
-export function getMeilisearchSearchConfig(): MeilisearchClientConfig | null {
-  const env = import.meta.env as Record<string, string | undefined>;
-  const host = env.VITE_MEILI_HOST;
-  const indexUid = env.VITE_MEILI_INDEX_UID;
-  const searchOnlyKey = env.VITE_MEILI_SEARCH_API_KEY;
-
-  if (!host || !indexUid || !searchOnlyKey) return null;
-  return { host, indexUid, searchOnlyKey };
-}
-
 export function normalizeMeilisearchQuery(query: string): string {
   return query.trim().replace(/^#+/, '');
 }
@@ -156,7 +146,13 @@ export function createMeilisearchClient({
 }
 
 function mapHit(hit: MeilisearchHit): SearchResult & Record<string, unknown> {
-  const normalized = normalizeMeilisearchHit(hit);
+  return mapSearchHit(normalizeMeilisearchHit(hit));
+}
+
+export function mapSearchHit(
+  normalized: SearchHit,
+): SearchResult & Record<string, unknown> {
+  const hit = normalized;
   const title = segmentsToMarkup(normalized.highlights.sectionTitle);
   const content = segmentsToMarkup(normalized.highlights.content);
   return {

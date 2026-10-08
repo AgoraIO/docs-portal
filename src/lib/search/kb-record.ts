@@ -7,6 +7,7 @@ export type SearchSection = {
   headingPath: string[];
   locale: string;
   product?: string;
+  tab?: string;
   platform?: string[];
   version?: string;
   docType: 'docs' | 'openapi';

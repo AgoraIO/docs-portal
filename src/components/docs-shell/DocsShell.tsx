@@ -221,6 +221,7 @@ export function DocsShell({
     '--docs-shell-body-height': `calc(100svh - ${headerOffset}px)`,
   } as React.CSSProperties;
   const isOpenApiLayout = layoutMode === 'openapi';
+  const isSearchLayout = layoutMode === 'search';
   // openapi and hideToc drop the toc rail and let content fill the grid; every
   // layout shares the same outer shell footprint so the sidebar/nav/content
   // align across page types.
@@ -373,29 +374,33 @@ export function DocsShell({
             </div>
             <div className="flex-1" />
             <div className="flex items-center gap-2">
-              <div
-                className="lg:hidden"
-                data-testid="docs-mobile-header-actions"
-              >
-                <DocsSearchDialog
-                  loadPages={loadPages}
-                  locale={currentLocale}
-                  mode="mobile"
-                  productScopes={productScopes}
-                />
-              </div>
+              {!isSearchLayout && (
+                <div
+                  className="lg:hidden"
+                  data-testid="docs-mobile-header-actions"
+                >
+                  <DocsSearchDialog
+                    loadPages={loadPages}
+                    locale={currentLocale}
+                    mode="mobile"
+                    productScopes={productScopes}
+                  />
+                </div>
+              )}
               <div
                 className="hidden items-center gap-2 lg:flex"
                 data-testid="docs-desktop-header-actions"
               >
-                <div className="w-80">
-                  <DocsSearchDialog
-                    loadPages={loadPages}
-                    locale={currentLocale}
-                    mode="desktop"
-                    productScopes={productScopes}
-                  />
-                </div>
+                {!isSearchLayout && (
+                  <div className="w-80">
+                    <DocsSearchDialog
+                      loadPages={loadPages}
+                      locale={currentLocale}
+                      mode="desktop"
+                      productScopes={productScopes}
+                    />
+                  </div>
+                )}
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -477,36 +482,44 @@ export function DocsShell({
         </header>
         <div
           className={cn(
-            'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
+            isSearchLayout
+              ? 'mx-auto w-full min-w-0 flex-1 px-4'
+              : 'mx-auto grid w-full min-w-0 grid-cols-1 px-4 lg:grid-cols-[256px_minmax(0,1fr)] lg:items-start',
             shellWidthClassName,
-            desktopGridClassName,
+            !isSearchLayout && desktopGridClassName,
           )}
           data-testid="docs-body-shell"
         >
-          <DocsSidebar
-            activePath={activePath}
-            header={sidebarHeader}
-            locale={currentLocale}
-            nodes={sidebar}
-            onSelectPath={() => setIsMobileSheetOpen(false)}
-            resetKey={sidebarResetKey}
-          />
-          <DocsMainColumn
-            contentFillsWidth={contentFillsWidth}
-            layoutMode={layoutMode}
-            locale={currentLocale}
-            next={next}
-            previous={previous}
-            resetKey={activePath}
-          >
-            {children}
-          </DocsMainColumn>
-          {contentFillsWidth ? null : (
-            <DocsTocRail
-              locale={currentLocale}
-              sourceLinks={sourceLinks}
-              toc={toc}
-            />
+          {isSearchLayout ? (
+            children
+          ) : (
+            <>
+              <DocsSidebar
+                activePath={activePath}
+                header={sidebarHeader}
+                locale={currentLocale}
+                nodes={sidebar}
+                onSelectPath={() => setIsMobileSheetOpen(false)}
+                resetKey={sidebarResetKey}
+              />
+              <DocsMainColumn
+                contentFillsWidth={contentFillsWidth}
+                layoutMode={layoutMode}
+                locale={currentLocale}
+                next={next}
+                previous={previous}
+                resetKey={activePath}
+              >
+                {children}
+              </DocsMainColumn>
+              {contentFillsWidth ? null : (
+                <DocsTocRail
+                  locale={currentLocale}
+                  sourceLinks={sourceLinks}
+                  toc={toc}
+                />
+              )}
+            </>
           )}
         </div>
         <DocsSiteFooter

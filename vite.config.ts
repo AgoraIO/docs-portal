@@ -15,20 +15,31 @@ import {
 import { readPublishedDocsRoutes } from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
+const buildTarget = process.env.DOCS_BUILD_TARGET;
+if (buildTarget && !['static', 'service'].includes(buildTarget)) {
+  throw new Error('DOCS_BUILD_TARGET must be static or service');
+}
+const isServiceDeployment = buildTarget === 'service';
 const isStaticDeployment =
-  process.env.TSS_STATIC_PRERENDER === 'true' ||
-  process.env.TSS_SPA_STATIC_EXPERIMENT === 'true';
+  !isServiceDeployment &&
+  (buildTarget === 'static' ||
+    process.env.TSS_STATIC_PRERENDER === 'true' ||
+    process.env.TSS_SPA_STATIC_EXPERIMENT === 'true');
 const selectedPrerenderPaths = process.env.TSS_PRERENDER_PATHS?.split(',')
   .map((path) => path.trim())
   .filter(Boolean);
-const docsPrerenderPaths = isTest
-  ? []
-  : isStaticDeployment
-    ? readPublishedDocsRoutes().map((route) => route.url)
-    : createDocsPrerenderPaths({
-        openApiPaths: getOpenApiPrerenderPaths(),
-        pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
-      });
+const docsPrerenderPaths =
+  isTest || isServiceDeployment
+    ? []
+    : isStaticDeployment
+      ? [
+          ...readPublishedDocsRoutes().map((route) => route.url),
+          ...(process.env.VITE_DOCS_REGION === 'cn' ? ['/zh-CN/search'] : []),
+        ]
+      : createDocsPrerenderPaths({
+          openApiPaths: getOpenApiPrerenderPaths(),
+          pages: getContentDocsPrerenderPaths().map((url) => ({ url })),
+        });
 const prerenderPages = (
   isStaticDeployment
     ? selectStaticDocsPrerenderPaths(docsPrerenderPaths, selectedPrerenderPaths)
@@ -36,6 +47,10 @@ const prerenderPages = (
 ).map((path) => ({ path }));
 
 export default defineConfig({
+  // The service build must not overwrite the separately published static site.
+  ...(isServiceDeployment
+    ? { publicDir: false, build: { outDir: 'dist/service' } }
+    : {}),
   server: {
     host: '127.0.0.1',
     port: 3000,
@@ -59,10 +74,20 @@ export default defineConfig({
       ? [react()]
       : [
           tanstackStart({
+            ...(isServiceDeployment
+              ? {
+                  router: {
+                    entry: 'router.service.ts',
+                    // Keep Start's route transforms, without rewriting the web router's types.
+                    generatedRouteTree:
+                      'node_modules/.tmp/docs-service/routeTree.gen.ts',
+                  },
+                }
+              : {}),
             pages: prerenderPages,
             prerender: {
               crawlLinks: false,
-              enabled: true,
+              enabled: !isServiceDeployment,
               filter: shouldPrerenderPage,
             },
             ...(isStaticDeployment
@@ -83,7 +108,8 @@ export default defineConfig({
             ? []
             : [
                 nitro({
-                  preset: 'vercel',
+                  preset: isServiceDeployment ? 'node-server' : 'vercel',
+                  ...(isServiceDeployment ? { noPublicDir: true } : {}),
                 }),
               ]),
         ]),

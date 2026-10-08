@@ -12,10 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as LocaleIndexRouteImport } from './routes/$locale/index'
 import { Route as LocaleTabRouteRouteImport } from './routes/$locale/$tab/route'
+import { Route as LocaleSearchRouteImport } from './routes/$locale/search'
 import { Route as ApiRefSplatRouteImport } from './routes/api-ref/$'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as DocSplatRouteImport } from './routes/doc/$'
 import { Route as LlmsSplatRouteImport } from './routes/llms/$'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
@@ -37,6 +41,11 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
   path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -52,9 +61,24 @@ const LocaleTabRouteRoute = LocaleTabRouteRouteImport.update({
   path: '/$locale/$tab',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LocaleSearchRoute = LocaleSearchRouteImport.update({
+  id: '/$locale/search',
+  path: '/$locale/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiRefSplatRoute = ApiRefSplatRouteImport.update({
   id: '/api-ref/$',
   path: '/api-ref/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiSearchRoute = ApiSearchRouteImport.update({
+  id: '/api/search',
+  path: '/api/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocSplatRoute = DocSplatRouteImport.update({
@@ -88,9 +112,13 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$locale/$tab': typeof LocaleTabRouteRouteWithChildren
+  '/$locale/search': typeof LocaleSearchRoute
   '/api-ref/$': typeof ApiRefSplatRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/search': typeof ApiSearchRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
@@ -102,8 +130,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/$locale/search': typeof LocaleSearchRoute
   '/api-ref/$': typeof ApiRefSplatRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/search': typeof ApiSearchRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale': typeof LocaleIndexRoute
@@ -116,9 +148,13 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
+  '/search': typeof SearchRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/$locale/$tab': typeof LocaleTabRouteRouteWithChildren
+  '/$locale/search': typeof LocaleSearchRoute
   '/api-ref/$': typeof ApiRefSplatRoute
+  '/api/health': typeof ApiHealthRoute
+  '/api/search': typeof ApiSearchRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
@@ -132,9 +168,13 @@ export interface FileRouteTypes {
     | '/'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/search'
     | '/sitemap.xml'
     | '/$locale/$tab'
+    | '/$locale/search'
     | '/api-ref/$'
+    | '/api/health'
+    | '/api/search'
     | '/doc/$'
     | '/llms/$'
     | '/$locale/'
@@ -146,8 +186,12 @@ export interface FileRouteTypes {
     | '/'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/search'
     | '/sitemap.xml'
+    | '/$locale/search'
     | '/api-ref/$'
+    | '/api/health'
+    | '/api/search'
     | '/doc/$'
     | '/llms/$'
     | '/$locale'
@@ -159,9 +203,13 @@ export interface FileRouteTypes {
     | '/'
     | '/llms-full.txt'
     | '/llms.txt'
+    | '/search'
     | '/sitemap.xml'
     | '/$locale/$tab'
+    | '/$locale/search'
     | '/api-ref/$'
+    | '/api/health'
+    | '/api/search'
     | '/doc/$'
     | '/llms/$'
     | '/$locale/'
@@ -174,9 +222,13 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
+  SearchRoute: typeof SearchRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   LocaleTabRouteRoute: typeof LocaleTabRouteRouteWithChildren
+  LocaleSearchRoute: typeof LocaleSearchRoute
   ApiRefSplatRoute: typeof ApiRefSplatRoute
+  ApiHealthRoute: typeof ApiHealthRoute
+  ApiSearchRoute: typeof ApiSearchRoute
   DocSplatRoute: typeof DocSplatRoute
   LlmsSplatRoute: typeof LlmsSplatRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
@@ -206,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -227,11 +286,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LocaleTabRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/$locale/search': {
+      id: '/$locale/search'
+      path: '/$locale/search'
+      fullPath: '/$locale/search'
+      preLoaderRoute: typeof LocaleSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api-ref/$': {
       id: '/api-ref/$'
       path: '/api-ref/$'
       fullPath: '/api-ref/$'
       preLoaderRoute: typeof ApiRefSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/search': {
+      id: '/api/search'
+      path: '/api/search'
+      fullPath: '/api/search'
+      preLoaderRoute: typeof ApiSearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/doc/$': {
@@ -290,9 +370,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
+  SearchRoute: SearchRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   LocaleTabRouteRoute: LocaleTabRouteRouteWithChildren,
+  LocaleSearchRoute: LocaleSearchRoute,
   ApiRefSplatRoute: ApiRefSplatRoute,
+  ApiHealthRoute: ApiHealthRoute,
+  ApiSearchRoute: ApiSearchRoute,
   DocSplatRoute: DocSplatRoute,
   LlmsSplatRoute: LlmsSplatRoute,
   LocaleIndexRoute: LocaleIndexRoute,

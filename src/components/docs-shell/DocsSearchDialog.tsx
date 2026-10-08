@@ -2,7 +2,7 @@
 
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { SearchIcon, SendIcon } from 'lucide-react';
+import { ArrowUpRightIcon, SearchIcon, SendIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AiMarkdown } from '@/components/docs-shell/AiMarkdown';
@@ -43,11 +43,12 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
-import {
-  createMeilisearchClient,
-  getMeilisearchSearchConfig,
-} from '@/lib/search/meilisearch-client';
+import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
+import {
+  buildSearchPageHref,
+  searchScopeProduct,
+} from '@/lib/search/search-page-state';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -85,11 +86,13 @@ export function DocsSearchDialog({
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
   productScopes = [],
+  enableAi = false,
 }: {
   loadPages: () => Promise<SearchEntry[]>;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
   productScopes?: ProductScope[];
+  enableAi?: boolean;
 }) {
   const { i18n } = useTranslation('common');
   const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
@@ -129,8 +132,6 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
-  const meilisearchConfig =
-    searchLocale === 'zh-CN' ? getMeilisearchSearchConfig() : null;
   const askDocsUrl = searchLocale === 'zh-CN' ? getAskDocsUrl() : null;
   const remoteSearchEnabled =
     searchLocale === 'zh-CN' || Boolean(algoliaConfig);
@@ -147,41 +148,25 @@ export function DocsSearchDialog({
             deps: ['ai-answer-mode'],
             search: async () => [],
           }
-        : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
-          ? createAlgoliaDocsClient({
-              appId: algoliaAppId,
-              indexName: algoliaIndexName,
-              locale: searchLocale,
+        : searchLocale === 'zh-CN'
+          ? createCnDocsSearchClient({
               platform: platformFilter ?? undefined,
               scope: searchScope,
-              searchApiKey: algoliaSearchApiKey,
             })
-          : meilisearchConfig
-            ? (() => {
-                const client = createMeilisearchClient(meilisearchConfig);
-                return {
-                  ...client,
-                  search: (query: string) =>
-                    client.searchCnDocuments(query, {
-                      filters: buildMeilisearchFilters({
-                        platform: platformFilter,
-                        scope: searchScope,
-                      }),
-                    }),
-                };
-              })()
-            : searchLocale === 'zh-CN'
-              ? {
-                  deps: ['missing-cn-meilisearch-config'],
-                  search: async () => {
-                    throw new Error('CN Meilisearch is not configured');
-                  },
-                }
-              : createOramaDocsClient({
-                  pages,
-                  platform: platformFilter ?? undefined,
-                  scope: searchScope,
-                });
+          : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+            ? createAlgoliaDocsClient({
+                appId: algoliaAppId,
+                indexName: algoliaIndexName,
+                locale: searchLocale,
+                platform: platformFilter ?? undefined,
+                scope: searchScope,
+                searchApiKey: algoliaSearchApiKey,
+              })
+            : createOramaDocsClient({
+                pages,
+                platform: platformFilter ?? undefined,
+                scope: searchScope,
+              });
     return {
       ...base,
       async search(query: string) {
@@ -197,7 +182,6 @@ export function DocsSearchDialog({
     algoliaAppId,
     algoliaIndexName,
     algoliaSearchApiKey,
-    meilisearchConfig,
     pages,
     platformFilter,
     searchScope,
@@ -519,7 +503,7 @@ export function DocsSearchDialog({
         title={t('docs.search')}
         value={activeValue ?? ''}
       >
-        {searchLocale === 'zh-CN' ? (
+        {searchLocale === 'zh-CN' && enableAi ? (
           <ToggleGroup
             aria-label={t('docs.searchMode')}
             className="w-full justify-center border-b px-3 py-2"
@@ -703,6 +687,27 @@ export function DocsSearchDialog({
             </CommandGroup>
           ) : null}
         </CommandList>
+        {searchLocale === 'zh-CN' && !isAnswerMode ? (
+          <div className="border-t p-2">
+            <Button
+              className="w-full justify-between"
+              onClick={() => {
+                setOpen(false);
+                void navigate({
+                  href: buildSearchPageHref(searchLocale, {
+                    q: search,
+                    product: searchScopeProduct(searchScope),
+                    platform: platformFilter ?? undefined,
+                  }),
+                });
+              }}
+              variant="ghost"
+            >
+              查看全部搜索结果
+              <ArrowUpRightIcon data-icon="inline-end" />
+            </Button>
+          </div>
+        ) : null}
         {/* Active-item detail: floats beside the dialog when there's room,
             otherwise a fixed-height strip in the footer. Either way it's out of
             the height-varying flow, so the dialog doesn't resize on focus change. */}
@@ -957,17 +962,4 @@ function groupProductScopes(scopes: ProductScope[]) {
   }
 
   return groups;
-}
-
-function buildMeilisearchFilters({
-  platform,
-  scope,
-}: {
-  platform: PlatformKey | null;
-  scope?: { field: 'product' | 'tab'; value: string };
-}) {
-  return [
-    platform ? `platform = ${JSON.stringify(platform)}` : undefined,
-    scope ? `${scope.field} = ${JSON.stringify(scope.value)}` : undefined,
-  ].filter((filter): filter is string => Boolean(filter));
 }
