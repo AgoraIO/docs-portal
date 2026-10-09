@@ -1566,7 +1566,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "id": "4.24.6-voice-sdk-web",
             "label": "版本 4.24.6（最新）",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip",
-            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6"
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6",
+            "releaseDate": "2026 年 7 月 13 日"
           },
           {
             "id": "4.24.5-voice-sdk-web",
@@ -2016,7 +2017,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "id": "2.5.1-voice-sdk-react-js",
             "label": "版本 2.5.1 （最新）",
             "downloadLink": "https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js",
-            "packageManager": "https://www.npmjs.com/package/agora-rtc-react/v/2.5.1"
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-react/v/2.5.1",
+            "releaseDate": "2025 年 12 月 17 日"
           },
           {
             "id": "2.5.0-voice-sdk-react-js",
@@ -2215,7 +2217,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.6.2-voice-sdk-windows",
             "label": "版本 4.6.2 （最新）",
-            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.6.2_FULL.zip"
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.6.2_FULL.zip",
+            "releaseDate": "2026 年 1 月 16 日"
           },
           {
             "id": "4.6.0-voice-sdk-windows",
@@ -2512,7 +2515,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "id": "4.6.2-voice-sdk-macOS",
             "label": "版本 4.6.2 （最新）",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.6.2_FULL.zip",
-            "packageManager": "https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS"
+            "packageManager": "https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS",
+            "releaseDate": "2026 年 1 月 16 日"
           },
           {
             "id": "4.6.0-voice-sdk-macOS",
@@ -3135,7 +3139,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.6.2-voice-sdk-electron",
             "label": "版本 4.6.2 （最新）",
-            "packageManager": "https://www.npmjs.com/package/agora-electron-sdk/v/4.6.2"
+            "packageManager": "https://www.npmjs.com/package/agora-electron-sdk/v/4.6.2",
+            "releaseDate": "2026 年 3 月 5 日"
           },
           {
             "id": "4.5.2-voice-sdk-electron",
@@ -3361,7 +3366,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "6.6.2-voice-sdk-flutter",
             "label": "版本 6.6.2 （最新）",
-            "packageManager": "https://pub.dev/packages/agora_rtc_engine/versions/6.6.2"
+            "packageManager": "https://pub.dev/packages/agora_rtc_engine/versions/6.6.2",
+            "releaseDate": "2026 年 3 月 18 日"
           },
           {
             "id": "6.5.2-voice-sdk-flutter",

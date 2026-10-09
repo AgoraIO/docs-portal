@@ -752,6 +752,28 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
+  it.each([
+    ['web', 'Web 音频 SDK', '2026 年 7 月 13 日'],
+    ['react-js', 'React 音频 SDK', '2025 年 12 月 17 日'],
+    ['windows', 'Windows 音频 SDK', '2026 年 1 月 16 日'],
+    ['macos', 'macOS 音频 SDK', '2026 年 1 月 16 日'],
+    ['electron', 'Electron 音频 SDK', '2026 年 3 月 5 日'],
+    ['flutter', 'Flutter 音频 SDK', '2026 年 3 月 18 日'],
+  ] as const)(
+    'shows the release date on the %s voice card',
+    (platform, cardName, date) => {
+      render(
+        <SdksCatalog locale="zh-CN" platform={platform} product="voice" />,
+      );
+
+      const voiceCard = openProductCard('语音 SDK');
+      const downloadCard = within(voiceCard).getByRole('article', {
+        name: cardName,
+      });
+      expect(within(downloadCard).getByText(`发布日期：${date}`)).toBeVisible();
+    },
+  );
+
   it('localizes zh-CN package variant and language labels', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
