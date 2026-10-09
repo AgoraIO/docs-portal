@@ -3,11 +3,13 @@ import type { SdkDownloadVersion } from './sdk-downloads-data';
 
 export function SdkDownloadCard({
   iconSrc,
+  onDownload,
   title,
   version,
   versionSuffix,
 }: {
   iconSrc: string;
+  onDownload?: () => void;
   title: string;
   version: SdkDownloadVersion;
   versionSuffix?: string;
@@ -34,6 +36,7 @@ export function SdkDownloadCard({
               }
               className="inline-flex size-9 shrink-0 items-center justify-center rounded-md text-foreground hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
               href={download}
+              onClick={version.downloadLink ? onDownload : undefined}
               rel="noopener noreferrer"
               target="_blank"
               title={version.downloadLink ? `下载 ${title}` : `获取 ${title}`}

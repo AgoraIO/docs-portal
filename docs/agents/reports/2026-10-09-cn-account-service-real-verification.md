@@ -18,8 +18,29 @@
 
 用户随后核实并确认一个账号可以对应多个 cid，撤回“都按 cid”的建议。本次没有将运行代码改为 cid person。账号与企业上下文继续分开：跨企业仍是同一账号，同一企业内不同账号仍分别识别；companyId 仅表示授权时的上下文，不能充当稳定账号标识。新增契约回归覆盖账号 A 的 cid 456 → 789，以及 cid 789 下账号 A → B；该回归是上游替身，未验证真实 Console 的账号切换行为。
 
-浏览器已证明本次实际到达 RTM 页面，但服务器的 `docs_console_redirected` 只证明发出跳转。Console 尚未产生带文档 flow_id 的落地事件，因此可查询漏斗仍未完整闭环。下载非阻断 dialog、展示 / 跳过埋点、匿名关联、跨标签会话更新及其他资源目标映射尚待接入。
+浏览器已证明本次实际到达 RTM 页面，但服务器的 `docs_console_redirected` 只证明发出跳转。Console 尚未接收文档 flow_id 并产生实际落地事件，因此可查询漏斗仍未完整闭环。其他资源映射和完整跨系统账号关联仍待完成。
 
 初次 raw API 服务端事件被 PostHog 按请求来源补充 GeoIP，不能作为用户位置。发送端现补充 `$geoip_disable=true` 与 `$is_server=true`，沿用 [PostHog 对服务端 GeoIP 的建议](https://posthog.com/docs/libraries/node#geoip-properties)。修改后再次完成真实认证，flow `ec80bf91-2475-4c84-b1c0-10a8d6f28f58` 的实际接收事件显示 GeoIP disabled=true，回归验证亦覆盖该属性。
 
 本地 Chrome 直接导航到部分 JSON 响应时出现 `ERR_BLOCKED_BY_CLIENT`；同源页面 fetch userinfo 正常，合法 OAuth 302 也正常。本次未更改浏览器安全设置。状态验证临时页面不进入提交。
+
+## 首个 RTM SDK 前端切片
+
+同日补充 `/zh-CN/reference/sdks` RTM Android 2.3.0 直接下载验证：保留官方原生 ZIP 链接，点击后原页出现可跳过 dialog，登录按钮在新标签页经过真实 SSO 到达 RTM 功能配置；原页保持 SDK 下载页面，userinfo 返回 authenticated。本文只证明资源动作触发，没有用浏览器完成文件下载作为验收终点。
+
+项目 509917 Activity 的真实 EventsQuery 响应中，最终复验 flow `951975e6-8837-4fdd-aa9a-da955948d5f4` 同时包含下列记录：
+
+| 事件 | 事实与身份 |
+| --- | --- |
+| `docs_resource_action_started` | 浏览器匿名身份触发 RTM Android 下载 |
+| `docs_account_guidance_shown` | 可见原页实际展示引导 |
+| `docs_account_login_clicked` | 选择登录新标签页 |
+| `$identify` | 服务端账号身份 + 对应浏览器 `$anon_distinct_id` |
+| `docs_account_auth_succeeded` | 真实 SSO / basic-info 成功，可信 accountUid |
+| `docs_console_redirected` | 后端发出 RTM 功能配置跳转 |
+
+各业务事件共享同一 flow、resource=signaling、platform=android、version=2.3.0-rtm-sdk-android。最终真实接收的前端事件没有 `$current_url` 或 `$referrer`，匿名关联事件也正常收到。已验证真实匿名关联事件接收；尚未据此证明 PostHog person 历史合并或 Console 项目身份已经对齐。可按 `properties.flow_id` 查询这些事件并逐阶段核对，不把 `docs_console_redirected` 当作落地事件。
+
+前端回归覆盖查询 pending 时原生链接不被取消、隐藏原页不假曝光、重复下载不漂移上下文、一次跳过、登录自动关闭、focus 后可信会话更新、首帧前点击、英文 / 其他嵌入路径排除。analytics 回归覆盖同账号跨 cid、不同账号共享 cid、旧身份清除及 SDK 最终出站字段过滤。全套测试仍有原基线的 35 个失败，失败集合逐项一致，没有新增失败；类型检查和定向测试通过。
+
+尚需继续实现 Demo / 全产品映射、导航栏账号 UI、认证错误恢复，并在 Console 接收 flow 与提供实际落地事件、核实 SSO accountUid ↔ Console accountId 契约。staging 上线后验证实际公开域名的同源代理、回调和 Cookie；这些不阻止当前本地切片开发。没有修改 Jenkins 或执行部署。

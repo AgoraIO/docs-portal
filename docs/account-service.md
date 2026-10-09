@@ -54,7 +54,11 @@ login 接受 `flow_id`（UUID）、`target`、`resource_type`（`sdk` / `demo` /
 | `conversational-ai` | `/product/ConversationAI?tab=Playground` | `content/docs/zh-CN/ai/index.mdx` |
 | `home` | `/` | 明确标为 fallback，不计为对应服务转化 |
 
-其他 SDK / Demo 产品要补充真实映射与验证，不能以 home 代替所有已知产品。此变更提供认证后端与流程接入契约；下载入口的非阻断 dialog、展示 / 跳过事件、跨标签状态更新及全部资源映射另行接入。
+其他 SDK / Demo 产品要补充真实映射与验证，不能以 home 代替所有已知产品。
+
+当前首个前端切片为 `/zh-CN/reference/sdks` 的实时消息 RTM 直接下载。保留原生下载链接，不等待 userinfo、SSO 或 PostHog；原页可关闭的 dialog 另行出现，登录入口在新标签页继续。有效文档会话抑制引导；初次查询、过期或未知状态不延迟下载，返回原页的 focus / visibility 会重新查询同源 userinfo。每个标签页 session 最多一次实际曝光，只有 dialog 在可见原页显示才记入；存储不可用时使用内存兜底。用户继续下载其他平台不会改写已经冻结的 flow、资源、平台或版本。
+
+这一切片尚未覆盖 Demo、其他产品 / SDK 嵌入页、导航栏账号状态与退出 UI，以及认证错误后的友好恢复交互。浏览器前端与认证 API 必须在同一公开 origin 联调；staging 用来验证网关、Secure Cookie、正式回调与配置，不是本地实现前端的前置条件。当前未发布。
 
 ## 可信事件与验证
 
@@ -68,6 +72,12 @@ SSO 字段 `accountUid` 与 Console 字段 `accountId` 的转换仍需通过接�
 - `docs_console_redirected`：服务发出了 Console 跳转，**不代表实际到达或完成开通**。
 - `$identify`：在浏览器提供有效匿名 ID 时关联此匿名身份与可信账号；需与浏览器配置同一个 PostHog 项目。
 - `docs_account_auth_failed`：有效上下文发生授权、token、userinfo 或会话写入失败，保留资源 / 平台 / 版本并记录失败阶段及受控 reason，不包含上游原始错误。
+- `docs_resource_action_started`：原生 RTM SDK 下载动作被触发，不代表文件下载完成。
+- `docs_account_guidance_shown`：可见原页内的实际 dialog 曝光。
+- `docs_account_guidance_dismissed`：主动关闭、跳过或 Esc 等关闭；选择登录后的自动关闭不算跳过。
+- `docs_account_login_clicked`：选择单独的登录入口，不代表认证成功。
+
+前端只用仍有效的可信 userinfo 识别账号；未知 / 过期状态触发业务事件时先清除残留的 PostHog 已识别身份，避免把事件归给上一账号。最终出站 `before_send` 对这些业务事件和浏览器 `$identify` 使用批准字段白名单，去掉 SDK 默认附加的 URL、query、hash、referrer 和 person 初始归因属性；保留 SDK 传输必需的公开项目 `token` 和匿名关联标识。这与仅保留在服务端的 SSO token / secret 是不同字段。
 
 实际 `console_landed` 应由 Console 产生并与 flow 联结；原文档页关闭不影响服务端认证事件。服务端事件不会补造 dialog 展示、用户点击下载或注册成功。
 
