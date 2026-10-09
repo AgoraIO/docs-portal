@@ -919,6 +919,7 @@ export async function loadDocsSearchIndex(
   const { source } = await import('./source.server');
   const searchNavigation = buildDocsSearchNavigation(
     getCanonicalPageTree(source, supportedLocale),
+    supportedLocale,
   );
   const pages = await Promise.all(
     getCanonicalSourcePages(source.getPages(locale))

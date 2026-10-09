@@ -8,6 +8,7 @@ export type PublishedDocsRoute = {
   canonicalPath: string;
   markdownPath: string;
   platform?: PlatformKey;
+  version?: string;
   url: string;
 };
 
@@ -19,9 +20,11 @@ type PlatformPage = {
 export function createPublishedDocsRoutes({
   canonicalPaths,
   platformPages,
+  versionByCanonicalPath = new Map(),
 }: {
   canonicalPaths: Iterable<string>;
   platformPages: Iterable<PlatformPage>;
+  versionByCanonicalPath?: ReadonlyMap<string, string | undefined>;
 }) {
   const canonicalPathSet = new Set(canonicalPaths);
   const routes = new Map<string, PublishedDocsRoute>();
@@ -30,6 +33,9 @@ export function createPublishedDocsRoutes({
     routes.set(canonicalPath, {
       canonicalPath,
       markdownPath: `${canonicalPath}.md`,
+      ...(versionByCanonicalPath.get(canonicalPath)
+        ? { version: versionByCanonicalPath.get(canonicalPath) }
+        : {}),
       url: canonicalPath,
     });
   }
@@ -51,6 +57,9 @@ export function createPublishedDocsRoutes({
         canonicalPath: page.url,
         markdownPath: `${url}.md`,
         platform,
+        ...(versionByCanonicalPath.get(page.url)
+          ? { version: versionByCanonicalPath.get(page.url) }
+          : {}),
         url,
       });
     }
@@ -63,10 +72,12 @@ export function createStaticDocsRouteSets({
   canonicalPaths,
   canonicalPayloads,
   platformPages,
+  versionByCanonicalPath,
 }: {
   canonicalPaths: Iterable<string>;
   canonicalPayloads: ReadonlyMap<string, unknown>;
   platformPages: Iterable<PlatformPage>;
+  versionByCanonicalPath?: ReadonlyMap<string, string | undefined>;
 }) {
   const publishedPlatformPages = Array.from(platformPages).filter((page) =>
     canonicalPayloads.has(page.url),
@@ -76,10 +87,12 @@ export function createStaticDocsRouteSets({
     machineReadableRoutes: createPublishedDocsRoutes({
       canonicalPaths: canonicalPayloads.keys(),
       platformPages: publishedPlatformPages,
+      versionByCanonicalPath,
     }),
     prerenderRoutes: createPublishedDocsRoutes({
       canonicalPaths,
       platformPages: publishedPlatformPages,
+      versionByCanonicalPath,
     }),
   };
 }

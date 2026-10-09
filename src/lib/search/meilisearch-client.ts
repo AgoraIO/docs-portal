@@ -27,6 +27,7 @@ export type SearchHit = {
   headingPath: string[];
   locale: string;
   product?: string;
+  products?: string[];
   platform?: string[];
   version?: string;
   docType: 'docs' | 'openapi';
@@ -49,6 +50,7 @@ type MeilisearchHit = {
   headingPath: string[];
   platform?: string[];
   product?: string;
+  products?: string[];
   locale: string;
   version?: string;
   docType: 'docs' | 'openapi';
@@ -67,16 +69,6 @@ export type MeilisearchClientConfig = {
   indexUid: string;
   searchOnlyKey: string;
 };
-
-export function getMeilisearchSearchConfig(): MeilisearchClientConfig | null {
-  const env = import.meta.env as Record<string, string | undefined>;
-  const host = env.VITE_MEILI_HOST;
-  const indexUid = env.VITE_MEILI_INDEX_UID;
-  const searchOnlyKey = env.VITE_MEILI_SEARCH_API_KEY;
-
-  if (!host || !indexUid || !searchOnlyKey) return null;
-  return { host, indexUid, searchOnlyKey };
-}
 
 export function normalizeMeilisearchQuery(query: string): string {
   return query.trim().replace(/^#+/, '');
@@ -156,7 +148,13 @@ export function createMeilisearchClient({
 }
 
 function mapHit(hit: MeilisearchHit): SearchResult & Record<string, unknown> {
-  const normalized = normalizeMeilisearchHit(hit);
+  return mapSearchHit(normalizeMeilisearchHit(hit));
+}
+
+export function mapSearchHit(
+  normalized: SearchHit,
+): SearchResult & Record<string, unknown> {
+  const hit = normalized;
   const title = segmentsToMarkup(normalized.highlights.sectionTitle);
   const content = segmentsToMarkup(normalized.highlights.content);
   return {
@@ -191,6 +189,7 @@ export function normalizeMeilisearchHit(hit: MeilisearchHit): SearchHit {
     headingPath: hit.headingPath,
     locale: hit.locale,
     product: hit.product,
+    products: hit.products,
     platform: hit.platform,
     version: hit.version,
     docType: hit.docType,

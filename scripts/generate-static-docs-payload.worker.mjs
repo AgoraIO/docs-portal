@@ -23,6 +23,7 @@ import {
 } from '../src/lib/platforms/registry.ts';
 import { getContentDocsPrerenderPaths } from '../src/lib/prerender-content-routes.ts';
 import { createStaticDocsRouteSets } from '../src/lib/published-docs-routes.ts';
+import { readPublishedDocVersion } from '../src/lib/published-doc-version.ts';
 import {
   DOCS_LOCALES,
   isPublishedDocsPath,
@@ -83,6 +84,14 @@ export async function generateStaticDocsPayload() {
     .sort();
   const canonicalRouteSet = new Set(canonicalRoutes);
   const platformKeysByPageUrl = new Map();
+  const versionByPageUrl = new Map();
+  for (const route of canonicalRoutes) {
+    const version = await readPublishedDocVersion(
+      path.join(repoRoot, 'content', 'docs'),
+      route,
+    );
+    if (version) versionByPageUrl.set(route, version);
+  }
   const platformPages = [];
 
   for (const locale of PUBLISHED_DOCS_LOCALES) {
@@ -93,7 +102,6 @@ export async function generateStaticDocsPayload() {
 
       const platforms = await getStaticPagePlatformKeys(page);
       platformKeysByPageUrl.set(page.url, platforms);
-
       if (platforms.length > 0) {
         platformPages.push({ platforms, url: page.url });
       }
@@ -166,6 +174,7 @@ export async function generateStaticDocsPayload() {
       canonicalPaths: canonicalRoutes,
       canonicalPayloads,
       platformPages,
+      versionByCanonicalPath: versionByPageUrl,
     });
   await writeTextFile(
     routesManifestPath,

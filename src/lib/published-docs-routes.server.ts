@@ -49,6 +49,7 @@ function isPublishedDocsRoute(value: unknown): value is PublishedDocsRoute {
     typeof route.canonicalPath === 'string' &&
     typeof route.markdownPath === 'string' &&
     typeof route.url === 'string' &&
-    (route.platform === undefined || isKnownPlatform(route.platform))
+    (route.platform === undefined || isKnownPlatform(route.platform)) &&
+    (route.version === undefined || typeof route.version === 'string')
   );
 }
