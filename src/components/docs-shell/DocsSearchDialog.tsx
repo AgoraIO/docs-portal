@@ -227,6 +227,7 @@ export function DocsSearchDialog({
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
+  const showActiveDetail = searchLocale !== 'zh-CN' || hasQuery;
   const isAnswerMode = searchMode === 'answer';
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
@@ -713,10 +714,10 @@ export function DocsSearchDialog({
             the height-varying flow, so the dialog doesn't resize on focus change. */}
         <SearchDetailPanel
           activeValue={activeValue}
-          description={hasQuery ? activeDetail?.primary : undefined}
+          description={showActiveDetail ? activeDetail?.primary : undefined}
           open={open}
           renderText={(value) => <HighlightedText value={value} />}
-          title={hasQuery ? activeDetail?.title : undefined}
+          title={showActiveDetail ? activeDetail?.title : undefined}
         />
         <SearchKeyboardHints
           closeLabel={t('docs.searchHintClose')}

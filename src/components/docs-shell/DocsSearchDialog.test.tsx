@@ -750,6 +750,40 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => expect(screen.queryByText('Recent')).toBeNull());
   });
 
+  it('keeps Chinese recent-page details hidden before a query', async () => {
+    window.localStorage.setItem(
+      RECENTLY_VIEWED_STORAGE_KEY,
+      JSON.stringify([
+        {
+          description: '最近文档摘要',
+          title: '最近文档',
+          url: '/zh-CN/ai/recent-page',
+        },
+      ]),
+    );
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="zh-CN" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    expect(await screen.findByText('最近文档')).toBeInTheDocument();
+    expect(screen.queryByTestId('search-active-detail')).toBeNull();
+  });
+
   it('resets the query on close so reopening does not show the previous no-results message', async () => {
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
     const docsRoute = createRoute({
@@ -829,7 +863,13 @@ describe('DocsSearchDialog', () => {
     // Seed a recently-viewed page so the empty state has something to cascade.
     window.localStorage.setItem(
       RECENTLY_VIEWED_STORAGE_KEY,
-      JSON.stringify([{ title: 'Recent Page', url: '/en/ai/recent-page' }]),
+      JSON.stringify([
+        {
+          description: 'Recent page summary',
+          title: 'Recent Page',
+          url: '/en/ai/recent-page',
+        },
+      ]),
     );
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
     const docsRoute = createRoute({
@@ -867,7 +907,9 @@ describe('DocsSearchDialog', () => {
     expect((await rowFor('Recent Page')).className).toContain(
       'search-result-enter',
     );
-    expect(screen.queryByTestId('search-active-detail')).toBeNull();
+    expect(await screen.findByTestId('search-active-detail')).toHaveTextContent(
+      'Recent page summary',
+    );
 
     // Typing disarms the stagger, so results render instantly — no cascade on
     // every keystroke.
