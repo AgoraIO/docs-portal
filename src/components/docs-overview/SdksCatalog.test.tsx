@@ -867,6 +867,34 @@ describe('SdksCatalog', () => {
     );
   });
 
+  it('copies the dedicated Electron download-page cards into the overview', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=video&platform=electron',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = openProductCard('视频 SDK');
+    const unionTechCard = within(videoCard).getByRole('article', {
+      name: 'Electron for 统信 OS',
+    });
+
+    expect(within(videoCard).getAllByRole('article')).toHaveLength(2);
+    expect(
+      within(unionTechCard).getByText('v4.5.40-rc.2（统信 OS 专版）'),
+    ).toBeVisible();
+    expect(
+      within(unionTechCard).getByRole('link', {
+        name: '获取 Electron for 统信 OS',
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.npmjs.com/package/agora-electron-sdk/v/4.5.40-rc.2',
+    );
+  });
+
   it('ignores invalid product and platform query values', () => {
     window.history.replaceState(
       null,

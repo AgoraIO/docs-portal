@@ -11,6 +11,7 @@ import {
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import { getPlatformIconSrc } from './platform-icon-src';
+import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
 import { SdkDownloadCard } from './SdkDownloadCard';
 import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
 import {
@@ -639,12 +640,13 @@ function ProductCard({
 
           {redesigned && downloadPageHref ? (
             <div className="mt-4 grid gap-4 md:grid-cols-2">
-              {versions.map((version) => (
+              {getDownloadCardEntries(group, activePlatform).map((entry) => (
                 <SdkDownloadCard
-                  iconSrc={getPlatformIconSrc(platformId)}
-                  key={getVersionKey(activePlatform.platformId, version)}
-                  title={getDownloadCardTitle(group, activePlatform, version)}
-                  version={version}
+                  iconSrc={getPlatformIconSrc(entry.iconPlatformId)}
+                  key={getVersionKey(activePlatform.platformId, entry.version)}
+                  title={entry.title}
+                  version={entry.version}
+                  versionSuffix={entry.versionSuffix}
                 />
               ))}
             </div>
@@ -703,6 +705,35 @@ function ProductCard({
       </details>
     </article>
   );
+}
+
+function getDownloadCardEntries(
+  group: ProductGroup,
+  platform: ProductPlatformEntry,
+) {
+  if (group.productId === 'video' || group.productId === 'voice') {
+    return getRtcDownloadCardEntries(
+      platform.platformId,
+      platform.platformLabel,
+      group.productId,
+      platform.product,
+    );
+  }
+
+  const versions = getDownloadCardVersions(platform);
+
+  return versions.map((version) => {
+    return {
+      iconPlatformId: platform.platformId,
+      title: getDownloadCardTitle(group, platform, version),
+      version,
+      versionSuffix: undefined,
+    };
+  });
+}
+
+function getDownloadCardVersions(platform: ProductPlatformEntry) {
+  return getLatestVersions(platform.product.versions);
 }
 
 function getDownloadCardTitle(
