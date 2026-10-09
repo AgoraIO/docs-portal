@@ -7,6 +7,8 @@ export type SearchSection = {
   headingPath: string[];
   locale: string;
   product?: string;
+  /** 多产品文档的完整筛选标签；product 保留主产品用于兼容展示。 */
+  products?: string[];
   tab?: string;
   platform?: string[];
   version?: string;

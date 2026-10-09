@@ -1,11 +1,13 @@
 import { findPath, flattenTree, type Root } from 'fumadocs-core/page-tree';
+import { zhCnFaqCategories, zhCnFaqItems } from '../../components/faq/faq-data.zh-cn';
 
 export type DocsSearchNavigation = Map<string, string[]>;
 
 export function buildDocsSearchNavigation(
   pageTree: Root,
+  locale?: string,
 ): DocsSearchNavigation {
-  return new Map(
+  const navigation = new Map(
     flattenTree(pageTree.children).map((page) => {
       const treePath = findPath(
         pageTree.children,
@@ -27,4 +29,13 @@ export function buildDocsSearchNavigation(
       return [page.url, breadcrumbs];
     }),
   );
+  // FAQ 详情通过中文组件链接公开，分类侧栏仅列入口页；两种公开导航都应收录。
+  if (locale === 'zh-CN') {
+    for (const item of zhCnFaqItems) {
+      if (navigation.has(item.href)) continue;
+      const category = zhCnFaqCategories.find(entry => entry.id === item.category);
+      navigation.set(item.href, ['常见问题', ...(category ? [category.label] : [])]);
+    }
+  }
+  return navigation;
 }

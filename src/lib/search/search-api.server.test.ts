@@ -14,6 +14,27 @@ const request = (query: string) =>
   new Request(`https://docs.example/api/search?${query}`);
 
 describe('Start search API', () => {
+  it('filters all product memberships of a FAQ and exposes product facets without losing the primary label', async () => {
+    vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+    vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+    vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+    const hit = {
+      id: 'faq', url: '/zh-CN/reference/faq/account/billing_basis',
+      pageTitle: '计时方式', sectionTitle: '计时方式', content: 'FAQ 正文', headingPath: ['计时方式'],
+      locale: 'zh-CN', hidden: false, status: 'published', docType: 'docs', audience: ['developer'],
+      product: 'local-server-recording', products: ['local-server-recording', 'rtc', 'analytics'],
+    };
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(Response.json({
+      ...empty, hits: [hit], totalHits: 1, totalPages: 1,
+      facetDistribution: { products: { rtc: 1, analytics: 1 } },
+    }));
+    const response = await handleSearchRequest(request('q=计时&product=rtc'));
+    const body = JSON.parse(fetchMock.mock.calls[0][1]?.body as string);
+    expect(body.filter).toContain('(product = "rtc" OR products = "rtc")');
+    const data = await response.json();
+    expect(data.groups[0].sections[0].products).toEqual(['local-server-recording', 'rtc', 'analytics']);
+    expect(data.facets.product).toEqual({ rtc: 1, analytics: 1 });
+  });
   it('rejects arbitrary engine filters, duplicate parameters and unbounded input', () => {
     for (const query of [
       'filter=hidden%3Dtrue',

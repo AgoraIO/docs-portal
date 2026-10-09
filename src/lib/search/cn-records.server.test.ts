@@ -8,6 +8,115 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it.each(['c++', 'objective-c', ''])(
+    'keeps following headings after table-cell fences with language %s',
+    (language) => {
+      const markdown = `# RTC API\n\n    ## 版本 [#version]\n\n    | 新 | 旧 |\n    | --- | --- |\n    | \`\`\`${language}\n    newDependency();\n    \`\`\` | \`\`\`${language}\n    oldDependency();\n    \`\`\` |\n\n    ### 改进 [#improved]\n\n    优化连接。`;
+      const records = extractPublishedCnSections(
+        { ...route, platform: 'android' },
+        page,
+        markdown,
+      );
+      expect(records.map((record) => record.url)).toEqual([
+        `${url}#version`,
+        `${url}#improved`,
+      ]);
+      expect(records[0].content).toContain('newDependency();');
+      expect(records[0].content).toContain('oldDependency();');
+    },
+  );
+  it('merges records whose corrected anchors resolve to the same rendered chapter', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n## 同一章节 [#outdated]\n\n前半内容。\n\n## 同一章节 [#current]\n\n后半内容。',
+      readRenderedHtml: async () =>
+        '<article><h2 id="current">同一章节</h2></article>',
+    });
+    expect(records).toHaveLength(1);
+    expect(records[0].id).toBe(`${url}::heading:current`);
+    expect(records[0].content).toContain('前半内容。');
+    expect(records[0].content).toContain('后半内容。');
+  });
+  it('splits renderer-annotated headings inside an indented platform block without splitting fenced examples', () => {
+    const markdown =
+      '# RTC API\n\n简介。\n\n    平台说明。\n\n    ## 技术原理 [#技术原理]\n\n    加密原理。\n\n    ```java\n    // ## 示例标题 [#not-a-section]\n    enableEncryption();\n    ```\n\n    ## 实现方法 [#实现方法]\n\n    调用 enableEncryption。';
+    const records = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      markdown,
+    );
+    expect(records.map((record) => record.url)).toEqual([
+      url,
+      `${url}#技术原理`,
+      `${url}#实现方法`,
+    ]);
+    expect(records[1].content).toContain('enableEncryption();');
+    expect(records[1].platform).toEqual(['android']);
+  });
+
+  it('keeps an ordinary indented code example intact without platform renderer metadata', () => {
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n    ## 示例 [#sample]\n    code();',
+    );
+    expect(records.map((record) => record.url)).toEqual([url]);
+  });
+  it('preserves both table-cell code examples without swallowing later release-note headings', () => {
+    const markdown =
+      '# RTC API\n\n    ## 版本 [#version]\n\n    | 新 | 旧 |\n    | --- | --- |\n    | ```groovy\n    newDependency();\n    ``` | ```groovy\n    oldDependency();\n    ``` |\n\n    ### 改进 [#improved]\n\n    优化连接。';
+    const records = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      markdown,
+    );
+    expect(records.map((record) => record.url)).toEqual([
+      `${url}#version`,
+      `${url}#improved`,
+    ]);
+    expect(records[0].content).toContain('newDependency();');
+    expect(records[0].content).toContain('oldDependency();');
+    expect(records[1].content).toContain('优化连接。');
+  });
+  it('uses the rendered heading ID when processed Markdown carries an outdated anchor', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n## Heartbeat Interval 与 Presence Timeout [#outdated]\n\n连接说明。',
+      readRenderedHtml: async () =>
+        '<article><h2 id="heartbeatinterval-and-presencetimeout">Heartbeat Interval 与 Presence Timeout</h2></article>',
+    });
+    expect(records[0].url).toBe(`${url}#heartbeatinterval-and-presencetimeout`);
+  });
+  it('preserves all explicit FAQ products and normalizes its platform labels', () => {
+    const url = '/zh-CN/reference/faq/account/billing_basis';
+    const [record] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '计时方式' },
+      '# 计时方式\n\nFAQ 正文。',
+    );
+    expect(record).toMatchObject({
+      products: ['local-server-recording', 'rtc', 'analytics'],
+    });
+    expect(record.platform).toBeUndefined();
+  });
+
+  it('tags cloud recording FAQ with RESTful instead of the reference folder', () => {
+    const url = '/zh-CN/reference/faq/integration/return_404';
+    const [record] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: 'query 返回 404' },
+      '# query 返回 404\n\nFAQ 正文。',
+    );
+    expect(record).toMatchObject({
+      product: 'cloud-recording',
+      products: ['cloud-recording'],
+      platform: ['restful'],
+    });
+  });
   it('preserves IDs containing brackets and merges headings sharing a renderer anchor', () => {
     const records = extractPublishedCnSections(
       route,
@@ -136,5 +245,49 @@ describe('published CN index export', () => {
       url: `${url}/web#token`,
       platform: ['web'],
     });
+  });
+
+  it.each([
+    [
+      '/zh-CN/solutions/showroom/get-started/run-example',
+      { product: 'showroom' },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/csharp-windows/rtc-api-overview',
+      { product: 'rtc', platform: ['csharp'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/react-sdk/overview',
+      { product: 'rtc', platform: ['web'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/csharp-windows/audio/audio-basic',
+      { product: 'rtc', platform: ['csharp'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/react-sdk/hooks',
+      { product: 'rtc', platform: ['web'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic',
+      { product: 'rtc', platform: ['cpp'] },
+    ],
+    [
+      '/zh-CN/api-reference/rtc/android/channel',
+      { product: 'rtc', platform: ['android'], version: '4.6.2' },
+    ],
+  ])('derives metadata for %s', (url, expected) => {
+    const records = extractPublishedCnSections(
+      {
+        url,
+        canonicalPath: url,
+        markdownPath: `${url}.md`,
+        ...(url.endsWith('/channel') ? { version: '4.6.2' } : {}),
+      },
+      { url, title: 'Example', objectType: 'docs' },
+      '# Example\n\n## Section\n\nContent.',
+    );
+
+    expect(records[0]).toMatchObject(expected);
   });
 });

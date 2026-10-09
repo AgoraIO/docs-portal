@@ -29,7 +29,14 @@ export async function queryCnSearch(
 ): Promise<CnSearchPageResponse> {
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
   for (const field of ['product', 'platform', 'version', 'tab'] as const) {
-    if (state[field]) filter.push(`${field} = ${JSON.stringify(state[field])}`);
+    if (state[field]) {
+      const value = JSON.stringify(state[field]);
+      filter.push(
+        field === 'product'
+          ? `(product = ${value} OR products = ${value})`
+          : `${field} = ${value}`,
+      );
+    }
   }
   if (state.type !== 'all')
     filter.push(`docType = ${JSON.stringify(state.type)}`);
@@ -47,7 +54,7 @@ export async function queryCnSearch(
         filter: filter.join(' AND '),
         page: state.page,
         hitsPerPage: SEARCH_PAGE_SIZE,
-        facets: ['product', 'platform', 'version', 'docType'],
+        facets: ['products', 'platform', 'version', 'docType'],
         attributesToHighlight: ['sectionTitle', 'content'],
         highlightPreTag: '<mark>',
         highlightPostTag: '</mark>',
@@ -89,6 +96,13 @@ export async function queryCnSearch(
     totalHits: result.totalHits,
     totalPages: Math.min(result.totalPages, 500),
     page: result.page,
-    facets: result.facetDistribution ?? {},
+    facets: result.facetDistribution
+      ? Object.fromEntries(
+          Object.entries(result.facetDistribution).map(([key, values]) => [
+            key === 'products' ? 'product' : key,
+            values,
+          ]),
+        )
+      : {},
   };
 }

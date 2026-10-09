@@ -1,9 +1,6 @@
-export function buildMeilisearchSettings(): {
-  searchableAttributes: string[];
-  filterableAttributes: string[];
-  displayedAttributes: string[];
-  pagination: { maxTotalHits: number };
-} {
+import { cnSearchSynonyms, cnTechnicalWords } from './cn-search-strategy';
+
+export function buildMeilisearchSettings() {
   return {
     pagination: { maxTotalHits: 10000 },
     searchableAttributes: ['sectionTitle', 'aliases', 'pageTitle', 'content'],
@@ -37,5 +34,42 @@ export function buildMeilisearchSettings(): {
       'hidden',
       'aliases',
     ],
+  };
+}
+
+/** 生产中文章节索引的策略；独立 demo 继续使用原来的基础设置。 */
+export function buildPublishedCnSearchSettings() {
+  const base = buildMeilisearchSettings();
+  return {
+    ...base,
+    searchableAttributes: [
+      'entryTitle',
+      'sectionTitle',
+      'nameSplit',
+      'groupNameSplit',
+      'aliases',
+      'pageTitle',
+      'content',
+    ],
+    sortableAttributes: ['entrySeq', 'productSeq', 'platformSeq', 'typeSeq'],
+    synonyms: cnSearchSynonyms,
+    typoTolerance: { disableOnWords: cnTechnicalWords },
+    rankingRules: [
+      'words',
+      'typo',
+      'attribute',
+      'proximity',
+      'sort',
+      'exactness',
+      'entrySeq:asc',
+      'productSeq:asc',
+      'platformSeq:asc',
+    ],
+    filterableAttributes: base.filterableAttributes.flatMap((field) =>
+      field === 'product' ? [field, 'products'] : [field],
+    ),
+    displayedAttributes: base.displayedAttributes.flatMap((field) =>
+      field === 'product' ? [field, 'products'] : [field],
+    ),
   };
 }

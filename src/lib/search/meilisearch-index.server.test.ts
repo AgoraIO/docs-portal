@@ -6,6 +6,7 @@ import {
   promoteSearchIndex,
   type SearchIndexClient,
 } from './meilisearch-index.server';
+import * as settingsModule from './meilisearch-settings';
 
 const record: SearchSection = {
   id: 'one',
@@ -73,6 +74,108 @@ function fakeClient() {
   return { client, indexes, events };
 }
 describe('search index release jobs', () => {
+  it('changes the release checksum when the search policy changes with identical source records', async () => {
+    const { client } = fakeClient();
+    const input = {
+      client,
+      indexUid: 'docs_cn',
+      revision: 'same-source',
+      records: [record],
+    };
+    const first = await prepareSearchIndex(input);
+    const settings = settingsModule.buildPublishedCnSearchSettings();
+    vi.spyOn(settingsModule, 'buildPublishedCnSearchSettings').mockReturnValue({
+      ...settings,
+      synonyms: { ...settings.synonyms, 自定义别名: ['Token'] },
+    });
+    const second = await prepareSearchIndex(input);
+    expect(first.checksum).not.toBe(second.checksum);
+  });
+  it('regenerates API tokens and normalized ordering fields when preparing a fresh snapshot', async () => {
+    const { client, indexes } = fakeClient();
+    const receipt = await prepareSearchIndex({
+      client,
+      indexUid: 'docs_cn',
+      revision: 'strategy-test',
+      records: [
+        {
+          ...record,
+          url: '/zh-CN/api-reference/rtc/web/overview#removehandler',
+          sectionTitle: 'removeHandler',
+          pageTitle: 'RTCEngine API',
+          headingPath: ['RTCEngine API', 'removeHandler'],
+          product: 'rtm',
+          platform: ['web'],
+        },
+      ],
+    });
+    const documents = [...(indexes.get(receipt.stagedUid)?.values() ?? [])];
+    expect(
+      documents.find((document) => document.sourceId === 'one'),
+    ).toMatchObject({
+      nameSplit: 'remove Handler',
+      groupNameSplit: 'RTC Engine API',
+      products: ['rtm'],
+      productSeq: 2,
+      platformSeq: 4,
+      typeSeq: 1000,
+    });
+  });
+
+  it('configures synonyms and conservative technical-word tolerance on each new index', async () => {
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValueOnce(Response.json({ taskUid: 7 }))
+      .mockResolvedValueOnce(Response.json({ status: 'succeeded' }));
+    await createSearchIndexClient({
+      host: 'http://meili.test',
+      writeKey: 'scoped-write',
+    }).settings('docs_cn');
+    const settings = JSON.parse(fetchMock.mock.calls[0][1]?.body as string);
+    expect(settings.synonyms['发布消息']).toEqual(['发送消息']);
+    expect(settings.typoTolerance.disableOnWords).toContain('屏幕共享');
+    expect(settings.searchableAttributes).toContain('nameSplit');
+    expect(settings.filterableAttributes).toContain('products');
+    expect(settings.sortableAttributes).toEqual(
+      expect.arrayContaining(['productSeq', 'platformSeq', 'typeSeq']),
+    );
+  });
+  it('indexes the product entry title separately from incidental subsection mentions', async () => {
+    const { client, indexes } = fakeClient();
+    const receipt = await prepareSearchIndex({
+      client,
+      indexUid: 'docs_cn',
+      revision: 'entry-title',
+      records: [
+        {
+          ...record,
+          id: 'overview',
+          url: '/zh-CN/realtime-media/cloud-recording',
+          pageTitle: '云端录制概览',
+          sectionTitle: '云端录制概览',
+          headingPath: ['云端录制概览'],
+          product: 'cloud-recording',
+        },
+        {
+          ...record,
+          id: 'incidental',
+          url: '/zh-CN/solutions/teleoperation#cloud-recording',
+          pageTitle: '远程操控',
+          sectionTitle: '云端录制',
+          headingPath: ['远程操控', '云端录制'],
+        },
+      ],
+    });
+    const documents = [...(indexes.get(receipt.stagedUid)?.values() ?? [])];
+    expect(
+      documents.find((document) => document.sourceId === 'overview')
+        ?.entryTitle,
+    ).toEqual(expect.arrayContaining(['云端录制', '云录制']));
+    expect(
+      documents.find((document) => document.sourceId === 'incidental')
+        ?.entryTitle,
+    ).toBeUndefined();
+  });
   afterEach(() => vi.restoreAllMocks());
   it('uses a separate read-only task key without expanding the index write key', async () => {
     const fetchMock = vi

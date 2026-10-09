@@ -6,7 +6,7 @@ import { exportPublishedCnRecords } from '../../src/lib/search/cn-records.server
 
 const { values } = parseArgs({
   options: {
-    public: { type: 'string', default: 'public' },
+    public: { type: 'string', default: 'dist/client' },
     out: { type: 'string', default: 'dist/search/cn-records.json' },
   },
   strict: true,
@@ -33,6 +33,13 @@ const records = await exportPublishedCnRecords({
     const file = path.resolve(publicRoot, `.${markdownPath}`);
     if (!file.startsWith(`${publicRoot}${path.sep}`))
       throw new Error('Invalid published Markdown path');
+    return readFile(file, 'utf8');
+  },
+  // 验收同一次构建的真实 HTML 锚点，不能只相信 Markdown/TOC 的标记。
+  readRenderedHtml: (url) => {
+    const file = path.resolve(publicRoot, `.${url}/index.html`);
+    if (!file.startsWith(`${publicRoot}${path.sep}`))
+      throw new Error('Invalid published HTML path');
     return readFile(file, 'utf8');
   },
 });

@@ -1,8 +1,9 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { setTimeout as delay } from 'node:timers/promises';
 import { isPublicCnSearchUrl } from './cn-search-page';
+import { buildCnSearchDocument } from './cn-search-strategy';
 import { assertValidSearchSection, type SearchSection } from './kb-record';
-import { buildMeilisearchSettings } from './meilisearch-settings';
+import { buildPublishedCnSearchSettings as buildMeilisearchSettings } from './meilisearch-settings';
 
 const RELEASE_ID = '_docs_release';
 type Release = {
@@ -175,7 +176,14 @@ export async function prepareSearchIndex({
       throw new Error(`Duplicate search section ID: ${record.id}`);
     seen.add(record.id);
   }
-  const checksum = hash(JSON.stringify(records));
+  const preparedRecords = records.map(buildCnSearchDocument);
+  // 回执同时覆盖检索字段和设置；源文档相同不代表搜索行为相同。
+  const checksum = hash(
+    JSON.stringify({
+      records: preparedRecords,
+      settings: buildMeilisearchSettings(),
+    }),
+  );
   const release = randomUUID();
   const stagedUid = `${indexUid}__${release.replaceAll('-', '')}`;
   const baseRelease = (await client.getRelease(indexUid))?.release ?? null;
@@ -192,7 +200,7 @@ export async function prepareSearchIndex({
   };
   await client.createIndex(stagedUid);
   await client.settings(stagedUid);
-  const documents = records.map((record) => ({
+  const documents = preparedRecords.map((record) => ({
     ...record,
     sourceId: record.id,
     id: hash(record.id),

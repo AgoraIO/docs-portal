@@ -58,9 +58,22 @@ bun run search:prepare:cn --revision="$RELEASE_SHA"
 bun run search:promote:cn --revision="$RELEASE_SHA"
 ```
 
-`search:export:cn` 读取 `public/__static/docs-routes.json`、`docs-search/zh-CN.json`、`sitemap.xml` 和发布的 `.md`。文档导航名单与真实发布页面的交集决定收录范围，排除隐藏文档和重定向别名。普通文档按章节收录，保留 Fumadocs 的实际锚点和平台变体；OpenAPI 按端点页面收录，因为它的可读 Markdown 栏目与交互页面锚点不同。缺失文件或空导出会失败。默认写入 `dist/search/cn-records.json`，可通过 `--public`、`--out` 指定其他产物目录。
+`search:export:cn` 默认读取对应构建的 `dist/client`：`__static/docs-routes.json`、`docs-search/zh-CN.json`、`sitemap.xml`、发布的 `.md` 与 HTML。文档导航名单（包括中文 FAQ 组件声明的公开页面）与真实发布页面的交集决定收录范围，排除隐藏文档和重定向别名。普通文档按章节收录，校验锚点确实存在于 HTML，保留平台变体；OpenAPI 按端点页面收录，因为它的可读 Markdown 栏目与交互页面锚点不同。缺失文件、无法匹配的章节锚点或空导出会失败。默认写入 `dist/search/cn-records.json`，可通过 `--public`、`--out` 指定其他产物目录。不要混用不同提交的 public 缓存和构建结果。
 
-`prepare` 在上传前校验所有记录，使用确定的章节 ID，设置检索/筛选字段，批量上传到独立临时索引并等待任务成功，再校验数量。默认回执为 `dist/search/cn-release.json`；`--records` 和 `--receipt` 可改路径。回执包含提交号、内容摘要、数量、索引名和上一次发布标记，不包含密钥。需要把 records 和 receipt 与同一次提交的静态站作为发布产物保存。
+`prepare` 在上传前校验所有记录，使用确定的章节 ID，设置检索/筛选字段，批量上传到独立临时索引并等待任务成功，再校验数量。默认回执为 `dist/search/cn-release.json`；`--records` 和 `--receipt` 可改路径。回执包含提交号、派生记录与检索设置的共同摘要、数量、索引名和上一次发布标记，不包含密钥。需要把 records 和 receipt 与同一次提交的静态站作为发布产物保存。
+
+### 中文检索策略与元数据
+
+生产策略由 `src/lib/search/cn-search-strategy.ts` 和 `buildPublishedCnSearchSettings()` 固化，每次 `prepare` 自动应用；不依赖人工改 Meilisearch 控制台。普通 demo 的基础设置保持独立。
+
+- FAQ 保留主要 `product`，新增 `products` 表达多个产品归属。产品筛选匹配任一归属；平台按 FAQ 数据集映射，界面的“全部产品/平台”不是通配归属。未知标签使导出失败。
+- API 原名保留，另外生成 `nameSplit`、`groupNameSplit`，支持 camelCase、缩写及下划线拆词。仅 API 文档生成这些派生字段。
+- 检索字段优先级和 Meilisearch 相关性规则共同决定排名，并非“标题乘十”的加权公式。有限同义词与技术词容错配置来自旧中文站；产品、平台顺序仅作为相关性之后的排序规则。未有可靠来源的 API 类别顺序统一为 1000，不猜测方法/类/枚举。
+- 产品入口使用独立 `entryTitle`（保留显示标题），帮助“云端录制”等宽泛查询找到概览。章节精确查询仍需用查询集验证。SDK/API/RTC 等泛词暂不承诺唯一标准首条。
+
+这些字段和设置变更需要重新 `prepare`、验收并 `promote` 整个快照；升级 API 代码也要同步，以支持 FAQ 多产品筛选。用户每次搜索只查询现有索引，不重新构建。
+
+覆盖审计命令：`node scripts/search/audit-cn-coverage.mjs --records=dist/search/cn-records.json`。它同时检查导航到发布路由的覆盖，新增无记录页必须审查；现有组件目录和 C# 空壳页面的具体豁免列在脚本中。部署输入和完整发布检查见 [中文搜索部署交接](./cn-search-deployment-handoff.md)。
 
 `promote` 校验回执、目标服务和提交号，通过 Meilisearch 的原子交换激活。它会先保存交换任务 ID，再等待成功；使用同一回执重试会恢复等待或报告已激活，不会再次交换。索引里有一个仅供 Job 使用的内部发布标记，公开查询始终排除它。完整快照替换使删除的页面自然退出搜索。
 

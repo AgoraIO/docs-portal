@@ -85,7 +85,7 @@ describe('full CN search adapter', () => {
       page: 2,
       hitsPerPage: 20,
       filter:
-        'locale = "zh-CN" AND hidden = false AND status = "published" AND product = "conversational-ai" AND platform = "web" AND version = "4.6.0" AND docType = "docs"',
+        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND platform = "web" AND version = "4.6.0" AND docType = "docs"',
     });
     expect(result.groups).toHaveLength(1);
     expect(

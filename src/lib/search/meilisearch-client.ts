@@ -27,6 +27,7 @@ export type SearchHit = {
   headingPath: string[];
   locale: string;
   product?: string;
+  products?: string[];
   platform?: string[];
   version?: string;
   docType: 'docs' | 'openapi';
@@ -49,6 +50,7 @@ type MeilisearchHit = {
   headingPath: string[];
   platform?: string[];
   product?: string;
+  products?: string[];
   locale: string;
   version?: string;
   docType: 'docs' | 'openapi';
@@ -187,6 +189,7 @@ export function normalizeMeilisearchHit(hit: MeilisearchHit): SearchHit {
     headingPath: hit.headingPath,
     locale: hit.locale,
     product: hit.product,
+    products: hit.products,
     platform: hit.platform,
     version: hit.version,
     docType: hit.docType,
