@@ -13,6 +13,7 @@ import {
   API_REFERENCE_CAPABILITY_GROUPS,
   getApiReferenceProductSectionId,
 } from '@/lib/api-reference-navigation';
+import { getPlatformIconSrc } from './platform-icon-src';
 
 type ApiReferenceCardsLocale = 'zh-CN';
 type ApiReferenceTypeFilter = 'all' | 'client' | 'restful' | 'server';
@@ -442,7 +443,7 @@ function ApiReferenceChip({ entry }: { entry: ApiReferenceCardEntry }) {
 }
 
 function PlatformLabel({ entry }: { entry: ApiReferenceCardEntry }) {
-  const iconSrc = platformIcons[entry.platformId] ?? defaultPlatformIconSrc;
+  const iconSrc = getPlatformIconSrc(entry.platformId);
   const showEntryLabel =
     entry.productId !== 'conversational-ai' && entry.label !== entry.platform;
 
@@ -482,36 +483,6 @@ type ApiReferenceSolutionEntryGroup = {
   id: string;
   isExplicit: boolean;
   title: string;
-};
-
-const platformIconBaseUrl =
-  'https://assets-docs.agora.io/images/api-reference/platforms';
-
-const defaultPlatformIconSrc = `${platformIconBaseUrl}/all.svg`;
-
-const platformIcons: Record<string, string> = {
-  android: `${platformIconBaseUrl}/android.svg`,
-  c: `${platformIconBaseUrl}/c.svg`,
-  cpp: `${platformIconBaseUrl}/cpp.svg`,
-  csharp: `${platformIconBaseUrl}/csharp.svg`,
-  electron: `${platformIconBaseUrl}/electron.svg`,
-  flutter: `${platformIconBaseUrl}/flutter.svg`,
-  go: `${platformIconBaseUrl}/go.svg`,
-  harmonyos: `${platformIconBaseUrl}/harmonyOS.svg`,
-  ios: `${platformIconBaseUrl}/ios.svg`,
-  java: `${platformIconBaseUrl}/java.svg`,
-  macos: `${platformIconBaseUrl}/macos.svg`,
-  'mini-program': `${platformIconBaseUrl}/min-program.svg`,
-  python: `${platformIconBaseUrl}/python.svg`,
-  'react-native': `${platformIconBaseUrl}/react-native.svg`,
-  'restful-api': `${platformIconBaseUrl}/restful.svg`,
-  swift: `${platformIconBaseUrl}/ios.svg`,
-  typescript: `${platformIconBaseUrl}/js.svg`,
-  unity: `${platformIconBaseUrl}/unity.svg`,
-  'unreal-blueprint': `${platformIconBaseUrl}/unreal-engine.svg`,
-  'unreal-cpp': `${platformIconBaseUrl}/unreal-engine.svg`,
-  web: `${platformIconBaseUrl}/js.svg`,
-  windows: 'https://doc.shengwang.cn/img/platforms/windows.svg',
 };
 
 const apiTypeOptions: Array<{

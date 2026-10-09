@@ -23,14 +23,14 @@ _migration:
 
 `GET /{region}/conference/apps/{appId}/v1/rooms/{roomUuid}/records?nextId={nextId}`
 
-域名详见[保障 REST 服务高可用](/zh-CN/realtime-media/meeting/build/manage-classroom/high-availability)。
+域名详见[保障 REST 服务高可用](/zh-CN/realtime-media/meeting/build/high-availability)。
 
 ### 路径参数
 
 | 参数 | 类型 | 是否必填 | 描述 |
 | --- | --- | --- | --- |
 | `region` | String | 必填 | 服务区域，目前仅支持设为 `cn`，代表中国大陆。 |
-| `appId` | String | 必填 | 项目 App ID，详见[获取 App ID](/zh-CN/realtime-media/meeting/build/setup-and-access/enable-service#获取-app-id)。 |
+| `appId` | String | 必填 | 项目 App ID，详见[获取 App ID](/zh-CN/realtime-media/meeting/build/enable-service#获取-app-id)。 |
 | `roomUuid` | String | 必填 | <Slot name="query-recording-restful-html-0-3-3" /> |
 
 <Slot for="query-recording-restful-html-0-3-3">
@@ -58,7 +58,7 @@ _migration:
 
 ### 请求 Header
 
-- `Authorization`：用于 HTTP Token 认证的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 认证](/zh-CN/realtime-media/meeting/build/customize-and-extend/http-token-auth)。
+- `Authorization`：用于 HTTP Token 认证的鉴权字段。每次发送 HTTP 请求时，都必须填入 `Authorization` 字段。详见[实现 HTTP Token 认证](/zh-CN/realtime-media/meeting/build/http-token-auth)。
 
 ### 请求示例
 

@@ -1,3 +1,4 @@
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import staticRedirects from './static-redirects.json';
 
 type StaticLegacyRedirectRule = {
@@ -10,9 +11,15 @@ type StaticLegacyRedirectRule = {
 export type StaticLegacyRedirectPayload = {
   preserveSearch: boolean;
   redirectUrl: string;
+  statusCode?: 301;
 };
 
 const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
+export const ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES = new Set(
+  Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS).map(
+    (path) => `/zh-CN/${path}`,
+  ),
+);
 
 export function resolveStaticLegacySitemapRedirect(
   legacyPath: string,
@@ -34,6 +41,9 @@ export function resolveStaticLegacySitemapRedirect(
     ? {
         preserveSearch: rule.s !== 0,
         redirectUrl: rule.t,
+        ...(ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES.has(rule.p)
+          ? { statusCode: 301 }
+          : {}),
       }
     : null;
 }

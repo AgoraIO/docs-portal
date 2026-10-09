@@ -25,6 +25,7 @@ const rawDocSchema = z.object({
   layout: z.enum(['platform-group']).optional(),
   tocMaxDepth: z.number().int().min(1).max(6).optional(),
   platforms: z.array(z.string()).optional(),
+  titlePlatforms: z.array(z.string()).optional(),
   defaultPlatform: z.string().optional(),
   _openapi: z.looseObject({}).optional(),
 });
@@ -93,10 +94,10 @@ export const docs = defineDocs({
             types: directiveCalloutTypes,
           },
         ],
-        remarkNormalizeLegacyHeadingAnchors,
         remarkPlatformContent,
         remarkTableSlots,
         ...plugins,
+        remarkNormalizeLegacyHeadingAnchors,
       ],
     }),
     postprocess: {

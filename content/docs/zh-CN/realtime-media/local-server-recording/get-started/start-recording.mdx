@@ -8,7 +8,7 @@ description: "了解如何快速接入本地服务端录制，完成环境准备
 
 本文介绍如何使用声网服务端 SDK 在实时音视频频道中实现录制功能。开始前请确保你的本地开发环境满足以下条件：
 
-* 参考[开通本地服务端录制服务](/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
+* 参考[开通本地服务端录制服务](/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
 * 在项目中实现了基础的音视频互动场景。
 * 服务器硬件条件：
   * CPU：8 核，1.8 GHz 主频
@@ -225,10 +225,10 @@ service->release();
 
 完成基本录制功能后，你可以进一步探索以下功能：
 
-- [单流录制和合流录制](/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode)
-- [自定义合流录制视频布局](/zh-CN/realtime-media/local-server-recording/build/recording-modes/set-layout)
-- [配置水印](/zh-CN/realtime-media/local-server-recording/build/recording-modes/watermark)
-- [录制崩溃后修复录制文件](/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files)
+- [单流录制和合流录制](/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/recording-mode)
+- [自定义合流录制视频布局](/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/set-layout)
+- [配置水印](/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/watermark)
+- [录制崩溃后修复录制文件](/zh-CN/realtime-media/local-server-recording/build/best-practices/restore-files)
 
 <a id="run-example"></a>
 ## 参考信息
@@ -254,7 +254,7 @@ service->release();
    export LD_LIBRARY_PATH=../../agora_sdk:$LD_LIBRARY_PATH
    ```
 
-4. 按照场景需要填写 `recorder.json`（合流录制的配置文件）或 `singleVideo.json`（单流录制的配置文件）。单流和合流的场景区别可以参考[单流录制和合流录制](/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode)。
+4. 按照场景需要填写 `recorder.json`（合流录制的配置文件）或 `singleVideo.json`（单流录制的配置文件）。单流和合流的场景区别可以参考[单流录制和合流录制](/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/recording-mode)。
 
 5. 运行如下命令行，示例程序会根据你在指定 json 文件中的配置进行录制：
 
@@ -277,7 +277,7 @@ service->release();
 
 开始前请确保你的本地开发环境满足以下条件：
 
-- 参考[开通本地服务端录制服务](/zh-CN/realtime-media/local-server-recording/build/setup-and-access/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
+- 参考[开通本地服务端录制服务](/zh-CN/realtime-media/local-server-recording/build/recording-preparation/enable-service)在控制台创建一个声网项目，并获取项目的 App ID。
 - 在项目中实现了基础的音视频互动场景。
 - 服务器硬件条件：
   - CPU：8 核，1.8 GHz 主频
@@ -715,10 +715,10 @@ agoraService.release();
 
 完成基本录制功能后，你可以进一步探索以下功能：
 
-- [单流录制和合流录制](/zh-CN/realtime-media/local-server-recording/build/recording-modes/recording-mode)
-- [自定义合流录制视频布局](/zh-CN/realtime-media/local-server-recording/build/recording-modes/set-layout)
-- [配置水印](/zh-CN/realtime-media/local-server-recording/build/recording-modes/watermark)
-- [录制崩溃后修复录制文件](/zh-CN/realtime-media/local-server-recording/build/optimize-and-operate/restore-files)
+- [单流录制和合流录制](/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/recording-mode)
+- [自定义合流录制视频布局](/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/set-layout)
+- [配置水印](/zh-CN/realtime-media/local-server-recording/build/configure-recording-output/watermark)
+- [录制崩溃后修复录制文件](/zh-CN/realtime-media/local-server-recording/build/best-practices/restore-files)
 
 <a id="run-example"></a>
 ## 参考信息

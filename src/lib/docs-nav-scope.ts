@@ -21,6 +21,7 @@ export type DocsSidebarHeaderVersion = {
 export type DocsSidebarHeader = {
   backHref: string;
   backLabel: string;
+  productDocsHref?: string;
   title: string;
   versionSwitcher?: {
     currentId: string;
@@ -400,14 +401,7 @@ function navScopeParentNodeToSidebarNodes(
   }
 
   if (node.type === 'page') {
-    return [
-      {
-        id: node.url,
-        title: normalizeLabel(node.name, node.url),
-        type: 'page',
-        url: node.url,
-      },
-    ];
+    return [pageTreePageToSidebarNode(node)];
   }
 
   if (node.type !== 'folder') {
@@ -425,6 +419,16 @@ function navScopeParentNodeToSidebarNodes(
   return hasNavScopeDescendant(node, getNodeMeta)
     ? pageTreeFolderToParentSidebarNodes(node, getNodeMeta)
     : navScopeNodeToSidebarNodes(node, getNodeMeta);
+}
+
+function pageTreePageToSidebarNode(item: Item): DocsSidebarNode {
+  return {
+    ...(item.external ? { external: true, href: item.url } : {}),
+    id: item.url,
+    title: normalizeLabel(item.name, item.url),
+    type: 'page',
+    url: item.url,
+  };
 }
 
 function flattenNavScopeSidebarNodes(

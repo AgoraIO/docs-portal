@@ -1620,11 +1620,12 @@ export function getOpenApiEndpointUrl(
 
 export function getOpenApiPrerenderPaths() {
   return getOpenApiLanes().flatMap((lane) =>
-    getOpenApiLaneLocales(lane).flatMap((locale) =>
-      getOpenApiOperationIds(lane).map((operationId) =>
+    getOpenApiLaneLocales(lane).flatMap((locale) => [
+      lane.parentUrl[locale],
+      ...getOpenApiOperationIds(lane).map((operationId) =>
         getOpenApiEndpointUrl(lane, locale, operationId),
       ),
-    ),
+    ]),
   );
 }
 
@@ -1697,6 +1698,34 @@ export function resolveOpenApiEndpointRoute(
       routeLeaf,
       url: getOpenApiEndpointUrl(lane, locale, operationId),
     };
+  }
+
+  return null;
+}
+
+export function resolveOpenApiLaneRootRedirect(
+  locale: AppLocale,
+  tab: string,
+  slugSegments: string[],
+) {
+  for (const lane of getOpenApiLanes()) {
+    if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
+      continue;
+    }
+
+    const prefixSegments = lane.routePrefix.split('/').filter(Boolean).slice(1);
+
+    if (
+      slugSegments.length !== prefixSegments.length ||
+      !prefixSegments.every((segment, index) => slugSegments[index] === segment)
+    ) {
+      continue;
+    }
+
+    const firstOperationId = getOpenApiOperationIds(lane)[0];
+    return firstOperationId
+      ? getOpenApiEndpointUrl(lane, locale, firstOperationId)
+      : null;
   }
 
   return null;

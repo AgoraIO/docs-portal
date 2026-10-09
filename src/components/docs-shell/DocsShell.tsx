@@ -3,8 +3,10 @@
 import { Link } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import {
+  ArrowRightIcon,
   CheckIcon,
   ChevronDownIcon,
+  ExternalLinkIcon,
   MenuIcon,
   MoonIcon,
   SunIcon,
@@ -42,21 +44,23 @@ import type {
   ProductScope,
   TabSummary,
 } from '@/lib/docs-tree';
+import { addIntroductionResourceLinks } from '@/lib/docs-tree';
 import {
   type AppLocale,
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { legacyDocsBannerConfig } from '@/lib/shared';
-import { AgoraLogoMark } from './AgoraLogoMark';
+import { getAppBranding, legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
+import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
+import { SiteLogoMark } from './SiteLogoMark';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
   'max-w-[calc(256px+var(--content-max)+5rem+220px+2rem)]';
@@ -168,6 +172,7 @@ export function DocsShell({
   const [isLegacyDocsBannerVisible, setIsLegacyDocsBannerVisible] =
     useState(true);
   const sidebarResetKey = getDocsSidebarResetKey(activeTab, sidebarHeader);
+  const branding = getAppBranding(currentLocale);
   const homeHref = buildDocPath(currentLocale, 'introduction');
   const legacyDocsHref = legacyDocsBannerConfig.hrefs[currentLocale];
   const dismissLegacyDocsBannerLabel = t('docs.dismissLegacyDocsBanner');
@@ -225,7 +230,8 @@ export function DocsShell({
   // openapi and hideToc drop the toc rail and let content fill the grid; every
   // layout shares the same outer shell footprint so the sidebar/nav/content
   // align across page types.
-  const contentFillsWidth = isOpenApiLayout || hideToc;
+  const isHomePage = currentLocale === 'zh-CN' && activePath === homeHref;
+  const contentFillsWidth = isOpenApiLayout || hideToc || isHomePage;
   const shellWidthClassName = DOCS_SHELL_MAX_WIDTH_CLASS_NAME;
   const desktopGridClassName = contentFillsWidth
     ? DOCS_FILL_DESKTOP_GRID_CLASS_NAME
@@ -242,6 +248,7 @@ export function DocsShell({
       <div className="flex min-h-screen min-w-0 flex-1 flex-col">
         <header
           className="sticky top-0 z-40 border-b border-border bg-background/80 backdrop-blur-xl"
+          data-testid="docs-shell-header"
           ref={headerRef}
         >
           {docsChromeLocaleLinks.length > 1 ? (
@@ -321,15 +328,20 @@ export function DocsShell({
                         to={homeHref}
                       >
                         <span className="sr-only">{t('app.name')}</span>
-                        <AgoraLogoMark
+                        <SiteLogoMark
                           aria-hidden="true"
-                          className="h-8 shrink-0 translate-y-2"
+                          className={
+                            currentLocale === 'en'
+                              ? 'h-8 shrink-0 translate-y-2'
+                              : undefined
+                          }
+                          locale={currentLocale}
                         />
                         <span
                           aria-hidden="true"
                           className="truncate text-[15px] font-semibold"
                         >
-                          Docs
+                          {branding.docsLabel}
                         </span>
                       </Link>
                     </SheetTitle>
@@ -362,12 +374,17 @@ export function DocsShell({
                   to={homeHref}
                 >
                   <span className="sr-only">{t('app.name')}</span>
-                  <AgoraLogoMark
+                  <SiteLogoMark
                     aria-hidden="true"
-                    className="h-8 shrink-0 translate-y-2"
+                    className={
+                      currentLocale === 'en'
+                        ? 'h-8 shrink-0 translate-y-2'
+                        : undefined
+                    }
+                    locale={currentLocale}
                   />
                   <span aria-hidden="true" className="truncate">
-                    Docs
+                    {branding.docsLabel}
                   </span>
                 </Link>
               </div>
@@ -574,6 +591,11 @@ function MobileSidebar({
   const { i18n } = useTranslation('common');
   const t = i18n.getFixedT(currentLocale, 'common');
   const currentTab = tabs.find((tab) => tab.id === activeTab) ?? tabs[0];
+  const sidebarNodes = addIntroductionResourceLinks({
+    activePath,
+    locale: currentLocale,
+    nodes: sidebar,
+  });
 
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
@@ -661,7 +683,7 @@ function MobileSidebar({
               />
             ) : null}
             <div className="flex min-w-0 flex-col gap-1">
-              {sidebar.map((node) => (
+              {sidebarNodes.map((node) => (
                 <MobileSidebarNode
                   activePath={activePath}
                   depth={0}
@@ -674,6 +696,14 @@ function MobileSidebar({
                 />
               ))}
             </div>
+            {sidebarHeader?.productDocsHref ? (
+              <DocsSidebarProductLink
+                href={sidebarHeader.productDocsHref}
+                locale={currentLocale}
+                mode="mobile"
+                onSelectPath={onSelectPath}
+              />
+            ) : null}
           </div>
           <div className="flex flex-col gap-2 border-t border-border pt-4">
             <div className="flex items-center gap-2">
@@ -720,10 +750,19 @@ function MobileSidebarNode({
             {node.method}
           </span>
         ) : null}
+        {node.showNavigationArrow ? (
+          <ArrowRightIcon
+            aria-hidden="true"
+            className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"
+          />
+        ) : node.external || node.linked ? (
+          <ExternalLinkIcon className="size-4 shrink-0 text-[color:var(--ink-4)]" />
+        ) : null}
       </>
     );
     const className = cn(
       mobilePageLinkClassName,
+      node.showNavigationArrow && 'group',
       isActive
         ? mobileActivePageLinkClassName
         : mobileInactivePageLinkClassName,
@@ -750,7 +789,9 @@ function MobileSidebarNode({
         className={className}
         onClick={onSelectPath}
         params={{}}
+        rel={node.linked ? 'noreferrer noopener' : undefined}
         search={node.search ?? {}}
+        target={node.linked ? '_blank' : undefined}
         to={node.url}
       >
         {content}

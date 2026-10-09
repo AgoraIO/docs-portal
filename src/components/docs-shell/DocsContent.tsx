@@ -18,6 +18,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import {
@@ -39,7 +40,7 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
-import type { PlatformKey } from '@/lib/platforms/registry';
+import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
   PlatformPanel,
@@ -83,6 +84,7 @@ export function DocsContent({
   sidebarHeader,
   slug,
   title,
+  titlePlatforms = [],
   toc,
 }: {
   body?: DocsContentBodyPayload;
@@ -97,6 +99,7 @@ export function DocsContent({
   sidebarHeader?: DocsSidebarHeader;
   slug?: string;
   title?: string;
+  titlePlatforms?: PlatformKey[];
   toc: TOCItemType[];
 }) {
   const { i18n } = useTranslation('common');
@@ -133,7 +136,8 @@ export function DocsContent({
   const effectiveLayoutMode = isOpenApiBody ? 'openapi' : layoutMode;
   const isOpenApiLayout = effectiveLayoutMode === 'openapi';
   // openapi and hideToc both let the article fill the width and hide the toc.
-  const contentFillsWidth = isOpenApiLayout || hideToc;
+  const isHomePage = contentPath === 'zh-CN/introduction/index.mdx';
+  const contentFillsWidth = isOpenApiLayout || hideToc || isHomePage;
   const platformTabs =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
       ? resolvedBody.platformTabs
@@ -144,6 +148,9 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
+  const titlePlatformLabels = titlePlatforms.map((platform) =>
+    getPlatformLabel(platform, currentLocale),
+  );
 
   useEffect(() => {
     if (!isMdxBody) {
@@ -165,135 +172,161 @@ export function DocsContent({
 
   return (
     <article
+      data-docs-home={isHomePage ? 'true' : undefined}
       className={cn(
         'flex min-w-0 flex-col',
         platformTabs ? 'gap-3' : 'gap-4',
         contentFillsWidth ? 'max-w-none' : 'max-w-[var(--content-max)]',
       )}
     >
-      <header
-        className={cn(
-          'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
-          platformTabs ? 'pb-0' : 'pb-4',
-        )}
-      >
-        {articleReturnLink ? (
-          <a
-            className="inline-flex min-w-0 w-fit items-center gap-1.5 rounded-md text-[13px] leading-5 font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-            href={articleReturnLink.href}
-          >
-            <ArrowLeftIcon aria-hidden="true" className="size-3.5 shrink-0" />
-            <span className="truncate">
-              {t('docs.returnToSource', { title: articleReturnLink.title })}
-            </span>
-          </a>
-        ) : null}
-        {showBreadcrumb ? (
-          <nav aria-label="Breadcrumb" className="min-w-0">
-            <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
-              {breadcrumb.map((item, index) => {
-                const isLast = index === breadcrumb.length - 1;
-
-                return (
-                  <li
-                    className="flex min-w-0 items-center gap-2"
-                    key={item.url ?? item.title}
-                  >
-                    {index > 0 ? (
-                      <span
-                        aria-hidden="true"
-                        className="text-[color:var(--line-strong)]"
-                      >
-                        /
-                      </span>
-                    ) : null}
-                    {item.url && !isLast ? (
-                      <a
-                        className="truncate transition-colors hover:text-[color:var(--ink-1)]"
-                        href={item.url}
-                      >
-                        {item.title}
-                      </a>
-                    ) : (
-                      <span
-                        aria-current={isLast ? 'page' : undefined}
-                        className={cn(
-                          'truncate',
-                          isLast && 'text-[color:var(--ink-2)]',
-                        )}
-                      >
-                        {item.title}
-                      </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-          </nav>
-        ) : null}
-        <div
+      {isHomePage ? (
+        <h1 className="sr-only">{displayTitle}</h1>
+      ) : (
+        <header
           className={cn(
-            'flex flex-col gap-3',
-            canCopyMarkdownContent && 'lg:flex-row lg:items-start lg:gap-6',
+            'flex flex-col gap-4 border-b border-[color:var(--line-soft)]',
+            platformTabs ? 'pb-0' : 'pb-4',
           )}
         >
-          <div className="min-w-0 flex-1">
-            <h1 className="max-w-4xl text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
-              {displayTitle}
-            </h1>
-            <p
-              className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
-              data-testid="docs-last-updated"
+          {articleReturnLink ? (
+            <a
+              className="inline-flex min-w-0 w-fit items-center gap-1.5 rounded-md text-[13px] leading-5 font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              href={articleReturnLink.href}
             >
-              <HistoryIcon
-                aria-hidden="true"
-                className="size-3.5 shrink-0"
-                data-testid="docs-last-updated-icon"
-              />
-              {lastUpdatedMetadata.source === 'fallback' ? (
-                <span>{t('docs.lastUpdatedUnavailable')}</span>
-              ) : (
-                <>
-                  <span>{t('docs.lastUpdated')} </span>
-                  <time dateTime={lastUpdatedMetadata.iso}>
-                    {lastUpdatedMetadata.formatted}
-                  </time>
-                </>
-              )}
-            </p>
-            {description ? (
-              <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
-                {description}
+              <ArrowLeftIcon aria-hidden="true" className="size-3.5 shrink-0" />
+              <span className="truncate">
+                {t('docs.returnToSource', { title: articleReturnLink.title })}
+              </span>
+            </a>
+          ) : null}
+          {showBreadcrumb ? (
+            <nav aria-label="Breadcrumb" className="min-w-0">
+              <ol className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-[13px] leading-5 text-[color:var(--ink-4)]">
+                {breadcrumb.map((item, index) => {
+                  const isLast = index === breadcrumb.length - 1;
+
+                  return (
+                    <li
+                      className="flex min-w-0 items-center gap-2"
+                      key={item.url ?? item.title}
+                    >
+                      {index > 0 ? (
+                        <span
+                          aria-hidden="true"
+                          className="text-[color:var(--line-strong)]"
+                        >
+                          /
+                        </span>
+                      ) : null}
+                      {item.url && !isLast ? (
+                        <a
+                          className="truncate transition-colors hover:text-[color:var(--ink-1)]"
+                          href={item.url}
+                        >
+                          {item.title}
+                        </a>
+                      ) : (
+                        <span
+                          aria-current={isLast ? 'page' : undefined}
+                          className={cn(
+                            'truncate',
+                            isLast && 'text-[color:var(--ink-2)]',
+                          )}
+                        >
+                          {item.title}
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+            </nav>
+          ) : null}
+          <div
+            className={cn(
+              'flex flex-col gap-3',
+              canCopyMarkdownContent && 'lg:flex-row lg:items-start lg:gap-6',
+            )}
+          >
+            <div className="min-w-0 flex-1">
+              <div className="flex max-w-4xl flex-wrap items-center gap-x-3 gap-y-2">
+                <h1 className="min-w-0 text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
+                  {displayTitle}
+                </h1>
+                {titlePlatformLabels.length > 0 ? (
+                  <ul
+                    aria-label={
+                      currentLocale === 'zh-CN' ? '适用平台' : 'Platforms'
+                    }
+                    className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
+                  >
+                    {titlePlatformLabels.map((label) => (
+                      <li
+                        className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
+                        key={label}
+                      >
+                        {label}
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
+              </div>
+              <p
+                className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
+                data-testid="docs-last-updated"
+              >
+                <HistoryIcon
+                  aria-hidden="true"
+                  className="size-3.5 shrink-0"
+                  data-testid="docs-last-updated-icon"
+                />
+                {lastUpdatedMetadata.source === 'fallback' ? (
+                  <span>{t('docs.lastUpdatedUnavailable')}</span>
+                ) : (
+                  <>
+                    <span>{t('docs.lastUpdated')} </span>
+                    <time dateTime={lastUpdatedMetadata.iso}>
+                      {lastUpdatedMetadata.formatted}
+                    </time>
+                  </>
+                )}
               </p>
+              {description ? (
+                <p className="mt-3 max-w-2xl text-[17.5px] leading-[1.55] text-[color:var(--ink-3)]">
+                  {description}
+                </p>
+              ) : null}
+            </div>
+            {canCopyMarkdownContent && markdownUrl ? (
+              <DocsCopyMenu
+                className="self-start lg:ml-auto lg:shrink-0 lg:translate-y-1"
+                locale={currentLocale}
+                markdownUrl={markdownUrl}
+                slug={slug ?? ''}
+                title={displayTitle ?? ''}
+              />
             ) : null}
           </div>
-          {canCopyMarkdownContent && markdownUrl ? (
-            <DocsCopyMenu
-              className="self-start lg:ml-auto lg:shrink-0 lg:translate-y-1"
+          {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
+            <DocsHeaderScopeTabs header={sidebarHeader} />
+          ) : null}
+          {platformTabs && !hidePlatformTabs ? (
+            <PlatformHeaderTabs
+              canonicalPlatform={platformTabs.canonicalPlatform}
+              className="pt-1"
+              defaultPlatform={platformTabs.defaultPlatform}
+              initialPlatform={platformTabs.initialPlatform}
               locale={currentLocale}
-              markdownUrl={markdownUrl}
-              slug={slug ?? ''}
-              title={displayTitle ?? ''}
+              platforms={platformTabs.platforms}
             />
           ) : null}
-        </div>
-        {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
-          <DocsHeaderScopeTabs header={sidebarHeader} />
-        ) : null}
-        {platformTabs && !hidePlatformTabs ? (
-          <PlatformHeaderTabs
-            canonicalPlatform={platformTabs.canonicalPlatform}
-            className="pt-1"
-            defaultPlatform={platformTabs.defaultPlatform}
-            initialPlatform={platformTabs.initialPlatform}
-            locale={currentLocale}
-            platforms={platformTabs.platforms}
-          />
-        ) : null}
-      </header>
+        </header>
+      )}
+      {isHomePage ? <IntroductionSdkDemoActions /> : null}
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
           <FumadocsOpenApiContent
+            contentPath={contentPath}
             locale={currentLocale}
             pageProps={resolvedBody.pageProps}
           />

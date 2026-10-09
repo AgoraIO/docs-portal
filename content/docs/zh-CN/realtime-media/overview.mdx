@@ -2,6 +2,10 @@
 title: 概览
 ---
 
+实时互动文档包括 RTC、消息与状态同步、媒体处理、外部流接入、设备接入和监控分析等内容。
+
+如果你要构建第一个语音或视频通话，先从[实时互动 RTC](/zh-CN/realtime-media/rtc) 开始；如果你要让用户和 AI 智能体对话，进入[对话式 AI](/zh-CN/ai)。已经确定要接入录制、转写、推流或设备能力时，再从下面的目录进入对应文档。
+
 ## 实时互动基础能力
 
 <SolutionCardGrid size="small">
@@ -43,14 +47,6 @@ title: 概览
 
 <SolutionCardGrid size="small">
   <SolutionCard
-    title="实时转录翻译"
-    href="/zh-CN/realtime-media/speech-to-text"
-    icon="transcription"
-    tone="green"
-    size="small"
-    description="为实时音频生成字幕、转写文本和多语言翻译结果。"
-  />
-  <SolutionCard
     title="云端录制"
     href="/zh-CN/realtime-media/cloud-recording"
     icon="cloud-recording"
@@ -59,12 +55,12 @@ title: 概览
     description="通过云端录制 RESTful API 录制音视频通话或直播内容，无需自行部署录制服务器。"
   />
   <SolutionCard
-    title="本地服务端录制"
-    href="/zh-CN/realtime-media/local-server-recording"
-    icon="on-premise-recording"
+    title="旁路推流"
+    href="/zh-CN/realtime-media/media-push"
+    icon="media-push"
     tone="green"
     size="small"
-    description="在 Linux 服务器部署录制 SDK，录制音视频通话或直播内容并生成本地录制文件。"
+    description="将 RTC 频道中的媒体流推送到 CDN 或外部媒体系统。"
   />
   <SolutionCard
     title="云端转码"
@@ -73,14 +69,6 @@ title: 概览
     tone="green"
     size="small"
     description="处理实时音视频流的合流、布局和输出转换。"
-  />
-  <SolutionCard
-    title="旁路推流"
-    href="/zh-CN/realtime-media/media-push"
-    icon="media-push"
-    tone="green"
-    size="small"
-    description="将 RTC 频道中的媒体流推送到 CDN 或外部媒体系统。"
   />
   <SolutionCard
     title="输入在线媒体流"
@@ -97,6 +85,22 @@ title: 概览
     tone="green"
     size="small"
     description="将基于 RTMP 的设备和系统接入声网实时频道。"
+  />
+  <SolutionCard
+    title="实时转录翻译"
+    href="/zh-CN/realtime-media/speech-to-text"
+    icon="transcription"
+    tone="green"
+    size="small"
+    description="为实时音频生成字幕、转写文本和多语言翻译结果。"
+  />
+  <SolutionCard
+    title="本地服务端录制"
+    href="/zh-CN/realtime-media/local-server-recording"
+    icon="on-premise-recording"
+    tone="green"
+    size="small"
+    description="在 Linux 服务器部署录制 SDK，录制音视频通话或直播内容并生成本地录制文件。"
   />
   <SolutionCard
     title="融合 CDN 直播"
@@ -132,6 +136,14 @@ title: 概览
     size="small"
     description="监测、回溯和分析实时互动中的用量、质量和异常数据。"
   />
+  <SolutionCard
+    title="健康看板"
+    href="/zh-CN/realtime-media/status-page"
+    icon="analytics"
+    tone="pink"
+    size="small"
+    description="查看声网产品服务状态、历史稳定性和实时互动质量数据。"
+  />
 </SolutionCardGrid>
 
 ## 扩展能力与生态
@@ -152,6 +164,14 @@ title: 概览
     tone="sand"
     size="small"
     description="在实时会话中加入共享画布、标注、文件展示和视觉协作。"
+  />
+  <SolutionCard
+    title="PPT 转码服务"
+    href="/zh-CN/realtime-media/ppt-transcoding"
+    icon="tools"
+    tone="sand"
+    size="small"
+    description="将课件和文档转换为可展示、可播放的静态图片或动态网页。"
   />
   <SolutionCard
     title="内容审核"

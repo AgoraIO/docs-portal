@@ -8,6 +8,7 @@ WORKDIR /app
 RUN npm install -g bun@1.3.12
 
 COPY package.json bun.lock ./
+COPY patches ./patches
 RUN bun install --frozen-lockfile --ignore-scripts
 
 FROM dependencies AS builder

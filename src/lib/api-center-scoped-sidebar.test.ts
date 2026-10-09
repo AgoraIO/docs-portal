@@ -50,6 +50,21 @@ async function loadReferencePayload(slugs: string[]) {
 }
 
 describe('API Center scoped sidebars', () => {
+  it.each([
+    [['conversational-ai', 'android', 'overview'], '/zh-CN/ai'],
+    [['conversational-ai', 'android', 'enum'], '/zh-CN/ai'],
+    [['rtc', 'android', 'rtc-api-overview'], '/zh-CN/realtime-media/rtc'],
+    [['api-ref', 'console'], '/zh-CN/introduction/quickstart'],
+  ])(
+    'adds the ordinary docs destination for %s',
+    async (route, expectedHref) => {
+      const payload = await loadApiReferencePayload(route);
+
+      expect(payload.sidebarHeader).toMatchObject({
+        productDocsHref: expectedHref,
+      });
+    },
+  );
   it('places API Reference between Solutions and Reference in the zh-CN tabs', async () => {
     const payload = await loadApiReferencePayload(['api']);
 
@@ -232,6 +247,23 @@ describe('API Center scoped sidebars', () => {
     expect(titles).not.toEqual(
       expect.arrayContaining(['文档指引', '产品介绍', '快速开始', '功能指南']),
     );
+    expect(payload.sidebarHeader).toMatchObject({
+      backHref: '/zh-CN/api-reference/api',
+      backLabel: 'API 参考',
+      title: 'RESTful API',
+    });
+  });
+
+  it('keeps the Meeting RESTful API endpoints together in the API sidebar', async () => {
+    const payload = await loadApiReferencePayload([
+      'meeting',
+      'restful',
+      'api',
+      'create-room',
+    ]);
+    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+
+    expect(titles).toEqual(['服务端 API', '创建房间', '查询录制列表']);
     expect(payload.sidebarHeader).toMatchObject({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',

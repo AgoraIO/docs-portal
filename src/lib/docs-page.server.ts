@@ -4,10 +4,14 @@ import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
+import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
 import type { DocsMeta } from './docs-meta-schema';
-import { resolveMovedDocsRedirect } from './docs-moved-redirects';
+import {
+  isPermanentMovedDocsRedirect,
+  resolveMovedDocsRedirect,
+} from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
   type DocsSidebarHeader,
@@ -45,6 +49,7 @@ import {
   isOpenApiTab,
   type OpenApiLane,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRootRedirect,
   resolveOpenApiLaneRoute,
 } from './openapi/lanes';
 import { getOpenApiMarkdownPages } from './openapi/markdown';
@@ -60,9 +65,14 @@ import {
 import {
   buildCanonicalPlatformTocText,
   buildPlatformMarkdownText,
+  extractStructuredPlatformKeys,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
-import type { PlatformKey } from './platforms/registry';
+import {
+  isKnownPlatform,
+  normalizePlatformKey,
+  type PlatformKey,
+} from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
@@ -71,7 +81,11 @@ import {
   getPageMarkdownUrl,
   type PageWithSource,
 } from './source.server';
-import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
+import {
+  resolveZhCnProductIaRedirect,
+  ZH_CN_PRODUCT_IA_REDIRECTS,
+  ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+} from './zh-cn-product-ia-redirects';
 
 const OPENAPI_TAB = 'api-reference';
 const ZH_CN_RTM_REST_API_PARENT_URL = '/zh-CN/api-reference/api-ref/signaling';
@@ -86,6 +100,17 @@ const ZH_CN_RTM_REST_API_BACK_LINK = {
   backHref: '/zh-CN/realtime-media/rtm',
   backLabel: '实时消息 RTM',
 };
+const ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES = [
+  '/zh-CN/realtime-media/rtm/build/rtm-initialization/',
+  '/zh-CN/realtime-media/rtm/build/authentication-and-connection/',
+  '/zh-CN/realtime-media/rtm/build/channels-and-topics/',
+  '/zh-CN/realtime-media/rtm/build/messaging/',
+  '/zh-CN/realtime-media/rtm/build/message-design-and-history/',
+  '/zh-CN/realtime-media/rtm/build/state-and-attributes/',
+  '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/',
+] as const;
+const ZH_CN_RTM_TROUBLESHOOTING_REDIRECT =
+  '/zh-CN/realtime-media/rtm/build/troubleshooting';
 const DEVICE_KIT_PATH_ENTRY_SLUG = 'quickstart-device-kit';
 const CONVERSATIONAL_AI_PATH_ENTRY_SLUG = 'quickstart-coding';
 const RECIPES_PATH_ENTRY_SLUG = 'voice-ai-recipes';
@@ -95,8 +120,28 @@ const ZH_CN_SHARED_CONCEPT_SLUGS = new Set([
   'mcp-integrate',
   'skills-integrate',
 ]);
+const TITLE_PLATFORM_SEGMENT_MAP = new Map<string, PlatformKey>([
+  ['agent-go', 'go'],
+  ['agent-python', 'python'],
+  ['agent-typescript', 'typescript'],
+  ['cpp-all-platforms', 'cpp'],
+  ['csharp-windows', 'csharp'],
+  ['go-api', 'go'],
+  ['java-api', 'java'],
+  ['python-api', 'python'],
+  ['react-sdk', 'react'],
+  ['restclient-go', 'go'],
+  ['restclient-java', 'java'],
+  ['unreal-blueprint', 'blueprint'],
+  ['unreal-cpp', 'unreal'],
+]);
+const TITLE_PLATFORM_EXCLUDED_KEYS = new Set<PlatformKey>([
+  'restful',
+  'restful-api',
+]);
 
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
+type ZhCnRtcRestSidebarLink = readonly [string, string];
 
 const LEGACY_CONVERSATIONAL_AI_AGENT_ROUTE_LEAVES: Record<string, string> = {
   history: 'history',
@@ -126,11 +171,25 @@ const LEGACY_BEST_PRACTICES_REDIRECTS: Record<
     'zh-CN': '/zh-CN/ai/best-practices/regional-restrictions',
   },
   'http-basic-auth': {
-    'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
+    'zh-CN': '/zh-CN/ai/build/http-basic-auth',
   },
   'release-notes': {
     'zh-CN': '/zh-CN/ai/release-notes',
   },
+};
+
+const ZH_CN_DELETED_API_REFERENCE_REDIRECTS: Record<string, string> = {
+  'api-ref/conversational-ai/authentication': '/zh-CN/ai/build/http-basic-auth',
+  'api-ref/cloud-recording/authentication':
+    '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
+  'api-ref/media-pull/restful-authentication':
+    '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+  'api-ref/media-push/restful-authentication':
+    '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
+  'api-ref/rtc/authentication':
+    '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+  'api-ref/voip-callkit/authentication':
+    '/zh-CN/solutions/voip-call/build/http-basic-auth',
 };
 
 const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
@@ -260,7 +319,7 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
   'rtm/toc-message/publish': '/zh-CN/api-reference/api-ref/signaling/publish',
   'rtm/toc-message/receive': '/zh-CN/api-reference/api-ref/signaling/receive',
   'rtm/toc-message/response-code':
-    '/zh-CN/realtime-media/rtm/reference/response-code',
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
   'rtm/toc-presence/presence': '/zh-CN/api-reference/rtm/android/presence',
   'rtm/toc-storage/storage': '/zh-CN/api-reference/rtm/android/storage',
   'rtm/toc-token/token': '/zh-CN/api-reference/rtm/android/token',
@@ -269,9 +328,9 @@ const ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS: Record<string, string> = {
   'api-ref/signaling/index': '/zh-CN/api-reference/api-ref/signaling/publish',
   'api-ref/signaling/restful': '/zh-CN/api-reference/api-ref/signaling/publish',
   'api-ref/signaling/response-code':
-    '/zh-CN/realtime-media/rtm/reference/response-code',
+    '/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/response-code',
   'api-ref/ppt-conversion-service/status-codes':
-    '/zh-CN/solutions/ppt-transcoding/reference/response-code',
+    '/zh-CN/realtime-media/ppt-transcoding/reference/response-code',
   'api-ref/whiteboard': '/zh-CN/api-reference/api-ref/whiteboard/restful',
   'api-ref/fastboard/android/fastboard-api':
     '/zh-CN/api-reference/whiteboard/fastboard/android',
@@ -436,6 +495,9 @@ export async function loadDocsPagePayload(
         locale,
         movedDocsRedirect,
       ),
+      ...(isPermanentMovedDocsRedirect(locale, tab, slugSegments)
+        ? { statusCode: 301 as const }
+        : {}),
     };
   }
 
@@ -505,6 +567,17 @@ export async function loadDocsPagePayload(
     };
   }
 
+  const deletedApiReferenceRedirect = resolveDeletedZhCnApiReferenceRedirect(
+    locale,
+    tab,
+    slugSegments,
+  );
+  if (deletedApiReferenceRedirect) {
+    return {
+      redirectUrl: deletedApiReferenceRedirect,
+    };
+  }
+
   const sharedConceptRedirect = resolveZhCnSharedConceptRedirect(
     locale,
     tab,
@@ -522,9 +595,19 @@ export async function loadDocsPagePayload(
     slugSegments,
   );
   if (zhCnProductIaRedirect) {
-    return {
-      redirectUrl: zhCnProductIaRedirect,
-    };
+    const path = `${tab}/${slugSegments.join('/')}`;
+    const statusCode: 301 | undefined =
+      path in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS ||
+      path in ZH_CN_PRODUCT_IA_REDIRECTS ||
+      isZhCnRtmBuildIaRedirect(zhCnProductIaRedirect)
+        ? 301
+        : undefined;
+
+    if (statusCode === undefined) {
+      return { redirectUrl: zhCnProductIaRedirect };
+    }
+
+    return { redirectUrl: zhCnProductIaRedirect, statusCode };
   }
 
   const realtimeMediaApiReferenceRedirect =
@@ -622,6 +705,18 @@ export async function loadDocsPagePayload(
   }
 
   if (!page) {
+    const supportedLocale = toSupportedLocale(locale);
+    const openApiLaneRootRedirect =
+      supportedLocale && isOpenApiTab(tab)
+        ? resolveOpenApiLaneRootRedirect(supportedLocale, tab, slugSegments)
+        : null;
+
+    if (openApiLaneRootRedirect) {
+      return {
+        redirectUrl: openApiLaneRootRedirect,
+      };
+    }
+
     const pageTree = getCanonicalPageTree(source, locale);
     const fallbackUrl = getFirstChildPageUrl(pageTree, tab, slugSegments);
 
@@ -788,6 +883,12 @@ export async function loadDocsPagePayload(
       ]),
     ),
   );
+  const titlePlatforms = getTitlePlatforms({
+    locale,
+    page,
+    processedText,
+    requestedPlatform,
+  });
 
   const apiPayload = {
     activePath: page.url,
@@ -854,6 +955,7 @@ export async function loadDocsPagePayload(
     slug: page.slugs.at(-1),
     tabs: getTabSummaries(pageTree),
     title: page.data.title,
+    ...(titlePlatforms.length > 0 ? { titlePlatforms } : {}),
     toc,
   };
 
@@ -878,6 +980,82 @@ export async function loadDocsPagePayload(
         sidebarHeader: productSidebarPayload.sidebarHeader,
       }
     : apiPayload;
+}
+
+function getTitlePlatforms({
+  locale,
+  page,
+  processedText,
+  requestedPlatform,
+}: {
+  locale: string;
+  page: PageWithSource;
+  processedText: string;
+  requestedPlatform?: PlatformKey;
+}): PlatformKey[] {
+  if (locale !== 'zh-CN') {
+    return [];
+  }
+
+  const explicitTitlePlatforms = getExplicitTitlePlatforms(page);
+
+  if (explicitTitlePlatforms.length > 0) {
+    return explicitTitlePlatforms;
+  }
+
+  if (requestedPlatform) {
+    return [requestedPlatform];
+  }
+
+  const structuredPlatforms = extractStructuredPlatformKeys(processedText);
+
+  if (structuredPlatforms.length === 1) {
+    return structuredPlatforms;
+  }
+
+  return getPathTitlePlatforms(page);
+}
+
+function getExplicitTitlePlatforms(page: PageWithSource): PlatformKey[] {
+  if (
+    !('titlePlatforms' in page.data) ||
+    !Array.isArray(page.data.titlePlatforms)
+  ) {
+    return [];
+  }
+
+  return page.data.titlePlatforms
+    .map((platform) => normalizePlatformKey(platform))
+    .filter(isKnownPlatform);
+}
+
+function getPathTitlePlatforms(page: PageWithSource): PlatformKey[] {
+  const platforms: PlatformKey[] = [];
+
+  for (const segment of page.slugs.slice(2)) {
+    const mappedPlatform = TITLE_PLATFORM_SEGMENT_MAP.get(segment);
+    const platform = mappedPlatform ?? normalizePlatformSlugSegment(segment);
+
+    if (
+      platform &&
+      !TITLE_PLATFORM_EXCLUDED_KEYS.has(platform) &&
+      !platforms.includes(platform)
+    ) {
+      platforms.push(platform);
+    }
+  }
+
+  return platforms.length === 1 ? platforms : [];
+}
+
+function normalizePlatformSlugSegment(
+  segment: string,
+): PlatformKey | undefined {
+  const normalizedSegment = normalizePlatformKey(segment);
+
+  return isKnownPlatform(normalizedSegment)
+    ? (normalizedSegment as PlatformKey)
+    : undefined;
 }
 
 function canonicalizeZhCnProductIaRedirectUrl(
@@ -987,6 +1165,18 @@ function resolveLegacyBestPracticesRedirect(
     LEGACY_BEST_PRACTICES_REDIRECTS[slug]?.[supportedLocale] ?? null;
 
   return redirect;
+}
+
+function resolveDeletedZhCnApiReferenceRedirect(
+  locale: string,
+  tab: string,
+  slugSegments: string[],
+) {
+  if (locale !== 'zh-CN' || tab !== 'api-reference') {
+    return null;
+  }
+
+  return ZH_CN_DELETED_API_REFERENCE_REDIRECTS[slugSegments.join('/')] ?? null;
 }
 
 function resolveZhCnSharedConceptRedirect(
@@ -1291,7 +1481,9 @@ function resolveLegacyConversationalAiRestRedirect(
   }
 
   if (normalizedPath === `${prefix}/authentication`) {
-    return `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
+    return locale === 'zh-CN'
+      ? '/zh-CN/ai/build/http-basic-auth'
+      : `/${locale}/api-reference/api-ref/conversational-ai/authentication`;
   }
 
   if (normalizedPath === `${prefix}/status-codes`) {
@@ -1409,12 +1601,25 @@ export function resolveLegacySitemapRedirect(
   const legacyPath = `/${[locale, tab, ...slugSegments].join('/')}`;
   const rule = resolveLegacySitemapRedirectPath(legacyPath, search);
 
-  return rule
-    ? {
-        preserveSearch: rule.preserveSearch,
-        redirectUrl: rule.target,
-      }
+  if (!rule) {
+    return null;
+  }
+
+  const zhCnProductPath = legacyPath.startsWith('/zh-CN/')
+    ? legacyPath.slice('/zh-CN/'.length)
     : null;
+
+  if (
+    zhCnProductPath &&
+    zhCnProductPath in ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS
+  ) {
+    return { redirectUrl: rule.target, statusCode: 301 as const };
+  }
+
+  return {
+    preserveSearch: rule.preserveSearch,
+    redirectUrl: rule.target,
+  };
 }
 
 function resolveRealtimeMediaRedirect(
@@ -1477,6 +1682,15 @@ function resolveRealtimeMediaRedirect(
   };
 
   return redirects[normalizedPath] ?? null;
+}
+
+function isZhCnRtmBuildIaRedirect(redirectUrl: string) {
+  return (
+    redirectUrl === ZH_CN_RTM_TROUBLESHOOTING_REDIRECT ||
+    ZH_CN_RTM_BUILD_IA_REDIRECT_PREFIXES.some((prefix) =>
+      redirectUrl.startsWith(prefix),
+    )
+  );
 }
 
 function resolveRealtimeMediaApiReferenceRedirect(
@@ -1712,6 +1926,7 @@ export type DocsPagePayload = Exclude<
 export type DocsRedirectPayload = {
   preserveSearch?: boolean;
   redirectUrl: string;
+  statusCode?: 301 | 307 | 308;
 };
 
 async function readProcessedText(page: PageWithSource) {
@@ -1841,6 +2056,11 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
+  const productSidebarPath = getZhCnProductSidebarPath(
+    activePath ?? pageUrl,
+    tab,
+  );
+
   if (tab === 'ai') {
     const aiNodes = getNavScopeSidebarNodes({
       getNodeMeta: (node) =>
@@ -1860,7 +2080,7 @@ async function getDocsSidebarNodes({
 
     return embedZhCnServiceApiSidebars(
       buildAiProductSidebar(aiNodes, apiReferenceNodes),
-      activePath ?? pageUrl,
+      productSidebarPath,
       locale,
       pageTree,
       source,
@@ -1885,7 +2105,7 @@ async function getDocsSidebarNodes({
         tab,
         activePath,
       }),
-      activePath ?? pageUrl,
+      productSidebarPath,
       locale,
       pageTree,
       source,
@@ -1964,14 +2184,18 @@ async function getDocsSidebarNodes({
     );
 
   if (!isOpenApiTab(tab) || !locale) {
-    return embedZhCnServiceApiSidebars(
+    const embeddedSidebar = await embedZhCnServiceApiSidebars(
       sidebarWithRealtimeMediaApiReference,
-      activePath ?? pageUrl,
+      productSidebarPath,
       locale,
       pageTree,
       source,
       tab,
     );
+
+    return locale
+      ? markZhCnProductApiReferenceLinks(embeddedSidebar, locale)
+      : embeddedSidebar;
   }
 
   const openApiSidebar = await addOpenApiEndpointSidebarItems(
@@ -1980,11 +2204,35 @@ async function getDocsSidebarNodes({
     tab,
   );
 
-  if (isRecipesPath(activePath)) {
-    return restoreRecipesSidebarSections(openApiSidebar);
+  const restoredOpenApiSidebar = isRecipesPath(activePath)
+    ? restoreRecipesSidebarSections(openApiSidebar)
+    : openApiSidebar;
+
+  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+}
+
+function getZhCnProductSidebarPath(
+  path: string | undefined,
+  tab: string,
+): string | undefined {
+  if (!path || !path.startsWith('/zh-CN/')) {
+    return path;
   }
 
-  return openApiSidebar;
+  const [, pathTab, productSlug] = path.split('/').filter(Boolean);
+  if (pathTab !== tab || !['ai', 'realtime-media', 'solutions'].includes(tab)) {
+    return path;
+  }
+
+  if (tab === 'ai') {
+    return '/zh-CN/ai';
+  }
+
+  if (productSlug && productSlug !== 'overview') {
+    return `/zh-CN/${tab}/${productSlug}`;
+  }
+
+  return path;
 }
 
 async function getProductSidebarContextPayload({
@@ -2045,42 +2293,69 @@ async function getProductSidebarContextPayload({
 
   return {
     activeTab: context.tab,
-    sidebar: revealActiveSidebarPath(sidebar, activePath),
+    sidebar: revealActiveSidebarPath(
+      sidebar,
+      activePath,
+      context.pathname,
+      context.sidebarScope,
+    ),
     sidebarHeader,
   };
 }
 
-function revealActiveSidebarPath(
+export function revealActiveSidebarPath(
   nodes: DocsSidebarNode[],
   activePath: string,
+  productPath?: string,
+  productScope?: string,
 ): DocsSidebarNode[] {
   return nodes.map((node) => {
     if (node.type === 'page') {
       return node;
     }
 
-    const children = revealActiveSidebarPath(node.children, activePath);
-    const containsActivePath = children.some((child) =>
-      sidebarNodeContainsPath(child, activePath),
+    const children = revealActiveSidebarPath(
+      node.children,
+      activePath,
+      productPath,
+      productScope,
     );
+    const containsActivePath = children.some((child) =>
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
+    );
+    const containsUnscopedActivePath =
+      productScope !== undefined &&
+      children.some((child) =>
+        sidebarNodeContainsPath(child, activePath, productPath),
+      );
 
     return containsActivePath
       ? { ...node, children, defaultOpen: true }
-      : { ...node, children };
+      : containsUnscopedActivePath
+        ? { ...node, children, defaultOpen: false }
+        : { ...node, children };
   });
 }
 
 function sidebarNodeContainsPath(
   node: DocsSidebarNode,
   activePath: string,
+  productPath?: string,
+  productScope?: string,
 ): boolean {
   if (node.type === 'page') {
-    return node.url === activePath;
+    return (
+      node.url === activePath &&
+      (productPath === undefined || node.search?.from === productPath) &&
+      (productScope === undefined || node.search?.fromScope === productScope)
+    );
   }
 
   return (
     node.url === activePath ||
-    node.children.some((child) => sidebarNodeContainsPath(child, activePath))
+    node.children.some((child) =>
+      sidebarNodeContainsPath(child, activePath, productPath, productScope),
+    )
   );
 }
 
@@ -2162,9 +2437,41 @@ async function getApiReferenceSidebarNodes({
     tab,
   );
 
-  return isRecipesPath(activePath)
+  const restoredOpenApiSidebar = isRecipesPath(activePath)
     ? restoreRecipesSidebarSections(openApiSidebar)
     : openApiSidebar;
+
+  return markZhCnProductApiReferenceLinks(restoredOpenApiSidebar, locale);
+}
+
+function markZhCnProductApiReferenceLinks(
+  nodes: DocsSidebarNode[],
+  locale: AppLocale,
+): DocsSidebarNode[] {
+  if (locale !== 'zh-CN') {
+    return nodes;
+  }
+
+  return nodes.map((node) => {
+    if (node.type === 'page') {
+      return shouldMarkZhCnClientApiReferenceLink(node)
+        ? { ...node, linked: true }
+        : node;
+    }
+
+    return {
+      ...node,
+      children: markZhCnProductApiReferenceLinks(node.children, locale),
+    };
+  });
+}
+
+function shouldMarkZhCnClientApiReferenceLink(
+  node: DocsSidebarPageNode,
+): boolean {
+  const [pathname] = node.url.split('?');
+
+  return node.title === '客户端 API' && pathname === '/zh-CN/api-reference/api';
 }
 
 function findApiNavScopeByPageUrl({
@@ -2257,13 +2564,77 @@ const ZH_CN_SERVICE_API_ENTRY_TITLES = new Set([
   '设备端 API',
   '操控端 API',
 ]);
+const ZH_CN_SINGLE_PAGE_SERVICE_API_ENTRY_TITLES = new Set([
+  '设备端 API',
+  '操控端 API',
+]);
 const ZH_CN_RTM_EMBEDDED_API_PREFIX = '/zh-CN/api-reference/api-ref/signaling/';
 const ZH_CN_RTMP_GATEWAY_API_ENTRY_URL =
   '/zh-CN/api-reference/api-ref/rtmp-gateway';
 const ZH_CN_RTMP_GATEWAY_API_LANDING_URL =
   '/zh-CN/api-reference/api-ref/rtmp-gateway/restful';
+const ZH_CN_RTC_REST_API_ENTRY_URL = '/zh-CN/api-reference/api-ref/rtc';
 const ZH_CN_WHITEBOARD_API_ENTRY_URL =
   '/zh-CN/api-reference/api-ref/whiteboard/restful';
+const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
+  id: string;
+  links: readonly ZhCnRtcRestSidebarLink[];
+  title: string;
+}[] = [
+  {
+    id: 'zh-cn-rtc-rest-guides',
+    links: [
+      [
+        '调用 RESTful API',
+        '/zh-CN/api-reference/rtc/restful/user-guides/call-api',
+      ],
+      [
+        'HTTP 基本认证',
+        '/zh-CN/api-reference/rtc/restful/user-guides/http-basic-auth',
+      ],
+      [
+        '管理频道和用户',
+        '/zh-CN/api-reference/rtc/restful/user-guides/channel-management',
+      ],
+      [
+        '封禁用户权限',
+        '/zh-CN/api-reference/rtc/restful/user-guides/user-privilege',
+      ],
+    ],
+    title: '接入指南',
+  },
+  {
+    id: 'zh-cn-rtc-rest-webhook',
+    links: [
+      [
+        '接收 Webhook 事件',
+        '/zh-CN/api-reference/rtc/restful/webhook/receive-webhook',
+      ],
+      ['频道事件类型', '/zh-CN/api-reference/rtc/restful/webhook/events'],
+    ],
+    title: 'Webhook',
+  },
+  {
+    id: 'zh-cn-rtc-rest-best-practice',
+    links: [
+      [
+        '维护用户在线状态',
+        '/zh-CN/api-reference/rtc/restful/best-practice/online-user-status',
+      ],
+      [
+        'REST 服务高可用',
+        '/zh-CN/api-reference/rtc/restful/best-practice/rest-availability',
+      ],
+    ],
+    title: '最佳实践',
+  },
+];
+const ZH_CN_RTC_REST_REFERENCE_LINKS: readonly ZhCnRtcRestSidebarLink[] = [
+  [
+    '响应状态码',
+    '/zh-CN/api-reference/rtc/restful/reference/response-code',
+  ],
+];
 
 async function embedZhCnServiceApiSidebars(
   nodes: DocsSidebarNode[],
@@ -2272,6 +2643,7 @@ async function embedZhCnServiceApiSidebars(
   pageTree: ReturnType<typeof docsSource.getPageTree>,
   source: typeof docsSource,
   tab: string,
+  sourcePath?: string,
 ): Promise<DocsSidebarNode[]> {
   if (
     locale !== 'zh-CN' ||
@@ -2289,6 +2661,16 @@ async function embedZhCnServiceApiSidebars(
           !node.url.startsWith('/zh-CN/api-reference/')
         ) {
           return node;
+        }
+
+        if (ZH_CN_SINGLE_PAGE_SERVICE_API_ENTRY_TITLES.has(node.title)) {
+          return {
+            ...node,
+            search: {
+              ...node.search,
+              from: productPath,
+            },
+          };
         }
 
         const apiSidebar = await getApiReferenceSidebarNodes({
@@ -2315,6 +2697,7 @@ async function embedZhCnServiceApiSidebars(
           children: addProductContextToApiSidebarNodes(
             normalizedApiSidebar,
             productPath,
+            tab === 'ai' ? undefined : sourcePath,
           ),
           collapsible: true,
           defaultOpen: false,
@@ -2323,6 +2706,9 @@ async function embedZhCnServiceApiSidebars(
           type: 'section' as const,
         };
       }
+
+      const resolvedSourcePath =
+        sourcePath ?? getEmbeddedSidebarSourcePath(node, productPath);
 
       return {
         ...node,
@@ -2333,6 +2719,7 @@ async function embedZhCnServiceApiSidebars(
           pageTree,
           source,
           tab,
+          resolvedSourcePath,
         ),
       };
     }),
@@ -2346,6 +2733,10 @@ export function normalizeZhCnEmbeddedApiSidebar(
   const flattened = apiEntryUrl.startsWith(ZH_CN_RTM_EMBEDDED_API_PREFIX)
     ? flattenSidebarSectionByTitle(nodes, 'RESTful API')
     : nodes;
+  const withGuideLinks =
+    apiEntryUrl === ZH_CN_RTC_REST_API_ENTRY_URL
+      ? groupZhCnRtcRestSidebarNodes(flattened)
+      : flattened;
 
   const landingUrl =
     apiEntryUrl === ZH_CN_RTMP_GATEWAY_API_ENTRY_URL
@@ -2354,7 +2745,115 @@ export function normalizeZhCnEmbeddedApiSidebar(
         ? ZH_CN_WHITEBOARD_API_ENTRY_URL
         : null;
 
-  return landingUrl ? removeSidebarPageByUrl(flattened, landingUrl) : flattened;
+  return landingUrl
+    ? removeSidebarPageByUrl(withGuideLinks, landingUrl)
+    : withGuideLinks;
+}
+
+function getZhCnRtcRestGuideSidebarNodes(): DocsSidebarPageNode[] {
+  const links: ZhCnRtcRestSidebarLink[] = [];
+
+  for (const group of ZH_CN_RTC_REST_SIDEBAR_GROUPS) {
+    links.push(...group.links);
+  }
+
+  links.push(...ZH_CN_RTC_REST_REFERENCE_LINKS);
+
+  return links.map(([title, url]) => ({
+    id: url,
+    title,
+    type: 'page',
+    url,
+  }));
+}
+
+function groupZhCnRtcRestSidebarNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarNode[] {
+  const existingPages = new Map(
+    flattenSidebarPageNodes(nodes).map((node) => [node.url, node]),
+  );
+  const groupedUrls = new Set(
+    getZhCnRtcRestGuideSidebarNodes().map((node) => node.url),
+  );
+  const endpointPages = flattenSidebarPageNodes(nodes).filter(
+    (node) => !groupedUrls.has(node.url),
+  );
+  const interfaceChildren = [
+    ...endpointPages,
+    ...ZH_CN_RTC_REST_REFERENCE_LINKS.map((link) =>
+      createZhCnRtcRestSidebarPage(link, existingPages),
+    ),
+  ];
+
+  return [
+    ...ZH_CN_RTC_REST_SIDEBAR_GROUPS.map((group) => ({
+      children: group.links.map((link) =>
+        createZhCnRtcRestSidebarPage(link, existingPages),
+      ),
+      collapsible: true,
+      defaultOpen: false,
+      id: group.id,
+      title: group.title,
+      type: 'section' as const,
+    })),
+    {
+      children: dedupeSidebarPagesByUrl(interfaceChildren),
+      collapsible: true,
+      defaultOpen: true,
+      id: 'zh-cn-rtc-rest-api-reference',
+      title: '接口参考',
+      type: 'section' as const,
+    },
+  ].filter((node) => node.children.length > 0);
+}
+
+function createZhCnRtcRestSidebarPage(
+  [title, url]: readonly [string, string],
+  existingPages: Map<string, DocsSidebarPageNode>,
+): DocsSidebarPageNode {
+  return {
+    ...existingPages.get(url),
+    id: url,
+    title,
+    type: 'page',
+    url,
+  };
+}
+
+function flattenSidebarPageNodes(
+  nodes: DocsSidebarNode[],
+): DocsSidebarPageNode[] {
+  return nodes.flatMap((node) =>
+    node.type === 'page' ? [node] : flattenSidebarPageNodes(node.children),
+  );
+}
+
+function dedupeSidebarPagesByUrl(
+  nodes: DocsSidebarPageNode[],
+): DocsSidebarPageNode[] {
+  const seen = new Set<string>();
+
+  return nodes.filter((node) => {
+    if (seen.has(node.url)) {
+      return false;
+    }
+
+    seen.add(node.url);
+    return true;
+  });
+}
+
+function prependMissingSidebarNodes(
+  nodes: DocsSidebarNode[],
+  leadingNodes: DocsSidebarPageNode[],
+): DocsSidebarNode[] {
+  const existingUrls = collectSidebarPageUrls(nodes);
+
+  return [
+    ...leadingNodes.filter((node) => !existingUrls.has(node.url)),
+    ...nodes,
+  ];
 }
 
 function flattenSidebarSectionByTitle(
@@ -2400,6 +2899,7 @@ function removeSidebarPageByUrl(
 function addProductContextToApiSidebarNodes(
   nodes: DocsSidebarNode[],
   productPath: string,
+  sourcePath?: string,
 ): DocsSidebarNode[] {
   return nodes.map((node) =>
     node.type === 'page'
@@ -2408,6 +2908,7 @@ function addProductContextToApiSidebarNodes(
           search: {
             ...node.search,
             from: productPath,
+            ...(sourcePath ? { fromScope: sourcePath } : {}),
           },
         }
       : {
@@ -2415,9 +2916,51 @@ function addProductContextToApiSidebarNodes(
           children: addProductContextToApiSidebarNodes(
             node.children,
             productPath,
+            sourcePath,
           ),
         },
   );
+}
+
+function getEmbeddedSidebarSourcePath(
+  node: DocsSidebarNode,
+  productPath: string,
+): string | undefined {
+  const firstPageUrl = getFirstSidebarPageUrl(node);
+  if (!firstPageUrl) {
+    return undefined;
+  }
+
+  if (firstPageUrl === productPath) {
+    return productPath;
+  }
+
+  if (!firstPageUrl.startsWith(`${productPath}/`)) {
+    return undefined;
+  }
+
+  const firstProductSegment = firstPageUrl
+    .slice(productPath.length + 1)
+    .split('/')[0];
+
+  return firstProductSegment
+    ? `${productPath}/${firstProductSegment}`
+    : undefined;
+}
+
+function getFirstSidebarPageUrl(node: DocsSidebarNode): string | undefined {
+  if (node.type === 'page') {
+    return node.url;
+  }
+
+  for (const child of node.children) {
+    const url = getFirstSidebarPageUrl(child);
+    if (url) {
+      return url;
+    }
+  }
+
+  return undefined;
 }
 
 function getLocaleSourcePageUrls(source: typeof docsSource, locale: AppLocale) {
@@ -2690,38 +3233,90 @@ function addRealtimeMediaApiReferenceSidebarItem(
       ])
     : new Set<string>();
 
-  return nodes.map((node) => {
-    if (node.type !== 'section') {
-      return node;
-    }
+  if (restApiLink) {
+    return nodes.map((node) => {
+      if (node.type !== 'section') {
+        return node;
+      }
 
-    if (
-      isProductReferenceSectionTitle(node.title, restApiLink?.locale ?? 'zh-CN')
-    ) {
+      if (isProductReferenceSectionTitle(node.title, restApiLink.locale)) {
+        return {
+          ...node,
+          children: [
+            ...(clientApiPageNode ? [clientApiPageNode] : []),
+            ...(restApiPageNode ? [restApiPageNode] : []),
+            ...filterSidebarNodes(
+              node.children,
+              (child) =>
+                child.type !== 'page' ||
+                (child.title !== '客户端 API' &&
+                  !existingRestApiUrls.has(child.url)),
+            ),
+          ],
+        };
+      }
+
       return {
         ...node,
-        children: [
-          ...(clientApiPageNode ? [clientApiPageNode] : []),
-          ...(restApiPageNode ? [restApiPageNode] : []),
-          ...filterSidebarNodes(
-            node.children,
-            (child) =>
-              child.type !== 'page' ||
-              (child.title !== '客户端 API' &&
-                !existingRestApiUrls.has(child.url)),
-          ),
-        ],
+        children: addRealtimeMediaApiReferenceSidebarItem(
+          node.children,
+          activePath,
+        ),
       };
-    }
+    });
+  }
 
-    return {
-      ...node,
-      children: addRealtimeMediaApiReferenceSidebarItem(
-        node.children,
-        activePath,
-      ),
-    };
-  });
+  const insertApiNodes = (children: DocsSidebarNode[]) => {
+    const filteredChildren = filterSidebarNodes(
+      children,
+      (child) =>
+        child.type !== 'page' ||
+        (child.title !== '客户端 API' && !existingRestApiUrls.has(child.url)),
+    );
+    const apiNodes = [clientApiPageNode, restApiPageNode].filter(
+      (node): node is DocsSidebarPageNode => node !== null,
+    );
+    const lastDownloadIndex = filteredChildren.reduce(
+      (lastIndex, child, index) =>
+        child.type === 'page' && child.title === '下载' ? index : lastIndex,
+      -1,
+    );
+    const insertionIndex = lastDownloadIndex + 1;
+
+    return [
+      ...filteredChildren.slice(0, insertionIndex),
+      ...apiNodes,
+      ...filteredChildren.slice(insertionIndex),
+    ];
+  };
+
+  const visit = (
+    currentNodes: DocsSidebarNode[],
+  ): { inserted: boolean; nodes: DocsSidebarNode[] } => {
+    let inserted = false;
+    const nextNodes = currentNodes.map((node) => {
+      if (node.type !== 'section') {
+        return node;
+      }
+
+      const visitedChildren = visit(node.children);
+      if (visitedChildren.inserted) {
+        inserted = true;
+        return { ...node, children: visitedChildren.nodes };
+      }
+
+      if (isProductReferenceSectionTitle(node.title, 'zh-CN')) {
+        inserted = true;
+        return { ...node, children: insertApiNodes(visitedChildren.nodes) };
+      }
+
+      return { ...node, children: visitedChildren.nodes };
+    });
+
+    return { inserted, nodes: nextNodes };
+  };
+
+  return visit(nodes).nodes;
 }
 
 function getProductClientApiReferenceLink(
@@ -3146,7 +3741,9 @@ function addAiApiReferenceSidebarItems(
   const existingUrls = new Set([
     ...(restApiPage ? [restApiUrl] : []),
     `/${locale}/ai/reference/restful-api`,
-    `/${locale}/api-reference/api-ref/conversational-ai/authentication`,
+    ...(locale === 'zh-CN'
+      ? []
+      : [`/${locale}/api-reference/api-ref/conversational-ai/authentication`]),
     `/${locale}/api-reference/conversational-ai/rest-api`,
     `/${locale}/api-reference/conversational-ai/rest-api/authentication`,
   ]);
@@ -3471,16 +4068,22 @@ function resolveDocsSidebarHeader({
         ...sidebarBackLink,
       }
     : navScope.header;
+  const headerWithProductDocs = addProductDocsHref(
+    baseHeader,
+    activePath,
+    locale,
+    tab,
+  );
 
   if (hidePlatformTabs) {
     return {
-      ...baseHeader,
+      ...headerWithProductDocs,
       versionSwitcher: undefined,
     };
   }
 
   if (!shouldUseSharedPlatformSidebar(tab, activePath)) {
-    return baseHeader;
+    return headerWithProductDocs;
   }
 
   const versionLinks = getNavScopeVersionLinks({
@@ -3496,13 +4099,13 @@ function resolveDocsSidebarHeader({
     !versionLinks.some((link) => link.href === activePath)
   ) {
     return {
-      ...baseHeader,
+      ...headerWithProductDocs,
       versionSwitcher: undefined,
     };
   }
 
   return {
-    ...baseHeader,
+    ...headerWithProductDocs,
     versionSwitcher: {
       currentId:
         versionLinks.find((item) => item.href === activePath)?.id ??
@@ -3512,6 +4115,21 @@ function resolveDocsSidebarHeader({
       versions: versionLinks,
     },
   };
+}
+
+function addProductDocsHref(
+  header: DocsSidebarHeader,
+  activePath: string,
+  locale: AppLocale | string | null,
+  tab: string,
+): DocsSidebarHeader {
+  if (locale !== 'zh-CN' || tab !== OPENAPI_TAB) {
+    return header;
+  }
+
+  const productDocsHref = resolveZhCnApiReferenceProductDocsHref(activePath);
+
+  return productDocsHref ? { ...header, productDocsHref } : header;
 }
 
 function resolveFocusedOpenApiLaneSidebarHeader(
@@ -3524,10 +4142,15 @@ function resolveFocusedOpenApiLaneSidebarHeader(
   }
 
   if (isZhCnRtmRestApiPage(activePath, locale)) {
-    return {
-      ...ZH_CN_RTM_REST_API_BACK_LINK,
-      title: 'RESTful API',
-    };
+    return addProductDocsHref(
+      {
+        ...ZH_CN_RTM_REST_API_BACK_LINK,
+        title: 'RESTful API',
+      },
+      activePath,
+      locale,
+      tab,
+    );
   }
 
   const lane = findOpenApiLaneByUrl(locale, tab, activePath);
@@ -3538,11 +4161,16 @@ function resolveFocusedOpenApiLaneSidebarHeader(
 
   const referenceBackLink = getOpenApiReferenceBackLink(locale);
 
-  return {
-    backHref: referenceBackLink.href,
-    backLabel: referenceBackLink.label,
-    title: 'RESTful API',
-  };
+  return addProductDocsHref(
+    {
+      backHref: referenceBackLink.href,
+      backLabel: referenceBackLink.label,
+      title: 'RESTful API',
+    },
+    activePath,
+    locale,
+    tab,
+  );
 }
 
 function isZhCnRtmRestApiPage(
@@ -3822,7 +4450,10 @@ async function getFocusedOpenApiLaneSidebarNodes({
     })),
   );
 
-  const fallbackNodes = [parentNode, ...manualNodes, ...operationNodes];
+  const fallbackNodes =
+    lane.parentUrl[locale] === ZH_CN_RTC_REST_API_ENTRY_URL
+      ? operationNodes
+      : [parentNode, ...manualNodes, ...operationNodes];
   const laneFolder = findFolderByIndexUrl(pageTree, parentUrl);
   const laneMeta = laneFolder
     ? getDocsMetaData(source.getNodeMeta(laneFolder, locale))
@@ -3848,7 +4479,9 @@ async function getFocusedOpenApiLaneSidebarNodes({
 
   return [
     ...metaNodes,
-    ...fallbackNodes.filter((node) => !metaNodeUrls.has(node.url)),
+    ...fallbackNodes.filter(
+      (node) => node.type !== 'page' || !metaNodeUrls.has(node.url),
+    ),
   ];
 }
 
@@ -3918,9 +4551,7 @@ async function appendEndpointPagesToOpenApiParent(
   );
 
   if (lane) {
-    const existingUrls = new Set(
-      children.flatMap((child) => (child.type === 'page' ? [child.url] : [])),
-    );
+    const existingUrls = collectSidebarPageUrls(children);
     const endpointPages: DocsSidebarNode[] = (
       await Promise.all(
         getOpenApiOperationIds(lane).map(async (operationId) => ({
@@ -3932,10 +4563,14 @@ async function appendEndpointPagesToOpenApiParent(
         })),
       )
     ).filter((item) => !existingUrls.has(item.url));
+    const childrenWithEndpointPages =
+      lane.parentUrl[locale] === ZH_CN_RTC_REST_API_ENTRY_URL
+        ? groupZhCnRtcRestSidebarNodes([...children, ...endpointPages])
+        : [...children, ...endpointPages];
 
     return {
       ...node,
-      children: [...children, ...endpointPages],
+      children: childrenWithEndpointPages,
     };
   }
 

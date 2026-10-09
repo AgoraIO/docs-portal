@@ -50,6 +50,7 @@ const enCommon = {
     lastUpdated: 'Updated',
     lastUpdatedUnavailable: 'Last update unavailable',
     returnToSource: 'Back to {{title}}',
+    viewProductDocs: 'View product docs',
     next: 'Next',
     previous: 'Previous',
     copyPage: 'Copy Page',

@@ -55,7 +55,7 @@ describe('normalizeDocsHref', () => {
         { contentPath: 'zh-CN/ai/index.md' },
       ),
     ).toEqual({
-      href: '/zh-CN/api-reference/api-ref/conversational-ai?view=all#start',
+      href: '/zh-CN/api-reference/api-ref/conversational-ai?view=all&from=%2Fzh-CN%2Fai#start',
       kind: 'internal-doc',
     });
   });
@@ -200,6 +200,52 @@ describe('normalizeDocsHref', () => {
       ),
     ).toEqual({
       href: '/en/api-reference/api-ref/conversational-ai/turns?page=2',
+      kind: 'internal-doc',
+    });
+  });
+
+  it('preserves the Chinese AI product sidebar for API links from product docs', () => {
+    expect(
+      normalizeDocsHref(
+        '/zh-CN/api-reference/api-ref/conversational-ai/join#properties-llm',
+        { contentPath: 'zh-CN/ai/get-started/quick-start.mdx' },
+      ),
+    ).toEqual({
+      href: '/zh-CN/api-reference/api-ref/conversational-ai/join?from=%2Fzh-CN%2Fai#properties-llm',
+      kind: 'root',
+    });
+  });
+
+  it('does not add Chinese product context to English API links', () => {
+    expect(
+      normalizeDocsHref('/en/api-reference/api-ref/conversational-ai/join', {
+        contentPath: 'en/ai/get-started/quick-start.mdx',
+      }),
+    ).toEqual({
+      href: '/en/api-reference/api-ref/conversational-ai/join',
+      kind: 'root',
+    });
+  });
+
+  it('does not infer a product context from a Chinese tab overview page', () => {
+    expect(
+      normalizeDocsHref('/zh-CN/api-reference/api-ref/conversational-ai/join', {
+        contentPath: 'zh-CN/realtime-media/overview.mdx',
+      }),
+    ).toEqual({
+      href: '/zh-CN/api-reference/api-ref/conversational-ai/join',
+      kind: 'root',
+    });
+  });
+
+  it('keeps the Chinese REST authentication article on its published route', () => {
+    expect(
+      normalizeDocsHref(
+        '../../api-reference/conversational-ai/rest-api/authentication.mdx',
+        { contentPath: 'zh-CN/ai/reference/enable-conversational-ai.md' },
+      ),
+    ).toEqual({
+      href: '/zh-CN/api-reference/conversational-ai/rest-api/authentication',
       kind: 'internal-doc',
     });
   });

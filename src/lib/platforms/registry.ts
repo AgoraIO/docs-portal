@@ -178,6 +178,13 @@ export const platformRegistry = {
     },
     order: 122,
   },
+  nodejs: {
+    label: {
+      en: 'Node.js',
+      'zh-CN': 'Node.js',
+    },
+    order: 123,
+  },
   'linux-cpp': {
     label: {
       en: 'Linux C++',
@@ -205,6 +212,13 @@ export const platformRegistry = {
       'zh-CN': 'RESTful',
     },
     order: 150,
+  },
+  'restful-api': {
+    label: {
+      en: 'RESTful API',
+      'zh-CN': 'RESTful API',
+    },
+    order: 151,
   },
 } as const;
 

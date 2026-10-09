@@ -1,9 +1,39 @@
 ---
-title: 声网文档
+title: 声网文档中心
 ---
+
+## 热门场景
+
+<section className="not-prose my-8 grid w-full max-w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+  <SolutionCard
+    title="1v1 私密房"
+    href="/zh-CN/solutions/one-to-one-live/rtm"
+    icon="video-calling"
+    tone="blue"
+    titlePlacement="beside-icon"
+    description="用于陌生人社交和即时通讯中的私密音视频互动。"
+  />
+  <SolutionCard
+    title="秀场直播"
+    href="/zh-CN/solutions/showroom"
+    icon="live-streaming"
+    tone="blue"
+    titlePlacement="beside-icon"
+    description="覆盖单人开播、跨房 PK、观众连麦和伪直播等直播玩法。"
+  />
+  <SolutionCard
+    title="声动语聊"
+    href="/zh-CN/solutions/chatroom/sdk"
+    icon="voice-calling"
+    tone="blue"
+    titlePlacement="beside-icon"
+    description="适合在线语聊房，包含音频体验和音效相关实践。"
+  />
+</section>
+
 ## 集成语音智能体
 
-<SolutionCardGrid>
+<SolutionCardGrid columns={2}>
   <SolutionCard
     title="对话式 AI 引擎"
     href="/zh-CN/ai/get-started/quick-start"
@@ -24,7 +54,7 @@ title: 声网文档
 
 ## 开发实时互动应用
 
-<SolutionCardGrid>
+<SolutionCardGrid columns={2}>
   <SolutionCard
     title="实时互动 RTC"
     href="/zh-CN/realtime-media/rtc"
@@ -179,7 +209,7 @@ title: 声网文档
   />
   <SolutionCard
     title="PPT 转码服务"
-    href="/zh-CN/solutions/ppt-transcoding"
+    href="/zh-CN/realtime-media/ppt-transcoding"
     icon="whiteboard"
     tone="blue"
     size="compact"
@@ -202,7 +232,7 @@ title: 声网文档
   />
   <SolutionCard
     title="健康看板"
-    href="/zh-CN/solutions/status-page"
+    href="/zh-CN/realtime-media/status-page"
     icon="analytics"
     tone="blue"
     size="compact"
@@ -231,7 +261,7 @@ title: 声网文档
 
 ## 从 AI 工具开始
 
-<SolutionCardGrid>
+<SolutionCardGrid columns={2}>
   <SolutionCard
     title="配置 AI 开发工具"
     href="/zh-CN/introduction/start-with-ai"
@@ -278,10 +308,6 @@ title: 声网文档
     },
   ]}
   knowledgeBase={[
-    {
-      label: "如何实现 HTTP 基本认证？",
-      href: "/zh-CN/api-reference/api-ref/conversational-ai/authentication#http-基本认证",
-    },
     {
       label: "iOS 或 Android 上为什么无法通过蓝牙接听通话？",
       href: "/zh-CN/reference/faq/quality/ios_bluetooth",

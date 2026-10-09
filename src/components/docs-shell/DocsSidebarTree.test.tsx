@@ -44,6 +44,68 @@ function renderSidebarTree(nodes: DocsSidebarNode[], activePath: string) {
 }
 
 describe('DocsSidebarTree', () => {
+  it('shows a same-tab navigation arrow for marked internal page links', async () => {
+    const demoLink: DocsSidebarNode = {
+      id: 'introduction-demo-gallery',
+      showNavigationArrow: true,
+      title: '体验 Demo',
+      type: 'page',
+      url: '/zh-CN/reference/demo',
+    };
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [demoLink],
+        defaultOpen: true,
+        id: 'general-references',
+        title: '通用参考',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/zh-CN/introduction');
+
+    const link = await screen.findByRole('link', { name: '体验 Demo' });
+    expect(link.querySelector('.lucide-arrow-right')).toBeInTheDocument();
+    expect(link.querySelector('.lucide-external-link')).not.toBeInTheDocument();
+    expect(link).not.toHaveAttribute('target', '_blank');
+  });
+
+  it('opens sections with defaultOpen true on initial render', async () => {
+    const tree: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                id: 'sdk-extensions-quick-start',
+                title: 'Quickstart',
+                type: 'page',
+                url: '/en/realtime-media/sdk-extensions/quickstart',
+              },
+            ],
+            collapsible: true,
+            defaultOpen: true,
+            id: 'sdk-extensions-build',
+            title: 'Build and integrate',
+            type: 'section',
+          },
+        ],
+        id: 'sdk-extensions',
+        title: 'SDK Extensions',
+        type: 'section',
+      },
+    ];
+
+    renderSidebarTree(tree, '/en/realtime-media/sdk-extensions');
+
+    expect(
+      await screen.findByRole('button', { name: 'Build and integrate' }),
+    ).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('link', { name: 'Quickstart' }),
+    ).toBeInTheDocument();
+  });
+
   it('keeps embedded service API entries collapsed until clicked', async () => {
     const tree: DocsSidebarNode[] = [
       {
@@ -134,6 +196,8 @@ describe('DocsSidebarTree', () => {
     expect(clientApiUrl.pathname).toBe('/zh-CN/api-reference/api');
     expect(clientApiUrl.searchParams.get('product')).toBe('rtc');
     expect(clientApiUrl.searchParams.get('apiType')).toBe('client');
+    expect(clientApiLink).toHaveAttribute('target', '_blank');
+    expect(clientApiLink).toHaveAttribute('rel', 'noreferrer noopener');
     expect(screen.getByRole('link', { name: 'RESTful API' })).toHaveAttribute(
       'href',
       '/zh-CN/api-reference/api-ref/rtc',
@@ -1236,7 +1300,7 @@ describe('DocsSidebarTree', () => {
     ).toBeInTheDocument();
   });
 
-  it('renders a linked section with children as a whole-row collapse toggle', async () => {
+  it('renders a linked section with children as a link and separate collapse toggle', async () => {
     const tree: DocsSidebarNode[] = [
       {
         children: [
@@ -1257,10 +1321,12 @@ describe('DocsSidebarTree', () => {
 
     renderSidebarTree(tree, '/en/api-reference/other');
 
-    // The whole row is a single collapse toggle button — not a navigating link.
-    const toggle = await screen.findByRole('button', { name: 'FAQ' });
+    expect(await screen.findByRole('link', { name: 'FAQ' })).toHaveAttribute(
+      'href',
+      '/en/api-reference/faq',
+    );
+    const toggle = await screen.findByRole('button', { name: 'FAQ 子页面' });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
-    expect(screen.queryByRole('link', { name: 'FAQ' })).toBeNull();
 
     // Children stay hidden until the row is clicked.
     expect(
@@ -1272,7 +1338,7 @@ describe('DocsSidebarTree', () => {
     expect(
       await screen.findByRole('link', { name: 'Integration' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'FAQ' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'FAQ 子页面' })).toHaveAttribute(
       'aria-expanded',
       'true',
     );

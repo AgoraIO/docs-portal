@@ -8,6 +8,7 @@ import {
   getOpenApiPrerenderPaths,
   getOpenApiReferenceBackLink,
   resolveOpenApiEndpointRoute,
+  resolveOpenApiLaneRootRedirect,
   resolveOpenApiLaneRoute,
 } from './lanes';
 
@@ -179,6 +180,22 @@ describe('openapi lanes', () => {
     });
   });
 
+  it('redirects an OpenAPI product root to its first endpoint', () => {
+    expect(
+      resolveOpenApiLaneRootRedirect('zh-CN', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+      ]),
+    ).toBe('/zh-CN/api-reference/api-ref/conversational-ai/join');
+    expect(
+      resolveOpenApiLaneRootRedirect('zh-CN', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+        'join',
+      ]),
+    ).toBeNull();
+  });
+
   it('derives operation order and static paths from lane operations', () => {
     const [lane] = getOpenApiLanes();
 
@@ -230,7 +247,10 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(232);
+    expect(getOpenApiPrerenderPaths()).toContain(
+      '/zh-CN/api-reference/api-ref/conversational-ai',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(254);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

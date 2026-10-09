@@ -656,6 +656,19 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "packageManager": "gradle://io.github.agora-apaas/FcrUIScene/3.1.0"
           }
         ]
+      },
+      {
+        "id": "client-toolkit-sdk-android",
+        "label": "客户端组件 SDK",
+        "info": "用于在 Android 客户端集成对话式 AI 引擎能力的组件",
+        "versions": [
+          {
+            "id": "2.9.0-client-toolkit-sdk-android",
+            "label": "版本 2.9.0（最新）",
+            "packageName": "io.agora.agents:agora-agent-client-toolkit",
+            "packageManager": "gradle://io.agora.agents/agora-agent-client-toolkit/2.9.0"
+          }
+        ]
       }
     ]
   },
@@ -1212,6 +1225,19 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "packageManager": "cocoapods://FcrUIScene?version=3.1.0"
           }
         ]
+      },
+      {
+        "id": "client-toolkit-sdk-ios",
+        "label": "客户端组件 SDK",
+        "info": "用于在 iOS 客户端集成对话式 AI 引擎能力的组件",
+        "versions": [
+          {
+            "id": "2.9.0-client-toolkit-sdk-ios",
+            "label": "版本 2.9.0（最新）",
+            "packageName": "agent-client-toolkit-swift",
+            "packageManager": "cocoapods://agent-client-toolkit-swift?version=2.9.0"
+          }
+        ]
       }
     ]
   },
@@ -1540,7 +1566,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "id": "4.24.6-voice-sdk-web",
             "label": "版本 4.24.6（最新）",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip",
-            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6"
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6",
+            "releaseDate": "2026 年 7 月 13 日"
           },
           {
             "id": "4.24.5-voice-sdk-web",
@@ -1912,6 +1939,19 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "packageManager": "npm://fcr-ui-scene?version=1.0.40"
           }
         ]
+      },
+      {
+        "id": "client-toolkit-sdk-web",
+        "label": "客户端组件 SDK",
+        "info": "用于在 Web 客户端集成对话式 AI 引擎能力的组件",
+        "versions": [
+          {
+            "id": "2.9.0-client-toolkit-sdk-web",
+            "label": "版本 2.9.0（最新）",
+            "packageName": "agora-agent-client-toolkit",
+            "packageManager": "https://www.npmjs.com/package/agora-agent-client-toolkit/v/2.9.0"
+          }
+        ]
       }
     ]
   },
@@ -1977,7 +2017,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "id": "2.5.1-voice-sdk-react-js",
             "label": "版本 2.5.1 （最新）",
             "downloadLink": "https://download.agora.io/sdk/release/agora-rtc-react.2.5.1.js",
-            "packageManager": "https://www.npmjs.com/package/agora-rtc-react/v/2.5.1"
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-react/v/2.5.1",
+            "releaseDate": "2025 年 12 月 17 日"
           },
           {
             "id": "2.5.0-voice-sdk-react-js",
@@ -2176,7 +2217,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.6.2-voice-sdk-windows",
             "label": "版本 4.6.2 （最新）",
-            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.6.2_FULL.zip"
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows_v4.6.2_FULL.zip",
+            "releaseDate": "2026 年 1 月 16 日"
           },
           {
             "id": "4.6.0-voice-sdk-windows",
@@ -2473,7 +2515,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             "id": "4.6.2-voice-sdk-macOS",
             "label": "版本 4.6.2 （最新）",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Mac_v4.6.2_FULL.zip",
-            "packageManager": "https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS"
+            "packageManager": "https://swiftpackageindex.com/AgoraIO/AgoraRtcEngine_macOS",
+            "releaseDate": "2026 年 1 月 16 日"
           },
           {
             "id": "4.6.0-voice-sdk-macOS",
@@ -2671,20 +2714,6 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         ]
       }
     ],
-    "addOns": [
-      {
-        "id": "interactive-whiteboard-ios",
-        "label": "互动白板 SDK",
-        "info": "SDK for: Interactive Whiteboard",
-        "versions": [
-          {
-            "id": "2.16.46-interactive-whiteboard-ios",
-            "label": "版本 2.16.46 （最新）",
-            "packageManager": "https://github.com/netless-io/whiteboard-ios"
-          }
-        ]
-      }
-    ]
   },
   {
     "id": "linux",
@@ -3110,7 +3139,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.6.2-voice-sdk-electron",
             "label": "版本 4.6.2 （最新）",
-            "packageManager": "https://www.npmjs.com/package/agora-electron-sdk/v/4.6.2"
+            "packageManager": "https://www.npmjs.com/package/agora-electron-sdk/v/4.6.2",
+            "releaseDate": "2026 年 3 月 5 日"
           },
           {
             "id": "4.5.2-voice-sdk-electron",
@@ -3336,7 +3366,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "6.6.2-voice-sdk-flutter",
             "label": "版本 6.6.2 （最新）",
-            "packageManager": "https://pub.dev/packages/agora_rtc_engine/versions/6.6.2"
+            "packageManager": "https://pub.dev/packages/agora_rtc_engine/versions/6.6.2",
+            "releaseDate": "2026 年 3 月 18 日"
           },
           {
             "id": "6.5.2-voice-sdk-flutter",

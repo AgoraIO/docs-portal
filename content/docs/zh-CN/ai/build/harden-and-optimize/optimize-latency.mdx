@@ -175,7 +175,7 @@ LLM 通常是延迟贡献最高的模块。优化 LLM 可以显著降低整体�
 在创建智能体时，可通过阅读 ASR/LLM/TTS 供应商文档，了解供应商提供的参数，结合实际场景进行参数调优。以下为一些通用的优化思路：
 
 - LLM
-  - **选择小型模型**: 如 `gpt-4o-mini`、`claude-3-haiku` 等，通常比大型模型响应更快。
+  - **选择低延迟模型**：比较 DeepSeek、豆包、千问或 Kimi 的候选模型，结合你的提示词和输出长度实测 TTFS，再选择符合延迟要求的模型。
   - **限制 max_tokens**: 减少生成的最大 Token 数可以降低 TTFS（首句延迟）。
 - ASR
   - **使用供应商推荐的采样率**: 使用供应商推荐的采样率（如 16kHz），避免不必要的重采样。
@@ -186,19 +186,20 @@ LLM 通常是延迟贡献最高的模块。优化 LLM 可以显著降低整体�
   - **选择更快的音色**: 部分 TTS 提供不同复杂度的输出音色可选，选择复杂度较低的音色可以减少生成时间。
   - **禁用非必要功能**：部分供应商提供语气、情感高级参数，可根据实际场景禁用以提高响应速度。
 
-以下为优化 LLM 参数的示例：
+以下以 [DeepSeek API](https://api-docs.deepseek.com/zh-cn/api/create-chat-completion/) 为例，关闭思考模式、限制输出长度并启用流式响应：
 
 ```json
 {
   "properties": {
     "llm": {
-      "url": "https://api.openai.com/v1/chat/completions",
+      "url": "https://api.deepseek.com/chat/completions",
       "api_key": "your_api_key",
       "params": {
-        "model": "gpt-4o-mini",  // 选择响应更快的模型
+        "model": "deepseek-flash",
+        "thinking": { "type": "disabled" },
         "temperature": 0.7,
-        "max_tokens": 150,  // 限制生成长度以减少延迟
-        "stream": true  // 启用流式响应
+        "max_tokens": 150,
+        "stream": true
       }
     }
   }

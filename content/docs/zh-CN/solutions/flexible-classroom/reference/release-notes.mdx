@@ -330,7 +330,7 @@ description: "查看灵动课堂的版本更新、问题修复、行为变更和
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -439,17 +439,17 @@ allprojects {
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
-开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui)。
+开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui)。
 
 #### 扩展应用 ExtApp
 
-自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget)。
+自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget)。
 
 #### 课件管理
 
 为提升课堂学习效果，灵动课堂 1.1.0 新增课件模块。老师可通过灵动课堂客户端上传 PPT、DOC、PDF 等格式的文件。灵动课堂客户端会对后缀名为 `"ppt"`、`"pptx"`、`"doc"`、`"docx"`、`"pdf"` 的文件默认开启文件转换，以用于课堂内白板展示。开发者还可通过灵动课堂云服务 RESTful API 配置并上传文件至云盘，并获取课堂内云盘文件变更事件，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom)。
 
-1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
+1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure)中在声网控制台配置灵动课堂一节。
 
 此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/android/api-reference/classroom-sdk)。
 
@@ -799,7 +799,7 @@ allprojects {
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -908,17 +908,17 @@ allprojects {
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
-开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui)。
+开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui)。
 
 #### 扩展应用 ExtApp
 
-自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget)。
+自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget)。
 
 #### 课件管理
 
 为提升课堂学习效果，灵动课堂 1.1.0 新增课件模块。老师可通过灵动课堂客户端上传 PPT、DOC、PDF 等格式的文件。灵动课堂客户端会对后缀名为 `"ppt"`、`"pptx"`、`"doc"`、`"docx"`、`"pdf"` 的文件默认开启文件转换，以用于课堂内白板展示。开发者还可通过灵动课堂云服务 RESTful API 配置并上传文件至云盘，并获取课堂内云盘文件变更事件，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-sync)。
 
-1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
+1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure)中在声网控制台配置灵动课堂一节。
 
 此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/ios/api-reference/classroom-sdk)。
 
@@ -1067,7 +1067,7 @@ allprojects {
 - 在线课堂场景，并引入全新的 UI 样式和交互体验，更贴近教育用户使用习惯。相关链接可以参考：
 
   - API 参考：[FcrUIScene API](/zh-CN/api-reference/flexible-classroom/web/api-reference/fcr-ui-scene)
-  - 功能文档：[使用 FcrUIScene 自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui-new)
+  - 功能文档：[使用 FcrUIScene 自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui-new)
 
 - 一对一私聊功能。该功能暂不支持历史消息。
 
@@ -1361,7 +1361,7 @@ allprojects {
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -1470,17 +1470,17 @@ allprojects {
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
-开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui)。
+开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui)。
 
 #### 扩展应用 ExtApp
 
-自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget)。
+自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget)。
 
 #### 课件管理
 
 为提升课堂学习效果，灵动课堂 1.1.0 新增课件模块。老师可通过灵动课堂客户端上传 PPT、DOC、PDF 等格式的文件。灵动课堂客户端会对后缀名为 `"ppt"`、`"pptx"`、`"doc"`、`"docx"`、`"pdf"` 的文件默认开启文件转换，以用于课堂内白板展示。开发者还可通过灵动课堂云服务 RESTful API 配置并上传文件至云盘，并获取课堂内云盘文件变更事件，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom)。
 
-1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
+1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure)中在声网控制台配置灵动课堂一节。
 
 此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)。
 
@@ -1912,7 +1912,7 @@ allprojects {
 
 #### 新版 IM
 
-1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure#配置环信-im)在声网控制台配置 IM 相关字段。
+1.1.5 采用新版 IM，改进了课堂内实时聊天体验，支持文字和表情聊天、全体和单个禁言、公告栏和用户列表等功能。为使用新版 IM 功能，升级至 1.1.5 前，请注册[环信即时通讯云](https://console.easemob.com/)并在环信开发者管理后台[创建应用](https://docs-im.easemob.com/im/quickstart/guide/experience#创建应用)，然后参考[配置 aPaaS 服务文档](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure#配置环信-im)在声网控制台配置 IM 相关字段。
 
 ### 新增特性
 
@@ -2021,17 +2021,17 @@ allprojects {
 
 ![灵动课堂 UI 分层架构示意图](https://web-cdn.agora.io/docs-files/1619696813295)
 
-开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/custom-ui)。
+开发者无需深入学习灵动课堂的核心业务逻辑，只需基于 UI Kit 修改 UI 组件，调用相应 Context 提供的方法和回调，即可自定义灵动课堂各个功能模块的 UI，使在线互动课堂更为个性化。详见[自定义课堂 UI](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/custom-ui)。
 
 #### 扩展应用 ExtApp
 
-自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-and-extend/widget)。
+自 1.1.0 起，灵动课堂支持扩展应用 ExtApp，能够帮助开发者根据实际需求在灵动课堂内嵌入自己实现的应用，例如倒计时、骰子等，详见[通过 ExtApp 自定义插件](/zh-CN/solutions/flexible-classroom/build/customize-classroom-experience/widget)。
 
 #### 课件管理
 
 为提升课堂学习效果，灵动课堂 1.1.0 新增课件模块。老师可通过灵动课堂客户端上传 PPT、DOC、PDF 等格式的文件。灵动课堂客户端会对后缀名为 `"ppt"`、`"pptx"`、`"doc"`、`"docx"`、`"pdf"` 的文件默认开启文件转换，以用于课堂内白板展示。开发者还可通过灵动课堂云服务 RESTful API 配置并上传文件至云盘，并获取课堂内云盘文件变更事件，详见[灵动课堂 RESTful API](/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom)。
 
-1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/setup-and-access/configure)中在声网控制台配置灵动课堂一节。
+1.1.0 中，上传至云盘的文件默认储存在声网的阿里云 OSS 账号中。如开发者想要将文件存储至自己的 OSS 账号中，需要更新声网控制台 aPaaS 配置中的白板 JSON 配置对象，详见[灵动课堂前提条件](/zh-CN/solutions/flexible-classroom/build/create-classroom/configure)中在声网控制台配置灵动课堂一节。
 
 此外，1.1.0 还支持课件预加载。声网 Classroom SDK 新增 `configCoursewares` 和 `downloadCoursewares` 方法，用于配置并预加载课件。成功调用后，客户端会将云盘中的课件缓存至本地。详见[声网 Classroom SDK API 参考](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk)。
 

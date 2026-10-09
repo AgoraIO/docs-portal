@@ -49,6 +49,9 @@ export function getSdkDownloadProductCatalogId(product: SdkDownloadProduct) {
   if (normalizedId.includes('agents-sdk')) {
     return 'agents';
   }
+  if (normalizedId.includes('client-toolkit')) {
+    return 'client-toolkit';
+  }
   if (normalizedId.includes('voice-sdk')) {
     return 'voice';
   }

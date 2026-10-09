@@ -2,7 +2,10 @@ import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
 import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
-import { resolveMovedDocsRedirect } from '@/lib/docs-moved-redirects';
+import {
+  isPermanentMovedDocsRedirect,
+  resolveMovedDocsRedirect,
+} from '@/lib/docs-moved-redirects';
 import { getDocsPagePayload } from '@/lib/docs-page';
 import type {
   DocsPagePayload,
@@ -57,6 +60,13 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     if (movedDocsRedirect) {
       throw redirect({
         href: preserveRedirectSearch(movedDocsRedirect, location),
+        ...(isPermanentMovedDocsRedirect(
+          params.locale,
+          params.tab,
+          slugSegments,
+        )
+          ? { statusCode: 301 }
+          : {}),
       });
     }
 
@@ -73,6 +83,9 @@ export const Route = createFileRoute('/$locale/$tab/$')({
             location,
             legacyRedirect.preserveSearch,
           ),
+          ...(legacyRedirect.statusCode
+            ? { statusCode: legacyRedirect.statusCode }
+            : {}),
         });
       }
     }
@@ -121,7 +134,14 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     if ('redirectUrl' in payload) {
       const { redirectUrl } = payload;
       const preserveSearch =
-        'preserveSearch' in payload ? payload.preserveSearch : true;
+        'preserveSearch' in payload &&
+        typeof payload.preserveSearch === 'boolean'
+          ? payload.preserveSearch
+          : true;
+      const statusCode =
+        'statusCode' in payload && typeof payload.statusCode === 'number'
+          ? payload.statusCode
+          : undefined;
 
       if (!redirectUrl) {
         throw notFound();
@@ -129,6 +149,7 @@ export const Route = createFileRoute('/$locale/$tab/$')({
 
       throw redirect({
         href: preserveRedirectSearch(redirectUrl, location, preserveSearch),
+        statusCode: statusCode ?? 307,
       });
     }
 
@@ -181,6 +202,7 @@ function Page() {
     slug,
     toc,
     title,
+    titlePlatforms,
   } = Route.useLoaderData();
 
   // Remember this page so the search dialog can offer it under "Recent". Keyed
@@ -210,6 +232,7 @@ function Page() {
       sidebarHeader={sidebarHeader}
       slug={slug}
       title={title}
+      titlePlatforms={titlePlatforms}
       toc={toc}
     />
   );

@@ -1,7 +1,11 @@
 'use client';
 
 import { Link } from '@tanstack/react-router';
-import { ChevronDownIcon, ExternalLinkIcon } from 'lucide-react';
+import {
+  ArrowRightIcon,
+  ChevronDownIcon,
+  ExternalLinkIcon,
+} from 'lucide-react';
 import {
   type AnchorHTMLAttributes,
   forwardRef,
@@ -51,7 +55,12 @@ const expandedSidebarChildrenClassName =
 const nestedExpandedSidebarChildrenClassName =
   'mt-0.5 flex flex-col gap-0.5 border-l border-[color:var(--line-strong)] pl-3';
 
-const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [];
+const sidebarTitleOverrides: Array<[suffix: string, shortTitle: string]> = [
+  [
+    '/zh-CN/realtime-media/cloud-recording/reference/ncs-events',
+    '回调事件概览',
+  ],
+];
 
 export function DocsSidebarTree({
   activePath,
@@ -114,6 +123,7 @@ function SidebarNodeRenderer({
       method={node.method}
       onSelectPath={onSelectPath}
       search={node.search}
+      showNavigationArrow={node.showNavigationArrow}
       title={node.title}
       url={node.url}
     />
@@ -135,7 +145,9 @@ function SidebarSection({
   const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
   const canAutoOpen = node.defaultOpen !== false;
   const defaultOpen =
-    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+    node.defaultOpen === true ||
+    !node.collapsible ||
+    (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
   const shouldRevealActivePath =
     canAutoOpen && (hasActiveChild || shouldDefaultOpen);
   const [isOpen, setIsOpen] = useActivePathDisclosure(
@@ -252,13 +264,17 @@ function SidebarSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
-                  className={sidebarEndpointButtonClassName(child.method)}
+                  className={cn(
+                    sidebarEndpointButtonClassName(child.method),
+                    child.showNavigationArrow && 'group',
+                  )}
                   isActive={child.url === activePath}
                   size="md"
                 >
                   <SidebarPageAnchor
                     external={child.external}
                     href={child.href}
+                    linked={child.linked}
                     onSelectPath={onSelectPath}
                     search={child.search}
                     url={child.url}
@@ -267,6 +283,7 @@ function SidebarSection({
                       external={child.external}
                       linked={child.linked}
                       method={child.method}
+                      showNavigationArrow={child.showNavigationArrow}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
                   </SidebarPageAnchor>
@@ -301,7 +318,8 @@ function SidebarLinkedSection({
   const canAutoOpen = defaultOpenProp !== false;
   const shouldRevealActivePath =
     canAutoOpen && (hasActiveChild || url === activePath);
-  const defaultOpen = !collapsible || shouldRevealActivePath;
+  const defaultOpen =
+    defaultOpenProp === true || !collapsible || shouldRevealActivePath;
   const [isOpen, setIsOpen] = useActivePathDisclosure(
     defaultOpen,
     shouldRevealActivePath,
@@ -318,7 +336,9 @@ function SidebarLinkedSection({
         >
           <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
             <span className="flex min-w-0 items-center gap-2">
-              <span className={sidebarSectionTitleClassName}>{title}</span>
+              <span className={sidebarSectionTitleClassName}>
+                {getSidebarDisplayTitle(title, url)}
+              </span>
             </span>
             <ChevronDownIcon className="size-4 shrink-0 -rotate-90" />
           </Link>
@@ -329,22 +349,35 @@ function SidebarLinkedSection({
 
   return (
     <SidebarMenuItem>
-      <SidebarMenuButton
-        aria-expanded={isOpen}
-        className={cn(sidebarToggleClassName, 'overflow-visible')}
-        onClick={() => setIsOpen((value) => !value)}
-        type="button"
-      >
-        <span className="flex min-w-0 items-center gap-2">
-          <span className={sidebarSectionTitleClassName}>{title}</span>
-        </span>
-        <ChevronDownIcon
-          className={cn(
-            'size-4 shrink-0 transition-transform',
-            isOpen ? 'rotate-0' : '-rotate-90',
-          )}
-        />
-      </SidebarMenuButton>
+      <div className="relative flex min-w-0 items-stretch">
+        <SidebarMenuButton
+          asChild
+          className={cn(sidebarToggleClassName, 'flex-1 overflow-visible pr-9')}
+          isActive={url === activePath}
+        >
+          <Link onClick={onSelectPath} params={{}} search={{}} to={url}>
+            <span className="flex min-w-0 items-center gap-2">
+              <span className={sidebarSectionTitleClassName}>
+                {getSidebarDisplayTitle(title, url)}
+              </span>
+            </span>
+          </Link>
+        </SidebarMenuButton>
+        <button
+          aria-expanded={isOpen}
+          aria-label={`${title} 子页面`}
+          className="absolute top-1/2 right-3 flex size-4 -translate-y-1/2 items-center justify-center text-muted-foreground transition-colors hover:text-[color:var(--ink-1)] focus-visible:rounded-sm focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+          onClick={() => setIsOpen((value) => !value)}
+          type="button"
+        >
+          <ChevronDownIcon
+            className={cn(
+              'size-4 shrink-0 transition-transform',
+              isOpen ? 'rotate-0' : '-rotate-90',
+            )}
+          />
+        </button>
+      </div>
       {isOpen ? (
         <SidebarMenuSub className={expandedSidebarChildrenClassName}>
           {items.map((child) =>
@@ -360,7 +393,10 @@ function SidebarLinkedSection({
               <SidebarMenuSubItem key={child.id}>
                 <SidebarMenuSubButton
                   asChild
-                  className={sidebarEndpointButtonClassName(child.method)}
+                  className={cn(
+                    sidebarEndpointButtonClassName(child.method),
+                    child.showNavigationArrow && 'group',
+                  )}
                   isActive={child.url === activePath}
                   size="md"
                 >
@@ -375,6 +411,7 @@ function SidebarLinkedSection({
                       external={child.external}
                       linked={child.linked}
                       method={child.method}
+                      showNavigationArrow={child.showNavigationArrow}
                       title={getSidebarDisplayTitle(child.title, child.url)}
                     />
                   </SidebarPageAnchor>
@@ -439,7 +476,10 @@ function SidebarQuickstartGroup({
             <SidebarMenuSubItem key={child.id}>
               <SidebarMenuSubButton
                 asChild
-                className={sidebarEndpointButtonClassName(child.method)}
+                className={cn(
+                  sidebarEndpointButtonClassName(child.method),
+                  child.showNavigationArrow && 'group',
+                )}
                 isActive={child.url === activePath}
                 size="md"
               >
@@ -453,6 +493,7 @@ function SidebarQuickstartGroup({
                     external={child.external}
                     linked={child.linked}
                     method={child.method}
+                    showNavigationArrow={child.showNavigationArrow}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
                 </Link>
@@ -480,7 +521,9 @@ function SidebarNestedSection({
   const shouldDefaultOpen = shouldDefaultOpenSection(node.title, activePath);
   const canAutoOpen = node.defaultOpen !== false;
   const defaultOpen =
-    !node.collapsible || (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
+    node.defaultOpen === true ||
+    !node.collapsible ||
+    (canAutoOpen && (hasActiveChild || shouldDefaultOpen));
   const shouldRevealActivePath =
     canAutoOpen && (hasActiveChild || shouldDefaultOpen);
   const [isOpen, setIsOpen] = useActivePathDisclosure(
@@ -522,7 +565,10 @@ function SidebarNestedSection({
             ) : (
               <SidebarMenuSubButton
                 asChild
-                className={sidebarEndpointButtonClassName(child.method)}
+                className={cn(
+                  sidebarEndpointButtonClassName(child.method),
+                  child.showNavigationArrow && 'group',
+                )}
                 isActive={child.url === activePath}
                 key={child.id}
                 size="md"
@@ -537,6 +583,7 @@ function SidebarNestedSection({
                   <SidebarPageLabel
                     linked={child.linked}
                     method={child.method}
+                    showNavigationArrow={child.showNavigationArrow}
                     title={getSidebarDisplayTitle(child.title, child.url)}
                   />
                 </SidebarPageAnchor>
@@ -743,6 +790,7 @@ function SidebarPageLink({
   method,
   onSelectPath,
   search,
+  showNavigationArrow,
   title,
   url,
 }: {
@@ -753,6 +801,7 @@ function SidebarPageLink({
   method?: string;
   onSelectPath: () => void;
   search?: Record<string, string>;
+  showNavigationArrow?: boolean;
   title: string;
   url: string;
 }) {
@@ -763,12 +812,14 @@ function SidebarPageLink({
         className={cn(
           sidebarPageButtonClassName,
           method && openApiSidebarButtonClassName,
+          showNavigationArrow && 'group',
         )}
         isActive={url === activePath}
       >
         <SidebarPageAnchor
           external={external}
           href={href}
+          linked={linked}
           onSelectPath={onSelectPath}
           search={search}
           url={url}
@@ -777,6 +828,7 @@ function SidebarPageLink({
             external={external}
             linked={linked}
             method={method}
+            showNavigationArrow={showNavigationArrow}
             title={getSidebarDisplayTitle(title, url)}
           />
         </SidebarPageAnchor>
@@ -789,6 +841,7 @@ type SidebarPageAnchorProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   children: ReactNode;
   external?: boolean;
   href?: string;
+  linked?: boolean;
   onSelectPath: () => void;
   search?: Record<string, string>;
   url: string;
@@ -800,6 +853,7 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
       children,
       external,
       href,
+      linked,
       onClick,
       onSelectPath,
       rel,
@@ -839,7 +893,9 @@ const SidebarPageAnchor = forwardRef<HTMLAnchorElement, SidebarPageAnchorProps>(
         onClick={handleClick}
         params={{}}
         ref={ref}
+        rel={linked ? 'noreferrer noopener' : rel}
         search={search ?? {}}
+        target={linked ? '_blank' : target}
         to={url}
       >
         {children}
@@ -858,11 +914,13 @@ function SidebarPageLabel({
   external,
   linked,
   method,
+  showNavigationArrow,
   title,
 }: {
   external?: boolean;
   linked?: boolean;
   method?: string;
+  showNavigationArrow?: boolean;
   title: string;
 }) {
   return (
@@ -879,6 +937,11 @@ function SidebarPageLabel({
         <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
           {method}
         </span>
+      ) : showNavigationArrow ? (
+        <ArrowRightIcon
+          aria-hidden="true"
+          className="ml-auto size-3.5 shrink-0 text-[color:var(--ink-4)] transition-colors group-hover:text-[color:var(--ink-1)] group-focus-visible:text-[color:var(--ink-1)]"
+        />
       ) : external || linked ? (
         <ExternalLinkIcon className="ml-auto size-4 shrink-0 text-[color:var(--ink-4)]" />
       ) : null}
@@ -887,14 +950,14 @@ function SidebarPageLabel({
 }
 
 function getSidebarDisplayTitle(title: string, url: string) {
-  if (isZhCnProductOverviewUrl(url) && title.endsWith('概览')) {
-    return '概览';
-  }
-
   for (const [suffix, shortTitle] of sidebarTitleOverrides) {
     if (url.endsWith(suffix)) {
       return shortTitle;
     }
+  }
+
+  if (isZhCnProductOverviewUrl(url) && title.endsWith('概览')) {
+    return '概览';
   }
 
   return title;

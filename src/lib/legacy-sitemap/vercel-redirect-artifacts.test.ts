@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
 
@@ -29,6 +30,153 @@ type VercelRedirect = {
   statusCode: number;
 };
 
+const RTM_DEPLOYMENT_REDIRECTS = {
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/application-setup':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/add-event-listener':
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/login':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/login',
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/link-basic':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/data-storage':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/data-storage',
+  '/zh-CN/realtime-media/rtm/build/setup-and-access/private-setup':
+    '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup',
+  '/zh-CN/realtime-media/rtm/build/manage-channels/channel-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic',
+  '/zh-CN/realtime-media/rtm/build/manage-channels/channel-name':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name',
+  '/zh-CN/realtime-media/rtm/build/manage-channels/message-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel',
+  '/zh-CN/realtime-media/rtm/build/manage-channels/stream-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/stream-channel',
+  '/zh-CN/realtime-media/rtm/build/manage-messages/send-message':
+    '/zh-CN/realtime-media/rtm/build/messaging/send-message',
+  '/zh-CN/realtime-media/rtm/build/manage-messages/constructed':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/constructed',
+  '/zh-CN/realtime-media/rtm/build/manage-messages/serialized':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized',
+  '/zh-CN/realtime-media/rtm/build/manage-messages/history-message':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/history-message',
+  '/zh-CN/realtime-media/rtm/build/manage-topics/topic-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic',
+  '/zh-CN/realtime-media/rtm/build/manage-topics/usage':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/usage',
+  '/zh-CN/realtime-media/rtm/build/manage-topics/topic-events':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
+  '/zh-CN/realtime-media/rtm/build/manage-presence/presence-basic':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic',
+  '/zh-CN/realtime-media/rtm/build/manage-presence/temporary-user-state':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state',
+  '/zh-CN/realtime-media/rtm/build/manage-presence/presence-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
+  '/zh-CN/realtime-media/rtm/build/manage-metadata/user-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata',
+  '/zh-CN/realtime-media/rtm/build/manage-metadata/channel-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata',
+  '/zh-CN/realtime-media/rtm/build/manage-metadata/metadata-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
+  '/zh-CN/realtime-media/rtm/build/security-and-auth/token-generation':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation',
+  '/zh-CN/realtime-media/rtm/build/security-and-auth/user-authentication':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication',
+  '/zh-CN/realtime-media/rtm/get-started/enable-service':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service',
+  '/zh-CN/realtime-media/rtm/reference/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  '/zh-CN/realtime-media/rtm/reference/metadata-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
+  '/zh-CN/realtime-media/rtm/reference/presence-events':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
+  '/zh-CN/realtime-media/rtm/reference/topic-events':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
+  '/zh-CN/realtime-media/rtm/user-guide/channel/channel-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-basic',
+  '/zh-CN/realtime-media/rtm/user-guide/channel/channel-name':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name',
+  '/zh-CN/realtime-media/rtm/user-guide/channel/message-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/message-channel',
+  '/zh-CN/realtime-media/rtm/user-guide/channel/stream-channel':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/stream-channel',
+  '/zh-CN/realtime-media/rtm/user-guide/link/link-basic':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
+  '/zh-CN/realtime-media/rtm/user-guide/link/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  '/zh-CN/realtime-media/rtm/user-guide/message/add-event-listener':
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
+  '/zh-CN/realtime-media/rtm/user-guide/message/constructed':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/constructed',
+  '/zh-CN/realtime-media/rtm/user-guide/message/history-message':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/history-message',
+  '/zh-CN/realtime-media/rtm/user-guide/message/send-message':
+    '/zh-CN/realtime-media/rtm/build/messaging/send-message',
+  '/zh-CN/realtime-media/rtm/user-guide/message/serialized':
+    '/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized',
+  '/zh-CN/realtime-media/rtm/user-guide/presence/event':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-events',
+  '/zh-CN/realtime-media/rtm/user-guide/presence/presence-basic':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/presence-basic',
+  '/zh-CN/realtime-media/rtm/user-guide/presence/temporary-user-state':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/temporary-user-state',
+  '/zh-CN/realtime-media/rtm/user-guide/setup/application-setup':
+    '/zh-CN/realtime-media/rtm/build/rtm-initialization/application-setup',
+  '/zh-CN/realtime-media/rtm/user-guide/setup/data-storage':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/data-storage',
+  '/zh-CN/realtime-media/rtm/user-guide/setup/login':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/login',
+  '/zh-CN/realtime-media/rtm/user-guide/setup/private-setup':
+    '/zh-CN/realtime-media/rtm/build/network-and-private-deployment/private-setup',
+  '/zh-CN/realtime-media/rtm/user-guide/storage/channel-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/channel-metadata',
+  '/zh-CN/realtime-media/rtm/user-guide/storage/event':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events',
+  '/zh-CN/realtime-media/rtm/user-guide/storage/user-metadata':
+    '/zh-CN/realtime-media/rtm/build/state-and-attributes/user-metadata',
+  '/zh-CN/realtime-media/rtm/user-guide/token/token-generation':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation',
+  '/zh-CN/realtime-media/rtm/user-guide/token/user-authentication':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication',
+  '/zh-CN/realtime-media/rtm/user-guide/topic/event':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-events',
+  '/zh-CN/realtime-media/rtm/user-guide/topic/topic-basic':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/topic-basic',
+  '/zh-CN/realtime-media/rtm/user-guide/topic/usage':
+    '/zh-CN/realtime-media/rtm/build/channels-and-topics/topics/usage',
+  '/zh-CN/realtime-media/rtm/build/manage-connections/link-basic':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-basic',
+  '/zh-CN/realtime-media/rtm/build/manage-connections/link-state':
+    '/zh-CN/realtime-media/rtm/build/authentication-and-connection/link-state',
+  '/zh-CN/realtime-media/rtm/build/manage-messages/add-event-listener':
+    '/zh-CN/realtime-media/rtm/build/messaging/add-event-listener',
+} as const;
+
+const RTM_OLD_CATEGORY_ROOTS = [
+  '/zh-CN/realtime-media/rtm/build/setup-and-access',
+  '/zh-CN/realtime-media/rtm/build/manage-channels',
+  '/zh-CN/realtime-media/rtm/build/manage-messages',
+  '/zh-CN/realtime-media/rtm/build/manage-topics',
+  '/zh-CN/realtime-media/rtm/build/manage-presence',
+  '/zh-CN/realtime-media/rtm/build/manage-metadata',
+  '/zh-CN/realtime-media/rtm/build/manage-connections',
+  '/zh-CN/realtime-media/rtm/build/security-and-auth',
+];
+
+const RTM_OLD_CATEGORY_SEGMENTS = [
+  'setup-and-access',
+  'manage-channels',
+  'manage-messages',
+  'manage-topics',
+  'manage-presence',
+  'manage-metadata',
+  'manage-connections',
+  'security-and-auth',
+];
+
 describe('legacy redirect Vercel artifacts', () => {
   const legacyRules = redirectsConfig.rules as LegacySitemapRedirectRule[];
   const vercelConfig = JSON.parse(readFileSync('vercel.json', 'utf8')) as {
@@ -36,7 +184,9 @@ describe('legacy redirect Vercel artifacts', () => {
     redirects?: VercelRedirect[];
     rewrites?: unknown[];
     routes?: Array<{
-      dest: string;
+      continue?: boolean;
+      dest?: string;
+      headers?: Record<string, string>;
       has?: Array<{
         key: string;
         type: string;
@@ -58,6 +208,7 @@ describe('legacy redirect Vercel artifacts', () => {
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
     expect(vercelConfig.routes).toContainEqual({
       dest: '/en/$1.md',
+      headers: { 'Content-Type': 'text/markdown; charset=utf-8' },
       has: [
         {
           key: 'Accept',
@@ -73,6 +224,41 @@ describe('legacy redirect Vercel artifacts', () => {
         expect.objectContaining({ src: expect.stringContaining('zh-CN') }),
       ]),
     );
+  });
+
+  it('declares UTF-8 for static Markdown and LLMS files without stopping filesystem routing', () => {
+    for (const pathname of [
+      '/zh-CN/introduction.md',
+      '/zh-CN/introduction/mcp-integrate.md',
+      '/zh-CN/api-reference/api-ref/uikit-sdk/android.md',
+      '/en/introduction/about-agora.md',
+      '/llms.txt',
+      '/llms-full.txt',
+      '/llms/introduction.txt',
+    ]) {
+      const rule = vercelConfig.routes?.find(
+        (route) => !route.has && new RegExp(route.src).test(pathname),
+      );
+      expect(rule?.continue).toBe(true);
+      expect(rule?.dest).toBeUndefined();
+      expect(rule?.headers?.['Content-Type']).toBe(
+        pathname.endsWith('.md')
+          ? 'text/markdown; charset=utf-8'
+          : 'text/plain; charset=utf-8',
+      );
+    }
+
+    for (const pathname of [
+      '/zh-CN/introduction/mcp-integrate',
+      '/shengwang-docs-og.png',
+      '/robots.txt',
+    ]) {
+      expect(
+        vercelConfig.routes?.some(
+          (route) => route.headers && new RegExp(route.src).test(pathname),
+        ),
+      ).toBe(false);
+    }
   });
 
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {
@@ -146,6 +332,48 @@ describe('legacy redirect Vercel artifacts', () => {
         },
       ]),
     );
+  });
+
+  it('redirects RTM current pages and historical aliases with deployment 301s', () => {
+    const rtmRedirects = (vercelConfig.redirects ?? []).filter((rule) =>
+      rule.source.startsWith('/zh-CN/realtime-media/rtm/'),
+    );
+
+    for (const [source, destination] of Object.entries(
+      RTM_DEPLOYMENT_REDIRECTS,
+    )) {
+      expect(rtmRedirects).toContainEqual({
+        destination,
+        source,
+        statusCode: 301,
+      });
+    }
+
+    expect(rtmRedirects.map((rule) => rule.source)).not.toEqual(
+      expect.arrayContaining(RTM_OLD_CATEGORY_ROOTS),
+    );
+
+    for (const rule of rtmRedirects) {
+      for (const segment of RTM_OLD_CATEGORY_SEGMENTS) {
+        expect(rule.destination).not.toContain(segment);
+      }
+    }
+  });
+
+  it('ships every zh-CN small Build flattening redirect directly to its canonical URL', () => {
+    for (const [path, destination] of Object.entries(
+      ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+    )) {
+      const source = `/zh-CN/${path}`;
+
+      expect(bulkRedirects).toContainEqual({
+        destination,
+        preserveQueryParams: true,
+        source,
+        statusCode: 301,
+      });
+      expect(staticRedirects).toContainEqual({ p: source, t: destination });
+    }
   });
 
   it('keeps legacy passthrough routes working without a catch-all SPA rewrite', () => {

@@ -1,6 +1,7 @@
 import {
   getPlatformLabel,
   isKnownPlatform,
+  normalizePlatformKey,
   type PlatformKey,
 } from './registry';
 
@@ -199,28 +200,18 @@ function stripGeneratedHeadingAnchors(markdown: string) {
 export function extractStructuredPlatformTabs(
   processedText: string,
 ): ProcessedPlatformTabs | undefined {
-  const platforms: PlatformKey[] = [];
+  const platforms = extractStructuredPlatformKeys(processedText);
   let canonicalPlatform: PlatformKey | undefined;
 
   for (const match of processedText.matchAll(PLATFORM_MARKER_PATTERN)) {
-    const { canonical, mode, platform } = match.groups ?? {};
+    const { canonical, mode } = match.groups ?? {};
 
-    if (
-      mode !== 'structured' ||
-      !canonical ||
-      !platform ||
-      !isKnownPlatform(canonical) ||
-      !isKnownPlatform(platform)
-    ) {
+    if (mode !== 'structured' || !canonical || !isKnownPlatform(canonical)) {
       continue;
     }
 
     if (!canonicalPlatform) {
-      canonicalPlatform = canonical;
-    }
-
-    if (!platforms.includes(platform)) {
-      platforms.push(platform);
+      canonicalPlatform = normalizePlatformKey(canonical) as PlatformKey;
     }
   }
 
@@ -236,6 +227,28 @@ export function extractStructuredPlatformTabs(
     defaultPlatform: getDefaultStructuredPlatform(platforms),
     platforms,
   };
+}
+
+export function extractStructuredPlatformKeys(
+  processedText: string,
+): PlatformKey[] {
+  const platforms: PlatformKey[] = [];
+
+  for (const match of processedText.matchAll(PLATFORM_MARKER_PATTERN)) {
+    const { mode, platform } = match.groups ?? {};
+
+    if (mode !== 'structured' || !platform || !isKnownPlatform(platform)) {
+      continue;
+    }
+
+    const normalizedPlatform = normalizePlatformKey(platform) as PlatformKey;
+
+    if (!platforms.includes(normalizedPlatform)) {
+      platforms.push(normalizedPlatform);
+    }
+  }
+
+  return platforms;
 }
 
 function getDefaultStructuredPlatform(platforms: PlatformKey[]) {

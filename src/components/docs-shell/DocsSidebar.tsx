@@ -7,11 +7,15 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
-import type { DocsSidebarNode } from '@/lib/docs-tree';
+import {
+  addIntroductionResourceLinks,
+  type DocsSidebarNode,
+} from '@/lib/docs-tree';
 import type { AppLocale } from '@/lib/i18n/i18n-config';
 import { getDocsSidebarMode } from '@/lib/reference-center-navigation';
 import { ApiReferenceProductNav } from './ApiReferenceProductNav';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
+import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
@@ -35,6 +39,11 @@ export function DocsSidebar({
   const sidebarMode = getDocsSidebarMode(activePath, locale);
   const hasPrimaryResourceLinks = sidebarMode === 'reference';
   const hasApiProductNav = sidebarMode === 'api';
+  const sidebarNodes = addIntroductionResourceLinks({
+    activePath,
+    locale,
+    nodes,
+  });
 
   useEffect(() => {
     void resetKey;
@@ -75,7 +84,7 @@ export function DocsSidebar({
                 <div className="shrink-0">
                   <DocsSidebarTree
                     activePath={activePath}
-                    nodes={nodes}
+                    nodes={sidebarNodes}
                     onSelectPath={onSelectPath}
                   />
                 </div>
@@ -94,11 +103,19 @@ export function DocsSidebar({
               ) : null}
               <DocsSidebarTree
                 activePath={activePath}
-                nodes={nodes}
+                nodes={sidebarNodes}
                 onSelectPath={onSelectPath}
               />
             </div>
           )}
+          {header?.productDocsHref ? (
+            <DocsSidebarProductLink
+              href={header.productDocsHref}
+              locale={locale}
+              mode="desktop"
+              onSelectPath={onSelectPath}
+            />
+          ) : null}
         </div>
       </SidebarContent>
     </ShadcnSidebar>

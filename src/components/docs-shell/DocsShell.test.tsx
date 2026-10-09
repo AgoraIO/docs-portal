@@ -339,7 +339,7 @@ describe('DocsShell', () => {
 
     const mainHeaderRow = await screen.findByTestId('docs-main-header-row');
     const brandHomeLink = within(mainHeaderRow).getByRole('link', {
-      name: 'Agora Docs',
+      name: '声网文档中心',
     });
 
     expect(brandHomeLink).toHaveAttribute('href', '/zh-CN/introduction');
@@ -639,6 +639,50 @@ describe('DocsShell', () => {
     ).toHaveTextContent('v4.6.2');
   });
 
+  it('renders the ordinary docs action in the mobile sidebar and closes it after navigation', async () => {
+    renderDocsShell({
+      activePath: '/zh-CN/api-reference/conversational-ai/android/overview',
+      activeTab: 'api-reference',
+      locale: 'zh-CN',
+      localeLinks: [
+        {
+          href: '/en/api-reference/conversational-ai/android/overview',
+          isActive: false,
+          locale: 'en',
+        },
+        {
+          href: '/zh-CN/api-reference/conversational-ai/android/overview',
+          isActive: true,
+          locale: 'zh-CN',
+        },
+      ],
+      sidebarHeader: {
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        productDocsHref: '/zh-CN/ai',
+        title: 'Android API 参考',
+      },
+    });
+
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const action = within(mobileSheet).getByRole('link', {
+      name: '查看普通文档',
+    });
+
+    expect(action).toHaveAttribute('href', '/zh-CN/ai');
+    const actionIcon = action.querySelector('svg');
+    expect(actionIcon).toHaveClass('lucide-arrow-left');
+    expect(actionIcon).toBe(action.firstElementChild);
+
+    fireEvent.click(action);
+
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    });
+  });
+
   it('uses the route locale for shell chrome before i18n bootstrap changes global language', async () => {
     await i18n.changeLanguage('en');
 
@@ -701,6 +745,7 @@ describe('DocsShell', () => {
 
     const docsTabsStrip = await screen.findByTestId('docs-tabs-strip');
 
+    expect(screen.getByTestId('docs-shell-header')).toHaveClass('sticky');
     expect(docsTabsStrip).toHaveClass('hidden', 'md:block');
     expect(docsTabsStrip).not.toHaveClass('lg:block');
   });
@@ -1780,6 +1825,102 @@ describe('DocsShell', () => {
     expect(
       within(mobileSheet).getByRole('link', { name: '产品概述' }),
     ).toBeInTheDocument();
+  });
+
+  it('opens external and linked mobile sidebar pages in new tabs with external icons', async () => {
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/realtime-media/overview',
+        activeTab: 'realtime-media',
+        locale: 'zh-CN',
+        sidebar: [
+          {
+            external: true,
+            href: 'https://im.shengwang.cn',
+            id: 'im',
+            title: '即时通讯 IM',
+            type: 'page',
+            url: 'https://im.shengwang.cn',
+          },
+          {
+            id: 'client-api',
+            linked: true,
+            search: {
+              apiType: 'client',
+              product: 'rtc',
+            },
+            title: '客户端 API',
+            type: 'page',
+            url: '/zh-CN/api-reference/api',
+          },
+        ],
+        tabs: realtimeMediaTabs,
+      },
+      '/zh-CN/realtime-media/overview',
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const imLink = within(mobileSheet).getByRole('link', {
+      name: '即时通讯 IM',
+    });
+    const clientApiLink = within(mobileSheet).getByRole('link', {
+      name: '客户端 API',
+    });
+
+    for (const link of [imLink, clientApiLink]) {
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noreferrer noopener');
+      expect(link.querySelector('.lucide-external-link')).toBeInTheDocument();
+    }
+
+    expect(imLink).toHaveAttribute('href', 'https://im.shengwang.cn');
+    expect(clientApiLink).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/api?apiType=client&product=rtc',
+    );
+  });
+
+  it('shows an internal navigation arrow without opening marked mobile links in a new tab', async () => {
+    renderDocsShell(
+      {
+        activePath: '/zh-CN/introduction',
+        activeTab: 'introduction',
+        locale: 'zh-CN',
+        sidebar: [
+          {
+            id: 'introduction-demo-gallery',
+            showNavigationArrow: true,
+            title: '体验 Demo',
+            type: 'page',
+            url: '/zh-CN/reference/demo',
+          },
+        ],
+        tabs: [
+          {
+            id: 'introduction',
+            title: '介绍',
+            url: '/zh-CN/introduction',
+          },
+        ],
+      },
+      '/zh-CN/introduction',
+    );
+
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+
+    const mobileSheet = await screen.findByRole('dialog');
+    const demoLink = within(mobileSheet).getByRole('link', {
+      name: '体验 Demo',
+    });
+
+    expect(demoLink).toHaveAttribute('href', '/zh-CN/reference/demo');
+    expect(demoLink).not.toHaveAttribute('target', '_blank');
+    expect(demoLink.querySelector('.lucide-arrow-right')).toBeInTheDocument();
+    expect(
+      demoLink.querySelector('.lucide-external-link'),
+    ).not.toBeInTheDocument();
   });
 
   it('keeps linked hub sections collapsed when defaultOpen is false', async () => {

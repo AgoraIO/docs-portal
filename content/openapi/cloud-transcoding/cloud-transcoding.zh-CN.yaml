@@ -804,12 +804,12 @@ components:
     Basic Auth:
       type: http
       description: 声网云端转码 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64
-        编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/api-reference/api-ref/cloud-transcoding/authentication)。
+        编码凭证，并填入请求头部的 `Authorization` 字段中。
       scheme: basic
     API Key:
       type: apiKey
       description: '**HTTP HMAC 认证**：每次发送 HTTP 请求时，都必须在请求 Header 部填入 `Authorization`
-        字段。关于如何生成该字段的值，请参考[实现 HTTP HMAC 认证](/zh-CN/api-reference/api-ref/cloud-transcoding/authentication)。'
+        字段。'
       name: API Key
       in: header
   responses:

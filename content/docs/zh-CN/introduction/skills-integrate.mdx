@@ -1,13 +1,13 @@
 ---
-title: "Agora Skills"
-description: "配置 Agora Skills，让 AI Coding Agent 按声网官方工作流选择 Starter、接入步骤和代码实现方式。"
+title: "声网 Skills"
+description: "配置 声网 Skills，让 AI Coding Agent 按声网官方工作流选择 Starter、接入步骤和代码实现方式。"
 ---
 
-配置 Agora Skills 后，AI Coding Agent 可以在编码前先确定声网产品路径、Starter 和接入步骤，再按官方流程完成实现。
+配置 声网 Skills 后，AI Coding Agent 可以在编码前先确定声网产品路径、Starter 和接入步骤，再按官方流程完成实现。
 
-当任务需要判断“先做什么”或“该走哪条官方路径”时，优先使用 Agora Skills。如果还需要在生成代码前查询最新官方文档，可以同时配置 [Agora MCP](/zh-CN/introduction/mcp-integrate)。
+当任务需要判断“先做什么”或“该走哪条官方路径”时，优先使用 声网 Skills。如果还需要在生成代码前查询最新官方文档，可以同时配置 [声网 MCP](/zh-CN/introduction/mcp-integrate)。
 
-## 安装 Agora Skills
+## 安装 声网 Skills
 
 <Tabs>
 <TabsList>
@@ -27,7 +27,7 @@ npx skills add AgoraIO/skills
 
 <TabsContent value="manual">
 
-克隆仓库，并将 AI Coding Agent 指向 Agora Skills 文件：
+克隆仓库，并将 AI Coding Agent 指向 声网 Skills 文件：
 
 ```bash
 git clone https://github.com/AgoraIO/skills.git ~/agora-skills
@@ -38,52 +38,30 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 </TabsContent>
 </Tabs>
 
-手动安装时，请按工具要求放置 Agora Skills 文件：
+手动安装时，请按工具要求放置 声网 Skills 文件：
 
 <Tabs>
 <TabsList>
-  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
-  <TabsTrigger value="cursor">Cursor</TabsTrigger>
-  <TabsTrigger value="windsurf">Windsurf</TabsTrigger>
-  <TabsTrigger value="copilot">GitHub Copilot</TabsTrigger>
+  <TabsTrigger value="trae">TRAE</TabsTrigger>
+  <TabsTrigger value="kimi-code">Kimi Code</TabsTrigger>
   <TabsTrigger value="other-tools">其他工具</TabsTrigger>
 </TabsList>
 
-<TabsContent value="claude-code">
+<TabsContent value="trae">
 
-在 Claude Code 中运行以下命令。
+将克隆后的 `skills/agora/` 目录复制到项目中的 `.trae/skills/agora/`，并保留 `SKILL.md` 以及关联脚本和参考文件。
 
-- **用户级**，可在所有项目中使用：
+如果通过 Skills CLI 安装到了 `.agents/skills/`，请在 TRAE 的 **设置 > 技能与命令 > 导入设置** 中启用 `.agents` 技能目录。
 
-  ```bash
-  /plugin marketplace add AgoraIO/skills
-  /plugin install agora
-  ```
-
-- **项目级**，可通过版本控制与团队共享：
-
-  ```bash
-  /plugin marketplace add AgoraIO/skills
-  /plugin install agora --scope project
-  ```
+安装后，可以让助手“使用声网 Skills”处理声网任务。目录和启用方式见 [TRAE 官方 Skills 文档](https://docs.trae.cn/ide_skills)。
 
 </TabsContent>
 
-<TabsContent value="cursor">
+<TabsContent value="kimi-code">
 
-将 `skills/agora/` 复制或符号链接到 `.cursor/rules/`。
+将克隆后的 `skills/agora/` 目录复制到项目中的 `.kimi-code/skills/agora/`，并保留 `SKILL.md` 以及关联文件。Kimi Code 也会扫描项目中的 `.agents/skills/`。
 
-</TabsContent>
-
-<TabsContent value="windsurf">
-
-将 `skills/agora/` 添加到 Cascade 上下文中。
-
-</TabsContent>
-
-<TabsContent value="copilot">
-
-通过 `@workspace` 引用这些文件，或将它们加入 Copilot instructions。
+新建会话后，让助手“使用声网 Skills”完成任务。也可以使用 `/skill:` 加技能文件中定义的名称来调用。目录和调用方式见 [Kimi Code 官方 Skills 文档](https://www.kimi.com/code/docs/kimi-code-cli/customization/skills.html)。
 
 </TabsContent>
 
@@ -96,11 +74,11 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 
 ## 从提示词开始
 
-安装 Agora Skills 后，让 AI Coding Agent 在创建项目或编辑代码前选择正确的声网路径。
+安装 声网 Skills 后，让 AI Coding Agent 在创建项目或编辑代码前选择正确的声网路径。
 
 ```text
-使用 Agora Skills 和 Agora MCP 帮我构建一个网页端对话式 AI Demo。
-请先查询官方文档，选择合适的 Starter，并使用 Agora CLI 完成中国区项目配置。
+使用 声网 Skills 和 声网 MCP 帮我构建一个网页端对话式 AI Demo。
+请先查询官方文档，选择合适的 Starter，并使用 声网 CLI 完成中国区项目配置。
 ```
 
 接下来，让 AI Coding Agent 先确认 Starter 和接入路径，再开始创建项目或编辑代码。

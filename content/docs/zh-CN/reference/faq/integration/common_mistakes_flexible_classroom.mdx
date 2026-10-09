@@ -109,7 +109,7 @@ Error running install script for optional dependency: "/root/flexible-classroom-
 
 `600001-1` 和 `401` 错误一般是因为 [`launch`](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launch) 方法传入的 Token 错误，或者 Token 和 App ID 不匹配。请检查 Token 是否正确，以及保证 App ID 和 Token 匹配。
 
-声网推荐你在后端生成 Token，前端调用生成的 Token，详情参考[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/build/setup-and-access/generate-token)。
+声网推荐你在后端生成 Token，前端调用生成的 Token，详情参考[使用 Token 鉴权](/zh-CN/solutions/flexible-classroom/build/create-classroom/generate-token)。
 
 如果需要临时生成 token 测试，可以使用这个[工具](https://webdemo.agora.io/token-builder/)。
 
@@ -120,7 +120,7 @@ Error running install script for optional dependency: "/root/flexible-classroom-
 该错误是因为该房间编号（`roomUuid`）已经创建了一个小班课课堂，同一个房间编号被配置为不同的房间类型，从而导致房间类型冲突。
 声网建议不要使用同一个房间编号创建多个课堂，并且每个房间都应配置一个不同的房间类型。
 
-其他相关服务端错误码可参考[响应状态码](/zh-CN/solutions/flexible-classroom/reference/response-code)。
+其他相关服务端错误码可参考[响应状态码](/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/response-code)。
 
 ### Error Domain=last launch not finished Code=-1 "(null)"
 

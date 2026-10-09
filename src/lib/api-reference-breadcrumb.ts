@@ -18,7 +18,7 @@ export function resolveZhCnApiReferenceBreadcrumb({
   activePath: string;
   title: string;
 }): DocsBreadcrumbItem[] | null {
-  const entry = findZhCnApiReferenceEntry(activePath);
+  const entry = resolveZhCnApiReferenceEntry(activePath);
 
   if (!entry) {
     return null;
@@ -48,7 +48,7 @@ export function resolveZhCnApiReferenceBreadcrumb({
   return breadcrumb;
 }
 
-function findZhCnApiReferenceEntry(
+export function resolveZhCnApiReferenceEntry(
   activePath: string,
 ): ApiReferenceCardEntry | undefined {
   return ZH_CN_API_REFERENCE_ENTRIES.map((entry, index) => ({

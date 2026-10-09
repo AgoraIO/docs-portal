@@ -19,7 +19,7 @@ info:
     > 请确保声网频道的场景为直播，而非通信，否则输入媒体流会失败。
 
 
-    为方便你监听云端播放器的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-pull/build/monitor-events/enable-event-notification)。开通该服务后，你可以通过 Webhook 接收如下事件：
+    为方便你监听云端播放器的状态，声网提供[消息通知服务](/zh-CN/realtime-media/media-pull/build/enable-event-notification)。开通该服务后，你可以通过 Webhook 接收如下事件：
 
 
     - [云端播放器创建成功](/zh-CN/realtime-media/media-pull/reference/ncs-events)。
@@ -512,7 +512,7 @@ components:
   securitySchemes:
     Basic Auth:
       type: http
-      description: 声网输入在线媒体流 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。详见[实现 HTTP 基本认证](/zh-CN/api-reference/api-ref/media-pull/restful-authentication)。
+      description: 声网输入在线媒体流 RESTful API 仅支持 HTTPS 协议。发送请求时，你需要使用声网提供的客户 ID 和客户密钥生成 Base64 编码凭证，并填入请求头部的 `Authorization` 字段中。
       scheme: basic
   responses:
     failure:

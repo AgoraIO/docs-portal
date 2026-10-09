@@ -15,8 +15,10 @@ import {
   loadDocsSearchIndex,
   loadDocsTabIndex,
   normalizeZhCnEmbeddedApiSidebar,
+  revealActiveSidebarPath,
 } from './docs-page.server';
 import { type PageWithSource, source } from './source.server';
+import { resolveZhCnProductIaRedirect } from './zh-cn-product-ia-redirects';
 
 vi.mock('./source.server', () => ({
   getPageMarkdownUrl: (page: { url: string }, platform?: string) => {
@@ -1121,6 +1123,23 @@ Why teams use it.`,
   } as unknown as PageWithSource;
 }
 
+function createZhPage(): PageWithSource {
+  return {
+    ...createPage(),
+    data: {
+      ...createPage().data,
+      info: {
+        fullPath: '/virtual/content/docs/zh-CN/introduction/about-agora.mdx',
+        path: 'zh-CN/introduction/about-agora.mdx',
+      },
+    },
+    path: 'zh-CN/introduction/about-agora.mdx',
+    slugs: ['zh-CN', 'introduction', 'about-agora'],
+    type: 'docs',
+    url: '/zh-CN/introduction/about-agora',
+  } as unknown as PageWithSource;
+}
+
 function mockPagesByRequestedSlugs() {
   mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
     const slugPath = slugs.join('/');
@@ -1478,6 +1497,17 @@ describe('loadDocsPagePayload', () => {
     mockedGetNodeMeta.mockReturnValue(undefined);
   });
 
+  it('redirects an OpenAPI product root to its first endpoint when no index exists', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/api-reference/api-ref/conversational-ai/join',
+    });
+  });
+
   it('falls back to generating TOC from processed markdown', async () => {
     await expect(
       loadDocsPagePayload('en', 'introduction', ['about-agora']),
@@ -1746,6 +1776,86 @@ Web body
     });
   });
 
+  it('adds title platform badges for zh-CN selected platform routes', async () => {
+    const page = createZhPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## 共享内容
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android 设置
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web 设置
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('zh-CN', 'introduction', [
+      'about-agora',
+      'web',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/zh-CN/introduction/about-agora',
+      markdownUrl: '/zh-CN/introduction/about-agora/web.md',
+      titlePlatforms: ['web'],
+    });
+  });
+
+  it('does not add title platform badges for non-zh-CN selected platform routes', async () => {
+    const page = createPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## Shared intro
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android setup
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web setup
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'en') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('en', 'introduction', [
+      'about-agora',
+      'web',
+    ]);
+
+    expect(unwrapPayload(payload)).not.toHaveProperty('titlePlatforms');
+  });
+
   it('resolves platform alias URL segments to their canonical platform tabs', async () => {
     const page = createPage();
 
@@ -1941,10 +2051,72 @@ Web body
     });
   });
 
-  it('returns OpenAPI content inside the existing docs shell payload from the merged source', async () => {
+  it('infers zh-CN title platform badges from API reference platform paths', async () => {
+    const page = {
+      ...createZhPage(),
+      path: 'zh-CN/api-reference/rtc/android/(current)/overview.mdx',
+      slugs: ['zh-CN', 'api-reference', 'rtc', 'android', 'overview'],
+      url: '/zh-CN/api-reference/rtc/android/overview',
+    } as unknown as PageWithSource;
+
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? page : undefined,
+    );
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('zh-CN', 'api-reference', [
+      'rtc',
+      'android',
+      'overview',
+    ]);
+
+    expect(payload).toMatchObject({
+      activePath: '/zh-CN/api-reference/rtc/android/overview',
+      titlePlatforms: ['android'],
+    });
+  });
+
+  it('keeps lane-authored pages beside generated operations in the docs shell', async () => {
     mockedGetPage.mockImplementation((_slugs, locale) =>
       locale === 'zh-CN' ? createZhOpenApiPage() : createOpenApiPage(),
     );
+    const conversationalAiPage = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/api-reference/api-ref/conversational-ai/index.mdx',
+          path: 'en/api-reference/api-ref/conversational-ai/index.mdx',
+        },
+        title: 'Conversational AI',
+      },
+      path: 'en/api-reference/api-ref/conversational-ai/index.mdx',
+      slugs: ['en', 'api-reference', 'api-ref', 'conversational-ai', 'index'],
+      url: '/en/api-reference/api-ref/conversational-ai',
+    } as unknown as PageWithSource;
+    const authenticationPage = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/en/api-reference/api-ref/conversational-ai/authentication.md',
+          path: 'en/api-reference/api-ref/conversational-ai/authentication.md',
+        },
+        title: 'RESTful authentication',
+      },
+      path: 'en/api-reference/api-ref/conversational-ai/authentication.md',
+      slugs: [
+        'en',
+        'api-reference',
+        'api-ref',
+        'conversational-ai',
+        'authentication',
+      ],
+      url: '/en/api-reference/api-ref/conversational-ai/authentication',
+    } as unknown as PageWithSource;
+    mockedGetPages.mockReturnValue([conversationalAiPage, authenticationPage]);
     mockedGetPageTree.mockReturnValue(apiReferencePageTree);
 
     const payload = await loadDocsPagePayload('en', 'api-reference', [
@@ -2005,7 +2177,6 @@ Web body
 
     expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
       expect.arrayContaining([
-        '/en/api-reference',
         '/en/api-reference/api-ref/conversational-ai',
         '/en/api-reference/api-ref/conversational-ai/authentication',
         '/en/api-reference/api-ref/conversational-ai/join',
@@ -2215,6 +2386,7 @@ Web body
     expect(unscopedPayload.sidebarHeader).toEqual({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
+      productDocsHref: '/zh-CN/realtime-media/fusion-cdn',
       title: 'RESTful API',
     });
   });
@@ -2223,7 +2395,7 @@ Web body
     const parentUrl = '/zh-CN/api-reference/api-ref/cloud-transcoding';
     const eventUrl = `${parentUrl}/ncs-events`;
     const guideUrl =
-      '/zh-CN/realtime-media/transcoding/build/monitor-events/enable-event-notification';
+      '/zh-CN/realtime-media/transcoding/build/enable-event-notification';
     const makePage = (url: string, title: string) => ({
       ...createPage(),
       data: {
@@ -2360,6 +2532,16 @@ Web body
       ]),
     ).resolves.toEqual({
       redirectUrl: '/zh-CN/api-reference/api-ref/conversational-ai',
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'api-reference', [
+        'conversational-ai',
+        'rest-api',
+        'authentication',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/build/http-basic-auth',
     });
   });
 
@@ -2961,8 +3143,7 @@ Web body
     await expect(
       loadDocsPagePayload('zh-CN', 'best-practices', ['http-basic-auth']),
     ).resolves.toEqual({
-      redirectUrl:
-        '/zh-CN/api-reference/api-ref/conversational-ai/authentication',
+      redirectUrl: '/zh-CN/ai/build/http-basic-auth',
     });
 
     await expect(
@@ -2971,6 +3152,40 @@ Web body
       redirectUrl: '/zh-CN/ai/release-notes',
     });
   });
+
+  it.each([
+    ['conversational-ai/authentication', '/zh-CN/ai/build/http-basic-auth'],
+    [
+      'cloud-recording/authentication',
+      '/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth',
+    ],
+    [
+      'media-pull/restful-authentication',
+      '/zh-CN/realtime-media/media-pull/build/http-basic-auth',
+    ],
+    [
+      'media-push/restful-authentication',
+      '/zh-CN/realtime-media/media-push/build/enable-media-push/http-basic-auth',
+    ],
+    [
+      'rtc/authentication',
+      '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
+    ],
+    [
+      'voip-callkit/authentication',
+      '/zh-CN/solutions/voip-call/build/http-basic-auth',
+    ],
+  ] as const)(
+    'redirects deleted Chinese API authentication page %s to %s',
+    async (legacyPath, redirectUrl) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'api-reference', [
+          'api-ref',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({ redirectUrl });
+    },
+  );
 
   it('redirects merged platform suffix pages to the canonical page with platform selection', async () => {
     mockedGetPage.mockImplementation((slugs: string[], locale = 'en') => {
@@ -3576,6 +3791,102 @@ Web body
     });
   });
 
+  it('reveals only the embedded service API section matching the product source', () => {
+    const activeApiUrl =
+      '/zh-CN/api-reference/api-ref/whiteboard/restful/create-room';
+    const productPath = '/zh-CN/realtime-media/whiteboard';
+    const whiteboardScope = '/zh-CN/realtime-media/whiteboard/whiteboard-sdk';
+    const fastboardScope = '/zh-CN/realtime-media/whiteboard/fastboard-sdk';
+    const nodes: DocsSidebarNode[] = [
+      {
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    id: 'whiteboard-api-page',
+                    search: { from: productPath, fromScope: whiteboardScope },
+                    title: '创建房间',
+                    type: 'page',
+                    url: activeApiUrl,
+                  },
+                ],
+                collapsible: true,
+                defaultOpen: false,
+                id: 'whiteboard-service-api',
+                title: '服务端 API',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'whiteboard-reference',
+            title: '参考',
+            type: 'section',
+          },
+        ],
+        id: 'whiteboard-sdk',
+        title: '互动白板 SDK',
+        type: 'section',
+      },
+      {
+        children: [
+          {
+            children: [
+              {
+                children: [
+                  {
+                    id: 'fastboard-api-page',
+                    search: { from: productPath, fromScope: fastboardScope },
+                    title: '创建房间',
+                    type: 'page',
+                    url: activeApiUrl,
+                  },
+                ],
+                collapsible: true,
+                defaultOpen: false,
+                id: 'fastboard-service-api',
+                title: '服务端 API',
+                type: 'section',
+              },
+            ],
+            collapsible: true,
+            id: 'fastboard-reference',
+            title: '参考',
+            type: 'section',
+          },
+        ],
+        id: 'fastboard-sdk',
+        title: 'Fastboard SDK',
+        type: 'section',
+      },
+    ];
+
+    const revealed = revealActiveSidebarPath(
+      nodes,
+      activeApiUrl,
+      productPath,
+      whiteboardScope,
+    );
+
+    expect(revealed[0]).toMatchObject({
+      children: [
+        {
+          defaultOpen: true,
+          children: [{ defaultOpen: true }],
+        },
+      ],
+    });
+    expect(revealed[1]).toMatchObject({
+      children: [
+        {
+          defaultOpen: false,
+          children: [{ defaultOpen: false }],
+        },
+      ],
+    });
+  });
+
   it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
     const page = createPage();
     const broadcastPage = {
@@ -3756,6 +4067,164 @@ Web body
     );
   });
 
+  it('places the dynamic client API after downloads in a Chinese product reference sidebar', async () => {
+    const page = {
+      ...createPage(),
+      data: {
+        ...createPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api.mdx',
+          path: 'zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api.mdx',
+        },
+        title: '如何调用 API',
+      },
+      path: 'zh-CN/solutions/flexible-classroom/reference/call-api.mdx',
+      slugs: [
+        'zh-CN',
+        'solutions',
+        'flexible-classroom',
+        'reference',
+        'api-usage-and-limits',
+        'call-api',
+      ],
+      url: '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
+    };
+
+    mockedGetPage.mockReturnValue(page);
+    mockedGetPages.mockReturnValue([page]);
+    mockedGetPageTree.mockReturnValue({
+      children: [
+        {
+          $id: 'zh-root',
+          children: [
+            {
+              $id: 'solutions-folder',
+              children: [
+                {
+                  $id: 'flexible-classroom-folder',
+                  children: [
+                    {
+                      $id: 'reference-separator',
+                      name: '参考',
+                      type: 'separator',
+                    },
+                    {
+                      $id: 'reference-folder',
+                      children: [
+                        {
+                          $id: 'downloads',
+                          name: '下载',
+                          type: 'page',
+                          url: '/zh-CN/solutions/flexible-classroom/reference/downloads',
+                        },
+                        {
+                          $id: 'service-api',
+                          name: '服务端 API',
+                          type: 'page',
+                          url: '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+                        },
+                        {
+                          $id: 'api-usage-and-limits',
+                          children: [
+                            {
+                              $id: 'call-api',
+                              name: '如何调用 API',
+                              type: 'page',
+                              url: '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
+                            },
+                          ],
+                          name: 'API 使用与限制',
+                          type: 'folder',
+                        },
+                      ],
+                      name: '参考',
+                      type: 'folder',
+                    },
+                  ],
+                  index: {
+                    $id: 'flexible-classroom-index',
+                    name: '灵动课堂',
+                    type: 'page',
+                    url: '/zh-CN/solutions/flexible-classroom',
+                  },
+                  name: '灵动课堂',
+                  type: 'folder',
+                },
+              ],
+              index: {
+                $id: 'solutions-index',
+                name: '解决方案',
+                type: 'page',
+                url: '/zh-CN/solutions/overview',
+              },
+              name: '解决方案',
+              root: true,
+              type: 'folder',
+            },
+          ],
+          name: '简体中文',
+          type: 'folder',
+        },
+      ],
+      name: 'Docs',
+    } as Root);
+    mockedGetNodeMeta.mockImplementation((node) =>
+      node.$id === 'flexible-classroom-folder'
+        ? ({
+            data: { navScope: {}, title: '灵动课堂' },
+          } as unknown as ReturnType<typeof source.getNodeMeta>)
+        : undefined,
+    );
+
+    const payload = await loadDocsPagePayload('zh-CN', 'solutions', [
+      'flexible-classroom',
+      'reference',
+      'api-usage-and-limits',
+      'call-api',
+    ]);
+
+    if (!payload || 'redirectUrl' in payload) {
+      throw new Error('expected a docs page payload');
+    }
+
+    const findReferenceSection = (
+      nodes: typeof payload.sidebar,
+    ): (typeof payload.sidebar)[number] | undefined => {
+      for (const node of nodes) {
+        if (node.type === 'section') {
+          if (
+            node.title === '参考' &&
+            node.children.some(
+              (child) => child.type === 'page' && child.title === '下载',
+            )
+          ) {
+            return node;
+          }
+
+          const nested = findReferenceSection(node.children);
+          if (nested) {
+            return nested;
+          }
+        }
+      }
+
+      return undefined;
+    };
+
+    const referenceSection = findReferenceSection(payload.sidebar);
+
+    if (!referenceSection || referenceSection.type !== 'section') {
+      throw new Error('expected the reference section');
+    }
+
+    expect(referenceSection.children.slice(0, 3)).toEqual([
+      expect.objectContaining({ title: '下载', type: 'page' }),
+      expect.objectContaining({ title: '客户端 API', type: 'page' }),
+      expect.objectContaining({ title: '服务端 API', type: 'page' }),
+    ]);
+  });
+
   it('removes deleted source-backed API directory indexes from scoped Chinese RESTful navigation', async () => {
     const basePage = createPage();
     const publishPage = {
@@ -3879,6 +4348,7 @@ Web body
     expect(payload.sidebarHeader).toEqual({
       backHref: '/zh-CN/realtime-media/rtm',
       backLabel: '实时消息 RTM',
+      productDocsHref: '/zh-CN/realtime-media/rtm',
       title: '实时消息 RTM',
     });
     expect(payload.breadcrumb).toEqual([
@@ -4044,13 +4514,14 @@ Web body
         'monitor',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/realtime-media/usage-analytics/build/rtc/monitor',
+      redirectUrl:
+        '/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor',
     });
 
     await expect(
       loadDocsPagePayload('zh-CN', 'introduction', ['ppt-transcoding']),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/solutions/ppt-transcoding',
+      redirectUrl: '/zh-CN/realtime-media/ppt-transcoding',
     });
 
     await expect(
@@ -4060,8 +4531,352 @@ Web body
         'quick-start',
       ]),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/solutions/ppt-transcoding/get-started/quick-start',
+      redirectUrl:
+        '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
     });
+  });
+
+  it.each(['ppt-transcoding', 'status-page'])(
+    'redirects old zh-CN Solutions %s page paths to Realtime Media',
+    async (product) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'solutions', [product, 'index']),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/${product}`,
+        statusCode: 301,
+      });
+      await expect(
+        loadDocsPagePayload('zh-CN', 'solutions', [
+          product,
+          'reference',
+          'release-notes',
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/${product}/reference/release-notes`,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it('keeps moved solution-product aliases as permanent redirects', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'solutions', ['ppt-transcoding', 'billing']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/ppt-transcoding/reference/billing',
+      statusCode: 301,
+    });
+  });
+
+  it.each([
+    ['ppt-transcoding', '/zh-CN/realtime-media/ppt-transcoding'],
+    [
+      'ppt-transcoding/get-started/quick-start',
+      '/zh-CN/realtime-media/ppt-transcoding/get-started/quick-start',
+    ],
+    ['status-page', '/zh-CN/realtime-media/status-page'],
+    [
+      'status-page/reference/release-notes',
+      '/zh-CN/realtime-media/status-page/reference/release-notes',
+    ],
+  ])(
+    'keeps the old Solutions path %s permanently redirected',
+    async (path, target) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'solutions', path.split('/')),
+      ).resolves.toEqual({
+        redirectUrl: target,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it.each([
+    ['get-started/enable-service', 'build/rtm-initialization/enable-service'],
+    ['error-codes', 'build/troubleshooting'],
+    ['reference/link-state', 'build/authentication-and-connection/link-state'],
+    ['reference/metadata-events', 'build/state-and-attributes/metadata-events'],
+    ['reference/presence-events', 'build/state-and-attributes/presence-events'],
+    ['reference/topic-events', 'build/channels-and-topics/topics/topic-events'],
+    [
+      'user-guide/channel/channel-basic',
+      'build/channels-and-topics/channel-basic',
+    ],
+    [
+      'user-guide/channel/channel-name',
+      'build/channels-and-topics/channel-name',
+    ],
+    [
+      'user-guide/channel/message-channel',
+      'build/channels-and-topics/message-channel',
+    ],
+    [
+      'user-guide/channel/stream-channel',
+      'build/channels-and-topics/stream-channel',
+    ],
+    [
+      'user-guide/link/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'user-guide/link/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'user-guide/message/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+    [
+      'user-guide/message/constructed',
+      'build/message-design-and-history/constructed',
+    ],
+    [
+      'user-guide/message/history-message',
+      'build/message-design-and-history/history-message',
+    ],
+    ['user-guide/message/send-message', 'build/messaging/send-message'],
+    [
+      'user-guide/message/serialized',
+      'build/message-design-and-history/serialized',
+    ],
+    ['user-guide/presence/event', 'build/state-and-attributes/presence-events'],
+    [
+      'user-guide/presence/presence-basic',
+      'build/state-and-attributes/presence-basic',
+    ],
+    [
+      'user-guide/presence/temporary-user-state',
+      'build/state-and-attributes/temporary-user-state',
+    ],
+    [
+      'user-guide/setup/application-setup',
+      'build/rtm-initialization/application-setup',
+    ],
+    [
+      'user-guide/setup/data-storage',
+      'build/state-and-attributes/data-storage',
+    ],
+    ['user-guide/setup/login', 'build/authentication-and-connection/login'],
+    [
+      'user-guide/setup/private-setup',
+      'build/network-and-private-deployment/private-setup',
+    ],
+    [
+      'user-guide/storage/channel-metadata',
+      'build/state-and-attributes/channel-metadata',
+    ],
+    ['user-guide/storage/event', 'build/state-and-attributes/metadata-events'],
+    [
+      'user-guide/storage/user-metadata',
+      'build/state-and-attributes/user-metadata',
+    ],
+    [
+      'user-guide/token/token-generation',
+      'build/authentication-and-connection/token-generation',
+    ],
+    [
+      'user-guide/token/user-authentication',
+      'build/authentication-and-connection/user-authentication',
+    ],
+    ['user-guide/topic/event', 'build/channels-and-topics/topics/topic-events'],
+    [
+      'user-guide/topic/topic-basic',
+      'build/channels-and-topics/topics/topic-basic',
+    ],
+    ['user-guide/topic/usage', 'build/channels-and-topics/topics/usage'],
+  ] as const)(
+    'redirects RTM historical alias %s to %s',
+    async (legacyPath, canonicalPath) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it('uses a permanent redirect for the moved RTM billing reference alias', async () => {
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', [
+        'rtm',
+        'overview',
+        'billing',
+        'billing-rules',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/realtime-media/rtm/reference/billing/billing-rules',
+      statusCode: 301,
+    });
+  });
+
+  it.each([
+    [
+      'build/setup-and-access/enable-service',
+      'build/rtm-initialization/enable-service',
+    ],
+    [
+      'build/setup-and-access/application-setup',
+      'build/rtm-initialization/application-setup',
+    ],
+    [
+      'build/setup-and-access/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+    [
+      'build/setup-and-access/login',
+      'build/authentication-and-connection/login',
+    ],
+    [
+      'build/setup-and-access/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'build/setup-and-access/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'build/setup-and-access/data-storage',
+      'build/state-and-attributes/data-storage',
+    ],
+    [
+      'build/setup-and-access/private-setup',
+      'build/network-and-private-deployment/private-setup',
+    ],
+    [
+      'build/manage-channels/channel-basic',
+      'build/channels-and-topics/channel-basic',
+    ],
+    [
+      'build/manage-channels/channel-name',
+      'build/channels-and-topics/channel-name',
+    ],
+    [
+      'build/manage-channels/message-channel',
+      'build/channels-and-topics/message-channel',
+    ],
+    [
+      'build/manage-channels/stream-channel',
+      'build/channels-and-topics/stream-channel',
+    ],
+    ['build/manage-messages/send-message', 'build/messaging/send-message'],
+    [
+      'build/manage-messages/constructed',
+      'build/message-design-and-history/constructed',
+    ],
+    [
+      'build/manage-messages/serialized',
+      'build/message-design-and-history/serialized',
+    ],
+    [
+      'build/manage-messages/history-message',
+      'build/message-design-and-history/history-message',
+    ],
+    [
+      'build/manage-topics/topic-basic',
+      'build/channels-and-topics/topics/topic-basic',
+    ],
+    ['build/manage-topics/usage', 'build/channels-and-topics/topics/usage'],
+    [
+      'build/manage-topics/topic-events',
+      'build/channels-and-topics/topics/topic-events',
+    ],
+    [
+      'build/manage-presence/presence-basic',
+      'build/state-and-attributes/presence-basic',
+    ],
+    [
+      'build/manage-presence/temporary-user-state',
+      'build/state-and-attributes/temporary-user-state',
+    ],
+    [
+      'build/manage-presence/presence-events',
+      'build/state-and-attributes/presence-events',
+    ],
+    [
+      'build/manage-metadata/user-metadata',
+      'build/state-and-attributes/user-metadata',
+    ],
+    [
+      'build/manage-metadata/channel-metadata',
+      'build/state-and-attributes/channel-metadata',
+    ],
+    [
+      'build/manage-metadata/metadata-events',
+      'build/state-and-attributes/metadata-events',
+    ],
+    [
+      'build/security-and-auth/token-generation',
+      'build/authentication-and-connection/token-generation',
+    ],
+    [
+      'build/security-and-auth/user-authentication',
+      'build/authentication-and-connection/user-authentication',
+    ],
+  ] as const)(
+    'redirects RTM current old page %s to %s with 301',
+    async (legacyPath, canonicalPath) => {
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({
+        redirectUrl: `/zh-CN/realtime-media/rtm/${canonicalPath}`,
+        statusCode: 301,
+      });
+    },
+  );
+
+  it.each([
+    [
+      'build/manage-connections/link-basic',
+      'build/authentication-and-connection/link-basic',
+    ],
+    [
+      'build/manage-connections/link-state',
+      'build/authentication-and-connection/link-state',
+    ],
+    [
+      'build/manage-messages/add-event-listener',
+      'build/messaging/add-event-listener',
+    ],
+  ] as const)(
+    'redirects the RTM intermediate path %s without retaining its old directory',
+    async (legacyPath, canonicalPath) => {
+      const redirectUrl = `/zh-CN/realtime-media/rtm/${canonicalPath}`;
+
+      expect(redirectUrl).not.toMatch(
+        /\/build\/(manage-connections|manage-messages)(\/|$)/,
+      );
+      await expect(
+        loadDocsPagePayload('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).resolves.toEqual({ redirectUrl, statusCode: 301 });
+    },
+  );
+
+  it('does not add redirects for RTM legacy category roots', () => {
+    for (const legacyPath of [
+      'build/setup-and-access',
+      'build/manage-channels',
+      'build/manage-messages',
+      'build/manage-topics',
+      'build/manage-presence',
+      'build/manage-metadata',
+      'build/security-and-auth',
+    ]) {
+      expect(
+        resolveZhCnProductIaRedirect('zh-CN', 'realtime-media', [
+          'rtm',
+          ...legacyPath.split('/'),
+        ]),
+      ).toBeNull();
+    }
   });
 
   it('redirects moved Reference pages to their new product paths', async () => {
