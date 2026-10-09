@@ -69,9 +69,9 @@ private void initializeAndJoinChannel() {
     RtcEngineConfig config = new RtcEngineConfig();
     config.mAppId = appId;
     config.mContext = mContext;
-    config.mEventHandler = mEngineEventHandler.mRtcEventHandler;
+    config.mEventHandler = mRtcEventHandler;
     // Restrict access to servers in North America only
-    config.mAreaCode = AREA_CODE_NA;
+    config.mAreaCode = RtcEngineConfig.AreaCode.AREA_CODE_NA;
     mRtcEngine = RtcEngine.create(config);
   } catch (Exception e) {
       throw new RuntimeException("Check the error.");
@@ -88,9 +88,9 @@ private fun initializeAndJoinChannel() {
     val config = RtcEngineConfig()
     config.mAppId = appId
     config.mContext = mContext
-    config.mEventHandler = mEngineEventHandler.mRtcEventHandler
+    config.mEventHandler = mRtcEventHandler
     // Restrict access to servers in North America only
-    config.mAreaCode = AREA_CODE_NA
+    config.mAreaCode = RtcEngineConfig.AreaCode.AREA_CODE_NA
     mRtcEngine = RtcEngine.create(config)
   } catch (e: Exception) {
       throw RuntimeException("Check the error.")
@@ -118,9 +118,9 @@ private void initializeAndJoinChannel() {
     RtcEngineConfig config = new RtcEngineConfig();
     config.mAppId = appId;
     config.mContext = mContext;
-    config.mEventHandler = mEngineEventHandler.mRtcEventHandler;
+    config.mEventHandler = mRtcEventHandler;
     // Exclude Mainland China from access zones
-    config.mAreaCode = AREA_CODE_GLOB ^ AREA_CODE_CN;
+    config.mAreaCode = RtcEngineConfig.AreaCode.AREA_CODE_GLOB ^ RtcEngineConfig.AreaCode.AREA_CODE_CN;
     mRtcEngine = RtcEngine.create(config);
   } catch (Exception e) {
       throw new RuntimeException("Check the error.");
@@ -137,9 +137,9 @@ private fun initializeAndJoinChannel() {
     val config = RtcEngineConfig()
     config.mAppId = appId
     config.mContext = mContext
-    config.mEventHandler = mEngineEventHandler.mRtcEventHandler
+    config.mEventHandler = mRtcEventHandler
     // Exclude Mainland China from access zones
-    config.mAreaCode = AREA_CODE_GLOB xor AREA_CODE_CN
+    config.mAreaCode = RtcEngineConfig.AreaCode.AREA_CODE_GLOB xor RtcEngineConfig.AreaCode.AREA_CODE_CN
     mRtcEngine = RtcEngine.create(config)
   } catch (e: Exception) {
       throw RuntimeException("Check the error.")

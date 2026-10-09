@@ -102,28 +102,30 @@ To add built-in media stream encryption to your app, refer to the following step
     Obtain the string key and Base64-encoded salt from your server, convert the salt from Base64 to `uint8_t`, and call `enableEncryption` before joining a channel. Set the encryption mode to `AES_128_GCM2` or `AES_256_GCM2` and pass the key and salt to the SDK.
 
     ```java tab="Java" tabGroup="encryption-android"
-    // Noise-free sample values must come from your server.
+    // Get the key and salt from your server.
     String encryptionKey = getEncryptionKeyFromServer();
     byte[] encryptionKdfSalt = getEncryptionSaltFromServer();
 
     EncryptionConfig config = new EncryptionConfig();
     config.encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2;
     config.encryptionKey = encryptionKey;
-    config.encryptionKdfSalt = encryptionKdfSalt;
+    // encryptionKdfSalt is a final 32-byte array, so copy the salt into it
+    System.arraycopy(encryptionKdfSalt, 0, config.encryptionKdfSalt, 0, config.encryptionKdfSalt.length);
 
     int result = rtcEngine.enableEncryption(true, config);
     ```
 
     ```kotlin tab="Kotlin" tabGroup="encryption-android"
-    // Noise-free sample values must come from your server.
+    // Get the key and salt from your server.
     val encryptionKey = getEncryptionKeyFromServer()
     val encryptionKdfSalt = getEncryptionSaltFromServer()
 
     val config = EncryptionConfig().apply {
       encryptionMode = EncryptionConfig.EncryptionMode.AES_128_GCM2
       this.encryptionKey = encryptionKey
-      this.encryptionKdfSalt = encryptionKdfSalt
     }
+    // encryptionKdfSalt is a final 32-byte array, so copy the salt into it
+    System.arraycopy(encryptionKdfSalt, 0, config.encryptionKdfSalt, 0, config.encryptionKdfSalt.size)
 
     val result = rtcEngine.enableEncryption(true, config)
     ```

@@ -88,13 +88,13 @@ dependencies {
 
   // Choose one of the following blocks:
   // Integration solution 1
-  implementation "io.agora.rtc:full-rtc-basic:\${agora_sdk_version}"
-  implementation "io.agora.rtc:full-screen-sharing:\${agora_sdk_version}"
-  implementation "io.agora.rtc:screen-capture:\${agora_sdk_version}"
+  implementation "io.agora.rtc:full-rtc-basic:${agora_sdk_version}"
+  implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
+  implementation "io.agora.rtc:screen-capture:${agora_sdk_version}"
 
   // Integration solution 2
-  implementation "io.agora.rtc:full-sdk:\${agora_sdk_version}"
-  implementation "io.agora.rtc:full-screen-sharing:\${agora_sdk_version}"
+  implementation "io.agora.rtc:full-sdk:${agora_sdk_version}"
+  implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
 }
 ```
 
@@ -255,13 +255,13 @@ Call the `setScreenCaptureScenario` method to set the screen sharing scenario an
 
 <CodeBlockTab value="java">
 ```java
-engine.setScreenCaptureScenario(Constants.SCREEN_SCENARIO_VIDEO);
+engine.setScreenCaptureScenario(Constants.ScreenScenarioType.SCREEN_SCENARIO_VIDEO);
 ```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
 ```kotlin
-engine.setScreenCaptureScenario(Constants.SCREEN_SCENARIO_VIDEO)
+engine.setScreenCaptureScenario(Constants.ScreenScenarioType.SCREEN_SCENARIO_VIDEO)
 ```
 </CodeBlockTab>
 

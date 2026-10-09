@@ -74,8 +74,8 @@ To play sound effects, refer to the following code example:
 
 <CodeBlockTab value="java">
 ```java
-//Import the IAudioEffectManger class
-import io.agora.rtc.IAudioEffectManager;
+// Import the IAudioEffectManager class
+import io.agora.rtc2.IAudioEffectManager;
 
 // Call getAudioEffectManager to get the IAudioEffectManager class
 private IAudioEffectManager audioEffectManager;
@@ -86,12 +86,12 @@ int id = 0;
 // If you want to play the sound effect repeatedly, you can preload the file into memory
 // If the file is large, do not preload it
 // You can only preload local sound effect files
-audioEffectManager.preloadEffect(id++, "Your file path");
+audioEffectManager.preloadEffect(id, "Your file path");
 
 // Call playEffect to play the specified sound effect file
 // Call playEffect multiple times, set multiple sound effect IDs, and play multiple sound effect files at the same time
 audioEffectManager.playEffect(
-  0,  // Set the sound effect ID
+  id,  // Set the sound effect ID
   "Your file path",  // Set the sound effect file path
   -1,  // Set the number of times the sound effect loops. -1 means infinite loop
   1,  // Set the tone of the sound effect. 1 represents the original pitch
@@ -106,7 +106,7 @@ audioEffectManager.pauseEffect(id);
 audioEffectManager.resumeEffect(id);
 
 // Set the playback position of the specified local sound effect file
-audioEffectManager.setEffectPosition(id, 500);
+mRtcEngine.setEffectPosition(id, 500);
 
 // Set the playback volume of all sound effect files
 audioEffectManager.setEffectsVolume(50.0);
@@ -118,7 +118,7 @@ audioEffectManager.setVolumeOfEffect(id, 50.0);
 audioEffectManager.unloadEffect(id);
 
 // Stop playing all sound effect files
-audioEffectManager.stopAllEffects;
+audioEffectManager.stopAllEffects();
 
 @Override
 // This callback is triggered when the sound effect file ends playing
@@ -131,7 +131,7 @@ public void onAudioEffectFinished(int soundId) {
 <CodeBlockTab value="kotlin">
 ```kotlin
 // Import the IAudioEffectManager class
-import io.agora.rtc.IAudioEffectManager
+import io.agora.rtc2.IAudioEffectManager
 
 // Call getAudioEffectManager to get the IAudioEffectManager class
 private lateinit var audioEffectManager: IAudioEffectManager
@@ -139,21 +139,21 @@ private lateinit var audioEffectManager: IAudioEffectManager
 audioEffectManager = mRtcEngine.getAudioEffectManager()
 
 // Set the sound effect ID as a unique identifier for identifying sound effect files
-var id = 0
+val id = 0
 // If you want to play the sound effect repeatedly, you can preload the file into memory
 // If the file is large, do not preload it
 // You can only preload local sound effect files
-audioEffectManager.preloadEffect(id++, "Your file path")
+audioEffectManager.preloadEffect(id, "Your file path")
 
 // Call playEffect to play the specified sound effect file
 // Call playEffect multiple times, set multiple sound effect IDs, and play multiple sound effect files at the same time
 audioEffectManager.playEffect(
-  0,  // Set the sound effect ID
+  id,  // Set the sound effect ID
   "Your file path",  // Set the sound effect file path
   -1,  // Set the number of times the sound effect loops. -1 means infinite loop
-  1,  // Set the tone of the sound effect. 1 represents the original pitch
+  1.0,  // Set the tone of the sound effect. 1 represents the original pitch
   0.0, // Set the spatial position of the sound effect. 0.0 means the sound effect appears directly in front
-  100, // Set the sound effect volume. 100 represents the original volume
+  100.0, // Set the sound effect volume. 100 represents the original volume
   true, // Set whether to publish sound effects to the remote end
   0   // Set the playback position of the sound effect file (in ms). 0 means start at the beginning
 )
@@ -163,7 +163,7 @@ audioEffectManager.pauseEffect(id)
 audioEffectManager.resumeEffect(id)
 
 // Set the playback position of the specified local sound effect file
-audioEffectManager.setEffectPosition(id, 500)
+mRtcEngine.setEffectPosition(id, 500)
 
 // Set the playback volume of all sound effect files
 audioEffectManager.setEffectsVolume(50.0)

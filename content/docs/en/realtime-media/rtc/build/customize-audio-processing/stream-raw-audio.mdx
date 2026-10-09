@@ -34,7 +34,7 @@ Follow these steps to implement raw audio data processing functionality in your 
 
 1. Before joining a channel, create an `IAudioFrameObserver` instance and call the `registerAudioFrameObserver` method to register the audio observer.
 1. Call `setRecordingAudioFrameParameters`, `setPlaybackAudioFrameParameters`, and `setMixedAudioFrameParameters` to configure the audio frame format.
-1. Implement `onRecordAudioFrame`, `onPlaybackAudioFrame`, `onPlaybackAudioFrameBeforeMixing`, and `onMixedAudioFrame` callbacks. These callbacks receive and process audio frames. If the return value of these callbacks is `false`, it indicates that the processing of the audio frames is invalid.
+1. Implement `onRecordAudioFrame`, `onPlaybackAudioFrame`, `onPlaybackAudioFrameBeforeMixing`, and `onMixedAudioFrame` callbacks. These callbacks receive and process audio frames.
 
 Refer to the following sample code to implement this logic:
 
@@ -50,37 +50,72 @@ Refer to the following sample code to implement this logic:
 engine.registerAudioFrameObserver(new IAudioFrameObserver() {
   // Implement the onRecordAudioFrame callback
   @Override
-  public boolean onRecordAudioFrame(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec) {
-    if(isEnableLoopBack){
-      mAudioPlayer.play(samples, 0, numOfSamples * bytesPerSample);
+  public boolean onRecordAudioFrame(String channelId, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type) {
+    if (isEnableLoopBack) {
+      // Copy the audio data before processing it
+      byte[] data = new byte[buffer.remaining()];
+      buffer.get(data);
+      buffer.rewind();
+      mAudioPlayer.play(data, 0, data.length);
     }
-
     return false;
   }
 
   // Implement the onPlaybackAudioFrame callback
   @Override
-  public boolean onPlaybackAudioFrame(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec) {
+  public boolean onPlaybackAudioFrame(String channelId, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type) {
     return false;
   }
 
   // Implement the onPlaybackAudioFrameBeforeMixing callback
   @Override
-  public boolean onPlaybackAudioFrameBeforeMixing(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec, int uid) {
+  public boolean onPlaybackAudioFrameBeforeMixing(String channelId, int uid, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type, int rtpTimestamp, long presentationMs) {
     return false;
   }
 
   // Implement the onMixedAudioFrame callback
   @Override
-  public boolean onMixedAudioFrame(byte[] samples, int numOfSamples, int bytesPerSample, int channels, int samplesPerSec) {
+  public boolean onMixedAudioFrame(String channelId, int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type) {
     return false;
   }
 
-  // Call methods with 'set' prefix to configure the audio frames captured by each callback
-  engine.setRecordingAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL);
-  engine.setMixedAudioFrameParameters(SAMPLE_RATE, SAMPLES_PER_CALL);
-  engine.setPlaybackAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL);
+  @Override
+  public boolean onEarMonitoringAudioFrame(int type, int samplesPerChannel, int bytesPerSample, int channels, int samplesPerSec, ByteBuffer buffer, long renderTimeMs, int avsync_type) {
+    return false;
+  }
+
+  // Specify the audio frame positions to observe
+  @Override
+  public int getObservedAudioFramePosition() {
+    return Constants.POSITION_RECORD | Constants.POSITION_PLAYBACK
+        | Constants.POSITION_MIXED | Constants.POSITION_BEFORE_MIXING;
+  }
+
+  @Override
+  public AudioParams getRecordAudioParams() {
+    return new AudioParams(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL);
+  }
+
+  @Override
+  public AudioParams getPlaybackAudioParams() {
+    return new AudioParams(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL);
+  }
+
+  @Override
+  public AudioParams getMixedAudioParams() {
+    return new AudioParams(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_ONLY, SAMPLES_PER_CALL);
+  }
+
+  @Override
+  public AudioParams getEarMonitoringAudioParams() {
+    return null;
+  }
 });
+
+// Call methods with 'set' prefix to configure the audio frames captured by each callback
+engine.setRecordingAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL);
+engine.setMixedAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, SAMPLES_PER_CALL);
+engine.setPlaybackAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL);
 ```
 </CodeBlockTab>
 
@@ -91,56 +126,60 @@ engine.registerAudioFrameObserver(object : IAudioFrameObserver {
 
   // Implement the onRecordAudioFrame callback
   override fun onRecordAudioFrame(
-    samples: ByteArray,
-    numOfSamples: Int,
-    bytesPerSample: Int,
-    channels: Int,
-    samplesPerSec: Int
+    channelId: String?, type: Int, samplesPerChannel: Int, bytesPerSample: Int,
+    channels: Int, samplesPerSec: Int, buffer: ByteBuffer?, renderTimeMs: Long, avsync_type: Int
   ): Boolean {
-    if (isEnableLoopBack) {
-      mAudioPlayer.play(samples, 0, numOfSamples * bytesPerSample)
+    if (isEnableLoopBack && buffer != null) {
+      // Copy the audio data before processing it
+      val data = ByteArray(buffer.remaining())
+      buffer.get(data)
+      buffer.rewind()
+      mAudioPlayer.play(data, 0, data.size)
     }
     return false
   }
 
   // Implement the onPlaybackAudioFrame callback
   override fun onPlaybackAudioFrame(
-    samples: ByteArray,
-    numOfSamples: Int,
-    bytesPerSample: Int,
-    channels: Int,
-    samplesPerSec: Int
-  ): Boolean {
-    return false
-  }
+    channelId: String?, type: Int, samplesPerChannel: Int, bytesPerSample: Int,
+    channels: Int, samplesPerSec: Int, buffer: ByteBuffer?, renderTimeMs: Long, avsync_type: Int
+  ): Boolean = false
 
   // Implement the onPlaybackAudioFrameBeforeMixing callback
   override fun onPlaybackAudioFrameBeforeMixing(
-    samples: ByteArray,
-    numOfSamples: Int,
-    bytesPerSample: Int,
-    channels: Int,
-    samplesPerSec: Int,
-    uid: Int
-  ): Boolean {
-    return false
-  }
+    channelId: String?, uid: Int, type: Int, samplesPerChannel: Int, bytesPerSample: Int,
+    channels: Int, samplesPerSec: Int, buffer: ByteBuffer?, renderTimeMs: Long, avsync_type: Int,
+    rtpTimestamp: Int, presentationMs: Long
+  ): Boolean = false
 
   // Implement the onMixedAudioFrame callback
   override fun onMixedAudioFrame(
-    samples: ByteArray,
-    numOfSamples: Int,
-    bytesPerSample: Int,
-    channels: Int,
-    samplesPerSec: Int
-  ): Boolean {
-    return false
-  }
+    channelId: String?, type: Int, samplesPerChannel: Int, bytesPerSample: Int,
+    channels: Int, samplesPerSec: Int, buffer: ByteBuffer?, renderTimeMs: Long, avsync_type: Int
+  ): Boolean = false
+
+  override fun onEarMonitoringAudioFrame(
+    type: Int, samplesPerChannel: Int, bytesPerSample: Int, channels: Int,
+    samplesPerSec: Int, buffer: ByteBuffer?, renderTimeMs: Long, avsync_type: Int
+  ): Boolean = false
+
+  // Specify the audio frame positions to observe
+  override fun getObservedAudioFramePosition(): Int =
+    Constants.POSITION_RECORD or Constants.POSITION_PLAYBACK or
+      Constants.POSITION_MIXED or Constants.POSITION_BEFORE_MIXING
+
+  override fun getRecordAudioParams() = AudioParams(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL)
+
+  override fun getPlaybackAudioParams() = AudioParams(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL)
+
+  override fun getMixedAudioParams() = AudioParams(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_ONLY, SAMPLES_PER_CALL)
+
+  override fun getEarMonitoringAudioParams(): AudioParams? = null
 })
 
 // Call methods with 'set' prefix to configure the audio frames captured by each callback
 engine.setRecordingAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL)
-engine.setMixedAudioFrameParameters(SAMPLE_RATE, SAMPLES_PER_CALL)
+engine.setMixedAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, SAMPLES_PER_CALL)
 engine.setPlaybackAudioFrameParameters(SAMPLE_RATE, SAMPLE_NUM_OF_CHANNEL, Constants.RAW_AUDIO_FRAME_OP_MODE_READ_WRITE, SAMPLES_PER_CALL)
 ```
 </CodeBlockTab>
@@ -167,10 +206,10 @@ Agora provides an open-source example project [ProcessAudioRawData](https://gith
 - [`setRecordingAudioFrameParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setrecordingaudioframeparameters)
 - [`setPlaybackAudioFrameParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setplaybackaudioframeparameters)
 - [`setMixedAudioFrameParameters`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setmixedaudioframeparameters)
-- [`onRecordAudioFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver_2.html#callback_iaudioframeobserverbase_onrecordaudioframe)
-- [`onPlaybackAudioFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver_2.html#callback_iaudioframeobserverbase_onplaybackaudioframe)
-- [`onplaybackaudioframebeforemixing`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver_2.html#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
-- [`onMixedAudioFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver_2.html#callback_iaudioframeobserverbase_onmixedaudioframe)
+- [`onRecordAudioFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver.html#callback_iaudioframeobserverbase_onrecordaudioframe)
+- [`onPlaybackAudioFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver.html#callback_iaudioframeobserverbase_onplaybackaudioframe)
+- [`onPlaybackAudioFrameBeforeMixing`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver.html#callback_iaudioframeobserver_onplaybackaudioframebeforemixing)
+- [`onMixedAudioFrame`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_iaudioframeobserver.html#callback_iaudioframeobserverbase_onmixedaudioframe)
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -961,6 +1000,6 @@ Agora provides an open-source example project [ProcessAudioRawData](https://gith
 - [`adjustPlaybackSignalVolume`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_irtcengine.html#api_irtcengine_adjustplaybacksignalvolume)
 - [`onRecordAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserverbase.html#callback_iaudioframeobserverbase_onrecordaudioframe)
 - [`onPlaybackAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserverbase.html#callback_iaudioframeobserverbase_onplaybackaudioframe)
-- [`onplaybackaudioframebeforemixing`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserver.html#class_iaudioframeobserver)
+- [`onPlaybackAudioFrameBeforeMixing`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserver.html#class_iaudioframeobserver)
 - [`onMixedAudioFrame`](https://api-ref.agora.io/en/video-sdk/unreal-engine/4.x/API/class_iaudioframeobserverbase.html#callback_iaudioframeobserverbase_onmixedaudioframe)
 </PlatformStructured>

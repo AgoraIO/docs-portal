@@ -161,7 +161,7 @@ This section explains how to join a second channel as a host after you have alre
           fl_remote2.addView(surfaceView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
           // Set the remote view
-          engine.setupRemoteVideoEx(new VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2);
+          engine.setupRemoteVideoEx(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid), rtcConnection2);
         });
       }
     };
@@ -193,13 +193,13 @@ This section explains how to join a second channel as a host after you have alre
           }
           // Create the rendering view through RtcEngine
           surfaceView = SurfaceView(context)
-          surfaceView?.zOrderMediaOverlay = true
+          surfaceView?.setZOrderMediaOverlay(true)
           // Add the view to the remote container
           fl_remote2.addView(surfaceView, FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
 
           // Set the remote view
-          engine.setupRemoteVideoEx(VideoCanvas(surfaceView, RENDER_MODE_FIT, uid), rtcConnection2)
+          engine.setupRemoteVideoEx(VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid), rtcConnection2)
         }
       }
     }

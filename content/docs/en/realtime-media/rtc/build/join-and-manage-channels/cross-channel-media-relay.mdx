@@ -105,7 +105,7 @@ To implement cross-channel media stream relay in your app, take the following st
     ```java
     public void onChannelMediaRelayStateChanged(int state, int code) {
       switch (state) {
-        case RELAY_STATE_CONNECTING:
+        case Constants.RELAY_STATE_CONNECTING:
           mediaRelaying = true;
           handler.post(() -> {
             et_channel_ex.setEnabled(false);
@@ -114,7 +114,7 @@ To implement cross-channel media stream relay in your app, take the following st
             showLongToast("channel media Relay connected.");
           });
           break;
-        case RELAY_STATE_FAILURE:
+        case Constants.RELAY_STATE_FAILURE:
           mediaRelaying = false;
           handler.post(() -> {
             showLongToast(String.format("channel media Relay failed at error code: %d", code));

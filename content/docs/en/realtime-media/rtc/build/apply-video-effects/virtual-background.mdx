@@ -70,14 +70,14 @@ To blur the video background, use the following code:
 ```java
 void setBlurBackground() {
   VirtualBackgroundSource virtualBackgroundSource = new VirtualBackgroundSource();
-  virtualBackgroundSource.setBackgroundSourceType(VirtualBackgroundSource.BACKGROUND_BLUR);
-  virtualBackgroundSource.setBlurDegree(VirtualBackgroundSource.BLUR_DEGREE_MEDIUM);
+  virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_BLUR;
+  virtualBackgroundSource.blurDegree = VirtualBackgroundSource.BLUR_DEGREE_MEDIUM;
 
   // Set processing properties for background
   SegmentationProperty segmentationProperty = new SegmentationProperty();
-  segmentationProperty.setModelType(SegmentationProperty.SEG_MODEL_AI);
+  segmentationProperty.modelType = SegmentationProperty.SEG_MODEL_AI;
   // Use SEG_MODEL_GREEN if you have a green background
-  segmentationProperty.setGreenCapacity(0.5f); // Accuracy for identifying green colors (range 0-1)
+  segmentationProperty.greenCapacity = 0.5f; // Accuracy for identifying green colors (range 0-1)
 
   // Enable or disable virtual background
   agoraEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);
@@ -89,14 +89,14 @@ void setBlurBackground() {
 ```kotlin
 fun setBlurBackground() {
   val virtualBackgroundSource = VirtualBackgroundSource()
-  virtualBackgroundSource.setBackgroundSourceType(VirtualBackgroundSource.BACKGROUND_BLUR)
-  virtualBackgroundSource.setBlurDegree(VirtualBackgroundSource.BLUR_DEGREE_MEDIUM)
+  virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_BLUR
+  virtualBackgroundSource.blurDegree = VirtualBackgroundSource.BLUR_DEGREE_MEDIUM
 
   // Set processing properties for background
   val segmentationProperty = SegmentationProperty()
-  segmentationProperty.setModelType(SegmentationProperty.SEG_MODEL_AI)
+  segmentationProperty.modelType = SegmentationProperty.SEG_MODEL_AI
   // Use SEG_MODEL_GREEN if you have a green background
-  segmentationProperty.setGreenCapacity(0.5f) // Accuracy for identifying green colors (range 0-1)
+  segmentationProperty.greenCapacity = 0.5f // Accuracy for identifying green colors (range 0-1)
 
   // Enable or disable virtual background
   agoraEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty)
@@ -119,14 +119,14 @@ To apply a solid color as the virtual background, use a hexadecimal color code. 
 ```java
 void setSolidBackground() {
   VirtualBackgroundSource virtualBackgroundSource = new VirtualBackgroundSource();
-  virtualBackgroundSource.setBackgroundSourceType(VirtualBackgroundSource.BACKGROUND_COLOR);
-  virtualBackgroundSource.setColor(0x0000FF);
+  virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_COLOR;
+  virtualBackgroundSource.color = 0x0000FF;
 
   // Set processing properties for background
   SegmentationProperty segmentationProperty = new SegmentationProperty();
-  segmentationProperty.setModelType(SegmentationProperty.SEG_MODEL_AI);
+  segmentationProperty.modelType = SegmentationProperty.SEG_MODEL_AI;
   // Use SEG_MODEL_GREEN if you have a green background
-  segmentationProperty.setGreenCapacity(0.5f); // Accuracy for identifying green colors (range 0-1)
+  segmentationProperty.greenCapacity = 0.5f; // Accuracy for identifying green colors (range 0-1)
 
   // Enable or disable virtual background
   agoraEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);
@@ -138,14 +138,14 @@ void setSolidBackground() {
 ```kotlin
 fun setSolidBackground() {
   val virtualBackgroundSource = VirtualBackgroundSource()
-  virtualBackgroundSource.setBackgroundSourceType(VirtualBackgroundSource.BACKGROUND_COLOR)
-  virtualBackgroundSource.setColor(0x0000FF)
+  virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_COLOR
+  virtualBackgroundSource.color = 0x0000FF
 
   // Set processing properties for background
   val segmentationProperty = SegmentationProperty()
-  segmentationProperty.setModelType(SegmentationProperty.SEG_MODEL_AI)
+  segmentationProperty.modelType = SegmentationProperty.SEG_MODEL_AI
   // Use SEG_MODEL_GREEN if you have a green background
-  segmentationProperty.setGreenCapacity(0.5f) // Accuracy for identifying green colors (range 0-1)
+  segmentationProperty.greenCapacity = 0.5f // Accuracy for identifying green colors (range 0-1)
 
   // Enable or disable virtual background
   agoraEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty)
@@ -168,14 +168,14 @@ To set a custom image as the virtual background, specify the absolute path to th
 ```java
 void setImageBackground() {
   VirtualBackgroundSource virtualBackgroundSource = new VirtualBackgroundSource();
-  virtualBackgroundSource.setBackgroundSourceType(VirtualBackgroundSource.BACKGROUND_IMG);
-  virtualBackgroundSource.setSource("<absolute path to an image file>");
+  virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_IMG;
+  virtualBackgroundSource.source = "<absolute path to an image file>";
 
   // Set processing properties for background
   SegmentationProperty segmentationProperty = new SegmentationProperty();
-  segmentationProperty.setModelType(SegmentationProperty.SEG_MODEL_AI);
+  segmentationProperty.modelType = SegmentationProperty.SEG_MODEL_AI;
   // Use SEG_MODEL_GREEN if you have a green background
-  segmentationProperty.setGreenCapacity(0.5f); // Accuracy for identifying green colors (range 0-1)
+  segmentationProperty.greenCapacity = 0.5f; // Accuracy for identifying green colors (range 0-1)
 
   // Enable or disable virtual background
   agoraEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty);
@@ -187,14 +187,14 @@ void setImageBackground() {
 ```kotlin
 fun setImageBackground() {
   val virtualBackgroundSource = VirtualBackgroundSource()
-  virtualBackgroundSource.setBackgroundSourceType(VirtualBackgroundSource.BACKGROUND_IMG)
-  virtualBackgroundSource.setSource("<absolute path to an image file>")
+  virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_IMG
+  virtualBackgroundSource.source = "<absolute path to an image file>"
 
   // Set processing properties for background
   val segmentationProperty = SegmentationProperty()
-  segmentationProperty.setModelType(SegmentationProperty.SEG_MODEL_AI)
+  segmentationProperty.modelType = SegmentationProperty.SEG_MODEL_AI
   // Use SEG_MODEL_GREEN if you have a green background
-  segmentationProperty.setGreenCapacity(0.5f) // Accuracy for identifying green colors (range 0-1)
+  segmentationProperty.greenCapacity = 0.5f // Accuracy for identifying green colors (range 0-1)
 
   // Enable or disable virtual background
   agoraEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty)
@@ -252,7 +252,7 @@ This section contains content that completes the information in this page, or po
 
 - [`VirtualBackgroundSource`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_virtualbackgroundsource.html)
 
-- [`SegmentationProperty`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_api_data_type.html#class_segmentationproperty)
+- [`SegmentationProperty`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_segmentationproperty.html)
 </PlatformStructured>
 
 <PlatformStructured platform="ios">

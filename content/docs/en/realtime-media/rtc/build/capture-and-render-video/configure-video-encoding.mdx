@@ -144,13 +144,13 @@ VideoEncoderConfiguration videoConfig = new VideoEncoderConfiguration(
   VideoEncoderConfiguration.VD_640x360,
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, // 15 fps balances smoothness and bandwidth
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
-  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
-  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_BALANCED // Balance quality and framerate under poor network
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE // Adjusts to device rotation
 );
+videoConfig.degradationPrefer = VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_BALANCED; // Balance quality and framerate under poor network
 // Mirror mode: AUTO lets SDK decide based on camera (front/back)
-videoConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO;
+videoConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE_TYPE.MIRROR_MODE_AUTO;
 // Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
-videoConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
+videoConfig.minBitrate = VideoEncoderConfiguration.DEFAULT_MIN_BITRATE;
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(videoConfig);
 ```
@@ -165,13 +165,13 @@ val videoConfig = VideoEncoderConfiguration(
   VideoEncoderConfiguration.VD_640x360,
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_15, // 15 fps balances smoothness and bandwidth
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate automatically
-  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
-  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_BALANCED // Balance quality and framerate under poor network
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE // Adjusts to device rotation
 )
+videoConfig.degradationPrefer = VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_BALANCED // Balance quality and framerate under poor network
 // Mirror mode: AUTO lets SDK decide based on camera (front/back)
-videoConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO
+videoConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE_TYPE.MIRROR_MODE_AUTO
 // Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
-videoConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE
+videoConfig.minBitrate = VideoEncoderConfiguration.DEFAULT_MIN_BITRATE
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(videoConfig)
 ```
@@ -195,13 +195,13 @@ VideoEncoderConfiguration videoCallConfig = new VideoEncoderConfiguration(
   VideoEncoderConfiguration.VD_1280x720, // HD resolution for high video quality
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_30, // Higher framerate for smooth motion
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
-  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
-  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_QUALITY // Prioritize video quality
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE // Adjusts to device rotation
 );
+videoCallConfig.degradationPrefer = VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_QUALITY; // Prioritize video quality
 // Mirror mode: AUTO lets SDK decide based on camera (front/back)
-videoCallConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO;
+videoCallConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE_TYPE.MIRROR_MODE_AUTO;
 // Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
-videoCallConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
+videoCallConfig.minBitrate = VideoEncoderConfiguration.DEFAULT_MIN_BITRATE;
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(videoCallConfig);
 ```
@@ -214,13 +214,13 @@ val videoCallConfig = VideoEncoderConfiguration(
   VideoEncoderConfiguration.VD_1280x720, // HD resolution for high video quality
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_30, // Higher framerate for smooth motion
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
-  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
-  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_QUALITY // Prioritize video quality
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE // Adjusts to device rotation
 )
+videoCallConfig.degradationPrefer = VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_QUALITY // Prioritize video quality
 // Mirror mode: AUTO lets SDK decide based on camera (front/back)
-videoCallConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO
+videoCallConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE_TYPE.MIRROR_MODE_AUTO
 // Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
-videoCallConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE
+videoCallConfig.minBitrate = VideoEncoderConfiguration.DEFAULT_MIN_BITRATE
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(videoCallConfig)
 ```
@@ -244,13 +244,13 @@ VideoEncoderConfiguration lowBandwidthConfig = new VideoEncoderConfiguration(
   VideoEncoderConfiguration.VD_320x180, // Minimal resolution to save bandwidth
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_10, // Lower framerate reduces bandwidth usage
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
-  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
-  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE // Keep playback smooth
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE // Adjusts to device rotation
 );
+lowBandwidthConfig.degradationPrefer = VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE; // Keep playback smooth
 // Mirror mode: AUTO lets SDK decide based on camera (front/back)
-lowBandwidthConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO;
+lowBandwidthConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE_TYPE.MIRROR_MODE_AUTO;
 // Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
-lowBandwidthConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE;
+lowBandwidthConfig.minBitrate = VideoEncoderConfiguration.DEFAULT_MIN_BITRATE;
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(lowBandwidthConfig);
 ```
@@ -263,13 +263,13 @@ val lowBandwidthConfig = VideoEncoderConfiguration(
   VideoEncoderConfiguration.VD_320x180, // Minimal resolution to save bandwidth
   VideoEncoderConfiguration.FRAME_RATE.FRAME_RATE_FPS_10, // Lower framerate reduces bandwidth usage
   VideoEncoderConfiguration.STANDARD_BITRATE, // SDK calculates optimal bitrate
-  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE, // Adjusts to device rotation
-  VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE // Keep playback smooth
+  VideoEncoderConfiguration.ORIENTATION_MODE.ORIENTATION_MODE_ADAPTIVE // Adjusts to device rotation
 )
+lowBandwidthConfig.degradationPrefer = VideoEncoderConfiguration.DEGRADATION_PREFERENCE.MAINTAIN_FRAMERATE // Keep playback smooth
 // Mirror mode: AUTO lets SDK decide based on camera (front/back)
-lowBandwidthConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE.VIDEO_MIRROR_MODE_AUTO
+lowBandwidthConfig.mirrorMode = VideoEncoderConfiguration.MIRROR_MODE_TYPE.MIRROR_MODE_AUTO
 // Minimum bitrate: Use default (-1) for most cases; higher values may cause packet loss
-lowBandwidthConfig.minBitrate = VideoEncoderConfiguration.STANDARD_BITRATE
+lowBandwidthConfig.minBitrate = VideoEncoderConfiguration.DEFAULT_MIN_BITRATE
 // Apply configuration (call before enableVideo() for faster first frame)
 engine.setVideoEncoderConfiguration(lowBandwidthConfig)
 ```

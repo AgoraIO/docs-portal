@@ -65,17 +65,17 @@ Follow these steps to implement custom audio capture in your project:
     <CodeBlockTab value="java">
       ```java
       AudioTrackConfig config = new AudioTrackConfig();
-        config.enableLocalPlayback = false;
-        customAudioTrack = engine.createCustomAudioTrack(Constants.AudioTrackType.AUDIO_TRACK_MIXABLE, config);
+      config.enableLocalPlayback = false;
+      customAudioTrack = engine.createCustomAudioTrack(Constants.AudioTrackType.AUDIO_TRACK_MIXABLE, config);
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       val config = AudioTrackConfig().apply {
-          enableLocalPlayback = false
-        }
-        customAudioTrack = engine.createCustomAudioTrack(Constants.AudioTrackType.AUDIO_TRACK_MIXABLE, config)
+        enableLocalPlayback = false
+      }
+      customAudioTrack = engine.createCustomAudioTrack(Constants.AudioTrackType.AUDIO_TRACK_MIXABLE, config)
       ```
     </CodeBlockTab>
 
@@ -95,37 +95,37 @@ Follow these steps to implement custom audio capture in your project:
     <CodeBlockTab value="java">
       ```java
       ChannelMediaOptions option = new ChannelMediaOptions();
-        option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
-        option.autoSubscribeAudio = true;
-        option.autoSubscribeVideo = true;
-        // In the audio self-collection use-case, the audio collected by the microphone is not published
-        option.publishMicrophoneTrack = false;
-        // Publish the custom audio track
-        publishCustomAudioTrack = true
-        // Set the custom audio track ID
-        publishCustomAudioTrackId = customAudioTrack
+      option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+      option.autoSubscribeAudio = true;
+      option.autoSubscribeVideo = true;
+      // In the audio self-collection use-case, the audio collected by the microphone is not published
+      option.publishMicrophoneTrack = false;
+      // Publish the custom audio track
+      option.publishCustomAudioTrack = true;
+      // Set the custom audio track ID
+      option.publishCustomAudioTrackId = customAudioTrack;
 
-        // Join the channel
-        val res = engine.joinChannel(accessToken, channelId, 0, option)
+      // Join the channel
+      int res = engine.joinChannel(accessToken, channelId, 0, option);
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       val option = ChannelMediaOptions().apply {
-          clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
-          autoSubscribeAudio = true
-          autoSubscribeVideo = true
-          // In the audio self-collection use-case, the audio collected by the microphone is not published
-          publishMicrophoneTrack = false
-          // Publish the custom audio track
-          publishCustomAudioTrack = true
-          // Set the custom audio track ID
-          publishCustomAudioTrackId = customAudioTrack
-        }
+        clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+        autoSubscribeAudio = true
+        autoSubscribeVideo = true
+        // In the audio self-collection use-case, the audio collected by the microphone is not published
+        publishMicrophoneTrack = false
+        // Publish the custom audio track
+        publishCustomAudioTrack = true
+        // Set the custom audio track ID
+        publishCustomAudioTrackId = customAudioTrack
+      }
 
-        // Join the channel
-        val res = engine.joinChannel(accessToken, channelId, 0, option)
+      // Join the channel
+      val res = engine.joinChannel(accessToken, channelId, 0, option)
       ```
     </CodeBlockTab>
 
@@ -147,34 +147,34 @@ Follow these steps to implement custom audio capture in your project:
     <CodeBlockTab value="java">
       ```java
       audioPushingHelper = new AudioFileReader(requireContext(), (buffer, timestamp) -> {
-          if (joined && engine != null && customAudioTrack != -1) {
-            // Push external audio frames to SDK
-            int ret = engine.pushExternalAudioFrame(buffer, timestamp,
-                AudioFileReader.SAMPLE_RATE,
-                AudioFileReader.SAMPLE_NUM_OF_CHANNEL,
-                Constants.BytesPerSample.TWO_BYTES_PER_SAMPLE,
-                customAudioTrack);
-            Log.i(TAG, "pushExternalAudioFrame times:" + (++\pushTimes) + ", ret=" + ret);
-          }
-        });
+        if (joined && engine != null && customAudioTrack != -1) {
+          // Push external audio frames to SDK
+          int ret = engine.pushExternalAudioFrame(buffer, timestamp,
+              AudioFileReader.SAMPLE_RATE,
+              AudioFileReader.SAMPLE_NUM_OF_CHANNEL,
+              Constants.BytesPerSample.TWO_BYTES_PER_SAMPLE,
+              customAudioTrack);
+          Log.i(TAG, "pushExternalAudioFrame times:" + (++pushTimes) + ", ret=" + ret);
+        }
+      });
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       audioPushingHelper = AudioFileReader(requireContext()) { buffer, timestamp ->
-          if (joined && engine != null && customAudioTrack != -1) {
-            // Push external audio frames to SDK
-            val ret = engine.pushExternalAudioFrame(
-              buffer, timestamp,
-              AudioFileReader.SAMPLE_RATE,
-              AudioFileReader.SAMPLE_NUM_OF_CHANNEL,
-              Constants.BytesPerSample.TWO_BYTES_PER_SAMPLE,
-              customAudioTrack
-            )
-            Log.i(TAG, "pushExternalAudioFrame times: \${++pushTimes\}, ret=$ret")
-          }
+        if (joined && engine != null && customAudioTrack != -1) {
+          // Push external audio frames to SDK
+          val ret = engine.pushExternalAudioFrame(
+            buffer, timestamp,
+            AudioFileReader.SAMPLE_RATE,
+            AudioFileReader.SAMPLE_NUM_OF_CHANNEL,
+            Constants.BytesPerSample.TWO_BYTES_PER_SAMPLE,
+            customAudioTrack
+          )
+          Log.i(TAG, "pushExternalAudioFrame times: ${++pushTimes}, ret=$ret")
         }
+      }
       ```
     </CodeBlockTab>
 
@@ -190,14 +190,14 @@ Follow these steps to implement custom audio capture in your project:
     <CodeBlockTab value="java">
       ```java
       // Destroy the custom audio track
-        engine.destroyCustomAudioTrack(customAudioTrack);
+      engine.destroyCustomAudioTrack(customAudioTrack);
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       // Destroy the custom audio track
-        engine.destroyCustomAudioTrack(customAudioTrack)
+      engine.destroyCustomAudioTrack(customAudioTrack)
       ```
     </CodeBlockTab>
 
@@ -223,20 +223,20 @@ To implement custom audio rendering, use the following methods:
     <CodeBlockTab value="java">
       ```java
       rtcEngine.setExternalAudioSink(
-          true,   // Enable custom audio rendering
-          44100,   // Sampling rate (Hz). Set this value to 16000, 32000, 441000, or 48000
-          1     // Number of channels for the custom audio source. Set this value to 1 or 2
-        );
+        true,   // Enable custom audio rendering
+        44100,   // Sampling rate (Hz). Set this value to 16000, 32000, 44100, or 48000
+        1     // Number of channels for the custom audio source. Set this value to 1 or 2
+      );
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       rtcEngine.setExternalAudioSink(
-          true,   // Enable custom audio rendering
-          44100,   // Sampling rate (Hz). Set this value to 16000, 32000, 441000, or 48000
-          1     // Number of channels for the custom audio source. Set this value to 1 or 2
-        )
+        true,   // Enable custom audio rendering
+        44100,   // Sampling rate (Hz). Set this value to 16000, 32000, 44100, or 48000
+        1     // Number of channels for the custom audio source. Set this value to 1 or 2
+      )
       ```
     </CodeBlockTab>
 
@@ -253,48 +253,48 @@ To implement custom audio rendering, use the following methods:
       ```java
       private class FileThread implements Runnable {
 
-          @Override
-          public void run() {
-            while (mPull) {
-              int lengthInByte = 48000 / 1000 * 2 * 1 * 10;
-              ByteBuffer frame = ByteBuffer.allocateDirect(lengthInByte);
-              int ret = engine.pullPlaybackAudioFrame(frame, lengthInByte);
-              byte[] data = new byte[frame.remaining()];
-              frame.get(data, 0, data.length);
-              // Write to a local file or render using a player
-              FileIOUtils.writeFileFromBytesByChannel("/sdcard/agora/pull_48k.pcm", data, true, true);
-              try {
-                Thread.sleep(10);
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
+        @Override
+        public void run() {
+          while (mPull) {
+            int lengthInByte = 48000 / 1000 * 2 * 1 * 10;
+            ByteBuffer frame = ByteBuffer.allocateDirect(lengthInByte);
+            int ret = engine.pullPlaybackAudioFrame(frame, lengthInByte);
+            byte[] data = new byte[frame.remaining()];
+            frame.get(data, 0, data.length);
+            // Write to a local file or render using a player
+            FileIOUtils.writeFileFromBytesByChannel("/sdcard/agora/pull_48k.pcm", data, true, true);
+            try {
+              Thread.sleep(10);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
             }
           }
         }
+      }
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
-      private class FileThread : Runnable {
+      private inner class FileThread : Runnable {
 
-          override fun run() {
-            while (mPull) {
-              val lengthInByte = 48000 / 1000 * 2 * 1 * 10
-              val frame = ByteBuffer.allocateDirect(lengthInByte)
-              val ret = engine.pullPlaybackAudioFrame(frame, lengthInByte)
-              val data = ByteArray(frame.remaining())
-              frame.get(data, 0, data.size)
-              // Write to a local file or render using a player
-              FileIOUtils.writeFileFromBytesByChannel("/sdcard/agora/pull_48k.pcm", data, true, true)
-              try {
-                Thread.sleep(10)
-              } catch (e: InterruptedException) {
-                e.printStackTrace()
-              }
+        override fun run() {
+          while (mPull) {
+            val lengthInByte = 48000 / 1000 * 2 * 1 * 10
+            val frame = ByteBuffer.allocateDirect(lengthInByte)
+            val ret = engine.pullPlaybackAudioFrame(frame, lengthInByte)
+            val data = ByteArray(frame.remaining())
+            frame.get(data, 0, data.size)
+            // Write to a local file or render using a player
+            FileIOUtils.writeFileFromBytesByChannel("/sdcard/agora/pull_48k.pcm", data, true, true)
+            try {
+              Thread.sleep(10)
+            } catch (e: InterruptedException) {
+              e.printStackTrace()
             }
           }
         }
+      }
       ```
     </CodeBlockTab>
 

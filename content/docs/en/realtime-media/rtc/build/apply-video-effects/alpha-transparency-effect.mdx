@@ -50,20 +50,20 @@ Take the following steps to implement this logic:
         <CodeBlockTab value="java">
             ```java
             JavaI420Buffer javaI420Buffer = JavaI420Buffer.wrap(width, height, dataY, width, dataU, strideUV, dataV, strideUV, null);
-               VideoFrame frame = new VideoFrame(javaI420Buffer, 0, timestamp);
-               ByteBuffer alphaBuffer = ByteBuffer.allocateDirect(width * height);
-               frame.fillAlphaData(alphaBuffer);
-               rtcEngine.pushExternalVideoFrame(frame);
+            VideoFrame frame = new VideoFrame(javaI420Buffer, 0, timestamp);
+            ByteBuffer alphaBuffer = ByteBuffer.allocateDirect(width * height);
+            frame.fillAlphaData(alphaBuffer);
+            rtcEngine.pushExternalVideoFrame(frame);
             ```
         </CodeBlockTab>
 
         <CodeBlockTab value="kotlin">
             ```kotlin
             val javaI420Buffer = JavaI420Buffer.wrap(width, height, dataY, width, dataU, strideUV, dataV, strideUV, null)
-               val frame = VideoFrame(javaI420Buffer, 0, timestamp)
-               val alphaBuffer = ByteBuffer.allocateDirect(width * height)
-               frame.fillAlphaData(alphaBuffer)
-               rtcEngine.pushExternalVideoFrame(frame)
+            val frame = VideoFrame(javaI420Buffer, 0, timestamp)
+            val alphaBuffer = ByteBuffer.allocateDirect(width * height)
+            frame.fillAlphaData(alphaBuffer)
+            rtcEngine.pushExternalVideoFrame(frame)
             ```
         </CodeBlockTab>
 
@@ -80,20 +80,20 @@ Take the following steps to implement this logic:
         <CodeBlockTab value="java">
             ```java
             JavaI420Buffer javaI420Buffer = JavaI420Buffer.wrap(width, height, dataY, width, dataU, strideUV, dataV, strideUV, null);
-               VideoFrame frame = new VideoFrame(javaI420Buffer, 0, timestamp);
-               // Set the Alpha stitching mode, in the example below, Alpha is set to be below the video image
-               frame.setAlphaStitchMode(Constants.VIDEO_ALPHA_STITCH_BELOW);
-               rtcEngine.pushExternalVideoFrame(frame);
+            VideoFrame frame = new VideoFrame(javaI420Buffer, 0, timestamp);
+            // Set the Alpha stitching mode, in the example below, Alpha is set to be below the video image
+            frame.setAlphaStitchMode(AlphaStitchMode.ALPHA_STITCH_BELOW.value());
+            rtcEngine.pushExternalVideoFrame(frame);
             ```
         </CodeBlockTab>
 
         <CodeBlockTab value="kotlin">
             ```kotlin
             val javaI420Buffer = JavaI420Buffer.wrap(width, height, dataY, width, dataU, strideUV, dataV, strideUV, null)
-               val frame = VideoFrame(javaI420Buffer, 0, timestamp)
-               // Set the Alpha stitching mode, in the example below, Alpha is set to be below the video image
-               frame.setAlphaStitchMode(Constants.VIDEO_ALPHA_STITCH_BELOW)
-               rtcEngine.pushExternalVideoFrame(frame)
+            val frame = VideoFrame(javaI420Buffer, 0, timestamp)
+            // Set the Alpha stitching mode, in the example below, Alpha is set to be below the video image
+            frame.setAlphaStitchMode(AlphaStitchMode.ALPHA_STITCH_BELOW.value())
+            rtcEngine.pushExternalVideoFrame(frame)
             ```
         </CodeBlockTab>
 
@@ -115,40 +115,40 @@ Take the following steps to implement this logic:
     <CodeBlockTab value="java">
         ```java
         // Alpha data input on the sender side and Alpha transmission is enabled
-            VideoEncoderConfiguration config = new VideoEncoderConfiguration(...);
-            // Alpha transfer needs to be enabled when setting encoding parameters.
-            config.advanceOptions.encodeAlpha = true;
-            rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+        VideoEncoderConfiguration config = new VideoEncoderConfiguration();
+        // Alpha transfer needs to be enabled when setting encoding parameters.
+        config.advanceOptions.encodeAlpha = true;
+        rtcEngine.setVideoEncoderConfiguration(config);
 
-            // Set the view to TextureView
-            TextureView textureView = new TextureView(context);
-            // Enable transparent mode, allowing transparent portions in the view background and content
-            textureView.setOpaque(false);
-            fl_local.addView(textureView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        // Set the view to TextureView
+        TextureView textureView = new TextureView(context);
+        // Enable transparent mode, allowing transparent portions in the view background and content
+        textureView.setOpaque(false);
+        fl_local.addView(textureView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-            VideoCanvas local = new VideoCanvas(textureView, RENDER_MODE_FIT, 0);
-            local.enableAlphaMask = true;
-            rtcEngine.setupLocalVideo(local);
+        VideoCanvas local = new VideoCanvas(textureView, VideoCanvas.RENDER_MODE_FIT, 0);
+        local.enableAlphaMask = true;
+        rtcEngine.setupLocalVideo(local);
         ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
         ```kotlin
         // Alpha data input on the sender side and Alpha transmission is enabled
-            val config = VideoEncoderConfiguration(...)
-            // Alpha transfer needs to be enabled when setting encoding parameters.
-            config.advanceOptions.encodeAlpha = true
-            rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration)
+        val config = VideoEncoderConfiguration()
+        // Alpha transfer needs to be enabled when setting encoding parameters.
+        config.advanceOptions.encodeAlpha = true
+        rtcEngine.setVideoEncoderConfiguration(config)
 
-            // Set the view to TextureView
-            val textureView = TextureView(context)
-            // Enable transparent mode, allowing transparent portions in the view background and content
-            textureView.isOpaque = false
-            fl_local.addView(textureView, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        // Set the view to TextureView
+        val textureView = TextureView(context)
+        // Enable transparent mode, allowing transparent portions in the view background and content
+        textureView.isOpaque = false
+        fl_local.addView(textureView, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
 
-            val local = VideoCanvas(textureView, RENDER_MODE_FIT, 0)
-            local.enableAlphaMask = true
-            rtcEngine.setupLocalVideo(local)
+        val local = VideoCanvas(textureView, VideoCanvas.RENDER_MODE_FIT, 0)
+        local.enableAlphaMask = true
+        rtcEngine.setupLocalVideo(local)
         ```
     </CodeBlockTab>
 
@@ -170,26 +170,26 @@ Take the following steps to implement this logic:
     <CodeBlockTab value="java">
         ```java
         // Enable transparent mode at the receiving end
-            TextureView textureView = new TextureView(context);
-            textureView.setOpaque(false);
-            fl_remote.addView(textureView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        TextureView textureView = new TextureView(context);
+        textureView.setOpaque(false);
+        fl_remote.addView(textureView, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-            VideoCanvas remote = new VideoCanvas(textureView, VideoCanvas.RENDER_MODE_FIT, uid);
-            remote.enableAlphaMask = true;
-            rtcEngine.setupRemoteVideo(remote);
+        VideoCanvas remote = new VideoCanvas(textureView, VideoCanvas.RENDER_MODE_FIT, uid);
+        remote.enableAlphaMask = true;
+        rtcEngine.setupRemoteVideo(remote);
         ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
         ```kotlin
         // Enable transparent mode at the receiving end
-            val textureView = TextureView(context)
-            textureView.isOpaque = false
-            fl_remote.addView(textureView, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
+        val textureView = TextureView(context)
+        textureView.isOpaque = false
+        fl_remote.addView(textureView, FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
 
-            val remote = VideoCanvas(textureView, VideoCanvas.RENDER_MODE_FIT, uid)
-            remote.enableAlphaMask = true
-            rtcEngine.setupRemoteVideo(remote)
+        val remote = VideoCanvas(textureView, VideoCanvas.RENDER_MODE_FIT, uid)
+        remote.enableAlphaMask = true
+        rtcEngine.setupRemoteVideo(remote)
         ```
     </CodeBlockTab>
 
@@ -218,19 +218,19 @@ Take the following steps to implement this logic:
 
     <CodeBlockTab value="java">
         ```java
-        VirtualBackgroundSource virtualBackgroundSource = new VirtualBackgroundSource(...);
-           virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_NONE; // Only generate alpha data, no background replacement
-           SegmentationProperty segmentationProperty = new SegmentationProperty(...);
-           rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, sourceType);
+        VirtualBackgroundSource virtualBackgroundSource = new VirtualBackgroundSource();
+        virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_NONE; // Only generate alpha data, no background replacement
+        SegmentationProperty segmentationProperty = new SegmentationProperty();
+        rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE);
         ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
         ```kotlin
-        val virtualBackgroundSource = VirtualBackgroundSource(...)
-           virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_NONE // Only generate alpha data, no background replacement
-           val segmentationProperty = SegmentationProperty(...)
-           rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, sourceType)
+        val virtualBackgroundSource = VirtualBackgroundSource()
+        virtualBackgroundSource.backgroundSourceType = VirtualBackgroundSource.BACKGROUND_NONE // Only generate alpha data, no background replacement
+        val segmentationProperty = SegmentationProperty()
+        rtcEngine.enableVirtualBackground(true, virtualBackgroundSource, segmentationProperty, Constants.MediaSourceType.PRIMARY_CAMERA_SOURCE)
         ```
     </CodeBlockTab>
 
@@ -246,19 +246,19 @@ Take the following steps to implement this logic:
 
     <CodeBlockTab value="java">
         ```java
-        VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration(...);
-          videoEncoderConfiguration.advanceOptions = new VideoEncoderConfiguration.AdvanceOptions(...);
-          videoEncoderConfiguration.advanceOptions.encodeAlpha = true;
-          rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
+        VideoEncoderConfiguration videoEncoderConfiguration = new VideoEncoderConfiguration();
+        videoEncoderConfiguration.advanceOptions = new VideoEncoderConfiguration.AdvanceOptions();
+        videoEncoderConfiguration.advanceOptions.encodeAlpha = true;
+        rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration);
         ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
         ```kotlin
-        val videoEncoderConfiguration = VideoEncoderConfiguration(...)
-          videoEncoderConfiguration.advanceOptions = VideoEncoderConfiguration.AdvanceOptions(...)
-          videoEncoderConfiguration.advanceOptions.encodeAlpha = true
-          rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration)
+        val videoEncoderConfiguration = VideoEncoderConfiguration()
+        videoEncoderConfiguration.advanceOptions = VideoEncoderConfiguration.AdvanceOptions()
+        videoEncoderConfiguration.advanceOptions.encodeAlpha = true
+        rtcEngine.setVideoEncoderConfiguration(videoEncoderConfiguration)
         ```
     </CodeBlockTab>
 
@@ -287,51 +287,91 @@ Take the following steps to implement this logic:
     <CodeBlockTab value="java">
       ```java
       // Register IVideoFrameObserver
-        public class MyVideoFrameObserver implements IVideoFrameObserver {
-          @Override
-          public boolean onRenderVideoFrame(String channelId, int uId, VideoFrame videoFrame) {
-            // ...
-            return false;
-          }
-
-          @Override
-          public boolean onCaptureVideoFrame(int type, VideoFrame videoFrame) {
-            // ...
-            return false;
-          }
-
-          @Override
-          public boolean onPreEncodeVideoFrame(int type, VideoFrame videoFrame) {
-            // ...
-            return false;
-          }
+      public class MyVideoFrameObserver implements IVideoFrameObserver {
+        @Override
+        public boolean onRenderVideoFrame(String channelId, int uId, VideoFrame videoFrame) {
+          // ...
+          return false;
         }
-        MyVideoFrameObserver observer = new MyVideoFrameObserver();
-        rtcEngine.registerVideoFrameObserver(observer);
+
+        @Override
+        public boolean onCaptureVideoFrame(int type, VideoFrame videoFrame) {
+          // ...
+          return false;
+        }
+
+        @Override
+        public boolean onPreEncodeVideoFrame(int type, VideoFrame videoFrame) {
+          // ...
+          return false;
+        }
+
+        // Implement the remaining IVideoFrameObserver methods
+        @Override
+        public boolean onMediaPlayerVideoFrame(VideoFrame videoFrame, int mediaPlayerId) {
+          return false;
+        }
+
+        @Override
+        public int getVideoFrameProcessMode() {
+          return PROCESS_MODE_READ_WRITE;
+        }
+
+        @Override
+        public int getVideoFormatPreference() {
+          return VIDEO_PIXEL_DEFAULT;
+        }
+
+        @Override
+        public boolean getRotationApplied() {
+          return false;
+        }
+
+        @Override
+        public boolean getMirrorApplied() {
+          return false;
+        }
+
+        @Override
+        public int getObservedFramePosition() {
+          return POSITION_POST_CAPTURER | POSITION_PRE_ENCODER | POSITION_PRE_RENDERER;
+        }
+      }
+      MyVideoFrameObserver observer = new MyVideoFrameObserver();
+      rtcEngine.registerVideoFrameObserver(observer);
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       // Register IVideoFrameObserver
-        class MyVideoFrameObserver : IVideoFrameObserver {
-          override fun onRenderVideoFrame(channelId: String, uId: Int, videoFrame: VideoFrame): Boolean {
-            // ...
-            return false
-          }
-
-          override fun onCaptureVideoFrame(type: Int, videoFrame: VideoFrame): Boolean {
-            // ...
-            return false
-          }
-
-          override fun onPreEncodeVideoFrame(type: Int, videoFrame: VideoFrame): Boolean {
-            // ...
-            return false
-          }
+      class MyVideoFrameObserver : IVideoFrameObserver {
+        override fun onRenderVideoFrame(channelId: String, uId: Int, videoFrame: VideoFrame): Boolean {
+          // ...
+          return false
         }
-        val observer = MyVideoFrameObserver()
-        rtcEngine.registerVideoFrameObserver(observer)
+
+        override fun onCaptureVideoFrame(type: Int, videoFrame: VideoFrame): Boolean {
+          // ...
+          return false
+        }
+
+        override fun onPreEncodeVideoFrame(type: Int, videoFrame: VideoFrame): Boolean {
+          // ...
+          return false
+        }
+
+        // Implement the remaining IVideoFrameObserver methods
+        override fun onMediaPlayerVideoFrame(videoFrame: VideoFrame, mediaPlayerId: Int): Boolean = false
+        override fun getVideoFrameProcessMode(): Int = IVideoFrameObserver.PROCESS_MODE_READ_WRITE
+        override fun getVideoFormatPreference(): Int = IVideoFrameObserver.VIDEO_PIXEL_DEFAULT
+        override fun getRotationApplied(): Boolean = false
+        override fun getMirrorApplied(): Boolean = false
+        override fun getObservedFramePosition(): Int =
+          IVideoFrameObserver.POSITION_POST_CAPTURER or IVideoFrameObserver.POSITION_PRE_ENCODER or IVideoFrameObserver.POSITION_PRE_RENDERER
+      }
+      val observer = MyVideoFrameObserver()
+      rtcEngine.registerVideoFrameObserver(observer)
       ```
     </CodeBlockTab>
 
@@ -346,25 +386,26 @@ Take the following steps to implement this logic:
 
     <CodeBlockTab value="java">
       ```java
+      @Override
       public boolean onCaptureVideoFrame(int type, VideoFrame videoFrame) {
-          // Modify Alpha data or directly add Alpha data
-          ByteBuffer alphaBuffer = videoFrame.getAlphaBuffer();
-          // ...
-          videoFrame.fillAlphaData(byteBuffer);
-          return false;
-        }
+        // Modify Alpha data or directly add Alpha data
+        ByteBuffer alphaBuffer = videoFrame.getAlphaBuffer();
+        // ...
+        videoFrame.fillAlphaData(alphaBuffer);
+        return false;
+      }
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       override fun onCaptureVideoFrame(type: Int, videoFrame: VideoFrame): Boolean {
-          // Modify Alpha data or directly add Alpha data
-          val alphaBuffer = videoFrame.alphaBuffer
-          // ...
-          videoFrame.fillAlphaData(byteBuffer)
-          return false
-        }
+        // Modify Alpha data or directly add Alpha data
+        val alphaBuffer = videoFrame.alphaBuffer
+        // ...
+        videoFrame.fillAlphaData(alphaBuffer)
+        return false
+      }
       ```
     </CodeBlockTab>
 
@@ -379,25 +420,26 @@ Take the following steps to implement this logic:
 
     <CodeBlockTab value="java">
       ```java
+      @Override
       public boolean onPreEncodeVideoFrame(int type, VideoFrame videoFrame) {
-          // Modify Alpha data or directly add Alpha data
-          ByteBuffer alphaBuffer = videoFrame.getAlphaBuffer();
-          // ...
-          videoFrame.fillAlphaData(byteBuffer);
-          return false;
-        }
+        // Modify Alpha data or directly add Alpha data
+        ByteBuffer alphaBuffer = videoFrame.getAlphaBuffer();
+        // ...
+        videoFrame.fillAlphaData(alphaBuffer);
+        return false;
+      }
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       override fun onPreEncodeVideoFrame(type: Int, videoFrame: VideoFrame): Boolean {
-          // Modify Alpha data or directly add Alpha data
-          val alphaBuffer = videoFrame.alphaBuffer
-          // ...
-          videoFrame.fillAlphaData(byteBuffer)
-          return false
-        }
+        // Modify Alpha data or directly add Alpha data
+        val alphaBuffer = videoFrame.alphaBuffer
+        // ...
+        videoFrame.fillAlphaData(alphaBuffer)
+        return false
+      }
       ```
     </CodeBlockTab>
 
@@ -412,25 +454,26 @@ Take the following steps to implement this logic:
 
     <CodeBlockTab value="java">
       ```java
-      public boolean onRenderVideoFrame(int type, VideoFrame videoFrame) {
-          // Modify Alpha data, directly add Alpha data, or render the video image yourself based on the obtained Alpha data
-          ByteBuffer alphaBuffer = videoFrame.getAlphaBuffer();
-          // ...
-          videoFrame.fillAlphaData(byteBuffer);
-          return false;
-        }
+      @Override
+      public boolean onRenderVideoFrame(String channelId, int uid, VideoFrame videoFrame) {
+        // Modify Alpha data, directly add Alpha data, or render the video image yourself based on the obtained Alpha data
+        ByteBuffer alphaBuffer = videoFrame.getAlphaBuffer();
+        // ...
+        videoFrame.fillAlphaData(alphaBuffer);
+        return false;
+      }
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
-      override fun onRenderVideoFrame(type: Int, videoFrame: VideoFrame): Boolean {
-          // Modify Alpha data, directly add Alpha data, or render the video image yourself based on the obtained Alpha data
-          val alphaBuffer = videoFrame.alphaBuffer
-          // ...
-          videoFrame.fillAlphaData(byteBuffer)
-          return false
-        }
+      override fun onRenderVideoFrame(channelId: String, uid: Int, videoFrame: VideoFrame): Boolean {
+        // Modify Alpha data, directly add Alpha data, or render the video image yourself based on the obtained Alpha data
+        val alphaBuffer = videoFrame.alphaBuffer
+        // ...
+        videoFrame.fillAlphaData(alphaBuffer)
+        return false
+      }
       ```
     </CodeBlockTab>
 

@@ -153,7 +153,7 @@ Use either of the following methods to add RTC SDK to your project.
 
     - Quick configuration: Open the `/app/proguard-rules.pro` file and add the following rules to keep all RTC SDK classes:
 
-        ```java
+        ```text
         -keep class io.agora.** { *; }
         -dontwarn io.agora.**
         ```
@@ -187,7 +187,7 @@ Use either of the following methods to add RTC SDK to your project.
 
     - Quick configuration: Open the `/app/proguard-rules.pro` file and add the following rules to keep all RTC SDK classes:
 
-        ```java
+        ```text
         -keep class io.agora.** { *; }
         -dontwarn io.agora.**
         ```
@@ -357,7 +357,7 @@ private fun joinChannel() {
   val options = ChannelMediaOptions().apply {
     clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
     channelProfile = Constants.CHANNEL_PROFILE_COMMUNICATION
-    publishMicrophoneTrack = true;
+    publishMicrophoneTrack = true
   }
   mRtcEngine?.joinChannel(token, channelName, 0, options)
 }

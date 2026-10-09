@@ -107,7 +107,7 @@ private final IRtcEngineEventHandler iRtcEngineEventHandler = new IRtcEngineEven
   // Implement the onLocalAudioStats callback
   @Override
   public void onLocalAudioStats(LocalAudioStats localAudioStats) {
-    Log.i(TAG, "onLocalAudioStats->" + "Network transport delay: " + localAudioStats.networkTransportDelay);
+    Log.i(TAG, "onLocalAudioStats->" + "Sent bitrate: " + localAudioStats.sentBitrate);
   }
 
   // Implement the onRemoteVideoStats callback
@@ -118,7 +118,7 @@ private final IRtcEngineEventHandler iRtcEngineEventHandler = new IRtcEngineEven
 
   // Implement the onLocalVideoStats callback
   @Override
-  public void onLocalVideoStats(LocalVideoStats localVideoStats) {
+  public void onLocalVideoStats(Constants.VideoSourceType source, LocalVideoStats localVideoStats) {
     Log.i(TAG, "onLocalVideoStats->" + "Sent frame rate: " + localVideoStats.sentFrameRate);
     // Log other specific information as needed
   }
@@ -126,7 +126,7 @@ private final IRtcEngineEventHandler iRtcEngineEventHandler = new IRtcEngineEven
   // Implement the onRtcStats callback
   @Override
   public void onRtcStats(RtcStats rtcStats) {
-    Log.i(TAG, "onRtcStats->" + "User count: " + rtcStats.userCount + ", Packet loss rate: " + rtcStats.rxPacketLossRate);
+    Log.i(TAG, "onRtcStats->" + "User count: " + rtcStats.users + ", Packet loss rate: " + rtcStats.rxPacketLossRate);
   }
 };
 ```
@@ -167,28 +167,28 @@ private val iRtcEngineEventHandler = object : IRtcEngineEventHandler() {
 
   // Implement the onRemoteAudioStats callback
   override fun onRemoteAudioStats(remoteAudioStats: RemoteAudioStats) {
-    Log.i(TAG, "onRemoteAudioStats-> Received bitrate: \${remoteAudioStats.receivedBitrate}")
+    Log.i(TAG, "onRemoteAudioStats-> Received bitrate: ${remoteAudioStats.receivedBitrate}")
   }
 
   // Implement the onLocalAudioStats callback
   override fun onLocalAudioStats(localAudioStats: LocalAudioStats) {
-    Log.i(TAG, "onLocalAudioStats-> Network transport delay: \${localAudioStats.networkTransportDelay}")
+    Log.i(TAG, "onLocalAudioStats-> Sent bitrate: ${localAudioStats.sentBitrate}")
   }
 
   // Implement the onRemoteVideoStats callback
   override fun onRemoteVideoStats(remoteVideoStats: RemoteVideoStats) {
-    Log.i(TAG, "onRemoteVideoStats-> Received bitrate: \${remoteVideoStats.receivedBitrate}")
+    Log.i(TAG, "onRemoteVideoStats-> Received bitrate: ${remoteVideoStats.receivedBitrate}")
   }
 
   // Implement the onLocalVideoStats callback
-  override fun onLocalVideoStats(localVideoStats: LocalVideoStats) {
-    Log.i(TAG, "onLocalVideoStats-> Sent frame rate: \${localVideoStats.sentFrameRate}")
+  override fun onLocalVideoStats(source: Constants.VideoSourceType, localVideoStats: LocalVideoStats) {
+    Log.i(TAG, "onLocalVideoStats-> Sent frame rate: ${localVideoStats.sentFrameRate}")
     // Log other specific information as needed
   }
 
   // Implement the onRtcStats callback
   override fun onRtcStats(rtcStats: RtcStats) {
-    Log.i(TAG, "onRtcStats-> User count: \${rtcStats.userCount}, Packet loss rate: \${rtcStats.rxPacketLossRate}")
+    Log.i(TAG, "onRtcStats-> User count: ${rtcStats.users}, Packet loss rate: ${rtcStats.rxPacketLossRate}")
   }
 }
 ```

@@ -243,26 +243,30 @@ To set spatial audio parameters for the remote user or media player, call `setRe
 
 <CodeBlockTab value="java">
 ```java
+SpatialAudioParams spatialAudioParams = new SpatialAudioParams();
+
 // Enable air absorption effect
 spatialAudioParams.enable_air_absorb = true;
 
 // Enable sound blur effect
 spatialAudioParams.enable_blur = true;
 
-// Set spatial audio parameters for the media player
+// Set spatial audio parameters for the remote user
 engine.setRemoteUserSpatialAudioParams(uid, spatialAudioParams);
 ```
 </CodeBlockTab>
 
 <CodeBlockTab value="kotlin">
 ```kotlin
+val spatialAudioParams = SpatialAudioParams()
+
 // Enable air absorption effect
 spatialAudioParams.enable_air_absorb = true
 
 // Enable sound blur effect
 spatialAudioParams.enable_blur = true
 
-// Set spatial audio parameters for the media player
+// Set spatial audio parameters for the remote user
 engine.setRemoteUserSpatialAudioParams(uid, spatialAudioParams)
 ```
 </CodeBlockTab>
@@ -319,8 +323,8 @@ val mediaPlayerLeftZone = SpatialAudioZone().apply {
 
 localSpatial.setZones(arrayOf(mediaPlayerLeftZone))
 
-localSpatial.setRemoteAudioAttenuation(uid, 0.5f, false)
-localSpatial.setPlayerAttenuation(mediaPlayer.mediaPlayerId, 0.5f, false)
+localSpatial.setRemoteAudioAttenuation(uid, 0.5, false)
+localSpatial.setPlayerAttenuation(mediaPlayer.mediaPlayerId, 0.5, false)
 ```
 </CodeBlockTab>
 

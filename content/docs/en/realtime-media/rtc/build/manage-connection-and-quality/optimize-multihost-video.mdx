@@ -97,8 +97,8 @@ To implement a client-customized composite layout for the audience, follow these
            runOnUiThread(new Runnable() {
                @Override
                public void run() {
-                   int size = info.layoutNumber;
-                   viewGrids.setChildCount(info.layoutNumber);
+                   int size = info.layoutCount;
+                   viewGrids.setChildCount(info.layoutCount);
                    for (int i = 0; i < size; i++) {
                        if (mUserViews.containsKey(info.layoutList[i].uid)) {
                            continue;
@@ -130,7 +130,7 @@ To implement a client-customized composite layout for the audience, follow these
                        canvasToRemove.uid = uid;
                        canvasToRemove.subviewUid = info.layoutList[i].uid;
                        canvasToRemove.setupMode = VideoCanvas.VIEW_SETUP_MODE_REMOVE;
-                       mRtcEngine.setupRemoteVideoEx(canvasToRemove);
+                       mRtcEngine.setupRemoteVideoEx(canvasToRemove, connection);
                    }
                }
            });

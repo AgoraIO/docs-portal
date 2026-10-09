@@ -95,8 +95,8 @@ mediaOptions.enableMultipath = true;
 multipathModeStr = spinner_multipath_mode.getSelectedItem().toString();
 Constants.MultipathMode multipathMode = Constants.MultipathMode.valueOf(multipathModeStr);
 
-mediaOptions.uplinkMultipathMode = Constants.MultipathMode.getValue(Constants.MultipathMode.DYNAMIC);
-mediaOptions.downlinkMultipathMode = Constants.MultipathMode.getValue(Constants.MultipathMode.DYNAMIC);
+mediaOptions.uplinkMultipathMode = Constants.MultipathMode.getValue(Constants.MultipathMode.MULTIPATH_MODE_DYNAMIC);
+mediaOptions.downlinkMultipathMode = Constants.MultipathMode.getValue(Constants.MultipathMode.MULTIPATH_MODE_DYNAMIC);
 mediaOptions.preferMultipathType = Constants.MultipathType.MULTIPATH_TYPE_WIFI.getValue();
 
 @Override

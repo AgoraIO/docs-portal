@@ -61,9 +61,10 @@ To implement raw video data functionality in your project, refer to the followin
     ```java
     private final IVideoFrameObserver iVideoFrameObserver = new IVideoFrameObserver() {
       @Override
-      public boolean onCaptureVideoFrame(VideoFrame videoFrame) {
+      public boolean onCaptureVideoFrame(int sourceType, VideoFrame videoFrame) {
         Log.i(TAG, "OnEncodedVideoImageReceived" + Thread.currentThread().getName());
-        if (isSnapshot) {
+        // Take the snapshot from the camera only, not from screen-sharing frames
+        if (isSnapshot && sourceType == Constants.VIDEO_SOURCE_CAMERA_PRIMARY) {
           isSnapshot = false;
 
           // Get the image bitmap
@@ -97,7 +98,7 @@ To implement raw video data functionality in your project, refer to the followin
       }
 
       @Override
-      public boolean onScreenCaptureVideoFrame(VideoFrame videoFrame) {
+      public boolean onPreEncodeVideoFrame(int sourceType, VideoFrame videoFrame) {
         return false;
       }
 
@@ -122,13 +123,18 @@ To implement raw video data functionality in your project, refer to the followin
       }
 
       @Override
-      public int getRotationApplied() {
-        return 0;
+      public boolean getRotationApplied() {
+        return false;
       }
 
       @Override
       public boolean getMirrorApplied() {
         return false;
+      }
+
+      @Override
+      public int getObservedFramePosition() {
+        return IVideoFrameObserver.POSITION_POST_CAPTURER;
       }
     };
     ```
@@ -137,9 +143,10 @@ To implement raw video data functionality in your project, refer to the followin
     <CodeBlockTab value="kotlin">
     ```kotlin
     private val iVideoFrameObserver = object : IVideoFrameObserver {
-      override fun onCaptureVideoFrame(videoFrame: VideoFrame): Boolean {
+      override fun onCaptureVideoFrame(sourceType: Int, videoFrame: VideoFrame): Boolean {
         Log.i(TAG, "OnEncodedVideoImageReceived${Thread.currentThread().name}")
-        if (isSnapshot) {
+        // Take the snapshot from the camera only, not from screen-sharing frames
+        if (isSnapshot && sourceType == Constants.VIDEO_SOURCE_CAMERA_PRIMARY) {
           isSnapshot = false
 
           // Get the image bitmap
@@ -174,7 +181,7 @@ To implement raw video data functionality in your project, refer to the followin
         return false
       }
 
-      override fun onScreenCaptureVideoFrame(videoFrame: VideoFrame): Boolean {
+      override fun onPreEncodeVideoFrame(sourceType: Int, videoFrame: VideoFrame): Boolean {
         return false
       }
 
@@ -194,12 +201,16 @@ To implement raw video data functionality in your project, refer to the followin
         return 1
       }
 
-      override fun getRotationApplied(): Int {
-        return 0
+      override fun getRotationApplied(): Boolean {
+        return false
       }
 
       override fun getMirrorApplied(): Boolean {
         return false
+      }
+
+      override fun getObservedFramePosition(): Int {
+        return IVideoFrameObserver.POSITION_POST_CAPTURER
       }
     }
     ```

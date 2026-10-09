@@ -46,13 +46,13 @@ Take the following steps to implement this workflow:
 
     <CodeBlockTab value="java">
       ```java
-      int videoTrackId = RtcEngine.createCustomVideoTrack();
+      int videoTrackId = engine.createCustomVideoTrack();
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
-      val videoTrackId = RtcEngine.createCustomVideoTrack()
+      val videoTrackId = engine.createCustomVideoTrack()
       ```
     </CodeBlockTab>
 
@@ -68,38 +68,38 @@ Take the following steps to implement this workflow:
     <CodeBlockTab value="java">
       ```java
       // Create a ChannelMediaOptions instance
-        ChannelMediaOptions option = new ChannelMediaOptions();
-        // Set the client role to BROADCASTER
-        option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
-        // Enable auto subscription of audio and video
-        option.autoSubscribeAudio = true;
-        option.autoSubscribeVideo = true;
-        // Publish self-captured video stream
-        option.publishCustomVideoTrack = true;
-        // Set custom video track ID
-        option.customVideoTrackId = videoTrackId;
-        // Join a channel with the specified options
-        int res = engine.joinChannel(accessToken, channelId, 0, option);
+      ChannelMediaOptions option = new ChannelMediaOptions();
+      // Set the client role to BROADCASTER
+      option.clientRoleType = Constants.CLIENT_ROLE_BROADCASTER;
+      // Enable auto subscription of audio and video
+      option.autoSubscribeAudio = true;
+      option.autoSubscribeVideo = true;
+      // Publish self-captured video stream
+      option.publishCustomVideoTrack = true;
+      // Set custom video track ID
+      option.customVideoTrackId = videoTrackId;
+      // Join a channel with the specified options
+      int res = engine.joinChannel(accessToken, channelId, 0, option);
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       // Create a ChannelMediaOptions instance
-       val option = ChannelMediaOptions().apply {
-         // Set the client role to BROADCASTER
-         clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
-         // Enable auto subscription of audio and video
-         autoSubscribeAudio = true
-         autoSubscribeVideo = true
-         // Publish self-captured video stream
-         publishCustomVideoTrack = true
-         // Set custom video track ID
-         customVideoTrackId = videoTrackId
-       }
+      val option = ChannelMediaOptions().apply {
+        // Set the client role to BROADCASTER
+        clientRoleType = Constants.CLIENT_ROLE_BROADCASTER
+        // Enable auto subscription of audio and video
+        autoSubscribeAudio = true
+        autoSubscribeVideo = true
+        // Publish self-captured video stream
+        publishCustomVideoTrack = true
+        // Set custom video track ID
+        customVideoTrackId = videoTrackId
+      }
 
-       // Join a channel with the specified options
-       val res = engine.joinChannel(accessToken, channelId, 0, option)
+      // Join a channel with the specified options
+      val res = engine.joinChannel(accessToken, channelId, 0, option)
       ```
     </CodeBlockTab>
 
@@ -193,7 +193,7 @@ Take the following steps to implement this workflow:
 
         <CodeBlockTab value="java">
           ```java
-          private void pushVideoFrameByNV21(int trackId, byte[] nv21, int width, height) {
+          private void pushVideoFrameByNV21(int trackId, byte[] nv21, int width, int height) {
             // Create a frameBuffer object and store the original YUV data in the NV21 format buffer
             VideoFrame.Buffer frameBuffer = new NV21Buffer(nv21, width, height, null);
 
@@ -375,23 +375,27 @@ Take the following steps to implement this workflow:
     <CodeBlockTab value="java">
       ```java
       // Destroy custom video track
-       engine.destroyCustomVideoTrack(videoTrack);
-       // Leave the channel
-       engine.leaveChannelEx(connection);
+      engine.destroyCustomVideoTrack(videoTrackId);
+      // Leave the channel
+      engine.leaveChannel();
       ```
     </CodeBlockTab>
 
     <CodeBlockTab value="kotlin">
       ```kotlin
       // Destroy custom video track
-       engine.destroyCustomVideoTrack(videoTrack)
-       // Leave the channel
-       engine.leaveChannelEx(connection)
+      engine.destroyCustomVideoTrack(videoTrackId)
+      // Leave the channel
+      engine.leaveChannel()
       ```
     </CodeBlockTab>
 
     </CodeBlockTabs>
-    
+
+    :::note
+    To publish custom video tracks to more than one channel at the same time, join each additional channel with `joinChannelEx` and an `RtcConnection`, instead of `joinChannel`. To leave a channel you joined using `joinChannelEx`, call `leaveChannelEx` with the same `RtcConnection`. For details, see [Join multiple channels](/en/realtime-media/rtc/build/join-and-manage-channels/join-multiple-channels).
+    :::
+
 ### Custom video rendering
 
 To implement custom video rendering in your app, refer to the following steps:
