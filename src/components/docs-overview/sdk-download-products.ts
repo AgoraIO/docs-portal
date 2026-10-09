@@ -1,5 +1,6 @@
 export const SDK_DOWNLOAD_PRODUCT_GROUP_ORDER = [
   'agents',
+  'client-toolkit',
   'voice',
   'video',
   'signaling',
@@ -18,8 +19,12 @@ export const SDK_DOWNLOAD_PRODUCT_GROUP_ORDER = [
 
 export const ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY = {
   agents: {
-    label: '对话式 AI 引擎 SDK',
+    label: 'Agora Agents SDK',
     info: '用于在服务端构建和运行语音智能体的 SDK',
+  },
+  'client-toolkit': {
+    label: '客户端组件 SDK',
+    info: '用于在 Android、iOS 和 Web 客户端集成对话式 AI 引擎能力的组件',
   },
   voice: {
     label: '语音 SDK',

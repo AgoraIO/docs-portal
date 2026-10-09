@@ -14,6 +14,7 @@ export type SdkCapabilityGroup = {
 
 const SDK_PRODUCT_CAPABILITY: Record<string, SdkCapabilityGroup['id']> = {
   agents: 'conversational-ai',
+  'client-toolkit': 'conversational-ai',
   voice: 'realtime-core',
   video: 'realtime-core',
   signaling: 'realtime-core',

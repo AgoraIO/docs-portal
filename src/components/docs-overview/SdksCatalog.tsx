@@ -10,12 +10,16 @@ import {
 } from 'react';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
+import { getPlatformIconSrc } from './platform-icon-src';
+import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
+import { SdkDownloadCard } from './SdkDownloadCard';
 import { buildSdkCapabilityGroups } from './sdk-download-capabilities';
 import {
   getSdkDownloadProductCatalogId,
   getSdkDownloadProductGroupRank,
   getSdkDownloadProductSectionId,
 } from './sdk-download-navigation';
+import { getZhCNSdkDownloadPageHref } from './sdk-download-page-links';
 import {
   getZhCNSdkDownloadProductCopy,
   ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY,
@@ -51,6 +55,31 @@ const platformGroups = [
 ] as const;
 
 const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
+const DOWNLOAD_PLATFORM_VARIANTS = {
+  'server-gateway': [
+    { id: 'linux-java', label: 'Linux Java', prefix: 'server-gateway-java' },
+    { id: 'linux-cpp', label: 'Linux C++', prefix: 'server-gateway-cpp' },
+    { id: 'python', label: 'Python', prefix: 'python-server-gateway' },
+    { id: 'go', label: 'Go', prefix: 'go-server-gateway' },
+  ],
+  'on-premise-recording': [
+    {
+      id: 'linux-cpp',
+      label: 'Linux C++',
+      prefix: 'on-premise-recording-cpp',
+    },
+    {
+      id: 'linux-java',
+      label: 'Linux Java',
+      prefix: 'on-premise-recording-java',
+    },
+  ],
+} as const;
+const ZH_CN_HIDDEN_SDK_PRODUCTS = new Set([
+  'iot',
+  'mediaplayer-kit',
+  'proctor',
+]);
 const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
 
 const sdkDownloadDatasets = {
@@ -120,6 +149,12 @@ const productFilters = {
     zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.agents.label,
     aliases: ['agents', 'agora-agents', 'ai-agents'],
     productIds: ['agents'],
+  },
+  'client-toolkit': {
+    label: 'Conversational AI Client Toolkit',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY['client-toolkit'].label,
+    aliases: ['client-toolkit', 'client-component', 'conversational-ai-client'],
+    productIds: ['client-toolkit'],
   },
   chat: {
     label: 'Chat SDK',
@@ -235,13 +270,23 @@ const productAliasToFilter = new Map<string, ProductFilterId>(
 );
 function platformRank(platformId: string) {
   const index = (PLATFORM_ORDER as readonly string[]).indexOf(platformId);
-  return index === -1 ? PLATFORM_ORDER.length : index;
+  if (index !== -1) return index;
+
+  const variantIndex = Object.values(DOWNLOAD_PLATFORM_VARIANTS)
+    .flat()
+    .findIndex((variant) => variant.id === platformId);
+  return variantIndex === -1
+    ? PLATFORM_ORDER.length
+    : PLATFORM_ORDER.length + variantIndex;
 }
 
 type ProductPlatformEntry = {
+  platformOrder?: number;
   platformId: string;
+  platformSelectLabel?: string;
   platformLabel: string;
   product: SdkDownloadProduct;
+  sourcePlatformId?: string;
 };
 
 type ProductGroup = {
@@ -271,49 +316,61 @@ function buildProductGroups(
           labelsByProductId.set(productId, product.label);
           order.push(productId);
         }
-        const existingEntry = entries.find(
-          (entry) => entry.platformId === platform.id,
-        );
-
-        if (existingEntry) {
-          const seenVersionKeys = new Set(
-            existingEntry.product.versions.map((version) =>
-              getVersionKey(platform.id, version),
-            ),
+        for (const platformEntry of getProductPlatformEntries(
+          platform,
+          product,
+          productId,
+          locale,
+        )) {
+          const existingEntry = entries.find(
+            (entry) => entry.platformId === platformEntry.platformId,
           );
-          const mergedVersions = [...existingEntry.product.versions];
 
-          for (const version of product.versions) {
-            const versionKey = getVersionKey(platform.id, version);
-            if (seenVersionKeys.has(versionKey)) {
-              continue;
+          if (existingEntry) {
+            const seenVersionKeys = new Set(
+              existingEntry.product.versions.map((version) =>
+                getVersionKey(platformEntry.platformId, version),
+              ),
+            );
+            const mergedVersions = [...existingEntry.product.versions];
+
+            for (const version of platformEntry.product.versions) {
+              const versionKey = getVersionKey(
+                platformEntry.platformId,
+                version,
+              );
+              if (seenVersionKeys.has(versionKey)) {
+                continue;
+              }
+              mergedVersions.push(version);
+              seenVersionKeys.add(versionKey);
             }
-            mergedVersions.push(version);
-            seenVersionKeys.add(versionKey);
+
+            existingEntry.product = {
+              ...existingEntry.product,
+              versions: mergedVersions,
+            };
+            continue;
           }
 
-          existingEntry.product = {
-            ...existingEntry.product,
-            versions: mergedVersions,
-          };
-          continue;
+          entries.push(platformEntry);
         }
-
-        entries.push({
-          platformId: platform.id,
-          platformLabel: platform.label,
-          product,
-        });
       }
     }
   }
 
   return order
+    .filter(
+      (productId) =>
+        locale !== 'zh-CN' || !ZH_CN_HIDDEN_SDK_PRODUCTS.has(productId),
+    )
     .map((productId) => {
       const platforms = (entriesByProductId.get(productId) ?? [])
         .slice()
         .sort(
-          (a, b) => platformRank(a.platformId) - platformRank(b.platformId),
+          (a, b) =>
+            (a.platformOrder ?? platformRank(a.platformId)) -
+            (b.platformOrder ?? platformRank(b.platformId)),
         );
       const localizedCopy =
         locale === 'zh-CN'
@@ -336,6 +393,46 @@ function buildProductGroups(
         getSdkDownloadProductGroupRank(a.productId) -
         getSdkDownloadProductGroupRank(b.productId),
     );
+}
+
+function getProductPlatformEntries(
+  platform: SdkDownloadPlatform,
+  product: SdkDownloadProduct,
+  productId: string,
+  locale: SdkCatalogLocale,
+): ProductPlatformEntry[] {
+  const variants =
+    locale === 'zh-CN' && platform.id === 'linux'
+      ? DOWNLOAD_PLATFORM_VARIANTS[
+          productId as keyof typeof DOWNLOAD_PLATFORM_VARIANTS
+        ]
+      : undefined;
+
+  if (!variants) {
+    return [
+      {
+        platformId: platform.id,
+        platformLabel: platform.label,
+        product,
+      },
+    ];
+  }
+
+  return variants
+    .map((variant, index) => ({
+      platformOrder: index,
+      platformId: variant.id,
+      platformLabel: platform.label,
+      platformSelectLabel: variant.label,
+      product: {
+        ...product,
+        versions: product.versions.filter((version) =>
+          version.id.includes(variant.prefix),
+        ),
+      },
+      sourcePlatformId: platform.id,
+    }))
+    .filter((entry) => entry.product.versions.length > 0);
 }
 
 export function SdksCatalog({
@@ -376,7 +473,9 @@ export function SdksCatalog({
     : queryFilters.platformId
       ? productGroups.filter((group) =>
           group.platforms.some(
-            (entry) => entry.platformId === queryFilters.platformId,
+            (entry) =>
+              entry.platformId === queryFilters.platformId ||
+              entry.sourcePlatformId === queryFilters.platformId,
           ),
         )
       : productGroups;
@@ -533,11 +632,13 @@ function ProductCard({
   locale: SdkCatalogLocale;
   redesigned: boolean;
 }) {
-  const defaultPlatformId =
-    initialPlatformId &&
-    group.platforms.some((entry) => entry.platformId === initialPlatformId)
-      ? initialPlatformId
-      : group.platforms[0].platformId;
+  const defaultPlatformId = initialPlatformId
+    ? (group.platforms.find(
+        (entry) =>
+          entry.platformId === initialPlatformId ||
+          entry.sourcePlatformId === initialPlatformId,
+      )?.platformId ?? group.platforms[0].platformId)
+    : group.platforms[0].platformId;
   const [platformId, setPlatformId] = useState(defaultPlatformId);
   const [versionIndex, setVersionIndex] = useState('0');
   const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
@@ -548,6 +649,12 @@ function ProductCard({
   const versions = getLatestVersions(activePlatform.product.versions);
   const activeVersion = versions[Number(versionIndex)] ?? versions[0];
   const command = activeVersion ? deriveInstallCommand(activeVersion) : null;
+  const downloadPageHref =
+    locale === 'zh-CN'
+      ? getZhCNSdkDownloadPageHref(group.productId, platformId)
+      : null;
+  const hasEmbeddedDownloadCards =
+    Boolean(downloadPageHref) && group.productId !== 'chat';
 
   const titleId = `sdk-${group.defaultProduct.id}-title`;
   const versionId = `sdk-${group.defaultProduct.id}-version`;
@@ -584,6 +691,15 @@ function ProductCard({
               {group.info}
             </span>
           </span>
+          {downloadPageHref && group.productId !== 'chat' ? (
+            <a
+              className="ml-auto shrink-0 text-xs font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              href={downloadPageHref}
+              onClick={(event) => event.stopPropagation()}
+            >
+              更多 ↗
+            </a>
+          ) : null}
         </summary>
         <div className="border-border border-t px-4 py-4 sm:pl-16">
           <div className="flex items-end justify-between gap-3">
@@ -603,62 +719,140 @@ function ProductCard({
               >
                 {group.platforms.map((entry) => (
                   <option key={entry.platformId} value={entry.platformId}>
-                    {entry.platformLabel}
+                    {entry.platformSelectLabel ?? entry.platformLabel}
                   </option>
                 ))}
               </select>
             </label>
-            <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
-              {command ? command.tool : ' '}
-            </span>
-          </div>
-
-          <div className="mt-4 flex items-center justify-between gap-3">
-            <span className="sr-only">{copy.versionLabel(group.label)}</span>
-            {versions.length > 1 ? (
-              <span className="relative ml-auto shrink-0">
-                <label className="sr-only" htmlFor={versionId}>
-                  {copy.versionLabel(group.label)}
-                </label>
-                <select
-                  className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-                  id={versionId}
-                  onChange={(event) => setVersionIndex(event.target.value)}
-                  value={versionIndex}
-                >
-                  {versions.map((version, index) => (
-                    <option
-                      key={getVersionKey(activePlatform.platformId, version)}
-                      value={String(index)}
-                    >
-                      {getVersionMeta(version, locale).optionLabel}
-                    </option>
-                  ))}
-                </select>
-                <ChevronDownIcon
-                  aria-hidden="true"
-                  className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
-                />
-              </span>
-            ) : activeVersion ? (
-              <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
-                {getVersionMeta(activeVersion, locale).optionLabel}
+            {!redesigned ? (
+              <span className="shrink-0 pb-2 text-[0.66rem] font-semibold tracking-[0.05em] text-muted-foreground uppercase">
+                {command ? command.tool : ' '}
               </span>
             ) : null}
           </div>
 
-          {activeVersion ? (
-            <InstallArea
-              command={command}
-              copy={copy}
-              redesigned={redesigned}
-              version={activeVersion}
-            />
-          ) : null}
+          {redesigned && hasEmbeddedDownloadCards ? (
+            <div className="mt-4 grid gap-4 md:grid-cols-2">
+              {getDownloadCardEntries(group, activePlatform).map((entry) => (
+                <SdkDownloadCard
+                  iconSrc={getPlatformIconSrc(entry.iconPlatformId)}
+                  key={getVersionKey(activePlatform.platformId, entry.version)}
+                  title={entry.title}
+                  version={entry.version}
+                  versionSuffix={entry.versionSuffix}
+                />
+              ))}
+            </div>
+          ) : (
+            <>
+              {!redesigned ? (
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <span className="sr-only">
+                    {copy.versionLabel(group.label)}
+                  </span>
+                  {versions.length > 1 ? (
+                    <span className="relative ml-auto shrink-0">
+                      <label className="sr-only" htmlFor={versionId}>
+                        {copy.versionLabel(group.label)}
+                      </label>
+                      <select
+                        className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                        id={versionId}
+                        onChange={(event) =>
+                          setVersionIndex(event.target.value)
+                        }
+                        value={versionIndex}
+                      >
+                        {versions.map((version, index) => (
+                          <option
+                            key={getVersionKey(
+                              activePlatform.platformId,
+                              version,
+                            )}
+                            value={String(index)}
+                          >
+                            {getVersionMeta(version, locale).optionLabel}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDownIcon
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                      />
+                    </span>
+                  ) : activeVersion ? (
+                    <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
+                      {getVersionMeta(activeVersion, locale).optionLabel}
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+
+              {activeVersion ? (
+                <InstallArea
+                  command={command}
+                  copy={copy}
+                  redesigned={redesigned}
+                  version={activeVersion}
+                />
+              ) : null}
+            </>
+          )}
         </div>
       </details>
     </article>
   );
+}
+
+function getDownloadCardEntries(
+  group: ProductGroup,
+  platform: ProductPlatformEntry,
+) {
+  if (group.productId === 'video' || group.productId === 'voice') {
+    return getRtcDownloadCardEntries(
+      platform.platformId,
+      platform.platformLabel,
+      group.productId,
+      platform.product,
+    );
+  }
+
+  const versions = getDownloadCardVersions(platform);
+
+  return versions.map((version) => {
+    return {
+      iconPlatformId: platform.platformId,
+      title: getDownloadCardTitle(group, platform, version),
+      version,
+      versionSuffix: undefined,
+    };
+  });
+}
+
+function getDownloadCardVersions(platform: ProductPlatformEntry) {
+  return getLatestVersions(platform.product.versions);
+}
+
+function getDownloadCardTitle(
+  group: ProductGroup,
+  platform: ProductPlatformEntry,
+  version: SdkDownloadVersion,
+) {
+  if (group.productId === 'video' || group.productId === 'voice') {
+    if (/\bFull\b/i.test(version.label)) {
+      return `${platform.platformLabel} Full`;
+    }
+    if (/\bLite\b/i.test(version.label)) {
+      return `${platform.platformLabel} Lite`;
+    }
+    return `${platform.platformLabel} ${group.productId === 'video' ? '视频' : '音频'} SDK`;
+  }
+
+  const variant = version.label
+    .replace(/^(?:版本|Version)\s+[^\s（(]+/i, '')
+    .replace(/[（(]\s*(?:最新|Latest)\s*[）)]/gi, '')
+    .trim();
+  return `${platform.platformLabel} ${group.label}${variant ? ` ${variant}` : ''}`;
 }
 
 function useSdkCatalogQueryFilters(
@@ -768,7 +962,12 @@ function readQueryFilters(
   const productId = product
     ? (productAliasToFilter.get(product) ?? null)
     : defaults.productId;
-  const platformIds = new Set(platforms.map((entry) => entry.id));
+  const platformIds = new Set([
+    ...platforms.map((entry) => entry.id),
+    ...Object.values(DOWNLOAD_PLATFORM_VARIANTS)
+      .flat()
+      .map((variant) => variant.id),
+  ]);
   const platformId = platform
     ? platformIds.has(platform)
       ? platform
@@ -794,7 +993,14 @@ function normalizePlatformFilter(
     return null;
   }
 
-  return platforms.some((entry) => entry.id === normalized) ? normalized : null;
+  return new Set([
+    ...platforms.map((entry) => entry.id),
+    ...Object.values(DOWNLOAD_PLATFORM_VARIANTS)
+      .flat()
+      .map((variant) => variant.id),
+  ]).has(normalized)
+    ? normalized
+    : null;
 }
 
 function getVersionKey(platformId: string, version: SdkDownloadVersion) {
@@ -856,7 +1062,7 @@ function InstallArea({
             <a
               className={cn(
                 redesigned
-                  ? 'inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                  ? 'inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
                   : 'underline underline-offset-2 hover:text-foreground',
               )}
               href={version.downloadLink}
@@ -873,7 +1079,7 @@ function InstallArea({
             <a
               className={cn(
                 'underline underline-offset-2 hover:text-foreground',
-                redesigned && 'inline-flex min-h-11 items-center',
+                redesigned && 'inline-flex items-center',
               )}
               href={version.packageManager}
               rel="noreferrer noopener"
@@ -883,11 +1089,7 @@ function InstallArea({
             </a>
           ) : null}
         </div>
-        {redesigned ? (
-          <VersionDetails copy={copy} version={version} />
-        ) : (
-          <VersionMetadata copy={copy} version={version} />
-        )}
+        {!redesigned ? <VersionMetadata copy={copy} version={version} /> : null}
       </div>
     );
   }
@@ -897,7 +1099,11 @@ function InstallArea({
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         {version.downloadLink ? (
           <a
-            className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            className={cn(
+              redesigned
+                ? 'inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                : 'inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+            )}
             href={version.downloadLink}
             rel="noreferrer noopener"
             target="_blank"
@@ -920,11 +1126,7 @@ function InstallArea({
           </a>
         ) : null}
       </div>
-      {redesigned ? (
-        <VersionDetails copy={copy} version={version} />
-      ) : (
-        <VersionMetadata copy={copy} version={version} />
-      )}
+      {!redesigned ? <VersionMetadata copy={copy} version={version} /> : null}
     </div>
   );
 }
@@ -1041,31 +1243,6 @@ function VersionMetadata({
       ))}
     </dl>
   );
-}
-
-function VersionDetails({
-  copy,
-  version,
-}: {
-  copy: CatalogCopy;
-  version: SdkDownloadVersion;
-}) {
-  if (!hasVersionMetadata(version)) {
-    return null;
-  }
-
-  return (
-    <details className="mt-4 border-border border-t pt-3">
-      <summary className="cursor-pointer text-xs font-medium text-foreground">
-        版本详情
-      </summary>
-      <VersionMetadata copy={copy} version={version} />
-    </details>
-  );
-}
-
-function hasVersionMetadata(version: SdkDownloadVersion) {
-  return Boolean(version.releaseDate || version.packageName || version.md5);
 }
 
 function CopyButton({ copy, value }: { copy: CatalogCopy; value: string }) {

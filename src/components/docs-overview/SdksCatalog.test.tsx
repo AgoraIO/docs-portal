@@ -59,18 +59,112 @@ describe('SdksCatalog', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      15,
+      13,
     );
   });
 
-  it('keeps version metadata under a labeled version-details disclosure', () => {
+  it('does not show an install-tool badge beside Chinese platform selectors', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const voiceCard = openProductCard('语音 SDK');
-    expect(within(voiceCard).getByText('版本详情')).toBeVisible();
-    expect(within(voiceCard).getByText('发布日期')).toBeInTheDocument();
-    expect(within(voiceCard).getByText('包名')).toBeInTheDocument();
-    expect(within(voiceCard).getByText('MD5')).toBeInTheDocument();
+    expect(within(voiceCard).queryByText('Gradle')).not.toBeInTheDocument();
+  });
+
+  it('shows download-card metadata in Chinese overview products', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const voiceCard = openProductCard('语音 SDK');
+    const downloadCard = within(voiceCard).getByRole('article', {
+      name: 'Android 音频 SDK',
+    });
+    expect(within(downloadCard).getByText('io.agora.rtc2.voice')).toBeVisible();
+    expect(
+      within(downloadCard).getByText('2801dfea3c96a32e6aaaa354d819ec71'),
+    ).toBeVisible();
+    expect(
+      within(downloadCard).getByText('发布日期：2026 年 2 月 9 日'),
+    ).toBeVisible();
+  });
+
+  it('uses download-page cards in Chinese overview products', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = openProductCard('视频 SDK');
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Full' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台' }),
+    ).toHaveValue('android');
+    const moreLink = within(videoCard).getByRole('link', {
+      name: '更多 ↗',
+    });
+    expect(moreLink).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc/reference/downloads/android',
+    );
+    expect(moreLink).not.toHaveClass('min-h-11', 'border', 'bg-primary/5');
+    expect(
+      within(videoCard).queryByText(
+        "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
+      ),
+    ).not.toBeInTheDocument();
+  });
+
+  it('updates overview download cards and page links when the platform changes', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = openProductCard('视频 SDK');
+    fireEvent.change(
+      within(videoCard).getByRole('combobox', { name: '视频 SDK 平台' }),
+      { target: { value: 'ios' } },
+    );
+
+    expect(
+      within(videoCard).getByRole('article', { name: 'iOS Full' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('link', { name: '更多 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc/reference/downloads/ios',
+    );
+  });
+
+  it('does not show a download-page link when a product has no dedicated page', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const agentsCard = screen.getByRole('article', {
+      name: 'Agora Agents SDK',
+    });
+    expect(
+      within(agentsCard).queryByRole('link', { name: '更多 ↗' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('separates Agora Agents SDK from the conversational AI client toolkit', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(
+      screen.getByRole('article', { name: 'Agora Agents SDK' }),
+    ).toBeVisible();
+    const clientToolkit = openProductCard('客户端组件 SDK');
+    const platform = within(clientToolkit).getByRole('combobox', {
+      name: '客户端组件 SDK 平台',
+    });
+
+    expect(platform).toHaveValue('android');
+    expect(
+      within(platform).getByRole('option', { name: 'iOS' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).getByRole('option', { name: 'Web' }),
+    ).toBeInTheDocument();
+    expect(
+      within(clientToolkit).getByText(
+        "implementation 'io.agora.agents:agora-agent-client-toolkit:2.9.0'",
+      ),
+    ).toBeVisible();
   });
 
   it('renders SDK products under API reference capability headings', () => {
@@ -86,7 +180,9 @@ describe('SdksCatalog', () => {
       screen.getByRole('heading', { name: '扩展能力与生态' }),
     ).toBeVisible();
     expect(screen.getByRole('heading', { name: '教育' })).toBeVisible();
-    expect(screen.getByRole('heading', { name: '智能硬件' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '智能硬件' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: '监控与分析' }),
     ).not.toBeInTheDocument();
@@ -102,7 +198,7 @@ describe('SdksCatalog', () => {
     ).toHaveLength(0);
     expect(
       container.querySelectorAll('[data-sdk-download-product-id] > details'),
-    ).toHaveLength(15);
+    ).toHaveLength(13);
   });
 
   it('does not show product or platform counts in the Chinese catalog', () => {
@@ -202,9 +298,9 @@ describe('SdksCatalog', () => {
   it('keeps long install commands horizontally inspectable with mobile-sized controls', async () => {
     render(<SdksCatalog locale="zh-CN" />);
 
-    const agentsCard = openProductCard('对话式 AI 引擎 SDK');
+    const agentsCard = openProductCard('Agora Agents SDK');
     const typescriptPlatform = within(agentsCard).getByRole('combobox', {
-      name: '对话式 AI 引擎 SDK 平台',
+      name: 'Agora Agents SDK 平台',
     });
 
     fireEvent.change(typescriptPlatform, { target: { value: 'typescript' } });
@@ -261,7 +357,7 @@ describe('SdksCatalog', () => {
     const packageManager = within(agentsCard).getByRole('link', {
       name: '包管理器 ↗',
     });
-    expect(packageManager).toHaveClass('min-h-11');
+    expect(packageManager).not.toHaveClass('min-h-11');
   });
 
   it('only exposes the latest SDK version for download', () => {
@@ -519,8 +615,13 @@ describe('SdksCatalog', () => {
         name: '实时消息 SDK 平台',
       }),
     ).toHaveValue('harmonyos');
+    const downloadCard = within(signalingCard).getByRole('article', {
+      name: 'HarmonyOS 实时消息 SDK',
+    });
     expect(
-      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+      within(downloadCard).getByRole('link', {
+        name: '下载 HarmonyOS 实时消息 SDK',
+      }),
     ).toHaveAttribute(
       'href',
       'https://download.shengwang.cn/rtm2/release/RTM_ArkTS_SDK_for_HarmonyOS_v2.3.0.zip',
@@ -541,15 +642,19 @@ describe('SdksCatalog', () => {
         name: '实时消息 SDK 平台',
       }),
     ).toHaveValue('linux');
+    const downloadCard = within(signalingCard).getByRole('article', {
+      name: 'Linux 实时消息 SDK C++',
+    });
     expect(
-      within(signalingCard).getByRole('link', { name: '下载 SDK' }),
+      within(downloadCard).getByRole('link', {
+        name: '下载 Linux 实时消息 SDK C++',
+      }),
     ).toHaveAttribute(
       'href',
       'https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_Linux_v2.3.0.zip',
     );
-    fireEvent.click(within(signalingCard).getByText('版本详情'));
     expect(
-      within(signalingCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
+      within(downloadCard).getByText('9a8ee5f8deda76e23eea80f5b3c5a453'),
     ).toBeVisible();
   });
 
@@ -594,7 +699,9 @@ describe('SdksCatalog', () => {
     const signalingCard = openProductCard('实时消息 SDK');
 
     expect(
-      within(signalingCard).getByText('flutter pub add agora_rtm:2.2.6'),
+      within(signalingCard).getByRole('article', {
+        name: 'Flutter 实时消息 SDK',
+      }),
     ).toBeVisible();
     expect(
       within(signalingCard).queryByRole('combobox', { name: /版本/ }),
@@ -625,17 +732,18 @@ describe('SdksCatalog', () => {
 
     const voiceCard = openProductCard('语音 SDK');
 
+    const downloadCard = within(voiceCard).getByRole('article', {
+      name: 'Web 音频 SDK',
+    });
+    expect(within(downloadCard).getByText('v4.24.6')).toBeVisible();
     expect(
-      within(voiceCard).getByText('npm i agora-rtc-sdk-ng@4.24.6'),
-    ).toBeVisible();
-    expect(
-      within(voiceCard).getByRole('link', { name: '下载 SDK' }),
+      within(downloadCard).getByRole('link', { name: '下载 Web 音频 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
     );
     expect(
-      within(voiceCard).getByRole('link', { name: '包管理器 ↗' }),
+      within(downloadCard).getByRole('link', { name: '包管理器' }),
     ).toHaveAttribute(
       'href',
       'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6',
@@ -644,35 +752,105 @@ describe('SdksCatalog', () => {
       within(voiceCard).queryByRole('combobox', { name: /版本/ }),
     ).not.toBeInTheDocument();
     expect(
-      within(voiceCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
+      within(downloadCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
     ).not.toBeInTheDocument();
   });
+
+  it('removes Chinese version details and lightens direct download links', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=client-toolkit&platform=ios',
+    );
+
+    const { unmount } = render(<SdksCatalog locale="zh-CN" />);
+
+    const clientToolkitCard = openProductCard('客户端组件 SDK');
+    expect(
+      within(clientToolkitCard).queryByText('版本详情'),
+    ).not.toBeInTheDocument();
+    expect(
+      within(clientToolkitCard).queryByText('v2.9.0 - 最新'),
+    ).not.toBeInTheDocument();
+    unmount();
+
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=cloud-scene&platform=web',
+    );
+    render(<SdksCatalog locale="zh-CN" />);
+    const cloudSceneCard = openProductCard('云课堂 SDK');
+    const downloadLink = within(cloudSceneCard).getByRole('link', {
+      name: '下载 SDK',
+    });
+    expect(downloadLink).not.toHaveClass('min-h-11', 'bg-primary');
+  });
+
+  it('does not show an external-site link for the Chinese Instant Messaging card', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=chat&platform=android',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const chatCard = openProductCard('即时通讯 SDK');
+    expect(
+      within(chatCard).queryByRole('link', { name: '更多 ↗' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['web', 'Web 音频 SDK', '2026 年 7 月 13 日'],
+    ['react-js', 'React 音频 SDK', '2025 年 12 月 17 日'],
+    ['windows', 'Windows 音频 SDK', '2026 年 1 月 16 日'],
+    ['macos', 'macOS 音频 SDK', '2026 年 1 月 16 日'],
+    ['electron', 'Electron 音频 SDK', '2026 年 3 月 5 日'],
+    ['flutter', 'Flutter 音频 SDK', '2026 年 3 月 18 日'],
+  ] as const)(
+    'shows the release date on the %s voice card',
+    (platform, cardName, date) => {
+      render(
+        <SdksCatalog locale="zh-CN" platform={platform} product="voice" />,
+      );
+
+      const voiceCard = openProductCard('语音 SDK');
+      const downloadCard = within(voiceCard).getByRole('article', {
+        name: cardName,
+      });
+      expect(within(downloadCard).getByText(`发布日期：${date}`)).toBeVisible();
+    },
+  );
 
   it('localizes zh-CN package variant and language labels', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const videoCard = openProductCard('视频 SDK');
-    const videoOptions = within(videoCard)
-      .getByRole('combobox', { name: '视频 SDK 版本' })
-      .querySelectorAll('option');
-    const videoOptionLabels = [...videoOptions].map(
-      (option) => option.textContent,
-    );
-    expect(videoOptionLabels).toEqual([
-      'v4.6.3 完整版 - 最新',
-      'v4.6.3 轻量版 - 最新',
-    ]);
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Full' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Lite' }),
+    ).toBeVisible();
 
     const serverCard = openProductCard('RTC 服务端 SDK');
-    const serverOptions = within(serverCard)
-      .getByRole('combobox', { name: 'RTC 服务端 SDK 版本' })
-      .querySelectorAll('option');
-    const serverOptionLabels = [...serverOptions].map(
-      (option) => option.textContent,
-    );
-    expect(serverOptionLabels).toContain('v2.2.8 Go - 最新');
-    expect(serverOptionLabels).toContain('v2.2.4 Python - 最新');
-    expect(serverOptionLabels.join(' ')).not.toContain(' for ');
+    const serverPlatform = within(serverCard).getByRole('combobox', {
+      name: 'RTC 服务端 SDK 平台',
+    });
+    fireEvent.change(serverPlatform, { target: { value: 'go' } });
+    expect(
+      within(serverCard).getByRole('article', {
+        name: 'Linux RTC 服务端 SDK for Go',
+      }),
+    ).toBeVisible();
+    fireEvent.change(serverPlatform, { target: { value: 'python' } });
+    expect(
+      within(serverCard).getByRole('article', {
+        name: 'Linux RTC 服务端 SDK for Python',
+      }),
+    ).toBeVisible();
   });
 
   it('orders zh-CN SDK capability groups like the API reference', () => {
@@ -689,7 +867,6 @@ describe('SdksCatalog', () => {
       '会议协作',
       '扩展能力与生态',
       '教育',
-      '智能硬件',
     ]);
   });
 
@@ -697,7 +874,11 @@ describe('SdksCatalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
     const expectedProducts = [
-      ['对话式 AI 引擎 SDK', '用于在服务端构建和运行语音智能体的 SDK'],
+      ['Agora Agents SDK', '用于在服务端构建和运行语音智能体的 SDK'],
+      [
+        '客户端组件 SDK',
+        '用于在 Android、iOS 和 Web 客户端集成对话式 AI 引擎能力的组件',
+      ],
       [
         '语音 SDK',
         '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
@@ -705,8 +886,6 @@ describe('SdksCatalog', () => {
       ['视频 SDK', '适用于音视频通话、互动直播和极速直播的实时互动 SDK'],
       ['实时消息 SDK', '提供低延时消息、信令、状态同步和频道管理能力的 SDK'],
       ['即时通讯 SDK', '适用于即时通讯场景的 SDK'],
-      ['物联网 aPaaS SDK', '适用于嵌入式设备实时音视频互动的 SDK'],
-      ['媒体播放器组件', '用于在客户端播放本地或在线媒体资源的组件'],
       ['互动白板 SDK', '提供可高度定制且不含默认 UI 的互动白板核心能力'],
       ['Fastboard SDK', '提供默认 UI，支持快速集成互动白板功能的 SDK'],
       [
@@ -720,7 +899,6 @@ describe('SdksCatalog', () => {
       ['本地服务端录制 SDK', '部署在本地服务端，用于录制 RTC 频道中的音视频流'],
       ['灵动课堂 SDK', '适用于教育场景和课堂 UI 定制的 SDK'],
       ['云课堂 SDK', '提供默认课堂 UI 的场景化 SDK'],
-      ['灵动监考 SDK', '适用于在线监考场景的 SDK'],
     ] as const;
 
     for (const [name, description] of expectedProducts) {
@@ -734,11 +912,11 @@ describe('SdksCatalog', () => {
       .map((article) => article.textContent)
       .join('\n');
     expect(catalogText).not.toMatch(
-      /SDK for:?|Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK/,
+      /Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK|媒体播放器组件|灵动监考 SDK|物联网 aPaaS SDK/,
     );
   });
 
-  it('derives zh-CN Android install commands from confirmed package versions', () => {
+  it('uses the confirmed zh-CN Android download-card versions', () => {
     window.history.replaceState(
       null,
       '',
@@ -749,24 +927,138 @@ describe('SdksCatalog', () => {
 
     const videoCard = openProductCard('视频 SDK');
     expect(
-      within(videoCard).getByText(
-        "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
-      ),
+      within(videoCard).getByRole('article', { name: 'Android Full' }),
     ).toBeVisible();
-    const downloadLink = within(videoCard).getByRole('link', {
-      name: '下载 SDK',
-    });
-    expect(downloadLink).toHaveAttribute(
+    expect(
+      within(videoCard).getByRole('article', { name: 'Android Lite' }),
+    ).toBeVisible();
+    expect(
+      within(videoCard).getByRole('link', { name: '更多 ↗' }),
+    ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip',
+      '/zh-CN/realtime-media/rtc/reference/downloads/android',
     );
-    expect(downloadLink).toHaveClass('bg-primary', 'min-h-11');
+  });
+
+  it('copies the dedicated Electron download-page cards into the overview', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=video&platform=electron',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const videoCard = openProductCard('视频 SDK');
+    const unionTechCard = within(videoCard).getByRole('article', {
+      name: 'Electron for 统信 OS',
+    });
+
+    expect(within(videoCard).getAllByRole('article')).toHaveLength(2);
     expect(
-      within(videoCard).getByRole('combobox', { name: '视频 SDK 版本' }),
-    ).toHaveClass('min-h-11');
+      within(unionTechCard).getByText('v4.5.40-rc.2（统信 OS 专版）'),
+    ).toBeVisible();
     expect(
-      within(videoCard).getByRole('link', { name: '包管理器 ↗' }),
-    ).toHaveClass('min-h-11');
+      within(unionTechCard).getByRole('link', {
+        name: '获取 Electron for 统信 OS',
+      }),
+    ).toHaveAttribute(
+      'href',
+      'https://www.npmjs.com/package/agora-electron-sdk/v/4.5.40-rc.2',
+    );
+  });
+
+  it('uses only the platforms exposed by the interactive whiteboard download page', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=whiteboard',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const whiteboardCard = openProductCard('互动白板 SDK');
+    const platform = within(whiteboardCard).getByRole('combobox', {
+      name: '互动白板 SDK 平台',
+    });
+
+    expect(
+      within(platform).getByRole('option', { name: 'Android' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).getByRole('option', { name: 'iOS' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).getByRole('option', { name: 'Web' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).queryByRole('option', { name: 'macOS' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('copies the four RTC server download-page variants into the platform selector', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=server-gateway&platform=linux',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const serverCard = openProductCard('RTC 服务端 SDK');
+    const platform = within(serverCard).getByRole('combobox', {
+      name: 'RTC 服务端 SDK 平台',
+    });
+
+    expect(platform).toHaveValue('linux-java');
+    expect(
+      within(platform)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(['Linux Java', 'Linux C++', 'Python', 'Go']);
+    expect(
+      within(serverCard).getByRole('article', {
+        name: 'Linux RTC 服务端 SDK Java x86-64',
+      }),
+    ).toBeVisible();
+
+    fireEvent.change(platform, { target: { value: 'linux-cpp' } });
+    expect(within(serverCard).getAllByRole('article')).toHaveLength(2);
+    expect(
+      within(serverCard).getByRole('link', { name: '更多 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp',
+    );
+  });
+
+  it('copies the C++ and Java variants from the local recording download page', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=on-premise-recording&platform=linux',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const recordingCard = openProductCard('本地服务端录制 SDK');
+    const platform = within(recordingCard).getByRole('combobox', {
+      name: '本地服务端录制 SDK 平台',
+    });
+
+    expect(platform).toHaveValue('linux-cpp');
+    expect(
+      within(platform)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(['Linux C++', 'Linux Java']);
+    expect(within(recordingCard).getAllByRole('article')).toHaveLength(2);
+    expect(
+      within(recordingCard).getByRole('link', { name: '更多 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-cpp',
+    );
   });
 
   it('ignores invalid product and platform query values', () => {

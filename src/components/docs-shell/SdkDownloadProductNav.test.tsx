@@ -83,11 +83,13 @@ describe('SdkDownloadProductNav', () => {
           ? hasScrolledToVoice
             ? -500
             : 500
-          : productId === 'voice'
-            ? hasScrolledToVoice
-              ? 120
-              : 900
-            : 1200;
+          : productId === 'client-toolkit'
+            ? -300
+            : productId === 'voice'
+              ? hasScrolledToVoice
+                ? 120
+                : 900
+              : 1200;
 
       return {
         bottom: top + 300,
