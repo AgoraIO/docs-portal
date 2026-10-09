@@ -71,10 +71,28 @@ export function getZhCNSdkDownloadPageHref(
   }
 
   if (productId === 'server-gateway') {
+    if (platformId === 'linux-java') {
+      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-java';
+    }
+    if (platformId === 'linux-cpp') {
+      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp';
+    }
+    if (platformId === 'python') {
+      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/python';
+    }
+    if (platformId === 'go') {
+      return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/go';
+    }
     return '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads';
   }
 
   if (productId === 'on-premise-recording') {
+    if (platformId === 'linux-cpp') {
+      return '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-cpp';
+    }
+    if (platformId === 'linux-java') {
+      return '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-java';
+    }
     return '/zh-CN/realtime-media/local-server-recording/reference/downloads';
   }
 

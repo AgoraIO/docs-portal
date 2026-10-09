@@ -2710,20 +2710,6 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         ]
       }
     ],
-    "addOns": [
-      {
-        "id": "interactive-whiteboard-ios",
-        "label": "互动白板 SDK",
-        "info": "SDK for: Interactive Whiteboard",
-        "versions": [
-          {
-            "id": "2.16.46-interactive-whiteboard-ios",
-            "label": "版本 2.16.46 （最新）",
-            "packageManager": "https://github.com/netless-io/whiteboard-ios"
-          }
-        ]
-      }
-    ]
   },
   {
     "id": "linux",

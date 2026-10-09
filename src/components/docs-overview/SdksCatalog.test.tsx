@@ -764,11 +764,16 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
 
     const serverCard = openProductCard('RTC 服务端 SDK');
+    const serverPlatform = within(serverCard).getByRole('combobox', {
+      name: 'RTC 服务端 SDK 平台',
+    });
+    fireEvent.change(serverPlatform, { target: { value: 'go' } });
     expect(
       within(serverCard).getByRole('article', {
         name: 'Linux RTC 服务端 SDK for Go',
       }),
     ).toBeVisible();
+    fireEvent.change(serverPlatform, { target: { value: 'python' } });
     expect(
       within(serverCard).getByRole('article', {
         name: 'Linux RTC 服务端 SDK for Python',
@@ -892,6 +897,99 @@ describe('SdksCatalog', () => {
     ).toHaveAttribute(
       'href',
       'https://www.npmjs.com/package/agora-electron-sdk/v/4.5.40-rc.2',
+    );
+  });
+
+  it('uses only the platforms exposed by the interactive whiteboard download page', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=whiteboard',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const whiteboardCard = openProductCard('互动白板 SDK');
+    const platform = within(whiteboardCard).getByRole('combobox', {
+      name: '互动白板 SDK 平台',
+    });
+
+    expect(
+      within(platform).getByRole('option', { name: 'Android' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).getByRole('option', { name: 'iOS' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).getByRole('option', { name: 'Web' }),
+    ).toBeInTheDocument();
+    expect(
+      within(platform).queryByRole('option', { name: 'macOS' }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('copies the four RTC server download-page variants into the platform selector', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=server-gateway&platform=linux',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const serverCard = openProductCard('RTC 服务端 SDK');
+    const platform = within(serverCard).getByRole('combobox', {
+      name: 'RTC 服务端 SDK 平台',
+    });
+
+    expect(platform).toHaveValue('linux-java');
+    expect(
+      within(platform)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(['Linux Java', 'Linux C++', 'Python', 'Go']);
+    expect(
+      within(serverCard).getByRole('article', {
+        name: 'Linux RTC 服务端 SDK Java x86-64',
+      }),
+    ).toBeVisible();
+
+    fireEvent.change(platform, { target: { value: 'linux-cpp' } });
+    expect(within(serverCard).getAllByRole('article')).toHaveLength(2);
+    expect(
+      within(serverCard).getByRole('link', { name: '查看下载页 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp',
+    );
+  });
+
+  it('copies the C++ and Java variants from the local recording download page', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=on-premise-recording&platform=linux',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const recordingCard = openProductCard('本地服务端录制 SDK');
+    const platform = within(recordingCard).getByRole('combobox', {
+      name: '本地服务端录制 SDK 平台',
+    });
+
+    expect(platform).toHaveValue('linux-cpp');
+    expect(
+      within(platform)
+        .getAllByRole('option')
+        .map((option) => option.textContent),
+    ).toEqual(['Linux C++', 'Linux Java']);
+    expect(within(recordingCard).getAllByRole('article')).toHaveLength(2);
+    expect(
+      within(recordingCard).getByRole('link', { name: '查看下载页 ↗' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-cpp',
     );
   });
 

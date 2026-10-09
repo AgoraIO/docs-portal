@@ -55,6 +55,26 @@ const platformGroups = [
 ] as const;
 
 const PLATFORM_ORDER = platformGroups.flatMap((group) => group.platformIds);
+const DOWNLOAD_PLATFORM_VARIANTS = {
+  'server-gateway': [
+    { id: 'linux-java', label: 'Linux Java', prefix: 'server-gateway-java' },
+    { id: 'linux-cpp', label: 'Linux C++', prefix: 'server-gateway-cpp' },
+    { id: 'python', label: 'Python', prefix: 'python-server-gateway' },
+    { id: 'go', label: 'Go', prefix: 'go-server-gateway' },
+  ],
+  'on-premise-recording': [
+    {
+      id: 'linux-cpp',
+      label: 'Linux C++',
+      prefix: 'on-premise-recording-cpp',
+    },
+    {
+      id: 'linux-java',
+      label: 'Linux Java',
+      prefix: 'on-premise-recording-java',
+    },
+  ],
+} as const;
 const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
 
 const sdkDownloadDatasets = {
@@ -245,13 +265,23 @@ const productAliasToFilter = new Map<string, ProductFilterId>(
 );
 function platformRank(platformId: string) {
   const index = (PLATFORM_ORDER as readonly string[]).indexOf(platformId);
-  return index === -1 ? PLATFORM_ORDER.length : index;
+  if (index !== -1) return index;
+
+  const variantIndex = Object.values(DOWNLOAD_PLATFORM_VARIANTS)
+    .flat()
+    .findIndex((variant) => variant.id === platformId);
+  return variantIndex === -1
+    ? PLATFORM_ORDER.length
+    : PLATFORM_ORDER.length + variantIndex;
 }
 
 type ProductPlatformEntry = {
+  platformOrder?: number;
   platformId: string;
+  platformSelectLabel?: string;
   platformLabel: string;
   product: SdkDownloadProduct;
+  sourcePlatformId?: string;
 };
 
 type ProductGroup = {
@@ -281,39 +311,45 @@ function buildProductGroups(
           labelsByProductId.set(productId, product.label);
           order.push(productId);
         }
-        const existingEntry = entries.find(
-          (entry) => entry.platformId === platform.id,
-        );
-
-        if (existingEntry) {
-          const seenVersionKeys = new Set(
-            existingEntry.product.versions.map((version) =>
-              getVersionKey(platform.id, version),
-            ),
+        for (const platformEntry of getProductPlatformEntries(
+          platform,
+          product,
+          productId,
+          locale,
+        )) {
+          const existingEntry = entries.find(
+            (entry) => entry.platformId === platformEntry.platformId,
           );
-          const mergedVersions = [...existingEntry.product.versions];
 
-          for (const version of product.versions) {
-            const versionKey = getVersionKey(platform.id, version);
-            if (seenVersionKeys.has(versionKey)) {
-              continue;
+          if (existingEntry) {
+            const seenVersionKeys = new Set(
+              existingEntry.product.versions.map((version) =>
+                getVersionKey(platformEntry.platformId, version),
+              ),
+            );
+            const mergedVersions = [...existingEntry.product.versions];
+
+            for (const version of platformEntry.product.versions) {
+              const versionKey = getVersionKey(
+                platformEntry.platformId,
+                version,
+              );
+              if (seenVersionKeys.has(versionKey)) {
+                continue;
+              }
+              mergedVersions.push(version);
+              seenVersionKeys.add(versionKey);
             }
-            mergedVersions.push(version);
-            seenVersionKeys.add(versionKey);
+
+            existingEntry.product = {
+              ...existingEntry.product,
+              versions: mergedVersions,
+            };
+            continue;
           }
 
-          existingEntry.product = {
-            ...existingEntry.product,
-            versions: mergedVersions,
-          };
-          continue;
+          entries.push(platformEntry);
         }
-
-        entries.push({
-          platformId: platform.id,
-          platformLabel: platform.label,
-          product,
-        });
       }
     }
   }
@@ -323,7 +359,9 @@ function buildProductGroups(
       const platforms = (entriesByProductId.get(productId) ?? [])
         .slice()
         .sort(
-          (a, b) => platformRank(a.platformId) - platformRank(b.platformId),
+          (a, b) =>
+            (a.platformOrder ?? platformRank(a.platformId)) -
+            (b.platformOrder ?? platformRank(b.platformId)),
         );
       const localizedCopy =
         locale === 'zh-CN'
@@ -346,6 +384,46 @@ function buildProductGroups(
         getSdkDownloadProductGroupRank(a.productId) -
         getSdkDownloadProductGroupRank(b.productId),
     );
+}
+
+function getProductPlatformEntries(
+  platform: SdkDownloadPlatform,
+  product: SdkDownloadProduct,
+  productId: string,
+  locale: SdkCatalogLocale,
+): ProductPlatformEntry[] {
+  const variants =
+    locale === 'zh-CN' && platform.id === 'linux'
+      ? DOWNLOAD_PLATFORM_VARIANTS[
+          productId as keyof typeof DOWNLOAD_PLATFORM_VARIANTS
+        ]
+      : undefined;
+
+  if (!variants) {
+    return [
+      {
+        platformId: platform.id,
+        platformLabel: platform.label,
+        product,
+      },
+    ];
+  }
+
+  return variants
+    .map((variant, index) => ({
+      platformOrder: index,
+      platformId: variant.id,
+      platformLabel: platform.label,
+      platformSelectLabel: variant.label,
+      product: {
+        ...product,
+        versions: product.versions.filter((version) =>
+          version.id.includes(variant.prefix),
+        ),
+      },
+      sourcePlatformId: platform.id,
+    }))
+    .filter((entry) => entry.product.versions.length > 0);
 }
 
 export function SdksCatalog({
@@ -386,7 +464,9 @@ export function SdksCatalog({
     : queryFilters.platformId
       ? productGroups.filter((group) =>
           group.platforms.some(
-            (entry) => entry.platformId === queryFilters.platformId,
+            (entry) =>
+              entry.platformId === queryFilters.platformId ||
+              entry.sourcePlatformId === queryFilters.platformId,
           ),
         )
       : productGroups;
@@ -543,11 +623,13 @@ function ProductCard({
   locale: SdkCatalogLocale;
   redesigned: boolean;
 }) {
-  const defaultPlatformId =
-    initialPlatformId &&
-    group.platforms.some((entry) => entry.platformId === initialPlatformId)
-      ? initialPlatformId
-      : group.platforms[0].platformId;
+  const defaultPlatformId = initialPlatformId
+    ? (group.platforms.find(
+        (entry) =>
+          entry.platformId === initialPlatformId ||
+          entry.sourcePlatformId === initialPlatformId,
+      )?.platformId ?? group.platforms[0].platformId)
+    : group.platforms[0].platformId;
   const [platformId, setPlatformId] = useState(defaultPlatformId);
   const [versionIndex, setVersionIndex] = useState('0');
   const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
@@ -626,7 +708,7 @@ function ProductCard({
               >
                 {group.platforms.map((entry) => (
                   <option key={entry.platformId} value={entry.platformId}>
-                    {entry.platformLabel}
+                    {entry.platformSelectLabel ?? entry.platformLabel}
                   </option>
                 ))}
               </select>
@@ -865,7 +947,12 @@ function readQueryFilters(
   const productId = product
     ? (productAliasToFilter.get(product) ?? null)
     : defaults.productId;
-  const platformIds = new Set(platforms.map((entry) => entry.id));
+  const platformIds = new Set([
+    ...platforms.map((entry) => entry.id),
+    ...Object.values(DOWNLOAD_PLATFORM_VARIANTS)
+      .flat()
+      .map((variant) => variant.id),
+  ]);
   const platformId = platform
     ? platformIds.has(platform)
       ? platform
@@ -891,7 +978,14 @@ function normalizePlatformFilter(
     return null;
   }
 
-  return platforms.some((entry) => entry.id === normalized) ? normalized : null;
+  return new Set([
+    ...platforms.map((entry) => entry.id),
+    ...Object.values(DOWNLOAD_PLATFORM_VARIANTS)
+      .flat()
+      .map((variant) => variant.id),
+  ]).has(normalized)
+    ? normalized
+    : null;
 }
 
 function getVersionKey(platformId: string, version: SdkDownloadVersion) {

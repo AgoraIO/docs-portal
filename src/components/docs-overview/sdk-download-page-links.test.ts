@@ -32,6 +32,20 @@ describe('getZhCNSdkDownloadPageHref', () => {
     expect(getZhCNSdkDownloadPageHref('agents', 'python')).toBeNull();
   });
 
+  it('maps server product variants to their exact download pages', () => {
+    expect(getZhCNSdkDownloadPageHref('server-gateway', 'linux-cpp')).toBe(
+      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp',
+    );
+    expect(getZhCNSdkDownloadPageHref('server-gateway', 'python')).toBe(
+      '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/python',
+    );
+    expect(
+      getZhCNSdkDownloadPageHref('on-premise-recording', 'linux-java'),
+    ).toBe(
+      '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-java',
+    );
+  });
+
   it('links the Chinese Instant Messaging SDK to its dedicated site', () => {
     expect(getZhCNSdkDownloadPageHref('chat', 'android')).toBe(
       'https://im.shengwang.cn/',
