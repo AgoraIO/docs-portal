@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest';
 
-if (!window.matchMedia) {
+if (typeof window !== 'undefined' && !window.matchMedia) {
   Object.defineProperty(window, 'matchMedia', {
     configurable: true,
     value: (query: string) => ({
@@ -18,7 +18,10 @@ if (!window.matchMedia) {
 
 // happy-dom can expose a `localStorage` object whose methods are not callable,
 // so guard on a working `setItem` rather than mere presence.
-if (typeof window.localStorage?.setItem !== 'function') {
+if (
+  typeof window !== 'undefined' &&
+  typeof window.localStorage?.setItem !== 'function'
+) {
   const storage = new Map<string, string>();
 
   Object.defineProperty(window, 'localStorage', {
