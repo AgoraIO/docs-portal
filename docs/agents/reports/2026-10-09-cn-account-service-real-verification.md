@@ -14,7 +14,9 @@
 
 ## 身份与闭环边界
 
-从中文 Console 实际 `/decide/` 请求读取的 PostHog distinct_id 等于 companyId，不等于 accountUid 或 Console user.id / accountId。Console 使用 `ph.agora.io` 和另一 ingestion key；不能将其与 Docs Portal(CN) 项目当成同一个数据集。当前 Console 的 person 表达组织，会合并同组织不同成员；文档采用 accountUid 作为 person、companyId 作为 cid group，暂时只能按组织核对，不能声明跨系统 person 已对齐。需在 Console 侧确认、修正人员身份并提供 flow 联结契约。
+从中文 Console 实际 `/decide/` 请求读取的 PostHog distinct_id 等于 companyId，不等于 accountUid 或 Console user.id / accountId。Console 使用 `ph.agora.io` 和另一 ingestion key；不能将其与 Docs Portal(CN) 项目当成同一个数据集。当前 Console 的 person 表达组织；文档采用 accountUid 作为 person、companyId 作为 cid group，暂时只能按组织核对，不能声明跨系统账号身份已对齐。需在 Console 侧确认可联结的账号标识及其与 SSO accountUid 的转换，并提供 flow 联结契约。
+
+用户随后核实并确认一个账号可以对应多个 cid，撤回“都按 cid”的建议。本次没有将运行代码改为 cid person。账号与企业上下文继续分开：跨企业仍是同一账号，同一企业内不同账号仍分别识别；companyId 仅表示授权时的上下文，不能充当稳定账号标识。新增契约回归覆盖账号 A 的 cid 456 → 789，以及 cid 789 下账号 A → B；该回归是上游替身，未验证真实 Console 的账号切换行为。
 
 浏览器已证明本次实际到达 RTM 页面，但服务器的 `docs_console_redirected` 只证明发出跳转。Console 尚未产生带文档 flow_id 的落地事件，因此可查询漏斗仍未完整闭环。下载非阻断 dialog、展示 / 跳过埋点、匿名关联、跨标签会话更新及其他资源目标映射尚待接入。
 

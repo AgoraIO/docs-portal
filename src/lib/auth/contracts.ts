@@ -1,5 +1,7 @@
 export type DocsAccount = {
+  // Stable SSO account identity across company contexts.
   accountUid: string;
+  // Company context at authorization time; not an account identity.
   companyId: string | null;
 };
 

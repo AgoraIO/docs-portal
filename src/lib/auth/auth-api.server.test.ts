@@ -21,7 +21,13 @@ function acceptCookies(response: Response, jar = new Map<string, string>()) {
   return jar;
 }
 
-function fixture() {
+function fixture(
+  accountProfile: unknown = {
+    accountUid: 'account-123',
+    companyId: 456,
+    email: 'private@example.com',
+  },
+) {
   const config: DocsAuthConfig = {
     docsOrigin: 'https://docs.example',
     ssoOrigin: 'https://sso.example',
@@ -50,11 +56,7 @@ function fixture() {
         });
       }
       if (url.endsWith('/api/v0/customer/company/basic-info'))
-        return Response.json({
-          accountUid: 'account-123',
-          companyId: 456,
-          email: 'private@example.com',
-        });
+        return Response.json(accountProfile);
       sent.push(JSON.parse(String(init?.body)));
       return Response.json({ status: 1 });
     });
@@ -184,6 +186,51 @@ describe('Docs confidential OAuth with existing framework sessions', () => {
     vi.spyOn(Date, 'now').mockReturnValue(Date.now() + 300_001);
     expect((await f.call(first.path, first.jar)).status).toBe(400);
     expect(f.fetcher).not.toHaveBeenCalled();
+  });
+
+  it('keeps account identity across companies and separates accounts sharing a company', async () => {
+    const profile = { accountUid: 'account-A', companyId: 456 };
+    const f = fixture(profile);
+    const jar = new Map<string, string>();
+    const users: unknown[] = [];
+    for (const nextProfile of [
+      { accountUid: 'account-A', companyId: 456 },
+      { accountUid: 'account-A', companyId: 789 },
+      { accountUid: 'account-B', companyId: 789 },
+    ]) {
+      Object.assign(profile, nextProfile);
+      const attempt = await f.login('target=rtm');
+      acceptCookies(attempt.response, jar);
+      const callback = await f.call(attempt.path, jar);
+      expect(callback.status).toBe(302);
+      acceptCookies(callback, jar);
+      const info = await f.call('/api/userinfo', jar);
+      expect(info.status).toBe(200);
+      users.push((await info.json()).user);
+    }
+    expect(users).toEqual([
+      { accountUid: 'account-A', companyId: '456' },
+      { accountUid: 'account-A', companyId: '789' },
+      { accountUid: 'account-B', companyId: '789' },
+    ]);
+    const successes = f.sent.filter(
+      (event) => event.event === 'docs_account_auth_succeeded',
+    );
+    expect(successes.map((event) => event.distinct_id)).toEqual([
+      'account-A',
+      'account-A',
+      'account-B',
+    ]);
+    expect(successes.map((event) => event.properties.$groups)).toEqual([
+      { cid: '456' },
+      { cid: '789' },
+      { cid: '789' },
+    ]);
+    expect(successes.map((event) => event.properties.company_id)).toEqual([
+      '456',
+      '789',
+      '789',
+    ]);
   });
 
   it('uses SSO one-use codes for concurrent callbacks instead of shared process state', async () => {

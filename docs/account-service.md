@@ -60,6 +60,10 @@ login 接受 `flow_id`（UUID）、`target`、`resource_type`（`sdk` / `demo` /
 
 事件在回调请求内直接发送给 PostHog，每条最多尝试三次、每次超时两秒，重试复用同一个 UUID。发送失败不阻止认证成功，输出不含凭据的失败日志；不创建后台队列，也不保证进程终止或接收端持续不可用后的补发。原文档页关闭不影响已到达后端的回调事件；这不等于具备持久投递保证。`accountUid` 为文档服务 person ID，`companyId` 单独作为组织和 `cid` group；仍需核对中文 Console 的实际 identity / PostHog 项目，不能据此声称已经对齐。
 
+2026-10-09 用户确认一个账号可以对应多个 cid，撤回将 cid 作为唯一身份的建议。账号识别始终采用可信 SSO 返回的 `accountUid`，公司切换不拆分账号，同一公司中的不同账号不合并。`companyId` 是本次授权时的企业上下文快照；可以由可信上游确定，但不能替代稳定账号标识或证明 Console 当前选择的企业。只写入每次事件的企业属性 / group，不用它覆盖账号身份。文档会话有效期内 Console 切换企业不会自动刷新此快照。
+
+SSO 字段 `accountUid` 与 Console 字段 `accountId` 的转换仍需通过接口契约核实，不能仅凭字段名称或 cid 相同认定相等。跨系统关联应保留账号、cid 和 flow 三种不同维度。
+
 - `docs_account_auth_succeeded`：成功换 token 并读到可信身份，包含冻结的 flow 和目标；SSO 未返回登录 / 注册 / 会话复用分类，所以 `auth_type=unknown`。
 - `docs_console_redirected`：服务发出了 Console 跳转，**不代表实际到达或完成开通**。
 - `$identify`：在浏览器提供有效匿名 ID 时关联此匿名身份与可信账号；需与浏览器配置同一个 PostHog 项目。
