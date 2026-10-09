@@ -644,6 +644,8 @@ function ProductCard({
     locale === 'zh-CN'
       ? getZhCNSdkDownloadPageHref(group.productId, platformId)
       : null;
+  const hasEmbeddedDownloadCards =
+    Boolean(downloadPageHref) && group.productId !== 'chat';
 
   const titleId = `sdk-${group.defaultProduct.id}-title`;
   const versionId = `sdk-${group.defaultProduct.id}-version`;
@@ -680,7 +682,7 @@ function ProductCard({
               {group.info}
             </span>
           </span>
-          {downloadPageHref ? (
+          {downloadPageHref && group.productId !== 'chat' ? (
             <a
               className="ml-auto shrink-0 text-xs font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
               href={downloadPageHref}
@@ -720,7 +722,7 @@ function ProductCard({
             ) : null}
           </div>
 
-          {redesigned && downloadPageHref ? (
+          {redesigned && hasEmbeddedDownloadCards ? (
             <div className="mt-4 grid gap-4 md:grid-cols-2">
               {getDownloadCardEntries(group, activePlatform).map((entry) => (
                 <SdkDownloadCard
@@ -1047,7 +1049,7 @@ function InstallArea({
             <a
               className={cn(
                 redesigned
-                  ? 'inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                  ? 'inline-flex items-center gap-2 font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
                   : 'underline underline-offset-2 hover:text-foreground',
               )}
               href={version.downloadLink}
@@ -1064,7 +1066,7 @@ function InstallArea({
             <a
               className={cn(
                 'underline underline-offset-2 hover:text-foreground',
-                redesigned && 'inline-flex min-h-11 items-center',
+                redesigned && 'inline-flex items-center',
               )}
               href={version.packageManager}
               rel="noreferrer noopener"
@@ -1074,11 +1076,7 @@ function InstallArea({
             </a>
           ) : null}
         </div>
-        {redesigned ? (
-          <VersionDetails copy={copy} version={version} />
-        ) : (
-          <VersionMetadata copy={copy} version={version} />
-        )}
+        {!redesigned ? <VersionMetadata copy={copy} version={version} /> : null}
       </div>
     );
   }
@@ -1088,7 +1086,11 @@ function InstallArea({
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
         {version.downloadLink ? (
           <a
-            className="inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+            className={cn(
+              redesigned
+                ? 'inline-flex items-center gap-2 text-sm font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50'
+                : 'inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
+            )}
             href={version.downloadLink}
             rel="noreferrer noopener"
             target="_blank"
@@ -1111,11 +1113,7 @@ function InstallArea({
           </a>
         ) : null}
       </div>
-      {redesigned ? (
-        <VersionDetails copy={copy} version={version} />
-      ) : (
-        <VersionMetadata copy={copy} version={version} />
-      )}
+      {!redesigned ? <VersionMetadata copy={copy} version={version} /> : null}
     </div>
   );
 }
@@ -1232,31 +1230,6 @@ function VersionMetadata({
       ))}
     </dl>
   );
-}
-
-function VersionDetails({
-  copy,
-  version,
-}: {
-  copy: CatalogCopy;
-  version: SdkDownloadVersion;
-}) {
-  if (!hasVersionMetadata(version)) {
-    return null;
-  }
-
-  return (
-    <details className="mt-4 border-border border-t pt-3">
-      <summary className="cursor-pointer text-xs font-medium text-foreground">
-        版本详情
-      </summary>
-      <VersionMetadata copy={copy} version={version} />
-    </details>
-  );
-}
-
-function hasVersionMetadata(version: SdkDownloadVersion) {
-  return Boolean(version.releaseDate || version.packageName || version.md5);
 }
 
 function CopyButton({ copy, value }: { copy: CatalogCopy; value: string }) {

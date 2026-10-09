@@ -355,7 +355,7 @@ describe('SdksCatalog', () => {
     const packageManager = within(agentsCard).getByRole('link', {
       name: '包管理器 ↗',
     });
-    expect(packageManager).toHaveClass('min-h-11');
+    expect(packageManager).not.toHaveClass('min-h-11');
   });
 
   it('only exposes the latest SDK version for download', () => {
@@ -751,6 +751,49 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
     expect(
       within(downloadCard).queryByText('npm i agora-rtc-sdk-ng@4.24.3'),
+    ).not.toBeInTheDocument();
+  });
+
+  it('removes Chinese version details and lightens direct download links', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=client-toolkit&platform=ios',
+    );
+
+    const { unmount } = render(<SdksCatalog locale="zh-CN" />);
+
+    const clientToolkitCard = openProductCard('客户端组件 SDK');
+    expect(
+      within(clientToolkitCard).queryByText('版本详情'),
+    ).not.toBeInTheDocument();
+    unmount();
+
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=cloud-scene&platform=web',
+    );
+    render(<SdksCatalog locale="zh-CN" />);
+    const cloudSceneCard = openProductCard('云课堂 SDK');
+    const downloadLink = within(cloudSceneCard).getByRole('link', {
+      name: '下载 SDK',
+    });
+    expect(downloadLink).not.toHaveClass('min-h-11', 'bg-primary');
+  });
+
+  it('does not show an external-site link for the Chinese Instant Messaging card', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=chat&platform=android',
+    );
+
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const chatCard = openProductCard('即时通讯 SDK');
+    expect(
+      within(chatCard).queryByRole('link', { name: '更多 ↗' }),
     ).not.toBeInTheDocument();
   });
 
