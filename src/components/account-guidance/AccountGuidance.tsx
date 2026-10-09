@@ -1,3 +1,4 @@
+import { ArrowRightIcon, DownloadIcon } from 'lucide-react';
 import {
   createContext,
   type ReactNode,
@@ -6,6 +7,7 @@ import {
   useRef,
   useState,
 } from 'react';
+import { zhCNSdkDownloadPlatforms } from '@/components/docs-overview/sdk-downloads-data.zh-cn';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -15,6 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
 import {
   captureAccountFlow,
   getDocsAnonymousId,
@@ -93,6 +96,13 @@ export function AccountGuidance({
   const info = useRef<DocsUserInfo>({ status: 'unknown', error: 'pending' });
   const pending = useRef<AccountFlow | null>(null);
   const shown = useRef(false);
+  const loginLink = useRef<HTMLAnchorElement>(null);
+  const sdkPlatform = zhCNSdkDownloadPlatforms.find(
+    (platform) => platform.id === flow?.platform,
+  );
+  const sdkVersion = sdkPlatform?.core
+    .flatMap((product) => product.versions)
+    .find((version) => version.id === flow?.version);
 
   useEffect(() => {
     info.current = { status: 'unknown', error: 'pending' };
@@ -255,31 +265,73 @@ export function AccountGuidance({
         }}
       >
         {flow ? (
-          <DialogContent closeLabel="关闭引导">
-            <DialogHeader>
-              <DialogTitle>继续配置实时消息 RTM</DialogTitle>
-              <DialogDescription>
-                登录后可前往控制台配置服务。SDK 下载不受影响，你也可以稍后登录。
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter>
-              <Button
-                variant="outline"
-                onClick={() => close('docs_account_guidance_dismissed')}
-              >
-                稍后再说
-              </Button>
-              <Button asChild>
-                <a
-                  href={loginUrl(flow)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => close('docs_account_login_clicked')}
-                >
-                  登录 / 注册并前往控制台
-                </a>
-              </Button>
-            </DialogFooter>
+          <DialogContent
+            className="gap-0 overflow-hidden rounded-xl border-0 p-0 sm:max-w-[480px]"
+            overlayClassName="bg-(--docs-overlay)"
+            showCloseButton={false}
+            onOpenAutoFocus={(event) => {
+              event.preventDefault();
+              loginLink.current?.focus();
+            }}
+            onInteractOutside={(event) => event.preventDefault()}
+            onEscapeKeyDown={(event) => event.preventDefault()}
+          >
+            <div className="flex items-center gap-3 bg-muted/60 px-6 py-4 sm:px-8">
+              <DownloadIcon
+                aria-hidden="true"
+                className="size-5 shrink-0 text-muted-foreground"
+              />
+              <div className="flex min-w-0 flex-col gap-1">
+                <p className="text-sm font-medium">实时消息 RTM SDK</p>
+                {sdkPlatform ? (
+                  <p className="text-xs text-muted-foreground">
+                    {sdkPlatform.label}
+                    {sdkVersion ? ` · ${sdkVersion.label}` : null}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <div className="flex flex-col gap-7 p-6 sm:p-8">
+              <DialogHeader className="gap-3 text-left">
+                <DialogTitle className="text-2xl leading-snug">
+                  下一步，配置 RTM 服务
+                </DialogTitle>
+                <DialogDescription className="text-pretty leading-7">
+                  登录声网控制台，获取 App ID 并开通 RTM 服务。
+                </DialogDescription>
+              </DialogHeader>
+              <div className="flex flex-col gap-5">
+                <p className="text-xs text-muted-foreground">
+                  SDK 下载不受影响，控制台将在新标签页打开。
+                </p>
+                <Separator />
+                <DialogFooter className="flex-row items-center justify-between gap-3 sm:justify-between">
+                  <Button
+                    size="xs"
+                    variant="ghost"
+                    className="text-muted-foreground"
+                    onClick={() => close('docs_account_guidance_dismissed')}
+                  >
+                    稍后再说
+                  </Button>
+                  <Button asChild size="lg">
+                    <a
+                      ref={loginLink}
+                      href={loginUrl(flow)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => close('docs_account_login_clicked')}
+                    >
+                      登录并前往控制台
+                      <ArrowRightIcon
+                        aria-hidden="true"
+                        data-icon="inline-end"
+                      />
+                    </a>
+                  </Button>
+                </DialogFooter>
+              </div>
+            </div>
           </DialogContent>
         ) : null}
       </Dialog>

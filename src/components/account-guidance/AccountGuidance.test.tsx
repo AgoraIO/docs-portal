@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SdksCatalog } from '@/components/docs-overview/SdksCatalog';
 
@@ -41,10 +47,10 @@ describe('Chinese SDK account guidance', () => {
     expect(fireEvent.click(download)).toBe(true);
 
     const dialog = await screen.findByRole('dialog', {
-      name: '继续配置实时消息 RTM',
+      name: '下一步，配置 RTM 服务',
     });
     expect(dialog).toBeVisible();
-    const login = screen.getByRole('link', { name: '登录 / 注册并前往控制台' });
+    const login = screen.getByRole('link', { name: '登录并前往控制台' });
     await waitFor(() =>
       expect(
         new URL(
@@ -107,11 +113,12 @@ describe('Chinese SDK account guidance', () => {
     );
     const params = new URL(
       screen
-        .getByRole('link', { name: '登录 / 注册并前往控制台' })
+        .getByRole('link', { name: '登录并前往控制台' })
         .getAttribute('href') ?? '',
       window.location.origin,
     ).searchParams;
     expect(params.get('platform')).toBe('android');
+    expect(screen.getByText('Android · 版本 2.3.0（最新）')).toBeVisible();
     visible = false;
     fireEvent(document, new Event('visibilitychange'));
     visible = true;
@@ -190,7 +197,7 @@ describe('Chinese SDK account guidance', () => {
     );
     fireEvent.click(screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }));
     const login = await screen.findByRole('link', {
-      name: '登录 / 注册并前往控制台',
+      name: '登录并前往控制台',
     });
     fireEvent.click(login);
     expect(capture.mock.calls.map(([event]) => event)).toEqual([
@@ -198,6 +205,34 @@ describe('Chinese SDK account guidance', () => {
       'docs_account_guidance_shown',
       'docs_account_login_clicked',
     ]);
+  });
+
+  it('only lets the user dismiss through an explicit action button', async () => {
+    const { baseElement } = render(
+      <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
+    );
+    fireEvent.click(screen.getByRole('link', { name: '下载 SDK' }));
+    const dialog = await screen.findByRole('dialog');
+    await waitFor(() => expect(capture).toHaveBeenCalledTimes(2));
+    expect(within(dialog).getAllByRole('button')).toHaveLength(1);
+    const overlay = baseElement.querySelector('[data-slot="dialog-overlay"]');
+    if (!overlay) throw new Error('Expected dialog overlay');
+    fireEvent.pointerDown(overlay);
+    fireEvent.click(overlay);
+    fireEvent.keyDown(dialog, { key: 'Escape' });
+    expect(screen.getByRole('dialog')).toBeVisible();
+    expect(
+      capture.mock.calls.filter(
+        ([event]) => event === 'docs_account_guidance_dismissed',
+      ),
+    ).toHaveLength(0);
+    fireEvent.click(screen.getByRole('button', { name: '稍后再说' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(
+      capture.mock.calls.filter(
+        ([event]) => event === 'docs_account_guidance_dismissed',
+      ),
+    ).toHaveLength(1);
   });
 
   it('keeps embedded product downloads outside the first catalog slice unchanged', () => {
