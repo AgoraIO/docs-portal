@@ -57,7 +57,11 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithMllm(
@@ -65,7 +69,7 @@ agent := agentkit.NewAgent(client).WithMllm(
         APIKey:     "your-xai-key",
         Voice:      "eve",
         Language:   "en",
-        SampleRate: agora.Int(24000),
+        SampleRate: Agora.Int(24000),
     }),
 )
 ```

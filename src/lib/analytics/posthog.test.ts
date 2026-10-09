@@ -122,6 +122,57 @@ describe('PostHog analytics', () => {
     expect(JSON.stringify(event)).not.toContain('private');
   });
 
+  it('captures English route 404s without raw query strings or hashes', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    window.history.replaceState(
+      {},
+      '',
+      '/en/realtime-media/rtc/missing?platform=web&token=secret#section',
+    );
+
+    const { captureDocsPageNotFound } = await import('./posthog');
+
+    captureDocsPageNotFound({
+      pathname: '/en/realtime-media/rtc/missing?token=secret#section',
+    });
+
+    await vi.waitFor(() => {
+      expect(captureMock).toHaveBeenCalledTimes(1);
+    });
+
+    const [eventName, properties] = captureMock.mock.calls[0] ?? [];
+    expect(eventName).toBe('docs_page_not_found');
+    expect(properties).toEqual(
+      expect.objectContaining({
+        docs_environment: 'development',
+        docs_locale: 'en',
+        docs_pathname: '/en/realtime-media/rtc/missing',
+        docs_platform: 'web',
+        docs_tab: 'realtime-media',
+        pathname: '/en/realtime-media/rtc/missing',
+        not_found_type: 'route',
+      }),
+    );
+    expect(JSON.stringify(properties)).not.toContain('secret');
+    expect(properties).not.toHaveProperty('hash');
+    expect(properties).not.toHaveProperty('search');
+    expect(JSON.stringify(properties)).not.toContain('#section');
+  });
+
+  it('does not capture Chinese route 404s as English events', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    window.history.replaceState({}, '', '/zh-CN/realtime-media/rtc/missing');
+
+    const { captureDocsPageNotFound } = await import('./posthog');
+
+    captureDocsPageNotFound({
+      pathname: '/zh-CN/realtime-media/rtc/missing',
+    });
+
+    await Promise.resolve();
+    expect(captureMock).not.toHaveBeenCalled();
+  });
+
   it('preserves the legacy docs feedback fields alongside structured context', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
 

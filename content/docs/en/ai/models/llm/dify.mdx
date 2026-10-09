@@ -100,7 +100,11 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
@@ -114,7 +118,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
         },
         GreetingMessage: "Hello, how can I assist you today?",
         FailureMessage:  "Hold on a moment.",
-        MaxHistory:      agora.Int(32),
+        MaxHistory:      Agora.Int(32),
     }),
 ).WithTts(/* configure your TTS vendor */)
 ```

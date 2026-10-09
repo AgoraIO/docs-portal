@@ -17,26 +17,6 @@ export const realtimeMediaApiReferenceLinks = [
     sdkUrl: sdkCatalogUrl('realtime-communication'),
   },
   {
-    productSlug: 'voice',
-    restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: sdkCatalogUrl('realtime-communication', 'voice'),
-  },
-  {
-    productSlug: 'video',
-    restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: sdkCatalogUrl('realtime-communication'),
-  },
-  {
-    productSlug: 'broadcast-streaming',
-    restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: sdkCatalogUrl('realtime-communication'),
-  },
-  {
-    productSlug: 'interactive-live-streaming',
-    restUrl: '/en/api-reference/api-ref/rtc',
-    sdkUrl: sdkCatalogUrl('realtime-communication'),
-  },
-  {
     productSlug: 'rtm',
     restUrl: '/en/api-reference/api-ref/signaling',
     sdkUrl: sdkCatalogUrl('signaling'),

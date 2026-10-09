@@ -62,7 +62,11 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(
@@ -71,7 +75,7 @@ agent := agentkit.NewAgent(client).WithStt(
         Model:         "gemini-3.5-transcribe-live",
         Language:      "en-US",
         SampleRate:    16000,
-        WordTimestamp: agora.Bool(true),
+        WordTimestamp: Agora.Bool(true),
     }),
 ).WithLlm(/* configure your LLM vendor */).
   WithTts(/* configure your TTS vendor */)

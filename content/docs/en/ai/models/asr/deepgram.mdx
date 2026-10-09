@@ -58,7 +58,10 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(
@@ -77,7 +80,7 @@ agent := agentkit.NewAgent(client).WithStt(
 
 - **Managed mode**
 
-  To use Deepgram ASR with Agora-managed credentials, set `credential_mode` to `"managed"` in the `asr` block. When using managed mode, `params.key` is not required. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`. For more information, see [Use managed mode](/en/ai/build/custom-model-integration/managed-mode).
+  To use Deepgram ASR with Agora-managed credentials, set `credential_mode` to `"managed"` in the `asr` block. When using managed mode, `params.key` is not required. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`. For more information, see [Use managed mode](/en/ai/build/managed-mode).
 
     ```json
     "asr": {

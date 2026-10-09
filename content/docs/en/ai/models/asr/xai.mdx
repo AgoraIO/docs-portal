@@ -10,6 +10,66 @@ xAI provides real-time automatic speech recognition (ASR) over WebSocket for con
 
 The following example shows a starting `asr` parameter configuration you can use when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
 
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import XaiSTT
+
+# ... other agent configuration ...
+.with_stt(XaiSTT(
+    api_key='your-xai-api-key',
+    base_url='wss://api.x.ai/v1/stt',
+    sample_rate=16000,
+    language='en',
+))
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { XAiSTT } from 'agora-agents';
+
+// ... other agent configuration ...
+.withStt(new XAiSTT({
+  apiKey: 'your-xai-api-key',
+  baseUrl: 'wss://api.x.ai/v1/stt',
+  sampleRate: 16000,
+  language: 'en',
+}));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+sampleRate := vendors.SampleRate16kHz
+
+// ... other agent configuration ...
+WithStt(
+    vendors.NewXaiSTT(vendors.XaiSTTOptions{
+        APIKey:     "your-xai-api-key",
+        BaseURL:    "wss://api.x.ai/v1/stt",
+        SampleRate: &sampleRate,
+        Language:   "en",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
 ```json
 "asr": {
   "vendor": "xai",
@@ -21,6 +81,9 @@ The following example shows a starting `asr` parameter configuration you can use
   }
 }
 ```
+
+</TabsContent>
+</Tabs>
 
 ### Key parameters
 

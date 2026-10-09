@@ -51,7 +51,7 @@ describe('Voice Agent entry links', () => {
       (href) =>
         href === '/en/ai/get-started/quickstart' ||
         href === '/en/ai/reference/openai-realtime-integration' ||
-        href === '/en/ai/build/custom-model-integration/build-server-client' ||
+        href === '/en/ai/build/build-server-client' ||
         href.startsWith('/en/ai/apps/'),
     );
 

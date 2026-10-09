@@ -3407,13 +3407,13 @@ Web body
   });
 
   it('adds a linked API Reference entry to Realtime Media product sidebars', async () => {
-    const videoPayload = await loadRealtimeMediaProductPayload(
-      'video',
-      'Video Calling',
+    const rtcPayload = await loadRealtimeMediaProductPayload(
+      'rtc',
+      'Voice & Video',
     );
-    const videoReference = getSidebarSection(videoPayload, 'Reference');
+    const rtcReference = getSidebarSection(rtcPayload, 'Reference');
 
-    expect.soft(videoReference.children.slice(0, 2)).toEqual([
+    expect.soft(rtcReference.children.slice(0, 2)).toEqual([
       {
         external: true,
         href: '/en/api-reference/api-ref/rtc',
@@ -3433,11 +3433,11 @@ Web body
         url: '/en/api-reference/api-ref?product=realtime-communication',
       },
     ]);
-    expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
+    expect(flattenSidebarPageUrls(rtcPayload.sidebar)).not.toContain(
       '/en/api-reference/api-ref/video',
     );
-    expect(flattenSidebarPageUrls(videoPayload.sidebar)).toContain(
-      '/en/realtime-media/video/reference/release-notes',
+    expect(flattenSidebarPageUrls(rtcPayload.sidebar)).toContain(
+      '/en/realtime-media/rtc/reference/release-notes',
     );
 
     const voiceQuickstartPayload = await loadRealtimeMediaProductPayload(
@@ -3567,18 +3567,6 @@ Web body
       '/en/realtime-media/on-premise-recording/reference/pricing',
     );
 
-    const interactiveLiveStreamingPayload =
-      await loadRealtimeMediaProductPayload(
-        'interactive-live-streaming',
-        'Interactive Live Streaming',
-      );
-
-    expect(
-      flattenSidebarPageUrls(interactiveLiveStreamingPayload.sidebar),
-    ).toContain(
-      '/en/realtime-media/interactive-live-streaming/reference/agora-console-rest-api',
-    );
-
     const rtmPayload = await loadRealtimeMediaProductPayload(
       'rtm',
       'Signaling',
@@ -3633,14 +3621,11 @@ Web body
     expect(flattenSidebarPageUrls(videoPayload.sidebar)).not.toContain(
       '/en/realtime-media/video/quickstart',
     );
-    expect(videoPayload.analyticsPageContext).toEqual({
+    // Taxonomy values are covered in analytics/docs-page-context.test.ts.
+    expect(videoPayload.analyticsPageContext).toMatchObject({
       contentId: 'realtime-media/video/get-started-sdk',
-      journeyStage: 'get-started',
-      navSection: 'get-started',
-      navSectionTitle: 'Get started',
       pageType: 'task-guide',
       pathname: '/en/realtime-media/video/get-started-sdk',
-      product: 'video',
       title: 'Quickstart',
       version: 'current',
     });
@@ -3925,6 +3910,25 @@ Web body
                   name: 'Convo AI Device Kit',
                   type: 'folder',
                 },
+                {
+                  $id: 'ai-studio-folder',
+                  children: [
+                    {
+                      $id: 'ai-studio-quickstart',
+                      name: 'Create your first agent',
+                      type: 'page',
+                      url: '/en/ai/studio/quickstart',
+                    },
+                  ],
+                  index: {
+                    $id: 'ai-studio-index',
+                    name: 'Overview',
+                    type: 'page',
+                    url: '/en/ai/studio',
+                  },
+                  name: 'Agent Studio',
+                  type: 'folder',
+                },
               ],
               index: {
                 $id: 'ai-index',
@@ -4005,7 +4009,21 @@ Web body
     expect(payload.sidebar.map((node) => node.title)).toEqual([
       'Voice Agent overview',
       'Voice agent in apps',
+      'Agent Studio',
       'Voice agent on dedicated devices',
+    ]);
+
+    const agentStudioSection = payload.sidebar.find(
+      (node) => node.type === 'section' && node.title === 'Agent Studio',
+    );
+
+    if (!agentStudioSection || agentStudioSection.type !== 'section') {
+      throw new Error('expected the Agent Studio section');
+    }
+
+    expect(flattenSidebarPageUrls([agentStudioSection])).toEqual([
+      '/en/ai/studio',
+      '/en/ai/studio/quickstart',
     ]);
 
     const softwareSection = payload.sidebar.find(

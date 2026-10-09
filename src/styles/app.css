@@ -1588,6 +1588,82 @@
   overflow: visible;
 }
 
+.prose-no-margin.overflow-auto > table.im-pricing-api-table {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+  overflow: visible;
+}
+
+.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th, td) {
+  min-width: 0;
+  padding: 0.45rem 0.35rem;
+  line-height: 1.45;
+}
+
+.prose-no-margin.overflow-auto > table.im-pricing-api-table :where(th) {
+  white-space: normal;
+  line-height: 1.35;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(th:nth-child(1), td:nth-child(1)) {
+  width: 15%;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(th:nth-child(2), td:nth-child(2)) {
+  width: 16%;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(th:nth-child(3), td:nth-child(3)) {
+  width: 17%;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(th:nth-child(4), td:nth-child(4)) {
+  width: 11%;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(th:nth-child(5), td:nth-child(5)) {
+  width: 17%;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(th:nth-child(6), td:nth-child(6)) {
+  width: 10%;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(th:nth-child(7), td:nth-child(7)) {
+  width: 14%;
+}
+
+.prose-no-margin.overflow-auto
+  > table.im-pricing-api-table
+  :where(td:nth-child(7) code) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+@media (max-width: 767px) {
+  .prose-no-margin.overflow-auto > table.im-pricing-api-table {
+    width: 60rem;
+    min-width: 60rem;
+  }
+}
+
 @media (max-width: 767px) {
   .prose
     :where(.docs-table-container[data-table-overflow="true"]):not(

@@ -88,22 +88,22 @@ To customize interruption behavior, configure turn detection when starting a con
 ```go
 // ... other agent configuration ...
 .WithTurnDetection(&agentkit.TurnDetectionConfig{
-    Mode: agora.String("default"),
-    Config: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfig{
-        SpeechThreshold: agora.Float64(0.5),
-        StartOfSpeech: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigStartOfSpeech{
-            Mode: agora.String("vad"),
-            VadConfig: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigStartOfSpeechVadConfig{
-                InterruptDurationMs:         agora.Float64(160),
-                SpeakingInterruptDurationMs: agora.Float64(320),
-                PrefixPaddingMs:             agora.Float64(800),
+    Mode: Agora.String("default"),
+    Config: &agentkit.TurnDetectionNestedConfig{
+        SpeechThreshold: Agora.Float64(0.5),
+        StartOfSpeech: &agentkit.StartOfSpeechConfig{
+            Mode: Agora.StartAgentsRequestPropertiesTurnDetectionConfigStartOfSpeechModeVad,
+            VadConfig: &agentkit.StartOfSpeechVadConfig{
+                InterruptDurationMs:         Agora.Int(160),
+                SpeakingInterruptDurationMs: Agora.Int(320),
+                PrefixPaddingMs:             Agora.Int(800),
             },
         },
-        EndOfSpeech: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigEndOfSpeech{
-            Mode: agora.String("semantic"),
-            SemanticConfig: &agentkit.StartAgentsRequestPropertiesTurnDetectionConfigEndOfSpeechSemanticConfig{
-                SilenceDurationMs: agora.Float64(320),
-                MaxWaitMs:         agora.Float64(3000),
+        EndOfSpeech: &agentkit.EndOfSpeechConfig{
+            Mode: Agora.StartAgentsRequestPropertiesTurnDetectionConfigEndOfSpeechModeSemantic.Ptr(),
+            SemanticConfig: &agentkit.EndOfSpeechSemanticConfig{
+                SilenceDurationMs: Agora.Int(320),
+                MaxWaitMs:         Agora.Int(3000),
             },
         },
     },

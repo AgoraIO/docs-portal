@@ -69,7 +69,11 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
@@ -80,10 +84,10 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
         VoiceID:    "Matthew",
         BaseURL:    "wss://global.api.murf.ai/v1/speech/stream-input",
         Locale:     "en-US",
-        Rate:       agora.Float64(0),
-        Pitch:      agora.Float64(0),
+        Rate:       Agora.Float64(0),
+        Pitch:      Agora.Float64(0),
         Model:      "FALCON",
-        SampleRate: agora.Int(24000),
+        SampleRate: Agora.Int(24000),
     }),
 )
 ```

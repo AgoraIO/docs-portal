@@ -65,7 +65,11 @@ const agent = new Agent({ client })
 <TabsContent value="go">
 
 ```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
 
 // client is your configured Agora client
 agent := agentkit.NewAgent(client).WithMllm(
@@ -76,8 +80,8 @@ agent := agentkit.NewAgent(client).WithMllm(
         ADCredentialsString: "<GOOGLE_APPLICATION_CREDENTIALS_STRING>",
         Voice:               "Aoede",
         Instructions:        "You are a friendly assistant.",
-        TranscribeAgent:     agora.Bool(true),
-        TranscribeUser:      agora.Bool(true),
+        TranscribeAgent:     Agora.Bool(true),
+        TranscribeUser:      Agora.Bool(true),
     }),
 )
 ```

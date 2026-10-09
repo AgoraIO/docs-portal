@@ -8,7 +8,6 @@ const marketplaceDocsRoot = resolve(
 );
 
 const codeTokenTargets = [
-  'content/docs/en/realtime-media/marketplace/build/add-video-and-ar-effects/metakit.mdx',
   'content/docs/en/realtime-media/marketplace/build/add-video-and-ar-effects/virtual-background.mdx',
 ];
 

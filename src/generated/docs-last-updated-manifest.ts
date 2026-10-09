@@ -3392,7 +3392,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/meta.json':
     '2026-09-25T06:07:21.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/integrate-and-embed/new-relic-integration.mdx':
-    '2026-09-30T04:15:59.000Z',
+    '2026-09-30T06:58:44.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/manage-agora-account.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/agora-analytics/build/meta.json':
