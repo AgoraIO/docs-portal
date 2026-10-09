@@ -14,7 +14,7 @@ export function FaqCategoryCard({
 }) {
   return (
     <a
-      className="group flex flex-col gap-1 rounded-lg border border-border bg-card p-5 transition-colors hover:border-primary/35 hover:bg-accent/35"
+      className="docs-card-surface docs-card-interactive group flex flex-col gap-1 p-5"
       href={categoryHref(category.id, locale)}
     >
       <span className="flex items-center justify-between gap-3">

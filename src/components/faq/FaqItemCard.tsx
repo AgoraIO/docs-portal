@@ -19,7 +19,7 @@ export function FaqItemCard({
 
   return (
     <a
-      className="group grid gap-3 rounded-lg border border-border bg-card p-5 text-left shadow-xs transition-colors hover:border-primary/35 hover:bg-accent/35 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"
+      className="docs-card-surface docs-card-interactive group grid gap-3 p-5 text-left sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center"
       href={item.href}
     >
       <span className="min-w-0">

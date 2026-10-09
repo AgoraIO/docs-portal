@@ -119,9 +119,10 @@ export function createMachineReadableDocsIndexes({
         ),
         group,
         maxCharacters,
+        locale,
       });
     });
-  const rootContent = renderRootIndex(sectionFiles, normalizedBaseUrl);
+  const rootContent = renderRootIndex(sectionFiles, normalizedBaseUrl, locale);
 
   assertWithinLimit('/llms.txt', rootContent, maxCharacters);
 
@@ -181,12 +182,14 @@ export async function validateMachineReadableDocsArtifacts({
 }
 
 function createSectionFiles({
+  locale,
   entries,
   group,
   maxCharacters,
 }: {
   entries: IndexEntry[];
   group: IndexGroup;
+  locale: string;
   maxCharacters: number;
 }) {
   const chunks: IndexEntry[][] = [];
@@ -197,7 +200,7 @@ function createSectionFiles({
 
     if (
       current.length > 0 &&
-      renderSectionIndex(group.label, candidate).length > maxCharacters
+      renderSectionIndex(group.label, candidate, locale).length > maxCharacters
     ) {
       chunks.push(current);
       current = [entry];
@@ -216,7 +219,7 @@ function createSectionFiles({
     const label =
       chunks.length > 1 ? `${group.label} ${index + 1}` : group.label;
     const path = `${INDEX_DIRECTORY}/${group.slug}${suffix}.txt`;
-    const content = renderSectionIndex(label, chunk);
+    const content = renderSectionIndex(label, chunk, locale);
 
     assertWithinLimit(path, content, maxCharacters);
 
@@ -227,9 +230,10 @@ function createSectionFiles({
 function renderRootIndex(
   sectionFiles: MachineReadableDocsIndexFile[],
   baseUrl: string,
+  locale: string,
 ) {
   return [
-    '# Agora Documentation',
+    locale === 'zh-CN' ? '# 声网文档中心' : '# Agora Documentation',
     '',
     '> Machine-readable indexes for the complete documentation published on this site.',
     '',
@@ -243,11 +247,17 @@ function renderRootIndex(
   ].join('\n');
 }
 
-function renderSectionIndex(label: string, entries: IndexEntry[]) {
+function renderSectionIndex(
+  label: string,
+  entries: IndexEntry[],
+  locale: string,
+) {
   return [
     `# ${label}`,
     '',
-    '> Machine-readable Agora documentation pages in this section.',
+    locale === 'zh-CN'
+      ? '> 本分区的声网文档，供 AI 工具读取。'
+      : '> Machine-readable Agora documentation pages in this section.',
     '',
     '## Documentation',
     '',
