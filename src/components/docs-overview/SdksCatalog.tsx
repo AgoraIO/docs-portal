@@ -736,44 +736,48 @@ function ProductCard({
             </div>
           ) : (
             <>
-              <div className="mt-4 flex items-center justify-between gap-3">
-                <span className="sr-only">
-                  {copy.versionLabel(group.label)}
-                </span>
-                {versions.length > 1 ? (
-                  <span className="relative ml-auto shrink-0">
-                    <label className="sr-only" htmlFor={versionId}>
-                      {copy.versionLabel(group.label)}
-                    </label>
-                    <select
-                      className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
-                      id={versionId}
-                      onChange={(event) => setVersionIndex(event.target.value)}
-                      value={versionIndex}
-                    >
-                      {versions.map((version, index) => (
-                        <option
-                          key={getVersionKey(
-                            activePlatform.platformId,
-                            version,
-                          )}
-                          value={String(index)}
-                        >
-                          {getVersionMeta(version, locale).optionLabel}
-                        </option>
-                      ))}
-                    </select>
-                    <ChevronDownIcon
-                      aria-hidden="true"
-                      className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
-                    />
+              {!redesigned ? (
+                <div className="mt-4 flex items-center justify-between gap-3">
+                  <span className="sr-only">
+                    {copy.versionLabel(group.label)}
                   </span>
-                ) : activeVersion ? (
-                  <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
-                    {getVersionMeta(activeVersion, locale).optionLabel}
-                  </span>
-                ) : null}
-              </div>
+                  {versions.length > 1 ? (
+                    <span className="relative ml-auto shrink-0">
+                      <label className="sr-only" htmlFor={versionId}>
+                        {copy.versionLabel(group.label)}
+                      </label>
+                      <select
+                        className="min-h-11 appearance-none rounded-md border border-border bg-background px-3 pr-9 text-sm font-medium text-foreground outline-none transition-colors hover:border-primary/40 focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/40"
+                        id={versionId}
+                        onChange={(event) =>
+                          setVersionIndex(event.target.value)
+                        }
+                        value={versionIndex}
+                      >
+                        {versions.map((version, index) => (
+                          <option
+                            key={getVersionKey(
+                              activePlatform.platformId,
+                              version,
+                            )}
+                            value={String(index)}
+                          >
+                            {getVersionMeta(version, locale).optionLabel}
+                          </option>
+                        ))}
+                      </select>
+                      <ChevronDownIcon
+                        aria-hidden="true"
+                        className="pointer-events-none absolute top-1/2 right-3 size-4 -translate-y-1/2 text-muted-foreground"
+                      />
+                    </span>
+                  ) : activeVersion ? (
+                    <span className="ml-auto shrink-0 text-sm font-medium text-foreground">
+                      {getVersionMeta(activeVersion, locale).optionLabel}
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
 
               {activeVersion ? (
                 <InstallArea

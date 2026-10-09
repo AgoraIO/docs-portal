@@ -767,6 +767,9 @@ describe('SdksCatalog', () => {
     expect(
       within(clientToolkitCard).queryByText('版本详情'),
     ).not.toBeInTheDocument();
+    expect(
+      within(clientToolkitCard).queryByText('v2.9.0 - 最新'),
+    ).not.toBeInTheDocument();
     unmount();
 
     window.history.replaceState(
