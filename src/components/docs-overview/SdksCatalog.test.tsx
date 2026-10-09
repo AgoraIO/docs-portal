@@ -59,7 +59,7 @@ describe('SdksCatalog', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      16,
+      13,
     );
   });
 
@@ -180,7 +180,9 @@ describe('SdksCatalog', () => {
       screen.getByRole('heading', { name: '扩展能力与生态' }),
     ).toBeVisible();
     expect(screen.getByRole('heading', { name: '教育' })).toBeVisible();
-    expect(screen.getByRole('heading', { name: '智能硬件' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '智能硬件' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: '监控与分析' }),
     ).not.toBeInTheDocument();
@@ -196,7 +198,7 @@ describe('SdksCatalog', () => {
     ).toHaveLength(0);
     expect(
       container.querySelectorAll('[data-sdk-download-product-id] > details'),
-    ).toHaveLength(16);
+    ).toHaveLength(13);
   });
 
   it('does not show product or platform counts in the Chinese catalog', () => {
@@ -865,7 +867,6 @@ describe('SdksCatalog', () => {
       '会议协作',
       '扩展能力与生态',
       '教育',
-      '智能硬件',
     ]);
   });
 
@@ -885,8 +886,6 @@ describe('SdksCatalog', () => {
       ['视频 SDK', '适用于音视频通话、互动直播和极速直播的实时互动 SDK'],
       ['实时消息 SDK', '提供低延时消息、信令、状态同步和频道管理能力的 SDK'],
       ['即时通讯 SDK', '适用于即时通讯场景的 SDK'],
-      ['物联网 aPaaS SDK', '适用于嵌入式设备实时音视频互动的 SDK'],
-      ['媒体播放器组件', '用于在客户端播放本地或在线媒体资源的组件'],
       ['互动白板 SDK', '提供可高度定制且不含默认 UI 的互动白板核心能力'],
       ['Fastboard SDK', '提供默认 UI，支持快速集成互动白板功能的 SDK'],
       [
@@ -900,7 +899,6 @@ describe('SdksCatalog', () => {
       ['本地服务端录制 SDK', '部署在本地服务端，用于录制 RTC 频道中的音视频流'],
       ['灵动课堂 SDK', '适用于教育场景和课堂 UI 定制的 SDK'],
       ['云课堂 SDK', '提供默认课堂 UI 的场景化 SDK'],
-      ['灵动监考 SDK', '适用于在线监考场景的 SDK'],
     ] as const;
 
     for (const [name, description] of expectedProducts) {
@@ -914,7 +912,7 @@ describe('SdksCatalog', () => {
       .map((article) => article.textContent)
       .join('\n');
     expect(catalogText).not.toMatch(
-      /Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK/,
+      /Signaling SDK|Chat SDK|Mediaplayer Kit SDK|Interactive Whiteboard Fastboard|灵动会议 SDK|媒体播放器组件|灵动监考 SDK|物联网 aPaaS SDK/,
     );
   });
 

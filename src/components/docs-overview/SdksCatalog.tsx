@@ -75,6 +75,11 @@ const DOWNLOAD_PLATFORM_VARIANTS = {
     },
   ],
 } as const;
+const ZH_CN_HIDDEN_SDK_PRODUCTS = new Set([
+  'iot',
+  'mediaplayer-kit',
+  'proctor',
+]);
 const LOCATION_CHANGE_EVENT = 'docs-portal-location-change';
 
 const sdkDownloadDatasets = {
@@ -355,6 +360,10 @@ function buildProductGroups(
   }
 
   return order
+    .filter(
+      (productId) =>
+        locale !== 'zh-CN' || !ZH_CN_HIDDEN_SDK_PRODUCTS.has(productId),
+    )
     .map((productId) => {
       const platforms = (entriesByProductId.get(productId) ?? [])
         .slice()
