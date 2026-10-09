@@ -15,7 +15,6 @@ import {
 } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
-import { askDocs, getAskDocsUrl } from '@/lib/ai/ask-docs-client';
 import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
@@ -33,11 +32,6 @@ vi.mock('@/lib/search/cn-search-client', () => ({
     deps: ['mock-meilisearch'],
     search: vi.fn(),
   })),
-}));
-
-vi.mock('@/lib/ai/ask-docs-client', () => ({
-  askDocs: vi.fn(),
-  getAskDocsUrl: vi.fn(() => 'http://127.0.0.1:8788'),
 }));
 
 const loadPages = async () => [
@@ -1048,108 +1042,6 @@ describe('DocsSearchDialog', () => {
     });
   });
 
-  it('uses the AI mode for CN questions and navigates through citations', async () => {
-    vi.mocked(askDocs).mockResolvedValue({
-      answer: '请调用 manualSOS。',
-      citations: [
-        {
-          headingPath: ['ConversationalAIAPI 类', 'manualSOS'],
-          title: 'manualSOS',
-          url: '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos',
-        },
-      ],
-    });
-    const meiliSearch = vi.fn();
-    vi.mocked(createCnDocsSearchClient).mockReturnValue({
-      deps: ['mock-meilisearch'],
-      search: meiliSearch,
-    });
-
-    const rootRoute = createRootRoute({ component: () => <Outlet /> });
-    const docsRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
-      component: () => (
-        <AppProviders>
-          <DocsSearchDialog
-            enableAi
-            loadPages={vi.fn().mockRejectedValue(new Error('not needed'))}
-            locale="zh-CN"
-            mode="desktop"
-          />
-        </AppProviders>
-      ),
-    });
-    const router = createRouter({
-      routeTree: rootRoute.addChildren([docsRoute]),
-      history: createMemoryHistory({
-        initialEntries: ['/zh-CN/introduction/about-agora'],
-      }),
-    });
-    const navigateSpy = vi.spyOn(router, 'navigate');
-
-    render(<RouterProvider router={router} />);
-    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
-    fireEvent.click(await screen.findByRole('radio', { name: 'AI 问答' }));
-    const input = await screen.findByPlaceholderText('输入问题，向文档提问...');
-    fireEvent.input(input, { target: { value: '如何调用 manualSOS？' } });
-    fireEvent.keyDown(input, { key: 'Enter' });
-
-    expect(await screen.findByTestId('ask-docs-answer')).toHaveTextContent(
-      '请调用 manualSOS。',
-    );
-    expect(askDocs).toHaveBeenCalledWith(
-      '如何调用 manualSOS？',
-      'http://127.0.0.1:8788',
-    );
-    expect(meiliSearch).not.toHaveBeenCalled();
-
-    fireEvent.click(await screen.findByRole('link', { name: 'manualSOS' }));
-    await waitFor(() => {
-      expect(navigateSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          to: '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos',
-        }),
-      );
-    });
-  });
-
-  it('shows an error when the AI endpoint is not configured', async () => {
-    vi.mocked(getAskDocsUrl).mockReturnValue(null);
-    const rootRoute = createRootRoute({ component: () => <Outlet /> });
-    const docsRoute = createRoute({
-      getParentRoute: () => rootRoute,
-      path: '/$locale/$tab/$slug',
-      component: () => (
-        <AppProviders>
-          <DocsSearchDialog
-            enableAi
-            loadPages={vi.fn().mockRejectedValue(new Error('not needed'))}
-            locale="zh-CN"
-            mode="desktop"
-          />
-        </AppProviders>
-      ),
-    });
-    const router = createRouter({
-      routeTree: rootRoute.addChildren([docsRoute]),
-      history: createMemoryHistory({
-        initialEntries: ['/zh-CN/introduction/about-agora'],
-      }),
-    });
-
-    render(<RouterProvider router={router} />);
-    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
-    fireEvent.click(await screen.findByRole('radio', { name: 'AI 问答' }));
-    const input = await screen.findByPlaceholderText('输入问题，向文档提问...');
-    fireEvent.input(input, { target: { value: '如何调用 manualSOS？' } });
-    fireEvent.keyDown(input, { key: 'Enter' });
-
-    expect(await screen.findByTestId('ask-docs-error')).toHaveTextContent(
-      'AI service unavailable',
-    );
-  });
-
   it('does not silently load the Orama page index when the CN search API is unavailable', async () => {
     vi.mocked(createCnDocsSearchClient).mockReturnValue({
       deps: [],
@@ -1190,7 +1082,7 @@ describe('DocsSearchDialog', () => {
     expect(loadPagesSpy).not.toHaveBeenCalled();
   });
 
-  it('opens full search with query and scope while leaving AI disabled by default', async () => {
+  it('opens full search with query and scope without an AI mode', async () => {
     vi.mocked(createCnDocsSearchClient).mockReturnValue({
       deps: [],
       search: vi.fn().mockResolvedValue([]),

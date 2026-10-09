@@ -64,7 +64,7 @@ bun run search:promote:cn --revision="$RELEASE_SHA"
 
 ### 中文检索策略与元数据
 
-生产策略由 `src/lib/search/cn-search-strategy.ts` 和 `buildPublishedCnSearchSettings()` 固化，每次 `prepare` 自动应用；不依赖人工改 Meilisearch 控制台。普通 demo 的基础设置保持独立。
+生产策略由 `src/lib/search/cn-search-strategy.ts` 和 `buildPublishedCnSearchSettings()` 固化，每次 `prepare` 自动应用；不依赖人工改 Meilisearch 控制台。基础设置与生产中文排序策略分层维护。
 
 - FAQ 保留主要 `product`，新增 `products` 表达多个产品归属。产品筛选匹配任一归属；平台按 FAQ 数据集映射，界面的“全部产品/平台”不是通配归属。未知标签使导出失败。
 - API 原名保留，另外生成 `nameSplit`、`groupNameSplit`，支持 camelCase、缩写及下划线拆词。仅 API 文档生成这些派生字段。
@@ -81,4 +81,4 @@ bun run search:promote:cn --revision="$RELEASE_SHA"
 
 交换后临时索引保留上一版内容。回滚时，外部发布系统需同时恢复匹配的静态站和搜索索引；不要直接重复运行已成功的 `promote`。历史索引的保留数量与清理策略也由外部发布系统负责。首次发布正式索引尚不存在时，激活命令会先创建它。
 
-目前中文接入 Meilisearch API，全球站继续使用既有 Algolia/Orama 配置。既有 `search-demo:*` 命令是独立实验，不属于生产索引更新链路。
+目前中文接入 Meilisearch API，全球站继续使用既有 Algolia/Orama 配置。本次交付不包含 AI demo 和实验问答服务；章节记录与索引契约供后续独立接入复用。

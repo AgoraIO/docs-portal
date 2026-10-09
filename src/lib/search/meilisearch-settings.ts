@@ -37,7 +37,7 @@ export function buildMeilisearchSettings() {
   };
 }
 
-/** 生产中文章节索引的策略；独立 demo 继续使用原来的基础设置。 */
+/** 在基础设置上应用生产中文章节索引的排序策略。 */
 export function buildPublishedCnSearchSettings() {
   const base = buildMeilisearchSettings();
   return {

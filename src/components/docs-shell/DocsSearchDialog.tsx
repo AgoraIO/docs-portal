@@ -2,10 +2,9 @@
 
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { ArrowUpRightIcon, SearchIcon, SendIcon } from 'lucide-react';
+import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AiMarkdown } from '@/components/docs-shell/AiMarkdown';
 import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
 import {
   type FilterGroup,
@@ -21,12 +20,6 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import {
-  type AskDocsResponse,
-  askDocs,
-  getAskDocsUrl,
-} from '@/lib/ai/ask-docs-client';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
@@ -74,35 +67,22 @@ type PagesState =
       status: 'error';
     };
 
-type SearchMode = 'search' | 'answer';
-type AskDocsState =
-  | { status: 'idle' }
-  | { status: 'loading' }
-  | { message: string; status: 'error' }
-  | ({ status: 'loaded' } & AskDocsResponse);
-
 export function DocsSearchDialog({
   loadPages,
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
   productScopes = [],
-  enableAi = false,
 }: {
   loadPages: () => Promise<SearchEntry[]>;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
   productScopes?: ProductScope[];
-  enableAi?: boolean;
 }) {
   const { i18n } = useTranslation('common');
   const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [searchMode, setSearchMode] = useState<SearchMode>('search');
-  const [askDocsState, setAskDocsState] = useState<AskDocsState>({
-    status: 'idle',
-  });
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
   );
@@ -132,7 +112,6 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
-  const askDocsUrl = searchLocale === 'zh-CN' ? getAskDocsUrl() : null;
   const remoteSearchEnabled =
     searchLocale === 'zh-CN' || Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
@@ -143,30 +122,25 @@ export function DocsSearchDialog({
   const [pendingRequests, setPendingRequests] = useState(0);
   const searchClient = useMemo(() => {
     const base =
-      searchMode === 'answer'
-        ? {
-            deps: ['ai-answer-mode'],
-            search: async () => [],
-          }
-        : searchLocale === 'zh-CN'
-          ? createCnDocsSearchClient({
+      searchLocale === 'zh-CN'
+        ? createCnDocsSearchClient({
+            platform: platformFilter ?? undefined,
+            scope: searchScope,
+          })
+        : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+          ? createAlgoliaDocsClient({
+              appId: algoliaAppId,
+              indexName: algoliaIndexName,
+              locale: searchLocale,
               platform: platformFilter ?? undefined,
               scope: searchScope,
+              searchApiKey: algoliaSearchApiKey,
             })
-          : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
-            ? createAlgoliaDocsClient({
-                appId: algoliaAppId,
-                indexName: algoliaIndexName,
-                locale: searchLocale,
-                platform: platformFilter ?? undefined,
-                scope: searchScope,
-                searchApiKey: algoliaSearchApiKey,
-              })
-            : createOramaDocsClient({
-                pages,
-                platform: platformFilter ?? undefined,
-                scope: searchScope,
-              });
+          : createOramaDocsClient({
+              pages,
+              platform: platformFilter ?? undefined,
+              scope: searchScope,
+            });
     return {
       ...base,
       async search(query: string) {
@@ -186,7 +160,6 @@ export function DocsSearchDialog({
     platformFilter,
     searchScope,
     searchLocale,
-    searchMode,
   ]);
   const searchDeps = useMemo(
     () =>
@@ -198,7 +171,6 @@ export function DocsSearchDialog({
             searchLocale,
             platformFilter,
             searchScope,
-            searchMode,
           ]
         : [pages, searchLocale],
     [
@@ -210,7 +182,6 @@ export function DocsSearchDialog({
       remoteSearchEnabled,
       searchScope,
       searchLocale,
-      searchMode,
     ],
   );
   const {
@@ -228,7 +199,6 @@ export function DocsSearchDialog({
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
   const showActiveDetail = searchLocale !== 'zh-CN' || hasQuery;
-  const isAnswerMode = searchMode === 'answer';
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
   // During that pre-fetch window `isLoading` is false and `results` still holds
@@ -263,28 +233,6 @@ export function DocsSearchDialog({
     }
   }, [search]);
   const isBusy = isLoading || debouncePending || pendingRequests > 0;
-  const submitQuestion = useCallback(async () => {
-    const question = search.trim();
-    if (!question || askDocsState.status === 'loading') return;
-    if (!askDocsUrl) {
-      setAskDocsState({
-        message: 'AI service unavailable',
-        status: 'error',
-      });
-      return;
-    }
-    setAskDocsState({ status: 'loading' });
-    try {
-      const result = await askDocs(question, askDocsUrl);
-      setAskDocsState({ status: 'loaded', ...result });
-    } catch (error) {
-      setAskDocsState({
-        message:
-          error instanceof Error ? error.message : 'AI service unavailable',
-        status: 'error',
-      });
-    }
-  }, [askDocsState.status, askDocsUrl, search]);
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
@@ -355,8 +303,6 @@ export function DocsSearchDialog({
 
       if (!nextOpen) {
         setActiveValue(null);
-        setSearchMode('search');
-        setAskDocsState({ status: 'idle' });
         // Reset the query on close so reopening lands on the recent list / prompt
         // rather than the previous search's (possibly empty) results.
         setSearch('');
@@ -419,7 +365,7 @@ export function DocsSearchDialog({
   // list (or a prompt). Section tabs are navigation, not search results, so
   // they no longer appear here; their landing pages surface as normal results.
   const resultEntries: RenderedSearchEntry[] =
-    isAnswerMode || !hasQuery || isSearchUnavailable
+    !hasQuery || isSearchUnavailable
       ? []
       : normalizedSearchResults.map(searchResultToEntry);
   const showRecent = !hasQuery && recentPages.length > 0;
@@ -428,8 +374,7 @@ export function DocsSearchDialog({
   // Only show the loading skeleton when there's nothing else to show. While a
   // re-query is in flight the previous results stay visible, so the skeleton
   // must not render on top of them.
-  const showSkeleton =
-    !isAnswerMode && hasQuery && isBusy && resultEntries.length === 0;
+  const showSkeleton = hasQuery && isBusy && resultEntries.length === 0;
 
   // One detail record per rendered item, in render order. `value` matches the
   // cmdk item value set on each CommandItem below. The empty state lists recent
@@ -504,58 +449,12 @@ export function DocsSearchDialog({
         title={t('docs.search')}
         value={activeValue ?? ''}
       >
-        {searchLocale === 'zh-CN' && enableAi ? (
-          <ToggleGroup
-            aria-label={t('docs.searchMode')}
-            className="w-full justify-center border-b px-3 py-2"
-            onValueChange={(value) => {
-              if (value !== 'search' && value !== 'answer') return;
-              setSearchMode(value);
-              setAskDocsState({ status: 'idle' });
-            }}
-            type="single"
-            value={searchMode}
-            variant="outline"
-          >
-            <ToggleGroupItem value="search">
-              {t('docs.searchModeSearch')}
-            </ToggleGroupItem>
-            <ToggleGroupItem value="answer">
-              {t('docs.searchModeAnswer')}
-            </ToggleGroupItem>
-          </ToggleGroup>
-        ) : null}
         <CommandInput
-          onKeyDown={(event) => {
-            if (isAnswerMode && event.key === 'Enter') {
-              event.preventDefault();
-              void submitQuestion();
-            }
-          }}
           onValueChange={setSearch}
-          placeholder={
-            isAnswerMode
-              ? t('docs.askDocsPlaceholder')
-              : t('docs.searchPlaceholder')
-          }
+          placeholder={t('docs.searchPlaceholder')}
           value={search}
         />
-        {isAnswerMode ? (
-          <div className="flex justify-end border-b px-3 py-2">
-            <Button
-              aria-label={t('docs.askDocsSubmit')}
-              disabled={!hasQuery || askDocsState.status === 'loading'}
-              onClick={() => void submitQuestion()}
-              size="sm"
-              title={t('docs.askDocsSubmit')}
-              type="button"
-            >
-              <SendIcon />
-              <span>{t('docs.askDocsSubmit')}</span>
-            </Button>
-          </div>
-        ) : null}
-        {!isAnswerMode && remoteSearchEnabled ? (
+        {remoteSearchEnabled ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
             {productScopes.length > 0 ? (
               <SearchFilterDropdown
@@ -578,14 +477,7 @@ export function DocsSearchDialog({
           </div>
         ) : null}
         <CommandList className="max-h-[min(620px,70vh)]">
-          {isAnswerMode ? (
-            <AskDocsAnswer
-              citationsLabel={t('docs.askDocsCitations')}
-              loadingLabel={t('docs.askDocsLoading')}
-              onSelect={handleSelect}
-              state={askDocsState}
-            />
-          ) : showSkeleton ? (
+          {showSkeleton ? (
             <div className="space-y-1 p-2" data-testid="search-loading">
               {[0, 1, 2].map((row) => (
                 <div className="space-y-2 rounded-md px-2 py-2.5" key={row}>
@@ -641,7 +533,7 @@ export function DocsSearchDialog({
               })}
             </CommandGroup>
           ) : null}
-          {!isAnswerMode && hasQuery ? (
+          {hasQuery ? (
             <CommandGroup>
               {isSearchUnavailable ? (
                 <div className="px-2 py-3 text-sm text-muted-foreground">
@@ -688,7 +580,7 @@ export function DocsSearchDialog({
             </CommandGroup>
           ) : null}
         </CommandList>
-        {searchLocale === 'zh-CN' && !isAnswerMode ? (
+        {searchLocale === 'zh-CN' ? (
           <div className="border-t p-2">
             <Button
               className="w-full justify-between"
@@ -744,69 +636,6 @@ type DetailEntry = {
   title: string;
   value: string;
 };
-
-function AskDocsAnswer({
-  citationsLabel,
-  loadingLabel,
-  onSelect,
-  state,
-}: {
-  citationsLabel: string;
-  loadingLabel: string;
-  onSelect: (url: string) => Promise<void>;
-  state: AskDocsState;
-}) {
-  if (state.status === 'idle') return null;
-  if (state.status === 'loading') {
-    return (
-      <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-        {loadingLabel}
-      </div>
-    );
-  }
-  if (state.status === 'error') {
-    return (
-      <div
-        className="px-4 py-8 text-center text-sm text-destructive"
-        data-testid="ask-docs-error"
-      >
-        {state.message}
-      </div>
-    );
-  }
-
-  return (
-    <div className="space-y-4 px-4 py-4 text-sm" data-testid="ask-docs-answer">
-      <AiMarkdown>{state.answer}</AiMarkdown>
-      {state.citations.length > 0 ? (
-        <div className="space-y-2 border-t pt-3">
-          <div className="font-medium">{citationsLabel}</div>
-          <ul className="space-y-1">
-            {state.citations.map((citation) => (
-              <li key={citation.url}>
-                <a
-                  className="text-primary underline underline-offset-2"
-                  href={citation.url}
-                  onClick={(event) => {
-                    event.preventDefault();
-                    void onSelect(citation.url);
-                  }}
-                >
-                  {citation.title}
-                </a>
-                {citation.headingPath.length > 0 ? (
-                  <span className="ml-2 text-muted-foreground">
-                    {citation.headingPath.join(' › ')}
-                  </span>
-                ) : null}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
-    </div>
-  );
-}
 
 function searchResultToEntry(result: {
   breadcrumbs?: unknown[];
