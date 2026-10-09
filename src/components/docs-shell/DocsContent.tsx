@@ -18,6 +18,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
 import {
@@ -321,6 +322,7 @@ export function DocsContent({
           ) : null}
         </header>
       )}
+      {isHomePage ? <IntroductionSdkDemoActions /> : null}
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
           <FumadocsOpenApiContent
