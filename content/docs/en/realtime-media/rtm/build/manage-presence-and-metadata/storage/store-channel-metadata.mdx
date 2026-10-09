@@ -791,7 +791,7 @@ The following example saves a set of metadata items for a message channel named 
 
 ```swift
 // Retrieve metadata
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Set metadata items
 let properties = AgoraRtmMetadataItem()
@@ -819,7 +819,7 @@ rtm.getStorage()?.setChannelMetadata(channelName: "channel1", channelType: .mess
         print("setChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("setChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("setChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -872,14 +872,14 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
 
 ```swift tab="Swift"
-rtm.getStorage()?.getChannelMetadata(channelName: "channel1",, channelType: .message) { response, errorInfo in
+rtm.getStorage()?.getChannelMetadata(channelName: "channel1", channelType: .message) { response, errorInfo in
     if errorInfo == nil {
         print("getChannelMetadata success!!")
         if let data = response?.data {
         }
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("getChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("getChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -943,7 +943,7 @@ The following example updates the value of a metadata item:
 
 ```swift
 // Retrieve metadata
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Set a metadata item
 let price = AgoraRtmMetadataItem()
@@ -964,7 +964,7 @@ rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .m
         print("updateChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1019,7 +1019,7 @@ To delete metadata items that are no longer required, call `removeChannelMetadat
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let announcement = AgoraRtmMetadataItem()
 announcement.key = "Announcement"
@@ -1032,7 +1032,7 @@ rtm.getStorage()?.removeChannelMetadata(channelName: "channel1", channelType: .m
         print("removeChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("removeChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1072,7 +1072,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let announcement = AgoraRtmMetadataItem()
 announcement.key = "Announcement"
@@ -1138,7 +1138,7 @@ When setting channel metadata, or a single channel metadata item, use the revisi
 The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let properties = AgoraRtmMetadataItem()
 properties.key = "Quantity"
@@ -1161,14 +1161,14 @@ metadata.majorRevision = 734874892
 
 let metadataOpt = AgoraRtmMetadataOptions()
 metadataOpt.recordUserId = true
-metadataOpt.records = true
+metadataOpt.recordTs = true
 
 rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
     if errorInfo == nil {
         print("updateChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1227,7 +1227,7 @@ Compared to CAS, which controls the version of channel metadata, locks offer a h
 The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let properties = AgoraRtmMetadataItem()
 properties.key = "Quantity"
@@ -1257,7 +1257,7 @@ rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .m
         print("updateChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1373,7 +1373,7 @@ The following example saves a set of metadata items for a message channel named 
 
 ```swift
 // Retrieve metadata
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Set metadata items
 let properties = AgoraRtmMetadataItem()
@@ -1401,7 +1401,7 @@ rtm.getStorage()?.setChannelMetadata(channelName: "channel1", channelType: .mess
         print("setChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("setChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("setChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1454,14 +1454,14 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To retrieve all metadata items associated with a specific channel, call `getChannelMetadata` by specifying the channel name and the channel type. Refer to the following example:
 
 ```swift tab="Swift"
-rtm.getStorage()?.getChannelMetadata(channelName: "channel1",, channelType: .message) { response, errorInfo in
+rtm.getStorage()?.getChannelMetadata(channelName: "channel1", channelType: .message) { response, errorInfo in
     if errorInfo == nil {
         print("getChannelMetadata success!!")
         if let data = response?.data {
         }
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("getChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("getChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1525,7 +1525,7 @@ The following example updates the value of a metadata item:
 
 ```swift
 // Retrieve metadata
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 // Set a metadata item
 let price = AgoraRtmMetadataItem()
@@ -1546,7 +1546,7 @@ rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .m
         print("updateChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1601,7 +1601,7 @@ To delete metadata items that are no longer required, call `removeChannelMetadat
 <TabsContent value="swift">
 
 ```swift
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let announcement = AgoraRtmMetadataItem()
 announcement.key = "Announcement"
@@ -1614,7 +1614,7 @@ rtm.getStorage()?.removeChannelMetadata(channelName: "channel1", channelType: .m
         print("removeChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("removeChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1654,7 +1654,7 @@ When the call is successful, the SDK returns the `AgoraRtmCommonResponse` data s
 To delete the entire set of metadata for a channel, do not specify any metadata items when calling `removeChannelMetadata`. Refer to the following sample code:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()!
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let announcement = AgoraRtmMetadataItem()
 announcement.key = "Announcement"
@@ -1720,7 +1720,7 @@ When setting channel metadata, or a single channel metadata item, use the revisi
 The following sample shows how to use `majorRevision` and `revision` to update channel metadata and a metadata item:
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let properties = AgoraRtmMetadataItem()
 properties.key = "Quantity"
@@ -1743,14 +1743,14 @@ metadata.majorRevision = 734874892
 
 let metadataOpt = AgoraRtmMetadataOptions()
 metadataOpt.recordUserId = true
-metadataOpt.records = true
+metadataOpt.recordTs = true
 
 rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .message, data: metadata, options: metadataOpt, lock: nil) { response, errorInfo in
     if errorInfo == nil {
         print("updateChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }
@@ -1809,7 +1809,7 @@ Compared to CAS, which controls the version of channel metadata, locks offer a h
 The following code demonstrates using a lock to update channel metadata. The user calling `updateChannelMetadata` must acquire the lock first for the call to succeed.
 
 ```swift tab="Swift"
-let metadata = AgoraRtmMetadata()
+guard let metadata = AgoraRtmMetadata() else { return }
 
 let properties = AgoraRtmMetadataItem()
 properties.key = "Quantity"
@@ -1839,7 +1839,7 @@ rtm.getStorage()?.updateChannelMetadata(channelName: "channel1", channelType: .m
         print("updateChannelMetadata success!!")
     } else {
         if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateChannelMetadata failed, errorCode: \\(errorCode), reason: \\(reason)")
+            print("updateChannelMetadata failed, errorCode: \(errorCode), reason: \(reason)")
         }
     }
 }

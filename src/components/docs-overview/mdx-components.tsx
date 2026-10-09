@@ -854,10 +854,7 @@ export function RecipesCatalog({
     [sdkFallback, sdkItems],
   );
   const stacks = useMemo(
-    () => [
-      allStacksLabel,
-      ...getUniqueValues(items.map((item) => item.stack).filter(Boolean)),
-    ],
+    () => [allStacksLabel, ...getUniqueValues(items.flatMap(getRecipeStacks))],
     [allStacksLabel, items],
   );
 
@@ -889,7 +886,7 @@ export function RecipesCatalog({
 
       if (
         activeStack !== allStacksLabel &&
-        (item.stack ?? '') !== activeStack
+        !getRecipeStacks(item).includes(activeStack)
       ) {
         return false;
       }
@@ -1070,7 +1067,7 @@ export function RecipesCatalog({
                               item.product,
                               ...(item.sdk ? [item.sdk] : []),
                               item.category,
-                              ...(item.stack ? [item.stack] : []),
+                              ...getRecipeStacks(item),
                               ...(item.tags ?? []),
                               ...(item.links?.map((link) => link.label) ?? []),
                             ]
@@ -1100,7 +1097,7 @@ export function RecipesCatalog({
                         item.product,
                         ...(item.sdk ? [item.sdk] : []),
                         item.category,
-                        ...(item.stack ? [item.stack] : []),
+                        ...getRecipeStacks(item),
                         ...(item.tags ?? []),
                         ...(item.links?.map((link) => link.label) ?? []),
                       ]
@@ -1167,12 +1164,29 @@ function getRecipeLevel(item: RecipeCatalogItem) {
   );
 }
 
+/**
+ * A card's `stack` may name more than one value, comma separated, because one
+ * reference can cover several platforms. The Signaling Swift API reference
+ * applies to both iOS and macOS, so a single value would either hide one
+ * platform from the filter or show a combined label that matches neither.
+ *
+ * Each value becomes its own filter option and its own tag on the card.
+ */
+function getRecipeStacks(item: RecipeCatalogItem) {
+  return (item.stack ?? '')
+    .split(',')
+    .map((stack) => stack.trim())
+    .filter(Boolean);
+}
+
 function recipeKey(item: RecipeCatalogItem) {
   return item.href ?? `${item.product}-${item.stack ?? item.title}`;
 }
 
 function recipeTags(item: RecipeCatalogItem) {
-  return [item.stack, getRecipeLevel(item)].filter(Boolean) as string[];
+  return [...getRecipeStacks(item), getRecipeLevel(item)].filter(
+    Boolean,
+  ) as string[];
 }
 
 function RecipeGallerySelect({
@@ -1262,10 +1276,7 @@ export function RecipesGallery({
     [allProductsLabel, items],
   );
   const stacks = useMemo(
-    () => [
-      allStacksLabel,
-      ...getUniqueValues(items.map((item) => item.stack).filter(Boolean)),
-    ],
+    () => [allStacksLabel, ...getUniqueValues(items.flatMap(getRecipeStacks))],
     [allStacksLabel, items],
   );
   const levels = useMemo(
@@ -1291,7 +1302,7 @@ export function RecipesGallery({
       }
       if (
         activeStack !== allStacksLabel &&
-        (item.stack ?? '') !== activeStack
+        !getRecipeStacks(item).includes(activeStack)
       ) {
         return false;
       }
@@ -1574,17 +1585,17 @@ function getInitialRecipeStack(
   const normalizedQueryValue = normalizeRecipeFilterValue(
     queryValue.replace(/-/g, ' '),
   );
-  const matchingStack = getUniqueValues(
-    items.map((item) => item.stack).filter(Boolean),
-  ).find((stack) => {
-    const normalizedStack = normalizeRecipeFilterValue(stack);
+  const matchingStack = getUniqueValues(items.flatMap(getRecipeStacks)).find(
+    (stack) => {
+      const normalizedStack = normalizeRecipeFilterValue(stack);
 
-    return (
-      normalizedStack === normalizedQueryValue ||
-      normalizedStack.replace(/\s+/g, '-') ===
-        normalizeRecipeFilterValue(queryValue)
-    );
-  });
+      return (
+        normalizedStack === normalizedQueryValue ||
+        normalizedStack.replace(/\s+/g, '-') ===
+          normalizeRecipeFilterValue(queryValue)
+      );
+    },
+  );
 
   return matchingStack ?? fallback;
 }

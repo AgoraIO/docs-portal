@@ -272,15 +272,18 @@ let message = "Hello Agora!"
 
 ```swift tab="Swift" tabGroup="language"
 let bytes: [UInt8] = [ /* your raw values */ ]
-    let rawMessage = Data(bytes: bytes, count: bytes.count)
+let rawMessage = Data(bytes: bytes, count: bytes.count)
 
-    streamChannel.publish(channelName: user, data: rawMessage, option: nil) { response, errorInfo in
-        if errorInfo == nil {
-            print("publish success!!")
-        } else {
-            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-        }
+let publishOption = AgoraRtmPublishOptions()
+publishOption.channelType = .user
+
+rtm.publish(channelName: user, data: rawMessage, option: publishOption) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
     }
+}
 ```
 
 ```objc tab="Objective-C" tabGroup="language"
@@ -312,21 +315,21 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes 32 KB size limits on message payload packets sent in user channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive the following error message.
 
-```objc tab="Swift" tabGroup="language"
+```text tab="Swift" tabGroup="language"
 // errorInfo
 {
-    errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
+    errorInfo.errorCode = .channelMessageLengthExceedLimitation
     errorInfo.reason = "Publish too long message."
-    errorInfo.operation = "publish"; // or "publishTopicMessage
+    errorInfo.operation = "publish"; // or publishTopicMessage
 }
 ```
 
-```objc tab="Objective-C" tabGroup="language"
+```text tab="Objective-C" tabGroup="language"
 // errorInfo
 {
     errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
     errorInfo.reason = @"Publish too long message.";
-    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+    errorInfo.operation = @"publish"; // or "publishTopicMessage"
 }
 ```
 
@@ -412,15 +415,18 @@ let message = "Hello Agora!"
 
 ```swift tab="Swift" tabGroup="language"
 let bytes: [UInt8] = [ /* your raw values */ ]
-    let rawMessage = Data(bytes: bytes, count: bytes.count)
+let rawMessage = Data(bytes: bytes, count: bytes.count)
 
-    streamChannel.publish(channelName: user, data: rawMessage, option: nil) { response, errorInfo in
-        if errorInfo == nil {
-            print("publish success!!")
-        } else {
-            print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-        }
+let publishOption = AgoraRtmPublishOptions()
+publishOption.channelType = .user
+
+rtm.publish(channelName: user, data: rawMessage, option: publishOption) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
     }
+}
 ```
 
 ```objc tab="Objective-C" tabGroup="language"
@@ -452,21 +458,21 @@ This section contains content that completes the information on this page, or po
 
 Signaling SDK imposes 32 KB size limits on message payload packets sent in user channels. The message payload packet size includes the message payload itself plus the size of the `customType` field. If the message payload package size exceeds the limit, you receive the following error message.
 
-```objc tab="Swift" tabGroup="language"
+```text tab="Swift" tabGroup="language"
 // errorInfo
 {
-    errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
+    errorInfo.errorCode = .channelMessageLengthExceedLimitation
     errorInfo.reason = "Publish too long message."
-    errorInfo.operation = "publish"; // or "publishTopicMessage
+    errorInfo.operation = "publish"; // or publishTopicMessage
 }
 ```
 
-```objc tab="Objective-C" tabGroup="language"
+```text tab="Objective-C" tabGroup="language"
 // errorInfo
 {
     errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
     errorInfo.reason = @"Publish too long message.";
-    errorInfo.Operation = @"publish"; // or "publishTopicMessage"
+    errorInfo.operation = @"publish"; // or "publishTopicMessage"
 }
 ```
 

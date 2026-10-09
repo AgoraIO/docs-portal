@@ -1155,7 +1155,7 @@ Signaling version `2.x` differs from `1.x` in the support of naming character se
 
 The SDK package names and integration methods for `2.x` and `1.x` remain unchanged. CDN and CocoaPods integration methods are both supported. The `Podfile` content for CocoaPods integration is as follows:
 
-```objc
+```ruby
 platform :ios, '11.0'
 target 'Your App' do
   # Replace x.y.z with the specific SDK version, such as 2.2.6
@@ -1513,7 +1513,7 @@ In `2.x`, real-time monitoring of user join, leave, timeout, or temporary status
 // 2. When joining a channel, enable the withPresence switch
 AgoraRtmSubscribeOptions* option = [[AgoraRtmSubscribeOptions alloc] init];
 option.features = AgoraRtmSubscribeChannelFeaturePresence;
-[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[rtm subscribeWithChannel:@"your_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe success!!");
     } else {
@@ -1647,11 +1647,11 @@ In addition to the enhancements presented in this document, Signaling `2.x` intr
 | | Join Stream Channel| `[streamChannel joinWithOption:completion]` |
 | | Leave Stream Channel | `[streamChannel leave]` |
 | | Destroy Stream Channel  | `[streamChannel destroy]` |
-| **Topic**| Join Topic| `[streamChannel joinTopic:withOption:completion]` |
+| **Topic**| Join Topic| `[streamChannel joinTopic:option:completion]` |
 | | Publish Topic Message| `[streamChannel publishTopicMessage:data:option:completion]`  |
 | | Leave Topic | `[streamChannel leaveTopic:completion]` |
-| | Subscribe Topic | `[streamChannel subscribeTopic:withOption:completion]` |
-| | Unsubscribe Topic | `[streamChannel unsubscribeTopic:withOption:completion]` |
+| | Subscribe Topic | `[streamChannel subscribeTopic:option:completion]` |
+| | Unsubscribe Topic | `[streamChannel unsubscribeTopic:option:completion]` |
 | **Message** | Send Message| `[rtm publish:message:option:completion]` |
 | **Presence**| Query Channel's Online Users| `[[rtm getPresence] getOnlineUsers:channelType:options:completion]` |
 | | Query User's Channel | `[[rtm getPresence] getUserChannels:completion]` |
@@ -1707,7 +1707,7 @@ Signaling version `2.x` differs from `1.x` in the support of naming character se
 
 The SDK package names and integration methods for `2.x` and `1.x` remain unchanged. CDN and CocoaPods integration methods are both supported. The `Podfile` content for CocoaPods integration is as follows:
 
-```objc
+```ruby
 platform :ios, '11.0'
 target 'Your App' do
   # Replace x.y.z with the specific SDK version, such as 2.2.6
@@ -2065,7 +2065,7 @@ In `2.x`, real-time monitoring of user join, leave, timeout, or temporary status
 // 2. When joining a channel, enable the withPresence switch
 AgoraRtmSubscribeOptions* option = [[AgoraRtmSubscribeOptions alloc] init];
 option.features = AgoraRtmSubscribeChannelFeaturePresence;
-[rtm subscribeWithChannel:@"you_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+[rtm subscribeWithChannel:@"your_channel" option:opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribe success!!");
     } else {
@@ -2199,11 +2199,11 @@ In addition to the enhancements presented in this document, Signaling `2.x` intr
 | | Join Stream Channel| `[streamChannel joinWithOption:completion]` |
 | | Leave Stream Channel | `[streamChannel leave]` |
 | | Destroy Stream Channel  | `[streamChannel destroy]` |
-| **Topic**| Join Topic| `[streamChannel joinTopic:withOption:completion]` |
+| **Topic**| Join Topic| `[streamChannel joinTopic:option:completion]` |
 | | Publish Topic Message| `[streamChannel publishTopicMessage:data:option:completion]`  |
 | | Leave Topic | `[streamChannel leaveTopic:completion]` |
-| | Subscribe Topic | `[streamChannel subscribeTopic:withOption:completion]` |
-| | Unsubscribe Topic | `[streamChannel unsubscribeTopic:withOption:completion]` |
+| | Subscribe Topic | `[streamChannel subscribeTopic:option:completion]` |
+| | Unsubscribe Topic | `[streamChannel unsubscribeTopic:option:completion]` |
 | **Message** | Send Message| `[rtm publish:message:option:completion]` |
 | **Presence**| Query Channel's Online Users| `[[rtm getPresence] getOnlineUsers:channelType:options:completion]` |
 | | Query User's Channel | `[[rtm getPresence] getUserChannels:completion]` |

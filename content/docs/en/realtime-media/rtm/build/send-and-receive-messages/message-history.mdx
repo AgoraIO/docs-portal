@@ -406,14 +406,14 @@ AgoraRtmGetHistoryMessagesOptions *option = [[AgoraRtmGetHistoryMessagesOptions 
 option.messageCount = 50;
 option.end = 1688978391800;
 
-[_kit getMessages:@"channel_name"
+[[_kit getHistory] getMessages:@"channel_name"
             channelType:AgoraRtmChannelTypeMessage
                 options:option
              completion:^(AgoraRtmGetHistoryMessagesResponse *response, NSError *error) {
     if (response != nil) {
         NSLog(@"total message count is: %lu", (unsigned long)response.messageList.count);
 
-        for (AgoraRtmMessage *msg in response.messageList) {
+        for (AgoraRtmHistoryMessage *msg in response.messageList) {
             NSLog(@"publisher: %@message content: %@time stamp: %lld", msg.publisher, msg.message.stringData, msg.timestamp);
         }
 
@@ -596,14 +596,14 @@ AgoraRtmGetHistoryMessagesOptions *option = [[AgoraRtmGetHistoryMessagesOptions 
 option.messageCount = 50;
 option.end = 1688978391800;
 
-[_kit getMessages:@"channel_name"
+[[_kit getHistory] getMessages:@"channel_name"
             channelType:AgoraRtmChannelTypeMessage
                 options:option
              completion:^(AgoraRtmGetHistoryMessagesResponse *response, NSError *error) {
     if (response != nil) {
         NSLog(@"total message count is: %lu", (unsigned long)response.messageList.count);
 
-        for (AgoraRtmMessage *msg in response.messageList) {
+        for (AgoraRtmHistoryMessage *msg in response.messageList) {
             NSLog(@"publisher: %@message content: %@time stamp: %lld", msg.publisher, msg.message.stringData, msg.timestamp);
         }
 

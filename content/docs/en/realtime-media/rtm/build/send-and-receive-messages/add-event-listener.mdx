@@ -344,7 +344,7 @@ do {
         print("RTM Client initialized successfully!")
     }
 } catch let error {
-    print("Failed to initialize RTM client. Error: \\(error)")
+    print("Failed to initialize RTM client. Error: \(error)")
 }
 ```
 
@@ -399,7 +399,7 @@ do {
     }else if (event_type == AgoraRtmPresenceEventTypeSnapshot) {
         NSArray<AgoraRtmUserState *> * snapshot = event.snapshot;
     } else {
-        NSArray<AgoraRtmStateItem *> *states = event.states;
+        NSDictionary<NSString *, NSString *> *states = event.states;
     }
 }
 
@@ -421,15 +421,6 @@ do {
         // Renew specific stream channel token
     } else {
         // Renew rtm client token
-    }
-}
-
-// Triggered when the connection state changes
-- (void)rtmKit:(AgoraRtmClientKit *)kit channel:(NSString *)channelName connectionChangedToState:(AgoraRtmClientConnectionState)state reason:(AgoraRtmClientConnectionChangeReason)reason {
-    if (channelName != nil) {
-        NSLog(@"stream channel connection changed now state is %d change reason is %d",state, reason);
-    } else {
-        NSLog(@"rtm client connection changed now state is %d change reason is %d",state, reason);
     }
 }
 
@@ -538,7 +529,7 @@ do {
         print("RTM Client initialized successfully!")
     }
 } catch let error {
-    print("Failed to initialize RTM client. Error: \\(error)")
+    print("Failed to initialize RTM client. Error: \(error)")
 }
 ```
 
@@ -593,7 +584,7 @@ do {
     }else if (event_type == AgoraRtmPresenceEventTypeSnapshot) {
         NSArray<AgoraRtmUserState *> * snapshot = event.snapshot;
     } else {
-        NSArray<AgoraRtmStateItem *> *states = event.states;
+        NSDictionary<NSString *, NSString *> *states = event.states;
     }
 }
 
@@ -615,15 +606,6 @@ do {
         // Renew specific stream channel token
     } else {
         // Renew rtm client token
-    }
-}
-
-// Triggered when the connection state changes
-- (void)rtmKit:(AgoraRtmClientKit *)kit channel:(NSString *)channelName connectionChangedToState:(AgoraRtmClientConnectionState)state reason:(AgoraRtmClientConnectionChangeReason)reason {
-    if (channelName != nil) {
-        NSLog(@"stream channel connection changed now state is %d change reason is %d",state, reason);
-    } else {
-        NSLog(@"rtm client connection changed now state is %d change reason is %d",state, reason);
     }
 }
 
