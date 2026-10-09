@@ -682,11 +682,11 @@ function ProductCard({
           </span>
           {downloadPageHref ? (
             <a
-              className="ml-auto inline-flex min-h-11 shrink-0 items-center rounded-md border border-primary/30 px-3 text-xs font-medium text-primary hover:bg-primary/5 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+              className="ml-auto shrink-0 text-xs font-medium text-primary underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
               href={downloadPageHref}
               onClick={(event) => event.stopPropagation()}
             >
-              查看下载页 ↗
+              更多 ↗
             </a>
           ) : null}
         </summary>

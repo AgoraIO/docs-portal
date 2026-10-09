@@ -96,12 +96,14 @@ describe('SdksCatalog', () => {
     expect(
       within(videoCard).getByRole('combobox', { name: '视频 SDK 平台' }),
     ).toHaveValue('android');
-    expect(
-      within(videoCard).getByRole('link', { name: '查看下载页 ↗' }),
-    ).toHaveAttribute(
+    const moreLink = within(videoCard).getByRole('link', {
+      name: '更多 ↗',
+    });
+    expect(moreLink).toHaveAttribute(
       'href',
       '/zh-CN/realtime-media/rtc/reference/downloads/android',
     );
+    expect(moreLink).not.toHaveClass('min-h-11', 'border', 'bg-primary/5');
     expect(
       within(videoCard).queryByText(
         "implementation 'cn.shengwang.rtc:full-sdk:4.6.3'",
@@ -122,7 +124,7 @@ describe('SdksCatalog', () => {
       within(videoCard).getByRole('article', { name: 'iOS Full' }),
     ).toBeVisible();
     expect(
-      within(videoCard).getByRole('link', { name: '查看下载页 ↗' }),
+      within(videoCard).getByRole('link', { name: '更多 ↗' }),
     ).toHaveAttribute(
       'href',
       '/zh-CN/realtime-media/rtc/reference/downloads/ios',
@@ -136,7 +138,7 @@ describe('SdksCatalog', () => {
       name: 'Agora Agents SDK',
     });
     expect(
-      within(agentsCard).queryByRole('link', { name: '查看下载页 ↗' }),
+      within(agentsCard).queryByRole('link', { name: '更多 ↗' }),
     ).not.toBeInTheDocument();
   });
 
@@ -887,7 +889,7 @@ describe('SdksCatalog', () => {
       within(videoCard).getByRole('article', { name: 'Android Lite' }),
     ).toBeVisible();
     expect(
-      within(videoCard).getByRole('link', { name: '查看下载页 ↗' }),
+      within(videoCard).getByRole('link', { name: '更多 ↗' }),
     ).toHaveAttribute(
       'href',
       '/zh-CN/realtime-media/rtc/reference/downloads/android',
@@ -979,7 +981,7 @@ describe('SdksCatalog', () => {
     fireEvent.change(platform, { target: { value: 'linux-cpp' } });
     expect(within(serverCard).getAllByRole('article')).toHaveLength(2);
     expect(
-      within(serverCard).getByRole('link', { name: '查看下载页 ↗' }),
+      within(serverCard).getByRole('link', { name: '更多 ↗' }),
     ).toHaveAttribute(
       'href',
       '/zh-CN/realtime-media/rtc-server-sdk/reference/downloads/linux-cpp',
@@ -1008,7 +1010,7 @@ describe('SdksCatalog', () => {
     ).toEqual(['Linux C++', 'Linux Java']);
     expect(within(recordingCard).getAllByRole('article')).toHaveLength(2);
     expect(
-      within(recordingCard).getByRole('link', { name: '查看下载页 ↗' }),
+      within(recordingCard).getByRole('link', { name: '更多 ↗' }),
     ).toHaveAttribute(
       'href',
       '/zh-CN/realtime-media/local-server-recording/reference/downloads/linux-cpp',
