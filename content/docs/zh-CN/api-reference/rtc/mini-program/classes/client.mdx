@@ -2675,7 +2675,7 @@ void
 
 <ApiSignature>
 
-updatePlayerNetStatus(uid: number, detail: any): void
+updatePlayerNetStatus(uid: number, event: any): void
 
 </ApiSignature>
 
@@ -2693,13 +2693,20 @@ v2.5.3
 远端用户的用户 ID。
 
 </Parameter>
-<Parameter name="detail" type="any" required>
+<Parameter name="event" type="any" required>
 
-微信事件回调的 `e.detail` 对象。
+微信组件的完整事件回调对象。请直接传入回调参数 `e`；SDK 会读取 `e.detail`。不要传入 `e.detail`。
  Note：要收到 live-player 组件报告的网络状态数据，你需要在创建 live-player 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
 
 </Parameter>
 </ParameterList>
+
+```javascript
+<live-player bindnetstatus="onPlayerNetStatus" />
+onPlayerNetStatus: function (e) {
+  client.updatePlayerNetStatus(uid, e)
+}
+```
 
 <ApiReturns>
 
@@ -2717,7 +2724,7 @@ void
 
 <ApiSignature>
 
-updatePlayerStateChange(uid: number, detail: any): void
+updatePlayerStateChange(uid: number, event: any): void
 
 </ApiSignature>
 
@@ -2735,13 +2742,20 @@ v2.5.3
 远端用户的用户 ID。
 
 </Parameter>
-<Parameter name="detail" type="any" required>
+<Parameter name="event" type="any" required>
 
-微信事件回调的 `e.detail` 对象。
+微信组件的完整事件回调对象。请直接传入回调参数 `e`；SDK 会读取 `e.detail`。不要传入 `e.detail`。
  Note：要收到 live-player 组件报告的拉流状态码，你需要在创建 live-player 组件时注册监听 `bindstatechange`。详见[微信小程序 live-player 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-player.html)。
 
 </Parameter>
 </ParameterList>
+
+```javascript
+<live-player bindstatechange="onPlayerStateChange" />
+onPlayerStateChange: function (e) {
+  client.updatePlayerStateChange(uid, e)
+}
+```
 
 <ApiReturns>
 
@@ -2759,7 +2773,7 @@ void
 
 <ApiSignature>
 
-updatePusherNetStatus(detail: any): void
+updatePusherNetStatus(event: any): void
 
 </ApiSignature>
 
@@ -2772,13 +2786,20 @@ v2.5.3
 :::
 
 <ParameterList title="Parameters">
-<Parameter name="detail" type="any" required>
+<Parameter name="event" type="any" required>
 
-微信事件回调的 `e.detail` 对象。
+微信组件的完整事件回调对象。请直接传入回调参数 `e`；SDK 会读取 `e.detail`。不要传入 `e.detail`。
  Note：要收到 live-pusher 组件报告的网络状态通知，你需要在创建 live-pusher 组件时注册监听 `bindnetstatus`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
 
 </Parameter>
 </ParameterList>
+
+```javascript
+<live-pusher bindnetstatus="onPusherNetStatus" />
+onPusherNetStatus: function (e) {
+  client.updatePusherNetStatus(e)
+}
+```
 
 <ApiReturns>
 
@@ -2796,7 +2817,7 @@ void
 
 <ApiSignature>
 
-updatePusherStateChange(detail: any): void
+updatePusherStateChange(event: any): void
 
 </ApiSignature>
 
@@ -2809,13 +2830,20 @@ v2.5.3
 :::
 
 <ParameterList title="Parameters">
-<Parameter name="detail" type="any" required>
+<Parameter name="event" type="any" required>
 
-微信事件回调的 `e.detail` 对象。
+微信组件的完整事件回调对象。请直接传入回调参数 `e`；SDK 会读取 `e.detail`。不要传入 `e.detail`。
  Note：要收到 live-pusher 组件报告的推流状态码，你需要在创建 live-pusher 组件时注册监听 `bindstatechange`。详见[微信小程序 live-pusher 文档](https://developers.weixin.qq.com/miniprogram/dev/component/live-pusher.html)。
 
 </Parameter>
 </ParameterList>
+
+```javascript
+<live-pusher bindstatechange="onPusherStateChange" />
+onPusherStateChange: function (e) {
+  client.updatePusherStateChange(e)
+}
+```
 
 <ApiReturns>
 
