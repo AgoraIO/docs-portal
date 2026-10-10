@@ -1,5 +1,5 @@
-export function shouldPrerenderRoute(_path: string) {
-  return true;
+export function shouldPrerenderRoute(path: string) {
+  return path !== '/api' && !path.startsWith('/api/');
 }
 
 export function shouldPrerenderPage(page: { path: string }) {

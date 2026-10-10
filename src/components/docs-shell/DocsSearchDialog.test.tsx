@@ -17,11 +17,19 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { RECENTLY_VIEWED_STORAGE_KEY } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
+import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
 import { DocsSearchDialog } from './DocsSearchDialog';
 
 vi.mock('@/lib/search/algolia-client', () => ({
   createAlgoliaDocsClient: vi.fn(() => ({
     deps: ['mock-algolia'],
+    search: vi.fn(),
+  })),
+}));
+
+vi.mock('@/lib/search/cn-search-client', () => ({
+  createCnDocsSearchClient: vi.fn(() => ({
+    deps: ['mock-meilisearch'],
     search: vi.fn(),
   })),
 }));
@@ -736,6 +744,40 @@ describe('DocsSearchDialog', () => {
     await waitFor(() => expect(screen.queryByText('Recent')).toBeNull());
   });
 
+  it('keeps Chinese recent-page details hidden before a query', async () => {
+    window.localStorage.setItem(
+      RECENTLY_VIEWED_STORAGE_KEY,
+      JSON.stringify([
+        {
+          description: '最近文档摘要',
+          title: '最近文档',
+          url: '/zh-CN/ai/recent-page',
+        },
+      ]),
+    );
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="zh-CN" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    expect(await screen.findByText('最近文档')).toBeInTheDocument();
+    expect(screen.queryByTestId('search-active-detail')).toBeNull();
+  });
+
   it('resets the query on close so reopening does not show the previous no-results message', async () => {
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
     const docsRoute = createRoute({
@@ -815,7 +857,13 @@ describe('DocsSearchDialog', () => {
     // Seed a recently-viewed page so the empty state has something to cascade.
     window.localStorage.setItem(
       RECENTLY_VIEWED_STORAGE_KEY,
-      JSON.stringify([{ title: 'Recent Page', url: '/en/ai/recent-page' }]),
+      JSON.stringify([
+        {
+          description: 'Recent page summary',
+          title: 'Recent Page',
+          url: '/en/ai/recent-page',
+        },
+      ]),
     );
     const rootRoute = createRootRoute({ component: () => <Outlet /> });
     const docsRoute = createRoute({
@@ -852,6 +900,9 @@ describe('DocsSearchDialog', () => {
     };
     expect((await rowFor('Recent Page')).className).toContain(
       'search-result-enter',
+    );
+    expect(await screen.findByTestId('search-active-detail')).toHaveTextContent(
+      'Recent page summary',
     );
 
     // Typing disarms the stagger, so results render instantly — no cascade on
@@ -928,5 +979,160 @@ describe('DocsSearchDialog', () => {
     expect(
       screen.getAllByText('Voice Activity Detection').length,
     ).toBeGreaterThan(0);
+  });
+
+  it('uses the search API for CN and navigates to the matched section anchor', async () => {
+    vi.mocked(createCnDocsSearchClient).mockReturnValue({
+      deps: ['mock-meilisearch'],
+      search: vi.fn().mockResolvedValue([
+        {
+          content: '<mark>manualSOS</mark>',
+          id: 'manual-sos',
+          objectType: 'docs',
+          path: ['Conversational AI API', 'manualSOS'],
+          platform: ['web'],
+          product: 'conversational-ai',
+          snippet: '手动触发 <mark>SOS</mark>。',
+          title: '<mark>manualSOS</mark>',
+          type: 'page',
+          url: '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos',
+        },
+      ]),
+    });
+
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={vi.fn().mockRejectedValue(new Error('not needed'))}
+            locale="zh-CN"
+            mode="desktop"
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+    const navigateSpy = vi.spyOn(router, 'navigate');
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'manualSOS' } },
+    );
+
+    expect(createCnDocsSearchClient).toHaveBeenCalled();
+    const manualSosLabels = await screen.findAllByText('manualSOS');
+    expect(manualSosLabels.length).toBeGreaterThan(0);
+    fireEvent.click(manualSosLabels[0]);
+    await waitFor(() => {
+      expect(navigateSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos',
+        }),
+      );
+    });
+  });
+
+  it('does not silently load the Orama page index when the CN search API is unavailable', async () => {
+    vi.mocked(createCnDocsSearchClient).mockReturnValue({
+      deps: [],
+      search: vi.fn().mockRejectedValue(new Error('503')),
+    });
+    const loadPagesSpy = vi.fn().mockResolvedValue(loadPages());
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPagesSpy}
+            locale="zh-CN"
+            mode="desktop"
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'manualSOS' } },
+    );
+
+    expect(
+      (await screen.findAllByText('搜索索引不可用。')).length,
+    ).toBeGreaterThan(0);
+    expect(loadPagesSpy).not.toHaveBeenCalled();
+  });
+
+  it('opens full search with query and scope without an AI mode', async () => {
+    vi.mocked(createCnDocsSearchClient).mockReturnValue({
+      deps: [],
+      search: vi.fn().mockResolvedValue([]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="zh-CN"
+            mode="desktop"
+            productScopes={[
+              {
+                id: 'rtc',
+                label: '实时互动 RTC',
+                scope: { field: 'product', value: 'rtc' },
+              },
+            ]}
+          />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+    const navigate = vi.spyOn(router, 'navigate');
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.click(await screen.findByRole('combobox', { name: '全部产品' }));
+    fireEvent.click(
+      await screen.findByRole('option', { name: '实时互动 RTC' }),
+    );
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'Token' } },
+    );
+    expect(
+      screen.queryByRole('radio', { name: 'AI 问答' }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: '查看全部搜索结果' }));
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith(
+        expect.objectContaining({ href: '/zh-CN/search?q=Token&product=rtc' }),
+      ),
+    );
   });
 });

@@ -2,7 +2,7 @@
 
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { SearchIcon } from 'lucide-react';
+import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
@@ -36,7 +36,12 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
+import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
+import {
+  buildSearchPageHref,
+  searchScopeProduct,
+} from '@/lib/search/search-page-state';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -107,6 +112,8 @@ export function DocsSearchDialog({
   const algoliaAppId = algoliaConfig?.appId;
   const algoliaIndexName = algoliaConfig?.indexName;
   const algoliaSearchApiKey = algoliaConfig?.searchApiKey;
+  const remoteSearchEnabled =
+    searchLocale === 'zh-CN' || Boolean(algoliaConfig);
   // Count of in-flight search requests. fumadocs' `isLoading` flips off the
   // moment ANY request settles — including a superseded one whose result it then
   // discards — which briefly reads as "settled with no results" mid-typing and
@@ -115,20 +122,25 @@ export function DocsSearchDialog({
   const [pendingRequests, setPendingRequests] = useState(0);
   const searchClient = useMemo(() => {
     const base =
-      algoliaAppId && algoliaIndexName && algoliaSearchApiKey
-        ? createAlgoliaDocsClient({
-            appId: algoliaAppId,
-            indexName: algoliaIndexName,
-            locale: searchLocale,
+      searchLocale === 'zh-CN'
+        ? createCnDocsSearchClient({
             platform: platformFilter ?? undefined,
             scope: searchScope,
-            searchApiKey: algoliaSearchApiKey,
           })
-        : createOramaDocsClient({
-            pages,
-            platform: platformFilter ?? undefined,
-            scope: searchScope,
-          });
+        : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+          ? createAlgoliaDocsClient({
+              appId: algoliaAppId,
+              indexName: algoliaIndexName,
+              locale: searchLocale,
+              platform: platformFilter ?? undefined,
+              scope: searchScope,
+              searchApiKey: algoliaSearchApiKey,
+            })
+          : createOramaDocsClient({
+              pages,
+              platform: platformFilter ?? undefined,
+              scope: searchScope,
+            });
     return {
       ...base,
       async search(query: string) {
@@ -151,7 +163,7 @@ export function DocsSearchDialog({
   ]);
   const searchDeps = useMemo(
     () =>
-      algoliaAppId && algoliaIndexName && algoliaSearchApiKey
+      remoteSearchEnabled
         ? [
             algoliaAppId,
             algoliaIndexName,
@@ -167,6 +179,7 @@ export function DocsSearchDialog({
       algoliaSearchApiKey,
       pages,
       platformFilter,
+      remoteSearchEnabled,
       searchScope,
       searchLocale,
     ],
@@ -178,24 +191,25 @@ export function DocsSearchDialog({
   } = useDocsSearch(
     {
       client: searchClient,
-      delayMs: algoliaConfig ? SEARCH_DEBOUNCE_MS : 0,
+      delayMs: remoteSearchEnabled ? SEARCH_DEBOUNCE_MS : 0,
     },
     searchDeps,
   );
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
+  const showActiveDetail = searchLocale !== 'zh-CN' || hasQuery;
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
   // During that pre-fetch window `isLoading` is false and `results` still holds
   // the previous/initial value, which briefly flashes the empty state after a
   // keystroke. Treat the debounce window as busy so the skeleton bridges the gap.
   const [debouncePending, setDebouncePending] = useState(false);
-  // `algoliaConfig` is a fresh object every render, so depend on a stable
+  // The remote config objects are recreated on render, so depend on a stable
   // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
-  const algoliaEnabled = Boolean(algoliaConfig);
+  const remoteSearchConfigured = remoteSearchEnabled;
   useEffect(() => {
-    if (!algoliaEnabled || search.trim() === '') {
+    if (!remoteSearchConfigured || search.trim() === '') {
       setDebouncePending(false);
       return;
     }
@@ -205,7 +219,7 @@ export function DocsSearchDialog({
       SEARCH_DEBOUNCE_MS + 30,
     );
     return () => window.clearTimeout(id);
-  }, [algoliaEnabled, search]);
+  }, [remoteSearchConfigured, search]);
   useEffect(() => {
     if (isLoading) {
       setDebouncePending(false);
@@ -294,7 +308,7 @@ export function DocsSearchDialog({
         setSearch('');
       }
 
-      if (algoliaConfig || !nextOpen || pages.length > 0) {
+      if (remoteSearchEnabled || !nextOpen || pages.length > 0) {
         return;
       }
 
@@ -319,7 +333,7 @@ export function DocsSearchDialog({
         });
       }
     },
-    [algoliaConfig, loadPages, pages.length, searchLocale, setSearch],
+    [loadPages, pages.length, remoteSearchEnabled, searchLocale, setSearch],
   );
 
   useEffect(() => {
@@ -440,7 +454,7 @@ export function DocsSearchDialog({
           placeholder={t('docs.searchPlaceholder')}
           value={search}
         />
-        {algoliaConfig ? (
+        {remoteSearchEnabled ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
             {productScopes.length > 0 ? (
               <SearchFilterDropdown
@@ -566,15 +580,36 @@ export function DocsSearchDialog({
             </CommandGroup>
           ) : null}
         </CommandList>
+        {searchLocale === 'zh-CN' ? (
+          <div className="border-t p-2">
+            <Button
+              className="w-full justify-between"
+              onClick={() => {
+                setOpen(false);
+                void navigate({
+                  href: buildSearchPageHref(searchLocale, {
+                    q: search,
+                    product: searchScopeProduct(searchScope),
+                    platform: platformFilter ?? undefined,
+                  }),
+                });
+              }}
+              variant="ghost"
+            >
+              查看全部搜索结果
+              <ArrowUpRightIcon data-icon="inline-end" />
+            </Button>
+          </div>
+        ) : null}
         {/* Active-item detail: floats beside the dialog when there's room,
             otherwise a fixed-height strip in the footer. Either way it's out of
             the height-varying flow, so the dialog doesn't resize on focus change. */}
         <SearchDetailPanel
           activeValue={activeValue}
-          description={activeDetail?.primary}
+          description={showActiveDetail ? activeDetail?.primary : undefined}
           open={open}
           renderText={(value) => <HighlightedText value={value} />}
-          title={activeDetail?.title}
+          title={showActiveDetail ? activeDetail?.title : undefined}
         />
         <SearchKeyboardHints
           closeLabel={t('docs.searchHintClose')}

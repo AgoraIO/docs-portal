@@ -2005,6 +2005,24 @@ describe('DocsShell', () => {
     expect(pageFooter).not.toHaveClass('max-w-[var(--content-max)]');
   });
 
+  it('gives search one full-width body without article chrome or a duplicate search dialog', async () => {
+    renderDocsShell({
+      layoutMode: 'search',
+      activeTab: 'search',
+      children: <main>Search results</main>,
+    });
+    const body = await screen.findByTestId('docs-body-shell');
+    expect(within(body).getByRole('main')).toHaveTextContent('Search results');
+    expect(body).not.toHaveClass('grid');
+    expect(screen.queryByTestId('docs-toc-rail')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('docs-main-desktop-scroll'),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: 'Search docs' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('renders the split docs body shell regions and keeps pagination in the main column', async () => {
     renderDocsShell({
       children: <article>Body copy</article>,

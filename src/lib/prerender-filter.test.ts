@@ -4,6 +4,11 @@ import { shouldPrerenderRoute } from './prerender-filter';
 import { createDocsPrerenderPaths } from './prerender-pages';
 
 describe('shouldPrerenderRoute', () => {
+  it('never emits a cached response for runtime API routes', () => {
+    expect(shouldPrerenderRoute('/api/search')).toBe(false);
+    expect(shouldPrerenderRoute('/api/health')).toBe(false);
+    expect(shouldPrerenderRoute('/api')).toBe(false);
+  });
   it('keeps ordinary docs pages in the crawler output', () => {
     expect(shouldPrerenderRoute('/en/introduction/about-agora')).toBe(true);
     expect(shouldPrerenderRoute('/zh-CN/ai/quick-start')).toBe(true);
