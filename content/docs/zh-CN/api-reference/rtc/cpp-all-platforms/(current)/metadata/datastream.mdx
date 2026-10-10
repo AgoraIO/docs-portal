@@ -104,7 +104,7 @@ virtual int createDataStream(int* streamId, const DataStreamConfig& config) = 0;
 
 <a id="api_irtcengine_createdatastream2__detailed_desc"></a>
 
-该方法不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据包。与 `createDataStream` 方法相比，该方法适用于对实时性要求高但可容忍部分数据丢失的场景。
+[createDataStream [2/2]](#api_irtcengine_createdatastream2) 与 [createDataStream [1/2]](#api_irtcengine_createdatastream1) 相比，不保证数据传输的可靠性。如果数据包在发送后五秒内未被接收，SDK 会直接丢弃该数据包。该方法适用于对实时性要求高但可容忍部分数据丢失的场景。
 
 :::note
 注： 每个用户在 [IRtcEngine](/zh-CN/api-reference/rtc/cpp-all-platforms/rtc-interface-class#class_irtcengine) 的生命周期内最多可以创建五个数据流。离开频道时数据流会被销毁，如需使用需重新创建。如果你需要一个更全面的低延迟、高并发、可扩展的实时消息和状态同步解决方案，建议使用实时消息。
@@ -320,7 +320,10 @@ virtual int sendStreamMessage(int streamId, const char* data, size_t length) = 0
 
 <a id="api_irtcengine_sendstreammessage__detailed_desc"></a>
 
-调用 `createDataStream` 后，可以调用该方法向频道内的所有用户发送数据流消息。
+调用 `createDataStream` 后，可以调用该方法向频道内的所有用户发送数据流消息。SDK 对该方法有限制：
+
+- 每个客户端在频道中最多可同时拥有 5 个数据通道，所有数据通道共享的总包比特率上限为 30 KB/s；
+- 每个数据通道每秒最多可发送 60 个数据包，每个数据包最大为 1 KB。
 
 :::note
 注：

@@ -1,10 +1,9 @@
 ---
-title: "发版说明"
-description: "查看云端录制的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
+title: "更新历史"
 ---
 本文提供云端录制服务的更新说明。
 
-端录制可为声网实时音视频提供录制服务。与声网本地服务端录制相比，声网云端录制无需部署 Linux 服务器，减轻了研发和运维的压力，更轻量便捷。点击[云端录制产品概览](/zh-CN/realtime-media/cloud-recording)了解关键特性。
+云端录制可为声网实时音视频提供录制服务。与声网本地服务端录制相比，声网云端录制无需部署 Linux 服务器，减轻了研发和运维的压力，更轻量便捷。点击[云端录制产品概述](/zh-CN/realtime-media/cloud-recording)了解关键特性。
 
 ## 兼容性
 
@@ -14,6 +13,21 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 | :--------------- | :----------------------------------------------------------- |
 |声网 RTC Native 及框架 SDK | v1.7.0 及以上版本 |
 |声网 RTC Web SDK    | v1.12.0 及以上版本          |
+
+## 2026.10.08
+
+### 升级必看
+
+单流录制 API 已从 v1 升级至 v2。迁移时需要将 `start`、`update`、`query` 和 `stop` 请求 URL 中的 `mode/individual` 改为 `mode/raw`，并按照如下差异更新业务逻辑：
+
+- 删除 `recordingConfig.streamMode`。v2 不再支持 `standard`、`default` 和 `original`。
+- HLS 输出改为音视频合并的一个 M3U8 文件。你需要同步调整播放器、文件解析逻辑和下游处理流程。
+- v2 支持输出 MP4 和 MP3。需要在 `avFileType` 中指定 `mp4`；音频场景可直接指定 `mp3`。
+- 删除请求中的 `extensionServiceConfig`，否则接口会拒绝请求。
+- 如果使用消息通知服务，将 `serviceScene` 从 `rtc_record` 更新为 `rtsc/raw-recording`。
+- 处理 `uploadingStatus` 时新增 `stranded` 状态分支。
+
+详见[实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)和[录制文件介绍](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/introduce-recorded-files)。
 
 ## 2025.06.27
 
@@ -96,7 +110,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 ## 2022.10.20
 
-本次发布在全球范围内支持延时转码功能。你需要在调用 `acquire` 接口时将 `scene` 字段设置为 `2`（延时转码），设置为该场景后，录制服务会在录制后 24 小时内对录制文件进行转码生成 MP4 文件，并将 MP4 文件上传至你指定的第三方云存储。请注意第三方云存储的 `region` 必须与调用 `acquire` 时设置的 `region` 一致。详见[实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。
+本次发布在全球范围内支持延时转码功能。你需要在调用 `acquire` 接口时将 `scene` 字段设置为 `2`（延时转码），设置为该场景后，录制服务会在录制后 24 小时内对录制文件进行转码生成 MP4 文件，并将 MP4 文件上传至你指定的第三方云存储。请注意第三方云存储的 `region` 必须与调用 `acquire` 时设置的 `region` 一致。详见[旧版实现单流录制](../user-guides/individual-mode/legacy-set-individual)。
 
 ## 2022.08.12
 
@@ -228,7 +242,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 #### 云端截图回调
 
-该版本增加了 [`recorder_snapshot_file`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#45) 回调，用于截图成功的通知，且返回截图文件名称。
+该版本增加了 [`recorder_snapshot_file`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/status#45) 回调，用于截图成功的通知，且返回截图文件名称。
 
 #### Amazon S3 云存储区域新增
 
@@ -337,7 +351,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 该版本 API 变更如下：
 
 - [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的 `transcodingConfig` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
-- [`updateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/update-layout) 方法中的 `clientRequest` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
+- [`updateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/updateLayout) 方法中的 `clientRequest` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
 - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71) 回调中新增 `fileList` 字段。
 
 ## 2021.02.05
@@ -441,7 +455,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 ## 2019.12.16
 
-本次发布提高了云端录制服务的可用性。当出现服务器断网、进程被杀时，云端录制会自动切换到新的服务器，在短时间内恢复录制服务。详情见[云端录制服务器断网、进程被杀的处理](/zh-CN/reference/faq/integration/high_availability)。
+本次发布提高了云端录制服务的可用性。当出现服务器断网、进程被杀时，云端录制会自动切换到新的服务器，在短时间内恢复录制服务。详情见[云端录制服务器断网、进程被杀的处理](/faq/integration-issues/high-availability)。
 
 ### API 变更
 
@@ -465,7 +479,7 @@ description: "查看云端录制的版本更新、问题修复、行为变更和
 
 #### 单流录制
 
-RESTful API 新增单流录制模式，支持分开录制每个用户 ID 的音频流和视频流。使用方法详见[单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。同时，声网提供了音视频合并脚本，用于合并单流录制模式下生成的音频和视频文件。使用方法详见[转换录制文件格式](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)。
+RESTful API 新增单流录制模式，支持分开录制每个用户 ID 的音频流和视频流。使用方法详见[旧版实现单流录制](../user-guides/individual-mode/legacy-set-individual)。同时，声网提供了音视频合并脚本，用于合并单流录制模式下生成的音频和视频文件。使用方法详见[转换录制文件格式](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)。
 
 #### 录制指定用户 ID 的音视频流
 

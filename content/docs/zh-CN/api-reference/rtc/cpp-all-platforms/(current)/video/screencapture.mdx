@@ -61,6 +61,7 @@ virtual IScreenCaptureSourceList* getScreenCaptureSources(const SIZE& thumbSize,
 
 :::note
 注： 该方法仅适用于 macOS 和 Windows 平台。
+该方法仅创建主屏幕视频轨道。如需通过 `sourceType` 指定其他屏幕视频源，请改用 [startScreenCapture [2/2]](#api_irtcengine_startscreencapture2)。
 :::
 
 <a id="api_irtcengine_getscreencapturesources__parameters"></a>
@@ -560,8 +561,8 @@ virtual int startScreenCaptureByDisplayId(int64_t displayId, const Rectangle& re
 
 你可以在加入频道前或加入频道后调用该方法，具体区别如下：
 
-- 在加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
-- 在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
+- 在加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 设置为 true，以开始屏幕共享。
+- 在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 设置为 true，以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebydisplayid__parameters"></a>
 
@@ -630,8 +631,8 @@ virtual int startScreenCaptureByScreenRect(const Rectangle& screenRect, const Re
 
 你可以通过该方法共享整个屏幕或部分屏幕，需要指定要共享的屏幕区域。你可以在加入频道前或加入频道后调用该方法：
 
-- 加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
-- 加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions)，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true，以开始屏幕共享。
+- 加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 设置为 true，以开始屏幕共享。
+- 加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions)，并将 `publishScreenTrack` 设置为 true，以开始屏幕共享。
 
 :::note
 注： 该方法仅适用于 Windows 平台。
@@ -740,8 +741,8 @@ virtual int startScreenCaptureByWindowId(int64_t windowId, const Rectangle& regi
 
 你可以在加入频道前或加入频道后调用该方法，具体如下：
 
-- 在加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true 以开始屏幕共享。
-- 在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 或 `publishSecondaryScreenTrack` 设置为 true 以开始屏幕共享。
+- 在加入频道前调用该方法，然后调用 `joinChannel` 加入频道，并将 `publishScreenTrack` 设置为 true 以开始屏幕共享。
+- 在加入频道后调用该方法，然后调用 [updateChannelMediaOptions](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_updatechannelmediaoptions) 并将 `publishScreenTrack` 设置为 true 以开始屏幕共享。
 
 <a id="api_irtcengine_startscreencapturebywindowid__parameters"></a>
 

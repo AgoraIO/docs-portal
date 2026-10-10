@@ -552,14 +552,14 @@ _migration:
 
 `turns` 数组中单个对话轮次的统计指标。包含以下字段：
 
-    - `e2e_latency_ms`：端到端延迟（ms），代表从用户说话结束到听到智能体开口说话的延迟时间。
-    - `segmented_latency_ms`：分段延时对象，包含以下字段：
-      - `algorithm_processing`：算法处理时间（ms），代表从用户说话结束的实际时间到判定出用户说话结束的延迟时间。
+    - `e2elatencyms`：端到端延迟（ms），代表从用户说话结束到听到智能体开口说话的延迟时间。
+    - `segmentedlatencyms`：分段延迟数组。数组中的每个对象包含 `name`（指标名称）和 `latency`（延迟，单位为 ms）字段。`name` 可能为：
+      - `algorithm_processing`：算法处理时间，代表从用户说话结束的实际时间到判定出用户说话结束的延迟时间。
       - `asr_ttlw`：ASR 模块的 ttlw（Time To Last Word）指标，表示从检测到用户说话结束到 ASR 输出最后一个词的延迟时间。
       - `llm_ttft`：LLM 模块的 ttft（Time To First Token）指标，表示从 LLM 收到请求到输出第一个 token 的延迟时间。
       - `llm_ftfs`：LLM 模块的 ftfs（First token To First Sentence）指标，表示从 LLM 输出第一个 token 到输出第一个完整句子的延迟时间。
       - `tts_ttfb`：TTS 模块的 ttfb（Time To First Byte）指标，表示从 TTS 模块收到文本请求开始到 TTS 输出第一个音频字节的延迟时间。
-      - `transport`：网络传输延迟 (ms)。目前，当用户使用 RTC Web SDK 时，不返回该字段。
+      - `transport`：网络传输延迟。目前，当用户使用 RTC Web SDK 时，不返回该指标。
 
 </Slot>
 
@@ -592,14 +592,15 @@ _migration:
                 "type": "ok"
             },
             "metrics": {
-                "e2e_latency_ms": 1500,
-                "segmented_latency_ms": {
-                    "algorithm_processing": 300,
-                    "asr_ttlw": 200,
-                    "llm_ttft": 600,
-                    "tts_ttfb": 200,
-                    "transport": 300
-                }
+                "e2elatencyms": 940,
+                "segmentedlatencyms": [
+                    {"name": "algorithm_processing", "latency": 100},
+                    {"name": "asr_ttlw", "latency": 180},
+                    {"name": "llm_ttft", "latency": 200},
+                    {"name": "llm_ftfs", "latency": 60},
+                    {"name": "tts_ttfb", "latency": 300},
+                    {"name": "transport", "latency": 100}
+                ]
             }
         }
     ]

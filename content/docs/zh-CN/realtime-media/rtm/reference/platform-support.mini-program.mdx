@@ -1,0 +1,108 @@
+---
+title: "平台支持"
+---
+本文介绍 RTM 微信小程序 SDK 的运行环境和集成要求。
+
+## 支持环境
+
+集成 SDK 前，请确认项目满足以下要求：
+
+- 已启用 npm 包支持的微信小程序项目。
+- 当前稳定版本的微信开发者工具。
+- 开发环境中已安装 Node.js 和 npm。
+- 如需在主小程序 appservice 中加载 RTM SDK，微信小程序基础库版本需为 2.13.0 或以上。
+- 已开通 RTM 服务并具有有效 App ID 的声网项目。
+- 生产环境中已准备由业务服务器生成的 RTM Token。
+- 已按照快速开始说明将 SDK 的 WebAssembly 文件放入小程序项目根目录下的 `wasm/` 目录。
+- 已将所需的 request 和 socket 域名添加到微信公众平台的服务器域名白名单。
+
+## 小程序基础库要求
+
+| 使用场景 | 最低基础库版本 |
+| --- | --- |
+| 主小程序 appservice | 2.13.0 |
+| 小程序 Worker | 2.15.0 |
+| 小程序插件 | 2.18.1 |
+
+RTM SDK 使用的 WebAssembly 特性包括 atomics、mutable-globals、bulk-memory 和 sign-ext。由于微信小程序官方文档未明确列出这些特性的支持情况，请在目标运行环境中完成兼容性测试后再发布。
+
+当前版本尚未完成按操作系统、系统版本、终端设备和微信版本维度的完整兼容性测试，因此本文不提供 Android、iOS、Windows、macOS 或 HarmonyOS 的具体支持版本列表。
+
+## 已测试设备
+
+以下为当前版本已完成验证的测试设备和微信版本，仅表示这些环境已测试通过，不代表完整支持版本矩阵。发布前请在你的目标运行环境中完成兼容性测试。
+
+| 平台 | 测试环境 |
+| --- | --- |
+| Android | <Slot name="platform-support-mini-program-markdown-1-1-1" /> |
+| iOS | <Slot name="platform-support-mini-program-markdown-1-2-1" /> |
+| Mac | <Slot name="platform-support-mini-program-markdown-1-3-1" /> |
+| Windows | <Slot name="platform-support-mini-program-markdown-1-4-1" /> |
+| 鸿蒙 | <Slot name="platform-support-mini-program-markdown-1-5-1" /> |
+
+<Slot for="platform-support-mini-program-markdown-1-1-1">
+
+mi 10，Android 11
+华为 nova 6，OS 4.2.0
+微信版本：8.0.76
+
+</Slot>
+
+<Slot for="platform-support-mini-program-markdown-1-2-1">
+
+iOS 15.5.3
+微信版本：8.0.75
+
+</Slot>
+
+<Slot for="platform-support-mini-program-markdown-1-3-1">
+
+MacBook Pro 13-inch, 2020, Four Thunderbolt 3 ports，OS 版本 14.2.1 (23C71)
+微信版本：4.1.11
+
+</Slot>
+
+<Slot for="platform-support-mini-program-markdown-1-4-1">
+
+Windows 11
+微信版本：4.1.11.24
+
+</Slot>
+
+<Slot for="platform-support-mini-program-markdown-1-5-1">
+
+华为 mate 70 pro，OS 版本 6.1.0
+微信版本：8.0.20.47
+
+</Slot>
+
+## npm 包
+
+中国大陆地区使用声网服务的项目，使用以下 npm 包：
+
+| 包名 | 安装方式 |
+| --- | --- |
+| [`shengwang-rtm-miniapp`](https://www.npmjs.com/package/shengwang-rtm-miniapp) | `npm install shengwang-rtm-miniapp` |
+
+中国大陆以外地区使用 Agora 服务的项目，可使用 `agora-rtm-miniapp`。
+
+## WebAssembly 资源
+
+安装 SDK 后，需要将包中的 WebAssembly 资源复制到小程序项目根目录下的 `wasm/` 目录，并在微信开发者工具中执行**构建 npm**。如果未复制 WebAssembly 资源，SDK 将无法在小程序运行环境中正常初始化。
+
+## 域名白名单
+
+微信小程序项目需要在微信公众平台配置 request 合法域名和 socket 合法域名。完整域名列表见[快速开始](/zh-CN/realtime-media/rtm/get-started/quick-start#附录微信小程序域名白名单)。
+
+## 能力限制
+
+微信小程序 SDK 不支持以下能力：
+
+- `StreamChannel`
+- Topic
+- `RTMConfig.cloudProxy`
+- `RTMConfig.privateConfig`
+- 私有化部署
+- 私有化配置
+
+详见[特性列表](/zh-CN/realtime-media/rtm/reference/feature-list)。

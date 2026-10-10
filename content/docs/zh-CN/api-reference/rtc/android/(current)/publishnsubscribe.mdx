@@ -1788,6 +1788,7 @@ public abstract int setSubscribeAudioBlocklist(int[] uidList);
 注：
 
 - 你可以在加入频道前或加入频道后调用此方法。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的音频流也会停止订阅。
 - 黑名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中 `autoSubscribeAudio` 设置的影响。
 - 一旦设置了订阅黑名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
@@ -1841,6 +1842,7 @@ public abstract int setSubscribeAudioBlocklistEx(int[] uidList, RtcConnection co
 注：
 
 - 你可以在加入频道前或加入频道后调用此方法。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的音频流也会停止订阅。
 - 黑名单设置不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeAudio` 的影响。
 - 一旦设置了订阅黑名单，即使离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。
@@ -2025,6 +2027,7 @@ public abstract int setSubscribeVideoBlocklist(int[] uidList);
 注：
 
 - 你可以在加入频道前或加入频道后调用此方法。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的视频流也会停止订阅。
 - 阻止名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的设置影响。
 - 一旦设置了订阅的阻止名单，即使你离开当前频道并重新加入频道，该设置仍然有效。
 - 如果某个用户同时被添加到允许名单和阻止名单中，则仅阻止名单生效。
@@ -2077,6 +2080,7 @@ public abstract int setSubscribeVideoBlocklistEx(int[] uidList, RtcConnection co
 注：
 
 - 你可以在加入频道前或加入频道后调用此方法。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的视频流也会停止订阅。
 - 黑名单设置不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 和 [ChannelMediaOptions](/zh-CN/api-reference/rtc/android/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的影响。
 - 一旦设置了订阅黑名单，即使你离开当前频道并重新加入，该设置仍然有效。
 - 如果某个用户同时被加入白名单和黑名单，则仅黑名单生效。

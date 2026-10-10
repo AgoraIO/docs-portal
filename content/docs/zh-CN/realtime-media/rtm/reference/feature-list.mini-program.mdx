@@ -1,0 +1,42 @@
+---
+title: "特性列表"
+---
+本文介绍 RTM 微信小程序 SDK 支持的功能特性和当前不支持的 API 能力。
+
+:::warning[注意]
+微信小程序 SDK 与 Web SDK API 范围不同。当前 API 链接指向 RTM JavaScript API 参考，使用具体 API 前，请以已安装的 `shengwang-rtm-miniapp` 包中的类型定义为准。
+:::
+
+## 支持能力
+
+| 功能 | 说明 | API 参考 |
+| --- | --- | --- |
+| 创建实例 | 使用 App ID 和用户 ID 创建 RTM 客户端实例。 | [`new RTM()`](/api-ref/rtm2/javascript/toc-configuration/configuration#Init) |
+| 登录服务 | 使用 RTM Token 登录服务。 | [`login`](/api-ref/rtm2/javascript/toc-configuration/configuration#login) |
+| 登出服务 | 断开当前用户与 RTM 服务的连接。 | [`logout`](/api-ref/rtm2/javascript/toc-configuration/configuration#logout) |
+| 事件监听 | 监听消息、Presence 和连接状态等事件。 | [`addEventListener`](/api-ref/rtm2/javascript/toc-configuration/configuration#添加监听) |
+| Message Channel 订阅 | 订阅或取消订阅 Message Channel。 | [`subscribe`](/api-ref/rtm2/javascript/toc-channel/channel#subscribe)、[`unsubscribe`](/api-ref/rtm2/javascript/toc-channel/channel#unsubscribe) |
+| 发布消息 | 向 Message Channel 或 User Channel 发布字符串或二进制消息。对象类型消息需要先序列化。 | [`publish`](/api-ref/rtm2/javascript/toc-message/message#publish) |
+| Presence | 查询在线用户、查询用户所在频道、设置和查询临时用户状态。 | [Presence](/api-ref/rtm2/javascript/toc-presence/presence) |
+| Storage | 管理频道属性和用户属性。 | [Storage](/api-ref/rtm2/javascript/toc-storage/storage) |
+| Lock | 管理分布式锁。 | [Lock](/api-ref/rtm2/javascript/toc-lock/lock) |
+| Token 鉴权 | 使用 RTM Token 鉴权，并在 Token 过期前更新 Token。 | [Token](/api-ref/rtm2/javascript/toc-token/token) |
+| 日志上传 | 通过 `logUpload` 上传 SDK 日志，辅助问题排查。 | [`RTMConfig`](/api-ref/rtm2/javascript/toc-configuration/configuration#RTMConfig) |
+
+## 当前不支持能力
+
+微信小程序 SDK 当前不支持以下 API 和能力：
+
+- `RTM.createStreamChannel`
+- `RTMStreamChannel` 相关 API，包括加入、离开 Stream Channel，以及 Stream Channel 上的消息发送能力
+- Topic 相关 API，包括加入 Topic、发送 Topic 消息、订阅 Topic、取消订阅 Topic 和离开 Topic
+- `RTMConfig.cloudProxy`
+- `RTMConfig.privateConfig`
+- 私有化部署
+- 私有化配置
+
+请勿将依赖上述能力的 Web SDK 代码直接复制到微信小程序项目中。
+
+## 服务开通与计费
+
+微信小程序 SDK 复用 RTM 现有服务开通和计费规则。详见[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)和[计费策略](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。

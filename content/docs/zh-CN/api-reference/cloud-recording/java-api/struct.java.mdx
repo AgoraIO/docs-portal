@@ -1910,7 +1910,7 @@ public static class SnapshotConfig {
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `captureInterval` | `Integer` | （可选）云端录制中定时截图的周期。单位为秒，取值范围为 [5, 3600]。 |
+| `captureInterval` | `Integer` | （可选）云端录制中定时截图的周期。单位为秒，取值范围为 [1, 3600]。截图仅在视频关键帧时生成，实际截图间隔可能大于设置的周期。 |
 | `fileType` | `List<String>` | 截图文件的格式。目前仅支持 `["jpg"]`，将生成 JPG 格式的截图文件。 |
 
 <a id="startresourcereq.storageconfig"></a>

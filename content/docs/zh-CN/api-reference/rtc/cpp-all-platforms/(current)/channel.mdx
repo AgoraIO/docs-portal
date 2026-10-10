@@ -2226,12 +2226,14 @@ virtual void onRequestToken() {}
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__detailed_desc"></a>
 
-收到该回调后，你需要在你的 Token 服务器上生成新的 Token，并通过以下方式之一进行更新：
+
+
+收到该回调后，你需要在你的 Token 服务器上生成新的 Token，并根据场景更新 Token：
 
 - 单频道场景：
 
-  - 调用 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken) 传入新 Token。
-  - 调用 `leaveChannel` 离开当前频道后，再调用 `joinChannel` 加入频道时传入新 Token。
+  - 调用 [renewToken](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengine_renewtoken)传入新的 Token，无需先离开频道。SDK 会通过 [onRenewTokenResult](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
 - 多频道场景：调用 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新 Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__timing"></a>

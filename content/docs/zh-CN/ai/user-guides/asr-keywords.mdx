@@ -1,0 +1,169 @@
+---
+title: "配置 ASR 热词"
+---
+在对话式 AI 场景中，用户可能会说出品牌名、产品名、人名、地名、行业术语等专有词。你可以通过 RESTful API 或 Agents SDK 在创建对话式智能体时配置 ASR 热词，提升凤鸣 ASR 对这些词汇的识别效果。
+
+## 前提条件
+
+开始前，请确保你已经：
+
+- 已参考[使用 RESTful API](/zh-CN/ai/get-started/quick-start) 或 [使用 Agents SDK](/zh-CN/ai/get-started/quick-start-agent) 实现与智能体对话的基本逻辑。
+- 如通过 Agents SDK 配置热词，请安装包含 `FengmingSTT` 热词配置支持的 Agents SDK `v2.6.0` 及以上版本。
+
+## 实现方式
+
+以下示例展示如何通过 Agents SDK 或 RESTful API 为凤鸣 ASR 配置热词。
+
+<Tabs defaultValue="go" groupId="asr-keywords-method" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">Restful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+创建 `FengmingSTT` 时，通过 `FengmingSTTOptions.Keywords` 传入热词列表：
+
+```go
+// 其他智能体配置...
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewFengmingSTT(vendors.FengmingSTTOptions{
+        Keywords: []string{
+            "Agora",
+            "Conversational AI",
+            "RTC",
+        },
+    }),
+)
+// 其他智能体配置...
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+创建 `FengmingSTT` 时，通过 `keywords` 传入热词列表：
+
+```python
+# 其他智能体配置...
+agent = agent.with_stt(
+    FengmingSTT(
+        keywords=[
+            "Agora",
+            "Conversational AI",
+            "RTC",
+        ]
+    )
+)
+# 其他智能体配置...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+创建 `FengmingSTT` 时，通过构造参数中的 `keywords` 传入热词列表：
+
+```typescript
+// 其他智能体配置...
+const agentWithKeywords = agent.withStt(
+  new FengmingSTT({
+    keywords: [
+      'Agora',
+      'Conversational AI',
+      'RTC',
+    ],
+  })
+);
+// 其他智能体配置...
+```
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+调用 [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent) 时，在请求体的 `properties.asr.keywords` 中传入热词列表：
+
+```json
+{
+  "asr": {
+    "language": "zh-CN",
+    "vendor": "fengming",
+    "keywords": [
+      "Agora",
+      "Conversational AI",
+      "RTC"
+    ]
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+## 参数说明
+
+<Tabs defaultValue="go" groupId="asr-keywords-method" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">Restful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+| 参数 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| `FengmingSTTOptions.Keywords` | []string | ASR 热词列表，用于提升指定词汇的识别效果，最多支持 128 个热词。 |
+
+</TabsContent>
+
+<TabsContent value="python">
+
+| 参数 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| `keywords` | List[str] | ASR 热词列表，用于提升指定词汇的识别效果，最多支持 128 个热词。 |
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+| 参数 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| `keywords` | string[] | ASR 热词列表，用于提升指定词汇的识别效果，最多支持 128 个热词。 |
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+| 参数 | 类型 | 描述 |
+| :--- | :--- | :--- |
+| `properties.asr.keywords` | Array[String] | ASR 热词列表，用于提升指定词汇的识别效果，最多支持 128 个热词。 |
+
+</TabsContent>
+</Tabs>
+
+:::info[信息]
+- 使用 RESTful API 时，仅当使用凤鸣 ASR 或未显式设置 `properties.asr.vendor` 时，可以设置 `properties.asr.keywords`。
+  - 如果配置了其他 ASR 供应商，同时设置热词，请求会报错。
+  - 热词数量最多支持 128 个。为避免影响整体识别效果，建议只配置当前业务确实需要增强识别的词汇。
+:::
+
+## 与关键词打断的区别
+
+ASR 热词和关键词打断都涉及关键词，但用途不同：
+
+| 能力 | 配置字段 | 作用 |
+| :--- | :--- | :--- |
+| ASR 热词 | `properties.asr.keywords` | 提升指定词汇的语音识别效果。 |
+| 关键词打断 | `properties.interruption.keywords_config.trigger_keywords` | 用户说出指定关键词时触发打断。 |
+
+## 最佳实践
+
+- 优先配置品牌名、产品名、人名、地名、型号、缩写等容易被误识别的词。
+- 避免配置过多通用词、短词或语义过泛的词，例如“好的”“开始”“服务”等。
+- 中英文混合场景下，可以同时配置中文词、英文词和常见读法，例如产品中文名、英文名和缩写。
+- 上线前使用真实业务音频回归验证，重点检查热词本身和相近词的识别结果。
