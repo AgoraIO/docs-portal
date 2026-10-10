@@ -1709,12 +1709,12 @@ onRequestToken?(connection: RtcConnection): void;
 <a id="callback_irtcengineeventhandler_onrequesttoken__detailed_desc"></a>
 
 在音视频互动过程中，如果 Token 失效，SDK 会触发该回调报告 Token 已过期。
-当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+当收到该回调时，你需要重新在服务端生成新的 Token，然后根据场景更新 Token：
 
 - 单频道场景：
 
-  - 调用 [renewToken](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_renewtoken) 来传入新的 Token。
-  - 调用 [leaveChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+  - 调用 [renewToken](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。SDK 会通过 [onRenewTokenResult](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
 - 多频道场景：调用 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/electron/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__parameters"></a>
@@ -1795,12 +1795,12 @@ onTokenPrivilegeWillExpire?(connection: RtcConnection, token: string): void;
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__detailed_desc"></a>
 
-当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+当收到该回调时，你需要重新在服务端生成新的 Token，然后根据场景更新 Token：
 
 - 单频道场景：
 
-  - 调用 [renewToken](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_renewtoken) 来传入新的 Token。
-  - 调用 [leaveChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [joinChannel](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+  - 调用 [renewToken](/zh-CN/api-reference/rtc/electron/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。SDK 会通过 [onRenewTokenResult](/zh-CN/api-reference/rtc/electron/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
 - 多频道场景：调用 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/electron/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__timing"></a>

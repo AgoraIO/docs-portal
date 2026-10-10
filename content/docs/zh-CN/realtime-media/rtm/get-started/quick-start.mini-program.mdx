@@ -1,0 +1,206 @@
+---
+title: "实现收发消息"
+---
+本文介绍如何在微信小程序项目中集成 RTM 微信小程序 SDK，并实现基础的 Message Channel 消息收发。
+
+:::warning[注意]
+本 SDK 专为微信小程序运行环境构建，不能作为 RTM Web SDK 的直接替代品使用。当前小程序 SDK 不支持 `StreamChannel`、Topic、`cloudProxy`，也不支持私有化部署和私有化配置。
+:::
+
+## 准备工作
+
+开始前，请确保你已完成以下准备：
+
+- 已创建支持 npm 包的微信小程序项目。
+- 已安装当前稳定版本的微信开发者工具。
+- 开发环境中已安装 Node.js 和 npm。
+- 如需在主小程序 appservice 中加载 RTM SDK，微信小程序基础库版本需为 2.13.0 或以上。
+- 已完成[开通服务](/zh-CN/realtime-media/rtm/build/setup-and-access/enable-service)，并获取项目的 App ID。
+- 生产环境中已准备由业务服务器生成的 RTM Token。
+- 已将 SDK 所需的 request 和 socket 域名添加到微信公众平台的服务器域名白名单。
+
+## 1. 创建声网项目
+
+安装 RTM SDK 前，请先在[声网控制台](https://console.shengwang.cn/)创建项目。初始化 SDK 时需要使用项目的 App ID。在生产环境中，请使用由业务服务器生成的 RTM Token。
+
+:::info[信息]
+使用不同 App ID 的客户端无法互通。需要互发消息的所有客户端必须使用相同的 App ID。
+:::
+
+## 2. 安装 RTM SDK
+
+中国大陆地区使用声网服务的项目，安装 `shengwang-rtm-miniapp`：
+
+```bash
+npm install shengwang-rtm-miniapp
+```
+
+中国大陆以外地区使用 Agora 服务的项目，安装 `agora-rtm-miniapp`：
+
+```bash
+npm install agora-rtm-miniapp
+```
+
+安装后，将已安装软件包中的 WebAssembly 资源复制到小程序项目根目录下的 `wasm/` 目录。请根据安装的软件包运行对应命令：
+
+```bash
+node ./node_modules/shengwang-rtm-miniapp/scripts/load-wasm.js
+```
+
+```bash
+node ./node_modules/agora-rtm-miniapp/scripts/load-wasm.js
+```
+
+安装软件包并复制资源后，在微信开发者工具中执行**构建 npm**。
+
+## 3. 导入 RTM SDK
+
+以下示例使用 `shengwang-rtm-miniapp`：
+
+```javascript
+import AgoraRTM from 'shengwang-rtm-miniapp';
+```
+
+## 4. 初始化 RTM 客户端实例
+
+使用 App ID 和用户 ID 创建 `RTM` 实例：
+
+```javascript
+import AgoraRTM from 'shengwang-rtm-miniapp';
+
+const { RTM } = AgoraRTM;
+const appId = 'your-app-id';
+const userId = 'your-user-id';
+const messageChannelName = 'chat-room';
+let rtm;
+
+try {
+  rtm = new RTM(appId, userId);
+} catch (error) {
+  console.error('RTM 初始化失败：', error);
+}
+```
+
+请将 `your-app-id` 和 `your-user-id` 替换为项目的 App ID 和当前用户的用户 ID。
+
+## 5. 添加事件监听
+
+登录前注册事件监听，以便小程序及时处理收到的消息和连接状态变化。
+
+```javascript
+rtm.addEventListener('message', event => {
+  console.log('收到消息：', event.publisher, event.message);
+});
+
+rtm.addEventListener('presence', event => {
+  console.log('Presence 事件：', event);
+});
+
+rtm.addEventListener('linkState', event => {
+  console.log('连接状态变化：', event.currentState, event.reasonCode);
+});
+```
+
+## 6. 登录 RTM 服务
+
+SDK 初始化完成后，登录 RTM 服务。如果在登录前调用需要连接的 RTM 操作，SDK 会返回 `RTM_ERROR_NOT_LOGIN (-10002)`。
+
+```javascript
+try {
+  await rtm.login({ token: 'your-token' });
+  console.log('RTM 登录成功');
+} catch (error) {
+  console.error('RTM 登录失败：', error);
+}
+```
+
+## 7. 订阅频道
+
+发送消息前先订阅 Message Channel，以便小程序接收其他用户发布的消息：
+
+```javascript
+try {
+  await rtm.subscribe(messageChannelName);
+  console.log('已订阅频道：', messageChannelName);
+} catch (error) {
+  console.error('订阅失败：', error);
+}
+```
+
+## 8. 发布消息
+
+向频道发布字符串消息。对象类型的消息内容需要先序列化，再调用 `publish`。
+
+```javascript
+const message = JSON.stringify({ text: '你好，微信小程序' });
+
+try {
+  await rtm.publish(messageChannelName, message);
+  console.log('消息发送成功');
+} catch (error) {
+  console.error('消息发送失败：', error);
+}
+```
+
+## 9. 取消订阅
+
+小程序不再需要接收该频道的消息时，取消订阅：
+
+```javascript
+try {
+  await rtm.unsubscribe(messageChannelName);
+} catch (error) {
+  console.error('取消订阅失败：', error);
+}
+```
+
+## 更多信息
+
+至此，你已经完成 RTM 小程序 SDK 的安装和 WebAssembly 资源准备，并实现了登录及 Message Channel 消息收发。
+
+当前 [RTM JavaScript API 参考](/api-ref/rtm2/javascript/toc-configuration/configuration) 可用于理解 API 概念。微信小程序 SDK 与 Web SDK API 范围不同，使用具体 API 前，请以已安装的 `shengwang-rtm-miniapp` 包中的类型定义为准。
+
+如有意见、问题或功能建议，请发送邮件至 rtm-support@agora.io。
+
+## 附录：微信小程序域名白名单
+
+微信小程序项目需要配置以下 13 个域名。其中，12 个 HTTPS 域名需要添加到微信公众平台的 **request 合法域名**，1 个 WSS 域名需要添加到 **socket 合法域名**。
+
+### request 合法域名
+
+AP 域名用于登录、边缘节点分配和配置拉取，通过 `wx.request` 访问：
+
+```text
+https://ap-web-1.agora.io;
+https://ap-web-2.agora.io;
+https://ap-web-3.agora.io;
+https://ap-web-4.agora.io;
+https://web-1.ap.sd-rtn.com;
+https://web-2.ap.sd-rtn.com;
+https://web-3.ap.sd-rtn.com;
+https://web-4.ap.sd-rtn.com;
+```
+
+事件上报域名用于 SDK 事件上报，通过 `wx.request` 访问：
+
+```text
+https://webcollector-rtm.agora.io;
+https://rtm.statscollector.sd-rtn.com;
+```
+
+日志上报域名在开启 `logUpload` 后用于 SDK 日志上报，通过 `wx.request` 访问：
+
+```text
+https://logservice-rtm.agora.io;
+https://rtm.logservice.sd-rtn.com;
+```
+
+### socket 合法域名
+
+RTM 长连接通过 `wx.connectSocket` 访问：
+
+```text
+wss://miniapp.agoraio.cn;
+```
+
+SDK 不使用 `wx.uploadFile` 或 `wx.downloadFile`，因此无需为这两个接口额外配置域名白名单。

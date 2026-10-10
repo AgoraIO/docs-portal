@@ -130,6 +130,13 @@ paths:
                           default: zh-CN
                         vendor:
                           type: string
+                        keywords:
+                          type: array
+                          description: |-
+                            ASR 热词列表，用于提升指定词汇的识别效果。最多支持 128 个热词；仅当 ASR 供应商为凤鸣（`fengming`）或未设置时可用。
+                          maxItems: 128
+                          items:
+                            type: string
                           description: |-
                             ASR 服务供应商，可选以下值：
                             - `fengming`：（默认）声网凤鸣 ASR。

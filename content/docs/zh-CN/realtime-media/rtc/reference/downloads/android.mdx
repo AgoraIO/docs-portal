@@ -6,8 +6,8 @@
 ...
 dependencies {
     ...
-    implementation 'cn.shengwang.rtc:full-sdk:4.6.3'
-    implementation 'cn.shengwang.rtc:lite-sdk:4.6.3'
+    implementation 'cn.shengwang.rtc:full-sdk:4.6.4'
+    implementation 'cn.shengwang.rtc:lite-sdk:4.6.4'
 }
 ```
 
@@ -15,7 +15,7 @@ dependencies {
 ...
 dependencies {
     ...
-    implementation 'cn.shengwang.rtc:voice-sdk:4.6.3'
+    implementation 'cn.shengwang.rtc:voice-sdk:4.6.4'
 }
 ```
 
@@ -62,3 +62,14 @@ dependencies {
   <Card title="API-Examples (Gitee)" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android" />
   <Card title="API-Examples (GitHub)" href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android" />
 </Cards>
+
+
+## 通过 Gradle 自动集成 SDK
+
+在添加 SDK 依赖前，请在 `settings.gradle` 中的 `dependencyResolutionManagement.repositories` 添加声网 Maven CDN：
+
+```groovy
+maven { url = 'https://download.shengwang.cn/maven/' }
+```
+
+如果 Android Gradle Plugin 低于 v7.1.0，请在根目录 `build.gradle` 的 `allprojects.repositories` 中添加该仓库。

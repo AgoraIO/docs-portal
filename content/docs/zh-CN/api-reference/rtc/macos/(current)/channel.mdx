@@ -2386,12 +2386,14 @@ Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__detailed_desc"></a>
 
-当 Token 过期时，SDK 会触发该回调。收到该回调后，你需要在你的 Token 服务器上生成一个新的 Token，并可以通过以下方式之一更新 Token：
+
+
+当 Token 过期时，SDK 会触发该回调。收到该回调后，你需要在你的 Token 服务器上生成一个新的 Token，并可以并根据场景更新 Token：
 
 - 单频道场景：
 
-  - 调用 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken) 传入新的 Token。
-  - 或调用 [updateChannelWithMediaOptions:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_updatechannelmediaoptions)，并在 [AgoraRtcChannelMediaOptions](/zh-CN/api-reference/rtc/macos/class-channelmediaoptions) 的 `token` 中传入新的 Token。
+  - 调用 [renewToken:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengine_renewtoken)传入新的 Token，无需先离开频道。SDK 会通过 [rtcEngine:renewTokenResult:code](/zh-CN/api-reference/rtc/macos/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
 - 多频道场景：调用 [updateChannelExWithMediaOptions\:connection:](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__timing"></a>

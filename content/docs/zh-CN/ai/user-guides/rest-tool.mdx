@@ -1,0 +1,906 @@
+---
+title: "让智能体调用自定义工具"
+---
+通过自定义工具，对话式智能体可以根据用户意图查询订单、库存等实时业务数据，或创建支持工单、发送跟进短信，将自有业务系统接入对话流程。
+
+一次工具调用的基本流程是：大模型选择工具并生成参数，对话式 AI 引擎校验参数并发起同步 HTTP 请求，再将结果交给大模型生成最终回复。HTTP 响应不会直接作为语音播报内容。
+
+## 前提条件
+
+开始前，请确保你已经：
+
+- 已参考[使用 RESTful API](/zh-CN/ai/get-started/quick-start) 或 [使用 Agents SDK](/zh-CN/ai/get-started/quick-start-agent) 实现与智能体对话的基本逻辑。
+- 使用支持 Function Calling 的标准文本 LLM。当前不支持 MLLM 和实时语音模型。
+- 准备一个公网可访问的 HTTPS 端点。
+
+## 配置 GET 工具
+
+下面以查询订单状态为例，介绍 GET 工具的配置方法。
+
+```go tab="Go" tabGroup="rest-tool-platform"
+// --- 此处省略智能体的其他配置 ---
+
+tool := &Agora.LlmTool{
+    Function: &Agora.LlmToolFunction{
+        Name:        "lookup_order",
+        Description: Agora.String("根据订单号查询订单的最新状态和预计送达时间。"),
+        Parameters: &Agora.LlmToolFunctionParameters{
+            Properties: map[string]interface{}{
+                "order_id": map[string]interface{}{
+                    "type":        "string",
+                    "description": "订单号，例如 ORD-10001。",
+                },
+            },
+            Required: []string{"order_id"},
+        },
+    },
+    Execution: &Agora.LlmToolExecution{
+        Mode: Agora.String("sync"),
+    },
+    Server: &Agora.LlmToolServer{
+        Method: Agora.LlmToolServerMethodGet,
+        URL:    "https://api.example.com/orders/{{args.order_id}}",
+        Headers: map[string]string{
+            "Authorization": "Bearer <api_token>",
+        },
+        TimeoutMs: Agora.Int(10000),
+    },
+}
+
+llm := vendors.NewAliyun(vendors.AliyunOptions{
+    APIKey:  "<aliyun_api_key>",
+    Model:   "qwen-plus",
+    BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    Tools:   []*Agora.LlmTool{tool},
+})
+
+agent := agentkit.NewAgent(client, agentkit.WithTools(true)).WithLlm(llm)
+```
+
+```python tab="Python" tabGroup="rest-tool-platform"
+# --- 此处省略智能体的其他配置 ---
+
+llm = AliyunLLM(
+    api_key="<aliyun_api_key>",
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    model="qwen-plus",
+    tools=[
+        {
+            "type": "function",
+            "function": {
+                "name": "lookup_order",
+                "description": "根据订单号查询订单的最新状态和预计送达时间。",
+                "parameters": {
+                    "type": "object",
+                    "properties": {
+                        "order_id": {
+                            "type": "string",
+                            "description": "订单号，例如 ORD-10001。",
+                        },
+                    },
+                    "required": ["order_id"],
+                    "additionalProperties": False,
+                },
+            },
+            "execution": {"mode": "sync"},
+            "server": {
+                "method": "GET",
+                "url": "https://api.example.com/orders/{{args.order_id}}",
+                "headers": {
+                    "Authorization": "Bearer <api_token>",
+                },
+                "timeout_ms": 10000,
+            },
+        },
+    ],
+)
+
+agent = Agent(client=client).with_llm(llm).with_tools(True)
+```
+
+```typescript tab="TypeScript" tabGroup="rest-tool-platform"
+// --- 此处省略智能体的其他配置 ---
+
+const llm = new AliyunLLM({
+  apiKey: "<aliyun_api_key>",
+  model: "qwen-plus",
+  url: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+  tools: [
+    {
+      type: "function",
+      function: {
+        name: "lookup_order",
+        description: "根据订单号查询订单的最新状态和预计送达时间。",
+        parameters: {
+          type: "object",
+          properties: {
+            order_id: {
+              type: "string",
+              description: "订单号，例如 ORD-10001。",
+            },
+          },
+          required: ["order_id"],
+          additionalProperties: false,
+        },
+      },
+      execution: { mode: "sync" },
+      server: {
+        method: "GET",
+        url: "https://api.example.com/orders/{{args.order_id}}",
+        headers: {
+          Authorization: "Bearer <api_token>",
+        },
+        timeout_ms: 10000,
+      },
+    },
+  ],
+});
+
+const agent = new Agent({ client }).withLlm(llm).withTools(true);
+```
+
+```json tab="RESTful API" tabGroup="rest-tool-platform"
+{
+  "properties": {
+    "advanced_features": {
+      "enable_tools": true
+    },
+    "llm": {
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "lookup_order",
+            "description": "根据订单号查询订单的最新状态和预计送达时间。",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "order_id": {
+                  "type": "string",
+                  "description": "订单号，例如 ORD-10001。"
+                }
+              },
+              "required": ["order_id"],
+              "additionalProperties": false
+            }
+          },
+          "execution": {
+            "mode": "sync"
+          },
+          "server": {
+            "method": "GET",
+            "url": "https://api.example.com/orders/{{args.order_id}}",
+            "headers": {
+              "Authorization": "Bearer <api_token>"
+            },
+            "timeout_ms": 10000
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+调用[创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent)时，RESTful API 必须将 `properties.advanced_features.enable_tools` 设为 `true`；Agents SDK 必须调用 `WithTools(true)`、`with_tools(True)` 或 `withTools(true)`。如果未开启工具调用，工具不会暴露给模型，也不会访问工具端点。
+
+完成配置后，用户可以询问“帮我查一下订单 ORD-10001 的状态”。模型生成 `order_id` 后，引擎会请求：
+
+```text
+GET https://api.example.com/orders/ORD-10001
+Authorization: Bearer <api_token>
+```
+
+### 配置字段说明
+
+<Tabs defaultValue="go" groupId="rest-tool-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+通过 LLM vendor 的 `Tools` 配置工具，并通过 `agentkit.WithTools(true)` 开启工具调用。
+
+| 参数                   |           必填 | 描述                                                                                                   |
+| ---------------------- | -------------: | ------------------------------------------------------------------------------------------------------ |
+| `AliyunOptions.Tools`  |             否 | 自定义工具数组，类型为 `[]*Agora.LlmTool`。                                                             |
+| `WithTools(true)`      |             是 | 同时开启自定义工具和 MCP 工具调用。                                                                    |
+| `Tool.Function`        |             是 | 模型可见的工具定义。                                                                                   |
+| `Function.Name`        |             是 | 以英文字母开头，只能包含英文字母和数字，长度不超过 64 个字符；不能使用 `mcp` 前缀或 `ragsearch_tool`。 |
+| `Function.Description` |             是 | 说明用途、调用时机和返回内容，不要写入密钥。                                                           |
+| `Function.Parameters`  |             是 | JSON Schema 对象；SDK 会将根节点类型序列化为 `object`，按 OpenAI Function Calling 的 non-strict 模式传递。 |
+| `Execution.Mode`       |             否 | 省略时默认为 `sync`；Phase 1a 仅支持 `sync`。                                                          |
+| `Server.Method`        |             是 | 仅支持 `GET` 和 `POST`；GET 不能配置 `Body`。                                                          |
+| `Server.URL`           |             是 | 绝对 HTTPS URL；路径和查询参数可以使用模板变量。                                                       |
+| `Server.Headers`       |             否 | 最多 32 项；不能使用 `{{args.<name>}}`。                                                               |
+| `Server.Body`          |    POST 时可选 | 仅用于 POST；支持嵌套 JSON，不支持字符串拼接。                                                         |
+| `Server.TimeoutMs`     |             否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                                          |
+
+</TabsContent>
+
+<TabsContent value="python">
+
+通过 LLM vendor 的 `tools` 参数配置工具，并通过 `.with_tools(True)` 开启工具调用。
+
+| 参数                    |           必填 | 描述                                                                                                       |
+| ----------------------- | -------------: | ---------------------------------------------------------------------------------------------------------- |
+| `AliyunLLM(tools=...)`  |             否 | 自定义工具数组。                                                                                          |
+| `Agent.with_tools(True)` |             是 | 同时开启自定义工具和 MCP 工具调用。                                                                       |
+| `tools[].type`          |             是 | 固定为 `function`。                                                                                        |
+| `tools[].function`      |             是 | 模型可见的工具定义。                                                                                       |
+| `function.name`         |             是 | 必须以英文字母开头，只能包含英文字母和数字，长度不超过 64 个字符；不能使用 `mcp` 前缀或 `ragsearch_tool`。 |
+| `function.description`  |             是 | 说明用途、调用时机和返回内容，不要写入密钥。                                                               |
+| `function.parameters`   |             是 | JSON Schema 对象；根节点 `type` 必须为 `object`，按 OpenAI Function Calling 的 non-strict 模式传递。     |
+| `execution.mode`        |             否 | 省略时默认为 `sync`；Phase 1a 仅支持 `sync`。                                                              |
+| `server.method`         |             是 | 仅支持 `GET` 和 `POST`；GET 不能配置 `body`。                                                              |
+| `server.url`            |             是 | 绝对 HTTPS URL；路径和查询参数可以使用模板变量。                                                           |
+| `server.headers`        |             否 | 最多 32 项。不能使用 `{{args.<name>}}`；认证信息只能放在完整 Header 值中。                                 |
+| `server.body`           |    POST 时可选 | 仅用于 POST，支持嵌套 JSON；模板必须是完整变量，不支持字符串拼接。                                         |
+| `server.timeout_ms`     |             否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                                              |
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+通过 LLM vendor 的 `tools` 选项配置工具，并通过 `.withTools(true)` 开启工具调用。
+
+| 参数                              |           必填 | 描述                                                                                                       |
+| --------------------------------- | -------------: | ---------------------------------------------------------------------------------------------------------- |
+| `AliyunLLM({ tools: [...] })`     |             否 | 自定义工具数组，类型为 `LlmTool[]`。                                                                       |
+| `Agent.withTools(true)`           |             是 | 同时开启自定义工具和 MCP 工具调用。                                                                        |
+| `tools[].type`                    |             是 | 固定为 `function`。                                                                                        |
+| `tools[].function`                |             是 | 模型可见的工具定义。                                                                                       |
+| `function.name`                   |             是 | 必须以英文字母开头，只能包含英文字母和数字，长度不超过 64 个字符；不能使用 `mcp` 前缀或 `ragsearch_tool`。 |
+| `function.description`            |             是 | 说明用途、调用时机和返回内容，不要写入密钥。                                                               |
+| `function.parameters`             |             是 | JSON Schema 对象；根节点 `type` 必须为 `object`，按 OpenAI Function Calling 的 non-strict 模式传递。     |
+| `execution.mode`                  |             否 | 省略时默认为 `sync`；Phase 1a 仅支持 `sync`。                                                              |
+| `server.method`                   |             是 | 仅支持 `GET` 和 `POST`；GET 不能配置 `body`。                                                              |
+| `server.url`                      |             是 | 绝对 HTTPS URL；路径和查询参数可以使用模板变量。                                                           |
+| `server.headers`                  |             否 | 最多 32 项。不能使用 `{{args.<name>}}`；认证信息只能放在完整 Header 值中。                                 |
+| `server.body`                     |    POST 时可选 | 仅用于 POST，支持嵌套 JSON；模板必须是完整变量，不支持字符串拼接。                                         |
+| `server.timeout_ms`               |             否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                                              |
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+自定义工具配置在 `properties.llm.tools` 数组中，并将 `properties.advanced_features.enable_tools` 设为 `true`。
+
+| 参数                                        |           必填 | 描述                                                                                                       |
+| ------------------------------------------- | -------------: | ---------------------------------------------------------------------------------------------------------- |
+| `properties.advanced_features.enable_tools` |             是 | 设为 `true` 后，智能体才会向模型暴露自定义工具和 MCP 工具；省略或设为 `false` 时不会调用工具端点。       |
+| `properties.llm.tools`                      |             否 | 自定义工具数组。自定义工具、MCP 工具、内置工具和模型原生工具共享模型可见的工具名称空间。                 |
+| `tools[].type`                              |             是 | 固定为 `function`。                                                                                        |
+| `tools[].function`                          |             是 | 模型可见的工具定义，包含名称、说明和参数 schema。                                                          |
+| `tools[].function.name`                     |             是 | 必须以英文字母开头，只能包含英文字母和数字，长度不超过 64 个字符；不能使用 `mcp` 前缀或 `ragsearch_tool`。 |
+| `tools[].function.description`              |             是 | 说明用途、调用时机和返回内容，不要写入密钥。                                                               |
+| `tools[].function.parameters`               |             是 | JSON Schema 对象；根节点的 `type` 必须为 `object`，按 OpenAI Function Calling 的 non-strict 模式传递。   |
+| `tools[].execution`                         |             否 | 省略时默认为 `{ "mode": "sync" }`；Phase 1a 仅支持 `sync`。                                                |
+| `tools[].server`                            |             是 | 实际 HTTP 请求配置。                                                                                       |
+| `tools[].server.method`                     |             是 | 仅支持 `GET` 和 `POST`；GET 不能配置 `body`。                                                              |
+| `tools[].server.url`                        |             是 | 绝对 HTTPS URL；路径和查询参数可以使用模板变量。                                                           |
+| `tools[].server.headers`                    |             否 | 最多 32 项。不能使用 `{{args.<name>}}`；认证信息只能放在完整 Header 值中。                                 |
+| `tools[].server.body`                       |    POST 时可选 | 仅用于 POST，支持嵌套 JSON；模板必须是完整变量，不支持字符串拼接。                                         |
+| `tools[].server.timeout_ms`                 |             否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                                              |
+
+</TabsContent>
+</Tabs>
+
+## 配置 POST 工具
+
+确认 `GET` 工具可以正常返回后，可以配置 `POST` 工具执行创建工单、发送短信等操作。`server.body` 只能用于 `POST`，GET 配置 body 会导致校验失败。
+
+下面的示例向指定手机号发送已确认的地址：
+
+<Tabs defaultValue="go" groupId="rest-tool-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+```go
+// --- 此处省略智能体的其他配置 ---
+
+postTool := &Agora.LlmTool{
+    Function: &Agora.LlmToolFunction{
+        Name:        "send_follow_up_sms",
+        Description: Agora.String("将用户已确认的地址发送到指定手机号。只有在用户确认地址和手机号后调用。"),
+        Parameters: &Agora.LlmToolFunctionParameters{
+            Properties: map[string]interface{}{
+                "phone_number": map[string]interface{}{
+                    "type":        "string",
+                    "description": "接收短信的手机号，使用 E.164 格式。",
+                },
+                "address": map[string]interface{}{
+                    "type":        "string",
+                    "description": "用户确认的收货地址。",
+                },
+            },
+            Required: []string{"phone_number", "address"},
+        },
+    },
+    Execution: &Agora.LlmToolExecution{
+        Mode: Agora.String("sync"),
+    },
+    Server: &Agora.LlmToolServer{
+        Method: Agora.LlmToolServerMethodPost,
+        URL:    "https://api.example.com/messages/sms",
+        Headers: map[string]string{
+            "Authorization": "Bearer <api_token>",
+            "Content-Type":  "application/json",
+        },
+        Body: map[string]interface{}{
+            "to":              "{{args.phone_number}}",
+            "message":         "{{args.address}}",
+            "idempotency_key": "{{tool_call_id}}",
+        },
+        TimeoutMs: Agora.Int(10000),
+    },
+}
+
+llm := vendors.NewAliyun(vendors.AliyunOptions{
+    APIKey:  "<aliyun_api_key>",
+    Model:   "qwen-plus",
+    BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    Tools:   []*Agora.LlmTool{postTool},
+})
+
+agent := agentkit.NewAgent(client, agentkit.WithTools(true)).WithLlm(llm)
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+# --- 此处省略智能体的其他配置 ---
+
+post_tool = {
+    "type": "function",
+    "function": {
+        "name": "send_follow_up_sms",
+        "description": "将用户已确认的地址发送到指定手机号。只有在用户确认地址和手机号后调用。",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "phone_number": {
+                    "type": "string",
+                    "description": "接收短信的手机号，使用 E.164 格式。",
+                },
+                "address": {
+                    "type": "string",
+                    "description": "用户确认的收货地址。",
+                },
+            },
+            "required": ["phone_number", "address"],
+            "additionalProperties": False,
+        },
+    },
+    "execution": {"mode": "sync"},
+    "server": {
+        "method": "POST",
+        "url": "https://api.example.com/messages/sms",
+        "headers": {
+            "Authorization": "Bearer <api_token>",
+            "Content-Type": "application/json",
+        },
+        "body": {
+            "to": "{{args.phone_number}}",
+            "message": "{{args.address}}",
+            "idempotency_key": "{{tool_call_id}}",
+        },
+        "timeout_ms": 10000,
+    },
+}
+
+llm = AliyunLLM(
+    api_key="<aliyun_api_key>",
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    model="qwen-plus",
+    tools=[post_tool],
+)
+
+agent = Agent(client=client).with_llm(llm).with_tools(True)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+// --- 此处省略智能体的其他配置 ---
+
+const postTool = {
+  type: "function" as const,
+  function: {
+    name: "send_follow_up_sms",
+    description:
+      "将用户已确认的地址发送到指定手机号。只有在用户确认地址和手机号后调用。",
+    parameters: {
+      type: "object" as const,
+      properties: {
+        phone_number: {
+          type: "string" as const,
+          description: "接收短信的手机号，使用 E.164 格式。",
+        },
+        address: {
+          type: "string" as const,
+          description: "用户确认的收货地址。",
+        },
+      },
+      required: ["phone_number", "address"],
+      additionalProperties: false,
+    },
+  },
+  execution: { mode: "sync" as const },
+  server: {
+    method: "POST" as const,
+    url: "https://api.example.com/messages/sms",
+    headers: {
+      Authorization: "Bearer <api_token>",
+      "Content-Type": "application/json",
+    },
+    body: {
+      to: "{{args.phone_number}}",
+      message: "{{args.address}}",
+      idempotency_key: "{{tool_call_id}}",
+    },
+    timeout_ms: 10000,
+  },
+};
+
+const llm = new AliyunLLM({
+  apiKey: "<aliyun_api_key>",
+  model: "qwen-plus",
+  url: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+  tools: [postTool],
+});
+
+const agent = new Agent({ client }).withLlm(llm).withTools(true);
+```
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+以下仅展示创建智能体请求体中的 POST 工具配置：
+
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "send_follow_up_sms",
+    "description": "将用户已确认的地址发送到指定手机号。只有在用户确认地址和手机号后调用。",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "phone_number": {
+          "type": "string",
+          "description": "接收短信的手机号，使用 E.164 格式。"
+        },
+        "address": {
+          "type": "string",
+          "description": "用户确认的收货地址。"
+        }
+      },
+      "required": ["phone_number", "address"],
+      "additionalProperties": false
+    }
+  },
+  "execution": {
+    "mode": "sync"
+  },
+  "server": {
+    "method": "POST",
+    "url": "https://api.example.com/messages/sms",
+    "headers": {
+      "Authorization": "Bearer <api_token>",
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "to": "{{args.phone_number}}",
+      "message": "{{args.address}}",
+      "idempotency_key": "{{tool_call_id}}"
+    },
+    "timeout_ms": 10000
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### 配置字段说明
+
+POST 工具的 `function` 和 `execution` 字段与 GET 工具相同，重点检查 `server` 下的请求字段：
+
+<Tabs defaultValue="go" groupId="rest-tool-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+| 参数               | 必填 | 描述                                                                                 |
+| ------------------ | ---: | ------------------------------------------------------------------------------------ |
+| `Server.Method`    |   是 | 固定为 `POST`。                                                                      |
+| `Server.URL`       |   是 | 绝对 HTTPS URL；可以在路径或查询参数中使用模板变量。                                 |
+| `Server.Headers`   |   否 | 配置认证信息和 `Content-Type`。不能使用 `{{args.<name>}}`，认证信息只能放在完整 Header 值中。 |
+| `Server.Body`      |   否 | POST 请求体，支持嵌套 JSON。值可以是常量或完整模板变量，不支持字符串拼接。           |
+| `Server.TimeoutMs` |   否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                        |
+
+</TabsContent>
+
+<TabsContent value="python">
+
+| 参数                | 必填 | 描述                                                                                 |
+| ------------------- | ---: | ------------------------------------------------------------------------------------ |
+| `server.method`     |   是 | 固定为 `POST`。                                                                      |
+| `server.url`        |   是 | 绝对 HTTPS URL；可以在路径或查询参数中使用模板变量。                                 |
+| `server.headers`    |   否 | 配置认证信息和 `Content-Type`。不能使用 `{{args.<name>}}`，认证信息只能放在完整 Header 值中。 |
+| `server.body`       |   否 | POST 请求体，支持嵌套 JSON。值可以是常量或完整模板变量，不支持字符串拼接。           |
+| `server.timeout_ms` |   否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                        |
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+| 参数                | 必填 | 描述                                                                                 |
+| ------------------- | ---: | ------------------------------------------------------------------------------------ |
+| `server.method`     |   是 | 固定为 `POST`。                                                                      |
+| `server.url`        |   是 | 绝对 HTTPS URL；可以在路径或查询参数中使用模板变量。                                 |
+| `server.headers`    |   否 | 配置认证信息和 `Content-Type`。不能使用 `{{args.<name>}}`，认证信息只能放在完整 Header 值中。 |
+| `server.body`       |   否 | POST 请求体，支持嵌套 JSON。值可以是常量或完整模板变量，不支持字符串拼接。           |
+| `server.timeout_ms` |   否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                        |
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+| 参数                        | 必填 | 描述                                                                                 |
+| --------------------------- | ---: | ------------------------------------------------------------------------------------ |
+| `tools[].server.method`     |   是 | 固定为 `POST`。                                                                      |
+| `tools[].server.url`        |   是 | 绝对 HTTPS URL；可以在路径或查询参数中使用模板变量。                                 |
+| `tools[].server.headers`    |   否 | 配置认证信息和 `Content-Type`。不能使用 `{{args.<name>}}`，认证信息只能放在完整 Header 值中。 |
+| `tools[].server.body`       |   否 | POST 请求体，支持嵌套 JSON。值可以是常量或完整模板变量，不支持字符串拼接。           |
+| `tools[].server.timeout_ms` |   否 | 默认 `10000`，取值范围为 `1000` 到 `100000`。                                        |
+
+</TabsContent>
+</Tabs>
+
+`{{tool_call_id}}` 是当前工具调用的关联 ID。你可以将它传给业务服务，用于日志关联或幂等控制。但它不等同于业务幂等机制，Agora 也不会自动重试请求；业务服务仍需自行处理重复请求和未知结果。
+
+对于有副作用的 `POST` 请求：
+
+- 在 `function.description` 和系统提示词中说明调用条件，例如必须先取得用户确认。
+- 由业务服务执行最终的权限校验，不要只依赖大模型判断。
+- 只有接口返回 `2xx` 后，模型才应向用户表示请求成功。
+- 如果请求已经发出，用户打断不会保证远端操作被取消或回滚。
+
+## 配置模板变量
+
+模板变量用于把模型参数或创建智能体时确定的值填入 HTTP 请求。
+
+以下示例会把租户 ID 放入 Header，并把客户 ID 放入请求体。
+
+<Tabs defaultValue="go" groupId="rest-tool-platform" persist>
+<TabsList>
+  <TabsTrigger value="go">Go</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript</TabsTrigger>
+  <TabsTrigger value="restful-api">RESTful API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="go">
+
+Go SDK 在 LLM vendor 的 `TemplateVariables` 中配置固定值，在 `LlmToolServer.Headers` 或 `Body` 中引用：
+
+```go
+// --- 此处省略智能体的其他配置 ---
+
+postTool := &Agora.LlmTool{
+    Function: &Agora.LlmToolFunction{
+        Name:        "get_customer_profile",
+        Description: Agora.String("查询客户资料。"),
+        Parameters: &Agora.LlmToolFunctionParameters{
+            Properties: map[string]interface{}{},
+        },
+    },
+    Server: &Agora.LlmToolServer{
+        Method: Agora.LlmToolServerMethodPost,
+        URL:    "https://api.example.com/customer/profile",
+        Headers: map[string]string{
+            "X-Tenant-ID": "{{template_variables.tenant_id}}",
+        },
+        Body: map[string]interface{}{
+            "customer_id": "{{template_variables.customer_id}}",
+        },
+    },
+}
+
+llm := vendors.NewAliyun(vendors.AliyunOptions{
+    APIKey: "<aliyun_api_key>",
+    Model:  "qwen-plus",
+    BaseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    TemplateVariables: map[string]string{
+        "tenant_id":   "<tenant_id>",
+        "customer_id": "<customer_id>",
+    },
+    Tools: []*Agora.LlmTool{postTool},
+})
+```
+
+| 参数                           | 描述                                                                                       |
+| --------------------------------- | ------------------------------------------------------------------------------------------ |
+| `AliyunOptions.TemplateVariables` | 配置创建智能体时确定的固定字符串值。                                                       |
+| `LlmToolServer.Headers` / `Body`  | 使用 `{{template_variables.<name>}}` 读取固定值。                                          |
+| `LlmToolServer.Body`              | 也可以使用 `{{args.<name>}}` 和 `{{tool_call_id}}`，这两者不需要配置 `TemplateVariables`。 |
+
+</TabsContent>
+
+<TabsContent value="python">
+
+Python SDK 在 LLM vendor 的 `template_variables` 参数中配置固定值，在工具的 `server.headers` 或 `server.body` 中引用：
+
+```python
+# --- 此处省略智能体的其他配置 ---
+
+post_tool = {
+    "type": "function",
+    "function": {
+        "name": "get_customer_profile",
+        "description": "查询客户资料。",
+        "parameters": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": False,
+        },
+    },
+    "execution": {"mode": "sync"},
+    "server": {
+        "method": "POST",
+        "url": "https://api.example.com/customer/profile",
+        "headers": {
+            "X-Tenant-ID": "{{template_variables.tenant_id}}",
+        },
+        "body": {
+            "customer_id": "{{template_variables.customer_id}}",
+        },
+    },
+}
+
+llm = AliyunLLM(
+    api_key="<aliyun_api_key>",
+    base_url="https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    model="qwen-plus",
+    template_variables={
+        "tenant_id": "<tenant_id>",
+        "customer_id": "<customer_id>",
+    },
+    tools=[post_tool],
+)
+
+agent = Agent(client=client).with_llm(llm).with_tools(True)
+```
+
+| 参数                      | 描述                                                                                   |
+| -------------------------------- | -------------------------------------------------------------------------------------- |
+| `AliyunLLM(template_variables=...)` | 配置创建智能体时确定的固定字符串值。                                                   |
+| `AliyunLLM(tools=...)`              | 配置自定义工具。                                                                       |
+| `Agent.with_tools(True)`         | 开启自定义工具和 MCP 工具调用。                                                        |
+| `server.body` / `server.headers` | 使用 `{{template_variables.<name>}}` 读取固定值，也可以引用 `args` 或 `tool_call_id`。 |
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+TypeScript SDK 在 LLM vendor 的 `templateVariables` 中配置固定值，在工具的 `server.body` 或 `headers` 中引用：
+
+```typescript
+// --- 此处省略智能体的其他配置 ---
+
+const postTool = {
+  type: "function" as const,
+  function: {
+    name: "get_customer_profile",
+    description: "查询客户资料。",
+    parameters: {
+      type: "object" as const,
+      properties: {},
+      additionalProperties: false,
+    },
+  },
+  execution: { mode: "sync" as const },
+  server: {
+    method: "POST" as const,
+    url: "https://api.example.com/customer/profile",
+    headers: {
+      "X-Tenant-ID": "{{template_variables.tenant_id}}",
+    },
+    body: {
+      customer_id: "{{template_variables.customer_id}}",
+    },
+  },
+};
+
+const llm = new AliyunLLM({
+  apiKey: "<aliyun_api_key>",
+  model: "qwen-plus",
+  url: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+  templateVariables: {
+    tenant_id: "<tenant_id>",
+    customer_id: "<customer_id>",
+  },
+  tools: [postTool],
+});
+```
+
+| 参数                      | 描述                                                                                       |
+| ------------------------------------ | ------------------------------------------------------------------------------------------ |
+| `AliyunLLM({ templateVariables: ... })` | 配置创建智能体时确定的固定字符串值。                                                       |
+| `server.headers` / `server.body`     | 使用 `{{template_variables.<name>}}` 读取固定值。                                          |
+| `server.body`                        | 也可以使用 `{{args.<name>}}` 和 `{{tool_call_id}}`，这两者不需要配置 `templateVariables`。 |
+
+</TabsContent>
+
+<TabsContent value="restful-api">
+
+以下仅展示创建智能体请求体中与模板变量相关的配置：
+
+```json
+{
+  "properties": {
+    "llm": {
+      "template_variables": {
+        "tenant_id": "<tenant_id>",
+        "customer_id": "<customer_id>"
+      },
+      "tools": [
+        {
+          "type": "function",
+          "function": {
+            "name": "get_customer_profile",
+            "description": "查询客户资料。",
+            "parameters": {
+              "type": "object",
+              "properties": {},
+              "additionalProperties": false
+            }
+          },
+          "execution": {
+            "mode": "sync"
+          },
+          "server": {
+            "method": "POST",
+            "url": "https://api.example.com/customer/profile",
+            "headers": {
+              "X-Tenant-ID": "{{template_variables.tenant_id}}"
+            },
+            "body": {
+              "customer_id": "{{template_variables.customer_id}}"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
+
+| 参数                                 | 描述                                                                                        |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------- |
+| `properties.llm.template_variables`              | 配置创建智能体时确定的固定字符串值。                                                        |
+| `properties.llm.tools[].server.headers` / `body` | 使用 `{{template_variables.<name>}}` 读取固定值。                                           |
+| `properties.llm.tools[].server.body`             | 也可以使用 `{{args.<name>}}` 和 `{{tool_call_id}}`，这两者不需要配置 `template_variables`。 |
+
+</TabsContent>
+</Tabs>
+
+模板使用规则如下：
+
+- 只进行一次替换，不会递归展开。
+- 模板必须引用完整变量，不支持 `order-{{args.order_id}}` 这类字符串拼接。
+- 不支持嵌套字段、数组索引或 `{{name}}` 形式的简写。
+- `{{args.*}}` 不能用于 Header。
+- Header 名称、HTTP 方法、URL 的协议、主机和端口不能使用模板。
+- URL 路径和查询参数中的变量会按 URL 对应部分编码；变量不能注入新的主机、路径段或查询键。
+- 变量不存在、值为 `null` 或类型不适合目标位置时，工具调用会失败，且不会访问接口。
+- 认证信息只能作为完整的 Header 值传入，不要放入 URL、请求体、工具参数或工具说明。
+
+## 参考信息
+
+### 参数 schema
+
+`function.parameters` 使用 JSON Schema，并按 OpenAI Function Calling 的 non-strict 模式传递。根节点必须是 `object`，参数通常在 `properties` 中声明。详情见 [OpenAI Function Calling 指南](https://platform.openai.com/docs/guides/function-calling)：
+
+```json
+{
+  "type": "object",
+  "properties": {
+    "order_id": {
+      "type": "string",
+      "description": "订单号。"
+    },
+    "include_items": {
+      "type": "boolean",
+      "description": "是否同时返回商品明细。"
+    },
+    "region": {
+      "type": "string",
+      "enum": ["cn", "us"],
+      "description": "订单所属区域。"
+    }
+  },
+  "required": ["order_id"],
+  "additionalProperties": false
+}
+```
+
+示例中的 `additionalProperties: false` 仅用于演示禁止未声明参数，并非必填项，也不代表启用 strict。希望允许额外参数时，可以省略该字段或将其设置为 `true`。
+
+实用规则如下：
+
+- 支持 JSON Schema 的常用类型，包括 `object`、`array`、`string`、`integer`、`number`、`boolean` 和 `null`。
+- 支持标准 JSON Schema 中与工具参数相关的关键字，例如 `type`、`description`、`enum`、`properties`、`required`、`additionalProperties` 和 `items`；具体效果取决于所选 LLM 的 Function Calling 能力。
+- 根节点 `type` 必须为 `object`；数组参数应通过 `items` 声明元素 schema。
+- 可选参数不要放进 `required`。`additionalProperties` 可以省略；省略时按 JSON Schema 语义允许额外属性。若要禁止未声明的额外参数，请显式设置为 `false`。
+- 不要依赖特定模型对 `$ref`、`$defs`、`format`、`pattern`、范围限制或组合 schema 等高级关键字的支持；如果使用这些关键字，请先确认所选 LLM 的兼容性。
+
+### 响应和运行时行为
+
+| 接口结果                                   | 工具结果                         | 对话行为                                      |
+| ------------------------------------------ | -------------------------------- | --------------------------------------------- |
+| 非空 `2xx`，响应是合法 JSON                | 解析 JSON 后序列化为字符串       | 模型根据完整结果生成回复                      |
+| 非空 `2xx`，响应是 UTF-8 文本              | 使用原始文本                     | 模型根据完整结果生成回复                      |
+| 空 `2xx`，例如 `204`                       | 工具成功，结果为 `[]`            | 模型根据成功结果继续生成回复                  |
+| 非 `2xx`，响应是合法 JSON                  | 工具失败；解析后序列化为字符串   | 完整响应仍返回模型，但模型不应声称业务成功    |
+| 非 `2xx`，响应是 UTF-8 文本                | 工具失败；使用原始文本           | 完整响应仍返回模型，但模型不应声称业务成功    |
+| 非 `2xx`，响应体为空                       | 工具失败，结果为 `[]`            | 模型收到失败结果，不应声称业务成功            |
+| `3xx`                                      | 按非 `2xx` 规则返回失败结果      | 不跟随 `Location`，也不向重定向地址转发请求   |
+| 超时、网络错误、参数或模板校验失败         | 工具失败                         | 不会自动重试                                  |
+| 响应超过 1 MiB 或无法解析为安全 UTF-8 文本 | 工具失败                         | 不会将部分响应交给模型                        |
+
+其他运行时规则：
+
+- 同一轮模型响应提交多个工具调用时，引擎会并发执行这些调用；一个调用失败不会阻止其他已提交调用。
+- 只有所有调用都得到终态结果或错误后，引擎才会发起下一轮 LLM 请求，并按模型返回顺序写入工具结果。
+- 用户打断会停止当前智能体播报，但不会保证已经发出的 HTTP 请求被取消或远端业务操作被回滚。
+- 等待期间使用现有的智能体级承接词配置；自定义工具不会增加单独的工具级承接词触发器。
+- HTTP 响应不会直接进入 TTS，只有模型生成的最终文本才会播报。
+
+### 安全与配置限制
+
+- `server.url` 必须是绝对 HTTPS URL；不支持 URL 中的用户名和密码。
+- Header 值会按敏感信息处理，不会传递给模型或写入普通日志、字幕和 TTS。Phase 1a 不提供 OAuth token exchange、动态签名、mTLS 或可复用的凭证资源。
+- 最终渲染后的 URL 最大为 8192 个 UTF-8 字节；单个路径变量最大 1024 字节，单个查询变量最大 4096 字节。
+- Header 最多 32 项，所有 Header 合计最大 16 KiB。
+- `server.body` 仅支持 `POST`；配置值和渲染结果均不得超过 64 KiB。
+- `server.timeout_ms` 默认值为 `10000`，取值范围为 `1000` 到 `100000`。
+- 非空响应包体不得超过 1 MiB；不提供响应字段提取、JSONPath 或自定义截断配置。
+- 自定义工具、MCP 工具、内置工具和模型原生工具共享名称空间。工具名称必须以英文字母开头，只能包含英文字母和数字，长度不超过 64 个字符；名称比较不区分 ASCII 大小写。
+- 工具名称不能使用 `mcp` 前缀或 `ragsearch_tool`。完成工具发现和过滤后，模型可见工具总数最多为 32 个。
+- 不支持 stored tool、异步任务、回调、轮询、自动重试、PUT/PATCH/DELETE 或可配置的串行工具调度。
+
+### 常见问题
+
+| 现象                           | 优先检查                                                                                                                           |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| 模型从不调用工具               | 是否开启 `enable_tools`；工具描述是否说明调用时机和返回内容；当前 LLM 是否支持 Function Calling                                    |
+| 创建智能体失败                 | `type` 是否为 `function`；`function.parameters` 根节点是否为 `object`；`server.method` 是否为 `GET` 或 `POST`；工具名称是否重复 |
+| 接口没有收到请求               | `server` 是否与 `function` 同级；URL 是否为绝对 HTTPS URL；模板变量是否存在；GET 是否误配置了 `body`                               |
+| Header 中没有拿到模型参数      | `{{args.<name>}}` 不支持用于 Header。需要传入 Header 的固定值应直接填写，动态值使用 `template_variables` 或 `tool_call_id`         |
+| 接口返回参数校验错误           | 检查 body 字段名、参数类型和 `Content-Type`；请求体中的模板不支持字符串拼接                                                        |
+| 工具调用超时                   | 检查接口响应时间和 `timeout_ms`；超时后不会自动重试                                                                                |
+| 接口返回成功但模型无法使用结果 | 确认接口返回 `2xx`；非空响应必须是安全 UTF-8 文本且不超过 1 MiB；接口返回的 JSON 不支持字段提取                                    |
+| POST 操作可能重复              | 使用 `tool_call_id` 作为业务侧关联，并在业务服务中实现重复请求处理；不要假设 Agora 会自动回滚或重试                        |

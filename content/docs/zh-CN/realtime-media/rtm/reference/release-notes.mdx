@@ -1,4 +1,12 @@
 ---
+## 重复创建实例限制
+
+同一 `appId` 和 `userId` 已被活跃 RTM 实例占用时，再次创建实例会返回 `RTM_ERROR_DUPLICATE_USER_ID`（-10027）。确保同一 `appId` 和 `userId` 只创建一个 RTM 实例，优先复用已有实例，避免多实例问题。
+
+:::info[信息]
+如遇 `RTM_ERROR_DUPLICATE_USER_ID`（-10027）错误，可参考 [WebRTM Integration Demo](https://github.com/AgoraIO-Community/WebRTM-Integration-Demo/tree/master)，确保同一 `appId` 和 `userId` 只创建一个 RTM 实例。
+:::
+
 title: "发版说明"
 description: "查看实时消息 RTM 的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---

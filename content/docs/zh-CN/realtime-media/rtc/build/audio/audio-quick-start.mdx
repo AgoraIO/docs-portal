@@ -84,7 +84,7 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 <Tabs defaultValue="maven" groupId="integrate-sdk" persist>
 <TabsList>
-  <TabsTrigger value="maven">通过 Maven Central 集成</TabsTrigger>
+  <TabsTrigger value="maven">通过 Gradle 自动集成</TabsTrigger>
   <TabsTrigger value="manual">手动集成</TabsTrigger>
 </TabsList>
 
@@ -1603,13 +1603,13 @@ startBasicCall();
 - 在项目 HTML 文件中，添加如下代码，使用 CDN 方法获取 SDK：
 
   ```html
-  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.8.js"></script>
   ```
 
 - 下载[声网 Web SDK 4.x 版本 SDK 包](/zh-CN/realtime-media/rtc/reference/downloads)至本地，将 SDK 包中的 `.js` 文件保存到项目文件所在的目录下，然后在项目 HTML 文件中添加如下代码：
 
   ```html
-  <script src="./AgoraRTC_N-4.24.6.js"></script>
+  <script src="./AgoraRTC_N-4.24.8.js"></script>
   ```
 
 :::info[信息]
@@ -6199,3 +6199,14 @@ void UAgoraWidget::NativeDestruct()
 - [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
+
+
+:::note[声网 Maven CDN]
+通过 Gradle 自动集成 Android SDK 前，请在 `settings.gradle` 的 `dependencyResolutionManagement.repositories` 中保留 `mavenCentral()`，并添加：
+
+```groovy
+maven { url = 'https://download.shengwang.cn/maven/' }
+```
+
+如果项目使用低于 v7.1.0 的 Android Gradle Plugin，请在根目录 `build.gradle` 的 `allprojects.repositories` 中添加同一仓库。
+:::

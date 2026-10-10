@@ -2002,7 +2002,7 @@ public virtual void OnRequestToken(RtcConnection connection) {}
 <a id="callback_irtcengineeventhandler_onrequesttoken__detailed_desc"></a>
 
 在音视频互动过程中，如果 Token 失效，SDK 会触发该回调报告 Token 已过期。
-当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+当收到该回调时，你需要重新在服务端生成新的 Token，然后根据场景更新 Token：
 
 - 单频道场景：
 
@@ -2088,7 +2088,7 @@ public virtual void OnTokenPrivilegeWillExpire(RtcConnection connection, string 
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__detailed_desc"></a>
 
-当收到该回调时，你需要重新在服务端生成新的 Token，然后通过下列任意一种方式来更新 Token：
+当收到该回调时，你需要重新在服务端生成新的 Token，然后根据场景更新 Token：
 
 - 单频道场景：
 
