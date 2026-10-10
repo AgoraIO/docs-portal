@@ -187,7 +187,7 @@ virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_
 <a id="callback_imetadataobserver_onreadytosendmetadata__detailed_desc"></a>
 
 :::note
-注： 请确保元数据的大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调中设置的值。
+注：请确保元数据的大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/cpp-all-platforms/metadata/metadata-observer#api_imetadataobserver_getmaxmetadatasize) 回调中设置的值。如果超过该值，SDK 会截除超出部分。
 :::
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__timing"></a>

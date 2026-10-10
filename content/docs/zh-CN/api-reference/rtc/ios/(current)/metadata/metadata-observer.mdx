@@ -58,7 +58,7 @@ _migration:
 该回调在 SDK 准备好发送元数据时触发。
 
 :::note
-注： 请确保元数据的大小不超过 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调中设置的值。
+注：请确保元数据的大小不超过 [metadataMaxSize](/zh-CN/api-reference/rtc/ios/metadata/metadata-observer#api_agoramediametadatadatasource_metadatamaxsize) 回调中设置的值。如果超过该值，SDK 会截除超出部分。
 :::
 
 <a id="api_agoramediametadatadatasource_readytosendmetadataattimestamp__timing"></a>
