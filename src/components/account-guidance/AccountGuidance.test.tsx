@@ -190,6 +190,31 @@ describe('Chinese SDK account guidance', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
+  it('preserves Chinese RTC direct downloads without RTM guidance', () => {
+    render(<SdksCatalog locale="zh-CN" product="video" platform="android" />);
+    const download = screen.getByRole('link', { name: '下载 Android Full' });
+    expect(fireEvent.click(download)).toBe(true);
+    expect(download).toHaveAttribute('target', '_blank');
+    expect(capture).not.toHaveBeenCalled();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
+  it('does not treat package-manager-only RTM links as direct downloads', () => {
+    render(
+      <SdksCatalog locale="zh-CN" product="signaling" platform="flutter" />,
+    );
+    const packageLink = screen.getByRole('link', {
+      name: '获取 Flutter 实时消息 SDK',
+    });
+    expect(packageLink).toHaveAttribute(
+      'href',
+      'https://pub.dev/packages/agora_rtm/versions/2.2.6',
+    );
+    expect(fireEvent.click(packageLink)).toBe(true);
+    expect(capture).not.toHaveBeenCalled();
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  });
+
   it('records an immediate login click before the first animation frame without losing its exposure', async () => {
     vi.spyOn(window, 'requestAnimationFrame').mockReturnValue(1);
     render(
@@ -211,7 +236,7 @@ describe('Chinese SDK account guidance', () => {
     const { baseElement } = render(
       <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
     );
-    fireEvent.click(screen.getByRole('link', { name: '下载 SDK' }));
+    fireEvent.click(screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ }));
     const dialog = await screen.findByRole('dialog');
     await waitFor(() => expect(capture).toHaveBeenCalledTimes(2));
     expect(within(dialog).getAllByRole('button')).toHaveLength(1);
