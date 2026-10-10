@@ -1,0 +1,268 @@
+---
+title: "ConversationalAIAPI 类"
+---
+用于通过声网的 RTC 和 RTM 服务管理对话式 AI 引擎交互的类。
+
+:::info[信息]
+自 1.7.0 版本新增。
+:::
+
+<a id="chat"></a>
+## chat
+
+```typescript
+public async chat(agentUserId: string, message: IChatMessageText | IChatMessageImage)
+```
+
+向对话式智能体发送聊天消息。
+
+:::info[信息]
+自 1.7.0 版本新增。
+:::
+
+#### 示例代码
+
+```typescript
+// Send an image message
+const imageMessage: IChatMessageImage = {
+  messageType: EChatMessageType.IMAGE,
+  imageData: urlImageData
+};
+await api.chat("user123", imageMessage);
+```
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 智能体的唯一标识符。 |
+| `message` | `IChatMessageText \| IChatMessageImage` | 要发送的聊天消息，类型为 [`IChatMessageImage`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.typescript#ichatmessageimage)，详见 [`IChatMessageImage`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.typescript#ichatmessageimage)。 |
+
+#### 返回值
+
+方法调用成功，返回一个 `Promise`，表示消息发送结果。
+
+<a id="speak"></a>
+## speak
+
+```typescript
+public async speak(agentUserId: string, message: SpeakMessage): Promise<void>
+```
+
+绕过大模型，直接通过智能体的 TTS 流程播报文本。
+
+该方法需要在初始化时传入 `rtmEngine`。Promise 成功仅表示 RTM 消息发布成功，不代表智能体已经完成播报。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 智能体用户 ID。 |
+| `message` | `SpeakMessage` | 播报内容和播报行为配置。详见 [`SpeakMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.typescript#speakmessage)。 |
+
+<a id="think"></a>
+## think
+
+```typescript
+public async think(agentUserId: string, message: ThinkMessage): Promise<void>
+```
+
+将文本作为用户输入注入对话，并交由大模型处理。
+
+该方法需要在初始化时传入 `rtmEngine`。Promise 成功仅表示 RTM 消息发布成功，不代表大模型已经完成处理。
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 智能体用户 ID。 |
+| `message` | `ThinkMessage` | 指令内容、状态动作和自定义元数据。详见 [`ThinkMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/struct.typescript#thinkmessage)。 |
+
+<a id="getinstance"></a>
+## getInstance
+
+```typescript
+public static getInstance()
+```
+
+获取 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript) 的单例实例。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+该方法确保在整个应用程序生命周期中只存在一个 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript) 实例。调用前必须先执行 [`init`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript#init) 方法进行初始化，否则会抛出异常。
+
+#### 返回值
+
+方法调用成功，返回 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript) 实例。
+
+<a id="init"></a>
+## init
+
+```typescript
+public static init(cfg: IConversationalAIAPIConfig)
+```
+
+初始化 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript) 单例实例。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+该方法用于设置 RTC 和 RTM 引擎、渲染模式以及日志选项。必须在调用 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript) 的其他方法之前调用此方法。
+
+- 同一时间只能初始化一个实例。
+- 如果已初始化，将抛出错误
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `cfg` | `IConversationalAIAPIConfig` | 用于初始化 API 的配置对象，详见 `IConversationalAIAPIConfig`。 |
+
+#### 返回值
+
+方法调用成功，返回初始化后的 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript) 实例。
+
+<a id="subscribemessage"></a>
+## subscribeMessage
+
+```typescript
+public subscribeMessage(channel: string)
+```
+
+订阅消息频道以获取实时更新。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+该方法绑定必要的 RTC 和 RTM 事件，并启动 `CovSubRenderController` 以处理接收到的消息。
+
+:::warning[注意]
+- 使用此方法前必须调用 [`init`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript#init)。
+    - 如果未初始化将抛出错误。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `channel` | `string` | 要订阅消息的频道名。 |
+
+<a id="unsubscribe"></a>
+## unsubscribe
+
+```typescript
+public unsubscribe()
+```
+
+取消订阅消息频道并清理资源。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+该方法解绑 RTC 和 RTM 事件，清空频道，并清理 `CovSubRenderController`。
+
+:::warning[注意]
+- 使用此方法前必须调用 [`subscribeMessage`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript#subscribemessage)。
+    - 如果未初始化将抛出错误。
+:::
+
+<a id="destroy"></a>
+## destroy
+
+```typescript
+public destroy(): void
+```
+
+销毁 [`ConversationalAIAPI`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript) 实例并清理资源。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+该方法会解绑所有 RTC 和 RTM 事件，清空频道场景，并清理 `CovSubRenderController`。
+
+:::warning[注意]
+- 使用该方法前必须调用 [`unsubscribe`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript#unsubscribe)。
+    - 如果未初始化，则会抛出错误。
+:::
+
+<a id="interrupt"></a>
+## interrupt
+
+```typescript
+public async interrupt(agentUserId: string)
+```
+
+向指定的智能体发送中断消息。
+
+:::info[信息]
+自 1.6.0 版本新增。
+:::
+
+:::warning[注意]
+- 使用该方法前必须调用 [`init`](/zh-CN/api-reference/conversational-ai/client-toolkit/conversationalaiapi.typescript#init)。
+    - 如果未初始化或发送失败，将抛出错误。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 要中断的智能体的用户 ID。 |
+
+<a id="manualsos"></a>
+## manualSOS
+
+```typescript
+public async manualSOS(agentUserId: string): Promise<string>
+```
+
+通过 RTM 向智能体发送手动 SoS 信令，显式声明当前用户开始说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，方法返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- 方法返回成功只表示 RTM publish 成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `USER_MANUAL_SOS_RESULT` 或 `USER_MANUAL_EOS_RESULT` 事件结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 智能体的唯一标识符。 |
+
+#### 返回值
+
+方法调用成功，返回一个 `Promise<string>`，其解析值为本次请求对应的 `requestId`。该返回结果仅表示 RTM publish 成功，不代表服务端已处理成功。
+
+<a id="manualeos"></a>
+## manualEOS
+
+```typescript
+public async manualEOS(agentUserId: string): Promise<string>
+```
+
+通过 RTM 向智能体发送手动 EoS 信令，显式声明当前用户结束说话。
+
+:::warning[注意]
+- `requestId` 由组件内部生成。发起请求后，方法返回本次请求对应的 `requestId`，业务方可自行保存，用于关联服务端回调。
+- 方法返回成功只表示 RTM publish 成功，不代表服务端已处理成功。
+- 服务端是否成功处理本次请求，需要以后续 `USER_MANUAL_SOS_RESULT` 或 `USER_MANUAL_EOS_RESULT` 事件结果为准。
+- 客户端不本地判断当前是否为 manual mode，mode 校验交给服务端。
+:::
+
+#### 参数
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `string` | 智能体的唯一标识符。 |
+
+#### 返回值
+
+方法调用成功，返回一个 `Promise<string>`，其解析值为本次请求对应的 `requestId`。该返回结果仅表示 RTM publish 成功，不代表服务端已处理成功。
