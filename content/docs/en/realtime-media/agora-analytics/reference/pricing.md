@@ -1,19 +1,19 @@
 ---
 title: "Pricing"
-description: "Provides you with information on billing, fee deductions, free-of-charge policy, and any suspension to your account based on the account type."
+description: "Compare Agora Analytics pricing plans, their features, and monthly fees, and manage your subscription."
 ---
 
 Agora Analytics manages analytics features and API access through pricing plans. To use a feature or an API, you
 subscribe to the plan that provides access to that feature or API.
 
-## Price plan features
+## Pricing plan features
 
-Agora Analytics offers the Starter, Standard, Premium, and Enterprise price plans. The features available in each
+Agora Analytics offers the Starter, Standard, Premium, and Enterprise pricing plans. The features available in each
 pricing plan are listed in the following sections.
 
 ### Call Inspector
 
-The available features for Call Inspector are:
+[Call Inspector](/en/realtime-media/agora-analytics/build/explore-and-analyze-data/call-search) is available on all plans. Data retention, RESTful API access, and embedding vary by plan:
 
 | Feature                              | Starter | Standard       | Premium       | Enterprise       |
 |--------------------------------------|:-------:|:--------------:|:-------------:|:----------------:|
@@ -26,7 +26,7 @@ For details about the Standard, Premium, and Enterprise-level Call Inspector RES
 
 ### Data Insights and Data Insights Plus
 
-The available features for Data Insights and Data Insights Plus are:
+[Data Insights](/en/realtime-media/agora-analytics/build/explore-and-analyze-data/data-insight) and [Data Insights Plus](/en/realtime-media/agora-analytics/build/explore-and-analyze-data/data-insight-plus) start with the Standard plan. Higher plans offer longer data retention, finer granularity, lower latency, and more analysis options:
 
 | Module | Feature | Starter | Standard | Premium | Enterprise |
 | --- | --- | --- | --- | --- | --- |
@@ -42,13 +42,11 @@ The available features for Data Insights and Data Insights Plus are:
 | Data Insights Plus | Data sampling analysis | ✘ | ✘ | ✔ | ✔ |
 | Data Insights Plus | Comparative analysis | ✘ | ✘ | ✔ | ✔ |
 
-For details about the Standard, Premium, and Enterprise-level Data Insights RESTful APIs, see [RESTful API](api.md).
-
-Data Insights Plus is only available with the Premium or Enterprise subscription plans.
+For details about the Data Insights RESTful API, see [RESTful API](api.md).
 
 ### Real-time Monitoring
 
-The available features for Real-time Monitoring are:
+[Real-time Monitoring](/en/realtime-media/agora-analytics/build/monitor-and-get-alerts/monitor) starts with the Standard plan. RESTful API access requires the Premium or Enterprise plan:
 
 | Feature                              | Starter | Standard | Premium       | Enterprise       |
 |--------------------------------------|:-------:|:--------:|:-------------:|:----------------:|
@@ -57,84 +55,85 @@ The available features for Real-time Monitoring are:
 | Data sampling                        | ✘       | ✔        | ✔             | ✔                |
 | Support for embedding in web portals | ✘       | ✔        | ✔             | ✔                |
 
-For details about the Standard, Premium, and Enterprise-level Real-time Monitoring RESTful APIs, see [RESTful API](api.md).
+For details about the Premium and Enterprise-level Real-time Monitoring RESTful APIs, see [RESTful API](api.md).
 
 ### Alert Notifications
 
-The available features for Alert Notifications are:
+[Alert Notifications](/en/realtime-media/agora-analytics/build/monitor-and-get-alerts/alarm) start with the Premium plan. Embedding in web portals requires the Enterprise plan:
 
 | Feature                              | Starter | Standard | Premium | Enterprise |
 |--------------------------------------|:-------:|:--------:|:-------:|:----------:|
 | Access through Agora Console         | ✘       | ✘        | ✔       | ✔          |
 | Support for embedding in web portals | ✘       | ✘        | ✘       | ✔          |
 
-### Datadog integration
+### Third-party integrations
 
-The available features for Datadog integration are:
+Agora Analytics can push real-time data to the following third-party observability platforms:
 
-| Feature                      | Starter | Standard | Premium | Enterprise |
-|------------------------------|:-------:|:--------:|:-------:|:----------:|
-| Real-time data push to [Datadog platform](https://www.datadoghq.com/)    | ✘       | ✘       | ✔      | ✔          |
-
-Datadog integration is only available with the Premium or Enterprise subscription plans.
+| Platform | Starter | Standard | Premium | Enterprise |
+|----------|:-------:|:--------:|:-------:|:----------:|
+| [Datadog](/en/realtime-media/agora-analytics/build/integrate-and-embed/datadog-integration) | ✘ | ✘ | ✔ | ✔ |
+| [New Relic](/en/realtime-media/agora-analytics/build/integrate-and-embed/new-relic-integration) | ✘ | ✘ | ✔ | ✔ |
 
 ## Prices
 
-The subscription fees for the price plans are:
+Each plan is billed as a monthly subscription:
 
 |                                             | Starter   | Standard  | Premium   | Enterprise |
 |---------------------------------------------|:-------:|:--------:|:-------:|:----------:|
 | Subscription fee per month (US$)            | 0         | 449       | 999       | 1,599      |
 
-You can also subscribe to Agora Analytics packages through our support plans. For details, visit [Agora Support Plans](https://www.agora.io/en/pricing/support-plans/).
+You can also subscribe to Agora Analytics packages through Agora support plans. For details, visit [Agora Support Plans](https://www.agora.io/en/pricing/support-plans/).
 
 ## Plan management
 
-This section tells you how to subscribe and unsubscribe to an Agora Analytics price plan.
+This section shows you how to subscribe to, unsubscribe from, or switch Agora Analytics pricing plans.
 
 ### Subscribe to a plan
 
 To subscribe to an Agora Analytics pricing plan, do the following:
 
-1. Log in to [Agora Console](https://console.agora.io/).
+1. In [Agora Console](https://console.agora.io/), select **Agora Analytics** in the sidebar to open Agora Analytics in a new tab, then select **Pricing Plan**.
 
-2. In [Agora Console](https://console.agora.io), select **Agora Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
+2. Choose the plan you want to use, and click **Subscribe**.
 
-3. Choose the plan you want to use, and click **Subscribe**.
+    :::note
+    For the Enterprise pricing plan, contact [support@agora.io](mailto:support@agora.io).
+    :::
 
-    **For the Enterprise pricing plan, contact support@agora.io to discuss your subscription**
+3. Follow the on-screen instructions to complete your payment.
 
-4. Follow the on-screen instructions to complete your payment.
-
-Subscription takes effect immediately. After subscribing to a plan, you can click **My Package Subscription** on the upper right corner to view your subscription details.
+Subscription takes effect immediately. After subscribing to a plan, you can click **My Package Subscription** in the upper-right corner to view your subscription details.
 
 By default, subscription to Agora Analytics pricing plans is automatically renewed. You can cancel it at any time. See [Unsubscribe from a plan](#unsubscribe-from-a-plan-or-switch-to-another-plan) for details.
 
-Agora Analytics charges are billed to your account on the first of every month until you cancel your subscription. Your subscription fee for the subsequent month is listed in the once-time bill. For details, see [Billing policies and free-of-charge policy](billing-policies.md).
+Agora Analytics charges are billed to your account on the first of every month until you cancel your subscription. Your subscription fee for the subsequent month is listed in your monthly bill. For details, see [Billing policies and free-of-charge policy](billing-policies.md).
 
 ### Unsubscribe from a plan or switch to another plan
 
 To unsubscribe from an Agora Analytics pricing plan, do the following:
 
-1. In [Agora Console](https://console.agora.io), select **Agora Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
+1. In [Agora Console](https://console.agora.io/), select **Agora Analytics** in the sidebar to open Agora Analytics in a new tab, then select **Pricing Plan**.
 
-2. On the upper right corner, click **My Package Subscription**.
+2. In the upper-right corner, click **My Package Subscription**.
 
-3. Find the plan you want to unsubscribe, and click **Cancel** in the **Action** column.
+3. Find the plan you want to unsubscribe from, and click **Cancel** in the **Action** column.
 
 To switch to another plan, do the following:
 
-1. In [Agora Console](https://console.agora.io), select **Agora Analytics** in the left navigation to open Agora Analytics in a new tab, then select **Pricing Plan**.
+1. In [Agora Console](https://console.agora.io/), select **Agora Analytics** in the sidebar to open Agora Analytics in a new tab, then select **Pricing Plan**.
 
 2. Choose the plan you want to switch to, and click **Subscribe**.
-For the Enterprise pricing plan, contact support@agora.io to subscribe.
 
-3. Read the pop-up window carefully, and click **Confirm to switch**.
+    :::note
+    For the Enterprise pricing plan, contact [support@agora.io](mailto:support@agora.io).
+    :::
+
+3. In the confirmation dialog, click **Confirm to switch**.
 
 Unsubscribing from a plan or switching to another plan takes effect on the first of the next month. For the current month, you still have access to the features and APIs provided by the plan. The subscription fee you paid for this month is not refunded, and any excess usage that occurs in this month is charged.
 
 ## See also
 
--   [Pricing for RTC SDK](/en/realtime-media/rtc/reference/pricing)
-
--   [What are Agora’s policies on billing, fee deductions, and account suspension](billing-policies.md)
+- [RTC pricing](/en/realtime-media/rtc/reference/pricing)
+- [Billing policies and free-of-charge policy](billing-policies.md)

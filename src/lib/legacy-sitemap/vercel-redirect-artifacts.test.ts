@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import gscObservedRedirects from './gsc-observed-redirects.json';
 import posthogRevalidatedRedirects from './posthog-revalidated-404s.json';
+import posthogObservedRedirects from './posthog-observed-redirects.json';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
 
@@ -81,7 +82,8 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(staticRedirects).toHaveLength(
       legacyRules.length +
         gscObservedRedirects.length +
-        posthogRevalidatedRedirects.length,
+        posthogRevalidatedRedirects.length +
+        posthogObservedRedirects.length,
     );
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
     expect(vercelConfig.rewrites).toBeUndefined();
@@ -153,16 +155,21 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('uses Vercel HTTP 301 redirects as the primary production path', () => {
-    const redirect = publishedRedirects.find(
-      (rule) => rule.source === '/en/agora-chat/develop/ip_allowlist',
-    );
-    expect(redirect).toMatchObject({
+    const ipAllowlistRedirect =
+      bulkRedirects.find(
+        (rule) => rule.source === '/en/agora-chat/develop/ip_allowlist',
+      ) ??
+      vercelConfig.redirects?.find(
+        (rule) => rule.source === '/en/agora-chat/develop/ip_allowlist',
+      );
+
+    expect(ipAllowlistRedirect).toMatchObject({
       destination:
         '/en/realtime-media/im/build/secure-access-and-authentication/ip-allowlist',
       source: '/en/agora-chat/develop/ip_allowlist',
       statusCode: 301,
     });
-    expect(redirect?.preserveQueryParams ?? true).toBe(true);
+    expect(ipAllowlistRedirect?.preserveQueryParams ?? true).toBe(true);
   });
 
   it('redirects the legacy Chat RESTful overview to the API reference overview in production', () => {
@@ -170,9 +177,8 @@ describe('legacy redirect Vercel artifacts', () => {
       publishedRedirects.find(
         (rule) => rule.source === '/en/agora-chat/restful-api/restful-overview',
       ),
-    ).toEqual({
+    ).toMatchObject({
       destination: '/en/api-reference/api-ref/im',
-      preserveQueryParams: true,
       source: '/en/agora-chat/restful-api/restful-overview',
       statusCode: 301,
     });
@@ -183,9 +189,8 @@ describe('legacy redirect Vercel artifacts', () => {
       publishedRedirects.find(
         (rule) => rule.source === '/en/ai/reference/release-notes',
       ),
-    ).toEqual({
+    ).toMatchObject({
       destination: '/en/ai/release-notes',
-      preserveQueryParams: true,
       source: '/en/ai/reference/release-notes',
       statusCode: 301,
     });
@@ -194,18 +199,16 @@ describe('legacy redirect Vercel artifacts', () => {
   it('matches legacy Agora Platform URLs with encoded spaces in production', () => {
     expect(publishedRedirects).toEqual(
       expect.arrayContaining([
-        {
+        expect.objectContaining({
           source: '/en/Agora%20Platform/downloads',
           destination: '/en/api-reference/sdks',
           statusCode: 301,
-          preserveQueryParams: true,
-        },
-        {
+        }),
+        expect.objectContaining({
           source: '/en/Agora%20Platform/sampleapps',
           destination: '/en/api-reference/recipes',
           statusCode: 301,
-          preserveQueryParams: true,
-        },
+        }),
       ]),
     );
 

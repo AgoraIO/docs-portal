@@ -23,6 +23,10 @@ const posthogRevalidatedRedirectsPath = path.join(
   repoRoot,
   'src/lib/legacy-sitemap/posthog-revalidated-404s.json',
 );
+const posthogObservedRedirectsPath = path.join(
+  repoRoot,
+  'src/lib/legacy-sitemap/posthog-observed-redirects.json',
+);
 const rtcFolderRedirectsPath = path.join(
   repoRoot,
   'src/lib/legacy-sitemap/rtc-folder-redirects.json',
@@ -41,6 +45,9 @@ const gscObservedRedirects = JSON.parse(
 const posthogRevalidatedRedirects = JSON.parse(
   await readFile(posthogRevalidatedRedirectsPath, 'utf8'),
 );
+const posthogObservedRedirects = JSON.parse(
+  await readFile(posthogObservedRedirectsPath, 'utf8'),
+);
 const baseConfig = JSON.parse(await readFile(vercelBasePath, 'utf8'));
 const rtcFolderRedirects = JSON.parse(
   await readFile(rtcFolderRedirectsPath, 'utf8'),
@@ -49,6 +56,7 @@ const artifactRules = [
   ...redirectsConfig.rules,
   ...gscObservedRedirects,
   ...posthogRevalidatedRedirects,
+  ...posthogObservedRedirects,
 ];
 
 const staticRedirects = createStaticRedirects(artifactRules);
@@ -82,7 +90,6 @@ console.log(
   [
     `[legacy-redirects] static fallback rules: ${staticRedirects.length}`,
     `[legacy-redirects] Vercel bulk redirects: ${bulkRedirects.length}`,
-    `[legacy-redirects] RTC folder redirects: ${rtcFolderRedirects.redirects.length}`,
     `[legacy-redirects] Vercel config overflow redirects: ${overflowRedirects.length}`,
     `[legacy-redirects] Vercel query redirect routes: ${queryRedirectRoutes.length}`,
     `[legacy-redirects] query-split paths: ${querySplitPaths.length}`,

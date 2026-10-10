@@ -21,6 +21,7 @@ const FIXTURE_PATHS = [
   'src/lib/legacy-sitemap/redirects.json',
   'src/lib/legacy-sitemap/gsc-observed-redirects.json',
   'src/lib/legacy-sitemap/posthog-revalidated-404s.json',
+  'src/lib/legacy-sitemap/posthog-observed-redirects.json',
   'src/lib/legacy-sitemap/rtc-folder-redirects.json',
   'src/lib/legacy-sitemap/static-redirects.json',
   'vercel-legacy-redirects.json',
@@ -265,6 +266,10 @@ describe('generate-legacy-redirect-artifacts', () => {
       root,
       'src/lib/legacy-sitemap/posthog-revalidated-404s.json',
     );
+    const posthogObservedRedirectsPath = path.join(
+      root,
+      'src/lib/legacy-sitemap/posthog-observed-redirects.json',
+    );
     const rules = Array.from({ length: 1_001 }, (_, index) => ({
       legacyUrl: `https://docs.agora.io/en/overflow/source-${index}`,
       legacyPath: `/en/overflow/source-${index}`,
@@ -281,6 +286,7 @@ describe('generate-legacy-redirect-artifacts', () => {
     );
     await writeFile(gscObservedRedirectsPath, '[]\n', 'utf8');
     await writeFile(posthogRevalidatedRedirectsPath, '[]\n', 'utf8');
+    await writeFile(posthogObservedRedirectsPath, '[]\n', 'utf8');
 
     expect(generateArtifacts(root)).toContain(
       '[legacy-redirects] Vercel bulk redirects: 1000',
