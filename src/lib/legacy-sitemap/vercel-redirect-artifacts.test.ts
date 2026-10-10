@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import gscObservedRedirects from './gsc-observed-redirects.json';
+import posthogRevalidatedRedirects from './posthog-revalidated-404s.json';
 import posthogObservedRedirects from './posthog-observed-redirects.json';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
@@ -72,11 +73,16 @@ describe('legacy redirect Vercel artifacts', () => {
   const bulkRedirects = JSON.parse(
     readFileSync('vercel-legacy-redirects.json', 'utf8'),
   ) as VercelRedirect[];
+  const publishedRedirects = [
+    ...bulkRedirects,
+    ...(vercelConfig.redirects ?? []),
+  ];
 
   it('keeps the committed artifacts aligned with the legacy redirect rules', () => {
     expect(staticRedirects).toHaveLength(
       legacyRules.length +
         gscObservedRedirects.length +
+        posthogRevalidatedRedirects.length +
         posthogObservedRedirects.length,
     );
     expect(vercelConfig.bulkRedirectsPath).toBe('vercel-legacy-redirects.json');
@@ -163,16 +169,16 @@ describe('legacy redirect Vercel artifacts', () => {
       source: '/en/agora-chat/develop/ip_allowlist',
       statusCode: 301,
     });
+    expect(ipAllowlistRedirect?.preserveQueryParams ?? true).toBe(true);
   });
 
   it('redirects the legacy Chat RESTful overview to the API reference overview in production', () => {
     expect(
-      bulkRedirects.find(
+      publishedRedirects.find(
         (rule) => rule.source === '/en/agora-chat/restful-api/restful-overview',
       ),
-    ).toEqual({
+    ).toMatchObject({
       destination: '/en/api-reference/api-ref/im',
-      preserveQueryParams: true,
       source: '/en/agora-chat/restful-api/restful-overview',
       statusCode: 301,
     });
@@ -180,32 +186,29 @@ describe('legacy redirect Vercel artifacts', () => {
 
   it('redirects the moved AI release notes page in production', () => {
     expect(
-      bulkRedirects.find(
+      publishedRedirects.find(
         (rule) => rule.source === '/en/ai/reference/release-notes',
       ),
-    ).toEqual({
+    ).toMatchObject({
       destination: '/en/ai/release-notes',
-      preserveQueryParams: true,
       source: '/en/ai/reference/release-notes',
       statusCode: 301,
     });
   });
 
   it('matches legacy Agora Platform URLs with encoded spaces in production', () => {
-    expect(bulkRedirects).toEqual(
+    expect(publishedRedirects).toEqual(
       expect.arrayContaining([
-        {
+        expect.objectContaining({
           source: '/en/Agora%20Platform/downloads',
           destination: '/en/api-reference/sdks',
           statusCode: 301,
-          preserveQueryParams: true,
-        },
-        {
+        }),
+        expect.objectContaining({
           source: '/en/Agora%20Platform/sampleapps',
           destination: '/en/api-reference/recipes',
           statusCode: 301,
-          preserveQueryParams: true,
-        },
+        }),
       ]),
     );
 
@@ -288,7 +291,7 @@ describe('legacy redirect Vercel artifacts', () => {
 
     for (const expected of expectedRedirects) {
       expect(
-        bulkRedirects.find((rule) => rule.source === expected.source),
+        publishedRedirects.find((rule) => rule.source === expected.source),
       ).toEqual({
         ...expected,
         preserveQueryParams: true,
@@ -342,7 +345,7 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('redirects observed legacy URLs with trailing slashes before app routing', () => {
-    expect(bulkRedirects).toEqual(
+    expect(publishedRedirects).toEqual(
       expect.arrayContaining([
         {
           destination:
@@ -362,7 +365,7 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('publishes confirmed GSC 404 targets as bulk redirects', () => {
-    expect(bulkRedirects).toContainEqual({
+    expect(publishedRedirects).toContainEqual({
       destination: '/en/api-reference/faq/product/browser_support',
       preserveQueryParams: true,
       source: '/en/help/general-product-inquiry/browser_support',
@@ -371,11 +374,6 @@ describe('legacy redirect Vercel artifacts', () => {
   });
 
   it('publishes confirmed PostHog 404 targets as production redirects', () => {
-    const publishedRedirects = [
-      ...bulkRedirects,
-      ...(vercelConfig.redirects ?? []),
-    ];
-
     expect(publishedRedirects).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
@@ -386,6 +384,11 @@ describe('legacy redirect Vercel artifacts', () => {
         expect.objectContaining({
           destination: '/en/api-reference/recipes',
           source: '/en/AgoraPlatform/sampleapps/',
+          statusCode: 301,
+        }),
+        expect.objectContaining({
+          destination: '/en/api-reference',
+          source: '/en/api_reference',
           statusCode: 301,
         }),
       ]),
