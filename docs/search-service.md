@@ -1,6 +1,6 @@
 # 静态文档与搜索服务
 
-文档页面和搜索服务使用同一套 TanStack Start 源码，分别构建和发布。文档站由 CDN/静态托管提供页面，同域的 `/api/*` 由独立 Node 服务处理。中文搜索页与快捷搜索都请求 `GET /api/search`；浏览器不需要 Meilisearch 地址或密钥。AI 和登录暂不启用，后续可在 Start 的 API 路由与中间件中扩展。
+文档页面和 API service 使用同一套 TanStack Start 源码，分别构建和发布。文档站由 CDN/静态托管提供页面，同域的 `/api/*` 由独立 Node 服务处理。中文搜索页与快捷搜索都请求 `GET /api/search`；浏览器不需要 Meilisearch 地址或密钥。AI 暂不启用；中文认证接口与其私有运行配置见 [账号服务说明](./account-service.md)。
 
 本仓库提供构建、运行和索引更新能力。容器、Kubernetes、网关、密钥注入及发布流水线配置由其他项目维护。
 
@@ -17,7 +17,7 @@ VITE_DOCS_REGION=cn bun run build:service
 HOST=0.0.0.0 PORT=3000 bun run start:service
 ```
 
-两种构建不会互相覆盖：服务构建预留 `dist/service` 为构建目录，Nitro 的最终可运行产物是整个 `.output`。服务入口只收录同一份 `/api/search` 和 `/api/health` 路由，不打包文档 UI/MDX，不进行页面预渲染。网关只需将 `/api/*` 转发给服务；页面流量继续走静态站。运行产物本身只需要 Node，也可以直接执行 `node .output/server/index.mjs`。`vite preview` 用于预览，不是生产服务命令。
+两种构建不会互相覆盖：服务构建预留 `dist/service` 为构建目录，Nitro 的最终可运行产物是整个 `.output`。服务入口收录同一份搜索、健康检查与认证 API 路由，不打包文档 UI/MDX，不进行页面预渲染。网关只需将 `/api/*` 转发给服务；页面流量继续走静态站。运行产物本身只需要 Node，也可以直接执行 `node .output/server/index.mjs`。`vite preview` 用于预览，不是生产服务命令。
 
 运行服务需要以下私有环境变量，构建静态站不需要这些变量：
 

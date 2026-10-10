@@ -8,6 +8,10 @@ import {
   useState,
   useSyncExternalStore,
 } from 'react';
+import {
+  AccountGuidance,
+  useResourceAccountGuidance,
+} from '@/components/account-guidance/AccountGuidance';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import { getPlatformIconSrc } from './platform-icon-src';
@@ -547,73 +551,75 @@ export function SdksCatalog({
   });
 
   return (
-    <section
-      className={cn(
-        'not-prose my-8',
-        redesigned ? 'gap-4' : 'gap-3',
-        'flex flex-col',
-      )}
-      data-layout={isEmbedded ? 'embedded' : 'catalog'}
-      data-sdk-download-catalog
-    >
-      {summaryLabel && (!redesigned || !isEmbedded) ? (
-        <div
-          className={cn(
-            'flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3',
-          )}
-        >
-          <p className="m-0 text-sm font-medium text-foreground">
-            {copy.showing(summaryLabel)}
-          </p>
-          <a
-            className="text-sm font-medium text-primary underline-offset-4 hover:underline"
-            href={copy.catalogPath}
+    <AccountGuidance enabled={locale === 'zh-CN'}>
+      <section
+        className={cn(
+          'not-prose my-8',
+          redesigned ? 'gap-4' : 'gap-3',
+          'flex flex-col',
+        )}
+        data-layout={isEmbedded ? 'embedded' : 'catalog'}
+        data-sdk-download-catalog
+      >
+        {summaryLabel && (!redesigned || !isEmbedded) ? (
+          <div
+            className={cn(
+              'flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card px-4 py-3',
+            )}
           >
-            {copy.showAll}
-          </a>
-        </div>
-      ) : null}
-      {usesCapabilityGroups
-        ? visibleCapabilityGroups.map((capability) => (
-            <section
-              aria-labelledby={`sdk-capability-${capability.id}`}
-              className="flex flex-col"
-              key={capability.id}
+            <p className="m-0 text-sm font-medium text-foreground">
+              {copy.showing(summaryLabel)}
+            </p>
+            <a
+              className="text-sm font-medium text-primary underline-offset-4 hover:underline"
+              href={copy.catalogPath}
             >
-              <div className="mb-2 flex items-baseline justify-between gap-3">
-                <h2
-                  className="m-0 text-lg font-semibold text-foreground"
-                  id={`sdk-capability-${capability.id}`}
-                >
-                  {capability.label}
-                </h2>
-              </div>
-              <div className="divide-y divide-border rounded-lg border border-border bg-card">
-                {capability.products.map((group) => (
-                  <ProductCard
-                    copy={copy}
-                    defaultOpen={false}
-                    group={group}
-                    initialPlatformId={queryFilters.platformId}
-                    key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
-                    locale={locale}
-                    redesigned={redesigned}
-                  />
-                ))}
-              </div>
-            </section>
-          ))
-        : visibleProductGroupsWithVersionFilter.map((group) => (
-            <ProductCard
-              copy={copy}
-              group={group}
-              initialPlatformId={queryFilters.platformId}
-              key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
-              locale={locale}
-              redesigned={redesigned}
-            />
-          ))}
-    </section>
+              {copy.showAll}
+            </a>
+          </div>
+        ) : null}
+        {usesCapabilityGroups
+          ? visibleCapabilityGroups.map((capability) => (
+              <section
+                aria-labelledby={`sdk-capability-${capability.id}`}
+                className="flex flex-col"
+                key={capability.id}
+              >
+                <div className="mb-2 flex items-baseline justify-between gap-3">
+                  <h2
+                    className="m-0 text-lg font-semibold text-foreground"
+                    id={`sdk-capability-${capability.id}`}
+                  >
+                    {capability.label}
+                  </h2>
+                </div>
+                <div className="divide-y divide-border rounded-lg border border-border bg-card">
+                  {capability.products.map((group) => (
+                    <ProductCard
+                      copy={copy}
+                      defaultOpen={false}
+                      group={group}
+                      initialPlatformId={queryFilters.platformId}
+                      key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+                      locale={locale}
+                      redesigned={redesigned}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))
+          : visibleProductGroupsWithVersionFilter.map((group) => (
+              <ProductCard
+                copy={copy}
+                group={group}
+                initialPlatformId={queryFilters.platformId}
+                key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
+                locale={locale}
+                redesigned={redesigned}
+              />
+            ))}
+      </section>
+    </AccountGuidance>
   );
 }
 
@@ -642,6 +648,7 @@ function ProductCard({
   const [platformId, setPlatformId] = useState(defaultPlatformId);
   const [versionIndex, setVersionIndex] = useState('0');
   const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
+  const startAccountGuidance = useResourceAccountGuidance();
 
   const activePlatform =
     group.platforms.find((entry) => entry.platformId === platformId) ??
@@ -655,6 +662,16 @@ function ProductCard({
       : null;
   const hasEmbeddedDownloadCards =
     Boolean(downloadPageHref) && group.productId !== 'chat';
+  const onDownload = (version: SdkDownloadVersion) => {
+    if (locale !== 'zh-CN' || group.productId !== 'signaling') return;
+    startAccountGuidance({
+      resourceType: 'sdk',
+      resourceId: group.productId,
+      target: 'rtm',
+      platform: activePlatform.platformId,
+      version: version.id,
+    });
+  };
 
   const titleId = `sdk-${group.defaultProduct.id}-title`;
   const versionId = `sdk-${group.defaultProduct.id}-version`;
@@ -737,6 +754,7 @@ function ProductCard({
                 <SdkDownloadCard
                   iconSrc={getPlatformIconSrc(entry.iconPlatformId)}
                   key={getVersionKey(activePlatform.platformId, entry.version)}
+                  onDownload={() => onDownload(entry.version)}
                   title={entry.title}
                   version={entry.version}
                   versionSuffix={entry.versionSuffix}
@@ -794,6 +812,7 @@ function ProductCard({
                   copy={copy}
                   redesigned={redesigned}
                   version={activeVersion}
+                  onDownload={() => onDownload(activeVersion)}
                 />
               ) : null}
             </>
@@ -1033,11 +1052,13 @@ function isLatestVersion(version: SdkDownloadVersion) {
 function InstallArea({
   command,
   copy,
+  onDownload,
   redesigned,
   version,
 }: {
   command: InstallCommand | null;
   copy: CatalogCopy;
+  onDownload?: () => void;
   redesigned: boolean;
   version: SdkDownloadVersion;
 }) {
@@ -1066,6 +1087,7 @@ function InstallArea({
                   : 'underline underline-offset-2 hover:text-foreground',
               )}
               href={version.downloadLink}
+              onClick={onDownload}
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -1105,6 +1127,7 @@ function InstallArea({
                 : 'inline-flex min-h-11 items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50',
             )}
             href={version.downloadLink}
+            onClick={onDownload}
             rel="noreferrer noopener"
             target="_blank"
           >

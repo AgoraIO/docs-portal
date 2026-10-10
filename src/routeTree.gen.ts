@@ -19,12 +19,16 @@ import { Route as LocaleTabRouteRouteImport } from './routes/$locale/$tab/route'
 import { Route as LocaleSearchRouteImport } from './routes/$locale/search'
 import { Route as ApiRefSplatRouteImport } from './routes/api-ref/$'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
+import { Route as ApiLogoutRouteImport } from './routes/api/logout'
+import { Route as ApiOauthRouteImport } from './routes/api/oauth'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
+import { Route as ApiUserinfoRouteImport } from './routes/api/userinfo'
 import { Route as DocSplatRouteImport } from './routes/doc/$'
 import { Route as LlmsSplatRouteImport } from './routes/llms/$'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
 import { Route as LocaleTabSplatRouteImport } from './routes/$locale/$tab/$'
 import { Route as Char91__staticChar93DocsSearchSplatRouteImport } from './routes/[__static]/docs-search/$'
+import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -76,9 +80,24 @@ const ApiHealthRoute = ApiHealthRouteImport.update({
   path: '/api/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiLogoutRoute = ApiLogoutRouteImport.update({
+  id: '/api/logout',
+  path: '/api/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOauthRoute = ApiOauthRouteImport.update({
+  id: '/api/oauth',
+  path: '/api/oauth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiSearchRoute = ApiSearchRouteImport.update({
   id: '/api/search',
   path: '/api/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiUserinfoRoute = ApiUserinfoRouteImport.update({
+  id: '/api/userinfo',
+  path: '/api/userinfo',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocSplatRoute = DocSplatRouteImport.update({
@@ -107,6 +126,11 @@ const Char91__staticChar93DocsSearchSplatRoute =
     path: '/__static/docs-search/$',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
+  id: '/api/auth/login',
+  path: '/api/auth/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -118,12 +142,16 @@ export interface FileRoutesByFullPath {
   '/$locale/search': typeof LocaleSearchRoute
   '/api-ref/$': typeof ApiRefSplatRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/logout': typeof ApiLogoutRoute
+  '/api/oauth': typeof ApiOauthRoute
   '/api/search': typeof ApiSearchRoute
+  '/api/userinfo': typeof ApiUserinfoRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
 export interface FileRoutesByTo {
@@ -135,12 +163,16 @@ export interface FileRoutesByTo {
   '/$locale/search': typeof LocaleSearchRoute
   '/api-ref/$': typeof ApiRefSplatRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/logout': typeof ApiLogoutRoute
+  '/api/oauth': typeof ApiOauthRoute
   '/api/search': typeof ApiSearchRoute
+  '/api/userinfo': typeof ApiUserinfoRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
   '/$locale/$tab': typeof LocaleTabIndexRoute
 }
 export interface FileRoutesById {
@@ -154,12 +186,16 @@ export interface FileRoutesById {
   '/$locale/search': typeof LocaleSearchRoute
   '/api-ref/$': typeof ApiRefSplatRoute
   '/api/health': typeof ApiHealthRoute
+  '/api/logout': typeof ApiLogoutRoute
+  '/api/oauth': typeof ApiOauthRoute
   '/api/search': typeof ApiSearchRoute
+  '/api/userinfo': typeof ApiUserinfoRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
+  '/api/auth/login': typeof ApiAuthLoginRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
 export interface FileRouteTypes {
@@ -174,12 +210,16 @@ export interface FileRouteTypes {
     | '/$locale/search'
     | '/api-ref/$'
     | '/api/health'
+    | '/api/logout'
+    | '/api/oauth'
     | '/api/search'
+    | '/api/userinfo'
     | '/doc/$'
     | '/llms/$'
     | '/$locale/'
     | '/$locale/$tab/$'
     | '/__static/docs-search/$'
+    | '/api/auth/login'
     | '/$locale/$tab/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -191,12 +231,16 @@ export interface FileRouteTypes {
     | '/$locale/search'
     | '/api-ref/$'
     | '/api/health'
+    | '/api/logout'
+    | '/api/oauth'
     | '/api/search'
+    | '/api/userinfo'
     | '/doc/$'
     | '/llms/$'
     | '/$locale'
     | '/$locale/$tab/$'
     | '/__static/docs-search/$'
+    | '/api/auth/login'
     | '/$locale/$tab'
   id:
     | '__root__'
@@ -209,12 +253,16 @@ export interface FileRouteTypes {
     | '/$locale/search'
     | '/api-ref/$'
     | '/api/health'
+    | '/api/logout'
+    | '/api/oauth'
     | '/api/search'
+    | '/api/userinfo'
     | '/doc/$'
     | '/llms/$'
     | '/$locale/'
     | '/$locale/$tab/$'
     | '/__static/docs-search/$'
+    | '/api/auth/login'
     | '/$locale/$tab/'
   fileRoutesById: FileRoutesById
 }
@@ -228,11 +276,15 @@ export interface RootRouteChildren {
   LocaleSearchRoute: typeof LocaleSearchRoute
   ApiRefSplatRoute: typeof ApiRefSplatRoute
   ApiHealthRoute: typeof ApiHealthRoute
+  ApiLogoutRoute: typeof ApiLogoutRoute
+  ApiOauthRoute: typeof ApiOauthRoute
   ApiSearchRoute: typeof ApiSearchRoute
+  ApiUserinfoRoute: typeof ApiUserinfoRoute
   DocSplatRoute: typeof DocSplatRoute
   LlmsSplatRoute: typeof LlmsSplatRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
   Char91__staticChar93DocsSearchSplatRoute: typeof Char91__staticChar93DocsSearchSplatRoute
+  ApiAuthLoginRoute: typeof ApiAuthLoginRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -307,11 +359,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiHealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/logout': {
+      id: '/api/logout'
+      path: '/api/logout'
+      fullPath: '/api/logout'
+      preLoaderRoute: typeof ApiLogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/oauth': {
+      id: '/api/oauth'
+      path: '/api/oauth'
+      fullPath: '/api/oauth'
+      preLoaderRoute: typeof ApiOauthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/search': {
       id: '/api/search'
       path: '/api/search'
       fullPath: '/api/search'
       preLoaderRoute: typeof ApiSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/userinfo': {
+      id: '/api/userinfo'
+      path: '/api/userinfo'
+      fullPath: '/api/userinfo'
+      preLoaderRoute: typeof ApiUserinfoRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/doc/$': {
@@ -349,6 +422,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91__staticChar93DocsSearchSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/auth/login': {
+      id: '/api/auth/login'
+      path: '/api/auth/login'
+      fullPath: '/api/auth/login'
+      preLoaderRoute: typeof ApiAuthLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -376,12 +456,16 @@ const rootRouteChildren: RootRouteChildren = {
   LocaleSearchRoute: LocaleSearchRoute,
   ApiRefSplatRoute: ApiRefSplatRoute,
   ApiHealthRoute: ApiHealthRoute,
+  ApiLogoutRoute: ApiLogoutRoute,
+  ApiOauthRoute: ApiOauthRoute,
   ApiSearchRoute: ApiSearchRoute,
+  ApiUserinfoRoute: ApiUserinfoRoute,
   DocSplatRoute: DocSplatRoute,
   LlmsSplatRoute: LlmsSplatRoute,
   LocaleIndexRoute: LocaleIndexRoute,
   Char91__staticChar93DocsSearchSplatRoute:
     Char91__staticChar93DocsSearchSplatRoute,
+  ApiAuthLoginRoute: ApiAuthLoginRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -7,12 +7,22 @@ import {
   within,
 } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SdksCatalog } from './SdksCatalog';
 
 beforeEach(() => {
   window.history.replaceState(null, '', '/en/api-reference/sdks');
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(
+      async () =>
+        new Response(JSON.stringify({ status: 'unauthenticated' }), {
+          status: 401,
+        }),
+    ),
+  );
 });
+afterEach(() => vi.unstubAllGlobals());
 
 function openProductCard(name: string) {
   const card = screen.getByRole('article', { name });
