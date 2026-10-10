@@ -8,6 +8,35 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('keeps recording and transcoding FAQ memberships under the navigation product IDs', () => {
+    const url = '/zh-CN/reference/faq/integration/ncs_vs_query';
+    const records = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '状态监视', objectType: 'docs' },
+      '# 状态监视\n\n使用 query 或消息通知。',
+    );
+    expect(records[0].products).toEqual(['cloud-recording', 'transcoding']);
+  });
+  it.each([
+    ['/zh-CN/realtime-media/transcoding', 'docs', 'transcoding'],
+    [
+      '/zh-CN/api-reference/api-ref/cloud-transcoding/acquire',
+      'openapi',
+      'transcoding',
+    ],
+    ['/zh-CN/api-reference/api-ref/signaling/receive', 'docs', 'rtm'],
+    ['/zh-CN/realtime-media/cloud-recording', 'docs', 'cloud-recording'],
+  ] as const)(
+    'exports a consistent product for %s',
+    (url, objectType, product) => {
+      const records = extractPublishedCnSections(
+        { url, canonicalPath: url, markdownPath: `${url}.md` },
+        { url, title: '产品说明', objectType },
+        '# 产品说明\n\n正文内容。',
+      );
+      expect(records[0]).toMatchObject({ product, products: [product] });
+    },
+  );
   it.each(['c++', 'objective-c', ''])(
     'keeps following headings after table-cell fences with language %s',
     (language) => {

@@ -11,6 +11,7 @@ import {
   normalizeMeilisearchQuery,
 } from './meilisearch-client';
 import { SEARCH_PAGE_SIZE, type SearchPageState } from './search-page-state';
+import { normalizeCnProduct } from './cn-products';
 
 export type CnSearchQuery = SearchPageState & { tab?: string };
 
@@ -30,7 +31,9 @@ export async function queryCnSearch(
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
   for (const field of ['product', 'platform', 'version', 'tab'] as const) {
     if (state[field]) {
-      const value = JSON.stringify(state[field]);
+      const value = JSON.stringify(
+        field === 'product' ? normalizeCnProduct(state[field]) : state[field],
+      );
       filter.push(
         field === 'product'
           ? `(product = ${value} OR products = ${value})`

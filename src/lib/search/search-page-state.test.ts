@@ -6,6 +6,11 @@ import {
 } from './search-page-state';
 
 describe('search page URL state', () => {
+  it.each([['cloud-transcoding', 'transcoding'], ['signaling', 'rtm']])(
+    'uses one product option for legacy links with %s', (product, canonical) => {
+      expect(parseSearchPageState({ product }).product).toBe(canonical);
+    },
+  );
   it('round trips a shareable query, filters, and page without defaults', () => {
     const input = {
       q: ' Token 过期 ',

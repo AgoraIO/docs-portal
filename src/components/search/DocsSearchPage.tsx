@@ -56,6 +56,7 @@ const productNames: Record<string, string> = {
   'local-server-recording': '本地服务端录制',
   console: '控制台',
   whiteboard: '互动白板',
+  transcoding: '云端转码',
 };
 const examples = ['Token', 'manualSOS', '云端录制', '降噪'];
 

@@ -1,5 +1,6 @@
 import { isKnownPlatform } from '@/lib/platforms/registry';
 import type { DocsSearchScope } from './search-provider';
+import { normalizeCnProduct } from './cn-products';
 
 export type SearchPageState = {
   q: string;
@@ -16,9 +17,10 @@ export function parseSearchPageState(
   input: Record<string, unknown>,
 ): SearchPageState {
   const page = Number(input.page);
+  const product = readIdentifier(input.product);
   return {
     q: typeof input.q === 'string' ? input.q.trim().slice(0, 500) : '',
-    product: readIdentifier(input.product),
+    product: product ? normalizeCnProduct(product) : undefined,
     platform:
       typeof input.platform === 'string' && isKnownPlatform(input.platform)
         ? input.platform

@@ -122,6 +122,30 @@ describe('search index release jobs', () => {
     });
   });
 
+  it('normalizes legacy product IDs when publishing previously exported records', async () => {
+    const { client, indexes } = fakeClient();
+    const receipt = await prepareSearchIndex({
+      client,
+      indexUid: 'docs_cn',
+      revision: 'product-normalization',
+      records: [
+        {
+          ...record,
+          product: 'cloud-transcoding',
+          products: ['cloud-transcoding', 'transcoding', 'cloud-recording'],
+        },
+      ],
+    });
+    expect(
+      [...indexes.get(receipt.stagedUid)!.values()].find(
+        (doc) => doc.sourceId === 'one',
+      ),
+    ).toMatchObject({
+      product: 'transcoding',
+      products: ['transcoding', 'cloud-recording'],
+    });
+  });
+
   it('configures synonyms and conservative technical-word tolerance on each new index', async () => {
     const fetchMock = vi
       .spyOn(globalThis, 'fetch')

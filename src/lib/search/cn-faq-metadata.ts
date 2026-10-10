@@ -1,4 +1,5 @@
 import { zhCnFaqItems } from '../../components/faq/faq-data.zh-cn';
+import { normalizeCnProduct } from './cn-products';
 
 // FAQ 的中文展示标签转换为当前站点筛选 ID；“全部”是 UI 默认选项，不是通配标签。
 const products: Record<string, string> = {
@@ -60,7 +61,11 @@ export function getCnFaqMetadata(url: string) {
   const item = byUrl.get(url);
   if (!item) return undefined;
   return {
-    products: normalize(item.products, products, '全部产品'),
+    products: [
+      ...new Set(
+        normalize(item.products, products, '全部产品').map(normalizeCnProduct),
+      ),
+    ],
     platform: normalize(item.platforms, platforms, '全部平台'),
   };
 }

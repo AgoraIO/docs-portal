@@ -8,6 +8,7 @@ import type { SearchEntry } from '../docs-search';
 import { isKnownPlatform } from '../platforms/registry';
 import type { PublishedDocsRoute } from '../published-docs-routes';
 import { getCnFaqMetadata } from './cn-faq-metadata';
+import { normalizeCnProduct } from './cn-products';
 import { isPublicCnSearchUrl } from './cn-search-page';
 import { assertValidSearchSection, type SearchSection } from './kb-record';
 
@@ -46,7 +47,11 @@ function getRouteMetadata(route: PublishedDocsRoute) {
       : inheritedPlatform && isKnownPlatform(inheritedPlatform)
         ? inheritedPlatform
         : route.canonicalPath.split('/').find(isKnownPlatform));
-  return { product, platform, version: route.version };
+  return {
+    product: normalizeCnProduct(product),
+    platform,
+    version: route.version,
+  };
 }
 
 function text(node: Root | RootContent): string {
