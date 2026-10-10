@@ -646,7 +646,7 @@ components:
     mode:
       name: mode
       in: path
-      description: '录制模式：<li>`individual`：[单流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。</li><li>`mix`：[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。</li><li>`web`：[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。</li>'
+      description: '录制模式：<li>`raw`：[单流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。</li><li>`mix`：[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。</li><li>`web`：[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。</li>'
       required: true
       schema:
         type: string
@@ -1193,7 +1193,8 @@ components:
           type: array
           description: |-
             录制生成的视频文件类型：
-            - `"hls"`：默认值。M3U8 和 TS 文件。
+            - `"hls"`：HLS 格式的 M3U8 和 TS 文件。单流录制时，音频和视频输出到同一个 M3U8 文件。
+            - `"mp3"`：MP3 文件，仅适用于单流录制且仅录制音频的场景。
             - `"mp4"`：MP4 文件。
             > - **单流录制**模式下，且**非仅截图**情况，使用默认值即可。
             > - **合流录制**和**页面录制**模式下，如果你需要生成 MP4 文件，那么设为 `["hls","mp4"]`。仅设为 `["mp4"]` 会收到报错。设置后，录制文件行为如下：
@@ -1209,15 +1210,15 @@ components:
       description: |-
         云端截图配置项。<p><b>注意：</b>仅需在<b>单流录制</b>模式下，且使用截图功能时设置。</p>
         **截图**使用须知：
-        - 截图功能仅适用于单流录制模式（`individual`）。
+        - 截图功能仅适用于单流录制模式（`raw`）。
         - 你可以在一个单流录制进程中仅截图，或同时录制和截图，详见[云端截图](/zh-CN/realtime-media/cloud-recording/build/recording-modes/snapshot)。同时录制和截图的情况需要设置 `recordingFileConfig` 字段。
         - 如果录制服务或录制上传服务异常，则截图失败。截图异常时，录制不受影响。
         - 使用截图时，`streamTypes` 必须设置为 1 或 2。如果设置了 `subscribeAudioUid`，则必须同时设置 `subscribeVideoUids`。
       properties:
         captureInterval:
           type: number
-          description: 云端录制定期截图的截图周期。单位为秒。
-          minimum: 5
+          description: 云端录制定期截图的截图周期。单位为秒。截图仅在视频关键帧时生成，实际截图间隔可能大于设置的周期。
+          minimum: 1
           maximum: 3600
           default: 10
         fileType:
@@ -1331,10 +1332,10 @@ components:
               default: false
             maxVideoDuration:
               type: number
-              description: 页面录制生成的 MP4 切片文件的最大时长，单位为分钟。页面录制过程中，录制服务会在当前 MP4 文件时长超过约 `maxVideoDuration` 左右时创建一个新的 MP4 切片文件。
+              description: 页面录制生成的 MP4 切片文件的最大时长，单位为分钟。页面录制过程中，录制服务会在当前 MP4 文件时长超过 `maxVideoDuration`（默认 180 分钟）或文件大小超过约 2 GB 时创建一个新的 MP4 切片文件。
               minimum: 30
               maximum: 240
-              default: 120
+              default: 180
             onhold:
               $ref: '#/components/schemas/onhold'
             readyTimeout:

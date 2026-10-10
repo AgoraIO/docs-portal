@@ -3,6 +3,79 @@ title: "发版说明"
 ---
 你可以使用 RTSA C SDK 在 Linux 平台上实现媒体流加速的功能。本页提供 RTSA C SDK 的发版说明。
 
+## 1.10.1 版
+
+该版本于 2026 年 9 月 7 日发布。
+
+### 升级必看
+
+#### RTM API 更名
+
+该版本对 RTM API 进行了更名。如果你由之前的版本升级到 v1.10.1 且集成过 RTM 服务，请同步更新相关集成代码：
+
+- `agora_rtc_login_rtm` 更名为 `agora_rtm_login`。
+- `agora_rtc_logout_rtm` 更名为 `agora_rtm_logout`。
+- `agora_rtc_send_rtm_data` 更名为 `agora_rtm_send_data`。
+
+#### RTM 消息接口参数变更
+
+该版本支持设置 RTM 消息的类型和自定义类型信息：
+
+- `agora_rtm_send_data` 方法新增 `msg_type` 和 `custom_type` 参数，支持发送二进制和文本消息。
+- `on_rtm_data` 回调新增 `msg_type` 和 `custom_type` 参数，用于获取收到的消息类型和自定义类型信息。
+
+### 新增特性
+
+#### RTM Channel
+
+该版本新增 RTM Channel 功能，支持订阅频道、取消订阅频道以及向频道发布消息。相关 API 包括：
+
+- `agora_rtm_subscribe`
+- `agora_rtm_unsubscribe`
+- `agora_rtm_publish`
+- `on_rtm_subscribe_result`
+- `on_rtm_subscribe_data`
+- `on_rtm_publish_result`
+
+#### 发送视频时携带 SEI 信息
+
+该版本支持发送视频时携带 SEI 信息。`video_frame_info_t` 结构体新增 `sei_data` 成员及配套的 `video_sei_t` 结构体。你可以在调用 `agora_rtc_send_video_data` 时随视频帧发送 SEI 信息。
+
+#### TLS 云代理
+
+该版本新增 TLS 云代理支持。在调用 `agora_rtc_set_cloud_proxy` 方法时，将 `cloud_proxy_type_e` 设置为 `CLOUD_PROXY_TLS (4)`，即可使用 TLS 云代理。
+
+### 改进
+
+- 优化视频下行传输 Pipeline，降低接收延迟和卡顿率，支持高帧率 Generic 视频流。
+- 抽象 mbedTLS 加密适配层，支持接入外部 mbedTLS。
+- 引入并开源 AOSL 平台适配层，更好、更快地支持更多非标准 RTOS。
+- 优化 RDT 传输速率。
+
+### 问题修复
+
+视频：
+
+- 修复接收 JPEG 时未移除尾部 Padding，导致特定硬件解码器无法解码的问题。
+- 限制视频重传次数并更新 FEC 计算逻辑，修复弱网环境下重传和 FEC 导致 CPU 占用激增的问题。
+- 修复视频质量反馈的时差计算溢出，导致发送端无法更新下行 RTT 的问题。
+- 避免超时后仍等待旧重传包，修复弱网环境下视频持续卡住的问题。
+- 修复视频上行带宽估计在初始爬升及高丢包重传场景下计算不准确的问题。
+- 修复高码率场景下接收端带宽计算溢出，导致带宽估计错误的问题。
+- 修复接收 H.265 视频时解析 SEI NALU 失败甚至崩溃的问题。
+- 修复视频接收时序列号识别错误，导致只回调关键帧并造成画面卡顿的问题。
+
+音频：
+
+- 修复 Mute 状态下提前收到音视频包时，不会触发对应 Unmute 回调的问题。
+- 修复接收 G722 数据时发生丢包，导致解码器输出突发噪声的问题。
+
+其他：
+
+- 修复云代理 Keepalive 机制失效的问题。
+- 修复 `log_path` 设置为 `NULL` 时发生崩溃的问题。
+- 修复当前 RTM Server 无法连接时，SDK 在部分情况下不会自动切换到下一个可用服务器的问题。
+
 ## 1.9.7 版
 
 该版本于 2025 年 11 月 27 日发布。
@@ -13,20 +86,20 @@ title: "发版说明"
 
 该版本对 <glossary>3A</glossary> 模块进行了优化。主要接口变更如下：
 
-- 从 [`rtc_channel_options_t`](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 中移除了 `audio_process_opt`，及其关联结构体 `rtc_audio_process_options_t`。
+- 从 [`rtc_channel_options_t`](/api-ref/rtsa/c/structrtc__channel__options__t.html) 中移除了 `audio_process_opt`，及其关联结构体 `rtc_audio_process_options_t`。
 - 在 `rtc_channel_options_t` 中新增 `enable_audio_downlink_aec` 和 `enable_audio_downlink_aec_pcm_dump` 用于替代上述选项。
 
 新的实现支持用户输入硬件回采信号，从而显著提高下行 <glossary>3A</glossary> 处理效果。如从旧版本升级，请确保同步更新相关集成逻辑。
 
 #### 删除错误码 221 和 222
 
-该版本删除了[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_err_code_e)中的 `ERR_AUDIO_DECODER_NOT_MATCH`(221) 和 `ERR_AUDIO_DECODER_NOT_ENABLE`(222)。
+该版本删除了[错误码](/api-ref/rtsa/c/agora__rtc__api_8h#aec639f854206054cb48acde88e998abf)中的 `ERR_AUDIO_DECODER_NOT_MATCH`(221) 和 `ERR_AUDIO_DECODER_NOT_ENABLE`(222)。
 
 ### 改进
 
 #### 音频收发 Codec 解耦
 
-该版本将音频的发送和接收编解码格式解耦，不再要求两者保持一致。相关接口更新为在 [`rtc_channel_options_t`](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 中添加了 `enable_audio_decode`，用于控制是否开启下行音频解码。
+该版本将音频的发送和接收编解码格式解耦，不再要求两者保持一致。相关接口更新为在 [`rtc_channel_options_t`](/api-ref/rtsa/c/structrtc__channel__options__t.html) 中添加了 `enable_audio_decode`，用于控制是否开启下行音频解码。
 
 #### 音频模块改进
 
@@ -51,11 +124,11 @@ title: "发版说明"
 该版本对如下代码进行了更名。如果你由之前的版本升级到 v1.9.6 且集成过相应代码，请重新集成：
 
 - 错误码 `ERR_RTM_EXCEED_TCP_SKB` (1006) 更名为 `ERR_RTM_EXCEED_SND_BUFFER` (1006)。
-- 回调 `on_send_rtm_data_result` 更名为 [`on_rtm_send_data_result`](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a15b2dba380611e1974686f74a3ec0ca7)。
+- 回调 `on_send_rtm_data_result` 更名为 [`on_rtm_send_data_result`](/api-ref/rtsa/c/structagora__rtm__handler__t#a8b8816e97d0ec1563280cc39fe4d28ca)。
 
 #### 区域码清理
 
-该版本对 [`area_code_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#area_code_e) 中不支持的区域进行了清理，并作为预览特性放置在 `area_code_ex_e` 中。声网对预览特性不做可用性保证。
+该版本对 [`area_code_e`](/api-ref/rtsa/c/agora__rtc__api_8h#a1a483a5b4b02019fa68b46a979ac1d1d) 中不支持的区域进行了清理，并作为预览特性放置在 `area_code_ex_e` 中。声网对预览特性不做可用性保证。
 
 清理后的 `area_code_e` 支持如下区域：
 
@@ -95,14 +168,14 @@ title: "发版说明"
 
 该版本新增 String 型 UID 功能，支持用户使用 String 型的 User Account 加入频道实现互通。相关 API 包括：
 
-- [`agora_rtc_join_channel_with_user_account`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a64a24029bfaa5408e987122261385013)：使用 User Account 加入频道
-- [`agora_rtc_get_user_info_by_user_account`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a68efcfa431803942c8fdc733b00c30c1)：通过 User Account 获取远端用户信息
-- [`agora_rtc_get_user_info_by_uid`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad6b1be785d6c2b4fa8fb0eac90290194)：通过 UID 获取远端用户信息
-- [`on_user_info_updated`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a4c8f017cc2fa8aaa6e91c966b97a8aee)：远端用户信息变更回调
-- [`on_user_joined_with_user_account`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa57af03ef9f26ab68917fa7a30f703bd)：远端用户使用 User Account 加入频道回调
-- [`on_user_offline_with_user_account`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af3a7f207010bafca7aa99fdba5a9b1ab)：使用 User Account 的场景下，远端用户离开频道回调
+- [`agora_rtc_join_channel_with_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a64a24029bfaa5408e987122261385013)：使用 User Account 加入频道
+- [`agora_rtc_get_user_info_by_user_account`](/api-ref/rtsa/c/agora__rtc__api_8h#a68efcfa431803942c8fdc733b00c30c1)：通过 User Account 获取远端用户信息
+- [`agora_rtc_get_user_info_by_uid`](/api-ref/rtsa/c/agora__rtc__api_8h#ad6b1be785d6c2b4fa8fb0eac90290194)：通过 UID 获取远端用户信息
+- [`on_user_info_updated`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#a4235da22aa144746564deaa878dcda40)：远端用户信息变更回调
+- [`on_user_joined_with_user_account`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#aa7f9418b6d5502ee641b8231c6f3292f)：远端用户使用 User Account 加入频道回调
+- [`on_user_offline_with_user_account`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#ab81aeacbe7daef9eff3f14362267ded7)：使用 User Account 的场景下，远端用户离开频道回调
 
-详细实现步骤和开发注意事项可以参考[使用 String 型 UID](/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/string-uid)。
+详细实现步骤和开发注意事项可以参考[使用 String 型 UID](/zh-CN/realtime-media/rtsa/build/implement-core-features/string-uid)。
 
 :::warning[注意]
 使用 String 型 UID 首次加入频道时会略有延迟。我们更建议使用 Int 型 UID 实现相关功能。
@@ -112,18 +185,18 @@ title: "发版说明"
 
 为方便用户在频道内以广播的形式发送消息，该版本新增数据流功能。相关 API 包括：
 
-- [`agora_rtc_create_data_stream`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aa6b288b479c7048b4cceb85d995771ed)：创建数据流
-- [`agora_rtc_send_stream_message`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aee89fa14447b4529d45275afe5b5a86f)：发送数据流消息
-- [`on_stream_message`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7c73b2bb0558e2b695d8838ee542c87a)：收到远端用户发送的数据流消息回调
+- [`agora_rtc_create_data_stream`](/api-ref/rtsa/c/agora__rtc__api_8h#aa6b288b479c7048b4cceb85d995771ed)：创建数据流
+- [`agora_rtc_send_stream_message`](/api-ref/rtsa/c/agora__rtc__api_8h#aee89fa14447b4529d45275afe5b5a86f)：发送数据流消息
+- [`on_stream_message`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#a60c9fde781cd1429ed824efeb1cdd7e5)：收到远端用户发送的数据流消息回调
 
-详细实现步骤和开发注意事项可以参考[发送和接收数据流 (Data Stream)](/zh-CN/realtime-media/rtsa/build/data-communication/data-stream)。
+详细实现步骤和开发注意事项可以参考[发送和接收数据流 (Data Stream)](/zh-CN/realtime-media/rtsa/build/implement-core-features/data-stream)。
 
 #### 媒体控制信息
 
 为方便用户向指定频道或所有频道内的用户发送消息，该版本新增媒体控制信息功能。相关 API 包括：
 
-- [`agora_rtc_send_media_ctrl_msg`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a83dd3f91afbae5d54548c4d8e546aafc)：发送媒体控制信息
-- [`on_media_ctrl_msg`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab0a6462ac391a960f767d2cf6ce8078a)：收到远端用户发送的媒体控制信息回调
+- [`agora_rtc_send_media_ctrl_msg`](/api-ref/rtsa/c/agora__rtc__api_8h#a83dd3f91afbae5d54548c4d8e546aafc)：发送媒体控制信息
+- [`on_media_ctrl_msg`](/api-ref/rtsa/c/structagora__rtc__event__handler__t#a2e1c250bc84081128d1c2f4fed26bf92)：收到远端用户发送的媒体控制信息回调
 
 ### 问题修复
 
@@ -162,7 +235,7 @@ title: "发版说明"
 
 #### 规整错误码
 
-为提升 SDK 易用性，该版本对错误码进行了规整。API 调用时返回的错误和 `on_error` 回调中报告的错误都收口进了 `agora_err_code_e` 中，并细分为通用、RTN、音频、视频、RDT、RTM 模块，方便开发者快速定位问题。你可以在 [API 参考](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_err_code_e)或[错误码文档](/zh-CN/realtime-media/rtsa/reference/error-codes)中了解详情。
+为提升 SDK 易用性，该版本对错误码进行了规整。API 调用时返回的错误和 `on_error` 回调中报告的错误都收口进了 `agora_err_code_e` 中，并细分为通用、RTN、音频、视频、RDT、RTM 模块，方便开发者快速定位问题。你可以在 [API 参考](/api-ref/rtsa/c/agora__rtc__api_8h#aec639f854206054cb48acde88e998abf)或[错误码文档](/zh-CN/realtime-media/rtsa/reference/error-codes)中了解详情。
 
 在之前的版本中，API 调用时返回的错误没有对外开放，开发者需要调用 `agora_rtc_err2str` 才能获取描述信息。你可以参考最新的 API 代码调整相关逻辑。
 
@@ -225,7 +298,7 @@ title: "发版说明"
 - `on_rdt_state` 回调：RDT 通道的连接状态已改变。
 - `on_rdt_msg` 回调：在 RDT 通道中收到消息。
 
-具体使用方法见[通过 RDT 通道发送消息](/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel)。
+具体使用方法见[通过 RDT 通道发送消息](/zh-CN/realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel)。
 
 #### 音频时长设置
 
@@ -418,7 +491,7 @@ title: "发版说明"
 
 ### 升级必看
 
-1.8.0 版相比 1.7.3 版，大部分 API 都发生了变更或重新设计。如果你将 SDK 从 1.7.3 版升级到该版本，你需要重新集成 SDK。集成方式详见[实现媒体流和信令传输](/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/implement-transmission)。
+1.8.0 版相比 1.7.3 版，大部分 API 都发生了变更或重新设计。如果你将 SDK 从 1.7.3 版升级到该版本，你需要重新集成 SDK。集成方式详见[实现媒体流和信令传输](/zh-CN/realtime-media/rtsa/build/implement-core-features/implement-transmission)。
 
 自该版本起，SDK 不再支持 String 型用户 ID，相关接口也从 SDK 中删除。
 
@@ -436,7 +509,7 @@ SDK 将所有 `channel_name` 参数更新为 `connection_id` 参数（`agora_rtc
 
 Connection 通过 `agora_rtc_join_channel` 与 RTC 频道和用户 ID 进行绑定。在你调用 `agora_rtc_leave_channel` 之后，绑定结束。
 
-你可以通过  Connection ID 机制实现多频道推流和单频道推多路流，详见[多频道发流和单频道多路发流](/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel)。
+你可以通过  Connection ID 机制实现多频道推流和单频道推多路流，详见[多频道发流和单频道多路发流](/zh-CN/realtime-media/rtsa/build/implement-core-features/multi-channel)。
 
 ### 问题修复
 
@@ -606,7 +679,7 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 ### 新增特性
 
-该版本支持在调用 `agora_rtc_init` 初始化 SDK 时指定服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。目前支持的区域有中国大陆、北美、欧洲、日本、印度、亚洲（中国大陆除外）和全球（默认）。详见[限定访问区域](/zh-CN/realtime-media/rtsa/build/network-and-region-access/region-limit)。
+该版本支持在调用 `agora_rtc_init` 初始化 SDK 时指定服务器的访问区域。该功能为高级设置，适用于有访问安全限制的场景。目前支持的区域有中国大陆、北美、欧洲、日本、印度、亚洲（中国大陆除外）和全球（默认）。详见[限定访问区域](/zh-CN/realtime-media/rtsa/build/setup-and-access/region-limit)。
 
 ### 问题修复
 
@@ -627,7 +700,7 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 ### 改进
 
-- 该版本对 API 返回的错误码进行了整理。以确保开发者能够得到清晰且准确的报错信息。详见[错误码](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_err_code_e)。
+- 该版本对 API 返回的错误码进行了整理。以确保开发者能够得到清晰且准确的报错信息。详见[错误码](/api-ref/rtsa/c/agora__rtc__api_8h#aec639f854206054cb48acde88e998abf)。
 - 该版本优化了 debug log，减少了 log 文件写入操作的系统资源占用。
 - 自该版本起，你可以略过申请 License 和激活步骤直接免费试用 RTSA SDK。试用期时效为 90 天且存在 10 路并发限制。
 
@@ -815,11 +888,11 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 #### 互通增强
 
-该版本增强了 RTSA SDK 间互通的能力，并实现了 RTSA SDK 与[声网 SDK](/zh-CN/realtime-media/rtc/reference/key-concept) 的互通，详见[产品概述的功能描述](/zh-CN/realtime-media/rtsa)章节。
+该版本增强了 RTSA SDK 间互通的能力，并实现了 RTSA SDK 与[声网 SDK](https://docs.agora.io/cn/Agora%20Platform/term_agora_rtc_sdk) 的互通，详见[产品概述的功能描述](/zh-CN/realtime-media/rtsa)章节。
 
 #### 配置 BWE
 
-该版本新增 `agora_rtc_set_bwe_param` 方法用于配置 BWE (Bandwidth Estimation) 参数。你可根据自己的实际带宽和码率需要调用此方法配置发送码率的最小值、最大值和起始值，详见[动态码率推荐](/zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption)。
+该版本新增 `agora_rtc_set_bwe_param` 方法用于配置 BWE (Bandwidth Estimation) 参数。你可根据自己的实际带宽和码率需要调用此方法配置发送码率的最小值、最大值和起始值，详见[动态码率推荐](/zh-CN/realtime-media/rtsa/build/implement-core-features/bitrate-adaption)。
 
 ### API 变更
 

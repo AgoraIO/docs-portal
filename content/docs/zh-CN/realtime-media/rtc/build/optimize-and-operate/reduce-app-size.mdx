@@ -41,9 +41,9 @@ SDK 提供了可选的插件动态库，插件的命名以 `extension` 为后缀
 
 通过官网 [SDK 下载链接](/zh-CN/realtime-media/rtc/reference/downloads)集成时，你可以将不需要使用的插件文件直接删除。
 
-### Maven Central 集成时删除插件
+### Gradle 自动集成时删除插件
 
-通过 Maven Central 集成 Android SDK 时，你可以修改 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中的 `dependencies`，以指定集成你需要的动态库，排除你不需要使用的插件。Android SDK 中各文件与 `dependencies` 中 `implementation` 字段的对应关系详见 [implementation 字段](#implementation-字段)。
+通过 Gradle 自动集成 Android SDK 时，你可以修改 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中的 `dependencies`，以指定集成你需要的动态库，排除你不需要使用的插件。Android SDK 中各文件与 `dependencies` 中 `implementation` 字段的对应关系详见 [implementation 字段](#implementation-字段)。
 
 <Tabs defaultValue="sample1" groupId="operating-systems" persist>
 <TabsList>
@@ -516,28 +516,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-1-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-2-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-3-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-4-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -610,28 +610,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-1-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-2-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-3-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-4-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -743,7 +743,7 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 
 ### implementation 字段
 
-通过 Maven Central 集成 Android SDK 时，你可以修改 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中的 `dependencies` 中的 `implementation` 字段，以指定需要集成的动态库。SDK 中各文件与 `implementation` 字段的对应关系详见下表：
+通过 Gradle 自动集成 Android SDK 时，你可以修改 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中的 `dependencies` 中的 `implementation` 字段，以指定需要集成的动态库。SDK 中各文件与 `implementation` 字段的对应关系详见下表：
 
 <Tabs defaultValue="android-video-sdk" groupId="operating-systems" persist>
 <TabsList>
@@ -788,7 +788,7 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
       - `libagora-fdkaac.so`
       - `libagora-ffmpeg.so`
       - `libagora-soundtouch.so`
-      - `video_dec.so`（自 v4.6.2 起新增）
+      - `libvideo_dec.so`（自 v4.6.2 起新增）
       - `libagora-core.so`（自 v4.3.0 起更名为 `libaosl.so`；自 v4.5.0 起成为依赖，详见下行）
       - SDK 头文件
 
@@ -797,14 +797,14 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-html-13-21-0">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-html-13-22-0">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -1358,28 +1358,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-1-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-2-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-3-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-4-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -1452,28 +1452,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-1-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-2-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-3-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-4-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -2232,28 +2232,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-1-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-2-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-3-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-4-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -2326,28 +2326,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-1-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-2-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-3-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-4-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -3051,28 +3051,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-1-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-2-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-3-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-11-4-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -3145,28 +3145,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-1-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-2-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-3-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-android-ios-macos-windows-electron-markdown-12-4-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -3731,28 +3731,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-unity-markdown-11-1-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-unity-markdown-11-2-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-unity-markdown-11-3-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-unity-markdown-11-4-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -3825,28 +3825,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-unity-markdown-12-1-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-unity-markdown-12-2-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-unity-markdown-12-3-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-unity-markdown-12-4-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -4483,28 +4483,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-rn-flutter-markdown-11-1-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-11-2-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-11-3-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-11-4-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -4577,28 +4577,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-rn-flutter-markdown-12-1-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-12-2-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-12-3-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-12-4-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -5235,28 +5235,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-rn-flutter-markdown-11-1-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-11-2-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-11-3-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-11-4-2">
 
 - `libagora_video_encoder_extension.so`
-- `video_enc.so`
+- `libvideo_enc.so`
 
 </Slot>
 
@@ -5329,28 +5329,28 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 <Slot for="reduce-app-size-rn-flutter-markdown-12-1-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-12-2-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-12-3-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
 <Slot for="reduce-app-size-rn-flutter-markdown-12-4-2">
 
 - `libagora_video_decoder_extension.so`
-- `video_dec.so`
+- `libvideo_dec.so`
 
 </Slot>
 
@@ -5465,3 +5465,14 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 - [为什么 SDK 中使用的是动态库而不是静态库？](/zh-CN/reference/faq/integration/dynamic_or_static_library)
 
 </PlatformStructured>
+
+
+:::note[声网 Maven CDN]
+通过 Gradle 自动集成 Android SDK 前，请在 `settings.gradle` 的 `dependencyResolutionManagement.repositories` 中保留 `mavenCentral()`，并添加：
+
+```groovy
+maven { url = 'https://download.shengwang.cn/maven/' }
+```
+
+如果项目使用低于 v7.1.0 的 Android Gradle Plugin，请在根目录 `build.gradle` 的 `allprojects.repositories` 中添加同一仓库。
+:::

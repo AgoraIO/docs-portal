@@ -416,7 +416,7 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/acquire HTTPS/1.
 | callback | String | 否 | 1024 | 数据回调参数，调用方根据业务情况自行设计，当调用 callback 接口获取直播音频结果时，该接口会原样返回该字段，详细见直播音频离线检测结果获取。作为数据处理标识，因此该字段应该设计为能唯一定位到该次请求的数据结构，如对用户的昵称进行检测，dataId 可设为用户标识（用户 ID），用户修改多次，每次请求数据的 dataId 可能一致，但是 callback 参数可以设计成定位该次请求的数据结构，比如 callback 字段设计成 JSON，包含 dataId 和请求的时间戳等信息，当然如果不想做区分，也可以直接把 callback 设置成 dataId 的值 |
 | extension | String | 否 | 30000 | 自定义扩展参数，JSON 字符串格式。如：`{"keyName1":"value1","keyName2":"value2"}` |
 
-回调结果中包含 `clientInfo` 信息，其中包含 `cname` 和 `uid` 字段，可用于与审核频道以及发流端进行关联。
+回调结果中包含 `clientRequest` 信息，其中包含 `cname` 和 `uid` 字段，可用于与审核频道以及发流端进行关联。
 
 </TabsContent>
 </Tabs>
@@ -718,7 +718,7 @@ POST https://api.sd-rtn.com/v1/apps/{yourappid}/cloud_recording/resourceid/{reso
 ### 审核结果回调
 
 语音审核结果会以 HTTP 请求的形式直接发送到你在 `extensionServiceConfig` 中设置的回调地址。回调参数详见[网易易盾音频审核接口文档](https://support.dun.163.com/documents/588434426518708224?docId=600817330300723200)。
-回调结果中包含 `clientInfo` 信息，其中包含 `cname` 和 `uid` 字段，可用于关联审核频道与发流端。
+回调结果中包含 `clientRequest` 信息，其中包含 `cname` 和 `uid` 字段，可用于关联审核频道与发流端。
 
 ### 错误码和状态码
 

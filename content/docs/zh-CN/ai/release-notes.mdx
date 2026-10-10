@@ -2,6 +2,35 @@
 title: "发版说明"
 description: "查看对话式 AI 引擎的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
+## v2.13
+
+该版本于 2026 年 9 月 18 日发布。
+
+### 改进
+
+- 动态承接词支持使用近期用户和智能体消息生成更符合上下文的提示。可通过 `context_message_limit` 和 `history_character_limit` 控制上下文范围。
+- `FillerWordsContentGeneratedConfig` 新增 `context_message_limit` 和 `history_character_limit`。
+
+## v2.12
+
+该版本于 2026 年 9 月 14 日发布。
+
+### 新增特性
+
+- Agora Agents SDK 支持通过 LLM vendor 配置同步自定义工具调用。
+- 支持根据对话动态生成承接词，并通过 `generated_config` 配置生成提示词和静态回退内容。
+- think action 支持 `append`，可将自定义指令延后到下一轮处理。
+- Android、iOS 和 Web 客户端组件新增 `speak` 和 `think` 方法。
+
+## v2.11
+
+该版本于 2026 年 8 月 11 日发布。
+
+### 新增特性
+
+- 凤鸣 ASR 支持通过 Agents SDK 或 RESTful API 配置 ASR 热词，提升专有名词和业务关键词的识别效果。详见[配置 ASR 热词](./user-guides/asr-keywords)。
+- Go、Python 和 TypeScript SDK 的凤鸣 ASR vendor 支持热词配置。
+
 ## v2.10
 
 该版本于 2026 年 7 月 22 日发布。
