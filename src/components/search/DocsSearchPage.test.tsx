@@ -31,6 +31,43 @@ describe('DocsSearchPage', () => {
   });
   afterEach(() => vi.clearAllMocks());
 
+  it('labels legacy and non-navigation product facets without changing their filter IDs', async () => {
+    const labels = [
+      ['agora-analytics', '水晶球'],
+      ['chatroom', '声动语聊'],
+      ['danmaku', '弹幕玩法'],
+      ['digital-learning', '教育信息化'],
+      ['introduction', '介绍'],
+      ['ppt-conversion-service', 'PPT 转码服务'],
+      ['private-room', '1v1 私密房'],
+      ['reference', '参考文档'],
+      ['voip-callkit', '微呼叫'],
+    ];
+    vi.mocked(searchCnDocsPage).mockResolvedValue({
+      ...empty,
+      facets: { product: Object.fromEntries(labels.map(([id]) => [id, 1])) },
+    });
+    const onChange = vi.fn();
+    render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: 'Token' })}
+        onChange={onChange}
+      />,
+    );
+    for (const [id, label] of labels) {
+      expect(await screen.findByRole('option', { name: label })).toHaveValue(
+        id,
+      );
+    }
+    fireEvent.change(screen.getByRole('combobox', { name: '产品' }), {
+      target: { value: 'agora-analytics' },
+    });
+    expect(onChange).toHaveBeenCalledWith({
+      product: 'agora-analytics',
+      version: undefined,
+    });
+  });
+
   it('clears the submitted query and returns to the start state while keeping filters', async () => {
     function Harness() {
       const [state, setState] = useState(
