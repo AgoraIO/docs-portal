@@ -38,6 +38,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { ProductScope } from '@/lib/docs-tree';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
+import { getCnProductLabel } from '@/lib/search/cn-product-labels';
 import {
   type CnSearchPageResponse,
   type SearchFacets,
@@ -46,18 +47,6 @@ import {
 import type { SearchPageState } from '@/lib/search/search-page-state';
 
 type SearchStatus = 'loading' | 'loaded' | 'error';
-const productNames: Record<string, string> = {
-  'conversational-ai': '对话式 AI 引擎',
-  'device-kit': '对话式 AI 开发套件',
-  rtc: '实时互动 RTC',
-  rtm: '实时消息 RTM',
-  rtsa: '媒体流加速 RTSA',
-  'cloud-recording': '云端录制',
-  'local-server-recording': '本地服务端录制',
-  console: '控制台',
-  whiteboard: '互动白板',
-  transcoding: '云端转码',
-};
 const examples = ['Token', 'manualSOS', '云端录制', '降噪'];
 
 export function DocsSearchPage({
@@ -111,14 +100,7 @@ export function DocsSearchPage({
   }, [request]);
 
   const productLabel = (product?: string) =>
-    product
-      ? (productNames[product] ??
-        productScopes.find(
-          (scope) =>
-            scope.scope.field === 'product' && scope.scope.value === product,
-        )?.label ??
-        product)
-      : '';
+    getCnProductLabel(product, productScopes);
   const hasFilters = Boolean(
     state.product || state.platform || state.version || state.type !== 'all',
   );
