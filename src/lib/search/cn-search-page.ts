@@ -56,6 +56,9 @@ export async function searchCnDocsPage(
 // removing authoring syntax from the cropped, text-only search preview.
 export function cleanSearchSnippet(value: string): string {
   return value
+    .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
+    .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
+    .replace(/(^|\s)\|(?=\s|$)/gm, '$1')
     .replace(/```[\w+-]*\s*/g, ' ')
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]*)\]\([^)]*(?:\)|$)/g, '$1')
@@ -65,6 +68,31 @@ export function cleanSearchSnippet(value: string): string {
     .replace(/(?:\*\*|__|`)/g, '')
     .replace(/\s+/g, ' ')
     .trim();
+}
+
+export function mergeSearchPageGroups(
+  pages: SearchPageGroup[][],
+): SearchPageGroup[] {
+  const groups = new Map<string, SearchPageGroup>();
+  for (const page of pages)
+    for (const group of page) {
+      const previous = groups.get(group.pageUrl);
+      if (!previous)
+        groups.set(group.pageUrl, {
+          ...group,
+          sections: [...group.sections],
+          platform: [...group.platform],
+        });
+      else {
+        for (const section of group.sections)
+          if (!previous.sections.some((item) => item.url === section.url))
+            previous.sections.push(section);
+        previous.platform = [
+          ...new Set([...previous.platform, ...group.platform]),
+        ];
+      }
+    }
+  return [...groups.values()];
 }
 
 export function isPublicCnSearchUrl(value: string) {

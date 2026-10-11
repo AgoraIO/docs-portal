@@ -15,7 +15,10 @@ import { parseSearchPageState } from '@/lib/search/search-page-state';
 import { DocsSearchPage } from './DocsSearchPage';
 import { SearchHighlight } from './SearchResultList';
 
-vi.mock('@/lib/search/cn-search-page', () => ({ searchCnDocsPage: vi.fn() }));
+vi.mock('@/lib/search/cn-search-page', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/search/cn-search-page')>()),
+  searchCnDocsPage: vi.fn(),
+}));
 const empty: CnSearchPageResponse = {
   groups: [],
   totalHits: 0,
@@ -25,6 +28,128 @@ const empty: CnSearchPageResponse = {
 };
 
 describe('DocsSearchPage', () => {
+  it('keeps alternative versions available when a version is selected', async () => {
+    vi.mocked(searchCnDocsPage).mockImplementation(
+      async (state): Promise<CnSearchPageResponse> => ({
+        ...empty,
+        facets: {
+          version: state.version ? { '4.6.0': 1 } : { '4.6.0': 1, '4.5.0': 2 },
+        },
+      }),
+    );
+    const onChange = vi.fn();
+    render(
+      <DocsSearchPage
+        state={parseSearchPageState({
+          q: 'Token',
+          product: 'rtc',
+          platform: 'web',
+          version: '4.6.0',
+        })}
+        onChange={onChange}
+      />,
+    );
+    expect(
+      await screen.findByRole('option', { name: '4.5.0' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('combobox', { name: '版本' })).toHaveValue('4.6.0');
+    expect(vi.mocked(searchCnDocsPage).mock.calls[1][0]).toMatchObject({
+      product: 'rtc',
+      platform: 'web',
+      version: undefined,
+      page: 1,
+    });
+    fireEvent.change(screen.getByRole('combobox', { name: '平台' }), {
+      target: { value: '' },
+    });
+    expect(onChange).toHaveBeenCalledWith({
+      platform: undefined,
+      version: undefined,
+    });
+  });
+  it('drops stale versions when changing products while retaining the product catalog', async () => {
+    vi.mocked(searchCnDocsPage)
+      .mockResolvedValueOnce({
+        ...empty,
+        facets: { product: { rtc: 2, whiteboard: 1 }, version: { '4.6.0': 2 } },
+      })
+      .mockResolvedValueOnce({
+        ...empty,
+        facets: { product: { whiteboard: 1 }, version: {} },
+      });
+    const view = render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: 'Token', product: 'rtc' })}
+        onChange={vi.fn()}
+      />,
+    );
+    await screen.findByRole('option', { name: '4.6.0' });
+    view.rerender(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: 'Token', product: 'whiteboard' })}
+        onChange={vi.fn()}
+      />,
+    );
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('combobox', { name: '版本' }),
+      ).not.toBeInTheDocument(),
+    );
+    expect(
+      screen.getByRole('option', { name: '实时互动 RTC' }),
+    ).toBeInTheDocument();
+  });
+
+  it('provides distinct options for product scopes with the same Chinese name', async () => {
+    vi.mocked(searchCnDocsPage).mockResolvedValue({
+      ...empty,
+      facets: {
+        product: {
+          'ppt-conversion-service': 1,
+          'ppt-transcoding': 2,
+          analytics: 1,
+          'agora-analytics': 1,
+          'online-art-teaching': 1,
+          'online-music-teaching': 1,
+          overview: 1,
+        },
+      },
+    });
+    render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: 'Token' })}
+        onChange={vi.fn()}
+        productScopes={[
+          {
+            id: 'ppt-transcoding',
+            label: 'PPT 转码服务',
+            scope: { field: 'product', value: 'ppt-transcoding' },
+          },
+        ]}
+      />,
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole('option', { name: '在线美术教学' }),
+      ).toBeInTheDocument(),
+    );
+    const labels = screen.getAllByRole('option').map((o) => o.textContent);
+    expect(
+      labels.filter((label) => label?.startsWith('PPT 转码服务')),
+    ).toHaveLength(2);
+    expect(
+      new Set(labels.filter((label) => label?.startsWith('PPT 转码服务'))).size,
+    ).toBe(2);
+    expect(
+      screen.getByRole('option', { name: '水晶球（产品概述）' }),
+    ).toHaveValue('analytics');
+    expect(
+      screen.getByRole('option', { name: '水晶球（REST API）' }),
+    ).toHaveValue('agora-analytics');
+    expect(screen.getByRole('option', { name: '产品概览' })).toHaveValue(
+      'overview',
+    );
+  });
   beforeEach(() => {
     vi.mocked(searchCnDocsPage).mockResolvedValue(empty);
     window.localStorage.clear();
@@ -165,7 +290,7 @@ describe('DocsSearchPage', () => {
     expect(searchCnDocsPage).toHaveBeenCalledTimes(2);
   });
 
-  it('uses real facets, updates filters, and exposes pagination', async () => {
+  it('uses real facets and merges more chapters with recovery without changing the URL', async () => {
     vi.mocked(searchCnDocsPage).mockResolvedValue({
       ...empty,
       totalHits: 22,
@@ -203,7 +328,7 @@ describe('DocsSearchPage', () => {
       ],
     });
     const onChange = vi.fn();
-    render(
+    const view = render(
       <DocsSearchPage
         state={parseSearchPageState({ q: 'Token' })}
         onChange={onChange}
@@ -217,10 +342,74 @@ describe('DocsSearchPage', () => {
       product: 'rtc',
       version: undefined,
     });
-    fireEvent.click(screen.getByRole('button', { name: '下一页' }));
-    expect(onChange).toHaveBeenCalledWith({ page: 2 });
     await waitFor(() =>
       expect(screen.getByText('22 个章节匹配')).toBeInTheDocument(),
+    );
+    const first = await vi.mocked(searchCnDocsPage).mock.results[0].value;
+    const group = first.groups[0];
+    vi.mocked(searchCnDocsPage)
+      .mockRejectedValueOnce(new Error('503'))
+      .mockResolvedValueOnce({
+        ...first,
+        page: 2,
+        groups: [
+          {
+            ...group,
+            sections: [
+              {
+                ...group.sections[0],
+                id: 'two',
+                url: '/zh-CN/guide#renew',
+                sectionTitle: '续期',
+                highlights: {
+                  ...group.sections[0].highlights,
+                  sectionTitle: [{ text: '续期', highlighted: false }],
+                },
+              },
+            ],
+          },
+        ],
+      });
+    fireEvent.click(screen.getByRole('button', { name: '加载更多' }));
+    await screen.findByRole('button', { name: '加载失败，重试' });
+    expect(vi.mocked(searchCnDocsPage).mock.lastCall?.[0]).toMatchObject({
+      page: 2,
+    });
+    expect(onChange).not.toHaveBeenCalledWith({ page: 2 });
+    expect(screen.getAllByRole('link', { name: 'RTC 指南' })).toHaveLength(1);
+    fireEvent.click(screen.getByRole('button', { name: '加载失败，重试' }));
+    await screen.findByText('另 1 个命中章节');
+    expect(screen.getAllByRole('link', { name: 'RTC 指南' })).toHaveLength(1);
+    expect(screen.getByText('已展示 1 篇文档')).toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: '加载更多' }),
+    ).not.toBeInTheDocument();
+    vi.mocked(searchCnDocsPage).mockResolvedValueOnce(empty);
+    view.rerender(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: 'other' })}
+        onChange={onChange}
+      />,
+    );
+    await screen.findByText('没有找到匹配的文档');
+    expect(
+      screen.queryByRole('link', { name: 'RTC 指南' }),
+    ).not.toBeInTheDocument();
+    expect(vi.mocked(searchCnDocsPage).mock.lastCall?.[0]).toMatchObject({
+      q: 'other',
+      page: 1,
+    });
+    view.rerender(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: 'Token' })}
+        onChange={onChange}
+      />,
+    );
+    await waitFor(() =>
+      expect(vi.mocked(searchCnDocsPage).mock.lastCall?.[0]).toMatchObject({
+        q: 'Token',
+        page: 1,
+      }),
     );
   });
 

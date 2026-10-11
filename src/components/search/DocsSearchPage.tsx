@@ -1,15 +1,13 @@
 'use client';
 
 import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
   ArrowUpRightIcon,
   Clock3Icon,
   SearchIcon,
   SlidersHorizontalIcon,
   XIcon,
 } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { SearchInput } from '@/components/search/SearchInput';
 import { SearchResultList } from '@/components/search/SearchResultList';
 import { SearchTypeTabs } from '@/components/search/SearchTypeTabs';
@@ -38,9 +36,13 @@ import { Skeleton } from '@/components/ui/skeleton';
 import type { ProductScope } from '@/lib/docs-tree';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
-import { getCnProductLabel } from '@/lib/search/cn-product-labels';
+import {
+  getCnProductLabel,
+  getCnProductOptionLabel,
+} from '@/lib/search/cn-product-labels';
 import {
   type CnSearchPageResponse,
+  mergeSearchPageGroups,
   type SearchFacets,
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
@@ -65,7 +67,20 @@ export function DocsSearchPage({
   const [recent, setRecent] = useState<RecentPage[]>([]);
   const [retry, setRetry] = useState(0);
   const [filterOpen, setFilterOpen] = useState(false);
-  const request = useMemo(() => ({ state, retry }), [state, retry]);
+  const stateKey = JSON.stringify(state);
+  const [progress, setProgress] = useState({ key: stateKey, page: state.page });
+  if (progress.key !== stateKey) {
+    setProgress({ key: stateKey, page: state.page });
+  }
+  const currentPage = progress.key === stateKey ? progress.page : state.page;
+  const loadedPages = useRef<{
+    key: string;
+    pages: Map<number, CnSearchPageResponse>;
+  }>({ key: '', pages: new Map() });
+  const request = useMemo(
+    () => ({ state: { ...state, page: currentPage }, retry }),
+    [state, currentPage, retry],
+  );
   useEffect(() => setDraft(state.q), [state.q]);
   useEffect(
     () =>
@@ -79,18 +94,41 @@ export function DocsSearchPage({
 
   useEffect(() => {
     const controller = new AbortController();
+    const { page: _page, ...criteria } = request.state;
+    const key = JSON.stringify(criteria);
+    if (loadedPages.current.key !== key) {
+      loadedPages.current = { key, pages: new Map() };
+      setData(null);
+      setFacets((previous) => ({ product: previous.product ?? {} }));
+    }
     setStatus('loading');
-    setData(null);
-    searchCnDocsPage(request.state, controller.signal)
-      .then((result) => {
+    Promise.all([
+      searchCnDocsPage(request.state, controller.signal),
+      request.state.version
+        ? searchCnDocsPage(
+            { ...request.state, version: undefined, page: 1 },
+            controller.signal,
+          )
+        : Promise.resolve(null),
+    ])
+      .then(([result, availableVersions]) => {
         if (controller.signal.aborted) return;
-        setData(result);
-        setFacets((previous) => {
-          const merged = { ...previous };
-          for (const [field, values] of Object.entries(result.facets))
-            merged[field] = { ...previous[field], ...values };
-          return merged;
+        loadedPages.current.pages.set(request.state.page, result);
+        const pages = [...loadedPages.current.pages.entries()]
+          .filter(([page]) => page <= request.state.page)
+          .sort(([a], [b]) => a - b);
+        setData({
+          ...result,
+          groups: mergeSearchPageGroups(
+            pages.map(([, response]) => response.groups),
+          ),
         });
+        setFacets((previous) => ({
+          ...result.facets,
+          version:
+            availableVersions?.facets.version ?? result.facets.version ?? {},
+          product: { ...previous.product, ...result.facets.product },
+        }));
         setStatus('loaded');
       })
       .catch(() => {
@@ -144,7 +182,7 @@ export function DocsSearchPage({
           <NativeSelectOption value="">全部产品</NativeSelectOption>
           {products.map((product) => (
             <NativeSelectOption key={product} value={product}>
-              {productLabel(product)}
+              {getCnProductOptionLabel(product, products, productScopes)}
             </NativeSelectOption>
           ))}
         </NativeSelect>
@@ -154,7 +192,10 @@ export function DocsSearchPage({
         <NativeSelect
           aria-label="平台"
           onChange={(event) =>
-            onChange({ platform: event.target.value || undefined })
+            onChange({
+              platform: event.target.value || undefined,
+              version: undefined,
+            })
           }
           value={state.platform ?? ''}
         >
@@ -340,7 +381,7 @@ export function DocsSearchPage({
           aria-busy={status === 'loading'}
           className="search-page-results-section"
         >
-          {status === 'loading' && (
+          {status === 'loading' && !data && (
             <div
               aria-label="正在加载搜索结果"
               role="status"
@@ -356,22 +397,41 @@ export function DocsSearchPage({
               ))}
             </div>
           )}
-          {status === 'error' && (
+          {status === 'error' && !data && (
             <SearchEmpty error onRetry={() => setRetry((value) => value + 1)} />
           )}
-          {status === 'loaded' &&
-            data &&
+          {data &&
             (data.groups.length ? (
               <>
                 <SearchResultList
                   groups={data.groups}
                   productLabel={productLabel}
                 />
-                <SearchPagination
-                  onChange={(page) => onChange({ page })}
-                  page={state.page}
-                  totalPages={data.totalPages}
-                />
+                <div className="search-page-pagination">
+                  <span aria-live="polite">
+                    已展示 {data.groups.length} 篇文档
+                  </span>
+                  {status === 'error' ? (
+                    <Button
+                      onClick={() => setRetry((value) => value + 1)}
+                      variant="outline"
+                    >
+                      加载失败，重试
+                    </Button>
+                  ) : (
+                    currentPage < data.totalPages && (
+                      <Button
+                        disabled={status === 'loading'}
+                        onClick={() =>
+                          setProgress({ key: stateKey, page: currentPage + 1 })
+                        }
+                        variant="outline"
+                      >
+                        {status === 'loading' ? '正在加载…' : '加载更多'}
+                      </Button>
+                    )
+                  )}
+                </div>
               </>
             ) : (
               <SearchEmpty
@@ -490,42 +550,5 @@ function SearchEmpty({
         )}
       </EmptyContent>
     </Empty>
-  );
-}
-
-function SearchPagination({
-  page,
-  totalPages,
-  onChange,
-}: {
-  page: number;
-  totalPages: number;
-  onChange: (page: number) => void;
-}) {
-  if (totalPages <= 1) return null;
-  return (
-    <nav aria-label="搜索结果分页" className="search-page-pagination">
-      <Button
-        aria-label="上一页"
-        disabled={page <= 1}
-        onClick={() => onChange(page - 1)}
-        variant="outline"
-      >
-        <ArrowLeftIcon data-icon="inline-start" />
-        <span className="hidden sm:inline">上一页</span>
-      </Button>
-      <span aria-live="polite">
-        第 {page} / {totalPages} 页
-      </span>
-      <Button
-        aria-label="下一页"
-        disabled={page >= totalPages}
-        onClick={() => onChange(page + 1)}
-        variant="outline"
-      >
-        <span className="hidden sm:inline">下一页</span>
-        <ArrowRightIcon data-icon="inline-end" />
-      </Button>
-    </nav>
   );
 }

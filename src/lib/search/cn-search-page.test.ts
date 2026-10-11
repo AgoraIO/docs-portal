@@ -26,6 +26,19 @@ const hit = {
 afterEach(() => vi.restoreAllMocks());
 
 describe('full CN search adapter', () => {
+  it('removes table separators and generated OpenAPI metadata without losing highlights', () => {
+    expect(
+      cleanSearchSnippet(
+        '| name | 描述 |\n| --- | --- |\n| <mark>Token</mark> | 有效期 |',
+      ),
+    ).toBe('name 描述 <mark>Token</mark> 有效期');
+    expect(
+      cleanSearchSnippet('生成 Token。 OpenAPI: /openapi/whiteboard/api.yaml'),
+    ).toBe('生成 Token。');
+    expect(
+      cleanSearchSnippet('a || b；https://example.com/openapi/file.yaml'),
+    ).toBe('a || b；https://example.com/openapi/file.yaml');
+  });
   it('cleans source syntax from snippets while retaining search highlights', () => {
     expect(cleanSearchSnippet('<#Your <mark>Token</mark>#>')).toBe(
       '<#Your <mark>Token</mark>#>',
