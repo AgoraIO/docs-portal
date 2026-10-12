@@ -18,6 +18,7 @@ import {
   useState,
 } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
@@ -137,6 +138,11 @@ export function DocsContent({
   const isOpenApiLayout = effectiveLayoutMode === 'openapi';
   // openapi and hideToc both let the article fill the width and hide the toc.
   const isHomePage = contentPath === 'zh-CN/introduction/index.mdx';
+  const accountGuidanceEnabled =
+    currentLocale === 'zh-CN' &&
+    (contentPath === 'zh-CN/reference/sdks' ||
+      contentPath === 'zh-CN/reference/sdks.mdx' ||
+      contentPath?.startsWith('zh-CN/reference/demo/'));
   const contentFillsWidth = isOpenApiLayout || hideToc || isHomePage;
   const platformTabs =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group'
@@ -323,78 +329,83 @@ export function DocsContent({
         </header>
       )}
       {isHomePage ? <IntroductionSdkDemoActions /> : null}
-      {isOpenApiBody ? (
-        <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
-          <FumadocsOpenApiContent
-            contentPath={contentPath}
-            locale={currentLocale}
-            pageProps={resolvedBody.pageProps}
-          />
-        </div>
-      ) : (
-        <div
-          className="prose prose-neutral dark:prose-invert max-w-none"
-          data-platform-header-tabs={platformTabs ? 'true' : undefined}
-          data-static-docs-body
-          onClickCapture={handleArticleBodyLinkClick}
-        >
-          {resolvedBody?.kind === 'mdx' ? (
-            <Suspense fallback={<DocsContentSkeleton />}>
-              <PlatformTabsPlacementProvider
-                defaultPlatform={platformTabs?.defaultPlatform}
-                initialPlatform={platformTabs?.initialPlatform}
-                value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
-              >
-                <DocsContentBody
-                  contentPath={resolvedBody.contentPath}
-                  locale={currentLocale}
-                />
-              </PlatformTabsPlacementProvider>
-            </Suspense>
-          ) : null}
-          {resolvedBody?.kind === 'platform-group' ? (
-            <div className="flex flex-col gap-4" data-platform-group-shell>
+      <AccountGuidance enabled={Boolean(accountGuidanceEnabled)}>
+        {isOpenApiBody ? (
+          <div
+            data-static-docs-body
+            onClickCapture={handleArticleBodyLinkClick}
+          >
+            <FumadocsOpenApiContent
+              contentPath={contentPath}
+              locale={currentLocale}
+              pageProps={resolvedBody.pageProps}
+            />
+          </div>
+        ) : (
+          <div
+            className="prose prose-neutral dark:prose-invert max-w-none"
+            data-platform-header-tabs={platformTabs ? 'true' : undefined}
+            data-static-docs-body
+            onClickCapture={handleArticleBodyLinkClick}
+          >
+            {resolvedBody?.kind === 'mdx' ? (
               <Suspense fallback={<DocsContentSkeleton />}>
-                <DocsContentBody
-                  contentPath={resolvedBody.contentPath}
-                  locale={currentLocale}
-                />
-              </Suspense>
-              <PlatformTabsPlacementProvider
-                defaultPlatform={platformTabs?.defaultPlatform}
-                initialPlatform={platformTabs?.initialPlatform}
-                value="header"
-              >
-                <PlatformTabsGroup
-                  canonicalPlatform={resolvedBody.canonicalPlatform}
+                <PlatformTabsPlacementProvider
                   defaultPlatform={platformTabs?.defaultPlatform}
-                  groupMode="structured"
                   initialPlatform={platformTabs?.initialPlatform}
-                  locale={currentLocale}
-                  platforms={JSON.stringify(resolvedBody.platforms)}
-                  showTabs="false"
+                  value={platformTabs || hidePlatformTabs ? 'header' : 'inline'}
                 >
-                  {resolvedBody.panels.map((panel) => (
-                    <PlatformPanel
-                      key={panel.platform}
-                      platform={panel.platform}
-                    >
-                      <div className="prose prose-neutral dark:prose-invert max-w-none">
-                        <Suspense fallback={<DocsContentSkeleton />}>
-                          <DocsContentBody
-                            contentPath={panel.contentPath}
-                            locale={currentLocale}
-                          />
-                        </Suspense>
-                      </div>
-                    </PlatformPanel>
-                  ))}
-                </PlatformTabsGroup>
-              </PlatformTabsPlacementProvider>
-            </div>
-          ) : null}
-        </div>
-      )}
+                  <DocsContentBody
+                    contentPath={resolvedBody.contentPath}
+                    locale={currentLocale}
+                  />
+                </PlatformTabsPlacementProvider>
+              </Suspense>
+            ) : null}
+            {resolvedBody?.kind === 'platform-group' ? (
+              <div className="flex flex-col gap-4" data-platform-group-shell>
+                <Suspense fallback={<DocsContentSkeleton />}>
+                  <DocsContentBody
+                    contentPath={resolvedBody.contentPath}
+                    locale={currentLocale}
+                  />
+                </Suspense>
+                <PlatformTabsPlacementProvider
+                  defaultPlatform={platformTabs?.defaultPlatform}
+                  initialPlatform={platformTabs?.initialPlatform}
+                  value="header"
+                >
+                  <PlatformTabsGroup
+                    canonicalPlatform={resolvedBody.canonicalPlatform}
+                    defaultPlatform={platformTabs?.defaultPlatform}
+                    groupMode="structured"
+                    initialPlatform={platformTabs?.initialPlatform}
+                    locale={currentLocale}
+                    platforms={JSON.stringify(resolvedBody.platforms)}
+                    showTabs="false"
+                  >
+                    {resolvedBody.panels.map((panel) => (
+                      <PlatformPanel
+                        key={panel.platform}
+                        platform={panel.platform}
+                      >
+                        <div className="prose prose-neutral dark:prose-invert max-w-none">
+                          <Suspense fallback={<DocsContentSkeleton />}>
+                            <DocsContentBody
+                              contentPath={panel.contentPath}
+                              locale={currentLocale}
+                            />
+                          </Suspense>
+                        </div>
+                      </PlatformPanel>
+                    ))}
+                  </PlatformTabsGroup>
+                </PlatformTabsPlacementProvider>
+              </div>
+            ) : null}
+          </div>
+        )}
+      </AccountGuidance>
       {contentFillsWidth ? null : (
         <DocsTableOfContents
           className="xl:hidden"

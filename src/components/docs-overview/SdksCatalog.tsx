@@ -12,6 +12,7 @@ import {
   AccountGuidance,
   useResourceAccountGuidance,
 } from '@/components/account-guidance/AccountGuidance';
+import { getSdkAccountGuidanceTarget } from '@/components/account-guidance/resource-registry';
 import { cn } from '@/lib/cn';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import { getPlatformIconSrc } from './platform-icon-src';
@@ -552,7 +553,13 @@ export function SdksCatalog({
   });
 
   return (
-    <AccountGuidance enabled={locale === 'zh-CN'}>
+    <AccountGuidance
+      enabled={
+        locale === 'zh-CN' &&
+        typeof window !== 'undefined' &&
+        window.location.pathname === '/zh-CN/reference/sdks'
+      }
+    >
       <section
         className={cn(
           'not-prose my-8',
@@ -664,11 +671,12 @@ function ProductCard({
   const hasEmbeddedDownloadCards =
     Boolean(downloadPageHref) && group.productId !== 'chat';
   const onDownload = (version: SdkDownloadVersion) => {
-    if (locale !== 'zh-CN' || group.productId !== 'signaling') return;
+    if (locale !== 'zh-CN') return;
     startAccountGuidance({
       resourceType: 'sdk',
       resourceId: group.productId,
-      target: 'rtm',
+      target: getSdkAccountGuidanceTarget(group.productId),
+      label: group.label,
       platform: activePlatform.platformId,
       version: version.id,
     });

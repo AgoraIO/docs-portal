@@ -47,7 +47,7 @@ describe('Chinese SDK account guidance', () => {
     expect(fireEvent.click(download)).toBe(true);
 
     const dialog = await screen.findByRole('dialog', {
-      name: '下一步，配置 RTM 服务',
+      name: '登录声网账号，继续使用相关服务',
     });
     expect(dialog).toBeVisible();
     const login = screen.getByRole('link', { name: '登录并前往控制台' });
@@ -190,13 +190,19 @@ describe('Chinese SDK account guidance', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('preserves Chinese RTC direct downloads without RTM guidance', () => {
+  it('guides Chinese RTC direct downloads with the home fallback target', () => {
     render(<SdksCatalog locale="zh-CN" product="video" platform="android" />);
     const download = screen.getByRole('link', { name: '下载 Android Full' });
     expect(fireEvent.click(download)).toBe(true);
     expect(download).toHaveAttribute('target', '_blank');
-    expect(capture).not.toHaveBeenCalled();
-    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+    expect(capture).toHaveBeenCalledWith(
+      'docs_resource_action_started',
+      expect.objectContaining({
+        resourceId: 'video',
+        target: 'home',
+      }),
+      null,
+    );
   });
 
   it('does not treat package-manager-only RTM links as direct downloads', () => {
