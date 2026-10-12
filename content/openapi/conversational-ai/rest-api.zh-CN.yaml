@@ -130,6 +130,11 @@ paths:
                           default: zh-CN
                         vendor:
                           type: string
+                          description: |-
+                            ASR 服务供应商，可选以下值：
+                            - `fengming`：（默认）声网凤鸣 ASR。
+                            - `tencent`：腾讯 ASR。
+                            - `microsoft`：微软 ASR。
                         keywords:
                           type: array
                           description: |-
@@ -137,11 +142,6 @@ paths:
                           maxItems: 128
                           items:
                             type: string
-                          description: |-
-                            ASR 服务供应商，可选以下值：
-                            - `fengming`：（默认）声网凤鸣 ASR。
-                            - `tencent`：腾讯 ASR。
-                            - `microsoft`：微软 ASR。
                         params:
                           $ref: '#/components/schemas/asr_params'
                           description: |
