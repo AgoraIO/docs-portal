@@ -29,6 +29,36 @@ title: "ConversationalAIAPI 类"
 
 </Slot>
 
+<a id="speak"></a>
+## speak
+
+```kotlin
+@objc func speak(agentUserId: String, message: SpeakMessage, completion: @escaping (ConversationalAIAPIError?) -> Void)
+```
+
+绕过大模型，直接通过智能体的 TTS 流程播报文本。该方法需要 RTM，回调仅表示 RTM 消息是否发布成功。
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `message` | `SpeakMessage` | 播报内容和播报行为配置。详见 [`SpeakMessage`](struct#speakmessage)。 |
+| `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 调用结果回调。 |
+
+<a id="think"></a>
+## think
+
+```kotlin
+@objc func think(agentUserId: String, message: ThinkMessage, completion: @escaping (ConversationalAIAPIError?) -> Void)
+```
+
+将文本作为用户输入注入对话，并交由大模型处理。该方法需要 RTM，回调仅表示 RTM 消息是否发布成功。
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `message` | `ThinkMessage` | 指令内容、状态动作和自定义元数据。详见 [`ThinkMessage`](struct#thinkmessage)。 |
+| `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 调用结果回调。 |
+
 <a id="interrupt"></a>
 ## interrupt
 

@@ -63,6 +63,40 @@ title: "枚举类"
 | `append` | （1）：中等优先级。智能体会在当前交互完成后排队处理该消息，适用于后续问题。 |
 | `ignore` | （2）：低优先级。如果智能体当前正在交互，该消息将被丢弃，仅在空闲时处理，适用于可选内容。 |
 
+<a id="thinklisteningaction"></a>
+## ThinkListeningAction
+
+Think 指令到达时智能体处于倾听状态的处理动作。
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `inject` | 注入当前对话。 |
+| `interrupt` | 中断当前交互并处理指令。 |
+| `ignore` | 忽略指令。 |
+| `append` | 在当前交互完成后追加处理。 |
+
+<a id="thinkthinkingaction"></a>
+## ThinkThinkingAction
+
+Think 指令到达时智能体处于思考状态的处理动作。
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `interrupt` | 中断当前交互并处理指令。 |
+| `ignore` | 忽略指令。 |
+| `append` | 在当前交互完成后追加处理。 |
+
+<a id="thinkspeakingaction"></a>
+## ThinkSpeakingAction
+
+Think 指令到达时智能体处于说话状态的处理动作。
+
+| 枚举值 | 描述 |
+| --- | --- |
+| `interrupt` | 中断当前交互并处理指令。 |
+| `ignore` | 忽略指令。 |
+| `append` | 在当前交互完成后追加处理。 |
+
 <a id="agentstate"></a>
 ## AgentState
 

@@ -243,13 +243,13 @@ agent := agentkit.NewAgent(client,
 | `WithGreetingConfigs(configs)` | `*LlmGreetingConfigs` | 设置 `llm.greeting_configs`，包括 v2.7 的 `interruptable` |
 | `WithSalConfig(sal)` | `*SalConfig` | 语音分析配置 |
 | `WithAdvancedFeatures(af)` | `*AdvancedFeatures` | 高级特性开关，例如 `EnableAivad` |
-| `WithTools(enabled)` | `bool` | 启用或关闭 MCP tool 调用 |
+| `WithTools(enabled)` | `bool` | 启用或关闭 MCP 和自定义工具调用 |
 | `WithParameters(params)` | `*SessionParams` | 附加会话参数 |
 | `WithAudioScenario(audioScenario)` | `ParametersAudioScenario` | 设置 `parameters.audio_scenario`（`default`、`chorus` 或 `aiserver`）。未设置时，SDK 会自动补成 `chorus` |
 | `WithGeofence(gf)` | `*GeofenceConfig` | 区域访问限制 |
 | `WithLabels(labels)` | `map[string]string` | 在通知回调中返回的自定义键值标签 |
 | `WithRtc(rtc)` | `*RtcConfig` | RTC 媒体加密配置 |
-| `WithFillerWords(fw)` | `*FillerWordsConfig` | 在等待 LLM 响应期间播放的填充词 |
+| `WithFillerWords(fw)` | `*FillerWordsConfig` | 在等待 LLM 响应期间播放的承接词 |
 
 ### Vendor chaining methods
 
@@ -308,14 +308,14 @@ func (a *Agent) WithTurnDetection(td *TurnDetectionConfig) *Agent
 | `WithName(name)` | `string` | 覆盖智能体名称 |
 | `WithSal(sal)` | `*SalConfig` | 设置 SAL 配置 |
 | `WithAdvancedFeatures(af)` | `*AdvancedFeatures` | 设置高级特性 |
-| `WithTools(enabled)` | `bool` | 启用或关闭 MCP tool 调用 |
+| `WithTools(enabled)` | `bool` | 启用或关闭 MCP 和自定义工具调用 |
 | `WithParameters(params)` | `*SessionParams` | 设置会话参数 |
 | `WithFailureMessage(msg)` | `string` | 设置失败提示消息 |
 | `WithMaxHistory(n)` | `int` | 设置最大对话历史长度 |
 | `WithGeofence(gf)` | `*GeofenceConfig` | 设置 geofence 配置 |
 | `WithLabels(labels)` | `map[string]string` | 设置自定义标签 |
 | `WithRtc(rtc)` | `*RtcConfig` | 设置 RTC 配置 |
-| `WithFillerWords(fw)` | `*FillerWordsConfig` | 设置填充词配置 |
+| `WithFillerWords(fw)` | `*FillerWordsConfig` | 设置承接词配置 |
 
 ### `ToProperties()`
 
@@ -389,7 +389,7 @@ type ToPropertiesOptions struct {
 | `Geofence()` | `*GeofenceConfig` | Geofence 配置 |
 | `Labels()` | `map[string]string` | 自定义标签 |
 | `Rtc()` | `*RtcConfig` | RTC 配置 |
-| `FillerWords()` | `*FillerWordsConfig` | 填充词配置 |
+| `FillerWords()` | `*FillerWordsConfig` | 承接词配置 |
 
 ## agentkit.NewAgentSession
 
@@ -635,7 +635,9 @@ func (s *AgentSession) GetInfo(ctx context.Context) (*Agora.GetAgentsResponse, e
 
 #### `Think(ctx)`
 
-向运行中的智能体注入一条 thought 或 instruction。在 v2.7 中，如果省略 `on_listening_action`，服务端默认值为 `interrupt`。如果你需要旧版的 inject 行为，请设置 `agentkit.ThinkOnListeningActionInject.Ptr()`。AgentKit 还提供了 `ThinkOnThinkingActionInterrupt`、`ThinkOnThinkingActionIgnore`、`ThinkOnSpeakingActionInterrupt` 和 `ThinkOnSpeakingActionIgnore` 这些便捷常量。
+向运行中的智能体注入一条 thought 或 instruction。在 v2.7 中，如果省略 `on_listening_action`，服务端默认值为 `interrupt`。如果你需要旧版的 inject 行为，请设置 `agentkit.ThinkOnListeningActionInject.Ptr()`。
+
+三个状态均支持 `append`：`ThinkOnListeningActionAppend`、`ThinkOnThinkingActionAppend` 和 `ThinkOnSpeakingActionAppend`。该值不打断当前交互，分别等待当前用户回合、LLM 推理或 TTS 播报完成后，再将该指令作为独立的 user 消息追加到上下文并发起新一轮对话。对应状态还提供 `Interrupt` 和 `Ignore` 常量，倾听状态额外提供 `ThinkOnListeningActionInject`。
 
 ```go
 func (s *AgentSession) Think(ctx context.Context, text string, onListeningAction *Agora.AgentThinkAgentManagementRequestOnListeningAction, onThinkingAction *Agora.AgentThinkAgentManagementRequestOnThinkingAction, onSpeakingAction *Agora.AgentThinkAgentManagementRequestOnSpeakingAction, interruptable *bool, metadata map[string]string) (*Agora.AgentThinkAgentManagementResponse, error)
@@ -785,17 +787,25 @@ func NewCustomLLM(opts CustomLLMOptions) *CustomLLM
 | `GreetingConfigs` | `map[string]interface{}` | No | 问候语播放配置 |
 | `TemplateVariables` | `map[string]string` | No | 消息模板变量 |
 | `McpServers` | `[]map[string]interface{}` | No | MCP server 配置；缺省的 `transport` 会自动补为 `streamable_http` |
+| `Tools` | `[]*Agora.LlmTool` | No | 同步自定义工具定义；需要同时启用 `WithTools(true)` |
 | `Vendor` | `string` | No | 覆盖默认 vendor 标识（通常无需设置） |
+
+`Tools` 用于声明供 LLM 选择调用的自定义工具。每个工具包含模型可见的函数定义，以及同步 `GET` 或 `POST` 请求的服务端配置；`WithTools(true)` 同时适用于 `Tools` 和 `McpServers`。
 
 ### STT vendors
 
 #### `NewFengmingSTT`
 
 ```go
-func NewFengmingSTT() *FengmingSTT
+func NewFengmingSTT(options ...FengmingSTTOptions) *FengmingSTT
 ```
 
-声网自研的「风鸣」STT 服务，无需任何参数和外部凭据，输出 `asr.vendor = "fengming"`。
+声网自研的「风鸣」STT 服务，无需外部凭据，输出 `asr.vendor = "fengming"`。`options` 可省略以保持 `NewFengmingSTT()` 兼容；传入多个 options 值会 panic。
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `Keywords` | `[]string` | No | 热词列表，用于提升 ASR 识别准确率 |
+| `AdditionalParams` | `map[string]interface{}` | No | 附加 Fengming 参数，合并进 `asr.params` |
 
 #### `NewTencentSTT`
 
@@ -1236,6 +1246,13 @@ option.AreaCN // Chinese Mainland (east + north)
 | `GeofenceConfig` | `Agora.StartAgentsRequestPropertiesGeofence` |
 | `RtcConfig` | `Agora.StartAgentsRequestPropertiesRtc` |
 | `FillerWordsConfig` | `Agora.StartAgentsRequestPropertiesFillerWords` |
+| `FillerWordsContentMode` | `Agora.StartAgentsRequestPropertiesFillerWordsContentMode` |
+| `FillerWordsContentGeneratedConfig` | `Agora.StartAgentsRequestPropertiesFillerWordsContentGeneratedConfig` |
+| `LlmTool` | `Agora.LlmTool` |
+| `LlmToolFunction` | `Agora.LlmToolFunction` |
+| `LlmToolFunctionParameters` | `Agora.LlmToolFunctionParameters` |
+| `LlmToolExecution` | `Agora.LlmToolExecution` |
+| `LlmToolServer` | `Agora.LlmToolServer` |
 | `LlmConfig` | `Agora.StartAgentsRequestPropertiesLlm` |
 | `MllmConfig` | `Agora.StartAgentsRequestPropertiesMllm` |
 | `AsrConfig` | `Agora.StartAgentsRequestPropertiesAsr` |
@@ -1247,6 +1264,10 @@ option.AreaCN // Chinese Mainland (east + north)
 | `ThinkResponse` | `Agora.AgentThinkAgentManagementResponse` |
 
 还有用于 SOS/EOS turn detection 的附加别名：`TurnDetectionNestedConfig`、`StartOfSpeechConfig`、`EndOfSpeechConfig` 以及相关子类型。session/对话相关别名包括 `SessionListResponse`、`ConversationHistory`、`ConversationTurns` 等。think 相关别名包括 `ThinkOnListeningAction`、`ThinkOnThinkingAction`、`ThinkOnSpeakingAction`。
+
+`FillerWordsConfig` 支持静态承接词和动态承接词。使用动态承接词时，必须同时配置非空的静态短语作为回退；`GeneratedConfig` 中的 `Prompt`、上下文限制和回退策略均为可选项，模型服务和凭证由声网托管。具体字段结构详见[配置承接词](/zh-CN/ai/user-guides/filler-words)。
+
+动态承接词配置还支持 `ContextMessageLimit`（取值范围 `1` 到 `6`，省略时由服务按 `1` 处理）和 `HistoryCharacterLimit`（取值范围 `0` 到 `10000`，省略时由服务按 `1000` 处理）。前者包含当前用户消息，显式设置为 `2` 到 `6` 时启用近期历史；后者只统计历史消息文本的 Unicode code points。
 
 ### `AgoraError`
 

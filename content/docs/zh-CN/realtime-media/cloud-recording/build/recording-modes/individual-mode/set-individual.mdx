@@ -15,7 +15,7 @@ title: "实现单流录制"
 
 ## 实现步骤
 
-本节介绍如何在[申请录制服务器资源](/zh-CN/realtime-media/cloud-recording/get-started/quick-start#申请录制服务器资源)后，实现单流音视频录制。
+本节介绍如何在[申请录制服务器资源](/zh-CN/realtime-media/cloud-recording/get-started/quick-start/restful-api#申请录制服务器资源)后，实现单流音视频录制。
 
 ### 开始录制
 
@@ -99,12 +99,12 @@ title: "实现单流录制"
 
 :::info[信息]
 - HLS 文件表示一个 M3U8 文件及多个 TS 文件，属于标准 HLS 协议，可直接播放。
-  - DASH 文件表示一个 MPD 文件及多个 WebM 文件，属于标准 DASH 协议，可直接播放。
+- DASH 文件表示一个 MPD 文件及多个 WebM 文件，属于标准 DASH 协议，可直接播放。
 :::
 
 如需了解录制文件的命名规则、字段含义和切片规则，请参见[录制文件介绍](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/introduce-recorded-files)。
 
-3. 参照[快速开始](/zh-CN/realtime-media/cloud-recording/get-started/quick-start#开始录制)配置 `storageConfig` 相关参数。
+3. 参照[快速开始](/zh-CN/realtime-media/cloud-recording/get-started/quick-start/restful-api#开始录制)配置 `storageConfig` 相关参数。
 
 单流音视频录制的请求 Body 示例如下：
 
@@ -268,8 +268,8 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<yourappid>/cloud
 
     | 发流端类型  | 禁用视频轨道的方法                                           | 录制效果             |
     | :---------- | :----------------------------------------------------------- | :------------------- |
-    | Native 端 | 调用 [`muteLocalVideoStream`](/api-ref/rtc/android/API/toc_publishnsubscribe#api_irtcengine_mutelocalvideostream)  或 [`disableVideo`](/api-ref/rtc/android/API/toc_video_basic#api_irtcengine_disablevideo) 方法 |不继续生成视频切片文件，在本切片内用户画面显示最后一帧。       |
-    | Web 端 | 调用 [`setEnabled`](/api-ref/rtc/javascript/interfaces/ilocalvideotrack#setEnabled) 方法 | 不继续生成视频切片文件，在本切片内用户画面显示最后一帧。 |
+    | Native 端 | 调用 [`muteLocalVideoStream`](/zh-CN/api-reference/rtc/android/publishnsubscribe#api_irtcengine_mutelocalvideostream)  或 [`disableVideo`](/zh-CN/api-reference/rtc/android/video/video-basic#api_irtcengine_disablevideo) 方法 |不继续生成视频切片文件，在本切片内用户画面显示最后一帧。       |
+    | Web 端 | 调用 [`setEnabled`](/zh-CN/api-reference/rtc/web/interfaces/ilocalvideotrack#setenabled) 方法 | 不继续生成视频切片文件，在本切片内用户画面显示最后一帧。 |
 
 ## 相关文档
 
@@ -289,9 +289,9 @@ curl --location --request POST 'https://api.sd-rtn.com/v1/apps/<yourappid>/cloud
 
 ## 常见问题
 
-- [应用崩溃后对云端录制有什么影响？](/faq/integration-issues/app-exit)
-- [如何选择云存储 bucket 区域及处理跨区上传问题？](/faq/integration-issues/bucket-region)
-- [为什么无法通过浏览器调用云端录制 RESTful API？](/faq/integration-issues/call-browser)
-- [为什么第三方云储存中没有录制文件？](/faq/integration-issues/fail-to-upload)
-- [如何获取 M3U8 文件地址？](/faq/integration-issues/get-m3u8-file)
-- [云端录制如何处理服务器断网、进程被杀问题？](/faq/integration-issues/high-availability)
+- [应用崩溃后对云端录制有什么影响？](/zh-CN/reference/faq/integration/abnormal_exit)
+- [如何选择云存储 bucket 区域及处理跨区上传问题？](/zh-CN/reference/faq/integration/bucket_region)
+- [为什么无法通过浏览器调用云端录制 RESTful API？](/zh-CN/reference/faq/product/call_api_in_browser)
+- [为什么第三方云储存中没有录制文件？](/zh-CN/reference/faq/integration/fail_to_upload)
+- [如何获取 M3U8 文件地址？](/zh-CN/reference/faq/integration/acquire_file_directory)
+- [云端录制如何处理服务器断网、进程被杀问题？](/zh-CN/reference/faq/integration/high_availability)
