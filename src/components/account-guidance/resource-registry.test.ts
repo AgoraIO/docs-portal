@@ -1,3 +1,4 @@
+import { readdirSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { getChineseAccountGuidanceResource } from './resource-registry';
 
@@ -22,22 +23,26 @@ describe('Chinese account guidance resource registry', () => {
     ).toBeNull();
   });
 
-  it.each([
-    ['zh-CN/reference/demo/agora-lab.mdx', 'https://www.pgyer.com/zwbL'],
-    [
-      'zh-CN/reference/demo/shengdong-entertainment.mdx',
-      'https://apps.apple.com/cn/app/%E5%A3%B0%E5%8A%A8%E4%BA%92%E5%A8%B1-%E5%A3%B0%E7%BD%91%E6%B3%9B%E5%A8%B1%E4%B9%90%E5%85%A8%E5%9C%BA%E6%99%AF/id1537528920',
-    ],
-    [
-      'zh-CN/reference/demo/shengdong-entertainment.mdx',
-      'https://www.pgyer.com/Grizis',
-    ],
-    ['zh-CN/reference/demo/fastboard.mdx', 'https://demo.whiteboard.agora.io/'],
-    [
-      'zh-CN/reference/demo/rtc-sdk-api-example.mdx',
-      'https://webdemo.agora.io',
-    ],
-  ])('registers %s %s', (contentPath, href) => {
-    expect(getChineseAccountGuidanceResource(contentPath, href)).not.toBeNull();
+  const demoDirectory = 'content/docs/zh-CN/reference/demo';
+  const demoLinks = readdirSync(demoDirectory)
+    .filter((file) => file.endsWith('.mdx'))
+    .flatMap((file) => {
+      const source = readFileSync(`${demoDirectory}/${file}`, 'utf8');
+      return [...source.matchAll(/<Card title="立即体验" href="([^"]+)"/g)].map(
+        (match) => [`zh-CN/reference/demo/${file}`, match[1]],
+      );
+    });
+
+  it('finds the six existing demo experience entry points', () => {
+    expect(demoLinks).toHaveLength(6);
   });
+
+  it.each(demoLinks)(
+    'registers the actual document link %s %s',
+    (contentPath, href) => {
+      expect(
+        getChineseAccountGuidanceResource(contentPath, href),
+      ).not.toBeNull();
+    },
+  );
 });

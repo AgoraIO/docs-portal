@@ -25,7 +25,7 @@ const demoResources: Record<string, DemoResource[]> = {
   ],
   'zh-CN/reference/demo/shengdong-entertainment.mdx': [
     {
-      href: 'https://apps.apple.com/cn/app/%E5%A3%B0%E5%8A%A8%E4%BA%92%E5%A8%B1-%E5%A3%B0%E7%BD%91%E6%B3%9B%E5%A8%B1%E4%B9%90%E5%85%A8%E5%9C%BA%E6%99%AF/id1537528920',
+      href: 'https://apps.apple.com/cn/app/%E5%A3%B0%E5%8A%A8%E4%BA%92%E5%A8%B1-%E5%A3%B0%E7%BD%91%E6%B3%9B%E5%A8%B1%E4%B9%90%E5%85%A8%E5%9C%BA%E6%99%AF%E5%BA%94%E7%94%A8/id1537528920',
       resourceId: 'shengdong-entertainment',
       label: '声动互娱',
       target: 'home',
