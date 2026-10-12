@@ -24,6 +24,7 @@ import type {
 } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
+import { AccountGuidance } from './account-guidance/AccountGuidance';
 import {
   ApiReturns,
   ApiReturnType,
@@ -572,6 +573,33 @@ describe('common MDX registry', () => {
         '/en/ai/choose-your-path/quickstart-coding',
       );
     });
+  });
+
+  it('guides Demo immediate-experience cards without changing source cards', async () => {
+    window.history.replaceState({}, '', '/zh-CN/reference/demo/fastboard');
+    const components = getMDXComponents(undefined, {
+      contentPath: 'zh-CN/reference/demo/fastboard.mdx',
+    });
+    const Card = components.Card as CardComponent;
+
+    render(
+      <AccountGuidance enabled>
+        <Card href="https://demo.whiteboard.agora.io/" title="立即体验" />
+        <Card
+          href="https://github.com/AgoraIO-Community/example"
+          title="Demo 源码"
+        />
+      </AccountGuidance>,
+    );
+
+    const experience = screen.getByRole('link', { name: '立即体验' });
+    expect(experience).toHaveAttribute('target', '_blank');
+    expect(experience).toHaveAttribute('rel', 'noopener noreferrer');
+    fireEvent.click(screen.getByRole('link', { name: 'Demo 源码' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+
+    fireEvent.click(experience);
+    expect(await screen.findByRole('dialog')).toHaveTextContent('Fastboard');
   });
 
   it('keeps only one MDX accordion open across separate roots', () => {

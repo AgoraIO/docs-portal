@@ -24,6 +24,7 @@ export type AccountFlow = {
   flowId: string;
   target: ConsoleTarget;
   resourceType: 'sdk' | 'demo' | 'account';
+  label?: string;
   resourceId?: string;
   sourcePath?: string;
   platform?: string;

@@ -29,6 +29,7 @@ import {
   createContext,
   type Dispatch,
   isValidElement,
+  type MouseEvent,
   type ReactElement,
   type ReactNode,
   type Ref,
@@ -41,6 +42,8 @@ import {
   useRef,
   useState,
 } from 'react';
+import { useResourceAccountGuidance } from '@/components/account-guidance/AccountGuidance';
+import { getChineseAccountGuidanceResource } from '@/components/account-guidance/resource-registry';
 import {
   Dialog,
   DialogContent,
@@ -1577,12 +1580,40 @@ function createLegacyDocsLink(contentPath?: string) {
 }
 
 function createDocsCard(contentPath?: string) {
-  function DocsCard({ children, className, href, ...props }: DocsCardProps) {
+  function DocsCard({
+    children,
+    className,
+    href,
+    title,
+    ...props
+  }: DocsCardProps) {
+    const startAccountGuidance = useResourceAccountGuidance();
     const normalized =
       typeof href === 'string'
         ? normalizeDocsHref(href, { contentPath })
         : null;
     const normalizedHref = normalized?.href ?? href;
+    const guidanceResource =
+      typeof title === 'string' && title === '立即体验'
+        ? getChineseAccountGuidanceResource(contentPath, href)
+        : null;
+    const cardProps = guidanceResource
+      ? {
+          title,
+          ...props,
+          rel: 'noopener noreferrer',
+          target: '_blank' as const,
+          onClick: (event: MouseEvent<HTMLAnchorElement>) => {
+            props.onClick?.(event);
+            startAccountGuidance({
+              resourceType: 'demo',
+              resourceId: guidanceResource.resourceId,
+              label: guidanceResource.label,
+              target: guidanceResource.target,
+            });
+          },
+        }
+      : { title, ...props };
     const cardClassName = cn(
       'docs-card-surface docs-mdx-card',
       href && 'docs-card-interactive docs-card-link',
@@ -1600,10 +1631,10 @@ function createDocsCard(contentPath?: string) {
       </>
     );
 
-    if (normalized && shouldUseRouterLink(normalized, props)) {
+    if (normalized && shouldUseRouterLink(normalized, cardProps)) {
       return (
         <RouterFumadocsCard
-          {...props}
+          {...cardProps}
           className={cardClassName}
           to={normalized.href}
         >
@@ -1613,7 +1644,11 @@ function createDocsCard(contentPath?: string) {
     }
 
     return (
-      <FumadocsCard {...props} className={cardClassName} href={normalizedHref}>
+      <FumadocsCard
+        {...cardProps}
+        className={cardClassName}
+        href={normalizedHref}
+      >
         {content}
       </FumadocsCard>
     );

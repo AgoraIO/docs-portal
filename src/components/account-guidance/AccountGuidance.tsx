@@ -36,6 +36,7 @@ export type ResourceAction = Omit<
 const ResourceActionContext = createContext<(action: ResourceAction) => void>(
   () => {},
 );
+const AccountGuidanceHostContext = createContext(false);
 const EXPOSURE_KEY = 'docs-account-guidance-shown';
 let exposureWithoutStorage = false;
 
@@ -92,6 +93,9 @@ export function AccountGuidance({
   children: ReactNode;
   enabled: boolean;
 }) {
+  const hasParentHost = useContext(AccountGuidanceHostContext);
+  const parentStart = useContext(ResourceActionContext);
+  const hostEnabled = enabled && !hasParentHost;
   const [flow, setFlow] = useState<AccountFlow | null>(null);
   const info = useRef<DocsUserInfo>({ status: 'unknown', error: 'pending' });
   const pending = useRef<AccountFlow | null>(null);
@@ -108,7 +112,7 @@ export function AccountGuidance({
     info.current = { status: 'unknown', error: 'pending' };
     pending.current = null;
     setFlow(null);
-    if (!enabled) return;
+    if (!hostEnabled) return;
     let disposed = false;
     let request: AbortController | null = null;
     const refresh = async () => {
@@ -164,7 +168,7 @@ export function AccountGuidance({
       window.removeEventListener('focus', onVisible);
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, [enabled]);
+  }, [hostEnabled]);
 
   useEffect(() => {
     if (!flow) return;
@@ -203,8 +207,7 @@ export function AccountGuidance({
   }, [flow]);
 
   const start = (action: ResourceAction) => {
-    if (!enabled || window.location.pathname !== '/zh-CN/reference/sdks')
-      return;
+    if (!hostEnabled) return;
     const next: AccountFlow = {
       ...action,
       flowId: crypto.randomUUID(),
@@ -256,86 +259,97 @@ export function AccountGuidance({
   };
 
   return (
-    <ResourceActionContext.Provider value={start}>
-      {children}
-      <Dialog
-        open={Boolean(flow)}
-        onOpenChange={(open) => {
-          if (!open) close('docs_account_guidance_dismissed');
-        }}
+    <AccountGuidanceHostContext.Provider value>
+      <ResourceActionContext.Provider
+        value={hasParentHost ? parentStart : start}
       >
-        {flow ? (
-          <DialogContent
-            className="gap-0 overflow-hidden rounded-xl border-0 p-0 sm:max-w-[480px]"
-            overlayClassName="bg-(--docs-overlay)"
-            showCloseButton={false}
-            onOpenAutoFocus={(event) => {
-              event.preventDefault();
-              loginLink.current?.focus();
+        {children}
+        {!hasParentHost ? (
+          <Dialog
+            open={Boolean(flow)}
+            onOpenChange={(open) => {
+              if (!open) close('docs_account_guidance_dismissed');
             }}
-            onInteractOutside={(event) => event.preventDefault()}
-            onEscapeKeyDown={(event) => event.preventDefault()}
           >
-            <div className="flex items-center gap-3 bg-muted/60 px-6 py-4 sm:px-8">
-              <DownloadIcon
-                aria-hidden="true"
-                className="size-5 shrink-0 text-muted-foreground"
-              />
-              <div className="flex min-w-0 flex-col gap-1">
-                <p className="text-sm font-medium">实时消息 RTM SDK</p>
-                {sdkPlatform ? (
-                  <p className="text-xs text-muted-foreground">
-                    {sdkPlatform.label}
-                    {sdkVersion ? ` · ${sdkVersion.label}` : null}
-                  </p>
-                ) : null}
-              </div>
-            </div>
-            <div className="flex flex-col gap-7 p-6 sm:p-8">
-              <DialogHeader className="gap-3 text-left">
-                <DialogTitle className="text-2xl leading-snug">
-                  下一步，配置 RTM 服务
-                </DialogTitle>
-                <DialogDescription className="text-pretty leading-7">
-                  登录声网控制台，获取 App ID 并开通 RTM 服务。
-                </DialogDescription>
-              </DialogHeader>
-              <div className="flex flex-col gap-5">
-                <p className="text-xs text-muted-foreground">
-                  SDK 下载不受影响，控制台将在新标签页打开。
-                </p>
-                <Separator />
-                <DialogFooter className="flex-row items-center justify-between gap-3 sm:justify-between">
-                  <Button
-                    size="xs"
-                    variant="ghost"
-                    className="text-muted-foreground"
-                    onClick={() => close('docs_account_guidance_dismissed')}
-                  >
-                    稍后再说
-                  </Button>
-                  <Button asChild size="lg">
-                    <a
-                      ref={loginLink}
-                      href={loginUrl(flow)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() => close('docs_account_login_clicked')}
-                    >
-                      登录并前往控制台
-                      <ArrowRightIcon
-                        aria-hidden="true"
-                        data-icon="inline-end"
-                      />
-                    </a>
-                  </Button>
-                </DialogFooter>
-              </div>
-            </div>
-          </DialogContent>
+            {flow ? (
+              <DialogContent
+                className="gap-0 overflow-hidden rounded-xl border-0 p-0 sm:max-w-[480px]"
+                overlayClassName="bg-(--docs-overlay)"
+                showCloseButton={false}
+                onOpenAutoFocus={(event) => {
+                  event.preventDefault();
+                  loginLink.current?.focus();
+                }}
+                onInteractOutside={(event) => event.preventDefault()}
+                onEscapeKeyDown={(event) => event.preventDefault()}
+              >
+                <div className="flex items-center gap-3 bg-muted/60 px-6 py-4 sm:px-8">
+                  <DownloadIcon
+                    aria-hidden="true"
+                    className="size-5 shrink-0 text-muted-foreground"
+                  />
+                  <div className="flex min-w-0 flex-col gap-1">
+                    <p className="text-sm font-medium">
+                      {flow.label ??
+                        (flow.resourceType === 'demo' ? 'Demo' : 'SDK')}
+                    </p>
+                    {sdkPlatform ? (
+                      <p className="text-xs text-muted-foreground">
+                        {sdkPlatform.label}
+                        {sdkVersion ? ` · ${sdkVersion.label}` : null}
+                      </p>
+                    ) : null}
+                  </div>
+                </div>
+                <div className="flex flex-col gap-7 p-6 sm:p-8">
+                  <DialogHeader className="gap-3 text-left">
+                    <DialogTitle className="text-2xl leading-snug">
+                      登录声网账号，继续使用相关服务
+                    </DialogTitle>
+                    <DialogDescription className="text-pretty leading-7">
+                      登录或注册声网账号，前往控制台配置
+                      {flow.label ? ` ${flow.label}` : '相关服务'}。
+                    </DialogDescription>
+                  </DialogHeader>
+                  <div className="flex flex-col gap-5">
+                    <p className="text-xs text-muted-foreground">
+                      {flow.resourceType === 'demo' ? 'Demo 体验' : 'SDK 下载'}
+                      不受影响，控制台将在新标签页打开。
+                    </p>
+                    <Separator />
+                    <DialogFooter className="flex-row items-center justify-between gap-3 sm:justify-between">
+                      <Button
+                        size="xs"
+                        variant="ghost"
+                        className="text-muted-foreground"
+                        onClick={() => close('docs_account_guidance_dismissed')}
+                      >
+                        稍后再说
+                      </Button>
+                      <Button asChild size="lg">
+                        <a
+                          ref={loginLink}
+                          href={loginUrl(flow)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={() => close('docs_account_login_clicked')}
+                        >
+                          登录并前往控制台
+                          <ArrowRightIcon
+                            aria-hidden="true"
+                            data-icon="inline-end"
+                          />
+                        </a>
+                      </Button>
+                    </DialogFooter>
+                  </div>
+                </div>
+              </DialogContent>
+            ) : null}
+          </Dialog>
         ) : null}
-      </Dialog>
-    </ResourceActionContext.Provider>
+      </ResourceActionContext.Provider>
+    </AccountGuidanceHostContext.Provider>
   );
 }
 
