@@ -2,7 +2,10 @@ import analytics from '../../../content/docs/zh-CN/api-reference/api-ref/agora-a
 import danmaku from '../../../content/docs/zh-CN/api-reference/api-ref/danmaku/meta.json';
 import ppt from '../../../content/docs/zh-CN/api-reference/api-ref/ppt-conversion-service/meta.json';
 import voip from '../../../content/docs/zh-CN/api-reference/api-ref/voip-callkit/meta.json';
+import art from '../../../content/docs/zh-CN/api-reference/online-art-teaching/meta.json';
+import music from '../../../content/docs/zh-CN/api-reference/online-music-teaching/meta.json';
 import introduction from '../../../content/docs/zh-CN/introduction/meta.json';
+import usageAnalytics from '../../../content/docs/zh-CN/realtime-media/usage-analytics/meta.json';
 import reference from '../../../content/docs/zh-CN/reference/meta.json';
 import chatroom from '../../../content/docs/zh-CN/solutions/chatroom/meta.json';
 import digitalLearning from '../../../content/docs/zh-CN/solutions/digital-learning/meta.json';
@@ -31,7 +34,39 @@ const productNames: Record<string, string> = {
   'private-room': privateRoom.title,
   reference: reference.title,
   'voip-callkit': voip.title,
+  analytics: usageAnalytics.title,
+  'online-art-teaching': art.title,
+  'online-music-teaching': music.title,
+  overview: '产品概览',
 };
+
+const scopeLabels: Record<string, string> = {
+  'agora-analytics': 'REST API',
+  analytics: '产品概述',
+  'usage-analytics': '指南',
+  'ppt-conversion-service': 'REST API',
+  'ppt-transcoding': '指南',
+  'private-room': 'API 参考',
+  'one-to-one-live': '指南',
+  'voip-callkit': 'REST API',
+  'voip-call': '指南',
+  'online-art-teaching': 'API 参考',
+  'art-class': '指南',
+  'online-music-teaching': 'API 参考',
+  'online-music-class': '指南',
+};
+
+export function getCnProductOptionLabel(
+  product: string,
+  products: string[],
+  scopes: ProductScope[],
+): string {
+  const label = getCnProductLabel(product, scopes);
+  const duplicated = products.some(
+    (id) => id !== product && getCnProductLabel(id, scopes) === label,
+  );
+  return duplicated ? `${label}（${scopeLabels[product] ?? product}）` : label;
+}
 
 export function getCnProductLabel(
   product: string | undefined,
