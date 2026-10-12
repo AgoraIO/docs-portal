@@ -6,7 +6,7 @@
 
 ## 结论
 
-当前不能判定为“所有站内跳转有效”。静态审计发现 185 个无效内部链接、76 个未解析根路径、98 个缺失锚点和 11 个未解析相对链接。对这些候选链接进行真实 HTTP 验证后，global 部署有 45 个去重后的实际 404 路径；cn 部署在此基础上新增 10 个 404 路径。另有 48 个锚点候选在运行时表现为页面 404 或页面 200 但锚点不存在。
+当前不能判定为“所有站内跳转有效”。静态审计发现 185 个无效内部链接、76 个未解析根路径、98 个缺失锚点和 11 个未解析相对链接。候选链接的原始 HTTP 结果为：global 45 个去重 404 路径，其中 8 个是 global 未发布的 zh-CN locale；cn 相对 global 新增 10 个 404 路径，全部是 cn 未发布的 en locale。按部署 locale 过滤后，global 仍有 37 个候选路径，cn 有 7 个候选路径需要处理。另有 48 个锚点候选在运行时表现为页面 404 或页面 200 但锚点不存在；其中部分与上述 locale guard 404 重叠。
 
 ## 静态审计
 
@@ -23,7 +23,9 @@
 | 缺失锚点 | 98 |
 | 外部链接（未在本轮检查） | 26,390 |
 
-## 真实运行时 404（global）
+## 真实运行时 404（global 原始结果）
+
+global 只发布 en。下表的 8 个 `/zh-CN/` 路径来自未发布 locale，404 是预期的 locale guard 结果；其余 37 个路径属于 global 可见范围或无 locale 根路径候选。
 
 | 路径 | 引用来源（最多 4 个） |
 | --- | --- |
@@ -73,7 +75,9 @@
 | `/zh-CN/solutions/iot-apaas/build/customize-and-extend/_` | zh-CN/solutions/iot-apaas/build/customize-and-extend/upgrade-ota.mdx |
 | `/zh-CN/solutions/voip-call/voip-events` | zh-CN/solutions/voip-call/build/license.mdx |
 
-## 真实运行时 404（cn 相对 global 新增）
+## 真实运行时 404（cn 相对 global 新增，均为未发布 en locale）
+
+cn 只发布 zh-CN。下表 10 个新增路径均来自 en 源文档，404 是预期的 locale guard 结果；cn 可见范围内的 7 个候选路径已包含在 global 原始结果表中，需按 cn 环境重新定位。
 
 | 路径 | 引用来源（最多 4 个） |
 | --- | --- |
@@ -89,6 +93,8 @@
 | `/en/video-calling/get-started/manage-agora-account` | en/api-reference/faq/account/billing_account.mdx |
 
 ## 锚点验证
+
+下表的页面状态来自 global `4173`。其中 `/zh-CN/` 页面在 global 的 404 属于 locale guard 结果，不能直接推断 cn 部署失败；锚点候选与页面 404 路径可能重复计数。
 
 | 页面 | 缺失锚点 | 状态 | 引用来源（最多 3 个） |
 | --- | --- | --- | --- |
@@ -148,6 +154,13 @@
 - `/en/introduction#build-an-agent` 的目标元素存在，浏览器加载后锚点位置在可视区域内。
 - 浏览器控制台还记录到 hydration mismatch；其中一次动态模块加载失败与本地 Vite 重启有关。hydration mismatch 在主题状态与 SSR 初始状态不一致时可复现，属于独立于 404 的前端问题。
 
+## 复验方法
+
+- 静态审计：`bun run docs:links:strict`。
+- 启动 global：`bun run dev -- --host 127.0.0.1 --port 4173`；启动 cn：`VITE_DOCS_REGION=cn bun run dev -- --host 127.0.0.1 --port 4174`。
+- 运行时抽样：分别从 `/en/introduction`、`/en/ai`、`/en/realtime-media/overview`、`/en/api-reference` 和对应的 `/zh-CN/` 页面提取同源 `<a href>`，去重后顺序请求并记录 200/307/404；英文 96 条、中文 156 条。
+- 运行时无效候选：从静态审计的 invalid internal、missing root、missing relative 集合去重后，在两个部署端逐条请求；锚点页面再检查目标 `id` 是否存在。
+
 ## 判定
 
-本轮验证未修改文档或路由。要达到“每个按钮、文中引用、跳转都 valid，不能是 404”，至少需要处理上面列出的实际 404 路径、缺失锚点和 11 个未解析相对链接，然后重新运行静态审计及两区域运行时爬取。
+本轮验证未修改文档或路由。要达到“每个按钮、文中引用、跳转都 valid，不能是 404”，至少需要处理 locale 过滤后仍失败的 37 个 global 候选、7 个 cn 候选、缺失锚点和 11 个未解析相对链接，然后重新运行静态审计及两区域运行时爬取。
