@@ -80,6 +80,7 @@ const DOWNLOAD_PLATFORM_VARIANTS = {
   ],
 } as const;
 const ZH_CN_HIDDEN_SDK_PRODUCTS = new Set([
+  'chat',
   'iot',
   'mediaplayer-kit',
   'proctor',

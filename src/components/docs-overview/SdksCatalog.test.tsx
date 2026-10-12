@@ -45,6 +45,9 @@ describe('SdksCatalog', () => {
     expect(
       screen.queryByRole('combobox', { name: '平台' }),
     ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('article', { name: '即时通讯 SDK' }),
+    ).not.toBeInTheDocument();
   });
 
   it('keeps URL product filters working without rendering filter controls', () => {
@@ -69,7 +72,7 @@ describe('SdksCatalog', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      13,
+      12,
     );
   });
 
@@ -208,7 +211,7 @@ describe('SdksCatalog', () => {
     ).toHaveLength(0);
     expect(
       container.querySelectorAll('[data-sdk-download-product-id] > details'),
-    ).toHaveLength(13);
+    ).toHaveLength(12);
   });
 
   it('does not show product or platform counts in the Chinese catalog', () => {
@@ -797,7 +800,7 @@ describe('SdksCatalog', () => {
     expect(downloadLink).not.toHaveClass('min-h-11', 'bg-primary');
   });
 
-  it('does not show an external-site link for the Chinese Instant Messaging card', () => {
+  it('does not render the Chinese Instant Messaging card', () => {
     window.history.replaceState(
       null,
       '',
@@ -806,9 +809,8 @@ describe('SdksCatalog', () => {
 
     render(<SdksCatalog locale="zh-CN" />);
 
-    const chatCard = openProductCard('即时通讯 SDK');
     expect(
-      within(chatCard).queryByRole('link', { name: '更多 ↗' }),
+      screen.queryByRole('article', { name: '即时通讯 SDK' }),
     ).not.toBeInTheDocument();
   });
 
@@ -895,7 +897,6 @@ describe('SdksCatalog', () => {
       ],
       ['视频 SDK', '适用于音视频通话、互动直播和极速直播的实时互动 SDK'],
       ['实时消息 SDK', '提供低延时消息、信令、状态同步和频道管理能力的 SDK'],
-      ['即时通讯 SDK', '适用于即时通讯场景的 SDK'],
       ['互动白板 SDK', '提供可高度定制且不含默认 UI 的互动白板核心能力'],
       ['Fastboard SDK', '提供默认 UI，支持快速集成互动白板功能的 SDK'],
       [
