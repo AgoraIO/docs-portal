@@ -1,166 +1,50 @@
-# 文档站内跳转验证报告
+# zh-CN 文档站内跳转验证报告
 
 - 验证日期：2026-10-12
-- 验证范围：英文 global 部署、中文 cn 部署；文档源链接、根路径链接、相对 Markdown 链接、锚点、渲染页面链接，以及代表性按钮/标签交互。
-- 验证环境：Vite dev，global `http://127.0.0.1:4173`，cn `http://127.0.0.1:4174`（`VITE_DOCS_REGION=cn`）。
+- 检查分支：`codex/cn-newdoc-html-api-migration`
+- 检查范围：只扫描 `content/docs/zh-CN` 和中文 OpenAPI 源，并只在 `VITE_DOCS_REGION=cn` 运行时验证。
+- 验证环境：`http://127.0.0.1:4174`（`VITE_DOCS_REGION=cn`）。
 
 ## 结论
 
-当前不能判定为“所有站内跳转有效”。静态审计发现 185 个无效内部链接、76 个未解析根路径、98 个缺失锚点和 11 个未解析相对链接。候选链接的原始 HTTP 结果为：global 45 个去重 404 路径，其中 8 个是 global 未发布的 zh-CN locale；cn 相对 global 新增 10 个 404 路径，全部是 cn 未发布的 en locale。按部署 locale 过滤后，global 仍有 37 个候选路径，cn 有 7 个候选路径需要处理。另有 48 个锚点候选在运行时表现为页面 404 或页面 200 但锚点不存在；其中部分与上述 locale guard 404 重叠。
+中文专用运行时检查发现 8 个去重候选路径，其中 6 个返回 200、2 个返回 404。两个真实 404 是：
+
+| 运行时 404 路径 | 中文源文件（最多 5 个） |
+| --- | --- |
+| `/zh-CN/realtime-media/rtc/build/get-started/quick-start` | zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction.mdx<br>zh-CN/realtime-media/rtc/build/extensions/web/super-clarity.mdx<br>zh-CN/realtime-media/rtc/build/extensions/web/video-compositing.mdx<br>zh-CN/realtime-media/rtc/build/extensions/web/virtual-background.mdx<br>zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection.mdx |
+| `/zh-CN/solutions/iot-apaas/build/customize-and-extend/_` | zh-CN/solutions/iot-apaas/build/customize-and-extend/upgrade-ota.mdx |
+
+静态源级审计还标记了 64 个无效内部链接、7 个未解析相对 Markdown 链接和 57 个缺失锚点候选；其中锚点候选去重后共 27 个页面/锚点组合，在 cn 运行时页面均为 200 且目标 `id` 存在。
 
 ## 静态审计
 
-执行：`bun run docs:links:strict`
+执行：`bun run docs:links:strict` 的 zh-CN 定向调用（只传入 zh-CN 文档源和中文 OpenAPI 源）。
 
 | 指标 | 数量 |
 | --- | ---: |
-| 文档文件 | 7,842 |
-| OpenAPI 文件 | 26 |
-| 总链接 | 135,472 |
-| 无效内部链接 | 185 |
-| 未解析相对 Markdown 链接 | 11 |
-| 未解析根路径链接 | 76 |
-| 缺失锚点 | 98 |
-| 外部链接（未在本轮检查） | 26,390 |
-
-## 真实运行时 404（global 原始结果）
-
-global 只发布 en。下表的 8 个 `/zh-CN/` 路径来自未发布 locale，404 是预期的 locale guard 结果；其余 37 个路径属于 global 可见范围或无 locale 根路径候选。
-
-| 路径 | 引用来源（最多 4 个） |
-| --- | --- |
-| `/cloud-recording/reference/region-vendor` | en/api-reference/api-ref/speech-to-text/rest-api-v5/start.mdx<br>en/api-reference/api-ref/speech-to-text/rest-api-v6/start.mdx |
-| `/en/3.x/interactive-live-streaming/basic-features/screensharing` | en/api-reference/faq/integration/switch_screen_camera_web.mdx |
-| `/en/3.x/interactive-live-streaming/introduction/product-overview` | en/api-reference/faq/quality/web_screen_share_issues.mdx |
-| `/en/3.x/interactive-live-streaming/introduction/release-notes` | en/api-reference/faq/integration/reduce_app_size_rtc.mdx |
-| `/en/3.x/voice-calling/best-practices/reduce-app-size` | en/api-reference/faq/integration/reduce_app_size_rtc.mdx |
-| `/en/agora-chat/reference/error-codes` | en/api-reference/faq/integration/chat_issues.mdx |
-| `/en/cloud-recording/develop/recording-video-profile` | en/api-reference/faq/integration/return_404.mdx |
-| `/en/cloud-recording/reference/common-errors` | en/api-reference/faq/integration/fail_to_upload.mdx<br>en/api-reference/faq/integration/return_404.mdx |
-| `/en/cloud-recording/reference/rest-api-overview` | en/api-reference/faq/integration/acquire_file_directory.mdx<br>en/api-reference/faq/integration/ncs_vs_query.mdx |
-| `/en/cloud-recording/reference/restful-api` | en/api-reference/faq/integration/acquire_file_directory.mdx<br>en/api-reference/faq/integration/fail_to_upload.mdx<br>en/api-reference/faq/integration/stop_cloud_recording.mdx<br>en/api-reference/faq/product/platform_version.mdx |
-| `/en/interactive-live-streaming/core-functionality/join-multiple-channels` | en/api-reference/faq/product/capacity.mdx |
-| `/en/interactive-live-streaming/core-functionality/screen-sharing` | en/api-reference/faq/quality/web_screen_share_issues.mdx |
-| `/en/interactive-live-streaming/get-started/get-started-sdk` | en/api-reference/faq/integration/host_set_role.mdx<br>en/api-reference/faq/integration/image_enhancement.mdx<br>en/api-reference/faq/integration/judge_voice_video_call.mdx<br>en/api-reference/faq/quality/video_blank.mdx |
-| `/en/interactive-whiteboard/develop/enable-whiteboard` | en/api-reference/faq/integration/cant_upload_courseware.mdx |
-| `/en/on-premise-recording/get-started/integrate-sdk` | en/api-reference/faq/product/platform_version.mdx |
-| `/en/realtime-media/video/account-settlement` | en/realtime-media/on-premise-recording/reference/pricing.mdx<br>en/realtime-media/video/reference/pricing.mdx |
-| `/en/signaling/develop/call-invitation` | en/api-reference/faq/integration/judge_voice_video_call.mdx |
-| `/en/signaling/develop/manage-connection-states` | en/api-reference/faq/integration/call_duration.mdx |
-| `/en/signaling/get-started/get-started-sdk` | en/api-reference/faq/integration/judge_voice_video_call.mdx |
-| `/en/signaling/get-started/sdk-quickstart` | en/api-reference/faq/integration/host_set_role.mdx |
-| `/en/signaling/reference/release-notes` | en/api-reference/faq/integration/judge_voice_video_call.mdx |
-| `/en/video-calling/advanced-features/audio-mixing-and-sound-effects` | en/api-reference/faq/quality/track_ended.mdx |
-| `/en/video-calling/advanced-features/custom-video` | en/api-reference/faq/quality/pixelated_green_video.mdx<br>en/api-reference/faq/quality/unsynchronized_video.mdx |
-| `/en/video-calling/best-practices/optimize-frame-rendering` | en/api-reference/faq/quality/optimize_video_rendering.mdx |
-| `/en/video-calling/core-functionality/media-stream-encryption` | en/api-reference/faq/quality/video_blank.mdx |
-| `/en/video-calling/core-functionality/receive-notifications` | en/api-reference/faq/integration/audience_event.mdx<br>en/api-reference/faq/integration/restful_api_call_frequency.mdx |
-| `/en/video-calling/get-started/authentication-workflow` | en/api-reference/faq/integration/kick_user.mdx<br>en/api-reference/faq/integration/token_cohost.mdx |
-| `/en/video-calling/get-started/get-started-sdk` | en/api-reference/faq/integration/android_startaudiomixing_permission.mdx<br>en/api-reference/faq/integration/image_enhancement.mdx |
-| `/en/video-calling/reference/agora-console-rest-api` | en/api-reference/faq/integration/string_uid.mdx |
-| `/en/video-calling/reference/channel-management-rest-api` | en/api-reference/faq/integration/restful_api_call_frequency.mdx |
-| `/en/video-calling/reference/supported-platforms` | en/api-reference/faq/integration/console_error_web.mdx<br>en/api-reference/faq/product/platform_version.mdx |
-| `/en/voice-calling/core-functionality/cloud-proxy` | en/api-reference/faq/integration/console_error_web.mdx |
-| `/en/voice-calling/reference/firewall` | en/api-reference/faq/integration/console_error_web.mdx |
-| `/help/integration-issues/agora_class_custom_properties` | en/api-reference/api-ref/flexible-classroom/classroom-sdk.mdx |
-| `/openapi/speech-to-text/join` | openapi/speech-to-text/v7.yaml |
-| `/real-time-stt/develop/translation` | en/api-reference/api-ref/speech-to-text/rest-api-v5/start.mdx<br>en/api-reference/api-ref/speech-to-text/rest-api-v6/start.mdx |
-| `/signaling/reference/error-codes` | en/api-reference/api-ref/signaling/flutter.mdx |
-| `/zh-CN/api-reference/online-music-teaching/cpp-all-platforms/api/fish-eye` | zh-CN/api-reference/online-music-teaching/cpp-all-platforms/api/fish-eye/index.mdx |
-| `/zh-CN/api-reference/rtm/unity/enumv` | zh-CN/api-reference/rtm/toc-presence/presence.mdx<br>zh-CN/api-reference/rtm/unity/presence.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx<br>zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec.mdx<br>zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx<br>zh-CN/realtime-media/rtsa/index.mdx |
-| `/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t` | zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx |
-| `/zh-CN/realtime-media/cloud-recording/get-started/quick-start` | zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding.mdx<br>zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual.mdx<br>zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite.mdx<br>zh-CN/realtime-media/cloud-recording/get-started/quick-start/go.mdx |
-| `/zh-CN/realtime-media/rtc/build/get-started/quick-start` | zh-CN/realtime-media/rtc/build/extensions/web/noise-reduction.mdx<br>zh-CN/realtime-media/rtc/build/extensions/web/super-clarity.mdx<br>zh-CN/realtime-media/rtc/build/extensions/web/video-compositing.mdx<br>zh-CN/realtime-media/rtc/build/extensions/web/virtual-background.mdx |
-| `/zh-CN/solutions/iot-apaas/build/customize-and-extend/_` | zh-CN/solutions/iot-apaas/build/customize-and-extend/upgrade-ota.mdx |
-| `/zh-CN/solutions/voip-call/voip-events` | zh-CN/solutions/voip-call/build/license.mdx |
-
-## 真实运行时 404（cn 相对 global 新增，均为未发布 en locale）
-
-cn 只发布 zh-CN。下表 10 个新增路径均来自 en 源文档，404 是预期的 locale guard 结果；cn 可见范围内的 7 个候选路径已包含在 global 原始结果表中，需按 cn 环境重新定位。
-
-| 路径 | 引用来源（最多 4 个） |
-| --- | --- |
-| `/en/api-reference/api-ref/cloud-recording` | en/realtime-media/cloud-recording/reference/pricing-webpage-recording.mdx |
-| `/en/api-reference/api-ref/uikit-sdk` | en/realtime-media/whiteboard/reference/release-notes-uikit.mdx |
-| `/en/cloud-recording/get-started/getstarted` | en/api-reference/faq/integration/bucket_region.mdx |
-| `/en/realtime-media/cloud-recording/reference/billing-policies` | en/realtime-media/cloud-recording/reference/pricing-webpage-recording.mdx |
-| `/en/realtime-media/iot/build/manage-agora-account` | en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming.mdx<br>en/realtime-media/iot/quickstart.mdx |
-| `/en/realtime-media/media-pull/reference/glossary` | en/api-reference/api-ref/media-pull/index.md |
-| `/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk` | en/realtime-media/whiteboard/reference/release-notes.mdx |
-| `/en/signaling/get-started/manage-agora-account` | en/api-reference/faq/integration/return_404.mdx |
-| `/en/solutions/interactive-live-streaming/reference/firewall` | en/realtime-media/interactive-live-streaming/reference/release-notes.mdx |
-| `/en/video-calling/get-started/manage-agora-account` | en/api-reference/faq/account/billing_account.mdx |
-
-## 锚点验证
-
-下表的页面状态来自 global `4173`。其中 `/zh-CN/` 页面在 global 的 404 属于 locale guard 结果，不能直接推断 cn 部署失败；锚点候选与页面 404 路径可能重复计数。
-
-| 页面 | 缺失锚点 | 状态 | 引用来源（最多 3 个） |
-| --- | --- | --- | --- |
-| `/en/api-reference/api-ref/conversational-ai/client-toolkit/ios` | `loadaudiosettings-12` | 页面 200，锚点不存在 | en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx |
-| `/en/api-reference/api-ref/conversational-ai/client-toolkit/ios` | `loadaudiosettings-22` | 页面 200，锚点不存在 | en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx |
-| `/en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads` | `Status-codes` | 页面 200，锚点不存在 | en/api-reference/api-ref/im/thread-management/create-delete-retrieve-threads.md |
-| `/en/api-reference/api-ref/im/thread-management/manage-thread-members` | `Status-codes` | 页面 200，锚点不存在 | en/api-reference/api-ref/im/thread-management/manage-thread-members.md |
-| `/en/realtime-media/media-pull/reference/glossary` | `app=id` | 页面 200，锚点不存在 | en/api-reference/api-ref/media-pull/index.md |
-| `/en/api-reference/api-ref/server-sdk/go` | `agentkit-newagent` | 页面 200，锚点不存在 | en/api-reference/api-ref/server-sdk/go.mdx |
-| `/en/api-reference/api-ref/server-sdk/python` | `expires_in_hours-expires_in_minutes` | 页面 200，锚点不存在 | en/api-reference/api-ref/server-sdk/python.mdx |
-| `/en/api-reference/api-ref/server-sdk/python` | `say-text-priority-none-interruptable-none` | 页面 200，锚点不存在 | en/api-reference/api-ref/server-sdk/python.mdx |
-| `/en/video-calling/get-started/manage-agora-account` | `billing-center` | 页面 200，锚点不存在 | en/api-reference/faq/account/billing_account.mdx |
-| `/en/cloud-recording/get-started/getstarted` | `start-recording` | 页面 200，锚点不存在 | en/api-reference/faq/integration/bucket_region.mdx |
-| `/en/api-reference/faq/integration/console_error_web` | `DTLS` | 页面 200，锚点不存在 | en/api-reference/faq/integration/console_error_web.mdx |
-| `/en/signaling/get-started/manage-agora-account` | `configure--features` | 页面 200，锚点不存在 | en/api-reference/faq/integration/return_404.mdx |
-| `/en/realtime-media/cloud-recording/reference/billing-policies` | `agoras-free-of-charge-policy-for-the-first-10000-minutes` | 页面 200，锚点不存在 | en/realtime-media/cloud-recording/reference/pricing-webpage-recording.mdx |
-| `/en/api-reference/api-ref/cloud-recording` | `extensionserviceconfig` | 页面 200，锚点不存在 | en/realtime-media/cloud-recording/reference/pricing-webpage-recording.mdx |
-| `/en/realtime-media/cloud-recording/reference/billing-policies` | `billing-fee-deductions-and-account-suspension-policies` | 页面 200，锚点不存在 | en/realtime-media/cloud-recording/reference/pricing-webpage-recording.mdx |
-| `/en/realtime-media/iot/build/manage-agora-account` | `generate-a-temporary-token` | 页面 200，锚点不存在 | en/realtime-media/iot/build/stream-and-optimize-media/multi-channel-streaming.mdx<br>en/realtime-media/iot/quickstart.mdx |
-| `/en/api-reference/api-ref/uikit-sdk` | `setstrokerange` | 页面 200，锚点不存在 | en/realtime-media/whiteboard/reference/release-notes-uikit.mdx |
-| `/en/api-reference/api-ref/uikit-sdk` | `settoolboxedgemargin` | 页面 200，锚点不存在 | en/realtime-media/whiteboard/reference/release-notes-uikit.mdx |
-| `/en/api-reference/api-ref/uikit-sdk` | `setresource` | 页面 200，锚点不存在 | en/realtime-media/whiteboard/reference/release-notes-uikit.mdx |
-| `/en/api-reference/api-ref/uikit-sdk` | `settoolscolors` | 页面 200，锚点不存在 | en/realtime-media/whiteboard/reference/release-notes-uikit.mdx |
-| `/en/realtime-media/whiteboard/build/set-up-and-build-your-first-app/get-started-sdk` | `get-the-whiteboard-sdk` | 页面 200，锚点不存在 | en/realtime-media/whiteboard/reference/release-notes.mdx |
-| `/zh-CN/api-reference/online-music-teaching/cpp-all-platforms/api/fish-eye` | `video_view_setup_mode` | 页面 404 | zh-CN/api-reference/online-music-teaching/cpp-all-platforms/api/fish-eye/index.mdx |
-| `/zh-CN/api-reference/rtm/unity/enumv` | `rtm_channel_type` | 页面 404 | zh-CN/api-reference/rtm/toc-presence/presence.mdx<br>zh-CN/api-reference/rtm/unity/presence.mdx |
-| `/zh-CN/realtime-media/cloud-recording/get-started/quick-start` | `申请录制服务器资源` | 页面 404 | zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding.mdx<br>zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual.mdx<br>zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite.mdx |
-| `/zh-CN/realtime-media/cloud-recording/get-started/quick-start` | `开始录制` | 页面 404 | zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding.mdx<br>zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual.mdx |
-| `/zh-CN/realtime-media/cloud-recording/get-started/quick-start` | `模拟音视频互动场景` | 页面 404 | zh-CN/realtime-media/cloud-recording/get-started/quick-start/go.mdx<br>zh-CN/realtime-media/cloud-recording/get-started/quick-start/java.mdx<br>zh-CN/realtime-media/cloud-recording/get-started/quick-start/nodejs.mdx |
-| `/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api` | `start_listening` | 页面 404 | zh-CN/realtime-media/marketplace/reference/iflytek-asr-api.mdx |
-| `/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api` | `flush_listening` | 页面 404 | zh-CN/realtime-media/marketplace/reference/iflytek-asr-api.mdx |
-| `/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api` | `stop_listening` | 页面 404 | zh-CN/realtime-media/marketplace/reference/iflytek-asr-api.mdx |
-| `/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api` | `log_lv` | 页面 404 | zh-CN/realtime-media/marketplace/reference/iflytek-asr-api.mdx |
-| `/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api` | `ist_result` | 页面 404 | zh-CN/realtime-media/marketplace/reference/iflytek-asr-api.mdx |
-| `/zh-CN/realtime-media/marketplace/reference/iflytek-asr-api` | `its_result` | 页面 404 | zh-CN/realtime-media/marketplace/reference/iflytek-asr-api.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_join_channel` | 页面 404 | zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx<br>zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_send_rdt_msg` | 页面 404 | zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_get_rdt_status_info` | 页面 404 | zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t` | `on_rdt_state` | 页面 404 | zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t` | `on_rdt_msg` | 页面 404 | zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `audio_codec_type_e` | 页面 404 | zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_create_connection` | 页面 404 | zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_send_video_data` | 页面 404 | zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_send_audio_data` | 页面 404 | zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_leave_channel` | 页面 404 | zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_rtc_destroy_connection` | 页面 404 | zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `audio_data_type_e` | 页面 404 | zh-CN/realtime-media/rtsa/index.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `video_data_type_e` | 页面 404 | zh-CN/realtime-media/rtsa/index.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `agora_err_code_e` | 页面 404 | zh-CN/realtime-media/rtsa/reference/release-notes.mdx |
-| `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h` | `area_code_e` | 页面 404 | zh-CN/realtime-media/rtsa/reference/release-notes.mdx |
-| `/zh-CN/solutions/voip-call/voip-events` | `98-api_error` | 页面 404 | zh-CN/solutions/voip-call/build/license.mdx |
+| zh-CN 文档文件 | 6708 |
+| 中文 OpenAPI 文件 | 15 |
+| 总链接 | 102724 |
+| 无效内部链接 | 64 |
+| 未解析相对 Markdown 链接 | 7 |
+| 未解析根路径链接 | 0 |
+| 缺失锚点候选 | 57 |
+| 外部链接（未在本轮检查） | 7500 |
 
 ## 浏览器交互冒烟验证
 
-- 英文首页、AI 快速开始页和中文首页均可渲染；英文代表性页面链接抽样 96 个，返回 200/307 的 96 个；中文代表性页面链接抽样 156 个，返回 200/307 的 156 个。
-- 首页主导航、搜索弹层、主题切换、文档复制按钮、目录折叠按钮可触发；AI 快速开始页的 Windows/macOS 与 Python/TypeScript/Go 标签切换可触发，标签状态发生变化。
-- `/en/introduction#build-an-agent` 的目标元素存在，浏览器加载后锚点位置在可视区域内。
-- 浏览器控制台还记录到 hydration mismatch；其中一次动态模块加载失败与本地 Vite 重启有关。hydration mismatch 在主题状态与 SSR 初始状态不一致时可复现，属于独立于 404 的前端问题。
+- 中文首页 `/zh-CN/introduction` 可渲染，标题为“声网文档中心”。
+- 中文首页搜索弹层可打开；主题按钮可从浅色切换为深色。
+- 中文 RTC 快速开始页可渲染，页面加载无浏览器错误。
+- 中文代表性导航和页面链接抽样 156 个，返回 200/307 的 156 个。
 
 ## 复验方法
 
-- 静态审计：`bun run docs:links:strict`。
-- 启动 global：`bun run dev -- --host 127.0.0.1 --port 4173`；启动 cn：`VITE_DOCS_REGION=cn bun run dev -- --host 127.0.0.1 --port 4174`。
-- 运行时抽样：分别从 `/en/introduction`、`/en/ai`、`/en/realtime-media/overview`、`/en/api-reference` 和对应的 `/zh-CN/` 页面提取同源 `<a href>`，去重后顺序请求并记录 200/307/404；英文 96 条、中文 156 条。
-- 运行时无效候选：从静态审计的 invalid internal、missing root、missing relative 集合去重后，在两个部署端逐条请求；锚点页面再检查目标 `id` 是否存在。
+- 递归扫描 `content/docs/zh-CN/**/*.md`、`*.mdx`，并使用审计脚本的中文 OpenAPI 源过滤。
+- 从静态审计的 invalid internal、missing relative、missing root 集合提取路径，在 cn 服务逐条请求并记录状态；本轮共 8 个去重路径。
+- 对 57 个锚点候选按目标页面去重后检查 HTML 的 `id` 属性；本轮共 27 个组合。
+- 启动命令：`VITE_DOCS_REGION=cn bun run dev -- --host 127.0.0.1 --port 4174`。
 
 ## 判定
 
-本轮验证未修改文档或路由。要达到“每个按钮、文中引用、跳转都 valid，不能是 404”，至少需要处理 locale 过滤后仍失败的 37 个 global 候选、7 个 cn 候选、缺失锚点和 11 个未解析相对链接，然后重新运行静态审计及两区域运行时爬取。
+当前 zh-CN 仍有 2 个运行时 404 路径需要修复；静态审计的 64 个无效内部链接和 7 个相对链接也需要逐项确认。修复后应重新运行本报告中的中文定向审计和 cn 浏览器验证。
