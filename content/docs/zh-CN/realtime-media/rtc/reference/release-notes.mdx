@@ -5,17 +5,91 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 <PlatformStructured platform="android">
 
-## RTC Native 4.7.0
+## v4.7.0
 
-该版本于 2026 年 9 月 22 日发布。Android、iOS、macOS 和 Windows SDK 更新了 API、视频增强、网络和屏幕采集能力，并同步更新了 SDK 下载资源。升级前请阅读各平台的兼容性说明和 API 变更。
+该版本于 2026 年 9 月 22 日发布。
 
-## RTC Android/iOS 4.6.4
+### 新增特性
 
-Android 和 iOS SDK 发布 v4.6.4，包含问题修复、稳定性改进和资源更新。请根据平台下载对应版本并核对升级说明。
+#### 声网高级美颜 2.1
 
-## RTC Flutter/React Native 4.6.4
+该版本支持声网高级美颜 2.1 API，并新增美颜人脸检测能力。使用声网高级美颜功能的客户可以检测人脸置信度。使用 RTC SDK v4.7.0 及以上版本集成声网高级美颜时，请参考[实现声网高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)；如果仍使用 RTC SDK v4.6.x，请继续参考[声网高级美颜 2.0 文档](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)。
 
-Flutter 和 React Native SDK 发布 4.6.4，更新了本地视频事件和相关资源。升级后请按框架版本核对 API 兼容性。
+### 改进
+
+#### 声网高级美颜场景性能优化
+
+该版本针对启用声网高级美颜的场景进行专项性能优化，720p 15fps 满帧开播的机型覆盖率大幅提高，更多中低端设备能稳定输出高清流畅的美颜画面。
+
+#### 音视频链路性能优化
+
+该版本针对音视频链路与线程调度机制做了专项优化，显著降低各音视频场景 CPU 消耗，同步提升长时间运行稳定性。
+
+#### 音频 SDK FFmpeg 插件集成优化
+
+该版本调整了音频 SDK 中 FFmpeg player 插件的加载方式。`libagora-ffmpeg.so` 已更名为 `libagora_ffmpeg_extension.so`，并由必需库调整为可选插件。SDK 包中默认包含该插件，你可以根据业务需要选择是否集成。未加载 FFmpeg player 插件时，MediaPlayer 使用系统原生播放能力，实际支持的音频文件格式取决于系统支持的容器格式和音频编解码器，不同系统版本或设备厂商可能存在差异；集成并加载 FFmpeg player 插件后，MediaPlayer 可支持更多音频格式和播放能力。
+
+#### 视频首帧体验优化
+
+该版本优化了视频帧传输调度机制，提升了频道内首个用户订阅流的出图速度。
+
+#### R8/ProGuard 混淆规则配置优化
+
+该版本优化了 Android SDK 的 R8/ProGuard 混淆规则配置。如果你的 app 未开启 R8/ProGuard 缩减和混淆，无需额外配置；如果开启了 R8/ProGuard 缩减和混淆，则需配置声网 SDK 相关混淆规则，以避免 Native 层通过 JNI 访问的 Java 类、成员或方法被移除或重命名。你可以继续使用 `-keep class io.agora.**{*;}` 快速配置，或使用 SDK 提供的 `consumer-proguard-rules.pro` 做精细化配置。
+
+#### 1v1 连麦延时体验优化
+
+该版本优化了视频1v1等实时互动场景下的音视频策略，在保障画质的前提下改善端到端延迟，并提升突发抖动等弱网场景下的播放流畅性。
+
+#### 音频场景码率优化
+
+该版本优化了音频场景下的码率开销，保障音质的前提下提升了音频流传输效率。
+
+#### Native 与 Web 互通弱网体验优化
+
+该版本优化了视频 1v1 弱网场景下 Native 与 Web 互通的音视频体验。
+
+#### 媒体文件播放兼容性优化
+
+该版本针对不合规 MP3 文件做了针对性兼容适配，提升了媒体文件播放的鲁棒性。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了开启音频裸数据后，从观众切换为主播时低概率出现残留上一段声音的问题。
+- 修复了多人音频情况下行压力比较大时，特定 Android 设备升级后播放音频时偶现电流声或杂音的问题。
+- 修复了预加载音效场景下，调用 `stopEffect` 停止播放后再次调用 `playEffect` 时，上一段音效仍有残留的问题。
+- 修复了部分场景下人脸检测回调未按预期触发的现象，解决了人脸信息获取不稳定的问题。
+- 修复了设备处于系统通话或音频占用状态时，本地音频状态回调异常的现象，解决了应用无法准确感知本地音频状态的问题。
+
+## v4.6.4
+
+该版本于 2026 年 8 月 31 日发布。
+
+### 新增特性
+
+该版本新增以下特性：
+
+- 新增两个回调事件，用于通知 Android 广角 / 超广角摄像头采集开启的成功或失败。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了断网后 `onNetworkQuality` 回调报告的网络质量可能不准确的问题。
+- 修复了接收端设置音频场景为`AUDIO_SCENARIO_AI_CLIENT`，发送端频繁停止和恢复发送音频流，当接收端网络不佳时偶现无声问题。
+- 修复了使用有线耳机进行音视频互动时，在特定音频路由配置场景下偶现音质变差的问题。
+- 修复了自渲染视频帧场景下，本地预览画面偶现卡住的问题。
+- 修复了在 Android 模拟器上部分场景下偶现回声的问题。
+- 修复了启用 Google 安全加固后，音视频互通过程中偶现 App 崩溃或无响应（ANR）的问题。
+- 修复了 Android 手表连接蓝牙耳机时，音频路由可能切换到外放的问题。
+- 修复了 App 集成调用 `setExternalVideoSource` 设置推送的外部视频源类型为已编码的视频帧（`ENCODED_VIDEO_FRAME`），推送的已编码视频帧包含的 SEI 信息长度如果与编码协议规定不匹配，偶现崩溃问题。
+- 修复了音视频互动场景下偶现 App 崩溃的问题。
+- 修复了 Web 与 Native 音视频互通场景下，偶现视频编码失败、远端视频卡顿或花屏的问题。
+- 修复了开启媒体播放器缓存后，在断网场景下播放已缓存资源时，可能延迟约 10 秒并回调错误的问题。
+- 修复了使用媒体播放器播放 CDN 流时，分辨率变化后偶现花屏的问题。
+- 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。
 
 ## v4.6.3
 
@@ -1945,6 +2019,86 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 由于 AirPods Pro 不支持在通话音量模式下使用 A2DP 协议，可能会导致该设备在该模式下无法成功连接。
 
+## v4.7.0
+
+该版本于 2026 年 9 月 22 日发布。
+
+### 新增特性
+
+#### 声网高级美颜 2.1
+
+该版本支持声网高级美颜 2.1 API，并新增美颜人脸检测能力。使用声网高级美颜功能的客户可以检测人脸置信度。使用 RTC SDK v4.7.0 及以上版本集成声网高级美颜时，请参考[实现声网高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)；如果仍使用 RTC SDK v4.6.x，请继续参考[声网高级美颜 2.0 文档](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)。
+
+### 改进
+
+#### 音视频链路性能优化
+
+该版本针对音视频链路与线程调度机制做了专项优化，显著降低各音视频场景 CPU 消耗，同步提升长时间运行稳定性。
+
+#### 音频 SDK FFmpeg 插件集成优化
+
+该版本调整了音频 SDK 中 FFmpeg player 插件的加载方式。`Agoraffmpeg.xcframework` 已调整为可选插件 `AgoraffmpegExtension.xcframework`。SDK 包中默认包含该插件，你可以根据业务需要选择是否集成。未加载 FFmpeg player 插件时，MediaPlayer 使用系统原生播放能力，实际支持的音频文件格式取决于系统支持的容器格式和音频编解码器；集成并加载 FFmpeg player 插件后，MediaPlayer 可支持更多音频格式和播放能力。
+
+#### 视频首帧体验优化
+
+该版本优化了视频帧传输调度机制，提升了频道内首个用户订阅流的出图速度。
+
+#### 1v1 连麦延时体验优化
+
+该版本优化了视频1v1等实时互动场景下的音视频策略，在保障画质的前提下改善端到端延迟，并提升突发抖动等弱网场景下的播放流畅性。
+
+#### 音频场景码率优化
+
+该版本优化了音频场景下的码率开销，保障音质的前提下提升了音频流传输效率。
+
+#### 视频方向处理优化
+
+该版本改进了横竖屏切换过程中的视频方向处理，降低设备旋转后视频 UI 旋转延迟或异常的概率。
+
+#### 后台摄像头采集与重新开播体验优化
+
+该版本改进了 App 进入后台后的摄像头采集状态处理，解决主播重新开播时本地或远端画面偶现黑屏的问题。
+
+#### Native 与 Web 互通弱网体验优化
+
+该版本优化了视频 1v1 弱网场景下 Native 与 Web 互通的音视频体验。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了 iOS 26 上触发系统键盘语音转文字后，播放端低概率无声的问题。
+- 修复了使用蓝牙音频设备上麦后，音频路由异常切换或远端音频无声的问题。
+- 修复了聊天室上下麦场景中，先关闭本地音频、切换观众/主播角色后再开启本地音频时导致的低概率远端无声的问题。
+- 修复了 AI QoS 配置下，通话刚开始时偶现首句音频丢字或异常的问题。
+- 修复了音视频互动、屏幕共享、视频帧数据访问和音视频统计等场景下偶现 App 崩溃的问题，提升了 SDK 稳定性。
+
+## v4.6.4
+
+该版本于 2026 年 8 月 31 日发布。
+
+### 升级必看
+
+#### iOS 27 横屏采集画面方向适配
+
+在使用 Xcode 27 编译 App 并运行于 iOS 27.0 及以上系统时，由于声网 RTC SDK 旧版本依赖的界面方向相关系统 API，如 [`UIApplicationWillChangeStatusBarOrientationNotification`](https://developer.apple.com/documentation/uikit/uiapplication/willchangestatusbarorientationnotification)，在 iOS 27 中不再支持，导致 App 在横屏界面下启用摄像头采集时出现采集画面方向异常。本版本已使用新API完成适配。
+
+更多信息请参考 Apple 的 [iOS & iPadOS 27 Release Notes](https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-27-release-notes)。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了断网后 `onNetworkQuality` 回调报告的网络质量可能不准确的问题。
+- 修复了接收端设置音频场景为`AUDIO_SCENARIO_AI_CLIENT`，发送端频繁停止和恢复发送音频流，当接收端网络不佳时偶现无声问题。
+- 修复了使用有线耳机进行音视频互动时，在特定音频路由配置场景下偶现音质变差的问题。
+- 修复了自渲染视频帧场景下，本地预览画面偶现卡住的问题。
+- 修复了在 Android 模拟器上部分场景下偶现回声的问题。
+- 修复了启用 Google 安全加固后，音视频互通过程中偶现 App 崩溃或无响应（ANR）的问题。
+- 修复了 App 集成调用 `setExternalVideoSource` 设置推送的外部视频源类型为已编码的视频帧（`ENCODED_VIDEO_FRAME`），推送的已编码视频帧包含的 SEI 信息长度如果与编码协议规定不匹配，偶现崩溃问题。
+- 修复了开启媒体播放器缓存后，在断网场景下播放已缓存资源时，可能延迟约 10 秒并回调错误的问题。
+- 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。
+
 ## v4.6.2
 
 该版本于 2026 年 1 月 16 日发布。
@@ -3819,6 +3973,41 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 ### 已知问题和局限性
 
+
+## v4.7.0
+
+该版本于 2026 年 9 月 22 日发布。
+
+### 改进
+
+#### 音视频链路性能优化
+
+该版本针对音视频链路与线程调度机制做了专项优化，显著降低各音视频场景 CPU 消耗，同步提升长时间运行稳定性。
+
+#### 视频首帧体验优化
+
+该版本优化了视频帧传输调度机制，提升了频道内首个用户订阅流的出图速度。
+
+#### 1v1 连麦延时体验优化
+
+该版本优化了视频1v1等实时互动场景下的音视频策略，在保障画质的前提下改善端到端延迟，并提升突发抖动等弱网场景下的播放流畅性。
+
+#### 音频场景码率优化
+
+该版本优化了音频场景下的码率开销，保障音质的前提下提升了音频流传输效率。
+
+#### Native 与 Web 互通弱网体验优化
+
+该版本优化了视频 1v1 弱网场景下 Native 与 Web 互通的音视频体验。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了 macOS 26 设备连接 HDMI 外接屏后，调用屏幕共享相关接口枚举屏幕列表时，无法枚举出扩展屏幕的问题。
+- 修复了 AI Client 场景下接收较长 TTS 音频时，偶现远端音频数据混乱的问题。
+- 修复了预加载音效场景下，调用 `stopEffect` 停止播放后再次调用 `playEffect` 时，上一段音效仍有残留的问题。
+- 修复了镜像渲染、自渲染和屏幕共享源枚举等场景下偶现 App 崩溃的问题，提升了 SDK 稳定性。
 
 ## v4.6.2
 
@@ -7300,6 +7489,46 @@ v4.0.0 修复了以下问题：
 </TabsList>
 
 <TabsContent value="cpp">
+
+## v4.7.0
+
+该版本于 2026 年 9 月 22 日发布。
+
+### 改进
+
+#### 音视频链路性能优化
+
+该版本针对音视频链路与线程调度机制做了专项优化，显著降低各音视频场景 CPU 消耗，同步提升长时间运行稳定性。
+
+#### 视频首帧体验优化
+
+该版本优化了视频帧传输调度机制，提升了频道内首个用户订阅流的出图速度。
+
+#### 1v1 连麦延时体验优化
+
+该版本优化了视频1v1等实时互动场景下的音视频策略，在保障画质的前提下改善端到端延迟，并提升突发抖动等弱网场景下的播放流畅性。
+
+#### 音频场景码率优化
+
+该版本优化了音频场景下的码率开销，保障音质的前提下提升了音频流传输效率。
+
+#### 屏幕共享屏蔽窗口能力优化
+
+该版本优化了 Windows 平台屏幕共享时的屏蔽窗口实现。调用 `startScreenCaptureByDisplayId` 开启屏幕共享，并通过 `ScreenCaptureParameters` 中的 `excludeWindowList` 屏蔽指定窗口时，SDK 会在满足条件时使用独立采集进程处理 MAG 采集，以降低多屏、负坐标、屏幕缩放或安全桌面切换等场景下屏蔽窗口失败或采集异常的风险，提升屏幕共享稳定性。
+
+#### Native 与 Web 互通弱网体验优化
+
+该版本优化了视频 1v1 弱网场景下 Native 与 Web 互通的音视频体验。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了 SDK 运行过程中麦克风被其他应用占用时，应用无法感知麦克风占用状态的问题。修复后，当音频采集设备被占用时，SDK 会通过警告码 `WARN_ADM_RECORD_IS_OCCUPIED`（1033）通知应用。
+- 修复了连接 USB 摄像头并开启声卡采集时，环回音频声道数小于双声道后处理不正确，导致偶现电流声或杂音的问题。
+- 修复了部分场景下摄像头偶现黑屏的现象，解决了视频采集偶现失败的问题。
+- 修复了预加载音效场景下，调用 `stopEffect` 停止播放后再次调用 `playEffect` 时，上一段音效仍有残留的问题。
+- 修复了管理员启动或屏幕采集场景下偶现崩溃的问题，提升了 SDK 稳定性。
 
 ## v4.6.2
 
@@ -13509,6 +13738,42 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 
 
+## v6.6.4 (对应 Native v4.6.4)
+
+该版本于 2026 年 8 月 31 日发布。
+
+### 升级必看
+
+#### iOS 27 横屏采集画面方向适配 (iOS)
+
+
+在使用 Xcode 27 编译 App 并运行于 iOS 27.0 及以上系统时，由于声网 RTC SDK 旧版本依赖的界面方向相关系统 API，如 [`UIApplicationWillChangeStatusBarOrientationNotification`](https://developer.apple.com/documentation/uikit/uiapplication/willchangestatusbarorientationnotification)，在 iOS 27 中不再支持，导致 App 在横屏界面下启用摄像头采集时出现采集画面方向异常。该版本已完成新方案适配。
+
+更多信息请参考 Apple 的 [iOS & iPadOS 27 Release Notes](https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-27-release-notes)。
+
+### 新增特性
+
+#### 视频采集 (Android)
+
+新增两个回调事件，用于通知 Android 广角 / 超广角摄像头采集开启的成功或失败。
+
+### 问题修复
+
+该版本修复了以下问题：
+- 修复了断网后 `onNetworkQuality` 回调报告的网络质量可能不准确的问题。(Android, iOS)
+- 修复了接收端设置音频场景为`AUDIO_SCENARIO_AI_CLIENT`，发送端频繁停止和恢复发送音频流，当接收端网络不佳时偶现无声问题。(Android, iOS)
+- 修复了使用有线耳机进行音视频互动时，在特定音频路由配置场景下偶现音质变差的问题。(Android, iOS)
+- 修复了自渲染视频帧场景下，本地预览画面偶现卡住的问题。(Android, iOS)
+- 修复了在 Android 模拟器上部分场景下偶现回声的问题。(Android, iOS)
+- 修复了启用 Google 安全加固后，音视频互通过程中偶现 App 崩溃或无响应（ANR）的问题。(Android, iOS)
+- 修复了 Android 手表连接蓝牙耳机时，音频路由可能切换到外放的问题。(Android)
+- 修复了 App 集成调用 `setExternalVideoSource` 设置推送的外部视频源类型为已编码的视频帧（`ENCODED_VIDEO_FRAME`），推送的已编码视频帧包含的 SEI 信息长度如果与编码协议规定不匹配，偶现崩溃问题。(Android, iOS)
+- 修复了音视频互动场景下偶现 App 崩溃的问题。(Android)
+- 修复了 Web 与 Native 音视频互通场景下，偶现视频编码失败、远端视频卡顿或花屏的问题。(Android)
+- 修复了开启媒体播放器缓存后，在断网场景下播放已缓存资源时，可能延迟约 10 秒并回调错误的问题。(Android, iOS)
+- 修复了使用媒体播放器播放 CDN 流时，分辨率变化后偶现花屏的问题。(Android)
+- 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。(Android, iOS)
+
 ## v6.6.2 (对应 Native v4.6.2)
 
 该版本于 2026 年 3 月 18 日发布。
@@ -15549,6 +15814,42 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 **AirPods Pro 蓝牙连接问题 (iOS)**
 
 由于 AirPods Pro 不支持在通话音量模式下使用 A2DP 协议，可能会导致该设备在该模式下无法成功连接。
+
+## v4.6.4
+
+该版本于 2026 年 8 月 31 日发布。
+
+### 升级必看
+
+#### iOS 27 横屏采集画面方向适配 (iOS)
+
+在使用 Xcode 27 编译 App 并运行于 iOS 27.0 及以上系统时，由于声网 RTC SDK 旧版本依赖的界面方向相关系统 API，如 [`UIApplicationWillChangeStatusBarOrientationNotification`](https://developer.apple.com/documentation/uikit/uiapplication/willchangestatusbarorientationnotification)，在 iOS 27 中不再支持，导致 App 在横屏界面下启用摄像头采集时出现采集画面方向异常。该版本已完成新方案适配。
+
+更多信息请参考 Apple 的 [iOS & iPadOS 27 Release Notes](https://developer.apple.com/documentation/ios-ipados-release-notes/ios-ipados-27-release-notes)。
+
+### 新增特性
+
+#### 视频采集 (Android)
+
+新增两个回调事件，用于通知 Android 广角 / 超广角摄像头采集开启的成功或失败。
+
+### 问题修复
+
+该版本修复了以下问题：
+
+- 修复了断网后 `onNetworkQuality` 回调报告的网络质量可能不准确的问题。(Android, iOS)
+- 修复了接收端设置音频场景为`AUDIO_SCENARIO_AI_CLIENT`，发送端频繁停止和恢复发送音频流，当接收端网络不佳时偶现无声问题。(Android, iOS)
+- 修复了使用有线耳机进行音视频互动时，在特定音频路由配置场景下偶现音质变差的问题。(Android, iOS)
+- 修复了自渲染视频帧场景下，本地预览画面偶现卡住的问题。(Android, iOS)
+- 修复了在 Android 模拟器上部分场景下偶现回声的问题。(Android, iOS)
+- 修复了启用 Google 安全加固后，音视频互通过程中偶现 App 崩溃或无响应（ANR）的问题。(Android, iOS)
+- 修复了 Android 手表连接蓝牙耳机时，音频路由可能切换到外放的问题。(Android)
+- 修复了 App 集成调用 `setExternalVideoSource` 设置推送的外部视频源类型为已编码的视频帧（`ENCODED_VIDEO_FRAME`），推送的已编码视频帧包含的 SEI 信息长度如果与编码协议规定不匹配，偶现崩溃问题。(Android, iOS)
+- 修复了音视频互动场景下偶现 App 崩溃的问题。(Android)
+- 修复了 Web 与 Native 音视频互通场景下，偶现视频编码失败、远端视频卡顿或花屏的问题。(Android)
+- 修复了开启媒体播放器缓存后，在断网场景下播放已缓存资源时，可能延迟约 10 秒并回调错误的问题。(Android, iOS)
+- 修复了使用媒体播放器播放 CDN 流时，分辨率变化后偶现花屏的问题。(Android)
+- 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。(Android, iOS)
 
 ## v4.6.2
 

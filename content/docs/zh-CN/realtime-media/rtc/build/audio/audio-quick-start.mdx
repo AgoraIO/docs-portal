@@ -90,19 +90,36 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 <TabsContent value="maven">
 
-1. 打开项目根目录下的 `settings.gradle` 文件，添加 Maven Central 依赖 (如果已有可忽略)：
+1. 进入项目根目录，打开 `settings.gradle` 文件，在 `dependencyResolutionManagement` 的 `repositories` 中添加声网 Maven CDN 仓库。
+
+    请保留项目中已有的 Maven 仓库配置，尤其是 `mavenCentral()`，并额外添加声网 Maven CDN 仓库。
+
+    :::warning[注意]
+    如果你在 `settings.gradle` 中找不到 `dependencyResolutionManagement` 字段，可能是因为你的 Android Gradle Plugin 版本低于 v7.1.0。
+
+        相关信息请参考 [Android Gradle Plugin Release Note v7.1.0](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes)。
+    :::
 
     ```groovy
-    repositories {
-        ...
-        mavenCentral()
-        ...
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.shengwang.cn/maven/' }
+        }
     }
     ```
 
-    :::warning[注意]
-    如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
-    :::
+    若你的 Android Gradle Plugin 版本低于 v7.1.0，请打开项目根目录下的 `build.gradle` 文件，在 `allprojects` 的 `repositories` 中添加如下配置：
+
+    ```groovy
+    allprojects {
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.shengwang.cn/maven/' }
+        }
+    }
+    ```
 
 2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。你可以从[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)中查询 SDK 的最新版本，并将 `x.y.z` 替换为具体的版本号。
 
@@ -6199,14 +6216,3 @@ void UAgoraWidget::NativeDestruct()
 - [频道连接状态管理](/zh-CN/realtime-media/rtc/build/initialize-and-channel/channel-connection)
 
 </PlatformStructured>
-
-
-:::note[声网 Maven CDN]
-通过 Gradle 自动集成 Android SDK 前，请在 `settings.gradle` 的 `dependencyResolutionManagement.repositories` 中保留 `mavenCentral()`，并添加：
-
-```groovy
-maven { url = 'https://download.shengwang.cn/maven/' }
-```
-
-如果项目使用低于 v7.1.0 的 Android Gradle Plugin，请在根目录 `build.gradle` 的 `allprojects.repositories` 中添加同一仓库。
-:::

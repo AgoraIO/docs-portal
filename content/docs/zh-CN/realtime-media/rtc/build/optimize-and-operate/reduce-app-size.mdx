@@ -5465,14 +5465,3 @@ v4.1.1 版本以前，集成超分辨率插件后，你可以调用 `enableRemot
 - [为什么 SDK 中使用的是动态库而不是静态库？](/zh-CN/reference/faq/integration/dynamic_or_static_library)
 
 </PlatformStructured>
-
-
-:::note[声网 Maven CDN]
-通过 Gradle 自动集成 Android SDK 前，请在 `settings.gradle` 的 `dependencyResolutionManagement.repositories` 中保留 `mavenCentral()`，并添加：
-
-```groovy
-maven { url = 'https://download.shengwang.cn/maven/' }
-```
-
-如果项目使用低于 v7.1.0 的 Android Gradle Plugin，请在根目录 `build.gradle` 的 `allprojects.repositories` 中添加同一仓库。
-:::
