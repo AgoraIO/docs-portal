@@ -182,7 +182,7 @@ const agent = new Agent({ client }).withLlm(llm).withTools(true);
 }
 ```
 
-调用[创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent)时，RESTful API 必须将 `properties.advanced_features.enable_tools` 设为 `true`；Agents SDK 必须调用 `WithTools(true)`、`with_tools(True)` 或 `withTools(true)`。如果未开启工具调用，工具不会暴露给模型，也不会访问工具端点。
+调用[创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join)时，RESTful API 必须将 `properties.advanced_features.enable_tools` 设为 `true`；Agents SDK 必须调用 `WithTools(true)`、`with_tools(True)` 或 `withTools(true)`。如果未开启工具调用，工具不会暴露给模型，也不会访问工具端点。
 
 完成配置后，用户可以询问“帮我查一下订单 ORD-10001 的状态”。模型生成 `order_id` 后，引擎会请求：
 

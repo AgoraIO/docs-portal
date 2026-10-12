@@ -138,10 +138,18 @@ paths:
                         keywords:
                           type: array
                           description: |-
-                            ASR 热词列表，用于提升指定词汇的识别效果。最多支持 128 个热词；仅当 ASR 供应商为凤鸣（`fengming`）或未设置时可用。
-                          maxItems: 128
+                            ASR 热词列表，用于提升指定词汇的识别效果。详见[配置 ASR 热词](/zh-CN/ai/user-guides/asr-keywords)。
+
+                            - 仅当 `properties.asr.vendor` 未填、为 `null`、为空字符串或 `fengming` 时可设置 `properties.asr.keywords`。
+                            - 热词数量最多支持 128 个。
+                            - 如果显式设置了其他 ASR 供应商，同时设置该字段，请求会报错：
+
+                                `Invalid value at properties.asr.keywords: can only be set when properties.asr.vendor is unset or fengming.`
+
+                            > 设置热词可能影响其他词汇的识别准确度，请根据业务场景谨慎配置。
                           items:
                             type: string
+                          maxItems: 128
                         params:
                           $ref: '#/components/schemas/asr_params'
                           description: |
