@@ -307,8 +307,7 @@ export function AccountGuidance({
                       登录声网账号，继续使用相关服务
                     </DialogTitle>
                     <DialogDescription className="text-pretty leading-7">
-                      登录或注册声网账号，前往控制台配置
-                      {flow.label ? ` ${flow.label}` : '相关服务'}。
+                      前往控制台配置相关服务。
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-col gap-5">
