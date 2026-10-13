@@ -164,6 +164,15 @@ export function buildOpenApiSchemaView(
         );
 
         if (children.length === 0 && branchSchema?.type === 'object') {
+          const hasSyntheticAnyProperty = branchSchema.props.some(
+            (property) => {
+              const childSchema = generated.refs[property.$type];
+              return (
+                childSchema !== undefined &&
+                isSyntheticAnyProperty(property.name, childSchema)
+              );
+            },
+          );
           const branchNodePath = [
             ...nextParentPath,
             { $ref: item.$type, name: item.name },
@@ -178,7 +187,9 @@ export function buildOpenApiSchemaView(
                 branchSchema.description !== undefined ||
                 (branchSchema.infoTags?.length ?? 0) > 0,
               id: encodeOpenApiSchemaNodeId(branchNodePath),
-              legacyNames: ['[key: string]'],
+              ...(hasSyntheticAnyProperty
+                ? { legacyNames: ['[key: string]'] }
+                : {}),
               name: item.name,
               parentPath: nextParentPath,
               path: [...fieldPath, item.name].join('.'),

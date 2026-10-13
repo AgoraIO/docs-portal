@@ -130,7 +130,10 @@ const variantMapGeneratedFixture: SchemaUIGeneratedData = {
     },
     params: {
       aliasName: 'params',
-      items: [{ $type: 'minimax', name: 'Minimax' }],
+      items: [
+        { $type: 'minimax', name: 'Minimax' },
+        { $type: 'empty', name: 'Empty' },
+      ],
       type: 'or',
       typeName: 'params',
     },
@@ -140,6 +143,13 @@ const variantMapGeneratedFixture: SchemaUIGeneratedData = {
       props: [{ $type: 'map-any', name: '[key: string]', required: false }],
       type: 'object',
       typeName: 'Minimax',
+    },
+    empty: {
+      aliasName: 'Empty',
+      description: 'Empty object description.',
+      props: [],
+      type: 'object',
+      typeName: 'Empty',
     },
     'map-any': primitive('any'),
   },
@@ -324,6 +334,9 @@ describe('openapi schema view', () => {
       name: 'Minimax',
       schema: { description: 'Minimax description.' },
     });
+    expect(
+      params?.children.find((node) => node.name === 'Empty')?.legacyNames,
+    ).toBeUndefined();
     expect(branch?.children).toEqual([]);
     expect(
       flattenOpenApiSchemaView(view).map((node) => node.name),
