@@ -1,7 +1,7 @@
 # zh-CN 文档站内跳转验证报告
 
 - 验证日期：2026-10-12
-- 检查分支：`codex/cn-newdoc-master-sync-20261010`
+- 检查分支：`codex/cn-newdoc-html-api-migration`
 - 检查范围：只扫描 `content/docs/zh-CN` 和中文 OpenAPI 源，并只在 `VITE_DOCS_REGION=cn` 运行时验证。
 - 验证环境：`http://127.0.0.1:4174`（`VITE_DOCS_REGION=cn`）。
 
