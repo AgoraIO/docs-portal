@@ -7,8 +7,14 @@ import {
 
 describe('resolveMovedDocsRedirect', () => {
   it.each([
-    ['rest-tool', '/zh-CN/ai/build/rest-tool'],
-    ['asr-keywords', '/zh-CN/ai/build/asr-keywords'],
+    [
+      'rest-tool',
+      '/zh-CN/ai/build/shape-the-conversation/rest-tool',
+    ],
+    [
+      'asr-keywords',
+      '/zh-CN/ai/build/custom-model-integration/asr-keywords',
+    ],
     [
       'filler-words',
       '/zh-CN/ai/build/shape-the-conversation/filler-words',

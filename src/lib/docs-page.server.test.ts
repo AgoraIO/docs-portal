@@ -4502,14 +4502,14 @@ Web body
     await expect(
       loadDocsPagePayload('zh-CN', 'ai', ['user-guides', 'rest-tool']),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/ai/build/rest-tool',
+      redirectUrl: '/zh-CN/ai/build/shape-the-conversation/rest-tool',
       statusCode: 301,
     });
 
     await expect(
       loadDocsPagePayload('zh-CN', 'ai', ['user-guides', 'asr-keywords']),
     ).resolves.toEqual({
-      redirectUrl: '/zh-CN/ai/build/asr-keywords',
+      redirectUrl: '/zh-CN/ai/build/custom-model-integration/asr-keywords',
       statusCode: 301,
     });
   });

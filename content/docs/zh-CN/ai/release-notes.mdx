@@ -33,7 +33,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 #### 调用自定义工具
 
-该版本为 Agora Agents SDK 的 LLM vendor 新增自定义工具配置能力。你可以通过 Go、Python 和 TypeScript SDK 声明模型可见的工具名称、说明、参数以及同步 `GET` 或 `POST` HTTPS 端点，让大模型根据对话内容选择工具并生成参数，再使用工具返回结果继续生成回复。详见[调用自定义工具](./build/rest-tool)。
+该版本为 Agora Agents SDK 的 LLM vendor 新增自定义工具配置能力。你可以通过 Go、Python 和 TypeScript SDK 声明模型可见的工具名称、说明、参数以及同步 `GET` 或 `POST` HTTPS 端点，让大模型根据对话内容选择工具并生成参数，再使用工具返回结果继续生成回复。详见[调用自定义工具](./build/shape-the-conversation/rest-tool)。
 
 你也可以直接调用 RESTful API 创建智能体，通过 [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join) 的 `properties.advanced_features.enable_tools` 和 `properties.llm.tools` 开启和声明自定义工具的调用。
 
@@ -134,7 +134,7 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 
 #### 凤鸣 ASR 支持配置热词
 
-该版本为 Agora Agents SDK 中的凤鸣 ASR vendor 新增热词配置能力。你可以在使用凤鸣 ASR 时，通过 Go、Python 和 TypeScript SDK 配置专有名词、品牌词、业务关键词等热词，提升指定词汇的识别效果。详见[配置 ASR 热词](./build/asr-keywords)。
+该版本为 Agora Agents SDK 中的凤鸣 ASR vendor 新增热词配置能力。你可以在使用凤鸣 ASR 时，通过 Go、Python 和 TypeScript SDK 配置专有名词、品牌词、业务关键词等热词，提升指定词汇的识别效果。详见[配置 ASR 热词](./build/custom-model-integration/asr-keywords)。
 
 你也可以直接调用 RESTful API 创建智能体，通过 [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join) 接口新增的 `properties.asr.keywords` 配置热词。
 

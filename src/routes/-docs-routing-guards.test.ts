@@ -380,15 +380,31 @@ describe('docs route locale guards', () => {
   });
 
   it.each([
-    ['rest-tool', '/zh-CN/ai/build/rest-tool', false],
-    ['asr-keywords', '/zh-CN/ai/build/asr-keywords', false],
+    [
+      'rest-tool',
+      '/zh-CN/ai/build/shape-the-conversation/rest-tool',
+      false,
+    ],
+    [
+      'asr-keywords',
+      '/zh-CN/ai/build/custom-model-integration/asr-keywords',
+      false,
+    ],
     [
       'filler-words',
       '/zh-CN/ai/build/shape-the-conversation/filler-words',
       false,
     ],
-    ['rest-tool', '/zh-CN/ai/build/rest-tool', true],
-    ['asr-keywords', '/zh-CN/ai/build/asr-keywords', true],
+    [
+      'rest-tool',
+      '/zh-CN/ai/build/shape-the-conversation/rest-tool',
+      true,
+    ],
+    [
+      'asr-keywords',
+      '/zh-CN/ai/build/custom-model-integration/asr-keywords',
+      true,
+    ],
     [
       'filler-words',
       '/zh-CN/ai/build/shape-the-conversation/filler-words',
