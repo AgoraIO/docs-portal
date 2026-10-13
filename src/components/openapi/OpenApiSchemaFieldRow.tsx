@@ -45,6 +45,9 @@ export function OpenApiSchemaFieldRow({
   remainingInfoTags = [],
 }: OpenApiSchemaFieldRowProps) {
   const expandable = node.children.length > 0;
+  const isSyntheticVariant =
+    node.name === '[key: string]' && Boolean(node.variant);
+  const displayName = isSyntheticVariant ? node.variant : node.name;
   const fieldIdentity = (
     <>
       <code
@@ -52,12 +55,14 @@ export function OpenApiSchemaFieldRow({
           'min-w-0 break-words font-mono text-sm font-semibold [overflow-wrap:anywhere]',
         )}
       >
-        {node.name}
+        {displayName}
       </code>
-      <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
-        {node.schema.aliasName}
-      </span>
-      {node.variant ? (
+      {!isSyntheticVariant && node.schema.aliasName !== displayName ? (
+        <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
+          {node.schema.aliasName}
+        </span>
+      ) : null}
+      {!isSyntheticVariant && node.variant ? (
         <span
           className="min-w-0 break-words text-xs text-muted-foreground [overflow-wrap:anywhere]"
           data-openapi-schema-variant=""
@@ -143,7 +148,7 @@ export function OpenApiSchemaFieldRow({
         </div>
         <div className="ms-auto flex shrink-0 items-center gap-2">
           <Button
-            aria-label={`${copied ? labels.copiedLink : labels.copyLink} ${node.name}`}
+            aria-label={`${copied ? labels.copiedLink : labels.copyLink} ${displayName}`}
             className="text-muted-foreground"
             onClick={onCopy}
             size="icon-xs"
