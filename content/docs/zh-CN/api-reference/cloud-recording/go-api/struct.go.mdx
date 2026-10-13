@@ -995,7 +995,7 @@ type SnapshotConfig struct {
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `CaptureInterval` | `int` | 云端录制中定期截图的周期，单位为秒，取值范围为 [5, 3600]，默认值为 10。 |
+| `CaptureInterval` | `int` | 云端录制中定期截图的周期，单位为秒，取值范围为 [1, 3600]，默认值为 10。截图仅在视频关键帧时生成，实际截图间隔可能大于设置的周期。 |
 | `FileType` | `[]string` | 截图的文件格式。目前仅支持 `["jpg"]`，生成 JPG 格式的截图文件。 |
 
 <a id="storageconfig"></a>

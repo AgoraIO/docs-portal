@@ -232,7 +232,7 @@ withGreeting(greeting: string): Agent<TTSSampleRate>
 |---|---|---|
 | `withSal(config)` | `SalConfig` | 设置 Selective Attention Locking 配置 |
 | `withAdvancedFeatures(features)` | `AdvancedFeatures` | 设置高级特性 |
-| `withTools(enabled)` | `boolean` | 启用或关闭 MCP tool 调用 |
+| `withTools(enabled)` | `boolean` | 启用或关闭 MCP 和自定义工具调用 |
 | `withParameters(parameters)` | `SessionParams` | 设置会话参数 |
 | `withAudioScenario(audioScenario)` | `ParametersAudioScenario` | 设置 `parameters.audio_scenario`。可选值为 `default`、`chorus` 和 `aiserver`。未设置时，SDK 会自动补成 `chorus`。为便于发现可选值，建议使用导出的 `AudioScenario` 常量，例如 `agent.withAudioScenario(AudioScenario.Aiserver)` |
 | `withFailureMessage(message)` | `string` | 设置 LLM 失败时播报的消息 |
@@ -306,7 +306,7 @@ const session = agent.createSession({
 | `geofence` | `GeofenceConfig \| undefined` | Geofence 配置 |
 | `labels` | `Labels \| undefined` | 自定义标签 |
 | `rtc` | `RtcConfig \| undefined` | RTC 配置 |
-| `fillerWords` | `FillerWordsConfig \| undefined` | 填充词配置 |
+| `fillerWords` | `FillerWordsConfig \| undefined` | 承接词配置 |
 | `greetingConfigs` | `LlmGreetingConfigs \| undefined` | 问候语播放配置兼容性字段 |
 | `config` | `AgentOptions` | 完整的只读配置快照 |
 
@@ -322,7 +322,9 @@ toProperties(opts): StartAgentsRequest.Properties
 
 SDK 公开了常用请求与响应类型的别名，包括 `LlmConfig`、`SttConfig`、`AsrConfig`（即 `SttConfig`）、`AvatarConfig`、会话/对话相关类型，以及 think 类型（例如 `ThinkOnListeningAction`）。
 
-Think 值常量包括：`ThinkOnListeningActionInject`、`ThinkOnListeningActionInterrupt`、`ThinkOnListeningActionIgnore`、`ThinkOnThinkingActionInterrupt`、`ThinkOnThinkingActionIgnore`、`ThinkOnSpeakingActionInterrupt`、`ThinkOnSpeakingActionIgnore`。
+`FillerWordsConfig` 支持静态承接词和动态承接词。使用动态承接词时，必须同时配置非空的静态短语作为回退；`generatedConfig` 中的 `prompt`、上下文限制和回退策略均为可选项，模型服务和凭证由声网托管。具体字段结构详见[配置承接词](/zh-CN/ai/user-guides/filler-words)。
+
+Think 值常量包括：`ThinkOnListeningActionInject`、`ThinkOnListeningActionInterrupt`、`ThinkOnListeningActionAppend`、`ThinkOnListeningActionIgnore`、`ThinkOnThinkingActionInterrupt`、`ThinkOnThinkingActionAppend`、`ThinkOnThinkingActionIgnore`、`ThinkOnSpeakingActionInterrupt`、`ThinkOnSpeakingActionAppend`、`ThinkOnSpeakingActionIgnore`。`append` 不打断当前交互，分别等待当前用户回合、LLM 推理或 TTS 播报完成后，再将该指令作为独立的 user 消息追加到上下文并发起新一轮对话。
 
 ## AgentSession
 

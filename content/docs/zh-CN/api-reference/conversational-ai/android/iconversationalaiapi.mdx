@@ -22,6 +22,36 @@ fun chat(agentUserId: String, message: ChatMessage, completion: (error: Conversa
 | `message` | `ChatMessage` | 消息对象，类型为 [`ImageMessage`](/zh-CN/api-reference/conversational-ai/android/struct#imagemessage)。详见 [`ChatMessage`](/zh-CN/api-reference/conversational-ai/android/struct#chatmessage)。 |
 | `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 回调函数。调用成功时 `error` 为 null，失败时为非 null。 |
 
+<a id="speak"></a>
+## speak
+
+```kotlin
+fun speak(agentUserId: String, message: SpeakMessage, completion: (error: ConversationalAIAPIError?) -> Unit)
+```
+
+绕过大模型，直接通过智能体的 TTS 流程播报文本。该方法需要 RTM，回调仅表示 RTM 消息是否发布成功。
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `message` | `SpeakMessage` | 播报内容和播报行为配置。详见 [`SpeakMessage`](struct#speakmessage)。 |
+| `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 调用结果回调。 |
+
+<a id="think"></a>
+## think
+
+```kotlin
+fun think(agentUserId: String, message: ThinkMessage, completion: (error: ConversationalAIAPIError?) -> Unit)
+```
+
+将文本作为用户输入注入对话，并交由大模型处理。该方法需要 RTM，回调仅表示 RTM 消息是否发布成功。
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `agentUserId` | `String` | 智能体用户 ID。 |
+| `message` | `ThinkMessage` | 指令内容、状态动作和自定义元数据。详见 [`ThinkMessage`](struct#thinkmessage)。 |
+| `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 调用结果回调。 |
+
 <a id="addhandler"></a>
 ## addHandler
 

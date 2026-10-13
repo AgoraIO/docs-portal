@@ -68,7 +68,14 @@ License 申请通过后，License 激活标识（PID） 会关联到你的 CID �
 <a id="preauthenticate"></a>
 ### 2. 获取预授权
 
-为保障 License 的安全性，降低被盗用的风险，声网提供预授权功能。你需要向 sales@shengwang.cn 提供项目 App ID 和 `licenseKey` 进行预授权，将设备加入白名单。预授权完成后，License 额度会被消耗，只有白名单中的设备才能通过校验激活 License。
+为保障 License 的安全性、降低被盗用风险，声网提供预授权功能。可在声网控制台自行完成预授权。
+
+1. 登录[声网控制台](https://console.shengwang.cn)，进入 **License > 预授权**。
+2. 选择需要预授权的 License PID，并按页面提示导入设备的唯一标识 `licenseKey`，例如设备 SN 号或 MAC 地址。
+
+![在控制台进行 License 预授权](/img/rtsa/preauthorization.png)
+
+预授权完成后，设备会加入白名单并消耗相应的 License 额度。只有白名单中的设备才能通过校验并激活 License。
 
 <a id="activate"></a>
 ### 3. 激活 License
@@ -147,7 +154,7 @@ SKU 能力集，包含如下字段：
 
     - `product`(Integer):
       - `1`: RTC
-      - `2`: RTSA
+      - `4`: 微呼叫
 
     :::info[信息]
     该参数下原有的 `mediaType`、`name`、`minutes` 和 `period` 字段不再有实际业务意义。

@@ -233,6 +233,50 @@ title: "结构体"
 
 </Slot>
 
+<a id="speakmessage"></a>
+## SpeakMessage
+
+```swift
+@objc public final class SpeakMessage: NSObject {
+    @objc public let text: String
+    @objc public let priority: Priority
+    @objc public let interruptable: Bool
+}
+```
+
+用于绕过大模型，直接通过智能体的 TTS 流程播报文本。
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `text` | `String` | 要播报的文本。 |
+| `priority` | `Priority` | 播报请求的处理优先级。 |
+| `interruptable` | `Boolean` | 是否允许用户说话打断本次播报。 |
+
+<a id="thinkmessage"></a>
+## ThinkMessage
+
+```swift
+@objc public final class ThinkMessage: NSObject {
+    @objc public let text: String
+    @objc public let onListeningAction: ThinkListeningAction
+    @objc public let onThinkingAction: ThinkThinkingAction
+    @objc public let onSpeakingAction: ThinkSpeakingAction
+    @objc public let interruptable: Bool
+    @objc public let metadata: [String: String]?
+}
+```
+
+用于将文本作为用户输入注入对话，并交由大模型处理。
+
+| 参数 | 数据类型 | 描述 |
+| --- | --- | --- |
+| `text` | `String` | 要注入大模型的指令文本。 |
+| `onListeningAction` | `ThinkListeningAction` | 倾听状态下的处理动作。 |
+| `onThinkingAction` | `ThinkThinkingAction` | 思考状态下的处理动作。 |
+| `onSpeakingAction` | `ThinkSpeakingAction` | 说话状态下的处理动作。 |
+| `interruptable` | `Boolean` | 是否允许用户说话打断响应。 |
+| `metadata` | `Map<String, String>?` | 可选的业务自定义键值对。 |
+
 <a id="statechangeevent"></a>
 ## StateChangeEvent
 

@@ -1655,6 +1655,58 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 <PlatformStructured platform="web">
 
 本文提供 RTM v2 SDK 的发版说明。
+
+## 2.3.0 版
+
+该版本于 2026 年 8 月 18 日发布。
+
+### 升级必看
+
+#### 移除旧连接状态事件
+
+该版本移除 `status` 和 `connectionStateChange` 事件通知。监听连接状态变化时，请改用 `linkState` 事件。
+
+#### Cloud Proxy 需显式开启
+
+该版本不再自动回退到 Cloud Proxy。需要使用 Cloud Proxy 时，需在初始化 RTM 实例时显式设置 `rtmConfig.cloudProxy = true`。建议根据业务需要向终端用户提供 Cloud Proxy 开关。
+
+#### 限制重复创建实例
+
+同一 `appId` 和 `userId` 已被活跃 RTM 实例占用时，再次创建实例会返回 `RTM_ERROR_DUPLICATE_USER_ID` (-10027)。确保同一 `appId` 和 `userId` 只创建一个 RTM 实例，优先复用已有实例，避免多实例问题。
+
+:::info[信息]
+如遇 `RTM_ERROR_DUPLICATE_USER_ID`（-10027）错误，可参考 [WebRTM Integration Demo](https://github.com/AgoraIO-Community/WebRTM-Integration-Demo/tree/master)，确保同一 `appId` 和 `userId` 只创建一个 RTM 实例，优先复用已有实例。
+:::
+
+### 新特性
+
+#### 新增微信小程序 SDK
+
+该版本新增微信小程序 SDK，提供小程序所需的基础 RTM 能力。微信小程序 SDK 暂不支持 Stream Channel、Cloud Proxy、私有化部署和 Geofencing。
+
+### 改进
+
+#### Presence 服务支持控制台开关
+
+Console控制台支持对Presence服务做开关控制，该开关默认开启。只有在控制台中开启Presence服务后，Presence的相关配置项和API调用才会生效。
+
+#### 其它改进
+
+- 优化了 Web 弱网重连和退避策略，提高连接恢复的可靠性。
+- 增加 `login` 全链路上报，并支持通过云端配置开启日志上传，提升问题排查效率。
+- Geofencing 场景新增多个可用接入节点，提高服务可用性。
+- 优化了登录后的 Presence 查询可用性。调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟或通过临时订阅判断服务是否就绪，现有异步结果处理方式保持不变。
+- 优化了大规模频道中的 Presence 成员同步。当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，以最多 512 名成员为持续同步的明细范围，并通过 `PresenceEvent.IntervalInfo.totalOccupancy` 提供频道总在线人数。应用仍可通过 `whoNow` 分页查询完整在线成员，并可按需查询远端用户状态；无需新增模式切换代码。
+- 登录服务后如果发生异常断开，异常断开期间发起的订阅请求会在连接恢复后重新发送。
+
+### 问题修复
+
+- 修复了设置或订阅 Metadata 后立即调用 `get`，偶现返回 `-12001` 的问题。
+- 修复了使用过期 Token 登录时，`linkState` 原因错误显示为 `rejected` 的问题。修复后会正确报告 Token 过期，并在 `linkState` 中体现 `LOGIN_NOT_AUTHORIZED`。
+- 修复了使用非法 Token 登录时，偶现返回 `-10016` 或 `The appid is not consistent.` 的问题。
+- 修复了用户 `logout` 后，短时间内仍能通过 `whoNow` 查询到该用户的问题。
+- 修复了加入 Stream Channel Topic 后空闲约一分钟，再发送 Topic 消息可能返回 `-11024` 的问题。
+
 ## 2.2.4 版
 
 该版本于 2026 年 4 月 13 日发布。
@@ -3869,5 +3921,42 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 - `removeLock`：删除指定频道中指定的锁。
 
 频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `onLockEvent` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+
+本文提供 RTM 微信小程序 SDK 的发版说明。
+
+## 2.3.0-beta.0 版
+
+该版本于 2026 年 7 月 16 日发布。
+
+### Beta 版本能力
+
+#### 支持微信小程序运行环境
+
+该 beta 版本提供微信小程序运行环境下的 RTM 基础实时消息能力。你可以通过 npm 安装 `shengwang-rtm-miniapp`，并在小程序项目中实现 RTM 客户端初始化、登录、Message Channel 订阅、消息发布、Presence、Storage、Lock 和 Token 鉴权等能力。
+
+- npm 包：[`shengwang-rtm-miniapp`](https://www.npmjs.com/package/shengwang-rtm-miniapp)
+- 版本号：`2.3.0-beta.0`
+- 发布日期：`2026-07-16`
+
+:::warning[注意]
+该版本为 beta 版本。微信小程序 SDK 与 Web SDK API 范围不同，使用具体 API 前，请以已安装的 `shengwang-rtm-miniapp` 包中的类型定义为准。
+:::
+
+### 能力边界
+
+当前微信小程序 SDK 不支持以下 API 和能力：
+
+- `RTM.createStreamChannel`
+- `RTMStreamChannel` 相关 API，包括加入、离开 Stream Channel，以及 Stream Channel 上的消息发送能力
+- Topic 相关 API，包括加入 Topic、发送 Topic 消息、订阅 Topic、取消订阅 Topic 和离开 Topic
+- `RTMConfig.cloudProxy`
+- `RTMConfig.privateConfig`
+- 私有化部署
+- 私有化配置
 
 </PlatformStructured>

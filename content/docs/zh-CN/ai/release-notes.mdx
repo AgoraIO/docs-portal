@@ -2,6 +2,159 @@
 title: "发版说明"
 description: "查看对话式 AI 引擎的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
+## v2.13
+
+该版本于 2026 年 9 月 18 日发布。
+
+### 改进
+
+#### 动态承接词支持多轮对话上下文
+
+该版本优化了动态承接词的生成能力。你可以通过 Agora Agents SDK 的 `FillerWordsConfig` 配置动态承接词使用的对话消息数量和历史文本长度，使承接词结合近期的用户和智能体消息生成更符合上下文的内容。详见[配置响应超时承接词](./user-guides/filler-words)。
+
+你也可以直接调用 RESTful API 创建智能体，通过 [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join) 的 `context_message_limit` 和 `history_character_limit` 配置动态承接词使用的对话上下文。
+
+### API 变更
+
+#### 新增
+
+- Agora Agents SDK：
+  - Go SDK 的 `FillerWordsContentGeneratedConfig` 新增 `ContextMessageLimit` 和 `HistoryCharacterLimit`
+  - Python 和 TypeScript SDK 的 `FillerWordsContentGeneratedConfig` 新增 `context_message_limit` 和 `history_character_limit`
+- [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join)
+  - `properties.filler_words.content.generated_config.context_message_limit`：对话消息数量上限。
+  - `properties.filler_words.content.generated_config.history_character_limit`：历史消息文本字符数上限。
+
+## v2.12
+
+该版本于 2026 年 9 月 14 日发布。
+
+### 新增特性
+
+#### 调用自定义工具
+
+该版本为 Agora Agents SDK 的 LLM vendor 新增自定义工具配置能力。你可以通过 Go、Python 和 TypeScript SDK 声明模型可见的工具名称、说明、参数以及同步 `GET` 或 `POST` HTTPS 端点，让大模型根据对话内容选择工具并生成参数，再使用工具返回结果继续生成回复。详见[调用自定义工具](./user-guides/rest-tool)。
+
+你也可以直接调用 RESTful API 创建智能体，通过 [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join) 的 `properties.advanced_features.enable_tools` 和 `properties.llm.tools` 开启和声明自定义工具的调用。
+
+#### 根据对话动态生成承接词
+
+该版本为 Agora Agents SDK 中的 `FillerWordsConfig` 新增动态承接词配置能力。你可以通过 Go、Python 和 TypeScript SDK 配置动态模式、生成提示词和静态回退内容。详见[配置承接词](./user-guides/filler-words)。
+
+如果你直接调用 RESTful API 创建智能体，也可以将 `properties.filler_words.content.mode` 设为 `generated`，并通过 `generated_config` 和 `static_config` 配置动态承接词及其静态回退内容。
+
+#### 延后处理自定义指令
+
+该版本为 Agora Agents SDK 的 think action 新增 `append`。你可以在 Go、Python 和 TypeScript SDK 中将倾听、思考或说话状态的处理动作设为 `append`，使自定义指令不打断当前交互，而是在下一轮作为独立的 user 消息进入上下文并触发新一轮回复。
+
+你也可以直接调用 [POST 发送自定义指令](/zh-CN/api-reference/conversational-ai/rest-api/agent/think)，将 `on_listening_action`、`on_thinking_action` 或 `on_speaking_action` 设为 `append`。
+
+#### 客户端组件支持主动播报和注入指令
+
+对话式 AI 引擎客户端组件新增 `speak` 和 `think` 方法。你可以在 Android、iOS 和 Web 客户端通过 `speak` 绕过大模型直接让智能体播报文本，也可以通过 `think` 将文本作为用户输入注入对话并交由大模型处理。两种方法均通过 RTM 发送消息，并支持配置消息优先级、打断行为以及 Think 指令在不同智能体状态下的处理动作。
+
+### API 变更
+
+#### 新增
+
+- Agora Agents SDK：
+  - Go、Python 和 TypeScript SDK 的 LLM vendor 新增自定义工具配置
+  - Go、Python 和 TypeScript SDK 的 FillerWordsConfig 新增动态承接词配置能力
+  - Go、Python 和 TypeScript SDK 的 think action 类型新增 `append`
+- [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join)
+  - `properties.llm.tools` 新增自定义工具配置
+  - `properties.filler_words.content.mode` 新增 `generated`
+  - `properties.filler_words.content.generated_config` 新增动态承接词 Prompt 和静态回退策略配置
+- [POST 发送自定义指令](/zh-CN/api-reference/conversational-ai/rest-api/agent/think)
+  - `on_listening_action`，`on_thinking_action` 和 `on_speaking_action` 新增 `append`
+- 客户端组件 API：
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`speak`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#speak)
+- [`think`](/zh-CN/api-reference/conversational-ai/android/iconversationalaiapi#think)
+- [`SpeakMessage`](/zh-CN/api-reference/conversational-ai/android/struct#speakmessage)
+- [`ThinkMessage`](/zh-CN/api-reference/conversational-ai/android/struct#thinkmessage)
+- [`ThinkListeningAction`](/zh-CN/api-reference/conversational-ai/android/enum#thinklisteningaction)
+- [`ThinkThinkingAction`](/zh-CN/api-reference/conversational-ai/android/enum#thinkthinkingaction)
+- [`ThinkSpeakingAction`](/zh-CN/api-reference/conversational-ai/android/enum#thinkspeakingaction)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`speak`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#speak)
+- [`think`](/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#think)
+- [`SpeakMessage`](/zh-CN/api-reference/conversational-ai/ios/struct#speakmessage)
+- [`ThinkMessage`](/zh-CN/api-reference/conversational-ai/ios/struct#thinkmessage)
+- [`ThinkListeningAction`](/zh-CN/api-reference/conversational-ai/ios/enum#thinklisteningaction)
+- [`ThinkThinkingAction`](/zh-CN/api-reference/conversational-ai/ios/enum#thinkthinkingaction)
+- [`ThinkSpeakingAction`](/zh-CN/api-reference/conversational-ai/ios/enum#thinkspeakingaction)
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`speak`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#speak)
+- [`think`](/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#think)
+- [`SpeakMessage`](/zh-CN/api-reference/conversational-ai/web/struct#speakmessage)
+- [`ThinkMessage`](/zh-CN/api-reference/conversational-ai/web/struct#thinkmessage)
+- [`ThinkListeningAction`](/zh-CN/api-reference/conversational-ai/web/enum#thinklisteningaction)
+- [`ThinkThinkingAction`](/zh-CN/api-reference/conversational-ai/web/enum#thinkthinkingaction)
+- [`ThinkSpeakingAction`](/zh-CN/api-reference/conversational-ai/web/enum#thinkspeakingaction)
+
+</TabsContent>
+</Tabs>
+
+### 配置优化与参数下线通知
+
+:::info[信息]
+v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params` 的请求将报错。其他配置暂不在 v2.13 立即下线，但建议尽快完成迁移。
+:::
+
+| 配置项 | 下线时间 | 影响说明 | 调整建议 |
+| --- | --- | --- | --- |
+| 指定第三方 ASR vendor 时 `properties.asr.params` 为空 | **v2.13** | 创建智能体请求将报错 | 使用默认 vendor：`fengming`；或为 vendor 补齐 `properties.asr.params` |
+| VAD 参数 `properties.vad.*` | 后续版本 | 后续不再保证判停行为生效 | 尽快迁移至 `properties.turn_detection.config` |
+| `properties.turn_detection` 平铺参数 | 后续版本 | 后续不再保证判停和打断行为生效 | 尽快迁移至新版 `properties.turn_detection.config` 和 `properties.interruption` 配置 |
+| `turn_detection.start_of_speech.mode` = `keywords` / `disabled` 的打断模式 | 后续版本 | 后续不再保证打断行为生效 | 尽快迁移至 `properties.interruption` 配置 |
+| `properties.silence_timeout` 和 `properties.llm.silence_message` | 后续版本 | 静音提示行为可能失效 | 尽快迁移至 `properties.parameters.silence_config` |
+
+## v2.11
+
+该版本于 2026 年 8 月 11 日发布。
+
+### 新增特性
+
+#### 凤鸣 ASR 支持配置热词
+
+该版本为 Agora Agents SDK 中的凤鸣 ASR vendor 新增热词配置能力。你可以在使用凤鸣 ASR 时，通过 Go、Python 和 TypeScript SDK 配置专有名词、品牌词、业务关键词等热词，提升指定词汇的识别效果。详见[配置 ASR 热词](./user-guides/asr-keywords)。
+
+你也可以直接调用 RESTful API 创建智能体，通过 [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join) 接口新增的 `properties.asr.keywords` 配置热词。
+
+### 改进
+
+#### 提升长音频回复场景下的稳定性
+
+该版本优化了智能体处理长音频流式回复时的资源保护和异常恢复逻辑，降低模型持续输出大量音频数据时，智能体异常断连或恢复失败的概率。提升长回复、自由对话等场景下的服务稳定性。
+
+### API 变更
+
+#### 新增
+
+- Agora Agents SDK：
+  - Go SDK 的 [`NewFengmingSTT`](/zh-CN/api-reference/conversational-ai/agent-go#newfengmingstt) 新增 `FengmingSTTOptions.Keywords`
+  - Python SDK 的 [`FengmingSTT`](/zh-CN/api-reference/conversational-ai/agent-python#fengmingstt) 新增 `keywords`
+  - TypeScript SDK 的 [`FengmingSTT`](/zh-CN/api-reference/conversational-ai/agent-typescript#fengmingstt) 新增 `keywords`
+- [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join)
+  - `properties.asr.keywords` 新增 ASR 热词配置
+
 ## v2.10
 
 该版本于 2026 年 7 月 22 日发布。

@@ -84,25 +84,42 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 <Tabs defaultValue="maven" groupId="integrate-sdk" persist>
 <TabsList>
-  <TabsTrigger value="maven">通过 Maven Central 集成</TabsTrigger>
+  <TabsTrigger value="maven">通过 Gradle 自动集成</TabsTrigger>
   <TabsTrigger value="manual">手动集成</TabsTrigger>
 </TabsList>
 
 <TabsContent value="maven">
 
-1. 打开项目根目录下的 `settings.gradle` 文件，添加 Maven Central 依赖 (如果已有可忽略)：
+1. 进入项目根目录，打开 `settings.gradle` 文件，在 `dependencyResolutionManagement` 的 `repositories` 中添加声网 Maven CDN 仓库。
+
+    请保留项目中已有的 Maven 仓库配置，尤其是 `mavenCentral()`，并额外添加声网 Maven CDN 仓库。
+
+    :::warning[注意]
+    如果你在 `settings.gradle` 中找不到 `dependencyResolutionManagement` 字段，可能是因为你的 Android Gradle Plugin 版本低于 v7.1.0。
+
+        相关信息请参考 [Android Gradle Plugin Release Note v7.1.0](https://developer.android.com/build/releases/past-releases/agp-7-1-0-release-notes)。
+    :::
 
     ```groovy
-    repositories {
-        ...
-        mavenCentral()
-        ...
+    dependencyResolutionManagement {
+        repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.shengwang.cn/maven/' }
+        }
     }
     ```
 
-    :::warning[注意]
-    如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
-    :::
+    若你的 Android Gradle Plugin 版本低于 v7.1.0，请打开项目根目录下的 `build.gradle` 文件，在 `allprojects` 的 `repositories` 中添加如下配置：
+
+    ```groovy
+    allprojects {
+        repositories {
+            mavenCentral()
+            maven { url = 'https://download.shengwang.cn/maven/' }
+        }
+    }
+    ```
 
 2. 打开 `/app/build.gradle` 文件，在 `dependencies` 中添加声网 RTC SDK 的依赖。你可以从[发版说明](/zh-CN/realtime-media/rtc/reference/release-notes)中查询 SDK 的最新版本，并将 `x.y.z` 替换为具体的版本号。
 
@@ -1603,13 +1620,13 @@ startBasicCall();
 - 在项目 HTML 文件中，添加如下代码，使用 CDN 方法获取 SDK：
 
   ```html
-  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.6.js"></script>
+  <script src="https://download.agora.io/sdk/release/AgoraRTC_N-4.24.8.js"></script>
   ```
 
 - 下载[声网 Web SDK 4.x 版本 SDK 包](/zh-CN/realtime-media/rtc/reference/downloads)至本地，将 SDK 包中的 `.js` 文件保存到项目文件所在的目录下，然后在项目 HTML 文件中添加如下代码：
 
   ```html
-  <script src="./AgoraRTC_N-4.24.6.js"></script>
+  <script src="./AgoraRTC_N-4.24.8.js"></script>
   ```
 
 :::info[信息]

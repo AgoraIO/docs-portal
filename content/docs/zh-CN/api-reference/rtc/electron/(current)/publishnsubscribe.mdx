@@ -1470,6 +1470,7 @@ abstract setSubscribeAudioBlocklist(
 注：
 
 - 该方法在加入频道前后均可调用。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的音频流也会停止订阅。
 - 音频订阅黑名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `autoSubscribeAudio` 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
@@ -1532,6 +1533,7 @@ abstract setSubscribeAudioBlocklistEx(
 注：
 
 - 该方法在加入频道前后均可调用。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的音频流也会停止订阅。
 - 音频订阅黑名单不受 [muteRemoteAudioStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteremoteaudiostream)、[muteAllRemoteAudioStreams](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteallremoteaudiostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `autoSubscribeAudio` 影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
@@ -1728,6 +1730,7 @@ abstract setSubscribeVideoBlocklist(
 注：
 
 - 该方法在加入频道前后均可调用。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的视频流也会停止订阅。
 - 视频订阅黑名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。
@@ -1790,6 +1793,7 @@ abstract setSubscribeVideoBlocklistEx(
 注：
 
 - 该方法在加入频道前后均可调用。
+- 黑名单设置实时生效。将已订阅用户加入黑名单后，该用户的视频流也会停止订阅。
 - 视频订阅黑名单不受 [muteRemoteVideoStream](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteremotevideostream)、[muteAllRemoteVideoStreams](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_muteallremotevideostreams) 以及 [ChannelMediaOptions](/zh-CN/api-reference/rtc/electron/class-channelmediaoptions) 中的 `autoSubscribeVideo` 的影响。
 - 设置订阅黑名单后，如果离开当前频道后再重新加入频道，黑名单依然生效。
 - 如果某个用户同时在音频订阅黑名单和白名单中，仅订阅黑名单生效。

@@ -190,6 +190,35 @@ export interface IChatMessageImage extends IChatMessageBase {
 | `uuid` | `string` | 图片消息的唯一标识符。 |
 | `url` | `string` | 可选。指向图片资源的 URL。 |
 
+<a id="speakmessage"></a>
+## SpeakMessage
+
+```typescript
+export interface SpeakMessage {
+  text: string;
+  priority?: EChatMessagePriority;
+  interruptable?: boolean;
+}
+```
+
+用于绕过大模型，直接通过智能体的 TTS 流程播报文本。
+
+<a id="thinkmessage"></a>
+## ThinkMessage
+
+```typescript
+export interface ThinkMessage {
+  text: string;
+  onListeningAction?: ThinkListeningAction;
+  onThinkingAction?: ThinkThinkingAction;
+  onSpeakingAction?: ThinkSpeakingAction;
+  interruptable?: boolean;
+  metadata?: Record<string, string>;
+}
+```
+
+用于将文本作为用户输入注入对话，并交由大模型处理。
+
 <a id="isubtitlehelperitem"></a>
 ## ISubtitleHelperItem
 
