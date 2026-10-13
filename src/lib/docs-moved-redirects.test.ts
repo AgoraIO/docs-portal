@@ -1,8 +1,27 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { resolveMovedDocsRedirect } from './docs-moved-redirects';
+import {
+  isPermanentMovedDocsRedirect,
+  resolveMovedDocsRedirect,
+} from './docs-moved-redirects';
 
 describe('resolveMovedDocsRedirect', () => {
+  it.each(['rest-tool', 'asr-keywords'])(
+    'permanently redirects the moved Chinese AI guide %s in shared routing',
+    (slug) => {
+      const segments = ['user-guides', slug];
+      expect(resolveMovedDocsRedirect('zh-CN', 'ai', segments)).toBe(
+        `/zh-CN/ai/build/${slug}`,
+      );
+      expect(isPermanentMovedDocsRedirect('zh-CN', 'ai', segments)).toBe(true);
+      expect(resolveMovedDocsRedirect('en', 'ai', segments)).toBeNull();
+      expect(isPermanentMovedDocsRedirect('en', 'ai', segments)).toBe(false);
+      expect(
+        resolveMovedDocsRedirect('zh-CN', 'ai', ['build', slug]),
+      ).toBeNull();
+    },
+  );
+
   it.each(['ppt-transcoding', 'status-page'])(
     'redirects old Solutions %s routes to Realtime Media',
     (product) => {

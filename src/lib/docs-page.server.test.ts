@@ -4498,6 +4498,20 @@ Web body
     ).resolves.toEqual({
       redirectUrl: '/en/ai/build/filler-words',
     });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'ai', ['user-guides', 'rest-tool']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/build/rest-tool',
+      statusCode: 301,
+    });
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'ai', ['user-guides', 'asr-keywords']),
+    ).resolves.toEqual({
+      redirectUrl: '/zh-CN/ai/build/asr-keywords',
+      statusCode: 301,
+    });
   });
 
   it('redirects moved zh-CN pages to their new product tabs', async () => {

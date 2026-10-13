@@ -379,6 +379,44 @@ describe('docs route locale guards', () => {
     throw new Error('expected loader to reject with redirect');
   });
 
+  it.each([
+    ['rest-tool', false],
+    ['asr-keywords', false],
+    ['rest-tool', true],
+    ['asr-keywords', true],
+  ] as const)(
+    'redirects moved AI guide %s with query and hash (static: %s)',
+    async (slug, staticPayload) => {
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticPayload);
+      try {
+        await expect(
+          getLoader(DocPageRoute)({
+            location: {
+              hash: '#details',
+              pathname: `/zh-CN/ai/user-guides/${slug}`,
+              searchStr: '?from=legacy',
+            },
+            params: {
+              _splat: `user-guides/${slug}`,
+              locale: 'zh-CN',
+              tab: 'ai',
+            },
+          } as never),
+        ).rejects.toMatchObject({
+          options: {
+            href: `/zh-CN/ai/build/${slug}?from=legacy#details`,
+            statusCode: 301,
+          },
+          status: 301,
+        });
+      } finally {
+        publishedLocaleOverride.value = false;
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+    },
+  );
+
   it('keeps a non-Build static legacy redirect at the default status', async () => {
     vi.mocked(shouldUseStaticDocsPayload).mockReturnValueOnce(true);
 

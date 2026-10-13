@@ -1,5 +1,10 @@
 import { ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS } from './zh-cn-moved-solution-product-redirects';
 
+const ZH_CN_AI_GUIDE_REDIRECTS = new Map([
+  ['user-guides/rest-tool', '/zh-CN/ai/build/rest-tool'],
+  ['user-guides/asr-keywords', '/zh-CN/ai/build/asr-keywords'],
+]);
+
 export function resolveMovedDocsRedirect(
   locale: string,
   tab: string,
@@ -7,6 +12,10 @@ export function resolveMovedDocsRedirect(
 ) {
   if (locale !== 'zh-CN') {
     return null;
+  }
+
+  if (tab === 'ai') {
+    return ZH_CN_AI_GUIDE_REDIRECTS.get(slugSegments.join('/')) ?? null;
   }
 
   if (
@@ -92,7 +101,8 @@ export function isPermanentMovedDocsRedirect(
 
   return (
     locale === 'zh-CN' &&
-    tab === 'solutions' &&
-    (root === 'ppt-transcoding' || root === 'status-page')
+    ((tab === 'ai' && ZH_CN_AI_GUIDE_REDIRECTS.has(slugSegments.join('/'))) ||
+      (tab === 'solutions' &&
+        (root === 'ppt-transcoding' || root === 'status-page')))
   );
 }
