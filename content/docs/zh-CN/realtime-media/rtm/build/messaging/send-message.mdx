@@ -580,7 +580,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-3"
+```csharp tab="发送字符串消息" tabGroup="rtm-stream-topic-csharp"
 // 发送字符串消息
 string message = "left";
 string topic = "Motion";
@@ -593,7 +593,20 @@ if (status.Error)
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-3"
+```csharp tab="发送二进制消息" tabGroup="rtm-stream-topic-csharp"
+// 发送二进制消息
+byte[] message = new byte[] { 00, 01, 35, 196 };
+string topic = "Motion";
+var options = new TopicMessageOptions();
+options.customType = "ByteArray";
+var (status,response) = await streamChannel.PublishTopicMessageAsync(topic, message, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
+}
+```
+
+```javascript tab="发送字符串消息" tabGroup="rtm-stream-topic-javascript"
 // 发送字符串消息
 const payload = "Hello Agora!";
 const topicName = "chat_topic";
@@ -606,7 +619,21 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-3"
+```javascript tab="发送二进制消息" tabGroup="rtm-stream-topic-javascript"
+// 发送二进制消息
+const message = "Hello Agora!";
+const payload = new TextEncoder().encode(message);
+const topicName = "chat_topic";
+const options = { customType: "ByteArray" }
+try {
+    const result = await streamChannel.publishTopicMessage(topicName, payload, options);
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+```java tab="发送字符串消息" tabGroup="rtm-stream-topic-java"
 // 发送字符串消息
 String message = "Hello Agora!";
 String topicName = "chat_topic";
@@ -625,7 +652,26 @@ mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallba
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-3"
+```java tab="发送二进制消息" tabGroup="rtm-stream-topic-java"
+// 发送二进制消息
+byte[] message = new byte[] { 00, 01, 35, 196 };
+String topicName = "chat_topic";
+var options = new TopicMessageOptions();
+options.customType = "ByteArray";
+mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "publish topic message success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+```swift tab="发送字符串消息" tabGroup="rtm-stream-topic-swift"
 let message = "Hello Agora!"
 
 streamChannel.publishTopicMessage("your_topic", message: message, option: nil) { response, errorInfo in
@@ -637,7 +683,20 @@ streamChannel.publishTopicMessage("your_topic", message: message, option: nil) {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-3"
+```swift tab="发送二进制消息" tabGroup="rtm-stream-topic-swift"
+let bytes: [UInt8] = [ /* your raw values */ ]
+let rawMessage = Data(bytes: bytes, count: bytes.count)
+
+streamChannel.publishTopicMessage("your_topic", data: rawMessage, option: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+```objc tab="发送字符串消息" tabGroup="rtm-stream-topic-objc"
 // 发送字符串消息
 NSString* message = @"Hello Agora!";
 [stream_channel publishTopicMessage:@"your_topic" message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
@@ -649,7 +708,20 @@ NSString* message = @"Hello Agora!";
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-3"
+```objc tab="发送二进制消息" tabGroup="rtm-stream-topic-objc"
+// 发送二进制消息
+unsigned char bytes[32] = { /*your raw values */ };
+NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32];
+[stream_channel publishTopicMessage:@"your_topic" data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+```cpp tab="发送字符串消息" tabGroup="rtm-stream-topic-cpp"
 // 发送字符串消息
 std::string message = "Hello Agora!";
 TopicMessageOptions options;
@@ -659,7 +731,18 @@ uint64_t requestId;
 streamChannel.publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-3"
+```cpp tab="发送二进制消息" tabGroup="rtm-stream-topic-cpp"
+// 发送二进制消息
+char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
+
+TopicMessageOptions options;
+options.messageType = RTM_MESSAGE_TYPE_BINARY;
+options.customType = "ByteArray";
+uint64_t requestId;
+streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
+```
+
+```dart tab="发送字符串消息" tabGroup="rtm-stream-topic-dart"
 // 发送字符串消息
 final topicName = 'chat_topic';
 var payload = 'hello RTM';
@@ -681,7 +764,28 @@ try {
 
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-3"
+```dart tab="发送二进制消息" tabGroup="rtm-stream-topic-dart"
+// 发送二进制消息
+final topicName = 'chat_topic';
+var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
+
+try {
+    var (status, response) = await stChannel.publishBinaryMessage(
+        topicName,
+        payload,
+        customType: 'Uint8List');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+```typescript tab="发送字符串消息" tabGroup="rtm-stream-topic-typescript"
 // Send string message to topic
 import { TopicMessageOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -703,7 +807,7 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-4"
+```typescript tab="发送二进制消息" tabGroup="rtm-stream-topic-typescript"
 // Send binary message to topic
 import { TopicMessageOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -725,92 +829,9 @@ try {
 }
 ```
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-4"
-// 发送二进制消息
-byte[] message = new byte[] { 00, 01, 35, 196 };
-string topic = "Motion";
-var options = new TopicMessageOptions();
-options.customType = "ByteArray";
-var (status,response) = await streamChannel.PublishTopicMessageAsync(topic, message, options);
-if (status.Error)
-{
-    Debug.Log(string.Format("{0} is failed, ErrorCode: {1}, due to: {2}", status.Operation, status.ErrorCode, status.Reason));
-}
-```
-
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-4"
-// 发送二进制消息
-const message = "Hello Agora!";
-const payload = new TextEncoder().encode(message);
-const topicName = "chat_topic";
-const options = { customType: "ByteArray" }
-try {
-    const result = await streamChannel.publishTopicMessage(topicName, payload, options);
-} catch (status) {
-    const { operation, reason, errorCode } = status;
-    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
-}
-```
-
-```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-4"
-// 发送二进制消息
-byte[] message = new byte[] { 00, 01, 35, 196 };
-String topicName = "chat_topic";
-var options = new TopicMessageOptions();
-options.customType = "ByteArray";
-mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallback<Void>() {
-    @Override
-    public void onSuccess(Void responseInfo) {
-        log(CALLBACK, "publish topic message success");
-    }
-
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-```
-
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-4"
-let bytes: [UInt8] = [ /* your raw values */ ]
-let rawMessage = Data(bytes: bytes, count: bytes.count)
-
-streamChannel.publishTopicMessage("your_topic", data: rawMessage, option: nil) { response, errorInfo in
-    if errorInfo == nil {
-        print("publish success!!")
-    } else {
-        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-    }
-}
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-4"
-// 发送二进制消息
-unsigned char bytes[32] = { /*your raw values */ };
-NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32];
-[stream_channel publishTopicMessage:@"your_topic" data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"publish success!!");
-    } else {
-        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-4"
-// 发送二进制消息
-char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
-
-TopicMessageOptions options;
-options.messageType = RTM_MESSAGE_TYPE_BINARY;
-options.customType = "ByteArray";
-uint64_t requestId;
-streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
-```
-
 调用该方法后，SDK 会触发 `config.onpublishtopicresult` 回调并返回 API 调用结果。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-send-message-2"
+```cpp
 // 异步回调
 class RtmEventHandler : public IRtmEventHandler {
     void onPublishTopicMessageResult(const uint64_t requestId, const char* channelName, const char* topic, RTM_ERROR_CODE errorCode) override {
@@ -822,28 +843,6 @@ class RtmEventHandler : public IRtmEventHandler {
     }
 };
 ```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-2"
-// 发送二进制消息
-final topicName = 'chat_topic';
-var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
-
-try {
-    var (status, response) = await stChannel.publishBinaryMessage(
-        topicName,
-        payload,
-        customType: 'Uint8List');
-
-    if (status.error == true ){
-       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
-    } else {
-        print('${status.operation} success!');
-    }
-} catch (e) {
-    print('something went wrong: $e');
-}
-```
-
 成功向 Topic 发送消息后，RTM 会在 100 毫秒内将你的消息发送给订阅该 Topic 的所有在线用户。同时，你会收到 `topic.publishresulttype` 类型的返回值，虽然当前其中的内容是空的。该消息和在 Message Channel 中发送的消息具备同样的延迟特性和 SLA 保障。
 
 ## 消息负载包体积限制
