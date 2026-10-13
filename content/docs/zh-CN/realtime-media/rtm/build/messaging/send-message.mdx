@@ -355,7 +355,7 @@ rtmClient.publish("Tony", message, options, new ResultCallback<Void>() {
 });
 ```
 
-```swift
+```swift tab="发送字符串消息" tabGroup="rtm-user-channel-swift"
 let message = "Hello Agora!"
 let user = "Tony"
 
@@ -363,6 +363,20 @@ let publishOption = AgoraRtmPublishOptions()
 publishOption.channelType = .user
 
 rtm.publish(channelName: user, message: message, option: publishOption, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+```
+
+```swift tab="发送二进制消息" tabGroup="rtm-user-channel-swift"
+let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // 代表 "Hello"
+let data = Data(byteArray)
+let user = "Tony"
+
+rtm.publish(channelName: user, data: data, option: nil, completion: { res, error in
     if error != nil {
         print("\(error?.operation) failed! error reason is \(error?.reason)")
     } else {
@@ -427,21 +441,6 @@ char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
 uint64_t requestId;
 rtmClient->publish("Tony", message, 5, options, requestId);
-```
-
-调用该方法后，SDK 会触发 `config.onpublishresult` 回调并返回 API 调用结果。
-
-```cpp
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            // publish message failed
-        } else {
-            // publish message success
-        }
-    }
-};
 ```
 
 ```dart tab="发送字符串消息" tabGroup="rtm-user-channel-dart"
@@ -562,6 +561,21 @@ try {
     const { operation, reason, errorCode } = status;
     console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
 }
+```
+
+调用该方法后，SDK 会触发 `config.onpublishresult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            // publish message failed
+        } else {
+            // publish message success
+        }
+    }
+};
 ```
 
 ## 在流频道中发送消息
