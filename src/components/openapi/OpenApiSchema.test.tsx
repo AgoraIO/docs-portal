@@ -92,6 +92,50 @@ describe('OpenApiSchema', () => {
     expect(screen.getByText('name')).toBeVisible();
   });
 
+  it('collapses supplier descriptions until their variant row is expanded', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => (
+            <div data-schema-description="">{markdown}</div>
+          )}
+          root={{
+            properties: {
+              params: {
+                oneOf: [
+                  {
+                    additionalProperties: {},
+                    description: 'Minimax description. ```json example```',
+                    title: 'Minimax',
+                    type: 'object',
+                  },
+                ],
+                title: 'params',
+              },
+            },
+            required: ['params'],
+            type: 'object',
+          }}
+          writeOnly
+        />
+      </AnchorSection>,
+    );
+
+    expect(
+      screen.getByRole('button', { name: 'Expand Minimax properties' }),
+    ).toBeVisible();
+    expect(screen.queryByText(/Minimax description/)).not.toBeInTheDocument();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand Minimax properties' }),
+    );
+
+    expect(screen.getByText(/Minimax description/)).toBeVisible();
+    expect(screen.getByText(/```json example```/)).toBeVisible();
+  });
+
   afterEach(() => {
     window.history.replaceState(null, '', '/');
     vi.useRealTimers();

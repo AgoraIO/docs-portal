@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Make OpenAPI schema rows render `params` once and show supplier variants without the `[key: string] unknown` placeholder text.
+**Goal:** Make OpenAPI schema rows render `params` once, show supplier variants without the `[key: string] unknown` placeholder text, and expose each supplier schema's full description behind the same collapse interaction as other nested fields.
 
-**Architecture:** Keep the existing normalized schema tree and union path model. Adjust only `OpenApiSchemaFieldRow` field identity rendering: suppress an alias identical to the field name, and replace a variant-bearing synthetic map row's identity with its variant label. No YAML or schema semantics change.
+**Architecture:** Keep the existing normalized schema tree and union path model. For `oneOf` object branches whose only visible content is an arbitrary-key map, create a branch container node with `detailsCollapsible: true`; the existing tree controls keep it collapsed until clicked, then render the branch schema description and descendants. Adjust `OpenApiSchemaFieldRow` identity rendering to suppress duplicate aliases and replace legacy synthetic map identities with their variant labels. No YAML or schema semantics change.
 
 **Tech Stack:** React, TypeScript, Vitest, Testing Library, Biome.
 
@@ -29,7 +29,40 @@ Run: `bun run test src/components/openapi/OpenApiSchemaFieldRow.test.tsx`
 
 Expected: the two new tests fail because the current component renders duplicate aliases and the raw placeholder identity.
 
-### Task 2: Implement the minimal field identity rendering fix
+### Task 2: Add a failing test for collapsed supplier descriptions
+
+**Files:**
+- Modify: `src/lib/openapi/schema-view.test.ts`
+- Modify: `src/components/openapi/OpenApiSchema.test.tsx`
+
+- [ ] **Step 1: Add a schema-view test for a branch container**
+
+Use a generated union fixture whose branch has `description: 'Minimax description.'` and only a synthetic `map-any` property. Assert that the view contains a `Minimax` node with `detailsCollapsible: true`, no `[key: string]` child, and the branch description.
+
+- [ ] **Step 2: Add a component test for the interaction**
+
+Render an `OpenApiSchema` root with a required `params` property whose `oneOf` branch has title `Minimax`, a Markdown description containing a code block, and `additionalProperties: {}`. Assert the Minimax row starts collapsed, then click its expand button and assert the description and code content become visible.
+
+### Task 3: Implement collapsible supplier branch nodes
+
+**Files:**
+- Modify: `src/lib/openapi/schema-view.ts`
+- Modify: `src/components/openapi/OpenApiSchemaFieldRow.tsx`
+- Modify: `src/components/openapi/OpenApiSchemaTree.tsx`
+
+- [ ] **Step 1: Add `detailsCollapsible` to view nodes and branch containers**
+
+When traversing a union branch with no visible descendants, create a node named after the branch title, keep its branch `description`, and mark it `detailsCollapsible: true`.
+
+- [ ] **Step 2: Include collapsible details in tree expansion state**
+
+Treat `detailsCollapsible` nodes as expandable, but do not render an empty descendants wrapper. Keep them collapsed by default unless they are required/root containers.
+
+- [ ] **Step 3: Hide collapsible details until expanded**
+
+Pass the expanded state to `OpenApiSchemaFieldRow`, render its details only when expanded, and expose the same expand/collapse button and accessible labels as other nested fields.
+
+### Task 4: Implement the field identity rendering fix
 
 **Files:**
 - Modify: `src/components/openapi/OpenApiSchemaFieldRow.tsx`
@@ -48,7 +81,7 @@ Run: `bun run test src/components/openapi/OpenApiSchemaFieldRow.test.tsx`
 
 Expected: all tests in the file pass, including the two new regression tests.
 
-### Task 3: Verify the OpenAPI rendering surface
+### Task 5: Verify the OpenAPI rendering surface
 
 **Files:**
 - Test: `src/components/openapi/OpenApiSchema.test.tsx`
@@ -66,12 +99,12 @@ Run: `bun run types:check`
 
 Expected: exit code 0 with no TypeScript errors.
 
-Run: `bun run lint`
+Run: `bunx biome check src/lib/openapi/schema-view.ts src/lib/openapi/schema-view.test.ts src/components/openapi/OpenApiSchemaFieldRow.tsx src/components/openapi/OpenApiSchemaTree.tsx src/components/openapi/OpenApiSchema.test.tsx`
 
-Expected: exit code 0 with no Biome errors.
+Expected: exit code 0 with no Biome errors in the changed files. The repository-wide lint command may still report unrelated baseline diagnostics.
 
 - [ ] **Step 3: Review the final diff**
 
 Run: `git diff --check && git status --short && git diff -- src/components/openapi/OpenApiSchemaFieldRow.tsx src/components/openapi/OpenApiSchemaFieldRow.test.tsx`
 
-Expected: only the intended tests and field-row rendering logic are modified after the plan/spec commits.
+Expected: only the intended schema view, tree rendering, field-row rendering, tests, and updated design/plan docs are modified after the earlier commits.

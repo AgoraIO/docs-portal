@@ -23,6 +23,7 @@ export type OpenApiSchemaFieldRowLabels = {
 
 export type OpenApiSchemaFieldRowProps = {
   copied: boolean;
+  detailsCollapsible?: boolean;
   domId?: string;
   expanded: boolean;
   labels: OpenApiSchemaFieldRowLabels;
@@ -35,6 +36,7 @@ export type OpenApiSchemaFieldRowProps = {
 
 export function OpenApiSchemaFieldRow({
   copied,
+  detailsCollapsible = false,
   domId,
   expanded,
   labels,
@@ -44,7 +46,7 @@ export function OpenApiSchemaFieldRow({
   onExpandedChange,
   remainingInfoTags = [],
 }: OpenApiSchemaFieldRowProps) {
-  const expandable = node.children.length > 0;
+  const expandable = node.children.length > 0 || detailsCollapsible;
   const isSyntheticVariant =
     node.name === '[key: string]' && Boolean(node.variant);
   const displayName = isSyntheticVariant ? node.variant : node.name;
@@ -173,17 +175,19 @@ export function OpenApiSchemaFieldRow({
             key={id}
           />
         ))}
-      {node.schema.description || remainingInfoTags.length > 0 ? (
-        <div className="openapi-schema-field-details min-w-0">
-          {remainingInfoTags.length > 0 ? (
-            <OpenApiSchemaMetadata items={remainingInfoTags} />
-          ) : null}
-          {node.schema.description ? (
-            <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
-              {node.schema.description}
-            </div>
-          ) : null}
-        </div>
+      {!detailsCollapsible || expanded ? (
+        node.schema.description || remainingInfoTags.length > 0 ? (
+          <div className="openapi-schema-field-details min-w-0">
+            {remainingInfoTags.length > 0 ? (
+              <OpenApiSchemaMetadata items={remainingInfoTags} />
+            ) : null}
+            {node.schema.description ? (
+              <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
+                {node.schema.description}
+              </div>
+            ) : null}
+          </div>
+        ) : null
       ) : null}
     </div>
   );

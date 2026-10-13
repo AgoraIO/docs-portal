@@ -119,6 +119,32 @@ const recursiveGeneratedFixture: SchemaUIGeneratedData = {
   },
 };
 
+const variantMapGeneratedFixture: SchemaUIGeneratedData = {
+  $root: 'root',
+  refs: {
+    root: {
+      aliasName: 'Root',
+      props: [{ $type: 'params', name: 'params', required: true }],
+      type: 'object',
+      typeName: 'Root',
+    },
+    params: {
+      aliasName: 'params',
+      items: [{ $type: 'minimax', name: 'Minimax' }],
+      type: 'or',
+      typeName: 'params',
+    },
+    minimax: {
+      aliasName: 'Minimax',
+      description: 'Minimax description.',
+      props: [{ $type: 'map-any', name: '[key: string]', required: false }],
+      type: 'object',
+      typeName: 'Minimax',
+    },
+    'map-any': primitive('any'),
+  },
+};
+
 const unionArrayGeneratedFixture: SchemaUIGeneratedData = {
   $root: 'root',
   refs: {
@@ -285,6 +311,22 @@ describe('openapi schema view', () => {
     expect(
       flattened.filter((node) => node.path.endsWith('.self')),
     ).toHaveLength(1);
+  });
+
+  it('creates a collapsed container for a union branch with only a synthetic map', () => {
+    const view = buildOpenApiSchemaView(variantMapGeneratedFixture, 'body');
+    const params = view.find((node) => node.name === 'params');
+    const branch = params?.children[0];
+
+    expect(branch).toMatchObject({
+      detailsCollapsible: true,
+      name: 'Minimax',
+      schema: { description: 'Minimax description.' },
+    });
+    expect(branch?.children).toEqual([]);
+    expect(
+      flattenOpenApiSchemaView(view).map((node) => node.name),
+    ).not.toContain('[key: string]');
   });
 
   it('keeps union variant paths and IDs unique through array object items', () => {

@@ -32,7 +32,8 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
     nodes
       .filter(
         (node) =>
-          (node.required || node.rootContainer) && node.children.length > 0,
+          (node.required || node.rootContainer) &&
+          (node.children.length > 0 || node.detailsCollapsible),
       )
       .map((node) => node.id),
   );
@@ -40,7 +41,7 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
 
 function getExpandableNodeIds(nodes: OpenApiSchemaViewNode[]): string[] {
   return nodes.flatMap((node) => [
-    ...(node.children.length > 0 ? [node.id] : []),
+    ...(node.children.length > 0 || node.detailsCollapsible ? [node.id] : []),
     ...getExpandableNodeIds(node.children),
   ]);
 }
@@ -57,6 +58,7 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.name,
     node.variant,
     node.depth,
+    node.detailsCollapsible,
     node.required,
     node.rootContainer,
     node.parentPath.map((item) => [item.$ref, item.name, item.tabValues ?? []]),
@@ -280,10 +282,11 @@ export function OpenApiSchemaTree({
       if (seen.has(node.id)) return [];
 
       const nextSeen = new Set(seen).add(node.id);
-      const expandable = node.children.length > 0;
+      const hasChildren = node.children.length > 0;
+      const expandable = hasChildren || node.detailsCollapsible === true;
       const expanded = expandable && expandedIds.has(node.id);
       const remainingInfoTags = renderRemainingInfoTags(node);
-      const descendants = expandable
+      const descendants = hasChildren
         ? expanded
           ? [
               <div
@@ -319,6 +322,7 @@ export function OpenApiSchemaTree({
           ) : null}
           <OpenApiSchemaFieldRow
             copied={copiedId === node.id}
+            detailsCollapsible={node.detailsCollapsible}
             domId={stableDomId(rootId, node.id)}
             expanded={expanded}
             labels={labels}
