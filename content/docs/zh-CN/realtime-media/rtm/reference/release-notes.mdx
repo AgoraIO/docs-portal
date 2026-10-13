@@ -3923,3 +3923,41 @@ Channel Metadata 和 User Metadata 都引进了版本控制逻辑 CAS（Compare 
 频道中锁的设置、获取、释放、撤销和删除操作都会上报对应的 `onLockEvent` 事件通知。你可以充分利用此特性优化业务的实现逻辑。
 
 </PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+## 微信小程序
+
+本文提供 RTM 微信小程序 SDK 的发版说明。
+
+## 2.3.0-beta.0 版
+
+该版本于 2026 年 7 月 16 日发布。
+
+### Beta 版本能力
+
+#### 支持微信小程序运行环境
+
+该 beta 版本提供微信小程序运行环境下的 RTM 基础实时消息能力。你可以通过 npm 安装 `shengwang-rtm-miniapp`，并在小程序项目中实现 RTM 客户端初始化、登录、Message Channel 订阅、消息发布、Presence、Storage、Lock 和 Token 鉴权等能力。
+
+- npm 包：[`shengwang-rtm-miniapp`](https://www.npmjs.com/package/shengwang-rtm-miniapp)
+- 版本号：`2.3.0-beta.0`
+- 发布日期：`2026-07-16`
+
+:::warning[注意]
+该版本为 beta 版本。微信小程序 SDK 与 Web SDK API 范围不同，使用具体 API 前，请以已安装的 `shengwang-rtm-miniapp` 包中的类型定义为准。
+:::
+
+### 能力边界
+
+当前微信小程序 SDK 不支持以下 API 和能力：
+
+- `RTM.createStreamChannel`
+- `RTMStreamChannel` 相关 API，包括加入、离开 Stream Channel，以及 Stream Channel 上的消息发送能力
+- Topic 相关 API，包括加入 Topic、发送 Topic 消息、订阅 Topic、取消订阅 Topic 和离开 Topic
+- `RTMConfig.cloudProxy`
+- `RTMConfig.privateConfig`
+- 私有化部署
+- 私有化配置
+
+</PlatformStructured>
