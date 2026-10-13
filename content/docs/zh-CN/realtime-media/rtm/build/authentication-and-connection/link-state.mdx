@@ -1614,20 +1614,16 @@ Stream Channel 与 RTM 服务器之间的连接状态在其生命周期内有很
 
 你可以通过监听 `linkState` 事件来观察连接状态的迁移：
 
-```typescript
-import type { LinkStateEvent } from '@shengwang/rtm-full';
-
-rtmClient.addEventListener('linkState', (event: object) => {
-  const linkEvent = event as LinkStateEvent;
-  const currentState = linkEvent.currentState;
-  const previousState = linkEvent.previousState;
-  const serviceType = linkEvent.serviceType;
-  const operation = linkEvent.operation;
-  const reason = linkEvent.reason;
-  const affectedChannels = linkEvent.affectedChannels;
-  const unrestoredChannels = linkEvent.unrestoredChannels;
-  const isResumed = linkEvent.isResumed;
-  const timestamp = linkEvent.timestamp;
+```javascript
+rtm.addEventListener('linkState', event => {
+  const currentState = event.currentState;
+  const previousState = event.previousState;
+  const serviceType = event.serviceType;
+  const operation = event.operation;
+  const reason = event.reason;
+  const affectedChannels = event.affectedChannels;
+  const timestamp = event.timestamp;
+  const isResumed = event.isResumed;
 
   console.log(`Link state: ${previousState} -> ${currentState}`);
   console.log(`Service type: ${serviceType}`);
@@ -1649,7 +1645,7 @@ rtmClient.addEventListener('linkState', (event: object) => {
 
 当网络连接突然断开时，你可以通过 `linkState` 事件的 `affectedChannels` 字段查看受到影响的频道名称。以下是 `affectedChannels` 字段的示例信息：
 
-```typescript
+```javascript
 affectedChannels: ['ChatRoom', 'VirtualSpace']
 ```
 

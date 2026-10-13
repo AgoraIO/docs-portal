@@ -820,8 +820,8 @@ rtm.login(token) {res, error in
 
 RTM 提供 Message Channel 和 Stream Channel 两种频道类型，使用不同类型的频道，对应的 Token 类型也不同：
 
-- 使用 Message Channel：只需在调用 `` 方法登录 RTM 系统时，传入开通了 RTM 服务的 Token（以下简称 RTM Token）。
-- 使用 Stream Channel：在使用 RTM Token 鉴权的基础上，还需要在调用 `` 方法加入 Stream Channel 时传入开通了 RTC 服务的 Token（以下简称 RTC Token）。
+- 使用 Message Channel：只需在调用 `login` 方法登录 RTM 系统时，传入开通了 RTM 服务的 Token（以下简称 RTM Token）。
+- 使用 Stream Channel：在使用 RTM Token 鉴权的基础上，还需要在调用 `join` 方法加入 Stream Channel 时传入开通了 RTC 服务的 Token（以下简称 RTC Token）。
 
 本文展示如何搭建一个使用 RTM Token 鉴权的客户端。使用 RTC Token 请参考[使用 RTC Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
 
@@ -927,26 +927,20 @@ RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用�
         const uid = "1234";
 
         // 获取 Token
-        const rtmToken = await fetchToken(uid);
+        const token = await fetchToken(uid);
 
         // 初始化客户端
-        const client = new AgoraRTM.RTM(appID, uid, { token: rtmToken });
+        const client = new AgoraRTM.RTM(appID, uid);
 
         // 显示连接状态变化
-        client.addEventlistener("linkState", function (event) {
+        client.addEventListener('linkState', function (event) {
             const currentState = event.currentState;
-            const previousState = event.previousState;
-            const serviceType = event.serviceType;
-            const operation = event.operation;
             const reason = event.reason;
-            const affectedChannels = event.affectedChannels;
-            const timestamp = event.timestamp;
-            const isResumed = event.isResumed;
             console.log("Link state changed to: " + currentState + " Reason: " + reason);
         });
 
         // 登录 RTM 系统
-        await client.login();
+        await client.login({ token });
 
         while (started) {
             // 每 30 秒更新一次 Token。此更新频率是为了功能展示，生产环境建议每小时更新一次
@@ -954,54 +948,13 @@ RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用�
             const newToken = await fetchToken(uid);
             await client.renewToken(newToken);
 
-            let currentDate = new Date();
-            let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+            const currentDate = new Date();
+            const time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
             console.log("Renew RTM token at " + time);
         }
     }
 
-        async function loginRTM() {
-            // 你的 App ID
-            const appID = "<Your App ID>";
-
-            // 设置 RTM 用户 ID
-            const uid = "1234";
-
-            // 获取 Token
-            const token = await fetchToken(uid);
-
-            // 初始化客户端
-            const client = new AgoraRTM.RTM(appID, uid);
-
-            // 显示连接状态变化
-            client.on('linkState', function (event) {
-                const currentState = event.currentState;
-                const previousState = event.previousState;
-                const serviceType = event.serviceType;
-                const operation = event.operation;
-                const reason = event.reason;
-                const affectedChannels = event.affectedChannels;
-                const timestamp = event.timestamp;
-                const isResumed = event.isResumed;
-                console.log("Link state changed to: " + currentState + " Reason: " + reason)
-            });
-
-            // 登录 RTM 系统
-            await client.login({ token });
-
-            while (started) {
-                // 每 30 秒更新一次 Token。此更新频率是为了功能展示，生产环境建议每小时更新一次
-                await sleep(30 * 1000);
-                const newToken = await fetchToken(uid);
-                await client.renewToken(newToken);
-
-                let currentDate = new Date();
-                let time = currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
-                console.log("Renew RTM token at " + time);
-            }
-        }
-
-        loginRTM();
+    loginRTM();
     ```
 
    在上述代码示例中，你可以看到 Token 与客户端的以下代码逻辑有关：
@@ -1023,18 +976,18 @@ RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用�
 <a id="expiration"></a>
 ### RTM Token 过期
 
-你可以根据业务需求指定 RTM Token 的有效期 (最长为 24 小时)。当 RTM Token 将在 30 秒后过期时，会触发 `` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+你可以根据业务需求指定 RTM Token 的有效期 (最长为 24 小时)。当 RTM Token 将在 30 秒后过期时，会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
 
-如果 Token 已过期，则 SDK 会触发 `` 回调，报告如下内容：
+如果 Token 已过期，则 SDK 会触发 `linkState` 回调，报告如下内容：
 
-- 当前状态（`currentState`）：``
-- 触发本次状态迁移的操作（`operation`）：``
+- 当前状态（`currentState`）：`FAILED`
+- 触发本次状态迁移的操作（`operation`）：`SERVER_REJECT`
 - 状态迁移的原因（`reason`）：`TOKEN_EXPIRED`
 
 此时，用户需要先在端侧更新 Token，排除故障后再调用 `login` 方法重新登录。
 
 :::info[信息]
-你可以通过 `` 回调和 `` 回调进行 Token 过期处理，但声网推荐你通过定时（例如每小时）更新 Token 来解决 Token 过期问题。
+你可以通过 `tokenPrivilegeWillExpire` 回调和 `linkState` 回调进行 Token 过期处理，但声网推荐你通过定时（例如每小时）更新 Token 来解决 Token 过期问题。
 :::
 
 </PlatformStructured>

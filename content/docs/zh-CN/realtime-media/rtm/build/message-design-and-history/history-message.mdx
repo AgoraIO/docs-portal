@@ -982,52 +982,40 @@ rtmClient.getHistory()?.getMessages(channelName: "channel_name", channelType: .m
 
 以下向你演示如何在向 Message Channel 发送消息的同时将消息存储到历史消息服务器：
 
-```typescript
-import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
-
-const channelName = "chatRoom";
-const message = "Hello world!";
-const options: PublishOptions = {
-  channelType: RtmChannelType.MESSAGE,
-  customType: "custom type",
-  storeInHistory: true
-};
-
+```javascript
 try {
-  const response = await rtmClient.publish(channelName, message, options);
-  console.log("Publish message success:", response);
+  const result = await rtm.publish(
+    "chatroom",
+    "Hello world!",
+    {
+      channelType: "MESSAGE",
+      customType: "STRING",
+      storeInHistory: true,
+    },
+  );
+  console.log("Publish message success:", result);
 } catch (error) {
   console.error("Publish message failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
-  }
 }
 ```
 
 ​
 你也可以向 User Channel 发送消息的同时将消息存储到历史消息服务器，从而实现收件箱的功能：
 
-```typescript
-import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
-
-const userId = "Tony";
-const message = "Hello world!";
-const options: PublishOptions = {
-  channelType: RtmChannelType.USER,
-  customType: "custom type",
-  storeInHistory: true
-};
-
+```javascript
 try {
-  const response = await rtmClient.publish(userId, message, options);
-  console.log("Send message to user success:", response);
+  const result = await rtm.publish(
+    "Tony",
+    "Hello world!",
+    {
+      channelType: "USER",
+      customType: "STRING",
+      storeInHistory: true,
+    },
+  );
+  console.log("Send message to user success:", result);
 } catch (error) {
   console.error("Send message to user failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`Publish failed: ${error.reason} (code: ${error.errorCode})`);
-  }
 }
 ```
 
@@ -1037,29 +1025,21 @@ SDK 为你提供了获取历史消息的 API，你可以使用 `getMessages()` �
 
 你可以通过设置 `start` 和 `end` 参数来获取指定时间段内的历史消息。当然，大部分情况下你可能只想获取上次掉线时刻到当前时间之间最新的消息，这种情况下，你只需要设置 `end` 参数即可。以下代码演示如何获取到上次掉线时刻为止的最新 50 条消息：
 
-```typescript
-import { RtmChannelType, GetHistoryMessagesOptions } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
-
-const channelName = "chatRoom";
-const options: GetHistoryMessagesOptions = {
-  messageCount: 50,
-  end: 1688978391800
-};
-
+```javascript
 try {
-  const result = await rtmClient.history.getMessages(channelName, RtmChannelType.MESSAGE, options);
+  const result = await rtm.history.getMessages(
+    "chat_room",
+    "MESSAGE",
+    {
+      messageCount: 50,
+      end: 1688978391800,
+    },
+  );
   console.log("Get history messages success! new start:", result.newStart);
   console.log("Total messages:", result.messageList.length);
-
-  result.messageList.forEach((message) => {
-    console.log(`Publisher: ${message.publisher}, Message: ${message.message}, Timestamp: ${message.timestamp}`);
-  });
 } catch (error) {
-  console.error("Get history messages failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`Get messages failed: ${error.reason} (code: ${error.errorCode})`);
-  }
+  const { operation, reason, errorCode } = error;
+  console.error(`${operation} failed, the error code is ${errorCode}, due to: ${reason}.`);
 }
 ```
 
