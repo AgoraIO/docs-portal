@@ -409,56 +409,6 @@ describe('OpenApiSchema', () => {
     expect(screen.getByText('any-value')).toBeVisible();
   });
 
-  it('collapses descriptions for map-only union variants', () => {
-    render(
-      <AnchorSection segments={['request-body', 'application-json']}>
-        <OpenApiSchema
-          client={{ as: 'body', name: 'body' }}
-          renderCodeblock={({ code }) => <pre>{code}</pre>}
-          renderMarkdown={(markdown) => <p>{markdown}</p>}
-          root={{
-            properties: {
-              params: {
-                oneOf: [
-                  {
-                    additionalProperties: {},
-                    description: 'Minimax configuration description.',
-                    title: 'Minimax',
-                    type: 'object',
-                  },
-                  {
-                    additionalProperties: {},
-                    description: 'Tencent configuration description.',
-                    title: 'Tencent',
-                    type: 'object',
-                  },
-                ],
-                title: 'params',
-              },
-            },
-            required: ['params'],
-            type: 'object',
-          }}
-        />
-      </AnchorSection>,
-    );
-
-    expect(screen.getByText('Minimax', { exact: true })).toBeVisible();
-    expect(screen.getByText('Tencent', { exact: true })).toBeVisible();
-    expect(
-      screen.queryByText('Minimax configuration description.'),
-    ).not.toBeInTheDocument();
-    expect(screen.queryByText('[key: string]', { exact: true })).toBeNull();
-    expect(screen.queryByText('unknown', { exact: true })).toBeNull();
-
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Expand Minimax properties' }),
-    );
-    expect(
-      screen.getByText('Minimax configuration description.'),
-    ).toBeVisible();
-  });
-
   it('keeps property enum values inherited through allOf', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>

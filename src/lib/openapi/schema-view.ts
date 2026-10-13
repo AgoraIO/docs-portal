@@ -16,7 +16,6 @@ export type OpenApiSchemaData = SchemaData & {
 export type OpenApiSchemaViewNode = {
   $type: string;
   children: OpenApiSchemaViewNode[];
-  collapsible?: boolean;
   depth: number;
   id: string;
   name: string;
@@ -152,31 +151,14 @@ export function buildOpenApiSchemaView(
           },
         ];
 
-        const branchSchema = generated.refs[item.$type];
-        const branchNodes = childrenFor(
+        return childrenFor(
           generated.refs[item.$type],
           nextParentPath,
           fieldPath,
           depth,
           nextAncestors,
           item.$type,
-        );
-
-        const syntheticVariant =
-          branchNodes.length === 1 &&
-          branchNodes[0]?.name === '[key: string]' &&
-          branchSchema?.description;
-
-        return branchNodes.map((node) => ({
-          ...node,
-          ...(syntheticVariant
-            ? {
-                collapsible: true,
-                schema: branchSchema,
-              }
-            : {}),
-          variant: item.name,
-        }));
+        ).map((node) => ({ ...node, variant: item.name }));
       });
     }
 

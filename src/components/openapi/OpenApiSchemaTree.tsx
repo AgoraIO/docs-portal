@@ -32,7 +32,7 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
     nodes
       .filter(
         (node) =>
-          (node.required || node.rootContainer) && isExpandableNode(node),
+          (node.required || node.rootContainer) && node.children.length > 0,
       )
       .map((node) => node.id),
   );
@@ -40,13 +40,9 @@ function getInitialExpandedIds(nodes: OpenApiSchemaViewNode[]) {
 
 function getExpandableNodeIds(nodes: OpenApiSchemaViewNode[]): string[] {
   return nodes.flatMap((node) => [
-    ...(isExpandableNode(node) ? [node.id] : []),
+    ...(node.children.length > 0 ? [node.id] : []),
     ...getExpandableNodeIds(node.children),
   ]);
-}
-
-function isExpandableNode(node: OpenApiSchemaViewNode) {
-  return node.children.length > 0 || node.collapsible === true;
 }
 
 export function getOpenApiSchemaTreeIdentity(nodes: OpenApiSchemaViewNode[]) {
@@ -61,7 +57,6 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.name,
     node.variant,
     node.depth,
-    node.collapsible,
     node.required,
     node.rootContainer,
     node.parentPath.map((item) => [item.$ref, item.name, item.tabValues ?? []]),
@@ -285,30 +280,29 @@ export function OpenApiSchemaTree({
       if (seen.has(node.id)) return [];
 
       const nextSeen = new Set(seen).add(node.id);
-      const expandable = isExpandableNode(node);
+      const expandable = node.children.length > 0;
       const expanded = expandable && expandedIds.has(node.id);
       const remainingInfoTags = renderRemainingInfoTags(node);
-      const descendants =
-        node.children.length > 0
-          ? expanded
-            ? [
-                <div
-                  className="openapi-schema-children"
-                  key={`${node.id}-children`}
-                >
-                  {renderNodes(node.children, nextSeen)}
-                </div>,
-              ]
-            : [
-                <HiddenDescendants
-                  className="openapi-schema-children"
-                  key={`${node.id}-hidden`}
-                  onBeforeMatch={() => revealNode(node.id)}
-                >
-                  {renderNodes(node.children, nextSeen)}
-                </HiddenDescendants>,
-              ]
-          : [];
+      const descendants = expandable
+        ? expanded
+          ? [
+              <div
+                className="openapi-schema-children"
+                key={`${node.id}-children`}
+              >
+                {renderNodes(node.children, nextSeen)}
+              </div>,
+            ]
+          : [
+              <HiddenDescendants
+                className="openapi-schema-children"
+                key={`${node.id}-hidden`}
+                onBeforeMatch={() => revealNode(node.id)}
+              >
+                {renderNodes(node.children, nextSeen)}
+              </HiddenDescendants>,
+            ]
+        : [];
 
       return [
         <div
