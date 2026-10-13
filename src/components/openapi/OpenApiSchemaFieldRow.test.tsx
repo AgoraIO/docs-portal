@@ -241,7 +241,7 @@ describe('OpenApiSchemaFieldRow', () => {
   });
 
   it('uses a union variant name instead of its synthetic map placeholder', () => {
-    render(
+    const { rerender } = render(
       <OpenApiSchemaFieldRow
         copied={false}
         expanded={false}
@@ -250,9 +250,11 @@ describe('OpenApiSchemaFieldRow', () => {
           name: '[key: string]',
           schema: {
             aliasName: 'unknown',
+            description: 'Minimax description.',
             type: 'primitive',
             typeName: 'unknown',
           },
+          collapsible: true,
           variant: 'Minimax',
         })}
         onCopy={() => {}}
@@ -264,6 +266,30 @@ describe('OpenApiSchemaFieldRow', () => {
     expect(screen.queryByText('[key: string]', { exact: true })).toBeNull();
     expect(screen.queryByText('unknown', { exact: true })).toBeNull();
     expect(screen.queryByText('(Minimax)', { exact: true })).toBeNull();
+    expect(screen.queryByText('Minimax description.')).toBeNull();
+
+    rerender(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded
+        labels={labels}
+        node={makeNode({
+          name: '[key: string]',
+          schema: {
+            aliasName: 'unknown',
+            description: 'Minimax description.',
+            type: 'primitive',
+            typeName: 'unknown',
+          },
+          collapsible: true,
+          variant: 'Minimax',
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText('Minimax description.')).toBeVisible();
   });
 
   it('places metadata below the field identity and above its description', () => {

@@ -44,7 +44,7 @@ export function OpenApiSchemaFieldRow({
   onExpandedChange,
   remainingInfoTags = [],
 }: OpenApiSchemaFieldRowProps) {
-  const expandable = node.children.length > 0;
+  const expandable = node.children.length > 0 || node.collapsible === true;
   const isSyntheticVariant =
     node.name === '[key: string]' && Boolean(node.variant);
   const displayName = isSyntheticVariant ? node.variant : node.name;
@@ -111,7 +111,7 @@ export function OpenApiSchemaFieldRow({
               >
                 <Button
                   aria-expanded={expanded}
-                  aria-label={`${expanded ? labels.collapse : labels.expand} ${node.name} ${labels.properties}`}
+                  aria-label={`${expanded ? labels.collapse : labels.expand} ${displayName} ${labels.properties}`}
                   className="absolute left-1/2 top-1/2 size-6 shrink-0 -translate-x-1/2 -translate-y-1/2 p-0 hover:bg-transparent"
                   onClick={() => onExpandedChange(!expanded)}
                   size="sm"
@@ -173,17 +173,19 @@ export function OpenApiSchemaFieldRow({
             key={id}
           />
         ))}
-      {node.schema.description || remainingInfoTags.length > 0 ? (
-        <div className="openapi-schema-field-details min-w-0">
-          {remainingInfoTags.length > 0 ? (
-            <OpenApiSchemaMetadata items={remainingInfoTags} />
-          ) : null}
-          {node.schema.description ? (
-            <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
-              {node.schema.description}
-            </div>
-          ) : null}
-        </div>
+      {!node.collapsible || expanded ? (
+        node.schema.description || remainingInfoTags.length > 0 ? (
+          <div className="openapi-schema-field-details min-w-0">
+            {remainingInfoTags.length > 0 ? (
+              <OpenApiSchemaMetadata items={remainingInfoTags} />
+            ) : null}
+            {node.schema.description ? (
+              <div className="openapi-schema-field-description mt-2 min-w-0 break-words font-normal text-muted-foreground [overflow-wrap:anywhere]">
+                {node.schema.description}
+              </div>
+            ) : null}
+          </div>
+        ) : null
       ) : null}
     </div>
   );
