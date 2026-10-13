@@ -318,7 +318,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```java
+```java tab="发送字符串消息" tabGroup="rtm-user-channel-java"
 // 发送字符串消息
 PublishOptions options = new PublishOptions();
 options.setChannelType(RtmChannelType.USER);
@@ -336,7 +336,7 @@ rtmClient.publish("Tony", "Hello world", options, new ResultCallback<Void>() {
 });
 ```
 
-```java
+```java tab="发送二进制消息" tabGroup="rtm-user-channel-java"
 // 发送二进制消息
 byte[] message = new byte[] {1, 2, 3, 4};
 PublishOptions options = new PublishOptions();
@@ -371,7 +371,7 @@ rtm.publish(channelName: user, message: message, option: publishOption, completi
 })
 ```
 
-```objc
+```objc tab="发送字符串消息" tabGroup="rtm-user-channel-objc"
 // 发送字符串消息
 NSString* message = @"Hello Agora!";
 NSString* user = @"Tony";
@@ -388,7 +388,7 @@ publish_option.channelType = AgoraRtmChannelTypeUser;
 }];
 ```
 
-```objc
+```objc tab="发送二进制消息" tabGroup="rtm-user-channel-objc"
 // 发送二进制消息
 NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
 NSString* user = @"Tony";
@@ -405,7 +405,7 @@ publish_option.channelType = AgoraRtmChannelTypeUser;
 }];
 ```
 
-```cpp tab="发送字符串消息"
+```cpp tab="发送字符串消息" tabGroup="rtm-user-channel-cpp"
 // 发送字符串消息
 std::string message = "Hello Agora!";
 PublishOptions options;
@@ -417,7 +417,7 @@ uint64_t requestId;
 rtmClient->publish("Tony", message.c_str(), message.size(), options, requestId);
 ```
 
-```cpp tab="发送二进制消息"
+```cpp tab="发送二进制消息" tabGroup="rtm-user-channel-cpp"
 // 发送二进制消息
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_BINARY;
@@ -444,7 +444,7 @@ class RtmEventHandler : public IRtmEventHandler {
 };
 ```
 
-```dart
+```dart tab="发送字符串消息" tabGroup="rtm-user-channel-dart"
 // 发送字符串消息
 final channelName = 'chat_room';
 var payload = 'hello RTM';
@@ -466,7 +466,7 @@ try {
 }
 ```
 
-```dart showLineNumbers
+```dart tab="发送二进制消息" tabGroup="rtm-user-channel-dart" showLineNumbers
 // 发送二进制消息
 final channelName = 'chat_room';
 var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
@@ -488,7 +488,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="发送字符串消息" tabGroup="rtm-user-channel-typescript"
 // Send string message to user
 import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -511,7 +511,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="发送二进制消息" tabGroup="rtm-user-channel-typescript"
 // Send binary message to user
 import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -534,7 +534,7 @@ try {
 }
 ```
 
-```javascript tab="发送字符串消息"
+```javascript tab="发送字符串消息" tabGroup="rtm-user-channel-javascript"
 // 发送字符串消息
 const payload = "Hello Agora!";
 const channelName = "chat_room";
@@ -550,7 +550,7 @@ try {
 }
 ```
 
-```javascript tab="发送二进制消息"
+```javascript tab="发送二进制消息" tabGroup="rtm-user-channel-javascript"
 // 发送二进制消息
 const message = "Hello Agora!";
 const payload = new TextEncoder().encode(message);
