@@ -4,6 +4,7 @@ import {
   cleanSearchSnippet,
   groupSearchSections,
   isPublicCnSearchUrl,
+  mergeSearchPageGroups,
 } from './cn-search-page';
 import { buildCnSearchDocument } from './cn-search-strategy';
 import { parseSearchPageState } from './search-page-state';
@@ -38,6 +39,46 @@ const hit = {
 afterEach(() => vi.restoreAllMocks());
 
 describe('full CN search adapter', () => {
+  it('deduplicates platform copies of a canonical chapter within and across pages', () => {
+    const canonicalUrl = '/zh-CN/realtime-media/rtc/build/token-authentication';
+    const android = {
+      ...hit,
+      canonicalUrl,
+      url: `${canonicalUrl}/android#token`,
+    };
+    const ios = { ...hit, canonicalUrl, url: `${canonicalUrl}/ios#token` };
+    const groups = groupSearchSections([android, ios]);
+    expect(groups).toHaveLength(1);
+    expect(groups[0].sections).toHaveLength(1);
+    expect(
+      mergeSearchPageGroups([
+        groupSearchSections([android]),
+        groupSearchSections([ios]),
+      ])[0].sections,
+    ).toHaveLength(1);
+  });
+
+  it.each([undefined, 'ios'])(
+    'filters platform copies before engine pagination (platform=%s)',
+    async (platform) => {
+      const request = vi
+        .spyOn(globalThis, 'fetch')
+        .mockResolvedValue(
+          Response.json({ hits: [], totalHits: 0, totalPages: 0, page: 1 }),
+        );
+      await queryCnSearch(
+        config,
+        parseSearchPageState({ q: 'Token', platform }),
+      );
+      const body = JSON.parse(request.mock.calls[0][1]?.body as string);
+      if (platform) {
+        expect(body.filter).toContain('platform = "ios"');
+        expect(body.filter).not.toContain('isDefaultPlatform');
+      } else {
+        expect(body.filter).toContain('isDefaultPlatform = true');
+      }
+    },
+  );
   it('groups platform variants under the canonical document when no platform is selected', () => {
     const groups = groupSearchSections([
       {

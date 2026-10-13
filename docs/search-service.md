@@ -37,6 +37,10 @@ HOST=0.0.0.0 PORT=3000 bun run start:service
 
 响应使用 `CnSearchPageResponse`：`groups` 按文档聚合章节，`totalHits` 统计章节，`totalPages`、`page` 与 `facets` 用于分页及筛选。分页发生在章节聚合之前，因此每页文档数量可以少于 20。响应不缓存；请求会在 10 秒后超时。参数错误返回 400，缺少服务配置返回 503，上游失败返回 502，均不暴露上游错误或凭据。
 
+未选择平台时，搜索引擎在分页前仅检索 `isDefaultPlatform = true` 的记录，避免同一文档的其他平台副本占用结果名额；选择平台时仅使用该平台过滤。普通文档、FAQ 和独立 API 页面同样标为默认记录。章节仍按相关性排序，同一文档可以命中多个不同章节，所以这不保证每批返回 20 篇不同文档。
+
+平台文档的默认值来自同次静态构建的 `body.platformTabs.defaultPlatform`，通过路由清单写入索引的 `defaultPlatform`、`isDefaultPlatform` 字段；不根据 URL 或固定的平台顺序猜测。所有平台的章节仍保留在索引里。未筛选时链接使用 canonical 文档入口，筛选时使用对应平台入口；同一最终章节链接在卡片内及跨页加载时只显示一次。
+
 `GET /api/health` 返回 `{ "status": "ok" }`，用于进程存活检查，不表示 Meilisearch 可用。未配置或不可用的搜索服务会在搜索界面显示错误和重试入口。
 
 ## 索引发布合约
@@ -72,6 +76,8 @@ bun run search:promote:cn --revision="$RELEASE_SHA"
 - 产品入口使用独立 `entryTitle`（保留显示标题），帮助“云端录制”等宽泛查询找到概览。章节精确查询仍需用查询集验证。SDK/API/RTC 等泛词暂不承诺唯一标准首条。
 
 这些字段和设置变更需要重新 `prepare`、验收并 `promote` 整个快照；升级 API 代码也要同步，以支持 FAQ 多产品筛选。用户每次搜索只查询现有索引，不重新构建。
+
+默认平台过滤属于索引结构升级，旧记录没有 `isDefaultPlatform`，旧设置也没有这个可过滤字段。需重新构建静态产物、导出并准备新索引，先用新代码连接临时索引验收；不要把新后端直接连接旧正式索引。正式发布需协调索引切换和新后端启用，保证新后端接收搜索请求前已接入新结构的索引；回滚时也必须配套恢复后端和索引。单纯重启本地服务或更新索引设置不能补齐旧记录。
 
 覆盖审计命令：`node scripts/search/audit-cn-coverage.mjs --records=dist/search/cn-records.json`。它同时检查导航到发布路由的覆盖，新增无记录页必须审查；现有组件目录和 C# 空壳页面的具体豁免列在脚本中。部署输入和完整发布检查见 [中文搜索部署交接](./cn-search-deployment-handoff.md)。
 

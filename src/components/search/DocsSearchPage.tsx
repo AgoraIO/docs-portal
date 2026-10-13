@@ -409,7 +409,6 @@ export function DocsSearchPage({
               <>
                 <SearchResultList
                   groups={data.groups}
-                  platformFiltered={Boolean(state.platform)}
                   productLabel={productLabel}
                 />
                 <div className="search-page-pagination">

@@ -13,6 +13,8 @@ export type SearchSection = {
   tab?: string;
   platform?: string[];
   availablePlatforms?: string[];
+  defaultPlatform?: string;
+  isDefaultPlatform?: boolean;
   version?: string;
   docType: 'docs' | 'openapi';
   audience: ('developer' | 'customer-support')[];

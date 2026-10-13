@@ -133,6 +133,9 @@ export function extractPublishedCnSections(
     product: products[0],
     products,
     canonicalUrl: route.canonicalPath,
+    defaultPlatform: route.defaultPlatform,
+    isDefaultPlatform:
+      !route.platform || route.platform === route.defaultPlatform,
     ...(route.platform ? { availablePlatforms: [route.platform] } : {}),
     version: routeMetadata.version ?? version,
     platform: faq
@@ -280,6 +283,10 @@ export async function exportPublishedCnRecords({
       variantPages.has(route.canonicalPath)
     )
       continue;
+    if (route.platform && !route.defaultPlatform)
+      throw new Error(
+        `Missing default platform for ${route.canonicalPath}; rebuild static docs payloads`,
+      );
     const markdown = await readMarkdown(route.markdownPath);
     const sections = extractPublishedCnSections(route, page, markdown);
     if (readRenderedHtml) {
@@ -342,6 +349,18 @@ export async function exportPublishedCnRecords({
       if (isKnownPlatform(platform)) platforms.add(platform);
     }
     availablePlatformsByCanonicalUrl.set(record.canonicalUrl, platforms);
+  }
+  for (const record of records) {
+    if (
+      record.defaultPlatform &&
+      record.canonicalUrl &&
+      !availablePlatformsByCanonicalUrl
+        .get(record.canonicalUrl)
+        ?.has(record.defaultPlatform)
+    )
+      throw new Error(
+        `Default platform ${record.defaultPlatform} has no indexed content: ${record.canonicalUrl}`,
+      );
   }
 
   return records

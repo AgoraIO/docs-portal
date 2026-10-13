@@ -91,7 +91,13 @@ export function mergeSearchPageGroups(
         });
       else {
         for (const section of group.sections)
-          if (!previous.sections.some((item) => item.url === section.url))
+          if (
+            !previous.sections.some(
+              (item) =>
+                getSearchSectionHref(previous.pageUrl, item.url) ===
+                getSearchSectionHref(previous.pageUrl, section.url),
+            )
+          )
             previous.sections.push(section);
         previous.platform = [
           ...new Set([...previous.platform, ...group.platform]),
@@ -134,12 +140,12 @@ export function groupSearchSections(
     const pageUrl = (
       platformFiltered ? hit.url : (hit.canonicalUrl ?? hit.url)
     ).split('#')[0];
-    const groupKey = [
+    const groupKey = getSearchPageGroupKey({
       pageUrl,
-      hit.product ?? '',
-      hit.docType,
-      hit.version ?? '',
-    ].join('\u0000');
+      product: hit.product,
+      docType: hit.docType,
+      version: hit.version,
+    });
     const platforms = platformFiltered
       ? selectedPlatform
         ? [selectedPlatform]
@@ -147,7 +153,13 @@ export function groupSearchSections(
       : (hit.availablePlatforms ?? hit.platform ?? []);
     const existing = groups.get(groupKey);
     if (existing) {
-      if (!existing.sections.some((section) => section.url === hit.url))
+      if (
+        !existing.sections.some(
+          (section) =>
+            getSearchSectionHref(pageUrl, section.url) ===
+            getSearchSectionHref(pageUrl, hit.url),
+        )
+      )
         existing.sections.push(hit);
       existing.platform = [...new Set([...existing.platform, ...platforms])];
       existing.availablePlatforms = [
@@ -170,7 +182,12 @@ export function groupSearchSections(
   return [...groups.values()];
 }
 
-export function getSearchPageGroupKey(group: SearchPageGroup): string {
+export function getSearchPageGroupKey(
+  group: Pick<
+    SearchPageGroup,
+    'groupKey' | 'pageUrl' | 'product' | 'docType' | 'version'
+  >,
+): string {
   return (
     group.groupKey ??
     [
@@ -180,4 +197,12 @@ export function getSearchPageGroupKey(group: SearchPageGroup): string {
       group.version ?? '',
     ].join('\u0000')
   );
+}
+
+export function getSearchSectionHref(
+  pageUrl: string,
+  sectionUrl: string,
+): string {
+  const hash = sectionUrl.indexOf('#');
+  return hash >= 0 ? `${pageUrl}${sectionUrl.slice(hash)}` : pageUrl;
 }

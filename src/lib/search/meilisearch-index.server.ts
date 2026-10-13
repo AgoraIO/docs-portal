@@ -166,6 +166,10 @@ export async function prepareSearchIndex({
   // Validate the entire snapshot before making any write request.
   for (const record of records) {
     assertValidSearchSection(record);
+    if (typeof record.isDefaultPlatform !== 'boolean')
+      throw new Error(
+        'Re-export CN records with default-platform metadata before preparing an index',
+      );
     if (
       record.locale !== 'zh-CN' ||
       record.status !== 'published' ||

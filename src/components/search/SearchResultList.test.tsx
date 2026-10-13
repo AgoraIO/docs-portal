@@ -74,7 +74,6 @@ describe('SearchResultList', () => {
             platform: ['android'],
           },
         ]}
-        platformFiltered
         productLabel={() => '实时互动 RTC'}
       />,
     );

@@ -228,6 +228,7 @@ describe('published CN index export', () => {
           canonicalPath: canonical,
           markdownPath: `${canonical}/web.md`,
           platform: 'web',
+          defaultPlatform: 'web',
         },
         {
           url: '/zh-CN/hidden',
@@ -278,6 +279,7 @@ describe('published CN index export', () => {
           url: `${url}/web`,
           markdownPath: `${url}/web.md`,
           platform: 'web',
+          defaultPlatform: 'web',
         },
       ],
       readMarkdown,
@@ -299,12 +301,14 @@ describe('published CN index export', () => {
           canonicalPath: canonical,
           markdownPath: `${canonical}/android.md`,
           platform: 'android',
+          defaultPlatform: 'ios',
         },
         {
           url: `${canonical}/ios`,
           canonicalPath: canonical,
           markdownPath: `${canonical}/ios.md`,
           platform: 'ios',
+          defaultPlatform: 'ios',
         },
       ],
       readMarkdown: async () => '# 使用 Token 鉴权\n\n## Token\n\n说明。',
@@ -314,10 +318,14 @@ describe('published CN index export', () => {
     expect(records[0]).toMatchObject({
       canonicalUrl: canonical,
       availablePlatforms: ['android', 'ios'],
+      defaultPlatform: 'ios',
+      isDefaultPlatform: false,
     });
     expect(records[1]).toMatchObject({
       canonicalUrl: canonical,
       availablePlatforms: ['android', 'ios'],
+      defaultPlatform: 'ios',
+      isDefaultPlatform: true,
     });
   });
 

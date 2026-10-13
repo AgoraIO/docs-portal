@@ -12,6 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
 import {
   getSearchPageGroupKey,
+  getSearchSectionHref,
   type SearchPageGroup,
 } from '@/lib/search/cn-search-page';
 import type { HighlightSegment } from '@/lib/search/meilisearch-client';
@@ -39,11 +40,9 @@ export function SearchHighlight({
 // rows. Focus gets the same feedback; navigation remains a normal anchor.
 export function SearchResultList({
   groups,
-  platformFiltered = false,
   productLabel,
 }: {
   groups: SearchPageGroup[];
-  platformFiltered?: boolean;
   productLabel: (product?: string) => string;
 }) {
   const [active, setActive] = useState<string | null>(null);
@@ -55,11 +54,7 @@ export function SearchResultList({
         {groups.map((group) => {
           const first = group.sections[0];
           const groupKey = getSearchPageGroupKey(group);
-          const firstHref = getSearchSectionHref(
-            group,
-            first.url,
-            platformFiltered,
-          );
+          const firstHref = getSearchSectionHref(group.pageUrl, first.url);
           const ancestors = first.headingPath
             .slice(0, -1)
             .filter((heading) => heading !== group.title)
@@ -150,9 +145,8 @@ export function SearchResultList({
                           <a
                             className="search-page-section"
                             href={getSearchSectionHref(
-                              group,
+                              group.pageUrl,
                               section.url,
-                              platformFiltered,
                             )}
                           >
                             <HashIcon
@@ -177,14 +171,4 @@ export function SearchResultList({
       </ul>
     </LayoutGroup>
   );
-}
-
-function getSearchSectionHref(
-  group: SearchPageGroup,
-  sectionUrl: string,
-  platformFiltered: boolean,
-) {
-  if (platformFiltered) return sectionUrl;
-  const hash = sectionUrl.split('#')[1];
-  return hash ? `${group.pageUrl}#${hash}` : group.pageUrl;
 }

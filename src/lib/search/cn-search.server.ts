@@ -36,6 +36,8 @@ export async function queryCnSearch(
   signal?: AbortSignal,
 ): Promise<CnSearchPageResponse> {
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
+  // Filter before pagination so other platform copies cannot consume result slots.
+  if (!state.platform) filter.push('isDefaultPlatform = true');
   for (const field of ['product', 'platform', 'version', 'tab'] as const) {
     if (state[field]) {
       const value = JSON.stringify(state[field]);
