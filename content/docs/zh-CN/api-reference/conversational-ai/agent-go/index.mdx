@@ -1265,7 +1265,7 @@ option.AreaCN // Chinese Mainland (east + north)
 
 还有用于 SOS/EOS turn detection 的附加别名：`TurnDetectionNestedConfig`、`StartOfSpeechConfig`、`EndOfSpeechConfig` 以及相关子类型。session/对话相关别名包括 `SessionListResponse`、`ConversationHistory`、`ConversationTurns` 等。think 相关别名包括 `ThinkOnListeningAction`、`ThinkOnThinkingAction`、`ThinkOnSpeakingAction`。
 
-`FillerWordsConfig` 支持静态承接词和动态承接词。使用动态承接词时，必须同时配置非空的静态短语作为回退；`GeneratedConfig` 中的 `Prompt`、上下文限制和回退策略均为可选项，模型服务和凭证由声网托管。具体字段结构详见[配置承接词](/zh-CN/ai/user-guides/filler-words)。
+`FillerWordsConfig` 支持静态承接词和动态承接词。使用动态承接词时，必须同时配置非空的静态短语作为回退；`GeneratedConfig` 中的 `Prompt`、上下文限制和回退策略均为可选项，模型服务和凭证由声网托管。具体字段结构详见[配置承接词](/zh-CN/ai/build/shape-the-conversation/filler-words)。
 
 动态承接词配置还支持 `ContextMessageLimit`（取值范围 `1` 到 `6`，省略时由服务按 `1` 处理）和 `HistoryCharacterLimit`（取值范围 `0` 到 `10000`，省略时由服务按 `1000` 处理）。前者包含当前用户消息，显式设置为 `2` 到 `6` 时启用近期历史；后者只统计历史消息文本的 Unicode code points。
 

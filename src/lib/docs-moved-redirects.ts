@@ -3,6 +3,10 @@ import { ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS } from './zh-cn-moved-solution-p
 const ZH_CN_AI_GUIDE_REDIRECTS = new Map([
   ['user-guides/rest-tool', '/zh-CN/ai/build/rest-tool'],
   ['user-guides/asr-keywords', '/zh-CN/ai/build/asr-keywords'],
+  [
+    'user-guides/filler-words',
+    '/zh-CN/ai/build/shape-the-conversation/filler-words',
+  ],
 ]);
 
 export function resolveMovedDocsRedirect(

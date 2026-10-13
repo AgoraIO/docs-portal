@@ -6,13 +6,18 @@ import {
 } from './docs-moved-redirects';
 
 describe('resolveMovedDocsRedirect', () => {
-  it.each(['rest-tool', 'asr-keywords'])(
+  it.each([
+    ['rest-tool', '/zh-CN/ai/build/rest-tool'],
+    ['asr-keywords', '/zh-CN/ai/build/asr-keywords'],
+    [
+      'filler-words',
+      '/zh-CN/ai/build/shape-the-conversation/filler-words',
+    ],
+  ])(
     'permanently redirects the moved Chinese AI guide %s in shared routing',
-    (slug) => {
+    (slug, target) => {
       const segments = ['user-guides', slug];
-      expect(resolveMovedDocsRedirect('zh-CN', 'ai', segments)).toBe(
-        `/zh-CN/ai/build/${slug}`,
-      );
+      expect(resolveMovedDocsRedirect('zh-CN', 'ai', segments)).toBe(target);
       expect(isPermanentMovedDocsRedirect('zh-CN', 'ai', segments)).toBe(true);
       expect(resolveMovedDocsRedirect('en', 'ai', segments)).toBeNull();
       expect(isPermanentMovedDocsRedirect('en', 'ai', segments)).toBe(false);

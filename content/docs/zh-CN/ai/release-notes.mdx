@@ -10,7 +10,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 #### 动态承接词支持多轮对话上下文
 
-该版本优化了动态承接词的生成能力。你可以通过 Agora Agents SDK 的 `FillerWordsConfig` 配置动态承接词使用的对话消息数量和历史文本长度，使承接词结合近期的用户和智能体消息生成更符合上下文的内容。详见[配置响应超时承接词](./user-guides/filler-words)。
+该版本优化了动态承接词的生成能力。你可以通过 Agora Agents SDK 的 `FillerWordsConfig` 配置动态承接词使用的对话消息数量和历史文本长度，使承接词结合近期的用户和智能体消息生成更符合上下文的内容。详见[配置响应超时承接词](./build/shape-the-conversation/filler-words)。
 
 你也可以直接调用 RESTful API 创建智能体，通过 [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join) 的 `context_message_limit` 和 `history_character_limit` 配置动态承接词使用的对话上下文。
 
@@ -39,7 +39,7 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 #### 根据对话动态生成承接词
 
-该版本为 Agora Agents SDK 中的 `FillerWordsConfig` 新增动态承接词配置能力。你可以通过 Go、Python 和 TypeScript SDK 配置动态模式、生成提示词和静态回退内容。详见[配置承接词](./user-guides/filler-words)。
+该版本为 Agora Agents SDK 中的 `FillerWordsConfig` 新增动态承接词配置能力。你可以通过 Go、Python 和 TypeScript SDK 配置动态模式、生成提示词和静态回退内容。详见[配置承接词](./build/shape-the-conversation/filler-words)。
 
 如果你直接调用 RESTful API 创建智能体，也可以将 `properties.filler_words.content.mode` 设为 `generated`，并通过 `generated_config` 和 `static_config` 配置动态承接词及其静态回退内容。
 

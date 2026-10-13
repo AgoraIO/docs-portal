@@ -380,13 +380,23 @@ describe('docs route locale guards', () => {
   });
 
   it.each([
-    ['rest-tool', false],
-    ['asr-keywords', false],
-    ['rest-tool', true],
-    ['asr-keywords', true],
+    ['rest-tool', '/zh-CN/ai/build/rest-tool', false],
+    ['asr-keywords', '/zh-CN/ai/build/asr-keywords', false],
+    [
+      'filler-words',
+      '/zh-CN/ai/build/shape-the-conversation/filler-words',
+      false,
+    ],
+    ['rest-tool', '/zh-CN/ai/build/rest-tool', true],
+    ['asr-keywords', '/zh-CN/ai/build/asr-keywords', true],
+    [
+      'filler-words',
+      '/zh-CN/ai/build/shape-the-conversation/filler-words',
+      true,
+    ],
   ] as const)(
-    'redirects moved AI guide %s with query and hash (static: %s)',
-    async (slug, staticPayload) => {
+    'redirects moved AI guide %s to %s with query and hash (static: %s)',
+    async (slug, target, staticPayload) => {
       publishedLocaleOverride.value = true;
       vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticPayload);
       try {
@@ -405,7 +415,7 @@ describe('docs route locale guards', () => {
           } as never),
         ).rejects.toMatchObject({
           options: {
-            href: `/zh-CN/ai/build/${slug}?from=legacy#details`,
+            href: `${target}?from=legacy#details`,
             statusCode: 301,
           },
           status: 301,
