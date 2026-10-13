@@ -320,6 +320,7 @@ describe('openapi schema view', () => {
 
     expect(branch).toMatchObject({
       detailsCollapsible: true,
+      legacyNames: ['[key: string]'],
       name: 'Minimax',
       schema: { description: 'Minimax description.' },
     });

@@ -341,7 +341,8 @@ function OpenApiSchemaParameterFields({
     if (!revealTarget) return;
     const target = nodes.find(
       (node) =>
-        node.name === revealTarget.fieldName &&
+        (node.name === revealTarget.fieldName ||
+          node.legacyNames?.includes(revealTarget.fieldName) === true) &&
         areOpenApiSchemaPathsEqual(node.parentPath, revealTarget.parentPath),
     );
     if (target) setHighlightedId(target.id);
@@ -542,7 +543,7 @@ async function copyOpenApiSchemaFieldLink(
   const url = new URL(window.location.href);
   url.hash = `#${rootId}`;
   url.searchParams.set('path', encodeOpenApiSchemaPath(node.parentPath));
-  url.searchParams.set('s-highlight', node.name);
+  url.searchParams.set('s-highlight', node.legacyNames?.[0] ?? node.name);
   try {
     if (!navigator.clipboard) return false;
     await navigator.clipboard.writeText(url.href);

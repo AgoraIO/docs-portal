@@ -59,6 +59,7 @@ function getOpenApiSchemaNodeIdentity(node: OpenApiSchemaViewNode): unknown[] {
     node.variant,
     node.depth,
     node.detailsCollapsible,
+    node.legacyNames,
     node.required,
     node.rootContainer,
     node.parentPath.map((item) => [item.$ref, item.name, item.tabValues ?? []]),
@@ -232,7 +233,8 @@ export function OpenApiSchemaTree({
 
     const chain = findNodeChain(
       (node) =>
-        node.name === revealTarget.fieldName &&
+        (node.name === revealTarget.fieldName ||
+          node.legacyNames?.includes(revealTarget.fieldName) === true) &&
         JSON.stringify(node.parentPath) ===
           JSON.stringify(revealTarget.parentPath),
     );

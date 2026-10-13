@@ -19,6 +19,7 @@ export type OpenApiSchemaViewNode = {
   depth: number;
   detailsCollapsible?: boolean;
   id: string;
+  legacyNames?: string[];
   name: string;
   parentPath: OpenApiSchemaPathItem[];
   path: string;
@@ -177,6 +178,7 @@ export function buildOpenApiSchemaView(
                 branchSchema.description !== undefined ||
                 (branchSchema.infoTags?.length ?? 0) > 0,
               id: encodeOpenApiSchemaNodeId(branchNodePath),
+              legacyNames: ['[key: string]'],
               name: item.name,
               parentPath: nextParentPath,
               path: [...fieldPath, item.name].join('.'),
