@@ -100,13 +100,15 @@ describe('DocsSearchPage', () => {
     ).toBeInTheDocument();
   });
 
-  it('provides distinct options for product scopes with the same Chinese name', async () => {
+  it('merges legacy product aliases into one canonical option', async () => {
     vi.mocked(searchCnDocsPage).mockResolvedValue({
       ...empty,
       facets: {
         product: {
           'ppt-conversion-service': 1,
           'ppt-transcoding': 2,
+          'micro-calling': 1,
+          'voip-callkit': 2,
           analytics: 1,
           'agora-analytics': 1,
           'online-art-teaching': 1,
@@ -136,10 +138,13 @@ describe('DocsSearchPage', () => {
     const labels = screen.getAllByRole('option').map((o) => o.textContent);
     expect(
       labels.filter((label) => label?.startsWith('PPT 转码服务')),
-    ).toHaveLength(2);
-    expect(
-      new Set(labels.filter((label) => label?.startsWith('PPT 转码服务'))).size,
-    ).toBe(2);
+    ).toHaveLength(1);
+    expect(screen.getByRole('option', { name: 'PPT 转码服务' })).toHaveValue(
+      'ppt-transcoding',
+    );
+    expect(screen.getByRole('option', { name: '微呼叫' })).toHaveValue(
+      'voip-callkit',
+    );
     expect(
       screen.getByRole('option', { name: '水晶球（产品概述）' }),
     ).toHaveValue('analytics');
@@ -156,21 +161,27 @@ describe('DocsSearchPage', () => {
   });
   afterEach(() => vi.clearAllMocks());
 
-  it('labels legacy and non-navigation product facets without changing their filter IDs', async () => {
+  it('labels canonical product facets and hides excluded products', async () => {
     const labels = [
       ['agora-analytics', '水晶球'],
       ['chatroom', '声动语聊'],
-      ['danmaku', '弹幕玩法'],
       ['digital-learning', '教育信息化'],
       ['introduction', '介绍'],
-      ['ppt-conversion-service', 'PPT 转码服务'],
+      ['ppt-transcoding', 'PPT 转码服务'],
       ['private-room', '1v1 私密房'],
       ['reference', '参考文档'],
       ['voip-callkit', '微呼叫'],
     ];
     vi.mocked(searchCnDocsPage).mockResolvedValue({
       ...empty,
-      facets: { product: Object.fromEntries(labels.map(([id]) => [id, 1])) },
+      facets: {
+        product: {
+          ...Object.fromEntries(labels.map(([id]) => [id, 1])),
+          'ppt-conversion-service': 1,
+          'micro-calling': 1,
+          danmaku: 1,
+        },
+      },
     });
     const onChange = vi.fn();
     render(
@@ -184,6 +195,9 @@ describe('DocsSearchPage', () => {
         id,
       );
     }
+    expect(
+      screen.queryByRole('option', { name: '弹幕玩法' }),
+    ).not.toBeInTheDocument();
     fireEvent.change(screen.getByRole('combobox', { name: '产品' }), {
       target: { value: 'agora-analytics' },
     });

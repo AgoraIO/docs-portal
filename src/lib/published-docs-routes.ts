@@ -8,6 +8,7 @@ export type PublishedDocsRoute = {
   canonicalPath: string;
   markdownPath: string;
   platform?: PlatformKey;
+  defaultPlatform?: PlatformKey;
   version?: string;
   url: string;
 };
@@ -21,10 +22,12 @@ export function createPublishedDocsRoutes({
   canonicalPaths,
   platformPages,
   versionByCanonicalPath = new Map(),
+  defaultPlatformByCanonicalPath = new Map(),
 }: {
   canonicalPaths: Iterable<string>;
   platformPages: Iterable<PlatformPage>;
   versionByCanonicalPath?: ReadonlyMap<string, string | undefined>;
+  defaultPlatformByCanonicalPath?: ReadonlyMap<string, PlatformKey>;
 }) {
   const canonicalPathSet = new Set(canonicalPaths);
   const routes = new Map<string, PublishedDocsRoute>();
@@ -33,6 +36,9 @@ export function createPublishedDocsRoutes({
     routes.set(canonicalPath, {
       canonicalPath,
       markdownPath: `${canonicalPath}.md`,
+      ...(defaultPlatformByCanonicalPath.has(canonicalPath)
+        ? { defaultPlatform: defaultPlatformByCanonicalPath.get(canonicalPath) }
+        : {}),
       ...(versionByCanonicalPath.get(canonicalPath)
         ? { version: versionByCanonicalPath.get(canonicalPath) }
         : {}),
@@ -57,6 +63,9 @@ export function createPublishedDocsRoutes({
         canonicalPath: page.url,
         markdownPath: `${url}.md`,
         platform,
+        ...(defaultPlatformByCanonicalPath.has(page.url)
+          ? { defaultPlatform: defaultPlatformByCanonicalPath.get(page.url) }
+          : {}),
         ...(versionByCanonicalPath.get(page.url)
           ? { version: versionByCanonicalPath.get(page.url) }
           : {}),
@@ -82,17 +91,33 @@ export function createStaticDocsRouteSets({
   const publishedPlatformPages = Array.from(platformPages).filter((page) =>
     canonicalPayloads.has(page.url),
   );
+  const defaultPlatformByCanonicalPath = new Map<string, PlatformKey>();
+  for (const [url, payload] of canonicalPayloads) {
+    if (!payload || typeof payload !== 'object' || !('body' in payload))
+      continue;
+    const body = payload.body;
+    if (!body || typeof body !== 'object' || !('platformTabs' in body))
+      continue;
+    const tabs = body.platformTabs;
+    if (!tabs || typeof tabs !== 'object' || !('defaultPlatform' in tabs))
+      continue;
+    const platform = tabs.defaultPlatform;
+    if (typeof platform === 'string' && isKnownPlatform(platform))
+      defaultPlatformByCanonicalPath.set(url, platform);
+  }
 
   return {
     machineReadableRoutes: createPublishedDocsRoutes({
       canonicalPaths: canonicalPayloads.keys(),
       platformPages: publishedPlatformPages,
       versionByCanonicalPath,
+      defaultPlatformByCanonicalPath,
     }),
     prerenderRoutes: createPublishedDocsRoutes({
       canonicalPaths,
       platformPages: publishedPlatformPages,
       versionByCanonicalPath,
+      defaultPlatformByCanonicalPath,
     }),
   };
 }

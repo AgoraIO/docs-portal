@@ -20,6 +20,7 @@ const record: SearchSection = {
   audience: ['developer'],
   status: 'published',
   hidden: false,
+  isDefaultPlatform: true,
 };
 function fakeClient() {
   const indexes = new Map<string, Map<string, Record<string, unknown>>>();
@@ -73,6 +74,19 @@ function fakeClient() {
   };
   return { client, indexes, events };
 }
+
+it('rejects old exports without default-platform metadata before writing any index', async () => {
+  const { client, events } = fakeClient();
+  await expect(
+    prepareSearchIndex({
+      client,
+      indexUid: 'docs_cn',
+      revision: 'old-export',
+      records: [{ ...record, isDefaultPlatform: undefined }],
+    }),
+  ).rejects.toThrow('Re-export');
+  expect(events).toEqual([]);
+});
 describe('search index release jobs', () => {
   it('changes the release checksum when the search policy changes with identical source records', async () => {
     const { client } = fakeClient();
@@ -160,6 +174,7 @@ describe('search index release jobs', () => {
     expect(settings.typoTolerance.disableOnWords).toContain('屏幕共享');
     expect(settings.searchableAttributes).toContain('nameSplit');
     expect(settings.filterableAttributes).toContain('products');
+    expect(settings.filterableAttributes).toContain('isDefaultPlatform');
     expect(settings.sortableAttributes).toEqual(
       expect.arrayContaining(['productSeq', 'platformSeq', 'typeSeq']),
     );

@@ -5,10 +5,10 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { zhCNApiReferenceCards } from '../api-reference-cards-data.zh-cn';
 import type { SearchEntry } from '../docs-search';
-import { isKnownPlatform } from '../platforms/registry';
+import { isKnownPlatform, platformRegistry } from '../platforms/registry';
 import type { PublishedDocsRoute } from '../published-docs-routes';
 import { getCnFaqMetadata } from './cn-faq-metadata';
-import { normalizeCnProduct } from './cn-products';
+import { normalizeCnProduct, normalizeCnProductList } from './cn-products';
 import { isPublicCnSearchUrl } from './cn-search-page';
 import { assertValidSearchSection, type SearchSection } from './kb-record';
 
@@ -118,16 +118,25 @@ export function extractPublishedCnSections(
   const version = route.canonicalPath
     .split('/')
     .find((segment) => /^v?\d+\.\d+(?:\.\d+)?$/.test(segment));
+  const faqProducts = faq
+    ? faq.unscoped
+      ? ['reference']
+      : faq.products
+    : routeMetadata.product
+      ? [routeMetadata.product]
+      : [];
+  const products = normalizeCnProductList(faqProducts);
   const metadata = {
     pageTitle: page.title,
     locale: 'zh-CN',
     tab,
-    product: faq ? (faq.products[0] ?? 'reference') : routeMetadata.product,
-    products: faq
-      ? faq.products
-      : routeMetadata.product
-        ? [routeMetadata.product]
-        : [],
+    product: products[0],
+    products,
+    canonicalUrl: route.canonicalPath,
+    defaultPlatform: route.defaultPlatform,
+    isDefaultPlatform:
+      !route.platform || route.platform === route.defaultPlatform,
+    ...(route.platform ? { availablePlatforms: [route.platform] } : {}),
     version: routeMetadata.version ?? version,
     platform: faq
       ? faq.platform.length
@@ -274,6 +283,10 @@ export async function exportPublishedCnRecords({
       variantPages.has(route.canonicalPath)
     )
       continue;
+    if (route.platform && !route.defaultPlatform)
+      throw new Error(
+        `Missing default platform for ${route.canonicalPath}; rebuild static docs payloads`,
+      );
     const markdown = await readMarkdown(route.markdownPath);
     const sections = extractPublishedCnSections(route, page, markdown);
     if (readRenderedHtml) {
@@ -327,5 +340,44 @@ export async function exportPublishedCnRecords({
     throw new Error(
       'No published CN search records; build the CN static artifacts first',
     );
-  return records;
+  const availablePlatformsByCanonicalUrl = new Map<string, Set<string>>();
+  for (const record of records) {
+    if (!record.canonicalUrl || !record.platform) continue;
+    const platforms =
+      availablePlatformsByCanonicalUrl.get(record.canonicalUrl) ?? new Set();
+    for (const platform of record.platform) {
+      if (isKnownPlatform(platform)) platforms.add(platform);
+    }
+    availablePlatformsByCanonicalUrl.set(record.canonicalUrl, platforms);
+  }
+  for (const record of records) {
+    if (
+      record.defaultPlatform &&
+      record.canonicalUrl &&
+      !availablePlatformsByCanonicalUrl
+        .get(record.canonicalUrl)
+        ?.has(record.defaultPlatform)
+    )
+      throw new Error(
+        `Default platform ${record.defaultPlatform} has no indexed content: ${record.canonicalUrl}`,
+      );
+  }
+
+  return records
+    .filter((record) => record.products?.length || record.product)
+    .map((record) => {
+      const platforms = record.canonicalUrl
+        ? availablePlatformsByCanonicalUrl.get(record.canonicalUrl)
+        : undefined;
+      const availablePlatforms = platforms
+        ? [...platforms].sort(
+            (a, b) =>
+              platformRegistry[a as keyof typeof platformRegistry].order -
+              platformRegistry[b as keyof typeof platformRegistry].order,
+          )
+        : record.availablePlatforms;
+      return availablePlatforms?.length
+        ? { ...record, availablePlatforms }
+        : record;
+    });
 }

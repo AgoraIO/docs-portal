@@ -5,6 +5,30 @@ import {
 } from './published-docs-routes';
 
 describe('published docs routes', () => {
+  it('carries the rendered document default platform into every published variant', () => {
+    const url = '/zh-CN/realtime-media/rtc/build/token-authentication';
+    const sets = createStaticDocsRouteSets({
+      canonicalPaths: [url],
+      canonicalPayloads: new Map([
+        [
+          url,
+          {
+            body: {
+              platformTabs: {
+                canonicalPlatform: 'web',
+                defaultPlatform: 'ios',
+              },
+            },
+          },
+        ],
+      ]),
+      platformPages: [{ url, platforms: ['android', 'ios', 'web'] }],
+    });
+    expect(sets.machineReadableRoutes).toHaveLength(4);
+    expect(
+      sets.machineReadableRoutes.map((route) => route.defaultPlatform),
+    ).toEqual(['ios', 'ios', 'ios', 'ios']);
+  });
   it('expands platform views while preserving the parent canonical path', () => {
     expect(
       createPublishedDocsRoutes({

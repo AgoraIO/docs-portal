@@ -133,6 +133,19 @@ describe('published CN index export', () => {
     expect(record.platform).toBeUndefined();
   });
 
+  it('keeps FAQs scoped to all products under the reference product', () => {
+    const url = '/zh-CN/reference/faq/account/billing_account';
+    const [record] = extractPublishedCnSections(
+      { url, canonicalPath: url, markdownPath: `${url}.md` },
+      { url, title: '什么是账单、结算与账户冻结？' },
+      '# 什么是账单、结算与账户冻结？\n\nFAQ 正文。',
+    );
+    expect(record).toMatchObject({
+      product: 'reference',
+      products: ['reference'],
+    });
+  });
+
   it('tags cloud recording FAQ with RESTful instead of the reference folder', () => {
     const url = '/zh-CN/reference/faq/integration/return_404';
     const [record] = extractPublishedCnSections(
@@ -215,6 +228,7 @@ describe('published CN index export', () => {
           canonicalPath: canonical,
           markdownPath: `${canonical}/web.md`,
           platform: 'web',
+          defaultPlatform: 'web',
         },
         {
           url: '/zh-CN/hidden',
@@ -265,6 +279,7 @@ describe('published CN index export', () => {
           url: `${url}/web`,
           markdownPath: `${url}/web.md`,
           platform: 'web',
+          defaultPlatform: 'web',
         },
       ],
       readMarkdown,
@@ -274,6 +289,55 @@ describe('published CN index export', () => {
       url: `${url}/web#token`,
       platform: ['web'],
     });
+  });
+
+  it('annotates platform variants with a canonical URL and complete platform list', async () => {
+    const canonical = '/zh-CN/realtime-media/rtc/build/token-authentication';
+    const records = await exportPublishedCnRecords({
+      pages: [{ url: canonical, title: '使用 Token 鉴权' }],
+      routes: [
+        {
+          url: `${canonical}/android`,
+          canonicalPath: canonical,
+          markdownPath: `${canonical}/android.md`,
+          platform: 'android',
+          defaultPlatform: 'ios',
+        },
+        {
+          url: `${canonical}/ios`,
+          canonicalPath: canonical,
+          markdownPath: `${canonical}/ios.md`,
+          platform: 'ios',
+          defaultPlatform: 'ios',
+        },
+      ],
+      readMarkdown: async () => '# 使用 Token 鉴权\n\n## Token\n\n说明。',
+    });
+
+    expect(records).toHaveLength(2);
+    expect(records[0]).toMatchObject({
+      canonicalUrl: canonical,
+      availablePlatforms: ['android', 'ios'],
+      defaultPlatform: 'ios',
+      isDefaultPlatform: false,
+    });
+    expect(records[1]).toMatchObject({
+      canonicalUrl: canonical,
+      availablePlatforms: ['android', 'ios'],
+      defaultPlatform: 'ios',
+      isDefaultPlatform: true,
+    });
+  });
+
+  it('does not export records whose only product is Danmaku', async () => {
+    const url = '/zh-CN/realtime-media/danmaku/reference/response-code';
+    const records = await exportPublishedCnRecords({
+      pages: [{ url, title: '响应状态码' }],
+      routes: [{ url, canonicalPath: url, markdownPath: `${url}.md` }],
+      readMarkdown: async () => '# 响应状态码\n\n## 错误码\n\n弹幕接口错误码。',
+    });
+
+    expect(records).toEqual([]);
   });
 
   it.each([

@@ -10,7 +10,11 @@ import {
 import { useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
-import type { SearchPageGroup } from '@/lib/search/cn-search-page';
+import {
+  getSearchPageGroupKey,
+  getSearchSectionHref,
+  type SearchPageGroup,
+} from '@/lib/search/cn-search-page';
 import type { HighlightSegment } from '@/lib/search/meilisearch-client';
 
 export function SearchHighlight({
@@ -49,6 +53,8 @@ export function SearchResultList({
       <ul className="search-page-results">
         {groups.map((group) => {
           const first = group.sections[0];
+          const groupKey = getSearchPageGroupKey(group);
+          const firstHref = getSearchSectionHref(group.pageUrl, first.url);
           const ancestors = first.headingPath
             .slice(0, -1)
             .filter((heading) => heading !== group.title)
@@ -56,17 +62,17 @@ export function SearchResultList({
           return (
             <li
               className="search-page-result"
-              key={group.pageUrl}
+              key={groupKey}
               onBlur={(event) => {
                 if (!event.currentTarget.contains(event.relatedTarget))
                   setActive(null);
               }}
-              onFocus={() => setActive(group.pageUrl)}
-              onMouseEnter={() => setActive(group.pageUrl)}
+              onFocus={() => setActive(groupKey)}
+              onMouseEnter={() => setActive(groupKey)}
               onMouseLeave={() => setActive(null)}
             >
               <AnimatePresence>
-                {active === group.pageUrl && (
+                {active === groupKey && (
                   <motion.div
                     aria-hidden="true"
                     animate={{ opacity: 1 }}
@@ -106,7 +112,7 @@ export function SearchResultList({
                   </div>
                 </div>
                 <div className="search-page-result-heading">
-                  <a className="search-page-result-title" href={first.url}>
+                  <a className="search-page-result-title" href={group.pageUrl}>
                     <h2>{group.title}</h2>
                     <ArrowUpRightIcon
                       aria-hidden="true"
@@ -114,7 +120,7 @@ export function SearchResultList({
                     />
                   </a>
                   {first.sectionTitle !== group.title && (
-                    <a className="search-page-section" href={first.url}>
+                    <a className="search-page-section" href={firstHref}>
                       <HashIcon
                         aria-hidden="true"
                         className="size-3.5 shrink-0"
@@ -136,7 +142,13 @@ export function SearchResultList({
                     <ul>
                       {group.sections.slice(1).map((section) => (
                         <li key={section.url}>
-                          <a className="search-page-section" href={section.url}>
+                          <a
+                            className="search-page-section"
+                            href={getSearchSectionHref(
+                              group.pageUrl,
+                              section.url,
+                            )}
+                          >
                             <HashIcon
                               aria-hidden="true"
                               className="size-3.5 shrink-0"
