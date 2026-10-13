@@ -3,10 +3,12 @@ import type { SearchPageState } from './search-page-state';
 
 export type SearchFacets = Record<string, Record<string, number>>;
 export type SearchPageGroup = {
+  groupKey?: string;
   pageUrl: string;
   title: string;
   product?: string;
   platform: string[];
+  availablePlatforms?: string[];
   version?: string;
   docType: SearchHit['docType'];
   sections: SearchHit[];
@@ -76,12 +78,16 @@ export function mergeSearchPageGroups(
   const groups = new Map<string, SearchPageGroup>();
   for (const page of pages)
     for (const group of page) {
-      const previous = groups.get(group.pageUrl);
+      const key = getSearchPageGroupKey(group);
+      const previous = groups.get(key);
       if (!previous)
-        groups.set(group.pageUrl, {
+        groups.set(key, {
           ...group,
           sections: [...group.sections],
           platform: [...group.platform],
+          availablePlatforms: group.availablePlatforms
+            ? [...group.availablePlatforms]
+            : undefined,
         });
       else {
         for (const section of group.sections)
@@ -89,6 +95,12 @@ export function mergeSearchPageGroups(
             previous.sections.push(section);
         previous.platform = [
           ...new Set([...previous.platform, ...group.platform]),
+        ];
+        previous.availablePlatforms = [
+          ...new Set([
+            ...(previous.availablePlatforms ?? []),
+            ...(group.availablePlatforms ?? []),
+          ]),
         ];
       }
     }
@@ -110,23 +122,45 @@ export function isPublicCnSearchUrl(value: string) {
   );
 }
 
-export function groupSearchSections(hits: SearchHit[]): SearchPageGroup[] {
+export function groupSearchSections(
+  hits: SearchHit[],
+  {
+    platformFiltered = false,
+    selectedPlatform,
+  }: { platformFiltered?: boolean; selectedPlatform?: string } = {},
+): SearchPageGroup[] {
   const groups = new Map<string, SearchPageGroup>();
   for (const hit of hits) {
-    const pageUrl = hit.url.split('#')[0];
-    const existing = groups.get(pageUrl);
+    const pageUrl = (
+      platformFiltered ? hit.url : (hit.canonicalUrl ?? hit.url)
+    ).split('#')[0];
+    const groupKey = [
+      pageUrl,
+      hit.product ?? '',
+      hit.docType,
+      hit.version ?? '',
+    ].join('\u0000');
+    const platforms = platformFiltered
+      ? selectedPlatform
+        ? [selectedPlatform]
+        : (hit.platform ?? [])
+      : (hit.availablePlatforms ?? hit.platform ?? []);
+    const existing = groups.get(groupKey);
     if (existing) {
       if (!existing.sections.some((section) => section.url === hit.url))
         existing.sections.push(hit);
-      existing.platform = [
-        ...new Set([...existing.platform, ...(hit.platform ?? [])]),
+      existing.platform = [...new Set([...existing.platform, ...platforms])];
+      existing.availablePlatforms = [
+        ...new Set([...(existing.availablePlatforms ?? []), ...platforms]),
       ];
     } else {
-      groups.set(pageUrl, {
+      groups.set(groupKey, {
+        groupKey,
         pageUrl,
         title: hit.pageTitle,
         product: hit.product,
-        platform: hit.platform ?? [],
+        platform: platforms,
+        availablePlatforms: platforms,
         version: hit.version,
         docType: hit.docType,
         sections: [hit],
@@ -134,4 +168,16 @@ export function groupSearchSections(hits: SearchHit[]): SearchPageGroup[] {
     }
   }
   return [...groups.values()];
+}
+
+export function getSearchPageGroupKey(group: SearchPageGroup): string {
+  return (
+    group.groupKey ??
+    [
+      group.pageUrl,
+      group.product ?? '',
+      group.docType,
+      group.version ?? '',
+    ].join('\u0000')
+  );
 }

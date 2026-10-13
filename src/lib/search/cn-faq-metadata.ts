@@ -66,6 +66,7 @@ export function getCnFaqMetadata(url: string) {
         normalize(item.products, products, '全部产品').map(normalizeCnProduct),
       ),
     ],
+    unscoped: item.products.every((product) => product === '全部产品'),
     platform: normalize(item.platforms, platforms, '全部平台'),
   };
 }

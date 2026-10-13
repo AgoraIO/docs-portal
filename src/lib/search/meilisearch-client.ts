@@ -19,6 +19,7 @@ export type HighlightSegment = {
 export type SearchHit = {
   id: string;
   sourceId: string;
+  canonicalUrl?: string;
   pageTitle: string;
   sectionTitle: string;
   content: string;
@@ -29,6 +30,7 @@ export type SearchHit = {
   product?: string;
   products?: string[];
   platform?: string[];
+  availablePlatforms?: string[];
   version?: string;
   docType: 'docs' | 'openapi';
   audience: string[];
@@ -43,12 +45,14 @@ export type SearchHit = {
 type MeilisearchHit = {
   id: string;
   sourceId?: string;
+  canonicalUrl?: string;
   url: string;
   pageTitle: string;
   sectionTitle: string;
   content: string;
   headingPath: string[];
   platform?: string[];
+  availablePlatforms?: string[];
   product?: string;
   products?: string[];
   locale: string;
@@ -171,6 +175,8 @@ export function mapSearchHit(
     snippet: content,
     path: hit.headingPath,
     platform: hit.platform,
+    availablePlatforms: hit.availablePlatforms,
+    canonicalUrl: hit.canonicalUrl,
     product: hit.product,
     type: 'page',
     objectType: 'docs',
@@ -181,6 +187,7 @@ export function normalizeMeilisearchHit(hit: MeilisearchHit): SearchHit {
   return {
     id: hit.id,
     sourceId: hit.sourceId ?? hit.id,
+    canonicalUrl: hit.canonicalUrl,
     pageTitle: hit.pageTitle,
     sectionTitle: hit.sectionTitle,
     content: hit.content,
@@ -191,6 +198,7 @@ export function normalizeMeilisearchHit(hit: MeilisearchHit): SearchHit {
     product: hit.product,
     products: hit.products,
     platform: hit.platform,
+    availablePlatforms: hit.availablePlatforms,
     version: hit.version,
     docType: hit.docType,
     audience: hit.audience,

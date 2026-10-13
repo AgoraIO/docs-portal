@@ -29,7 +29,7 @@ describe('Start search API', () => {
       await handleSearchRequest(request(`q=资源&product=${alias}`));
       const body = JSON.parse(fetchMock.mock.calls[0][1]?.body as string);
       expect(body.filter).toContain(
-        `(product = "${canonical}" OR products = "${canonical}")`,
+        `(product = "${canonical}" OR products = "${canonical}"`,
       );
     },
   );
@@ -71,6 +71,48 @@ describe('Start search API', () => {
       'analytics',
     ]);
     expect(data.facets.product).toEqual({ rtc: 1, analytics: 1 });
+  });
+  it('merges legacy product facets and removes Danmaku-only hits', async () => {
+    vi.stubEnv('MEILI_HOST', 'http://meili.internal:7700');
+    vi.stubEnv('MEILI_INDEX_UID', 'docs_cn');
+    vi.stubEnv('MEILI_SEARCH_API_KEY', 'private-read-key');
+    const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        ...empty,
+        hits: [
+          {
+            id: 'danmaku',
+            url: '/zh-CN/realtime-media/danmaku/reference/response-code',
+            pageTitle: '响应状态码',
+            sectionTitle: '响应状态码',
+            content: '弹幕错误码',
+            headingPath: ['响应状态码'],
+            locale: 'zh-CN',
+            product: 'danmaku',
+            products: ['danmaku'],
+            docType: 'docs',
+            audience: ['developer'],
+            status: 'published',
+            hidden: false,
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+        facetDistribution: {
+          products: {
+            'ppt-conversion-service': 2,
+            'ppt-transcoding': 3,
+            danmaku: 4,
+          },
+        },
+      }),
+    );
+
+    const response = await handleSearchRequest(request('q=Token'));
+    const data = await response.json();
+    expect(fetchMock).toHaveBeenCalledOnce();
+    expect(data.groups).toEqual([]);
+    expect(data.facets.product).toEqual({ 'ppt-transcoding': 5 });
   });
   it('rejects arbitrary engine filters, duplicate parameters and unbounded input', () => {
     for (const query of [

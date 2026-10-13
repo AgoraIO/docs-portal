@@ -1,6 +1,11 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { queryCnSearch } from './cn-search.server';
-import { cleanSearchSnippet, isPublicCnSearchUrl } from './cn-search-page';
+import {
+  cleanSearchSnippet,
+  groupSearchSections,
+  isPublicCnSearchUrl,
+} from './cn-search-page';
+import { buildCnSearchDocument } from './cn-search-strategy';
 import { parseSearchPageState } from './search-page-state';
 
 const config = {
@@ -10,22 +15,163 @@ const config = {
 };
 const hit = {
   id: 'one',
+  sourceId: 'one',
   url: '/zh-CN/api-reference/conversational-ai/web/api#token',
   pageTitle: 'API 参考',
   sectionTitle: 'Token',
   content: '调用 Token',
+  snippet: '调用 Token',
   headingPath: ['API 参考', 'Token'],
+  audience: ['developer'],
+  highlights: {
+    sectionTitle: [{ text: 'Token', highlighted: true }],
+    content: [{ text: '调用 Token', highlighted: false }],
+  },
   locale: 'zh-CN',
   product: 'conversational-ai',
   platform: ['web'],
   version: '4.6.0',
-  docType: 'docs',
-  status: 'published',
+  docType: 'docs' as const,
+  status: 'published' as const,
   hidden: false,
 };
 afterEach(() => vi.restoreAllMocks());
 
 describe('full CN search adapter', () => {
+  it('groups platform variants under the canonical document when no platform is selected', () => {
+    const groups = groupSearchSections([
+      {
+        ...hit,
+        id: 'android',
+        url: `${hit.url.replace('/web/', '/android/')}`,
+        canonicalUrl: '/zh-CN/api-reference/conversational-ai/api',
+        platform: ['android'],
+        availablePlatforms: ['android', 'ios', 'web'],
+      },
+      {
+        ...hit,
+        id: 'ios',
+        url: `${hit.url.replace('/web/', '/ios/')}`,
+        canonicalUrl: '/zh-CN/api-reference/conversational-ai/api',
+        platform: ['ios'],
+        availablePlatforms: ['android', 'ios', 'web'],
+      },
+    ]);
+
+    expect(groups).toHaveLength(1);
+    expect(groups[0]).toMatchObject({
+      pageUrl: '/zh-CN/api-reference/conversational-ai/api',
+      platform: ['android', 'ios', 'web'],
+    });
+  });
+
+  it('keeps platform URLs when a platform filter is selected', () => {
+    const groups = groupSearchSections(
+      [
+        {
+          ...hit,
+          url: '/zh-CN/api-reference/conversational-ai/android/api#token',
+          canonicalUrl: '/zh-CN/api-reference/conversational-ai/api',
+          platform: ['android'],
+          availablePlatforms: ['android', 'ios', 'web'],
+        },
+      ],
+      { platformFiltered: true },
+    );
+
+    expect(groups[0]).toMatchObject({
+      pageUrl: '/zh-CN/api-reference/conversational-ai/android/api',
+      platform: ['android'],
+    });
+  });
+
+  it('shows only the selected platform when a legacy hit lists several platforms', () => {
+    const groups = groupSearchSections(
+      [
+        {
+          ...hit,
+          url: '/zh-CN/api-reference/conversational-ai/android/api#token',
+          canonicalUrl: '/zh-CN/api-reference/conversational-ai/api',
+          platform: ['android', 'ios', 'web'],
+          availablePlatforms: ['android', 'ios', 'web'],
+        },
+      ],
+      { platformFiltered: true, selectedPlatform: 'android' },
+    );
+
+    expect(groups[0].platform).toEqual(['android']);
+  });
+
+  it('merges the same canonical document across loaded pages', async () => {
+    const { mergeSearchPageGroups } = await import('./cn-search-page');
+    const first = groupSearchSections([
+      {
+        ...hit,
+        id: 'android',
+        url: '/zh-CN/api-reference/conversational-ai/android/api#token',
+        canonicalUrl: '/zh-CN/api-reference/conversational-ai/api',
+        platform: ['android'],
+        availablePlatforms: ['android', 'ios'],
+      },
+    ]);
+    const second = groupSearchSections([
+      {
+        ...hit,
+        id: 'ios',
+        url: '/zh-CN/api-reference/conversational-ai/ios/api#token',
+        canonicalUrl: '/zh-CN/api-reference/conversational-ai/api',
+        platform: ['ios'],
+        availablePlatforms: ['android', 'ios'],
+      },
+    ]);
+
+    expect(mergeSearchPageGroups([first, second])).toHaveLength(1);
+  });
+
+  it('uses the primary product when an old record has an empty product list', () => {
+    const document = buildCnSearchDocument({
+      id: 'reference',
+      url: '/zh-CN/reference/faq/account/billing_account',
+      canonicalUrl: '/zh-CN/reference/faq/account/billing_account',
+      pageTitle: '账单、结算与账户冻结',
+      sectionTitle: '账单、结算与账户冻结',
+      content: 'FAQ 正文。',
+      headingPath: ['账单、结算与账户冻结'],
+      product: 'reference',
+      products: [],
+      locale: 'zh-CN',
+      docType: 'docs',
+      audience: ['developer'],
+      status: 'published',
+      hidden: false,
+    });
+
+    expect(document).toMatchObject({
+      product: 'reference',
+      products: ['reference'],
+    });
+  });
+
+  it('preserves an explicit primary product when legacy memberships are reordered', () => {
+    const document = buildCnSearchDocument({
+      id: 'faq',
+      url: '/zh-CN/reference/faq/account/billing_basis',
+      pageTitle: '计时方式',
+      sectionTitle: '计时方式',
+      content: 'FAQ 正文。',
+      headingPath: ['计时方式'],
+      product: 'rtc',
+      products: ['analytics', 'rtc'],
+      locale: 'zh-CN',
+      docType: 'docs',
+      audience: ['developer'],
+      status: 'published',
+      hidden: false,
+    });
+
+    expect(document.product).toBe('rtc');
+  });
+
   it('removes table separators and generated OpenAPI metadata without losing highlights', () => {
     expect(
       cleanSearchSnippet(

@@ -1,5 +1,9 @@
+import {
+  isExcludedCnProduct,
+  normalizeCnProduct,
+  normalizeCnProductList,
+} from './cn-products';
 import type { SearchSection } from './kb-record';
-import { normalizeCnProduct } from './cn-products';
 
 // 参考旧中文站的顺序，ID 使用本项目规范；未定义的产品/平台排在末尾。
 const productOrder = [
@@ -115,16 +119,19 @@ export function splitApiName(value: string) {
 /** 每次准备快照重新生成检索字段，避免依赖旧索引里手工补上的数据。 */
 export function buildCnSearchDocument(record: SearchSection) {
   const api = record.url.startsWith('/zh-CN/api-reference/');
-  const product = record.product
+  const sourceProducts = record.products?.length
+    ? record.products
+    : record.product
+      ? [record.product]
+      : [];
+  const products = normalizeCnProductList(sourceProducts);
+  const normalizedProduct = record.product
     ? normalizeCnProduct(record.product)
     : undefined;
-  const products = [
-    ...new Set(
-      (record.products ?? (record.product ? [record.product] : [])).map(
-        normalizeCnProduct,
-      ),
-    ),
-  ];
+  const product =
+    normalizedProduct && !isExcludedCnProduct(normalizedProduct)
+      ? normalizedProduct
+      : products[0];
   const pageEntry =
     !record.url.includes('#') && record.sectionTitle === record.pageTitle;
   const productEntry =

@@ -1,4 +1,11 @@
 import {
+  getCnProductAliases,
+  isExcludedCnProduct,
+  normalizeCnProduct,
+  normalizeCnProductFacets,
+  normalizeCnProductList,
+} from './cn-products';
+import {
   type CnSearchPageResponse,
   cleanSearchSnippet,
   groupSearchSections,
@@ -9,9 +16,9 @@ import {
   type MeilisearchClientConfig,
   normalizeMeilisearchHit,
   normalizeMeilisearchQuery,
+  type SearchHit,
 } from './meilisearch-client';
 import { SEARCH_PAGE_SIZE, type SearchPageState } from './search-page-state';
-import { normalizeCnProduct } from './cn-products';
 
 export type CnSearchQuery = SearchPageState & { tab?: string };
 
@@ -31,12 +38,10 @@ export async function queryCnSearch(
   const filter = ['locale = "zh-CN"', 'hidden = false', 'status = "published"'];
   for (const field of ['product', 'platform', 'version', 'tab'] as const) {
     if (state[field]) {
-      const value = JSON.stringify(
-        field === 'product' ? normalizeCnProduct(state[field]) : state[field],
-      );
+      const value = JSON.stringify(state[field]);
       filter.push(
         field === 'product'
-          ? `(product = ${value} OR products = ${value})`
+          ? buildProductFilter(state[field])
           : `${field} = ${value}`,
       );
     }
@@ -94,18 +99,43 @@ export async function queryCnSearch(
         },
       }),
     );
+  const normalizedHits = publicHits.flatMap((hit) => {
+    const products = normalizeCnProductList(
+      hit.products ?? (hit.product ? [hit.product] : []),
+    );
+    if (products.length === 0) return [];
+    const product =
+      hit.product && !isExcludedCnProduct(hit.product)
+        ? normalizeCnProduct(hit.product)
+        : products[0];
+    return [{ ...hit, product, products } satisfies SearchHit];
+  });
+  const facets = result.facetDistribution
+    ? Object.fromEntries(
+        Object.entries(result.facetDistribution).map(([key, values]) => [
+          key === 'products' ? 'product' : key,
+          key === 'products' || key === 'product'
+            ? normalizeCnProductFacets(values)
+            : values,
+        ]),
+      )
+    : {};
   return {
-    groups: groupSearchSections(publicHits),
+    groups: groupSearchSections(normalizedHits, {
+      platformFiltered: Boolean(state.platform),
+      selectedPlatform: state.platform,
+    }),
     totalHits: result.totalHits,
     totalPages: Math.min(result.totalPages, 500),
     page: result.page,
-    facets: result.facetDistribution
-      ? Object.fromEntries(
-          Object.entries(result.facetDistribution).map(([key, values]) => [
-            key === 'products' ? 'product' : key,
-            values,
-          ]),
-        )
-      : {},
+    facets,
   };
+}
+
+function buildProductFilter(product: string) {
+  const clauses = getCnProductAliases(product).flatMap((value) => [
+    `product = ${JSON.stringify(value)}`,
+    `products = ${JSON.stringify(value)}`,
+  ]);
+  return `(${clauses.join(' OR ')})`;
 }

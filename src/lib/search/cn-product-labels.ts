@@ -1,5 +1,4 @@
 import analytics from '../../../content/docs/zh-CN/api-reference/api-ref/agora-analytics/meta.json';
-import danmaku from '../../../content/docs/zh-CN/api-reference/api-ref/danmaku/meta.json';
 import ppt from '../../../content/docs/zh-CN/api-reference/api-ref/ppt-conversion-service/meta.json';
 import voip from '../../../content/docs/zh-CN/api-reference/api-ref/voip-callkit/meta.json';
 import art from '../../../content/docs/zh-CN/api-reference/online-art-teaching/meta.json';
@@ -27,12 +26,13 @@ const productNames: Record<string, string> = {
   transcoding: '云端转码',
   'agora-analytics': analytics.title,
   chatroom: chatroom.title,
-  danmaku: danmaku.title,
   'digital-learning': digitalLearning.title,
   introduction: introduction.title,
   'ppt-conversion-service': ppt.title,
+  'ppt-transcoding': ppt.title,
   'private-room': privateRoom.title,
   reference: reference.title,
+  'micro-calling': voip.title,
   'voip-callkit': voip.title,
   analytics: usageAnalytics.title,
   'online-art-teaching': art.title,

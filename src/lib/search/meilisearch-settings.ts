@@ -18,6 +18,7 @@ export function buildMeilisearchSettings() {
     displayedAttributes: [
       'id',
       'sourceId',
+      'canonicalUrl',
       'url',
       'pageTitle',
       'sectionTitle',
@@ -27,6 +28,7 @@ export function buildMeilisearchSettings() {
       'product',
       'tab',
       'platform',
+      'availablePlatforms',
       'version',
       'docType',
       'audience',

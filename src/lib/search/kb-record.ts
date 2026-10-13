@@ -1,6 +1,7 @@
 export type SearchSection = {
   id: string;
   url: string;
+  canonicalUrl?: string;
   pageTitle: string;
   sectionTitle: string;
   content: string;
@@ -11,6 +12,7 @@ export type SearchSection = {
   products?: string[];
   tab?: string;
   platform?: string[];
+  availablePlatforms?: string[];
   version?: string;
   docType: 'docs' | 'openapi';
   audience: ('developer' | 'customer-support')[];

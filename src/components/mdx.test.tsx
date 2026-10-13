@@ -1265,7 +1265,7 @@ describe('common MDX registry', () => {
     window.history.replaceState(
       {},
       '',
-      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios',
+      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios#token',
     );
 
     const components = getMDXComponents() as Record<string, unknown>;
@@ -1306,6 +1306,7 @@ describe('common MDX registry', () => {
     expect(window.location.pathname).toBe(
       '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/android',
     );
+    expect(window.location.hash).toBe('#token');
     expect(
       screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();

@@ -40,6 +40,7 @@ import {
   getCnProductLabel,
   getCnProductOptionLabel,
 } from '@/lib/search/cn-product-labels';
+import { normalizeCnProductFacets } from '@/lib/search/cn-products';
 import {
   type CnSearchPageResponse,
   mergeSearchPageGroups,
@@ -113,6 +114,9 @@ export function DocsSearchPage({
     ])
       .then(([result, availableVersions]) => {
         if (controller.signal.aborted) return;
+        const normalizedProductFacets = normalizeCnProductFacets(
+          result.facets.product ?? {},
+        );
         loadedPages.current.pages.set(request.state.page, result);
         const pages = [...loadedPages.current.pages.entries()]
           .filter(([page]) => page <= request.state.page)
@@ -127,7 +131,7 @@ export function DocsSearchPage({
           ...result.facets,
           version:
             availableVersions?.facets.version ?? result.facets.version ?? {},
-          product: { ...previous.product, ...result.facets.product },
+          product: { ...previous.product, ...normalizedProductFacets },
         }));
         setStatus('loaded');
       })
@@ -405,6 +409,7 @@ export function DocsSearchPage({
               <>
                 <SearchResultList
                   groups={data.groups}
+                  platformFiltered={Boolean(state.platform)}
                   productLabel={productLabel}
                 />
                 <div className="search-page-pagination">
