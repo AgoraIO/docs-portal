@@ -17,6 +17,7 @@ export type OpenApiSchemaViewNode = {
   $type: string;
   children: OpenApiSchemaViewNode[];
   depth: number;
+  detailsCollapsible?: boolean;
   id: string;
   name: string;
   parentPath: OpenApiSchemaPathItem[];
@@ -139,7 +140,7 @@ export function buildOpenApiSchemaView(
     }
 
     if (schema.type === 'and' || schema.type === 'or') {
-      return schema.items.flatMap((item) => {
+      return schema.items.flatMap((item): OpenApiSchemaViewNode[] => {
         const current = parentPath.at(-1);
         if (!current) return [];
 
@@ -151,14 +152,41 @@ export function buildOpenApiSchemaView(
           },
         ];
 
-        return childrenFor(
-          generated.refs[item.$type],
+        const branchSchema = generated.refs[item.$type];
+        const children = childrenFor(
+          branchSchema,
           nextParentPath,
           fieldPath,
           depth,
           nextAncestors,
           item.$type,
-        ).map((node) => ({ ...node, variant: item.name }));
+        );
+
+        if (children.length === 0 && branchSchema?.type === 'object') {
+          const branchNodePath = [
+            ...nextParentPath,
+            { $ref: item.$type, name: item.name },
+          ];
+
+          return [
+            {
+              $type: item.$type,
+              children: [],
+              depth,
+              detailsCollapsible:
+                branchSchema.description !== undefined ||
+                (branchSchema.infoTags?.length ?? 0) > 0,
+              id: encodeOpenApiSchemaNodeId(branchNodePath),
+              name: item.name,
+              parentPath: nextParentPath,
+              path: [...fieldPath, item.name].join('.'),
+              required: false,
+              schema: branchSchema as OpenApiSchemaData,
+            },
+          ];
+        }
+
+        return children.map((node) => ({ ...node, variant: item.name }));
       });
     }
 
@@ -197,7 +225,10 @@ export function getInitialOpenApiSchemaExpandedIds(
   return new Set(
     nodes
       .filter(
-        (node) => node.depth === 0 && node.required && node.children.length > 0,
+        (node) =>
+          node.depth === 0 &&
+          node.required &&
+          (node.children.length > 0 || node.detailsCollapsible === true),
       )
       .map((node) => node.id),
   );
@@ -208,7 +239,9 @@ export function getAllOpenApiSchemaExpandableIds(
 ) {
   return new Set(
     flattenOpenApiSchemaView(nodes)
-      .filter((node) => node.children.length > 0)
+      .filter(
+        (node) => node.children.length > 0 || node.detailsCollapsible === true,
+      )
       .map((node) => node.id),
   );
 }
@@ -259,6 +292,9 @@ export function filterOpenApiSchemaView(
 function isSyntheticAnyProperty(name: string, schema: OpenApiSchemaData) {
   return (
     name === '[key: string]' &&
-    (schema.aliasName === 'any' || schema.typeName === 'any')
+    (schema.aliasName === 'any' ||
+      schema.typeName === 'any' ||
+      schema.aliasName === 'unknown' ||
+      schema.typeName === 'unknown')
   );
 }

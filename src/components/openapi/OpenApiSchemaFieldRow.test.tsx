@@ -215,6 +215,57 @@ describe('OpenApiSchemaFieldRow', () => {
     );
   });
 
+  it('does not repeat a type alias that matches the field name', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: 'params',
+          schema: {
+            aliasName: 'params',
+            type: 'primitive',
+            typeName: 'params',
+          },
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(screen.getAllByText('params', { exact: true })).toHaveLength(1);
+    expect(
+      document.querySelector('.openapi-schema-field-content > span'),
+    ).toBeNull();
+  });
+
+  it('uses a union variant name instead of its synthetic map placeholder', () => {
+    render(
+      <OpenApiSchemaFieldRow
+        copied={false}
+        expanded={false}
+        labels={labels}
+        node={makeNode({
+          name: '[key: string]',
+          schema: {
+            aliasName: 'unknown',
+            type: 'primitive',
+            typeName: 'unknown',
+          },
+          variant: 'Minimax',
+        })}
+        onCopy={() => {}}
+        onExpandedChange={() => {}}
+      />,
+    );
+
+    expect(screen.getByText('Minimax', { exact: true })).toBeVisible();
+    expect(screen.queryByText('[key: string]', { exact: true })).toBeNull();
+    expect(screen.queryByText('unknown', { exact: true })).toBeNull();
+    expect(screen.queryByText('(Minimax)', { exact: true })).toBeNull();
+  });
+
   it('places metadata below the field identity and above its description', () => {
     render(
       <OpenApiSchemaFieldRow
