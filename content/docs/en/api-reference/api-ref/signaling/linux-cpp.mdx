@@ -2897,11 +2897,11 @@ class RtmEventHandler : public IRtmEventHandler {
 
 #### Description
 
-If you want to query the lock information such as lock total number, lock name, and lock user, time to live, you can call the `getMessages` method on the client.
+If you want to query the lock information such as lock total number, lock name, and lock user, time to live, you can call the `getLocks` method on the client.
 
 #### Method
 
-You can call the `getMessages` method as follows:
+You can call the `getLocks` method as follows:
 
 ```cpp
 virtual void getLocks(const char* channelName, RTM_CHANNEL_TYPE channelType, uint64_t& requestId) = 0;
