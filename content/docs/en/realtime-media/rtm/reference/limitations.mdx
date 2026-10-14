@@ -1,0 +1,388 @@
+---
+title: "API usage restrictions"
+description: "Signaling rate limits, quotas, and capacity limits, with guidance on planning your application's capacity."
+---
+
+This page describes the limits that apply to Signaling SDK 2.x and its RESTful APIs, what happens when your application exceeds a limit, and how to plan capacity. Use it to:
+
+- [Resolve rate-limit errors](#rate-limits).
+- [Fix sending failures caused by oversized messages or parameters](#message-specifications).
+- [Diagnose rising latency or repeated reconnections as a channel grows](#channel-message-rate-recommendations).
+- [Estimate peak concurrent users](#estimate-pcu) and [plan channel message rates](#plan-channel-message-rates) before launch.
+- [Request a higher limit](#request-higher-limits).
+
+## How limits work
+
+Each Signaling limit applies at a specific level and has a type that determines what happens when you exceed it.
+
+### Limit levels
+
+Signaling limits apply at four levels. Higher levels limit total volume, and lower levels limit individual objects. A single call can be subject to limits at more than one level.
+
+| Level | Applies to | When exceeded |
+| --- | --- | --- |
+| [Account](#account-level-limits) | Your Agora account | The RESTful API returns a quota error. |
+| [Project (App ID)](#project-level-limits-app-id) | One project | Most project limits are recommendations. Contact support before you exceed them. |
+| [Channel](#channel-level-limits) | One channel | Capacity limits return errors. Rate limits are recommendations. |
+| [Client](#client-level-limits) | One Signaling client instance | The SDK reports an error in a callback. |
+
+### Limit types
+
+Each limit has one of the following types:
+
+| Type | Meaning | When exceeded | Can you change it? |
+| --- | --- | --- | --- |
+| Fixed limit | A hard system constraint. | The call fails and returns an error. | No. |
+| Default limit | The default quota. | The call fails and returns an error. | Yes. See [Request higher limits](#request-higher-limits). |
+| Recommended value | The range that provides the best performance. | Usually, no error is returned. | Contact support before you exceed it. |
+| Unlimited count | The resource has no count limit. | Not applicable. | Not applicable. Rate and throughput limits still apply. |
+
+## Account-level limits
+
+The following limit applies to all projects in your Agora account:
+
+| Limit | Value | Type | Description |
+| --- | --- | --- | --- |
+| Total RESTful API request rate per account | 1,000 requests per second | Default limit | The total across all projects and RESTful APIs in the account. Requests above this rate return HTTP `429`. |
+
+## Project-level limits (App ID)
+
+The following limits apply to each project, identified by its App ID:
+
+| Limit | Value | Type | Description |
+| --- | --- | --- | --- |
+| Peak concurrent users (PCU) | 200,000 | Recommended value | If you expect to exceed this value, contact support in advance. See [Estimate PCU](#estimate-pcu). |
+| Total upstream message rate | 100,000 messages per second | Recommended value | The total number of messages that all clients and RESTful APIs in the project send. |
+| Number of message channels | Unlimited | Unlimited count | Signaling creates channels as needed. You don't need to create them in advance. |
+| Number of stream channels | Unlimited | Unlimited count | Signaling creates channels as needed. You don't need to create them in advance. |
+| Total channel metadata items | 1 million | Recommended value | If you expect to exceed this value, contact support in advance. |
+| Total user metadata items | 1 million | Recommended value | If you expect to exceed this value, contact support in advance. |
+| Total locks | 1 million | Recommended value | If you expect to exceed this value, contact support in advance. |
+| Message history retention | 1, 7, 30, 90, or 365 days, or unlimited | Default limit | Configure this value for each project in Agora Console. Changing the value doesn't affect the retention period of messages that are already stored. |
+
+### Estimate PCU
+
+Signaling limits and billing are based on PCU, but application metrics often use daily active users (DAU), room count, or class count. Use the formula that matches your application:
+
+| Application type | Available data | PCU estimate |
+| --- | --- | --- |
+| Instant messaging (IM) or social | DAU and average daily hours online | PCU ≈ DAU × average daily hours online ÷ 24 × peak factor |
+| Live streaming | Simultaneous rooms and average viewers per room | PCU ≈ simultaneous rooms × average viewers per room × peak factor |
+| Education or meetings | Simultaneous classes and attendees per class | PCU ≈ simultaneous classes × attendees per class |
+| Games | Concurrent players (CCU) | PCU ≈ CCU |
+
+The peak factor scales daily averages to peak periods. A value of 2 to 3 is a common starting point. For a known peak event, such as a sale, a tournament, or the start of a school term, use the expected event peak instead of a daily average.
+
+When you estimate PCU, avoid the following common errors:
+
+- **Counting users instead of connections**: Each connection counts separately. A user who signs in on a phone and in a browser counts as two PCU.
+- **Ignoring `heartbeatInterval`**: A longer heartbeat interval delays offline detection, which can increase the reported PCU. The default is 5 seconds, and the range is 5 to 1,800 seconds.
+
+## Channel-level limits
+
+Channel-level limits cover how many users and resources a single channel can hold, and how many messages per second it can handle.
+
+### Capacity
+
+The following limits apply to a single channel:
+
+| Limit | Value | Type | Description |
+| --- | --- | --- | --- |
+| Message channel subscribers without Presence | Unlimited | Unlimited count | The [channel message rate recommendations](#channel-message-rate-recommendations) still apply. |
+| Message channel subscribers with Presence | 5,000 | Recommended value | If you expect to exceed this value, contact support in advance. |
+| Message channel publishers | Unlimited | Unlimited count | Not applicable. |
+| Stream channel online users | 128 | Fixed limit | The 129th `join` call fails with an error code. For larger groups, use multiple stream channels or a message channel. |
+| Topics in a stream channel | Unlimited | Unlimited count | Signaling creates a topic when its first publisher joins and deletes it when its last publisher leaves. |
+| Locks in a channel | 32 | Recommended value | If you expect to exceed this value, contact support in advance. |
+
+### Channel message rate recommendations
+
+The channel message rate is the total number of messages that all publishers, including clients and RESTful APIs, send to one channel per second. Signaling calculates this rate separately from the [client rate limits](#rate-limits), so the channel total can exceed the recommendation even when every client stays within its own limit.
+
+The recommended rate depends on the number of concurrent users in the channel. Each additional user increases the fan-out cost of every message, so a larger channel can handle fewer messages per second:
+
+| Concurrent users in one channel | Recommended channel message rate |
+| --- | --- |
+| Fewer than 1,000 | 200 messages per second |
+| 1,000 to 9,999 | 100 messages per second |
+| 10,000 or more | 30 messages per second |
+
+When a channel exceeds the recommended rate, the SDK usually doesn't return an error. Instead, latency can increase, messages can be lost, and users might be unable to send or receive messages or might reconnect repeatedly.
+
+When a channel approaches the recommended rate, do the following:
+
+- Split users across multiple channels, and check each channel against the recommended rates.
+- Use stream channels and topics for frequent, small messages. Keep each stream channel under 128 users.
+- Aggregate messages on your application server, and send the result using the RESTful API to reduce the upstream message count.
+- If you need a higher rate, contact support in advance. Agora can provide a custom increase if it doesn't affect latency or stability.
+
+## Client-level limits
+
+The following limits apply to each Signaling client instance. Signaling counts each client separately.
+
+### Rate limits
+
+Signaling groups client APIs into operation categories, and each category has its own per-second quota. Methods in the same category share a quota, and categories don't affect each other. For example, 15 calls to `getOnlineUsers` and 15 calls to `getChannelMetadata` in the same second don't trigger a rate limit because the two methods belong to different categories. However, 25 calls to `getOnlineUsers` in the same second do trigger a rate limit.
+
+The SDK doesn't run or queue calls that exceed a quota. Instead, it reports a rate-limit error in its error callback. To handle the error, throttle or retry the call in your application. For details, see [Handle exceeded limits](#handle-exceeded-limits).
+
+#### Operations with dedicated quotas
+
+The following operations have their own quotas:
+
+| Operation | Methods | Quota per client | Type | Description |
+| --- | --- | --- | --- | --- |
+| Send messages | `publish` | 60 calls per second | Default limit | Message channel and user channel calls share this quota. |
+| Send topic messages | `publishTopicMessage` | 200 calls per second for each stream channel | Default limit | Each stream channel that the client joins has a separate quota. |
+| Modify channel metadata | `setChannelMetadata`, `updateChannelMetadata`, `removeChannelMetadata` | 20 calls per second | Default limit | These methods share a quota. |
+| Read channel metadata | `getChannelMetadata` | 20 calls per second | Default limit | Not applicable. |
+| Modify user metadata | `setUserMetadata`, `updateUserMetadata`, `removeUserMetadata` | 20 calls per second | Default limit | These methods share a quota. |
+| Read user metadata | `getUserMetadata` | 20 calls per second | Default limit | Not applicable. |
+| Acquire a lock | `acquireLock` | 10 calls per second | Default limit | Not applicable. |
+
+#### All other operations
+
+Each row in the following table is an independent category with a quota of 20 calls per second. Methods in the same row share that quota.
+
+| Category | Methods |
+| --- | --- |
+| Log in | `login` |
+| Renew a token | `renewToken` |
+| Subscribe to a message channel | `subscribe` |
+| Join or leave a stream channel | `join`, `leave` |
+| Join or leave a topic | `joinTopic`, `leaveTopic` |
+| Subscribe to a topic | `subscribeTopic` |
+| Subscribe to user metadata | `subscribeUserMetadata` |
+| Get the online users in a channel | `getOnlineUsers` |
+| Get the channels that a user has joined | `getUserChannels` |
+| Set temporary state | `setState` |
+| Get temporary state | `getState` |
+| Set a lock | `setLock` |
+| Remove a lock | `removeLock` |
+| Release a lock | `releaseLock` |
+| Revoke a lock | `revokeLock` |
+| Get locks | `getLocks` |
+| Get historical messages | `getMessages` |
+
+### Connections and instances
+
+The following limits apply to client instances and to the channels and topics that each client uses:
+
+| Limit | Value | Type | When exceeded |
+| --- | --- | --- | --- |
+| Signaling instances per client | 1 | Fixed limit | Creating a second instance fails. |
+| `userId` length | 64 ASCII characters | Fixed limit | Initialization or login fails. |
+| Message channels subscribed to concurrently | 50 | Default limit | The 51st `subscribe` call fails with an error code. |
+| Stream channels joined concurrently | 10 | Default limit | The 11th `join` call fails with an error code. |
+| Topics joined in one channel concurrently | 8 | Fixed limit | The 9th `joinTopic` call fails. |
+| Topics subscribed to in one channel concurrently | 50 | Fixed limit | The 51st `subscribeTopic` call fails. |
+| Publishers subscribed to in one topic | 64 | Fixed limit | If you don't pass a `users` list, the SDK subscribes to up to 64 randomly selected publishers. The client doesn't receive messages from other publishers. |
+
+### Message specifications
+
+The following limits apply to messages and to the names and queries that messages use:
+
+| Limit | Value | Type | When exceeded |
+| --- | --- | --- | --- |
+| Message size in a message channel or user channel | 32 KB | Default limit | Sending fails with error code `-11010`. The size includes the message payload and `customType`. |
+| Topic message size | 1 KB | Default limit | Sending fails with error code `-11010`. The size is calculated the same way as for message channel messages. |
+| `customType` length | 32 ASCII characters | Fixed limit | Sending fails. |
+| Channel name length | 64 ASCII characters | Fixed limit | The call fails. The name must also use the supported character set. See [Channel naming](/en/realtime-media/rtm/reference/channel-naming). |
+| Topic name length | 16 ASCII characters | Fixed limit | The call fails. |
+| Messages returned by one `getMessages` call | 100 | Fixed limit | Get additional messages from the next page. |
+| `getMessages` query window | 24 hours or less between `start` and `end` | Fixed limit | The call fails with an error code. |
+
+### Presence specifications
+
+The following limits apply to Presence:
+
+| Limit | Value | Type | When exceeded |
+| --- | --- | --- | --- |
+| `presenceTimeout` | 300 seconds by default, with a range of 5 to 300 seconds | Fixed range | No error is returned. The SDK uses the nearest boundary value. For example, a value of 400 seconds takes effect as 300 seconds. |
+| Temporary state key-value pairs per user per channel | 32 pairs | Fixed limit | `setState` fails. |
+| Size of one temporary state value | 16 KB | Fixed limit | `setState` fails. |
+| Temporary state key length | 32 ASCII characters | Fixed limit | `setState` fails. |
+| Temporary states cached before joining a channel | 100 | Fixed limit | The states take effect, and Signaling sends notifications, after the client joins or subscribes to the channel. |
+| Users per `getOnlineUsers` page | 100 | Fixed limit | Use `nextPage` to get additional pages. |
+| Instant notifications before switching to interval mode | 50 by default, with a range of 8 to 128 | Default limit | When the number of online users reaches this threshold, Signaling switches from instant notifications to interval mode. Set this value with **Max number of instant event** in [Agora Console](/en/realtime-media/rtm/enable-signaling#presence-configuration). |
+
+### Storage specifications
+
+The following limits apply to channel and user metadata:
+
+| Limit | Value | Type | When exceeded |
+| --- | --- | --- | --- |
+| Metadata item `key` length | 32 ASCII characters | Fixed limit | The call fails. |
+| Metadata sets per channel or user | 1 | Fixed limit | Not applicable. |
+| Metadata items per set | Unlimited | Unlimited count | The 16 KB size limit for the set still applies. |
+| Size of one metadata set | 16 KB | Default limit | The write fails. |
+| Size of one metadata item | 16 KB | Default limit | The write fails. The item limit and the set limit both apply. |
+
+Metadata stays stored after you write it. Destroying a channel or logging out a user doesn't delete it. Delete metadata explicitly when you no longer need it.
+
+### Lock specifications
+
+The following limits apply to locks:
+
+| Limit | Value | Type | When exceeded |
+| --- | --- | --- | --- |
+| Locks held by one client concurrently | Unlimited | Unlimited count | Not applicable. |
+| Lock TTL | 10 seconds by default, with a range of 10 to 300 seconds | Fixed range | No error is returned. The SDK uses the nearest boundary value. The TTL starts when the lock holder disconnects. If the holder reconnects before the TTL expires, it keeps the lock. After the TTL expires, the SDK releases the lock and sends an event. |
+| Lock name length | 64 ASCII characters | Fixed limit | The call fails. |
+
+## RESTful API limits
+
+The following limits apply to the Signaling RESTful APIs:
+
+| Limit | Value | Type | Description |
+| --- | --- | --- | --- |
+| Total request rate per account | 1,000 requests per second | Default limit | The API returns HTTP `429`. See [Account-level limits](#account-level-limits). |
+| `publish` rate per channel | No separate limit | Not applicable | Signaling counts RESTful API messages and client messages together toward the [channel message rate](#channel-message-rate-recommendations). |
+| `publish` message size | 32 KB | Fixed limit | The request fails. |
+| `publish` request body | A serializable string | Fixed limit | Binary request bodies aren't supported. Encode binary content in Base64 first. |
+| History query rate | 60 calls per second | Recommended value | Requests above the recommended rate return a quota error. |
+| History messages per call | 100 | Fixed limit | Get additional messages from the next page. |
+
+## Plan channel message rates
+
+To estimate the message rate of a channel, use the following formula:
+
+`channel message rate ≈ active publishers in the channel × messages sent per publisher per second`
+
+Compare the result with the [channel message rate recommendations](#channel-message-rate-recommendations). Estimate the number of concurrent users and the message rate separately: the number of concurrent users determines the fan-out cost, and therefore the recommended rate that applies.
+
+The following table shows example scenarios. When you plan, replace the example values with measurements from your application.
+
+| Scenario | Example scale | Estimated rate | Recommended rate | Recommended approach |
+| --- | --- | --- | --- | --- |
+| IM group chat | 500 users. During active periods, 5% of users send one message every 10 seconds. | 500 × 5% ÷ 10 ≈ 2.5 messages per second | 200 per second (within) | Use a message channel. If you enable Presence, plan for the recommended maximum of 5,000 subscribers. |
+| Live stream comments | 50,000 viewers. 1% of viewers send one message every 5 seconds. | 50,000 × 1% ÷ 5 = 100 messages per second | 30 per second (more than 3× over) | Aggregate comments on your application server and send no more than 30 messages per second using the RESTful API, or split viewers across channels. Send less frequent, higher-value events, such as gifts, in a separate channel. |
+| Live stream gifts or system notifications | 50,000 viewers. No more than 5 messages per second. | 5 messages per second | 30 per second (within) | Use a different channel from comments so that comments can't use up the available rate. |
+| Multiplayer game state synchronization | 100 players. Each player sends 10 position updates per second. | 1,000 messages per second | 200 per second (5× over) | Use stream channels and topics. Keep each channel under 128 users and each publisher under 200 messages per second. Subscribe each receiver to only the publishers it needs, up to 64 publishers. |
+| IoT device reports | 2,000 devices. Each device reports once every 5 seconds. | 400 messages per second | 100 per second (4× over) | Split the devices across at least five channels, with no more than 400 devices and 80 messages per second in each channel. |
+| Collaborative editing or whiteboard | 20 users. Each user sends 20 drawing events per second. | 400 messages per second | 200 per second (2× over) | Use stream channels and topics. Keep topic messages under 1 KB, and combine the drawing events from each 50 ms window into one message before sending. |
+
+Keep the following points in mind when you estimate:
+
+- The activity ratio and per-user frequency affect the result most. Replace the example values with measurements from your application.
+- Each row describes one channel. Check each channel separately against the recommendations. The project-level total upstream rate of 100,000 messages per second still includes every channel. See [Project-level limits](#project-level-limits-app-id).
+
+## Frequently asked questions
+
+The following questions cover common misunderstandings about Signaling limits.
+
+<Accordions type="multiple">
+
+<Accordion title="Is the limit 20 calls per second for all APIs combined?">
+
+No. Rate limits apply to each operation category separately. The default quota for one category is 20 calls per second. The 60 calls per second quota for sending messages doesn't share its quota with any other category.
+
+</Accordion>
+
+<Accordion title="Do channel messages and user messages each have a quota of 60 calls per second?">
+
+No. `publish` calls to message channels and user channels share one quota of 60 calls per second.
+
+</Accordion>
+
+<Accordion title="Why did message latency increase when my client stayed below 60 calls per second?">
+
+The client rate limit is only one of the limits that apply. Each channel also has [channel message rate recommendations](#channel-message-rate-recommendations), and each project has a total upstream rate of 100,000 messages per second. When multiple clients send messages frequently to one channel, the channel total can exceed its recommendation even when each client stays within its own limit.
+
+</Accordion>
+
+<Accordion title="Is 200 topic messages per second the limit for the whole client?">
+
+No. The quota of 200 messages per second applies to each stream channel. A client that joins several stream channels has a separate quota for each one.
+
+</Accordion>
+
+<Accordion title="Does the SDK queue calls that exceed a rate limit and send them later?">
+
+No. The SDK doesn't run calls that exceed a quota. It returns an error, and your application must retry the call if appropriate.
+
+</Accordion>
+
+<Accordion title="Does an unlimited subscriber count mean that a channel has unlimited capacity?">
+
+No. An unlimited count means that Signaling doesn't limit the number of subscribers. The [channel message rate recommendations](#channel-message-rate-recommendations) still apply. If you enable Presence, contact support before a channel exceeds 5,000 subscribers.
+
+</Accordion>
+
+<Accordion title="Can I increase the 128-user limit for stream channels?">
+
+No. The 128-user limit is fixed. For larger groups, use multiple stream channels or a message channel.
+
+</Accordion>
+
+<Accordion title="Does an unlimited metadata item count mean that I can store unlimited data?">
+
+No. The number of items is unlimited, but each metadata set and each item is limited to 16 KB. Both limits apply.
+
+</Accordion>
+
+<Accordion title="Can the RESTful API send up to 60 messages per second to each channel?">
+
+RESTful API messages don't have a separate limit of 60 messages per second. Signaling counts RESTful API messages and client messages together toward the [channel message rate](#channel-message-rate-recommendations). The RESTful API is also subject to the account-level limit of 1,000 requests per second.
+
+</Accordion>
+
+<Accordion title="Does a client lose its lock if it disconnects before the TTL expires?">
+
+No. If the lock holder reconnects before the TTL expires, it keeps the lock. After the TTL expires, the SDK releases the lock and sends an event.
+
+</Accordion>
+
+</Accordions>
+
+## Handle exceeded limits
+
+How you detect and handle an exceeded limit depends on the type of limit:
+
+| Limit exceeded | How to detect it | Retry? | Recommended action |
+| --- | --- | --- | --- |
+| A client category quota. See [Rate limits](#rate-limits). | The SDK reports a rate-limit error in its callback. | Yes | Throttle calls with a queue in your application, then retry with exponential backoff. Don't resend immediately from the callback. |
+| A fixed capacity limit, such as size, length, or count. | The SDK reports an error, such as `-11010` for an oversized message. | No | Correct the parameter before you call the method again. Check the message size in your application before sending. |
+| A parameter range, such as `presenceTimeout` or lock TTL. | No error is returned. The SDK uses the nearest boundary value. | Not applicable | Pass a value within the documented range. Don't rely on the SDK to adjust out-of-range values. |
+| A [channel message rate recommendation](#channel-message-rate-recommendations). | No error is returned. Latency increases sharply, users can't send or receive messages, or users reconnect repeatedly. | Not applicable | Split users across channels or use stream channels. Contact support if you need a higher rate. |
+| A project recommendation, such as PCU or total upstream rate. | No error is returned. | Not applicable | If you expect to exceed the recommendation, contact support in advance. |
+| A RESTful API quota. | The HTTP response contains a quota error. | Yes | Throttle requests on your server and retry with backoff. |
+
+The following pseudocode shows one retry pattern for a rate-limit error. For the callback that each platform SDK uses, see the API reference for your platform.
+
+```text
+send(msg):
+  result = rtm.publish(channel, msg)
+  if result.error == RATE_LIMITED:
+    delay = min(baseDelay * 2^attempt, maxDelay)  // 100 ms to 2 s
+    wait(delay)
+    attempt += 1
+    if attempt < maxAttempts:
+      send(msg)
+    else:
+      report("publish dropped after retries")
+  else:
+    attempt = 0
+```
+
+Retries alone aren't enough to stay within your quotas. For more reliable results, use a token bucket for each operation category. For example, use a bucket of 60 calls per second for sending messages and a bucket of 20 calls per second for each other category.
+
+## Request higher limits
+
+You can request an increase, or discuss capacity planning, for the following limits. Contact [support@agora.io](mailto:support@agora.io) or your Agora technical support contact, and include your App ID, expected scale, and launch date.
+
+| Limit | Default value | How to change it |
+| --- | --- | --- |
+| Total RESTful API request rate per account | 1,000 requests per second | Request an increase. |
+| PCU per project | 200,000 | Contact support before you exceed it. |
+| Total upstream message rate per project | 100,000 messages per second | Contact support before you exceed it. |
+| Message channel subscribers with Presence | 5,000 | Contact support before you exceed it. |
+| Channel message rate | See [Channel message rate recommendations](#channel-message-rate-recommendations). | Contact support to discuss a custom increase. |
+| Stream channels joined per client | 10 | Request an increase. |
+| Message channels subscribed to per client | 50 | Request an increase. |
+| `publish` rate per client | 60 calls per second | Request an increase. |
+| `publishTopicMessage` rate per client per stream channel | 200 calls per second | Request an increase. |
+| Message size | 32 KB for message channels and user channels, 1 KB for topics | Request an increase. |
+| Metadata set size | 16 KB | Request an increase. |
+| Locks in a channel | 32 | Request an increase. |
+| Total locks per project | 1 million | Request an increase. |
