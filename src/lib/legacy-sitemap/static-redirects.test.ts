@@ -111,6 +111,17 @@ describe('static legacy sitemap redirects', () => {
     },
   );
 
+  it('redirects the legacy Cloud Recording billing page to the shared billing policies', () => {
+    expect(
+      resolveStaticLegacySitemapRedirect(
+        '/en/cloud-recording/reference/billing-policies',
+      ),
+    ).toEqual({
+      preserveSearch: true,
+      redirectUrl: '/en/introduction/billing/billing-policies',
+    });
+  });
+
   it('redirects legacy Agora Platform community resources to Discord', () => {
     expect(
       resolveStaticLegacySitemapRedirect('/en/AgoraPlatform/community/'),
