@@ -2796,6 +2796,27 @@ Web body
     });
   });
 
+  it('redirects the removed Cloud Recording billing page to the shared billing policies', async () => {
+    const billingPage = {
+      ...createPage(),
+      path: 'en/introduction/billing/billing-policies.md',
+      slugs: ['en', 'introduction', 'billing', 'billing-policies'],
+      url: '/en/introduction/billing/billing-policies',
+    } as PageWithSource;
+    mockedGetPage.mockReturnValue(billingPage);
+    mockedGetPages.mockReturnValue([billingPage]);
+
+    await expect(
+      loadDocsPagePayload('en', 'realtime-media', [
+        'cloud-recording',
+        'reference',
+        'billing-policies',
+      ]),
+    ).resolves.toEqual({
+      redirectUrl: '/en/introduction/billing/billing-policies',
+    });
+  });
+
   it('does not expose locale links outside the deployment region', async () => {
     const page = createPage();
     const zhPageTree: Root = {

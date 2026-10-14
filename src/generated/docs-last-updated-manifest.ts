@@ -1181,7 +1181,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/faq/account/billing_basis.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/faq/account/billing_free.mdx':
-    '2026-07-27T09:08:03.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/api-reference/faq/account/console_account_faq.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/faq/account/email_verification.mdx':
@@ -3304,7 +3304,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/billing/account-settlement.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/billing/billing-policies.md':
-    '2026-09-14T11:37:07.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/introduction/billing/index.md': '2026-06-18T09:50:43.000Z',
   'content/docs/en/introduction/billing/meta.json': '2026-06-18T09:50:43.000Z',
   'content/docs/en/introduction/billing/subscription-packages.md':
@@ -3986,7 +3986,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/product-overview.mdx':
     '2026-06-15T04:37:24.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/billing-policies.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/common-errors.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/firewall.mdx':
@@ -3996,9 +3996,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/reference/meta.json':
     '2026-08-27T03:13:28.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/pricing-webpage-recording.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/pricing.mdx':
-    '2026-09-20T03:04:42.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/region-vendor.mdx':
     '2026-06-24T09:22:50.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/release-notes.mdx':
@@ -4020,7 +4020,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/rest-quickstart.md':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/rest-quickstart.mdx':
-    '2026-09-09T06:31:33.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/realtime-media/cloud-recording/skills.mdx':
     '2026-06-27T07:32:17.000Z',
   'content/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.mdx':
@@ -4493,7 +4493,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/im/reference/access-token-2.md':
     '2026-06-22T06:39:47.000Z',
   'content/docs/en/realtime-media/im/reference/billing-policies.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/realtime-media/im/reference/callbacks-events.md':
     '2026-06-11T15:24:47.000Z',
   'content/docs/en/realtime-media/im/reference/comparison-chat-signalling.md':
@@ -5210,7 +5210,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/media-push/overview/pricing.md':
     '2026-06-12T08:03:40.000Z',
   'content/docs/en/realtime-media/media-push/reference/billing-policies.md':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/realtime-media/media-push/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/media-push/reference/meta.json':
@@ -5856,7 +5856,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/api-reference/meta.json':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/billing-policies.mdx':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-14T10:48:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/billing.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/channel-management-api.md':
