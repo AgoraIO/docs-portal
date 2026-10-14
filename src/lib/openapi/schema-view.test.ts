@@ -38,6 +38,8 @@ const generatedFixture: SchemaUIGeneratedData = {
         { $type: 'channel', name: 'channel', required: true },
         { $type: 'nested', name: 'nested', required: false },
         { $type: 'map-any', name: '[key: string]', required: false },
+        { $type: 'map-string', name: '[key: string]', required: false },
+        { $type: 'params', name: 'params', required: false },
         { $type: 'items-array', name: 'items', required: false },
         { $type: 'choice', name: 'choice', required: false },
       ],
@@ -55,6 +57,20 @@ const generatedFixture: SchemaUIGeneratedData = {
     },
     'nested-required': primitive('integer'),
     'map-any': primitive('any'),
+    'map-string': primitive('string'),
+    params: {
+      aliasName: 'Params',
+      props: [
+        {
+          $type: 'params-map-string',
+          name: '[key: string]',
+          required: false,
+        },
+      ],
+      type: 'object',
+      typeName: 'Params',
+    },
+    'params-map-string': primitive('string'),
     'items-array': {
       aliasName: 'Item[]',
       item: { $type: 'item' },
@@ -257,6 +273,9 @@ describe('openapi schema view', () => {
     expect(flattened.map((node) => node.path)).toContain('properties.channel');
     expect(flattened.map((node) => node.path)).not.toContain(
       'properties.[key: string]',
+    );
+    expect(flattened.map((node) => node.path)).toContain(
+      'properties.params.[key: string]',
     );
 
     const properties = view.find((node) => node.path === 'properties');

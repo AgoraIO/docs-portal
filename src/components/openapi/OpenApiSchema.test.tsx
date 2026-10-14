@@ -92,6 +92,41 @@ describe('OpenApiSchema', () => {
     expect(screen.getByText('name')).toBeVisible();
   });
 
+  it('hides string map placeholders outside params while preserving params maps', () => {
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={{
+            properties: {
+              template_variables: {
+                additionalProperties: { type: 'string' },
+                type: 'object',
+              },
+              params: {
+                additionalProperties: { type: 'string' },
+                type: 'object',
+              },
+            },
+            type: 'object',
+          }}
+          writeOnly
+        />
+      </AnchorSection>,
+    );
+
+    const paramsMapRow = screen.getByText('[key: string]', { exact: true });
+    expect(paramsMapRow).not.toBeVisible();
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Expand params properties' }),
+    );
+
+    expect(screen.getByText('[key: string]', { exact: true })).toBeVisible();
+  });
+
   it('collapses supplier descriptions until their variant row is expanded', () => {
     render(
       <AnchorSection segments={['request-body', 'application-json']}>

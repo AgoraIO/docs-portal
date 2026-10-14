@@ -87,7 +87,8 @@ export function buildOpenApiSchemaView(
         const childSchema = generated.refs[property.$type];
         if (
           !childSchema ||
-          isSyntheticAnyProperty(property.name, childSchema)
+          isSyntheticAnyProperty(property.name, childSchema) ||
+          isSyntheticStringMapProperty(property.name, childSchema, parentPath)
         ) {
           return [];
         }
@@ -296,5 +297,19 @@ function isSyntheticAnyProperty(name: string, schema: OpenApiSchemaData) {
       schema.typeName === 'any' ||
       schema.aliasName === 'unknown' ||
       schema.typeName === 'unknown')
+  );
+}
+
+function isSyntheticStringMapProperty(
+  name: string,
+  schema: OpenApiSchemaData,
+  parentPath: OpenApiSchemaPathItem[],
+) {
+  return (
+    name === '[key: string]' &&
+    schema.typeName === 'string' &&
+    parentPath.at(-1)?.name !== 'params' &&
+    (schema.infoTags?.length ?? 0) === 0 &&
+    (schema.allowedValues?.length ?? 0) === 0
   );
 }
