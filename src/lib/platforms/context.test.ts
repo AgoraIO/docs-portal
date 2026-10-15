@@ -27,6 +27,17 @@ describe('resolvePlatformContext', () => {
     });
   });
 
+  it('uses the only available platform when no default is provided', () => {
+    expect(
+      resolvePlatformContext({
+        availablePlatforms: ['web'],
+      }),
+    ).toMatchObject({
+      selectedPlatform: 'web',
+      titlePlatforms: ['web'],
+    });
+  });
+
   it('keeps explicit title platforms ahead of inferred platform state', () => {
     expect(
       resolvePlatformContext({

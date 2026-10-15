@@ -220,16 +220,54 @@ function normalizeStaticPlatformPayload<T extends PlatformStaticPayload>(
     pathPlatforms,
     requestedPlatform,
   }).titlePlatforms;
+  const normalizedPayload = platformTabs
+    ? {
+        ...payload,
+        body: {
+          ...payload.body,
+          platformTabs: {
+            ...platformTabs,
+            canonicalPlatform: normalizePlatformKey(
+              platformTabs.canonicalPlatform,
+            ),
+            ...(platformTabs.defaultPlatform
+              ? {
+                  defaultPlatform: normalizePlatformKey(
+                    platformTabs.defaultPlatform,
+                  ),
+                }
+              : {}),
+            platforms: JSON.stringify(availablePlatforms),
+          },
+        },
+      }
+    : payload;
 
-  return titlePlatforms.length > 0 ? { ...payload, titlePlatforms } : payload;
+  return titlePlatforms.length > 0
+    ? { ...normalizedPayload, titlePlatforms }
+    : normalizedPayload;
 }
 
 function parsePlatformList(value: string) {
   try {
     const parsed = JSON.parse(value) as unknown;
-    return Array.isArray(parsed)
-      ? parsed.filter((item): item is string => typeof item === 'string')
-      : [];
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    const normalized: string[] = [];
+    for (const item of parsed) {
+      if (typeof item !== 'string') {
+        continue;
+      }
+
+      const platform = normalizePlatformKey(item);
+      if (isKnownPlatform(platform) && !normalized.includes(platform)) {
+        normalized.push(platform);
+      }
+    }
+
+    return normalized;
   } catch {
     return [];
   }
@@ -242,8 +280,12 @@ function clearStalePlatformFallbackToc<T extends PlatformStaticPayload>(
   const tocPlatform =
     payload.body.platformTabs?.defaultPlatform ??
     payload.body.platformTabs?.canonicalPlatform;
+  const normalizedTocPlatform = tocPlatform
+    ? normalizePlatformKey(tocPlatform)
+    : undefined;
+  const normalizedPlatform = normalizePlatformKey(platform);
 
-  if (!('toc' in payload) || tocPlatform === platform) {
+  if (!('toc' in payload) || normalizedTocPlatform === normalizedPlatform) {
     return payload;
   }
 

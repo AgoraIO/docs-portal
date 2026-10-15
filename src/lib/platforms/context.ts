@@ -50,6 +50,9 @@ export function resolvePlatformContext({
       normalizedAvailablePlatforms.includes(normalizedDefaultPlatform))
       ? normalizedDefaultPlatform
       : undefined) ??
+    (normalizedAvailablePlatforms.length === 1
+      ? normalizedAvailablePlatforms[0]
+      : undefined) ??
     (normalizedPathPlatforms.length === 1
       ? normalizedPathPlatforms[0]
       : undefined) ??

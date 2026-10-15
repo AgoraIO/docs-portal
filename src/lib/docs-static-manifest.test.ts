@@ -254,11 +254,61 @@ describe('docs-static-manifest', () => {
     ).resolves.toMatchObject({
       body: {
         platformTabs: {
+          canonicalPlatform: 'javascript',
+          defaultPlatform: 'javascript',
+          initialPlatform: 'javascript',
+          platforms: '["javascript","web"]',
+        },
+      },
+      markdownUrl: '/zh-CN/introduction/about-agora/javascript.md',
+      titlePlatforms: ['javascript'],
+    });
+  });
+
+  it('canonicalizes aliases in static platform metadata and preserves the TOC', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValueOnce({
+          ok: false,
+          status: 404,
+          statusText: 'Not Found',
+        })
+        .mockResolvedValueOnce({
+          json: async () => ({
+            body: {
+              kind: 'mdx',
+              platformTabs: {
+                canonicalPlatform: 'react-js',
+                defaultPlatform: 'react-js',
+                platforms: '["react-js","web"]',
+              },
+            },
+            markdownUrl: '/zh-CN/introduction/about-agora/react-js.md',
+            toc: [{ depth: 2, title: 'React setup', url: '#react-setup' }],
+          }),
+          ok: true,
+          status: 200,
+          statusText: 'OK',
+        }),
+    );
+
+    await expect(
+      resolvePlatformStaticDocsPayload({
+        locale: 'zh-CN',
+        slugSegments: ['about-agora', 'react-js'],
+        tab: 'introduction',
+      }),
+    ).resolves.toMatchObject({
+      body: {
+        platformTabs: {
           initialPlatform: 'javascript',
         },
       },
       markdownUrl: '/zh-CN/introduction/about-agora/javascript.md',
       titlePlatforms: ['javascript'],
+      toc: [{ title: 'React setup' }],
     });
   });
 
