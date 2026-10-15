@@ -1251,8 +1251,15 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         "info": "适用于 Web 端音视频通话、互动直播和极速直播的实时互动 SDK",
         "versions": [
           {
+            "id": "4.24.9-video-sdk-web",
+            "label": "版本 4.24.9（最新）",
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip",
+            "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9",
+            "releaseDate": "2026 年 10 月 13 日"
+          },
+          {
             "id": "4.24.6-video-sdk-web",
-            "label": "版本 4.24.6（最新）",
+            "label": "版本 4.24.6",
             "downloadLink": "https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip",
             "packageManager": "https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.6",
             "releaseDate": "2026 年 7 月 13 日"
