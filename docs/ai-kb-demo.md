@@ -75,3 +75,60 @@ bun run types:check
 后续真实百炼同步必须另行落实：隔离的 demo KB/类目、API Key 安全注入、Metadata 写入/过滤、远端 ID 和任务映射、持久化日志与锁、结果未知对账、更新/删除完成确认和可检索验证。问答 API/UI、网关、CI/CD 全量链路也仍需实现。本阶段不能用于直接覆盖现有“文档站”知识库。
 
 阶段验证、基线失败清单及审查取舍见 [Phase 1 验证记录](agents/reports/2026-10-15-ai-kb-phase1-verification.md)。
+
+## 第二阶段：本地同步执行器
+
+本地已实现协议适配、目标绑定、持久化日志、进程锁和增量执行。它尚未完成真实百炼账号验收；CLI 没有启用未经验证的检索接口，因此导入后会停在 `verifying`，不会伪造成功投影。普通搜索不受影响。
+
+目标配置不含凭据，示例（ID 必须换成实际已确认的业务空间与独立上传类目）：
+
+```json
+{
+  "schema": 1,
+  "environment": "local-demo",
+  "region": "cn-beijing",
+  "workspaceId": "llm-example",
+  "categoryId": "example-demo-category",
+  "name": "cn-ai-bot-demo",
+  "origin": "https://doc.shengwang.cn",
+  "scope": "cn-demo-v1",
+  "selection": ["/zh-CN/ai/example"]
+}
+```
+
+`scope/selection` 必须与 corpus 一致。初始化配置不带 indexId；首次 API 建库的返回 ID 会一次性绑定到状态内。此后沿用原配置，不往配置里补写 indexId（会改变目标身份）。缺失受管状态时拒绝接管现有 indexId。当前不支持从 UI 创建的库自动迁移所有权。
+
+以下路径均为操作者指定的持久化本地目录；使用绝对真实路径，不用符号链接、网络盘、临时 CI 缓存或其他任务的状态目录。锁仅保障同机串行，不是多机分布式锁。
+
+```sh
+# 无需 Key；只预览、保存回执，不调用云 API
+bun run kb:sync:cn --config /absolute/target.json --corpus /absolute/corpus.json --state-dir /absolute/kb-state --receipt /absolute/preview.json
+
+# 由操作者安全设置 BAILIAN_API_KEY 环境变量；不在命令参数/聊天中传 Key
+bun run kb:preflight:cn --config /absolute/target.json
+
+# 费用/凭据落实后才执行：明确允许为本 demo 首次建库
+bun run kb:sync:cn --config /absolute/target.json --corpus /absolute/corpus.json --state-dir /absolute/kb-state --receipt /absolute/apply.json --apply --new-demo
+
+# 后续执行/恢复沿用相同目标、状态和 pending 对应的原语料
+bun run kb:sync:cn --config /absolute/target.json --corpus /absolute/corpus.json --state-dir /absolute/kb-state --receipt /absolute/resume.json --apply
+```
+
+preflight 仅证明读取类目/库的请求被接受，不证明写权限。`--new-demo` 是显式初始化开关，不替代付费确认。初次 API 创建要求非空首篇文件，后续逐篇明确指定文件 ID；不会隐式导入整个数据中心。
+
+状态文件为 `state.json`（0600），使用临时文件 fsync → rename → 目录 fsync，并按 generation 校验。每次远端副作用前写意图，收到 ID 后立即保存。Key、上传租约 URL 和原始云错误不进状态/回执。保留状态文件是增量和归属判断的前提，不能删除它强行重跑。
+
+回执状态：`preview` 为未执行；`indexing` 为任务尚未完成；`verifying` 为未证明可检索；`complete` 才是同步成功；`needs-reconciliation` 为远端结果未知，停止自动写入。未完成返回非零退出码（indexing/verifying 为 2）。`remoteWrites` 统计本次写请求尝试，包含上传租约，不代表已创建对象数量。
+
+更新先验证新版本，再清理旧受管文档；期间可能短暂存在双版本。清理被明确拒绝时可恢复清理；请求结果未知时先查列表，只有旧对象已消失才能安全推进，否则需人工对账。删除回执为空不等于已删除。不删除数据中心原始文件、不删除整个知识库。
+
+来源删除默认阻止。显式 `--delete-approval /absolute/approval.json` 必须提供与当前重新计算计划完全一致的 `identity`、`generation`、`sourceIds`；从预览回执取得 identity/generation，从离线计划审阅来源集合。样本 selection 不可通过删 URL 来变更，换样本需新 scope/目标。真实不可恢复删除需先审阅具体对象，不把本地测试等同云端删除授权。
+
+恢复注意：
+
+- 同一语料重跑会恢复已有任务和清理，不重新上传已登记的新版本。
+- 未知注册/建库/导入不能通过同名对象猜测归属或重发；保留意图和所有 ID，需结合控制台与任务证据人工对账。本版没有自动修复状态命令。
+- 崩溃锁不会按时间过期。先查看 `writer.lock` 的 PID，并确认该机器无同步进程、备份整个状态目录，再由操作者解除残留锁；不要在进程仍活跃时删锁。
+- 断电/磁盘写入失败后必须停止，重新检查磁盘快照再恢复；状态写失败不继续云操作。
+
+Metadata 完整保留在 corpus；目前远端仅映射平台确认的 tags 和 originalFileUrl。标签不能代替已验证的检索筛选，章节引用仍依赖本地受控 Metadata。MD5 编码、文件/文档 ID 映射、实际解析与检索均需真实样本验收。
