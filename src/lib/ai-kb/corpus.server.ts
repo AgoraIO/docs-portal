@@ -1,6 +1,7 @@
 import type { PublishedDocsRoute } from '../published-docs-routes';
 import type { SearchSection } from '../search/kb-record';
 import { createKbDocument, type KbCorpus, requireText } from './corpus';
+import { normalizeKbPlatformMarkdown } from './markdown';
 
 export async function buildKbCorpus(input: {
   routes: PublishedDocsRoute[];
@@ -86,9 +87,12 @@ export async function buildKbCorpus(input: {
       )
         throw new Error(`Conflicting page metadata: ${id}`);
     }
+    const markdown = await input.readMarkdown(route.markdownPath);
     documents.push(
       createKbDocument({
-        content: await input.readMarkdown(route.markdownPath),
+        content: route.platform
+          ? normalizeKbPlatformMarkdown(markdown)
+          : markdown,
         metadata: {
           ...base.metadata,
           sections: sections.map((section) => ({

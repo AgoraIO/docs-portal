@@ -108,6 +108,9 @@ export function parseKbSuccessfulState(value: unknown): KbSuccessfulState {
     return { sourceId: e.sourceId, hash: hash(e.hash), remoteIds };
   });
   uniqueIds(entries);
+  const ownedRemoteIds = entries.flatMap((entry) => entry.remoteIds);
+  if (new Set(ownedRemoteIds).size !== ownedRemoteIds.length)
+    throw new Error('Duplicate remote ID ownership across source identities');
   const selected = selection(input.selection);
   if (selected && entries.some((e) => !selected.includes(e.sourceId)))
     throw new Error('State selection mismatch');

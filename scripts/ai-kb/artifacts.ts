@@ -119,18 +119,44 @@ export async function readPublishedKbInputs(root: string) {
     readRenderedHtml: (url) => read(`${url.slice(1)}/index.html`),
   });
   const represented = new Set(
-    sections.map(
-      (section) => section.canonicalUrl ?? section.url.split('#')[0],
-    ),
+    sections.map((section) => section.url.split('#')[0]),
   );
-  for (const page of pages) {
+  const routesByUrl = new Map(routes.map((route) => [route.url, route]));
+  const variantCanonicals = new Set(
+    routes
+      .filter((route) => route.platform)
+      .map((route) => route.canonicalPath),
+  );
+  // The navigation manifest qualifies documents; the sitemap additionally
+  // inventories their rendered platform URLs, including missing route entries.
+  const qualified = new Set<string>();
+  for (const url of published) {
+    const slash = url.lastIndexOf('/');
+    const canonical = url.slice(0, slash);
+    const suffix = url.slice(slash + 1);
     if (
-      published.has(page.url) &&
-      isPublicCnSearchUrl(page.url) &&
-      !represented.has(page.url)
+      isPublicCnSearchUrl(url) &&
+      (pageIds.has(url) || (pageIds.has(canonical) && isKnownPlatform(suffix)))
     )
+      qualified.add(url);
+  }
+  for (const url of qualified) {
+    if (!routesByUrl.has(url))
+      throw new Error(`Incomplete KB export: no published route for ${url}`);
+  }
+  const pagesByUrl = new Map(pages.map((page) => [page.url, page]));
+  for (const route of routes) {
+    const page = pagesByUrl.get(route.canonicalPath);
+    if (!page) continue;
+    if (
+      !route.platform &&
+      page.objectType !== 'openapi' &&
+      variantCanonicals.has(route.canonicalPath)
+    )
+      continue;
+    if (!represented.has(route.url))
       throw new Error(
-        `Incomplete KB export: no validated content for ${page.url}`,
+        `Incomplete KB export: no validated content for ${route.url}`,
       );
   }
   return { routes, sections, readMarkdown };

@@ -1,4 +1,4 @@
-import { readFile, rm, symlink, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import { readPublishedKbInputs } from './artifacts';
@@ -15,7 +15,72 @@ async function fixture() {
   cleanup.push(f.base);
   return f;
 }
+async function platformFixture() {
+  const f = await fixture();
+  const routes = [
+    {
+      url: fixtureUrl,
+      canonicalPath: fixtureUrl,
+      markdownPath: `${fixtureUrl}.md`,
+      defaultPlatform: 'web',
+    },
+    ...['web', 'ios'].map((platform) => ({
+      url: `${fixtureUrl}/${platform}`,
+      canonicalPath: fixtureUrl,
+      markdownPath: `${fixtureUrl}/${platform}.md`,
+      platform,
+      defaultPlatform: 'web',
+    })),
+  ];
+  await writeFile(
+    path.join(f.root, '__static/docs-routes.json'),
+    JSON.stringify(routes),
+  );
+  await writeFile(
+    path.join(f.root, 'sitemap.xml'),
+    `<urlset>${routes.map((r) => `<url><loc>https://docs.example.test${r.url}</loc></url>`).join('')}</urlset>`,
+  );
+  for (const platform of ['web', 'ios']) {
+    await mkdir(path.join(f.root, `.${fixtureUrl}/${platform}`), {
+      recursive: true,
+    });
+    await writeFile(
+      path.join(f.root, `.${fixtureUrl}/${platform}.md`),
+      '# Demo\n\n## Example\nbody\n',
+    );
+    await writeFile(
+      path.join(f.root, `.${fixtureUrl}/${platform}/index.html`),
+      '<article><h2 id="example">Example</h2></article>',
+    );
+  }
+  return { ...f, routes };
+}
 describe('published KB artifact reader', () => {
+  it('validates all platform variants without requiring superseded canonical content', async () => {
+    const f = await platformFixture();
+    await writeFile(path.join(f.root, `.${fixtureUrl}.md`), '# Demo\n');
+    const input = await readPublishedKbInputs(f.root);
+    expect(new Set(input.sections.map((s) => s.url.split('#')[0]))).toEqual(
+      new Set([`${fixtureUrl}/web`, `${fixtureUrl}/ios`]),
+    );
+  });
+  it('rejects a platform variant with no validated content', async () => {
+    const f = await platformFixture();
+    await writeFile(path.join(f.root, `.${fixtureUrl}/ios.md`), '# Demo\n');
+    await expect(readPublishedKbInputs(f.root)).rejects.toThrow(
+      /incomplete.*ios/i,
+    );
+  });
+  it('rejects a published platform variant missing from the route manifest', async () => {
+    const f = await platformFixture();
+    await writeFile(
+      path.join(f.root, '__static/docs-routes.json'),
+      JSON.stringify(f.routes.filter((r) => r.url !== `${fixtureUrl}/ios`)),
+    );
+    await expect(readPublishedKbInputs(f.root)).rejects.toThrow(
+      /incomplete.*ios/i,
+    );
+  });
   it('uses HTML-verified sections and original Markdown from the same read', async () => {
     const f = await fixture();
     const input = await readPublishedKbInputs(f.root);

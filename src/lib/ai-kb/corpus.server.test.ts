@@ -1,4 +1,7 @@
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
 import { describe, expect, it } from 'vitest';
+import { buildPlatformLLMText } from '../platforms/processed-text';
 import type { PublishedDocsRoute } from '../published-docs-routes';
 import type { SearchSection } from '../search/kb-record';
 import { buildKbCorpus } from './corpus.server';
@@ -60,6 +63,40 @@ describe('KB published corpus', () => {
       url,
       `${url}#example`,
     ]);
+  });
+  it('restores renderer-indented headings and language fences while keeping code indentation', async () => {
+    const published = buildPlatformLLMText({
+      pageTitle: 'Demo',
+      pageUrl: canonical,
+      platform: 'web',
+      preserveSourceFormatting: true,
+      processedText:
+        '<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />\n    ## Example [#example]\n\n    ```ts\n      foo();\n    ```\n<_PlatformProcessedMarker close="true" />',
+    });
+    const result = await buildKbCorpus({
+      ...input,
+      readMarkdown: async () => published,
+    });
+    const ast = unified().use(remarkParse).parse(result.documents[0].content);
+    expect(ast.children).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ type: 'heading', depth: 2 }),
+        expect.objectContaining({
+          type: 'code',
+          lang: 'ts',
+          value: '  foo();',
+        }),
+      ]),
+    );
+  });
+  it('keeps ordinary indented code and fenced heading examples unchanged', async () => {
+    const published =
+      '# Demo\n\n    const indented = true;\n\n```md\n    ## Example [#example]\n```\n';
+    const result = await buildKbCorpus({
+      ...input,
+      readMarkdown: async () => published,
+    });
+    expect(result.documents[0].content).toBe(published);
   });
   it('keeps both default and nondefault platform variants', async () => {
     const ios = `${canonical}/ios`;

@@ -55,7 +55,7 @@ describe('KB incremental plan', () => {
       entries: [a, b, c].map((d) => ({
         sourceId: d.sourceId,
         hash: d.hash,
-        remoteIds: ['id'],
+        remoteIds: [`remote-${d.sourceId}`],
       })),
     };
     const p = planKbSync({ ...corpus, revision: 'new-repo-commit' }, state);
@@ -64,6 +64,21 @@ describe('KB incremental plan', () => {
     expect(p.update).toEqual([]);
     expect(p.delete).toEqual([]);
     expect(p.deletionBlocked).toBe(false);
+  });
+  it('rejects remote objects owned by multiple source identities', () => {
+    expect(() =>
+      planKbSync(
+        { ...corpus, documents: [a] },
+        {
+          ...old,
+          entries: [a, gone].map((d) => ({
+            sourceId: d.sourceId,
+            hash: d.hash,
+            remoteIds: ['shared-object'],
+          })),
+        },
+      ),
+    ).toThrow(/remote.*owner|remote.*multiple|duplicate.*remote/i);
   });
   it('plans a move as create and blocked delete', () => {
     const p = planKbSync(
