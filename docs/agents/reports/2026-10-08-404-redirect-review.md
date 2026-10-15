@@ -86,7 +86,7 @@
 
 ## Unresolved
 
-未安全确定目标的路径未添加重定向，完整列表见 output/posthog/404-unresolved-2026-10-08.txt。分类统计：
+未安全确定目标的路径未添加重定向，完整列表见 [2026-10-08-404-unresolved-paths.txt](./2026-10-08-404-unresolved-paths.txt)。分类统计：
 
 - unresolved：633 条
 - already-covered：5 条
