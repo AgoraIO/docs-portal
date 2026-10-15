@@ -36,6 +36,8 @@ export type PendingOperation = {
   fileId?: string;
   jobId?: string;
   deleted?: boolean;
+  errorCode?: string;
+  requestId?: string;
   oldRemote: RemoteDocument[];
   newRemote: RemoteDocument[];
 };
@@ -45,6 +47,8 @@ export type SyncSnapshot = {
   identity: string;
   generation: number;
   indexId?: string;
+  run?: { revision: string; corpusHash: string };
+  requestIds?: string[];
   bootstrap?: { operationId: string; jobId: string };
   entries: { sourceId: string; hash: string; remote: RemoteDocument[] }[];
   pending: PendingOperation[];
@@ -77,6 +81,8 @@ function validate(s: SyncSnapshot): SyncSnapshot {
       'generation',
       'indexId',
       'bootstrap',
+      'run',
+      'requestIds',
       'entries',
       'pending',
     ]);
@@ -88,6 +94,20 @@ function validate(s: SyncSnapshot): SyncSnapshot {
       s.generation < 0
     )
       throw new Error();
+    if (s.run) {
+      keys(s.run, ['revision', 'corpusHash']);
+      if (
+        typeof s.run.revision !== 'string' ||
+        !s.run.revision.trim() ||
+        s.run.revision.length > 256
+      )
+        throw new Error();
+      hash(s.run.corpusHash);
+    }
+    if (s.requestIds) {
+      if (!Array.isArray(s.requestIds)) throw new Error();
+      s.requestIds.forEach(validId);
+    }
     if (s.indexId !== undefined) validId(s.indexId);
     if (s.bootstrap) {
       keys(s.bootstrap, ['operationId', 'jobId']);
@@ -123,6 +143,8 @@ function validate(s: SyncSnapshot): SyncSnapshot {
         'fileId',
         'jobId',
         'deleted',
+        'errorCode',
+        'requestId',
         'oldRemote',
         'newRemote',
       ]);
@@ -152,6 +174,8 @@ function validate(s: SyncSnapshot): SyncSnapshot {
         )
       )
         throw new Error();
+      if (p.errorCode !== undefined) validId(p.errorCode);
+      if (p.requestId !== undefined) validId(p.requestId);
       if (p.fileId !== undefined) validId(p.fileId);
       if (p.jobId !== undefined) validId(p.jobId);
       if (p.deleted !== undefined && p.deleted !== true) throw new Error();

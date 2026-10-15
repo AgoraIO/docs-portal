@@ -5,9 +5,11 @@ import { join } from 'node:path';
 import { afterEach, expect, it } from 'vitest';
 import { BailianError } from './bailian-client.server';
 import { createKbDocument, type KbCorpus } from './corpus';
-import { runKbSync, type SyncAdapter } from './sync.server';
+import { runKbSync as executeSync, type SyncAdapter } from './sync.server';
 import { openSyncStore, type SyncStore } from './sync-state.server';
 
+const runKbSync = (input: Parameters<typeof executeSync>[0]) =>
+  executeSync({ verifyRevision: async () => true, ...input });
 const roots: string[] = [];
 const stores: SyncStore[] = [];
 afterEach(async () => {
@@ -33,7 +35,10 @@ const doc = (content = 'first', path = '/zh-CN/ai/a') =>
 const corpus = (docs = [doc()]): KbCorpus => ({
   schema: 1,
   scope: 'test',
-  revision: 'rev',
+  revision:
+    docs.length === 1 && docs[0].hash === doc().hash
+      ? 'rev'
+      : docs.map((d) => d.hash).join('-'),
   complete: true,
   documents: docs,
 });
@@ -324,4 +329,57 @@ it('rejects empty, incomplete and mismatched scopes before any remote write', as
       }),
     ).rejects.toThrow();
   expect(f.writes).toEqual([]);
+});
+it('rejects a superseded corpus and same-revision artifact mutation before writes', async () => {
+  const s = await store(),
+    f = fake();
+  const first = corpus();
+  const second = { ...corpus([doc('next')]), revision: 'new-revision' };
+  await runKbSync({ corpus: first, store: s, adapter: f.adapter, verify });
+  await runKbSync({
+    corpus: second,
+    store: s,
+    adapter: f.adapter,
+    verify,
+    verifyRevision: async (previous, next) =>
+      previous === 'rev' && next === 'new-revision',
+  });
+  const writes = [...f.writes];
+  await expect(
+    runKbSync({
+      corpus: first,
+      store: s,
+      adapter: f.adapter,
+      verify,
+      verifyRevision: async () => false,
+    }),
+  ).rejects.toThrow(/revision/i);
+  await expect(
+    runKbSync({
+      corpus: { ...second, documents: [doc('mutated')] },
+      store: s,
+      adapter: f.adapter,
+      verify,
+      verifyRevision: async () => true,
+    }),
+  ).rejects.toThrow(/revision/i);
+  expect(f.writes).toEqual(writes);
+});
+it('persists safe remote error and request ID without raw exception text', async () => {
+  const s = await store(),
+    f = fake();
+  f.adapter.registerFile = async () => {
+    throw new BailianError('HTTP_429', 'request-safe');
+  };
+  await expect(
+    runKbSync({ corpus: corpus(), store: s, adapter: f.adapter, verify }),
+  ).rejects.toThrow();
+  expect(s.snapshot.pending[0]).toMatchObject({
+    errorCode: 'HTTP_429',
+    requestId: 'request-safe',
+  });
+  await expect(
+    runKbSync({ corpus: corpus(), store: s, adapter: f.adapter, verify }),
+  ).rejects.toThrow(/reconciliation/i);
+  expect(s.snapshot.pending[0].errorCode).toBe('HTTP_429');
 });

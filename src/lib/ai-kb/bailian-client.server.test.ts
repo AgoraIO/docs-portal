@@ -348,3 +348,24 @@ it('aborts a stalled request without exposing transport details', async () => {
     'TRANSPORT',
   );
 });
+it('passes a sanitized successful request ID to durable evidence collection', async () => {
+  const evidence: string[] = [];
+  const client = createBailianClient({
+    workspaceId: 'llm-test',
+    apiKey: 'test-only-key',
+    onRequestId: async (id) => {
+      evidence.push(id);
+    },
+    fetch: async () =>
+      new Response(
+        JSON.stringify({
+          code: 'Success',
+          status: 200,
+          request_id: 'request-success',
+          data: { fileList: [], hasNext: false },
+        }),
+      ),
+  });
+  await client.listFiles({ categoryId: 'cat' });
+  expect(evidence).toEqual(['request-success']);
+});

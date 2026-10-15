@@ -69,6 +69,7 @@ export function createBailianClient(options: {
   apiKey: string;
   fetch?: typeof fetch;
   timeoutMs?: number;
+  onRequestId?: (requestId: string) => void | Promise<void>;
 }) {
   const host = workspaceHost(options.workspaceId);
   const apiKey = requireText(options.apiKey, 'API Key');
@@ -131,7 +132,9 @@ export function createBailianClient(options: {
           : 'BUSINESS';
       throw new BailianError(code, requestId);
     }
-    return object(value.data);
+    const data = object(value.data);
+    if (requestId) await options.onRequestId?.(requestId);
+    return data;
   }
   function page(data: JsonObject, requestedPage: number) {
     if (integer(data.page_number, 1) !== requestedPage)

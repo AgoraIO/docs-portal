@@ -1,3 +1,4 @@
+import { spawnSync } from 'node:child_process';
 import { realpath } from 'node:fs/promises';
 import { basename, dirname, resolve, sep } from 'node:path';
 import { parseArgs } from 'node:util';
@@ -77,8 +78,8 @@ try {
       receipt,
       {
         ...base,
-        status: 'preview',
-        remoteWrites: 0,
+        status: values.apply ? 'applying' : 'preview',
+        remoteWrites: values.apply ? null : 0,
         generation: store.snapshot.generation,
         pending: store.snapshot.pending.length,
         deletionBlocked: plan.deletionBlocked,
@@ -94,6 +95,17 @@ try {
       const client = createBailianClient({
         workspaceId: target.workspaceId,
         apiKey: process.env.BAILIAN_API_KEY ?? '',
+        onRequestId: async (requestId) => {
+          const s = store.snapshot;
+          await store.save(
+            {
+              ...s,
+              generation: s.generation + 1,
+              requestIds: [...new Set([...(s.requestIds ?? []), requestId])],
+            },
+            s.generation,
+          );
+        },
       });
       let remoteWrites = 0;
       const adapter: SyncAdapter = {
@@ -129,6 +141,20 @@ try {
           corpus,
           store,
           adapter,
+          verifyRevision: async (previous, next) => {
+            if (
+              !/^[a-f0-9]{40}$/.test(previous) ||
+              !/^[a-f0-9]{40}$/.test(next)
+            )
+              return false;
+            return (
+              spawnSync(
+                'git',
+                ['merge-base', '--is-ancestor', previous, next],
+                { cwd: process.cwd(), stdio: 'ignore' },
+              ).status === 0
+            );
+          },
           ...(values['delete-approval']
             ? {
                 deletionApproval: (await readJson(
@@ -155,10 +181,13 @@ try {
           remoteWrites,
           generation: store.snapshot.generation,
           indexId: store.snapshot.indexId,
+          requestIds: store.snapshot.requestIds ?? [],
           pending: store.snapshot.pending.map((p) => ({
             id: p.id,
             sourceId: p.sourceId,
             phase: p.phase,
+            ...(p.errorCode ? { errorCode: p.errorCode } : {}),
+            ...(p.requestId ? { requestId: p.requestId } : {}),
             ...(p.intent ? { intent: p.intent } : {}),
           })),
         },

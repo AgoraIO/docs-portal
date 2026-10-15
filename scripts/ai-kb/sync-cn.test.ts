@@ -130,3 +130,58 @@ it('preflight fails before network calls when the API Key is missing', async () 
   expect(r.status).not.toBe(0);
   expect(r.stderr).toContain('MISSING_API_KEY');
 });
+it('marks an interrupted apply as applying rather than a zero-write preview', async () => {
+  const { spawn } = await import('node:child_process');
+  const f = await fixture();
+  const preload = join(f.directory, 'stall.ts');
+  const marker = join(f.directory, 'request-started');
+  await writeFile(
+    preload,
+    `import {writeFile} from 'node:fs/promises'; setInterval(()=>{},1000); globalThis.fetch = async () => { await writeFile(${JSON.stringify(marker)}, 'sent'); return new Promise(() => {}); };`,
+  );
+  const r = spawn(
+    'bun',
+    [
+      '--preload',
+      preload,
+      'scripts/ai-kb/sync-cn.ts',
+      '--config',
+      f.config,
+      '--corpus',
+      f.corpus,
+      '--state-dir',
+      f.state,
+      '--receipt',
+      f.receipt,
+      '--apply',
+      '--new-demo',
+    ],
+    {
+      cwd: process.cwd(),
+      env: { ...process.env, BAILIAN_API_KEY: 'test-invalid-only' },
+      stdio: 'ignore',
+    },
+  );
+  let observed: Record<string, unknown> | undefined;
+  const deadline = Date.now() + 2500;
+  while (Date.now() < deadline) {
+    try {
+      await readFile(marker);
+      observed = JSON.parse(await readFile(f.receipt, 'utf8'));
+      if (observed) break;
+    } catch {}
+    await new Promise((resolve) => setTimeout(resolve, 10));
+  }
+  r.kill('SIGKILL');
+  await new Promise<void>((resolve) => {
+    if (r.exitCode !== null || r.signalCode !== null) resolve();
+    else r.once('exit', () => resolve());
+  });
+  expect(await readFile(marker, 'utf8')).toBe('sent');
+  expect(
+    JSON.parse(await readFile(join(f.state, 'state.json'), 'utf8')).pending[0]
+      .intent,
+  ).toBe('lease');
+  expect(observed?.status).toBe('applying');
+  expect(observed?.remoteWrites).toBeNull();
+});

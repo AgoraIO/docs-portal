@@ -1,4 +1,4 @@
-import { randomUUID } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 import { type BailianClient, BailianError } from './bailian-client.server';
 import type { KbTarget } from './bailian-config';
 import type { KbCorpus, KbDocument } from './corpus';
@@ -35,6 +35,7 @@ export async function runKbSync(input: {
   adapter: SyncAdapter;
   verify?: RetrievalVerifier;
   deletionApproval?: DeletionApproval;
+  verifyRevision?: (previous: string, next: string) => Promise<boolean>;
 }) {
   const { store, adapter } = input;
   const corpus = parseKbCorpus(input.corpus);
@@ -60,6 +61,36 @@ export async function runKbSync(input: {
         JSON.stringify(plan.delete.map((e) => e.sourceId).sort())
     )
       throw new Error('Explicit matching deletion approval required');
+  }
+  const corpusHash = createHash('sha256')
+    .update(
+      JSON.stringify({
+        ...corpus,
+        documents: [...corpus.documents].sort((a, b) =>
+          a.sourceId.localeCompare(b.sourceId),
+        ),
+      }),
+    )
+    .digest('hex');
+  if (existing.run && existing.run.corpusHash !== corpusHash) {
+    if (existing.pending.length)
+      throw new Error('Pending operation requires original corpus revision');
+    if (
+      existing.run.revision === corpus.revision ||
+      !input.verifyRevision ||
+      !(await input.verifyRevision(existing.run.revision, corpus.revision))
+    )
+      throw new Error('Unverified or superseded corpus revision');
+  }
+  if (existing.run?.corpusHash !== corpusHash) {
+    await store.save(
+      {
+        ...existing,
+        generation: existing.generation + 1,
+        run: { revision: corpus.revision, corpusHash },
+      },
+      existing.generation,
+    );
   }
   async function saveOperation(
     p: PendingOperation,
@@ -153,130 +184,148 @@ export async function runKbSync(input: {
         newRemote: [],
       });
   for (const p of work) {
-    const document = corpus.documents.find((d) => d.sourceId === p.sourceId);
-    if (p.phase === 'needs-reconciliation')
-      throw new Error(
-        'Remote result needs reconciliation; automatic writes stopped',
-      );
-    if (p.intent && p.intent !== 'delete') return uncertain(p);
-    if (!existing.pending.some((o) => o.id === p.id)) await saveOperation(p);
-    if (p.phase === 'prepared') {
-      if (!document) throw new Error('Missing document');
-      const bytes = new TextEncoder().encode(document.content);
-      p.phase = 'uploading';
-      await intent(p, 'lease');
-      const lease = await adapter.lease({
-        categoryId: existing.target.categoryId,
-        fileName: `kb-${p.id}.md`,
-        bytes,
-      });
-      await intent(p, 'put');
-      await adapter.putFile({ lease, bytes });
-      await intent(p, 'register');
-      const tags = [
-        `kb:${existing.identity.slice(0, 24)}`,
-        ...document.metadata.products.map((v) => `product:${v}`),
-        ...document.metadata.platforms.map((v) => `platform:${v}`),
-      ];
-      p.fileId = await adapter.registerFile({
-        leaseId: lease.leaseId,
-        categoryId: existing.target.categoryId,
-        tags,
-        originalFileUrl: new URL(
-          document.metadata.url,
-          existing.target.origin,
-        ).toString(),
-      });
-      delete p.intent;
-      p.phase = 'registered';
-      await saveOperation(p);
-    }
-    if (p.phase === 'registered') {
-      if (!p.fileId) throw new Error('Missing registered file');
-      const indexId = store.snapshot.indexId;
-      if (!indexId) {
-        await intent(p, 'create');
-        const created = await adapter.createIndex({
-          name: existing.target.name,
-          fileIds: [p.fileId],
+    try {
+      const document = corpus.documents.find((d) => d.sourceId === p.sourceId);
+      if (p.phase === 'needs-reconciliation')
+        throw new Error(
+          'Remote result needs reconciliation; automatic writes stopped',
+        );
+      if (p.intent && p.intent !== 'delete') return uncertain(p);
+      if (!existing.pending.some((o) => o.id === p.id)) await saveOperation(p);
+      if (p.phase === 'prepared') {
+        if (!document) throw new Error('Missing document');
+        const bytes = new TextEncoder().encode(document.content);
+        p.phase = 'uploading';
+        await intent(p, 'lease');
+        const lease = await adapter.lease({
+          categoryId: existing.target.categoryId,
+          fileName: `kb-${p.id}.md`,
+          bytes,
         });
-        p.jobId = created.jobId;
-        delete p.intent;
-        p.phase = 'importing';
-        await saveOperation(p, {
-          indexId: created.indexId,
-          bootstrap: { operationId: p.id, jobId: created.jobId },
+        await intent(p, 'put');
+        await adapter.putFile({ lease, bytes });
+        await intent(p, 'register');
+        const tags = [
+          `kb:${existing.identity.slice(0, 24)}`,
+          ...document.metadata.products.map((v) => `product:${v}`),
+          ...document.metadata.platforms.map((v) => `platform:${v}`),
+        ];
+        p.fileId = await adapter.registerFile({
+          leaseId: lease.leaseId,
+          categoryId: existing.target.categoryId,
+          tags,
+          originalFileUrl: new URL(
+            document.metadata.url,
+            existing.target.origin,
+          ).toString(),
         });
-      } else {
-        await intent(p, 'import');
-        p.jobId = await adapter.submitImport({ indexId, fileIds: [p.fileId] });
         delete p.intent;
-        p.phase = 'importing';
+        p.phase = 'registered';
         await saveOperation(p);
       }
-    }
-    if (p.phase === 'importing') {
-      if (!p.fileId || !p.jobId || !store.snapshot.indexId)
-        throw new Error('Missing import evidence');
-      const rows = await adapter.completedJob({
-        indexId: store.snapshot.indexId,
-        jobId: p.jobId,
-        fileIds: [p.fileId],
-      });
-      if (!rows) return { status: 'indexing' as const };
-      // The adapter must prove the file-to-document mapping; never infer it from a name.
-      if (
-        rows.length !== 1 ||
-        rows[0].jobId !== p.jobId ||
-        rows[0].code !== 'FINISH' ||
-        rows[0].status !== 'FINISH'
-      )
-        throw new Error('Incomplete document job evidence');
-      p.newRemote = [
-        { fileId: p.fileId, documentId: rows[0].documentId, jobId: p.jobId },
-      ];
-      p.phase = 'verifying';
-      await saveOperation(p);
-    }
-    if (p.phase === 'verifying') {
-      if (!document || !store.snapshot.indexId || !p.newRemote.length)
-        throw new Error('Missing retrieval verification inputs');
-      if (
-        !input.verify ||
-        !(await input.verify({
-          target: { ...existing.target, indexId: store.snapshot.indexId },
-          document,
-          remote: p.newRemote,
-        }))
-      )
-        return { status: 'verifying' as const };
-      p.phase = 'cleanup-pending';
-      await saveOperation(p);
-    }
-    if (p.phase === 'cleanup-pending') {
-      if (p.oldRemote.length) await cleanup(p);
-      const s = store.snapshot;
-      // Successful projection and removal of the pending journal are one durable commit.
-      await store.save(
-        {
-          ...s,
-          generation: s.generation + 1,
-          entries: [
-            ...s.entries.filter((e) => e.sourceId !== p.sourceId),
-            ...(!p.deleted
-              ? [
-                  {
-                    sourceId: p.sourceId,
-                    hash: p.desiredHash,
-                    remote: p.newRemote,
-                  },
-                ]
-              : []),
-          ],
-          pending: s.pending.filter((o) => o.id !== p.id),
-        },
-        s.generation,
-      );
+      if (p.phase === 'registered') {
+        if (!p.fileId) throw new Error('Missing registered file');
+        const indexId = store.snapshot.indexId;
+        if (!indexId) {
+          await intent(p, 'create');
+          const created = await adapter.createIndex({
+            name: existing.target.name,
+            fileIds: [p.fileId],
+          });
+          p.jobId = created.jobId;
+          delete p.intent;
+          p.phase = 'importing';
+          await saveOperation(p, {
+            indexId: created.indexId,
+            bootstrap: { operationId: p.id, jobId: created.jobId },
+          });
+        } else {
+          await intent(p, 'import');
+          p.jobId = await adapter.submitImport({
+            indexId,
+            fileIds: [p.fileId],
+          });
+          delete p.intent;
+          p.phase = 'importing';
+          await saveOperation(p);
+        }
+      }
+      if (p.phase === 'importing') {
+        if (!p.fileId || !p.jobId || !store.snapshot.indexId)
+          throw new Error('Missing import evidence');
+        const rows = await adapter.completedJob({
+          indexId: store.snapshot.indexId,
+          jobId: p.jobId,
+          fileIds: [p.fileId],
+        });
+        if (!rows) return { status: 'indexing' as const };
+        // The adapter must prove the file-to-document mapping; never infer it from a name.
+        if (
+          rows.length !== 1 ||
+          rows[0].jobId !== p.jobId ||
+          rows[0].code !== 'FINISH' ||
+          rows[0].status !== 'FINISH'
+        )
+          throw new Error('Incomplete document job evidence');
+        p.newRemote = [
+          { fileId: p.fileId, documentId: rows[0].documentId, jobId: p.jobId },
+        ];
+        p.phase = 'verifying';
+        await saveOperation(p);
+      }
+      if (p.phase === 'verifying') {
+        if (!document || !store.snapshot.indexId || !p.newRemote.length)
+          throw new Error('Missing retrieval verification inputs');
+        if (
+          !input.verify ||
+          !(await input.verify({
+            target: { ...existing.target, indexId: store.snapshot.indexId },
+            document,
+            remote: p.newRemote,
+          }))
+        )
+          return { status: 'verifying' as const };
+        p.phase = 'cleanup-pending';
+        await saveOperation(p);
+      }
+      if (p.phase === 'cleanup-pending') {
+        if (p.oldRemote.length) await cleanup(p);
+        const s = store.snapshot;
+        // Successful projection and removal of the pending journal are one durable commit.
+        await store.save(
+          {
+            ...s,
+            generation: s.generation + 1,
+            entries: [
+              ...s.entries.filter((e) => e.sourceId !== p.sourceId),
+              ...(!p.deleted
+                ? [
+                    {
+                      sourceId: p.sourceId,
+                      hash: p.desiredHash,
+                      remote: p.newRemote,
+                    },
+                  ]
+                : []),
+            ],
+            pending: s.pending.filter((o) => o.id !== p.id),
+          },
+          s.generation,
+        );
+      }
+    } catch (error) {
+      const saved = store.snapshot.pending.find((o) => o.id === p.id);
+      if (saved) {
+        if (error instanceof BailianError) {
+          saved.errorCode = /^[a-zA-Z0-9_.-]{1,96}$/.test(error.code)
+            ? error.code
+            : 'REMOTE_FAILURE';
+          if (error.requestId && /^[a-zA-Z0-9_-]{1,128}$/.test(error.requestId))
+            saved.requestId = error.requestId;
+        } else saved.errorCode = 'SYNC_FAILURE';
+        await saveOperation(saved);
+      }
+      throw error;
     }
   }
   return { status: 'complete' as const };
