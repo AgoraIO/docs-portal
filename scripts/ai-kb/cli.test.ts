@@ -54,6 +54,23 @@ async function setup() {
   return { ...f, corpus, state, stateBody, args };
 }
 describe('KB offline CLI', () => {
+  it('writes an offline preview without modifying corpus and refuses an output alias', async () => {
+    const f = await setup();
+    const before = await readFile(f.corpus, 'utf8');
+    const out = path.join(f.base, 'preview.json');
+    const result = run('preview-cn.ts', ['--corpus', f.corpus, '--out', out]);
+    expect(result.status, result.stderr).toBe(0);
+    const preview = JSON.parse(await readFile(out, 'utf8'));
+    expect(preview.cloudVerified).toBe(false);
+    expect(
+      preview.chunks.map((x: { content: string }) => x.content).join(''),
+    ).toBe(JSON.parse(before).documents[0].content);
+    expect(await readFile(f.corpus, 'utf8')).toBe(before);
+    expect(
+      run('preview-cn.ts', ['--corpus', f.corpus, '--out', f.corpus]).status,
+    ).not.toBe(0);
+    expect(await readFile(f.corpus, 'utf8')).toBe(before);
+  });
   it('checks content completeness within the selected scope while full export still rejects empty pages', async () => {
     const f = await fixture();
     const emptyUrl = '/zh-CN/realtime-media/rtc/empty';

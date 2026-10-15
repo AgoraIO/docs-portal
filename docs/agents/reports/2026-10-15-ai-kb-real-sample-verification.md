@@ -42,3 +42,7 @@ Ruling: 样本完整性按显式 selection 定义，全量导出保持严格。�
 - 浏览器在端口 3008 显示真实正文“创建一个对话式智能体 … 并加入 RTC 频道”，点击引用实际进入 join 文档页并显示其参数与请求示例。已回到搜索页保留演示；截图 `/tmp/cn-ai-bot-real-kb-2026-10-15.png`。最终 HTTP 同样返回该真实正文，未再返回导航提示。
 - `git diff --check` 通过。
 - 未 push、merge、deploy；原 CN-NEWDOC 工作区未修改。真实云端导入/Metadata 筛选/检索/模型/CI-CD 全链路仍待验收。
+
+## 后续类型检查更正
+
+后续质量预览阶段发现本轮 `it.each` 平台参数的 TypeScript 推断错误，前次组合命令退出状态未正确反映 tsc 失败。本报告原“types:check 通过”表述不准确；已在后续提交将参数改为 const tuple，并独立确认类型检查 exit 0。详见 `2026-10-15-ai-kb-quality-preview-verification.md`。

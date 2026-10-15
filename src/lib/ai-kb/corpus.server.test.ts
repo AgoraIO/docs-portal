@@ -43,7 +43,7 @@ const input = {
   readMarkdown: async () => markdown,
 };
 describe('KB published corpus', () => {
-  it.each(['web', undefined])(
+  it.each(['web', undefined] as const)(
     'removes only the generated leading directive for platform %s',
     async (platform) => {
       const body = `正文说明。\n\n\`\`\`md\n${AGENT_DOCS_DIRECTIVE}\n\`\`\`\n`;
