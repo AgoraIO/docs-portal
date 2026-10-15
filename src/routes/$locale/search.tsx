@@ -64,6 +64,7 @@ function SearchRoute() {
       toc={[]}
     >
       <DocsSearchPage
+        aiDemoEnabled={import.meta.env.VITE_AI_BOT_DEMO === 'true'}
         productScopes={payload.productScopes}
         state={state}
         onChange={(patch) => {

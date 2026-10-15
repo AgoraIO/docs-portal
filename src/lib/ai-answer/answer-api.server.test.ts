@@ -37,13 +37,17 @@ const req = (
   body: unknown = { question: 'Token' },
   headers: HeadersInit = {},
   signal?: AbortSignal,
-) =>
-  new Request('http://localhost/api/ai/answer', {
+) => {
+  const merged = new Headers(headers);
+  if (!merged.has('Content-Type'))
+    merged.set('Content-Type', 'application/json');
+  return new Request('http://localhost/api/ai/answer', {
     method: 'POST',
     body: JSON.stringify(body),
-    headers: { 'Content-Type': 'application/json', ...headers },
+    headers: merged,
     signal,
   });
+};
 const dirs: string[] = [];
 afterEach(async () => {
   await Promise.all(
@@ -193,4 +197,25 @@ it('honors an already cancelled request without producing an answer', async () =
     (await handleAnswerRequest(req(undefined, {}, controller.signal), opts))
       .status,
   ).toBe(499);
+});
+it('bounds slow request streams and slow corpus loading with a total deadline', async () => {
+  const body = new ReadableStream({ start() {} });
+  const request = new Request('http://localhost/api/ai/answer', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+    duplex: 'half',
+  } as RequestInit);
+  expect(
+    (await handleAnswerRequest(request, { ...opts, timeoutMs: 10 })).status,
+  ).toBe(504);
+  expect(
+    (
+      await handleAnswerRequest(req(), {
+        env,
+        loadCorpus: () => new Promise(() => {}),
+        timeoutMs: 10,
+      })
+    ).status,
+  ).toBe(504);
 });

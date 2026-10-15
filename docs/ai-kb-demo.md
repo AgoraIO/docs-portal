@@ -146,3 +146,27 @@ Metadata 完整保留在 corpus；目前远端仅映射平台确认的 tags 和 
 防旧任务回滚：状态保存已接受的 `revision` 和规范语料摘要。同 revision 的不同语料会拒绝；存在 pending 时必须使用原 revision/语料。切换 revision 时 CLI 要求两个 40 位 Git 提交存在，且旧提交是新提交祖先。历史缺失、分叉或回退均停止；不会为了继续而覆盖已完成的新版本。运行库允许注入版本验证器，默认拒绝未经验证的版本切换。
 
 执行开始后回执先记为 `applying`，`remoteWrites: null` 表示尚无法确认写入次数；进程被强杀时不能当作 preview/零写入。恢复以持久化意图为准。远端提供的安全 requestId 和错误码写入状态及回执，便于对账；不保存原始错误文本。
+
+## 第三阶段：不调用云服务的问答链路
+
+新增独立 `POST /api/ai/answer` 和新版搜索页的可选 AI 问答面板。当前只支持 `local-demo`：对本地 corpus 做确定性关键词匹配，再展示原文摘录，不调用百炼或任何模型，也不读写 Meilisearch。它用于验证请求、筛选、来源映射和页面交互，不代表语义检索或模型回答质量。
+
+服务默认返回 503。明确配置 `AI_BOT_MODE=local-demo`、绝对路径 `AI_BOT_CORPUS_PATH`，且运行环境不是 `production` 时才启用。语料使用前面导出的 corpus，最多 100 篇、20MiB；不是源码路径，也不是 Meili 索引。服务端按既有 corpus 契约校验摘要。前端独立通过 `VITE_AI_BOT_DEMO=true` 打开入口：
+
+```sh
+AI_BOT_MODE=local-demo \
+AI_BOT_CORPUS_PATH=/absolute/path/to/sample-corpus.json \
+VITE_AI_BOT_DEMO=true \
+VITE_DOCS_REGION=cn \
+bun run dev --port 3008
+```
+
+打开 `http://127.0.0.1:3008/zh-CN/search`，点击“AI 问答”，输入语料中实际包含的关键词并提问。预期页面明确标记“本地文档摘录演示”，显示摘录与来源；输入无关词显示依据不足；更改筛选后旧回答清除，需要重新提问。等待时可以取消，关闭面板也会取消；失败可重试。不开启前端开关时普通搜索页面没有新增入口。
+
+后端检索器返回证据 ID、sourceId、原文片段和可选章节 URL；编排器按受控 corpus 再校验产品、平台、版本和类型，并确认片段属于原文。最多使用 6 段、每段 3000 字符。生成器只能引用本次证据 ID，来源链接由后端 Metadata 生成；未知章节回退受控页面。没有证据时不调用生成器。所有证据不可信时返回 no-evidence，生成结果含未知引用时拒绝回答。
+
+HTTP 请求限制 16KiB，问题限制 2000 字符，总时限 15 秒，用户请求不触发同步。接口拒绝跨站/跨源浏览器请求，不返回内部文件路径或上游错误详情，响应不缓存。前端仅渲染受限 Markdown：文本、代码、段落、强调和列表等；原始 HTML、图片和模型生成的导航链接不执行，仅“参考文档”区域可导航。
+
+本 worktree 的 node_modules 是指向其他目录的软链接。如果 Vite 报已有依赖文件 `ERR_LOAD_URL`，本次验证使用临时配置显式允许 repo 和该依赖真实目录，未改变 tracked Vite/部署配置。正常独立安装依赖的 checkout 无需该临时配置。
+
+仍未完成：百炼真实检索/模型适配、KB Metadata 及可检索性实测、真实回答效果、发布产物到云 KB 的实测、CI/CD/网关和全量验收。生产环境不会启用本地摘录模式；后续真实适配必须单独配置，不会自动退回本地摘录或 Meili。

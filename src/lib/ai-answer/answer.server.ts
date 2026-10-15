@@ -37,7 +37,7 @@ export function matchesAnswerFilters(doc: KbDocument, input: AnswerRequest) {
 }
 
 // Enforce cancellation even if a future upstream adapter ignores AbortSignal.
-async function abortable<T>(
+export async function abortable<T>(
   signal: AbortSignal,
   work: () => Promise<T>,
 ): Promise<T> {

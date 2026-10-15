@@ -1,5 +1,6 @@
 import { isAbsolute } from 'node:path';
 import type { KbCorpus } from '../ai-kb/corpus';
+import { abortable } from './answer.server';
 import {
   AnswerError,
   type AnswerRequest,
@@ -10,6 +11,7 @@ import { createLocalDemoAnswer, readDemoCorpus } from './local-demo.server';
 type Options = {
   env?: Record<string, string | undefined>;
   loadCorpus?: (path: string) => Promise<KbCorpus>;
+  timeoutMs?: number;
 };
 const headers = {
   'Cache-Control': 'no-store',
@@ -52,6 +54,26 @@ async function readBody(request: Request) {
 export async function handleAnswerRequest(
   request: Request,
   options: Options = {},
+): Promise<Response> {
+  const timeout = new AbortController();
+  const timer = setTimeout(() => timeout.abort(), options.timeoutMs ?? 15000);
+  const signal = AbortSignal.any([request.signal, timeout.signal]);
+  try {
+    return await abortable(signal, () =>
+      handleActiveRequest(new Request(request, { signal }), options),
+    );
+  } catch {
+    if (request.signal.aborted) return failure(499, 'CANCELLED');
+    if (timeout.signal.aborted) return failure(504, 'AI_TIMEOUT');
+    return failure(503, 'AI_UNAVAILABLE');
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function handleActiveRequest(
+  request: Request,
+  options: Options,
 ): Promise<Response> {
   const env = options.env ?? process.env;
   if (
