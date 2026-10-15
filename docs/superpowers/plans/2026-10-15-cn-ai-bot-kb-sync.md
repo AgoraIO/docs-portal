@@ -152,7 +152,7 @@ expect(JSON.stringify(missingKey)).not.toContain(testApiKey);
 
 - [ ] 确认可调用的 RAG API Key 注入途径，不重置旧 Key、不在聊天发送明文；若需新建专用 Key，在最终提交创建前确认精确权限和作用域。
 - [ ] 在用户已授权的新建独立 demo 目标下准备类目与 KB。库 API 创建需非空首批 fileIds；若用 UI 创建则记录真实库 ID，不另重复 API bootstrap。
-- [ ] 从同一 revision 的真实发布产物选择普通文档、平台变体与 OpenAPI 样本并导出；保留来源/revision/selection。无可核实产物则报告真实语料验收未完成，不把合成 fixture 当替代。
+- [x] 从同一 revision 的真实发布产物选择普通文档、平台变体与 OpenAPI 样本并导出；保留来源/revision/selection。无可核实产物则报告真实语料验收未完成，不把合成 fixture 当替代。
 - [ ] 实测 MD5 编码、响应 envelope、fileId/doc_id/jobId、解析/索引与可检索验证、Metadata 可写字段和筛选；把真实字段形状脱敏后补协议 fixture。与官方示例冲突时先停写、记录事实并修正适配器测试。
 - [ ] 验证首导、无变化、仅 revision 变化、修改一个样本、受管删除、断点恢复；更新完成后旧内容不再召回。删除只在这次 demo 的明确对象范围内操作。
 - [ ] Run `bun run test src/lib/ai-kb scripts/ai-kb src/lib/search`、`bun run types:check`、完整 `bun run test`、针对变更的 Biome 和 `git diff --check`。完整失败与 `5dad5ced7` 已记录 37 个失败逐项比较。
@@ -168,4 +168,4 @@ expect(JSON.stringify(missingKey)).not.toContain(testApiKey);
 
 ## 2026-10-15 执行检查点
 
-Task 1–4 的本地实现、测试与独立整体审查修正已完成；见 Phase 2 verification 报告。Task 5 的真实云端/同 revision 样本验收仍未完成，待 API Key、费用和实际目标绑定落实。上述未勾选的实测条目不以本地 fixture 替代；不把此检查点称为第二阶段整体完成。
+Task 1–4 的本地实现、测试与独立整体审查修正已完成；见 Phase 2 verification 报告。Task 5 的同 revision 真实样本准备已完成：见 `docs/agents/reports/2026-10-15-ai-kb-real-sample-verification.md`。真实云端验收仍未完成，待 API Key、费用和实际目标绑定落实。上述未勾选的实测条目不以本地 fixture 替代；不把此检查点称为第二阶段整体完成。

@@ -27,7 +27,13 @@ function platform(value: unknown): PlatformKey | undefined {
   return value;
 }
 
-export async function readPublishedKbInputs(root: string) {
+export async function readPublishedKbInputs(
+  root: string,
+  options: { selectedSourceIds?: string[] } = {},
+) {
+  const selected = options.selectedSourceIds
+    ? new Set(options.selectedSourceIds)
+    : undefined;
   const publicRoot = await realpath(path.resolve(root));
   const cache = new Map<string, Promise<string>>();
   const read = (relative: string): Promise<string> => {
@@ -146,6 +152,9 @@ export async function readPublishedKbInputs(root: string) {
   }
   const pagesByUrl = new Map(pages.map((page) => [page.url, page]));
   for (const route of routes) {
+    // A sample is complete within its explicit selection. Full exports still
+    // require every qualified page; publication and anchor checks above remain.
+    if (selected && !selected.has(route.url)) continue;
     const page = pagesByUrl.get(route.canonicalPath);
     if (!page) continue;
     if (

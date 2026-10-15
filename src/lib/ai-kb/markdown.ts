@@ -1,5 +1,17 @@
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
+import { AGENT_DOCS_DIRECTIVE } from '../agent-docs-directive';
+
+/** Remove the publication navigation preamble, never matching body/code text. */
+export function stripKbNavigationPreamble(markdown: string): string {
+  const normalized = markdown.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n');
+  const prefix = normalized.match(/^(# [^\n]+\n\n)?/)?.[0] ?? '';
+  const rest = normalized.slice(prefix.length);
+  const directive = `${AGENT_DOCS_DIRECTIVE}\n\n`;
+  return rest.startsWith(directive)
+    ? prefix + rest.slice(directive.length)
+    : markdown;
+}
 
 /** Restore only the renderer-marked platform blocks recognized by CN search.
  * This leaves genuine indented code and language fences unchanged.

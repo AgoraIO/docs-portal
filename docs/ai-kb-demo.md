@@ -29,9 +29,13 @@ bun run kb:export:cn --public dist/client --out dist/ai-kb/corpus.json --scope c
 
 ## 小样本范围
 
+真实文档 demo 的固定 5 篇选择、导出步骤和测试问题见 [真实样本说明](ai-kb/real-sample-demo.md)。该样本与早期合成 fixture 分开，不代表云端已导入。
+
 将需要的来源 URL 写入 JSON 字符串数组，通过 `--select /absolute/path/to/sample.json` 导出。每个 URL 必须是已发布的页面或平台变体 URL，不是章节 URL。输出保存排序后的 `selection`。
 
 样本与全量使用不同 scope；成功状态的 selection 也必须与样本清单完全一致。即使 scope 名称误写成相同，工具仍拒绝将样本清单和全量状态比较。调整样本集合需要显式调整范围及对应状态，不能借此删除已有全量 KB 文档。
+
+正文完整性按本次导出范围检查：样本只要求所选身份全部有有效正文，全量仍要求全部合格来源。路由清单和锚点校验不关闭；样本中的空页面、缺失身份会失败。样本 `complete` 不代表全站覆盖通过。
 
 ## 规划增量
 

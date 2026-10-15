@@ -28,7 +28,7 @@ try {
       throw new Error('Selection must be an array of source IDs');
     selectedSourceIds = selected;
   }
-  const input = await readPublishedKbInputs(root);
+  const input = await readPublishedKbInputs(root, { selectedSourceIds });
   const corpus = await buildKbCorpus({
     ...input,
     scope,

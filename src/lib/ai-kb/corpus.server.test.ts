@@ -1,6 +1,7 @@
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { describe, expect, it } from 'vitest';
+import { AGENT_DOCS_DIRECTIVE } from '../agent-docs-directive';
 import { buildPlatformLLMText } from '../platforms/processed-text';
 import type { PublishedDocsRoute } from '../published-docs-routes';
 import type { SearchSection } from '../search/kb-record';
@@ -42,6 +43,19 @@ const input = {
   readMarkdown: async () => markdown,
 };
 describe('KB published corpus', () => {
+  it.each(['web', undefined])(
+    'removes only the generated leading directive for platform %s',
+    async (platform) => {
+      const body = `正文说明。\n\n\`\`\`md\n${AGENT_DOCS_DIRECTIVE}\n\`\`\`\n`;
+      const corpus = await buildKbCorpus({
+        ...input,
+        routes: [{ ...route, platform }],
+        readMarkdown: async () =>
+          `# Demo\n\n${AGENT_DOCS_DIRECTIVE}\n\n${body}`,
+      });
+      expect(corpus.documents[0].content).toBe(`# Demo\n\n${body}`);
+    },
+  );
   it('keeps original Markdown and aggregates sections into one document', async () => {
     const corpus = await buildKbCorpus({
       ...input,
