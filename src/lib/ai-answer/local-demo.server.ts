@@ -3,6 +3,7 @@ import { isAbsolute } from 'node:path';
 import type { KbCorpus } from '../ai-kb/corpus';
 import { parseKbCorpus } from '../ai-kb/plan';
 import { createAnswerService, matchesAnswerFilters } from './answer.server';
+import { pickMarkdownExcerpt } from './excerpt.server';
 
 export async function readDemoCorpus(path: string): Promise<KbCorpus> {
   if (!isAbsolute(path)) throw new Error('Absolute corpus path required');
@@ -52,24 +53,19 @@ export function createLocalDemoAnswer(value: KbCorpus) {
           const text =
             `${doc.metadata.title}\n${doc.content}`.toLocaleLowerCase();
           const score = terms.filter((term) => text.includes(term)).length;
-          const first =
-            terms
-              .map((term) => doc.content.toLocaleLowerCase().indexOf(term))
-              .filter((i) => i >= 0)
-              .sort((a, b) => a - b)[0] ?? 0;
-          const start = doc.content.lastIndexOf('\n', first) + 1;
-          return { doc, score, start };
+          const excerpt = pickMarkdownExcerpt(doc.content, terms);
+          return { doc, score, excerpt };
         })
-        .filter((item) => item.score > 0)
+        .filter((item) => item.score > 0 && item.excerpt !== null)
         .sort(
           (a, b) =>
             b.score - a.score || a.doc.sourceId.localeCompare(b.doc.sourceId),
         )
         .slice(0, 6)
-        .map(({ doc, start }, i) => ({
+        .map(({ doc, excerpt }, i) => ({
           id: `e${i + 1}`,
           sourceId: doc.sourceId,
-          text: doc.content.slice(start, start + 3000),
+          text: excerpt as string,
         }));
     },
     async generate({ evidence }, signal) {

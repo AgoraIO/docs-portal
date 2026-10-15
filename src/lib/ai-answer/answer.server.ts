@@ -8,6 +8,7 @@ import {
   isSafeCitationUrl,
   parseAnswerRequest,
 } from './contracts';
+import { pickMarkdownExcerpt } from './excerpt.server';
 
 export type Evidence = {
   id: string;
@@ -123,7 +124,9 @@ export function createAnswerService(deps: AnswerDependencies) {
         const url = section?.url ?? doc.metadata.url;
         if (!isSafeCitationUrl(url)) continue;
         if (evidence.length >= 6) continue;
-        evidence.push({ ...hit, text: hit.text.slice(0, 3000) });
+        const excerpt = pickMarkdownExcerpt(hit.text);
+        if (excerpt === null) continue;
+        evidence.push({ ...hit, text: excerpt });
         citations.set(hit.id, {
           id: hit.id,
           title: section

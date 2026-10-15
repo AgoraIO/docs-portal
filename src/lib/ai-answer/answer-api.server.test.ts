@@ -1,7 +1,12 @@
 // @vitest-environment node
 import { mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { IncomingMessage } from 'node:http';
+import { Socket } from 'node:net';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import remarkParse from 'remark-parse';
+import { NodeRequest } from 'srvx/node';
+import { unified } from 'unified';
 import { afterEach, expect, it, vi } from 'vitest';
 import { createKbDocument, type KbCorpus } from '../ai-kb/corpus';
 import { handleAnswerRequest } from './answer-api.server';
@@ -80,6 +85,17 @@ it('returns an explicitly local excerpt and no-store through real HTTP objects',
     citations: [{ url: doc.sourceId }],
   });
 });
+it('accepts the srvx NodeRequest used by the real service without native reconstruction', async () => {
+  const incoming = new IncomingMessage(new Socket());
+  incoming.method = 'POST';
+  incoming.url = '/api/ai/answer';
+  incoming.headers = { host: 'localhost', 'content-type': 'application/json' };
+  incoming.push(Buffer.from(JSON.stringify({ question: 'Token' })));
+  incoming.push(null);
+  incoming.complete = true;
+  const request = new NodeRequest({ req: incoming });
+  expect((await handleAnswerRequest(request, opts)).status).toBe(200);
+});
 it('reads a local corpus from disk without altering its bytes', async () => {
   const directory = await mkdtemp(join(tmpdir(), 'ai-local-'));
   dirs.push(directory);
@@ -107,6 +123,35 @@ it('applies filters before choosing excerpts', async () => {
   expect(
     (await answer({ question: 'Token', platform: 'android' })).status,
   ).toBe('no-evidence');
+});
+it('keeps complete code fences when the query matches inside a code block', async () => {
+  const content =
+    '# Example\n\n```ts\nconst first = 1;\n  joinChannel(token);\nconst last = 2;\n```\n\nAfter code.';
+  const codeDoc = createKbDocument({ content, metadata: doc.metadata });
+  const result = await createLocalDemoAnswer({
+    ...corpus,
+    documents: [codeDoc],
+  })({ question: 'joinChannel' });
+  const nodes = unified().use(remarkParse).parse(result.answer).children;
+  expect(nodes.find((n) => n.type === 'code')).toMatchObject({
+    type: 'code',
+    lang: 'ts',
+    value: expect.stringContaining('  joinChannel(token);'),
+  });
+  expect(nodes.filter((n) => n.type === 'code')).toHaveLength(1);
+});
+it('does not cut a large code block or turn later excerpts into code', async () => {
+  const content = '# Token\n\n```ts\n' + 'token();\n'.repeat(500) + '```';
+  const codeDoc = createKbDocument({ content, metadata: doc.metadata });
+  const result = await createLocalDemoAnswer({
+    ...corpus,
+    documents: [codeDoc],
+  })({ question: 'token' });
+  const code = unified()
+    .use(remarkParse)
+    .parse(result.answer)
+    .children.filter((n) => n.type === 'code');
+  expect(code).toHaveLength(0);
 });
 it('rejects cross-origin and cross-site browser requests before reading corpus', async () => {
   for (const headers of [

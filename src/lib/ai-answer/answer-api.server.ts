@@ -19,7 +19,7 @@ const headers = {
 };
 const failure = (status: number, error: string) =>
   Response.json({ error }, { status, headers });
-async function readBody(request: Request) {
+async function readBody(request: Request, signal: AbortSignal) {
   const limit = 16 * 1024;
   if (Number(request.headers.get('content-length')) > limit)
     throw new AnswerError('TOO_LARGE');
@@ -31,10 +31,10 @@ async function readBody(request: Request) {
   const onAbort = () => {
     void reader.cancel().catch(() => {});
   };
-  request.signal.addEventListener('abort', onAbort, { once: true });
+  signal.addEventListener('abort', onAbort, { once: true });
   try {
     while (true) {
-      request.signal.throwIfAborted();
+      signal.throwIfAborted();
       const { value, done } = await reader.read();
       if (done) break;
       size += value.byteLength;
@@ -44,10 +44,10 @@ async function readBody(request: Request) {
       }
       text += decoder.decode(value, { stream: true });
     }
-    request.signal.throwIfAborted();
+    signal.throwIfAborted();
     return parseAnswerRequest(JSON.parse(text + decoder.decode()));
   } finally {
-    request.signal.removeEventListener('abort', onAbort);
+    signal.removeEventListener('abort', onAbort);
     reader.releaseLock();
   }
 }
@@ -60,7 +60,7 @@ export async function handleAnswerRequest(
   const signal = AbortSignal.any([request.signal, timeout.signal]);
   try {
     return await abortable(signal, () =>
-      handleActiveRequest(new Request(request, { signal }), options),
+      handleActiveRequest(request, options, signal),
     );
   } catch {
     if (request.signal.aborted) return failure(499, 'CANCELLED');
@@ -74,6 +74,7 @@ export async function handleAnswerRequest(
 async function handleActiveRequest(
   request: Request,
   options: Options,
+  signal: AbortSignal,
 ): Promise<Response> {
   const env = options.env ?? process.env;
   if (
@@ -98,7 +99,7 @@ async function handleActiveRequest(
   if (request.signal.aborted) return failure(499, 'CANCELLED');
   let input: AnswerRequest;
   try {
-    input = await readBody(request);
+    input = await readBody(request, signal);
   } catch (error) {
     if (request.signal.aborted) return failure(499, 'CANCELLED');
     return failure(
@@ -110,10 +111,9 @@ async function handleActiveRequest(
     const corpus = await (options.loadCorpus ?? readDemoCorpus)(
       env.AI_BOT_CORPUS_PATH,
     );
-    return Response.json(
-      await createLocalDemoAnswer(corpus)(input, request.signal),
-      { headers },
-    );
+    return Response.json(await createLocalDemoAnswer(corpus)(input, signal), {
+      headers,
+    });
   } catch (error) {
     if (request.signal.aborted) return failure(499, 'CANCELLED');
     if (error instanceof AnswerError && error.code === 'TIMEOUT')
