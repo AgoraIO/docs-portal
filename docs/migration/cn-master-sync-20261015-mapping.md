@@ -2,7 +2,7 @@
 
 源仓库：`shengwang-doc-source`，`master`，当前提交 `5ff6834d5`  
 源同步基线：`5d03551cf`  
-目标仓库：`docs-portal`，目标分支 `codex/cn-newdoc-html-api-migration`  
+目标仓库：`docs-portal`，目标基线 `99e7f81b4`，目标分支 `codex/cn-newdoc-html-api-migration`  
 目标迁移分支：`codex/cn-master-sync-20261015`
 
 ## 已同步文件
