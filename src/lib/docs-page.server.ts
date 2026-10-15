@@ -54,6 +54,7 @@ import {
 } from './openapi/lanes';
 import { getOpenApiMarkdownPages } from './openapi/markdown';
 import { getOpenApiOperation } from './openapi/source.server';
+import { resolvePlatformContext } from './platforms/context';
 import {
   filterPlatformGroupPanelNodes,
   getCanonicalSourcePages,
@@ -135,11 +136,6 @@ const TITLE_PLATFORM_SEGMENT_MAP = new Map<string, PlatformKey>([
   ['unreal-blueprint', 'blueprint'],
   ['unreal-cpp', 'unreal'],
 ]);
-const TITLE_PLATFORM_EXCLUDED_KEYS = new Set<PlatformKey>([
-  'restful',
-  'restful-api',
-]);
-
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type ZhCnRtcRestSidebarLink = readonly [string, string];
 
@@ -884,6 +880,7 @@ export async function loadDocsPagePayload(
     ),
   );
   const titlePlatforms = getTitlePlatforms({
+    defaultPlatform: defaultStructuredPlatform,
     locale,
     page,
     processedText,
@@ -983,11 +980,13 @@ export async function loadDocsPagePayload(
 }
 
 function getTitlePlatforms({
+  defaultPlatform,
   locale,
   page,
   processedText,
   requestedPlatform,
 }: {
+  defaultPlatform?: PlatformKey;
   locale: string;
   page: PageWithSource;
   processedText: string;
@@ -997,23 +996,14 @@ function getTitlePlatforms({
     return [];
   }
 
-  const explicitTitlePlatforms = getExplicitTitlePlatforms(page);
-
-  if (explicitTitlePlatforms.length > 0) {
-    return explicitTitlePlatforms;
-  }
-
-  if (requestedPlatform) {
-    return [requestedPlatform];
-  }
-
   const structuredPlatforms = extractStructuredPlatformKeys(processedText);
-
-  if (structuredPlatforms.length === 1) {
-    return structuredPlatforms;
-  }
-
-  return getPathTitlePlatforms(page);
+  return resolvePlatformContext({
+    availablePlatforms: structuredPlatforms,
+    defaultPlatform,
+    explicitTitlePlatforms: getExplicitTitlePlatforms(page),
+    pathPlatforms: getPathTitlePlatforms(page),
+    requestedPlatform,
+  }).titlePlatforms;
 }
 
 function getExplicitTitlePlatforms(page: PageWithSource): PlatformKey[] {
@@ -1036,11 +1026,7 @@ function getPathTitlePlatforms(page: PageWithSource): PlatformKey[] {
     const mappedPlatform = TITLE_PLATFORM_SEGMENT_MAP.get(segment);
     const platform = mappedPlatform ?? normalizePlatformSlugSegment(segment);
 
-    if (
-      platform &&
-      !TITLE_PLATFORM_EXCLUDED_KEYS.has(platform) &&
-      !platforms.includes(platform)
-    ) {
+    if (platform && !platforms.includes(platform)) {
       platforms.push(platform);
     }
   }

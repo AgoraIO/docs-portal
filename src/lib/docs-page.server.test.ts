@@ -1818,6 +1818,51 @@ Web body
     });
   });
 
+  it('adds the default platform badge for a canonical zh-CN structured page', async () => {
+    const page = createZhPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## 共享内容
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android 设置
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web 设置
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('zh-CN', 'introduction', [
+      'about-agora',
+    ]);
+
+    expect(payload).toMatchObject({
+      body: {
+        platformTabs: {
+          defaultPlatform: 'android',
+          initialPlatform: undefined,
+        },
+      },
+      titlePlatforms: ['android'],
+    });
+  });
+
   it('does not add title platform badges for non-zh-CN selected platform routes', async () => {
     const page = createPage();
 

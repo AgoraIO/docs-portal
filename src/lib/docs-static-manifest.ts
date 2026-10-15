@@ -1,5 +1,6 @@
 import type { DocsRedirectPayload } from './docs-page.server';
-import { isKnownPlatform } from './platforms/registry';
+import { resolvePlatformContext } from './platforms/context';
+import { isKnownPlatform, normalizePlatformKey } from './platforms/registry';
 
 const STATIC_DOCS_BASE = '/__static/docs';
 const STATIC_DOCS_PUBLIC_DIR = '__static/docs';
@@ -114,14 +115,14 @@ type PlatformStaticPayload = {
     };
   };
   markdownUrl: string;
+  titlePlatforms?: string[];
   toc?: unknown[];
 };
 
 export async function resolvePlatformStaticDocsPayload<
   T extends PlatformStaticPayload | DocsRedirectPayload,
->(input: StaticDocsRouteInput) {
-  const { locale, slugSegments, tab } =
-    canonicalizeStaticDocsRouteInput(input);
+>(input: StaticDocsRouteInput): Promise<T | null> {
+  const { locale, slugSegments, tab } = canonicalizeStaticDocsRouteInput(input);
 
   const payload = await readStaticDocsPayload<T>({
     locale,
@@ -130,10 +131,22 @@ export async function resolvePlatformStaticDocsPayload<
   });
 
   if (payload) {
-    return payload;
+    if ('redirectUrl' in payload) {
+      return payload;
+    }
+
+    return normalizeStaticPlatformPayload(
+      payload,
+      locale,
+      slugSegments.at(-1),
+      slugSegments,
+    ) as T;
   }
 
-  const platform = slugSegments.at(-1);
+  const platformCandidate = slugSegments.at(-1);
+  const platform = platformCandidate
+    ? normalizePlatformKey(platformCandidate)
+    : undefined;
 
   if (!platform || !isKnownPlatform(platform)) {
     return null;
@@ -162,22 +175,64 @@ export async function resolvePlatformStaticDocsPayload<
   }
 
   return clearStalePlatformFallbackToc(
-    {
-      ...canonicalPayload,
-      body: {
-        ...canonicalPayload.body,
-        platformTabs: {
-          ...canonicalPayload.body.platformTabs,
-          initialPlatform: platform,
+    normalizeStaticPlatformPayload(
+      {
+        ...canonicalPayload,
+        body: {
+          ...canonicalPayload.body,
+          platformTabs: {
+            ...canonicalPayload.body.platformTabs,
+            initialPlatform: platform,
+          },
         },
+        markdownUrl: getPlatformMarkdownUrl(
+          canonicalPayload.markdownUrl,
+          platform,
+        ),
       },
-      markdownUrl: getPlatformMarkdownUrl(
-        canonicalPayload.markdownUrl,
-        platform,
-      ),
-    },
+      locale,
+      platform,
+      slugSegments,
+    ),
     platform,
   );
+}
+
+function normalizeStaticPlatformPayload<T extends PlatformStaticPayload>(
+  payload: T,
+  locale: string,
+  requestedPlatform?: string,
+  pathPlatforms: readonly string[] = [],
+): T {
+  if (locale !== 'zh-CN') {
+    return payload;
+  }
+
+  const platformTabs = payload.body.platformTabs;
+  const availablePlatforms = platformTabs
+    ? parsePlatformList(platformTabs.platforms)
+    : [];
+  const titlePlatforms = resolvePlatformContext({
+    availablePlatforms,
+    canonicalPlatform: platformTabs?.canonicalPlatform,
+    defaultPlatform: platformTabs?.defaultPlatform,
+    explicitTitlePlatforms: payload.titlePlatforms,
+    pathPlatforms,
+    requestedPlatform,
+  }).titlePlatforms;
+
+  return titlePlatforms.length > 0 ? { ...payload, titlePlatforms } : payload;
+}
+
+function parsePlatformList(value: string) {
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    return Array.isArray(parsed)
+      ? parsed.filter((item): item is string => typeof item === 'string')
+      : [];
+  } catch {
+    return [];
+  }
 }
 
 function clearStalePlatformFallbackToc<T extends PlatformStaticPayload>(
@@ -199,12 +254,7 @@ function clearStalePlatformFallbackToc<T extends PlatformStaticPayload>(
 }
 
 function platformsInclude(platformsJson: string, platform: string) {
-  try {
-    const platforms = JSON.parse(platformsJson) as unknown;
-    return Array.isArray(platforms) && platforms.includes(platform);
-  } catch {
-    return false;
-  }
+  return parsePlatformList(platformsJson).includes(platform);
 }
 
 function getPlatformMarkdownUrl(markdownUrl: string, platform: string) {
