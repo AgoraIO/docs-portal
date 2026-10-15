@@ -1,6 +1,8 @@
 import { ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS } from './zh-cn-moved-solution-product-redirects';
 
 const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
+  'api-reference/whiteboard/whiteboard-sdk/restful/fastboard-sdk/solution-compare':
+    '/zh-CN/realtime-media/whiteboard/solution-compare',
   'realtime-media/recording': '/zh-CN/realtime-media/cloud-recording',
   'realtime-media/danmaku/api/api-limits':
     '/zh-CN/realtime-media/danmaku/reference/api-limits',
@@ -1036,7 +1038,7 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/whiteboard/fastboard-sdk/response-code':
     '/zh-CN/realtime-media/whiteboard/fastboard-sdk/reference/response-code',
   'realtime-media/whiteboard/fastboard-sdk/solution-compare':
-    '/zh-CN/realtime-media/whiteboard#如何选择互动白板-sdk-和-fastboard-sdk',
+    '/zh-CN/realtime-media/whiteboard/solution-compare',
   'realtime-media/whiteboard/reference':
     '/zh-CN/realtime-media/whiteboard/concepts',
   'realtime-media/whiteboard/whiteboard-sdk/advanced-features/convert-files':
