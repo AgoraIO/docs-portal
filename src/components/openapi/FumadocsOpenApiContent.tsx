@@ -831,7 +831,9 @@ function getOpenApiSecurityLink(
   );
   const link = links?.[key];
 
-  return typeof link === 'string' && link.trim().length > 0 ? link : undefined;
+  return typeof link === 'string' && link.trim().length > 0
+    ? link.trim()
+    : undefined;
 }
 
 function getOpenApiSecuritySchemes(operation?: OpenApiOperation) {

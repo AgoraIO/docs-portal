@@ -994,6 +994,8 @@ describe('FumadocsOpenApiContent', () => {
                   '/en/api-reference/api-ref/conversational-ai/authentication#token-authentication',
                 basicAuth:
                   '/en/api-reference/api-ref/conversational-ai/authentication#basic-http-authentication',
+                blankAuth: '   ',
+                invalidAuth: 123,
               },
               components: {
                 securitySchemes: {
@@ -1010,6 +1012,14 @@ describe('FumadocsOpenApiContent', () => {
                     scheme: 'bearer',
                     type: 'http',
                   },
+                  blankAuth: {
+                    scheme: 'bearer',
+                    type: 'http',
+                  },
+                  invalidAuth: {
+                    scheme: 'bearer',
+                    type: 'http',
+                  },
                 },
               },
               security: [
@@ -1021,6 +1031,12 @@ describe('FumadocsOpenApiContent', () => {
                 },
                 {
                   unlinkedAuth: [],
+                },
+                {
+                  blankAuth: [],
+                },
+                {
+                  invalidAuth: [],
                 },
               ],
               paths: {
@@ -1078,6 +1094,18 @@ describe('FumadocsOpenApiContent', () => {
     ).toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: 'unlinkedAuth' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('blankAuth', { selector: 'code' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'blankAuth' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('invalidAuth', { selector: 'code' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'invalidAuth' }),
     ).not.toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Header Parameters' }),
