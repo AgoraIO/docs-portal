@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { createKbDocument, type KbCorpus } from './corpus';
-import { planKbSync, type KbSuccessfulState } from './plan';
+import { type KbSuccessfulState, planKbSync } from './plan';
+
 const makeDoc = (name: string, content = 'body') =>
   createKbDocument({
     content,

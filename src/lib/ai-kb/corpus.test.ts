@@ -63,8 +63,8 @@ describe('KB document contract', () => {
   });
   it('canonicalizes section order and object property order', () => {
     const sections = [
-      { url: metadata.url + '#b', title: 'B', headingPath: ['Demo', 'B'] },
-      { url: metadata.url + '#a', title: 'A', headingPath: ['Demo', 'A'] },
+      { url: `${metadata.url}#b`, title: 'B', headingPath: ['Demo', 'B'] },
+      { url: `${metadata.url}#a`, title: 'A', headingPath: ['Demo', 'A'] },
     ];
     const a = createKbDocument({
       metadata: { ...metadata, sections },

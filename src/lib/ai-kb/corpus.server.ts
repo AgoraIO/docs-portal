@@ -48,8 +48,10 @@ export async function buildKbCorpus(input: {
   if (!identities.length) throw new Error('No published KB documents');
   const documents = [];
   for (const id of identities) {
-    const route = routes.get(id)!;
-    const sections = groups.get(id)!;
+    const route = routes.get(id);
+    const sections = groups.get(id);
+    if (!route || !sections?.length)
+      throw new Error(`Missing validated route: ${id}`);
     const first = sections[0];
     const metadataFor = (section: SearchSection) => ({
       url: id,

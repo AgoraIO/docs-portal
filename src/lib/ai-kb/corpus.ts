@@ -54,7 +54,8 @@ export function assertKbPath(value: unknown): asserts value is string {
       !decoded ||
       decoded === '.' ||
       decoded === '..' ||
-      /[/\\?#\s%\u0000-\u001f]/.test(decoded)
+      /[/\\?#\s%]/.test(decoded) ||
+      Array.from(decoded).some((character) => character.charCodeAt(0) < 32)
     )
       throw new Error('Invalid CN document path segment');
   }
