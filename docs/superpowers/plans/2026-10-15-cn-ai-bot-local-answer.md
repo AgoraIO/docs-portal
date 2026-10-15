@@ -1,6 +1,6 @@
 # CN AI-Bot 本地问答链路 Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** 不创建云资源，通过现有 corpus 和明确标记的本地摘录演示，打通独立问答 API、新搜索页交互及引用约束。
 
@@ -35,11 +35,11 @@
 
 **Interfaces:** `AnswerRequest={question,product?,platform?,version?,type?}`；`Evidence={id,sourceId,text,sectionUrl?}`；`GeneratedAnswer={markdown,evidenceIds}`；`AnswerResponse={mode,status,answer,citations}`。`createAnswerService({corpus,retrieve,generate,timeoutMs?})` 返回 `(input,signal?) => Promise<AnswerResponse>`，retrieve/generate 只收到限定输入与合并超时 signal。
 
-- [ ] 写失败测试：`expect(await answer({question:'Token',platform:'web'})).toMatchObject({status:'no-evidence',citations:[]})`，检索器返回 Android 与未知 sourceId，生成器不可被调用。
-- [ ] 运行 `bun run test src/lib/ai-answer/answer.server.test.ts`，观察模块缺失失败。
-- [ ] 实现请求解析、来源白名单/筛选、去重/上下文限额、引用映射、超时/取消；生成器引用集合必须非空且完全属于本次证据，失败拒绝回答。corpus 通过既有 parseKbCorpus 校验。
-- [ ] 增加代码围栏保留、章节回退、未知引用、无证据不调用生成、错误及超时测试，运行通过。
-- [ ] 提交 `feat: add grounded document answer orchestration`。
+- [x] 写失败测试：`expect(await answer({question:'Token',platform:'web'})).toMatchObject({status:'no-evidence',citations:[]})`，检索器返回 Android 与未知 sourceId，生成器不可被调用。
+- [x] 运行 `bun run test src/lib/ai-answer/answer.server.test.ts`，观察模块缺失失败。
+- [x] 实现请求解析、来源白名单/筛选、去重/上下文限额、引用映射、超时/取消；生成器引用集合必须非空且完全属于本次证据，失败拒绝回答。corpus 通过既有 parseKbCorpus 校验。
+- [x] 增加代码围栏保留、章节回退、未知引用、无证据不调用生成、错误及超时测试，运行通过。
+- [x] 提交 `feat: add grounded document answer orchestration`。
 
 ### Task 2: 本地摘录模式和独立 HTTP 入口
 
@@ -47,11 +47,11 @@
 
 **Interfaces:** `createLocalDemoAnswer(corpus)` 复用 Task 1 服务，返回 mode=local-demo；`handleAnswerRequest(request, options?)` 提供依赖注入测试，实际模式从服务端环境读取，文件大小最大 20MiB，corpus 限定最多 100 篇 demo 文档。HTTP 响应 no-store、固定公开错误码，不回显内部错误。
 
-- [ ] 写失败测试 `expect((await handleAnswerRequest(request,{env:{}})).status).toBe(503)`；额外测试真实 Request/Response 的错误 JSON、超限、跨站请求、production、取消及成功摘录。
-- [ ] 运行 `bun run test src/lib/ai-answer/answer-api.server.test.ts`，确认失败。
-- [ ] 实现流式读取请求大小上限、JSON/字段校验、同源检查、关闭保护、读取本地 corpus 和确定性关键词摘录。无关键词命中返回 no-evidence，不能总是返回第一篇。
-- [ ] 注册 POST 路由至普通路由树和 service router；不改普通搜索 API。运行 focused tests 和 service build。
-- [ ] 提交 `feat: expose opt-in local document answer API`。
+- [x] 写失败测试 `expect((await handleAnswerRequest(request,{env:{}})).status).toBe(503)`；额外测试真实 Request/Response 的错误 JSON、超限、跨站请求、production、取消及成功摘录。
+- [x] 运行 `bun run test src/lib/ai-answer/answer-api.server.test.ts`，确认失败。
+- [x] 实现流式读取请求大小上限、JSON/字段校验、同源检查、关闭保护、读取本地 corpus 和确定性关键词摘录。无关键词命中返回 no-evidence，不能总是返回第一篇。
+- [x] 注册 POST 路由至普通路由树和 service router；不改普通搜索 API。运行 focused tests 和 service build。
+- [x] 提交 `feat: expose opt-in local document answer API`。
 
 ### Task 3: 新搜索页的独立问答面板
 
@@ -59,9 +59,13 @@
 
 **Interfaces:** `askDocumentQuestion(input,signal?) => Promise<AnswerResponse>` POST 到 /api/ai/answer，运行时验证响应与安全引用 URL。`AiAnswerPanel({filters,onClose})`；`DocsSearchPage` 新增默认 false 的 aiDemoEnabled prop，路由通过 VITE_AI_BOT_DEMO 显式开启。
 
-- [ ] 写失败测试：提交后显示等待，取消后延迟结果不显示；更改筛选清除旧回答；默认普通搜索没有 AI 入口，启用后点击才展示面板，不自动请求。
-- [ ] 运行 `bun run test src/components/search/AiAnswerPanel.test.tsx src/lib/ai-answer/client.test.ts`，观察失败。
-- [ ] 实现面板、取消/重试/无证据/错误/受控引用；Markdown AST 仅渲染文本、段落、标题、列表、强调和代码，链接只显示文字，HTML/图片不执行。
-- [ ] 验证默认搜索回归、恶意 Markdown、信号取消、旧响应忽略和引用。记录本地启动方式、真实联调待办及证据。
-- [ ] 运行 focused tests、types:check、Biome、完整 test，比较已知 37 个失败；浏览器验证页面、独立 review 后处理重要问题。
-- [ ] 提交 `feat: add opt-in AI answer demo panel`，不 push/merge/deploy。
+- [x] 写失败测试：提交后显示等待，取消后延迟结果不显示；更改筛选清除旧回答；默认普通搜索没有 AI 入口，启用后点击才展示面板，不自动请求。
+- [x] 运行 `bun run test src/components/search/AiAnswerPanel.test.tsx src/lib/ai-answer/client.test.ts`，观察失败。
+- [x] 实现面板、取消/重试/无证据/错误/受控引用；Markdown AST 仅渲染文本、段落、标题、列表、强调和代码，链接只显示文字，HTML/图片不执行。
+- [x] 验证默认搜索回归、恶意 Markdown、信号取消、旧响应忽略和引用。记录本地启动方式、真实联调待办及证据。
+- [x] 运行 focused tests、types:check、Biome、完整 test，比较已知 37 个失败；浏览器验证页面、独立 review 后处理重要问题。
+- [x] 提交 `feat: add opt-in AI answer demo panel`，不 push/merge/deploy。
+
+## 执行结果
+
+本地范围完成；实现、独立审查修复及验证见 docs/agents/reports/2026-10-15-ai-answer-local-verification.md。最终 2953 项：2914 通过、37 基线失败、2 跳过；新增失败 0。真实云端/全量/部署仍不在本计划已完成范围内。
