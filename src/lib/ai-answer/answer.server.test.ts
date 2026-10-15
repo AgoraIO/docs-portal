@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { expect, it, vi } from 'vitest';
 import { createKbDocument, type KbCorpus } from '../ai-kb/corpus';
-import { createAnswerService } from './answer.server';
+import { createAnswerService, type GenerateInput } from './answer.server';
 
 const web = createKbDocument({
   content:
@@ -50,7 +50,7 @@ function setup(
   overrides: Partial<Parameters<typeof createAnswerService>[0]> = {},
 ) {
   const retrieve = vi.fn(async () => [evidence]);
-  const generate = vi.fn(async () => ({
+  const generate = vi.fn(async (_input: GenerateInput) => ({
     markdown: '使用 Token。\n\n```ts\n  joinChannel(token);\n```',
     evidenceIds: ['e1'],
   }));
@@ -130,7 +130,7 @@ it('bounds evidence count and context while keeping the source text', async () =
     content: 'x'.repeat(10000),
     metadata: web.metadata,
   });
-  const generate = vi.fn(async () => ({
+  const generate = vi.fn(async (_input: GenerateInput) => ({
     markdown: 'answer',
     evidenceIds: ['0'],
   }));

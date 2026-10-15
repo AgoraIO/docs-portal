@@ -63,7 +63,10 @@ export function isSafeCitationUrl(value: unknown): value is string {
   try {
     const decoded = decodeURIComponent(value);
     if (
-      /[\s\\%\u0000-\u001f\u007f]/.test(decoded) ||
+      /[\s\\%]/.test(decoded) ||
+      Array.from(decoded).some(
+        (c) => c.charCodeAt(0) < 32 || c.charCodeAt(0) === 127,
+      ) ||
       decoded.split('#').length > 2
     )
       return false;
