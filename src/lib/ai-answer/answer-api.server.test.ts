@@ -264,3 +264,89 @@ it('bounds slow request streams and slow corpus loading with a total deadline', 
     ).status,
   ).toBe(504);
 });
+
+it('runs the opt-in Bailian mode with server-only credentials through the real HTTP handler', async () => {
+  const fetcher = vi.fn(async (url: string | URL | Request) => {
+    if (String(url).endsWith('/knowledge/search'))
+      return Response.json({
+        code: 'Success',
+        status_code: 200,
+        status: 'SUCCESS',
+        success: true,
+        data: {
+          nodes: [
+            {
+              metadata: {
+                doc_id: 'remote',
+                pipeline_id: 'kb',
+                workspace_id: 'llm-test',
+                content: 'Token 需要由服务端生成。',
+              },
+            },
+          ],
+        },
+      });
+    return Response.json({
+      choices: [
+        {
+          finish_reason: 'stop',
+          message: {
+            content: JSON.stringify({
+              markdown: '依据文档，应在服务端生成 Token。',
+              evidenceIds: ['e1'],
+            }),
+          },
+        },
+      ],
+    });
+  });
+  const response = await handleAnswerRequest(req(), {
+    ...opts,
+    env: {
+      ...env,
+      AI_BOT_MODE: 'bailian',
+      AI_BOT_BAILIAN_BINDINGS_PATH: '/test/bindings.json',
+      BAILIAN_API_KEY: 'TEST-SECRET',
+    },
+    loadBindings: async () => ({
+      schema: 1,
+      scope: corpus.scope,
+      workspaceId: 'llm-test',
+      indexId: 'kb',
+      agentId: 'aid-test',
+      documents: [
+        { sourceId: doc.sourceId, hash: doc.hash, documentId: 'remote' },
+      ],
+    }),
+    fetch: fetcher,
+  });
+  expect(response.status).toBe(200);
+  expect(await response.json()).toMatchObject({
+    mode: 'bailian',
+    status: 'answered',
+    citations: [{ url: doc.sourceId }],
+  });
+  expect(fetcher).toHaveBeenCalledTimes(2);
+});
+it('does not call upstream with incomplete Bailian configuration or in production', async () => {
+  const fetcher = vi.fn();
+  for (const cloudEnv of [
+    { ...env, AI_BOT_MODE: 'bailian' },
+    {
+      ...env,
+      AI_BOT_MODE: 'bailian',
+      NODE_ENV: 'production',
+      BAILIAN_API_KEY: 'TEST-SECRET',
+      AI_BOT_BAILIAN_BINDINGS_PATH: '/test/bindings.json',
+    },
+  ]) {
+    const response = await handleAnswerRequest(req(), {
+      ...opts,
+      env: cloudEnv,
+      fetch: fetcher,
+    });
+    expect(response.status).toBe(503);
+    expect(await response.text()).not.toContain('TEST-SECRET');
+  }
+  expect(fetcher).not.toHaveBeenCalled();
+});

@@ -55,3 +55,12 @@ it('rejects malformed response shapes and unsafe citation links', async () => {
     );
   }
 });
+
+it('accepts a validated Bailian response through the same endpoint', async () => {
+  vi.stubGlobal('fetch', async () =>
+    Response.json({ ...answer, mode: 'bailian' }),
+  );
+  expect((await askDocumentQuestion({ question: 'Token' })).mode).toBe(
+    'bailian',
+  );
+});

@@ -1,6 +1,7 @@
 import { isAbsolute } from 'node:path';
 import type { KbCorpus } from '../ai-kb/corpus';
 import { abortable } from './answer.server';
+import { createBailianAnswer, readAnswerBindings } from './bailian.server';
 import {
   AnswerError,
   type AnswerRequest,
@@ -11,6 +12,8 @@ import { createLocalDemoAnswer, readDemoCorpus } from './local-demo.server';
 type Options = {
   env?: Record<string, string | undefined>;
   loadCorpus?: (path: string) => Promise<KbCorpus>;
+  loadBindings?: (path: string) => Promise<unknown>;
+  fetch?: typeof fetch;
   timeoutMs?: number;
 };
 const headers = {
@@ -78,10 +81,17 @@ async function handleActiveRequest(
 ): Promise<Response> {
   const env = options.env ?? process.env;
   if (
-    env.AI_BOT_MODE !== 'local-demo' ||
+    !['local-demo', 'bailian'].includes(env.AI_BOT_MODE ?? '') ||
     env.NODE_ENV === 'production' ||
     !env.AI_BOT_CORPUS_PATH ||
     !isAbsolute(env.AI_BOT_CORPUS_PATH)
+  )
+    return failure(503, 'AI_UNAVAILABLE');
+  if (
+    env.AI_BOT_MODE === 'bailian' &&
+    (!env.BAILIAN_API_KEY ||
+      !env.AI_BOT_BAILIAN_BINDINGS_PATH ||
+      !isAbsolute(env.AI_BOT_BAILIAN_BINDINGS_PATH))
   )
     return failure(503, 'AI_UNAVAILABLE');
   if (request.method !== 'POST') return failure(405, 'METHOD_NOT_ALLOWED');
@@ -111,7 +121,20 @@ async function handleActiveRequest(
     const corpus = await (options.loadCorpus ?? readDemoCorpus)(
       env.AI_BOT_CORPUS_PATH,
     );
-    return Response.json(await createLocalDemoAnswer(corpus)(input, signal), {
+    const answer =
+      env.AI_BOT_MODE === 'bailian'
+        ? createBailianAnswer({
+            corpus,
+            bindings: await (options.loadBindings ?? readAnswerBindings)(
+              env.AI_BOT_BAILIAN_BINDINGS_PATH as string,
+            ),
+            apiKey: env.BAILIAN_API_KEY as string,
+            modelApiKey: env.BAILIAN_MODEL_API_KEY,
+            model: env.AI_BOT_MODEL,
+            fetch: options.fetch,
+          })
+        : createLocalDemoAnswer(corpus);
+    return Response.json(await answer(input, signal), {
       headers,
     });
   } catch (error) {

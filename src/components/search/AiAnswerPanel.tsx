@@ -82,7 +82,13 @@ export function AiAnswerPanel({
         </Button>
       </div>
       <p className="text-sm text-muted-foreground">
-        本地文档摘录演示，尚未接入百炼知识库和 AI 模型。
+        {current.result?.mode === 'local-demo'
+          ? '本地文档摘录演示，尚未调用百炼知识库和 AI 模型。'
+          : current.result?.mode === 'bailian'
+            ? current.result.status === 'answered'
+              ? '百炼知识库与模型生成，回答仅供参考，请结合来源文档核对。'
+              : '已检索百炼知识库，未找到足够依据。'
+            : '基于文档内容回答，请结合参考文档核对。'}
       </p>
       <p className="text-sm text-muted-foreground">
         沿用当前产品、平台、版本和文档类型筛选；修改筛选后请重新提问。

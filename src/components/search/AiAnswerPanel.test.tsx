@@ -132,3 +132,15 @@ it('renders restricted markdown without scripts, images, or model-provided links
     '<script>alert(1)</script>',
   );
 });
+
+it('labels a Bailian response without claiming it is a local excerpt', async () => {
+  vi.mocked(askDocumentQuestion).mockResolvedValue({
+    ...result,
+    mode: 'bailian',
+  });
+  render(<AiAnswerPanel filters={{}} onClose={vi.fn()} />);
+  submit();
+  await screen.findByRole('link', { name: 'Token 指南' });
+  expect(screen.queryByText(/本地文档摘录演示/)).not.toBeInTheDocument();
+  expect(screen.getByText(/百炼知识库与模型生成/)).toBeInTheDocument();
+});

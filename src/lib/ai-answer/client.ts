@@ -18,7 +18,7 @@ export async function askDocumentQuestion(
   if (!response.ok) throw new Error('AI_UNAVAILABLE');
   const value = await response.json();
   if (
-    value?.mode !== 'local-demo' ||
+    !['local-demo', 'bailian'].includes(value?.mode) ||
     !['answered', 'no-evidence'].includes(value.status) ||
     typeof value.answer !== 'string' ||
     !value.answer.trim() ||

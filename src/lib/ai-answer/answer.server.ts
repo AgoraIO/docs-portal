@@ -19,6 +19,7 @@ export type Evidence = {
 export type GenerateInput = { question: string; evidence: Evidence[] };
 export type GeneratedAnswer = { markdown: string; evidenceIds: string[] };
 export type AnswerDependencies = {
+  mode?: AnswerResponse['mode'];
   corpus: KbCorpus;
   retrieve: (input: AnswerRequest, signal: AbortSignal) => Promise<Evidence[]>;
   generate: (
@@ -78,7 +79,7 @@ export function createAnswerService(deps: AnswerDependencies) {
       ? AbortSignal.any([external, timer.signal])
       : timer.signal;
     const empty: AnswerResponse = {
-      mode: 'local-demo',
+      mode: deps.mode ?? 'local-demo',
       status: 'no-evidence',
       answer: '当前文档中没有找到足够依据，请调整问题或筛选条件。',
       citations: [],
@@ -150,7 +151,7 @@ export function createAnswerService(deps: AnswerDependencies) {
       )
         throw new AnswerError('INVALID_ANSWER');
       return {
-        mode: 'local-demo',
+        mode: deps.mode ?? 'local-demo',
         status: 'answered',
         answer: output.markdown,
         citations: [...new Set(output.evidenceIds)].map(
