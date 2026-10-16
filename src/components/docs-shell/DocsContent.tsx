@@ -41,23 +41,14 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
-import {
-  getStoredPlatformPreference,
-  PLATFORM_DATASET_KEY,
-  PLATFORM_PREFERENCE_EVENT,
-} from '@/lib/platforms/preference';
-import {
-  getPlatformLabel,
-  isKnownPlatform,
-  normalizePlatformKey,
-  type PlatformKey,
-} from '@/lib/platforms/registry';
+import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
   PlatformPageProvider,
   PlatformPanel,
   PlatformTabsGroup,
   PlatformTabsPlacementProvider,
+  usePlatformPageContext,
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
@@ -83,85 +74,44 @@ type DocsArticleReturnLink = {
   title: string;
 };
 
-function readStoredPlatformPreference(): PlatformKey | null {
-  const stored = getStoredPlatformPreference();
-  if (!stored) {
-    return null;
-  }
-
-  const normalized = normalizePlatformKey(stored);
-  return isKnownPlatform(normalized) ? normalized : null;
-}
-
-function readActivePlatformDataset(): PlatformKey | null {
-  if (typeof document === 'undefined') {
-    return null;
-  }
-
-  const value = document.documentElement.dataset[PLATFORM_DATASET_KEY];
-  if (!value) {
-    return null;
-  }
-
-  const normalized = normalizePlatformKey(value);
-  return isKnownPlatform(normalized) ? normalized : null;
-}
-
-function resolveTitlePlatforms({
-  hidePlatformTabs,
-  activePlatform,
+function PlatformTitleBadges({
+  fallbackPlatforms,
+  locale,
   platformTabs,
-  storedPlatformPreference,
-  titlePlatforms,
 }: {
-  hidePlatformTabs: boolean;
-  activePlatform: PlatformKey | null;
+  fallbackPlatforms: PlatformKey[];
+  locale: AppLocale | string;
   platformTabs?: {
     initialPlatform?: PlatformKey;
-    platforms: string;
   };
-  storedPlatformPreference: PlatformKey | null;
-  titlePlatforms: PlatformKey[];
 }) {
-  if (hidePlatformTabs || !platformTabs) {
-    return titlePlatforms;
-  }
-
-  const availablePlatforms = parsePlatformList(platformTabs.platforms);
-  const routePlatform = platformTabs.initialPlatform;
+  const pageContext = usePlatformPageContext();
   const selectedPlatform =
-    (routePlatform && availablePlatforms.includes(routePlatform)
-      ? routePlatform
-      : undefined) ??
-    (activePlatform && availablePlatforms.includes(activePlatform)
-      ? activePlatform
-      : undefined) ??
-    (storedPlatformPreference &&
-    availablePlatforms.includes(storedPlatformPreference)
-      ? storedPlatformPreference
-      : undefined);
+    platformTabs?.initialPlatform ?? pageContext?.activePlatform;
+  const platforms = selectedPlatform ? [selectedPlatform] : fallbackPlatforms;
+  const labels = platforms.map((platform) =>
+    getPlatformLabel(platform, normalizeLocale(locale) ?? DEFAULT_LOCALE),
+  );
 
-  return selectedPlatform ? [selectedPlatform] : titlePlatforms;
-}
-
-function parsePlatformList(platforms: string) {
-  try {
-    const parsed = JSON.parse(platforms) as unknown;
-    if (!Array.isArray(parsed)) {
-      return [];
-    }
-
-    return parsed.flatMap((value) => {
-      if (typeof value !== 'string') {
-        return [];
-      }
-
-      const normalized = normalizePlatformKey(value);
-      return isKnownPlatform(normalized) ? [normalized] : [];
-    });
-  } catch {
-    return [];
+  if (labels.length === 0) {
+    return null;
   }
+
+  return (
+    <ul
+      aria-label={locale === 'zh-CN' ? '适用平台' : 'Platforms'}
+      className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
+    >
+      {labels.map((label) => (
+        <li
+          className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
+          key={label}
+        >
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
 }
 
 export function DocsContent({
@@ -246,59 +196,6 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
-  const [storedPlatformPreference, setStoredPlatformPreference] =
-    useState<PlatformKey | null>(null);
-  const [activePlatform, setActivePlatform] = useState<PlatformKey | null>(
-    null,
-  );
-  const platformTabsJson = platformTabs?.platforms;
-  const effectiveTitlePlatforms = resolveTitlePlatforms({
-    activePlatform,
-    hidePlatformTabs,
-    platformTabs,
-    storedPlatformPreference,
-    titlePlatforms,
-  });
-  const titlePlatformLabels = effectiveTitlePlatforms.map((platform) =>
-    getPlatformLabel(platform, currentLocale),
-  );
-
-  useEffect(() => {
-    const syncStoredPlatformPreference = () => {
-      setStoredPlatformPreference(readStoredPlatformPreference());
-      const active = readActivePlatformDataset();
-      const availablePlatforms = platformTabsJson
-        ? parsePlatformList(platformTabsJson)
-        : [];
-      setActivePlatform(
-        active &&
-          (availablePlatforms.length === 0 ||
-            availablePlatforms.includes(active))
-          ? active
-          : null,
-      );
-    };
-
-    syncStoredPlatformPreference();
-    const frame = window.requestAnimationFrame(() => {
-      setActivePlatform(readActivePlatformDataset());
-    });
-    window.addEventListener(
-      PLATFORM_PREFERENCE_EVENT,
-      syncStoredPlatformPreference,
-    );
-    window.addEventListener('storage', syncStoredPlatformPreference);
-
-    return () => {
-      window.removeEventListener(
-        PLATFORM_PREFERENCE_EVENT,
-        syncStoredPlatformPreference,
-      );
-      window.removeEventListener('storage', syncStoredPlatformPreference);
-      window.cancelAnimationFrame(frame);
-    };
-  }, [platformTabsJson]);
-
   useEffect(() => {
     if (!isMdxBody) {
       return;
@@ -400,23 +297,11 @@ export function DocsContent({
                 <h1 className="min-w-0 text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
                   {displayTitle}
                 </h1>
-                {titlePlatformLabels.length > 0 ? (
-                  <ul
-                    aria-label={
-                      currentLocale === 'zh-CN' ? '适用平台' : 'Platforms'
-                    }
-                    className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
-                  >
-                    {titlePlatformLabels.map((label) => (
-                      <li
-                        className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
-                        key={label}
-                      >
-                        {label}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
+                <PlatformTitleBadges
+                  fallbackPlatforms={titlePlatforms}
+                  locale={currentLocale}
+                  platformTabs={platformTabs}
+                />
               </div>
               <p
                 className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"

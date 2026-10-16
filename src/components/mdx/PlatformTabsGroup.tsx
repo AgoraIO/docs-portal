@@ -126,6 +126,10 @@ export function PlatformPageProvider({
   );
 }
 
+export function usePlatformPageContext() {
+  return useContext(PlatformPageContext);
+}
+
 export function PlatformTabsGroup({
   canonicalPlatform,
   children,
