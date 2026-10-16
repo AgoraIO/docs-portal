@@ -67,4 +67,5 @@ We use [Amazon S3](https://aws.amazon.com/s3/) as an example to show you how to 
 - The M3U8 file can be played directly on Safari. For other web browsers, you might need to install an HLS playback extension.
 - You can also play the M3U8 file on players supporting HLS, such as the VLC media player.
 - If the `uploadingStatus` in the response of [`stop`](/en/api-reference/api-ref/cloud-recording#stop) is `"backuped"`, it indicates that some of the recorded files are uploaded to Agora's backup cloud storage. You should wait until these files are uploaded automatically to your cloud storage before playing the M3U8 file.
+- In individual recording, if the `uploadingStatus` in the response of [`stop`](/en/api-reference/api-ref/cloud-recording#stop) is `"stranded"`, some of the recorded files have not been uploaded to your cloud storage, and the M3U8 file might not play in full. For details, see [Stop recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode#stop-recording).
 - If you do not need to play the recorded files online, we suggest that you make your bucket private to improve security.

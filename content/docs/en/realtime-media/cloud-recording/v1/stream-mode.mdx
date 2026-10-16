@@ -1,10 +1,14 @@
 ---
-title: "Media streaming output modes"
-description: "Media stream output modes for single-stream recording."
+title: "Legacy media streaming output modes"
+description: "Media stream output modes in legacy individual recording."
 ---
+:::info
+This page describes legacy individual recording, where the `mode` path parameter in the request URL is `individual`. The current version, which uses `raw`, removes `streamMode`. For details, see [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode).
+:::
+
 This page explains the media streaming output modes.
 
-When calling `start` to enable single-stream recording, set the output mode of the media stream in the `recordingConfig.streamMode` field of the `clientRequest`. The supported values and their description is as follows:
+When calling `start` to enable [legacy individual recording](/en/realtime-media/cloud-recording/v1/individual-mode), set the output mode of the media stream in the `recordingConfig.streamMode` field of the `clientRequest`. The supported values and their description is as follows:
 
 | `streamMode` | Description | Generate index file | Generate slice files | Video encoding | Audio encoding | Supported features |
 |:---|:---|:---|:---|:---|:---|:---|

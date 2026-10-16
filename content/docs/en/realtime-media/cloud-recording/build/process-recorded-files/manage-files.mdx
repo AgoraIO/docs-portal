@@ -2,53 +2,85 @@
 title: "Manage recorded files"
 description: "Know the naming conventions of the recorded files, how to parse the information in the M3U8 file, and when slicing occurs"
 ---
-Agora Cloud Recording generates M3U8, TS/WebM, and MP4 files. To process these recorded files, such as [merging audio and video](/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files), [converting file formats](/en/realtime-media/cloud-recording/build/process-recorded-files/convert-format), or [synchronizing playback](/en/realtime-media/cloud-recording/build/process-recorded-files/playback) with other streams, it is essential to understand the following key aspects of recorded files:
+Agora Cloud Recording generates HLS files (M3U8 and TS/M4S), DASH files (MPD and WebM), and MP4 and MP3 files. To process these recorded files, such as [merging audio and video](/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files), [converting file formats](/en/realtime-media/cloud-recording/build/process-recorded-files/convert-format), or [synchronizing playback](/en/realtime-media/cloud-recording/build/process-recorded-files/playback) with other streams, it is essential to understand the following key aspects of recorded files:
 
 - The naming convention
-- How to parse information from M3U8 file
+- How to parse information from an M3U8 file
 - The conditions under which file slicing occurs
+
+:::info
+The individual recording content on this page applies to the current version of individual recording. If you use legacy individual recording, where the `mode` path parameter in the request URL is `individual`, see [Legacy recorded files](/en/realtime-media/cloud-recording/v1/recorded-files).
+:::
 
 ## Naming conventions
 
-### Individual recording
-
-The naming conventions for individual recordings are as follows:
-
-- M3U8 file: `<sid>_<cname>__uid_s_<uid>__uid_e_<type>.m3u8`
-- TS file: `<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.ts`
-- WebM file: `<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.webm`
-
-Where:
-- `<sid>` is the recording ID.
-- `<cname>` is the channel name.
-- `<uid>` is the user ID.
-- `<type>` is the file type (`audio` or `video`).
-- `<utc>` is the UTC time when the slice file starts. The time zone is UTC+0, and the timestamp consists of the year, month, day, hour, minute, second, and millisecond. When `utc` is `20190611073246073`, for example, the slice file starts at 07:32:46.073 a.m., June 11, 2019.
-
-For example, in the file name:
-```text
-sid713476478245_cnameagora__uid_s_123__uid_e_video_20190920125142485.ts
-```
-
-`sid713476478245` is the recording ID, `cnameagora` is the channel name, `123` is the user ID, `video` is the file type, and the start time of the recording is 12:51:42.485 a.m., September 20, 2019.
-
-### Individual audio non-transcoding recording
-
-The naming conventions of [individual audio non-transcoding recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding) are as follows:
-
-- M3U8 file: `<sid>_<cname>__uid_s_<uid>__uid_e_<type>.m3u8`
-- TS file: `<sid>_<cname>__uid_s_<uid>__uid_e_<type>_utc.ts`
-
-Where:
-- `<sid>` is the recording ID.
-- `<cname>` is the channel name.
-- `<uid>` is the user ID.
-- `<type>` is the file type (`audio`).
-- `<utc>` is the UTC time when the slice file starts. The time zone is UTC+0, and the timestamp consists of the year, month, day, hour, minute, second, and millisecond. When `utc` is `20190611073246073`, for example, the slice file starts at 07:32:46.073 a.m., June 11, 2019.
+The naming conventions of recorded files differ by recording mode.
 
 :::info
-In individual audio non-transcoding recording, only M3U8 and TS files are generated and uploaded to the third-party cloud storage in real time.
+Since the filename does not support special characters, any special characters in `cname`, including `!`, `@`, `#`, `$`, `%`, `^`, `&`, `*`, `(`, `)`, `+`, `_`, `.`, `=`, `[`, `]`, `{`, `}`, `~`, `|`, `,`, `;`, `:`, `?`, `<`, and `>`, are replaced with `-` in the filename.
 :::
+
+### Individual recording
+
+The recording service generates separate audio and video files for each user ID. The naming conventions depend on the video codec of the source stream.
+
+#### H.264 or H.265 source streams
+
+- HLS M3U8 file: `<sid>_<cname>__uid_s_<uid>__uid_e_<codec>.m3u8`
+- HLS TS slice file: `<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_<codec>.ts`
+- MP4 file: `<sid>_<cname>__uid_s_<uid>__uid_e_<index>_<codec>.mp4`
+- Screenshot file: `<sid>_<cname>__uid_s_<uid>__uid_e_video_<utc>.jpg`
+
+If the resolution changes during the recording, the recording service starts a new MP4 file. The `<index>` field shows the sequence number of each MP4 file.
+
+#### VP8 or VP9 source streams
+
+- DASH MPD file: `<sid>_<cname>__uid_s_<uid>__uid_e_<codec>.mpd`
+- DASH WebM media slice file: `<sid>_<cname>__uid_s_<uid>__uid_e_<stream index>_<segment index>_<codec>.webm`
+- DASH WebM initialization file: `<sid>_<cname>__uid_s_<uid>__uid_e_<stream index>_<utc>_<codec>_init.webm`
+- Screenshot file: `<sid>_<cname>__uid_s_<uid>__uid_e_video_<utc>.jpg`
+
+MP4 files are not supported.
+
+#### AV1 source streams
+
+- HLS M3U8 file: `<sid>_<cname>__uid_s_<uid>__uid_e_<codec>.m3u8`
+- HLS M4S slice file: `<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_av1.m4s`. AV1 uses M4S slices and does not generate TS files.
+- HLS M4S initialization file: `<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_av1_init.m4s`
+- Screenshot file: `<sid>_<cname>__uid_s_<uid>__uid_e_video_<utc>.jpg`
+
+MP4 files are not supported.
+
+#### Audio-only source streams
+
+- HLS M3U8 file: `<sid>_<cname>__uid_s_<uid>__uid_e_mp3.m3u8`
+- HLS TS slice file: `<sid>_<cname>__uid_s_<uid>__uid_e_<utc>_mp3.ts`
+- MP3 file: `<sid>_<cname>__uid_s_<uid>__uid_e_<index>_mp3.mp3`
+
+#### Naming fields
+
+The single and double underscores in the file names are part of the naming conventions and cannot be omitted. In your business logic, use the complete file names returned in the [`cloud_recording_file_infos`](/en/realtime-media/cloud-recording/build/handle-events/receive-notifications#cloud_recording_file_infos) notification whenever possible.
+
+Where:
+
+- `<sid>` is the ID of the recording task.
+- `<cname>` is the channel name.
+- `<uid>` is the user ID being recorded.
+- `<utc>` is the UTC time when the slice file starts. The time zone is UTC+0, and the timestamp consists of the year, month, day, hour, minute, second, and millisecond. When `utc` is `20190611073246073`, for example, the slice file starts at 07:32:46.073 a.m., June 11, 2019.
+- `<index>` is the index number of the MP4 or MP3 file. The index number of the first file is `0`. For MP4 files, the recording service generates an additional file when the length of the current file reaches approximately three hours or the size of the file exceeds approximately 2 GB.
+- `<stream index>` is the index of the WebM stream.
+- `<segment index>` is the index of the WebM slice.
+- `<codec>` is the audio or video codec, such as `h264`, `h265`, `av1`, `aac`, `mp3`, `vp8`, or `vp9`.
+- `video` is a fixed field in screenshot file names.
+- `_init.webm` is the fixed suffix of DASH WebM initialization files.
+
+For example, in the file name:
+
+```text
+13a4602f55448e83be0b7aaacdda1d22_test_yb__uid_s_222__uid_e_20260807065702767_h264.ts
+```
+
+`13a4602f55448e83be0b7aaacdda1d22` is the ID of the recording task, `test_yb` is the channel name, `222` is the user ID being recorded, `20260807065702767` is the UTC time, and `h264` is the video codec.
 
 ### Composite recording
 
@@ -59,6 +91,7 @@ In composite recording mode, the naming conventions are as follows:
 - MP4 files: `<sid>_<cname>_<index>.mp4`
 
 Where:
+
 - `<sid>` is the recording ID.
 - `<cname>` is the channel name.
 - `<utc>` is the starting time (UTC) of the TS file. The time zone is UTC+0. The timestamp consists of the year, month, day, hour, minute, second, and millisecond. For example, if `<utc>` is `20190611073246073`, the starting time of the TS file is 07:32:46.073 a.m., June 11, 2019.
@@ -77,16 +110,13 @@ In web page recording mode, the naming conventions are as follows:
 - MP4 file: `<sid>_<cname>_<index>.mp4`
 
 Where:
+
 - `<sid>` is the recording ID.
 - `<cname>` is the value of `cname` you use in the `acquire` method.
 - `<utc>` is the starting time (UTC) of the TS file. The time zone is UTC+0. The timestamp consists of the year, month, day, hour, minute, second, and millisecond. For example, if `<utc>` is `20190611073246073`, the starting time of the TS file is 07:32:46.073 a.m., June 11, 2019.
 - `<index>` is the index number of the MP4 file. The index number of the first MP4 file is `0`. The recording service automatically generates a new MP4 file when the length of the current file reaches about three hours or the size of the file exceeds about 2 GB.
 
-To generate an MP4 file, add `mp4` to `avFileType`
-
-:::info
-Since the filename does not support special characters, any special characters in `cname`, including `!`, `@`, `#`, `$`, `%`, `^`, `&`, `*`, `(`, `)`, `+`, `_`, `.`, `=`, `[`, `]`, `{`, `}`, `~`, `|`, `,`, `;`, `:`, `?`, `<`, and `>`, are replaced with `-` in the filename.
-:::
+To generate an MP4 file, add `mp4` to `avFileType`.
 
 ## Recorded files in abnormal conditions
 
@@ -97,24 +127,23 @@ If Agora Cloud Recording fails to upload the recorded files to the third-party c
 - `<tick>` is related to the time when the index file is generated.
 - `<index>` is the index of the M3U8 file. The first version to be transferred has an index of `0`. The higher the index, the newer the version of the file.
 
-For example:
-```text
-sid713476478245_cnameagora__uid_s_123__uid_e_video_22194679897_3.m3u8
-```
+For example, in the following file name, the `3` at the end indicates that this is the fourth version of the M3U8 file:
 
-where the `3` at the end indicates that this is the fourth version of the M3U8 file.
+```text
+13a4602f55448e83be0b7aaacdda1d22_test_yb__uid_s_222__uid_e_h264_22194679897_3.m3u8
+```
 
 :::info
 When you find transferred M3U8 file(s) in the third-party cloud storage, compare the M3U8 file with the highest index to the file without a suffix, and choose the larger file.
 :::
 
-The cloud recording service does not append the suffix to the names of TS/WebM files and MP4 files.
+The cloud recording service appends this suffix only to M3U8 file names.
 
 ### Server disconnected or process killed
 
 When [a cloud recording server is disconnected or the process killed](../../index#features), the cloud recording service enables the high availability mechanism, where the fault processing center automatically switches to a new server within 90 seconds to resume the service. Each time the service enables the high availability mechanism, it creates a new M3U8 file, which contains the index information of the recorded slice files from the time when the service resumes. The file name is prefixed with `bak<n>`, where `n` stands for the number of times the mechanism is enabled in a recording, starting with `0`.
 
-For example, in the filename `bak0_sid713476478245_cnameagora.m3u8`, `bak0` indicates that this file is generated after enabling the high availability mechanism for the first time.
+For example, in the filename `bak0_13a4602f55448e83be0b7aaacdda1d22_test_yb__uid_s_222__uid_e_h264.m3u8`, `bak0` indicates that this file is generated after enabling the high availability mechanism for the first time.
 
 After the cloud recording service enables the high availability mechanism, the names of the recorded TS/WebM files and the MP4 files are also prefixed with `bak<n>`.
 
@@ -150,7 +179,8 @@ To merge the original M3U8 file and the new M3U8 file generated after enabling t
 
     </Slot>
 
-## File size
+## Estimate file size
+
 In an individual recording, the size of a recorded file depends on the audio and video bitrates of the media source and the duration of the recording. For example, if the audio bitrate is 48 Kbps, the video bitrate is 500 Kbps, and the recording lasts for 30 minutes (1800 seconds), the size of the recorded file is approximately (48 Kbps + 500 Kbps) * 1800 s = 986.4 Mbit, or 123.3 MB.
 
 In a composite recording, the size of a recorded file depends on the audio and video bitrates of the transcoding configurations and the duration of the recording. For example, if you set the `audioProfile` to `1` (sets the audio bitrate to 128 Kbps), `bitrate` to 800 (sets the video bitrate to 800 Kbps), and the recording lasts for 30 minutes (1800 seconds), the size of the recorded file is approximately (128 Kbps + 800 Kbps) * 1800 s = 1670.4 Mbit, or 208.8 MB.
@@ -160,51 +190,37 @@ In a composite recording, the size of a recorded file depends on the audio and v
 The M3U8 file contains the file names of several slice files and descriptive symbols. The M3U8 file generated by Agora Cloud Recording has three descriptive symbols:
 
 - `#EXT-X-AGORA-TRACK-EVENT:EVENT=<event>,TRACK_TYPE=<type>,TIME=<utc>`: The first slice file after a stream starts or restarts after an interruption has this descriptive symbol, which describes the state of the stream.
-  - `EVENT`: Name of the event. Currently, `EVENT` can only be `START`, which means that the stream has started or restarted after an interruption.
-  - `TRACK_TYPE`: The content of the slice file, `AUDIO` or `VIDEO`.
-  - `TIME`: The time when the state of the stream changes. `TIME` is in UTC and the time zone is UTC+0.
+    - `EVENT`: Name of the event. Currently, `EVENT` can only be `START`, which means that the stream has started or restarted after an interruption.
+    - `TRACK_TYPE`: The content of the slice file, `AUDIO` or `VIDEO`.
+    - `TIME`: The time when the state of the stream changes. `TIME` is in UTC and the time zone is UTC+0.
 
 - `#EXT-X-AGORA-ROTATE:WIDTH=<width>,HEIGHT=<height>,ROTATE=<rotate>,TIME=<utc>`: The first slice file after a video rotates has this descriptive symbol, which describes the details of the rotation. A slice file may have several such symbols.
-  - `WIDTH`: Width of the video.
-  - `HEIGHT`: Height of the video.
-  - `ROTATE`: The degrees by which the video rotates anticlockwise. `ROTATE` can only be `0`, `90`, `180`, or `270`.
-  - `TIME`: The time when the video rotates. `TIME` is in UTC and the time zone is UTC+0.
+    - `WIDTH`: Width of the video.
+    - `HEIGHT`: Height of the video.
+    - `ROTATE`: The degrees by which the video rotates anticlockwise. `ROTATE` can only be `0`, `90`, `180`, or `270`.
+    - `TIME`: The time when the video rotates. `TIME` is in UTC and the time zone is UTC+0.
 
 - `#EXTINF:<length>`: Length of the slice file in seconds.
 
 For example:
+
 ```text
 #EXT-X-AGORA-ROTATE:WIDTH=640,HEIGHT=480,ROTATE=90,TIME=20190920125142485
 #EXT-X-AGORA-TRACK-EVENT:EVENT=START,TRACK_TYPE=VIDEO,TIME=20190920125142485
 #EXTINF:6.332000
-sid713476478245_cnameagora__uid_s_123__uid_e_video_20190920125142485.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125142485_h264.ts
 ```
 
 The sample M3U8 file above contains the file name of a TS file and three descriptive symbols, which indicates that the TS file is the first slice file after the video stream starts or restarts after an interruption, the video rotates by 90 degrees anticlockwise, and the TS file lasts for 6.332 seconds.
 
 :::info
-If you face compatibility issues in some M3U8 players due to the missing comma after `#EXTINF:<length>`, set `privateParams` in `recordingConfig` in the [start](/en/api-reference/api-ref/cloud-recording#start) request as follows: `"recordingConfig": {"privateParams":"{\"correctEXTINF\":true}", ...}`.
+If you face compatibility issues in some M3U8 players due to the missing comma after `#EXTINF:<length>`, set `privateParams` in `recordingConfig` in the [`start`](/en/api-reference/api-ref/cloud-recording#start) request as follows: `"recordingConfig": {"privateParams":"{\"correctEXTINF\":true}", ...}`.
 :::
 
-## Slicing
-
-### Video file slicing
-
-Slicing occurs when any of the following conditions is met:
-
-- When an I frame appears and the slice file reaches 15 seconds.
-- The codec changes.
-- The width or height of the video changes.
-- The video stream is interrupted.
-- When you set the browser to use the H.264 codec for encoding, forced slicing occurs when the slice file reaches 5.5 minutes, or the file size is over 50 MB. After forced slicing, the first frame of the new slice file might not be an I frame, in which case the slice file cannot be decoded and played directly. For example, in the communication channel, sometimes only one I frame may appear in several hours. In such case, the first frame of the new slice file is probably not an I frame.
-
-When you set the browser to use the VP9 codec, Agora Cloud Recording does not enforce file slicing.
-
-### Audio file slicing
-
-Slicing occurs when the slice file reaches 15 seconds.
-
 ### Sample M3U8 file for audio
+
+The following sample M3U8 file indexes the audio slices of one user ID in individual recording:
+
 ```text
 #EXTM3U
 #EXT-X-VERSION:3
@@ -214,19 +230,22 @@ Slicing occurs when the slice file reaches 15 seconds.
 #EXT-X-DISCONTINUITY
 #EXT-X-AGORA-TRACK-EVENT:EVENT=START,TRACK_TYPE=AUDIO,TIME=20190920125142289
 #EXTINF:15.019000
-sid713476478245_cnameagora__uid_s_123__uid_e_audio_20190920125142289.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125142289_aac.ts
 #EXTINF:15.019000
-sid713476478245_cnameagora__uid_s_123__uid_e_audio_20190920125157307.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125157307_aac.ts
 #EXTINF:15.019000
-sid713476478245_cnameagora__uid_s_123__uid_e_audio_20190920125212326.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125212326_aac.ts
 #EXTINF:15.019000
-sid713476478245_cnameagora__uid_s_123__uid_e_audio_20190920125227345.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125227345_aac.ts
 #EXTINF:12.523000
-sid713476478245_cnameagora__uid_s_123__uid_e_audio_20190920125242363.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125242363_aac.ts
 #EXT-X-ENDLIST
 ```
 
 ### Sample M3U8 file for video
+
+The following sample M3U8 file indexes the video slices of one user ID in individual recording. The `#EXT-X-AGORA-ROTATE` symbols show where the video resolution changes:
+
 ```text
 #EXTM3U
 #EXT-X-VERSION:3
@@ -237,18 +256,68 @@ sid713476478245_cnameagora__uid_s_123__uid_e_audio_20190920125242363.ts
 #EXT-X-AGORA-ROTATE:WIDTH=640,HEIGHT=480,ROTATE=0,TIME=20190920125142485
 #EXT-X-AGORA-TRACK-EVENT:EVENT=START,TRACK_TYPE=VIDEO,TIME=20190920125142485
 #EXTINF:6.332000
-sid713476478245_cnameagora__uid_s_123__uid_e_video_20190920125142485.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125142485_h264.ts
 #EXT-X-AGORA-ROTATE:WIDTH=1280,HEIGHT=720,ROTATE=0,TIME=20190920125149174
 #EXT-X-DISCONTINUITY
 #EXTINF:17.442000
-sid713476478245_cnameagora__uid_s_123__uid_e_video_20190920125149174.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125149174_h264.ts
 #EXT-X-DISCONTINUITY
 #EXT-X-AGORA-ROTATE:WIDTH=640,HEIGHT=480,ROTATE=0,TIME=20190920125206616
 #EXTINF:33.326000
-sid713476478245_cnameagora__uid_s_123__uid_e_video_20190920125206616.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125206616_h264.ts
 #EXT-X-DISCONTINUITY
 #EXT-X-AGORA-ROTATE:WIDTH=1280,HEIGHT=720,ROTATE=0,TIME=20190920125239942
 #EXTINF:14.815000
-sid713476478245_cnameagora__uid_s_123__uid_e_video_20190920125239942.ts
+sid713476478245_cnameagora__uid_s_123__uid_e_20190920125239942_h264.ts
 #EXT-X-ENDLIST
 ```
+
+## Slicing
+
+Slicing splits a continuous audio or video stream into a series of smaller files. The slicing rules differ between individual recording and the other recording modes.
+
+### Slicing in individual recording
+
+The recording service slices HLS, DASH, MP4, and MP3 files under different conditions.
+
+#### HLS and DASH files
+
+When the video codec of the source stream for a user ID changes, the recording service generates a separate index file for each codec. H.264, H.265, and AV1 source streams use M3U8 index files, and VP8 and VP9 source streams use MPD index files. Each index file references only the slices of its own codec.
+
+For example, if the source stream uses VP8 when the recording starts, the recording service generates an MPD file. If the source stream then switches to H.264, the recording service generates an M3U8 file.
+
+Slicing of audio and video files occurs when any of the following conditions is met:
+
+- When an I frame appears and the slice file reaches 15 seconds.
+- The codec changes.
+- The width or height of the video changes.
+- The rotation of the video changes.
+- The video stream is interrupted.
+
+#### MP4 files
+
+The recording service generates a new MP4 file when any of the following conditions is met:
+
+- The codec changes, for example, from H.265 to H.264.
+- The width or height of the video changes.
+- The length of the current MP4 file exceeds approximately three hours.
+- The size of the current MP4 file exceeds approximately 2 GB.
+
+#### MP3 files
+
+The recording service generates a new MP3 file when the length of the current MP3 file exceeds the configured slice duration. You can set the slice duration from 30 to 120 minutes. The default is 30 minutes.
+
+### Slicing in composite and web page recording
+
+The recording service slices HLS files by duration and creates new MP4 files by duration or file size.
+
+#### HLS files
+
+The M3U8 index file is not sliced. Audio and video media files are sliced by duration. The default slice duration is 15 seconds. If you set `sliceDuration` for HLS, the configured value applies.
+
+#### MP4 files
+
+The recording service generates a new MP4 file when any of the following conditions is met:
+
+- The length of the current MP4 file exceeds the default of three hours. In web page recording, if you set `maxVideoDuration`, the configured value applies.
+- The size of the current MP4 file exceeds approximately 2 GB.

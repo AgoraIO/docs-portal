@@ -1333,6 +1333,25 @@ export const faqItems: FaqItem[] = [
   },
   {
     category: 'integration-issues',
+    href: '/en/api-reference/faq/integration/call_browser',
+    platforms: ['All Platforms', 'RESTful API'],
+    products: ['All Products', 'Cloud Recording'],
+    summary:
+      'To call the Cloud Recording RESTful API from a web page, the browser must send a cross-origin request. The Cloud Recording RESTful API does not support the OPTIONS method, so you cannot call it from a browser.',
+    title: "Why can't I call the Cloud Recording RESTful API from a browser?",
+  },
+  {
+    category: 'integration-issues',
+    href: '/en/api-reference/faq/integration/high_availability',
+    platforms: ['All Platforms', 'RESTful API'],
+    products: ['All Products', 'Cloud Recording'],
+    summary:
+      'If a recording server is disconnected or its process is killed, Cloud Recording enables its high availability mechanism. The service switches to a new server within 90 seconds and resumes the recording automatically.',
+    title:
+      'How does Cloud Recording handle a disconnected server or a killed process?',
+  },
+  {
+    category: 'integration-issues',
     href: '/en/api-reference/faq/integration/acquire_file_directory',
     platforms: ['All Platforms', 'RESTful API'],
     products: ['All Products', 'Cloud Recording'],

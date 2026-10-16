@@ -20,7 +20,7 @@ The initial Queries Per Second (QPS) limit is 10 per app ID when you register. I
 
 ### Get a resource ID
 
-Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to apply for a resource ID.
+Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to get a resource ID.
 
 #### Example `acquire` request over HTTPS
 
@@ -46,7 +46,7 @@ Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording
 
 ### Start recording
 
-Set `mode` to `individual` when calling [`start`](/en/api-reference/api-ref/cloud-recording#start) to enable [individual recording mode](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode).
+Set `mode` to `raw` when calling [`start`](/en/api-reference/api-ref/cloud-recording#start) to enable [individual recording mode](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode).
 
 You cannot switch to a different recording mode once you start recording.
 
@@ -75,7 +75,7 @@ Configures the time interval between two successive screenshots and the file for
 - Request URL:
 
     ```html
-    https://api.agora.io/v1/apps/<yourappid>/cloud_recording/resourceid/<resourceid>/mode/individual/start
+    https://api.agora.io/v1/apps/<yourappid>/cloud_recording/resourceid/<resourceid>/mode/raw/start
     ```
 
 - `Content-type`: `application/json;charset=utf-8`
@@ -169,7 +169,7 @@ When [a cloud recording server is disconnected or the process killed](../../inde
 
 Pay attention to the following parameters as incorrect settings result in errors and failure to capture screenshots:
 
-- In the URL of your request, you must set `mode` as `individual`.
+- In the URL of your request, you must set `mode` as `raw`.
 - Do not set `recordingFileConfig`.
 - `streamTypes` must be `1` or `2`.
 - If you set `subscribeAudioUid`, you must also set `subscribeVideoUids`.
