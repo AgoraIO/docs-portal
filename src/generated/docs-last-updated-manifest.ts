@@ -772,7 +772,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/broadcast-streaming/watermarks.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/api-reference/api-ref/cloud-recording/api-callback-service.mdx':
-    '2026-06-26T08:54:16.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/api-reference/api-ref/cloud-recording/authentication.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/api-ref/cloud-recording/authentication.mdx':
@@ -1207,6 +1207,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/faq/integration/bucket_region.mdx':
     '2026-08-11T08:07:52.000Z',
+  'content/docs/en/api-reference/faq/integration/call_browser.mdx':
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/api-reference/faq/integration/call_duration.mdx':
     '2026-08-11T08:07:52.000Z',
   'content/docs/en/api-reference/faq/integration/camera_exposure_focus.mdx':
@@ -1244,13 +1246,15 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/faq/integration/empty_deviceId.mdx':
     '2026-06-27T06:23:39.000Z',
   'content/docs/en/api-reference/faq/integration/fail_to_upload.mdx':
-    '2026-08-11T08:07:52.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/api-reference/faq/integration/flutter_pod.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/api-reference/faq/integration/framework_cannot_be_opened.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/faq/integration/get_channel_info.mdx':
     '2026-08-07T06:52:10.000Z',
+  'content/docs/en/api-reference/faq/integration/high_availability.mdx':
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/api-reference/faq/integration/host_set_role.mdx':
     '2026-08-11T08:07:52.000Z',
   'content/docs/en/api-reference/faq/integration/image_enhancement.mdx':
@@ -3900,7 +3904,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/handle-events/meta.json':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/handle-events/receive-notifications.mdx':
-    '2026-09-28T09:13:59.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/individual-mode.mdx':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/individual-nontranscoding.mdx':
@@ -3924,13 +3928,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/convert-format.mdx':
     '2026-07-02T14:12:17.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files.mdx':
-    '2026-06-29T16:19:14.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files.mdx':
     '2026-09-17T04:34:39.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/meta.json':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/online-play.mdx':
-    '2026-06-27T06:23:39.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/process-recorded-files/playback.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/receive-notifications.mdx':
@@ -3946,17 +3950,17 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/build/set-up-authentication/meta.json':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode.mdx':
-    '2026-09-09T06:31:33.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode.mdx':
-    '2026-09-09T06:31:33.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding.mdx':
     '2026-09-09T06:31:33.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/meta.json':
-    '2026-06-26T08:54:16.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/screen-capture.mdx':
-    '2026-09-09T06:31:33.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/start-a-recording/webpage-mode.mdx':
-    '2026-09-09T06:31:33.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/subscription.mdx':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/realtime-media/cloud-recording/build/webpage-best-practices.mdx':
@@ -3976,7 +3980,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/mcp.mdx':
     '2026-06-29T07:50:31.000Z',
   'content/docs/en/realtime-media/cloud-recording/meta.json':
-    '2026-08-10T15:28:51.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/middleware-quickstart.mdx':
     '2026-06-30T07:00:49.000Z',
   'content/docs/en/realtime-media/cloud-recording/pricing-webpage-recording.mdx':
@@ -3994,7 +3998,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/reference/glossary.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/meta.json':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/pricing-webpage-recording.mdx':
     '2026-10-14T12:21:14.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/pricing.mdx':
@@ -4002,7 +4006,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/reference/region-vendor.mdx':
     '2026-06-24T09:22:50.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/release-notes.mdx':
-    '2026-09-28T09:13:59.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/rest-api-overview.mdx':
     '2026-06-22T06:39:47.000Z',
   'content/docs/en/realtime-media/cloud-recording/reference/restful-api.mdx':
@@ -4020,9 +4024,19 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/cloud-recording/rest-quickstart.md':
     '2026-06-26T08:54:16.000Z',
   'content/docs/en/realtime-media/cloud-recording/rest-quickstart.mdx':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/cloud-recording/skills.mdx':
     '2026-06-27T07:32:17.000Z',
+  'content/docs/en/realtime-media/cloud-recording/v1/individual-mode.mdx':
+    '2026-10-16T06:41:36.000Z',
+  'content/docs/en/realtime-media/cloud-recording/v1/individual-nontranscoding.mdx':
+    '2026-10-16T06:41:36.000Z',
+  'content/docs/en/realtime-media/cloud-recording/v1/meta.json':
+    '2026-10-16T06:41:36.000Z',
+  'content/docs/en/realtime-media/cloud-recording/v1/recorded-files.mdx':
+    '2026-10-16T06:41:36.000Z',
+  'content/docs/en/realtime-media/cloud-recording/v1/stream-mode.mdx':
+    '2026-10-16T06:41:36.000Z',
   'content/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-classroom.mdx':
     '2026-08-11T15:10:41.000Z',
   'content/docs/en/realtime-media/flexible-classroom/build/customize-the-ui-and-plugins/customize-ui-scene-sdk.mdx':
@@ -11681,7 +11695,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/channel-management/query-channel-information.en.yaml':
     '2026-06-28T06:41:08.000Z',
   'content/openapi/cloud-recording/cloud-recording.en.yaml':
-    '2026-07-03T04:07:10.000Z',
+    '2026-10-16T06:41:36.000Z',
   'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml':
     '2026-07-03T04:07:10.000Z',
   'content/openapi/cloud-transcoding/openapi.meta.json':
