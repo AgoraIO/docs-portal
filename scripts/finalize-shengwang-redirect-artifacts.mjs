@@ -66,36 +66,42 @@ const finalSummary = {
   uniqueSourcePaths: new Set(records.map((record) => record.legacyPath)).size,
 };
 
-await writeFile(finalMapPath, toCsv(records));
-await writeFile(
-  finalJsonPath,
-  `${JSON.stringify(
-    {
-      generatedAt: candidate.generatedAt,
-      targetCommit: candidate.targetCommit,
-      sourceCandidate: path.relative(repoRoot, candidatePath),
-      snapshot: candidate.snapshot,
-      summary: finalSummary,
-      records,
-    },
-    null,
-    2,
-  )}\n`,
-);
-await writeFile(
-  vercelPath,
-  `${JSON.stringify(
-    redirects.map((record) => ({
-      source: record.legacyPath,
-      destination: record.target,
-      statusCode: 301,
-      preserveQueryParams: record.preserveQuery,
-    })),
-    null,
-    2,
-  )}\n`,
-);
-await writeFile(nginxPath, toNginx(redirects, candidate.targetCommit));
+const finalMap = toCsv(records);
+const finalJson = `${JSON.stringify(
+  {
+    generatedAt: candidate.generatedAt,
+    targetCommit: candidate.targetCommit,
+    sourceCandidate: path.relative(repoRoot, candidatePath),
+    snapshot: candidate.snapshot,
+    summary: finalSummary,
+    records,
+  },
+  null,
+  2,
+)}\n`;
+const vercelJson = `${JSON.stringify(
+  redirects.map((record) => ({
+    source: record.legacyPath,
+    destination: record.target,
+    statusCode: 301,
+    preserveQueryParams: record.preserveQuery,
+  })),
+  null,
+  2,
+)}\n`;
+const nginxConfig = toNginx(redirects, candidate.targetCommit);
+
+if (process.argv.includes('--check')) {
+  await assertFileMatches(finalMapPath, finalMap);
+  await assertFileMatches(finalJsonPath, finalJson);
+  await assertFileMatches(vercelPath, vercelJson);
+  await assertFileMatches(nginxPath, nginxConfig);
+} else {
+  await writeFile(finalMapPath, finalMap);
+  await writeFile(finalJsonPath, finalJson);
+  await writeFile(vercelPath, vercelJson);
+  await writeFile(nginxPath, nginxConfig);
+}
 
 console.log(
   JSON.stringify(
@@ -128,6 +134,15 @@ function toCsv(items) {
   return `${columns.join(',')}\n${items
     .map((item) => columns.map((column) => csvEscape(item[column])).join(','))
     .join('\n')}\n`;
+}
+
+async function assertFileMatches(filePath, expected) {
+  const actual = await readFile(filePath, 'utf8');
+  if (actual !== expected) {
+    throw new Error(
+      `Checked-in Shengwang redirect artifact is stale or modified: ${path.relative(repoRoot, filePath)}`,
+    );
+  }
 }
 
 async function sha256File(filePath) {

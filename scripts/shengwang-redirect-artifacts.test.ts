@@ -16,7 +16,7 @@ describe('Shengwang redirect artifacts', () => {
   it('finalizes a checked candidate into equivalent redirect artifacts', () => {
     const output = execFileSync(
       process.execPath,
-      ['scripts/finalize-shengwang-redirect-artifacts.mjs'],
+      ['scripts/finalize-shengwang-redirect-artifacts.mjs', '--check'],
       { cwd: repoRoot, encoding: 'utf8' },
     );
     expect(output).toContain('"manualReview": 0');
@@ -40,7 +40,12 @@ describe('Shengwang redirect artifacts', () => {
       }>;
     }>('legacy-url-map.json');
     const vercel = readJson<
-      Array<{ source: string; destination: string; statusCode: number }>
+      Array<{
+        source: string;
+        destination: string;
+        statusCode: number;
+        preserveQueryParams: boolean;
+      }>
     >('legacy-url-redirects.vercel.json');
     const redirects = candidate.records.filter(
       (record) => record.status === 'candidate',
@@ -49,21 +54,27 @@ describe('Shengwang redirect artifacts', () => {
     expect(finalMap.generatedAt).toBe(candidate.generatedAt);
     expect(finalMap.snapshot).toEqual(candidate.snapshot);
     expect(finalMap.records).toEqual(candidate.records);
-    expect(vercel).toHaveLength(redirects.length);
+    const expectedRules = new Map(
+      redirects.map((record) => [record.legacyPath, record.target]),
+    );
+    const actualRules = new Map(
+      vercel.map((rule) => [rule.source, rule.destination]),
+    );
     expect(vercel.every((rule) => rule.statusCode === 301)).toBe(true);
-    expect(
-      vercel.every((rule) =>
-        redirects.some(
-          (record) =>
-            record.legacyPath === rule.source && record.target === rule.destination,
-        ),
-      ),
-    ).toBe(true);
+    expect(vercel.every((rule) => rule.preserveQueryParams === false)).toBe(true);
+    expect(actualRules.size).toBe(vercel.length);
+    expect(actualRules).toEqual(expectedRules);
 
     const nginx = readFileSync(
       path.join(inputRoot, 'legacy-url-redirects.nginx.conf'),
       'utf8',
     );
-    expect(nginx.match(/^location = /gm)?.length).toBe(redirects.length);
+    const nginxRules = [
+      ...nginx.matchAll(
+        /^location = ([^\s]+) \{\n  return 301 ([^;]+);\n\}$/gm,
+      ),
+    ].map((match) => [match[1], match[2]] as const);
+    expect(new Map(nginxRules).size).toBe(nginxRules.length);
+    expect(new Map(nginxRules)).toEqual(expectedRules);
   });
 });
