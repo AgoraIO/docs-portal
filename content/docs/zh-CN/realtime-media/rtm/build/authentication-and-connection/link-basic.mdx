@@ -1483,17 +1483,12 @@ RTM SDK 在很大程度上屏蔽了直接处理网络连接的种种细节，提
 
 你可以通过以下方式建立 `MESSAGE` 连接：
 
-```typescript
-import { RtmError } from '@shengwang/rtm-full';
-
+```javascript
 try {
-  const response = await rtmClient.login("your_token");
-  console.log("Login successful:", response);
-} catch (error) {
-  console.error("Login failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`Login failed: ${error.reason} (code: ${error.errorCode})`);
-  }
+  const result = await rtm.login({ token: "your_token" });
+  console.log(result);
+} catch (status) {
+  console.log(status);
 }
 ```
 
@@ -1509,26 +1504,18 @@ try {
 
 在建立 `STREAM` 连接前，你需要先建立 `MESSAGE` 连接，即调用 `login` 方法并成功登录服务器。`STREAM` 连接的生命周期从你主动调用 `join` 方法加入频道时开始，到你主动调用 `leave` 方法离开频道时结束。你可以通过以下方式建立 `STREAM` 连接：
 
-```typescript
-import { JoinOptions } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
-
-const options: JoinOptions = {
+```javascript
+const options = {
   token: "yourToken",
   withPresence: true,
   withMetadata: false,
   withLock: false
 };
-
 try {
-  const streamChannel = rtmClient.createStreamChannel("test");
-  const response = await streamChannel.join(options);
-  console.log("Join channel successful:", response);
-} catch (error) {
-  console.error("Join channel failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`Join channel failed: ${error.reason} (code: ${error.errorCode})`);
-  }
+  const result = await streamChannel.join(options);
+  console.log(result);
+} catch (status) {
+  console.log(status);
 }
 ```
 
@@ -1554,23 +1541,17 @@ try {
 
 你可以通过以下方式监听 `linkState` 事件通知：
 
-```typescript
-import type { LinkStateEvent } from '@shengwang/rtm-full';
-
-rtmClient.addEventListener('linkState', (event: object) => {
-  const linkEvent = event as LinkStateEvent;
-  const currentState = linkEvent.currentState;
-  const previousState = linkEvent.previousState;
-  const serviceType = linkEvent.serviceType;
-  const operation = linkEvent.operation;
-  const reason = linkEvent.reason;
-  const reasonCode = linkEvent.reasonCode;
-  const affectedChannels = linkEvent.affectedChannels;
-  const timestamp = linkEvent.timestamp;
-  const isResumed = linkEvent.isResumed;
-
-  console.log(`Link state changed: ${previousState} -> ${currentState}`);
-  console.log(`Reason: ${reason} (code: ${reasonCode})`);
+```javascript
+rtm.addEventListener('linkState', event => {
+  const currentState = event.currentState;
+  const previousState = event.previousState;
+  const serviceType = event.serviceType;
+  const operation = event.operation;
+  const reason = event.reason;
+  const reasonCode = event.reasonCode;
+  const affectedChannels = event.affectedChannels;
+  const timestamp = event.timestamp;
+  const isResumed = event.isResumed;
 });
 ```
 
@@ -1606,26 +1587,9 @@ RTM SDK 默认的心跳探测时间间隔为 5 秒，这是平衡了设备续航
 
 你可以通过以下方式自定义心跳探测时间间隔，例如修改为 30 秒：
 
-```typescript
-import { RtmClient, RtmConfig } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
-
-const rtmConfig: RtmConfig = {
-  appId: "your_appId",
-  userId: "your_userId",
-  heartbeatInterval: 30
-};
-
-try {
-  const rtmClient = new RtmClient(rtmConfig);
-  console.log("RTM client initialized with custom heartbeat interval");
-} catch (error) {
-  if (error instanceof RtmError) {
-    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
-  } else {
-    console.error("Failed to initialize RTM client:", error);
-  }
-}
+```javascript
+const rtmConfig = { heartbeatInterval: 30 };
+const rtm = new RTM("yourAppId", "Tony", rtmConfig);
 ```
 
 ### STREAM 类型
@@ -1656,17 +1620,12 @@ try {
 
 对于 `MESSAGE` 类型服务，连接状态会影响峰值连接数的计量，推荐你调用 `logout` 方法显式地登出服务器，从而主动断开连接。
 
-```typescript
-import { RtmError } from '@shengwang/rtm-full';
-
+```javascript
 try {
-  const response = await rtmClient.logout();
-  console.log("Logout successful:", response);
-} catch (error) {
-  console.error("Logout failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`Logout failed: ${error.reason} (code: ${error.errorCode})`);
-  }
+  const result = await rtm.logout();
+  console.log(result);
+} catch (status) {
+  console.log(status);
 }
 ```
 
@@ -1678,17 +1637,12 @@ try {
 
 当你不再需要 `STREAM` 类型服务时，可以调用 `leave` 方法退出频道，从而断开 `STREAM` 连接。
 
-```typescript
-import { RtmError } from '@shengwang/rtm-full';
-
+```javascript
 try {
-  const response = await streamChannel.leave();
-  console.log("Leave channel successful:", response);
-} catch (error) {
-  console.error("Leave channel failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`Leave channel: ${error.reason} (code: ${error.errorCode})`);
-  }
+  const result = await streamChannel.leave();
+  console.log(result);
+} catch (status) {
+  console.log(status);
 }
 ```
 
