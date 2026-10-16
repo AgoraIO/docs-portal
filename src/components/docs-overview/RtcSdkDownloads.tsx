@@ -1,5 +1,6 @@
 import { getPlatformIconSrc } from './platform-icon-src';
 import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
+import { zhCNRtcSdkDownloadPlatforms } from './rtc-sdk-downloads-data.zh-cn';
 import { SdkDownloadCard } from './SdkDownloadCard';
 import { zhCNSdkDownloadPlatforms } from './sdk-downloads-data.zh-cn';
 
@@ -12,9 +13,9 @@ export function RtcSdkDownloads({
   platform: string;
   product: RtcProduct;
 }) {
-  const platformData = zhCNSdkDownloadPlatforms.find(
-    (item) => item.id === platform,
-  );
+  const platformData =
+    zhCNRtcSdkDownloadPlatforms.find((item) => item.id === platform) ??
+    zhCNSdkDownloadPlatforms.find((item) => item.id === platform);
   const sdk = platformData?.core.find(
     (item) => item.id === `${product}-sdk-${platform}`,
   );

@@ -69,6 +69,12 @@ export function SdkDownloadCard({
               <dd className="mt-1 font-mono text-xs">{version.md5}</dd>
             </div>
           ) : null}
+          {version.packageSize ? (
+            <div className="break-all">
+              <dt>包体积：</dt>
+              <dd className="mt-1">{version.packageSize}</dd>
+            </div>
+          ) : null}
         </dl>
         {version.packageManager && version.downloadLink ? (
           <a
