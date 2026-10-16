@@ -1818,6 +1818,99 @@ Web body
     });
   });
 
+  it('adds the default platform badge for a canonical zh-CN structured page', async () => {
+    const page = createZhPage();
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+
+    docsPage.data.getText = vi.fn(
+      async () => `## 共享内容
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+## Android 设置
+Android body
+<_PlatformProcessedMarker close="true" />
+
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## Web 设置
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((slugs, locale) => {
+      if (locale !== 'zh-CN') {
+        return undefined;
+      }
+
+      return slugs.join('/') === 'introduction/about-agora' ? page : undefined;
+    });
+    mockedGetPages.mockReturnValue([page]);
+
+    const payload = await loadDocsPagePayload('zh-CN', 'introduction', [
+      'about-agora',
+    ]);
+
+    expect(payload).toMatchObject({
+      body: {
+        platformTabs: {
+          defaultPlatform: 'android',
+          initialPlatform: undefined,
+        },
+      },
+      titlePlatforms: ['android'],
+    });
+  });
+
+  it('keeps the badge for a zh-CN page with one structured platform', async () => {
+    const page = {
+      ...createZhPage(),
+      data: {
+        ...createZhPage().data,
+        info: {
+          fullPath:
+            '/virtual/content/docs/zh-CN/realtime-media/rtc/reference/browser-compatibility.mdx',
+          path: 'zh-CN/realtime-media/rtc/reference/browser-compatibility.mdx',
+        },
+      },
+      path: 'zh-CN/realtime-media/rtc/reference/browser-compatibility.mdx',
+      slugs: [
+        'zh-CN',
+        'realtime-media',
+        'rtc',
+        'reference',
+        'browser-compatibility',
+      ],
+      url: '/zh-CN/realtime-media/rtc/reference/browser-compatibility',
+    } as unknown as PageWithSource;
+
+    const docsPage = page as PageWithSource & {
+      data: { getText: (kind: 'processed') => Promise<string> };
+    };
+    docsPage.data.getText = vi.fn(
+      async () => `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+## 浏览器兼容性
+Web body
+<_PlatformProcessedMarker close="true" />`,
+    );
+
+    mockedGetPage.mockImplementation((_slugs, locale) =>
+      locale === 'zh-CN' ? page : undefined,
+    );
+    mockedGetPages.mockReturnValue([page]);
+
+    await expect(
+      loadDocsPagePayload('zh-CN', 'realtime-media', [
+        'rtc',
+        'reference',
+        'browser-compatibility',
+      ]),
+    ).resolves.toMatchObject({
+      titlePlatforms: ['web'],
+    });
+  });
+
   it('does not add title platform badges for non-zh-CN selected platform routes', async () => {
     const page = createPage();
 

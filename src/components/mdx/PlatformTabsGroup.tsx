@@ -50,6 +50,10 @@ const PlatformTabsPlacementContext = createContext<{
 }>({
   placement: 'inline',
 });
+const PlatformPageContext = createContext<{
+  activePlatform?: PlatformKey;
+  handlePlatformChange: (value: string) => void;
+} | null>(null);
 const useBrowserLayoutEffect =
   typeof window === 'undefined' ? useEffect : useLayoutEffect;
 const HEADER_TAB_GAP_WIDTH = 24;
@@ -91,6 +95,39 @@ export function PlatformTabsPlacementProvider({
       {children}
     </PlatformTabsPlacementContext>
   );
+}
+
+export function PlatformPageProvider({
+  canonicalPlatform,
+  children,
+  defaultPlatform,
+  initialPlatform,
+  platforms,
+}: {
+  canonicalPlatform: PlatformKey;
+  children?: ReactNode;
+  defaultPlatform?: PlatformKey;
+  initialPlatform?: PlatformKey;
+  platforms: string;
+}) {
+  const parsedPlatforms = usePlatformList(platforms);
+  const selection = usePlatformSelection({
+    canonicalPlatform,
+    defaultPlatform,
+    initialPlatform,
+    parsedPlatforms,
+    syncPath: true,
+  });
+
+  return (
+    <PlatformPageContext.Provider value={selection}>
+      {children}
+    </PlatformPageContext.Provider>
+  );
+}
+
+export function usePlatformPageContext() {
+  return useContext(PlatformPageContext);
 }
 
 export function PlatformTabsGroup({
@@ -667,6 +704,7 @@ function usePlatformSelection({
   parsedPlatforms: PlatformKey[];
   syncPath: boolean;
 }) {
+  const pageContext = useContext(PlatformPageContext);
   const storedPlatformPreferenceRef = useRef<PlatformKey | null | undefined>(
     undefined,
   );
@@ -677,34 +715,39 @@ function usePlatformSelection({
       stored && isKnownPlatform(stored) ? stored : null;
   }
 
-  const [activePlatform, setActivePlatform] = useState<PlatformKey | undefined>(
-    () => {
-      if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
-        return undefined;
-      }
+  const [localActivePlatform, setLocalActivePlatform] = useState<
+    PlatformKey | undefined
+  >(() => {
+    if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
+      return undefined;
+    }
 
-      if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
-        return initialPlatform;
-      }
+    if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
+      return initialPlatform;
+    }
 
-      if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
-        return defaultPlatform;
-      }
+    if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
+      return defaultPlatform;
+    }
 
-      const stored = storedPlatformPreferenceRef.current;
+    const stored = storedPlatformPreferenceRef.current;
 
-      if (stored && parsedPlatforms.includes(stored)) {
-        return stored;
-      }
+    if (stored && parsedPlatforms.includes(stored)) {
+      return stored;
+    }
 
-      return getDefaultPlatform(
-        parsedPlatforms,
-        canonicalPlatform,
-        defaultPlatform,
-      );
-    },
-  );
-  const activePlatformRef = useRef(activePlatform);
+    return getDefaultPlatform(
+      parsedPlatforms,
+      canonicalPlatform,
+      defaultPlatform,
+    );
+  });
+  const activePlatform =
+    pageContext?.activePlatform &&
+    parsedPlatforms.includes(pageContext.activePlatform)
+      ? pageContext.activePlatform
+      : localActivePlatform;
+  const activePlatformRef = useRef(localActivePlatform);
   const previousDefaultPlatformRef = useRef(defaultPlatform);
 
   useEffect(() => {
@@ -712,7 +755,7 @@ function usePlatformSelection({
 
     if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
       activePlatformRef.current = undefined;
-      setActivePlatform(undefined);
+      setLocalActivePlatform(undefined);
       return;
     }
 
@@ -722,16 +765,16 @@ function usePlatformSelection({
       stored &&
       isKnownPlatform(stored) &&
       parsedPlatforms.includes(stored) &&
-      stored !== activePlatform
+      stored !== localActivePlatform
     ) {
       activePlatformRef.current = stored;
-      setActivePlatform(stored);
+      setLocalActivePlatform(stored);
       return;
     }
 
     if (
-      activePlatform === undefined ||
-      !parsedPlatforms.includes(activePlatform)
+      localActivePlatform === undefined ||
+      !parsedPlatforms.includes(localActivePlatform)
     ) {
       const fallbackPlatform = getDefaultPlatform(
         parsedPlatforms,
@@ -740,10 +783,10 @@ function usePlatformSelection({
       );
 
       activePlatformRef.current = fallbackPlatform;
-      setActivePlatform(fallbackPlatform);
+      setLocalActivePlatform(fallbackPlatform);
     }
   }, [
-    activePlatform,
+    localActivePlatform,
     canonicalPlatform,
     defaultPlatform,
     initialPlatform,
@@ -764,24 +807,28 @@ function usePlatformSelection({
     }
 
     activePlatformRef.current = defaultPlatform;
-    setActivePlatform(defaultPlatform);
+    setLocalActivePlatform(defaultPlatform);
   }, [defaultPlatform, initialPlatform, parsedPlatforms]);
 
   useEffect(() => {
     if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
       activePlatformRef.current = initialPlatform;
       storedPlatformPreferenceRef.current = initialPlatform;
-      setActivePlatform(initialPlatform);
+      setLocalActivePlatform(initialPlatform);
       setStoredPlatformPreference(initialPlatform);
     }
   }, [initialPlatform, parsedPlatforms]);
 
   useEffect(() => {
-    if (activePlatform) {
-      activePlatformRef.current = activePlatform;
-      syncPlatformDataset(activePlatform);
+    if (pageContext) {
+      return;
     }
-  }, [activePlatform]);
+
+    if (localActivePlatform) {
+      activePlatformRef.current = localActivePlatform;
+      syncPlatformDataset(localActivePlatform);
+    }
+  }, [localActivePlatform, pageContext]);
 
   useEffect(() => {
     function handlePreferenceChange(event: Event) {
@@ -795,7 +842,7 @@ function usePlatformSelection({
 
         if (parsedPlatforms.includes(nextPlatform)) {
           activePlatformRef.current = nextPlatform;
-          setActivePlatform(nextPlatform);
+          setLocalActivePlatform(nextPlatform);
         }
       }
     }
@@ -813,7 +860,7 @@ function usePlatformSelection({
 
         if (parsedPlatforms.includes(event.newValue)) {
           activePlatformRef.current = event.newValue;
-          setActivePlatform(event.newValue);
+          setLocalActivePlatform(event.newValue);
         }
       }
     }
@@ -835,9 +882,14 @@ function usePlatformSelection({
       return;
     }
 
+    if (pageContext) {
+      pageContext.handlePlatformChange(value);
+      return;
+    }
+
     if (activePlatformRef.current !== value) {
       activePlatformRef.current = value;
-      setActivePlatform(value);
+      setLocalActivePlatform(value);
     }
 
     if (storedPlatformPreferenceRef.current !== value) {

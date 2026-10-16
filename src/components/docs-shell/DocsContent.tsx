@@ -44,9 +44,11 @@ import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
 import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
+  PlatformPageProvider,
   PlatformPanel,
   PlatformTabsGroup,
   PlatformTabsPlacementProvider,
+  usePlatformPageContext,
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
@@ -71,6 +73,46 @@ type DocsArticleReturnLink = {
   href: string;
   title: string;
 };
+
+function PlatformTitleBadges({
+  fallbackPlatforms,
+  locale,
+  platformTabs,
+}: {
+  fallbackPlatforms: PlatformKey[];
+  locale: AppLocale | string;
+  platformTabs?: {
+    initialPlatform?: PlatformKey;
+  };
+}) {
+  const pageContext = usePlatformPageContext();
+  const selectedPlatform =
+    platformTabs?.initialPlatform ?? pageContext?.activePlatform;
+  const platforms = selectedPlatform ? [selectedPlatform] : fallbackPlatforms;
+  const labels = platforms.map((platform) =>
+    getPlatformLabel(platform, normalizeLocale(locale) ?? DEFAULT_LOCALE),
+  );
+
+  if (labels.length === 0) {
+    return null;
+  }
+
+  return (
+    <ul
+      aria-label={locale === 'zh-CN' ? '适用平台' : 'Platforms'}
+      className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
+    >
+      {labels.map((label) => (
+        <li
+          className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
+          key={label}
+        >
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function DocsContent({
   body,
@@ -154,10 +196,6 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
-  const titlePlatformLabels = titlePlatforms.map((platform) =>
-    getPlatformLabel(platform, currentLocale),
-  );
-
   useEffect(() => {
     if (!isMdxBody) {
       return;
@@ -176,7 +214,7 @@ export function DocsContent({
     };
   }, [isMdxBody]);
 
-  return (
+  const article = (
     <article
       data-docs-home={isHomePage ? 'true' : undefined}
       className={cn(
@@ -259,23 +297,11 @@ export function DocsContent({
                 <h1 className="min-w-0 text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
                   {displayTitle}
                 </h1>
-                {titlePlatformLabels.length > 0 ? (
-                  <ul
-                    aria-label={
-                      currentLocale === 'zh-CN' ? '适用平台' : 'Platforms'
-                    }
-                    className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
-                  >
-                    {titlePlatformLabels.map((label) => (
-                      <li
-                        className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
-                        key={label}
-                      >
-                        {label}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
+                <PlatformTitleBadges
+                  fallbackPlatforms={titlePlatforms}
+                  locale={currentLocale}
+                  platformTabs={platformTabs}
+                />
               </div>
               <p
                 className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
@@ -416,6 +442,21 @@ export function DocsContent({
         />
       )}
     </article>
+  );
+
+  if (!platformTabs) {
+    return article;
+  }
+
+  return (
+    <PlatformPageProvider
+      canonicalPlatform={platformTabs.canonicalPlatform}
+      defaultPlatform={platformTabs.defaultPlatform}
+      initialPlatform={platformTabs.initialPlatform}
+      platforms={platformTabs.platforms}
+    >
+      {article}
+    </PlatformPageProvider>
   );
 }
 
