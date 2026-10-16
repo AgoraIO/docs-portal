@@ -43,6 +43,7 @@ import {
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
 import {
   getStoredPlatformPreference,
+  PLATFORM_DATASET_KEY,
   PLATFORM_PREFERENCE_EVENT,
 } from '@/lib/platforms/preference';
 import {
@@ -91,13 +92,29 @@ function readStoredPlatformPreference(): PlatformKey | null {
   return isKnownPlatform(normalized) ? normalized : null;
 }
 
+function readActivePlatformDataset(): PlatformKey | null {
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  const value = document.documentElement.dataset[PLATFORM_DATASET_KEY];
+  if (!value) {
+    return null;
+  }
+
+  const normalized = normalizePlatformKey(value);
+  return isKnownPlatform(normalized) ? normalized : null;
+}
+
 function resolveTitlePlatforms({
   hidePlatformTabs,
+  activePlatform,
   platformTabs,
   storedPlatformPreference,
   titlePlatforms,
 }: {
   hidePlatformTabs: boolean;
+  activePlatform: PlatformKey | null;
   platformTabs?: {
     initialPlatform?: PlatformKey;
     platforms: string;
@@ -114,6 +131,9 @@ function resolveTitlePlatforms({
   const selectedPlatform =
     (routePlatform && availablePlatforms.includes(routePlatform)
       ? routePlatform
+      : undefined) ??
+    (activePlatform && availablePlatforms.includes(activePlatform)
+      ? activePlatform
       : undefined) ??
     (storedPlatformPreference &&
     availablePlatforms.includes(storedPlatformPreference)
@@ -227,7 +247,12 @@ export function DocsContent({
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
   const [storedPlatformPreference, setStoredPlatformPreference] =
     useState<PlatformKey | null>(null);
+  const [activePlatform, setActivePlatform] = useState<PlatformKey | null>(
+    null,
+  );
+  const platformTabsJson = platformTabs?.platforms;
   const effectiveTitlePlatforms = resolveTitlePlatforms({
+    activePlatform,
     hidePlatformTabs,
     platformTabs,
     storedPlatformPreference,
@@ -240,9 +265,23 @@ export function DocsContent({
   useEffect(() => {
     const syncStoredPlatformPreference = () => {
       setStoredPlatformPreference(readStoredPlatformPreference());
+      const active = readActivePlatformDataset();
+      const availablePlatforms = platformTabsJson
+        ? parsePlatformList(platformTabsJson)
+        : [];
+      setActivePlatform(
+        active &&
+          (availablePlatforms.length === 0 ||
+            availablePlatforms.includes(active))
+          ? active
+          : null,
+      );
     };
 
     syncStoredPlatformPreference();
+    const frame = window.requestAnimationFrame(() => {
+      setActivePlatform(readActivePlatformDataset());
+    });
     window.addEventListener(
       PLATFORM_PREFERENCE_EVENT,
       syncStoredPlatformPreference,
@@ -255,8 +294,9 @@ export function DocsContent({
         syncStoredPlatformPreference,
       );
       window.removeEventListener('storage', syncStoredPlatformPreference);
+      window.cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [platformTabsJson]);
 
   useEffect(() => {
     if (!isMdxBody) {
