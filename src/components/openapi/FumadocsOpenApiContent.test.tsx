@@ -989,17 +989,54 @@ describe('FumadocsOpenApiContent', () => {
                 title: 'Cloud Recording API',
               },
               openapi: '3.2.0',
+              'x-docs-auth-links': {
+                tokenAuth:
+                  '/en/api-reference/api-ref/conversational-ai/authentication#token-authentication',
+                basicAuth:
+                  '/en/api-reference/api-ref/conversational-ai/authentication#basic-http-authentication',
+                blankAuth: '   ',
+                invalidAuth: 123,
+              },
               components: {
                 securitySchemes: {
+                  tokenAuth: {
+                    in: 'header',
+                    name: 'Authorization',
+                    type: 'apiKey',
+                  },
                   basicAuth: {
                     scheme: 'basic',
+                    type: 'http',
+                  },
+                  unlinkedAuth: {
+                    scheme: 'bearer',
+                    type: 'http',
+                  },
+                  blankAuth: {
+                    scheme: 'bearer',
+                    type: 'http',
+                  },
+                  invalidAuth: {
+                    scheme: 'bearer',
                     type: 'http',
                   },
                 },
               },
               security: [
                 {
+                  tokenAuth: [],
+                },
+                {
                   basicAuth: [],
+                },
+                {
+                  unlinkedAuth: [],
+                },
+                {
+                  blankAuth: [],
+                },
+                {
+                  invalidAuth: [],
                 },
               ],
               paths: {
@@ -1044,7 +1081,32 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       await screen.findByText('This endpoint requires authentication.'),
     ).toBeInTheDocument();
-    expect(screen.getByText('basicAuth')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'tokenAuth' })).toHaveAttribute(
+      'href',
+      '/en/api-reference/api-ref/conversational-ai/authentication#token-authentication',
+    );
+    expect(screen.getByRole('link', { name: 'basicAuth' })).toHaveAttribute(
+      'href',
+      '/en/api-reference/api-ref/conversational-ai/authentication#basic-http-authentication',
+    );
+    expect(
+      screen.getByText('unlinkedAuth', { selector: 'code' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'unlinkedAuth' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('blankAuth', { selector: 'code' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'blankAuth' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByText('invalidAuth', { selector: 'code' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'invalidAuth' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.getByRole('heading', { name: 'Header Parameters' }),
     ).toBeInTheDocument();

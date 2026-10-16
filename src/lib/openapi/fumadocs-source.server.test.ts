@@ -3,6 +3,7 @@ import {
   createLocalizedOpenApiSource,
   getOpenApiLoaderPlugin,
 } from './fumadocs-source.server';
+import { OPENAPI_LANES } from './lanes';
 
 describe('fumadocs openapi source', () => {
   it('generates localized operation pages with existing route leaves', async () => {
@@ -69,6 +70,64 @@ describe('fumadocs openapi source', () => {
     expect(props.payload.bundled.info?.title).toBe(
       'Conversational AI RESTful API',
     );
+  });
+
+  it('preserves authentication links for every REST OpenAPI lane', async () => {
+    const source = await createLocalizedOpenApiSource();
+    const expectedAuthLinks = {
+      convoai: {
+        tokenAuth:
+          '/en/api-reference/api-ref/conversational-ai/authentication#token-authentication',
+        basicAuth:
+          '/en/api-reference/api-ref/conversational-ai/authentication#basic-http-authentication',
+      },
+      'rtc-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/rtc/authentication#authorization-header',
+      },
+      'signaling-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/signaling/authentication#implement-basic-http-authentication',
+      },
+      'cloud-recording-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/cloud-recording/authentication#implement-basic-http-authentication',
+      },
+      'cloud-transcoding-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/cloud-transcoding/authentication#implement-basic-http-authentication',
+      },
+      'media-gateway-rest': {
+        basicAuth:
+          '/en/api-reference/api-ref/rtmp-gateway/authentication#http-basic-authentication',
+        hmacAuth:
+          '/en/api-reference/api-ref/rtmp-gateway/authentication#http-hmac-authentication',
+      },
+      'speech-to-text-rest': {
+        BasicAuth:
+          '/en/api-reference/api-ref/speech-to-text/authentication#recommended-pattern',
+      },
+    } as const;
+
+    for (const lane of OPENAPI_LANES) {
+      const firstOperation = Object.values(lane.operations)[0];
+      const page = source.files.find(
+        (file) =>
+          file.type === 'page' &&
+          file.path ===
+            `en/${lane.routePrefix}/${firstOperation.routeLeaf}.mdx`,
+      );
+
+      expect(page?.type).toBe('page');
+      if (page?.type !== 'page') {
+        throw new Error(`Missing OpenAPI page for lane "${lane.id}"`);
+      }
+
+      const props = await page.data.getOpenAPIPageProps();
+      expect(
+        (props.payload.bundled as Record<string, unknown>)['x-docs-auth-links'],
+      ).toEqual(expectedAuthLinks[lane.id as keyof typeof expectedAuthLinks]);
+    }
   });
 
   it('keeps Cloud Recording legacy-visible prose in generated endpoint payloads', async () => {
