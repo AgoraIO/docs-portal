@@ -33,6 +33,8 @@
     "docs:links:external": "node scripts/audit-doc-links.mjs --check-external --external-concurrency=8 --external-retries=2 --external-timeout=5000",
     "legacy-redirects:generate": "node scripts/generate-legacy-redirect-artifacts.mjs",
     "legacy-redirects:check": "node scripts/generate-legacy-redirect-artifacts.mjs --check",
+    "shengwang-redirects:candidates": "bun scripts/generate-shengwang-redirect-candidates.mjs",
+    "shengwang-redirects:finalize": "node scripts/finalize-shengwang-redirect-artifacts.mjs",
     "docs:lint:english": "node scripts/audit-english-doc-low-errors.mjs",
     "docs:mdx-build-syntax": "bun scripts/audit-mdx-build-syntax.mjs",
     "docs:migration-parity": "node scripts/audit-migration-parity.mjs",
