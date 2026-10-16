@@ -144,3 +144,15 @@ it('labels a Bailian response without claiming it is a local excerpt', async () 
   expect(screen.queryByText(/本地文档摘录演示/)).not.toBeInTheDocument();
   expect(screen.getByText(/百炼知识库与模型生成/)).toBeInTheDocument();
 });
+
+it('distinguishes local KB model answers from excerpt-only and hosted KB modes', async () => {
+  vi.mocked(askDocumentQuestion).mockResolvedValue({
+    ...result,
+    mode: 'local-kb',
+  });
+  render(<AiAnswerPanel filters={{}} onClose={vi.fn()} />);
+  submit();
+  await screen.findByRole('link', { name: 'Token 指南' });
+  expect(screen.getByText(/本地知识库检索，百炼模型生成/)).toBeInTheDocument();
+  expect(screen.queryByText(/尚未调用/)).not.toBeInTheDocument();
+});

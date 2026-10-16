@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite dev",
+    "dev:ai-local": "AI_BOT_MODE=local-kb VITE_AI_BOT_DEMO=true VITE_DOCS_REGION=cn vite dev --host 127.0.0.1 --port 3008 --config scripts/ai-kb/vite.local.ts",
     "dev:full": "vite dev",
     "dev:scope": "bun run dev",
     "build": "bun run legacy-redirects:check && bun run build:static",

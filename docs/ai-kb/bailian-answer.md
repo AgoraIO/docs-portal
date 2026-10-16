@@ -1,5 +1,7 @@
 # 百炼问答接口接入
 
+本文说明托管 KB 适配器。当前运行的 demo 使用“本地 KB + 千问模型”，启动与测试见 [本地问答 demo](local-answer-demo.md)。两条链路的配置不能混用。
+
 代码已支持开发环境的显式 `bailian` 模式：新版搜索页 → 独立 `/api/ai/answer` → 百炼知识检索 → 本地语料来源/平台校验 → 千问生成 → 原有回答与引用面板。默认关闭，普通搜索与 Meili 索引不改变。
 
 ## 本轮确认的接口
@@ -9,14 +11,14 @@
 - [知识检索](https://help.aliyun.com/zh/model-studio/knowledgesearch)：`POST https://{workspaceId}.cn-beijing.maas.aliyuncs.com/api/v1/indices/knowledge/search`，Bearer API Key，传 `agent_id/query/kb_search_configs`，返回 `data.nodes`。
 - [千问 OpenAI 兼容接口](https://help.aliyun.com/zh/model-studio/qwen-api-via-openai-chat-completions)：同一 workspace host 下 `/compatible-mode/v1/chat/completions`，非流式、JSON 输出。
 
-知识检索接口需要在控制台创建并发布检索服务，拿到 `agent_id`，且服务绑定目标 KB。本轮没有创建/发布服务，没有核实当前账号权限或计费，也没有调用这些付费接口。检索服务不是本地 AI Agent；它是平台保存检索配置的服务实例。未采用仅在概览出现、缺少本次详细协议核实的旧 `index/retrieve` 路径。
+知识检索接口需要在控制台创建并发布检索服务，拿到 `agent_id`，且服务绑定目标 KB。托管适配器实现阶段没有创建/发布检索服务，也没有调用托管检索接口；后续本地 KB 模式已完成真实模型调用，见上方说明。检索服务不是本地 AI Agent；它是平台保存检索配置的服务实例。未采用仅在概览出现、缺少本次详细协议核实的旧 `index/retrieve` 路径。
 
 ## 接入准备
 
 1. 在后续确认云端资源后导入样本文档，记录真实 KB ID 和每篇文档的远端 `doc_id`。不要把上传 fileId、任务 jobId、知识库 ID 当成文档 ID。
 2. 创建并发布绑定该 KB 的检索服务，记录服务 ID。
 3. 把真实 doc_id 与同版本本地 corpus 的 sourceId/hash 对应，写入不提交的 bindings 文件。不能使用模拟 ID，也不能凭同名文档猜测对应关系。
-4. 在服务端注入 API Key 和路径，再启动开发服务。本轮默认本地摘录服务继续运行，没有切到收费模式。
+4. 在服务端注入 API Key 和路径，再启动开发服务。这是托管模式的配置；本地 KB 模式不需要这些 bindings。
 
 ### bindings 文件结构
 

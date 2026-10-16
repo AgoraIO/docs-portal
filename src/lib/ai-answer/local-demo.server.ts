@@ -2,8 +2,8 @@ import { open } from 'node:fs/promises';
 import { isAbsolute } from 'node:path';
 import type { KbCorpus } from '../ai-kb/corpus';
 import { parseKbCorpus } from '../ai-kb/plan';
-import { createAnswerService, matchesAnswerFilters } from './answer.server';
-import { pickMarkdownExcerpt } from './excerpt.server';
+import { createAnswerService } from './answer.server';
+import { createLocalSearchDocs } from './local-retrieval.server';
 
 export async function readDemoCorpus(path: string): Promise<KbCorpus> {
   if (!isAbsolute(path)) throw new Error('Absolute corpus path required');
@@ -40,34 +40,7 @@ export function createLocalDemoAnswer(value: KbCorpus) {
   const corpus = parseKbCorpus(value);
   return createAnswerService({
     corpus,
-    async retrieve(input, signal) {
-      signal.throwIfAborted();
-      const tokens =
-        input.question
-          .toLocaleLowerCase()
-          .match(/[a-z0-9_]+|[\u3400-\u9fff]{2,}/g) ?? [];
-      const terms = [...new Set(tokens)];
-      return corpus.documents
-        .filter((doc) => matchesAnswerFilters(doc, input))
-        .map((doc) => {
-          const text =
-            `${doc.metadata.title}\n${doc.content}`.toLocaleLowerCase();
-          const score = terms.filter((term) => text.includes(term)).length;
-          const excerpt = pickMarkdownExcerpt(doc.content, terms);
-          return { doc, score, excerpt };
-        })
-        .filter((item) => item.score > 0 && item.excerpt !== null)
-        .sort(
-          (a, b) =>
-            b.score - a.score || a.doc.sourceId.localeCompare(b.doc.sourceId),
-        )
-        .slice(0, 6)
-        .map(({ doc, excerpt }, i) => ({
-          id: `e${i + 1}`,
-          sourceId: doc.sourceId,
-          text: excerpt as string,
-        }));
-    },
+    retrieve: createLocalSearchDocs(corpus),
     async generate({ evidence }, signal) {
       signal.throwIfAborted();
       return {

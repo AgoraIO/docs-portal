@@ -1,6 +1,6 @@
 import { isAbsolute } from 'node:path';
 import type { KbCorpus } from '../ai-kb/corpus';
-import { abortable } from './answer.server';
+import { abortable, createAnswerService } from './answer.server';
 import { createBailianAnswer, readAnswerBindings } from './bailian.server';
 import {
   AnswerError,
@@ -8,6 +8,8 @@ import {
   parseAnswerRequest,
 } from './contracts';
 import { createLocalDemoAnswer, readDemoCorpus } from './local-demo.server';
+import { createLocalSearchDocs } from './local-retrieval.server';
+import { createQwenGenerator } from './qwen.server';
 
 type Options = {
   env?: Record<string, string | undefined>;
@@ -81,7 +83,7 @@ async function handleActiveRequest(
 ): Promise<Response> {
   const env = options.env ?? process.env;
   if (
-    !['local-demo', 'bailian'].includes(env.AI_BOT_MODE ?? '') ||
+    !['local-demo', 'local-kb', 'bailian'].includes(env.AI_BOT_MODE ?? '') ||
     env.NODE_ENV === 'production' ||
     !env.AI_BOT_CORPUS_PATH ||
     !isAbsolute(env.AI_BOT_CORPUS_PATH)
@@ -92,6 +94,11 @@ async function handleActiveRequest(
     (!env.BAILIAN_API_KEY ||
       !env.AI_BOT_BAILIAN_BINDINGS_PATH ||
       !isAbsolute(env.AI_BOT_BAILIAN_BINDINGS_PATH))
+  )
+    return failure(503, 'AI_UNAVAILABLE');
+  if (
+    env.AI_BOT_MODE === 'local-kb' &&
+    !(env.BAILIAN_MODEL_API_KEY || env.DASHSCOPE_API_KEY || env.BAILIAN_API_KEY)
   )
     return failure(503, 'AI_UNAVAILABLE');
   if (request.method !== 'POST') return failure(405, 'METHOD_NOT_ALLOWED');
@@ -133,7 +140,21 @@ async function handleActiveRequest(
             model: env.AI_BOT_MODEL,
             fetch: options.fetch,
           })
-        : createLocalDemoAnswer(corpus);
+        : env.AI_BOT_MODE === 'local-kb'
+          ? createAnswerService({
+              mode: 'local-kb',
+              corpus,
+              retrieve: createLocalSearchDocs(corpus),
+              generate: createQwenGenerator({
+                apiKey: (env.BAILIAN_MODEL_API_KEY ||
+                  env.DASHSCOPE_API_KEY ||
+                  env.BAILIAN_API_KEY) as string,
+                workspaceId: env.BAILIAN_WORKSPACE_ID,
+                model: env.AI_BOT_MODEL,
+                fetch: options.fetch,
+              }),
+            })
+          : createLocalDemoAnswer(corpus);
     return Response.json(await answer(input, signal), {
       headers,
     });

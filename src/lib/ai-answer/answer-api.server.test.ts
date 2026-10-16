@@ -350,3 +350,90 @@ it('does not call upstream with incomplete Bailian configuration or in productio
   }
   expect(fetcher).not.toHaveBeenCalled();
 });
+
+it('uses local chunks with the model API without hosted KB bindings', async () => {
+  const calls: string[] = [];
+  const response = await handleAnswerRequest(
+    req({ question: '怎么生成 Token？', platform: 'web' }),
+    {
+      env: {
+        ...env,
+        AI_BOT_MODE: 'local-kb',
+        BAILIAN_MODEL_API_KEY: 'server-only-secret',
+      },
+      loadCorpus: async () => corpus,
+      fetch: (async (url, init) => {
+        calls.push(String(url));
+        const body = JSON.parse(String(init?.body));
+        const context = JSON.parse(body.messages[1].content);
+        expect(context.question).toBe('怎么生成 Token？');
+        expect(context.evidence[0].text).toContain('Token 需要由服务端生成');
+        expect(init?.headers).toMatchObject({
+          Authorization: 'Bearer server-only-secret',
+        });
+        return Response.json({
+          choices: [
+            {
+              finish_reason: 'stop',
+              message: {
+                content: JSON.stringify({
+                  markdown: '请在服务端生成 Token。',
+                  evidenceIds: [context.evidence[0].id],
+                }),
+              },
+            },
+          ],
+        });
+      }) as typeof fetch,
+    },
+  );
+  expect(response.status).toBe(200);
+  expect(await response.json()).toMatchObject({
+    mode: 'local-kb',
+    answer: '请在服务端生成 Token。',
+    citations: [{ url: doc.sourceId }],
+  });
+  expect(calls).toEqual([
+    'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+  ]);
+});
+
+it('does not call the model when local KB has no evidence after filtering', async () => {
+  let calls = 0;
+  const response = await handleAnswerRequest(
+    req({ question: 'Token', platform: 'android' }),
+    {
+      env: {
+        ...env,
+        AI_BOT_MODE: 'local-kb',
+        BAILIAN_MODEL_API_KEY: 'server-only-secret',
+      },
+      loadCorpus: async () => corpus,
+      fetch: (async () => {
+        calls++;
+        throw new Error('must not call');
+      }) as typeof fetch,
+    },
+  );
+  expect(response.status).toBe(200);
+  expect(await response.json()).toMatchObject({
+    mode: 'local-kb',
+    status: 'no-evidence',
+    citations: [],
+  });
+  expect(calls).toBe(0);
+});
+
+it('returns local Chinese evidence instead of requiring a whole-question literal match', async () => {
+  const chinese = createKbDocument({
+    content: '# 鉴权\n\n请在服务端生成令牌，用于用户加入频道时鉴权。',
+    metadata: { ...doc.metadata, title: '鉴权', sections: [] },
+  });
+  const answer = createLocalDemoAnswer({ ...corpus, documents: [chinese] });
+  const response = await answer({ question: '请问令牌应该怎么生成呢？' });
+  expect(response.status).toBe('answered');
+  expect(response.answer).toContain('请在服务端生成令牌');
+  expect((await answer({ question: '今天北京天气怎么样？' })).status).toBe(
+    'no-evidence',
+  );
+});

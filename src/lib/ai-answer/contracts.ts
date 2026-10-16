@@ -9,7 +9,7 @@ export type AnswerRequest = {
 };
 export type Citation = { id: string; title: string; url: string };
 export type AnswerResponse = {
-  mode: 'local-demo' | 'bailian';
+  mode: 'local-demo' | 'local-kb' | 'bailian';
   status: 'answered' | 'no-evidence';
   answer: string;
   citations: Citation[];

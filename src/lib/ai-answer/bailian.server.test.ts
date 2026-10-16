@@ -212,3 +212,22 @@ it('bounds upstream bodies and cancels a stalled response body', async () => {
   await expect(pending).rejects.toThrow('CANCELLED');
   await vi.waitFor(() => expect(cancel).toHaveBeenCalled());
 });
+
+it('rejects retrieval-key echoes in model output when model and retrieval keys differ', async () => {
+  const responses = [
+    ok([node]),
+    model({ markdown: 'RETRIEVAL-SECRET', evidenceIds: ['e1'] }),
+  ];
+  const answer = createBailianAnswer({
+    corpus,
+    bindings,
+    apiKey: 'RETRIEVAL-SECRET',
+    modelApiKey: 'MODEL-SECRET',
+    fetch: (async () => {
+      const response = responses.shift();
+      if (!response) throw new Error('Unexpected request');
+      return response;
+    }) as typeof fetch,
+  });
+  await expect(answer({ question: 'Token' })).rejects.toThrow('AI_UPSTREAM');
+});
