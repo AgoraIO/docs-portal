@@ -220,6 +220,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
   'cloud-recording': {
     'get-started/getstarted':
       '/en/realtime-media/cloud-recording/rest-quickstart',
+    'reference/billing-policies': '/en/introduction/billing/billing-policies',
     'rest-api/acquire': '/en/api-reference/api-ref/cloud-recording',
     'rest-api/ncs-ip':
       '/en/realtime-media/cloud-recording/build/handle-events/receive-notifications',

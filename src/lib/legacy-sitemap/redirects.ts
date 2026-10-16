@@ -1,3 +1,4 @@
+import posthogObservedRedirects from './posthog-observed-redirects.json';
 import legacySitemapRedirects from './redirects.json';
 
 export type LegacySitemapRuleType =
@@ -32,14 +33,18 @@ export function resolveLegacySitemapRedirectPath(
 ) {
   const normalizedPath = normalizeLegacyPath(legacyPath);
   const normalizedSearch = normalizeLegacySearch(legacySearch);
+  const allRedirectRules = [
+    ...legacySitemapRedirectConfig.rules,
+    ...(posthogObservedRedirects as LegacySitemapRedirectRule[]),
+  ];
 
   return (
-    legacySitemapRedirectConfig.rules.find(
+    allRedirectRules.find(
       (rule) =>
         normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
         normalizeLegacySearch(rule.legacySearch) === normalizedSearch,
     ) ??
-    legacySitemapRedirectConfig.rules.find(
+    allRedirectRules.find(
       (rule) =>
         normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
         !rule.legacySearch,
