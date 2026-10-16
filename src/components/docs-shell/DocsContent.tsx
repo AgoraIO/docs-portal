@@ -41,7 +41,16 @@ import {
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
-import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
+import {
+  getStoredPlatformPreference,
+  PLATFORM_PREFERENCE_EVENT,
+} from '@/lib/platforms/preference';
+import {
+  getPlatformLabel,
+  isKnownPlatform,
+  normalizePlatformKey,
+  type PlatformKey,
+} from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
   PlatformPanel,
@@ -71,6 +80,68 @@ type DocsArticleReturnLink = {
   href: string;
   title: string;
 };
+
+function readStoredPlatformPreference(): PlatformKey | null {
+  const stored = getStoredPlatformPreference();
+  if (!stored) {
+    return null;
+  }
+
+  const normalized = normalizePlatformKey(stored);
+  return isKnownPlatform(normalized) ? normalized : null;
+}
+
+function resolveTitlePlatforms({
+  hidePlatformTabs,
+  platformTabs,
+  storedPlatformPreference,
+  titlePlatforms,
+}: {
+  hidePlatformTabs: boolean;
+  platformTabs?: {
+    initialPlatform?: PlatformKey;
+    platforms: string;
+  };
+  storedPlatformPreference: PlatformKey | null;
+  titlePlatforms: PlatformKey[];
+}) {
+  if (hidePlatformTabs || !platformTabs) {
+    return titlePlatforms;
+  }
+
+  const availablePlatforms = parsePlatformList(platformTabs.platforms);
+  const routePlatform = platformTabs.initialPlatform;
+  const selectedPlatform =
+    (routePlatform && availablePlatforms.includes(routePlatform)
+      ? routePlatform
+      : undefined) ??
+    (storedPlatformPreference &&
+    availablePlatforms.includes(storedPlatformPreference)
+      ? storedPlatformPreference
+      : undefined);
+
+  return selectedPlatform ? [selectedPlatform] : titlePlatforms;
+}
+
+function parsePlatformList(platforms: string) {
+  try {
+    const parsed = JSON.parse(platforms) as unknown;
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed.flatMap((value) => {
+      if (typeof value !== 'string') {
+        return [];
+      }
+
+      const normalized = normalizePlatformKey(value);
+      return isKnownPlatform(normalized) ? [normalized] : [];
+    });
+  } catch {
+    return [];
+  }
+}
 
 export function DocsContent({
   body,
@@ -154,9 +225,38 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
-  const titlePlatformLabels = titlePlatforms.map((platform) =>
+  const [storedPlatformPreference, setStoredPlatformPreference] =
+    useState<PlatformKey | null>(null);
+  const effectiveTitlePlatforms = resolveTitlePlatforms({
+    hidePlatformTabs,
+    platformTabs,
+    storedPlatformPreference,
+    titlePlatforms,
+  });
+  const titlePlatformLabels = effectiveTitlePlatforms.map((platform) =>
     getPlatformLabel(platform, currentLocale),
   );
+
+  useEffect(() => {
+    const syncStoredPlatformPreference = () => {
+      setStoredPlatformPreference(readStoredPlatformPreference());
+    };
+
+    syncStoredPlatformPreference();
+    window.addEventListener(
+      PLATFORM_PREFERENCE_EVENT,
+      syncStoredPlatformPreference,
+    );
+    window.addEventListener('storage', syncStoredPlatformPreference);
+
+    return () => {
+      window.removeEventListener(
+        PLATFORM_PREFERENCE_EVENT,
+        syncStoredPlatformPreference,
+      );
+      window.removeEventListener('storage', syncStoredPlatformPreference);
+    };
+  }, []);
 
   useEffect(() => {
     if (!isMdxBody) {

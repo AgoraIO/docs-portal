@@ -19,6 +19,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { i18n } from '@/lib/i18n/i18n';
+import { PLATFORM_PREFERENCE_STORAGE_KEY } from '@/lib/platforms/registry';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsTocRail } from './DocsTocRail';
@@ -142,11 +143,13 @@ describe('DocsContent', () => {
   beforeEach(() => {
     fetchMock.mockReset();
     vi.stubGlobal('fetch', fetchMock);
+    window.localStorage.removeItem(PLATFORM_PREFERENCE_STORAGE_KEY);
     window.sessionStorage.clear();
     window.history.replaceState(null, '', '/en/introduction/about-agora');
   });
 
   afterEach(() => {
+    window.localStorage.removeItem(PLATFORM_PREFERENCE_STORAGE_KEY);
     vi.unstubAllGlobals();
   });
 
@@ -539,6 +542,34 @@ describe('DocsContent', () => {
       await screen.findByRole('heading', { name: '插件概览' }),
     ).toBeInTheDocument();
     expect(screen.getByLabelText('适用平台')).toHaveTextContent('Web');
+  });
+
+  it('updates a canonical page badge from the stored platform preference', async () => {
+    window.localStorage.setItem(PLATFORM_PREFERENCE_STORAGE_KEY, 'windows');
+
+    renderWithRouter(
+      <DocsContent
+        body={{
+          contentPath:
+            'zh-CN/realtime-media/rtc/build/video/custom-video-rendering.mdx',
+          kind: 'mdx',
+          platformTabs: {
+            canonicalPlatform: 'web',
+            defaultPlatform: 'android',
+            platforms: '["android","windows"]',
+          },
+        }}
+        contentPath="zh-CN/realtime-media/rtc/build/video/custom-video-rendering.mdx"
+        locale="zh-CN"
+        title="自定义视频渲染"
+        titlePlatforms={['android']}
+        toc={[]}
+      />,
+    );
+
+    expect(await screen.findByLabelText('适用平台')).toHaveTextContent(
+      'Windows',
+    );
   });
 
   it('renders openapi-layout content without the article max-width or mobile TOC', async () => {
