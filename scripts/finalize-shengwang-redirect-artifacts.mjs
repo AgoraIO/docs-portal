@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,6 +9,18 @@ const candidatePath = path.join(
   inputRoot,
   'legacy-url-map-candidate-32883e92e9-2026-10-15.json',
 );
+const legacyInventoryPath = path.join(
+  inputRoot,
+  'legacy-url-inventory-2026-10-14.json',
+);
+const targetRoutesPath = path.join(
+  inputRoot,
+  'target-routes-32883e92e9.json',
+);
+const targetMetaPath = path.join(
+  inputRoot,
+  'target-build-meta-32883e92e9.json',
+);
 const finalMapPath = path.join(inputRoot, 'legacy-url-map.csv');
 const finalJsonPath = path.join(inputRoot, 'legacy-url-map.json');
 const vercelPath = path.join(
@@ -17,7 +30,14 @@ const vercelPath = path.join(
 const nginxPath = path.join(inputRoot, 'legacy-url-redirects.nginx.conf');
 
 const candidate = JSON.parse(await readFile(candidatePath, 'utf8'));
+const legacyInventory = JSON.parse(await readFile(legacyInventoryPath, 'utf8'));
+const targetRoutes = JSON.parse(await readFile(targetRoutesPath, 'utf8'));
+const targetMeta = JSON.parse(await readFile(targetMetaPath, 'utf8'));
+const targetRouteSet = new Set(targetRoutes.map((route) => route.url));
+const applicationRoutes = new Set(['/zh-CN/search']);
+validateSnapshots(candidate, legacyInventory, targetRoutes, targetMeta);
 const records = candidate.records;
+validateRecords(records, legacyInventory, targetRouteSet, applicationRoutes);
 const manualReview = records.filter((record) => record.status === 'manual-review');
 if (manualReview.length > 0) {
   throw new Error(
@@ -51,9 +71,10 @@ await writeFile(
   finalJsonPath,
   `${JSON.stringify(
     {
-      generatedAt: new Date().toISOString(),
+      generatedAt: candidate.generatedAt,
       targetCommit: candidate.targetCommit,
       sourceCandidate: path.relative(repoRoot, candidatePath),
+      snapshot: candidate.snapshot,
       summary: finalSummary,
       records,
     },
@@ -107,6 +128,113 @@ function toCsv(items) {
   return `${columns.join(',')}\n${items
     .map((item) => columns.map((column) => csvEscape(item[column])).join(','))
     .join('\n')}\n`;
+}
+
+async function sha256File(filePath) {
+  const content = await readFile(filePath);
+  return createHash('sha256').update(content).digest('hex');
+}
+
+async function validateSnapshots(candidate, legacyInventory, targetRoutes, targetMeta) {
+  if (!candidate || !Array.isArray(candidate.records)) {
+    throw new Error('Cannot finalize Shengwang redirects: invalid candidate schema');
+  }
+  if (!candidate.targetCommit || !targetMeta.commit?.startsWith(candidate.targetCommit)) {
+    throw new Error(
+      `Cannot finalize Shengwang redirects: candidate target commit ${candidate.targetCommit} does not match ${targetMeta.commit}`,
+    );
+  }
+  if (targetMeta.routeCount !== targetRoutes.length) {
+    throw new Error(
+      `Cannot finalize Shengwang redirects: target route count ${targetRoutes.length} does not match metadata ${targetMeta.routeCount}`,
+    );
+  }
+  const expectedSnapshots = {
+    legacyInventory: legacyInventoryPath,
+    legacySitemap: path.join(inputRoot, 'legacy-sitemap-2026-10-14.xml'),
+    targetRoutes: targetRoutesPath,
+  };
+  for (const [key, filePath] of Object.entries(expectedSnapshots)) {
+    const snapshot = candidate.snapshot?.[key];
+    const expectedPath = path.relative(repoRoot, filePath);
+    if (!snapshot || snapshot.path !== expectedPath) {
+      throw new Error(
+        `Cannot finalize Shengwang redirects: candidate ${key} snapshot path is not ${expectedPath}`,
+      );
+    }
+    const actualHash = await sha256File(filePath);
+    if (snapshot.sha256 !== actualHash) {
+      throw new Error(
+        `Cannot finalize Shengwang redirects: candidate ${key} snapshot hash does not match ${actualHash}`,
+      );
+    }
+  }
+  if (
+    targetMeta.snapshot?.path !== path.relative(repoRoot, targetRoutesPath) ||
+    targetMeta.snapshot?.sha256 !== candidate.snapshot.targetRoutes.sha256
+  ) {
+    throw new Error(
+      'Cannot finalize Shengwang redirects: target route snapshot provenance does not match metadata',
+    );
+  }
+  if (candidate.targetRouteSnapshot !== candidate.snapshot.targetRoutes.path) {
+    throw new Error(
+      'Cannot finalize Shengwang redirects: candidate targetRouteSnapshot is inconsistent with snapshot metadata',
+    );
+  }
+  if (candidate.legacyCollectedAt !== legacyInventory.collectedAt) {
+    throw new Error(
+      'Cannot finalize Shengwang redirects: candidate legacy collection date is inconsistent with inventory',
+    );
+  }
+}
+
+function validateRecords(records, legacyInventory, targetRouteSet, applicationRoutes) {
+  const expectedPaths = legacyInventory.urls.map(normalizePath);
+  const actualPaths = records.map((record) => record.legacyPath);
+  const expectedSet = new Set(expectedPaths);
+  const actualSet = new Set(actualPaths);
+  if (expectedPaths.length !== records.length || expectedSet.size !== records.length) {
+    throw new Error(
+      `Cannot finalize Shengwang redirects: candidate record count ${records.length} does not match unique inventory count ${expectedSet.size}`,
+    );
+  }
+  if (expectedSet.size !== actualSet.size || [...expectedSet].some((value) => !actualSet.has(value))) {
+    throw new Error('Cannot finalize Shengwang redirects: candidate sources do not match the legacy inventory');
+  }
+
+  const allowedStatuses = new Set(['candidate', 'no-redirect']);
+  for (const record of records) {
+    if (!record || !allowedStatuses.has(record.status) || !record.legacyPath) {
+      throw new Error('Cannot finalize Shengwang redirects: candidate contains an invalid record');
+    }
+    const targetPath = record.target?.split('#', 1)[0];
+    const targetExists = targetPath
+      ? targetRouteSet.has(targetPath) || applicationRoutes.has(targetPath)
+      : false;
+    if (record.targetExists !== targetExists) {
+      throw new Error(
+        `Cannot finalize Shengwang redirects: targetExists mismatch for ${record.legacyPath}`,
+      );
+    }
+    if (record.status === 'candidate' && (!targetPath || !targetExists)) {
+      throw new Error(
+        `Cannot finalize Shengwang redirects: candidate target is missing for ${record.legacyPath}`,
+      );
+    }
+    if (record.status === 'no-redirect' && (record.target || record.targetExists)) {
+      throw new Error(
+        `Cannot finalize Shengwang redirects: no-redirect record has a target for ${record.legacyPath}`,
+      );
+    }
+  }
+}
+
+function normalizePath(value) {
+  const parsed = new URL(value, 'https://legacy.invalid');
+  let pathname = decodeURIComponent(parsed.pathname).replace(/\/+/g, '/');
+  pathname = pathname.replace(/\.html$/, '');
+  return pathname.replace(/\/$/, '') || '/';
 }
 
 function toNginx(items, targetCommit) {

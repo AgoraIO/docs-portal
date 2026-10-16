@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -173,6 +174,25 @@ const outputGroupsCsvPath = path.join(
 
 const legacyInventory = JSON.parse(await readFile(legacyInventoryPath, 'utf8'));
 const targetRoutes = JSON.parse(await readFile(targetRoutesPath, 'utf8'));
+const snapshot = {
+  legacyInventory: {
+    path: path.relative(repoRoot, legacyInventoryPath),
+    sha256: await sha256File(legacyInventoryPath),
+  },
+  legacySitemap: {
+    path: path.relative(
+      repoRoot,
+      path.join(inputRoot, `legacy-sitemap-${legacyCollectedAt}.xml`),
+    ),
+    sha256: await sha256File(
+      path.join(inputRoot, `legacy-sitemap-${legacyCollectedAt}.xml`),
+    ),
+  },
+  targetRoutes: {
+    path: path.relative(repoRoot, targetRoutesPath),
+    sha256: await sha256File(targetRoutesPath),
+  },
+};
 const targetRouteSet = new Set(targetRoutes.map((route) => route.url));
 const applicationRoutes = new Set(['/zh-CN/search']);
 const historicalRows = parseCsv(await readFile(historicalPathMapPath, 'utf8'));
@@ -371,6 +391,7 @@ const output = {
   legacySitemap: legacyInventory.sitemapUrl,
   legacyCollectedAt: legacyInventory.collectedAt,
   targetRouteSnapshot: path.relative(repoRoot, targetRoutesPath),
+  snapshot,
   historicalSeed: path.relative(repoRoot, historicalPathMapPath),
   summary,
   reviewGroupCount: reviewGroups.length,
@@ -424,6 +445,11 @@ function makeRecord({
     preserveQuery: false,
     notes,
   };
+}
+
+async function sha256File(filePath) {
+  const content = await readFile(filePath);
+  return createHash('sha256').update(content).digest('hex');
 }
 
 function resolveSpecialRoute(legacyPath) {
