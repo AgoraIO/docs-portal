@@ -20,7 +20,6 @@ import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { i18n } from '@/lib/i18n/i18n';
 import { PLATFORM_DATASET_KEY } from '@/lib/platforms/preference';
-import { PLATFORM_PREFERENCE_STORAGE_KEY } from '@/lib/platforms/registry';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsTocRail } from './DocsTocRail';
@@ -144,14 +143,12 @@ describe('DocsContent', () => {
   beforeEach(() => {
     fetchMock.mockReset();
     vi.stubGlobal('fetch', fetchMock);
-    window.localStorage.removeItem(PLATFORM_PREFERENCE_STORAGE_KEY);
     delete document.documentElement.dataset[PLATFORM_DATASET_KEY];
     window.sessionStorage.clear();
     window.history.replaceState(null, '', '/en/introduction/about-agora');
   });
 
   afterEach(() => {
-    window.localStorage.removeItem(PLATFORM_PREFERENCE_STORAGE_KEY);
     delete document.documentElement.dataset[PLATFORM_DATASET_KEY];
     vi.unstubAllGlobals();
   });
@@ -547,37 +544,7 @@ describe('DocsContent', () => {
     expect(screen.getByLabelText('适用平台')).toHaveTextContent('Web');
   });
 
-  it('updates a canonical page badge from the stored platform preference', async () => {
-    window.localStorage.setItem(PLATFORM_PREFERENCE_STORAGE_KEY, 'windows');
-    document.documentElement.dataset[PLATFORM_DATASET_KEY] = 'windows';
-
-    renderWithRouter(
-      <DocsContent
-        body={{
-          contentPath:
-            'zh-CN/realtime-media/rtc/build/video/custom-video-rendering.mdx',
-          kind: 'mdx',
-          platformTabs: {
-            canonicalPlatform: 'web',
-            defaultPlatform: 'android',
-            platforms: '["android","windows"]',
-          },
-        }}
-        contentPath="zh-CN/realtime-media/rtc/build/video/custom-video-rendering.mdx"
-        locale="zh-CN"
-        title="自定义视频渲染"
-        titlePlatforms={['android']}
-        toc={[]}
-      />,
-    );
-
-    expect(await screen.findByLabelText('适用平台')).toHaveTextContent(
-      'Windows',
-    );
-  });
-
   it('uses the active tab dataset ahead of a stale stored preference', async () => {
-    window.localStorage.setItem(PLATFORM_PREFERENCE_STORAGE_KEY, 'flutter');
     document.documentElement.dataset[PLATFORM_DATASET_KEY] = 'android';
 
     renderWithRouter(
@@ -602,6 +569,33 @@ describe('DocsContent', () => {
 
     expect(await screen.findByLabelText('适用平台')).toHaveTextContent(
       'Android',
+    );
+  });
+
+  it('uses the route-selected platform from the shared page context', async () => {
+    renderWithRouter(
+      <DocsContent
+        body={{
+          contentPath:
+            'zh-CN/realtime-media/rtc/build/video/custom-video-rendering.mdx',
+          kind: 'mdx',
+          platformTabs: {
+            canonicalPlatform: 'web',
+            defaultPlatform: 'android',
+            initialPlatform: 'windows',
+            platforms: '["android","windows"]',
+          },
+        }}
+        contentPath="zh-CN/realtime-media/rtc/build/video/custom-video-rendering.mdx"
+        locale="zh-CN"
+        title="自定义视频渲染"
+        titlePlatforms={['android']}
+        toc={[]}
+      />,
+    );
+
+    expect(await screen.findByLabelText('适用平台')).toHaveTextContent(
+      'Windows',
     );
   });
 

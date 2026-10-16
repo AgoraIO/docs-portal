@@ -54,6 +54,7 @@ import {
 } from '@/lib/platforms/registry';
 import {
   PlatformHeaderTabs,
+  PlatformPageProvider,
   PlatformPanel,
   PlatformTabsGroup,
   PlatformTabsPlacementProvider,
@@ -316,7 +317,7 @@ export function DocsContent({
     };
   }, [isMdxBody]);
 
-  return (
+  const article = (
     <article
       data-docs-home={isHomePage ? 'true' : undefined}
       className={cn(
@@ -556,6 +557,21 @@ export function DocsContent({
         />
       )}
     </article>
+  );
+
+  if (!platformTabs) {
+    return article;
+  }
+
+  return (
+    <PlatformPageProvider
+      canonicalPlatform={platformTabs.canonicalPlatform}
+      defaultPlatform={platformTabs.defaultPlatform}
+      initialPlatform={platformTabs.initialPlatform}
+      platforms={platformTabs.platforms}
+    >
+      {article}
+    </PlatformPageProvider>
   );
 }
 
