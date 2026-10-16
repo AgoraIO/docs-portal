@@ -978,7 +978,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.mdx':
@@ -990,13 +990,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/signaling/ios.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-cpp.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-java.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/macos.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/meta.json':
     '2026-06-30T10:25:06.000Z',
   'content/docs/en/api-reference/api-ref/signaling/react-native.mdx':
@@ -1004,9 +1004,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/unity.mdx':
     '2026-09-10T05:40:14.000Z',
   'content/docs/en/api-reference/api-ref/signaling/web.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/windows-cpp.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/api-callback-service.mdx':
     '2026-08-05T09:38:07.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/authentication.md':
@@ -6163,9 +6163,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtm/reference/limitations.md':
-    '2026-10-14T16:26:25.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/realtime-media/rtm/reference/limitations.mdx':
-    '2026-10-14T16:26:25.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/realtime-media/rtm/reference/meta.json':
     '2026-08-27T03:13:28.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.md':

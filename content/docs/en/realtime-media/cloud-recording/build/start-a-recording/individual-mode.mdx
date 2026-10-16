@@ -2,169 +2,269 @@
 title: "Individual recording"
 description: "Use the Cloud Recording RESTful API to make an individual recording"
 ---
-This guide includes the key steps in using the Cloud Recording RESTful API to make an individual recording. For more information, see [Get started](/en/realtime-media/cloud-recording/index).
+This guide includes the key steps in using the Cloud Recording RESTful API to make an individual recording and generate files in specific formats. For more information, see [Get started](/en/realtime-media/cloud-recording/index).
 
 Agora Cloud Recording supports three recording modes:
 
 -   Individual recording
-
 -   Composite recording
-
 -   Web page recording
 
 In individual recording mode, the audio and video of each user ID in a channel are recorded in separate files.
 
-Agora recommends that you use the standard mode when you start individual recording, and get audio and video files that can be played directly for each user IDs after the recording stops. For details, see [Start recording](#start-recording).
+:::info
+If you use legacy individual recording, where the `mode` path parameter in the request URL is `individual`, see [Legacy individual recording](/en/realtime-media/cloud-recording/v1/individual-mode).
+:::
 
-For example, if a channel has two users and you choose to record both audio and video, the files generated for standard mode of individual recording is shown in the following diagram:
+## Prerequisites
 
-![Image](https://assets-docs.agora.io/images/cloud-recording/individual-mode.svg)
+Before you start, follow the [REST quickstart](/en/realtime-media/cloud-recording/rest-quickstart) to complete a full recording workflow.
 
 ## Implementation
 
 ### Get a resource ID
 
-Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to apply for a resource ID.
+Before recording, call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method to get a resource ID.
 
-#### Example `acquire` request over HTTPS
+The following example requests a resource ID for the `httpClient463224` channel. Replace `<appid>` with your App ID and `<credentials>` with your Base64-encoded credentials. For more information, see [How to pass the basic HTTP authentication](/en/api-reference/api-ref/cloud-recording/authentication).
 
--   Request URL:
-
-  ```json
-  https://api.agora.io/v1/apps/<yourappid>/cloud_recording/acquire
-  ```
--   `Content-type`: `application/json;charset=utf-8`
-
--   `Authorization`: Basic authorization. For more information, see [How to pass the basic HTTP authentication](/en/api-reference/api-ref/cloud-recording/authentication).
-
--   Request body:
-
-  ```json
-  {
-      "cname": "https://xxxxx",
-      "uid": "527841",
-      "clientRequest": {
-          "resourceExpiredHour": 24,
-          "scene": 0
-      }
-  }
-  ```
+```bash title="Example acquire request"
+curl --request POST \
+  --url 'https://api.agora.io/v1/apps/<appid>/cloud_recording/acquire' \
+  --header 'Authorization: Basic <credentials>' \
+  --header 'Content-Type: application/json;charset=utf-8' \
+  --data '{
+    "cname": "httpClient463224",
+    "uid": "527841",
+    "clientRequest": {
+      "resourceExpiredHour": 24,
+      "scene": 0
+    }
+  }'
+```
 
 ### Start recording
 
-To enable individual recording mode, set `mode` to `individual` when calling [`start`](/en/api-reference/api-ref/cloud-recording#start). Use `recordingConfig` to configure individual recording, and use `storageConfig` to configure your third-party cloud storage.
+To enable individual recording mode, set `mode` to `raw` when calling [`start`](/en/api-reference/api-ref/cloud-recording#start). Use `recordingConfig` to configure stream subscription, `recordingFileConfig` to configure the recorded file types, and `storageConfig` to configure your third-party cloud storage.
 
-Agora recommends that you use the standard mode when you start recording, that is, set the `streamMode` field in the `recordingConfig` parameter to `standard` to generate combined audio and video files that can be played directly.
+:::warning
+Set the recording mode when you start the recording. You cannot switch the mode after the recording starts.
+:::
 
 In individual recording mode, you can configure the following parameters in `clientRequest`:
 
-| Parameter                                                                                       | Description                                                                                       | Note                                       |
-|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|--------------------------------------------|
-| [`token`](../../reference/glossary#token)                                                     | String. The dynamic key used for the channel to record.                                           | JSON. Required if the channel uses a token |
-| [`recordingConfig`](/en/api-reference/api-ref/cloud-recording#recordingconfig)                   | JSON. Configures stream subscription, transcoding, and the profile of the output audio and video. | Required                                   |
-| [`recordingConfig.streamMode`](/en/api-reference/api-ref/cloud-recording#recordingconfig)        | String. The output mode of the media stream in individual recording mode.                         | Required                                   |
-| [`recordingFileConfig`](/en/api-reference/api-ref/cloud-recording#recordingfileconfig) | JSON. Configures the recorded files.                                                              | Optional                                   |
-| [`storageConfig`](/en/api-reference/api-ref/cloud-recording#storageconfig)                 | JSON. Configures the third-party cloud storage.                                                   | Required                                   |
+| Parameter | Description | Required |
+|:----------|:------------|:---------|
+| [`token`](/en/realtime-media/cloud-recording/reference/glossary#token) | String. The dynamic key used for the channel to record. | Required if the channel uses a token |
+| [`recordingConfig`](/en/api-reference/api-ref/cloud-recording#recordingconfig) | JSON. Configures stream subscription and the profile of the output audio and video. | Required |
+| [`recordingConfig.streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) | Number. The type of media stream to subscribe to: `0` for audio only, `1` for video only, or `2` for audio and video. | Optional. Defaults to `2` (audio and video). |
+| [`recordingFileConfig`](/en/api-reference/api-ref/cloud-recording#recordingfileconfig) | JSON. Configures the recorded file types in `avFileType`. | Required, unless you only take screenshots |
+| [`storageConfig`](/en/api-reference/api-ref/cloud-recording#storageconfig) | JSON. Configures the third-party cloud storage. | Required |
 
-#### Example `start` request over HTTPS
+The files that the recording service generates depend on the combination of `recordingConfig.streamTypes` and `recordingFileConfig.avFileType`. The recorded files use the following standard formats, which can be played directly:
 
--   Request URL:
+- **HLS:** one M3U8 file and multiple TS files.
+- **DASH:** one MPD file and multiple WebM files.
 
-  ```json
-  https://api.agora.io/v1/apps/<yourappid>/cloud_recording/resourceid/<resourceid>/mode/individual/start
-  ```
--   `Content-type`: `application/json;charset=utf-8`
+The recording service always generates HLS or DASH files. In addition, it can generate MP3 files when you record audio only, and MP4 files when you record video only or audio and video. The following tabs show the `avFileType` options for each case:
 
--   `Authorization`: Basic authorization. For more information, see [How to pass the basic HTTP authentication](/en/api-reference/api-ref/cloud-recording/authentication).
+<Tabs defaultValue="0" groupId="stream-types">
+<TabsList>
+  <TabsTrigger value="0">Audio only (0)</TabsTrigger>
+  <TabsTrigger value="1">Video only (1)</TabsTrigger>
+  <TabsTrigger value="2">Audio and video (2)</TabsTrigger>
+</TabsList>
 
--   Request body:
+<TabsContent value="0">
 
-**Real-time recording for standard mode**
-```json
-{
-    "uid": "527841",
+| `avFileType` | Recorded files |
+|:-------------|:---------------|
+| `["hls"]` | One HLS file for each user ID, containing only that user's audio. |
+| `["hls","mp3"]` | Two sets of files for each user ID: one HLS file containing only that user's audio, and one MP3 file. |
+| `["mp3"]` | Not supported. |
+
+</TabsContent>
+
+<TabsContent value="1">
+
+| `avFileType` | Recorded files |
+|:-------------|:---------------|
+| `["hls"]` | One HLS or DASH file for each user ID, depending on the video codec of the source stream. Each slice contains only that user's video. |
+| `["hls","mp4"]` | Two sets of files for each user ID: one HLS or DASH file, depending on the video codec of the source stream, with each slice containing only that user's video; and one MP4 file. MP4 generation has known limitations. For details, see [Generate MP4 files directly](#generate-mp4-files-directly). |
+| `["mp4"]` | Not supported. |
+
+</TabsContent>
+
+<TabsContent value="2">
+
+| `avFileType` | Recorded files |
+|:-------------|:---------------|
+| `["hls"]` | One HLS or DASH file for each user ID, depending on the video codec of the source stream. Each slice contains both that user's audio and video. |
+| `["hls","mp4"]` | Two sets of files for each user ID: one HLS or DASH file, depending on the video codec of the source stream, with each slice containing both that user's audio and video; and one MP4 file. MP4 generation has known limitations. For details, see [Generate MP4 files directly](#generate-mp4-files-directly). |
+| `["mp4"]` | Not supported. |
+
+</TabsContent>
+</Tabs>
+
+For the naming conventions, field definitions, and slicing rules of the recorded files, see [Manage recorded files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files).
+
+The following example records the audio and video of two users and generates HLS and MP4 files. To keep the number of MP4 files to a minimum, the source stream must meet certain requirements. For details, see [Generate MP4 files directly](#generate-mp4-files-directly). Replace `<resourceid>` with the resource ID that `acquire` returns, and use the same `cname` and `uid` values as in the `acquire` request.
+
+```bash title="Example start request"
+curl --request POST \
+  --url 'https://api.agora.io/v1/apps/<appid>/cloud_recording/resourceid/<resourceid>/mode/raw/start' \
+  --header 'Authorization: Basic <credentials>' \
+  --header 'Content-Type: application/json;charset=utf-8' \
+  --data '{
     "cname": "httpClient463224",
+    "uid": "527841",
     "clientRequest": {
-        "token": "<token if any>",
-        "recordingConfig": {
-            "maxIdleTime": 30,
-            "streamTypes": 2,
-            "channelType": 0,
-            "videoStreamType": 0,
-            "subscribeVideoUids": [
-                "123",
-                "456"
-            ],
-            "subscribeAudioUids": [
-                "123",
-                "456"
-            ],
-            "subscribeUidGroup": 0
-        },
-        "storageConfig": {
-            "accessKey": "xxxxxxf",
-            "region": 3,
-            "bucket": "xxxxx",
-            "secretKey": "xxxxx",
-            "vendor": 2,
-            "fileNamePrefix": [
-                "directory1",
-                "directory2"
-            ]
-        }
+      "token": "<token if any>",
+      "recordingConfig": {
+        "maxIdleTime": 30,
+        "streamTypes": 2,
+        "channelType": 0,
+        "videoStreamType": 0,
+        "subscribeVideoUids": ["123", "456"],
+        "subscribeAudioUids": ["123", "456"],
+        "subscribeUidGroup": 0
+      },
+      "recordingFileConfig": {
+        "avFileType": ["hls", "mp4"]
+      },
+      "storageConfig": {
+        "vendor": 2,
+        "region": 3,
+        "bucket": "xxxxx",
+        "accessKey": "xxxxx",
+        "secretKey": "xxxxx",
+        "fileNamePrefix": ["directory1", "directory2"]
+      }
     }
+  }'
+```
+
+If the request succeeds, the response is similar to the following:
+
+```json title="Example start response"
+{
+    "cname": "httpClient463224",
+    "uid": "527841",
+    "resourceId": "SGXETXXX",
+    "sid": "04a85XXX"
 }
 ```
+
+Copy the `sid` value. You need it to stop the recording.
 
 ### Stop recording
 
 When a recording finishes, call [`stop`](/en/api-reference/api-ref/cloud-recording#stop) to leave the channel and stop recording. To use Agora Cloud Recording again, you need to call the [`acquire`](/en/api-reference/api-ref/cloud-recording#acquire) method for a new resource ID.
 
-#### Example `stop` request over HTTPS
+The following example stops the recording synchronously. Replace `<resourceid>` and `<sid>` with the values that `acquire` and `start` return.
 
--   The request URL is:
+```bash title="Example stop request"
+curl --request POST \
+  --url 'https://api.agora.io/v1/apps/<appid>/cloud_recording/resourceid/<resourceid>/sid/<sid>/mode/raw/stop' \
+  --header 'Authorization: Basic <credentials>' \
+  --header 'Content-Type: application/json;charset=utf-8' \
+  --data '{
+    "cname": "httpClient463224",
+    "uid": "527841",
+    "clientRequest": {
+      "async_stop": false
+    }
+  }'
+```
 
-  ```json
-    https://api.agora.io/v1/apps/<yourappid>/cloud_recording/resourceid/<resourceid>/sid/<sid>/mode/individual/stop
-  ```
--   `Content-type`: `application/json;charset=utf-8`
+If the request succeeds, the response is similar to the following:
 
--   `Authorization`: Basic authorization. For more information, see [How to pass the basic HTTP authentication](/en/api-reference/api-ref/cloud-recording/authentication).
+```json title="Example stop response"
+{
+    "resourceId": "SGXETXXX",
+    "sid": "04a85XXX",
+    "serverResponse": {
+        "fileListMode": "json",
+        "fileList": [
+            {
+                "fileName": "xxxxxxx",
+                "isPlayable": true,
+                "mixedAllUser": false,
+                "sliceStartTime": 1700000000000,
+                "trackType": "audio_and_video",
+                "uid": "xxx"
+            }
+        ],
+        "uploadingStatus": "uploaded"
+    },
+    "cname": "httpClient463224",
+    "uid": "527841"
+}
+```
 
--   Request body:
+The `uploadingStatus` field indicates the upload status of the recorded files:
 
-  ```json
-  {
-      "cname": "httpClient463224",
-      "uid": "527841",
-      "clientRequest": {}
-  }
-  ```
+- `uploaded`: The recorded files have been uploaded to the third-party cloud storage.
+- `stranded`: Added in individual recording v2. Add a branch in your business logic for this status, and use notifications or query results to find the files that were not uploaded.
 
-## Recorded files
+## Generate MP4 files directly
 
-In individual recording mode, the audio and video profiles of the recorded file are as follows:
+In individual recording mode, the recording service does not transcode video. To generate MP4 files that can be played directly, and to keep the number of MP4 files to a minimum, the source stream must meet the following conditions:
 
--   Audio profile: The sample rate is 48 kHz, and the bitrate and number of audio channels are the same as those of the original audio stream.
+- The video codec of the source stream is H.264, H.265, or AV1. If the source stream uses VP8 or VP9, MP4 files cannot be generated.
+- The resolution of the source stream stays the same.
 
--   Video profile: The video profile of the recorded file is the same as that of the original video stream.
+To keep the resolution of the source stream unchanged, configure the sender as follows:
 
-The recorded files vary according to the recorded content. See the table below.
+<Tabs defaultValue="native" groupId="mp4-config-platform">
+<TabsList>
+  <TabsTrigger value="native">Native</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
 
-| Recorded content                   | Settings                                                                                                              | Recorded files                                                                                                                                                                                                                                                                                                                                           |
-|------------------------------------|-----------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Audio only                         | Set [`streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) to `0`                                  | One M3U8 file and several TS files for each user ID. The TS files store the audio.                                                                                                                                                                                                                                                                       |
-| Video only                         | Set [`streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) to `1`                                  | One M3U8 file and several TS/WebM files for each user ID. The TS/WebM files store the video.                                                                                                                                                                                                                                                             |
-| Audio and video, and standard mode | Set [`streamTypes`](/en/api-reference/api-ref/cloud-recording#recordingconfig) to `2` and `streamMode` to `standard`. | One M3U8 audio index file, one M3U8 video index file, a combined M3U8 audio and video index file, multiple TS audio slice files and multiple TS video slice files are generated per user ID. If VP9 encoding is used on the web side, a combined MPD audio and video index file and multiple WebM video slice files are generated per user ID. |
+<TabsContent value="native">
 
-For detailed information about the naming conventions of the recorded files, see [Manage Recorded Files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files).
+Call [`setVideoEncoderConfiguration`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_setvideoencoderconfiguration) and set the following parameters:
+
+- Set [`orientationMode`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_orientationmode.html) to `1` (`ORIENTATION_MODE_FIXED_LANDSCAPE`) or `2` (`ORIENTATION_MODE_FIXED_PORTRAIT`) to fix the video in landscape or portrait mode.
+- Set [`degradationPreference`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/enum_degradationpreference.html) to `3` (`MAINTAIN_RESOLUTION`) to keep the resolution unchanged, or to `100` to disable dynamic resolution adjustment.
+
+</TabsContent>
+
+<TabsContent value="web">
+
+Call [`setOptimizationMode`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocalvideotrack.html#setoptimizationmode) and set the mode to `"detail"`. This mode prioritizes clarity: in poor network conditions, the SDK reduces the frame rate rather than the resolution.
+
+</TabsContent>
+</Tabs>
+
+If the source stream cannot meet these requirements and its resolution changes during the recording, the recording service generates a separate MP4 file before and after each change. For the file names, see [Manage recorded files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files#individual-recording).
+
+:::info
+If you cannot guarantee a fixed resolution for the source stream and cannot accept multiple MP4 files, or if the source stream uses VP8 or VP9, use [composite recording](/en/realtime-media/cloud-recording/build/start-a-recording/composite-mode) instead. Composite recording transcodes in real time during the recording to maximize MP4 file compatibility.
+:::
 
 ## Considerations
 
--   Use standard mode to record (set `streamMode` to `standard`), if you switch the native side to the web side (or vice versa) during the recording process, two combined audio and video index files in M3U8 format and MPD format are generated after recording, and the whole recording process cannot be played continuously.
+If the sender disables the video track during the recording, the recording effects are as follows:
 
--   The recording effects of Web SDK 4.x after disabling the video track are shown below:
+| Sender | Ways to disable the video track | Recording effects |
+|:-------|:--------------------------------|:------------------|
+| Native | Call [`muteLocalVideoStream`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_mutelocalvideostream) or [`disableVideo`](https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_irtcengine.html#api_irtcengine_disablevideo) | Displays the last frame on the user screen in this slice and does not continue to generate video slices. |
+| Web SDK 4.x | Call [`setEnabled`](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocaltrack.html#setenabled) | Displays the last frame on the user screen in this slice and does not continue to generate video slices. |
 
-| Publisher   | Ways to disable the video track                                                                                                                                    | Recording effects                                                                                        |
-|-------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
-| Web SDK 4.x | Call [setEnabled](https://api-ref.agora.io/en/video-sdk/web/4.x/interfaces/ilocaltrack.html#setenabled) method | Displays the last frame on the user screen in this slice and does not continue to generate video slices. |
+## FAQs
+
+- [How does an app crash affect cloud recording?](/en/api-reference/faq/integration/abnormal_exit)
+- [How to choose the appropriate cloud storage bucket region and address cross-region upload challenges?](/en/api-reference/faq/integration/bucket_region)
+- [Why can't I call the Cloud Recording RESTful API from a browser?](/en/api-reference/faq/integration/call_browser)
+- [Why are there no recorded files in the cloud storage?](/en/api-reference/faq/integration/fail_to_upload)
+- [How can I get the URL of the M3U8 file?](/en/api-reference/faq/integration/acquire_file_directory)
+- [How does Cloud Recording handle a disconnected server or a killed process?](/en/api-reference/faq/integration/high_availability)
+
+## See also
+
+- [Cloud Recording RESTful API reference](/en/api-reference/api-ref/cloud-recording)
+- [Set up subscription lists](/en/realtime-media/cloud-recording/build/customize-the-recording/subscription)
+- [Convert between file formats](/en/realtime-media/cloud-recording/build/process-recorded-files/convert-format)
+- [Manage recorded files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files)

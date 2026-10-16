@@ -21,6 +21,23 @@ This page provides the release notes for:
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="2026.10.16" id="20261008" headingLevel={3} value="20261008">
+
+#### Compatibility changes
+
+The individual recording API is upgraded to v2. To migrate from legacy individual recording, change `mode/individual` to `mode/raw` in the request URLs of `start`, `update`, `query`, and `stop`, and update your business logic as follows:
+
+- Remove `recordingConfig.streamMode`. v2 no longer supports `standard`, `default`, or `original`.
+- HLS output is now a single M3U8 file that combines audio and video. Update your player, file parsing logic, and downstream processing accordingly.
+- v2 supports MP4 and MP3 output. To generate MP4 files, specify `mp4` in `avFileType`. For audio-only recording, specify `mp3`.
+- Remove `extensionServiceConfig` from your requests. Otherwise, the request is rejected.
+- If you use the Notifications service, update `serviceScene` from `rtc_record` to `rtsc/raw-recording`.
+- Add a branch to handle the new `stranded` value of `uploadingStatus`.
+
+For details, see [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode) and [Manage recorded files](/en/realtime-media/cloud-recording/build/process-recorded-files/manage-files).
+
+</Accordion>
+
 <Accordion title="2025.06.27" id="20250627" headingLevel={3} value="20250627">
 
 
@@ -95,7 +112,7 @@ This release adds the following improvements:
 <Accordion title="2022.10.20" id="20221020" headingLevel={3} value="20221020">
 
 
-This release supports the postpone transcoding feature globally. You need to set the scene field to `2` (postpone transcoding) when calling the `acquire`. After setting this scene, the recording service transcodes the recorded file within 24 hours after recording to generate an MP4 file, and uploads the MP4 file to the third-party cloud storage you specify. Please note that the `region` of the third-party cloud storage must be consistent with the `region` set when calling `acquire`. For details, see [Individual recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode).
+This release supports the postpone transcoding feature globally. You need to set the scene field to `2` (postpone transcoding) when calling the `acquire`. After setting this scene, the recording service transcodes the recorded file within 24 hours after recording to generate an MP4 file, and uploads the MP4 file to the third-party cloud storage you specify. Please note that the `region` of the third-party cloud storage must be consistent with the `region` set when calling `acquire`. For details, see [Legacy individual recording](/en/realtime-media/cloud-recording/v1/individual-mode).
 
 
 </Accordion>
@@ -132,7 +149,7 @@ In composite recording mode, Agora provides a transcoder script for merging the 
 
 **Individual Audio Non-transcoding Recording**
 
-In order to meet the diverse recording needs of users, this release adds the [`streamMode`](/en/realtime-media/cloud-recording/reference/stream-mode) parameter in the `start` method to support [Individual Audio Non-transcoding Recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-nontranscoding).
+In order to meet the diverse recording needs of users, this release adds the [`streamMode`](/en/realtime-media/cloud-recording/v1/stream-mode) parameter in the `start` method to support [Individual Audio Non-transcoding Recording](/en/realtime-media/cloud-recording/v1/individual-nontranscoding).
 
 **Postpone Audio Mixing**
 For voice chat use-cases, this release adds the [`appsCollection`](/en/api-reference/api-ref/cloud-recording) and [`transcodeOptions`](/en/api-reference/api-ref/cloud-recording) parameters in the `start` method to support [Postpone Audio Mixing](/en/api-reference/api-ref/cloud-recording/start). If you enable this function, the recording service merges and transcodes the recorded files of all user IDs in the specified channel within 24 hours after the recording ends to generate an MP3/M4A/AAC file, and then uploads the recording file to your specified third-party cloud storage.
@@ -511,7 +528,7 @@ This release supports Tencent Cloud as one of the third-party cloud storages.
 
 #### 1. Individual recording
 
-The RESTful API adds individual recording mode, which supports recording the audio and video of each user ID separately. See [Individual Recording](/en/realtime-media/cloud-recording/build/start-a-recording/individual-mode) for details. Meanwhile, Agora provides the Audio & Video File Merging script, which you can use to merge the audio and video files generated in individual mode. See [Merge Audio and Video Files](/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files) for details.
+The RESTful API adds individual recording mode, which supports recording the audio and video of each user ID separately. See [Legacy individual recording](/en/realtime-media/cloud-recording/v1/individual-mode) for details. Meanwhile, Agora provides the Audio & Video File Merging script, which you can use to merge the audio and video files generated in individual mode. See [Merge Audio and Video Files](/en/realtime-media/cloud-recording/build/process-recorded-files/merge-files) for details.
 
 #### 2. Record specified user IDs
 

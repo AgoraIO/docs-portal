@@ -396,6 +396,11 @@ You can subscribe to the following Cloud Recording events from Agora Console:
 - `cname`: String. The name of the channel to be recorded.
 - `uid`: String. The user ID of the recording client.
 - `sid`: String. The recording ID. The unique identifier of each recording.
+- `serviceScene`: String. The recording scene or stage:
+  - `"rtc_record"`: Real-time recording. In individual recording, only legacy individual recording uses this value.
+  - `"rtsc/raw-recording"`: Individual recording.
+  - `"rtc_snapshot"`: Screenshot capture.
+  - `"web_record"`: Web page recording.
 - `sequence`: Number. The serial number of the notifications, starting from 0. You can use this parameter to identify notifications that are random, lost, or resent.
 - `sendts`: Number. The time (UTC) when the event happens. Unix timestamp in ms.
 - `serviceType`: Number. The type of Agora service.
