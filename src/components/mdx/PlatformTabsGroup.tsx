@@ -20,6 +20,7 @@ import { cn } from '@/lib/cn';
 import { buildDocPath } from '@/lib/docs-routing';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
+  getDocumentPlatformPreference,
   getStoredPlatformPreference,
   PLATFORM_PREFERENCE_EVENT,
   setStoredPlatformPreference,
@@ -116,6 +117,7 @@ export function PlatformPageProvider({
     defaultPlatform,
     initialPlatform,
     parsedPlatforms,
+    preferDocumentPlatform: true,
     syncPath: true,
   });
 
@@ -168,6 +170,7 @@ export function PlatformTabsGroup({
     defaultPlatform: resolvedDefaultPlatform,
     initialPlatform: resolvedInitialPlatform,
     parsedPlatforms,
+    preferDocumentPlatform: false,
     syncPath: shouldSyncPlatformPath,
   });
 
@@ -231,6 +234,7 @@ export function PlatformHeaderTabs({
     defaultPlatform,
     initialPlatform,
     parsedPlatforms,
+    preferDocumentPlatform: false,
     syncPath: true,
   });
 
@@ -696,23 +700,34 @@ function usePlatformSelection({
   defaultPlatform,
   initialPlatform,
   parsedPlatforms,
+  preferDocumentPlatform,
   syncPath,
 }: {
   canonicalPlatform: PlatformKey;
   defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   parsedPlatforms: PlatformKey[];
+  preferDocumentPlatform: boolean;
   syncPath: boolean;
 }) {
   const pageContext = useContext(PlatformPageContext);
-  const storedPlatformPreferenceRef = useRef<PlatformKey | null | undefined>(
+  const platformPreferenceRef = useRef<PlatformKey | null | undefined>(
     undefined,
   );
 
-  if (storedPlatformPreferenceRef.current === undefined) {
+  if (platformPreferenceRef.current === undefined) {
+    const documentPlatform = preferDocumentPlatform
+      ? getDocumentPlatformPreference()
+      : null;
     const stored = getStoredPlatformPreference();
-    storedPlatformPreferenceRef.current =
-      stored && isKnownPlatform(stored) ? stored : null;
+    platformPreferenceRef.current =
+      documentPlatform &&
+      isKnownPlatform(documentPlatform) &&
+      parsedPlatforms.includes(documentPlatform)
+        ? documentPlatform
+        : stored && isKnownPlatform(stored) && parsedPlatforms.includes(stored)
+          ? stored
+          : null;
   }
 
   const [localActivePlatform, setLocalActivePlatform] = useState<
@@ -726,14 +741,16 @@ function usePlatformSelection({
       return initialPlatform;
     }
 
-    if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
-      return defaultPlatform;
-    }
-
-    const stored = storedPlatformPreferenceRef.current;
+    const stored = preferDocumentPlatform
+      ? null
+      : platformPreferenceRef.current;
 
     if (stored && parsedPlatforms.includes(stored)) {
       return stored;
+    }
+
+    if (defaultPlatform && parsedPlatforms.includes(defaultPlatform)) {
+      return defaultPlatform;
     }
 
     return getDefaultPlatform(
@@ -742,17 +759,24 @@ function usePlatformSelection({
       defaultPlatform,
     );
   });
+  const previousInitialPlatformRef = useRef(initialPlatform);
   const activePlatform =
-    pageContext?.activePlatform &&
-    parsedPlatforms.includes(pageContext.activePlatform)
-      ? pageContext.activePlatform
-      : localActivePlatform;
+    initialPlatform !== previousInitialPlatformRef.current &&
+    initialPlatform &&
+    parsedPlatforms.includes(initialPlatform)
+      ? initialPlatform
+      : pageContext?.activePlatform &&
+          parsedPlatforms.includes(pageContext.activePlatform)
+        ? pageContext.activePlatform
+        : localActivePlatform;
   const activePlatformRef = useRef(localActivePlatform);
   const previousDefaultPlatformRef = useRef(defaultPlatform);
 
-  useEffect(() => {
-    const stored = getStoredPlatformPreference();
+  useBrowserLayoutEffect(() => {
+    previousInitialPlatformRef.current = initialPlatform;
+  }, [initialPlatform]);
 
+  useBrowserLayoutEffect(() => {
     if (initialPlatform && !parsedPlatforms.includes(initialPlatform)) {
       activePlatformRef.current = undefined;
       setLocalActivePlatform(undefined);
@@ -761,14 +785,12 @@ function usePlatformSelection({
 
     if (
       initialPlatform === undefined &&
-      defaultPlatform === undefined &&
-      stored &&
-      isKnownPlatform(stored) &&
-      parsedPlatforms.includes(stored) &&
-      stored !== localActivePlatform
+      platformPreferenceRef.current &&
+      parsedPlatforms.includes(platformPreferenceRef.current) &&
+      platformPreferenceRef.current !== localActivePlatform
     ) {
-      activePlatformRef.current = stored;
-      setLocalActivePlatform(stored);
+      activePlatformRef.current = platformPreferenceRef.current;
+      setLocalActivePlatform(platformPreferenceRef.current);
       return;
     }
 
@@ -793,7 +815,7 @@ function usePlatformSelection({
     parsedPlatforms,
   ]);
 
-  useEffect(() => {
+  useBrowserLayoutEffect(() => {
     const previousDefaultPlatform = previousDefaultPlatformRef.current;
     previousDefaultPlatformRef.current = defaultPlatform;
 
@@ -806,6 +828,15 @@ function usePlatformSelection({
       return;
     }
 
+    if (
+      platformPreferenceRef.current &&
+      parsedPlatforms.includes(platformPreferenceRef.current)
+    ) {
+      activePlatformRef.current = platformPreferenceRef.current;
+      setLocalActivePlatform(platformPreferenceRef.current);
+      return;
+    }
+
     activePlatformRef.current = defaultPlatform;
     setLocalActivePlatform(defaultPlatform);
   }, [defaultPlatform, initialPlatform, parsedPlatforms]);
@@ -813,7 +844,7 @@ function usePlatformSelection({
   useEffect(() => {
     if (initialPlatform && parsedPlatforms.includes(initialPlatform)) {
       activePlatformRef.current = initialPlatform;
-      storedPlatformPreferenceRef.current = initialPlatform;
+      platformPreferenceRef.current = initialPlatform;
       setLocalActivePlatform(initialPlatform);
       setStoredPlatformPreference(initialPlatform);
     }
@@ -838,7 +869,7 @@ function usePlatformSelection({
           : getStoredPlatformPreference();
 
       if (typeof nextPlatform === 'string' && isKnownPlatform(nextPlatform)) {
-        storedPlatformPreferenceRef.current = nextPlatform;
+        platformPreferenceRef.current = nextPlatform;
 
         if (parsedPlatforms.includes(nextPlatform)) {
           activePlatformRef.current = nextPlatform;
@@ -856,7 +887,7 @@ function usePlatformSelection({
         typeof event.newValue === 'string' &&
         isKnownPlatform(event.newValue)
       ) {
-        storedPlatformPreferenceRef.current = event.newValue;
+        platformPreferenceRef.current = event.newValue;
 
         if (parsedPlatforms.includes(event.newValue)) {
           activePlatformRef.current = event.newValue;
@@ -892,8 +923,8 @@ function usePlatformSelection({
       setLocalActivePlatform(value);
     }
 
-    if (storedPlatformPreferenceRef.current !== value) {
-      storedPlatformPreferenceRef.current = value;
+    if (platformPreferenceRef.current !== value) {
+      platformPreferenceRef.current = value;
       setStoredPlatformPreference(value);
     }
 

@@ -1101,8 +1101,8 @@ describe('common MDX registry', () => {
     }
   });
 
-  it('uses the canonical page default before stored preference without overwriting it', () => {
-    window.localStorage.setItem('docs-portal:platform:v1', 'flutter');
+  it('uses a supported stored preference before the canonical page default', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     render(
       <PlatformHeaderTabs
@@ -1112,13 +1112,11 @@ describe('common MDX registry', () => {
       />,
     );
 
-    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
       'aria-selected',
       'true',
     );
-    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe(
-      'flutter',
-    );
+    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe('ios');
   });
 
   it('updates canonical page defaults when the rendered payload changes', async () => {
@@ -1149,6 +1147,73 @@ describe('common MDX registry', () => {
         'true',
       );
     });
+  });
+
+  it('keeps a supported stored preference when the canonical default changes', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'ios');
+
+    const { rerender } = render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    rerender(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="web"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+  });
+
+  it('falls back to the page default when the stored preference is unsupported', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'ios');
+
+    render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe('ios');
+  });
+
+  it('ignores unsupported preference events for the current platform group', () => {
+    render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","web"]'
+      />,
+    );
+
+    window.dispatchEvent(
+      new CustomEvent(PLATFORM_PREFERENCE_EVENT, { detail: 'ios' }),
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
   it('keeps an initial overflow platform visible as a selected header tab', () => {
@@ -1197,6 +1262,34 @@ describe('common MDX registry', () => {
           .scrollIntoView;
       }
     }
+  });
+
+  it('applies a route-selected platform immediately when the payload changes', () => {
+    const { rerender } = render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        initialPlatform="android"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    rerender(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        initialPlatform="ios"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {

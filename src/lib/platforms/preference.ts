@@ -15,6 +15,14 @@ export function getStoredPlatformPreference(): string | null {
   }
 }
 
+export function getDocumentPlatformPreference(): string | null {
+  if (typeof document === 'undefined') {
+    return null;
+  }
+
+  return document.documentElement.dataset[PLATFORM_DATASET_KEY] ?? null;
+}
+
 export function setStoredPlatformPreference(platform: PlatformKey) {
   if (typeof window !== 'undefined') {
     try {

@@ -559,7 +559,7 @@ describe('DocsContent', () => {
           kind: 'mdx',
           platformTabs: {
             canonicalPlatform: 'web',
-            defaultPlatform: 'android',
+            defaultPlatform: 'flutter',
             platforms: '["android","flutter"]',
           },
         }}
