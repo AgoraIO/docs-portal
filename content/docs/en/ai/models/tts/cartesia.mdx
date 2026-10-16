@@ -30,7 +30,7 @@ agent = (
     .with_llm(...)  # configure your LLM vendor
     .with_tts(CartesiaTTS(
         api_key='your-cartesia-key',
-        model_id='sonic-2',
+        model_id='sonic-3.6',
         voice_id='<voice_id>',
     ))
 )
@@ -49,7 +49,7 @@ const agent = new Agent({ client })
   .withLlm(/* configure your LLM vendor */)
   .withTts(new CartesiaTTS({
     apiKey: 'your-cartesia-key',
-    modelId: 'sonic-2',
+    modelId: 'sonic-3.6',
     voiceId: '<voice_id>',
   }));
 ```
@@ -70,7 +70,7 @@ agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
   WithTts(
     vendors.NewCartesiaTTS(vendors.CartesiaTTSOptions{
         APIKey:  "your-cartesia-key",
-        ModelID: "sonic-2",
+        ModelID: "sonic-3.6",
         VoiceID: "<voice_id>",
     }),
 )
@@ -87,7 +87,7 @@ Use the following `tts` configuration in your request:
   "vendor": "cartesia",
   "params": {
     "api_key": "<your_cartesia_key>",
-    "model_id": "sonic-2",
+    "model_id": "sonic-3.6",
     "base_url": "wss://api.cartesia.ai",
     "voice": {
         "mode": "id",
@@ -112,7 +112,7 @@ Use the following `tts` configuration in your request:
     The Cartesia API key used to authenticate requests. Get your API key from the [Cartesia Console](https://play.cartesia.ai/sign-up).
   </Parameter>
   <Parameter name="model_id" type="string" required={true}>
-    The identifier of the TTS model to use. For example, `sonic-2`.
+    The identifier of the TTS model to use. For example, `sonic-3.6`.
   </Parameter>
   <Parameter name="base_url" type="string" required={false}>
     The WebSocket URL for the Cartesia streaming API. For example, `wss://api.cartesia.ai`.
