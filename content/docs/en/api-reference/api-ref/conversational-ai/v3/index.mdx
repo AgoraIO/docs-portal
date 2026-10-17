@@ -1,0 +1,63 @@
+---
+title: Conversational AI v3 overview
+description: Save agents, secrets, and phone numbers, and use them to start agent sessions and outbound call campaigns.
+---
+
+{/* TODO(v3-prod): Draft for review. Base URL and authentication are placeholders until engineering confirms production values. */}
+
+The Conversational AI REST API v3 lets you save agents, secrets, and phone numbers in your project, and use them to start agent sessions and outbound call campaigns from your server.
+
+## API basics
+
+- **Base URL**: `https://api.agora.io/api/conversational-ai-agent/v3/projects/<appid>`, where `<appid>` is the Agora App ID for your project.
+- **Request**: Request and response bodies use JSON.
+- **Versioning**: Create, retrieve, and update responses include an `ETag` header. Pass it in the `If-Match` header when an endpoint requires it.
+- **Request ID**: Every response includes an `Agora-Request-Id` header. Include it when you contact Agora support.
+
+## REST APIs
+
+### Agents
+
+- [Create an agent](create-agent): Save an agent configuration.
+- [List agents](list-agents): Retrieve the agents in your project.
+- [Retrieve an agent](retrieve-agent): Retrieve the configuration of an agent.
+- [Update an agent](update-agent): Change the configuration of an agent.
+- [Delete an agent](delete-agent): Delete an agent.
+
+### Sessions
+
+- [Start a session](start-session): Start a session with a saved agent.
+- [Start an ephemeral session](start-ephemeral-session): Start a session with an agent configuration you pass in the request.
+- [List sessions](list-sessions): Retrieve the sessions that match your filters.
+- [Retrieve a session](retrieve-session): Retrieve the status of a session.
+- [Stop a session](stop-session): Stop a running session.
+
+### Secrets
+
+- [Create a secret set](create-secret-set): Store credentials in a named secret set.
+- [List secret sets](list-secret-sets): Retrieve the secret sets in your project.
+- [Retrieve a secret set](retrieve-secret-set): Retrieve the key names in a secret set.
+- [Update a secret set](update-secret-set): Add, change, or remove keys.
+- [Replace a secret set](replace-secret-set): Replace all the keys in a set.
+- [Delete a secret set](delete-secret-set): Delete a set and all its keys.
+- [Set a secret key](set-secret-key): Add a key or replace its value.
+- [Delete a secret key](delete-secret-key): Remove a key from a set.
+
+### Phone numbers
+
+- [Create a phone number](create-number): Register a phone number and its SIP trunk.
+- [List phone numbers](list-numbers): Retrieve the phone numbers in your project.
+- [Retrieve a phone number](retrieve-number): Retrieve a number and its SIP trunk settings.
+- [Update a phone number](update-number): Change the settings of a number.
+- [Delete a phone number](delete-number): Remove a number from your project.
+
+### Campaigns
+
+- [Create a campaign](create-campaign): Dial a list of contacts with a saved agent.
+- [List campaigns](list-campaigns): Retrieve the campaigns in your project.
+- [Retrieve a campaign](retrieve-campaign): Retrieve a campaign and its contact counts.
+- [Update a campaign](update-campaign): Change the pacing, schedule, or call settings.
+- [Pause a campaign](pause-campaign): Stop placing new calls.
+- [Resume a campaign](resume-campaign): Continue dialing a paused campaign.
+- [Cancel a campaign](cancel-campaign): End a campaign permanently.
+- [Delete a campaign](delete-campaign): Delete a finished or canceled campaign.

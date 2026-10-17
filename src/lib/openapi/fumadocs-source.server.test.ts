@@ -43,7 +43,7 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(91);
+    expect(pagePaths).toHaveLength(122);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -106,6 +106,12 @@ describe('fumadocs openapi source', () => {
       'speech-to-text-rest': {
         BasicAuth:
           '/en/api-reference/api-ref/speech-to-text/authentication#recommended-pattern',
+      },
+      'convoai-v3': {
+        basicAuth:
+          '/en/api-reference/api-ref/conversational-ai/v3/authentication#basic-http-authentication',
+        tokenAuth:
+          '/en/api-reference/api-ref/conversational-ai/v3/authentication#token-authentication',
       },
     } as const;
 

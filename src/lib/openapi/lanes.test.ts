@@ -72,6 +72,11 @@ describe('openapi lanes', () => {
         routePrefix: 'api-reference/api-ref/speech-to-text',
         tab: 'api-reference',
       }),
+      expect.objectContaining({
+        id: 'convoai-v3',
+        routePrefix: 'api-reference/api-ref/conversational-ai/v3',
+        tab: 'api-reference',
+      }),
     ]);
   });
 
@@ -102,6 +107,28 @@ describe('openapi lanes', () => {
       routeLeaf: 'join',
       url: '/en/api-reference/api-ref/conversational-ai/join',
     });
+  });
+
+  it('resolves a nested v3 lane ahead of its parent lane', () => {
+    const v3Slug = ['api-ref', 'conversational-ai', 'v3', 'start-session'];
+
+    expect(
+      resolveOpenApiEndpointRoute('en', 'api-reference', v3Slug),
+    ).toMatchObject({
+      lane: expect.objectContaining({ id: 'convoai-v3' }),
+      operationId: 'start-session',
+      url: '/en/api-reference/api-ref/conversational-ai/v3/start-session',
+    });
+    expect(resolveOpenApiLaneRoute('en', 'api-reference', v3Slug)?.id).toBe(
+      'convoai-v3',
+    );
+    expect(
+      resolveOpenApiLaneRoute('en', 'api-reference', [
+        'api-ref',
+        'conversational-ai',
+        'join',
+      ])?.id,
+    ).toBe('convoai');
   });
 
   it('derives operation order and static paths from lane operations', () => {
@@ -140,7 +167,7 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(91);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(122);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

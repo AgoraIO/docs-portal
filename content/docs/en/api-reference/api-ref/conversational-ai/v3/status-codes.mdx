@@ -1,0 +1,78 @@
+---
+title: Status codes and error reasons
+description: HTTP status codes and error reasons for Conversational AI REST API v3 requests.
+---
+
+{/* TODO(v3-confirm): Reasons are limited to those the v3 spec documents. SecretSetAlreadyExists and SecretSetInUse are in the engineering reason list but were not triggered on staging. */}
+
+Use the HTTP status code together with the `reason` and `detail` fields in the response body to troubleshoot failed Conversational AI REST API v3 requests.
+
+## Error response format
+
+When a request fails, the response body contains a machine-readable `reason` and a human-readable `detail`:
+
+```json
+{
+  "detail": "Resource not found.",
+  "reason": "ResourceNotFound"
+}
+```
+
+Every response also includes an `Agora-Request-Id` header. Include its value when you contact Agora support.
+
+## HTTP status codes
+
+| Status code | Description | Suggested action |
+| --- | --- | --- |
+| `200` | OK | The request was successful. |
+| `201` | Created | The resource was created. The `Location` header contains its path. |
+| `400` | Invalid request | Check `reason` and `detail`, fix the request, and try again. |
+| `401` | Authentication failed | Check your credentials in the `Authorization` header. |
+| `404` | Resource not found | Check the ID or name in the request path. |
+| `409` | Conflict with the current state of the resource | Check the state of the resource. For example, cancel a campaign before you delete it. |
+| `412` | Precondition failed | The resource changed since you got its `ETag`. Retrieve the resource to get the current `ETag`, and try again. |
+| `422` | Quota exceeded | Delete resources you no longer need, or contact Agora support to raise your quota. |
+| `503` | Service unavailable | Contact Agora support with the `Agora-Request-Id` value. Don't retry [Create a phone number](create-number) after a `503`. |
+| `5xx` | Server error | If the problem persists, contact Agora support with the `Agora-Request-Id` value. |
+
+## Error reasons
+
+### Request errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `InvalidRequestBody` | `400` | The request body isn't valid. For example, it contains an unknown field, or [Stop a session](stop-session) received a body. |
+| `MissingRequiredField` | `400` | A required field or header is missing. For example, `If-Match` is missing, or a pipeline stage with `managed` credentials has no endpoint. |
+| `InvalidFieldValue` | `400` | A field contains an invalid value. For example, `limit` is out of range, an ID has the wrong format, or a phone number isn't valid. |
+| `InvalidModuleParameter` | `400` | The agent's pipeline configuration is invalid, so the session can't start. Check the vendor settings of each stage. |
+| `NotImplemented` | `400` | The request uses a field or value that isn't supported yet. |
+| `InvalidPermission` | `401` | Authentication failed. |
+
+### Resource errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `ResourceNotFound` | `404` | No agent, secret set, phone number, or campaign has the ID or name in the path. |
+| `AgentNotFound` | `404` | No agent has the `agent_id` in the request body. Returned by [Start a session](start-session) and [Create a campaign](create-campaign). |
+| `NumberNotFound` | `404` | A number in `transport.from` isn't registered in the project. Returned by [Create a campaign](create-campaign). |
+| `TaskNotFound` | `404` | No session has this `agent_session_id`, or the session has already ended. Returned by [Retrieve a session](retrieve-session) and [Stop a session](stop-session). |
+| `ResourceQuotaLimitExceeded` | `422` | The project has reached its quota for this resource, such as secret sets or campaigns. |
+
+### Conflict and precondition errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `IdempotencyKeyConflict` | `409` | The `Idempotency-Key` was already used with a different request body. Use a new key. |
+| `SecretSetAlreadyExists` | `409` | A secret set with this name already exists. |
+| `SecretSetInUse` | `409` | An agent references a secret in this set, so you can't delete it. |
+| `SecretSetEmpty` | `409` | The request would remove the last key from a secret set. To remove every key, [delete the set](delete-secret-set). |
+| `CampaignInvalidState` | `409` | The campaign isn't in a state that allows this action. For example, you can only pause a `running` campaign. |
+| `CampaignActive` | `409` | The campaign is `scheduled`, `running`, or `paused`. [Cancel it](cancel-campaign) before you delete it. |
+| `CampaignNotEditable` | `409` | The field can't be changed in the campaign's current state. After dialing starts, you can change only `pacing`. |
+| `PreconditionFailed` | `412` | The `If-Match` value doesn't match the current `ETag`, or you sent `If-None-Match: *` for a key that exists. |
+
+### Server errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `ServiceUnavailable` | `503` | A service the request depends on is temporarily unavailable. |
