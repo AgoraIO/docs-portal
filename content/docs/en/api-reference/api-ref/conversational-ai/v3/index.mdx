@@ -16,7 +16,11 @@ The Conversational AI REST API v3 lets you save agents, secrets, and phone numbe
 
 ## REST APIs
 
+The v3 APIs are organized by resource. You save agents, secrets, and phone numbers in your project, then reference them when you start sessions and campaigns.
+
 ### Agents
+
+An agent is a saved configuration that defines how your agent behaves, including its instructions, variables, greeting, and the models in its pipeline. Use these endpoints to manage agents that you start sessions and campaigns from.
 
 - [Create an agent](create-agent): Save an agent configuration.
 - [List agents](list-agents): Retrieve the agents in your project.
@@ -26,6 +30,8 @@ The Conversational AI REST API v3 lets you save agents, secrets, and phone numbe
 
 ### Sessions
 
+A session runs one agent in an RTC channel or a phone call. Use these endpoints to start sessions from a saved or inline agent, check their status, and stop them.
+
 - [Start a session](start-session): Start a session with a saved agent.
 - [Start an ephemeral session](start-ephemeral-session): Start a session with an agent configuration you pass in the request.
 - [List sessions](list-sessions): Retrieve the sessions that match your filters.
@@ -33,6 +39,8 @@ The Conversational AI REST API v3 lets you save agents, secrets, and phone numbe
 - [Stop a session](stop-session): Stop a running session.
 
 ### Secrets
+
+A secret set stores vendor API keys and other credentials, so your agent configurations reference secrets instead of containing them. Secret values are write-only and are never returned.
 
 - [Create a secret set](create-secret-set): Store credentials in a named secret set.
 - [List secret sets](list-secret-sets): Retrieve the secret sets in your project.
@@ -45,6 +53,8 @@ The Conversational AI REST API v3 lets you save agents, secrets, and phone numbe
 
 ### Phone numbers
 
+A phone number connects your agents to the phone network through your SIP trunk. Agents call from a registered number, and you can assign an agent to answer inbound calls to it.
+
 - [Create a phone number](create-number): Register a phone number and its SIP trunk.
 - [List phone numbers](list-numbers): Retrieve the phone numbers in your project.
 - [Retrieve a phone number](retrieve-number): Retrieve a number and its SIP trunk settings.
@@ -52,6 +62,8 @@ The Conversational AI REST API v3 lets you save agents, secrets, and phone numbe
 - [Delete a phone number](delete-number): Remove a number from your project.
 
 ### Campaigns
+
+A campaign calls a list of contacts with a saved agent, on a schedule or right away. Each call starts a telephony session. Use these endpoints to create campaigns and control them while they run.
 
 - [Create a campaign](create-campaign): Dial a list of contacts with a saved agent.
 - [List campaigns](list-campaigns): Retrieve the campaigns in your project.
