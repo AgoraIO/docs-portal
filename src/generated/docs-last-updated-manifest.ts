@@ -812,9 +812,15 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
-    '2026-06-26T08:32:37.000Z',
+    '2026-10-17T06:31:11.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/status-codes.md':
     '2026-06-24T02:36:42.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/v3/index.mdx':
+    '2026-10-17T09:47:27.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/v3/meta.json':
+    '2026-10-17T06:31:11.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/v3/status-codes.mdx':
+    '2026-10-17T06:31:11.000Z',
   'content/docs/en/api-reference/api-ref/extensions-marketplace/meta.json':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/extensions-marketplace/provisioning.md':
@@ -907,7 +913,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/user-system-registration.md':
     '2026-08-14T11:03:51.000Z',
-  'content/docs/en/api-reference/api-ref/index.mdx': '2026-09-30T12:47:37.000Z',
+  'content/docs/en/api-reference/api-ref/index.mdx': '2026-10-17T06:31:11.000Z',
   'content/docs/en/api-reference/api-ref/iot-channel-management-rest-api.md':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/index.md':
@@ -978,7 +984,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/signaling/android.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/api-ref/signaling/authentication.mdx':
@@ -990,13 +996,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/signaling/ios.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-cpp.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/linux-java.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/macos.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/meta.json':
     '2026-06-30T10:25:06.000Z',
   'content/docs/en/api-reference/api-ref/signaling/react-native.mdx':
@@ -1004,9 +1010,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/signaling/unity.mdx':
     '2026-09-10T05:40:14.000Z',
   'content/docs/en/api-reference/api-ref/signaling/web.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/signaling/windows-cpp.mdx':
-    '2026-10-14T16:26:26.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/api-callback-service.mdx':
     '2026-08-05T09:38:07.000Z',
   'content/docs/en/api-reference/api-ref/speech-to-text/authentication.md':
@@ -1181,7 +1187,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/faq/account/billing_basis.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/api-reference/faq/account/billing_free.mdx':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-16T03:05:53.000Z',
   'content/docs/en/api-reference/faq/account/console_account_faq.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/faq/account/email_verification.mdx':
@@ -3304,7 +3310,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/billing/account-settlement.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/billing/billing-policies.md':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-16T03:05:53.000Z',
   'content/docs/en/introduction/billing/index.md': '2026-06-18T09:50:43.000Z',
   'content/docs/en/introduction/billing/meta.json': '2026-06-18T09:50:43.000Z',
   'content/docs/en/introduction/billing/subscription-packages.md':
@@ -4493,7 +4499,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/im/reference/access-token-2.md':
     '2026-06-22T06:39:47.000Z',
   'content/docs/en/realtime-media/im/reference/billing-policies.md':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-16T03:05:53.000Z',
   'content/docs/en/realtime-media/im/reference/callbacks-events.md':
     '2026-06-11T15:24:47.000Z',
   'content/docs/en/realtime-media/im/reference/comparison-chat-signalling.md':
@@ -5210,7 +5216,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/media-push/overview/pricing.md':
     '2026-06-12T08:03:40.000Z',
   'content/docs/en/realtime-media/media-push/reference/billing-policies.md':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-16T03:05:53.000Z',
   'content/docs/en/realtime-media/media-push/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/media-push/reference/meta.json':
@@ -5303,7 +5309,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/on-premise-recording/reference/migration-guide.mdx':
     '2026-08-26T06:38:28.000Z',
   'content/docs/en/realtime-media/on-premise-recording/reference/pricing.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-10-16T03:05:53.000Z',
   'content/docs/en/realtime-media/on-premise-recording/reference/release-notes.mdx':
     '2026-09-28T07:48:11.000Z',
   'content/docs/en/realtime-media/on-premise-recording/reference/sunset.mdx':
@@ -5515,7 +5521,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc-server-sdk/reference/placeholder.md':
     '2026-06-16T07:49:02.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/pricing.md':
-    '2026-07-27T09:08:03.000Z',
+    '2026-10-16T03:05:53.000Z',
+  'content/docs/en/realtime-media/rtc-server-sdk/reference/pricing.mdx':
+    '2026-10-16T03:05:53.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.md':
     '2026-07-07T09:11:58.000Z',
   'content/docs/en/realtime-media/rtc-server-sdk/reference/release-notes.mdx':
@@ -5856,7 +5864,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/api-reference/meta.json':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/billing-policies.mdx':
-    '2026-10-14T12:21:14.000Z',
+    '2026-10-16T03:05:53.000Z',
   'content/docs/en/realtime-media/rtc/reference/billing.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/channel-management-api.md':
@@ -6163,9 +6171,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtm/reference/limitations.md':
-    '2026-10-14T16:26:25.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/realtime-media/rtm/reference/limitations.mdx':
-    '2026-10-14T16:26:25.000Z',
+    '2026-10-14T16:32:09.000Z',
   'content/docs/en/realtime-media/rtm/reference/meta.json':
     '2026-08-27T03:13:28.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.md':
@@ -11681,9 +11689,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/channel-management/query-channel-information.en.yaml':
     '2026-06-28T06:41:08.000Z',
   'content/openapi/cloud-recording/cloud-recording.en.yaml':
-    '2026-07-03T04:07:10.000Z',
+    '2026-10-16T02:35:23.000Z',
   'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml':
-    '2026-07-03T04:07:10.000Z',
+    '2026-10-16T02:35:23.000Z',
   'content/openapi/cloud-transcoding/openapi.meta.json':
     '2026-06-24T07:15:37.000Z',
   'content/openapi/conversational-ai/convoai.en.yaml':
@@ -11695,17 +11703,19 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-24T02:36:42.000Z',
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
+  'content/openapi/conversational-ai/rest-api-v3.en.yaml':
+    '2026-10-17T06:31:11.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-09-25T12:51:42.000Z',
+    '2026-10-16T02:35:23.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
-    '2026-07-03T04:07:10.000Z',
+    '2026-10-16T02:35:23.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',
-  'content/openapi/rtc/channel-management.en.yaml': '2026-08-14T05:30:43.000Z',
+  'content/openapi/rtc/channel-management.en.yaml': '2026-10-16T02:35:23.000Z',
   'content/openapi/rtc/openapi.meta.json': '2026-06-24T07:15:37.000Z',
-  'content/openapi/rtm/signaling-rest.en.yaml': '2026-08-14T05:30:43.000Z',
+  'content/openapi/rtm/signaling-rest.en.yaml': '2026-10-16T02:35:23.000Z',
   'content/openapi/speech-to-text/openapi.meta.json':
     '2026-06-14T08:17:36.000Z',
-  'content/openapi/speech-to-text/v7.en.yaml': '2026-08-07T06:52:10.000Z',
+  'content/openapi/speech-to-text/v7.en.yaml': '2026-10-16T02:35:23.000Z',
   'content/openapi/speech-to-text/v7.yaml': '2026-06-29T04:04:59.000Z',
   'content/openapi/speech-to-text/v7.zh-CN.yaml': '2026-06-29T04:04:59.000Z',
 };
