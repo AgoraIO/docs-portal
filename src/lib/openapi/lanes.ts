@@ -626,11 +626,39 @@ export const OPENAPI_LANES = [
           'zh-CN': 'Retrieve a session',
         },
       },
+      'update-session': {
+        routeLeaf: 'update-session',
+        title: {
+          en: 'Update a session',
+          'zh-CN': 'Update a session',
+        },
+      },
       'stop-session': {
         routeLeaf: 'stop-session',
         title: {
           en: 'Stop a session',
           'zh-CN': 'Stop a session',
+        },
+      },
+      speak: {
+        routeLeaf: 'speak',
+        title: {
+          en: 'Speak',
+          'zh-CN': 'Speak',
+        },
+      },
+      'inject-context': {
+        routeLeaf: 'inject-context',
+        title: {
+          en: 'Inject context',
+          'zh-CN': 'Inject context',
+        },
+      },
+      interrupt: {
+        routeLeaf: 'interrupt',
+        title: {
+          en: 'Interrupt the agent',
+          'zh-CN': 'Interrupt the agent',
         },
       },
       'create-secret-set': {
