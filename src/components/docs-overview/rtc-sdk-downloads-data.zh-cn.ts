@@ -16,6 +16,8 @@ const version = (
   ...details,
 });
 
+// Android Maven integration is documented in the download guide. Its artifacts
+// are hosted in Shengwang's Maven repository, so do not infer Central links.
 export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
   {
     id: 'android',
