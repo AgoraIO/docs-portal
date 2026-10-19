@@ -3,6 +3,130 @@ import { describe, expect, it } from 'vitest';
 import { ProductSdkDownloads } from './ProductSdkDownloads';
 
 describe('ProductSdkDownloads', () => {
+  it.each([
+    ['android', '1.7.2-fastboard-android', '1.7.2'],
+    ['web', '1.1.0-interactive-whiteboard-web', '1.1.0'],
+  ])(
+    'offers the latest Fastboard %s release without a stale download',
+    (platform, id, version) => {
+      render(
+        <ProductSdkDownloads
+          product="fastboard"
+          platform={platform}
+          versionIds={[id]}
+        />,
+      );
+      expect(screen.getAllByRole('article')).toHaveLength(1);
+      expect(screen.getByText(`v${version}`)).toBeVisible();
+      expect(screen.getByText('发布日期：2025 年 7 月 11 日')).toBeVisible();
+      const link = screen.getByRole('link');
+      expect(link.getAttribute('href')).toContain(version);
+    },
+  );
+
+  it('pins Fastboard without losing metadata from duplicate catalog records', () => {
+    render(
+      <ProductSdkDownloads
+        product="fastboard"
+        platform="android"
+        versionIds={['1.6.2-fastboard-android']}
+      />,
+    );
+    const card = screen.getByRole('article', { name: 'Android Fastboard SDK' });
+    expect(screen.getAllByRole('article')).toHaveLength(1);
+    expect(within(card).getByText('v1.6.2')).toBeVisible();
+    expect(
+      within(card).getByText('92a2240199faa74dc2bea46830623404'),
+    ).toBeVisible();
+    expect(
+      within(card).getByText('发布日期：2024 年 9 月 14 日'),
+    ).toBeVisible();
+    expect(
+      within(card).getByRole('link', { name: '下载 Android Fastboard SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://github.com/netless-io/fastboard-android/archive/refs/tags/1.6.2.zip',
+    );
+    expect(screen.queryByText('v1.7.2')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    [
+      'android',
+      'video',
+      '4.4.1-video-sdk-android-full',
+      '4.4.1',
+      '4d4fcfebad97ca79ff0420ed76d1caa9',
+    ],
+    [
+      'android',
+      'voice',
+      '4.4.1-voice-sdk-android',
+      '4.4.1',
+      '3e0982995f94b9b9247aa928b40f2ae7',
+    ],
+    [
+      'ios',
+      'video',
+      '4.4.0-video-sdk-ios-full',
+      '4.4.0',
+      'f13c0f11a91f9305f4af393e2945f0b4',
+    ],
+    [
+      'ios',
+      'voice',
+      '4.4.0-voice-sdk-ios',
+      '4.4.0',
+      '5eeb612aed506daed4bd3c2cc2ee8c77',
+    ],
+  ])(
+    'keeps the KTV %s %s compatible package and checksum',
+    (platform, product, id, version, md5) => {
+      render(
+        <ProductSdkDownloads
+          platform={platform}
+          product={product}
+          versionIds={[id]}
+        />,
+      );
+      expect(screen.getAllByRole('article')).toHaveLength(1);
+      expect(screen.getByText(`v${version}`)).toBeVisible();
+      expect(screen.getByText(md5)).toBeVisible();
+      expect(screen.getByText('包体积：')).toBeVisible();
+      const download = screen.getByRole('link', { name: /^下载 / });
+      expect(download.getAttribute('href')).toContain(`v${version}_`);
+      expect(screen.queryByText(/v4\.6\.[23]/)).not.toBeInTheDocument();
+    },
+  );
+
+  it('rejects a missing pinned release instead of falling back to latest', () => {
+    expect(() =>
+      render(
+        <ProductSdkDownloads
+          platform="android"
+          product="video"
+          versionIds={['not-a-release']}
+        />,
+      ),
+    ).toThrow('Unknown SDK download version');
+  });
+
+  it('retains all 18 RTSA C architecture packages and release dates', () => {
+    render(<ProductSdkDownloads product="rtsa" platform="c" />);
+    const cards = screen.getAllByRole('article');
+    expect(cards).toHaveLength(18);
+    expect(screen.getAllByText('v1.10.1')).toHaveLength(18);
+    expect(screen.getAllByText('发布日期：2026 年 9 月 4 日')).toHaveLength(18);
+    expect(screen.getAllByRole('link', { name: /^下载 / })).toHaveLength(18);
+    for (const card of cards) {
+      expect(within(card).getByRole('link').getAttribute('href')).toMatch(
+        /-v1\.10\.1-[\d_]+-\d+\.tgz$/,
+      );
+    }
+    expect(screen.queryByText('v1.9.2')).not.toBeInTheDocument();
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+  });
+
   it('shows only the current RTM Android download with RTC-style metadata', () => {
     render(<ProductSdkDownloads platform="android" product="signaling" />);
 
