@@ -650,14 +650,26 @@ function OpenApiAuthorizationSection({
         {getOpenApiLabel('This endpoint requires authentication.', locale)}
       </p>
       <div className="flex flex-wrap gap-1.5">
-        {securityKeys.map((key) => (
-          <code
-            className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-0.5 text-[11px] text-fd-muted-foreground"
-            key={key}
-          >
-            {key}
-          </code>
-        ))}
+        {securityKeys.map((key) => {
+          const href = getOpenApiSecurityLink(operation, key);
+
+          return href ? (
+            <a
+              className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-0.5 text-[11px] text-fd-muted-foreground hover:text-fd-foreground"
+              href={href}
+              key={key}
+            >
+              <code>{key}</code>
+            </a>
+          ) : (
+            <code
+              className="rounded-md border border-fd-border bg-fd-secondary px-1.5 py-0.5 text-[11px] text-fd-muted-foreground"
+              key={key}
+            >
+              {key}
+            </code>
+          );
+        })}
       </div>
     </OpenApiRightSection>
   );
@@ -808,6 +820,20 @@ function getOpenApiSecurityKeys(operation?: OpenApiOperation) {
       ),
     ),
   ];
+}
+
+function getOpenApiSecurityLink(
+  operation: OpenApiOperation | undefined,
+  key: string,
+) {
+  const links = getRecord(
+    getRecord(operation?.__document)?.['x-docs-auth-links'],
+  );
+  const link = links?.[key];
+
+  return typeof link === 'string' && link.trim().length > 0
+    ? link.trim()
+    : undefined;
 }
 
 function getOpenApiSecuritySchemes(operation?: OpenApiOperation) {

@@ -1,0 +1,228 @@
+---
+title: "Pricing"
+description: "Learn how Agora calculates usage and costs for Server Gateway."
+---
+Agora bills Server Gateway by the minute, based on the audio and video streams that the Server Gateway SDK receives on your server. These streams come from voice calls, video calls, or interactive live streaming apps built with the Agora RTC SDK. This page explains how Agora calculates your usage and costs.
+
+Usage is calculated monthly across all projects in your Agora account. You receive a bill by email on the first day of each month, and the payment is deducted from your account five days later. For details, see [Billing and account policies](/en/introduction/billing/billing-policies#billing-and-account-policies).
+
+:::info
+- Each Agora account gets 10,000 free minutes each month. For the deduction order and the products this applies to, see [Free-of-charge policy](/en/introduction/billing/billing-policies#free-of-charge-policy).
+- If you have signed a contract with Agora, your billing details might differ.
+:::
+
+## How costs are calculated
+
+At the end of each month, Agora adds up the usage in seconds for audio and for each video category, divides each total by 60, and rounds up to the nearest whole minute. Agora then multiplies the service minutes in each category by the unit price for that category.
+
+**Cost = audio charges + video charges = (audio unit price × audio minutes) + (video unit price × video minutes)**
+
+The following rules also apply:
+
+- If the Server Gateway SDK receives audio and video at the same time, Agora charges only for video minutes.
+- If the SDK is in a channel but doesn't receive any streams, Agora charges for the idle time at the audio unit price.
+
+### Service minutes
+
+Service minutes are measured to the second, from the time the Server Gateway SDK joins a channel until it leaves the channel.
+
+Service minutes consist of the following:
+
+- **Video minutes**: The time that the SDK receives video in a channel.
+- **Audio minutes**: The rest of the time that the SDK is in the channel, whether or not it receives audio.
+
+When one SDK instance receives several streams at the same time, Agora doesn't add up the minutes for each stream. For example:
+
+- If an instance receives video from user A and user B for the same 10 minutes, Agora charges for 10 minutes of video. The video category is based on the [aggregate video resolution](#aggregate-video-resolution) of both streams.
+- If an instance receives audio from user A and video from user B for the same 10 minutes, Agora charges for 10 minutes of video.
+
+When you run several SDK instances in the same channel at the same time, Agora adds up the minutes for each instance.
+
+### Unit prices
+
+The following table lists the unit prices for audio and video. Agora determines the video category from the [aggregate video resolution](#aggregate-video-resolution).
+
+| Service type | Category | Price (USD per 1,000 minutes) |
+| --- | --- | --- |
+| Audio | Not applicable | 0.99 |
+| Video | High definition (HD) | 3.99 |
+| Video | Full high definition (Full HD) | 8.99 |
+| Video | 2K | 15.99 |
+| Video | 2K+ | 35.99 |
+
+#### Aggregate video resolution
+
+The aggregate video resolution is the sum of the resolutions of all video streams that the Server Gateway SDK receives at the same time. Agora uses it to set the video category:
+
+| Video category | Aggregate video resolution |
+| :--- | :--- |
+| High definition (HD) | Up to 921,600 (1280 × 720) |
+| Full high definition (Full HD) | Greater than 921,600 (1280 × 720), up to 2,073,600 (1920 × 1080) |
+| 2K | Greater than 2,073,600 (1920 × 1080), up to 3,686,400 (2560 × 1440) |
+| 2K+ | Greater than 3,686,400 (2560 × 1440), up to 8,847,360 (4096 × 2160) |
+
+For example, if the SDK receives a 1280 × 720 stream and a 1920 × 1080 stream at the same time, the aggregate resolution is (1280 × 720) + (1920 × 1080) = 2,995,200. This value is greater than 2,073,600 and less than 3,686,400, so Agora charges at the 2K video price.
+
+## Example
+
+This example shows how to calculate monthly service minutes for each category and the total cost.
+
+You have an active project named Test in your Agora account. The project uses the Server Gateway SDK to receive streams from a channel. In February, the project has the following sessions:
+
+1. **February 4**: Four users have a video call for 6,000 seconds. One SDK instance receives only their audio streams.
+
+    Usage: 6,000 seconds of audio.
+
+2. **February 9**: Four users have a video call for 6,000 seconds. Two SDK instances receive only their audio streams. Because two instances are in the channel, Agora adds up the minutes for each instance.
+
+    Usage: 6,000 + 6,000 = 12,000 seconds of audio.
+
+3. **February 13**: Four users, each with a video resolution of 640 × 360, have a video call for 3,500 seconds. One SDK instance receives their audio and video streams. The aggregate video resolution is 4 × (640 × 360) = 921,600, which is in the HD category.
+
+    Usage: 3,500 seconds of HD video.
+
+4. **February 15**: Users A, B, and C start interactive live streaming with video resolutions of 640 × 360, 1280 × 720, and 960 × 720. After 1,680 seconds, user D joins with a video resolution of 1920 × 1080 and streams with the others for 520 seconds. One SDK instance receives the audio and video streams of all users for the whole session.
+
+    - For the first 1,680 seconds, the aggregate resolution is (640 × 360) + (1280 × 720) + (960 × 720) = 1,843,200, which is in the Full HD category.
+    - For the next 520 seconds, the aggregate resolution is (640 × 360) + (1280 × 720) + (960 × 720) + (1920 × 1080) = 3,916,800, which is in the 2K+ category.
+
+    Usage: 1,680 seconds of Full HD video and 520 seconds of 2K+ video.
+
+The following table combines the four sessions to calculate the monthly cost.
+
+<table>
+  <tbody>
+    <tr>
+      <th rowSpan={2}>Date</th>
+      <th colSpan={5}>Actual usage duration (seconds)</th>
+      <th colSpan={5}>Usage duration displayed on Agora Console (minutes)</th>
+    </tr>
+    <tr>
+      <th>Audio</th>
+      <th>HD video</th>
+      <th>Full HD video</th>
+      <th>2K video</th>
+      <th>2K+ video</th>
+      <th>Audio</th>
+      <th>HD video</th>
+      <th>Full HD video</th>
+      <th>2K video</th>
+      <th>2K+ video</th>
+    </tr>
+    <tr>
+      <td>Feb 4</td>
+      <td>6,000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>100</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Feb 9</td>
+      <td>12,000</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>200</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Feb 13</td>
+      <td>0</td>
+      <td>3,500</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>59</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <td>Feb 15</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1,680</td>
+      <td>0</td>
+      <td>520</td>
+      <td>0</td>
+      <td>0</td>
+      <td>28</td>
+      <td>0</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>Monthly usage</td>
+      <td>18,000</td>
+      <td>3,500</td>
+      <td>1,680</td>
+      <td>0</td>
+      <td>520</td>
+      <td>300</td>
+      <td>59</td>
+      <td>28</td>
+      <td>0</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <td>Billable service minutes</td>
+      <td>300 minutes</td>
+      <td>59 minutes</td>
+      <td>28 minutes</td>
+      <td>0 minutes</td>
+      <td>9 minutes</td>
+      <td colSpan={5}>Usage shown in Agora Console is for reference only. Agora bills based on the actual usage.</td>
+    </tr>
+    <tr>
+      <td>Cost of each service (USD)</td>
+      <td>(300/1000) × 0.99 = 0.297</td>
+      <td>(59/1000) × 3.99 = 0.23541</td>
+      <td>(28/1000) × 8.99 = 0.25172</td>
+      <td>0</td>
+      <td>(9/1000) × 35.99 = 0.32391</td>
+      <td colSpan={5}></td>
+    </tr>
+    <tr>
+      <td>Total cost (USD)</td>
+      <td colSpan={5}>0.297 + 0.23541 + 0.25172 + 0.32391 = 1.10804, rounded up to 1.11</td>
+      <td colSpan={5}></td>
+    </tr>
+  </tbody>
+</table>
+
+:::info
+- Agora rounds the monthly total up to two decimal places.
+- Each Agora account gets 10,000 free minutes each month. The total in this example is less than 10,000 minutes, so the service is free and the bill shows 0 USD.
+:::
+
+## Considerations
+
+This section covers details that affect how Agora calculates your service minutes and video category.
+
+### Accuracy of service minutes
+
+Because Agora rounds up to the nearest whole minute, 59 seconds of audio counts as 1 minute, and 61 seconds of video counts as 2 minutes. The margin of error for each month is less than 1 minute per category.
+
+### Video resolution with dual-stream mode
+
+When a user enables [dual-stream mode](/en/introduction/glossary#dual-stream-mode), the Server Gateway SDK receives only one of that user's streams at a time. Agora calculates the aggregate video resolution using the resolution of the stream that the SDK receives.
+
+### Resolution calibration
+
+When Agora calculates the aggregate resolution, it counts a resolution of 640 × 352 (225,280) as 640 × 360.
+
+## Related resources
+
+- [RTC pricing](/en/realtime-media/rtc/reference/pricing)
+- [Free-of-charge policy](/en/introduction/billing/billing-policies#free-of-charge-policy)
+- [Billing and account policies](/en/introduction/billing/billing-policies#billing-and-account-policies)

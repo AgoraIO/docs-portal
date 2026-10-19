@@ -935,6 +935,13 @@ function resolveRealtimeMediaRedirect(
     return '/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy';
   }
 
+  if (
+    locale === 'en' &&
+    normalizedPath === 'cloud-recording/reference/billing-policies'
+  ) {
+    return '/en/introduction/billing/billing-policies';
+  }
+
   const redirects: Record<string, string> = {
     'rtc/quick-start': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,
     'rtc/quick-start/integrate-with-ai-tools': `/${locale}/realtime-media/rtc/quick-start/android/integrate-with-ai-tools`,

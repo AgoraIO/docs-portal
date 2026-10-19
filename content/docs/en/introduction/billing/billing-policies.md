@@ -94,30 +94,26 @@ Agora provides each account with 10,000 free minutes per month and deducts them 
 - Broadcast Streaming audio minutes
 - Voice call, video call, and Interactive Live Streaming audio minutes
 - On-premise recording audio minutes
-- Cloud recording audio non-transcoding minutes
-- Cloud recording audio minutes
-- Web page recording audio minutes
+- Server Gateway audio minutes
 - Cloud Proxy audio minutes
 - Broadcast Streaming HD video minutes
 - Voice call, video call, and Interactive Live Streaming HD video minutes
 - On-premise recording HD video minutes
-- Cloud recording HD video minutes
-- Web page recording HD video minutes
+- Server Gateway HD video minutes
 - Cloud Proxy HD video minutes
 - Broadcast Streaming Full HD* video minutes
 - Voice call, video call, and Interactive Live Streaming Full HD* video minutes
 - On-premise recording Full HD* video minutes
-- Cloud recording Full HD* video minutes
-- Web page recording Full HD* video minutes
+- Server Gateway Full HD* video minutes
 - Cloud Proxy Full HD* video minutes
 - Broadcast Streaming 2K video minutes
 - Voice call, video call, and Interactive Live Streaming 2K video minutes
 - On-premise recording 2K video minutes
-- Cloud recording 2K video minutes
+- Server Gateway 2K video minutes
 - Broadcast Streaming 2K+ video minutes
 - Voice call, video call, Interactive Live Streaming 2K+ video minutes
 - On-premise recording 2K+ video minutes
-- Cloud recording 2K+ video minutes
+- Server Gateway 2K+ video minutes
 - Cloud proxy 2K+ video minutes
 
 \* HD+ minutes are also included in the shared 10,000 free minutes.
@@ -126,6 +122,7 @@ If your total service minutes do not exceed 10,000 minutes, the service is free-
 
 :::info
 - The 10,000 free-of-charge minutes policy does not apply to the Signaling SDK, the Chat SDK, or the IoT SDK.
+- The 10,000 free-of-charge minutes policy does not apply to Cloud Recording or Web Page Recording. To use these services, add a credit card to your Agora account.
 - Conversational AI Engine has its own free minutes policy. For details, see [Conversational AI pricing](/en/ai/reference/pricing).
 :::
 
