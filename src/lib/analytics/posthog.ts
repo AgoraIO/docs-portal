@@ -1,5 +1,7 @@
 import type { BeforeSendFn } from 'posthog-js';
 import type { AccountFlow, DocsAccount } from '@/lib/auth/contracts';
+import type { MeasurementEvent } from './docs-measurement';
+import { filterCnMeasurementEvent } from './measurement-privacy';
 
 type PostHogClient = typeof import('posthog-js').default;
 
@@ -53,6 +55,14 @@ const filterAccountFlowEvent: BeforeSendFn = (event) => {
   };
 };
 
+const filterOutboundEvent: BeforeSendFn = (event) => {
+  const filtered = filterAccountFlowEvent(event);
+  return import.meta.env.VITE_DOCS_REGION === 'cn'
+    ? filterCnMeasurementEvent(filtered)
+    : filtered;
+};
+
+let currentDocsAccount: DocsAccount | null = null;
 let posthogClientPromise: Promise<PostHogClient | null> | null = null;
 
 export type DocsFeedbackValue = 'yes' | 'no';
@@ -99,6 +109,13 @@ export async function getDocsAnonymousId() {
 }
 
 export async function synchronizeDocsAccount(account: DocsAccount | null) {
+  if (
+    currentDocsAccount &&
+    currentDocsAccount.accountUid !== account?.accountUid &&
+    typeof window !== 'undefined'
+  )
+    window.dispatchEvent(new Event('docs-account-changed'));
+  currentDocsAccount = account;
   const posthog = await getPostHogClient();
   if (!posthog) return;
   applyDocsAccount(posthog, account);
@@ -139,6 +156,27 @@ export function captureDocsPageFeedback({
   });
 }
 
+export function captureMeasurementEvent(event: MeasurementEvent) {
+  const account = currentDocsAccount;
+  void getPostHogClient()
+    .then((posthog) => {
+      if (!posthog) return;
+      applyDocsAccount(posthog, account);
+      posthog.capture(
+        event.name,
+        {
+          ...event.properties,
+          ...(account
+            ? { account_uid: account.accountUid, company_id: account.companyId }
+            : {}),
+          $groups: account?.companyId ? { cid: account.companyId } : {},
+        },
+        { timestamp: new Date(String(event.properties.occurred_at)) },
+      );
+    })
+    .catch(() => {});
+}
+
 function getPostHogClient() {
   if (typeof window === 'undefined') {
     return Promise.resolve(null);
@@ -156,7 +194,7 @@ function getPostHogClient() {
         posthog.init(key, {
           api_host: import.meta.env.VITE_POSTHOG_HOST || POSTHOG_HOST,
           autocapture: true,
-          before_send: filterAccountFlowEvent,
+          before_send: filterOutboundEvent,
           capture_pageview: 'history_change',
           defaults: '2026-05-30',
           disable_session_recording: true,

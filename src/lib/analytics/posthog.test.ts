@@ -42,6 +42,42 @@ describe('PostHog analytics', () => {
     expect(initMock).not.toHaveBeenCalled();
   });
 
+  it('removes sensitive queries and SDK-added properties at the CN outbound boundary', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    vi.stubEnv('VITE_DOCS_REGION', 'cn');
+    vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'true');
+    const { initializePostHog } = await import('./posthog');
+    initializePostHog();
+    await vi.waitFor(() => expect(initMock).toHaveBeenCalledTimes(1));
+    const event = initMock.mock.calls[0][1].before_send({
+      uuid: 'capture-1',
+      event: 'docs_search_submitted',
+      properties: {
+        token: 'public-project-key',
+        distinct_id: 'anonymous-id',
+        event_id: 'search-event-1',
+        journey_id: 'journey-1',
+        query_redacted: 'token=customer-secret person@example.test',
+        $current_url: 'https://docs.example/zh-CN/search?q=customer-secret',
+        $referrer: 'https://private.example/path?token=customer-secret',
+        $set_once: { email: 'person@example.test' },
+        unknown_field: 'customer-secret',
+      },
+      $set: { email: 'person@example.test' },
+    });
+    expect(event.properties).toMatchObject({
+      token: 'public-project-key',
+      event_id: 'search-event-1',
+      journey_id: 'journey-1',
+      query_redacted: '[redacted]',
+      $current_url: 'https://docs.example/zh-CN/search',
+      $referrer: 'https://private.example',
+    });
+    expect(JSON.stringify(event)).not.toMatch(
+      /customer-secret|person@example|unknown_field|\$set/,
+    );
+  });
+
   it('initializes PostHog for web analytics when a project key is configured', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
     vi.stubEnv('VITE_POSTHOG_HOST', 'https://example.posthog.test');

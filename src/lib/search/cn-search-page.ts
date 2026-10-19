@@ -26,6 +26,7 @@ export type CnSearchRequest = SearchPageState & { tab?: string };
 export async function searchCnDocsPage(
   state: CnSearchRequest,
   signal?: AbortSignal,
+  measurementHeaders?: Record<string, string>,
 ): Promise<CnSearchPageResponse> {
   const params = new URLSearchParams({
     q: state.q,
@@ -37,7 +38,7 @@ export async function searchCnDocsPage(
   }
   const response = await fetch(`/api/search?${params}`, {
     signal,
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/json', ...measurementHeaders },
   });
   if (!response.ok)
     throw new Error(`Search unavailable (HTTP ${response.status})`);

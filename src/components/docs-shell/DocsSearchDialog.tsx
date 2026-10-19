@@ -20,6 +20,15 @@ import {
   CommandItem,
   CommandList,
 } from '@/components/ui/command';
+import type {
+  ResultsSnapshot,
+  SearchSnapshot,
+} from '@/lib/analytics/docs-measurement';
+import {
+  getDocsMeasurement,
+  selectDocsResult,
+} from '@/lib/analytics/measurement.client';
+import { observeVisible } from '@/lib/analytics/visibility';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
@@ -42,6 +51,7 @@ import {
   buildSearchPageHref,
   searchScopeProduct,
 } from '@/lib/search/search-page-state';
+import { DocsTaskFeedback } from './DocsTaskFeedback';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -83,6 +93,7 @@ export function DocsSearchDialog({
   const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [draftSearch, setDraftSearch] = useState('');
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
   );
@@ -120,12 +131,28 @@ export function DocsSearchDialog({
   // flashes the empty message. Tracking every request keeps us "busy" until the
   // latest one actually resolves.
   const [pendingRequests, setPendingRequests] = useState(0);
+  const isOpenRef = useRef(open);
+  isOpenRef.current = open;
+  const inputAt = useRef<number | undefined>(undefined);
+  const composing = useRef(false);
+  const logicalSearch = useRef<{
+    key: string;
+    snapshot: SearchSnapshot;
+  } | null>(null);
+  const resultSnapshots = useRef(new WeakMap<object, ResultsSnapshot>());
+  const errorSnapshots = useRef(
+    new WeakMap<object, { search: SearchSnapshot; requestId: string }>(),
+  );
+  const resultsContainer = useRef<HTMLDivElement>(null);
+  const selectionMethod = useRef('keyboard');
   const searchClient = useMemo(() => {
+    let headers: Record<string, string> = {};
     const base =
       searchLocale === 'zh-CN'
         ? createCnDocsSearchClient({
             platform: platformFilter ?? undefined,
             scope: searchScope,
+            requestHeaders: () => headers,
           })
         : algoliaAppId && algoliaIndexName && algoliaSearchApiKey
           ? createAlgoliaDocsClient({
@@ -145,8 +172,54 @@ export function DocsSearchDialog({
       ...base,
       async search(query: string) {
         setPendingRequests((count) => count + 1);
+        const measurement =
+          searchLocale === 'zh-CN' && isOpenRef.current && query.trim()
+            ? getDocsMeasurement()
+            : undefined;
+        const key = JSON.stringify([query.trim(), platformFilter, searchScope]);
+        if (measurement && logicalSearch.current?.key !== key)
+          logicalSearch.current = {
+            key,
+            snapshot: measurement.startSearch({
+              surface: 'search_dialog',
+              query,
+              started: inputAt.current,
+              filters: {
+                platform: platformFilter ?? undefined,
+                product: searchScopeProduct(searchScope),
+                tab:
+                  searchScope?.field === 'tab' ? searchScope.value : undefined,
+              },
+            }),
+          };
+        const snapshot = measurement
+          ? logicalSearch.current?.snapshot
+          : undefined;
+        const requestId = snapshot ? crypto.randomUUID() : undefined;
+        headers =
+          snapshot && requestId
+            ? {
+                'X-Docs-Search-Id': snapshot.searchId,
+                'X-Docs-Request-Id': requestId,
+                'X-Docs-Request-Purpose': 'results',
+              }
+            : {};
         try {
-          return await base.search(query);
+          const result = await base.search(query);
+          if (measurement && snapshot && typeof result === 'object' && result)
+            resultSnapshots.current.set(
+              result,
+              measurement.prepareResults(snapshot, {
+                count: result.length,
+                unit: 'section',
+                requestId,
+              }),
+            );
+          return result;
+        } catch (error) {
+          if (snapshot && requestId && error && typeof error === 'object')
+            errorSnapshots.current.set(error, { search: snapshot, requestId });
+          throw error;
         } finally {
           setPendingRequests((count) => count - 1);
         }
@@ -233,6 +306,20 @@ export function DocsSearchDialog({
     }
   }, [search]);
   const isBusy = isLoading || debouncePending || pendingRequests > 0;
+  const visibleSnapshot =
+    searchResults && typeof searchResults === 'object'
+      ? resultSnapshots.current.get(searchResults)
+      : undefined;
+  useEffect(() => {
+    if (!open || !resultsContainer.current || !hasQuery) return;
+    return observeVisible(resultsContainer.current, () => {
+      const measurement = getDocsMeasurement();
+      if (searchError && typeof searchError === 'object') {
+        const failure = errorSnapshots.current.get(searchError);
+        if (failure) measurement?.fail(failure.search, failure.requestId);
+      } else if (visibleSnapshot) measurement?.presentResults(visibleSnapshot);
+    });
+  }, [open, hasQuery, visibleSnapshot, searchError]);
   const platformOptions = useMemo(
     () =>
       (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
@@ -285,6 +372,7 @@ export function DocsSearchDialog({
 
   const handleOpenChange = useCallback(
     async (nextOpen: boolean) => {
+      isOpenRef.current = nextOpen;
       setOpen(nextOpen);
       // Re-arm the cascade each time the dialog opens; clear it on close.
       setStaggerArmed(nextOpen);
@@ -306,6 +394,8 @@ export function DocsSearchDialog({
         // Reset the query on close so reopening lands on the recent list / prompt
         // rather than the previous search's (possibly empty) results.
         setSearch('');
+        setDraftSearch('');
+        logicalSearch.current = null;
       }
 
       if (remoteSearchEnabled || !nextOpen || pages.length > 0) {
@@ -439,7 +529,7 @@ export function DocsSearchDialog({
         </Button>
       )}
       <CommandDialog
-        className="docs-search-dialog max-w-2xl overflow-hidden border-border p-0"
+        className="docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-y-auto border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={setActiveValue}
@@ -450,9 +540,24 @@ export function DocsSearchDialog({
         value={activeValue ?? ''}
       >
         <CommandInput
-          onValueChange={setSearch}
+          onCompositionStart={() => {
+            composing.current = true;
+          }}
+          onCompositionEnd={(event) => {
+            composing.current = false;
+            inputAt.current = Date.now();
+            setSearch(event.currentTarget.value);
+          }}
+          onValueChange={(value) => {
+            inputAt.current = Date.now();
+            setDraftSearch(value);
+            if (!composing.current) setSearch(value);
+          }}
+          onKeyDown={() => {
+            selectionMethod.current = 'keyboard';
+          }}
           placeholder={t('docs.searchPlaceholder')}
-          value={search}
+          value={draftSearch}
         />
         {remoteSearchEnabled ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
@@ -476,7 +581,16 @@ export function DocsSearchDialog({
             />
           </div>
         ) : null}
-        <CommandList className="max-h-[min(620px,70vh)]">
+        <CommandList
+          ref={resultsContainer}
+          className="max-h-[min(620px,70vh)]"
+          onKeyDownCapture={() => {
+            selectionMethod.current = 'keyboard';
+          }}
+          onPointerDownCapture={() => {
+            selectionMethod.current = 'mouse';
+          }}
+        >
           {showSkeleton ? (
             <div className="space-y-1 p-2" data-testid="search-loading">
               {[0, 1, 2].map((row) => (
@@ -546,7 +660,45 @@ export function DocsSearchDialog({
                     <CommandItem
                       className={cn('items-start', stagger.className)}
                       key={page.id ?? page.url}
-                      onSelect={() => void handleSelect(page.url)}
+                      onSelect={() => {
+                        selectDocsResult(visibleSnapshot, {
+                          id: page.url,
+                          path: page.url,
+                          rank: index + 1,
+                          kind: 'section',
+                          method: selectionMethod.current,
+                        });
+                        void handleSelect(page.url);
+                      }}
+                      onMouseDown={(event) => {
+                        if (
+                          event.button !== 1 &&
+                          !(
+                            event.button === 0 &&
+                            (event.metaKey || event.ctrlKey)
+                          )
+                        )
+                          return;
+                        event.preventDefault();
+                        const href = selectDocsResult(
+                          visibleSnapshot,
+                          {
+                            id: page.url,
+                            path: page.url,
+                            rank: index + 1,
+                            kind: 'section',
+                            method: event.button === 1 ? 'middle' : 'mouse',
+                          },
+                          true,
+                        );
+                        window.open(href, '_blank', 'noopener');
+                      }}
+                      onClickCapture={(event) => {
+                        if (event.metaKey || event.ctrlKey) {
+                          event.preventDefault();
+                          event.stopPropagation();
+                        }
+                      }}
                       style={stagger.style}
                       value={page.id ?? page.url}
                     >
@@ -580,6 +732,11 @@ export function DocsSearchDialog({
             </CommandGroup>
           ) : null}
         </CommandList>
+        {searchLocale === 'zh-CN' && hasQuery && !isBusy ? (
+          <div className="px-2 pb-2">
+            <DocsTaskFeedback surface="search_dialog" />
+          </div>
+        ) : null}
         {searchLocale === 'zh-CN' ? (
           <div className="border-t p-2">
             <Button

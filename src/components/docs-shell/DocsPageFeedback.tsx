@@ -5,7 +5,7 @@ import {
   ThumbsDownIcon,
   ThumbsUpIcon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,10 +18,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { getDocsMeasurement } from '@/lib/analytics/measurement.client';
 import {
   captureDocsPageFeedback,
   type DocsFeedbackValue,
 } from '@/lib/analytics/posthog';
+import { observeVisible } from '@/lib/analytics/visibility';
 import { cn } from '@/lib/cn';
 import {
   type AppLocale,
@@ -45,6 +47,18 @@ export function DocsPageFeedback({
   const { i18n } = useTranslation('common');
   const normalizedLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(normalizedLocale, 'common');
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (normalizedLocale !== 'zh-CN' || !root.current) return;
+    return observeVisible(root.current, () =>
+      getDocsMeasurement()?.prompt(
+        'page_helpfulness',
+        'content',
+        'manual',
+        getDocsMeasurement()?.contentContext(window.location.pathname),
+      ),
+    );
+  }, [normalizedLocale]);
   const [feedback, setFeedback] = useState<'yes' | 'no' | null>(null);
   const [feedbackKind, setFeedbackKind] = useState<FeedbackKind>('issue');
   const [feedbackText, setFeedbackText] = useState('');
@@ -59,6 +73,12 @@ export function DocsPageFeedback({
   });
   const submitHelpfulnessFeedback = (value: DocsFeedbackValue) => {
     setFeedback(value);
+    const measurement =
+      normalizedLocale === 'zh-CN' ? getDocsMeasurement() : undefined;
+    if (measurement) {
+      measurement.pageFeedback(value, window.location.pathname);
+      return;
+    }
     captureDocsPageFeedback({
       locale: normalizedLocale,
       value,
@@ -75,6 +95,7 @@ export function DocsPageFeedback({
         className,
       )}
       data-testid="docs-feedback"
+      ref={root}
     >
       <p className="text-sm font-medium text-[color:var(--ink-2)]">
         {t('docs.feedback')}
