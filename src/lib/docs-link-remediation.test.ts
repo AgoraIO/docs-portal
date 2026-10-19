@@ -478,8 +478,9 @@ describe('reported Chinese link destinations', () => {
         'content/docs/zh-CN/realtime-media/rtc/reference/release-notes.mdx';
       const content = readFileSync(sourcePath, 'utf8');
 
-      expect(content).toContain(`<a id="${version}"></a>`);
-      expect(content).toContain(`<Accordion title="${version}"`);
+      expect(content).toContain(
+        `<section id="${version}">\n\n<Accordion title="${version}"`,
+      );
     },
   );
 
