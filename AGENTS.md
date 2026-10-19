@@ -28,7 +28,9 @@ Use Vitest for unit and component tests. Name tests after the module they cover,
 
 ## Commit & Pull Request Guidelines
 
-Recent history uses short, direct subjects such as `feat: openAPI example`, `remove best practice`, and `update (#23)`. Keep commits scoped to one change and use a concise imperative summary; use a `feat:` prefix for new user-visible functionality. PRs should describe the changed docs or behavior, link relevant issues, list verification commands, and include screenshots for visible UI or docs-shell changes.
+Recent history uses short, direct subjects such as `feat: openAPI example`, `remove best practice`, and `update (#23)`. Keep commits scoped to one change and use a concise imperative summary; use a `feat:` prefix for new user-visible functionality. PRs should describe the changed docs or behavior, link relevant issues, list verification commands, and record visual checks for visible UI or docs-shell changes.
+
+Keep local test screenshots and QA images under ignored `.agent/artifacts/`; do not commit them or add hosted screenshot links to PRs. Images tracked in the repository should be assets used by the published documentation or application.
 
 ## Security & Configuration Tips
 

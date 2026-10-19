@@ -83,7 +83,7 @@
 
 ### 保留用户确认的标题订正
 
-`content/docs/zh-CN/realtime-media/cloud-recording/reference/release-notes.mdx` 的 frontmatter title 应为 **“发版说明”**，对应修订提交 `e8faf420cd01d74f8fce45c3123522afefbd3ca4`。这是用户确认的命名变更；处理中文内容或元数据冲突时保留该值。页面标题、浏览器标题和侧栏入口应显示同一名称，页面路径仍为 `reference/release-notes`。
+`content/docs/zh-CN/realtime-media/cloud-recording/reference/release-notes.mdx` 的 frontmatter title 应为 **“发版说明”**，修订记录见 [#1214](https://github.com/AgoraIO/docs-portal/pull/1214)。这是用户确认的命名变更；处理中文内容或元数据冲突时保留该值。页面标题、浏览器标题和侧栏入口应显示同一名称，页面路径仍为 `reference/release-notes`。
 
 上文云端录制正文签名对应标题订正之前的快照。核对保真时，将这处明确的标题变化与正文/版本/链接变化分别检查。
 
@@ -102,7 +102,7 @@
 - `bun run types:check`、`bun run lint`、`git diff --check` 通过；Lint 无错误，20 条 warning、5 条 info。
 - `VITE_DOCS_REGION=cn bun run build` 在源码一致的隔离工作区完整执行，退出码 0：生成 6,842 份页面数据、8,045 份机器可读文件、7,739 份路由 HTML。存在非阻塞的大 chunk 提示。
 - 浏览器覆盖桌面/390px 手机显示、多版本展开、目录定位、中文编码锚点、平台重置并保留其他查询参数、已保存的内层语言标签、日期型历史、Fastboard 内层示例以及英文 Video 发版页。
-- 生成的机器可读 Markdown 中，AI 版本标题和七个历史版本别名均检查通过。截图保存在 `.github/pr-assets/cn-release-notes-20261019/`。
+- 生成的机器可读 Markdown 中，AI 版本标题和七个历史版本别名均检查通过。测试截图仅在本地 `.agent/artifacts/cn-release-notes-20261019/` 保存，仓库与 PR 保留文字验证结果。
 - 规范与需求两轴独立审查完成；内层标签覆盖和历史锚点关联问题修复后复审无剩余可执行问题。
 
 ## 后续标题订正

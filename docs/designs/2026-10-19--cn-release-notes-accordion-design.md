@@ -15,7 +15,7 @@
 - 参考 head：`3f20e5b422e40e2d22075c77d38eeee8d435ebf1`；合并提交：`9b635d23aedb106592b53707d74ac6d0932ba448`。
 - 本轮获取的 main：`38576d41002d31fcd16c757d1762f2990b8f922d`。
 - 中文基线预览：[RTC Android](http://127.0.0.1:3011/zh-CN/realtime-media/rtc/reference/release-notes/android)，使用 `VITE_DOCS_REGION=cn bun run dev --port 3011 --strictPort` 启动并经浏览器确认。
-- 基线截图：`/tmp/cn-release-notes-baseline-20261019.png`。
+- 基线截图仅保存在本地忽略目录 `.agent/artifacts/cn-release-notes-20261019/`。
 
 当前中文分支已有普通 Accordion，但没有参考 PR 的版本标题、openFirst、折叠目录处理和完整历史锚点展开能力。不能仅在中文 MDX 中加入 openFirst 属性。
 
@@ -84,9 +84,9 @@ Fastboard 已有“示例代码”普通折叠块，适配后会位于版本内�
 
 1. 运行聚焦组件和集成测试，覆盖多个版本展开、动态首项、平台重置、版本和子节哈希、目录、搜索及中文机器可读 Markdown。
 2. 内容保真检查覆盖所有适配页面及平台，确认版本/日期/正文/链接/锚点完整；正文中的普通折叠继续可用。
-3. 浏览器桌面与移动端验证 RTC、AI、日期型更新记录及 Fastboard 嵌套折叠，提供截图；在隔离的 global 区域预览验证英文页回归。
+3. 浏览器桌面与移动端验证 RTC、AI、日期型更新记录及 Fastboard 嵌套折叠，记录文字结果，截图仅在本地忽略目录保存；在隔离的 global 区域预览验证英文页回归。
 4. 运行 `bun run test`、`bun run types:check`、`bun run lint` 和 `VITE_DOCS_REGION=cn bun run build`；记录命令退出状态。遇到失败时固定基线复现，区分已有问题与新增问题。PR #1111 旧描述中的 31 项失败不能用作当前基线结论。
-5. 保留可访问的本地预览，提供修改摘要、工作区/分支/SHA、页面链接、截图和实际验证结果。
+5. 保留可访问的本地预览，提供修改摘要、工作区/分支/SHA、页面链接和实际验证结果；需要查看测试截图时提供本地文件。
 
 ## 未来合入 main
 
