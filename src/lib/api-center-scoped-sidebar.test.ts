@@ -591,7 +591,7 @@ describe('API Center scoped sidebars', () => {
           {
             href: '/zh-CN/api-reference/rtsa/c/overview',
             id: 'current',
-            label: 'Current',
+            label: 'v1.10.1',
           },
         ],
       },

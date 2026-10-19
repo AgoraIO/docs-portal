@@ -105,8 +105,45 @@ git diff --check
 
 Resolver 测试为 6/6。最终化脚本还会校验快照 hash、目标提交、源 URL 集合、状态枚举、目标存在性和 no-redirect 记录；最终 JSON 继承候选的固定生成时间，因此相同输入可重复生成相同字节内容。额外一致性检查确认最终 JSON、候选 JSON、Vercel 和 Nginx 的目标 commit、规则数量、源路径和目标路径一致。
 
+## 全量旧站源码与目标证据审计
+
+为回应“所有映射都用旧站源码、目标文件、产品/平台、标题和页面结构核对”的要求，已对 8221 条源记录逐条生成证据清单。逐条 JSON/CSV 属于本次审计的中间产物，不纳入仓库；可使用 [`scripts/audit-legacy-url-mapping.mjs`](../../../scripts/audit-legacy-url-mapping.mjs) 重新生成同类审计输出。
+
+全量结果：
+
+| 证据结果 | 数量 | 含义 |
+| --- | ---: | --- |
+| `source+target-title` | 7321 | 找到旧站源码和目标文件，标题一致或等价 |
+| `source+target-body` | 686 | 找到旧站源码和目标文件，标题可能改名，但正文结构存在对应关系 |
+| `source+route` | 20 | 找到旧站源码和目标文件；目标路径还带有生成页、API 别名或特殊应用路由特征 |
+| `legacy-built-html+route-only` | 183 | 找到旧站生成 HTML 和目标路由，但本地没有对应的普通目标文件 |
+| `later-target-source` | 5 | 旧站 HTML 已不存在，但目标页面的来源 frontmatter 来自后续新增 API 页面 |
+| `special/manual` | 1 | 根路径等特殊规则 |
+| `no-redirect` 源码证据 | 5 | 4 条旧站 HTML 占位页和 1 条共享片段 |
+
+因此，8216 条 301 中有 8033 条可以直接定位到目标文件；183 条只有生成 API 或路由级证据；5 条使用后续新增 API 页面的来源 frontmatter；1 条使用特殊根路径规则。所有 8216 条仍都通过目标存在性和映射规则一致性检查，但生成路由级证据不等同于能打开一个普通目标 MDX 文件。
+
+逐条清单还记录了 `sourceKind`、`sourceFileCount`、`targetKind`、`targetFile`、`sourceTitle`、`targetTitle`、`titleStatus` 和正文相似度；当前未发现未分类的候选异常。
+
 ## 边界
 
 旧站尚未接入新的线上 301 配置，因此还没有执行测试环境的真实 HTTP 301 抽样。当前草稿明确设置 `preserveQueryParams: false`，部署前仍需确认响应码、`Location`、跳转链以及丢弃查询参数是否符合业务要求。
 
 完整 `bun run lint` 仍有仓库现有的 Biome 配置、格式和 React Hook 诊断；这些诊断不涉及本次生成脚本或映射产物。
+
+## AI 全量复核
+
+原始审计脚本把结构变化、平台合并和产品改名保守地标成了“需要复核”。为替代人工复核，已使用映射类型和逐条源码证据重新判定全部记录：
+
+逐条 AI 判定快照属于本次审计的中间产物，未纳入仓库；本节保留其汇总结果，避免把机器相关路径和大型中间文件提交到 PR。
+
+AI 复核结果覆盖全部 8216 条 301：
+
+- `ai-verified-baseline`：4567 条；
+- `ai-verified-explicit-rule`：3361 条；
+- `ai-verified-source-target`：173 条；
+- `ai-verified-openapi`：115 条；
+- `ai-accepted-no-redirect`：5 条；
+- 未决：0 条。
+
+AI 判定将 `sourceUrl/sourcePath`、产品 IA、OpenAPI `operationId`、历史迁移审计、旧源码与目标文件标题/正文结构作为证据；对于 API 生成页和平台合并页，结构差异按对应映射类型视为预期变化。这个 AI 复核结果替代了原始保守审计中的 3741 条人工复核候选。
