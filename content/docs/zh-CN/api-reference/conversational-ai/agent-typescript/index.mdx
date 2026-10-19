@@ -322,7 +322,9 @@ toProperties(opts): StartAgentsRequest.Properties
 
 SDK 公开了常用请求与响应类型的别名，包括 `LlmConfig`、`SttConfig`、`AsrConfig`（即 `SttConfig`）、`AvatarConfig`、会话/对话相关类型，以及 think 类型（例如 `ThinkOnListeningAction`）。
 
-`FillerWordsConfig` 支持静态承接词和动态承接词。使用动态承接词时，必须同时配置非空的静态短语作为回退；`generatedConfig` 中的 `prompt`、上下文限制和回退策略均为可选项，模型服务和凭证由声网托管。具体字段结构详见[配置承接词](/zh-CN/ai/build/shape-the-conversation/filler-words)。
+`FillerWordsConfig` 支持静态承接词和动态承接词。使用动态承接词时，必须同时配置非空的静态短语作为回退；`generated_config` 中的 `prompt`、上下文限制和回退策略均为可选项，模型服务和凭证由声网托管。具体字段结构详见[配置承接词](/zh-CN/ai/build/shape-the-conversation/filler-words)。
+
+动态承接词配置还支持 `context_message_limit`（取值范围 `1` 到 `6`，省略时由服务按 `1` 处理）和 `history_character_limit`（取值范围 `0` 到 `10000`，省略时由服务按 `1000` 处理）。前者包含当前用户消息，显式设置为 `2` 到 `6` 时启用近期历史；后者只统计历史消息文本的 Unicode code points。
 
 Think 值常量包括：`ThinkOnListeningActionInject`、`ThinkOnListeningActionInterrupt`、`ThinkOnListeningActionAppend`、`ThinkOnListeningActionIgnore`、`ThinkOnThinkingActionInterrupt`、`ThinkOnThinkingActionAppend`、`ThinkOnThinkingActionIgnore`、`ThinkOnSpeakingActionInterrupt`、`ThinkOnSpeakingActionAppend`、`ThinkOnSpeakingActionIgnore`。`append` 不打断当前交互，分别等待当前用户回合、LLM 推理或 TTS 播报完成后，再将该指令作为独立的 user 消息追加到上下文并发起新一轮对话。
 
