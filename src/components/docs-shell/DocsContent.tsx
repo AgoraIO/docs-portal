@@ -55,7 +55,7 @@ import {
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
-import { DocVersionBar } from './DocVersionBar';
+import { DocVersionNotice, DocVersionSwitch } from './DocVersionControls';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -222,7 +222,6 @@ export function DocsContent({
           platformTabs ? 'pb-0' : 'pb-4',
         )}
       >
-        {activePath ? <DocVersionBar activePath={activePath} /> : null}
         {articleReturnLink ? (
           <a
             className="inline-flex min-w-0 w-fit items-center gap-1.5 rounded-md text-[13px] leading-5 font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
@@ -313,15 +312,20 @@ export function DocsContent({
               </p>
             ) : null}
           </div>
-          {canCopyMarkdownContent && markdownUrl ? (
-            <DocsCopyMenu
-              className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
-              locale={currentLocale}
-              markdownUrl={markdownUrl}
-              slug={slug ?? ''}
-              title={displayTitle ?? ''}
-            />
-          ) : null}
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 xl:contents">
+            {canCopyMarkdownContent && markdownUrl ? (
+              <DocsCopyMenu
+                className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
+                locale={currentLocale}
+                markdownUrl={markdownUrl}
+                slug={slug ?? ''}
+                title={displayTitle ?? ''}
+              />
+            ) : null}
+            {activePath ? (
+              <DocVersionSwitch activePath={activePath} className="md:hidden" />
+            ) : null}
+          </div>
         </div>
         {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
@@ -337,6 +341,7 @@ export function DocsContent({
           />
         ) : null}
       </header>
+      {activePath ? <DocVersionNotice activePath={activePath} /> : null}
       {isOpenApiBody ? (
         <div data-static-docs-body onClickCapture={handleArticleBodyLinkClick}>
           <FumadocsOpenApiContent

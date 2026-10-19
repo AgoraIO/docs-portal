@@ -10,8 +10,8 @@ Open `/en/api-reference/versioning-demo`, also linked from Reference overview
 and near the top of the Reference sidebar under **API reference**. This family
 is imaginary and labelled **Test current version** or **Test new version**.
 
-1. The first visit opens v1. Open **List test widgets**, then select v2 in the
-   page header. The target is `/en/api-reference/versioning-demo/v2/list-widgets`.
+1. The first visit opens v1. Open **List test widgets**, then turn on **Try v2**
+   at the right of the header tab strip. The target is `/en/api-reference/versioning-demo/v2/list-widgets`.
    Its schema uses `displayName`; v1 uses `legacyName`.
 2. Open authentication and other sidebar links. Only the selected version's
    navigation appears, including **Migration** in v2 and **Legacy notes** in v1.
@@ -23,9 +23,11 @@ is imaginary and labelled **Test current version** or **Test new version**.
    for `widgetbaseline` or `widgetpreview` to find the corresponding release.
    Browsing preferences do not filter search results. Ordinary docs and SDK API
    search keep their existing behavior.
-6. Repeat on a narrow viewport. The compact version row and **🧪 Preview** link
-   remain visible above the page title without opening the mobile sidebar.
-   The sidebar also offers version links directly below the API family name.
+6. Repeat on a narrow viewport. The same switch and **Preview** tag appear beside
+   **Copy Page**, without opening the mobile sidebar. In preview mode, a Fumadocs
+   callout between the article header and body identifies the release. Turn the
+   switch off or click **Turn Preview off to return to v1.** in that callout to
+   return to the matching stable topic and save that choice.
 
 Inspect the current page's Copy/Open Markdown action and these fixed resources:
 

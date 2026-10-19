@@ -1867,8 +1867,7 @@
      adds a row), so anchor targets clear whatever the header currently is.
      Must live in `utilities` to beat the flat 7rem `scroll-m-28` utility
      fumadocs puts on every heading: layer order outranks specificity. */
-  .prose
-    :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
     scroll-margin-top: max(
       7rem,
       calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
@@ -2015,4 +2014,111 @@
     :where(:not(a:empty) ~ h2)
   )::before {
   content: none;
+}
+
+@layer components {
+  .doc-version-switch {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 7px;
+    min-height: 30px;
+    padding: 0 4px;
+    border-radius: 5px;
+    color: var(--ink-2);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .doc-version-switch:hover {
+    background: var(--docs-soft-fill);
+  }
+
+  .doc-version-switch:focus-visible {
+    outline: 2px solid var(--accent-brand-ring);
+    outline-offset: 3px;
+  }
+
+  .doc-version-switch-track {
+    position: relative;
+    display: block;
+    flex: none;
+    width: 32px;
+    height: 18px;
+    border: 1px solid var(--ink-4);
+    border-radius: 10px;
+    background: var(--bg-sunken);
+  }
+
+  .doc-version-switch-track::after {
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 50%;
+    background: var(--bg-card);
+    content: "";
+  }
+
+  .doc-version-switch[aria-checked="true"] .doc-version-switch-track {
+    border-color: var(--ink-1);
+    background: var(--ink-1);
+  }
+
+  .doc-version-switch[aria-checked="true"] .doc-version-switch-track::after {
+    left: 15px;
+    border-color: transparent;
+    background: var(--background);
+  }
+
+  .doc-version-preview-tag {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    padding: 1px 5px;
+    border: 1px solid color-mix(in srgb, var(--docs-warning) 14%, transparent);
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--docs-warning) 7%, var(--background));
+    color: color-mix(in srgb, var(--docs-warning) 75%, var(--foreground));
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 14px;
+  }
+
+  @media (max-width: 767px) {
+    .doc-version-switch {
+      gap: 6px;
+      padding: 0 2px;
+      font-size: 11px;
+    }
+  }
+}
+
+.doc-version-callout {
+  margin: 0;
+  border-color: color-mix(in srgb, var(--docs-info) 19%, var(--line));
+  background: color-mix(in srgb, var(--docs-info) 6%, var(--bg-card));
+  box-shadow: none;
+}
+
+.doc-version-callout > div:last-child {
+  gap: 4px;
+}
+
+.doc-version-callout > div:last-child > p {
+  color: var(--ink-1);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+}
+
+.doc-version-callout > div:last-child > div {
+  color: var(--ink-3);
+  font-size: 13px;
+  line-height: 20px;
 }
