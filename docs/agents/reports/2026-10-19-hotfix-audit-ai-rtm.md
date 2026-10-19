@@ -16,7 +16,7 @@
 | PR | 状态 | 最重要的结果 |
 | --- | --- | --- |
 | [#2064](https://github.com/AgoraIO/shengwang-doc-source/pull/2064) | 完整覆盖 | STT 首页 Demo 已改成国内地址。 |
-| [#2063](https://github.com/AgoraIO/shengwang-doc-source/pull/2063) | 部分覆盖 | ASR 指南、Go/Python、OpenAPI 已更新；TypeScript API 仍声称 FengmingSTT 无参数。 |
+| [#2063](https://github.com/AgoraIO/shengwang-doc-source/pull/2063) | 部分覆盖 | ASR 指南、Go、OpenAPI 已更新；TS API 仍称无参数，Python keywords 参数表错入 TencentSTT。 |
 | [#2067](https://github.com/AgoraIO/shengwang-doc-source/pull/2067) | 部分覆盖 | Web v2.3 发版说明有了，但 API、下载、退休政策仍留旧内容。 |
 | [#2069](https://github.com/AgoraIO/shengwang-doc-source/pull/2069) | 部分覆盖 | 小程序主要指南已迁移；首页平台/下载入口和 API 限制平台边界未完整保留。 |
 | [#2074](https://github.com/AgoraIO/shengwang-doc-source/pull/2074) | 部分覆盖 | v2.12 指南和客户端新 API 已有；共享安装片段、TS 工具配置、OpenAPI think append 等遗漏。 |
@@ -40,10 +40,12 @@
 已覆盖：
 
 - `content/docs/zh-CN/ai/release-notes.mdx:129` 起有 v2.11；`ai/build/custom-model-integration/asr-keywords.mdx:4,11,27,87,120` 有三种 SDK 和 REST 示例、SDK v2.6.0 前提、128 热词限制；同目录 `meta.json:5` 有导航。
-- `content/docs/zh-CN/api-reference/conversational-ai/agent-go/index.mdx:800,807` 有可选 `FengmingSTTOptions` 和 `Keywords`；`agent-python/index.mdx:879,894` 有 `keywords`。
+- `content/docs/zh-CN/api-reference/conversational-ai/agent-go/index.mdx:800,807` 有可选 `FengmingSTTOptions` 和 `Keywords`；Python `agent-python/index.mdx:879` 有关键词说明，但 `:894` 的参数行不在 FengmingSTT 小节，不能计作完整参数覆盖（见下文执行复核更正）。
 - `content/openapi/conversational-ai/rest-api.zh-CN.yaml:143` 起有 `asr.keywords`、vendor 条件、128 个上限。Python 使用 `asr.keywords` 而非原 PR 的 `asr.params.keywords`，是 #2074 后续修正，不是遗漏。
 
 明确遗漏：`content/docs/zh-CN/api-reference/conversational-ai/agent-typescript/index.mdx:735` 的 FengmingSTT 小节仍写“无需任何参数”，`:740` 仍为 `new FengmingSTT()`，没有源 PR 新增的 `FengmingSTTOptions`、`keywords`、`additionalParams` 表。与同站 ASR 热词 TS 示例直接矛盾。
+
+执行复核更正（2026-10-19）：上文将 Python `:894` 的关键词表行认作 FengmingSTT 覆盖不准确；该行实际上位于 `#### TencentSTT` 之后，FengmingSTT 在 `:879` 只有关键词描述，缺独立参数表及完整 vendor 说明。源固定提交和范围终点均将表置于 FengmingSTT 下。#2063 的“部分覆盖”总状态不变，但明确遗漏还包括 Python 表格错位；修复必须按小节验证并保留后续正确的 `asr.keywords`，不能只补 TS。修复进度见[逐 PR 进度表](./2026-10-19-hotfix-repair-progress.md)。
 
 ## #2067：RTM Web v2.3.0
 

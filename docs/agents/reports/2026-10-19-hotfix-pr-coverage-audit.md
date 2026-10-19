@@ -52,7 +52,7 @@
 | [#2060](https://github.com/AgoraIO/shengwang-doc-source/pull/2060) | 屏幕采集发布轨道 | 后续源回退 | 源 #2094 重新生成时回退了相关句子，目标与源范围终点一致；需确认源侧意图。 |
 | [#2064](https://github.com/AgoraIO/shengwang-doc-source/pull/2064) | STT Demo 链接 | 完整覆盖 | 首页国内体验地址已替换。 |
 | [#2065](https://github.com/AgoraIO/shengwang-doc-source/pull/2065) | 音频审核回调 | 部分覆盖 | 两处 clientRequest 已改；开通前置步骤仍是联系技术支持的旧流程。 |
-| [#2063](https://github.com/AgoraIO/shengwang-doc-source/pull/2063) | ConvoAI 2.11 ASR 热词 | 部分覆盖 | 指南、Go/Python 和 REST 已更新；TS FengmingSTT 参数说明仍旧。 |
+| [#2063](https://github.com/AgoraIO/shengwang-doc-source/pull/2063) | ConvoAI 2.11 ASR 热词 | 部分覆盖 | 指南、Go 和 REST 已更新；TS 参数说明仍旧，Python keywords 表错入 TencentSTT。 |
 | [#2068](https://github.com/AgoraIO/shengwang-doc-source/pull/2068) | Android 编解码库名 | 完整覆盖 | 对应库名修正已落到裁包指南。 |
 | [#2070](https://github.com/AgoraIO/shengwang-doc-source/pull/2070) | LogConfig 路径 | 完整覆盖 | current API 的日志文件路径指导已更新。 |
 | [#2072](https://github.com/AgoraIO/shengwang-doc-source/pull/2072) | Metadata 截断 | 完整覆盖 | C++ current 有超出大小后截断的说明。 |

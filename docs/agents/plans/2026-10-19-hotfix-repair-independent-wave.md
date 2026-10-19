@@ -17,17 +17,18 @@
 - [ ] 新建编号独立的修复记录：源 SHA、目标 SHA、source→target 对照、已覆盖但未重复改动项、红绿证据与验证边界。未验证线上，不写成已上线。
 - [ ] 提交精确任务文件，不修改锁文件、AGENTS、生成树、用户主工作区。完成后按规格、质量两个轴复核；通过后由主控逐个创建 PR。
 
-## Task A：#2063 TypeScript 热词参数
+## Task A：#2063 TypeScript 热词参数与 Python 错位表
 
 源：`8a40a93329aec856e6ff0f2192e7ab1cd4ec2fd0`。
 
 **Files:**
 
 - Modify: `content/docs/zh-CN/api-reference/conversational-ai/agent-typescript/index.mdx`
+- Modify: `content/docs/zh-CN/api-reference/conversational-ai/agent-python/index.mdx`
 - Create/Test: `src/lib/convoai-pr2063-sync.test.ts`
 - Create: `docs/agents/reports/2026-10-19-hotfix-pr2063-fix.md`
 
-- [ ] source 的 Go/Python/指南/导航/REST 逐项复核已存在；Python 已由 #2074 修正为 `asr.keywords`，不得倒退。
+- [ ] source 的 Go/Python/指南/导航/REST 逐项复核；Python 已由 #2074 修正为 `asr.keywords`，不得倒退。执行时发现 Python 的 keywords 参数行误放进 TencentSTT 表，故同一源 PR 范围内补齐 Python，不另开第二个同源修复。
 - [ ] 从真实目标内容提取 `#### FengmingSTT` 至 `#### TencentSTT` 小节；对可选构造器、两个表字段和旧“无需任何参数”分别检查，先观察失败。
 - [ ] 仅将该小节补齐为源有效版本：
 
@@ -44,7 +45,8 @@ new FengmingSTT(options?: FengmingSTTOptions)
 | `additionalParams` | `Record<string, unknown>` | No | 附加 Fengming 参数，合并进 `asr.params` |
 ````
 
-- [ ] 验证小节之外整篇内容保持基线；测试保护无参调用兼容的可选参数签名，不把 `options?` 改成必选。不要顺手混入 #2074 tools 或 #2101 类型别名。
+- [ ] 验证 TypeScript 小节之外整篇内容保持基线；测试保护无参调用兼容的可选参数签名，不把 `options?` 改成必选。不要顺手混入 #2074 tools 或 #2101 类型别名。
+- [ ] Python 新增小节级 RED 用例：FengmingSTT 必须有 keywords/List[str]/No/None 参数表及完整“声网自研、无需外部凭据、asr.vendor=fengming”描述，保留 `asr.keywords`；TencentSTT 不再包含误放的 keywords 行。将该行移动到 Fengming 的独立表，恢复完整描述，其他 Tencent 参数及全文保持不变；GREEN 后以最终集合重跑完整测试、两文件 MDX 编译。TS 源仍写 asr.params 的源内差异仅记录，不擅自推断 SDK 事实。
 - [ ] 通用验证与双审后创建独立 PR，更新进度为“PR 已提交，待审”。
 
 ## Task B：#2065 音频审核控制台开通

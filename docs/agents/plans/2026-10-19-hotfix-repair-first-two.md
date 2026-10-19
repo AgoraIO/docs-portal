@@ -26,9 +26,9 @@
 
 工作树：`/Users/yejiayi/.config/superpowers/worktrees/docs-portal/fix-hotfix-pr2107`；分支：`codex/fix-hotfix-pr2107`。
 
-- [ ] 阅读源提交 `c201c2234334aab94cae46e98529e9dc8f6d1638` 的三个 diff hunk；确认目标仍有三条旧固定版本。
-- [ ] `bun install --frozen-lockfile`，运行既有 `src/lib/source.server.test.ts`，确认此工作树基线。
-- [ ] 先新增三个回归测试，每个语言独立断言实际 MDX 的新命令、旧固定版本消失；同时保留 dotenv/godotenv 版本约束。测试核心断言：
+- [x] 阅读源提交 `c201c2234334aab94cae46e98529e9dc8f6d1638` 的三个 diff hunk；确认目标仍有三条旧固定版本。
+- [x] `bun install --frozen-lockfile`，运行既有 `src/lib/source.server.test.ts`，确认此工作树基线。
+- [x] 先新增三个回归测试，每个语言独立断言实际 MDX 的新命令、旧固定版本消失；同时保留 dotenv/godotenv 版本约束。测试核心断言：
 
 ```ts
 expect(content).toContain('go get github.com/AgoraIO/agora-agents-go/v2@latest');
@@ -39,8 +39,8 @@ expect(content).toContain('npm install agora-agents dotenv@16.4.7');
 expect(content).not.toContain('npm install agora-agents@2.4.0');
 ```
 
-- [ ] `bun run test -- src/lib/convoai-pr2107-sync.test.ts`：预期因三条旧值失败，不能是加载/语法错误。
-- [ ] 仅替换三条命令，其他文本、依赖和平台结构不变：
+- [x] `bun run test -- src/lib/convoai-pr2107-sync.test.ts`：预期因三条旧值失败，不能是加载/语法错误。
+- [x] 仅替换三条命令，其他文本、依赖和平台结构不变：
 
 ```text
 go get github.com/AgoraIO/agora-agents-go/v2@latest
@@ -48,9 +48,9 @@ agora-agents
 npm install agora-agents dotenv@16.4.7
 ```
 
-- [ ] 同一测试转绿；运行 `bun run types:check`、`bun run test`、新增测试文件 Biome 和 `git diff --check`。
-- [ ] 修复记录注明源 SHA、目标基线、红绿证据、完整测试统计和没有安装/执行 SDK 的验证边界。
-- [ ] 单独提交；依次完成规格符合性与质量审查。两项通过后，推送并创建目标为中文迁移分支的独立 PR。
+- [x] 同一测试转绿；运行 `bun run types:check`、`bun run test`、新增测试文件 Biome 和 `git diff --check`。
+- [x] 修复记录注明源 SHA、目标基线、红绿证据、完整测试统计和没有安装/执行 SDK 的验证边界。
+- [x] 单独提交；依次完成规格符合性与质量审查。两项通过后，推送并创建目标为中文迁移分支的独立 PR。
 
 ## Task 2：源 #2077 metadata 截断
 
@@ -68,9 +68,9 @@ npm install agora-agents dotenv@16.4.7
 
 分支：`codex/fix-hotfix-pr2077`；独立工作树同名；从当时最新目标分支建立，不包含 Task 1 的未合入提交。
 
-- [ ] 读取固定源提交 `5745b93af59f63df5fa6f2ea6bfbc9cc25b75a60`；核对源 8 平台及目标已覆盖的 Android/iOS/macOS，保留 C++ #2072 已有说明。
-- [ ] 建立逐方法回归检查：Electron/Flutter/RN/Unity 的 send metadata 方法、Unity OnReadyToSendMetadata、Unreal C++ onReadyToSendMetadata 都必须在对应方法正文包含超限截断说明。检查大小限制链接/锚点和源 severity，而不是只查整页出现一次短语。
-- [ ] 核心断言：
+- [x] 读取固定源提交 `5745b93af59f63df5fa6f2ea6bfbc9cc25b75a60`；核对源 8 平台及目标已覆盖的 Android/iOS/macOS，保留 C++ #2072 已有说明。
+- [x] 建立逐方法回归检查：Electron/Flutter/RN/Unity 的 send metadata 方法、Unity OnReadyToSendMetadata、Unreal C++ onReadyToSendMetadata 都必须在对应方法正文包含超限截断说明。检查大小限制链接/锚点和源 severity，而不是只查整页出现一次短语。
+- [x] 核心断言：
 
 ```ts
 expect(methodSection).toContain('如果超过该值，SDK 会截除超出部分。');
@@ -79,10 +79,10 @@ expect(methodSection).toContain('#api_irtcengine_setmaxmetadatasize');
 
 其中 Unreal C++ 对应源链接为 `#callback_imetadataobserver_getmaxmetadatasize`；Unity 大小限制显示名保持 `SetMaxMetadataSize`。已有 Android/iOS/macOS 作为完整范围的正向保护，C++ 不倒灌历史版本。
 
-- [ ] 先运行 `bun run test -- src/lib/rtc-pr2077-sync.test.ts` 确认缺失方法失败。
-- [ ] 为 Electron/Flutter/RN/Unity send 方法添加源 note 的等价 `:::note`；Unity ready 回调再添加一处；Unreal C++ 仅补原注意说明的截断句并保持注意语义，不把它误改为普通 note。不改签名、参数和历史版本。
-- [ ] 同一回归测试转绿；`bun run types:check`、`bun run test`、改动文件 MDX 语法检查、相关大小限制链接/锚点存在性检查、测试 Biome 和 `git diff --check`。
-- [ ] 新增独立修复记录，依次完成规格与质量审查；独立提交、推送和创建 PR。
+- [x] 先运行 `bun run test -- src/lib/rtc-pr2077-sync.test.ts` 确认缺失方法失败。
+- [x] 为 Electron/Flutter/RN/Unity send 方法添加源 note 的等价 `:::note`；Unity ready 回调再添加一处；Unreal C++ 仅补原注意说明的截断句并保持注意语义，不把它误改为普通 note。不改签名、参数和历史版本。
+- [x] 同一回归测试转绿；`bun run types:check`、`bun run test`、改动文件 MDX 语法检查、相关大小限制链接/锚点存在性检查、测试 Biome 和 `git diff --check`。
+- [x] 新增独立修复记录，依次完成规格与质量审查；独立提交、推送和创建 PR。
 
 ## 后续产品组队列与依赖边界
 
