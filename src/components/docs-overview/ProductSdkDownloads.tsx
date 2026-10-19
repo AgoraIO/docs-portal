@@ -1,4 +1,5 @@
 import { getPlatformIconSrc } from './platform-icon-src';
+import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
 import { SdkDownloadCard } from './SdkDownloadCard';
 import { getSdkDownloadProductCatalogId } from './sdk-download-navigation';
 import { getZhCNSdkDownloadProductCopy } from './sdk-download-products';
@@ -16,21 +17,45 @@ function variant(version: SdkDownloadVersion) {
 export function ProductSdkDownloads({
   platform,
   product,
+  versionIds,
   versionIdPrefixes,
 }: {
   platform: string;
   product: string;
+  versionIds?: string[];
   versionIdPrefixes?: string[];
 }) {
-  const platformData = zhCNSdkDownloadPlatforms.find(
-    (item) => item.id === platform,
-  );
+  const platformData =
+    product === 'rtsa' && platform === 'c'
+      ? zhCNRtsaSdkDownloadPlatform
+      : zhCNSdkDownloadPlatforms.find((item) => item.id === platform);
   const productId = product === 'whiteboard-sdk' ? 'whiteboard' : product;
   const matchingProducts = [
     ...(platformData?.core ?? []),
     ...(platformData?.addOns ?? []),
   ].filter((item) => getSdkDownloadProductCatalogId(item) === productId);
   const versions = matchingProducts.flatMap((item) => {
+    // A solution can require a specific release rather than the catalog latest.
+    // Merge duplicate catalog records so pinned cards retain download metadata.
+    if (versionIds) {
+      return versionIds.flatMap((id) => {
+        const records = item.versions.filter((version) => version.id === id);
+        if (!records.length) {
+          throw new Error(
+            `Unknown SDK download version: ${product}/${platform}/${id}`,
+          );
+        }
+        return [
+          {
+            item,
+            version: records.reduce(
+              (merged, record) => Object.assign(merged, record),
+              { ...records[0] },
+            ),
+          },
+        ];
+      });
+    }
     const candidates = versionIdPrefixes?.length
       ? item.versions.filter((version) =>
           versionIdPrefixes.some((prefix) => version.id.includes(prefix)),

@@ -4,6 +4,7 @@ export type SdkDownloadVersion = {
   latestVariant?: true;
   label: string;
   md5?: string;
+  packageSize?: string;
   packageName?: string;
   packageManager?: string;
   releaseDate?: string;
