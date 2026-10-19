@@ -1,0 +1,58 @@
+[
+  {
+    "key": "outcomes",
+    "board": "outcomes",
+    "name": "中文文档｜解决、耗时与易用性 v1",
+    "description": "按成熟过程开始日；只代表回应者。完整解决率排除尚未验证，无反馈保留未知。确认耗时含反馈延迟。未批准的 v1 口径。",
+    "sql": "SELECT count() AS `观察过程`, countIf(r.latest_response IN ('resolved','partial','not_resolved')) AS `有解决结论`,\n countIf(r.latest_response = 'resolved') AS `完整解决`, countIf(r.latest_response = 'resolved') / nullIf(countIf(r.latest_response IN ('resolved','partial','not_resolved')), 0) AS `回应者完整解决率`,\n countIf(e.latest_response IN ('1','2','3','4','5')) AS `易用性回答`, countIf(e.latest_response IN ('4','5')) / nullIf(countIf(e.latest_response IN ('1','2','3','4','5')),0) AS `回应者易用率`,\n countIf(r.latest_response = 'resolved' AND dateDiff('millisecond',j.started_at,r.answered_at) >= 0) AS `确认耗时样本`,\n if(countIf(r.latest_response = 'resolved') = 0, NULL, quantileIf(0.5)(dateDiff('millisecond',j.started_at,r.answered_at),r.latest_response = 'resolved' AND dateDiff('millisecond',j.started_at,r.answered_at) >= 0)) AS `确认解决P50毫秒`,\n if(countIf(r.latest_response = 'resolved') = 0, NULL, quantileIf(0.9)(dateDiff('millisecond',j.started_at,r.answered_at),r.latest_response = 'resolved' AND dateDiff('millisecond',j.started_at,r.answered_at) >= 0)) AS `确认解决P90毫秒`\nFROM docs_journey_facts AS j\nLEFT JOIN (SELECT journey_id, latest_response, answered_at FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'resolution') AS r ON j.journey_id = r.journey_id\nLEFT JOIN (SELECT journey_id, latest_response FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'ease') AS e ON j.journey_id = e.journey_id\nWHERE j.matches_context AND j.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND j.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai') AND j.mature"
+  },
+  {
+    "key": "resolution",
+    "board": "outcomes",
+    "name": "中文文档｜解决分布与未知 v1",
+    "description": "包含全部成熟过程：尚未验证和未回应单列，不能据点击或停留补成解决。",
+    "sql": "SELECT multiIf(r.latest_response='resolved','解决',r.latest_response='partial','部分解决',r.latest_response='not_resolved','未解决',r.latest_response='not_verified','尚未验证','未回应 / 未知') AS `最终结果`, count() AS `过程数`\nFROM docs_journey_facts AS j\nLEFT JOIN (SELECT journey_id, latest_response, answered_at FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'resolution') AS r ON j.journey_id = r.journey_id\nLEFT JOIN (SELECT journey_id, latest_response FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'ease') AS e ON j.journey_id = e.journey_id\nWHERE j.matches_context AND j.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND j.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai') AND j.mature\nGROUP BY `最终结果` ORDER BY `过程数` DESC"
+  },
+  {
+    "key": "ease",
+    "board": "outcomes",
+    "name": "中文文档｜易用性完整分布 v1",
+    "description": "1 非常困难至 5 非常容易；未回应单列。独立问题，不以页面点赞代替。",
+    "sql": "SELECT if(e.latest_response IN ('1','2','3','4','5'),e.latest_response,'未回应 / 未知') AS `易用性评分`, count() AS `过程数`\nFROM docs_journey_facts AS j\nLEFT JOIN (SELECT journey_id, latest_response, answered_at FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'resolution') AS r ON j.journey_id = r.journey_id\nLEFT JOIN (SELECT journey_id, latest_response FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'ease') AS e ON j.journey_id = e.journey_id\nWHERE j.matches_context AND j.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND j.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai') AND j.mature\nGROUP BY `易用性评分` ORDER BY `易用性评分`"
+  },
+  {
+    "key": "coverage",
+    "board": "outcomes",
+    "name": "中文文档｜反馈覆盖与未知 v1",
+    "description": "成熟和未成熟过程分开，窗口外回答单列；结果可知度与曝光后回应率使用不同分母。未归因搜索的正文可以是直接阅读，不能当作跳转失败。抽样/资格/频控记录只描述已观察过程。",
+    "sql": "SELECT countIf(j.mature) AS `成熟观察过程`, countIf(j.mature AND j.resolution_prompted) AS `看到解决问题`, countIf(j.mature AND j.resolution_answered) AS `有效回应过程`,\n countIf(j.mature AND r.latest_response IN ('resolved','partial','not_resolved')) AS `有解决结论`, countIf(j.mature AND r.latest_response='not_verified') AS `尚未验证`, countIf(j.mature AND coalesce(r.latest_response,'')='') AS `未回应`,\n countIf(j.mature AND r.latest_response IN ('resolved','partial','not_resolved')) / nullIf(countIf(j.mature),0) AS `结果可知度`, countIf(j.mature AND j.resolution_answered AND j.resolution_prompted) / nullIf(countIf(j.mature AND j.resolution_prompted),0) AS `曝光后回应率`,\n countIf(NOT j.mature) AS `未成熟过程`, sum(j.late_resolution_answers) AS `窗口外解决回答`,\n countIf(j.sample_eligible) AS `邀请合格过程`, countIf(j.sample_selected) AS `抽中过程`, countIf(j.frequency_limited) AS `受频控过程`,\n sum(j.content_view_count) AS `正文视图`, sum(j.content_view_count-j.search_arrivals) AS `未归因搜索正文`\nFROM docs_journey_facts AS j\nLEFT JOIN (SELECT journey_id, latest_response, answered_at FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'resolution') AS r ON j.journey_id = r.journey_id\nLEFT JOIN (SELECT journey_id, latest_response FROM docs_feedback_facts WHERE feedback_scope = 'journey' AND question_id = 'ease') AS e ON j.journey_id = e.journey_id\nWHERE j.matches_context AND j.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND j.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai')"
+  },
+  {
+    "key": "search",
+    "board": "search",
+    "name": "中文文档｜逻辑搜索与真实到达 v1",
+    "description": "一行一次逻辑搜索。重试、翻页、facets 不增加分母；只有成功且真正展示的首屏计入无结果分母。章节和文档单位分开。",
+    "sql": "SELECT surface AS `入口`, coalesce(result_unit,'unknown') AS `结果单位`, countIf(submitted) AS `逻辑搜索`, countIf(submitted AND first_presented) AS `首屏展示`,\n countIf(submitted AND first_presented AND first_result_count=0) AS `无结果`, countIf(submitted AND failed) AS `发生失败`, countIf(submitted AND selected) AS `选择结果`, countIf(submitted AND arrived) AS `到达正文`,\n countIf(submitted AND first_presented AND first_result_count=0) / nullIf(countIf(submitted AND first_presented),0) AS `无结果率`,\n if(countIf(submitted AND first_visible_ms IS NOT NULL AND first_visible_ms >= 0)=0,NULL,quantileIf(0.5)(first_visible_ms,submitted AND first_visible_ms IS NOT NULL AND first_visible_ms>=0)) AS `首屏可见P50毫秒`,\n if(countIf(submitted AND first_visible_ms IS NOT NULL AND first_visible_ms >= 0)=0,NULL,quantileIf(0.9)(first_visible_ms,submitted AND first_visible_ms IS NOT NULL AND first_visible_ms>=0)) AS `首屏可见P90毫秒`\nFROM docs_search_facts WHERE matches_context AND started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai')\nGROUP BY surface,result_unit LIMIT 20"
+  },
+  {
+    "key": "queries",
+    "board": "search",
+    "name": "中文文档｜需要改进的查询 v1",
+    "description": "仅脱敏查询；需求量、无结果、失败和真实到达共同看。并非查询次数最多就一定最应修。",
+    "sql": "SELECT surface AS `入口`, query_redacted AS `脱敏查询`, count() AS `逻辑搜索`, countIf(first_presented AND first_result_count=0) AS `无结果`, countIf(failed) AS `发生失败`, countIf(selected) AS `选择结果`, countIf(arrived) AS `到达正文`\nFROM docs_search_facts WHERE submitted AND matches_context AND started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai')\nGROUP BY surface,query_redacted ORDER BY `无结果` DESC,`发生失败` DESC,`逻辑搜索` DESC LIMIT 50"
+  },
+  {
+    "key": "content",
+    "board": "content",
+    "name": "中文文档｜页面帮助度与任务反馈位置 v1",
+    "description": "过程答案只归到明确提交反馈的正文视图，不能把一次解决分摊给每篇阅读。不是内容因果解决率。搜索反馈不归到背景页面。",
+    "sql": "SELECT v.canonical_path AS `文档`, v.product AS `产品`, coalesce(v.platform,'unknown') AS `平台`, coalesce(v.version,'unknown') AS `版本`, countIf(v.viewed) AS `正文视图`,\n sum(coalesce(f.helpful,0)) AS `本页有帮助`, sum(coalesce(f.unhelpful,0)) AS `本页无帮助`, sum(coalesce(f.not_resolved,0)) AS `在此页反馈未解决`, sum(coalesce(f.partial,0)) AS `在此页反馈部分解决`\nFROM docs_content_view_facts AS v\nLEFT JOIN (SELECT reported_doc_view_id, countIf(question_id='page_helpfulness' AND latest_response='yes') AS helpful, countIf(question_id='page_helpfulness' AND latest_response='no') AS unhelpful, countIf(question_id='resolution' AND latest_response='not_resolved') AS not_resolved, countIf(question_id='resolution' AND latest_response='partial') AS partial FROM docs_feedback_facts WHERE reported_doc_view_id IS NOT NULL GROUP BY reported_doc_view_id) AS f ON v.doc_view_id=f.reported_doc_view_id\nWHERE v.matches_context AND v.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND v.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai')\nGROUP BY v.canonical_path,v.product,v.platform,v.version ORDER BY `在此页反馈未解决` DESC,`本页无帮助` DESC,`正文视图` DESC LIMIT 50"
+  },
+  {
+    "key": "reasons",
+    "board": "content",
+    "name": "中文文档｜最新问题原因与来源 v1",
+    "description": "每过程最后有效原因回答。原因可以多选；这是自报证据，不能代替内容正确性核验。",
+    "sql": "SELECT coalesce(f.canonical_path,'搜索 / 未知页面') AS `反馈位置`, f.latest_response AS `结构化原因`, f.feedback_source AS `来源`, count() AS `过程回答`\nFROM docs_feedback_facts AS f LEFT JOIN docs_journey_facts AS j ON f.journey_id=j.journey_id\nWHERE f.question_id='reasons' AND f.feedback_scope='journey' AND j.matches_context AND j.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND j.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai') AND j.mature\nGROUP BY f.canonical_path,f.latest_response,f.feedback_source ORDER BY `过程回答` DESC LIMIT 50"
+  }
+]

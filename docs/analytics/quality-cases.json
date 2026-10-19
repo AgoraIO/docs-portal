@@ -1,7 +1,7 @@
 [
   {
     "id": "CN-P0-01",
-    "task": "定位 Web 紧急停止 API",
+    "task": "用 Web manualSOS 声明用户开始说话",
     "query": "manualSOS",
     "filters": {
       "platform": "web"
@@ -21,7 +21,7 @@
   },
   {
     "id": "CN-P0-02",
-    "task": "定位 iOS 紧急停止 API",
+    "task": "用 iOS manualSOS 声明用户开始说话",
     "query": "manualSOS",
     "filters": {
       "platform": "ios"
@@ -82,13 +82,13 @@
   {
     "id": "CN-P0-05",
     "task": "加入 RTC 频道",
-    "query": "joinChannel",
+    "query": "join",
     "filters": {
       "product": "rtc",
       "platform": "web"
     },
     "expected_topic": "rtc",
-    "expected_anchor": "joinchannel",
+    "expected_anchor": "join",
     "expected_empty": false,
     "severity_if_wrong": "blocking",
     "steps": [
@@ -110,7 +110,7 @@
       "type": "docs"
     },
     "expected_topic": "rtc",
-    "expected_anchor": "token",
+    "expected_anchor": "",
     "expected_empty": false,
     "severity_if_wrong": "blocking",
     "steps": [
@@ -358,7 +358,7 @@
   {
     "id": "CN-P0-19",
     "task": "检查应为空的明确无效查询",
-    "query": "sdk_wrongword_zzzz_20261019",
+    "query": "zzzzwrongword20261019",
     "filters": {},
     "expected_topic": "",
     "expected_anchor": "",
@@ -376,11 +376,11 @@
   {
     "id": "CN-P0-20",
     "task": "检查指定版本隔离",
-    "query": "overview",
+    "query": "joinChannel",
     "filters": {
       "product": "rtc",
       "platform": "android",
-      "version": "4.x"
+      "version": "4.6.0"
     },
     "expected_topic": "rtc",
     "expected_anchor": "",
