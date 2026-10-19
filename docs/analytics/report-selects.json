@@ -52,7 +52,7 @@
     "key": "reasons",
     "board": "content",
     "name": "中文文档｜最新问题原因与来源 v1",
-    "description": "每过程最后有效原因回答。原因可以多选；这是自报证据，不能代替内容正确性核验。",
-    "sql": "SELECT coalesce(f.canonical_path,'搜索 / 未知页面') AS `反馈位置`, f.latest_response AS `结构化原因`, f.feedback_source AS `来源`, count() AS `过程回答`\nFROM docs_feedback_facts AS f LEFT JOIN docs_journey_facts AS j ON f.journey_id=j.journey_id\nWHERE f.question_id='reasons' AND f.feedback_scope='journey' AND j.matches_context AND j.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n  AND j.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai') AND j.mature\nGROUP BY f.canonical_path,f.latest_response,f.feedback_source ORDER BY `过程回答` DESC LIMIT 50"
+    "description": "每过程取最后有效原因回答，再按单个原因计数；多选可进入多个原因，撤销全部选择后不计原因。自报证据不能代替内容正确性核验。",
+    "sql": "SELECT coalesce(f.canonical_path,'搜索 / 未知页面') AS `反馈位置`,\n multiIf(f.reason='not_found','找不到',f.reason='irrelevant','不相关',f.reason='wrong_context','产品 / 平台 / 版本不对',f.reason='outdated','内容过期',f.reason='incorrect','内容错误',f.reason='unclear','看不懂',f.reason='steps_failed','步骤无效',f.reason='slow','太慢','其他') AS `原因`,\n f.reason AS `原因码`, f.feedback_source AS `来源`, count() AS `过程数`\nFROM (SELECT journey_id,canonical_path,feedback_source,arrayJoin(arrayDistinct(JSONExtract(coalesce(latest_response,'[]'),'Array(String)'))) AS reason\n FROM docs_feedback_facts WHERE question_id='reasons' AND feedback_scope='journey') AS f\nLEFT JOIN docs_journey_facts AS j ON f.journey_id=j.journey_id\nWHERE j.matches_context AND j.started_at >= toStartOfDay({variables.cn_docs_from}, 'Asia/Shanghai')\n AND j.started_at < toStartOfDay({variables.cn_docs_to}, 'Asia/Shanghai') AND j.mature\nGROUP BY f.canonical_path,f.reason,f.feedback_source ORDER BY `过程数` DESC LIMIT 50"
   }
 ]
