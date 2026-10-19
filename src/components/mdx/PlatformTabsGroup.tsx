@@ -20,7 +20,6 @@ import { cn } from '@/lib/cn';
 import { buildDocPath } from '@/lib/docs-routing';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
-  getDocumentPlatformPreference,
   getStoredPlatformPreference,
   PLATFORM_PREFERENCE_EVENT,
   setStoredPlatformPreference,
@@ -117,7 +116,7 @@ export function PlatformPageProvider({
     defaultPlatform,
     initialPlatform,
     parsedPlatforms,
-    preferDocumentPlatform: true,
+    deferStoredPreference: true,
     syncPath: true,
   });
 
@@ -170,7 +169,7 @@ export function PlatformTabsGroup({
     defaultPlatform: resolvedDefaultPlatform,
     initialPlatform: resolvedInitialPlatform,
     parsedPlatforms,
-    preferDocumentPlatform: false,
+    deferStoredPreference: false,
     syncPath: shouldSyncPlatformPath,
   });
 
@@ -234,7 +233,7 @@ export function PlatformHeaderTabs({
     defaultPlatform,
     initialPlatform,
     parsedPlatforms,
-    preferDocumentPlatform: false,
+    deferStoredPreference: false,
     syncPath: true,
   });
 
@@ -700,14 +699,14 @@ function usePlatformSelection({
   defaultPlatform,
   initialPlatform,
   parsedPlatforms,
-  preferDocumentPlatform,
+  deferStoredPreference,
   syncPath,
 }: {
   canonicalPlatform: PlatformKey;
   defaultPlatform?: PlatformKey;
   initialPlatform?: PlatformKey;
   parsedPlatforms: PlatformKey[];
-  preferDocumentPlatform: boolean;
+  deferStoredPreference: boolean;
   syncPath: boolean;
 }) {
   const pageContext = useContext(PlatformPageContext);
@@ -716,18 +715,10 @@ function usePlatformSelection({
   );
 
   if (platformPreferenceRef.current === undefined) {
-    const documentPlatform = preferDocumentPlatform
-      ? getDocumentPlatformPreference()
-      : null;
     const stored = getStoredPlatformPreference();
+    // A page fallback must not erase a preference supported by the next page.
     platformPreferenceRef.current =
-      documentPlatform &&
-      isKnownPlatform(documentPlatform) &&
-      parsedPlatforms.includes(documentPlatform)
-        ? documentPlatform
-        : stored && isKnownPlatform(stored) && parsedPlatforms.includes(stored)
-          ? stored
-          : null;
+      stored && isKnownPlatform(stored) ? stored : null;
   }
 
   const [localActivePlatform, setLocalActivePlatform] = useState<
@@ -741,9 +732,8 @@ function usePlatformSelection({
       return initialPlatform;
     }
 
-    const stored = preferDocumentPlatform
-      ? null
-      : platformPreferenceRef.current;
+    // Match server HTML on hydration; the page owner applies storage before paint.
+    const stored = deferStoredPreference ? null : platformPreferenceRef.current;
 
     if (stored && parsedPlatforms.includes(stored)) {
       return stored;

@@ -547,7 +547,7 @@ describe('DocsContent', () => {
     expect(screen.getByLabelText('适用平台')).toHaveTextContent('Web');
   });
 
-  it('uses the active tab dataset ahead of a stale stored preference', async () => {
+  it('uses the saved preference instead of the previous page fallback dataset', async () => {
     window.localStorage.setItem(PLATFORM_PREFERENCE_STORAGE_KEY, 'flutter');
     document.documentElement.dataset[PLATFORM_DATASET_KEY] = 'android';
 
@@ -572,7 +572,7 @@ describe('DocsContent', () => {
     );
 
     expect(await screen.findByLabelText('适用平台')).toHaveTextContent(
-      'Android',
+      'Flutter',
     );
   });
 

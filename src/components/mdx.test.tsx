@@ -1264,7 +1264,7 @@ describe('common MDX registry', () => {
     }
   });
 
-  it('applies a route-selected platform immediately when the payload changes', () => {
+  it('updates the selected tab when the route platform changes', () => {
     const { rerender } = render(
       <PlatformHeaderTabs
         canonicalPlatform="web"
