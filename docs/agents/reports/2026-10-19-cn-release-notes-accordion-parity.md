@@ -61,3 +61,12 @@
 ## 后续合入 main
 
 保留 main 现有的共享折叠实现与英文内容，合入中文 MDX、中文 Markdown 出口及本次补充的父标签/滚动处理。主要重叠点为 `mdx.tsx`、`DocsContent.tsx`、`docs-hash.ts`、`source.server.ts`、`PlatformTabsGroup.tsx` 及标题提取模块；合并时逐项去重。
+
+## 最终验证
+
+- `bun run test --maxWorkers=2`：222 个文件全部通过，2,921 项测试通过、2 项跳过。默认并发运行曾在既有 Speech-to-Text 侧栏测试触发 5 秒超时；该文件默认参数单独复测 6 项通过，完整的受限并发运行通过。
+- `bun run types:check`、`bun run lint`、`git diff --check` 通过；Lint 无错误，20 条 warning、5 条 info。
+- `VITE_DOCS_REGION=cn bun run build` 在源码一致的隔离工作区完整执行，退出码 0：生成 6,842 份页面数据、8,045 份机器可读文件、7,739 份路由 HTML。存在非阻塞的大 chunk 提示。
+- 浏览器覆盖桌面/390px 手机显示、多版本展开、目录定位、中文编码锚点、平台重置并保留其他查询参数、已保存的内层语言标签、日期型历史、Fastboard 内层示例以及英文 Video 发版页。
+- 生成的机器可读 Markdown 中，AI 版本标题和七个历史版本别名均检查通过。截图保存在 `.github/pr-assets/cn-release-notes-20261019/`。
+- 规范与需求两轴独立审查完成；内层标签覆盖和历史锚点关联问题修复后复审无剩余可执行问题。
