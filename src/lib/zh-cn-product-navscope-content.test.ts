@@ -72,20 +72,20 @@ function listFiles(root: string): string[] {
 }
 
 describe('zh-CN product nav scope content', () => {
-  it.each([
-    'realtime-media',
-    'solutions',
-  ] as const)('marks %s product folders as nav scopes', (section) => {
-    const missingNavScope = getDirectProductMetaPaths(section).flatMap(
-      (metaPath) => {
-        const meta = readMeta(metaPath);
+  it.each(['realtime-media', 'solutions'] as const)(
+    'marks %s product folders as nav scopes',
+    (section) => {
+      const missingNavScope = getDirectProductMetaPaths(section).flatMap(
+        (metaPath) => {
+          const meta = readMeta(metaPath);
 
-        return Object.hasOwn(meta, 'navScope') ? [] : [metaPath];
-      },
-    );
+          return Object.hasOwn(meta, 'navScope') ? [] : [metaPath];
+        },
+      );
 
-    expect(missingNavScope).toEqual([]);
-  });
+      expect(missingNavScope).toEqual([]);
+    },
+  );
 
   it('keeps RTC overview as the Voice and Video product entry target', () => {
     const rtcMeta = readMeta(
@@ -96,10 +96,10 @@ describe('zh-CN product nav scope content', () => {
       'utf8',
     );
 
-    expect(rtcMeta.title).toBe('语音与视频 RTC');
+    expect(rtcMeta.title).toBe('实时互动 RTC');
     expect(rtcMeta.navScope).toEqual({});
     expect(rtcMeta.pages).toContain('index');
-    expect(rtcIndex).toMatch(/^title:\s*"?语音与视频 RTC 概览"?$/m);
+    expect(rtcIndex).toMatch(/^title:\s*"?实时互动 RTC 概览"?$/m);
   });
 
   it('keeps fully shared MCP and Skills docs only under introduction', () => {

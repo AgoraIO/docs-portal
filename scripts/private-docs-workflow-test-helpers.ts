@@ -5,9 +5,18 @@ import path from 'node:path';
 
 const tempDirs: string[] = [];
 
+function isolatedGitEnv(env: NodeJS.ProcessEnv) {
+  return {
+    ...env,
+    GIT_CONFIG_GLOBAL: process.platform === 'win32' ? 'NUL' : '/dev/null',
+    GIT_CONFIG_NOSYSTEM: '1',
+  };
+}
+
 export function git(cwd: string, ...args: string[]) {
   return execFileSync('git', args, {
     cwd,
+    env: isolatedGitEnv(process.env),
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
   }).trim();
@@ -20,7 +29,7 @@ export function runScript(
 ) {
   return execFileSync(process.execPath, [script, ...args], {
     encoding: 'utf8',
-    env,
+    env: isolatedGitEnv(env),
     stdio: ['ignore', 'pipe', 'pipe'],
   }).trim();
 }

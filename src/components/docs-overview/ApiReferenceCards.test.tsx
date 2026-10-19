@@ -9,6 +9,7 @@ import {
 } from '@testing-library/react';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { zhCNApiReferenceCards } from '@/lib/api-reference-cards-data.zh-cn';
+import { getOpenApiPrerenderPaths } from '@/lib/openapi/lanes';
 import { ApiReferenceCards } from './ApiReferenceCards';
 
 describe('ApiReferenceCards', () => {
@@ -463,8 +464,11 @@ describe('ApiReferenceCards', () => {
   });
 });
 
+const openApiRoutes = new Set(getOpenApiPrerenderPaths());
+
 function routeExists(href: string) {
   const cleanHref = href.split(/[?#]/, 1)[0];
+  if (openApiRoutes.has(cleanHref)) return true;
   const segments = cleanHref.split('/').filter(Boolean);
 
   if (segments.length < 2) {

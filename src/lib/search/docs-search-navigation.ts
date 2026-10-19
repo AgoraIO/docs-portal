@@ -1,5 +1,8 @@
 import { findPath, flattenTree, type Root } from 'fumadocs-core/page-tree';
-import { zhCnFaqCategories, zhCnFaqItems } from '../../components/faq/faq-data.zh-cn';
+import {
+  zhCnFaqCategories,
+  zhCnFaqItems,
+} from '../../components/faq/faq-data.zh-cn';
 
 export type DocsSearchNavigation = Map<string, string[]>;
 
@@ -33,8 +36,13 @@ export function buildDocsSearchNavigation(
   if (locale === 'zh-CN') {
     for (const item of zhCnFaqItems) {
       if (navigation.has(item.href)) continue;
-      const category = zhCnFaqCategories.find(entry => entry.id === item.category);
-      navigation.set(item.href, ['常见问题', ...(category ? [category.label] : [])]);
+      const category = zhCnFaqCategories.find(
+        (entry) => entry.id === item.category,
+      );
+      navigation.set(item.href, [
+        '常见问题',
+        ...(category ? [category.label] : []),
+      ]);
     }
   }
   return navigation;
