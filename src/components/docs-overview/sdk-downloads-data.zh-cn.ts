@@ -11,8 +11,19 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
         versions: [
           {
+            id: '4.7.0-voice-sdk-android',
+            label: '版本 4.7.0（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.0_VOICE.zip',
+            md5: 'acb70a13f5e001e324cb33e46624edf8',
+            packageSize:
+              'armeabi-v7a 7.27 MB；arm64-v8a 7.82 MB；x86 7.67 MB；x86_64 7.49 MB',
+            packageName: 'io.agora.rtc2.voice',
+          },
+          {
             id: '4.6.3-voice-sdk-android',
-            label: '版本 4.6.3（最新）',
+            label: '版本 4.6.3',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_VOICE.zip',
             md5: '2801dfea3c96a32e6aaaa354d819ec71',
@@ -200,8 +211,31 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于音视频通话、互动直播和极速直播的实时互动 SDK',
         versions: [
           {
+            id: '4.7.0-video-sdk-android-full',
+            label: '版本 4.7.0 Full（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.0_FULL.zip',
+            md5: '867fb78c2eb1ec8ff02ba073a1fd2e1d',
+            packageSize:
+              'armeabi-v7a 16.55 MB；arm64-v8a 17.17 MB；x86 17.81 MB；x86_64 17.44 MB',
+            packageName: 'io.agora.rtc2.video',
+          },
+          {
+            id: '4.7.0-video-sdk-android-lite',
+            label: '版本 4.7.0 Lite（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.0_LITE.zip',
+            latestVariant: true,
+            md5: 'b5bb69fa8c7e79bf939fe1caa1fd8f9c',
+            packageSize:
+              'armeabi-v7a 8.42 MB；arm64-v8a 9.02 MB；x86 9.08 MB；x86_64 8.92 MB',
+            packageName: 'io.agora.rtc2.video',
+          },
+          {
             id: '4.6.3-video-sdk-android-full',
-            label: '版本 4.6.3 Full（最新）',
+            label: '版本 4.6.3 Full',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip',
             md5: '70cb117df069f30501ca13f5147e3a99',
@@ -212,8 +246,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.6.3-video-sdk-android-lite',
-            latestVariant: true,
-            label: '版本 4.6.3 Lite（最新）',
+            label: '版本 4.6.3 Lite',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_LITE.zip',
             md5: '00cb209f68c803e1aa17e8498efae94d',
@@ -235,7 +268,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.6.3-video-sdk-android',
-            label: '版本 4.6.3 （最新）',
+            label: '版本 4.6.3',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.6.3_FULL.zip',
             packageManager:
@@ -863,8 +896,18 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于语音通话、纯音频互动直播和纯音频极速直播的实时互动 SDK',
         versions: [
           {
+            id: '4.7.0-voice-sdk-ios',
+            label: '版本 4.7.0（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.0_VOICE.zip',
+            md5: 'db7fc92f1f56725758a5d71173e9fcab',
+            packageSize: '13.15 MB',
+            packageName: 'AgoraRtcKit',
+          },
+          {
             id: '4.6.2-voice-sdk-ios',
-            label: '版本 4.6.2（最新）',
+            label: '版本 4.6.2',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.2_VOICE.zip',
             md5: 'd1ef8c0f83ccea5110b8637d09357115',
@@ -1024,8 +1067,29 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于音视频通话、互动直播和极速直播的实时互动 SDK',
         versions: [
           {
+            id: '4.7.0-video-sdk-ios-full',
+            label: '版本 4.7.0 Full（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.0_FULL.zip',
+            md5: '044dafd641e8d44b9e2583c5481aeaa8',
+            packageSize: '31.69 MB',
+            packageName: 'AgoraRtcEngineKit',
+          },
+          {
+            id: '4.7.0-video-sdk-ios-lite',
+            label: '版本 4.7.0 Lite（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.7.0_LITE.zip',
+            latestVariant: true,
+            md5: 'c29b295befc44fe4ab5023e166e93e41',
+            packageSize: '14.97 MB',
+            packageName: 'AgoraRtcEngineKit',
+          },
+          {
             id: '4.6.2-video-sdk-ios-full',
-            label: '版本 4.6.2 Full（最新）',
+            label: '版本 4.6.2 Full',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.2_FULL.zip',
             md5: '1752d1bd20ee99373fc6d811544c559f',
@@ -1034,8 +1098,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.6.2-video-sdk-ios-lite',
-            latestVariant: true,
-            label: '版本 4.6.2 Lite（最新）',
+            label: '版本 4.6.2 Lite',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_iOS_v4.6.2_LITE.zip',
             md5: '15af353e5290ae883aa4ddde55a771a0',
@@ -1053,7 +1116,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '4.6.2-video-sdk-ios',
-            label: '版本 4.6.2 （最新）',
+            label: '版本 4.6.2',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.6.2_FULL.zip',
             packageManager:
@@ -2529,8 +2592,15 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 Windows 端音视频通话、互动直播和极速直播的实时互动 SDK',
         versions: [
           {
+            id: '4.7.0-video-sdk-windows',
+            label: '版本 4.7.0（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Windows_v4.7.0_FULL.zip',
+          },
+          {
             id: '4.6.2-video-sdk-windows',
-            label: '版本 4.6.2（最新）',
+            label: '版本 4.6.2',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Windows_v4.6.2_FULL.zip',
             releaseDate: '2026 年 1 月 16 日',
@@ -2909,8 +2979,16 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 macOS 端音视频通话、互动直播和极速直播的实时互动 SDK',
         versions: [
           {
+            id: '4.7.0-video-sdk-macos',
+            label: '版本 4.7.0（最新）',
+            releaseDate: '2026 年 9 月 22 日',
+            downloadLink:
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Mac_v4.7.0_FULL.zip',
+            packageName: 'ShengwangRtcEngine_macOS',
+          },
+          {
             id: '4.6.2-video-sdk-macos',
-            label: '版本 4.6.2（最新）',
+            label: '版本 4.6.2',
             downloadLink:
               'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Mac_v4.6.2_FULL.zip',
             packageName: 'ShengwangRtcEngine_macOS',
