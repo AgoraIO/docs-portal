@@ -37,7 +37,8 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '2.3.1-agents-sdk-typescript',
             label: 'Version 2.3.1 (Latest)',
-            packageManager: 'https://www.npmjs.com/package/agora-agents/v/2.3.1',
+            packageManager:
+              'https://www.npmjs.com/package/agora-agents/v/2.3.1',
           },
         ],
       },

@@ -17,6 +17,7 @@ describe('RTC mini-program Client reference', () => {
     const body = content.slice(content.indexOf('\n---\n', 4) + 5).trimStart();
 
     expect(body).toMatch(/^## Constructors\n/);
+    expect(body.match(/^## Constructors$/gm)).toHaveLength(1);
     expect(body).not.toContain('### Hierarchy');
     expect(body).not.toContain('## Index');
   });

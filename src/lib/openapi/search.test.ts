@@ -17,10 +17,15 @@ describe('openapi search documents', () => {
     const documents = await getOpenApiSearchDocuments();
 
     expect(
-      documents.find((doc) => doc.url === '/en/api-reference/api-ref/rtc/query-channel-list'),
+      documents.find(
+        (doc) => doc.url === '/en/api-reference/api-ref/rtc/query-channel-list',
+      ),
     ).toBeDefined();
     expect(
-      documents.find((doc) => doc.url === '/zh-CN/api-reference/api-ref/rtc/query-channel-list'),
+      documents.find(
+        (doc) =>
+          doc.url === '/zh-CN/api-reference/api-ref/rtc/query-channel-list',
+      ),
     ).toBeDefined();
   });
 });

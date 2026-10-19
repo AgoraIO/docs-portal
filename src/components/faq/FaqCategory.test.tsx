@@ -57,11 +57,7 @@ describe('FaqCategory', () => {
   });
 
   it('uses localized labels and FAQ data for Chinese pages', () => {
-    window.history.replaceState(
-      null,
-      '',
-      '/zh-CN/reference/faq/integration',
-    );
+    window.history.replaceState(null, '', '/zh-CN/reference/faq/integration');
 
     render(<FaqCategory category="integration-issues" locale="zh-CN" />);
 
@@ -73,9 +69,6 @@ describe('FaqCategory', () => {
       screen.getByRole('link', {
         name: /为什么媒体音量下，设置录制时允许震动不生效？/,
       }),
-    ).toHaveAttribute(
-      'href',
-      '/zh-CN/reference/faq/integration/allow_haptics',
-    );
+    ).toHaveAttribute('href', '/zh-CN/reference/faq/integration/allow_haptics');
   });
 });

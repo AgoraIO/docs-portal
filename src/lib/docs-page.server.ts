@@ -2616,10 +2616,7 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
   },
 ];
 const ZH_CN_RTC_REST_REFERENCE_LINKS: readonly ZhCnRtcRestSidebarLink[] = [
-  [
-    '响应状态码',
-    '/zh-CN/api-reference/rtc/restful/reference/response-code',
-  ],
+  ['响应状态码', '/zh-CN/api-reference/rtc/restful/reference/response-code'],
 ];
 
 async function embedZhCnServiceApiSidebars(

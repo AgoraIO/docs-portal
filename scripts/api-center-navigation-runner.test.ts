@@ -38,25 +38,28 @@ describe('API Center navigation runner', () => {
         'iagoramediacomponentfactory.cpp',
       ],
     ],
-  ])('keeps local recording %s API pages inside the platform sidebar scope', async (platform, expectedPages) => {
-    const meta = JSON.parse(
-      await fs.readFile(
-        path.resolve(
-          `content/docs/zh-CN/api-reference/local-server-recording/${platform}/meta.json`,
-        ),
-        'utf8',
-      ),
-    );
-
-    expect(meta.pages).toEqual(expect.arrayContaining(expectedPages));
-    for (const leaf of expectedPages) {
-      expect(meta.pages).not.toContainEqual(
-        expect.stringContaining(
-          `/zh-CN/api-reference/local-server-recording/${leaf}`,
+  ])(
+    'keeps local recording %s API pages inside the platform sidebar scope',
+    async (platform, expectedPages) => {
+      const meta = JSON.parse(
+        await fs.readFile(
+          path.resolve(
+            `content/docs/zh-CN/api-reference/local-server-recording/${platform}/meta.json`,
+          ),
+          'utf8',
         ),
       );
-    }
-  });
+
+      expect(meta.pages).toEqual(expect.arrayContaining(expectedPages));
+      for (const leaf of expectedPages) {
+        expect(meta.pages).not.toContainEqual(
+          expect.stringContaining(
+            `/zh-CN/api-reference/local-server-recording/${leaf}`,
+          ),
+        );
+      }
+    },
+  );
 
   it('keeps external IM entries under the stable catalog product id', () => {
     const catalog = buildApiReferenceCatalogData([
@@ -104,7 +107,8 @@ describe('API Center navigation runner', () => {
         product: '1v1 私密房',
         apiGroup: 'client',
         label: 'Android',
-        targetRoute: '/zh-CN/api-reference/private-room/android/rtm/api/call-api',
+        targetRoute:
+          '/zh-CN/api-reference/private-room/android/rtm/api/call-api',
         urlFamily: 'doc',
       },
     ];
@@ -112,15 +116,13 @@ describe('API Center navigation runner', () => {
     const catalog = buildApiReferenceCatalogData(groups);
 
     expect(
-      catalog.all.map((entry: {
-        apiType: string;
-        product: string;
-        productId: string;
-      }) => ({
-        apiType: entry.apiType,
-        product: entry.product,
-        productId: entry.productId,
-      })),
+      catalog.all.map(
+        (entry: { apiType: string; product: string; productId: string }) => ({
+          apiType: entry.apiType,
+          product: entry.product,
+          productId: entry.productId,
+        }),
+      ),
     ).toEqual([
       {
         apiType: 'server-sdk',
@@ -264,26 +266,29 @@ describe('API Center navigation runner', () => {
     ],
     ['android', 'auikaraoke', ['api/auikaraoke-api', 'api/lyrics-api']],
     ['ios', 'auikaraoke', ['api/auikaraoke-api', 'api/lyrics-api']],
-  ] as const)('keeps only Online KTV API documents in the %s/%s scoped sidebar', async (platform, solution, expectedPages) => {
-    const solutionMeta = JSON.parse(
-      await fs.readFile(
-        path.resolve(
-          `content/docs/zh-CN/api-reference/online-ktv/${platform}/${solution}/meta.json`,
+  ] as const)(
+    'keeps only Online KTV API documents in the %s/%s scoped sidebar',
+    async (platform, solution, expectedPages) => {
+      const solutionMeta = JSON.parse(
+        await fs.readFile(
+          path.resolve(
+            `content/docs/zh-CN/api-reference/online-ktv/${platform}/${solution}/meta.json`,
+          ),
+          'utf8',
         ),
-        'utf8',
-      ),
-    );
-    expect(solutionMeta.navScope).toEqual({});
-    expect(solutionMeta.pages).toEqual(expectedPages);
-    expect(solutionMeta.pages).not.toEqual(
-      expect.arrayContaining([
-        'landing-page',
-        'overview/introduction',
-        'get-started/enable-service',
-        'advanced-features/get-music',
-      ]),
-    );
-  });
+      );
+      expect(solutionMeta.navScope).toEqual({});
+      expect(solutionMeta.pages).toEqual(expectedPages);
+      expect(solutionMeta.pages).not.toEqual(
+        expect.arrayContaining([
+          'landing-page',
+          'overview/introduction',
+          'get-started/enable-service',
+          'advanced-features/get-music',
+        ]),
+      );
+    },
+  );
 
   it('keeps Online KTV product and platform navigation exact', async () => {
     const productMeta = JSON.parse(
@@ -344,7 +349,7 @@ describe('API Center navigation runner', () => {
       ],
     ).toBe('事件类型');
     expect(solutionMeta.pages).toContain(
-      '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events)',
+      '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events?from=%2Fzh-CN%2Frealtime-media%2Ftranscoding)',
     );
     expect(solutionMeta.pages).not.toContain('ncs-events');
   });

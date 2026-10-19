@@ -188,22 +188,26 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('keeps AI Video SDK quickstart links on the Video Calling SDK quickstart', () => {
-    const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
-    const offenders = files.flatMap((file) => {
-      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+  it(
+    'keeps AI Video SDK quickstart links on the Video Calling SDK quickstart',
+    () => {
+      const files = listMarkdownFiles(resolve(docsRoot, 'ai'));
+      const offenders = files.flatMap((file) => {
+        const lines = readFileSync(file, 'utf8').split(/\r?\n/);
 
-      return lines.flatMap((line, index) =>
-        (/Video SDK|Video Calling/.test(line) &&
-          /introduction\/realtime-audio-video/.test(line)) ||
-        /audio and video quickstart/.test(line)
-          ? [`${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`]
-          : [],
-      );
-    });
+        return lines.flatMap((line, index) =>
+          (/Video SDK|Video Calling/.test(line) &&
+            /introduction\/realtime-audio-video/.test(line)) ||
+          /audio and video quickstart/.test(line)
+            ? [`${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`]
+            : [],
+        );
+      });
 
-    expect(offenders).toEqual([]);
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      expect(offenders).toEqual([]);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps AI build interrupt links in shape the conversation', () => {
     const files = listMarkdownFiles(resolve(docsRoot, 'ai/build'));
@@ -398,7 +402,9 @@ describe('docs content regressions', () => {
   });
 
   it('keeps Whiteboard IA centered on the product root and Reference section', () => {
-    const productMeta = JSON.parse(readDoc('realtime-media/whiteboard/meta.json'));
+    const productMeta = JSON.parse(
+      readDoc('realtime-media/whiteboard/meta.json'),
+    );
     const referenceMeta = JSON.parse(
       readDoc('realtime-media/whiteboard/reference/meta.json'),
     );
@@ -409,14 +415,19 @@ describe('docs content regressions', () => {
       'build',
       'reference',
     ]);
-    expect(productMeta.sidebarIndexTitle).toBe('Interactive Whiteboard overview');
+    expect(productMeta.sidebarIndexTitle).toBe(
+      'Interactive Whiteboard overview',
+    );
     expect(productMeta.pages).not.toContain('overview');
     expect(
       existsSync(resolve(docsRoot, 'realtime-media/whiteboard/overview')),
     ).toBe(false);
     expect(
       existsSync(
-        resolve(docsRoot, 'realtime-media/whiteboard/overview/core-concepts.md'),
+        resolve(
+          docsRoot,
+          'realtime-media/whiteboard/overview/core-concepts.md',
+        ),
       ),
     ).toBe(false);
 
@@ -444,76 +455,84 @@ describe('docs content regressions', () => {
     expect(offenders).toEqual([]);
   });
 
-  it('keeps block-style lists and notes out of GFM table cells', () => {
-    const blockSyntaxPattern =
-      /(?:<\/?(?:ul|ol|li)\b|\*\*Note\*\*|<Note\b|:::note|:::info|:::warning|:::caution|\[!NOTE\])/i;
-    const inlineTableCellBlockPattern = new RegExp(
-      String.raw`^\s*\|.*${blockSyntaxPattern.source}.*$`,
-      'i',
-    );
-    const offenders: string[] = [];
+  it(
+    'keeps block-style lists and notes out of GFM table cells',
+    () => {
+      const blockSyntaxPattern =
+        /(?:<\/?(?:ul|ol|li)\b|\*\*Note\*\*|<Note\b|:::note|:::info|:::warning|:::caution|\[!NOTE\])/i;
+      const inlineTableCellBlockPattern = new RegExp(
+        String.raw`^\s*\|.*${blockSyntaxPattern.source}.*$`,
+        'i',
+      );
+      const offenders: string[] = [];
 
-    for (const file of listMarkdownFiles(allDocsRoot)) {
-      const lines = readFileSync(file, 'utf8').split(/\r?\n/);
+      for (const file of listMarkdownFiles(allDocsRoot)) {
+        const lines = readFileSync(file, 'utf8').split(/\r?\n/);
 
-      for (let index = 0; index < lines.length; index += 1) {
-        if (inlineTableCellBlockPattern.test(lines[index])) {
-          offenders.push(
-            `${relative(process.cwd(), file)}:${index + 1}: ${lines[index]}`,
-          );
-        }
+        for (let index = 0; index < lines.length; index += 1) {
+          if (inlineTableCellBlockPattern.test(lines[index])) {
+            offenders.push(
+              `${relative(process.cwd(), file)}:${index + 1}: ${lines[index]}`,
+            );
+          }
 
-        if (!/^\s*\|.*\|.*\|\s*\S.*[^|]\s*$/.test(lines[index])) {
-          continue;
-        }
+          if (!/^\s*\|.*\|.*\|\s*\S.*[^|]\s*$/.test(lines[index])) {
+            continue;
+          }
 
-        const blockStart = index;
-        const blockLines: string[] = [];
-        let cursor = index + 1;
+          const blockStart = index;
+          const blockLines: string[] = [];
+          let cursor = index + 1;
 
-        while (
-          cursor < lines.length &&
-          !/^\s*\|\s*$/.test(lines[cursor]) &&
-          !/^\s*\|.*\|/.test(lines[cursor])
-        ) {
-          blockLines.push(lines[cursor]);
-          cursor += 1;
-        }
+          while (
+            cursor < lines.length &&
+            !/^\s*\|\s*$/.test(lines[cursor]) &&
+            !/^\s*\|.*\|/.test(lines[cursor])
+          ) {
+            blockLines.push(lines[cursor]);
+            cursor += 1;
+          }
 
-        if (
-          cursor < lines.length &&
-          /^\s*\|\s*$/.test(lines[cursor]) &&
-          blockSyntaxPattern.test(blockLines.join('\n'))
-        ) {
-          offenders.push(
-            `${relative(process.cwd(), file)}:${blockStart + 1}-${cursor + 1}: multiline table cell contains block syntax`,
-          );
+          if (
+            cursor < lines.length &&
+            /^\s*\|\s*$/.test(lines[cursor]) &&
+            blockSyntaxPattern.test(blockLines.join('\n'))
+          ) {
+            offenders.push(
+              `${relative(process.cwd(), file)}:${blockStart + 1}-${cursor + 1}: multiline table cell contains block syntax`,
+            );
+          }
         }
       }
-    }
 
-    expect(offenders).toEqual([]);
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      expect(offenders).toEqual([]);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
-  it('keeps docs free of four-colon directive fences', () => {
-    const offenders: string[] = [];
+  it(
+    'keeps docs free of four-colon directive fences',
+    () => {
+      const offenders: string[] = [];
 
-    for (const file of listMarkdownFiles(allDocsRoot)) {
-      const lines = readFileSync(file, 'utf8').split('\n');
+      for (const file of listMarkdownFiles(allDocsRoot)) {
+        const lines = readFileSync(file, 'utf8').split('\n');
 
-      lines.forEach((line, index) => {
-        const match = line.match(/^\s*(:+)($|[^:])/);
+        lines.forEach((line, index) => {
+          const match = line.match(/^\s*(:+)($|[^:])/);
 
-        if (match?.[1].length === 4) {
-          offenders.push(
-            `${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`,
-          );
-        }
-      });
-    }
+          if (match?.[1].length === 4) {
+            offenders.push(
+              `${relative(process.cwd(), file)}:${index + 1}: ${line.trim()}`,
+            );
+          }
+        });
+      }
 
-    expect(offenders).toEqual([]);
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      expect(offenders).toEqual([]);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps screenshot upload provider details grouped in tabs across screenshot upload docs', () => {
     const screenshotUploadDocs = [
@@ -1038,82 +1057,96 @@ describe('docs content regressions', () => {
     ).resolves.toBeDefined();
   });
 
-  it('uses nested canonical build routes for voice docs content', async () => {
-    const { source } = await import('./source.server');
+  it(
+    'uses nested canonical build routes for voice docs content',
+    async () => {
+      const { source } = await import('./source.server');
 
-    expect(
-      source.getPage(
-        [
-          'realtime-media',
-          'voice',
-          'build',
-          'set-up-token-authentication',
-          'use-tokens',
-        ],
-        'en',
-      ),
-    ).toBeDefined();
-    expect(
-      source.getPage(
-        [
-          'realtime-media',
-          'voice',
-          'build',
-          'set-up-your-project',
-          'compile-run-sample-project',
-        ],
-        'en',
-      ),
-    ).toBeDefined();
-    expect(
-      source.getPage(
-        [
-          'realtime-media',
-          'voice',
-          'build',
-          'manage-connection-and-quality',
-          'cloud-proxy',
-        ],
-        'en',
-      ),
-    ).toBeDefined();
+      expect(
+        source.getPage(
+          [
+            'realtime-media',
+            'voice',
+            'build',
+            'set-up-token-authentication',
+            'use-tokens',
+          ],
+          'en',
+        ),
+      ).toBeDefined();
+      expect(
+        source.getPage(
+          [
+            'realtime-media',
+            'voice',
+            'build',
+            'set-up-your-project',
+            'compile-run-sample-project',
+          ],
+          'en',
+        ),
+      ).toBeDefined();
+      expect(
+        source.getPage(
+          [
+            'realtime-media',
+            'voice',
+            'build',
+            'manage-connection-and-quality',
+            'cloud-proxy',
+          ],
+          'en',
+        ),
+      ).toBeDefined();
 
-    expect(
-      source.getPage(['realtime-media', 'voice', 'build', 'use-tokens'], 'en'),
-    ).toBeUndefined();
-    expect(
-      source.getPage(
-        ['realtime-media', 'voice', 'build', 'compile-run-sample-project'],
-        'en',
-      ),
-    ).toBeUndefined();
-    expect(
-      source.getPage(['realtime-media', 'voice', 'build', 'cloud-proxy'], 'en'),
-    ).toBeUndefined();
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      expect(
+        source.getPage(
+          ['realtime-media', 'voice', 'build', 'use-tokens'],
+          'en',
+        ),
+      ).toBeUndefined();
+      expect(
+        source.getPage(
+          ['realtime-media', 'voice', 'build', 'compile-run-sample-project'],
+          'en',
+        ),
+      ).toBeUndefined();
+      expect(
+        source.getPage(
+          ['realtime-media', 'voice', 'build', 'cloud-proxy'],
+          'en',
+        ),
+      ).toBeUndefined();
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
-  it('uses specific titles for English top-level overview pages', async () => {
-    const { source } = await import('./source.server');
+  it(
+    'uses specific titles for English top-level overview pages',
+    async () => {
+      const { source } = await import('./source.server');
 
-    const overviewPages = [
-      {
-        expectedTitle: 'Voice Agent overview',
-        slugs: ['ai'],
-      },
-      {
-        expectedTitle: 'RTC overview',
-        slugs: ['realtime-media', 'overview'],
-      },
-      {
-        expectedTitle: 'Reference overview',
-        slugs: ['api-reference'],
-      },
-    ];
+      const overviewPages = [
+        {
+          expectedTitle: 'Voice Agent overview',
+          slugs: ['ai'],
+        },
+        {
+          expectedTitle: 'RTC overview',
+          slugs: ['realtime-media', 'overview'],
+        },
+        {
+          expectedTitle: 'Reference overview',
+          slugs: ['api-reference'],
+        },
+      ];
 
-    for (const { expectedTitle, slugs } of overviewPages) {
-      expect(source.getPage(slugs, 'en')?.data.title).toBe(expectedTitle);
-    }
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      for (const { expectedTitle, slugs } of overviewPages) {
+        expect(source.getPage(slugs, 'en')?.data.title).toBe(expectedTitle);
+      }
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps voice token server deployment steps in continuous ordered lists', async () => {
     const source = readFileSync(
@@ -1198,7 +1231,7 @@ describe('docs content regressions', () => {
       const relativePath = relative(process.cwd(), file);
       const source = readFileSync(file, 'utf8');
 
-      if (/[\u200B\u200C\u200D\uFEFF]/.test(source)) {
+      if (/(?:\u200B|\u200C|\u200D|\uFEFF)/.test(source)) {
         offenders.push(`${relativePath}: contains zero-width characters`);
       }
 
@@ -1232,10 +1265,7 @@ describe('docs content regressions', () => {
       ['mac-linux|windows-powershell', 'ai-install-os'],
       ['rest-api|python|nodejs', 'ai-rest-sample-language'],
       ['python|go|nodejs', 'ai-server-language'],
-      [
-        'golang|nodejs|php|python|java|csharp',
-        'ai-service-api-language',
-      ],
+      ['golang|nodejs|php|python|java|csharp', 'ai-service-api-language'],
     ]);
     const offenders: string[] = [];
 
@@ -1324,76 +1354,88 @@ describe('docs content regressions', () => {
     );
   });
 
-  it('preserves explicit table cell line breaks in processed markdown', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['ai', 'best-practices', 'optimize-latency'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error('Expected latency page to expose processed markdown.');
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain(
-      'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('keeps IoT SDK compatibility table cells readable without raw HTML lists', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error('Expected IoT SDK page to expose processed markdown.');
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).not.toContain('<ul>');
-    expect(processed).not.toContain('<li>');
-    expect(processed).toContain(
-      'Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native',
-    );
-    expect(processed).toContain(
-      'Audio: G722, G711, Opus, AAC; Video: H.264, JPEG',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('renders media push layout images inside GFM table cells', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['realtime-media', 'media-push', 'reference', 'set-vertical-layout'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected media push vertical layout page to expose processed markdown.',
+  it(
+    'preserves explicit table cell line breaks in processed markdown',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['ai', 'best-practices', 'optimize-latency'],
+        'en',
       );
-    }
 
-    const processed = await page.data.getText('processed');
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
 
-    expect(processed).toContain('| Number of people | Layout effect');
-    expect(processed).toMatch(
-      /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      if (!page || !('getText' in page.data)) {
+        throw new Error('Expected latency page to expose processed markdown.');
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain(
+        'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
+      );
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'keeps IoT SDK compatibility table cells readable without raw HTML lists',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
+        'en',
+      );
+
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error('Expected IoT SDK page to expose processed markdown.');
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).not.toContain('<ul>');
+      expect(processed).not.toContain('<li>');
+      expect(processed).toContain(
+        'Native/third-party frameworks: Android, iOS/macOS, Windows, Electron, Unity, Flutter, React Native',
+      );
+      expect(processed).toContain(
+        'Audio: G722, G711, Opus, AAC; Video: H.264, JPEG',
+      );
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'renders media push layout images inside GFM table cells',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['realtime-media', 'media-push', 'reference', 'set-vertical-layout'],
+        'en',
+      );
+
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          'Expected media push vertical layout page to expose processed markdown.',
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain('| Number of people | Layout effect');
+      expect(processed).toMatch(
+        /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
+      );
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('keeps shared geofencing pages with readable media-zone table content', () => {
     const pages = [
@@ -1592,8 +1634,9 @@ describe('docs content regressions', () => {
       'utf8',
     );
 
+    expect(source).toContain('### Complete sample code');
     expect(source).toContain(
-      '### Complete sample code for real-time Video Calling',
+      'title="Complete sample code for real-time Video Calling"',
     );
     expect(source).toContain('### Display the local video');
     expect(source).toContain('### Create a basic UI');
@@ -1900,143 +1943,162 @@ describe('docs content regressions', () => {
     expect(features).toContain('REST API overview');
   });
 
-  it('keeps parameter table lists and callouts in the media push type definition page', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      ['api-reference', 'api-ref', 'media-push', 'restful-type-definition'],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected media push type definition page to expose processed markdown.',
+  it(
+    'keeps parameter table lists and callouts in the media push type definition page',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        ['api-reference', 'api-ref', 'media-push', 'restful-type-definition'],
+        'en',
       );
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain('| Field');
-    expect(processed).toContain('| Type');
-    expect(processed).toContain('| Descriptions');
-    expect(processed).not.toContain('<ParamTable>');
-    expect(processed).not.toContain('<Slot');
-    expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
-    expect(processed).toContain('<CalloutContainer type="info">');
-    expect(processed).toContain(
-      '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('keeps console REST API table slot callout content in processed markdown', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      [
-        'api-reference',
-        'api-ref',
-        'console',
-        'solutions-agora-console-rest-api',
-      ],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected console REST API page to expose processed markdown.',
-      );
-    }
-
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain('| `enable_sign_key`');
-    expect(processed).not.toContain('<Slot name="enablesignkey"');
-    expect(processed).toContain('<CalloutContainer type="info">');
-    expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
-    expect(processed).toContain(
-      'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
-    );
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('renders AI model callout directives through the processed markdown pipeline', async () => {
-    const { source } = await import('./source.server');
-    const modelDocsRoot = resolve(docsRoot, 'ai/models');
-    const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter(
-      (file) => {
-        const sourceText = readFileSync(file, 'utf8');
-        return /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m.test(
-          sourceText,
-        );
-      },
-    );
-
-    for (const file of filesWithCallouts) {
-      const page = source.getPage(aiModelsDocSlugs(file), 'en');
 
       expect(page).toBeDefined();
       expect(page?.type).toBe('docs');
 
       if (!page || !('getText' in page.data)) {
         throw new Error(
-          `Expected AI model page ${relative(process.cwd(), file)} to expose processed markdown.`,
+          'Expected media push type definition page to expose processed markdown.',
         );
       }
 
       const processed = await page.data.getText('processed');
 
-      expect(processed).not.toMatch(
-        /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
+      expect(processed).toContain('| Field');
+      expect(processed).toContain('| Type');
+      expect(processed).toContain('| Descriptions');
+      expect(processed).not.toContain('<ParamTable>');
+      expect(processed).not.toContain('<Slot');
+      expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
+      expect(processed).toContain('<CalloutContainer type="info">');
+      expect(processed).toContain(
+        '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
       );
-      expect(processed).toContain('<CalloutContainer');
-    }
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
-  it('keeps nested and repeated AI model callouts rendered as callout containers', async () => {
-    const { source } = await import('./source.server');
-    const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
-    const deepgram = source.getPage(['ai', 'models', 'asr', 'deepgram'], 'en');
-    const elevenLabs = source.getPage(
-      ['ai', 'models', 'tts', 'elevenlabs'],
-      'en',
-    );
+  it(
+    'keeps console REST API table slot callout content in processed markdown',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        [
+          'api-reference',
+          'api-ref',
+          'console',
+          'solutions-agora-console-rest-api',
+        ],
+        'en',
+      );
 
-    for (const page of [akool, deepgram, elevenLabs]) {
       expect(page).toBeDefined();
       expect(page?.type).toBe('docs');
-    }
 
-    if (
-      !akool ||
-      !deepgram ||
-      !elevenLabs ||
-      !('getText' in akool.data) ||
-      !('getText' in deepgram.data) ||
-      !('getText' in elevenLabs.data)
-    ) {
-      throw new Error(
-        'Expected AI model regression pages to expose processed markdown.',
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          'Expected console REST API page to expose processed markdown.',
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain('| `enable_sign_key`');
+      expect(processed).not.toContain('<Slot name="enablesignkey"');
+      expect(processed).toContain('<CalloutContainer type="info">');
+      expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
+      expect(processed).toContain(
+        'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
       );
-    }
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
-    const akoolProcessed = await akool.data.getText('processed');
-    const deepgramProcessed = await deepgram.data.getText('processed');
-    const elevenLabsProcessed = await elevenLabs.data.getText('processed');
+  it(
+    'renders AI model callout directives through the processed markdown pipeline',
+    async () => {
+      const { source } = await import('./source.server');
+      const modelDocsRoot = resolve(docsRoot, 'ai/models');
+      const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter(
+        (file) => {
+          const sourceText = readFileSync(file, 'utf8');
+          return /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m.test(
+            sourceText,
+          );
+        },
+      );
 
-    expect(
-      akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
-    ).toHaveLength(3);
-    expect(akoolProcessed).toContain('sales@agora.io');
-    expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
-    expect(deepgramProcessed).toContain('callback_method');
-    expect(
-      elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
-    ).toHaveLength(2);
-    expect(elevenLabsProcessed).toContain('Paid plan required');
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      for (const file of filesWithCallouts) {
+        const page = source.getPage(aiModelsDocSlugs(file), 'en');
+
+        expect(page).toBeDefined();
+        expect(page?.type).toBe('docs');
+
+        if (!page || !('getText' in page.data)) {
+          throw new Error(
+            `Expected AI model page ${relative(process.cwd(), file)} to expose processed markdown.`,
+          );
+        }
+
+        const processed = await page.data.getText('processed');
+
+        expect(processed).not.toMatch(
+          /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
+        );
+        expect(processed).toContain('<CalloutContainer');
+      }
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'keeps nested and repeated AI model callouts rendered as callout containers',
+    async () => {
+      const { source } = await import('./source.server');
+      const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
+      const deepgram = source.getPage(
+        ['ai', 'models', 'asr', 'deepgram'],
+        'en',
+      );
+      const elevenLabs = source.getPage(
+        ['ai', 'models', 'tts', 'elevenlabs'],
+        'en',
+      );
+
+      for (const page of [akool, deepgram, elevenLabs]) {
+        expect(page).toBeDefined();
+        expect(page?.type).toBe('docs');
+      }
+
+      if (
+        !akool ||
+        !deepgram ||
+        !elevenLabs ||
+        !('getText' in akool.data) ||
+        !('getText' in deepgram.data) ||
+        !('getText' in elevenLabs.data)
+      ) {
+        throw new Error(
+          'Expected AI model regression pages to expose processed markdown.',
+        );
+      }
+
+      const akoolProcessed = await akool.data.getText('processed');
+      const deepgramProcessed = await deepgram.data.getText('processed');
+      const elevenLabsProcessed = await elevenLabs.data.getText('processed');
+
+      expect(
+        akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
+      ).toHaveLength(3);
+      expect(akoolProcessed).toContain('sales@agora.io');
+      expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
+      expect(deepgramProcessed).toContain('callback_method');
+      expect(
+        elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
+      ).toHaveLength(2);
+      expect(elevenLabsProcessed).toContain('Paid plan required');
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 
   it('uses regular persisted tabs for React Native Picture-in-Picture host OS variants', () => {
     const pictureInPictureDocs = [
@@ -2055,9 +2117,7 @@ describe('docs content regressions', () => {
       expect(source, relativePath).not.toContain(
         '<CodeBlockTabs defaultValue="android">',
       );
-      expect(source, relativePath).toContain(
-        '<TabsContent value="android">',
-      );
+      expect(source, relativePath).toContain('<TabsContent value="android">');
       expect(source, relativePath).toContain('<TabsContent value="ios">');
     }
   });
@@ -2085,82 +2145,88 @@ describe('docs content regressions', () => {
           .replace(/\s+/g, ' ')
           .slice(0, 120);
 
-        violations.push(
-          `${relative(process.cwd(), file)}:${line} ${preview}`,
-        );
+        violations.push(`${relative(process.cwd(), file)}:${line} ${preview}`);
       }
     }
 
     expect(violations).toEqual([]);
   });
 
-  it('renders IoT authentication code tabs as MDX components', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      [
-        'realtime-media',
-        'iot',
-        'build',
-        'set-up-authentication-and-security',
-        'authentication-workflow',
-      ],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-    expect(page?.path).toBe(
-      'en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow.mdx',
-    );
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected IoT authentication page to expose processed markdown.',
+  it(
+    'renders IoT authentication code tabs as MDX components',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        [
+          'realtime-media',
+          'iot',
+          'build',
+          'set-up-authentication-and-security',
+          'authentication-workflow',
+        ],
+        'en',
       );
-    }
 
-    const processed = await page.data.getText('processed');
-
-    expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
-    expect(processed).toContain('<CodeBlockTab value="java">');
-    expect(processed).toContain('<CodeBlockTab value="kotlin">');
-    expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
-    expect(processed).not.toContain('&lt;CodeBlockTab');
-  }, SOURCE_LOADER_TEST_TIMEOUT);
-
-  it('renders stream channel platform sections as MDX components', async () => {
-    const { source } = await import('./source.server');
-    const page = source.getPage(
-      [
-        'realtime-media',
-        'rtm',
-        'build',
-        'work-with-channels',
-        'stream-channel',
-      ],
-      'en',
-    );
-
-    expect(page).toBeDefined();
-    expect(page?.type).toBe('docs');
-    expect(page?.path).toBe(
-      'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx',
-    );
-
-    if (!page || !('getText' in page.data)) {
-      throw new Error(
-        'Expected stream channel page to expose processed markdown.',
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+      expect(page?.path).toBe(
+        'en/realtime-media/iot/build/set-up-authentication-and-security/authentication-workflow.mdx',
       );
-    }
 
-    const processed = await page.data.getText('processed');
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          'Expected IoT authentication page to expose processed markdown.',
+        );
+      }
 
-    expect(processed).toContain('<_PlatformTabsGroup');
-    expect(processed).toContain('<_PlatformPanel platform="web">');
-    expect(processed).toContain('<_PlatformPanel platform="android">');
-    expect(processed).toContain('<_PlatformPanel platform="ios">');
-    expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
-    expect(processed).not.toContain('&lt;CodeBlockTab');
-    expect(processed).not.toContain('&lt;PlatformStructured');
-  }, SOURCE_LOADER_TEST_TIMEOUT);
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain('<CodeBlockTabs defaultValue="java">');
+      expect(processed).toContain('<CodeBlockTab value="java">');
+      expect(processed).toContain('<CodeBlockTab value="kotlin">');
+      expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
+      expect(processed).not.toContain('&lt;CodeBlockTab');
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
+
+  it(
+    'renders stream channel platform sections as MDX components',
+    async () => {
+      const { source } = await import('./source.server');
+      const page = source.getPage(
+        [
+          'realtime-media',
+          'rtm',
+          'build',
+          'work-with-channels',
+          'stream-channel',
+        ],
+        'en',
+      );
+
+      expect(page).toBeDefined();
+      expect(page?.type).toBe('docs');
+      expect(page?.path).toBe(
+        'en/realtime-media/rtm/build/work-with-channels/stream-channel.mdx',
+      );
+
+      if (!page || !('getText' in page.data)) {
+        throw new Error(
+          'Expected stream channel page to expose processed markdown.',
+        );
+      }
+
+      const processed = await page.data.getText('processed');
+
+      expect(processed).toContain('<_PlatformTabsGroup');
+      expect(processed).toContain('<_PlatformPanel platform="web">');
+      expect(processed).toContain('<_PlatformPanel platform="android">');
+      expect(processed).toContain('<_PlatformPanel platform="ios">');
+      expect(processed).not.toContain('&lt;/CodeBlockTab&gt;');
+      expect(processed).not.toContain('&lt;CodeBlockTab');
+      expect(processed).not.toContain('&lt;PlatformStructured');
+    },
+    SOURCE_LOADER_TEST_TIMEOUT,
+  );
 });

@@ -813,15 +813,6 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'other-issues',
-    href: '/zh-CN/reference/faq/other/macos_15_beta',
-    platforms: ['全部平台', 'macOS'],
-    products: ['全部产品', '实时互动'],
-    summary:
-      '在 macOS 15 Beta 系统上开发时，如果 App 的路径（以及 App 名称）包含非英文字符（例如：中文、日文、韩文等），则编译后的 Metal shader library 中可能不包含任何方法，导致 App 无法正常运行。',
-    title: '如何解决 macOS 15 Beta 不支持路径中包含中文字符的 App 问题？',
-  },
-  {
-    category: 'other-issues',
     href: '/zh-CN/reference/faq/other/privacyinfortm',
     platforms: ['全部平台', 'iOS', 'Unity'],
     products: ['全部产品', '实时消息'],

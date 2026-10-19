@@ -1,6 +1,6 @@
 import { isKnownPlatform } from '@/lib/platforms/registry';
-import type { DocsSearchScope } from './search-provider';
 import { normalizeCnProduct } from './cn-products';
+import type { DocsSearchScope } from './search-provider';
 
 export type SearchPageState = {
   q: string;

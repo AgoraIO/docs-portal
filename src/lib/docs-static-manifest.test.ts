@@ -43,7 +43,9 @@ describe('docs-static-manifest', () => {
         slugSegments: ['flexible-classroom', 'quickstart'],
         tab: 'solutions',
       }),
-    ).toBe('/__static/docs/en/realtime-media/flexible-classroom/quickstart.json');
+    ).toBe(
+      '/__static/docs/en/realtime-media/flexible-classroom/quickstart.json',
+    );
   });
 
   it('keeps non-English and unknown legacy solutions payload paths unchanged', () => {

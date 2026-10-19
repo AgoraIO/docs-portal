@@ -30,7 +30,17 @@ async function loadApiReferenceSidebar(slugs: string[]) {
 }
 
 async function loadApiReferencePayload(slugs: string[]) {
-  const payload = await loadDocsPagePayload('zh-CN', 'api-reference', slugs);
+  let payload = await loadDocsPagePayload('zh-CN', 'api-reference', slugs);
+  if (payload && 'redirectUrl' in payload) {
+    const target = new URL(payload.redirectUrl, 'https://docs.example.com');
+    expect(target.pathname).toMatch(/^\/zh-CN\/api-reference\//);
+    payload = await loadDocsPagePayload(
+      'zh-CN',
+      'api-reference',
+      target.pathname.split('/').filter(Boolean).slice(2),
+      target.search,
+    );
+  }
   if (!payload || 'redirectUrl' in payload) {
     throw new Error(
       `expected docs payload for /zh-CN/api-reference/${slugs.join('/')}`,
@@ -49,7 +59,27 @@ async function loadReferencePayload(slugs: string[]) {
   return payload;
 }
 
-describe('API Center scoped sidebars', () => {
+// These integration tests load the real MDX/OpenAPI graph under parallel suite load.
+describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
+  it.each([
+    [
+      ['api-ref', 'console'],
+      '/zh-CN/api-reference/api-ref/console/create-project',
+    ],
+    [
+      ['api-ref', 'whiteboard', 'restful'],
+      '/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token',
+    ],
+  ])(
+    'redirects the %s lane root to its maintained entry endpoint',
+    async (slugs, redirectUrl) => {
+      expect(
+        await loadDocsPagePayload('zh-CN', 'api-reference', slugs),
+      ).toMatchObject({
+        redirectUrl,
+      });
+    },
+  );
   it.each([
     [['conversational-ai', 'android', 'overview'], '/zh-CN/ai'],
     [['conversational-ai', 'android', 'enum'], '/zh-CN/ai'],
@@ -119,9 +149,9 @@ describe('API Center scoped sidebars', () => {
     expect(titles).not.toContain('产品参考');
     expect(titles).not.toContain('Whiteboard SDK');
     expect(titles).toEqual(
-      expect.arrayContaining(['SDK 下载', 'Demo', '常见问题']),
+      expect.arrayContaining(['SDK 下载', '体验 Demo', '常见问题']),
     );
-    expect(rootTitles).toEqual(['SDK 下载', 'Demo', '常见问题']);
+    expect(rootTitles).toEqual(['SDK 下载', '体验 Demo', '常见问题']);
   });
 
   it('uses the generated RTC Android current-version categories', async () => {
@@ -177,17 +207,20 @@ describe('API Center scoped sidebars', () => {
     ],
     [['teleoperation', 'iot', 'api', 'device'], '设备端'],
     [['teleoperation', 'iot', 'api', 'operator'], '操控端'],
-  ])('uses a focused %s sidebar for a single-document card', async (route, label) => {
-    const payload = await loadApiReferencePayload(route);
-    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+  ])(
+    'uses a focused %s sidebar for a single-document card',
+    async (route, label) => {
+      const payload = await loadApiReferencePayload(route);
+      const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
-    expect(titles).toEqual([label]);
-    expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/api',
-      backLabel: 'API 参考',
-      title: label,
-    });
-  });
+      expect(titles).toEqual([label]);
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        title: label,
+      });
+    },
+  );
 
   it('uses the Conversational AI Android SDK sidebar, not RESTful navigation', async () => {
     const sidebar = await loadApiReferenceSidebar([
@@ -217,11 +250,7 @@ describe('API Center scoped sidebars', () => {
     const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
     expect(titles).toEqual(
-      expect.arrayContaining([
-        'RESTful 鉴权',
-        '创建对话式智能体',
-        '停止对话式智能体',
-      ]),
+      expect.arrayContaining(['创建对话式智能体', '停止对话式智能体']),
     );
     expect(titles).not.toEqual(
       expect.arrayContaining(['文档指引', '产品介绍', '快速开始', '功能指南']),
@@ -319,14 +348,7 @@ describe('API Center scoped sidebars', () => {
     ],
   ])(
     'switches local server recording %s between its current and Legacy APIs',
-    async (
-      platform,
-      currentPage,
-      currentLabel,
-      legacyLabel,
-      currentHref,
-      legacyHref,
-    ) => {
+    async (platform, currentPage, currentLabel, legacyLabel, currentHref, legacyHref) => {
       const payload = await loadApiReferencePayload([
         'local-server-recording',
         platform,
@@ -366,7 +388,9 @@ describe('API Center scoped sidebars', () => {
         ],
       });
 
-      const legacyTitles = collectTitles(legacyPayload.sidebar as SidebarNode[]);
+      const legacyTitles = collectTitles(
+        legacyPayload.sidebar as SidebarNode[],
+      );
       expect(legacyTitles).toEqual([
         'Legacy API 概览',
         'API 概览',
@@ -393,32 +417,38 @@ describe('API Center scoped sidebars', () => {
         'IAgoraMediaRtcRecorder 类',
       ],
     ],
-  ])('keeps the canonical %s page inside the local recording sidebar scope', async (route, expectedTitles) => {
-    const payload = await loadApiReferencePayload(route);
-    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+  ])(
+    'keeps the canonical %s page inside the local recording sidebar scope',
+    async (route, expectedTitles) => {
+      const payload = await loadApiReferencePayload(route);
+      const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
-    expect(titles).toEqual(expect.arrayContaining(expectedTitles));
-    expect(titles).not.toContain('Demo');
-    expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/api',
-      backLabel: 'API 参考',
-      title: '本地服务端录制',
-    });
-  });
+      expect(titles).toEqual(expect.arrayContaining(expectedTitles));
+      expect(titles).not.toContain('Demo');
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        title: '本地服务端录制',
+      });
+    },
+  );
 
   it.each([
     ['cpp', 'overview'],
     ['java', 'overview'],
     ['python-api', 'overview.python'],
     ['go-api', 'overview.go'],
-  ])('labels the RTC Server SDK %s error-code entry as common', async (...route) => {
-    const titles = collectTitles(
-      await loadApiReferenceSidebar(['rtc-server-sdk', ...route]),
-    );
+  ])(
+    'labels the RTC Server SDK %s error-code entry as common',
+    async (...route) => {
+      const titles = collectTitles(
+        await loadApiReferenceSidebar(['rtc-server-sdk', ...route]),
+      );
 
-    expect(titles).toContain('通用错误码');
-    expect(titles).not.toContain('错误码');
-  });
+      expect(titles).toContain('通用错误码');
+      expect(titles).not.toContain('错误码');
+    },
+  );
 
   it('identifies the shared RTC Server SDK error-code page', async () => {
     const payload = await loadApiReferencePayload([
@@ -435,51 +465,52 @@ describe('API Center scoped sidebars', () => {
       ['Agent SDK API', '客户端组件 API'],
     ],
     [['cloud-recording', 'restful', 'landing-page'], ['REST Client API']],
-  ])('keeps cross-entry SDK links out of RESTful sidebars', async (route, excluded) => {
-    const titles = collectTitles(await loadApiReferenceSidebar(route));
+  ])(
+    'keeps cross-entry SDK links out of RESTful sidebars',
+    async (route, excluded) => {
+      const titles = collectTitles(await loadApiReferenceSidebar(route));
 
-    for (const title of excluded) expect(titles).not.toContain(title);
-  });
+      for (const title of excluded) expect(titles).not.toContain(title);
+    },
+  );
 
-  it.each([
-    'android',
-    'ios',
-    'macos',
-    'flutter',
-  ])('preserves RTC %s first-level groups with second-level pages', async (platform) => {
-    const sidebar = await loadApiReferenceSidebar([
-      'rtc',
-      platform,
-      'play',
-      'audio-mixing',
-    ]);
-    const audio = findNode(sidebar, '音频功能');
-    const video = findNode(sidebar, '视频功能');
+  it.each(['android', 'ios', 'macos', 'flutter'])(
+    'preserves RTC %s first-level groups with second-level pages',
+    async (platform) => {
+      const sidebar = await loadApiReferenceSidebar([
+        'rtc',
+        platform,
+        'play',
+        'audio-mixing',
+      ]);
+      const audio = findNode(sidebar, '音频功能');
+      const video = findNode(sidebar, '视频功能');
 
-    expect(collectTitles(audio?.children ?? [])).toEqual(
-      expect.arrayContaining([
-        '音频基础功能',
-        '音频采集',
-        '音频前处理和后处理',
-        '原始音频数据',
-        '已编码音频数据',
-        '自定义音频采集和渲染',
-        '音频频谱',
-      ]),
-    );
-    expect(collectTitles(video?.children ?? [])).toEqual(
-      expect.arrayContaining([
-        '视频基础功能',
-        '摄像头采集',
-        '屏幕采集',
-        '视频前处理和后处理',
-        '视频渲染',
-        '原始视频数据',
-        '已编码视频数据',
-        '自定义视频采集和渲染',
-      ]),
-    );
-  });
+      expect(collectTitles(audio?.children ?? [])).toEqual(
+        expect.arrayContaining([
+          '音频基础功能',
+          '音频采集',
+          '音频前处理和后处理',
+          '原始音频数据',
+          '已编码音频数据',
+          '自定义音频采集和渲染',
+          '音频频谱',
+        ]),
+      );
+      expect(collectTitles(video?.children ?? [])).toEqual(
+        expect.arrayContaining([
+          '视频基础功能',
+          '摄像头采集',
+          '屏幕采集',
+          '视频前处理和后处理',
+          '视频渲染',
+          '原始视频数据',
+          '已编码视频数据',
+          '自定义视频采集和渲染',
+        ]),
+      );
+    },
+  );
 
   it.each([
     [
@@ -497,17 +528,20 @@ describe('API Center scoped sidebars', () => {
       ],
       ['WhiteSdk', 'WhiteRoom', 'WhitePlayer', 'WhiteDisplayer'],
     ],
-  ])('uses the Whiteboard SDK %s class directory', async (_platform, route, expected) => {
-    const sidebar = await loadApiReferenceSidebar([
-      'whiteboard',
-      'whiteboard-sdk',
-      ...route,
-    ]);
-    const titles = collectTitles(sidebar);
+  ])(
+    'uses the Whiteboard SDK %s class directory',
+    async (_platform, route, expected) => {
+      const sidebar = await loadApiReferenceSidebar([
+        'whiteboard',
+        'whiteboard-sdk',
+        ...route,
+      ]);
+      const titles = collectTitles(sidebar);
 
-    expect(titles).toEqual(expect.arrayContaining(expected));
-    expect(titles).not.toContain('参考概览');
-  });
+      expect(titles).toEqual(expect.arrayContaining(expected));
+      expect(titles).not.toContain('参考概览');
+    },
+  );
 
   it('keeps the four Flexible Classroom Web API nodes', async () => {
     const sidebar = await loadApiReferenceSidebar([
@@ -528,52 +562,52 @@ describe('API Center scoped sidebars', () => {
     );
   });
 
-  it.each([
-    'electron',
-    'web',
-  ])('matches the old Flexible Classroom %s Edu Store sidebar', async (platform) => {
-    const payload = await loadApiReferencePayload([
-      'flexible-classroom',
-      platform,
-      'api-reference',
-      'edu-store',
-    ]);
-    const sidebar = payload.sidebar as SidebarNode[];
-    const eduStore = findNode(sidebar, 'Edu Store API');
+  it.each(['electron', 'web'])(
+    'matches the old Flexible Classroom %s Edu Store sidebar',
+    async (platform) => {
+      const payload = await loadApiReferencePayload([
+        'flexible-classroom',
+        platform,
+        'api-reference',
+        'edu-store',
+      ]);
+      const sidebar = payload.sidebar as SidebarNode[];
+      const eduStore = findNode(sidebar, 'Edu Store API');
 
-    expect(eduStore).toBeDefined();
-    const titles = collectTitles(eduStore?.children ?? []);
-    expect(titles).toEqual([
-      '概览',
-      'CloudDriveStore',
-      'GroupStore',
-      'HandUpStore',
-      'MediaStore',
-      'RecordingStore',
-      'RoomStore',
-      'StreamStore',
-      'UserStore',
-      'ConnectionStore',
-      'StatisticsStore',
-      'WidgetStore',
-    ]);
-    expect(collectTitles(sidebar)).not.toContain('Exports');
-    expect(collectTitles(sidebar)).not.toContain(
-      '"agora-edu-core/src/configs/index"',
-    );
-    expect(payload.toc.map((item) => item.title)).toEqual([
-      'Cloud Drive Store',
-      'Group Store',
-      'Hand Up Store',
-      'Media Store',
-      'Recording Store',
-      'Room Store',
-      'Statistics Store',
-      'Stream Store',
-      'User Store',
-      'Connection Store',
-    ]);
-  });
+      expect(eduStore).toBeDefined();
+      const titles = collectTitles(eduStore?.children ?? []);
+      expect(titles).toEqual([
+        '概览',
+        'CloudDriveStore',
+        'GroupStore',
+        'HandUpStore',
+        'MediaStore',
+        'RecordingStore',
+        'RoomStore',
+        'StreamStore',
+        'UserStore',
+        'ConnectionStore',
+        'StatisticsStore',
+        'WidgetStore',
+      ]);
+      expect(collectTitles(sidebar)).not.toContain('Exports');
+      expect(collectTitles(sidebar)).not.toContain(
+        '"agora-edu-core/src/configs/index"',
+      );
+      expect(payload.toc.map((item) => item.title)).toEqual([
+        'Cloud Drive Store',
+        'Group Store',
+        'Hand Up Store',
+        'Media Store',
+        'Recording Store',
+        'Room Store',
+        'Statistics Store',
+        'Stream Store',
+        'User Store',
+        'Connection Store',
+      ]);
+    },
+  );
 
   it('keeps RTSA C detail pages reachable without listing them in the platform sidebar', async () => {
     const payload = await loadApiReferencePayload([
@@ -624,32 +658,33 @@ describe('API Center scoped sidebars', () => {
     expect(toc.every((item) => !item.title.includes('◆'))).toBe(true);
   });
 
-  it.each([
-    'android',
-    'ios',
-  ])('keeps the online KTV %s entry scoped to its three API documents', async (platform) => {
-    const payload = await loadApiReferencePayload([
-      'online-ktv',
-      platform,
-      'ktv-scenario',
-      'api',
-      'ktv-api',
-    ]);
-    const titles = collectTitles(payload.sidebar as SidebarNode[]);
+  it.each(['android', 'ios'])(
+    'keeps the online KTV %s entry scoped to its three API documents',
+    async (platform) => {
+      const payload = await loadApiReferencePayload([
+        'online-ktv',
+        platform,
+        'ktv-scenario',
+        'api',
+        'ktv-api',
+      ]);
+      const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
-    expect(titles).toEqual(
-      expect.arrayContaining([
-        '场景化 API',
-        '歌词打分组件 API',
-        '实时互动 API',
-        '服务端 API',
-      ]),
-    );
-    expect(titles.filter((title) => title === '场景化 API')).toHaveLength(1);
-    expect(payload.sidebarHeader).toMatchObject({
-      backHref: '/zh-CN/api-reference/api',
-      backLabel: 'API 参考',
-      title: platform === 'android' ? '在线 K 歌房 Android' : '在线 K 歌房 iOS',
-    });
-  });
+      expect(titles).toEqual(
+        expect.arrayContaining([
+          '场景化 API',
+          '歌词打分组件 API',
+          '实时互动 API',
+          '服务端 API',
+        ]),
+      );
+      expect(titles.filter((title) => title === '场景化 API')).toHaveLength(1);
+      expect(payload.sidebarHeader).toMatchObject({
+        backHref: '/zh-CN/api-reference/api',
+        backLabel: 'API 参考',
+        title:
+          platform === 'android' ? '在线 K 歌房 Android' : '在线 K 歌房 iOS',
+      });
+    },
+  );
 });

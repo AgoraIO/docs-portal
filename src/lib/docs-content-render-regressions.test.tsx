@@ -83,16 +83,20 @@ describe('docs content render regressions', () => {
   it(
     'renders a Chinese page through the upgraded MDX component runtime',
     async () => {
-      await renderDocsPage(['ai', 'get-started', 'quickstart'], 'zh-CN');
+      await renderDocsPage(['introduction', 'skills-integrate'], 'zh-CN');
 
       expect(
-        screen.getByRole('heading', { name: '安装 Agora skills' }),
+        screen.getByRole('heading', { name: '安装 声网 Skills' }),
       ).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'Python' })).toBeInTheDocument();
       expect(
-        screen.getByRole('tab', { name: 'TypeScript' }),
+        screen.getByRole('tab', { name: 'Skills CLI' }),
       ).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: 'Go' })).toBeInTheDocument();
+      expect(screen.getByRole('tab', { name: '手动安装' })).toBeInTheDocument();
+      expect(
+        Array.from(document.querySelectorAll('pre')).some((block) =>
+          block.textContent?.includes('npx skills add AgoraIO/skills'),
+        ),
+      ).toBe(true);
     },
     SOURCE_LOADER_TEST_TIMEOUT,
   );
