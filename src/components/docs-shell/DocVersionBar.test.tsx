@@ -71,4 +71,28 @@ describe('documentation version controls', () => {
       'This topic is not available in this version. Showing its overview instead.',
     );
   });
+
+  it('keeps the sidebar preview link crawlable and closes navigation on an intentional selection', () => {
+    const onSelectPath = vi.fn();
+    render(
+      <DocVersionBar
+        activePath={`${root}/v1/widgets`}
+        onSelectPath={onSelectPath}
+        placement="sidebar"
+      />,
+    );
+    const preview = screen.getByRole('link', {
+      name: 'v2 — Test new version',
+    });
+    expect(preview).toHaveAttribute('href', `${root}/v2/list-widgets`);
+    expect(preview).toHaveTextContent('Preview');
+    fireEvent.click(preview, { metaKey: true });
+    expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBeNull();
+    expect(onSelectPath).not.toHaveBeenCalled();
+    fireEvent.click(preview);
+    expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
+      '{"test-api":"v2"}',
+    );
+    expect(onSelectPath).toHaveBeenCalledOnce();
+  });
 });

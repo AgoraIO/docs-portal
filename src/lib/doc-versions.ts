@@ -2,6 +2,7 @@
 export type DocVersion = {
   id: string;
   label: string;
+  status?: 'preview';
   rootUrl: string;
   /** Stable topic keys map to relative URLs, including anchors when needed. */
   pages: Readonly<Record<string, string>>;
@@ -21,7 +22,7 @@ const DEMO_ROOT = '/en/api-reference/versioning-demo';
 export const DOC_VERSION_SCOPES: readonly DocVersionScope[] = [
   {
     id: 'test-api',
-    label: 'Test API (mock documentation)',
+    label: 'Test API (mock docs)',
     entryUrl: DEMO_ROOT,
     defaultVersion: 'v1',
     versions: [
@@ -39,6 +40,7 @@ export const DOC_VERSION_SCOPES: readonly DocVersionScope[] = [
       {
         id: 'v2',
         label: 'v2 — Test new version',
+        status: 'preview',
         rootUrl: `${DEMO_ROOT}/v2`,
         pages: {
           overview: '',

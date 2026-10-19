@@ -91,7 +91,7 @@ export function resolveDocsNavScope({
         header: {
           backHref: scope.entryUrl.split('/').slice(0, 3).join('/'),
           backLabel: normalizeLabel(tabNode.name, tab),
-          title: `${scope.label} · ${version.label}`,
+          title: scope.label,
         },
         scope: { meta: getNodeMeta(versionRoot) ?? {}, node: versionRoot },
         sidebarRoot: versionRoot,

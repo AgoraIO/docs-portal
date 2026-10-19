@@ -627,6 +627,7 @@ function MobileSidebar({
             </p>
             {sidebarHeader ? (
               <DocsSidebarHeaderBlock
+                activePath={activePath}
                 header={sidebarHeader}
                 mode="mobile"
                 onSelectPath={onSelectPath}

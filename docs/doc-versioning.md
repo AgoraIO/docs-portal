@@ -7,8 +7,8 @@ Existing product documentation has not been assigned new releases by this change
 ## Try the mock API
 
 Open `/en/api-reference/versioning-demo`, also linked from Reference overview
-and the Reference sidebar under **Test documentation**. All content in this
-family is imaginary and labelled **Test current version** or **Test new version**.
+and near the top of the Reference sidebar under **API reference**. This family
+is imaginary and labelled **Test current version** or **Test new version**.
 
 1. The first visit opens v1. Open **List test widgets**, then select v2 in the
    page header. The target is `/en/api-reference/versioning-demo/v2/list-widgets`.
@@ -23,8 +23,9 @@ family is imaginary and labelled **Test current version** or **Test new version*
    for `widgetbaseline` or `widgetpreview` to find the corresponding release.
    Browsing preferences do not filter search results. Ordinary docs and SDK API
    search keep their existing behavior.
-6. Repeat on a narrow viewport. The version links remain visible above the page
-   title without opening the mobile sidebar.
+6. Repeat on a narrow viewport. The compact version row and **🧪 Preview** link
+   remain visible above the page title without opening the mobile sidebar.
+   The sidebar also offers version links directly below the API family name.
 
 Inspect the current page's Copy/Open Markdown action and these fixed resources:
 
@@ -43,6 +44,7 @@ to the same origin; a preview deployment and production have separate storage.
 1. Add a `DocVersionScope` in `src/lib/doc-versions.ts`: a stable scope ID,
    label, neutral `entryUrl`, `defaultVersion`, and version records. Each record
    owns a distinct `rootUrl` and a map from stable topic keys to relative URLs.
+   Set `status: 'preview'` on prerelease docs to show the preview badge.
    The map can include anchors to map old single-page topics to new pages.
    Missing equivalents fall back to the target overview with a visible message.
 2. Add the neutral entry and each version's overview/supporting Markdown pages

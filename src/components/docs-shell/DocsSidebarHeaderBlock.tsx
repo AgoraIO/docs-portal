@@ -12,14 +12,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import { DocVersionBar } from './DocVersionBar';
 
 export function DocsSidebarHeaderBlock({
   className,
+  activePath,
   header,
   mode,
   onSelectPath,
 }: {
   className?: string;
+  activePath?: string;
   header: DocsSidebarHeader;
   mode: 'desktop' | 'mobile';
   onSelectPath: () => void;
@@ -61,6 +64,13 @@ export function DocsSidebarHeaderBlock({
       >
         {header.title}
       </div>
+      {activePath ? (
+        <DocVersionBar
+          activePath={activePath}
+          onSelectPath={onSelectPath}
+          placement="sidebar"
+        />
+      ) : null}
       {versionSwitcher &&
       currentVersion &&
       versionSwitcher.presentation !== 'tabs' ? (

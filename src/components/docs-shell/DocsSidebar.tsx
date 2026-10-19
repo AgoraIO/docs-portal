@@ -55,6 +55,7 @@ export function DocsSidebar({
         <div className="py-4 pr-3 pb-8">
           {header ? (
             <DocsSidebarHeaderBlock
+              activePath={activePath}
               header={header}
               mode="desktop"
               onSelectPath={onSelectPath}

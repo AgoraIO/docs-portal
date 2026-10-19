@@ -51,9 +51,7 @@ describe('documentation releases', () => {
         ],
       },
     });
-    expect(result?.header.title).toBe(
-      'Test API (mock documentation) · v2 — Test new version',
-    );
+    expect(result?.header.title).toBe('Test API (mock docs)');
     expect(result?.header.backHref).toBe('/en/api-reference');
     expect(result?.sidebarRoot.children).toHaveLength(2);
   });
