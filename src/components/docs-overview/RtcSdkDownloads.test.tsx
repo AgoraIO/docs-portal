@@ -39,6 +39,9 @@ describe('RtcSdkDownloads', () => {
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
     expect(screen.queryByText('历史版本')).not.toBeInTheDocument();
     expect(
+      screen.queryByRole('link', { name: '包管理器' }),
+    ).not.toBeInTheDocument();
+    expect(
       screen.queryByRole('link', { name: /4\.6\.2/ }),
     ).not.toBeInTheDocument();
   });

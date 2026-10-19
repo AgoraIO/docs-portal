@@ -599,6 +599,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "1.7.2-fastboard-android",
             "label": "版本 1.7.2 （最新）",
+            "releaseDate": "2025 年 7 月 11 日",
             "packageManager": "https://github.com/netless-io/fastboard-android/releases/tag/1.7.2"
           },
           {
@@ -1897,13 +1898,12 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "1.1.0-interactive-whiteboard-web",
             "label": "版本 1.1.0 （最新）",
+            "releaseDate": "2025 年 7 月 11 日",
             "packageManager": "https://www.npmjs.com/package/@netless/fastboard/v/1.1.0"
           },
           {
             "id": "1.0.0-interactive-whiteboard-web",
             "label": "版本 1.0.0",
-            "downloadLink": "https://github.com/netless-io/fastboard",
-            "releaseDate": "2024 年 12 月 12 日",
             "packageManager": "https://www.npmjs.com/package/@netless/fastboard/v/1.0.0"
           },
           {

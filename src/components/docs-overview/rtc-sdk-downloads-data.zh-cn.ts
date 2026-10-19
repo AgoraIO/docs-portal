@@ -33,8 +33,6 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageSize:
               'armeabi-v7a 7.27 MB；arm64-v8a 7.82 MB；x86 7.67 MB；x86_64 7.49 MB',
             packageName: 'io.agora.rtc2.voice',
-            packageManager:
-              'https://central.sonatype.com/artifact/cn.shengwang.rtc/voice-sdk/4.7.0/aar',
           }),
         ],
       },
@@ -50,8 +48,6 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageSize:
               'armeabi-v7a 16.55 MB；arm64-v8a 17.17 MB；x86 17.81 MB；x86_64 17.44 MB',
             packageName: 'io.agora.rtc2.video',
-            packageManager:
-              'https://central.sonatype.com/artifact/cn.shengwang.rtc/full-sdk/4.7.0/aar',
           }),
           version('4.7.0-video-sdk-android-lite', '版本 4.7.0 Lite（最新）', {
             downloadLink:
@@ -61,8 +57,6 @@ export const zhCNRtcSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
             packageSize:
               'armeabi-v7a 8.42 MB；arm64-v8a 9.02 MB；x86 9.08 MB；x86_64 8.92 MB',
             packageName: 'io.agora.rtc2.video',
-            packageManager:
-              'https://central.sonatype.com/artifact/cn.shengwang.rtc/lite-sdk/4.7.0/aar',
           }),
         ],
       },

@@ -3,6 +3,27 @@ import { describe, expect, it } from 'vitest';
 import { ProductSdkDownloads } from './ProductSdkDownloads';
 
 describe('ProductSdkDownloads', () => {
+  it.each([
+    ['android', '1.7.2-fastboard-android', '1.7.2'],
+    ['web', '1.1.0-interactive-whiteboard-web', '1.1.0'],
+  ])(
+    'offers the latest Fastboard %s release without a stale download',
+    (platform, id, version) => {
+      render(
+        <ProductSdkDownloads
+          product="fastboard"
+          platform={platform}
+          versionIds={[id]}
+        />,
+      );
+      expect(screen.getAllByRole('article')).toHaveLength(1);
+      expect(screen.getByText(`v${version}`)).toBeVisible();
+      expect(screen.getByText('发布日期：2025 年 7 月 11 日')).toBeVisible();
+      const link = screen.getByRole('link');
+      expect(link.getAttribute('href')).toContain(version);
+    },
+  );
+
   it('pins Fastboard without losing metadata from duplicate catalog records', () => {
     render(
       <ProductSdkDownloads
