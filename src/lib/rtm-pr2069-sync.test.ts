@@ -63,6 +63,23 @@ describe('RTM upstream PR #2069 parity', () => {
     ).toContain('npm install shengwang-rtm-miniapp');
   });
 
+  it('shows the source package, version and release date in the homepage SDK card', () => {
+    const entries =
+      readDoc('index').split('**更多入口**')[1]?.split('</Cards>')[0] ?? '';
+    const card =
+      [...entries.matchAll(/<Card\b[\s\S]*?\/>/g)]
+        .map((match) => match[0])
+        .find((value) => value.includes('title="小程序 SDK（Beta）"')) ?? '';
+    expect(card).toContain('title="小程序 SDK（Beta）"');
+    expect(card).toContain(`href="${npmHref}"`);
+    expect(card).toContain(
+      'description="包名：shengwang-rtm-miniapp；最新版本：2.3.0-beta.0；发布日期：2026 年 7 月 16 日。"',
+    );
+    expect(entries.indexOf('title="下载 SDK"')).toBeLessThan(
+      entries.indexOf(card),
+    );
+  });
+
   it('adds only source-backed RTM npm metadata to the existing Mini Program catalog', () => {
     const platform = zhCNSdkDownloadPlatforms.find(
       (item) => item.id === 'mini-program',
