@@ -1,4 +1,10 @@
+import { getDocVersionSearchMetadata } from './doc-versions';
+
 export type SearchEntry = {
+  versionScope?: string;
+  docVersion?: string;
+  docVersionLabel?: string;
+  docVersionKey?: string;
   breadcrumbs?: string[];
   content?: string;
   description?: string;
@@ -37,6 +43,7 @@ export function getSearchEntryMetadata(
   const searchableText = `${url}\n${content}`.toLowerCase();
 
   return {
+    ...getDocVersionSearchMetadata(url),
     objectType,
     platform: inferSearchPlatforms(searchableText),
     product,

@@ -1,3 +1,4 @@
+import { getDocVersionIndexPath, resolveDocVersion } from './doc-versions';
 import type { PublishedDocsRoute } from './published-docs-routes';
 
 const DEFAULT_MAX_CHARACTERS = 50_000;
@@ -134,7 +135,10 @@ export async function validateMachineReadableDocsArtifacts({
     'published Markdown references',
     sections
       .flatMap((file) => extractLinkTargets(file.content))
-      .filter((target) => isSameOrigin(target, normalizedBaseUrl)),
+      .filter(
+        (target) =>
+          isSameOrigin(target, normalizedBaseUrl) && target.endsWith('.md'),
+      ),
     publishedRoutes
       .filter((route) => route.url.startsWith(`/${locale}/`))
       .map((route) => `${normalizedBaseUrl}${route.markdownPath}`),
@@ -142,6 +146,14 @@ export async function validateMachineReadableDocsArtifacts({
 
   const artifactPaths = new Set([
     ...files.map((file) => file.path),
+    ...sections
+      .flatMap((file) => extractLinkTargets(file.content))
+      .filter(
+        (target) =>
+          isSameOrigin(target, normalizedBaseUrl) &&
+          target.endsWith('-full.txt'),
+      )
+      .map((target) => new URL(target).pathname),
     ...publishedRoutes
       .filter((route) => route.url.startsWith(`/${locale}/`))
       .map((route) => route.markdownPath),
@@ -171,7 +183,8 @@ function createSectionFiles({
 
     if (
       current.length > 0 &&
-      renderSectionIndex(group.label, candidate).length > maxCharacters
+      renderSectionIndex(group.label, candidate, group.slug).length >
+        maxCharacters
     ) {
       chunks.push(current);
       current = [entry];
@@ -190,7 +203,7 @@ function createSectionFiles({
     const label =
       chunks.length > 1 ? `${group.label} ${index + 1}` : group.label;
     const path = `${INDEX_DIRECTORY}/${group.slug}${suffix}.txt`;
-    const content = renderSectionIndex(label, chunk);
+    const content = renderSectionIndex(label, chunk, group.slug);
 
     assertWithinLimit(path, content, maxCharacters);
 
@@ -217,11 +230,20 @@ function renderRootIndex(
   ].join('\n');
 }
 
-function renderSectionIndex(label: string, entries: IndexEntry[]) {
+function renderSectionIndex(
+  label: string,
+  entries: IndexEntry[],
+  slug: string,
+) {
+  const bulkLink =
+    slug.startsWith('doc-versions-') && entries[0]
+      ? `[Download only this documentation version](${new URL(entries[0].markdownUrl).origin}/llms/${slug}-full.txt)`
+      : '';
   return [
     `# ${label}`,
     '',
     '> Machine-readable Agora documentation pages in this section.',
+    ...(bulkLink ? ['', bulkLink] : []),
     '',
     '## Documentation',
     '',
@@ -314,6 +336,15 @@ function getRouteLabel(
 }
 
 function getIndexGroup(url: string, expectedLocale: string): IndexGroup {
+  const context = resolveDocVersion(url);
+  if (context) {
+    return {
+      label: `${context.scope.label} — ${context.version.label}`,
+      slug: getDocVersionIndexPath(context.scope, context.version)
+        .replace('/llms/', '')
+        .replace('.txt', ''),
+    };
+  }
   const [, locale, tab, area, product] = url.split('/');
   const segments =
     tab === 'realtime-media'

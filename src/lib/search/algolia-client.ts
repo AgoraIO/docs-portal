@@ -1,6 +1,12 @@
 import { liteClient } from 'algoliasearch/lite';
 import type { SearchClient } from 'fumadocs-core/search/client';
 import {
+  type DocVersionSelections,
+  getDocVersionAlgoliaFilters,
+  getDocVersionSearchMetadata,
+  matchesDocVersion,
+} from '../doc-versions';
+import {
   getApiIdentityMatch,
   getApiRetrievalQuery,
   parseApiQueryIdentity,
@@ -45,6 +51,7 @@ export function createAlgoliaDocsClient({
   appId,
   indexName,
   locale,
+  docVersions,
   platform,
   rankingV2 = false,
   scope,
@@ -54,6 +61,7 @@ export function createAlgoliaDocsClient({
   appId: string;
   indexName: string;
   locale: string;
+  docVersions?: DocVersionSelections;
   platform?: string;
   rankingV2?: boolean;
   // Product/tab scope derived from the docs navigation.
@@ -73,6 +81,7 @@ export function createAlgoliaDocsClient({
       indexName,
       apiReferenceIndexName,
       locale,
+      docVersions,
       platform,
       rankingV2,
       scope,
@@ -100,12 +109,15 @@ export function createAlgoliaDocsClient({
           client,
           indexName,
           locale,
+          docVersions,
           platform,
           query,
           scope,
           setStatus: updateLastStatus,
         });
-        return searchResult;
+        return searchResult.filter((entry) =>
+          matchesDocVersion(entry.url, docVersions),
+        );
       }
 
       try {
@@ -120,7 +132,7 @@ export function createAlgoliaDocsClient({
               distinct: 1,
               minWordSizefor1Typo: 5,
               typoTolerance: 'min' as const,
-              filters: buildFilters({ locale, platform, scope }),
+              filters: buildFilters({ locale, docVersions, platform, scope }),
               // Demote low-signal pages so real docs rank above them. Boosting
               // via optionalFilters keeps Algolia's textual relevance intact and
               // only nudges by category: normal docs (+2) and deprecated (+1)
@@ -251,6 +263,7 @@ export function createAlgoliaDocsClient({
           seenResultKeys.add(resultUrl);
 
           entries.push({
+            ...getDocVersionSearchMetadata(url),
             breadcrumbs: getStringArray(hit.breadcrumbs),
             content: getHighlight(hit, 'title') ?? getString(hit.title) ?? url,
             id: getString(hit.objectID) ?? `${url}#${sectionId ?? ''}`,
@@ -279,7 +292,9 @@ export function createAlgoliaDocsClient({
         // API references are grouped before docs, while each index keeps the
         // ranking Algolia returned. No client-side sorting can disturb relevance
         // within either result family.
-        return entries;
+        return entries.filter((entry) =>
+          matchesDocVersion(entry.url, docVersions),
+        );
       } catch (error) {
         updateLastStatus({
           api:
@@ -308,6 +323,7 @@ type RankingV2SearchInput = {
   client: ReturnType<typeof liteClient>;
   indexName: string;
   locale: string;
+  docVersions?: DocVersionSelections;
   platform?: string;
   query: string;
   scope?: DocsSearchScope;
@@ -319,6 +335,7 @@ async function searchWithRankingV2({
   client,
   indexName,
   locale,
+  docVersions,
   platform,
   query,
   scope,
@@ -339,6 +356,7 @@ async function searchWithRankingV2({
   const docsRequest = buildDocsSearchRequest({
     indexName,
     locale,
+    docVersions,
     platform,
     query: getDocsRetrievalQuery(retrievalQuery),
     scope,
@@ -543,12 +561,14 @@ function getApiHighlightedTitle(
 function buildDocsSearchRequest({
   indexName,
   locale,
+  docVersions,
   platform,
   query,
   scope,
 }: {
   indexName: string;
   locale: string;
+  docVersions?: DocVersionSelections;
   platform?: string;
   query: string;
   scope?: DocsSearchScope;
@@ -560,7 +580,7 @@ function buildDocsSearchRequest({
     distinct: 1,
     minWordSizefor1Typo: 5,
     typoTolerance: 'min' as const,
-    filters: buildFilters({ locale, platform, scope }),
+    filters: buildFilters({ locale, docVersions, platform, scope }),
     optionalFilters: [
       'category:default<score=2>',
       'category:deprecated<score=1>',
@@ -707,6 +727,7 @@ function mapDocsHitForFederatedSearch(
   }
 
   return {
+    ...getDocVersionSearchMetadata(url),
     allMajorTermsMatch,
     breadcrumbs,
     category: getDocsCategory(hit.category),
@@ -769,15 +790,18 @@ function isExplicitApiReferenceScope(scope?: DocsSearchScope) {
 
 function buildFilters({
   locale,
+  docVersions,
   platform,
   scope,
 }: {
   locale: string;
+  docVersions?: DocVersionSelections;
   platform?: string;
   scope?: DocsSearchScope;
 }) {
   return [
     `locale:${locale}`,
+    ...getDocVersionAlgoliaFilters(docVersions),
     platform ? `platform:${platform}` : undefined,
     scope ? `${scope.field}:"${scope.value}"` : undefined,
   ]

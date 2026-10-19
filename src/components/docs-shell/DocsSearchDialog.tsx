@@ -1,4 +1,10 @@
-'use client';
+import { useDocVersionSelections } from '@/lib/doc-version-preference';
+import {
+  DOC_VERSION_SCOPES,
+  getDocVersionSearchMetadata,
+} from '@/lib/doc-versions';
+
+('use client');
 
 import { useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
@@ -73,11 +79,13 @@ type PagesState =
 
 export function DocsSearchDialog({
   loadPages,
+  activePath = '',
   locale = DEFAULT_LOCALE,
   mode = 'desktop',
   productScopes = [],
 }: {
   loadPages: () => Promise<SearchEntry[]>;
+  activePath?: string;
   locale?: AppLocale | string;
   mode?: 'desktop' | 'mobile';
   productScopes?: ProductScope[];
@@ -86,6 +94,12 @@ export function DocsSearchDialog({
   const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
+  const selectedDocVersions = useDocVersionSelections(activePath);
+  const [includeAllDocVersions, setIncludeAllDocVersions] = useState(false);
+  const docVersions = includeAllDocVersions ? undefined : selectedDocVersions;
+  const hasVersionedDocs = DOC_VERSION_SCOPES.some((scope) =>
+    scope.entryUrl.startsWith(`/${searchLocale}/`),
+  );
   const [open, setOpen] = useState(false);
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
@@ -252,6 +266,7 @@ export function DocsSearchDialog({
             appId: algoliaAppId,
             indexName: algoliaIndexName,
             locale: searchLocale,
+            docVersions,
             platform: platformFilter ?? undefined,
             rankingV2: algoliaRankingV2,
             scope: searchScope,
@@ -259,6 +274,7 @@ export function DocsSearchDialog({
           })
         : createOramaDocsClient({
             pages,
+            docVersions,
             platform: platformFilter ?? undefined,
             scope: searchScope,
           });
@@ -339,6 +355,7 @@ export function DocsSearchDialog({
       },
     };
   }, [
+    docVersions,
     algoliaAppId,
     algoliaApiReferenceIndexName,
     algoliaIndexName,
@@ -365,9 +382,11 @@ export function DocsSearchDialog({
             searchLocale,
             platformFilter,
             searchScope,
+            docVersions,
           ]
-        : [pages, searchLocale],
+        : [pages, searchLocale, platformFilter, searchScope, docVersions],
     [
+      docVersions,
       algoliaAppId,
       algoliaApiReferenceIndexName,
       algoliaIndexName,
@@ -909,6 +928,25 @@ export function DocsSearchDialog({
             />
           </div>
         ) : null}
+        {hasVersionedDocs ? (
+          <div className="flex items-center gap-2 border-b px-3 py-2">
+            <Button
+              aria-pressed={includeAllDocVersions}
+              onClick={() => setIncludeAllDocVersions((value) => !value)}
+              size="sm"
+              variant="outline"
+            >
+              {includeAllDocVersions
+                ? 'All documentation versions'
+                : 'Selected documentation versions'}
+            </Button>
+            <span className="text-xs text-muted-foreground">
+              {includeAllDocVersions
+                ? 'Results include other versions.'
+                : 'API documentation follows the current page or your saved choice.'}
+            </span>
+          </div>
+        ) : null}
         {hasQuery && apiSearchUnavailable && !isSearchUnavailable ? (
           <div
             aria-live="polite"
@@ -934,11 +972,22 @@ export function DocsSearchDialog({
             // in the prompt/recent state adds an empty padded block that throws
             // off the prompt's vertical balance.
             <CommandEmpty>
-              {isSearchUnavailable
-                ? t('docs.searchUnavailable')
-                : normalizedSearchResults.length === 0
-                  ? t('docs.searchEmpty')
-                  : null}
+              {isSearchUnavailable ? (
+                t('docs.searchUnavailable')
+              ) : normalizedSearchResults.length === 0 ? (
+                <div className="flex flex-col items-center gap-2">
+                  <span>{t('docs.searchEmpty')}</span>
+                  {hasVersionedDocs && !includeAllDocVersions ? (
+                    <Button
+                      onClick={() => setIncludeAllDocVersions(true)}
+                      size="sm"
+                      variant="outline"
+                    >
+                      Search other documentation versions
+                    </Button>
+                  ) : null}
+                </div>
+              ) : null}
             </CommandEmpty>
           ) : null}
           {showPrompt ? (
@@ -1137,6 +1186,7 @@ function searchResultToEntry(result: {
       objectType === 'openapi' ? 'API' : undefined,
       ...formatPlatformContext(platforms ?? []),
       version,
+      getDocVersionSearchMetadata(result.url).docVersionLabel,
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'

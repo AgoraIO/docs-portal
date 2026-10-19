@@ -1319,6 +1319,7 @@ describe('DocsSearchDialog', () => {
       expect(createAlgoliaDocsClient).toHaveBeenCalledWith({
         apiReferenceIndexName: 'agora_APIRefSearch',
         appId: 'test-app',
+        docVersions: { 'test-api': 'v1' },
         indexName: 'docs_portal_en',
         locale: 'en',
         platform: undefined,

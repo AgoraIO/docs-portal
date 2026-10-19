@@ -29,6 +29,10 @@ import { faqItems } from './faq-data';
 type SearchCategory = 'glossary' | 'deprecated' | 'default';
 
 type AlgoliaExtraData = {
+  versionScope?: string;
+  docVersion?: string;
+  docVersionLabel?: string;
+  docVersionKey?: string;
   category: SearchCategory;
   locale: AppLocale;
   objectType: 'docs' | 'openapi';

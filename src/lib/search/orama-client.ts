@@ -1,4 +1,9 @@
 import type { SearchClient } from 'fumadocs-core/search/client';
+import {
+  type DocVersionSelections,
+  getDocVersionSearchMetadata,
+  matchesDocVersion,
+} from '../doc-versions';
 import type { SearchEntry } from '../docs-search';
 import type { DocsSearchScope } from './search-provider';
 
@@ -15,24 +20,29 @@ const ORAMA_DOCS_SCHEMA = {
 
 export function createOramaDocsClient({
   pages,
+  docVersions,
   platform,
   scope,
 }: {
   pages: SearchEntry[];
+  docVersions?: DocVersionSelections;
   platform?: string;
   scope?: DocsSearchScope;
 }): SearchClient {
+  const visiblePages = pages.filter((page) =>
+    matchesDocVersion(page.url, docVersions),
+  );
   let database: ReturnType<typeof createOramaDocsDatabase> | undefined;
-  const pagesByUrl = new Map(pages.map((page) => [page.url, page]));
+  const pagesByUrl = new Map(visiblePages.map((page) => [page.url, page]));
 
   return {
-    deps: [pages],
+    deps: [pages, docVersions, platform, scope],
     async search(query) {
       if (!query.trim()) {
         return [];
       }
 
-      database ??= createOramaDocsDatabase(pages);
+      database ??= createOramaDocsDatabase(visiblePages);
       const { search } = await import('@orama/orama');
       const result = await search(await database, {
         boost: {
@@ -46,6 +56,7 @@ export function createOramaDocsClient({
       });
 
       return result.hits.map(({ document }) => ({
+        ...getDocVersionSearchMetadata(document.url),
         content: document.title,
         id: document.url,
         objectType: document.objectType,

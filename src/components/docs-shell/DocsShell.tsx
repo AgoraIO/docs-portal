@@ -366,6 +366,7 @@ export function DocsShell({
                 data-testid="docs-mobile-header-actions"
               >
                 <DocsSearchDialog
+                  activePath={activePath}
                   loadPages={loadPages}
                   locale={currentLocale}
                   mode="mobile"
@@ -378,6 +379,7 @@ export function DocsShell({
               >
                 <div className="w-80">
                   <DocsSearchDialog
+                    activePath={activePath}
                     loadPages={loadPages}
                     locale={currentLocale}
                     mode="desktop"
