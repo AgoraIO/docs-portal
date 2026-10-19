@@ -28,6 +28,7 @@ import { Route as LlmsSplatRouteImport } from './routes/llms/$'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
 import { Route as LocaleTabSplatRouteImport } from './routes/$locale/$tab/$'
 import { Route as Char91__staticChar93DocsSearchSplatRouteImport } from './routes/[__static]/docs-search/$'
+import { Route as ApiAiAnswerRouteImport } from './routes/api/ai/answer'
 import { Route as ApiAuthLoginRouteImport } from './routes/api/auth/login'
 
 const IndexRoute = IndexRouteImport.update({
@@ -126,6 +127,11 @@ const Char91__staticChar93DocsSearchSplatRoute =
     path: '/__static/docs-search/$',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAiAnswerRoute = ApiAiAnswerRouteImport.update({
+  id: '/api/ai/answer',
+  path: '/api/ai/answer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAuthLoginRoute = ApiAuthLoginRouteImport.update({
   id: '/api/auth/login',
   path: '/api/auth/login',
@@ -151,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
+  '/api/ai/answer': typeof ApiAiAnswerRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
@@ -172,6 +179,7 @@ export interface FileRoutesByTo {
   '/$locale': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
+  '/api/ai/answer': typeof ApiAiAnswerRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/$locale/$tab': typeof LocaleTabIndexRoute
 }
@@ -195,6 +203,7 @@ export interface FileRoutesById {
   '/$locale/': typeof LocaleIndexRoute
   '/$locale/$tab/$': typeof LocaleTabSplatRoute
   '/__static/docs-search/$': typeof Char91__staticChar93DocsSearchSplatRoute
+  '/api/ai/answer': typeof ApiAiAnswerRoute
   '/api/auth/login': typeof ApiAuthLoginRoute
   '/$locale/$tab/': typeof LocaleTabIndexRoute
 }
@@ -219,6 +228,7 @@ export interface FileRouteTypes {
     | '/$locale/'
     | '/$locale/$tab/$'
     | '/__static/docs-search/$'
+    | '/api/ai/answer'
     | '/api/auth/login'
     | '/$locale/$tab/'
   fileRoutesByTo: FileRoutesByTo
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/$locale'
     | '/$locale/$tab/$'
     | '/__static/docs-search/$'
+    | '/api/ai/answer'
     | '/api/auth/login'
     | '/$locale/$tab'
   id:
@@ -262,6 +273,7 @@ export interface FileRouteTypes {
     | '/$locale/'
     | '/$locale/$tab/$'
     | '/__static/docs-search/$'
+    | '/api/ai/answer'
     | '/api/auth/login'
     | '/$locale/$tab/'
   fileRoutesById: FileRoutesById
@@ -284,6 +296,7 @@ export interface RootRouteChildren {
   LlmsSplatRoute: typeof LlmsSplatRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
   Char91__staticChar93DocsSearchSplatRoute: typeof Char91__staticChar93DocsSearchSplatRoute
+  ApiAiAnswerRoute: typeof ApiAiAnswerRoute
   ApiAuthLoginRoute: typeof ApiAuthLoginRoute
 }
 
@@ -422,6 +435,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91__staticChar93DocsSearchSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai/answer': {
+      id: '/api/ai/answer'
+      path: '/api/ai/answer'
+      fullPath: '/api/ai/answer'
+      preLoaderRoute: typeof ApiAiAnswerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/auth/login': {
       id: '/api/auth/login'
       path: '/api/auth/login'
@@ -465,6 +485,7 @@ const rootRouteChildren: RootRouteChildren = {
   LocaleIndexRoute: LocaleIndexRoute,
   Char91__staticChar93DocsSearchSplatRoute:
     Char91__staticChar93DocsSearchSplatRoute,
+  ApiAiAnswerRoute: ApiAiAnswerRoute,
   ApiAuthLoginRoute: ApiAuthLoginRoute,
 }
 export const routeTree = rootRouteImport

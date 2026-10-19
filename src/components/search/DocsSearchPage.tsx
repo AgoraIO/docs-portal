@@ -8,6 +8,7 @@ import {
   XIcon,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { AiAnswerPanel } from '@/components/search/AiAnswerPanel';
 import { SearchInput } from '@/components/search/SearchInput';
 import { SearchResultList } from '@/components/search/SearchResultList';
 import { SearchTypeTabs } from '@/components/search/SearchTypeTabs';
@@ -56,11 +57,14 @@ export function DocsSearchPage({
   state,
   onChange,
   productScopes = [],
+  aiDemoEnabled = false,
 }: {
   state: SearchPageState;
   onChange: (patch: Partial<SearchPageState>) => void;
   productScopes?: ProductScope[];
+  aiDemoEnabled?: boolean;
 }) {
+  const [aiOpen, setAiOpen] = useState(false);
   const [draft, setDraft] = useState(state.q);
   const [status, setStatus] = useState<SearchStatus>('loading');
   const [data, setData] = useState<CnSearchPageResponse | null>(null);
@@ -379,6 +383,24 @@ export function DocsSearchPage({
           </fieldset>
         )}
       </section>
+      {aiDemoEnabled &&
+        (aiOpen ? (
+          <AiAnswerPanel
+            filters={{
+              product: state.product,
+              platform: state.platform,
+              version: state.version,
+              type: state.type,
+            }}
+            onClose={() => setAiOpen(false)}
+          />
+        ) : (
+          <div className="my-4">
+            <Button variant="outline" onClick={() => setAiOpen(true)}>
+              AI 问答
+            </Button>
+          </div>
+        ))}
       {state.q ? (
         <section
           aria-label="搜索结果"
