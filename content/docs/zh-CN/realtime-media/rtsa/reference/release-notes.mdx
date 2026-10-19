@@ -3,7 +3,9 @@ title: "发版说明"
 ---
 你可以使用 RTSA C SDK 在 Linux 平台上实现媒体流加速的功能。本页提供 RTSA C SDK 的发版说明。
 
-## 1.10.1 版
+<Accordions type="multiple" openFirst>
+
+<Accordion title="1.10.1 版" id="1101-版" headingLevel={2} value="1101-版">
 
 该版本于 2026 年 9 月 7 日发布。
 
@@ -76,7 +78,9 @@ title: "发版说明"
 - 修复 `log_path` 设置为 `NULL` 时发生崩溃的问题。
 - 修复当前 RTM Server 无法连接时，SDK 在部分情况下不会自动切换到下一个可用服务器的问题。
 
-## 1.9.7 版
+</Accordion>
+
+<Accordion title="1.9.7 版" id="197-版" headingLevel={2} value="197-版">
 
 该版本于 2025 年 11 月 27 日发布。
 
@@ -113,7 +117,9 @@ title: "发版说明"
 
 修复了视频 RTP 时间戳偶现错误的问题。
 
-## 1.9.6 版
+</Accordion>
+
+<Accordion title="1.9.6 版" id="196-版" headingLevel={2} value="196-版">
 
 该版本于 2025 年 8 月 8 日发布。
 
@@ -158,7 +164,9 @@ title: "发版说明"
 - 当频繁调整 RTSA 运行设备的系统时间时，移动接收端可能出现视频画面卡顿现象。
 - 在特定网络环境下（MTU 值较小），使用 RDT 传输大型帧数据时可能发生接收失败的问题。
 
-## 1.9.5 版
+</Accordion>
+
+<Accordion title="1.9.5 版" id="195-版" headingLevel={2} value="195-版">
 
 该版本于 2025 年 3 月 21 日发布。
 
@@ -207,7 +215,9 @@ title: "发版说明"
 - 发送 Jpeg 文件时 FEC 包错误。
 - 调用 `agora_rtc_init` 后快速调用 `agora_rtc_fini` 时偶现崩溃。
 
-## 1.9.4 版
+</Accordion>
+
+<Accordion title="1.9.4 版" id="194-版" headingLevel={2} value="194-版">
 
 该版本于 2025 年 1 月 9 日发布。
 
@@ -283,7 +293,9 @@ title: "发版说明"
 - `rtm_event_handler` 异步调用传递时没有深拷贝，可能导致的崩溃问题。
 - 修复与小程序 RTC 和 RTM 的互通问题。
 
-## 1.9.2 版
+</Accordion>
+
+<Accordion title="1.9.2 版" id="192-版" headingLevel={2} value="192-版">
 
 该版本于 2024 年 1 月 9 日发布。
 
@@ -348,7 +360,9 @@ title: "发版说明"
 - 特定场景下的视频卡顿。
 - 调用 `agora_rtc_renew_token` 方法更新 Token 后，SDK 在加入频道时未使用新的 Token。
 
-## 1.9.1 版
+</Accordion>
+
+<Accordion title="1.9.1 版" id="191-版" headingLevel={2} value="191-版">
 
 该版本于 2023 年 7 月 11 日发布。
 
@@ -441,7 +455,9 @@ title: "发版说明"
 - 调用 `agora_rtc_mute_remote_audio` 方法静音远端用户后，SDK 依旧触发了该远端用户的 `on_audio_data` 回调。
 - 偶现的崩溃。
 
-## 1.9.0 版
+</Accordion>
+
+<Accordion title="1.9.0 版" id="190-版" headingLevel={2} value="190-版">
 
 该版本于 2023 年 1 月 4 日发布。
 
@@ -485,7 +501,9 @@ title: "发版说明"
 
 该版本修复了一些问题。
 
-## 1.8.0 版
+</Accordion>
+
+<Accordion title="1.8.0 版" id="180-版" headingLevel={2} value="180-版">
 
 该版本于 2022 年 8 月 1 日发布。
 
@@ -515,7 +533,9 @@ Connection 通过 `agora_rtc_join_channel` 与 RTC 频道和用户 ID 进行绑�
 
 修复了一些 SDK 的问题。
 
-## 1.7.3 版
+</Accordion>
+
+<Accordion title="1.7.3 版" id="173-版" headingLevel={2} value="173-版">
 
 该版本于 2022 年 5 月 19 日发布。
 
@@ -538,7 +558,9 @@ salt 类型新增对 Base64 编码的支持。
 - 改进了 SDK 的性能，修复了一些问题。
 - 在 SDK 日志中新增 IP 脱敏功能。
 
-## 1.7.0 版
+</Accordion>
+
+<Accordion title="1.7.0 版" id="170-版" headingLevel={2} value="170-版">
 
 该版本于 2022 年 3 月 16 日发布。
 
@@ -612,7 +634,9 @@ salt 类型新增对 Base64 编码的支持。
 - `video_codec_e` 枚举
 - `agora_rtc_init` 方法删除 `sdk_log_dir` 参数
 
-## 1.6.0 版
+</Accordion>
+
+<Accordion title="1.6.0 版" id="160-版" headingLevel={2} value="160-版">
 
 该版本于 2021 年 9 月 24 日发布。
 
@@ -673,7 +697,9 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 - `agora_rtc_init_with_name`
 - `agora_rtc_init` 删除 `uid` 参数。
 
-## 1.5.0 版
+</Accordion>
+
+<Accordion title="1.5.0 版" id="150-版" headingLevel={2} value="150-版">
 
 该版本于 2021 年 5 月 31 日发布。
 
@@ -694,7 +720,9 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 - `rtc_service_option_t` 结构体
 - `ERR_DYNAMIC_TOKEN_BUT_USE_STATIC_KEY` 错误码
 
-## 1.4.2 版
+</Accordion>
+
+<Accordion title="1.4.2 版" id="142-版" headingLevel={2} value="142-版">
 
 该版本于 2021 年 4 月 11 日发布。
 
@@ -713,7 +741,9 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 - 断网重连后 SDK 音频编码功能异常。
 - 对端推送非 Opus 格式编码的音频可能造成 SDK 崩溃。
 
-## 1.4.1 版
+</Accordion>
+
+<Accordion title="1.4.1 版" id="141-版" headingLevel={2} value="141-版">
 
 该版本于 2021 年 3 月 11 日发布。
 
@@ -769,7 +799,9 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 - `rtm_event_type_e` 枚举类型中的 `RTM_EVENT_TPYE_EXIT` 更正为 `RTM_EVENT_TYPE_EXIT`
 - `ERR_RTM_INVALID_CHANNEL_NAME` 重新命名为 `ERR_RTM_INVALID_RTM_UID`
 
-## 1.4.0 版
+</Accordion>
+
+<Accordion title="1.4.0 版" id="140-版" headingLevel={2} value="140-版">
 
 该版本于 2021 年 2 月 24 日发布。
 
@@ -852,7 +884,9 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 
 `agora_rtc_set_log_level` 方法的 `level` 参数从 int 型变为枚举型。枚举值通过 `rtc_log_level_e` 枚举类型定义。
 
-## 1.3.0 版
+</Accordion>
+
+<Accordion title="1.3.0 版" id="130-版" headingLevel={2} value="130-版">
 
 该版本于 2020 年 11 月 24 日发布。
 
@@ -915,7 +949,9 @@ License 激活工具使用 HTTPS 协议，增强了安全性。
 - `on_inc_bitrate`
 - `on_dec_bitrate`
 
-## 1.2.2 版
+</Accordion>
+
+<Accordion title="1.2.2 版" id="122-版" headingLevel={2} value="122-版">
 
 该版本于 2019 年 12 月 17 日发布。新增特性和问题修复如下。
 
@@ -932,7 +968,9 @@ v1.2.2 起支持可靠数据传输，适用于数据量少但可靠性高的传�
 * 4K 高清场景下偶现的丢帧。
 * 部分已知 crash。
 
-## 1.2.1 版
+</Accordion>
+
+<Accordion title="1.2.1 版" id="121-版" headingLevel={2} value="121-版">
 
 该版本于 2019 年 8 月 15 日发布。改进如下。
 
@@ -941,7 +979,9 @@ v1.2.2 起支持可靠数据传输，适用于数据量少但可靠性高的传�
 - 增强 String UID 的注册刷新/失效/一致性检测。
 - 完善异常数据包过滤。
 
-## 1.2.0 版
+</Accordion>
+
+<Accordion title="1.2.0 版" id="120-版" headingLevel={2} value="120-版">
 
 该版本于 2019 年 8 月 9 日发布。新增特性和问题修复如下。
 
@@ -954,3 +994,7 @@ v1.2.0 新增 `agora_rtc_init_with_name` 方法，支持用户使用 String 型�
 ### 问题修复
 
 - P2P 链路可通但链路状态拥塞时，消除反复 P2P 连接尝试造成带来的数据传输损伤。
+
+</Accordion>
+
+</Accordions>

@@ -4,7 +4,9 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 ---
 水晶球（声网 Analytics）是声网为开发者提供的全周期通话质量监测、回溯和分析的解决方案，致力于帮助你及时发现问题、定位原因，并最终解决问题以提升用户体验。详见[水晶球概览](/zh-CN/realtime-media/usage-analytics)。
 
-## 2023.09
+<Accordions type="multiple" openFirst>
+
+<Accordion title="2023.09" id="202309" headingLevel={2} value="202309">
 
 ### 新增特性
 
@@ -17,7 +19,9 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 - 新增[获取通话卡顿率分桶数据 API](/zh-CN/api-reference/api-ref/agora-analytics/call-freeze-bucket) 用于获取指定通话在指定时间范围内的音频/视频卡顿率分桶统计数据。
 - 新增[获取频道时序指标 API](/zh-CN/api-reference/api-ref/agora-analytics/call-statistics-time) 用于获取指定通话的洞察统计数据。
 
-## 2023.08
+</Accordion>
+
+<Accordion title="2023.08" id="202308" headingLevel={2} value="202308">
 
 ### 新增特性
 
@@ -35,13 +39,17 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 - [数据洞察 Plus 使用指南](/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/plus)
 - [异常数据排查指南](/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/troubleshooting)
 
-## 2023.04
+</Accordion>
+
+<Accordion title="2023.04" id="202304" headingLevel={2} value="202304">
 
 ### 新增特性
 
 媒体服务是实时音视频（RTC）的重要辅助产品，包括云端录制、旁路推流等。为了方便开发者了解 RTC 媒体服务的线上使用情况，本次发布升级了[数据洞察](/zh-CN/realtime-media/usage-analytics/build/analyze-call-data/basic)和[实时监控](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor)模块，支持查询云端录制、输入在线媒体流和旁路推流服务的历史或实时规模。
 
-## 2023.03
+</Accordion>
+
+<Accordion title="2023.03" id="202303" headingLevel={2} value="202303">
 
 ### 改进
 
@@ -55,7 +63,9 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
   - 新增[查询实时规模 Top 20 分组](/zh-CN/api-reference/api-ref/agora-analytics/realtime-usage-top20)接口，用于获取指定维度下实时的通话人数的 TOP 20 分组数据。
   - 新增[查询实时质量 Top 20 分组](/zh-CN/api-reference/api-ref/agora-analytics/realtime-quality-top20)接口，用于获取指定维度下的质量相关指标 TOP 20 分组数据。
 
-## 2022.09
+</Accordion>
+
+<Accordion title="2022.09" id="202209" headingLevel={2} value="202209">
 
 ### 改进
 
@@ -66,13 +76,17 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 - 实时监控
 - 告警通知
 
-## 2022.08
+</Accordion>
+
+<Accordion title="2022.08" id="202208" headingLevel={2} value="202208">
 
 ### 改进
 
 为了兼顾数据洞察的时效性和准确性，本次发布在数据洞察中增加数据重算机制。数据洞察的数据延迟最低可以达到 6 小时，但内部资源调度、用户网络不佳等原因可能导致数据上报的延迟。增加数据重算机制后，每天的数据都会在 T+2 天重新计算一次，以保证历史数据的完整性。例如，2022 年 7 月 6 日的数据将在 7 月 8 日凌晨进行重算。
 
-## 2022.04
+</Accordion>
+
+<Accordion title="2022.04" id="202204" headingLevel={2} value="202204">
 
 ### 新增特性
 
@@ -84,7 +98,9 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 
 详见[通话调查流程总览](/zh-CN/realtime-media/usage-analytics/build/investigate-call-problems/overview)。
 
-## 2021.10
+</Accordion>
+
+<Accordion title="2021.10" id="202110" headingLevel={2} value="202110">
 
 本次发布下线了实时数据（Beta）和实时预警（Beta），并且新增[实时监控](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/monitor)和[告警通知](/zh-CN/realtime-media/usage-analytics/build/monitor-call-quality/alarm)功能：
 
@@ -97,7 +113,9 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 自 2021 年 10 月 12 日起，实时数据（Beta）和实时预警（Beta）全面下线。如需继续使用实时数据（Beta）功能，请升级到实时监控服务。详见[计费说明](/zh-CN/realtime-media/usage-analytics/reference/billing)。
 :::
 
-## 2021.07
+</Accordion>
+
+<Accordion title="2021.07" id="202107" headingLevel={2} value="202107">
 
 本次发布对数据洞察功能进行如下优化：
 
@@ -110,7 +128,9 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 自 2021 年 7 月 12 日起，数据洞察 Beta 版全面下线。如果需要使用数据洞察功能，请订阅水晶球套餐包。各套餐包支持的数据洞察功能有所不同，详见[套餐包详情](/zh-CN/realtime-media/usage-analytics/reference/billing#套餐包详情)。
 :::
 
-## 2021.05
+</Accordion>
+
+<Accordion title="2021.05" id="202105" headingLevel={2} value="202105">
 
 本次发布对通话调查 RESTful API 进行如下改动：
 
@@ -122,7 +142,9 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 - 自 2021 年 6 月起，接入点 `/beta/analytics/call/details` 将停止维护。请使用最新版本的通话调查 RESTful API。
 :::
 
-## 2020.09
+</Accordion>
+
+<Accordion title="2020.09" id="202009" headingLevel={2} value="202009">
 
 ### 新增特性
 
@@ -160,30 +182,48 @@ description: "查看水晶球的版本更新、问题修复、行为变更和兼
 
 除 RESTful API 外，水晶球各功能默认使用本地时间。
 
-## 2020.06
+</Accordion>
+
+<Accordion title="2020.06" id="202006" headingLevel={2} value="202006">
 
 本次发布新增水晶球内嵌功能（Beta），帮助开发者快速在自己的系统中嵌入水晶球功能，减少对接成本并提升问题调查效率。
 
-## 2020.05
+</Accordion>
+
+<Accordion title="2020.05" id="202005" headingLevel={2} value="202005">
 
 本次发布新增实时预警功能（Beta），实现实时异常识别、根因分析，帮助开发者及时定位异常源。
 
-## 2020.01
+</Accordion>
+
+<Accordion title="2020.01" id="202001" headingLevel={2} value="202001">
 
 本次发布新增大频道功能（Beta），实现频道级监控、异常识别，能极大提高用户运营大频道的效率。
 
-## 2019.10
+</Accordion>
+
+<Accordion title="2019.10" id="201910" headingLevel={2} value="201910">
 
 本次发布新增实时数据功能（Beta），帮助用户实时掌握项目动态，及时识别异常通话体验和异常根因。
 
-## 2019.09
+</Accordion>
+
+<Accordion title="2019.09" id="201909" headingLevel={2} value="201909">
 
 本次发布新增数据洞察功能（Beta），提供整体、地域、版本的质量监控，用户可以历时分析通话规模和质量。
 
-## 2019.08
+</Accordion>
+
+<Accordion title="2019.08" id="201908" headingLevel={2} value="201908">
 
 本次发布新增关键事件功能，提升问题调查效率。
 
-## 2018.08
+</Accordion>
+
+<Accordion title="2018.08" id="201808" headingLevel={2} value="201808">
 
 本次发布提供通话调查功能，帮助用户查找通话并分析质量问题。
+
+</Accordion>
+
+</Accordions>
