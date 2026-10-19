@@ -91,6 +91,7 @@ export function createMachineReadableDocsIndexes({
       }
 
       return createSectionFiles({
+        baseUrl: normalizedBaseUrl,
         entries: entries.sort((left, right) =>
           left.markdownUrl.localeCompare(right.markdownUrl),
         ),
@@ -167,10 +168,12 @@ export async function validateMachineReadableDocsArtifacts({
 }
 
 function createSectionFiles({
+  baseUrl,
   entries,
   group,
   maxCharacters,
 }: {
+  baseUrl: string;
   entries: IndexEntry[];
   group: IndexGroup;
   maxCharacters: number;
@@ -183,7 +186,7 @@ function createSectionFiles({
 
     if (
       current.length > 0 &&
-      renderSectionIndex(group.label, candidate, group.slug).length >
+      renderSectionIndex(group.label, candidate, group.slug, baseUrl).length >
         maxCharacters
     ) {
       chunks.push(current);
@@ -198,17 +201,36 @@ function createSectionFiles({
     chunks.push(current);
   }
 
-  return chunks.map((chunk, index) => {
+  const files = chunks.map((chunk, index) => {
     const suffix = chunks.length > 1 ? `-${index + 1}` : '';
     const label =
       chunks.length > 1 ? `${group.label} ${index + 1}` : group.label;
     const path = `${INDEX_DIRECTORY}/${group.slug}${suffix}.txt`;
-    const content = renderSectionIndex(label, chunk, group.slug);
+    const content = renderSectionIndex(label, chunk, group.slug, baseUrl);
 
     assertWithinLimit(path, content, maxCharacters);
 
     return { content, path };
   });
+  if (chunks.length > 1 && group.slug.startsWith('doc-versions-')) {
+    const path = `${INDEX_DIRECTORY}/${group.slug}.txt`;
+    const content = [
+      `# ${group.label}`,
+      '',
+      '> Documentation index for this release only. Read the sections below.',
+      '',
+      `[Download only this documentation version](${baseUrl}${INDEX_DIRECTORY}/${group.slug}-full.txt)`,
+      '',
+      ...files.map(
+        (file, index) =>
+          `- [${group.label} ${index + 1}](${baseUrl}${file.path})`,
+      ),
+      '',
+    ].join('\n');
+    assertWithinLimit(path, content, maxCharacters);
+    return [{ path, content }, ...files];
+  }
+  return files;
 }
 
 function renderRootIndex(
@@ -234,10 +256,11 @@ function renderSectionIndex(
   label: string,
   entries: IndexEntry[],
   slug: string,
+  baseUrl: string,
 ) {
   const bulkLink =
     slug.startsWith('doc-versions-') && entries[0]
-      ? `[Download only this documentation version](${new URL(entries[0].markdownUrl).origin}/llms/${slug}-full.txt)`
+      ? `[Download only this documentation version](${baseUrl}/llms/${slug}-full.txt)`
       : '';
   return [
     `# ${label}`,

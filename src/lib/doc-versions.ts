@@ -181,46 +181,6 @@ export function getDocVersionSelections(
   );
 }
 
-export function matchesDocVersion(
-  href: string,
-  selections?: DocVersionSelections,
-) {
-  if (!selections) return true;
-  const context = resolveDocVersion(href);
-  return (
-    !context ||
-    !selections[context.scope.id] ||
-    selections[context.scope.id] === context.version.id
-  );
-}
-
-export function getDocVersionSearchMetadata(href: string) {
-  const context = resolveDocVersion(href);
-  return context
-    ? {
-        versionScope: context.scope.id,
-        docVersion: context.version.id,
-        docVersionLabel: context.version.label,
-        docVersionKey: `${context.scope.id}:${context.version.id}`,
-      }
-    : {};
-}
-
-/** Negative filters preserve unversioned records and tolerate older index records. */
-export function getDocVersionAlgoliaFilters(selections?: DocVersionSelections) {
-  return DOC_VERSION_SCOPES.flatMap((scope) =>
-    scope.versions
-      .filter(
-        (version) =>
-          selections?.[scope.id] && selections[scope.id] !== version.id,
-      )
-      .map(
-        (version) =>
-          `NOT docVersionKey:${JSON.stringify(`${scope.id}:${version.id}`)}`,
-      ),
-  );
-}
-
 export function getDocVersionIndexPath(
   scope: DocVersionScope,
   version: DocVersion,

@@ -2,33 +2,28 @@ import { describe, expect, it } from 'vitest';
 import { createOramaDocsClient } from './orama-client';
 
 describe('createOramaDocsClient', () => {
-  it('searches the selected API release and ordinary docs, with explicit access to other releases', async () => {
-    const pages = [
-      {
-        title: 'Widget baseline',
-        content: 'widgetbaseline',
-        url: '/en/api-reference/versioning-demo/v1/widgets',
-      },
-      {
-        title: 'Widget preview',
-        content: 'widgetpreview',
-        url: '/en/api-reference/versioning-demo/v2/list-widgets',
-      },
-      {
-        title: 'Widget guide',
-        content: 'widgetpreview',
-        url: '/en/ai/ordinary',
-      },
-    ];
-    const selected = createOramaDocsClient({
-      pages,
-      docVersions: { 'test-api': 'v2' },
+  it('keeps both documentation releases searchable with distinct URLs', async () => {
+    const client = createOramaDocsClient({
+      pages: [
+        {
+          title: 'Widget baseline',
+          content: 'widgetbaseline',
+          url: '/en/api-reference/versioning-demo/v1/widgets',
+        },
+        {
+          title: 'Widget preview',
+          content: 'widgetpreview',
+          url: '/en/api-reference/versioning-demo/v2/list-widgets',
+        },
+      ],
     });
-    expect(await selected.search('widgetbaseline')).toEqual([]);
-    expect(await selected.search('widgetpreview')).toHaveLength(2);
-    expect(
-      await createOramaDocsClient({ pages }).search('widgetbaseline'),
-    ).toHaveLength(1);
+    expect(await client.search('widget')).toHaveLength(2);
+    expect((await client.search('widgetbaseline'))[0]?.url).toBe(
+      '/en/api-reference/versioning-demo/v1/widgets',
+    );
+    expect((await client.search('widgetpreview'))[0]?.url).toBe(
+      '/en/api-reference/versioning-demo/v2/list-widgets',
+    );
   });
   it('finds Chinese documentation by body text', async () => {
     const client = createOramaDocsClient({

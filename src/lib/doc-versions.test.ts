@@ -166,4 +166,25 @@ describe('documentation releases', () => {
     expect(newIndex?.content).not.toContain('/v1/');
     expect(newIndex?.content).toContain('doc-versions-test-api-v2-full.txt');
   });
+
+  it('keeps the advertised release index stable when a large API needs shards', () => {
+    const files = createMachineReadableDocsIndexes({
+      baseUrl: 'https://docs.example',
+      docsIndex: '',
+      locale: 'en',
+      maxCharacters: 1000,
+      publishedRoutes: Array.from({ length: 12 }, (_, index) => {
+        const url = `${root}/v2/long-reference-topic-${index}`;
+        return { url, canonicalPath: url, markdownPath: `${url}.md` };
+      }),
+    });
+    const stable = files.find(
+      (file) => file.path === '/llms/doc-versions-test-api-v2.txt',
+    );
+    expect(stable?.content).toContain('/llms/doc-versions-test-api-v2-1.txt');
+    expect(
+      files.filter((file) => /v2-\d+\.txt$/.test(file.path)).length,
+    ).toBeGreaterThan(1);
+    expect(files.every((file) => file.content.length <= 1000)).toBe(true);
+  });
 });

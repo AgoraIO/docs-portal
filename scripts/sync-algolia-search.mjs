@@ -44,9 +44,6 @@ await client.setSettings({
       'filterOnly(tab)',
       'filterOnly(objectType)',
       'filterOnly(category)',
-      'filterOnly(versionScope)',
-      'filterOnly(docVersion)',
-      'filterOnly(docVersionKey)',
     ],
     attributesToRetrieve: [
       'objectID',
@@ -63,10 +60,6 @@ await client.setSettings({
       'tab',
       'objectType',
       'category',
-      'versionScope',
-      'docVersion',
-      'docVersionLabel',
-      'docVersionKey',
     ],
     searchableAttributes: [
       'unordered(title)',

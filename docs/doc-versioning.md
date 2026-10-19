@@ -19,10 +19,10 @@ family is imaginary and labelled **Test current version** or **Test new version*
    overview explains that the topic has no equivalent.
 4. Reopen the neutral entry or refresh it. The same browser remembers the choice.
    A direct v1 link still opens v1 and does not overwrite the saved v2 choice.
-5. Search for `widgetpreview` in v2 and `widgetbaseline` in v1. The opposite
-   version is excluded until **All documentation versions** is enabled. Ordinary
-   docs and SDK API search keep their existing behavior. A query with no matches
-   offers **Search other documentation versions**.
+5. Search for `widget`. Both releases appear with their version labels. Search
+   for `widgetbaseline` or `widgetpreview` to find the corresponding release.
+   Browsing preferences do not filter search results. Ordinary docs and SDK API
+   search keep their existing behavior.
 6. Repeat on a narrow viewport. The version links remain visible above the page
    title without opening the mobile sidebar.
 
@@ -68,18 +68,17 @@ from their URL. Only an intentional version selection writes the preference.
 
 ## Search and publication
 
-Both static search and Algolia index records derive `versionScope`, `docVersion`,
-`docVersionLabel` and `docVersionKey` from the same route registry. Algolia uses
-negative version-key filters so unversioned and older index records remain
-compatible. A result admission check also rejects a wrong-release URL if an
-older record lacks the new fields. Orama filters pages before indexing them.
-The search dialog uses the explicit current page's version before saved choices;
-other API families keep their own selections. Including all versions is a search
-option and does not overwrite browsing preferences.
+Search keeps the existing Algolia and local search flows. Both releases are
+indexed at distinct URLs and remain searchable together. The dialog adds the
+release label from each result's URL, including recently viewed pages. It does
+not add version filters, search scope controls or preview provider overrides.
+SDK version labels keep their existing meaning.
 
-The deployment's existing `search:sync` step must publish the new facets and
-records. A local build does not update the remote Algolia index. Coordinate
-index and site publication so a result cannot point at an unpublished route.
+New content reaches Algolia through the existing production `search:sync` step.
+PR previews retain the existing search configuration and do not sync unpublished
+content into the production index. To test mock search before publication, run
+locally without Algolia credentials so the existing local search uses the branch's
+built documents. No remote search index needs to be changed for that test.
 
 LLM discovery groups are separated by family and release. Every version page's
 Markdown identifies its release and links to its release index; each index
