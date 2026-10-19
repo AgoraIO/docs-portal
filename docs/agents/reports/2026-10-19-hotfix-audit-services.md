@@ -137,7 +137,7 @@
 
 - 主产品线已覆盖：`content/docs/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing.mdx:23` 有“录制机器人的订阅费用会自动减免，不会额外计入实时音视频费用”。
 - 未覆盖副本：`content/docs/zh-CN/api-reference/cloud-recording/restful/overview/billing-strategy/billing.mdx:33` 的提示列表仍直接从“同时录制多路音频流和视频流”开始，没有减免说明。
-- 该副本不是自动认定的废文件：`content/docs/zh-CN/api-reference/cloud-recording/restful/meta.json:6` 仍将其列为导航项。主线程独立调用 `resolveZhCnProductIaRedirect`、`resolveMovedDocsRedirect`、`resolveStaticLegacySitemapRedirect`，对此 API lane 路径均返回 null；因此不能用主产品线已更新推定所有入口覆盖。
+- 该副本不是自动认定的废文件：`content/docs/zh-CN/api-reference/cloud-recording/restful/meta.json:6` 仍有其子树导航声明。但上层 `cloud-recording/meta.json` 为 `sidebarHidden: true`，pages 只列 go-api/java-api，不能称该副本在顶层公开导航可见。主线程独立调用 `resolveZhCnProductIaRedirect`、`resolveMovedDocsRedirect`、`resolveStaticLegacySitemapRedirect`，对此 API lane 路径均返回 null；本结论针对仍入库且未被接管的正文副本，不要求恢复导航。
 
 ### #2115：完整覆盖
 

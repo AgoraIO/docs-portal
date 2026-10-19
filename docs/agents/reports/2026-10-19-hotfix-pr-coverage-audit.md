@@ -79,7 +79,7 @@
 | [#2105](https://github.com/AgoraIO/shengwang-doc-source/pull/2105) | 媒体推流转码计费 | 完整覆盖 | 源计费文字修订已存在。 |
 | [#2103](https://github.com/AgoraIO/shengwang-doc-source/pull/2103) | License 自助预授权 | 完整覆盖 | 控制台自助预授权和图示已更新。 |
 | [#2107](https://github.com/AgoraIO/shengwang-doc-source/pull/2107) | Agent 快速开始安装命令 | 未覆盖 | Go/Python/TS 仍分别锁在 v2.4.0/2.4.1/2.4.0。 |
-| [#2109](https://github.com/AgoraIO/shengwang-doc-source/pull/2109) | 云录制机器人费用 | 部分覆盖 | 主计费页有免费规则；API 参考中仍有旧计费副本且存在导航入口。 |
+| [#2109](https://github.com/AgoraIO/shengwang-doc-source/pull/2109) | 云录制机器人费用 | 部分覆盖 | 主计费页有免费规则；API 参考仍有未同步副本及子树导航声明，但上层 API 目录隐藏，不能称顶层公开入口。 |
 | [#2101](https://github.com/AgoraIO/shengwang-doc-source/pull/2101) | ConvoAI 2.13 承接词 | 部分覆盖 | 指南、Go/Python 和 REST 有新内容；TS 上下文参数和部分公开类型说明仍缺。 |
 | [#2110](https://github.com/AgoraIO/shengwang-doc-source/pull/2110) | 门铃隐藏 aPaaS | 部分覆盖 | 文字/导航已隐藏；源 PR 删除的旧图仍被引用，需人工确认。 |
 | [#2108](https://github.com/AgoraIO/shengwang-doc-source/pull/2108) | Android Maven CDN | 部分覆盖 | 快速开始/下载页已改；发版提醒和裁包前置引导缺失。 |

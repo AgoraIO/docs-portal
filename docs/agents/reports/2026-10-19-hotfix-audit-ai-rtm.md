@@ -78,7 +78,9 @@
 
 - `content/docs/zh-CN/realtime-media/rtm/index.mdx:18` 起的平台卡只有 Web、Android、iOS、Swift、C++、HarmonyOS、Unity、Flutter，没有源 PR 新增的小程序入口；`:65` 的介绍性文字没有带 `?platform=mini-program` 的快速开始链接。内容存在，不等于原新增平台入口生效。
 - `src/components/docs-overview/sdk-downloads-data.zh-cn.ts` 没有 `shengwang-rtm-miniapp` / `2.3.0-beta.0` 下载项；源 PR 的小程序 npm 下载卡未在统一下载目录找到等价项。指南仍有专用包，所以不是整项未覆盖。
-- 源 `api-limits.mdx` 明确对 mini-program 排除 Stream Channel 章节；目标统一改写后的 `content/docs/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits.mdx:5,50,83` 没有小程序不支持 Stream Channel 的排除说明，面向 RTM 2.x 客户端统一列出 Stream Channel 限制。此处平台边界不再与源 PR 的条件一致，需要补充明确适用范围。
+- 源 `api-limits.mdx` 对 mini-program 排除 Stream Channel 章节。执行前复核纠正：目标 `content/docs/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits.mdx:88` 已有局部 3.1 提示，排除 Stream 人数和 Topic 数，并非完全没有说明；但项目级 Stream 数量、Topic 发送与客户端 Topic 消息等其余段落未给全局范围。需要补全全页适用边界：小程序支持 Message 和 User Channel，不支持 Stream/Topic；不能误写成仅支持 Message。
+
+执行前进一步逐 hunk 检查还发现 USER 示例、消息负载及 Presence 模式缺口，错误码符号也有漂移待查来源。初审上述“有分支”的样本仅证明存在性，不代表分支内容全部正确；完整映射与修复另记后续报告，不改变本次历史快照的“部分覆盖”分类。
 
 注意：源 PR 并未新增一套独立小程序 API 参考，而是要求以包类型定义为准、借用 JS API 理解概念。因此“目标没有独立 mini-program API 目录”本身不作为遗漏。
 
