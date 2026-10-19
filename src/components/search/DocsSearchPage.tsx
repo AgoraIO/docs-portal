@@ -41,7 +41,7 @@ import type {
 import {
   getDocsMeasurement,
   selectDocsResult,
-} from '@/lib/analytics/measurement.client';
+} from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 import type { ProductScope } from '@/lib/docs-tree';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';

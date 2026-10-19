@@ -18,7 +18,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { getDocsMeasurement } from '@/lib/analytics/measurement.client';
+import { getDocsMeasurement } from '@/lib/analytics/measurement';
 import {
   captureDocsPageFeedback,
   type DocsFeedbackValue,

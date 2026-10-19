@@ -9,7 +9,7 @@ import { DocsTaskFeedback } from './DocsTaskFeedback';
 
 let measurement: DocsMeasurement;
 let events: MeasurementEvent[];
-vi.mock('@/lib/analytics/measurement.client', () => ({
+vi.mock('@/lib/analytics/measurement', () => ({
   getDocsMeasurement: () => measurement,
   measurementEnabled: () => true,
   invitationAllowed: () => false,

@@ -1,5 +1,5 @@
 import { createContext, type RefObject, useContext, useEffect } from 'react';
-import { getDocsMeasurement } from '@/lib/analytics/measurement.client';
+import { getDocsMeasurement } from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 import { usePlatformPageContext } from '../mdx/PlatformTabsGroup';
 
@@ -17,17 +17,27 @@ export function useMeasuredDocsBody(root: RefObject<HTMLDivElement | null>) {
   useEffect(() => {
     if (!context.contentPath || !root.current) return;
     const path = window.location.pathname;
-    const stop = observeVisible(root.current, () =>
-      getDocsMeasurement()?.viewContent({
-        path,
-        platform,
-        version: context.version,
-        contentType: context.contentType,
-      }),
-    );
-    return () => {
+    const measurement = getDocsMeasurement();
+    if (!measurement) return;
+    let stop = () => {};
+    const watch = () => {
       stop();
-      getDocsMeasurement()?.leaveContent();
+      if (root.current)
+        stop = observeVisible(root.current, () =>
+          measurement.viewContent({
+            path,
+            platform,
+            version: context.version,
+            contentType: context.contentType,
+          }),
+        );
+    };
+    watch();
+    const unsubscribe = measurement.subscribe(watch);
+    return () => {
+      unsubscribe();
+      stop();
+      measurement.leaveContent();
     };
   }, [
     platform,

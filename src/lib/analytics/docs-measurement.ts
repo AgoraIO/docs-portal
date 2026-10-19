@@ -327,7 +327,11 @@ export function createDocsMeasurement(options: Options) {
         target: analyticsPath(result.path),
         expires: options.now() + 5 * 60 * 1000,
       };
+      const refreshBody =
+        !result.method.endsWith('_new_tab') &&
+        view?.properties.canonical_path === attribution.target;
       if (!result.method.endsWith('_new_tab')) pending = attribution;
+      if (refreshBody) view = undefined;
       send('docs_search_result_selected', snapshot.search.journey, {
         ...searchProperties(snapshot.search),
         results_view_id: snapshot.viewId,
@@ -338,6 +342,7 @@ export function createDocsMeasurement(options: Options) {
         section_rank: result.sectionRank ?? null,
         selection_method: result.method,
       });
+      if (refreshBody) changed();
       return attribution;
     },
     restoreAttribution(attribution: Attribution) {

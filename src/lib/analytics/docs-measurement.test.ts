@@ -184,6 +184,35 @@ it('attributes only a selected target and does not attribute another tab from a 
   ).toBe(search.searchId);
 });
 
+it('records a fresh attributed view when a result targets the already visible document', () => {
+  const { measurement } = fixture();
+  const first = measurement.viewContent({
+    path: '/zh-CN/token',
+    contentType: 'mdx',
+  });
+  const search = measurement.startSearch({
+    surface: 'search_dialog',
+    query: 'Token',
+  });
+  const results = measurement.prepareResults(search, {
+    count: 1,
+    unit: 'section',
+  });
+  measurement.selectResult(results, {
+    id: '/zh-CN/token#token',
+    path: '/zh-CN/token#token',
+    rank: 1,
+    kind: 'section',
+    method: 'keyboard',
+  });
+  const next = measurement.viewContent({
+    path: '/zh-CN/token',
+    contentType: 'mdx',
+  });
+  expect(next.doc_view_id).not.toBe(first.doc_view_id);
+  expect(next.search_id).toBe(search.searchId);
+});
+
 it('invalidates cached results on account/new-problem boundaries and idle', () => {
   const { measurement, events, advance } = fixture();
   const search = measurement.startSearch({

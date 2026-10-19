@@ -27,7 +27,7 @@ import type {
 import {
   getDocsMeasurement,
   selectDocsResult,
-} from '@/lib/analytics/measurement.client';
+} from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 import { cn } from '@/lib/cn';
 import type { SearchEntry } from '@/lib/docs-search';

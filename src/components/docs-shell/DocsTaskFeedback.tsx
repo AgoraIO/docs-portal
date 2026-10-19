@@ -13,7 +13,7 @@ import {
   invitationAllowed,
   markInvitationVisible,
   measurementEnabled,
-} from '@/lib/analytics/measurement.client';
+} from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 
 const resolutionLabels = ['解决', '部分解决', '未解决', '尚未验证'];
