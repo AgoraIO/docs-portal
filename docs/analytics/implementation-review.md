@@ -1,6 +1,6 @@
 # P0 implementation review — 2026-10-19
 
-Final runtime candidate: `e113a424668dc9bf62477351a07dac2d3164a065`.
+Final deployed runtime: `e113a424668dc9bf62477351a07dac2d3164a065`.
 Functional staging baseline: `8802e22eface30960d2404d6c6f7235874870bfd` (build #107).
 Base: `7c6c60ead44406e69906c5c3808cd489784aa89e`.
 Deployment recipe: `01f509a7f179f24e800b5ab88b8a7b8d1cd38e07`.
@@ -38,7 +38,7 @@ The SQL-only regression fixture runs without inserting fake events. Actual marke
 
 ## Verification scope
 
-- Current candidate `8802e22ef` completed the full local build with the exact staging configuration: 6844 payloads, 8050 machine-readable files, 7741 route HTML files. The normal client, server and static generation stages passed.
+- Functional baseline `8802e22ef` completed the full local build with the exact staging configuration: 6844 payloads, 8050 machine-readable files, 7741 route HTML files. The normal client, server and static generation stages passed.
 - Focused runtime verification: 13 files / 141 tests pass.
 - Type checking passes; changed runtime files pass Biome.
 - Full suite after incorporating the current Chinese base: 227 files pass; 2891 tests pass, 2 skipped. Earlier base failures were repaired by upstream changes.
@@ -61,7 +61,17 @@ Curated receipts: [events](evidence/2026-10-19-b107/events.json), [renderers](ev
 
 ## Final UI follow-up
 
-Screenshot inspection on staging found weak selected-state contrast in dark mode. Candidate `e113a4246` adds an opt-in semantic-color toggle variant for the three feedback groups. Both themes show clear foreground/background contrast in the actual local preview. The focused test, two-file Biome check, type check and full suite (227 files; 2891 pass, 2 skipped) pass. Both independent reviews cleared this UI-only delta. Build #108 is running the same full staging recipe; final staging screenshots and receipt remain pending.
+Screenshot inspection on staging found weak selected-state contrast in dark mode. Source `e113a4246` adds an opt-in semantic-color toggle variant for the three feedback groups. The focused test, two-file Biome check, type check and full suite (227 files; 2891 pass, 2 skipped) pass. Both independent reviews cleared this UI-only delta.
+
+Build [#108](https://web-jenkins.agoralab.co/job/docs-portal-2026/job/hci-master/108/console) completed the full normal build and staging release successfully. Index preparation/promotion/verification, 8216 redirects, 5 exclusions, frontend source, health, search, platform filtering, pagination and login checks all passed. Frontend, backend and index point to the final source. Production was not deployed.
+
+Actual final-source visits independently received all nine P0 types in PostHog 509917; received counts matched distinct event IDs. Dialog keyboard selection linked to its visible body. Full search retained one logical search across controlled failure and retry. Shared SQL returned the final withdrawn reason set, cleared search-page document attribution and kept page helpfulness on its original document view. Both marked journeys are immature; test data is excluded from production business metrics.
+
+Ten decoded final-source collector events passed synthetic-email redaction, canonical URL, DOM-text and recording checks. The 20 retrieval cases passed again after the final index activation. SDK/task correctness remains `not_reviewed`.
+
+Final evidence: [pipeline and digests](evidence/2026-10-19-b108/pipeline.json), [nine event types](evidence/2026-10-19-b108/events.json), [shared search facts](evidence/2026-10-19-b108/search-facts.json), [final feedback facts](evidence/2026-10-19-b108/feedback-facts.json), [outbound privacy](evidence/2026-10-19-b108/outbound-privacy.json), [retrieval quality](evidence/2026-10-19-b108/retrieval-quality.json), [actual staging screenshots](evidence/2026-10-19-b108/screenshots.json).
+
+Desktop dark/light and 390px mobile screenshots in PR #1212 come from the final deployed staging source. Computed selected colors have clear foreground/background contrast in both themes. Mobile document width equals its 390px viewport. Temporary network blocks and device emulation were cleared; the local preview server and temporary verification tabs were closed.
 
 Build #104 failed before deployment at server import protection; the boundary is fixed. Build #105 was cancelled before deployment to incorporate the newer Chinese base. Another user’s #106 was untouched and timed out before deployment. Production rollout is outside this change; its P0 build flag stays disabled.
 

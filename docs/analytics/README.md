@@ -1,5 +1,7 @@
 # 中文文档测量 v1
 
+staging 最终版本 `e113a4246` 已通过正常完整发布、9 类事件实收、共享事实、隐私及界面验收。实际回执与 PR 截图见 [staging 核验记录](staging-verification.json)。生产 P0 参数已备好，开关关闭。
+
 本目录实现 [P0 方案](../designs/2026-10-19-cn-docs-measurement.md) 的共享计算协议。`measurement-v1.sql` 定义四种逻辑数据集；它们是查询 CTE，不是假称已物化的数据表。每个看板查询复用相同前缀。项目尚无已批准的 Data Catalog 定义，本期查询标记为 v1 待业务审核。
 
 - 事件按 `event_id` 去重；先保留全部可观测过程，再左关联反馈，保留无反馈的未知。
