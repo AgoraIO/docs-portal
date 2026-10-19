@@ -1,5 +1,6 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { getOpenApiPrerenderPaths } from '../openapi/lanes';
 import posthogRules from './posthog-revalidated-404s.json';
 import redirectsConfig from './redirects.json';
 import staticRedirects from './static-redirects.json';
@@ -16,6 +17,7 @@ const existingTargetPaths = new Set(
     .map((rule) => rule.target)
     .filter((target) => target.startsWith('/')),
 );
+const openApiRoutes = new Set(getOpenApiPrerenderPaths());
 
 function normalizePath(pathname: string) {
   const path = pathname.startsWith('/') ? pathname : `/${pathname}`;
@@ -28,7 +30,8 @@ function normalizePath(pathname: string) {
 }
 
 function contentPathExists(routePath: string) {
-  const withoutLocale = routePath.replace(/^\/en\//, '');
+  // A `.md` target is the Markdown variant of a content page.
+  const withoutLocale = routePath.replace(/^\/en\//, '').replace(/\.md$/, '');
   const candidates = [
     `content/docs/en/${withoutLocale}.md`,
     `content/docs/en/${withoutLocale}.mdx`,
@@ -41,10 +44,12 @@ function contentPathExists(routePath: string) {
 
 describe('PostHog revalidated 404 redirects', () => {
   it('contains only unique sources with complete evidence', () => {
-    const sources = posthogRules.map((rule) => normalizePath(rule.legacyPath));
+    // Compare exact paths: Vercel and the static fallback match `_` and `-`
+    // as distinct characters, so both spellings need their own rule.
+    const sources = posthogRules.map((rule) => decodeURI(rule.legacyPath));
 
     expect(new Set(sources).size).toBe(sources.length);
-    expect(posthogRules.length).toBe(51);
+    expect(posthogRules.length).toBe(357);
 
     for (const rule of posthogRules) {
       expect(rule.legacyUrl).toContain(rule.legacyPath);
@@ -73,6 +78,7 @@ describe('PostHog revalidated 404 redirects', () => {
         expect(
           routes.has(rule.target) ||
             existingTargetPaths.has(rule.target) ||
+            openApiRoutes.has(rule.target) ||
             contentPathExists(rule.target),
           rule.target,
         ).toBe(true);

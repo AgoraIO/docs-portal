@@ -39,6 +39,26 @@
       "statusCode": 301
     },
     {
+      "source": "/en/llms.txt",
+      "destination": "/llms.txt",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/llm.txt",
+      "destination": "/llms.txt",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/sitemap.xml",
+      "destination": "/sitemap.xml",
+      "statusCode": 301
+    },
+    {
+      "source": "/en/sitemap.ml",
+      "destination": "/sitemap.xml",
+      "statusCode": 301
+    },
+    {
       "source": "/skill.md",
       "destination": "https://raw.githubusercontent.com/AgoraIO/skills/main/skills/agora/SKILL.md",
       "statusCode": 307
@@ -470,6 +490,181 @@
     }
   ],
   "routes": [
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/oc(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/ios/4.x/documentation/agorartckit"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/java(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/android/4.x/API/rtc_api_overview.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/cpp(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/cpp/4.x/API/rtc_api_overview.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/web(?:_ng)?(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/web/4.x/index.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/flutter(?:_ng)?(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/flutter/6.x/API/rtc_api_overview.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/react_native(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/react-native/4.x/API/rtc_api_overview.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/unity(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/unity/4.x/API/rtc_api_overview.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/electron(?:_ng)?(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/electron/4.x/API/rtc_api_overview.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/RTM_oc(?:/.*)?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/ios"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/RTM_java(?:/.*)?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/android"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/RTM_java_linux(?:/.*)?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/linux-java"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/RTM_web(?:/.*)?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/signaling/web"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/recording_(?:cpp|java)(?:/.*)?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/on-premise-recording"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/whiteboard_oc(?:/.*)?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/interactive-whiteboard-sdk/ios/2.x/index.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:[^/]+/)+API(?:%20|\\+|%2520)Reference/edu_context_swift(?:/.*)?$",
+      "headers": {
+        "Location": "/en/api-reference/api-ref/flexible-classroom/edu-context-sdk"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/(?:All|Agora(?:%20|\\+|%2520)Platform|live-streaming)/api-ref/?$",
+      "headers": {
+        "Location": "/en/api-reference"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/api-reference/whiteboard/web/?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/interactive-whiteboard-sdk/web/2.x/index.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/api-reference/rtc/android/class-and-enum/classes/class-channelmediaoptions/?$",
+      "headers": {
+        "Location": "https://api-ref.agora.io/en/video-sdk/android/4.x/API/class_channelmediaoptions.html"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive\\+Broadcast/voice_changer_apple/?$",
+      "headers": {
+        "Location": "/en/realtime-media/rtc/build/enhance-the-audio-experience/voice-effects"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive\\+Broadcast/custom_audio_web_ng/?$",
+      "headers": {
+        "Location": "/en/realtime-media/rtc/build/customize-audio-processing/custom-audio"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive\\+Broadcast/video_profile_web/?$",
+      "headers": {
+        "Location": "/en/realtime-media/rtc/build/capture-and-render-video/configure-video-encoding"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/Agora\\+Platform/proxy_web/?$",
+      "headers": {
+        "Location": "/en/realtime-media/rtc/build/manage-connection-and-quality/cloud-proxy"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/Audio\\+Broadcast/inject_stream_windows_audio/?$",
+      "headers": {
+        "Location": "/en/realtime-media/media-pull"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/Audio\\+Broadcast/test_switch_device_unity/?$",
+      "headers": {
+        "Location": "/en/realtime-media/rtc/build/manage-connection-and-quality/pre-call-tests"
+      },
+      "status": 301
+    },
+    {
+      "src": "^/en/Interactive%2520Broadcast/start_live_audio_mac/?$",
+      "headers": {
+        "Location": "/en/realtime-media/rtc/voice-quickstart"
+      },
+      "status": 301
+    },
     {
       "src": "^/\\.well-known/mcp$",
       "dest": "/.well-known/mcp.json"
