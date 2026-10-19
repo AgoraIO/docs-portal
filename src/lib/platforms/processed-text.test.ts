@@ -1,14 +1,31 @@
+import { getTableOfContents } from 'fumadocs-core/content/toc';
 import { describe, expect, it } from 'vitest';
 import {
   buildCanonicalPlatformLLMText,
   buildCanonicalPlatformTocText,
   buildPlatformLLMText,
   buildPlatformMarkdownText,
+  buildPlatformTocText,
   extractStructuredPlatformKeys,
   extractStructuredPlatformTabs,
 } from './processed-text';
 
 describe('canonical platform toc text', () => {
+  it('keeps globally deduplicated heading IDs in a noncanonical platform TOC', async () => {
+    const processedText = [
+      '<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="android" />',
+      '## 新增特性 [#新增特性]',
+      '<_PlatformProcessedMarker close="true" />',
+      '<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="android" platform="ios" />',
+      '## 新增特性 [#新增特性-1]',
+      '<_PlatformProcessedMarker close="true" />',
+    ].join('\n\n');
+    const toc = await getTableOfContents(
+      buildPlatformTocText(processedText, 'ios'),
+    );
+    expect(toc).toEqual([{ title: '新增特性', depth: 2, url: '#新增特性-1' }]);
+  });
+
   it('keeps shared content and only canonical structured-platform headings', () => {
     const processedText = `
 # Page title

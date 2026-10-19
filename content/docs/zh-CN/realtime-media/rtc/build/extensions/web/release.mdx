@@ -4,6 +4,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 titlePlatforms:
   - web
 ---
+
 :::warning[注意]
 使用 AI 降噪插件和虚拟背景插件可能会产生费用。请与 sales@shengwang.cn 沟通后再使用。
 :::
@@ -20,7 +21,9 @@ titlePlatforms:
 
 <TabsContent value="rtc">
 
-### v2.0.1
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v2.0.1" id="v201" headingLevel={3} value="v201">
 
 #### 升级必看
 
@@ -41,7 +44,9 @@ titlePlatforms:
 
 该版本对回调的实现形式进行了调整。废弃了原来的 `onloaderror`, `onoverload`, `ondump`, `ondumpend` 回调，分别改用 `on("pipeerror"|"overload"|"dump"|"dumpend")` 方法监听对应事件。
 
-### v1.1.0
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110" headingLevel={3} value="v110">
 
 #### 升级必看
 
@@ -67,17 +72,25 @@ API 描述详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensi
 
 该版本优化了 AI 降噪算法的计算性能。
 
-### v1.0.0
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100" headingLevel={3} value="v100">
 
 AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)由 Beta 发布转变为正式发布。
 
 相比之前的版本，v1.0.0 版本的 AI 降噪具有更好的人声保真度、更干净的噪声抑制，并新增了去混响 (Dereverberation) 能力。
 
+</Accordion>
+
+</Accordions>
+
 </TabsContent>
 
 <TabsContent value="convoai">
 
-### v1.0.0-beta2
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v1.0.0-beta2" id="v100-beta2" headingLevel={3} value="v100-beta2">
 
 AI 场景专用降噪插件 [agora-conversational-ai-denoiser](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 于 2025 年 3 月 5 日发布，用于更好地支持[声网对话式 AI 引擎](/zh-CN/ai)的应用效果。
 
@@ -90,6 +103,10 @@ AI 场景专用降噪插件 [agora-conversational-ai-denoiser](https://www.npmjs
 - 显著提升人声（尤其是歌声）保护。
 - 降低运行中音频采集播放卡顿的风险。
 - 开启 AI 降噪后，AGC 最大增益的默认值从 24dB 下调至 12dB。
+
+</Accordion>
+
+</Accordions>
 
 </TabsContent>
 </Tabs>
