@@ -735,9 +735,10 @@ describe('common MDX registry', () => {
           ),
         );
       await waitFor(() =>
-        expect(
-          screen.getByRole('tab', { name: 'Electron', exact: true }),
-        ).toHaveAttribute('aria-selected', 'true'),
+        expect(screen.getByRole('tab', { name: 'Electron' })).toHaveAttribute(
+          'aria-selected',
+          'true',
+        ),
       );
       expect(screen.getByRole('button', { name: 'v1' })).toHaveAttribute(
         'aria-expanded',
