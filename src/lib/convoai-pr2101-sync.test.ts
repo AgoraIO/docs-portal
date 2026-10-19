@@ -9,9 +9,14 @@ const page = readFileSync(
   ),
   'utf8',
 );
-const aliases = page
-  .split('### Type aliases\n')[1]
-  ?.split('## AgentSession')[0];
+const aliasesStart = page.indexOf('### Type aliases\n');
+const aliasesEnd = page.indexOf('\n## AgentSession', aliasesStart);
+if (aliasesStart < 0 || aliasesEnd <= aliasesStart) {
+  throw new Error(
+    'Missing or unordered Type aliases / AgentSession boundaries',
+  );
+}
+const aliases = page.slice(aliasesStart, aliasesEnd);
 
 describe('ConvoAI source PR 2101 TypeScript context configuration', () => {
   it('uses the source generated_config name in the dynamic filler contract', () => {
