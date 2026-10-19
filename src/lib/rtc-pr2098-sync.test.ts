@@ -18,14 +18,48 @@ function readContent(file: string) {
   return readFileSync(resolve(process.cwd(), rtcRoot, file), 'utf8');
 }
 
-function platformBody(file: string, platform: string) {
-  const block = [
-    ...readContent(file).matchAll(
+function extractPlatformBody(content: string, platform: string) {
+  const blocks = [
+    ...content.matchAll(
       /<PlatformStructured platform="([^"]+)">([\s\S]*?)<\/PlatformStructured>/g,
     ),
-  ].find((match) => match[1] === platform);
-  expect(block, `${file}: ${platform}`).toBeDefined();
-  return block?.[2] ?? '';
+  ].filter((match) => match[1] === platform);
+  expect(blocks.length, `${platform}: exactly one platform block`).toBe(1);
+  return blocks[0][2];
+}
+
+function platformBody(file: string, platform: string) {
+  return extractPlatformBody(readContent(file), platform);
+}
+
+function sectionBetween(
+  content: string,
+  startMarker: string,
+  endMarker: string,
+) {
+  const start = content.indexOf(startMarker);
+  const end = content.indexOf(endMarker);
+  expect(
+    start,
+    `Missing section start marker: ${startMarker}`,
+  ).toBeGreaterThanOrEqual(0);
+  expect(
+    end,
+    `Missing section end marker: ${endMarker}`,
+  ).toBeGreaterThanOrEqual(0);
+  expect(end, 'Section end marker must follow start marker').toBeGreaterThan(
+    start,
+  );
+  return content.slice(start + startMarker.length, end);
+}
+
+function beforeMarker(content: string, endMarker: string) {
+  const end = content.indexOf(endMarker);
+  expect(
+    end,
+    `Missing section end marker: ${endMarker}`,
+  ).toBeGreaterThanOrEqual(0);
+  return content.slice(0, end);
 }
 
 function contains(content: string, marker: string) {
@@ -41,6 +75,45 @@ function tabBody(content: string, value: string) {
 }
 
 describe('RTC upstream PR #2098 complete content parity', () => {
+  it('rejects missing or reversed markers in the real Android ProGuard body', () => {
+    const body = platformBody('get-started/quick-start.mdx', 'android');
+    const start = '3. 防止代码混淆。';
+    const end = '## 集成 SDK';
+
+    contains(sectionBetween(body, start, end), 'consumer-proguard-rules.pro');
+    expect(() =>
+      sectionBetween(body.replace(end, '## 集成标记已移除'), start, end),
+    ).toThrow(/Missing section end marker/);
+    expect(() =>
+      sectionBetween(body.replace(start, '3. 起点已移除。'), start, end),
+    ).toThrow(/Missing section start marker/);
+    const reversed = body
+      .replace(start, '__RULES_START__')
+      .replace(end, start)
+      .replace('__RULES_START__', end);
+    expect(() => sectionBetween(reversed, start, end)).toThrow(
+      /Section end marker must follow start marker/,
+    );
+  });
+
+  it('rejects a missing real release boundary and ambiguous platform bodies', () => {
+    const source = readContent('reference/release-notes.mdx');
+    const body = extractPlatformBody(source, 'android');
+    const version = '## v4.7.0';
+
+    contains(beforeMarker(body, version), 'cn.shengwang.rtc');
+    expect(() =>
+      beforeMarker(body.replace(version, '## 版本标记已移除'), version),
+    ).toThrow(/Missing section end marker/);
+    const wrapped = `<PlatformStructured platform="android">${body}</PlatformStructured>`;
+    expect(() =>
+      extractPlatformBody(`${source}\n${wrapped}`, 'android'),
+    ).toThrow(/exactly one platform block/);
+    expect(() =>
+      extractPlatformBody(source.replace(wrapped, ''), 'android'),
+    ).toThrow(/exactly one platform block/);
+  });
+
   it.each(nativePlatforms)(
     'selects beauty 2.1 at all three %s boundaries',
     (platform) => {
@@ -93,7 +166,7 @@ describe('RTC upstream PR #2098 complete content parity', () => {
     'expands Android ProGuard choices without changing CDN setup in %s',
     (file) => {
       const body = platformBody(file, 'android');
-      const rules = body.split('3. 防止代码混淆。')[1].split('## 集成 SDK')[0];
+      const rules = sectionBetween(body, '3. 防止代码混淆。', '## 集成 SDK');
       for (const marker of [
         '未开启 R8/ProGuard 缩减和混淆，无需额外配置混淆规则',
         '快速配置',
@@ -163,7 +236,7 @@ describe('RTC upstream PR #2098 complete content parity', () => {
 
   it('places the Android Maven package migration before every release version', () => {
     const body = platformBody('reference/release-notes.mdx', 'android');
-    const notice = body.slice(0, body.indexOf('## v4.7.0'));
+    const notice = beforeMarker(body, '## v4.7.0');
     contains(notice, ':::caution[注意]');
     contains(notice, '通过 Gradle 自动集成并升级至 v4.6.0 及以上版本时');
     contains(
