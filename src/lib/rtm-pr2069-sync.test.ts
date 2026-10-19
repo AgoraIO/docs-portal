@@ -154,6 +154,12 @@ describe('RTM upstream PR #2069 parity', () => {
     const body = platformBody(payload, 'cpp');
     expect(body).toContain('32 KB');
     expect(body).toContain('1 KB');
+    expect(body).toContain(
+      '消息负载包体积包含消息负载自身加上 `customType` 字段大小。',
+    );
+    expect(body).not.toContain(
+      '当消息负载包体积超出限制时，你会收到以下返回值：',
+    );
     expect(body).not.toContain('```');
   });
 
