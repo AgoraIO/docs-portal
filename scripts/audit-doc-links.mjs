@@ -2433,11 +2433,12 @@ function getRoutePath(contentPath) {
 
 export function getOpenApiRoutePathsForAudit() {
   return getOpenApiRouteLanesForAudit().flatMap((lane) =>
-    lane.locales.flatMap((locale) =>
-      lane.routeLeaves.map(
+    lane.locales.flatMap((locale) => [
+      lane.parentUrls[locale],
+      ...lane.routeLeaves.map(
         (routeLeaf) => `/${locale}/${lane.routePrefix}/${routeLeaf}`,
       ),
-    ),
+    ]),
   );
 }
 
@@ -2510,7 +2511,20 @@ function getOpenApiRouteLanesForAudit() {
       );
     }
 
-    return { locales, routePrefix, routeLeaves, sourcePaths };
+    const parentUrlsBlock = extractObjectProperty(block, 'parentUrl');
+    const parentUrls = parentUrlsBlock
+      ? Object.fromEntries(
+          [...parentUrlsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g)].map(
+            (match) => [match[1], match[2]],
+          ),
+        )
+      : Object.fromEntries(
+          locales.map((locale) => [
+            locale,
+            block.match(/parentUrl:\s*'([^']+)'/)?.[1],
+          ]),
+        );
+    return { locales, parentUrls, routePrefix, routeLeaves, sourcePaths };
   });
 }
 

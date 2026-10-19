@@ -934,7 +934,8 @@ function getRedirectTargetProductRoots() {
   return [...roots].sort();
 }
 
-describe('zh-CN product IA standard', () => {
+// Route publication checks resolve the real content graph, not isolated fixtures.
+describe('zh-CN product IA standard', { timeout: 30_000 }, () => {
   it('keeps every route from the prior staging manifest publishable', async () => {
     expect(priorStagingRouteUrls).toHaveLength(55);
     expect(new Set(priorStagingRouteUrls).size).toBe(55);

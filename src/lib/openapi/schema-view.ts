@@ -308,6 +308,7 @@ function isSyntheticStringMapProperty(
   return (
     name === '[key: string]' &&
     schema.typeName === 'string' &&
+    parentPath.length > 1 &&
     parentPath.at(-1)?.name !== 'params' &&
     (schema.infoTags?.length ?? 0) === 0 &&
     (schema.allowedValues?.length ?? 0) === 0

@@ -199,7 +199,8 @@ describe('faq content integrity', () => {
     const zhCnRootMeta = readMeta(path.join(zhCnFaqRoot, 'meta.json'));
 
     expect(zhCnRootMeta.pages).toEqual(enRootMeta.pages);
-    expect(zhCnRootMeta.defaultOpen).toBe(enRootMeta.defaultOpen);
+    expect(enRootMeta.defaultOpen).toBe(false);
+    expect(zhCnRootMeta.defaultOpen).toBe(true);
 
     for (const folder of Object.values(FAQ_CATEGORY_FOLDER)) {
       const enCategoryMeta = readMeta(path.join(faqRoot, folder, 'meta.json'));

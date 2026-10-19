@@ -7,16 +7,19 @@ vi.mock('./site-region', async (importOriginal) => ({
 vi.mock('./source.server', () => ({
   source: {
     getPageTree: () => ({ name: 'Docs', children: [] }),
-    getPages: () => ['return_404', 'unlisted-private-page'].map(slug => ({
-      type: 'docs',
-      path: `zh-CN/reference/faq/integration/${slug}.mdx`,
-      slugs: ['zh-CN', 'reference', 'faq', 'integration', slug],
-      url: `/zh-CN/reference/faq/integration/${slug}`,
-      data: { title: slug, getText: async () => '公开问答正文。' },
-    })),
+    getPages: () =>
+      ['return_404', 'unlisted-private-page'].map((slug) => ({
+        type: 'docs',
+        path: `zh-CN/reference/faq/integration/${slug}.mdx`,
+        slugs: ['zh-CN', 'reference', 'faq', 'integration', slug],
+        url: `/zh-CN/reference/faq/integration/${slug}`,
+        data: { title: slug, getText: async () => '公开问答正文。' },
+      })),
   },
 }));
-vi.mock('./openapi/markdown', () => ({ getOpenApiMarkdownPages: async () => [] }));
+vi.mock('./openapi/markdown', () => ({
+  getOpenApiMarkdownPages: async () => [],
+}));
 
 import { loadDocsSearchIndex } from './docs-page.server';
 

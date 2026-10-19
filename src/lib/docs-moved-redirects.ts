@@ -1,10 +1,7 @@
 import { ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS } from './zh-cn-moved-solution-product-redirects';
 
 const ZH_CN_AI_GUIDE_REDIRECTS = new Map([
-  [
-    'user-guides/rest-tool',
-    '/zh-CN/ai/build/shape-the-conversation/rest-tool',
-  ],
+  ['user-guides/rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool'],
   [
     'user-guides/asr-keywords',
     '/zh-CN/ai/build/custom-model-integration/asr-keywords',

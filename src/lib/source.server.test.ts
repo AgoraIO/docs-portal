@@ -32,28 +32,28 @@ describe('fumadocs source loader', () => {
     ).toBeUndefined();
   });
 
-  it.each([
-    'web',
-    'electron',
-  ])('keeps hidden Flexible Classroom %s Edu Store detail routes reachable', (platform) => {
-    const detailRoutes = [
-      ['modules', 'agora-edu-core-src-configs-index'],
-      ['classes', 'agora-edu-core-src-configs-index-du-classroom-config'],
-      ['interfaces', 'agora-edu-core-src-configs-index-hiteboard-defaults'],
-      ['enums', 'agora-edu-core-src-configs-index-latform'],
-    ];
-
-    for (const detailRoute of detailRoutes) {
-      const slugs = [
-        'api-reference',
-        'flexible-classroom',
-        platform,
-        'api-reference',
-        'edu-store',
-        ...detailRoute,
+  it.each(['web', 'electron'])(
+    'keeps hidden Flexible Classroom %s Edu Store detail routes reachable',
+    (platform) => {
+      const detailRoutes = [
+        ['modules', 'agora-edu-core-src-configs-index'],
+        ['classes', 'agora-edu-core-src-configs-index-du-classroom-config'],
+        ['interfaces', 'agora-edu-core-src-configs-index-hiteboard-defaults'],
+        ['enums', 'agora-edu-core-src-configs-index-latform'],
       ];
-      const page = source.getPage(slugs, 'zh-CN');
-      expect(page?.url).toBe(`/zh-CN/${slugs.join('/')}`);
-    }
-  });
+
+      for (const detailRoute of detailRoutes) {
+        const slugs = [
+          'api-reference',
+          'flexible-classroom',
+          platform,
+          'api-reference',
+          'edu-store',
+          ...detailRoute,
+        ];
+        const page = source.getPage(slugs, 'zh-CN');
+        expect(page?.url).toBe(`/zh-CN/${slugs.join('/')}`);
+      }
+    },
+  );
 });

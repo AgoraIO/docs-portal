@@ -31,6 +31,7 @@ const LEGACY_LIST_PATTERNS = [
 ];
 
 const LEGACY_ARTICLE_PATTERNS = [
+  /\/zh-CN\/api-reference\/faq\/(?:([A-Za-z0-9_-]+)\/)?([^/?#)\]}> '"`]+)(#[^?)\]}> '"`]+)?(?:\?[^)\]}> '"`]+)?/g,
   /https?:\/\/doc\.shengwang\.cn\/faq\/(?!list\b)(?:([A-Za-z0-9_-]+)\/)?([^/?#)\]}> '"`]+)(#[^?)\]}> '"`]+)?(?:\?[^)\]}> '"`]+)?/g,
   /https?:\/\/docs\.agora\.io\/(?:cn|en)\/(?:[^/?#)\]}> '"`]+\/)*faq\/([^/?#)\]}> '"`]+)(#[^?)\]}> '"`]+)?(?:\?[^)\]}> '"`]+)?/g,
   /(?<![A-Za-z0-9_-])\/faq\/(?!list\b)(?:([A-Za-z0-9_-]+)\/)?([^/?#)\]}> '"`]+)(#[^?)\]}> '"`]+)?(?:\?[^)\]}> '"`]+)?/g,
@@ -136,7 +137,10 @@ function createSlugMap(rows) {
   for (const row of rows) {
     const href = `/${row.targetPath
       .replace(/^content\/docs\//, '')
-      .replace(/\.mdx$/, '')}`;
+      .replace(/\.mdx$/, '')}`.replace(
+      /^\/zh-CN\/api-reference\/faq(?=\/|$)/,
+      '/zh-CN/reference/faq',
+    );
     const targetStem = path.posix.basename(row.targetPath, '.mdx');
     for (const alias of aliasesFor(row.sourceSlug, targetStem)) {
       addAlias(map, alias, href);
@@ -180,13 +184,11 @@ function listHrefFor(match) {
   const query = match.includes('?') ? match.slice(match.indexOf('?') + 1) : '';
   const params = new URLSearchParams(query);
   const folder = CATEGORY_TO_FOLDER[params.get('category') ?? ''];
-  return folder
-    ? `/zh-CN/reference/faq/${folder}`
-    : '/zh-CN/reference/faq';
+  return folder ? `/zh-CN/reference/faq/${folder}` : '/zh-CN/reference/faq';
 }
 
 function articleGroups(pattern, first, second, third) {
-  if (pattern === LEGACY_ARTICLE_PATTERNS[1]) {
+  if (pattern === LEGACY_ARTICLE_PATTERNS[2]) {
     return {
       hash: second,
       slug: first,

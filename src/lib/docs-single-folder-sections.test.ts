@@ -6,7 +6,7 @@ import { source } from './source.server';
 const docsRoot = resolve(process.cwd(), 'content/docs');
 
 describe('single-folder docs sections', () => {
-  it('does not keep navigation sections whose only page is another folder', () => {
+  it('does not keep guide navigation sections whose only page is another folder', () => {
     expect(findSingleFolderSections()).toEqual([]);
   });
 
@@ -83,6 +83,11 @@ describe('single-folder docs sections', () => {
 
 function findSingleFolderSections() {
   return listMetaFiles(docsRoot).flatMap((metaPath) => {
+    // API wrappers preserve product/platform/version TOC boundaries; this rule
+    // targets redundant guide folders, not generated API navigation scopes.
+    if (metaPath.startsWith(join(docsRoot, 'zh-CN', 'api-reference'))) {
+      return [];
+    }
     const meta = JSON.parse(readFileSync(metaPath, 'utf8')) as {
       pages?: unknown;
       title?: string;

@@ -28,7 +28,7 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
-  it('marks all 76 flattened zh-CN Build routes as permanent redirects', () => {
+  it('marks all maintained flattened zh-CN Build routes as permanent redirects', () => {
     for (const [path, redirectUrl] of Object.entries(
       ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
     )) {

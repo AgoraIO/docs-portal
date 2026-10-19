@@ -380,11 +380,7 @@ describe('docs route locale guards', () => {
   });
 
   it.each([
-    [
-      'rest-tool',
-      '/zh-CN/ai/build/shape-the-conversation/rest-tool',
-      false,
-    ],
+    ['rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool', false],
     [
       'asr-keywords',
       '/zh-CN/ai/build/custom-model-integration/asr-keywords',
@@ -395,11 +391,7 @@ describe('docs route locale guards', () => {
       '/zh-CN/ai/build/shape-the-conversation/filler-words',
       false,
     ],
-    [
-      'rest-tool',
-      '/zh-CN/ai/build/shape-the-conversation/rest-tool',
-      true,
-    ],
+    ['rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool', true],
     [
       'asr-keywords',
       '/zh-CN/ai/build/custom-model-integration/asr-keywords',
@@ -987,8 +979,16 @@ describe('docs route locale guards', () => {
 
       const indexText = await indexResponse.text();
 
-      expect(indexText).toContain('/en/');
+      expect(indexText).toContain('/llms/');
       expect(indexText).not.toContain('/zh-CN/');
+      const section = indexText.match(/\]\([^)]*\/llms\/([^)]*\.txt)\)/)?.[1];
+      expect(section).toBeDefined();
+      const sectionResponse = (await getGetHandler(LlmsSectionRoute)({
+        params: { _splat: section },
+      } as never)) as Response;
+      const sectionText = await sectionResponse.text();
+      expect(sectionText).toContain('/en/');
+      expect(sectionText).not.toContain('/zh-CN/');
     },
     REAL_DOCS_ROUTE_TIMEOUT,
   );
