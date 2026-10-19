@@ -104,7 +104,7 @@ export function DocsTaskFeedback({
                 if (!value) return;
                 answer('resolution', value);
               }}
-              variant="outline"
+              variant="contrast"
               size="sm"
               spacing={2}
               className="flex-wrap justify-start"
@@ -130,7 +130,7 @@ export function DocsTaskFeedback({
                 if (!value) return;
                 answer('ease', value);
               }}
-              variant="outline"
+              variant="contrast"
               size="sm"
               spacing={2}
             >
@@ -164,7 +164,7 @@ export function DocsTaskFeedback({
               onValueChange={(value) => {
                 answer('reasons', value);
               }}
-              variant="outline"
+              variant="contrast"
               size="sm"
               spacing={2}
               className="flex-wrap justify-start"
