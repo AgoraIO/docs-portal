@@ -2,23 +2,25 @@
 
 ## 2026-10-19：最终目标 URL 去除语言前缀
 
-最终化脚本现在会先按原始候选及路由快照完成校验，再仅移除目标路径开头的完整 `/zh-CN` 段。例如 `/zh-CN/realtime-media/rtc/overview#intro` 输出为 `/realtime-media/rtc/overview#intro`。目标中的查询参数和锚点不变；候选记录中的旧站源 URL、映射关系、状态、查询参数保留策略及 5 条 `no-redirect` 记录不变。
+最终化脚本现在会先按原始候选及路由快照完成校验，再移除目标路径开头的完整 `/zh-CN` 段。例如 `/zh-CN/realtime-media/rtc/overview#intro` 输出为 `/realtime-media/rtc/overview#intro`。继续重定向的目标中的查询参数和锚点不变；旧站源 URL、其余映射关系、查询参数保留策略及原有 5 条 `no-redirect` 记录不变。
 
 以下四份最终产物统一使用无前缀目标：`legacy-url-map.json`、`legacy-url-map.csv`、`legacy-url-redirects.vercel.json`、`legacy-url-redirects.nginx.conf`。最终 JSON 的 `targetUrlTransform: "remove-zh-CN-prefix"` 记录该转换策略。
 
-去前缀后，原 `/search` 映射的目标也是 `/search`。映射 JSON/CSV 保留该记录及原始状态，但 Vercel/Nginx 不输出这条路径级 301，避免相对目标自循环。因此映射仍有 8216 条候选，实际配置各有 **8215 条**规则；最终 JSON 汇总中的 `emittedRedirects: 8215`、`skippedSamePathRedirects: 1` 显式记录差异。下面历史报告中的“8216 条配置逐条一致”描述的是去前缀之前的产物。
+去前缀后，原 `/search` 映射的目标也是 `/search`，无需重定向。最终 JSON/CSV 将该记录改为 `status: "no-redirect"`、`target: ""`、`targetExists: false`，并以 `mappingType: "same-path-no-redirect"` 和 notes 注明“公开路径未变化，由新站直接服务”。这里的 `targetExists: false` 表示没有重定向目标，不表示搜索页缺失。
+
+最终统计统一为 **8215 条重定向、6 条 `no-redirect`，共 8221 条记录**。Vercel/Nginx 直接由最终记录中的重定向项生成，各有 8215 条规则；不再在输出配置时额外过滤 `/search`。原先的 `emittedRedirects`、`skippedSamePathRedirects` 字段已移除，映射状态与实际输出一致。
 
 上线时 `/search` 必须由承接这些规则的 host 上的新站直接服务；如果新旧站位于不同 host，需另行配置目标 origin，不能直接把相对路径草稿加载到仍只服务旧站的 host。被省略的 `/search` 不再通过 301 丢弃查询参数，搜索参数将直接交给应用处理；其余已输出规则的查询参数策略不变。
 
-历史候选、人工覆盖表、目标路由快照、目标 commit 和 SHA-256 保持原样，仍带 `/zh-CN`，用于追溯原始映射证据。下文的目标存在性结论及最终记录中的 `targetExists` 均指**转换前的历史路由快照校验**，不证明无前缀 URL 已经可以在线访问。`generatedAt` 继续继承候选快照日期，不作为本次重新生成时间。
+历史候选、人工覆盖表、目标路由快照、目标 commit 和 SHA-256 保持原样，仍带 `/zh-CN`，用于追溯原始映射证据。原始候选中的 `/search` 仍保留 `/zh-CN/search` 目标和原状态。下文的目标存在性结论及最终重定向记录中的 `targetExists: true` 均指**转换前的历史路由快照校验**，不证明无前缀 URL 已经可以在线访问。`generatedAt` 继续继承候选快照日期，不作为本次重新生成时间。
 
 运行 `bun run shengwang-redirects:finalize` 可重新生成四份最终产物；运行 `bun run shengwang-redirects:check` 可只读检查其一致性。部署前必须确认新站已支持无前缀路由，并再次检查实际目标、响应码、`Location` 和跳转链。本次没有改造新站路由、修改生效中的部署配置或部署这些草稿。
 
-本次验证：目标转换、产物一致性和 resolver 定向测试 21/21 通过；`shengwang-redirects:check`、`types:check`、修改脚本的 Biome 检查及 `git diff --check` 通过。全部输出规则无直接或多跳循环。全量测试仍有 103 项失败，失败集合与修改前其他区域的基线一致，未扩大到本次改动。
+本次验证：目标转换、产物一致性和 resolver 定向测试 22/22 通过，包含 `/search` 最终状态的回归测试；`shengwang-redirects:check`、`types:check`、修改脚本的 Biome 检查及 `git diff --check` 通过。全部输出规则无直接或多跳循环。全量测试原有 103 项失败的情况单独记录于 PR 验证说明。
 
-## 结论
+## 原始候选快照结论（转换前）
 
-本报告对应目标 commit `32883e92e9`，覆盖当前最终映射中的 8216 条 301 规则。
+以下历史审计对应目标 commit `32883e92e9`，覆盖去语言前缀之前的 8216 条 301 候选，不代表当前最终产物统计。
 
 - 源 URL：8221 条，全部唯一；
 - 301 候选：8216 条；

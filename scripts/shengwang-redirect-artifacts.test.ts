@@ -11,6 +11,34 @@ function readJson<T>(fileName: string): T {
 }
 
 describe('Shengwang redirect artifacts', () => {
+  it('marks the unchanged public search path as no-redirect in the final map', () => {
+    const finalMap = readJson<{
+      summary: { redirect: number; noRedirect: number };
+      records: Array<{
+        legacyPath: string;
+        target: string;
+        status: string;
+        targetExists: boolean;
+        mappingType: string;
+        notes: string;
+      }>;
+    }>('legacy-url-map.json');
+    const search = finalMap.records.find(
+      (record) => record.legacyPath === '/search',
+    );
+
+    expect(search).toMatchObject({
+      legacyPath: '/search',
+      target: '',
+      status: 'no-redirect',
+      targetExists: false,
+      mappingType: 'same-path-no-redirect',
+    });
+    expect(search?.notes).toContain('公开路径未变化，由新站直接服务');
+    expect(finalMap.summary.redirect).toBe(8215);
+    expect(finalMap.summary.noRedirect).toBe(6);
+  });
+
   it('finalizes a checked candidate into equivalent redirect artifacts', () => {
     const output = execFileSync(
       process.execPath,
@@ -26,13 +54,14 @@ describe('Shengwang redirect artifacts', () => {
         legacyPath: string;
         target: string;
         status: string;
+        notes: string;
       }>;
     }>('legacy-url-map-candidate-32883e92e9-2026-10-15.json');
     const finalMap = readJson<{
       generatedAt: string;
       snapshot: unknown;
       targetUrlTransform: string;
-      summary: { emittedRedirects: number; skippedSamePathRedirects: number };
+      summary: { redirect: number; noRedirect: number };
       records: Array<{
         legacyPath: string;
         target: string;
@@ -47,24 +76,35 @@ describe('Shengwang redirect artifacts', () => {
         preserveQueryParams: boolean;
       }>
     >('legacy-url-redirects.vercel.json');
-    const redirects = candidate.records.filter(
+    const originalRedirects = candidate.records.filter(
       (record) => record.status === 'candidate',
     );
 
     expect(finalMap.generatedAt).toBe(candidate.generatedAt);
     expect(finalMap.snapshot).toEqual(candidate.snapshot);
     expect(finalMap.targetUrlTransform).toBe('remove-zh-CN-prefix');
-    expect(finalMap.summary.emittedRedirects).toBe(8215);
-    expect(finalMap.summary.skippedSamePathRedirects).toBe(1);
-    const expectedRecords = candidate.records.map((record) => ({
-      ...record,
-      target: record.target.replace(/^\/zh-CN\//, '/'),
-    }));
+    expect(finalMap.summary.redirect).toBe(8215);
+    expect(finalMap.summary.noRedirect).toBe(6);
+    const expectedRecords = candidate.records.map((record) =>
+      record.legacyPath === '/search'
+        ? {
+            ...record,
+            target: '',
+            status: 'no-redirect',
+            targetExists: false,
+            mappingType: 'same-path-no-redirect',
+            notes: `${record.notes}；公开路径未变化，由新站直接服务，无需重定向，查询参数交由应用处理。`,
+          }
+        : { ...record, target: record.target.replace(/^\/zh-CN\//, '/') },
+    );
     expect(finalMap.records).toEqual(expectedRecords);
-    expect(redirects).toHaveLength(8216);
+    expect(originalRedirects).toHaveLength(8216);
     expect(
       finalMap.records.filter((record) => record.status === 'no-redirect'),
-    ).toHaveLength(5);
+    ).toHaveLength(6);
+    expect(
+      finalMap.records.filter((record) => record.status === 'candidate'),
+    ).toHaveLength(vercel.length);
     const expectedRules = new Map(
       expectedRecords
         .filter((record) => record.status === 'candidate')
@@ -80,9 +120,7 @@ describe('Shengwang redirect artifacts', () => {
       true,
     );
     expect(actualRules.size).toBe(vercel.length);
-    // /search is already the public path; a path-only 301 would loop.
-    expect(expectedRules.get('/search')).toBe('/search');
-    expectedRules.delete('/search');
+    expect(expectedRules.has('/search')).toBe(false);
     expect(actualRules).toEqual(expectedRules);
 
     const nginx = readFileSync(

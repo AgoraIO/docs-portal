@@ -42,10 +42,24 @@ validateRecords(
   targetRouteSet,
   applicationRoutes,
 );
-const records = candidate.records.map((record) => ({
-  ...record,
-  target: toPublicRedirectTarget(record.target),
-}));
+const records = candidate.records.map((record) => {
+  const target = toPublicRedirectTarget(record.target);
+  if (
+    record.status === 'candidate' &&
+    record.legacyPath === target.split(/[?#]/, 1)[0]
+  ) {
+    return {
+      ...record,
+      target: '',
+      status: 'no-redirect',
+      targetExists: false,
+      mappingType: 'same-path-no-redirect',
+      notes: `${record.notes}；公开路径未变化，由新站直接服务，无需重定向，查询参数交由应用处理。`,
+    };
+  }
+
+  return { ...record, target };
+});
 const manualReview = records.filter(
   (record) => record.status === 'manual-review',
 );
@@ -74,12 +88,6 @@ if (missingTargets.length > 0) {
   );
 }
 
-// Path-only rules also match requests with a query or fragment. Do not emit
-// same-path redirects such as /search -> /search after removing the prefix.
-const emittedRedirects = redirects.filter(
-  (record) => record.legacyPath !== record.target.split(/[?#]/, 1)[0],
-);
-
 const finalSummary = {
   total: records.length,
   redirect: redirects.length,
@@ -87,8 +95,6 @@ const finalSummary = {
     .length,
   manualReview: manualReview.length,
   uniqueSourcePaths: new Set(records.map((record) => record.legacyPath)).size,
-  emittedRedirects: emittedRedirects.length,
-  skippedSamePathRedirects: redirects.length - emittedRedirects.length,
 };
 
 const finalMap = toCsv(records);
@@ -106,7 +112,7 @@ const finalJson = `${JSON.stringify(
   2,
 )}\n`;
 const vercelJson = `${JSON.stringify(
-  emittedRedirects.map((record) => ({
+  redirects.map((record) => ({
     source: record.legacyPath,
     destination: record.target,
     statusCode: 301,
@@ -115,7 +121,7 @@ const vercelJson = `${JSON.stringify(
   null,
   2,
 )}\n`;
-const nginxConfig = toNginx(emittedRedirects, candidate.targetCommit);
+const nginxConfig = toNginx(redirects, candidate.targetCommit);
 
 if (process.argv.includes('--check')) {
   await assertFileMatches(finalMapPath, finalMap);
@@ -311,7 +317,7 @@ function toNginx(items, targetCommit) {
     `# Generated from target commit ${targetCommit}.`,
     '# Target URL transform: remove-zh-CN-prefix.',
     '# Deploy only after the target site serves unprefixed routes.',
-    '# Same-path redirects are omitted; serve /search directly on this host.',
+    '# Same-path requests such as /search are no-redirect; serve them directly.',
     '# Review before loading into the Shengwang legacy host.',
     '',
   ];
