@@ -52,6 +52,10 @@ This is a single-context repo with root `CONTEXT.md` and optional ADRs under `do
 
 Docs content uses the minimum Markdown/Fumadocs syntax standard in `docs/agents/markdown-authoring-standard.md`. Check it before editing or migrating `content/docs/**`.
 
+### Chinese release-note merging
+
+Before merging the Chinese docs branch into `main`, or resolving release-note accordion, TOC, hash, or Markdown conflicts, read [the release-note merge guide](docs/agents/reports/2026-10-19-cn-release-notes-accordion-parity.md#后续合入-main). It identifies shared modules, intentional content changes, and merge acceptance checks.
+
 ### OpenAPI migration
 
 RESTful API YAML migration follows `docs/openapi-migration-playbook.md`. Check it before moving OpenAPI sources into `content/openapi/**` or exposing generated endpoint pages in the docs site.

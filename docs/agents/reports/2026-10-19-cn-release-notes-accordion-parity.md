@@ -60,7 +60,41 @@
 
 ## 后续合入 main
 
-保留 main 现有的共享折叠实现与英文内容，合入中文 MDX、中文 Markdown 出口及本次补充的父标签/滚动处理。主要重叠点为 `mdx.tsx`、`DocsContent.tsx`、`docs-hash.ts`、`source.server.ts`、`PlatformTabsGroup.tsx` 及标题提取模块；合并时逐项去重。
+本节是后续合并的执行入口；设计文档记录设计依据，上文记录迁移快照。适用于将中文文档分支合入 `main`，以及解决发版说明相关冲突。
+
+### 先确认实际基线
+
+获取当前远端 `main` 和中文分支，记录两端 SHA，并核对 [#1111](https://github.com/AgoraIO/docs-portal/pull/1111) 与 [#1214](https://github.com/AgoraIO/docs-portal/pull/1214) 的实际合并状态。本报告开头的 SHA 是迁移时的快照；合并时以当前代码为准。
+
+`main` 已有 #1111 的英文折叠能力。以当前共享实现为基础，逐项合入下面的中文适配；每个模块保留一份实现，两种语言共用组件与内容约定。文件迁移后，按表中的导出函数或行为定位其新位置。
+
+### 按模块处理重叠代码
+
+| 文件或模块 | 合并后必须保留的行为 |
+| --- | --- |
+| `src/components/mdx.tsx`、`src/components/docs-shell/DocsContentBody.tsx` | 一套 Accordion/Accordions；动态首项、多项展开、页面/平台状态重置；编码锚点激活所属父语言标签，并优先于保存的标签偏好。保留两侧其他参数、代码标签和普通折叠能力。 |
+| `src/components/docs-shell/DocsContent.tsx`、`src/lib/docs-hash.ts`、`src/styles/app.css` | `scrollDocsHashTargetAfterLayout` 的展开后定位；目录过滤关闭正文和非活动语言面板；版本标题及历史 section 使用页头留白。 |
+| `src/lib/mdx/accordion-toc.ts`、`src/lib/docs-page.server.ts` | `remarkAccordionHeadings` 提取版本标题供服务端目录使用；通过同一个元数据约定识别版本。 |
+| `src/lib/source.server.ts`、`src/lib/search/algolia-records.server.ts` | 折叠版本标题同时进入中文 Markdown 和搜索。英文 #1111 原来的仅限 `en` 处理需要结合中文出口适配，保留中文已有格式与链接语义。 |
+| `src/lib/platforms/processed-text.ts`、`src/components/mdx/PlatformTabsGroup.tsx` | `buildPlatformTocText` 保留跨平台去重后的标题 ID；切换平台清理旧 hash/platform 参数并保留其他参数；保留中文分支已有的平台偏好修复。 |
+| `src/lib/i18n/resources/{en,zh-CN}/common.ts` | 共享组件的 `docs.copyLink` 等标签通过现有 i18n 提供。 |
+| `content/docs/{en,zh-CN}/**` | 分别保留两侧最新发版事实与正文，按[编写标准](../markdown-authoring-standard.md#accordions)共用折叠语法；中文内层语言标签和[七个历史别名](#历史版本别名)保留在对应版本范围内。 |
+| `package.json`、`bun.lock` | 合并标题解析需要的直接依赖，如 `remark-mdx`；保留当前两侧其他依赖与补丁配置，按包管理器重新校验锁文件。 |
+
+### 保留用户确认的标题订正
+
+`content/docs/zh-CN/realtime-media/cloud-recording/reference/release-notes.mdx` 的 frontmatter title 应为 **“发版说明”**，对应修订提交 `e8faf420cd01d74f8fce45c3123522afefbd3ca4`。这是用户确认的命名变更；处理中文内容或元数据冲突时保留该值。页面标题、浏览器标题和侧栏入口应显示同一名称，页面路径仍为 `reference/release-notes`。
+
+上文云端录制正文签名对应标题订正之前的快照。核对保真时，将这处明确的标题变化与正文/版本/链接变化分别检查。
+
+### 合并验收
+
+合并说明应逐行交代上表各模块的结果：保留、合并，或已由上游等价实现替代。以下行为全部验证后，才能认定本功能的合并完成：
+
+- 中英文首项动态展开、多项比较、平台切换重置；Windows C++/C#、Electron/统信 OS 等内层标签都包含版本折叠，Fastboard 内层示例可独立展开。
+- 当前语言面板的目录正确；中文编码子节锚点激活父标签；[历史版本别名](#历史版本别名)展开匹配版本；目标标题位于固定页头下方。
+- 中文 Markdown 与搜索包含版本标题及原 ID；云端录制页面、浏览器和侧栏显示“发版说明”。
+- 运行仓库要求的完整测试、类型检查、Lint 和生产构建，并记录合并后的实际结果。现有回归入口包括 `cn-release-notes.test.ts`、`mdx.test.tsx`、`DocsContent.test.tsx`、`docs-hash.test.ts`、`docs-link-remediation.test.ts`、`source.server.test.ts`、`algolia-records.server.test.ts` 及 `app-css-regressions.test.ts`；文件位置以当前仓库为准。本报告的历史通过数不能替代合并后的复测。
 
 ## 最终验证
 
@@ -73,4 +107,4 @@
 
 ## 后续标题订正
 
-根据用户确认，将云端录制该页的 frontmatter title 从“更新历史”改为“发版说明”。上表签名记录折叠适配时的快照；本次仅订正标题元数据，正文、版本和链接保持原样。页面标题和侧栏在浏览器中核对；4182 地址切换为源码实时预览，以显示该标题修订。
+标题决策与保留规则见[用户确认的标题订正](#保留用户确认的标题订正)。本次仅修改标题元数据，正文、版本和链接保持原样；浏览器已核对页面标题、浏览器标题与侧栏名称一致。4182 地址切换为源码实时预览，以显示该修订。
