@@ -34,6 +34,10 @@ WITH captured AS (
     AND properties.site_id = 'docs_portal' AND properties.schema_version = '1'
     AND properties.deployment_region = 'cn' AND properties.locale = 'zh-CN'
     AND properties.environment = {variables.cn_docs_environment} AND properties.traffic_type = {variables.cn_docs_traffic}
+    AND (({variables.cn_docs_environment} = 'production' AND properties.$host = 'docs-portal.sh3.agoralab.co')
+      OR ({variables.cn_docs_environment} = 'staging' AND properties.$host = 'docs-portal-staging.sh3.agoralab.co')
+      OR ({variables.cn_docs_environment} = 'local' AND (properties.$host IN ('localhost', '127.0.0.1')
+        OR properties.$host LIKE 'localhost:%' OR properties.$host LIKE '127.0.0.1:%')))
     AND properties.event_id IS NOT NULL AND properties.journey_id IS NOT NULL
 ), docs_event_facts AS (
   SELECT * FROM captured WHERE event_copy = 1

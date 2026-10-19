@@ -7,7 +7,7 @@
 - 反馈按问题分别取最后有效变化；重复同值不重置确认解决时间。最后答案变为未解决时撤销解决锚点。
 - 完整解决率的分母只含 resolved/partial/not_resolved；not_verified 与无响应单列。
 - 确认耗时包含反馈延迟，只统计最终 resolved 的有效样本；易用性为最后有效 1–5 分，4–5 为易用。
-- 生产默认排除 staging、local、internal_test。使用看板的 CN Docs Environment 与 CN Docs Traffic 两个变量一起切换测试范围，不能混入生产看板。
+- 生产默认排除 staging、local、internal_test；同时核对实际 host。正式域名切换时须同步 SQL 允许的 host，不能只改环境标签。使用看板的 CN Docs Environment 与 CN Docs Traffic 两个变量一起切换测试范围，不能混入生产看板。
 - 报告用 Asia/Shanghai 的完整自然日；未满 24 小时批次单列。无有效分母用 NULL 显示尚未测得，不补零或编造基线。
 - 页面帮助度按页面视图；任务反馈按过程，不把一份过程反馈分摊到每篇文档。
 - 搜索弹窗按章节行，完整搜索页按文档卡片。请求、翻页和重试不能当新逻辑搜索。
