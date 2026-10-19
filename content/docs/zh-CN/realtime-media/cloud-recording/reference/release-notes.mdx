@@ -110,7 +110,7 @@ title: "更新历史"
 
 ## 2022.10.20
 
-本次发布在全球范围内支持延时转码功能。你需要在调用 `acquire` 接口时将 `scene` 字段设置为 `2`（延时转码），设置为该场景后，录制服务会在录制后 24 小时内对录制文件进行转码生成 MP4 文件，并将 MP4 文件上传至你指定的第三方云存储。请注意第三方云存储的 `region` 必须与调用 `acquire` 时设置的 `region` 一致。
+本次发布在全球范围内支持延时转码功能。你需要在调用 `acquire` 接口时将 `scene` 字段设置为 `2`（延时转码），设置为该场景后，录制服务会在录制后 24 小时内对录制文件进行转码生成 MP4 文件，并将 MP4 文件上传至你指定的第三方云存储。请注意第三方云存储的 `region` 必须与调用 `acquire` 时设置的 `region` 一致。详见[旧版实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/legacy-set-individual)。
 
 ## 2022.08.12
 
@@ -479,7 +479,7 @@ title: "更新历史"
 
 #### 单流录制
 
-RESTful API 新增单流录制模式，支持分开录制每个用户 ID 的音频流和视频流。同时，声网提供了音视频合并脚本，用于合并单流录制模式下生成的音频和视频文件。使用方法详见[转换录制文件格式](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)。
+RESTful API 新增单流录制模式，支持分开录制每个用户 ID 的音频流和视频流。使用方法详见[旧版实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/legacy-set-individual)。同时，声网提供了音视频合并脚本，用于合并单流录制模式下生成的音频和视频文件。使用方法详见[转换录制文件格式](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)。
 
 #### 录制指定用户 ID 的音视频流
 

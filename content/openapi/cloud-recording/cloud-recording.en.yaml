@@ -1751,7 +1751,7 @@ components:
             - `"hls"`: M3U8 and TS files.
             - `"mp4"`: MP4 files.
 
-             In individual recording mode (non-screenshot-only), use the default value. In composite recording and web page recording modes, set to `["hls","mp4"]` to generate MP4 files. Setting to `["mp4"]` alone causes an error. In composite recording mode, a new MP4 file is created when the current file exceeds ~2 hours or ~2 GB. In web page recording mode, a new MP4 file is created when the current file exceeds `maxVideoDuration`.
+             In individual recording mode (non-screenshot-only), use the default value. In composite recording and web page recording modes, set to `["hls","mp4"]` to generate MP4 files. Setting to `["mp4"]` alone causes an error. In composite recording mode, a new MP4 file is created when the current file exceeds ~3 hours or ~2 GB. In web page recording mode, a new MP4 file is created when the current file exceeds `maxVideoDuration`.
           items:
             type: string
             enum:
@@ -1881,7 +1881,7 @@ components:
           description: Whether to enable mobile web mode.
         maxVideoDuration:
           type: integer
-          default: 120
+          default: 180
           minimum: 30
           maximum: 240
           description: >-
