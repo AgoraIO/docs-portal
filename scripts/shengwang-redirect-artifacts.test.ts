@@ -7,9 +7,7 @@ const repoRoot = process.cwd();
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
 
 function readJson<T>(fileName: string): T {
-  return JSON.parse(
-    readFileSync(path.join(inputRoot, fileName), 'utf8'),
-  ) as T;
+  return JSON.parse(readFileSync(path.join(inputRoot, fileName), 'utf8')) as T;
 }
 
 describe('Shengwang redirect artifacts', () => {
@@ -33,6 +31,8 @@ describe('Shengwang redirect artifacts', () => {
     const finalMap = readJson<{
       generatedAt: string;
       snapshot: unknown;
+      targetUrlTransform: string;
+      summary: { emittedRedirects: number; skippedSamePathRedirects: number };
       records: Array<{
         legacyPath: string;
         target: string;
@@ -53,28 +53,80 @@ describe('Shengwang redirect artifacts', () => {
 
     expect(finalMap.generatedAt).toBe(candidate.generatedAt);
     expect(finalMap.snapshot).toEqual(candidate.snapshot);
-    expect(finalMap.records).toEqual(candidate.records);
+    expect(finalMap.targetUrlTransform).toBe('remove-zh-CN-prefix');
+    expect(finalMap.summary.emittedRedirects).toBe(8215);
+    expect(finalMap.summary.skippedSamePathRedirects).toBe(1);
+    const expectedRecords = candidate.records.map((record) => ({
+      ...record,
+      target: record.target.replace(/^\/zh-CN\//, '/'),
+    }));
+    expect(finalMap.records).toEqual(expectedRecords);
+    expect(redirects).toHaveLength(8216);
+    expect(
+      finalMap.records.filter((record) => record.status === 'no-redirect'),
+    ).toHaveLength(5);
     const expectedRules = new Map(
-      redirects.map((record) => [record.legacyPath, record.target]),
+      expectedRecords
+        .filter((record) => record.status === 'candidate')
+        .map((record) => [record.legacyPath, record.target]),
     );
     const actualRules = new Map(
       vercel.map((rule) => [rule.source, rule.destination]),
     );
     expect(vercel.every((rule) => rule.statusCode === 301)).toBe(true);
-    expect(vercel.every((rule) => rule.preserveQueryParams === false)).toBe(true);
+    expect(vercel.some((rule) => rule.source === rule.destination)).toBe(false);
+    expect(vercel).toHaveLength(8215);
+    expect(vercel.every((rule) => rule.preserveQueryParams === false)).toBe(
+      true,
+    );
     expect(actualRules.size).toBe(vercel.length);
+    // /search is already the public path; a path-only 301 would loop.
+    expect(expectedRules.get('/search')).toBe('/search');
+    expectedRules.delete('/search');
     expect(actualRules).toEqual(expectedRules);
 
     const nginx = readFileSync(
       path.join(inputRoot, 'legacy-url-redirects.nginx.conf'),
       'utf8',
     );
+    expect(nginx).toContain('# Target URL transform: remove-zh-CN-prefix.');
     const nginxRules = [
       ...nginx.matchAll(
-        /^location = ([^\s]+) \{\n  return 301 ([^;]+);\n\}$/gm,
+        /^location = ([^\s]+) \{\n {2}return 301 ([^;]+);\n\}$/gm,
       ),
     ].map((match) => [match[1], match[2]] as const);
     expect(new Map(nginxRules).size).toBe(nginxRules.length);
     expect(new Map(nginxRules)).toEqual(expectedRules);
+
+    const csvColumns = [
+      'legacyUrl',
+      'legacyPath',
+      'legacyFamily',
+      'target',
+      'status',
+      'confidence',
+      'mappingType',
+      'source',
+      'targetExists',
+      'preserveQuery',
+      'notes',
+    ];
+    const expectedCsv = `${csvColumns.join(',')}\n${expectedRecords
+      .map((record) =>
+        csvColumns
+          .map((column) => {
+            const value = String(
+              (record as Record<string, unknown>)[column] ?? '',
+            );
+            return /[",\n\r]/.test(value)
+              ? `"${value.replaceAll('"', '""')}"`
+              : value;
+          })
+          .join(','),
+      )
+      .join('\n')}\n`;
+    expect(
+      readFileSync(path.join(inputRoot, 'legacy-url-map.csv'), 'utf8'),
+    ).toBe(expectedCsv);
   });
 });
