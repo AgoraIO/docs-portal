@@ -25,3 +25,7 @@
 - 与#2108/#1224同release及reduce文件不同小节，保留CDN日期/提醒/正确下载锚点；两quickstart现有双仓库+mavenCentral配置不变。组合树无论是否文本冲突都核验双方。
 - frozen install、定向、types、所有修改MDX实际编译与语法、links/fragment、Biome、允许区间外一致性/历史数据保护/diffcheck；不改锁文件/英文/runtime/meta/归档策略。
 - full/build/preview主控独占调度，未经放行不得自启。轻量提交READY_WITHOUT_FULL后独立spec→quality，root复跑并做组合验收；由root推送与建PR，未合入不称生效。
+
+## 已批准的测试写集例外
+
+主控批准仅在 `src/components/docs-overview/SdksCatalog.test.tsx` 的 Chinese metadata case 中，将 Android Voice MD5 和发布日期两项预期更新为源 4.7.0 数据；英文和其他产品断言不动。修改前同一三文件定向命令真实结果为 105 项通过、1 项因旧 4.6.3 MD5 预期失败，须在修复报告保留该证据并以同命令复验。生产写集仍为上述 8 文件，新增 TDD 23 项检查保留；此例外不放行 full/build/preview。
