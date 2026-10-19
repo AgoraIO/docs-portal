@@ -1,6 +1,7 @@
 # P0 implementation review — 2026-10-19
 
-Runtime source: `8802e22eface30960d2404d6c6f7235874870bfd`.
+Final runtime candidate: `e113a424668dc9bf62477351a07dac2d3164a065`.
+Functional staging baseline: `8802e22eface30960d2404d6c6f7235874870bfd` (build #107).
 Base: `7c6c60ead44406e69906c5c3808cd489784aa89e`.
 Deployment recipe: `01f509a7f179f24e800b5ab88b8a7b8d1cd38e07`.
 
@@ -46,5 +47,21 @@ The SQL-only regression fixture runs without inserting fake events. Actual marke
 - Actual compressed collector requests decoded for an email-shaped test query: no raw test address, URL query/hash or DOM text; search query is `[redacted]`.
 - Quality runner checks retrieval in the top three document units, metadata compatibility, HTTP targets and static anchors. SDK/task correctness remains `not_reviewed` pending product-owner review.
 
-Build #104 failed before deployment at server import protection. Build #105 was cancelled before deployment to incorporate the newer Chinese base. Build #107 is queued behind another user’s #106; that build is unchanged. The current candidate includes the platform-preference paint regression fix and passes all tests. Staging release and real ingestion receipts will be recorded after successful deployment. Production rollout is outside this change; its P0 build flag stays disabled.
+## Actual staging receipt
+
+Build [#107](https://web-jenkins.agoralab.co/job/docs-portal-2026/job/hci-master/107/console) succeeded. Source `8802e22ef` passed index coverage, preparation and promotion; all 8216 legacy redirects and 5 exclusions; frontend/source identity; health, aggregated search, platform filters, pagination and login redirects.
+
+Actual browser visits on that release produced all nine P0 event types in PostHog 509917, with the staging host/environment/source. Received counts matched distinct event IDs. Dialog keyboard/mouse, same-document selection, full-page filters/load more, controlled request failure/retry and new-tab arrivals were linked. Actual MDX, OpenAPI and restored-platform bodies were observed.
+
+The shared SQL returned the final modified answers and withdrawn reasons. Search-page feedback cleared the previous document attribution; page helpfulness retained its own page scope. All three marked test journeys were immature at query time; none is a production business measurement. The noopener tab does not inherit the tab-local test marker, so that arrival was correlated by explicit journey/search IDs and remains excluded from production by host/environment.
+
+Five actual gzip collector packets passed the email/query/hash/DOM-text/recording check. All 20 retrieval cases passed on source `8802e22ef`; SDK task correctness remains unreviewed. English routes are not published in this Chinese build; the Chinese-only gate is unit-tested rather than claimed as a live rendered-English check.
+
+Curated receipts: [events](evidence/2026-10-19-b107/events.json), [renderers](evidence/2026-10-19-b107/renderers.json), [search lifecycle](evidence/2026-10-19-b107/search-lifecycle.json), [final feedback facts](evidence/2026-10-19-b107/feedback-facts.json), [privacy](evidence/2026-10-19-b107/outbound-privacy.json), [retrieval](evidence/2026-10-19-b107/retrieval-quality.json), [pipeline](evidence/2026-10-19-b107/pipeline.json).
+
+## Final UI follow-up
+
+Screenshot inspection on staging found weak selected-state contrast in dark mode. Candidate `e113a4246` adds an opt-in semantic-color toggle variant for the three feedback groups. Both themes show clear foreground/background contrast in the actual local preview. The focused test, two-file Biome check, type check and full suite (227 files; 2891 pass, 2 skipped) pass. Both independent reviews cleared this UI-only delta. Build #108 is running the same full staging recipe; final staging screenshots and receipt remain pending.
+
+Build #104 failed before deployment at server import protection; the boundary is fixed. Build #105 was cancelled before deployment to incorporate the newer Chinese base. Another user’s #106 was untouched and timed out before deployment. Production rollout is outside this change; its P0 build flag stays disabled.
 

@@ -1,12 +1,12 @@
 {
-  "status": "queued_for_staging_deployment",
-  "application_source": "8802e22eface30960d2404d6c6f7235874870bfd",
+  "status": "functional_staging_verified_final_ui_build_in_progress",
+  "application_source": "e113a424668dc9bf62477351a07dac2d3164a065",
   "deployment_recipe": "01f509a7f179f24e800b5ab88b8a7b8d1cd38e07",
   "environment": "staging",
   "origin": "https://docs-portal-staging.sh3.agoralab.co",
   "posthog_project_id": 509917,
-  "jenkins_build": 107,
-  "jenkins_url": "https://web-jenkins.agoralab.co/job/docs-portal-2026/job/hci-master/107/console",
+  "jenkins_build": 108,
+  "jenkins_url": "https://web-jenkins.agoralab.co/job/docs-portal-2026/job/hci-master/108/console",
   "production_p0_enabled": false,
   "preflight": {
     "focused_tests": {
@@ -39,59 +39,97 @@
       "machine_readable_files": 8050,
       "route_html_files": 7741,
       "scope": "local build; real staging deployment remains pending"
-    }
+    },
+    "jenkins_pipeline_gate_tests": {
+      "build": 107,
+      "passed": 17
+    },
+    "jenkins_authenticated_index_preflight": "pass"
   },
   "checks": {
     "full_page_search_and_results": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Actual full search shows document cards; one submitted fact per logical query."
     },
     "result_selection_and_visible_body": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Mouse and keyboard selections linked to actually visible content."
     },
     "same_document_dialog_selection": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Two visible body arrivals for keyboard then same-page mouse selection under the same search id."
     },
     "new_problem_rechecks_visible_body": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Explicit new problem clears answers and records the already-visible body in the new journey."
     },
     "empty_search_with_optional_feedback": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Visible zero-results state retains optional feedback; not treated as request failure."
     },
     "visible_request_failure_and_retry": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Scoped browser network block produced visible error and one failure fact; block removed; retry plus load more retained search id."
     },
     "filters_and_load_more_preserve_search_units": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Load more retains logical search id; explicit platform change creates new search; document and section units remain distinct."
     },
     "keyboard_and_new_tab_attribution": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Keyboard, mouse and noopener new-tab navigation linked by journey/search/selection ids. New-tab test marker is tab-local; linked arrival remains staging and excluded by production host guard."
     },
     "mdx_and_platform_body_context": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "MDX, platform-specific and restored iOS generic body verified; unpainted default Android was not counted."
     },
     "openapi_body_context": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Actual OpenAPI resource page emitted content_type=openapi, platform=restful-api."
     },
     "feedback_revisions_and_reason_withdrawal": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Shared SQL returned final resolution/ease/reasons, removed withdrawn reasons and cleared old document attribution on search-page revisions."
     },
     "page_helpfulness_keeps_page_scope": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Shared SQL keeps page_helpfulness=yes attached to its original introduction document view."
     },
     "english_route_has_no_p0_feedback": {
-      "status": "pending"
+      "status": "not_applicable_live_cn_build",
+      "note": "English routes are not published by the Chinese build; Chinese-only gate is covered by unit tests. No claim of rendered-English live verification."
     },
     "actual_collector_payload_privacy": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "Five real gzip packets decoded: synthetic email redacted, URL query/hash and DOM text absent, no recording events; buffer not truncated."
     },
     "posthog_marked_event_and_fact_receipt": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "All nine event types received in project 509917 at actual staging host/release; counts equal distinct event ids. Three test journeys remain immature and are not business KPI samples."
     },
     "desktop_mobile_screenshots": {
-      "status": "pending"
+      "status": "superseded_pending_final_ui",
+      "build": 107,
+      "note": "Actual 390px mobile layout has no horizontal overflow; screenshots found weak selected-state contrast, fixed for build 108. Final screenshots pending."
     },
     "20_retrieval_quality_cases": {
-      "status": "pending"
+      "status": "pass",
+      "build": 107,
+      "note": "20 pass, zero errors/review flags for retrieval/metadata/HTTP/anchor checks only; SDK task correctness not reviewed."
     }
   },
   "content_task_correctness": "not_reviewed",
@@ -119,14 +157,52 @@
     },
     {
       "build": 106,
-      "status": "other_user_build",
+      "status": "other_user_build_failed_before_deployment",
       "source": "7c6c60ead44406e69906c5c3808cd489784aa89e",
-      "action": "untouched"
+      "action": "untouched",
+      "reason": "index preparation HTTP request timed out; no active release change"
     },
     {
       "build": 107,
-      "status": "queued",
+      "status": "success_verified",
       "source": "8802e22eface30960d2404d6c6f7235874870bfd"
+    },
+    {
+      "build": 108,
+      "status": "in_progress",
+      "source": "e113a424668dc9bf62477351a07dac2d3164a065",
+      "reason": "Final selected-state contrast fix found during staging screenshot review."
     }
-  ]
+  ],
+  "functional_baseline": {
+    "build": 107,
+    "source": "8802e22eface30960d2404d6c6f7235874870bfd",
+    "status": "pass",
+    "evidence_directory": "evidence/2026-10-19-b107",
+    "scope": "Complete actual staging functional, ingestion, privacy and retrieval QA."
+  },
+  "final_ui_delta": {
+    "source": "e113a424668dc9bf62477351a07dac2d3164a065",
+    "files": [
+      "src/components/ui/toggle.tsx",
+      "src/components/docs-shell/DocsTaskFeedback.tsx"
+    ],
+    "scope": "Opt-in selected-state contrast only; no event or state logic changes.",
+    "types": "pass",
+    "biome": "pass",
+    "focused_test": "pass",
+    "full_suite": {
+      "files": 227,
+      "passed": 2891,
+      "skipped": 2,
+      "failed": 0
+    },
+    "standards_review": "pass",
+    "spec_review": "pass",
+    "local_theme_checks": [
+      "dark selected background light with dark text",
+      "light selected background dark with white text"
+    ],
+    "actual_staging": "pending_build_108"
+  }
 }
