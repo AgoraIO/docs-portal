@@ -25,3 +25,7 @@
 - 报告 `docs/agents/reports/2026-10-19-hotfix-pr2069-fix.md` 包含36文件与shared闭包、已在/修复/源矛盾/遗留债分类。175共同正文+3其他平台的 alias.key 占位在 #1185 前已有，不夹带全平台重构；新增mini块未展开占位数为0，但两错误名/RTMConfig属于本源实缺必须修。
 - 轻量定向、类型、所有修改MDX实际编译/语法、links、Biome、最小差异/范围保护；锁文件/其他产品/英文不改。需要UI渲染验收，由主控统一排队预览。
 - full/build/preview由主控独占调度，实施者未经授权不得自启。独立spec后独立quality，root复跑与组合验收后推送建PR。已建PR不称已合入或线上。
+
+## 浏览器验收后的同写集补充
+
+真实统一目录选中小程序后，single-version fallback仅显示npm命令/包管理器，不展示版本与发布日期；仅在数据对象中补字段不足以承接源首页新增SDK卡的可见事实。因此批准在RTM首页现有“更多入口”Cards内、通用下载卡之后增加现有Card：小程序SDK（Beta），直达源npm页，description显示包名、2.3.0-beta.0和2026年7月16日。仍只改原index文件，不改runtime/type/新下载页；新增真实下载Card作用域RED→GREEN并双审增量，主控重新截图与最终组合回归。原独占full结果按其当时SHA保留，不能冒充补卡后的结果。
