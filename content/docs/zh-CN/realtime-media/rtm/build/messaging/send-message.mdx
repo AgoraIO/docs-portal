@@ -458,13 +458,13 @@ publish_option.channelType = AgoraRtmChannelTypeUser;
 ```javascript
 // 发送字符串消息
 const payload = "Hello Agora!";
-const channelName = "chat_room";
+const userId = "Tony";
 const options = {
     customType: "PlainTxt",
     channelType: "USER",
 };
 try {
-    const result = await rtm.publish(channelName, payload, options);
+    const result = await rtm.publish(userId, payload, options);
 } catch (status) {
     const { operation, reason, errorCode } = status;
     console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
@@ -475,10 +475,10 @@ try {
 // 发送二进制消息
 const message = "Hello Agora!";
 const payload = new TextEncoder().encode(message);
-const channelName = "chat_room";
+const userId = "Tony";
 const options = { customType:"ByteArray", channelType: "USER" }
 try {
-    const result = await rtm.publish(channelName, payload, options);
+    const result = await rtm.publish(userId, payload, options);
 } catch (status) {
     const { operation, reason, errorCode } = status;
     console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
@@ -653,13 +653,13 @@ rtm.publish(channelName: user, message: message, option: publishOption, completi
 ```javascript
 // 发送字符串消息
 const payload = "Hello Agora!";
-const channelName = "chat_room";
+const userId = "Tony";
 const options = {
     customType: "PlainTxt",
     channelType: "USER",
 };
 try {
-    const result = await rtm.publish(channelName, payload, options);
+    const result = await rtm.publish(userId, payload, options);
 } catch (status) {
     const { operation, reason, errorCode } = status;
     console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
@@ -670,10 +670,10 @@ try {
 // 发送二进制消息
 const message = "Hello Agora!";
 const payload = new TextEncoder().encode(message);
-const channelName = "chat_room";
+const userId = "Tony";
 const options = { customType:"ByteArray", channelType: "USER" }
 try {
-    const result = await rtm.publish(channelName, payload, options);
+    const result = await rtm.publish(userId, payload, options);
 } catch (status) {
     const { operation, reason, errorCode } = status;
     console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
@@ -1008,9 +1008,27 @@ RTM 微信小程序 SDK 不支持 Stream Channel。
 
 ## 消息负载包体积限制
 
+<PlatformStructured platform="mini-program">
+
+RTM 对在 Message 类型频道中发送的消息负载包体积有限制，限制为 32 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```javascript
+// Status
+{
+    error = true;
+    errorCode = -11010;
+    operation = "publish";
+    reason = "Publish too long message.";
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
 RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-send-message-3"
+```csharp
 // Status
 {
     Error = true;
@@ -1020,7 +1038,13 @@ RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载�
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-send-message-3"
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```javascript
 // Status
 {
     error = true;
@@ -1030,7 +1054,13 @@ RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载�
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-send-message-3"
+</PlatformStructured>
+
+<PlatformStructured platform="android">
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```java
 // ErrorInfo
 ErrorInfo {
     errorCode = -11010;
@@ -1039,7 +1069,13 @@ ErrorInfo {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-send-message-3"
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```swift
 // errorInfo
 {
     errorInfo.errorCode = rrorCode = .channelMessageLengthExceedLimitation
@@ -1048,7 +1084,13 @@ ErrorInfo {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-send-message-3"
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```objc
 // errorInfo
 {
     errorInfo.errorCode = AgoraRtmErrorChannelMessageLengthExceedLimitation;
@@ -1057,7 +1099,13 @@ ErrorInfo {
 }
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-send-message-3"
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```dart
 // Status
 {
     error = true;
@@ -1067,7 +1115,13 @@ ErrorInfo {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-send-message-3"
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+```typescript
 // RtmError
 import { RtmError, RtmErrorCode } from '@shengwang/rtm-full';
 
@@ -1086,5 +1140,13 @@ try {
   }
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+RTM 对在 Message 类型频道和 Stream 类型频道中发送的消息负载包体积有限制：Message 类型频道中的限制为 32 KB，Stream 类型频道中的限制为 1 KB。消息负载包体积包含消息负载自身加上 `customType` 字段大小。当消息负载包体积超出限制时，你会收到以下返回值：
+
+</PlatformStructured>
 
 为避免因为消息负载包体积超限而导致发送失败，你可以在消息发送之前对消息负载包体积进行检查。

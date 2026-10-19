@@ -2740,7 +2740,7 @@ type ErrorInfo = {
 | `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | 用户未加入该频道。检查用户是否在线、是否已加入频道以及 `userId` 是否正确。 |
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | 用户未订阅该频道。检查用户是否在线、是否已订阅频道以及 `userId` 是否正确。 |
 | `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
-| `-11006` | `RTM_ERROR_CHANNEL_NOT_AVAILABLE` | 频道不可用。请重新订阅 Message Channel。 |
+| `-11006` | `RTM_ERROR_CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新订阅 Message Channel。 |
 | `-11007` | `RTM_ERROR_CHANNEL_JOIN_FAILED` | 加入频道失败。检查频道数量、频道名和网络连接。 |
 | `-11009` | `RTM_ERROR_CHANNEL_INVALID_MESSAGE` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
 | `-11010` | `RTM_ERROR_CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | 消息长度超出限制。Message Channel 单个消息包必须小于 32 KB。 |
@@ -2792,7 +2792,7 @@ type ErrorInfo = {
 | `-14008` | `RTM_ERROR_LOCK_NOT_EXIST` | 该 Lock 不存在。 |
 | `-14009` | `RTM_ERROR_LOCK_NOT_AVAILABLE` | Lock 服务不可用。 |
 | `-15001` | `RTM_ERROR_HISTORY_OPERATION_FAILED` | 历史消息的操作失败。 |
-| `-15003` | `RTM_ERROR_HISTORY_OPERATION_OUTDATED` | 历史消息操作过时。 |
+| `-15003` | `RTM_ERROR_HISTORY_OPERATION_TIMEOUT` | 历史消息操作过时。 |
 | `-15005` | `RTM_ERROR_HISTORY_NOT_AVAILABLE` | 历史消息服务不可用。 |
 
 具体 API 支持范围以已安装的 `shengwang-rtm-miniapp` 包中的类型定义为准。

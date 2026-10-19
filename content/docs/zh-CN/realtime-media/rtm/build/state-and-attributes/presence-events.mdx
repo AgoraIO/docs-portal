@@ -143,6 +143,18 @@ Presence 事件通知模式是指在频道中如何将 Presence 事件通知到�
 
 </PlatformStructured>
 
+<PlatformStructured platform="web">
+
+Presence 事件通知模式是指在频道中如何将 Presence 事件通知到订阅用户。有两种模式：**实时通知模式（Announce）** 和 **定时通知模式（Interval）**。用户可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。定时通知模式可防止频道内在线用户过多而导致的事件嘈杂。实时通知最大人数可以设置的范围为 [8,128]，如果你的需求超出此范围，需要联系声网 RTM 团队（rtm-support@shengwang.cn）另行调整。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+Presence 事件通知模式是指在频道中如何将 Presence 事件通知到订阅用户。有两种模式：**实时通知模式（Announce）** 和 **定时通知模式（Interval）**。用户可以在控制台的项目设置中通过**实时通知最大人数**大小来决定两种模式相互切换的条件。定时通知模式可防止频道内在线用户过多而导致的事件嘈杂。实时通知最大人数可以设置的范围为 [8,128]，如果你的需求超出此范围，需要联系声网 RTM 团队（rtm-support@shengwang.cn）另行调整。
+
+</PlatformStructured>
+
 ### 实时通知模式
 
 如果频道中的在线人数小于实时通知最大人数参数设定的值（默认值为 50），则 Presence 事件通知处于实时通知模式。在此模式下，`enumv.presencetypejoin`、`enumv.presencetypeleave`、`enumv.presencetypetimeout`、`enumv.presencetypechange` 事件在触发时会立即发送到客户端。
