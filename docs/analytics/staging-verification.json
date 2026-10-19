@@ -1,17 +1,17 @@
 {
-  "status": "pending_staging_deployment",
-  "application_source": "7397701941746d664d2bc5ccbbd05786f4d96909",
+  "status": "queued_for_staging_deployment",
+  "application_source": "8802e22eface30960d2404d6c6f7235874870bfd",
   "deployment_recipe": "01f509a7f179f24e800b5ab88b8a7b8d1cd38e07",
   "environment": "staging",
   "origin": "https://docs-portal-staging.sh3.agoralab.co",
   "posthog_project_id": 509917,
-  "jenkins_build": 105,
-  "jenkins_url": "https://web-jenkins.agoralab.co/job/docs-portal-2026/job/hci-master/105/console",
+  "jenkins_build": 107,
+  "jenkins_url": "https://web-jenkins.agoralab.co/job/docs-portal-2026/job/hci-master/107/console",
   "production_p0_enabled": false,
   "preflight": {
     "focused_tests": {
-      "files": 12,
-      "passed": 136
+      "files": 13,
+      "passed": 141
     },
     "changed_source_biome": {
       "files": 27,
@@ -23,14 +23,22 @@
       "passed": 17
     },
     "full_suite": {
-      "passed": 2809,
-      "failed": 37,
-      "skipped": 2,
-      "baseline_also_fails": true
+      "files": 227,
+      "passed": 2891,
+      "failed": 0,
+      "skipped": 2
     },
     "reviews": {
       "standards": "pass",
       "spec": "pass"
+    },
+    "full_local_staging_config_build": {
+      "source": "8802e22eface30960d2404d6c6f7235874870bfd",
+      "status": "pass",
+      "payload_files": 6844,
+      "machine_readable_files": 8050,
+      "route_html_files": 7741,
+      "scope": "local build; real staging deployment remains pending"
     }
   },
   "checks": {
@@ -96,5 +104,29 @@
     ],
     "runtime_image": "unchanged nginx base",
     "production_deployment": "not_requested_not_run"
-  }
+  },
+  "base_source": "7c6c60ead44406e69906c5c3808cd489784aa89e",
+  "build_history": [
+    {
+      "build": 104,
+      "status": "failed_before_deployment",
+      "reason": "server import boundary; fixed by facade"
+    },
+    {
+      "build": 105,
+      "status": "aborted_before_deployment",
+      "reason": "incorporate current Chinese base and platform preference compatibility fix"
+    },
+    {
+      "build": 106,
+      "status": "other_user_build",
+      "source": "7c6c60ead44406e69906c5c3808cd489784aa89e",
+      "action": "untouched"
+    },
+    {
+      "build": 107,
+      "status": "queued",
+      "source": "8802e22eface30960d2404d6c6f7235874870bfd"
+    }
+  ]
 }
