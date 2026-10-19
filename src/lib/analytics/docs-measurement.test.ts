@@ -183,3 +183,60 @@ it('attributes only a selected target and does not attribute another tab from a 
       .search_id,
   ).toBe(search.searchId);
 });
+
+it('invalidates cached results on account/new-problem boundaries and idle', () => {
+  const { measurement, events, advance } = fixture();
+  const search = measurement.startSearch({
+    surface: 'search_page',
+    query: 'Token',
+    filters: { type: 'openapi' },
+  });
+  const results = measurement.prepareResults(search, {
+    count: 1,
+    unit: 'document',
+  });
+  expect(search.properties.search_type).toBe('openapi');
+  measurement.reset();
+  measurement.presentResults(results);
+  measurement.fail(search, 'old-request');
+  expect(
+    measurement.selectResult(results, {
+      id: '/zh-CN/token',
+      path: '/zh-CN/token',
+      rank: 1,
+      kind: 'document',
+      method: 'mouse',
+    }),
+  ).toBeUndefined();
+  expect(events).toHaveLength(2);
+  const fresh = measurement.startSearch({
+    surface: 'search_page',
+    query: 'Token',
+  });
+  expect(fresh.journey.id).not.toBe(search.journey.id);
+  advance(30 * 60 * 1000);
+  expect(measurement.searchIsCurrent(fresh)).toBe(false);
+});
+
+it('resolves nested REST product context and explicit platform without assuming Web', () => {
+  const { measurement } = fixture();
+  expect(
+    measurement.viewContent({
+      path: '/zh-CN/api-reference/api-ref/cloud-transcoding/create',
+      contentType: 'openapi',
+    }).product,
+  ).toBe('transcoding');
+  expect(
+    measurement.viewContent({
+      path: '/zh-CN/ai/get-started/quick-start',
+      contentType: 'platform-group',
+      platform: 'ios',
+    }).platform,
+  ).toBe('ios');
+  expect(
+    measurement.viewContent({
+      path: '/zh-CN/introduction/about',
+      contentType: 'mdx',
+    }).platform,
+  ).toBe(null);
+});

@@ -94,10 +94,16 @@ export function DocsSearchPage({
   }, []);
   useEffect(() => {
     const snapshot = data ? resultSnapshots.current.get(data) : undefined;
-    if (!snapshot || !resultsContainer.current || status !== 'loaded') return;
-    return observeVisible(resultsContainer.current, () =>
-      getDocsMeasurement()?.presentResults(snapshot),
-    );
+    if (!resultsContainer.current) return;
+    return observeVisible(resultsContainer.current, () => {
+      if (status === 'loaded' && snapshot)
+        getDocsMeasurement()?.presentResults(snapshot);
+      if (status === 'error' && failure.current)
+        getDocsMeasurement()?.fail(
+          failure.current.search,
+          failure.current.requestId,
+        );
+    });
   }, [data, status]);
   const stateKey = JSON.stringify(state);
   const [progress, setProgress] = useState({ key: stateKey, page: state.page });
@@ -134,7 +140,11 @@ export function DocsSearchPage({
       setFacets((previous) => ({ product: previous.product ?? {} }));
     }
     const measurement = request.state.q ? getDocsMeasurement() : undefined;
-    if (measurement && logicalSearch.current?.key !== key)
+    if (
+      measurement &&
+      (logicalSearch.current?.key !== key ||
+        !measurement.searchIsCurrent(logicalSearch.current.snapshot))
+    )
       logicalSearch.current = {
         key,
         snapshot: measurement.startSearch({

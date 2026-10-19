@@ -97,6 +97,7 @@ const allowedProperties = new Set([
   'sample_selected',
   'sample_eligible',
   'frequency_limited',
+  'frequency_status',
   'sampling_version',
   'value',
   'evidence_source',
@@ -118,7 +119,7 @@ const pathProperties = new Set([
   'source_path',
 ]);
 const sensitiveQuery =
-  /(?:[\w.+-]+@[\w.-]+\.[a-z]{2,}|\b1[3-9]\d{9}\b|https?:\/\/|\b(?:ph[cx]_|gh[pousr]_|sk[-_])[\w-]+|\beyJ[\w-]+\.[\w-]+|(?:token|secret|password|api[-_ ]?key|authorization|appcertificate)\s*[:=]|[A-Za-z0-9_+/=-]{32,})/i;
+  /(?:[\w.+-]+@[\w.-]+\.[a-z]{2,}|(?:\+\d[\d ()-]{6,}\d|\b(?:86)?1[3-9]\d[ -]?\d{4}[ -]?\d{4}\b|\b\d{3,4}[- ]\d{7,8}\b)|https?:\/\/|\b(?:ph[cx]_|gh[pousr]_|sk[-_])[\w-]+|\beyJ[\w-]+\.[\w-]+|(?:token|secret|password|api[-_ ]?key|authorization|appcertificate)\s*[:=]|[A-Za-z0-9_+/=-]{32,})/i;
 
 export function redactSearchQuery(value: string) {
   const query = value.trim().replace(/\s+/g, ' ');

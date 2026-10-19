@@ -450,6 +450,7 @@ export function DocsContent({
       value={{
         contentPath,
         contentType: resolvedBody?.kind ?? 'unknown',
+        platform: titlePlatforms.length === 1 ? titlePlatforms[0] : undefined,
         version: sidebarHeader?.versionSwitcher?.currentId,
       }}
     >

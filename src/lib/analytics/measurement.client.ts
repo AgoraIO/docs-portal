@@ -74,6 +74,20 @@ export function getDocsMeasurement() {
       }
     })(),
     testRunId,
+    invitationStatus: () => {
+      try {
+        return {
+          eligible: true,
+          limited:
+            Date.now() -
+              Number(localStorage.getItem('docs-feedback-invited-at') || 0) <
+            86400000,
+          status: 'available',
+        };
+      } catch {
+        return { eligible: false, limited: true, status: 'unavailable' };
+      }
+    },
     restoreAnswers: (() => {
       try {
         return read<Record<string, { value: string; revision: number }>>(
@@ -172,6 +186,7 @@ export function selectDocsResult(
     ...selection,
     method: newTab ? `${selection.method}_new_tab` : selection.method,
   });
+  if (!attribution) return selection.path;
   try {
     if (newTab) {
       const token = uuid();

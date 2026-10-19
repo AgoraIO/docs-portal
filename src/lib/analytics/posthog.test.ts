@@ -76,6 +76,14 @@ describe('PostHog analytics', () => {
     expect(JSON.stringify(event)).not.toMatch(
       /customer-secret|person@example|unknown_field|\$set/,
     );
+    const phoneEvent = initMock.mock.calls[0][1].before_send({
+      event: 'docs_search_submitted',
+      properties: { query_redacted: '+8613812345678', search_type: 'openapi' },
+    });
+    expect(phoneEvent.properties).toMatchObject({
+      query_redacted: '[redacted]',
+      search_type: 'openapi',
+    });
   });
 
   it('initializes PostHog for web analytics when a project key is configured', async () => {

@@ -177,7 +177,11 @@ export function DocsSearchDialog({
             ? getDocsMeasurement()
             : undefined;
         const key = JSON.stringify([query.trim(), platformFilter, searchScope]);
-        if (measurement && logicalSearch.current?.key !== key)
+        if (
+          measurement &&
+          (logicalSearch.current?.key !== key ||
+            !measurement.searchIsCurrent(logicalSearch.current.snapshot))
+        )
           logicalSearch.current = {
             key,
             snapshot: measurement.startSearch({
@@ -566,7 +570,10 @@ export function DocsSearchDialog({
                 allLabel={t('docs.searchAllProducts')}
                 emptyLabel={t('docs.searchFilterNoResults')}
                 groups={productFilterGroups}
-                onChange={setScopeId}
+                onChange={(value) => {
+                  inputAt.current = Date.now();
+                  setScopeId(value);
+                }}
                 searchPlaceholder={t('docs.searchFilterProducts')}
                 value={scopeId}
               />
@@ -575,7 +582,10 @@ export function DocsSearchDialog({
               allLabel={t('docs.searchAllPlatforms')}
               emptyLabel={t('docs.searchFilterNoResults')}
               groups={platformFilterGroups}
-              onChange={(next) => setPlatformFilter(next as PlatformKey | null)}
+              onChange={(next) => {
+                inputAt.current = Date.now();
+                setPlatformFilter(next as PlatformKey | null);
+              }}
               searchPlaceholder={t('docs.searchFilterPlatforms')}
               value={platformFilter}
             />

@@ -6,13 +6,14 @@ import { usePlatformPageContext } from '../mdx/PlatformTabsGroup';
 export const DocsMeasurementContext = createContext<{
   contentType: string;
   version?: string;
+  platform?: string;
   contentPath?: string;
 }>({ contentType: 'mdx' });
 
 /** Render inside the resolved body, after Suspense; skeletons cannot count as reading. */
 export function useMeasuredDocsBody(root: RefObject<HTMLDivElement | null>) {
   const context = useContext(DocsMeasurementContext);
-  const platform = usePlatformPageContext()?.activePlatform;
+  const platform = usePlatformPageContext()?.activePlatform ?? context.platform;
   useEffect(() => {
     if (!context.contentPath || !root.current) return;
     const path = window.location.pathname;

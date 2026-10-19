@@ -1,3 +1,4 @@
+import { measurementContentContext } from './content-context';
 import { analyticsPath, redactSearchQuery } from './measurement-privacy';
 
 export type Properties = Record<
@@ -76,6 +77,11 @@ type Options = {
   restore?: Journey;
   save?: (journey: Journey | null) => void;
   random?: () => number;
+  invitationStatus?: () => {
+    eligible: boolean;
+    limited: boolean;
+    status: string;
+  };
   restoreAnswers?: Record<string, { value: string; revision: number }>;
   saveAnswers?: (
     answers: Record<string, { value: string; revision: number }>,
@@ -148,6 +154,7 @@ export function createDocsMeasurement(options: Options) {
       view = undefined;
       lastSearch = undefined;
       pending = undefined;
+      const invitation = options.invitationStatus?.();
       send('docs_journey_started', journey, {
         entry_path: analyticsPath(
           typeof options.entryPath === 'function'
@@ -157,7 +164,9 @@ export function createDocsMeasurement(options: Options) {
         entry_source: options.entrySource ?? 'unknown',
         sample_rate: 0.1,
         sample_selected: journey.sampled,
-        sample_eligible: true,
+        sample_eligible: invitation?.eligible ?? true,
+        frequency_limited: invitation?.limited ?? false,
+        frequency_status: invitation?.status ?? 'unknown',
         sampling_version: 'v1',
       });
     }
@@ -168,8 +177,16 @@ export function createDocsMeasurement(options: Options) {
   function searchProperties(snapshot: SearchSnapshot) {
     return { ...snapshot.properties, search_id: snapshot.searchId };
   }
+  function searchIsCurrent(snapshot: SearchSnapshot) {
+    return (
+      journey?.id === snapshot.journey.id &&
+      options.now() >= journey.active &&
+      options.now() - journey.active < idleMs
+    );
+  }
   return {
     current,
+    searchIsCurrent,
     peek: () => journey,
     touch() {
       if (journey && options.now() - journey.active < idleMs) {
@@ -227,7 +244,7 @@ export function createDocsMeasurement(options: Options) {
           index_revision: null,
           ...Object.fromEntries(
             Object.entries(input.filters ?? {}).map(([key, value]) => [
-              `filter_${key}`,
+              key === 'type' ? 'search_type' : `filter_${key}`,
               value ?? null,
             ]),
           ),
@@ -263,6 +280,7 @@ export function createDocsMeasurement(options: Options) {
       } satisfies ResultsSnapshot;
     },
     presentResults(snapshot: ResultsSnapshot) {
+      if (!searchIsCurrent(snapshot.search)) return;
       if (presented.has(snapshot.viewId)) return;
       presented.add(snapshot.viewId);
       const duration = options.now() - snapshot.started;
@@ -286,6 +304,7 @@ export function createDocsMeasurement(options: Options) {
       );
     },
     fail(search: SearchSnapshot, requestId?: string) {
+      if (!searchIsCurrent(search)) return;
       const key = requestId ?? search.searchId;
       if (failed.has(key)) return;
       failed.add(key);
@@ -296,7 +315,11 @@ export function createDocsMeasurement(options: Options) {
         error_code: 'search_unavailable',
       });
     },
-    selectResult(snapshot: ResultsSnapshot, result: Selection): Attribution {
+    selectResult(
+      snapshot: ResultsSnapshot,
+      result: Selection,
+    ): Attribution | undefined {
+      if (!searchIsCurrent(snapshot.search)) return undefined;
       const attribution = {
         journey: snapshot.search.journey,
         searchId: snapshot.search.searchId,
@@ -348,12 +371,9 @@ export function createDocsMeasurement(options: Options) {
         canonical_path: path,
         doc_id: path,
         content_type: input.contentType,
-        product: ['realtime-media', 'api-reference', 'solutions'].includes(
-          path.split('/')[2],
-        )
-          ? path.split('/')[3] || 'unknown'
-          : 'unknown',
-        platform: input.platform ?? null,
+        product: measurementContentContext(path).product,
+        platform:
+          input.platform ?? measurementContentContext(path).platform ?? null,
         version: input.version ?? null,
         content_release: options.appRelease || 'unknown',
         doc_view_id: options.id(),
@@ -426,7 +446,7 @@ export function createDocsMeasurement(options: Options) {
       options.saveAnswers?.(Object.fromEntries([...answers].slice(-50)));
       changed();
       send('docs_feedback_submitted', context, {
-        ...(view?.properties ?? {}),
+        ...(surface === 'content' ? (view?.properties ?? {}) : {}),
         question_id: question,
         prompt_id: `${context.id}::${question}`,
         feedback_scope: 'journey',
