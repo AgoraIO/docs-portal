@@ -734,11 +734,16 @@ new StepFunTTS(options: StepFunTTSOptions)
 
 #### FengmingSTT
 
-声网自研的「风鸣」STT 服务，无需任何参数和外部凭据，输出 `asr.vendor = "fengming"`。
+声网自研的「风鸣」STT 服务，无需外部凭据，输出 `asr.vendor = "fengming"`。可选传入 `keywords` 热词列表和 `additionalParams`，这些参数会写入 `asr.params`。
 
 ```typescript
-new FengmingSTT()
+new FengmingSTT(options?: FengmingSTTOptions)
 ```
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `keywords` | `string[]` | No | 热词列表，用于提升 ASR 识别准确率 |
+| `additionalParams` | `Record<string, unknown>` | No | 附加 Fengming 参数，合并进 `asr.params` |
 
 #### TencentSTT
 
