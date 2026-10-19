@@ -22,7 +22,11 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.4.1-voice-sdk-android",
             "label": "版本 4.4.1",
-            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.4.1_VOICE.zip"
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.4.1_VOICE.zip",
+            "md5": "3e0982995f94b9b9247aa928b40f2ae7",
+            "packageSize": "armeabi-v7a 8.48 MB；arm64-v8a 9.99 MB；x86 10.56 MB；x86_64 10.27 MB",
+            "releaseDate": "2024 年 8 月 8 日",
+            "packageName": "io.agora.rtc2"
           },
           {
             "id": "4.6.2-voice-sdk-android",
@@ -173,7 +177,11 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.4.1-video-sdk-android-full",
             "label": "版本 4.4.1 Full",
-            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.4.1_FULL.zip"
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_Android_v4.4.1_FULL.zip",
+            "md5": "4d4fcfebad97ca79ff0420ed76d1caa9",
+            "packageSize": "armeabi-v7a 15.93 MB；arm64-v8a 17.91 MB；x86 20.38 MB；x86_64 19.24 MB",
+            "releaseDate": "2024 年 8 月 8 日",
+            "packageName": "io.agora.rtc2"
           },
           {
             "id": "4.6.3-video-sdk-android",
@@ -692,7 +700,10 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.4.0-voice-sdk-ios",
             "label": "版本 4.4.0",
-            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.4.0_VOICE.zip"
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.4.0_VOICE.zip",
+            "md5": "5eeb612aed506daed4bd3c2cc2ee8c77",
+            "packageSize": "12.2 MB",
+            "releaseDate": "2024 年 8 月 5 日"
           },
           {
             "id": "4.6.0-voice-sdk-ios",
@@ -823,7 +834,10 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "4.4.0-video-sdk-ios-full",
             "label": "版本 4.4.0 Full",
-            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.4.0_FULL.zip"
+            "downloadLink": "https://download.agora.io/sdk/release/Agora_Native_SDK_for_iOS_v4.4.0_FULL.zip",
+            "md5": "f13c0f11a91f9305f4af393e2945f0b4",
+            "packageSize": "24.7 MB",
+            "releaseDate": "2024 年 8 月 5 日"
           },
           {
             "id": "4.6.2-video-sdk-ios",
@@ -1888,6 +1902,8 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           {
             "id": "1.0.0-interactive-whiteboard-web",
             "label": "版本 1.0.0",
+            "downloadLink": "https://github.com/netless-io/fastboard",
+            "releaseDate": "2024 年 12 月 12 日",
             "packageManager": "https://www.npmjs.com/package/@netless/fastboard/v/1.0.0"
           },
           {
