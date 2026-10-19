@@ -17,7 +17,7 @@ staging 最终版本 `e113a4246` 已通过正常完整发布、9 类事件实收
 
 `quality-cases.json` 是首批 20 个任务的检查清单。搜索和链接结果可自动检查；SDK 操作步骤与答案正确性需要产品审核。`not_reviewed` 不能计为通过。审阅人、版本和阻断级错误必须保留。
 
-三个看板和八个 SQL insight 的实际 ID、URL、变量记录在 `posthog-artifacts.json`。SQL 由 `measurement-v1.sql` 前缀和 `report-selects.json` 的对应 SELECT 组成；修改共享规则时必须同步全部 insight。扫描起点随 From 变量变化，读取截至查询时刻的事实，再按过程开始日选取批次，保留 24 小时结果窗和窗口外回答。搜索诊断也按所属过程开始日筛选。默认 From=-15d、To=-1d，是 14 个已满 24 小时的完整上海自然日。通用日期/属性控件不直接改变这些 SQL；使用九个 CN Docs 变量。产品、平台、版本、发布、入口按实体是否出现相应上下文选择观察集合，保留集合内全部事实，避免先过滤掉反馈或分母。
+三个成效看板和八个 SQL insight 的实际 ID、URL、变量记录在 `posthog-artifacts.json`。SQL 由 `measurement-v1.sql` 前缀和 `report-selects.json` 的对应 SELECT 组成；修改共享规则时必须同步全部 insight。扫描起点随 From 变量变化，读取截至查询时刻的事实，再按过程开始日选取批次，保留 24 小时结果窗和窗口外回答。搜索诊断也按所属过程开始日筛选。默认 From=-15d、To=-1d，是 14 个已满 24 小时的完整上海自然日。通用日期/属性控件不直接改变这些 SQL；使用九个 CN Docs 变量。产品、平台、版本、发布、入口按实体是否出现相应上下文选择观察集合，保留集合内全部事实，避免先过滤掉反馈或分母。
 
 `feedback-regression.sql` 是只在查询内生成的固定样本，不向事件表插入测试数据。它核验同一秒内反转答案、搜索修订清除旧文档归属、重复同值保留最早确认锚点。发生时间保留毫秒，归属随最后回答一并取 tuple，避免 nullable 字段跳过 NULL。
 
@@ -34,3 +34,5 @@ python3 docs/analytics/check-quality.py \
 公开采集 key 沿用部署仓库 Jenkins 环境；应用源码不添加管理凭据。开关只控制本期业务采集与反馈，现有基础 SDK 继续运行；中文全局发送出口始终去掉任意 URL 查询、hash、referrer 路径、未知属性和自动 DOM 内容。录屏关闭。查询含邮箱、电话、URL、长 token、JWT 或敏感键值时整条替换为 `[redacted]`，普通查询最多 120 字符。结构化原因不收集自由输入。
 
 回退：构建 `VITE_DOCS_MEASUREMENT_ENABLED=false`，或部署前一前端镜像；staging 流水线保留原有索引/后端一致性与回退记录。prod 目前只准备参数，默认关闭本期功能。
+
+群讨论后补了 [流量概览试版](https://us.posthog.com/project/509917/dashboard/2229856)：六张原生趋势图，使用独立的 UTC 日期与生产域名范围。定义、数据限制、地址归类验证及去前缀配套要求见 [补充试验](group-followup-2026-10-19.md)。它不改变既有成效口径，也不提供缺失的旧站基线。
