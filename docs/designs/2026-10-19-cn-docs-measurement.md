@@ -189,7 +189,7 @@ P0 从现有中文质量查询集选择并补足 **20 个真实任务场景**。
 | `DocsPageFeedback.tsx` | 反馈真实曝光、过程问题、修改与结构化原因；兼容原页面帮助度 |
 | 部署仓库 `helm/docs-portal/` | 沿用 Jenkins → Docker build → Vite 的配置；按环境发布与留回执 |
 
-保留已有 `VITE_POSTHOG_KEY`、`VITE_POSTHOG_HOST`、`VITE_DOCS_REGION=cn`。建议新增构建变量 `VITE_DOCS_MEASUREMENT_ENABLED`、`VITE_DOCS_ENVIRONMENT`、`VITE_DOCS_APP_RELEASE`，分别控制业务采集、环境与实际源 SHA；这些是待实施变量，不是现有功能。镜像缓存键要包含会影响采集行为的配置。Nginx 运行时加 env 不能替代重新构建。
+保留已有 `VITE_POSTHOG_KEY`、`VITE_POSTHOG_HOST`、`VITE_DOCS_REGION=cn`。本期已新增构建变量 `VITE_DOCS_MEASUREMENT_ENABLED`、`VITE_DOCS_ENVIRONMENT`、`VITE_DOCS_APP_RELEASE`，分别控制业务采集、环境与实际源 SHA。镜像缓存键要包含会影响采集行为的配置。Nginx 运行时加 env 不能替代重新构建。
 
 公开 Project key 可按用户已确认的方式继续放 Jenkinsfile；Personal API key、SSO 参数和其他私密凭据不进前端。业务采集生效时使用应用 SDK；静态脚本层必须跳过同项目 SDK，验收没有双初始化。业务开关关闭时回到基础采集与原反馈行为；若回退版本有已知敏感字段泄露，则应同时停采相关入口，不能为恢复旧行为重新引入泄露。
 

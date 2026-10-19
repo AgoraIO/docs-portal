@@ -1,6 +1,6 @@
 # P0 implementation review — 2026-10-19
 
-Runtime source: `68ef9a31859f366d79f8d6f5d314bbfdaebc1111`.
+Runtime source: `7397701941746d664d2bc5ccbbd05786f4d96909`.
 Base: `8240cacc776757682807d243cd79416c5e23c59f`.
 Deployment recipe: `01f509a7f179f24e800b5ab88b8a7b8d1cd38e07`.
 
@@ -15,6 +15,9 @@ Resolved findings:
 - Normalize product/platform metadata, preserve filter timing and match content-type filter fields.
 - Carry invitation eligibility, selection and frequency status separately.
 - Remove background body context from search feedback.
+- Reobserve the visible body after a same-document selection or explicit task reset; pause background body visibility while a search dialog covers it.
+- Filter DOM mutation records so unrelated animations/content do not repeat layout checks.
+- Put the browser adapter behind Start isomorphic functions. The production compiler smoke check confirms the client module is absent from the server output.
 - Derive content surface on body facts; select search origin from its submitted fact.
 - Derive the SQL scan start from the selected cohort date instead of silently dropping dates older than31days.
 - Validate returned product/platform/version metadata in quality checks.
@@ -33,13 +36,14 @@ The SQL-only regression fixture runs without inserting fake events. Actual marke
 
 ## Verification scope
 
-- Focused runtime verification: 10files / 133tests pass.
+- Full local production build passes: 6842 static payloads, 8045 machine-readable files, 7739 route HTML files; client and server compilation both pass.
+- Focused runtime verification: 12 files / 136 tests pass.
 - Type checking passes; changed runtime files pass Biome.
-- Full suite: 2791passed,37failed,2skipped. The clean base also fails (2765passed,56failed,2skipped). Current failed cases reproduced at base, except one timing timeout that passes in isolation. Existing migration/content and OpenAPI expectations remain outside this change.
+- Full suite: 2809 passed, 37 failed, 2 skipped. The clean base also fails (2765passed,56failed,2skipped). Current failed cases reproduced at base, except one timing timeout that passes in isolation. Existing migration/content and OpenAPI expectations remain outside this change.
 - Repository-wide lint has existing formatting failures; changed-file checks pass.
 - Mobile form:390px, visible controls usable, no horizontal overflow in mobile emulation.
 - Actual compressed collector requests decoded for an email-shaped test query: no raw test address, URL query/hash or DOM text; search query is `[redacted]`.
 - Quality runner checks retrieval in the top three document units, metadata compatibility, HTTP targets and static anchors. SDK/task correctness remains `not_reviewed` pending product-owner review.
 
-Staging release and real ingestion receipts are recorded separately after deployment. Production rollout is outside this change; its P0 build flag stays disabled.
+Build #104 failed before deployment at server import protection. Build #105 now validates the corrected runtime source through the existing coverage/index/search/redirect/SSO gates. Staging release and real ingestion receipts will be recorded after successful deployment. Production rollout is outside this change; its P0 build flag stays disabled.
 

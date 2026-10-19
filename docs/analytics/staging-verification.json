@@ -1,0 +1,100 @@
+{
+  "status": "pending_staging_deployment",
+  "application_source": "7397701941746d664d2bc5ccbbd05786f4d96909",
+  "deployment_recipe": "01f509a7f179f24e800b5ab88b8a7b8d1cd38e07",
+  "environment": "staging",
+  "origin": "https://docs-portal-staging.sh3.agoralab.co",
+  "posthog_project_id": 509917,
+  "jenkins_build": 105,
+  "jenkins_url": "https://web-jenkins.agoralab.co/job/docs-portal-2026/job/hci-master/105/console",
+  "production_p0_enabled": false,
+  "preflight": {
+    "focused_tests": {
+      "files": 12,
+      "passed": 136
+    },
+    "changed_source_biome": {
+      "files": 27,
+      "passed": true
+    },
+    "types": "pass",
+    "server_compiler_boundary": "pass",
+    "pipeline_gate_unit_tests": {
+      "passed": 17
+    },
+    "full_suite": {
+      "passed": 2809,
+      "failed": 37,
+      "skipped": 2,
+      "baseline_also_fails": true
+    },
+    "reviews": {
+      "standards": "pass",
+      "spec": "pass"
+    }
+  },
+  "checks": {
+    "full_page_search_and_results": {
+      "status": "pending"
+    },
+    "result_selection_and_visible_body": {
+      "status": "pending"
+    },
+    "same_document_dialog_selection": {
+      "status": "pending"
+    },
+    "new_problem_rechecks_visible_body": {
+      "status": "pending"
+    },
+    "empty_search_with_optional_feedback": {
+      "status": "pending"
+    },
+    "visible_request_failure_and_retry": {
+      "status": "pending"
+    },
+    "filters_and_load_more_preserve_search_units": {
+      "status": "pending"
+    },
+    "keyboard_and_new_tab_attribution": {
+      "status": "pending"
+    },
+    "mdx_and_platform_body_context": {
+      "status": "pending"
+    },
+    "openapi_body_context": {
+      "status": "pending"
+    },
+    "feedback_revisions_and_reason_withdrawal": {
+      "status": "pending"
+    },
+    "page_helpfulness_keeps_page_scope": {
+      "status": "pending"
+    },
+    "english_route_has_no_p0_feedback": {
+      "status": "pending"
+    },
+    "actual_collector_payload_privacy": {
+      "status": "pending"
+    },
+    "posthog_marked_event_and_fact_receipt": {
+      "status": "pending"
+    },
+    "desktop_mobile_screenshots": {
+      "status": "pending"
+    },
+    "20_retrieval_quality_cases": {
+      "status": "pending"
+    }
+  },
+  "content_task_correctness": "not_reviewed",
+  "build_execution": {
+    "scope": "normal full application build and existing release gates",
+    "agent": "master",
+    "validation_only_adjustments": [
+      "Node 22 bullseye builder base, matching the existing backend builder; repository frontend Dockerfile stays on bookworm",
+      "Controller Docker workspace uses its verified host volume path"
+    ],
+    "runtime_image": "unchanged nginx base",
+    "production_deployment": "not_requested_not_run"
+  }
+}
