@@ -116,7 +116,6 @@ paths:
                     recordingConfig:
                       channelType: 1
                       streamTypes: 2
-                      streamMode: default
                       videoStreamType: 0
                       maxIdleTime: 30
                       subscribeAudioUids:
@@ -127,6 +126,7 @@ paths:
                     recordingFileConfig:
                       avFileType:
                         - hls
+                        - mp4
                     storageConfig:
                       vendor: 2
                       region: 3
@@ -146,7 +146,6 @@ paths:
                     recordingConfig:
                       channelType: 1
                       streamTypes: 0
-                      streamMode: original
                       maxIdleTime: 30
                       subscribeAudioUids:
                         - '#allstream#'
@@ -154,6 +153,7 @@ paths:
                     recordingFileConfig:
                       avFileType:
                         - hls
+                        - mp3
                     storageConfig:
                       vendor: 2
                       region: 3
@@ -171,7 +171,6 @@ paths:
                     recordingConfig:
                       channelType: 1
                       streamTypes: 2
-                      streamMode: default
                       videoStreamType: 0
                       maxIdleTime: 30
                       subscribeAudioUids:
@@ -200,7 +199,6 @@ paths:
                     recordingConfig:
                       channelType: 1
                       streamTypes: 2
-                      streamMode: default
                       videoStreamType: 0
                       maxIdleTime: 30
                       subscribeAudioUids:
@@ -211,6 +209,7 @@ paths:
                     recordingFileConfig:
                       avFileType:
                         - hls
+                        - mp4
                     snapshotConfig:
                       captureInterval: 5
                       fileType:
@@ -944,15 +943,6 @@ components:
             - `5`：33 到 49 个 UID。
             > - 仅需在**单流录制**模式下设置，且单流录制模式下必填。
             > - 举例来说，如果 `subscribeVideoUids` 为 `["100","101","102"]`，`subscribeAudioUids` 为 `["101","102","103"]`，则订阅人数为 4 人。
-        streamMode:
-          type: string
-          description: |-
-            媒体流的输出模式。详见[媒体流输出模式](/zh-CN/realtime-media/cloud-recording/reference/api-reference#媒体流输出模式设置)。
-            - `"default"`：默认模式。录制过程中音频转码，分别生成 M3U8 音频索引文件和视频索引文件。
-            - `"standard"`：标准模式。声网推荐使用该模式。录制过程中音频转码，分别生成 M3U8 音频索引文件、视频索引文件和合并的音视频索引文件。如果在 Web 端使用 VP8 编码，则生成一个合并的 MPD 音视频索引文件。
-            - `"original"`：原始编码模式。适用于[单流音频不转码录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual-without-transcoding)。仅订阅音频时（`streamTypes` 为 0）时该字段生效，录制过程中音频不转码，生成 M3U8 音频索引文件。
-            > 仅需在**单流录制**模式下设置。
-          default: default
         audioProfile:
           type: number
           description: |-
@@ -1192,14 +1182,15 @@ components:
         avFileType:
           type: array
           description: |-
-            录制生成的视频文件类型：
+            录制生成的文件类型：
             - `"hls"`：HLS 格式的 M3U8 和 TS 文件。单流录制时，音频和视频输出到同一个 M3U8 文件。
-            - `"mp3"`：MP3 文件，仅适用于单流录制且仅录制音频的场景。
             - `"mp4"`：MP4 文件。
-            > - **单流录制**模式下，且**非仅截图**情况，使用默认值即可。
+            - `"mp3"`：MP3 文件，仅适用于单流录制且仅录制音频的场景。
+            > - **单流录制**模式下，且**非仅截图**情况，默认输出 HLS 文件；如果需要生成 MP4 文件，需将 `avFileType` 设置为 `["hls","mp4"]`。
+            > - 单流录制且仅录制音频时，将 `avFileType` 设置为 `["hls","mp3"]` 可直接输出 MP3 文件。
             > - **合流录制**和**页面录制**模式下，如果你需要生成 MP4 文件，那么设为 `["hls","mp4"]`。仅设为 `["mp4"]` 会收到报错。设置后，录制文件行为如下：
-            >   - 合流录制模式：录制服务会在当前 MP4 文件时长超过约 2 小时或文件大小超过约 2 GB 左右时，创建一个新的 MP4 文件。
-            >   - 页面录制模式：录制服务会在当前 MP4 文件时长超过 `maxVideoDuration` 时，创建一个新的 MP4 文件。
+            >   - 合流录制模式：录制服务会在当前 MP4 文件时长超过约 3 小时或文件大小超过约 2 GB 左右时，创建一个新的 MP4 文件。
+            >   - 页面录制模式：录制服务会在当前 MP4 文件时长超过 `maxVideoDuration`（默认 180 分钟）或文件大小超过约 2 GB 时，创建一个新的 MP4 文件。
           items:
             type: string
             default: hls
@@ -2050,6 +2041,7 @@ components:
         当前录制上传的状态：
         - `"uploaded"`：本次录制的文件已经全部上传至指定的第三方云存储。
         - `"backuped"`：本次录制的文件已经全部上传完成，但是至少有一个 TS 文件上传到了声网备份云。声网服务器会自动将这部分文件继续上传至指定的第三方云存储。
+        - `"stranded"`：v2 新增状态。部分录制文件未上传至指定的第三方云存储，需要结合业务逻辑进行处理。
         - `"unknown"`：未知状态。
       x-stoplight:
         id: gqi1s9iqnhn9l
