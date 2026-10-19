@@ -31,6 +31,17 @@ export function buildCanonicalPlatformTocText(processedText: string) {
   );
 }
 
+// Keep globally deduplicated heading IDs when extracting one platform's TOC.
+export function buildPlatformTocText(
+  processedText: string,
+  platform: PlatformKey,
+) {
+  return filterPlatformBlocks(
+    processedText,
+    (_mode, _canonical, blockPlatform) => blockPlatform === platform,
+  );
+}
+
 export function buildPlatformMarkdownText(
   processedText: string,
   platform: PlatformKey,
