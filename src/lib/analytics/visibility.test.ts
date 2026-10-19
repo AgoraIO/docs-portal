@@ -27,7 +27,9 @@ it('waits for an open search dialog to close before exposing the background body
   const stop = observeVisible(body, visible);
   expect(visible).not.toHaveBeenCalled();
   dialog.remove();
-  await waitFor(() => expect(visible).toHaveBeenCalledTimes(1));
+  await waitFor(() => expect(visible).toHaveBeenCalledTimes(1), {
+    timeout: 5000,
+  });
   const unrelated = document.createElement('div');
   document.body.append(unrelated);
   unrelated.style.opacity = '0.5';
@@ -38,7 +40,9 @@ it('waits for an open search dialog to close before exposing the background body
   await new Promise((resolve) => setTimeout(resolve, 0));
   expect(visible).toHaveBeenCalledTimes(1);
   body.hidden = false;
-  await waitFor(() => expect(visible).toHaveBeenCalledTimes(2));
+  await waitFor(() => expect(visible).toHaveBeenCalledTimes(2), {
+    timeout: 5000,
+  });
   stop();
   body.style.opacity = '0.9';
   await new Promise((resolve) => setTimeout(resolve, 0));

@@ -1,6 +1,7 @@
 /** A mounted component is not necessarily visible (tabs, offscreen and background). */
 export function observeVisible(element: HTMLElement, callback: () => void) {
   let stopped = false;
+  let frame: number | undefined;
   const visible = () => {
     if (
       stopped ||
@@ -32,9 +33,18 @@ export function observeVisible(element: HTMLElement, callback: () => void) {
     )
       callback();
   };
+  const check = () => {
+    if (stopped || frame !== undefined) return;
+    // Layout effects can restore a platform preference and flush effects from
+    // the previous render. Wait for that render to settle before reading layout.
+    frame = window.requestAnimationFrame(() => {
+      frame = undefined;
+      visible();
+    });
+  };
   const observer =
     typeof IntersectionObserver !== 'undefined'
-      ? new IntersectionObserver(visible)
+      ? new IntersectionObserver(check)
       : undefined;
   observer?.observe(element);
   const mutations =
@@ -56,7 +66,7 @@ export function observeVisible(element: HTMLElement, callback: () => void) {
                   ),
             )
           )
-            visible();
+            check();
         })
       : undefined;
   mutations?.observe(document.body, {
@@ -72,12 +82,13 @@ export function observeVisible(element: HTMLElement, callback: () => void) {
       'open',
     ],
   });
-  document.addEventListener('visibilitychange', visible);
-  visible();
+  document.addEventListener('visibilitychange', check);
+  check();
   return () => {
     stopped = true;
+    if (frame !== undefined) window.cancelAnimationFrame(frame);
     observer?.disconnect();
     mutations?.disconnect();
-    document.removeEventListener('visibilitychange', visible);
+    document.removeEventListener('visibilitychange', check);
   };
 }
