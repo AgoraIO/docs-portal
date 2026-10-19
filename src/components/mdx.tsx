@@ -665,9 +665,18 @@ function Tabs({
   defaultValue,
   items,
   onValueChange,
+  ref,
   value,
   ...props
 }: TabsRootProps) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const setRootRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      rootRef.current = element;
+      assignRef(ref, element);
+    },
+    [ref],
+  );
   const values = useTabValues({ children, items });
   const labels = useMemo(() => {
     const collected = collectTabLabels(children);
@@ -685,10 +694,51 @@ function Tabs({
     values,
   });
 
+  const revealHashTab = useEffectEvent((url: string) => {
+    const root = rootRef.current;
+    const target = findDocsHeadingForHash(url);
+    if (!root || !target || !root.contains(target)) return;
+
+    // Fumadocs' literal fragment lookup misses percent-encoded Chinese IDs.
+    // Activate this root's ancestor panel, including when tabs are nested.
+    for (
+      let panel: HTMLElement | null = target;
+      panel && panel !== root;
+      panel = panel.parentElement
+    ) {
+      const tabValue = panel.getAttribute('data-mdx-tab-value');
+      if (tabValue && panel.closest('[data-mdx-tabs-root]') === root) {
+        if (props.groupId) {
+          sessionStorage.setItem(props.groupId, tabValue);
+          if (props.persist) localStorage.setItem(props.groupId, tabValue);
+        }
+        setSafeValue(tabValue);
+        return;
+      }
+    }
+  });
+
+  useEffect(() => {
+    const applyCurrentHash = () => revealHashTab(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      revealHashTab(typeof url === 'string' ? url : window.location.hash);
+    };
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, []);
+
   return (
     <MdxTabLabelsContext value={labels}>
       <ControlledFumadocsTabs
         {...props}
+        data-mdx-tabs-root=""
+        ref={setRootRef}
         className={cn('bg-fd-card', className)}
         defaultValue={defaultValue}
         items={items}
@@ -1158,6 +1208,7 @@ function TabsContent({
   return (
     <MdxTabLabelContext value={tabLabel}>
       <FumadocsTabsContent
+        data-mdx-tab-value={tabValue}
         className={cn(
           '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
           className,

@@ -190,6 +190,8 @@ function isHiddenFromDocs(element: HTMLElement) {
       current.hidden ||
       current.getAttribute('aria-hidden') === 'true' ||
       current.hasAttribute('inert') ||
+      (current.getAttribute('role') === 'tabpanel' &&
+        current.getAttribute('data-state') === 'inactive') ||
       (current.getAttribute('role') === 'region' &&
         current.getAttribute('data-state') === 'closed')
     ) {

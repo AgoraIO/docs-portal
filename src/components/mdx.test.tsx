@@ -686,6 +686,68 @@ describe('common MDX registry', () => {
     expect(screen.getByRole('heading', { name: '问题修复' })).toBeVisible();
   });
 
+  it.each(['initial', 'event'])(
+    'reveals the ancestor language tab for an encoded release hash (%s)',
+    async (trigger) => {
+      sessionStorage.setItem('release-hash', 'tongxin');
+      localStorage.setItem('release-hash', 'tongxin');
+      const url = '#%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D';
+      window.history.replaceState(
+        {},
+        '',
+        '/zh-CN/realtime-media/rtc/reference/release-notes/electron' +
+          (trigger === 'initial' ? url : ''),
+      );
+      const components = getMDXComponents();
+      const Tabs = components.Tabs as TabsComponent;
+      const TabsList = components.TabsList as ComponentType<{
+        children: ReactNode;
+      }>;
+      const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+      const TabsContent = components.TabsContent as TabsChildComponent;
+      const Accordions = components.Accordions as AccordionsComponent;
+      const Accordion = components.Accordion as AccordionComponent;
+      render(
+        <MDXAccordionProvider>
+          <Tabs defaultValue="electron" groupId="release-hash" persist>
+            <TabsList>
+              <TabsTrigger value="electron">Electron</TabsTrigger>
+              <TabsTrigger value="tongxin">统信 OS</TabsTrigger>
+            </TabsList>
+            <TabsContent value="electron">
+              <Accordions type="multiple" openFirst>
+                <Accordion title="v2" id="v2" headingLevel={2} value="v2">
+                  Latest release
+                </Accordion>
+                <Accordion title="v1" id="v1" headingLevel={2} value="v1">
+                  <h3 id="问题修复">问题修复</h3>
+                </Accordion>
+              </Accordions>
+            </TabsContent>
+            <TabsContent value="tongxin">Tongxin release</TabsContent>
+          </Tabs>
+        </MDXAccordionProvider>,
+      );
+      if (trigger === 'event')
+        act(() =>
+          window.dispatchEvent(
+            new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: url }),
+          ),
+        );
+      await waitFor(() =>
+        expect(
+          screen.getByRole('tab', { name: 'Electron', exact: true }),
+        ).toHaveAttribute('aria-selected', 'true'),
+      );
+      expect(screen.getByRole('button', { name: 'v1' })).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+      expect(screen.getByRole('heading', { name: '问题修复' })).toBeVisible();
+      expect(sessionStorage.getItem('release-hash')).toBe('electron');
+    },
+  );
+
   it('keeps only one MDX accordion open across separate roots', () => {
     const components = getMDXComponents();
     const Accordions = components.Accordions as AccordionsComponent;

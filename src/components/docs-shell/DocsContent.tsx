@@ -864,7 +864,7 @@ export function DocsTableOfContents({
 
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ['hidden', 'aria-hidden', 'inert'],
+      attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state'],
       childList: true,
       subtree: true,
     });
@@ -1197,6 +1197,8 @@ function isHiddenFromToc(element: HTMLElement) {
       current.getAttribute('aria-hidden') === 'true' ||
       current.getAttribute('data-toc-hidden') === 'true' ||
       current.hasAttribute('inert') ||
+      (current.getAttribute('role') === 'tabpanel' &&
+        current.getAttribute('data-state') === 'inactive') ||
       ((current.getAttribute('role') === 'region' ||
         current.tagName === 'SECTION') &&
         current.getAttribute('data-state') === 'closed')

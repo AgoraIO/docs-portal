@@ -479,7 +479,7 @@ describe('reported Chinese link destinations', () => {
       const content = readFileSync(sourcePath, 'utf8');
 
       expect(content).toContain(`<a id="${version}"></a>`);
-      expect(content).toContain(`## ${version}`);
+      expect(content).toContain(`<Accordion title="${version}"`);
     },
   );
 

@@ -671,6 +671,42 @@ describe('DocsContent', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('updates version entries when a language tab changes', async () => {
+    renderWithRouter(
+      <AppProviders>
+        <article>
+          <div role="tabpanel" data-state="active" data-testid="cpp-panel">
+            <h2 id="cpp-version" data-accordion-value="cpp-version">
+              C++ version
+            </h2>
+          </div>
+          <div role="tabpanel" data-state="inactive" data-testid="cs-panel">
+            <h2 id="cs-version" data-accordion-value="cs-version">
+              C# version
+            </h2>
+          </div>
+          <DocsTableOfContents toc={[]} />
+        </article>
+      </AppProviders>,
+    );
+    expect(
+      await screen.findByRole('link', { name: 'C++ version' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: 'C# version' }),
+    ).not.toBeInTheDocument();
+    screen.getByTestId('cpp-panel').setAttribute('data-state', 'inactive');
+    screen.getByTestId('cs-panel').setAttribute('data-state', 'active');
+    expect(
+      await screen.findByRole('link', { name: 'C# version' }),
+    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('link', { name: 'C++ version' }),
+      ).not.toBeInTheDocument(),
+    );
+  });
+
   it('uses rendered headings when the payload TOC is incomplete', async () => {
     renderWithRouter(
       <AppProviders>
