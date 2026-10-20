@@ -3,6 +3,35 @@ import { describe, expect, it } from 'vitest';
 import { RtcSdkDownloads } from './RtcSdkDownloads';
 
 describe('RtcSdkDownloads', () => {
+  it.each([
+    [
+      'flutter',
+      'Flutter',
+      '6.6.4（对应 Native v4.6.4）',
+      'https://pub.dev/packages/shengwang_rtc_engine/versions/6.6.4',
+    ],
+    [
+      'react-native',
+      'React Native',
+      '4.6.4',
+      'https://www.npmjs.com/package/react-native-shengwang/v/4.6.4',
+    ],
+  ])(
+    'shows the current #2084 %s video package',
+    (platform, label, version, url) => {
+      render(<RtcSdkDownloads platform={platform} product="video" />);
+      const card = screen.getByRole('article', { name: `${label} 视频 SDK` });
+      expect(screen.getAllByRole('article')).toHaveLength(1);
+      expect(within(card).getByText(`v${version}`)).toBeVisible();
+      expect(
+        within(card).getByText('发布日期：2026 年 8 月 31 日'),
+      ).toBeVisible();
+      expect(
+        within(card).getByRole('link', { name: `获取 ${label} 视频 SDK` }),
+      ).toHaveAttribute('href', url);
+    },
+  );
+
   it('shows separate direct-download cards for the latest Android Full and Lite packages', () => {
     render(<RtcSdkDownloads platform="android" product="video" />);
 
