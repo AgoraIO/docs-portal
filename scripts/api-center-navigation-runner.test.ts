@@ -28,6 +28,66 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
+  it('regenerates the flat React overview entries and nested Web SDK without promoting hidden types', async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-react-'),
+    );
+    roots.push(repoRoot);
+    const manifestPath = 'docs/migration/api-center-html-manifest.json';
+    const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+    manifest.entries = manifest.entries.filter(
+      (entry: { label: string; product: string }) =>
+        entry.product === '实时互动 RTC' && entry.label === 'React',
+    );
+    manifest.pageEvidence = manifest.pageEvidence.filter(
+      (page: { requestedUrl: string }) =>
+        page.requestedUrl.startsWith(
+          'https://doc.shengwang.cn/api-ref/rtc/react/',
+        ),
+    );
+    await fs.mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, manifestPath),
+      JSON.stringify(manifest),
+    );
+    const root = 'content/docs/zh-CN/api-reference';
+    const reactRoot = `${root}/rtc/react-sdk`;
+    await fs.mkdir(path.join(repoRoot, reactRoot), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, root, 'meta.json'),
+      JSON.stringify({
+        title: 'API 参考',
+        root: true,
+        pages: ['overview', 'rtc'],
+      }),
+    );
+    await fs.writeFile(
+      path.join(repoRoot, reactRoot, 'meta.json'),
+      JSON.stringify({ title: 'React API 参考', navScope: {} }),
+    );
+    for (const page of manifest.pageEvidence) {
+      const targetPath = page.sourceResolution?.targetPath;
+      if (!targetPath?.endsWith('.mdx')) continue;
+      await fs.mkdir(path.dirname(path.join(repoRoot, targetPath)), {
+        recursive: true,
+      });
+      await fs.writeFile(
+        path.join(repoRoot, targetPath),
+        '---\ntitle: Fixture\n---\n',
+      );
+    }
+
+    const result = await runApiCenterNavigation({ repoRoot, lanes: [] });
+    expect(result.report.counts.errors).toBe(0);
+    for (const relativePath of ['meta.json', 'web-sdk/meta.json']) {
+      const targetPath = `${reactRoot}/${relativePath}`;
+      expect(
+        JSON.parse(await fs.readFile(path.join(repoRoot, targetPath), 'utf8')),
+      ).toEqual(JSON.parse(await fs.readFile(targetPath, 'utf8')));
+    }
+    await runApiCenterNavigation({ repoRoot, lanes: [], mode: 'check' });
+  });
+
   it.each([
     ['java', ['agoraservice.java', 'agoramediartcrecorder.java']],
     [

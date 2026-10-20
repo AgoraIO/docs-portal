@@ -783,6 +783,54 @@ describe('DocsSidebarTree', () => {
     ).toBeNull();
   });
 
+  it('keeps an explicitly open root group collapsible beside direct overview links', async () => {
+    const root = '/zh-CN/api-reference/rtc/react-sdk';
+    const overview: DocsSidebarNode = {
+      id: `${root}/overview`,
+      title: '概览',
+      type: 'page',
+      url: `${root}/overview`,
+    };
+    renderSidebarTree(
+      [
+        overview,
+        {
+          id: 'web-sdk',
+          title: 'Web SDK API',
+          type: 'section',
+          collapsible: true,
+          defaultOpen: true,
+          children: [
+            {
+              id: 'client',
+              title: 'IAgoraRTCClient',
+              type: 'page',
+              url: `${root}/web-sdk/interfaces/iagorartcclient`,
+            },
+          ],
+        },
+      ],
+      overview.url,
+    );
+
+    const toggle = await screen.findByRole('button', { name: 'Web SDK API' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('link', { name: 'IAgoraRTCClient' }),
+    ).toBeInTheDocument();
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: 'IAgoraRTCClient' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '概览' })).toBeInTheDocument();
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('link', { name: 'IAgoraRTCClient' }),
+    ).toBeInTheDocument();
+  });
+
   it('opens the realtime section by default on the introduction index page', async () => {
     const tree: DocsSidebarNode[] = [
       {

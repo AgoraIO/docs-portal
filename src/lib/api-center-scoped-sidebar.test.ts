@@ -175,6 +175,64 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
   });
 
   it.each([
+    ['overview'],
+    ['components'],
+    ['web-sdk', 'overview'],
+    ['web-sdk', 'interfaces', 'iagorartcclient'],
+    ['web-sdk', 'interfaces', 'networkquality'],
+  ])(
+    'shows React overview pages directly above the Web SDK group on %s',
+    async (...route) => {
+      const payload = await loadApiReferencePayload([
+        'rtc',
+        'react-sdk',
+        ...route,
+      ]);
+      const sidebar = payload.sidebar as SidebarNode[];
+
+      expect(sidebar).toMatchObject([
+        { title: '概览', url: '/zh-CN/api-reference/rtc/react-sdk/overview' },
+        { title: 'Components（组件）' },
+        { title: 'Hooks（钩子）' },
+        { title: '类型定义' },
+        {
+          type: 'section',
+          title: 'Web SDK API',
+          collapsible: true,
+          defaultOpen: true,
+          children: [
+            {
+              title: '概览',
+              url: '/zh-CN/api-reference/rtc/react-sdk/web-sdk/overview',
+            },
+            { title: 'IAgoraRTC' },
+            { title: 'IAgoraRTCClient' },
+            { title: 'ILocalTrack' },
+            { title: 'ILocalAudioTrack' },
+            { title: 'IMicrophoneAudioTrack' },
+            { title: 'IBufferSourceAudioTrack' },
+            { title: 'ILocalVideoTrack' },
+            { title: 'ICameraVideoTrack' },
+            { title: 'IRemoteTrack' },
+            { title: 'IRemoteAudioTrack' },
+            { title: 'IRemoteVideoTrack' },
+            {
+              title: '类型别名 (Type alias)',
+              url: '/zh-CN/api-reference/rtc/react-sdk/web-sdk/globals',
+            },
+          ],
+        },
+      ]);
+      expect(collectTitles(sidebar)).not.toContain('API 概览');
+      expect(collectTitles(sidebar)).not.toContain('API 参考');
+      expect(collectTitles(sidebar)).not.toContain('NetworkQuality');
+      expect(payload.sidebarHeader).toMatchObject({
+        productDocsHref: '/zh-CN/realtime-media/rtc',
+      });
+    },
+  );
+
+  it.each([
     [['conversational-ai', 'agent-go'], 'Go'],
     [['conversational-ai', 'agent-python'], 'Python'],
     [['conversational-ai', 'agent-typescript'], 'TypeScript'],
