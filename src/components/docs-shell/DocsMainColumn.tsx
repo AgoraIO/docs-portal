@@ -13,6 +13,7 @@ import {
 } from '@/lib/i18n/i18n-config';
 import { DocsPageFeedback } from './DocsPageFeedback';
 import { DocsSiteFooter } from './DocsSiteFooter';
+import { DocsTaskFeedback } from './DocsTaskFeedback';
 
 export function DocsMainColumn({
   children,
@@ -91,7 +92,12 @@ function DocsPageFooter({
       )}
       data-testid="docs-page-footer"
     >
-      {includeFeedback ? <DocsPageFeedback locale={locale} /> : null}
+      {includeFeedback ? (
+        <>
+          <DocsPageFeedback locale={locale} />
+          {locale === 'zh-CN' ? <DocsTaskFeedback surface="content" /> : null}
+        </>
+      ) : null}
       {previous || next ? (
         <div
           className={cn(
