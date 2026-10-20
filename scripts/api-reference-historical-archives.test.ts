@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { docsMetaSchema } from '../src/lib/docs-meta-schema';
@@ -196,8 +196,8 @@ describe('Chinese API Reference historical archives', () => {
   it('does not add version menus to either deferred React series', () => {
     expect(readMeta('rtc/react-sdk').navScope?.versions).toBeUndefined();
     expect(
-      existsSync(path.join(contentRoot, 'rtc/react-sdk/web-sdk/meta.json')),
-    ).toBe(false);
+      readMeta('rtc/react-sdk/web-sdk').navScope?.versions,
+    ).toBeUndefined();
   });
 
   it.each(['cpp', 'java'])(
