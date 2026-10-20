@@ -228,6 +228,7 @@ When creating an agent, read the vendor documentation for ASR, LLM, and TTS to u
    * **Choose smaller models**: Models such as `gpt-4o-mini` and `gemini-2.5-flash` typically respond faster than larger models.
    * **Limit `max_tokens`**: Reducing the maximum number of tokens generated can lower TTFS (first sentence latency).
    * **Enable streaming response**: Ensure `stream: true` so the agent can start speaking as soon as possible.
+   * **Start the LLM request early**: Let the agent send the LLM request before the user finishes speaking. For details, see [Prepare responses early](/en/ai/build/shape-the-conversation/prepare-responses).
 * **ASR**
    * **Use vendor-recommended sampling rate**: Use the sampling rate recommended by the vendor, such as 16 kHz, to avoid unnecessary resampling.
    * **Limit language model**: Use the `phrases` or `context` parameter to provide domain-specific vocabulary and improve recognition speed.

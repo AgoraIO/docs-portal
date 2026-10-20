@@ -1,0 +1,95 @@
+---
+title: Prepare responses early
+description: Start the LLM request before the user finishes speaking to shorten the agent's response time.
+---
+
+To shorten the time users wait for the agent's reply, you can start the LLM request before the user finishes speaking. Choose one or both of the following triggers for the early request:
+
+- `asr_auto`: The ASR provider triggers the request based on interim transcripts. Requires an ASR provider that supports automatic triggering.
+- `eager_eos`: The engine triggers the request when it predicts that the user is about to finish speaking.
+
+When the user finishes speaking, the engine compares the candidate text, which is the text used for the early request, with the final transcript for the turn. If they match, the agent uses the early response. If they don't match, the agent generates a new response from the final transcript.
+
+The agent doesn't use an early response in every turn. If the engine produces no candidate text, the early request doesn't finish in time, or the final transcript doesn't match the candidate text, the agent generates the response from the final transcript.
+
+:::warning[Caution]
+Early requests can increase LLM usage. When the candidate text changes, the engine can cancel the earlier request and send a new one. If the early response doesn't match the final transcript, the agent sends another LLM request. Both cases increase token consumption and the number of LLM requests.
+:::
+
+## Prerequisites
+
+Before you begin, make sure you can start an agent using the RESTful API. For details, see [Start and stop an agent](/en/ai/build/start-stop-agent).
+
+This feature is available in the RESTful API only.
+
+## Respond early using `asr_auto`
+
+`asr_auto` works only with ASR providers that support automatic triggering. The engine sends the early request automatically based on interim transcripts. This trigger doesn't require a `semantic` end-of-speech mode.
+
+When you [start an agent](/en/api-reference/api-ref/conversational-ai/join), add the following configuration to `properties`:
+
+```json
+{
+  "properties": {
+    "parameters": {
+      "eager_llm_response": true,
+      "turn_detector": {
+        "prefetch": {
+          "trigger_by": ["asr_auto"]
+        }
+      }
+    }
+  }
+}
+```
+
+## Respond early using `eager_eos`
+
+With `eager_eos`, the engine sends the early request when end-of-speech signals predict that the user is about to finish speaking. This trigger requires the `semantic` end-of-speech mode.
+
+When you [start an agent](/en/api-reference/api-ref/conversational-ai/join), add the following configuration to `properties`:
+
+```json
+{
+  "properties": {
+    "turn_detection": {
+      "config": {
+        "end_of_speech": {
+          "mode": "semantic"
+        }
+      }
+    },
+    "parameters": {
+      "eager_llm_response": true,
+      "turn_detector": {
+        "prefetch": {
+          "trigger_by": ["eager_eos"]
+        }
+      }
+    }
+  }
+}
+```
+
+:::warning
+`trigger_by` defaults to `["asr_auto"]`. If your ASR provider doesn't support `asr_auto`, set `trigger_by` to `["eager_eos"]` explicitly. Otherwise, the engine sends no early request.
+:::
+
+## Parameters
+
+| Field | Type | Description |
+| --- | --- | --- |
+| `properties.turn_detection.config.end_of_speech.mode` | String | End-of-speech detection mode. `eager_eos` requires `semantic`. `asr_auto` works with any mode. |
+| `properties.parameters.eager_llm_response` | Boolean | Whether to start the LLM request early. Set to `true` to enable the feature. Defaults to `false`. |
+| `properties.parameters.turn_detector.prefetch.trigger_by` | String[] | What triggers the early request: `asr_auto`, `eager_eos`, or both. Defaults to `["asr_auto"]`. |
+
+`trigger_by` supports the following values:
+
+| Value | Behavior |
+| --- | --- |
+| `["asr_auto"]` | Only the ASR provider triggers early requests. |
+| `["eager_eos"]` | Only `eager_eos` triggers early requests. |
+| `["asr_auto", "eager_eos"]` | Both triggers are active. The engine sends only one request for the same candidate text. |
+| Not set, or `[]` | Uses the default, `["asr_auto"]`. |
+
+For the complete field reference, see [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-eager-llm-response).

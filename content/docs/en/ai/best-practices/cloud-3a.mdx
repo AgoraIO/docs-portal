@@ -1,0 +1,311 @@
+---
+title: Remove echo and noise on IoT devices
+description: Use cloud 3A to run acoustic echo cancellation, noise suppression, and gain control in the cloud for IoT devices that connect to a voice agent using the IoT SDK.
+---
+
+When a device plays the agent's voice through its speaker, the microphone picks up that audio again. Without echo cancellation, the agent can mistake its own voice for user speech.
+
+Cloud 3A solves this by cleaning up the device's audio in the cloud. Conversational AI Engine applies acoustic echo cancellation (AEC), automatic noise suppression (ANS), and automatic gain control (AGC) to the audio before the agent processes it. To use cloud 3A, configure audio capture and playback on the device using the [IoT SDK](/en/realtime-media/iot/product-overview), then set the cloud 3A parameters when you start the agent.
+
+Cloud 3A works as follows:
+
+1. The device captures the microphone signal and the speaker reference signal at the same time.
+1. The device interleaves the two signals into 2-channel PCM and sends it to the channel using the IoT SDK.
+1. Conversational AI Engine applies AEC, ANS, and AGC in the cloud, then passes the processed audio to the agent.
+1. The agent's reply audio reaches the device through the IoT SDK. The device plays it, and the played signal becomes the reference signal for the following audio frames.
+
+:::info
+Verify the settings on this page against the API reference for your IoT SDK version. Parameter behavior can vary between IoT SDK and Conversational AI Engine versions. Take particular care with `audio_codec_opt`. Depending on the version, its PCM settings can apply to the audio the device sends or the audio it receives. For example, the configuration on this page sets `pcm_channel_num` to `1` even though the device sends 2-channel audio.
+:::
+
+## Configure the device audio
+
+Configure audio capture, sending, and playback on the device using the IoT SDK.
+
+### Capture and interleave the microphone and reference signals
+
+Capture the microphone signal and the speaker reference signal in sync, and interleave them sample by sample into 2-channel PCM:
+
+| Item | Requirement |
+| --- | --- |
+| Uplink sample rate | 16000 Hz |
+| Uplink sample format | 16-bit signed PCM, little-endian |
+| Uplink channels | 2 |
+| Left channel | Microphone signal |
+| Right channel | Reference signal |
+| Frame duration | 20 ms |
+| Samples per channel per frame | 320 |
+| Frame size | 1280 bytes |
+
+Interleave the two channels in the following order, where `mic` and `ref` hold the microphone and reference samples:
+
+```text
+mic[0], ref[0], mic[1], ref[1], ... , mic[319], ref[319]
+```
+
+The following C example interleaves one frame:
+
+```c
+#include <stddef.h>
+#include <stdint.h>
+
+#define SAMPLE_RATE_HZ       16000
+#define FRAME_DURATION_MS    20
+#define SAMPLES_PER_CHANNEL  (SAMPLE_RATE_HZ * FRAME_DURATION_MS / 1000)
+#define CHANNEL_COUNT        2
+
+static void interleave_mic_ref(const int16_t *mic,
+                               const int16_t *ref,
+                               int16_t *stereo,
+                               size_t samples_per_channel) {
+  for (size_t i = 0; i < samples_per_channel; ++i) {
+    stereo[2 * i] = mic[i];
+    stereo[2 * i + 1] = ref[i];
+  }
+}
+```
+
+The reference signal must align with the audio the speaker plays. Take it from the actual speaker playback path or from a hardware loopback. Don't swap the left and right channels, and don't mix the two channels before sending. Use the same sample rate, sample format, and frame duration for both signals, and keep both signals in the same clock domain where possible.
+
+### Send uplink PCM
+
+The IoT SDK sends audio using `agora_rtc_send_audio_data`:
+
+```c
+/**
+ * @brief Send an audio frame to all channels OR specific channel.
+ *        All remote users in this channel will receive the audio frame.
+ * @note All channels that you joined will receive the audio frame that you send
+ *       unless you stop sending the local audio to a specific channel.
+ * @param[in] conn_id   Connection identification
+ * @param[in] data_ptr  Audio frame buffer
+ * @param[in] data_len  Audio frame buffer length (bytes)
+ * @param[in] info_ptr  Audio frame info, see #audio_frame_info_t
+ * @return
+ * - = 0: Success
+ * - < 0: Failure
+ */
+extern agora_api int agora_rtc_send_audio_data(connection_id_t conn_id,
+                                               const void *data_ptr,
+                                               size_t data_len,
+                                               audio_frame_info_t *info_ptr);
+```
+
+The IoT SDK defines the audio frame information as follows:
+
+```c
+typedef struct {
+  /** Audio data type, reference #audio_data_type_e. */
+  audio_data_type_e data_type;
+} audio_frame_info_t;
+```
+
+To send PCM data, set `data_type` to `AUDIO_DATA_TYPE_PCM`:
+
+```c
+int16_t stereo_frame[SAMPLES_PER_CHANNEL * CHANNEL_COUNT];
+audio_frame_info_t frame_info = {
+    .data_type = AUDIO_DATA_TYPE_PCM,
+};
+
+interleave_mic_ref(mic_frame, ref_frame, stereo_frame, SAMPLES_PER_CHANNEL);
+
+int ret = agora_rtc_send_audio_data(conn_id,
+                                    stereo_frame,
+                                    sizeof(stereo_frame),
+                                    &frame_info);
+if (ret < 0) {
+  /* Log the error, or retry or recover as your app requires. */
+}
+```
+
+Send one complete frame every 20 ms at a steady interval. Don't combine frames irregularly into one call, and don't resend an old frame when input runs short.
+
+### Join the channel
+
+The IoT SDK joins a channel using `agora_rtc_join_channel`:
+
+```c
+/**
+ * @brief Local user joins channel.
+ * @note Users in the same channel with the same App ID can send data to each other.
+ *   You can join more than one channel at the same time. All channels that
+ *   you join will receive the audio/video data stream that you send unless
+ *   you stop sending the audio/video data stream in a specific channel.
+ * @param[in] conn_id      Connection identification
+ * @param[in] channel_name Channel name, whose length must be less than 64 bytes
+ * @param[in] uid          User ID in [1, 2^32-1], or 0 for SDK assignment
+ * @param[in] token        Token in [32, 512] bytes, or NULL if authorization is disabled
+ * @param[in] options      Channel options; use NULL if no options are required
+ * @return
+ * - = 0: Success
+ * - < 0: Failure
+ */
+extern agora_api int agora_rtc_join_channel(connection_id_t conn_id,
+                                            const char *channel_name,
+                                            uint32_t uid,
+                                            const char *token,
+                                            rtc_channel_options_t *options);
+```
+
+The following `rtc_channel_options_t` fields are relevant to cloud 3A. For the complete struct and field meanings, see the API reference for your IoT SDK version.
+
+```c
+typedef struct {
+  bool auto_subscribe_audio;
+  bool auto_subscribe_video;
+  bool enable_audio_jitter_buffer;
+  bool enable_audio_mixer;
+  bool enable_audio_decode;
+  bool enable_audio_ai_qos;
+  bool enable_audio_downlink_aec;
+  bool enable_audio_downlink_aec_pcm_dump;
+  audio_codec_option_t audio_codec_opt;
+} rtc_channel_options_t;
+```
+
+The IoT SDK defines the audio codec options as follows:
+
+```c
+typedef struct {
+  audio_codec_type_e audio_codec_type;
+  int pcm_sample_rate;
+  int pcm_channel_num;
+  int pcm_duration;
+} audio_codec_option_t;
+```
+
+The following example configures the channel options for cloud 3A and joins the channel:
+
+```c
+rtc_channel_options_t options = {0};
+
+options.auto_subscribe_audio = true;
+options.enable_audio_downlink_aec = true;
+options.enable_audio_decode = true;
+options.enable_audio_jitter_buffer = true;
+
+options.audio_codec_opt.audio_codec_type = AUDIO_CODEC_TYPE_G722;
+options.audio_codec_opt.pcm_sample_rate = 16000;
+options.audio_codec_opt.pcm_channel_num = 1;
+options.audio_codec_opt.pcm_duration = 20;
+
+int ret = agora_rtc_join_channel(conn_id,
+                                 channel_name,
+                                 uid,
+                                 token,
+                                 &options);
+if (ret < 0) {
+  /* Joining the channel failed. Handle the error code. */
+}
+```
+
+If you pass `0` as the `uid`, the SDK returns the assigned UID in the `on_join_channel_success` callback. Store that UID for later use.
+
+Although `pcm_channel_num` is `1`, the device still sends 2-channel interleaved audio. For details, see [Capture and interleave the microphone and reference signals](#capture-and-interleave-the-microphone-and-reference-signals).
+
+### Decode and play the downlink audio
+
+Before you receive downlink audio, configure the IoT SDK as follows:
+
+| Setting | Recommended value |
+| --- | --- |
+| `enable_audio_downlink_aec` | `true` |
+| `enable_audio_decode` | `true` |
+| `enable_audio_jitter_buffer` | `true` |
+| Audio codec type | `AUDIO_CODEC_TYPE_G722` |
+| PCM sample rate | `16000` |
+| PCM channels | `1` |
+| PCM frame duration | `20` ms |
+
+The agent request parameter `properties.parameters.audio3a_downstream.enable_aec` turns on AEC in the cloud. The IoT SDK setting `enable_audio_downlink_aec` is a device-side setting. The two settings act on different audio paths. Whether you need both, and the order in which they apply, depends on your IoT SDK and engine versions.
+
+When the device receives the G.722 audio from the agent, the IoT SDK decodes it, buffers it against jitter, and outputs mono PCM to the player:
+
+- `enable_audio_decode = true` enables the SDK's built-in decoder.
+- `enable_audio_jitter_buffer = true` enables the jitter buffer, which outputs PCM at a steady frame interval.
+- Follow the SDK's audio receive API for the player's PCM format, callback model, and playback threading.
+
+The audio the player outputs becomes the reference signal for the next frame. `subscribe_audio_num_of_channels` sets how many uplink channels the agent subscribes to from the device. Don't change it and `pcm_channel_num` together based on their names.
+
+These are device-side IoT SDK settings. Don't add `enable_audio_downlink_aec` to the agent request.
+
+## Configure the agent
+
+When you [start an agent](/en/api-reference/api-ref/conversational-ai/join), add the following configuration to `properties.parameters`. Before you integrate, confirm that these parameters are available for your account and engine version. If the engine rejects them, [contact technical support](mailto:support@agora.io).
+
+The example uses recommended starting values for cloud 3A. After the basic integration works, tune the AEC, ANS, and AGC parameters for your device's speaker volume, microphone sensitivity, and echo.
+
+```json
+{
+  "parameters": {
+    "output_audio_codec": "G722",
+    "audio3a_downstream": {
+      "interleaved_reverse_stream": true,
+      "sample_rate": 16000,
+      "passthrough": false,
+      "enable_aec": true,
+      "aec_filter_length": "normal",
+      "aec_model_type": "std_aiaec",
+      "enable_aec_auto_reset": false,
+      "aec_startup_max_suppress_time_in_ms": 1000,
+      "aiaec_suppression_mode": "chat",
+      "aec_suppression_mode": "aggressive",
+      "enable_ans": true,
+      "ans_mode_type": "std_aians",
+      "ans_suppression_mode": "moderate",
+      "enable_agc": true,
+      "agc_max_digital_gain_db": 12,
+      "agc_target_level_db": 6,
+      "agc_curve_slope": 17,
+      "enable_algorithm_log": false,
+      "algorithm_log_level": "error",
+      "algorithm_log_verbose": false
+    },
+    "rtc": {
+      "subscribe_audio_num_of_channels": 2
+    }
+  }
+}
+```
+
+The following table describes the key parameters:
+
+| Parameter | Description |
+| --- | --- |
+| `output_audio_codec` | The codec for the agent's downlink audio. Set to `G722` for cloud 3A, and match it in the device's decoder settings. |
+| `audio3a_downstream.interleaved_reverse_stream` | Declares that the input uses the interleaved 2-channel layout of microphone and reference signals. Set to `true`. |
+| `audio3a_downstream.sample_rate` | The cloud 3A input sample rate. Set to `16000`. |
+| `audio3a_downstream.passthrough` | Whether to pass the raw input through. Set to `false` to use the 3A-processed audio. |
+| `audio3a_downstream.enable_aec` | Whether to enable AEC in the cloud. Set to `true`. |
+| `audio3a_downstream.enable_ans` | Whether to enable ANS in the cloud. Set to `true`. |
+| `audio3a_downstream.enable_agc` | Whether to enable AGC in the cloud. Set to `true`. |
+| `rtc.subscribe_audio_num_of_channels` | The number of uplink channels the agent subscribes to from the device. Set to `2` to receive both the microphone and reference signals. |
+
+`properties.parameters.rtc` and `properties.rtc` are separate objects:
+
+- `properties.parameters.rtc.subscribe_audio_num_of_channels` configures the uplink audio subscription for cloud 3A.
+- `properties.rtc` configures media encryption.
+
+The remaining AEC, ANS, and AGC values are recommended starting points, not the best values for every device. After the basic integration works, test echo, double-talk, noise suppression, and volume for your device's speaker volume, microphone sensitivity, acoustic design, and typical noise environment, then adjust the parameters. For all `audio3a_downstream` fields, see [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-audio3a-downstream).
+
+## Verify the integration
+
+After you complete the configuration, check the following in order:
+
+1. The microphone and reference signals are both 16 kHz, 16-bit PCM, with 320 samples per channel in each frame.
+1. Before the device sends the audio, the microphone signal is on the left channel and the reference signal is on the right, the samples alternate in the correct order, and each frame is 1280 bytes.
+1. The reference signal comes from the actual speaker playback path, not from the microphone or silence.
+1. The device sends one complete frame every 20 ms, and the send call returns success.
+1. The sample rate, output codec, and subscribed channel count in the agent request match the device configuration.
+1. Echo cancellation, noise suppression, volume stability, and interruption work in quiet rooms, steady noise, near-end speech, far-end playback, and double-talk.
+
+## Troubleshooting
+
+| Symptom | What to check |
+| --- | --- |
+| Echo is still clearly audible | The reference signal is valid; the device doesn't swap the left and right channels; the microphone and reference signals are in sync; `enable_aec` is `true`. |
+| The agent receives silence or distorted audio | PCM sample format, byte order, frame size, sample rate, `data_type`, and the send call's return value. |
+| The agent's reply doesn't play | `output_audio_codec` is `G722`; `enable_audio_decode` is `true` in the IoT SDK; the player format matches the SDK output. |
+| Playback stutters or frame intervals are uneven | `enable_audio_jitter_buffer` is `true` in the IoT SDK; nothing blocks the audio receive callback or the playback thread. |
+| AEC degrades over time | The microphone and reference clocks keep drifting; the capture or playback path has changing delay. |
