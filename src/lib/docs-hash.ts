@@ -4,6 +4,16 @@ const HASH_SCROLL_OFFSET = 24;
 const WINDOW_SCROLL_OFFSET = 96;
 const SCROLLABLE_OVERFLOW_VALUES = new Set(['auto', 'scroll', 'overlay']);
 const STICKY_POSITION_VALUES = new Set(['fixed', 'sticky']);
+const HASH_LAYOUT_TIMEOUT_MS = 30_000;
+const HASH_SCROLL_CANCEL_EVENTS = [
+  'wheel',
+  'touchstart',
+  'pointerdown',
+  'keydown',
+  'pagehide',
+] as const;
+let cancelPendingHashScroll: (() => void) | undefined;
+export const DOCS_HASH_TARGET_EVENT = 'docs-portal:hash-target';
 
 export function scrollDocsHashTarget(
   url: string,
@@ -53,6 +63,112 @@ export function scrollDocsHashTarget(
   return true;
 }
 
+/**
+ * Wait for lazy content, ancestor tabs and accordion layout to settle before
+ * the final scroll. Stop waiting when the reader takes control or navigates.
+ */
+export function scrollDocsHashTargetAfterLayout(
+  url: string,
+  options: {
+    behavior?: ScrollBehavior;
+    updateHistory?: boolean;
+  } = {},
+) {
+  if (typeof window === 'undefined' || !url.startsWith('#')) {
+    return false;
+  }
+
+  cancelPendingHashScroll?.();
+
+  if (options.updateHistory !== false) {
+    updateHash(url);
+  }
+
+  notifyDocsHashTarget(url);
+
+  const location = window.location.href;
+  const initialHeading = getHeadingForUrl(url);
+  let frame = 0;
+  let timeout = 0;
+  let previousLayout = '';
+  let stableFrames = 0;
+  const observer = new MutationObserver(() => {
+    if (!frame) frame = window.requestAnimationFrame(waitForLayout);
+  });
+
+  const cancel = () => {
+    window.cancelAnimationFrame(frame);
+    window.clearTimeout(timeout);
+    observer.disconnect();
+    for (const event of HASH_SCROLL_CANCEL_EVENTS) {
+      window.removeEventListener(event, cancel);
+    }
+    if (cancelPendingHashScroll === cancel) {
+      cancelPendingHashScroll = undefined;
+    }
+  };
+  const waitForLayout = () => {
+    frame = 0;
+    if (window.location.href !== location) {
+      cancel();
+      return;
+    }
+
+    const heading = getHeadingForUrl(url);
+    if (!heading || isHiddenFromDocs(heading)) {
+      previousLayout = '';
+      stableFrames = 0;
+      // Hydration may finish well after the shell mounts. Wake on content
+      // or visibility changes instead of polling while the target is hidden.
+      return;
+    } else {
+      const container = getActiveDocsScrollContainer();
+      const viewport = container ?? document.documentElement;
+      const rect = heading.getBoundingClientRect();
+      const position = container
+        ? rect.top - container.getBoundingClientRect().top + container.scrollTop
+        : rect.top + window.scrollY;
+      // Scroll height matters too: an expanding region can clamp scrolling
+      // even when the subsection already has its final document position.
+      const layout = [
+        position,
+        rect.height,
+        viewport.scrollHeight,
+        viewport.clientHeight,
+        getWindowScrollOffset(),
+      ].join(':');
+      stableFrames = layout === previousLayout ? stableFrames + 1 : 0;
+      previousLayout = layout;
+
+      if (stableFrames >= 2) {
+        cancel();
+        scrollDocsHashTarget(url, {
+          behavior: options.behavior ?? 'smooth',
+          updateHistory: false,
+        });
+        return;
+      }
+    }
+
+    frame = window.requestAnimationFrame(waitForLayout);
+  };
+
+  cancelPendingHashScroll = cancel;
+  observer.observe(document.body, {
+    attributes: true,
+    attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state', 'id'],
+    childList: true,
+    subtree: true,
+  });
+  for (const event of HASH_SCROLL_CANCEL_EVENTS) {
+    window.addEventListener(event, cancel, { passive: true });
+  }
+  timeout = window.setTimeout(cancel, HASH_LAYOUT_TIMEOUT_MS);
+  frame = window.requestAnimationFrame(waitForLayout);
+
+  return initialHeading !== null;
+}
+
 export function syncDocsHashTargetFromLocation(
   behavior: ScrollBehavior = 'auto',
 ) {
@@ -60,7 +176,7 @@ export function syncDocsHashTargetFromLocation(
     return false;
   }
 
-  return scrollDocsHashTarget(window.location.hash, {
+  return scrollDocsHashTargetAfterLayout(window.location.hash, {
     behavior,
     updateHistory: false,
   });
@@ -130,10 +246,36 @@ function getHeadingForUrl(url: string) {
   const selector = `#${escapeCssIdentifier(id)}`;
   const headings = document.querySelectorAll<HTMLElement>(selector);
   const visibleHeading = Array.from(headings).find(
-    (heading) => heading.getClientRects().length > 0,
+    (heading) =>
+      !isHiddenFromDocs(heading) && heading.getClientRects().length > 0,
+  );
+  const renderedHeading = Array.from(headings).find(
+    (heading) => !isHiddenFromDocs(heading),
   );
 
-  return visibleHeading ?? headings[0] ?? null;
+  return visibleHeading ?? renderedHeading ?? headings[0] ?? null;
+}
+
+function isHiddenFromDocs(element: HTMLElement) {
+  for (
+    let current: HTMLElement | null = element;
+    current;
+    current = current.parentElement
+  ) {
+    if (
+      current.hidden ||
+      current.getAttribute('aria-hidden') === 'true' ||
+      current.hasAttribute('inert') ||
+      (current.getAttribute('role') === 'tabpanel' &&
+        current.getAttribute('data-state') === 'inactive') ||
+      (current.getAttribute('role') === 'region' &&
+        current.getAttribute('data-state') === 'closed')
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function escapeCssIdentifier(value: string) {
@@ -149,5 +291,13 @@ function updateHash(url: string) {
     null,
     '',
     `${window.location.pathname}${window.location.search}${url}`,
+  );
+}
+
+function notifyDocsHashTarget(url: string) {
+  window.dispatchEvent(
+    new CustomEvent(DOCS_HASH_TARGET_EVENT, {
+      detail: url,
+    }),
   );
 }

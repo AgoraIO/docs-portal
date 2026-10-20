@@ -7,7 +7,7 @@ import {
   motion,
   useReducedMotion,
 } from 'motion/react';
-import { useId, useState } from 'react';
+import { type MouseEvent, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
 import {
@@ -41,9 +41,16 @@ export function SearchHighlight({
 export function SearchResultList({
   groups,
   productLabel,
+  onSelectResult,
 }: {
   groups: SearchPageGroup[];
   productLabel: (product?: string) => string;
+  onSelectResult?: (
+    event: MouseEvent<HTMLAnchorElement>,
+    path: string,
+    rank: number,
+    sectionRank?: number,
+  ) => void;
 }) {
   const [active, setActive] = useState<string | null>(null);
   const id = useId();
@@ -51,7 +58,7 @@ export function SearchResultList({
   return (
     <LayoutGroup id={id}>
       <ul className="search-page-results">
-        {groups.map((group) => {
+        {groups.map((group, groupIndex) => {
           const first = group.sections[0];
           const groupKey = getSearchPageGroupKey(group);
           const firstHref = getSearchSectionHref(group.pageUrl, first.url);
@@ -112,7 +119,16 @@ export function SearchResultList({
                   </div>
                 </div>
                 <div className="search-page-result-heading">
-                  <a className="search-page-result-title" href={group.pageUrl}>
+                  <a
+                    className="search-page-result-title"
+                    href={group.pageUrl}
+                    onClick={(event) =>
+                      onSelectResult?.(event, group.pageUrl, groupIndex + 1)
+                    }
+                    onAuxClick={(event) =>
+                      onSelectResult?.(event, group.pageUrl, groupIndex + 1)
+                    }
+                  >
                     <h2>{group.title}</h2>
                     <ArrowUpRightIcon
                       aria-hidden="true"
@@ -120,7 +136,16 @@ export function SearchResultList({
                     />
                   </a>
                   {first.sectionTitle !== group.title && (
-                    <a className="search-page-section" href={firstHref}>
+                    <a
+                      className="search-page-section"
+                      href={firstHref}
+                      onClick={(event) =>
+                        onSelectResult?.(event, firstHref, groupIndex + 1, 1)
+                      }
+                      onAuxClick={(event) =>
+                        onSelectResult?.(event, firstHref, groupIndex + 1, 1)
+                      }
+                    >
                       <HashIcon
                         aria-hidden="true"
                         className="size-3.5 shrink-0"
@@ -140,9 +165,31 @@ export function SearchResultList({
                   <details className="search-page-more-sections">
                     <summary>另 {group.sections.length - 1} 个命中章节</summary>
                     <ul>
-                      {group.sections.slice(1).map((section) => (
+                      {group.sections.slice(1).map((section, sectionIndex) => (
                         <li key={section.url}>
                           <a
+                            onClick={(event) =>
+                              onSelectResult?.(
+                                event,
+                                getSearchSectionHref(
+                                  group.pageUrl,
+                                  section.url,
+                                ),
+                                groupIndex + 1,
+                                sectionIndex + 2,
+                              )
+                            }
+                            onAuxClick={(event) =>
+                              onSelectResult?.(
+                                event,
+                                getSearchSectionHref(
+                                  group.pageUrl,
+                                  section.url,
+                                ),
+                                groupIndex + 1,
+                                sectionIndex + 2,
+                              )
+                            }
                             className="search-page-section"
                             href={getSearchSectionHref(
                               group.pageUrl,

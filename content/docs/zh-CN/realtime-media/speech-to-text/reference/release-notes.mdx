@@ -2,9 +2,12 @@
 title: "发版说明"
 description: "查看实时转录的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
+
 本文介绍实时转录翻译服务的版本更新说明。
 
-## v7.2.3
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v7.2.3" id="v723" headingLevel={2} value="v723">
 
 该版本于 2026 年 7 月 20 日发布。
 
@@ -28,7 +31,9 @@ description: "查看实时转录的版本更新、问题修复、行为变更和
 
 如果你的客户端启用了 JSON 协议，请遍历 `results[]` 处理每个片段，并兼容 `results[]` 为空数组的消息。Protobuf 协议字段不变，但单次消息也可能承载多个片段。字段说明和示例见 [JSON 协议数据结构](/zh-CN/realtime-media/speech-to-text/build/process-transcription-data/how-to-use-protobuf#json-协议数据结构)。
 
-## v7.2.2
+</Accordion>
+
+<Accordion title="v7.2.2" id="v722" headingLevel={2} value="v722">
 
 该版本于 2026 年 5 月 22 日发布。
 
@@ -53,7 +58,9 @@ description: "查看实时转录的版本更新、问题修复、行为变更和
 - 当源语言为单语言输入时，翻译的目标语言必须和源语言不同，否则会报错。例如，中文输入时，目标语言不能选择中文。
 - 当源语言为多语言混合输入时，翻译的目标语言可以与源语言中的某一种语言相同。例如，中文和英文混合输入时，目标语言可以设置为中文，此时输入中的中文和英文都会被翻译为中文。
 
-## v7.2.1
+</Accordion>
+
+<Accordion title="v7.2.1" id="v721" headingLevel={2} value="v721">
 
 该版本于 2026 年 4 月 17 日发布。
 
@@ -67,7 +74,9 @@ description: "查看实时转录的版本更新、问题修复、行为变更和
 
 该版本新增 [GET 获取任务列表](/zh-CN/api-reference/api-ref/speech-to-text/list) 接口，用于按频道、时间范围和任务状态检索符合条件的实时转录翻译任务。
 
-## v7.2
+</Accordion>
+
+<Accordion title="v7.2" id="v72" headingLevel={2} value="v72">
 
 该版本于 2026 年 3 月 30 日发布。
 
@@ -80,3 +89,7 @@ description: "查看实时转录的版本更新、问题修复、行为变更和
 #### 字幕唯一 ID（sentence_id）
 
 解析转写数据时，每条字幕会携带唯一标识 `sentence_id`。在原文与译文场景下，可通过该 ID 将同一句话的原文与译文字幕一一对应，实现更精准的字幕对齐与展示。
+
+</Accordion>
+
+</Accordions>

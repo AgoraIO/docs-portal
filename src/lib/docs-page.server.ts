@@ -3,6 +3,7 @@ import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import remarkMdx from 'remark-mdx';
 import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
@@ -39,6 +40,7 @@ import {
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
+import { remarkAccordionHeadings } from './mdx/accordion-toc';
 import {
   findOpenApiLaneByUrl,
   getOpenApiEndpointUrl,
@@ -65,7 +67,7 @@ import {
 } from './platforms/platform-group-pages';
 import {
   buildCanonicalPlatformTocText,
-  buildPlatformMarkdownText,
+  buildPlatformTocText,
   extractStructuredPlatformKeys,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
@@ -1942,25 +1944,37 @@ async function resolvePageToc(
 ) {
   const directToc = normalizeToc(getPageToc(page));
 
-  if (directToc.length > 0 && !platform) {
+  if (
+    directToc.length > 0 &&
+    !platform &&
+    !processedText.includes('<Accordion')
+  ) {
     return directToc;
   }
 
   try {
     const tocText = platform
-      ? buildPlatformMarkdownText(processedText, platform)
+      ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getTableOfContents(tocText));
+    return normalizeToc(await getAccordionTableOfContents(tocText));
   } catch {
     try {
       return normalizeToc(
-        await getTableOfContents(buildCanonicalPlatformTocText(processedText)),
+        await getAccordionTableOfContents(
+          buildCanonicalPlatformTocText(processedText),
+        ),
       );
     } catch {
       return directToc;
     }
   }
+}
+
+function getAccordionTableOfContents(markdown: string) {
+  return markdown.includes('<Accordion')
+    ? getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings])
+    : getTableOfContents(markdown);
 }
 
 function normalizeToc(toc: TOCItemType[] | undefined) {
