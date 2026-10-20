@@ -193,6 +193,63 @@ function getNodeMeta(node: Folder | Root): DocsMeta | undefined {
 }
 
 describe('docs nav scope', () => {
+  it.each(['(current)', '.'])(
+    'keeps %s current selected with archive-only historical options',
+    (currentPath) => {
+      const archiveHref =
+        'https://doc-archive.shengwang.cn/archive/0.0.405/api-ref/rtc/android/API/rtc_api_overview';
+      const activePath = '/en/api-reference/rtc/android/overview';
+      const scope = resolveDocsNavScope({
+        activePath,
+        getNodeMeta(node) {
+          const meta = getNodeMeta(node);
+          return node.$id === 'android-folder'
+            ? {
+                ...meta,
+                navScope: {
+                  defaultVersion: 'current',
+                  versions: [
+                    { id: 'current', label: 'v4.7.0', path: currentPath },
+                    {
+                      id: '4.6.0',
+                      label: 'v4.6.0',
+                      path: '4.6.0',
+                      href: archiveHref,
+                    },
+                    {
+                      id: '4.2.2',
+                      label: 'v4.2.2',
+                      path: '4.2.2',
+                      href: archiveHref.replace('0.0.405', '0.0.14'),
+                    },
+                  ],
+                },
+              }
+            : meta;
+        },
+        root: apiReferenceTree,
+        tab: 'api-reference',
+      });
+
+      expect(scope?.activeVersion?.id).toBe('current');
+      expect(scope?.header.versionSwitcher).toEqual({
+        currentId: 'current',
+        versions: [
+          { id: 'current', label: 'v4.7.0', href: activePath },
+          { id: '4.6.0', label: 'v4.6.0', href: archiveHref },
+          {
+            id: '4.2.2',
+            label: 'v4.2.2',
+            href: archiveHref.replace('0.0.405', '0.0.14'),
+          },
+        ],
+      });
+      expect(scope?.sidebarRoot.$id).toBe(
+        currentPath === '.' ? 'android-folder' : 'android-current-folder',
+      );
+    },
+  );
+
   it('resolves the nearest current-version scope from a clean URL', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/overview',

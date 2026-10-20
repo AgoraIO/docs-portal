@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "verifiedDate": "2026-10-20",
+  "lastRecheckedAt": "2026-10-20T16:06:29+08:00",
+  "timezone": "Asia/Shanghai",
+  "sourceCommit": "e91218031d7dd02ff84a66fc1b5f422a1cd28a64",
+  "sourceInventory": "api-reference-historical-archive-inventory-20261020.md",
+  "investigation": "api-reference-archive-404-investigation-20261020.md",
+  "scope": "用户报告的 13 个失效入口；不表示其余归档入口已完成线上验证。",
+  "sourceFailure": "13 个原地址均重定向到 https://doc.shengwang.cn/404，最终 HTTP 为 200；浏览器随后会跳回首页。",
+  "overrideRule": "按 newPlatform 和 sdkVersion 匹配，使用 href 覆盖实施目标；保留 sourceSiteVersion 作为 master 原值，避免把人工验证覆盖误当作 master 配置。",
+  "verification": "所有 href 均以 GET 确认 HTTP 200 且最终 URL 未离开该归档入口；均经浏览器渲染核对目标版本标签，RTC Web 两项另核对正文标题。Git 内容同一性证据见 investigation。",
+  "overrides": [
+    {
+      "newPlatform": "conversational-ai/ios",
+      "sdkVersion": "v1.7.0",
+      "sourceSiteVersion": "0.0454",
+      "verifiedArchiveVersion": "0.0.455",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.455/api-ref/convoai/ios/ios-component/overview",
+      "renderedVersion": "v1.7.0"
+    },
+    {
+      "newPlatform": "conversational-ai/android",
+      "sdkVersion": "v1.7.0",
+      "sourceSiteVersion": "0.0454",
+      "verifiedArchiveVersion": "0.0.455",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.455/api-ref/convoai/android/android-component/overview",
+      "renderedVersion": "v1.7.0"
+    },
+    {
+      "newPlatform": "conversational-ai/web",
+      "sdkVersion": "v1.7.0",
+      "sourceSiteVersion": "0.0.454",
+      "verifiedArchiveVersion": "0.0.455",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.455/api-ref/convoai/typescript/web-component/overview",
+      "renderedVersion": "v1.7.0"
+    },
+    {
+      "newPlatform": "rtc/web",
+      "sdkVersion": "v4.24.1",
+      "sourceSiteVersion": "0.0.379",
+      "verifiedArchiveVersion": "0.0.405",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.405/api-ref/rtc/javascript/overview",
+      "renderedVersion": "v4.24.1",
+      "pageTitle": "Agora Web SDK API Reference v4.24.1 | 文档中心 | 声网"
+    },
+    {
+      "newPlatform": "rtc/web",
+      "sdkVersion": "v4.23.0",
+      "sourceSiteVersion": "0.0.345",
+      "verifiedArchiveVersion": "0.0.234",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.234/api-ref/rtc/javascript/overview",
+      "renderedVersion": "v4.23.0",
+      "pageTitle": "Agora Web SDK API Reference v4.23.0 | 文档中心 | 声网"
+    },
+    {
+      "newPlatform": "rtc/mini-program",
+      "sdkVersion": "v2.6.0",
+      "sourceSiteVersion": "v0.0.166",
+      "verifiedArchiveVersion": "0.0.166",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.166/api-ref/rtc/mini-program/overview",
+      "renderedVersion": "v2.6.0"
+    },
+    {
+      "newPlatform": "rtc/harmonyos",
+      "sdkVersion": "v4.4.1",
+      "sourceSiteVersion": "0.0.216",
+      "verifiedArchiveVersion": "0.0.211",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.211/api-ref/rtc/harmonyos/API/rtc_api_overview",
+      "renderedVersion": "v4.4.1"
+    },
+    {
+      "newPlatform": "rtm/flutter",
+      "sdkVersion": "v2.2.1",
+      "sourceSiteVersion": "0.0.202",
+      "verifiedArchiveVersion": "0.0.197",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.197/api-ref/rtm2/flutter/toc-configuration/configuration",
+      "renderedVersion": "v2.2.1"
+    },
+    {
+      "newPlatform": "whiteboard/whiteboard-sdk/android",
+      "sdkVersion": "v2.16.81",
+      "sourceSiteVersion": "0.0.136",
+      "verifiedArchiveVersion": "0.0.134",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.134/api-ref/whiteboard/android/overview",
+      "renderedVersion": "v2.16.81"
+    },
+    {
+      "newPlatform": "whiteboard/whiteboard-sdk/ios",
+      "sdkVersion": "v2.16.88",
+      "sourceSiteVersion": "0.0.136",
+      "verifiedArchiveVersion": "0.0.134",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.134/api-ref/whiteboard/ios/docs/headers/Agora-Interactive-Whiteboard-Objective-C-Overview",
+      "renderedVersion": "v2.16.88"
+    },
+    {
+      "newPlatform": "whiteboard/whiteboard-sdk/web",
+      "sdkVersion": "v2.16.49",
+      "sourceSiteVersion": "0.0.125",
+      "verifiedArchiveVersion": "0.0.124",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.124/api-ref/whiteboard/javascript/overview",
+      "renderedVersion": "v2.16.49"
+    },
+    {
+      "newPlatform": "rtc-server-sdk/cpp",
+      "sdkVersion": "v4.4.30",
+      "sourceSiteVersion": "0.0.289",
+      "verifiedArchiveVersion": "0.0.282",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.282/api-ref/rtc-server-sdk/cpp/overview",
+      "renderedVersion": "v4.4.30"
+    },
+    {
+      "newPlatform": "rtc-server-sdk/cpp",
+      "sdkVersion": "v4.2.31",
+      "sourceSiteVersion": "0.0.172",
+      "verifiedArchiveVersion": "0.0.171",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.171/api-ref/rtc-server-sdk/cpp/overview",
+      "renderedVersion": "v4.2.31"
+    }
+  ]
+}

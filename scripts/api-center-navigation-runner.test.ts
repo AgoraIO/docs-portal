@@ -1279,6 +1279,64 @@ describe('API Center navigation runner', () => {
         'docs/migration/api-center-navigation-generated-files.json',
     });
     expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 11 });
+
+    // Versions are maintained in platform metadata, not reconstructed from
+    // the API Center manifest (which only describes current content).
+    const maintainedScopes = [
+      {
+        directory: 'rtsa/c',
+        scope: {
+          defaultVersion: 'current',
+          versions: [
+            { id: 'current', label: 'v1.10.1', path: '(current)' },
+            {
+              id: '1.9.7',
+              label: 'v1.9.7',
+              path: '1.9.7',
+              href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtsa/c/overview',
+            },
+          ],
+        },
+      },
+      {
+        directory: 'whiteboard/whiteboard-sdk/android',
+        scope: {
+          defaultVersion: 'current',
+          versions: [
+            { id: 'current', label: 'v2.16.100', path: '(current)' },
+            {
+              id: '2.16.86',
+              label: 'v2.16.86',
+              path: '2.16.86',
+              href: 'https://doc-archive.shengwang.cn/archive/0.0.275/api-ref/whiteboard/android/overview',
+            },
+          ],
+        },
+      },
+    ];
+    for (const { directory, scope } of maintainedScopes) {
+      const metaPath = path.join(
+        repoRoot,
+        `content/docs/zh-CN/api-reference/${directory}/meta.json`,
+      );
+      const meta = JSON.parse(await fs.readFile(metaPath, 'utf8'));
+      await fs.writeFile(
+        metaPath,
+        `${JSON.stringify({ ...meta, navScope: scope }, null, 2)}\n`,
+      );
+    }
+    await runApiCenterNavigation({ repoRoot, manifestPath, lanes });
+    for (const { directory, scope } of maintainedScopes) {
+      const metaPath = path.join(
+        repoRoot,
+        `content/docs/zh-CN/api-reference/${directory}/meta.json`,
+      );
+      const meta = JSON.parse(await fs.readFile(metaPath, 'utf8'));
+      expect(meta.navScope).toEqual(scope);
+    }
+    await expect(
+      runApiCenterNavigation({ repoRoot, manifestPath, lanes, mode: 'check' }),
+    ).resolves.toBeTruthy();
   });
 
   it('rebuilds the old Edu Store sidebar while keeping other TypeDoc details hidden', async () => {

@@ -51,18 +51,17 @@ function linkListeners(text: string, count: number) {
 describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
   it('offers current Web and the exact 2.2.4 archive without moving API pages', () => {
     const meta = docsMetaSchema.parse(JSON.parse(read(`${api}web/meta.json`)));
-    expect(meta.navScope).toMatchObject({
-      defaultVersion: 'current',
-      versions: [
-        { id: 'current', label: 'v2.3.0', path: '.' },
-        {
-          id: '2.2.4',
-          label: 'v2.2.4',
-          path: '2.2.4',
-          href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtm2/javascript/toc-configuration/configuration',
-        },
-      ],
-    });
+    expect(meta.navScope?.defaultVersion).toBe('current');
+    // Additional historical choices come from the complete archive inventory.
+    expect(meta.navScope?.versions?.slice(0, 2)).toEqual([
+      { id: 'current', label: 'v2.3.0', path: '.' },
+      {
+        id: '2.2.4',
+        label: 'v2.2.4',
+        path: '2.2.4',
+        href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtm2/javascript/toc-configuration/configuration',
+      },
+    ]);
     expect(meta.pages).toEqual([
       'configuration',
       'token',
@@ -109,7 +108,7 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
         getNodeMeta: (node) => (node.$id === 'rtm-web' ? meta : undefined),
       });
       expect(nav?.activeVersion?.id).toBe('current');
-      expect(nav?.header.versionSwitcher?.versions).toEqual([
+      expect(nav?.header.versionSwitcher?.versions.slice(0, 2)).toEqual([
         {
           id: 'current',
           label: 'v2.3.0',

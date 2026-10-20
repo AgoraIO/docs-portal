@@ -135,7 +135,12 @@ describe('RTC upstream PR #2113 historical API archive parity', () => {
         path: '(current)',
       });
       if (testCase.platform === 'android' || testCase.platform === 'ios') {
-        expect(meta.navScope?.versions?.map((version) => version.id)).toEqual(
+        // The complete archive inventory extends the original PR's prefix.
+        expect(
+          meta.navScope?.versions
+            ?.slice(0, testCase.platform === 'android' ? 4 : 3)
+            .map((version) => version.id),
+        ).toEqual(
           testCase.platform === 'android'
             ? ['current', '4.6.4', '4.6.2', '4.6.0']
             : ['current', '4.6.4', '4.6.2'],
@@ -155,7 +160,12 @@ describe('RTC upstream PR #2113 historical API archive parity', () => {
       if (testCase.platform === 'android') {
         expect(
           meta.navScope?.versions?.find((version) => version.id === '4.6.0'),
-        ).toEqual({ id: '4.6.0', label: 'v4.6.0', path: '4.6.0' });
+        ).toEqual({
+          id: '4.6.0',
+          label: 'v4.6.0',
+          path: '4.6.0',
+          href: 'https://doc-archive.shengwang.cn/archive/0.0.405/api-ref/rtc/android/API/rtc_api_overview',
+        });
       }
       expect(
         existsSync(
@@ -197,7 +207,7 @@ describe('RTC upstream PR #2113 historical API archive parity', () => {
       );
       if (testCase.platform === 'android') {
         expect(scope?.header.versionSwitcher?.versions).toContainEqual({
-          href: '/zh-CN/api-reference/rtc/android/4.6.0/overview',
+          href: 'https://doc-archive.shengwang.cn/archive/0.0.405/api-ref/rtc/android/API/rtc_api_overview',
           id: '4.6.0',
           label: 'v4.6.0',
         });
