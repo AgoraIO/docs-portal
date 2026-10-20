@@ -58,7 +58,7 @@
 {"id":"2.2.4","label":"v2.2.4","path":"2.2.4","href":"https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtm2/javascript/toc-configuration/configuration"}
 ```
 
-- [ ] latest数据只头插Web signaling对象：下载`https://download.shengwang.cn/sdk/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip`，MD5`13f63c0322c49b1edd3f7a0e2c8c89fc`，包名agora-rtm，日期2026年8月10日；保留原两个2.2.4及全部历史。实际URL以冻结源字符串再核，禁止猜其它包。
+- [ ] latest数据只头插Web signaling对象：下载`https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip`，MD5`13f63c0322c49b1edd3f7a0e2c8c89fc`，包名agora-rtm，日期2026年8月10日；保留原两个2.2.4及全部历史。实际URL以冻结源字符串再核，禁止猜其它包。此处按固定源勘误原计划中的下载host，实施已使用正确URL。
 - [ ] 发版Web日期8月18日与下载/退休表8月10日是源不同字段，不统一。release-notes已含全部终点增强，不写；sourceToken例中旧addEventlistener拼写和更早共享占位债不夹改。
 - [ ] FAQ第三问确实源删除，移除该小节/临时随机频道方案，前两问及frontmatter逐字保持。旧enum正文删后检查入站fragment：保留必要connectionstate/connectionreason别名到新的相应linkState/linkStateReason语义位置，或明确历史入口说明；不能让旧hash指向错误成员、不能把旧枚举继续列为当前契约。
 
