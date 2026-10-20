@@ -29,6 +29,8 @@ _migration:
 
 <a id="a6c7a08a918ea7ced6cbd5b41b18533c6"></a>
 
+<a id="af50f0b13389c28ffab6f185d6dc7e18c"></a>
+
 ### on_audio_data
 
 <ApiSignature>
@@ -74,6 +76,8 @@ Unix 时间戳（ms）。标识远端用户调用 [agora_rtc_send_audio_data](/z
 
 <a id="ac571090198206c2fa3bc68fb8cee42d0"></a>
 
+<a id="a93ef61674bc7c4d5f53fe2b59aa38e88"></a>
+
 ### on_connection_lost
 
 <ApiSignature>
@@ -95,6 +99,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="a57ad737a0443bb604e11ae6c6b37fd5d"></a>
+
+<a id="a7a67b6ffff8d0758afe5b38a91e3a6e3"></a>
 
 ### on_error
 
@@ -128,6 +134,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="a3006c067f8a7deb521580c5044f27ff8"></a>
 
+<a id="af1fb7d73977c5d23301bed8066b92024"></a>
+
 ### on_join_channel_success
 
 <ApiSignature>
@@ -157,6 +165,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="ab698db32db28c348552915a3a1337bf8"></a>
+
+<a id="a67e5f4137e45db389ca5f69866135715"></a>
 
 ### on_key_frame_gen_req
 
@@ -190,6 +200,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="aa05b9b9e42a2018a913ac18bf0022919"></a>
 
+<a id="af300f9a2a90391ce3ef8bbca2217bd91"></a>
+
 ### on_license_validation_failure
 
 <ApiSignature>
@@ -217,6 +229,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="a96f899b78b34a3ef989bc094cd6327e9"></a>
 
+<a id="a2b677c4cf470812e365d7d20b958de77"></a>
+
 ### on_local_user_registered
 
 <ApiSignature>
@@ -241,12 +255,14 @@ void(* on_local_user_registered)(const char *uname, uint32_t uid)
 </Parameter>
 <Parameter name="uid" direction="[in]">
 
-使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。
+使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。
 
 </Parameter>
 </ParameterList>
 
 <a id="ab0a6462ac391a960f767d2cf6ce8078a"></a>
+
+<a id="a2e1c250bc84081128d1c2f4fed26bf92"></a>
 
 ### on_media_ctrl_msg
 
@@ -287,6 +303,8 @@ Connection ID。
 
 <a id="ad3cf11417984d7a70c9eedc739ce9452"></a>
 
+<a id="aa10d23bce1cd68dbe42e16945e45b174"></a>
+
 ### on_mixed_audio_data
 
 <ApiSignature>
@@ -321,6 +339,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="a80dfcd1cd72a006a7b2daae4d7f80eea"></a>
+
+<a id="a7b5b9ba5f3acaf9b336040e4edd282a5"></a>
 
 ### on_rdt_msg
 
@@ -366,6 +386,8 @@ RDT 消息长度。
 
 <a id="afa921fa31ea49ef1c97a17949119e386"></a>
 
+<a id="afe6c35e916473a1424f28d3fefbdda69"></a>
+
 ### on_rdt_state
 
 <ApiSignature>
@@ -402,6 +424,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="acadee60a0d36eec3939e769a40e43cad"></a>
 
+<a id="a63382fa7b0cba7589f1577630657a323"></a>
+
 ### on_reconnecting
 
 <ApiSignature>
@@ -427,6 +451,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="af1aad04da5b59bb0ae4575c1121eaa59"></a>
+
+<a id="a289e8f276aaecbf44f80f8c66efeac0b"></a>
 
 ### on_rejoin_channel_success
 
@@ -460,6 +486,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="a631f8f2d7c71a54bbb1825dc5b386eba"></a>
 
+<a id="a60abe33f6936c8c5ff6a6e3a86bf70c9"></a>
+
 ### on_remote_user_registered
 
 <ApiSignature>
@@ -485,12 +513,14 @@ void(* on_remote_user_registered)(const char *uname, uint32_t uid)
 </Parameter>
 <Parameter name="uid" direction="[in]">
 
-使用 agora_rtc_init 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。
+使用 [agora_rtc_init](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6187076d897f0b56cb20942368c15aaa) 方法初始化时设置的用户 ID（32 位整型）。建议设置范围：1 到 (232-1)，并保证唯一性。 0 是无效的 uid。如果将 uid 设为 0，系统将自动分配一个 UID。
 
 </Parameter>
 </ParameterList>
 
 <a id="a7c73b2bb0558e2b695d8838ee542c87a"></a>
+
+<a id="a60c9fde781cd1429ed824efeb1cdd7e5"></a>
 
 ### on_stream_message
 
@@ -543,6 +573,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="af3ef06a16cd4cf3aa585dd6ad13ada0b"></a>
 
+<a id="a2cd16998c0834bac5c47c0e2b9f47fcc"></a>
+
 ### on_target_bitrate_changed
 
 <ApiSignature>
@@ -567,6 +599,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="aef1aa16dd5b32baa1aa03887f40f6ee9"></a>
+
+<a id="a73ce0c60c3e00ac601342ddf70408a58"></a>
 
 ### on_token_privilege_will_expire
 
@@ -594,6 +628,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="a4c8f017cc2fa8aaa6e91c966b97a8aee"></a>
+
+<a id="a4235da22aa144746564deaa878dcda40"></a>
 
 ### on_user_info_updated
 
@@ -629,6 +665,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="ada682c16b9d0e53404beb76c9c3a02a2"></a>
+
+<a id="a74df0f085839d12a7d85236a70f2ff1d"></a>
 
 ### on_user_joined
 
@@ -666,6 +704,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="aa57af03ef9f26ab68917fa7a30f703bd"></a>
+
+<a id="aa7f9418b6d5502ee641b8231c6f3292f"></a>
 
 ### on_user_joined_with_user_account
 
@@ -707,6 +747,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="ab749491e46ce8d06aa69507ebb630bf9"></a>
 
+<a id="a5c823e048831fcefa7fca0a2c01ad864"></a>
+
 ### on_user_mute_audio
 
 <ApiSignature>
@@ -740,6 +782,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="a7ba3bed4e4d97a4e39096f07d2333311"></a>
 
+<a id="ae07cf9b3a19154ad8d889a4bd3f51b59"></a>
+
 ### on_user_mute_video
 
 <ApiSignature>
@@ -772,6 +816,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="aa20dd2bc2ee7389257e7d03dd28a3dd4"></a>
+
+<a id="ac3f1bcc48ccb52dbe58e2698a24d1faa"></a>
 
 ### on_user_offline
 
@@ -808,6 +854,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 
 <a id="af3a7f207010bafca7aa99fdba5a9b1ab"></a>
 
+<a id="ab81aeacbe7daef9eff3f14362267ded7"></a>
+
 ### on_user_offline_with_user_account
 
 <ApiSignature>
@@ -837,6 +885,8 @@ Connection ID，详见 [connection_id_t](/zh-CN/api-reference/rtsa/c/agora-rtc-a
 </ParameterList>
 
 <a id="ab6c026de857cff2283f7f5287af0551a"></a>
+
+<a id="ad22676cef8f3d947b68c84b95ea5cde9"></a>
 
 ### on_video_data
 
