@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { load } from 'cheerio';
+import { isPublicCnSearchUrl, toCnPublicSearchUrl } from '../../src/lib/search/cn-search-urls.mjs';
 
 // 仅审计已构建的文件；不会构建、查询或写入 Meilisearch。
 const { values, positionals } = parseArgs({
@@ -22,13 +23,16 @@ const json = async (file) => JSON.parse(await readFile(file, 'utf8'));
 const before = await stat(recordsPath);
 const bytes = await readFile(recordsPath);
 const records = JSON.parse(bytes.toString('utf8'));
-if (!Array.isArray(records) || records.some(r => !r.url?.startsWith('/zh-CN/'))) {
+if (!Array.isArray(records) || records.some(r => r.locale !== 'zh-CN' || !isPublicCnSearchUrl(r.url) || (r.canonicalUrl !== undefined && !isPublicCnSearchUrl(r.canonicalUrl)))) {
   throw new Error('Expected an array of CN records');
 }
-const routes = (await json(path.join(htmlRoot, '__static/docs-routes.json'))).filter(r => r.url.startsWith('/zh-CN/'));
+// Public addresses and physical build paths can differ during the migration.
+const routes = (await json(path.join(htmlRoot, '__static/docs-routes.json')))
+  .filter(r => isPublicCnSearchUrl(r.url))
+  .map(r => ({ ...r, buildUrl: r.url, url: toCnPublicSearchUrl(r.url), canonicalPath: toCnPublicSearchUrl(r.canonicalPath) }));
 const routesByUrl = new Map(routes.map(r => [r.url, r]));
 const navigation = await json(path.join(htmlRoot, '__static/docs-search/zh-CN.json'));
-const navigationUrls = new Set(navigation.map(p => p.url));
+const navigationUrls = new Set(navigation.map(p => toCnPublicSearchUrl(p.url)));
 const canonicalUrls = new Set(routes.map(route => route.canonicalPath));
 const navigationWithoutRoutes = [...navigationUrls].filter(url => !canonicalUrls.has(url));
 // 已审查的无正文入口：目录由组件渲染，三个 C# 页面只有空锚点。
@@ -42,13 +46,13 @@ const nonTextPages = new Set([
   '/zh-CN/reference/faq/integration', '/zh-CN/reference/faq/other',
   '/zh-CN/reference/faq/product', '/zh-CN/reference/faq/quality',
   '/zh-CN/reference/sdks',
-]);
+].map(toCnPublicSearchUrl));
 const sitemap = load(await readFile(path.join(htmlRoot, 'sitemap.xml'), 'utf8'), { xmlMode: true });
-const published = new Set(sitemap('loc').map((_, e) => new URL(sitemap(e).text()).pathname).get());
+const published = new Set(sitemap('loc').map((_, e) => toCnPublicSearchUrl(new URL(sitemap(e).text()).pathname)).get());
 const variantCanonical = new Set(routes.filter(r => r.platform).map(r => r.canonicalPath));
 const pages = new Map();
 for (const record of records) {
-  const url = record.url.split('#')[0];
+  const url = toCnPublicSearchUrl(record.url).split(/[?#]/)[0];
   if (!pages.has(url)) pages.set(url, []);
   pages.get(url).push(record);
 }
@@ -72,7 +76,7 @@ let checkedPages = 0;
 for (const [url, rows] of pages) {
   const route = routesByUrl.get(url);
   if (!route) { findings.unknownRoutes.push(url); continue; }
-  const pathname = path.resolve(htmlRoot, `.${url}`, 'index.html');
+  const pathname = path.resolve(htmlRoot, `.${route.buildUrl}`, 'index.html');
   if (!pathname.startsWith(`${htmlRoot}${path.sep}`)) throw new Error('Unsafe HTML path');
   let html;
   try { html = await readFile(pathname, 'utf8'); }
@@ -147,6 +151,7 @@ const report = {
     'Panel checks validate anchor ownership, not arbitrary prose leakage; duplicated IDs can still affect browser navigation.',
     'TOC selector is renderer-specific; revalidate it if TOC markup changes. No browser interaction or Meili audit.',
     'HTML/routes/navigation/sitemap must come from the same completed build. Record stability alone cannot establish their provenance.',
+    'Local coverage checks physical build artifacts, not public routing. Run verify-cn-public-urls.mjs against the deployed frontend before index promotion.',
   ],
 };
 await mkdir(path.dirname(path.resolve(values.out)), { recursive: true });

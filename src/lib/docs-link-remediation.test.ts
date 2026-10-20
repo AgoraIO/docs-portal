@@ -539,15 +539,24 @@ describe('reported Chinese link destinations', () => {
     },
   );
 
-  it.each(['v4.20.0', 'v4.22.0', 'v4.24.0', 'v4.24.2'])(
-    'keeps the pending RTC release-note anchor %s at its matching version heading',
-    (version) => {
+  it.each([
+    { alias: 'v4.20.0', version: 'v4.20.0' },
+    { alias: 'v4.22.0', version: 'v4.22.0' },
+    { alias: 'v4.24.0', version: 'v4.24.0' },
+    { alias: 'v4.24.2', version: 'v4.24.2' },
+    { alias: 'v4.3.1', version: 'v4.3.1' },
+    { alias: '415', version: 'v4.15.0' },
+    { alias: '410', version: 'v4.10.0' },
+  ])(
+    'keeps the historical RTC release-note anchor $alias at version $version',
+    ({ alias, version }) => {
       const sourcePath =
         'content/docs/zh-CN/realtime-media/rtc/reference/release-notes.mdx';
       const content = readFileSync(sourcePath, 'utf8');
 
-      expect(content).toContain(`<a id="${version}"></a>`);
-      expect(content).toContain(`## ${version}`);
+      expect(content).toContain(
+        `<section id="${alias}">\n\n<Accordion title="${version}"`,
+      );
     },
   );
 

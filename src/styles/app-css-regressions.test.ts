@@ -161,7 +161,7 @@ function getRuleBodyContainingInContainer(
 
 describe('app prose CSS regressions', () => {
   it('keeps heading anchors below the full sticky docs header', () => {
-    const headingAnchor = getRuleBody(
+    const headingAnchor = getRuleBodyContaining(
       '.prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *))',
     ).rule;
     const openApiHeadingAnchor = getRuleBody(
@@ -169,6 +169,9 @@ describe('app prose CSS regressions', () => {
     ).rule;
 
     expect(headingAnchor.parent?.type).toBe('atrule');
+    expect(headingAnchor.selectors).toContain(
+      '.docs-body :is(h2, h3, h4)[data-accordion-value]',
+    );
     expect((headingAnchor.parent as postcss.AtRule).name).toBe('layer');
     expect((headingAnchor.parent as postcss.AtRule).params).toBe('utilities');
     expectDeclaration(

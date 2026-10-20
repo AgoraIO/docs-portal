@@ -90,7 +90,9 @@ export async function queryCnSearch(
         hit.locale === 'zh-CN' &&
         hit.hidden === false &&
         hit.status === 'published' &&
-        isPublicCnSearchUrl(hit.url),
+        isPublicCnSearchUrl(hit.url) &&
+        (hit.canonicalUrl === undefined ||
+          isPublicCnSearchUrl(hit.canonicalUrl)),
     )
     .map((hit) =>
       normalizeMeilisearchHit({

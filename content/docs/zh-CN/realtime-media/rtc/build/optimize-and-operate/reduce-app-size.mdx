@@ -43,6 +43,8 @@ SDK 提供了可选的插件动态库，插件的命名以 `extension` 为后缀
 
 ### Gradle 自动集成时删除插件
 
+通过 Gradle 自动集成 Android SDK 前，请先确保已添加声网 Maven CDN 仓库。具体配置方式请参考[下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/android#通过-gradle-自动集成-sdk)。
+
 通过 Gradle 自动集成 Android SDK 时，你可以修改 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中的 `dependencies`，以指定集成你需要的动态库，排除你不需要使用的插件。Android SDK 中各文件与 `dependencies` 中 `implementation` 字段的对应关系详见 [implementation 字段](#implementation-字段)。
 
 <Tabs defaultValue="sample1" groupId="operating-systems" persist>
