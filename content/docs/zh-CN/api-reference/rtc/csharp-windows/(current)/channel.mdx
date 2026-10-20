@@ -2124,8 +2124,8 @@ public virtual void OnRequestToken(RtcConnection connection) {}
 
 - 单频道场景：
 
-  - 调用 [RenewToken](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_renewtoken) 来传入新的 Token。
-  - 调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+  - 调用 [RenewToken](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 离开频道，然后在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 时传入新的 Token。
 - 多频道场景：调用 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__restriction"></a>
@@ -2222,8 +2222,8 @@ public virtual void OnTokenPrivilegeWillExpire(RtcConnection connection, string 
 
 - 单频道场景：
 
-  - 调用 [RenewToken](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_renewtoken) 来传入新的 Token。
-  - 调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+  - 调用 [RenewToken](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 [LeaveChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_leavechannel2) 离开频道，然后在调用 [JoinChannel [2/2]](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengine_joinchannel2) 时传入新的 Token。
 - 多频道场景：调用 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/csharp-windows/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__timing"></a>

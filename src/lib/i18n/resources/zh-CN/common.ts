@@ -53,6 +53,7 @@ const zhCnCommon = {
     next: '下一页',
     previous: '上一页',
     copyPage: '复制页面',
+    copyLink: '复制链接',
     copyPageMoreActions: '复制页面更多操作',
     viewAsMarkdown: '查看 Markdown',
     openInDeepSeek: '打开 DeepSeek',

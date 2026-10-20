@@ -5,7 +5,13 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 <PlatformStructured platform="android">
 
-## v4.7.0
+:::caution[注意]
+自 2026 年 9 月 14 日开始，通过 Gradle 自动集成 Android SDK 时，需要额外配置声网 Maven CDN 仓库。具体配置方式请参考[下载 SDK](/zh-CN/realtime-media/rtc/reference/downloads/android#通过-gradle-自动集成-sdk)。
+:::
+
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.7.0" id="v470" headingLevel={2} value="v470">
 
 该版本于 2026 年 9 月 22 日发布。
 
@@ -63,7 +69,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 修复了部分场景下人脸检测回调未按预期触发的现象，解决了人脸信息获取不稳定的问题。
 - 修复了设备处于系统通话或音频占用状态时，本地音频状态回调异常的现象，解决了应用无法准确感知本地音频状态的问题。
 
-## v4.6.4
+</Accordion>
+
+<Accordion title="v4.6.4" id="v464" headingLevel={2} value="v464">
 
 该版本于 2026 年 8 月 31 日发布。
 
@@ -91,7 +99,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 修复了使用媒体播放器播放 CDN 流时，分辨率变化后偶现花屏的问题。
 - 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。
 
-## v4.6.3
+</Accordion>
+
+<Accordion title="v4.6.3" id="v463" headingLevel={2} value="v463">
 
 该版本于 2026 年 2 月 9 日发布。
 
@@ -108,7 +118,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 部分机型开启美颜功能进行音视频互动场景下，偶现发送端黑屏或 App 崩溃。
 - 音视频互动场景下偶现 App 崩溃。
 
-## v4.6.2
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462" headingLevel={2} value="v462">
 
 该版本于 2026 年 1 月 16 日发布。
 
@@ -189,7 +201,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 修复了音视频互通过程中偶现崩溃的问题。
 - 美颜功能在部分场景下不生效。
 
-## v4.6.1
+</Accordion>
+
+<Accordion title="v4.6.1" id="v461" headingLevel={2} value="v461">
 
 该版本于 2025 年 11 月 21 日发布。
 
@@ -208,7 +222,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 多频道场景下，App 进行音视频互通时偶现闪退。
 - 使用音频 SDK 时，`onRtcStats` 回调报告 `memoryAppUsageRatio` 值始终为 0。
 
-## v4.6.0
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460" headingLevel={2} value="v460">
 
 该版本于 2025 年 8 月 18 日发布。
 
@@ -349,7 +365,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 加入频道，然后调用 [`startOrUpdateChannelMediaRelay`](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发，下麦、退出频道后重新加入频道开始连麦，偶现 [`onChannelMediaRelayStateChanged`](/zh-CN/api-reference/rtc/android/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `state` 为 `RELAY_STATE_FAILURE`，[`code`](/zh-CN/api-reference/rtc/android/play/rte-player#api_error_code) 为 `RELAY_ERROR_SERVER_ERROR_RESPONSE`。
 - 加入频道前调用 [`setAudioScenario`](/zh-CN/api-reference/rtc/android/audio/audio-basic#api_irtcengine_setaudioscenario) 设置音频场景为 `AUDIO_SCENARIO_CHATROOM`，加入频道后使用蓝牙耳机或有线耳机进行音视频互通，偶现听到杂音。
 
-## v4.5.2
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452" headingLevel={2} value="v452">
 
 该版本于 2025 年 4 月 22 日发布。
 
@@ -399,7 +417,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 多频道场景下，App 在调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/android/channel#api_irtcengineex_joinchannelex) 成功前调用 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/android/video/video-rendering#api_irtcengineex_setupremotevideoex) 初始化远端用户视图，偶现远端用户视图首帧图像显示延时大。
 - 加入频道失败后，在没有调用 `leaveChannel` 离开频道的情况下，再次调用 `joinChannel` 加入频道时偶现崩溃。
 
-## v4.5.1
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451" headingLevel={2} value="v451">
 
 该版本于 2025 年 3 月 5 日发布。
 
@@ -429,7 +449,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450" headingLevel={2} value="v450">
 
 该版本于 2024 年 11 月 26 日发布。
 
@@ -556,7 +578,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 调用 [`startAudioMixing`](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_startaudiomixing)[1/2] 后，立即调用 [`pauseAudioMixing`](/zh-CN/api-reference/rtc/android/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 - 音视频互动过程中偶现崩溃。
 
-## v4.4.1
+</Accordion>
+
+<Accordion title="v4.4.1" id="v441" headingLevel={2} value="v441">
 
 该版本于 2024 年 8 月 8 日发布。
 
@@ -564,7 +588,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 修复了因上传错误导致 `io.agora.rtc:full-rtc-basic:4.4.0` 和 `io.agora.rtc:voice-rtc-basic:4.4.0` 在 Maven Central 上无法正常使用的问题。
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440" headingLevel={2} value="v440">
 
 该版本于 2024 年 8 月 5 日发布。
 
@@ -655,7 +681,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 - 调用 [`pushExternalAudioFrame`](/zh-CN/api-reference/rtc/android/audio/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
 
-## v4.3.2
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432" headingLevel={2} value="v432">
 
 该版本于 2024 年 6 月 4 日发布。
 
@@ -684,7 +712,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 远端用户离开频道时偶现崩溃。
 - 调用 [`queryCameraFocalLengthCapability`](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_querycamerafocallengthcapability) 返回的 [`AgoraFocalLengthInfo`](/zh-CN/api-reference/rtc/android/class-focallengthinfo) 中，`cameraDirection` 和 `focalLengthType` 的值无法被直接读取。
 
-## v4.3.1
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431" headingLevel={2} value="v431">
 
 该版本于 2024 年 4 月 29 日发布。
 
@@ -809,7 +839,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - [`switchCamera`](/zh-CN/api-reference/rtc/android/device-management/video-device#api_irtcengine_switchcamera2)[2/2]
 - `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`(`1 <<15`)
 
-## v4.3.0
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430" headingLevel={2} value="v430">
 
 该版本于 2024 年 2 月 22 日发布。
 
@@ -1109,7 +1141,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - `updateChannelMediaRelayEx`
 - `onChannelMediaRelayEvent`
 
-## v4.2.6
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426" headingLevel={2} value="v426">
 
 该版本于 2023 年 11 月 16 日发布。
 
@@ -1127,7 +1161,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 在直播场景下，观众端看到的画面偶现变形。
 - 在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
 
-## v4.2.3
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423" headingLevel={2} value="v423">
 
 该版本于 2023 年 10 月 12 日发布。
 
@@ -1196,7 +1232,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - [`ContentInspectConfig`](/zh-CN/api-reference/rtc/android/class-contentinspectconfig) 中新增 `serverConfig` 可选参数
 - [`isFeatureAvailableOnDevice`](/zh-CN/api-reference/rtc/android/network#api_irtcengine_isfeatureavailableondevice)
 
-## v4.2.2
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422" headingLevel={2} value="v422">
 
 该版本于 2023 年 7 月 27 日发布。
 
@@ -1287,7 +1325,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 - [`preload`](/zh-CN/api-reference/rtc/android/play/drm#api_imusicontentcenter_preload)[1/2]
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421" headingLevel={2} value="v421">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -1304,7 +1344,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 使用媒体播放器播放媒体文件时出现短暂杂音。
 - 屏幕共享场景下，部分机型必现接收端看到共享的画面卡顿。
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420" headingLevel={2} value="v420">
 
 该版本于 2023 年 5 月 24 日发布。
 
@@ -1506,7 +1548,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - `onScreenCaptureVideoFrame`
 - `onPreEncodeScreenVideoFrame`
 
-## v4.1.1
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411" headingLevel={2} value="v411">
 
 该版本于 2023 年 2 月 8 日发布。
 
@@ -1575,7 +1619,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - `enableRemoteSuperResolution`
 - [`RemoteVideoStats`](/zh-CN/api-reference/rtc/android/class-remotevideostats) 中删除 `superResolutionType`
 
-## v4.1.0-1
+</Accordion>
+
+<Accordion title="v4.1.0-1" id="v410-1" headingLevel={2} value="v410-1">
 
 该版本于 2022 年 12 月 19 日发布。
 
@@ -1729,7 +1775,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 - 删除了 [`LiveTranscoding`](/zh-CN/api-reference/rtc/android/class-livetranscoding) 类中的废弃成员参数 `backgroundImage` 和 `watermark`
 - `onChannelMediaRelayEvent` 中删除 `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8)
 
-## v4.0.1
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401" headingLevel={2} value="v401">
 
 该版本于 2022 年 9 月 29 日发布。
 
@@ -1831,7 +1879,9 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 
 - `enableDualStreamMode`[2/3]
 
-## v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400" headingLevel={2} value="v400">
 
 该版本于 2022 年 9 月 13 日发布。
 
@@ -2009,6 +2059,10 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 你可以通过 `setRemoteDefaultVideoStreamType` 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -2019,7 +2073,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 由于 AirPods Pro 不支持在通话音量模式下使用 A2DP 协议，可能会导致该设备在该模式下无法成功连接。
 
-## v4.7.0
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.7.0" id="v470-1" headingLevel={2} value="v470-1">
 
 该版本于 2026 年 9 月 22 日发布。
 
@@ -2073,7 +2129,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 修复了 AI QoS 配置下，通话刚开始时偶现首句音频丢字或异常的问题。
 - 修复了音视频互动、屏幕共享、视频帧数据访问和音视频统计等场景下偶现 App 崩溃的问题，提升了 SDK 稳定性。
 
-## v4.6.4
+</Accordion>
+
+<Accordion title="v4.6.4" id="v464-1" headingLevel={2} value="v464-1">
 
 该版本于 2026 年 8 月 31 日发布。
 
@@ -2099,7 +2157,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 修复了开启媒体播放器缓存后，在断网场景下播放已缓存资源时，可能延迟约 10 秒并回调错误的问题。
 - 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。
 
-## v4.6.2
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462-1" headingLevel={2} value="v462-1">
 
 该版本于 2026 年 1 月 16 日发布。
 
@@ -2184,7 +2244,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 在 iOS 26 部分设备上，用户以主播身份在音频 Scenario 为 `AgoraAudioScenarioChatRoom` 的情况下加入频道，调用 `enableLocalAudio` 关闭本地音频采集后，无法调整通话音量。
 - 在硬件异常的情况下切换视频分辨率时，偶现视频编码无输出帧，导致画面卡住的问题。
 
-## v4.6.0
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-1" headingLevel={2} value="v460-1">
 
 该版本于 2025 年 8 月 18 日发布。
 
@@ -2331,7 +2393,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 偶现的崩溃问题。
 - 调用 [`joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 加入频道，然后调用 [`startOrUpdateChannelMediaRelay:`](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发，下麦、退出频道后重新加入频道开始连麦，偶现 [`rtcEngine:channelMediaRelayStateDidChange:error:`](/zh-CN/api-reference/rtc/ios/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `state` 为 `AgoraChannelMediaRelayStateFailure`，[`code`](/zh-CN/api-reference/rtc/ios/play/rte-player#api_error_code) 为 `AgoraChannelMediaRelayErrorServerErrorResponse`。
 
-## v4.5.2
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-1" headingLevel={2} value="v452-1">
 
 该版本于 2025 年 4 月 22 日发布。
 
@@ -2362,7 +2426,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 多频道场景下，App 在调用 [`joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 成功前调用 [`setupRemoteVideoEx:connection:`](/zh-CN/api-reference/rtc/ios/video/video-rendering#api_irtcengineex_setupremotevideoex) 初始化远端用户视图，偶现远端用户视图首帧图像显示延时大。
 - App 退出时偶现崩溃。
 
-## v4.5.1
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-1" headingLevel={2} value="v451-1">
 
 该版本于 2025 年 3 月 5 日发布。
 
@@ -2394,7 +2460,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-1" headingLevel={2} value="v450-1">
 
 该版本于 2024 年 11 月 26 日发布。
 
@@ -2510,7 +2578,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 音视频互动过程中被系统其他 App 打断后恢复，偶现音频采集无声。
 - 调用 [`startAudioMixing:loopback:cycle:`](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_startaudiomixing) 后，立即调用 [`pauseAudioMixing`](/zh-CN/api-reference/rtc/ios/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-1" headingLevel={2} value="v440-1">
 
 该版本于 2024 年 8 月 5 日发布。
 
@@ -2599,7 +2669,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 发送端调用 `startDirectCdnStreaming:publishUrl:mediaOptions:` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。
 - 调用 [`pushExternalAudioFrameRawData:samples:sampleRate:channels:trackId:timestamp:`](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#api_irtcengine_pushaudioframe2) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
 
-## v4.3.2
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-1" headingLevel={2} value="v432-1">
 
 该版本于 2024 年 6 月 4 日发布。
 
@@ -2628,8 +2700,11 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 调用 [`playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:`](/zh-CN/api-reference/rtc/ios/play/audio-effect-file#api_irtcengine_playeffect3) 播放时长不足 1 秒的音效文件并设置不循环播放（ [`loopCount`](/zh-CN/api-reference/rtc/ios/play/rte-player#api_playerconfig_getloopcount) 为 0 ）时，出现无声。
 - 使用媒体播放器播放视频，暂停播放后恢复播放，偶现短暂无声。
 
-<a id="v4.3.1"></a>
-## v4.3.1
+</Accordion>
+
+<section id="v4.3.1">
+
+<Accordion title="v4.3.1" id="v431-1" headingLevel={2} value="v431-1">
 
 该版本于 2024 年 4 月 29 日发布。
 
@@ -2747,7 +2822,11 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - [`pushExternalAudioFrameSampleBuffer:`](/zh-CN/api-reference/rtc/ios/audio/audio-custom-capturenrendering#pushexternalaudioframesamplebuffer)
 
-## v4.3.0
+</Accordion>
+
+</section>
+
+<Accordion title="v4.3.0" id="v430-1" headingLevel={2} value="v430-1">
 
 该版本于 2024 年 2 月 22 日发布。
 
@@ -3045,7 +3124,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `didReceiveChannelMediaRelayEvent`
 - `AgoraChannelMediaRelayEvent`
 
-## v4.2.6
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-1" headingLevel={2} value="v426-1">
 
 该版本于 2023 年 11 月 16 日发布。
 
@@ -3056,7 +3137,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 使用 iOS 16 版本或以上设备在加入频道前连接了蓝牙耳机，在加入频道后的音频路由不符合预期：音频从扬声器播放、而非蓝牙耳机。
 - 在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
 
-## v4.2.3
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-1" headingLevel={2} value="v423-1">
 
 该版本于 2023 年 10 月 12 日发布。
 
@@ -3121,7 +3204,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - [`isFeatureAvailableOnDevice:`](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_isfeatureavailableondevice)
 - [`AgoraFeatureType`](/zh-CN/api-reference/rtc/ios/enum-featuretype)
 
-## v4.2.2
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-1" headingLevel={2} value="v422-1">
 
 该版本于 2023 年 7 月 27 日发布。
 
@@ -3233,7 +3318,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - [`preloadWithSongCode:jsonOption:`](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload)
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-1" headingLevel={2} value="v421-1">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -3250,7 +3337,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 使用媒体播放器播放媒体文件时出现短暂杂音。
 - 调用 [`destroyMediaPlayer:`](/zh-CN/api-reference/rtc/ios/play/mediaplayer/mediaplayer-initialize#api_irtcengine_destroymediaplayer) 销毁媒体播放器时偶现崩溃。
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-1" headingLevel={2} value="v420-1">
 
 该版本于 2023 年 5 月 24 日发布。
 
@@ -3457,7 +3546,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `onScreenCaptureVideoFrame`
 - `onPreEncodeScreenVideoFrame`
 
-## v4.1.1
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-1" headingLevel={2} value="v411-1">
 
 该版本于 2023 年 2 月 8 日发布。
 
@@ -3529,7 +3620,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `enableRemoteSuperResolution`
 - [`AgoraRtcRemoteVideoStats`](/zh-CN/api-reference/rtc/ios/class-remotevideostats) 中删除 `superResolutionType`
 
-## v4.1.0
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410" headingLevel={2} value="v410">
 
 该版本于 2022 年 12 月 19 日发布。
 
@@ -3691,7 +3784,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 删除了 [`AgoraLiveTranscoding`](/zh-CN/api-reference/rtc/ios/class-livetranscoding) 类中的废弃成员参数 `backgroundImage` 和 `watermark`
 - `didReceiveChannelMediaRelayEvent` 中删除 `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8)
 
-## v4.0.1
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-1" headingLevel={2} value="v401-1">
 
 该版本于 2022 年 9 月 29 日发布。
 
@@ -3797,7 +3892,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `AgoraLocalVideoStreamErrorExtensionCaptureStoped`
 - `AgoraLocalVideoStreamErrorExtensionCaptureDisconnected`
 
-## v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-1" headingLevel={2} value="v400-1">
 
 该版本于 2022 年 8 月 3 日发布。
 
@@ -3967,6 +4064,10 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 你可以通过 [`setRemoteDefaultVideoStreamType:`](/zh-CN/api-reference/rtc/ios/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
@@ -3974,7 +4075,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 ### 已知问题和局限性
 
 
-## v4.7.0
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.7.0" id="v470-2" headingLevel={2} value="v470-2">
 
 该版本于 2026 年 9 月 22 日发布。
 
@@ -4009,7 +4112,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 修复了预加载音效场景下，调用 `stopEffect` 停止播放后再次调用 `playEffect` 时，上一段音效仍有残留的问题。
 - 修复了镜像渲染、自渲染和屏幕共享源枚举等场景下偶现 App 崩溃的问题，提升了 SDK 稳定性。
 
-## v4.6.2
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462-2" headingLevel={2} value="v462-2">
 
 该版本于 2026 年 1 月 16 日发布。
 
@@ -4061,7 +4166,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - 新增错误码 `AgoraErrorCodePcmSendFormat (200)` 和 `AgoraErrorCodePcmSendBufferOverflow (201)`，用于报告 PCM 数据发送相关错误。
 
-## v4.6.0
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-2" headingLevel={2} value="v460-2">
 
 该版本于 2025 年 8 月 18 日发布。
 
@@ -4202,7 +4309,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 在媒体音量模式下，主播在频道中发布麦克风采集的音频流，同时调用 [`playEffect:filePath:loopCount:pitch:pan:gain:publish:startPos:`](/zh-CN/api-reference/rtc/macos/play/audio-effect-file#api_irtcengine_playeffect3) 播放音效文件、调用 [`startAudioMixing:loopback:cycle:startPos:`](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing2) 播放音乐文件，偶现回声。
 - 调用 [`joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 加入频道，然后调用 [`startOrUpdateChannelMediaRelay:`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#api_irtcengine_startorupdatechannelmediarelay) 开始跨频道媒体流转发，下麦、退出频道后重新加入频道开始连麦，偶现 [`rtcEngine:channelMediaRelayStateDidChange:error:`](/zh-CN/api-reference/rtc/macos/cloud-media-relay/channel-media-relay#callback_irtcengineeventhandler_onchannelmediarelaystatechanged) 回调报告 `state` 为 `AgoraChannelMediaRelayStateFailure`，[`code`](/zh-CN/api-reference/rtc/macos/play/rte-player#api_error_code) 为 `AgoraChannelMediaRelayErrorServerErrorResponse`。
 
-## v4.5.2
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-2" headingLevel={2} value="v452-2">
 
 该版本于 2025 年 4 月 22 日发布。
 
@@ -4231,7 +4340,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - App 调用 [`enableVideoImageSource:options:`](/zh-CN/api-reference/rtc/macos/video/video-prenpro/image-source#api_irtcengine_enablevideoimagesource) 启用垫片推流功能，偶现发送端推流成功但是 [`rtcEngine:didVideoPublishStateChange:sourceType:oldState:newState:elapseSinceLastState:`](/zh-CN/api-reference/rtc/macos/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 返回当前的发布状态不是 PUB_STATE_PUBLISHED，不符合预期。
 - 多频道场景下，App 在调用 [`joinChannelExByToken:connection:delegate:mediaOptions:joinSuccess:`](/zh-CN/api-reference/rtc/macos/channel#api_irtcengineex_joinchannelex) 成功前调用 [`setupRemoteVideoEx:connection:`](/zh-CN/api-reference/rtc/macos/video/video-rendering#api_irtcengineex_setupremotevideoex) 初始化远端用户视图，偶现远端用户视图首帧图像显示延时大。
 
-## v4.5.1
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-2" headingLevel={2} value="v451-2">
 
 该版本于 2025 年 3 月 5 日发布。
 
@@ -4256,7 +4367,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-2" headingLevel={2} value="v450-2">
 
 该版本于 2024 年 11 月 26 日发布。
 
@@ -4370,7 +4483,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - 调用 [`startAudioMixing:loopback:cycle:`](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_startaudiomixing) 后，立即调用 [`pauseAudioMixing`](/zh-CN/api-reference/rtc/macos/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-2" headingLevel={2} value="v440-2">
 
 该版本于 2024 年 8 月 5 日发布。
 
@@ -4436,7 +4551,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 无。
 
-## v4.3.2
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-2" headingLevel={2} value="v432-2">
 
 该版本于 2024 年 6 月 4 日发布。
 
@@ -4452,7 +4569,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 接收端 App 解码后的视频分辨率为奇数时偶现 App 崩溃。
 - 远端用户离开频道时偶现崩溃。
 
-## v4.3.1
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-2" headingLevel={2} value="v431-2">
 
 该版本于 2024 年 4 月 29 日发布。
 
@@ -4557,7 +4676,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - [`pushExternalAudioFrameSampleBuffer:`](/zh-CN/api-reference/rtc/macos/audio/audio-custom-capturenrendering#pushexternalaudioframesamplebuffer)
 
-## v4.3.0
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-2" headingLevel={2} value="v430-2">
 
 该版本于 2024 年 2 月 22 日发布。
 
@@ -4807,7 +4928,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `didReceiveChannelMediaRelayEvent`
 - `AgoraChannelMediaRelayEvent`
 
-## v4.2.6
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-2" headingLevel={2} value="v426-2">
 
 该版本于 2023 年 11 月 16 日发布。
 
@@ -4817,7 +4940,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - 在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
 
-## v4.2.3
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-2" headingLevel={2} value="v423-2">
 
 该版本于 2023 年 10 月 12 日发布。
 
@@ -4872,7 +4997,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - [`isFeatureAvailableOnDevice:`](/zh-CN/api-reference/rtc/macos/network#api_irtcengine_isfeatureavailableondevice)
 - [`AgoraFeatureType`](/zh-CN/api-reference/rtc/macos/enum-featuretype)
 
-## v4.2.2
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-2" headingLevel={2} value="v422-2">
 
 该版本于 2023 年 7 月 27 日发布。
 
@@ -4965,7 +5092,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `CodecCapAgoraVideoCodecCapInfoInfo` 中增加 `codecLevels` 成员
 - [`AgoraVideoRemoteReason`](/zh-CN/api-reference/rtc/macos/enum-remotevideostatereason) 中增加 `AgoraVideoRemoteReasonCodecNotSupport` 枚举
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-2" headingLevel={2} value="v421-2">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -4982,7 +5111,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 使用媒体播放器播放媒体文件时出现短暂杂音。
 - 发送端启用屏幕共享功能后，偶现接收端看到共享画面的延迟较高。
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-2" headingLevel={2} value="v420-2">
 
 该版本于 2023 年 5 月 24 日发布。
 
@@ -5164,7 +5295,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `onScreenCaptureVideoFrame`
 - `onPreEncodeScreenVideoFrame`
 
-## v4.1.1
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-2" headingLevel={2} value="v411-2">
 
 该版本于 2023 年 2 月 8 日发布。
 
@@ -5236,7 +5369,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - `enableRemoteSuperResolution`
 - [`AgoraRtcRemoteVideoStats`](/zh-CN/api-reference/rtc/macos/class-remotevideostats) 中删除 `superResolutionType`
 
-## v4.1.0
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-2" headingLevel={2} value="v410-2">
 
 该版本于 2022 年 12 月 19 日发布。
 
@@ -5406,7 +5541,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 - 删除了 [`AgoraLiveTranscoding`](/zh-CN/api-reference/rtc/macos/class-livetranscoding) 类中的废弃成员参数 `backgroundImage` 和 `watermark`
 - `didReceiveChannelMediaRelayEvent` 中删除 `AgoraChannelMediaRelayEventUpdateDestinationChannelRefused`(8)
 
-## v4.0.1
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-2" headingLevel={2} value="v401-2">
 
 该版本于 2022 年 9 月 29 日发布。
 
@@ -5518,7 +5655,9 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 - [`enableDualStreamMode:streamConfig:`](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_enabledualstreammode3)
 
-## v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-2" headingLevel={2} value="v400-2">
 
 该版本于 2022 年 8 月 3 日发布。
 
@@ -5684,6 +5823,10 @@ v4.0.0 SDK 对部分功能的实现方式进行了优化，从而导致与 v3.7.
 
 你可以通过 [`setRemoteDefaultVideoStreamType:`](/zh-CN/api-reference/rtc/macos/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="web">
@@ -5709,7 +5852,9 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 | 2.5.0-2.9.0 和 3.0.0-3.6.1 | 在调用 `publish` 方法后再调用 `switchDevice` 方法，出现视频卡顿或无声问题。 |
 |           4.0.0-4.0.1           | `publish` 和 `subscribe` 方法不生效。                        |
 
-## v4.24.9
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.24.9" id="v4249" headingLevel={2} value="v4249">
 
 该版本于 2026 年 10 月 13 日发布。
 
@@ -5744,15 +5889,21 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 
 - `ScreenEncoderConfigurationPreset` 新增 `1440p`、`1440p_1`、`1440p_2`、`1440p_3`、`4k`、`4k_1`、`4k_2` 和 `4k_3`。
 
-## v4.24.8
+</Accordion>
+
+<Accordion title="v4.24.8" id="v4248" headingLevel={2} value="v4248">
 
 该版本于 2026 年 8 月 31 日发布，进行了一些内部改进。
 
-## v4.24.7
+</Accordion>
+
+<Accordion title="v4.24.7" id="v4247" headingLevel={2} value="v4247">
 
 该版本于 2026 年 8 月 3 日发布，进行了一些内部改进。
 
-## v4.24.6
+</Accordion>
+
+<Accordion title="v4.24.6" id="v4246" headingLevel={2} value="v4246">
 
 该版本于 2026 年 7 月 13 日发布。本版本新增远端音频自动接收和播放能力，并提升了 Safari、iOS 等环境下的音频播放及连接稳定性。
 
@@ -5779,7 +5930,9 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 受浏览器自动播放策略影响，页面首次播放音频时仍可能需要用户进行点击或触摸操作。
 :::
 
-## v4.24.5
+</Accordion>
+
+<Accordion title="v4.24.5" id="v4245" headingLevel={2} value="v4245">
 
 该版本于 2026 年 6 月 24 日发布。
 
@@ -5832,7 +5985,9 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 - 修复了首次调用 `client.publish(video)` 后，远端视频可能短暂卡顿的问题。
 - 修复了 npm 包中 TypeScript 类型定义文件缺失以及导出符号异常的问题。
 
-## v4.24.4
+</Accordion>
+
+<Accordion title="v4.24.4" id="v4244" headingLevel={2} value="v4244">
 
 该版本于 2026 年 5 月 27 日发布。
 
@@ -5840,7 +5995,9 @@ Web SDK 4.x 是通过 HTML 网页加载的 JavaScript 和 TypeScript 库。你�
 
 针对弱网场景进行了内部优化，提高了登录成功率。
 
-## v4.24.3
+</Accordion>
+
+<Accordion title="v4.24.3" id="v4243" headingLevel={2} value="v4243">
 
 该版本于 2026 年 3 月 27 日发布。
 
@@ -5857,9 +6014,11 @@ AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agor
 - 该版本优化了 H.264 编码场景下的视频互动体验。
 - AI 画质插件升级至 v2.0.1 版本，优化了锐化算法，提升了部分场景下的视频体验。
 
-<a id="v4.24.2"></a>
+</Accordion>
 
-## v4.24.2
+<section id="v4.24.2">
+
+<Accordion title="v4.24.2" id="v4242" headingLevel={2} value="v4242">
 
 该版本于 2025 年 12 月 12 日发布，修复了一个由于 Chrome 浏览器升级（自 Chrome 143 起）引入的兼容性问题。
 
@@ -5881,7 +6040,11 @@ A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新
 
 最新进展：Chrome 已于 2025 年 12 月 18 日修复该问题。
 
-## v4.24.1
+</Accordion>
+
+</section>
+
+<Accordion title="v4.24.1" id="v4241" headingLevel={2} value="v4241">
 
 该版本于 2025 年 11 月 25 日发布。
 
@@ -5933,9 +6096,11 @@ A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新
 
 修复了 iOS 系统上，音频流销毁后，系统音量无法设置为 0 的问题。
 
-<a id="v4.24.0"></a>
+</Accordion>
 
-## v4.24.0
+<section id="v4.24.0">
+
+<Accordion title="v4.24.0" id="v4240" headingLevel={2} value="v4240">
 
 该版本于 2025 年 7 月 31 日发布。
 
@@ -5980,13 +6145,19 @@ A、B 正常互通过程中，A 先取消发布和订阅音频流，然后重新
 - 修复了分辨率过低时出现的编码失败的问题。
 - 修复了使用 Plan-B 场景下偶现的黑屏问题。
 
-## v4.23.4
+</Accordion>
+
+</section>
+
+<Accordion title="v4.23.4" id="v4234" headingLevel={2} value="v4234">
 
 该版本于 2025 年 6 月 5 日发布。
 
 v4.23.4 进行了一些内部改进，修复了特定场景下调用 `setMute` 或 `setEnable` 方法时，可能出现无声的问题。如果你使用的是 v4.23.0 及之后版本的 SDK，我们建议你升级到该版本，以获得更好的用户体验。
 
-## v4.23.3
+</Accordion>
+
+<Accordion title="v4.23.3" id="v4233" headingLevel={2} value="v4233">
 
 该版本于 2025 年 4 月 30 日发布。
 
@@ -5995,18 +6166,24 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 - 优化了内存及 CPU 开销。
 - 修复了特定分辨率时产生的黑屏问题。
 
-## v4.23.2
+</Accordion>
+
+<Accordion title="v4.23.2" id="v4232" headingLevel={2} value="v4232">
 
 该版本于 2025 年 3 月 5 日发布，主要包含以下改进：
 
 - 为支持[声网对话式 AI 引擎](/zh-CN/ai)作了一些内部改进。
 - 进一步缩小了包体积。
 
-## v4.23.1
+</Accordion>
+
+<Accordion title="v4.23.1" id="v4231" headingLevel={2} value="v4231">
 
 该版本于 2025 年 1 月 16 日发布，进行了一些内部改进。
 
-## v4.23.0
+</Accordion>
+
+<Accordion title="v4.23.0" id="v4230" headingLevel={2} value="v4230">
 
 该版本于 2024 年 12 月 19 日发布。
 
@@ -6062,7 +6239,9 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 - `AgoraRTC.on("peer-connection-state-change")`
 - `ScreenVideoTrackInitConfig` 中新增 `preferCurrentTab` 参数
 
-## v4.22.2
+</Accordion>
+
+<Accordion title="v4.22.2" id="v4222" headingLevel={2} value="v4222">
 
 该版本于 2024 年 10 月 28 日发布。
 
@@ -6082,13 +6261,17 @@ v4.23.3 将虚拟背景插件升级到了 [2.1.0 版本](https://www.npmjs.com/p
 
 - `createScreenVideoTrack` 方法中的 `withAudio` 参数支持传入 `ScreenAudioTrackInitconfig`
 
-## v4.22.1
+</Accordion>
+
+<Accordion title="v4.22.1" id="v4221" headingLevel={2} value="v4221">
 
 该版本于 2024 年 9 月 19 日发布，进行了一些内部改进。
 
-<a id="v4.22.0"></a>
+</Accordion>
 
-## v4.22.0
+<section id="v4.22.0">
+
+<Accordion title="v4.22.0" id="v4220" headingLevel={2} value="v4220">
 
 该版本于 2024 年 8 月 15 日发布。
 
@@ -6132,7 +6315,11 @@ SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `Client
 - `ClientConfig.codec` 新增 `av1` 枚举值
 - ESM-bundle 格式包中的 `AgoraRTC` 新增 `use` 方法
 
-## v4.21.0
+</Accordion>
+
+</section>
+
+<Accordion title="v4.21.0" id="v4210" headingLevel={2} value="v4210">
 
 该版本于 2024 年 6 月 3 日发布。
 
@@ -6168,13 +6355,17 @@ SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `Client
 
 - `AgoraRTC.preload`
 
-## v4.20.2
+</Accordion>
+
+<Accordion title="v4.20.2" id="v4202" headingLevel={2} value="v4202">
 
 该版本于 2024 年 3 月 20 日发布。
 
 该版本修复了在某些场景下调用 [`createCustomVideoTrack`](/zh-CN/api-reference/rtc/web/interfaces/iagorartc#createcustomvideotrack) 方法，出现采集的视频分辨率被浏览器修改的问题。
 
-## v4.20.1
+</Accordion>
+
+<Accordion title="v4.20.1" id="v4201" headingLevel={2} value="v4201">
 
 该版本于 2024 年 2 月 26 日发布。
 
@@ -6220,9 +6411,11 @@ SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `Client
 - `RemoteVideoTrack.on("video-state-changed")`
 - `AgoraRTCClient.setEncryptionConfig` 中新增 `encryptDataStream` 参数
 
-<a id="v4.20.0"></a>
+</Accordion>
 
-## v4.20.0
+<section id="v4.20.0">
+
+<Accordion title="v4.20.0" id="v4200" headingLevel={2} value="v4200">
 
 该版本于 2023 年 12 月 8 日发布。
 
@@ -6250,7 +6443,11 @@ SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `Client
 - `resumeAudioContext`
 - `AgoraRTC.on("audio-context-state-changed")`
 
-## v4.19.3
+</Accordion>
+
+</section>
+
+<Accordion title="v4.19.3" id="v4193" headingLevel={2} value="v4193">
 
 该版本于 2023 年 11 月 2 日发布。
 
@@ -6258,7 +6455,9 @@ SDK 新增了对 AV1 视频编码格式的支持。你可以通过设置 `Client
 
 如果你集成了 4.19.2 版本的 SDK，声网推荐你尽快升级到 4.19.3 版本。
 
-## v4.19.2
+</Accordion>
+
+<Accordion title="v4.19.2" id="v4192" headingLevel={2} value="v4192">
 
 该版本于 2023 年 10 月 20 日发布。
 
@@ -6283,13 +6482,17 @@ Safari 存在已知问题，不能在网络条件较差或者视频发送帧率�
 
 - `VideoEncoderConfigurationPreset` 中新增 `"720p_auto"`
 
-## v4.19.1
+</Accordion>
+
+<Accordion title="v4.19.1" id="v4191" headingLevel={2} value="v4191">
 
 该版本于 2023 年 10 月 11 日发布。
 
 该版本修复了使用 Webpack 4.x 对 SDK 二次打包导致运行出错的问题。二次打包指将 SDK 集成到 App 后再对 App 进行打包。
 
-## v4.19.0
+</Accordion>
+
+<Accordion title="v4.19.0" id="v4190" headingLevel={2} value="v4190">
 
 该版本于 2023 年 9 月 22 日发布。
 
@@ -6378,19 +6581,25 @@ Safari 存在已知问题，不能在网络条件较差或者视频发送帧率�
 
 - `AgoraRTCClient.on("join-fallback-to-proxy")`
 
-## v4.18.3
+</Accordion>
+
+<Accordion title="v4.18.3" id="v4183" headingLevel={2} value="v4183">
 
 该版本于 2023 年 9 月 20 日发布。
 
 该版本修复了 SDK 在 Safari 17 上音视频统计数据缺失的问题。
 
-## v4.18.2
+</Accordion>
+
+<Accordion title="v4.18.2" id="v4182" headingLevel={2} value="v4182">
 
 该版本于 2023 年 7 月 11 日发布。
 
 该版本修复了 SDK 加载完成后，在特定情况下触发麦克风和摄像头设备权限申请弹窗的问题。
 
-## v4.18.1
+</Accordion>
+
+<Accordion title="v4.18.1" id="v4181" headingLevel={2} value="v4181">
 
 该版本于 2023 年 7 月 7 日发布。
 
@@ -6420,7 +6629,9 @@ Safari 存在已知问题，不能在网络条件较差或者视频发送帧率�
 -  `onCameraChanged` 或 `AgoraRTC.on("camera-changed")`
 -  `onMicrophoneChanged` 或 `AgoraRTC.on("microphone-changed")`
 
-## v4.18.0
+</Accordion>
+
+<Accordion title="v4.18.0" id="v4180" headingLevel={2} value="v4180">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -6522,13 +6733,17 @@ v4.18.0 修复了以下问题：
     - `"security-policy-violation"`
     :::
 
-## v4.17.2
+</Accordion>
+
+<Accordion title="v4.17.2" id="v4172" headingLevel={2} value="v4172">
 
 该版本于 2023 年 4 月 19 日发布。
 
 该版本修复了 `getCurrentFrameData` 方法返回值异常的问题。
 
-## v4.17.1
+</Accordion>
+
+<Accordion title="v4.17.1" id="v4171" headingLevel={2} value="v4171">
 
 该版本于 2023 年 4 月 19 日发布。
 
@@ -6580,7 +6795,9 @@ v4.18.0 修复了以下问题：
 -  `CustomVideoTrackInitConfig` 中的  `width`、`height`、`frameRate` 属性
 - `LocalVideoTrack.setEncoderConfiguration`
 
-## v4.17.0
+</Accordion>
+
+<Accordion title="v4.17.0" id="v4170" headingLevel={2} value="v4170">
 
 该版本于 2023 年 3 月 22 日发布。
 
@@ -6633,13 +6850,17 @@ v4.18.0 修复了以下问题：
 
 v4.17.0 修复了在 iOS 14.7 及以上版本的 Safari 浏览器上，反复订阅、取消订阅多路音频流可能导致听不到远端用户声音的问题。
 
-## v4.16.1
+</Accordion>
+
+<Accordion title="v4.16.1" id="v4161" headingLevel={2} value="v4161">
 
 该版本于 2023 年 2 月 8 日发布。
 
 该版本修复了使用 v4.16.0 版本的 SDK 时，水晶球统计的视频卡顿率异常升高的问题。
 
-## v4.16.0
+</Accordion>
+
+<Accordion title="v4.16.0" id="v4160" headingLevel={2} value="v4160">
 
 该版本于 2023 年 1 月 5 日发布。
 
@@ -6710,14 +6931,19 @@ v4.16.0 修复了以下问题：
 
 - `IAgoraRTCClient.setLocalAccessPointsV2`
 
-## v4.15.1
+</Accordion>
+
+<Accordion title="v4.15.1" id="v4151" headingLevel={2} value="v4151">
 
 该版本于 2022 年 12 月 2 日发布。
 
 该版本修复了在 iOS 13.7 上接收的音频流无声的问题。
 
-<a id="415"></a>
-## v4.15.0
+</Accordion>
+
+<section id="415">
+
+<Accordion title="v4.15.0" id="v4150" headingLevel={2} value="v4150">
 该版本于 2022 年 11 月 10 日发布。
 
 ### 升级必看
@@ -6790,13 +7016,19 @@ SDK 有以下改进：
 
 - `IAgoraRTC.onSecurityPolicyViolation`
 
-## v4.14.2
+</Accordion>
+
+</section>
+
+<Accordion title="v4.14.2" id="v4142" headingLevel={2} value="v4142">
 
 该版本于 2022 年 10 月 27 日发布。
 
 该版本修复了在 iOS 14.x 上使用微信浏览器时，订阅的第一路音频流无声的问题。
 
-## v4.14.1
+</Accordion>
+
+<Accordion title="v4.14.1" id="v4141" headingLevel={2} value="v4141">
 
 该版本于 2022 年 10 月 24 日发布。
 
@@ -6811,7 +7043,9 @@ v4.14.1 修复了以下问题：
 - SDK 断网重连后，跨频道媒体流转发失败。
 - 使用跨频道媒体流转发时，用户离开源频道后，SDK 仍然在发送心跳包。
 
-## v4.14.0
+</Accordion>
+
+<Accordion title="v4.14.0" id="v4140" headingLevel={2} value="v4140">
 
 该版本于 2022 年 8 月 31 日发布。
 
@@ -6838,7 +7072,9 @@ v4.14.0 修复了以下问题：
 - `enableContentInspect`
 - `client.on("content_inspect_result")`
 
-## v4.13.0
+</Accordion>
+
+<Accordion title="v4.13.0" id="v4130" headingLevel={2} value="v4130">
 
 该版本于 2022 年 7 月 25 日发布。
 
@@ -6880,18 +7116,24 @@ v4.13.0 完善了 token 过期回调的触发逻辑。如果 token 在设备休�
 - `RemoteVideoTrack.pipe`
 - `RemoteVideoTrack.unpipe`
 
-## v4.12.2
+</Accordion>
+
+<Accordion title="v4.12.2" id="v4122" headingLevel={2} value="v4122">
 
 该版本于 2022 年 7 月 7 日发布，优化了 SDK 的自动模式（在自动模式下，SDK 优先连接 SD-RTN™ ，如果连接失败，会自动切换到 TCP/TLS 443）。
 
-## v4.12.1
+</Accordion>
+
+<Accordion title="v4.12.1" id="v4121" headingLevel={2} value="v4121">
 
 该版本于 2022 年 6 月 27 日发布，修复了以下问题：
 
 - 在特定情况下，重连后订阅远端音视频流会失败。
 - 在 Firefox 浏览器上反复订阅、取消订阅多路视频流可能导致视频卡住。
 
-## v4.12.0
+</Accordion>
+
+<Accordion title="v4.12.0" id="v4120" headingLevel={2} value="v4120">
 
 该版本于 2022 年 6 月 15 日发布。
 
@@ -6908,14 +7150,18 @@ v4.13.0 完善了 token 过期回调的触发逻辑。如果 token 在设备休�
 
 v4.12.0 修复了在 Safari 上开启双流模式后，调用 `Track.setEnabled(false)`、`Track.close()` 等方法无法关闭摄像头指示灯的问题。
 
-## v4.11.1
+</Accordion>
+
+<Accordion title="v4.11.1" id="v4111" headingLevel={2} value="v4111">
 
 该版本于 2022 年 5 月 9 日发布，修复了以下问题：
 
 - Firefox 浏览器中订阅音频流可能导致无声。
 - iOS 12 Safari 浏览器以及 iOS 13 微信浏览器的兼容性问题。
 
-## v4.11.0
+</Accordion>
+
+<Accordion title="v4.11.0" id="v4110" headingLevel={2} value="v4110">
 
 该版本于 2022 年 4 月 1 日发布。
 
@@ -6951,16 +7197,23 @@ v4.11.0 修复了以下问题：
   - `ERR_TOO_MANY_BROADCASTERS`
   - `ERR_TOO_MANY_SUBSCRIBERS`
 
-## v4.10.2
+</Accordion>
+
+<Accordion title="v4.10.2" id="v4102" headingLevel={2} value="v4102">
 
 该版本于 2022 年 3 月 24 日发布，修复了在特定场景下调用 `join` 会触发代理异常的问题。
 
-## v4.10.1
+</Accordion>
+
+<Accordion title="v4.10.1" id="v4101" headingLevel={2} value="v4101">
 
 该版本于 2022 年 3 月 17 日发布，在 `package.json` 中补充了对声网插件系统 `agora-rte-extension` 的 TypeScript 类型定义依赖。如果你使用 TypeScript 进行类型检查，建议将 Typescript 升级至 4.3.2 或以上版本。
 
-<a id="410"></a>
-## v4.10.0
+</Accordion>
+
+<section id="410">
+
+<Accordion title="v4.10.0" id="v4100" headingLevel={2} value="v4100">
 该版本于 2022 年 3 月 11 日发布。
 
 ### 新增特性
@@ -6984,19 +7237,29 @@ v4.10.0 支持在 SDK 内使用媒体处理插件。声网当前提供以下插�
 - `LocalVideoTrack.pipe`
 - `LocalVideoTrack.unpipe`
 
-## v4.9.4
+</Accordion>
+
+</section>
+
+<Accordion title="v4.9.4" id="v494" headingLevel={2} value="v494">
 
 该版本于 2022 年 3 月 16 日发布，修复了在 Chrome 隐身模式下的 iFrame 中加载 SDK 时访问 localStorage 报错的问题。
 
-## v4.9.3
+</Accordion>
+
+<Accordion title="v4.9.3" id="v493" headingLevel={2} value="v493">
 
 该版本于 2022 年 3 月 3 日发布，修复了一些内部问题。
 
-## v4.9.1
+</Accordion>
+
+<Accordion title="v4.9.1" id="v491" headingLevel={2} value="v491">
 
 该版本于 2022 年 2 月 24 日发布，修复了一些内部问题。
 
-## v4.9.0
+</Accordion>
+
+<Accordion title="v4.9.0" id="v490" headingLevel={2} value="v490">
 
 该版本于 2022 年 2 月 17 日发布。
 
@@ -7045,15 +7308,21 @@ v4.9.0 修复了以下问题：
 - `localVideoTrack.getVideoElementVisibleStatus`
 - `remoteVideoTrack.getVideoElementVisibleStatus`
 
-## v4.8.2
+</Accordion>
+
+<Accordion title="v4.8.2" id="v482" headingLevel={2} value="v482">
 
 该版本于 2022 年 1 月 27 日发布，修复了 iOS 微信浏览器上锁屏后解锁可能会黑屏的问题。
 
-## v4.8.1
+</Accordion>
+
+<Accordion title="v4.8.1" id="v481" headingLevel={2} value="v481">
 
 该版本于 2022 年 1 月 6 日发布，修复了一个内部问题。
 
-## v4.8.0
+</Accordion>
+
+<Accordion title="v4.8.0" id="v480" headingLevel={2} value="v480">
 
 该版本于 2021 年 12 月 29 日发布。
 
@@ -7068,11 +7337,15 @@ v4.8.0 修复了以下问题：
 - iOS Safari 上以观众角色收流时，能听到主播的声音但 `client.on("volume-indicator")` 回调返回的音量可能为 0。
 - iOS Safari 上发流时，先调用 `setDevice` 再调用 `setEncoderConfiguration` 会报错。
 
-## v4.7.3
+</Accordion>
+
+<Accordion title="v4.7.3" id="v473" headingLevel={2} value="v473">
 
 该版本于 2021 年 11 月 17 日发布，规避了 iOS 15.1 中 Safari 浏览器上音视频通话被打断后无法恢复播放的问题。
 
-## v4.7.2
+</Accordion>
+
+<Accordion title="v4.7.2" id="v472" headingLevel={2} value="v472">
 
 该版本于 2021 年 10 月 14 日发布，有以下改动：
 
@@ -7080,11 +7353,15 @@ v4.8.0 修复了以下问题：
 - 规避了在桌面端和移动端 Safari 15 浏览器上，使用 `videoTrack.play(element, {mirror: true})` 播放视频时可能出现黑屏的问题，详见[问题说明](https://bugs.webkit.org/show_bug.cgi?id=230532)。
 - 修复了在 Edge 浏览器上调用 `AgoraRTC.checkSystemRequirements()` 返回 `false` 的问题。
 
-## v4.7.1
+</Accordion>
+
+<Accordion title="v4.7.1" id="v471" headingLevel={2} value="v471">
 
 该版本于 2021 年 9 月 13 日发布，修复了在 Safari 11 和 iPad Chrome 浏览器上的一些问题。
 
-## v4.7.0
+</Accordion>
+
+<Accordion title="v4.7.0" id="v470-3" headingLevel={2} value="v470-3">
 
 该版本于 2021 年 9 月 1 日发布。
 
@@ -7108,19 +7385,27 @@ v4.7.0 修复了以下问题：
 - 设置日志等级为不打印日志时，SDK 仍会打印初始化的一些日志。
 - `LocalAudioTrack.setDevice` 返回的 Promise 可能一直处于 pending 状态。
 
-## v4.6.3
+</Accordion>
+
+<Accordion title="v4.6.3" id="v463-1" headingLevel={2} value="v463-1">
 
 该版本于 2021 年 8 月 10 日发布，修复了一个偶现问题：本地关闭标签页或浏览器后，远端没有立即收到 `user-left` 事件。
 
-## v4.6.2
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462-3" headingLevel={2} value="v462-3">
 
 该版本于 2021 年 7 月 30 日发布，修复了 SDK 内部存在未销毁的 Media Player 的问题。由于 Chrome 92 新增了一个页面最多创建 75 个 Media Player 的限制，数次播放轨道后，SDK 内未销毁的 MediaPlayer 会导致当前页面无法继续播放。
 
-## v4.6.1
+</Accordion>
+
+<Accordion title="v4.6.1" id="v461-1" headingLevel={2} value="v461-1">
 
 该版本于 2021 年 7 月 21 日发布，修复了一个内部错误。
 
-## v4.6.0
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-3" headingLevel={2} value="v460-3">
 
 该版本于 2021 年 7 月 16 日发布。
 
@@ -7180,7 +7465,9 @@ v4.6.0 修复了以下问题：
 
 - `onAudioAutoplayFailed`
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-3" headingLevel={2} value="v450-3">
 
 该版本于 2021 年 5 月 25 日发布。
 
@@ -7225,7 +7512,9 @@ v4.5.0 修复了以下问题：
 - `EncryptionMode` 新增 `"aes-128-gcm2"` 和 `"aes-256-gcm2"` 属性
 - `setArea` 方法新增 `excludedArea` 参数
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-3" headingLevel={2} value="v440-3">
 
 该版本于 2021 年 4 月 2 日发布。
 
@@ -7278,7 +7567,9 @@ v4.4.0 修复了以下问题：
 - `client.on("is-using-cloud-proxy")`
 - `EncryptionMode` 新增 `"aes-128-gcm"` 和 `"aes-256-gcm"`
 
-## v4.3.0
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-3" headingLevel={2} value="v430-3">
 
 该版本于 2021 年 1 月 26 日发布。
 
@@ -7290,11 +7581,15 @@ v4.4.0 修复了以下问题：
 
 你可联系 [sales@shengwang.cn](mailto:sales@shengwang.cn) 或技术支持申请使用优化后的云代理服务，然后调用 `startProxyServer` 方法将 `mode` 参数设为 3 实现使用云代理服务。详见[使用云代理服务](/zh-CN/realtime-media/rtc/build/setup-and-access/firewall)。
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-3" headingLevel={2} value="v421-3">
 
 该版本于 2020 年 12 月 23 日发布，修复了 `client.publish` 方法传入非法参数时错误说明抛出异常的问题。
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-3" headingLevel={2} value="v420-3">
 
 该版本于 2020 年 12 月 1 日发布。
 
@@ -7364,7 +7659,9 @@ v4.4.0 修复了以下问题：
 
 - `AgoraRTCClient.startProxyServer` 方法的 `mode` 参数类型由 `boolean` 改成 `number`
 
-## v4.1.1
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-3" headingLevel={2} value="v411-3">
 
 该版本于 2020 年 10 月 27 日发布。该版本修复了以下问题：
 
@@ -7374,7 +7671,9 @@ v4.4.0 修复了以下问题：
 - 降低双流模式时频繁调用 `setEnabled` 方法启用和禁用视频轨道的消耗。
 - Safari 14 上调用 `client.getLocalVideoStats` 方法的偶现报错。
 
-## v4.1.0
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-3" headingLevel={2} value="v410-3">
 
 该版本于 2020 年 9 月 4 日发布。
 
@@ -7427,14 +7726,18 @@ v4.1.0 新增了以下方法和回调，用于音频播放设备的管理：
 
   - 废弃了  `LocalTrack.getStats` 和 `RemoteTrack.getStats`，请使用 `Client.getLocalAudioStats` 等方法来获取本地和远端的媒体质量信息。
 
-## v4.0.1
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-3" headingLevel={2} value="v401-3">
 
 该版本于 2020 年 7 月 18 日发布，该版本修复了以下问题：
 
 - 修复 Chrome 70 下发布失败的问题。
 - 修复某些情况下离开频道发布操作没有被中止的问题。
 
-## v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-3" headingLevel={2} value="v400-3">
 
 该版本于 2020 年 7 月 15 日发布。
 
@@ -7513,6 +7816,10 @@ v4.0.0 修复了以下问题：
 - 删除了 `AgoraRTCRemoteUser.videoMuted` 属性。
 - 删除了 `LocalTrack.getUserId` 方法。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="windows">
@@ -7525,7 +7832,9 @@ v4.0.0 修复了以下问题：
 
 <TabsContent value="cpp">
 
-## v4.7.0
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.7.0" id="v470-4" headingLevel={2} value="v470-4">
 
 该版本于 2026 年 9 月 22 日发布。
 
@@ -7565,7 +7874,9 @@ v4.0.0 修复了以下问题：
 - 修复了预加载音效场景下，调用 `stopEffect` 停止播放后再次调用 `playEffect` 时，上一段音效仍有残留的问题。
 - 修复了管理员启动或屏幕采集场景下偶现崩溃的问题，提升了 SDK 稳定性。
 
-## v4.6.2
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462-4" headingLevel={2} value="v462-4">
 
 该版本于 2026 年 1 月 16 日 发布。
 
@@ -7639,7 +7950,9 @@ v4.0.0 修复了以下问题：
 - 第二次调用 `enumerateVideoDevices` 接口获取设备列表不生效。
 - Windows 7 设备上共享 PPT 窗口，当 PPT 以全屏自动播放模式运行且包含大量动画时，远端看到的画面有概率出现闪烁。
 
-## v4.6.0
+</Accordion>
+
+<Accordion title="v4.6.0" id="v460-4" headingLevel={2} value="v460-4">
 
 该版本于 2025 年 8 月 18 日发布。
 
@@ -7783,7 +8096,9 @@ v4.0.0 修复了以下问题：
 - 部分机型的笔记本电脑开启节能模式下，发送端共享屏幕和音频，偶现接收端听到回声。
 - 在线教育场景下，偶现教师端本地看多个学生端音画不同步。
 
-## v4.5.2
+</Accordion>
+
+<Accordion title="v4.5.2" id="v452-3" headingLevel={2} value="v452-3">
 
 该版本于 2025 年 4 月 22 日发布。
 
@@ -7824,7 +8139,9 @@ v4.0.0 修复了以下问题：
 - App 调用 [`enableVideoImageSource`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-prenpro/image-source#api_irtcengine_enablevideoimagesource) 启用垫片推流功能，偶现发送端推流成功但是 [`onVideoPublishStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-basic#callback_irtcengineeventhandler_onvideopublishstatechanged) 返回当前的发布状态不是 PUB_STATE_PUBLISHED，不符合预期。
 - 多频道场景下，App 在调用 [`joinChannelEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/channel#api_irtcengineex_joinchannelex) 成功前调用 [`setupRemoteVideoEx`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/video-rendering#api_irtcengineex_setupremotevideoex) 初始化远端用户视图，偶现远端用户视图首帧图像显示延时大。
 
-## v4.5.1
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-3" headingLevel={2} value="v451-3">
 
 该版本于 2025 年 3 月 5 日发布。
 
@@ -7849,7 +8166,9 @@ v4.0.0 修复了以下问题：
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-4" headingLevel={2} value="v450-4">
 
 该版本于 2024 年 11 月 26 日发布。
 
@@ -8010,7 +8329,9 @@ v4.0.0 修复了以下问题：
 - 调用 [`followSystemRecordingDevice`](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_followsystemrecordingdevice) 或 [`followSystemPlaybackDevice`](/zh-CN/api-reference/rtc/cpp-all-platforms/device-management/audio-device#api_iaudiodevicemanager_followsystemplaybackdevice) 设置 SDK 使用的音频采集或播放设备不跟随系统默认的音频播放设备，当音频设备被移除时，本地音频状态回调 [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/cpp-all-platforms/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 没有被触发，不符合预期。
 - 调用 [`startAudioMixing`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-mixing#api_irtcengine_startaudiomixing)[1/2] 后，立即调用 [`pauseAudioMixing`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-4" headingLevel={2} value="v440-4">
 
 该版本于 2024 年 8 月 5 日发布。
 
@@ -8086,7 +8407,9 @@ v4.0.0 修复了以下问题：
    - 该版本在 [`Metadata`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-metadata) 中新增 `channelId` 参数，用于获取发送 Metadata 的源频道名称。
    - 废弃了 [`CLIENT_ROLE_CHANGE_FAILED_REASON`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-clientrolechangefailedreason) 中的冗余枚举值 `CLIENT_ROLE_CHANGE_FAILED_REQUEST_TIME_OUT`、`CLIENT_ROLE_CHANGE_FAILED_CONNECTION_FAILED`。
 
-## v4.3.2
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-3" headingLevel={2} value="v432-3">
 
 该版本于 2024 年 6 月 4 日发布。
 
@@ -8106,7 +8429,9 @@ v4.0.0 修复了以下问题：
 - 调用 [`startScreenCaptureByWindowId`](/zh-CN/api-reference/rtc/cpp-all-platforms/video/screencapture#api_irtcengine_startscreencapturebywindowid) 共享窗口，并设置 [`ScreenCaptureParameters`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-screencaptureparameters) 的 `windowFocus` 和 `enableHighLight` 为 `true` 以前置指定窗口并开启窗口描边，如果当前该窗口被其他窗口覆盖，无法前置该窗口，不符合预期。
 - 在 Windows 7 设备上共享窗口并对窗口描边时，点击桌面控件导致描边部分闪烁。
 
-## v4.3.1
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-3" headingLevel={2} value="v431-3">
 
 该版本于 2024 年 4 月 29 日发布。
 
@@ -8184,7 +8509,9 @@ v4.0.0 修复了以下问题：
 - [`setAudioMixingPlaybackSpeed`](/zh-CN/api-reference/rtc/cpp-all-platforms/play/audio-mixing#api_irtcengine_setaudiomixingplaybackspeed)
 - [`EAR_MONITORING_FILTER_TYPE`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-earmonitoringfiltertype) 新增枚举 `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`(1&lt;&lt;15)
 
-## v4.3.0
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-4" headingLevel={2} value="v430-4">
 
 该版本于 2024 年 2 月 22 日发布。
 
@@ -8428,7 +8755,9 @@ v4.0.0 修复了以下问题：
 - `onChannelMediaRelayEvent`
 - `CHANNEL_MEDIA_RELAY_EVENT`
 
-## v4.2.6
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-3" headingLevel={2} value="v426-3">
 
 该版本于 2023 年 11 月 16 日发布。
 
@@ -8436,7 +8765,9 @@ v4.0.0 修复了以下问题：
 
 该版本修复了在特定场景下（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道），接收端的视频出现卡顿或冻结。
 
-## v4.2.3
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-3" headingLevel={2} value="v423-3">
 
 该版本于 2023 年 10 月 12 日发布。
 
@@ -8524,7 +8855,9 @@ v4.0.0 修复了以下问题：
 
 - [`FeatureType`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-featuretype)
 
-## v4.2.2
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-3" headingLevel={2} value="v422-3">
 
 该版本于 2023 年 7 月 27 日发布。
 
@@ -8607,7 +8940,9 @@ v4.0.0 修复了以下问题：
 - [`CodecCapInfo`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-codeccapinfo) 中增加 `codecLevels` 成员
 - [`REMOTE_VIDEO_STATE_REASON`](/zh-CN/api-reference/rtc/cpp-all-platforms/enum-remotevideostatereason) 中增加 `REMOTE_VIDEO_STATE_REASON_CODEC_NOT_SUPPORT` 枚举
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-4" headingLevel={2} value="v421-4">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -8624,7 +8959,9 @@ v4.0.0 修复了以下问题：
 - 使用媒体播放器播放媒体文件时出现短暂杂音。
 - 发送端将两路摄像头采集的视频进行本地合图并发布后，接收端偶现第二路摄像头画面缺失。
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-4" headingLevel={2} value="v420-4">
 
 该版本于 2023 年 5 月 24 日发布。
 
@@ -8851,7 +9188,9 @@ v4.0.0 修复了以下问题：
 - `AGORA_IID_MEDIA_RECORDER`
 - [`startRecording`](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_imediarecorder_startrecording)、[`stopRecording`](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_imediarecorder_stoprecording)、[`setMediaRecorderObserver`](/zh-CN/api-reference/rtc/cpp-all-platforms/recording#api_imediarecorder_setmediarecorderobserver) 中删除 `connection` 参数
 
-##  v4.1.1
+</Accordion>
+
+<Accordion title="v4.1.1" id="v411-4" headingLevel={2} value="v411-4">
 
 该版本于 2023 年 2 月 8 日发布。
 
@@ -8916,7 +9255,9 @@ v4.0.0 修复了以下问题：
  - `enableRemoteSuperResolution`
  - [`RemoteVideoStats`](/zh-CN/api-reference/rtc/cpp-all-platforms/class-remotevideostats) 中删除 `superResolutionType`
 
-## v4.1.0
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-4" headingLevel={2} value="v410-4">
 
 该版本于 2022 年 12 月 19 日发布。
 
@@ -9136,7 +9477,9 @@ v4.0.0 修复了以下问题：
 
 - `onChannelMediaRelayEvent` 中删除 `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8)
 
-## v4.0.1
+</Accordion>
+
+<Accordion title="v4.0.1" id="v401-4" headingLevel={2} value="v401-4">
 
 该版本于 2022 年 9 月 29 日发布。
 
@@ -9261,7 +9604,9 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 
 - `enableDualStreamMode`[2/3]
 
-## v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-4" headingLevel={2} value="v400-4">
 
 该版本于 2022 年 9 月 13 日发布。
 
@@ -9446,11 +9791,17 @@ SDK 会根据你在 `VideoEncoderConfiguration` 中的设置，自动选择选�
 
 你可以通过 [`setRemoteDefaultVideoStreamType`](/zh-CN/api-reference/rtc/cpp-all-platforms/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。
 
+</Accordion>
+
+</Accordions>
+
 </TabsContent>
 
 <TabsContent value="cs">
 
-## v4.2.1
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.2.1" id="v421-5" headingLevel={2} value="v421-5">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -9467,7 +9818,9 @@ SDK 会根据你在 `VideoEncoderConfiguration` 中的设置，自动选择选�
 - 使用媒体播放器播放媒体文件时出现短暂杂音。
 - 发送端将两路摄像头采集的视频进行本地合图并发布后，接收端偶现第二路摄像头画面缺失。
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-5" headingLevel={2} value="v420-5">
 
 该版本于 2023 年 5 月 26 日发布，是 C# SDK 的第一个版本。
 
@@ -9486,6 +9839,10 @@ SDK 会根据你在 `VideoEncoderConfiguration` 中的设置，自动选择选�
 
 声网在 GitHub 提供一个开源的 [CSharp API Example](https://github.com/AgoraIO-Extensions/Agora-C_Sharp-SDK/tree/master/APIExample) 示例项目，你也可以前往下载并体验。
 
+</Accordion>
+
+</Accordions>
+
 </TabsContent>
 </Tabs>
 
@@ -9493,7 +9850,9 @@ SDK 会根据你在 `VideoEncoderConfiguration` 中的设置，自动选择选�
 
 <PlatformStructured platform="harmonyos">
 
-## v4.4.2
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.4.2" id="v442" headingLevel={2} value="v442">
 
 该版本于 2024 年 11 月 29 日发布。
 
@@ -9512,7 +9871,9 @@ SDK 会根据你在 `VideoEncoderConfiguration` 中的设置，自动选择选�
 - `isSpeakerphoneEnabled` 回调返回结果不准确。
 - 在鸿蒙 NEXT 0.0.107 系统的设备上，调用 `leaveChannel` 后偶现崩溃。
 
-## v4.4.1
+</Accordion>
+
+<Accordion title="v4.4.1" id="v441-1" headingLevel={2} value="v441-1">
 
 该版本于 2024 年 10 月 24 日发布，适配 HarmonyOS NEXT Release 版本，确保其在最新操作系统上的兼容性和性能表现。
 
@@ -9563,7 +9924,9 @@ SDK 会根据你在 `VideoEncoderConfiguration` 中的设置，自动选择选�
 - 音视频录制偶现崩溃。
 - 偶现 `onVideSizeChanged` 回调无法正常上报。
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-5" headingLevel={2} value="v440-5">
 
 该版本于 2024 年 10 月 8 日发布。
 
@@ -9585,6 +9948,10 @@ SDK 提供了一套强大的 API，使开发者可以轻松构建具备实时音
 
 声网提供了开源的[示例项目](https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample)，你可以前往下载并体验。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="mini-program">
@@ -9604,7 +9971,9 @@ SDK 提供了一套强大的 API，使开发者可以轻松构建具备实时音
 
 具体步骤详见[配置服务器域名](/zh-CN/realtime-media/rtc/get-started/run-demo#add-ip)。
 
-## v2.6.5
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v2.6.5" id="v265" headingLevel={2} value="v265">
 
 该版本于 2024 年 8 月 21 日发布。
 
@@ -9612,7 +9981,9 @@ SDK 提供了一套强大的 API，使开发者可以轻松构建具备实时音
 
 该版本新增支持 IoT 场景下的加、解密功能。具体的参数设置及加解密类型详见 [API 参考](/zh-CN/api-reference/rtc/mini-program/classes/client#constructor)。
 
-## v2.6.4
+</Accordion>
+
+<Accordion title="v2.6.4" id="v264" headingLevel={2} value="v264">
 
 该版本于 2024 年 1 月 11 日发布。
 
@@ -9624,25 +9995,33 @@ SDK 提供了一套强大的 API，使开发者可以轻松构建具备实时音
 
 该版本修复了反复调用 `join`/`leave` 方法导致的 Client 对象无法复用的问题。
 
-## v2.6.3
+</Accordion>
+
+<Accordion title="v2.6.3" id="v263" headingLevel={2} value="v263">
 
 该版本于 2023 年 12 月 22 日发布。
 
 该版本修复了断网情况下调用 `destroy` 方法导致的 Promise 不返回的问题。
 
-## v2.6.2
+</Accordion>
+
+<Accordion title="v2.6.2" id="v262" headingLevel={2} value="v262">
 
 该版本于 2023 年 8 月 29 日发布。
 
 该版本修复了收不到跨频道媒体流转发 `channel-media-relay-event` 和 `channel-media-relay-state` 事件的问题。
 
-## v2.6.1
+</Accordion>
+
+<Accordion title="v2.6.1" id="v261" headingLevel={2} value="v261">
 
 该版本于 2023 年 3 月 2 日发布。
 
 该版本修复了 WebSocket 连接 `onClose` 方法中 `err` 参数未定义错误。
 
-## v2.6.0
+</Accordion>
+
+<Accordion title="v2.6.0" id="v260" headingLevel={2} value="v260">
 
 该版本于 2023 年 2 月 8 日发布。
 
@@ -9670,7 +10049,9 @@ SDK 新增支持如下集成方式：
 - 默认用户角色改为 `audience`（观众）。如有需要请调用 [`setRole`](/zh-CN/api-reference/rtc/mini-program/classes/client#setrole) 修改。
 - 包体积优化，从 190kb 左右降至 160kb 左右。
 
-## v2.5.7
+</Accordion>
+
+<Accordion title="v2.5.7" id="v257" headingLevel={2} value="v257">
 
 该版本于 2022 年 12 月 9 日发布。
 
@@ -9682,7 +10063,9 @@ SDK 新增支持如下集成方式：
 
 完善了重连机制，更好地保障用户成功加入频道。
 
-## v2.5.6
+</Accordion>
+
+<Accordion title="v2.5.6" id="v256" headingLevel={2} value="v256">
 
 该版本于 2022 年 9 月 22 日发布。
 
@@ -9717,7 +10100,9 @@ SDK 新增支持如下集成方式：
 - `rejoin`
 - `setRemoteVideoStreamType`
 
-## v2.5.5
+</Accordion>
+
+<Accordion title="v2.5.5" id="v255" headingLevel={2} value="v255">
 
 该版本于 2022 年 7 月 1 日发布。
 
@@ -9725,7 +10110,9 @@ SDK 新增支持如下集成方式：
 
 该版本优化了向声网数据中心上报数据的频次和逻辑，减少了上报请求对正常 http 请求通道的占用。
 
-## v2.5.4
+</Accordion>
+
+<Accordion title="v2.5.4" id="v254" headingLevel={2} value="v254">
 
 该版本于 2022 年 5 月 19 日发布。
 
@@ -9753,7 +10140,9 @@ SDK 新增支持如下集成方式：
 - `Client.join` 新增 `isAudioOnly` 参数
 - `Client.rejoin` 新增 `isAudioOnly` 参数
 
-## v2.5.3
+</Accordion>
+
+<Accordion title="v2.5.3" id="v253" headingLevel={2} value="v253">
 
 该版本于 2021 年 12 月 9 日发布。
 
@@ -9799,11 +10188,15 @@ SDK 新增支持如下集成方式：
 - `updatePlayerNetStatus`
 - `updatePlayerStateChange`
 
-## v2.4.6
+</Accordion>
+
+<Accordion title="v2.4.6" id="v246" headingLevel={2} value="v246">
 
 该版本于 2021 年 1 月 20 日发布。修复了 `wx.connectSocket is not a constructor` 报错问题。
 
-## v2.4.5
+</Accordion>
+
+<Accordion title="v2.4.5" id="v245" headingLevel={2} value="v245">
 
 该版本于 2020 年 9 月 21 日发布。
 
@@ -9811,11 +10204,15 @@ SDK 新增支持如下集成方式：
 
 为方便本地了解远端用户的媒体状态，该版本新增 `Client.on("mute-video")` 回调。当远端用户停止发送视频流时，SDK 会触发相应的回调。你还可以从该回调中得知停止发送的远端用户的 ID。
 
-## v2.4.4
+</Accordion>
+
+<Accordion title="v2.4.4" id="v244" headingLevel={2} value="v244">
 
 该版本于 2020 年 7 月 7 日发布。增加了对 QQ 小程序的兼容。
 
-## v2.4.3
+</Accordion>
+
+<Accordion title="v2.4.3" id="v243" headingLevel={2} value="v243">
 
 该版本于 2020 年 5 月 26 日发布。
 
@@ -9829,7 +10226,9 @@ SDK 新增支持如下集成方式：
 
 在跨频道媒体流转发过程中，SDK 会通过 `Client.on("channel-media-relay-state")` 和 `Client.on("channel-media-relay-event")` 回调报告媒体流转发的状态和事件。
 
-## v2.4.2
+</Accordion>
+
+<Accordion title="v2.4.2" id="v242" headingLevel={2} value="v242">
 
 该版本于 2019 年 12 月 31 日发布。
 
@@ -9837,11 +10236,15 @@ SDK 新增支持如下集成方式：
 
 为方便本地了解远端用户的媒体状态，该版本新增 `Client.on("mute-audio")`。当远端用户停止发送音频流时，SDK 会触发相应的回调。你还可以从该回调中得知停止发送的远端用户的 ID。
 
-## v2.4.1
+</Accordion>
+
+<Accordion title="v2.4.1" id="v241" headingLevel={2} value="v241">
 
 该版本于 2019 年 9 月 18 日发布。进行了一些内部优化。
 
-## v2.4.0
+</Accordion>
+
+<Accordion title="v2.4.0" id="v240" headingLevel={2} value="v240">
 
 该版本于 2019 年 4 月 30 日发布。新增特性和性能改进详见下文。
 
@@ -9853,7 +10256,9 @@ SDK 新增支持如下集成方式：
 
 该版本针对直播下主播切换为观众的场景，对图像和声音的延迟进行了优化。声网实验室测试结果显示，延迟降低为之前的 20%。
 
-## v2.3.2
+</Accordion>
+
+<Accordion title="v2.3.2" id="v232" headingLevel={2} value="v232">
 
 该版本于 2019 年 1 月 3 日发布。新增特性及功能改进详见下文。
 
@@ -9870,7 +10275,9 @@ SDK 新增支持如下集成方式：
 - 用户角色为 `broadcaster` 时，可以调用 [`Client.publish`](/zh-CN/api-reference/rtc/mini-program/classes/client#publish) 和 [`Client.unpublish`](/zh-CN/api-reference/rtc/mini-program/classes/client#unpublish) 方法
 - 用户角色为 `audience` 时，不可以调用 `Client.publish` 和 `Client.unpublish` 方法
 
-## v1.1.3 BETA
+</Accordion>
+
+<Accordion title="v1.1.3 BETA" id="v113-beta" headingLevel={2} value="v113-beta">
 
 该版本于 2018 年 11 月 2 日发布。
 
@@ -9878,7 +10285,9 @@ SDK 新增支持如下集成方式：
 
 修复了偶现的反复加入频道失败的问题，提升了服务的稳定性。
 
-## v1.1.2 Beta
+</Accordion>
+
+<Accordion title="v1.1.2 Beta" id="v112-beta" headingLevel={2} value="v112-beta">
 
 该版本于 2018 年 10 月 22 日发布。新增特性与修复问题列表详见下文。
 
@@ -9902,7 +10311,9 @@ https://miniapp-3.agoraio.cn
 https://miniapp-4.agoraio.cn
 ```
 
-## v1.1.1 Beta
+</Accordion>
+
+<Accordion title="v1.1.1 Beta" id="v111-beta" headingLevel={2} value="v111-beta">
 
 该版本于 2018 年 8 月 8 日发布。
 
@@ -9914,7 +10325,9 @@ https://miniapp-4.agoraio.cn
 -   Native 端的频道场景为直播场景
 -   小程序端作为观众加入频道
 
-## v1.1.0 Beta
+</Accordion>
+
+<Accordion title="v1.1.0 Beta" id="v110-beta" headingLevel={2} value="v110-beta">
 
 该版本于 2018 年 7 月 27 日发布。包含如下功能：
 
@@ -9939,6 +10352,10 @@ https://miniapp-4.agoraio.cn
 -   正常的音视频或纯语音场景下，不影响正常通话，但测试结论不推荐播放背景音乐，可能会出现声音卡顿、忽大忽小等不可控现象。
 -   iOS 手机系统为最新的 iOS 12.0 的用户使用微信小程序时，对方看到该用户的窗口必现花屏。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
@@ -9955,7 +10372,9 @@ https://miniapp-4.agoraio.cn
 
 
 
-## v4.6.2
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.6.2" id="v462-5" headingLevel={2} value="v462-5">
 
 该版本于 2026 年 3 月 5 日发布。
 
@@ -10131,7 +10550,9 @@ https://miniapp-4.agoraio.cn
 - 第二次调用 [`enumerateVideoDevices`](/zh-CN/api-reference/rtc/electron/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 接口获取设备列表不生效。
 - Windows 7 设备上共享 PPT 窗口，当 PPT 以全屏自动播放模式运行且包含大量动画时，远端看到的画面有概率出现闪烁。
 
-## v4.5.2(对应 Native v4.5.1)
+</Accordion>
+
+<Accordion title="v4.5.2(对应 Native v4.5.1)" id="v452对应-native-v451" headingLevel={2} value="v452对应-native-v451">
 
 该版本于 2025 年 3 月 13 日发布。
 
@@ -10151,7 +10572,9 @@ https://miniapp-4.agoraio.cn
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-5" headingLevel={2} value="v450-5">
 
 该版本于 2024 年 12 月 10 日发布。
 
@@ -10256,7 +10679,9 @@ https://miniapp-4.agoraio.cn
 - 调用 [`followSystemRecordingDevice`](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_followsystemrecordingdevice) 或 [`followSystemPlaybackDevice`](/zh-CN/api-reference/rtc/electron/device-management/audio-device#api_iaudiodevicemanager_followsystemplaybackdevice) 设置 SDK 使用的音频采集或播放设备不跟随系统默认的音频播放设备，当音频设备被移除时，本地音频状态回调 [`onLocalAudioStateChanged`](/zh-CN/api-reference/rtc/electron/audio/audio-basic#callback_irtcengineeventhandler_onlocalaudiostatechanged) 没有被触发，不符合预期。(Windows)
 - 调用 [`startAudioMixing`](/zh-CN/api-reference/rtc/electron/play/audio-mixing#api_irtcengine_startaudiomixing2)后，立即调用 [`pauseAudioMixing`](/zh-CN/api-reference/rtc/electron/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-6" headingLevel={2} value="v440-6">
 
 该版本于 2024 年 8 月 29 日发布。
 
@@ -10319,7 +10744,9 @@ https://miniapp-4.agoraio.cn
 
 该版本修复了用户主动拒绝授权 App 使用音视频设备的权限后进行音视频互动时 App 崩溃的问题。(macOS)
 
-## v4.3.2
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-4" headingLevel={2} value="v432-4">
 
 该版本于 2024 年 6 月 6 日发布。
 
@@ -10340,7 +10767,9 @@ https://miniapp-4.agoraio.cn
 - 在 Windows 7 设备上共享窗口并对窗口描边时，点击桌面控件导致描边部分闪烁。(Windows)
 - 调用 [`leaveChannelEx`](/zh-CN/api-reference/rtc/electron/channel#api_irtcengineex_leavechannelex2) 离开频道时，偶现不传入 `options` 参数导致的 App 崩溃。
 
-## v4.3.1
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-4" headingLevel={2} value="v431-4">
 
 该版本于 2024 年 5 月 9 日发布。
 
@@ -10431,7 +10860,9 @@ https://miniapp-4.agoraio.cn
 - [`setAudioMixingPlaybackSpeed`](/zh-CN/api-reference/rtc/electron/play/audio-mixing#api_irtcengine_setaudiomixingplaybackspeed)
 - [`EarMonitoringFilterType`](/zh-CN/api-reference/rtc/electron/enum-earmonitoringfiltertype) 新增枚举 `EarMonitoringFilterBuiltInAudioFilters`(`1 << 15`)
 
-## v4.3.0
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-5" headingLevel={2} value="v430-5">
 
 该版本于 2024 年 2 月 28 日发布。
 
@@ -10662,7 +11093,9 @@ https://miniapp-4.agoraio.cn
 - `onChannelMediaRelayEvent`
 - `ChannelMediaRelayEvent`
 
-## v4.2.6
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-4" headingLevel={2} value="v426-4">
 
 该版本于 2023 年 11 月 21 日发布。
 
@@ -10670,7 +11103,9 @@ https://miniapp-4.agoraio.cn
 
 该版本修复了在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
 
-## v4.2.4
+</Accordion>
+
+<Accordion title="v4.2.4" id="v424" headingLevel={2} value="v424">
 
 该版本于 2023 年 10 月 24 日发布。
 
@@ -10680,7 +11115,9 @@ https://miniapp-4.agoraio.cn
 
 `AgoraRtcWrapper` 中的 `CFBundleShortVersionString` 版本号错误，导致 App 无法被提交至 App Store。(macOS)
 
-## v4.2.3
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-4" headingLevel={2} value="v423-4">
 
 该版本于 2023 年 10 月 13 日发布。
 
@@ -10764,7 +11201,9 @@ https://miniapp-4.agoraio.cn
 - [`isFeatureAvailableOnDevice`](/zh-CN/api-reference/rtc/electron/network#api_irtcengine_isfeatureavailableondevice)
 - [`FeatureType`](/zh-CN/api-reference/rtc/electron/enum-featuretype)
 
-## v4.2.2
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-4" headingLevel={2} value="v422-4">
 
 该版本于 2023 年 8 月 1 日发布。
 
@@ -10851,7 +11290,9 @@ https://miniapp-4.agoraio.cn
 - [`CodecCapInfo`](/zh-CN/api-reference/rtc/electron/class-codeccapinfo) 中增加 `codecLevels` 成员
 - [`RemoteVideoStateReason`](/zh-CN/api-reference/rtc/electron/enum-remotevideostatereason) 中增加 `RemoteVideoStateReasonCodecNotSupport` 枚举
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-6" headingLevel={2} value="v421-6">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -10869,7 +11310,9 @@ https://miniapp-4.agoraio.cn
 - 发送端启用屏幕共享功能后，偶现接收端看到共享画面的延迟较高。 (macOS)
 - 发送端将两路摄像头采集的视频进行本地合图并发布后，接收端偶现第二路摄像头画面缺失。 (Windows)
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-6" headingLevel={2} value="v420-6">
 
 该版本于 2023 年 5 月 26 日发布。
 
@@ -11141,7 +11584,9 @@ https://miniapp-4.agoraio.cn
 - `AgoraIidMediaRecorder` (Windows)
 - [`startRecording`](/zh-CN/api-reference/rtc/electron/recording#api_imediarecorder_startrecording)、[`stopRecording`](/zh-CN/api-reference/rtc/electron/recording#api_imediarecorder_stoprecording)、[`setMediaRecorderObserver`](/zh-CN/api-reference/rtc/electron/recording#api_imediarecorder_setmediarecorderobserver) 中删除 `connection` 参数
 
-## v4.1.0
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-5" headingLevel={2} value="v410-5">
 
 该版本于 2022 年 12 月 20 日发布。
 
@@ -11462,7 +11907,9 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - `onApiCallExecuted`
 - `ChannelMediaRelayEvent`：废弃 `RelayEventPacketUpdateDestChannelRefused `(8)
 
-## v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-5" headingLevel={2} value="v400-5">
 
 该版本于 2022 年 9 月 29 日发布。
 
@@ -11617,6 +12064,10 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 你可以通过 [`setRemoteDefaultVideoStreamType`](/zh-CN/api-reference/rtc/electron/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。
 
+</Accordion>
+
+</Accordions>
+
 </TabsContent>
 
 <TabsContent value="tongxin">
@@ -11627,7 +12078,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 统信 OS 版本基于标准 Electron SDK 进行适配和优化，专门针对国产操作系统和芯片架构进行了兼容性验证。
 
-## v4.5.40-rc.2
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.5.40-rc.2" id="v4540-rc2" headingLevel={2} value="v4540-rc2">
 
 该版本于 2025 年 9 月 29 日发布，基于 RTC Native v4.5.1 开发。
 
@@ -11663,6 +12116,10 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 前往[下载页](/zh-CN/realtime-media/rtc/reference/downloads)获取 SDK。
 
+</Accordion>
+
+</Accordions>
+
 </TabsContent>
 </Tabs>
 
@@ -11678,7 +12135,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 
 
-## v4.6.2
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.6.2" id="v462-6" headingLevel={2} value="v462-6">
 
 该版本于 2026 年 3 月 5 日发布。
 
@@ -11865,7 +12324,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - 第二次调用 [`EnumerateVideoDevices`](/zh-CN/api-reference/rtc/unity/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 接口获取设备列表不生效。
 - Windows 7 设备上共享 PPT 窗口，当 PPT 以全屏自动播放模式运行且包含大量动画时，远端看到的画面有概率出现闪烁。
 
-## v4.5.1
+</Accordion>
+
+<Accordion title="v4.5.1" id="v451-4" headingLevel={2} value="v451-4">
 
 该版本于 2025 年 3 月 13 日发布。
 
@@ -11897,7 +12358,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-6" headingLevel={2} value="v450-6">
 
 该版本于 2024 年 12 月 10 日发布。
 
@@ -12054,7 +12517,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - 调用 [`StartAudioMixing`](/zh-CN/api-reference/rtc/unity/play/audio-mixing#api_irtcengine_startaudiomixing)[1/2] 后，立即调用 [`PauseAudioMixing`](/zh-CN/api-reference/rtc/unity/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 - 音视频互动过程中偶现崩溃。(Android)
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-7" headingLevel={2} value="v440-7">
 
 该版本于 2024 年 8 月 29 日发布。
 
@@ -12137,7 +12602,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - 发送端调用 `StartDirectCdnStreaming` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
 - 调用 [`PushAudioFrame`](/zh-CN/api-reference/rtc/unity/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
 
-## v4.3.2
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-5" headingLevel={2} value="v432-5">
 
 该版本于 2024 年 6 月 6 日发布。
 
@@ -12173,7 +12640,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - 调用 [`PlayEffect`](/zh-CN/api-reference/rtc/unity/play/audio-effect-file#api_irtcengine_playeffect3) 播放时长不足 1 秒的音效文件并设置不循环播放（ `loopCount` 为 0 ）时，出现无声。(iOS)
 - 使用媒体播放器播放视频，暂停播放后恢复播放，偶现短暂无声。(iOS)
 
-## v4.3.1
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-5" headingLevel={2} value="v431-5">
 
 该版本于 2024 年 5 月 9 日发布。
 
@@ -12303,7 +12772,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - [`CameraCapturerConfiguration`](/zh-CN/api-reference/rtc/unity/class-cameracapturerconfiguration) 新增成员 `cameraId` (Android)
 - [`EAR_MONITORING_FILTER_TYPE`](/zh-CN/api-reference/rtc/unity/enum-earmonitoringfiltertype) 新增枚举 `EAR_MONITORING_FILTER_BUILT_IN_AUDIO_FILTERS`(`1 << 15`)
 
-## v4.3.0
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-6" headingLevel={2} value="v430-6">
 
 该版本于 2024 年 2 月 28 日发布。
 
@@ -12591,7 +13062,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - `OnChannelMediaRelayEvent`
 - `CHANNEL_MEDIA_RELAY_EVENT`
 
-## v4.2.6
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-5" headingLevel={2} value="v426-5">
 
 该版本于 2023 年 11 月 21 日发布。
 
@@ -12610,7 +13083,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - 在直播场景下，观众端看到的画面偶现变形。(Android)
 - 在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
 
-## v4.2.4
+</Accordion>
+
+<Accordion title="v4.2.4" id="v424-1" headingLevel={2} value="v424-1">
 
 该版本于 2023 年 10 月 24 日发布。
 
@@ -12620,7 +13095,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 
 `AgoraRtcWrapper` 中的 `CFBundleShortVersionString` 版本号错误，导致 App 无法被提交至 App Store。(iOS, macOS)
 
-## v4.2.3
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-5" headingLevel={2} value="v423-5">
 
 该版本于 2023 年 10 月 13 日发布。
 
@@ -12713,7 +13190,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - [`IsFeatureAvailableOnDevice`](/zh-CN/api-reference/rtc/unity/network#api_irtcengine_isfeatureavailableondevice)
 - [`FeatureType`](/zh-CN/api-reference/rtc/unity/enum-featuretype)
 
-## v4.2.2
+</Accordion>
+
+<Accordion title="v4.2.2" id="v422-5" headingLevel={2} value="v422-5">
 
 该版本于 2023 年 8 月 1 日发布。
 
@@ -12873,7 +13352,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - `GetMaxMetadataSize`
 - [`OnReadyToSendMetadata`](/zh-CN/api-reference/rtc/unity/metadata/metadata-observer#callback_imetadataobserver_onreadytosendmetadata)
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-7" headingLevel={2} value="v421-7">
 
 该版本于 2023 年 6 月 30 日发布。
 
@@ -12893,7 +13374,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/elect
 - 调用 [`DestroyMediaPlayer`](/zh-CN/api-reference/rtc/unity/play/mediaplayer/mediaplayer-initialize#api_irtcengine_destroymediaplayer) 销毁媒体播放器时偶现崩溃。(iOS)
 - 屏幕共享场景下，部分机型必现接收端看到共享的画面卡顿。(Android)
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-7" headingLevel={2} value="v420-7">
 
 该版本于 2023 年 5 月 26 日发布。
 
@@ -13223,7 +13706,9 @@ macOS，iOS，Android：该版本新增本地合图功能，用户可以调用 [
 - `EnableRemoteSuperResolution`
 - [`RemoteVideoStats`](/zh-CN/api-reference/rtc/unity/class-remotevideostats) 中删除 `superResolutionType`
 
-## v4.1.0
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-6" headingLevel={2} value="v410-6">
 
 该版本于 2022 年 12 月 20 日发布。
 
@@ -13575,7 +14060,9 @@ macOS：
 - 删除了 [`LiveTranscoding`](/zh-CN/api-reference/rtc/unity/class-livetranscoding) 类中的废弃成员参数 `backgroundImage` 和 `watermark` （Android/iOS/macOS）
 - `OnChannelMediaRelayEvent` 中删除 `RELAY_EVENT_PACKET_UPDATE_DEST_CHANNEL_REFUSED`(8)
 
-##  v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-6" headingLevel={2} value="v400-6">
 
 该版本于 2022 年 9 月 28 日发布。
 
@@ -13761,6 +14248,10 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 你可以通过 [`SetRemoteDefaultVideoStreamType`](/zh-CN/api-reference/rtc/unity/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -13773,7 +14264,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 
 
-## v6.6.4 (对应 Native v4.6.4)
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v6.6.4 (对应 Native v4.6.4)" id="v664-对应-native-v464" headingLevel={2} value="v664-对应-native-v464">
 
 该版本于 2026 年 8 月 31 日发布。
 
@@ -13809,7 +14302,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 修复了使用媒体播放器播放 CDN 流时，分辨率变化后偶现花屏的问题。(Android)
 - 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。(Android, iOS)
 
-## v6.6.2 (对应 Native v4.6.2)
+</Accordion>
+
+<Accordion title="v6.6.2 (对应 Native v4.6.2)" id="v662-对应-native-v462" headingLevel={2} value="v662-对应-native-v462">
 
 该版本于 2026 年 3 月 18 日发布。
 
@@ -13989,7 +14484,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 第二次调用 [`enumerateVideoDevices`](/zh-CN/api-reference/rtc/flutter/device-management/video-device#api_ivideodevicemanager_enumeratevideodevices) 接口获取设备列表不生效。
 - Windows 7 设备上共享 PPT 窗口，当 PPT 以全屏自动播放模式运行且包含大量动画时，远端看到的画面有概率出现闪烁。
 
-## v6.5.2 (对应 Native v4.5.2)
+</Accordion>
+
+<Accordion title="v6.5.2 (对应 Native v4.5.2)" id="v652-对应-native-v452" headingLevel={2} value="v652-对应-native-v452">
 
 该版本于 2025 年 5 月 9 日发布。
 
@@ -14029,7 +14526,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - App 退出时偶现崩溃。(iOS)
 - 加入频道失败后，在没有调用 [`leaveChannel`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_leavechannel2) 离开频道的情况下，再次调用 [`joinChannel`](/zh-CN/api-reference/rtc/flutter/channel#api_irtcengine_joinchannel2) 加入频道时偶现崩溃。
 
-## v6.5.1 (对应 Native v4.5.1)
+</Accordion>
+
+<Accordion title="v6.5.1 (对应 Native v4.5.1)" id="v651-对应-native-v451" headingLevel={2} value="v651-对应-native-v451">
 
 该版本于 2025 年 3 月 13 日发布。
 
@@ -14061,7 +14560,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v6.5.0 (对应 Native v4.5.0)
+</Accordion>
+
+<Accordion title="v6.5.0 (对应 Native v4.5.0)" id="v650-对应-native-v450" headingLevel={2} value="v650-对应-native-v450">
 
 该版本于 2024 年 12 月 10 日发布。
 
@@ -14235,7 +14736,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 发送端调用 `startDirectCdnStreaming` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
 - 调用 [`pushAudioFrame`](/zh-CN/api-reference/rtc/flutter/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。(Android, iOS)
 
-## v6.3.2 (对应 Native v4.3.2)
+</Accordion>
+
+<Accordion title="v6.3.2 (对应 Native v4.3.2)" id="v632-对应-native-v432" headingLevel={2} value="v632-对应-native-v432">
 
 该版本于 2024 年 6 月 6 日发布。
 
@@ -14270,7 +14773,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 调用 [`playEffect`](/zh-CN/api-reference/rtc/flutter/play/audio-effect-file#api_irtcengine_playeffect3) 播放时长不足 1 秒的音效文件并设置不循环播放（`loopCount` 为 `0`）时，出现无声。(iOS)
 - 使用媒体播放器播放视频，暂停播放后恢复播放，偶现短暂无声。(iOS)
 
-## v6.3.1 (对应 Native v4.3.1)
+</Accordion>
+
+<Accordion title="v6.3.1 (对应 Native v4.3.1)" id="v631-对应-native-v431" headingLevel={2} value="v631-对应-native-v431">
 
 该版本于 2024 年 5 月 9 日发布。
 
@@ -14400,7 +14905,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - [`CameraCapturerConfiguration`](/zh-CN/api-reference/rtc/flutter/class-cameracapturerconfiguration) 新增成员 `cameraId` (Android)
 - [`EarMonitoringFilterType`](/zh-CN/api-reference/rtc/flutter/enum-earmonitoringfiltertype) 新增枚举 `earMonitoringFilterBuiltInAudioFilters`(`1 << 15`)
 
-## v6.3.0 (对应 Native v4.3.0)
+</Accordion>
+
+<Accordion title="v6.3.0 (对应 Native v4.3.0)" id="v630-对应-native-v430" headingLevel={2} value="v630-对应-native-v430">
 
 该版本于 2024 年 2 月 28 日发布。
 
@@ -14694,7 +15201,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - `onChannelMediaRelayEvent`
 - `ChannelMediaRelayEvent`
 
-## v6.2.6 (对应 Native v4.2.6)
+</Accordion>
+
+<Accordion title="v6.2.6 (对应 Native v4.2.6)" id="v626-对应-native-v426" headingLevel={2} value="v626-对应-native-v426">
 
 该版本于 2023 年 11 月 21 日发布。
 
@@ -14713,7 +15222,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 在直播场景下，观众端看到的画面偶现变形。(Android)
 - 在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
 
-## v6.2.4 (对应 Native v4.2.3)
+</Accordion>
+
+<Accordion title="v6.2.4 (对应 Native v4.2.3)" id="v624-对应-native-v423" headingLevel={2} value="v624-对应-native-v423">
 
 该版本于 2023 年 10 月 24 日发布。
 
@@ -14723,7 +15234,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 `AgoraRtcWrapper` 中的 `CFBundleShortVersionString` 版本号错误，导致 App 无法被提交至 App Store。(iOS, macOS)
 
-## v6.2.3 (对应 Native v4.2.3)
+</Accordion>
+
+<Accordion title="v6.2.3 (对应 Native v4.2.3)" id="v623-对应-native-v423" headingLevel={2} value="v623-对应-native-v423">
 
 该版本于 2023 年 10 月 13 日发布。
 
@@ -14820,7 +15333,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 - [`FeatureType`](/zh-CN/api-reference/rtc/flutter/enum-featuretype)
 
-## v6.2.2 (对应 Native v4.2.2)
+</Accordion>
+
+<Accordion title="v6.2.2 (对应 Native v4.2.2)" id="v622-对应-native-v422" headingLevel={2} value="v622-对应-native-v422">
 
 该版本于 2023 年 8 月 1 日发布。
 
@@ -14938,7 +15453,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 
 - [`MusicContentCenter`](/zh-CN/api-reference/rtc/flutter/rtc-interface-class#class_imusiccontentcenter) 类下的 [`preload`](/zh-CN/api-reference/rtc/flutter/play/drm#api_imusiccontentcenter_preload2) 方法中的 `jsonOption` 参数 (Android, iOS)
 
-## v6.2.1 (对应 Native v4.2.1)
+</Accordion>
+
+<Accordion title="v6.2.1 (对应 Native v4.2.1)" id="v621-对应-native-v421" headingLevel={2} value="v621-对应-native-v421">
 
 该版本于 2023 年 6 月 30 日发布。
 
@@ -14958,7 +15475,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - 发送端将两路摄像头采集的视频进行本地合图并发布后，接收端偶现第二路摄像头画面缺失。 (Windows)
 - 屏幕共享场景下，部分机型必现接收端看到共享的画面卡顿。 (Android)
 
-## v6.2.0 (对应 Native v4.2.0)
+</Accordion>
+
+<Accordion title="v6.2.0 (对应 Native v4.2.0)" id="v620-对应-native-v420" headingLevel={2} value="v620-对应-native-v420">
 
 该版本于 2023 年 5 月 24 日发布。
 
@@ -15283,7 +15802,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/unity
 - `enableRemoteSuperResolution`
 - [`RemoteVideoStats`](/zh-CN/api-reference/rtc/flutter/class-remotevideostats) 中删除 `superResolutionType`
 
-## v6.1.0 (对应 Native v4.1.0)
+</Accordion>
+
+<Accordion title="v6.1.0 (对应 Native v4.1.0)" id="v610-对应-native-v410" headingLevel={2} value="v610-对应-native-v410">
 
 该版本于 2022 年 12 月 20 日发布。
 
@@ -15655,7 +16176,9 @@ SDK 默认使用播放设备为声卡采集设备，自该版本起，你可以�
 - `onApiCallExecuted`
 - `ChannelMediaRelayEvent`：废弃 `relayEventPacketUpdateDestChannelRefused `(8)
 
-## v6.0.0 (对应 Native v4.0.0)
+</Accordion>
+
+<Accordion title="v6.0.0 (对应 Native v4.0.0)" id="v600-对应-native-v400" headingLevel={2} value="v600-对应-native-v400">
 
 该版本于 2022 年 9 月 29 日发布。
 
@@ -15840,6 +16363,10 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 你可以通过 [`setRemoteDefaultVideoStreamType`](/zh-CN/api-reference/rtc/flutter/publishnsubscribe#api_irtcengine_setremotedefaultvideostreamtype) 方法，根据你想要订阅的视频流分辨率和码率来灵活设置默认订阅视频流类型。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
@@ -15850,7 +16377,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 由于 AirPods Pro 不支持在通话音量模式下使用 A2DP 协议，可能会导致该设备在该模式下无法成功连接。
 
-## v4.6.4
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.6.4" id="v464-2" headingLevel={2} value="v464-2">
 
 该版本于 2026 年 8 月 31 日发布。
 
@@ -15886,7 +16415,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 修复了使用媒体播放器播放 CDN 流时，分辨率变化后偶现花屏的问题。(Android)
 - 修复了 App 以通信模式（`CHANNEL_PROFILE_COMMUNICATION`）加入频道后，调用 `updateChannelMediaOptions` 更新频道媒体选项后，NCS 和 RESTful API 返回的频道信息被错误识别为互动直播模式的问题。(Android, iOS)
 
-## v4.6.2
+</Accordion>
+
+<Accordion title="v4.6.2" id="v462-7" headingLevel={2} value="v462-7">
 
 该版本于 2026 年 3 月 5 日发布。
 
@@ -16077,7 +16608,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 第二次调用 `enumerateVideoDevices` 接口获取设备列表不生效。
 - Windows 7 设备上共享 PPT 窗口，当 PPT 以全屏自动播放模式运行且包含大量动画时，远端看到的画面有概率出现闪烁。
 
-## v4.5.2(对应 Native v4.5.1)
+</Accordion>
+
+<Accordion title="v4.5.2(对应 Native v4.5.1)" id="v452对应-native-v451-1" headingLevel={2} value="v452对应-native-v451-1">
 
 该版本于 2025 年 3 月 13 日发布。
 
@@ -16109,7 +16642,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-7" headingLevel={2} value="v450-7">
 
 该版本于 2024 年 12 月 10 日发布。
 
@@ -16227,7 +16762,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 调用 [`startAudioMixing`](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_startaudiomixing2)后，立即调用 [`pauseAudioMixing`](/zh-CN/api-reference/rtc/react-native/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 - 音视频互动过程中偶现崩溃。(Android)
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-8" headingLevel={2} value="v440-8">
 
 该版本于 2024 年 8 月 29 日发布。
 
@@ -16304,7 +16841,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 发送端调用 `startDirectCdnStreaming` 开始直接向 CDN 推流后，频繁开关或切换网络，偶现接收端黑屏但发送端未收到推流失败回调。(iOS)
 - 调用 [`pushAudioFrame`](/zh-CN/api-reference/rtc/react-native/audio/audio-custom-capturenrendering#api_imediaengine_pushaudioframe) 推送外部音频数据，外部音频渲染的采样率如果不是 SDK 推荐的值时，比如 22050 Hz 和 11025 Hz，声音播放失败。
 
-## v4.3.2
+</Accordion>
+
+<Accordion title="v4.3.2" id="v432-6" headingLevel={2} value="v432-6">
 
 该版本于 2024 年 6 月 6 日发布。
 
@@ -16335,7 +16874,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 调用 [`playEffect`](/zh-CN/api-reference/rtc/react-native/play/audio-effect-file#api_irtcengine_playeffect3) 播放时长不足 1 秒的音效文件并设置不循环播放（ `loopCount` 为 0 ）时，出现无声。(iOS)
 - 使用媒体播放器播放视频，暂停播放后恢复播放，偶现短暂无声。(iOS)
 
-## v4.3.1
+</Accordion>
+
+<Accordion title="v4.3.1" id="v431-6" headingLevel={2} value="v431-6">
 
 该版本于 2024 年 5 月 9 日发布。
 
@@ -16450,7 +16991,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - [`CameraCapturerConfiguration`](/zh-CN/api-reference/rtc/react-native/class-cameracapturerconfiguration) 新增成员 `cameraId` (Android)
 - [`EarMonitoringFilterType`](/zh-CN/api-reference/rtc/react-native/enum-earmonitoringfiltertype) 新增枚举 `EarMonitoringFilterBuiltInAudioFilters`(`1 << 15`)
 
-## v4.3.0-build.1
+</Accordion>
+
+<Accordion title="v4.3.0-build.1" id="v430-build1" headingLevel={2} value="v430-build1">
 
 该版本于 2024 年 3 月 18 日发布。
 
@@ -16460,7 +17003,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 在未调用 [`engine.unregisterEventHandler`](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_removehandler) 删除已添加的所有回调事件时，直接调用 [`engine.release`](/zh-CN/api-reference/rtc/react-native/initialize#api_irtcengine_release) 销毁引擎可能导致 App 崩溃。(Android)
 
-## v4.3.0
+</Accordion>
+
+<Accordion title="v4.3.0" id="v430-7" headingLevel={2} value="v430-7">
 
 该版本于 2024 年 2 月 28 日发布。
 
@@ -16726,7 +17271,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - `onChannelMediaRelayEvent`
 - `ChannelMediaRelayEvent`
 
-## v4.2.6
+</Accordion>
+
+<Accordion title="v4.2.6" id="v426-6" headingLevel={2} value="v426-6">
 
 该版本于 2023 年 11 月 21 日发布。
 
@@ -16745,7 +17292,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 在直播场景下，观众端看到的画面偶现变形。(Android)
 - 在特定场景（网络丢包率较高、主播在不销毁引擎时退出频道然后重新进入频道）下，接收端的视频出现卡顿或冻结。
 
-## v4.2.5
+</Accordion>
+
+<Accordion title="v4.2.5" id="v425" headingLevel={2} value="v425">
 
 该版本于 2023 年 10 月 30 日发布。
 
@@ -16755,7 +17304,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 因 `package.json` 中 `types` 字段定义的路径有误，导致集成 SDK 到 Typescript 项目时报错：`Could not find a declaration file for module 'react-native-agora'`。
 
-## v4.2.4
+</Accordion>
+
+<Accordion title="v4.2.4" id="v424-2" headingLevel={2} value="v424-2">
 
 该版本于 2023 年 10 月 24 日发布。
 
@@ -16765,7 +17316,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 `AgoraRtcWrapper` 中的 `CFBundleShortVersionString` 版本号错误，导致 App 无法被提交至 App Store。(iOS)
 
-## v4.2.3
+</Accordion>
+
+<Accordion title="v4.2.3" id="v423-6" headingLevel={2} value="v423-6">
 
 该版本于 2023 年 10 月 17 日发布。
 
@@ -16907,7 +17460,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 
 - [`IMusicContentCenter`](/zh-CN/api-reference/rtc/react-native/rtc-interface-class#class_imusiccontentcenter) 类下的 `preload` 方法中的 `jsonOption` 参数
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-8" headingLevel={2} value="v421-8">
 
 该版本于 2023 年 6 月 21 日发布。
 
@@ -16925,7 +17480,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - 调用 [`destroyMediaPlayer`](/zh-CN/api-reference/rtc/react-native/play/mediaplayer/mediaplayer-initialize#api_irtcengine_destroymediaplayer) 销毁媒体播放器时偶现崩溃。 (iOS)
 - 屏幕共享场景下，部分机型必现接收端看到共享的画面卡顿。 (Android)
 
-## v4.2.0
+</Accordion>
+
+<Accordion title="v4.2.0" id="v420-8" headingLevel={2} value="v420-8">
 
 该版本于 2023 年 5 月 26 日发布。
 
@@ -17179,7 +17736,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - `enableRemoteSuperResolution`
 - [`RemoteVideoStats`](/zh-CN/api-reference/rtc/react-native/class-remotevideostats) 中删除 `superResolutionType`
 
-## v4.1.0
+</Accordion>
+
+<Accordion title="v4.1.0" id="v410-7" headingLevel={2} value="v410-7">
 
 该版本于 2022 年 12 月 20 日发布。
 
@@ -17441,7 +18000,9 @@ SDK 会根据你在 [`VideoEncoderConfiguration`](/zh-CN/api-reference/rtc/flutt
 - `onApiCallExecuted`
 - `ChannelMediaRelayEvent`：废弃 `relayEventPacketUpdateDestChannelRefused `(8)
 
-## v4.0.0
+</Accordion>
+
+<Accordion title="v4.0.0" id="v400-7" headingLevel={2} value="v400-7">
 
 该版本于 2022 年 9 月 29 日发布。
 
@@ -17599,6 +18160,10 @@ v4.0.0 SDK 包名由 `react-native-agora-rtc-ng` 变更为 `react-native-agora`�
 
 该版本新增 [`onPermissionError`](/zh-CN/api-reference/rtc/react-native/network#callback_irtcengineeventhandler_onpermissionerror) 方法，当获取音频采集设备或摄像头权限失败时自动上报，用户可根据该回调的提示开启相应的设备权限。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
@@ -17616,7 +18181,9 @@ AudioMixerModuleName=
 
 
 
-## v4.5.1
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.5.1" id="v451-5" headingLevel={2} value="v451-5">
 
 该版本于 2025 年 3 月 13 日发布。
 
@@ -17648,7 +18215,9 @@ AudioMixerModuleName=
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-8" headingLevel={2} value="v450-8">
 
 该版本于 2024 年 12 月 10 日发布。
 
@@ -17779,7 +18348,9 @@ AudioMixerModuleName=
 - 音视频互动过程中被系统其他 App 打断后恢复，偶现音频采集无声。(iOS)
 - 调用 [`startAudioMixing`](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_startaudiomixing)[1/2] 后，立即调用 [`pauseAudioMixing`](/zh-CN/api-reference/rtc/unreal-cpp/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-9" headingLevel={2} value="v440-9">
 
 该版本于 2024 年 8 月 29 日发布。
 
@@ -17895,7 +18466,9 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 }
 ```
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-9" headingLevel={2} value="v421-9">
 
 该版本于 2023 年 11 月 16 日发布，该版本为声网 RTC Unreal SDK 的首个版本。
 
@@ -17921,6 +18494,10 @@ SDK 提供了一套强大的 C++ API，使开发者可以轻松构建具备实�
 如果你已经集成了 3.x 版本的 SDK、想要升级至该版本，请参考[迁移指南](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/blob/main/Migration%20Guide.md)了解升级。
 :::
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="blueprint">
@@ -17938,7 +18515,9 @@ AudioMixerModuleName=
 
 
 
-## v4.5.1
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.5.1" id="v451-6" headingLevel={2} value="v451-6">
 
 该版本于 2025 年 3 月 13 日发布。
 
@@ -17970,7 +18549,9 @@ AudioMixerModuleName=
 - 在极速直播场景下，观众通过 `string` 型的用户 ID 加入频道观看直播，偶现音频和画面不同步。
 - 在同时使用 AI 降噪、AI 回声消除插件时，偶现插件不生效。
 
-## v4.5.0
+</Accordion>
+
+<Accordion title="v4.5.0" id="v450-9" headingLevel={2} value="v450-9">
 
 该版本于 2024 年 12 月 10 日发布。
 
@@ -18070,7 +18651,9 @@ AudioMixerModuleName=
 - 调用 [`PauseAudioMixing`](/zh-CN/api-reference/rtc/unreal-blueprint/play/audio-mixing#api_irtcengine_pauseaudiomixing) 暂停播放音乐文件不生效。(iOS)
 - 音视频互动过程中偶现崩溃。(Android)
 
-## v4.4.0
+</Accordion>
+
+<Accordion title="v4.4.0" id="v440-10" headingLevel={2} value="v440-10">
 
 该版本于 2024 年 8 月 29 日发布。
 
@@ -18193,7 +18776,9 @@ if (Target.Platform == UnrealTargetPlatform.IOS)
 }
 ```
 
-## v4.2.1
+</Accordion>
+
+<Accordion title="v4.2.1" id="v421-10" headingLevel={2} value="v421-10">
 
 该版本于 2023 年 11 月 16 日发布，该版本为声网 RTC Unreal SDK 的首个版本。
 
@@ -18215,23 +18800,33 @@ SDK 提供可视化界面和一系列直观易用的节点，开发者可在 Unr
 
 声网提供了开源的[示例项目](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example)，你可以前往下载并体验。
 
+</Accordion>
+
+</Accordions>
+
 </PlatformStructured>
 
 <PlatformStructured platform="react">
 
-## v2.5.1
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v2.5.1" id="v251" headingLevel={2} value="v251">
 
 该版本于 2025 年 12 月 17 日发布。
 
 该版本将 React SDK 中内置的 Web SDK 更新为 4.24.2 版本。相关改动可以查看 [Web SDK 发版说明](/zh-CN/realtime-media/rtc/reference/release-notes/web#v4.24.2)。
 
-## v2.5.0
+</Accordion>
+
+<Accordion title="v2.5.0" id="v250" headingLevel={2} value="v250">
 
 该版本于 2025 年 8 月 13 日发布。
 
 该版本将 React SDK 中内置的 Web SDK 更新为 4.24.0 版本。相关改动可以查看 [Web SDK 发版说明](/zh-CN/realtime-media/rtc/reference/release-notes/web#v4.24.0)。
 
-## v2.4.0
+</Accordion>
+
+<Accordion title="v2.4.0" id="v240-1" headingLevel={2} value="v240-1">
 
 该版本于 2025 年 3 月 18 日发布。主要改动点如下：
 
@@ -18239,25 +18834,33 @@ SDK 提供可视化界面和一系列直观易用的节点，开发者可在 Unr
 - 将 React SDK 中内置的 Web SDK 更新为 4.23.2 版本。相关改动可以查看 [Web SDK 发版说明](/zh-CN/realtime-media/rtc/reference/release-notes/web)。
 - 修复了网络状态发生改变可能意外创建新 Track 的问题。
 
-## v2.3.0
+</Accordion>
+
+<Accordion title="v2.3.0" id="v230" headingLevel={2} value="v230">
 
 该版本于 2024 年 8 月 21 日发布。
 
 该版本将 React SDK 中内置的 Web SDK 更新为 4.22.0 版本。相关改动可以查看 [Web SDK 发版说明](/zh-CN/realtime-media/rtc/reference/release-notes/web#v4.22.0)。
 
-## v2.2.0
+</Accordion>
+
+<Accordion title="v2.2.0" id="v220" headingLevel={2} value="v220">
 
 该版本于 2024 年 6 月 13 日发布。
 
 此版本对 React SDK 进行了升级，将内置的 Web SDK 更新至 4.21.0 版本。如需了解 Web SDK 4.20.0 到 4.21.0 版本间的变更详情，可以查看 [Web SDK 发版说明](/zh-CN/realtime-media/rtc/reference/release-notes/web)。
 
-## v2.1.0
+</Accordion>
+
+<Accordion title="v2.1.0" id="v210" headingLevel={2} value="v210">
 
 该版本于 2023 年 12 月 27 日发布。
 
 该版本将 React SDK 中内置的 Web SDK 更新为 4.20.0 版本。相关改动可以查看 [Web SDK 发版说明](/zh-CN/realtime-media/rtc/reference/release-notes/web#v4.20.0)。
 
-## v2.0.0
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200" headingLevel={2} value="v200">
 
 该版本于 2023 年 12 月 7 日发布。
 
@@ -18316,7 +18919,9 @@ React SDK 基于 Web SDK 4.x 开发。为进一步提升易用性，该版本在
   - `downlink` 属性改为 `downlinkNetworkQuality`
 - `useLocalCameraTrack` 中新增 `cameraVideoTrackConfig` 参数
 
-## v2.0.0-beta.0
+</Accordion>
+
+<Accordion title="v2.0.0-beta.0" id="v200-beta0" headingLevel={2} value="v200-beta0">
 
 该版本于 2023 年 8 月 8 日发布。这是 RTC React SDK 的第一个版本。
 
@@ -18325,5 +18930,9 @@ React SDK 基于 Web SDK 4.x 开发。为进一步提升易用性，该版本在
 :::warning[注意]
 RTC React SDK 目前处于 Public Beta 阶段，某些功能细节可能会在随后的版本中发生改变，以提升用户体验。
 :::
+
+</Accordion>
+
+</Accordions>
 
 </PlatformStructured>
