@@ -18,7 +18,7 @@ export function DocsContentBody({
 
   return (
     <div className="docs-body">
-      <MDXAccordionProvider>{content}</MDXAccordionProvider>
+      <MDXAccordionProvider key={contentPath}>{content}</MDXAccordionProvider>
     </div>
   );
 }
