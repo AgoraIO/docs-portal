@@ -142,7 +142,7 @@ new Agent<TTSSampleRate extends number = number>(options?: AgentOptions)
 | `geofence` | `GeofenceConfig` | `undefined` | 区域访问限制 |
 | `labels` | `Labels` | `undefined` | 在通知回调中返回的自定义键值标签 |
 | `rtc` | `RtcConfig` | `undefined` | RTC 媒体加密配置 |
-| `fillerWords` | `FillerWordsConfig` | `undefined` | 在等待 LLM 响应期间播放的填充词配置 |
+| `fillerWords` | `FillerWordsConfig` | `undefined` | 在等待 LLM 响应期间播放的承接词配置 |
 | `greetingConfigs` | `LlmGreetingConfigs` | `undefined` | 已废弃。请改在 LLM vendor 上配置 |
 
 `instructions`、`greeting`、`failureMessage`、`maxHistory`、`greetingConfigs` 是兼容性字段。新代码应在 LLM vendor 上配置这些值，以匹配核心请求 schema。
@@ -240,7 +240,7 @@ withGreeting(greeting: string): Agent<TTSSampleRate>
 | `withGeofence(geofence)` | `GeofenceConfig` | 设置 geofence 配置 |
 | `withLabels(labels)` | `Labels` | 设置自定义标签 |
 | `withRtc(rtc)` | `RtcConfig` | 设置 RTC 配置 |
-| `withFillerWords(fillerWords)` | `FillerWordsConfig` | 设置填充词配置 |
+| `withFillerWords(fillerWords)` | `FillerWordsConfig` | 设置承接词配置 |
 
 ### `createSession(options)`
 
@@ -327,6 +327,8 @@ SDK 公开了常用请求与响应类型的别名，包括 `LlmConfig`、`SttCon
 动态承接词配置还支持 `context_message_limit`（取值范围 `1` 到 `6`，省略时由服务按 `1` 处理）和 `history_character_limit`（取值范围 `0` 到 `10000`，省略时由服务按 `1000` 处理）。前者包含当前用户消息，显式设置为 `2` 到 `6` 时启用近期历史；后者只统计历史消息文本的 Unicode code points。
 
 Think 值常量包括：`ThinkOnListeningActionInject`、`ThinkOnListeningActionInterrupt`、`ThinkOnListeningActionAppend`、`ThinkOnListeningActionIgnore`、`ThinkOnThinkingActionInterrupt`、`ThinkOnThinkingActionAppend`、`ThinkOnThinkingActionIgnore`、`ThinkOnSpeakingActionInterrupt`、`ThinkOnSpeakingActionAppend`、`ThinkOnSpeakingActionIgnore`。`append` 不打断当前交互，分别等待当前用户回合、LLM 推理或 TTS 播报完成后，再将该指令作为独立的 user 消息追加到上下文并发起新一轮对话。
+
+公开类型别名还包括 `FillerWordsContentGeneratedConfig`、`FillerWordsContentMode` 以及自定义工具相关的 `LlmTool`、`LlmToolFunction`、`LlmToolServer` 和 `LlmToolExecution`。`llm.tools` 与 MCP server 配置相互独立，但都需要通过 `withTools(true)` 开启工具调用。
 
 ## AgentSession
 
@@ -575,6 +577,9 @@ const llm = new AliyunLLM({
 | `headers` | `Record<string, string>` | No | 转发给 LLM 服务商的自定义 HTTP Header |
 | `greetingConfigs` | `LlmGreetingConfigs` | No | 问候语播放配置 |
 | `templateVariables` | `Record<string, string>` | No | 消息模板变量 |
+| `tools` | `LlmTool[]` | No | 同步自定义工具定义；需要同时启用 `withTools(true)` |
+
+`tools` 用于声明供 LLM 选择调用的自定义工具。每个工具包含模型可见的函数定义，以及同步 `GET` 或 `POST` 请求的服务端配置；`withTools(true)` 同时适用于 `tools` 和 MCP server 配置。
 
 :::info[信息]
 自定义 LLM 路由复用 `CustomLLM`，因此即便是 BYOK 路径，`apiKey`、`model`、`url` 均为必填。
