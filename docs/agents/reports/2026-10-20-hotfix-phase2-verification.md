@@ -7,11 +7,11 @@
 | 源 | 生产实施 | 独立全量（仅对应该次代码） | 修复PR |
 | --- | --- | --- | --- |
 | #2113 | `e604b433addf`，四meta历史外链，12新回归 | 222文件/2877通过/2跳过，97.94秒，exit0 | [#1231](https://github.com/AgoraIO/docs-portal/pull/1231) |
-| #2084 | `ac71747f9b`，7生产/四API及Flutter/RN下载 | `47b3f80ca2`：223文件/2876通过/2跳过，104.86秒，exit0 | 待UI后提交 |
-| #2067 | `117792a2ab`，19生产/Web2.3当前API/指南/下载及2.2.4外链 | 同实现：222文件/2886通过/2跳过，175.37秒，exit0 | 待UI后提交 |
-| #2085 | `dc842ad2b6`，1生产/Android回调六项 | 同实现：222文件/2867通过/2跳过，146.31秒，exit0 | 待UI后提交 |
-| #2094 | `ce3c6f93c3`，最终40生产/Native当前API与四历史外链 | 最终222文件/2901通过/2跳过，97.96秒，exit0；36新回归及两meta均覆盖 | 增量双审通过，待UI后提交 |
-| #2083 | `8c5fc8666f`，42生产/RTSA API、指南与两共享消费者；最终测试`c7ed0963ee` | 首次16失败后精确修复fixture；最终222文件/2878通过/2跳过，101.11秒，exit0 | 最终双审通过，待UI后提交 |
+| #2084 | `ac71747f9b`，7生产/四API及Flutter/RN下载 | `47b3f80ca2`：223文件/2876通过/2跳过，104.86秒，exit0 | [#1235](https://github.com/AgoraIO/docs-portal/pull/1235) |
+| #2067 | `117792a2ab`，19生产/Web2.3当前API/指南/下载及2.2.4外链 | 同实现：222文件/2886通过/2跳过，175.37秒，exit0 | [#1236](https://github.com/AgoraIO/docs-portal/pull/1236) |
+| #2085 | `dc842ad2b6`，1生产/Android回调六项 | 同实现：222文件/2867通过/2跳过，146.31秒，exit0 | [#1237](https://github.com/AgoraIO/docs-portal/pull/1237) |
+| #2094 | `ce3c6f93c3`，最终40生产/Native当前API与四历史外链 | 最终222文件/2901通过/2跳过，97.96秒，exit0；36新回归及两meta均覆盖 | [#1234](https://github.com/AgoraIO/docs-portal/pull/1234) |
+| #2083 | `8c5fc8666f`，42生产/RTSA API、指南与两共享消费者；最终测试`c7ed0963ee` | 首次16失败后精确修复fixture；最终222文件/2878通过/2跳过，101.11秒，exit0 | [#1233](https://github.com/AgoraIO/docs-portal/pull/1233) |
 
 所有实现均有真实先红后绿、类型与完整MDX preset编译、源hunk分类/导航/hash/内链/范围保护证据，详见各独立PR实施报告；通过定向或编译不等于全量/内容保真通过。
 
@@ -30,9 +30,9 @@ RTSA首次全量失败不是timeout：15项 `docs-link-remediation` 硬编码旧
 - Presence自动合并曾产生两份Web块，已去掉短的重复基础块，只保一份Web基础Announce/Interval、8–128范围与512明细优化；mini只基础。`totalOccupancy` 不受512明细上限约束。#1229两项test-only修正收窄mini负断言，并接受 `[8,128]`/“8 至 128”两种等价范围，仍保两平台基础模式正向断言。
 - 无scope types通过；完整第二阶段10定向文件187测试通过，exit0。它不替代最终组合完整回归。
 
-## 归档验真与明确阻塞
+## 归档验真与已解除的实施阻塞
 
-[归档验真明细](./2026-10-20-hotfix-archive-url-verification.md)：10个历史意图中8个有正确SDK版本的官方可用外链，其中macOS/C++ v4.6.2由失效的source0.0.519改用经真实浏览器验证的同版本0.0.492。
+[归档验真明细](./2026-10-20-hotfix-archive-url-verification.md)：初查8个有正确SDK版本的可用外链；最终两条4.6.4亦有真实浏览器身份实证，全部10个已配置。macOS/C++ v4.6.2使用经真实浏览器验证的同版本0.0.492备用。
 
 早期Android/iOS **v4.6.4** 的source0.0.519曾跳 `https://doc.shengwang.cn/404`，HTTP200是软404，记录保留。11:41–11:43再次检查后，独立Chrome154中两原URL均显示真实平台API概览与v4.6.4，Android再次reload亦正确；因此按用户原任务补齐两条官方外链。curl Android同次仍404、iOS已正确，故不能宣称旧站永久稳定恢复；状态为浏览器正确版本已验证、存在间歇HTTP404风险。两项不再是“无有效同版本地址”的实施阻塞，十个历史意图均有可用同版本实证；没有复制历史正文或错版替代。
 
@@ -42,6 +42,10 @@ RTSA CloudProxy原源码页亦404，archive同路径无目标方法/行号；因
 
 首次生产构建在 `8e8f068361` 因新增两meta主动停止，exit130，不记为通过。最终 `2dcdf75b2b` 无scope `bun run types:check` exit0，独占 `bun run test --maxWorkers=4` **243文件、3150通过、2跳过，exit0，106.05秒**。日志 `/tmp/docs-portal-hotfix20-final-{types,full}-20261020.log`。
 
-同一串行流程已在full成功后开始 `VITE_DOCS_REGION=cn bun run build`，当前结果待记录；之后真实生产预览。所有最终生产内容已固定，不用旧的前十一项构建外推覆盖本次。
+同一串行流程在full成功后执行 `VITE_DOCS_REGION=cn bun run build`，**exit0**：6846 payload、8053机器可读、7747路由HTML；client 4分56秒、SSR 4分46秒、全站预渲染和SEO HTML全部完成。日志 `/tmp/docs-portal-hotfix20-final-build-20261020.log`。大chunk、插件耗时及Git历史不完整/保留既有更新时间manifest的告警如实保留，未调阈值；不能据此声称所有更早性能/历史债已修复。
 
-所有专用浏览器与服务器须收尾关闭；主用户工作区原三份未跟踪分析文档保留。PR创建后仍OPEN不表示已经线上生效。
+生产预览（本地4308、Chrome154隔离会话）实际验收八组版本菜单、12个关键页面、四组SDK卡及两个跳转：新枚举/六项回调、String完整签名三参数返回值、Apple错误码/旧定义、RTSA索引/RTM回调/有限声明/实测表；Web Presence含基础与512而mini不含512。目录Flutter6.6.4/对应Native4.6.4、RN4.6.4、WebRTM2.3日期/MD5/地址正确，Flutter独立voice6.6.2未污染。实际从本站点击Android4.6.4到旧站正确版本，随后本站4.6.0仍可访问。截图已入各修复PR报告；[静态payload十外链及两新页证据](./2026-10-20-hotfix-static-payload-evidence.json)亦保存。
+
+专用浏览器与4308预览已关闭，关闭后无scope types再次exit0。报告/截图追加后的验证树HEAD `4e3442ed8c3a515933e86f345b94118e3f763b1f`，相对代码HEAD仅`docs/agents/reports/**`差异，树干净且不推送。用户主工作区原三份分析文档和其他未跟踪文件全部保留。
+
+2026-10-20最终读回验证：六个新修复PR均OPEN、非draft，base正确；head与各本地最终提交相等。#1229测试范围修正也已push并通过独立增量质量/最终组合。没有合并/部署，不能称当前站点已经生效。
