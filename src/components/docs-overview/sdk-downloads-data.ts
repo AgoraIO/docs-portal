@@ -2921,8 +2921,13 @@ export const sdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Chat',
         versions: [
           {
+            id: '1.4.1-chat-sdk-flutter',
+            label: 'Version 1.4.1 (Latest)',
+            packageManager: 'https://pub.dev/packages/agora_chat_sdk',
+          },
+          {
             id: '1.4.0-chat-sdk-flutter',
-            label: 'Version 1.4.0 (Latest)',
+            label: 'Version 1.4.0',
             packageManager: 'https://pub.dev/packages/agora_chat_sdk',
           },
           {
