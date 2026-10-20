@@ -36,31 +36,6 @@ function openProductCard(name: string) {
 }
 
 describe('SdksCatalog', () => {
-  it('offers Chinese Web RTM 2.3.0 without labeling a historical release as latest', () => {
-    render(<SdksCatalog locale="zh-CN" platform="web" product="signaling" />);
-    const product = openProductCard('实时消息 SDK');
-    const card = within(product).getByRole('article', {
-      name: 'Web 实时消息 SDK',
-    });
-    expect(within(card).getByText('v2.3.0')).toBeVisible();
-    expect(
-      within(card).getByText('13f63c0322c49b1edd3f7a0e2c8c89fc'),
-    ).toBeVisible();
-    expect(
-      within(card).getByText('发布日期：2026 年 8 月 10 日'),
-    ).toBeVisible();
-    expect(
-      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
-    ).toHaveAttribute(
-      'href',
-      'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',
-    );
-    expect(
-      within(product).queryByRole('combobox', { name: /版本/ }),
-    ).not.toBeInTheDocument();
-    expect(within(product).queryByText('v2.2.4')).not.toBeInTheDocument();
-  });
-
   it('does not render product or platform filters on the full Chinese catalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
@@ -1111,5 +1086,30 @@ describe('SdksCatalog', () => {
     expect(
       within(videoCard).getByRole('combobox', { name: 'Video SDK platform' }),
     ).toHaveValue('android');
+  });
+
+  it('offers Chinese Web RTM 2.3.0 without labeling a historical release as latest', () => {
+    render(<SdksCatalog locale="zh-CN" platform="web" product="signaling" />);
+    const product = openProductCard('实时消息 SDK');
+    const card = within(product).getByRole('article', {
+      name: 'Web 实时消息 SDK',
+    });
+    expect(within(card).getByText('v2.3.0')).toBeVisible();
+    expect(
+      within(card).getByText('13f63c0322c49b1edd3f7a0e2c8c89fc'),
+    ).toBeVisible();
+    expect(
+      within(card).getByText('发布日期：2026 年 8 月 10 日'),
+    ).toBeVisible();
+    expect(
+      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',
+    );
+    expect(
+      within(product).queryByRole('combobox', { name: /版本/ }),
+    ).not.toBeInTheDocument();
+    expect(within(product).queryByText('v2.2.4')).not.toBeInTheDocument();
   });
 });

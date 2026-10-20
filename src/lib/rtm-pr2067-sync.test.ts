@@ -282,10 +282,11 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
   });
 
   it('adds Web large-channel optimization on top of Announce/Interval, not instead of it', () => {
-    const text = platform(
-      read(`${rtm}build/state-and-attributes/presence-events.mdx`),
-      'web',
+    const source = read(`${rtm}build/state-and-attributes/presence-events.mdx`);
+    expect(source.match(/<PlatformStructured platform="web">/g)).toHaveLength(
+      1,
     );
+    const text = platform(source, 'web');
     for (const phrase of [
       'Announce',
       'Interval',
