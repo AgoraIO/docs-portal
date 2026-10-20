@@ -57,6 +57,7 @@ import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
 import { DocsSiteFooter } from './DocsSiteFooter';
 import { DocsTocRail } from './DocsTocRail';
+import { DocVersionSwitch } from './DocVersionControls';
 import { getDocsSourceLinks } from './docs-source-links';
 
 const DOCS_SHELL_MAX_WIDTH_CLASS_NAME =
@@ -460,6 +461,10 @@ export function DocsShell({
                   ))}
                 </TabsList>
               </Tabs>
+              <DocVersionSwitch
+                activePath={activePath}
+                className="ml-auto self-center"
+              />
             </div>
           </nav>
         </header>

@@ -29,6 +29,7 @@ import {
 } from '@/lib/analytics/posthog';
 import { savePendingSearchLanding } from '@/lib/analytics/search-attribution';
 import { cn } from '@/lib/cn';
+import { resolveDocVersion } from '@/lib/doc-versions';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
 import {
@@ -965,6 +966,11 @@ export function DocsSearchDialog({
                       <span className="line-clamp-1 font-medium">
                         {page.title}
                       </span>
+                      {resolveDocVersion(page.url)?.version.label ? (
+                        <span className="block text-xs text-muted-foreground">
+                          {resolveDocVersion(page.url)?.version.label}
+                        </span>
+                      ) : null}
                       {page.description ? (
                         <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
                           {page.description}
@@ -1137,6 +1143,7 @@ function searchResultToEntry(result: {
       objectType === 'openapi' ? 'API' : undefined,
       ...formatPlatformContext(platforms ?? []),
       version,
+      resolveDocVersion(result.url)?.version.label,
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'

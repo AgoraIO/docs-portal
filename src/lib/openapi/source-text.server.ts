@@ -10,10 +10,14 @@ import signalingRestEnYaml from '../../../content/openapi/rtm/signaling-rest.en.
 import speechToTextEnYaml from '../../../content/openapi/speech-to-text/v7.en.yaml?raw';
 import speechToTextYaml from '../../../content/openapi/speech-to-text/v7.yaml?raw';
 import speechToTextZhCnYaml from '../../../content/openapi/speech-to-text/v7.zh-CN.yaml?raw';
+import testApiV1Yaml from '../../../content/openapi/versioning-demo/v1.en.yaml?raw';
+import testApiV2Yaml from '../../../content/openapi/versioning-demo/v2.en.yaml?raw';
 import type { AppLocale } from '../i18n/i18n-config';
 import type { OpenApiLane } from './lanes';
 
 const OPENAPI_SOURCE_TEXT: Record<string, string> = {
+  'content/openapi/versioning-demo/v1.en.yaml': testApiV1Yaml,
+  'content/openapi/versioning-demo/v2.en.yaml': testApiV2Yaml,
   'content/openapi/channel-management/ban-user-privileges.en.yaml':
     channelManagementBanUserPrivilegesEnYaml,
   'content/openapi/channel-management/message-notification-service.en.yaml':

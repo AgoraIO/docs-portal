@@ -43,7 +43,7 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(91);
+    expect(pagePaths).toHaveLength(93);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -207,9 +207,7 @@ describe('fumadocs openapi source', () => {
       ]),
     );
     expect(updateLayoutRecord['x-docs-callouts']).toBeUndefined();
-    expect(
-      schemas?.['updateLayout-clientRequest']?.properties,
-    ).toMatchObject({
+    expect(schemas?.['updateLayout-clientRequest']?.properties).toMatchObject({
       maxResolutionUid: expect.objectContaining({
         description: expect.stringContaining('from 1 to (2³²−1)'),
       }),
@@ -326,7 +324,8 @@ describe('fumadocs openapi source', () => {
         'zh-CN/api-reference/api-ref/speech-to-text/leave.mdx',
         {
           description: '停止实时转录翻译任务并离开频道。',
-          prose: '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
+          prose:
+            '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
         },
       ],
       [

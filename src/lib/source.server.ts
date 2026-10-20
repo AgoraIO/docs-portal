@@ -1,5 +1,6 @@
 import { docs } from 'collections/server';
 import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
+import { withDocVersionMetadata } from './doc-versions';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { addAccordionHeadingsToTocText } from './mdx/accordion-toc';
@@ -109,6 +110,10 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
+  return withDocVersionMetadata(await getPageLLMText(page), page.url);
+}
+
+async function getPageLLMText(page: InferPageType<typeof source>) {
   const locale = page.path.split('/').filter(Boolean)[0] ?? DEFAULT_LOCALE;
   const platformGroupText = await getPlatformGroupLLMText(page);
 
@@ -139,6 +144,14 @@ ${processed}`;
 }
 
 export async function getPlatformLLMText(
+  page: InferPageType<typeof source>,
+  platform: PlatformKey,
+) {
+  const markdown = await getPagePlatformLLMText(page, platform);
+  return markdown ? withDocVersionMetadata(markdown, page.url) : null;
+}
+
+async function getPagePlatformLLMText(
   page: InferPageType<typeof source>,
   platform: PlatformKey,
 ) {

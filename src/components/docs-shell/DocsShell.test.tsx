@@ -479,6 +479,21 @@ describe('DocsShell', () => {
     ).toBeInTheDocument();
   });
 
+  it('places the preview switch in the existing tabs strip without adding sidebar navigation', async () => {
+    renderDocsShell({
+      activePath: '/en/api-reference/versioning-demo/v1/widgets',
+      activeTab: 'api-reference',
+    });
+    const strip = await screen.findByTestId('docs-tabs-strip');
+    expect(within(strip).getByRole('switch')).toHaveAttribute(
+      'href',
+      '/en/api-reference/versioning-demo/v2/list-widgets',
+    );
+    expect(
+      within(screen.getByTestId('docs-sidebar')).queryByRole('switch'),
+    ).not.toBeInTheDocument();
+  });
+
   it('renders a separate desktop header row and docs tabs strip', async () => {
     renderDocsShell();
 

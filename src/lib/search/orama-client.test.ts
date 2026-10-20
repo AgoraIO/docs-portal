@@ -2,6 +2,29 @@ import { describe, expect, it } from 'vitest';
 import { createOramaDocsClient } from './orama-client';
 
 describe('createOramaDocsClient', () => {
+  it('keeps both documentation releases searchable with distinct URLs', async () => {
+    const client = createOramaDocsClient({
+      pages: [
+        {
+          title: 'Widget baseline',
+          content: 'widgetbaseline',
+          url: '/en/api-reference/versioning-demo/v1/widgets',
+        },
+        {
+          title: 'Widget preview',
+          content: 'widgetpreview',
+          url: '/en/api-reference/versioning-demo/v2/list-widgets',
+        },
+      ],
+    });
+    expect(await client.search('widget')).toHaveLength(2);
+    expect((await client.search('widgetbaseline'))[0]?.url).toBe(
+      '/en/api-reference/versioning-demo/v1/widgets',
+    );
+    expect((await client.search('widgetpreview'))[0]?.url).toBe(
+      '/en/api-reference/versioning-demo/v2/list-widgets',
+    );
+  });
   it('finds Chinese documentation by body text', async () => {
     const client = createOramaDocsClient({
       pages: [
