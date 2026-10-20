@@ -193,7 +193,7 @@ virtual bool onReadyToSendMetadata(Metadata &metadata, VIDEO_SOURCE_TYPE source_
 当 SDK 准备好发送 metadata 时，会触发该回调。
 
 :::caution
-注意： 请确保在该方法中传入的 metadata 大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#callback_imetadataobserver_getmaxmetadatasize) 中设定的值。
+注意： 请确保在该方法中传入的 metadata 大小不超过 [getMaxMetadataSize](/zh-CN/api-reference/rtc/unreal-cpp/metadata/metadata-observer#callback_imetadataobserver_getmaxmetadatasize) 中设定的值。如果超过该值，SDK 会截除超出部分。
 :::
 
 <a id="callback_imetadataobserver_onreadytosendmetadata__parameters"></a>

@@ -182,7 +182,7 @@ Agent(
 | `geofence` | `Optional[GeofenceConfig]` | `None` | 区域访问限制 |
 | `labels` | `Optional[Dict[str, str]]` | `None` | 会在通知回调中返回的自定义键值标签 |
 | `rtc` | `Optional[RtcConfig]` | `None` | RTC 媒体加密配置 |
-| `filler_words` | `Optional[FillerWordsConfig]` | `None` | 等待 LLM 响应期间播放的垫词配置 |
+| `filler_words` | `Optional[FillerWordsConfig]` | `None` | 等待 LLM 响应期间播放的承接词配置 |
 
 ### Builder methods
 
@@ -366,7 +366,7 @@ to_properties(
 | `geofence` | `Optional[GeofenceConfig]` | 区域访问限制配置 |
 | `labels` | `Optional[Dict[str, str]]` | 自定义标签 |
 | `rtc` | `Optional[RtcConfig]` | RTC 配置 |
-| `filler_words` | `Optional[FillerWordsConfig]` | 垫词配置 |
+| `filler_words` | `Optional[FillerWordsConfig]` | 承接词配置 |
 | `config` | `Dict[str, Any]` | 完整配置快照 |
 
 ### Type aliases
@@ -378,6 +378,8 @@ SDK 公开了常用请求与响应类型的别名，包括：`LlmConfig`、`SttC
 动态承接词配置还支持 `context_message_limit`（取值范围 `1` 到 `6`，省略时由服务按 `1` 处理）和 `history_character_limit`（取值范围 `0` 到 `10000`，省略时由服务按 `1000` 处理）。前者包含当前用户消息，显式设置为 `2` 到 `6` 时启用近期历史；后者只统计历史消息文本的 Unicode code points。
 
 Think 值常量包括：`ThinkOnListeningActionInject`、`ThinkOnListeningActionInterrupt`、`ThinkOnListeningActionAppend`、`ThinkOnListeningActionIgnore`、`ThinkOnThinkingActionInterrupt`、`ThinkOnThinkingActionAppend`、`ThinkOnThinkingActionIgnore`、`ThinkOnSpeakingActionInterrupt`、`ThinkOnSpeakingActionAppend`、`ThinkOnSpeakingActionIgnore`。`append` 不打断当前交互，分别等待当前用户回合、LLM 推理或 TTS 播报完成后，再将该指令作为独立的 user 消息追加到上下文并发起新一轮对话。
+
+公开类型别名还包括 `FillerWordsContentGeneratedConfig` 以及自定义工具相关的 `LlmToolConfig`、`LlmToolFunctionConfig`、`LlmToolFunctionParametersConfig`、`LlmToolExecutionConfig` 和 `LlmToolServerConfig`。
 
 
 <a id="agentsession-asyncagentsession"></a>
@@ -534,8 +536,15 @@ await session.update(properties)
 
 在 API v2.7 中，如果省略 `on_listening_action`，服务端默认使用 `interrupt`。如需保留 v2.7 之前的行为，请显式传入 `on_listening_action='inject'`。
 
+`on_listening_action`、`on_thinking_action` 和 `on_speaking_action` 均支持 `append`。该值不会打断当前交互，分别等待当前用户回合、LLM 推理或 TTS 播报完成后处理该指令。
+
 ```python
-session.think('Summarize the last answer', on_listening_action='inject')
+session.think(
+    'Summarize the last answer',
+    on_listening_action='append',
+    on_thinking_action='append',
+    on_speaking_action='append',
+)
 ```
 
 #### `get_history()`
@@ -688,8 +697,12 @@ llm = AliyunLLM(
 | `max_history` | `int` | No | `None` | 保留在 LLM 上下文中的最大对话轮次数 |
 | `params` | `Dict[str, Any]` | No | `None` | 附加模型参数 |
 | `headers` | `Dict[str, str]` | No | `None` | 转发给 LLM 服务商的自定义 HTTP Header |
-| `template_variables` | `Dict[str, str]` | No | `None` | 创建智能体时确定的固定模板变量，可供自定义工具引用 |
+| `template_variables` | `Dict[str, str]` | No | `None` | 创建智能体时确定的固定模板变量；序列化到 `llm.template_variables`，可供自定义工具通过 `{{template_variables.<name>}}` 引用 |
 | `tools` | `List[Dict[str, Any]]` | No | `None` | 同步自定义工具定义；需要同时启用 `with_tools(True)` |
+
+LLM vendor 的 `template_variables` 选项用于声明创建智能体时确定的固定字符串值。自定义工具可以在 `server.url`、`server.headers` 或 `server.body` 中通过 `{{template_variables.<name>}}` 引用这些值；`{{args.<name>}}` 和 `{{tool_call_id}}` 分别由模型和引擎运行时提供，不需要配置 `template_variables`。
+
+LLM vendor 的 `tools` 选项用于声明同步自定义工具。每个工具包含函数定义和服务端请求配置；调用 `.with_tools()`（或传入 `True`）后，SDK 才会启用 `tools` 和 `mcp_servers` 中的工具调用。
 
 #### CustomLLM
 
@@ -716,6 +729,8 @@ llm = CustomLLM(
 | `max_history` | `int` | No | `None` | 保留在 LLM 上下文中的最大对话轮次数 |
 | `params` | `Dict[str, Any]` | No | `None` | 附加模型参数 |
 | `headers` | `Dict[str, str]` | No | `None` | 转发给 LLM 服务的自定义 HTTP Header |
+| `template_variables` | `Dict[str, str]` | No | `None` | 创建智能体时确定的固定模板变量；序列化到 `llm.template_variables`，可供自定义工具通过 `{{template_variables.<name>}}` 引用 |
+| `tools` | `List[Dict[str, Any]]` | No | `None` | 同步自定义工具定义；需要同时启用 `with_tools(True)` |
 
 ### TTS vendors
 
@@ -876,12 +891,15 @@ from agora_agent.cn import StepFunTTS
 
 #### FengmingSTT
 
-可选传入 `keywords` 热词列表，这些参数会写入 `asr.keywords`。
+声网自研的「风鸣」STT 服务，无需外部凭据，输出 `asr.vendor = "fengming"`。可选传入 `keywords` 热词列表，这些参数会写入 `asr.keywords`。
 
 ```python
 from agora_agent.cn import FengmingSTT
-
 ```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `keywords` | `List[str]` | No | `None` | 热词列表，用于提升 ASR 识别准确率 |
 
 #### TencentSTT
 
@@ -891,7 +909,6 @@ from agora_agent.cn import TencentSTT
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `keywords` | `List[str]` | No | `None` | 热词列表，用于提升 ASR 识别准确率 |
 | `key` | `str` | Yes | — | 腾讯云 ASR 参数 `secret_id` |
 | `app_id` | `str` | Yes | — | 腾讯云 ASR app id |
 | `secret` | `str` | Yes | — | 腾讯云 ASR 参数 `secret_key` |

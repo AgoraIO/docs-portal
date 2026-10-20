@@ -99,7 +99,7 @@ describe('RTC upstream PR #2098 complete content parity', () => {
   it('rejects a missing real release boundary and ambiguous platform bodies', () => {
     const source = readContent('reference/release-notes.mdx');
     const body = extractPlatformBody(source, 'android');
-    const version = '## v4.7.0';
+    const version = '<Accordions type="multiple" openFirst>';
 
     contains(beforeMarker(body, version), 'cn.shengwang.rtc');
     expect(() =>
@@ -236,8 +236,13 @@ describe('RTC upstream PR #2098 complete content parity', () => {
 
   it('places the Android Maven package migration before every release version', () => {
     const body = platformBody('reference/release-notes.mdx', 'android');
-    const notice = beforeMarker(body, '## v4.7.0');
+    const notice = beforeMarker(body, '<Accordions type="multiple" openFirst>');
     contains(notice, ':::caution[注意]');
+    contains(notice, '额外配置声网 Maven CDN 仓库');
+    expect(notice.match(/:::caution\[注意\]/g)).toHaveLength(2);
+    expect(notice.indexOf('额外配置声网 Maven CDN 仓库')).toBeLessThan(
+      notice.indexOf('通过 Gradle 自动集成并升级至 v4.6.0 及以上版本时'),
+    );
     contains(notice, '通过 Gradle 自动集成并升级至 v4.6.0 及以上版本时');
     contains(
       notice,

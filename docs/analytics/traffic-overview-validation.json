@@ -1,0 +1,82 @@
+{
+  "project_id": 509917,
+  "dashboard_id": 2229856,
+  "purpose": "Query/coverage validation only. Staging history includes QA and must not be interpreted as business traffic.",
+  "staging": [
+    {
+      "key": "totals",
+      "is_error": false,
+      "result": "Date range|Aggregated value for PV|Aggregated value for Session\n2026-10-13 00:00:00+00:00 to 2026-10-19 23:59:59+00:00|92|13"
+    },
+    {
+      "key": "daily",
+      "is_error": false,
+      "result": "Date|PV|Session\n2026-10-13|0|0\n2026-10-14|0|0\n2026-10-15|0|0\n2026-10-16|6|1\n2026-10-17|0|0\n2026-10-18|1|1\n2026-10-19 (partial)|85|11\n\nNote: rows marked \"(partial)\" cover an interval that is still in progress as of the query time, so their values are incomplete. Timezone: UTC."
+    },
+    {
+      "key": "referrers",
+      "is_error": false,
+      "result": "Date range|Aggregated value for Session breakdown for the value `未知或未提供来源`|Aggregated value for Session breakdown for the value `docs-portal-staging.sh3.agoralab.co`\n2026-10-13 00:00:00+00:00 to 2026-10-19 23:59:59+00:00|12|1"
+    },
+    {
+      "key": "landings",
+      "is_error": false,
+      "result": "Date range|Aggregated value for Session breakdown for the value `/introduction`|Aggregated value for Session breakdown for the value `/realtime-media/overview`|Aggregated value for Session breakdown for the value `/`|Aggregated value for Session breakdown for the value `/realtime-media/rtc`|Aggregated value for Session breakdown for the value `/realtime-media/rtc/build/setup-and-access/token-authentication/web`|Aggregated value for Session breakdown for the value `/solutions/showroom/build/beauty/faceunity-run-project/android`|Aggregated value for Session breakdown for the value `未知入口`\n2026-10-13 00:00:00+00:00 to 2026-10-19 23:59:59+00:00|5|3|1|1|1|1|1"
+    },
+    {
+      "key": "products",
+      "is_error": false,
+      "result": "Date range|Aggregated value for PV breakdown for the value `通用或未归属产品`|Aggregated value for PV breakdown for the value `rtc`|Aggregated value for PV breakdown for the value `conversational-ai`|Aggregated value for PV breakdown for the value `cloud-recording`|Aggregated value for PV breakdown for the value `rtsa`|Aggregated value for PV breakdown for the value `content-moderation`|Aggregated value for PV breakdown for the value `meeting`\n2026-10-13 00:00:00+00:00 to 2026-10-19 23:59:59+00:00|47|17|10|9|7|1|1"
+    },
+    {
+      "key": "scenarios",
+      "is_error": false,
+      "result": "Date range|Aggregated value for PV breakdown for the value `场景总览`|Aggregated value for PV breakdown for the value `one-to-one-live`|Aggregated value for PV breakdown for the value `showroom`\n2026-10-13 00:00:00+00:00 to 2026-10-19 23:59:59+00:00|5|2|2"
+    }
+  ],
+  "production": [
+    {
+      "key": "totals",
+      "is_error": false,
+      "result": "Date range|Aggregated value for PV|Aggregated value for Session\n2026-10-13 00:00:00+00:00 to 2026-10-19 23:59:59+00:00|0|0"
+    },
+    {
+      "key": "daily",
+      "is_error": false,
+      "result": "Date|PV|Session\n2026-10-13|0|0\n2026-10-14|0|0\n2026-10-15|0|0\n2026-10-16|0|0\n2026-10-17|0|0\n2026-10-18|0|0\n2026-10-19 (partial)|0|0\n\nNote: rows marked \"(partial)\" cover an interval that is still in progress as of the query time, so their values are incomplete. Timezone: UTC."
+    },
+    {
+      "key": "referrers",
+      "is_error": false,
+      "result": "No data recorded for this time period."
+    },
+    {
+      "key": "landings",
+      "is_error": false,
+      "result": "No data recorded for this time period."
+    },
+    {
+      "key": "products",
+      "is_error": false,
+      "result": "No data recorded for this time period."
+    },
+    {
+      "key": "scenarios",
+      "is_error": false,
+      "result": "No data recorded for this time period."
+    }
+  ],
+  "saved_dashboard_run": {
+    "is_error": false,
+    "result": "results[6]:\n  - id: 13851318\n    insight:\n      id: 13032057\n      short_id: V4FC4BGl\n      name: 中文文档｜PV 与 Session 总量（试版）\n      derived_name: null\n      result: \"Date range|Aggregated value for PV|Aggregated value for Session\\n2026-10-13 00:00:00+00:00 to 2026-10-19 00:00:00+00:00|0|0\"\n      warnings: null\n    order: 1\n    last_refresh: null\n    is_cached: false\n  - id: 13851319\n    insight:\n      id: 13032058\n      short_id: xkN4aCCV\n      name: 中文文档｜PV 与 Session 每日趋势（试版）\n      derived_name: null\n      result: \"Date|PV|Session\\n2026-10-13|0|0\\n2026-10-14|0|0\\n2026-10-15|0|0\\n2026-10-16|0|0\\n2026-10-17|0|0\\n2026-10-18|0|0\\n2026-10-19 (partial)|0|0\\n\\nNote: rows marked \\\"(partial)\\\" cover an interval that is still in progress as of the query time, so their values are incomplete. Timezone: UTC.\"\n      warnings: null\n    order: 2\n    last_refresh: null\n    is_cached: false\n  - id: 13851321\n    insight:\n      id: 13032060\n      short_id: TBs8RC28\n      name: 中文文档｜会话来源域名（试版）\n      derived_name: null\n      result: No data recorded for this time period.\n      warnings: null\n    order: 3\n    last_refresh: null\n    is_cached: false\n  - id: 13851323\n    insight:\n      id: 13032061\n      short_id: v84cmbul\n      name: 中文文档｜会话入口页面（试版）\n      derived_name: null\n      result: No data recorded for this time period.\n      warnings: null\n    order: 4\n    last_refresh: null\n    is_cached: false\n  - id: 13851325\n    insight:\n      id: 13032062\n      short_id: xn6JGIKG\n      name: 中文文档｜产品路径流量（试版）\n      derived_name: null\n      result: No data recorded for this time period.\n      warnings: null\n    order: 5\n    last_refresh: null\n    is_cached: false\n  - id: 13851327\n    insight:\n      id: 13032063\n      short_id: qTszs3nY\n      name: 中文文档｜场景路径流量（试版）\n      derived_name: null\n      result: No data recorded for this time period.\n      warnings: null\n    order: 6\n    last_refresh: null\n    is_cached: false\n_posthogUrl: \"https://us.posthog.com/project/509917/dashboard/2229856\""
+  },
+  "route_fixture": "cases|passed\n16|16",
+  "legacy_reference": {
+    "project_id": 142880,
+    "dashboard_id": 356588,
+    "status": "unavailable_to_current_account",
+    "connector": "404 project access",
+    "browser": "Project access denied"
+  },
+  "source_field_audit": "host|pageviews|with_session_id|with_environment|with_traffic_label|with_referrer\ndocs-portal-staging.sh3.agoralab.co|92|91|0|0|79\n127.0.0.1:3000|29|29|0|0|28\n127.0.0.1:3031|28|28|0|0|17"
+}

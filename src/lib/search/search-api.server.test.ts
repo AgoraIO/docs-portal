@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
+  handleHealthRequest,
   handleSearchRequest,
   parseSearchApiQuery,
   readSearchServiceConfig,
@@ -14,6 +15,23 @@ const request = (query: string) =>
   new Request(`https://docs.example/api/search?${query}`);
 
 describe('Start search API', () => {
+  it('exposes the deployed full revision without changing the health contract', async () => {
+    const revision = 'a'.repeat(40);
+    const response = handleHealthRequest({ DOCS_RELEASE_REVISION: revision });
+    expect(response.status).toBe(200);
+    expect(response.headers.get('cache-control')).toBe('no-store');
+    expect(await response.json()).toEqual({ status: 'ok', revision });
+  });
+
+  it.each([undefined, 'feature-branch', 'private-value'])(
+    'omits missing or invalid health revision: %s',
+    async (revision) => {
+      expect(
+        await handleHealthRequest({ DOCS_RELEASE_REVISION: revision }).json(),
+      ).toEqual({ status: 'ok' });
+    },
+  );
+
   it.each([
     ['cloud-transcoding', 'transcoding'],
     ['signaling', 'rtm'],

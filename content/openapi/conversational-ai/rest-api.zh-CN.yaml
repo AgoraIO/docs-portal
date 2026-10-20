@@ -1606,19 +1606,38 @@ paths:
                     智能体处于倾听状态时的处理动作，支持以下值：
                     - `"inject"`：自定义文本指令注入当前轮次，不打断当前轮次。
                     - `"interrupt"`：（默认）立即打断当前处理流程，并发起新一轮对话。
+                    - `"append"`：不打断当前用户输入。等待当前用户输入对应的 LLM 输出完成后，将自定义文本指令作为独立的 user 消息追加到上下文，并发起新一轮对话。
                     - `"ignore"`：忽略本次请求。
+                  enum:
+                    - inject
+                    - interrupt
+                    - append
+                    - ignore
+                  default: interrupt
                 on_thinking_action:
                   type: string
                   description: |
                     智能体处于思考状态时的处理动作，支持以下值：
                     - `"interrupt"`：（默认）打断当前状态，并发起新一轮对话。
+                    - `"append"`：不打断当前 LLM 推理。等待当前轮次的 LLM 输出完成后，将自定义文本指令作为独立的 user 消息追加到上下文，并发起新一轮对话。
                     - `"ignore"`：忽略本次请求。
+                  enum:
+                    - interrupt
+                    - append
+                    - ignore
+                  default: interrupt
                 on_speaking_action:
                   type: string
                   description: |
                     智能体处于说话状态时的处理动作，支持以下值：
                     - `"interrupt"`：打断当前状态，并发起新一轮对话。
+                    - `"append"`：不打断当前 TTS 播报。等待当前轮次的 LLM 输出完成后，将自定义文本指令作为独立的 user 消息追加到上下文，并发起新一轮对话。
                     - `"ignore"`：（默认）忽略本次请求。
+                  enum:
+                    - interrupt
+                    - append
+                    - ignore
+                  default: ignore
                 interruptable:
                   type: boolean
                   description: |
@@ -1634,9 +1653,9 @@ paths:
               Example 1:
                 value:
                   text: 用户刚才点击了购买按钮
-                  on_listening_action: interrupt
-                  on_thinking_action: interrupt
-                  on_speaking_action: ignore
+                  on_listening_action: append
+                  on_thinking_action: append
+                  on_speaking_action: append
                   interruptable: true
                   metadata:
                     publisher: user123

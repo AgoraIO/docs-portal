@@ -16,14 +16,14 @@ _migration:
 
 | API | 描述 | 替代 API | 废弃版本 |
 | --- | --- | --- | --- |
-| setDirectCdnStreamingAudioConfiguration | 设置直接向 CDN 推流的音频配置。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
-| setDirectCdnStreamingVideoConfiguration | 设置直接向 CDN 推流的视频配置。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
-| startDirectCdnStreaming | 开始直接向 CDN 推流。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
+| setDirectCdnStreamingAudioConfiguration: | 设置直接向 CDN 推流的音频配置。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
+| setDirectCdnStreamingVideoConfiguration: | 设置直接向 CDN 推流的视频配置。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
+| startDirectCdnStreaming\:publishUrl\:mediaOptions: | 开始直接向 CDN 推流。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
 | stopDirectCdnStreaming | 停止直接向 CDN 推流。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
-| DirectCdnStreamingMediaOptions | 直接向 CDN 推流的媒体选项。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
-| DirectCdnStreamingStats | 直接向 CDN 推流的统计信息。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
-| DirectCdnStreamingState | 直接向 CDN 推流的状态。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
-| DirectCdnStreamingReason | 直接向 CDN 推流状态变化的原因。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
+| AgoraDirectCdnStreamingMediaOptions | 直接向 CDN 推流的媒体选项。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
+| AgoraDirectCdnStreamingStats | 直接向 CDN 推流的统计信息。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
+| AgoraDirectCdnStreamingState | 直接向 CDN 推流的状态。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
+| AgoraDirectCdnStreamingReason | 直接向 CDN 推流状态变化的原因。 | 请改用[服务端旁路推流功能](/zh-CN/realtime-media/media-push)。 | v4.6.0 |
 | [startRhythmPlayer\:sound2\:config:](/zh-CN/api-reference/rtc/ios/play/rhythmplayer#api_irtcengine_startrhythmplayer) | 启用虚拟节拍器。 | - | v4.6.0 |
 | [configRhythmPlayer:](/zh-CN/api-reference/rtc/ios/play/rhythmplayer#api_irtcengine_configrhythmplayer) | 配置虚拟节拍器。 | - | v4.6.0 |
 | [rtcEngine\:didRhythmPlayerStateChanged\:reason:](/zh-CN/api-reference/rtc/ios/play/rhythmplayer#callback_irtcengineeventhandler_onrhythmplayerstatechanged) | 当虚拟节拍器状态发生变化时触发的回调。 | - | v4.6.0 |
@@ -48,7 +48,7 @@ _migration:
 | [preloadWithSongCode\:jsonOption:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload) | 预加载音乐资源。 | [preloadWithSongCode:](/zh-CN/api-reference/rtc/ios/play/drm#api_imusiccontentcenter_preload2) | v4.0.0 |
 | [addVideoWatermark:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark1) | 向本地视频添加水印图像。 | [addVideoWatermark\:options:](/zh-CN/api-reference/rtc/ios/video/video-prenpro/watermark#api_irtcengine_addvideowatermark2) | v4.0.0 |
 | [rtcEngineLocalAudioMixingDidFinish:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingfinished) | 本地音乐文件播放结束时的回调。 | [rtcEngine\:audioMixingStateChanged\:reasonCode:](/zh-CN/api-reference/rtc/ios/play/audio-mixing#callback_irtcengineeventhandler_onaudiomixingstatechanged) | v4.0.0 |
-| [audioQualityBlock:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudioquality) | 当前通话的音频质量，每两秒报告一次。 | [rtcEngine\:remoteAudioStats:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | v4.0.0 |
+| [audioQualityBlock:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onaudioquality) | 报告每个远端用户发送音频流的统计信息。 | [rtcEngine\:remoteAudioStats:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostats) | v4.0.0 |
 | [rtcEngineConnectionDidBanned:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionbanned) | 连接被声网服务器封禁时触发的回调。 | [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) | v4.0.0 |
 | [rtcEngineConnectionDidInterrupted:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectioninterrupted) | 连接中断回调。 | [rtcEngine\:connectionChangedToState\:reason:](/zh-CN/api-reference/rtc/ios/network#callback_irtcengineeventhandler_onconnectionstatechanged) | v4.0.0 |
 | [rtcEngine\:firstRemoteAudioFrameOfUid\:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onfirstremoteaudioframe) | 远端用户的第一帧音频被接收并解码时触发。 | [rtcEngine\:remoteAudioStateChangedOfUid\:state\:reason\:elapsed:](/zh-CN/api-reference/rtc/ios/audio/audio-basic#callback_irtcengineeventhandler_onremoteaudiostatechanged) | v4.0.0 |
