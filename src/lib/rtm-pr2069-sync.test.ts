@@ -181,7 +181,7 @@ describe('RTM upstream PR #2069 parity', () => {
   });
 
   it.each(['web', 'mini-program'])(
-    'restores the %s Presence modes without native large-channel behavior',
+    'restores the %s baseline Presence modes with platform-scoped limits',
     (platform) => {
       const body = platformBody(
         readDoc('build/state-and-attributes/presence-events'),
@@ -190,8 +190,10 @@ describe('RTM upstream PR #2069 parity', () => {
       expect(body).toContain('实时通知模式（Announce）');
       expect(body).toContain('定时通知模式（Interval）');
       expect(body).toContain('[8,128]');
-      expect(body).not.toContain('512');
-      expect(body).not.toContain('从 v2.3.0');
+      if (platform === 'mini-program') {
+        expect(body).not.toContain('512');
+        expect(body).not.toContain('从 v2.3.0');
+      }
     },
   );
 
