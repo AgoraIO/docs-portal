@@ -6245,7 +6245,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtmp-gateway/product-overview.md':
     '2026-06-18T09:52:26.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/quickstart.md':
-    '2026-09-14T03:44:50.000Z',
+    '2026-10-20T06:58:08.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/core-concepts.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/glossary.md':
@@ -6263,7 +6263,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtmp-gateway/reference/release-notes.md':
     '2026-06-27T08:57:33.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/release-notes.mdx':
-    '2026-09-28T07:48:11.000Z',
+    '2026-10-20T06:58:08.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/rest-api.md':
     '2026-08-26T06:38:28.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/rest-api/authentication.md':

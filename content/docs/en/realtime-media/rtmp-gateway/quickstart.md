@@ -36,9 +36,9 @@ You can use Agora's unified domain name or your own one. The server appends the 
 
 ## Get streaming key
 
-The stream key generation method depends on whether you use the Agora domain name or a custom domain name.
+The streaming key generation method depends on whether you use the Agora domain name or a custom domain name.
 
-- If you use Agora's domain name, create a stream key using the Media Gateway RESTful API.
+- If you use Agora's domain name, create a streaming key using the Media Gateway RESTful API.
 - If you use your own domain name, you can either call the Media Gateway RESTful API or generate the key locally.
 
 ### Generate streaming key with RESTful API
@@ -59,31 +59,31 @@ To explore the RESTful API parameters, obtain sample code in various client lang
 Before starting, make sure you have configured your domain name by contacting [technical support](mailto:support@agora.io).
 :::
 
-Media Gateway supports two methods for generating a stream key locally:
+Media Gateway supports two methods for generating a streaming key locally:
 
-- [Generate an sk001 stream key](#generate-an-sk001-stream-key): The recommended method.
-- [Generate a legacy stream key](#generate-a-legacy-stream-key): The original method, which remains supported.
+- [Generate a streaming key with your App ID](#generate-a-streaming-key-with-your-app-id): The recommended method. The streaming key is bound to your app ID and can't be used in a different project.
+- [Generate a streaming key without your App ID](#generate-a-streaming-key-without-your-app-id): The streaming key isn't bound to a project.
 
-To generate a stream key locally, you use the following information:
+To generate a streaming key locally, you use the following information:
 
 - The app ID of your Agora project. For details, see [Get the App ID and App Certificate](/en/introduction/account#get-the-app-id-and-app-certificate).
 - The app certificate corresponding to your app ID
 - `channelName`: The channel name
 - `uid`: The user ID of the host in the channel
-- `expiresAfter`: The effective duration of the stream key, in seconds
+- `expiresAfter`: The effective duration of the streaming key, in seconds
 - `template` (optional): The associated stream configuration template. For details, see the [Media Gateway REST API](/en/api-reference/api-ref/rtmp-gateway).
 
-#### Generate an sk001 stream key
+#### Generate a streaming key with your App ID
 
-A stream key generated using this method starts with `sk001`. For example:
+A streaming key generated using this method starts with `sk001`. For example:
 
 ```text
 sk001AAECAwQFBgcICQoLoFm4Eaib-wXsTAT8eOwvg2hziXtEgd-P5zpOAAVr3ROEf8vtK3YeXUAp
 ```
 
-Use the stream key as the stream name for RTMP and SRT, or as the Bearer token in a WHIP request. The stream key does not contain your app ID. However, Media Gateway uses the app ID to authenticate the stream key, which prevents the key from being used in a different project.
+Use the streaming key as the stream name for RTMP and SRT, or as the Bearer token in a WHIP request. The streaming key does not contain your app ID. However, Media Gateway uses the app ID to authenticate the streaming key, which prevents the key from being used in a different project.
 
-The following samples generate an sk001 stream key. Before you run a sample, replace the placeholder values in angle brackets with the values for your project.
+The following samples generate a streaming key with your App ID. Before you run a sample, replace the placeholder values in angle brackets with the values for your project.
 
 - Node.js: Use Node.js 16 or later. The sample has no additional dependencies.
 - Python: Use Python 3.10 or later, and install the `cryptography` package:
@@ -251,9 +251,9 @@ print(generate_stream_key(
 ))
 ```
 
-#### Generate a legacy stream key
+#### Generate a streaming key without your App ID
 
-The following Node.js sample code generates a stream key using the original method. This method does not use your app ID.
+The following Node.js sample code generates a streaming key without your app ID. The generated streaming key has no prefix and isn't bound to a project.
 
 :::note
 The following example code relies on the `msgpack-lite` module. If you haven't installed it yet, execute `npm install msgpack-lite` and run `node app.js` in the project root directory.
@@ -266,7 +266,7 @@ const msgpack = require('msgpack-lite');
 appcert = "<your_app_certificate>"; // Your app certificate from Agora
 channel = "<your_channel_name>"; // The RTC SDK channel name
 uid = "<your_host_uid>"; // The UID of the host in the channel
-expiresAfter = 86400; // Valid duration of stream key (seconds)
+expiresAfter = 86400; // Valid duration of streaming key (seconds)
 
 const expiresAt = Math.floor(Date.now() / 1000) + expiresAfter;
 
