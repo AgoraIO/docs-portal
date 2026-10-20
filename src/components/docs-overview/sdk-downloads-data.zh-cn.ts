@@ -3940,8 +3940,16 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 Flutter 应用的实时互动 SDK',
         versions: [
           {
+            id: '6.6.4-video-sdk-flutter',
+            label: '版本 6.6.4（最新）',
+            packageManager:
+              'https://pub.dev/packages/shengwang_rtc_engine/versions/6.6.4',
+            releaseDate: '2026 年 8 月 31 日',
+            nativeVersion: '4.6.4',
+          },
+          {
             id: '6.6.2-video-sdk-flutter',
-            label: '版本 6.6.2（最新）',
+            label: '版本 6.6.2',
             packageManager:
               'https://pub.dev/packages/shengwang_rtc_engine/versions/6.6.2',
             releaseDate: '2026 年 3 月 18 日',
@@ -4225,8 +4233,15 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 React Native 应用的实时互动 SDK',
         versions: [
           {
+            id: '4.6.4-video-sdk-react-native',
+            label: '版本 4.6.4（最新）',
+            packageManager:
+              'https://www.npmjs.com/package/react-native-shengwang/v/4.6.4',
+            releaseDate: '2026 年 8 月 31 日',
+          },
+          {
             id: '4.6.2-video-sdk-react-native',
-            label: '版本 4.6.2（最新）',
+            label: '版本 4.6.2',
             packageManager:
               'https://www.npmjs.com/package/react-native-shengwang/v/4.6.2',
             releaseDate: '2026 年 3 月 5 日',
