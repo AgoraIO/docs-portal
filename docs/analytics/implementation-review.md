@@ -74,3 +74,13 @@ Final evidence: [pipeline and digests](evidence/2026-10-19-b108/pipeline.json), 
 Desktop dark/light and 390px mobile screenshots in PR #1212 come from the final deployed staging source. Computed selected colors have clear foreground/background contrast in both themes. Mobile document width equals its 390px viewport. Temporary network blocks and device emulation were cleared; the local preview server and temporary verification tabs were closed.
 
 Build #104 failed before deployment at server import protection; the boundary is fixed. Build #105 was cancelled before deployment to incorporate the newer Chinese base. Another user’s #106 was untouched and timed out before deployment. Production rollout is outside this change; its P0 build flag stays disabled.
+
+## Merge integration — 2026-10-20
+
+Chinese target `58245f6cf` includes prefixless search URLs and newer accordion behavior. Runtime `f32e201fcc5756ebaae6e7502d7262154504779d` incorporates that target, preserves both the visible-body ref and the accordion content key, and normalizes new/old Chinese URL aliases to the historical document identity. Previously stored same-tab and new-tab targets are normalized at restoration too.
+
+The browser adapter requires the Chinese build, the explicit P0 flag and a Chinese route. A second guard prevents the global build from sending P0 facts even if the flag is accidentally enabled. The English SDK retains its existing event properties and page helpfulness. No English content or OpenAPI source files differ from the Chinese target.
+
+Final checks: 241 test files pass, 3120 tests pass and 2 skip; type checking and changed-source Biome pass. Both independent review axes cleared the restored-target regression after its two adapter tests passed. The deployment scripts also pass all 21 tests.
+
+These are integration checks, not a new staging deployment. Actual staging screenshots and collector receipts above remain pinned to build #108/source `e113a4246`. Production remains undeployed with P0 disabled. Bitbucket deployment PR #7 still requires one reviewer approval before merge.
