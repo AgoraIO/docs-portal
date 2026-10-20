@@ -150,4 +150,74 @@ describe('docsMetaSchema', () => {
       }),
     ).toThrow();
   });
+
+  it('preserves context-specific versions with independently reused current ids', () => {
+    const navScope = {
+      defaultVersion: 'current',
+      versions: [{ id: 'current', label: 'React v2.5.0', path: '.' }],
+      versionOverrides: [
+        {
+          path: 'web-sdk',
+          versions: [{ id: 'current', label: 'Web v4.24.0', path: '.' }],
+        },
+        {
+          path: 'web-sdk/interfaces',
+          versions: [{ id: 'current', label: 'Interface', path: '.' }],
+        },
+      ],
+    };
+
+    expect(docsMetaSchema.parse({ navScope }).navScope).toEqual(navScope);
+  });
+
+  it.each([
+    '',
+    '.',
+    '..',
+    '/web-sdk',
+    'web-sdk/',
+    'web-sdk//types',
+    'web-sdk/../types',
+    'web-sdk?query',
+    'web-sdk#hash',
+    ' web-sdk',
+    'web-sdk\\types',
+    'https://example.com',
+  ])('rejects invalid override path %j', (path) => {
+    expect(() =>
+      docsMetaSchema.parse({
+        navScope: {
+          versionOverrides: [
+            { path, versions: [{ id: 'current', label: 'Web', path: '.' }] },
+          ],
+        },
+      }),
+    ).toThrow();
+  });
+
+  it('rejects empty override version lists', () => {
+    expect(() =>
+      docsMetaSchema.parse({
+        navScope: { versionOverrides: [{ path: 'web-sdk', versions: [] }] },
+      }),
+    ).toThrow();
+  });
+
+  it.each(['default', 'override'])(
+    'rejects duplicate ids in one %s version list',
+    (list) => {
+      const versions = [
+        { id: 'current', label: 'First', path: '.' },
+        { id: 'current', label: 'Second', path: 'older' },
+      ];
+      expect(() =>
+        docsMetaSchema.parse({
+          navScope:
+            list === 'default'
+              ? { versions }
+              : { versionOverrides: [{ path: 'web-sdk', versions }] },
+        }),
+      ).toThrow();
+    },
+  );
 });

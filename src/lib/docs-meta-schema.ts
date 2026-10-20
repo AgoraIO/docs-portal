@@ -81,12 +81,47 @@ export const docsNavScopeVersionSchema = z.object({
   sidebar: z.array(docsNavScopeSidebarEntrySchema).min(1).optional(),
 });
 
+const docsNavScopeVersionsSchema = z
+  .array(docsNavScopeVersionSchema)
+  .min(1)
+  .refine(
+    (versions) =>
+      new Set(versions.map(({ id }) => id)).size === versions.length,
+    {
+      message: 'Version ids must be unique within a version list.',
+    },
+  );
+
+const docsNavScopeVersionOverrideSchema = z.object({
+  path: z
+    .string()
+    .min(1)
+    .refine(
+      (path) =>
+        path
+          .split('/')
+          .every(
+            (segment) =>
+              segment.length > 0 &&
+              segment !== '.' &&
+              segment !== '..' &&
+              !/[\s\\?#:]/.test(segment),
+          ),
+      {
+        message:
+          'Override paths must contain non-empty relative path segments.',
+      },
+    ),
+  versions: docsNavScopeVersionsSchema,
+});
+
 export const docsNavScopeSchema = z.object({
   defaultVersion: z.string().min(1).optional(),
   platformTabs: z.boolean().optional(),
   presentation: z.enum(['dropdown', 'tabs']).optional(),
   sharedSidebar: z.boolean().optional(),
-  versions: z.array(docsNavScopeVersionSchema).min(1).optional(),
+  versionOverrides: z.array(docsNavScopeVersionOverrideSchema).optional(),
+  versions: docsNavScopeVersionsSchema.optional(),
 });
 
 export const docsMetaSchema = metaSchema.extend({

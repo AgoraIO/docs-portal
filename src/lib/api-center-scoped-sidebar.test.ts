@@ -177,9 +177,12 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
   it.each([
     ['overview'],
     ['components'],
+    ['hooks'],
+    ['data-types'],
     ['web-sdk', 'overview'],
     ['web-sdk', 'interfaces', 'iagorartcclient'],
     ['web-sdk', 'interfaces', 'networkquality'],
+    ['web-sdk', 'globals'],
   ])(
     'shows React overview pages directly above the Web SDK group on %s',
     async (...route) => {
@@ -228,7 +231,35 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       expect(collectTitles(sidebar)).not.toContain('NetworkQuality');
       expect(payload.sidebarHeader).toMatchObject({
         productDocsHref: '/zh-CN/realtime-media/rtc',
+        versionSwitcher: { currentId: 'current' },
       });
+      const isWebSdk = route[0] === 'web-sdk';
+      const versions = payload.sidebarHeader?.versionSwitcher?.versions;
+      expect(versions?.map((version) => version.label)).toEqual(
+        isWebSdk
+          ? ['v4.22.0', 'v4.21.0', 'v4.20.0', 'v4.19.3']
+          : [
+              'v2.5.0',
+              'v2.4.0',
+              'v2.3.0',
+              'v2.2.0',
+              'v2.1.0',
+              'v2.0.0',
+              'v2.0.0-beta.0',
+            ],
+      );
+      expect(versions?.[0].href).toBe(
+        isWebSdk
+          ? '/zh-CN/api-reference/rtc/react-sdk/web-sdk/overview'
+          : '/zh-CN/api-reference/rtc/react-sdk/overview',
+      );
+      for (const version of versions?.slice(1) ?? []) {
+        expect(version.href).toMatch(
+          isWebSdk
+            ? /\/api-ref\/rtc\/react\/overview$/
+            : /\/api-ref\/rtc\/react\/react-sdk\/overview$/,
+        );
+      }
     },
   );
 

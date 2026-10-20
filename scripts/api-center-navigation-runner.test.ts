@@ -63,7 +63,13 @@ describe('API Center navigation runner', () => {
     );
     await fs.writeFile(
       path.join(repoRoot, reactRoot, 'meta.json'),
-      JSON.stringify({ title: 'React API 参考', navScope: {} }),
+      JSON.stringify({
+        title: 'React API 参考',
+        // Versions are hand-maintained; the generator owns pages and labels.
+        navScope: JSON.parse(
+          await fs.readFile(`${reactRoot}/meta.json`, 'utf8'),
+        ).navScope,
+      }),
     );
     for (const page of manifest.pageEvidence) {
       const targetPath = page.sourceResolution?.targetPath;
@@ -1354,6 +1360,25 @@ describe('API Center navigation runner', () => {
               label: 'v1.9.7',
               path: '1.9.7',
               href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtsa/c/overview',
+            },
+          ],
+          versionOverrides: [
+            {
+              path: 'details',
+              versions: [
+                {
+                  id: 'current',
+                  label: 'v1.10.1 (details)',
+                  path: '.',
+                  href: '/zh-CN/api-reference/rtsa/c/overview',
+                },
+                {
+                  id: '1.9.7',
+                  label: 'v1.9.7',
+                  path: '1.9.7',
+                  href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtsa/c/overview',
+                },
+              ],
             },
           ],
         },

@@ -193,11 +193,52 @@ describe('Chinese API Reference historical archives', () => {
     },
   );
 
-  it('does not add version menus to either deferred React series', () => {
-    expect(readMeta('rtc/react-sdk').navScope?.versions).toBeUndefined();
+  it('keeps the React SDK and underlying Web SDK version series isolated', () => {
+    const meta = readMeta('rtc/react-sdk');
+    const navScope = meta.navScope;
+    const rawInventory = readFileSync(
+      'docs/migration/api-reference-historical-archive-inventory-20261020.md',
+      'utf8',
+    );
+    const reactTable = rawInventory
+      .split('#### React（react）：9 项')[1]
+      .split('### 实时消息')[0];
+    const history = reactTable.split('\n').flatMap((line) => {
+      const row = line.match(
+        /^\| (v[^|]+) \| `[^`]+` \| \[[^\]]+\]\(([^)]+)\)/,
+      );
+      return row ? [{ label: row[1].replace(/（.*$/, ''), href: row[2] }] : [];
+    });
+    expect(history).toHaveLength(9);
+    expect(navScope?.defaultVersion).toBe('current');
+    expect(navScope?.versions?.[0]).toEqual({
+      id: 'current',
+      label: 'v2.5.0',
+      path: '.',
+      href: '/zh-CN/api-reference/rtc/react-sdk/overview',
+    });
     expect(
-      readMeta('rtc/react-sdk/web-sdk').navScope?.versions,
-    ).toBeUndefined();
+      navScope?.versions?.slice(1).map(({ label, href }) => ({ label, href })),
+    ).toEqual(history.filter((v) => v.href.includes('/react/react-sdk/')));
+    expect(navScope?.versions).toHaveLength(7);
+    const versionOverrides = navScope?.versionOverrides;
+    expect(versionOverrides).toHaveLength(1);
+    expect(versionOverrides?.[0].path).toBe('web-sdk');
+    const webVersions = versionOverrides?.[0].versions;
+    expect(webVersions?.[0]).toEqual({
+      id: 'current',
+      label: 'v4.22.0',
+      path: '.',
+      href: '/zh-CN/api-reference/rtc/react-sdk/web-sdk/overview',
+    });
+    expect(webVersions).toHaveLength(4);
+    expect(
+      webVersions?.slice(1).map(({ label, href }) => ({ label, href })),
+    ).toEqual(history.filter((v) => !v.href.includes('/react/react-sdk/')));
+    expect(new Set(navScope?.versions?.map((v) => v.id)).size).toBe(7);
+    expect(new Set(webVersions?.map((v) => v.id)).size).toBe(4);
+    // The child folder remains part of the shared React sidebar, not a new scope.
+    expect(readMeta('rtc/react-sdk/web-sdk').navScope).toBeUndefined();
   });
 
   it.each(['cpp', 'java'])(
