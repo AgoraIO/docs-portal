@@ -32,7 +32,7 @@ The main API groups map to product features as follows:
 
 | Feature area | APIs or guides |
 | --- | --- |
-| Media input and stream key management | Use the streaming key APIs in the [REST API overview](/en/api-reference/api-ref/rtmp-gateway) to create, query, and delete stream keys. For a local stream key generation example, see the [Quickstart](../quickstart). |
+| Media input and streaming key management | Use the streaming key APIs in the [REST API overview](/en/api-reference/api-ref/rtmp-gateway) to create, query, and delete streaming keys. For a local streaming key generation example, see the [Quickstart](../quickstart). |
 | Online stream control | Use the online stream APIs in the [REST API overview](/en/api-reference/api-ref/rtmp-gateway) to query active streams, inspect stream details, force disconnect a stream, or mute and unmute audio or video. |
 | Custom transcoding parameters | Use template APIs in the [REST API overview](/en/api-reference/api-ref/rtmp-gateway) to create, update, delete, or set default transcoding templates for ingress streams. |
 | Server event notification callback | Configure notifications by following [Receive notifications about channel events](../build/optimize-quality-and-monitor-events/receive-notifications.md), then use the [event type reference](/en/api-reference/api-ref/rtmp-gateway/media-gateway-event-types) to interpret callback payloads. |
