@@ -189,7 +189,7 @@ describe('RTM upstream PR #2069 parity', () => {
       );
       expect(body).toContain('实时通知模式（Announce）');
       expect(body).toContain('定时通知模式（Interval）');
-      expect(body).toContain('[8,128]');
+      expect(body).toMatch(/(?:\[8,128\]|8 至 128)/);
       if (platform === 'mini-program') {
         expect(body).not.toContain('512');
         expect(body).not.toContain('从 v2.3.0');
