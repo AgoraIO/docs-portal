@@ -26,7 +26,7 @@ RTSA SDK 支持以下功能：
 
 | 功能 | 描述 |
 | --- | --- |
-| RTSA SDK 间的互通 | 支持多种编码格式的音视频流互通。C 接口的数据类型详见 [`audio_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#audio_data_type_e) 和 [`video_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#video_data_type_e)；Java 接口使用 `AudioDataType` 和 `VideoDataType`。 |
+| RTSA SDK 间的互通 | 支持多种编码格式的音视频流互通。C 接口的数据类型详见 [`audio_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a5a0f97a26cd357a5afed482c46360713) 和 [`video_data_type_e`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1ccdeb97ac0c919ca5de750fad95c222)；Java 接口使用 `AudioDataType` 和 `VideoDataType`。 |
 | RTSA SDK 与 RTC SDK 互通 | 支持 RTSA SDK 与 RTC Native SDK、RTC 三方框架 SDK、RTC Web SDK 和 RTC 小程序 SDK 的双向互通。详见[音视频互通](/zh-CN/realtime-media/rtsa/build/rtc-interoperability/interoperate-rtc)。 |
 | 上行带宽预测 | 支持根据带宽预测算法提出目标码率建议，反馈当前应该提高还是降低码率以及相应的建议值。 |
 | 关键帧 | 支持本地关键帧主动请求和远端关键帧请求响应回调。 |
@@ -58,7 +58,69 @@ RTSA SDK 具有以下性能：
 
 | 特性 | 声网指标 |
 | --- | --- |
-| 包体积 | 集成 SDK 包体积增量 \< 400 KB 在同时收发 320 × 240、H.264 码流的场景中，内存占用 \< 2 MB |
 | 连通率 | 连通率 > 99% |
 | 数据传输速率 | 单个频道单个用户的码率 &le; 50 Mbps |
 | 网络适应性 | 50% 丢包下可无感知恢复 |
+
+### 资源占用
+
+以下数据为 RTSA C SDK 在特定硬件、操作系统和构建配置下的实测结果，仅供参考，不代表所有设备和业务场景下的性能表现。CPU 占用率按单核维度统计，不是多核处理器整机的综合利用率。包体大小是按对应构建命令生成的 SDK 包体积，不等同于集成 SDK 后的包体积增量；内存数据为测试进程的平均占用。
+
+#### 树莓派（Linux arm-32）
+
+测试环境：
+
+| 项目 | 参数 |
+| --- | --- |
+| 架构 | armv7l |
+| CPU | 4 核，ARMv7 Processor rev 4 (v7l)，主频 600–1400 MHz |
+
+资源占用：
+
+| 测试场景 | CPU 平均占用率（%） | 内存平均占用（KB） |
+| --- | ---: | ---: |
+| 发送 1K 视频、接收 240P 视频（H.264） | 12.189 | 47866.99 |
+| 发送 2K 视频（H.264） | 12.855 | 84980.64 |
+| 收发 G.711 音频 | 4.088 | 3138.40 |
+
+包体大小：1097 KB
+
+#### X86（Linux X86-64）
+
+测试环境：
+
+| 项目 | 参数 |
+| --- | --- |
+| 架构 | x86_64，支持 32 位和 64 位 CPU 操作模式 |
+| CPU | 8 个逻辑 CPU、4 核，Intel(R) Core(TM) i7-8565U CPU @ 1.80GHz，主频 400–4600 MHz |
+
+资源占用：
+
+| 测试场景 | CPU 平均占用率（%） | 内存平均占用（KB） |
+| --- | ---: | ---: |
+| 发送 1K 视频、接收 240P 视频（H.264） | 7.777 | 48955.91 |
+| 发送 2K 视频（H.264） | 8.062 | 86503.97 |
+| 收发 G.711 音频 | 4.636 | 2012.00 |
+
+包体大小：1590 KB
+
+#### RTOS（Xtensa）
+
+测试环境：
+
+| 项目 | 参数 |
+| --- | --- |
+| 架构 | Xtensa |
+| CPU | Dual Core + LP Core，项目主频 160 MHz，最高主频 240 MHz |
+
+资源占用：
+
+| 测试场景 | CPU 平均占用率（%） | 内存平均占用（KB） |
+| --- | ---: | ---: |
+| 收发 G.711 音频 | 37.95 | 181 |
+
+包体大小：3871 KB
+
+## 最新版本
+
+[v1.10.1 发版说明](/zh-CN/realtime-media/rtsa/reference/release-notes)。
