@@ -876,12 +876,15 @@ from agora_agent.cn import StepFunTTS
 
 #### FengmingSTT
 
-可选传入 `keywords` 热词列表，这些参数会写入 `asr.keywords`。
+声网自研的「风鸣」STT 服务，无需外部凭据，输出 `asr.vendor = "fengming"`。可选传入 `keywords` 热词列表，这些参数会写入 `asr.keywords`。
 
 ```python
 from agora_agent.cn import FengmingSTT
-
 ```
+
+| Parameter | Type | Required | Default | Description |
+|---|---|---|---|---|
+| `keywords` | `List[str]` | No | `None` | 热词列表，用于提升 ASR 识别准确率 |
 
 #### TencentSTT
 
@@ -891,7 +894,6 @@ from agora_agent.cn import TencentSTT
 
 | Parameter | Type | Required | Default | Description |
 |---|---|---|---|---|
-| `keywords` | `List[str]` | No | `None` | 热词列表，用于提升 ASR 识别准确率 |
 | `key` | `str` | Yes | — | 腾讯云 ASR 参数 `secret_id` |
 | `app_id` | `str` | Yes | — | 腾讯云 ASR app id |
 | `secret` | `str` | Yes | — | 腾讯云 ASR 参数 `secret_key` |
