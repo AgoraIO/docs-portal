@@ -74,4 +74,3 @@ Final evidence: [pipeline and digests](evidence/2026-10-19-b108/pipeline.json), 
 Desktop dark/light and 390px mobile screenshots in PR #1212 come from the final deployed staging source. Computed selected colors have clear foreground/background contrast in both themes. Mobile document width equals its 390px viewport. Temporary network blocks and device emulation were cleared; the local preview server and temporary verification tabs were closed.
 
 Build #104 failed before deployment at server import protection; the boundary is fixed. Build #105 was cancelled before deployment to incorporate the newer Chinese base. Another user’s #106 was untouched and timed out before deployment. Production rollout is outside this change; its P0 build flag stays disabled.
-

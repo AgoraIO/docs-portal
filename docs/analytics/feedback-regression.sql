@@ -34,4 +34,3 @@ SELECT 'repeat' AS journey_id, 'journey' AS feedback_scope, 'resolution' AS ques
   FROM valid_feedback WHERE toString(response) != previous_response
   GROUP BY journey_id, feedback_scope, question_id, scope_id
 ) SELECT journey_id,latest_response,canonical_path,reported_doc_view_id,feedback_source,answered_at FROM docs_feedback_facts ORDER BY journey_id
-

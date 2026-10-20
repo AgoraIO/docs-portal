@@ -353,7 +353,7 @@ export function createDocsMeasurement(options: Options) {
       )
         return;
       journey = attribution.journey;
-      pending = attribution;
+      pending = { ...attribution, target: measurementPath(attribution.target) };
       options.save?.(journey);
     },
     viewContent(input: ContentContext) {

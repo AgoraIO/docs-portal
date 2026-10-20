@@ -98,4 +98,3 @@ receipt = {'checked_at': datetime.datetime.now(datetime.timezone.utc).isoformat(
                        for state in ['pass', 'needs_review', 'error']}, 'cases': results}
 pathlib.Path(args.out).write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + '\n')
 print(json.dumps(receipt['summary'], ensure_ascii=False))
-
