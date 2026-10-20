@@ -22,3 +22,12 @@
 另一个当前RTSA源码链接 `https://doc.shengwang.cn/api-ref/rtsa/c/agora__rtc__api_8h_source.html#l01930` 带/不带.html均404；archive0.0.492同路径返回200却不是目标方法/行号页，因此不能当有效源码替代。当前CloudProxy指南改链到本站有限参考页，只迁移固定header的CONFIG_RTC_PROXY guard、枚举和函数声明，不编造返回值或运行行为。
 
 结论：10个历史意图中8个有正确版本的可用外链（其中2个为明确记录的同版本备用），Android/iOS4.6.4两项待旧站恢复或提供有效官方地址。此报告不是可用性永久保证，不代表PR已合并/部署。
+
+## 11:41–11:43 主控复验：两条4.6.4已有浏览器身份实证
+
+上表和结论记录的是早期观察，不作为本次最终判定。最后复验时curl出现不同结果：Android仍最终200跳 `/404`，iOS则保持0.0.519原URL并返回真实iOS API概览。随后Chrome154全新隔离会话分别直接访问：
+
+- [iOS4.6.4官方0.0.519](https://doc-archive.shengwang.cn/archive/0.0.519/api-ref/rtc/ios/API/rtc_api_overview)：最终保留原URL，title/h1为API概览，可见版本选择器首项v4.6.4。
+- [Android4.6.4官方0.0.519](https://doc-archive.shengwang.cn/archive/0.0.519/api-ref/rtc/android/API/rtc_api_overview)：直接导航及再次reload均保持原URL，真实概览选择器首项v4.6.4。
+
+专用浏览器已关闭。截图由主控提供并随源#2094修复保存。没有推断“旧站已经稳定恢复”；同一URL对请求方式/时间存在不一致是观察到的事实，早期软404证据保留。基于真实浏览器的正确版本身份，这两条外链现在可纳入原任务，10个历史意图都有对应版本可用实证。它们仍依赖外站可用性，不能保证永久稳定。

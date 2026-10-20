@@ -37,3 +37,12 @@ API前缀 `content/docs/zh-CN/api-reference/rtc/{android,cpp-all-platforms,ios,m
 - 三控制CSV只改实际本源sourcekeys；HTML40原defer修真实现有目标，新增5源缺行补唯一映射。保metadata no-redirect。完成标completed/ready/pending，machine `audit_scope=source-pr-delta`，不伪装全页初次保真pass；video-basic交#2085并明确依赖。
 - 报告 `docs/agents/reports/2026-10-20-hotfix-pr2094-fix.md` 与机器证据记录46源分类/hunk trace、旧nav原文及树、所有hash兼容、source疑义、归档两有效/两阻塞，勘误审计0.6等无证据推断。
 - 本地提交 READY_WITHOUT_FULL，不push/PR，不自行full/build/preview。主控双审、full、真实浏览器和组合检查后创建独立PR。
+
+## 2026-10-20 11:42 归档复验增量（覆盖先前两入口阻塞处置）
+
+主控隔离Chrome154直接导航与Android再次reload，Android/iOS的原0.0.519地址均保持原URL且真实API概览选择器显示v4.6.4。curl仍可见Android跳404，iOS同次curl已为真实概览，说明请求结果存在不一致；不推断旧站何时恢复，也不抹掉早期失败记录。当前已有有效同版本浏览器证据，可以完成用户原先要求的两条外链。
+
+- 批准生产写集38→40，仅增加Android/iOS外层meta，各current后加v4.6.4/path4.6.4/对应原0.0.519官方href；保current/default/pages/Android本地4.6.0，不加历史正文目录。
+- 源#2113的4.6.2仍由独立目标#1231承接；最终组合顺序current→4.6.4→4.6.2→4.6.0（若该平台已有）。macOS/C++已验证同SDK4.6.2的0.0.492备用保持。
+- 新2meta回归先RED→GREEN，完整schema/href/不造folder/去新增后base深等价及真实resolver保留外链；此前两个Minor的精确参数/返回/完整成员集合守卫也保留。报告元数据fanout与归档状态据实际更新并附主控截图，不冒称永久可用。
+- 此增量须重新独立规格→质量、独占full与最终组合build/UI。组合build在旧production `8e8f068361` 已主动停止exit130，不能宣称构建通过。
