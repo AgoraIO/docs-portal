@@ -14,6 +14,19 @@ const allowedParams = new Set([
 ]);
 const identifier = /^[a-z0-9][a-z0-9-]{0,79}$/;
 
+export function handleHealthRequest(
+  env: Record<string, string | undefined> = process.env,
+): Response {
+  const revision = env.DOCS_RELEASE_REVISION;
+  return Response.json(
+    {
+      status: 'ok',
+      ...(revision && /^[a-f0-9]{40}$/.test(revision) ? { revision } : {}),
+    },
+    { headers: { 'Cache-Control': 'no-store' } },
+  );
+}
+
 export function parseSearchApiQuery(params: URLSearchParams): CnSearchQuery {
   const input: Record<string, string> = {};
   for (const [key, value] of params) {
@@ -60,8 +73,26 @@ export function readSearchServiceConfig(
   return { host, indexUid, searchOnlyKey };
 }
 
+// Optional tracing headers are untrusted and must never affect search behavior.
+export function searchMeasurementHeaders(input: Headers) {
+  const output: Record<string, string> = {};
+  const uuid =
+    /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i;
+  for (const name of ['X-Docs-Search-Id', 'X-Docs-Request-Id']) {
+    const value = input.get(name);
+    if (value && uuid.test(value)) output[name] = value;
+  }
+  const purpose = input.get('X-Docs-Request-Purpose');
+  if (purpose && ['results', 'facets', 'prefetch'].includes(purpose))
+    output['X-Docs-Request-Purpose'] = purpose;
+  return output;
+}
+
 export async function handleSearchRequest(request: Request): Promise<Response> {
-  const headers = { 'Cache-Control': 'no-store' };
+  const headers = {
+    'Cache-Control': 'no-store',
+    ...searchMeasurementHeaders(request.headers),
+  };
   let query: CnSearchQuery;
   try {
     query = parseSearchApiQuery(new URL(request.url).searchParams);

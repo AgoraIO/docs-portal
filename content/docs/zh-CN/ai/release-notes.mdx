@@ -2,7 +2,10 @@
 title: "发版说明"
 description: "查看对话式 AI 引擎的版本更新、问题修复、行为变更和兼容性说明，评估升级影响。"
 ---
-## v2.13
+
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v2.13" id="v213" headingLevel={2} value="v213">
 
 该版本于 2026 年 9 月 18 日发布。
 
@@ -25,7 +28,9 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
   - `properties.filler_words.content.generated_config.context_message_limit`：对话消息数量上限。
   - `properties.filler_words.content.generated_config.history_character_limit`：历史消息文本字符数上限。
 
-## v2.12
+</Accordion>
+
+<Accordion title="v2.12" id="v212" headingLevel={2} value="v212">
 
 该版本于 2026 年 9 月 14 日发布。
 
@@ -126,7 +131,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 | `turn_detection.start_of_speech.mode` = `keywords` / `disabled` 的打断模式 | 后续版本 | 后续不再保证打断行为生效 | 尽快迁移至 `properties.interruption` 配置 |
 | `properties.silence_timeout` 和 `properties.llm.silence_message` | 后续版本 | 静音提示行为可能失效 | 尽快迁移至 `properties.parameters.silence_config` |
 
-## v2.11
+</Accordion>
+
+<Accordion title="v2.11" id="v211" headingLevel={2} value="v211">
 
 该版本于 2026 年 8 月 11 日发布。
 
@@ -155,7 +162,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 - [POST 创建对话式智能体](/zh-CN/api-reference/conversational-ai/rest-api/agent/join)
   - `properties.asr.keywords` 新增 ASR 热词配置
 
-## v2.10
+</Accordion>
+
+<Accordion title="v2.10" id="v210" headingLevel={2} value="v210">
 
 该版本于 2026 年 7 月 22 日发布。
 
@@ -222,7 +231,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 - [`TAgentManualEosPayload`](/zh-CN/api-reference/conversational-ai/web/struct#tagentmanualeospayload)
 - [`TAgentManualEosEvent`](/zh-CN/api-reference/conversational-ai/web/struct#tagentmanualeosevent)
 
-## v2.9
+</Accordion>
+
+<Accordion title="v2.9" id="v29" headingLevel={2} value="v29">
 
 该版本于 2026 年 7 月 1 日发布。
 
@@ -269,7 +280,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 - [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 新增 `llm.greeting_configs.audio_download_timeout_ms`
 - [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join) 新增 `llm.greeting_configs.audio_pcm_sample_rate`
 
-## v2.8
+</Accordion>
+
+<Accordion title="v2.8" id="v28" headingLevel={2} value="v28">
 
 该版本于 2026 年 6 月 9 日发布。
 
@@ -317,7 +330,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
     - `0` 仅表示不因频道空闲超时退出
     - 无论 `idle_timeout` 取值为何，单次任务最长运行时间均为 72 小时
 
-## v2.7
+</Accordion>
+
+<Accordion title="v2.7" id="v27" headingLevel={2} value="v27">
 
 该版本于 2026 年 5 月 20 日发布。
 
@@ -359,7 +374,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
     - 响应 Body 新增 `agent_id`、`name`、`channel`、`total_turn_count` 和 `pagination` 字段
 - [POST 发送自定义指令](/zh-CN/api-reference/api-ref/conversational-ai/think) 的 `on_listening_action` 新增 `interrupt`
 
-## v2.6
+</Accordion>
+
+<Accordion title="v2.6" id="v26" headingLevel={2} value="v26">
 
 该版本于 2026 年 4 月 22 日发布。
 
@@ -464,7 +481,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 </TabsContent>
 </Tabs>
 
-## v2.5
+</Accordion>
+
+<Accordion title="v2.5" id="v25" headingLevel={2} value="v25">
 
 该版本于 2026 年 3 月 30 日发布。
 
@@ -498,7 +517,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 - [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)的 `properties.turn_detection.config.end_of_speech.semantic_config` 字段新增 `pause_state_enabled` 字段
 - [GET 查询对话轮次信息](/zh-CN/api-reference/api-ref/conversational-ai/turns)
 
-## v2.4
+</Accordion>
+
+<Accordion title="v2.4" id="v24" headingLevel={2} value="v24">
 
 该版本于 2026 年 2 月 2 日发布。
 
@@ -508,9 +529,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 
 该版本为 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口新增 `llm.mcp_servers` 字段，用于接入 MCP (Model Context Protocol) 服务器。你可以在创建智能体时配置 MCP 服务器，并开启工具调用 (`advanced_features.enable_tools` 设为 `true`)，让智能体调用外部服务提供的工具 (tools)，实现更复杂的业务逻辑。
 
-#### 垫词功能 (Beta)
+#### 承接词功能 (Beta)
 
-该版本为 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口新增 `filler_words` 字段，用于配置垫词功能。垫词功能可在 LLM 响应等待时播报垫词，缓解用户等待焦虑，提升对话流畅度。
+该版本为 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口新增 `filler_words` 字段，用于配置承接词功能。承接词功能可在 LLM 响应等待时播报承接词，缓解用户等待焦虑，提升对话流畅度。
 
 ### 改进
 
@@ -562,7 +583,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
     - `turn_detection.mode`
     - `turn_detection.config`
 
-## v2.3
+</Accordion>
+
+<Accordion title="v2.3" id="v23" headingLevel={2} value="v23">
 
 该版本于 2026 年 1 月 7 日发布。
 
@@ -590,7 +613,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 
 - [POST 停止对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/leave)改为异步响应
 
-## v2.2
+</Accordion>
+
+<Accordion title="v2.2" id="v22" headingLevel={2} value="v22">
 
 该版本于 2025 年 12 月 11 日发布。
 
@@ -609,7 +634,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 
 - [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)新增 `llm.greeting_configs.mode` 字段
 
-## v2.1
+</Accordion>
+
+<Accordion title="v2.1" id="v21" headingLevel={2} value="v21">
 
 该版本于 2025 年 12 月 1 日发布。
 
@@ -631,7 +658,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
     - `llm.template_variables`
     - `labels`
 
-## v2.0
+</Accordion>
+
+<Accordion title="v2.0" id="v20" headingLevel={2} value="v20">
 
 该版本于 2025 年 11 月 6 日发布。
 
@@ -734,7 +763,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
     - `turn_detection.silence_duration_ms` （迁移自 `vad.silence_duration_ms`）
     - `turn_detection.threshold` （迁移自 `vad.threshold`）
 
-## v1.7
+</Accordion>
+
+<Accordion title="v1.7" id="v17" headingLevel={2} value="v17">
 
 该版本于 2025 年 7 月 29 日发布。
 
@@ -818,7 +849,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 </TabsContent>
 </Tabs>
 
-## v1.6
+</Accordion>
+
+<Accordion title="v1.6" id="v16" headingLevel={2} value="v16">
 
 该版本于 2025 年 7 月 1 日发布。
 
@@ -860,7 +893,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
     - [iOS](/zh-CN/api-reference/conversational-ai/ios/overview)
     - [Web](/zh-CN/api-reference/conversational-ai/web/overview)
 
-## v1.5
+</Accordion>
+
+<Accordion title="v1.5" id="v15" headingLevel={2} value="v15">
 
 该版本于 2025 年 6 月 6 日发布。
 
@@ -876,7 +911,9 @@ v2.13 起，显式指定第三方 ASR vendor 但未配置 `properties.asr.params
 
 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)接口新增 `tts.skip_patterns` 字段。
 
-## v1.4
+</Accordion>
+
+<Accordion title="v1.4" id="v14" headingLevel={2} value="v14">
 
 该版本于 2025 年 5 月 26 日发布。
 
@@ -938,7 +975,9 @@ v1.4 版本对 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conv
 - `silence_timeout`
 - `llm.silence_message`
 
-## v1.3
+</Accordion>
+
+<Accordion title="v1.3" id="v13" headingLevel={2} value="v13">
 
 该版本于 2025 年 4 月 16 日发布。
 
@@ -982,7 +1021,9 @@ v1.4 版本对 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conv
 - [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)新增 `silence_timeout` 和 `llm.silence_message` 参数
 - [POST 播报自定义信息](/zh-CN/api-reference/api-ref/conversational-ai/speak)新增 `priority` 和 `interruptable` 参数
 
-## v1.2
+</Accordion>
+
+<Accordion title="v1.2" id="v12" headingLevel={2} value="v12">
 
 该版本于 2025 年 3 月 27 日发布。
 
@@ -1003,7 +1044,9 @@ v1.4 版本对 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conv
 - [POST 播报自定义信息](/zh-CN/api-reference/api-ref/conversational-ai/speak)
 - [POST 打断智能体](/zh-CN/api-reference/api-ref/conversational-ai/interrupt)
 
-## v1.1
+</Accordion>
+
+<Accordion title="v1.1" id="v11" headingLevel={2} value="v11">
 
 该版本于 2025 年 3 月 19 日发布。
 
@@ -1023,7 +1066,9 @@ v1.4 版本对 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conv
 
 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)新增 `enable_rtm` 和 `agent_rtm_uid` 字段
 
-## v1.0 GA
+</Accordion>
+
+<Accordion title="v1.0 GA" id="v10-ga" headingLevel={2} value="v10-ga">
 
 该版本于 2025 年 3 月 5 日发布。
 
@@ -1055,7 +1100,9 @@ v1.4 版本对 [POST 创建对话式智能体](/zh-CN/api-reference/api-ref/conv
 
 该版本新增热词功能，添加热词可以显著提升对话式 AI 引擎在专有词汇上的识别准确率。目前该功能处于 Beta 发布阶段，请[联系技术支持](https://ticket.shengwang.cn)开通。
 
-## v1.0 Public Beta
+</Accordion>
+
+<Accordion title="v1.0 Public Beta" id="v10-public-beta" headingLevel={2} value="v10-public-beta">
 
 该版本于 2025 年 2 月 18 日发布。本次发版聚焦于提供自然流畅、低延迟、高可靠的实时语音对话能力，助力开发者快速构建智能化、沉浸式的交互体验。
 
@@ -1099,3 +1146,7 @@ SDK 会智能识别和消除背景噪音，即使在嘈杂的公共场所，都�
 #### 多平台支持
 
 支持 iOS、Android、Web、 小程序、以及各类嵌入式硬件等客户端，提供跨平台的一致性和无缝集成体验，满足不同场景的应用需求。
+
+</Accordion>
+
+</Accordions>
