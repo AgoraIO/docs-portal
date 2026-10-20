@@ -36,12 +36,17 @@ function androidBody(relativePath: string) {
 }
 
 describe('RTC upstream PR #2108 Maven CDN guidance', () => {
-  it('places the dated caution above all Android release versions', () => {
+  it('keeps the dated caution outside the Android release accordions', () => {
     const android = androidBody(releaseNotes);
-    const firstVersion = android.search(/^## v\d+\.\d+\.\d+/m);
-    const globalNotice = android.slice(0, firstVersion).trim();
+    const versionsStart = android.indexOf(
+      '<Accordions type="multiple" openFirst>',
+    );
+    const globalNotice = android.slice(0, versionsStart).trim();
 
-    expect(firstVersion).toBeGreaterThan(0);
+    expect(versionsStart).toBeGreaterThan(0);
+    expect(android.slice(versionsStart)).toMatch(
+      /^<Accordions type="multiple" openFirst>\s+<Accordion title="v\d+\.\d+\.\d+"/,
+    );
     expect(globalNotice).toMatch(/^:::caution\[注意\]\n/);
     expect(globalNotice).toContain('自 2026 年 9 月 14 日开始');
     expect(globalNotice).toContain(

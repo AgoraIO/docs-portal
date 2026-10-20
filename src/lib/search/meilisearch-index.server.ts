@@ -173,7 +173,9 @@ export async function prepareSearchIndex({
     if (
       record.locale !== 'zh-CN' ||
       record.status !== 'published' ||
-      !isPublicCnSearchUrl(record.url)
+      !isPublicCnSearchUrl(record.url) ||
+      (record.canonicalUrl !== undefined &&
+        !isPublicCnSearchUrl(record.canonicalUrl))
     )
       throw new Error('Only published public CN records may be indexed');
     if (seen.has(record.id))

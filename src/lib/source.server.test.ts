@@ -2,6 +2,53 @@ import { describe, expect, it } from 'vitest';
 import { getLLMText, getPlatformLLMText, source } from './source.server';
 
 describe('fumadocs source loader', () => {
+  it.each([
+    { slugs: ['ai', 'release-notes'], version: 'v2.13', id: 'v213' },
+    {
+      slugs: [
+        'realtime-media',
+        'cloud-recording',
+        'reference',
+        'release-notes',
+      ],
+      version: '2026.10.08',
+      id: '20261008',
+    },
+  ])(
+    'keeps Chinese version headings in machine-readable $slugs',
+    async ({ slugs, version, id }) => {
+      const page = source.getPage(slugs, 'zh-CN');
+      expect(page).toBeDefined();
+      if (!page) throw new Error('Missing Chinese release notes');
+
+      const markdown = await getLLMText(page);
+      expect(markdown).toContain(`### ${version} [#${id}]`);
+      expect(markdown).toContain('该版本');
+    },
+  );
+
+  it.each([
+    { platform: 'android' as const, id: 'v470' },
+    { platform: 'ios' as const, id: 'v470-1' },
+  ])(
+    'preserves Chinese $platform version IDs and filters other platforms in Markdown',
+    async ({ platform, id }) => {
+      const page = source.getPage(
+        ['realtime-media', 'rtc', 'reference', 'release-notes'],
+        'zh-CN',
+      );
+      expect(page).toBeDefined();
+      if (!page) throw new Error('Missing Chinese RTC release notes');
+
+      const markdown = await getPlatformLLMText(page, platform);
+      expect(markdown).toContain(`### v4.7.0 [#${id}]`);
+      expect(markdown).toContain('声网高级美颜 2.1');
+      expect(markdown).not.toContain('title="v2.5.1"');
+      expect(markdown).not.toContain('_PlatformPanel');
+    },
+    30_000,
+  );
+
   it('resolves localized OpenAPI operation pages from the merged source', () => {
     const page = source.getPage(
       ['api-reference', 'api-ref', 'conversational-ai', 'join'],

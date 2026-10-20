@@ -43,6 +43,7 @@ import {
 import { normalizeCnProductFacets } from '@/lib/search/cn-products';
 import {
   type CnSearchPageResponse,
+  isPublicCnSearchUrl,
   mergeSearchPageGroups,
   type SearchFacets,
   searchCnDocsPage,
@@ -87,7 +88,7 @@ export function DocsSearchPage({
     () =>
       setRecent(
         getRecentPages()
-          .filter((page) => page.url.startsWith('/zh-CN/'))
+          .filter((page) => isPublicCnSearchUrl(page.url))
           .slice(0, 4),
       ),
     [],

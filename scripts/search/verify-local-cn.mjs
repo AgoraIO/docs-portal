@@ -1,12 +1,13 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { zhCnFaqItems } from '../../src/components/faq/faq-data.zh-cn.ts';
+import { toCnPublicSearchUrl } from '../../src/lib/search/cn-search-urls.mjs';
 
 // 只读验收：通过当前页面使用的 API 检查筛选和排序，不改索引设置。
 const base = process.env.CN_SEARCH_VERIFY_URL ?? 'http://127.0.0.1:3004';
 const recordsPath = process.env.CN_SEARCH_RECORDS ?? 'dist/search/cn-records-version-verified.json';
 const records = JSON.parse(await readFile(recordsPath, 'utf8'));
-const indexedPages = new Set(records.map(record => record.url.split('#')[0]));
-const faqMissing = zhCnFaqItems.filter(item => !indexedPages.has(item.href));
+const indexedPages = new Set(records.map(record => toCnPublicSearchUrl(record.url).split('#')[0]));
+const faqMissing = zhCnFaqItems.filter(item => !indexedPages.has(toCnPublicSearchUrl(item.href)));
 const queries = [
   { q: 'manualSOS', target: '/zh-CN/api-reference/conversational-ai/web/conversationalaiapi#manualsos' },
   { q: 'manualSOS', platform: 'ios', target: '/zh-CN/api-reference/conversational-ai/ios/conversationalaiapi#manualsos' },
@@ -41,7 +42,7 @@ for (const query of queries) {
   if (!response.ok) throw new Error(`Search API HTTP ${response.status}`);
   const data = await response.json();
   const hits = data.groups.flatMap(group => group.sections);
-  const matches = hit => query.target ? hit.url === query.target : query.prefix ? hit.url.startsWith(query.prefix) : true;
+  const matches = hit => query.target ? toCnPublicSearchUrl(hit.url) === toCnPublicSearchUrl(query.target) : query.prefix ? toCnPublicSearchUrl(hit.url).startsWith(toCnPublicSearchUrl(query.prefix)) : true;
   const rank = hits.findIndex(matches) + 1 || null;
   const violations = hits.filter(hit =>
     hit.locale !== 'zh-CN' || hit.hidden !== false || hit.status !== 'published' ||
@@ -61,21 +62,22 @@ for (const query of queries) {
 const allFaq = new Set(zhCnFaqItems.map(item => item.href));
 const linkChecks = [];
 const publishedRoutes = JSON.parse(await readFile('dist/client/__static/docs-routes.json', 'utf8'));
-const canonicalPaths = new Map(publishedRoutes.map(route => [route.url, route.canonicalPath]));
-const urls = new Set(results.flatMap(result => [result.query.target, ...result.top.map(hit => hit.url)]).filter(Boolean));
+const routesByPublicUrl = new Map(publishedRoutes.map(route => [toCnPublicSearchUrl(route.url), route]));
+const urls = new Set(results.flatMap(result => [result.query.target, ...result.top.map(hit => hit.url)]).filter(Boolean).map(toCnPublicSearchUrl));
 for (const url of urls) {
   const [pageUrl, anchor] = url.split('#');
-  let payload;
+  let html;
   try {
-    const canonicalPath = canonicalPaths.get(pageUrl) ?? pageUrl;
-    payload = JSON.parse(await readFile(`dist/client/__static/docs${canonicalPath}.json`, 'utf8'));
+    const route = routesByPublicUrl.get(pageUrl);
+    if (!route) throw new Error(`No published route: ${pageUrl}`);
+    JSON.parse(await readFile(`dist/client/__static/docs${route.canonicalPath}.json`, 'utf8'));
+    html = await readFile(`dist/client${route.url}/index.html`, 'utf8');
   } catch {
-    linkChecks.push({ url, status: 'missing-static-payload' });
+    linkChecks.push({ url, status: 'missing-static-artifact' });
     continue;
   }
   const response = await fetch(`${base}${pageUrl}`, { signal: AbortSignal.timeout(15000) });
   await response.arrayBuffer();
-  const html = await readFile(`dist/client${pageUrl}/index.html`, 'utf8');
   const ids = new Set([...html.matchAll(/\bid=["']([^"']+)["']/g)].map(match => match[1]));
   const validAnchor = !anchor || ids.has(anchor);
   linkChecks.push({ url, httpStatus: response.status, status: response.ok && validAnchor ? 'verified' : response.ok ? 'anchor-needs-review' : 'page-request-failed' });

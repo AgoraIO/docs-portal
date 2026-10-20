@@ -2,6 +2,7 @@ import { docs } from 'collections/server';
 import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
+import { addAccordionHeadingsToTocText } from './mdx/accordion-toc';
 import {
   createLocalizedOpenApiSource,
   getOpenApiLoaderPlugin,
@@ -131,8 +132,8 @@ export async function getLLMText(page: InferPageType<typeof source>) {
 
   if (platformGroupText) {
     return locale === 'en'
-      ? normalizeAgentMarkdownLinks(platformGroupText)
-      : platformGroupText;
+      ? normalizeAgentMarkdown(platformGroupText)
+      : addAccordionHeadingsToTocText(platformGroupText);
   }
 
   const processed =
@@ -141,12 +142,12 @@ export async function getLLMText(page: InferPageType<typeof source>) {
       : '';
 
   if (locale !== 'en') {
-    return `# ${page.data.title} (${page.url})
+    return addAccordionHeadingsToTocText(`# ${page.data.title} (${page.url})
 
-${processed}`;
+${processed}`);
   }
 
-  return normalizeAgentMarkdownLinks(
+  return normalizeAgentMarkdown(
     buildCanonicalPlatformLLMText({
       pageTitle: page.data.title,
       pageUrl: page.url,
@@ -188,7 +189,9 @@ export async function getPlatformLLMText(
 
 ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
 
-    return locale === 'en' ? normalizeAgentMarkdownLinks(markdown) : markdown;
+    return locale === 'en'
+      ? normalizeAgentMarkdown(markdown)
+      : addAccordionHeadingsToTocText(markdown);
   }
 
   if (!('getText' in page.data) || typeof page.data.getText !== 'function') {
@@ -210,11 +213,13 @@ ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
     preserveSourceFormatting: locale !== 'en',
   });
 
-  return locale === 'en' ? normalizeAgentMarkdownLinks(markdown) : markdown;
+  return locale === 'en'
+    ? normalizeAgentMarkdown(markdown)
+    : addAccordionHeadingsToTocText(markdown);
 }
 
-function normalizeAgentMarkdownLinks(markdown: string) {
-  return markdown.replace(
+function normalizeAgentMarkdown(markdown: string) {
+  return addAccordionHeadingsToTocText(markdown).replace(
     /(\]\()(https?:\/\/(?:\\.|[^\\)])+)(\))/g,
     (_match, opening: string, destination: string, closing: string) =>
       `${opening}${destination.replaceAll('\\(', '%28').replaceAll('\\)', '%29')}${closing}`,
