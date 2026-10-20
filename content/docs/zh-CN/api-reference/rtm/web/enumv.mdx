@@ -21,6 +21,8 @@ title: "枚举类"
 | `MESSAGE` | Message Channel 频道。|
 | `USER` | 私密频道。|
 
+<a id="connectionstate"></a>
+
 <a id="linkstate"></a>
 
 ## SDK 连接状态类型
@@ -33,6 +35,8 @@ title: "枚举类"
 |   `DISCONNECTED`    |      已断开连接。      |
 |   `SUSPENDED`    |      挂起状态。     |
 |   `FAILED`    |      连接失败。      |
+
+<a id="connectionreason"></a>
 
 <a id="linkstatechangereason"></a>
 
@@ -165,31 +169,3 @@ title: "枚举类"
 |   `SNAPSHOT`  |        加入频道时 Topic 的快照信息。                  |
 |   `REMOTE_JOIN`    |      远端用户加入 Topic。      |
 |   `REMOTE_LEAVE`    |      远端用户离开 Topic。      |
-
-<a id="connectionreason"></a>
-
-## （已废弃）SDK 连接状态改变原因
-
-|       属性值      | 描述             |
-| --------- | ----- |
-|    `CONNECTING`  | 建立网络连接中。         |
-|    `LOGIN_SUCCESS`  | SDK 登录 RTM 系统成功。         |
-|    `REJECTED_BY_SERVER`  | SDK 被服务器禁止连接。       |
-|    `LOST`  | SDK 和服务器失去连接。       |
-|    `INTERRUPTED`  | 网络连接中断。        |
-|    `LOGOUT`  | SDK 已退出 RTM 系统。        |
-|    `PRESENCE_NOT_READY`  |  Presence 服务未就绪。你需要重新调用 `login` 方法登录 RTM 系统并重新执行对 SDK 的所有操作。    |
-|    `SAME_UID_LOGIN`  | 使用相同的用户 ID 从不同的设备加入同一频道。     |
-|    `TOKEN_EXPIRED`  | 当前使用的 Token 过期，不再有效，需要重新在你的服务端申请生成 Token。  |
-
-<a id="connectionstate"></a>
-
-## （已废弃）SDK 连接状态
-
-|       属性值      | 描述             |
-| --------- | ----- |
-|    `DISCONNECTED`  | SDK 已和服务器断开连接。         |
-|    `CONNECTING`  | SDK 正在连接服务器。         |
-|    `CONNECTED`  | SDK 已连上服务器。         |
-|    `RECONNECTING`  | SDK 和服务器断开连接，正在重新连接服务器。                     |
-|    `FAILED`  | SDK 无法连接服务器。           |

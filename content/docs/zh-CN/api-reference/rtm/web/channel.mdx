@@ -22,6 +22,10 @@ RTM 提供消息、状态、事件变更等事件通知能力。通过设置事�
 
 通过调用 `subscribe` 方法，客户端可以订阅 Message Channel 并开始接收频道中的消息和事件通知。成功调用该方法后，订阅该频道且开启 Presence 事件监听的用户会收到 `REMOTE_JOIN` 类型的 `presence` 事件，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
+从 v2.3.0 起，当 SDK 处于 `CONNECTING`、`DISCONNECTED` 或 `SUSPENDED` 状态时，你仍可以调用该方法。SDK 会缓存订阅请求，并在连接恢复后继续执行。
+
+该方法返回成功表示 Message Channel 订阅已完成，但 Presence 加入可能仍在异步执行。如果订阅后需要立即调用 Presence API，应用仍需处理 Presence 服务尚未就绪或请求异步失败的结果。
+
 :::info[信息]
 该方法仅适用于 Message Channel。
 :::
@@ -110,6 +114,8 @@ type ErrorInfo = {
 ### 接口描述
 
 如果你不再需要关注某个频道，可调用 `unsubscribe` 方法取消订阅该频道。成功取消订阅该频道后，其他订阅该频道并开启事件监听的用户会收到 `REMOTE_LEAVE` 类型的 `presence` 事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
+
+如果在订阅完成前对同一频道调用该方法，进行中的订阅请求会返回 `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` (-11040)，随后 SDK 完成取消订阅。取消后到达的迟到消息不会再透传给应用。
 
 :::info[信息]
 该方法仅适用于 Message Channel。

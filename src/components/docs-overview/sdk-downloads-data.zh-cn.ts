@@ -1856,8 +1856,18 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于低延时消息、信令、状态同步和频道管理的 SDK',
         versions: [
           {
+            id: '2.3.0-rtm-sdk-web',
+            label: '版本 2.3.0（最新）',
+            downloadLink:
+              'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',
+            md5: '13f63c0322c49b1edd3f7a0e2c8c89fc',
+            packageName: 'agora-rtm',
+            packageManager: 'https://www.npmjs.com/package/agora-rtm',
+            releaseDate: '2026 年 8 月 10 日',
+          },
+          {
             id: '2.2.4-rtm-sdk-web',
-            label: '版本 2.2.4（最新）',
+            label: '版本 2.2.4',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip',
             md5: '6043262f5e5999a06e12d83c3c40a943',
@@ -1867,7 +1877,7 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '2.2.4-signaling-sdk-web',
-            label: '版本 2.2.4 （最新）',
+            label: '版本 2.2.4',
             downloadLink:
               'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip',
             packageManager:

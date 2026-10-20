@@ -144,22 +144,16 @@ rtm.addEventListener("lock", event => {
     const owner = event.owner;                  // The owner of this lock
     const timestamp = event.timestamp;          // Event timestamp
 });
-// Handle connection state change event
-rtm.addEventListener("status", event => {
-    const currentState = event.state;                // Which connection state right now
-    const changeReason = event.reason;                // Why trigger this event
-    const timestamp = event.timestamp;          // Event timestamp
-});
 // Handle link state change event
-rtm.addEventListener('linkState', event => {
-    const currentState = event.currentState;
-    const previousState = event.previousState;
-    const serviceType = event.serviceType;
-    const operation = event.operation;
-    const reason = event.reason;
-    const affectedChannels = event.affectedChannels;
-    const timestamp = event.timestamp;
-    const isResumed = event.isResumed;
+rtm.addEventListener("linkState", event => {
+    const currentState = event.currentState; // Current link state
+    const previousState = event.previousState; // Previous link state
+    const serviceType = event.serviceType; // Service type
+    const operation = event.operation; // Operation that triggered this event
+    const reason = event.reason; // Reason for the state change
+    const affectedChannels = event.affectedChannels; // Affected channels
+    const timestamp = event.timestamp; // Event timestamp
+    const isResumed = event.isResumed; // Whether the connection resumed
 });
 // Handle token privilege will expire event
 rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {

@@ -692,6 +692,7 @@ type ErrorInfo = {
 | `-10023` | `RTM_ERROR_LOGIN_CANCELED` | <Slot name="error-codes-javascript-html-0-19-2" /> |
 | `-10025` | `RTM_ERROR_NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
 | `-10026` | `RTM_ERROR_RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
+| `-10027` | `RTM_ERROR_DUPLICATE_USER_ID` | 同一 App ID 和用户 ID 已被活跃 RTM 实例占用。请复用已有实例，或释放旧实例后再创建新实例。 |
 | `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | <Slot name="error-codes-javascript-html-0-22-2" /> |
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-javascript-html-0-23-2" /> |
 | `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
@@ -718,6 +719,7 @@ type ErrorInfo = {
 | `-11029` | `RTM_ERROR_CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
 | `-11030` | `RTM_ERROR_CHANNEL_INVALID_CUSTOM_TYPE` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
 | `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | <Slot name="error-codes-javascript-html-0-47-2" /> |
+| `-11040` | `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` | 订阅频道操作已取消。调用 `subscribe` 后，如果在收到结果前调用 `unsubscribe` 打断订阅，会返回该错误，随后完成取消订阅。 |
 | `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
 | `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
 | `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |

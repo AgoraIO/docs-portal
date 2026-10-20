@@ -26,6 +26,16 @@ description: "了解如何在实时消息 RTM 中消息频道，包括适用场�
 
 监听了 `config.onmessageevent` 事件通知后，你就可以调用 `channel.subscribe` 方法订阅频道，从而接收频道中的消息和事件通知。
 
+<PlatformStructured platform="web">
+
+从 v2.3.0 起，当连接状态为 `CONNECTING`、`DISCONNECTED` 或 `SUSPENDED` 时，你仍可以调用 `subscribe`。SDK 会缓存订阅请求，并在连接恢复后继续执行。
+
+`subscribe` 返回成功表示消息频道订阅已完成，但 Presence 加入可能仍在异步执行。如果需要紧接着调用 Presence API，仍需处理服务尚未就绪或请求失败的异步结果。
+
+如果在订阅完成前对同一频道调用 `unsubscribe`，`subscribe` 请求会返回 `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` (-11040)，随后 SDK 完成取消订阅。取消后到达的迟到消息不会再透传给应用。
+
+</PlatformStructured>
+
 ```csharp tab="C#" tabGroup="rtm-build-manage-channels-message-channel-1"
 var options = new SubscribeOptions();
 
