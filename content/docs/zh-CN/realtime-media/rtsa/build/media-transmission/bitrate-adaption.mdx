@@ -32,23 +32,29 @@ title: "实时调整发送码率"
 uint32_t min_bps = 400000;
 uint32_t max_bps = 4200000;
 uint32_t start_bps = 500000;
-agora_rtc_set_bwe_param(min_bps,  max_bps,  start_bps);
+// conn_id 代表目标 Connection，此处配置所有 Connection
+agora_rtc_set_bwe_param(CONNECTION_ID_ALL, min_bps,  max_bps,  start_bps);
 
 // 实时调整发送码率
-static void __on_target_bitrate_changed(const char *channel, uint32_t target_bps)
+static void __on_target_bitrate_changed(connection_id_t conn_id, uint32_t target_bps)
 {
     // 当前码率按照 100 K 分档，向下取整
     curTargetBitrate = target_bps/100000 * 100;
-    diffTargetBitrate = abs(curTargetBitRate - lastTargetBitrate);
+    diffTargetBitrate = abs(curTargetBitrate - lastTargetBitrate);
 
     // 如果探测带宽与设置的编码码率相差 100 K 以上，则重写调整编码参数
-    if ( (diffTargetBitrate >= 100 ) && (lowBitrateL1 < curTargetBitrate < highBitrateL3) )
+    if ( (diffTargetBitrate >= 100 ) &&
+         (lowBitrateL1 <= curTargetBitrate && curTargetBitrate <= highBitrateL3) )
     {
-        if (lowBitrateL1 < curTargetBitrate < highBitrateL1)
+        if (lowBitrateL1 <= curTargetBitrate && curTargetBitrate <= highBitrateL1)
         {
             curResolutionLevel = L1;
         }
-        else if (lowBitrateL2 < curTargetBitrate < highBitrateL2)
+        else if (lowBitrateL2 <= curTargetBitrate && curTargetBitrate <= highBitrateL2)
+        {
+            curResolutionLevel = L2;
+        }
+        else if (highBitrateL2 < curTargetBitrate && curTargetBitrate <= highBitrateL3)
         {
             curResolutionLevel = L3;
         }
@@ -73,7 +79,7 @@ static void __on_target_bitrate_changed(const char *channel, uint32_t target_bps
 开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
 
 - [`agora_rtc_set_bwe_param`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ae274291aadd1afb9974a4672ed6c2bb8)
-- [`on_target_bitrate_changed`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af3ef06a16cd4cf3aa585dd6ad13ada0b)
+- [`on_target_bitrate_changed`](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a2cd16998c0834bac5c47c0e2b9f47fcc)
 
 ## 开发注意事项
 

@@ -79,9 +79,11 @@ const char* log_path
 
 </ApiSignature>
 
-用于存放声网 SDK 日志的目录。如果 log_path 设为 NULL，则日志位于当前应用程序的 pwd 目录。
+用于存放声网 SDK 日志的目录。如果 [log_path](/zh-CN/api-reference/rtsa/c/structlog-config-t#a79726ff7dc5114bd61541bbc86e398c3) 设为 NULL，则日志位于当前应用程序的 pwd 目录。
 
 <a id="a69502c3f4163356cb37015aa580867af"></a>
+
+<a id="a09f2691e31237cfed34e98b5f04d2261"></a>
 
 ### log_printf
 
@@ -93,10 +95,10 @@ int(* log_printf)(const char *fmt, ...)
 
 （选填）日志打印函数。该参数用于你需要自行管理 SDK 日志等场景。
 
-你需要自行实现日志打印函数并将其传递给 SDK，SDK 会将日志信息回调到该函数接口。例如， 为方便管理日志，你可以设置将 SDK 的日志消息打印在你的应用日志里，并通过 log_tag 进行区分。
+你需要自行实现日志打印函数并将其传递给 SDK，SDK 会将日志信息回调到该函数接口。例如， 为方便管理日志，你可以设置将 SDK 的日志消息打印在你的应用日志里，并通过 [log_tag](/zh-CN/api-reference/rtsa/c/structlog-config-t#ad97236d65624abd2946650acabe2b050) 进行区分。
 
 :::info[注解]
-该参数不影响 SDK 生成日志文件。不论你是否设置该参数，SDK 都会在你设置的 log_path 中生成日志文件。
+该参数不影响 SDK 生成日志文件。不论你是否设置该参数，SDK 都会在你设置的 [log_path](/zh-CN/api-reference/rtsa/c/structlog-config-t#a79726ff7dc5114bd61541bbc86e398c3) 中生成日志文件。
 :::
 
 <a id="ad97236d65624abd2946650acabe2b050"></a>

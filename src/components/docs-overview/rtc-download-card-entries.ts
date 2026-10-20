@@ -47,7 +47,11 @@ export function getRtcDownloadCardEntries(
         ? 'Electron for 统信 OS'
         : `${platformLabel} ${variantName(version, product)}`,
       version,
-      versionSuffix: isUnionTech ? '统信 OS 专版' : undefined,
+      versionSuffix: isUnionTech
+        ? '统信 OS 专版'
+        : version.nativeVersion
+          ? `对应 Native v${version.nativeVersion}`
+          : undefined,
     };
   });
 }

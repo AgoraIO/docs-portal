@@ -692,6 +692,7 @@ type ErrorInfo = {
 | `-10023` | `RTM_ERROR_LOGIN_CANCELED` | <Slot name="error-codes-javascript-html-0-19-2" /> |
 | `-10025` | `RTM_ERROR_NOT_CONNECTED` | 未连接 RTM 服务器。在调用消息订阅、Metadata 或 Lock 模块相关 API 时，如果 RTM 服务未连接，会报这个错误。 |
 | `-10026` | `RTM_ERROR_RENEW_TOKEN_TIMEOUT` | 更新 Token 超时。 |
+| `-10027` | `RTM_ERROR_DUPLICATE_USER_ID` | 同一 App ID 和用户 ID 已被活跃 RTM 实例占用。请复用已有实例，或释放旧实例后再创建新实例。 |
 | `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | <Slot name="error-codes-javascript-html-0-22-2" /> |
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | <Slot name="error-codes-javascript-html-0-23-2" /> |
 | `-11003` | `RTM_ERROR_CHANNEL_EXCEED_TOPIC_USER_LIMITATION` | 订阅该 Topic 人数超出限制。 |
@@ -718,6 +719,7 @@ type ErrorInfo = {
 | `-11029` | `RTM_ERROR_CHANNEL_CUSTOM_TYPE_LENGTH_OVERFLOW` | Custom type 长度溢出。`customType` 字段长度需要在 32 个字符以内。 |
 | `-11030` | `RTM_ERROR_CHANNEL_INVALID_CUSTOM_TYPE` | `customType` 字段无效。检查 `customType` 字段是否包含非法字符。 |
 | `-11033` | `RTM_ERROR_CHANNEL_RECEIVER_OFFLINE` | <Slot name="error-codes-javascript-html-0-47-2" /> |
+| `-11040` | `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` | 订阅频道操作已取消。调用 `subscribe` 后，如果在收到结果前调用 `unsubscribe` 打断订阅，会返回该错误，随后完成取消订阅。 |
 | `-12001` | `RTM_ERROR_STORAGE_OPERATION_FAILED` | Storage 操作失败。 |
 | `-12002` | `RTM_ERROR_STORAGE_METADATA_ITEM_EXCEED_LIMITATION` | Storage Metadata Item 数量超出限制。 |
 | `-12003` | `RTM_ERROR_STORAGE_INVALID_METADATA_ITEM` | 无效 Metadata Item。 |
@@ -2740,7 +2742,7 @@ type ErrorInfo = {
 | `-11001` | `RTM_ERROR_CHANNEL_NOT_JOINED` | 用户未加入该频道。检查用户是否在线、是否已加入频道以及 `userId` 是否正确。 |
 | `-11002` | `RTM_ERROR_CHANNEL_NOT_SUBSCRIBED` | 用户未订阅该频道。检查用户是否在线、是否已订阅频道以及 `userId` 是否正确。 |
 | `-11005` | `RTM_ERROR_CHANNEL_INSTANCE_EXCEED_LIMITATION` | 创建的频道数量或订阅的频道数量超出限制。详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。 |
-| `-11006` | `RTM_ERROR_CHANNEL_NOT_AVAILABLE` | 频道不可用。请重新订阅 Message Channel。 |
+| `-11006` | `RTM_ERROR_CHANNEL_IN_ERROR_STATE` | 频道不可用。请重新订阅 Message Channel。 |
 | `-11007` | `RTM_ERROR_CHANNEL_JOIN_FAILED` | 加入频道失败。检查频道数量、频道名和网络连接。 |
 | `-11009` | `RTM_ERROR_CHANNEL_INVALID_MESSAGE` | 无效消息。检查消息类型是否合法，RTM 只支持字符串或二进制类型消息。 |
 | `-11010` | `RTM_ERROR_CHANNEL_MESSAGE_LENGTH_EXCEED_LIMITATION` | 消息长度超出限制。Message Channel 单个消息包必须小于 32 KB。 |
@@ -2792,7 +2794,7 @@ type ErrorInfo = {
 | `-14008` | `RTM_ERROR_LOCK_NOT_EXIST` | 该 Lock 不存在。 |
 | `-14009` | `RTM_ERROR_LOCK_NOT_AVAILABLE` | Lock 服务不可用。 |
 | `-15001` | `RTM_ERROR_HISTORY_OPERATION_FAILED` | 历史消息的操作失败。 |
-| `-15003` | `RTM_ERROR_HISTORY_OPERATION_OUTDATED` | 历史消息操作过时。 |
+| `-15003` | `RTM_ERROR_HISTORY_OPERATION_TIMEOUT` | 历史消息操作过时。 |
 | `-15005` | `RTM_ERROR_HISTORY_NOT_AVAILABLE` | 历史消息服务不可用。 |
 
 具体 API 支持范围以已安装的 `shengwang-rtm-miniapp` 包中的类型定义为准。

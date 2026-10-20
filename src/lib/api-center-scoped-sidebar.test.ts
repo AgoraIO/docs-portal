@@ -627,6 +627,11 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
             id: 'current',
             label: 'v1.10.1',
           },
+          {
+            href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtsa/c/overview',
+            id: '1.9.7',
+            label: 'v1.9.7',
+          },
         ]),
       },
     });
@@ -638,13 +643,22 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       title: item.title,
     }));
 
-    expect(toc).toHaveLength(73);
+    // v1.10.1 adds one message enum and three RTM Channel methods.
+    expect(toc).toHaveLength(77);
     expect(toc.filter((item) => item.depth === 2)).toEqual([
       { depth: 2, title: '宏定义说明' },
       { depth: 2, title: '类型定义说明' },
       { depth: 2, title: '函数说明' },
     ]);
-    expect(toc.filter((item) => item.depth === 3)).toHaveLength(70);
+    expect(toc.filter((item) => item.depth === 3)).toHaveLength(74);
+    expect(toc.map((item) => item.title)).toEqual(
+      expect.arrayContaining([
+        'rtm_message_type_e',
+        'agora_rtm_publish()',
+        'agora_rtm_subscribe()',
+        'agora_rtm_unsubscribe()',
+      ]),
+    );
     expect(toc.map((item) => item.title)).not.toEqual(
       expect.arrayContaining([
         '枚举类型说明',

@@ -8,6 +8,7 @@ import {
   XIcon,
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { DocsTaskFeedback } from '@/components/docs-shell/DocsTaskFeedback';
 import { SearchInput } from '@/components/search/SearchInput';
 import { SearchResultList } from '@/components/search/SearchResultList';
 import { SearchTypeTabs } from '@/components/search/SearchTypeTabs';
@@ -33,6 +34,15 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Skeleton } from '@/components/ui/skeleton';
+import type {
+  ResultsSnapshot,
+  SearchSnapshot,
+} from '@/lib/analytics/docs-measurement';
+import {
+  getDocsMeasurement,
+  selectDocsResult,
+} from '@/lib/analytics/measurement';
+import { observeVisible } from '@/lib/analytics/visibility';
 import type { ProductScope } from '@/lib/docs-tree';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
@@ -69,6 +79,33 @@ export function DocsSearchPage({
   const [recent, setRecent] = useState<RecentPage[]>([]);
   const [retry, setRetry] = useState(0);
   const [filterOpen, setFilterOpen] = useState(false);
+  const logicalSearch = useRef<{
+    key: string;
+    snapshot: SearchSnapshot;
+  } | null>(null);
+  const resultSnapshots = useRef(
+    new WeakMap<CnSearchPageResponse, ResultsSnapshot>(),
+  );
+  const resultsContainer = useRef<HTMLElement>(null);
+  const failure = useRef<
+    { search: SearchSnapshot; requestId?: string } | undefined
+  >(undefined);
+  useEffect(() => {
+    getDocsMeasurement()?.leaveContent();
+  }, []);
+  useEffect(() => {
+    const snapshot = data ? resultSnapshots.current.get(data) : undefined;
+    if (!resultsContainer.current) return;
+    return observeVisible(resultsContainer.current, () => {
+      if (status === 'loaded' && snapshot)
+        getDocsMeasurement()?.presentResults(snapshot);
+      if (status === 'error' && failure.current)
+        getDocsMeasurement()?.fail(
+          failure.current.search,
+          failure.current.requestId,
+        );
+    });
+  }, [data, status]);
   const stateKey = JSON.stringify(state);
   const [progress, setProgress] = useState({ key: stateKey, page: state.page });
   if (progress.key !== stateKey) {
@@ -103,13 +140,45 @@ export function DocsSearchPage({
       setData(null);
       setFacets((previous) => ({ product: previous.product ?? {} }));
     }
+    const measurement = request.state.q ? getDocsMeasurement() : undefined;
+    if (
+      measurement &&
+      (logicalSearch.current?.key !== key ||
+        !measurement.searchIsCurrent(logicalSearch.current.snapshot))
+    )
+      logicalSearch.current = {
+        key,
+        snapshot: measurement.startSearch({
+          surface: 'search_page',
+          query: request.state.q,
+          filters: {
+            product: request.state.product,
+            platform: request.state.platform,
+            version: request.state.version,
+            type: request.state.type,
+          },
+        }),
+      };
+    const snapshot = measurement ? logicalSearch.current?.snapshot : undefined;
+    const requestId = snapshot ? crypto.randomUUID() : undefined;
+    const requestStarted = Date.now();
+    const headers = (purpose: string) =>
+      snapshot
+        ? {
+            'X-Docs-Search-Id': snapshot.searchId,
+            'X-Docs-Request-Id':
+              purpose === 'results' ? (requestId ?? '') : crypto.randomUUID(),
+            'X-Docs-Request-Purpose': purpose,
+          }
+        : undefined;
     setStatus('loading');
     Promise.all([
-      searchCnDocsPage(request.state, controller.signal),
+      searchCnDocsPage(request.state, controller.signal, headers('results')),
       request.state.version
         ? searchCnDocsPage(
             { ...request.state, version: undefined, page: 1 },
             controller.signal,
+            headers('facets'),
           )
         : Promise.resolve(null),
     ])
@@ -122,12 +191,25 @@ export function DocsSearchPage({
         const pages = [...loadedPages.current.pages.entries()]
           .filter(([page]) => page <= request.state.page)
           .sort(([a], [b]) => a - b);
-        setData({
+        const accepted = {
           ...result,
           groups: mergeSearchPageGroups(
             pages.map(([, response]) => response.groups),
           ),
-        });
+        };
+        if (snapshot && measurement)
+          resultSnapshots.current.set(
+            accepted,
+            measurement.prepareResults(snapshot, {
+              count: accepted.groups.length,
+              unit: 'document',
+              page: request.state.page,
+              totalHits: result.totalHits,
+              requestId,
+              started: request.state.page > 1 ? requestStarted : undefined,
+            }),
+          );
+        setData(accepted);
         setFacets((previous) => ({
           ...result.facets,
           version:
@@ -137,7 +219,10 @@ export function DocsSearchPage({
         setStatus('loaded');
       })
       .catch(() => {
-        if (!controller.signal.aborted) setStatus('error');
+        if (!controller.signal.aborted) {
+          setStatus('error');
+          if (snapshot) failure.current = { search: snapshot, requestId };
+        }
       });
     return () => controller.abort();
   }, [request]);
@@ -382,6 +467,7 @@ export function DocsSearchPage({
       </section>
       {state.q ? (
         <section
+          ref={resultsContainer}
           aria-label="搜索结果"
           aria-busy={status === 'loading'}
           className="search-page-results-section"
@@ -411,6 +497,32 @@ export function DocsSearchPage({
                 <SearchResultList
                   groups={data.groups}
                   productLabel={productLabel}
+                  onSelectResult={(event, path, rank, sectionRank) => {
+                    if (event.type === 'auxclick' && event.button !== 1) return;
+                    const newTab =
+                      event.button === 1 ||
+                      event.ctrlKey ||
+                      event.metaKey ||
+                      event.shiftKey;
+                    const href = selectDocsResult(
+                      resultSnapshots.current.get(data),
+                      {
+                        id: path,
+                        path,
+                        rank,
+                        kind: sectionRank ? 'section' : 'document',
+                        sectionRank,
+                        method:
+                          event.button === 1
+                            ? 'middle'
+                            : event.detail === 0
+                              ? 'keyboard'
+                              : 'mouse',
+                      },
+                      newTab,
+                    );
+                    event.currentTarget.href = href;
+                  }}
                 />
                 <div className="search-page-pagination">
                   <span aria-live="polite">
@@ -453,6 +565,9 @@ export function DocsSearchPage({
                 }
               />
             ))}
+          {status !== 'loading' ? (
+            <DocsTaskFeedback surface="search_page" />
+          ) : null}
         </section>
       ) : (
         <section aria-label="开始搜索" className="search-page-start">

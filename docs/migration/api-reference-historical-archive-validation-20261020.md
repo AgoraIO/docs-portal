@@ -1,5 +1,13 @@
 # API Reference 历史归档外链验证（2026-10-20）
 
+## PR 前最新基线同步与验证
+
+- 为创建面向 `codex/cn-newdoc-html-api-migration` 的 review PR，已将目标分支最新基线 `145b9d51372a95327f89c9e5993d8a6ecabe5e79` 同步到工作分支；没有合并或推送目标分支。
+- 解决 5 份重叠版本元数据及 1 份侧栏测试冲突：上游已有历史项与本清单一致，保留完整历史菜单；同时保留上游 RTSA 的 77 项 TOC、74 项三级标题及新增 API 断言。
+- 两份新引入的上游版本测试改为保护原有版本前缀并允许完整历史菜单，Android v4.6.0 继续使用已确认的归档地址；API 正文与原始 SDK 内容保护断言不变。
+- 同步后独立审查通过，完整 `bun run test --maxWorkers=4`：257 个文件通过、3379 项通过、2 项跳过。`bun run types:check`、`bun run lint` 和 `git diff --check` 通过；lint 为既有 20 条 warning、5 条 info，无错误。
+- 219 个历史选项、214 个去重 URL 和 13 项已验证覆盖不变；相对于目标分支，没有 API 正文、英文或 React 双系列内容差异。生产构建未运行，留给后续 CI/发布验收。
+
 ## 当前状态：13 项已验证覆盖已应用
 
 - 已按用户批准的 [URL 覆盖清单](./api-reference-archive-url-overrides-20261020.json)，以 `newPlatform + sdkVersion` 精确替换 11 份平台元数据中的 13 个 `href`。版本标签、ID、path、current、219 个历史选项和 214 个去重 URL 均未改变；React 两系列仍不处理。

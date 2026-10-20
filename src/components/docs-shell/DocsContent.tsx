@@ -52,6 +52,7 @@ import {
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
+import { DocsMeasurementContext } from './DocsContentMeasurement';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -444,8 +445,21 @@ export function DocsContent({
     </article>
   );
 
+  const measuredArticle = (
+    <DocsMeasurementContext.Provider
+      value={{
+        contentPath,
+        contentType: resolvedBody?.kind ?? 'unknown',
+        platform: titlePlatforms.length === 1 ? titlePlatforms[0] : undefined,
+        version: sidebarHeader?.versionSwitcher?.currentId,
+      }}
+    >
+      {article}
+    </DocsMeasurementContext.Provider>
+  );
+
   if (!platformTabs) {
-    return article;
+    return measuredArticle;
   }
 
   return (
@@ -455,7 +469,7 @@ export function DocsContent({
       initialPlatform={platformTabs.initialPlatform}
       platforms={platformTabs.platforms}
     >
-      {article}
+      {measuredArticle}
     </PlatformPageProvider>
   );
 }

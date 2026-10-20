@@ -9,6 +9,7 @@ import {
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SdksCatalog } from './SdksCatalog';
+import { zhCNSdkDownloadPlatforms } from './sdk-downloads-data.zh-cn';
 
 beforeEach(() => {
   window.history.replaceState(null, '', '/en/api-reference/sdks');
@@ -36,6 +37,58 @@ function openProductCard(name: string) {
 }
 
 describe('SdksCatalog', () => {
+  it.each([
+    [
+      'flutter',
+      'Flutter',
+      '6.6.4（对应 Native v4.6.4）',
+      'https://pub.dev/packages/shengwang_rtc_engine/versions/6.6.4',
+      '6.6.2',
+      'https://pub.dev/packages/shengwang_rtc_engine/versions/6.6.2',
+    ],
+    [
+      'react-native',
+      'React Native',
+      '4.6.4',
+      'https://www.npmjs.com/package/react-native-shengwang/v/4.6.4',
+      '4.6.2',
+      'https://www.npmjs.com/package/react-native-shengwang/v/4.6.2',
+    ],
+  ])(
+    'shares the current #2084 %s video package and preserves its history',
+    (platform, label, version, url, previous, previousUrl) => {
+      render(
+        <SdksCatalog locale="zh-CN" platform={platform} product="video" />,
+      );
+      const product = openProductCard('视频 SDK');
+      const card = within(product).getByRole('article', {
+        name: `${label} 视频 SDK`,
+      });
+      expect(within(product).getAllByRole('article')).toHaveLength(1);
+      expect(within(card).getByText(`v${version}`)).toBeVisible();
+      expect(
+        within(card).getByText('发布日期：2026 年 8 月 31 日'),
+      ).toBeVisible();
+      expect(
+        within(card).getByRole('link', { name: `获取 ${label} 视频 SDK` }),
+      ).toHaveAttribute('href', url);
+      const sdk = zhCNSdkDownloadPlatforms
+        .find((entry) => entry.id === platform)
+        ?.core.find((entry) => entry.id === `video-sdk-${platform}`);
+      const old = sdk?.versions.filter(
+        (entry) => entry.id === `${previous}-video-sdk-${platform}`,
+      );
+      expect(old).toHaveLength(1);
+      expect(old?.[0]).toMatchObject({
+        label: `版本 ${previous}`,
+        packageManager: previousUrl,
+      });
+      expect(
+        sdk?.versions.filter((entry) => entry.label.includes('最新')),
+      ).toHaveLength(1);
+    },
+  );
+
   it('does not render product or platform filters on the full Chinese catalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
@@ -92,10 +145,10 @@ describe('SdksCatalog', () => {
     });
     expect(within(downloadCard).getByText('io.agora.rtc2.voice')).toBeVisible();
     expect(
-      within(downloadCard).getByText('2801dfea3c96a32e6aaaa354d819ec71'),
+      within(downloadCard).getByText('acb70a13f5e001e324cb33e46624edf8'),
     ).toBeVisible();
     expect(
-      within(downloadCard).getByText('发布日期：2026 年 2 月 9 日'),
+      within(downloadCard).getByText('发布日期：2026 年 9 月 22 日'),
     ).toBeVisible();
   });
 
@@ -1086,5 +1139,30 @@ describe('SdksCatalog', () => {
     expect(
       within(videoCard).getByRole('combobox', { name: 'Video SDK platform' }),
     ).toHaveValue('android');
+  });
+
+  it('offers Chinese Web RTM 2.3.0 without labeling a historical release as latest', () => {
+    render(<SdksCatalog locale="zh-CN" platform="web" product="signaling" />);
+    const product = openProductCard('实时消息 SDK');
+    const card = within(product).getByRole('article', {
+      name: 'Web 实时消息 SDK',
+    });
+    expect(within(card).getByText('v2.3.0')).toBeVisible();
+    expect(
+      within(card).getByText('13f63c0322c49b1edd3f7a0e2c8c89fc'),
+    ).toBeVisible();
+    expect(
+      within(card).getByText('发布日期：2026 年 8 月 10 日'),
+    ).toBeVisible();
+    expect(
+      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',
+    );
+    expect(
+      within(product).queryByRole('combobox', { name: /版本/ }),
+    ).not.toBeInTheDocument();
+    expect(within(product).queryByText('v2.2.4')).not.toBeInTheDocument();
   });
 });

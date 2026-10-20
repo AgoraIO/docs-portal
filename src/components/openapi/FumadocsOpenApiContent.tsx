@@ -36,6 +36,7 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
@@ -278,6 +279,7 @@ export function FumadocsOpenApiContent({
   );
   const containerRef = useRef<HTMLDivElement>(null);
 
+  useMeasuredDocsBody(containerRef);
   useOpenApiHashScroll();
   useLocalizedOpenApiGeneratedChrome(containerRef, locale);
 

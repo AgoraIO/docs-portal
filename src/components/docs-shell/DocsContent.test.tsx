@@ -2666,6 +2666,7 @@ describe('DocsPageFeedback placement', () => {
 
     const mobileFlow = await screen.findByTestId('docs-main-mobile-flow');
     const feedback = within(mobileFlow).getByTestId('docs-feedback');
+    expect(screen.queryByTestId('docs-task-feedback')).not.toBeInTheDocument();
     const yesButton = within(feedback).getByRole('button', { name: 'Yes' });
     const noButton = within(feedback).getByRole('button', { name: 'No' });
 

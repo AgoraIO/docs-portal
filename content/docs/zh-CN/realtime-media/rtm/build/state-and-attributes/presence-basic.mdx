@@ -58,6 +58,14 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 获取到这些初始信息后，你可以通过 `config.onpresenceevent` 事件通知实时更新频道中在线用户信息。
 
+<PlatformStructured platform="web">
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
+
 <PlatformStructured platform="android">
 
 :::info[登录后查询 Presence]
