@@ -18329,5 +18329,81 @@
     "unrelated_physical_rows_unchanged": true,
     "dependency_row_base_byte_identical": true,
     "method": "filter physical lines by source key and compare the remaining entire row sequence to base; preserve duplicate non-scoped mapping rows"
+  },
+  "minor_testguard_followup": {
+    "base_commit": "1a11afcbb4",
+    "scope": "test + small source return fixture + append-only report; no production or CSV changes",
+    "source_commit": "80b1000446bacab3f4937f5f1a6d177c5be6bee1",
+    "fixture": "src/lib/fixtures/rtc-pr2094-string-method-contracts.json",
+    "return_extraction": "cheerio.load(git show fixedCommit:source_path); select unique #api_ivideoeffectobject_setvideoeffectstringparam__return_values; clone/remove direct h3; .text(); normalize whitespace",
+    "complete_member_fixtures": {
+      "content/docs/zh-CN/api-reference/rtc/android/(current)/class-faceshapeareaoptions.mdx": {
+        "scope": "complete page member collection",
+        "members": 13
+      },
+      "content/docs/zh-CN/api-reference/rtc/cpp-all-platforms/(current)/enum-faceshapearea.mdx": {
+        "scope": "complete page member collection",
+        "members": 32
+      },
+      "content/docs/zh-CN/api-reference/rtc/ios/(current)/enum-faceshapearea.mdx": {
+        "scope": "complete page member collection",
+        "members": 32
+      },
+      "content/docs/zh-CN/api-reference/rtc/macos/(current)/enum-faceshapearea.mdx": {
+        "scope": "complete page member collection",
+        "members": 32
+      },
+      "content/docs/zh-CN/api-reference/rtc/ios/(current)/enum-errorcodetype.mdx": {
+        "scope": "complete page member collection",
+        "members": 70
+      },
+      "content/docs/zh-CN/api-reference/rtc/macos/(current)/enum-errorcodetype.mdx": {
+        "scope": "complete page member collection",
+        "members": 70
+      }
+    },
+    "guards": [
+      "String exact parameter names/descriptions using existing parameters, excluding 自从",
+      "String complete source return text bounded before 所属接口类",
+      "complete member exact key set plus existing per-member descriptions"
+    ],
+    "mutation_cases": {
+      "swapped_parameter_descriptions": 4,
+      "missing_failure_return_preserving_success_0": 4,
+      "fabricated_member_in_complete_collection": 6,
+      "production_files_mutated": 0
+    },
+    "red": {
+      "command": "bun run test src/lib/rtc-pr2094-sync.test.ts",
+      "tests": 34,
+      "passed": 20,
+      "failed": 14,
+      "exit_code": 1,
+      "reason": "old guards did not reject each mutation"
+    },
+    "green": {
+      "command": "bun run test src/lib/rtc-pr2094-sync.test.ts",
+      "tests": 34,
+      "passed": 34,
+      "failed": 0,
+      "exit_code": 0
+    },
+    "checks": [
+      {
+        "command": "bun run types:check",
+        "exit_code": 0
+      },
+      {
+        "command": "bun x biome check src/lib/rtc-pr2094-sync.test.ts src/lib/fixtures/rtc-pr2094-string-method-contracts.json",
+        "exit_code": 0
+      },
+      {
+        "command": "git diff --check",
+        "exit_code": 0
+      }
+    ],
+    "full_test": "not rerun; preserve coordinator prior full record for original 20-test commit",
+    "build": false,
+    "preview": false
   }
 }

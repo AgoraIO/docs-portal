@@ -7,7 +7,10 @@ const read = (file: string) => readFileSync(resolve(file), 'utf8');
 const report = JSON.parse(
   read('docs/agents/reports/2026-10-20-hotfix-pr2094-fix.json'),
 ) as {
-  string_methods: Record<string, { signature: string }>;
+  string_methods: Record<
+    string,
+    { signature: string; parameters: Array<[string, string]> }
+  >;
   expectations: Record<string, string>;
   inventory: Array<{
     source_path: string;
@@ -16,6 +19,9 @@ const report = JSON.parse(
     member_delta?: { added: string[]; removed: string[]; changed: string[] };
   }>;
 };
+const stringReturns = JSON.parse(
+  read('src/lib/fixtures/rtc-pr2094-string-method-contracts.json'),
+) as { methods: Record<string, { return: string }> };
 const platforms = ['android', 'cpp-all-platforms', 'ios', 'macos'];
 const file = (platform: string, page: string) =>
   `content/docs/zh-CN/api-reference/rtc/${platform}/(current)/${page}.mdx`;
@@ -43,6 +49,42 @@ function members(text: string) {
   );
 }
 
+function expectMemberContract(
+  actual: Map<string, string>,
+  expected: Map<string, string>,
+) {
+  expect([...actual.keys()].sort()).toEqual([...expected.keys()].sort());
+  for (const [name, value] of expected) {
+    expect(actual.get(name), name).toBe(value);
+  }
+}
+
+const stringReturnAnchor =
+  '<a id="api_ivideoeffectobject_setvideoeffectstringparam__return_values"></a>';
+const stringParametersAnchor =
+  '<a id="api_ivideoeffectobject_setvideoeffectstringparam__parameters"></a>';
+
+function expectStringValueContract(page: string, platform: string) {
+  const parameters = section(page, stringParametersAnchor, stringReturnAnchor);
+  const expected = new Map(
+    report.string_methods[platform].parameters
+      .filter(([name]) => name !== '自从')
+      .map(([name, description]) => [name, normalize(description)]),
+  );
+  expect(expected.size).toBe(3);
+  expectMemberContract(members(parameters), expected);
+  const returns = section(page, stringReturnAnchor, '\n### 所属接口类');
+  expect(returns.match(/^### 返回值$/gm)).toHaveLength(1);
+  const description = returns
+    .trim()
+    .replace(/^### 返回值\n/, '')
+    .replace(/^-\s+/gm, '')
+    .replace(/`([^`]+)`/g, '$1');
+  expect(normalize(description)).toBe(
+    normalize(stringReturns.methods[platform].return),
+  );
+}
+
 describe('RTC PR #2094 frozen source delta', () => {
   it('rejects missing, duplicate, and reversed member boundaries', () => {
     expect(() => section('end start', 'start', 'end')).toThrow();
@@ -53,9 +95,7 @@ describe('RTC PR #2094 frozen source delta', () => {
   for (const [target, expected] of Object.entries(report.expectations)) {
     it(`matches each frozen source member: ${target}`, () => {
       const actual = members(read(target));
-      for (const [name, value] of members(expected)) {
-        expect(actual.get(name), name).toBe(value);
-      }
+      expectMemberContract(actual, members(expected));
     });
   }
 
@@ -97,14 +137,7 @@ describe('RTC PR #2094 frozen source delta', () => {
         normalize(report.string_methods[platform].signature),
       );
       expect(method).toContain('v4.6.0');
-      expect(members(method).size).toBe(3);
-      expect(
-        page.slice(
-          page.indexOf(
-            'api_ivideoeffectobject_setvideoeffectstringparam__return_values',
-          ),
-        ),
-      ).toContain('0');
+      expectStringValueContract(page, platform);
       expect(page).not.toContain(
         'rtc-interface-class#class_ivideoeffectobject',
       );
@@ -130,6 +163,73 @@ describe('RTC PR #2094 frozen source delta', () => {
       );
     },
   );
+
+  it.each(platforms)(
+    '%s rejects swapped String parameter descriptions',
+    (platform) => {
+      const page = read(
+        file(platform, 'video/video-prenpro/video-enhance-option'),
+      );
+      const parameters = section(
+        page,
+        stringParametersAnchor,
+        stringReturnAnchor,
+      );
+      const option = section(
+        parameters,
+        '<Parameter name="option">',
+        '</Parameter>',
+      );
+      const key = section(parameters, '<Parameter name="key">', '</Parameter>');
+      const swapped = parameters
+        .replace(
+          `<Parameter name="option">${option}</Parameter>`,
+          `<Parameter name="option">${key}</Parameter>`,
+        )
+        .replace(
+          `<Parameter name="key">${key}</Parameter>`,
+          `<Parameter name="key">${option}</Parameter>`,
+        );
+      expect(swapped).not.toBe(parameters);
+      expect(() =>
+        expectStringValueContract(page.replace(parameters, swapped), platform),
+      ).toThrow();
+    },
+  );
+
+  it.each(platforms)(
+    '%s rejects a missing String failure return',
+    (platform) => {
+      const page = read(
+        file(platform, 'video/video-prenpro/video-enhance-option'),
+      );
+      const returns = section(page, stringReturnAnchor, '\n### 所属接口类');
+      const missingFailure = returns.includes('小于 0：失败。')
+        ? returns.replace('小于 0：失败。', '')
+        : returns.replace(/^.*失败。.*\n?/m, '');
+      expect(missingFailure).not.toBe(returns);
+      expect(missingFailure).toContain('0');
+      expect(() =>
+        expectStringValueContract(
+          page.replace(returns, missingFailure),
+          platform,
+        ),
+      ).toThrow();
+    },
+  );
+
+  for (const [target, expected] of Object.entries(report.expectations)) {
+    it(`rejects a fabricated member in the complete contract: ${target}`, () => {
+      const mutant = expected.replace(
+        '</ParameterList>',
+        '<Parameter name="FabricatedMember">not in frozen source</Parameter>\n</ParameterList>',
+      );
+      expect(mutant).not.toBe(expected);
+      expect(() =>
+        expectMemberContract(members(mutant), members(expected)),
+      ).toThrow();
+    });
+  }
 
   it('removes preview metadata fields without dropping old hashes', () => {
     const text = read(file('cpp-all-platforms', 'class-externalvideoframe'));
