@@ -47,9 +47,12 @@ _migration:
 | [agora_rtc_send_video_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a05973c4f32a5eb480e52b4f566601bf5) | 向指定 Connection 所关联的 RTC 频道发送视频帧。 |
 | [agora_rtc_leave_channel](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a939878648ce563ef4041da892d478f8b) | 离开指定 Connection 所关联的 RTC 频道。 |
 | [agora_rtc_fini](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a09875c7766bbb543425da877a3ef6e1d) | 释放所有资源。 |
-| [agora_rtc_login_rtm](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a577ba22b315e7ec594221fb3f1e89ce7) | 登录RTM 服务。 |
-| [agora_rtc_logout_rtm](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab6ec6e5968325a3d24c4352f0b7dafec) | 登出RTM 服务。 |
-| [agora_rtc_send_rtm_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1eaa46ebfb4613c624eef98ae7275319) | 通过RTM 服务发送消息。 |
+| [agora_rtm_login](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#abd4be43c4d5850c8753ef27c18417c20) | 登录 RTM 服务。 |
+| [agora_rtm_logout](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6775e5f6356091e50328cc5dd7c3f9a1) | 登出 RTM 服务。 |
+| [agora_rtm_send_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab001eda008555d96e4e64dc9e66687bf) | 通过 RTM 服务发送消息。 |
+| [agora_rtm_subscribe](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30c2d99a514ebd98a4d335685668f595) | 订阅 RTM 频道。 |
+| [agora_rtm_unsubscribe](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a80ccd21954a2f23c1fc7d0b540709fe6) | 取消订阅 RTM 频道。 |
+| [agora_rtm_publish](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab3dfb2693ca2cc21a56862065a16d718) | 向 RTM 频道发布消息。 |
 | [agora_rtc_set_params](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a3d0aac6ce04ce9f2420c459fa9990d41) | 通过 JSON 配置 SDK 提供技术预览或特别定制功能。 |
 | [agora_rtc_send_rdt_msg](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a056de38235f67ad1ea91cfd695ffaf61) | 发送 RDT 消息。 |
 | [agora_rtc_get_rdt_status_info](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a80f16bf3cf9bcdf8a6cecc51f8e584aa) | 获取 RDT 通道的信息。 |
@@ -62,29 +65,32 @@ _migration:
 
 | 回调 | 描述 |
 | --- | --- |
-| [on_join_channel_success](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a3006c067f8a7deb521580c5044f27ff8) | 加入 RTC 频道成功。 |
-| [on_connection_lost](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ac571090198206c2fa3bc68fb8cee42d0) | 连接丢失。 |
-| [on_reconnecting](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#acadee60a0d36eec3939e769a40e43cad) | 正在重新连接回调。 |
-| [on_rejoin_channel_success](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af1aad04da5b59bb0ae4575c1121eaa59) | 重新加入 RTC 频道成功。 |
-| [on_error](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a57ad737a0443bb604e11ae6c6b37fd5d) | 发生错误。 |
-| [on_license_validation_failure](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa05b9b9e42a2018a913ac18bf0022919) | 设备 License 验证失败。 |
-| [on_user_joined](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ada682c16b9d0e53404beb76c9c3a02a2) | 远端用户加入 RTC 频道。 |
-| [on_user_joined_with_user_account](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa57af03ef9f26ab68917fa7a30f703bd) | 远端用户使用 User Account 加入 RTC 频道。 |
-| [on_user_offline](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa20dd2bc2ee7389257e7d03dd28a3dd4) | 远端用户离开 RTC 频道。 |
-| [on_user_offline_with_user_account](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af3a7f207010bafca7aa99fdba5a9b1ab) | 使用 User Account 场景下，远端用户离开频道回调。 |
-| [on_user_mute_audio](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab749491e46ce8d06aa69507ebb630bf9) | RTC 频道内远端用户暂停/恢复发送音频流。 |
-| [on_user_mute_video](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7ba3bed4e4d97a4e39096f07d2333311) | RTC 频道内远端用户暂停/恢复发送视频流。 |
-| [on_stream_message](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7c73b2bb0558e2b695d8838ee542c87a) | 接收到远端用户数据流消息的回调。 |
-| [on_media_ctrl_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab0a6462ac391a960f767d2cf6ce8078a) | 接收到远端用户发送的消息回调。 |
-| [on_user_info_updated](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a4c8f017cc2fa8aaa6e91c966b97a8aee) | 用户信息已更新回调。 |
-| [on_key_frame_gen_req](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab698db32db28c348552915a3a1337bf8) | RTC 频道内远端用户请求关键帧。 |
-| [on_audio_data](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a6c7a08a918ea7ced6cbd5b41b18533c6) | 收到 RTC 频道内远端用户的音频帧。 |
-| [on_video_data](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab6c026de857cff2283f7f5287af0551a) | 收到 RTC 频道内远端用户的视频帧。 |
-| [on_mixed_audio_data](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ad3cf11417984d7a70c9eedc739ce9452) | 收到 RTC 频道内本地用户和远端用户的混音数据。 |
-| [on_target_bitrate_changed](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af3ef06a16cd4cf3aa585dd6ad13ada0b) | 编码器码率更新通知。 |
-| [on_token_privilege_will_expire](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aef1aa16dd5b32baa1aa03887f40f6ee9) | RTC Token 服务即将过期回调。 |
-| [on_rtm_data](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#aca9b8bc902639a09bf17d0995f5aa828) | RTM 消息回调。 |
-| [on_rtm_event](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a25c73cac37a00ac748fa41869838f623) | RTM 事件回调。 |
-| [on_rtm_send_data_result](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a15b2dba380611e1974686f74a3ec0ca7) | [agora_rtc_send_rtm_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1eaa46ebfb4613c624eef98ae7275319) 方法调用结果回调。 |
-| [on_rdt_state](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#afa921fa31ea49ef1c97a17949119e386) | RDT 通道的连接状态已改变回调。 |
-| [on_rdt_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a80dfcd1cd72a006a7b2daae4d7f80eea) | 收到 RDT 消息回调。 |
+| [on_join_channel_success](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af1fb7d73977c5d23301bed8066b92024) | 加入 RTC 频道成功。 |
+| [on_connection_lost](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a93ef61674bc7c4d5f53fe2b59aa38e88) | 连接丢失。 |
+| [on_reconnecting](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a63382fa7b0cba7589f1577630657a323) | 正在重新连接回调。 |
+| [on_rejoin_channel_success](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a289e8f276aaecbf44f80f8c66efeac0b) | 重新加入 RTC 频道成功。 |
+| [on_error](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7a67b6ffff8d0758afe5b38a91e3a6e3) | 发生错误。 |
+| [on_license_validation_failure](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af300f9a2a90391ce3ef8bbca2217bd91) | 设备 License 验证失败。 |
+| [on_user_joined](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a74df0f085839d12a7d85236a70f2ff1d) | 远端用户加入 RTC 频道。 |
+| [on_user_joined_with_user_account](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa7f9418b6d5502ee641b8231c6f3292f) | 远端用户使用 User Account 加入 RTC 频道。 |
+| [on_user_offline](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ac3f1bcc48ccb52dbe58e2698a24d1faa) | 远端用户离开 RTC 频道。 |
+| [on_user_offline_with_user_account](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab81aeacbe7daef9eff3f14362267ded7) | 使用 User Account 场景下，远端用户离开频道回调。 |
+| [on_user_mute_audio](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a5c823e048831fcefa7fca0a2c01ad864) | RTC 频道内远端用户暂停/恢复发送音频流。 |
+| [on_user_mute_video](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ae07cf9b3a19154ad8d889a4bd3f51b59) | RTC 频道内远端用户暂停/恢复发送视频流。 |
+| [on_stream_message](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a60c9fde781cd1429ed824efeb1cdd7e5) | 接收到远端用户数据流消息的回调。 |
+| [on_media_ctrl_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a2e1c250bc84081128d1c2f4fed26bf92) | 接收到远端用户发送的消息回调。 |
+| [on_user_info_updated](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a4235da22aa144746564deaa878dcda40) | 用户信息已更新回调。 |
+| [on_key_frame_gen_req](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a67e5f4137e45db389ca5f69866135715) | RTC 频道内远端用户请求关键帧。 |
+| [on_audio_data](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af50f0b13389c28ffab6f185d6dc7e18c) | 收到 RTC 频道内远端用户的音频帧。 |
+| [on_video_data](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ad22676cef8f3d947b68c84b95ea5cde9) | 收到 RTC 频道内远端用户的视频帧。 |
+| [on_mixed_audio_data](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa10d23bce1cd68dbe42e16945e45b174) | 收到 RTC 频道内本地用户和远端用户的混音数据。 |
+| [on_target_bitrate_changed](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a2cd16998c0834bac5c47c0e2b9f47fcc) | 编码器码率更新通知。 |
+| [on_token_privilege_will_expire](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a73ce0c60c3e00ac601342ddf70408a58) | RTC Token 服务即将过期回调。 |
+| [on_rtm_data](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a8c5e9092fcc6702053f25a4e9a437d7e) | RTM 消息回调。 |
+| [on_rtm_event](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#ab2549296a558191c8108cc5ca80de6ca) | RTM 事件回调。 |
+| [on_rtm_send_data_result](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a8b8816e97d0ec1563280cc39fe4d28ca) | [agora_rtm_send_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab001eda008555d96e4e64dc9e66687bf) 方法调用结果回调。 |
+| [on_rtm_subscribe_result](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a4af3bd1e0ff1e84245e81e7f2cb1fc79) | 订阅结果。 |
+| [on_rtm_subscribe_data](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a40440ce1910c685ba80d7116bc289062) | 收到已订阅 RTM 频道的消息回调。 |
+| [on_rtm_publish_result](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#ab4a465f3612760c6b7b74f6b79a5e6f6) | 发布结果。 |
+| [on_rdt_state](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#afe6c35e916473a1424f28d3fefbdda69) | RDT 通道的连接状态已改变回调。 |
+| [on_rdt_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7b5b9ba5f3acaf9b336040e4edd282a5) | 收到 RDT 消息回调。 |

@@ -3,15 +3,12 @@ title: "平台支持"
 description: "RTSA SDK 支持的平台、系统版本和架构要求。"
 ---
 
-媒体流加速 C 语言支持 Linux、Android 和 HarmonyOS 平台。
-
-RTSA SDK 具体的兼容性要求见下表：
+SDK 核心基于 C99 和 [AOSL](https://github.com/AgoraIO-Community/aosl) 设计，具备良好的平台可移植性，可适配 Linux、RTOS 及裸机 MCU。具体兼容性要求见下表。
 
 | 平台 | 支持版本 |
 | --- | --- |
 | Linux | <Slot name="supported-platforms-html-0-0-1" /> |
-| HarmonyOS | ARM 架构：arm-liteos-eabi 内核 liteOS 2.0 |
-| Android | <Slot name="supported-platforms-html-0-2-1" /> |
+| RTOS | <Slot name="supported-platforms-rtos" /> |
 
 <Slot for="supported-platforms-html-0-0-1">
 
@@ -25,9 +22,39 @@ RTSA SDK 具体的兼容性要求见下表：
   - aarch64-linux-musl 5.5.x 及以上
   - arm-linux-uclibceabi 4.4.x 及以上
   - arm-linux-uclibceabihf 4.8.x 及以上
-- MIPS 架构：mips-linux-uclibceabihf 4.7.x 及以上
+- MIPS 架构：
+  - mips-linux-uclibceabihf 4.7.x 及以上
+  - mips-linux-gnu 4.7.x 及以上
+- RISCV 架构：
+  - riscv32-linux-gnu
+  - riscv32-linux-musl
+  - riscv64-linux-gnu
+  - riscv64-linux-musl
+- 已适配芯片平台：全志、安凯微、瑞昱、君正、杰理及联发科的部分 Linux 芯片系列。
 
 </Slot>
+
+<Slot for="supported-platforms-rtos">
+
+支持系统：FreeRTOS、LiteOS、ThreadX、Zephyr RTOS、RT-Thread、NuttX... 及厂商定制化 RTOS
+
+已适配芯片平台：
+
+- esp32 系列
+- BK72xx 系列
+- 展锐 rtos 系列
+- ...
+
+</Slot>
+
+## Java SDK
+
+媒体流加速 Java 语言支持 Android 和 HarmonyOS 平台。
+
+| 平台 | 支持版本 |
+| --- | --- |
+| HarmonyOS | ARM 架构：arm-liteos-eabi 内核 liteOS 2.0 |
+| Android | <Slot name="supported-platforms-html-0-2-1" /> |
 
 <Slot for="supported-platforms-html-0-2-1">
 
