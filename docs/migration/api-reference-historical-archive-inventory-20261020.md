@@ -1,11 +1,16 @@
 # API Reference 历史版本归档入口盘点（2026-10-20）
 
+> 阶段说明：本文件保留源配置盘点与调查阶段记录。运行接入及 13 项覆盖的当前验证状态见 [实施验证报告](./api-reference-historical-archive-validation-20261020.md)；文中“尚未接入”等表述指资料整理阶段，不表示当前分支仍未接入。
+
+> 实施前必读：源清单中有 13 个入口已确认跳入旧站 404。它们的可用替代入口已通过 GET、浏览器版本标签及历史源码核验，记录在 [URL 覆盖文件](./api-reference-archive-url-overrides-20261020.json) 和 [404 调查报告](./api-reference-archive-404-investigation-20261020.md)。接入时先读取本清单，再按覆盖文件修正这 13 项的目标地址。下面逐版本表仍保留 master 的原始映射，方便追溯。
+
 ## 范围与基线
 
 - **原本地旧分支基线 `61935883a` 已作废**：它属于 `codex/release-docs-convoai-v2.14`，落后于旧站主线，不能代表当前发布配置；原 224 项 / 219 URL 的结果也随之撤销。
 - 本报告已全面改用旧站远端最新基线 [`e91218031d7dd02ff84a66fc1b5f422a1cd28a64`](https://github.com/AgoraIO/shengwang-doc-source/commit/e91218031d7dd02ff84a66fc1b5f422a1cd28a64)（简写 `e91218031`）：本轮已 fetch 的 `origin/master` 与 `origin/release/prod` 指向同一提交。全部旧站证据通过 `git show <固定SHA>:<path>` 读取，来源链接固定到该 commit 及行号；没有切换旧站分支或改动工作区。
 - 新站对照基线仍为 `/Users/yejiayi/Documents/docs-portal`，HEAD `7c6c60ead4`。
 - 本次仅整理源码与已有导航配置，没有修改产品导航、版本配置或 API 正文。仅使用已同步的 Git 对象，**未联网检查归档可达性**；下表 URL 是按最新旧站源码与平台入口推导的候选外链，不代表已确认线上返回 200 或内容版本一致。
+- 线上复核补充（2026-10-20）：已验证用户报告的 13 个源入口均重定向到 `https://doc.shengwang.cn/404`，最终 HTTP 为 200；另找到并验证了 13 个同版本替代入口。此前“未联网检查”描述的是最初盘点阶段，现阶段线上验证覆盖以调查报告及覆盖文件为准，其余入口不据此视作已验证。
 - 完整读取最新 API 产品清单及全部 17 份平台配置（含未在产品清单启用的目录），按 JavaScript 生效配置计算；注释中的配置不计入。没有平台配置通过 `require`/`import` 导入其他版本表，RTC 文件内的 `commonExcludes` 已纳入判断。
 
 ## 汇总
@@ -706,10 +711,10 @@
 
 ### 后续实施约束
 
-- 保留 SDK 显示版本号与 siteVersion 的对应关系，外链使用旧站路径；不能拿新站产品名、平台名或新站 URL 拼接 archive 地址。
+- 保留 SDK 显示版本号与 master 原始 siteVersion 的追溯关系，外链使用旧站路径。已验证失效的 13 项采用 [覆盖文件](./api-reference-archive-url-overrides-20261020.json) 的 href 作为实施地址；不要将覆盖后的归档编号回写成 master 原值，也不能拿新站产品名、平台名或新站 URL 拼接 archive 地址。
 - 维持现有本站 current 与三个历史入口；Android v4.6.0 同时存在本站页面与旧站 archive 配置，实施时应明确菜单表达，避免出现两个无区别的同名选项。
 - 新站版本元数据已有 `href` 字段，链接解析器会直接返回配置的 href；可据此设计接入，但外域导航、新标签页行为、移动端菜单及 React 双系列尚未做端到端验证，不能仅凭字段存在就视作已支持全部行为。依据：[schema:75](/Users/yejiayi/Documents/docs-portal/src/lib/docs-meta-schema.ts:75)、[版本链接解析:860](/Users/yejiayi/Documents/docs-portal/src/lib/docs-nav-scope.ts:860)、[菜单组件:94](/Users/yejiayi/Documents/docs-portal/src/components/docs-shell/DocsSidebarHeaderBlock.tsx:94)。
-- 上线前单独核验异常编号、HarmonyOS 大小写、旧快照入口存在性及页面内容版本。此次仅完成清单与差异整理，尚未接入导航。
+- 上线前应用已核验的 13 项覆盖，并继续核验其余旧快照入口及页面内容版本。RN v6.x 等未包含在这 13 项中的疑点仍待处理。此次仅更新清单与调查资料，尚未接入导航。
 
 ## 本地完整性校验
 
@@ -720,4 +725,4 @@
 - 历史项行数：228；涉及平台：44；React 额外划分一个版本系列，共 45；按生成的完整入口 URL 去重：223。
 - 当前项与历史项分别处理，未生成 current 归档 URL；prevPlatform、React pathFilter 均已应用到表内 URL。
 - 没有运行应用测试或构建：本次只新增盘点报告，不修改运行代码；未进行外网可达性验证。
-- 本次确认的是与 master 源配置一致。ConvoAI 的 `0.0454`、RTC 小程序的 `v0.0.166` 及 RN 的 v6.x 标签仍是 master 原有疑点，不能据源码比对通过就视作归档目标和内容已核验。
+- 源码一致性检查确认的是与 master 原值一致。后续线上复核已为 ConvoAI `0.0454`、RTC 小程序 `v0.0.166` 等 13 个失效入口找到可用目标，详见覆盖文件；RN 的 v6.x 标签仍未核验。源码比对通过不代表源地址在线可用。

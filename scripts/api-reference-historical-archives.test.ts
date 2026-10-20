@@ -4,6 +4,32 @@ import { describe, expect, it } from 'vitest';
 import { docsMetaSchema } from '../src/lib/docs-meta-schema';
 
 const contentRoot = 'content/docs/zh-CN/api-reference';
+type ArchiveOverride = {
+  newPlatform: string;
+  sdkVersion: string;
+  sourceSiteVersion: string;
+  verifiedArchiveVersion: string;
+  href: string;
+  renderedVersion: string;
+};
+const { overrides } = JSON.parse(
+  readFileSync(
+    'docs/migration/api-reference-archive-url-overrides-20261020.json',
+    'utf8',
+  ),
+) as { overrides: ArchiveOverride[] };
+const overrideByVersion = new Map(
+  overrides.map((override) => [
+    `${override.newPlatform}:${override.sdkVersion}`,
+    override,
+  ]),
+);
+const initialAudit = JSON.parse(
+  readFileSync(
+    'docs/migration/api-reference-historical-archive-url-check-20261020.json',
+    'utf8',
+  ),
+) as { results: { url: string; notFound: boolean }[] };
 const inventory = readFileSync(
   'docs/migration/api-reference-historical-archive-inventory-20261020.md',
   'utf8',
@@ -74,6 +100,17 @@ describe('Chinese API Reference historical archives', () => {
     const history = platforms.flatMap((item) => item.history);
     expect(history).toHaveLength(219);
     expect(new Set(history.map((item) => item.href)).size).toBe(214);
+    expect(
+      new Set(
+        platforms.flatMap(({ directory, history }) =>
+          history.map(
+            (item) =>
+              overrideByVersion.get(`${directory}:${item.label}`)?.href ??
+              item.href,
+          ),
+        ),
+      ).size,
+    ).toBe(214);
     expect(platforms.every((item) => item.history.length > 0)).toBe(true);
     expect(platforms.some((item) => item.directory.includes('react-sdk'))).toBe(
       false,
@@ -81,7 +118,7 @@ describe('Chinese API Reference historical archives', () => {
   });
 
   it.each(platforms)(
-    '$directory matches every inventory label and URL',
+    '$directory matches the inventory with verified URL overrides',
     ({ directory, history }) => {
       const meta = readMeta(directory);
       expect(meta.navScope?.defaultVersion).toBe('current');
@@ -90,7 +127,14 @@ describe('Chinese API Reference historical archives', () => {
       expect(versions[0]?.href ?? '').not.toMatch(/^https?:/);
       expect(
         versions.slice(1).map(({ label, href }) => ({ label, href })),
-      ).toEqual(history);
+      ).toEqual(
+        history.map((entry) => ({
+          ...entry,
+          href:
+            overrideByVersion.get(`${directory}:${entry.label}`)?.href ??
+            entry.href,
+        })),
+      );
       expect(new Set(versions.map((version) => version.id)).size).toBe(
         versions.length,
       );
@@ -100,6 +144,52 @@ describe('Chinese API Reference historical archives', () => {
         );
         expect(version.id).not.toBe('legacy');
       }
+    },
+  );
+
+  it('has exactly one verified override for each initially broken URL', () => {
+    expect(overrides).toHaveLength(13);
+    expect(overrideByVersion.size).toBe(13);
+    const replacedUrls = overrides.map((override) => {
+      const matches = platforms
+        .find((item) => item.directory === override.newPlatform)
+        ?.history.filter((entry) => entry.label === override.sdkVersion);
+      expect(matches).toHaveLength(1);
+      const originalHref = matches?.[0].href ?? '';
+      const original = new URL(originalHref);
+      const replacement = new URL(override.href);
+      expect(original.pathname.split('/')[2]).toBe(override.sourceSiteVersion);
+      expect(replacement.origin).toBe(original.origin);
+      expect(replacement.pathname.split('/')[2]).toBe(
+        override.verifiedArchiveVersion,
+      );
+      expect(replacement.pathname.split('/').slice(3)).toEqual(
+        original.pathname.split('/').slice(3),
+      );
+      expect(override.renderedVersion).toBe(override.sdkVersion);
+      return originalHref;
+    });
+    expect(new Set(replacedUrls)).toEqual(
+      new Set(
+        initialAudit.results
+          .filter((item) => item.notFound)
+          .map((item) => item.url),
+      ),
+    );
+  });
+
+  it.each(overrides)(
+    '$newPlatform $sdkVersion uses its verified replacement',
+    (override) => {
+      const versions = readMeta(override.newPlatform).navScope?.versions ?? [];
+      expect(
+        versions.filter((version) => version.label === override.sdkVersion),
+      ).toEqual([
+        expect.objectContaining({
+          href: override.href,
+          id: override.sdkVersion.slice(1),
+        }),
+      ]);
     },
   );
 
