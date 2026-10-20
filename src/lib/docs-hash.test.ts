@@ -1,5 +1,8 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { scrollDocsHashTarget } from './docs-hash';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  scrollDocsHashTarget,
+  scrollDocsHashTargetAfterLayout,
+} from './docs-hash';
 
 describe('scrollDocsHashTarget', () => {
   afterEach(() => {
@@ -257,5 +260,166 @@ describe('scrollDocsHashTarget', () => {
       behavior: 'auto',
       top: 204,
     });
+  });
+});
+
+describe('scrollDocsHashTargetAfterLayout', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.useFakeTimers();
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((callback) =>
+      window.setTimeout(() => callback(performance.now()), 16),
+    );
+    vi.spyOn(window, 'cancelAnimationFrame').mockImplementation((frame) =>
+      window.clearTimeout(frame),
+    );
+    window.history.replaceState(null, '', '/zh-CN/ai/release-notes');
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 0,
+    });
+  });
+
+  afterEach(() => {
+    window.dispatchEvent(new Event('pointerdown'));
+    document.body.innerHTML = '';
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
+
+  it.each([120, 6000])(
+    'reaches a subsection when content appears after %d ms',
+    async (delay) => {
+      const scrollTo = vi.fn();
+      vi.spyOn(window, 'scrollTo').mockImplementation(scrollTo);
+      Object.defineProperty(window, 'scrollY', {
+        configurable: true,
+        value: 0,
+      });
+
+      scrollDocsHashTargetAfterLayout('#%E9%97%AE%E9%A2%98', {
+        behavior: 'auto',
+      });
+      await vi.advanceTimersByTimeAsync(delay);
+      document.body.innerHTML = `
+      <div role="region" data-state="closed">
+        <h3 id="问题">问题</h3>
+      </div>
+    `;
+      const heading = document.getElementById('问题') as HTMLElement;
+      vi.spyOn(heading, 'getBoundingClientRect').mockReturnValue({
+        top: 2400,
+        bottom: 2428,
+        height: 28,
+        left: 0,
+        right: 390,
+        width: 390,
+        x: 0,
+        y: 2400,
+        toJSON: () => ({}),
+      });
+      await vi.advanceTimersByTimeAsync(200);
+      heading.parentElement?.setAttribute('data-state', 'open');
+      await vi.advanceTimersByTimeAsync(300);
+
+      expect(scrollTo).toHaveBeenLastCalledWith({
+        behavior: 'auto',
+        top: 2304,
+      });
+    },
+  );
+
+  it('waits for an expanding page to allow the requested scroll position', async () => {
+    document.body.innerHTML = '<h3 id="target">Target</h3>';
+    const heading = document.getElementById('target') as HTMLElement;
+    let scrollY = 0;
+    let pageHeight = 800;
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      get: () => scrollY,
+    });
+    vi.spyOn(
+      document.documentElement,
+      'scrollHeight',
+      'get',
+    ).mockImplementation(() => pageHeight);
+    vi.spyOn(window, 'scrollTo').mockImplementation((options) => {
+      scrollY = Math.min(
+        (options as ScrollToOptions).top ?? 0,
+        pageHeight - 800,
+      );
+    });
+    vi.spyOn(heading, 'getBoundingClientRect').mockImplementation(
+      () => ({ top: 1000 - scrollY, height: 28 }) as DOMRect,
+    );
+    const animation = window.setInterval(() => {
+      pageHeight += 100;
+      if (pageHeight === 2000) window.clearInterval(animation);
+    }, 16);
+
+    scrollDocsHashTargetAfterLayout('#target', { behavior: 'auto' });
+    await vi.advanceTimersByTimeAsync(400);
+
+    expect(heading.getBoundingClientRect().top).toBe(96);
+  });
+
+  it.each([
+    'wheel',
+    'touchstart',
+    'pointerdown',
+    'keydown',
+    'pagehide',
+    'navigation',
+  ])(
+    'does not pull readers back after %s while content is loading',
+    async (interaction) => {
+      const scrollTo = vi
+        .spyOn(window, 'scrollTo')
+        .mockImplementation(() => {});
+      scrollDocsHashTargetAfterLayout('#target', { behavior: 'auto' });
+      await vi.advanceTimersByTimeAsync(50);
+
+      if (interaction === 'navigation') {
+        window.history.replaceState(null, '', '/zh-CN/introduction');
+      } else {
+        window.dispatchEvent(new Event(interaction));
+      }
+      document.body.innerHTML = '<h3 id="target">Target</h3>';
+      await vi.advanceTimersByTimeAsync(200);
+
+      expect(scrollTo).not.toHaveBeenCalled();
+    },
+  );
+
+  it('follows the newest hash request when content arrives', async () => {
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    scrollDocsHashTargetAfterLayout('#old', { behavior: 'auto' });
+    await vi.advanceTimersByTimeAsync(50);
+    scrollDocsHashTargetAfterLayout('#new', { behavior: 'auto' });
+    document.body.innerHTML = '<h3 id="old">Old</h3><h3 id="new">New</h3>';
+    for (const [id, top] of [
+      ['old', 1000],
+      ['new', 2000],
+    ] as const) {
+      const heading = document.getElementById(id) as HTMLElement;
+      vi.spyOn(heading, 'getBoundingClientRect').mockReturnValue({
+        top,
+        height: 28,
+      } as DOMRect);
+    }
+    await vi.advanceTimersByTimeAsync(200);
+
+    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 1904 });
+    expect(scrollTo).not.toHaveBeenCalledWith({ behavior: 'auto', top: 904 });
+  });
+
+  it('expires unmatched hash requests instead of scrolling much later', async () => {
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+    scrollDocsHashTargetAfterLayout('#missing', { behavior: 'auto' });
+    await vi.advanceTimersByTimeAsync(31_000);
+    document.body.innerHTML = '<h3 id="missing">Late unrelated content</h3>';
+    await vi.advanceTimersByTimeAsync(200);
+
+    expect(scrollTo).not.toHaveBeenCalled();
   });
 });

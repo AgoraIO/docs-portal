@@ -1645,6 +1645,35 @@ describe('DocsContent', () => {
 });
 
 describe('DocsTableOfContents', () => {
+  it('clears the current item when the last open release is closed', async () => {
+    const fixture = (state: 'open' | 'closed') => (
+      <AppProviders>
+        <article>
+          <div data-state={state}>
+            <h2 data-accordion-value="v213" id="v213">
+              v2.13
+            </h2>
+          </div>
+        </article>
+        <DocsTableOfContents
+          toc={[{ depth: 3, title: 'v2.13', url: '#v213' }]}
+        />
+      </AppProviders>
+    );
+    const { rerender } = render(fixture('open'));
+    const link = screen.getByRole('link', { name: 'v2.13' });
+
+    await waitFor(() =>
+      expect(link).toHaveAttribute('aria-current', 'location'),
+    );
+    rerender(fixture('closed'));
+
+    await waitFor(() => {
+      expect(link).not.toHaveAttribute('aria-current');
+      expect(link).not.toHaveAttribute('data-visible');
+    });
+  });
+
   it('does not highlight a closed accordion heading', async () => {
     render(
       <AppProviders>
@@ -1825,7 +1854,9 @@ describe('DocsTableOfContents', () => {
 
     fireEvent.click(link);
 
-    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
+    await waitFor(() => {
+      expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
+    });
     expect(link).toHaveAttribute('aria-current', 'location');
   });
 
@@ -1986,7 +2017,9 @@ describe('DocsTableOfContents', () => {
     fireEvent.click(toggle);
     fireEvent.click(screen.getByRole('link', { name: 'Target heading' }));
 
-    expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
+    await waitFor(() => {
+      expect(scrollTo).toHaveBeenCalledWith({ behavior: 'auto', top: 126 });
+    });
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
     expect(screen.queryByRole('link', { name: 'Target heading' })).toBeNull();
   });
