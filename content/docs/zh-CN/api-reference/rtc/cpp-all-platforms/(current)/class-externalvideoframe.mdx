@@ -30,8 +30,6 @@ struct ExternalVideoFrame {
   int textureId;
   long long fenceObject;
   float matrix[16];
-  uint8_t* metadataBuffer;
-  int metadataSize;
   uint8_t* alphaBuffer;
   bool fillAlphaBuffer;
   ALPHA_STITCH_MODE alphaStitchMode;
@@ -145,18 +143,6 @@ struct ExternalVideoFrame {
 仅适用于 Texture 格式的视频数据。输入的 4×4 变换矩阵。典型值为单位矩阵。
 
 </Parameter>
-<a id="metadatabuffer"></a>
-<Parameter name="metadataBuffer">
-
-仅适用于 Texture 格式的视频数据。MetaData 缓冲区。默认值为 NULL。
-
-</Parameter>
-<a id="metadatasize"></a>
-<Parameter name="metadataSize">
-
-仅适用于 Texture 格式的视频数据。MetaData 大小。默认值为 0。
-
-</Parameter>
 <a id="alphabuffer"></a>
 <Parameter name="alphaBuffer">
 
@@ -204,3 +190,11 @@ struct ExternalVideoFrame {
 
 </Parameter>
 </ParameterList>
+
+## 旧字段链接
+
+<a id="metadatabuffer"></a>
+
+<a id="metadatasize"></a>
+
+以上锚点仅用于旧文档链接兼容，当前结构体字段列表不包含这两个预览字段。

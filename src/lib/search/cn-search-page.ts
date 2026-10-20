@@ -1,6 +1,8 @@
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
 
+export { isPublicCnSearchUrl } from './cn-search-urls.mjs';
+
 export type SearchFacets = Record<string, Record<string, number>>;
 export type SearchPageGroup = {
   groupKey?: string;
@@ -111,21 +113,6 @@ export function mergeSearchPageGroups(
       }
     }
   return [...groups.values()];
-}
-
-export function isPublicCnSearchUrl(value: string) {
-  if (
-    typeof value !== 'string' ||
-    !value.startsWith('/zh-CN/') ||
-    Array.from(value).some(
-      (character) => character.charCodeAt(0) <= 32 || character === '\\',
-    )
-  )
-    return false;
-  const url = new URL(value, 'https://docs.local');
-  return (
-    url.origin === 'https://docs.local' && url.pathname.startsWith('/zh-CN/')
-  );
 }
 
 export function groupSearchSections(
