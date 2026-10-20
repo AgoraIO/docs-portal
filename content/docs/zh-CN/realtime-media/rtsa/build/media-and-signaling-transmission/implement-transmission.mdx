@@ -64,7 +64,7 @@ static void __on_rejoin_channel_success(connection_id_t conn_id, uint32_t uid, i
 }
 
 static void __on_user_joined(connection_id_t conn_id, uint32_t uid, int elapsed_ms) {
-    printf("[conn-%u] Remote user \"%u\" has joined the channel, elapsed %d ms\n", uid, conn_id, elapsed_ms);
+    printf("[conn-%u] Remote user \"%u\" has joined the channel, elapsed %d ms\n", conn_id, uid, elapsed_ms);
 }
 
 static void __on_user_offline(connection_id_t conn_id, uint32_t uid, int reason) {
@@ -312,7 +312,7 @@ agora_rtc_destroy_connection(g_conn_id);
 
 #### 3.1 登录 RTM 系统
 
-调用 `agora_rtc_login_rtm` 方法登录 RTM 系统。登录成功之后，你可以发送和接收信令。
+调用 `agora_rtm_login` 方法登录 RTM 系统。登录成功之后，你可以发送和接收信令。
 
 在该方法中，你需要进行如下操作：
 
@@ -330,9 +330,9 @@ RTM Token 与 RTC Token 生成机制不同，作用范围也不同，不能混�
 agora_rtm_handler_t rtm_handler = {0};
 rtm_handler.on_rtm_data = __on_rtm_data;
 rtm_handler.on_rtm_event = __on_rtm_event;
-rtm_handler.on_send_rtm_data_result = __on_send_rtm_data_result;
+rtm_handler.on_rtm_send_data_result = __on_rtm_send_data_result;
 
-rval = agora_rtc_login_rtm(rtm_uid, token, &rtm_handler);
+rval = agora_rtm_login(rtm_uid, token, &rtm_handler);
 if (rval < 0) {
     printf("login rtm failed\n");
     goto EXIT;
@@ -343,47 +343,63 @@ if (rval < 0) {
 
 成功登录 RTM 系统后，你可以开始发送和接收信令：
 
+:::caution[注意]
+只有收到 `RTM_EVENT_TYPE_LOGIN` 且 `ERR_RTM_OK` 的成功回调后，才能调用 `agora_rtm_send_data`。
+:::
+
 - 通过 `on_rtm_data` 回调接收远端发送给你的信令。
 - 通过 `on_rtm_event` 回调监听本地用户状态。
-- 通过 `on_send_rtm_data_result` 回调监听本地信令发送结果。
-- 调用 `agora_rtc_send_rtm_data` 方法向指定 RTM 用户发送信令。
+- 通过 `on_rtm_send_data_result` 回调监听本地信令发送结果。
+- 调用 `agora_rtm_send_data` 方法向指定 RTM 用户发送信令。
 
 示例代码如下：
 
 ```c
 // 接收你登录的 RTM 系统中远端发送的信令
-static void __on_rtm_data(const char *user_id, const void *data, size_t data_len) {
-    printf("Receive data[%s] from user[%s] length[%lu]\n", (char *)data, user_id, data_len);
+static void __on_rtm_data(const char *user_id, const void *data, size_t data_len,
+                          rtm_message_type_e msg_type, const char *custom_type) {
+    if (msg_type == RTM_MESSAGE_TYPE_STRING) {
+        printf("Receive data[%.*s] from user[%s] length[%zu]\n", (int)data_len, (const char *)data, user_id, data_len);
+    } else {
+        printf("Receive data from user[%s] length[%zu]\n", user_id, data_len);
+    }
 }
 // 监听本地用户状态
-static void __on_rtm_event(const char *user_id, uint32_t event_id, uint32_t event_code) {
-    printf("%s event id[%u], event code[%u]\n", user_id, event_id, event_code);
-    if (event_id == 0 && event_code == 0) {
+static void __on_rtm_event(const char *user_id, rtm_event_type_e event_type, rtm_err_code_e err_code) {
+    printf("%s event type[%d], err code[%d]\n", user_id, event_type, err_code);
+    if (event_type == RTM_EVENT_TYPE_LOGIN && err_code == ERR_RTM_OK) {
         g_rtm_login_success_flag = 1;
     }
 }
 // 监听本地信令发送结果
-static void __on_rtm_send_data_res(const char *user_id, uint32_t msg_id, uint32_t error_code) {
-    printf("user [%s] msg_id [%u], error_code[%u]\n", user_id, msg_id, error_code);
+static void __on_rtm_send_data_result(const char *rtm_uid, uint32_t msg_id, rtm_msg_state_e state) {
+    printf("user [%s] msg_id [%u], state[%d]\n", rtm_uid, msg_id, state);
 }
 // 向指定 RTM 用户发送信令
 uint32_t g_message_id = 0;
-rval = agora_rtc_send_rtm_data(peer_uid, buffer, rval, &g_message_id);
+uint32_t message_id = ++g_message_id;
+const unsigned char buffer[] = {0x01, 0x02, 0x03};
+size_t msg_len = sizeof(buffer);
+if (!g_rtm_login_success_flag) {
+    printf("RTM login not successful, skip sending data\n");
+    goto EXIT;
+}
+rval = agora_rtm_send_data(peer_uid, buffer, msg_len, message_id, RTM_MESSAGE_TYPE_BINARY, NULL);
 if (rval < 0) {
     printf("send data failed, rval=%d\n", rval);
     goto EXIT;
 }
-printf("send message_id=%u successfully\n");
+printf("send message_id=%u successfully\n", message_id);
 ```
 
 #### 3.3 登出 RTM 系统
 
-调用 `agora_rtc_logout_rtm` 方法登出 RTM，结束在 RTM 系统中的消息传输。
+调用 `agora_rtm_logout` 方法登出 RTM，结束在 RTM 系统中的消息传输。
 
 示例代码如下：
 
 ```c
-agora_rtc_logout_rtm();
+agora_rtm_logout();
 ```
 
 ### 4. 销毁 SDK 实例
