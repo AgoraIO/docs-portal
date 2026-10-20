@@ -66,6 +66,7 @@
     "build:service": "node scripts/clean-service-output.mjs && NODE_OPTIONS=--max-old-space-size=8192 DOCS_BUILD_TARGET=service vite build",
     "start:service": "node .output/server/index.mjs",
     "search:export:cn": "bun scripts/search/export-cn.ts",
+    "search:verify:urls:cn": "node scripts/search/verify-cn-public-urls.mjs",
     "search:prepare:cn": "bun scripts/search/sync-cn.ts prepare",
     "search:promote:cn": "bun scripts/search/sync-cn.ts promote"
   },
