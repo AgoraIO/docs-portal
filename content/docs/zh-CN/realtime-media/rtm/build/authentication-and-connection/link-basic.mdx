@@ -1581,7 +1581,7 @@ rtm.addEventListener('linkState', event => {
 
 需要注意的是，以上机制只适用于客户端与服务器意外断开连接的情况，如果你是主动断开连接，例如通过调用 `logout` 方法主动登出时，则不会遵循上述机制。
 
-RTM SDK 默认的心跳探测时间间隔为 5 秒，这是平衡了设备续航能力和意外断连识别及时性的结果。如果你的 App 需要增加电池续航或者需要更及时地识别网络断连情况，那么你可以通过 `RtmConfig` 中的 `heartbeatInterval` 参数自定义心跳探测时间间隔，支持的取值为 [5,1800] 之间的任意整数值。
+RTM SDK 默认的心跳探测时间间隔为 5 秒，这是平衡了设备续航能力和意外断连识别及时性的结果。如果你的 App 需要增加电池续航或者需要更及时地识别网络断连情况，那么你可以通过 `RTMConfig` 中的 `heartbeatInterval` 参数自定义心跳探测时间间隔，支持的取值为 [5,1800] 之间的任意整数值。
 
 设置更高的 `heartbeatInterval` 值可能会降低客户端和服务器对于意外断连识别的及时性，峰值连接数（PCU）也可能显得更高。虽然 `heartbeatInterval` 最高可以设置成 1800 秒，但是我们不建议这么做。
 
@@ -1599,7 +1599,7 @@ const rtm = new RTM("yourAppId", "Tony", rtmConfig);
 <a id="heartbeatinterval-and-presencetimeout"></a>
 ## Heartbeat Interval 与 Presence Timeout
 
-`RtmConfig` 中包含两个与时间间隔相关的参数，分别为 `heartbeatInterval` 和 `presenceTimeout`。这两个参数常常会让人感到困惑，本节主要介绍它们的含义，以便你更有效地配置 App。
+`RTMConfig` 中包含两个与时间间隔相关的参数，分别为 `heartbeatInterval` 和 `presenceTimeout`。这两个参数常常会让人感到困惑，本节主要介绍它们的含义，以便你更有效地配置 App。
 
 - `heartbeatInterval`：客户端会定期向服务器发送证明自身处于活跃状态的 Ping-Pong 数据包，以确保服务器能够及时清除超时计数并维持连接状态。该设置会影响 PCU 计数，是 SDK 全局连接管理功能中的一个重要特性。
 - `presenceTimeout`：如果在设置的 `heartbeatInterval` 时间加 10 秒冗余时间内未收到客户端的 Ping 包，服务器则会认为该客户端可能遇到了网络连接故障。考虑到此时客户端可能在尝试修复问题，为避免重复通知事件，服务器会延迟一段时间（即 `presenceTimeout` 时间）再向频道中的其他用户广播事件通知。

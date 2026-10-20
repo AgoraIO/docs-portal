@@ -3689,6 +3689,21 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
           },
         ],
       },
+      {
+        id: 'rtm-sdk-mini-program',
+        label: '实时消息 SDK',
+        info: '适用于微信小程序消息收发、状态同步、属性管理和分布式锁的 Beta SDK',
+        versions: [
+          {
+            id: '2.3.0-beta.0-rtm-sdk-mini-program',
+            label: '版本 2.3.0-beta.0（最新）',
+            packageName: 'shengwang-rtm-miniapp',
+            packageManager:
+              'https://www.npmjs.com/package/shengwang-rtm-miniapp',
+            releaseDate: '2026 年 7 月 16 日',
+          },
+        ],
+      },
     ],
   },
   {
