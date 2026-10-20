@@ -131,6 +131,32 @@ describe('PostHog analytics', () => {
     });
   });
 
+  it('never sends CN measurement facts from the global build, even with the flag enabled', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    vi.stubEnv('VITE_DOCS_REGION', 'global');
+    vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'true');
+    const { captureMeasurementEvent } = await import('./posthog');
+    captureMeasurementEvent({ name: 'docs_journey_started', properties: {} });
+    await Promise.resolve();
+    expect(initMock).not.toHaveBeenCalled();
+    expect(captureMock).not.toHaveBeenCalled();
+  });
+
+  it('keeps the existing English SDK event properties unchanged', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    vi.stubEnv('VITE_DOCS_REGION', 'global');
+    const { initializePostHog } = await import('./posthog');
+    initializePostHog();
+    await vi.waitFor(() => expect(initMock).toHaveBeenCalledTimes(1));
+    const pageview = {
+      event: '$pageview',
+      properties: {
+        $current_url: 'https://docs.example/en/introduction?platform=web#start',
+      },
+    };
+    expect(initMock.mock.calls[0][1].before_send(pageview)).toBe(pageview);
+  });
+
   it('keeps account identity across companies and never offers an identified account as an anonymous merge source', async () => {
     vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
     const { captureAccountFlow, getDocsAnonymousId, synchronizeDocsAccount } =

@@ -1,5 +1,6 @@
 import { measurementContentContext } from './content-context';
-import { analyticsPath, redactSearchQuery } from './measurement-privacy';
+import { measurementPath } from './measurement-path';
+import { redactSearchQuery } from './measurement-privacy';
 
 export type Properties = Record<
   string,
@@ -156,7 +157,7 @@ export function createDocsMeasurement(options: Options) {
       pending = undefined;
       const invitation = options.invitationStatus?.();
       send('docs_journey_started', journey, {
-        entry_path: analyticsPath(
+        entry_path: measurementPath(
           typeof options.entryPath === 'function'
             ? options.entryPath()
             : options.entryPath,
@@ -324,7 +325,7 @@ export function createDocsMeasurement(options: Options) {
         journey: snapshot.search.journey,
         searchId: snapshot.search.searchId,
         resultsViewId: snapshot.viewId,
-        target: analyticsPath(result.path),
+        target: measurementPath(result.path),
         expires: options.now() + 5 * 60 * 1000,
       };
       const refreshBody =
@@ -335,7 +336,7 @@ export function createDocsMeasurement(options: Options) {
       send('docs_search_result_selected', snapshot.search.journey, {
         ...searchProperties(snapshot.search),
         results_view_id: snapshot.viewId,
-        result_id: analyticsPath(result.id),
+        result_id: measurementPath(result.id),
         target_path: attribution.target,
         result_rank: result.rank,
         result_kind: result.kind,
@@ -357,7 +358,7 @@ export function createDocsMeasurement(options: Options) {
     },
     viewContent(input: ContentContext) {
       const context = current();
-      const path = analyticsPath(input.path);
+      const path = measurementPath(input.path);
       const key = JSON.stringify([
         context.id,
         path,
@@ -395,7 +396,7 @@ export function createDocsMeasurement(options: Options) {
       view = undefined;
     },
     contentContext(path: string) {
-      return view?.properties.canonical_path === analyticsPath(path)
+      return view?.properties.canonical_path === measurementPath(path)
         ? view.properties
         : {};
     },
@@ -466,10 +467,10 @@ export function createDocsMeasurement(options: Options) {
     pageFeedback(value: 'yes' | 'no', path: string) {
       const context = current();
       const properties =
-        view?.properties.canonical_path === analyticsPath(path)
+        view?.properties.canonical_path === measurementPath(path)
           ? view.properties
           : {
-              canonical_path: analyticsPath(path),
+              canonical_path: measurementPath(path),
               attribution_status: 'unknown',
             };
       send('docs_page_feedback', context, {

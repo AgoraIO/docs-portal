@@ -1,6 +1,7 @@
 ---
-title: "更新历史"
+title: "发版说明"
 ---
+
 本文提供云端录制服务的更新说明。
 
 云端录制可为声网实时音视频提供录制服务。与声网本地服务端录制相比，声网云端录制无需部署 Linux 服务器，减轻了研发和运维的压力，更轻量便捷。点击[云端录制产品概述](/zh-CN/realtime-media/cloud-recording)了解关键特性。
@@ -14,7 +15,9 @@ title: "更新历史"
 |声网 RTC Native 及框架 SDK | v1.7.0 及以上版本 |
 |声网 RTC Web SDK    | v1.12.0 及以上版本          |
 
-## 2026.10.08
+<Accordions type="multiple" openFirst>
+
+<Accordion title="2026.10.08" id="20261008" headingLevel={2} value="20261008">
 
 ### 升级必看
 
@@ -29,7 +32,9 @@ title: "更新历史"
 
 详见[实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)和[录制文件介绍](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/introduce-recorded-files)。
 
-## 2025.06.27
+</Accordion>
+
+<Accordion title="2025.06.27" id="20250627" headingLevel={2} value="20250627">
 
 ### 新增功能
 
@@ -57,25 +62,33 @@ title: "更新历史"
 }
 ```
 
-## 2024.08.02
+</Accordion>
+
+<Accordion title="2024.08.02" id="20240802" headingLevel={2} value="20240802">
 
 ### 改进
 
 为了提升云端录制的安全性，本次发布在 `start` 和 `update` 请求 Body 的 `storageConfig` 中新增了可选字段 `stsToken` 和 `stsExpiration`。你需要确保 `stsToken` 的时效足够长，以便云端录制能够顺利上传文件至三方云存储。详见 [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 和 [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) API 参考。
 
-## 2024.03.05
+</Accordion>
+
+<Accordion title="2024.03.05" id="20240305" headingLevel={2} value="20240305">
 
 ### 改进
 
 本次发布在 `acquire` 请求 Body 的 `clientRequest` 中新增可选字段 `startParameter`。你设置该字段后，声网可以更精确地分配资源调度，提升请求异常时的恢复能力，进而提高云端录制的可用性。填写 `startParameter` 字段时，必须和 `start` 请求 Body 的 `clientRequest` 内容保持一致。详见 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) API 参考。
 
-## 2023.12.25
+</Accordion>
+
+<Accordion title="2023.12.25" id="20231225" headingLevel={2} value="20231225">
 
 ### 新增功能
 
 本次发布新增支持指定某个区域的资源进行录制。可用于加速录制文件上传。详见 [`acquire`](/zh-CN/api-reference/api-ref/cloud-recording/acquire) 中的 `clientRequest.regionAffinity` 字段。
 
-## 2023.11.30
+</Accordion>
+
+<Accordion title="2023.11.30" id="20231130" headingLevel={2} value="20231130">
 
 ### 改进
 
@@ -85,7 +98,9 @@ title: "更新历史"
 
 - 跨区域多路录制保障：为避免单个区域网络故障对云端录制服务的影响，本次发布在 `acquire` 方法的 `clientRequest` 中新增 `excludeResourceIds` 字段。该字段用于排除指定的录制资源，以便新发起的录制任务可以使用新区域的资源，实现跨区域多路录制。详见[多路任务保障](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/rest-availability#多路任务保障)。
 
-## 2023.07.05
+</Accordion>
+
+<Accordion title="2023.07.05" id="20230705" headingLevel={2} value="20230705">
 
 ### 新增功能
 
@@ -101,22 +116,30 @@ title: "更新历史"
 
 本次发布更新了[声网转码脚本](https://download.agora.io/acrsdk/release/cloud_recording_tools.v3.8.0.69-202302061216-release-prod.tar.gz)，以降低底噪。
 
-## 2022.11.20
+</Accordion>
+
+<Accordion title="2022.11.20" id="20221120" headingLevel={2} value="20221120">
 
 本次发布的改进如下：
 
 - 提升了单流录制 `standard` 模式生成 MPD 文件的播放器兼容性。
 - 优化了单流录制音视频合并脚本，你可以参考[转换录制文件格式](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)获取最新的音视频合并脚本。
 
-## 2022.10.20
+</Accordion>
+
+<Accordion title="2022.10.20" id="20221020" headingLevel={2} value="20221020">
 
 本次发布在全球范围内支持延时转码功能。你需要在调用 `acquire` 接口时将 `scene` 字段设置为 `2`（延时转码），设置为该场景后，录制服务会在录制后 24 小时内对录制文件进行转码生成 MP4 文件，并将 MP4 文件上传至你指定的第三方云存储。请注意第三方云存储的 `region` 必须与调用 `acquire` 时设置的 `region` 一致。详见[旧版实现单流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/legacy-set-individual)。
 
-## 2022.08.12
+</Accordion>
+
+<Accordion title="2022.08.12" id="20220812" headingLevel={2} value="20220812">
 
 本次发布新增 Amazon S3 支持区域。详见[第三方云存储地区说明](/zh-CN/realtime-media/cloud-recording/reference/api-reference)。
 
-## 2022.05.20
+</Accordion>
+
+<Accordion title="2022.05.20" id="20220520" headingLevel={2} value="20220520">
 
 ### 改进
 
@@ -131,7 +154,9 @@ title: "更新历史"
 
 合流录制模式下，声网提供转码脚本，用于将原 M3U8 文件与启用高可用机制后生成的新 M3U8 文件合并为一个 MP4 文件。详见[录制文件介绍](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/introduce-recorded-files#服务器断网或进程被杀)。
 
-## 2022.01.20
+</Accordion>
+
+<Accordion title="2022.01.20" id="20220120" headingLevel={2} value="20220120">
 
 ### 新增功能
 
@@ -152,7 +177,9 @@ title: "更新历史"
 
 该版本新增 `extensionParams` 字段，用于支持第三方云存储服务对已上传的录制文件加密和打标签。该功能适用于 Amazon S3 和阿里云 OSS。
 
-## 2021.12.09
+</Accordion>
+
+<Accordion title="2021.12.09" id="20211209" headingLevel={2} value="20211209">
 
 ### 新增功能
 
@@ -169,7 +196,9 @@ title: "更新历史"
 
 开始合流录制时待录制的用户未发流的场景下，当用户开始发流，并中途停止发流或退出频道后，无法显示自定义的背景图或背景色。
 
-## 2021.11.03
+</Accordion>
+
+<Accordion title="2021.11.03" id="20211103" headingLevel={2} value="20211103">
 
 ### 升级必看
 
@@ -205,7 +234,9 @@ title: "更新历史"
 - `4`：18 到 32 个用户 ID
 - `5`：33 到 49 个用户 ID
 
-## 2021.09.03
+</Accordion>
+
+<Accordion title="2021.09.03" id="20210903" headingLevel={2} value="20210903">
 
 ### 升级必看
 
@@ -236,7 +267,9 @@ title: "更新历史"
 - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#73) 回调新增错误码及错误信息，用于提示页面录制异常退出原因，用户可以根据该信息采取相应措施。
 - [`update`](/zh-CN/api-reference/api-ref/cloud-recording/update) 方法新增 `webRecordingConfig` 字段，用于在页面录制过程中更新相关字段。
 
-## 2021.07.30
+</Accordion>
+
+<Accordion title="2021.07.30" id="20210730" headingLevel={2} value="20210730">
 
 ### 新增功能
 
@@ -253,7 +286,9 @@ title: "更新历史"
 - `22`：`ME_SOUTH_1`
 - `23`：`US_GOV_EAST_1`
 
-## 2021.07.07
+</Accordion>
+
+<Accordion title="2021.07.07" id="20210707" headingLevel={2} value="20210707">
 
 ### 新增功能
 
@@ -267,7 +302,9 @@ title: "更新历史"
 
 该版本修复了页面录制偶现的录制文件无声问题。
 
-## 2021.06.10
+</Accordion>
+
+<Accordion title="2021.06.10" id="20210610" headingLevel={2} value="20210610">
 
 ### 新增功能
 
@@ -300,7 +337,9 @@ title: "更新历史"
 - [`web_recorder_started`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#70) 回调中新增 `recorderStartTime` 字段。
 - 新增 [`web_recorder_reload`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#73) 回调。
 
-## 2021.04.29
+</Accordion>
+
+<Accordion title="2021.04.29" id="20210429" headingLevel={2} value="20210429">
 
 ### 新增功能
 
@@ -328,7 +367,9 @@ title: "更新历史"
 - [`start`](/zh-CN/api-reference/api-ref/cloud-recording/start) 方法中的 `decryptionMode` 字段新增枚举值 `5` 和 `6`。
 - [`uploaded`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#31) 和 [`backuped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/uploading#32) 回调中新增 `fileList` 字段。
 
-## 2021.03.31
+</Accordion>
+
+<Accordion title="2021.03.31" id="20210331" headingLevel={2} value="20210331">
 
 ### 新增功能
 
@@ -354,11 +395,15 @@ title: "更新历史"
 - [`updateLayout`](/zh-CN/api-reference/api-ref/cloud-recording/update-layout) 方法中的 `clientRequest` 字段新增 `backgroundImage`、`defaultUserBackgroundImage` 以及 `backgroundConfig` 字段。
 - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71) 回调中新增 `fileList` 字段。
 
-## 2021.02.05
+</Accordion>
+
+<Accordion title="2021.02.05" id="20210205" headingLevel={2} value="20210205">
 
 该版本提高了页面录制中针对视频源分辨率的限制，将待录制页面中任一视频源的分辨率上限从 1280 × 720 提高至 1920 × 1080。
 
-## 2021.01.29
+</Accordion>
+
+<Accordion title="2021.01.29" id="20210129" headingLevel={2} value="20210129">
 
 ### 新增功能
 
@@ -379,7 +424,9 @@ title: "更新历史"
   - `postpone_transcode_final_result`
 - 所有云端录制回调新增 `serviceScene` 字段，表示当前运行的录制场景或录制阶段。
 
-## 2020.12.10
+</Accordion>
+
+<Accordion title="2020.12.10" id="20201210" headingLevel={2} value="20201210">
 
 ### 新增功能
 
@@ -399,14 +446,18 @@ title: "更新历史"
   - [`web_recorder_stopped`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#71)
   - [`web_recorder_capability_limit`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/webpage#72)
 
-## 2020.09.16
+</Accordion>
+
+<Accordion title="2020.09.16" id="20200916" headingLevel={2} value="20200916">
 
 该版本进行了性能优化及服务稳定性优化，并修复了如下问题：
 
 - 订阅小流不生效。
 - 偶现的部分内容未被录制的问题。
 
-## 2020.07.21
+</Accordion>
+
+<Accordion title="2020.07.21" id="20200721" headingLevel={2} value="20200721">
 
 ### 新增功能
 
@@ -421,7 +472,9 @@ title: "更新历史"
 
 - 新增 `vod_started` 回调和 `vod_triggered` 回调，提供阿里视频点播服务上传模块的状态。
 
-## 2020.06.12
+</Accordion>
+
+<Accordion title="2020.06.12" id="20200612" headingLevel={2} value="20200612">
 
 ### 新增功能
 
@@ -445,15 +498,21 @@ title: "更新历史"
 
 - 新增 `session_failover` 回调。
 
-## 2020.05.09
+</Accordion>
+
+<Accordion title="2020.05.09" id="20200509" headingLevel={2} value="20200509">
 
 本次发布新增了对金山云存储的支持。
 
-## 2020.04.17
+</Accordion>
+
+<Accordion title="2020.04.17" id="20200417" headingLevel={2} value="20200417">
 
 本次发布新增了截图功能，详见[云端截图](/zh-CN/realtime-media/cloud-recording/build/recording-modes/snapshot)。
 
-## 2019.12.16
+</Accordion>
+
+<Accordion title="2019.12.16" id="20191216" headingLevel={2} value="20191216">
 
 本次发布提高了云端录制服务的可用性。当出现服务器断网、进程被杀时，云端录制会自动切换到新的服务器，在短时间内恢复录制服务。详情见[云端录制服务器断网、进程被杀的处理](/zh-CN/reference/faq/integration/high_availability)。
 
@@ -465,15 +524,21 @@ title: "更新历史"
 
 - RESTful API 回调通知中新增事件 [`session_exit`](/zh-CN/realtime-media/cloud-recording/build/implement-core-features/service#11)，提供云端录制服务的退出状态。
 
-## 2019.11.15
+</Accordion>
+
+<Accordion title="2019.11.15" id="20191115" headingLevel={2} value="20191115">
 
 调用 `start` 方法后，你可以通过 `query` 请求立刻获得录制文件名，而不再需要等待 15 秒。
 
-## 2019.10.24
+</Accordion>
+
+<Accordion title="2019.10.24" id="20191024" headingLevel={2} value="20191024">
 
 本次发布新增了对腾讯云存储的支持。
 
-## 2019.10.08
+</Accordion>
+
+<Accordion title="2019.10.08" id="20191008" headingLevel={2} value="20191008">
 
 ### 新增功能
 
@@ -509,7 +574,9 @@ RESTful API 回调通知中新增事件 `recorder_audio_stream_state_changed` �
 
 如果因为第三方云存储的 `bucket` 及 `key` 字段值错误导致上传失败，云端录制服务将会直接报错，而不再将切片文件上传至声网备份云。
 
-## 2019.07.19
+</Accordion>
+
+<Accordion title="2019.07.19" id="20190719" headingLevel={2} value="20190719">
 
 ### 新增功能
 
@@ -535,18 +602,24 @@ RESTful API 优化了对 `resourceId` 和 `cname` 以及 `uid` 是否对应的�
 
 修复了默认的合流布局中存在的一些小问题。
 
-## 2019.07.02
+</Accordion>
+
+<Accordion title="2019.07.02" id="20190702" headingLevel={2} value="20190702">
 
 该版本变更如下：
 
 - 将合流布局默认背景色修改为黑色。
 - 改善了在弱网环境下录制的视频卡顿问题。
 
-## 2019.06.13
+</Accordion>
+
+<Accordion title="2019.06.13" id="20190613" headingLevel={2} value="20190613">
 
 本次发布主要新增了对 RESTful API 的支持，无需集成 SDK，直接通过网络请求来控制云端录制。
 
-## 2019.04.29
+</Accordion>
+
+<Accordion title="2019.04.29" id="20190429" headingLevel={2} value="20190429">
 
 本次发布主要包括以下功能：
 
@@ -555,3 +628,7 @@ RESTful API 优化了对 `resourceId` 和 `cname` 以及 `uid` 是否对应的�
 - 支持 3 种合流布局样式：Float（默认布局）、BestFit（自适应布局）、Vertical（垂直布局）。
 - 第三方云存储，目前支持阿里云和 Amazon S3
 - 提供 C++ 和 Java SDK 包
+
+</Accordion>
+
+</Accordions>

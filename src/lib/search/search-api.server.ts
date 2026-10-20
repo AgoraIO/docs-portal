@@ -14,6 +14,19 @@ const allowedParams = new Set([
 ]);
 const identifier = /^[a-z0-9][a-z0-9-]{0,79}$/;
 
+export function handleHealthRequest(
+  env: Record<string, string | undefined> = process.env,
+): Response {
+  const revision = env.DOCS_RELEASE_REVISION;
+  return Response.json(
+    {
+      status: 'ok',
+      ...(revision && /^[a-f0-9]{40}$/.test(revision) ? { revision } : {}),
+    },
+    { headers: { 'Cache-Control': 'no-store' } },
+  );
+}
+
 export function parseSearchApiQuery(params: URLSearchParams): CnSearchQuery {
   const input: Record<string, string> = {};
   for (const [key, value] of params) {

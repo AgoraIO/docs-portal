@@ -3,6 +3,7 @@ import {
   normalizeCnProduct,
   normalizeCnProductList,
 } from './cn-products';
+import { toCnPublicSearchUrl } from './cn-search-urls.mjs';
 import type { SearchSection } from './kb-record';
 
 // 参考旧中文站的顺序，ID 使用本项目规范；未定义的产品/平台排在末尾。
@@ -118,7 +119,8 @@ export function splitApiName(value: string) {
 
 /** 每次准备快照重新生成检索字段，避免依赖旧索引里手工补上的数据。 */
 export function buildCnSearchDocument(record: SearchSection) {
-  const api = record.url.startsWith('/zh-CN/api-reference/');
+  const publicUrl = toCnPublicSearchUrl(record.url);
+  const api = publicUrl.startsWith('/api-reference/');
   const sourceProducts = record.products?.length
     ? record.products
     : record.product
@@ -135,8 +137,8 @@ export function buildCnSearchDocument(record: SearchSection) {
   const pageEntry =
     !record.url.includes('#') && record.sectionTitle === record.pageTitle;
   const productEntry =
-    /^\/zh-CN\/(?:realtime-media|solutions|api-reference\/api-ref)\/[^/]+$/.test(
-      record.url,
+    /^\/(?:realtime-media|solutions|api-reference\/api-ref)\/[^/]+$/.test(
+      publicUrl,
     );
   const entryTitle = productEntry
     ? record.pageTitle.replace(/概览$/, '')
@@ -151,7 +153,7 @@ export function buildCnSearchDocument(record: SearchSection) {
     ...(pageEntry ? { entryTitle: [...entryAliases, entryTitle] } : {}),
     // 相关性相同才优先产品说明入口，其次 API 入口，最后普通页/章节。
     entrySeq:
-      productEntry && record.url.startsWith('/zh-CN/realtime-media/')
+      productEntry && publicUrl.startsWith('/realtime-media/')
         ? 0
         : productEntry
           ? 1

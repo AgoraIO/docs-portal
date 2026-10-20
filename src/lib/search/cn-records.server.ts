@@ -10,6 +10,10 @@ import type { PublishedDocsRoute } from '../published-docs-routes';
 import { getCnFaqMetadata } from './cn-faq-metadata';
 import { normalizeCnProduct, normalizeCnProductList } from './cn-products';
 import { isPublicCnSearchUrl } from './cn-search-page';
+import {
+  toCnContentSearchUrl,
+  toCnPublicSearchUrl,
+} from './cn-search-urls.mjs';
 import { assertValidSearchSection, type SearchSection } from './kb-record';
 
 function getRouteMetadata(route: PublishedDocsRoute) {
@@ -70,6 +74,11 @@ export function extractPublishedCnSections(
   page: SearchEntry,
   markdown: string,
 ): SearchSection[] {
+  // Metadata/card/FAQ lookups use content paths, regardless of public routing.
+  route = {
+    ...route,
+    canonicalPath: toCnContentSearchUrl(route.canonicalPath),
+  };
   let tree = unified().use(remarkParse).parse(markdown);
   // 平台容器导出后可能保留四空格缩进，remark 会把整段教程误当代码。
   // 仅展开带渲染器锚点标记的缩进块；真正的 fenced 示例和普通代码保持原样。
@@ -264,23 +273,23 @@ export async function exportPublishedCnRecords({
   const pagesByUrl = new Map(
     pages
       .filter((page) => isPublicCnSearchUrl(page.url))
-      .map((page) => [page.url, page]),
+      .map((page) => [toCnPublicSearchUrl(page.url), page]),
   );
   const records: SearchSection[] = [];
   const variantPages = new Set(
     routes
       .filter((route) => route.platform)
-      .map((route) => route.canonicalPath),
+      .map((route) => toCnPublicSearchUrl(route.canonicalPath)),
   );
   for (const route of [...routes].sort((a, b) => a.url.localeCompare(b.url))) {
-    const page = pagesByUrl.get(route.canonicalPath);
+    const page = pagesByUrl.get(toCnPublicSearchUrl(route.canonicalPath));
     if (!page || !isPublicCnSearchUrl(route.url)) continue;
     // Search a specific rendered platform instead of canonical Markdown containing
     // every hidden tab. Platform links open the matching content directly.
     if (
       !route.platform &&
       page.objectType !== 'openapi' &&
-      variantPages.has(route.canonicalPath)
+      variantPages.has(toCnPublicSearchUrl(route.canonicalPath))
     )
       continue;
     if (route.platform && !route.defaultPlatform)
@@ -376,8 +385,15 @@ export async function exportPublishedCnRecords({
               platformRegistry[b as keyof typeof platformRegistry].order,
           )
         : record.availablePlatforms;
-      return availablePlatforms?.length
+      const section = availablePlatforms?.length
         ? { ...record, availablePlatforms }
         : record;
+      return {
+        ...section,
+        url: toCnPublicSearchUrl(section.url),
+        canonicalUrl: section.canonicalUrl
+          ? toCnPublicSearchUrl(section.canonicalUrl)
+          : undefined,
+      };
     });
 }

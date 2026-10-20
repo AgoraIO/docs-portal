@@ -66,6 +66,41 @@ function fixture() {
   };
 }
 
+it.each([
+  ['/realtime-media/rtc/get-started', '/zh-CN/realtime-media/rtc/get-started/'],
+  ['/zh-CN/realtime-media/rtc/get-started', '/realtime-media/rtc/get-started/'],
+])(
+  'keeps search attribution across CN URL aliases: %s to %s',
+  (selectedPath, viewedPath) => {
+    const { measurement } = fixture();
+    const search = measurement.startSearch({
+      surface: 'search_page',
+      query: 'Token',
+    });
+    const results = measurement.prepareResults(search, {
+      count: 1,
+      unit: 'document',
+    });
+    measurement.selectResult(results, {
+      id: selectedPath,
+      path: selectedPath,
+      rank: 1,
+      kind: 'document',
+      method: 'keyboard',
+    });
+    const viewed = measurement.viewContent({
+      path: viewedPath,
+      contentType: 'mdx',
+    });
+    expect(viewed).toMatchObject({
+      canonical_path: '/zh-CN/realtime-media/rtc/get-started',
+      product: 'rtc',
+      search_id: search.searchId,
+      attribution_status: 'search_result',
+    });
+  },
+);
+
 it('records a visible snapshot once, keeps empty results separate from errors, and never retains raw secrets', () => {
   const { measurement, events } = fixture();
   const search = measurement.startSearch({

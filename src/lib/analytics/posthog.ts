@@ -157,6 +157,11 @@ export function captureDocsPageFeedback({
 }
 
 export function captureMeasurementEvent(event: MeasurementEvent) {
+  if (
+    import.meta.env.VITE_DOCS_REGION !== 'cn' ||
+    import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true'
+  )
+    return;
   const account = currentDocsAccount;
   void getPostHogClient()
     .then((posthog) => {

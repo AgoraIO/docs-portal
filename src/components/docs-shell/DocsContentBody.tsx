@@ -22,7 +22,7 @@ export function DocsContentBody({
   useMeasuredDocsBody(root);
   return (
     <div className="docs-body" ref={root}>
-      <MDXAccordionProvider>{content}</MDXAccordionProvider>
+      <MDXAccordionProvider key={contentPath}>{content}</MDXAccordionProvider>
     </div>
   );
 }

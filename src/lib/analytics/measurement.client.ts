@@ -5,6 +5,7 @@ import {
   type ResultsSnapshot,
   type Selection,
 } from './docs-measurement';
+import { isCnMeasurementPath, measurementPath } from './measurement-path';
 import { captureMeasurementEvent } from './posthog';
 
 const sessionKey = 'docs-measurement-v1';
@@ -22,7 +23,7 @@ export function measurementEnabled() {
     typeof window !== 'undefined' &&
     import.meta.env.VITE_DOCS_REGION === 'cn' &&
     import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED === 'true' &&
-    window.location.pathname.startsWith('/zh-CN/')
+    isCnMeasurementPath(window.location.pathname)
   );
 }
 export function getDocsMeasurement() {
@@ -128,7 +129,7 @@ export function getDocsMeasurement() {
     if (
       stored &&
       typeof stored.target === 'string' &&
-      stored.target === url.pathname.replace(/\/+$/, '') &&
+      measurementPath(stored.target) === measurementPath(url.pathname) &&
       typeof stored.journey?.id === 'string' &&
       Number.isFinite(stored.expires)
     )
@@ -145,7 +146,7 @@ export function getDocsMeasurement() {
     if (
       !stored &&
       pending &&
-      pending.target === url.pathname.replace(/\/+$/, '') &&
+      measurementPath(pending.target) === measurementPath(url.pathname) &&
       Number.isFinite(pending.expires)
     )
       instance.restoreAttribution(pending);
