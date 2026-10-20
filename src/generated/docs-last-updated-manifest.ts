@@ -3325,7 +3325,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/conversational-ai.mdx':
     '2026-07-21T03:37:31.000Z',
   'content/docs/en/introduction/core-concepts.mdx': '2026-08-11T07:22:09.000Z',
-  'content/docs/en/introduction/firewall.md': '2026-10-20T05:46:09.000Z',
+  'content/docs/en/introduction/firewall.md': '2026-10-20T06:13:19.000Z',
   'content/docs/en/introduction/fusion-cdn.md': '2026-05-21T09:41:55.000Z',
   'content/docs/en/introduction/fusion-cdn.mdx': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/get-started/build-it-yourself.mdx':
@@ -5874,13 +5874,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/error-codes.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/reference/firewall.mdx':
-    '2026-10-20T05:46:09.000Z',
+    '2026-10-20T06:13:19.000Z',
   'content/docs/en/realtime-media/rtc/reference/glossary.mdx':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtc/reference/magic-leap.md':
     '2026-09-10T10:36:08.000Z',
   'content/docs/en/realtime-media/rtc/reference/meta.json':
-    '2026-10-20T05:46:09.000Z',
+    '2026-10-20T06:13:19.000Z',
   'content/docs/en/realtime-media/rtc/reference/migration-guide.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/migration-guide.mdx':
@@ -5894,7 +5894,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtc/reference/release-notes.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/release-notes.mdx':
-    '2026-09-30T12:47:37.000Z',
+    '2026-10-20T06:13:19.000Z',
   'content/docs/en/realtime-media/rtc/reference/rest-api.md':
     '2026-06-03T07:58:03.000Z',
   'content/docs/en/realtime-media/rtc/reference/sdk-downloads.md':
@@ -6169,7 +6169,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/limitations.mdx':
     '2026-10-14T16:32:09.000Z',
   'content/docs/en/realtime-media/rtm/reference/meta.json':
-    '2026-10-20T05:46:09.000Z',
+    '2026-10-20T06:13:19.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.md':
     '2026-07-29T04:01:40.000Z',
   'content/docs/en/realtime-media/rtm/reference/migration-guide.mdx':

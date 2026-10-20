@@ -7,6 +7,18 @@ This page provides the release notes for Media Gateway.
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="2026.10.23" id="20261023" headingLevel={2} value="20261023">
+
+
+### New features
+
+- **sk001 stream key**
+
+  Media Gateway adds a more secure method for generating stream keys locally. Stream keys generated using this method start with `sk001` and are bound to your app ID, which prevents a key from being used in a different project. You can use an sk001 stream key as the stream name for RTMP and SRT, or as the Bearer token in a WHIP request. The original local generation method remains supported. For details, see [Generate an sk001 stream key](../quickstart.md#generate-an-sk001-stream-key).
+
+
+</Accordion>
+
 <Accordion title="2025.5.28" id="2025528" headingLevel={2} value="2025528">
 
 
