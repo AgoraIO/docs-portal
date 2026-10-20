@@ -3,6 +3,49 @@ import { describe, expect, it } from 'vitest';
 import { ProductSdkDownloads } from './ProductSdkDownloads';
 
 describe('ProductSdkDownloads', () => {
+  it('retains the pinned historical Web RTM package and metadata', () => {
+    render(
+      <ProductSdkDownloads
+        platform="web"
+        product="signaling"
+        versionIds={['2.2.4-rtm-sdk-web']}
+      />,
+    );
+    const card = screen.getByRole('article', { name: 'Web 实时消息 SDK' });
+    expect(within(card).getByText('v2.2.4')).toBeVisible();
+    expect(
+      within(card).getByText('6043262f5e5999a06e12d83c3c40a943'),
+    ).toBeVisible();
+    expect(
+      within(card).getByText('发布日期：2026 年 4 月 13 日'),
+    ).toBeVisible();
+    expect(
+      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip',
+    );
+  });
+
+  it('shows Web RTM 2.3.0 with its source checksum and release date', () => {
+    render(<ProductSdkDownloads platform="web" product="signaling" />);
+    const card = screen.getByRole('article', { name: 'Web 实时消息 SDK' });
+    expect(within(card).getByText('v2.3.0')).toBeVisible();
+    expect(
+      within(card).getByText('13f63c0322c49b1edd3f7a0e2c8c89fc'),
+    ).toBeVisible();
+    expect(
+      within(card).getByText('发布日期：2026 年 8 月 10 日'),
+    ).toBeVisible();
+    expect(
+      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',
+    );
+    expect(screen.queryByText('v2.2.4')).not.toBeInTheDocument();
+  });
+
   it.each([
     ['android', '1.7.2-fastboard-android', '1.7.2'],
     ['web', '1.1.0-interactive-whiteboard-web', '1.1.0'],
