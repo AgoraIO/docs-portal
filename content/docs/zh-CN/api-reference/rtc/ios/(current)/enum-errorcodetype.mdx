@@ -1,6 +1,6 @@
 ---
 title: AgoraErrorCode
-description: 错误码。
+description: 表示错误代码。
 _migration:
   type: generated-html
   status: migrated
@@ -18,49 +18,49 @@ _migration:
 <a id="agoraerrorcodenoerror"></a>
 <Parameter name="AgoraErrorCodeNoError">
 
-（0）：无错误。
+0: 没有错误。（默认）
 
 </Parameter>
 <a id="agoraerrorcodefailed"></a>
 <Parameter name="AgoraErrorCodeFailed">
 
-（1）：通用错误，原因未分类。请重试调用该方法。
+1: 一般性的错误（没有明确归类的错误原因）。
 
 </Parameter>
 <a id="agoraerrorcodeinvalidargument"></a>
 <Parameter name="AgoraErrorCodeInvalidArgument">
 
-（2）：参数无效。例如，频道名包含非法字符。请重新设置参数。
+2: API 调用了无效的参数。例如，指定的频道名含有非法字符。
 
 </Parameter>
 <a id="agoraerrorcodenotready"></a>
 <Parameter name="AgoraErrorCodeNotReady">
 
-（3）：SDK 尚未就绪。可能的原因包括：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化失败；调用方法时无用户加入频道；调用 [rate\:rating\:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_rate) 或 [complain\:description:](/zh-CN/api-reference/rtc/ios/network#api_irtcengine_complain) 方法时用户尚未离开频道；音频模块被禁用；程序不完整。
+3: RTC 初始化失败。处理方法：
+
+- 检查音频设备状态
+
+- 检查程序集完整性
+
+- 尝试重新初始化 AgoraRtcEngineKit
 
 </Parameter>
 <a id="agoraerrorcodenotsupported"></a>
 <Parameter name="AgoraErrorCodeNotSupported">
 
-（4）：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 不支持该请求。可能的原因包括：内置加密模式设置错误，或 SDK 加载外部加密库失败。请检查加密模式设置或重新加载外部加密库。
-
-</Parameter>
-<a id="agoraerrorcoderefused"></a>
-<Parameter name="AgoraErrorCodeRefused">
-
-（5）：请求被拒绝。可能的原因包括：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化失败；加入频道时频道名为空字符串 `""`；调用 [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 方法加入多个频道时，指定的频道名已被使用。
+4: RTC 当前状态禁止此操作，因此不能进行此操作。
 
 </Parameter>
 <a id="agoraerrorcodebuffertoosmall"></a>
 <Parameter name="AgoraErrorCodeBufferTooSmall">
 
-（6）：缓冲区大小不足，无法存储返回数据。
+6: 传入的缓冲区大小不足以存放返回的数据。
 
 </Parameter>
 <a id="agoraerrorcodenotinitialized"></a>
 <Parameter name="AgoraErrorCodeNotInitialized">
 
-（7）：在 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化前调用了方法。请确保在调用该方法前已初始化 [AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 对象。
+7: SDK 尚未初始化，就调用其 API。请确认在调用 API 之前已创建 AgoraRtcEngineKit 对象并完成初始化。
 
 </Parameter>
 <a id="agoraerrorcodeinvalidstate"></a>
@@ -69,64 +69,60 @@ _migration:
 （8）：状态无效。
 
 </Parameter>
-<a id="agoraerrorcodenopermission"></a>
-<Parameter name="AgoraErrorCodeNoPermission">
-
-（9）：无访问权限。请检查应用是否已获得音视频设备的访问权限。
-
-</Parameter>
 <a id="agoraerrorcodetimedout"></a>
 <Parameter name="AgoraErrorCodeTimedOut">
 
-（10）：超时错误。部分 API 调用需要 SDK 返回执行结果，若超过 10 秒未返回，则触发该错误。
+10: API 调用超时。有些 API 调用需要 SDK 返回结果，如果 SDK 处理事件过程，会出现此错误。
 
 </Parameter>
 <a id="agoraerrorcodejoinchannelrejected"></a>
 <Parameter name="AgoraErrorCodeJoinChannelRejected">
 
-（17）：加入频道请求被拒绝。可能的原因包括：用户已在频道中。建议通过 connectionChangedToState\:reason: 回调判断用户是否在频道中，除非收到 AgoraConnectionStateDisconnected（1）状态，否则不要调用此方法加入频道；调用 startEchoTestWithConfig: 进行通话测试后，未调用 stopEchoTest 结束测试就尝试加入频道。要加入频道，必须先调用 stopEchoTest 结束测试。
+17: 加入频道被拒绝。一般有以下原因：
+
+- 用户已进入频道，再次调用加入频道的 API，例如 `joinChannelByToken`，会返回此错误。停止调用该 API 即可。
+
+- 用户在做 Echo 测试时尝试加入频道。等待 Echo test 结束后再加入频道即可。
 
 </Parameter>
 <a id="agoraerrorcodeleavechannelrejected"></a>
 <Parameter name="AgoraErrorCodeLeaveChannelRejected">
 
-（18）：离开频道失败。可能的原因包括：在调用 leaveChannel\:leaveChannelBlock: 方法前用户已离开频道，建议停止调用此方法以清除错误；在加入频道前调用了 leaveChannel\:leaveChannelBlock: 方法，此情况下无需额外操作。
+18: 离开频道失败。一般有以下原因：
+
+- 用户已离开频道，再次调用退出频道的 API，例如 `leaveChannel`，会返回此错误。停止调用该 API 即可。
+
+- 用户尚未加入频道，就调用退出频道的 API。这种情况下无需额外操作。
 
 </Parameter>
 <a id="agoraerrorcodealreadyinuse"></a>
 <Parameter name="AgoraErrorCodeAlreadyInUse">
 
-（19）：资源已被占用。
-
-</Parameter>
-<a id="agoraerrorcodeabort"></a>
-<Parameter name="AgoraErrorCodeAbort">
-
-（20）：请求被 SDK 放弃，可能是因为请求发送过于频繁。
+19: 资源已被占用，不能重复使用。
 
 </Parameter>
 <a id="agoraerrorcodeinitnetengine"></a>
 <Parameter name="AgoraErrorCodeInitNetEngine">
 
-（21）：由于特定的 Windows 防火墙设置，AgoraRtcEngineKit 初始化失败并崩溃。
+21: Windows 下特定的防火墙设置导致 SDK 初始化失败然后崩溃。
 
 </Parameter>
 <a id="agoraerrorcoderesourcelimited"></a>
 <Parameter name="AgoraErrorCodeResourceLimited">
 
-（22）：由于应用程序使用了过多系统资源或系统资源不足，SDK 分配资源失败。
+22: 资源有限。
 
 </Parameter>
 <a id="agoraerrorcodeinvalidappid"></a>
 <Parameter name="AgoraErrorCodeInvalidAppId">
 
-（101）：指定的 App ID 无效。请使用有效的 App ID 重新加入频道。
+101: 不是有效的 App ID。请更换有效的 App ID 重新加入频道。
 
 </Parameter>
 <a id="agoraerrorcodeinvalidchannelid"></a>
 <Parameter name="AgoraErrorCodeInvalidChannelId">
 
-（102）：指定的频道名无效。可能的原因是参数类型不正确。请使用有效的频道名重新加入频道。
+102: 不是有效的频道名。请更换有效的频道名重新加入频道。
 
 </Parameter>
 <a id="agoraerrorcodenoserverresources"></a>
@@ -138,52 +134,63 @@ _migration:
 <a id="agoraerrorcodetokenexpired"></a>
 <Parameter name="AgoraErrorCodeTokenExpired">
 
-（109）：当前 Token 已过期。请在服务器上申请新的 Token，并调用 renewToken: 方法。
+109: 当前使用的 Token 过期，不再有效。一般有以下原因：
+
+- Token 授权时间戳无效：Token 授权时间戳为 Token 生成时的时间戳，自 1970 年 1 月 1 日开始到当前时间的描述。授权该 Token 在生成后的 24 小时内可以访问 Agora 服务。如果 24 小时内没有访问，则该 Token 无法再使用。需要重新在服务端申请生成 Token。
+
+- Token 服务到期时间戳已过期：用户设置的服务到期时间戳小于当前时间戳，无法继续使用 Agora 服务（比如正在进行的通话会被强制终止）；设置服务到期时间并不意味着 Token 失效，而仅仅用于限制用户使用当前服务的时间。需要重新在服务端申请生成 Token。
 
 </Parameter>
 <a id="agoraerrorcodeinvalidtoken"></a>
 <Parameter name="AgoraErrorCodeInvalidToken">
 
-（110）：Token 无效。常见原因包括：
+110: 生成的 Token 无效，一般有以下原因：
 
-- 在声网控制台启用了 App 证书，但代码仍使用 App ID 进行鉴权。启用 App 证书后，必须使用 Token 进行鉴权。
-- 用于生成 Token 的 uid 与加入频道时使用的 uid 不一致。
+- 用户在 Dashboard 上启用了 App Certificate，但仍旧在代码里仅使用了 App ID。当启用了 App Certificate，必须使用 Token。
+
+- 字段 uid 为生成 Token 的必须字段，用户在调用 `joinChannelByToken` 加入频道时必须设置相同的 uid。
 
 </Parameter>
 <a id="agoraerrorcodeconnectioninterrupted"></a>
 <Parameter name="AgoraErrorCodeConnectionInterrupted">
 
-（111）：网络连接中断。建立连接后，如果 SDK 与服务器失去连接超过 4 秒，会触发此回调。
+111: 网络连接中断。仅适用于 Agora Web SDK。
 
 </Parameter>
 <a id="agoraerrorcodeconnectionlost"></a>
 <Parameter name="AgoraErrorCodeConnectionLost">
 
-（112）：网络连接丢失。连接中断后，如果 SDK 在 10 秒内无法重新连接到声网边缘服务器，会触发此回调。
+112: 网络连接丢失。仅适用于 Agora Web SDK。
 
 </Parameter>
 <a id="agoraerrorcodenotinchannel"></a>
 <Parameter name="AgoraErrorCodeNotInChannel">
 
-（113）：调用 sendStreamMessage\:data: 方法时，用户不在频道中。
+113: 用户不在频道内。
 
 </Parameter>
 <a id="agoraerrorcodesizetoolarge"></a>
 <Parameter name="AgoraErrorCodeSizeTooLarge">
 
-（114）：调用 sendStreamMessage\:data: 方法时，数据大小超过 1 KB。
+114: 数据太大。
 
 </Parameter>
 <a id="agoraerrorcodebitratelimit"></a>
 <Parameter name="AgoraErrorCodeBitrateLimit">
 
-（115）：调用 sendStreamMessage\:data: 方法时，数据传输码率超过 6 KB/s。
+115: 码率受限。
 
 </Parameter>
 <a id="agoraerrorcodetoomanydatastreams"></a>
 <Parameter name="AgoraErrorCodeTooManyDataStreams">
 
-（116）：调用 createDataStream\:config: 方法时创建了超过五个数据流。
+116: 数据流/通道过多。
+
+</Parameter>
+<a id="agoraerrorcodedecryptionfailed"></a>
+<Parameter name="AgoraErrorCodeDecryptionFailed">
+
+120: 解密失败，可能是用户加入频道用了不同的密码。请检查加入频道时的设置，或尝试重新加入频道。
 
 </Parameter>
 <a id="agoraerrorcodeencryptedstreamnotallowedpublish"></a>
@@ -196,6 +203,42 @@ _migration:
 <Parameter name="AgoraErrorCodeInvalidUserAccount">
 
 （134）：用户账号无效，可能是因为包含无效参数。
+
+</Parameter>
+<a id="agoraerrorcodewatermarkparam"></a>
+<Parameter name="AgoraErrorCodeWatermarkParam">
+
+124: 水印文件参数错误。
+
+</Parameter>
+<a id="agoraerrorcodewatermarkpath"></a>
+<Parameter name="AgoraErrorCodeWatermarkPath">
+
+125: 水印文件路径错误。
+
+</Parameter>
+<a id="agoraerrorcodewatermarkpng"></a>
+<Parameter name="AgoraErrorCodeWatermarkPng">
+
+126: 水印文件格式错误。
+
+</Parameter>
+<a id="agoraerrorcodewatermarkinfo"></a>
+<Parameter name="AgoraErrorCodeWatermarkInfo">
+
+127: 水印文件信息错误。
+
+</Parameter>
+<a id="agoraerrorcodewatermarkagrb"></a>
+<Parameter name="AgoraErrorCodeWatermarkAGRB">
+
+128: 水印文件数据格式错误。
+
+</Parameter>
+<a id="agoraerrorcodewatermarkread"></a>
+<Parameter name="AgoraErrorCodeWatermarkRead">
+
+129: 水印文件读取错误。
 
 </Parameter>
 <a id="agoraerrorcodepcmsendformat"></a>
@@ -213,85 +256,232 @@ _migration:
 <a id="agoraerrorcodeloadmediaengine"></a>
 <Parameter name="AgoraErrorCodeLoadMediaEngine">
 
-（1001）：加载媒体引擎失败。
+1001: 加载媒体引擎失败。
 
 </Parameter>
 <a id="agoraerrorcodestartcall"></a>
 <Parameter name="AgoraErrorCodeStartCall">
 
-（1002）：启用媒体引擎后启动通话失败。
+1002: 启动媒体引擎开始通话失败。请尝试重新进入频道。
 
 </Parameter>
 <a id="agoraerrorcodestartcamera"></a>
 <Parameter name="AgoraErrorCodeStartCamera">
 
-（1003）：启动摄像头失败。
+1003: 启动摄像头失败，请检查摄像头是否被其他应用占用，或者尝试重新进入频道。
 
 </Parameter>
 <a id="agoraerrorcodestartvideorender"></a>
 <Parameter name="AgoraErrorCodeStartVideoRender">
 
-（1004）：启动视频渲染模块失败。
+1004: 启动视频渲染模块失败。
 
 </Parameter>
 <a id="agoraerrorcodeadmgeneralerror"></a>
 <Parameter name="AgoraErrorCodeAdmGeneralError">
 
-（1005）：发生通用错误（无明确原因）。请检查音频设备是否被其他应用占用，或尝试重新加入频道。
+1005: 音频设备模块：音频初始化失败。请检查音频设备是否被其他应用占用，或者尝试重新进入频道。
 
 </Parameter>
 <a id="agoraerrorcodeadmjavaresource"></a>
 <Parameter name="AgoraErrorCodeAdmJavaResource">
 
-（1006）：音频设备模块：使用 Java 资源时发生错误。
+1006: 音频设备模块：使用 Java 资源出现错误。
 
 </Parameter>
 <a id="agoraerrorcodeadmsamplerate"></a>
 <Parameter name="AgoraErrorCodeAdmSampleRate">
 
-（1007）：音频设备模块：设置采样率时发生错误。
+1007: 音频设备模块：设置的采样频率出现错误。
 
 </Parameter>
 <a id="agoraerrorcodeadminitplayout"></a>
 <Parameter name="AgoraErrorCodeAdmInitPlayout">
 
-（1008）：初始化播放设备时发生错误。请检查播放设备是否被其他应用占用，或尝试重新加入频道。
+1008: 音频设备模块：初始化播放设备出现错误。请检查播放设备是否被其他应用占用，或者尝试重新进入频道。
 
 </Parameter>
 <a id="agoraerrorcodeadmstartplayout"></a>
 <Parameter name="AgoraErrorCodeAdmStartPlayout">
 
-（1009）：启动播放设备时发生错误。请检查播放设备。
+1009: 音频设备模块：启动播放设备出现错误。请检查播放设备是否正常，或者尝试重新进入频道。
 
 </Parameter>
 <a id="agoraerrorcodeadmstopplayout"></a>
 <Parameter name="AgoraErrorCodeAdmStopPlayout">
 
-（1010）：停止播放设备时发生错误。
+1010: 音频设备模块：停止播放设备出现错误。
 
 </Parameter>
 <a id="agoraerrorcodeadminitrecording"></a>
 <Parameter name="AgoraErrorCodeAdmInitRecording">
 
-（1011）：初始化录音设备时发生错误。请检查录音设备，或尝试重新加入频道。
+1011: 音频设备模块：初始化录音设备时出现错误。请检查录音设备是否正常，或者尝试重新进入频道。
 
 </Parameter>
 <a id="agoraerrorcodeadmstartrecording"></a>
 <Parameter name="AgoraErrorCodeAdmStartRecording">
 
-（1012）：启动录音设备时发生错误。请检查录音设备。
+1012: 音频设备模块：启动录音设备出现错误。请检查录音设备是否正常，或者尝试重新进入频道。
 
 </Parameter>
 <a id="agoraerrorcodeadmstoprecording"></a>
 <Parameter name="AgoraErrorCodeAdmStopRecording">
 
-（1013）：停止录音设备时发生错误。
+1013: 音频设备模块：停止录音设备出现错误。
 
 </Parameter>
 <a id="agoraerrorcodeadmruntimeplayouterror"></a>
 <Parameter name="AgoraErrorCodeAdmRuntimePlayoutError">
 
-（1015）：音频设备模块：播放过程中发生错误。请检查播放设备，或尝试重新加入频道。
+1015: 音频设备模块：运行时播放出现错误。请检查录音设备是否正常，或者尝试重新进入频道。
+
+</Parameter>
+<a id="agoraerrorcodeadmruntimerecordingerror"></a>
+<Parameter name="AgoraErrorCodeAdmRuntimeRecordingError">
+
+1017: 音频设备模块：运行时录音错误。请检查录音设备是否正常，或者尝试重新进入频道。
+
+</Parameter>
+<a id="agoraerrorcodeadmrecordaudiofailed"></a>
+<Parameter name="AgoraErrorCodeAdmRecordAudioFailed">
+
+1018: 音频设备模块：录音失败。
+
+</Parameter>
+<a id="agoraerrorcodeadmplayabnormalfrequency"></a>
+<Parameter name="AgoraErrorCodeAdmPlayAbnormalFrequency">
+
+1020: 回放频率异常。
+
+</Parameter>
+<a id="agoraerrorcodeadmrecordabnormalfrequency"></a>
+<Parameter name="AgoraErrorCodeAdmRecordAbnormalFrequency">
+
+1021: 录制频率异常。
+
+</Parameter>
+<a id="agoraerrorcodeadminitloopback"></a>
+<Parameter name="AgoraErrorCodeAdmInitLoopback">
+
+1022: 音频设备模块：初始化 Loopback 设备错误。
+
+</Parameter>
+<a id="agoraerrorcodeadmstartloopback"></a>
+<Parameter name="AgoraErrorCodeAdmStartLoopback">
+
+1023: 音频设备模块：启动 Loopback 设备错误。
+
+</Parameter>
+<a id="agoraerrorcodeadmnorecordingdevice"></a>
+<Parameter name="AgoraErrorCodeAdmNoRecordingDevice">
+
+1359: 音频设备模块：无录制设备。请检查是否有可用的录放音设备或者录放音设备是否已经被其他应用占用。
+
+</Parameter>
+<a id="agoraerrorcodeadmnoplayoutdevice"></a>
+<Parameter name="AgoraErrorCodeAdmNoPlayoutDevice">
+
+1360: 音频设备模块：无播放设备。
+
+</Parameter>
+<a id="agoraerrorcodevdmcameranotauthorized"></a>
+<Parameter name="AgoraErrorCodeVdmCameraNotAuthorized">
+
+1501: 视频设备模块：没有摄像头使用权限。请检查是否已经打开摄像头权限。
+
+</Parameter>
+<a id="agoraerrorcodevcmunknownerror"></a>
+<Parameter name="AgoraErrorCodeVcmUnknownError">
+
+1600: 视频设备模块：未知错误。
+
+</Parameter>
+<a id="agoraerrorcodevcmencoderiniterror"></a>
+<Parameter name="AgoraErrorCodeVcmEncoderInitError">
+
+1601: 视频设备模块：视频 Codec 初始化错误。该错误为严重错误，请尝试重新加入频道。
+
+</Parameter>
+<a id="agoraerrorcodevcmencoderencodeerror"></a>
+<Parameter name="AgoraErrorCodeVcmEncoderEncodeError">
+
+1602: 视频设备模块：视频 Codec 错误。该错误为严重错误，请尝试重新加入频道。
+
+</Parameter>
+<a id="agoraerrorcodevcmencoderseterror"></a>
+<Parameter name="AgoraErrorCodeVcmEncoderSetError">
+
+1603: 视频设备模块：视频 Codec 设置错误。
+
+</Parameter>
+<a id="agoraerrorcodevideoeffectassetinvalid"></a>
+<Parameter name="AgoraErrorCodeVideoEffectAssetInvalid">
+
+1700: 美颜资产无效。可能是资源包损坏、配置文件解析失败或缺少必填字段。
+
+</Parameter>
+<a id="agoraerrorcodevideoeffectsavefailed"></a>
+<Parameter name="AgoraErrorCodeVideoEffectSaveFailed">
+
+1701: 保存美颜配置失败。可能由于磁盘空间不足或文件写入权限不足导致。
+
+</Parameter>
+<a id="agoraerrorcodevideoeffectengineinvalid"></a>
+<Parameter name="AgoraErrorCodeVideoEffectEngineInvalid">
+
+1702: 美颜引擎状态无效。可能是引擎未初始化或渲染引擎实例不存在。
+
+</Parameter>
+<a id="agoraerrorcodevideoeffectnodenotactive"></a>
+<Parameter name="AgoraErrorCodeVideoEffectNodeNotActive">
+
+1704: 目标美颜节点未激活。请先调用 `addOrUpdateVideoEffect` 激活节点。
+
+</Parameter>
+<a id="agoraerrorcodevideoeffectinvalidparam"></a>
+<Parameter name="AgoraErrorCodeVideoEffectInvalidParam">
+
+1705: 美颜参数无效。例如，nodeId、actionId、option 或 key 非法或为空。
+
+</Parameter>
+<a id="agoraerrorcodevideoeffectnotsupported"></a>
+<Parameter name="AgoraErrorCodeVideoEffectNotSupported">
+
+1706: 当前设备不支持美颜效果。
+
+</Parameter>
+<a id="agoraerrorcodevideoeffectinvalidbundlepath"></a>
+<Parameter name="AgoraErrorCodeVideoEffectInvalidBundlePath">
+
+1707: 美颜资源包路径无效。路径为空或文件系统中不存在。
 
 </Parameter>
 </ParameterList>
+
+## 旧定义引用
+
+以下仅保留旧文档定义及链接，未列入本页当前枚举清单；不据此推断 SDK 已删除这些错误码。
+
+<a id="agoraerrorcoderefused"></a>
+
+### AgoraErrorCodeRefused（旧定义）
+
+
+（5）：请求被拒绝。可能的原因包括：[AgoraRtcEngineKit](/zh-CN/api-reference/rtc/ios/rtc-interface-class#class_irtcengine) 初始化失败；加入频道时频道名为空字符串 `""`；调用 [joinChannelExByToken\:connection\:delegate\:mediaOptions\:joinSuccess:](/zh-CN/api-reference/rtc/ios/channel#api_irtcengineex_joinchannelex) 方法加入多个频道时，指定的频道名已被使用。
+
+
+<a id="agoraerrorcodenopermission"></a>
+
+### AgoraErrorCodeNoPermission（旧定义）
+
+
+（9）：无访问权限。请检查应用是否已获得音视频设备的访问权限。
+
+
+<a id="agoraerrorcodeabort"></a>
+
+### AgoraErrorCodeAbort（旧定义）
+
+
+（20）：请求被 SDK 放弃，可能是因为请求发送过于频繁。

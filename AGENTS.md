@@ -28,7 +28,9 @@ Use Vitest for unit and component tests. Name tests after the module they cover,
 
 ## Commit & Pull Request Guidelines
 
-Recent history uses short, direct subjects such as `feat: openAPI example`, `remove best practice`, and `update (#23)`. Keep commits scoped to one change and use a concise imperative summary; use a `feat:` prefix for new user-visible functionality. PRs should describe the changed docs or behavior, link relevant issues, list verification commands, and include screenshots for visible UI or docs-shell changes.
+Recent history uses short, direct subjects such as `feat: openAPI example`, `remove best practice`, and `update (#23)`. Keep commits scoped to one change and use a concise imperative summary; use a `feat:` prefix for new user-visible functionality. PRs should describe the changed docs or behavior, link relevant issues, list verification commands, and record visual checks for visible UI or docs-shell changes.
+
+Keep local test screenshots and QA images under ignored `.agent/artifacts/`; do not commit them or add hosted screenshot links to PRs. Images tracked in the repository should be assets used by the published documentation or application.
 
 ## Security & Configuration Tips
 
@@ -51,6 +53,10 @@ This is a single-context repo with root `CONTEXT.md` and optional ADRs under `do
 ### Markdown authoring
 
 Docs content uses the minimum Markdown/Fumadocs syntax standard in `docs/agents/markdown-authoring-standard.md`. Check it before editing or migrating `content/docs/**`.
+
+### Chinese release-note merging
+
+Before merging the Chinese docs branch into `main`, or resolving release-note accordion, TOC, hash, or Markdown conflicts, read [the release-note merge guide](docs/agents/reports/2026-10-19-cn-release-notes-accordion-parity.md#后续合入-main). It identifies shared modules, intentional content changes, and merge acceptance checks.
 
 ### OpenAPI migration
 

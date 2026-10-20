@@ -118,7 +118,9 @@ describe('published CN index export', () => {
       readRenderedHtml: async () =>
         '<article><h2 id="heartbeatinterval-and-presencetimeout">Heartbeat Interval 与 Presence Timeout</h2></article>',
     });
-    expect(records[0].url).toBe(`${url}#heartbeatinterval-and-presencetimeout`);
+    expect(records[0].url).toBe(
+      '/api-reference/rtc/web/4.6.0/api#heartbeatinterval-and-presencetimeout',
+    );
   });
   it('preserves all explicit FAQ products and normalizes its platform labels', () => {
     const url = '/zh-CN/reference/faq/account/billing_basis';
@@ -243,7 +245,7 @@ describe('published CN index export', () => {
       docType: 'openapi',
       product: 'conversational-ai',
       content: '请求\nToken',
-      url: canonical,
+      url: '/api-reference/api-ref/conversational-ai/join',
       headingPath: ['Join'],
     });
     expect(records[1].platform).toEqual(['web']);
@@ -286,7 +288,7 @@ describe('published CN index export', () => {
     });
     expect(readMarkdown).toHaveBeenCalledOnce();
     expect(records[0]).toMatchObject({
-      url: `${url}/web#token`,
+      url: '/api-reference/rtc/web/4.6.0/api/web#token',
       platform: ['web'],
     });
   });
@@ -316,13 +318,13 @@ describe('published CN index export', () => {
 
     expect(records).toHaveLength(2);
     expect(records[0]).toMatchObject({
-      canonicalUrl: canonical,
+      canonicalUrl: '/realtime-media/rtc/build/token-authentication',
       availablePlatforms: ['android', 'ios'],
       defaultPlatform: 'ios',
       isDefaultPlatform: false,
     });
     expect(records[1]).toMatchObject({
-      canonicalUrl: canonical,
+      canonicalUrl: '/realtime-media/rtc/build/token-authentication',
       availablePlatforms: ['android', 'ios'],
       defaultPlatform: 'ios',
       isDefaultPlatform: true,

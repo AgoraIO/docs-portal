@@ -134,6 +134,19 @@ describe('RTC upstream PR #2113 historical API archive parity', () => {
         label: testCase.current,
         path: '(current)',
       });
+      if (testCase.platform === 'android' || testCase.platform === 'ios') {
+        expect(meta.navScope?.versions?.map((version) => version.id)).toEqual(
+          testCase.platform === 'android'
+            ? ['current', '4.6.4', '4.6.2', '4.6.0']
+            : ['current', '4.6.4', '4.6.2'],
+        );
+        expect(meta.navScope?.versions?.[1]).toEqual({
+          id: '4.6.4',
+          label: 'v4.6.4',
+          path: '4.6.4',
+          href: `https://doc-archive.shengwang.cn/archive/0.0.519/api-ref/rtc/${testCase.platform}/API/rtc_api_overview`,
+        });
+      }
       expect(meta.pages).toEqual(
         testCase.platform === 'android'
           ? ['(current)', '4.6.0']

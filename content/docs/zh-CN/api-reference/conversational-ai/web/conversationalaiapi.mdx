@@ -49,12 +49,16 @@ await api.chat("user123", imageMessage);
 public async speak(agentUserId: string, message: SpeakMessage): Promise<void>
 ```
 
-绕过大模型，直接通过智能体的 TTS 流程播报文本。Promise 成功仅表示 RTM 消息发布成功。
+绕过大模型，直接通过智能体的 TTS 流程播报文本。
+
+该方法需要在初始化时传入 `rtmEngine`。Promise 成功仅表示 RTM 消息发布成功，不代表智能体已经完成播报。
+
+#### 参数
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `agentUserId` | `string` | 智能体用户 ID。 |
-| `message` | `SpeakMessage` | 播报内容和播报行为配置。详见 [`SpeakMessage`](struct#speakmessage)。 |
+| `message` | `SpeakMessage` | 播报内容和播报行为配置。详见 [`SpeakMessage`](/zh-CN/api-reference/conversational-ai/web/struct#speakmessage)。 |
 
 <a id="think"></a>
 ## think
@@ -63,12 +67,16 @@ public async speak(agentUserId: string, message: SpeakMessage): Promise<void>
 public async think(agentUserId: string, message: ThinkMessage): Promise<void>
 ```
 
-将文本作为用户输入注入对话，并交由大模型处理。Promise 成功仅表示 RTM 消息发布成功。
+将文本作为用户输入注入对话，并交由大模型处理。
+
+该方法需要在初始化时传入 `rtmEngine`。Promise 成功仅表示 RTM 消息发布成功，不代表大模型已经完成处理。
+
+#### 参数
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `agentUserId` | `string` | 智能体用户 ID。 |
-| `message` | `ThinkMessage` | 指令内容、状态动作和自定义元数据。详见 [`ThinkMessage`](struct#thinkmessage)。 |
+| `message` | `ThinkMessage` | 指令内容、状态动作和自定义元数据。详见 [`ThinkMessage`](/zh-CN/api-reference/conversational-ai/web/struct#thinkmessage)。 |
 
 <a id="getinstance"></a>
 ## getInstance

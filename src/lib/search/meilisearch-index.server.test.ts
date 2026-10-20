@@ -88,6 +88,45 @@ it('rejects old exports without default-platform metadata before writing any ind
   expect(events).toEqual([]);
 });
 describe('search index release jobs', () => {
+  it('prepares a full snapshot with unprefixed URLs and API ranking fields', async () => {
+    const { client, indexes } = fakeClient();
+    const receipt = await prepareSearchIndex({
+      client,
+      indexUid: 'docs_cn',
+      revision: 'public-urls',
+      records: [
+        {
+          ...record,
+          url: '/api-reference/rtc/web/api#removehandler',
+          canonicalUrl: '/api-reference/rtc/web/api',
+          sectionTitle: 'removeHandler',
+        },
+      ],
+    });
+    expect(
+      [...(indexes.get(receipt.stagedUid)?.values() ?? [])].find(
+        (value) => value.url,
+      ),
+    ).toMatchObject({
+      url: '/api-reference/rtc/web/api#removehandler',
+      canonicalUrl: '/api-reference/rtc/web/api',
+      nameSplit: 'remove Handler',
+      locale: 'zh-CN',
+    });
+  });
+
+  it('rejects an unsafe canonical result URL before writing any index', async () => {
+    const { client, events } = fakeClient();
+    await expect(
+      prepareSearchIndex({
+        client,
+        indexUid: 'docs_cn',
+        revision: 'unsafe',
+        records: [{ ...record, canonicalUrl: '//evil.example' }],
+      }),
+    ).rejects.toThrow('Only published public CN');
+    expect(events).toEqual([]);
+  });
   it('changes the release checksum when the search policy changes with identical source records', async () => {
     const { client } = fakeClient();
     const input = {

@@ -52,7 +52,7 @@ describe('Chinese download page release constraints', () => {
       const platformNotes = notes.split(
         `<PlatformStructured platform="${platform}">`,
       )[1];
-      const latest = platformNotes.match(/^## ([\d.]+) 版/m)?.[1];
+      const latest = platformNotes.match(/<Accordion title="([\d.]+) 版"/)?.[1];
       expect(id.split('-')[0]).toBe(latest);
       if (platform === 'android')
         expect(page).toContain(`fastboard-android:${latest}`);

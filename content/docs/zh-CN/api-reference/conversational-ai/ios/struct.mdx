@@ -246,11 +246,13 @@ title: "结构体"
 
 用于绕过大模型，直接通过智能体的 TTS 流程播报文本。
 
+#### 成员参数
+
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `text` | `String` | 要播报的文本。 |
-| `priority` | `Priority` | 播报请求的处理优先级。 |
-| `interruptable` | `Boolean` | 是否允许用户说话打断本次播报。 |
+| `priority` | `Priority` | 播报请求的处理优先级，默认值为 `.interrupt`。详见 [`Priority`](/zh-CN/api-reference/conversational-ai/ios/enum#priority)。 |
+| `interruptable` | `Bool` | 是否允许用户说话打断本次播报，默认值为 `true`。 |
 
 <a id="thinkmessage"></a>
 ## ThinkMessage
@@ -268,14 +270,16 @@ title: "结构体"
 
 用于将文本作为用户输入注入对话，并交由大模型处理。
 
+#### 成员参数
+
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `text` | `String` | 要注入大模型的指令文本。 |
-| `onListeningAction` | `ThinkListeningAction` | 倾听状态下的处理动作。 |
-| `onThinkingAction` | `ThinkThinkingAction` | 思考状态下的处理动作。 |
-| `onSpeakingAction` | `ThinkSpeakingAction` | 说话状态下的处理动作。 |
-| `interruptable` | `Boolean` | 是否允许用户说话打断响应。 |
-| `metadata` | `Map<String, String>?` | 可选的业务自定义键值对。 |
+| `onListeningAction` | `ThinkListeningAction` | 智能体处于倾听状态时的处理动作，默认值为 `.interrupt`。详见 [`ThinkListeningAction`](/zh-CN/api-reference/conversational-ai/ios/enum#thinklisteningaction)。 |
+| `onThinkingAction` | `ThinkThinkingAction` | 智能体处于思考状态时的处理动作，默认值为 `.ignore`。详见 [`ThinkThinkingAction`](/zh-CN/api-reference/conversational-ai/ios/enum#thinkthinkingaction)。 |
+| `onSpeakingAction` | `ThinkSpeakingAction` | 智能体处于说话状态时的处理动作，默认值为 `.ignore`。详见 [`ThinkSpeakingAction`](/zh-CN/api-reference/conversational-ai/ios/enum#thinkspeakingaction)。 |
+| `interruptable` | `Bool` | 是否允许用户说话打断本次指令生成的响应，默认值为 `true`。 |
+| `metadata` | `[String: String]?` | 可选的业务自定义键值对。为 nil 时不会写入 RTM 消息。 |
 
 <a id="statechangeevent"></a>
 ## StateChangeEvent
