@@ -304,7 +304,7 @@ describe('RTC PR #2094 frozen source delta', () => {
     },
   );
 
-  it('updates the Android current title and only verified historical archive versions', () => {
+  it('keeps the Android current title and the upstream macOS/C++ archive snapshot', () => {
     expect(
       read('content/docs/zh-CN/api-reference/rtc/android/(current)/meta.json'),
     ).toContain('v4.7.0');
@@ -313,10 +313,13 @@ describe('RTC PR #2094 frozen source delta', () => {
         `content/docs/zh-CN/api-reference/rtc/${platform}/meta.json`,
       );
       expect(text).toContain('v4.6.2');
-      expect(text).toContain(
-        'https://doc-archive.shengwang.cn/archive/0.0.492/',
-      );
-      expect(text).not.toContain('0.0.519');
+      expect(
+        JSON.parse(text).navScope.versions.find(
+          (version: { id: string }) => version.id === '4.6.2',
+        ),
+      ).toMatchObject({
+        href: `https://doc-archive.shengwang.cn/archive/0.0.519/api-ref/rtc/${platform === 'macos' ? 'macos' : 'windows'}/API/rtc_api_overview`,
+      });
       expect(docsMetaSchema.safeParse(JSON.parse(text)).success).toBe(true);
     }
   });
@@ -341,8 +344,8 @@ describe('RTC PR #2094 frozen source delta', () => {
       );
       expect(existsSync(resolve(directory, '4.6.4'))).toBe(false);
 
-      // The fixed target base has no 4.6.4. Permit only the separately owned
-      // PR #2113 archive if the two approved patches are composed later.
+      // The complete historical inventory now owns version options. Keep
+      // the PR's original current metadata and content structure protected.
       const separatelyOwnedArchive = raw.navScope.versions.find(
         (version: { id: string }) => version.id === '4.6.2',
       );
@@ -364,20 +367,16 @@ describe('RTC PR #2094 frozen source delta', () => {
         navScope: {
           ...raw.navScope,
           versions: raw.navScope.versions.filter(
-            (version: { id: string }) =>
-              version.id !== '4.6.4' && version.id !== '4.6.2',
+            (version: { id: string }) => version.id === 'current',
           ),
         },
       };
-      // Frozen metadata at 7c6c60ead44406e69906c5c3808cd489784aa89e.
+      // Non-history metadata frozen at 7c6c60ead44406e69906c5c3808cd489784aa89e.
       expect(withoutApprovedArchives).toEqual({
         title: platform === 'android' ? 'Android API 参考' : 'iOS API 参考',
         navScope: {
           defaultVersion: 'current',
-          versions: [
-            { id: 'current', label: 'v4.7.0', path: '(current)' },
-            ...localVersions,
-          ],
+          versions: [{ id: 'current', label: 'v4.7.0', path: '(current)' }],
         },
         pages: platform === 'android' ? ['(current)', '4.6.0'] : ['(current)'],
       });
@@ -437,7 +436,7 @@ describe('RTC PR #2094 frozen source delta', () => {
       });
       if (platform === 'android') {
         expect(scope?.header.versionSwitcher?.versions).toContainEqual({
-          href: '/zh-CN/api-reference/rtc/android/4.6.0/overview',
+          href: 'https://doc-archive.shengwang.cn/archive/0.0.405/api-ref/rtc/android/API/rtc_api_overview',
           id: '4.6.0',
           label: 'v4.6.0',
         });

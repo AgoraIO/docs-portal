@@ -2352,9 +2352,21 @@ export async function runApiCenterNavigation({
         ? mergeMetaPages(['index'], plannedPages)
         : plannedPages;
     if (pages.length === 0) continue;
+    // The API Center manifest only describes current content. Historical
+    // archive choices are maintained separately in each platform's metadata.
+    const maintainedScope = meta.navScope?.versions?.some((version) =>
+      version.href?.startsWith('https://doc-archive.shengwang.cn/archive/'),
+    )
+      ? { navScope: meta.navScope }
+      : {};
     run.planFile({
       targetPath: plan.metaPath,
-      contents: serializeJson({ ...meta, ...plan.metaPatch, pages }),
+      contents: serializeJson({
+        ...meta,
+        ...plan.metaPatch,
+        ...maintainedScope,
+        pages,
+      }),
       sourcePath: manifestPath,
       sourceUrl: API_CENTER_URL,
       type: 'navigation-meta',

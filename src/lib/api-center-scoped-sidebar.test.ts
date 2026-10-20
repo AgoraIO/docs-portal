@@ -330,25 +330,12 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
   });
 
   it.each([
-    [
-      'cpp',
-      'iagoraservice.cpp',
-      '服务端 C++',
-      '服务端 C++ Legacy',
-      '/zh-CN/api-reference/local-server-recording/cpp/api-overview',
-      '/zh-CN/api-reference/local-server-recording/cpp/legacy/overview',
-    ],
-    [
-      'java',
-      'agoraservice.java',
-      '服务端 Java',
-      '服务端 Java Legacy',
-      '/zh-CN/api-reference/local-server-recording/java/api-overview',
-      '/zh-CN/api-reference/local-server-recording/java/legacy/overview',
-    ],
+    ['cpp', 'iagoraservice.cpp'],
+    ['java', 'agoraservice.java'],
   ])(
-    'switches local server recording %s between its current and Legacy APIs',
-    async (platform, currentPage, currentLabel, legacyLabel, currentHref, legacyHref) => {
+    'uses archives for local server recording %s history while retaining Legacy pages',
+    async (platform, currentPage) => {
+      const currentHref = `/zh-CN/api-reference/local-server-recording/${platform}/api-overview`;
       const payload = await loadApiReferencePayload([
         'local-server-recording',
         platform,
@@ -363,12 +350,12 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
             {
               href: currentHref,
               id: 'current',
-              label: currentLabel,
+              label: 'v4.4.151',
             },
             {
-              href: legacyHref,
-              id: 'legacy',
-              label: legacyLabel,
+              href: `https://doc-archive.shengwang.cn/archive/0.0.341/api-ref/recording/${platform}/api-overview`,
+              id: '4.4.150',
+              label: 'v4.4.150',
             },
           ],
         },
@@ -380,13 +367,7 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
         'legacy',
         'overview',
       ]);
-      expect(legacyPayload.sidebarHeader?.versionSwitcher).toMatchObject({
-        currentId: 'legacy',
-        versions: [
-          { href: currentHref, id: 'current', label: currentLabel },
-          { href: legacyHref, id: 'legacy', label: legacyLabel },
-        ],
-      });
+      expect(legacyPayload.sidebarHeader?.versionSwitcher).toBeUndefined();
 
       const legacyTitles = collectTitles(
         legacyPayload.sidebar as SidebarNode[],
@@ -400,6 +381,25 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
           : 'RecordingEventHandler 类',
         'RecordingConfig 类',
       ]);
+
+      const legacyClassPayload = await loadApiReferencePayload([
+        'local-server-recording',
+        platform,
+        'legacy',
+        platform === 'cpp'
+          ? 'classagora-1-1recording-1-1-i-recording-engine'
+          : 'classio-1-1agora-1-1recording-1-1-recording-s-d-k',
+      ]);
+      expect(legacyClassPayload.sidebarHeader?.versionSwitcher).toBeUndefined();
+      expect(
+        collectTitles(legacyClassPayload.sidebar as SidebarNode[]),
+      ).toEqual(legacyTitles);
+      expect(
+        findNode(payload.sidebar as SidebarNode[], 'Legacy API 参考'),
+      ).toMatchObject({
+        collapsible: true,
+        children: [expect.objectContaining({ title: 'Legacy API 概览' })],
+      });
     },
   );
 
@@ -621,13 +621,13 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
       title: '媒体流加速 RTSA C',
       versionSwitcher: {
         currentId: 'current',
-        versions: [
+        versions: expect.arrayContaining([
           {
             href: '/zh-CN/api-reference/rtsa/c/overview',
             id: 'current',
             label: 'v1.10.1',
           },
-        ],
+        ]),
       },
     });
     const sidebarTitles = collectTitles(payload.sidebar);

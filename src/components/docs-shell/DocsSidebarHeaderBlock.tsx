@@ -91,30 +91,45 @@ export function DocsSidebarHeaderBlock({
             className="w-48 rounded-lg p-1"
           >
             <DropdownMenuGroup>
-              {versionSwitcher.versions.map((version) => (
-                <DropdownMenuItem
-                  asChild
-                  className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
-                  key={version.id}
-                >
-                  <Link
-                    aria-current={
-                      version.id === versionSwitcher.currentId
-                        ? 'page'
-                        : undefined
-                    }
-                    onClick={onSelectPath}
-                    params={{}}
-                    search={{}}
-                    to={version.href}
-                  >
+              {versionSwitcher.versions.map((version) => {
+                const isCurrent = version.id === versionSwitcher.currentId;
+                const content = (
+                  <>
                     <span className="min-w-0 truncate">{version.label}</span>
-                    {version.id === versionSwitcher.currentId ? (
-                      <CheckIcon className="opacity-80" />
-                    ) : null}
-                  </Link>
-                </DropdownMenuItem>
-              ))}
+                    {isCurrent ? <CheckIcon className="opacity-80" /> : null}
+                  </>
+                );
+
+                return (
+                  <DropdownMenuItem
+                    asChild
+                    className="min-h-8 cursor-pointer justify-between rounded-md px-2.5 text-[13px]"
+                    key={version.id}
+                  >
+                    {/^https?:\/\//i.test(version.href) ? (
+                      <a
+                        aria-current={isCurrent ? 'page' : undefined}
+                        href={version.href}
+                        onClick={onSelectPath}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <Link
+                        aria-current={isCurrent ? 'page' : undefined}
+                        onClick={onSelectPath}
+                        params={{}}
+                        search={{}}
+                        to={version.href}
+                      >
+                        {content}
+                      </Link>
+                    )}
+                  </DropdownMenuItem>
+                );
+              })}
             </DropdownMenuGroup>
           </DropdownMenuContent>
         </DropdownMenu>
