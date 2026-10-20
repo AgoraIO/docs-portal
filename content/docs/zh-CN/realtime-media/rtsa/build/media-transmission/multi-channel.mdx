@@ -41,9 +41,9 @@ title: "多频道发流和单频道多路发流"
 4. 调用 `agora_rtc_leave_channel` 和 `agora_rtc_destroy_connection` 离开频道并销毁 Connection。
 
     ```c showLineNumbers
-    agora_rtc_leave_channel(cname1);
-    agora_rtc_leave_channel(cname2);
-    agora_rtc_leave_channel(cname3);
+    agora_rtc_leave_channel(conn1);
+    agora_rtc_leave_channel(conn2);
+    agora_rtc_leave_channel(conn3);
     agora_rtc_destroy_connection(conn1);
     agora_rtc_destroy_connection(conn2);
     agora_rtc_destroy_connection(conn3);
@@ -85,7 +85,9 @@ title: "多频道发流和单频道多路发流"
 4. 调用 `agora_rtc_leave_channel` 和 `agora_rtc_destroy_connection` 离开频道并销毁 Connection。
 
     ```c showLineNumbers
-    agora_rtc_leave_channel(cname);
+    agora_rtc_leave_channel(conn1);
+    agora_rtc_leave_channel(conn2);
+    agora_rtc_leave_channel(conn3);
     agora_rtc_destroy_connection(conn1);
     agora_rtc_destroy_connection(conn2);
     agora_rtc_destroy_connection(conn3);
@@ -95,9 +97,9 @@ title: "多频道发流和单频道多路发流"
 
 开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
 
-- [`agora_rtc_create_connection`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_rtc_create_connection))
-- [`agora_rtc_join_channel`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_rtc_join_channel))
-- [`agora_rtc_send_video_data`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_rtc_send_video_data))
-- [`agora_rtc_send_audio_data`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_rtc_send_audio_data))
-- [`agora_rtc_leave_channel`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_rtc_leave_channel))
-- [`agora_rtc_destroy_connection`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#agora_rtc_destroy_connection))
+- [`agora_rtc_create_connection`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394)
+- [`agora_rtc_join_channel`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6c29ff27f04623526a164cf6e5dcd738)
+- [`agora_rtc_send_video_data`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a05973c4f32a5eb480e52b4f566601bf5)
+- [`agora_rtc_send_audio_data`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a0a00045d34a87e7a3798c6c906f9e197)
+- [`agora_rtc_leave_channel`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a939878648ce563ef4041da892d478f8b)
+- [`agora_rtc_destroy_connection`](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ac58d42a331c45233d81085fc13defcaf)
