@@ -4,6 +4,7 @@ description: "查看实时互动 RTC 的版本更新、问题修复、行为变�
 titlePlatforms:
   - web
 ---
+
 :::warning[注意]
 使用 AI 降噪插件和虚拟背景插件可能会产生费用。请与 sales@shengwang.cn 沟通后再使用。
 :::
@@ -20,7 +21,9 @@ titlePlatforms:
 
 <TabsContent value="rtc">
 
-### v2.0.1
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v2.0.1" id="v201" headingLevel={3} value="v201">
 
 #### 升级必看
 
@@ -41,7 +44,9 @@ titlePlatforms:
 
 该版本对回调的实现形式进行了调整。废弃了原来的 `onloaderror`, `onoverload`, `ondump`, `ondumpend` 回调，分别改用 `on("pipeerror"|"overload"|"dump"|"dumpend")` 方法监听对应事件。
 
-### v1.1.0
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110" headingLevel={3} value="v110">
 
 #### 升级必看
 
@@ -67,17 +72,25 @@ API 描述详见[使用 AI 降噪插件](/zh-CN/realtime-media/rtc/build/extensi
 
 该版本优化了 AI 降噪算法的计算性能。
 
-### v1.0.0
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100" headingLevel={3} value="v100">
 
 AI 降噪插件 [agora-extension-ai-denoiser](https://www.npmjs.com/package/agora-extension-ai-denoiser)由 Beta 发布转变为正式发布。
 
 相比之前的版本，v1.0.0 版本的 AI 降噪具有更好的人声保真度、更干净的噪声抑制，并新增了去混响 (Dereverberation) 能力。
 
+</Accordion>
+
+</Accordions>
+
 </TabsContent>
 
 <TabsContent value="convoai">
 
-### v1.0.0-beta2
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v1.0.0-beta2" id="v100-beta2" headingLevel={3} value="v100-beta2">
 
 AI 场景专用降噪插件 [agora-conversational-ai-denoiser](https://www.npmjs.com/package/agora-conversational-ai-denoiser) v1.0.0-beta2 于 2025 年 3 月 5 日发布，用于更好地支持[声网对话式 AI 引擎](/zh-CN/ai)的应用效果。
 
@@ -91,29 +104,45 @@ AI 场景专用降噪插件 [agora-conversational-ai-denoiser](https://www.npmjs
 - 降低运行中音频采集播放卡顿的风险。
 - 开启 AI 降噪后，AGC 最大增益的默认值从 24dB 下调至 12dB。
 
+</Accordion>
+
+</Accordions>
+
 </TabsContent>
 </Tabs>
 
 ## VAD 语音活动监测插件
 
-### v1.0.0-beta.2
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v1.0.0-beta.2" id="v100-beta2-1" headingLevel={3} value="v100-beta2-1">
 
 VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package/agora-extension-vad) v1.0.0-beta.2 于 2024 年 10 月 15 日发布，是 VAD 插件的第一个版本。详细集成步骤可以参考[使用 VAD 插件](/zh-CN/realtime-media/rtc/build/extensions/web/voice-activity-detection)。
 
+</Accordion>
+
+</Accordions>
+
 ## 虚拟背景插件
 
-### v2.1.0
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v2.1.0" id="v210" headingLevel={3} value="v210">
 
 该版本包含如下改动：
 
 - 优化了内存及 CPU 开销。
 - 修复了特定分辨率时产生的黑屏问题。
 
-### v2.0.0
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200" headingLevel={3} value="v200">
 
 该版本将虚拟背景算法升级到 2.0.0 版本。新版本对人像算法进行全面升级，提供更加分明的人像边缘以及更加清晰稳定的视频画面。
 
-### v1.2.0
+</Accordion>
+
+<Accordion title="v1.2.0" id="v120" headingLevel={3} value="v120">
 
 #### 升级必看
 
@@ -133,13 +162,17 @@ VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package
 
 `init` 方法的 `wasmDir` 参数改为可选。
 
-### v1.1.3
+</Accordion>
+
+<Accordion title="v1.1.3" id="v113" headingLevel={3} value="v113">
 
 #### 问题修复
 
 该版本修复了 Android 端 Chrome 浏览器上背景图片偶现锯齿状效果的问题。
 
-### v1.1.2
+</Accordion>
+
+<Accordion title="v1.1.2" id="v112" headingLevel={3} value="v112">
 
 #### 升级必看
 
@@ -149,7 +182,9 @@ VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package
 
 该版本支持在调用 `setOptions` 方法时设置 `fit` 属性，用于设置虚拟背景的填充方式。API 描述详见[使用虚拟背景插件](/zh-CN/realtime-media/rtc/build/extensions/web/virtual-background)。
 
-### v1.1.1
+</Accordion>
+
+<Accordion title="v1.1.1" id="v111" headingLevel={3} value="v111">
 
 #### 新增特性
 
@@ -159,35 +194,59 @@ VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package
 
 该版本修复了背景左侧出现黑边的问题。
 
-### v1.1.0
+</Accordion>
+
+<Accordion title="v1.1.0" id="v110-1" headingLevel={3} value="v110-1">
 
 #### 新增特性
 
 自 v1.1.0 起，你可以创建多个 `VirtualBackgroundProcessor` 实例，同时处理多路视频流。
 
-### v1.0.0
+</Accordion>
+
+<Accordion title="v1.0.0" id="v100-1" headingLevel={3} value="v100-1">
 
 虚拟背景插件 [agora-extension-virtual-background](https://www.npmjs.com/package/agora-extension-virtual-background) 由 Beta 发布转变为正式发布。
 
+</Accordion>
+
+</Accordions>
+
 ## 美颜插件
 
-### v1.0.2-beta
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v1.0.2-beta" id="v102-beta" headingLevel={3} value="v102-beta">
 
 美颜插件 [agora-extension-beauty-effect](https://www.npmjs.com/package/agora-extension-beauty-effect) v1.0.2 于 2022 年 11 月 26 日发布。这是美颜插件的第一个版本，详细集成步骤可以参考[使用美颜插件](/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement)。
 
+</Accordion>
+
+</Accordions>
+
 ## 合图插件
 
-### v1.0.0-beta
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v1.0.0-beta" id="v100-beta" headingLevel={3} value="v100-beta">
 
 合图插件 [agora-extension-videp-compositor](https://www.npmjs.com/package/agora-extension-video-compositor) v1.0.0-beta 该版本于 2022 年 10 月 25 日发布。这是合图插件的第一个版本，详细集成步骤可以参考[使用合图插件](/zh-CN/realtime-media/rtc/build/extensions/web/video-compositing)。
 
+</Accordion>
+
+</Accordions>
+
 ## AI 画质插件
 
-### v2.0.1
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v2.0.1" id="v201-1" headingLevel={3} value="v201-1">
 
 该版本对插件的锐化算法进行了优化，提升了部分场景下的视频体验。
 
-### v2.0.0
+</Accordion>
+
+<Accordion title="v2.0.0" id="v200-1" headingLevel={3} value="v200-1">
 
 #### 升级必看
 
@@ -200,12 +259,24 @@ VAD 语音活动监测插件 [agora-extension-vad](https://www.npmjs.com/package
 - 优化应用切换至后台时的帧率同步策略，改善操作流畅度。
 - 提升在 Safari 浏览器上的兼容性与功能稳定性。
 
-### v1.0.1
+</Accordion>
+
+<Accordion title="v1.0.1" id="v101" headingLevel={3} value="v101">
 
 AI 画质插件 [agora-extension-super-clarity](https://www.npmjs.com/package/agora-extension-super-clarity) v1.0.1 于 2024 年 11 月 10 日发布，这是 AI 画质插件的第一个版本，详细集成步骤可以参考[使用 AI 画质插件](/zh-CN/realtime-media/rtc/build/extensions/web/super-clarity)。
 
+</Accordion>
+
+</Accordions>
+
 ## 水印插件 (BETA)
 
-### v1.0.0-beta
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v1.0.0-beta" id="v100-beta-1" headingLevel={3} value="v100-beta-1">
 
 水印插件 [agora-extension-video-watermark](https://www.npmjs.com/package/agora-extension-video-watermark) v1.0.0-beta 于 2025 年 11 月 25 日发布。这是水印插件的第一个版本，与 Web SDK v4.24.0 及以上搭配使用，可以实现在视频流中添加图像水印的功能。更详细的插件能力和集成步骤可以参考[使用水印插件](/zh-CN/realtime-media/rtc/build/extensions/web/watermark)。
+
+</Accordion>
+
+</Accordions>

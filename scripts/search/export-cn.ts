@@ -3,6 +3,7 @@ import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { load } from 'cheerio';
 import { exportPublishedCnRecords } from '../../src/lib/search/cn-records.server';
+import { toCnPublicSearchUrl } from '../../src/lib/search/cn-search-urls.mjs';
 
 const { values } = parseArgs({
   options: {
@@ -21,12 +22,15 @@ const sitemap = load(
 );
 const publishedUrls = new Set(
   sitemap('loc')
-    .map((_, element) => new URL(sitemap(element).text()).pathname)
+    .map((_, element) =>
+      toCnPublicSearchUrl(new URL(sitemap(element).text()).pathname),
+    )
     .get(),
 );
 const records = await exportPublishedCnRecords({
   routes: (await readJson('docs-routes.json')).filter(
-    (route: { url: string }) => publishedUrls.has(route.url),
+    (route: { url: string }) =>
+      publishedUrls.has(toCnPublicSearchUrl(route.url)),
   ),
   pages: await readJson('docs-search/zh-CN.json'),
   readMarkdown: (markdownPath) => {

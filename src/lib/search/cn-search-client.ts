@@ -7,23 +7,29 @@ import type { DocsSearchScope } from './search-provider';
 export function createCnDocsSearchClient({
   platform,
   scope,
+  requestHeaders,
 }: {
   platform?: string;
   scope?: DocsSearchScope;
+  requestHeaders?: () => Record<string, string>;
 }): SearchClient {
   return {
     deps: ['cn-search-api', platform, scope?.field, scope?.value],
     async search(query) {
       const q = normalizeMeilisearchQuery(query);
       if (!q) return [];
-      const result = await searchCnDocsPage({
-        ...parseSearchPageState({
-          q,
-          platform,
-          product: scope?.field === 'product' ? scope.value : undefined,
-        }),
-        tab: scope?.field === 'tab' ? scope.value : undefined,
-      });
+      const result = await searchCnDocsPage(
+        {
+          ...parseSearchPageState({
+            q,
+            platform,
+            product: scope?.field === 'product' ? scope.value : undefined,
+          }),
+          tab: scope?.field === 'tab' ? scope.value : undefined,
+        },
+        undefined,
+        requestHeaders?.(),
+      );
       return result.groups
         .flatMap((group) => group.sections.map(mapSearchHit))
         .slice(0, 10);

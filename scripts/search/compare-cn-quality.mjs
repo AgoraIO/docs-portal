@@ -1,4 +1,5 @@
 import { readFile, writeFile } from 'node:fs/promises';
+import { toCnPublicSearchUrl } from '../../src/lib/search/cn-search-urls.mjs';
 
 // 只读比较两个 prepare 回执指向的快照；使用能查询临时索引的本地验收密钥。
 const host = process.env.MEILI_HOST ?? 'http://127.0.0.1:7700';
@@ -43,7 +44,7 @@ for (const query of queries) {
     });
     if (!response.ok) throw new Error(`Engine HTTP ${response.status}`);
     const data = await response.json();
-    const rank = data.hits.findIndex(hit => hit.url === query.target) + 1 || null;
+    const rank = data.hits.findIndex(hit => toCnPublicSearchUrl(hit.url) === toCnPublicSearchUrl(query.target)) + 1 || null;
     runs.push({ index: receipt.stagedUid, rank, passed: rank !== null && rank <= query.maxRank, top: data.hits.slice(0, 3).map(hit => ({ title: hit.sectionTitle, url: hit.url })) });
   }
   comparisons.push({ query, baseline: runs[0], candidate: runs[1] });

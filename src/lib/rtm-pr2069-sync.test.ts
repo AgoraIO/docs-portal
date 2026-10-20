@@ -319,7 +319,9 @@ describe('RTM upstream PR #2069 parity', () => {
       readDoc('reference/release-notes'),
       'mini-program',
     );
-    expect(release).toContain('## 2.3.0-beta.0 版');
+    expect(release).toContain(
+      '<Accordion title="2.3.0-beta.0 版" id="230-beta0-版" headingLevel={2} value="230-beta0-版">',
+    );
     expect(release).toContain('`2026-07-16`');
     expect(release).toContain(npmHref);
   });
