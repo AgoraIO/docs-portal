@@ -1,7 +1,9 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import type { Folder, Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
-import { docsMetaSchema } from './docs-meta-schema';
+import { type DocsMeta, docsMetaSchema } from './docs-meta-schema';
+import { resolveDocsNavScope } from './docs-nav-scope';
 
 const read = (file: string) => readFileSync(resolve(file), 'utf8');
 const report = JSON.parse(
@@ -318,4 +320,128 @@ describe('RTC PR #2094 frozen source delta', () => {
       expect(docsMetaSchema.safeParse(JSON.parse(text)).success).toBe(true);
     }
   });
+
+  it.each(['android', 'ios'])(
+    '%s preserves the browser-verified 4.6.4 archive through the real resolver',
+    (platform) => {
+      const directory = `content/docs/zh-CN/api-reference/rtc/${platform}`;
+      const raw = JSON.parse(read(`${directory}/meta.json`));
+      const meta = docsMetaSchema.parse(raw);
+      const archive = {
+        id: '4.6.4',
+        label: 'v4.6.4',
+        path: '4.6.4',
+        href: `https://doc-archive.shengwang.cn/archive/0.0.519/api-ref/rtc/${platform}/API/rtc_api_overview`,
+      };
+      const versions = meta.navScope?.versions ?? [];
+      expect(versions[1]).toEqual(archive);
+      expect(raw.navScope.versions[1]).toEqual(archive);
+      expect(new Set(versions.map((version) => version.id)).size).toBe(
+        versions.length,
+      );
+      expect(existsSync(resolve(directory, '4.6.4'))).toBe(false);
+
+      // The fixed target base has no 4.6.4. Permit only the separately owned
+      // PR #2113 archive if the two approved patches are composed later.
+      const separatelyOwnedArchive = raw.navScope.versions.find(
+        (version: { id: string }) => version.id === '4.6.2',
+      );
+      if (separatelyOwnedArchive) {
+        expect(separatelyOwnedArchive).toEqual({
+          id: '4.6.2',
+          label: 'v4.6.2',
+          path: '4.6.2',
+          href: `https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtc/${platform}/API/rtc_api_overview`,
+        });
+        expect(raw.navScope.versions[2]).toEqual(separatelyOwnedArchive);
+      }
+      const localVersions =
+        platform === 'android'
+          ? [{ id: '4.6.0', label: 'v4.6.0', path: '4.6.0' }]
+          : [];
+      const withoutApprovedArchives = {
+        ...raw,
+        navScope: {
+          ...raw.navScope,
+          versions: raw.navScope.versions.filter(
+            (version: { id: string }) =>
+              version.id !== '4.6.4' && version.id !== '4.6.2',
+          ),
+        },
+      };
+      // Frozen metadata at 7c6c60ead44406e69906c5c3808cd489784aa89e.
+      expect(withoutApprovedArchives).toEqual({
+        title: platform === 'android' ? 'Android API 参考' : 'iOS API 参考',
+        navScope: {
+          defaultVersion: 'current',
+          versions: [
+            { id: 'current', label: 'v4.7.0', path: '(current)' },
+            ...localVersions,
+          ],
+        },
+        pages: platform === 'android' ? ['(current)', '4.6.0'] : ['(current)'],
+      });
+
+      const activePath = `/zh-CN/api-reference/rtc/${platform}/rtc-api-overview`;
+      const currentFolder: Folder = {
+        name: '(current)',
+        type: 'folder',
+        children: [{ name: 'API 概览', type: 'page', url: activePath }],
+      };
+      const platformFolder: Folder = {
+        name: platform,
+        type: 'folder',
+        children: [
+          currentFolder,
+          ...localVersions.map(
+            (version): Folder => ({
+              name: version.path,
+              type: 'folder',
+              children: [
+                {
+                  name: 'API 概览',
+                  type: 'page',
+                  url: `/zh-CN/api-reference/rtc/${platform}/${version.path}/overview`,
+                },
+              ],
+            }),
+          ),
+        ],
+      };
+      const root: Root = {
+        name: '文档',
+        children: [
+          {
+            name: '参考',
+            type: 'folder',
+            root: true,
+            index: { name: '参考', type: 'page', url: '/zh-CN/api-reference' },
+            children: [platformFolder],
+          },
+        ],
+      };
+      const scope = resolveDocsNavScope({
+        activePath,
+        getNodeMeta: (node): DocsMeta | undefined =>
+          node === platformFolder ? meta : undefined,
+        root,
+        tab: 'api-reference',
+      });
+      expect(scope?.activeVersion?.id).toBe('current');
+      expect(scope?.sidebarRoot).toBe(currentFolder);
+      expect(scope?.header.versionSwitcher?.currentId).toBe('current');
+      expect(scope?.header.versionSwitcher?.versions).toContainEqual({
+        href: archive.href,
+        id: archive.id,
+        label: archive.label,
+      });
+      if (platform === 'android') {
+        expect(scope?.header.versionSwitcher?.versions).toContainEqual({
+          href: '/zh-CN/api-reference/rtc/android/4.6.0/overview',
+          id: '4.6.0',
+          label: 'v4.6.0',
+        });
+      }
+    },
+  );
 });
