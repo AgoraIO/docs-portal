@@ -2,8 +2,12 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { toPublicRedirectTarget } from './shengwang-redirect-targets.mjs';
 
-const repoRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const repoRoot = path.resolve(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '..',
+);
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
 const candidatePath = path.join(
   inputRoot,
@@ -13,20 +17,14 @@ const legacyInventoryPath = path.join(
   inputRoot,
   'legacy-url-inventory-2026-10-14.json',
 );
-const targetRoutesPath = path.join(
-  inputRoot,
-  'target-routes-32883e92e9.json',
-);
+const targetRoutesPath = path.join(inputRoot, 'target-routes-32883e92e9.json');
 const targetMetaPath = path.join(
   inputRoot,
   'target-build-meta-32883e92e9.json',
 );
 const finalMapPath = path.join(inputRoot, 'legacy-url-map.csv');
 const finalJsonPath = path.join(inputRoot, 'legacy-url-map.json');
-const vercelPath = path.join(
-  inputRoot,
-  'legacy-url-redirects.vercel.json',
-);
+const vercelPath = path.join(inputRoot, 'legacy-url-redirects.vercel.json');
 const nginxPath = path.join(inputRoot, 'legacy-url-redirects.nginx.conf');
 
 const candidate = JSON.parse(await readFile(candidatePath, 'utf8'));
@@ -36,22 +34,54 @@ const targetMeta = JSON.parse(await readFile(targetMetaPath, 'utf8'));
 const targetRouteSet = new Set(targetRoutes.map((route) => route.url));
 const applicationRoutes = new Set(['/zh-CN/search']);
 validateSnapshots(candidate, legacyInventory, targetRoutes, targetMeta);
-const records = candidate.records;
-validateRecords(records, legacyInventory, targetRouteSet, applicationRoutes);
-const manualReview = records.filter((record) => record.status === 'manual-review');
+// Validate the original targets against the immutable, locale-prefixed snapshot.
+// This does not prove that the public, unprefixed routes have been deployed.
+validateRecords(
+  candidate.records,
+  legacyInventory,
+  targetRouteSet,
+  applicationRoutes,
+);
+const records = candidate.records.map((record) => {
+  const target = toPublicRedirectTarget(record.target);
+  if (
+    record.status === 'candidate' &&
+    record.legacyPath === target.split(/[?#]/, 1)[0]
+  ) {
+    return {
+      ...record,
+      target: '',
+      status: 'no-redirect',
+      targetExists: false,
+      mappingType: 'same-path-no-redirect',
+      notes: `${record.notes}；公开路径未变化，由新站直接服务，无需重定向，查询参数交由应用处理。`,
+    };
+  }
+
+  return { ...record, target };
+});
+const manualReview = records.filter(
+  (record) => record.status === 'manual-review',
+);
 if (manualReview.length > 0) {
   throw new Error(
     `Cannot finalize Shengwang redirects: ${manualReview.length} manual-review records remain`,
   );
 }
 
-const duplicatePaths = findDuplicates(records.map((record) => record.legacyPath));
+const duplicatePaths = findDuplicates(
+  records.map((record) => record.legacyPath),
+);
 if (duplicatePaths.length > 0) {
-  throw new Error(`Cannot finalize Shengwang redirects: duplicate source paths: ${duplicatePaths.join(', ')}`);
+  throw new Error(
+    `Cannot finalize Shengwang redirects: duplicate source paths: ${duplicatePaths.join(', ')}`,
+  );
 }
 
 const redirects = records.filter((record) => record.status === 'candidate');
-const missingTargets = redirects.filter((record) => !record.target || !record.targetExists);
+const missingTargets = redirects.filter(
+  (record) => !record.target || !record.targetExists,
+);
 if (missingTargets.length > 0) {
   throw new Error(
     `Cannot finalize Shengwang redirects: ${missingTargets.length} candidate targets are missing`,
@@ -61,7 +91,8 @@ if (missingTargets.length > 0) {
 const finalSummary = {
   total: records.length,
   redirect: redirects.length,
-  noRedirect: records.filter((record) => record.status === 'no-redirect').length,
+  noRedirect: records.filter((record) => record.status === 'no-redirect')
+    .length,
   manualReview: manualReview.length,
   uniqueSourcePaths: new Set(records.map((record) => record.legacyPath)).size,
 };
@@ -73,6 +104,7 @@ const finalJson = `${JSON.stringify(
     targetCommit: candidate.targetCommit,
     sourceCandidate: path.relative(repoRoot, candidatePath),
     snapshot: candidate.snapshot,
+    targetUrlTransform: 'remove-zh-CN-prefix',
     summary: finalSummary,
     records,
   },
@@ -150,11 +182,21 @@ async function sha256File(filePath) {
   return createHash('sha256').update(content).digest('hex');
 }
 
-async function validateSnapshots(candidate, legacyInventory, targetRoutes, targetMeta) {
+async function validateSnapshots(
+  candidate,
+  legacyInventory,
+  targetRoutes,
+  targetMeta,
+) {
   if (!candidate || !Array.isArray(candidate.records)) {
-    throw new Error('Cannot finalize Shengwang redirects: invalid candidate schema');
+    throw new Error(
+      'Cannot finalize Shengwang redirects: invalid candidate schema',
+    );
   }
-  if (!candidate.targetCommit || !targetMeta.commit?.startsWith(candidate.targetCommit)) {
+  if (
+    !candidate.targetCommit ||
+    !targetMeta.commit?.startsWith(candidate.targetCommit)
+  ) {
     throw new Error(
       `Cannot finalize Shengwang redirects: candidate target commit ${candidate.targetCommit} does not match ${targetMeta.commit}`,
     );
@@ -204,24 +246,39 @@ async function validateSnapshots(candidate, legacyInventory, targetRoutes, targe
   }
 }
 
-function validateRecords(records, legacyInventory, targetRouteSet, applicationRoutes) {
+function validateRecords(
+  records,
+  legacyInventory,
+  targetRouteSet,
+  applicationRoutes,
+) {
   const expectedPaths = legacyInventory.urls.map(normalizePath);
   const actualPaths = records.map((record) => record.legacyPath);
   const expectedSet = new Set(expectedPaths);
   const actualSet = new Set(actualPaths);
-  if (expectedPaths.length !== records.length || expectedSet.size !== records.length) {
+  if (
+    expectedPaths.length !== records.length ||
+    expectedSet.size !== records.length
+  ) {
     throw new Error(
       `Cannot finalize Shengwang redirects: candidate record count ${records.length} does not match unique inventory count ${expectedSet.size}`,
     );
   }
-  if (expectedSet.size !== actualSet.size || [...expectedSet].some((value) => !actualSet.has(value))) {
-    throw new Error('Cannot finalize Shengwang redirects: candidate sources do not match the legacy inventory');
+  if (
+    expectedSet.size !== actualSet.size ||
+    [...expectedSet].some((value) => !actualSet.has(value))
+  ) {
+    throw new Error(
+      'Cannot finalize Shengwang redirects: candidate sources do not match the legacy inventory',
+    );
   }
 
   const allowedStatuses = new Set(['candidate', 'no-redirect']);
   for (const record of records) {
     if (!record || !allowedStatuses.has(record.status) || !record.legacyPath) {
-      throw new Error('Cannot finalize Shengwang redirects: candidate contains an invalid record');
+      throw new Error(
+        'Cannot finalize Shengwang redirects: candidate contains an invalid record',
+      );
     }
     const targetPath = record.target?.split('#', 1)[0];
     const targetExists = targetPath
@@ -237,7 +294,10 @@ function validateRecords(records, legacyInventory, targetRouteSet, applicationRo
         `Cannot finalize Shengwang redirects: candidate target is missing for ${record.legacyPath}`,
       );
     }
-    if (record.status === 'no-redirect' && (record.target || record.targetExists)) {
+    if (
+      record.status === 'no-redirect' &&
+      (record.target || record.targetExists)
+    ) {
       throw new Error(
         `Cannot finalize Shengwang redirects: no-redirect record has a target for ${record.legacyPath}`,
       );
@@ -255,6 +315,9 @@ function normalizePath(value) {
 function toNginx(items, targetCommit) {
   const lines = [
     `# Generated from target commit ${targetCommit}.`,
+    '# Target URL transform: remove-zh-CN-prefix.',
+    '# Deploy only after the target site serves unprefixed routes.',
+    '# Same-path requests such as /search are no-redirect; serve them directly.',
     '# Review before loading into the Shengwang legacy host.',
     '',
   ];
