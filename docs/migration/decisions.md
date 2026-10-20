@@ -67,3 +67,13 @@ Decision: A successful build or type check is required for many migration batche
 Rationale: A page can compile while losing sections, flattening platform variants, dropping anchors, or replacing source content with an incomplete summary.
 
 Impact: Verification records must name content checks performed, not only commands run.
+
+### D006: Hotfix Historical APIs Link To The Old Archive
+
+Status: `approved` (user confirmation, 2026-10-20).
+
+Decision: For source PRs #2067, #2083, #2084, #2085, #2094 and #2113, preserve historical SDK/API version entry points as external links to the corresponding official old-site archive. Do not copy historical bodies into new local version folders. Repair current API and guide omissions inside docs-portal. Retain already-existing local history such as Android 4.6.0; this decision does not authorize deleting it.
+
+Rationale: The user explicitly selected archive external links, and separately requested that current API/guide omissions be completed locally. SDK display versions and archive build IDs are different dimensions; neither may be inferred from the other.
+
+Impact: Use existing `navScope.versions[].href` and keep clean current URLs, platform-specific versions and navigation order. Fixed external hrefs are version landing entries, not invented per-leaf mappings. Verify final HTTP destination and actual page identity; a 200 response redirecting to `/404` is not valid evidence. If a source archive URL is unavailable, investigate official same-version alternatives, record evidence, and never silently link another SDK version. Keep per-PR content mappings/execution records and separate source limitations from migration omissions. No runtime archive selector, deployment or automatic merge is authorized.
