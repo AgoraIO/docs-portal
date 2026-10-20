@@ -183,10 +183,13 @@ describe('RTM upstream PR #2069 parity', () => {
   it.each(['web', 'mini-program'])(
     'restores the %s baseline Presence modes with platform-scoped limits',
     (platform) => {
-      const body = platformBody(
-        readDoc('build/state-and-attributes/presence-events'),
-        platform,
-      );
+      const source = readDoc('build/state-and-attributes/presence-events');
+      expect(
+        source.match(
+          new RegExp(`<PlatformStructured platform="${platform}">`, 'g'),
+        ),
+      ).toHaveLength(1);
+      const body = platformBody(source, platform);
       expect(body).toContain('实时通知模式（Announce）');
       expect(body).toContain('定时通知模式（Interval）');
       expect(body).toMatch(/(?:\[8,128\]|8 至 128)/);
