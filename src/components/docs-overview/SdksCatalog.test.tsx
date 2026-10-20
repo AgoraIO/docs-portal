@@ -92,10 +92,10 @@ describe('SdksCatalog', () => {
     });
     expect(within(downloadCard).getByText('io.agora.rtc2.voice')).toBeVisible();
     expect(
-      within(downloadCard).getByText('2801dfea3c96a32e6aaaa354d819ec71'),
+      within(downloadCard).getByText('acb70a13f5e001e324cb33e46624edf8'),
     ).toBeVisible();
     expect(
-      within(downloadCard).getByText('发布日期：2026 年 2 月 9 日'),
+      within(downloadCard).getByText('发布日期：2026 年 9 月 22 日'),
     ).toBeVisible();
   });
 

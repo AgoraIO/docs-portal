@@ -71,12 +71,31 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 3. 防止代码混淆。
 
-    打开 `/app/proguard-rules.pro` 文件，添加如下行以防止声网 SDK 的代码被混淆：
+   如果你的 App 未开启 R8/ProGuard 缩减和混淆，无需额外配置混淆规则。如果你的 App 开启了 R8/ProGuard 缩减和混淆，请根据集成方式选择以下任一配置：
 
-    ```java
-    -keep class io.agora.**{*;}
-    -dontwarn io.agora.**
-    ```
+   - 快速配置：打开 `/app/proguard-rules.pro` 文件，添加如下规则，保留所有声网 SDK 相关类：
+
+     ```java
+     -keep class io.agora.**{*;}
+     -dontwarn io.agora.**
+     ```
+
+   - 精细化配置：如果你对 App 包体积、代码缩减或混淆效果有更高要求，可以使用 SDK 提供的 `consumer-proguard-rules.pro` 文件。该文件仅保留 Native 层通过 JNI 访问所需的 Java 类、成员和方法，使其他 SDK Java 代码可继续参与 R8/ProGuard 的缩减、优化和混淆。
+
+     通过 AAR 集成时，`consumer-proguard-rules.pro` 已包含在 AAR 中，打包时会自动生效，无需手动拷贝。通过 JAR 集成时，你需要将 `consumer-proguard-rules.pro` 手动拷贝到工程中，并在 `build.gradle` 中添加该文件，例如：
+
+     ```text
+     android {
+         buildTypes {
+             release {
+                 minifyEnabled true
+                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'),
+                         'proguard-rules.pro',
+                         'consumer-proguard-rules.pro'
+             }
+         }
+     }
+     ```
 
 ## 集成 SDK
 
