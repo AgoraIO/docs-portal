@@ -2141,8 +2141,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 - 单频道场景：
 
-  - 调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 来传入新的 Token。
-  - 调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+  - 调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 离开频道，然后在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 时传入新的 Token。
 - 多频道场景：调用 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__restriction"></a>
@@ -2226,8 +2226,8 @@ UFUNCTION(BlueprintNativeEvent, Category = "Agora|Event")
 
 - 单频道场景：
 
-  - 调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 来传入新的 Token。
-  - 调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 离开当前频道，然后在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 时传入新的 Token 重新加入频道。
+  - 调用 [RenewToken](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 [LeaveChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_leavechannel2) 离开频道，然后在调用 [JoinChannelWithOptions](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengine_joinchannel2) 时传入新的 Token。
 - 多频道场景：调用 [UpdateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-blueprint/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__timing"></a>
