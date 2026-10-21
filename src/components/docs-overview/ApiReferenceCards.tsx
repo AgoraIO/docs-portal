@@ -171,14 +171,6 @@ export function ApiReferenceCards({
             </button>
           ) : null}
         </div>
-        <p
-          aria-live="polite"
-          className="m-0 mt-3 text-xs text-muted-foreground"
-        >
-          {platformNotApplicable
-            ? 'RESTful API 无需选择平台或语言。'
-            : '可按运行平台或开发语言、框架筛选。'}
-        </p>
       </section>
 
       {visibleEntries.length > 0 ? (
