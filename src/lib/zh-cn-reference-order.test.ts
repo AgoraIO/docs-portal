@@ -21,7 +21,6 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     '[服务端 API](/zh-CN/api-reference/api-ref/cloud-recording)',
     'api-reference',
     'response-code',
-    'ncs-events',
     'quota',
     'concepts',
   ],
