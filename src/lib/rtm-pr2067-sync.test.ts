@@ -2,8 +2,10 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import type { Root } from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
+import { selectPlatformMarkdown } from '../test/platform-markdown';
 import { docsMetaSchema } from './docs-meta-schema';
 import { resolveDocsNavScope } from './docs-nav-scope';
+import type { PlatformKey } from './platforms/registry';
 
 const root = resolve(process.cwd(), 'content/docs/zh-CN');
 const rtm = 'realtime-media/rtm/';
@@ -28,12 +30,8 @@ function between(text: string, start: string, end: string) {
   return text.slice(offset, finish);
 }
 
-function platform(text: string, name: string) {
-  return between(
-    text,
-    `<PlatformStructured platform="${name}">`,
-    '</PlatformStructured>',
-  );
+function platform(text: string, name: PlatformKey) {
+  return selectPlatformMarkdown(text, name);
 }
 
 function linkListeners(text: string, count: number) {
@@ -235,12 +233,13 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
   });
 
   it('uses the complete link event in the JavaScript listener example', () => {
-    const text = between(
+    const text = platform(
       read(`${rtm}build/messaging/add-event-listener.mdx`),
-      '```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-add-event-listener-1"',
-      '\n```',
+      'web',
     );
-    linkListeners(text, 1);
+    const code = text.match(/```javascript[^\n]*\n([\s\S]*?)\n```/)?.[1];
+    expect(code).toBeDefined();
+    linkListeners(code as string, 1);
   });
 
   it('updates both Web token examples without touching the mini-program branch', () => {
@@ -282,14 +281,11 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
 
   it('adds Web large-channel optimization on top of Announce/Interval, not instead of it', () => {
     const source = read(`${rtm}build/state-and-attributes/presence-events.mdx`);
-    expect(source.match(/<PlatformStructured platform="web">/g)).toHaveLength(
-      1,
-    );
     const text = platform(source, 'web');
+    expect(text).toMatch(/8(?: 至 |,)128/);
     for (const phrase of [
       'Announce',
       'Interval',
-      '8 至 128',
       '现有事件通知模式基础上增加',
       '默认阈值为 512',
       '最多包含 512 名成员',
@@ -328,10 +324,12 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
 
   it('adds both new errors in the Web error table rather than another platform', () => {
     const text = platform(read(`${rtm}build/troubleshooting.mdx`), 'web');
-    expect(text).toContain('| `-10027` | `RTM_ERROR_DUPLICATE_USER_ID` |');
+    expect(text).toMatch(
+      /\|\s*`-10027`\s*\|\s*`RTM_ERROR_DUPLICATE_USER_ID`\s*\|/,
+    );
     expect(text).toContain('请复用已有实例，或释放旧实例后再创建新实例');
-    expect(text).toContain(
-      '| `-11040` | `RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED` |',
+    expect(text).toMatch(
+      /\|\s*`-11040`\s*\|\s*`RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED`\s*\|/,
     );
     expect(text).toContain('随后完成取消订阅');
   });

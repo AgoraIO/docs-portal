@@ -624,7 +624,7 @@ yarn add agora-rtx
     ```
 
    :::info[信息]
-   如果你同时集成了 2.2.1 及以上版本的 RTM SDK 和 4.3.0 及以上版本的 RTC SDK，请参考 [FAQ](/faq/integration-issues/rtm2-rtc-integration-issue) 处理集成问题。
+   如果你同时集成了 2.2.1 及以上版本的 RTM SDK 和 4.3.0 及以上版本的 RTC SDK，请参考 [FAQ](/zh-CN/reference/faq/integration/rtm2_rtc_integration_issue) 处理集成问题。
    :::
 
 3. 添加依赖并保存文件后，打开终端，在项目路径下执行以下命令获取并安装依赖：
@@ -1098,35 +1098,6 @@ do {
 | `ERROR` | `0x0004`: 仅输出 `FATAL`、`ERROR` 级别的日志。                                               |
 | `FATAL` | `0x0008`: 仅输出 `FATAL` 级别的日志。                                                        |
 
-## Proxy 设置
-
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-```java
-RtmProxyConfig proxyConfig = new RtmProxyConfig()
-
-// set proxy type as HTTP.
-proxyConfig.proxyType = RtmProxyType.HTTP;
-// set your proxy server address.
-proxyConfig.server = "192.168.11.101";
-// set your listener port.
-proxyConfig.port = 8080;
-// set your proxy account
-proxyConfig.account = "your_account";
-// set your proxy password
-proxyConfig.password = "your_password"
-
-RtmConfig config = new RtmConfig();
-// initialize proxyConfig
-config.proxyConfig = proxyConfig;
-
-try {
-    mRtmClient = RtmClient.create(rtmConfig);
-} catch(Exception e) {
-    log(INFO, "create rtm client failed with exception: " e.toString());
-}
-```
-
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
@@ -1142,32 +1113,6 @@ try {
 | `AgoraRtmLogLevelWarn`  | `0x0002`: 仅输出 `AgoraRtmLogLevelFatal`、`AgoraRtmLogLevelError`、`AgoraRtmLogLevelWarn` 级别的日志。                                       |
 | `AgoraRtmLogLevelError` | `0x0004`: 仅输出 `AgoraRtmLogLevelFatal`、`AgoraRtmLogLevelError` 级别的日志。                                               |
 | `AgoraRtmLogLevelFatal` | `0x0008`: 仅输出 `AgoraRtmLogLevelFatal` 级别的日志。                                                        |
-
-## Proxy 设置
-
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-```objc
-AgoraRtmClientConfig* rtm_cfg = [[AgoraRtmClientConfig alloc] initWithAppId:@"your_appid" userId:@"your_userid"];
-
-// set proxy config
-AgoraRtmProxyConfig* proxy_config = [[AgoraRtmProxyConfig alloc] init];
-proxy_config.proxyType = AgoraRtmProxyTypeHttp;
-proxy_config.server = @"your_proxy_server";
-proxy_config.port = 8080; //your server's port
-proxy_config.account = @"username";
-proxy_config.password = @"password";
-rtm_cfg.proxyConfig = proxy_config;
-rtm_cfg.logConfig = log_cfg;
-
-NSError* initError = nil;
-AgoraRtmClientKit* rtm = [[AgoraRtmClientKit alloc] initWithConfig:rtm_cfg delegate:handler error:&initError];
-if (rtm != nil) {
-    NSLog(@"init rtm success!!");
-} else {
-    NSLog(@"init rtm failed!!");
-}
-```
 
 </PlatformStructured>
 
@@ -1187,24 +1132,6 @@ if (rtm != nil) {
 
 你也可以查看[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting)了解更详细地调试及错误处理方法。
 
-## Cloud Proxy 设置
-
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Cloud Proxy 云端代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-从 v2.3.0 起，SDK 不再自动回退到 Cloud Proxy。需要使用 Cloud Proxy 时，必须在初始化 RTM 实例时显式将 `cloudProxy` 设置为 `true`。建议根据业务需要向终端用户提供开关，由用户决定是否启用 Cloud Proxy。
-
-```javascript showLineNumbers
-const { RTM } = AgoraRTM;
-const appId = "your_appId";
-const userId = "your_userId";
-const rtmConfig = { cloudProxy: true };
-const rtm = new RTM(appId, userId, rtmConfig);
-```
-
-:::info[信息]
-该功能仅适用于 Message Channel。
-:::
-
 </PlatformStructured>
 
 <PlatformStructured platform="harmonyos">
@@ -1220,40 +1147,6 @@ const rtm = new RTM(appId, userId, rtmConfig);
 | `WARN`  | `0x0002`: 仅输出 `FATAL`、`ERROR`、`WARN` 级别的日志。                                       |
 | `ERROR` | `0x0004`: 仅输出 `FATAL`、`ERROR` 级别的日志。                                               |
 | `FATAL` | `0x0008`: 仅输出 `FATAL` 级别的日志。                                                        |
-
-## Proxy 设置
-
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-```typescript
-import { RtmClient, RtmConfig, RtmProxyConfig, RtmProxyType } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
-
-const proxyConfig: RtmProxyConfig = {
-  proxyType: RtmProxyType.HTTP,
-  server: "192.168.11.101",
-  port: 8080,
-  account: "your_account",
-  password: "your_password"
-};
-
-const rtmConfig: RtmConfig = {
-  appId: "your_appId",
-  userId: "your_userId",
-  proxyConfig: proxyConfig
-};
-
-try {
-  const rtmClient = new RtmClient(rtmConfig);
-  console.log("RTM Client Initialize Successful");
-} catch (error) {
-  if (error instanceof RtmError) {
-    console.error(`Initialize failed: ${error.reason} (code: ${error.errorCode})`);
-  } else {
-    console.error("Failed to initialize RTM client:", error);
-  }
-}
-```
 
 </PlatformStructured>
 
@@ -1271,43 +1164,6 @@ try {
 | `ERROR` | `0x0004`: 仅输出 `FATAL`、`ERROR` 级别的日志。                                               |
 | `FATAL` | `0x0008`: 仅输出 `FATAL` 级别的日志。                                                        |
 
-## Proxy 设置
-
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-```csharp showLineNumbers
-using Agora.Rtm;
-
-private IRtmClient rtmClient;
-
-var proxyConfig = new RtmProxyConfig()
-// set proxy type as HTTP.
-proxyConfig.proxyType = RTM_PROXY_TYPE.HTTP;
-// set your proxy server address.
-proxyConfig.server = "192.168.11.101";
-// set your listener port.
-proxyConfig.port = 8080;
-// set your proxy account
-proxyConfig.account = "Tony";
-// set your proxy password
-proxyConfig.password = "my_password"
-
-RtmConfig config = new RtmConfig();
-// initialize proxyConfig
-config.proxyConfig = proxyConfig;
-
-try
-{
-    rtmClient = RtmClient.CreateAgoraRtmClient(config);
-    Debug.Log("RTM Client Initialize Sucessfull");
-}
-catch (RTMException e)
-{
-    Debug.Log(string.Format("{0} is failed.", e.Status.Operation ));
-    Debug.Log(string.Format("Error code: {0}, due to: {1}", e.Status.ErrorCode, e.Status.Reason));
-}
-```
-
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
@@ -1323,21 +1179,6 @@ catch (RTMException e)
 | `warn`  | `0x0002`: 仅输出 `fatal`、`error`、`warn` 级别的日志。                                       |
 | `error` | `0x0004`: 仅输出 `fatal`、`error` 级别的日志。                                               |
 | `fatal` | `0x0008`: 仅输出 `fatal` 级别的日志。                                                        |
-
-## Proxy 设置
-
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-```dart
-const proxyConfig = RtmProxyConfig(
-    proxyType: RtmProxyType.http,
-    server: "x.x.x.x",
-    port: 8080,
-    account: "user_name",
-    password: "password");
-
-const rtmConfig = RtmConfig( proxyConfig:proxyConfig );
-```
 
 </PlatformStructured>
 
@@ -1355,29 +1196,6 @@ const rtmConfig = RtmConfig( proxyConfig:proxyConfig );
 | `RTM_LOG_LEVEL_ERROR` | `0x0004`: 仅输出 `RTM_LOG_LEVEL_FATAL`、`RTM_LOG_LEVEL_ERROR` 级别的日志。                                               |
 | `RTM_LOG_LEVEL_FATAL` | `0x0008`: 仅输出 `RTM_LOG_LEVEL_FATAL` 级别的日志。                                                        |
 
-## Proxy 设置
-
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-```cpp
-RtmConfig config;
-config.appId = "your_appid";
-config.userId = "your_name";
-config.eventHandler = new RtmEventHandler();
-
-config.proxyConfig.proxyType = RTM_PROXY_TYPE_HTTP;
-config.proxyConfig.server = "x.x.x.x";
-config.proxyConfig.port = 8080;
-config.proxyConfig.account = "user_name";
-config.proxyConfig.password = "password";
-
-int errorCode = 0;
-IRtmClient* rtmClient = createAgoraRtmClient(config, errorCode);
-if (!rtmClient || errorCode != 0) {
-  // create rtm client failed
-}
-```
-
 </PlatformStructured>
 
 <PlatformStructured platform="swift">
@@ -1394,320 +1212,20 @@ if (!rtmClient || errorCode != 0) {
 | `error` | `0x0004`: 仅输出 `fatal`、`error` 级别的日志。                                               |
 | `fatal` | `0x0008`: 仅输出 `fatal` 级别的日志。                                                        |
 
+</PlatformStructured>
+
+<a id="cloud-proxy-设置"></a>
+
+## Cloud Proxy 设置
+
+完整配置说明请参阅[网络配置中的 Cloud Proxy 设置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration#cloud-proxy-设置)。
+<a id="proxy-设置"></a>
+
 ## Proxy 设置
 
-在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Proxy 代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
-
-```swift
-do {
-let rtmConfig = AgoraRtmClientConfig(appId: "your_appid", userId: "your_userid")
-
-let proxyConfig = AgoraRtmProxyConfig()
-proxyConfig.proxyType = .http
-proxyConfig.server = "your_proxy_server"
-proxyConfig.port = 8080
-proxyConfig.account = "username"
-proxyConfig.password = "password"
-
-rtmConfig.proxyConfig = proxyConfig
-
-let rtmClient = try AgoraRtmClientKit(rtmConfig, delegate: nil)
-    if rtmClient != nil {
-        print("RTM Client initialized successfully!")
-    }
-} catch let error {
-    print("Failed to initialize RTM client. Error: \(error)")
-}
-```
-
-</PlatformStructured>
+完整配置说明请参阅[网络配置中的 Proxy 设置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration#proxy-设置)。
+<a id="防火墙白名单设置"></a>
 
 ## 防火墙白名单设置
 
-大型企业、医院、高校、银行等安全需求较高的机构会部署防火墙将办公环境与外网隔离开来，保护内部信息安全。为避免这些企业用户因防火墙无法使用声网的服务，你需要设置防火墙白名单。
-
-:::info[信息]
-本节展示的目标端口可能会根据实际情况调整。如果遇到问题，联系 rtm-support@agora.io。
-:::
-
-### Message Channel
-
-Message Channel 是 RTM 的基础服务，只要你使用了 RTM，就需要将以下内容添加到防火墙白名单：
-
-#### 域名
-
-<PlatformStructured platform="android">
-
-```shell
-.agora.io
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-```shell
-.agora.io
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="web">
-
-```shell
-.edge.agora.io
-.edge.sd-rtn.com
-web-1.ap.sd-rtn.com
-web-2.ap.sd-rtn.com
-web-3.ap.sd-rtn.com
-web-4.ap.sd-rtn.com
-ap-web-1.agora.io
-ap-web-2.agora.io
-ap-web-3.agora.io
-ap-web-4.agora.io
-webcollector-rtm.agora.io
-logservice-rtm.agora.io
-rtm.statscollector.sd-rtn.com
-rtm.logservice.sd-rtn.com
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="harmonyos">
-
-```shell
-.agora.io
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="unity">
-
-```shell
-.agora.io
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="flutter">
-
-```shell
-.agora.io
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="cpp">
-
-```shell
-.agora.io
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="swift">
-
-```shell
-.agora.io
-```
-
-</PlatformStructured>
-
-#### 端口
-
-<PlatformStructured platform="android">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
-| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
-| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="web">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 9591; 9593; 27387 | TCP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="harmonyos">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
-| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="unity">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
-| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="flutter">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
-| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="cpp">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
-| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="swift">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 443; 7384; 8443; 9130; 9131; 9136; 9137; 9140, 9141 | TCP | 允许 |
-| 1080; 3000; 8000; 8130; 8443; 9120; 9121; 9700; 25000 | UDP | 允许 |
-
-</PlatformStructured>
-
-### Stream Channel
-
-如果你还使用了 Stream Channel，你还需要将以下内容添加到防火墙白名单：
-
-<PlatformStructured platform="android">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="web">
-
-#### 域名
-
-```shell
-.agora.io
-.edge.agora.io
-.sd-rtn.com
-.edge.sd-rtn.com
-```
-
-</PlatformStructured>
-
-<PlatformStructured platform="harmonyos">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="unity">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="flutter">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="cpp">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="swift">
-
-
-
-</PlatformStructured>
-
-#### 端口
-
-<PlatformStructured platform="android">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 4001 - 4150 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 4001 - 4150 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="web">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 80; 3433; 4700 - 5000; 5668; 5669; 6080; 6443; 8667; 9667 | TCP | 允许 |
-| 3478; 4700 - 5000 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="harmonyos">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 4001 - 4150 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="unity">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 4001 - 4150 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="flutter">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 4001 - 4150 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="cpp">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 4001 - 4150 | UDP | 允许 |
-
-</PlatformStructured>
-
-<PlatformStructured platform="swift">
-
-| 目标端口 | 协议 | 操作 |
-| --------------- | ------------ | ------------ |
-| 4001 - 4150 | UDP | 允许 |
-
-</PlatformStructured>
+完整配置说明请参阅[网络配置中的防火墙白名单设置](/zh-CN/realtime-media/rtm/build/network-and-private-deployment/network-configuration#防火墙白名单设置)。

@@ -1,48 +1,34 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { load as loadYaml } from 'js-yaml';
-import remarkDirective from 'remark-directive';
 import remarkGfm from 'remark-gfm';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
-import remarkStringify from 'remark-stringify';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import { describe, expect, it } from 'vitest';
 import { extractMdxAnchors } from '../../scripts/lib/api-center/local-fragment-index.mjs';
-import { resolvePlatformContext } from './platforms/context';
 import {
-  buildPlatformMarkdownText,
-  extractStructuredPlatformKeys,
-} from './platforms/processed-text';
+  processPlatformMarkdown,
+  selectPlatformMarkdown,
+} from '../test/platform-markdown';
+import { resolvePlatformContext } from './platforms/context';
+import { extractStructuredPlatformKeys } from './platforms/processed-text';
 import type { PlatformKey } from './platforms/registry';
-import { remarkPlatformContent } from './platforms/remark-platform-content';
 
 const docsRoot = path.resolve('content/docs/zh-CN');
-const processor = unified()
-  .use(remarkParse)
-  .use(remarkMdx)
-  .use(remarkGfm)
-  .use(remarkDirective)
-  .use(remarkPlatformContent)
-  .use(remarkStringify);
 const parser = unified().use(remarkParse).use(remarkMdx).use(remarkGfm);
-const cache = new Map<string, string>();
 
 function readDoc(relative: string) {
   return readFileSync(path.join(docsRoot, relative), 'utf8');
 }
 
 function processedDoc(relative: string) {
-  if (!cache.has(relative)) {
-    const body = readDoc(relative).replace(/^---\n[\s\S]*?\n---\n/, '');
-    cache.set(relative, String(processor.processSync(body)));
-  }
-  return cache.get(relative) as string;
+  return processPlatformMarkdown(readDoc(relative));
 }
 
 function platformDoc(relative: string, platform: PlatformKey) {
-  return buildPlatformMarkdownText(processedDoc(relative), platform);
+  return selectPlatformMarkdown(readDoc(relative), platform);
 }
 
 function codeBlocks(markdown: string) {
@@ -54,6 +40,19 @@ function codeBlocks(markdown: string) {
 }
 
 describe('Chinese documentation platform applicability', () => {
+  it('provides actual Unity connection events and states after login', () => {
+    const body = platformDoc(
+      'realtime-media/rtm/build/authentication-and-connection/login.mdx',
+      'unity',
+    );
+    expect(body).toContain('OnConnectionStateChanged');
+    expect(body).toContain('RTM_CONNECTION_STATE');
+    expect(body).toContain('`CONNECTING`');
+    expect(body).toContain('`CONNECTED`');
+    expect(body).not.toMatch(/(?<!`)``(?!`)/);
+    expect(body).not.toContain('linkState');
+  });
+
   it.each([
     [
       'realtime-media/rtc/build/optimize-and-operate/optimization-mode.mdx',
