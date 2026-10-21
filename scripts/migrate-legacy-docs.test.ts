@@ -2280,31 +2280,37 @@ import SDKDownload from '@shared/rtm2/_sdkdownload.mdx'
     expect(migrated).not.toContain('\n   </Tabs>');
   });
 
-  it('resolves namespace shared platform maps without emitting export objects', async () => {
-    const tempRoot = await mkdtemp(
-      path.join(os.tmpdir(), 'legacy-docs-namespace-map-'),
-    );
-    const repoRoot = path.join(tempRoot, 'repo');
-    const sourceRoot = path.join(tempRoot, 'source');
-    const sourcePath = 'docs/rtm2/overview/release-notes.android.mdx';
+  it.each([
+    { platform: 'android', expected: 'RENEW_TOKEN_TIMEOUT' },
+    { platform: 'mini-program', expected: 'RENEW_TOKEN_TIMEOUT_MINI' },
+  ])(
+    'resolves shared maps for $platform without export objects',
+    async ({ platform, expected }) => {
+      const tempRoot = await mkdtemp(
+        path.join(os.tmpdir(), 'legacy-docs-namespace-map-'),
+      );
+      const repoRoot = path.join(tempRoot, 'repo');
+      const sourceRoot = path.join(tempRoot, 'source');
+      const sourcePath = `docs/rtm2/overview/release-notes.${platform}.mdx`;
 
-    await mkdir(path.join(sourceRoot, 'docs/rtm2/overview'), {
-      recursive: true,
-    });
-    await mkdir(path.join(sourceRoot, 'shared/rtm2'), { recursive: true });
-    await mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
-    await writeFile(
-      path.join(sourceRoot, 'shared/rtm2/_error-codes.mdx'),
-      `export const rtmrenewtokentimeout = {
+      await mkdir(path.join(sourceRoot, 'docs/rtm2/overview'), {
+        recursive: true,
+      });
+      await mkdir(path.join(sourceRoot, 'shared/rtm2'), { recursive: true });
+      await mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+      await writeFile(
+        path.join(sourceRoot, 'shared/rtm2/_error-codes.mdx'),
+        `export const rtmrenewtokentimeout = {
   android: "RENEW_TOKEN_TIMEOUT",
   ios: "AgoraRtmErrorRenewTokenTimeout",
+  'mini-program': "RENEW_TOKEN_TIMEOUT_MINI",
 };
 `,
-      'utf8',
-    );
-    await writeFile(
-      path.join(sourceRoot, sourcePath),
-      `---
+        'utf8',
+      );
+      await writeFile(
+        path.join(sourceRoot, sourcePath),
+        `---
 title: 发版说明
 ---
 
@@ -2312,38 +2318,39 @@ import * as code from '@shared/rtm2/_error-codes.mdx'
 
 为反馈更新 Token 操作的结果，该版本新增错误码 <code>{code.rtmrenewtokentimeout[frontMatter.ag_platform]}</code> (10026)。
 `,
-      'utf8',
-    );
-    await writeFile(
-      path.join(repoRoot, 'docs/migration/path-map.csv'),
-      [
-        'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
-        `${sourcePath},content/docs/zh-CN/realtime-media/rtm/overview/release-notes.android.mdx,migrate_page_after_syntax_and_ia_review,needs_review,medium,partial,,,`,
-      ].join('\n'),
-      'utf8',
-    );
+        'utf8',
+      );
+      await writeFile(
+        path.join(repoRoot, 'docs/migration/path-map.csv'),
+        [
+          'source_path,target_path,migration_action,status,risk,batchable,blocked_reason,next_step,decision_refs',
+          `${sourcePath},content/docs/zh-CN/realtime-media/rtm/overview/release-notes.${platform}.mdx,migrate_page_after_syntax_and_ia_review,needs_review,medium,partial,,,`,
+        ].join('\n'),
+        'utf8',
+      );
 
-    await migrateLegacyBatch({
-      outDir: 'out',
-      pages: [sourcePath],
-      pathMap: 'docs/migration/path-map.csv',
-      repoRoot,
-      sampleCount: 0,
-      sourceRoot,
-    });
-    const migrated = await readFile(
-      path.join(
+      await migrateLegacyBatch({
+        outDir: 'out',
+        pages: [sourcePath],
+        pathMap: 'docs/migration/path-map.csv',
         repoRoot,
-        'out/content/docs/zh-CN/realtime-media/rtm/overview/release-notes.android.mdx',
-      ),
-      'utf8',
-    );
+        sampleCount: 0,
+        sourceRoot,
+      });
+      const migrated = await readFile(
+        path.join(
+          repoRoot,
+          `out/content/docs/zh-CN/realtime-media/rtm/overview/release-notes.${platform}.mdx`,
+        ),
+        'utf8',
+      );
 
-    expect(migrated).toContain('`RENEW_TOKEN_TIMEOUT`');
-    expect(migrated).not.toContain('android:');
-    expect(migrated).not.toContain('export const');
-    expect(migrated).not.toContain('frontMatter.');
-  });
+      expect(migrated).toContain(`\`${expected}\``);
+      expect(migrated).not.toContain('android:');
+      expect(migrated).not.toContain('export const');
+      expect(migrated).not.toContain('frontMatter.');
+    },
+  );
 
   it('keeps stable namespace names for all-platform shared maps', async () => {
     const tempRoot = await mkdtemp(
