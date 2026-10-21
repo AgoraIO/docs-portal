@@ -4,7 +4,7 @@ description: "了解如何在智能摄像头中与 Amazon Alexa 互通，包括�
 ---
 声网 RTSA Lite SDK 支持与内置 Amazon Alexa 的设备，如 Echo 音箱等进行音视频互通。
 
-你可以通过这种方式为smart-camera场景增加智能设备。
+你可以通过这种方式为智能摄像头场景增加智能设备。
 
 Echo 音箱作为 AWS 智能家居的入口，支持基于 AWS 公有云进行技能开发。技能开发的实现依赖于 Echo 内置语音助手 Alexa 的技能 (skill) 和 AWS 公有云 Lambda 服务。详见[手把手教你如何用 Lambda + Alexa 调用 Echo 设备](https://aws.amazon.com/cn/blogs/china/lambda-alexa-echo/)。
 
@@ -21,7 +21,7 @@ Echo 音箱自带支持音视频互通的 WebRTC 协议。声网为了最优化�
 
 ## 跑通示例项目
 
-声网提供了一个支持 Alexa 的smart-camera示例项目。你可以参考以下步骤进行跑通。
+声网提供了一个支持 Alexa 的智能摄像头示例项目。你可以参考以下步骤进行跑通。
 
 ### 1. 创建 AWS Lambda 函数
 
@@ -110,7 +110,7 @@ Alexa 与声网 VOS Web 基于 WebRTC 协议的交互分为信令交互与流媒
 
 Echo 的信令需要通过 Alexa Skill 分发给 AWS Lambda 进行处理，由于 AWS Lambda 的功能局限性，不满足与声网 VOS Web 服务节点交互的完整条件，需要另外部署一套信令代理服务。AWS Lambda 只完成 Alexa Skill 触发以及与 Agent 的信令交互。
 
-1. 实现 Alexa 与 AWS Lambda 的信令交互。参考 [Alexa Skill](https://developer.amazon.com/en-US/docs/alexa/ask-overviews/what-is-the-alexa-skills-kit.html) 以及 [AWS Lambda 官方文档](https://console.aws.amazon.com/lambda/home?region=us-east-1#/create/function)。例如，你可以实现 Alexa 发现设备 (Alexa, discover devices) 和查看smart-camera (Alexa, show the device) 两个命令。
+1. 实现 Alexa 与 AWS Lambda 的信令交互。参考 [Alexa Skill](https://developer.amazon.com/en-US/docs/alexa/ask-overviews/what-is-the-alexa-skills-kit.html) 以及 [AWS Lambda 官方文档](https://console.aws.amazon.com/lambda/home?region=us-east-1#/create/function)。例如，你可以实现 Alexa 发现设备 (Alexa, discover devices) 和查看智能摄像头 (Alexa, show the device) 两个命令。
 2. 实现 AWS Lambda 与设备端的信令代理服务之间的信令交互。参考 [AWS IoT MQTT 官方文档](https://docs.aws.amazon.com/zh_cn/iot/latest/developerguide/view-mqtt-messages.html)。同时，AWS Lambda 需要携带 Alexa 提供的 Echo 音箱流媒体传输信令 (SDP)，经设备端的信令代理服务提供给 VOS Web，再由 VOS Web 创建新的 SDP 最终返回到 Alexa，以用于创建 Echo 与 VOS Web 之间的流媒体传输通道。
 3. 实现设备端的信令代理服务与声网 VOSWeb 的信令交互。信令代理服务向声网发出 VOSWeb 服务节点请求，声网就近分配 VOS Web 节点之后，信令代理服务就可以与 VOS Web 服务节点连接交互。你需要联系 sales@shengwang.cn 获取  VOS Web 服务的调用接口。
 
@@ -120,7 +120,7 @@ Echo 的信令需要通过 Alexa Skill 分发给 AWS Lambda 进行处理，由�
 
 ![发现设备信令交互](https://web-cdn.agora.io/docs-portal/img/smart-doorbell/aws-find-device.png)
 
-下图展示了 Alexa 查看smart-camera步骤中所进行的信令交互。
+下图展示了 Alexa 查看智能摄像头步骤中所进行的信令交互。
 
 ![查看设备信令交互](https://web-cdn.agora.io/docs-portal/img/smart-doorbell/aws-show-device.png)
 

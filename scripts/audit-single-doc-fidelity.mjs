@@ -2,6 +2,7 @@ import fs, { promises as fsPromises } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { pathToFileURL } from 'node:url';
+import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
 import {
   ensureControlProgressColumns,
   readControlTable,
@@ -53,13 +54,6 @@ const CODE_LANG_ALIASES = new Map([
   ['obj-c', 'objc'],
   ['shell', 'bash'],
   ['txt', 'text'],
-]);
-const PRODUCT_LABELS = new Map([
-  ['aigc', 'AIGC'],
-  ['art-class', '灵动课堂'],
-  ['marketplace', '云市场'],
-  ['online-music-class', '在线音乐课堂'],
-  ['recording', '本地服务端录制'],
 ]);
 const PLATFORM_LABELS = new Map([
   ['android', 'Android'],
@@ -255,6 +249,10 @@ export function loadLegacyContent({
   sourceRoot,
   variables = DEFAULT_VARIABLES,
 }) {
+  projection = {
+    ...projection,
+    sourceRoot: projection.sourceRoot ?? sourceRoot,
+  };
   const resolvedCurrentFile = resolveMarkdownFile(currentFile);
 
   if (!resolvedCurrentFile) {
@@ -349,7 +347,7 @@ export function loadLegacyContent({
 function expandRuntimeVariablesForAudit(content, projection) {
   const product = projection.product ?? '';
   const platform = projection.platform ?? '';
-  const productLabel = getProductLabel(product);
+  const productLabel = () => getProductLabel(product, projection);
   const platformLabel = getPlatformLabel(platform);
 
   return content
@@ -369,8 +367,11 @@ function expandRuntimeVariablesForAudit(content, projection) {
     .replace(/\bfrontMatter\.ag_product\b/g, product);
 }
 
-function getProductLabel(product) {
-  return PRODUCT_LABELS.get(product) ?? product;
+function getProductLabel(product, projection) {
+  return resolveLegacyProductLabel(product, {
+    sourceLabel: projection.productLabel,
+    sourceRoot: projection.sourceRoot,
+  });
 }
 
 function getPlatformLabel(platform) {
@@ -723,7 +724,7 @@ function getRuntimePropValueForAudit(name, projection) {
   }
 
   if (name === 'ag_product_label') {
-    return getProductLabel(projection.product ?? '');
+    return getProductLabel(projection.product ?? '', projection);
   }
 
   return '';

@@ -2069,7 +2069,7 @@ macOS 内容。
       'utf8',
     );
 
-    expect(migrated).toContain('showroom中，配置音频体验。');
+    expect(migrated).toContain('秀场直播中，配置音频体验。');
     expect(migrated).toContain('chatScenario()');
     expect(migrated).not.toContain('showScenario()');
     expect(migrated).not.toContain('props.type');
