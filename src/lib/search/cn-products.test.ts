@@ -27,5 +27,13 @@ describe('Chinese search product identifiers', () => {
     expect(normalizeCnProductList(['danmaku', 'rtc', 'rtc'])).toEqual(['rtc']);
     expect(isExcludedCnProduct('danmaku')).toBe(true);
     expect(isExcludedCnProduct('rtc')).toBe(false);
+    expect(
+      normalizeCnProductList([
+        'sdk-extensions',
+        'metakit',
+        'portrait-rhythm',
+        'rtc',
+      ]),
+    ).toEqual(['rtc']);
   });
 });

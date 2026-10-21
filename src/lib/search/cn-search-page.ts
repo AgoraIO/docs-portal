@@ -1,3 +1,5 @@
+import { normalizeCnProductFacets } from './cn-products';
+import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
 
@@ -54,7 +56,25 @@ export async function searchCnDocsPage(
   ) {
     throw new Error('Invalid search response');
   }
-  return result;
+  return {
+    ...result,
+    groups: result.groups
+      .filter((group) => isPublicCnSearchUrl(group.pageUrl))
+      .map((group) => ({
+        ...group,
+        sections: group.sections.filter(
+          (section) =>
+            isPublicCnSearchUrl(section.url) &&
+            (!section.canonicalUrl ||
+              isPublicCnSearchUrl(section.canonicalUrl)),
+        ),
+      }))
+      .filter((group) => group.sections.length > 0),
+    facets: {
+      ...result.facets,
+      product: normalizeCnProductFacets(result.facets.product ?? {}),
+    },
+  };
 }
 
 // The current demo index contains Markdown source. Keep highlight tags while

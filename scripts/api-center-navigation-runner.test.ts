@@ -1710,7 +1710,8 @@ describe('API Center navigation runner', () => {
         `${eduRoot}/classes/cloud-drive.mdx`.replace('content/docs/', ''),
       ],
     });
-    expect(linkAudit.totalLinks).toBe(2);
+    // Migration retains the source graph, while public audits omit retired docs.
+    expect(linkAudit.totalLinks).toBe(0);
     expect(linkAudit.invalidLinks).toEqual([]);
     await runApiCenterNavigation({
       repoRoot,

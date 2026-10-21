@@ -100,12 +100,6 @@ describe('openapi lanes', () => {
           tab: 'api-reference',
         }),
         expect.objectContaining({
-          id: 'fusion-cdn-rest',
-          locales: ['zh-CN'],
-          routePrefix: 'api-reference/api-ref/fusion-cdn',
-          tab: 'api-reference',
-        }),
-        expect.objectContaining({
           id: 'rtc-rest-zh-cn',
           locales: ['zh-CN'],
           routePrefix: 'api-reference/api-ref/rtc',
@@ -238,7 +232,7 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/zh-CN/api-reference/api-ref/console/create-project',
     );
-    expect(getOpenApiPrerenderPaths()).toContain(
+    expect(getOpenApiPrerenderPaths()).not.toContain(
       '/zh-CN/api-reference/api-ref/fusion-cdn/domain-list',
     );
     expect(getOpenApiPrerenderPaths()).toContain(
@@ -250,7 +244,7 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/zh-CN/api-reference/api-ref/conversational-ai',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(254);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(203);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

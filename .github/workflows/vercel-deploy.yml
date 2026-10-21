@@ -52,6 +52,14 @@ on:
         description: Optional PR number to comment on for preview deploys
         required: false
         type: string
+      docs_region:
+        description: Documentation region for preview builds
+        required: false
+        default: global
+        type: choice
+        options:
+          - global
+          - cn
       release_sha:
         description: Release commit SHA for production deploys triggered by Promote Production
         required: false
@@ -123,6 +131,7 @@ jobs:
             if (response.data.length > 0) {
               core.setOutput('should_deploy', 'true');
               core.setOutput('pr_number', String(response.data[0].number));
+              core.setOutput('docs_region', response.data[0].base.ref.startsWith('codex/cn-') ? 'cn' : 'global');
               core.setOutput('reason', 'branch push with open pull request');
               return;
             }
@@ -177,7 +186,7 @@ jobs:
       - name: Build with Vercel
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
-          VITE_DOCS_REGION: global
+          VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
           VERCEL_GIT_PROVIDER: github
@@ -209,6 +218,12 @@ jobs:
             --meta githubCommitRef="${{ github.head_ref || github.ref_name }}" \
             --meta githubCommitSha="${{ github.event.pull_request.head.sha || github.sha }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Verify retired CN documentation on the deployed preview
+        if: steps.preview-context.outputs.should_deploy == 'true' && (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn'
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+        run: node scripts/verify-retired-cn-docs-preview.mjs
 
       - name: Alias main preview URL
         if: steps.preview-context.outputs.should_deploy == 'true' && github.event_name == 'push' && github.ref_name == 'main'

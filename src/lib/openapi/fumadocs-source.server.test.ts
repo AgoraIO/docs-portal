@@ -48,7 +48,8 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'zh-CN/api-reference/api-ref/whiteboard/restful/get-room.mdx',
     );
-    expect(pagePaths).toHaveLength(232);
+    expect(pagePaths).toHaveLength(182);
+    expect(pagePaths.some((path) => path.includes('/fusion-cdn/'))).toBe(false);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

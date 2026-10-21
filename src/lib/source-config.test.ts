@@ -32,11 +32,19 @@ describe('source config', () => {
     vi.resetModules();
   });
 
-  it('uses canonical docs and meta collection globs by default', async () => {
+  it('publishes only docs and navigation metadata, retaining retired sources on disk', async () => {
     const { docs } = await import('../../source.config');
 
-    expect(docs.docs.files).toEqual(['**/*.{md,mdx}']);
-    expect(docs.meta.files).toEqual(['**/meta.{json,yaml}']);
+    expect(docs.docs.files).toContain('zh-CN/realtime-media/rtc/**/*.{md,mdx}');
+    expect(
+      docs.docs.files?.every(
+        (file) =>
+          !file.includes('fusion-cdn') && !file.includes('view-live-data'),
+      ),
+    ).toBe(true);
+    expect(docs.meta.files?.every((file) => !file.includes('fusion-cdn'))).toBe(
+      true,
+    );
   }, 30000);
 
   it('creates scoped docs collection globs for a focused dev subtree', () => {
@@ -52,20 +60,21 @@ describe('source config', () => {
   });
 
   it('applies DOCS_DEV_SCOPE to the source config', async () => {
-    process.env.DOCS_DEV_SCOPE = 'en/ai/openai-realtime';
+    process.env.DOCS_DEV_SCOPE = 'en/ai/get-started';
     vi.resetModules();
 
     const scopedConfig = await import('../../source.config');
 
-    expect(scopedConfig.docs.docs.files).toEqual([
-      'en/ai/openai-realtime/**/*.{mdx,md}',
-    ]);
-    expect(scopedConfig.docs.meta.files).toEqual([
-      'meta.{json,yaml}',
-      'en/meta.{json,yaml}',
-      'en/ai/meta.{json,yaml}',
-      'en/ai/openai-realtime/**/meta.{json,yaml}',
-    ]);
+    expect(scopedConfig.docs.docs.files?.length).toBeGreaterThan(0);
+    expect(
+      scopedConfig.docs.docs.files?.every((file) =>
+        file.startsWith('en/ai/get-started/'),
+      ),
+    ).toBe(true);
+    expect(scopedConfig.docs.meta.files).toContain('en/ai/meta.{json,yaml}');
+    expect(scopedConfig.docs.meta.files).not.toContain(
+      'zh-CN/realtime-media/meta.json',
+    );
   });
 
   it('maps directive callout aliases to supported Fumadocs callout types', async () => {

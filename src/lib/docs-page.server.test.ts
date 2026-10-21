@@ -2387,20 +2387,20 @@ Web body
 
   it('returns scoped Chinese OpenAPI lanes to the reference center', async () => {
     const basePage = createPage();
-    const fusionCdnPage = {
+    const consolePage = {
       ...basePage,
       data: {
         ...basePage.data,
         info: {
           fullPath:
-            '/virtual/content/docs/zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
-          path: 'zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
+            '/virtual/content/docs/zh-CN/api-reference/api-ref/console/index.mdx',
+          path: 'zh-CN/api-reference/api-ref/console/index.mdx',
         },
-        title: '融合 CDN 直播 RESTful API',
+        title: '控制台 RESTful API',
       },
-      path: 'zh-CN/api-reference/api-ref/fusion-cdn/index.mdx',
-      slugs: ['zh-CN', 'api-reference', 'api-ref', 'fusion-cdn', 'index'],
-      url: '/zh-CN/api-reference/api-ref/fusion-cdn',
+      path: 'zh-CN/api-reference/api-ref/console/index.mdx',
+      slugs: ['zh-CN', 'api-reference', 'api-ref', 'console', 'index'],
+      url: '/zh-CN/api-reference/api-ref/console',
     } as unknown as PageWithSource;
     const zhCnApiReferenceTree: Root = {
       children: [
@@ -2411,15 +2411,15 @@ Web body
               $id: 'api-reference-folder',
               children: [
                 {
-                  $id: 'api-reference-fusion-cdn-folder',
+                  $id: 'api-reference-console-folder',
                   children: [],
                   index: {
-                    $id: 'api-reference-fusion-cdn-index',
-                    name: '融合 CDN 直播 RESTful API',
+                    $id: 'api-reference-console-index',
+                    name: '控制台 RESTful API',
                     type: 'page',
-                    url: fusionCdnPage.url,
+                    url: consolePage.url,
                   },
-                  name: '融合 CDN 直播 RESTful API',
+                  name: '控制台 RESTful API',
                   type: 'folder',
                 },
               ],
@@ -2441,15 +2441,15 @@ Web body
       name: 'Docs',
     };
 
-    mockedGetPage.mockReturnValue(fusionCdnPage);
-    mockedGetPages.mockReturnValue([fusionCdnPage]);
+    mockedGetPage.mockReturnValue(consolePage);
+    mockedGetPages.mockReturnValue([consolePage]);
     mockedGetPageTree.mockReturnValue(zhCnApiReferenceTree);
     mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'api-reference-fusion-cdn-folder'
+      node.$id === 'api-reference-console-folder'
         ? ({
             data: {
               navScope: {},
-              title: '融合 CDN 直播 RESTful API',
+              title: '控制台 RESTful API',
             },
           } as unknown as ReturnType<typeof source.getNodeMeta>)
         : undefined,
@@ -2458,7 +2458,7 @@ Web body
     const payload = unwrapPayload(
       await loadDocsPagePayload('zh-CN', 'api-reference', [
         'api-ref',
-        'fusion-cdn',
+        'console',
       ]),
     );
 
@@ -2472,14 +2472,14 @@ Web body
     const unscopedPayload = unwrapPayload(
       await loadDocsPagePayload('zh-CN', 'api-reference', [
         'api-ref',
-        'fusion-cdn',
+        'console',
       ]),
     );
 
     expect(unscopedPayload.sidebarHeader).toEqual({
       backHref: '/zh-CN/api-reference/api',
       backLabel: 'API 参考',
-      productDocsHref: '/zh-CN/realtime-media/fusion-cdn',
+      productDocsHref: '/zh-CN/introduction/quickstart',
       title: 'RESTful API',
     });
   });
@@ -4167,21 +4167,21 @@ Web body
         ...createPage().data,
         info: {
           fullPath:
-            '/virtual/content/docs/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api.mdx',
-          path: 'zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api.mdx',
+            '/virtual/content/docs/zh-CN/realtime-media/meeting/reference/api-usage-and-limits/call-api.mdx',
+          path: 'zh-CN/realtime-media/meeting/reference/api-usage-and-limits/call-api.mdx',
         },
         title: '如何调用 API',
       },
-      path: 'zh-CN/solutions/flexible-classroom/reference/call-api.mdx',
+      path: 'zh-CN/realtime-media/meeting/reference/call-api.mdx',
       slugs: [
         'zh-CN',
-        'solutions',
-        'flexible-classroom',
+        'realtime-media',
+        'meeting',
         'reference',
         'api-usage-and-limits',
         'call-api',
       ],
-      url: '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
+      url: '/zh-CN/realtime-media/meeting/reference/api-usage-and-limits/call-api',
     };
 
     mockedGetPage.mockReturnValue(page);
@@ -4192,10 +4192,10 @@ Web body
           $id: 'zh-root',
           children: [
             {
-              $id: 'solutions-folder',
+              $id: 'realtime-media-folder',
               children: [
                 {
-                  $id: 'flexible-classroom-folder',
+                  $id: 'meeting-folder',
                   children: [
                     {
                       $id: 'reference-separator',
@@ -4209,13 +4209,13 @@ Web body
                           $id: 'downloads',
                           name: '下载',
                           type: 'page',
-                          url: '/zh-CN/solutions/flexible-classroom/reference/downloads',
+                          url: '/zh-CN/realtime-media/meeting/reference/downloads',
                         },
                         {
                           $id: 'service-api',
                           name: '服务端 API',
                           type: 'page',
-                          url: '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+                          url: '/zh-CN/api-reference/meeting/restful/api/create-room',
                         },
                         {
                           $id: 'api-usage-and-limits',
@@ -4224,7 +4224,7 @@ Web body
                               $id: 'call-api',
                               name: '如何调用 API',
                               type: 'page',
-                              url: '/zh-CN/solutions/flexible-classroom/reference/api-usage-and-limits/call-api',
+                              url: '/zh-CN/realtime-media/meeting/reference/api-usage-and-limits/call-api',
                             },
                           ],
                           name: 'API 使用与限制',
@@ -4236,22 +4236,22 @@ Web body
                     },
                   ],
                   index: {
-                    $id: 'flexible-classroom-index',
-                    name: '灵动课堂',
+                    $id: 'meeting-index',
+                    name: '智能云会议引擎',
                     type: 'page',
-                    url: '/zh-CN/solutions/flexible-classroom',
+                    url: '/zh-CN/realtime-media/meeting',
                   },
-                  name: '灵动课堂',
+                  name: '智能云会议引擎',
                   type: 'folder',
                 },
               ],
               index: {
-                $id: 'solutions-index',
-                name: '解决方案',
+                $id: 'realtime-media-index',
+                name: '实时互动',
                 type: 'page',
-                url: '/zh-CN/solutions/overview',
+                url: '/zh-CN/realtime-media/overview',
               },
-              name: '解决方案',
+              name: '实时互动',
               root: true,
               type: 'folder',
             },
@@ -4263,15 +4263,15 @@ Web body
       name: 'Docs',
     } as Root);
     mockedGetNodeMeta.mockImplementation((node) =>
-      node.$id === 'flexible-classroom-folder'
+      node.$id === 'meeting-folder'
         ? ({
-            data: { navScope: {}, title: '灵动课堂' },
+            data: { navScope: {}, title: '智能云会议引擎' },
           } as unknown as ReturnType<typeof source.getNodeMeta>)
         : undefined,
     );
 
-    const payload = await loadDocsPagePayload('zh-CN', 'solutions', [
-      'flexible-classroom',
+    const payload = await loadDocsPagePayload('zh-CN', 'realtime-media', [
+      'meeting',
       'reference',
       'api-usage-and-limits',
       'call-api',

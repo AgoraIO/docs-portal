@@ -2,6 +2,7 @@ import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 
 type BuildExpectation = { productPath: string; pages: string[] };
 type Migration = {
@@ -829,9 +830,15 @@ describe('zh-CN small Build flat IA migration invariants', () => {
   );
 
   it.each(migrations)(
-    '$productPath $oldRelativePath ($oldUrl) redirects directly to $newUrl with HTTP 301',
+    '$productPath $oldRelativePath ($oldUrl) respects publication before redirecting to $newUrl',
     async ({ oldUrl, newUrl }) => {
       const { locale, tab, segments } = parseOldUrl(oldUrl);
+      if (isRetiredCnDocsPath(oldUrl)) {
+        await expect(
+          loadDocsPagePayload(locale, tab, segments),
+        ).resolves.toBeNull();
+        return;
+      }
       await expect(loadDocsPagePayload(locale, tab, segments)).resolves.toEqual(
         { redirectUrl: newUrl, statusCode: 301 },
       );

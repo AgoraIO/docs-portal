@@ -1,3 +1,4 @@
+import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 import type { FaqCategoryId, FaqItem } from './faq-data';
 
 export const FAQ_ZH_CN_ALL_PRODUCTS = '全部产品';
@@ -59,13 +60,13 @@ export const zhCnFaqProducts = [
   '全部产品',
   '实时互动',
   '实时消息',
-  '灵动课堂',
+  // '灵动课堂', // 已下线，保留历史标签。
   '本地服务端录制',
   '互动白板',
   '旁路推流',
   '声动语聊',
   '水晶球',
-  '融合 CDN',
+  // '融合 CDN', // 已下线，保留历史标签。
   '云端录制',
   '云端转码',
   '对话式 AI 引擎',
@@ -73,7 +74,7 @@ export const zhCnFaqProducts = [
   'Fastboard',
 ];
 
-export const zhCnFaqItems: FaqItem[] = [
+const zhCnFaqSourceItems: FaqItem[] = [
   {
     category: 'account-and-billing',
     href: '/zh-CN/reference/faq/account/billing_account',
@@ -1074,3 +1075,12 @@ export const zhCnFaqItems: FaqItem[] = [
     title: '为什么我的视频会出现卡顿？',
   },
 ];
+
+export const zhCnFaqItems: FaqItem[] = zhCnFaqSourceItems
+  .filter((item) => !isRetiredCnDocsPath(item.href))
+  .map((item) => ({
+    ...item,
+    products: item.products.filter(
+      (product) => product !== '融合 CDN' && product !== '灵动课堂',
+    ),
+  }));

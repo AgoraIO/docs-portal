@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 import { faqItems } from './faq-data';
 import { zhCnFaqItems } from './faq-data.zh-cn';
 import { FAQ_CATEGORY_FOLDER } from './faq-filter';
@@ -165,7 +166,7 @@ describe('faq content integrity', () => {
     expect([...faqHrefs].sort()).toEqual([...articlePages].sort());
   });
 
-  it('keeps zhCnFaqItems 1:1 with Chinese article pages', () => {
+  it('keeps zhCnFaqItems 1:1 with published Chinese article pages', () => {
     const landingPages = new Set([
       '/zh-CN/reference/faq/index',
       ...zhCnCategoryIndexPages,
@@ -174,7 +175,7 @@ describe('faq content integrity', () => {
       contentRoot: path.join(process.cwd(), 'content/docs/zh-CN'),
       dir: zhCnFaqRoot,
       locale: 'zh-CN',
-    }).filter((page) => !landingPages.has(page));
+    }).filter((page) => !landingPages.has(page) && !isRetiredCnDocsPath(page));
     const faqHrefs = zhCnFaqItems.map((item) => item.href);
 
     expect(new Set(faqHrefs)).toHaveLength(faqHrefs.length);

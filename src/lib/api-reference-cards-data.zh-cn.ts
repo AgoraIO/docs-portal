@@ -1,4 +1,5 @@
 import generatedCards from './api-reference-cards-data.zh-cn.json';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 
 export type ApiReferenceCardType = 'client' | 'server';
 
@@ -21,7 +22,9 @@ export type ApiReferenceCardEntry = {
   solutionTitle?: string;
 };
 
-const all = generatedCards.all as ApiReferenceCardEntry[];
+const all = (generatedCards.all as ApiReferenceCardEntry[]).filter(
+  (entry) => !isRetiredCnDocsPath(entry.href),
+);
 
 export const zhCNApiReferenceCards: Record<
   ApiReferenceCardType | 'all',

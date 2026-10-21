@@ -72,12 +72,6 @@ const zhCnServiceApiEntries = [
   ],
   [
     'realtime-media',
-    ['fusion-cdn'],
-    '服务端 API',
-    '/zh-CN/api-reference/api-ref/fusion-cdn',
-  ],
-  [
-    'realtime-media',
     ['whiteboard', 'whiteboard-sdk'],
     '服务端 API',
     '/zh-CN/api-reference/api-ref/whiteboard/restful',
@@ -93,12 +87,6 @@ const zhCnServiceApiEntries = [
     ['ppt-transcoding'],
     '服务端 API',
     '/zh-CN/api-reference/api-ref/ppt-conversion-service',
-  ],
-  [
-    'solutions',
-    ['flexible-classroom'],
-    '服务端 API',
-    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
   ],
   [
     'realtime-media',
@@ -227,7 +215,6 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ['media-push', '/zh-CN/api-reference/api-ref/media-push'],
     ['media-pull', '/zh-CN/api-reference/api-ref/media-pull'],
     ['rtmp-gateway', '/zh-CN/api-reference/api-ref/rtmp-gateway'],
-    ['fusion-cdn', '/zh-CN/api-reference/api-ref/fusion-cdn'],
   ])(
     'reads the service API leaf from the Chinese %s realtime-media metadata',
     async (productSlug, url) => {
@@ -260,7 +247,6 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ['realtime-media', ['rtm'], 'rtm'],
     ['realtime-media', ['rtsa'], 'rtsa'],
     ['realtime-media', ['whiteboard', 'whiteboard-sdk'], 'whiteboard'],
-    ['solutions', ['flexible-classroom'], 'flexible-classroom'],
     ['realtime-media', ['meeting'], 'meeting'],
     ['solutions', ['art-class'], 'online-art-teaching'],
     ['solutions', ['online-ktv', 'online-ktv-sdk'], 'online-ktv'],
@@ -569,11 +555,6 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ],
     [
       'solutions',
-      ['flexible-classroom'],
-      '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
-    ],
-    [
-      'solutions',
       ['online-ktv', 'ktv-scenario'],
       '/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center',
     ],
@@ -653,18 +634,10 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ]);
   });
 
-  it('opens the SDK extensions development section by default', async () => {
-    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
-      'sdk-extensions',
-    ]);
-    const development = findSection(sidebar, ['开发与集成']);
-
-    expect(development).toMatchObject({
-      collapsible: true,
-      defaultOpen: true,
-      title: '开发与集成',
-      type: 'section',
-    });
+  it('does not publish the retired SDK extensions section', async () => {
+    expect(
+      await loadDocsPagePayload('zh-CN', 'realtime-media', ['sdk-extensions']),
+    ).toBeNull();
   });
 
   it('keeps the existing English realtime-media RESTful API injection', async () => {

@@ -25,14 +25,13 @@ const expectedGroups = [
       '旁路推流',
       '输入在线媒体流',
       'RTMP 网关',
-      '融合 CDN 直播',
     ],
   ],
   ['会议协作', ['智能云会议引擎']],
   ['监控与分析', ['水晶球']],
   ['扩展能力与生态', ['RTC 服务端 SDK', '互动白板', 'PPT 转码服务']],
   ['社交娱乐', ['在线 K 歌房', '1v1 私密房']],
-  ['教育', ['灵动课堂', '在线美术教学', '在线音乐教学']],
+  ['教育', ['在线美术教学', '在线音乐教学']],
   ['智能硬件', ['微呼叫', '平行操控']],
   ['平台管理', ['控制台']],
 ] as const;
@@ -134,8 +133,8 @@ describe('ApiReferenceProductNav', () => {
       within(navigation).getByRole('link', { name: '实时互动 RTC' }),
     ).toBeVisible();
     expect(
-      within(navigation).getByRole('link', { name: '灵动课堂' }),
-    ).toBeVisible();
+      within(navigation).queryByRole('link', { name: '灵动课堂' }),
+    ).not.toBeInTheDocument();
     expect(
       within(navigation).queryByRole('heading', {
         name: '实时媒体处理',
@@ -147,10 +146,10 @@ describe('ApiReferenceProductNav', () => {
       }),
     ).toBeVisible();
     expect(
-      within(navigation).getByRole('heading', {
+      within(navigation).queryByRole('heading', {
         name: '教育',
       }),
-    ).toBeVisible();
+    ).not.toBeInTheDocument();
   });
 
   it('tracks the visible product and scrolls its left navigation link into view', async () => {

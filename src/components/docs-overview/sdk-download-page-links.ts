@@ -1,3 +1,5 @@
+import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
+
 const platformRouteAliases: Record<string, string> = {
   'react-js': 'react',
   'unreal-engine': 'unreal',
@@ -67,7 +69,8 @@ export function getZhCNSdkDownloadPageHref(
 
   if (productId === 'flexible-classroom') {
     if (!flexibleClassroomPlatforms.has(platformId)) return null;
-    return `/zh-CN/solutions/flexible-classroom/reference/downloads/${platformId}`;
+    const href = `/zh-CN/solutions/flexible-classroom/reference/downloads/${platformId}`;
+    return isRetiredCnDocsPath(href) ? null : href;
   }
 
   if (productId === 'server-gateway') {
