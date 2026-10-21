@@ -163,6 +163,21 @@ describe('overview entry links', () => {
     );
   });
 
+  it.each([
+    ['zh-CN', 'https://ticket.shengwang.cn/'],
+    ['en', 'https://agoraio.zendesk.com/hc/en-us'],
+  ])(
+    'uses the regional ticket portal for the %s introduction',
+    (locale, href) => {
+      const ticketCard = readDoc(`${locale}/introduction/index.mdx`).match(
+        /\{[^{}]*\bicon:\s*"ticket"[^{}]*\}/,
+      )?.[0];
+
+      expect(ticketCard).toBeDefined();
+      expect(ticketCard).toContain(`href: "${href}"`);
+    },
+  );
+
   it('uses product-specific titles for product overview pages', () => {
     const expectedTitles = {
       'en/realtime-media/overview.mdx': 'RTC overview',
