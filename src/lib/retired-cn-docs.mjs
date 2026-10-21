@@ -4,6 +4,9 @@ export const retiredCnProductIds = [
   'flexible-classroom',
   'cloud-scene',
   'proctor',
+  'sdk-extensions',
+  'metakit',
+  'portrait-rhythm',
 ];
 
 export const retiredCnDocDirectories = [
@@ -14,6 +17,7 @@ export const retiredCnDocDirectories = [
   'zh-CN/api-reference/flexible-classroom',
   'zh-CN/realtime-media/flexible-classroom',
   'zh-CN/api-reference/api-ref/flexible-classroom',
+  'zh-CN/realtime-media/sdk-extensions',
 ];
 
 export const retiredCnDocPages = [

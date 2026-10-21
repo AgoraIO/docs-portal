@@ -25,6 +25,26 @@ const retiredPaths = [
 ];
 const checks = retiredPaths.flatMap((path) => [`/${path}`, `/${path}.md`]);
 checks.push(
+  '/realtime-media/sdk-extensions',
+  ...[
+    'metakit',
+    'metakit/reference/api-ref',
+    'metakit/reference/downloads',
+    'metakit/reference/release-notes',
+    'metakit/build/implement-core-features/quick-start',
+    'metakit/build/implement-core-features/dress',
+    'metakit/build/implement-core-features/face',
+    'portrait-rhythm',
+    'portrait-rhythm/downloads',
+    'portrait-rhythm/reference/release-notes',
+    'portrait-rhythm/build/implement-core-features/quick-start',
+    'portrait-rhythm/build/implement-core-features/key-value',
+    'metakit/overview',
+    'portrait-rhythm/overview',
+  ].flatMap((slug) => [
+    `/zh-CN/realtime-media/sdk-extensions/${slug}`,
+    `/zh-CN/realtime-media/sdk-extensions/${slug}.md`,
+  ]),
   '/realtime-media/fusion-cdn',
   '/solutions/flexible-classroom',
   '/openapi/fusion-cdn/streaming.zh-CN.yaml',
@@ -44,6 +64,8 @@ for (const path of [
   '/zh-CN/api-reference/api',
   '/zh-CN/realtime-media/rtc',
   '/zh-CN/reference/sdks',
+  '/zh-CN/realtime-media/rtc/build/extensions/face-capture',
+  '/zh-CN/introduction',
 ]) {
   await request(path);
 }
@@ -78,11 +100,13 @@ for (const path of [
   '/zh-CN/realtime-media/overview.md',
   '/zh-CN/solutions/overview.md',
   '/zh-CN/api-reference/api.md',
+  '/zh-CN/introduction.md',
+  '/zh-CN/realtime-media/rtc/build/extensions/face-capture.md',
 ]) {
   const markdown = await (await request(path)).text();
   assert.doesNotMatch(
     markdown,
-    /fusion-cdn|flexible-classroom|融合 CDN|灵动课堂/,
+    /fusion-cdn|flexible-classroom|融合 CDN|灵动课堂|sdk-extensions|MetaKit|摄像头律动|人像节奏/,
   );
 }
 

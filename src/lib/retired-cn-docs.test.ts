@@ -23,6 +23,15 @@ const retiredPaths = [
   '/zh-CN/api-reference/api-ref/fusion-cdn/domain-list',
   '/zh-CN/realtime-media/usage-analytics/build/view-live-data',
   '/zh-CN/solutions/flexible-classroom',
+  '/zh-CN/realtime-media/sdk-extensions',
+  '/zh-CN/realtime-media/sdk-extensions/metakit',
+  '/zh-CN/realtime-media/sdk-extensions/metakit/reference/api-ref',
+  '/zh-CN/realtime-media/sdk-extensions/metakit/reference/downloads',
+  '/zh-CN/realtime-media/sdk-extensions/metakit/build/implement-core-features/face',
+  '/zh-CN/realtime-media/sdk-extensions/portrait-rhythm',
+  '/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/downloads',
+  '/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/build/implement-core-features/key-value',
+  '/zh-CN/realtime-media/sdk-extensions/portrait-rhythm/overview',
   '/zh-CN/solutions/flexible-classroom/get-started/integrate-new',
   '/zh-CN/solutions/flexible-classroom/reference/downloads/web',
   '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
@@ -31,7 +40,56 @@ const retiredPaths = [
   ...retiredCnDocPages.map((page) => `/${page}`),
 ];
 
-describe('retired Chinese Fusion CDN and Flexible Classroom documentation', () => {
+describe('retired Chinese product documentation', () => {
+  it.each([
+    ['introduction'],
+    ['realtime-media', 'overview'],
+    ['realtime-media', 'rtc', 'build', 'extensions', 'face-capture'],
+  ])(
+    'omits retired plugin recommendations from %s Markdown',
+    async (...slugs) => {
+      const page = source.getPage(slugs, 'zh-CN');
+      expect(page).toBeDefined();
+      if (!page) throw new Error('Missing active page');
+      const markdown = await getLLMText(page);
+      expect(markdown).not.toMatch(
+        /sdk-extensions|MetaKit|摄像头律动|人像节奏/,
+      );
+    },
+  );
+
+  it('retains plugin sources and keeps English plugin documentation available', () => {
+    for (const path of [
+      'sdk-extensions/index.mdx',
+      'sdk-extensions/metakit/index.mdx',
+      'sdk-extensions/metakit/reference/api-ref.mdx',
+      'sdk-extensions/metakit/reference/downloads.mdx',
+      'sdk-extensions/portrait-rhythm/index.mdx',
+      'sdk-extensions/portrait-rhythm/downloads.mdx',
+    ]) {
+      expect(existsSync(`content/docs/zh-CN/realtime-media/${path}`)).toBe(
+        true,
+      );
+    }
+    expect(
+      source.getPage(
+        [
+          'realtime-media',
+          'marketplace',
+          'build',
+          'add-video-and-ar-effects',
+          'metakit',
+        ],
+        'en',
+      ),
+    ).toBeDefined();
+    expect(JSON.stringify(source.getPageTree('zh-CN'))).not.toMatch(
+      /sdk-extensions/,
+    );
+    expect(
+      isRetiredCnDocsPath('/zh-CN/realtime-media/sdk-extensions-other'),
+    ).toBe(false);
+  });
   it.each([
     ['solutions', 'overview'],
     ['solutions', 'one-to-one-classroom'],
