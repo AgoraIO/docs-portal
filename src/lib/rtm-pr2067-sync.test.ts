@@ -158,7 +158,7 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
         'userStateList',
         'totalOccupancy',
       ])
-        expect(detail).toMatch(new RegExp('\\|\\s*`' + field + '`\\s*\\|'));
+        expect(detail).toMatch(new RegExp(`\\|\\s*\`${field}\`\\s*\\|`));
       expect(detail).toContain('最多同步 512 名用户明细');
       expect(detail).toContain('短暂延迟');
       expect(events).toContain(

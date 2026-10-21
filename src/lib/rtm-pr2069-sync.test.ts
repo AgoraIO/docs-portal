@@ -7,6 +7,7 @@ import { ProductSdkDownloads } from '../components/docs-overview/ProductSdkDownl
 import { getSdkDownloadProductCatalogId } from '../components/docs-overview/sdk-download-navigation';
 import { zhCNSdkDownloadPlatforms } from '../components/docs-overview/sdk-downloads-data.zh-cn';
 import { deriveInstallCommand } from '../components/docs-overview/sdk-install-command';
+import { selectPlatformMarkdown } from '../test/platform-markdown';
 import { isKnownPlatform } from './platforms/registry';
 
 const docsRoot = 'content/docs/zh-CN/realtime-media/rtm';
@@ -119,7 +120,7 @@ describe('RTM upstream PR #2069 parity', () => {
     expect(markup).not.toContain('.zip');
   });
 
-  it.each(['web', 'mini-program'])(
+  it.each(['web', 'mini-program'] as const)(
     'publishes both %s USER examples to a user ID',
     (platform) => {
       const body = platformBody(userMessages, platform);
@@ -180,16 +181,11 @@ describe('RTM upstream PR #2069 parity', () => {
     expect(body).not.toContain('```');
   });
 
-  it.each(['web', 'mini-program'])(
+  it.each(['web', 'mini-program'] as const)(
     'restores the %s baseline Presence modes with platform-scoped limits',
     (platform) => {
       const source = readDoc('build/state-and-attributes/presence-events');
-      expect(
-        source.match(
-          new RegExp(`<PlatformStructured platform="${platform}">`, 'g'),
-        ),
-      ).toHaveLength(1);
-      const body = platformBody(source, platform);
+      const body = selectPlatformMarkdown(source, platform);
       expect(body).toContain('实时通知模式（Announce）');
       expect(body).toContain('定时通知模式（Interval）');
       expect(body).toMatch(/(?:\[8,128\]|8 至 128)/);
