@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { isRetiredCnDocsPath } from '../src/lib/retired-cn-docs.mjs';
 
 const repoRoot = process.cwd();
 const sourceRoot = path.join(repoRoot, 'content', 'openapi');
@@ -29,6 +30,10 @@ function copyOpenApiAssets(fromDir, toDir) {
     }
 
     if (!/\.(ya?ml|json)$/i.test(entry.name)) {
+      continue;
+    }
+
+    if (isRetiredCnDocsPath(`openapi/${path.relative(publicRoot, toPath)}`)) {
       continue;
     }
 

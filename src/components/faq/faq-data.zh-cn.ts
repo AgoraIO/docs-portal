@@ -65,7 +65,7 @@ export const zhCnFaqProducts = [
   '旁路推流',
   '声动语聊',
   '水晶球',
-  '融合 CDN',
+  // '融合 CDN', // 已下线，保留历史标签。
   '云端录制',
   '云端转码',
   '对话式 AI 引擎',
@@ -73,7 +73,7 @@ export const zhCnFaqProducts = [
   'Fastboard',
 ];
 
-export const zhCnFaqItems: FaqItem[] = [
+const zhCnFaqSourceItems: FaqItem[] = [
   {
     category: 'account-and-billing',
     href: '/zh-CN/reference/faq/account/billing_account',
@@ -1074,3 +1074,8 @@ export const zhCnFaqItems: FaqItem[] = [
     title: '为什么我的视频会出现卡顿？',
   },
 ];
+
+export const zhCnFaqItems: FaqItem[] = zhCnFaqSourceItems.map((item) => ({
+  ...item,
+  products: item.products.filter((product) => product !== '融合 CDN'),
+}));

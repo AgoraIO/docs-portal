@@ -609,6 +609,11 @@
   ],
   "routes": [
     {
+      "src": "^/(?:(?:zh-CN/)?(?:realtime-media/fusion-cdn|api-reference/(?:api-ref/)?fusion-cdn)(?:/.*|\\.md)?|(?:zh-CN/)?realtime-media/usage-analytics/build/view-live-data(?:/.*|\\.md)?|openapi/fusion-cdn/streaming\\.zh-CN\\.yaml)/?$",
+      "dest": "/404.html",
+      "status": 404
+    },
+    {
       "src": "^/.*\\.md/?$",
       "headers": {
         "Content-Type": "text/markdown; charset=utf-8"

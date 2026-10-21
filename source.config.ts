@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs';
 import {
   rehypeCodeDefaultOptions,
   remarkDirectiveAdmonition,
@@ -11,10 +12,17 @@ import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
 import { remarkNormalizeLegacyHeadingAnchors } from './src/lib/mdx/remark-normalize-legacy-heading-anchors';
 import { remarkTableSlots } from './src/lib/mdx/remark-table-slots';
 import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
+import { isRetiredCnDocsPath } from './src/lib/retired-cn-docs.mjs';
 
 const useDynamicDocsRuntime =
   process.env.FUMADOCS_STATIC_PAYLOAD_DYNAMIC === 'true';
 const scopedDocsFiles = createScopedDocsFiles(process.env.DOCS_DEV_SCOPE ?? '');
+const scopedPath = scopedDocsFiles?.docs[0].split('/**/')[0];
+// This Fumadocs version prefixes negative globs with "./" and its collection
+// matcher treats negatives as alternatives. Use positive paths for publication.
+const publicFiles = readdirSync('content/docs', { recursive: true })
+  .map(String)
+  .filter((file) => !isRetiredCnDocsPath(file));
 
 const rawDocSchema = z.object({
   title: z.string().optional(),
@@ -35,7 +43,12 @@ export const docs = defineDocs({
   docs: {
     async: true,
     dynamic: useDynamicDocsRuntime,
-    files: scopedDocsFiles?.docs ?? ['**/*.{md,mdx}'],
+    files: scopedPath
+      ? publicFiles.filter(
+          (file) =>
+            file.startsWith(`${scopedPath}/`) && /\.(md|mdx)$/.test(file),
+        )
+      : publicFiles.filter((file) => /\.(md|mdx)$/.test(file)),
     schema: rawDocSchema,
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {
@@ -105,7 +118,13 @@ export const docs = defineDocs({
     },
   },
   meta: {
-    files: scopedDocsFiles?.meta ?? ['**/meta.{json,yaml}'],
+    files: publicFiles.filter(
+      (file) =>
+        /(?:^|\/)meta\.(json|yaml)$/.test(file) &&
+        (!scopedPath ||
+          file.startsWith(`${scopedPath}/`) ||
+          scopedPath.startsWith(file.slice(0, file.lastIndexOf('/') + 1))),
+    ),
     schema: docsMetaSchema,
   },
 });

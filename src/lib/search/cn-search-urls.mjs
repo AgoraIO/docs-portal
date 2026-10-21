@@ -1,3 +1,5 @@
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
+
 // Content/build paths retain the locale. Only public result addresses lose it.
 /** @param {string} value */
 export function toCnPublicSearchUrl(value) {
@@ -41,6 +43,7 @@ export function isPublicCnSearchUrl(value) {
     const url = new URL(value, 'https://docs.local');
     const rawPath = value.split(/[?#]/, 1)[0];
     const decodedPath = decodeURIComponent(rawPath);
+    if (isRetiredCnDocsPath(toCnContentSearchUrl(decodedPath))) return false;
     if (
       url.origin !== 'https://docs.local' ||
       hasUnsafeCharacters(decodedPath) ||

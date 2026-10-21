@@ -193,6 +193,7 @@ describe('legacy redirect Vercel artifacts', () => {
         value: string;
       }>;
       src: string;
+      status?: number;
     }>;
   };
   const bulkRedirects = JSON.parse(
@@ -219,7 +220,9 @@ describe('legacy redirect Vercel artifacts', () => {
       src: '^/en/((?!.*\\.md/?$).+?)/?$',
     });
 
-    expect(vercelConfig.routes).not.toEqual(
+    expect(
+      vercelConfig.routes?.filter((route) => route.status !== 404),
+    ).not.toEqual(
       expect.arrayContaining([
         expect.objectContaining({ src: expect.stringContaining('zh-CN') }),
       ]),

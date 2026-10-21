@@ -3,6 +3,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { setTimeout as wait } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
+import { isRetiredCnDocsPath } from '../src/lib/retired-cn-docs.mjs';
 import { maskFencedCode } from './lib/markdown-code.mjs';
 
 const DEFAULT_MAX_SAMPLES = 30;
@@ -36,7 +37,9 @@ export function auditDocsLinks({
   openApiSourcePaths,
 } = {}) {
   const stats = createStats();
-  const docsFiles = listMarkdownFiles(docsRoot);
+  const docsFiles = listMarkdownFiles(docsRoot).filter(
+    (file) => !isRetiredCnDocsPath(toContentPath(docsRoot, file)),
+  );
   const existingContentPaths = new Set(
     docsFiles.map((file) => toContentPath(docsRoot, file)),
   );
@@ -89,6 +92,8 @@ export function auditDocsLinks({
 
     for (const filePath of openApiFiles) {
       const sourcePath = toOpenApiSourcePath(openApiRoot, filePath);
+
+      if (isRetiredCnDocsPath(sourcePath)) continue;
 
       if (openApiSourcePathFilter && !openApiSourcePathFilter.has(sourcePath)) {
         continue;
@@ -403,6 +408,7 @@ export function getZhCnOpenApiSourcePaths(openApiRoot) {
 
   return listOpenApiYamlFiles(openApiRoot)
     .map((filePath) => toOpenApiSourcePath(openApiRoot, filePath))
+    .filter((sourcePath) => !isRetiredCnDocsPath(sourcePath))
     .filter(isZhCnOpenApiSourcePath);
 }
 
@@ -480,7 +486,9 @@ function extractAnchors(markdown) {
 }
 
 function maskMarkdownCode(markdown) {
-  return maskFencedCode(markdown);
+  return maskFencedCode(markdown).replace(/\{\/\*[\s\S]*?\*\/\}/g, (comment) =>
+    comment.replace(/[^\n]/g, ' '),
+  );
 }
 
 function cleanHeadingText(rawHeading) {
@@ -2525,7 +2533,7 @@ function getOpenApiRouteLanesForAudit() {
           ]),
         );
     return { locales, parentUrls, routePrefix, routeLeaves, sourcePaths };
-  });
+  }).filter((lane) => !isRetiredCnDocsPath(lane.parentUrls['zh-CN'] ?? ''));
 }
 
 function extractTupleOperationRouteLeaves(raw) {

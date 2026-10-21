@@ -72,12 +72,6 @@ const zhCnServiceApiEntries = [
   ],
   [
     'realtime-media',
-    ['fusion-cdn'],
-    '服务端 API',
-    '/zh-CN/api-reference/api-ref/fusion-cdn',
-  ],
-  [
-    'realtime-media',
     ['whiteboard', 'whiteboard-sdk'],
     '服务端 API',
     '/zh-CN/api-reference/api-ref/whiteboard/restful',
@@ -227,7 +221,6 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ['media-push', '/zh-CN/api-reference/api-ref/media-push'],
     ['media-pull', '/zh-CN/api-reference/api-ref/media-pull'],
     ['rtmp-gateway', '/zh-CN/api-reference/api-ref/rtmp-gateway'],
-    ['fusion-cdn', '/zh-CN/api-reference/api-ref/fusion-cdn'],
   ])(
     'reads the service API leaf from the Chinese %s realtime-media metadata',
     async (productSlug, url) => {

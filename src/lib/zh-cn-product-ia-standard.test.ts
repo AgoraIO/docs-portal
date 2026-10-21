@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
 import { getContentDocsPrerenderPaths } from './prerender-content-routes';
 import { createPublishedDocsRoutes } from './published-docs-routes';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 import { getPagePlatformKeys, source } from './source.server';
 import {
   resolveZhCnProductIaRedirect,
@@ -659,7 +660,7 @@ const productBuildMetas = [
     {
       title: '开发与集成',
       pages: [
-        'view-live-data',
+        '!view-live-data',
         'monitor-call-quality',
         'investigate-call-problems',
         'analyze-call-data',
@@ -1409,13 +1410,18 @@ describe('zh-CN product IA standard', { timeout: 30_000 }, () => {
   });
 
   it.each(productBuildPageMoves)(
-    'loads the canonical %s page %s at %s without redirecting',
+    'respects publication status for the canonical %s page %s at %s',
     async (productRoot, _legacyPath, canonicalPath) => {
       const [tab, ...productSegments] = productRoot.split('/');
       const payload = await loadDocsPagePayload('zh-CN', tab, [
         ...productSegments,
         ...canonicalPath.split('/'),
       ]);
+
+      if (isRetiredCnDocsPath(`/zh-CN/${productRoot}/${canonicalPath}`)) {
+        expect(payload).toBeNull();
+        return;
+      }
 
       expect(payload).toBeTruthy();
       expect(payload).not.toHaveProperty('redirectUrl');

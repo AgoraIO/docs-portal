@@ -77,6 +77,7 @@ import {
   type PlatformKey,
 } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
@@ -486,6 +487,10 @@ export async function loadDocsPagePayload(
   slugSegments: string[],
   search?: string,
 ) {
+  if (isRetiredCnDocsPath(`/${[locale, tab, ...slugSegments].join('/')}`)) {
+    return null;
+  }
+
   const movedDocsRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
   if (movedDocsRedirect) {
     return {

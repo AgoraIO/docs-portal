@@ -52,6 +52,14 @@ on:
         description: Optional PR number to comment on for preview deploys
         required: false
         type: string
+      docs_region:
+        description: Documentation region for preview builds
+        required: false
+        default: global
+        type: choice
+        options:
+          - global
+          - cn
       release_sha:
         description: Release commit SHA for production deploys triggered by Promote Production
         required: false
@@ -177,7 +185,7 @@ jobs:
       - name: Build with Vercel
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
-          VITE_DOCS_REGION: global
+          VITE_DOCS_REGION: ${{ inputs.docs_region || 'global' }}
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
           VERCEL_GIT_PROVIDER: github
