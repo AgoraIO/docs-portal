@@ -219,6 +219,12 @@ jobs:
             --meta githubCommitSha="${{ github.event.pull_request.head.sha || github.sha }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
 
+      - name: Verify retired CN documentation on the deployed preview
+        if: steps.preview-context.outputs.should_deploy == 'true' && (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn'
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+        run: node scripts/verify-retired-cn-docs-preview.mjs
+
       - name: Alias main preview URL
         if: steps.preview-context.outputs.should_deploy == 'true' && github.event_name == 'push' && github.ref_name == 'main'
         env:

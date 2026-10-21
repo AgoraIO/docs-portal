@@ -1,6 +1,6 @@
 import type { SdkDownloadPlatform } from './sdk-downloads-data';
 
-export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
+const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
   {
     id: 'android',
     label: 'Android',
@@ -5041,3 +5041,22 @@ export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] = [
     ],
   },
 ] as const;
+
+// Retain the classroom SDK records while hiding the retired product family.
+const retiredClassroomSdkIds =
+  /^(?:flexible-classroom|cloud-scene|proctor)-sdk-/;
+
+export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] =
+  zhCNSdkDownloadSourcePlatforms.map((platform) => ({
+    ...platform,
+    core: platform.core.filter(
+      (product) => !retiredClassroomSdkIds.test(product.id),
+    ),
+    ...(platform.addOns
+      ? {
+          addOns: platform.addOns.filter(
+            (product) => !retiredClassroomSdkIds.test(product.id),
+          ),
+        }
+      : {}),
+  }));

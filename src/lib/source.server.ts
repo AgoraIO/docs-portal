@@ -21,6 +21,8 @@ import {
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
 import { getPlatformLabel, type PlatformKey } from './platforms/registry';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
+import { filterRetiredCnDocsTree } from './retired-cn-docs-tree';
 import { expandSdkCatalogMarkdown } from './sdk-catalog-markdown.server';
 import { docsRoute } from './shared';
 
@@ -49,7 +51,26 @@ const fumadocsSource = loader({
   plugins: [getOpenApiLoaderPlugin()],
 });
 
+const publishedPageLists = new Map<
+  string | undefined,
+  InferPageType<typeof fumadocsSource>[]
+>();
+
 export const source = Object.assign(Object.create(fumadocsSource), {
+  getPages(language?: string) {
+    let pages = publishedPageLists.get(language);
+    if (!pages) {
+      pages = fumadocsSource
+        .getPages(language)
+        .filter((page) => !isRetiredCnDocsPath(page.url));
+      publishedPageLists.set(language, pages);
+    }
+    return [...pages];
+  },
+  getPageTree(language?: string) {
+    const tree = fumadocsSource.getPageTree(language);
+    return language === 'zh-CN' ? filterRetiredCnDocsTree(tree) : tree;
+  },
   getPage(
     slugs: Parameters<typeof fumadocsSource.getPage>[0],
     language?: Parameters<typeof fumadocsSource.getPage>[1],
@@ -57,13 +78,16 @@ export const source = Object.assign(Object.create(fumadocsSource), {
     const page = fumadocsSource.getPage(slugs, language);
 
     if (page || !slugs) {
-      return page;
+      return page && isRetiredCnDocsPath(page.url) ? undefined : page;
     }
 
-    return fumadocsSource.getPage(
+    const encodedPage = fumadocsSource.getPage(
       slugs.map((segment) => encodeURI(segment)),
       language,
     );
+    return encodedPage && isRetiredCnDocsPath(encodedPage.url)
+      ? undefined
+      : encodedPage;
   },
 }) as typeof fumadocsSource;
 

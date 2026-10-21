@@ -632,69 +632,24 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     },
   );
 
-  it('keeps the four Flexible Classroom Web API nodes', async () => {
-    const sidebar = await loadApiReferenceSidebar([
-      'flexible-classroom',
-      'web',
-      'api-reference',
-      'classroom-sdk',
-    ]);
-    const titles = collectTitles(sidebar);
-
-    expect(titles).toEqual(
-      expect.arrayContaining([
-        'Classroom SDK API',
-        'Proctor SDK API',
-        'FcrUIScene API',
-        'Edu Store API',
-      ]),
-    );
-  });
-
-  it.each(['electron', 'web'])(
-    'matches the old Flexible Classroom %s Edu Store sidebar',
+  it.each(['web', 'electron'])(
+    'keeps retired Flexible Classroom %s API entrypoints unavailable',
     async (platform) => {
-      const payload = await loadApiReferencePayload([
-        'flexible-classroom',
-        platform,
-        'api-reference',
+      for (const name of [
+        'classroom-sdk',
+        'proctor-sdk',
+        'fcr-ui-scene',
         'edu-store',
-      ]);
-      const sidebar = payload.sidebar as SidebarNode[];
-      const eduStore = findNode(sidebar, 'Edu Store API');
-
-      expect(eduStore).toBeDefined();
-      const titles = collectTitles(eduStore?.children ?? []);
-      expect(titles).toEqual([
-        '概览',
-        'CloudDriveStore',
-        'GroupStore',
-        'HandUpStore',
-        'MediaStore',
-        'RecordingStore',
-        'RoomStore',
-        'StreamStore',
-        'UserStore',
-        'ConnectionStore',
-        'StatisticsStore',
-        'WidgetStore',
-      ]);
-      expect(collectTitles(sidebar)).not.toContain('Exports');
-      expect(collectTitles(sidebar)).not.toContain(
-        '"agora-edu-core/src/configs/index"',
-      );
-      expect(payload.toc.map((item) => item.title)).toEqual([
-        'Cloud Drive Store',
-        'Group Store',
-        'Hand Up Store',
-        'Media Store',
-        'Recording Store',
-        'Room Store',
-        'Statistics Store',
-        'Stream Store',
-        'User Store',
-        'Connection Store',
-      ]);
+      ]) {
+        await expect(
+          loadDocsPagePayload('zh-CN', 'api-reference', [
+            'flexible-classroom',
+            platform,
+            'api-reference',
+            name,
+          ]),
+        ).resolves.toBeNull();
+      }
     },
   );
 

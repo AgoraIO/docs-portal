@@ -80,7 +80,7 @@ describe('fumadocs source loader', () => {
   });
 
   it.each(['web', 'electron'])(
-    'keeps hidden Flexible Classroom %s Edu Store detail routes reachable',
+    'keeps retired Flexible Classroom %s Edu Store detail sources unpublished',
     (platform) => {
       const detailRoutes = [
         ['modules', 'agora-edu-core-src-configs-index'],
@@ -99,7 +99,7 @@ describe('fumadocs source loader', () => {
           ...detailRoute,
         ];
         const page = source.getPage(slugs, 'zh-CN');
-        expect(page?.url).toBe(`/zh-CN/${slugs.join('/')}`);
+        expect(page).toBeUndefined();
       }
     },
   );

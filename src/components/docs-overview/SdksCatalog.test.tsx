@@ -125,7 +125,7 @@ describe('SdksCatalog', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      12,
+      10,
     );
   });
 
@@ -245,7 +245,9 @@ describe('SdksCatalog', () => {
     expect(
       screen.getByRole('heading', { name: '扩展能力与生态' }),
     ).toBeVisible();
-    expect(screen.getByRole('heading', { name: '教育' })).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '教育' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: '智能硬件' }),
     ).not.toBeInTheDocument();
@@ -264,7 +266,7 @@ describe('SdksCatalog', () => {
     ).toHaveLength(0);
     expect(
       container.querySelectorAll('[data-sdk-download-product-id] > details'),
-    ).toHaveLength(12);
+    ).toHaveLength(10);
   });
 
   it('does not show product or platform counts in the Chinese catalog', () => {
@@ -724,7 +726,7 @@ describe('SdksCatalog', () => {
     ).toBeVisible();
   });
 
-  it('renders flexible classroom solution SDKs in the zh-CN catalog', () => {
+  it('hides retired flexible classroom solution SDKs in the zh-CN catalog', () => {
     render(
       <SdksCatalog
         locale="zh-CN"
@@ -734,7 +736,9 @@ describe('SdksCatalog', () => {
     );
 
     expect(screen.queryByText('正在显示 灵动课堂 SDK')).not.toBeInTheDocument();
-    expect(screen.getByRole('article', { name: '灵动课堂 SDK' })).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: '灵动课堂 SDK' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('article', { name: '云课堂 SDK' }),
     ).not.toBeInTheDocument();
@@ -822,14 +826,14 @@ describe('SdksCatalog', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('removes Chinese version details and lightens direct download links', () => {
+  it('removes Chinese version details for active SDK products', () => {
     window.history.replaceState(
       null,
       '',
       '/zh-CN/reference/sdks?product=client-toolkit&platform=ios',
     );
 
-    const { unmount } = render(<SdksCatalog locale="zh-CN" />);
+    render(<SdksCatalog locale="zh-CN" />);
 
     const clientToolkitCard = openProductCard('客户端组件 SDK');
     expect(
@@ -838,19 +842,6 @@ describe('SdksCatalog', () => {
     expect(
       within(clientToolkitCard).queryByText('v2.9.0 - 最新'),
     ).not.toBeInTheDocument();
-    unmount();
-
-    window.history.replaceState(
-      null,
-      '',
-      '/zh-CN/reference/sdks?product=cloud-scene&platform=web',
-    );
-    render(<SdksCatalog locale="zh-CN" />);
-    const cloudSceneCard = openProductCard('云课堂 SDK');
-    const downloadLink = within(cloudSceneCard).getByRole('link', {
-      name: '下载 SDK',
-    });
-    expect(downloadLink).not.toHaveClass('min-h-11', 'bg-primary');
   });
 
   it('does not render the Chinese Instant Messaging card', () => {
@@ -931,7 +922,6 @@ describe('SdksCatalog', () => {
       '实时互动基础能力',
       '会议协作',
       '扩展能力与生态',
-      '教育',
     ]);
   });
 
@@ -961,8 +951,6 @@ describe('SdksCatalog', () => {
         '部署在服务端，用于向 RTC 频道发送音视频流或从频道接收音视频流',
       ],
       ['本地服务端录制 SDK', '部署在本地服务端，用于录制 RTC 频道中的音视频流'],
-      ['灵动课堂 SDK', '适用于教育场景和课堂 UI 定制的 SDK'],
-      ['云课堂 SDK', '提供默认课堂 UI 的场景化 SDK'],
     ] as const;
 
     for (const [name, description] of expectedProducts) {

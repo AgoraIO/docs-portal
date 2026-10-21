@@ -14,6 +14,7 @@ import {
 } from '@/components/account-guidance/AccountGuidance';
 import { getSdkAccountGuidanceTarget } from '@/components/account-guidance/resource-registry';
 import { cn } from '@/lib/cn';
+import { retiredCnProductIds } from '@/lib/retired-cn-docs.mjs';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import { getPlatformIconSrc } from './platform-icon-src';
 import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
@@ -466,9 +467,14 @@ export function SdksCatalog({
     platformId: normalizePlatformFilter(platform, platforms),
     productId: normalizeProductFilter(product),
   });
-  const productFilter = queryFilters.productId
-    ? productFilters[queryFilters.productId]
-    : null;
+  const retiredProductFilter =
+    locale === 'zh-CN' &&
+    queryFilters.productId &&
+    retiredCnProductIds.includes(queryFilters.productId);
+  const productFilter =
+    queryFilters.productId && !retiredProductFilter
+      ? productFilters[queryFilters.productId]
+      : null;
   const productFilterProductIds = productFilter
     ? new Set<string>(productFilter.productIds)
     : null;

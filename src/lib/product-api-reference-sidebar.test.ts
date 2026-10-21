@@ -89,12 +89,6 @@ const zhCnServiceApiEntries = [
     '/zh-CN/api-reference/api-ref/ppt-conversion-service',
   ],
   [
-    'solutions',
-    ['flexible-classroom'],
-    '服务端 API',
-    '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
-  ],
-  [
     'realtime-media',
     ['meeting'],
     '服务端 API',
@@ -253,7 +247,6 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ['realtime-media', ['rtm'], 'rtm'],
     ['realtime-media', ['rtsa'], 'rtsa'],
     ['realtime-media', ['whiteboard', 'whiteboard-sdk'], 'whiteboard'],
-    ['solutions', ['flexible-classroom'], 'flexible-classroom'],
     ['realtime-media', ['meeting'], 'meeting'],
     ['solutions', ['art-class'], 'online-art-teaching'],
     ['solutions', ['online-ktv', 'online-ktv-sdk'], 'online-ktv'],
@@ -559,11 +552,6 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
       'realtime-media',
       ['ppt-transcoding'],
       '/zh-CN/api-reference/api-ref/ppt-conversion-service',
-    ],
-    [
-      'solutions',
-      ['flexible-classroom'],
-      '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
     ],
     [
       'solutions',

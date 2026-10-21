@@ -2,6 +2,7 @@ import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync } from 'node:fs';
 import { isNotFound } from '@tanstack/react-router';
 import { describe, expect, it } from 'vitest';
+import { zhCNSdkDownloadPlatforms } from '../components/docs-overview/sdk-downloads-data.zh-cn';
 import {
   zhCnFaqItems,
   zhCnFaqProducts,
@@ -11,7 +12,7 @@ import { getPublicDocsMarkdownResponse } from './docs-markdown.server';
 import { loadDocsPagePayload } from './docs-page.server';
 import { getOpenApiLanes, resolveOpenApiEndpointRoute } from './openapi/lanes';
 import { getContentDocsPrerenderPaths } from './prerender-content-routes';
-import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
+import { isRetiredCnDocsPath, retiredCnDocPages } from './retired-cn-docs.mjs';
 import { isPublicCnSearchUrl } from './search/cn-search-urls.mjs';
 import { getLLMText, source } from './source.server';
 
@@ -21,9 +22,53 @@ const retiredPaths = [
   '/zh-CN/api-reference/fusion-cdn/restful/api/reference',
   '/zh-CN/api-reference/api-ref/fusion-cdn/domain-list',
   '/zh-CN/realtime-media/usage-analytics/build/view-live-data',
+  '/zh-CN/solutions/flexible-classroom',
+  '/zh-CN/solutions/flexible-classroom/get-started/integrate-new',
+  '/zh-CN/solutions/flexible-classroom/reference/downloads/web',
+  '/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom',
+  '/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk',
+  '/zh-CN/api-reference/flexible-classroom/electron/api-reference/edu-store/classes/agora-edu-core-src-configs-index-du-classroom-config',
+  ...retiredCnDocPages.map((page) => `/${page}`),
 ];
 
-describe('retired Chinese Fusion CDN documentation', () => {
+describe('retired Chinese Fusion CDN and Flexible Classroom documentation', () => {
+  it.each([
+    ['solutions', 'overview'],
+    ['solutions', 'one-to-one-classroom'],
+    ['solutions', 'small-classroom'],
+    ['solutions', 'digital-learning', 'course-resource'],
+    ['solutions', 'digital-learning', 'school-resource'],
+    ['solutions', 'art-class', 'build', 'enable-service'],
+    ['realtime-media', 'speech-to-text'],
+    [
+      'api-reference',
+      'whiteboard',
+      'whiteboard-sdk',
+      'restful',
+      'fastboard-sdk',
+      'overview',
+      'product-overview',
+    ],
+    [
+      'api-reference',
+      'whiteboard',
+      'whiteboard-sdk',
+      'restful',
+      'whiteboard-sdk',
+      'overview',
+      'product-overview',
+    ],
+  ])(
+    'keeps active %s pages free of classroom recommendations in public Markdown',
+    async (...slugs) => {
+      const page = source.getPage(slugs, 'zh-CN');
+      expect(page).toBeDefined();
+      if (!page) throw new Error('Missing independent product page');
+      const markdown = await getLLMText(page);
+      expect(markdown).not.toContain('flexible-classroom');
+      expect(markdown).not.toContain('灵动课堂');
+    },
+  );
   it.each([
     ['realtime-media', 'overview'],
     ['api-reference', 'overview'],
@@ -66,8 +111,13 @@ describe('retired Chinese Fusion CDN documentation', () => {
       'view-live-data',
     );
     expect(
-      zhCNApiReferenceCards.all.some(
-        (entry) => entry.productId === 'fusion-cdn',
+      JSON.stringify(source.getPageTree('zh-CN')).match(
+        /.{0,70}flexible-classroom.{0,100}/g,
+      ) ?? [],
+    ).toEqual([]);
+    expect(
+      zhCNApiReferenceCards.all.some((entry) =>
+        ['fusion-cdn', 'flexible-classroom'].includes(entry.productId),
       ),
     ).toBe(false);
     expect(
@@ -95,6 +145,17 @@ describe('retired Chinese Fusion CDN documentation', () => {
     expect(zhCnFaqItems.flatMap((item) => item.products)).not.toContain(
       '融合 CDN',
     );
+    expect(zhCnFaqProducts).not.toContain('灵动课堂');
+    expect(zhCnFaqItems.flatMap((item) => item.products)).not.toContain(
+      '灵动课堂',
+    );
+    expect(zhCnFaqItems.some((item) => isRetiredCnDocsPath(item.href))).toBe(
+      false,
+    );
+    expect(
+      zhCnFaqItems.find((item) => item.href.endsWith('/dynamic_storage_path'))
+        ?.products,
+    ).toContain('声网会议');
     expect(
       zhCnFaqItems.find((item) =>
         item.href.endsWith('/restful_api_call_frequency'),
@@ -109,9 +170,58 @@ describe('retired Chinese Fusion CDN documentation', () => {
     ).toBeDefined();
     expect(source.getPage(['ai'], 'en')).toBeDefined();
     expect(isRetiredCnDocsPath('/en/realtime-media/fusion-cdn')).toBe(false);
+    expect(
+      source
+        .getPages('en')
+        .some((page) => page.url.includes('/flexible-classroom/')),
+    ).toBe(true);
+    expect(
+      JSON.stringify(source.getPageTree('en')).includes(
+        '/en/realtime-media/flexible-classroom',
+      ),
+    ).toBe(true);
+    expect(
+      source.getPage(['solutions', 'one-to-one-classroom'], 'zh-CN'),
+    ).toBeDefined();
+    expect(
+      source.getPage(['solutions', 'small-classroom'], 'zh-CN'),
+    ).toBeDefined();
     expect(isRetiredCnDocsPath('/zh-CN/realtime-media/fusion-cdn-other')).toBe(
       false,
     );
+  });
+
+  it('hides the classroom SDK family while retaining its source records', () => {
+    expect(
+      retiredCnDocPages.every((page) => existsSync(`content/docs/${page}.mdx`)),
+    ).toBe(true);
+    const products = zhCNSdkDownloadPlatforms.flatMap((platform) => [
+      ...platform.core,
+      ...(platform.addOns ?? []),
+    ]);
+    expect(
+      products.some((product) =>
+        /^(flexible-classroom|cloud-scene|proctor)-sdk-/.test(product.id),
+      ),
+    ).toBe(false);
+    expect(products.some((product) => product.id === 'video-sdk-android')).toBe(
+      true,
+    );
+    const source = readFileSync(
+      'src/components/docs-overview/sdk-downloads-data.zh-cn.ts',
+      'utf8',
+    );
+    expect(source).toContain("id: 'flexible-classroom-sdk-web'");
+    expect(source).toContain("id: 'cloud-scene-sdk-web'");
+    expect(source).toContain("id: 'proctor-sdk-web'");
+    expect(
+      existsSync('content/docs/zh-CN/solutions/flexible-classroom/index.mdx'),
+    ).toBe(true);
+    expect(
+      existsSync(
+        'content/docs/zh-CN/api-reference/flexible-classroom/restful-api/api-classroom.mdx',
+      ),
+    ).toBe(true);
   });
 
   it('retains source files but omits retired public OpenAPI assets', () => {

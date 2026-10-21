@@ -1,3 +1,5 @@
+import { retiredCnProductIds } from '../retired-cn-docs.mjs';
+
 // 搜索产品 ID 跟随中文导航；API/FAQ 的历史名称在此统一，文档 URL 保持原样。
 const aliases = new Map<string, string>([
   ['cloud-transcoding', 'transcoding'],
@@ -6,7 +8,7 @@ const aliases = new Map<string, string>([
   ['micro-calling', 'voip-callkit'],
 ]);
 
-const excludedProducts = new Set(['danmaku', 'fusion-cdn']);
+const excludedProducts = new Set(['danmaku', ...retiredCnProductIds]);
 
 const aliasesByCanonical = new Map<string, string[]>();
 for (const [alias, canonical] of aliases) {

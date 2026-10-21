@@ -240,7 +240,6 @@ describe('ProductSdkDownloads', () => {
     ['web', 'whiteboard-sdk'],
     ['ios', 'meeting'],
     ['electron', 'meeting'],
-    ['web', 'flexible-classroom'],
     ['linux', 'on-premise-recording'],
     ['flutter', 'signaling'],
     ['ios', 'voice'],
