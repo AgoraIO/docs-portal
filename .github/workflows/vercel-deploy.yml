@@ -94,8 +94,8 @@ jobs:
             }
 
             if (context.eventName === 'workflow_dispatch') {
-              const manualInput = `${{ toJson(inputs.pr_number) }}`;
-              if (manualInput && manualInput !== 'null' && manualInput !== '') {
+              const manualInput = context.payload.inputs?.pr_number?.trim() ?? '';
+              if (/^[1-9]\d*$/.test(manualInput)) {
                 core.setOutput('should_deploy', 'true');
                 core.setOutput('pr_number', manualInput);
                 core.setOutput('reason', 'manual preview deploy');
@@ -215,6 +215,22 @@ jobs:
             --meta githubCommitRef="${{ github.head_ref || github.ref_name }}" \
             --meta githubCommitSha="${{ github.event.pull_request.head.sha || github.sha }}")"
           echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Verify public CN RESTful preview
+        if: steps.preview-context.outputs.should_deploy == 'true'
+        env:
+          DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
+        run: |
+          node --input-type=module -e '
+            const url = new URL("/zh-CN/api-reference/api-ref/conversational-ai/join", process.env.DEPLOY_URL);
+            const response = await fetch(url, { signal: AbortSignal.timeout(30000) });
+            if (!response.ok) throw new Error(`Public preview returned ${response.status}`);
+            const html = await response.text();
+            if (!html.includes("创建对话式智能体") || !/<span[^>]*class="[^"]*bg-green-100[^"]*"[^>]*data-openapi-method="POST"/.test(html)) {
+              throw new Error("Public preview is missing the colored POST navigation badge");
+            }
+            console.log(`Public CN preview verified: HTTP ${response.status}; colored POST navigation badge; ${url}`);
+          '
 
       - name: Alias main preview URL
         if: steps.preview-context.outputs.should_deploy == 'true' && github.event_name == 'push' && github.ref_name == 'main'
