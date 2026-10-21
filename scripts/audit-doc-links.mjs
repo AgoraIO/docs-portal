@@ -413,6 +413,7 @@ export function getZhCnOpenApiSourcePaths(openApiRoot) {
 }
 
 function extractLinks(markdown) {
+  markdown = maskMdxComments(markdown);
   const links = [];
   const markdownLinkPattern = /(!?)\[[\s\S]*?\]\((<[^>\n]+>|[^)\n]+)\)/g;
   const referenceLinkPattern = /^\s{0,3}\[[^\]\n]+\]:\s*(\S+)/gm;
@@ -486,7 +487,11 @@ function extractAnchors(markdown) {
 }
 
 function maskMarkdownCode(markdown) {
-  return maskFencedCode(markdown).replace(/\{\/\*[\s\S]*?\*\/\}/g, (comment) =>
+  return maskMdxComments(maskFencedCode(markdown));
+}
+
+function maskMdxComments(markdown) {
+  return markdown.replace(/\{\/\*[\s\S]*?\*\/\}/g, (comment) =>
     comment.replace(/[^\n]/g, ' '),
   );
 }

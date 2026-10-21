@@ -13,7 +13,7 @@ import { getOpenApiLanes, resolveOpenApiEndpointRoute } from './openapi/lanes';
 import { getContentDocsPrerenderPaths } from './prerender-content-routes';
 import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 import { isPublicCnSearchUrl } from './search/cn-search-urls.mjs';
-import { source } from './source.server';
+import { getLLMText, source } from './source.server';
 
 const retiredPaths = [
   '/zh-CN/realtime-media/fusion-cdn',
@@ -24,6 +24,22 @@ const retiredPaths = [
 ];
 
 describe('retired Chinese Fusion CDN documentation', () => {
+  it.each([
+    ['realtime-media', 'overview'],
+    ['api-reference', 'overview'],
+    ['solutions', 'digital-learning', 'course-resource'],
+    ['solutions', 'digital-learning', 'school-resource'],
+  ])(
+    'omits hidden source sections from public Markdown for %s',
+    async (...slugs) => {
+      const page = source.getPage(slugs, 'zh-CN');
+      expect(page).toBeDefined();
+      if (!page) throw new Error('Missing active overview');
+      const markdown = await getLLMText(page);
+      expect(markdown).not.toContain('fusion-cdn');
+      expect(markdown).not.toContain('融合 CDN');
+    },
+  );
   it.each(retiredPaths)('stops serving %s and its Markdown', async (url) => {
     const [locale, tab, ...slugSegments] = url.split('/').filter(Boolean);
     expect(source.getPage([tab, ...slugSegments], locale)).toBeUndefined();
