@@ -50,6 +50,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import { getAppBranding, legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
@@ -746,7 +747,13 @@ function MobileSidebarNode({
           {node.title}
         </span>
         {node.method ? (
-          <span className="mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+          <span
+            className={cn(
+              'mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none',
+              getOpenApiMethodBadgeClassName(node.method),
+            )}
+            data-openapi-method={node.method}
+          >
             {node.method}
           </span>
         ) : null}

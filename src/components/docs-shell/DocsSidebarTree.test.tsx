@@ -489,6 +489,73 @@ describe('DocsSidebarTree', () => {
     expect(screen.getByText('POST')).toHaveClass('font-mono');
   });
 
+  it.each([
+    ['GET', 'blue'],
+    ['POST', 'green'],
+    ['PUT', 'amber'],
+    ['PATCH', 'amber'],
+    ['DELETE', 'red'],
+  ])(
+    'colors active and inactive %s endpoint badges in both themes',
+    async (method, color) => {
+      const activePath = '/zh-CN/api-reference/api-ref/conversational-ai/join';
+      const inactivePath = '/zh-CN/api-reference/api-ref/cloud-recording/query';
+      renderSidebarTree(
+        [
+          {
+            id: activePath,
+            method,
+            title: 'ConvoAI endpoint',
+            type: 'page',
+            url: activePath,
+          },
+          {
+            id: 'cloud-recording',
+            title: 'Cloud recording',
+            type: 'section',
+            children: [
+              {
+                id: inactivePath,
+                method,
+                title: 'Recording endpoint',
+                type: 'page',
+                url: inactivePath,
+              },
+            ],
+          },
+          {
+            id: '/zh-CN/introduction',
+            title: 'Overview',
+            type: 'page',
+            url: '/zh-CN/introduction',
+          },
+        ],
+        activePath,
+      );
+
+      for (const title of ['ConvoAI endpoint', 'Recording endpoint']) {
+        const link = await screen.findByRole('link', {
+          name: `${title} ${method}`,
+        });
+        const badge = link.querySelector('span:last-child');
+        expect(badge).toHaveClass(
+          `bg-${color}-100`,
+          `text-${color}-800`,
+          `dark:bg-${color}-900`,
+          `dark:text-${color}-100`,
+        );
+        expect(badge).not.toHaveClass('text-[color:var(--ink-4)]');
+        expect(link).toHaveAttribute(
+          'href',
+          title === 'ConvoAI endpoint' ? activePath : inactivePath,
+        );
+      }
+      expect(
+        screen.getByRole('link', { name: 'Overview' }).children,
+      ).toHaveLength(1);
+    },
+  );
+
   it('does not clamp long OpenAPI endpoint labels', async () => {
     const longTitle =
       'Start a conversational AI agent with a very long visible endpoint label';
