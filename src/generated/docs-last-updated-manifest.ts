@@ -812,7 +812,15 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
-    '2026-10-17T06:31:11.000Z',
+    '2026-10-21T05:55:36.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/platform/authentication.mdx':
+    '2026-10-21T05:55:36.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/platform/index.mdx':
+    '2026-10-21T05:55:36.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/platform/meta.json':
+    '2026-10-21T05:55:36.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/platform/status-codes.mdx':
+    '2026-10-21T05:55:36.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/status-codes.md':
     '2026-06-24T02:36:42.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/v3/index.mdx':
@@ -913,7 +921,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/user-system-registration.md':
     '2026-08-14T11:03:51.000Z',
-  'content/docs/en/api-reference/api-ref/index.mdx': '2026-10-18T10:19:52.000Z',
+  'content/docs/en/api-reference/api-ref/index.mdx': '2026-10-21T05:55:36.000Z',
   'content/docs/en/api-reference/api-ref/iot-channel-management-rest-api.md':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/index.md':
@@ -11703,6 +11711,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-24T02:36:42.000Z',
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
+  'content/openapi/conversational-ai/rest-api-platform.en.yaml':
+    '2026-10-21T05:55:36.000Z',
   'content/openapi/conversational-ai/rest-api-v3.en.yaml':
     '2026-10-18T10:19:52.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
