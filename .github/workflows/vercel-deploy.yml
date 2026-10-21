@@ -178,6 +178,7 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
           VITE_DOCS_REGION: cn
+          DOCS_DEV_SCOPE: zh-CN/api-reference/api-ref
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
           VERCEL_GIT_PROVIDER: github
