@@ -5,6 +5,7 @@ import {
   groupSearchSections,
   isPublicCnSearchUrl,
   mergeSearchPageGroups,
+  searchCnDocsPage,
 } from './cn-search-page';
 import { buildCnSearchDocument } from './cn-search-strategy';
 import { parseSearchPageState } from './search-page-state';
@@ -39,6 +40,39 @@ const hit = {
 afterEach(() => vi.restoreAllMocks());
 
 describe('full CN search adapter', () => {
+  it('hides retired documents and product facets returned by an older search service', async () => {
+    const groups = groupSearchSections([
+      hit,
+      {
+        ...hit,
+        id: 'retired',
+        url: '/realtime-media/fusion-cdn/build/enable-service',
+        product: 'fusion-cdn',
+      },
+      {
+        ...hit,
+        id: 'analytics',
+        url: '/realtime-media/usage-analytics/build/view-live-data',
+        product: 'analytics',
+      },
+    ]);
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        groups,
+        totalHits: 3,
+        totalPages: 1,
+        page: 1,
+        facets: {
+          product: { 'conversational-ai': 1, 'fusion-cdn': 1, analytics: 1 },
+        },
+      }),
+    );
+    const result = await searchCnDocsPage(parseSearchPageState({ q: 'CDN' }));
+    expect(result.groups.map((group) => group.pageUrl)).toEqual([
+      hit.url.split('#')[0],
+    ]);
+    expect(result.facets.product).not.toHaveProperty('fusion-cdn');
+  });
   it('deduplicates platform copies of a canonical chapter within and across pages', () => {
     const canonicalUrl = '/zh-CN/realtime-media/rtc/build/token-authentication';
     const android = {
