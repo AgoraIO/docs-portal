@@ -153,14 +153,14 @@ describe('ApiReferenceCards', () => {
     ).not.toBeInTheDocument();
   });
 
-  it('keeps the platform select left of API type and the product select as a mobile fallback', () => {
+  it('keeps product and platform selectors visible beside API type at every width', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
     const productSelect = screen.getByLabelText('产品');
     const platformSelect = screen.getByLabelText('平台/语言');
     const apiType = screen.getByRole('radiogroup', { name: 'API 类型' });
 
-    expect(productSelect.closest('label')).toHaveClass('lg:hidden');
+    expect(productSelect.closest('label')).not.toHaveClass('lg:hidden');
     expect(platformSelect.closest('label')).not.toHaveClass('lg:hidden');
     expect(platformSelect).toHaveDisplayValue('全部平台');
     expect(
@@ -168,6 +168,278 @@ describe('ApiReferenceCards', () => {
         Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
     expect(apiType).not.toHaveClass('lg:hidden');
+  });
+
+  it('orders common SDK platforms first without duplicating the RESTful type', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    const ids = within(screen.getByLabelText('平台/语言'))
+      .getAllByRole('option')
+      .map((option) => (option as HTMLOptionElement).value);
+    expect(ids.slice(0, 4)).toEqual(['all', 'android', 'ios', 'web']);
+    expect(ids).not.toContain('restful-api');
+  });
+
+  it.each([
+    [
+      '客户端 SDK',
+      'client',
+      ['android', 'ios', 'web'],
+      ['restful-api', 'go', 'python', 'typescript'],
+    ],
+    [
+      '服务端 SDK',
+      'server',
+      ['python', 'java', 'go', 'typescript', 'cpp'],
+      ['restful-api', 'android', 'ios', 'web'],
+    ],
+  ] as const)(
+    'limits platform options to %s after switching API type',
+    (label, apiType, included, excluded) => {
+      render(<ApiReferenceCards locale="zh-CN" type="all" />);
+      fireEvent.click(screen.getByRole('radio', { name: label }));
+      const select = screen.getByLabelText('平台/语言');
+      const ids = within(select)
+        .getAllByRole('option')
+        .map((option) => (option as HTMLOptionElement).value);
+      expect(ids).toEqual(expect.arrayContaining([...included]));
+      for (const id of excluded) expect(ids).not.toContain(id);
+      expect(select).toHaveDisplayValue(
+        apiType === 'client' ? '全部客户端平台' : '全部服务端语言',
+      );
+    },
+  );
+
+  it('makes platform inapplicable to RESTful and restores it when changing type', async () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'android' },
+    });
+    fireEvent.click(screen.getByRole('radio', { name: 'RESTful API' }));
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('all');
+    expect(screen.getByLabelText('平台/语言')).toBeDisabled();
+    expect(screen.queryByText('没有匹配的 API 文档')).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(new URLSearchParams(location.search).has('platform')).toBe(false),
+    );
+
+    fireEvent.click(screen.getByRole('radio', { name: '客户端 SDK' }));
+    expect(screen.getByLabelText('平台/语言')).not.toBeDisabled();
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('all');
+    expect(
+      screen.getByRole('link', { name: /实时互动 RTC Android 客户端 SDK/i }),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(new URLSearchParams(location.search).has('platform')).toBe(false),
+    );
+
+    fireEvent.click(screen.getByRole('radio', { name: 'RESTful API' }));
+    fireEvent.click(screen.getByRole('radio', { name: '全部' }));
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('all');
+    expect(screen.getByRole('option', { name: 'Android' })).toBeInTheDocument();
+    await waitFor(() => {
+      expect(new URLSearchParams(location.search).has('apiType')).toBe(false);
+      expect(new URLSearchParams(location.search).has('platform')).toBe(false);
+    });
+  });
+
+  it('keeps an explicitly selected platform supported by the next API type', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'cpp' },
+    });
+    fireEvent.click(screen.getByRole('radio', { name: '服务端 SDK' }));
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('cpp');
+    expect(screen.queryByText('没有匹配的 API 文档')).not.toBeInTheDocument();
+  });
+
+  it('normalizes incompatible URL filters and restores platform options on history navigation', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?apiType=client&platform=python&from=docs#catalog',
+    );
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    await waitFor(() =>
+      expect(screen.getByLabelText('平台/语言')).toHaveValue('all'),
+    );
+    expect(
+      screen.queryByRole('option', { name: 'Python' }),
+    ).not.toBeInTheDocument();
+    expect(new URLSearchParams(location.search).get('from')).toBe('docs');
+    expect(location.hash).toBe('#catalog');
+
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?apiType=restful',
+    );
+    fireEvent.popState(window);
+    await waitFor(() =>
+      expect(screen.getByLabelText('平台/语言')).toBeDisabled(),
+    );
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('all');
+    expect(
+      screen.queryByRole('option', { name: 'Android' }),
+    ).not.toBeInTheDocument();
+
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?apiType=client&platform=web',
+    );
+    fireEvent.popState(window);
+    await waitFor(() =>
+      expect(screen.getByLabelText('平台/语言')).toHaveValue('web'),
+    );
+    expect(screen.getByRole('option', { name: 'Android' })).toBeInTheDocument();
+  });
+
+  it('keeps a selected product visible and resettable even with matching results', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?product=conversational-ai&from=docs#catalog',
+    );
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    expect(screen.getByLabelText('产品')).toHaveValue('conversational-ai');
+    expect(screen.getByLabelText('产品').closest('label')).not.toHaveClass(
+      'lg:hidden',
+    );
+    expect(
+      screen.getByRole('heading', { name: '对话式 AI 引擎' }),
+    ).toBeVisible();
+    fireEvent.click(screen.getByRole('button', { name: '清除筛选' }));
+    expect(screen.getByLabelText('产品')).toHaveValue('all');
+    expect(screen.getByRole('heading', { name: '实时互动 RTC' })).toBeVisible();
+    await waitFor(() =>
+      expect(new URLSearchParams(window.location.search).has('product')).toBe(
+        false,
+      ),
+    );
+    expect(new URLSearchParams(window.location.search).get('from')).toBe(
+      'docs',
+    );
+    expect(window.location.hash).toBe('#catalog');
+  });
+
+  it('clears incompatible filters when switching to a REST-only product', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    fireEvent.click(screen.getByRole('radio', { name: '客户端 SDK' }));
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'ios' },
+    });
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'rtmp-gateway' },
+    });
+    expect(screen.getByLabelText('平台/语言')).toBeDisabled();
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('all');
+    expect(
+      screen.queryByRole('option', { name: 'iOS' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: '客户端 SDK' })).toBeDisabled();
+    expect(screen.getByRole('radio', { name: '服务端 SDK' })).toBeDisabled();
+    expect(
+      screen.getByRole('link', { name: /RTMP 网关 RESTful API/ }),
+    ).toBeVisible();
+    expect(screen.queryByText('没有匹配的 API 文档')).not.toBeInTheDocument();
+  });
+
+  it('keeps supported filters and scopes platforms and types to the product', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'ios' },
+    });
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'rtc' },
+    });
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('ios');
+    expect(
+      screen.queryByRole('option', { name: 'Python' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: '服务端 SDK' })).toBeDisabled();
+    expect(
+      screen.getByRole('link', { name: /实时互动 RTC iOS 客户端 SDK/ }),
+    ).toBeVisible();
+  });
+
+  it('includes explicitly Windows-compatible SDK references in Windows results', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'windows' },
+    });
+    expect(
+      screen.getByRole('link', {
+        name: /实时互动 RTC C# \(Windows\) 客户端 SDK/,
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('link', {
+        name: /实时互动 RTC C\+\+ \(全平台\) 客户端 SDK/,
+      }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('link', {
+        name: /即时通讯 IM C\+\+ \(全平台\) 客户端 SDK/,
+      }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('link', {
+        name: /RTC 服务端 SDK C\+\+ 服务端 SDK/,
+      }),
+    ).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'rtc' },
+    });
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('windows');
+    expect(screen.getByRole('option', { name: 'Windows' })).toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: /实时互动 RTC Android 客户端 SDK/ }),
+    ).not.toBeInTheDocument();
+  });
+
+  it('migrates legacy RESTful platform links to the API type without a duplicate platform choice', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?platform=restful-api&from=docs',
+    );
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    expect(
+      screen.getByRole('radio', { name: 'RESTful API', checked: true }),
+    ).toBeVisible();
+    expect(screen.getByLabelText('平台/语言')).toBeDisabled();
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('all');
+    expect(
+      screen.queryByRole('option', { name: 'RESTful API' }),
+    ).not.toBeInTheDocument();
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get('apiType')).toBe('restful');
+      expect(params.has('platform')).toBe(false);
+      expect(params.get('from')).toBe('docs');
+    });
+  });
+
+  it('repairs a shared link with a product-incompatible type and platform', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?product=rtmp-gateway&apiType=client&platform=ios',
+    );
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    expect(screen.getByLabelText('产品')).toHaveValue('rtmp-gateway');
+    expect(
+      screen.getByRole('radio', { name: '全部', checked: true }),
+    ).toBeVisible();
+    expect(
+      screen.getByRole('link', { name: /RTMP 网关 RESTful API/ }),
+    ).toBeVisible();
+    await waitFor(() => {
+      const params = new URLSearchParams(window.location.search);
+      expect(params.get('product')).toBe('rtmp-gateway');
+      expect(params.has('apiType')).toBe(false);
+      expect(params.has('platform')).toBe(false);
+    });
   });
 
   it('renders only product cards without capability headings', () => {
@@ -316,19 +588,23 @@ describe('ApiReferenceCards', () => {
     ).toBeVisible();
   });
 
-  it('shows an empty state and can clear filters', () => {
+  it('clears product and platform filters while matching results are present', () => {
     render(<ApiReferenceCards locale="zh-CN" type="server" />);
 
     fireEvent.change(screen.getByLabelText('产品'), {
       target: { value: 'rtc-server-sdk' },
     });
     fireEvent.change(screen.getByLabelText('平台/语言'), {
-      target: { value: 'restful-api' },
+      target: { value: 'python' },
     });
 
-    expect(screen.getByText('没有匹配的 API 文档')).toBeVisible();
+    expect(screen.queryByText('没有匹配的 API 文档')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('产品')).toHaveValue('rtc-server-sdk');
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('python');
 
     fireEvent.click(screen.getByRole('button', { name: '清除筛选' }));
+    expect(screen.getByLabelText('产品')).toHaveValue('all');
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('all');
 
     expect(
       screen.getByRole('link', { name: /RTC 服务端 SDK Python 服务端 SDK/i }),

@@ -1767,6 +1767,44 @@ describe('DocsShell', () => {
     );
   });
 
+  it.each([
+    ['GET', 'blue'],
+    ['POST', 'green'],
+    ['PUT', 'amber'],
+    ['PATCH', 'amber'],
+    ['DELETE', 'red'],
+  ])(
+    'colors %s method badges in the mobile navigation',
+    async (method, color) => {
+      const url = '/zh-CN/api-reference/api-ref/conversational-ai/join';
+      renderDocsShell(
+        {
+          activePath: url,
+          activeTab: 'api-reference',
+          sidebar: [
+            { id: url, method, title: 'ConvoAI endpoint', type: 'page', url },
+          ],
+        },
+        '/en/api-reference/method',
+      );
+      fireEvent.click(
+        await screen.findByRole('button', { name: 'Open navigation' }),
+      );
+      const sheet = await screen.findByRole('dialog');
+      const link = within(sheet).getByRole('link', {
+        name: `ConvoAI endpoint ${method}`,
+      });
+      expect(within(link).getByText(method)).toHaveClass(
+        `bg-${color}-100`,
+        `text-${color}-800`,
+        `dark:bg-${color}-900`,
+        `dark:text-${color}-100`,
+      );
+      expect(link).toHaveAttribute('href', url);
+      expect(link).toHaveAttribute('aria-current', 'page');
+    },
+  );
+
   it('keeps linked mobile sections navigable and independently expandable', async () => {
     renderDocsShell(
       {
