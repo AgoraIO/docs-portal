@@ -4,9 +4,9 @@
 # from the internal reference site, reviewed 18 Oct 2026. Deferred APIs and fields are omitted.
 # MLLM and realtime pipelines are out of scope for the Preview and are omitted on purpose.
 #
-# TODO(v3-prod): Authentication is not defined in the launch contract. The security schemes below
-# mirror V2 and are placeholders. Confirm the Preview auth method with engineering before
-# publishing.
+# Authentication: Basic HTTP authentication and the ConvoAI token (confirmed by the PM, 20 Oct
+# 2026). See the RESTful authentication page in the Platform reference.
+# TODO(platform-confirm): Whether the token value in the Authorization header is quoted.
 openapi: 3.1.0
 info:
   version: ""
@@ -18,8 +18,8 @@ servers:
   - url: https://preview.ai.agora.io/conversational-ai
     description: Base endpoint for the Conversational AI Platform REST API (Preview).
 x-docs-auth-links:
-  tokenAuth: /en/api-reference/api-ref/conversational-ai/v3/authentication#token-authentication
-  basicAuth: /en/api-reference/api-ref/conversational-ai/v3/authentication#basic-http-authentication
+  tokenAuth: /en/api-reference/api-ref/conversational-ai/platform/authentication#token-authentication
+  basicAuth: /en/api-reference/api-ref/conversational-ai/platform/authentication#basic-http-authentication
 security:
   - tokenAuth: []
   - basicAuth: []
@@ -72,7 +72,7 @@ paths:
           markdown: >-
             Set `credential` on each pipeline stage. With `byok`, pass your provider key in
             `credential.api_key` as a `$secrets.<set>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/v3/create-secret-set). Agora checks
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). Agora checks
             that the reference exists when you create the agent. Keep credentials out of `params`.
       parameters:
         - $ref: "#/components/parameters/AppId"
@@ -218,7 +218,7 @@ paths:
           description: "`ResourceQuotaLimitExceeded`: The project has reached its agent quota."
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): Staging (14 Oct) required `params.url` for managed ASR and TTS and `url`
+      # TODO(platform-confirm): Staging (14 Oct) required `params.url` for managed ASR and TTS and `url`
       # for a managed LLM, and rejected other URLs. The contract describes `url` only as a custom
       # endpoint and lets you omit the pipeline entirely. Confirm the launch behavior.
     get:
@@ -275,7 +275,7 @@ paths:
         - position: after-description
           markdown: >-
             The response includes the agent's current `ETag`. Pass it in the `If-Match` header when
-            you [update the agent](/en/api-reference/api-ref/conversational-ai/v3/update-agent).
+            you [update the agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent).
             Pipeline stages report only `credential.mode`. API keys and secret references are never
             returned.
       parameters:
@@ -329,7 +329,7 @@ paths:
 
             The update applies to sessions that start afterward. Running sessions keep the
             configuration they started with. To change a running session, use [Update a
-            session](/en/api-reference/api-ref/conversational-ai/v3/update-session).
+            session](/en/api-reference/api-ref/conversational-ai/platform/update-session).
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/AgentId"
@@ -372,7 +372,7 @@ paths:
           $ref: "#/components/responses/PreconditionFailed"
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): The contract says each variable definition is replaced as a whole. On
+      # TODO(platform-confirm): The contract says each variable definition is replaced as a whole. On
       # staging (10 Oct), a patch with only `description` merged into the saved definition.
     delete:
       tags:
@@ -425,13 +425,13 @@ paths:
           markdown: >-
             The session uses the agent's configuration as saved when the session starts. To run a
             configuration without saving an agent first, use [Start an ephemeral
-            session](/en/api-reference/api-ref/conversational-ai/v3/start-ephemeral-session).
+            session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session).
 
 
             A `200` response confirms that the session exists. It doesn't confirm that the agent
             has joined the RTC channel or that an outbound call was answered. To follow the
-            session, [retrieve it](/en/api-reference/api-ref/conversational-ai/v3/retrieve-session).
-            The session ends when you [stop it](/en/api-reference/api-ref/conversational-ai/v3/stop-session),
+            session, [retrieve it](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session).
+            The session ends when you [stop it](/en/api-reference/api-ref/conversational-ai/platform/stop-session),
             or when it reaches a limit in `lifecycle`.
       parameters:
         - $ref: "#/components/parameters/AppId"
@@ -618,7 +618,7 @@ paths:
           markdown: >-
             Use this endpoint to start a session without saving an agent first, for example to
             test a configuration. The request body is the same as [Start a
-            session](/en/api-reference/api-ref/conversational-ai/v3/start-session), but with the
+            session](/en/api-reference/api-ref/conversational-ai/platform/start-session), but with the
             agent configuration in `agent` instead of `agent_id`. The configuration isn't saved.
       parameters:
         - $ref: "#/components/parameters/AppId"
@@ -837,7 +837,7 @@ paths:
             operation on the session is in progress.
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): The contract's Runtime updates guide describes If-Match, recursive merge
+      # TODO(platform-confirm): The contract's Runtime updates guide describes If-Match, recursive merge
       # of params, and lifecycle updates. The endpoint page and the OpenAPI schema describe no
       # If-Match, replacement, and no lifecycle. Documented as the endpoint page and schema say.
   /v3/projects/{appid}/sessions/{agent_session_id}/stop:
@@ -852,7 +852,7 @@ paths:
           markdown: >-
             Use this endpoint to end a session as soon as its task is complete. Send the request
             without a body. The stop happens asynchronously. [Retrieve the
-            session](/en/api-reference/api-ref/conversational-ai/v3/retrieve-session) to confirm
+            session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session) to confirm
             that its status is `STOPPED`.
       parameters:
         - $ref: "#/components/parameters/AppId"
@@ -885,7 +885,7 @@ paths:
             its status.
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): Staging (14 Oct) returned 404 TaskNotFound for an ended session, not
+      # TODO(platform-confirm): Staging (14 Oct) returned 404 TaskNotFound for an ended session, not
       # 409 TaskNotRunning.
   /v3/projects/{appid}/sessions/{agent_session_id}/actions/speak:
     post:
@@ -1074,8 +1074,8 @@ paths:
 
             If a set with the same name exists, the request fails with `SecretSetAlreadyExists`.
             To change values, [update the
-            set](/en/api-reference/api-ref/conversational-ai/v3/update-secret-set) or [set a
-            key](/en/api-reference/api-ref/conversational-ai/v3/set-secret-key).
+            set](/en/api-reference/api-ref/conversational-ai/platform/update-secret-set) or [set a
+            key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key).
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/IdempotencyKey"
@@ -1232,9 +1232,9 @@ paths:
           markdown: >-
             Use this endpoint to rotate keys that must change together. Pass a string to add or
             replace a key, or `null` to remove it. Keys you omit don't change. To change one key,
-            [set the key](/en/api-reference/api-ref/conversational-ai/v3/set-secret-key) instead.
+            [set the key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key) instead.
             To replace the whole set, use [Replace a secret
-            set](/en/api-reference/api-ref/conversational-ai/v3/replace-secret-set).
+            set](/en/api-reference/api-ref/conversational-ai/platform/replace-secret-set).
 
 
             Running sessions keep the values they resolved when they started. New sessions use the
@@ -1470,7 +1470,7 @@ paths:
           markdown: >-
             You can't remove a key that an agent references. A secret set must also keep at least
             one key. To remove the last key, [delete the
-            set](/en/api-reference/api-ref/conversational-ai/v3/delete-secret-set) instead.
+            set](/en/api-reference/api-ref/conversational-ai/platform/delete-secret-set) instead.
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/SecretSetName"
@@ -1611,7 +1611,7 @@ paths:
           description: "`ResourceQuotaLimitExceeded`: The project has reached its number quota."
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): Staging (10 Oct) rejected allowed_ips, secret-reference SIP passwords,
+      # TODO(platform-confirm): Staging (10 Oct) rejected allowed_ips, secret-reference SIP passwords,
       # and inbound end_call and transfer with NotImplemented, and a 503 left a hidden pending
       # record. The contract lists all four fields at launch. Confirm the launch build.
     get:
@@ -1805,8 +1805,8 @@ paths:
 
 
             Before you create a campaign, [create the
-            agent](/en/api-reference/api-ref/conversational-ai/v3/create-agent) and [register the
-            phone number](/en/api-reference/api-ref/conversational-ai/v3/create-number) to call
+            agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) and [register the
+            phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) to call
             from. Send an `Idempotency-Key` so that retrying the request can't create a second
             campaign.
       x-docs-callouts:
@@ -1817,7 +1817,7 @@ paths:
             A campaign places real phone calls. When `schedule.mode` is `immediate`, dialing
             starts as soon as the campaign is created. To test, create a `scheduled` campaign with
             a start time in the future, then [cancel
-            it](/en/api-reference/api-ref/conversational-ai/v3/cancel-campaign).
+            it](/en/api-reference/api-ref/conversational-ai/platform/cancel-campaign).
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/IdempotencyKey"
@@ -1947,7 +1947,7 @@ paths:
           description: "`ResourceQuotaLimitExceeded`: The project has reached its campaign quota."
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): Staging (14 Oct) rejected call_policy.voicemail with NotImplemented. The
+      # TODO(platform-confirm): Staging (14 Oct) rejected call_policy.voicemail with NotImplemented. The
       # contract lists voicemail, end_call, transfer, and max_silence_duration_ms at launch.
     get:
       tags:
@@ -2013,7 +2013,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): Default and maximum `limit`.
+      # TODO(platform-confirm): Default and maximum `limit`.
   /v3/projects/{appid}/campaigns/{campaign_id}:
     get:
       tags:
@@ -2133,7 +2133,7 @@ paths:
         - position: after-description
           markdown: >-
             You can't delete a campaign that is `scheduled`, `running`, or `paused`. [Cancel
-            it](/en/api-reference/api-ref/conversational-ai/v3/cancel-campaign) first.
+            it](/en/api-reference/api-ref/conversational-ai/platform/cancel-campaign) first.
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/CampaignId"
@@ -2169,7 +2169,7 @@ paths:
           markdown: >-
             You can pause a campaign whose status is `running`. Calls already in progress continue.
             To continue dialing, [resume the
-            campaign](/en/api-reference/api-ref/conversational-ai/v3/resume-campaign).
+            campaign](/en/api-reference/api-ref/conversational-ai/platform/resume-campaign).
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/CampaignId"
@@ -2304,7 +2304,7 @@ paths:
             `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
         default:
           $ref: "#/components/responses/Error"
-      # TODO(v3-confirm): Whether calls in progress are hung up on cancel, and whether
+      # TODO(platform-confirm): Whether calls in progress are hung up on cancel, and whether
       # complete_ts is set on a canceled campaign.
 components:
   securitySchemes:
@@ -2316,7 +2316,11 @@ components:
       type: apiKey
       in: header
       name: Authorization
-      description: Use an RTC token in the format `agora token=<your_token>`.
+      description: >-
+        Use a token generated with your App ID and App Certificate, in the format
+        `agora token=<your_token>`. A token with the ConvoAI service authenticates any request.
+        To start an RTC session, also include the RTC service and pass the same token in
+        `transport.token`.
   parameters:
     AppId:
       name: appid
@@ -2517,7 +2521,7 @@ components:
     Error:
       description: >-
         The request failed. The response body contains the `reason` and `detail` of the failure.
-        For possible reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/v3/status-codes).
+        For possible reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes).
       headers:
         Agora-Request-Id:
           $ref: "#/components/headers/Agora-Request-Id"
@@ -2541,7 +2545,7 @@ components:
           type: string
           description: >-
             A machine-readable error reason, such as `InvalidFieldValue` or `ResourceNotFound`.
-            For all reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/v3/status-codes).
+            For all reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes).
       example:
         detail: The requested session was not found.
         reason: TaskNotFound
@@ -2855,7 +2859,7 @@ components:
           writeOnly: true
           description: >-
             Your provider API key, as a `$secrets.<set_name>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/v3/create-secret-set) or as the key
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set) or as the key
             itself. Required when `mode` is `byok`, and not accepted when `mode` is `managed`. Agora
             resolves references when each session starts. This value is never returned.
     StageHeaders:
@@ -3133,7 +3137,7 @@ components:
           type: object
           additionalProperties: true
           description: Provider-specific settings, passed to the provider as they are.
-      # TODO(v3-confirm): Ticket: avatar runtime support needs Samyak's confirmation before the
+      # TODO(platform-confirm): Ticket: avatar runtime support needs Samyak's confirmation before the
       # Models pages publish it.
     StartOfSpeech:
       type: object
@@ -3369,7 +3373,7 @@ components:
       type: object
       description: >-
         The agent configuration for this session. It has the same fields as
-        [Create an agent](/en/api-reference/api-ref/conversational-ai/v3/create-agent), except
+        [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent), except
         `agent_name`. The configuration isn't saved.
       properties:
         instructions:
@@ -3411,21 +3415,21 @@ components:
           additionalProperties: true
           description: >-
             Changes to the greeting. Pass any of the `greeting` fields of [Create an
-            agent](/en/api-reference/api-ref/conversational-ai/v3/create-agent). Set it to `null`
+            agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). Set it to `null`
             to remove the greeting.
         pipeline:
           type: object
           additionalProperties: true
           description: >-
             Changes to the pipeline. Pass any of the `pipeline` fields of [Create an
-            agent](/en/api-reference/api-ref/conversational-ai/v3/create-agent). Nested objects
+            agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). Nested objects
             merge field by field.
         filler_words:
           type: object
           additionalProperties: true
           description: >-
             Changes to the filler words. Pass any of the `filler_words` fields of [Create an
-            agent](/en/api-reference/api-ref/conversational-ai/v3/create-agent).
+            agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent).
     Agent:
       type: object
       required:
@@ -3620,7 +3624,7 @@ components:
           description: >-
             The RTC token the agent uses to join the channel. Required when the project has an App
             Certificate enabled. To renew it, [update the
-            session](/en/api-reference/api-ref/conversational-ai/v3/update-session).
+            session](/en/api-reference/api-ref/conversational-ai/platform/update-session).
         uid:
           type: string
           description: >-
@@ -3821,7 +3825,7 @@ components:
           description: >-
             The status of the session. `RUNNING` means the agent is live. For a phone call, it
             doesn't mean the call was answered.
-      # TODO(v3-confirm): Staging (13 Oct) returned 201 with lowercase `running` and `created_at`.
+      # TODO(platform-confirm): Staging (13 Oct) returned 201 with lowercase `running` and `created_at`.
     SessionUpdated:
       type: object
       required:
@@ -4154,7 +4158,7 @@ components:
           description: >-
             The values extracted for the agent's variables with `extract: true`. `null` when the
             agent declares no extract variables.
-      # TODO(v3-confirm): On staging, `agent_name` returned the engine's task name
+      # TODO(platform-confirm): On staging, `agent_name` returned the engine's task name
       # (`session-...` or `ephemeral-...`), not the agent's name.
     SessionSummary:
       type: object
@@ -4284,7 +4288,7 @@ components:
         update_ts:
           type: integer
           description: The time the set was last updated, as a Unix timestamp in seconds.
-      # TODO(v3-confirm): Staging (10 Oct) returned `keys` as a list of names and Set Key as
+      # TODO(platform-confirm): Staging (10 Oct) returned `keys` as a list of names and Set Key as
       # `{key}` only. The contract returns key objects with timestamps.
     SecretSetList:
       type: object
@@ -4471,7 +4475,7 @@ components:
           $ref: "#/components/schemas/SipTrunk"
         inbound:
           $ref: "#/components/schemas/Inbound"
-      # TODO(v3-confirm): Whether `sip_trunk` in a patch merges or replaces (for example, whether
+      # TODO(platform-confirm): Whether `sip_trunk` in a patch merges or replaces (for example, whether
       # omitting `auth` clears the saved credentials).
     Number:
       type: object
@@ -4693,7 +4697,7 @@ components:
           $ref: "#/components/schemas/SessionLifecycle"
           description: >-
             The lifecycle settings for each session the campaign starts. See [Start a
-            session](/en/api-reference/api-ref/conversational-ai/v3/start-session) for the fields
+            session](/en/api-reference/api-ref/conversational-ai/platform/start-session) for the fields
             and limits.
         pacing:
           $ref: "#/components/schemas/CampaignPacing"
@@ -4708,7 +4712,7 @@ components:
           type: object
           description: >-
             Changes to the pacing. Pass any of the `pacing` fields of [Create a
-            campaign](/en/api-reference/api-ref/conversational-ai/v3/create-campaign). Fields you
+            campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign). Fields you
             omit keep their saved values.
           properties:
             max_concurrent:

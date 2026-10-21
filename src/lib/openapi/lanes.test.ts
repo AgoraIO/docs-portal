@@ -73,8 +73,8 @@ describe('openapi lanes', () => {
         tab: 'api-reference',
       }),
       expect.objectContaining({
-        id: 'convoai-v3',
-        routePrefix: 'api-reference/api-ref/conversational-ai/v3',
+        id: 'convoai-platform',
+        routePrefix: 'api-reference/api-ref/conversational-ai/platform',
         tab: 'api-reference',
       }),
     ]);
@@ -109,19 +109,24 @@ describe('openapi lanes', () => {
     });
   });
 
-  it('resolves a nested v3 lane ahead of its parent lane', () => {
-    const v3Slug = ['api-ref', 'conversational-ai', 'v3', 'start-session'];
+  it('resolves a nested Platform lane ahead of its parent lane', () => {
+    const platformSlug = [
+      'api-ref',
+      'conversational-ai',
+      'platform',
+      'start-session',
+    ];
 
     expect(
-      resolveOpenApiEndpointRoute('en', 'api-reference', v3Slug),
+      resolveOpenApiEndpointRoute('en', 'api-reference', platformSlug),
     ).toMatchObject({
-      lane: expect.objectContaining({ id: 'convoai-v3' }),
+      lane: expect.objectContaining({ id: 'convoai-platform' }),
       operationId: 'start-session',
-      url: '/en/api-reference/api-ref/conversational-ai/v3/start-session',
+      url: '/en/api-reference/api-ref/conversational-ai/platform/start-session',
     });
-    expect(resolveOpenApiLaneRoute('en', 'api-reference', v3Slug)?.id).toBe(
-      'convoai-v3',
-    );
+    expect(
+      resolveOpenApiLaneRoute('en', 'api-reference', platformSlug)?.id,
+    ).toBe('convoai-platform');
     expect(
       resolveOpenApiLaneRoute('en', 'api-reference', [
         'api-ref',

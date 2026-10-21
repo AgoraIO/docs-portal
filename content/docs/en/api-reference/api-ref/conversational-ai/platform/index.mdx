@@ -3,8 +3,6 @@ title: Conversational AI Platform REST API overview
 description: Save agents, secrets, and phone numbers, and use them to run agent sessions and outbound call campaigns.
 ---
 
-{/* TODO(v3-prod): Authentication is not defined in the launch contract. Add an Authentication bullet and page once engineering confirms the Preview auth method. */}
-
 The Conversational AI Platform REST API (Preview) lets you save agents, secrets, and phone numbers in your project, and use them to run agent sessions and outbound call campaigns from your server.
 
 :::info
@@ -14,6 +12,7 @@ During the Preview, agent sessions run in North America (US). Geofencing isn't s
 ## API basics
 
 - **Base URL**: `https://preview.ai.agora.io/conversational-ai/v3/projects/<appid>`, where `<appid>` is the App ID of your Agora project. Every resource belongs to one project.
+- **Authentication**: Use [token authentication](authentication#token-authentication) or [Basic HTTP authentication](authentication#basic-http-authentication) for every request.
 - **Request**: Request and response bodies use JSON. Request URLs and request bodies are case-sensitive.
 - **IDs**: Each resource returns its ID in a `<resource>_id` field, such as `agent_id`, `number_id`, and `campaign_id`. Agent, number, and campaign IDs start with `agent_`, `num_`, and `camp_`. Session IDs are 32 lowercase letters and digits.
 - **Timestamps**: Timestamps are Unix times in seconds, in fields that end in `_ts`. Durations have a unit suffix, such as `_ms` or `_seconds`. Campaign schedules are the exception: they use local times in the schedule's time zone.

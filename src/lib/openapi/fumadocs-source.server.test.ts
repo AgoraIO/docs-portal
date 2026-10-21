@@ -107,11 +107,11 @@ describe('fumadocs openapi source', () => {
         BasicAuth:
           '/en/api-reference/api-ref/speech-to-text/authentication#recommended-pattern',
       },
-      'convoai-v3': {
+      'convoai-platform': {
         basicAuth:
-          '/en/api-reference/api-ref/conversational-ai/v3/authentication#basic-http-authentication',
+          '/en/api-reference/api-ref/conversational-ai/platform/authentication#basic-http-authentication',
         tokenAuth:
-          '/en/api-reference/api-ref/conversational-ai/v3/authentication#token-authentication',
+          '/en/api-reference/api-ref/conversational-ai/platform/authentication#token-authentication',
       },
     } as const;
 

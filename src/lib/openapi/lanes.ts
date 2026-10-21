@@ -546,20 +546,20 @@ export const OPENAPI_LANES = [
     },
   },
   {
-    id: 'convoai-v3',
+    id: 'convoai-platform',
     locales: ['en'],
     parentUrl: {
-      en: '/en/api-reference/api-ref/conversational-ai/v3',
-      'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai/v3',
+      en: '/en/api-reference/api-ref/conversational-ai/platform',
+      'zh-CN': '/zh-CN/api-reference/api-ref/conversational-ai/platform',
     },
     publicSourceUrl: {
-      en: '/openapi/conversational-ai/rest-api-v3.en.yaml',
-      'zh-CN': '/openapi/conversational-ai/rest-api-v3.en.yaml',
+      en: '/openapi/conversational-ai/rest-api-platform.en.yaml',
+      'zh-CN': '/openapi/conversational-ai/rest-api-platform.en.yaml',
     },
-    routePrefix: 'api-reference/api-ref/conversational-ai/v3',
+    routePrefix: 'api-reference/api-ref/conversational-ai/platform',
     sourcePath: {
-      en: 'content/openapi/conversational-ai/rest-api-v3.en.yaml',
-      'zh-CN': 'content/openapi/conversational-ai/rest-api-v3.en.yaml',
+      en: 'content/openapi/conversational-ai/rest-api-platform.en.yaml',
+      'zh-CN': 'content/openapi/conversational-ai/rest-api-platform.en.yaml',
     },
     tab: 'api-reference',
     operations: {
@@ -899,7 +899,7 @@ export function resolveOpenApiLaneRoute(
   slugSegments: string[],
 ) {
   // Prefer the longest matching prefix so a nested lane (for example a
-  // `conversational-ai/v3` lane) wins over its parent lane.
+  // `conversational-ai/platform` lane) wins over its parent lane.
   let match: { lane: OpenApiLane; length: number } | null = null;
 
   for (const lane of getOpenApiLanes()) {
