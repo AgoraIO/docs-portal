@@ -634,18 +634,10 @@ describe('product API reference sidebar links', { timeout: 30_000 }, () => {
     ]);
   });
 
-  it('opens the SDK extensions development section by default', async () => {
-    const sidebar = await loadSidebar('zh-CN', 'realtime-media', [
-      'sdk-extensions',
-    ]);
-    const development = findSection(sidebar, ['开发与集成']);
-
-    expect(development).toMatchObject({
-      collapsible: true,
-      defaultOpen: true,
-      title: '开发与集成',
-      type: 'section',
-    });
+  it('does not publish the retired SDK extensions section', async () => {
+    expect(
+      await loadDocsPagePayload('zh-CN', 'realtime-media', ['sdk-extensions']),
+    ).toBeNull();
   });
 
   it('keeps the existing English realtime-media RESTful API injection', async () => {
