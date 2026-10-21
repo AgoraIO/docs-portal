@@ -9,8 +9,9 @@ import {
   zhCNApiReferenceCards,
 } from '@/lib/api-reference-cards-data.zh-cn';
 import {
-  type ApiReferenceFilterOption,
   buildApiReferenceFilterOptions,
+  getApiReferencePlatformOptions,
+  matchesApiReferencePlatform,
 } from '@/lib/api-reference-filter-options';
 import {
   API_REFERENCE_CAPABILITY_GROUPS,
@@ -35,24 +36,28 @@ export function ApiReferenceCards({
 }) {
   const entries =
     type === 'all' ? zhCNApiReferenceCards.all : zhCNApiReferenceCards[type];
-  const [productId, setProductId] = useState('all');
-  const [platformId, setPlatformId] = useState('all');
-  const [apiType, setApiType] = useState<ApiReferenceTypeFilter>('all');
+  const [{ productId, platformId, apiType }, setFilters] =
+    useState<ApiReferenceFilters>({
+      productId: 'all',
+      platformId: 'all',
+      apiType: 'all',
+    });
   const [filtersReady, setFiltersReady] = useState(false);
 
   const productOptions = useMemo(
     () => buildApiReferenceFilterOptions(entries, 'product'),
     [entries],
   );
-  const platformOptions = useMemo(
-    () => getApiReferencePlatformOptions(entries, apiType),
-    [entries, apiType],
+  const productEntries = entries.filter(
+    (entry) => productId === 'all' || entry.productId === productId,
   );
-  const visibleEntries = entries.filter(
-    (entry) =>
-      (productId === 'all' || entry.productId === productId) &&
-      (platformId === 'all' || entry.platformId === platformId) &&
-      matchesApiTypeFilter(entry, apiType),
+  const typeEntries = productEntries.filter((entry) =>
+    matchesApiTypeFilter(entry, apiType),
+  );
+  const platformOptions = getApiReferencePlatformOptions(typeEntries);
+  const platformNotApplicable = platformOptions.length === 0;
+  const visibleEntries = typeEntries.filter((entry) =>
+    matchesApiReferencePlatform(entry, platformId),
   );
   const visibleGroups = groupEntriesByProduct(visibleEntries);
   const visibleProductGroups = orderProductsByCapability(visibleGroups);
@@ -67,9 +72,7 @@ export function ApiReferenceCards({
         type === 'all',
       );
 
-      setProductId(filters.productId);
-      setPlatformId(filters.platformId);
-      setApiType(filters.apiType);
+      setFilters(filters);
       setFiltersReady(true);
     };
 
@@ -97,17 +100,15 @@ export function ApiReferenceCards({
   }, [apiType, filtersReady, platformId, productId, type]);
 
   function clearFilters() {
-    setProductId('all');
-    setPlatformId('all');
-    setApiType('all');
+    setFilters({ productId: 'all', platformId: 'all', apiType: 'all' });
   }
 
-  function changeApiType(nextType: ApiReferenceTypeFilter) {
-    setApiType(nextType);
-    setPlatformId(
-      resolvePlatformFilter(
-        apiType === 'restful' ? null : platformId,
-        getApiReferencePlatformOptions(entries, nextType),
+  function updateFilters(next: Partial<ApiReferenceFilters>) {
+    setFilters((current) =>
+      normalizeApiReferenceFilters(
+        { ...current, ...next },
+        entries,
+        type === 'all',
       ),
     );
   }
@@ -120,9 +121,8 @@ export function ApiReferenceCards({
       <section aria-label="API 筛选" className="border-border border-b pb-5">
         <div className="flex flex-wrap items-end gap-4">
           <ReferenceFilterSelect
-            className={type === 'all' ? 'lg:hidden' : undefined}
             label="产品"
-            onChange={setProductId}
+            onChange={(value) => updateFilters({ productId: value })}
             options={[
               { label: '全部产品', value: 'all' },
               ...productOptions.map((option) => ({
@@ -133,12 +133,14 @@ export function ApiReferenceCards({
             value={productId}
           />
           <ReferenceFilterSelect
+            disabled={platformNotApplicable}
             label="平台/语言"
-            onChange={setPlatformId}
+            onChange={(value) => updateFilters({ platformId: value })}
             options={[
               {
-                label:
-                  apiType === 'client'
+                label: platformNotApplicable
+                  ? '不适用（RESTful API）'
+                  : apiType === 'client'
                     ? '全部客户端平台'
                     : apiType === 'server'
                       ? '全部服务端语言'
@@ -153,9 +155,30 @@ export function ApiReferenceCards({
             value={platformId}
           />
           {type === 'all' ? (
-            <ApiTypeSegmentedControl onChange={changeApiType} value={apiType} />
+            <ApiTypeSegmentedControl
+              entries={productEntries}
+              onChange={(value) => updateFilters({ apiType: value })}
+              value={apiType}
+            />
+          ) : null}
+          {hasFilter ? (
+            <button
+              className="h-9 rounded-md border border-border px-3 text-sm font-medium text-foreground transition-colors hover:bg-accent/40"
+              onClick={clearFilters}
+              type="button"
+            >
+              清除筛选
+            </button>
           ) : null}
         </div>
+        <p
+          aria-live="polite"
+          className="m-0 mt-3 text-xs text-muted-foreground"
+        >
+          {platformNotApplicable
+            ? 'RESTful API 无需选择平台或语言。'
+            : '可按运行平台或开发语言、框架筛选。'}
+        </p>
       </section>
 
       {visibleEntries.length > 0 ? (
@@ -177,17 +200,8 @@ export function ApiReferenceCards({
             没有匹配的 API 文档
           </p>
           <p className="m-0 mt-1 text-sm text-muted-foreground">
-            调整产品或平台筛选条件后重试。
+            调整产品、API 类型或平台筛选条件后重试。
           </p>
-          {hasFilter ? (
-            <button
-              className="mt-3 rounded-md border border-border px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-accent/40"
-              onClick={clearFilters}
-              type="button"
-            >
-              清除筛选
-            </button>
-          ) : null}
         </div>
       )}
     </section>
@@ -195,9 +209,11 @@ export function ApiReferenceCards({
 }
 
 function ApiTypeSegmentedControl({
+  entries,
   onChange,
   value,
 }: {
+  entries: readonly ApiReferenceCardEntry[];
   onChange: (value: ApiReferenceTypeFilter) => void;
   value: ApiReferenceTypeFilter;
 }) {
@@ -205,7 +221,12 @@ function ApiTypeSegmentedControl({
     <ReferenceFilterToggleGroup
       label="API 类型"
       onChange={onChange}
-      options={apiTypeOptions}
+      options={apiTypeOptions.map((option) => ({
+        ...option,
+        disabled: !entries.some((entry) =>
+          matchesApiTypeFilter(entry, option.value),
+        ),
+      }))}
       value={value}
     />
   );
@@ -596,48 +617,63 @@ function readApiReferenceFilters(
   const requestedProduct = params.get('product');
   const requestedPlatform = params.get('platform');
   const requestedApiType = params.get('apiType');
-  const apiType =
-    supportsApiType &&
-    (requestedApiType === 'client' ||
-      requestedApiType === 'server' ||
-      requestedApiType === 'restful')
-      ? requestedApiType
-      : 'all';
 
-  return {
-    apiType,
-    platformId: resolvePlatformFilter(
-      requestedPlatform,
-      getApiReferencePlatformOptions(entries, apiType),
-    ),
-    productId:
-      requestedProduct &&
-      entries.some((entry) => entry.productId === requestedProduct)
-        ? requestedProduct
-        : 'all',
-  };
-}
-
-function getApiReferencePlatformOptions(
-  entries: readonly ApiReferenceCardEntry[],
-  apiType: ApiReferenceTypeFilter,
-) {
-  return buildApiReferenceFilterOptions(
-    entries.filter((entry) => matchesApiTypeFilter(entry, apiType)),
-    'platform',
+  return normalizeApiReferenceFilters(
+    {
+      apiType:
+        requestedApiType === 'client' ||
+        requestedApiType === 'server' ||
+        requestedApiType === 'restful'
+          ? requestedApiType
+          : 'all',
+      productId: requestedProduct ?? 'all',
+      platformId: requestedPlatform ?? 'all',
+    },
+    entries,
+    supportsApiType,
   );
 }
 
-function resolvePlatformFilter(
-  platformId: string | null,
-  options: readonly ApiReferenceFilterOption[],
-) {
-  const selectedOption = options.find((option) => option.id === platformId);
-  if (selectedOption) {
-    return selectedOption.id;
+function normalizeApiReferenceFilters(
+  requested: ApiReferenceFilters,
+  entries: readonly ApiReferenceCardEntry[],
+  supportsApiType: boolean,
+): ApiReferenceFilters {
+  const productId = entries.some(
+    (entry) => entry.productId === requested.productId,
+  )
+    ? requested.productId
+    : 'all';
+  const productEntries = entries.filter(
+    (entry) => productId === 'all' || entry.productId === productId,
+  );
+  let apiType = supportsApiType ? requested.apiType : 'all';
+
+  if (
+    supportsApiType &&
+    requested.platformId === 'restful-api' &&
+    apiType === 'all'
+  ) {
+    apiType = 'restful';
   }
 
-  return options.length === 1 ? options[0].id : 'all';
+  if (!productEntries.some((entry) => matchesApiTypeFilter(entry, apiType))) {
+    apiType = 'all';
+  }
+
+  const platformOptions = getApiReferencePlatformOptions(
+    productEntries.filter((entry) => matchesApiTypeFilter(entry, apiType)),
+  );
+
+  return {
+    apiType,
+    platformId: platformOptions.some(
+      (option) => option.id === requested.platformId,
+    )
+      ? requested.platformId
+      : 'all',
+    productId,
+  };
 }
 
 function setOptionalSearchParam(
