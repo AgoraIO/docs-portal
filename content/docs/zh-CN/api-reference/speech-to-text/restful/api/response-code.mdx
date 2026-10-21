@@ -9,7 +9,7 @@ _migration:
   warnings: []
 ---
 
-本文列出了使用转录翻译 RESTful API 过程中可能遇到的错误码和状态码。若遇到其他错误，请[联系技术支持](https://tickets.shengwang.cn)。
+本文列出了使用转录翻译 RESTful API 过程中可能遇到的错误码和状态码。若遇到其他错误，请[联系技术支持](https://ticket.shengwang.cn/)。
 
 ### 响应状态码
 
@@ -71,18 +71,18 @@ _migration:
 
 #### 错误码（Error code）
 
-- `1`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://tickets.shengwang.cn)。
+- `1`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://ticket.shengwang.cn/)。
 - `2`：参数无效。可能原因：
     - 数据类型错误。
     - 参数拼写错误（所有参数区分大小写）。
     - 参数值超出允许范围。
     - 缺少必需参数。
-- `6`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://tickets.shengwang.cn)。
+- `6`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://ticket.shengwang.cn/)。
 - `20`：处理超时。请采用退避策略在 3 秒和 6 秒后重试相同调用。
-- `23`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://tickets.shengwang.cn)。
+- `23`：调用 `start` 时发生服务器内部错误。如需支持，请[联系技术支持](https://ticket.shengwang.cn/)。
 - `49`：使用相同 `tokenName` 重复调用 `start`，或使用相同 `tokenName` 和 `taskId` 重复调用 `stop`。
 - `53`：`taskid` 与 `buildtoken` 不匹配。
-- `62`：若在调用 `acquire` 时收到此错误，表示你的 App ID 未启用实时转录翻译服务。请在控制台启用，或[联系技术支持](https://tickets.shengwang.cn)；若在调用 `start` 时收到此错误，表示因网络问题导致服务未能启动。
+- `62`：若在调用 `acquire` 时收到此错误，表示你的 App ID 未启用实时转录翻译服务。请在控制台启用，或[联系技术支持](https://ticket.shengwang.cn/)；若在调用 `start` 时收到此错误，表示因网络问题导致服务未能启动。
 - `404`：调用 `query` 或 `stop` 时任务已终止。
 - `501`：调用 `start` 时发生服务器内部错误。声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
 - `502`：调用 `start` 时发生服务器内部错误。声网建议你使用退避策略。例如，第一次等待 1 秒后重试、第二次等待 3 秒后重试、第三次等待 6 秒后重试。
@@ -93,4 +93,4 @@ _migration:
 ### 注意事项
 
 - `resourceId` 和 `tokenName` 参数含义相同。某些情况下 `builderToken` 也指代 `tokenName`。
-- 如遇到本文档未提及的错误，请[联系技术支持](https://tickets.shengwang.cn)。
+- 如遇到本文档未提及的错误，请[联系技术支持](https://ticket.shengwang.cn/)。
