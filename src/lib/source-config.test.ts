@@ -4,7 +4,6 @@ import remarkDirective from 'remark-directive';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createScopedDocsFiles } from './docs-dev-scope';
 import { directiveCalloutTypes } from './mdx/directive-callouts';
-import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 
 async function compileDirectiveCallout(
   directive: string,
@@ -36,18 +35,16 @@ describe('source config', () => {
   it('publishes only docs and navigation metadata, retaining retired sources on disk', async () => {
     const { docs } = await import('../../source.config');
 
-    expect(docs.docs.files).toContain('zh-CN/realtime-media/rtc/index.mdx');
+    expect(docs.docs.files).toContain('zh-CN/realtime-media/rtc/**/*.{md,mdx}');
     expect(
       docs.docs.files?.every(
-        (file) => /\.(md|mdx)$/.test(file) && !isRetiredCnDocsPath(file),
-      ),
-    ).toBe(true);
-    expect(
-      docs.meta.files?.every(
         (file) =>
-          /(?:^|\/)meta\.(json|yaml)$/.test(file) && !isRetiredCnDocsPath(file),
+          !file.includes('fusion-cdn') && !file.includes('view-live-data'),
       ),
     ).toBe(true);
+    expect(docs.meta.files?.every((file) => !file.includes('fusion-cdn'))).toBe(
+      true,
+    );
   }, 30000);
 
   it('creates scoped docs collection globs for a focused dev subtree', () => {
@@ -74,7 +71,7 @@ describe('source config', () => {
         file.startsWith('en/ai/get-started/'),
       ),
     ).toBe(true);
-    expect(scopedConfig.docs.meta.files).toContain('en/ai/meta.json');
+    expect(scopedConfig.docs.meta.files).toContain('en/ai/meta.{json,yaml}');
     expect(scopedConfig.docs.meta.files).not.toContain(
       'zh-CN/realtime-media/meta.json',
     );

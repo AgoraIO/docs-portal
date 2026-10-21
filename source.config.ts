@@ -12,7 +12,10 @@ import { directiveCalloutTypes } from './src/lib/mdx/directive-callouts';
 import { remarkNormalizeLegacyHeadingAnchors } from './src/lib/mdx/remark-normalize-legacy-heading-anchors';
 import { remarkTableSlots } from './src/lib/mdx/remark-table-slots';
 import { remarkPlatformContent } from './src/lib/platforms/remark-platform-content';
-import { isRetiredCnDocsPath } from './src/lib/retired-cn-docs.mjs';
+import {
+  isRetiredCnDocsPath,
+  retiredCnDocPaths,
+} from './src/lib/retired-cn-docs.mjs';
 
 const useDynamicDocsRuntime =
   process.env.FUMADOCS_STATIC_PAYLOAD_DYNAMIC === 'true';
@@ -20,9 +23,31 @@ const scopedDocsFiles = createScopedDocsFiles(process.env.DOCS_DEV_SCOPE ?? '');
 const scopedPath = scopedDocsFiles?.docs[0].split('/**/')[0];
 // This Fumadocs version prefixes negative globs with "./" and its collection
 // matcher treats negatives as alternatives. Use positive paths for publication.
-const publicFiles = readdirSync('content/docs', { recursive: true })
-  .map(String)
-  .filter((file) => !isRetiredCnDocsPath(file));
+// Split only the directories that contain retired content. Unaffected subtrees
+// keep glob imports so collection matching and fresh builds stay inexpensive.
+function publishedCollectionFiles(
+  directory: string,
+  kind: 'docs' | 'meta',
+): string[] {
+  if (isRetiredCnDocsPath(directory)) return [];
+  const prefix = directory ? `${directory}/` : '';
+  const pattern = kind === 'docs' ? '*.{md,mdx}' : 'meta.{json,yaml}';
+  if (!retiredCnDocPaths.some((path) => path.startsWith(prefix))) {
+    return [`${prefix}**/${pattern}`];
+  }
+
+  return readdirSync(`content/docs/${directory}`, {
+    withFileTypes: true,
+  }).flatMap((entry) => {
+    const file = `${prefix}${entry.name}`;
+    if (entry.isDirectory()) return publishedCollectionFiles(file, kind);
+    const matches =
+      kind === 'docs'
+        ? /\.(md|mdx)$/.test(entry.name)
+        : /^meta\.(json|yaml)$/.test(entry.name);
+    return matches && !isRetiredCnDocsPath(file) ? [file] : [];
+  });
+}
 
 const rawDocSchema = z.object({
   title: z.string().optional(),
@@ -43,12 +68,7 @@ export const docs = defineDocs({
   docs: {
     async: true,
     dynamic: useDynamicDocsRuntime,
-    files: scopedPath
-      ? publicFiles.filter(
-          (file) =>
-            file.startsWith(`${scopedPath}/`) && /\.(md|mdx)$/.test(file),
-        )
-      : publicFiles.filter((file) => /\.(md|mdx)$/.test(file)),
+    files: publishedCollectionFiles(scopedPath ?? '', 'docs'),
     schema: rawDocSchema,
     mdxOptions: applyMdxPreset({
       rehypeCodeOptions: {
@@ -118,13 +138,10 @@ export const docs = defineDocs({
     },
   },
   meta: {
-    files: publicFiles.filter(
-      (file) =>
-        /(?:^|\/)meta\.(json|yaml)$/.test(file) &&
-        (!scopedPath ||
-          file.startsWith(`${scopedPath}/`) ||
-          scopedPath.startsWith(file.slice(0, file.lastIndexOf('/') + 1))),
-    ),
+    files: [
+      ...(scopedDocsFiles?.meta.slice(0, -1) ?? []),
+      ...publishedCollectionFiles(scopedPath ?? '', 'meta'),
+    ],
     schema: docsMetaSchema,
   },
 });

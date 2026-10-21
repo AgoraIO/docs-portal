@@ -8,6 +8,11 @@ export const retiredCnDocDirectories = [
 const retiredAnalyticsPage =
   'zh-CN/realtime-media/usage-analytics/build/view-live-data';
 
+export const retiredCnDocPaths = [
+  ...retiredCnDocDirectories,
+  retiredAnalyticsPage,
+];
+
 /** @param {string} value A locale-prefixed content URL or public OpenAPI asset. */
 export function isRetiredCnDocsPath(value) {
   let path;
