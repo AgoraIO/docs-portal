@@ -217,7 +217,7 @@ describe('auditSingleDocContentFidelity', () => {
         'title: Example',
         '---',
         '',
-        '本文介绍如何开通media-pull服务。',
+        '本文介绍如何开通输入在线媒体流服务。',
       ].join('\n'),
     );
 
@@ -281,7 +281,7 @@ describe('auditSingleDocContentFidelity', () => {
         'title: Example',
         '---',
         '',
-        'smart-camera场景。',
+        '智能摄像头场景。',
         '',
         '显示通话。',
       ].join('\n'),

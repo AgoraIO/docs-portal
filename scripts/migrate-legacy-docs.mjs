@@ -4,6 +4,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
 import {
   isRedirectContentRow,
   readControlTable,
@@ -37,13 +38,6 @@ const CODE_LANG_ALIASES = new Map([
   ['md', 'markdown'],
   ['objectivec', 'objc'],
   ['txt', 'text'],
-]);
-const PRODUCT_LABELS = new Map([
-  ['aigc', 'AIGC'],
-  ['art-class', '灵动课堂'],
-  ['marketplace', '云市场'],
-  ['online-music-class', '在线音乐课堂'],
-  ['recording', '本地服务端录制'],
 ]);
 const PLATFORM_LABELS = new Map([
   ['android', 'Android'],
@@ -1253,7 +1247,7 @@ function isWholeLineMatch({ match, offset, source }) {
 
 function transformRuntimeVariables(value, state) {
   const { platform, product } = state.context;
-  const productLabel = getProductLabel(product, state.context.productLabel);
+  const productLabel = () => getProductLabel(product, state);
   const platformLabel = getPlatformLabel(platform, state.context.platformLabel);
   return value
     .replace(/\$\{props\.ag_platform\}/g, platform)
@@ -1271,7 +1265,9 @@ function transformRuntimeVariables(value, state) {
       /\bfrontMatter\.ag_platform_label\b/g,
       JSON.stringify(platformLabel),
     )
-    .replace(/\bfrontMatter\.ag_product_label\b/g, JSON.stringify(productLabel))
+    .replace(/\bfrontMatter\.ag_product_label\b/g, () =>
+      JSON.stringify(productLabel()),
+    )
     .replace(/\bfrontMatter\.ag_product\b/g, JSON.stringify(product))
     .replace(
       /\{props\.([A-Za-z0-9_]+)\}/g,
@@ -1283,8 +1279,11 @@ function transformRuntimeVariables(value, state) {
     );
 }
 
-function getProductLabel(product, sourceLabel) {
-  return sourceLabel ?? PRODUCT_LABELS.get(product) ?? product;
+function getProductLabel(product, state) {
+  return resolveLegacyProductLabel(product, {
+    sourceLabel: state.context.productLabel,
+    sourceRoot: state.sourceRoot,
+  });
 }
 
 function getPlatformLabel(platform, sourceLabel) {
@@ -1312,7 +1311,7 @@ function getRuntimePropValue(name, state) {
   }
 
   if (name === 'ag_product_label') {
-    return getProductLabel(state.context.product, state.context.productLabel);
+    return getProductLabel(state.context.product, state);
   }
 
   if (!state.props) {
