@@ -1,9 +1,9 @@
 ---
-title: 对话式 AI API
-description: 选择适合你集成层级的对话式 AI API。
+title: 对话式 AI 引擎 API
+description: 选择适合你集成层级的对话式 AI 引擎 API。
 ---
 
-对话式 AI API 覆盖 REST API、Agent SDK、Android/iOS/Web 工具包和 REST Client 等集成入口。
+对话式 AI 引擎 API 覆盖 REST API、Agent SDK、Android/iOS/Web 工具包和 REST Client 等集成入口。
 
 ## 页面
 
