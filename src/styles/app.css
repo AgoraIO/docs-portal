@@ -1927,6 +1927,44 @@
 }
 
 @layer utilities {
+  /* Override prose/card utilities only for the teleoperation scenario grid. */
+  .docs-teleoperation-scenarios {
+    margin-block: 1.25rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card] {
+    border-radius: 0.25rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card] > h3 {
+    margin-block: 0 1rem;
+    font-size: 1rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(1) > h3 {
+    color: var(--docs-success);
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(2) > h3 {
+    color: var(--docs-info);
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(3) > h3 {
+    color: var(--docs-warning);
+  }
+
+  .docs-teleoperation-scenarios p {
+    margin-block: 0 0.75rem;
+  }
+
+  .docs-teleoperation-scenarios ul {
+    margin-block: 0;
+  }
+
+  .docs-teleoperation-scenarios li {
+    margin-block: 0.25rem;
+  }
+
   /* Keep hash targets below the sticky shell header, including its banner. */
   .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)),
   .docs-body :is(h2, h3, h4)[data-accordion-value],
