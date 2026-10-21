@@ -8,7 +8,10 @@ import {
   type ApiReferenceCardType,
   zhCNApiReferenceCards,
 } from '@/lib/api-reference-cards-data.zh-cn';
-import { buildApiReferenceFilterOptions } from '@/lib/api-reference-filter-options';
+import {
+  type ApiReferenceFilterOption,
+  buildApiReferenceFilterOptions,
+} from '@/lib/api-reference-filter-options';
 import {
   API_REFERENCE_CAPABILITY_GROUPS,
   getApiReferenceProductSectionId,
@@ -42,8 +45,8 @@ export function ApiReferenceCards({
     [entries],
   );
   const platformOptions = useMemo(
-    () => buildApiReferenceFilterOptions(entries, 'platform'),
-    [entries],
+    () => getApiReferencePlatformOptions(entries, apiType),
+    [entries, apiType],
   );
   const visibleEntries = entries.filter(
     (entry) =>
@@ -99,6 +102,16 @@ export function ApiReferenceCards({
     setApiType('all');
   }
 
+  function changeApiType(nextType: ApiReferenceTypeFilter) {
+    setApiType(nextType);
+    setPlatformId(
+      resolvePlatformFilter(
+        apiType === 'restful' ? null : platformId,
+        getApiReferencePlatformOptions(entries, nextType),
+      ),
+    );
+  }
+
   return (
     <section
       className="not-prose my-8 flex flex-col gap-5"
@@ -123,7 +136,15 @@ export function ApiReferenceCards({
             label="平台/语言"
             onChange={setPlatformId}
             options={[
-              { label: '全部平台', value: 'all' },
+              {
+                label:
+                  apiType === 'client'
+                    ? '全部客户端平台'
+                    : apiType === 'server'
+                      ? '全部服务端语言'
+                      : '全部平台',
+                value: 'all',
+              },
               ...platformOptions.map((option) => ({
                 label: option.label,
                 value: option.id,
@@ -132,7 +153,7 @@ export function ApiReferenceCards({
             value={platformId}
           />
           {type === 'all' ? (
-            <ApiTypeSegmentedControl onChange={setApiType} value={apiType} />
+            <ApiTypeSegmentedControl onChange={changeApiType} value={apiType} />
           ) : null}
         </div>
       </section>
@@ -575,26 +596,48 @@ function readApiReferenceFilters(
   const requestedProduct = params.get('product');
   const requestedPlatform = params.get('platform');
   const requestedApiType = params.get('apiType');
+  const apiType =
+    supportsApiType &&
+    (requestedApiType === 'client' ||
+      requestedApiType === 'server' ||
+      requestedApiType === 'restful')
+      ? requestedApiType
+      : 'all';
 
   return {
-    apiType:
-      supportsApiType &&
-      (requestedApiType === 'client' ||
-        requestedApiType === 'server' ||
-        requestedApiType === 'restful')
-        ? requestedApiType
-        : 'all',
-    platformId:
-      requestedPlatform &&
-      entries.some((entry) => entry.platformId === requestedPlatform)
-        ? requestedPlatform
-        : 'all',
+    apiType,
+    platformId: resolvePlatformFilter(
+      requestedPlatform,
+      getApiReferencePlatformOptions(entries, apiType),
+    ),
     productId:
       requestedProduct &&
       entries.some((entry) => entry.productId === requestedProduct)
         ? requestedProduct
         : 'all',
   };
+}
+
+function getApiReferencePlatformOptions(
+  entries: readonly ApiReferenceCardEntry[],
+  apiType: ApiReferenceTypeFilter,
+) {
+  return buildApiReferenceFilterOptions(
+    entries.filter((entry) => matchesApiTypeFilter(entry, apiType)),
+    'platform',
+  );
+}
+
+function resolvePlatformFilter(
+  platformId: string | null,
+  options: readonly ApiReferenceFilterOption[],
+) {
+  const selectedOption = options.find((option) => option.id === platformId);
+  if (selectedOption) {
+    return selectedOption.id;
+  }
+
+  return options.length === 1 ? options[0].id : 'all';
 }
 
 function setOptionalSearchParam(

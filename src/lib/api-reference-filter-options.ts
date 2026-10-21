@@ -5,6 +5,34 @@ export type ApiReferenceFilterOption = {
   label: string;
 };
 
+const platformPriority = new Map(
+  [
+    'android',
+    'ios',
+    'web',
+    'windows',
+    'macos',
+    'harmonyos',
+    'mini-program',
+    'flutter',
+    'react-native',
+    'electron',
+    'unity',
+    'unreal-cpp',
+    'unreal-blueprint',
+    'python',
+    'java',
+    'go',
+    'typescript',
+    'cpp',
+    'csharp',
+    'c',
+    'device',
+    'operator',
+    'restful-api',
+  ].map((id, index) => [id, index] as const),
+);
+
 export function buildApiReferenceFilterOptions(
   entries: readonly ApiReferenceCardEntry[],
   kind: 'platform' | 'product',
@@ -24,5 +52,11 @@ export function buildApiReferenceFilterOptions(
     options.push({ id, label });
   }
 
-  return options;
+  return kind === 'platform'
+    ? options.sort(
+        (a, b) =>
+          (platformPriority.get(a.id) ?? platformPriority.size) -
+          (platformPriority.get(b.id) ?? platformPriority.size),
+      )
+    : options;
 }
