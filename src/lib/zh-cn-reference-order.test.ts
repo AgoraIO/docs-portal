@@ -93,12 +93,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
       collapsible: true,
       pages: ['migration-guide', 'after-migrate', 'sunset-plan'],
     },
-    {
-      type: 'group',
-      title: '概念事件',
-      collapsible: true,
-      pages: ['key-concept', 'events'],
-    },
+    'key-concept',
     {
       type: 'group',
       title: '平台兼容性',

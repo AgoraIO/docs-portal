@@ -5,6 +5,26 @@ describe('Shengwang public redirect targets', () => {
   it.each([
     ['/zh-CN/realtime-media/rtc', '/realtime-media/rtc'],
     ['/zh-CN/api-reference/rtc#join', '/api-reference/rtc#join'],
+    [
+      '/zh-CN/realtime-media/rtc/reference/events',
+      '/api-reference/rtc/restful/webhook/events',
+    ],
+    [
+      '/zh-CN/realtime-media/rtc/reference/events?from=legacy#103-broadcaster-join-channel',
+      '/api-reference/rtc/restful/webhook/events?from=legacy#103-broadcaster-join-channel',
+    ],
+    [
+      '/realtime-media/rtc/reference/events#104',
+      '/api-reference/rtc/restful/webhook/events#104',
+    ],
+    [
+      '/zh-CN/realtime-media/rtc/reference/events-extra',
+      '/realtime-media/rtc/reference/events-extra',
+    ],
+    [
+      '/en/realtime-media/rtc/reference/events',
+      '/en/realtime-media/rtc/reference/events',
+    ],
     ['/zh-CN/search?q=rtc#results', '/search?q=rtc#results'],
     ['/zh-CN', '/'],
     ['/zh-CN/', '/'],

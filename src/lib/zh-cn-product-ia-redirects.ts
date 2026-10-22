@@ -683,7 +683,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/user-guides/http-basic-auth':
     '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
   'realtime-media/rtc/webhook/events':
-    '/zh-CN/realtime-media/rtc/reference/events',
+    '/zh-CN/api-reference/rtc/restful/webhook/events',
+  'realtime-media/rtc/reference/events':
+    '/zh-CN/api-reference/rtc/restful/webhook/events',
   'realtime-media/rtc/webhook/receive_webhook':
     '/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook',
   'realtime-media/rtm/build/manage-channels/channel-basic':

@@ -14,7 +14,7 @@ description: "了解 1v1 私密房 RTM 方案的计费方式、计费项、免�
 
 满足如下**全部**条件时，开始计费：
 
-- 使用服务端消息通知服务的事件回调 [`103`](/zh-CN/realtime-media/rtc/reference/events#103-broadcaster-join-channel)，判断主叫方和被叫方均加入了频道。
+- 使用服务端消息通知服务的事件回调 [`103`](/zh-CN/api-reference/rtc/restful/webhook/events#103-broadcaster-join-channel)，判断主叫方和被叫方均加入了频道。
 - 主叫用户端收到 [`onCallStateChanged`](/zh-CN/api-reference/private-room) 回调，并且 `state` 为 `connected`，表示收到了被叫方接受呼叫邀请的回执消息，且收到了对方视频首帧。
 - 被叫用户端收到 `onCallStateChanged` 回调，并且 `state` 为 `connected`，表示被叫方主动调用了 `accept` 接受呼叫邀请，且收到了主叫方视频首帧。
 
@@ -35,7 +35,7 @@ description: "了解 1v1 私密房 RTM 方案的计费方式、计费项、免�
 
 选择如下**一种**时机，结束计费：
 
-- 在收到服务端消息通知回调的事件回调 [`104`](/zh-CN/realtime-media/rtc/reference/events#104-broadcaster-leave-channel)，且 `reason` 为 `1` 时，表示用户已离开频道，此时结束计费。
+- 在收到服务端消息通知回调的事件回调 [`104`](/zh-CN/api-reference/rtc/restful/webhook/events#104-broadcaster-leave-channel)，且 `reason` 为 `1` 时，表示用户已离开频道，此时结束计费。
 
   :::warning[注意]
   如果服务端事件回调 `104` 的 `reason` 为其他值，可能是由 App 被关闭、手机卡顿或重启、网络中断等原因导致的，不能作为结束计费的依据。你可以设置一个超时时间，例如 10 秒。如果在 10 秒内声网服务器没有接收到客户端的数据包，可以判断为结束计费的依据。
