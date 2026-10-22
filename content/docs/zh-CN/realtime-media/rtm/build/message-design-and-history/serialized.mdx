@@ -2,6 +2,7 @@
 title: "消息负载序列化"
 description: "了解如何在实时消息 RTM 中消息负载序列化，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
+
 当你为消息负载构建结构化的格式后，还需要将消息数据进行序列化转换成字符串类型或二进制类型，以满足 RTM 中发送消息的格式要求。你可以自己实现或使用第三方的插件，我们有以下两种推荐做法：
 
 - 使用 Json.Net
@@ -11,6 +12,20 @@ description: "了解如何在实时消息 RTM 中消息负载序列化，包括�
 
 Json.Net 是 .NET 平台上一个强大、灵活、易用和高性能的 JSON 框架，可用于序列化和反序列化 JSON 数据，支持多种数据格式和数据类型。
 
+<PlatformStructured platform="android">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
 ### 安装步骤
 
 1. 在 Unity 中打开 **Package Manager**。
@@ -19,9 +34,63 @@ Json.Net 是 .NET 平台上一个强大、灵活、易用和高性能的 JSON �
 
 安装完成后，你可以使用自定义类或者 JSON Object 序列化消息。
 
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+
+
+</PlatformStructured>
+
 ### 使用自定义类
 
-以下步骤展示了如何使用自定义类把包含问题和答案选项的投票消息序列化为 JSON 格式，并通过 `message.publish` 方法发布到指定的消息通道中。
+<PlatformStructured platform="android">
+
+以下步骤展示了如何使用自定义类把包含问题和答案选项的投票消息序列化为 JSON 格式，并通过 `publish` 方法发布到指定的消息通道中。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+以下步骤展示了如何使用自定义类把包含问题和答案选项的投票消息序列化为 JSON 格式，并通过 `publish` 方法发布到指定的消息通道中。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+以下步骤展示了如何使用自定义类把包含问题和答案选项的投票消息序列化为 JSON 格式，并通过 `PublishAsync` 方法发布到指定的消息通道中。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+以下步骤展示了如何使用自定义类把包含问题和答案选项的投票消息序列化为 JSON 格式，并通过 `publish` 方法发布到指定的消息通道中。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+以下步骤展示了如何使用自定义类把包含问题和答案选项的投票消息序列化为 JSON 格式，并通过 `publish` 方法发布到指定的消息通道中。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+以下步骤展示了如何使用自定义类把包含问题和答案选项的投票消息序列化为 JSON 格式，并通过 `publish` 方法发布到指定的消息通道中。
+
+</PlatformStructured>
 
 1. 定义一个 `PollMessage` 类，该类包含了投票消息的所有属性，包括 `type`（消息类型）、`question`（问题内容）、`answer`（答案选项）和 `sender`（消息发送者）。
 2. 使用 `Dictionary<string, string>` 类型的 `answer` 变量定义答案选项，并将其赋值给 `PollMessage` 对象的 `answer` 属性。
@@ -31,7 +100,54 @@ Json.Net 是 .NET 平台上一个强大、灵活、易用和高性能的 JSON �
 
 示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-serialized-1"
+<PlatformStructured platform="android">
+
+```java
+PollMessage message = new PollMessage();
+// ...
+// 序列化对象
+String payload = message.serialize(); // 自定义类型的序列化
+
+PublishOptions options = new PublishOptions();
+options.customType = "PollMessage";
+
+mRtmClient.publish(msChannelName, payload, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message to channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+PollMessage* message = [[PollMessage alloc] init];
+// ...
+// 序列化对象
+NSString* payload = [message serialize]; // 自定义类型的序列化
+[rtm publish:channel message:payload option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 using Newtonsoft.Json;
 using Agora.Rtm;
 
@@ -89,29 +205,48 @@ public async void PublishStringMessage()
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-serialized-1"
-PollMessage message = new PollMessage();
-// ...
-// 序列化对象
-String payload = message.serialize(); // 自定义类型的序列化
+</PlatformStructured>
 
-PublishOptions options = new PublishOptions();
-options.customType = "PollMessage";
+<PlatformStructured platform="flutter">
 
-mRtmClient.publish(msChannelName, payload, options, new ResultCallback<Void>() {
-    @Override
-    public void onSuccess(Void responseInfo) {
-        log(CALLBACK, "send message to channel success");
-    }
+```dart
+// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
 
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-serialized-1"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+
+std::string message = message.serialize();
+uint64_t requestId;
+rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
+```
+
+调用该方法后，SDK 会触发 `onPublishResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+  void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
+    if (errorCode != RTM_ERROR_OK) {
+      printf("publish message failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+    } else {
+      printf("publish message success\n");
+    }
+  }
+};
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
 let message = PollMessage()
 // ...
 
@@ -128,53 +263,55 @@ rtm.publish(channelName: channel, message: payload, option: nil) { response, err
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-serialized-1"
-PollMessage* message = [[PollMessage alloc] init];
-// ...
-// 序列化对象
-NSString* payload = [message serialize]; // 自定义类型的序列化
-[rtm publish:channel message:payload option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"publish success!!");
-    } else {
-        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-serialized-1"
-PublishOptions options;
-options.messageType = RTM_MESSAGE_TYPE_STRING;
-
-std::string message = message.serialize();
-uint64_t requestId;
-rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
-```
-
-调用该方法后，SDK 会触发 `config.onpublishresult` 回调并返回 API 调用结果。
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-serialized-2"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-  void onPublishResult(const uint64_t requestId, RTM_ERROR_CODE errorCode) override {
-    if (errorCode != RTM_ERROR_OK) {
-      printf("publish message failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-    } else {
-      printf("publish message success\n");
-    }
-  }
-};
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-serialized-2"
-// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
-
-```
+</PlatformStructured>
 
 接收到消息时，你需要通过反序列化将字符串消息恢复成原先的自定义类型。示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-serialized-3"
+<PlatformStructured platform="android">
+
+```java
+eventListener = new RtmEventListener {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        log(INFO, "onMessageEvent");
+        if (event.message.getType() == RtmMessageType.STRING) {
+            // 调用自定义的反序列化接口
+            PollMessage message = PollMessage.deserialize(event.message.getData());
+        }
+    }
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+@interface RtmHandler : NSObject <AgoraRtmClientDelegate>
+@end
+
+@implementation RtmHandler
+// triggered when received message from remote
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+
+    NSString* channel = event.channelName;
+    AgoraRtmChannelType channel_type = event.channelType;
+    if (channel_type == AgoraRtmChannelTypeStream) {
+        NSString* topic = event.channelTopic; // if message from stream channel, user can get topic name
+    }
+
+    PollMessage* message = [[PollMessage alloc] init];
+    [message deserialize:event.message.stringData];
+    NSString* publisher = event.publisher;
+}
+@end
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 // 添加消息事件监听
 rtmClient.OnMessageEvent += OnMessageEvent;
 
@@ -205,59 +342,20 @@ private void OnMessageEvent(MessageEvent event)
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-serialized-3"
-eventListener = new RtmEventListener {
-    @Override
-    public void onMessageEvent(MessageEvent event) {
-        log(INFO, "onMessageEvent");
-        if (event.message.getType() == RtmMessageType.STRING) {
-            // 调用自定义的反序列化接口
-            PollMessage message = PollMessage.deserialize(event.message.getData());
-        }
-    }
-}
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
+// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-serialized-3"
-extension YourClassName: AgoraRtmDelegate {
-    // triggered when received message from remote
-    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
-        let channel = event.channelName
-        let channelType = event.channelType
-        
-        if channelType == .stream {
-            let topic = event.channelTopic // if message from stream channel, user can get topic name
-        }
+</PlatformStructured>
 
-        let message = PollMessage()
-        message.deserialize(event.message.stringData)
-        let publisher = event.publisher
-    }
-}
-```
+<PlatformStructured platform="cpp">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-serialized-3"
-@interface RtmHandler : NSObject <AgoraRtmClientDelegate>
-@end
-
-@implementation RtmHandler
-// triggered when received message from remote
--(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
-
-    NSString* channel = event.channelName;
-    AgoraRtmChannelType channel_type = event.channelType;
-    if (channel_type == AgoraRtmChannelTypeStream) {
-        NSString* topic = event.channelTopic; // if message from stream channel, user can get topic name
-    }
-
-    PollMessage* message = [[PollMessage alloc] init];
-    [message deserialize:event.message.stringData];
-    NSString* publisher = event.publisher;
-}
-@end
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-serialized-3"
+```cpp
 class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) override{
         printf("onMessageEvent");
@@ -269,16 +367,82 @@ class RtmHandler: public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-serialized-3"
-// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+</PlatformStructured>
 
+<PlatformStructured platform="swift">
+
+```swift
+extension YourClassName: AgoraRtmDelegate {
+    // triggered when received message from remote
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        let channel = event.channelName
+        let channelType = event.channelType
+
+        if channelType == .stream {
+            let topic = event.channelTopic // if message from stream channel, user can get topic name
+        }
+
+        let message = PollMessage()
+        message.deserialize(event.message.stringData)
+        let publisher = event.publisher
+    }
+}
 ```
+
+</PlatformStructured>
 
 ### 使用 JSON Object
 
 你也可以直接利用 JSON Object 类型对消息进行序列化。JSON Object 是一种轻量级、简单、易读、跨平台的数据交换格式，具有广泛的应用性。 Newtonsoft.Json.Linq 中包含了对 JSON Object 类型的支持。
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-serialized-4"
+<PlatformStructured platform="android">
+
+```java
+JSONObject jsonObject = new JSONObject();
+// 添加键值对
+try {
+    jsonObject.put("name", "John");
+    jsonObject.put("age", 25);
+} catch (JSONException e) {
+    e.printStackTrace();
+}
+
+PublishOptions options = new PublishOptions();
+options.customType = "customType";
+mRtmClient.publish(msChannelName, jsonObject.toString(), options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message to channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+NSDictionary *dictionary = @{@"key1": @"value1", @"key2": @"value2"};
+NSString *jsonString = [self serializeDictionaryToJson:dictionary];
+[rtm publish:channel message:jsonString option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Agora.Rtm;
@@ -320,32 +484,38 @@ public async void PublishStringMessage()
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-serialized-4"
-JSONObject jsonObject = new JSONObject();
-// 添加键值对
-try {
-    jsonObject.put("name", "John");
-    jsonObject.put("age", 25);
-} catch (JSONException e) {
-    e.printStackTrace();
-}
+</PlatformStructured>
 
-PublishOptions options = new PublishOptions();
-options.customType = "customType";
-mRtmClient.publish(msChannelName, jsonObject.toString(), options, new ResultCallback<Void>() {
-    @Override
-    public void onSuccess(Void responseInfo) {
-        log(CALLBACK, "send message to channel success");
-    }
+<PlatformStructured platform="flutter">
 
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
+```dart
+// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-serialized-4"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+
+Json::Value jsonObject;
+jsonObject["name"] = "John";
+jsonObject["age"] = 30;
+jsonObject["city"] = "New York";
+std::string message = jsonObject.toStyledString();
+
+uint64_t requestId;
+rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
 let dictionary: [String: Any] = ["key1": "value1", "key2": "value2"]
 
 // 序列化字典为 JSON 字符串
@@ -368,40 +538,60 @@ rtm.publish(channelName: channel, message: jsonString, option: nil) { response, 
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-serialized-4"
-NSDictionary *dictionary = @{@"key1": @"value1", @"key2": @"value2"};
-NSString *jsonString = [self serializeDictionaryToJson:dictionary];
-[rtm publish:channel message:jsonString option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"publish success!!");
-    } else {
-        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-serialized-4"
-PublishOptions options;
-options.messageType = RTM_MESSAGE_TYPE_STRING;
-
-Json::Value jsonObject;
-jsonObject["name"] = "John";
-jsonObject["age"] = 30;
-jsonObject["city"] = "New York";
-std::string message = jsonObject.toStyledString();
-
-uint64_t requestId;
-rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-serialized-4"
-// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
-
-```
+</PlatformStructured>
 
 接收到消息时，你需要定义一个 JObject 对象，对接收到的字符串进行反序列化。示例代码如下：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-serialized-5"
+<PlatformStructured platform="android">
+
+```java
+eventListener = new RtmEventListener {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        log(INFO, "onMessageEvent");
+        if (event.message.getType() == RtmMessageType.STRING) {
+            // Json Object 类型的反序列化
+            JSONObject jsonObject = new JSONObject(event.message.getData());
+            String name = jsonObject.getString("name");
+            int age = jsonObject.getInt("age");
+        }
+    }
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+@interface RtmHandler : NSObject <AgoraRtmClientDelegate>
+@end
+
+@implementation RtmHandler
+// triggered when received message from remote
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+
+    NSString* channel = event.channelName;
+    AgoraRtmChannelType channel_type = event.channelType;
+    if (channel_type == AgoraRtmChannelTypeStream) {
+        NSString* topic = event.channelTopic; // if message from stream channel, user can get topic name
+    }
+
+    NSString* jsonString = event.message.stringData;
+    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
+    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
+    NSString *name = jsonObject[@"name"];
+    int age = jsonObject[@"age"];
+    NSString* publisher = event.publisher;
+}
+@end
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 // 添加消息事件监听
 rtmClient.OnMessageEvent += OnMessageEvent;
 
@@ -432,74 +622,20 @@ private void OnMessageEvent(MessageEvent event)
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-serialized-5"
-eventListener = new RtmEventListener {
-    @Override
-    public void onMessageEvent(MessageEvent event) {
-        log(INFO, "onMessageEvent");
-        if (event.message.getType() == RtmMessageType.STRING) {
-            // Json Object 类型的反序列化
-            JSONObject jsonObject = new JSONObject(event.message.getData());
-            String name = jsonObject.getString("name");
-            int age = jsonObject.getInt("age");
-        }
-    }
-}
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
+// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-serialized-5"
-class RtmHandler: NSObject, AgoraRtmClientDelegate {
-    // triggered when received message from remote
-    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
-        let channel = event.channelName
-        let channelType = event.channelType
-        
-        if channelType == .stream {
-            let topic = event.channelTopic // if message from stream channel, user can get topic name
-        }
+</PlatformStructured>
 
-        let jsonString = event.message.stringData
-        if let jsonData = jsonString.data(using: .utf8) {
-            do {
-                if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
-                    let name = jsonObject["name"] as? String
-                    let age = jsonObject["age"] as? Int
-                    let publisher = event.publisher        
-                }
-            } catch {
-                print("Error parsing JSON: \(error)")
-            }
-        }
-    }
-}
-```
+<PlatformStructured platform="cpp">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-serialized-5"
-@interface RtmHandler : NSObject <AgoraRtmClientDelegate>
-@end
-
-@implementation RtmHandler
-// triggered when received message from remote
--(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
-
-
-    NSString* channel = event.channelName;
-    AgoraRtmChannelType channel_type = event.channelType;
-    if (channel_type == AgoraRtmChannelTypeStream) {
-        NSString* topic = event.channelTopic; // if message from stream channel, user can get topic name
-    }
-
-    NSString* jsonString = event.message.stringData;
-    NSData *jsonData = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
-    NSDictionary *jsonObject = [NSJSONSerialization JSONObjectWithData:jsonData options:kNilOptions error:&error];
-    NSString *name = jsonObject[@"name"];
-    int age = jsonObject[@"age"];
-    NSString* publisher = event.publisher;
-}
-@end
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-serialized-5"
+```cpp
 class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) override{
         printf("onMessageEvent");
@@ -510,10 +646,38 @@ class RtmHandler: public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-serialized-5"
-// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+</PlatformStructured>
 
+<PlatformStructured platform="swift">
+
+```swift
+class RtmHandler: NSObject, AgoraRtmClientDelegate {
+    // triggered when received message from remote
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        let channel = event.channelName
+        let channelType = event.channelType
+
+        if channelType == .stream {
+            let topic = event.channelTopic // if message from stream channel, user can get topic name
+        }
+
+        let jsonString = event.message.stringData
+        if let jsonData = jsonString.data(using: .utf8) {
+            do {
+                if let jsonObject = try JSONSerialization.jsonObject(with: jsonData, options: []) as? [String: Any] {
+                    let name = jsonObject["name"] as? String
+                    let age = jsonObject["age"] as? Int
+                    let publisher = event.publisher
+                }
+            } catch {
+                print("Error parsing JSON: \(error)")
+            }
+        }
+    }
+}
 ```
+
+</PlatformStructured>
 
 ## 使用 Protocol Buffers
 
@@ -553,7 +717,87 @@ message Direction {
 }
 ```
 
-2. 在程序中引用 `Google.Protobuf` 和定义好的 `MessageType`，把消息序列化成二进制格式后使用 RTM 的 `message.publish` 发送消息。示例代码如下：
+<PlatformStructured platform="android">
+
+2. 在程序中引用 `Google.Protobuf` 和定义好的 `MessageType`，把消息序列化成二进制格式后使用 RTM 的 `publish` 发送消息。示例代码如下：
+
+```java
+byte[] message = position.ToByteArray(); // 二进制类型的数据
+PublishOptions options = new PublishOptions();
+options.customType = "customType";
+mRtmClient.publish("msChannelName", message, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "send message to channel success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+3. 当你接收到消息时，需要对消息进行反序列化。示例代码如下：
+
+```java
+eventListener = new RtmEventListener {
+    @Override
+    public void onMessageEvent(MessageEvent event) {
+        log(INFO, "onMessageEvent");
+        if (event.message.getType() == RtmMessageType.BINARY) {
+            // 把二进制格式的消息反序列化为 Position 对象
+            Position position = new Position();
+            position = Position.ParseFrom(event.message.getData());
+        }
+    }
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+2. 在程序中引用 `Google.Protobuf` 和定义好的 `MessageType`，把消息序列化成二进制格式后使用 RTM 的 `publish` 发送消息。示例代码如下：
+
+```objc
+NSData* raw_message = [position ToByteArray];
+NSString* channel = @"your_channel";
+[rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"publish success!!");
+    } else {
+        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+3. 当你接收到消息时，需要对消息进行反序列化。示例代码如下：
+
+```objc
+@interface RtmHandler : NSObject <AgoraRtmClientDelegate>
+@end
+
+@implementation RtmHandler
+// triggered when received message from remote
+-(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
+    NSString* channel = event.channelName;
+    AgoraRtmChannelType channel_type = event.channelType;
+    if (channel_type == AgoraRtmChannelTypeStream) {
+        NSString* topic = event.channelTopic; // if message from stream channel, user can get topic name
+    }
+
+    Position* position = [[Position alloc] init];
+    [position ParseFrom:event.message.rawData];
+}
+@end
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+2. 在程序中引用 `Google.Protobuf` 和定义好的 `MessageType`，把消息序列化成二进制格式后使用 RTM 的 `PublishAsync` 发送消息。示例代码如下：
 
     ```csharp
     using Agora.Rtm;
@@ -613,62 +857,6 @@ message Direction {
     ...
     ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-serialized-6"
-byte[] message = position.ToByteArray(); // 二进制类型的数据
-PublishOptions options = new PublishOptions();
-options.customType = "customType";
-mRtmClient.publish("msChannelName", message, options, new ResultCallback<Void>() {
-    @Override
-    public void onSuccess(Void responseInfo) {
-        log(CALLBACK, "send message to channel success");
-    }
-
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-```
-
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-serialized-6"
-let rawMessage: Data = position.toByteArray() // 这里需要确保 `toByteArray` 返回 Data 类型
-let channel = "your_channel"
-
-// 发布消息
-rtm.publish(channelName: channel, data: rawMessage, option: nil) { response, errorInfo in
-    if errorInfo == nil {
-        print("publish success!!")
-    } else {
-        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-    }
-}
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-serialized-6"
-NSData* raw_message = [position ToByteArray];
-NSString* channel = @"your_channel";
-[rtm publish:channel data:raw_message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"publish success!!");
-    } else {
-        NSLog(@"publish failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-serialized-6"
-PublishOptions options;
-options.type = RTM_MESSAGE_TYPE_BINARY;
-
-uint64_t requestId;
-rtmClient->publish("channelName", position.ToByteArray(), position.ByteLength, options, requestId);
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-serialized-6"
-// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
-
-```
-
 3. 当你接收到消息时，需要对消息进行反序列化。示例代码如下：
 
     ```csharp
@@ -700,56 +888,41 @@ rtmClient->publish("channelName", position.ToByteArray(), position.ByteLength, o
     }
     ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-serialized-7"
-eventListener = new RtmEventListener {
-    @Override
-    public void onMessageEvent(MessageEvent event) {
-        log(INFO, "onMessageEvent");
-        if (event.message.getType() == RtmMessageType.BINARY) {
-            // 把二进制格式的消息反序列化为 Position 对象
-            Position position = new Position();
-            position = Position.ParseFrom(event.message.getData());
-        }
-    }
-}
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+2. 在程序中引用 `Google.Protobuf` 和定义好的 `MessageType`，把消息序列化成二进制格式后使用 RTM 的 `publish` 发送消息。示例代码如下：
+
+```dart
+// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-serialized-7"
-class RtmHandler: NSObject, AgoraRtmClientDelegate {
-    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
-        let channel = event.channelName
-        let channelType = event.channelType
-        
-        if channelType == .stream {
-            let topic = event.channelTopic 
-        }
+3. 当你接收到消息时，需要对消息进行反序列化。示例代码如下：
 
-        let position = Position() 
-        position.parse(data: event.message.rawData)
-    }
-}
+```dart
+// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-serialized-7"
-@interface RtmHandler : NSObject <AgoraRtmClientDelegate>
-@end
+</PlatformStructured>
 
-@implementation RtmHandler
-// triggered when received message from remote
--(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
-    NSString* channel = event.channelName;
-    AgoraRtmChannelType channel_type = event.channelType;
-    if (channel_type == AgoraRtmChannelTypeStream) {
-        NSString* topic = event.channelTopic; // if message from stream channel, user can get topic name
-    }
+<PlatformStructured platform="cpp">
 
-    Position* position = [[Position alloc] init];
-    [position ParseFrom:event.message.rawData];
-}
-@end
+2. 在程序中引用 `Google.Protobuf` 和定义好的 `MessageType`，把消息序列化成二进制格式后使用 RTM 的 `publish` 发送消息。示例代码如下：
+
+```cpp
+PublishOptions options;
+options.type = RTM_MESSAGE_TYPE_BINARY;
+
+uint64_t requestId;
+rtmClient->publish("channelName", position.ToByteArray(), position.ByteLength, options, requestId);
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-serialized-7"
+3. 当你接收到消息时，需要对消息进行反序列化。示例代码如下：
+
+```cpp
 class RtmHandler: public IRtmEventHandler {
     void onMessageEvent(const MessageEvent &event) override{
         printf("onMessageEvent");
@@ -761,7 +934,42 @@ class RtmHandler: public IRtmEventHandler {
 };
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-serialized-7"
-// TODO Flutter 请根据上面其他语言的示例代码，提供 Dart 的示例代码
+</PlatformStructured>
 
+<PlatformStructured platform="swift">
+
+2. 在程序中引用 `Google.Protobuf` 和定义好的 `MessageType`，把消息序列化成二进制格式后使用 RTM 的 `publish` 发送消息。示例代码如下：
+
+```swift
+let rawMessage: Data = position.toByteArray() // 这里需要确保 `toByteArray` 返回 Data 类型
+let channel = "your_channel"
+
+// 发布消息
+rtm.publish(channelName: channel, data: rawMessage, option: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("publish success!!")
+    } else {
+        print("publish failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
 ```
+
+3. 当你接收到消息时，需要对消息进行反序列化。示例代码如下：
+
+```swift
+class RtmHandler: NSObject, AgoraRtmClientDelegate {
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        let channel = event.channelName
+        let channelType = event.channelType
+
+        if channelType == .stream {
+            let topic = event.channelTopic
+        }
+
+        let position = Position()
+        position.parse(data: event.message.rawData)
+    }
+}
+```
+
+</PlatformStructured>

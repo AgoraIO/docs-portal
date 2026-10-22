@@ -2,6 +2,7 @@
 title: "消息负载结构化"
 description: "了解如何在实时消息 RTM 中消息负载结构化，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
+
 消息负载的结构应该具备易读性和可扩展性，以减少程序的构建和维护成本，以及在未来版本升级时新老版本可以更容易地兼容。由于通过 RTM 发送的消息只能为字符串（String）或二进制（Binary）类型，RTM 无法直接提供可解析、可扩展的消息数据结构。但你可以根据业务需求自行构建结构化消息负载，并使用 `customType` 参数来标识和解析它。
 
 你在业务流程中可能会涉及到以下类型的消息：
@@ -31,37 +32,11 @@ description: "了解如何在实时消息 RTM 中消息负载结构化，包括�
 | `{message: "https://cdn.agora.io/assets/avatar.png"} ` | `{type: "image", url: "https://cdn.agora.io/assets/avatar.png"}` |
 | `{message: { x =1 0, y = 100, z = 55 }}`               | `{type: "position", coordinate: { x: 10, y: 100, z: 55 }}`       |
 
-现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `message.publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
+<PlatformStructured platform="android">
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-1" showLineNumbers
-// Define message structure
-const message = {
-    type: "image",
-    asset_url: "https://my.app/image.png",
-    thumb_url: "https://my.app/thumbnail/image.png",
-    mentionedUsers: ["Tony","Lily"],
-    sender: "Max"
-}
-// Message string serialization
-const payload = JSON.stringify(message);
-// Send message with customType set
-try {
-    const result = await rtm.publish( "my_channel", payload, {customType : "image", channelType: "MESSAGE"} );
-    console.log(result);
-} catch (status) {
-    console.log(status);
-}
-// When receiving a message, use the custom Type field to parse the message type。
-// Handle message event
-rtm.addEventListener("message", event => {
-    if (event.customType === "image" ) {
-        console.log("It is a image message!");
-        const message = JSON.parse(event.message);
-    }
-});
-```
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-1"
+```java
 String message = {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -100,38 +75,13 @@ new RtmEventListener {
 
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-1"
-let option = AgoraRtmPublishOptions();
-option.customType = "image"
-let message = "{
-    \"type\": \"image\",
-    \"asset_url\": \"https://my.app/image.png\",
-    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
-    \"mentionedUsers\": [\"Tony\",\"Lily\"],
-    \"sender\": \"Max\"
-    }"
+</PlatformStructured>
 
-rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
-    if error != nil {
-        print("\(error?.operation) failed! error reason is \(error?.reason)")
-    } else {
-        print("success")
-    }
-})
+<PlatformStructured platform="ios">
 
-class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
-    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
-        print("message event")
-        if event.customType == "image" {
-            // precess message
-            print("message: \(event.message.stringData)")
-        }
-    }
-}
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
 
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-1"
+```objc
 -(void) rtmKit:(AgoraRtmClientKit *)rtmKit didReceiveMessageEvent:(AgoraRtmMessageEvent *)event {
     NSLog(@"didReceiveMessageEvent");
     if (event.customType == @"image") {
@@ -142,75 +92,47 @@ class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-1"
-PublishOptions options;
-options.messageType = RTM_MESSAGE_TYPE_STRING;
-options.customType = "image";
+</PlatformStructured>
 
-std::string message =  "{
-    "type": "image",
-    "asset_url": "https://my.app/image.png",
-    "thumb_url": "https://my.app/thumbnail/image.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}";
+<PlatformStructured platform="web">
 
-uint64_t requestId;
-rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。
 
-// When receiving a message, use the custom Type field to parse the message type
-
-class RtmHandler: public IRtmEventHandler {
-    void onMessageEvent(const MessageEvent &event) override{
-        printf("onMessageEvent");
-        if (strcmp(event.customType, "image") == 0) {
-            // precess message
-            printf("%s", event.message);
-        }
-    }
-};
-
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-messages-constructed-1"
-import 'dart:convert';
-
-final channelName = 'chat_room';
-var message = {
-    type: 'image',
-    asset_url: 'https://my.app/image.png',
-    thumb_url: 'https://my.app/thumbnail/image.png',
-    mentionedUsers: ['Tony','Lily'],
-    sender: 'Max'
+```javascript showLineNumbers
+// Define message structure
+const message = {
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
 }
 // Message string serialization
-var payload = jsonEncode(message);
+const payload = JSON.stringify(message);
 // Send message with customType set
 try {
-    var (status, response) = await rtmClient.publish(
-        channelName,
-        payload,
-        customType: 'image');
-
-    if (status.error == true ){
-       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
-    } else {
-        print('${status.operation} success!');
-    }
-} catch (e) {
-    print('something went wrong: $e');
+    const result = await rtm.publish( "my_channel", payload, {customType : "image", channelType: "MESSAGE"} );
+    console.log(result);
+} catch (status) {
+    console.log(status);
 }
 // When receiving a message, use the custom Type field to parse the message type。
 // Handle message event
-rtm.addListener( message: (MessageEvent event) {
-    if (event.customType == "image" ) {
-        print("It is a image message!");
-        Map<String, dynamic> data = jsonDecode(utf8.decode(event.message!));
+rtm.addEventListener("message", event => {
+    if (event.customType === "image" ) {
+        console.log("It is a image message!");
+        const message = JSON.parse(event.message);
     }
 });
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-messages-constructed-1"
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。
+
+```typescript
 import { PublishOptions, RtmChannelType, MessageEvent } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -262,13 +184,200 @@ rtmClient.addEventListener("message", (event: object) => {
 });
 ```
 
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `PublishAsync` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
+
+```dart
+import 'dart:convert';
+
+final channelName = 'chat_room';
+var message = {
+    type: 'image',
+    asset_url: 'https://my.app/image.png',
+    thumb_url: 'https://my.app/thumbnail/image.png',
+    mentionedUsers: ['Tony','Lily'],
+    sender: 'Max'
+}
+// Message string serialization
+var payload = jsonEncode(message);
+// Send message with customType set
+try {
+    var (status, response) = await rtmClient.publish(
+        channelName,
+        payload,
+        customType: 'image');
+
+    if (status.error == true ){
+       print('${status.operation} failed, errorCode: ${status.errorCode}, due to ${status.reason}');
+    } else {
+        print('${status.operation} success!');
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+// When receiving a message, use the custom Type field to parse the message type。
+// Handle message event
+rtm.addListener( message: (MessageEvent event) {
+    if (event.customType == "image" ) {
+        print("It is a image message!");
+        Map<String, dynamic> data = jsonDecode(utf8.decode(event.message!));
+    }
+});
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
+
+```cpp
+PublishOptions options;
+options.messageType = RTM_MESSAGE_TYPE_STRING;
+options.customType = "image";
+
+std::string message =  "{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}";
+
+uint64_t requestId;
+rtmClient->publish("channelName", message.c_str(), message.size(), options, requestId);
+
+// When receiving a message, use the custom Type field to parse the message type
+
+class RtmHandler: public IRtmEventHandler {
+    void onMessageEvent(const MessageEvent &event) override{
+        printf("onMessageEvent");
+        if (strcmp(event.customType, "image") == 0) {
+            // precess message
+            printf("%s", event.message);
+        }
+    }
+};
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。详见：[消息负载序列化](/zh-CN/realtime-media/rtm/build/message-design-and-history/serialized)。
+
+```swift
+let option = AgoraRtmPublishOptions();
+option.customType = "image"
+let message = "{
+    \"type\": \"image\",
+    \"asset_url\": \"https://my.app/image.png\",
+    \"thumb_url\": \"https://my.app/thumbnail/image.png\",
+    \"mentionedUsers\": [\"Tony\",\"Lily\"],
+    \"sender\": \"Max\"
+    }"
+
+rtm.publish(channelName: channel, message: message, option: option, completion: { res, error in
+    if error != nil {
+        print("\(error?.operation) failed! error reason is \(error?.reason)")
+    } else {
+        print("success")
+    }
+})
+
+class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
+    func rtmKit(_ rtmKit: AgoraRtmClientKit, didReceiveMessageEvent event: AgoraRtmMessageEvent) {
+        print("message event")
+        if event.customType == "image" {
+            // precess message
+            print("message: \(event.message.stringData)")
+        }
+    }
+}
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。
+
+```javascript showLineNumbers
+// Define message structure
+const message = {
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+// Message string serialization
+const payload = JSON.stringify(message);
+// Send message with customType set
+try {
+    const result = await rtm.publish( "my_channel", payload, {customType : "image", channelType: "MESSAGE"} );
+    console.log(result);
+} catch (status) {
+    console.log(status);
+}
+// When receiving a message, use the custom Type field to parse the message type。
+// Handle message event
+rtm.addEventListener("message", event => {
+    if (event.customType === "image" ) {
+        console.log("It is a image message!");
+        const message = JSON.parse(event.message);
+    }
+});
+```
+
+</PlatformStructured>
+
 ## 推荐消息负载结构
 
 本节列举了一些应用场景中经常用到的可解析、可扩展的消息结构示例，你可以根据自己的实际业务场景进行修改。
 
 ### 文本消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-1"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "text",
     message: "This is a message",
@@ -277,7 +386,24 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-1" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "text",
     message: "This is a message",
@@ -286,43 +412,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-1"
-{
-    "type": "text",
-    "message": "This is a message",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-1"
-{
-    "type": "text",
-    "message": "This is a message",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="flutter">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-1"
-{
-    "type": "text",
-    "message": "This is a message",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-1"
-{
-    "type": "text",
-    "message": "This is a message",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-1"
+```json
 {
     type: "text",
     message: "This is a message",
@@ -331,7 +425,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-1"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "text",
     "message": "This is a message",
@@ -339,10 +437,74 @@ rtmClient.addEventListener("message", (event: object) => {
     "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "text",
+    "message": "This is a message",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "text",
+    message: "This is a message",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
 
 ### 多语言消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-2"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "translation",
     message: {
@@ -355,7 +517,28 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-2" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "translation",
     message: {
@@ -368,59 +551,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-2"
-{
-    "type": "translation",
-    "message": {
-        "zh": "你好",
-        "en": "Hello",
-        "jp": "こんにちは"
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-2"
-{
-    "type": "translation",
-    "message": {
-        "zh": "你好",
-        "en": "Hello",
-        "jp": "こんにちは"
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="flutter">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-2"
-{
-    "type": "translation",
-    "message": {
-        "zh": "你好",
-        "en": "Hello",
-        "jp": "こんにちは"
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-2"
-{
-    "type": "translation",
-    "message": {
-        "zh": "你好",
-        "en": "Hello",
-        "jp": "こんにちは"
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-2"
+```json
 {
     type: "translation",
     message: {
@@ -433,7 +568,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-2"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "translation",
     "message": {
@@ -445,10 +584,132 @@ rtmClient.addEventListener("message", (event: object) => {
     "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "translation",
+    "message": {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "translation",
+    message: {
+        "zh": "你好",
+        "en": "Hello",
+        "jp": "こんにちは"
+    },
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
 
 ### 图片附件消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-3"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
+{
+    type: "attachment",
+    text: "Here is a image below!"
+    attachments: [
+        {
+            type: "image",
+            asset_url: "https://bit.ly/2K74TaG",
+            thumb_url: "https://bit.ly/2Uumxti",
+            myCustomField: 123
+        }
+    ],
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "attachment",
+    "text": "Here is a image below!",
+    "attachments": [
+        {
+            "type": "image",
+            "asset_url": "https://bit.ly/2K74TaG",
+            "thumb_url": "https://bit.ly/2Uumxti",
+            "myCustomField": 123
+        }
+    ],
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "attachment",
     text: "Here is a image below!"
@@ -465,7 +726,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-3" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```json
 {
     type: "attachment",
     text: "Here is a image below!"
@@ -482,7 +747,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-3"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "attachment",
     "text": "Here is a image below!",
@@ -499,7 +768,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-3"
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
 {
     "type": "attachment",
     "text": "Here is a image below!",
@@ -516,41 +789,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-3"
-{
-    "type": "attachment",
-    "text": "Here is a image below!",
-    "attachments": [
-        {
-            "type": "image",
-            "asset_url": "https://bit.ly/2K74TaG",
-            "thumb_url": "https://bit.ly/2Uumxti",
-            "myCustomField": 123
-        }
-    ],
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-3"
-{
-    "type": "attachment",
-    "text": "Here is a image below!",
-    "attachments": [
-        {
-            "type": "image",
-            "asset_url": "https://bit.ly/2K74TaG",
-            "thumb_url": "https://bit.ly/2Uumxti",
-            "myCustomField": 123
-        }
-    ],
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="mini-program">
 
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-3"
+```javascript showLineNumbers
 {
     type: "attachment",
     text: "Here is a image below!"
@@ -567,26 +810,41 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-3"
-{
-    "type": "attachment",
-    "text": "Here is a image below!",
-    "attachments": [
-        {
-            "type": "image",
-            "asset_url": "https://bit.ly/2K74TaG",
-            "thumb_url": "https://bit.ly/2Uumxti",
-            "myCustomField": 123
-        }
-    ],
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
 ### 图片消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-4"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "image",
     asset_url: "https://my.app/image.png",
@@ -596,7 +854,25 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-4" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "image",
     asset_url: "https://my.app/image.png",
@@ -606,47 +882,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-4"
-{
-    "type": "image",
-    "asset_url": "https://my.app/image.png",
-    "thumb_url": "https://my.app/thumbnail/image.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-4"
-{
-    "type": "image",
-    "asset_url": "https://my.app/image.png",
-    "thumb_url": "https://my.app/thumbnail/image.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="flutter">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-4"
-{
-    "type": "image",
-    "asset_url": "https://my.app/image.png",
-    "thumb_url": "https://my.app/thumbnail/image.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-4"
-{
-    "type": "image",
-    "asset_url": "https://my.app/image.png",
-    "thumb_url": "https://my.app/thumbnail/image.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-4"
+```json
 {
     type: "image",
     asset_url: "https://my.app/image.png",
@@ -656,7 +896,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-4"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "image",
     "asset_url": "https://my.app/image.png",
@@ -665,10 +909,70 @@ rtmClient.addEventListener("message", (event: object) => {
     "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "image",
+    "asset_url": "https://my.app/image.png",
+    "thumb_url": "https://my.app/thumbnail/image.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "image",
+    asset_url: "https://my.app/image.png",
+    thumb_url: "https://my.app/thumbnail/image.png",
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
 
 ### 视频消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-5"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "video",
     asset_url: "https://my.app/video.mp4",
@@ -678,7 +982,25 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-5" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "video",
     asset_url: "https://my.app/video.mp4",
@@ -688,47 +1010,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-5"
-{
-    "type": "video",
-    "asset_url": "https://my.app/video.mp4",
-    "thumb_url": "https://my.app/thumbnail/video.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-5"
-{
-    "type": "video",
-    "asset_url": "https://my.app/video.mp4",
-    "thumb_url": "https://my.app/thumbnail/video.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="flutter">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-5"
-{
-    "type": "video",
-    "asset_url": "https://my.app/video.mp4",
-    "thumb_url": "https://my.app/thumbnail/video.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-5"
-{
-    "type": "video",
-    "asset_url": "https://my.app/video.mp4",
-    "thumb_url": "https://my.app/thumbnail/video.png",
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-5"
+```json
 {
     type: "video",
     asset_url: "https://my.app/video.mp4",
@@ -738,7 +1024,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-5"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "video",
     "asset_url": "https://my.app/video.mp4",
@@ -747,10 +1037,66 @@ rtmClient.addEventListener("message", (event: object) => {
     "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "video",
+    "asset_url": "https://my.app/video.mp4",
+    "thumb_url": "https://my.app/thumbnail/video.png",
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "video",
+    asset_url: "https://my.app/video.mp4",
+    thumb_url: "https://my.app/thumbnail/video.png"
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
 
 ### 动作提示消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-6"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "action",
     event: "正在输入",
@@ -758,7 +1104,23 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-6" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "action",
     event: "正在输入",
@@ -766,39 +1128,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-6"
-{
-    "type": "action",
-    "event": "正在输入",
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-6"
-{
-    "type": "action",
-    "event": "正在输入",
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="flutter">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-6"
-{
-    "type": "action",
-    "event": "正在输入",
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-6"
-{
-    "type": "action",
-    "event": "正在输入",
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-6"
+```json
 {
     type: "action",
     event: "正在输入",
@@ -806,17 +1140,73 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-6"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "action",
     "event": "正在输入",
     "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "action",
+    "event": "正在输入",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "action",
+    event: "正在输入",
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
 
 ### 聊天邀请消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-7"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "chatInvite",
     channel: "this is the channel you are being invited too",
@@ -824,7 +1214,23 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-7" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "chatInvite",
     channel: "this is the channel you are being invited too",
@@ -832,39 +1238,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-7"
-{
-    "type": "chatInvite",
-    "channel": "this is the channel you are being invited too",
-    "message": "Hi Tony, welcome to the team!"
-}
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-7"
-{
-    "type": "chatInvite",
-    "channel": "this is the channel you are being invited too",
-    "message": "Hi Tony, welcome to the team!"
-}
-```
+<PlatformStructured platform="flutter">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-7"
-{
-    "type": "chatInvite",
-    "channel": "this is the channel you are being invited too",
-    "message": "Hi Tony, welcome to the team!"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-7"
-{
-    "type": "chatInvite",
-    "channel": "this is the channel you are being invited too",
-    "message": "Hi Tony, welcome to the team!"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-7"
+```json
 {
     type: "chatInvite",
     channel: "this is the channel you are being invited too",
@@ -872,17 +1250,75 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-7"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "chatInvite",
     "channel": "this is the channel you are being invited too",
     "message": "Hi Tony, welcome to the team!"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "chatInvite",
+    "channel": "this is the channel you are being invited too",
+    "message": "Hi Tony, welcome to the team!"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "chatInvite",
+    channel: "this is the channel you are being invited too",
+    message: "Hi Tony, welcome to the team!"
+}
+```
+
+</PlatformStructured>
 
 ### 视频呼叫消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-8"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "chatInvite",
     session: "your_video_session",
@@ -891,7 +1327,24 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-8" showLineNumbers
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```json
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
 {
     type: "chatInvite",
     session: "your_video_session",
@@ -900,43 +1353,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-8"
-{
-    "type": "chatInvite",
-    "session": "your_video_session",
-    "message": "Hi Tony, welcome to the video chat!",
-    "sender": "Max"
-}
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-8"
-{
-    "type": "chatInvite",
-    "session": "your_video_session",
-    "message": "Hi Tony, welcome to the video chat!",
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="flutter">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-8"
-{
-    "type": "chatInvite",
-    "session": "your_video_session",
-    "message": "Hi Tony, welcome to the video chat!",
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-8"
-{
-    "type": "chatInvite",
-    "session": "your_video_session",
-    "message": "Hi Tony, welcome to the video chat!",
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-8"
+```json
 {
     type: "chatInvite",
     session: "your_video_session",
@@ -945,7 +1366,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-8"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
     "type": "chatInvite",
     "session": "your_video_session",
@@ -953,10 +1378,74 @@ rtmClient.addEventListener("message", (event: object) => {
     "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "chatInvite",
+    "session": "your_video_session",
+    "message": "Hi Tony, welcome to the video chat!",
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "chatInvite",
+    session: "your_video_session",
+    message:"Hi Tony, welcome to the video chat!",
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
 
 ### 问卷消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-9"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "poll",
     question: "Which option is right?",
@@ -969,85 +1458,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-9" showLineNumbers
-{
-    type: "poll",
-    question: "Which option is right?",
-    answers: {
-        A: "Apple",
-        B: "Banana",
-        C: "Blackberry"
-    },
-    sender: "Max"
-}
-```
+</PlatformStructured>
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-9"
-{
-    "type": "poll",
-    "question": "Which option is right?",
-    "answers":{
-        "A": "Apple",
-        "B": "Banana",
-        "C": "Blackberry"
-    },
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="harmonyos">
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-9"
-{
-    "type": "poll",
-    "question": "Which option is right?",
-    "answers":{
-        "A": "Apple",
-        "B": "Banana",
-        "C": "Blackberry"
-    },
-    "sender": "Max"
-}
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-9"
-{
-    "type": "poll",
-    "question": "Which option is right?",
-    "answers":{
-        "A": "Apple",
-        "B": "Banana",
-        "C": "Blackberry"
-    },
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-9"
-{
-    "type": "poll",
-    "question": "Which option is right?",
-    "answers":{
-        "A": "Apple",
-        "B": "Banana",
-        "C": "Blackberry"
-    },
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-9"
-{
-    type: "poll",
-    question: "Which option is right?",
-    answers: {
-        A: "Apple",
-        B: "Banana",
-        C: "Blackberry"
-    },
-    sender: "Max"
-}
-```
-
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-9"
+```json
 {
     "type": "poll",
     "question": "Which option is right?",
@@ -1060,9 +1475,132 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
+{
+    type: "poll",
+    question: "Which option is right?",
+    answers: {
+        A: "Apple",
+        B: "Banana",
+        C: "Blackberry"
+    },
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```json
+{
+    type: "poll",
+    question: "Which option is right?",
+    answers: {
+        A: "Apple",
+        B: "Banana",
+        C: "Blackberry"
+    },
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "poll",
+    "question": "Which option is right?",
+    "answers":{
+        "A": "Apple",
+        "B": "Banana",
+        "C": "Blackberry"
+    },
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "poll",
+    question: "Which option is right?",
+    answers: {
+        A: "Apple",
+        B: "Banana",
+        C: "Blackberry"
+    },
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
+
 ### 状态同步消息
 
-```csharp tab="C#" tabGroup="rtm-build-manage-messages-constructed-10"
+<PlatformStructured platform="android">
+
+```java
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript showLineNumbers
 {
     type: "position",
     data: {
@@ -1074,83 +1612,11 @@ rtmClient.addEventListener("message", (event: object) => {
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-messages-constructed-10" showLineNumbers
-{
-    type: "position",
-    data: {
-        coordinate: { x: 10, y: 100, z: 55 },
-        direction: {pitch: 30, roll : 90, yaw: 80}
-    }
-    mentionedUsers: ["Tony","Lily"],
-    sender: "Max"
-}
-```
+</PlatformStructured>
 
-```java tab="Java" tabGroup="rtm-build-manage-messages-constructed-10"
-{
-    "type": "position",
-    "question": "Which option is right?",
-    "data":{
-        "coordinate": { "x": 10, "y": 100, "z": 55 },
-        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
+<PlatformStructured platform="harmonyos">
 
-```swift tab="Swift" tabGroup="rtm-build-manage-messages-constructed-10"
-{
-    "type": "position",
-    "question": "Which option is right?",
-    "data":{
-        "coordinate": { "x": 10, "y": 100, "z": 55 },
-        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-messages-constructed-10"
-{
-    "type": "position",
-    "question": "Which option is right?",
-    "data":{
-        "coordinate": { "x": 10, "y": 100, "z": 55 },
-        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-messages-constructed-10"
-{
-    "type": "position",
-    "question": "Which option is right?",
-    "data":{
-        "coordinate": { "x": 10, "y": 100, "z": 55 },
-        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
-    },
-    "mentionedUsers": ["Tony","Lily"],
-    "sender": "Max"
-}
-```
-
-```json tab="JSON" tabGroup="rtm-build-manage-messages-constructed-10"
-{
-    type: "position",
-    data: {
-        coordinate: { x: 10, y: 100, z: 55 },
-        direction: {pitch: 30, roll : 90, yaw: 80}
-    }
-    mentionedUsers: ["Tony","Lily"],
-    sender: "Max"
-}
-```
-
-```json tab="JSON strict" tabGroup="rtm-build-manage-messages-constructed-10"
+```json
 {
     "type": "position",
     "data": {
@@ -1161,3 +1627,87 @@ rtmClient.addEventListener("message", (event: object) => {
     "sender": "Max"
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp
+{
+    type: "position",
+    data: {
+        coordinate: { x: 10, y: 100, z: 55 },
+        direction: {pitch: 30, roll : 90, yaw: 80}
+    }
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```json
+{
+    type: "position",
+    data: {
+        coordinate: { x: 10, y: 100, z: 55 },
+        direction: {pitch: 30, roll : 90, yaw: 80}
+    }
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+{
+    "type": "position",
+    "question": "Which option is right?",
+    "data":{
+        "coordinate": { "x": 10, "y": 100, "z": 55 },
+        "direction": {"pitch": 30, "roll" : 90, "yaw": 80}
+    },
+    "mentionedUsers": ["Tony","Lily"],
+    "sender": "Max"
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript showLineNumbers
+{
+    type: "position",
+    data: {
+        coordinate: { x: 10, y: 100, z: 55 },
+        direction: {pitch: 30, roll : 90, yaw: 80}
+    }
+    mentionedUsers: ["Tony","Lily"],
+    sender: "Max"
+}
+```
+
+</PlatformStructured>

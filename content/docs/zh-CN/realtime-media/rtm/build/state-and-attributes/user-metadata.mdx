@@ -2,47 +2,74 @@
 title: "User Metadata"
 description: "了解如何在实时消息 RTM 中用户元数据，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
-`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `config.onstorageevent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+<PlatformStructured platform="android">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `onStorageEvent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `didReceiveStorageEvent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `storage` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `storage` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `OnStorageEvent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `storage` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `onStorageEvent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `didReceiveStorageEvent` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+`Storage` 服务为你提供了 User Metadata 的能力，可以用来存储和分发你的应用中关于用户的上下文数据，例如：姓名、年龄、头像链接等自定义数据。User Metadata 在被设置、更新和删除的时候会触发 `storage` 事件通知，订阅此 User Metadata 的用户会在 100ms 内收到此信息。
+
+</PlatformStructured>
 
 需要注意的是，User Metadata 属于永久存储，一旦被设置将会长期保存在 RTM 数据库，不会因为你的用户注销而丢失，直到你手动删除它们为止。知道这一点非常重要，因为它将影响你的存储计费项，详见[计费规则](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
 
-## 设置用户元数据
+## 设置 User Metadata
 
-你可以为指定的用户设置一组 User Metadata 用以实现业务上用户级别的数据存储和实时通知，例如用户的姓名、年级、头像链接、自我介绍等任何自定义数据。每个用户只能有一组 User Metadata，但每组 User Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 调用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。每个 Metadata Item 包含有 `key`、`value`、`revision` 预定义字段。
+你可以为指定的用户设置一组 User Metadata 用以实现业务上用户级别的数据存储和实时通知，例如用户的姓名、年级、头像链接、自我介绍等任何自定义数据。每个用户只能有一组 User Metadata，但每组 User Metadata 可以包含一个或多个 Metadata Item，相关限制详见 [API 使用限制](/zh-CN/realtime-media/rtm/reference/usage-limits-and-errors/api-limits)。每个 Metadata Item 包含有 `key`、`value`、`revision` 预定义字段。
 
 如果当前 User Metadata 或者 Metadata Item 不存在，该方法将为指定用户新增属性；如果 User Metadata 或者 Metadata Item 存在，则会使用新值覆盖原有值。
 
 以下示例代码展示了如何设置 User Metadata：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-1"
-const Name = {
-    key : "Name",
-    value : "Tony"
-};
+<PlatformStructured platform="android">
 
-const Age = {
-    key : "Age",
-    value : "40"
-};
-
-const Avatar = {
-    key : "Avatar",
-    value : "https://your-domain/avatar/tong.png"
-};
-
-const data = [Name, Age, avatar];
-
-const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
-
-try {
-    const result = await rtm.storage.setUserMetadata(data, options);
-    console.log(JSON.stringify(result));
-} catch (status) {
-    console.log(JSON.stringify(status));
-}
-```
-
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-1"
+```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Name", "Tony"));
 metadata.getItems().add(new MetadataItem("Age", "40"));
@@ -65,41 +92,25 @@ mRtmClient.getStorage().setUserMetadata("Tony", metadata, options, new ResultCal
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-1"
-let metadata = AgoraRtmMetadata()!
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。
 
-let name = AgoraRtmMetadataItem()
-name.key = "Name"
-name.value = "Tony"
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/android/storage)。
 
-let age = AgoraRtmMetadataItem()
-age.key = "Age"
-age.value = "40"
+当上述操作成功后，RTM SDK 会返回如下数据结构：
 
-let avatar = AgoraRtmMetadataItem()
-avatar.key = "Avatar"
-avatar.value = "https://your-domain/avatar/tong.png"
-
-let itemArray = [name, age, avatar]
-metadata.items = itemArray
-
-let metadataOpt = AgoraRtmMetadataOptions()
-metadataOpt.recordUserId = true
-metadataOpt.recordTs = true
-
-rtm.getStorage()?.setUserMetadata(userId: "Tony", data: metadata, options: metadataOpt) { response, errorInfo in
-    if errorInfo == nil {
-        print("setUserMetadata success!!")
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("setUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
+```java
+@Override
+public void onSuccess(Void responseInfo) {
 }
-
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-1"
+同时，RTM 还会触发一个 `UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 
 AgoraRtmMetadataItem* Name = [[AgoraRtmMetadataItem alloc] init];
@@ -127,39 +138,128 @@ metadata_opt.recordTs = true;
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-1"
-Metadata metadata;
-std::vector<agora::rtm::MetadataItem> items;
-items.emplace_back(MetadataItem("Name", "Tony"));
-items.emplace_back(MetadataItem("Age", "40"));
-items.emplace_back(MetadataItem("Avatar", "https://your-domain/avatar/tong.png"));
-metadata.items = items.data();
-metadata.items = items.size();
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。
 
-MetadataOptions options;
-options.recordTs = true;
-options.recordUserId = true;
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/ios/storage)。
 
-uint64_t requestId;
-rtm_client->getStorage()->setUserMetadata("Tony", metadata, options, requestId);
-```
+当上述操作成功后，RTM SDK 会返回 `AgoraRtmCommonResponse` 数据结构。
 
-调用该方法后，SDK 会触发 `config.onsetusermetadataresult` 回调并返回 API 调用结果。
+同时，RTM 还会触发一个 `AgoraRtmStorageEventTypeUpdate` 类型的 `didReceiveStorageEvent` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-2"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onSetUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("SetUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("SetUserMetadata success\n");
-        }
-    }
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript
+const Name = {
+    key : "Name",
+    value : "Tony"
 };
+
+const Age = {
+    key : "Age",
+    value : "40"
+};
+
+const Avatar = {
+    key : "Avatar",
+    value : "https://your-domain/avatar/tong.png"
+};
+
+const data = [Name, Age, avatar];
+
+const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
+
+try {
+    const result = await rtm.storage.setUserMetadata(data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-2"
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。上述代码使用了 `await/async` 编程模式，所以需要被定义在一个异步函数中。
+
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/web/storage)。
+
+当上述操作成功后，RTM SDK 会返回如下数据结构：
+
+```javascript
+{
+    timestamp : 18770098911,   // 本次操作成功时间戳
+    userId : "Tony",           // 用户名
+    totalCount : 3             // Metadata Item 个数
+}
+```
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```typescript
+import { MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const metadata: MetadataItem[] = [
+  { key: "Name", value: "Tony" },
+  { key: "Age", value: "40" },
+  { key: "Avatar", value: "https://your-domain/avatar/tong.png" }
+];
+
+const options: MetadataOptions = {
+  recordTs: true,
+  recordUserId: true
+};
+
+try {
+  const result = await rtmClient.storage.setUserMetadata(
+    "Tony",
+    {
+      majorRevision: -1,
+      items: metadata
+    },
+    options
+  );
+  console.log("User metadata set successfully:", result.userId);
+} catch (error) {
+  console.error("setUserMetadata failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`setUserMetadata failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。
+
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/harmonyos/storage)。
+
+当上述操作成功后，RTM SDK 会返回如下数据结构：
+
+```typescript
+{
+    userId: "Tony"   // 用户名
+}
+```
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。上述代码使用了 `await/async` 编程模式，所以需要被定义在一个异步函数中。
+
+关于 `SetUserMetadataAsync` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/unity/storage)。
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `OnStorageEvent` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
 var Name = MetadataItem.fromJson({
     'key' : 'Name',
     'value' : 'Tony'
@@ -194,42 +294,143 @@ try{
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-2"
-import { MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。
 
-const metadata: MetadataItem[] = [
-  { key: "Name", value: "Tony" },
-  { key: "Age", value: "40" },
-  { key: "Avatar", value: "https://your-domain/avatar/tong.png" }
-];
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/flutter/storage)。
 
-const options: MetadataOptions = {
-  recordTs: true,
-  recordUserId: true
+当上述操作成功后，RTM SDK 会返回如下数据结构：
+
+```dart
+{
+    userId : "Tony",           // 用户名
+}
+```
+
+同时，RTM 还会触发一个 `update` 类型的 `storage` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+Metadata metadata;
+std::vector<agora::rtm::MetadataItem> items;
+items.emplace_back(MetadataItem("Name", "Tony"));
+items.emplace_back(MetadataItem("Age", "40"));
+items.emplace_back(MetadataItem("Avatar", "https://your-domain/avatar/tong.png"));
+metadata.items = items.data();
+metadata.items = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtm_client->getStorage()->setUserMetadata("Tony", metadata, options, requestId);
+```
+
+调用该方法后，SDK 会触发 `onSetUserMetadataResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onSetUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("SetUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("SetUserMetadata success\n");
+        }
+    }
+};
+```
+
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。
+
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/cpp/storage)。
+
+同时，RTM 还会触发一个 `RTM_STORAGE_EVENT_TYPE_UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+let metadata = AgoraRtmMetadata()!
+
+let name = AgoraRtmMetadataItem()
+name.key = "Name"
+name.value = "Tony"
+
+let age = AgoraRtmMetadataItem()
+age.key = "Age"
+age.value = "40"
+
+let avatar = AgoraRtmMetadataItem()
+avatar.key = "Avatar"
+avatar.value = "https://your-domain/avatar/tong.png"
+
+let itemArray = [name, age, avatar]
+metadata.items = itemArray
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+rtm.getStorage()?.setUserMetadata(userId: "Tony", data: metadata, options: metadataOpt) { response, errorInfo in
+    if errorInfo == nil {
+        print("setUserMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("setUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
+```
+
+上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。
+
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/swift/storage)。
+
+当上述操作成功后，RTM SDK 会返回 `AgoraRtmCommonResponse` 数据结构。
+
+同时，RTM 还会触发一个 `update` 类型的 `didReceiveStorageEvent` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript
+const Name = {
+    key : "Name",
+    value : "Tony"
 };
 
+const Age = {
+    key : "Age",
+    value : "40"
+};
+
+const Avatar = {
+    key : "Avatar",
+    value : "https://your-domain/avatar/tong.png"
+};
+
+const data = [Name, Age, avatar];
+
+const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
+
 try {
-  const result = await rtmClient.storage.setUserMetadata(
-    "Tony",
-    {
-      majorRevision: -1,
-      items: metadata
-    },
-    options
-  );
-  console.log("User metadata set successfully:", result.userId);
-} catch (error) {
-  console.error("setUserMetadata failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`setUserMetadata failed: ${error.reason} (code: ${error.errorCode})`);
-  }
+    const result = await rtm.storage.setUserMetadata(data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
 
 上述示例代码中，我们为用户 `Tony` 设置了一组 User Metadata，其中包含三个 Metadata Item，分别为 `Name`、`Age` 和 `Avatar`。同时我们设置了 `options` 参数要求 RTM 服务在存储上述三个 Metadata Item 时额外添加上时间戳和修改者信息。上述代码使用了 `await/async` 编程模式，所以需要被定义在一个异步函数中。
 
-关于 `storage.setuser` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/android/storage)。
+关于 `setUserMetadata` 接口详见 [Storage API 参考](/zh-CN/api-reference/rtm/web/storage)。
 
 当上述操作成功后，RTM SDK 会返回如下数据结构：
 
@@ -241,48 +442,17 @@ try {
 }
 ```
 
-当上述操作成功后，RTM SDK 会返回如下数据结构：
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
 
-```dart
-{
-    userId : "Tony",           // 用户名
-}
-```
+</PlatformStructured>
 
-当上述操作成功后，RTM SDK 会返回如下数据结构：
+## 获取 User Metadata
+
+<PlatformStructured platform="android">
+
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
 
 ```java
-@Override
-public void onSuccess(Void responseInfo) {
-}
-```
-
-当上述操作成功后，RTM SDK 会返回 `AgoraRtmCommonResponse` 数据结构。
-
-当上述操作成功后，RTM SDK 会返回如下数据结构：
-
-```typescript
-{
-    userId: "Tony"   // 用户名
-}
-```
-
-同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100 ms 内通知到订阅了此 User Metadata 的其他人，详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
-
-## 获取用户元数据
-
-你可以通过调用 `storage.getuser` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
-
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-3"
-try {
-    const result = await rtm.storage.getUserMetadata({ userId: "Tony" });
-    console.log(JSON.stringify(result));
-} catch (status) {
-    console.log(JSON.stringify(status));
-}
-```
-
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-3"
 mRtmClient.getStorage().getUserMetadata("Tony", new ResultCallback<Metadata>() {
     @Override
     public void onSuccess(Metadata data) {
@@ -300,24 +470,13 @@ mRtmClient.getStorage().getUserMetadata("Tony", new ResultCallback<Metadata>() {
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-3"
-// 获取用户元数据
-rtm.getStorage()?.getUserMetadata(userId: "Tony") { response, errorInfo in
-    if errorInfo == nil {
-        print("getUserMetadata success!!")
-        if let data = response?.data {
-            print("Retrieved metadata: \(data)")
-        }
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("getUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
-}
+</PlatformStructured>
 
-```
+<PlatformStructured platform="ios">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-3"
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
+
+```objc
 [[rtm getStorage] getUserMetadata:@"Tony" completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"getUserMetadata success!!");
@@ -328,44 +487,52 @@ rtm.getStorage()?.getUserMetadata(userId: "Tony") { response, errorInfo in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-3"
-uint64_t requestId;
-rtmClient->getStorage()->getUserMetadata("Tony", requestId);
-```
+你也可以不填写 `userId` 参数以获取自己的 User Metadata 数据：
 
-调用该方法后，SDK 会触发 `config.ongetusermetadataresult` 回调并返回 API 调用结果。
-
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-4"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onGetUserMetadataResult(const uint64_t requestId, const char *userId, const Metadata& data, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("GetUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("GetUserMetadata success user id: %s\n", userId);
-            for (int i = 0 ; i < data.itemCount; i++) {
-                printf("key: %s value: %s revision: %lld\n", data.items[i].key, data.items[i].value, data.items[i].revision);
-            }
-        }
-    }
-};
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-4"
-try{
-    var (status,response) = await rtmClient.getStorage.getUserMetadata('Tony');
-
-    if (status.error == true) {
-        print(status);
+```objc
+[[rtm getStorage] getUserMetadata:@"" completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"getUserMetadata success!!");
+        AgoraRtmMetadata* data = response.data; //get storage data;
     } else {
-        print(response);
+        NSLog(@"getUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
     }
-} catch (e) {
-    print('something went wrong: $e');
+}];
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
+
+```javascript
+try {
+    const result = await rtm.storage.getUserMetadata({ userId: "Tony" });
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-4"
+你也可以在 `options` 中不填写 `userId` 参数以获取自己的 User Metadata 数据：
+
+```javascript
+try {
+    const result = await rtm.storage.getUserMetadata();
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
+
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
 try {
@@ -388,15 +555,82 @@ try {
 }
 ```
 
-你也可以在 `options` 中不填写 `userId` 参数以获取自己的 User Metadata 数据：
+</PlatformStructured>
 
-```javascript
-try {
-    const result = await rtm.storage.getUserMetadata();
-    console.log(JSON.stringify(result));
-} catch (status) {
-    console.log(JSON.stringify(status));
+<PlatformStructured platform="unity">
+
+你可以通过调用 `GetUserMetadataAsync` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
+
+```dart
+try{
+    var (status,response) = await rtmClient.getStorage.getUserMetadata('Tony');
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
 }
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
+
+```cpp
+uint64_t requestId;
+rtmClient->getStorage()->getUserMetadata("Tony", requestId);
+```
+
+调用该方法后，SDK 会触发 `onGetUserMetadataResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onGetUserMetadataResult(const uint64_t requestId, const char *userId, const Metadata& data, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("GetUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("GetUserMetadata success user id: %s\n", userId);
+            for (int i = 0 ; i < data.itemCount; i++) {
+                printf("key: %s value: %s revision: %lld\n", data.items[i].key, data.items[i].value, data.items[i].revision);
+            }
+        }
+    }
+};
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
+
+```swift
+// 获取用户元数据
+rtm.getStorage()?.getUserMetadata(userId: "Tony") { response, errorInfo in
+    if errorInfo == nil {
+        print("getUserMetadata success!!")
+        if let data = response?.data {
+            print("Retrieved metadata: \(data)")
+        }
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("getUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
 ```
 
 你也可以不填写 `userId` 参数以获取自己的 User Metadata 数据：
@@ -416,51 +650,39 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
 
 ```
 
-你也可以不填写 `userId` 参数以获取自己的 User Metadata 数据：
+</PlatformStructured>
 
-```objc
-[[rtm getStorage] getUserMetadata:@"" completion:^(AgoraRtmGetMetadataResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"getUserMetadata success!!");
-        AgoraRtmMetadata* data = response.data; //get storage data;
-    } else {
-        NSLog(@"getUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-```
+<PlatformStructured platform="mini-program">
 
-当上述操作成功后，RTM SDK 会返回如下数据结构：
+你可以通过调用 `getUserMetadata` 方法获得指定用户的全部属性数据。以下示例代码展示如何获取 User Metadata：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-5"
-{
-    totalCount: 3,
-    majorRevision: 734874892,
-    metadata:{
-        "Name":{
-            value:"Tony",
-            revision:734874872,
-            updated:1688978391900,
-            authorUid:"Tony"
-        },
-        "Age":{
-            value:"40",
-            revision:734874862,
-            updated:1688978390900,
-            authorUid:"Tony"
-        },
-        "Avatar":{
-            value:"https://your-domain/avatar/tong.png",
-            revision:734874812,
-            updated:1688978382900,
-            authorUid:"Tony"
-        }
-    },
-    userId: "Tony",
-    timestamp: 18770098911
+```javascript
+try {
+    const result = await rtm.storage.getUserMetadata({ userId: "Tony" });
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-5"
+你也可以在 `options` 中不填写 `userId` 参数以获取自己的 User Metadata 数据：
+
+```javascript
+try {
+    const result = await rtm.storage.getUserMetadata();
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+</PlatformStructured>
+
+当上述操作成功后，RTM SDK 会返回如下数据结构：
+
+<PlatformStructured platform="android">
+
+```java
 {
     majorRevision: 734874892,
     metadata:{
@@ -489,7 +711,11 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
 }
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-5"
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
 {
     majorRevision: 734874892,
     metadata:{
@@ -515,8 +741,13 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
 }
 ```
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-5"
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript
 {
+    totalCount: 3,
     majorRevision: 734874892,
     metadata:{
         "Name":{
@@ -537,37 +768,59 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
             updated:1688978382900,
             authorUid:"Tony"
         }
-    }
+    },
+    userId: "Tony",
+    timestamp: 18770098911
 }
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-5"
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```typescript
 {
-    majorRevision: 734874892,
-    metadata:{
-        "Name":{
-            value:"Tony",
-            revision:734874872,
-            updated:1688978391900,
-            authorUid:"Tony"
-        },
-        "Age":{
-            value:"40",
-            revision:734874862,
-            updated:1688978390900,
-            authorUid:"Tony"
-        },
-        "Avatar":{
-            value:"https://your-domain/avatar/tong.png",
-            revision:734874812,
-            updated:1688978382900,
-            authorUid:"Tony"
-        }
+    userId: "Tony",
+    data: {
+        majorRevision: 734874892,
+        items: [
+            {
+                key: "Name",
+                value: "Tony",
+                revision: 734874872,
+                updateTs: 1688978391900,
+                authorUserId: "Tony"
+            },
+            {
+                key: "Age",
+                value: "40",
+                revision: 734874862,
+                updateTs: 1688978390900,
+                authorUserId: "Tony"
+            },
+            {
+                key: "Avatar",
+                value: "https://your-domain/avatar/tong.png",
+                revision: 734874812,
+                updateTs: 1688978382900,
+                authorUserId: "Tony"
+            }
+        ]
     }
 }
 ```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-5"
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
 {
     userId: 'Tony',
     data: {
@@ -600,62 +853,162 @@ rtm.getStorage()?.getUserMetadata(userId: "") { response, errorInfo in
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-5"
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
 {
-    userId: "Tony",
-    data: {
-        majorRevision: 734874892,
-        items: [
-            {
-                key: "Name",
-                value: "Tony",
-                revision: 734874872,
-                updateTs: 1688978391900,
-                authorUserId: "Tony"
-            },
-            {
-                key: "Age",
-                value: "40",
-                revision: 734874862,
-                updateTs: 1688978390900,
-                authorUserId: "Tony"
-            },
-            {
-                key: "Avatar",
-                value: "https://your-domain/avatar/tong.png",
-                revision: 734874812,
-                updateTs: 1688978382900,
-                authorUserId: "Tony"
-            }
-        ]
+    majorRevision: 734874892,
+    metadata:{
+        "Name":{
+            value:"Tony",
+            revision:734874872,
+            updated:1688978391900,
+            authorUid:"Tony"
+        },
+        "Age":{
+            value:"40",
+            revision:734874862,
+            updated:1688978390900,
+            authorUid:"Tony"
+        },
+        "Avatar":{
+            value:"https://your-domain/avatar/tong.png",
+            revision:734874812,
+            updated:1688978382900,
+            authorUid:"Tony"
+        }
     }
 }
 ```
 
-## 更新用户元数据
+</PlatformStructured>
 
-你可以使用 `storage.updateuser` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+<PlatformStructured platform="swift">
 
-以下示例代码展示了如何更新用户 Metadata Item：
-
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-6"
-const Age = {
-    key : "Age",
-    value : "45"
-};
-
-const data = [Age];
-const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
-
-try {
-    const result = await rtm.storage.updateUserMetadata(data, options);
-    console.log(JSON.stringify(result));
-} catch (status) {
-    console.log(JSON.stringify(status));
+```swift
+{
+    majorRevision: 734874892,
+    metadata:{
+        "Name":{
+            value:"Tony",
+            revision:734874872,
+            updated:1688978391900,
+            authorUid:"Tony"
+        },
+        "Age":{
+            value:"40",
+            revision:734874862,
+            updated:1688978390900,
+            authorUid:"Tony"
+        },
+        "Avatar":{
+            value:"https://your-domain/avatar/tong.png",
+            revision:734874812,
+            updated:1688978382900,
+            authorUid:"Tony"
+        }
+    }
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-6"
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript
+{
+    totalCount: 3,
+    majorRevision: 734874892,
+    metadata:{
+        "Name":{
+            value:"Tony",
+            revision:734874872,
+            updated:1688978391900,
+            authorUid:"Tony"
+        },
+        "Age":{
+            value:"40",
+            revision:734874862,
+            updated:1688978390900,
+            authorUid:"Tony"
+        },
+        "Avatar":{
+            value:"https://your-domain/avatar/tong.png",
+            revision:734874812,
+            updated:1688978382900,
+            authorUid:"Tony"
+        }
+    },
+    userId: "Tony",
+    timestamp: 18770098911
+}
+```
+
+</PlatformStructured>
+
+## 更新 User Metadata
+
+<PlatformStructured platform="android">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+你可以使用 `UpdateUserMetadataAsync` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+你可以使用 `updateUserMetadata` 来更新已存在的 User Metadata。如果该 User Metadata 不存在，则会返回错误。该接口可用于需要权限控制的业务场景，例如：应用的设置者预定义了 User Metadata 的数据字段和格式，用户只具备更新的权限。
+
+</PlatformStructured>
+
+以下示例代码展示了如何更新用户 Metadata Item：
+
+<PlatformStructured platform="android">
+
+```java
 Metadata metadata = new Metadata();
 metadata.getItems().add(new MetadataItem("Age", "45"));
 
@@ -672,33 +1025,11 @@ mRtmClient.getStorage().updateUserMetadata("Tony", metadata, new MetadataOptions
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-6"
-let metadata = AgoraRtmMetadata()!
+</PlatformStructured>
 
-let age = AgoraRtmMetadataItem()
-age.key = "Age"
-age.value = "45"
+<PlatformStructured platform="ios">
 
-let itemArray = [age]
-metadata.items = itemArray
-
-let metadataOpt = AgoraRtmMetadataOptions()
-metadataOpt.recordUserId = true
-metadataOpt.recordTs = true
-
-rtm.getStorage()?.updateUserMetadata(userId: "Tony", data: metadata, options: metadataOpt) { response, errorInfo in
-    if errorInfo == nil {
-        print("updateUserMetadata success!!")
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
-}
-
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-6"
+```objc
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 
 AgoraRtmMetadataItem* Age = [[AgoraRtmMetadataItem alloc] init];
@@ -720,60 +1051,32 @@ metadata_opt.recordTs = true;
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-6"
-Metadata metadata;
-std::vector<MetadataItem> items;
-items.emplace_back(MetadataItem("Age", "45"));
-metadata.items = items.data();
-metadata.itemCount = items.size();
+</PlatformStructured>
 
-MetadataOptions options;
-options.recordTs = true;
-options.recordUserId = true;
+<PlatformStructured platform="web">
 
-uint64_t requestId;
-rtmClient->getStorage()->updateUserMetadata("Tony", metadata, options, requestId);
-```
-
-调用该方法后，SDK 会触发 `config.onupdateusermetadataresult` 回调并返回 API 调用结果。
-
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-7"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onUpdateUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("UpdateUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("UpdateUserMetadata success\n");
-        }
-    }
+```javascript
+const Age = {
+    key : "Age",
+    value : "45"
 };
-```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-7"
-var Age = MetadataItem.fromJson({
-    'key' : 'Age',
-    'value' : '45'
-});
-var metadata = [Age];
-try{
-    var (status,response) = await rtmClient.getStorage.updateUserMetadata(
-        'Tony',
-        metadata,
-        recordTs: true,
-        recordUserId: true);
+const data = [Age];
+const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
 
-    if (status.error == true) {
-        print(status);
-    } else {
-        print(response);
-    }
-} catch (e) {
-    print('something went wrong: $e');
+try {
+    const result = await rtm.storage.updateUserMetadata(data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-7"
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```typescript
 import { MetadataItem, MetadataOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -804,7 +1107,151 @@ try {
 }
 ```
 
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
+var Age = MetadataItem.fromJson({
+    'key' : 'Age',
+    'value' : '45'
+});
+var metadata = [Age];
+try{
+    var (status,response) = await rtmClient.getStorage.updateUserMetadata(
+        'Tony',
+        metadata,
+        recordTs: true,
+        recordUserId: true);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+Metadata metadata;
+std::vector<MetadataItem> items;
+items.emplace_back(MetadataItem("Age", "45"));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->updateUserMetadata("Tony", metadata, options, requestId);
+```
+
+调用该方法后，SDK 会触发 `onUpdateUserMetadataResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onUpdateUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("UpdateUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("UpdateUserMetadata success\n");
+        }
+    }
+};
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+let metadata = AgoraRtmMetadata()!
+
+let age = AgoraRtmMetadataItem()
+age.key = "Age"
+age.value = "45"
+
+let itemArray = [age]
+metadata.items = itemArray
+
+let metadataOpt = AgoraRtmMetadataOptions()
+metadataOpt.recordUserId = true
+metadataOpt.recordTs = true
+
+rtm.getStorage()?.updateUserMetadata(userId: "Tony", data: metadata, options: metadataOpt) { response, errorInfo in
+    if errorInfo == nil {
+        print("updateUserMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript
+const Age = {
+    key : "Age",
+    value : "45"
+};
+
+const data = [Age];
+const options = { userId : "Tony", addTimeStamp : true, addUserId : true };
+
+try {
+    const result = await rtm.storage.updateUserMetadata(data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+</PlatformStructured>
+
 上述示例代码将 `key` 为 `Age` 的年龄数据更新为 `45`。
+
+<PlatformStructured platform="android">
+
+当上述操作成功后，RTM SDK 会返回如下数据结构：
+
+```java
+@Override
+public void onSuccess(Void responseInfo) {
+}
+```
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`onStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+当上述操作成功后，RTM SDK 会返回 `AgoraRtmCommonResponse` 数据结构。
+
+同时，RTM 还会触发一个 `AgoraRtmStorageEventTypeUpdate` 类型的 `didReceiveStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`didReceiveStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
 
 当上述操作成功后，RTM SDK 会返回如下数据结构：
 
@@ -816,15 +1263,11 @@ try {
 }
 ```
 
-当上述操作成功后，RTM SDK 会返回如下数据结构：
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
 
-```java
-@Override
-public void onSuccess(Void responseInfo) {
-}
-```
+</PlatformStructured>
 
-当上述操作成功后，RTM SDK 会返回 `AgoraRtmCommonResponse` 数据结构。
+<PlatformStructured platform="harmonyos">
 
 当上述操作成功后，RTM SDK 会返回如下数据结构：
 
@@ -834,30 +1277,59 @@ public void onSuccess(Void responseInfo) {
 }
 ```
 
-同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`config.onstorageevent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
 
-## 删除用户元数据
+</PlatformStructured>
 
-当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `storage.removeuser` 进行删除操作：
+<PlatformStructured platform="unity">
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-8"
-const Age = {
-    key : "Age",
-};
+同时，RTM 还会触发一个 `UPDATE` 类型的 `OnStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`OnStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
 
-const data = [Age];
+</PlatformStructured>
 
-const options = { userId: "Tony", data : data };
+<PlatformStructured platform="flutter">
 
-try {
-    const result = await rtm.storage.removeUserMetadata(options);
-    console.log(JSON.stringify(result));
-} catch (status) {
-    console.log(JSON.stringify(status));
+同时，RTM 还会触发一个 `update` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+同时，RTM 还会触发一个 `RTM_STORAGE_EVENT_TYPE_UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`onStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+当上述操作成功后，RTM SDK 会返回 `AgoraRtmCommonResponse` 数据结构。
+
+同时，RTM 还会触发一个 `update` 类型的 `didReceiveStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`didReceiveStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+当上述操作成功后，RTM SDK 会返回如下数据结构：
+
+```javascript
+{
+    timestamp : "",                // 本次操作成功时间戳
+    userId : "Tony",               // 用户名
+    totalCount : 3                 // Metadata Item 个数
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-8"
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+## 删除 User Metadata
+
+<PlatformStructured platform="android">
+
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
+
+```java
 Metadata metadata = new Metadata();
 MetadataItem age = new MetadataItem();
 age.setKey("Age");
@@ -876,28 +1348,13 @@ mRtmClient.getStorage().removeUserMetadata("Tony", metadata, new MetadataOptions
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-8"
-let metadata = AgoraRtmMetadata()!
+</PlatformStructured>
 
-let age = AgoraRtmMetadataItem()
-age.key = "Age"
+<PlatformStructured platform="ios">
 
-let itemArray = [age]
-metadata.items = itemArray
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
 
-rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
-    if errorInfo == nil {
-        print("removeUserMetadata success!!")
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
-}
-
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-8"
+```objc
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 
 AgoraRtmMetadataItem* Age = [[AgoraRtmMetadataItem alloc] init];
@@ -914,53 +1371,36 @@ metadata.items = item_array;
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-8"
-Metadata metadata;
-std::vector<MetadataItem> items;
-MetadataItem item;
-item.key = "Age";
-items.emplace_back(item);
-metadata.items = items.data();
-metadata.itemCount = items.size();
+</PlatformStructured>
 
-uint64_t requestId;
-rtmClient->getStorage()->removeUserMetadata("Tony", metadata, MetadataOptions(), requestId);
-```
+<PlatformStructured platform="web">
 
-调用该方法后，SDK 会触发 `config.onremoveusermetadataresult` 回调并返回 API 调用结果。
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-9"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onRemoveUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("RemoveUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("RemoveUserMetadata success\n");
-        }
-    }
+```javascript
+const Age = {
+    key : "Age",
 };
-```
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-9"
-var Age = MetadataItem.fromJson({ 'key' : 'Age' });
-var metadata = [Age];
-try{
-    var (status,response) = await rtmClient.getStorage.removeUserMetadata(
-        'Tony',
-        metadata:metadata);
+const data = [Age];
 
-    if (status.error == true) {
-        print(status);
-    } else {
-        print(response);
-    }
-} catch (e) {
-    print('something went wrong: $e');
+const options = { userId: "Tony", data : data };
+
+try {
+    const result = await rtm.storage.removeUserMetadata(options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-9"
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
+
+```typescript
 import { MetadataItem } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
 
@@ -985,18 +1425,125 @@ try {
 }
 ```
 
-以上示例代码中 `value` 不论为何值都没有影响。
+</PlatformStructured>
 
-如果你不填写 `options` 中的 `data` 参数，则会删除指定用户的整组 User Metadata。参照以下示例代码：
+<PlatformStructured platform="unity">
+
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `RemoveUserMetadataAsync` 进行删除操作：
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
+
+```dart
+var Age = MetadataItem.fromJson({ 'key' : 'Age' });
+var metadata = [Age];
+try{
+    var (status,response) = await rtmClient.getStorage.removeUserMetadata(
+        'Tony',
+        metadata:metadata);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
+
+```cpp
+Metadata metadata;
+std::vector<MetadataItem> items;
+MetadataItem item;
+item.key = "Age";
+items.emplace_back(item);
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+uint64_t requestId;
+rtmClient->getStorage()->removeUserMetadata("Tony", metadata, MetadataOptions(), requestId);
+```
+
+调用该方法后，SDK 会触发 `onRemoveUserMetadataResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onRemoveUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("RemoveUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("RemoveUserMetadata success\n");
+        }
+    }
+};
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
+
+```swift
+let metadata = AgoraRtmMetadata()!
+
+let age = AgoraRtmMetadataItem()
+age.key = "Age"
+
+let itemArray = [age]
+metadata.items = itemArray
+
+rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("removeUserMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+当你不再需要指定用户的 User Metadata 或者某几个 Metadata Item，你可以进行删除操作。以下示例代码展示了如何使用 `removeUserMetadata` 进行删除操作：
 
 ```javascript
+const Age = {
+    key : "Age",
+};
+
+const data = [Age];
+
+const options = { userId: "Tony", data : data };
+
 try {
-    const result = await rtm.storage.removeUserMetadata();
+    const result = await rtm.storage.removeUserMetadata(options);
     console.log(JSON.stringify(result));
 } catch (status) {
     console.log(JSON.stringify(status));
 }
 ```
+
+</PlatformStructured>
+
+以上示例代码中 `value` 不论为何值都没有影响。
+
+<PlatformStructured platform="android">
 
 如果你不填充任何 `MetadataItem`，则会删除指定用户的整组 User Metadata。参照以下示例代码：
 
@@ -1016,27 +1563,13 @@ mRtmClient.getStorage().removeUserMetadata("Tony", metadata, null, new ResultCal
 });
 ```
 
-如果你不填充任何 `AgoraRtmMetadataItem`，则会删除指定用户的整组 User Metadata。参照以下示例代码：
+</PlatformStructured>
 
-```swift
-let metadata = AgoraRtmMetadata()!
-
-// 移除用户元数据
-rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
-    if errorInfo == nil {
-        print("removeUserMetadata success!!")
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
-}
-
-```
+<PlatformStructured platform="ios">
 
 如果你不填充任何 `AgoraRtmMetadataItem`，则会删除指定用户的整组 User Metadata。参照以下示例代码：
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-10"
+```objc
 AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 [[rtm getStorage] removeUserMetadata:@"Tony" data:metadata options:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
@@ -1047,26 +1580,24 @@ AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-10"
-Metadata metadata;
-MetadataOptions options;
+</PlatformStructured>
 
-uint64_t requestId;
-rtmClient->getStorage()->removeUserMetadata("Tony", metadata, options, requestId);
-```
+<PlatformStructured platform="web">
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-10"
-try{
-    var (status,response) = await rtmClient.getStorage.removeUserMetadata('Tony');
-    if (status.error == true) {
-        print(status);
-    } else {
-        print(response);
-    }
-} catch (e) {
-    print('something went wrong: $e');
+如果你不填写 `options` 中的 `data` 参数，则会删除指定用户的整组 User Metadata。参照以下示例代码：
+
+```javascript
+try {
+    const result = await rtm.storage.removeUserMetadata();
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
 
 如果你传入空的 `items` 数组，则会删除指定用户的整组 User Metadata。参照以下示例代码：
 
@@ -1091,24 +1622,143 @@ try {
 }
 ```
 
-销毁用户账户的过程中，经常见到删除整组 User Metadata 的操作。User Metadata 数据一旦被删除将无法恢复，如果你对数据具有恢复的需求，那么你需要谨慎使用该方法并做好数据备份。
+</PlatformStructured>
 
-同时，RTM 还会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`config.onstorageevent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+<PlatformStructured platform="unity">
 
-## 订阅用户元数据
 
-与订阅 Channel Metadata 类似，如果你需要关注某个用户的属性更新，那么你可以订阅该用户的 User Metadata，参照以下示例代码：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-11"
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
+try{
+    var (status,response) = await rtmClient.getStorage.removeUserMetadata('Tony');
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+Metadata metadata;
+MetadataOptions options;
+
+uint64_t requestId;
+rtmClient->getStorage()->removeUserMetadata("Tony", metadata, options, requestId);
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+如果你不填充任何 `AgoraRtmMetadataItem`，则会删除指定用户的整组 User Metadata。参照以下示例代码：
+
+```swift
+let metadata = AgoraRtmMetadata()!
+
+// 移除用户元数据
+rtm.getStorage()?.removeUserMetadata(userId: "Tony", data: metadata, options: nil) { response, errorInfo in
+    if errorInfo == nil {
+        print("removeUserMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("removeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+如果你不填写 `options` 中的 `data` 参数，则会删除指定用户的整组 User Metadata。参照以下示例代码：
+
+```javascript
 try {
-    const result = await rtm.storage.subscribeUserMetadata("Tony");
-    console.log(JSON.stringify(result));
+    const result = await rtm.storage.removeUserMetadata();
+    console.log(JSON.stringify(result));
 } catch (status) {
     console.log(JSON.stringify(status));
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-11"
+</PlatformStructured>
+
+销毁用户账户的过程中，经常见到删除整组 User Metadata 的操作。User Metadata 数据一旦被删除将无法恢复，如果你对数据具有恢复的需求，那么你需要谨慎使用该方法并做好数据备份。
+
+<PlatformStructured platform="android">
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`onStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+同时，RTM 还会触发一个 `AgoraRtmStorageEventTypeUpdate` 类型的 `didReceiveStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`didReceiveStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `OnStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`OnStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+同时，RTM 还会触发一个 `update` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+同时，RTM 还会触发一个 `RTM_STORAGE_EVENT_TYPE_UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`onStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+同时，RTM 还会触发一个 `update` 类型的 `didReceiveStorageEvent` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`didReceiveStorageEvent` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+同时，RTM 还会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100ms 内通知到订阅此 User Metadata 的其他人。`storage` 详见[事件通知](/zh-CN/realtime-media/rtm/build/state-and-attributes/metadata-events)。
+
+</PlatformStructured>
+
+## 订阅 User Metadata
+
+与订阅 Channel Metadata 类似，如果你需要关注某个用户的属性更新，那么你可以订阅该用户的 User Metadata，参照以下示例代码：
+
+<PlatformStructured platform="android">
+
+```java
 mRtmClient.getStorage().subscribeUserMetadata("Tony", new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -1122,20 +1772,13 @@ mRtmClient.getStorage().subscribeUserMetadata("Tony", new ResultCallback<Void>()
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-11"
-rtm.getStorage()?.subscribeUserMetadata(userId: "Tony") { response, errorInfo in
-    if errorInfo == nil {
-        print("subscribeUserMetadata success!!")
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("subscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
-}
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100 ms 内通知到你。
 
-```
+</PlatformStructured>
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-11"
+<PlatformStructured platform="ios">
+
+```objc
 [[rtm getStorage] subscribeUserMetadata:@"Tony" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"subscribeUserMetadata success!!");
@@ -1145,41 +1788,28 @@ rtm.getStorage()?.subscribeUserMetadata(userId: "Tony") { response, errorInfo in
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-11"
-uint64_t requestId;
-rtmClient->getStorage()->subscribeUserMetadata("Tony", requestId);
-```
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `AgoraRtmStorageEventTypeUpdate` 类型的 `didReceiveStorageEvent` 事件通知，并在 100 ms 内通知到你。
 
-调用该方法后，SDK 会触发 `config.onsubscribeusermetadataresult` 回调并返回 API 调用结果。
+</PlatformStructured>
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-12"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onSubscribeUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("SubscribeUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("SubscribeUserMetadata success\n");
-        }
-    }
-};
-```
+<PlatformStructured platform="web">
 
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-12"
-try{
-    var (status,response) = await rtmClient.getStorage.subscribeUserMetadata('Tony');
-
-    if (status.error == true) {
-        print(status);
-    } else {
-        print(response);
-    }
-} catch (e) {
-    print('something went wrong: $e');
+```javascript
+try {
+    const result = await rtm.storage.subscribeUserMetadata("Tony");
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-12"
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100 ms 内通知到你。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
 try {
@@ -1193,22 +1823,103 @@ try {
 }
 ```
 
-以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `enumv.storageeventtypeupdate` 类型的 `config.onstorageevent` 事件通知，并在 100 ms 内通知到你。
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100 ms 内通知到你。
 
-## 取消订阅用户元数据
+</PlatformStructured>
 
-如果你对不再关注某个用户的 User Metadata 变更，可以取消订阅，参照以下示例代码：
+<PlatformStructured platform="unity">
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-13"
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `UPDATE` 类型的 `OnStorageEvent` 事件通知，并在 100 ms 内通知到你。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
+try{
+    var (status,response) = await rtmClient.getStorage.subscribeUserMetadata('Tony');
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `update` 类型的 `storage` 事件通知，并在 100 ms 内通知到你。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+uint64_t requestId;
+rtmClient->getStorage()->subscribeUserMetadata("Tony", requestId);
+```
+
+调用该方法后，SDK 会触发 `onSubscribeUserMetadataResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onSubscribeUserMetadataResult(const uint64_t requestId, const char *userId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("SubscribeUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("SubscribeUserMetadata success\n");
+        }
+    }
+};
+```
+
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `RTM_STORAGE_EVENT_TYPE_UPDATE` 类型的 `onStorageEvent` 事件通知，并在 100 ms 内通知到你。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+rtm.getStorage()?.subscribeUserMetadata(userId: "Tony") { response, errorInfo in
+    if errorInfo == nil {
+        print("subscribeUserMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("subscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
+```
+
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `update` 类型的 `didReceiveStorageEvent` 事件通知，并在 100 ms 内通知到你。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript
 try {
-    const result = await rtm.storage.unsubscribeUserMetadata("Tony");
-    console.log(JSON.stringify(result));
+    const result = await rtm.storage.subscribeUserMetadata("Tony");
+    console.log(JSON.stringify(result));
 } catch (status) {
     console.log(JSON.stringify(status));
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-13"
+以上示例中我们订阅了用户名为 `Tony` 的 User Metadata，当 `Tony` 的 User Metadata 变化时 RTM 会触发一个 `UPDATE` 类型的 `storage` 事件通知，并在 100 ms 内通知到你。
+
+</PlatformStructured>
+
+## 取消订阅 User Metadata
+
+如果你对不再关注某个用户的 User Metadata 变更，可以取消订阅，参照以下示例代码：
+
+<PlatformStructured platform="android">
+
+```java
 mRtmClient.getStorage().unsubscribeUserMetadata("Tony", new ResultCallback<Void>() {
     @Override
     public void onSuccess(Void responseInfo) {
@@ -1222,20 +1933,11 @@ mRtmClient.getStorage().unsubscribeUserMetadata("Tony", new ResultCallback<Void>
 });
 ```
 
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-13"
-rtm.getStorage()?.unsubscribeUserMetadata(userId: "Tony") { response, errorInfo in
-    if errorInfo == nil {
-        print("unsubscribeUserMetadata success!!")
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("unsubscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
-}
+</PlatformStructured>
 
-```
+<PlatformStructured platform="ios">
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-13"
+```objc
 [[rtm getStorage] unsubscribeUserMetadata:@"Tony" completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
     if (errorInfo == nil) {
         NSLog(@"unsubscribeUserMetadata success!!");
@@ -1245,41 +1947,24 @@ rtm.getStorage()?.unsubscribeUserMetadata(userId: "Tony") { response, errorInfo 
 }];
 ```
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-13"
-uint64_t requestId;
-rtm_client->getStorage()->unsubscribeUserMetadata("Tony", requestId);
-```
+</PlatformStructured>
 
-调用该方法后，SDK 会触发 `config.onunsubscribeusermetadataresult` 回调并返回 API 调用结果。
+<PlatformStructured platform="web">
 
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-14"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onUnsubscribeUserMetadataResult(const uint64_t requestId, const char* userId, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("UnsubscribeUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("UnsubscribeUserMetadata success\n");
-        }
-    }
-};
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-14"
-try{
-    var (status,response) = await rtmClient.getStorage.unsubscribeUserMetadata('Tony');
-
-    if (status.error == true) {
-        print(status);
-    } else {
-        print(response);
-    }
-} catch (e) {
-    print('something went wrong: $e');
+```javascript
+try {
+    const result = await rtm.storage.unsubscribeUserMetadata("Tony");
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-14"
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
 try {
@@ -1293,25 +1978,222 @@ try {
 }
 ```
 
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
+try{
+    var (status,response) = await rtmClient.getStorage.unsubscribeUserMetadata('Tony');
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+uint64_t requestId;
+rtm_client->getStorage()->unsubscribeUserMetadata("Tony", requestId);
+```
+
+调用该方法后，SDK 会触发 `onUnsubscribeUserMetadataResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onUnsubscribeUserMetadataResult(const uint64_t requestId, const char* userId, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("UnsubscribeUserMetadata failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("UnsubscribeUserMetadata success\n");
+        }
+    }
+};
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+rtm.getStorage()?.unsubscribeUserMetadata(userId: "Tony") { response, errorInfo in
+    if errorInfo == nil {
+        print("unsubscribeUserMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("unsubscribeUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript
+try {
+    const result = await rtm.storage.unsubscribeUserMetadata("Tony");
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+</PlatformStructured>
+
 操作成功后，你将不再会收到此 User Metadata 变更通知。
 
 ## CAS 控制
 
 User Metadata 与 Channel Metadata 类似，也存在 CAS 控制机制。该方法提供两种独立的版本控制字段，你可以根据实际业务场景设置任意一种或多种：
 
+<PlatformStructured platform="android">
+
+- 通过 `Metadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+- 通过 `AgoraRtmMetadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+
+- 通过 `AgoraRtmMetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
 - 通过 `options` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
 
-- 通过 `storage.metadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+- 通过 `MetadataItem[]` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+- 通过 `Metadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+- 通过 `RtmMetadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
 
 - 通过 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
 
-- 通过 `storage.metadataitem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+- 通过 `Metadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+
+- 通过 `MetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+- 通过 `AgoraRtmMetadata` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+
+- 通过 `AgoraRtmMetadataItem` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+- 通过 `options` 中的 `majorRevision` 属性开启整组 User Metadata 的版本号校验。
+
+- 通过 `MetadataItem[]` 中的 `revision` 属性开启某个 Metadata Item 的版本号校验。
+
+</PlatformStructured>
 
 你可以在需要权限控制的场景中应用 CAS 控制，例如：在交友 App 中同时只允许一位观众与主播连麦，在多人同时发起请求时，只有最先操作的人会成功。
 
 以下示例代码展示了如何使用 `majorRevision` 和 `revision` 更新 User Metadata 和 Metadata Item：
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-metadata-user-metadata-15"
+<PlatformStructured platform="android">
+
+```java
+Metadata metadata = new Metadata();
+metadata.setMajorRevision(734874892);
+metadata.getItems().add(new MetadataItem("Avatar", "https://your-domain/avatar/tony.png", 734874812));
+
+MetadataOptions options = new MetadataOptions();
+options.setRecordTs(true);
+options.setRecordUserId(true);
+mRtmClient.getStorage().updateUserMetadata("Tony", metadata, options, new ResultCallback<Void>() {
+    @Override
+    public void onSuccess(Void responseInfo) {
+        log(CALLBACK, "update user metadata success");
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
+AgoraRtmMetadataItem* sessionRequest = [[AgoraRtmMetadataItem alloc] init];
+sessionRequest.key = @"Avatar";
+sessionRequest.value = @"https://your-domain/avatar/tony.png";
+sessionRequest.revision = 734874812;
+NSArray *item_array = [NSArray arrayWithObjects:sessionRequest];
+metadata.items = item_array;
+metadata.majorRevision = 734874892; //set major revision
+
+AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
+metadata_opt.recordUserId = true;
+metadata_opt.recordTs = true;
+[[rtm getStorage] updateUserMetadata:@"Tony" data:metadata options:metadata_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"updateUserMetadata success!!");
+    } else {
+        NSLog(@"updateUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript
 const avatar = {
     key : "Avatar",
     value : "https://your-domain/avatar/tony.png",
@@ -1335,121 +2217,11 @@ try {
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-metadata-user-metadata-15"
-Metadata metadata = new Metadata();
-metadata.setMajorRevision(734874892);
-metadata.getItems().add(new MetadataItem("Avatar", "https://your-domain/avatar/tony.png", 734874812));
+</PlatformStructured>
 
-MetadataOptions options = new MetadataOptions();
-options.setRecordTs(true);
-options.setRecordUserId(true);
-mRtmClient.getStorage().updateUserMetadata("Tony", metadata, options, new ResultCallback<Void>() {
-    @Override
-    public void onSuccess(Void responseInfo) {
-        log(CALLBACK, "update user metadata success");
-    }
+<PlatformStructured platform="harmonyos">
 
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-```
-
-```swift tab="Swift" tabGroup="rtm-build-manage-metadata-user-metadata-15"
-let metadata = AgoraRtmMetadata()!
-
-let sessionRequest = AgoraRtmMetadataItem()
-sessionRequest.key = "Avatar"
-sessionRequest.value = "https://your-domain/avatar/tony.png"
-sessionRequest.revision = 734874812
-
-let itemArray = [sessionRequest]
-metadata.items = itemArray
-metadata.majorRevision = 734874892 // 设置 major revision
-
-let metadataOptions = AgoraRtmMetadataOptions()
-metadataOptions.recordUserId = true
-metadataOptions.recordTs = true
-
-rtm.getStorage().updateUserMetadata(userId: "Tony", data: metadata, options: metadataOptions) { response, errorInfo in
-    if errorInfo == nil {
-        print("updateUserMetadata success!!")
-    } else {
-        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
-            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
-        }
-    }
-}
-
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-metadata-user-metadata-15"
-AgoraRtmMetadata* metadata = [[AgoraRtmMetadata alloc] init];
-AgoraRtmMetadataItem* sessionRequest = [[AgoraRtmMetadataItem alloc] init];
-sessionRequest.key = @"Avatar";
-sessionRequest.value = @"https://your-domain/avatar/tony.png";
-sessionRequest.revision = 734874812;
-NSArray *item_array = [NSArray arrayWithObjects:sessionRequest];
-metadata.items = item_array;
-metadata.majorRevision = 734874892; //set major revision
-
-AgoraRtmMetadataOptions* metadata_opt = [[AgoraRtmMetadataOptions alloc] init];
-metadata_opt.recordUserId = true;
-metadata_opt.recordTs = true;
-[[rtm getStorage] updateUserMetadata:@"Tony" data:metadata options:metadata_opt completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"updateUserMetadata success!!");
-    } else {
-        NSLog(@"updateUserMetadata failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-metadata-user-metadata-15"
-Metadata metadata;
-metadata.majorRevision = 734874892;
-std::vector<MetadataItem> items;
-items.emplace_back(MetadataItem("Avatar", "https://your-domain/avatar/tony.png", 734874812));
-metadata.items = items.data();
-metadata.itemCount = items.size();
-
-MetadataOptions options;
-options.recordTs = true;
-options.recordUserId = true;
-
-uint64_t requestId;
-rtmClient->getStorage()->updateUserMetadata("Tony", metadata, options, requestId);
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-metadata-user-metadata-15"
-var Name = MetadataItem.fromJson({
-    'key' : 'Name',
-    'value' : 'Tony',
-    'revision' : 734874812
-});
-
-var metadata = [Name];
-
-try{
-    var (status,response) = await rtmClient.getStorage.setUserMetadata(
-        'Tony',
-        metadata,
-        majorRevision: 734874892,
-        recordTs: true,
-        recordUserId: true);
-
-    if (status.error == true) {
-        print(status);
-    } else {
-        print(response);
-    }
-} catch (e) {
-    print('something went wrong: $e');
-}
-```
-
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-metadata-user-metadata-15"
+```typescript
 import { Metadata, RtmError } from '@shengwang/rtm-full';
 
 // Define metadata with revision control
@@ -1477,6 +2249,177 @@ try {
 }
 ```
 
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+```dart
+var Name = MetadataItem.fromJson({
+    'key' : 'Name',
+    'value' : 'Tony',
+    'revision' : 734874812
+});
+
+var metadata = [Name];
+
+try{
+    var (status,response) = await rtmClient.getStorage.setUserMetadata(
+        'Tony',
+        metadata,
+        majorRevision: 734874892,
+        recordTs: true,
+        recordUserId: true);
+
+    if (status.error == true) {
+        print(status);
+    } else {
+        print(response);
+    }
+} catch (e) {
+    print('something went wrong: $e');
+}
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+Metadata metadata;
+metadata.majorRevision = 734874892;
+std::vector<MetadataItem> items;
+items.emplace_back(MetadataItem("Avatar", "https://your-domain/avatar/tony.png", 734874812));
+metadata.items = items.data();
+metadata.itemCount = items.size();
+
+MetadataOptions options;
+options.recordTs = true;
+options.recordUserId = true;
+
+uint64_t requestId;
+rtmClient->getStorage()->updateUserMetadata("Tony", metadata, options, requestId);
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+let metadata = AgoraRtmMetadata()!
+
+let sessionRequest = AgoraRtmMetadataItem()
+sessionRequest.key = "Avatar"
+sessionRequest.value = "https://your-domain/avatar/tony.png"
+sessionRequest.revision = 734874812
+
+let itemArray = [sessionRequest]
+metadata.items = itemArray
+metadata.majorRevision = 734874892 // 设置 major revision
+
+let metadataOptions = AgoraRtmMetadataOptions()
+metadataOptions.recordUserId = true
+metadataOptions.recordTs = true
+
+rtm.getStorage().updateUserMetadata(userId: "Tony", data: metadata, options: metadataOptions) { response, errorInfo in
+    if errorInfo == nil {
+        print("updateUserMetadata success!!")
+    } else {
+        if let errorCode = errorInfo?.errorCode, let reason = errorInfo?.reason {
+            print("updateUserMetadata failed, errorCode: \(errorCode), reason: \(reason)")
+        }
+    }
+}
+
+```
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript
+const avatar = {
+    key : "Avatar",
+    value : "https://your-domain/avatar/tony.png",
+    revision : 734874812
+};
+
+const data = [sessionRequest];
+
+const options = {
+    userId : "Tony",
+    addTimeStamp : true,
+    addUserId: true,
+    majorRevision : 734874892
+};
+
+try {
+    const result = await rtm.storage.updateUserMetadata(data, options);
+    console.log(JSON.stringify(result));
+} catch (status) {
+    console.log(JSON.stringify(status));
+}
+```
+
+</PlatformStructured>
+
 上述例子中，我们对 User Metadata 和 Metadata Item `Avatar` 开启 CAS 验证并设置 `majorRevision` 为 `734874892`。服务器在接收到接口调用请求后，会首先验证接口调用提供的 `majorRevision` 与数据库最新值是否匹配，如果不匹配，则返回错误；如果匹配，则继续验证 Metadata Item 的 `revision`，逻辑与验证 User Metadata 相同。
 
-如果你开启了版本控制能力，那么你需要关注 `config.onstorageevent` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+<PlatformStructured platform="android">
+
+如果你开启了版本控制能力，那么你需要关注 `onStorageEvent` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+如果你开启了版本控制能力，那么你需要关注 `didReceiveStorageEvent` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+如果你开启了版本控制能力，那么你需要关注 `storage` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+如果你开启了版本控制能力，那么你需要关注 `storage` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+如果你开启了版本控制能力，那么你需要关注 `OnStorageEvent` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+如果你开启了版本控制能力，那么你需要关注 `storage` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+如果你开启了版本控制能力，那么你需要关注 `onStorageEvent` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+如果你开启了版本控制能力，那么你需要关注 `didReceiveStorageEvent` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+如果你开启了版本控制能力，那么你需要关注 `storage` 事件通知以获取 `majorRevision` 和 `revision` 更新后的值，以便于在接口调用时提供最新值。
+
+</PlatformStructured>

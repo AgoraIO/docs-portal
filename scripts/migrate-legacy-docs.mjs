@@ -855,17 +855,17 @@ function parseExportedObjectMaps(content) {
   while (exportMatch) {
     const values = new Map();
     const propertyPattern =
-      /\b([A-Za-z0-9_]+)\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([^,\n]+))/g;
+      /(?:"([^"]+)"|'([^']+)'|\b([A-Za-z0-9_]+))\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([^,\n]+))/g;
     let propertyMatch = propertyPattern.exec(exportMatch[2]);
 
     while (propertyMatch) {
       values.set(
-        propertyMatch[1],
+        propertyMatch[1] ?? propertyMatch[2] ?? propertyMatch[3],
         (
-          propertyMatch[2] ??
-          propertyMatch[3] ??
           propertyMatch[4] ??
           propertyMatch[5] ??
+          propertyMatch[6] ??
+          propertyMatch[7] ??
           ''
         ).trim(),
       );
