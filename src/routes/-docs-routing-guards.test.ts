@@ -817,6 +817,51 @@ describe('docs route locale guards', () => {
     },
   );
 
+  it.each([
+    ['rtc/reference/events', false],
+    ['rtc/reference/events', true],
+    ['rtc/webhook/events', false],
+    ['rtc/webhook/events', true],
+  ] as const)(
+    'redirects duplicate RTC events %s with query/hash before payload lookup (static: %s)',
+    async (slug, useStaticPayload) => {
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(useStaticPayload);
+      docsPagePayloadOverride.mockReturnValue(null);
+      const searchStr =
+        '?from=%2Fzh-CN%2Frealtime-media%2Frtc&fromScope=%2Fzh-CN%2Frealtime-media%2Frtc%2Freference';
+      try {
+        await getLoader(DocPageRoute)({
+          location: {
+            hash: '#103-broadcaster-join-channel',
+            pathname: `/zh-CN/realtime-media/${slug}`,
+            searchStr,
+          },
+          params: {
+            _splat: slug,
+            locale: 'zh-CN',
+            tab: 'realtime-media',
+          },
+        } as never);
+      } catch (error) {
+        expect(isRedirect(error)).toBe(true);
+        expect(error).toMatchObject({
+          options: {
+            href: `/zh-CN/api-reference/rtc/restful/webhook/events${searchStr}#103-broadcaster-join-channel`,
+            statusCode: 301,
+          },
+          status: 301,
+        });
+        return;
+      } finally {
+        publishedLocaleOverride.value = false;
+        docsPagePayloadOverride.mockReset();
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+      throw new Error('Expected duplicate RTC events to redirect permanently');
+    },
+  );
+
   it('forwards an RTM 301 DocsRedirectPayload from the tab index route', async () => {
     docsTabIndexOverride.mockReturnValueOnce({ url: '/en/realtime-media' });
     docsPagePayloadOverride.mockReturnValueOnce({

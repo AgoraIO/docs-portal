@@ -95,7 +95,13 @@ describe('Shengwang redirect artifacts', () => {
             mappingType: 'same-path-no-redirect',
             notes: `${record.notes}；公开路径未变化，由新站直接服务，无需重定向，查询参数交由应用处理。`,
           }
-        : { ...record, target: record.target.replace(/^\/zh-CN\//, '/') },
+        : {
+            ...record,
+            target:
+              record.target === '/zh-CN/realtime-media/rtc/reference/events'
+                ? '/api-reference/rtc/restful/webhook/events'
+                : record.target.replace(/^\/zh-CN\//, '/'),
+          },
     );
     expect(finalMap.records).toEqual(expectedRecords);
     expect(originalRedirects).toHaveLength(8216);
@@ -122,6 +128,17 @@ describe('Shengwang redirect artifacts', () => {
     expect(actualRules.size).toBe(vercel.length);
     expect(expectedRules.has('/search')).toBe(false);
     expect(actualRules).toEqual(expectedRules);
+
+    const rtcEventsRules = vercel.filter((rule) =>
+      /^\/doc\/rtc\/[^/]+\/webhook\/events$/.test(rule.source),
+    );
+    expect(rtcEventsRules).toHaveLength(15);
+    expect(
+      rtcEventsRules.every(
+        (rule) =>
+          rule.destination === '/api-reference/rtc/restful/webhook/events',
+      ),
+    ).toBe(true);
 
     const nginx = readFileSync(
       path.join(inputRoot, 'legacy-url-redirects.nginx.conf'),
