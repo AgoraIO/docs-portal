@@ -1,14 +1,27 @@
 ---
-title: "计费策略"
-description: "了解实时互动 RTC 的计费方式、计费项、免费额度和费用计算规则。"
+title: "计费规则"
+description: "了解 RTC 标准时长计费模型下的基础服务、增值服务、套餐费用和各 SDK 的折算系数。"
 ---
-本文介绍实时互动的新版计费规则，适配声网控制台的新版计费模型。
+
+本文介绍音视频用量折算为标准时长后，通过套餐包、加油包或后付费结算的计费规则。适用范围包括 Native、Web、框架 SDK 和小程序 SDK，各 SDK 的折算系数见[标准时长](#标准时长)。
+
+套餐的购买、续订和升级操作见[付费方式](/zh-CN/realtime-media/rtc/reference/payment)。
 
 :::info[信息]
 - 自 2024 年 7 月 26 日起，在声网控制台新建通用项目时，系统会自动将你账号下的**所有通用项目**均切换为新版计费模型，如未切换成功，请联系 [sales@shengwang.cn](mailto:sales@shengwang.cn)。
   - 如果在 2024 年 7 月 26 日后未创建新的通用项目，则存量项目仍默认使用旧模型进行计费。详见旧版[计费说明](/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-strategy-old)。
   - 如果你已与声网的销售签约，则实际计费信息以合同为准。
 :::
+
+## 适用的计费模型
+
+请结合[声网控制台](https://console.shengwang.cn/)中的账号计费信息、账单和合同，选择对应说明。如果无法确认账号适用的模型，请联系 [sales@shengwang.cn](mailto:sales@shengwang.cn)。
+
+- **标准时长计费**：继续阅读本文。各 SDK 的折算系数见[标准时长](#标准时长)。
+- **旧版计费**：仍使用旧版计费模型的账号，请阅读[旧版计费规则](/zh-CN/realtime-media/rtc/reference/legacy-billing/billing-strategy-old)。
+- **小程序 SDK**：使用标准时长计费时，请选择本文“RTC 小程序 SDK”折算表。按音视频分钟数列示的单价和用量示例另见[小程序计费说明](/zh-CN/realtime-media/rtc/reference/billing)，请根据账号适用的模型使用对应规则。
+
+套餐包、免费时长、用量统计和欠费等问题见[计费常见问题](/zh-CN/realtime-media/rtc/reference/billing-faq)。
 
 ## 计费总览
 
@@ -31,7 +44,7 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 为简化计费规则，声网对基础服务产生的用量折算为标准时长后进行统一结算，即：将所有角色（主播、观众）订阅音视频流的用量折算为标准时长，然后通过套餐包、加油包或后付费方式进行抵扣。
 
-有关标准时长的折算系数以及计算方式详见[标准时长](/zh-CN/realtime-media/rtc/reference/billing-strategy)。声网会统计用户订阅的所有不同类型视频流的分辨率的总和，即[集合分辨率](/zh-CN/realtime-media/rtc/reference/billing-strategy)。不同类型的集合分辨率对应的折算系数不同。
+有关标准时长的折算系数以及计算方式详见[标准时长](#标准时长)。声网会统计用户订阅的所有不同类型视频流的分辨率的总和，即[集合分辨率](#集合分辨率)。不同类型的集合分辨率对应的折算系数不同。
 
 ### 套餐内订阅费用
 
@@ -39,7 +52,7 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 
 :::warning[注意]
 - 订购任意套餐包后，将不再享受 [1 万分钟免费时长](/zh-CN/reference/faq/account/billing_free)。
-- 不同套餐包支持的高级功能也有所不同，请根据实际业务需求购买对应的套餐包。详见[功能限制](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+- 不同套餐包支持的高级功能也有所不同，请根据实际业务需求购买对应的套餐包。详见[功能限制](#功能限制)。
 :::
 
 声网支持购买的套餐包如下表所示：
@@ -201,6 +214,8 @@ description: "了解实时互动 RTC 的计费方式、计费项、免费额度�
 标准时长的计算公式如下：
 
 **标准时长 = 音视频用量 × 对应折算系数**
+
+以下两组系数分别对应 Native、Web、框架 SDK 和小程序 SDK。使用小程序 SDK 时，请选择“RTC 小程序 SDK”表；按音视频分钟数列示的单价和用量示例另见[小程序计费说明](/zh-CN/realtime-media/rtc/reference/billing)。
 
 <Tabs defaultValue="native-sdk" groupId="sdk" persist>
 <TabsList>
