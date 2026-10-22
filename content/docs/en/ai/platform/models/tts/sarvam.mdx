@@ -1,0 +1,144 @@
+---
+title: Sarvam
+description: >
+ Integrate Sarvam TTS with the Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/sarvam.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Sarvam provides fast, reliable text-to-speech (TTS) with support for Indian languages and customizable voices.
+
+### Sample configuration
+
+The following examples show how to configure Sarvam TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import SarvamTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(SarvamTTS(
+        key='your-sarvam-key',
+        speaker='anushka',
+        target_language_code='en-IN',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, SarvamTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new SarvamTTS({
+    key: 'your-sarvam-key',
+    speaker: 'anushka',
+    targetLanguageCode: 'en-IN',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewSarvamTTS(vendors.SarvamTTSOptions{
+        Key:                "your-sarvam-key",
+        Speaker:            "anushka",
+        TargetLanguageCode: "en-IN",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "sarvam",
+  "params": {
+    "api_subscription_key": "<SARVAM_API_KEY>",
+    "speaker": "anushka",
+    "target_language_code": "en-IN"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_subscription_key" type="string" required={true}>
+  The API key used for authentication. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+  </Parameter>
+  <Parameter name="speaker" type="string" required={true}>
+  The voice ID to use for speech generation.
+  - Female voices: `anushka`, `manisha`, `vidya`, `arya`.
+  - Male voices: `abhilash`, `karun`, `hitesh`.
+  </Parameter>
+  <Parameter name="target_language_code" type="string" required={true}>
+  The language code for speech synthesis. Supported values:
+  - `en-IN` English (India)
+  - `hi-IN`: Hindi
+  - `bn-IN`: Bengali
+  - `ta-IN`: Tamil
+  - `te-IN`: Telugu
+  - `kn-IN`: Kannada
+  - `ml-IN`: Malayalam
+  - `mr-IN`: Marathi
+  - `gu-IN`: Gujarati
+  - `pa-IN`: Punjabi
+  - `or-IN`: Odia
+  </Parameter>
+  <Parameter name="pitch" type="number" possibleValues="[-0.75,0.75]" required={false}>
+  The pitch adjustment for the voice. Positive values make the voice sharper; negative values make it deeper.
+  </Parameter>
+  <Parameter name="pace" type="number" possibleValues="[0.3,3.0]" required={false}>
+  The speed of speech. `1.0` is the normal speed. Values less than `1.0` slow down the speech; values greater than `1.0` speed it up.
+  </Parameter>
+  <Parameter name="loudness" type="number" possibleValues="[0.1,3.0]" required={false}>
+  The volume level of the speech. Higher values increase the loudness.
+  </Parameter>
+  <Parameter name="sample_rate" type="number" possibleValues="8000, 16000, 22050, 24000" required={false}>
+  The audio sample rate in Hz.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/text-to-speech/convert).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

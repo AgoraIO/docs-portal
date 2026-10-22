@@ -1,0 +1,155 @@
+---
+title: Murf
+description: >
+ Integrate Murf TTS with the Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/murf.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Murf provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
+
+### Sample configuration
+
+The following examples show how to configure Murf TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import MurfTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(MurfTTS(
+        key='your-murf-key',
+        voice_id='Matthew',
+        base_url='wss://global.api.murf.ai/v1/speech/stream-input',
+        locale='en-US',
+        rate=0,
+        pitch=0,
+        model='FALCON',
+        sample_rate=24000,
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, MurfTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new MurfTTS({
+    key: 'your-murf-key',
+    voiceId: 'Matthew',
+    baseUrl: 'wss://global.api.murf.ai/v1/speech/stream-input',
+    locale: 'en-US',
+    rate: 0,
+    pitch: 0,
+    model: 'FALCON',
+    sampleRate: 24000,
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewMurfTTS(vendors.MurfTTSOptions{
+        Key:        "your-murf-key",
+        VoiceID:    "Matthew",
+        BaseURL:    "wss://global.api.murf.ai/v1/speech/stream-input",
+        Locale:     "en-US",
+        Rate:       Agora.Float64(0),
+        Pitch:      Agora.Float64(0),
+        Model:      "FALCON",
+        SampleRate: Agora.Int(24000),
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "murf",
+  "params": {
+    "api_key": "<murf_api_key>",
+    "base_url": "wss://global.api.murf.ai/v1/speech/stream-input",
+    "voiceId": "Matthew",
+    "locale": "en-US",
+    "rate": 0,
+    "pitch": 0,
+    "model": "FALCON",
+    "sample_rate": 24000
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Murf API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="base_url" type="string" required={false}>
+    The WebSocket endpoint for streaming TTS output. For example, `wss://global.api.murf.ai/v1/speech/stream-input`.
+  </Parameter>
+  <Parameter name="voiceId" type="string" required={false}>
+    The voice identifier to use. For example, `Matthew`.
+  </Parameter>
+  <Parameter name="locale" type="string" required={false}>
+    The locale for the selected voice. For example, `en-US`.
+  </Parameter>
+  <Parameter name="rate" type="number" required={false}>
+    The speech rate adjustment. A value of `0` applies the default rate.
+  </Parameter>
+  <Parameter name="pitch" type="number" required={false}>
+    The pitch adjustment. A value of `0` applies the default pitch.
+  </Parameter>
+  <Parameter name="model" type="string" required={false}>
+    The TTS model to use. For example, `FALCON`.
+  </Parameter>
+  <Parameter name="sample_rate" type="number" required={false}>
+    The audio sample rate in Hz. For example, `24000`.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Murf documentation](https://murf.ai/api/docs/api-reference/text-to-speech/stream-input).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

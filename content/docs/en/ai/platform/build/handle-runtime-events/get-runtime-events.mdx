@@ -1,0 +1,154 @@
+---
+title: Get runtime events
+description: Receive runtime events in clients and on your server.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/handle-runtime-events/get-runtime-events.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+This page explains how to receive runtime events from Conversational AI Engine. It compares the delivery paths so you can choose the one that fits your use case, or use both approaches together.
+
+You can receive runtime events through the following paths:
+
+- **Client toolkit**: for live, in-session interaction events
+- **Webhook**: for backend monitoring, durable records, and post-session processing
+
+The paths don't deliver identical events. Some events overlap semantically, but many are exclusive to one path.
+
+## Event coverage
+
+| Runtime event | Client toolkit | Webhook |
+| --- | --- | --- |
+| Agent state changes such as `listening`, `thinking`, and `speaking` | Yes | No |
+| Interrupt events during a live session | Yes | No |
+| Module errors during a live session | Yes | Yes |
+| Runtime metrics and latency data | Yes | Yes |
+| Agent joined and left lifecycle records | No | Yes |
+| Conversation history after a session ends | No | Yes |
+| Telephony call state | No | Yes |
+| Debug logs and message-level client diagnostics | Yes | No |
+
+If you only need current UI state, use the client path. If you need monitoring, history, or backend analytics, use the webhook path. If you need live UX with production observability, use both.
+
+## Choose how to receive events
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="client-toolkit">Client toolkit</TabsTrigger>
+  <TabsTrigger value="webhook">Webhook</TabsTrigger>
+</TabsList>
+
+<TabsContent value="client-toolkit">
+
+Use the client toolkit when the app must react during the current session.
+
+### What you get
+
+- `onAgentStateChanged`
+- `onAgentListeningChanged`
+- `onAgentThinkingChanged`
+- `onAgentSpeakingChanged`
+- `onAgentInterrupted`
+- `onAgentMetrics`
+- `onAgentError`
+- `onTranscriptUpdated`
+- `onDebugLog` or `DEBUG_LOG`
+
+### What you need
+
+- RTC integrated in the client
+- RTM enabled for the project
+- Authenticated RTC and RTM instances with lifecycle managed by your app
+
+### How to receive events
+
+1. Start the agent with RTM enabled.
+2. Set `parameters.data_channel` to `rtm`.
+3. Enable optional outputs such as metrics and error messages when needed.
+4. Register toolkit event handlers.
+5. Subscribe to channel messages before the session starts.
+
+   ```json
+   {
+     "advanced_features": {
+       "enable_rtm": true
+     },
+     "parameters": {
+       "data_channel": "rtm",
+       "enable_metrics": true,
+       "enable_error_message": true
+     }
+   }
+   ```
+
+This path is best for:
+
+- Updating in-call UI state
+- Reacting to interruptions
+- Surfacing errors immediately in the app
+- Observing client-side runtime behavior during live debugging
+
+For the full client setup and platform examples, see [Client-side events](event-notifications).
+
+</TabsContent>
+
+<TabsContent value="webhook">
+
+Use webhooks when your backend must receive and persist runtime events.
+
+### What you get
+
+- `101 agent joined`
+- `102 agent left`
+- `103 agent history`
+- `104 agent expire`
+- `110 agent error`
+- `111 agent metrics`
+- `112 turns finished`
+- `201 inbound call state`
+- `202 outbound call state`
+
+### What you need
+
+- A public HTTPS callback endpoint
+- Access to the Agora Console project notification settings
+- Server-side storage for the generated secret
+
+### How to receive events
+
+1. Open the project's notification settings in Agora Console.
+2. Choose the Conversational AI event types you want to subscribe to.
+3. Configure your HTTPS callback URL.
+4. Save the generated secret.
+5. Verify `Agora-Signature` or `Agora-Signature-V2` on your server.
+6. Return `200 OK` quickly after receiving the callback.
+
+This path is best for:
+
+- Alerting and dashboards
+- Session lifecycle records
+- Post-session history processing
+- Backend debugging and incident review
+- Turn and metric aggregation across many sessions
+
+For the full webhook setup, request format, and signature verification steps, see [Webhooks](webhooks).
+
+</TabsContent>
+</Tabs>
+
+## How to achieve your goals
+
+You can achieve some goals through either path; others work with only one:
+
+- **Status UI**: mainly client toolkit
+- **Errors**: client toolkit and webhook
+- **Performance**: client toolkit and webhook
+- **Debugging failures**: client toolkit for live reproduction, webhook for backend investigation
+- **Conversation history**: webhook and REST APIs, not client toolkit
+
+## Related resources
+
+- If you want to understand what the webhook event numbers mean, see [Notification event types](/en/ai/reference/event-types).
+- If you want to decide which events to use for state, errors, and performance, see [Monitor agent status, errors, and performance](monitor-agent-runtime).
+- If you want to receive server-side webhook callbacks, see [Webhooks](webhooks).
+- If you want to investigate failures, see [Debug agent failures with runtime events](debug-agent-failures).
+- If you want post-session history and turn data, see [Retrieve conversation history after a session ends](retrieve-session-history).

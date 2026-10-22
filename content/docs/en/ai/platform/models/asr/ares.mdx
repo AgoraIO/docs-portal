@@ -1,0 +1,109 @@
+---
+title: ARES
+description: >
+ Integrate ARES ASR into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/ares.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Adaptive Recognition Engine for Speech (ARES) provides built-in real-time speech-to-text, offering seamless integration with low latency and reliable performance for conversational AI applications.
+
+### Sample configuration
+
+The following example shows how to configure ARES ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AresSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(AresSTT(
+        keywords=['Agora', 'Conversational AI', 'RTC'],
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+`AresSTT` has no `language` parameter. ARES uses the recognition language set through the agent's turn detection configuration, using `with_turn_detection()`, which defaults to `en-US`.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AresSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new AresSTT({
+    keywords: ['Agora', 'Conversational AI', 'RTC'],
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+`AresSTT` has no `language` option. ARES uses the recognition language set through the agent's turn detection configuration, using `withTurnDetection()`, which defaults to `en-US`.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewAresSTT(vendors.AresSTTOptions{
+        Keywords: []string{"Agora", "Conversational AI", "RTC"},
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+`AresSTTOptions` has no `Language` field. ARES uses the recognition language set through the agent's turn detection configuration, using `WithTurnDetection()`, which defaults to `en-US`.
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
+
+```json
+"asr": {
+  "vendor": "ares",
+  "language": "en-US",
+  "keywords": ["Agora", "Conversational AI", "RTC"]
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ ASR provider. Set to `ares` to use Adaptive Recognition Engine for Speech.
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+  The BCP-47 language tag identifying the primary language used for agent interaction.
+  See [Supported languages](/en/realtime-media/speech-to-text/reference/supported-languages#real-time-transcription) for the complete list.
+ </Parameter>
+ <Parameter name="keywords" type="array[string]" required={false}>
+ Keywords used to improve ASR recognition accuracy for specific terms, such as brand names, product names, or industry jargon. Supports up to 128 keywords. See [Configure ASR keywords](../../build/shape-the-conversation/asr-keywords) for details.
+ </Parameter>
+</ParameterList>

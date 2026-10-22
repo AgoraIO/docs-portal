@@ -1585,6 +1585,9 @@ function buildAiProductSidebar(
   const agentStudioSection = findTopLevelSidebarSection(nodes, [
     'Agent Studio',
   ]);
+  const platformSection = findTopLevelSidebarSection(nodes, [
+    'Conversational AI Platform (Preview)',
+  ]);
 
   if (
     !aiOverview ||
@@ -1714,6 +1717,20 @@ function buildAiProductSidebar(
       title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
       type: 'section',
     },
+    ...(platformSection
+      ? [
+          {
+            ...stripSidebarSectionMeta(platformSection),
+            children: stripSidebarSectionMetaFromNodes(
+              platformSection.children,
+            ),
+            icon: 'Layers',
+            id: 'ai-product-platform',
+            title: 'Conversational AI Platform (Preview)',
+            type: 'section',
+          } satisfies DocsSidebarSectionNode,
+        ]
+      : []),
     ...(agentStudioSection
       ? [
           {

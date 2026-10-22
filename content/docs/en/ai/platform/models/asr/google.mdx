@@ -1,0 +1,132 @@
+---
+title: Google
+description: >
+ Integrate Google ASR into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/google.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Google provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
+
+### Sample configuration
+
+The following example shows how to configure Google ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GoogleSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(GoogleSTT(
+        project_id='your-google-project-id',
+        location='global',
+        adc_credentials_string='your-google-credentials-json-string',
+        language='en-US',
+        model='long',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, GoogleSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new GoogleSTT({
+    projectId: 'your-google-project-id',
+    location: 'global',
+    adcCredentialsString: 'your-google-credentials-json-string',
+    language: 'en-US',
+    model: 'long',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewGoogleSTT(vendors.GoogleSTTOptions{
+        ProjectID:            "your-google-project-id",
+        Location:             "global",
+        ADCCredentialsString: "your-google-credentials-json-string",
+        Language:             "en-US",
+        Model:                "long",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
+
+```json
+"asr": {
+    "vendor": "google",
+    "language": "en-US",
+    "params": {
+        "project_id": "<GOOGLE_ASR_PROJECT_ID>",
+        "location": "global",
+        "adc_credentials_string": "<GOOGLE_APPLICATION_CREDENTIALS_STRING>",
+        "language": "en-US",
+        "model": "long"
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="project_id" type="string" required={true}>
+  The Google Cloud project ID where the Speech-to-Text API is enabled. Get your project ID from the [Google Cloud Console](https://console.cloud.google.com/).
+  </Parameter>
+  <Parameter name="location" type="string" required={true}>
+  The Google Cloud region where the speech service is hosted, for example, `global`, `us-central1`, or `europe-west1`.
+  </Parameter>
+  <Parameter name="adc_credentials_string" type="string" required={true}>
+  The Google Cloud service account credentials JSON string used for authentication. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
+  </Parameter>
+  <Parameter name="language" type="string" required={true}>
+  The language code for speech recognition, for example, `en-US`, `es-ES`, or `fr-FR`. See [supported languages](https://cloud.google.com/speech-to-text/docs/speech-to-text-supported-languages) for available language codes.
+  </Parameter>
+  <Parameter name="model" type="string" required={false}>
+  The recognition model to use.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Google official documentation](https://docs.cloud.google.com/speech-to-text/v2/docs).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

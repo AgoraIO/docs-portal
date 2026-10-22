@@ -1,0 +1,176 @@
+---
+title: Dify
+description: >
+  Integrate Conversational AI Engine with Dify's workflow and agent platform as an LLM provider.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/dify.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Dify is an open-source LLM application development platform that provides a unified API for multiple LLM providers with workflow orchestration and advanced features.
+
+### Setup and Configuration
+
+To integrate Dify with Agora Conversational AI, install the plugin, configure your Agora project, and create an endpoint:
+
+1. **Install the Dify plugin**
+   1. Log in to the [Dify Console](https://cloud.dify.ai).
+   2. Click on **Plugins** in the top navigation bar to open the Marketplace.
+   3. Search for the **Agora Conversational AI** plugin.
+   4. Click **Install** to install the plugin.
+   5. After installation, confirm that the plugin status is **Active** in the Installed Plugins list.
+
+2. **Configure the Agora Console**
+   1. Log in to the [Agora Console](https://console.agora.io).
+   2. Create a new project or select an existing one.
+   3. Enable the **Conversational AI** feature within the selected project.
+   4. Record the following information for later use:
+      - **App ID** (unique project identifier)
+      - **Certificate** (optional, if enabled for enhanced security)
+   5. Navigate to the **RESTful API** page and generate a **Customer ID** and **Customer Secret** (required for HTTP Basic Authentication).
+
+3. **Create an Endpoint in Dify**
+   1. In the Dify console's left-hand navigation panel, click on the **Agora Conversational AI** plugin you just installed.
+   2. Click **Create a new API endpoint** to open the configuration page.
+   3. Fill in the following details:
+      - **App ID** (copied from the Agora Console)
+      - **Customer ID and Customer Secret** (copied from the Agora Console)
+      - **TTS** (Text-to-Speech) configuration (e.g., Azure or ElevenLabs)
+
+4. **Save and note the endpoint details**
+   1. Save the endpoint configuration. Dify generates an **Endpoint URL**.
+   2. Note down this **Dify Endpoint URL** and **Dify endpoint API key** for use in the `llm` configuration.
+
+       ![](https://assets-docs.agora.io/images/conversational-ai/dify-endpoint.png)
+
+### Sample configuration
+
+The following examples show how to configure Dify LLM when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, Dify
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(Dify(
+        api_key='your-dify-api-key',
+        url='https://xxxxxx.ai-plugin.io/convoai/dify-completion',
+        model='default',
+        system_messages=[{'role': 'system', 'content': 'You are a helpful voice assistant.'}],
+        greeting_message='Hello, how can I assist you today?',
+        failure_message='Hold on a moment.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, Dify } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new Dify({
+    apiKey: 'your-dify-api-key',
+    url: 'https://xxxxxx.ai-plugin.io/convoai/dify-completion',
+    model: 'default',
+    systemMessages: [{ role: 'system', content: 'You are a helpful voice assistant.' }],
+    greetingMessage: 'Hello, how can I assist you today?',
+    failureMessage: 'Hold on a moment.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewDify(vendors.DifyOptions{
+        APIKey: "your-dify-api-key",
+        URL:    "https://xxxxxx.ai-plugin.io/convoai/dify-completion",
+        Model:  "default",
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful voice assistant."},
+        },
+        GreetingMessage: "Hello, how can I assist you today?",
+        FailureMessage:  "Hold on a moment.",
+        MaxHistory:      Agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `llm` configuration in your request:
+
+```json
+"llm": {
+   "url": "https://xxxxxx.ai-plugin.io/convoai/dify-completion",
+   "api_key": "<same_api_key_as_in_endpoint_setup>",
+   "system_messages": [
+       {
+           "role": "system",
+           "content": "You are a helpful voice assistant."
+       }
+   ],
+   "max_history": 32,
+   "greeting_message": "Hello, how can I assist you today?",
+   "failure_message": "Hold on a moment.",
+   "params": {
+       "model": "default"
+   },
+   "style": "dify"
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="llm" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+  Use the same API key configured in your Dify endpoint setup.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+  Use the custom endpoint URL from your Dify marketplace integration.
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>
+  Set to `dify` to use Dify's message format and workflow processing.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model" type="string" required={true}>
+    Set to `default` to use the model configured in your Dify application.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For advanced configuration options, workflow setup, and detailed parameter descriptions, see the [Agora Conversational AI - Dify Marketplace](https://marketplace.dify.ai/plugins/plutoless/convoai) documentation.

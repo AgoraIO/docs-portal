@@ -1,0 +1,119 @@
+---
+title: Fish Audio
+description: >
+ Integrate Fish Audio TTS with the Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/fish-audio.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Fish Audio provides text-to-speech (TTS) with flexible models and high-quality synthetic voices.
+
+### Sample configuration
+
+The following examples show how to configure Fish Audio TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import FishAudioTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(FishAudioTTS(
+        key='your-fishaudio-key',
+        reference_id='<voice_model_id>',
+        backend='speech-1.5',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, FishAudioTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new FishAudioTTS({
+    key: 'your-fishaudio-key',
+    referenceId: '<voice_model_id>',
+    backend: 'speech-1.5',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewFishAudioTTS(vendors.FishAudioTTSOptions{
+        Key:         "your-fishaudio-key",
+        ReferenceID: "<voice_model_id>",
+        Backend:     "speech-1.5",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "fishaudio",
+  "params": {
+    "api_key": "<fishaudio_key>",
+    "reference_id": "<voice_model_id>",
+    "backend": "speech-1.5"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Fish Audio API key used to authenticate requests. You must provide a valid key for the service to function.
+  </Parameter>
+  <Parameter name="reference_id" type="string" required={true}>
+    The identifier of the voice model to use for speech synthesis.
+  </Parameter>
+  <Parameter name="backend" type="string" required={true}>
+    The backend model version to use. For example, `speech-1.5`.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Fish Audio documentation](https://docs.fish.audio/sdk-reference/python/api-reference).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

@@ -1,0 +1,118 @@
+---
+title: AssemblyAI
+description: >
+ Integrate AssemblyAI ASR into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/assembly-ai.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+AssemblyAI provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
+
+### Sample configuration
+
+The following example shows how to configure AssemblyAI ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AssemblyAISTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(AssemblyAISTT(
+        api_key='your-assemblyai-key',
+        language='en-US',
+        ws_url='wss://streaming.assemblyai.com/v3/ws',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AssemblyAISTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new AssemblyAISTT({
+    apiKey: 'your-assemblyai-key',
+    language: 'en-US',
+    uri: 'wss://streaming.assemblyai.com/v3/ws',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewAssemblyAISTT(vendors.AssemblyAISTTOptions{
+        APIKey:   "your-assemblyai-key",
+        Language: "en-US",
+        URI:      "wss://streaming.assemblyai.com/v3/ws",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
+
+```json
+"asr": {
+  "vendor": "assemblyai",
+  "language": "en-US",
+  "params": {
+    "api_key": "<assemblyai_api_key>",
+    "language": "en-US",
+    "uri": "wss://streaming.assemblyai.com/v3/ws"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+ <Parameter name="api_key" type="string" required={true}>
+ The API key used for authentication. Get your API key from the [AssemblyAI Dashboard](https://www.assemblyai.com/dashboard/signup).
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+ The language code for speech recognition.
+ </Parameter>
+ <Parameter name="ws_url" type="string" required={false}>
+    The WebSocket URL for the AssemblyAI's streaming API. Specify this to target a particular region. For example, `wss://streaming.assemblyai.com/v3/ws`.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [AssemblyAI official documentation](https://www.assemblyai.com/docs/universal-streaming).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

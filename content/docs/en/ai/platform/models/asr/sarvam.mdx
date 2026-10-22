@@ -1,0 +1,111 @@
+---
+title: Sarvam
+description: >
+ Integrate Sarvam ASR with the Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/sarvam.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Sarvam ASR provides real-time speech-to-text with low latency and reliable performance for Indian languages.
+
+### Sample configuration
+
+The following example shows how to configure Sarvam ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, SarvamSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(SarvamSTT(
+        api_key='your-sarvam-key',
+        language='hi-IN',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, SarvamSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new SarvamSTT({
+    apiKey: 'your-sarvam-key',
+    language: 'hi-IN',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewSarvamSTT(vendors.SarvamSTTOptions{
+        APIKey:   "your-sarvam-key",
+        Language: "hi-IN",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
+
+```json
+"asr": {
+  "vendor": "sarvam",
+  "language": "en-US",
+  "params": {
+    "api_key": "SARVAM_KEY",
+    "language": "hi-IN"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+  Your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+  </Parameter>
+  <Parameter name="language" type="string" required={true}>
+  The language code for transcription. Set to `unknown` for automatic language detection.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/speech-to-text/transcribe).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

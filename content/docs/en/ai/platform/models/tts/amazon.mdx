@@ -1,0 +1,133 @@
+---
+title: Amazon Polly
+description: >
+ Integrate Amazon Polly TTS into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/amazon.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Amazon provides natural-sounding text-to-speech with customizable voice instructions and multiple voice options.
+
+### Sample configuration
+
+The following examples show how to configure Amazon Polly TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import AmazonTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(AmazonTTS(
+        access_key='your-aws-access-key',
+        secret_key='your-aws-secret-key',
+        region='us-east-1',
+        voice_id='Joanna',
+        engine='neural',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AmazonTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new AmazonTTS({
+    accessKey: 'your-aws-access-key',
+    secretKey: 'your-aws-secret-key',
+    region: 'us-east-1',
+    voiceId: 'Joanna',
+    engine: 'neural',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewAmazonTTS(vendors.AmazonTTSOptions{
+        AccessKey: "your-aws-access-key",
+        SecretKey: "your-aws-secret-key",
+        Region:    "us-east-1",
+        VoiceID:   "Joanna",
+        Engine:    "neural",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "amazon",
+  "params": {
+    "aws_access_key_id": "<AWS_TTS_ACCESS_KEY_ID>",
+    "aws_secret_access_key": "<AWS_TTS_SECRET_ACCESS_KEY>",
+    "region_name": "<AWS_TTS_REGION>",
+    "voice": "Joanna",
+    "engine": "neural"
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="aws_access_key_id" type="string" required={true}>
+  The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  </Parameter>
+  <Parameter name="aws_secret_access_key" type="string" required={true}>
+  The AWS secret access key used for authentication. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  </Parameter>
+  <Parameter name="region_name" type="string" required={true}>
+  The AWS region where the Polly service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/pol.html) for available regions.
+  </Parameter>
+  <Parameter name="voice" type="string" required={true}>
+  The voice ID to use for speech synthesis, for example, `Joanna`, `Matthew`, or `Ivy`. See [available voices](https://docs.aws.amazon.com/polly/latest/dg/voicelist.html) for supported voice IDs.
+  </Parameter>
+  <Parameter name="engine" type="string" required={true}>
+  The engine type to use for speech synthesis. Supported values: `standard`, `neural`, `long-form`, `generative`. See [engine documentation](https://docs.aws.amazon.com/polly/latest/dg/voicelist.html) for details on each engine type.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Amazon Polly documentation](https://docs.aws.amazon.com/polly/latest/dg/what-is.html).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

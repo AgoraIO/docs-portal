@@ -1,0 +1,145 @@
+---
+title: Google Gemini
+description: >
+  Integrate a Google Gemini LLM into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/gemini.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Google Gemini provides advanced multimodal AI capabilities with fast performance and efficient processing for conversational AI applications.
+
+### Sample configuration
+
+The following example shows how to configure Google Gemini LLM when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, Gemini
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(Gemini(
+        api_key='your-google-api-key',
+        model='gemini-3.6-flash',
+        system_messages=[{'parts': [{'text': 'You are a helpful chatbot.'}], 'role': 'user'}],
+        greeting_message='Good to see you!',
+        failure_message='Hold on a second.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, Gemini } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new Gemini({
+    apiKey: 'your-google-api-key',
+    model: 'gemini-3.6-flash',
+    systemMessages: [{ parts: [{ text: 'You are a helpful chatbot.' }], role: 'user' }],
+    greetingMessage: 'Good to see you!',
+    failureMessage: 'Hold on a second.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewGemini(vendors.GeminiOptions{
+        APIKey: "your-google-api-key",
+        Model:  "gemini-3.6-flash",
+        SystemMessages: []map[string]interface{}{
+            {"parts": []map[string]interface{}{{"text": "You are a helpful chatbot."}}, "role": "user"},
+        },
+        GreetingMessage: "Good to see you!",
+        FailureMessage:  "Hold on a second.",
+        MaxHistory:      Agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `llm` configuration in your request:
+
+```json
+"llm": {
+   "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse&key=<api_key>",
+   "system_messages": [
+       {
+           "parts": [
+               {
+                   "text": "You are a helpful chatbot"
+               }
+           ],
+           "role": "user"
+       }
+   ],
+   "max_history": 32,
+   "greeting_message": "Good to see you!",
+   "failure_message": "Hold on a second.",
+   "params": {
+       "model": "gemini-3.6-flash"
+   },
+   "style": "gemini"
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="llm" required={true}>
+  <Parameter name="url" type="string" required={true}>
+  Note that the API key is passed in the URL query parameter. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+  </Parameter>
+  <Parameter name="system_messages" type="array[object]" required={false}>
+  Use `parts` array with `text` objects instead of simple `content` string.
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>
+  Set to `gemini` to use Gemini's message format.
+  </Parameter>
+  <Parameter name="ignore_empty" type="boolean" required={false}>
+  Set to `true` to handle empty responses appropriately.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model" type="string" required={true}>
+    Refer to [Gemini models](https://ai.google.dev/gemini-api/docs/models/gemini) for available models.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Google Gemini API documentation](https://ai.google.dev/api/generate-content#method:-models.streamgeneratecontent).

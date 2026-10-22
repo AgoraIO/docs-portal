@@ -1,0 +1,120 @@
+---
+title: Deepgram
+description: >
+  Integrate Deepgram TTS into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/deepgram.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Deepgram provides low-latency text-to-speech with a wide range of voices, optimized for real-time conversational AI applications.
+
+### Sample configuration
+
+The following examples show how to configure Deepgram TTS when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import DeepgramTTS
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(DeepgramTTS(
+        api_key='your-deepgram-key',
+        model='aura-2-thalia-en',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, DeepgramTTS } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(new DeepgramTTS({
+    apiKey: 'your-deepgram-key',
+    model: 'aura-2-thalia-en',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(
+    vendors.NewDeepgramTTS(vendors.DeepgramTTSOptions{
+        APIKey: "your-deepgram-key",
+        Model:  "aura-2-thalia-en",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `tts` configuration in your request:
+
+```json
+"tts": {
+  "vendor": "deepgram",
+  "params": {
+    "api_key": "<your_deepgram_key>",
+    "base_url": "wss://api.deepgram.com/v1/speak",
+    "model": "aura-2-thalia-en",
+    "sample_rate": 24000
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+    The Deepgram API key used to authenticate requests. Get your API key from the [Deepgram Console](https://console.deepgram.com/).
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    The identifier of the TTS model to use. See [Deepgram voices and languages](https://developers.deepgram.com/docs/tts-models).
+  </Parameter>
+  <Parameter name="base_url" type="string" required={false}>
+    The WebSocket URL for the Deepgram streaming API. Defaults to `wss://api.deepgram.com/v1/speak`.
+  </Parameter>
+  <Parameter name="sample_rate" type="number" required={false}>
+    The audio sampling rate in Hz.
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Deepgram TTS documentation](https://developers.deepgram.com/docs/text-to-speech).
+:::
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

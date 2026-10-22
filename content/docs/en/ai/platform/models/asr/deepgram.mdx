@@ -1,0 +1,143 @@
+---
+title: Deepgram
+description: >
+ Integrate Deepgram ASR into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/deepgram.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Deepgram provides fast, accurate automatic speech recognition with advanced AI models optimized for real-time streaming and conversational applications across multiple languages.
+
+### Sample configuration
+
+The following example shows how to configure Deepgram ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, DeepgramSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(DeepgramSTT(
+        api_key='your-deepgram-key',  # omit to use Agora-managed mode
+        model='nova-3',
+        language='en',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, DeepgramSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new DeepgramSTT({
+    apiKey: 'your-deepgram-key',  // omit to use Agora-managed mode
+    model: 'nova-3',
+    language: 'en',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{
+        APIKey:   "your-deepgram-key",  // omit to use Agora-managed mode
+        Model:    "nova-3",
+        Language: "en",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+  To use Deepgram ASR with Agora-managed credentials, set `credential_mode` to `"managed"` in the `asr` block. When using managed mode, `params.key` is not required. You can still use the `asr` field to configure additional settings such as `language` and `keyterm`. For more information, see [Use managed mode](/en/ai/platform/build/managed-mode).
+
+    ```json
+    "asr": {
+      "credential_mode": "managed",
+      "vendor": "deepgram",
+      "params": {
+        "url": "wss://api.deepgram.com/v1/listen",
+        "model": "nova-3",
+        "language": "en",
+        "keyterm": "agora%20convo"
+      }
+    }
+    ```
+
+- **BYOK**
+
+    ```json
+    "asr": {
+      "vendor": "deepgram",
+      "params": {
+        "url": "wss://api.deepgram.com/v1/listen",
+        "api_key": "<deepgram_key>",
+        "model": "nova-3",
+        "language": "en",
+        "keyterm": "term1%20term2"
+      }
+    }
+    ```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+ <Parameter name="url" type="string" required={true}>
+ The WebSocket URL for Deepgram's streaming API.
+ </Parameter>
+ <Parameter name="api_key" type="string" required={false}>
+ The API key used for authentication. Required when using your own API key (BYOK). Get your API key from the [Deepgram Console](https://console.deepgram.com/).
+ </Parameter>
+ <Parameter name="model" type="string" required={false}>
+ The speech recognition model to use. For managed mode, use `nova-2` or `nova-3`.
+ </Parameter>
+ <Parameter name="language" type="string" required={false}>
+ The language code for speech recognition (For example, `en`, `es`, `fr`). See [supported languages](https://developers.deepgram.com/docs/models-languages-overview) for language codes.
+ </Parameter>
+ <Parameter name="keyterm" type="string" required={false}>
+ Boost specialized terms and brands. Only compatible with the `nova-3` model.
+ </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Deepgram API documentation](https://developers.deepgram.com/docs/getting-started-with-live-streaming-audio).
+
+The following parameters are not passed through and instead use default values set by Agora:
+`callback`, `callback_method`, `channels`, `encoding`, `multichannel`, `sample_rate`
+:::

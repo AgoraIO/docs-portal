@@ -1,0 +1,165 @@
+---
+title: OpenAI
+description: >
+  Integrate an OpenAI LLM into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/openai.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+OpenAI provides frontier models ranging from lightweight to high-capability.
+
+### Sample configuration
+
+The following examples show how to configure OpenAI LLM when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, OpenAI
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(OpenAI(
+        api_key='your-openai-key',  # omit api_key and base_url to use Agora-managed mode
+        base_url='https://api.openai.com/v1/chat/completions',
+        model='gpt-4o-mini',
+        system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
+        greeting_message='Hello, how can I assist you?',
+        failure_message='Please hold on a second.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, OpenAI } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new OpenAI({
+    apiKey: 'your-openai-key',  // omit apiKey and url to use Agora-managed mode
+    url: 'https://api.openai.com/v1/chat/completions',
+    model: 'gpt-4o-mini',
+    systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
+    greetingMessage: 'Hello, how can I assist you?',
+    failureMessage: 'Please hold on a second.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewOpenAI(vendors.OpenAIOptions{
+        APIKey:  "your-openai-key",  // omit APIKey and BaseURL to use Agora-managed mode
+        BaseURL: "https://api.openai.com/v1/chat/completions",
+        Model:   "gpt-4o-mini",
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful chatbot."},
+        },
+        GreetingMessage: "Hello, how can I assist you?",
+        FailureMessage:  "Please hold on a second.",
+        MaxHistory:      Agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+- **Managed mode**
+
+  To use an OpenAI LLM with Agora-managed credentials, set `credential_mode` to `"managed"` in the `llm` block. When using managed mode, `api_key` is not required. You can still use the `llm` field to configure additional settings such as `system_messages` and `greeting_message`. For more information, see [Use managed mode](/en/ai/platform/build/managed-mode).
+
+  ```json
+  "llm": {
+    "credential_mode": "managed",
+    "vendor": "openai",
+    "style": "openai",
+    "url": "https://api.openai.com/v1/chat/completions",
+    "params": {
+      "model": "gpt-4.1-mini"
+    },
+    "system_messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful chatbot."
+      }
+    ],
+    "max_history": 32,
+    "greeting_message": "Hello, how can I assist you?",
+    "failure_message": "Please hold on a second."
+  }
+  ```
+
+- **BYOK**
+
+  ```json
+  "llm": {
+      "url": "https://api.openai.com/v1/chat/completions",
+      "api_key": "<your_llm_key>",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful chatbot."
+        }
+      ],
+      "max_history": 32,
+      "greeting_message": "Hello, how can I assist you?",
+      "failure_message": "Please hold on a second.",
+      "params": {
+        "model": "gpt-4o-mini"
+      }
+    }
+  ```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+The following parameters are required when using your own API key (BYOK). When using managed mode, `api_key` is not required. For more information, see [Use managed mode](/en/ai/platform/build/managed-mode).
+
+<ParameterList title="llm">
+  <Parameter name="api_key" type="string">
+    Create or manage your API key from [OpenAI organization settings](https://platform.openai.com/settings/organization/api-keys). Required when using your own API key (BYOK).
+  </Parameter>
+  <Parameter name="url" type="string">
+    Use the completions endpoint.
+  </Parameter>
+  <Parameter name="params" type="object">
+    <Parameter name="model" type="string">
+      Refer to [OpenAI models](https://platform.openai.com/docs/models) for available models. For managed mode, use `gpt-4o-mini`, `gpt-4.1-mini`, `gpt-5-nano`, or `gpt-5-mini`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For complete `llm` configuration options, see [LLM parameters](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm). For OpenAI-specific options and model capabilities, see the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/chat).

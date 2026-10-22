@@ -1,0 +1,143 @@
+---
+title: Azure OpenAI
+description: >
+  Integrate an Azure OpenAI LLM into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/azure-openai.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Azure OpenAI service provides REST API access to OpenAI's powerful language models through Microsoft Azure's secure infrastructure.
+
+### Sample configuration
+
+The following example shows how to configure Azure OpenAI LLM when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, AzureOpenAI
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(AzureOpenAI(
+        api_key='your-azure-api-key',
+        endpoint='https://your-resource-name.openai.azure.com',
+        deployment_name='your-deployment-name', # the name given to your model deployment in Azure OpenAI Studio
+        model='gpt-4o-mini',
+        system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
+        greeting_message='Hello, how can I assist you today?',
+        failure_message='Please hold on a second.',
+        max_history=32,
+    ))
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AzureOpenAI } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(new AzureOpenAI({
+    apiKey: 'your-azure-api-key',
+    resourceName: 'your-resource-name',
+    deploymentName: 'your-deployment-name', // the name given to your model deployment in Azure OpenAI Studio
+    model: 'gpt-4o-mini',
+    systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
+    greetingMessage: 'Hello, how can I assist you today?',
+    failureMessage: 'Please hold on a second.',
+    maxHistory: 32,
+  }))
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    Agora "github.com/AgoraIO/agora-agents-go/v2"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(
+    vendors.NewAzureOpenAI(vendors.AzureOpenAIOptions{
+        APIKey:         "your-azure-api-key",
+        Endpoint:       "https://your-resource-name.openai.azure.com",
+        DeploymentName: "your-deployment-name", // the name given to your model deployment in Azure OpenAI Studio
+        Model:          "gpt-4o-mini",
+        SystemMessages: []map[string]interface{}{
+            {"role": "system", "content": "You are a helpful chatbot."},
+        },
+        GreetingMessage: "Hello, how can I assist you today?",
+        FailureMessage:  "Please hold on a second.",
+        MaxHistory:      Agora.Int(32),
+    }),
+).WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `llm` configuration in your request:
+
+```json
+"llm": {
+    "url": "https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/chat/completions?api-version=AZURE_API_VERSION",
+    "api_key": "<api_key>",
+    "system_messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful chatbot."
+        }
+    ],
+    "max_history": 32,
+    "greeting_message": "Hello, how can I assist you today?",
+    "failure_message": "Please hold on a second.",
+    "style": "openai",
+    "vendor": "azure",
+    "params": {
+        "model": "gpt-4o-mini"
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="llm" required={true}>
+  <Parameter name="api_key" type="string" required={true}>
+  Find your API key in the Azure portal under your OpenAI resource.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+  Replace `YOUR_RESOURCE_NAME` with your Azure resource name and `YOUR_DEPLOYMENT_NAME` with your model deployment name.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model" type="string" required={true}>
+    Use the deployment name you created in Azure, not the base model name.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For advanced configuration options, deployment setup, and detailed parameter descriptions, see the [Azure OpenAI API documentation](https://learn.microsoft.com/en-us/azure/ai-services/openai/reference).

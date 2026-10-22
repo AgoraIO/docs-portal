@@ -1,0 +1,385 @@
+---
+title: Client-side events
+description: Use toolkit callbacks to update the UI and react to agent events during a live session.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/handle-runtime-events/event-notifications.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Real-time Conversational AI applications require responsive user interfaces that react to agent events. This page explains how to implement client-side event handling with the Conversational AI Engine toolkit. Use this page when you need in-session events in a mobile or web client. If you need backend monitoring, alerting, or post-session analysis, use [Webhooks](webhooks) instead.
+
+For an overview that compares client toolkit and webhook delivery, see [Get runtime events](get-runtime-events).
+
+## Understand the tech
+
+Agora provides a flexible, scalable, and standardized Conversational AI Engine toolkit. The toolkit supports **Android**, **iOS**, and **Web** platforms, and encapsulates scenario-based APIs. You can use these APIs to integrate Agora Signaling SDK and RTC SDK capabilities to enable the following features:
+
+- [Interrupt agents](../shape-the-conversation/interrupt-agent)
+- [Display live transcripts](../transcripts)
+- [Monitor agent status, errors, and performance](monitor-agent-runtime)
+- [Set optimal audio parameters](../../best-practices/audio-setup) for iOS and Android
+
+The toolkit exposes callback methods that let you listen for various agent-related events and system information:
+
+- **`onAgentStateChanged`**: Listen for agent state changes such as `silent`, `listening`, `thinking`, and `speaking`.
+- **`onAgentListeningChanged`**: Track when the agent starts or stops listening.
+- **`onAgentThinkingChanged`**: Track when the agent starts or stops processing.
+- **`onAgentSpeakingChanged`**: Track when the agent starts or stops playing speech.
+- **`onAgentInterrupted`**: Handle interruption events triggered during a conversation.
+- **`onAgentMetrics`**: Observe performance metrics such as LLM and TTS latency.
+- **`onAgentError`**: Handle module-level failures such as LLM or TTS errors.
+
+## Prerequisites
+
+- Implemented the Conversational AI Engine [quickstart](../../get-started/quickstart).
+- Your app integrates Agora RTC SDK v4.5.1 or later and includes the [RTC SDK quickstart](/en/realtime-media/rtc/get-started-sdk).
+- Enabled Signaling in the Agora Console and completed the [Signaling quickstart](/en/realtime-media/rtm/quickstart) for basic messaging.
+- Maintain active and authenticated RTC and Signaling instances that persist beyond the component lifecycle. The toolkit does not manage RTC or Signaling initialization, lifecycle, or authentication.
+
+## Implementation
+
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+1. **Integrate the toolkit**
+
+   Add the toolkit to your project using Maven or source code. See [Install the Android toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#installation). Refer to [Folder structure](#folder-structure) to understand the role of each file.
+
+2. **Create a toolkit instance**
+
+   ```kotlin
+   val config = ConversationalAIAPIConfig(
+       rtcEngine = rtcEngine,
+       rtmClient = rtmClient,
+       renderMode = TranscriptRenderMode.Word,
+       enableLog = true,
+       enableRenderModeFallback = true
+   )
+
+   val api = ConversationalAIAPIImpl(config)
+   ```
+
+3. **Register events**
+
+   ```kotlin
+   api.addHandler(object : IConversationalAIAPIEventHandler {
+       override fun onAgentStateChanged(agentUserId: String, event: StateChangeEvent) {
+           when (event.state) {
+               AgentState.SILENT -> updateAgentStatus("Waiting...")
+               AgentState.LISTENING -> updateAgentStatus("Listening...")
+               AgentState.THINKING -> updateAgentStatus("Thinking...")
+               AgentState.SPEAKING -> updateAgentStatus("Speaking...")
+               AgentState.UNKNOWN -> Log.w("AgentState", "Unknown agent state: $event")
+           }
+       }
+
+       override fun onAgentInterrupted(agentUserId: String, event: InterruptEvent) {
+           Log.d("AgentInterrupt", "Agent $agentUserId interrupted at turn ${event.turnId}")
+           showInterruptNotification()
+       }
+
+       override fun onAgentMetrics(agentUserId: String, metric: Metric) {
+           when (metric.type) {
+               ModuleType.LLM -> Log.d("Metrics", "LLM latency: ${metric.value} ms")
+               ModuleType.TTS -> Log.d("Metrics", "TTS latency: ${metric.value} ms")
+               else -> Log.d("Metrics", "${metric.type}: ${metric.name} = ${metric.value}")
+           }
+       }
+
+       override fun onAgentError(agentUserId: String, error: ModuleError) {
+           Log.e("AgentError", "Error in ${error.type}: ${error.message} (code: ${error.code})")
+       }
+   })
+   ```
+
+4. **Subscribe to the channel**
+
+   ```kotlin
+   api.subscribeMessage("channelName") { error ->
+       if (error != null) {
+           // Handle error
+       }
+   }
+   ```
+
+5. **Add a conversational AI agent to the channel**
+
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
+
+   | Parameter | Description | Required |
+   | --- | --- | --- |
+   | `advanced_features.enable_rtm: true` | Starts the Signaling service | Yes |
+   | `parameters.data_channel: "rtm"` | Enables Signaling as the data transmission channel | Yes |
+   | `parameters.enable_metrics: true` | Enables agent performance data collection | Optional |
+   | `parameters.enable_error_message: true` | Enables reporting of agent error events | Optional |
+
+6. **Unsubscribe and release resources**
+
+   ```kotlin
+   api.unsubscribeMessage("channelName") { error ->
+       if (error != null) {
+           // Handle the error
+       }
+   }
+
+   api.destroy()
+   ```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+1. **Integrate the toolkit**
+
+   Add the toolkit to your project using CocoaPods, Swift Package Manager, or source code. See [Install the iOS toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#installation). Refer to [Folder structure](#folder-structure) to understand the role of each file.
+
+2. **Create a toolkit instance**
+
+   ```swift
+   let config = ConversationalAIAPIConfig(
+       rtcEngine: rtcEngine,
+       rtmEngine: rtmEngine,
+       renderMode: .words,
+       enableLog: true,
+       enableRenderModeFallback: true
+   )
+
+   convoAIAPI = ConversationalAIAPIImpl(config: config)
+   ```
+
+3. **Register events**
+
+   ```swift
+   class ConversationViewController: UIViewController, ConversationalAIAPIEventHandler {
+       func onAgentStateChanged(agentUserId: String, event: StateChangeEvent) {
+           DispatchQueue.main.async {
+               self.updateAgentStatus(event.state)
+           }
+       }
+
+       func onAgentInterrupted(agentUserId: String, event: InterruptEvent) {
+           print("Agent \(agentUserId) interrupted at turn \(event.turnId)")
+       }
+
+       func onAgentMetrics(agentUserId: String, metrics: Metric) {
+           switch metrics.type {
+           case .llm:
+               print("LLM latency: \(metrics.value)ms")
+           case .tts:
+               print("TTS latency: \(metrics.value)ms")
+           case .unknown:
+               print("Unknown metric: \(metrics.name) = \(metrics.value)")
+           }
+       }
+
+       func onAgentError(agentUserId: String, error: ModuleError) {
+           print("Error in \(error.type): \(error.message) (code: \(error.code))")
+       }
+   }
+
+   convoAIAPI.addHandler(handler: self)
+   ```
+
+4. **Subscribe to the channel**
+
+   ```swift
+   convoAIAPI.subscribeMessage(channelName: channelName) { error in
+       if let error = error {
+           print("Subscription failed: \(error.message)")
+       } else {
+           print("Subscription successful")
+       }
+   }
+   ```
+
+5. **Add a conversational AI agent to the channel**
+
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
+
+   | Parameter | Description | Required |
+   | --- | --- | --- |
+   | `advanced_features.enable_rtm: true` | Starts the Signaling service | Yes |
+   | `parameters.data_channel: "rtm"` | Enables Signaling as the data transmission channel | Yes |
+   | `parameters.enable_metrics: true` | Enables collection of agent performance data | Optional |
+   | `parameters.enable_error_message: true` | Enables reporting of agent error events | Optional |
+
+6. **Unsubscribe and release resources**
+
+   ```swift
+   convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
+       if let error = error {
+           print("Unsubscription failed: \(error.message)")
+       } else {
+           print("Unsubscribed successfully")
+       }
+   }
+
+   convoAIAPI.destroy()
+   ```
+
+</TabsContent>
+
+<TabsContent value="web">
+
+1. **Integrate the toolkit**
+
+   Add the toolkit to your project using a package manager or source code. See [Install the Web toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#installation). Refer to [Folder structure](#folder-structure) to understand the role of each file.
+
+2. **Create a toolkit instance**
+
+   ```tsx
+   const config: IConversationalAIAPIConfig = {
+     rtcEngine,
+     rtmEngine,
+     renderMode: ETranscriptHelperMode.WORD,
+     enableLog: true,
+     enableRenderModeFallback: true,
+   }
+
+   const conversationalAIAPI = await ConversationalAIAPI.init(config)
+   ```
+
+3. **Register events**
+
+   ```tsx
+   conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_STATE_CHANGED, onAgentStateChanged)
+   conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_METRICS, onAgentMetricsChanged)
+   conversationalAIAPI.on(EConversationalAIAPIEvents.AGENT_ERROR, onAgentError)
+   ```
+
+4. **Subscribe to the channel**
+
+   ```ts
+   conversationalAIAPI.subscribeMessage(channel_name)
+   ```
+
+5. **Add a conversational AI agent to the channel**
+
+   To [start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), configure:
+
+   | Parameter | Description | Required |
+   | --- | --- | --- |
+   | `advanced_features.enable_rtm: true` | Starts the Signaling service | Yes |
+   | `parameters.data_channel: "rtm"` | Enables Signaling as the data transmission channel | Yes |
+   | `parameters.enable_metrics: true` | Enables agent performance data collection | Optional |
+   | `parameters.enable_error_message: true` | Enables reporting of agent error events | Optional |
+
+6. **Unsubscribe and release resources**
+
+   ```ts
+   conversationalAIAPI.unsubscribeMessage(channel_name)
+   conversationalAIAPI.destroy()
+   ```
+
+</TabsContent>
+
+</Tabs>
+
+## Reference
+
+### Sample project
+
+- [Conversational-AI-Demo](https://github.com/AgoraIO-Community/Conversational-AI-Demo/)
+
+### Related guides
+
+- [Monitor agent status, errors, and performance](monitor-agent-runtime)
+- [Webhooks](webhooks)
+
+### Folder structure
+
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- `IConversationalAIAPI.kt`: API interface, data structures, and enumerations
+- `ConversationalAIAPIImpl.kt`: main implementation logic
+- `ConversationalAIUtils.kt`: utility functions and event callback management
+- `v3/`
+  - `TranscriptionController.kt`: transcript rendering and synchronization
+  - `MessageParser.kt`: transcription and message parsing
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- `ConversationalAIAPI.swift`: API interface, data structures, and enumerations
+- `ConversationalAIAPIImpl.swift`: main implementation logic
+- `Transcription/`
+  - `TranscriptionController.swift`: transcript rendering and control
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- `index.ts`: main API class
+- `type.ts`: API interfaces, data structures, and enumerations
+- `utils/`
+  - `index.ts`: general utility functions
+  - `events.ts`: event management class
+  - `sub-render.ts`: transcript rendering module
+
+</TabsContent>
+</Tabs>
+
+### API reference
+
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#destroy)
+- [`onAgentStateChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentstatechanged)
+- [`onAgentListeningChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentspeakingchanged)
+- [`onAgentInterrupted`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentinterrupted)
+- [`onAgentMetrics`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagentmetrics)
+- [`onAgentError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#onagenterror)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`addHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#addhandler)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#unsubscribemessage)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#destroy)
+- [`onAgentStateChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentstatechanged)
+- [`onAgentListeningChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentlisteningchanged)
+- [`onAgentThinkingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentthinkingchanged)
+- [`onAgentSpeakingChanged`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentspeakingchanged)
+- [`onAgentInterrupted`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentinterrupted)
+- [`onAgentMetrics`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagentmetrics)
+- [`onAgentError`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#onagenterror)
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`IConversationalAIAPIEventHandler`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#iconversationalaiapieventhandlers-interface)
+- [`EConversationalAIAPIEvents`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#econversationalaiapievents)
+- [`subscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#subscribemessage)
+- [`unsubscribeMessage`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#unsubscribe)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#destroy)
+
+</TabsContent>
+</Tabs>

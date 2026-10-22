@@ -1,0 +1,120 @@
+---
+title: Microsoft Azure
+description: >
+ Integrate Microsoft Azure ASR into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/microsoft.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Microsoft Azure provides enterprise-grade automatic speech recognition with support for multiple languages and robust noise handling capabilities, optimized for real-time conversational applications.
+
+### Sample configuration
+
+The following example shows how to configure Microsoft Azure ASR when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, MicrosoftSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(MicrosoftSTT(
+        key='your-azure-key',
+        region='eastus',
+        language='en-US',
+    ))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, MicrosoftSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new MicrosoftSTT({
+    key: 'your-azure-key',
+    region: 'eastus',
+    language: 'en-US',
+  }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(
+    vendors.NewMicrosoftSTT(vendors.MicrosoftSTTOptions{
+        Key:      "your-azure-key",
+        Region:   "eastus",
+        Language: "en-US",
+    }),
+).WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure your TTS vendor */)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `asr` configuration in your request:
+
+```json
+"asr": {
+  "vendor": "microsoft",
+  "language": "en-US",
+  "params": {
+    "key": "<microsoft_key>",
+    "region": "eastus",
+    "language": "en-US",
+    "phrase_list": ["agora", "conversational", "ai", "engine"]
+  }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+ <Parameter name="key" type="string" required={true}>
+ The API key used for authentication. Get your API key from the [Azure Portal](https://portal.azure.com/).
+ </Parameter>
+ <Parameter name="region" type="string" required={true}>
+ The Azure region where the speech service is hosted (For example, `eastus`, `westus2`).
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+ The language code for speech recognition (For example, `en-US`, `es-ES`, `fr-FR`). See [supported languages](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt) for language codes.
+ </Parameter>
+ <Parameter name="phrase_list" type="array[string]" required={false}>
+ A list of words or phrases provided in advance to improve recognition accuracy.
+ </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Microsoft Azure Speech-to-Text documentation](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-to-text).
+:::
