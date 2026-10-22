@@ -2,6 +2,60 @@ import { describe, expect, it } from 'vitest';
 import { getLLMText, getPlatformLLMText, source } from './source.server';
 
 describe('fumadocs source loader', () => {
+  it('exports Start with AI as clean Markdown with labeled installation alternatives', async () => {
+    const page = source.getPage(['introduction', 'start-with-ai'], 'en');
+    if (!page) throw new Error('Expected the Start with AI page');
+
+    const markdown = await getLLMText(page);
+
+    expect(markdown).not.toMatch(
+      /<\/?(?:Tabs|TabsList|TabsTrigger|TabsContent)\b/,
+    );
+    expect(markdown).toContain('**macOS and Linux**');
+    expect(markdown).toContain('**Windows (PowerShell)**');
+    expect(markdown).toContain(
+      '```bash\ncurl -fsSL https://dl.agora.io/cli/install.sh | sh\nagora --help\n```',
+    );
+    expect(markdown).toContain(
+      '```powershell\nirm https://dl.agora.io/cli/install.ps1 | iex\nagora --help\n```',
+    );
+    expect(markdown).toContain('**Manual installation**');
+    expect(markdown).toContain(
+      'git clone https://github.com/AgoraIO/skills.git ~/agora-skills',
+    );
+  });
+  it.each(['en', 'zh-CN'])(
+    'cleans %s platform exports after selecting the requested platform',
+    async (locale) => {
+      const processed = `<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="android" />
+<Tabs items={['Java']}>
+<Tab>
+
+\`\`\`java
+if (ready) {
+  connect();
+}
+\`\`\`
+
+</Tab>
+</Tabs>
+<_PlatformProcessedMarker close="true" />
+<_PlatformProcessedMarker groupMode="structured" canonicalPlatform="web" platform="web" />
+Web instructions only.
+<_PlatformProcessedMarker close="true" />`;
+      const page = {
+        data: { getText: async () => processed, title: 'Quickstart' },
+        path: `${locale}/test.mdx`,
+        url: `/${locale}/test`,
+      } as unknown as Parameters<typeof getPlatformLLMText>[0];
+      const markdown = await getPlatformLLMText(page, 'android');
+      expect(markdown).toContain('**Java**');
+      expect(markdown).toContain('```java\nif (ready) {\n  connect();\n}\n```');
+      expect(markdown).not.toContain('Web instructions only.');
+      expect(markdown).not.toMatch(/<\/?(?:Tabs|Tab|_Platform)/);
+    },
+  );
+
   it('keeps RTC extensions and notes within their platform markdown', async () => {
     const page = source.getPage(
       ['realtime-media', 'rtc', 'reference', 'release-notes'],
@@ -80,7 +134,7 @@ describe('fumadocs source loader', () => {
     expect(Buffer.byteLength(markdown)).toBeLessThan(50_000);
   });
 
-  it('preserves processed Markdown for Chinese pages', async () => {
+  it('exports Chinese component content as clean Markdown', async () => {
     const page = source.getPage(['introduction'], 'zh-CN');
 
     expect(page).toBeDefined();
@@ -88,16 +142,18 @@ describe('fumadocs source loader', () => {
       throw new Error('Expected the Chinese introduction page');
     }
 
-    const processed = await page.data.getText('processed');
-
-    await expect(
-      getLLMText(page),
-    ).resolves.toBe(`# ${page.data.title} (${page.url})
-
-${processed}`);
+    const markdown = await getLLMText(page);
+    expect(markdown).toContain(`# ${page.data.title} (${page.url})`);
+    expect(markdown).toContain('[Voice agent 快速开始](/zh-CN/ai/quick-start)');
+    expect(markdown).toContain('15 分钟内跑通一个可用的语音智能体。');
+    expect(markdown).toContain('构建实时互动');
+    expect(markdown).toContain('Signaling');
+    expect(markdown).not.toMatch(
+      /<\/?(?:OverviewSpotlight|CapabilityMatrix|div)\b/,
+    );
   });
 
-  it('preserves source formatting for Chinese platform Markdown', async () => {
+  it('keeps Chinese platform headings and prose in standard Markdown', async () => {
     const page = {
       data: {
         getText:
@@ -119,8 +175,9 @@ ${processed}`);
       getPlatformLLMText(page, 'android'),
     ).resolves.toBe(`# 快速开始 (/zh-CN/test/android)
 
-    ## Android 设置 [#android]
-    Android 内容
+## Android 设置 \\[#android]
+
+Android 内容
 `);
   });
 

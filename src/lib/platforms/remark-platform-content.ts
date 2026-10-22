@@ -1,6 +1,8 @@
+import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
 import type { Root } from 'mdast';
 import type { MdxJsxAttribute, MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
 import { visit } from 'unist-util-visit';
+import { VFile } from 'vfile';
 import {
   createPlatformGroup,
   type PlatformGroupMode,
@@ -16,7 +18,7 @@ const PLATFORM_COMPONENT_NAMES = new Map<string, PlatformGroupMode>([
 type PlatformContentNode = MdxJsxFlowElement;
 
 export function remarkPlatformContent() {
-  return (tree: Root) => {
+  return (tree: Root, file: VFile = new VFile()) => {
     visit(tree, (node, _index, parent) => {
       if (
         node.type === 'mdxJsxFlowElement' &&
@@ -30,7 +32,7 @@ export function remarkPlatformContent() {
       }
     });
 
-    groupPlatformBlocks(tree);
+    groupPlatformBlocks(tree, file);
   };
 }
 
@@ -40,12 +42,12 @@ export function remarkPlatformContent() {
 // node; platform blocks are top-level within that included file, so we recurse
 // into embedded roots first, otherwise their blocks survive untransformed and
 // the runtime stub component crashes the whole page.
-function groupPlatformBlocks(root: Root): void {
+function groupPlatformBlocks(root: Root, file: VFile): void {
   for (const child of root.children) {
     // `remarkInclude` splices included files in as nested `root` nodes, which
     // are not part of mdast's `RootContent` union — hence the cast.
     if ((child as { type: string }).type === 'root') {
-      groupPlatformBlocks(child as unknown as Root);
+      groupPlatformBlocks(child as unknown as Root, file);
     }
   }
 
@@ -81,6 +83,22 @@ function groupPlatformBlocks(root: Root): void {
     }
 
     const group = createPlatformGroup(run.map((entry) => entry.leaf));
+
+    // Fumadocs 16.17 exports authored source. Record generated platform markers
+    // explicitly so platform selection and TOC IDs still use processed content.
+    for (const [index, { leaf, node }] of run.entries()) {
+      replaceSource(file, node, (s) =>
+        [
+          index === 0 ? '<_PlatformTabsGroup>' : '',
+          `<_PlatformProcessedMarker groupMode="${group.mode}" canonicalPlatform="${group.canonicalPlatform}" platform="${leaf.platform}" />`,
+          s.inner(node),
+          '<_PlatformProcessedMarker close="true" />',
+          index === run.length - 1 ? '</_PlatformTabsGroup>' : '',
+        ]
+          .filter(Boolean)
+          .join('\n'),
+      );
+    }
 
     nextChildren.push({
       type: 'mdxJsxFlowElement',

@@ -661,7 +661,8 @@ describe('DocsSearchDialog', () => {
     expect(screen.queryByText('No matching pages found.')).toBeNull();
     await waitFor(() => expect(loadPagesFailure).toHaveBeenCalledOnce());
     await act(async () => {
-      resolveLocalSearch[1]?.([]);
+      // An index-state change can restart the active query in Fumadocs.
+      resolveLocalSearch.at(-1)?.([]);
     });
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();

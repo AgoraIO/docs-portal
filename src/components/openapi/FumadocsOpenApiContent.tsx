@@ -1,6 +1,6 @@
 import { TranslationProvider } from '@fuma-translate/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
-import type { RenderContext } from 'fumadocs-openapi';
+import { type OpenAPIComponents, useOpenAPI } from 'fumadocs-openapi';
 import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
 import {
   type CreateOpenAPIPageOptions,
@@ -23,7 +23,6 @@ import {
   createContext,
   isValidElement,
   type ReactNode,
-  type RefObject,
   useCallback,
   useContext,
   useEffect,
@@ -63,6 +62,7 @@ const GENERATED_CODE_SAMPLE_IDS = [
   'python',
   'java',
   'csharp',
+  'rust',
 ] as const;
 const removeGeneratedCodeSamples = GENERATED_CODE_SAMPLE_IDS.map((id) => ({
   id,
@@ -170,17 +170,12 @@ const OpenAPIPage = createOpenAPIPage({
         }}
       />
     ),
-    renderOperationLayout: (
-      slots,
-      { ctx, method: operationMethod, operation },
-    ) => (
+    renderOperationLayout: (slots, { method: operationMethod, operation }) => (
       <OpenApiOperationLayoutWithSource
         method={
           {
             ...(operation as OpenApiOperation),
             method: operationMethod,
-            __documentSecurity: ctx.schema.dereferenced.security,
-            __document: ctx.schema.dereferenced as OpenApiRecord,
           } as OpenApiOperation
         }
         slots={slots}
@@ -192,12 +187,22 @@ const OpenAPIPage = createOpenAPIPage({
   playground: {
     enabled: false,
   },
-  renderHeading: renderOpenApiHeading,
-  renderMarkdown: renderOpenApiMarkdown,
-  schemaUI: {
-    render: (options, ctx) => {
+  components: {
+    Heading: ({ depth, ...props }) => {
+      const locale = useContext(OpenApiLocaleContext);
+      const label = isZhCnLocale(locale)
+        ? ZH_CN_OPENAPI_GENERATED_HEADING_LABELS[props.id]
+        : undefined;
+      return renderOpenApiHeading(
+        { ...props, children: label ?? props.children },
+        depth,
+      );
+    },
+    Markdown: ({ md }) => renderOpenApiMarkdown(md),
+    SchemaUI: (options) => {
+      const { doc } = useOpenAPI();
       const schemaOptions = options as typeof options & {
-        client: ComponentProps<RenderContext['SchemaUI']>['client'];
+        client: ComponentProps<OpenAPIComponents['SchemaUI']>['client'];
         legacyAnchorPrefix?: string;
         showExample?: boolean;
       };
@@ -205,7 +210,7 @@ const OpenAPIPage = createOpenAPIPage({
       return (
         <OpenApiSchema
           client={schemaOptions.client}
-          document={ctx.schema.bundled}
+          document={doc.bundled}
           legacyAnchorPrefix={schemaOptions.legacyAnchorPrefix}
           readOnly={schemaOptions.readOnly}
           renderCodeblock={({ code, lang }) =>
@@ -258,7 +263,6 @@ export function FumadocsOpenApiContent({
   const containerRef = useRef<HTMLDivElement>(null);
 
   useOpenApiHashScroll();
-  useLocalizedOpenApiGeneratedChrome(containerRef, locale);
 
   return (
     <div
@@ -285,6 +289,7 @@ function adaptOpenApiParameterSchemaExtensions(
 ): OpenAPIPageProps {
   if (!('payload' in pageProps)) return pageProps;
   const document = pageProps.payload.bundled;
+  if (!document) throw new Error('OpenAPI pages require a bundled document');
   const paths = getRecord(document.paths);
   const components = getRecord(document.components);
   const componentParameters = getRecord(components?.parameters);
@@ -434,10 +439,18 @@ function OpenApiOperationLayoutWithSource({
   slots: OpenApiOperationLayoutSlots;
 }) {
   const sourceOperation = useContext(OpenApiSourceOperationContext);
+  const { doc } = useOpenAPI();
 
   return (
     <OpenApiOperationLayout
-      method={mergeOpenApiOperationExtensions(method, sourceOperation)}
+      method={mergeOpenApiOperationExtensions(
+        {
+          ...method,
+          __documentSecurity: doc.dereferenced.security,
+          __document: doc.dereferenced as OpenApiRecord,
+        },
+        sourceOperation,
+      )}
       slots={slots}
     />
   );
@@ -523,42 +536,6 @@ function getOpenApiLabel(label: string, locale?: string) {
 
 function getOpenApiFumaTranslations(locale?: string) {
   return isZhCnLocale(locale) ? ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS : {};
-}
-
-function useLocalizedOpenApiGeneratedChrome(
-  containerRef: RefObject<HTMLDivElement | null>,
-  locale?: string,
-) {
-  useEffect(() => {
-    const container = containerRef.current;
-
-    if (!container || !isZhCnLocale(locale)) {
-      return;
-    }
-
-    const syncLabels = () => {
-      for (const [id, label] of Object.entries(
-        ZH_CN_OPENAPI_GENERATED_HEADING_LABELS,
-      )) {
-        const heading = container.querySelector<HTMLElement>(`h2#${id}`);
-        const link = heading?.querySelector<HTMLElement>('a');
-
-        if (link && link.textContent !== label) {
-          link.textContent = label;
-        }
-      }
-    };
-
-    syncLabels();
-
-    const observer = new MutationObserver(syncLabels);
-    observer.observe(container, {
-      childList: true,
-      subtree: true,
-    });
-
-    return () => observer.disconnect();
-  }, [containerRef, locale]);
 }
 
 function isZhCnLocale(locale?: string) {
@@ -879,7 +856,7 @@ function getCurrentOperation(
 
   const operation = pageProps.operations?.at(0);
   const pathItem = operation
-    ? getRecord(pageProps.payload.bundled.paths)?.[operation.path]
+    ? getRecord(pageProps.payload.bundled?.paths)?.[operation.path]
     : undefined;
 
   if (!operation || !isRecord(pathItem)) {

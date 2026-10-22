@@ -67,7 +67,7 @@ describe('fumadocs openapi source', () => {
         path: '/v2/projects/{appid}/join',
       },
     ]);
-    expect(props.payload.bundled.info?.title).toBe(
+    expect(props.payload.bundled?.info?.title).toBe(
       'Conversational AI RESTful API',
     );
   });
@@ -145,15 +145,15 @@ describe('fumadocs openapi source', () => {
 
     const props = await acquirePage.data.getOpenAPIPageProps();
     const acquireOperation =
-      props.payload.bundled.paths?.['/v1/apps/{appid}/cloud_recording/acquire']
+      props.payload.bundled?.paths?.['/v1/apps/{appid}/cloud_recording/acquire']
         ?.post;
     const acquireRecord = acquireOperation as Record<string, unknown>;
     const updateLayoutOperation =
-      props.payload.bundled.paths?.[
+      props.payload.bundled?.paths?.[
         '/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/updateLayout'
       ]?.post;
     const updateLayoutRecord = updateLayoutOperation as Record<string, unknown>;
-    const schemas = props.payload.bundled.components?.schemas as
+    const schemas = props.payload.bundled?.components?.schemas as
       | Record<string, Record<string, unknown>>
       | undefined;
 
@@ -207,9 +207,7 @@ describe('fumadocs openapi source', () => {
       ]),
     );
     expect(updateLayoutRecord['x-docs-callouts']).toBeUndefined();
-    expect(
-      schemas?.['updateLayout-clientRequest']?.properties,
-    ).toMatchObject({
+    expect(schemas?.['updateLayout-clientRequest']?.properties).toMatchObject({
       maxResolutionUid: expect.objectContaining({
         description: expect.stringContaining('from 1 to (2³²−1)'),
       }),
@@ -281,7 +279,7 @@ describe('fumadocs openapi source', () => {
 
       const props = await page.data.getOpenAPIPageProps();
       for (const operation of props.operations ?? []) {
-        const pathItem = props.payload.bundled.paths?.[operation.path];
+        const pathItem = props.payload.bundled?.paths?.[operation.path];
         const method = operation.method.toLowerCase();
         const operationObject = pathItem?.[method as keyof typeof pathItem] as
           | { description?: unknown; operationId?: unknown }
@@ -326,7 +324,8 @@ describe('fumadocs openapi source', () => {
         'zh-CN/api-reference/api-ref/speech-to-text/leave.mdx',
         {
           description: '停止实时转录翻译任务并离开频道。',
-          prose: '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
+          prose:
+            '开始实时转录翻译后，你可以调用 `leave` 方法离开频道，停止转写。',
         },
       ],
       [
@@ -363,10 +362,10 @@ describe('fumadocs openapi source', () => {
         throw new Error(`Missing operation payload for ${pagePath}`);
       }
 
-      const pathItem = props.payload.bundled.paths?.[operation.path];
+      const pathItem = props.payload.bundled?.paths?.[operation.path];
       const method = operation.method.toLowerCase();
       const operationObject = pathItem?.[method as keyof typeof pathItem] as
-        | { description?: unknown; ['x-docs-sections']?: unknown }
+        | { description?: unknown; 'x-docs-sections'?: unknown }
         | undefined;
 
       expect(
@@ -411,10 +410,10 @@ describe('fumadocs openapi source', () => {
 
       const props = await page.data.getOpenAPIPageProps();
       for (const operation of props.operations ?? []) {
-        const pathItem = props.payload.bundled.paths?.[operation.path];
+        const pathItem = props.payload.bundled?.paths?.[operation.path];
         const method = operation.method.toLowerCase();
         const operationObject = pathItem?.[method as keyof typeof pathItem] as
-          | { ['x-docs-sections']?: unknown; operationId?: unknown }
+          | { 'x-docs-sections'?: unknown; operationId?: unknown }
           | undefined;
         const sections = Array.isArray(operationObject?.['x-docs-sections'])
           ? operationObject['x-docs-sections']
