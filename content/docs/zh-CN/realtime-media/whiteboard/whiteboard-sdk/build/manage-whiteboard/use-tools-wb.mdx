@@ -1,11 +1,10 @@
 ---
 title: "使用白板工具"
+titlePlatforms: [web]
 description: "了解如何在互动白板 SDK 中白板工具，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
 
-成功加入互动白板实时房间后，你就可以用 SDK 默认的工具在白板上写写画画了。
-
-互动白板 SDK 提供丰富的基础编辑工具，如铅笔、箭头、直线、橡皮擦、各种图形等，并支持修改字体的大小、线条的颜色和粗细。
+成功加入互动白板实时房间后，你就可以用 SDK 默认的工具在白板上写写画画了。互动白板 SDK 提供丰富的基础编辑工具，如铅笔、箭头、直线、橡皮擦、各种图形等，并支持修改字体的大小、线条的颜色和粗细。
 
 本页面介绍以下白板工具的使用方法：
 
@@ -14,7 +13,7 @@ description: "了解如何在互动白板 SDK 中白板工具，包括适用场�
 
 ## 技术原理
 
-互动白板 SDK 提供 [`setMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setmemberstate) 方法，用于设置当前白板房间内使用的工具。你可以通过修改当前 `Room` 对象的 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate) 切换工具、选择图形、修改字体的大小、线条的颜色和粗细。
+白板 SDK 提供 [`setMemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#setmemberstate) 方法，用于设置当前白板房间内使用的工具。你可以通过修改当前 `Room` 对象的 [`MemberState`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#memberstate) 切换工具、选择图形、修改字体的大小、线条的颜色和粗细。
 
 `MemberState` 包含如下属性：
 
@@ -49,9 +48,7 @@ description: "了解如何在互动白板 SDK 中白板工具，包括适用场�
 
 开始前，请确保你已在项目中集成声网互动白板 SDK 并加入房间。详见[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)。
 
-<a id="通过修改代码切换工具"></a>
-
-## 通过修改代码切换工具（Web SDK）
+## 通过修改代码切换工具
 
 本节展示如何在[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)示例代码的基础上，直接在程序中设置当前用户使用的工具。
 
@@ -100,9 +97,7 @@ whiteWebSdk
 
 保存并刷新页面，就可以在白板上画出蓝色的五角星。
 
-<a id="通过-ui-切换工具"></a>
-
-## 通过 UI 切换工具（Web SDK）
+## 通过 UI 切换工具
 
 在实际的应用中，不可能通过直接修改代码切换工具。你可以自行设计并实现工具 UI，以便用户切换工具。
 

@@ -64,6 +64,34 @@ describe('Chinese documentation platform applicability', () => {
     ],
     ['realtime-media/rtc/get-started/quick-start-expo.mdx', 'react-native'],
     ['realtime-media/rtc/reference/billing.mdx', 'mini-program'],
+    [
+      'realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/custom-event.mdx',
+      'web',
+    ],
+    [
+      'realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/record-and-replay.mdx',
+      'web',
+    ],
+    [
+      'realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-room-phase.mdx',
+      'web',
+    ],
+    [
+      'realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-room-status.mdx',
+      'web',
+    ],
+    [
+      'realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/manage-scene.mdx',
+      'web',
+    ],
+    [
+      'realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/present-files-wb.mdx',
+      'web',
+    ],
+    [
+      'realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/use-tools-wb.mdx',
+      'web',
+    ],
   ])(
     'resolves the page badge for %s from its documented SDK scope',
     (file, platform) => {
@@ -266,9 +294,16 @@ describe('Chinese documentation platform applicability', () => {
       'realtime-media/rtc/build/optimize-and-operate/reduce-app-size.mdx',
       'realtime-media/rtc/reference/after-migrate.mdx',
     ]) {
-      expect(extractStructuredPlatformKeys(processedDoc(file))).toContain(
+      expect(extractStructuredPlatformKeys(processedDoc(file))).toEqual([
+        'android',
+        'ios',
+        'macos',
+        'windows',
         'electron',
-      );
+        'unity',
+        'flutter',
+        'react-native',
+      ]);
       expect(platformDoc(file, 'electron')).not.toBe('');
     }
     expect(
