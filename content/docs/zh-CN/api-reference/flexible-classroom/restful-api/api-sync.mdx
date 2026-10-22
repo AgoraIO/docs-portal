@@ -81,16 +81,16 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 返回数据，包含以下字段：
 
-      - `count`: Integer 型，本批数据条数。
-      - `list`: 由多个 Object 组成的数组。每个 Object 包含以下字段：
+- `count`: Integer 型，本批数据条数。
+- `list`: 由多个 Object 组成的数组。每个 Object 包含以下字段：
 
-        - `roomUuid`: String 型，课堂 uuid。
-        - `cmd`: Integer 型，事件类型。详见[事件枚举](#事件枚举)。
-        - `sequence`: Integer 型，事件序号，是每个课堂内事件的唯一标识符，课堂内全局自增，用于确保事件的有序性。
-        - `version`: Integer 型，版本号。
-        - `data`: Object 型，事件的具体数据，不同事件类型返回不同数据。详见[事件枚举](#事件枚举)。
+  - `roomUuid`: String 型，课堂 uuid。
+  - `cmd`: Integer 型，事件类型。详见[事件枚举](#事件枚举)。
+  - `sequence`: Integer 型，事件序号，是每个课堂内事件的唯一标识符，课堂内全局自增，用于确保事件的有序性。
+  - `version`: Integer 型，版本号。
+  - `data`: Object 型，事件的具体数据，不同事件类型返回不同数据。详见[事件枚举](#事件枚举)。
 
-      - `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
+- `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
 
 </Slot>
 
@@ -207,40 +207,40 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 返回数据，包含以下字段：
 
-      - `count`: Integer 型，本批数据条数。
-      - `list`: 由多个 Object 组成的数组。每个 Object 包含以下内容：
+- `count`: Integer 型，本批数据条数。
+- `list`: 由多个 Object 组成的数组。每个 Object 包含以下内容：
 
-        - `roomUuid`: String 型，课堂 UUID。
-        - `cmd`: Integer 型，事件类型，此处为 `1110`。
-        - `sequence`: Integer 型。事件序号，是每个课堂内事件的唯一标识符，课堂内全局自增，用于确保事件的有序性。
-        - `version`: Integer 型，版本号。
-        - `data`: Object 型，事件的具体数据，包含以下字段：
+  - `roomUuid`: String 型，课堂 UUID。
+  - `cmd`: Integer 型，事件类型，此处为 `1110`。
+  - `sequence`: Integer 型。事件序号，是每个课堂内事件的唯一标识符，课堂内全局自增，用于确保事件的有序性。
+  - `version`: Integer 型，版本号。
+  - `data`: Object 型，事件的具体数据，包含以下字段：
 
-          - `action`: Integer 型，属性操作类型：
+    - `action`: Integer 型，属性操作类型：
 
-            - `1`: 设置属性
-            - `2`: 删除属性
+      - `1`: 设置属性
+      - `2`: 删除属性
 
-        - `widgetUuid`: String 型，本次查询的 widget 的 uuid。
-        - `changeProperties`: Object 型，本次变更的 widget 用户属性。
+  - `widgetUuid`: String 型，本次查询的 widget 的 uuid。
+  - `changeProperties`: Object 型，本次变更的 widget 用户属性。
 
-          - `position`: Object 型，本次变更的位置。
-          - `size`: Object 型，本次变更的大小。
-          - `extra`: Object 型，本次变更的 widget 房间属性。
+    - `position`: Object 型，本次变更的位置。
+    - `size`: Object 型，本次变更的大小。
+    - `extra`: Object 型，本次变更的 widget 房间属性。
 
-        - `fromUser`: Object 型，更新属性的用户。当事件为更新 widget 用户属性事件时，该字段有值。包含以下字段：
+  - `fromUser`: Object 型，更新属性的用户。当事件为更新 widget 用户属性事件时，该字段有值。包含以下字段：
 
-          - `userUuid`: String 型，用户 UUID。
-          - `userName`: String 型，用户名。
-          - `role`: Integer 型，用户角色。
+    - `userUuid`: String 型，用户 UUID。
+    - `userName`: String 型，用户名。
+    - `role`: Integer 型，用户角色。
 
-        - `operator`: Object 型，操作人，包含以下字段：
+  - `operator`: Object 型，操作人，包含以下字段：
 
-          - `userUuid`: String 型，用户 UUID。
-          - `userName`: String 型，用户名。
-          - `role`: Integer 型，用户角色。
+    - `userUuid`: String 型，用户 UUID。
+    - `userName`: String 型，用户名。
+    - `role`: Integer 型，用户角色。
 
-      - `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
+- `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
 
 </Slot>
 
@@ -364,8 +364,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 本次答题状态：
 
-      - `1` : 答题进行中
-      - `0`: 答题结束
+- `1` : 答题进行中
+- `0`: 答题结束
 
 </Slot>
 
@@ -373,8 +373,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 答题器状态：
 
-      - `0`: 非活跃
-      - `1`: 活跃
+- `0`: 非活跃
+- `1`: 活跃
 
 </Slot>
 
@@ -382,10 +382,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始答题
-      - `2`: 老师结束答题
-      - `3`: 学生提交答案
-      - `4`: 汇总信息同步
+- `1`: 老师开始答题
+- `2`: 老师结束答题
+- `3`: 学生提交答案
+- `4`: 汇总信息同步
 
 </Slot>
 
@@ -416,10 +416,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始答题。
-      - `2`: 老师结束答题。
-      - `3`: 学生提交答案。
-      - `4`: 汇总信息同步。
+- `1`: 老师开始答题。
+- `2`: 老师结束答题。
+- `3`: 学生提交答案。
+- `4`: 汇总信息同步。
 
 </Slot>
 
@@ -447,10 +447,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始答题
-      - `2`: 老师结束答题
-      - `3`: 学生提交答案
-      - `4`: 汇总信息同步
+- `1`: 老师开始答题
+- `2`: 老师结束答题
+- `3`: 学生提交答案
+- `4`: 汇总信息同步
 
 </Slot>
 
@@ -479,8 +479,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 本次答题状态：
 
-      - `1`: 答题进行中
-      - `0`: 答题结束
+- `1`: 答题进行中
+- `0`: 答题结束
 
 </Slot>
 
@@ -488,10 +488,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始答题
-      - `2`: 老师结束答题
-      - `3`: 学生提交答案
-      - `4`: 汇总信息同步
+- `1`: 老师开始答题
+- `2`: 老师结束答题
+- `3`: 学生提交答案
+- `4`: 汇总信息同步
 
 </Slot>
 
@@ -653,8 +653,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 投票模式：
 
-      - `1`: 单选
-      - `2`: 多选
+- `1`: 单选
+- `2`: 多选
 
 </Slot>
 
@@ -662,8 +662,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 本次投票状态：
 
-      - `1` : 投票进行中
-      - `0`: 投票结束
+- `1` : 投票进行中
+- `0`: 投票结束
 
 </Slot>
 
@@ -671,8 +671,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 投票器状态：
 
-      - `0`: 非活跃
-      - `1`: 活跃
+- `0`: 非活跃
+- `1`: 活跃
 
 </Slot>
 
@@ -680,10 +680,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始投票
-      - `2`: 老师结束投票
-      - `3`: 学生提交投票
-      - `4`: 汇总信息同步
+- `1`: 老师开始投票
+- `2`: 老师结束投票
+- `3`: 学生提交投票
+- `4`: 汇总信息同步
 
 </Slot>
 
@@ -713,10 +713,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始投票
-      - `2`: 老师结束投票
-      - `3`: 学生提交投票
-      - `4`: 汇总信息同步
+- `1`: 老师开始投票
+- `2`: 老师结束投票
+- `3`: 学生提交投票
+- `4`: 汇总信息同步
 
 </Slot>
 
@@ -744,10 +744,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始投票
-      - `2`: 老师结束投票
-      - `3`: 学生提交投票
-      - `4`: 汇总信息同步
+- `1`: 老师开始投票
+- `2`: 老师结束投票
+- `3`: 学生提交投票
+- `4`: 汇总信息同步
 
 </Slot>
 
@@ -776,8 +776,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 本次投票状态：
 
-      - `1` : 投票进行中
-      - `0`: 投票结束
+- `1` : 投票进行中
+- `0`: 投票结束
 
 </Slot>
 
@@ -785,10 +785,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 操作类型：
 
-      - `1`: 老师开始投票
-      - `2`: 老师结束投票后，投票器的汇总数据会发生变化
-      - `3`: 学生提交投票
-      - `4`: 汇总信息同步
+- `1`: 老师开始投票
+- `2`: 老师结束投票后，投票器的汇总数据会发生变化
+- `3`: 学生提交投票
+- `4`: 汇总信息同步
 
 </Slot>
 
@@ -968,10 +968,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 当前课堂状态：
 
-      - `0`: 未开始。
-      - `1`: 进行中。
-      - `2`: 已结束。
-      - `3`: 拖堂时间结束，房间关闭，用户无法再进入。
+- `0`: 未开始。
+- `1`: 进行中。
+- `2`: 已结束。
+- `3`: 拖堂时间结束，房间关闭，用户无法再进入。
 
 </Slot>
 
@@ -998,21 +998,21 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 进入课堂的用户，包含以下字段：
 
-      - `userName`: String 型，用户名称。
-      - `userUuid`: String 型，用户 UUID。
-      - `role`: Integer 型，用户在课堂中的角色：
+- `userName`: String 型，用户名称。
+- `userUuid`: String 型，用户 UUID。
+- `role`: Integer 型，用户在课堂中的角色：
 
-        - `1`: 老师
-        - `2`: 学生
+  - `1`: 老师
+  - `2`: 学生
 
-      - `userProperties`: Object 型，用户属性。
-      - `streamUuid`: String 型，用户流的 uuid，也是加入 RTC 频道时使用的用户 ID。
-      - `type`: Integer 型，用户进入类型：
+- `userProperties`: Object 型，用户属性。
+- `streamUuid`: String 型，用户流的 uuid，也是加入 RTC 频道时使用的用户 ID。
+- `type`: Integer 型，用户进入类型：
 
-        - `1`: 正常进入
-        - `2`: 重连
+  - `1`: 正常进入
+  - `2`: 重连
 
-      - `updateTime`: Number 型，用户进入课堂时的 Unix 时间戳，单位为毫秒，UTC 时间。
+- `updateTime`: Number 型，用户进入课堂时的 Unix 时间戳，单位为毫秒，UTC 时间。
 
 </Slot>
 
@@ -1020,21 +1020,21 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 退出课堂的用户，包含以下字段：
 
-      - `userName`: String 型，用户名称。
-      - `userUuid`: String 型，用户 UUID。
-      - `role`: Integer 型，用户在课堂中的角色：
+- `userName`: String 型，用户名称。
+- `userUuid`: String 型，用户 UUID。
+- `role`: Integer 型，用户在课堂中的角色：
 
-        - `1`: 老师
-        - `2`: 学生
+  - `1`: 老师
+  - `2`: 学生
 
-      - `userProperties`: Object 型，用户属性。
-      - `streamUuid`: String 型，用户流的 uuid，也是加入 RTC 频道时使用的用户 ID。
-      - `type`: Integer 型，用户退出类型：
+- `userProperties`: Object 型，用户属性。
+- `streamUuid`: String 型，用户流的 uuid，也是加入 RTC 频道时使用的用户 ID。
+- `type`: Integer 型，用户退出类型：
 
-        - `1`: 由于客户端原因退出课堂，例如正常离开课堂、应用被强制关闭或由于网络状况不佳而断线。
-        - `2`: 被踢出课堂。
+  - `1`: 由于客户端原因退出课堂，例如正常离开课堂、应用被强制关闭或由于网络状况不佳而断线。
+  - `2`: 被踢出课堂。
 
-      - `updateTime`: Number 型，用户退出课堂时的 Unix 时间戳，单位为毫秒，UTC 时间。
+- `updateTime`: Number 型，用户退出课堂时的 Unix 时间戳，单位为毫秒，UTC 时间。
 
 </Slot>
 
@@ -1089,8 +1089,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 当前录制状态：
 
-      - `0`: 录制已结束
-      - `1`: 录制中
+- `0`: 录制已结束
+- `1`: 录制中
 
 </Slot>
 
@@ -1098,8 +1098,8 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 是否在启动页面录制任务时暂停页面录制。
 
-      - `true`: 不录制
-      - `false`: 录制
+- `true`: 不录制
+- `false`: 录制
 
 </Slot>
 
@@ -1135,7 +1135,7 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 JSONArray 类型。包含所有录制文件列表，包含以下字段：
 
-      - `url`: String 型，网页录制模式下录制文件的访问地址。
+- `url`: String 型，网页录制模式下录制文件的访问地址。
 
 </Slot>
 
@@ -1167,9 +1167,9 @@ JSONArray 类型。包含所有录制文件列表，包含以下字段：
 
 一个 Object 代表一个用户的奖励数量变更情况，包含以下字段：
 
-      - `userUuid`: String 型，用户 UUID。
-      - `changedReward`: Integer 型，发生变更的奖励个数。
-      - `totalReward`: Integer 型，变更后用户的奖励总数。
+- `userUuid`: String 型，用户 UUID。
+- `changedReward`: Integer 型，发生变更的奖励个数。
+- `totalReward`: Integer 型，变更后用户的奖励总数。
 
 </Slot>
 
@@ -1234,8 +1234,8 @@ JSONArray 类型。包含所有录制文件列表，包含以下字段：
 
 当前举手人员列表，包含以下字段：
 
-      - `userUuid`: String 型，用户 UUID。
-      - `payload`: Object 型。
+- `userUuid`: String 型，用户 UUID。
+- `payload`: Object 型。
 
 </Slot>
 
@@ -1243,8 +1243,8 @@ JSONArray 类型。包含所有录制文件列表，包含以下字段：
 
 本次新增举手人员列表，包含以下字段：
 
-      - `userUuid`: String 型，用户 UUID。
-      - `payload`: Object 型，扩展信息。
+- `userUuid`: String 型，用户 UUID。
+- `payload`: Object 型，扩展信息。
 
 </Slot>
 
@@ -1252,8 +1252,8 @@ JSONArray 类型。包含所有录制文件列表，包含以下字段：
 
 本次移除举手人员列表，包含以下字段：
 
-      - `userUuid`: String 型，用户 UUID。
-      - `payload`: Object 型，扩展信息。
+- `userUuid`: String 型，用户 UUID。
+- `payload`: Object 型，扩展信息。
 
 </Slot>
 

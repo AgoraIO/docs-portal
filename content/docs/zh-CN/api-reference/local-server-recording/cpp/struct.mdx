@@ -62,8 +62,8 @@ struct AgoraServiceConfiguration {
 
 是否启用音频处理模块。
 
-    - `true`：（默认）启用音频处理模块。
-    - `false`：禁用音频处理模块。禁用后无法创建音频轨道。
+- `true`：（默认）启用音频处理模块。
+- `false`：禁用音频处理模块。禁用后无法创建音频轨道。
 
 </Slot>
 
@@ -71,12 +71,12 @@ struct AgoraServiceConfiguration {
 
 是否启用音频设备模块。
 
-    - `true`：（默认）启用音频设备模块。
-    - `false`：禁用音频设备模块。
+- `true`：（默认）启用音频设备模块。
+- `false`：禁用音频设备模块。
 
-    :::warning[注意]
-    在录制场景中，请确保将 `enableAudioDevice` 设置为 `false`。如果设置为 `true`，SDK 会报错，因为录制器实例没有任何音频设备。
-    :::
+:::warning[注意]
+在录制场景中，请确保将 `enableAudioDevice` 设置为 `false`。如果设置为 `true`，SDK 会报错，因为录制器实例没有任何音频设备。
+:::
 
 </Slot>
 
@@ -84,8 +84,8 @@ struct AgoraServiceConfiguration {
 
 是否启用视频。
 
-    - `true`：启用视频。
-    - `false`：（默认）禁用视频。
+- `true`：启用视频。
+- `false`：（默认）禁用视频。
 
 </Slot>
 
@@ -93,8 +93,8 @@ struct AgoraServiceConfiguration {
 
 是否启用字符串类型的用户 ID。
 
-    - `true`：启用字符串类型的用户 ID。
-    - `false`：（默认）不启用字符串类型的用户 ID。
+- `true`：启用字符串类型的用户 ID。
+- `false`：（默认）不启用字符串类型的用户 ID。
 
 </Slot>
 
@@ -102,8 +102,8 @@ struct AgoraServiceConfiguration {
 
 是否启用域名限制。
 
-    - `true`：仅连接已通过 DNS 解析的服务器。
-    - `false`：（默认）连接服务器时不做限制。
+- `true`：仅连接已通过 DNS 解析的服务器。
+- `false`：（默认）连接服务器时不做限制。
 
 </Slot>
 
@@ -130,7 +130,7 @@ struct VideoSubscriptionOptions {
 
 要订阅的视频流类型，详见 [`VIDEO_STREAM_TYPE`](/zh-CN/api-reference/local-server-recording/cpp/enum#video_stream_type)。
 
-    - 默认值为 `VIDEO_STREAM_HIGH`，表示高质量视频流。
+- 默认值为 `VIDEO_STREAM_HIGH`，表示高质量视频流。
 
 </Slot>
 
@@ -138,12 +138,12 @@ struct VideoSubscriptionOptions {
 
 是否仅订阅编码后的视频数据：
 
-    - `true`：仅订阅编码后的视频数据。
-    - `false`：（默认）订阅解码后的视频数据。
+- `true`：仅订阅编码后的视频数据。
+- `false`：（默认）订阅解码后的视频数据。
 
-    :::warning[注意]
-    在涉及视频帧采集的场景中，如果你希望采集 YUV 帧、JPF 帧或 JPG 文件，请确保将该参数设置为 `false`。
-    :::
+:::warning[注意]
+在涉及视频帧采集的场景中，如果你希望采集 YUV 帧、JPF 帧或 JPG 文件，请确保将该参数设置为 `false`。
+:::
 
 </Slot>
 
@@ -242,8 +242,8 @@ struct WatermarkOptions {
 
 水印图像在本地视频预览中是否可见：
 
-    - `true`：（默认）水印图像在预览中可见。
-    - `false`：水印图像在预览中不可见。
+- `true`：（默认）水印图像在预览中可见。
+- `false`：水印图像在预览中不可见。
 
 </Slot>
 
@@ -397,8 +397,8 @@ Salt，长度为 32 字节。声网建议你在服务器端使用 OpenSSL 生成
 
 是否启用数据流加密。
 
-    - `true`：启用数据流加密。
-    - `false`：（默认）不启用数据流加密。
+- `true`：启用数据流加密。
+- `false`：（默认）不启用数据流加密。
 
 </Slot>
 
@@ -434,8 +434,8 @@ struct LogUploadServerInfo {
 
 是否使用 HTTPS 请求：
 
-    - `true`：使用 HTTPS 请求。
-    - `false`：使用 HTTP 请求。
+- `true`：使用 HTTPS 请求。
+- `false`：使用 HTTP 请求。
 
 </Slot>
 
@@ -499,8 +499,8 @@ struct LocalAccessPointConfiguration {
 
 是否禁用 `vos-aut`：
 
-    - `true`：（默认）禁用 `vos-aut`。
-    - `false`：不禁用 `vos-aut`。
+- `true`：（默认）禁用 `vos-aut`。
+- `false`：不禁用 `vos-aut`。
 
 </Slot>
 
@@ -574,8 +574,8 @@ struct MixerLayoutConfig {
 
 是否镜像混合视频流中的视频区域。
 
-    - `true`：镜像视频区域。
-    - `false`：不镜像视频区域。
+- `true`：镜像视频区域。
+- `false`：不镜像视频区域。
 
 </Slot>
 
@@ -583,10 +583,10 @@ struct MixerLayoutConfig {
 
 混合视频流中视频区域的旋转角度。
 
-    - `0`：不旋转。
-    - `1`：顺时针旋转 90°。
-    - `2`：顺时针旋转 180°。
-    - `3`：顺时针旋转 270°。
+- `0`：不旋转。
+- `1`：顺时针旋转 90°。
+- `2`：顺时针旋转 180°。
+- `3`：顺时针旋转 270°。
 
 </Slot>
 
@@ -837,10 +837,10 @@ struct RecorderVideoFrameCaptureConfig {
 
 指定保存 JPG 文件的目录的绝对路径。当 `videoFrameType` 设置为 `VIDEO_FORMAT_JPG_FILE_TYPE` 且 `jpgFileStorePath` 不为空时，JPG 文件将保存到该目录。文件名格式为："channelId_userId_YYYYMMDDHHMMSS_MS.jpg"。
 
-    :::warning[注意]
-    - 请确保在采集 `VIDEO_FORMAT_JPG_FILE_TYPE` 时设置该参数，否则不会采集 JPG 文件。
-        - 请确保指定的目录已存在且可写。
-    :::
+:::warning[注意]
+- 请确保在采集 `VIDEO_FORMAT_JPG_FILE_TYPE` 时设置该参数，否则不会采集 JPG 文件。
+- 请确保指定的目录已存在且可写。
+:::
 
 </Slot>
 

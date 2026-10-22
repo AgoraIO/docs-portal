@@ -3130,7 +3130,9 @@ function normalizeInlineTableCell(value) {
 
 function normalizeSlotDefinitionContent(value) {
   return ensureBlankLineBeforeList(
-    transformInlineHtml(transformHtmlLists(value)),
+    // JSX container indentation is not Markdown nesting. Remove it from the
+    // whole block before trim() can erase only the first item's indentation.
+    transformInlineHtml(transformHtmlLists(trimCommonIndent(value))),
   )
     .replace(/\n{3,}/g, '\n\n')
     .trim();

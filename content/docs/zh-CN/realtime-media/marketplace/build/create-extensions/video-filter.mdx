@@ -56,8 +56,8 @@ virtual void getProcessMode(ProcessMode& mode, bool& independent_thread) = 0;
 
 SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
-        - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
-        - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
+  - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
+  - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
 
 </Slot>
 
@@ -65,8 +65,8 @@ SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
 是否为插件创建独立的线程：
 
-        - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
-        - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
+  - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
+  - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
 
 </Slot>
 
@@ -143,14 +143,14 @@ virtual void getVideoFormatWanted(VideoFrameData::Type& type, RawPixelBuffer::Fo
 
 视频数据的格式，支持设为以下值：
 
-        - `Unknown`：未知格式。
-        - `I420`：I420 格式。
-        - `I422`：I422 格式。
-        - `NV21`：NV21 格式。
-        - `NV12`：NV12 格式。
-        - `RGBA`：RGBA 格式。
-        - `ARGB`：ARGB 格式。
-        - `BGRA`：BGRA 格式。
+  - `Unknown`：未知格式。
+  - `I420`：I420 格式。
+  - `I422`：I422 格式。
+  - `NV21`：NV21 格式。
+  - `NV12`：NV12 格式。
+  - `RGBA`：RGBA 格式。
+  - `ARGB`：ARGB 格式。
+  - `BGRA`：BGRA 格式。
 
 </Slot>
 
@@ -380,14 +380,14 @@ virtual void enumerateExtensions(ExtensionMetaInfo* extension_list,
 
 插件的信息，包括插件类型和插件名称。支持的视频插件类型有：
 
-        - `VIDEO_PRE_PROCESSING_FILTER`（上行）
-        - `VIDEO_POST_PROCESSING_FILTER`（下行）
+- `VIDEO_PRE_PROCESSING_FILTER`（上行）
+- `VIDEO_POST_PROCESSING_FILTER`（下行）
 
-        插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
+插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
 
-        - 26 个小写字母 `a`~`z`
-        - 数字和下划线（不能是第一个或最后一个）
-        如果插件名不符合规则，会无法通过编译。
+- 26 个小写字母 `a`~`z`
+- 数字和下划线（不能是第一个或最后一个）
+如果插件名不符合规则，会无法通过编译。
 
 </Slot>
 
@@ -572,8 +572,8 @@ virtual void getProcessMode(ProcessMode& mode, bool& independent_thread) = 0;
 
 SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
-        - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
-        - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
+  - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
+  - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
 
 </Slot>
 
@@ -581,8 +581,8 @@ SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
 是否为插件创建独立的线程：
 
-        - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
-        - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
+  - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
+  - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
 
 </Slot>
 
@@ -657,14 +657,14 @@ virtual void getVideoFormatWanted(VideoFrameData::Type& type, RawPixelBuffer::Fo
 
 视频数据的格式，支持设为以下值：
 
-        - `Unknown`：未知格式。
-        - `I420`：I420 格式。
-        - `I422`：I422 格式。
-        - `NV21`：NV21 格式。
-        - `NV12`：NV12 格式。
-        - `RGBA`：RGBA 格式。
-        - `ARGB`：ARGB 格式。
-        - `BGRA`：BGRA 格式。
+  - `Unknown`：未知格式。
+  - `I420`：I420 格式。
+  - `I422`：I422 格式。
+  - `NV21`：NV21 格式。
+  - `NV12`：NV12 格式。
+  - `RGBA`：RGBA 格式。
+  - `ARGB`：ARGB 格式。
+  - `BGRA`：BGRA 格式。
 
 </Slot>
 
@@ -894,14 +894,14 @@ virtual void enumerateExtensions(ExtensionMetaInfo* extension_list,
 
 插件的信息，包括插件类型和插件名称。支持的视频插件类型有：
 
-        - `VIDEO_PRE_PROCESSING_FILTER`（上行）
-        - `VIDEO_POST_PROCESSING_FILTER`（下行）
+- `VIDEO_PRE_PROCESSING_FILTER`（上行）
+- `VIDEO_POST_PROCESSING_FILTER`（下行）
 
-        插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
+插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
 
-        - 26 个小写字母 `a`~`z`
-        - 数字和下划线（不能是第一个或最后一个）
-        如果插件名不符合规则，会无法通过编译。
+- 26 个小写字母 `a`~`z`
+- 数字和下划线（不能是第一个或最后一个）
+如果插件名不符合规则，会无法通过编译。
 
 </Slot>
 
@@ -1026,8 +1026,8 @@ virtual void getProcessMode(ProcessMode& mode, bool& independent_thread) = 0;
 
 SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
-        - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
-        - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 deliverVideoFrame 将处理后的数据返回给 SDK。
+  - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
+  - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 deliverVideoFrame 将处理后的数据返回给 SDK。
 
 </Slot>
 
@@ -1035,8 +1035,8 @@ SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
 是否为插件创建独立的线程：
 
-        - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
-        - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
+  - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
+  - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
 
 </Slot>
 
@@ -1111,14 +1111,14 @@ virtual void getVideoFormatWanted(VideoFrameData::Type& type, RawPixelBuffer::Fo
 
 视频数据的格式，支持设为以下值：
 
-        - `Unknown`：未知格式。
-        - `I420`：I420 格式。
-        - `I422`：I422 格式。
-        - `NV21`：NV21 格式。
-        - `NV12`：NV12 格式。
-        - `RGBA`：RGBA 格式。
-        - `ARGB`：ARGB 格式。
-        - `BGRA`：BGRA 格式。
+  - `Unknown`：未知格式。
+  - `I420`：I420 格式。
+  - `I422`：I422 格式。
+  - `NV21`：NV21 格式。
+  - `NV12`：NV12 格式。
+  - `RGBA`：RGBA 格式。
+  - `ARGB`：ARGB 格式。
+  - `BGRA`：BGRA 格式。
 
 </Slot>
 
@@ -1542,8 +1542,8 @@ virtual void getProcessMode(ProcessMode& mode, bool& independent_thread) = 0;
 
 SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
-        - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
-        - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
+  - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
+  - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
 
 </Slot>
 
@@ -1551,8 +1551,8 @@ SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
 是否为插件创建独立的线程：
 
-        - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
-        - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
+  - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
+  - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
 
 </Slot>
 
@@ -1627,14 +1627,14 @@ virtual void getVideoFormatWanted(VideoFrameData::Type& type, RawPixelBuffer::Fo
 
 视频数据的格式，支持设为以下值：
 
-        - `Unknown`：未知格式。
-        - `I420`：I420 格式。
-        - `I422`：I422 格式。
-        - `NV21`：NV21 格式。
-        - `NV12`：NV12 格式。
-        - `RGBA`：RGBA 格式。
-        - `ARGB`：ARGB 格式。
-        - `BGRA`：BGRA 格式。
+  - `Unknown`：未知格式。
+  - `I420`：I420 格式。
+  - `I422`：I422 格式。
+  - `NV21`：NV21 格式。
+  - `NV12`：NV12 格式。
+  - `RGBA`：RGBA 格式。
+  - `ARGB`：ARGB 格式。
+  - `BGRA`：BGRA 格式。
 
 </Slot>
 
@@ -1864,14 +1864,14 @@ virtual void enumerateExtensions(ExtensionMetaInfo* extension_list,
 
 插件的信息，包括插件类型和插件名称。支持的视频插件类型有：
 
-        - `VIDEO_PRE_PROCESSING_FILTER`（上行）
-        - `VIDEO_POST_PROCESSING_FILTER`（下行）
+- `VIDEO_PRE_PROCESSING_FILTER`（上行）
+- `VIDEO_POST_PROCESSING_FILTER`（下行）
 
-        插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
+插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
 
-        - 26 个小写字母 `a`~`z`
-        - 数字和下划线（不能是第一个或最后一个）
-        如果插件名不符合规则，会无法通过编译。
+- 26 个小写字母 `a`~`z`
+- 数字和下划线（不能是第一个或最后一个）
+如果插件名不符合规则，会无法通过编译。
 
 </Slot>
 
@@ -1996,8 +1996,8 @@ virtual void getProcessMode(ProcessMode& mode, bool& independent_thread) = 0;
 
 SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
-        - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
-        - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 deliverVideoFrame 将处理后的数据返回给 SDK。
+  - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
+  - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 deliverVideoFrame 将处理后的数据返回给 SDK。
 
 </Slot>
 
@@ -2005,8 +2005,8 @@ SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
 是否为插件创建独立的线程：
 
-        - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
-        - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
+  - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
+  - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
 
 </Slot>
 
@@ -2081,14 +2081,14 @@ virtual void getVideoFormatWanted(VideoFrameData::Type& type, RawPixelBuffer::Fo
 
 视频数据的格式，支持设为以下值：
 
-        - `Unknown`：未知格式。
-        - `I420`：I420 格式。
-        - `I422`：I422 格式。
-        - `NV21`：NV21 格式。
-        - `NV12`：NV12 格式。
-        - `RGBA`：RGBA 格式。
-        - `ARGB`：ARGB 格式。
-        - `BGRA`：BGRA 格式。
+  - `Unknown`：未知格式。
+  - `I420`：I420 格式。
+  - `I422`：I422 格式。
+  - `NV21`：NV21 格式。
+  - `NV12`：NV12 格式。
+  - `RGBA`：RGBA 格式。
+  - `ARGB`：ARGB 格式。
+  - `BGRA`：BGRA 格式。
 
 </Slot>
 
@@ -2852,8 +2852,8 @@ virtual void getProcessMode(ProcessMode& mode, bool& independent_thread) = 0;
 
 SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
-        - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
-        - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
+  - `Sync`: 同步模式。该模式下，SDK 和插件通过 `adaptVideoFrame` 传递视频数据。
+  - `Async`: 异步模式。该模式下，SDK 通过 `pendVideoFrame` 将待处理的数据传给插件，插件通过 `deliverVideoFrame` 将处理后的数据返回给 SDK。
 
 </Slot>
 
@@ -2861,8 +2861,8 @@ SDK 和插件互相传递视频数据的模式，支持设为以下值：
 
 是否为插件创建独立的线程：
 
-        - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
-        - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
+  - `true`: 为插件创建独立的线程。创建后，SDK 向插件发送的所有回调都在该独立线程上进行。
+  - `false`: 不为插件创建独立的线程。SDK 向插件发送的所有回调都在 SDK 的视频处理线程上进行。
 
 </Slot>
 
@@ -2937,14 +2937,14 @@ virtual void getVideoFormatWanted(VideoFrameData::Type& type, RawPixelBuffer::Fo
 
 视频数据的格式，支持设为以下值：
 
-        - `Unknown`：未知格式。
-        - `I420`：I420 格式。
-        - `I422`：I422 格式。
-        - `NV21`：NV21 格式。
-        - `NV12`：NV12 格式。
-        - `RGBA`：RGBA 格式。
-        - `ARGB`：ARGB 格式。
-        - `BGRA`：BGRA 格式。
+  - `Unknown`：未知格式。
+  - `I420`：I420 格式。
+  - `I422`：I422 格式。
+  - `NV21`：NV21 格式。
+  - `NV12`：NV12 格式。
+  - `RGBA`：RGBA 格式。
+  - `ARGB`：ARGB 格式。
+  - `BGRA`：BGRA 格式。
 
 </Slot>
 
@@ -3174,14 +3174,14 @@ virtual void enumerateExtensions(ExtensionMetaInfo* extension_list,
 
 插件的信息，包括插件类型和插件名称。支持的视频插件类型有：
 
-        - `VIDEO_PRE_PROCESSING_FILTER`（上行）
-        - `VIDEO_POST_PROCESSING_FILTER`（下行）
+- `VIDEO_PRE_PROCESSING_FILTER`（上行）
+- `VIDEO_POST_PROCESSING_FILTER`（下行）
 
-        插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
+插件名由插件服务商指定，需要在 `IExtensionProvider` 对象内唯一。插件名为 String 型，支持如下字符：
 
-        - 26 个小写字母 `a`~`z`
-        - 数字和下划线（不能是第一个或最后一个）
-        如果插件名不符合规则，会无法通过编译。
+- 26 个小写字母 `a`~`z`
+- 数字和下划线（不能是第一个或最后一个）
+如果插件名不符合规则，会无法通过编译。
 
 </Slot>
 
