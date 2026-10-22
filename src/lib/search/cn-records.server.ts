@@ -73,6 +73,7 @@ export function extractPublishedCnSections(
   route: PublishedDocsRoute,
   page: SearchEntry,
   markdown: string,
+  renderedHeadingIds?: ReadonlySet<string>,
 ): SearchSection[] {
   // Metadata/card/FAQ lookups use content paths, regardless of public routing.
   route = {
@@ -80,9 +81,9 @@ export function extractPublishedCnSections(
     canonicalPath: toCnContentSearchUrl(route.canonicalPath),
   };
   let tree = unified().use(remarkParse).parse(markdown);
-  // 平台容器导出后可能保留四空格缩进，remark 会把整段教程误当代码。
-  // 仅展开带渲染器锚点标记的缩进块；真正的 fenced 示例和普通代码保持原样。
-  if (route.platform) {
+  // 平台和折叠容器导出后可能保留四空格缩进，remark 会把正文误当代码。
+  // 非平台页必须由真实 HTML 标题确认锚点，不能把普通代码示例提升成章节。
+  if (route.platform || renderedHeadingIds?.size) {
     while (true) {
       const blocks = tree.children.filter((node) => {
         if (node.type !== 'code' || node.lang || !node.position) return false;
@@ -91,7 +92,9 @@ export function extractPublishedCnSections(
         return (
           /^(?: {4}|\t)/.test(source) &&
           !/^\s*(?:`{3,}|~{3,})/.test(source) &&
-          /^\s*#{1,6}\s+.+\s+\[#.+\]\s*$/m.test(node.value)
+          [...node.value.matchAll(/^\s*#{1,6}\s+.+\s+\[#(.+)\]\s*$/gm)].some(
+            (match) => route.platform || renderedHeadingIds?.has(match[1]),
+          )
         );
       });
       if (!blocks.length) break;
@@ -297,9 +300,23 @@ export async function exportPublishedCnRecords({
         `Missing default platform for ${route.canonicalPath}; rebuild static docs payloads`,
       );
     const markdown = await readMarkdown(route.markdownPath);
-    const sections = extractPublishedCnSections(route, page, markdown);
-    if (readRenderedHtml) {
-      const $ = load(await readRenderedHtml(route.url));
+    const $ = readRenderedHtml
+      ? load(await readRenderedHtml(route.url))
+      : undefined;
+    const renderedHeadingIds =
+      $ &&
+      new Set(
+        $('h1[id],h2[id],h3[id],h4[id],h5[id],h6[id]')
+          .map((_, element) => $(element).attr('id'))
+          .get(),
+      );
+    const sections = extractPublishedCnSections(
+      route,
+      page,
+      markdown,
+      renderedHeadingIds,
+    );
+    if ($) {
       const ids = new Set(
         $('[id]')
           .map((_, element) => $(element).attr('id'))
