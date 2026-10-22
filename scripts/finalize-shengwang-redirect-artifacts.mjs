@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { isRetiredCnDocsPath } from '../src/lib/retired-cn-docs.mjs';
 import { toPublicRedirectTarget } from './shengwang-redirect-targets.mjs';
 
 const repoRoot = path.resolve(
@@ -9,6 +10,7 @@ const repoRoot = path.resolve(
   '..',
 );
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
+const retirementPolicyPath = path.join(repoRoot, 'src/lib/retired-cn-docs.mjs');
 const candidatePath = path.join(
   inputRoot,
   'legacy-url-map-candidate-32883e92e9-2026-10-15.json',
@@ -43,6 +45,19 @@ validateRecords(
   applicationRoutes,
 );
 const records = candidate.records.map((record) => {
+  // The historical route snapshot includes products retired since collection.
+  // Keep that evidence immutable; apply the current publication policy explicitly.
+  if (record.status === 'candidate' && isRetiredCnDocsPath(record.target)) {
+    return {
+      ...record,
+      target: '',
+      status: 'no-redirect',
+      targetExists: false,
+      mappingType: 'retired-content-no-redirect',
+      retiredTarget: record.target,
+      notes: `${record.notes}；目标 ${record.target} 已由 src/lib/retired-cn-docs.mjs 下线，不发布此内容，保留旧路径 404。`,
+    };
+  }
   const target = toPublicRedirectTarget(record.target);
   if (
     record.status === 'candidate' &&
@@ -105,6 +120,10 @@ const finalJson = `${JSON.stringify(
     sourceCandidate: path.relative(repoRoot, candidatePath),
     snapshot: candidate.snapshot,
     targetUrlTransform: 'remove-zh-CN-prefix',
+    retirementPolicy: {
+      path: path.relative(repoRoot, retirementPolicyPath),
+      sha256: await sha256File(retirementPolicyPath),
+    },
     summary: finalSummary,
     records,
   },
@@ -318,6 +337,7 @@ function toNginx(items, targetCommit) {
     '# Target URL transform: remove-zh-CN-prefix.',
     '# Deploy only after the target site serves unprefixed routes.',
     '# Same-path requests such as /search are no-redirect; serve them directly.',
+    '# Retired content follows src/lib/retired-cn-docs.mjs; its legacy sources remain 404.',
     '# Review before loading into the Shengwang legacy host.',
     '',
   ];
