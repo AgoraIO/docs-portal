@@ -391,9 +391,7 @@ describe('docs content regressions', () => {
   });
 
   it('keeps custom model integration tutorial prerequisites focused on Agora-managed presets', () => {
-    const content = readDoc(
-      'ai/build/build-server-client.mdx',
-    );
+    const content = readDoc('ai/build/build-server-client.mdx');
 
     expect(content).toContain('- An active [Agora account]');
     expect(content).toContain('Agora-managed presets');
@@ -1192,7 +1190,7 @@ describe('docs content regressions', () => {
       const relativePath = relative(process.cwd(), file);
       const source = readFileSync(file, 'utf8');
 
-      if (/[\u200B\u200C\u200D\uFEFF]/.test(source)) {
+      if (/(?:\u200B|\u200C|\u200D|\uFEFF)/.test(source)) {
         offenders.push(`${relativePath}: contains zero-width characters`);
       }
 
@@ -1314,9 +1312,9 @@ describe('docs content regressions', () => {
   });
 
   it(
-    'preserves explicit table cell line breaks in processed markdown',
+    'exports table cell line breaks as readable separators',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['ai', 'best-practices', 'optimize-latency'],
         'en',
@@ -1329,10 +1327,10 @@ describe('docs content regressions', () => {
         throw new Error('Expected latency page to expose processed markdown.');
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain(
-        'TTFB: Time To First Byte, the first byte latency.<br />TTFS: Time To First Sentence',
+        'TTFB: Time To First Byte, the first byte latency.; TTFS: Time To First Sentence',
       );
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -1341,7 +1339,7 @@ describe('docs content regressions', () => {
   it(
     'keeps IoT SDK compatibility table cells readable without raw HTML lists',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['realtime-media', 'iot', 'reference', 'communicate-with-rtc-sdk'],
         'en',
@@ -1354,7 +1352,7 @@ describe('docs content regressions', () => {
         throw new Error('Expected IoT SDK page to expose processed markdown.');
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).not.toContain('<ul>');
       expect(processed).not.toContain('<li>');
@@ -1371,7 +1369,7 @@ describe('docs content regressions', () => {
   it(
     'renders media push layout images inside GFM table cells',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['realtime-media', 'media-push', 'reference', 'set-vertical-layout'],
         'en',
@@ -1386,11 +1384,11 @@ describe('docs content regressions', () => {
         );
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain('| Number of people | Layout effect');
       expect(processed).toMatch(
-        /\| 1\s+\| !\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
+        /\| 1\s*\|\s*!\[1645770574489\]\(https:\/\/web-cdn\.agora\.io\/docs-files\/1645770574489\) \|/,
       );
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -1880,7 +1878,7 @@ describe('docs content regressions', () => {
   it(
     'keeps parameter table lists and callouts in the media push type definition page',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         ['api-reference', 'api-ref', 'media-push', 'restful-type-definition'],
         'en',
@@ -1895,7 +1893,7 @@ describe('docs content regressions', () => {
         );
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain('| Field');
       expect(processed).toContain('| Type');
@@ -1903,7 +1901,7 @@ describe('docs content regressions', () => {
       expect(processed).not.toContain('<ParamTable>');
       expect(processed).not.toContain('<Slot');
       expect(processed).toContain('`LC-AAC` (Default): MPEG-4 AAC LC');
-      expect(processed).toContain('<CalloutContainer type="info">');
+      expect(processed).toMatch(/> \*\*(?:Note|Info)/);
       expect(processed).toContain(
         '`volumes.rtcStreamUid` needs to exist in the `rtcStreamUids` array',
       );
@@ -1914,7 +1912,7 @@ describe('docs content regressions', () => {
   it(
     'keeps console REST API table slot callout content in processed markdown',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const page = source.getPage(
         [
           'api-reference',
@@ -1934,12 +1932,12 @@ describe('docs content regressions', () => {
         );
       }
 
-      const processed = await page.data.getText('processed');
+      const processed = await getLLMText(page);
 
       expect(processed).toContain('| `enable_sign_key`');
       expect(processed).not.toContain('<Slot name="enablesignkey"');
-      expect(processed).toContain('<CalloutContainer type="info">');
-      expect(processed).toMatch(/<CalloutTitle>\s*Note\s*<\/CalloutTitle>/);
+      expect(processed).toMatch(/> \*\*(?:Note|Info)/);
+      expect(processed).toContain('> **Note**');
       expect(processed).toContain(
         'After creating a project, you can send a request to `https://api.agora.io/dev/v1/signkey`',
       );
@@ -1950,7 +1948,7 @@ describe('docs content regressions', () => {
   it(
     'renders AI model callout directives through the processed markdown pipeline',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const modelDocsRoot = resolve(docsRoot, 'ai/models');
       const filesWithCallouts = listMarkdownFiles(modelDocsRoot).filter(
         (file) => {
@@ -1973,21 +1971,21 @@ describe('docs content regressions', () => {
           );
         }
 
-        const processed = await page.data.getText('processed');
+        const processed = await getLLMText(page);
 
         expect(processed).not.toMatch(
           /^:{3,4}(?:caution|danger|info|note|tip|warn|warning)\b/m,
         );
-        expect(processed).toContain('<CalloutContainer');
+        expect(processed).toMatch(/^> /m);
       }
     },
     SOURCE_LOADER_TEST_TIMEOUT,
   );
 
   it(
-    'keeps nested and repeated AI model callouts rendered as callout containers',
+    'keeps nested and repeated AI model callouts as Markdown quotes',
     async () => {
-      const { source } = await import('./source.server');
+      const { source, getLLMText } = await import('./source.server');
       const akool = source.getPage(['ai', 'models', 'avatar', 'akool'], 'en');
       const deepgram = source.getPage(
         ['ai', 'models', 'asr', 'deepgram'],
@@ -2016,19 +2014,18 @@ describe('docs content regressions', () => {
         );
       }
 
-      const akoolProcessed = await akool.data.getText('processed');
-      const deepgramProcessed = await deepgram.data.getText('processed');
-      const elevenLabsProcessed = await elevenLabs.data.getText('processed');
+      const akoolProcessed = await getLLMText(akool);
+      const deepgramProcessed = await getLLMText(deepgram);
+      const elevenLabsProcessed = await getLLMText(elevenLabs);
 
-      expect(
-        akoolProcessed.match(/<CalloutContainer type="info">/g) ?? [],
-      ).toHaveLength(3);
+      expect(akoolProcessed.match(/> \*\*Info/g) ?? []).toHaveLength(
+        (readDoc('ai/models/avatar/akool.mdx').match(/:::info\[/g) ?? [])
+          .length,
+      );
       expect(akoolProcessed).toContain('sales@agora.io');
-      expect(deepgramProcessed).toContain('<CalloutContainer type="warning">');
+      expect(deepgramProcessed).toContain('> **Caution');
       expect(deepgramProcessed).toContain('callback_method');
-      expect(
-        elevenLabsProcessed.match(/<CalloutContainer type="warning">/g) ?? [],
-      ).toHaveLength(2);
+      expect(elevenLabsProcessed.match(/> \*\*Caution/g) ?? []).toHaveLength(2);
       expect(elevenLabsProcessed).toContain('Paid plan required');
     },
     SOURCE_LOADER_TEST_TIMEOUT,
@@ -2085,7 +2082,9 @@ describe('docs content regressions', () => {
   });
 
   it('keeps the IM RESTful API pricing table content stable', () => {
-    const source = readDoc('realtime-media/im/reference/pricing-plan-details.md');
+    const source = readDoc(
+      'realtime-media/im/reference/pricing-plan-details.md',
+    );
     const tableStart = source.indexOf('| Category | Rest API Description |');
     const tableEnd = source.indexOf('\n\n## SDK support', tableStart);
     const tableLines = source

@@ -1,6 +1,6 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { source as createSource, loader, multiple } from 'fumadocs-core/source';
+import { loader, multiple } from 'fumadocs-core/source';
 import yaml from 'js-yaml';
 import { docsMetaSchema } from '../docs-meta-schema';
 import { buildDocPath, parseSourceSlugs } from '../docs-routing';
@@ -91,7 +91,7 @@ async function createStaticDocsSource() {
     })),
   );
 
-  return createSource({ pages, metas });
+  return { files: [...pages, ...metas] };
 }
 
 async function scanContentFiles(dir: string): Promise<{
