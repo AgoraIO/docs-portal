@@ -128,6 +128,78 @@ describe('machine-readable docs indexes', () => {
     ).toBe(true);
   });
 
+  it.each([1, 12, 100])(
+    'counts the final numbered heading when splitting shard %i',
+    (shard) => {
+      const publishedRoutes = Array.from(
+        { length: shard * 2 + 1 },
+        (_, index) => {
+          const url = `/en/api-reference/guide-${String(index).padStart(3, '0')}`;
+          return { canonicalPath: url, markdownPath: `${url}.md`, url };
+        },
+      );
+      // The unnumbered header is 98 characters and each link adds 61
+      // characters around its label: 98 + 2 * (61 + 24_890) = 50_000.
+      const docsIndex = publishedRoutes
+        .map((route, index) => {
+          const labelLength =
+            index === shard * 2
+              ? 10
+              : index >= (shard - 1) * 2
+                ? 24_890
+                : 24_880;
+          return `- [${'x'.repeat(labelLength)}](${route.url})`;
+        })
+        .join('\n');
+      const files = createMachineReadableDocsIndexes({
+        baseUrl: 'https://docs.example.com',
+        docsIndex,
+        locale: 'en',
+        publishedRoutes,
+      });
+
+      expect(files.every((file) => file.content.length <= 50_000)).toBe(true);
+      expect(
+        files.slice(1).flatMap((file) => getMarkdownTargets(file.content)),
+      ).toEqual(
+        publishedRoutes.map(
+          (route) => `https://docs.example.com${route.markdownPath}`,
+        ),
+      );
+      expect(getMarkdownTargets(files[0]?.content ?? '')).toEqual(
+        files.slice(1).map((file) => `https://docs.example.com${file.path}`),
+      );
+    },
+  );
+
+  it('keeps an unnumbered section that fits the limit exactly', () => {
+    const url = '/en/api-reference/guide-000';
+    const files = createMachineReadableDocsIndexes({
+      baseUrl: 'https://docs.example.com',
+      docsIndex: `- [${'x'.repeat(49_841)}](${url})`,
+      locale: 'en',
+      publishedRoutes: [{ canonicalPath: url, markdownPath: `${url}.md`, url }],
+    });
+
+    expect(files[1]?.path).toBe('/llms/api-reference.txt');
+    expect(files[1]?.content.length).toBe(50_000);
+  });
+
+  it('rejects an indivisible entry that exceeds the limit', () => {
+    const url = '/en/api-reference/guide-000';
+
+    expect(() =>
+      createMachineReadableDocsIndexes({
+        baseUrl: 'https://docs.example.com',
+        docsIndex: `- [${'x'.repeat(49_842)}](${url})`,
+        locale: 'en',
+        publishedRoutes: [
+          { canonicalPath: url, markdownPath: `${url}.md`, url },
+        ],
+      }),
+    ).toThrow(/is 50001 characters; maximum is 50000/);
+  });
+
   it('validates index references against published and emitted artifacts', async () => {
     const publishedRoutes = [
       {
