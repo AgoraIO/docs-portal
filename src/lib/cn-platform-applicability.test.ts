@@ -47,6 +47,10 @@ describe('Chinese documentation platform applicability', () => {
     );
     expect(body).toContain('OnConnectionStateChanged');
     expect(body).toContain('你可以通过 `LoginAsync` 的返回值或监听');
+    expect(body).toContain(
+      '/zh-CN/api-reference/rtm/unity/configuration#OnConnectionStateChanged',
+    );
+    expect(body).not.toContain('/api-ref/rtm2/');
     expect(body).toContain('`CONNECTING`');
     expect(body).toContain('`CONNECTED`');
     expect(body).not.toMatch(/(?<!`)``(?!`)/);
