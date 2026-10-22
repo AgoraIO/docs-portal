@@ -1461,12 +1461,9 @@ describe('DocsShell', () => {
     const mobileSearchButton = within(mobileHeaderActions).getByRole('button', {
       name: 'Search docs',
     });
-    const desktopSearchButton = within(desktopHeaderActions).getByRole(
-      'button',
-      {
-        name: 'Search docs',
-      },
-    );
+    const desktopSearchButton = within(
+      screen.getByTestId('docs-desktop-header-search'),
+    ).getByRole('button', { name: 'Search docs' });
 
     expect(menuButton).toBeInTheDocument();
     expect(mobileSearchButton).toBeInTheDocument();
