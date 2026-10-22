@@ -42,7 +42,9 @@ import {
   stableDomId,
 } from './OpenApiSchemaTree';
 
-type OpenApiSchemaClient = Omit<SchemaUIProps, 'generated'>;
+type OpenApiSchemaClient = Omit<SchemaUIProps, 'generated'> & {
+  rootId?: string;
+};
 
 export type OpenApiSchemaProps = {
   client: OpenApiSchemaClient;
@@ -82,7 +84,8 @@ export function OpenApiSchema({
   writeOnly,
 }: OpenApiSchemaProps) {
   const translations = useTranslations().translations;
-  const rootId = useAnchorId([client.name]);
+  const fallbackRootId = useAnchorId([client.name]);
+  const rootId = client.rootId ?? fallbackRootId;
   const legacyNavigation = useMemo(
     () => getLegacySchemaNavigation(rootId, legacyAnchorPrefix),
     [legacyAnchorPrefix, rootId],

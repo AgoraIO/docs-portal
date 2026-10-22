@@ -40,7 +40,7 @@ export function OpenApiCodePreview({ children }: { children: ReactNode }) {
 
     const markCodeViewports = () => {
       for (const viewport of root.querySelectorAll<HTMLElement>(
-        '[role="tabpanel"] .fd-scroll-container',
+        '[role="tabpanel"] .fd-scroll-container, .fd-scroll-container[role="region"]',
       )) {
         viewport.setAttribute('data-openapi-code-viewport', '');
         bindScrollListener(viewport);

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.4.13/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.2/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
@@ -27,7 +27,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "preset": "recommended"
     },
     "domains": {
       "react": "recommended"
@@ -39,5 +39,21 @@
         "organizeImports": "on"
       }
     }
-  }
+  },
+  "overrides": [
+    {
+      "includes": [
+        "src/components/mdx.tsx",
+        "src/components/docs-shell/DocsShell.test.tsx",
+        "src/components/docs-shell/DocsSidebarTree.test.tsx"
+      ],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noComponentHookFactories": "off"
+          }
+        }
+      }
+    }
+  ]
 }
