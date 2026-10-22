@@ -57,7 +57,7 @@ description: "了解如何在实时消息 RTM 中在线状态事件通知，包�
 
 <PlatformStructured platform="harmonyos">
 
-接收 Presence 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/messaging/add-event-listener)，并在订阅或加入频道时将 `withPresence` 设置为 `true`。事件属性定义见 HarmonyOS API 参考中的 [`PresenceEvent`](/zh-CN/api-reference/rtm/harmonyos/configuration#presenceevent)。
+接收 Presence 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/messaging/add-event-listener)。除此之外，你需要在订阅或加入频道时将 `withPresence` 参数设置成 `true`。[`PresenceEvent`](/zh-CN/api-reference/rtm/harmonyos/configuration#presenceevent) 数据结构包含以下属性：
 
 </PlatformStructured>
 
@@ -113,7 +113,7 @@ description: "了解如何在实时消息 RTM 中在线状态事件通知，包�
 
 <PlatformStructured platform="swift">
 
-接收 Presence 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/messaging/add-event-listener)，并在订阅或加入频道时通过 `features` 启用 Presence 事件。`AgoraRtmPresenceEvent` 数据结构包含以下属性：
+接收 Presence 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/messaging/add-event-listener)。除此之外，在订阅或加入频道时还需将 `features` 参数设为 `presence` 或 `presence`。`AgoraRtmPresenceEvent` 数据结构包含以下属性：
 
 |     参数      | 描述                                                                                                                                        |
 | ----------- | ----
@@ -129,10 +129,6 @@ description: "了解如何在实时消息 RTM 中在线状态事件通知，包�
 </PlatformStructured>
 
 <PlatformStructured platform="mini-program">
-
-:::caution[小程序 SDK]
-小程序与 Web SDK 的 API 范围和版本不同。API 参考复用 JavaScript 页面，具体能力以已安装的 `shengwang-rtm-miniapp` 类型定义为准。详见[平台能力列表](/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/mini-program)。
-:::
 
 接收 Presence 事件通知，你需要实现事件监听程序，详见[事件监听](/zh-CN/realtime-media/rtm/build/messaging/add-event-listener)。除此之外，你需要在订阅或加入频道时将 `withPresence` 参数设置成 `true`。`PresenceEvent` 数据结构包含以下属性：
 

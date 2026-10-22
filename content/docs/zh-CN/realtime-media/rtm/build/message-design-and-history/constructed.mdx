@@ -311,10 +311,6 @@ class RtmListenerEx: NSObject, AgoraRtmClientDelegate {
 
 <PlatformStructured platform="mini-program">
 
-:::caution[小程序 SDK]
-小程序与 Web SDK 的 API 范围和版本不同。API 参考复用 JavaScript 页面，具体能力以已安装的 `shengwang-rtm-miniapp` 类型定义为准。详见[平台能力列表](/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/mini-program)。
-:::
-
 现在你可以根据接收到消息负载中的 `type` 字段来解析消息格式和数据，并对不同消息类型进行不同的处理。你也可以充分利用 `publish` 方法中的 `customType` 字段将你自定义的附加信息随着消息一起发送给接收端。用户接收到 Message Event 后可以通过 `customType` 字段来解析出数据。
 
 ```javascript showLineNumbers

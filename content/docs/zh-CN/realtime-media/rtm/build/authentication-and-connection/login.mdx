@@ -96,7 +96,7 @@ else
 }
 ```
 
-你可以通过 `LoginAsync` 的返回值判断登录是否成功，并获取登录失败的错误码和错误原因。客户端连接时，`RTM_CONNECTION_STATE` 为 `CONNECTING`；连接成功后更新为 `CONNECTED`。为持续监测客户端的网络连接状态，声网建议你在应用的整个生命周期内监听 [`OnConnectionStateChanged`](/zh-CN/api-reference/rtm/unity/configuration#OnConnectionStateChanged) 事件通知，状态值详见 [`RTM_CONNECTION_STATE`](/zh-CN/api-reference/rtm/unity/enumv#connectionstate)。
+你可以通过 `LoginAsync` 的返回值或监听 `OnConnectionStateChanged` 事件通知来判断登录是否成功以及登录失败的错误码和错误原因。执行登录操作时，客户端的网络连接状态为 `CONNECTING`；登录成功后，其状态会更新为 `CONNECTED` 状态。为持续监测客户端的网络连接状态，声网建议你在应用的整个生命周期内持续监听 `OnConnectionStateChanged` 事件通知，详见[事件监听](/api-ref/rtm2/unity/toc-configuration/configuration#OnConnectionStateChanged)。
 
 </PlatformStructured>
 

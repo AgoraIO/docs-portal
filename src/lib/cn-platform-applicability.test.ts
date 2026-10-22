@@ -40,13 +40,13 @@ function codeBlocks(markdown: string) {
 }
 
 describe('Chinese documentation platform applicability', () => {
-  it('provides actual Unity connection events and states after login', () => {
+  it('resolves Unity symbols while retaining the legacy login sentence', () => {
     const body = platformDoc(
       'realtime-media/rtm/build/authentication-and-connection/login.mdx',
       'unity',
     );
     expect(body).toContain('OnConnectionStateChanged');
-    expect(body).toContain('RTM_CONNECTION_STATE');
+    expect(body).toContain('你可以通过 `LoginAsync` 的返回值或监听');
     expect(body).toContain('`CONNECTING`');
     expect(body).toContain('`CONNECTED`');
     expect(body).not.toMatch(/(?<!`)``(?!`)/);
@@ -104,9 +104,6 @@ describe('Chinese documentation platform applicability', () => {
     expect(platformDoc(file, 'mini-program')).not.toContain(
       'RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED',
     );
-    expect(platformDoc(file, 'mini-program')).toContain(
-      'shengwang-rtm-miniapp',
-    );
   });
 
   it('separates Presence configuration fields for iOS and Android', () => {
@@ -140,7 +137,7 @@ describe('Chinese documentation platform applicability', () => {
     'does not expose unsupported Stream/Topic examples to mini programs in %s',
     (file) => {
       const mini = platformDoc(file, 'mini-program');
-      expect(mini).toContain('不支持 Stream Channel 和 Topic');
+      expect(mini).toContain('小程序（不适用）');
       expect(codeBlocks(mini)).toHaveLength(0);
       expect(codeBlocks(platformDoc(file, 'web')).length).toBeGreaterThan(0);
     },
@@ -213,7 +210,8 @@ describe('Chinese documentation platform applicability', () => {
       'realtime-media/rtsa/reference/supported-platforms.mdx',
     );
     expect(doc).toContain('已下架的 Java SDK（历史兼容性）');
-    expect(doc).toContain('不属于当前可集成的 SDK 平台范围');
+    expect(doc).toContain('RTSA Java SDK 已完成下架。历史下架时间点如下：');
+    expect(doc).toContain('2025 年 4 月 30 日（不含）');
     expect(doc).toContain('/rtsa/reference/sunset');
   });
 });

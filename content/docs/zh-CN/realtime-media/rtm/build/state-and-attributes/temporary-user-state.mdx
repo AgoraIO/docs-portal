@@ -27,7 +27,7 @@ RTM 不会永久保存临时状态数据。当用户取消订阅频道、掉线�
 
 <PlatformStructured platform="harmonyos">
 
-当用户临时状态发生变更时，RTM 会实时触发 `REMOTE_STATE_CHANGED` 事件通知，订阅或加入频道时设置了 `withPresence = true` 的用户会收到事件通知。
+当用户临时状态发生变更时，RTM 会实时触发 `REMOTE_STATE_CHANGED` 事件通知，加入频道时设置了 `withPresence = true` 的用户会收到事件通知。
 
 </PlatformStructured>
 
@@ -56,10 +56,6 @@ RTM 不会永久保存临时状态数据。当用户取消订阅频道、掉线�
 </PlatformStructured>
 
 <PlatformStructured platform="mini-program">
-
-:::caution[小程序 SDK]
-小程序与 Web SDK 的 API 范围和版本不同。API 参考复用 JavaScript 页面，具体能力以已安装的 `shengwang-rtm-miniapp` 类型定义为准。详见[平台能力列表](/zh-CN/realtime-media/rtm/reference/capabilities-and-compatibility/feature-list/mini-program)。
-:::
 
 当用户临时状态发生变更时，RTM 会实时触发 `REMOTE_STATE_CHANGED` 事件通知，加入频道时设置了 `withPresence = true` 的用户会收到事件通知。
 
@@ -633,7 +629,7 @@ try {
 }
 ```
 
-`setState` 方法和 `removeState` 方法都会触发 `REMOTE_STATE_CHANGED` 事件通知，订阅或加入频道时设置了 `withPresence = true` 的用户会收到事件通知，其中包含了当前用户临时状态的全量数据。
+`setState` 方法和 `removeState` 方法都会触发 `REMOTE_STATE_CHANGED` 事件通知，加入频道时设置了 `withPresence = true` 的用户会收到事件通知，其中包含了当前用户临时状态的全量数据。
 
 </PlatformStructured>
 
