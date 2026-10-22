@@ -160,6 +160,19 @@ function getRuleBodyContainingInContainer(
 }
 
 describe('app prose CSS regressions', () => {
+  it('keeps the console API entry heading compact and without a divider', () => {
+    const heading = getRuleBody(
+      '.prose .docs-body > .docs-console-api-entry + h2',
+    ).rule;
+    const divider = getRuleBody(
+      '.prose .docs-body > .docs-console-api-entry + h2::before',
+    ).rule;
+
+    expectDeclaration(heading, 'margin-top', '1.75rem');
+    expectDeclaration(heading, 'padding-top', '0');
+    expectDeclaration(divider, 'content', 'none');
+  });
+
   it('keeps heading anchors below the full sticky docs header', () => {
     const headingAnchor = getRuleBodyContaining(
       '.prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *))',
