@@ -2139,12 +2139,21 @@ function isDocsRouteHref(href: string) {
   );
 }
 
-function InlineImage({ alt, ...props }: ComponentProps<'img'>) {
+function InlineImage({
+  alt,
+  width,
+  height,
+  style,
+  ...props
+}: ComponentProps<'img'>) {
   return (
     <img
       referrerPolicy="no-referrer"
       {...props}
       alt={alt}
+      width={width}
+      height={height}
+      style={{ width, height, ...style }}
       className="not-prose m-0 inline-block h-auto max-w-full align-middle"
     />
   );
@@ -2154,9 +2163,18 @@ function ZoomableImage({
   alt = '',
   src,
   displayWidth,
+  displayHeight,
+  style,
   referrerPolicy = 'no-referrer',
   ...props
-}: ComponentProps<'img'> & { displayWidth?: CSSProperties['width'] }) {
+}: ComponentProps<'img'> & {
+  displayWidth?: CSSProperties['width'];
+  displayHeight?: CSSProperties['maxHeight'];
+}) {
+  const thumbnailStyle =
+    displayHeight === undefined
+      ? style
+      : { ...style, maxHeight: displayHeight, width: 'auto', height: 'auto' };
   if (typeof src !== 'string' || src.length === 0) {
     return (
       <FumadocsImage
@@ -2164,6 +2182,7 @@ function ZoomableImage({
         src={src}
         referrerPolicy={referrerPolicy}
         {...props}
+        style={thumbnailStyle}
       />
     );
   }
@@ -2188,6 +2207,7 @@ function ZoomableImage({
             src={src}
             referrerPolicy={referrerPolicy}
             {...props}
+            style={thumbnailStyle}
           />
         </button>
       </DialogTrigger>

@@ -339,21 +339,25 @@ Rules:
 - Do not use raw `<img>` tags in docs content.
 
 For small UI icons embedded in a sentence, use the approved `InlineImage`
-primitive with meaningful alt text and an explicit pixel width. It preserves
+primitive with meaningful alt text and an explicit pixel width or height. It preserves
 inline alignment and does not open the screenshot zoom dialog. This is the
 exception to the standalone Markdown image rule.
 
 ```mdx
 Click <InlineImage alt="Run" src="https://example.com/run.png" width={25} /> to build.
+Click <InlineImage alt="Play" src="https://example.com/play.png" height={20} /> to start.
 ```
 
 Keep screenshots as Markdown unless they require an explicit display width.
 For that case, use `DocsImage` with `displayWidth` (a CSS width), which sizes
-the thumbnail but keeps the full-size zoom preview. Indent it to the list
+the thumbnail but keeps the full-size zoom preview. For screenshots with a
+legacy height limit, use `displayHeight` (a CSS maximum height); the thumbnail
+keeps its aspect ratio and stays within the available width. Indent it to the list
 content column when it belongs to a list item.
 
 ```mdx
 <DocsImage alt="Karaoke room" src="https://example.com/room.png" displayWidth="40%" />
+<DocsImage alt="Unity scenes" src="https://example.com/scenes.png" displayHeight="320px" />
 ```
 
 ## Tables

@@ -414,6 +414,49 @@ describe('common MDX registry', () => {
     expect(image.closest('button')).toBeNull();
   });
 
+  it('honors legacy inline icon heights without a width constraint', () => {
+    const InlineImage = getMDXComponents().InlineImage as ComponentType<
+      ComponentProps<'img'>
+    >;
+    render(
+      <InlineImage
+        alt="开始图标"
+        src="https://web-cdn.agora.io/docs-files/1690171362896"
+        height={20}
+      />,
+    );
+    const image = screen.getByRole('img', { name: '开始图标' });
+    expect(image).toHaveStyle({ height: '20px' });
+    expect(image.style.width).toBe('');
+    expect(image.closest('button')).toBeNull();
+  });
+
+  it('caps a screenshot height without limiting the zoom preview', async () => {
+    const Image = getMDXComponents().DocsImage as ComponentType<
+      ComponentProps<'img'> & { displayHeight?: string }
+    >;
+    render(
+      <Image
+        alt="Unity 场景列表"
+        src="https://web-cdn.agora.io/docs-files/1691054049527"
+        displayHeight="320px"
+      />,
+    );
+    const thumbnail = screen.getByRole('img', { name: 'Unity 场景列表' });
+    expect(thumbnail).toHaveStyle({
+      maxHeight: '320px',
+      width: 'auto',
+      height: 'auto',
+    });
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Zoom image: Unity 场景列表' }),
+    );
+    const preview = within(await screen.findByRole('dialog')).getByRole('img', {
+      name: 'Unity 场景列表',
+    });
+    expect(preview.style.maxHeight).toBe('');
+  });
+
   it('opens MDX images in a zoom dialog', async () => {
     const components = getMDXComponents();
     const Image = components.img as ImageComponent;
