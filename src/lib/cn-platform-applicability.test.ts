@@ -170,10 +170,10 @@ describe('Chinese documentation platform applicability', () => {
   });
 
   it('links the Unreal API table to existing Unreal pages and fragments', () => {
-    const body = readDoc('solutions/game-voice/reference/api.mdx').split(
-      '### Unreal C++',
-    )[1];
-    expect(body).toBeDefined();
+    const body = platformDoc(
+      'solutions/game-voice/reference/api.mdx',
+      'unreal',
+    );
     expect(body).not.toContain('/rtc/android/');
     const links = [
       ...body.matchAll(
@@ -192,6 +192,73 @@ describe('Chinese documentation platform applicability', () => {
       );
       expect(extractMdxAnchors(content).has(url.hash.slice(1))).toBe(true);
     }
+  });
+
+  it.each([
+    [
+      'solutions/showroom/reference/api.mdx',
+      'android',
+      '/rtc/android/',
+      'ios',
+      '/rtc/ios/',
+    ],
+    [
+      'solutions/chatroom/sdk/reference/api.mdx',
+      'android',
+      '/rtc/android/',
+      'ios',
+      '/rtc/ios/',
+    ],
+    [
+      'solutions/chatroom/sdk/reference/rtc-api.mdx',
+      'android',
+      '/rtc/android/',
+      'ios',
+      '/rtc/ios/',
+    ],
+    [
+      'solutions/chatroom/sdk/reference/im-api.mdx',
+      'android',
+      '/im_java/',
+      'ios',
+      '/im_oc/',
+    ],
+    [
+      'solutions/game-voice/reference/api.mdx',
+      'unity',
+      '/rtc/unity/',
+      'unreal',
+      '/rtc/unreal-cpp/',
+    ],
+  ] as const)(
+    'shows only the selected SDK API set in %s',
+    (file, first, firstHref, second, secondHref) => {
+      const firstDoc = platformDoc(file, first);
+      const secondDoc = platformDoc(file, second);
+      expect(firstDoc).toContain(firstHref);
+      expect(firstDoc).not.toContain(secondHref);
+      expect(secondDoc).toContain(secondHref);
+      expect(secondDoc).not.toContain(firstHref);
+      expect(extractStructuredPlatformKeys(processedDoc(file))).toEqual([
+        first,
+        second,
+      ]);
+    },
+  );
+
+  it('keeps the C++ and Java recording migration APIs in separate panels', () => {
+    const file =
+      'realtime-media/local-server-recording/reference/migration-guide.mdx';
+    const cpp = platformDoc(file, 'cpp');
+    const java = platformDoc(file, 'java');
+    expect(cpp).toContain('createAgoraRecordingEngine');
+    expect(cpp).not.toContain('RecordingSDK');
+    expect(java).toContain('RecordingSDK');
+    expect(java).not.toContain('createAgoraRecordingEngine');
+    expect(extractStructuredPlatformKeys(processedDoc(file))).toEqual([
+      'cpp',
+      'java',
+    ]);
   });
 
   it('restores Electron variants while preserving the original example scope', () => {

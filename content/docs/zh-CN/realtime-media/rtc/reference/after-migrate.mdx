@@ -385,6 +385,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-android">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -405,6 +414,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -420,6 +433,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -456,6 +473,9 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
 
@@ -776,6 +796,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-electron">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -796,6 +825,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -811,6 +844,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -847,6 +884,9 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
 
@@ -1233,6 +1273,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-ios">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -1253,6 +1302,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -1268,6 +1321,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -1304,6 +1361,9 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
 
@@ -1690,6 +1750,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-macos">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -1710,6 +1779,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -1725,6 +1798,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -1761,6 +1838,9 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
 
@@ -2147,6 +2227,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-windows">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -2167,6 +2256,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -2182,6 +2275,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -2218,6 +2315,9 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
 
@@ -2538,6 +2638,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-unity">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -2558,6 +2667,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -2573,6 +2686,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -2609,6 +2726,9 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
 
@@ -2929,6 +3049,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-flutter">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -2949,6 +3078,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -2964,6 +3097,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -3000,6 +3137,9 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
 
@@ -3320,6 +3460,15 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 下表展示一些常用 API 在不同版本的区别：
 
+<Tabs defaultValue="stream-controls" groupId="rtc-upgrade-reference-react-native">
+<TabsList>
+  <TabsTrigger value="stream-controls">音视频流控制</TabsTrigger>
+  <TabsTrigger value="role-preview">角色与预览</TabsTrigger>
+  <TabsTrigger value="local-capture">本地采集</TabsTrigger>
+</TabsList>
+
+<TabsContent value="stream-controls">
+
 | 常用 API | muteLocalAudioStream | muteLocalVideoStream |
 | --- | --- | --- |
 | v2.x & v3.x | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalAudioStream` 的设置。 | 带 `options` 参数的 `joinChannel` 方法会覆盖 `muteLocalVideoStream` 设置。 |
@@ -3340,6 +3489,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 
 </Slot>
 
+</TabsContent>
+
+<TabsContent value="role-preview">
+
 | 常用 API | setClientRole | startPreview |
 | --- | --- | --- |
 | v2.x & v3.x | 同 v4.x（不支持多路上行流，不能同时在多频道中设置为主播）。 | 同 v4.x。 |
@@ -3355,6 +3508,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
+
+</TabsContent>
+
+<TabsContent value="local-capture">
 
 | 常用 API | enableLocalAudio | enableLocalVideo |
 | --- | --- | --- |
@@ -3391,5 +3548,8 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
         - 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
+
+</TabsContent>
+</Tabs>
 
 </PlatformStructured>
