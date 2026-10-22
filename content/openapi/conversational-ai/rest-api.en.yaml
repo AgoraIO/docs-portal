@@ -5900,8 +5900,17 @@ paths:
                                 playback_duration_ms:
                                   type: integer
                                   description: >-
-                                    The audio playback duration in milliseconds. Included only when
-                                    `type` is `ok`.
+                                    The audio playback duration in milliseconds. Included when
+                                    `type` is `ok` or `interrupted`. For an interrupted turn, this
+                                    is the PCM audio actually played before the interruption, and it
+                                    doesn't exceed `intended_playback_duration_ms`.
+                                intended_playback_duration_ms:
+                                  type: integer
+                                  description: >-
+                                    The total duration in milliseconds of PCM audio the engine
+                                    received and scheduled to play for the turn, including queued
+                                    audio that hadn't played yet. Included only when `type` is
+                                    `interrupted`.
                                 caused_by:
                                   type: string
                                   description: >-
@@ -6049,6 +6058,8 @@ paths:
                       metadata:
                         caused_by: api_interrupt
                         transport: rtm
+                        playback_duration_ms: 1200
+                        intended_playback_duration_ms: 2400
                     metrics:
                       e2e_latency_ms: 337
                       segmented_latency_ms:

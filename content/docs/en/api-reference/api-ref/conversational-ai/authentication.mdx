@@ -35,26 +35,17 @@ The Agora RESTful API only supports HTTPS with TLS 1.0, 1.1, or 1.2 for encrypte
 
 Tokens expire after a maximum of 86400 seconds.
 
-### Choose the token services
+### Use the token
 
-A token grants access to one or more services. The services you need depend on where you use the token:
+Put the same token in both of the following places:
 
 - **`Authorization` header**: The token authenticates the REST API request.
-- **`properties.token` in the request body**: The token lets the agent join the RTC channel. Only a token that includes the RTC service with the join channel privilege works here.
+- **`properties.token` in the request body**: The token lets the agent join the RTC channel.
 
-| Services | Authenticates REST requests | Lets the agent join the channel | How to generate |
-| --- | --- | --- | --- |
-| ConvoAI | Yes | No | [Build a token with specific services](#build-a-token-with-specific-services) |
-| ConvoAI + RTC | Yes | Yes | [Build a token with specific services](#build-a-token-with-specific-services) |
-| ConvoAI + RTC + RTM | Yes | Yes | [Build a ConvoAI token](#build-a-convoai-token) (recommended) |
-
-You can use the same token in both places, or generate a separate token for each. If you use separate tokens, put the REST authentication token in the `Authorization` header and the RTC token in `properties.token`.
-
-When the token includes the RTC service, the token parameters must match the agent request:
+The token parameters must match the agent request:
 
 - `channelName` must match `properties.channel`.
 - The account or UID must match `properties.agent_rtc_uid`.
-- If the UID is a non-numeric string, set `properties.enable_string_uid` to `true`.
 
 ### Use a temporary token for testing
 
@@ -296,9 +287,7 @@ git clone --branch feature/access-token2-convoai-stt-services https://github.com
 cd Tools/DynamicKey/AgoraDynamicKey/python3
 ```
 
-#### Build a ConvoAI token
-
-`ConvoAITokenBuilder.buildToken` generates a token with the ConvoAI, RTC, and RTM services. Use the same token in the `Authorization` header and in `properties.token`:
+The following examples use `ConvoAITokenBuilder.buildToken` to generate a token with the ConvoAI, RTC, and RTM services:
 
 ```js tab="Node.js"
 const https = require('https');
@@ -365,102 +354,9 @@ token = ConvoAITokenBuilder.build_token(
 
 The privilege lifetime must not exceed the token lifetime. To set the RTC role or each RTC and RTM privilege separately, use `buildTokenWithPrivilege` (`BuildTokenWithPrivilege` in Go, `build_token_with_privilege` in Python). It also adds the ConvoAI service automatically.
 
-#### Build a token with specific services
-
-To control exactly which services a token includes, build it with the `AccessToken2` API. The following examples build a token with the ConvoAI service only. Use this token in the `Authorization` header only:
-
-```js tab="Node.js"
-const { AccessToken2, ServiceConvoAI } = require('agora-token/src/AccessToken2');
-
-const tokenExpire = 86400; // Token lifetime, 24 hours, in seconds
-
-const accessToken = new AccessToken2(appId, appCertificate, null, tokenExpire);
-accessToken.add_service(new ServiceConvoAI());
-const token = accessToken.build();
-```
-
-```go tab="Golang"
-import accesstoken "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/accesstoken2"
-
-const tokenExpire = 24 * 60 * 60 // Token lifetime, 24 hours, in seconds
-
-accessToken := accesstoken.NewAccessToken(appID, appCertificate, tokenExpire)
-accessToken.AddService(accesstoken.NewServiceConvoAI())
-token, err := accessToken.Build()
-```
-
-```python tab="Python"
-from src.AccessToken2 import AccessToken, ServiceConvoAI
-
-token_expire = 86400  # Token lifetime, 24 hours, in seconds
-
-access_token = AccessToken(app_id, app_certificate, expire=token_expire)
-access_token.add_service(ServiceConvoAI())
-token = access_token.build()
-```
-
-The following examples build a token with the ConvoAI and RTC services. You can use this token in the `Authorization` header and in `properties.token`. Each RTC privilege lifetime must not exceed the token lifetime:
-
-```js tab="Node.js"
-const { AccessToken2, ServiceConvoAI, ServiceRtc } = require('agora-token/src/AccessToken2');
-
-const tokenExpire = 86400; // Token lifetime, 24 hours, in seconds
-const privilegeExpire = 3600; // RTC privilege lifetime, 1 hour, in seconds
-
-const accessToken = new AccessToken2(appId, appCertificate, null, tokenExpire);
-
-const rtc = new ServiceRtc(channelName, agentUid);
-rtc.add_privilege(ServiceRtc.kPrivilegeJoinChannel, privilegeExpire);
-rtc.add_privilege(ServiceRtc.kPrivilegePublishAudioStream, privilegeExpire);
-rtc.add_privilege(ServiceRtc.kPrivilegePublishVideoStream, privilegeExpire);
-rtc.add_privilege(ServiceRtc.kPrivilegePublishDataStream, privilegeExpire);
-
-accessToken.add_service(rtc);
-accessToken.add_service(new ServiceConvoAI());
-const token = accessToken.build();
-```
-
-```go tab="Golang"
-import accesstoken "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/accesstoken2"
-
-const tokenExpire = 24 * 60 * 60 // Token lifetime, 24 hours, in seconds
-const privilegeExpire = 60 * 60 // RTC privilege lifetime, 1 hour, in seconds
-
-accessToken := accesstoken.NewAccessToken(appID, appCertificate, tokenExpire)
-
-rtc := accesstoken.NewServiceRtc(channelName, agentUID)
-rtc.AddPrivilege(accesstoken.PrivilegeJoinChannel, privilegeExpire)
-rtc.AddPrivilege(accesstoken.PrivilegePublishAudioStream, privilegeExpire)
-rtc.AddPrivilege(accesstoken.PrivilegePublishVideoStream, privilegeExpire)
-rtc.AddPrivilege(accesstoken.PrivilegePublishDataStream, privilegeExpire)
-
-accessToken.AddService(rtc)
-accessToken.AddService(accesstoken.NewServiceConvoAI())
-token, err := accessToken.Build()
-```
-
-```python tab="Python"
-from src.AccessToken2 import AccessToken, ServiceConvoAI, ServiceRtc
-
-token_expire = 86400     # Token lifetime, 24 hours, in seconds
-privilege_expire = 3600  # RTC privilege lifetime, 1 hour, in seconds
-
-access_token = AccessToken(app_id, app_certificate, expire=token_expire)
-
-rtc = ServiceRtc(channel_name, agent_uid)
-rtc.add_privilege(ServiceRtc.kPrivilegeJoinChannel, privilege_expire)
-rtc.add_privilege(ServiceRtc.kPrivilegePublishAudioStream, privilege_expire)
-rtc.add_privilege(ServiceRtc.kPrivilegePublishVideoStream, privilege_expire)
-rtc.add_privilege(ServiceRtc.kPrivilegePublishDataStream, privilege_expire)
-
-access_token.add_service(rtc)
-access_token.add_service(ServiceConvoAI())
-token = access_token.build()
-```
-
 ### Send a request with a token
 
-The following example starts an agent using a token with the ConvoAI, RTC, and RTM services, such as one from [`ConvoAITokenBuilder.buildToken`](#build-a-convoai-token). It uses the same token in the `Authorization` header and in `properties.token`, and enables RTM. If you don't need RTM, set `advanced_features.enable_rtm` to `false` or omit it. The example uses [managed mode](/en/ai/build/managed-mode) for ASR, LLM, and TTS, so it doesn't need provider API keys.
+The following example starts an agent using a token with the ConvoAI, RTC, and RTM services, such as one from [`ConvoAITokenBuilder.buildToken`](#using-the-token-builder-library). It uses the same token in the `Authorization` header and in `properties.token`, and enables RTM. The example uses [managed mode](/en/ai/build/managed-mode) for ASR, LLM, and TTS, so it doesn't need provider API keys.
 
 ```bash
 curl --request POST   --url https://api.agora.io/api/conversational-ai-agent/v2/projects/<your_app_id>/join   --header 'Authorization: agora token=<your_token>'   --header 'Content-Type: application/json'   --data '{
