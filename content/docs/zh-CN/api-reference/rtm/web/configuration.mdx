@@ -233,8 +233,8 @@ const { RTMConfig } = AgoraRTM;
 
 是否上传日志：
 
-    - `true`: 启用日志上传
-    - `false`: 关闭日志上传。
+- `true`: 启用日志上传
+- `false`: 关闭日志上传。
 
 </Slot>
 
@@ -242,12 +242,12 @@ const { RTMConfig } = AgoraRTM;
 
 是否开启云代理:
 
-    - `true`: 开启。
-    - `false`: 关闭。
+- `true`: 开启。
+- `false`: 关闭。
 
-    :::info[信息]
-    该功能仅适用于 Message Channel。从 v2.3.0 起，SDK 不再自动回退到 Cloud Proxy。需要使用时，必须在初始化 RTM 实例时将该参数显式设置为 `true`。
-    :::
+:::info[信息]
+该功能仅适用于 Message Channel。从 v2.3.0 起，SDK 不再自动回退到 Cloud Proxy。需要使用时，必须在初始化 RTM 实例时将该参数显式设置为 `true`。
+:::
 
 </Slot>
 
@@ -255,8 +255,8 @@ const { RTMConfig } = AgoraRTM;
 
 是否使用 string 类型的用户 ID：
 
-    - `true`: 使用 string 类型的用户 ID。
-    - `false`: 使用 number 类型的用户 ID，SDK 会自动将 string 类型的 `userId` 转换为 number 类型。此时，`userId` 参数必须是数字字符串（例如:"123456")，否则初始化会失败。
+- `true`: 使用 string 类型的用户 ID。
+- `false`: 使用 number 类型的用户 ID，SDK 会自动将 string 类型的 `userId` 转换为 number 类型。此时，`userId` 参数必须是数字字符串（例如:"123456")，否则初始化会失败。
 
 </Slot>
 
@@ -284,8 +284,8 @@ SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM
 
 RTM 私有化场景下 SDK 边缘节点服务器的域名格式。支持以下取值：
 
-      - `1`：(默认) 自定义格式，例如 `ip.**`。
-      - `2`：老版本私有化格式，例如 `ip.edge.**`。
+- `1`：(默认) 自定义格式，例如 `ip.**`。
+- `2`：老版本私有化格式，例如 `ip.edge.**`。
 
 </Slot>
 
@@ -466,8 +466,8 @@ rtm.login(options?: object): Promise<LoginResponse>;
 
 初始化 RTM 客户端的 Token。
 
-    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
-    - 如果你的项目未开启 Token 鉴权，你可以不填，或填入开通了 RTM 服务的项目 App ID。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目未开启 Token 鉴权，你可以不填，或填入开通了 RTM 服务的项目 App ID。
 
 </Slot>
 

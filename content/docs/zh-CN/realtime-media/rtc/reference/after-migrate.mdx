@@ -394,14 +394,14 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-1">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
+- 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-2">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
+- 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
 
 </Slot>
 
@@ -414,10 +414,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-1-3-1">
 
 - `setClientRole` 优先级高于  `enableLocalAudio`/`enableLocalVideo`。
-        - 如果在加入频道前调用该方法，SDK  会先记录该状态。
-        - 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
-        - 如果切换用户角色为观众，则会关闭采集并停止发布。
-        - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
+- 如果在加入频道前调用该方法，SDK  会先记录该状态。
+- 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
+- 如果切换用户角色为观众，则会关闭采集并停止发布。
+- 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
 
@@ -430,30 +430,30 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-1">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭麦克风。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-2">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭摄像头。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-1">
 
 - 如果在频道外调用，不会打开/关闭麦克风，且加入频道后会自动打开/关闭麦克风。
-        - 如果在频道内调用，会打开/关闭麦克风。
+- 如果在频道内调用，会打开/关闭麦克风。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-2">
 
 - 如果在频道外调用，不会打开/关闭摄像头，且加入频道后会自动打开/关闭摄像头。
-        - 如果在频道内调用，会打开/关闭摄像头。
+- 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
 
@@ -851,14 +851,14 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-1">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
+- 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-2">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
+- 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
 
 </Slot>
 
@@ -871,10 +871,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-1-3-1">
 
 - `setClientRole` 优先级高于  `enableLocalAudio`/`enableLocalVideo`。
-        - 如果在加入频道前调用该方法，SDK  会先记录该状态。
-        - 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
-        - 如果切换用户角色为观众，则会关闭采集并停止发布。
-        - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
+- 如果在加入频道前调用该方法，SDK  会先记录该状态。
+- 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
+- 如果切换用户角色为观众，则会关闭采集并停止发布。
+- 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
 
@@ -887,30 +887,30 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-1">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭麦克风。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-2">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭摄像头。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-1">
 
 - 如果在频道外调用，不会打开/关闭麦克风，且加入频道后会自动打开/关闭麦克风。
-        - 如果在频道内调用，会打开/关闭麦克风。
+- 如果在频道内调用，会打开/关闭麦克风。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-2">
 
 - 如果在频道外调用，不会打开/关闭摄像头，且加入频道后会自动打开/关闭摄像头。
-        - 如果在频道内调用，会打开/关闭摄像头。
+- 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
 
@@ -1308,14 +1308,14 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-1">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
+- 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-2">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
+- 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
 
 </Slot>
 
@@ -1328,10 +1328,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-1-3-1">
 
 - `setClientRole` 优先级高于  `enableLocalAudio`/`enableLocalVideo`。
-        - 如果在加入频道前调用该方法，SDK  会先记录该状态。
-        - 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
-        - 如果切换用户角色为观众，则会关闭采集并停止发布。
-        - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
+- 如果在加入频道前调用该方法，SDK  会先记录该状态。
+- 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
+- 如果切换用户角色为观众，则会关闭采集并停止发布。
+- 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
 
@@ -1344,30 +1344,30 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-1">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭麦克风。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-2">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭摄像头。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-1">
 
 - 如果在频道外调用，不会打开/关闭麦克风，且加入频道后会自动打开/关闭麦克风。
-        - 如果在频道内调用，会打开/关闭麦克风。
+- 如果在频道内调用，会打开/关闭麦克风。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-2">
 
 - 如果在频道外调用，不会打开/关闭摄像头，且加入频道后会自动打开/关闭摄像头。
-        - 如果在频道内调用，会打开/关闭摄像头。
+- 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
 
@@ -1765,14 +1765,14 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-1">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
+- 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-2">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
+- 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
 
 </Slot>
 
@@ -1785,10 +1785,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-1-3-1">
 
 - `setClientRole` 优先级高于  `enableLocalAudio`/`enableLocalVideo`。
-        - 如果在加入频道前调用该方法，SDK  会先记录该状态。
-        - 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
-        - 如果切换用户角色为观众，则会关闭采集并停止发布。
-        - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
+- 如果在加入频道前调用该方法，SDK  会先记录该状态。
+- 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
+- 如果切换用户角色为观众，则会关闭采集并停止发布。
+- 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
 
@@ -1801,30 +1801,30 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-1">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭麦克风。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-2">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭摄像头。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-1">
 
 - 如果在频道外调用，不会打开/关闭麦克风，且加入频道后会自动打开/关闭麦克风。
-        - 如果在频道内调用，会打开/关闭麦克风。
+- 如果在频道内调用，会打开/关闭麦克风。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-2">
 
 - 如果在频道外调用，不会打开/关闭摄像头，且加入频道后会自动打开/关闭摄像头。
-        - 如果在频道内调用，会打开/关闭摄像头。
+- 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
 
@@ -2156,14 +2156,14 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-1">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
+- 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-2">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
+- 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
 
 </Slot>
 
@@ -2176,10 +2176,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-1-3-1">
 
 - `setClientRole` 优先级高于  `enableLocalAudio`/`enableLocalVideo`。
-        - 如果在加入频道前调用该方法，SDK  会先记录该状态。
-        - 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
-        - 如果切换用户角色为观众，则会关闭采集并停止发布。
-        - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
+- 如果在加入频道前调用该方法，SDK  会先记录该状态。
+- 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
+- 如果切换用户角色为观众，则会关闭采集并停止发布。
+- 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
 
@@ -2192,30 +2192,30 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-1">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭麦克风。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-2">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭摄像头。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-1">
 
 - 如果在频道外调用，不会打开/关闭麦克风，且加入频道后会自动打开/关闭麦克风。
-        - 如果在频道内调用，会打开/关闭麦克风。
+- 如果在频道内调用，会打开/关闭麦克风。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-2">
 
 - 如果在频道外调用，不会打开/关闭摄像头，且加入频道后会自动打开/关闭摄像头。
-        - 如果在频道内调用，会打开/关闭摄像头。
+- 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
 
@@ -2547,14 +2547,14 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-1">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
+- 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-2">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
+- 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
 
 </Slot>
 
@@ -2567,10 +2567,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-1-3-1">
 
 - `setClientRole` 优先级高于  `enableLocalAudio`/`enableLocalVideo`。
-        - 如果在加入频道前调用该方法，SDK  会先记录该状态。
-        - 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
-        - 如果切换用户角色为观众，则会关闭采集并停止发布。
-        - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
+- 如果在加入频道前调用该方法，SDK  会先记录该状态。
+- 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
+- 如果切换用户角色为观众，则会关闭采集并停止发布。
+- 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
 
@@ -2583,30 +2583,30 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-1">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭麦克风。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-2">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭摄像头。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-1">
 
 - 如果在频道外调用，不会打开/关闭麦克风，且加入频道后会自动打开/关闭麦克风。
-        - 如果在频道内调用，会打开/关闭麦克风。
+- 如果在频道内调用，会打开/关闭麦克风。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-2">
 
 - 如果在频道外调用，不会打开/关闭摄像头，且加入频道后会自动打开/关闭摄像头。
-        - 如果在频道内调用，会打开/关闭摄像头。
+- 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
 
@@ -2938,14 +2938,14 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-1">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
+- 网络控制  `muteLocalAudioStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishMicrophoneTrack` 为 `true`， `muteLocalAudioStream` 为  `true`，则仍然不发送音频。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-0-3-2">
 
 - 加入频道前后调用该方法都会生效。
-        - 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
+- 网络控制  `muteLocalVideoStream` 和发布流控制 `ChannelMediaOptions` 相互独立：如果设置  `publishCameraTrack` 为 `true`，`muteLocalVideoStream` 为 `true`，  仍然不发送视频。
 
 </Slot>
 
@@ -2958,10 +2958,10 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-1-3-1">
 
 - `setClientRole` 优先级高于  `enableLocalAudio`/`enableLocalVideo`。
-        - 如果在加入频道前调用该方法，SDK  会先记录该状态。
-        - 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
-        - 如果切换用户角色为观众，则会关闭采集并停止发布。
-        - 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
+- 如果在加入频道前调用该方法，SDK  会先记录该状态。
+- 如果进频道后切换用户角色为主播，会根据 `enableLocalAudio`/`enableLocalVideo` 的状态，打开媒体采集并自动发布。
+- 如果切换用户角色为观众，则会关闭采集并停止发布。
+- 在多频道场景中，用户可以在每个频道都切换为主播角色，从而进行发流。在频道中，通过  `updateChannelMediaOptionsEx` 控制流发布。
 
 </Slot>
 
@@ -2974,30 +2974,30 @@ A: 用户在主播角色下调用 `joinChannel` 时会自动启动摄像头，�
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-1">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭麦克风。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制  `ChannelMediaOptions.publishAudioTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-2-2">
 
 - 主播角色调用（包括频道内和频道外）会打开/关闭摄像头。
-        - 观众角色调用返回错误码。
-        - 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
+- 观众角色调用返回错误码。
+- 如果在频道内调用，还会更新发布流控制 `ChannelMediaOptions.publishCameraTrack`。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-1">
 
 - 如果在频道外调用，不会打开/关闭麦克风，且加入频道后会自动打开/关闭麦克风。
-        - 如果在频道内调用，会打开/关闭麦克风。
+- 如果在频道内调用，会打开/关闭麦克风。
 
 </Slot>
 
 <Slot for="after-migrate-android-ios-macos-windows-electron-rn-flutter-unity-html-2-3-2">
 
 - 如果在频道外调用，不会打开/关闭摄像头，且加入频道后会自动打开/关闭摄像头。
-        - 如果在频道内调用，会打开/关闭摄像头。
+- 如果在频道内调用，会打开/关闭摄像头。
 
 </Slot>
 

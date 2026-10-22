@@ -61,8 +61,8 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
 
 智能体停止后回调其储存的短期记忆（最大条数由[创建智能体](/zh-CN/api-reference/api-ref/conversational-ai/join#llm-max_history)时传入的 `llm.max_history` 参数决定，默认为 32 条），包括以下信息：
 
-    - 用户和智能体对话消息
-    - 智能体创建和停止的时间戳
+- 用户和智能体对话消息
+- 智能体创建和停止的时间戳
 
 </Slot>
 
@@ -191,18 +191,18 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
 
 用户和智能体对话的短期记忆。包含以下字段：
 
-    - `role`：消息发送角色，包括以下值：
-      - `user`：用户。
-      - `assistant`：智能体。
-    - `content`：消息内容。
-    - `speech_start_ms`：用户说话或 TTS 播报开始时间戳，单位为毫秒（Unix 时间戳）。
-    - `speech_end_ms`：用户说话或 TTS 播报完成或被打断，单位为毫秒（Unix 时间戳）。
-    - `speech_algorithmic_delay`：算法处理时延，单位为毫秒。
-      - 仅当 `contents[].role = user` 且存在实际语音输入时返回。
-      - 表示音频从用户设备麦克风采集后，经过降噪、背景人声消除、声纹锁定等算法处理引入的总延迟，可用于进一步对齐云录制原始音频的时间戳。
-    :::info[信息]
-    `speech_start_ms`、`speech_end_ms` 和 `speech_algorithmic_delay` 仅在 `llm.vendor = custom` 的 `103` agent history 事件中返回。
-    :::
+- `role`：消息发送角色，包括以下值：
+  - `user`：用户。
+  - `assistant`：智能体。
+- `content`：消息内容。
+- `speech_start_ms`：用户说话或 TTS 播报开始时间戳，单位为毫秒（Unix 时间戳）。
+- `speech_end_ms`：用户说话或 TTS 播报完成或被打断，单位为毫秒（Unix 时间戳）。
+- `speech_algorithmic_delay`：算法处理时延，单位为毫秒。
+  - 仅当 `contents[].role = user` 且存在实际语音输入时返回。
+  - 表示音频从用户设备麦克风采集后，经过降噪、背景人声消除、声纹锁定等算法处理引入的总延迟，可用于进一步对齐云录制原始音频的时间戳。
+:::info[信息]
+`speech_start_ms`、`speech_end_ms` 和 `speech_algorithmic_delay` 仅在 `llm.vendor = custom` 的 `103` agent history 事件中返回。
+:::
 
 </Slot>
 
@@ -343,10 +343,10 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
 
 错误信息。包含以下字段：
 
-    - `module`：错误发生的模块。
-    - `turn_id`：字幕对话轮次。
-    - `code`：错误码。你可以前往错误模块对应供应商的错误码文档查看详细信息。
-    - `message`：错误信息。
+- `module`：错误发生的模块。
+- `turn_id`：字幕对话轮次。
+- `code`：错误码。你可以前往错误模块对应供应商的错误码文档查看详细信息。
+- `message`：错误信息。
 
 </Slot>
 
@@ -420,11 +420,11 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
 
 性能指标数组。每个对象包含以下字段：
 
-    - `turn_id`：对话轮次 ID。
-    - `asr_ttlw`：ASR 模块的 ttlw（Time To Last Word）指标，表示从用户说话结束到 ASR 输出最后一个词的延迟时间（ms）。
-    - `llm_ttfb`：LLM 模块的 ttfb（Time To First Byte）指标，表示从 LLM 请求开始到收到第一个字节的响应延迟时间（ms）。
-    - `llm_ttfs`：LLM 模块的 ttfs（Time To First Sentence）指标，表示从 LLM 请求开始到收到第一个完整句子的响应所经过的时间（ms）。
-    - `tts_ttfb`：TTS 模块的 ttfb（Time To First Byte）指标，表示从 TTS 请求开始到收到第一个字节的响应延迟时间（ms）。
+- `turn_id`：对话轮次 ID。
+- `asr_ttlw`：ASR 模块的 ttlw（Time To Last Word）指标，表示从用户说话结束到 ASR 输出最后一个词的延迟时间（ms）。
+- `llm_ttfb`：LLM 模块的 ttfb（Time To First Byte）指标，表示从 LLM 请求开始到收到第一个字节的响应延迟时间（ms）。
+- `llm_ttfs`：LLM 模块的 ttfs（Time To First Sentence）指标，表示从 LLM 请求开始到收到第一个完整句子的响应所经过的时间（ms）。
+- `tts_ttfb`：TTS 模块的 ttfb（Time To First Byte）指标，表示从 TTS 请求开始到收到第一个字节的响应延迟时间（ms）。
 
 </Slot>
 
@@ -493,16 +493,16 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
 
 `turns` 数组中单个对话轮次开始的相关信息。包含以下字段：
 
-    - `start_at`：Unix 时间戳，精确到毫秒，UTC 时区。
-    - `type`：对话轮次开始类型，包括以下值：
-      - `greeting`：问候语。
-      - `silence_timeout`：静音超时。
-      - `api_speak`：API 调用说话。
-      - `api_think`：API 调用思考。
-      - `voice_input`：语音输入。
-    - `metadata`：元数据对象，包含以下字段：
-      - `speech_duration_ms`：语音时长（ms）。
-      - `interrupt_duration_ms`：打断时长（ms）。
+- `start_at`：Unix 时间戳，精确到毫秒，UTC 时区。
+- `type`：对话轮次开始类型，包括以下值：
+  - `greeting`：问候语。
+  - `silence_timeout`：静音超时。
+  - `api_speak`：API 调用说话。
+  - `api_think`：API 调用思考。
+  - `voice_input`：语音输入。
+- `metadata`：元数据对象，包含以下字段：
+  - `speech_duration_ms`：语音时长（ms）。
+  - `interrupt_duration_ms`：打断时长（ms）。
 
 </Slot>
 
@@ -510,30 +510,30 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
 
 `turns` 数组中单个对话轮次结束的相关信息。包含以下字段：
 
-    - `end_at`：Unix 时间戳，精确到毫秒，UTC 时区。
-    - `type`：对话轮次结束类型，包括以下值：
-      - `ok`：正常结束。
-      - `error`：错误结束。
-      - `ignored`：被忽略。
-      - `interrupted`：被中断。
-    - `metadata`：元数据对象。根据 `type` 字段的不同，包含以下字段：
-      - `ok`：包含 `playback_duration_ms`，表示语音播放时长（ms）。
-      - `interrupted`：包含 `caused_by`，表示轮次中断原因，包括以下值：
-        - `start_of_speech`：新一条语音请求开始。
-        - `api_speak`：API 调用说话。
-        - `api_think`：API 调用思考。
-        - `api_interrupt`：调用打断智能体接口。
-        - `api_leave`：调用停止对话式智能体接口离开频道。
-        - `user_no_longer_present`：智能体检测不到可订阅用户。
-      - `ignored`：包含 `caused_by`，表示轮次忽略原因，包括以下值：
-        - `semantic`：语义规则判断无需响应。
-        - `keywords`：未命中轮次开始检测关键词。
-        - `disable`：对话轮次检测功能设置为不可打断。
-        - `no_asr_result`：未识别到 ASR 结果。
-      - `error`：包含 `reason`，表示错误类型，可能包含以下值：
-        - `LLM_REQUEST_ERR`：LLM 请求错误。
-        - `TTS_REQUEST_ERR`：TTS 请求错误。
-        - `INTERNAL_ERR`：内部错误。
+- `end_at`：Unix 时间戳，精确到毫秒，UTC 时区。
+- `type`：对话轮次结束类型，包括以下值：
+  - `ok`：正常结束。
+  - `error`：错误结束。
+  - `ignored`：被忽略。
+  - `interrupted`：被中断。
+- `metadata`：元数据对象。根据 `type` 字段的不同，包含以下字段：
+  - `ok`：包含 `playback_duration_ms`，表示语音播放时长（ms）。
+  - `interrupted`：包含 `caused_by`，表示轮次中断原因，包括以下值：
+    - `start_of_speech`：新一条语音请求开始。
+    - `api_speak`：API 调用说话。
+    - `api_think`：API 调用思考。
+    - `api_interrupt`：调用打断智能体接口。
+    - `api_leave`：调用停止对话式智能体接口离开频道。
+    - `user_no_longer_present`：智能体检测不到可订阅用户。
+  - `ignored`：包含 `caused_by`，表示轮次忽略原因，包括以下值：
+    - `semantic`：语义规则判断无需响应。
+    - `keywords`：未命中轮次开始检测关键词。
+    - `disable`：对话轮次检测功能设置为不可打断。
+    - `no_asr_result`：未识别到 ASR 结果。
+  - `error`：包含 `reason`，表示错误类型，可能包含以下值：
+    - `LLM_REQUEST_ERR`：LLM 请求错误。
+    - `TTS_REQUEST_ERR`：TTS 请求错误。
+    - `INTERNAL_ERR`：内部错误。
 
 </Slot>
 
@@ -541,14 +541,14 @@ description: "查看对话式 AI 引擎的事件类型，了解关键概念、�
 
 `turns` 数组中单个对话轮次的统计指标。包含以下字段：
 
-    - `e2e_latency_ms`：端到端延迟（ms），代表从用户说话结束到听到智能体开口说话的延迟时间。
-    - `segmented_latency_ms`：分段延时对象，包含以下字段：
-      - `algorithm_processing`：算法处理时间（ms），代表从用户说话结束的实际时间到判定出用户说话结束的延迟时间。
-      - `asr_ttlw`：ASR 模块的 ttlw（Time To Last Word）指标，表示从检测到用户说话结束到 ASR 输出最后一个词的延迟时间。
-      - `llm_ttft`：LLM 模块的 ttft（Time To First Token）指标，表示从 LLM 收到请求到输出第一个 token 的延迟时间。
-      - `llm_ftfs`：LLM 模块的 ftfs（First token To First Sentence）指标，表示从 LLM 输出第一个 token 到输出第一个完整句子的延迟时间。
-      - `tts_ttfb`：TTS 模块的 ttfb（Time To First Byte）指标，表示从 TTS 模块收到文本请求开始到 TTS 输出第一个音频字节的延迟时间。
-      - `transport`：网络传输延迟 (ms)。目前，当用户使用 RTC Web SDK 时，不返回该字段。
+- `e2e_latency_ms`：端到端延迟（ms），代表从用户说话结束到听到智能体开口说话的延迟时间。
+- `segmented_latency_ms`：分段延时对象，包含以下字段：
+  - `algorithm_processing`：算法处理时间（ms），代表从用户说话结束的实际时间到判定出用户说话结束的延迟时间。
+  - `asr_ttlw`：ASR 模块的 ttlw（Time To Last Word）指标，表示从检测到用户说话结束到 ASR 输出最后一个词的延迟时间。
+  - `llm_ttft`：LLM 模块的 ttft（Time To First Token）指标，表示从 LLM 收到请求到输出第一个 token 的延迟时间。
+  - `llm_ftfs`：LLM 模块的 ftfs（First token To First Sentence）指标，表示从 LLM 输出第一个 token 到输出第一个完整句子的延迟时间。
+  - `tts_ttfb`：TTS 模块的 ttfb（Time To First Byte）指标，表示从 TTS 模块收到文本请求开始到 TTS 输出第一个音频字节的延迟时间。
+  - `transport`：网络传输延迟 (ms)。目前，当用户使用 RTC Web SDK 时，不返回该字段。
 
 </Slot>
 

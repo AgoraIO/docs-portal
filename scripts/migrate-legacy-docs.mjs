@@ -527,12 +527,14 @@ export function transformLegacyMdx(body, state) {
 
 export function transformAdmonitions(value) {
   const blockConverted = value.replace(
-    /^([ \t]*)<Admonition(?=[^>]*>)([^>]*)>\s*\n?([\s\S]*?)\n?[ \t]*<\/Admonition>/gm,
+    /^([ \t]*)<Admonition(?=[^>]*>)([^>]*)>([\s\S]*?)\n?[ \t]*<\/Admonition>/gm,
     (_, indent, attrs = '', body) => {
       const type = mapAdmonitionType(readAttribute(attrs, 'type') ?? 'info');
       const title = readAttribute(attrs, 'title');
       const label = title ? `[${title}]` : '';
-      const normalizedBody = trimCommonIndent(transformHtmlLists(body)).trim();
+      // Capture the first line's indentation before removing the common JSX
+      // padding; consuming it in the tag regex creates a false child list.
+      const normalizedBody = transformHtmlLists(trimCommonIndent(body)).trim();
       return indentBlock(
         `:::${type}${label}\n${normalizedBody}\n:::`,
         indent.length,
@@ -541,12 +543,12 @@ export function transformAdmonitions(value) {
   );
 
   return blockConverted.replace(
-    /<Admonition(?=[^>]*>)([^>]*)>\s*([\s\S]*?)\s*<\/Admonition>/g,
+    /<Admonition(?=[^>]*>)([^>]*)>([\s\S]*?)<\/Admonition>/g,
     (_match, attrs = '', body) => {
       const type = mapAdmonitionType(readAttribute(attrs, 'type') ?? 'info');
       const title = readAttribute(attrs, 'title');
       const label = title ? `[${title}]` : '';
-      const normalizedBody = trimCommonIndent(transformHtmlLists(body)).trim();
+      const normalizedBody = transformHtmlLists(trimCommonIndent(body)).trim();
       return `\n\n:::${type}${label}\n${normalizedBody}\n:::\n\n`;
     },
   );
@@ -3130,7 +3132,9 @@ function normalizeInlineTableCell(value) {
 
 function normalizeSlotDefinitionContent(value) {
   return ensureBlankLineBeforeList(
-    transformInlineHtml(transformHtmlLists(value)),
+    // JSX container indentation is not Markdown nesting. Remove it from the
+    // whole block before trim() can erase only the first item's indentation.
+    transformInlineHtml(transformHtmlLists(trimCommonIndent(value))),
   )
     .replace(/\n{3,}/g, '\n\n')
     .trim();

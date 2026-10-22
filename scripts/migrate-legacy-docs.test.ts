@@ -1,6 +1,9 @@
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import remarkDirective from 'remark-directive';
+import remarkParse from 'remark-parse';
+import { unified } from 'unified';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -111,6 +114,103 @@ describe('migrate-legacy-docs helpers', () => {
     expect(migrated).toContain('<PlatformInline platform="ios">');
     expect(migrated).toContain('iOS 返回值');
     expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('keeps all five sibling items in an indented legacy admonition', () => {
+    const input =
+      '<Admonition type="caution" title="注意">\n  - One\n  - Two\n  - Three\n  - Four\n  - Five\n</Admonition>';
+    const migrated = transformLegacyMdx(input, createState());
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkDirective)
+      .parse(migrated);
+    expect(tree.children).toHaveLength(1);
+    const callout = tree.children[0];
+    expect(callout.type).toBe('containerDirective');
+    if (callout.type !== 'containerDirective')
+      throw new Error('Expected callout');
+    expect(
+      callout.children.find((child) => child.type === 'list'),
+    ).toMatchObject({
+      type: 'list',
+      children: [
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+      ],
+    });
+  });
+
+  it('retains real child items and the enclosing list content column in callouts', () => {
+    const input =
+      '1. Step\n\n   <Admonition type="info">\n     - Parent\n       - Child\n     - Peer\n   </Admonition>';
+    const migrated = transformLegacyMdx(input, createState());
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkDirective)
+      .parse(migrated);
+    expect(tree.children[0]).toMatchObject({
+      type: 'list',
+      ordered: true,
+      children: [
+        {
+          type: 'listItem',
+          children: [
+            { type: 'paragraph' },
+            {
+              type: 'containerDirective',
+              children: [
+                {
+                  type: 'list',
+                  children: [
+                    {
+                      type: 'listItem',
+                      children: [
+                        { type: 'paragraph' },
+                        { type: 'list', children: [{ type: 'listItem' }] },
+                      ],
+                    },
+                    { type: 'listItem', children: [{ type: 'paragraph' }] },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('preserves sibling and child lists in the inline admonition fallback', () => {
+    const migrated = transformAdmonitions(
+      'Before <Admonition type="info">\n  - Parent\n    - Child\n  - Peer\n</Admonition> After',
+    );
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkDirective)
+      .parse(migrated);
+    expect(
+      tree.children.find((node) => node.type === 'containerDirective'),
+    ).toMatchObject({
+      type: 'containerDirective',
+      children: [
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                { type: 'paragraph' },
+                { type: 'list', children: [{ type: 'listItem' }] },
+              ],
+            },
+            { type: 'listItem', children: [{ type: 'paragraph' }] },
+          ],
+        },
+      ],
+    });
   });
 
   it('rewrites legacy admonitions to directive fences', () => {
@@ -1364,6 +1464,72 @@ export const FaceCapture = [
     expect(state.issues).toContain('normalized-html-table');
     expect(state.issues).toContain('normalized-table-slot');
     expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it.each([4, 6, 8])(
+    'preserves sibling Markdown list items in a table cell indented by %i spaces',
+    (spaces) => {
+      const indent = ' '.repeat(spaces);
+      const migrated = transformLegacyMdx(
+        `<Table><Tr><Td>质量</Td></Tr><Tr><Td>\n${indent}- SD: 100\n${indent}- HD: 50\n${indent}- FHD: 30\n</Td></Tr></Table>`,
+        createState('docs/cloud-recording/quota.mdx'),
+      );
+      const body =
+        migrated.match(/<Slot for="[^"]+">\n([\s\S]*?)\n<\/Slot>/)?.[1] ?? '';
+      const tree = unified().use(remarkParse).parse(body);
+      expect(tree.children).toHaveLength(1);
+      expect(tree.children[0]).toMatchObject({
+        type: 'list',
+        children: [
+          { type: 'listItem', children: [{ type: 'paragraph' }] },
+          { type: 'listItem', children: [{ type: 'paragraph' }] },
+          { type: 'listItem', children: [{ type: 'paragraph' }] },
+        ],
+      });
+      expect(body.trim()).toBe('- SD: 100\n- HD: 50\n- FHD: 30');
+    },
+  );
+
+  it('preserves relative nesting, continuation text and ordered sublists in indented table cells', () => {
+    const migrated = transformLegacyMdx(
+      `<Table><Tr><Td>说明</Td></Tr><Tr><Td>
+      - 父项
+        续行文字保持在父项中。
+        - 子项
+          1. 第三级
+      - 同级项
+      </Td></Tr></Table>`,
+      createState(),
+    );
+    const body =
+      migrated.match(/<Slot for="[^"]+">\n([\s\S]*?)\n<\/Slot>/)?.[1] ?? '';
+    const tree = unified().use(remarkParse).parse(body);
+    expect(tree.children).toHaveLength(1);
+    expect(tree.children[0]).toMatchObject({
+      type: 'list',
+      children: [
+        {
+          type: 'listItem',
+          children: [
+            { type: 'paragraph' },
+            {
+              type: 'list',
+              children: [
+                {
+                  type: 'listItem',
+                  children: [
+                    { type: 'paragraph' },
+                    { type: 'list', ordered: true },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+      ],
+    });
+    expect(body).toContain('\n  续行文字保持在父项中。');
   });
 
   it('rewrites legacy admonitions inside table cells to table slots', () => {

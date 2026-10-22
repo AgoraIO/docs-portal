@@ -30,10 +30,10 @@ License 是声网服务的一种计费模式。在 IoT 场景中，声网通过�
 
 License 的类型：
 
-    - 测试 License
-    - 正式 License
+- 测试 License
+- 正式 License
 
-    声网推荐你在集成测试时选用测试 License，正式上线前改用正式 License。详见[测试 License 和正式 License](#licensetype)。
+声网推荐你在集成测试时选用测试 License，正式上线前改用正式 License。详见[测试 License 和正式 License](#licensetype)。
 
 </Slot>
 
@@ -41,14 +41,14 @@ License 的类型：
 
 设置 License 的能力集，包含以下参数：
 
-    - 产品：
-      - 媒体流加速 (RTSA)。
-    - License 能力：
-      - 音频。
-      - 视频。
-      - 音视频。
-    - License 分钟数上限：是否限制使用时长，精确到分钟。
-    - License 使用时间段：是否限制使用时段，精确到分钟。
+- 产品：
+  - 媒体流加速 (RTSA)。
+- License 能力：
+  - 音频。
+  - 视频。
+  - 音视频。
+- License 分钟数上限：是否限制使用时长，精确到分钟。
+- License 使用时间段：是否限制使用时段，精确到分钟。
 
 </Slot>
 
@@ -56,10 +56,10 @@ License 的类型：
 
 License 的有效期：
 
-    - 测试 License 的有效期以天为单位，最少 3 天。
-    - 正式 License 的有效期以年为单位，最少 1 年。
+- 测试 License 的有效期以天为单位，最少 3 天。
+- 正式 License 的有效期以年为单位，最少 1 年。
 
-    License 的有效期从激活当日开始计算。
+License 的有效期从激活当日开始计算。
 
 </Slot>
 
@@ -101,10 +101,10 @@ License 申请通过后，License 激活标识（PID） 会关联到你的 CID �
 
 设备的唯一标识。例如设备的 SN 号、Mac 地址等。字符串长度需小于 64 字节。
 
-    :::warning[注意]
-    - 请注意区分大小写。
-        - 只有在白名单中的 `licenseKey` 才能通过校验激活 License。
-    :::
+:::warning[注意]
+- 请注意区分大小写。
+- 只有在白名单中的 `licenseKey` 才能通过校验激活 License。
+:::
 
 </Slot>
 
@@ -251,10 +251,10 @@ SKU 能力集，包含如下字段：
 
 将要过期的天数，可设为如下值：
 
-    - `60`: 60 天。
-    - `90`: 90 天。
+- `60`: 60 天。
+- `90`: 90 天。
 
-    服务器会返回即将在设置的天数内过期的 License 信息。不会返回已经过期的 License 信息。
+服务器会返回即将在设置的天数内过期的 License 信息。不会返回已经过期的 License 信息。
 
 </Slot>
 
@@ -286,10 +286,10 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 
 由多组 Lisence 信息组成的数组，包含如下字段：
 
-      - `licenseKey`: 设备的唯一标识。和你在 `activate` 接口中传入的 `licenseKey` 一致。
-      - `license`: 即将过期的 License 的值。
-      - `activeTime`: License 的激活时间，RFC3339 格式。
-      - `expireTime`: License 的过期时间，RFC3339 格式。
+- `licenseKey`: 设备的唯一标识。和你在 `activate` 接口中传入的 `licenseKey` 一致。
+- `license`: 即将过期的 License 的值。
+- `activeTime`: License 的激活时间，RFC3339 格式。
+- `expireTime`: License 的过期时间，RFC3339 格式。
 
 </Slot>
 
@@ -468,19 +468,19 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/renewa
 
 由多组续期订单信息组成的数组，包含如下字段：
 
-      - `renewId`: 续期 ID。
-      - `pid`: 由 SKU、有效期、品类定义的 License 激活标识。和你在请求中填入的
-      `pid` 一致。
+- `renewId`: 续期 ID。
+- `pid`: 由 SKU、有效期、品类定义的 License 激活标识。和你在请求中填入的
+`pid` 一致。
 
-      - `type`: License 类型：
-        - `1`: 整个 CID 下所有 App ID 均可使用。
-        - `2`: 仅指定 App ID 可用。
-      - `duration`: 有效期。单位根据你的 `pid` 类型而定：
-        - 如果 `pid` 为测试类型，则有效期的单位为天。
-        - 如果 `pid` 为正式类型，则有效期的单位为年。
-      - `totalCount`: 续期次数。
-      - `allocateCount`: 已经使用的次数。
-      - `createTime`: 续期创建的时间，RFC3339 格式。
+- `type`: License 类型：
+  - `1`: 整个 CID 下所有 App ID 均可使用。
+  - `2`: 仅指定 App ID 可用。
+- `duration`: 有效期。单位根据你的 `pid` 类型而定：
+  - 如果 `pid` 为测试类型，则有效期的单位为天。
+  - 如果 `pid` 为正式类型，则有效期的单位为年。
+- `totalCount`: 续期次数。
+- `allocateCount`: 已经使用的次数。
+- `createTime`: 续期创建的时间，RFC3339 格式。
 
 </Slot>
 

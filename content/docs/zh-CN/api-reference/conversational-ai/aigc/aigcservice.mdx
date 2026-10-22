@@ -192,10 +192,10 @@ int pushSpeechDialogue(byte[] data, Vad vad, boolean isLastFrame);
 
 是否是最后一帧音频数据：
 
-        - `true`：是
-        - `false`：不是
+- `true`：是
+- `false`：不是
 
-        该参数仅在 [`setSTTMode`](#setsttmode) 设置为 `CONTROLLED` 时有效。
+该参数仅在 [`setSTTMode`](#setsttmode) 设置为 `CONTROLLED` 时有效。
 
 </Slot>
 
@@ -231,8 +231,8 @@ int pushTxtDialogue(String text, String roundId);
 
 请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
-        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+- 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -269,8 +269,8 @@ int pushMessagesToLLM(String messagesJsonArray, String extraInfoJson, String rou
 
 请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
-        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+- 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -304,8 +304,8 @@ int pushTxttoTTS(String text, String roundId);
 
 请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
-        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+- 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -453,8 +453,8 @@ HandleResult onSpeech2TextResult(String roundId, Data<String> result, boolean is
 
 请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
-        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+- 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -462,8 +462,8 @@ HandleResult onSpeech2TextResult(String roundId, Data<String> result, boolean is
 
 该回调返回的 `result` 是否是一个完整的句子：
 
-        - `true`：是
-        - `false`：不是
+- `true`：是
+- `false`：不是
 
 </Slot>
 
@@ -501,8 +501,8 @@ HandleResult onLLMResult(String roundId, Data<String> answer, boolean isRoundEnd
 
 请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
-        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+- 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -510,8 +510,8 @@ HandleResult onLLMResult(String roundId, Data<String> answer, boolean isRoundEnd
 
 本轮大语言模型返回结果是否结束：
 
-        - `true`：是。
-        - `false`：否。
+- `true`：是。
+- `false`：否。
 
 </Slot>
 
@@ -546,8 +546,8 @@ HandleResult onText2SpeechResult(String roundId, Data<byte[]> voice, int sampleR
 
 请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
-        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+- 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -627,12 +627,12 @@ pubic class AIGCServiceConfig {
 
 是否开启多轮短时记忆：
 
-        - `true`：是。开启后，后续流程的处理会结合上下文语境。
-        - `false`：否。
+- `true`：是。开启后，后续流程的处理会结合上下文语境。
+- `false`：否。
 
-        :::warning[注意]
-        该参数配置在调用 `pushMessagesToLLM` 时无效。
-        :::
+:::warning[注意]
+该参数配置在调用 `pushMessagesToLLM` 时无效。
+:::
 
 </Slot>
 
@@ -640,8 +640,8 @@ pubic class AIGCServiceConfig {
 
 是否开启日志输出到 IDE 的控制台：
 
-        - `true`：是。
-        - `false`：否。
+- `true`：是。
+- `false`：否。
 
 </Slot>
 
@@ -649,12 +649,12 @@ pubic class AIGCServiceConfig {
 
 是否保存日志到文件系统：
 
-        - `true`：是。
-        - `false`：否。
+- `true`：是。
+- `false`：否。
 
-        :::warning[注意]
-        该参数的设置只有在 `enableLog` 为 `true` 时才生效。
-        :::
+:::warning[注意]
+该参数的设置只有在 `enableLog` 为 `true` 时才生效。
+:::
 
 </Slot>
 
@@ -662,8 +662,8 @@ pubic class AIGCServiceConfig {
 
 是否开启闲时聊天提示信息：
 
-      - `true`：是。
-      - `false`：（默认）否。
+- `true`：是。
+- `false`：（默认）否。
 
 </Slot>
 
@@ -1098,10 +1098,10 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 是否是最后一帧音频数据：
 
-        - `true`：是
-        - `false`：不是
+    - `true`：是
+    - `false`：不是
 
-    该参数仅在 [`setSTTMode`](#setsttmode) 设置为 `AgoraAIGCServiceSTTModeControlled` 时有效。
+该参数仅在 [`setSTTMode`](#setsttmode) 设置为 `AgoraAIGCServiceSTTModeControlled` 时有效。
 
 </Slot>
 
@@ -1136,8 +1136,8 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
-        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+- 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -1175,8 +1175,8 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
-        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+- 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -1209,8 +1209,8 @@ SDK 支持的 [`AgoraAIGCAIRole`](#airole) 数组。
 
 请求的 `roundId`，可为空。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
-        - 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果自行设置 `roundId`，为准确区分不同请求，请确保设置的 ID 全局唯一；
+- 如果 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -1355,8 +1355,8 @@ AIGCService 实例事件回调。
 
 请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
-        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+- 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -1364,8 +1364,8 @@ AIGCService 实例事件回调。
 
 该回调返回的 `result` 是否是一个完整的句子：
 
-        - `YES`：是
-        - `NO`：不是
+- `YES`：是
+- `NO`：不是
 
 </Slot>
 
@@ -1407,8 +1407,8 @@ AIGCService 实例事件回调。
 
 请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
-        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+- 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -1416,8 +1416,8 @@ AIGCService 实例事件回调。
 
 本轮大语言模型返回结果是否结束：
 
-        - `YES`：是。
-        - `NO`：否。
+- `YES`：是。
+- `NO`：否。
 
 </Slot>
 
@@ -1457,8 +1457,8 @@ AIGCService 实例事件回调。
 
 请求的 `roundId`。用于跟踪后续 LLM/TTS 对应关系的 ID，你可以利用该参数在 UI 层实现相关的业务逻辑。
 
-        - 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
-        - 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
+- 如果你在推送时设置了 `roundId`，回调中沿用你设置的 `roundId`；
+- 如果推送时 `roundId` 为空，SDK 内部会分配一个 `roundId`，并在每形成一个完整句子时更新为新的 `roundId`。
 
 </Slot>
 
@@ -1551,12 +1551,12 @@ speechRecognitionCompletenessLevel:(AgoraSpeechRecognitionCompletenessLevel)spee
 
 是否开启多轮短时记忆：
 
-        - `YES`：是。开启后，后续流程的处理会结合上下文语境。
-        - `NO`：否。
+- `YES`：是。开启后，后续流程的处理会结合上下文语境。
+- `NO`：否。
 
-        :::warning[注意]
-        该参数配置在调用 `pushMessagesToLlm` 时无效。
-        :::
+:::warning[注意]
+该参数配置在调用 `pushMessagesToLlm` 时无效。
+:::
 
 </Slot>
 
@@ -1564,8 +1564,8 @@ speechRecognitionCompletenessLevel:(AgoraSpeechRecognitionCompletenessLevel)spee
 
 是否开启日志输出到 IDE 的控制台：
 
-        - `YES`：是。
-        - `NO`：否。
+- `YES`：是。
+- `NO`：否。
 
 </Slot>
 
@@ -1573,12 +1573,12 @@ speechRecognitionCompletenessLevel:(AgoraSpeechRecognitionCompletenessLevel)spee
 
 是否保存日志到文件系统：
 
-        - `YES`：是。
-        - `NO`：否。
+- `YES`：是。
+- `NO`：否。
 
-        :::warning[注意]
-        该参数的设置只有在 `enableLog` 为 `YES` 时才生效。
-        :::
+:::warning[注意]
+该参数的设置只有在 `enableLog` 为 `YES` 时才生效。
+:::
 
 </Slot>
 
@@ -1586,8 +1586,8 @@ speechRecognitionCompletenessLevel:(AgoraSpeechRecognitionCompletenessLevel)spee
 
 是否开启闲时聊天提示信息：
 
-      - `YES`：是。
-      - `NO`：（默认）否。
+- `YES`：是。
+- `NO`：（默认）否。
 
 </Slot>
 

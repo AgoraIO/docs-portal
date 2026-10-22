@@ -22,28 +22,28 @@ description: "了解如何在本地服务端录制中录制崩溃后修复录制
 <Slot for="restore-files-html-0-1-3">
 
 - Native 和框架端每个 UID 生成一个 AAC 音频文件和一个 TS 视频文件
-        - Web 端每个 UID 生成一个 AAC 音频文件和一个 WebM 或 TS 视频文件
+- Web 端每个 UID 生成一个 AAC 音频文件和一个 WebM 或 TS 视频文件
 
 </Slot>
 
 <Slot for="restore-files-html-0-1-4">
 
 - Native 和框架端每个 UID 生成一个 AAC 音频文件和一个 MP4 视频文件
-        - Web 端每个 UID 生成一个 AAC 音频文件和一个 WebM 或 MP4 视频文件
+- Web 端每个 UID 生成一个 AAC 音频文件和一个 WebM 或 MP4 视频文件
 
 </Slot>
 
 <Slot for="restore-files-html-0-2-2">
 
 - `--isVideoOnly 1`
-        - `--isMixingEnabled 1`
+- `--isMixingEnabled 1`
 
 </Slot>
 
 <Slot for="restore-files-html-0-3-2">
 
 - `--isMixingEnabled 1`
-        - `--mixedVideoAudio 2`
+- `--mixedVideoAudio 2`
 
 </Slot>
 
@@ -64,29 +64,29 @@ description: "了解如何在本地服务端录制中录制崩溃后修复录制
 <Slot for="restore-files-html-1-1-1">
 
 - 录制服务会被重复拉起，继续录制。由于录制崩溃，TS 文件会被切片，`uid_UID_timestamp.txt` 文件会出现内容缺失。
-        - 录制结束后，录制 SDK 会将所有 TS 文件逐一转封装为 MP4 文件，无需手动处理。
-        - 但是，录制 SDK 不会修复 `uid_UID_timestamp.txt` 文件。如果你需要用转码脚本将每个 UID 的音频文件和视频文件合并成一个 MP4 文件，则需要先运行 `crash_restore.sh` 脚本修复 `uid_UID_timestamp.txt` 文件。
+- 录制结束后，录制 SDK 会将所有 TS 文件逐一转封装为 MP4 文件，无需手动处理。
+- 但是，录制 SDK 不会修复 `uid_UID_timestamp.txt` 文件。如果你需要用转码脚本将每个 UID 的音频文件和视频文件合并成一个 MP4 文件，则需要先运行 `crash_restore.sh` 脚本修复 `uid_UID_timestamp.txt` 文件。
 
 </Slot>
 
 <Slot for="restore-files-html-1-1-2">
 
 - 录制服务会被重复拉起，继续录制。由于录制崩溃，TS 文件会被切片。
-        - 录制结束后，录制 SDK 会将所有 TS 文件逐一转封装为 MP4 文件，无需手动处理。
+- 录制结束后，录制 SDK 会将所有 TS 文件逐一转封装为 MP4 文件，无需手动处理。
 
 </Slot>
 
 <Slot for="restore-files-html-1-2-1">
 
 - 录制服务异常退出，因录制崩溃而被切片的 TS 文件无法被自动转封装，`uid_UID_timestamp.txt` 文件会出现内容缺失。
-        - 你需要运行 `crash_restore.sh` 脚本将所有 TS 文件转封装为 MP4 文件。该脚本同时会修复 `uid_UID_timestamp.txt` 文件。
+- 你需要运行 `crash_restore.sh` 脚本将所有 TS 文件转封装为 MP4 文件。该脚本同时会修复 `uid_UID_timestamp.txt` 文件。
 
 </Slot>
 
 <Slot for="restore-files-html-1-2-2">
 
 - 录制服务异常退出，因录制崩溃而被切片的 TS 文件无法被自动转封装。
-        - 你需要运行 `crash_restore.sh` 脚本将所有 TS 文件转封装为 MP4 文件。
+- 你需要运行 `crash_restore.sh` 脚本将所有 TS 文件转封装为 MP4 文件。
 
 </Slot>
 

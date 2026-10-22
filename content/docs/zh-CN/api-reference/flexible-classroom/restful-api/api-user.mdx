@@ -64,22 +64,22 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 返回数据，包含以下字段：
 
-      - `userUuid`: 用户 ID。
-      - `userName`: 用户名称。
-      - `role`: 用户角色：
+- `userUuid`: 用户 ID。
+- `userName`: 用户名称。
+- `role`: 用户角色：
 
-        - `1`: 老师
-        - `2`: 学生
-        - `3`: 助教
+  - `1`: 老师
+  - `2`: 学生
+  - `3`: 助教
 
-      - `streamUuid`: 流 ID。
-      - `state`: 该用户是否在线：
+- `streamUuid`: 流 ID。
+- `state`: 该用户是否在线：
 
-        - `0`：不在线
-        - `1`：在线
+  - `0`：不在线
+  - `1`：在线
 
-      - `userProperties`: 用户属性。
-      - `updateTime`: 更新时间。
+- `userProperties`: 用户属性。
+- `updateTime`: 更新时间。
 
 </Slot>
 
@@ -316,10 +316,10 @@ curl -X DELETE 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/te
 
 用户踢人标记，包含以下字段：
 
-      - `state`: Integer 型，踢人状态：
-        - `1`: 被踢，无法进入课堂。
-        - `0`: 未被踢，可以进入课堂。
-      - `duration`: Number 型，临时踢人持续时间，单位为秒。该字段仅在 `state` 为 `1` 时生效。从被踢出时开始计时，过了 `duration` 设置的时长后，用户自动恢复为未被踢状态。若不传该参数，则用户被永久踢出。
+- `state`: Integer 型，踢人状态：
+  - `1`: 被踢，无法进入课堂。
+  - `0`: 未被踢，可以进入课堂。
+- `duration`: Number 型，临时踢人持续时间，单位为秒。该字段仅在 `state` 为 `1` 时生效。从被踢出时开始计时，过了 `duration` 设置的时长后，用户自动恢复为未被踢状态。若不传该参数，则用户被永久踢出。
 
 </Slot>
 

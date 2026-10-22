@@ -58,9 +58,9 @@ Body 参数
 
 （必填）授权类型。支持如下值：
 
-    - `password`：密码模式。
-    - `client_credentials`：客户端模式。
-    - `refresh_token`：刷新 Token 模式。
+- `password`：密码模式。
+- `client_credentials`：客户端模式。
+- `refresh_token`：刷新 Token 模式。
 
 </Slot>
 
@@ -91,11 +91,11 @@ Body 参数
 
 授权数据：
 
-    - `access_token`：String 型。声网灵隼 Token。
-    - `token_type`：String 型。Token 类型。仅支持返回 `bearer`。
-    - `refresh_token`：String 型。更新后的 Token。
-    - `expires_in`：Integer 型。声网灵隼 Token 的过期时间（s）。
-    - `scope`：String 型。作用域。仅支持返回 `read`。
+- `access_token`：String 型。声网灵隼 Token。
+- `token_type`：String 型。Token 类型。仅支持返回 `bearer`。
+- `refresh_token`：String 型。更新后的 Token。
+- `expires_in`：Integer 型。声网灵隼 Token 的过期时间（s）。
+- `scope`：String 型。作用域。仅支持返回 `read`。
 
 </Slot>
 
@@ -103,8 +103,8 @@ Body 参数
 
 是否成功响应：
 
-    - `true`：成功。
-    - `false`：失败。
+- `true`：成功。
+- `false`：失败。
 
 </Slot>
 
@@ -157,8 +157,8 @@ Body 参数
 
 请求包体：
 
-    - `traceId`：（必填）String 型。请求 ID，声网推荐使用 UUID。
-    - `timestamp`：（必填）Long 型。请求时间戳（ms）。
+- `traceId`：（必填）String 型。请求 ID，声网推荐使用 UUID。
+- `timestamp`：（必填）Long 型。请求时间戳（ms）。
 
 </Slot>
 
@@ -187,25 +187,25 @@ Body 参数
 
 云存储套餐数据：
 
-      - `cloudRecordPackageId`：Integer 型。云存储套餐 ID。
-      - `packageName`：String 型。云存储套餐名。
-      - `packageType`：String 型。云存储套餐类型：
-        - `YEAR`：包年，365 天。
-        - `MONTH`：包月，30 天。
-      - `lifeCycle`：String 型。云存储文件的存储周期：
-        - `ONE`：1 天
-        - `THREE`：3 天
-        - `SEVEN`：7 天
-        - `FOURTEEN`：14 天
-        - `THIRTY`：30 天
-      - `bucket`：String 型。云存储的 bucket。
-      - `preDir`：String 型。云存储文件目录的前缀。
-      - `deleted`：Boolean 型。云存储文件是否已删除：
-        - ` true`：已删除。
-        - `false`：未删除。
-      - `createdBy`：Integer 型。告警设备的 ID。
-      - `createdTime`：Number 型。设备端触发告警的时间戳（ms）。
-      - `changedTime`：Number 型。设备最后更新的时间戳（ms）。
+- `cloudRecordPackageId`：Integer 型。云存储套餐 ID。
+- `packageName`：String 型。云存储套餐名。
+- `packageType`：String 型。云存储套餐类型：
+  - `YEAR`：包年，365 天。
+  - `MONTH`：包月，30 天。
+- `lifeCycle`：String 型。云存储文件的存储周期：
+  - `ONE`：1 天
+  - `THREE`：3 天
+  - `SEVEN`：7 天
+  - `FOURTEEN`：14 天
+  - `THIRTY`：30 天
+- `bucket`：String 型。云存储的 bucket。
+- `preDir`：String 型。云存储文件目录的前缀。
+- `deleted`：Boolean 型。云存储文件是否已删除：
+  - ` true`：已删除。
+  - `false`：未删除。
+- `createdBy`：Integer 型。告警设备的 ID。
+- `createdTime`：Number 型。设备端触发告警的时间戳（ms）。
+- `changedTime`：Number 型。设备最后更新的时间戳（ms）。
 
 </Slot>
 
@@ -213,8 +213,8 @@ Body 参数
 
 是否成功响应：
 
-    - `true`：成功。
-    - `false`：失败。
+- `true`：成功。
+- `false`：失败。
 
 </Slot>
 
@@ -286,8 +286,8 @@ Body 参数
 
 请求包体：
 
-    - traceId：（必填）String 型。请求 ID，声网推荐使用 UUID。
-    - timestamp：（必填）Long 型。请求时间戳（ms）。
+- traceId：（必填）String 型。请求 ID，声网推荐使用 UUID。
+- timestamp：（必填）Long 型。请求时间戳（ms）。
 
 </Slot>
 
@@ -317,25 +317,25 @@ Body 参数
 
 云存储套餐数据：
 
-      - `cloudRecordPackageId`：Integer 型。云存储套餐 ID。
-      - `packageName`：String 型。云存储套餐名。
-      - `packageType`：String 型。云存储套餐类型：
-        - `YEAR`：包年，365 天。
-        - `MONTH`：包月，30 天。
-      - `lifeCycle`：String 型。云存储文件的存储周期：
-        - `ONE`：1 天
-        - `THREE`：3 天
-        - `SEVEN`：7 天
-        - `FOURTEEN`：14 天
-        - `THIRTY`：30 天
-      - `bucket`：String 型。云存储的 bucket。
-      -  `preDir`：String 型。云存储文件目录的前缀。
-      - `deleted`：Boolean 型。云存储文件是否已删除：
-        - ` true`：已删除。
-        - `false`：未删除。
-      - `createdBy`：Integer 型。告警设备的 ID。
-      - `createdTime`：Number 型。设备端触发告警的时间戳（ms）。
-      - `changedTime`：Number 型。设备最后更新的时间戳（ms）。
+- `cloudRecordPackageId`：Integer 型。云存储套餐 ID。
+- `packageName`：String 型。云存储套餐名。
+- `packageType`：String 型。云存储套餐类型：
+  - `YEAR`：包年，365 天。
+  - `MONTH`：包月，30 天。
+- `lifeCycle`：String 型。云存储文件的存储周期：
+  - `ONE`：1 天
+  - `THREE`：3 天
+  - `SEVEN`：7 天
+  - `FOURTEEN`：14 天
+  - `THIRTY`：30 天
+- `bucket`：String 型。云存储的 bucket。
+-  `preDir`：String 型。云存储文件目录的前缀。
+- `deleted`：Boolean 型。云存储文件是否已删除：
+  - ` true`：已删除。
+  - `false`：未删除。
+- `createdBy`：Integer 型。告警设备的 ID。
+- `createdTime`：Number 型。设备端触发告警的时间戳（ms）。
+- `changedTime`：Number 型。设备最后更新的时间戳（ms）。
 
 </Slot>
 
@@ -343,8 +343,8 @@ Body 参数
 
 是否成功响应：
 
-    - `true`：成功。
-    - `false`：失败。
+- `true`：成功。
+- `false`：失败。
 
 </Slot>
 
@@ -401,8 +401,8 @@ Body 参数
 
 请求包体：
 
-    - traceId：（必填）String 型。请求 ID，声网推荐使用 UUID。
-    - timestamp：（必填）Long 型。请求时间戳（ms）。
+- traceId：（必填）String 型。请求 ID，声网推荐使用 UUID。
+- timestamp：（必填）Long 型。请求时间戳（ms）。
 
 </Slot>
 
@@ -410,12 +410,12 @@ Body 参数
 
 云存储套餐信息：
 
-    - `appId`：（必填）String 型。声网灵隼项目的 App ID。
-    - `userId`：（必填）String 型。用户 ID。
-    - `deviceId`：（必填）String 型。设备 ID。
-    - `paymentOrderId`：（必填）String 型。支付订单号。请确保该参数的唯一性。
-    - `cloudRecordPackageId`：（必填）Integer 型。云存储套餐的 ID。
-    - `orderNumber`：（必填）Integer 型。订购套餐的数量。用户实际可以使用云存储服务的天数 = 订购套餐的数量 × 订购套餐对应的天数。
+- `appId`：（必填）String 型。声网灵隼项目的 App ID。
+- `userId`：（必填）String 型。用户 ID。
+- `deviceId`：（必填）String 型。设备 ID。
+- `paymentOrderId`：（必填）String 型。支付订单号。请确保该参数的唯一性。
+- `cloudRecordPackageId`：（必填）Integer 型。云存储套餐的 ID。
+- `orderNumber`：（必填）Integer 型。订购套餐的数量。用户实际可以使用云存储服务的天数 = 订购套餐的数量 × 订购套餐对应的天数。
 
 </Slot>
 
@@ -452,8 +452,8 @@ Body 参数
 
 是否成功响应：
 
-    - `true`：成功。
-    - `false`：失败。
+- `true`：成功。
+- `false`：失败。
 
 </Slot>
 

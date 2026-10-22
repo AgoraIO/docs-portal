@@ -44,8 +44,8 @@ GET https://api.sd-rtn.com/rtm/v2/history/{:appId}/userId/{:userId}/channelType/
 
 频道类型：
 
-    - `message`：消息频道
-    - `user`：用户频道
+- `message`：消息频道
+- `user`：用户频道
 
 </Slot>
 
@@ -143,8 +143,8 @@ axios.request(config)
 
 当前请求是否出错。
 
-    - `false` 代表请求成功。
-    - `true` 代表请求失败。
+- `false` 代表请求成功。
+- `true` 代表请求失败。
 
 </Slot>
 
@@ -152,15 +152,15 @@ axios.request(config)
 
 响应的具体 Payload 信息，包含如下字段：
 
-    - `messageList`：获取的历史消息列表，为一个 Array List，包含如下参数：
-      - `messageType`：消息数据类型：
-        - 如果 `messageType` 为 "STRING"，直接取 `message` 字段内容即可。
-        - 如果 `messageType` 为 "BINARY"，消息内容为 `message` 字段 base64 编码后的结果。
-      - `message`：具体的消息内容。
-      - `customType`：自定义类型。
-      - `publisher`：发布消息的用户。
-      - `timestamp`：消息发布时的时间戳。
-    - `count`：共获得的历史消息数量。
-    - `newStart`：新的历史消息开始的时间戳。
+- `messageList`：获取的历史消息列表，为一个 Array List，包含如下参数：
+  - `messageType`：消息数据类型：
+    - 如果 `messageType` 为 "STRING"，直接取 `message` 字段内容即可。
+    - 如果 `messageType` 为 "BINARY"，消息内容为 `message` 字段 base64 编码后的结果。
+  - `message`：具体的消息内容。
+  - `customType`：自定义类型。
+  - `publisher`：发布消息的用户。
+  - `timestamp`：消息发布时的时间戳。
+- `count`：共获得的历史消息数量。
+- `newStart`：新的历史消息开始的时间戳。
 
 </Slot>
