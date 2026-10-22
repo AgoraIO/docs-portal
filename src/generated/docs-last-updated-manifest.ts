@@ -622,7 +622,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-22T06:06:50.000Z',
-  'content/docs/en/ai/platform/index.mdx': '2026-10-22T06:06:50.000Z',
+  'content/docs/en/ai/platform/index.mdx': '2026-10-22T16:48:25.000Z',
   'content/docs/en/ai/platform/meta.json': '2026-10-22T12:41:21.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
     '2026-10-22T06:06:50.000Z',
