@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { llms } from 'fumadocs-core/source';
+import { toDocsMarkdown } from '../src/lib/mdx/to-markdown.ts';
 import { withAgentDocsDirective } from '../src/lib/agent-docs-directive.ts';
 import {
   loadDocsPagePayload,
@@ -381,9 +382,9 @@ async function getStaticLLMText(page) {
   try {
     return await getLLMText(page);
   } catch {
-    return `# ${page.data.title ?? page.url} (${page.url})
+    return toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url})
 
-${await readSourceMarkdown(page.path)}`;
+${await readSourceMarkdown(page.path)}`);
   }
 }
 
@@ -412,9 +413,9 @@ async function buildRawPlatformLLMText(page, platform) {
     return null;
   }
 
-  return `# ${page.data.title ?? page.url} (${page.url}/${platform})
+  return toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url}/${platform})
 
-${body}`;
+${body}`);
 }
 
 function getRawPagePlatformKeys(page) {
