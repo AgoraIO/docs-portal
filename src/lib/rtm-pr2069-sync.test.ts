@@ -39,10 +39,6 @@ function platformBody(content: string, platform: string) {
 }
 
 const sendMessage = readDoc('build/messaging/send-message');
-const userMessages =
-  sendMessage
-    .split('## User Channel 中发送消息')[1]
-    ?.split('## 在流频道中发送消息')[0] ?? '';
 const payload = sendMessage.split('## 消息负载包体积限制')[1] ?? '';
 
 describe('RTM upstream PR #2069 parity', () => {
@@ -123,7 +119,10 @@ describe('RTM upstream PR #2069 parity', () => {
   it.each(['web', 'mini-program'] as const)(
     'publishes both %s USER examples to a user ID',
     (platform) => {
-      const body = platformBody(userMessages, platform);
+      const body =
+        selectPlatformMarkdown(sendMessage, platform)
+          .split('## User Channel 中发送消息')[1]
+          ?.split('## 在流频道中发送消息')[0] ?? '';
       expect(body.match(/const userId = "Tony";/g) ?? []).toHaveLength(2);
       expect(
         body.match(/rtm\.publish\(userId, payload, options\)/g) ?? [],

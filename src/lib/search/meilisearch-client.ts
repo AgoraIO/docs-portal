@@ -175,6 +175,7 @@ export function mapSearchHit(
     snippet: content,
     path: hit.headingPath,
     platform: hit.platform,
+    version: hit.version,
     availablePlatforms: hit.availablePlatforms,
     canonicalUrl: hit.canonicalUrl,
     product: hit.product,
