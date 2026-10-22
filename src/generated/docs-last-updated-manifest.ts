@@ -130,6 +130,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/best-practices/audio-setup.mdx':
     '2026-08-07T06:52:10.000Z',
+  'content/docs/en/ai/best-practices/cloud-3a.mdx': '2026-10-20T05:26:07.000Z',
   'content/docs/en/ai/best-practices/cloud-recording.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/best-practices/cloud-recording.mdx':
@@ -142,11 +143,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/best-practices/manual-turn-control.mdx':
     '2026-09-29T10:16:46.000Z',
-  'content/docs/en/ai/best-practices/meta.json': '2026-07-01T14:02:18.000Z',
+  'content/docs/en/ai/best-practices/meta.json': '2026-10-20T05:26:07.000Z',
   'content/docs/en/ai/best-practices/optimize-latency.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/best-practices/optimize-latency.mdx':
-    '2026-07-31T07:35:49.000Z',
+    '2026-10-20T05:26:07.000Z',
   'content/docs/en/ai/best-practices/record-agent-conversation.mdx':
     '2026-07-17T08:52:13.000Z',
   'content/docs/en/ai/best-practices/regional-restrictions.md':
@@ -208,7 +209,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/index.mdx': '2026-06-25T15:09:45.000Z',
   'content/docs/en/ai/build/interrupt-agent.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/interrupt-agent.mdx': '2026-06-24T10:50:33.000Z',
-  'content/docs/en/ai/build/managed-mode.mdx': '2026-09-27T04:12:07.000Z',
+  'content/docs/en/ai/build/managed-mode.mdx': '2026-10-20T05:26:07.000Z',
   'content/docs/en/ai/build/mcp-tools.mdx': '2026-09-25T12:51:42.000Z',
   'content/docs/en/ai/build/meta.json': '2026-09-27T04:12:07.000Z',
   'content/docs/en/ai/build/monitor-agent-runtime.mdx':
@@ -232,7 +233,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx':
     '2026-10-03T08:16:21.000Z',
   'content/docs/en/ai/build/shape-the-conversation/meta.json':
-    '2026-09-27T04:12:07.000Z',
+    '2026-10-20T05:26:07.000Z',
+  'content/docs/en/ai/build/shape-the-conversation/prepare-responses.mdx':
+    '2026-10-20T05:26:07.000Z',
   'content/docs/en/ai/build/shape-the-conversation/short-term-memory.mdx':
     '2026-06-30T07:00:49.000Z',
   'content/docs/en/ai/build/short-term-memory.md': '2026-05-19T10:33:06.000Z',
@@ -571,7 +574,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-09-28T07:48:11.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-10-20T05:26:07.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -800,7 +803,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/authentication.md':
     '2026-07-27T09:08:03.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/authentication.mdx':
-    '2026-09-25T12:51:42.000Z',
+    '2026-10-20T05:26:07.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/android.mdx':
     '2026-09-11T14:11:21.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/ios.mdx':
@@ -814,7 +817,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
     '2026-06-26T08:32:37.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/status-codes.md':
-    '2026-06-24T02:36:42.000Z',
+    '2026-10-20T05:26:07.000Z',
   'content/docs/en/api-reference/api-ref/extensions-marketplace/meta.json':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/extensions-marketplace/provisioning.md':
@@ -6181,7 +6184,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/release-notes.md':
     '2026-07-02T06:58:41.000Z',
   'content/docs/en/realtime-media/rtm/reference/release-notes.mdx':
-    '2026-09-28T07:48:11.000Z',
+    '2026-10-20T08:13:51.000Z',
   'content/docs/en/realtime-media/rtm/reference/rest-api.md':
     '2026-06-28T06:41:08.000Z',
   'content/docs/en/realtime-media/rtm/reference/security.md':
@@ -11698,7 +11701,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
-    '2026-10-16T02:35:23.000Z',
+    '2026-10-20T05:26:07.000Z',
   'content/openapi/media-gateway/media-gateway.en.yaml':
     '2026-10-16T02:35:23.000Z',
   'content/openapi/media-gateway/openapi.meta.json': '2026-06-25T09:57:31.000Z',

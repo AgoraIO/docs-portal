@@ -9,6 +9,61 @@ This document tracks notable changes and improvements to the Conversational AI E
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v2.14" id="v214" headingLevel={3} value="v214">
+
+Released on October 23, 2026.
+
+#### New features
+
+Included in this release:
+
+- **Prepare responses early**
+
+  The agent can send the LLM request before the user finishes speaking. When the final transcript matches the text used for the early request, the agent uses the early response, which shortens the time the user waits for a reply. Available in the RESTful API. For details, see [Prepare responses early](build/shape-the-conversation/prepare-responses).
+
+- **Cloud 3A for IoT devices**
+
+  For devices that connect using the IoT SDK, Conversational AI Engine can run acoustic echo cancellation, noise suppression, and gain control in the cloud. This helps the agent hear the user instead of its own echo. Available in the RESTful API. For details, see [Remove echo and noise on IoT devices](best-practices/cloud-3a).
+
+- **ConvoAI token service**
+
+  Tokens can include a dedicated ConvoAI service for REST API authentication. Use the same token for REST authentication and for the agent's channel access. For details, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication#token-authentication).
+
+#### Improvements
+
+This release includes the following enhancements.
+
+- **More complete turn latency metrics**
+
+  This release fixes an issue where performance metrics could be missing for some turns when the agent processes several turns concurrently. To view the end-to-end and per-stage latency of each turn, see [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns).
+
+- **Playback duration for interrupted turns**
+
+  Turn data for an interrupted turn now records how much of the agent's reply audio actually played before the interruption, and how much was scheduled to play. Use this data to analyze how far the agent got before users interrupted it. It's available from [Query conversation turn information](/en/api-reference/api-ref/conversational-ai/turns) and the [112 turns finished](/en/ai/reference/event-types#112-turns-finished) event. Playback duration for turns that end normally is unchanged.
+
+#### API changes
+
+This release introduces the following changes for early responses, cloud 3A, and interrupted-turn playback data. These changes are available in the RESTful API only.
+
+- Changes to [**Start a conversational AI agent**](/en/api-reference/api-ref/conversational-ai/join)
+
+  - **New parameters**
+
+    - [`parameters.eager_llm_response`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-eager-llm-response): Whether to start the LLM request before the user finishes speaking. Defaults to `false`.
+    - [`parameters.turn_detector.prefetch.trigger_by`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-turn-detector-prefetch-trigger-by): What triggers the early LLM request: `asr_auto`, `eager_eos`, or both. Defaults to `["asr_auto"]`.
+    - [`parameters.output_audio_codec`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-output-audio-codec): The codec for the agent's downlink audio. Set to `G722` for cloud 3A.
+    - [`parameters.audio3a_downstream`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-audio3a-downstream): Cloud 3A settings for AEC, ANS, and AGC.
+    - [`parameters.rtc.subscribe_audio_num_of_channels`](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-parameters-rtc-subscribe-audio-num-of-channels): The number of uplink audio channels the agent subscribes to from the device. Set to `2` for cloud 3A.
+
+- Changes to [**Query conversation turn information**](/en/api-reference/api-ref/conversational-ai/turns) and the [**112 turns finished**](/en/ai/reference/event-types#112-turns-finished) event
+
+  - **New fields** in `turns[].end.metadata` when `end.type` is `interrupted`
+
+    - `playback_duration_ms`: The PCM audio actually played before the interruption, in milliseconds.
+    - `intended_playback_duration_ms`: The total PCM audio the engine received and scheduled to play for the turn, in milliseconds.
+
+</Accordion>
+
 <Accordion title="v2.13" id="v213" headingLevel={3} value="v213">
 
 Released on September 25, 2026.
