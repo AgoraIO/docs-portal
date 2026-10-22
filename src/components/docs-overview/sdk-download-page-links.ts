@@ -56,6 +56,12 @@ export function getZhCNSdkDownloadPageHref(
     return `/zh-CN/realtime-media/rtm/reference/downloads/${platform}`;
   }
 
+  if (productId === 'rtsa') {
+    return platformId === 'c'
+      ? '/zh-CN/realtime-media/rtsa/reference/downloads'
+      : null;
+  }
+
   if (productId === 'chat') {
     return 'https://im.shengwang.cn/';
   }

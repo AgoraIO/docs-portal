@@ -223,6 +223,12 @@ const productFilters = {
     aliases: ['server-gateway', 'rtc-server-sdk'],
     productIds: ['server-gateway'],
   },
+  rtsa: {
+    label: 'RTSA SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.rtsa.label,
+    aliases: ['rtsa'],
+    productIds: ['rtsa'],
+  },
   signaling: {
     label: 'Signaling SDK',
     zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.signaling.label,
