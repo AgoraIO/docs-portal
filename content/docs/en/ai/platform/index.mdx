@@ -1,53 +1,78 @@
 ---
 analyticsPageType: navigation-landing
-title: Voice Agent overview
-description: Understand what a voice agent is, how this section is organized, and which path to follow in the sidebar.
+title: Conversational AI Platform overview
+description: Learn how the Conversational AI Platform works, what you can build with it, and which path to follow.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/index.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/index.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-22, pending review. */}
 
-A Voice Agent is a real-time system that listens to a user, reasons over the conversation, and responds with speech. On Agora, that experience is built from a shared foundation: real-time transport, an agent runtime, AI models, and the endpoint where the conversation is delivered.
+The Conversational AI Platform lets you build voice agents that talk to your users in apps and over the phone. You save an agent's configuration once in your project, then run it in as many conversations as you need, from a single REST API.
 
-Agora supports three Voice Agent paths: **in apps**, **Agent Studio**, and **on dedicated devices**. Choose **In apps** if your agent lives in a web, mobile, desktop, or backend-assisted app experience that you build with code. Choose **Agent Studio** if you want to build, deploy, and monitor agents in Agora Console without writing integration code, including agents that handle phone calls. Choose **On dedicated devices** if your endpoint is embedded or hardware-first, such as a toy, wearable, kiosk, or companion. Use the quickstart that matches your path to jump directly into the right implementation workflow.
+:::info
+The Conversational AI Platform is in Preview. During the Preview, agent sessions run in North America (US). Geofencing isn't supported.
+:::
+
+## How the Platform works
+
+The Platform separates setting up an agent from when and where you run it. In your project, you save agent configurations and the secrets they use, such as API keys for your ASR, LLM, and TTS providers. You also import the phone numbers that agents call from and answer. Then you start sessions and campaigns that run your agents.
+
+The Platform has five building blocks, each scoped to a single Agora project:
+
+- **[Agents](/en/api-reference/api-ref/conversational-ai/platform/create-agent)**: An agent is a saved configuration that defines how your voice agent behaves: its instructions, greeting, variables, and the models that power it. A project can have many agents, for example one for support and one for sales. You create an agent once, then use it to start sessions and campaigns, and to answer calls to your phone numbers.
+- **[Secrets](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set)**: A secret set stores provider API keys and other credentials. Instead of embedding a key in an agent's configuration, you refer to it by name. The API never returns secret values.
+- **[Sessions](/en/api-reference/api-ref/conversational-ai/platform/start-session)**: A session is one conversation. It runs an agent in an RTC channel in your app, or in a phone call. To test a configuration without saving it, you can start an [ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session) with the agent configuration in the request.
+- **[Phone numbers](/en/api-reference/api-ref/conversational-ai/platform/create-number)**: A phone number connects your agents to the phone network. Agents place calls from your numbers and answer calls made to them. You import numbers that your carrier assigned to you, with their SIP trunk settings, and choose which agent answers each number.
+- **[Campaigns](/en/api-reference/api-ref/conversational-ai/platform/create-campaign)**: You create a campaign to call a list of contacts with a saved agent, right away or on a schedule. Each call starts a phone session.
+
+Together, these building blocks let one agent handle conversations across your app and the phone network. For example, a support team might store its LLM key in a secret set, create a support agent that references it, and assign the agent to its support phone number. The same agent then answers inbound calls, talks to customers in the team's app through RTC sessions, and calls customers back through a campaign.
+
+## Key capabilities
+
+With the Platform, you can:
+
+- **Personalize every conversation**: Declare variables in an agent, such as a customer's name, and use them in its instructions and greeting. You pass the values when you start a session, or for each contact in a campaign.
+- **Get structured results**: Ask an agent to extract values from each conversation after it ends, such as whether a customer confirmed an appointment. You get the results when you retrieve the session.
+- **Use managed mode or BYOK**: Use managed mode to let Agora provide access to supported ASR, LLM, and TTS models, or bring your own key to use your provider account. Store your keys in secret sets.
+- **Update agents safely**: When you update an agent, every subsequent session uses the new configuration. Sessions that are already running keep the configuration they started with.
+- **Control conversation data**: For each session, choose whether Agora retains its conversation data or discards it. If you discard the data, structured results aren't available for that session.
+
+{/* TODO(platform-confirm): Add runtime session control (Update a session, Speak, Inject context, Interrupt) once engineering confirms these operations ship in the Preview. They weren't deployed on staging on 2026-10-20. */}
+
+## Choose your path
+
+Choose the path that matches where your users talk to your agent:
 
 <Cards>
   <Card
-    title="In apps quickstart"
+    title="In apps"
     href="/en/ai/platform/get-started/quickstart"
-    description="Build the minimal backend-plus-client flow and get a working voice agent running quickly."
+    description="Create an agent, start a session in an RTC channel from your server, and talk to it from your app."
   />
   <Card
-    title="Agent Studio quickstart"
-    href="/en/ai/studio/quickstart"
-    description="Create and test your first agent in Agora Console from a pre-built template."
+    title="Phone calls"
+    href="/en/api-reference/api-ref/conversational-ai/platform/create-number"
+    description="Import a phone number, route inbound calls to an agent, and place outbound calls and campaigns."
   />
   <Card
-    title="Dedicated devices quickstart"
-    href="/en/ai/device-kit/start-here/quickstart"
-    description="Bring up the Convo AI Device Kit quickly and verify the end-to-end device workflow."
+    title="Agent Studio"
+    href="/en/ai/studio"
+    description="Build, test, and deploy agents in Agora Console without writing integration code."
+  />
+  <Card
+    title="REST API reference"
+    href="/en/api-reference/api-ref/conversational-ai/platform"
+    description="Explore every Platform endpoint, with request and response examples."
   />
 </Cards>
 
-## Capabilities
+{/* TODO(platform-docs): Point the Phone calls card to the phone guides (Import a phone number, Connect a number to an agent, Make an outbound call, Run a campaign) once they exist. */}
 
-No matter where you ship it, a Voice Agent usually has the same core layers:
+## What's not in the Preview
 
-- **Real-time transport**: moves audio, events, and conversation state between the user and the agent with low latency.
-- **Agent runtime**: manages the session lifecycle, turn taking, interruptions, memory, and tool orchestration.
-- **Models**: provide ASR, LLM, TTS, and optional multimodal capabilities.
-- **Endpoint**: presents the experience to the user, either through an app or a dedicated device.
+The Preview supports agents that use separate ASR, LLM, and TTS models, in apps and over the phone. The following aren't available in the Preview:
 
-The first three layers stay conceptually similar across the docs. The sidebar splits by how you build the agent and where it runs, because app teams, Agent Studio users, and device teams need different implementation workflows.
+- Realtime agents built on a multimodal LLM (MLLM).
+- Session history through the API, such as transcripts, turns, and recordings.
+- Managing webhooks and reading an event log through the API. [Notification events](/en/ai/reference/event-types) for sessions, RTC, and telephony are available.
 
-## How this section is organized
-
-The AI sidebar is structured in three paths:
-
-- **In apps**: for web, mobile, desktop, and backend-assisted app experiences that you build with code.
-- **Agent Studio**: for building, deploying, and monitoring agents in Agora Console, including inbound and outbound phone calls through Elastic SIP Trunk.
-- **On dedicated devices**: for embedded or hardware-first endpoints such as toys, wearables, kiosks, and companions.
-
-All three paths share the same Voice Agent idea, but they differ in what teams need to build next. App teams usually care first about session orchestration, UI, model behavior, and runtime events. Agent Studio users usually care first about prompts, model configuration, telephony, and call analytics. Device teams usually care first about bring-up, networking, firmware, controls, and hardware integration.
-
-<a id="on-software-clients" />
-<a id="for-software-clients" />
+To build with these features now, use the [Voice Agent API](/en/ai). The Voice Agent API remains available alongside the Platform.
