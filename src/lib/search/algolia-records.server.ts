@@ -1,10 +1,14 @@
 import { readdir, readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { structure } from 'fumadocs-core/mdx-plugins';
+import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
 import type { DocumentRecord } from 'fumadocs-core/search/algolia';
 import yaml from 'js-yaml';
+import type { Root } from 'mdast';
 import remarkDirective from 'remark-directive';
 import remarkMdx from 'remark-mdx';
+import { visit } from 'unist-util-visit';
+import type { VFile } from 'vfile';
 import { buildDocPath } from '../docs-routing';
 import { getSearchEntryMetadata } from '../docs-search';
 import type { AppLocale } from '../i18n/i18n-config';
@@ -238,8 +242,13 @@ export function buildAlgoliaOpenApiRecord({
  */
 export function extractDocSearchContent(markdown: string) {
   const plugins = markdown.includes('<Accordion')
-    ? [remarkMdx, remarkDirective, remarkAccordionHeadings]
-    : [remarkDirective];
+    ? [
+        remarkMdx,
+        remarkDirective,
+        remarkAccordionHeadings,
+        remarkSearchTableCells,
+      ]
+    : [remarkDirective, remarkSearchTableCells];
   const extracted = structure(markdown, plugins, {
     types: STRUCTURE_CONTENT_TYPES,
   });
@@ -516,4 +525,18 @@ function flattenSchemaNode(node: {
   ].filter(
     (value): value is string => typeof value === 'string' && Boolean(value),
   );
+}
+
+// Source-backed GFM table cells can include their surrounding pipe delimiters.
+function remarkSearchTableCells() {
+  return (tree: Root, file: VFile) => {
+    visit(tree, 'tableCell', (node) => {
+      replaceSource(
+        file,
+        node,
+        (s) => s.stringify(node).replace(/^\s*\|\s*|\s*\|\s*$/g, ''),
+        'search',
+      );
+    });
+  };
 }

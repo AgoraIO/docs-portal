@@ -5,6 +5,7 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import { describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
@@ -145,7 +146,8 @@ describe('FumadocsOpenApiContent', () => {
       ['parameters-header', 'traceId'],
       ['parameters-cookie', 'sessionId'],
     ]) {
-      const section = document.getElementById(id)?.nextElementSibling;
+      const section =
+        document.getElementById(id)?.parentElement?.nextElementSibling;
       expect(section).toBeTruthy();
       expect(section).toHaveTextContent(name);
       expect(section).not.toHaveTextContent('Filter Properties');
@@ -586,7 +588,7 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
-  it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
+  it('keeps generated language selection when an operation does not define x-codeSamples', async () => {
     render(
       <FumadocsOpenApiContent
         pageProps={{
@@ -637,20 +639,22 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
-    expect(
-      await screen.findByRole('tab', { name: 'cURL' }),
-    ).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
-    const generatedPreview = screen.getByTestId('openapi-code-preview');
+    const generatedPreview = await screen.findByTestId('openapi-code-preview');
+    const languageSelector = within(generatedPreview).getByRole('combobox');
+    expect(languageSelector).toHaveTextContent('cURL');
+    const user = userEvent.setup();
+    await user.click(languageSelector);
+    await user.click(await screen.findByRole('option', { name: 'JavaScript' }));
+    await waitFor(() =>
+      expect(languageSelector).toHaveTextContent('JavaScript'),
+    );
     expect(
       within(generatedPreview)
-        .getByRole('tabpanel')
-        .querySelector('.fd-scroll-container'),
+        .getByRole('region')
+        .closest('.fd-scroll-container'),
     ).toHaveAttribute('data-openapi-code-viewport', '');
     expect(
-      screen
-        .getByRole('tab', { name: 'cURL' })
-        .closest('.openapi-request-examples'),
+      languageSelector.closest('.openapi-request-examples'),
     ).not.toHaveAttribute('data-markdown-ignore');
     expect(
       screen.getByText('Response example').closest('.openapi-response-example'),
@@ -1923,10 +1927,10 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = screen.getByRole('heading', {
       name: 'Path Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
 
     expect(within(pathSection).getByText('appid')).toBeInTheDocument();
     expect(within(pathSection).getByText('resourceid')).toBeInTheDocument();
@@ -2502,10 +2506,11 @@ describe('FumadocsOpenApiContent', () => {
     const pathParameters = await screen.findByRole('heading', {
       name: 'Path Parameters',
     });
-    const pathSection = pathParameters.nextElementSibling as HTMLElement;
+    const pathSection = pathParameters.parentElement
+      ?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const responseHeaderSection = screen
       .getByRole('heading', { name: 'Response Headers' })
       .closest('section') as HTMLElement;
@@ -2529,7 +2534,7 @@ describe('FumadocsOpenApiContent', () => {
 
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     expect(within(querySection).getByText('page_size')).toBeInTheDocument();
     expect(within(querySection).getAllByText('Range:')).toHaveLength(2);
     expect(
@@ -2991,7 +2996,11 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).not.toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
+    expect(
+      within(
+        document.querySelector('.openapi-response-example') as HTMLElement,
+      ).getByText('200'),
+    ).toBeInTheDocument();
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
     ).not.toBeInTheDocument();
@@ -3124,7 +3133,11 @@ describe('FumadocsOpenApiContent', () => {
         'Sends a custom text instruction to a specified Conversational AI agent instance.',
       ),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
+    expect(
+      within(
+        document.querySelector('.openapi-response-example') as HTMLElement,
+      ).getByText('200'),
+    ).toBeInTheDocument();
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
     ).not.toBeInTheDocument();
@@ -3289,11 +3302,6 @@ describe('FumadocsOpenApiContent', () => {
     expect(
       screen.queryByRole('heading', { name: '响应 Schema' }),
     ).not.toBeInTheDocument();
-    for (const button of screen.getAllByRole('button', {
-      name: /^(200|401)$/,
-    })) {
-      fireEvent.click(button);
-    }
     const responseScope = within(document.body);
 
     expect(
@@ -3332,6 +3340,13 @@ describe('FumadocsOpenApiContent', () => {
         'Unix timestamp, in seconds, when the streaming key was created.',
       ),
     ).toBeInTheDocument();
+    const user = userEvent.setup();
+    await user.click(await screen.findByRole('tab', { name: '401' }));
+    await waitFor(() =>
+      expect(document.body).toHaveTextContent(
+        'A 401 (Unauthorized) response status code means the request is not authorized.',
+      ),
+    );
     expect(document.body).toHaveTextContent(
       'A 401 (Unauthorized) response status code means the request is not authorized.',
     );
@@ -3549,7 +3564,7 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: 'Path Parameters' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
 
     expect(
       within(pathSection).getByText('The App ID used by this request.'),
@@ -3638,16 +3653,16 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: 'Path Parameters' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const cookieSection = screen.getByRole('heading', {
       name: 'Cookie Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
 
     const pathRow = within(pathSection)
       .getByText('itemId')
@@ -3734,10 +3749,10 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: '路径参数' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
     const querySection = screen.getByRole('heading', {
       name: '查询参数',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     expect(within(pathSection).getByText('必填')).toBeVisible();
     expect(within(querySection).queryByText('可选')).not.toBeInTheDocument();
     expect(

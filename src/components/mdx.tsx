@@ -72,6 +72,7 @@ import {
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
+import { DocsHeading } from './mdx/DocsHeading';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -1048,15 +1049,12 @@ function TabAwareHeading({
   ...props
 }: ComponentProps<'h2'> & { as: MdxHeadingLevel }) {
   const tabLabel = useContext(MdxTabLabelContext);
-  const Heading = (defaultMdxComponents[as] ?? as) as ComponentType<
-    ComponentProps<'h2'>
-  >;
 
   return (
-    <Heading {...props}>
+    <DocsHeading {...props} as={as}>
       {children}
       {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
-    </Heading>
+    </DocsHeading>
   );
 }
 

@@ -2208,7 +2208,7 @@ Web body
     );
   });
 
-  it('keeps static pages inside OpenAPI lanes on the same wide layout as generated operations', async () => {
+  it('renders static pages inside OpenAPI lanes with the docs layout and TOC', async () => {
     const staticPage = createOpenApiStaticPage();
 
     mockedGetPage.mockReturnValue(staticPage);
@@ -2227,7 +2227,7 @@ Web body
       body: {
         kind: 'mdx',
       },
-      layoutMode: 'openapi',
+      layoutMode: 'docs',
       title: 'RESTful authentication',
     });
   });
