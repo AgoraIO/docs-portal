@@ -1801,6 +1801,8 @@ override func viewDidLoad() {
 - **互动直播**：频道内的用户分为主播和观众，只有主播可以自由发言并且被其他用户看见。
 - **视频通话**：频道内的用户不区分主播和观众，所有用户都可以发言并看见彼此。
 
+<a id="rtc-web-prerequisites"></a>
+
 ## 前提条件
 
 在集成声网实时互动 Web SDK 快速实现音视频互动前，请确保开发环境满足以下要求：
@@ -2060,7 +2062,7 @@ rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 rtc.client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
 ```
 
-你可以直接将以下代码复制到 `basicEngagement.js` 文件中来快速体验互动直播，注意将 `appID`、`token` 和频道名替换为[你自己的 App ID 和临时 Token](#前提条件)以及频道名。
+你可以直接将以下代码复制到 `basicEngagement.js` 文件中来快速体验互动直播，注意将 `appID`、`token` 和频道名替换为[你自己的 App ID 和临时 Token](#rtc-web-prerequisites)以及频道名。
 
 <Tabs defaultValue="live" groupId="mode" persist>
 <TabsList>
