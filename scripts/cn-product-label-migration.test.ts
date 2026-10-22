@@ -39,6 +39,11 @@ const products = [...new Set(manifest.documents.map((doc) => doc.product))].map(
   (product) => [product, sourceLabels.get(product)!] as const,
 );
 const tempDirs: string[] = [];
+const scenarioPreparationPages = new Set([
+  'content/docs/zh-CN/solutions/game-voice/build/enable-service.mdx',
+  'content/docs/zh-CN/solutions/one-to-one-live/rtm/build/setup-and-access/enable-service.mdx',
+  'content/docs/zh-CN/solutions/one-to-one-live/custom-signaling/build/setup-and-access/enable-service.mdx',
+]);
 
 function createState(product: string, productLabel?: string) {
   const sourcePath = `docs/${product}/enable-service.mdx`;
@@ -228,10 +233,16 @@ describe('legacy product display names', () => {
 describe('approved Chinese product label content repairs', () => {
   it.each(manifest.documents)(
     'restores display names in $path',
-    ({ path: file, replacements }) => {
+    ({ path: file, label, replacements }) => {
       const content = readFileSync(path.resolve(file), 'utf8');
-      for (const replacement of replacements)
-        expect(content).toContain(replacement.after);
+      if (scenarioPreparationPages.has(file))
+        expect(content).toContain('title: "接入准备"');
+      for (const replacement of replacements) {
+        expect(content).not.toContain(replacement.before);
+        expect(content).toContain(
+          scenarioPreparationPages.has(file) ? label : replacement.after,
+        );
+      }
     },
   );
 
