@@ -45,6 +45,22 @@ describe('published CN index export', () => {
     expect(records[1].content).toContain('示例标题 [#not-a-section]');
   });
 
+  it('indexes the first heading immediately after an Accordion opening tag', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n### v4.6 [#v46]\n\n<Accordion title="v4.6" id="v46" headingLevel="2">\n    ### 升级必看 [#upgrade]\n\n    更新调用方式。\n  </Accordion>',
+      readRenderedHtml: async () =>
+        '<h2 id="v46">v4.6</h2><h3 id="upgrade">升级必看</h3><p>更新调用方式。</p>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#v46`,
+      `${url.replace('/zh-CN', '')}#upgrade`,
+    ]);
+    expect(records[1].content).toContain('更新调用方式。');
+  });
+
   it('does not promote indented examples just because a non-heading element has the same ID', async () => {
     const records = await exportPublishedCnRecords({
       routes: [route],

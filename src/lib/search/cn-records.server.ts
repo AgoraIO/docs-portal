@@ -84,26 +84,42 @@ export function extractPublishedCnSections(
   // 平台和折叠容器导出后可能保留四空格缩进，remark 会把正文误当代码。
   // 非平台页必须由真实 HTML 标题确认锚点，不能把普通代码示例提升成章节。
   if (route.platform || renderedHeadingIds?.size) {
+    const accordionOpening = /^[ \t]*<Accordion\b[^\r\n]*>\r?\n/;
     while (true) {
       const blocks = tree.children.filter((node) => {
-        if (node.type !== 'code' || node.lang || !node.position) return false;
+        if ((node.type !== 'code' && node.type !== 'html') || !node.position)
+          return false;
+        const headingIds = [
+          ...node.value.matchAll(/^\s*#{1,6}\s+.+\s+\[#(.+)\]\s*$/gm),
+        ].map((match) => match[1]);
+        if (node.type === 'html') {
+          // 紧跟开标签的第一个标题会被 remark 吞进 HTML 节点，而不是缩进代码块。
+          return (
+            accordionOpening.test(node.value) &&
+            headingIds.some((id) => renderedHeadingIds?.has(id))
+          );
+        }
+        if (node.lang) return false;
         const start = node.position.start.offset ?? 0;
         const source = markdown.slice(start, node.position.end.offset);
         return (
           /^(?: {4}|\t)/.test(source) &&
           !/^\s*(?:`{3,}|~{3,})/.test(source) &&
-          [...node.value.matchAll(/^\s*#{1,6}\s+.+\s+\[#(.+)\]\s*$/gm)].some(
-            (match) => route.platform || renderedHeadingIds?.has(match[1]),
-          )
+          headingIds.some((id) => route.platform || renderedHeadingIds?.has(id))
         );
       });
       if (!blocks.length) break;
       for (const node of blocks.reverse()) {
-        if (node.type !== 'code' || !node.position) continue;
+        if ((node.type !== 'code' && node.type !== 'html') || !node.position)
+          continue;
         let value = node.value;
+        if (node.type === 'html') {
+          value = value.replace(accordionOpening, '$&\n');
+        }
         // Slot 中的代码被序列化到表格单元格时，闭合 fence 后会残留列分隔符。
         // 只在确认存在表格代码单元格的生成块内恢复两列代码的 fence 边界。
         if (
+          node.type === 'code' &&
           /^\s*\|\s*`{3,}[^`\r\n]*$/m.test(value) &&
           /^\s*\|[\s:|-]+\|\s*$/m.test(value)
         ) {
