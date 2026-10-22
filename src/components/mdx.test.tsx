@@ -389,6 +389,31 @@ describe('common MDX registry', () => {
     );
   });
 
+  it('renders explicitly sized inline icons without a zoom button', () => {
+    const InlineImage = getMDXComponents().InlineImage as ComponentType<
+      ComponentProps<'img'>
+    >;
+
+    expect(InlineImage).toBeTypeOf('function');
+    render(
+      <p>
+        点击{' '}
+        <InlineImage
+          alt="运行"
+          src="https://web-cdn.agora.io/docs-files/1687670569781"
+          width={25}
+        />{' '}
+        开始编译。
+      </p>,
+    );
+
+    const image = screen.getByRole('img', { name: '运行' });
+    expect(image).toHaveAttribute('width', '25');
+    expect(image).toHaveAttribute('referrerpolicy', 'no-referrer');
+    expect(image).toHaveClass('inline-block', 'align-middle', 'm-0', 'h-auto');
+    expect(image.closest('button')).toBeNull();
+  });
+
   it('opens MDX images in a zoom dialog', async () => {
     const components = getMDXComponents();
     const Image = components.img as ImageComponent;
@@ -399,6 +424,10 @@ describe('common MDX registry', () => {
         src="https://assets-docs.agora.io/images/product.png"
       />,
     );
+
+    expect(
+      screen.getByRole('img', { name: 'Product Architecture' }),
+    ).toHaveAttribute('referrerpolicy', 'no-referrer');
 
     fireEvent.click(
       screen.getByRole('button', {
@@ -418,9 +447,39 @@ describe('common MDX registry', () => {
       'src',
       'https://assets-docs.agora.io/images/product.png',
     );
+    expect(previewImage).toHaveAttribute('referrerpolicy', 'no-referrer');
     expect(dialog).toHaveClass('w-fit');
     expect(dialog).not.toHaveClass('w-full');
     expect(dialog).toHaveClass('justify-items-center');
+  });
+
+  it('sizes a documentation screenshot without shrinking the zoom preview', async () => {
+    const Image = getMDXComponents().DocsImage as ComponentType<
+      ComponentProps<'img'> & { displayWidth?: string }
+    >;
+    expect(Image).toBeTypeOf('function');
+
+    render(
+      <Image
+        alt="在线 K 歌房界面"
+        src="https://web-cdn.agora.io/docs-files/1696931506007"
+        displayWidth="40%"
+      />,
+    );
+
+    const thumbnail = screen.getByRole('img', { name: '在线 K 歌房界面' });
+    const trigger = screen.getByRole('button', {
+      name: 'Zoom image: 在线 K 歌房界面',
+    });
+    expect(trigger).toHaveStyle({ width: '40%' });
+    expect(thumbnail).toHaveAttribute('referrerpolicy', 'no-referrer');
+    fireEvent.click(trigger);
+    const dialog = await screen.findByRole('dialog');
+    const preview = within(dialog).getByRole('img', {
+      name: '在线 K 歌房界面',
+    });
+    expect(preview).toHaveAttribute('referrerpolicy', 'no-referrer');
+    expect(preview.style.width).toBe('');
   });
 
   it('routes normalized relative docs links through TanStack Router', async () => {

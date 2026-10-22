@@ -34,6 +34,7 @@ import {
   Children,
   type ComponentProps,
   type ComponentType,
+  type CSSProperties,
   createContext,
   createElement,
   type Dispatch,
@@ -2137,9 +2138,33 @@ function isDocsRouteHref(href: string) {
   );
 }
 
-function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
+function InlineImage({ alt, ...props }: ComponentProps<'img'>) {
+  return (
+    <img
+      referrerPolicy="no-referrer"
+      {...props}
+      alt={alt}
+      className="not-prose m-0 inline-block h-auto max-w-full align-middle"
+    />
+  );
+}
+
+function ZoomableImage({
+  alt = '',
+  src,
+  displayWidth,
+  referrerPolicy = 'no-referrer',
+  ...props
+}: ComponentProps<'img'> & { displayWidth?: CSSProperties['width'] }) {
   if (typeof src !== 'string' || src.length === 0) {
-    return <FumadocsImage alt={alt} src={src} {...props} />;
+    return (
+      <FumadocsImage
+        alt={alt}
+        src={src}
+        referrerPolicy={referrerPolicy}
+        {...props}
+      />
+    );
   }
 
   const title = alt || 'Documentation image';
@@ -2150,9 +2175,19 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
         <button
           aria-label={`Zoom image: ${title}`}
           className="block cursor-zoom-in"
+          style={
+            displayWidth === undefined
+              ? undefined
+              : { width: displayWidth, maxWidth: '100%' }
+          }
           type="button"
         >
-          <FumadocsImage alt={alt} src={src} {...props} />
+          <FumadocsImage
+            alt={alt}
+            src={src}
+            referrerPolicy={referrerPolicy}
+            {...props}
+          />
         </button>
       </DialogTrigger>
       <DialogContent className="max-h-[calc(100vh-2rem)] w-fit max-w-[calc(100vw-2rem)] justify-items-center border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
@@ -2164,6 +2199,7 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           alt={alt}
           className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] rounded-md object-contain shadow-2xl"
           src={src}
+          referrerPolicy={referrerPolicy}
         />
       </DialogContent>
     </Dialog>
@@ -2180,6 +2216,8 @@ export function getMDXComponents(
     CalloutContainer: DocsCalloutContainer,
     table: createDocsTableComponent(context?.locale),
     img: ZoomableImage,
+    DocsImage: ZoomableImage,
+    InlineImage,
     h2: (props) => <TabAwareHeading as="h2" {...props} />,
     h3: (props) => <TabAwareHeading as="h3" {...props} />,
     h4: (props) => <TabAwareHeading as="h4" {...props} />,
