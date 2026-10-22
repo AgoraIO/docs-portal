@@ -1927,6 +1927,15 @@
 }
 
 @layer utilities {
+  .prose .docs-body > .docs-console-api-entry + h2 {
+    margin-top: 1.75rem;
+    padding-top: 0;
+  }
+
+  .prose .docs-body > .docs-console-api-entry + h2::before {
+    content: none;
+  }
+
   /* Override prose/card utilities only for the teleoperation scenario grid. */
   .docs-teleoperation-scenarios {
     margin-block: 1.25rem;
