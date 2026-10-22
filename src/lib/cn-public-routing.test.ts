@@ -93,8 +93,9 @@ describe('CN public route navigation', () => {
   ])('leaves non-document path %s unchanged', (pathname) => {
     const rewrite = getCnPublicRouteRewrite('cn');
     const url = new URL(pathname, 'https://docs.local');
+    const original = url.toString();
     expect(rewrite?.input?.({ url })?.toString() ?? url.toString()).toBe(
-      url.toString(),
+      original,
     );
   });
 
