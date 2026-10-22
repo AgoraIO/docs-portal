@@ -623,7 +623,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/index.mdx': '2026-10-22T06:06:50.000Z',
-  'content/docs/en/ai/platform/meta.json': '2026-10-22T06:06:50.000Z',
+  'content/docs/en/ai/platform/meta.json': '2026-10-22T12:41:21.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/asr/ares.mdx': '2026-10-22T06:06:50.000Z',
@@ -721,7 +721,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/models/tts/typecast.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/tts/xai.mdx': '2026-10-22T06:06:50.000Z',
-  'content/docs/en/ai/platform/release-notes.mdx': '2026-10-22T06:06:50.000Z',
+  'content/docs/en/ai/platform/release-notes.mdx': '2026-10-22T12:41:21.000Z',
   'content/docs/en/ai/pricing.md': '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/product-overview.md': '2026-05-18T10:29:54.000Z',
   'content/docs/en/ai/production-checklist.md': '2026-05-19T10:33:06.000Z',
@@ -746,7 +746,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-09-28T07:48:11.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-10-22T12:41:21.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -6370,7 +6370,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtm/reference/release-notes.md':
     '2026-07-02T06:58:41.000Z',
   'content/docs/en/realtime-media/rtm/reference/release-notes.mdx':
-    '2026-09-28T07:48:11.000Z',
+    '2026-10-20T08:13:51.000Z',
   'content/docs/en/realtime-media/rtm/reference/rest-api.md':
     '2026-06-28T06:41:08.000Z',
   'content/docs/en/realtime-media/rtm/reference/security.md':
