@@ -83,6 +83,7 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
@@ -2227,6 +2228,7 @@ export function getMDXComponents(
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
     Cards,
+    RepositoryCardTitle,
     CommandBlock,
     Tabs,
     Tab: FumadocsTab,

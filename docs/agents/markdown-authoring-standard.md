@@ -18,6 +18,20 @@ first; use MDX only for the repo-approved primitives listed here.
 - Use a code language listed in `source.config.ts`. If no better language
   exists, use `text` for plain output.
 
+## Repository Cards
+
+Use `RepositoryCardTitle` inside a Card's `title` to place a repository host icon
+beside the unchanged repository name. Supported providers are `gitee` and
+`github`. The platform label is screen-reader-only; do not append it to the
+visible title or use the separate Card icon slot.
+
+```mdx
+<Cards>
+  <Card title={<RepositoryCardTitle provider="gitee">API-Examples</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples" />
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO/API-Examples" />
+</Cards>
+```
+
 ## Callouts
 
 Use directive callouts with exactly three colons. The opening and closing
