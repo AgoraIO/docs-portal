@@ -43,6 +43,11 @@ import {
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
 import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
 import {
+  isPublicCnSearchUrl,
+  toCnContentSearchUrl,
+} from '@/lib/search/cn-search-urls.mjs';
+import { DOCS_REGION } from '@/lib/site-region';
+import {
   PlatformHeaderTabs,
   PlatformPageProvider,
   PlatformPanel,
@@ -698,7 +703,11 @@ function getSafeStoredDocsHref(href: string) {
 }
 
 function getDocsPageKey(url: URL) {
-  const pathname = normalizePathname(url.pathname);
+  const rawPath = normalizePathname(url.pathname);
+  const pathname =
+    DOCS_REGION === 'cn' && isPublicCnSearchUrl(rawPath)
+      ? toCnContentSearchUrl(rawPath)
+      : rawPath;
 
   if (!isDocsPagePath(pathname)) {
     return null;
