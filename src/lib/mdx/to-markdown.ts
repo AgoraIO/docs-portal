@@ -25,6 +25,7 @@ const parser = unified()
   .use(remarkMdx)
   .use(remarkDirective)
   .use(remarkGfm);
+const markdownParser = unified().use(remarkParse).use(remarkGfm);
 const tabRoots = new Set(['Tabs', 'CodeBlockTabs']);
 const tabLists = new Set(['TabsList', 'CodeBlockTabsList']);
 const tabTriggers = new Set(['TabsTrigger', 'CodeBlockTabsTrigger']);
@@ -40,7 +41,7 @@ export function toDocsMarkdown(markdown: string): string {
   function walk(
     node: Nodes,
     labels = new Map<Element, string>(),
-    inTable = false,
+    inTable?: 'html' | 'gfm',
   ) {
     if (node.type === 'code') {
       s.replace(node, () => renderCode(node));
@@ -71,8 +72,13 @@ export function toDocsMarkdown(markdown: string): string {
         value === undefined
           ? node.value.trim().startsWith('/*')
             ? ''
-            : `\`${node.value}\``
-          : String(value),
+            : { type: 'inlineCode', value: node.value }
+          : node.type === 'mdxFlowExpression'
+            ? {
+                type: 'paragraph',
+                children: [{ type: 'text', value: String(value) }],
+              }
+            : { type: 'text', value: String(value) },
       );
       return;
     }
@@ -95,13 +101,27 @@ export function toDocsMarkdown(markdown: string): string {
         walk(
           child,
           labels,
-          inTable || node.type === 'tableCell' || element?.name === 'table',
+          node.type === 'tableCell'
+            ? 'gfm'
+            : element?.name === 'table'
+              ? 'html'
+              : inTable,
         );
     }
     if (element) {
       const panelLabel = labels.get(element);
-      s.replace(element, () =>
-        renderElement(element, s, panelLabel, slots.get(element), inTable),
+      s.replace(
+        element,
+        element.name === 'code' || element.name === 'kbd'
+          ? { type: 'inlineCode', value: literalText(element) }
+          : () =>
+              renderElement(
+                element,
+                s,
+                panelLabel,
+                slots.get(element),
+                inTable,
+              ),
       );
     } else if (node.type === 'containerDirective') {
       s.replace(node, () => {
@@ -134,7 +154,7 @@ function renderElement(
   s: MarkdownWriter,
   panelLabel?: string,
   slot?: { title: string; id: string; definition: boolean },
-  inTable = false,
+  inTable?: 'html' | 'gfm',
 ): string {
   const name = node.name ?? '';
   const body =
@@ -192,7 +212,6 @@ function renderElement(
   }
   if (['strong', 'b'].includes(name)) return `**${body}**`;
   if (['em', 'i'].includes(name)) return `*${body}*`;
-  if (['code', 'kbd'].includes(name)) return `\`${body}\``;
   if (name === 'br') return inTable ? '; ' : '\n';
   if (name === 'hr') return '---';
   if (name === 'blockquote') return quote(body);
@@ -204,17 +223,40 @@ function renderElement(
       .map((child) => s.stringify(child))
       .filter(Boolean)
       .join(inTable ? '; ' : '\n');
-  if (name === 'Parameter') {
+  if (name === 'Parameter' || name === 'ParameterList') {
     const type = attribute(node, 'type');
+    const required = staticAttribute(node, 'required');
+    const requiredState =
+      required === true || required === 'true'
+        ? 'required'
+        : staticAttribute(node, 'optional') === true ||
+            required === false ||
+            required === 'false'
+          ? 'optional'
+          : '';
+    const details = ['defaultValue', 'possibleValues'].flatMap((key) => {
+      const value = staticAttribute(node, key);
+      if (value === undefined) return [];
+      const text =
+        typeof value === 'string' ? value || '""' : JSON.stringify(value);
+      return [
+        `${key === 'defaultValue' ? 'Default value' : 'Possible values'}: ${renderInlineCode(text, s, inTable === 'gfm')}`,
+      ];
+    });
     return labeled(
       [
-        title ? `\`${title}\`` : '',
+        title
+          ? name === 'Parameter'
+            ? renderInlineCode(title, s, inTable === 'gfm')
+            : title
+          : '',
         type ? `(${type})` : '',
-        attribute(node, 'required') === 'true' ? 'required' : '',
+        requiredState,
+        staticAttribute(node, 'nullable') === true ? 'nullable' : '',
       ]
         .filter(Boolean)
         .join(' '),
-      body,
+      [...details, body].filter(Boolean).join('\n\n'),
     );
   }
   if (name === 'Accordion') {
@@ -241,6 +283,19 @@ function renderElement(
   );
 }
 
+function renderInlineCode(value: string, s: MarkdownWriter, inTable = false) {
+  const markdown = s.stringify({ type: 'inlineCode', value });
+  return inTable ? markdown.replaceAll('|', '\\|') : markdown;
+}
+
+function literalText(node: Nodes): string {
+  if (node.type === 'mdxTextExpression' || node.type === 'mdxFlowExpression') {
+    return String(expressionValue(node.data?.estree?.body[0]) ?? node.value);
+  }
+  if ('value' in node && typeof node.value === 'string') return node.value;
+  return 'children' in node ? node.children.map(literalText).join('') : '';
+}
+
 function renderHtmlTable(node: Element, s: MarkdownWriter) {
   const rows: Element[] = [];
   function collect(parent: Nodes) {
@@ -265,7 +320,7 @@ function renderHtmlTable(node: Element, s: MarkdownWriter) {
     );
     for (const cell of elements) {
       while (cells[column] !== undefined) column++;
-      const text = s.inner(cell).replaceAll('\n', '; ').replaceAll('|', '\\|');
+      const text = s.inner(cell).replaceAll('\n', '; ');
       const colspan = Math.max(
         1,
         Number(attribute(cell, 'colSpan') || attribute(cell, 'colspan')) || 1,
@@ -300,13 +355,25 @@ function renderHtmlTable(node: Element, s: MarkdownWriter) {
       ),
     ].join(' / '),
   );
-  const formatRow = (cells: string[]) =>
-    `| ${Array.from({ length: width }, (_, column) => cells[column] ?? '').join(' | ')} |`;
-  return [
-    formatRow(headers),
-    formatRow(headers.map(() => '---')),
-    ...grid.slice(headerCount).map((row) => formatRow(row.cells)),
-  ].join('\n');
+  return s.stringify({
+    type: 'table',
+    children: [headers, ...grid.slice(headerCount).map((row) => row.cells)].map(
+      (cells) => ({
+        type: 'tableRow',
+        children: Array.from({ length: width }, (_, column) => {
+          const text = cells[column] ?? '';
+          const paragraph = markdownParser.parse(text).children[0];
+          return {
+            type: 'tableCell',
+            children:
+              paragraph?.type === 'paragraph'
+                ? paragraph.children
+                : [{ type: 'text', value: text }],
+          };
+        }),
+      }),
+    ),
+  });
 }
 
 function collectLabels(node: Element, s: MarkdownWriter) {
@@ -527,9 +594,16 @@ function renderCode(node: Code) {
 }
 
 function createMarkdownWriter() {
-  const replacements = new Map<Nodes, string | (() => string)>();
+  const replacements = new Map<Nodes, string | Nodes | (() => string)>();
+  const gfm = gfmToMarkdown();
+  const handlers: NonNullable<Options['handlers']> = { ...defaultHandlers };
+  function addHandlers(extension: Options) {
+    for (const child of extension.extensions ?? []) addHandlers(child);
+    Object.assign(handlers, extension.handlers);
+  }
+  addHandlers(gfm);
   const options: Options = {
-    extensions: [gfmToMarkdown()],
+    extensions: [gfm],
     handlers: {},
     bullet: '-',
   };
@@ -543,15 +617,15 @@ function createMarkdownWriter() {
     'textDirective',
     'leafDirective',
   ];
-  for (const type of new Set([
-    ...Object.keys(defaultHandlers),
-    ...customTypes,
-  ])) {
-    const fallback = defaultHandlers[type as keyof typeof defaultHandlers];
+  for (const type of new Set([...Object.keys(handlers), ...customTypes])) {
+    const fallback = handlers[type as keyof typeof handlers];
     const handler: Handle = (node, parent, state, info) => {
       const replacement = replacements.get(node);
-      if (replacement !== undefined)
-        return typeof replacement === 'string' ? replacement : replacement();
+      if (replacement !== undefined) {
+        if (typeof replacement === 'string') return replacement;
+        if (typeof replacement === 'function') return replacement();
+        return state.handle(replacement, parent, state, info);
+      }
       return fallback ? fallback(node, parent, state, info) : '';
     };
     if (fallback) Object.assign(handler, fallback);
@@ -594,7 +668,7 @@ function createMarkdownWriter() {
   return {
     stringify,
     inner,
-    replace(node: Nodes, value: string | (() => string)) {
+    replace(node: Nodes, value: string | Nodes | (() => string)) {
       replacements.set(node, value);
     },
   };

@@ -8,6 +8,102 @@ import { describe, expect, it } from 'vitest';
 import { toDocsMarkdown } from './to-markdown';
 
 describe('documentation Markdown export', () => {
+  it('keeps static expression strings as literal text instead of Markdown formatting', () => {
+    const markdown = toDocsMarkdown(
+      '{"*required*"}\n\n{"[x](https://example.com)"}\n\nUse {"*required*"}.',
+    );
+    const tree = unified().use(remarkParse).parse(markdown);
+    const text: string[] = [];
+    visit(tree, 'text', (node) => {
+      text.push(node.value);
+    });
+    expect(text).toEqual([
+      '*required*',
+      '[x](https://example.com)',
+      'Use *required*.',
+    ]);
+  });
+
+  it.each([
+    '<table><tr><th>Value</th><th>Other</th></tr><tr><td><code>a|b</code></td><td>ok</td></tr></table>',
+    '| Value | Other |\n| --- | --- |\n| <code>a\\|b</code> | ok |',
+    '| Value | Other |\n| --- | --- |\n| `a\\|b` | ok |',
+  ])('preserves pipe characters in inline code inside tables: %s', (source) => {
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .parse(toDocsMarkdown(source));
+    const values: string[] = [];
+    visit(tree, 'tableRow', (node) => {
+      expect(node.children).toHaveLength(2);
+    });
+    visit(tree, 'inlineCode', (node) => {
+      values.push(node.value);
+    });
+    expect(values).toEqual(['a|b']);
+  });
+
+  it('preserves inline HTML code identifiers, backslashes and backticks literally', () => {
+    const markdown = toDocsMarkdown(
+      'Use <code>start_time</code>, <code>libagora_video_process_extension.so</code>, <kbd>C:\\Users</kbd>, and <code>a`b</code>.',
+    );
+    const values: string[] = [];
+    visit(unified().use(remarkParse).parse(markdown), 'inlineCode', (node) => {
+      values.push(node.value);
+    });
+    expect(values).toEqual([
+      'start_time',
+      'libagora_video_process_extension.so',
+      'C:\\Users',
+      'a`b',
+    ]);
+  });
+
+  it('keeps parameter defaults, allowed values and required/optional/nullable state', () => {
+    const markdown = toDocsMarkdown(
+      '<ParameterList title="Metadata" nullable optional>\n<Parameter name="state" type="string" required={false} nullable possibleValues="START, ANSWERED" defaultValue="START">State.</Parameter>\n<Parameter name="limit" type="number" required defaultValue={0}>Maximum.</Parameter>\n</ParameterList>',
+    );
+    expect(markdown).toContain('**Metadata optional nullable**');
+    expect(markdown).toContain('**`state` (string) optional nullable**');
+    expect(markdown).toContain('Default value: `START`');
+    expect(markdown).toContain('Possible values: `START, ANSWERED`');
+    expect(markdown).toContain('**`limit` (number) required**');
+    expect(markdown).toContain('Default value: `0`');
+    expect(markdown).toContain('State.');
+  });
+
+  it('keeps pipe characters in parameter defaults inside HTML table cells', () => {
+    const markdown = toDocsMarkdown(
+      '<table><tr><th>Value</th></tr><tr><td><Parameter name="option" defaultValue="a|b" /></td></tr></table>',
+    );
+    const tree = unified().use(remarkParse).use(remarkGfm).parse(markdown);
+    const values: string[] = [];
+    visit(tree, 'tableRow', (node) => {
+      expect(node.children).toHaveLength(1);
+    });
+    visit(tree, 'inlineCode', (node) => {
+      values.push(node.value);
+    });
+    expect(values).toEqual(['option', 'a|b']);
+  });
+
+  it.each([
+    [
+      'ai/best-practices/regional-restrictions.mdx',
+      'Possible values: `GLOBAL, NORTH_AMERICA, EUROPE, ASIA, INDIA, JAPAN`',
+    ],
+    [
+      'ai/models/mllm/openai-gpt-live.mdx',
+      'Default value: `wss://api.openai.com/v1/live/sessions`',
+    ],
+  ])('retains parameter contract details in %s', (path, value) => {
+    const source = readFileSync(`content/docs/en/${path}`, 'utf8').replace(
+      /^---\r?\n[\s\S]*?\r?\n---\r?\n/,
+      '',
+    );
+    expect(toDocsMarkdown(source)).toContain(value);
+  });
+
   it.each([
     'api-reference/api-ref/speech-to-text/rest-api-v5/query.mdx',
     'api-reference/faq/integration/rtm2_rtc_integration_issue.mdx',
@@ -199,8 +295,10 @@ Refresh the token before it expires.
     );
     const tree = unified().use(remarkParse).use(remarkGfm).parse(markdown);
     expect(tree.children[0].type).toBe('table');
-    expect(markdown).toContain('| Date | Usage / Audio | Usage / Video |');
-    expect(markdown).toContain('| Feb 4 | 6,000 | 0 |');
+    expect(markdown).toMatch(
+      /\| Date\s*\| Usage \/ Audio\s*\| Usage \/ Video\s*\|/,
+    );
+    expect(markdown).toMatch(/\| Feb 4\s*\| 6,000\s*\| 0\s*\|/);
     expect(markdown).not.toMatch(/<\/?(?:table|tr|th|td)/);
   });
 
