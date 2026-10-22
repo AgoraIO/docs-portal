@@ -1,6 +1,7 @@
 import { mkdir, mkdtemp, readFile, writeFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
+import remarkDirective from 'remark-directive';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { describe, expect, it } from 'vitest';
@@ -113,6 +114,103 @@ describe('migrate-legacy-docs helpers', () => {
     expect(migrated).toContain('<PlatformInline platform="ios">');
     expect(migrated).toContain('iOS 返回值');
     expect(findLegacyResidue(migrated)).toEqual([]);
+  });
+
+  it('keeps all five sibling items in an indented legacy admonition', () => {
+    const input =
+      '<Admonition type="caution" title="注意">\n  - One\n  - Two\n  - Three\n  - Four\n  - Five\n</Admonition>';
+    const migrated = transformLegacyMdx(input, createState());
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkDirective)
+      .parse(migrated);
+    expect(tree.children).toHaveLength(1);
+    const callout = tree.children[0];
+    expect(callout.type).toBe('containerDirective');
+    if (callout.type !== 'containerDirective')
+      throw new Error('Expected callout');
+    expect(
+      callout.children.find((child) => child.type === 'list'),
+    ).toMatchObject({
+      type: 'list',
+      children: [
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+        { type: 'listItem', children: [{ type: 'paragraph' }] },
+      ],
+    });
+  });
+
+  it('retains real child items and the enclosing list content column in callouts', () => {
+    const input =
+      '1. Step\n\n   <Admonition type="info">\n     - Parent\n       - Child\n     - Peer\n   </Admonition>';
+    const migrated = transformLegacyMdx(input, createState());
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkDirective)
+      .parse(migrated);
+    expect(tree.children[0]).toMatchObject({
+      type: 'list',
+      ordered: true,
+      children: [
+        {
+          type: 'listItem',
+          children: [
+            { type: 'paragraph' },
+            {
+              type: 'containerDirective',
+              children: [
+                {
+                  type: 'list',
+                  children: [
+                    {
+                      type: 'listItem',
+                      children: [
+                        { type: 'paragraph' },
+                        { type: 'list', children: [{ type: 'listItem' }] },
+                      ],
+                    },
+                    { type: 'listItem', children: [{ type: 'paragraph' }] },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+  });
+
+  it('preserves sibling and child lists in the inline admonition fallback', () => {
+    const migrated = transformAdmonitions(
+      'Before <Admonition type="info">\n  - Parent\n    - Child\n  - Peer\n</Admonition> After',
+    );
+    const tree = unified()
+      .use(remarkParse)
+      .use(remarkDirective)
+      .parse(migrated);
+    expect(
+      tree.children.find((node) => node.type === 'containerDirective'),
+    ).toMatchObject({
+      type: 'containerDirective',
+      children: [
+        {
+          type: 'list',
+          children: [
+            {
+              type: 'listItem',
+              children: [
+                { type: 'paragraph' },
+                { type: 'list', children: [{ type: 'listItem' }] },
+              ],
+            },
+            { type: 'listItem', children: [{ type: 'paragraph' }] },
+          ],
+        },
+      ],
+    });
   });
 
   it('rewrites legacy admonitions to directive fences', () => {

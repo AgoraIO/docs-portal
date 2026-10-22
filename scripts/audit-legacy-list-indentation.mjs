@@ -33,6 +33,7 @@ const canonical = (body) =>
     )
     .filter(Boolean)
     .join('\n');
+export const listContentKey = canonical;
 const structure = (body) =>
   body
     .split('\n')

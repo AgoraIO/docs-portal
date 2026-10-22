@@ -2,7 +2,7 @@
 
 日期：2026-10-22。分支：`codex/cn-newdoc-html-api-migration`，实施基线：`b33d5ebe3`。
 
-## 结果
+## 表格修复结果
 
 - 读取旧仓库全部 2,355 份 Markdown/MDX 文件，包括隐藏目录中的文档，忽略 `.git` 与依赖目录。
 - 扫描新站 6,719 份中文 Markdown/MDX 文件、4,677 个顶层表格 Slot 定义。其中 3,180 个包含无序列表。
@@ -80,6 +80,29 @@ node scripts/audit-legacy-list-indentation.mjs --source=/absolute/path/to/shengw
 ```
 
 审计需要本地旧源；普通网站构建、类型检查和回归测试不需要访问该旧仓库。
+
+## 抽查发现的提示框遗漏与补充修复
+
+表格修复后抽查8个可访问页面，发现 AI 计费页加油包提示框仍呈现一个父项、四个子项。旧源 `docs/convoai/overview/billing.mdx:145` 的五个条目均缩进两个空格，确认应为同级。
+
+根因在 `transformAdmonitions`：开标签后的 `\s*` 提前吞掉首项缩进，随后 `trimCommonIndent` 看见首行缩进为0，无法移除后续条目的容器空格。补充修复让块级及行内回退分支完整捕获正文，再移除公共缩进后转换列表。转换测试覆盖五个同级项、真实子项、外层有序列表的内容列和行内回退。
+
+新增 `scripts/audit-legacy-flow-list-indentation.mjs`，对旧源提示框与正文列表做来源对照，排除表格 Slot 和代码示例，并保留外层列表上下文。列表文字、所属产品和上下文需匹配，来源层级冲突时跳过。该回填只修改列表标记的缩进，不调整普通正文续行。
+
+- 读取2,355份旧源，提取7,717个来源列表；扫描6,719份目标文档的31,253个非表格列表块。
+- 确认并补修12份文档中的14个提示框，包括 AI 计费及API副本、ASR热词、录制合流布局及API副本、RTC计费/付费说明及旧版副本、屏幕共享和保留在Git中的MetaKit说明。
+- 本轮没有对正文列表新增推断性修复。25,462个块无法满足本轮直接来源匹配或续行保护条件，保留原样；这些不是确认的错误数，包含生成API及平台/变量展开后的内容。
+- 重新运行回填检查：0个待修复、0个文件差异，5,791个列表已匹配验证。
+- 整个PR累计修改259份正文：2,178个表格槽位加14个提示框。两轮正文变更均仅为行首缩进。
+- 最终定向回归226个通过。提示框示例在桌面及390px窄屏下均为五个同级项、零个子项；指南和API副本均已复测。原8页面9场景的18项抽查全部通过，另加API副本两项，共20项通过。
+
+补充产物：`flow-applied.json` 保留每处来源及前后内容；`flow-audit.json` 为最终只读复查；`spotcheck/pricing-callout-finding.png` 和 `spotcheck/pricing-callout-fixed.png` 为提示框前后截图。补充回填的复跑命令：
+
+```bash
+node scripts/audit-legacy-flow-list-indentation.mjs --source=/absolute/path/to/shengwang-doc-source
+```
+
+补充提交最终验证：226个定向测试通过；`bun run types:check` 和定向Biome检查通过；累计259份修改文档全部通过MDX编译。全局模式全量套件为3,698通过、2跳过、1失败，仍为已在未修改基线复现的同一个CN favicon用例，没有新增失败。完整记录为 `tests-global-followup.json`。
 
 ## 其他观察
 
