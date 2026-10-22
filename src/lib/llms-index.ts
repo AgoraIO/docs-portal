@@ -163,21 +163,15 @@ function createSectionFiles({
   group: IndexGroup;
   maxCharacters: number;
 }) {
-  const needsNumbering =
-    entries.length > 1 &&
-    renderSectionIndex(group.label, entries).length > maxCharacters;
   const chunks: IndexEntry[][] = [];
   let current: IndexEntry[] = [];
 
   for (const entry of entries) {
     const candidate = [...current, entry];
-    const label = needsNumbering
-      ? `${group.label} ${chunks.length + 1}`
-      : group.label;
 
     if (
       current.length > 0 &&
-      renderSectionIndex(label, candidate).length > maxCharacters
+      renderSectionIndex(group.label, candidate).length > maxCharacters
     ) {
       chunks.push(current);
       current = [entry];
@@ -192,8 +186,9 @@ function createSectionFiles({
   }
 
   return chunks.map((chunk, index) => {
-    const suffix = needsNumbering ? `-${index + 1}` : '';
-    const label = needsNumbering ? `${group.label} ${index + 1}` : group.label;
+    const suffix = chunks.length > 1 ? `-${index + 1}` : '';
+    const label =
+      chunks.length > 1 ? `${group.label} ${index + 1}` : group.label;
     const path = `${INDEX_DIRECTORY}/${group.slug}${suffix}.txt`;
     const content = renderSectionIndex(label, chunk);
 
