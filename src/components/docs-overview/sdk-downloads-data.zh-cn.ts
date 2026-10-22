@@ -1,3 +1,4 @@
+import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
 import type { SdkDownloadPlatform } from './sdk-downloads-data';
 
 const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
@@ -5040,6 +5041,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
       },
     ],
   },
+  zhCNRtsaSdkDownloadPlatform,
 ] as const;
 
 // Retain the classroom SDK records while hiding the retired product family.

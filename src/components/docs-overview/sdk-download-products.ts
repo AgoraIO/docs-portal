@@ -5,6 +5,7 @@ export const SDK_DOWNLOAD_PRODUCT_GROUP_ORDER = [
   'video',
   'signaling',
   'chat',
+  'rtsa',
   'iot',
   'whiteboard',
   'fastboard',
@@ -41,6 +42,10 @@ export const ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY = {
   chat: {
     label: '即时通讯 SDK',
     info: '适用于即时通讯场景的 SDK',
+  },
+  rtsa: {
+    label: '媒体流加速 RTSA SDK',
+    info: '轻量级的智能硬件专属 SDK',
   },
   iot: {
     label: '物联网 aPaaS SDK',

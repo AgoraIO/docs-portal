@@ -8,6 +8,7 @@ import {
 } from '@testing-library/react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
 import { SdksCatalog } from './SdksCatalog';
 import { zhCNSdkDownloadPlatforms } from './sdk-downloads-data.zh-cn';
 
@@ -37,6 +38,45 @@ function openProductCard(name: string) {
 }
 
 describe('SdksCatalog', () => {
+  it('shows all RTSA C architecture downloads in the realtime capability group', () => {
+    render(<SdksCatalog locale="zh-CN" />);
+
+    const group = screen.getByRole('region', { name: '实时互动基础能力' });
+    const product = openProductCard('媒体流加速 RTSA SDK');
+    expect(group).toContainElement(product);
+    const platform = within(product).getByRole('combobox', {
+      name: '媒体流加速 RTSA SDK 平台',
+    });
+    expect(platform).toHaveValue('c');
+    expect(within(platform).getAllByRole('option')).toHaveLength(1);
+    expect(within(product).getAllByRole('article')).toHaveLength(18);
+    const links = within(product).getAllByRole('link', { name: /^下载 / });
+    expect(links.map((link) => link.getAttribute('href'))).toEqual(
+      zhCNRtsaSdkDownloadPlatform.core[0].versions.map(
+        (version) => version.downloadLink,
+      ),
+    );
+    expect(
+      within(product).getByRole('link', { name: '更多 ↗' }),
+    ).toHaveAttribute('href', '/zh-CN/realtime-media/rtsa/reference/downloads');
+  });
+
+  it('supports the RTSA product and C platform URL filters', () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?product=rtsa&platform=c',
+    );
+    render(<SdksCatalog locale="zh-CN" />);
+
+    expect(
+      screen.getByRole('article', { name: '媒体流加速 RTSA SDK' }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('article', { name: '视频 SDK' }),
+    ).not.toBeInTheDocument();
+  });
+
   it.each([
     [
       'flutter',
@@ -125,7 +165,7 @@ describe('SdksCatalog', () => {
 
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(container.querySelectorAll('select[id$="-platform"]')).toHaveLength(
-      10,
+      11,
     );
   });
 
@@ -266,7 +306,7 @@ describe('SdksCatalog', () => {
     ).toHaveLength(0);
     expect(
       container.querySelectorAll('[data-sdk-download-product-id] > details'),
-    ).toHaveLength(10);
+    ).toHaveLength(11);
   });
 
   it('does not show product or platform counts in the Chinese catalog', () => {
