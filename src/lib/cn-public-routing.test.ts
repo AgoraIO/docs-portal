@@ -38,30 +38,35 @@ describe('CN public route navigation', () => {
     expect(router.state.location.hash).toBe('release');
   });
 
-  it('loads search directly and keeps all search state during navigation', async () => {
-    const router = fixture('/search?q=Token&platform=ios&type=all&page=2');
-    await router.load();
-    expect(router.state.matches.at(-1)?.routeId).toBe('/$locale/search');
-    expect(router.state.location.search).toEqual({
-      q: 'Token',
-      platform: 'ios',
-      type: 'all',
-      page: 2,
-    });
-    const location = router.buildLocation({
-      to: '/$locale/search',
-      params: { locale: 'zh-CN' },
-      search: { q: 'Token', platform: 'web', type: 'docs', page: 3 },
-    });
-    expect(new URL(location.publicHref, 'https://docs.local').pathname).toBe(
-      '/search',
-    );
-    expect(
-      new URL(location.publicHref, 'https://docs.local').searchParams.get(
-        'page',
-      ),
-    ).toBe('3');
-  });
+  it.each(['/search', '/search/'])(
+    'loads %s directly and keeps all search state during navigation',
+    async (pathname) => {
+      const router = fixture(
+        `${pathname}?q=Token&platform=ios&type=all&page=2`,
+      );
+      await router.load();
+      expect(router.state.matches.at(-1)?.routeId).toBe('/$locale/search');
+      expect(router.state.location.search).toEqual({
+        q: 'Token',
+        platform: 'ios',
+        type: 'all',
+        page: 2,
+      });
+      const location = router.buildLocation({
+        to: '/$locale/search',
+        params: { locale: 'zh-CN' },
+        search: { q: 'Token', platform: 'web', type: 'docs', page: 3 },
+      });
+      expect(new URL(location.publicHref, 'https://docs.local').pathname).toBe(
+        '/search',
+      );
+      expect(
+        new URL(location.publicHref, 'https://docs.local').searchParams.get(
+          'page',
+        ),
+      ).toBe('3');
+    },
+  );
 
   it('builds public document links without changing platform or fragment', () => {
     const router = fixture('/zh-CN/ai/release-notes');

@@ -5,10 +5,14 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import type { Window as HappyWindow } from 'happy-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SdksCatalog } from '@/components/docs-overview/SdksCatalog';
 
 const capture = vi.fn();
+const navigation = (window as unknown as HappyWindow).happyDOM.settings
+  .navigation;
+const originalChildNavigation = navigation.disableChildPageNavigation;
 const syncAccount = vi.fn<(...args: unknown[]) => Promise<void>>(
   async () => {},
 );
@@ -20,6 +24,8 @@ vi.mock('@/lib/analytics/posthog', () => ({
 
 describe('Chinese SDK account guidance', () => {
   beforeEach(() => {
+    // Keep native click/default-action semantics without opening network tabs.
+    navigation.disableChildPageNavigation = true;
     capture.mockClear();
     syncAccount.mockClear();
     window.sessionStorage.clear();
@@ -30,11 +36,12 @@ describe('Chinese SDK account guidance', () => {
     );
   });
   afterEach(() => {
+    navigation.disableChildPageNavigation = originalChildNavigation;
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });
 
-  it.each(['/zh-CN/reference/sdks', '/reference/sdks'])(
+  it.each(['/zh-CN/reference/sdks', '/reference/sdks', '/reference/sdks/'])(
     'preserves the native RTM download and separate login tab at %s',
     async (path) => {
       window.history.replaceState(null, '', path);

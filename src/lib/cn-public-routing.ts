@@ -15,7 +15,9 @@ export function getCnPublicRouteRewrite(
       // Content payloads and route parameters keep their existing locale.
       if (
         !url.pathname.startsWith('/zh-CN/') &&
-        (url.pathname === '/search' || isPublicCnSearchUrl(url.pathname))
+        (url.pathname === '/search' ||
+          url.pathname === '/search/' ||
+          isPublicCnSearchUrl(url.pathname))
       ) {
         url.pathname = `/zh-CN${url.pathname}`;
       }
