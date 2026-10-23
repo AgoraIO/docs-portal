@@ -1,3 +1,4 @@
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 import legacySitemapRedirects from './redirects.json';
 
 export type LegacySitemapRuleType =
@@ -32,8 +33,9 @@ export function resolveLegacySitemapRedirectPath(
 ) {
   const normalizedPath = normalizeLegacyPath(legacyPath);
   const normalizedSearch = normalizeLegacySearch(legacySearch);
+  if (isRetiredCnDocsPath(normalizedPath)) return null;
 
-  return (
+  const rule =
     legacySitemapRedirectConfig.rules.find(
       (rule) =>
         normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
@@ -44,8 +46,8 @@ export function resolveLegacySitemapRedirectPath(
         normalizeLegacyPath(rule.legacyPath) === normalizedPath &&
         !rule.legacySearch,
     ) ??
-    null
-  );
+    null;
+  return rule && !isRetiredCnDocsPath(rule.target) ? rule : null;
 }
 
 function normalizeLegacyPath(path: string) {

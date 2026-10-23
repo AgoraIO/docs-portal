@@ -14,12 +14,12 @@
       "statusCode": 301
     },
     {
-      "source": "/doc/:path*",
+      "source": "/doc/:path((?!(?:fusion-cdn|flexible-classroom|sdk-extension|analytics/general/fls/data)(?:/|\\.(?:html|mdx?)|$)).*)",
       "destination": "https://doc.shengwang.cn/doc/:path*",
       "statusCode": 308
     },
     {
-      "source": "/api-ref/:path*",
+      "source": "/api-ref/:path((?!(?:fusion-cdn|flexible-classroom)(?:/|\\.(?:html|mdx?)|$)).*)",
       "destination": "https://doc.shengwang.cn/api-ref/:path*",
       "statusCode": 308
     },

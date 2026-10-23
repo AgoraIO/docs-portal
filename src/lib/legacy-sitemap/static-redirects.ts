@@ -1,3 +1,4 @@
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import staticRedirects from './static-redirects.json';
 
@@ -16,9 +17,9 @@ export type StaticLegacyRedirectPayload = {
 
 const staticLegacyRedirectRules = staticRedirects as StaticLegacyRedirectRule[];
 export const ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES = new Set(
-  Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS).map(
-    (path) => `/zh-CN/${path}`,
-  ),
+  Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS)
+    .filter((path) => !isRetiredCnDocsPath(`/zh-CN/${path}`))
+    .map((path) => `/zh-CN/${path}`),
 );
 
 export function resolveStaticLegacySitemapRedirect(

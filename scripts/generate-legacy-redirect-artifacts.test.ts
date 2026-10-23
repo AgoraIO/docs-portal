@@ -18,6 +18,7 @@ const REPO_ROOT = path.resolve(
 );
 const FIXTURE_PATHS = [
   'scripts/generate-legacy-redirect-artifacts.mjs',
+  'src/lib/retired-cn-docs.mjs',
   'src/lib/legacy-sitemap/redirects.json',
   'src/lib/legacy-sitemap/static-redirects.json',
   'vercel-legacy-redirects.json',
