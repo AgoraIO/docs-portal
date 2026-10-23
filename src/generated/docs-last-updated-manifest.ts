@@ -588,8 +588,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/handle-runtime-events/webhooks.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/build/managed-mode.mdx':
-    '2026-10-22T06:06:50.000Z',
-  'content/docs/en/ai/platform/build/meta.json': '2026-10-22T06:06:50.000Z',
+    '2026-10-23T08:01:41.000Z',
+  'content/docs/en/ai/platform/build/meta.json': '2026-10-23T08:01:41.000Z',
   'content/docs/en/ai/platform/build/send-multimodal-messages.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/asr-keywords.mdx':
@@ -605,7 +605,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/shape-the-conversation/short-term-memory.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/build/start-stop-agent.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-23T08:01:41.000Z',
   'content/docs/en/ai/platform/build/tools/custom-tools.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/build/tools/mcp-tools.mdx':
@@ -614,15 +614,17 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/build/transcripts.mdx':
     '2026-10-22T06:06:50.000Z',
+  'content/docs/en/ai/platform/build/use-your-own-keys.mdx':
+    '2026-10-23T08:01:41.000Z',
   'content/docs/en/ai/platform/get-started/mcp-integrate.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/get-started/meta.json':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/get-started/quickstart.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-23T08:01:41.000Z',
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-22T06:06:50.000Z',
-  'content/docs/en/ai/platform/index.mdx': '2026-10-22T16:48:25.000Z',
+  'content/docs/en/ai/platform/index.mdx': '2026-10-23T08:01:41.000Z',
   'content/docs/en/ai/platform/meta.json': '2026-10-22T12:41:21.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
     '2026-10-22T06:06:50.000Z',
