@@ -7,6 +7,7 @@ import {
   apiCenterHtmlConversionProfile,
   convertHtmlToMdx,
   EDU_STORE_TYPEDOC_CONVERSION_PROFILE,
+  extractHtmlPageMetadata,
 } from './lib/api-center/html-to-mdx.mjs';
 import { buildLegacyRouteMap } from './lib/api-center/migration-framework.mjs';
 
@@ -29,6 +30,25 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it.each(['v4.24.8', '4.24.9', 'v2.0.0-beta.0'])(
+    'keeps SDK version %s out of generated page titles',
+    async (version) => {
+      const options = {
+        html: `<main><article><h1>Agora Web SDK API Reference ${version}</h1><p>Available since v4.20.0.</p><h2>API v2.0 compatibility</h2></article></main>`,
+        sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/javascript/overview',
+        sourcePath: 'html-docs/rtc/Web/index.html',
+      };
+
+      expect(extractHtmlPageMetadata(options).title).toBe(
+        'Agora Web SDK API Reference',
+      );
+      const result = await convertHtmlToMdx(options);
+      expect(result.title).toBe('Agora Web SDK API Reference');
+      expect(result.body).toContain('Available since v4.20.0.');
+      expect(result.body).toContain('## API v2.0 compatibility');
+    },
+  );
+
   it('converts headings, stable anchors, links, lists, callouts, code, definitions, tables, and images', async () => {
     const html = `<!doctype html><html><head><title>Fallback</title></head><body>
       <main><article>
