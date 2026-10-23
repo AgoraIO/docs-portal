@@ -160,6 +160,33 @@ describe('openapi source loader', () => {
     expect(ncsIp.path).toBe('/v2/ncs/ip');
   });
 
+  it('loads documented Cloud Recording error fields and an authentication failure example', async () => {
+    if (!cloudRecordingLane) {
+      throw new Error('Missing cloud-recording-rest OpenAPI lane');
+    }
+    const operation = await getOpenApiOperation(
+      cloudRecordingLane,
+      'start-cloud-recording',
+      'zh-CN',
+    );
+    const errorResponse = operation.responses['非 200'];
+    const json = errorResponse.content?.['application/json'];
+
+    expect(errorResponse.description).toContain('响应状态码');
+    expect(json?.schema).toMatchObject({
+      type: 'object',
+      properties: {
+        message: { type: 'string' },
+        code: { type: 'integer' },
+        reason: { type: 'string' },
+      },
+    });
+    expect(json?.schema).not.toHaveProperty('required');
+    expect(json?.examples?.['authentication-error']?.value).toEqual({
+      message: 'Invalid authentication credentials',
+    });
+  });
+
   it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {
     const originalCwd = process.cwd();
     const runtimeCwd = await fs.mkdtemp(
