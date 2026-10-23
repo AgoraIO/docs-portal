@@ -6,6 +6,7 @@ import {
 import { applyMdxPreset, defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import remarkDirective from 'remark-directive';
 import { z } from 'zod';
+import { codePresentationTransformer } from './src/lib/code/presentation';
 import { codeThemes, codeTokenVariable } from './src/lib/code/theme';
 import { createScopedDocsFiles } from './src/lib/docs-dev-scope';
 import { docsMetaSchema } from './src/lib/docs-meta-schema';
@@ -77,6 +78,7 @@ export const docs = defineDocs({
         ...rehypeCodeDefaultOptions,
         themes: codeThemes,
         transformers: [
+          codePresentationTransformer(),
           ...(rehypeCodeDefaultOptions.transformers ?? []),
           {
             name: 'docs-code-language',

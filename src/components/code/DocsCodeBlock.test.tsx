@@ -120,3 +120,21 @@ it('allows disabling line numbers and names its keyboard-scrollable code region'
     screen.queryByRole('button', { name: '复制代码' }),
   ).not.toBeInTheDocument();
 });
+
+it('reserves the decorative shell prompt for single-line commands without line numbers', () => {
+  const { container } = render(
+    <>
+      <DocsCodeBlock source="npm install" language="bash" />
+      <DocsCodeBlock source={'curl /api \\\n--header value'} language="bash" />
+      <DocsCodeBlock source="npm install" language="bash" lineNumbers />
+    </>,
+  );
+  const blocks = container.querySelectorAll('.docs-code-shell');
+  expect(blocks[0]).toHaveAttribute('data-terminal-prompt', 'true');
+  expect(blocks[1]).not.toHaveAttribute('data-terminal-prompt');
+  expect(blocks[2]).not.toHaveAttribute('data-terminal-prompt');
+  expect(blocks[1].querySelector('figure')).toHaveAttribute(
+    'data-line-numbers',
+    'true',
+  );
+});

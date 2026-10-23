@@ -89,6 +89,8 @@ Do not mix indentation, close the directive at a different level, or use `::::`.
 ## Code Blocks
 
 Use fenced code blocks with a language.
+Use two-space indentation for JSON examples; preserve payload values and do
+not rely on the renderer to reformat code.
 
 ````mdx
 ```bash
@@ -119,7 +121,8 @@ not determine whether a block is a request or response.
 Use Shiki notation comments for emphasis and diffs, such as
 `// [!code highlight]`, `// [!code ++]`, and `// [!code --]`. They are removed
 from rendered and copied code. Terminal blocks use `bash` or `sh`; the
-component supplies the decorative prompt.
+component supplies the decorative prompt for single-line commands without
+line numbers. Multi-line commands show line numbers without a prompt.
 
 For code tabs, use `tab` and optional `tabGroup`; add `noLineNumbers` when
 needed. When code blocks are

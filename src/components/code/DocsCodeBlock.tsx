@@ -144,6 +144,12 @@ export function DocsCodeBlock({
         : 'Response'
       : (LANGUAGE_LABELS[lang ?? ''] ?? lang ?? (chinese ? '代码' : 'Code')));
   const long = collapseAfter > 0 && count > collapseAfter;
+  const showLineNumbers = Boolean(
+    lineNumbers ??
+      (props['data-no-line-numbers']
+        ? false
+        : (props['data-line-numbers'] ?? count > 1)),
+  );
   const expanded = !long || expandedSource === prepared.source;
   const stateLabel =
     status === 'copied'
@@ -247,6 +253,10 @@ export function DocsCodeBlock({
       ref={root}
       className="docs-code-shell"
       data-variant={resolvedVariant}
+      data-terminal-prompt={
+        (resolvedVariant === 'terminal' && count === 1 && !showLineNumbers) ||
+        undefined
+      }
       data-collapsed={!expanded || undefined}
       style={{ '--code-visible-lines': collapseAfter } as CSSProperties}
     >
@@ -266,14 +276,7 @@ export function DocsCodeBlock({
         }
         allowCopy={false}
         className={cn('docs-code-block', className)}
-        data-line-numbers={
-          (lineNumbers ??
-          (props['data-no-line-numbers']
-            ? false
-            : (props['data-line-numbers'] ?? count > 1)))
-            ? true
-            : undefined
-        }
+        data-line-numbers={showLineNumbers || undefined}
         Actions={() =>
           allowCopy !== false && allowCopy !== 'false' ? (
             <Button

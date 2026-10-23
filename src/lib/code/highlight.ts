@@ -1,5 +1,6 @@
 import { createHighlighterCore } from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
+import { normalizeShellOptions } from './presentation';
 import { codeThemes } from './theme';
 
 const languages = {
@@ -53,9 +54,12 @@ export async function highlightCode(source: string, language: string) {
       );
     await loading.get(lang);
   }
-  return highlighterInstance.codeToTokens(source, {
+  const result = highlighterInstance.codeToTokens(source, {
     lang,
     defaultColor: false,
     themes: { light: codeThemes.light.name, dark: codeThemes.dark.name },
+    includeExplanation: lang === 'bash' ? 'scopeName' : false,
   });
+  if (lang === 'bash') result.tokens = normalizeShellOptions(result.tokens);
+  return result;
 }

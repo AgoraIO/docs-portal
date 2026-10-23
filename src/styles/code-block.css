@@ -119,9 +119,8 @@
   backdrop-filter: none;
   font-size: 12px;
   font-weight: 500;
-  transition:
-    opacity 120ms,
-    background-color 120ms;
+  opacity: 1;
+  transition: background-color 120ms;
 }
 :root .docs-code-shell figure.docs-code-block .docs-code-copy:hover,
 :root .docs-code-shell figure.docs-code-block .docs-code-copy:focus-visible {
@@ -154,6 +153,10 @@
   scroll-padding-inline: var(--code-padding-x);
   font: 400 var(--code-font-size) / var(--code-line-height) var(--code-font);
   font-variant-ligatures: none;
+  font-feature-settings:
+    "liga" 0,
+    "calt" 0;
+  tab-size: 2;
 }
 :root .docs-code-shell[data-collapsed] .docs-code-viewport {
   max-height: calc(
@@ -196,6 +199,15 @@
   white-space: pre;
   overflow-wrap: normal;
   word-break: normal;
+}
+/* :lang(zh) sets a font on every descendant, so inheritance alone is insufficient. */
+:root .docs-code-shell figure.docs-code-block pre :where(code, span) {
+  font-family: var(--code-font);
+  font-variant-ligatures: none;
+  font-feature-settings:
+    "liga" 0,
+    "calt" 0;
+  tab-size: 2;
 }
 :root .docs-code-shell figure.docs-code-block pre .line {
   position: relative;
@@ -259,7 +271,7 @@
   content: "−";
 }
 :root
-  .docs-code-shell[data-variant="terminal"]
+  .docs-code-shell[data-terminal-prompt="true"]
   figure.docs-code-block
   pre
   .line:first-child:not(.diff)::before {
@@ -390,26 +402,16 @@
   font-family: var(--code-font);
   font-size: 0.88em;
   font-variant-ligatures: none;
-}
-@media (hover: hover) and (pointer: fine) {
-  :root
-    .docs-code-shell
-    figure.docs-code-block
-    .docs-code-copy[data-copy-status="idle"] {
-    opacity: 0;
-  }
-  :root .docs-code-shell:hover figure.docs-code-block .docs-code-copy,
-  :root .docs-code-shell:focus-within figure.docs-code-block .docs-code-copy {
-    opacity: 1;
-  }
+  font-feature-settings:
+    "liga" 0,
+    "calt" 0;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 @media (max-width: 639px) {
   :root {
     --code-padding-x: 12px;
     --code-padding-y: 12px;
-  }
-  :root .docs-code-shell figure.docs-code-block .docs-code-copy {
-    opacity: 1;
   }
   .docs-code-language {
     display: none;
@@ -598,14 +600,6 @@
   border: 0;
   background: transparent;
   color: inherit;
-}
-@media (max-width: 639px) {
-  :root
-    .docs-code-shell
-    figure.docs-code-block
-    .docs-code-copy[data-copy-status] {
-    opacity: 1;
-  }
 }
 @media print {
   :root.dark .docs-code-shell figure.docs-code-block pre span[style] {
