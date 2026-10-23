@@ -4,6 +4,15 @@ import { describe, expect, it } from 'vitest';
 import { docsMetaSchema } from '../src/lib/docs-meta-schema';
 
 const contentRoot = 'content/docs/zh-CN/api-reference';
+const { apiHistoricalAdditions } = JSON.parse(
+  readFileSync('docs/migration/cn-master-sync-20261023.json', 'utf8'),
+) as {
+  apiHistoricalAdditions: {
+    directory: string;
+    label: string;
+    href: string;
+  }[];
+};
 type ArchiveOverride = {
   newPlatform: string;
   sdkVersion: string;
@@ -128,7 +137,12 @@ describe('Chinese API Reference historical archives', () => {
       expect(
         versions.slice(1).map(({ label, href }) => ({ label, href })),
       ).toEqual(
-        history.map((entry) => ({
+        [
+          ...apiHistoricalAdditions
+            .filter((entry) => entry.directory === directory)
+            .map(({ label, href }) => ({ label, href })),
+          ...history,
+        ].map((entry) => ({
           ...entry,
           href:
             overrideByVersion.get(`${directory}:${entry.label}`)?.href ??

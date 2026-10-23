@@ -22,7 +22,7 @@ _migration:
 <a id="api_irtcengine_playeffect3__prototype"></a>
 
 ```text
-public abstract playEffect(soundId:number,filePath:string,loopCount:number,pitch:number,pan:number,gain:number,publish:boolean,startPos?:number):number;
+public abstract playEffect(soundId:number,filePath:string,loopCount:number,pitch:number,pan:number,gain:number,publish?:boolean,startPos?:number):Promise<number>;
 ```
 
 <a id="api_irtcengine_playeffect3__detailed_desc"></a>
@@ -169,6 +169,105 @@ public abstract stopEffect(soundId:number):number;
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
 
+<a id="api_irtcengine_playalleffects"></a>
+
+<a id="hmos463-ariaid-title4"></a>
+
+## playAllEffects
+
+播放所有音效文件。
+
+<a id="api_irtcengine_playalleffects__prototype"></a>
+
+```text
+public abstract playAllEffects(loopCount:number,pitch:number,pan:number,gain:number,publish:boolean):number;
+```
+
+<a id="api_irtcengine_playalleffects__detailed_desc"></a>
+
+### 详情
+
+多次调用 [preloadEffect](/zh-CN/api-reference/rtc/harmonyos/play/audio-effect-file#api_irtcengine_preloadeffect) 预加载多个音效文件后，你可以调用本方法播放所有预加载的音效文件。
+
+<a id="api_irtcengine_playalleffects__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="loopcount-1"></a>
+<Parameter name="loopCount">
+
+音效文件循环播放的次数：
+
+- -1: 无限循环播放音效文件，直至调用 [stopEffect](/zh-CN/api-reference/rtc/harmonyos/play/audio-effect-file#api_irtcengine_stopeffect) 或 [stopAllEffects](/zh-CN/api-reference/rtc/harmonyos/play/audio-effect-file#api_irtcengine_stopalleffects) 后停止。
+- 0: 播放音效文件一次。
+- 1: 播放音效文件两次。
+
+</Parameter>
+<a id="pitch-1"></a>
+<Parameter name="pitch">
+
+音效的音调。取值范围为 [0.5,2.0]。默认值为 1.0，代表原始音调。取值越小，则音调越低。
+
+</Parameter>
+</ParameterList>
+
+<ParameterList>
+<a id="pan-1"></a>
+<Parameter name="pan">
+
+音效的空间位置。取值范围为 [-1.0,1.0]:
+
+- -1.0: 音效出现在左边。
+- 0: 音效出现在正前边。
+- 1.0: 音效出现在右边。
+
+</Parameter>
+<a id="gain-1"></a>
+<Parameter name="gain">
+
+音效的音量。取值范围为 [0,100]。100 为默认值，代表原始音量。取值越小，则音量越低。
+
+</Parameter>
+<a id="publish-1"></a>
+<Parameter name="publish">
+
+是否将音效发布到远端：
+
+- `true`: 将音效发布到远端。本地和远端用户都能听到该音效。
+- `false`: （默认）不将音效发布到远端。只能本地用户能听到该音效。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_playalleffects__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+<a id="api_irtcengine_unloadalleffects"></a>
+
+<a id="ariaid-title5"></a>
+
+## unloadAllEffects
+
+从内存释放所有预加载音效文件。
+
+<a id="api_irtcengine_unloadalleffects__prototype"></a>
+
+```text
+public abstract unloadAllEffects():number;
+```
+
+<a id="api_irtcengine_unloadalleffects__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
 <a id="callback_irtcengineeventhandler_onaudioeffectfinished"></a>
 
 <a id="ariaid-title4"></a>
@@ -207,3 +306,348 @@ onAudioEffectFinished?:(soundId:number) => void;
 ### 所属接口类
 
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
+<a id="api_irtcengine_geteffectsvolume"></a>
+
+## getEffectsVolume
+
+<a id="api_irtcengine_geteffectsvolume__shortdesc"></a>
+
+获取音效文件的播放音量。
+
+<a id="api_irtcengine_geteffectsvolume__prototype"></a>
+
+```text
+public abstract getEffectsVolume():number;
+```
+
+<a id="api_irtcengine_geteffectsvolume__parameters"></a>
+
+### 参数
+
+<a id="api_irtcengine_geteffectsvolume__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_seteffectsvolume"></a>
+
+## setEffectsVolume
+
+<a id="api_irtcengine_seteffectsvolume__shortdesc"></a>
+
+设置音效文件的播放音量。
+
+<a id="api_irtcengine_seteffectsvolume__prototype"></a>
+
+```text
+public abstract setEffectsVolume(volume:number):number;
+```
+
+<a id="api_irtcengine_seteffectsvolume__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="volume"></a>
+<Parameter name="volume">
+
+播放音量。取值范围为 [0,100]。默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_seteffectsvolume__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_preloadeffect"></a>
+
+## preloadEffect
+
+<a id="api_irtcengine_preloadeffect__shortdesc"></a>
+
+将音效文件加载至内存。
+
+<a id="api_irtcengine_preloadeffect__prototype"></a>
+
+```text
+public abstract preloadEffect(soundId:number,filePath:string,startPos?:number):Promise<number>;
+```
+
+<a id="api_irtcengine_preloadeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-3"></a>
+<Parameter name="soundId">
+
+音效的 ID。每个音效的 ID 具有唯一性。
+
+</Parameter>
+<a id="filepath-1"></a>
+<Parameter name="filePath">
+
+文件路径：
+
+</Parameter>
+<a id="startpos-1"></a>
+<Parameter name="startPos">
+
+音效文件加载的起始位置，单位为毫秒。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_preloadeffect__return_values"></a>
+
+### 返回值
+
+Promise 完成时返回操作结果。
+
+<a id="api_irtcengine_setvolumeofeffect"></a>
+
+## setVolumeOfEffect
+
+<a id="api_irtcengine_setvolumeofeffect__shortdesc"></a>
+
+设置指定音效文件的播放音量。
+
+<a id="api_irtcengine_setvolumeofeffect__prototype"></a>
+
+```text
+public abstract setVolumeOfEffect(soundId:number,volume:number):number;
+```
+
+<a id="api_irtcengine_setvolumeofeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-4"></a>
+<Parameter name="soundId">
+
+指定音效的 ID。每个音效均有唯一的 ID。
+
+</Parameter>
+<a id="volume-1"></a>
+<Parameter name="volume">
+
+播放音量。取值范围为 [0,100]。默认值为 100，表示原始音量。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_setvolumeofeffect__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_pauseeffect"></a>
+
+## pauseEffect
+
+<a id="api_irtcengine_pauseeffect__shortdesc"></a>
+
+暂停音效文件播放。
+
+<a id="api_irtcengine_pauseeffect__prototype"></a>
+
+```text
+public abstract pauseEffect(soundId:number):number;
+```
+
+<a id="api_irtcengine_pauseeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-5"></a>
+<Parameter name="soundId">
+
+音效文件的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_pauseeffect__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_pausealleffects"></a>
+
+## pauseAllEffects
+
+<a id="api_irtcengine_pausealleffects__shortdesc"></a>
+
+暂停所有音效文件播放。
+
+<a id="api_irtcengine_pausealleffects__prototype"></a>
+
+```text
+public abstract pauseAllEffects():number;
+```
+
+<a id="api_irtcengine_pausealleffects__parameters"></a>
+
+### 参数
+
+<a id="api_irtcengine_pausealleffects__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_resumeeffect"></a>
+
+## resumeEffect
+
+<a id="api_irtcengine_resumeeffect__shortdesc"></a>
+
+恢复播放指定音效文件。
+
+<a id="api_irtcengine_resumeeffect__prototype"></a>
+
+```text
+public abstract resumeEffect(soundId:number):number;
+```
+
+<a id="api_irtcengine_resumeeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-6"></a>
+<Parameter name="soundId">
+
+音效文件的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_resumeeffect__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_resumealleffects"></a>
+
+## resumeAllEffects
+
+<a id="api_irtcengine_resumealleffects__shortdesc"></a>
+
+恢复播放所有音效文件。
+
+<a id="api_irtcengine_resumealleffects__prototype"></a>
+
+```text
+public abstract resumeAllEffects():number;
+```
+
+<a id="api_irtcengine_resumealleffects__parameters"></a>
+
+### 参数
+
+<a id="api_irtcengine_resumealleffects__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_stopalleffects"></a>
+
+## stopAllEffects
+
+<a id="api_irtcengine_stopalleffects__shortdesc"></a>
+
+停止播放所有音效文件。
+
+<a id="api_irtcengine_stopalleffects__prototype"></a>
+
+```text
+public abstract stopAllEffects():number;
+```
+
+<a id="api_irtcengine_stopalleffects__parameters"></a>
+
+### 参数
+
+<a id="api_irtcengine_stopalleffects__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_unloadeffect"></a>
+
+## unloadEffect
+
+<a id="api_irtcengine_unloadeffect__shortdesc"></a>
+
+从内存释放某个预加载的音效文件。
+
+<a id="api_irtcengine_unloadeffect__prototype"></a>
+
+```text
+public abstract unloadEffect(soundId:number):number;
+```
+
+<a id="api_irtcengine_unloadeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-7"></a>
+<Parameter name="soundId">
+
+指定音效文件的 ID。每个音效文件均有唯一的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_unloadeffect__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。
+
+<a id="api_irtcengine_getvolumeofeffect"></a>
+
+## getVolumeOfEffect
+
+<a id="api_irtcengine_getvolumeofeffect__shortdesc"></a>
+
+获取指定音效文件的播放音量。
+
+<a id="api_irtcengine_getvolumeofeffect__prototype"></a>
+
+```text
+public abstract getVolumeOfEffect(soundId:number):number;
+```
+
+<a id="api_irtcengine_getvolumeofeffect__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="soundid-8"></a>
+<Parameter name="soundId">
+
+音效文件的 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_getvolumeofeffect__return_values"></a>
+
+### 返回值
+
+0：方法调用成功；小于 0：方法调用失败。

@@ -896,3 +896,93 @@ disableEncryption = () => {
 如需与 Web 平台的音视频 SDK 互通，你还需要将本文提到的 `String` 型密钥从 Hex 编码格式转换成 ASCII 编码格式。
 
 </PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+媒体流加密可以使用由你的服务端生成并管理的密钥和盐保护音视频流。本文介绍如何在 HarmonyOS 项目中启用单连接和多连接的内置加密。
+
+## 技术原理
+
+同一频道内的用户必须使用相同的加密模式和密钥，否则可能出现黑屏、无声或其他未定义行为。建议使用 `AES_128_GCM2` 或 `AES_256_GCM2`，并为每次启用加密生成新的密钥和盐。
+
+## 前提条件
+
+在进行操作之前，请确保你的项目已经实现基本的实时音视频功能，详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+在服务端生成密钥和盐，并通过安全的业务接口下发给客户端：
+
+- `encryptionKey` 为字符串类型。
+- `encryptionKdfSalt` 为 32 字节的 `ArrayBuffer`。
+- 不要在客户端代码中硬编码生产环境的密钥和盐。
+
+## 单连接场景
+
+在加入频道前创建 `EncryptionConfig`，设置加密模式、密钥和盐，然后调用 `enableEncryption`：
+
+```typescript
+import { EncryptionConfig, EncryptionMode } from "AgoraRtcSdk";
+
+const encryptionKey = "your-key-from-server";
+// 示例仅用于展示类型。生产环境应替换为服务端下发的 32 字节盐。
+const encryptionKdfSalt = new Uint8Array(32).fill(1).buffer;
+
+const encryptionConfig = new EncryptionConfig();
+encryptionConfig.encryptionMode = EncryptionMode.AES_128_GCM2;
+encryptionConfig.encryptionKey = encryptionKey;
+encryptionConfig.encryptionKdfSalt = encryptionKdfSalt;
+
+// 在加入频道前调用
+const result = this.rtcEngine?.enableEncryption(true, encryptionConfig);
+if (result !== undefined && result !== 0) {
+    Logger.error(TAG, `enableEncryption failed: ${result}`);
+}
+```
+
+关闭加密时，将 `enabled` 设置为 `false`。用户离开频道后，SDK 会自动关闭该频道的加密；再次加入前需要重新调用 `enableEncryption`。
+
+## 多连接场景
+
+如果同一个 `RtcEngine` 实例通过多个 `RtcConnection` 加入频道，需要针对每个连接调用 `enableEncryptionEx`，并传入对应的 `RtcConnection`：
+
+```typescript
+import { EncryptionConfig, EncryptionMode, RtcConnection } from "AgoraRtcSdk";
+
+const connection = new RtcConnection("your-channel", 0);
+const encryptionConfig = new EncryptionConfig();
+encryptionConfig.encryptionMode = EncryptionMode.AES_128_GCM2;
+encryptionConfig.encryptionKey = "your-key-from-server";
+// 生产环境应替换为该连接对应的服务端下发盐。
+encryptionConfig.encryptionKdfSalt = new Uint8Array(32).fill(1).buffer;
+
+// 在该连接加入频道前调用
+const result = this.rtcEngine?.enableEncryptionEx(
+    true,
+    encryptionConfig,
+    connection
+);
+if (result !== undefined && result !== 0) {
+    Logger.error(TAG, `enableEncryptionEx failed: ${result}`);
+}
+```
+
+`enableEncryptionEx` 的加密配置作用于传入的连接。多个连接不能依赖一个全局配置；你需要为每个连接明确配置，并确保同一频道内的所有用户使用一致的加密模式和密钥。
+
+## 注意事项
+
+- 必须在加入频道前调用 `enableEncryption` 或 `enableEncryptionEx`。
+- `AES_128_GCM2` 和 `AES_256_GCM2` 需要设置有效的 32 字节盐，盐不能全部为 0。
+- 开启内置加密后，不能使用旁路推流功能。
+- 如果密钥为空或加密参数无效，SDK 会返回错误码。请检查服务端下发的数据和 `EncryptionConfig` 字段。
+- 需要关闭加密时，使用与开启时相同的连接粒度调用对应方法。
+
+## 参考信息
+
+### API 参考
+
+- [`enableEncryption`](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengine_enableencryption)
+- [`enableEncryptionEx`](/zh-CN/api-reference/rtc/harmonyos/network#api_irtcengineex_enableencryptionex)
+- [`EncryptionConfig`](/zh-CN/api-reference/rtc/harmonyos/class-encryptionconfig)
+- [`EncryptionMode`](/zh-CN/api-reference/rtc/harmonyos/enum-encryptionmode)
+- [`RtcConnection`](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)
+
+</PlatformStructured>
