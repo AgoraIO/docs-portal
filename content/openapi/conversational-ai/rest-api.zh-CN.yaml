@@ -2018,6 +2018,8 @@ paths:
                           metadata:
                             caused_by: api_interrupt
                             transport: rtm
+                            playback_duration_ms: 1200
+                            intended_playback_duration_ms: 2400
                         metrics:
                           e2e_latency_ms: 337
                           segmented_latency_ms:
@@ -2032,13 +2034,14 @@ components:
       name: Authorization
       in: header
       description: |
-        发送 HTTP 请求时，你需要使用 Basic Auth。参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。
+        发送 HTTP 请求时，你可以从以下鉴权方式中任选其一：
 
-        传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`
+        1. **使用 Token 认证（推荐）**：参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-token-认证)生成 Token 并填入 `Authorization` Header。传参示例：`Authorization: agora token="007abcxxxxxxx123"`。
+        2. **使用 Basic Auth**：参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`。
       required: true
       schema:
         type: string
-        example: Basic NDI1OTQ3N2I4MzYy...YwZjA=
+        example: agora token="007abcxxxxxxx123"
     appid:
       name: appid
       in: path
@@ -2362,6 +2365,12 @@ components:
       type: object
       description: 中断附加元数据。
       properties:
+        playback_duration_ms:
+          type: integer
+          description: 中断发生时，当前轮次已实际播放的 PCM 音频时长（ms）。
+        intended_playback_duration_ms:
+          type: integer
+          description: 当前轮次中计划播放的 PCM 音频总时长（ms），包含尚未播放完的排队音频。
         caused_by:
           type: string
           description: |
@@ -3030,7 +3039,13 @@ components:
     Basic Auth:
       type: http
       scheme: basic
-      description: '发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求的 `Authorization` Header。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 安全认证](/zh-CN/ai/build/http-basic-auth)。'
+      description: '使用 HTTP 基本认证时，将由客户 ID 和客户密钥生成的凭证填入 HTTP 请求的 `Authorization` Header。具体生成方法请参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth)。'
+    Agora Token:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: '推荐使用 Token 认证。请参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-token-认证)生成 Token，并填入 HTTP 请求的 `Authorization` Header。传参示例：`Authorization: agora token="007abcxxxxxxx123"`。'
 security:
   - {}
   - Basic Auth: []
+  - Agora Token: []

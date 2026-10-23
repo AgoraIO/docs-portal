@@ -3707,13 +3707,13 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 HarmonyOS NEXT 端纯音频互动场景的实时互动 SDK',
         versions: [
           {
-            id: '4.4.2-voice-sdk-harmonyos',
-            label: '版本 4.4.2（最新）',
+            id: '4.6.3-voice-sdk-harmonyos',
+            label: '版本 4.6.3（最新）',
             downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_V4.4.2_VOICE.har',
-            md5: 'c23e66633da8fe341501b9572ed064c4',
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_HarmonyOS_v4.6.3_VOICE.zip',
+            md5: 'a1d6a77792811e23954645a6bc4590a5',
             packageName: '@shengwang/rtc-voice',
-            releaseDate: '2024 年 11 月 29 日',
+            releaseDate: '2026 年 9 月 20 日',
           },
         ],
       },
@@ -3723,13 +3723,13 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 HarmonyOS NEXT 端音视频互动场景的实时互动 SDK',
         versions: [
           {
-            id: '4.4.2-video-sdk-harmonyos',
-            label: '版本 4.4.2（最新）',
+            id: '4.6.3-video-sdk-harmonyos',
+            label: '版本 4.6.3（最新）',
             downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_v4.4.2_FULL.har',
-            md5: 'f02df2e181a7e25218eb87dbdca0db7d',
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_HarmonyOS_v4.6.3_FULL.zip',
+            md5: '52b13901ba39f907d1c52bd642a57ab8',
             packageName: '@shengwang/rtc-full',
-            releaseDate: '2024 年 11 月 29 日',
+            releaseDate: '2026 年 9 月 20 日',
           },
         ],
       },

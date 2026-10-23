@@ -1556,3 +1556,123 @@ rtcEngine.setLocalVoiceReverb(AudioReverbType.AudioReverbStrength, 78);
 - [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/react-native/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
 
 </PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+在社交娱乐、KTV 和互动直播等场景中，你可以使用 HarmonyOS RTC SDK 调整本地人声的预设效果、音调、均衡和混响。
+
+本文只介绍当前 HarmonyOS API 参考中已公开且支持的能力。
+
+## 前提条件
+
+在进行操作之前，请确保你的项目已经实现基本的实时音视频功能，详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
+
+为了获得更好的人声效果，建议将音频场景设置为 `GAME_STREAMING`，并使用高音质音频编码属性：
+
+```typescript
+this.rtcEngine = RtcEngine.create(config);
+this.rtcEngine?.setAudioScenario(Constants.AudioScenarioType.GAME_STREAMING);
+this.rtcEngine?.setAudioProfile(Constants.AudioProfileType.MUSIC_HIGH_QUALITY_STEREO);
+```
+
+## 设置预设人声效果
+
+调用 `setVoiceBeautifierPreset` 设置预设美声或音色效果。以下示例分别设置磁性人声和浑厚人声，并使用 `OFF` 恢复原始人声：
+
+```typescript
+// 磁性人声，适合男声
+this.rtcEngine?.setVoiceBeautifierPreset(
+    Constants.VoiceBeautifierPreset.CHAT_BEAUTIFIER_MAGNETIC
+);
+
+// 音色变换为浑厚
+this.rtcEngine?.setVoiceBeautifierPreset(
+    Constants.VoiceBeautifierPreset.TIMBRE_TRANSFORMATION_VIGOROUS
+);
+
+// 关闭预设人声效果
+this.rtcEngine?.setVoiceBeautifierPreset(Constants.VoiceBeautifierPreset.OFF);
+```
+
+部分预设针对特定音色或性别进行了调校。使用前请阅读 API 参考中的枚举说明，否则可能产生失真。
+
+## 设置预设音效
+
+调用 `setAudioEffectPreset` 设置空间塑造或其他预设音效：
+
+```typescript
+// 设置 KTV 空间音效
+this.rtcEngine?.setAudioEffectPreset(
+    Constants.AudioEffectPreset.ROOM_ACOUSTICS_KTV
+);
+
+// 关闭预设音效
+this.rtcEngine?.setAudioEffectPreset(Constants.AudioEffectPreset.AUDIO_EFFECT_OFF);
+```
+
+同一时间建议只使用一种预设人声或音效。重复设置时，后一次调用可能覆盖前一次效果。
+
+## 自定义人声效果
+
+### 调整音调
+
+调用 `setLocalVoicePitch` 调整音调。`pitch` 的取值范围为 0.5 到 2.0，默认值为 1.0：
+
+```typescript
+this.rtcEngine?.setLocalVoicePitch(0.8);
+```
+
+### 调整均衡
+
+调用 `setLocalVoiceEqualization` 调整指定频段的增益。频段枚举和增益范围以 API 参考为准：
+
+```typescript
+// 调整低频和中频，使人声更厚实
+this.rtcEngine?.setLocalVoiceEqualization(
+    Constants.AudioEqualizationBandFrequency.BAND_31,
+    3
+);
+this.rtcEngine?.setLocalVoiceEqualization(
+    Constants.AudioEqualizationBandFrequency.BAND_1K,
+    -2
+);
+```
+
+### 调整混响
+
+调用 `setLocalVoiceReverb` 调整干声、湿声、房间大小、延迟和混响强度：
+
+```typescript
+this.rtcEngine?.setLocalVoiceReverb(
+    Constants.AudioReverbType.DRY_LEVEL,
+    0
+);
+this.rtcEngine?.setLocalVoiceReverb(
+    Constants.AudioReverbType.WET_LEVEL,
+    6
+);
+this.rtcEngine?.setLocalVoiceReverb(
+    Constants.AudioReverbType.ROOM_SIZE,
+    40
+);
+```
+
+## 开发注意事项
+
+- 预设美声、预设音效、音调、均衡和混响可能互相覆盖。需要切换效果时，先明确当前生效的效果，再设置新的效果。
+- 人声效果主要用于人声。将其用于音乐或复杂混音可能无法得到预期效果。
+- 关闭预设效果时，调用对应枚举中的 `OFF` 值；自定义参数需要根据业务逻辑恢复到默认值。
+
+## 参考信息
+
+### API 参考
+
+- [`setAudioScenario`](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_setaudioscenario)
+- [`setAudioProfile`](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#api_irtcengine_setaudioprofile2)
+- [`setVoiceBeautifierPreset`](/zh-CN/api-reference/rtc/harmonyos/audio/audio-prenpost/audio-effect#api_irtcengine_setvoicebeautifierpreset)
+- [`setAudioEffectPreset`](/zh-CN/api-reference/rtc/harmonyos/audio/audio-prenpost/audio-effect#api_irtcengine_setaudioeffectpreset)
+- [`setLocalVoicePitch`](/zh-CN/api-reference/rtc/harmonyos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicepitch)
+- [`setLocalVoiceEqualization`](/zh-CN/api-reference/rtc/harmonyos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoiceequalization)
+- [`setLocalVoiceReverb`](/zh-CN/api-reference/rtc/harmonyos/audio/audio-prenpost/audio-effect#api_irtcengine_setlocalvoicereverb)
+
+</PlatformStructured>
