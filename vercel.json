@@ -15,23 +15,18 @@
       "statusCode": 301
     },
     {
-      "source": "/doc/:path*",
+      "source": "/doc/:path((?!(?:fusion-cdn|flexible-classroom|sdk-extension|analytics/general/fls/data)(?:/|\\.(?:html|mdx?)|$)).*)?",
       "destination": "https://doc.shengwang.cn/doc/:path*",
       "statusCode": 308
     },
     {
-      "source": "/api-ref/:path*",
+      "source": "/api-ref/:path((?!(?:fusion-cdn|flexible-classroom)(?:/|\\.(?:html|mdx?)|$)).*)?",
       "destination": "https://doc.shengwang.cn/api-ref/:path*",
       "statusCode": 308
     },
     {
       "source": "/cn",
       "destination": "/en",
-      "statusCode": 301
-    },
-    {
-      "source": "/basics/security/flexible-classroom-sdk-third-party",
-      "destination": "/zh-CN/introduction/security/sdk-compliance/flexible-classroom-sdk-third-party",
       "statusCode": 301
     },
     {
@@ -650,6 +645,11 @@
           "value": ".*text/markdown.*"
         }
       ]
+    },
+    {
+      "src": "^/(?:doc/fusion-cdn|api-ref/fusion-cdn|doc/flexible-classroom|api-ref/flexible-classroom|doc/sdk-extension|doc/analytics/general/fls/data|basics/security/flexible-classroom-sdk|basics/security/flexible-classroom-sdk-third-party|faq/integration-issues/class-courseware|faq/integration-issues/class-custom-ui|faq/integration-issues/class-errors|faq/integration-issues/class-im|faq/integration-issues/class-language|faq/integration-issues/class-packaging|faq/integration-issues/class-properties|faq/integration-issues/class-record|faq/integration-issues/class-restapi|faq/integration-issues/class-states|faq/integration-issues/class-stop|faq/integration-issues/class-threea|faq/quality-issues/class-audio-video)(?:/.*|\\.(?:html|mdx?))?/?$",
+      "dest": "/404.html",
+      "status": 404
     }
   ]
 }
