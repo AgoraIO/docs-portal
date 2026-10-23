@@ -7,6 +7,7 @@ export type SearchEntry = {
   product?: string;
   tab?: string;
   title: string;
+  version?: string;
   url: string;
 };
 

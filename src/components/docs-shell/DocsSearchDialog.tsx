@@ -45,6 +45,7 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
+import { getCnProductLabel } from '@/lib/search/cn-product-labels';
 import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
 import {
@@ -461,7 +462,9 @@ export function DocsSearchDialog({
   const resultEntries: RenderedSearchEntry[] =
     !hasQuery || isSearchUnavailable
       ? []
-      : normalizedSearchResults.map(searchResultToEntry);
+      : normalizedSearchResults.map((result) =>
+          searchResultToEntry(result, searchLocale === 'zh-CN', productScopes),
+        );
   const showRecent = !hasQuery && recentPages.length > 0;
   // Nothing typed and no history yet → a plain prompt instead of fake results.
   const showPrompt = !hasQuery && recentPages.length === 0;
@@ -804,20 +807,25 @@ type DetailEntry = {
   value: string;
 };
 
-function searchResultToEntry(result: {
-  breadcrumbs?: unknown[];
-  content: unknown;
-  id?: unknown;
-  objectType?: unknown;
-  path?: unknown[];
-  platform?: unknown;
-  product?: unknown;
-  section?: unknown;
-  snippet?: unknown;
-  tab?: unknown;
-  title?: unknown;
-  url: string;
-}): RenderedSearchEntry {
+function searchResultToEntry(
+  result: {
+    breadcrumbs?: unknown[];
+    content: unknown;
+    id?: unknown;
+    objectType?: unknown;
+    path?: unknown[];
+    platform?: unknown;
+    product?: unknown;
+    section?: unknown;
+    snippet?: unknown;
+    tab?: unknown;
+    title?: unknown;
+    url: string;
+    version?: unknown;
+  },
+  isCn: boolean,
+  productScopes: ProductScope[],
+): RenderedSearchEntry {
   const breadcrumbs = getStringArray(result.breadcrumbs);
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
@@ -825,7 +833,11 @@ function searchResultToEntry(result: {
   return {
     context: uniqueStrings([
       objectType === 'openapi' ? 'API' : undefined,
+      isCn
+        ? getCnProductLabel(getString(result.product), productScopes)
+        : undefined,
       ...formatPlatformContext(platforms ?? []),
+      isCn ? getString(result.version) : undefined,
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'

@@ -992,6 +992,7 @@ describe('DocsSearchDialog', () => {
           path: ['Conversational AI API', 'manualSOS'],
           platform: ['web'],
           product: 'conversational-ai',
+          version: '2.9.0',
           snippet: '手动触发 <mark>SOS</mark>。',
           title: '<mark>manualSOS</mark>',
           type: 'page',
@@ -1032,6 +1033,8 @@ describe('DocsSearchDialog', () => {
     expect(createCnDocsSearchClient).toHaveBeenCalled();
     const manualSosLabels = await screen.findAllByText('manualSOS');
     expect(manualSosLabels.length).toBeGreaterThan(0);
+    expect(screen.getAllByText('2.9.0').length).toBeGreaterThan(0);
+    expect(screen.getAllByText('对话式 AI 引擎').length).toBeGreaterThan(0);
     fireEvent.click(manualSosLabels[0]);
     await waitFor(() => {
       expect(navigateSpy).toHaveBeenCalledWith(

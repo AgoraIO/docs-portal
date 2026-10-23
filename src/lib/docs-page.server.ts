@@ -78,6 +78,7 @@ import {
 } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
 import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
+import { resolveCnSdkPublication } from './search/cn-sdk-publication.server';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
@@ -1092,6 +1093,12 @@ export async function loadDocsSearchIndex(
     getCanonicalPageTree(source, supportedLocale),
     supportedLocale,
   );
+  if (supportedLocale === 'zh-CN') {
+    for (const url of searchNavigation.keys()) {
+      if (!resolveCnSdkPublication(url).searchable)
+        searchNavigation.delete(url);
+    }
+  }
   const pages = await Promise.all(
     getCanonicalSourcePages(source.getPages(locale))
       .filter(
@@ -1105,6 +1112,11 @@ export async function loadDocsSearchIndex(
           content,
           description: item.data.description,
           ...getSearchEntryMetadata(item.url, content),
+          ...(supportedLocale === 'zh-CN'
+            ? {
+                version: resolveCnSdkPublication(item.url).version,
+              }
+            : {}),
           title: item.data.title ?? item.slugs.at(-1) ?? item.url,
           url: item.url,
         };
