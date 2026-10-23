@@ -88,7 +88,7 @@
 
 - `docs/convoai/best-practice/cloud-3a.mdx` 和 `docs/convoai/user-guides/prepare-response.mdx`：不在旧站有效 sidebar 中，相关 OpenAPI 配置仍带“暂不对外展示”注释。保留为暂缓项，等待明确的公开范围；不新增可被搜索或导航发现的目标页面，不解开源 YAML 的私有注释。
 - 旧站 `data/version.ts` 发布计数不迁移。`landing-page.harmonyos.mdx` 的旧 JSX 推荐卡片不直接复制，其版本事实由新站发布说明/下载数据/版本菜单承接。222 个 HTML 源无规范化正文差异，逐项标为 `not-required`。
-- 变更页的 3 处既有失效锚点：HarmonyOS channel 的 `onRenewTokenResult` 两处、微呼叫 License 的事件 98 一处。在 `be9871602` 中均可复现，未新增接口定义或猜测修正。
+- 初次链接检查将 3 处既有引用计为失效：后续真实 DOM 复核确认微呼叫事件 98 有效，属于误报；实际是 HarmonyOS channel 的 `onRenewTokenResult` 两处。两处引用现已按固定旧源对应段落修正，详见[空页与展示一致性修复](./cn-empty-page-parity-20261023.md)。
 
 ## 一致性与检查
 
@@ -98,7 +98,7 @@
 - 50 个变更 MDX 使用仓库真实 `source.config.ts` 完整编译：50/50 通过。
 - 200 项针对发版说明、OpenAPI、归档版本与 API 标题的测试通过。两个初次失败的新增版本/标题断言已按源版本增量和既有标题规则修正，未降低断言或测试超时。
 - 最终全量 `bun run test`：4174 通过、3 失败、2 跳过。RTM USER 示例的两个失败已在未修改基线 worktree 复现；另一个为 retired-cn-docs 的 5 秒超时，独立重跑该文件 59/59 通过。保留本次全量失败事实，不将其写为全量通过。
-- 中文变更 MDX 内部链接审计：新增断链 0，继承失效锚点 3；本轮 OpenAPI 文件的 55 个引用全部解析通过。
+- 初次中文变更 MDX 内部链接审计：新增断链 0，继承告警 3；其中事件 98 经真实 DOM 复核为误报，另两处已回源修正。本轮 OpenAPI 文件的 55 个引用全部解析通过。
 - `bun x biome check scripts/api-reference-historical-archives.test.ts src/components/docs-overview/sdk-downloads-data.zh-cn.ts`：通过。
 - `agent-browser` 浏览器抽查：ConvoAI v2.14 与 HarmonyOS v4.6.3 折叠/平台选择、Token 文档、新增嵌套 API 导航、轮次响应示例及 v4.4.2 归档入口通过；所查本地页面未报告浏览器异常。截图和临时报告仅保存在 ignored `.agent/hotfix-20261023/`，未提交或托管截图。
 - `bun run build`：通过（默认 global 区域，1194 个 payload、3356 个机器可读文件、3215 个路由 HTML），单独记录，不与中文产物混用。
