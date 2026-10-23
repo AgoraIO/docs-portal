@@ -101,7 +101,8 @@
 - 中文变更 MDX 内部链接审计：新增断链 0，继承失效锚点 3；本轮 OpenAPI 文件的 55 个引用全部解析通过。
 - `bun x biome check scripts/api-reference-historical-archives.test.ts src/components/docs-overview/sdk-downloads-data.zh-cn.ts`：通过。
 - `agent-browser` 浏览器抽查：ConvoAI v2.14 与 HarmonyOS v4.6.3 折叠/平台选择、Token 文档、新增嵌套 API 导航、轮次响应示例及 v4.4.2 归档入口通过；所查本地页面未报告浏览器异常。截图和临时报告仅保存在 ignored `.agent/hotfix-20261023/`，未提交或托管截图。
-- `bun run build`：通过（默认 global 区域，1194 个 payload、3356 个机器可读文件、3215 个路由 HTML）。它不构成中文发布产物通过的证据；`VITE_DOCS_REGION=cn bun run build` 正在执行，结果待回填。
+- `bun run build`：通过（默认 global 区域，1194 个 payload、3356 个机器可读文件、3215 个路由 HTML），单独记录，不与中文产物混用。
+- `VITE_DOCS_REGION=cn bun run build`：通过，exit 0；中文客户端、服务端编译与全站预渲染完成，生成 5865 个 payload、7048 个机器可读文件和 6799 个路由 HTML。中文发布路由清单包含本轮全部 50 个变更 MDX 路由；没有把默认 global 构建当作中文构建通过的证据。
 
 ## 下一轮起点
 
