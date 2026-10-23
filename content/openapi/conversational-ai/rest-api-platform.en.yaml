@@ -48,7 +48,7 @@ paths:
   # -----------------------------------------------------------------------------------------------
   # Agents
   # -----------------------------------------------------------------------------------------------
-  /v3/projects/{appid}/agents:
+  /v1/projects/{appid}/agents:
     post:
       tags:
         - Agents
@@ -264,7 +264,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/agents/{agent_id}:
+  /v1/projects/{appid}/agents/{agent_id}:
     get:
       tags:
         - Agents
@@ -413,7 +413,7 @@ paths:
   # -----------------------------------------------------------------------------------------------
   # Sessions
   # -----------------------------------------------------------------------------------------------
-  /v3/projects/{appid}/sessions:
+  /v1/projects/{appid}/sessions:
     post:
       tags:
         - Sessions
@@ -606,7 +606,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/sessions/ephemeral:
+  /v1/projects/{appid}/sessions/ephemeral:
     post:
       tags:
         - Sessions
@@ -707,7 +707,7 @@ paths:
             still start. Retrieve or list sessions before you retry.
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/sessions/{agent_session_id}:
+  /v1/projects/{appid}/sessions/{agent_session_id}:
     get:
       tags:
         - Sessions
@@ -840,7 +840,7 @@ paths:
       # TODO(platform-confirm): The contract's Runtime updates guide describes If-Match, recursive merge
       # of params, and lifecycle updates. The endpoint page and the OpenAPI schema describe no
       # If-Match, replacement, and no lifecycle. Documented as the endpoint page and schema say.
-  /v3/projects/{appid}/sessions/{agent_session_id}/stop:
+  /v1/projects/{appid}/sessions/{agent_session_id}/stop:
     post:
       tags:
         - Sessions
@@ -887,7 +887,7 @@ paths:
           $ref: "#/components/responses/Error"
       # TODO(platform-confirm): Staging (14 Oct) returned 404 TaskNotFound for an ended session, not
       # 409 TaskNotRunning.
-  /v3/projects/{appid}/sessions/{agent_session_id}/actions/speak:
+  /v1/projects/{appid}/sessions/{agent_session_id}/actions/speak:
     post:
       tags:
         - Sessions
@@ -944,7 +944,7 @@ paths:
             `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/sessions/{agent_session_id}/actions/inject:
+  /v1/projects/{appid}/sessions/{agent_session_id}/actions/inject:
     post:
       tags:
         - Sessions
@@ -1005,7 +1005,7 @@ paths:
             `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/sessions/{agent_session_id}/actions/interrupt:
+  /v1/projects/{appid}/sessions/{agent_session_id}/actions/interrupt:
     post:
       tags:
         - Sessions
@@ -1057,7 +1057,7 @@ paths:
   # -----------------------------------------------------------------------------------------------
   # Secrets
   # -----------------------------------------------------------------------------------------------
-  /v3/projects/{appid}/secrets:
+  /v1/projects/{appid}/secrets:
     post:
       tags:
         - Secrets
@@ -1183,7 +1183,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/secrets/{name}:
+  /v1/projects/{appid}/secrets/{name}:
     get:
       tags:
         - Secrets
@@ -1370,7 +1370,7 @@ paths:
           $ref: "#/components/responses/PreconditionFailed"
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/secrets/{name}/keys/{key}:
+  /v1/projects/{appid}/secrets/{name}/keys/{key}:
     put:
       tags:
         - Secrets
@@ -1510,7 +1510,7 @@ paths:
   # -----------------------------------------------------------------------------------------------
   # Phone numbers
   # -----------------------------------------------------------------------------------------------
-  /v3/projects/{appid}/numbers:
+  /v1/projects/{appid}/numbers:
     post:
       tags:
         - Phone numbers
@@ -1665,7 +1665,7 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/numbers/{number_id}:
+  /v1/projects/{appid}/numbers/{number_id}:
     get:
       tags:
         - Phone numbers
@@ -1789,7 +1789,7 @@ paths:
   # -----------------------------------------------------------------------------------------------
   # Campaigns
   # -----------------------------------------------------------------------------------------------
-  /v3/projects/{appid}/campaigns:
+  /v1/projects/{appid}/campaigns:
     post:
       tags:
         - Campaigns
@@ -2014,7 +2014,7 @@ paths:
         default:
           $ref: "#/components/responses/Error"
       # TODO(platform-confirm): Default and maximum `limit`.
-  /v3/projects/{appid}/campaigns/{campaign_id}:
+  /v1/projects/{appid}/campaigns/{campaign_id}:
     get:
       tags:
         - Campaigns
@@ -2157,7 +2157,7 @@ paths:
             `CampaignActive`: The campaign is `scheduled`, `running`, or `paused`. Cancel it first.
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/campaigns/{campaign_id}:pause:
+  /v1/projects/{appid}/campaigns/{campaign_id}:pause:
     post:
       tags:
         - Campaigns
@@ -2199,7 +2199,7 @@ paths:
             `Idempotency-Key` is bound to a different request.
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/campaigns/{campaign_id}:resume:
+  /v1/projects/{appid}/campaigns/{campaign_id}:resume:
     post:
       tags:
         - Campaigns
@@ -2238,7 +2238,7 @@ paths:
             `Idempotency-Key` is bound to a different request.
         default:
           $ref: "#/components/responses/Error"
-  /v3/projects/{appid}/campaigns/{campaign_id}:cancel:
+  /v1/projects/{appid}/campaigns/{campaign_id}:cancel:
     post:
       tags:
         - Campaigns

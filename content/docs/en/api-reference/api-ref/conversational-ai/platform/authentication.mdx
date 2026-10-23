@@ -247,7 +247,7 @@ The following example lists the agents in your project. It works with a token th
 
 ```bash
 curl --request GET \
-  --url 'https://preview.ai.agora.io/conversational-ai/v3/projects/<your_app_id>/agents?limit=20' \
+  --url 'https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents?limit=20' \
   --header 'Authorization: agora token=<your_token>'
 ```
 
@@ -255,7 +255,7 @@ The following example starts an RTC session with a saved agent, using a token wi
 
 ```bash
 curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v3/projects/<your_app_id>/sessions \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
   --header 'Authorization: agora token=<your_token>' \
   --header 'Content-Type: application/json' \
   --data '{

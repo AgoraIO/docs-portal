@@ -36,7 +36,7 @@ Set names and key names are case-sensitive, and can contain up to 64 letters, di
 
 ```bash
 curl --request POST \
-  --url <base_url>/v3/projects/<your_app_id>/secrets \
+  --url <base_url>/v1/projects/<your_app_id>/secrets \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '
@@ -78,7 +78,7 @@ In the following example, the `llm` stage uses the OpenAI key stored as `llm` in
 
 ```bash
 curl --request POST \
-  --url <base_url>/v3/projects/<your_app_id>/agents \
+  --url <base_url>/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --header 'Idempotency-Key: <your_unique_key>' \
@@ -131,7 +131,7 @@ To replace a key's value, send a request to [Set a secret key](/en/api-reference
 
 ```bash
 curl --request PUT \
-  --url <base_url>/v3/projects/<your_app_id>/secrets/support-prod/keys/llm \
+  --url <base_url>/v1/projects/<your_app_id>/secrets/support-prod/keys/llm \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '

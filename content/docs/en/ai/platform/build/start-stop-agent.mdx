@@ -49,7 +49,7 @@ In the `Idempotency-Key` header, pass a unique value for each agent you create. 
 
 ```bash
 curl --request POST \
-  --url <base_url>/v3/projects/<your_app_id>/agents \
+  --url <base_url>/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --header 'Idempotency-Key: <your_unique_key>' \
@@ -116,7 +116,7 @@ In `values`, pass a value for each required variable.
 
 ```bash
 curl --request POST \
-  --url <base_url>/v3/projects/<your_app_id>/sessions \
+  --url <base_url>/v1/projects/<your_app_id>/sessions \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '
@@ -156,7 +156,7 @@ A session starts asynchronously. A successful response to Start a session confir
 
 ```bash
 curl --request GET \
-  --url <base_url>/v3/projects/<your_app_id>/sessions/<agent_session_id> \
+  --url <base_url>/v1/projects/<your_app_id>/sessions/<agent_session_id> \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
@@ -194,7 +194,7 @@ When the conversation ends, send a request to [Stop a session](/en/api-reference
 
 ```bash
 curl --request POST \
-  --url <base_url>/v3/projects/<your_app_id>/sessions/<agent_session_id>/stop \
+  --url <base_url>/v1/projects/<your_app_id>/sessions/<agent_session_id>/stop \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
@@ -215,7 +215,7 @@ To try a configuration before you save it, send a request to [Start an ephemeral
 
 ```bash
 curl --request POST \
-  --url <base_url>/v3/projects/<your_app_id>/sessions/ephemeral \
+  --url <base_url>/v1/projects/<your_app_id>/sessions/ephemeral \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '
