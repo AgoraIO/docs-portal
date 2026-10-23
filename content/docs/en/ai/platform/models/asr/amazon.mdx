@@ -1,130 +1,72 @@
 ---
 title: Amazon Transcribe
 description: >
- Integrate Amazon ASR into Conversational AI Engine.
+ Use Amazon Transcribe for speech recognition (ASR) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/amazon.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/amazon.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 Amazon provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
 
-### Sample configuration
+## Sample configuration
 
-The following example shows how to configure Amazon Transcribe ASR when starting a conversational AI agent.
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). Amazon Transcribe supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your AWS secret access key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent, AmazonSTT
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(AmazonSTT(
-        access_key='your-aws-access-key-id',
-        secret_key='your-aws-secret-access-key',
-        region='us-east-1',
-        language='en-US',
-    ))
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(...)  # configure your TTS vendor
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, AmazonSTT } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(new AmazonSTT({
-    accessKey: 'your-aws-access-key-id',
-    secretKey: 'your-aws-secret-access-key',
-    region: 'us-east-1',
-    language: 'en-US',
-  }))
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure your TTS vendor */);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(
-    vendors.NewAmazonSTT(vendors.AmazonSTTOptions{
-        AccessKey: "your-aws-access-key-id",
-        SecretKey: "your-aws-secret-access-key",
-        Region:    "us-east-1",
-        Language:  "en-US",
-    }),
-).WithLlm(/* configure your LLM vendor */).
-  WithTts(/* configure your TTS vendor */)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
+In the following example, the key is stored as `amazon` in the `support-prod` set:
 
 ```json
 "asr": {
-    "vendor": "amazon",
-    "params": {
-        "region": "<AWS_ASR_REGION>",
-        "access_key_id": "<AWS_ASR_ACCESS_KEY_ID>",
-        "secret_access_key": "<AWS_ASR_SECRET_ACCESS_KEY>",
-        "language_code": "en-US",
-        "media_sample_rate_hz": 16000,
-        "media_encoding": "pcm"
-    }
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.amazon"
+  },
+  "vendor": "amazon",
+  "language": "en-US",
+  "params": {
+    "region": "<AWS_ASR_REGION>",
+    "access_key_id": "<AWS_ASR_ACCESS_KEY_ID>",
+    "media_sample_rate_hz": 16000,
+    "media_encoding": "pcm"
+  }
 }
 ```
 
-</TabsContent>
-</Tabs>
+{/* TODO(platform-confirm): AWS needs two credentials, an access key ID and a secret access key. Confirm how the Platform takes them: the secret access key in `credential.api_key` with `access_key_id` in `params` (as shown), or another format. The contract says authentication fields don't belong in `params`. Also confirm that block-level `language` replaces the Voice Agent `params.language_code`. */}
 
-### Key parameters
+## Key parameters
 
-<ParameterList title="params" required={true}>
-  <Parameter name="region" type="string" required={true}>
-  The AWS region where the Transcribe service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/transcribe.html) for available regions.
+<ParameterList title="asr" required={true}>
+  <Parameter name="vendor" type="string" required={true}>
+  Set to `amazon`.
   </Parameter>
-  <Parameter name="access_key_id" type="string" required={true}>
-  The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  <Parameter name="credential" type="object" required={true}>
+  How the agent authenticates with Amazon Transcribe. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your AWS secret access key. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
   </Parameter>
-  <Parameter name="secret_access_key" type="string" required={true}>
-  The AWS secret access key used for authentication. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
-  </Parameter>
-  <Parameter name="language_code" type="string" required={true}>
+  <Parameter name="language" type="string" required={true}>
   The language code for speech recognition, for example, `en-US`, `es-US`, or `fr-FR`. See [supported languages](https://docs.aws.amazon.com/transcribe/latest/dg/supported-languages.html) for available language codes.
   </Parameter>
-  <Parameter name="media_sample_rate_hz" type="integer" required={false}>
-  The sample rate in Hertz for the audio input, for example, `16000` or `8000`.
-  </Parameter>
-  <Parameter name="media_encoding" type="string" required={false}>
-  The encoding format of the audio input, for example, `pcm`, `opus`, or `flac`.
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="region" type="string" required={true}>
+    The AWS region where the Transcribe service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/transcribe.html) for available regions.
+    </Parameter>
+    <Parameter name="access_key_id" type="string" required={true}>
+    The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+    </Parameter>
+    <Parameter name="media_sample_rate_hz" type="integer" required={false}>
+    The sample rate in Hertz for the audio input, for example, `16000` or `8000`.
+    </Parameter>
+    <Parameter name="media_encoding" type="string" required={false}>
+    The encoding format of the audio input, for example, `pcm`, `opus`, or `flac`.
+    </Parameter>
   </Parameter>
 </ParameterList>
 
 :::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Amazon official documentation](https://docs.aws.amazon.com/transcribe/latest/dg/streaming.html).
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Amazon Transcribe without validation. For a full list of supported options, refer to the [Amazon official documentation](https://docs.aws.amazon.com/transcribe/latest/dg/streaming.html).
 :::
 
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

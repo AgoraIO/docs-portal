@@ -1,57 +1,54 @@
 ---
 title: xAI Grok
 description: >
-  Integrate xAI Grok as the LLM with the Conversational AI Engine.
+  Use xAI Grok as the LLM in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/xai.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/xai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 xAI provides access to Grok large language models through an OpenAI-compatible chat completions API for conversational AI applications.
 
-### Sample configuration
+## Sample configuration
 
-The following example shows a starting `llm` parameter configuration you can use when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). xAI Grok supports BYOK only. It isn't available in managed mode.
+
+Store your xAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `xai` in the `support-prod` set:
 
 ```json
 "llm": {
-  "url": "https://api.x.ai/v1/chat/completions",
-  "api_key": "<your_llm_key>",
-  "system_messages": [
-    {
-      "role": "system",
-      "content": "You are a helpful chatbot."
-    }
-  ],
-  "max_history": 32,
-  "greeting_message": "Hello, how can I assist you?",
-  "failure_message": "Please hold on a second.",
-  "params": {
-    "model": "grok-4.3"
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.xai"
   },
-  "vendor": "xai"
+  "vendor": "xai",
+  "model": "grok-4.3",
+  "url": "https://api.x.ai/v1/chat/completions",
+  "max_history": 32,
+  "failure_message": "Please hold on a second."
 }
 ```
 
-### Key parameters
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
-<ParameterList required={true}>
+{/* TODO(platform-confirm): Confirm the `vendor` value for xAI Grok (`xai` is assumed, as in the Voice Agent API), and whether `url` is required. */}
+
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `xai`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your xAI API key.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    The Grok model to use. For example, `grok-4.3`. For available models, refer to the [xAI models documentation](https://docs.x.ai/developers/models).
+  </Parameter>
   <Parameter name="url" type="string" required={true}>
     The xAI chat completions endpoint. Set to `https://api.x.ai/v1/chat/completions`.
   </Parameter>
-  <Parameter name="api_key" type="string" required={true}>
-    The xAI API key used to authenticate requests.
-  </Parameter>
-  <Parameter name="vendor" type="string" required={true}>
-    The LLM vendor. Set to `xai`.
-  </Parameter>
-  <Parameter name="params" type="object" required={false}>
-    Additional parameters passed directly to the xAI API.
-    <ParameterList title="params">
-      <Parameter name="model" type="string" required={true}>
-        The Grok model to use. For example, `grok-4.3`. For available models, refer to the [xAI models documentation](https://docs.x.ai/developers/models).
-      </Parameter>
-    </ParameterList>
-  </Parameter>
 </ParameterList>
 
-For more information, refer to the [xAI Chat Completions documentation](https://docs.x.ai/developers/model-capabilities/legacy/chat-completions).
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For more information, refer to the [xAI Chat Completions documentation](https://docs.x.ai/developers/model-capabilities/legacy/chat-completions).

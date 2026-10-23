@@ -1,111 +1,52 @@
 ---
 title: Sarvam
 description: >
- Integrate Sarvam ASR with the Conversational AI Engine.
+ Use Sarvam for speech recognition (ASR) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/sarvam.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/sarvam.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 Sarvam ASR provides real-time speech-to-text with low latency and reliable performance for Indian languages.
 
-### Sample configuration
+## Sample configuration
 
-The following example shows how to configure Sarvam ASR when starting a conversational AI agent.
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). Sarvam supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your Sarvam API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent, SarvamSTT
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(SarvamSTT(
-        api_key='your-sarvam-key',
-        language='hi-IN',
-    ))
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(...)  # configure your TTS vendor
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, SarvamSTT } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(new SarvamSTT({
-    apiKey: 'your-sarvam-key',
-    language: 'hi-IN',
-  }))
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure your TTS vendor */);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(
-    vendors.NewSarvamSTT(vendors.SarvamSTTOptions{
-        APIKey:   "your-sarvam-key",
-        Language: "hi-IN",
-    }),
-).WithLlm(/* configure your LLM vendor */).
-  WithTts(/* configure your TTS vendor */)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `asr` configuration in your request:
+In the following example, the key is stored as `sarvam` in the `support-prod` set:
 
 ```json
 "asr": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.sarvam"
+  },
   "vendor": "sarvam",
-  "language": "en-US",
-  "params": {
-    "api_key": "SARVAM_KEY",
-    "language": "hi-IN"
-  }
+  "language": "hi-IN"
 }
 ```
 
-</TabsContent>
-</Tabs>
+{/* TODO(platform-confirm): Confirm that the block-level `language` accepts `unknown` for automatic language detection, as the Voice Agent `params.language` did. */}
 
-### Key parameters
+## Key parameters
 
-<ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-  Your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+<ParameterList title="asr" required={true}>
+  <Parameter name="vendor" type="string" required={true}>
+  Set to `sarvam`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+  How the agent authenticates with Sarvam. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
   </Parameter>
   <Parameter name="language" type="string" required={true}>
-  The language code for transcription. Set to `unknown` for automatic language detection.
+  The language code for transcription, for example, `hi-IN`. Set to `unknown` for automatic language detection.
   </Parameter>
 </ParameterList>
 
 :::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/speech-to-text/transcribe).
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Sarvam without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/speech-to-text/transcribe).
 :::
 
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

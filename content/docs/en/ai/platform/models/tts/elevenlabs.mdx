@@ -1,10 +1,10 @@
 ---
 title: ElevenLabs
 description: >
- Integrate ElevenLabs TTS into Conversational AI Engine.
+ Use ElevenLabs for text-to-speech (TTS) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/elevenlabs.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/elevenlabs.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 ElevenLabs provides highly realistic AI voices with advanced prosody and natural speech patterns, delivering lifelike audio synthesis with emotional nuance and conversational flow.
 
@@ -14,91 +14,23 @@ You need a **paid ElevenLabs plan** for reliable TTS integration.
 ElevenLabs may restrict or disable free-tier accounts due to abuse-detection mechanisms, even if free credits are available. To avoid missing audio responses during testing and production, ensure you use a paid plan.
 :::
 
-### Sample configuration
+## Sample configuration
 
-The following examples show how to configure ElevenLabs TTS when starting a conversational AI agent.
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). ElevenLabs supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your ElevenLabs API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent
-from agora_agent.agentkit.vendors import ElevenLabsTTS
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(...)  # configure your STT vendor
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(ElevenLabsTTS(
-        key='your-elevenlabs-key',
-        model_id='eleven_flash_v2_5',
-        voice_id='pNInz6obpgDQGcFmaJgB',
-        base_url='wss://api.elevenlabs.io/v1',
-    ))
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, ElevenLabsTTS } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(new ElevenLabsTTS({
-    key: 'your-elevenlabs-key',
-    modelId: 'eleven_flash_v2_5',
-    voiceId: 'pNInz6obpgDQGcFmaJgB',
-    baseUrl: 'wss://api.elevenlabs.io/v1',
-  }));
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
-  WithLlm(/* configure your LLM vendor */).
-  WithTts(
-    vendors.NewElevenLabsTTS(vendors.ElevenLabsTTSOptions{
-        Key:     "your-elevenlabs-key",
-        ModelID: "eleven_flash_v2_5",
-        VoiceID: "pNInz6obpgDQGcFmaJgB",
-        BaseURL: "wss://api.elevenlabs.io/v1",
-    }),
-)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `tts` configuration in your request:
+In the following example, the key is stored as `elevenlabs` in the `support-prod` set:
 
 ```json
 "tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.elevenlabs"
+  },
   "vendor": "elevenlabs",
+  "url": "wss://api.elevenlabs.io/v1",
   "params": {
-    "base_url": "wss://api.elevenlabs.io/v1",
-    "key": "<your_elevenlabs_key>",
     "model_id": "eleven_flash_v2_5",
     "voice_id": "pNInz6obpgDQGcFmaJgB",
     "sample_rate": 24000
@@ -106,44 +38,48 @@ Use the following `tts` configuration in your request:
 }
 ```
 
-</TabsContent>
-</Tabs>
+{/* TODO(platform-confirm): The Voice Agent API requires the ElevenLabs endpoint as `params.base_url` (it selects data residency). Confirm that the Platform takes it as the block `url`, and whether it's still required. */}
 
-### Key parameters
+## Key parameters
 
-<ParameterList title="params" required={true}>
-  <Parameter name="base_url" type="string" required={true}>
-  The endpoint URL for the ElevenLabs TTS service. See [Data residency](https://elevenlabs.io/docs/product-guides/administration/data-residency).
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `elevenlabs`.
   </Parameter>
-  <Parameter name="key" type="string" required={true}>
-  The API key used for authentication. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your ElevenLabs API key. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
   </Parameter>
-  <Parameter name="model_id" type="string" required={true}>
-  Identifier of the model to be used. Popular options include `eleven_flash_v2_5` for speed or `eleven_multilingual_v2` for quality.
+  <Parameter name="url" type="string" required={true}>
+    The endpoint URL for the ElevenLabs TTS service. See [Data residency](https://elevenlabs.io/docs/product-guides/administration/data-residency).
   </Parameter>
-  <Parameter name="voice_id" type="string" required={true}>
-  The identifier for the selected voice for speech synthesis. Browse available voices in the [Voice Library](https://elevenlabs.io/voice-library).
-  </Parameter>
-  <Parameter name="sample_rate" type="number" defaultValue="24000" required={false}>
-  Audio sampling rate in Hz. Common values: `16000`, `22050`, `24000`, `44100`.
-  </Parameter>
-  <Parameter name="speed" type="number" defaultValue="1.0" required={false}>
-  Speed up or slow down the speed of the generated speech. Range `0.7` to `1.2` inclusive.
-  </Parameter>
-  <Parameter name="stability" type="number" required={false}>
-  Controls voice stability. Higher values `(0.8-1.0)` produce more consistent speech, lower values `(0.0-0.5)` add more variation.
-  </Parameter>
-  <Parameter name="similarity_boost" type="number" required={false}>
-  Enhances similarity to the original voice. Range: `0.0-1.0`. Higher values stick closer to the training voice.
-  </Parameter>
-  <Parameter name="style" type="number" required={false}>
-  Controls speaking style and expressiveness. Higher values increase emotional range and variation.
-  </Parameter>
-  <Parameter name="use_speaker_boost" type="boolean" required={false}>
-  Improves voice quality and similarity when enabled. Recommended for most use cases.
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model_id" type="string" required={true}>
+      Identifier of the model to be used. Popular options include `eleven_flash_v2_5` for speed or `eleven_multilingual_v2` for quality.
+    </Parameter>
+    <Parameter name="voice_id" type="string" required={true}>
+      The identifier for the selected voice for speech synthesis. Browse available voices in the [Voice Library](https://elevenlabs.io/voice-library).
+    </Parameter>
+    <Parameter name="sample_rate" type="number" defaultValue="24000" required={false}>
+      Audio sampling rate in Hz. Common values: `16000`, `22050`, `24000`, `44100`.
+    </Parameter>
+    <Parameter name="speed" type="number" defaultValue="1.0" required={false}>
+      Speed up or slow down the speed of the generated speech. Range `0.7` to `1.2` inclusive.
+    </Parameter>
+    <Parameter name="stability" type="number" required={false}>
+      Controls voice stability. Higher values `(0.8-1.0)` produce more consistent speech, lower values `(0.0-0.5)` add more variation.
+    </Parameter>
+    <Parameter name="similarity_boost" type="number" required={false}>
+      Enhances similarity to the original voice. Range: `0.0-1.0`. Higher values stick closer to the training voice.
+    </Parameter>
+    <Parameter name="style" type="number" required={false}>
+      Controls speaking style and expressiveness. Higher values increase emotional range and variation.
+    </Parameter>
+    <Parameter name="use_speaker_boost" type="boolean" required={false}>
+      Improves voice quality and similarity when enabled. Recommended for most use cases.
+    </Parameter>
   </Parameter>
 </ParameterList>
 
 :::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [ElevenLabs TTS documentation](https://elevenlabs.io/docs/capabilities/text-to-speech).
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to ElevenLabs without validation. For a full list of supported options, refer to the [ElevenLabs TTS documentation](https://elevenlabs.io/docs/capabilities/text-to-speech).
 :::

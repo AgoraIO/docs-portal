@@ -1,119 +1,58 @@
 ---
 title: Mistral
 description: >
- Integrate Mistral TTS with the Conversational AI Engine.
+ Use Mistral for text-to-speech (TTS) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/mistral.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/mistral.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 Mistral provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
 
-### Sample configuration
+## Sample configuration
 
-The following examples show how to configure Mistral TTS when starting a conversational AI agent.
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). Mistral supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your Mistral API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent
-from agora_agent.agentkit.vendors import MistralTTS
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(...)  # configure your STT vendor
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(MistralTTS(
-        api_key='<MISTRAL_API_KEY>',
-        model='voxtral-mini-tts-2603',
-        voice='<MISTRAL_TTS_VOICE>',
-    ))
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, MistralTTS } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(new MistralTTS({
-    apiKey: '<MISTRAL_API_KEY>',
-    model: 'voxtral-mini-tts-2603',
-    voice: '<MISTRAL_TTS_VOICE>',
-  }));
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
-  WithLlm(/* configure your LLM vendor */).
-  WithTts(
-    vendors.NewMistralTTS(vendors.MistralTTSOptions{
-        APIKey: "<MISTRAL_API_KEY>",
-        Model:  "voxtral-mini-tts-2603",
-        Voice:  "<MISTRAL_TTS_VOICE>",
-    }),
-)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `tts` configuration in your request:
+In the following example, the key is stored as `mistral` in the `support-prod` set:
 
 ```json
 "tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.mistral"
+  },
   "vendor": "mistral",
   "params": {
-    "api_key": "<MISTRAL_API_KEY>",
     "model": "voxtral-mini-tts-2603",
-    "voice": "<MISTRAL_TTS_VOICE>"
+    "voice": "<your_mistral_voice>"
   }
 }
 ```
 
-</TabsContent>
-</Tabs>
+## Key parameters
 
-### Key parameters
-
-<ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-    The Mistral API key used to authenticate requests. You must provide a valid key for the service to function.
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `mistral`.
   </Parameter>
-  <Parameter name="model" type="string" required={false}>
-    The TTS model to use. For example, `voxtral-mini-tts-2603`.
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Mistral API key.
   </Parameter>
-  <Parameter name="voice" type="string" required={false}>
-    The voice identifier to use.
+  <Parameter name="params" type="object" required={false}>
+    <Parameter name="model" type="string" required={false}>
+      The TTS model to use, for example `voxtral-mini-tts-2603`.
+    </Parameter>
+    <Parameter name="voice" type="string" required={false}>
+      The voice identifier to use.
+    </Parameter>
   </Parameter>
 </ParameterList>
 
 :::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Mistral documentation](https://docs.mistral.ai/api/endpoint/audio/speech).
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Mistral without validation. For a full list of supported options, refer to the [Mistral documentation](https://docs.mistral.ai/api/endpoint/audio/speech).
 :::
 
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

@@ -1,82 +1,29 @@
 ---
 title: xAI
 description: >
-  Integrate xAI TTS with the Conversational AI Engine.
+  Use xAI for text-to-speech (TTS) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/xai.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/xai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 xAI provides text-to-speech (TTS) with a range of expressive voices for conversational AI applications.
 
-### Sample configuration
+## Sample configuration
 
-The following example shows a starting `tts` parameter configuration you can use when you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join).
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). xAI supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
+Store your xAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-<TabsContent value="python">
-
-```python
-from agora_agent import XaiTTS
-
-# ... other agent configuration ...
-.with_tts(XaiTTS(
-    api_key='your-xai-api-key',
-    voice_id='eve',
-    language='en',
-    sample_rate=16000,
-))
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { XAiTTS } from 'agora-agents';
-
-// ... other agent configuration ...
-.withTts(new XAiTTS({
-  apiKey: 'your-xai-api-key',
-  voiceId: 'eve',
-  language: 'en',
-  sampleRate: 16000,
-}));
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-sampleRate := vendors.SampleRate16kHz
-
-// ... other agent configuration ...
-WithTts(
-    vendors.NewXaiTTS(vendors.XaiTTSOptions{
-        APIKey:     "your-xai-api-key",
-        VoiceID:    "eve",
-        Language:   "en",
-        SampleRate: &sampleRate,
-    }),
-)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
+In the following example, the key is stored as `xai` in the `support-prod` set:
 
 ```json
 "tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.xai"
+  },
   "vendor": "xai",
   "params": {
-    "api_key": "${env:XAI_API_KEY}",
     "voice_id": "eve",
     "language": "en",
     "sample_rate": 16000
@@ -84,28 +31,32 @@ WithTts(
 }
 ```
 
-</TabsContent>
-</Tabs>
+## Key parameters
 
-### Key parameters
-
-<ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-    The xAI API key used to authenticate requests. You must provide a valid key for the service to function.
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `xai`.
   </Parameter>
-  <Parameter name="voice_id" type="string" required={false}>
-    The voice to use for speech synthesis. For voice IDs and samples, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#voices).
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your xAI API key.
   </Parameter>
-  <Parameter name="language" type="string" required={true}>
-    The BCP-47 language code for speech synthesis. For example, use `en` for English. For supported language codes, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#supported-languages).
-  </Parameter>
-  <Parameter name="sample_rate" type="integer" required={false}>
-    The audio sample rate in Hz. Supported values: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`.
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="voice_id" type="string" required={false}>
+      The voice to use for speech synthesis. For voice IDs and samples, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#voices).
+    </Parameter>
+    <Parameter name="language" type="string" required={true}>
+      The BCP-47 language code for speech synthesis. For example, use `en` for English. For supported language codes, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech#supported-languages).
+    </Parameter>
+    <Parameter name="sample_rate" type="integer" required={false}>
+      The audio sample rate in Hz. Supported values: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`.
+    </Parameter>
   </Parameter>
 </ParameterList>
 
 :::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [xAI Text to Speech documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech).
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to xAI without validation. For a full list of supported options, refer to the [xAI Text to Speech documentation](https://docs.x.ai/developers/model-capabilities/audio/text-to-speech).
 :::
 
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

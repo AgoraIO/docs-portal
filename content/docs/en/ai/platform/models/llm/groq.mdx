@@ -1,138 +1,58 @@
 ---
 title: Groq
 description: >
-  Integrate Groq LLM into Conversational AI Engine.
+  Use Groq as the LLM in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/groq.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/groq.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 Groq provides state-of-the-art language models optimized for different use cases.
 
-### Sample configuration
+## Sample configuration
 
-The following example shows how to configure Groq LLM when starting a conversational AI agent.
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). Groq supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your Groq API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent, Groq
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(...)  # configure your STT vendor
-    .with_llm(Groq(
-        api_key='your-groq-key',
-        base_url='https://api.groq.com/openai/v1/chat/completions',
-        model='llama-3.3-70b-versatile',
-        system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
-        greeting_message='Hello, how can I assist you?',
-        failure_message='Please hold on a second.',
-        max_history=32,
-    ))
-    .with_tts(...)  # configure your TTS vendor
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, Groq } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(new Groq({
-    apiKey: 'your-groq-key',
-    url: 'https://api.groq.com/openai/v1/chat/completions',
-    model: 'llama-3.3-70b-versatile',
-    systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
-    greetingMessage: 'Hello, how can I assist you?',
-    failureMessage: 'Please hold on a second.',
-    maxHistory: 32,
-  }))
-  .withTts(/* configure your TTS vendor */);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    Agora "github.com/AgoraIO/agora-agents-go/v2"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
-  WithLlm(
-    vendors.NewGroq(vendors.GroqOptions{
-        APIKey:  "your-groq-key",
-        BaseURL: "https://api.groq.com/openai/v1/chat/completions",
-        Model:   "llama-3.3-70b-versatile",
-        SystemMessages: []map[string]interface{}{
-            {"role": "system", "content": "You are a helpful chatbot."},
-        },
-        GreetingMessage: "Hello, how can I assist you?",
-        FailureMessage:  "Please hold on a second.",
-        MaxHistory:      Agora.Int(32),
-    }),
-).WithTts(/* configure your TTS vendor */)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `llm` configuration in your request:
+In the following example, the key is stored as `groq` in the `support-prod` set:
 
 ```json
 "llm": {
-    "url": "https://api.groq.com/openai/v1/chat/completions",
-    "api_key": "<your_llm_key>",
-    "system_messages": [
-      {
-        "role": "system",
-        "content": "You are a helpful chatbot."
-      }
-    ],
-    "max_history": 32,
-    "greeting_message": "Hello, how can I assist you?",
-    "failure_message": "Please hold on a second.",
-    "params": {
-      "model": "llama-3.3-70b-versatile"
-    }
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.groq"
+  },
+  "vendor": "groq",
+  "style": "openai",
+  "model": "llama-3.3-70b-versatile",
+  "url": "https://api.groq.com/openai/v1/chat/completions",
+  "max_history": 32,
+  "failure_message": "Please hold on a second."
 }
 ```
 
-</TabsContent>
-</Tabs>
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
-### Key parameters
+{/* TODO(platform-confirm): Confirm the `vendor` value for Groq (`groq` is assumed; the Voice Agent API sets no vendor and uses the default `openai` style), and whether `url` is required. */}
 
-<ParameterList title="llm" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-  Create and manage your API key from [Groq console](https://console.groq.com/keys).
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `groq`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Groq API key. Create and manage your API key from [Groq console](https://console.groq.com/keys).
+  </Parameter>
+  <Parameter name="style" type="string" required={false}>
+    Set to `openai`. Groq uses an OpenAI-compatible API.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Refer to [Groq models](https://console.groq.com/docs/models) for available models.
   </Parameter>
   <Parameter name="url" type="string" required={true}>
-  Use the completions endpoint.
-  </Parameter>
-  <Parameter name="params" type="object" required={true}>
-    <Parameter name="model" type="string" required={true}>
-    Refer to [Groq models](https://console.groq.com/docs/models) for available models.
-    </Parameter>
+    Use the completions endpoint.
   </Parameter>
 </ParameterList>
 
-For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Groq API Documentation](https://console.groq.com/docs/api-reference).
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Groq API Documentation](https://console.groq.com/docs/api-reference).

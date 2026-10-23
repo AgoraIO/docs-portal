@@ -1,96 +1,30 @@
 ---
 title: OpenAI
 description: >
- Integrate OpenAI ASR with the Conversational AI Engine.
+ Use OpenAI for speech recognition (ASR) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/openai.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/openai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 OpenAI provides real-time speech-to-text with low latency and reliable performance, making it ideal for conversational AI applications.
 
-### Sample configuration
+## Sample configuration
 
-The following example shows how to configure OpenAI ASR when starting a conversational AI agent.
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). OpenAI ASR supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your OpenAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent, OpenAISTT
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(OpenAISTT(
-        api_key='your-openai-key',
-        model='gpt-4o-mini-transcribe',
-        language='en',
-        prompt='Please transcribe the following audio into text. Output in English.',
-    ))
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(...)  # configure your TTS vendor
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, OpenAISTT } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(new OpenAISTT({
-    apiKey: 'your-openai-key',
-    model: 'gpt-4o-mini-transcribe',
-    language: 'en',
-    prompt: 'Please transcribe the following audio into text. Output in English.',
-  }))
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure your TTS vendor */);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(
-    vendors.NewOpenAISTT(vendors.OpenAISTTOptions{
-        APIKey:   "your-openai-key",
-        Model:    "gpt-4o-mini-transcribe",
-        Language: "en",
-        Prompt:   "Please transcribe the following audio into text. Output in English.",
-    }),
-).WithLlm(/* configure your LLM vendor */).
-  WithTts(/* configure your TTS vendor */)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `asr` configuration in your request:
+In the following example, the key is stored as `openai` in the `support-prod` set:
 
 ```json
 "asr": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.openai"
+  },
   "vendor": "openai",
   "language": "en-US",
   "params": {
-    "api_key": "<openai_key>",
     "input_audio_transcription": {
       "model": "gpt-4o-mini-transcribe",
       "prompt": "Please transcribe the following audio into text. Output in English.",
@@ -100,31 +34,40 @@ Use the following `asr` configuration in your request:
 }
 ```
 
-</TabsContent>
-</Tabs>
+{/* TODO(platform-confirm): OpenAI ASR sets its model and language inside `params.input_audio_transcription`. Confirm whether the Platform expects them there, or in the block-level `model` and `language` fields. */}
 
-### Key parameters
+## Key parameters
 
-<ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-    The OpenAI API key used to authenticate requests. You must provide a valid key for the service to function.
+<ParameterList title="asr" required={true}>
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `openai`.
   </Parameter>
-  <Parameter name="input_audio_transcription" type="object" required={true}>
-    The configuration object for audio transcription. Use this object to specify the model, prompt, and language for the transcription task.
-    <Parameter name="model" type="string" required={true}>
-      The OpenAI ASR model to use for transcription. For example, `gpt-4o-mini-transcribe`.
-    </Parameter>
-    <Parameter name="prompt" type="string" required={true}>
-      A prompt that guides the transcription process. Use this parameter to provide context or instructions for how the audio should be transcribed.
-    </Parameter>
-    <Parameter name="language" type="string" required={true}>
-      The language code to use for transcription. For example, use `en` for English.
+  <Parameter name="credential" type="object" required={true}>
+    How the agent authenticates with OpenAI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your OpenAI API key.
+  </Parameter>
+  <Parameter name="language" type="string" required={false}>
+    The language of the user's speech, for example, `en-US`.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="input_audio_transcription" type="object" required={true}>
+      The configuration object for audio transcription. Use this object to specify the model, prompt, and language for the transcription task.
+      <Parameter name="model" type="string" required={true}>
+        The OpenAI ASR model to use for transcription. For example, `gpt-4o-mini-transcribe`.
+      </Parameter>
+      <Parameter name="prompt" type="string" required={true}>
+        A prompt that guides the transcription process. Use this parameter to provide context or instructions for how the audio should be transcribed.
+      </Parameter>
+      <Parameter name="language" type="string" required={true}>
+        The language code to use for transcription. For example, use `en` for English.
+      </Parameter>
     </Parameter>
   </Parameter>
 </ParameterList>
 
 :::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [OpenAI documentation](https://platform.openai.com/docs/guides/speech-to-text).
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to OpenAI without validation. For a full list of supported options, refer to the [OpenAI documentation](https://platform.openai.com/docs/guides/speech-to-text).
 :::
 
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

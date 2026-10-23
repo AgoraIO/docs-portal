@@ -1,116 +1,50 @@
 ---
 title: Speechmatics
 description: >
- Integrate Speechmatics ASR with the Conversational AI Engine.
+ Use Speechmatics for speech recognition (ASR) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/speechmatics.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/speechmatics.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
 Speechmatics provides real-time automatic speech recognition (ASR) with flexible language support and reliable performance for conversational AI applications.
 
-### Sample configuration
+## Sample configuration
 
-The following example shows how to configure Speechmatics ASR when starting a conversational AI agent.
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). Speechmatics supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your Speechmatics API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent, SpeechmaticsSTT
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(SpeechmaticsSTT(
-        key='your-speechmatics-key',
-        language='en',
-        uri='wss://eu2.rt.speechmatics.com/v2',
-    ))
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(...)  # configure your TTS vendor
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, SpeechmaticsSTT } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(new SpeechmaticsSTT({
-    key: 'your-speechmatics-key',
-    language: 'en',
-    uri: 'wss://eu2.rt.speechmatics.com/v2',
-  }))
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure your TTS vendor */);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(
-    vendors.NewSpeechmaticsSTT(vendors.SpeechmaticsSTTOptions{
-        Key:      "your-speechmatics-key",
-        Language: "en",
-        URI:      "wss://eu2.rt.speechmatics.com/v2",
-    }),
-).WithLlm(/* configure your LLM vendor */).
-  WithTts(/* configure your TTS vendor */)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `asr` configuration in your request:
+In the following example, the key is stored as `speechmatics` in the `support-prod` set:
 
 ```json
 "asr": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.speechmatics"
+  },
   "vendor": "speechmatics",
-  "language": "en-US",
-  "params": {
-    "key": "<speechmatics_key>",
-    "language": "en",
-    "uri": "wss://eu2.rt.speechmatics.com/v2"
-  }
+  "language": "en",
+  "url": "wss://eu2.rt.speechmatics.com/v2"
 }
 ```
 
-</TabsContent>
-</Tabs>
+## Key parameters
 
-### Key parameters
-
-<ParameterList title="params" required={true}>
-  <Parameter name="key" type="string" required={true}>
-    The Speechmatics API key used to authenticate requests. You must provide a valid key for the service to function.
+<ParameterList title="asr" required={true}>
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `speechmatics`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    How the agent authenticates with Speechmatics. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Speechmatics API key.
   </Parameter>
   <Parameter name="language" type="string" required={true}>
     The language code to use for transcription. For example, use `en` for English.
   </Parameter>
-  <Parameter name="uri" type="string" required={false}>
-    The WebSocket URL for the Speechmatics streaming API. Specify this to target a particular region. For example, `wss://eu2.rt.speechmatics.com/v2`.
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket URL for the Speechmatics streaming API. Specify this to target a particular region, for example, `wss://eu2.rt.speechmatics.com/v2`. Omit it to use the default endpoint.
   </Parameter>
 </ParameterList>
 
 :::caution[Caution]
-The parameters listed on this page are validated for use with Conversational AI Engine. Required parameters must be provided as documented. Any additional parameters are passed through directly to the underlying vendor without validation. For a full list of supported options, refer to the [Speechmatics documentation](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket).
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Speechmatics without validation. For a full list of supported options, refer to the [Speechmatics documentation](https://docs.speechmatics.com/api-ref/realtime-transcription-websocket).
 :::

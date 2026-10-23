@@ -1,157 +1,72 @@
 ---
 title: Claude Anthropic
 description: >
-  Integrate Anthropic Claude LLM into Conversational AI Engine.
+  Use Anthropic Claude as the LLM in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/claude.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/claude.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Pattern page for the LLM vendor conversion. */}
 
 Claude from Anthropic provides helpful, harmless, and honest AI assistance with strong reasoning capabilities and natural conversational abilities.
 
-### Sample configuration
+## Sample configuration
 
-The following examples show how to configure Claude (Anthropic) LLM when starting a conversational AI agent.
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/build/start-stop-agent#create-an-agent). Claude supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your Anthropic API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent, Anthropic
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(...)  # configure your STT vendor
-    .with_llm(Anthropic(
-        api_key='your-anthropic-key',
-        url='https://api.anthropic.com/v1/messages',
-        model='claude-opus-4-8',
-        max_tokens=1024,
-        headers={'anthropic-version': '2023-06-01'},
-        system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
-        greeting_message='Hello, how can I assist you?',
-        failure_message='Please hold on a second.',
-        max_history=32,
-    ))
-    .with_tts(...)  # configure your TTS vendor
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, Anthropic } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(new Anthropic({
-    apiKey: 'your-anthropic-key',
-    url: 'https://api.anthropic.com/v1/messages',
-    model: 'claude-opus-4-8',
-    headers: { 'anthropic-version': '2023-06-01' },
-    params: { max_tokens: 1024 },
-    systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
-    greetingMessage: 'Hello, how can I assist you?',
-    failureMessage: 'Please hold on a second.',
-    maxHistory: 32,
-  }))
-  .withTts(/* configure your TTS vendor */);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    Agora "github.com/AgoraIO/agora-agents-go/v2"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
-  WithLlm(
-    vendors.NewAnthropic(vendors.AnthropicOptions{
-        APIKey:    "your-anthropic-key",
-        URL:       "https://api.anthropic.com/v1/messages",
-        Model:     "claude-opus-4-8",
-        MaxTokens: Agora.Int(1024),
-        Headers:   map[string]string{"anthropic-version": "2023-06-01"},
-        SystemMessages: []map[string]interface{}{
-            {"role": "system", "content": "You are a helpful chatbot."},
-        },
-        GreetingMessage: "Hello, how can I assist you?",
-        FailureMessage:  "Please hold on a second.",
-    }),
-).WithTts(/* configure your TTS vendor */)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `llm` configuration in your request:
+In the following example, the key is stored as `anthropic` in the `support-prod` set:
 
 ```json
 "llm": {
-    "url": "https://api.anthropic.com/v1/messages",
-    "api_key": "<your_llm_key>",
-    "headers": "{\"anthropic-version\":\"2023-06-01\"}",
-    "system_messages": [
-        {
-            "role": "system",
-            "content": "You are a helpful chatbot."
-        }
-    ],
-    "max_history": 32,
-    "greeting_message": "Hello, how can I assist you?",
-    "failure_message": "Please hold on a second.",
-    "params": {
-        "model": "claude-opus-4-8",
-        "max_tokens": 1024
-    },
-    "style": "anthropic"
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.anthropic"
+  },
+  "vendor": "anthropic",
+  "style": "anthropic",
+  "model": "claude-opus-4-8",
+  "url": "https://api.anthropic.com/v1/messages",
+  "headers": {
+    "anthropic-version": "2023-06-01"
+  },
+  "max_history": 32,
+  "failure_message": "Please hold on a second.",
+  "params": {
+    "max_tokens": 1024
+  }
 }
 ```
 
-</TabsContent>
-</Tabs>
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
-### Key parameters
+{/* TODO(platform-confirm): Confirm the `vendor` value for Claude (`anthropic` is assumed), and whether `url` is required or Agora uses Anthropic's endpoint by default. */}
 
-The following parameters are required when using your own API key (BYOK).
+## Key parameters
 
 <ParameterList title="llm">
-  <Parameter name="api_key" type="string" required={true}>
-    Get your API key from the [Anthropic Console](https://console.anthropic.com/).
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `anthropic`.
   </Parameter>
-  <Parameter name="url" type="string" required={true}>
-    Use Anthropic's messages endpoint.
-  </Parameter>
-  <Parameter name="headers" type="string" required={true}>
-    Must include the `anthropic-version` header for API compatibility.
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Anthropic API key. Get your API key from the [Anthropic Console](https://console.anthropic.com/).
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `anthropic` to use Claude's message format.
   </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Refer to [Claude models](https://docs.anthropic.com/en/docs/about-claude/models) for available models.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    Use Anthropic's messages endpoint.
+  </Parameter>
+  <Parameter name="headers" type="object" required={true}>
+    Must include the `anthropic-version` header for API compatibility.
+  </Parameter>
   <Parameter name="params" type="object" required={true}>
-    <Parameter name="model" type="string" required={true}>
-      Refer to [Claude models](https://docs.anthropic.com/en/docs/about-claude/models) for available models.
-    </Parameter>
     <Parameter name="max_tokens" type="integer" required={true}>
       The maximum number of tokens to generate in the response.
     </Parameter>
   </Parameter>
 </ParameterList>
 
-For complete `llm` configuration options, see [LLM parameters](/en/api-reference/api-ref/conversational-ai/join#request-body-properties-llm). For Claude-specific options and model capabilities, see the [Claude API documentation](https://docs.anthropic.com/en/api/messages).
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For Claude-specific options and model capabilities, see the [Claude API documentation](https://docs.anthropic.com/en/api/messages).
