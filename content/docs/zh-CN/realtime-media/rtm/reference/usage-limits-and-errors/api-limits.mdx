@@ -178,7 +178,7 @@ RTM 将客户端 API 按功能分为若干操作类别，每个类别拥有独�
 | 消息包体积（Message / User Channel） | 32 KB | 默认上限 | 发送失败，错误码 `-11010`。体积 = 消息负载 + `customType`。 |
 | 消息包体积（Topic） | 1 KB | 默认上限 | 发送失败，错误码 `-11010`。计算方式同上。 |
 | `customType` 长度 | 32 个 ASCII 字符 | 固定上限 | 发送失败。 |
-| 频道名长度 | 64 个 ASCII 字符 | 固定上限 | 调用失败；另受合法字符集约束，参见[频道命名指南](../channel/channel-name)。 |
+| 频道名长度 | 64 个 ASCII 字符 | 固定上限 | 调用失败；另受合法字符集约束，参见[频道命名指南](/zh-CN/realtime-media/rtm/build/channels-and-topics/channel-name)。 |
 | Topic 名长度 | 16 个 ASCII 字符 | 固定上限 | 调用失败。 |
 | `getMessages` 单次条数 | 100 条 | 固定上限 | 超出部分需翻页获取。 |
 | `getMessages` 查询窗口 | `start` 与 `end` 间隔不超过 24 小时 | 固定上限 | 调用失败并返回错误码。 |
