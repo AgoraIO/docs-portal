@@ -47,7 +47,6 @@ import {
   buildUniqueOpenApiAnchorIds,
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
-import { createDocsCodeGenerators } from '@/lib/openapi/code-generators';
 import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
 import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import {
@@ -204,7 +203,6 @@ const OpenAPIPage = createOpenAPIPage({
   },
   generateTypeScriptDefinitions: () => undefined,
   generateCodeSamples: getGeneratedCodeSampleOverrides,
-  codeUsages: createDocsCodeGenerators(),
   playground: {
     enabled: false,
   },

@@ -816,19 +816,16 @@ function searchResultToEntry(result: {
   snippet?: unknown;
   tab?: unknown;
   title?: unknown;
-  version?: unknown;
   url: string;
 }): RenderedSearchEntry {
   const breadcrumbs = getStringArray(result.breadcrumbs);
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
-  const version = getString(result.version);
 
   return {
     context: uniqueStrings([
       objectType === 'openapi' ? 'API' : undefined,
       ...formatPlatformContext(platforms ?? []),
-      version ? `v${version.replace(/^v/i, '')}` : undefined,
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'

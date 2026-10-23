@@ -988,7 +988,6 @@ describe('DocsSearchDialog', () => {
         {
           content: '<mark>manualSOS</mark>',
           id: 'manual-sos',
-          version: '2.3.0',
           objectType: 'docs',
           path: ['Conversational AI API', 'manualSOS'],
           platform: ['web'],
@@ -1031,7 +1030,6 @@ describe('DocsSearchDialog', () => {
     );
 
     expect(createCnDocsSearchClient).toHaveBeenCalled();
-    expect(await screen.findByText('v2.3.0')).toBeInTheDocument();
     const manualSosLabels = await screen.findAllByText('manualSOS');
     expect(manualSosLabels.length).toBeGreaterThan(0);
     fireEvent.click(manualSosLabels[0]);
