@@ -1,4 +1,5 @@
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
@@ -15,6 +16,52 @@ function readJson<T>(fileName: string): T {
 }
 
 describe('Shengwang redirect artifacts', () => {
+  it('records the exact publication retirement policy used to derive the map', () => {
+    const finalMap = readJson<{
+      retirementPolicy: { path: string; sha256: string };
+    }>('legacy-url-map.json');
+    expect(finalMap.retirementPolicy).toEqual({
+      path: 'src/lib/retired-cn-docs.mjs',
+      sha256: createHash('sha256')
+        .update(
+          readFileSync(path.join(repoRoot, 'src/lib/retired-cn-docs.mjs')),
+        )
+        .digest('hex'),
+    });
+  });
+  it('keeps retired destinations explicitly unavailable instead of redirecting into a 404', () => {
+    const candidate = readJson<{
+      records: Array<{ legacyPath: string; target: string }>;
+    }>('legacy-url-map-candidate-32883e92e9-2026-10-15.json');
+    const finalMap = readJson<{
+      records: Array<{
+        legacyPath: string;
+        target: string;
+        status: string;
+        mappingType: string;
+      }>;
+    }>('legacy-url-map.json');
+    const bySource = new Map(
+      finalMap.records.map((record) => [record.legacyPath, record]),
+    );
+    const retired = candidate.records.filter((record) =>
+      isRetiredCnDocsPath(record.target),
+    );
+    expect(retired).toHaveLength(1076);
+    for (const record of retired) {
+      expect(bySource.get(record.legacyPath)).toMatchObject({
+        target: '',
+        status: 'retired',
+        mappingType: 'retired-cn-docs',
+      });
+    }
+    expect(
+      finalMap.records
+        .filter((record) => record.status === 'candidate')
+        .some((record) => isRetiredCnDocsPath(`/zh-CN${record.target}`)),
+    ).toBe(false);
+  });
+
   it('marks the unchanged public search path as no-redirect in the final map', () => {
     const finalMap = readJson<{
       summary: { redirect: number; noRedirect: number };

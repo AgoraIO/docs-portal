@@ -5,10 +5,14 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import type { Window as HappyWindow } from 'happy-dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SdksCatalog } from '@/components/docs-overview/SdksCatalog';
 
 const capture = vi.fn();
+const navigation = (window as unknown as HappyWindow).happyDOM.settings
+  .navigation;
+const originalChildNavigation = navigation.disableChildPageNavigation;
 const syncAccount = vi.fn<(...args: unknown[]) => Promise<void>>(
   async () => {},
 );
@@ -20,6 +24,8 @@ vi.mock('@/lib/analytics/posthog', () => ({
 
 describe('Chinese SDK account guidance', () => {
   beforeEach(() => {
+    // Keep native click/default-action semantics without opening network tabs.
+    navigation.disableChildPageNavigation = true;
     capture.mockClear();
     syncAccount.mockClear();
     window.sessionStorage.clear();
@@ -30,56 +36,63 @@ describe('Chinese SDK account guidance', () => {
     );
   });
   afterEach(() => {
+    navigation.disableChildPageNavigation = originalChildNavigation;
     vi.unstubAllGlobals();
     vi.restoreAllMocks();
   });
 
-  it('preserves the native RTM download while account status is pending and offers a separate login tab', async () => {
-    render(
-      <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
-    );
-    const download = screen.getByRole('link', { name: /^下载 .*实时消息 SDK/ });
-    expect(download).toHaveAttribute(
-      'href',
-      'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip',
-    );
-    expect(download).toHaveAttribute('target', '_blank');
-    expect(fireEvent.click(download)).toBe(true);
+  it.each(['/zh-CN/reference/sdks', '/reference/sdks', '/reference/sdks/'])(
+    'preserves the native RTM download and separate login tab at %s',
+    async (path) => {
+      window.history.replaceState(null, '', path);
+      render(
+        <SdksCatalog locale="zh-CN" product="signaling" platform="android" />,
+      );
+      const download = screen.getByRole('link', {
+        name: /^下载 .*实时消息 SDK/,
+      });
+      expect(download).toHaveAttribute(
+        'href',
+        'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip',
+      );
+      expect(download).toHaveAttribute('target', '_blank');
+      expect(fireEvent.click(download)).toBe(true);
 
-    const dialog = await screen.findByRole('dialog', {
-      name: '登录声网账号，继续使用相关服务',
-    });
-    expect(dialog).toBeVisible();
-    const login = screen.getByRole('link', { name: '登录并前往控制台' });
-    await waitFor(() =>
-      expect(
-        new URL(
-          login.getAttribute('href') ?? '',
-          window.location.origin,
-        ).searchParams.get('anonymous_id'),
-      ).toBe('anonymous-browser-id'),
-    );
-    const params = new URL(
-      login.getAttribute('href') ?? '',
-      window.location.origin,
-    ).searchParams;
-    expect(params.get('target')).toBe('rtm');
-    expect(params.get('resource_id')).toBe('signaling');
-    expect(params.get('platform')).toBe('android');
-    expect(params.get('version')).toBe('2.3.0-rtm-sdk-android');
-    expect(login).toHaveAttribute('target', '_blank');
-    fireEvent.click(login);
-    await waitFor(() =>
-      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
-    );
-    expect(capture.mock.calls.map(([event]) => event)).toEqual([
-      'docs_resource_action_started',
-      'docs_account_guidance_shown',
-      'docs_account_login_clicked',
-    ]);
-    const flowIds = capture.mock.calls.map(([, flow]) => flow.flowId);
-    expect(new Set(flowIds).size).toBe(1);
-  });
+      const dialog = await screen.findByRole('dialog', {
+        name: '登录声网账号，继续使用相关服务',
+      });
+      expect(dialog).toBeVisible();
+      const login = screen.getByRole('link', { name: '登录并前往控制台' });
+      await waitFor(() =>
+        expect(
+          new URL(
+            login.getAttribute('href') ?? '',
+            window.location.origin,
+          ).searchParams.get('anonymous_id'),
+        ).toBe('anonymous-browser-id'),
+      );
+      const params = new URL(
+        login.getAttribute('href') ?? '',
+        window.location.origin,
+      ).searchParams;
+      expect(params.get('target')).toBe('rtm');
+      expect(params.get('resource_id')).toBe('signaling');
+      expect(params.get('platform')).toBe('android');
+      expect(params.get('version')).toBe('2.3.0-rtm-sdk-android');
+      expect(login).toHaveAttribute('target', '_blank');
+      fireEvent.click(login);
+      await waitFor(() =>
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+      );
+      expect(capture.mock.calls.map(([event]) => event)).toEqual([
+        'docs_resource_action_started',
+        'docs_account_guidance_shown',
+        'docs_account_login_clicked',
+      ]);
+      const flowIds = capture.mock.calls.map(([, flow]) => flow.flowId);
+      expect(new Set(flowIds).size).toBe(1);
+    },
+  );
 
   it('counts exposure only when the original tab is visible, freezes the first resource, and skips once', async () => {
     let visible = false;

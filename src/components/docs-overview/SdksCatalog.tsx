@@ -570,7 +570,9 @@ export function SdksCatalog({
       enabled={
         locale === 'zh-CN' &&
         typeof window !== 'undefined' &&
-        window.location.pathname === '/zh-CN/reference/sdks'
+        ['/zh-CN/reference/sdks', '/reference/sdks'].includes(
+          window.location.pathname.replace(/\/$/, ''),
+        )
       }
     >
       <section
