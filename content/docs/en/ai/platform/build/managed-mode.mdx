@@ -7,15 +7,15 @@ description: Use ASR, LLM, and TTS models that Agora provides access to, without
 
 {/* TODO(platform-confirm): `<base_url>` is a placeholder for the Platform API base URL. Replace every occurrence once the public Preview endpoint is confirmed. */}
 
-Managed mode lets your agent use supported ASR, LLM, and TTS models without your own provider accounts or API keys. Agora provides access to the models. You choose a vendor and model for each stage, or let the Platform select them. To use your own provider accounts instead, see [Use your own provider keys (BYOK)](/en/ai/platform/build/use-your-own-keys).
+Managed mode lets your agent use supported ASR, LLM, and TTS models without your own provider accounts or API keys. Agora provides access to the models. You choose the vendor and model to use for ASR, LLM, and TTS, or let the Platform select them. To use your own provider accounts instead, see [Use your own provider keys (BYOK)](/en/ai/platform/build/use-your-own-keys).
 
 ## Understand the tech
 
-An agent's `pipeline` has an `asr`, `llm`, and `tts` stage. To use managed mode for a stage, set its `credential` to `{ "mode": "managed" }`, and choose a vendor and model from [Supported vendors and models](#supported-vendors-and-models).
+An agent's `pipeline` has an `asr`, `llm`, and `tts` block. To use managed mode for a model, set the `credential` in its block to `{ "mode": "managed" }`, and choose a vendor and model from [Supported vendors and models](#supported-vendors-and-models).
 
-You choose the credential mode for each stage. For example, an agent can use managed ASR and TTS with your own LLM key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+You choose the credential mode for each model. For example, an agent can use managed ASR and TTS with your own LLM key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-If you create an agent without a `pipeline`, the Platform selects managed models for all three stages. For an example, see [Create an agent](/en/ai/platform/build/start-stop-agent#create-an-agent).
+If you create an agent without a `pipeline`, the Platform selects managed ASR, LLM, and TTS models. For an example, see [Create an agent](/en/ai/platform/build/start-stop-agent#create-an-agent).
 
 ## Choose managed models
 
@@ -62,10 +62,10 @@ curl --request POST \
 
 In this example:
 
-- Each stage sets `credential.mode` to `managed`. A managed stage doesn't accept an `api_key`, and it doesn't need a provider endpoint `url`.
-- The `asr` stage uses Deepgram Nova 3 for US English.
-- The `llm` stage uses OpenAI GPT-4.1 Mini.
-- The `tts` stage uses MiniMax Speech 2.6 Turbo, with the voice and speaking speed in `params`.
+- Each block sets `credential.mode` to `managed`. A managed block doesn't accept an `api_key`, and it doesn't need a provider endpoint `url`.
+- The `asr` block uses Deepgram Nova 3 for US English.
+- The `llm` block uses OpenAI GPT-4.1 Mini.
+- The `tts` block uses MiniMax Speech 2.6 Turbo, with the voice and speaking speed in `params`.
 
 {/* TODO(platform-confirm): Staging required `voice_setting.speed` for managed MiniMax TTS on 2026-10-20. Confirm that it's still required at launch. */}
 
