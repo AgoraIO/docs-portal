@@ -187,6 +187,71 @@ describe('openapi source loader', () => {
     });
   });
 
+  it('loads documented error bodies for every Chinese RTC channel-management operation', async () => {
+    const chineseRtcLane = OPENAPI_LANES.find(
+      (item) => item.id === 'rtc-rest-zh-cn',
+    );
+    if (!chineseRtcLane) {
+      throw new Error('Missing rtc-rest-zh-cn OpenAPI lane');
+    }
+    const operations = await getOpenApiOperations(chineseRtcLane, 'zh-CN');
+
+    expect(operations).toHaveLength(9);
+    for (const operation of operations) {
+      const json = operation.responses['非 200']?.content?.['application/json'];
+      expect(json?.schema, operation.operationId).toMatchObject({
+        type: 'object',
+        properties: {
+          message: { type: 'string' },
+          reason: { type: 'string' },
+        },
+      });
+      expect(json?.schema).not.toHaveProperty('required');
+      expect(json?.examples?.['invalid-app-id']?.value).toEqual({
+        message: 'invalid appid',
+      });
+    }
+  });
+
+  it('keeps License message errors distinct from CallKit call responses', async () => {
+    const callkitLane = OPENAPI_LANES.find(
+      (item) => item.id === 'voip-callkit-rest',
+    );
+    if (!callkitLane) {
+      throw new Error('Missing voip-callkit-rest OpenAPI lane');
+    }
+    const operations = await getOpenApiOperations(callkitLane, 'zh-CN');
+    const licenseOperationIds = [
+      'activateLicense',
+      'getExpiringLicenses',
+      'renewLicense',
+      'getLicenseRenewals',
+    ];
+    const licenseOperations = operations.filter((operation) =>
+      licenseOperationIds.includes(operation.operationId),
+    );
+
+    expect(licenseOperations).toHaveLength(4);
+    for (const operation of licenseOperations) {
+      const json = operation.responses['非 200']?.content?.['application/json'];
+      expect(json?.schema, operation.operationId).toMatchObject({
+        type: 'object',
+        properties: { message: { type: 'string' } },
+      });
+      expect(json?.schema).not.toHaveProperty('required');
+      expect(json?.schema).not.toHaveProperty('properties.msg');
+      expect(json?.examples).toBeUndefined();
+    }
+    const call = operations.find(
+      (operation) => operation.operationId === 'callMiniApp',
+    );
+    expect(
+      call?.responses['非 200']?.content?.['application/json']?.schema,
+    ).toMatchObject({
+      properties: { msg: { type: 'string' } },
+    });
+  });
+
   it('loads OpenAPI data when runtime cwd has no content or public folders', async () => {
     const originalCwd = process.cwd();
     const runtimeCwd = await fs.mkdtemp(
