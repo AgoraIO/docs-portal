@@ -52,9 +52,9 @@ describe('SdksCatalog', () => {
     expect(within(product).getAllByRole('article')).toHaveLength(18);
     const links = within(product).getAllByRole('link', { name: /^下载 / });
     expect(links.map((link) => link.getAttribute('href'))).toEqual(
-      zhCNRtsaSdkDownloadPlatform.core[0].versions.map(
-        (version) => version.downloadLink,
-      ),
+      zhCNRtsaSdkDownloadPlatform.core[0].versions
+        .filter((version) => version.latestVariant)
+        .map((version) => version.downloadLink),
     );
     expect(
       within(product).getByRole('link', { name: '更多 ↗' }),
