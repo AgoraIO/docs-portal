@@ -1,22 +1,25 @@
 ---
 analyticsPageType: task-guide
-title: Start and stop an agent
-description: Set up real-time interaction with a Conversational AI agent.
+title: Create an agent and start a session
+description: Define an agent in your project, then start and stop sessions that run it in an RTC channel.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/start-stop-agent.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/start-stop-agent.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. REST API only until the Platform SDKs ship. */}
 
-This page describes how to call the Conversational AI Engine APIs to start and stop an AI agent.
+{/* TODO(platform-confirm): `<base_url>` is a placeholder for the Platform API base URL. Replace every occurrence once the public Preview endpoint is confirmed. */}
+
+On the Conversational AI Platform, you create an agent once and save it in your project. For each conversation, you start a session that runs the agent in an RTC channel, and you stop the session when the conversation ends. This page shows the REST API requests for each step. In a production environment, send these requests from your business server.
 
 ## Understand the tech
 
-A user joins a channel and triggers your business server to start an agent via the Conversational AI Engine API. The agent joins the same channel and communicates with the user through voice, using the specified LLM, TTS service, and Agora’s low-latency Software-Defined Real-Time Network (SDRTN®). When the conversation ends, the business server stops the agent and the user leaves the channel.
+An agent is a saved configuration. A session is a single conversation that runs it. The workflow is as follows:
 
-<details>
-<summary>Conversational AI Engine workflow</summary>
+1. Your server creates an agent and stores the agent ID that the Platform returns. You do this once, not for every conversation.
+2. A user joins an RTC channel from your app.
+3. Your server starts a session with the agent ID, the channel name, and the user's UID. The agent joins the channel and talks to the user, using the agent's ASR, LLM, and TTS models and Agora's low-latency Software-Defined Real-Time Network (SDRTN®).
+4. When the conversation ends, your server stops the session, and the agent leaves the channel.
 
-![Conversational AI Engine workflow](https://assets-docs.agora.io/images/conversational-ai/ai-agent-tech.svg)
-</details>
+{/* TODO(platform-docs): Add a workflow diagram for the Platform (create agent, start session, stop session). The Voice Agent diagram shows the `join` flow and doesn't apply. */}
 
 ## Prerequisites
 
@@ -32,364 +35,230 @@ agora project env --format shell --with-secrets
 
 You also need:
 
+- REST API credentials for the Platform. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
+- An RTC token for the agent's UID in the channel. Projects have an App Certificate enabled by default, and the agent can't join the channel without a token. For details, see [Integrate token generation](/en/realtime-media/rtc/build/authenticate-users/integrate-token-generation).
 - A client app that can join an Agora RTC channel, such as the [Voice Calling](/en/realtime-media/rtc/voice-quickstart) or [Video Calling](/en/realtime-media/rtc/get-started-sdk) quickstart.
 
+{/* TODO(platform-confirm): Confirm the REST API credentials the Platform accepts in the Preview (Basic auth, ConvoAI token, or both). The examples on this page use Basic auth. */}
 
-## Install the SDK
+## Create an agent
 
-Select your preferred language and install the corresponding SDK.
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with the agent's name, instructions, and greeting. This example declares a `customer_name` variable and uses it in the instructions and the greeting. You pass its value when you start a session.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-```sh
-pip install agora-agents
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```sh
-npm install agora-agents
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```sh
-go get github.com/AgoraIO/agora-agents-go/v2@v2.2.0
-```
-
-</TabsContent>
-</Tabs>
-
-## Implementation
-
-This section introduces the basic RESTful API requests you use to start and stop a conversational AI agent. In a production environment, implement these requests on your business server.
-
-### Start a conversational AI agent
-
-Call the `join` endpoint to create an agent instance that joins an Agora channel. This example uses [managed mode](/en/ai/platform/build/managed-mode) for ASR, LLM, and TTS, so you don't need to supply your own provider API keys. If you want to use your own API key (BYOK) instead, see the vendor pages under Models, for example [Deepgram](/en/ai/platform/models/asr/deepgram).
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-```python
-from agora_agent import Agent, Agora, Area, DeepgramSTT, OpenAI, MiniMaxTTS
-
-client = Agora(
-    area=Area.US,
-    app_id='your-app-id',
-    app_certificate='your-app-certificate',
-)
-
-# Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
-agent = (
-    Agent(client)
-    .with_stt(DeepgramSTT(
-        model='nova-3',
-        language='en-US',
-    ))
-    .with_llm(OpenAI(
-        model='gpt-4o-mini',
-        system_messages=[{'role': 'system', 'content': 'You are a helpful chatbot.'}],
-        greeting_message='Hello, how can I help you?',
-        failure_message="Sorry, I don't know how to answer this question.",
-        max_history=10,
-    ))
-    .with_tts(MiniMaxTTS(
-        model='speech-2.6-turbo',
-        voice_id='English_captivating_female1',
-    ))
-)
-
-session = agent.create_session(
-    channel='your_channel_name',
-    agent_uid='0',
-    remote_uids=['1002'],
-    name='unique_name',
-    idle_timeout=120,
-)
-
-agent_id = session.start()
-print(f'Agent started: {agent_id}')
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, AgoraClient, Area, DeepgramSTT, OpenAI, MiniMaxTTS } from 'agora-agents';
-
-const client = new AgoraClient({
-  area: Area.US,
-  appId: 'your-app-id',
-  appCertificate: 'your-app-certificate',
-});
-
-// Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
-const agent = new Agent({ client })
-  .withStt(new DeepgramSTT({
-    model: 'nova-3',
-    language: 'en-US',
-  }))
-  .withLlm(new OpenAI({
-    model: 'gpt-4o-mini',
-    systemMessages: [{ role: 'system', content: 'You are a helpful chatbot.' }],
-    greetingMessage: 'Hello, how can I help you?',
-    failureMessage: 'Sorry, I don't know how to answer this question.',
-    maxHistory: 10,
-  }))
-  .withTts(new MiniMaxTTS({
-    model: 'speech-2.6-turbo',
-    voiceId: 'English_captivating_female1',
-  }));
-
-const session = agent.createSession({
-  channel: 'your_channel_name',
-  agentUid: '0',
-  remoteUids: ['1002'],
-  name: 'unique_name',
-  idleTimeout: 120,
-});
-
-const agentId = await session.start();
-console.log('Agent started:', agentId);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-package main
-
-import (
-    "context"
-    "fmt"
-    "log"
-
-    Agora "github.com/AgoraIO/agora-agents-go/v2"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-    "github.com/AgoraIO/agora-agents-go/v2/option"
-)
-
-func main() {
-    ctx := context.Background()
-    idleTimeout := 120
-
-    client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
-        Area:           option.AreaUS,
-        AppID:          "your-app-id",
-        AppCertificate: "your-app-certificate",
-    })
-
-    // Omit API keys to use Agora-managed models for ASR, LLM, and TTS.
-    agent := agentkit.NewAgent(client).WithStt(
-        vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{
-            Model:    "nova-3",
-            Language: "en-US",
-        }),
-    ).WithLlm(
-        vendors.NewOpenAI(vendors.OpenAIOptions{
-            Model: "gpt-4o-mini",
-            SystemMessages: []map[string]interface{}{
-                {"role": "system", "content": "You are a helpful chatbot."},
-            },
-            GreetingMessage: "Hello, how can I help you?",
-            FailureMessage:  "Sorry, I don't know how to answer this question.",
-            MaxHistory:      Agora.Int(10),
-        }),
-    ).WithTts(
-        vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
-            Model:   "speech-2.6-turbo",
-            VoiceID: "English_captivating_female1",
-        }),
-    )
-
-    session := agent.CreateSession(agentkit.CreateSessionOptions{
-        Channel:     "your_channel_name",
-        AgentUID:    "0",
-        RemoteUIDs:  []string{"1002"},
-        Name:        "unique_name",
-        IdleTimeout: &idleTimeout,
-    })
-
-    agentID, err := session.Start(ctx)
-    if err != nil {
-        log.Fatal(err)
-    }
-    fmt.Println("Agent started:", agentID)
-}
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-For the Curl request, pass in the `channel` name and `token` for agent authentication. To generate your base64-encoded credentials, see [RESTful authentication](/en/api-reference/api-ref/conversational-ai/authentication).
-
-Set `credential_mode` to `"managed"` in the `asr`, `llm`, and `tts` blocks to use Agora-managed credentials instead of your own API keys.
+In the `Idempotency-Key` header, pass a unique value for each agent you create. If a request times out, retry it with the same key and the same body. The Platform returns the agent it already created instead of creating a duplicate.
 
 ```bash
 curl --request POST \
-  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+  --url <base_url>/v3/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
+  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
-  "name": "unique_name",
-  "properties": {
-    "channel": "<your_channel_name>",
-    "token": "<your_rtc_token>",
-    "agent_rtc_uid": "0",
-    "remote_rtc_uids": ["1002"],
-    "enable_string_uid": false,
-    "idle_timeout": 120,
-    "asr": {
-      "credential_mode": "managed",
-      "vendor": "deepgram",
-      "params": {
-        "url": "wss://api.deepgram.com/v1/listen",
-        "model": "nova-3",
-        "language": "en-US"
-      }
-    },
-    "llm": {
-      "credential_mode": "managed",
-      "vendor": "openai",
-      "style": "openai",
-      "url": "https://api.openai.com/v1/chat/completions",
-      "system_messages": [
-        {
-          "role": "system",
-          "content": "You are a helpful chatbot."
-        }
-      ],
-      "greeting_message": "Hello, how can I help you?",
-      "failure_message": "Sorry, I don't know how to answer this question.",
-      "max_history": 10,
-      "params": {
-        "model": "gpt-4o-mini"
-      }
-    },
-    "tts": {
-      "credential_mode": "managed",
-      "vendor": "minimax",
-      "params": {
-        "url": "wss://api.minimax.io/ws/v1/t2a_v2",
-        "model": "speech-2.6-turbo",
-        "voice_setting": {
-          "voice_id": "English_captivating_female1"
-        }
-      }
+  "agent_name": "Support agent",
+  "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
+  "variables": {
+    "customer_name": {
+      "type": "str",
+      "required": true
     }
+  },
+  "greeting": {
+    "mode": "text",
+    "on": "each_join",
+    "text": "Hi {{customer_name}}, how can I help you today?"
   }
 }'
 ```
 
-If the request is successful, you receive the following response:
+This agent doesn't specify its models. When a session starts, the Platform selects managed ASR, LLM, and TTS models, and you don't need provider API keys. To choose the models yourself, add a `pipeline` to the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+{/* TODO(platform-confirm): Confirm that omitting `pipeline` selects a managed pipeline at launch, which models it selects, and that variables work in `greeting.text`. Staging accepted an agent without a pipeline on 2026-10-20. */}
+
+If the request is successful, the response contains the agent ID and the saved configuration:
+
+```json
+// 201 Created
+{
+  "agent_id": "agent_k3n9x2",
+  "agent_name": "Support agent",
+  "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
+  "variables": {
+    "customer_name": {
+      "type": "str",
+      "required": true
+    }
+  },
+  "greeting": {
+    "mode": "text",
+    "on": "each_join",
+    "text": "Hi {{customer_name}}, how can I help you today?"
+  },
+  "create_ts": 1786543331,
+  "update_ts": 1786543331
+}
+```
+
+Store the `agent_id`. You use it to start every session that runs this agent.
+
+## Start a session
+
+When a user joins a channel, send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) with the agent ID and the channel details. In `transport`, set:
+
+- `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead.
+    {/* TODO(platform-docs): Link `telephony` to the phone guide once it exists. */}
+- `channel`: The channel the user joined.
+- `token`: The RTC token for the agent's UID.
+- `uid`: The UID the agent uses in the channel. It must be different from the user's UID.
+- `subscribe_uids`: The UID of the user the agent talks to.
+
+In `values`, pass a value for each required variable.
+
+```bash
+curl --request POST \
+  --url <base_url>/v3/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_id": "agent_k3n9x2",
+  "values": {
+    "customer_name": "Ada"
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+If the request is successful, the response contains the session ID and its [status](#check-the-session-status):
 
 ```json
 // 200 OK
 {
-  "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
   "create_ts": 1737111452,
-  "status": "RUNNING"
+  "status": "STARTING"
 }
 ```
 
-</TabsContent>
-</Tabs>
+Store the `agent_session_id`. You use it to check and stop the session.
 
-If the request is successful, the agent ID is returned. Store the agent ID to manage the agent in subsequent calls.
+{/* TODO(platform-confirm): Staging returned `201 Created` with a lowercase status and `created_at` on 2026-10-20. The launch contract specifies `200 OK`, uppercase statuses, and `create_ts`. Confirm the launch response. */}
 
-### Stop the conversational AI agent
+## Check the session status
 
-To end the conversation with the AI agent, call the `leave` endpoint. This causes the agent to leave the Agora channel.
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-
-<TabsContent value="python">
-
-```python
-session.stop()
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-await session.stop();
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-if err := session.Stop(ctx); err != nil {
-    log.Fatal(err)
-}
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
+A session starts asynchronously. A successful response to Start a session confirms that the session exists, not that the agent has joined the channel. To follow the session, send a request to [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session):
 
 ```bash
-curl --request POST \
-  --url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/leave \
+curl --request GET \
+  --url <base_url>/v3/projects/<your_app_id>/sessions/<agent_session_id> \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
-If the request is successful, the server responds with a `200 OK` status and an empty JSON object.
+When the agent is in the channel, `status` is `RUNNING`:
+
+```json
+// 200 OK
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "agent_name": "Support agent",
+  "status": "RUNNING",
+  "start_ts": 1735035893,
+  "stop_ts": null,
+  "message": null,
+  "analysis": null
+}
+```
+
+A session has one of the following statuses:
+
+| Status | Description |
+|---|---|
+| `IDLE` | The session is idle. |
+| `STARTING` | The session is starting, and the agent hasn't joined the channel yet. |
+| `RUNNING` | The agent is in the channel. |
+| `STOPPING` | The session is stopping. |
+| `STOPPED` | The session has ended, and the agent has left the channel. |
+| `FAILED` | The session failed. Check `message` for the reason. |
+
+{/* TODO(platform-confirm): Confirm when a session is `IDLE` and how it differs from `STARTING`. The launch contract describes it only as "The session is idle." */}
+
+## Stop the session
+
+When the conversation ends, send a request to [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) without a body. The agent leaves the channel.
+
+```bash
+curl --request POST \
+  --url <base_url>/v3/projects/<your_app_id>/sessions/<agent_session_id>/stop \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+If the request is successful, the response is an empty JSON object:
 
 ```json
 // 200 OK
 {}
 ```
 
-</TabsContent>
-</Tabs>
+A session also stops asynchronously. To confirm that the session has ended, retrieve it and check that `status` is `STOPPED`. If you don't stop a session, it ends when it reaches a limit you set in `lifecycle` when you start it, such as `idle_timeout_ms` or `max_duration_ms`.
 
-:::info[Info]
-The number of Peak Concurrent Users (PCU) allowed to call the server API under a single App ID is limited to 20. If you need to increase this limit, please [contact technical support](mailto:support@agora.io).
-:::
+{/* TODO(platform-confirm): Confirm the default `lifecycle` limits that apply when you don't set them. */}
+
+## Test a configuration without saving an agent
+
+To try a configuration before you save it, send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). The request is the same as Start a session, but you pass the agent configuration in `agent` instead of `agent_id`. The Platform doesn't save the configuration.
+
+```bash
+curl --request POST \
+  --url <base_url>/v3/projects/<your_app_id>/sessions/ephemeral \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent": {
+    "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+    "greeting": {
+      "mode": "text",
+      "on": "each_join",
+      "text": "Hi, how can I help you today?"
+    }
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+{/* TODO(platform-confirm): Confirm that an ephemeral session accepts an agent without `pipeline`. */}
+
+The response has the same format as Start a session. Check and stop an ephemeral session the same way as any other session.
+
+When the configuration works as you want, save it with [Create an agent](#create-an-agent), or apply it to an existing agent with [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent).
+
+{/* TODO(platform-confirm): The Voice Agent page states a limit of 20 concurrent users per App ID for the server API. Confirm the Platform's concurrent session limit for the Preview and add it here. */}
 
 ## Reference
 
-This section contains content that completes the information on this page, or points you to documentation that explains other aspects of this product.
+For more information, see the following pages:
 
 - [Use managed mode](/en/ai/platform/build/managed-mode)
+- [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication)
 
 ### API reference
 
-- [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join)
-- [Stop a conversational AI agent](/en/api-reference/api-ref/conversational-ai/leave)
-- [Update agent configuration](/en/api-reference/api-ref/conversational-ai/update)
-- [Query agent status](/en/api-reference/api-ref/conversational-ai/query)
-- [Retrieve a list of agents](/en/api-reference/api-ref/conversational-ai/list)
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)
+- [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session)
+- [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session)
+- [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session)
+- [List sessions](/en/api-reference/api-ref/conversational-ai/platform/list-sessions)
+- [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session)
