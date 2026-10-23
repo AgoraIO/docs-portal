@@ -25,6 +25,23 @@ function fixture(entry: string, region: 'cn' | 'global' = 'cn') {
 }
 
 describe('CN public route navigation', () => {
+  it.each([
+    '/solutions/iot-apaas/reference/restful',
+    '/api-reference/iot-apaas/client-api/call',
+    '/solutions/%69ot-apaas/reference/restful',
+  ])(
+    'keeps undiscoverable but published document %s routable',
+    async (pathname) => {
+      const router = fixture(`${pathname}?platform=web#overview`);
+      await router.load();
+      expect(router.state.matches.at(-1)?.params).toMatchObject({
+        locale: 'zh-CN',
+      });
+      expect(router.state.location.search).toEqual({ platform: 'web' });
+      expect(router.state.location.hash).toBe('overview');
+    },
+  );
+
   it('loads a public document through the existing Chinese route', async () => {
     const router = fixture('/ai/release-notes?platform=ios#release');
     await router.load();

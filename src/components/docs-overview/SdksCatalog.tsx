@@ -473,12 +473,13 @@ export function SdksCatalog({
     platformId: normalizePlatformFilter(platform, platforms),
     productId: normalizeProductFilter(product),
   });
-  const retiredProductFilter =
+  const hiddenProductFilter =
     locale === 'zh-CN' &&
     queryFilters.productId &&
-    retiredCnProductIds.includes(queryFilters.productId);
+    (retiredCnProductIds.includes(queryFilters.productId) ||
+      queryFilters.productId === 'iot');
   const productFilter =
-    queryFilters.productId && !retiredProductFilter
+    queryFilters.productId && !hiddenProductFilter
       ? productFilters[queryFilters.productId]
       : null;
   const productFilterProductIds = productFilter

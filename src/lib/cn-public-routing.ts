@@ -1,9 +1,14 @@
 import type { LocationRewrite } from '@tanstack/react-router';
-import {
-  isPublicCnSearchUrl,
-  toCnPublicSearchUrl,
-} from './search/cn-search-urls.mjs';
+import { toCnPublicSearchUrl } from './search/cn-search-urls.mjs';
 import type { DocsRegion } from './site-region';
+
+// Route eligibility includes pages intentionally omitted from search discovery.
+// Actual publication checks remain in the document loader and static server.
+export function isCnPublicDocsPath(pathname: string) {
+  return /^\/(?:introduction|realtime-media|solutions|api-reference|reference|ai)(?:\/|$)/.test(
+    pathname,
+  );
+}
 
 export function getCnPublicRouteRewrite(
   region: DocsRegion,
@@ -17,7 +22,7 @@ export function getCnPublicRouteRewrite(
         !url.pathname.startsWith('/zh-CN/') &&
         (url.pathname === '/search' ||
           url.pathname === '/search/' ||
-          isPublicCnSearchUrl(url.pathname))
+          isCnPublicDocsPath(url.pathname))
       ) {
         url.pathname = `/zh-CN${url.pathname}`;
       }

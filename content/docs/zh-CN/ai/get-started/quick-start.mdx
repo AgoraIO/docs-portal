@@ -24,7 +24,7 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 
 实现与智能体语音互动的流程如下图所示：
 
-![](https://web-cdn.agora.io/docs-portal/img/convoai/quick-start.svg)
+<DocsImage alt="与智能体语音互动的实现流程" src="https://web-cdn.agora.io/docs-portal/img/convoai/quick-start.svg" displayWidth="75%" />
 
 ### 加入 RTC 频道
 
@@ -43,7 +43,7 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 
 #### 请求
 
-```shell
+```bash
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<your_app_id>/join \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
@@ -105,9 +105,8 @@ curl --request POST \
 ```json
 /// 200 OK
 {
-  // highlight-start
+  // [!code highlight:1]
   "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
-  // highlight-end
   "create_ts": 1737111452,
   "status": "RUNNING"
 }
@@ -121,12 +120,11 @@ curl --request POST \
 
 #### 请求
 
-```shell
+```bash
 curl --request POST \
-// highlight-start
+# [!code highlight:2]
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<your_app_id>/agents/<agentid>/leave \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
-// highlight-end
 ```
 
 #### 响应

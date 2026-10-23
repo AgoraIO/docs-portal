@@ -57,7 +57,12 @@ function page(path: string, source: boolean) {
   return render(<RouterProvider router={router} />);
 }
 
-it.each(['/introduction/source', '/zh-CN/introduction/source'])(
+it.each([
+  '/introduction/source',
+  '/zh-CN/introduction/source',
+  '/solutions/iot-apaas/source',
+  '/zh-CN/solutions/iot-apaas/source',
+])(
   'keeps the return-to-article link across mixed public/content URLs from %s',
   async (sourcePath) => {
     const source = page(sourcePath, true);

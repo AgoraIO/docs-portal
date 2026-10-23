@@ -3,7 +3,10 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { isRetiredCnDocsPath } from '../src/lib/retired-cn-docs.mjs';
+import {
+  isRetiredCnDocsPath,
+  isRetiredCnLegacyDocsPath,
+} from '../src/lib/retired-cn-docs.mjs';
 
 const repoRoot = process.cwd();
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
@@ -36,7 +39,6 @@ describe('Shengwang redirect artifacts', () => {
         target: string;
         status: string;
         mappingType: string;
-        retiredTarget?: string;
       }>;
     }>('legacy-url-map.json');
     const bySource = new Map(
@@ -49,9 +51,8 @@ describe('Shengwang redirect artifacts', () => {
     for (const record of retired) {
       expect(bySource.get(record.legacyPath)).toMatchObject({
         target: '',
-        status: 'no-redirect',
-        mappingType: 'retired-content-no-redirect',
-        retiredTarget: record.target,
+        status: 'retired',
+        mappingType: 'retired-cn-docs',
       });
     }
     expect(
@@ -85,8 +86,8 @@ describe('Shengwang redirect artifacts', () => {
       mappingType: 'same-path-no-redirect',
     });
     expect(search?.notes).toContain('公开路径未变化，由新站直接服务');
-    expect(finalMap.summary.redirect).toBe(7139);
-    expect(finalMap.summary.noRedirect).toBe(1082);
+    expect(finalMap.summary.redirect).toBe(7119);
+    expect(finalMap.summary.noRedirect).toBe(2);
   });
 
   it('finalizes a checked candidate into equivalent redirect artifacts', () => {
@@ -133,18 +134,18 @@ describe('Shengwang redirect artifacts', () => {
     expect(finalMap.generatedAt).toBe(candidate.generatedAt);
     expect(finalMap.snapshot).toEqual(candidate.snapshot);
     expect(finalMap.targetUrlTransform).toBe('remove-zh-CN-prefix');
-    expect(finalMap.summary.redirect).toBe(7139);
-    expect(finalMap.summary.noRedirect).toBe(1082);
+    expect(finalMap.summary.redirect).toBe(7119);
+    expect(finalMap.summary.noRedirect).toBe(2);
     const expectedRecords = candidate.records.map((record) =>
-      record.status === 'candidate' && isRetiredCnDocsPath(record.target)
+      isRetiredCnLegacyDocsPath(record.legacyPath) ||
+      isRetiredCnDocsPath(record.target)
         ? {
             ...record,
             target: '',
-            status: 'no-redirect',
+            status: 'retired',
             targetExists: false,
-            mappingType: 'retired-content-no-redirect',
-            retiredTarget: record.target,
-            notes: `${record.notes}；目标 ${record.target} 已由 src/lib/retired-cn-docs.mjs 下线，不发布此内容，保留旧路径 404。`,
+            mappingType: 'retired-cn-docs',
+            notes: `${record.notes}；按 PR #1248 下线策略直接返回 HTTP 404，不生成 301。原始目标：${record.target || '无'}。`,
           }
         : record.legacyPath === '/search'
           ? {
@@ -167,7 +168,7 @@ describe('Shengwang redirect artifacts', () => {
     expect(originalRedirects).toHaveLength(8216);
     expect(
       finalMap.records.filter((record) => record.status === 'no-redirect'),
-    ).toHaveLength(1082);
+    ).toHaveLength(2);
     expect(
       finalMap.records.filter((record) => record.status === 'candidate'),
     ).toHaveLength(vercel.length);
@@ -181,7 +182,7 @@ describe('Shengwang redirect artifacts', () => {
     );
     expect(vercel.every((rule) => rule.statusCode === 301)).toBe(true);
     expect(vercel.some((rule) => rule.source === rule.destination)).toBe(false);
-    expect(vercel).toHaveLength(7139);
+    expect(vercel).toHaveLength(7119);
     expect(vercel.every((rule) => rule.preserveQueryParams === false)).toBe(
       true,
     );
