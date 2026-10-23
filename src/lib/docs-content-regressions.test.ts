@@ -15,7 +15,7 @@ describe('docs content regressions', () => {
       'utf8',
     );
     const cards = [...source.matchAll(/<Card\b[^\n]+/g)];
-    expect(cards).toHaveLength(21);
+    expect(cards).toHaveLength(23);
     for (const [card] of cards) {
       const href = card.match(/href="([^"]+)"/)?.[1];
       const provider = new URL(href ?? '').hostname.split('.')[0];
