@@ -67,7 +67,7 @@ public class Base64Encoding {
             .header("Authorization", authorizationHeader)
             .header("Content-Type", "application/json")
             .build();
-        // highlight-start
+        // [!code highlight:11]
         // 使用 executor 安排任务，每 24 小时运行一次
         executor.scheduleAtFixedRate(() -> {
             try {
@@ -79,7 +79,6 @@ public class Base64Encoding {
                 e.printStackTrace();
         }
     }, 0, 24, TimeUnit.HOURS);
-    // highlight-end
 }
 }
 ```
