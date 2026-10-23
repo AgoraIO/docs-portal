@@ -241,9 +241,10 @@ function loadHtmlPage({
     selectedTitleNode?.length > 0
       ? selectedTitleNode
       : article.find('h1').first();
+  // The sidebar version switcher owns the SDK release label.
   const title = cleanText(
     preferredTitle || titleNode.text() || $('title').first().text(),
-  );
+  ).replace(/\s+v?\d+\.\d+(?:\.\d+)*(?:-[\w.-]+)?$/i, '');
   const titleArticle = titleNode.closest('article').get(0);
   const articleNode = article.get(0);
   const descriptionCandidates =
