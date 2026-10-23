@@ -1,0 +1,28 @@
+# 中文 SDK 搜索与历史归档发布
+
+关联：[#1281](https://github.com/AgoraIO/docs-portal/issues/1281)。本文说明搜索代码的发布合约，不表示归档服务已经发布了未来版本。
+
+## 收录来源
+
+`content/docs/zh-CN/api-reference/**/meta.json` 的 `navScope.versions` 是各产品、平台的发布配置。搜索使用 `defaultVersion` 指定的版本，未指定时使用 `current`；实际版本取该项的数字 `label`。`versionOverrides` 的子路径独立解析，最深路径优先，例如 React SDK 与其 Web SDK 参考使用不同版本。
+
+`(current)` 是不出现在 URL 中的路由组，`.` 表示当前目录。历史版本即使还保留本地正文，也不进入中文搜索导出。归档外链不作为正文索引。没有声明真实数字版本的“当前版本”标签不会被猜测成某个 SDK 版本；元数据回归检查会阻止维护者将已声明版本重新改回占位名称。
+
+本次补齐原有 11 项占位标签：RTC Electron/Unity 4.6.2、HarmonyOS 4.4.2、C# Windows 4.2.0、Unreal C++/Blueprint 4.5.1；RTC Server C++/Java 4.4.32；Whiteboard Android 2.16.100、iOS 2.16.112、Web 2.16.53。依据是迁移来源固定提交 `697ee0110bb05d4fdc6b3f44dd3979afd7a6c981` 的 [`rtc`](https://github.com/AgoraIO/shengwang-doc-source/blob/697ee0110bb05d4fdc6b3f44dd3979afd7a6c981/docs-api-reference/rtc/_platforms_.meta.js)、[`rtc-server-sdk`](https://github.com/AgoraIO/shengwang-doc-source/blob/697ee0110bb05d4fdc6b3f44dd3979afd7a6c981/docs-api-reference/rtc-server-sdk/_platforms_.meta.js)、[`whiteboard`](https://github.com/AgoraIO/shengwang-doc-source/blob/697ee0110bb05d4fdc6b3f44dd3979afd7a6c981/docs-api-reference/whiteboard/_platforms_.meta.js) 中 `siteVersion: current` 的标签，并与 [已有版本盘点](migration/api-reference-historical-archive-inventory-20261020.md) 交叉核对；不是按其他平台版本或最大版本号推断。
+
+快捷搜索和完整搜索都查询同一个 `/api/search` 与正式 Meilisearch 索引。版本筛选来自索引内记录；应按既有全量快照流程 prepare、验收、promote，不能向正式索引只追加新记录，否则旧记录仍会残留。
+
+## 下一次 SDK 发版
+
+以 Android 4.7.0 → 4.7.1 为例；这只是未来验收场景，不表示 4.7.1 已上线：
+
+1. 在修改当前正文前，保存上一版发布 SHA、完整站点构建产物与依赖资源。由归档发布负责人生成不可变站点快照，取得真实可访问的 archive URL。SDK 版本号与整站 archive 快照号不是同一概念。
+2. 在 Android 的 `meta.json` 中为上一版增加历史版本选项，`href` 填入经验证的归档正文地址。保留已有历史外链。不要用 `/archive/current`、猜测的快照号或仍指向最新正文的链接代替。
+3. 更新当前目录中的真实文档正文及 `current.label`，一起提交。只改标签不能证明正文已升级；发布者必须核对 SDK 对应的来源版本。其他产品、平台的配置不随之修改。
+4. 按 [中文搜索部署交接](cn-search-deployment-handoff.md) 对同一个合入 SHA 构建静态站、导出并审计索引、prepare 临时索引、部署前后端、验收并 promote。
+5. 查询 `joinChannel` 及另一个 API，核对快捷搜索与完整搜索都显示新版本、正文和锚点；旧版本不出现在结果或版本筛选。检查重载 `[1/2]`、`[2/2]` 和浏览器返回后的关键词、平台过滤。
+6. 从版本菜单打开上一版归档，检查正文仍是旧版本，以及样式、侧栏、图片和内部锚点；复查既有历史外链。
+
+## 当前边界
+
+本仓库已有历史版本的外链配置和回归测试，但尚未找到负责生成、上传未来站点 archive 快照的流水线。搜索修复不会创建归档站，也不会改动现有存档地址。首次采用上述发版流程前，需由文档与部署负责人确认快照产物位置、发布任务和真实 URL，再完成实际归档验收；这部分不能仅用搜索单元测试代替。
