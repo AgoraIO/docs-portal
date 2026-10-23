@@ -2,6 +2,7 @@
 
 ## 固定基线与状态
 
+- PR：[docs-portal #1291](https://github.com/AgoraIO/docs-portal/pull/1291)。
 - 源：`shengwang-doc-source/master`，已同步起点 `5ff6834d544e9c647252540da97c574b2aeeef56`，本轮审计终点 `427a27358efd3f2eeb1b9dc6e841e828b9a53366`（旧站 0.0.535）。
 - 上一轮 PR #1198 已合并，合并提交 `82d1138723ad805c7032a19880ada68b3c27e652`。
 - 目标：`docs-portal/codex/cn-newdoc-html-api-migration`，本轮真实目标基线 `be9871602d5e5a6bd89b1b18944dae975e57259b`；分支 `codex/cn-master-hotfix-20261023`。
@@ -81,7 +82,7 @@
 
 - 独立图片清单：[cn-master-sync-20261023-images.tsv](./cn-master-sync-20261023-images.tsv)。对源增量中的 Markdown/MDX 图片及 HTML 正文图片前后提取比较，没有新增或变更正文图片。未编造图床 URL，无需上传、回填或等待同事返回 URL。
 - HarmonyOS Full 与 Voice ZIP 均返回 HTTP 200、`application/zip`。MD5 按源分别保留 `52b13901ba39f907d1c52bd642a57ab8`、`a1d6a77792811e23954645a6bc4590a5`；本轮未下载整包重算 MD5。
-- HarmonyOS 4.4.2 归档返回 HTTP 200、`text/html`，URL 来自源 `_platforms_.meta.js` 的 `0.0.527`，未推断其他版本 URL；未做浏览器端长期可用性保证。
+- HarmonyOS 4.4.2 归档返回 HTTP 200、`text/html`，URL 来自源 `_platforms_.meta.js` 的 `0.0.527`；实际从新站版本菜单点击后，归档 API 概览显示 v4.4.2，未推断其他版本 URL，不承诺外站长期可用性。
 
 ## 排除、暂缓与继承问题
 
@@ -99,7 +100,8 @@
 - 最终全量 `bun run test`：4174 通过、3 失败、2 跳过。RTM USER 示例的两个失败已在未修改基线 worktree 复现；另一个为 retired-cn-docs 的 5 秒超时，独立重跑该文件 59/59 通过。保留本次全量失败事实，不将其写为全量通过。
 - 中文变更 MDX 内部链接审计：新增断链 0，继承失效锚点 3；本轮 OpenAPI 文件的 55 个引用全部解析通过。
 - `bun x biome check scripts/api-reference-historical-archives.test.ts src/components/docs-overview/sdk-downloads-data.zh-cn.ts`：通过。
-- `bun run build`：仍在执行，结果待回填；不宣称已通过。
+- `agent-browser` 浏览器抽查：ConvoAI v2.14 与 HarmonyOS v4.6.3 折叠/平台选择、Token 文档、新增嵌套 API 导航、轮次响应示例及 v4.4.2 归档入口通过；所查本地页面未报告浏览器异常。截图和临时报告仅保存在 ignored `.agent/hotfix-20261023/`，未提交或托管截图。
+- `bun run build`：通过（默认 global 区域，1194 个 payload、3356 个机器可读文件、3215 个路由 HTML）。它不构成中文发布产物通过的证据；`VITE_DOCS_REGION=cn bun run build` 正在执行，结果待回填。
 
 ## 下一轮起点
 

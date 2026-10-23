@@ -8,7 +8,7 @@ Last updated: 2026-10-23
 - Last confirmed merged incremental batch: [#1198](https://github.com/AgoraIO/docs-portal/pull/1198), merge `82d1138723ad805c7032a19880ada68b3c27e652`.
 - Effective source baseline from that batch: `5ff6834d544e9c647252540da97c574b2aeeef56`.
 - Pending batch: [`cn-master-sync-20261023.json`](./cn-master-sync-20261023.json), source range `5ff6834d5..427a27358`, target base `be9871602d5e5a6bd89b1b18944dae975e57259b`.
-- Pending branch: `codex/cn-master-hotfix-20261023`. It has not been treated as merged or deployed.
+- Pending PR: [#1291](https://github.com/AgoraIO/docs-portal/pull/1291), branch `codex/cn-master-hotfix-20261023`. It has not been treated as merged or deployed.
 - Full per-source decisions and target hashes are in [`cn-master-sync-20261023-ledger.json`](./cn-master-sync-20261023-ledger.json). Two unpublished AI guides remain explicitly deferred; carry them forward even after the pending batch merges.
 
 Before the next increment, confirm that the pending branch has merged. Only then use its fixed source head `427a27358efd3f2eeb1b9dc6e841e828b9a53366` as the new comparison start, while retaining its deferred items. Do not use the older `5d03551cf` source baseline, historical `99e7f81b4` target base, or the August checkpoint below for this branch.
