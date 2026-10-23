@@ -5044,20 +5044,17 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
   zhCNRtsaSdkDownloadPlatform,
 ] as const;
 
-// Retain the classroom SDK records while hiding the retired product family.
-const retiredClassroomSdkIds =
-  /^(?:flexible-classroom|cloud-scene|proctor)-sdk-/;
+// Retain source records while hiding classroom and IoT aPaaS downloads.
+const hiddenSdkIds = /^(?:flexible-classroom|cloud-scene|proctor|iot)-sdk-/;
 
 export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] =
   zhCNSdkDownloadSourcePlatforms.map((platform) => ({
     ...platform,
-    core: platform.core.filter(
-      (product) => !retiredClassroomSdkIds.test(product.id),
-    ),
+    core: platform.core.filter((product) => !hiddenSdkIds.test(product.id)),
     ...(platform.addOns
       ? {
           addOns: platform.addOns.filter(
-            (product) => !retiredClassroomSdkIds.test(product.id),
+            (product) => !hiddenSdkIds.test(product.id),
           ),
         }
       : {}),

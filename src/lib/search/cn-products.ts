@@ -8,7 +8,12 @@ const aliases = new Map<string, string>([
   ['micro-calling', 'voip-callkit'],
 ]);
 
-const excludedProducts = new Set(['danmaku', ...retiredCnProductIds]);
+const excludedProducts = new Set([
+  'danmaku',
+  'iot',
+  'iot-apaas',
+  ...retiredCnProductIds,
+]);
 
 const aliasesByCanonical = new Map<string, string[]>();
 for (const [alias, canonical] of aliases) {

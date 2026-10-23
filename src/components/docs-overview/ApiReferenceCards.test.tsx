@@ -138,6 +138,90 @@ describe('ApiReferenceCards', () => {
     });
   });
 
+  it('shows RTC server SDKs under RTC while keeping their independent product entry', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+
+    const rtcGroup = screen
+      .getByRole('heading', { name: '实时互动 RTC' })
+      .closest('section') as HTMLElement;
+    expect(
+      within(rtcGroup).getByRole('heading', { name: '服务端 SDK' }),
+    ).toBeVisible();
+    const serverEntries = zhCNApiReferenceCards.server.filter(
+      (entry) => entry.productId === 'rtc-server-sdk',
+    );
+    expect(serverEntries).toHaveLength(4);
+    for (const entry of serverEntries) {
+      expect(
+        within(rtcGroup).getByRole('link', {
+          name: `实时互动 RTC ${entry.platform} 服务端 SDK`,
+        }),
+      ).toHaveAttribute('href', entry.href);
+    }
+    expect(
+      screen.getByRole('option', { name: 'RTC 服务端 SDK' }),
+    ).toBeVisible();
+
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'rtc-server-sdk' },
+    });
+    expect(
+      screen.getByRole('heading', { name: 'RTC 服务端 SDK' }),
+    ).toBeVisible();
+    expect(
+      screen.queryByRole('heading', { name: '实时互动 RTC' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getAllByRole('link')).toHaveLength(4);
+  });
+
+  it('filters RTC server SDKs by API type and language', () => {
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    fireEvent.change(screen.getByLabelText('产品'), {
+      target: { value: 'rtc' },
+    });
+    expect(screen.getByRole('radio', { name: '服务端 SDK' })).toBeEnabled();
+    fireEvent.click(screen.getByRole('radio', { name: '服务端 SDK' }));
+    expect(screen.getAllByRole('link')).toHaveLength(4);
+    expect(
+      screen.queryByRole('link', { name: /客户端 SDK/ }),
+    ).not.toBeInTheDocument();
+    fireEvent.change(screen.getByLabelText('平台/语言'), {
+      target: { value: 'python' },
+    });
+    expect(screen.getAllByRole('link')).toHaveLength(1);
+    expect(
+      screen.getByRole('link', { name: '实时互动 RTC Python 服务端 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/rtc-server-sdk/python-api/overview.python',
+    );
+  });
+
+  it('restores RTC server SDK filters from a shared URL', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/api-reference/api?product=rtc&apiType=server&platform=python',
+    );
+    render(<ApiReferenceCards locale="zh-CN" type="all" />);
+    expect(screen.getByLabelText('产品')).toHaveValue('rtc');
+    expect(
+      screen.getByRole('radio', { name: '服务端 SDK', checked: true }),
+    ).toBeVisible();
+    expect(screen.getByLabelText('平台/语言')).toHaveValue('python');
+    expect(
+      screen.getByRole('link', { name: '实时互动 RTC Python 服务端 SDK' }),
+    ).toBeVisible();
+    await waitFor(() => {
+      expect(new URLSearchParams(window.location.search).get('apiType')).toBe(
+        'server',
+      );
+      expect(new URLSearchParams(window.location.search).get('platform')).toBe(
+        'python',
+      );
+    });
+  });
+
   it('uses current Chinese product names in the product filter', () => {
     render(<ApiReferenceCards locale="zh-CN" type="all" />);
 
@@ -353,10 +437,8 @@ describe('ApiReferenceCards', () => {
       target: { value: 'rtc' },
     });
     expect(screen.getByLabelText('平台/语言')).toHaveValue('ios');
-    expect(
-      screen.queryByRole('option', { name: 'Python' }),
-    ).not.toBeInTheDocument();
-    expect(screen.getByRole('radio', { name: '服务端 SDK' })).toBeDisabled();
+    expect(screen.getByRole('option', { name: 'Python' })).toBeInTheDocument();
+    expect(screen.getByRole('radio', { name: '服务端 SDK' })).toBeEnabled();
     expect(
       screen.getByRole('link', { name: /实时互动 RTC iOS 客户端 SDK/ }),
     ).toBeVisible();
