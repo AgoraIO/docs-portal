@@ -62,6 +62,11 @@ describe('RTM send-message platform semantics', () => {
       expect(body).toContain(`\`${user}\``);
       expect(body).toContain(`\`${join}\``);
       expect(body).not.toMatch(/`(?:message|enumv|channel|topic)\./);
+      expect(body).not.toContain('`config.');
+      if (platform === 'cpp') {
+        expect(body).toContain('`onPublishResult`');
+        expect(body).toContain('`onPublishTopicMessageResult`');
+      }
     },
   );
 });

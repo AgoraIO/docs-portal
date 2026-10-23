@@ -23,7 +23,7 @@ RTM 目前只支持字符串和二进制类型的消息数据格式。如果你�
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```java
+```java tab="字符串消息"
 // 发送字符串消息
 String message = "Hello World";
 String channelName = "my_channel";
@@ -42,7 +42,7 @@ mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() {
 });
 ```
 
-```java
+```java tab="二进制消息"
 // 发送二进制消息
 byte[] message = new byte[] { 00, 01, 35, 196 };
 String channelName = "my_channel";
@@ -75,7 +75,7 @@ mRtmClient.publish(channelName, message, options, new ResultCallback<Void>() {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```objc
+```objc tab="字符串消息"
 // 发送字符串消息
 NSString* message = @"Hello Agora!";
 NSString* channel = @"your_channel";
@@ -88,7 +88,7 @@ NSString* channel = @"your_channel";
 }];
 ```
 
-```objc
+```objc tab="二进制消息"
 // 发送二进制消息
 unsigned char bytes[32] = { /*your raw values */ };
 NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32];
@@ -116,7 +116,7 @@ NSString* channel = @"your_channel";
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```javascript
+```javascript tab="字符串消息"
 // 发送字符串消息
 const payload = "Hello Agora!";
 const channelName = "chat_room";
@@ -132,7 +132,7 @@ try {
 }
 ```
 
-```javascript
+```javascript tab="二进制消息"
 // 发送二进制消息
 const message = "Hello Agora!";
 const payload = new TextEncoder().encode(message);
@@ -160,7 +160,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```typescript
+```typescript tab="字符串消息"
 // Send string message
 import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -183,7 +183,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="二进制消息"
 // Send binary message
 import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -220,7 +220,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```csharp
+```csharp tab="字符串消息"
 // 发送字符串消息
 string message = "Hello World";
 string channelName = "chat_room";
@@ -238,7 +238,7 @@ else
 }
 ```
 
-```csharp
+```csharp tab="二进制消息"
 // 发送二进制消息
 byte[] message = new byte[] { 00, 01, 35, 196 };
 var channelName = "my_channel";
@@ -270,7 +270,7 @@ else
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```dart
+```dart tab="字符串消息"
 // 发送字符串消息
 final channelName = 'chat_room';
 var payload = 'hello RTM';
@@ -292,7 +292,7 @@ try {
 }
 ```
 
-```dart
+```dart tab="二进制消息"
 // 发送二进制消息
 final channelName = 'chat_room';
 var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
@@ -328,7 +328,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```cpp lineNumbers
+```cpp tab="字符串消息" lineNumbers
 // 发送字符串消息
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_STRING;
@@ -339,7 +339,7 @@ uint64_t requestId;
 rtm_client->publish("channelName", message.c_str(), message.size(), options, requestId);
 ```
 
-```cpp
+```cpp tab="二进制消息"
 // 发送二进制消息
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_BINARY;
@@ -350,7 +350,7 @@ uint64_t requestId;
 rtm_client->publish("channelName", message, 5, options, requestId);
 ```
 
-调用该方法后，SDK 会触发 `config.onpublishresult` 回调并返回 API 调用结果。
+调用该方法后，SDK 会触发 `onPublishResult` 回调并返回 API 调用结果。
 
 ```cpp
 // 异步回调
@@ -379,7 +379,7 @@ class RtmEventHandler : public IRtmEventHandler {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```swift
+```swift tab="字符串消息"
 let message = "Hello Agora!"
 let channel = "your_channel"
 
@@ -392,7 +392,7 @@ rtm.publish(channelName: channel, message: message, option: nil, completion: { r
 })
 ```
 
-```swift
+```swift tab="二进制消息"
 let byteArray: [UInt8] = [0x48, 0x65, 0x6C, 0x6C, 0x6F] // 代表 "Hello"
 let myDataFromBytes = Data(byteArray)
 let channel = "your_channel"
@@ -418,7 +418,7 @@ rtm.publish(channelName: channel, data: myDataFromBytes, option: nil, completion
 `publish` 方法仅适用于 Message Channel 和 User Channel。
 :::
 
-发送字符串消息和二进制消息的示例代码如下：
+发送字符串消息的示例代码如下：
 
 ```javascript
 // 发送字符串消息
@@ -454,7 +454,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```java
+```java tab="字符串消息"
 // 发送字符串消息
 PublishOptions options = new PublishOptions();
 options.setChannelType(RtmChannelType.USER);
@@ -472,7 +472,7 @@ rtmClient.publish("Tony", "Hello world", options, new ResultCallback<Void>() {
 });
 ```
 
-```java
+```java tab="二进制消息"
 // 发送二进制消息
 byte[] message = new byte[] {1, 2, 3, 4};
 PublishOptions options = new PublishOptions();
@@ -505,7 +505,7 @@ rtmClient.publish("Tony", message, options, new ResultCallback<Void>() {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```objc
+```objc tab="字符串消息"
 // 发送字符串消息
 NSString* message = @"Hello Agora!";
 NSString* user = @"Tony";
@@ -522,7 +522,7 @@ publish_option.channelType = AgoraRtmChannelTypeUser;
 }];
 ```
 
-```objc
+```objc tab="二进制消息"
 // 发送二进制消息
 NSData* raw_message = [[NSData alloc] initWithBytes:byte_array length:5];
 NSString* user = @"Tony";
@@ -553,7 +553,7 @@ publish_option.channelType = AgoraRtmChannelTypeUser;
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```javascript
+```javascript tab="字符串消息"
 // 发送字符串消息
 const payload = "Hello Agora!";
 const userId = "Tony";
@@ -569,7 +569,7 @@ try {
 }
 ```
 
-```javascript
+```javascript tab="二进制消息"
 // 发送二进制消息
 const message = "Hello Agora!";
 const payload = new TextEncoder().encode(message);
@@ -597,7 +597,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```typescript
+```typescript tab="字符串消息"
 // Send string message to user
 import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -620,7 +620,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="二进制消息"
 // Send binary message to user
 import { PublishOptions, RtmChannelType } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -657,7 +657,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```dart
+```dart tab="字符串消息"
 // 发送字符串消息
 final channelName = 'chat_room';
 var payload = 'hello RTM';
@@ -679,7 +679,7 @@ try {
 }
 ```
 
-```dart lineNumbers
+```dart tab="二进制消息" lineNumbers
 // 发送二进制消息
 final channelName = 'chat_room';
 var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
@@ -715,7 +715,7 @@ try {
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```cpp
+```cpp tab="字符串消息"
 // 发送字符串消息
 std::string message = "Hello Agora!";
 PublishOptions options;
@@ -727,7 +727,7 @@ uint64_t requestId;
 rtmClient->publish("Tony", message.c_str(), message.size(), options, requestId);
 ```
 
-```cpp
+```cpp tab="二进制消息"
 // 发送二进制消息
 PublishOptions options;
 options.messageType = RTM_MESSAGE_TYPE_BINARY;
@@ -739,7 +739,7 @@ uint64_t requestId;
 rtmClient->publish("Tony", message, 5, options, requestId);
 ```
 
-调用该方法后，SDK 会触发 `config.onpublishresult` 回调并返回 API 调用结果。
+调用该方法后，SDK 会触发 `onPublishResult` 回调并返回 API 调用结果。
 
 ```cpp
 // 异步回调
@@ -766,7 +766,7 @@ class RtmEventHandler : public IRtmEventHandler {
 `publish` 方法仅适用于 Message Channel 和 User Channel，你无法使用该方法向 Stream Channel 发送消息。
 :::
 
-发送字符串消息和二进制消息的示例代码如下：
+发送字符串消息的示例代码如下：
 
 ```swift
 let message = "Hello Agora!"
@@ -798,7 +798,7 @@ rtm.publish(channelName: user, message: message, option: publishOption, completi
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```javascript
+```javascript tab="字符串消息"
 // 发送字符串消息
 const payload = "Hello Agora!";
 const userId = "Tony";
@@ -814,7 +814,7 @@ try {
 }
 ```
 
-```javascript
+```javascript tab="二进制消息"
 // 发送二进制消息
 const message = "Hello Agora!";
 const payload = new TextEncoder().encode(message);
@@ -850,7 +850,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```java
+```java tab="字符串消息"
 // 发送字符串消息
 String message = "Hello Agora!";
 String topicName = "chat_topic";
@@ -869,7 +869,7 @@ mStreamChannel.publishTopicMessage(topicName, message, options, new ResultCallba
 });
 ```
 
-```java
+```java tab="二进制消息"
 // 发送二进制消息
 byte[] message = new byte[] { 00, 01, 35, 196 };
 String topicName = "chat_topic";
@@ -910,7 +910,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```objc
+```objc tab="字符串消息"
 // 发送字符串消息
 NSString* message = @"Hello Agora!";
 [stream_channel publishTopicMessage:@"your_topic" message:message option:nil completion:^(AgoraRtmCommonResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
@@ -922,7 +922,7 @@ NSString* message = @"Hello Agora!";
 }];
 ```
 
-```objc
+```objc tab="二进制消息"
 // 发送二进制消息
 unsigned char bytes[32] = { /*your raw values */ };
 NSData* raw_message = [[NSData alloc] initWithBytes:bytes length:32];
@@ -957,7 +957,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```javascript
+```javascript tab="字符串消息"
 // 发送字符串消息
 const payload = "Hello Agora!";
 const topicName = "chat_topic";
@@ -970,7 +970,7 @@ try {
 }
 ```
 
-```javascript
+```javascript tab="二进制消息"
 // 发送二进制消息
 const message = "Hello Agora!";
 const payload = new TextEncoder().encode(message);
@@ -1006,7 +1006,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```typescript
+```typescript tab="字符串消息"
 // Send string message to topic
 import { TopicMessageOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -1028,7 +1028,7 @@ try {
 }
 ```
 
-```typescript
+```typescript tab="二进制消息"
 // Send binary message to topic
 import { TopicMessageOptions } from '@shengwang/rtm-full';
 import { RtmError } from '@shengwang/rtm-full';
@@ -1072,7 +1072,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```csharp
+```csharp tab="字符串消息"
 // 发送字符串消息
 string message = "left";
 string topic = "Motion";
@@ -1085,7 +1085,7 @@ if (status.Error)
 }
 ```
 
-```csharp
+```csharp tab="二进制消息"
 // 发送二进制消息
 byte[] message = new byte[] { 00, 01, 35, 196 };
 string topic = "Motion";
@@ -1120,7 +1120,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```dart
+```dart tab="字符串消息"
 // 发送字符串消息
 final topicName = 'chat_topic';
 var payload = 'hello RTM';
@@ -1142,7 +1142,7 @@ try {
 
 ```
 
-```dart
+```dart tab="二进制消息"
 // 发送二进制消息
 final topicName = 'chat_topic';
 var payload = Uint8List.fromList([155, 26, 88, 0, 0]);
@@ -1185,7 +1185,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```cpp
+```cpp tab="字符串消息"
 // 发送字符串消息
 std::string message = "Hello Agora!";
 TopicMessageOptions options;
@@ -1195,7 +1195,7 @@ uint64_t requestId;
 streamChannel.publishTopicMessage("topicName", message.c_str(), message.size(), options, requestId);
 ```
 
-```cpp
+```cpp tab="二进制消息"
 // 发送二进制消息
 char message[5] = {0x00, 0x01, 0x02, 0x03, 0x04};
 
@@ -1206,7 +1206,7 @@ uint64_t requestId;
 streamChannel.publishTopicMessage("topicName", message, 5, options, requestId);
 ```
 
-调用该方法后，SDK 会触发 `config.onpublishtopicresult` 回调并返回 API 调用结果。
+调用该方法后，SDK 会触发 `onPublishTopicMessageResult` 回调并返回 API 调用结果。
 
 ```cpp
 // 异步回调
@@ -1243,7 +1243,7 @@ RTM 规定一位用户同时只能注册成为不超过 8 个 Topic 的消息发
 
 发送字符串消息和二进制消息的示例代码如下：
 
-```swift
+```swift tab="字符串消息"
 let message = "Hello Agora!"
 
 streamChannel.publishTopicMessage("your_topic", message: message, option: nil) { response, errorInfo in
@@ -1255,7 +1255,7 @@ streamChannel.publishTopicMessage("your_topic", message: message, option: nil) {
 }
 ```
 
-```swift
+```swift tab="二进制消息"
 let bytes: [UInt8] = [ /* your raw values */ ]
 let rawMessage = Data(bytes: bytes, count: bytes.count)
 
