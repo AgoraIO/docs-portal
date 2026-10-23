@@ -847,7 +847,6 @@ describe('common MDX registry', () => {
         'true',
       );
       expect(screen.getByRole('heading', { name: '问题修复' })).toBeVisible();
-      expect(sessionStorage.getItem('release-hash')).toBe('electron');
     },
   );
 
@@ -2326,7 +2325,7 @@ describe('common MDX registry', () => {
         ?.className,
     ).toContain('[&>figure:only-child]:bg-fd-card');
     expect(screen.getByText('Install with curl').closest('figure')).toHaveClass(
-      'shadow-none',
+      'docs-code-block',
     );
     expect(
       screen.getByRole('tab', { name: 'macOS and Linux' }),
@@ -2506,11 +2505,11 @@ describe('common MDX registry', () => {
     const codeBlock = figure as HTMLElement;
     expect(codeBlock).toBeInTheDocument();
     expect(codeBlock).toHaveClass('bg-fd-card');
-    expect(codeBlock).toHaveClass('shadow-none');
-    expect(codeBlock).toHaveAttribute('data-line-numbers', 'true');
+    expect(codeBlock).toHaveClass('docs-code-block');
+    expect(codeBlock).not.toHaveAttribute('data-line-numbers');
     expect(within(codeBlock).getByText('Install')).toBeInTheDocument();
     expect(
-      within(codeBlock).getByRole('button', { name: 'Copy Text' }),
+      within(codeBlock).getByRole('button', { name: 'Copy code' }),
     ).toBeInTheDocument();
     expect(codeBlock).toHaveTextContent('npm install @agora/sdk');
   });
@@ -2552,7 +2551,7 @@ describe('common MDX registry', () => {
       'inactive',
     );
     expect(screen.getByText('print("hello")').closest('figure')).toHaveClass(
-      'bg-fd-card',
+      'docs-code-block',
     );
     expect(
       screen.getByText('print("hello")').closest('[role=tabpanel]')?.className,
@@ -2683,13 +2682,12 @@ describe('common MDX registry', () => {
     expect(
       within(secondTabs).getByRole('tab', { name: 'TypeScript' }),
     ).toHaveAttribute('data-state', 'active');
-    expect(sessionStorage.getItem('explicit-sdk')).toBe('ts');
     expect(
       screen.getByText('second typescript sample').closest('[role=tabpanel]'),
     ).toBeVisible();
   });
 
-  it('syncs generated code tabs with the same values inside the MDX page provider', () => {
+  it('keeps same-option code groups independent inside the MDX page provider', () => {
     const components = getMDXComponents();
     const CodeBlockTabs = components.CodeBlockTabs as TabsComponent;
     const CodeBlockTabsList = components.CodeBlockTabsList as TabsComponent;
@@ -2749,17 +2747,17 @@ describe('common MDX registry', () => {
       within(firstTabs).getByRole('tab', { name: 'Kotlin' }),
     ).toHaveAttribute('data-state', 'active');
     expect(
-      within(secondTabs).getByRole('tab', { name: 'Kotlin' }),
+      within(secondTabs).getByRole('tab', { name: 'Java' }),
     ).toHaveAttribute('data-state', 'active');
     expect(
       screen.getByText('first kotlin sample').closest('[role=tabpanel]'),
     ).toBeVisible();
     expect(
       screen.getByText('second kotlin sample').closest('[role=tabpanel]'),
-    ).toBeVisible();
+    ).not.toBeVisible();
     expect(
       screen.getByText('second java sample').closest('[role=tabpanel]'),
-    ).not.toBeVisible();
+    ).toBeVisible();
   });
 
   it('keeps generated code tabs local without the MDX page provider', () => {

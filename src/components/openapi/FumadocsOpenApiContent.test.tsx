@@ -649,15 +649,16 @@ describe('FumadocsOpenApiContent', () => {
       generatedPanel.querySelector('.fd-scroll-container'),
     ).toHaveAttribute('data-openapi-code-viewport', '');
     expect(generatedPanel.querySelector('figure.shiki')).toHaveClass(
-      'bg-fd-secondary',
-      '-mx-px',
-      '-mb-px',
-      'last:rounded-b-xl',
+      'docs-code-block',
     );
-    expect(generatedPanel.querySelector('.token-command')).toBeInTheDocument();
-    expect(generatedPanel.querySelector('.token-flag')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(generatedPanel.querySelector('code')).toHaveAttribute(
+        'data-highlighted',
+        'true',
+      ),
+    );
     expect(
-      within(generatedPreview).getByRole('button', { name: '复制文本' }),
+      within(generatedPreview).getByRole('button', { name: '复制代码' }),
     ).toBeInTheDocument();
     expect(
       screen
@@ -755,9 +756,11 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(
-      examplesScope.getByRole('tabpanel').querySelector('.token-command'),
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        examplesScope.getByRole('tabpanel').querySelector('code'),
+      ).toHaveAttribute('data-highlighted', 'true'),
+    );
     const preview = examplesScope.getByTestId('openapi-code-preview');
     expect(
       within(preview)
@@ -783,7 +786,7 @@ describe('FumadocsOpenApiContent', () => {
     });
     try {
       fireEvent.click(
-        within(preview).getByRole('button', { name: 'Copy Text' }),
+        within(preview).getByRole('button', { name: 'Copy code' }),
       );
       await waitFor(() => {
         expect(clipboardWriteText).toHaveBeenCalledWith(
@@ -2272,11 +2275,11 @@ describe('FumadocsOpenApiContent', () => {
         '[data-openapi-responses] input[placeholder="Filter Properties"]',
       ),
     ).toBeNull();
-    expect(screen.getByText('cname')).toBeVisible();
+    expect(screen.getByText('cname', { selector: 'code' })).toBeVisible();
     expect(
       screen.getByText('The name of the channel being recorded.'),
     ).toBeVisible();
-    expect(screen.getByText('uid')).toBeVisible();
+    expect(screen.getByText('uid', { selector: 'code' })).toBeVisible();
     expect(
       screen.getByText(
         'The UID used by the cloud recording service in the RTC channel.',
@@ -2290,7 +2293,7 @@ describe('FumadocsOpenApiContent', () => {
     fireEvent.click(
       within(
         screen
-          .getByText('serverResponse')
+          .getByText('serverResponse', { selector: 'code' })
           .closest('div.border-t') as HTMLElement,
       ).getByRole('button', { name: 'Expand serverResponse properties' }),
     );
@@ -3496,10 +3499,14 @@ describe('FumadocsOpenApiContent', () => {
         'The request succeeded and returned the created streaming key.',
       ),
     ).toBeInTheDocument();
-    expect(responseScope.getByText('status')).toBeInTheDocument();
+    expect(
+      responseScope.getByText('status', { selector: 'code' }),
+    ).toBeInTheDocument();
     fireEvent.click(
       within(
-        responseScope.getByText('data').closest('div.border-t') as HTMLElement,
+        responseScope
+          .getByText('data', { selector: 'code' })
+          .closest('div.border-t') as HTMLElement,
       ).getByRole('button', { name: '展开 data 属性' }),
     );
     expect(
@@ -3771,7 +3778,7 @@ describe('FumadocsOpenApiContent', () => {
       screen.queryByRole('heading', { name: 'Response schema' }),
     ).not.toBeInTheDocument();
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
-    expect(screen.getByText('agent_id')).toBeVisible();
+    expect(screen.getByText('agent_id', { selector: 'code' })).toBeVisible();
   });
 
   it('adds stable official root anchors and nested find paths', async () => {
@@ -3881,11 +3888,13 @@ describe('FumadocsOpenApiContent', () => {
     );
     fireEvent.click(
       within(
-        screen.getByText('data').closest('div.border-t') as HTMLElement,
+        screen
+          .getByText('data', { selector: 'code' })
+          .closest('div.border-t') as HTMLElement,
       ).getByRole('button', { name: 'Expand data properties' }),
     );
     expect(screen.getByText('idleTimeout')).toBeVisible();
-    expect(screen.getByText('agentId')).toBeVisible();
+    expect(screen.getByText('agentId', { selector: 'code' })).toBeVisible();
     expect(
       document.querySelector('[data-openapi-schema-find-index]'),
     ).toBeNull();
@@ -4129,7 +4138,7 @@ describe('FumadocsOpenApiContent', () => {
       }),
     ).toBeVisible();
     expect(
-      screen.getAllByRole('button', { name: '复制文本' }).length,
+      screen.getAllByRole('button', { name: '复制代码' }).length,
     ).toBeGreaterThan(0);
   });
 });

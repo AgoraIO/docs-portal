@@ -1,43 +1,36 @@
+import { render, waitFor } from '@testing-library/react';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { highlightOpenApiCode } from './code-highlight';
 
 describe('highlightOpenApiCode', () => {
-  it('renders shell and JSON tokens while preserving source text', () => {
+  it('enhances code with Shiki without changing the copied command', async () => {
     const source = String.raw`curl --request post \
 --header 'Authorization: Basic token' \
 --data '{"name":"unique_name","idle_timeout":120}'`;
-    const markup = renderToStaticMarkup(
+    const { container } = render(
       highlightOpenApiCode({ language: 'bash', source }),
     );
-
-    expect(markup).toContain('class="line"');
-    expect(markup).toContain('class="token-command"');
-    expect(markup).toContain('class="token-flag"');
-    expect(markup).toContain('class="token-string"');
-    expect(markup).toContain('class="token-key"');
-    expect(markup).toContain('class="token-number"');
-    expect(markup).toContain('>curl</span>');
-    expect(markup).toContain('&#x27;Authorization: Basic token&#x27;');
-    expect(markup).toContain('&quot;name&quot;');
+    expect(container.textContent).toBe(source);
+    await waitFor(() =>
+      expect(container.querySelector('code')).toHaveAttribute(
+        'data-highlighted',
+        'true',
+      ),
+    );
+    expect(container.textContent).toBe(source);
+    expect(
+      container.querySelector('span[style*="--shiki-light"]'),
+    ).toBeInTheDocument();
   });
-
-  it('uses language-aware keywords for Python and JavaScript', () => {
-    const python = renderToStaticMarkup(
+  it('keeps code available and escaped during server rendering', () => {
+    const markup = renderToStaticMarkup(
       highlightOpenApiCode({
         language: 'python',
-        source: 'import requests\nresponse = requests.post(url)',
+        source: 'print("<response>")',
       }),
     );
-    const javascript = renderToStaticMarkup(
-      highlightOpenApiCode({
-        language: 'javascript',
-        source: 'const response = await fetch(url)',
-      }),
-    );
-
-    expect(python).toContain('class="token-keyword"');
-    expect(javascript).toContain('class="token-keyword"');
-    expect(javascript).toContain('class="token-function"');
+    expect(markup).toContain('&lt;response&gt;');
+    expect(markup).not.toContain('<response>');
   });
 });

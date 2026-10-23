@@ -8,12 +8,10 @@ import {
   type OpenAPIPageProps,
 } from 'fumadocs-openapi/ui';
 import {
-  CodeBlock,
   CodeBlockTab,
   CodeBlockTabs,
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
-  Pre,
 } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
@@ -36,6 +34,7 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
+import { DocsCodeBlock } from '@/components/code/DocsCodeBlock';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
@@ -91,6 +90,9 @@ const OpenApiLocaleContext = createContext<string | undefined>(undefined);
 const OpenApiContentPathContext = createContext<string | undefined>(undefined);
 const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OpenApiRequestCodeContext = createContext(false);
+const OpenApiCodeVariantContext = createContext<'output' | undefined>(
+  undefined,
+);
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
@@ -608,7 +610,9 @@ function OpenApiRightExamplesLayout({
         className="openapi-response-example"
         title={getOpenApiLabel('Response example', locale)}
       >
-        {slots.responseTabs}
+        <OpenApiCodeVariantContext value="output">
+          {slots.responseTabs}
+        </OpenApiCodeVariantContext>
       </OpenApiRightSection>
     </div>
   );
@@ -1053,7 +1057,7 @@ function OpenApiCodeSampleUsageTabs({
 
   return cloneElement(defaultUsageTabs, {
     className: cn(
-      'openapi-request-code-tabs my-0',
+      'docs-code-tabs openapi-request-code-tabs my-0',
       defaultUsageTabs.props.className,
     ),
   });
@@ -1106,7 +1110,7 @@ function OpenApiCodeSampleTabs({
 
   return (
     <CodeBlockTabs
-      className="openapi-request-code-tabs my-0"
+      className="docs-code-tabs openapi-request-code-tabs my-0"
       onValueChange={setSelectedSampleValue}
       value={activeSampleValue}
     >
@@ -1175,7 +1179,7 @@ function OpenApiCodeSampleGroupSelector({
       </select>
       <CodeBlockTabs
         key={selectedGroup.title}
-        className="openapi-request-code-tabs my-0"
+        className="docs-code-tabs openapi-request-code-tabs my-0"
         onValueChange={setSelectedSampleValue}
         value={activeSampleValue}
       >
@@ -1588,11 +1592,22 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
   return <div className="openapi-markdown prose-no-margin">{content}</div>;
 }
 
-function renderOpenApiCodeBlock(lang: string, source: string) {
-  return (
-    <OpenApiCodeSourceContext.Provider value={source}>
+function renderOpenApiCodeBlock(
+  lang: string,
+  source: string,
+  variant?: 'output',
+) {
+  const content = (
+    <OpenApiCodeSourceContext value={source}>
       {renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``)}
-    </OpenApiCodeSourceContext.Provider>
+    </OpenApiCodeSourceContext>
+  );
+  return variant ? (
+    <OpenApiCodeVariantContext value={variant}>
+      {content}
+    </OpenApiCodeVariantContext>
+  ) : (
+    content
   );
 }
 
@@ -1600,39 +1615,32 @@ function OpenApiMarkdownCodeBlock({
   children,
   ...props
 }: ComponentProps<'pre'>) {
-  const source = useContext(OpenApiCodeSourceContext);
-  const isRequestCode = useContext(OpenApiRequestCodeContext);
-  const childClassName = isValidElement(children)
-    ? (children.props as { className?: string }).className
+  const contextSource = useContext(OpenApiCodeSourceContext);
+  const locale = useContext(OpenApiLocaleContext);
+  const variant = useContext(OpenApiCodeVariantContext);
+  const childProps = isValidElement(children)
+    ? (children.props as { className?: string; children?: ReactNode })
     : undefined;
   const language =
     getCodeBlockLanguage(props.className) ??
-    getCodeBlockLanguage(childClassName);
-
+    getCodeBlockLanguage(childProps?.className);
+  const source =
+    contextSource ??
+    (typeof childProps?.children === 'string'
+      ? childProps.children
+      : undefined);
   return (
-    <CodeBlock
+    <DocsCodeBlock
       {...props}
-      className={cn(
-        props.className,
-        isRequestCode &&
-          'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
-      )}
-      Actions={
-        source === undefined
-          ? undefined
-          : ({ className }) => (
-              <div className={cn('empty:hidden', className)}>
-                <OpenApiCodeCopyButton source={source} />
-              </div>
-            )
-      }
+      source={source}
+      language={language}
+      variant={variant}
+      locale={locale}
     >
-      <Pre>
-        {source === undefined || language === undefined
-          ? children
-          : highlightOpenApiCode({ language, source })}
-      </Pre>
-    </CodeBlock>
+      {source !== undefined && language
+        ? highlightOpenApiCode({ source, language })
+        : children}
+    </DocsCodeBlock>
   );
 }
 
@@ -1640,28 +1648,6 @@ function getCodeBlockLanguage(className: string | undefined) {
   const match = className?.match(/(?:^|\s)language-([^\s]+)/);
 
   return match?.[1];
-}
-
-function OpenApiCodeCopyButton({ source }: { source: string }) {
-  const locale = useContext(OpenApiLocaleContext);
-  const [checked, onClick] = useOpenApiCopyButton(() =>
-    navigator.clipboard.writeText(source),
-  );
-
-  return (
-    <button
-      aria-label={getOpenApiLabel(
-        checked ? 'Copied Text' : 'Copy Text',
-        locale,
-      )}
-      className="inline-flex items-center justify-center rounded-md p-1 text-sm font-medium text-fd-muted-foreground transition-colors duration-100 hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50 data-checked:text-fd-accent-foreground [&_svg]:size-4"
-      data-checked={checked || undefined}
-      onClick={onClick}
-      type="button"
-    >
-      {checked ? <Check /> : <Clipboard />}
-    </button>
-  );
 }
 
 function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {

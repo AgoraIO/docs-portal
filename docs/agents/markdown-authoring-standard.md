@@ -89,6 +89,8 @@ Do not mix indentation, close the directive at a different level, or use `::::`.
 ## Code Blocks
 
 Use fenced code blocks with a language.
+Use two-space indentation for JSON examples; preserve payload values and do
+not rely on the renderer to reformat code.
 
 ````mdx
 ```bash
@@ -96,8 +98,9 @@ npm install agora-rtc-sdk-ng
 ```
 ````
 
-For plain code fences, use only these optional metadata fields: `title` and
-`lineNumbers`.
+For plain code fences, use these optional metadata fields: `title`,
+`lineNumbers`, and `noLineNumbers`. Multi-line examples show line numbers by
+default; use `noLineNumbers` for a block that should omit them.
 
 ````mdx
 ```ts title="client.ts" lineNumbers
@@ -105,10 +108,28 @@ const client = AgoraRTC.createClient({ mode: 'rtc', codec: 'vp8' });
 ```
 ````
 
-For code tabs, use only `tab` and optional `tabGroup`. When code blocks are
+Use a descriptive filename in `title` when available. An explicit
+`title="响应"` or `title="Response"` marks an output block; JSON alone does
+not determine whether a block is a request or response.
+
+````mdx
+```json title="响应" noLineNumbers
+{"resourceId": "example-resource"}
+```
+````
+
+Use Shiki notation comments for emphasis and diffs, such as
+`// [!code highlight]`, `// [!code ++]`, and `// [!code --]`. They are removed
+from rendered and copied code. Terminal blocks use `bash` or `sh`; the
+component supplies the decorative prompt for single-line commands without
+line numbers. Multi-line commands show line numbers without a prompt.
+
+For code tabs, use `tab` and optional `tabGroup`; add `noLineNumbers` when
+needed. When code blocks are
 alternatives for the same step, keep the fences consecutive and add `tab`. Use
 the same `tabGroup` when multiple tab sets on the page should share one
-selection.
+selection. Only an explicit `tabGroup` synchronizes examples, scoped to the
+current page and matching options; other groups remain independent.
 
 ````mdx
 ```bash tab="npm" tabGroup="package-manager"
