@@ -394,13 +394,13 @@ describe('legacy redirect Vercel artifacts', () => {
         {
           destination: 'https://doc.shengwang.cn/doc/:path*',
           source:
-            '/doc/:path((?!(?:fusion-cdn|flexible-classroom|sdk-extension|analytics/general/fls/data)(?:/|\\.(?:html|mdx?)|$)).*)',
+            '/doc/:path((?!(?:fusion-cdn|flexible-classroom|sdk-extension|analytics/general/fls/data)(?:/|\\.(?:html|mdx?)|$)).*)?',
           statusCode: 308,
         },
         {
           destination: 'https://doc.shengwang.cn/api-ref/:path*',
           source:
-            '/api-ref/:path((?!(?:fusion-cdn|flexible-classroom)(?:/|\\.(?:html|mdx?)|$)).*)',
+            '/api-ref/:path((?!(?:fusion-cdn|flexible-classroom)(?:/|\\.(?:html|mdx?)|$)).*)?',
           statusCode: 308,
         },
       ]),
