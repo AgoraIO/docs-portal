@@ -17,6 +17,7 @@ import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
+import { appendApiReferenceTrail } from '@/lib/api-reference-context';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { i18n } from '@/lib/i18n/i18n';
 import { PLATFORM_DATASET_KEY } from '@/lib/platforms/preference';
@@ -134,6 +135,27 @@ function renderWithRouter(
 }
 
 describe('DocsContent', () => {
+  it('restores the return link from a shared API URL in a fresh session', async () => {
+    const href = appendApiReferenceTrail(
+      '/zh-CN/api-reference/enum-multipathtype',
+      new URL(
+        '/zh-CN/api-reference/class-channelmediaoptions#prefermultipathtype',
+        window.location.origin,
+      ),
+      'ChannelMediaOptions',
+    );
+    renderWithRouter(
+      <DocsContent locale="zh-CN" title="MultipathType" toc={[]} />,
+      href,
+    );
+    expect(
+      await screen.findByRole('link', { name: '返回 ChannelMediaOptions' }),
+    ).toHaveAttribute(
+      'href',
+      '/zh-CN/api-reference/class-channelmediaoptions#prefermultipathtype',
+    );
+  });
+
   Object.defineProperty(window.navigator, 'clipboard', {
     configurable: true,
     value: {

@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import {
@@ -21,6 +21,12 @@ import { useTranslation } from 'react-i18next';
 import { AccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  type ApiReferenceLink,
+  appendApiReferenceTrail,
+  readApiReferenceTrail,
+  withApiReferenceTrail,
+} from '@/lib/api-reference-context';
 import { cn } from '@/lib/cn';
 import { isCnPublicDocsPath } from '@/lib/cn-public-routing';
 import {
@@ -158,8 +164,24 @@ export function DocsContent({
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
   const storedArticleReturnLink = useDocsArticleReturnLink(currentPageKey);
-  const articleReturnLink =
-    storedArticleReturnLink?.href === breadcrumb[0]?.url
+  const [apiTrail, setApiTrail] = useState<ApiReferenceLink[]>([]);
+  useEffect(() => {
+    const url = currentPageKey
+      ? new URL(currentPageKey, window.location.origin)
+      : null;
+    setApiTrail(url ? readApiReferenceTrail(url) : []);
+  }, [currentPageKey]);
+  const sharedReturnLink = apiTrail.at(-1);
+  const articleReturnLink = sharedReturnLink
+    ? {
+        ...sharedReturnLink,
+        href: withApiReferenceTrail(
+          sharedReturnLink.href,
+          apiTrail.slice(0, -1),
+          window.location.origin,
+        ),
+      }
+    : storedArticleReturnLink?.href === breadcrumb[0]?.url
       ? null
       : storedArticleReturnLink;
   const sourceLinks = getDocsSourceLinks(contentPath);
@@ -494,6 +516,7 @@ function useTrackDocsArticleLinkNavigation({
 }: {
   sourceTitle: string;
 }) {
+  const router = useRouter();
   return useCallback(
     (event: MouseEvent<HTMLElement>) => {
       if (
@@ -520,8 +543,35 @@ function useTrackDocsArticleLinkNavigation({
       }
 
       trackDocsArticleLinkNavigation(anchor, sourceTitle);
+      if (
+        anchor.hasAttribute('download') ||
+        (anchor.target && anchor.target !== '_self')
+      )
+        return;
+      const sourceUrl = getCurrentUrl();
+      if (!sourceUrl) return;
+      // Return to the field/section containing the clicked type, even if the
+      // reader scrolled there without changing the address bar's hash.
+      const precedingAnchor = Array.from(
+        event.currentTarget.querySelectorAll<HTMLElement>(
+          'a[id], h2[id], h3[id], h4[id]',
+        ),
+      )
+        .filter((element) =>
+          Boolean(
+            element.compareDocumentPosition(anchor) &
+              Node.DOCUMENT_POSITION_FOLLOWING,
+          ),
+        )
+        .at(-1);
+      if (precedingAnchor) sourceUrl.hash = precedingAnchor.id;
+      const href = appendApiReferenceTrail(anchor.href, sourceUrl, sourceTitle);
+      if (href !== anchor.href) {
+        event.preventDefault();
+        void router.navigate({ href });
+      }
     },
-    [sourceTitle],
+    [router, sourceTitle],
   );
 }
 
