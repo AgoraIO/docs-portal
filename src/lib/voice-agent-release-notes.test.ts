@@ -9,7 +9,8 @@ const releaseNotes = readFileSync(
 
 describe('Voice Agent release notes', () => {
   it('uses the shared multi-open version history structure', () => {
-    expect(releaseNotes).toContain('## Versions');
+    expect(releaseNotes).toContain('## Conversational AI Platform (Preview)');
+    expect(releaseNotes).toContain('## Voice Agent API');
     expect(releaseNotes).toContain('<Accordions type="multiple" openFirst>');
     const versions = Array.from(
       releaseNotes.matchAll(

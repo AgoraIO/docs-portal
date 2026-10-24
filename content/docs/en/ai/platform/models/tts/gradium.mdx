@@ -1,0 +1,66 @@
+---
+title: Gradium
+description: >
+ Use Gradium for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/gradium.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Gradium provides enterprise-grade AI voice generation with text-to-speech (TTS) models.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Gradium supports BYOK only. It isn't available in managed mode.
+
+Store your Gradium API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `gradium` in the `support-prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.gradium"
+  },
+  "vendor": "gradium",
+  "url": "wss://api.gradium.ai/api/speech/tts",
+  "params": {
+    "model_name": "default",
+    "voice_id": "<your_gradium_voice_id>",
+    "sample_rate": 16000
+  }
+}
+```
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `gradium`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Gradium API key.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket endpoint for streaming TTS output. For example, `wss://api.gradium.ai/api/speech/tts`.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="model_name" type="string" required={false}>
+      The TTS model to use. For example, `default`.
+    </Parameter>
+    <Parameter name="voice_id" type="string" required={false}>
+      The voice identifier to use.
+    </Parameter>
+    <Parameter name="sample_rate" type="number" required={false}>
+      The audio sample rate in Hz. For example, `16000`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Gradium without validation. For a full list of supported options, refer to the [Gradium documentation](https://docs.gradium.ai/guides/text-to-speech).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

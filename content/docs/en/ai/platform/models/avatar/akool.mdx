@@ -1,0 +1,128 @@
+---
+title: Akool
+description: >
+ Integrate Akool AI avatars into Conversational AI Engine.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/akool.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+Akool provides AI-powered avatars with realistic facial expressions and lip-sync capabilities, enabling natural video conversations with your AI agents. Their platform offers a variety of pre-built avatars and supports custom avatar creation.
+
+### Sample configuration
+
+The following examples show how to configure an Akool avatar when starting a conversational AI agent.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent
+from agora_agent.agentkit.vendors import AkoolAvatar
+
+# client is your configured Agora client
+agent = (
+    Agent(client)
+    .with_stt(...)  # configure your STT vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure a TTS vendor at 16000 Hz
+    .with_avatar(AkoolAvatar(
+        api_key='your-akool-key',
+        avatar_id='<akool_avatar_id>',
+    ))
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+import { Agent, AkoolAvatar } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your STT vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure a TTS vendor at 16000 Hz */)
+  .withAvatar(new AkoolAvatar({
+    apiKey: 'your-akool-key',
+    avatarId: '<akool_avatar_id>',
+  }));
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+import (
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
+    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+)
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
+  WithLlm(/* configure your LLM vendor */).
+  WithTts(/* configure a TTS vendor at 16000 Hz */).
+  WithAvatar(
+    vendors.NewAkoolAvatar(vendors.AkoolAvatarOptions{
+        APIKey:   "your-akool-key",
+        AvatarID: "<akool_avatar_id>",
+    }),
+)
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+Use the following `avatar` configuration in your request:
+
+```json
+"avatar": {
+    "vendor": "akool",
+    "enable": true,
+    "params": {
+          "api_key": "<akool_key>",
+          "agora_uid": "<avatar_rtc_uid>",
+          "agora_token": "<avatar_rtc_token>",
+          "avatar_id": "<akool_avatar_id>"
+    }
+}
+```
+
+</TabsContent>
+</Tabs>
+
+:::info[Info]
+Akool avatars only support audio with a sample rate of 16,000 Hz. Using a TTS model configured with a different sample rate will result in an error. Ensure your TTS configuration matches this requirement.
+:::
+
+### Key parameters
+
+<ParameterList title="params" required={true}>
+ <Parameter name="api_key" type="string" required={true}>
+ The API key used for authentication with Akool's services.
+
+ :::info[Info]
+ To purchase an Akool API key, contact [Agora sales](mailto:sales@agora.io).
+ :::
+ </Parameter>
+ <Parameter name="agora_uid" type="string" required={true}>
+ The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+ </Parameter>
+ <Parameter name="agora_token" type="string" required={false}>
+ The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+ </Parameter>
+ <Parameter name="avatar_id" type="string" required={true}>
+ The unique identifier for the specific Akool avatar you want to use. Find available avatar IDs in your Akool dashboard.
+ </Parameter>
+</ParameterList>
+
+This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.

@@ -1,0 +1,72 @@
+---
+title: Google
+description: >
+ Use Google for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/google.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Google provides fast, reliable text-to-speech (TTS) with customizable voices.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google TTS supports BYOK only. It isn't available in managed mode.
+
+Store your Google Cloud service account credentials JSON string in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the credentials. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the credentials are stored as `google` in the `support-prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.google"
+  },
+  "vendor": "google",
+  "params": {
+    "VoiceSelectionParams": {
+      "name": "en-US-Chirp3-HD-Charon"
+    },
+    "AudioConfig": {
+      "speaking_rate": 1.0,
+      "sample_rate_hertz": 24000
+    }
+  }
+}
+```
+
+{/* TODO(platform-confirm): The Voice Agent API takes a Google Cloud service account JSON string in `params.credentials`, not an API key. Confirm how the Platform expects it: the JSON string stored as a secret and referenced from `credential.api_key` (as shown), or another format. */}
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `google`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud service account credentials JSON string. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="VoiceSelectionParams" type="object" required={true}>
+      <Parameter name="name" type="string" required={true}>
+        The name of the voice to use, for example, `en-US-Chirp3-HD-Charon` or `en-US-Neural2-A`. See [supported voices](https://cloud.google.com/text-to-speech/docs/voices) for available voice names.
+      </Parameter>
+    </Parameter>
+    <Parameter name="AudioConfig" type="object" required={false}>
+      <Parameter name="speaking_rate" type="number" required={false}>
+        The speed of speech. Valid range is `0.25` to `2.0`, where `1.0` is the normal speed. Values less than `1.0` slow down the speech, while values greater than `1.0` speed it up.
+      </Parameter>
+      <Parameter name="sample_rate_hertz" type="integer" required={false}>
+        The sample rate in Hertz for the audio output, for example, `24000` or `16000`. The default value depends on the selected voice.
+      </Parameter>
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Google without validation. For a full list of supported options, refer to the [Google documentation](https://cloud.google.com/text-to-speech/docs/create-audio-text-streaming).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

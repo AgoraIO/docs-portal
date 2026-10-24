@@ -1,0 +1,58 @@
+---
+title: Google Vertex AI
+description: >
+  Use Google Vertex AI as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/google-vertex-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Google Vertex AI provides enterprise-grade access to Google's generative AI models with enhanced security, scaling capabilities, and integration with Google Cloud services.
+
+## Sample configuration
+
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google Vertex AI supports BYOK only. It isn't available in managed mode.
+
+Store your Google Cloud credential in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to it. Your project ID and region aren't secret. Pass them in the `url`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the credential is stored as `vertex-ai` in the `support-prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.vertex-ai"
+  },
+  "vendor": "vertexai",
+  "style": "gemini",
+  "model": "gemini-2.0-flash-001",
+  "url": "https://{region}-aiplatform.googleapis.com/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:streamGenerateContent?alt=sse",
+  "max_history": 32,
+  "failure_message": "Hold on a second."
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+{/* TODO(platform-confirm): Confirm the `vendor` value for Google Vertex AI (`vertexai` is assumed, matching the Voice Agent API's MLLM vendor), and whether `url` is required. The Voice Agent API example passes a short-lived access token (`gcloud auth print-access-token`) as `api_key`. A stored secret can't refresh itself. Confirm which Google Cloud credential the Platform accepts in a secret set (for example, a service account key) and how it's refreshed. */}
+
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `vertexai`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud credential. Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>
+    Set to `gemini` to use Gemini's message format.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Refer to [Vertex AI models](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/models) for available models.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    Use the Vertex AI endpoint with your Google Cloud project ID and region in the URL path. Refer to the [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/locations) for details.
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Google Vertex AI API documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/system-instructions).

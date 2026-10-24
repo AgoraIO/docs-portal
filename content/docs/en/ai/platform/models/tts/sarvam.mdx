@@ -1,0 +1,85 @@
+---
+title: Sarvam
+description: >
+ Use Sarvam for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/sarvam.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Sarvam provides fast, reliable text-to-speech (TTS) with support for Indian languages and customizable voices.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Sarvam supports BYOK only. It isn't available in managed mode.
+
+Store your Sarvam API subscription key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `sarvam` in the `support-prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.sarvam"
+  },
+  "vendor": "sarvam",
+  "params": {
+    "speaker": "anushka",
+    "target_language_code": "en-IN"
+  }
+}
+```
+
+{/* TODO(platform-confirm): The Voice Agent API takes the Sarvam key in `params.api_subscription_key`. This page passes it in `credential.api_key`. Confirm that the Platform maps it to Sarvam's subscription key. */}
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `sarvam`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Sarvam API subscription key. Get your key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="speaker" type="string" required={true}>
+    The voice ID to use for speech generation.
+    - Female voices: `anushka`, `manisha`, `vidya`, `arya`.
+    - Male voices: `abhilash`, `karun`, `hitesh`.
+    </Parameter>
+    <Parameter name="target_language_code" type="string" required={true}>
+    The language code for speech synthesis. Supported values:
+    - `en-IN` English (India)
+    - `hi-IN`: Hindi
+    - `bn-IN`: Bengali
+    - `ta-IN`: Tamil
+    - `te-IN`: Telugu
+    - `kn-IN`: Kannada
+    - `ml-IN`: Malayalam
+    - `mr-IN`: Marathi
+    - `gu-IN`: Gujarati
+    - `pa-IN`: Punjabi
+    - `or-IN`: Odia
+    </Parameter>
+    <Parameter name="pitch" type="number" possibleValues="[-0.75,0.75]" required={false}>
+    The pitch adjustment for the voice. Positive values make the voice sharper; negative values make it deeper.
+    </Parameter>
+    <Parameter name="pace" type="number" possibleValues="[0.3,3.0]" required={false}>
+    The speed of speech. `1.0` is the normal speed. Values less than `1.0` slow down the speech; values greater than `1.0` speed it up.
+    </Parameter>
+    <Parameter name="loudness" type="number" possibleValues="[0.1,3.0]" required={false}>
+    The volume level of the speech. Higher values increase the loudness.
+    </Parameter>
+    <Parameter name="sample_rate" type="number" possibleValues="8000, 16000, 22050, 24000" required={false}>
+    The audio sample rate in Hz.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Sarvam without validation. For a full list of supported options, refer to the [Sarvam documentation](https://docs.sarvam.ai/api-reference-docs/text-to-speech/convert).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

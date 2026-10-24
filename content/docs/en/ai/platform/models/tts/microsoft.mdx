@@ -1,0 +1,66 @@
+---
+title: Microsoft Azure
+description: >
+ Use Microsoft Azure for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/microsoft.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Microsoft Azure offers neural voices in multiple languages with options for different speaking styles and emotions, providing enterprise-grade text-to-speech capabilities with high-quality audio output.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Microsoft Azure supports BYOK only. It isn't available in managed mode.
+
+Store your Azure Speech key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your Azure region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `microsoft` in the `support-prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.microsoft"
+  },
+  "vendor": "microsoft",
+  "params": {
+    "region": "eastus",
+    "voice_name": "en-US-AndrewMultilingualNeural",
+    "speed": 1.0,
+    "volume": 70,
+    "sample_rate": 24000
+  }
+}
+```
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `microsoft`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Azure Speech key. Get your key from the [Azure Portal](https://portal.azure.com/).
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="region" type="string" required={true}>
+      The Azure region where the speech service is hosted, for example `eastus` or `westus2`.
+    </Parameter>
+    <Parameter name="voice_name" type="string" required={true}>
+      The identifier for the selected voice for speech synthesis. See [available voices](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=tts) for options.
+    </Parameter>
+    <Parameter name="speed" type="number" defaultValue="1.0" required={false}>
+      Speaking rate of the text. Values between `0.5` and `2.0` times the original audio speed.
+    </Parameter>
+    <Parameter name="volume" type="number" defaultValue="100" required={false}>
+      Audio volume as a number between `0.0` and `100.0`, where `0.0` is quietest and `100.0` is loudest.
+    </Parameter>
+    <Parameter name="sample_rate" type="integer" defaultValue="24000" required={false}>
+      Audio sampling rate in Hz. Common values: `16000`, `24000`, `48000`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Microsoft Azure without validation. For a full list of supported options, refer to the [Microsoft Azure TTS documentation](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/text-to-speech).
+:::

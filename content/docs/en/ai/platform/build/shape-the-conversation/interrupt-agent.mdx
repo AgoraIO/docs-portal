@@ -1,0 +1,456 @@
+---
+title: Interrupt the agent mid-response
+description: Interrupt the agent to start a new round of conversation.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/interrupt-agent.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+
+When interacting with an agent, you may need to interrupt the agent to begin a new round of conversation. The Agora Conversational AI Engine supports agent interruption in the following ways:
+
+- **Voice interruption**: The engine detects user voice input and automatically stops the agent’s response.
+- **Manual interruption**: Your app can explicitly stop the agent by calling a REST API or client SDK method—typically triggered by a button tap or custom command.
+
+This page describes how to implement agent interruption in your app.
+
+## Voice interruption
+
+Conversational AI Engine supports an intelligent interruption feature that allows a user's voice input to automatically interrupt the speaking agent. This enables quicker response times and more natural, fluid interactions.
+
+To customize interruption behavior, configure turn detection when starting a conversational AI agent. To enable AIVAD-based interruption, set the end of speech mode to `"semantic"`. The following example shows how to configure turn detection:
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+# ... other agent configuration ...
+.with_turn_detection({
+    'mode': 'default',
+    'config': {
+        'speech_threshold': 0.5,
+        'start_of_speech': {
+            'mode': 'vad',
+            'vad_config': {
+                'interrupt_duration_ms': 160,
+                'speaking_interrupt_duration_ms': 320,
+                'prefix_padding_ms': 800,
+            },
+        },
+        'end_of_speech': {
+            'mode': 'semantic',
+            'semantic_config': {
+                'silence_duration_ms': 320,
+                'max_wait_ms': 3000,
+            },
+        },
+    },
+})
+# ... continue with .create_session() ...
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+// ... other agent configuration ...
+.withTurnDetection({
+  mode: 'default',
+  config: {
+    speech_threshold: 0.5,
+    start_of_speech: {
+      mode: 'vad',
+      vad_config: {
+        interrupt_duration_ms: 160,
+        speaking_interrupt_duration_ms: 320,
+        prefix_padding_ms: 800,
+      },
+    },
+    end_of_speech: {
+      mode: 'semantic',
+      semantic_config: {
+        silence_duration_ms: 320,
+        max_wait_ms: 3000,
+      },
+    },
+  },
+})
+// ... continue with .createSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// ... other agent configuration ...
+.WithTurnDetection(&agentkit.TurnDetectionConfig{
+    Mode: Agora.String("default"),
+    Config: &agentkit.TurnDetectionNestedConfig{
+        SpeechThreshold: Agora.Float64(0.5),
+        StartOfSpeech: &agentkit.StartOfSpeechConfig{
+            Mode: Agora.StartAgentsRequestPropertiesTurnDetectionConfigStartOfSpeechModeVad,
+            VadConfig: &agentkit.StartOfSpeechVadConfig{
+                InterruptDurationMs:         Agora.Int(160),
+                SpeakingInterruptDurationMs: Agora.Int(320),
+                PrefixPaddingMs:             Agora.Int(800),
+            },
+        },
+        EndOfSpeech: &agentkit.EndOfSpeechConfig{
+            Mode: Agora.StartAgentsRequestPropertiesTurnDetectionConfigEndOfSpeechModeSemantic.Ptr(),
+            SemanticConfig: &agentkit.EndOfSpeechSemanticConfig{
+                SilenceDurationMs: Agora.Int(320),
+                MaxWaitMs:         Agora.Int(3000),
+            },
+        },
+    },
+})
+// ... continue with .CreateSession() ...
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```bash
+curl --request post \
+--url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/join \
+--header 'Authorization: Basic <your_base64_encoded_credentials>' \
+--data '
+{
+  "name": "unique_name",
+  "properties": {
+    "channel": "channel_name",
+    "token": "token",
+    "agent_rtc_uid": "1001",
+    "remote_rtc_uids": ["1002"],
+    "turn_detection": {
+      "mode": "default",
+      "config": {
+        "speech_threshold": 0.5,
+        "start_of_speech": {
+          "mode": "vad",
+          "vad_config": {
+            "interrupt_duration_ms": 160,
+            "speaking_interrupt_duration_ms": 320,
+            "prefix_padding_ms": 800
+          }
+        },
+        "end_of_speech": {
+          "mode": "semantic",
+          "semantic_config": {
+            "silence_duration_ms": 320,
+            "max_wait_ms": 3000
+          }
+        }
+      }
+    },
+    "llm": {
+      "url": "https://api.openai.com/v1/chat/completions",
+      "api_key": "",
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are a helpful assistant."
+        }
+      ],
+      "params": {
+        "model": "gpt-4o-mini"
+      }
+    },
+    "tts": {
+      "vendor": "microsoft",
+      "params": {
+        "key": "",
+        "region": "eastus",
+        "voice_name": "en-US-AndrewMultilingualNeural"
+      }
+    },
+    "asr": {
+      "language": "en-US"
+    }
+  }
+}'
+```
+
+If the request succeeds, the API returns a `200` status code and a response body like the following:
+
+```json
+{
+  "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
+  "create_ts": 1737111452,
+  "status": "RUNNING"
+}
+```
+
+</TabsContent>
+</Tabs>
+
+## Manual interruption
+
+Conversational AI Engine supports actively triggering an interruption by calling RESTful APIs or client component APIs. This allows users to interrupt the agent through a button click or a specific command.
+
+### Server-side interruption
+
+Use the [Interrupt agent](/en/api-reference/api-ref/conversational-ai/interrupt) API to manually initiate an interruption request.
+
+<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+</TabsList>
+
+<TabsContent value="python">
+
+```python
+session.interrupt()
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```typescript
+await session.interrupt();
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+if err := session.Interrupt(ctx); err != nil {
+    log.Fatal(err)
+}
+```
+
+</TabsContent>
+
+<TabsContent value="rest-api">
+
+```bash
+curl --request post \
+--url https://api.agora.io/api/conversational-ai-agent/v2/projects/:appid/agents/:agentId/interrupt \
+--header 'Authorization: Basic <credentials>' \
+--data '{}'
+```
+
+If the request is successful, the API returns a 200 status code and the following response body:
+
+```json
+{
+  "agent_id": "1NT29XxxxxxxxxELWEHC8OS",
+  "channel": "test_channel",
+  "start_ts": 1744877089
+}
+```
+
+</TabsContent>
+</Tabs>
+
+### Call the client toolkit API
+
+Agora provides a set of flexible, scalable and standardized client components for its conversational AI engine. These components support iOS, Android, and Web platforms and encapsulate scenario-based APIs. You can use them to integrate Agora Real-Time Communication (RTC) and Signaling capabilities, enabling the following features:
+
+- Interrupt the agent
+- Display real-time transcript
+- Receive event notifications
+- Optimize audio (Android and iOS only)
+
+Before you begin, make sure you:
+
+- Integrate RTC SDK v4.5.1 or later and follow the [Quickstart](/en/realtime-media/rtc/get-started-sdk) guide to implement basic real-time audio and video features.
+- Enable Signaling for your project in the Agora Console and follow the [Signaling Quickstart](/en/realtime-media/rtm/quickstart) to implement real-time messaging.
+- Implement the basic logic to communicate with a conversational AI agent.
+- Ensure that the RTC engine instance is initialized and the app is logged in to Signaling. The toolkit does not handle initialization, lifecycle management, authentication, or login for RTC SDK or Signaling.
+
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+1. Add the toolkit to your project using Maven or source code. See [Install the Android toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#installation).
+2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
+
+   ```kotlin
+   // Create a configuration object for the RTC and RTM instances
+   val config = ConversationalAIAPIConfig(
+       rtcEngine = rtcEngine,
+       rtmClient = rtmClient,
+       renderMode = TranscriptRenderMode.Word,
+       enableLog = true,
+       enableRenderModeFallback = true
+   )
+
+   // Create the component instance
+   val api = ConversationalAIAPIImpl(config)
+   ```
+
+3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
+
+   - `advanced_features.enable_rtm: true`: Start Signaling (Required)
+   - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
+   - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
+   - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
+
+   After the call is successful, the agent joins the specified RTC channel and the user can start interacting with the agent.
+
+4. Call the `interrupt` method to interrupt the agent.
+
+   ```kotlin
+   api.interrupt("agentId") { error -> /* ... */ }
+   ```
+
+5. When the agent interaction ends, destroy the component instance to release all resources.
+
+   ```kotlin
+   api.destroy()
+   ```
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+1. Add the toolkit to your project using CocoaPods, Swift Package Manager, or source code. See [Install the iOS toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#installation).
+2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
+
+   ```swift
+   // Create a configuration object for the RTC and RTM instances
+   let config = ConversationalAIAPIConfig(
+       rtcEngine: rtcEngine,
+       rtmEngine: rtmEngine,
+       renderMode: .words,
+       enableLog: true,
+       enableRenderModeFallback: true
+   )
+
+   // Create the component instance
+   convoAIAPI = ConversationalAIAPIImpl(config: config)
+   ```
+
+3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
+
+   - `advanced_features.enable_rtm: true`: Start Signaling (Required)
+   - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
+   - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
+   - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
+
+   After the call is successful, the agent joins the specified RTC channel and the user can start interacting with the agent.
+
+4. Call the `interrupt` method to interrupt the agent.
+
+   ```swift
+   convoAIAPI.interrupt(agentUserId: "\(agentUid)") { error in
+       if let error = error {
+           print("Interruption failed: \(error.message)")
+       } else {
+           print("Interruption succeeded")
+       }
+   }
+   ```
+
+5. When the agent interaction ends, destroy the component instance to release all resources.
+
+   ```swift
+   convoAIAPI.destroy()
+   ```
+
+</TabsContent>
+
+<TabsContent value="web">
+
+1. Add the toolkit to your project using a package manager or source code. See [Install the Web toolkit](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#installation).
+2. Create a configuration object for the RTC engine and Signaling client instances, then use it to initialize the component instance.
+
+   ```ts
+   // Create a configuration object for the RTC and RTM instances
+   const config: IConversationalAIAPIConfig = {
+     rtcEngine,
+     rtmEngine,
+     renderMode: ETranscriptHelperMode.WORD,
+     enableLog: true,
+     enableRenderModeFallback: true,
+   }
+
+   // Initialize the component instance
+   const conversationalAIAPI = await ConversationalAIAPI.init(config)
+   ```
+
+3. Call [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join) using the following parameter settings:
+
+   - `advanced_features.enable_rtm: true`: Start Signaling (Required)
+   - `parameters.data_channel: "rtm"`: Enable the RTM data transmission channel (Required)
+   - `parameters.enable_metrics: true`: Receive agent performance data (Enabled on demand)
+   - `parameters.enable_error_message: true`: Receive agent error events (Enable on demand)
+
+   After the call is successful, the agent joins the specified RTC channel and the user can start interacting with the agent.
+
+4. Call the `interrupt` method to interrupt the agent.
+
+   ```ts
+   await conversationalAIAPI.interrupt(`${agent_rtc_uid}`)
+   ```
+
+5. When the agent interaction ends, destroy the component instance to release all resources.
+
+   ```ts
+   conversationalAIAPI.destroy()
+   ```
+</TabsContent>
+</Tabs>
+
+## Reference
+
+### Sample project
+
+Agora provides a [sample project](https://github.com/AgoraIO-Community/Conversational-AI-Demo/) for your reference. Download or view the source code for a complete example.
+
+### API reference
+
+#### RESTful API
+
+- [Start a conversational AI Agent](/en/api-reference/api-ref/conversational-ai/join)
+- [Interrupt the Agent](/en/api-reference/api-ref/conversational-ai/interrupt)
+
+#### Toolkit
+
+<Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+- [`interrupt`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#interrupt)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/android#destroy)
+
+</TabsContent>
+
+<TabsContent value="ios">
+
+- [`interrupt`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#interrupt)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios#destroy)
+
+</TabsContent>
+
+<TabsContent value="web">
+
+- [`interrupt`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#interrupt)
+- [`destroy`](/en/api-reference/api-ref/conversational-ai/client-toolkit/web#destroy)
+
+</TabsContent>
+</Tabs>

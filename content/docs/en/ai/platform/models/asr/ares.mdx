@@ -1,0 +1,48 @@
+---
+title: ARES
+description: >
+ Use ARES for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/ares.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Adaptive Recognition Engine for Speech (ARES) provides built-in real-time speech-to-text, offering seamless integration with low latency and reliable performance for conversational AI applications.
+
+## Sample configuration
+
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). ARES is available in managed mode only. Agora provides ARES, and you don't need a provider account or API key.
+
+Set `credential.mode` to `managed`. For details, see [Use managed mode](/en/ai/platform/build/managed-mode).
+
+```json
+"asr": {
+  "credential": { "mode": "managed" },
+  "vendor": "ares",
+  "language": "en-US",
+  "params": {
+    "keywords": ["Agora", "Conversational AI", "RTC"]
+  }
+}
+```
+
+{/* TODO(platform-confirm): Confirm that ARES is available in the Platform, and that `keywords` belongs in `params`. In the Voice Agent API it's a top-level `asr` field, and the Platform `asr` block has no `keywords` field. */}
+
+## Key parameters
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `ares`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ How the agent authenticates with ARES. Set `mode` to `managed`.
+ </Parameter>
+ <Parameter name="language" type="string" required={true}>
+  The BCP-47 language tag identifying the primary language used for agent interaction.
+  See [Supported languages](/en/realtime-media/speech-to-text/reference/supported-languages#real-time-transcription) for the complete list.
+ </Parameter>
+ <Parameter name="params" type="object" required={false}>
+  <Parameter name="keywords" type="array[string]" required={false}>
+  Keywords used to improve ASR recognition accuracy for specific terms, such as brand names, product names, or industry jargon. Supports up to 128 keywords. See [Configure ASR keywords](/en/ai/platform/build/shape-the-conversation/asr-keywords) for details.
+  </Parameter>
+ </Parameter>
+</ParameterList>

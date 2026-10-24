@@ -1,0 +1,109 @@
+---
+analyticsPageType: task-guide
+title: Import phone numbers
+description: Import a phone number and its SIP trunk from your carrier, and use it for your agents' phone calls.
+---
+
+{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-24, pending review. Written from the launch contract. Not verified on staging: Create Number returned 503 on 2026-10-20 and wasn't retried. */}
+
+To let your agents make and receive phone calls, import the phone numbers your carrier assigned to you. Each number connects to the phone network through your SIP trunk. Importing a number doesn't purchase one.
+
+## Understand the tech
+
+After you import a number, you can use it in both directions:
+
+- **Inbound calls**: When someone calls the number, the Platform starts a session with the routed agent, and the agent answers the call. For details, see [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
+- **Outbound calls**: Sessions and campaigns use the number as their caller ID. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- An Agora project and REST API credentials for the Platform. For details, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+- A phone number from a carrier that supports SIP trunking, in E.164 format, for example `+14155550100`.
+- Your SIP trunk's hostname, transport protocol, username, and password.
+
+## Store your SIP password in a secret set
+
+The SIP password is a secret. Store it in a secret set, and refer to it when you import the number. For example, store it as `sip_password` in the `support-prod` set. For details, see [Store your keys in a secret set](/en/ai/platform/build/use-your-own-keys#store-your-keys-in-a-secret-set).
+
+## Import a number
+
+Send a request to [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) with the number and its SIP trunk. To have an agent answer calls to the number, also add `inbound`, as in the following example. For details, see [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --header 'Idempotency-Key: <your_unique_key>' \
+  --data '
+{
+  "number": "+14155550100",
+  "description": "Customer support line",
+  "sip_trunk": {
+    "name": "support-line",
+    "hostname": "acme.pstn.example.com",
+    "transport": "tls",
+    "auth": {
+      "username": "acme",
+      "password": "$secrets.support-prod.sip_password"
+    }
+  },
+  "inbound": {
+    "agent": "agent_k3n9x2"
+  }
+}'
+```
+
+In `sip_trunk`, set the following fields:
+
+| Field | Description |
+|---|---|
+| `hostname` | Required. Your carrier's SIP hostname, without a scheme or port, for example `acme.pstn.example.com`. |
+| `transport` | The transport protocol: `tls`, `tcp`, or `udp`. The default is `tls`. |
+| `port` | The SIP signaling port. The default is `5061` for `tls`, and `5060` for `udp` and `tcp`. |
+| `auth` | Your SIP username, and your SIP password as a `$secrets.<set>.<key>` reference. The API never returns them. |
+| `allowed_ips` | The CIDR ranges allowed to send inbound SIP traffic, for example `54.172.60.0/23`. Omit it to accept your carrier's published ranges. |
+| `name` | A name that helps you identify the carrier connection. |
+
+{/* TODO(platform-confirm): Staging rejected `allowed_ips` and secret-reference SIP passwords with NotImplemented on 2026-10-10. The launch contract lists both. Confirm the launch build, and verify this example end to end. */}
+
+If the request is successful, the response contains the number's ID and its configuration. The `auth` credentials aren't returned.
+
+```json
+// 201 Created
+{
+  "number_id": "num_2v9c4q",
+  "number": "+14155550100",
+  "description": "Customer support line",
+  "sip_trunk": {
+    "name": "support-line",
+    "hostname": "acme.pstn.example.com",
+    "port": 5061,
+    "transport": "tls"
+  },
+  "inbound": {
+    "agent": "agent_k3n9x2"
+  },
+  "create_ts": 1786543331
+}
+```
+
+Store the `number_id`. You use it to place outbound calls from the number and to update it. You can't change the phone number itself. To use a different number, import it.
+
+## Reference
+
+For more information, see the following pages:
+
+- [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls)
+- [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns)
+- [Use your own provider keys](/en/ai/platform/build/use-your-own-keys)
+
+### API reference
+
+- [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number)
+- [Retrieve a phone number](/en/api-reference/api-ref/conversational-ai/platform/retrieve-number)
+- [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number)
+- [List phone numbers](/en/api-reference/api-ref/conversational-ai/platform/list-numbers)
+- [Delete a phone number](/en/api-reference/api-ref/conversational-ai/platform/delete-number)

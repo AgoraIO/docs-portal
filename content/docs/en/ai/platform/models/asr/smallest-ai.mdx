@@ -1,0 +1,134 @@
+---
+title: Smallest AI
+description: >
+ Use Smallest AI for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/smallest-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Smallest AI provides real-time streaming transcription through its Pulse model. Use it as the ASR model in a cascading pipeline with any supported LLM and TTS vendor.
+
+## Sample configuration
+
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Smallest AI supports BYOK only. It isn't available in managed mode.
+
+Store your Smallest AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `smallestai` in the `support-prod` set. Only `credential` and `vendor` are required:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.smallestai"
+  },
+  "vendor": "smallestai",
+  "language": "zh",
+  "url": "wss://api.us.smallest.ai/waves/v1/stt/live",
+  "params": {
+    "sample_rate": 16000,
+    "encoding": "linear16",
+    "word_timestamps": "true",
+    "sentence_timestamps": "true",
+    "diarize": "true",
+    "vad_events": "true",
+    "endpointing": "true",
+    "eou_timeout_ms": 480,
+    "format": "true",
+    "finalize_on_words": "true",
+    "max_words": "100",
+    "punctuate": "true",
+    "capitalize": "true",
+    "itn_normalize": "true",
+    "full_transcript": "true",
+    "keywords": "Codex:2,Smallest AI:2",
+    "redact_pii": "false",
+    "redact_pci": "false"
+  }
+}
+```
+
+:::info[Info]
+Smallest AI expects its boolean options as the strings `"true"` and `"false"`, as shown in the example.
+:::
+
+## Key parameters
+
+<ParameterList title="asr" required={true}>
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `smallestai`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ How the agent authenticates with Smallest AI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
+ </Parameter>
+ <Parameter name="language" type="string" required={false}>
+  The language code for speech recognition, for example, `zh`.
+ </Parameter>
+ <Parameter name="url" type="string" required={false}>
+  The Smallest AI streaming ASR WebSocket endpoint, for example, `wss://api.us.smallest.ai/waves/v1/stt/live`. Omit it to use the default endpoint.
+ </Parameter>
+ <Parameter name="params" type="object" required={false}>
+  <Parameter name="sample_rate" type="integer" required={false}>
+   Input audio sample rate in Hz. Defaults to `16000`.
+  </Parameter>
+  <Parameter name="encoding" type="string" required={false}>
+   Input audio encoding. Defaults to `linear16`.
+  </Parameter>
+  <Parameter name="word_timestamps" type="string" required={false}>
+   Whether to include word-level timestamps in the transcription results.
+  </Parameter>
+  <Parameter name="sentence_timestamps" type="string" required={false}>
+   Whether to include sentence-level timestamps in the transcription results.
+  </Parameter>
+  <Parameter name="diarize" type="string" required={false}>
+   Whether to enable speaker diarization. Speaker labels are emitted on final transcription results.
+  </Parameter>
+  <Parameter name="vad_events" type="string" required={false}>
+   Whether to emit voice activity detection events.
+  </Parameter>
+  <Parameter name="endpointing" type="string" required={false}>
+   Whether to enable automatic end-of-utterance detection.
+  </Parameter>
+  <Parameter name="eou_timeout_ms" type="integer" required={false}>
+   End-of-utterance timeout in milliseconds. For example, `480`.
+  </Parameter>
+  <Parameter name="format" type="string" required={false}>
+   Whether to enable Smallest AI's transcript formatting. Smallest AI defines the formatting applied.
+  </Parameter>
+  <Parameter name="finalize_on_words" type="string" required={false}>
+   Whether to finalize transcription results based on word count, together with `max_words`.
+  </Parameter>
+  <Parameter name="max_words" type="string" required={false}>
+   Maximum number of words per transcription result, passed as a string. For example, `"100"`.
+  </Parameter>
+  <Parameter name="punctuate" type="string" required={false}>
+   Whether to add punctuation to transcription results.
+  </Parameter>
+  <Parameter name="capitalize" type="string" required={false}>
+   Whether to apply capitalization to transcription results.
+  </Parameter>
+  <Parameter name="itn_normalize" type="string" required={false}>
+   Whether to apply inverse text normalization, which converts spoken forms such as numbers and dates into written form. Smallest AI applies it only to finalized transcripts, before redaction.
+  </Parameter>
+  <Parameter name="full_transcript" type="string" required={false}>
+   Whether to return the full accumulated transcript.
+  </Parameter>
+  <Parameter name="keywords" type="string" required={false}>
+   Keyword boosts that improve recognition accuracy for specific terms, as a comma-separated list in `keyword:weight` format. For example, `Codex:2,Smallest AI:2`.
+  </Parameter>
+  <Parameter name="redact_pii" type="string" required={false}>
+   Whether to redact personally identifiable information from transcription results.
+  </Parameter>
+  <Parameter name="redact_pci" type="string" required={false}>
+   Whether to redact payment card information from transcription results.
+  </Parameter>
+ </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Smallest AI without validation. For a full list of supported options, refer to the [Smallest AI documentation](https://docs.smallest.ai/models/documentation/speech-to-text-pulse/overview).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

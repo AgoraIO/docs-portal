@@ -1,0 +1,58 @@
+---
+title: Typecast
+description: >
+ Use Typecast for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/typecast.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Typecast provides text-to-speech (TTS) with expressive, natural-sounding voices.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Typecast supports BYOK only. It isn't available in managed mode.
+
+Store your Typecast API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `typecast` in the `support-prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.typecast"
+  },
+  "vendor": "typecast",
+  "params": {
+    "voice_id": "tc_60e5426de8b95f1d3000d7b5",
+    "model": "ssfm-v30"
+  }
+}
+```
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `typecast`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Typecast API key.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="voice_id" type="string" required={true}>
+      The Typecast voice identifier to use, for example `tc_60e5426de8b95f1d3000d7b5`.
+    </Parameter>
+    <Parameter name="model" type="string" required={true}>
+      The Typecast TTS model to use, for example `ssfm-v30`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Typecast without validation. For a full list of supported options, refer to the [Typecast documentation](https://typecast.ai/docs/api-reference/text-to-speech/text-to-speech).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

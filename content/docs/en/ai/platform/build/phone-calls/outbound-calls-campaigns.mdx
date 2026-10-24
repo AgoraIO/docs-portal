@@ -1,0 +1,250 @@
+---
+analyticsPageType: task-guide
+title: Make outbound calls and run campaigns
+description: Have an agent call a phone number, or call a list of contacts on a schedule with a campaign.
+---
+
+{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-24, pending review. Written from the launch contract. Not verified on staging: no phone number could be created (Create Number returned 503 on 2026-10-20). */}
+
+Your agent can call people from a phone number in your project. To place a single call, start a session that dials the number. To call a list of contacts, create a campaign that dials each contact on a schedule you set.
+
+## Understand the tech
+
+An outbound call is a session that uses `telephony` transport instead of an RTC channel. The Platform dials the number from your phone number, and the agent talks to whoever answers. The session ends when the call ends, or when you stop it.
+
+A campaign starts these sessions for you. You give it an agent, the number to call from, and a list of contacts. The campaign dials each contact as a separate session, within its schedule and pacing limits, and retries contacts it can't reach.
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- An agent in your project. For details, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
+- A phone number in your project. For details, see [Import phone numbers](/en/ai/platform/build/phone-calls/import-phone-numbers).
+
+## Make an outbound call
+
+Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) with `telephony` transport. In `transport`, set `from` to your number's ID and `to` to the number to call, in E.164 format. In `values`, pass the values for the agent's variables, as for any session.
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_id": "agent_k3n9x2",
+  "values": {
+    "customer_name": "Ada"
+  },
+  "transport": {
+    "type": "telephony",
+    "from": "num_2v9c4q",
+    "to": "+14155550123",
+    "call_policy": {
+      "max_ring_duration_ms": 30000,
+      "max_call_duration_seconds": 600,
+      "voicemail": {
+        "mode": "hangup"
+      }
+    }
+  }
+}'
+```
+
+The response contains the session ID and its status, as for an RTC session. A session status of `RUNNING` doesn't mean that the call was answered. To end the call, [stop the session](/en/ai/platform/get-started/start-stop-agent#stop-the-session).
+
+{/* TODO(platform-confirm): Staging rejected `call_policy.voicemail` with NotImplemented on 2026-10-14. The launch contract includes it. Also confirm how developers can tell whether a call was answered (for example a telephony notification event), and add it here. */}
+
+### Set call limits and behavior
+
+In `call_policy`, set limits and behavior for the call. If you omit a limit, it doesn't apply.
+
+| Field | Description |
+|---|---|
+| `max_ring_duration_ms` | The maximum time in milliseconds from starting the dial until the call is answered. If nobody answers in time, the dial attempt ends. |
+| `max_call_duration_seconds` | The maximum length of the call in seconds, from when it's answered. The session's `lifecycle` limits can end the call earlier. |
+| `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
+| `voicemail` | What the agent does when it reaches voicemail: `hangup` ends the call, and `continue` keeps it going. |
+| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
+| `transfer` | Lets the agent transfer the call to a person at `phone_number`. The agent decides when to transfer based on `description`, and then leaves the call. |
+
+## Run a campaign
+
+Send a request to [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign) with the agent, the number to call from, the contacts, and a schedule. For each contact, pass the phone number and the values for the agent's variables.
+
+The following example calls customers on weekday mornings and afternoons in New York time for two weeks:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --header 'Idempotency-Key: <your_unique_key>' \
+  --data '
+{
+  "name": "november-appointments",
+  "agent_id": "agent_k3n9x2",
+  "transport": {
+    "type": "telephony",
+    "from": "num_2v9c4q",
+    "call_policy": {
+      "max_ring_duration_ms": 30000,
+      "voicemail": {
+        "mode": "hangup"
+      }
+    }
+  },
+  "contacts": [
+    {
+      "phone": "+12025550123",
+      "values": { "customer_name": "Ava", "plan": "pro" }
+    },
+    {
+      "phone": "+12025550124",
+      "values": { "customer_name": "Ben", "plan": "basic" }
+    }
+  ],
+  "schedule": {
+    "mode": "scheduled",
+    "timezone": "America/New_York",
+    "start": "2026-11-02T09:00",
+    "end": "2026-11-13T17:00",
+    "days": [
+      { "weekday": "mon", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "tue", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "wed", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "thu", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] },
+      { "weekday": "fri", "ranges": [{ "start": "09:00", "end": "12:00" }, { "start": "13:00", "end": "17:00" }] }
+    ]
+  },
+  "pacing": {
+    "max_concurrent": 10,
+    "max_attempts": 3,
+    "retry_backoff_ms": 600000
+  }
+}'
+```
+
+You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
+
+If the request is successful, the response contains the campaign, including its ID and status:
+
+```json
+// 201 Created
+{
+  "campaign_id": "camp_7r2n9k",
+  "name": "november-appointments",
+  "status": "scheduled",
+  "agent_id": "agent_k3n9x2",
+  "transport": {
+    "type": "telephony",
+    "from": ["num_2v9c4q"],
+    "call_policy": {
+      "max_ring_duration_ms": 30000,
+      "voicemail": {
+        "mode": "hangup"
+      }
+    }
+  },
+  "lifecycle": {
+    "idle_timeout_ms": 30000,
+    "max_duration_ms": 259200000,
+    "graceful_stop": {
+      "enabled": false,
+      "timeout_ms": 30000
+    }
+  },
+  "schedule": { ... },  // The schedule you set in the request.
+  "counts": {
+    "contacts": 2,
+    "pending": 2,
+    "calling": 0,
+    "completed": 0,
+    "failed": 0,
+    "canceled": 0
+  },
+  "create_ts": 1787673602,
+  "start_ts": null,
+  "complete_ts": null,
+  "failure": null
+}
+```
+
+The response returns `transport.from` as a list, and fills in the default `lifecycle` values for the settings you didn't pass. Store the `campaign_id`. You use it to check and control the campaign.
+
+### Set the schedule
+
+In `schedule`, set `mode` to one of the following:
+
+- `immediate`: The campaign starts dialing as soon as you create it. Don't pass `start` or `end`.
+- `scheduled`: The campaign dials from `start` until `end`. Pass both as local dates and times in `YYYY-MM-DDTHH:MM` format, and set `timezone` to an IANA time zone, such as `America/New_York`.
+
+To limit dialing to certain hours, add `days`. For each weekday, pass up to 10 time ranges in 24-hour `HH:MM` format. Outside these hours, no new calls start, and retries wait for the next window. A day you don't list has no dialing. If you omit `days`, the campaign dials at any time between `start` and `end`.
+
+### Set the pacing
+
+In `pacing`, control how fast the campaign dials and how often it retries:
+
+| Field | Description |
+|---|---|
+| `max_concurrent` | The maximum number of calls in progress at the same time. The default is `10`. |
+| `max_calls_per_second` | The maximum number of new dials in any one-second window. Omit it to dial as fast as `max_concurrent` and your project's carrier limits allow. |
+| `max_attempts` | The number of attempts for each contact before it's marked `failed`. The default is `3`. |
+| `retry_backoff_ms` | How long in milliseconds to wait between attempts to the same contact. The default is `600000` (10 minutes). |
+
+## Monitor and control a campaign
+
+To check a campaign's progress, send a request to [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign). The response contains its `status` and `counts`, the number of contacts that are pending, calling, completed, failed, or canceled.
+
+```bash
+curl --request GET \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id> \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+A campaign has one of the following statuses:
+
+| Status | Description |
+|---|---|
+| `scheduled` | The campaign is waiting for its start time. |
+| `running` | The campaign is dialing, or can dial during its schedule. |
+| `paused` | You paused the campaign. |
+| `completed` | The campaign has finished. |
+| `canceled` | You canceled the campaign. |
+| `failed` | The campaign failed. The details are in `failure`. |
+
+To control a running campaign, send one of the following requests:
+
+- [Pause a campaign](/en/api-reference/api-ref/conversational-ai/platform/pause-campaign): Stops new calls. Calls in progress continue.
+- [Resume a campaign](/en/api-reference/api-ref/conversational-ai/platform/resume-campaign): Continues dialing a paused campaign.
+- [Cancel a campaign](/en/api-reference/api-ref/conversational-ai/platform/cancel-campaign): Ends the campaign permanently. Contacts that haven't been called change to `canceled`, and you can't resume the campaign.
+
+For example, to pause a campaign:
+
+```bash
+curl --request POST \
+  --url 'https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id>:pause' \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+{/* TODO(platform-confirm): Confirm whether canceling a campaign hangs up calls in progress. */}
+
+To change a campaign, send a request to [Update a campaign](/en/api-reference/api-ref/conversational-ai/platform/update-campaign). Before the campaign starts dialing, you can change `pacing`, `schedule`, `lifecycle`, and `transport.call_policy`. After it starts, you can change only `pacing`.
+
+## Reference
+
+For more information, see the following pages:
+
+- [Import phone numbers](/en/ai/platform/build/phone-calls/import-phone-numbers)
+- [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls)
+- [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations)
+
+### API reference
+
+- [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session)
+- [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign)
+- [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign)
+- [Update a campaign](/en/api-reference/api-ref/conversational-ai/platform/update-campaign)
+- [Pause a campaign](/en/api-reference/api-ref/conversational-ai/platform/pause-campaign)
+- [Resume a campaign](/en/api-reference/api-ref/conversational-ai/platform/resume-campaign)
+- [Cancel a campaign](/en/api-reference/api-ref/conversational-ai/platform/cancel-campaign)

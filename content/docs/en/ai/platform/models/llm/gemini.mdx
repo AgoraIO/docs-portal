@@ -1,0 +1,63 @@
+---
+title: Google Gemini
+description: >
+  Use Google Gemini as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/gemini.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Google Gemini provides advanced multimodal AI capabilities with fast performance and efficient processing for conversational AI applications.
+
+## Sample configuration
+
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google Gemini supports BYOK only. It isn't available in managed mode.
+
+Store your Gemini API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Don't put the key in the `url` query string. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `gemini` in the `support-prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.gemini"
+  },
+  "vendor": "gemini",
+  "style": "gemini",
+  "model": "gemini-3.6-flash",
+  "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:streamGenerateContent?alt=sse",
+  "max_history": 32,
+  "failure_message": "Hold on a second."
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+{/* TODO(platform-confirm): Confirm the `vendor` value for Google Gemini (`gemini` is assumed), and whether `url` is required. The Voice Agent API passes the key in the `url` query string (`&key=<api_key>`). Confirm that the Platform sends `credential.api_key` to Gemini without it. Also confirm where `ignore_empty` goes. It isn't a block field in the Platform spec. This page lists it in `params`. */}
+
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `gemini`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Gemini API key. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>
+    Set to `gemini` to use Gemini's message format.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Refer to [Gemini models](https://ai.google.dev/gemini-api/docs/models/gemini) for available models.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    The Gemini `streamGenerateContent` endpoint for your model.
+  </Parameter>
+  <Parameter name="params" type="object" required={false}>
+    <Parameter name="ignore_empty" type="boolean" required={false}>
+      Set to `true` to handle empty responses appropriately.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Google Gemini API documentation](https://ai.google.dev/api/generate-content#method:-models.streamgeneratecontent).

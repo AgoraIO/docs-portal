@@ -1,0 +1,422 @@
+---
+title: RESTful authentication
+description: Set up RESTful authentication for Conversational AI Platform REST API requests.
+---
+
+{/* Adapted from the Voice Agent API authentication page in the v2.14 release (PR #1239). After v2.14 is published and main is pulled in, move the shared Basic HTTP authentication section into an include used by both pages. */}
+
+Conversational AI Platform REST API requests require authentication. Use one of the following methods:
+
+- **[Token authentication](#token-authentication) (recommended)**: Generate a token with your App ID and App Certificate, and set `Authorization: agora token=<your_token>`.
+- **[Basic HTTP authentication](#basic-http-authentication)**: Generate a Base64-encoded credential from your customer ID and customer secret, and set `Authorization: Basic <base64_credentials>`.
+
+:::info
+Implement authentication on the server to mitigate the risk of data leakage.
+:::
+
+## Token authentication
+
+Token authentication uses a token generated on your server with your App ID and App Certificate. To authenticate with a token, include the `Authorization` header in each request:
+
+```text
+Authorization: agora token=<your_token>
+```
+
+{/* TODO(platform-confirm): The internal CN authentication draft shows the token in quotes (agora token="<token>"). Confirm with engineering which form the API accepts, and align this page and the Voice Agent API page. */}
+
+### Prerequisites
+
+Before you begin, get the following values from [Agora Console](https://console.agora.io):
+
+- **App ID**: A unique string that identifies your project.
+- **App Certificate**: A string used to generate tokens.
+
+:::warning
+Never expose your App Certificate in client-side code or public repositories. Generate tokens on your server only.
+:::
+
+Tokens expire after a maximum of 86400 seconds.
+
+### Choose the token services
+
+A token grants access to one or more services. The services you need depend on where you use the token:
+
+- **`Authorization` header**: The token authenticates the REST API request. Every request needs this.
+- **`transport.token` in the request body**: The token lets the agent join the RTC channel. You pass it when you [start a session](start-session) or [start an ephemeral session](start-ephemeral-session) with an RTC transport, and when you renew it with [Update a session](update-session). Only a token that includes the RTC service with the join channel privilege works here.
+
+| Services | Authenticates REST requests | Lets the agent join the channel | How to generate |
+| --- | --- | --- | --- |
+| ConvoAI | Yes | No | [Build a token with specific services](#build-a-token-with-specific-services) |
+| ConvoAI + RTC | Yes | Yes | [Build a token with specific services](#build-a-token-with-specific-services) |
+| ConvoAI + RTC + RTM | Yes | Yes | [Build a ConvoAI token](#build-a-convoai-token) (recommended for RTC sessions) |
+
+A token with the ConvoAI service is enough for every request that doesn't join an RTC channel. These include:
+
+- Managing agents, secrets, phone numbers, and campaigns.
+- Listing, retrieving, and stopping sessions.
+- Sending session actions, such as Speak.
+- Starting telephony sessions.
+
+To start an RTC session, you can use the same token in both places, or generate a separate token for each. If you use separate tokens, put the REST authentication token in the `Authorization` header and the RTC token in `transport.token`.
+
+When the token includes the RTC service, the token parameters must match the session request:
+
+- `channelName` must match `transport.channel`.
+- The account or UID must match `transport.uid`.
+
+{/* TODO(platform-confirm): The Voice Agent API uses enable_string_uid to tell numeric and string UIDs apart when it checks the token. The Platform transport has no such field and always sends uid as a string. Confirm how the Platform handles string UIDs in tokens. */}
+
+### Use a temporary token for testing
+
+For testing, you can generate a temporary token in Agora Console. A temporary token is valid for 24 hours. For details, see [Credentials](/en/introduction/console-setup#credentials). When you start an RTC session, use the channel name you entered when you generated the token as `transport.channel` in your request.
+
+In production, generate tokens on your server using the token builder library.
+
+### Using the token builder library
+
+The [AgoraDynamicKey repository](https://github.com/AgoraIO/Tools/tree/master/DynamicKey/AgoraDynamicKey) provides open-source token generation libraries for multiple languages, including `ConvoAITokenBuilder` and the ConvoAI service.
+
+Install the token builder library for your language:
+
+```bash tab="Node.js"
+npm install agora-token
+```
+
+```bash tab="Golang"
+# Pins the latest commit on the feature/access-token2-convoai-stt-services branch
+go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src@b75635c32d30
+```
+
+```bash tab="Python"
+git clone --branch feature/access-token2-convoai-stt-services https://github.com/AgoraIO/Tools.git
+cd Tools/DynamicKey/AgoraDynamicKey/python3
+```
+
+#### Build a ConvoAI token
+
+`ConvoAITokenBuilder.buildToken` generates a token with the ConvoAI, RTC, and RTM services. Use it to start an RTC session, with the same token in the `Authorization` header and in `transport.token`:
+
+```js tab="Node.js"
+const { ConvoAITokenBuilder } = require('agora-token');
+
+const appId = '<your_app_id>';
+const appCertificate = '<your_app_certificate>';
+const channelName = '<your_channel_name>';
+const agentUid = '<your_agent_uid>';
+const tokenExpire = 86400; // Token lifetime, 24 hours, in seconds
+const privilegeExpire = 3600; // RTC and RTM privilege lifetime, 1 hour, in seconds
+
+const token = ConvoAITokenBuilder.buildToken(
+  appId,
+  appCertificate,
+  channelName,
+  agentUid,
+  tokenExpire,
+  privilegeExpire,
+);
+```
+
+```go tab="Golang"
+import "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/convoaitokenbuilder"
+
+const tokenExpire = 24 * 60 * 60 // Token lifetime, 24 hours, in seconds
+const privilegeExpire = 60 * 60 // RTC and RTM privilege lifetime, 1 hour, in seconds
+
+token, err := convoaitokenbuilder.BuildToken(
+	appID,
+	appCertificate,
+	channelName,
+	agentUID,
+	tokenExpire,
+	privilegeExpire,
+)
+if err != nil {
+	// Handle the error
+}
+```
+
+```python tab="Python"
+from src.convoai_token_builder import ConvoAITokenBuilder
+
+token_expire = 86400     # Token lifetime, 24 hours, in seconds
+privilege_expire = 3600  # RTC and RTM privilege lifetime, 1 hour, in seconds
+
+token = ConvoAITokenBuilder.build_token(
+    app_id, app_certificate, channel_name, agent_uid, token_expire, privilege_expire
+)
+```
+
+The privilege lifetime must not exceed the token lifetime. To set the RTC role or each RTC and RTM privilege separately, use `buildTokenWithPrivilege` (`BuildTokenWithPrivilege` in Go, `build_token_with_privilege` in Python). It also adds the ConvoAI service automatically.
+
+#### Build a token with specific services
+
+To control exactly which services a token includes, build it with the `AccessToken2` API. The following examples build a token with the ConvoAI service only. Use this token in the `Authorization` header for requests that don't join an RTC channel:
+
+```js tab="Node.js"
+const { AccessToken2, ServiceConvoAI } = require('agora-token/src/AccessToken2');
+
+const tokenExpire = 86400; // Token lifetime, 24 hours, in seconds
+
+const accessToken = new AccessToken2(appId, appCertificate, null, tokenExpire);
+accessToken.add_service(new ServiceConvoAI());
+const token = accessToken.build();
+```
+
+```go tab="Golang"
+import accesstoken "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/accesstoken2"
+
+const tokenExpire = 24 * 60 * 60 // Token lifetime, 24 hours, in seconds
+
+accessToken := accesstoken.NewAccessToken(appID, appCertificate, tokenExpire)
+accessToken.AddService(accesstoken.NewServiceConvoAI())
+token, err := accessToken.Build()
+```
+
+```python tab="Python"
+from src.AccessToken2 import AccessToken, ServiceConvoAI
+
+token_expire = 86400  # Token lifetime, 24 hours, in seconds
+
+access_token = AccessToken(app_id, app_certificate, expire=token_expire)
+access_token.add_service(ServiceConvoAI())
+token = access_token.build()
+```
+
+The following examples build a token with the ConvoAI and RTC services. You can use this token in the `Authorization` header and in `transport.token`. Each RTC privilege lifetime must not exceed the token lifetime:
+
+```js tab="Node.js"
+const { AccessToken2, ServiceConvoAI, ServiceRtc } = require('agora-token/src/AccessToken2');
+
+const tokenExpire = 86400; // Token lifetime, 24 hours, in seconds
+const privilegeExpire = 3600; // RTC privilege lifetime, 1 hour, in seconds
+
+const accessToken = new AccessToken2(appId, appCertificate, null, tokenExpire);
+
+const rtc = new ServiceRtc(channelName, agentUid);
+rtc.add_privilege(ServiceRtc.kPrivilegeJoinChannel, privilegeExpire);
+rtc.add_privilege(ServiceRtc.kPrivilegePublishAudioStream, privilegeExpire);
+rtc.add_privilege(ServiceRtc.kPrivilegePublishVideoStream, privilegeExpire);
+rtc.add_privilege(ServiceRtc.kPrivilegePublishDataStream, privilegeExpire);
+
+accessToken.add_service(rtc);
+accessToken.add_service(new ServiceConvoAI());
+const token = accessToken.build();
+```
+
+```go tab="Golang"
+import accesstoken "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/accesstoken2"
+
+const tokenExpire = 24 * 60 * 60 // Token lifetime, 24 hours, in seconds
+const privilegeExpire = 60 * 60 // RTC privilege lifetime, 1 hour, in seconds
+
+accessToken := accesstoken.NewAccessToken(appID, appCertificate, tokenExpire)
+
+rtc := accesstoken.NewServiceRtc(channelName, agentUID)
+rtc.AddPrivilege(accesstoken.PrivilegeJoinChannel, privilegeExpire)
+rtc.AddPrivilege(accesstoken.PrivilegePublishAudioStream, privilegeExpire)
+rtc.AddPrivilege(accesstoken.PrivilegePublishVideoStream, privilegeExpire)
+rtc.AddPrivilege(accesstoken.PrivilegePublishDataStream, privilegeExpire)
+
+accessToken.AddService(rtc)
+accessToken.AddService(accesstoken.NewServiceConvoAI())
+token, err := accessToken.Build()
+```
+
+```python tab="Python"
+from src.AccessToken2 import AccessToken, ServiceConvoAI, ServiceRtc
+
+token_expire = 86400     # Token lifetime, 24 hours, in seconds
+privilege_expire = 3600  # RTC privilege lifetime, 1 hour, in seconds
+
+access_token = AccessToken(app_id, app_certificate, expire=token_expire)
+
+rtc = ServiceRtc(channel_name, agent_uid)
+rtc.add_privilege(ServiceRtc.kPrivilegeJoinChannel, privilege_expire)
+rtc.add_privilege(ServiceRtc.kPrivilegePublishAudioStream, privilege_expire)
+rtc.add_privilege(ServiceRtc.kPrivilegePublishVideoStream, privilege_expire)
+rtc.add_privilege(ServiceRtc.kPrivilegePublishDataStream, privilege_expire)
+
+access_token.add_service(rtc)
+access_token.add_service(ServiceConvoAI())
+token = access_token.build()
+```
+
+### Send a request with a token
+
+The following example lists the agents in your project. It works with a token that has only the ConvoAI service, because it doesn't join an RTC channel:
+
+```bash
+curl --request GET \
+  --url 'https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents?limit=20' \
+  --header 'Authorization: agora token=<your_token>'
+```
+
+The following example starts an RTC session with a saved agent, using a token with the ConvoAI, RTC, and RTM services, such as one from [`ConvoAITokenBuilder.buildToken`](#build-a-convoai-token). It uses the same token in the `Authorization` header and in `transport.token`:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: agora token=<your_token>' \
+  --header 'Content-Type: application/json' \
+  --data '{
+    "agent_id": "<your_agent_id>",
+    "transport": {
+      "type": "rtc",
+      "channel": "<your_channel_name>",
+      "token": "<your_token>",
+      "uid": "1001",
+      "subscribe_uids": ["1002"]
+    },
+    "lifecycle": {
+      "idle_timeout_ms": 120000
+    }
+  }'
+```
+
+The token must be generated for `<your_channel_name>` and UID `1001`. To create an agent first, see [Create an agent](create-agent).
+
+## Basic HTTP authentication
+
+Basic HTTP authentication uses your Agora customer ID and customer secret. Generate a Base64-encoded credential from the `customer_id:customer_secret` string, then include it in the `Authorization` header:
+
+```text
+Authorization: Basic <base64_credentials>
+```
+
+<include cwd>content/includes/en/shared/console/restful-credentials.mdx</include>
+
+### Generate an authorization header using a third-party tool
+
+For testing and debugging, you can use a [third-party online tool](https://www.debugbear.com/basic-auth-header-generator) to quickly generate your Authorization header. Enter your Customer ID as the Username and your Customer Secret as the Password. Your generated header should look like this:
+
+```text
+Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=
+```
+
+### Generate an authorization header using code
+
+The following examples read your customer ID and customer secret from the `AGORA_CUSTOMER_KEY` and `AGORA_CUSTOMER_SECRET` environment variables, and print the value to use in the `Authorization` header:
+
+```java tab="Java"
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+
+public class BasicAuthHeader {
+
+    public static void main(String[] args) {
+        // Read your customer ID and customer secret from environment variables
+        String customerKey = System.getenv("AGORA_CUSTOMER_KEY");
+        String customerSecret = System.getenv("AGORA_CUSTOMER_SECRET");
+
+        // Join the customer ID and customer secret, then encode them with Base64
+        String plainCredentials = customerKey + ":" + customerSecret;
+        String base64Credentials = Base64.getEncoder()
+                .encodeToString(plainCredentials.getBytes(StandardCharsets.UTF_8));
+
+        // Create the Authorization header value
+        String authorizationHeader = "Basic " + base64Credentials;
+        System.out.println(authorizationHeader);
+    }
+}
+```
+
+```go tab="Golang"
+package main
+
+import (
+	"encoding/base64"
+	"fmt"
+	"os"
+)
+
+func main() {
+	// Read your customer ID and customer secret from environment variables
+	customerKey := os.Getenv("AGORA_CUSTOMER_KEY")
+	customerSecret := os.Getenv("AGORA_CUSTOMER_SECRET")
+
+	// Join the customer ID and customer secret, then encode them with Base64
+	plainCredentials := customerKey + ":" + customerSecret
+	base64Credentials := base64.StdEncoding.EncodeToString([]byte(plainCredentials))
+
+	// Create the Authorization header value
+	authorizationHeader := "Basic " + base64Credentials
+	fmt.Println(authorizationHeader)
+}
+```
+
+```php tab="PHP"
+<?php
+// Read your customer ID and customer secret from environment variables
+$customerKey = getenv("AGORA_CUSTOMER_KEY");
+$customerSecret = getenv("AGORA_CUSTOMER_SECRET");
+
+// Join the customer ID and customer secret, then encode them with Base64
+$plainCredentials = $customerKey . ":" . $customerSecret;
+$base64Credentials = base64_encode($plainCredentials);
+
+// Create the Authorization header value
+$authorizationHeader = "Basic " . $base64Credentials;
+echo $authorizationHeader . PHP_EOL;
+```
+
+```csharp tab="C#"
+using System;
+using System.Text;
+
+public class BasicAuthHeader
+{
+    public static void Main()
+    {
+        // Read your customer ID and customer secret from environment variables
+        string customerKey = Environment.GetEnvironmentVariable("AGORA_CUSTOMER_KEY");
+        string customerSecret = Environment.GetEnvironmentVariable("AGORA_CUSTOMER_SECRET");
+
+        // Join the customer ID and customer secret, then encode them with Base64
+        string plainCredentials = customerKey + ":" + customerSecret;
+        string base64Credentials = Convert.ToBase64String(Encoding.UTF8.GetBytes(plainCredentials));
+
+        // Create the Authorization header value
+        string authorizationHeader = "Basic " + base64Credentials;
+        Console.WriteLine(authorizationHeader);
+    }
+}
+```
+
+```js tab="Node.js"
+'use strict';
+
+// Read your customer ID and customer secret from environment variables
+const customerKey = process.env.AGORA_CUSTOMER_KEY;
+const customerSecret = process.env.AGORA_CUSTOMER_SECRET;
+
+// Join the customer ID and customer secret, then encode them with Base64
+const plainCredentials = customerKey + ':' + customerSecret;
+const base64Credentials = Buffer.from(plainCredentials).toString('base64');
+
+// Create the Authorization header value
+const authorizationHeader = 'Basic ' + base64Credentials;
+console.log(authorizationHeader);
+```
+
+```python tab="Python"
+import base64
+import os
+
+# Read your customer ID and customer secret from environment variables
+customer_key = os.environ["AGORA_CUSTOMER_KEY"]
+customer_secret = os.environ["AGORA_CUSTOMER_SECRET"]
+
+# Join the customer ID and customer secret, then encode them with Base64
+plain_credentials = customer_key + ":" + customer_secret
+base64_credentials = base64.b64encode(plain_credentials.encode("utf-8")).decode("utf-8")
+
+# Create the Authorization header value
+authorization_header = "Basic " + base64_credentials
+print(authorization_header)
+```
+
+## Related pages
+
+- [Conversational AI Platform REST API overview](index)
+- [Create an agent](create-agent)
+- [Start a session](start-session)
