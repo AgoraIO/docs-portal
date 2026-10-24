@@ -103,8 +103,7 @@ Store the `agent_id`. You use it to start every session that runs this agent.
 
 When a user joins a channel, send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) with the agent ID and the channel details. In `transport`, set:
 
-- `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead.
-    {/* TODO(platform-docs): Link `telephony` to the phone guide once it exists. */}
+- `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
 - `channel`: The channel the user joined.
 - `token`: The RTC token for the agent's UID.
 - `uid`: The UID the agent uses in the channel. It must be different from the user's UID.
