@@ -6,8 +6,6 @@ description: Bring your own key (BYOK) for ASR, LLM, and TTS. Store your provide
 
 {/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-23, pending review. The secret set flow wasn't verified on staging (project at its secret set quota). */}
 
-{/* TODO(platform-confirm): `<base_url>` is a placeholder for the Platform API base URL. Replace every occurrence once the public Preview endpoint is confirmed. */}
-
 To use your own provider accounts for ASR, LLM, or TTS, bring your own key (BYOK). You store each provider API key in a secret set in your project, and your agent refers to the key by name. The key never appears in the agent's configuration, and the API never returns it.
 
 ## Understand the tech
@@ -36,7 +34,7 @@ Set names and key names are case-sensitive, and can contain up to 64 letters, di
 
 ```bash
 curl --request POST \
-  --url <base_url>/v1/projects/<your_app_id>/secrets \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/secrets \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '
@@ -78,7 +76,7 @@ In the following example, the `llm` block uses the OpenAI key stored as `llm` in
 
 ```bash
 curl --request POST \
-  --url <base_url>/v1/projects/<your_app_id>/agents \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --header 'Idempotency-Key: <your_unique_key>' \
@@ -123,7 +121,7 @@ curl --request POST \
 
 If the request is successful, the response contains the agent ID and the saved configuration. In the response, each block's `credential` contains only `mode`. Neither the reference nor the key is returned.
 
-You then start sessions with the agent as usual. The session request doesn't change. For details, see [Start a session](/en/ai/platform/build/start-stop-agent#start-a-session).
+You then start sessions with the agent as usual. The session request doesn't change. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
 
 ## Rotate a key
 
@@ -131,7 +129,7 @@ To replace a key's value, send a request to [Set a secret key](/en/api-reference
 
 ```bash
 curl --request PUT \
-  --url <base_url>/v1/projects/<your_app_id>/secrets/support-prod/keys/llm \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/secrets/support-prod/keys/llm \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '
@@ -176,7 +174,7 @@ For all error reasons, see [Status codes](/en/api-reference/api-ref/conversation
 For more information, see the following pages:
 
 - [Use managed mode](/en/ai/platform/build/managed-mode)
-- [Create an agent and start a session](/en/ai/platform/build/start-stop-agent)
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
 
 ### API reference
 

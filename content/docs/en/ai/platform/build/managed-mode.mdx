@@ -5,8 +5,6 @@ description: Use ASR, LLM, and TTS models that Agora provides access to, without
 
 {/* PLATFORM-COPY: copied from content/docs/en/ai/build/managed-mode.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
 
-{/* TODO(platform-confirm): `<base_url>` is a placeholder for the Platform API base URL. Replace every occurrence once the public Preview endpoint is confirmed. */}
-
 Managed mode lets your agent use supported ASR, LLM, and TTS models without your own provider accounts or API keys. Agora provides access to the models. You choose the vendor and model to use for ASR, LLM, and TTS, or let the Platform select them. To use your own provider accounts instead, see [Use your own provider keys (BYOK)](/en/ai/platform/build/use-your-own-keys).
 
 ## Understand the tech
@@ -15,7 +13,7 @@ An agent's `pipeline` has an `asr`, `llm`, and `tts` block. To use managed mode 
 
 You choose the credential mode for each model. For example, an agent can use managed ASR and TTS with your own LLM key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-If you create an agent without a `pipeline`, the Platform selects managed ASR, LLM, and TTS models. For an example, see [Create an agent](/en/ai/platform/build/start-stop-agent#create-an-agent).
+If you create an agent without a `pipeline`, the Platform selects managed ASR, LLM, and TTS models. For an example, see [Create an agent](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
 ## Choose managed models
 
@@ -23,7 +21,7 @@ To choose the managed models, send a request to [Create an agent](/en/api-refere
 
 ```bash
 curl --request POST \
-  --url <base_url>/v1/projects/<your_app_id>/agents \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --header 'Idempotency-Key: <your_unique_key>' \
@@ -69,7 +67,7 @@ In this example:
 
 {/* TODO(platform-confirm): Staging required `voice_setting.speed` for managed MiniMax TTS on 2026-10-20. Confirm that it's still required at launch. */}
 
-You then start sessions with the agent as usual. For details, see [Start a session](/en/ai/platform/build/start-stop-agent#start-a-session).
+You then start sessions with the agent as usual. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
 
 ## Supported vendors and models
 
@@ -102,7 +100,7 @@ The following vendors and models are available in managed mode.
 For more information, see the following pages:
 
 - [Use your own provider keys](/en/ai/platform/build/use-your-own-keys)
-- [Create an agent and start a session](/en/ai/platform/build/start-stop-agent)
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
 - For the settings each vendor supports, see the vendor pages under Models, for example [Deepgram](/en/ai/platform/models/asr/deepgram), [OpenAI](/en/ai/platform/models/llm/openai), and [MiniMax](/en/ai/platform/models/tts/minimax).
 
 ### API reference

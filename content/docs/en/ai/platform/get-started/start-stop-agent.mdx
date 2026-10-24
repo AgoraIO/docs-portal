@@ -6,8 +6,6 @@ description: Define an agent in your project, then start and stop sessions that 
 
 {/* PLATFORM-COPY: copied from content/docs/en/ai/build/start-stop-agent.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. REST API only until the Platform SDKs ship. */}
 
-{/* TODO(platform-confirm): `<base_url>` is a placeholder for the Platform API base URL. Replace every occurrence once the public Preview endpoint is confirmed. */}
-
 On the Conversational AI Platform, you create an agent once and save it in your project. For each conversation, you start a session that runs the agent in an RTC channel, and you stop the session when the conversation ends. This page shows the REST API requests for each step. In a production environment, send these requests from your business server.
 
 ## Understand the tech
@@ -49,7 +47,7 @@ In the `Idempotency-Key` header, pass a unique value for each agent you create. 
 
 ```bash
 curl --request POST \
-  --url <base_url>/v1/projects/<your_app_id>/agents \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --header 'Idempotency-Key: <your_unique_key>' \
@@ -116,7 +114,7 @@ In `values`, pass a value for each required variable.
 
 ```bash
 curl --request POST \
-  --url <base_url>/v1/projects/<your_app_id>/sessions \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '
@@ -156,7 +154,7 @@ A session starts asynchronously. A successful response to Start a session confir
 
 ```bash
 curl --request GET \
-  --url <base_url>/v1/projects/<your_app_id>/sessions/<agent_session_id> \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id> \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
@@ -194,7 +192,7 @@ When the conversation ends, send a request to [Stop a session](/en/api-reference
 
 ```bash
 curl --request POST \
-  --url <base_url>/v1/projects/<your_app_id>/sessions/<agent_session_id>/stop \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id>/stop \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
@@ -215,7 +213,7 @@ To try a configuration before you save it, send a request to [Start an ephemeral
 
 ```bash
 curl --request POST \
-  --url <base_url>/v1/projects/<your_app_id>/sessions/ephemeral \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/ephemeral \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '
