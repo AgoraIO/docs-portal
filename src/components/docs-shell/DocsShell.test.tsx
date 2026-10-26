@@ -561,20 +561,29 @@ describe('DocsShell', () => {
     { activePath: '/zh-CN/api-reference/example', layoutMode: 'openapi' },
     { activePath: '/zh-CN/search', layoutMode: 'search' },
   ] as const)(
-    'links Chinese $layoutMode page $activePath to international docs',
+    'offers a site menu on Chinese $layoutMode page $activePath',
     async ({ activePath, layoutMode }) => {
       renderDocsShell({ locale: 'zh-CN', activePath, layoutMode }, activePath);
 
       const actions = await screen.findByTestId('docs-desktop-header-actions');
-      const link = within(actions).getByRole('link', {
-        name: /English Docs/,
+      const trigger = within(actions).getByRole('button', {
+        name: '切换站点 / Switch site',
       });
+      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+      trigger.focus();
+      fireEvent.keyDown(trigger, { code: 'Enter', key: 'Enter' });
+      const menu = await screen.findByRole('menu');
+      expect(
+        within(menu).getByRole('menuitem', { name: /简体中文/ }),
+      ).toHaveAttribute('aria-current', 'true');
+      const link = within(menu).getByRole('menuitem', { name: /English/ });
       expect(link).toHaveAttribute(
         'href',
         'https://docs.agora.io/en/introduction',
       );
       expect(link).toHaveAttribute('target', '_blank');
       expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(link).toHaveAttribute('hrefLang', 'en');
       expect(link).toHaveAccessibleName(/在新标签页打开/);
       expect(screen.getByTestId('legacy-docs-banner')).toHaveAttribute(
         'href',
@@ -590,51 +599,78 @@ describe('DocsShell', () => {
     );
     expect(screen.queryByTestId('legacy-docs-banner')).not.toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: /English Docs/ }),
+      screen.getByRole('button', { name: '切换站点 / Switch site' }),
     ).toBeInTheDocument();
 
     unmount();
     renderDocsShell({ locale: 'zh-CN' });
+    const trigger = await screen.findByRole('button', {
+      name: '切换站点 / Switch site',
+    });
+    fireEvent.keyDown(trigger, { code: 'Enter', key: 'Enter' });
     expect(
-      await screen.findByRole('link', { name: /English Docs/ }),
+      await screen.findByRole('menuitem', { name: /English/ }),
     ).toHaveAttribute('href', 'https://docs.agora.io/en/introduction');
     expect(screen.queryByTestId('legacy-docs-banner')).not.toBeInTheDocument();
   });
 
-  it('offers international docs near the start of the Chinese mobile menu', async () => {
+  it('opens international docs from the mobile tools and closes the navigation', async () => {
     renderDocsShell({ locale: 'zh-CN' });
     fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
     const sheet = await screen.findByRole('dialog');
-    const link = within(sheet).getByRole('link', {
-      name: /English Docs/,
+    const tools = within(sheet).getByTestId('docs-mobile-sidebar-tools');
+    const trigger = within(tools).getByRole('button', {
+      name: '切换站点 / Switch site',
     });
+    expect(
+      within(sheet).getByTestId('docs-mobile-sidebar-scroll'),
+    ).not.toContainElement(tools);
+    expect(
+      within(tools).getByRole('button', { name: '主题: 浅色' }),
+    ).toBeInTheDocument();
+    fireEvent.keyDown(trigger, { code: 'Enter', key: 'Enter' });
+    const menu = await screen.findByRole('menu');
+    const link = within(menu).getByRole('menuitem', { name: /English/ });
     expect(link).toHaveAttribute(
       'href',
       'https://docs.agora.io/en/introduction',
     );
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-    expect(
-      link.compareDocumentPosition(
-        within(sheet).getByTestId('docs-mobile-section-picker'),
-      ) & Node.DOCUMENT_POSITION_FOLLOWING,
-    ).toBeTruthy();
     fireEvent.click(link);
     await waitFor(() =>
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
     );
   });
 
-  it('does not add an international docs link to English desktop or mobile navigation', async () => {
+  it('closes the mobile site menu with Escape and restores focus without closing navigation', async () => {
+    renderDocsShell({ locale: 'zh-CN' });
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+    const sheet = await screen.findByRole('dialog');
+    const trigger = within(sheet).getByRole('button', {
+      name: '切换站点 / Switch site',
+    });
+    trigger.focus();
+    fireEvent.keyDown(trigger, { code: 'Enter', key: 'Enter' });
+    const menu = await screen.findByRole('menu');
+    fireEvent.keyDown(menu, { code: 'Escape', key: 'Escape' });
+    await waitFor(() => {
+      expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+      expect(trigger).toHaveFocus();
+    });
+    expect(sheet).toBeInTheDocument();
+  });
+
+  it('does not add a site menu to English desktop or mobile navigation', async () => {
     renderDocsShell();
     await screen.findByTestId('docs-desktop-header-actions');
     expect(
-      screen.queryByRole('link', { name: /English Docs/ }),
+      screen.queryByRole('button', { name: 'Switch site' }),
     ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
     const sheet = await screen.findByRole('dialog');
     expect(
-      within(sheet).queryByRole('link', { name: /English Docs/ }),
+      within(sheet).queryByRole('button', { name: 'Switch site' }),
     ).not.toBeInTheDocument();
   });
 
