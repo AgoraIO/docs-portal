@@ -77,6 +77,16 @@ export async function searchCnDocsPage(
   };
 }
 
+// A stable, publication-wide catalog: keyword matches and a previously selected
+// platform must not remove the user's next product/platform from the controls.
+export async function loadCnSearchCatalog(signal?: AbortSignal) {
+  const result = await searchCnDocsPage(
+    { q: '', type: 'all', page: 1 },
+    signal,
+  );
+  return result.facets;
+}
+
 // The current demo index contains Markdown source. Keep highlight tags while
 // removing authoring syntax from the cropped, text-only search preview.
 export function cleanSearchSnippet(value: string): string {

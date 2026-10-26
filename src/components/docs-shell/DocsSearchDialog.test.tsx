@@ -34,6 +34,11 @@ vi.mock('@/lib/search/cn-search-client', () => ({
   })),
 }));
 
+vi.mock('@/lib/search/cn-search-page', async (original) => ({
+  ...(await original<typeof import('@/lib/search/cn-search-page')>()),
+  loadCnSearchCatalog: vi.fn().mockResolvedValue({}),
+}));
+
 const loadPages = async () => [
   {
     description: 'Start here',
@@ -48,6 +53,7 @@ describe('DocsSearchDialog', () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', '');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', '');
     window.localStorage.clear();
+    window.sessionStorage.clear();
   });
 
   it('renders compact trigger variants and lets the mobile trigger navigate through the same dialog', async () => {
@@ -1085,6 +1091,206 @@ describe('DocsSearchDialog', () => {
     expect(loadPagesSpy).not.toHaveBeenCalled();
   });
 
+  it('keeps CN search text and published platform choices when reopening', async () => {
+    const router = renderCnSearch(vi.fn().mockResolvedValue([]));
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.click(await screen.findByRole('combobox', { name: '全部平台' }));
+    for (const name of ['小程序', 'C++', 'C#', 'Java', 'Swift']) {
+      expect(await screen.findByRole('option', { name })).toBeInTheDocument();
+    }
+    fireEvent.click(screen.getByRole('option', { name: 'C++' }));
+    const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
+    fireEvent.input(input, { target: { value: 'Token' } });
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    expect(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+    ).toHaveValue('Token');
+    expect(screen.getByRole('combobox', { name: /C\+\+/ })).toBeInTheDocument();
+  });
+
+  it.each([false, true])(
+    'submits CN Enter to full search regardless of whether results have arrived (%s)',
+    async (ready) => {
+      const result = {
+        id: 'join',
+        title: 'joinChannel',
+        content: 'joinChannel',
+        type: 'page' as const,
+        url: '/zh-CN/api-reference/rtc/android/channel#joinchannel-12',
+      };
+      const search = ready
+        ? vi.fn().mockResolvedValue([result])
+        : vi.fn().mockImplementation(() => new Promise(() => {}));
+      const router = renderCnSearch(search);
+      const navigate = vi.spyOn(router, 'navigate');
+      render(<RouterProvider router={router} />);
+      fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+      const input = await screen.findByPlaceholderText(
+        '搜索文档、API、指南...',
+      );
+      fireEvent.input(input, { target: { value: 'joinChannel' } });
+      await waitFor(() => expect(search).toHaveBeenCalled());
+      if (ready) await screen.findAllByText('joinChannel');
+      fireEvent.keyDown(input, { key: 'Enter' });
+      await waitFor(() =>
+        expect(navigate).toHaveBeenCalledWith(
+          expect.objectContaining({
+            href: '/zh-CN/search?q=joinChannel',
+          }),
+        ),
+      );
+    },
+  );
+
+  it('opens an explicitly keyboard-selected CN result and preserves its overload anchor', async () => {
+    const router = renderCnSearch(
+      vi.fn().mockResolvedValue([
+        {
+          id: 'join',
+          title: 'joinChannel [2/2]',
+          content: 'joinChannel [2/2]',
+          type: 'page',
+          url: '/zh-CN/api-reference/rtc/android/channel#joinchannel-22',
+        },
+      ]),
+    );
+    const navigate = vi.spyOn(router, 'navigate');
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
+    fireEvent.input(input, { target: { value: 'joinChannel' } });
+    await screen.findAllByText('joinChannel [2/2]');
+    await waitFor(() =>
+      expect(
+        screen.getByRole('option', { name: /joinChannel/ }),
+      ).not.toHaveAttribute('aria-disabled', 'true'),
+    );
+    fireEvent.keyDown(input, { key: 'ArrowDown' });
+    fireEvent.keyDown(input, { key: 'Enter' });
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          to: '/zh-CN/api-reference/rtc/android/channel#joinchannel-22',
+        }),
+      ),
+    );
+  });
+
+  it('keeps an IME confirmation Enter from navigating', async () => {
+    const router = renderCnSearch(
+      vi.fn().mockResolvedValue([
+        {
+          id: 'certificate',
+          title: '管理鉴权方式',
+          content: '主要证书',
+          type: 'page',
+          url: '/zh-CN/introduction/user-guides/manage-authentication',
+        },
+      ]),
+    );
+    const navigate = vi.spyOn(router, 'navigate');
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
+    fireEvent.compositionStart(input);
+    fireEvent.input(input, { target: { value: '主要证书' } });
+    fireEvent.keyDown(input, { key: 'ArrowDown', isComposing: true });
+    fireEvent.keyDown(input, { key: 'Enter', isComposing: true });
+    expect(navigate).not.toHaveBeenCalled();
+    fireEvent.compositionEnd(input, { data: '主要证书' });
+    await waitFor(() =>
+      expect(
+        screen.getByRole('option', { name: /管理鉴权方式/ }),
+      ).not.toHaveAttribute('aria-disabled', 'true'),
+    );
+    fireEvent.keyDown(input, { key: 'Enter' });
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          href: '/zh-CN/search?q=%E4%B8%BB%E8%A6%81%E8%AF%81%E4%B9%A6',
+        }),
+      ),
+    );
+  });
+
+  it('starts an unfiltered search on another document and restores the source search on return', async () => {
+    const router = renderCnSearch(vi.fn().mockResolvedValue([]));
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
+    fireEvent.input(input, { target: { value: 'joinChannel' } });
+    fireEvent.click(screen.getByRole('combobox', { name: '全部平台' }));
+    fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    await act(() => router.navigate({ href: '/zh-CN/realtime-media/rtm' }));
+    expect(screen.getByRole('link', { name: '完整搜索' })).toHaveAttribute(
+      'href',
+      '/zh-CN/search',
+    );
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    expect(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+    ).toHaveValue('');
+    expect(
+      screen.getByRole('combobox', { name: '全部平台' }),
+    ).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    await act(() => router.navigate({ href: '/zh-CN/realtime-media/flutter' }));
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    expect(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+    ).toHaveValue('joinChannel');
+    expect(
+      screen.getByRole('combobox', { name: /Android/ }),
+    ).toBeInTheDocument();
+  });
+
+  it('restores the document search after the full search route unmounts the dialog', async () => {
+    const router = renderCnSearch(vi.fn().mockResolvedValue([]));
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
+    fireEvent.input(input, { target: { value: 'Token' } });
+    fireEvent.click(screen.getByRole('combobox', { name: '全部平台' }));
+    fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
+    fireEvent.click(screen.getByRole('button', { name: '查看全部搜索结果' }));
+    await screen.findByText('Full search route');
+    await act(() => {
+      router.history.back();
+    });
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    expect(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+    ).toHaveValue('Token');
+    expect(
+      screen.getByRole('combobox', { name: /Android/ }),
+    ).toBeInTheDocument();
+  });
+
+  it('shares the current document search between mobile and desktop triggers', async () => {
+    const router = renderCnSearch(vi.fn().mockResolvedValue([]), true);
+    render(<RouterProvider router={router} />);
+    const triggers = await screen.findAllByRole('button', { name: '搜索文档' });
+    fireEvent.click(triggers[1]);
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'Token' } },
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    await waitFor(() =>
+      expect(screen.getByRole('link', { name: '完整搜索' })).toHaveAttribute(
+        'href',
+        '/zh-CN/search?q=Token',
+      ),
+    );
+    fireEvent.click(triggers[0]);
+    expect(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+    ).toHaveValue('Token');
+  });
+
   it('filters CN quick search by HarmonyOS and carries the query and scope into full search', async () => {
     vi.mocked(createCnDocsSearchClient).mockReturnValue({
       deps: [],
@@ -1146,3 +1352,38 @@ describe('DocsSearchDialog', () => {
     );
   });
 });
+
+function renderCnSearch(
+  search: ReturnType<typeof createCnDocsSearchClient>['search'],
+  dual = false,
+) {
+  vi.mocked(createCnDocsSearchClient).mockReturnValue({ deps: [], search });
+  const rootRoute = createRootRoute({ component: () => <Outlet /> });
+  const docsRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/$tab/$slug',
+    component: () => (
+      <AppProviders>
+        <DocsSearchDialog loadPages={loadPages} locale="zh-CN" />
+        {dual ? (
+          <DocsSearchDialog
+            loadPages={loadPages}
+            locale="zh-CN"
+            mode="mobile"
+          />
+        ) : null}
+      </AppProviders>
+    ),
+  });
+  const searchRoute = createRoute({
+    getParentRoute: () => rootRoute,
+    path: '/$locale/search',
+    component: () => <div>Full search route</div>,
+  });
+  return createRouter({
+    routeTree: rootRoute.addChildren([docsRoute, searchRoute]),
+    history: createMemoryHistory({
+      initialEntries: ['/zh-CN/realtime-media/flutter'],
+    }),
+  });
+}

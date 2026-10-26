@@ -38,6 +38,37 @@ const group: SearchPageGroup = {
 };
 
 describe('SearchResultList', () => {
+  it('distinguishes the React companion Web reference from the standalone Web SDK', () => {
+    render(
+      <SearchResultList
+        groups={[
+          {
+            ...group,
+            groupKey: 'react-web',
+            pageUrl:
+              '/api-reference/rtc/react-sdk/web-sdk/interfaces/iagorartcclient',
+            title: 'Interface IAgoraRTCClient',
+            platform: ['web'],
+            version: '4.22.0',
+          },
+          {
+            ...group,
+            groupKey: 'web',
+            pageUrl: '/api-reference/rtc/web/interfaces/iagorartcclient',
+            title: 'Interface IAgoraRTCClient',
+            platform: ['web'],
+            version: '4.24.9',
+          },
+        ]}
+        productLabel={() => '实时互动 RTC'}
+      />,
+    );
+    expect(screen.getByText('React SDK 配套 Web SDK')).toBeInTheDocument();
+    expect(screen.getByText('Web SDK')).toBeInTheDocument();
+    expect(screen.getByText('4.22.0')).toBeInTheDocument();
+    expect(screen.getByText('4.24.9')).toBeInTheDocument();
+  });
+
   it('links unfiltered results to the canonical document and preserves section hash', () => {
     render(
       <SearchResultList groups={[group]} productLabel={() => '实时互动 RTC'} />,

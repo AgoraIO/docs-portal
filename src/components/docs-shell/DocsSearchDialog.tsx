@@ -1,6 +1,6 @@
 'use client';
 
-import { useNavigate } from '@tanstack/react-router';
+import { Link, useLocation, useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
 import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -47,6 +47,20 @@ import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 import { getCnProductLabel } from '@/lib/search/cn-product-labels';
 import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
+import {
+  getCnSearchPlatforms,
+  getCnSearchSdkLabel,
+} from '@/lib/search/cn-search-context';
+import {
+  loadCnSearchCatalog,
+  type SearchFacets,
+} from '@/lib/search/cn-search-page';
+import {
+  CN_SEARCH_SESSION_CHANGED,
+  type CnSearchSession,
+  readCnSearchSession,
+  saveCnSearchSession,
+} from '@/lib/search/cn-search-session';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
 import {
   buildSearchPageHref,
@@ -93,6 +107,8 @@ export function DocsSearchDialog({
   const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
+  const pathname = useLocation({ select: (location) => location.pathname });
+  const isCn = searchLocale === 'zh-CN';
   const [open, setOpen] = useState(false);
   const [draftSearch, setDraftSearch] = useState('');
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
@@ -100,6 +116,52 @@ export function DocsSearchDialog({
   );
   // Selected scope id (e.g. `product:video`), or null for all products.
   const [scopeId, setScopeId] = useState<string | null>(null);
+  const [catalog, setCatalog] = useState<SearchFacets>();
+  const manualSelection = useRef(false);
+  const searchOrigin = useRef<string | undefined>(undefined);
+  const [savedPage, setSavedPage] = useState<{
+    path: string;
+    value?: CnSearchSession;
+  }>();
+  useEffect(() => {
+    if (!isCn) return;
+    const synchronize = () => {
+      setSavedPage({ path: pathname, value: readCnSearchSession(pathname) });
+    };
+    synchronize();
+    window.addEventListener(CN_SEARCH_SESSION_CHANGED, synchronize);
+    return () =>
+      window.removeEventListener(CN_SEARCH_SESSION_CHANGED, synchronize);
+  }, [isCn, pathname]);
+  const currentSearch = useRef({
+    query: draftSearch,
+    platform: platformFilter,
+    scope: scopeId,
+  });
+  currentSearch.current = {
+    query: draftSearch,
+    platform: platformFilter,
+    scope: scopeId,
+  };
+  useEffect(() => {
+    if (isCn && open && searchOrigin.current === pathname) {
+      saveCnSearchSession(pathname, {
+        query: draftSearch,
+        platform: platformFilter,
+        scope: scopeId,
+      });
+    }
+  }, [isCn, open, pathname, draftSearch, platformFilter, scopeId]);
+  useEffect(() => {
+    if (!isCn || !open || catalog) return;
+    const controller = new AbortController();
+    loadCnSearchCatalog(controller.signal)
+      .then((result) => {
+        if (!controller.signal.aborted) setCatalog(result);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [isCn, open, catalog]);
   // Mirrors cmdk's highlighted item (keyboard ↑/↓ AND mouse hover both set it)
   // so the footer can describe the active result without a focus-based tooltip.
   const [activeValue, setActiveValue] = useState<string | null>(null);
@@ -286,8 +348,12 @@ export function DocsSearchDialog({
   // The remote config objects are recreated on render, so depend on a stable
   // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
   const remoteSearchConfigured = remoteSearchEnabled;
+  const debounceRequest = useMemo(
+    () => ({ query: search, platform: platformFilter, scope: scopeId }),
+    [search, platformFilter, scopeId],
+  );
   useEffect(() => {
-    if (!remoteSearchConfigured || search.trim() === '') {
+    if (!remoteSearchConfigured || debounceRequest.query.trim() === '') {
       setDebouncePending(false);
       return;
     }
@@ -297,7 +363,7 @@ export function DocsSearchDialog({
       SEARCH_DEBOUNCE_MS + 30,
     );
     return () => window.clearTimeout(id);
-  }, [remoteSearchConfigured, search]);
+  }, [remoteSearchConfigured, debounceRequest]);
   useEffect(() => {
     if (isLoading) {
       setDebouncePending(false);
@@ -327,22 +393,24 @@ export function DocsSearchDialog({
   }, [open, hasQuery, visibleSnapshot, searchError]);
   const platformOptions = useMemo(
     () =>
-      (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
-        [
-          'web',
-          'android',
-          'ios',
-          'javascript',
-          'flutter',
-          'react-native',
-          'windows',
-          'harmonyos',
-          'macos',
-          'electron',
-          'unity',
-        ].includes(platform),
-      ),
-    [],
+      isCn
+        ? getCnSearchPlatforms(catalog?.platform, platformFilter)
+        : (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
+            [
+              'web',
+              'android',
+              'ios',
+              'javascript',
+              'flutter',
+              'react-native',
+              'windows',
+              'harmonyos',
+              'macos',
+              'electron',
+              'unity',
+            ].includes(platform),
+          ),
+    [isCn, catalog, platformFilter],
   );
 
   const productFilterGroups = useMemo<FilterGroup[]>(
@@ -384,6 +452,20 @@ export function DocsSearchDialog({
       setStaggerArmed(nextOpen);
 
       if (nextOpen) {
+        if (isCn) {
+          const saved =
+            readCnSearchSession(pathname) ??
+            (searchOrigin.current === pathname
+              ? currentSearch.current
+              : undefined);
+          setSearch(saved?.query ?? '');
+          setDraftSearch(saved?.query ?? '');
+          setPlatformFilter(saved?.platform ?? null);
+          setScopeId(saved?.scope ?? null);
+          setActiveValue(null);
+          manualSelection.current = false;
+          searchOrigin.current = pathname;
+        }
         // Refresh the recent list from storage on each open, dropping the page
         // the user is currently on (offering it back to them makes no sense).
         const currentPath =
@@ -395,7 +477,7 @@ export function DocsSearchDialog({
         );
       }
 
-      if (!nextOpen) {
+      if (!nextOpen && !isCn) {
         setActiveValue(null);
         // Reset the query on close so reopening lands on the recent list / prompt
         // rather than the previous search's (possibly empty) results.
@@ -429,7 +511,15 @@ export function DocsSearchDialog({
         });
       }
     },
-    [loadPages, pages.length, remoteSearchEnabled, searchLocale, setSearch],
+    [
+      loadPages,
+      pages.length,
+      remoteSearchEnabled,
+      searchLocale,
+      setSearch,
+      isCn,
+      pathname,
+    ],
   );
 
   useEffect(() => {
@@ -511,6 +601,29 @@ export function DocsSearchDialog({
         }
       : { className: undefined, style: undefined };
 
+  const pageSearch =
+    open && searchOrigin.current === pathname
+      ? currentSearch.current
+      : savedPage?.path === pathname
+        ? savedPage.value
+        : searchOrigin.current === pathname
+          ? currentSearch.current
+          : undefined;
+  const pageScope = productScopes.find(
+    (scope) => scope.id === pageSearch?.scope,
+  )?.scope;
+  const fullSearchHref = buildSearchPageHref(searchLocale, {
+    q: pageSearch?.query ?? '',
+    product: searchScopeProduct(pageScope),
+    platform: pageSearch?.platform ?? undefined,
+  });
+  const openFullSearch = () => {
+    if (isCn && searchOrigin.current === pathname)
+      saveCnSearchSession(pathname, currentSearch.current);
+    setOpen(false);
+    void navigate({ href: fullSearchHref });
+  };
+
   return (
     <>
       {mode === 'mobile' ? (
@@ -536,33 +649,82 @@ export function DocsSearchDialog({
           <kbd>⌘K</kbd>
         </Button>
       )}
+      {isCn && mode === 'desktop' ? (
+        <Button
+          asChild
+          className="hidden shrink-0 lg:inline-flex"
+          size="sm"
+          variant="ghost"
+        >
+          <Link to={fullSearchHref}>完整搜索</Link>
+        </Button>
+      ) : null}
       <CommandDialog
         className="docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-y-auto border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
-        onValueChange={setActiveValue}
+        onValueChange={(value) => {
+          if (!isCn || manualSelection.current) setActiveValue(value);
+        }}
         open={open}
         overlayClassName="docs-search-overlay bg-black/30 backdrop-blur-md"
         shouldFilter={false}
         title={t('docs.search')}
         value={activeValue ?? ''}
       >
+        {isCn ? (
+          <div className="flex items-center justify-between border-b px-3 py-2 pr-12">
+            <span>搜索文档</span>
+            <Button onClick={openFullSearch} size="sm" variant="ghost">
+              完整搜索
+            </Button>
+          </div>
+        ) : null}
         <CommandInput
           onCompositionStart={() => {
             composing.current = true;
           }}
           onCompositionEnd={(event) => {
             composing.current = false;
+            manualSelection.current = false;
+            setActiveValue(null);
             inputAt.current = Date.now();
+            setDraftSearch(event.currentTarget.value);
             setSearch(event.currentTarget.value);
           }}
           onValueChange={(value) => {
+            if (isCn) {
+              manualSelection.current = false;
+              setActiveValue(null);
+            }
             inputAt.current = Date.now();
             setDraftSearch(value);
             if (!composing.current) setSearch(value);
           }}
-          onKeyDown={() => {
+          onKeyDownCapture={(event) => {
             selectionMethod.current = 'keyboard';
+            if (!isCn) return;
+            if (composing.current || event.nativeEvent.isComposing) {
+              event.stopPropagation();
+              return;
+            }
+            if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+              if (isBusy) {
+                event.preventDefault();
+                event.stopPropagation();
+              } else manualSelection.current = true;
+            }
+            if (
+              event.key === 'Enter' &&
+              (!manualSelection.current ||
+                isBusy ||
+                event.metaKey ||
+                event.ctrlKey)
+            ) {
+              event.preventDefault();
+              event.stopPropagation();
+              if (draftSearch.trim()) openFullSearch();
+            }
           }}
           placeholder={t('docs.searchPlaceholder')}
           value={draftSearch}
@@ -575,6 +737,8 @@ export function DocsSearchDialog({
                 emptyLabel={t('docs.searchFilterNoResults')}
                 groups={productFilterGroups}
                 onChange={(value) => {
+                  manualSelection.current = false;
+                  setActiveValue(null);
                   inputAt.current = Date.now();
                   setScopeId(value);
                 }}
@@ -587,6 +751,8 @@ export function DocsSearchDialog({
               emptyLabel={t('docs.searchFilterNoResults')}
               groups={platformFilterGroups}
               onChange={(next) => {
+                manualSelection.current = false;
+                setActiveValue(null);
                 inputAt.current = Date.now();
                 setPlatformFilter(next as PlatformKey | null);
               }}
@@ -673,6 +839,7 @@ export function DocsSearchDialog({
                   return (
                     <CommandItem
                       className={cn('items-start', stagger.className)}
+                      disabled={isCn && isBusy}
                       key={page.id ?? page.url}
                       onSelect={() => {
                         selectDocsResult(visibleSnapshot, {
@@ -685,6 +852,7 @@ export function DocsSearchDialog({
                         void handleSelect(page.url);
                       }}
                       onMouseDown={(event) => {
+                        if (isCn && isBusy) return;
                         if (
                           event.button !== 1 &&
                           !(
@@ -755,16 +923,7 @@ export function DocsSearchDialog({
           <div className="border-t p-2">
             <Button
               className="w-full justify-between"
-              onClick={() => {
-                setOpen(false);
-                void navigate({
-                  href: buildSearchPageHref(searchLocale, {
-                    q: search,
-                    product: searchScopeProduct(searchScope),
-                    platform: platformFilter ?? undefined,
-                  }),
-                });
-              }}
+              onClick={openFullSearch}
               variant="ghost"
             >
               查看全部搜索结果
@@ -785,7 +944,11 @@ export function DocsSearchDialog({
         <SearchKeyboardHints
           closeLabel={t('docs.searchHintClose')}
           navigateLabel={t('docs.searchHintNavigate')}
-          selectLabel={t('docs.searchHintSelect')}
+          selectLabel={
+            isCn && !manualSelection.current
+              ? '完整搜索'
+              : t('docs.searchHintSelect')
+          }
         />
       </CommandDialog>
     </>
@@ -830,6 +993,7 @@ function searchResultToEntry(
   const breadcrumbs = getStringArray(result.breadcrumbs);
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
+  const sdkLabel = isCn ? getCnSearchSdkLabel(result.url) : undefined;
 
   return {
     context: uniqueStrings([
@@ -837,7 +1001,7 @@ function searchResultToEntry(
       isCn
         ? getCnProductLabel(getString(result.product), productScopes)
         : undefined,
-      ...formatPlatformContext(platforms ?? []),
+      ...(sdkLabel ? [sdkLabel] : formatPlatformContext(platforms ?? [])),
       isCn ? getString(result.version) : undefined,
     ]),
     description: truncateSearchSnippet(

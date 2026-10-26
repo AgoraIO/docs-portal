@@ -10,6 +10,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { recordRecentPage } from '@/lib/recently-viewed';
 import {
   type CnSearchPageResponse,
+  loadCnSearchCatalog,
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
 import { parseSearchPageState } from '@/lib/search/search-page-state';
@@ -19,6 +20,7 @@ import { SearchHighlight } from './SearchResultList';
 vi.mock('@/lib/search/cn-search-page', async (importOriginal) => ({
   ...(await importOriginal<typeof import('@/lib/search/cn-search-page')>()),
   searchCnDocsPage: vi.fn(),
+  loadCnSearchCatalog: vi.fn(),
 }));
 const empty: CnSearchPageResponse = {
   groups: [],
@@ -29,6 +31,67 @@ const empty: CnSearchPageResponse = {
 };
 
 describe('DocsSearchPage', () => {
+  it('keeps published alternatives selectable after a filtered direct visit', async () => {
+    vi.mocked(loadCnSearchCatalog).mockResolvedValue({
+      platform: { android: 20, harmonyos: 5, flutter: 8 },
+      product: { rtc: 20, whiteboard: 5 },
+    });
+    vi.mocked(searchCnDocsPage).mockResolvedValue({
+      ...empty,
+      facets: { platform: { android: 1 }, product: { rtc: 1 } },
+    });
+    const onChange = vi.fn();
+    render(
+      <DocsSearchPage
+        state={parseSearchPageState({
+          q: 'joinChannel',
+          product: 'rtc',
+          platform: 'android',
+        })}
+        onChange={onChange}
+      />,
+    );
+    expect(
+      await screen.findByRole('option', { name: 'HarmonyOS' }),
+    ).toBeEnabled();
+    expect(screen.getByRole('option', { name: '互动白板' })).toBeEnabled();
+    fireEvent.change(screen.getByRole('combobox', { name: '平台' }), {
+      target: { value: 'harmonyos' },
+    });
+    expect(onChange).toHaveBeenCalledWith({
+      platform: 'harmonyos',
+      version: undefined,
+    });
+  });
+
+  it('applies mobile filter changes only on confirmation and cancels drafts', async () => {
+    const onChange = vi.fn();
+    render(
+      <DocsSearchPage
+        state={parseSearchPageState({ q: 'joinChannel', platform: 'android' })}
+        onChange={onChange}
+      />,
+    );
+    fireEvent.click(screen.getByRole('button', { name: '筛选 (1)' }));
+    fireEvent.change(screen.getByRole('combobox', { name: '平台' }), {
+      target: { value: 'harmonyos' },
+    });
+    expect(onChange).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: '关闭筛选' }));
+    expect(onChange).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: '筛选 (1)' }));
+    expect(screen.getByRole('combobox', { name: '平台' })).toHaveValue(
+      'android',
+    );
+    fireEvent.change(screen.getByRole('combobox', { name: '平台' }), {
+      target: { value: 'harmonyos' },
+    });
+    fireEvent.click(screen.getByRole('button', { name: '查看结果' }));
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({ platform: 'harmonyos', page: 1 }),
+    );
+  });
+
   it('shows recent CN pages with public or previous URLs and excludes other destinations', async () => {
     recordRecentPage({ title: '旧中文文档', url: '/zh-CN/realtime-media/rtc' });
     recordRecentPage({
@@ -109,14 +172,22 @@ describe('DocsSearchPage', () => {
       });
     const view = render(
       <DocsSearchPage
-        state={parseSearchPageState({ q: 'Token', product: 'rtc' })}
+        state={parseSearchPageState({
+          q: 'Token',
+          product: 'rtc',
+          platform: 'web',
+        })}
         onChange={vi.fn()}
       />,
     );
     await screen.findByRole('option', { name: '4.6.0' });
     view.rerender(
       <DocsSearchPage
-        state={parseSearchPageState({ q: 'Token', product: 'whiteboard' })}
+        state={parseSearchPageState({
+          q: 'Token',
+          product: 'whiteboard',
+          platform: 'web',
+        })}
         onChange={vi.fn()}
       />,
     );
@@ -187,6 +258,7 @@ describe('DocsSearchPage', () => {
   });
   beforeEach(() => {
     vi.mocked(searchCnDocsPage).mockResolvedValue(empty);
+    vi.mocked(loadCnSearchCatalog).mockResolvedValue({});
     window.localStorage.clear();
   });
   afterEach(() => vi.clearAllMocks());

@@ -51,9 +51,11 @@ import {
   getCnProductOptionLabel,
 } from '@/lib/search/cn-product-labels';
 import { normalizeCnProductFacets } from '@/lib/search/cn-products';
+import { getCnSearchPlatforms } from '@/lib/search/cn-search-context';
 import {
   type CnSearchPageResponse,
   isPublicCnSearchUrl,
+  loadCnSearchCatalog,
   mergeSearchPageGroups,
   type SearchFacets,
   searchCnDocsPage,
@@ -76,9 +78,20 @@ export function DocsSearchPage({
   const [status, setStatus] = useState<SearchStatus>('loading');
   const [data, setData] = useState<CnSearchPageResponse | null>(null);
   const [facets, setFacets] = useState<SearchFacets>({});
+  const [catalog, setCatalog] = useState<SearchFacets>({});
   const [recent, setRecent] = useState<RecentPage[]>([]);
   const [retry, setRetry] = useState(0);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [filterDraft, setFilterDraft] = useState(state);
+  useEffect(() => {
+    const controller = new AbortController();
+    loadCnSearchCatalog(controller.signal)
+      .then((result) => {
+        if (!controller.signal.aborted) setCatalog(result);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   const logicalSearch = useRef<{
     key: string;
     snapshot: SearchSnapshot;
@@ -238,20 +251,37 @@ export function DocsSearchPage({
     state.version,
     state.type !== 'all',
   ].filter(Boolean).length;
-  const platforms = useMemo(
-    () => Object.keys(facets.platform ?? {}).filter(isKnownPlatform),
-    [facets.platform],
+  const controlsState = filterOpen ? filterDraft : state;
+  const changeFilters = (patch: Partial<SearchPageState>) => {
+    if (filterOpen) setFilterDraft((previous) => ({ ...previous, ...patch }));
+    else onChange(patch);
+  };
+  const platforms = getCnSearchPlatforms(
+    catalog.platform,
+    controlsState.platform,
   );
-  const products = [
-    ...new Set([
-      ...Object.keys(facets.product ?? {}),
-      ...(state.product ? [state.product] : []),
-    ]),
-  ];
+  const products = Object.keys(
+    normalizeCnProductFacets({
+      ...catalog.product,
+      ...facets.product,
+      ...Object.fromEntries(
+        [
+          ...productScopes.flatMap(({ scope }) =>
+            scope.field === 'product' ? [scope.value] : [],
+          ),
+          ...(controlsState.product ? [controlsState.product] : []),
+        ].map((product) => [product, 1]),
+      ),
+    }),
+  );
+  const draftScopeChanged =
+    filterOpen &&
+    (filterDraft.product !== state.product ||
+      filterDraft.platform !== state.platform);
   const versions = [
     ...new Set([
-      ...Object.keys(facets.version ?? {}),
-      ...(state.version ? [state.version] : []),
+      ...Object.keys(draftScopeChanged ? {} : (facets.version ?? {})),
+      ...(controlsState.version ? [controlsState.version] : []),
     ]),
   ];
 
@@ -262,12 +292,12 @@ export function DocsSearchPage({
         <NativeSelect
           aria-label="产品"
           onChange={(event) =>
-            onChange({
+            changeFilters({
               product: event.target.value || undefined,
               version: undefined,
             })
           }
-          value={state.product ?? ''}
+          value={controlsState.product ?? ''}
         >
           <NativeSelectOption value="">全部产品</NativeSelectOption>
           {products.map((product) => (
@@ -282,18 +312,18 @@ export function DocsSearchPage({
         <NativeSelect
           aria-label="平台"
           onChange={(event) =>
-            onChange({
+            changeFilters({
               platform: event.target.value || undefined,
               version: undefined,
             })
           }
-          value={state.platform ?? ''}
+          value={controlsState.platform ?? ''}
         >
           <NativeSelectOption value="">全部平台</NativeSelectOption>
           {[
             ...new Set([
               ...platforms,
-              ...(state.platform ? [state.platform] : []),
+              ...(controlsState.platform ? [controlsState.platform] : []),
             ]),
           ].map((platform) => (
             <NativeSelectOption key={platform} value={platform}>
@@ -304,15 +334,18 @@ export function DocsSearchPage({
           ))}
         </NativeSelect>
       </div>
-      {versions.length > 0 && (
+      {versions.length > 0 &&
+      (controlsState.version ||
+        (controlsState.product && controlsState.platform)) ? (
         <div className="search-page-filter-label">
           <span>版本</span>
           <NativeSelect
             aria-label="版本"
             onChange={(event) =>
-              onChange({ version: event.target.value || undefined })
+              changeFilters({ version: event.target.value || undefined })
             }
-            value={state.version ?? ''}
+            title="所选产品和平台的 SDK 版本；不同 SDK 可能使用不同版本号"
+            value={controlsState.version ?? ''}
           >
             <NativeSelectOption value="">全部版本</NativeSelectOption>
             {versions.map((version) => (
@@ -322,6 +355,13 @@ export function DocsSearchPage({
             ))}
           </NativeSelect>
         </div>
+      ) : (
+        <span
+          className="text-xs text-muted-foreground"
+          title="按各 SDK 当前发布文档搜索；历史版本可从 API 文档的版本菜单访问。"
+        >
+          当前发布文档
+        </span>
       )}
     </>
   );
@@ -371,7 +411,13 @@ export function DocsSearchPage({
             )}
           </div>
           <div className="search-page-mobile-filters">
-            <Sheet onOpenChange={setFilterOpen} open={filterOpen}>
+            <Sheet
+              onOpenChange={(nextOpen) => {
+                if (nextOpen) setFilterDraft(state);
+                setFilterOpen(nextOpen);
+              }}
+              open={filterOpen}
+            >
               <SheetTrigger asChild>
                 <Button size="sm" variant="ghost">
                   <SlidersHorizontalIcon data-icon="inline-start" />
@@ -382,7 +428,7 @@ export function DocsSearchPage({
                 <SheetHeader>
                   <SheetTitle>筛选文档</SheetTitle>
                   <SheetDescription>
-                    选择适用的产品、平台和版本。
+                    调整产品和平台后，点击“查看结果”应用筛选。
                   </SheetDescription>
                 </SheetHeader>
                 <div className="search-page-sheet-filters">
@@ -391,19 +437,32 @@ export function DocsSearchPage({
                 <div className="flex gap-2 p-4">
                   <Button
                     onClick={() => {
-                      onChange({
+                      setFilterDraft({
+                        ...state,
                         product: undefined,
                         platform: undefined,
                         version: undefined,
                         type: 'all',
                       });
-                      setFilterOpen(false);
                     }}
                     variant="outline"
                   >
                     清除筛选
                   </Button>
-                  <Button onClick={() => setFilterOpen(false)}>查看结果</Button>
+                  <Button
+                    onClick={() => {
+                      onChange({
+                        product: filterDraft.product,
+                        platform: filterDraft.platform,
+                        version: filterDraft.version,
+                        type: filterDraft.type,
+                        page: 1,
+                      });
+                      setFilterOpen(false);
+                    }}
+                  >
+                    查看结果
+                  </Button>
                 </div>
               </SheetContent>
             </Sheet>

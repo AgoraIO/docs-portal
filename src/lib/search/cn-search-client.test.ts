@@ -1,11 +1,27 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createCnDocsSearchClient } from './cn-search-client';
-import { searchCnDocsPage } from './cn-search-page';
+import { loadCnSearchCatalog, searchCnDocsPage } from './cn-search-page';
 import { parseSearchPageState } from './search-page-state';
 
 afterEach(() => vi.restoreAllMocks());
 const empty = { groups: [], totalHits: 0, totalPages: 0, page: 1, facets: {} };
 describe('browser search API transport', () => {
+  it('loads the publication catalog without query or selected filters', async () => {
+    const facets = {
+      platform: { android: 3, harmonyos: 2, swift: 1 },
+      product: { rtc: 3 },
+    };
+    const fetchMock = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(Response.json({ ...empty, facets }));
+    const signal = new AbortController().signal;
+    await expect(loadCnSearchCatalog(signal)).resolves.toEqual(facets);
+    expect(fetchMock).toHaveBeenCalledWith('/api/search?q=&page=1&type=all', {
+      signal,
+      headers: { Accept: 'application/json' },
+    });
+  });
+
   it('calls only the same-origin API and propagates cancellation without engine credentials', async () => {
     const fetchMock = vi
       .spyOn(globalThis, 'fetch')

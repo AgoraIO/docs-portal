@@ -10,6 +10,7 @@ import {
 import { type MouseEvent, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
+import { getCnSearchSdkLabel } from '@/lib/search/cn-search-context';
 import {
   getSearchPageGroupKey,
   getSearchSectionHref,
@@ -59,6 +60,7 @@ export function SearchResultList({
     <LayoutGroup id={id}>
       <ul className="search-page-results">
         {groups.map((group, groupIndex) => {
+          const sdkLabel = getCnSearchSdkLabel(group.pageUrl);
           const first = group.sections[0];
           const groupKey = getSearchPageGroupKey(group);
           const firstHref = getSearchSectionHref(group.pageUrl, first.url);
@@ -108,13 +110,17 @@ export function SearchResultList({
                     {group.docType === 'openapi' && (
                       <Badge variant="secondary">REST API</Badge>
                     )}
-                    {group.platform.map((platform) => (
-                      <span key={platform}>
-                        {isKnownPlatform(platform)
-                          ? getPlatformLabel(platform, 'zh-CN')
-                          : platform}
-                      </span>
-                    ))}
+                    {sdkLabel ? (
+                      <span>{sdkLabel}</span>
+                    ) : (
+                      group.platform.map((platform) => (
+                        <span key={platform}>
+                          {isKnownPlatform(platform)
+                            ? getPlatformLabel(platform, 'zh-CN')
+                            : platform}
+                        </span>
+                      ))
+                    )}
                     {group.version && <span>{group.version}</span>}
                   </div>
                 </div>
