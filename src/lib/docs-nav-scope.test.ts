@@ -609,6 +609,56 @@ describe('docs nav scope', () => {
     },
   );
 
+  it.each(['(current)', '.'])(
+    'identifies local historical pages even when %s versions link to an external archive',
+    (currentPath) => {
+      const scope = resolveDocsNavScope({
+        activePath: '/en/api-reference/rtc/android/4.6.0/overview',
+        getNodeMeta(node) {
+          const meta = getNodeMeta(node);
+          return node.$id === 'android-folder'
+            ? {
+                ...meta,
+                navScope: {
+                  defaultVersion: 'current',
+                  versions: [
+                    { id: 'current', label: 'v4.7.0', path: currentPath },
+                    {
+                      id: '4.6.0',
+                      label: 'v4.6.0',
+                      path: '4.6.0',
+                      href: 'https://archive.example.com/android/4.6.0',
+                    },
+                  ],
+                },
+              }
+            : meta;
+        },
+        root: apiReferenceTree,
+        tab: 'api-reference',
+      });
+
+      expect(scope?.activeVersion?.id).toBe('4.6.0');
+      expect(scope?.header.versionSwitcher?.currentId).toBe('4.6.0');
+      expect(scope?.sidebarRoot.$id).toBe('android-4-6-0-folder');
+      expect(
+        scope &&
+          getScopedNavScopeSidebarNodes({ getNodeMeta, navScope: scope }),
+      ).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            url: '/en/api-reference/rtc/android/4.6.0/overview',
+          }),
+        ]),
+      );
+      expect(scope?.header.versionSwitcher?.versions).toContainEqual({
+        id: '4.6.0',
+        label: 'v4.6.0',
+        href: 'https://archive.example.com/android/4.6.0',
+      });
+    },
+  );
+
   it('resolves the nearest current-version scope from a clean URL', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/overview',

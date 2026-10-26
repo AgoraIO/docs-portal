@@ -1042,6 +1042,72 @@ describe('DocsSearchDialog', () => {
     });
   });
 
+  it('labels current and historical API search results from adapter metadata and keeps the historical target usable', async () => {
+    const historicalUrl =
+      '/zh-CN/api-reference/rtc/android/4.6.0/channel#joinchannel-12';
+    vi.mocked(createCnDocsSearchClient).mockReturnValue({
+      deps: ['version-context'],
+      search: vi.fn().mockResolvedValue([
+        {
+          id: 'current',
+          title: 'joinChannel [1/2]',
+          content: 'joinChannel',
+          type: 'page',
+          path: ['频道相关', 'joinChannel [1/2]'],
+          platform: ['android'],
+          version: '4.7.0',
+          versionStatus: 'current',
+          url: '/zh-CN/api-reference/rtc/android/channel#joinchannel-12',
+        },
+        {
+          id: 'historical',
+          title: 'joinChannel [1/2]',
+          content: 'joinChannel',
+          type: 'page',
+          path: ['频道相关', 'joinChannel [1/2]'],
+          platform: ['android'],
+          version: '4.6.0',
+          versionStatus: 'historical',
+          url: historicalUrl,
+        },
+      ]),
+    });
+    const rootRoute = createRootRoute({ component: () => <Outlet /> });
+    const docsRoute = createRoute({
+      getParentRoute: () => rootRoute,
+      path: '/$locale/$tab/$slug',
+      component: () => (
+        <AppProviders>
+          <DocsSearchDialog loadPages={loadPages} locale="zh-CN" />
+        </AppProviders>
+      ),
+    });
+    const router = createRouter({
+      routeTree: rootRoute.addChildren([docsRoute]),
+      history: createMemoryHistory({
+        initialEntries: ['/zh-CN/introduction/about-agora'],
+      }),
+    });
+    const navigate = vi.spyOn(router, 'navigate');
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'joinChannel' } },
+    );
+    expect(
+      await screen.findByRole('option', { name: /v4.7.0 · 当前/ }),
+    ).toBeInTheDocument();
+    fireEvent.click(
+      await screen.findByRole('option', { name: /v4.6.0 · 旧版/ }),
+    );
+    await waitFor(() =>
+      expect(navigate).toHaveBeenCalledWith(
+        expect.objectContaining({ to: historicalUrl }),
+      ),
+    );
+  });
+
   it('does not silently load the Orama page index when the CN search API is unavailable', async () => {
     vi.mocked(createCnDocsSearchClient).mockReturnValue({
       deps: [],

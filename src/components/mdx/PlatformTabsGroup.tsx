@@ -17,7 +17,6 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
-import { buildDocPath } from '@/lib/docs-routing';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   getStoredPlatformPreference,
@@ -30,6 +29,7 @@ import {
   isKnownPlatform,
   type PlatformKey,
 } from '@/lib/platforms/registry';
+import { buildPlatformPathname } from '@/lib/platforms/route';
 
 type ControlledTabsProps = React.ComponentProps<typeof Tabs> & {
   onValueChange?: (value: string) => void;
@@ -948,21 +948,7 @@ function syncPlatformPath(platform: PlatformKey) {
     return;
   }
 
-  const segments = window.location.pathname.split('/').filter(Boolean);
-  const [locale, tab, ...slugSegments] = segments;
-
-  if (!locale || !tab) {
-    return;
-  }
-
-  const pathSlugSegments = slugSegments.filter(Boolean);
-  const currentPlatform = pathSlugSegments.at(-1);
-
-  if (currentPlatform && isKnownPlatform(currentPlatform)) {
-    pathSlugSegments.pop();
-  }
-
-  const nextPath = buildDocPath(locale, tab, [...pathSlugSegments, platform]);
+  const nextPath = buildPlatformPathname(window.location.pathname, platform);
   const searchParams = new URLSearchParams(window.location.search);
   searchParams.delete('platform');
   const nextSearch = searchParams.toString();

@@ -61,6 +61,31 @@ async function loadReferencePayload(slugs: string[]) {
 
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
+  it('keeps the retained Android 4.6.0 page identity and sidebar in its historical scope', async () => {
+    const payload = await loadApiReferencePayload([
+      'rtc',
+      'android',
+      '4.6.0',
+      'channel',
+    ]);
+    expect(payload.sidebarHeader?.versionSwitcher).toMatchObject({
+      currentId: '4.6.0',
+      versions: expect.arrayContaining([
+        expect.objectContaining({ id: '4.6.0', label: 'v4.6.0' }),
+      ]),
+    });
+    expect(
+      findNode(payload.sidebar as SidebarNode[], '频道相关'),
+    ).toMatchObject({
+      url: '/zh-CN/api-reference/rtc/android/4.6.0/channel',
+    });
+    expect(
+      findNode(payload.sidebar as SidebarNode[], '初始化相关'),
+    ).toMatchObject({
+      url: '/zh-CN/api-reference/rtc/android/4.6.0/initialize',
+    });
+  });
+
   it.each([
     [
       ['api-ref', 'console'],

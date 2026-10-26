@@ -7,6 +7,10 @@ export type SearchResult = {
   url: string;
   headingPath: string[];
   type: 'page';
+  version?: string;
+  versionStatus?: 'current' | 'historical';
+  product?: string;
+  platform?: string[];
   path: string[];
   highlights?: Record<string, string>;
 };
@@ -178,9 +182,27 @@ export function mapSearchHit(
     availablePlatforms: hit.availablePlatforms,
     canonicalUrl: hit.canonicalUrl,
     product: hit.product,
+    version: hit.version,
+    versionStatus: resolveSearchVersionStatus(hit),
     type: 'page',
     objectType: 'docs',
   };
+}
+
+// Older indexes and search-service releases already return the numeric version,
+// but no version identity. Resolve that once at this adapter boundary, using
+// the published route convention, so UI components never infer it themselves.
+function resolveSearchVersionStatus(
+  hit: Pick<SearchHit, 'version' | 'url' | 'canonicalUrl'>,
+) {
+  if (!hit.version) return undefined;
+  const pathname = (hit.canonicalUrl ?? hit.url).split(/[?#]/)[0];
+  if (!/^\/(?:zh-CN\/)?api-reference\//.test(pathname)) return undefined;
+  return pathname
+    .split('/')
+    .some((segment) => /^v?\d+\.\d+(?:\.\d+)?$/.test(segment))
+    ? ('historical' as const)
+    : ('current' as const);
 }
 
 export function normalizeMeilisearchHit(hit: MeilisearchHit): SearchHit {

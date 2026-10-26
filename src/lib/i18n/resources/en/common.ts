@@ -32,6 +32,8 @@ const enCommon = {
     searchLoading: 'Searching...',
     searchAllPlatforms: 'All platforms',
     searchAllProducts: 'All products',
+    searchCurrentVersion: 'Current',
+    searchHistoricalVersion: 'Historical',
     searchFilterNoResults: 'No results',
     searchFilterPlatforms: 'Filter platforms…',
     searchFilterProducts: 'Filter products…',

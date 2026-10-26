@@ -896,6 +896,23 @@ function resolveActiveVersion({
     return undefined;
   }
 
+  // href controls where the version menu navigates, not which version owns a
+  // retained local route. Prefer an explicit local folder over a '.' scope
+  // that also contains historical children.
+  const localVersion = versions
+    .flatMap((version) => {
+      const node = findVersionFolder(scope, version);
+      return node && nodeContainsUrl(node, activePath)
+        ? [{ ...version, node }]
+        : [];
+    })
+    .sort(
+      (left, right) =>
+        Number(left.node === scope) - Number(right.node === scope),
+    )
+    .at(0);
+  if (localVersion) return localVersion;
+
   const matches = versions.flatMap((version) => {
     const node = findVersionFolder(scope, version) ?? scope;
     const matchesVersion = version.href
