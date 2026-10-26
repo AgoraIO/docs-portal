@@ -34,8 +34,20 @@ export function ApiReferenceCards({
   locale?: ApiReferenceCardsLocale;
   type: ApiReferenceCardType | 'all';
 }) {
-  const entries =
-    type === 'all' ? zhCNApiReferenceCards.all : zhCNApiReferenceCards[type];
+  const entries = useMemo(() => {
+    const sourceEntries = zhCNApiReferenceCards[type];
+    // Expose the same server SDK references inside RTC without changing their
+    // canonical product metadata or removing the standalone product entry.
+    const rtcServerEntries = sourceEntries
+      .filter((entry) => entry.productId === 'rtc-server-sdk')
+      .map((entry) => ({
+        ...entry,
+        product: '实时互动 RTC',
+        productId: 'rtc',
+      }));
+
+    return [...sourceEntries, ...rtcServerEntries];
+  }, [type]);
   const [{ productId, platformId, apiType }, setFilters] =
     useState<ApiReferenceFilters>({
       productId: 'all',
@@ -310,14 +322,14 @@ function ConversationalAiReferenceGroup({
           <ApiReferenceEntrySection
             entries={clientEntries}
             subtitle="客户端 SDK"
-            title="对话式 AI Toolkit"
+            title="客户端组件 SDK"
           />
         ) : null}
         {serverSdkEntries.length > 0 ? (
           <ApiReferenceEntrySection
             entries={serverSdkEntries}
             subtitle="服务端 SDK"
-            title="Agora Agents"
+            title="Agora Agents SDK"
           />
         ) : null}
         {restfulEntries.length > 0 ? (

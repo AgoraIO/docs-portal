@@ -529,13 +529,16 @@ _migration:
   - `interrupted`：被中断。
 - `metadata`：元数据对象。根据 `type` 字段的不同，包含以下字段：
   - `ok`：包含 `playback_duration_ms`，表示语音播放时长（ms）。
-  - `interrupted`：包含 `caused_by`，表示轮次中断原因，包括以下值：
-    - `start_of_speech`：新一条语音请求开始。
-    - `api_speak`：API 调用说话。
-    - `api_think`：API 调用思考。
-    - `api_interrupt`：调用打断智能体接口。
-    - `api_leave`：调用停止对话式智能体接口离开频道。
-    - `user_no_longer_present`：智能体检测不到可订阅用户。
+  - `interrupted`：包含以下字段：
+    - `playback_duration_ms`：中断发生时，当前轮次已实际播放的 PCM 音频时长（ms），不大于 `intended_playback_duration_ms`。
+    - `intended_playback_duration_ms`：当前轮次中引擎已接收并计划播放的 PCM 音频总时长（ms），包含尚未播放完的排队音频。
+    - `caused_by`：轮次中断原因，包括以下值：
+      - `start_of_speech`：新一条语音请求开始。
+      - `api_speak`：API 调用说话。
+      - `api_think`：API 调用思考。
+      - `api_interrupt`：调用打断智能体接口。
+      - `api_leave`：调用停止对话式智能体接口离开频道。
+      - `user_no_longer_present`：智能体检测不到可订阅用户。
   - `ignored`：包含 `caused_by`，表示轮次忽略原因，包括以下值：
     - `semantic`：语义规则判断无需响应。
     - `keywords`：未命中轮次开始检测关键词。
@@ -604,6 +607,20 @@ _migration:
             }
         }
     ]
+}
+```
+
+轮次被打断时，`end` 示例：
+
+```json
+{
+    "end_at": 1774579822412,
+    "type": "interrupted",
+    "metadata": {
+        "caused_by": "api_interrupt",
+        "playback_duration_ms": 1200,
+        "intended_playback_duration_ms": 2400
+    }
 }
 ```
 

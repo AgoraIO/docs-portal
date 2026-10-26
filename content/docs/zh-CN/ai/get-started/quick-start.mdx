@@ -11,8 +11,9 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 - 已参考[开通服务](/zh-CN/ai/get-started/enable-service)在声网控制台完成以下步骤：
     - 为你的项目开通声网对话式 AI 引擎。
     - 获取 App ID：声网随机生成的字符串，用于识别你的项目和调用对话式智能体 RESTful API。
-    - 获取客户 ID 和客户密钥：用于在调用对话式 AI 引擎 RESTful API 时进行 HTTP 鉴权。
-    - 生成临时 Token：Token 也称为动态密钥，用于在加入 RTC 频道时对用户鉴权。临时 Token 的有效期为 24 小时。在生产环境中，你需要参考[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)在你的 App 服务端生成 Token。
+    - 获取客户 ID 和客户密钥：使用 HTTP 基本认证调用对话式 AI 引擎 RESTful API 时需要。
+    - 生成 Token：使用 [Token 认证](/zh-CN/ai/build/http-basic-auth#使用-token-认证)调用 RESTful API 时需要。Token 必须以 `007` 开头，并包含 ConvoAI service。在生产环境中，你需要在你的 App 服务端生成 Token。
+    - 生成 RTC Token：用于智能体和用户加入 RTC 频道。该 Token 与 REST 鉴权 Token 的用途不同。
 - 已参考[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)集成 v4.5.1 及以上版本的实时互动 SDK，并在你的 App 中实现基本的实时音视频功能。
   :::info[信息]
   如果你想使用嵌入式智能硬件与 AI 智能体对话，你可以集成 1.9.x 及以上版本的 RTSA C SDK，并参考实现媒体流和信令传输在你的设备端实现基本的实时音视频功能。
@@ -37,13 +38,14 @@ description: "了解如何快速接入对话式 AI 引擎，完成环境准备�
 :::info[提示]
 - 声网推荐你前往控制台的 [**Playground**](https://console.shengwang.cn/product/ConversationAI?tab=Playground) 快速体验与 AI 智能体对话，正确配置各项参数并完成体验后，点击右上角的 **View code** 复制自动生成的服务端 API 调用示例代码。
 - 你可以使用两种鉴权方式：
-  - （推荐）使用 RTC Token 鉴权时，你可以直接将 Token 填入 HTTP 请求头的 `Authorization` 字段。例如：`Authorization: agora token="007abcxxxxxxx123"`。
+  - 使用 Token 认证时，将以 `007` 开头且包含 ConvoAI service 的 Token 填入 HTTP 请求头的 `Authorization` 字段。例如：`Authorization: agora token="007abcxxxxxxx123"`。
   - 使用 HTTP 基本认证时，你可以使用[第三方在线工具](https://www.debugbear.com/basic-auth-header-generator)快速得到 `Authorization` 值。将客户 ID 和客户密钥分别填入 `Username` 和 `Password` 框，得到形如 `Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=` 的结果。将该结果替代下面代码中的 `Authorization: agora token="007abcxxxxxxx123"` 即可。
+  - Header 中的 Token 用于 REST 鉴权，Request Body 中 `properties.token` 使用的 Token 用于智能体加入 RTC 频道，不参与 REST 鉴权。
 :::
 
 #### 请求
 
-```shell
+```bash
 curl --request POST \
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<your_app_id>/join \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
@@ -105,9 +107,8 @@ curl --request POST \
 ```json
 /// 200 OK
 {
-  // highlight-start
+  // [!code highlight:1]
   "agent_id": "1NT29X10YHxxxxxWJOXLYHNYB",
-  // highlight-end
   "create_ts": 1737111452,
   "status": "RUNNING"
 }
@@ -121,12 +122,11 @@ curl --request POST \
 
 #### 请求
 
-```shell
+```bash
 curl --request POST \
-// highlight-start
+# [!code highlight:2]
   --url https://api.agora.io/cn/api/conversational-ai-agent/v2/projects/<your_app_id>/agents/<agentid>/leave \
   --header 'Authorization: agora token="007abcxxxxxxx123"' \
-// highlight-end
 ```
 
 #### 响应

@@ -1,5 +1,17 @@
 import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
-import type { SdkDownloadPlatform } from './sdk-downloads-data';
+import type {
+  SdkDownloadPlatform,
+  SdkDownloadVersion,
+} from './sdk-downloads-data';
+
+const latestWebRtcSdkVersion: SdkDownloadVersion = {
+  id: '4.24.9',
+  label: '版本 4.24.9（最新）',
+  downloadLink:
+    'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
+  packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
+  releaseDate: '2026 年 10 月 13 日',
+};
 
 const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
   {
@@ -867,7 +879,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-android',
             label: '版本 3.1.0（最新）',
-            packageManager: 'gradle://io.github.agora-apaas/FcrUIScene/3.1.0',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.github.agora-apaas/FcrUIScene/3.1.0',
           },
         ],
       },
@@ -881,7 +894,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.9.0（最新）',
             packageName: 'io.agora.agents:agora-agent-client-toolkit',
             packageManager:
-              'gradle://io.agora.agents/agora-agent-client-toolkit/2.9.0',
+              'https://central.sonatype.com/artifact/io.agora.agents/agora-agent-client-toolkit/2.9.0',
           },
         ],
       },
@@ -1601,7 +1614,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-ios',
             label: '版本 3.1.0（最新）',
-            packageManager: 'cocoapods://FcrUIScene?version=3.1.0',
+            packageManager:
+              'https://github.com/CocoaPods/Specs/blob/master/Specs/0/7/4/FcrUIScene/3.1.0/FcrUIScene.podspec.json',
           },
         ],
       },
@@ -1615,7 +1629,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.9.0（最新）',
             packageName: 'agent-client-toolkit-swift',
             packageManager:
-              'cocoapods://agent-client-toolkit-swift?version=2.9.0',
+              'https://github.com/CocoaPods/Specs/blob/master/Specs/0/9/0/agent-client-toolkit-swift/2.9.0/agent-client-toolkit-swift.podspec.json',
           },
         ],
       },
@@ -1631,13 +1645,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 Web 端音视频通话、互动直播和极速直播的实时互动 SDK',
         versions: [
           {
-            id: '4.24.9-video-sdk-web',
-            label: '版本 4.24.9（最新）',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
-            releaseDate: '2026 年 10 月 13 日',
+            ...latestWebRtcSdkVersion,
+            id: `${latestWebRtcSdkVersion.id}-video-sdk-web`,
           },
           {
             id: '4.24.6-video-sdk-web',
@@ -2026,8 +2035,12 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {
+            ...latestWebRtcSdkVersion,
+            id: `${latestWebRtcSdkVersion.id}-voice-sdk-web`,
+          },
+          {
             id: '4.24.6-voice-sdk-web',
-            label: '版本 4.24.6（最新）',
+            label: '版本 4.24.6',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
             packageManager:
@@ -3707,13 +3720,13 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 HarmonyOS NEXT 端纯音频互动场景的实时互动 SDK',
         versions: [
           {
-            id: '4.4.2-voice-sdk-harmonyos',
-            label: '版本 4.4.2（最新）',
+            id: '4.6.3-voice-sdk-harmonyos',
+            label: '版本 4.6.3（最新）',
             downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_V4.4.2_VOICE.har',
-            md5: 'c23e66633da8fe341501b9572ed064c4',
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_HarmonyOS_v4.6.3_VOICE.zip',
+            md5: 'a1d6a77792811e23954645a6bc4590a5',
             packageName: '@shengwang/rtc-voice',
-            releaseDate: '2024 年 11 月 29 日',
+            releaseDate: '2026 年 9 月 20 日',
           },
         ],
       },
@@ -3723,13 +3736,13 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 HarmonyOS NEXT 端音视频互动场景的实时互动 SDK',
         versions: [
           {
-            id: '4.4.2-video-sdk-harmonyos',
-            label: '版本 4.4.2（最新）',
+            id: '4.6.3-video-sdk-harmonyos',
+            label: '版本 4.6.3（最新）',
             downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Native_SDK_for_HarmonyOS_v4.4.2_FULL.har',
-            md5: 'f02df2e181a7e25218eb87dbdca0db7d',
+              'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_HarmonyOS_v4.6.3_FULL.zip',
+            md5: '52b13901ba39f907d1c52bd642a57ab8',
             packageName: '@shengwang/rtc-full',
-            releaseDate: '2024 年 11 月 29 日',
+            releaseDate: '2026 年 9 月 20 日',
           },
         ],
       },
@@ -4028,7 +4041,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-electron',
             label: '版本 3.1.0（最新）',
-            packageManager: 'npm://fcr-ui-scene?version=3.1.0',
+            packageManager:
+              'https://www.npmjs.com/package/fcr-ui-scene/v/3.1.0',
           },
         ],
       },
@@ -5044,20 +5058,17 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
   zhCNRtsaSdkDownloadPlatform,
 ] as const;
 
-// Retain the classroom SDK records while hiding the retired product family.
-const retiredClassroomSdkIds =
-  /^(?:flexible-classroom|cloud-scene|proctor)-sdk-/;
+// Retain source records while hiding classroom and IoT aPaaS downloads.
+const hiddenSdkIds = /^(?:flexible-classroom|cloud-scene|proctor|iot)-sdk-/;
 
 export const zhCNSdkDownloadPlatforms: readonly SdkDownloadPlatform[] =
   zhCNSdkDownloadSourcePlatforms.map((platform) => ({
     ...platform,
-    core: platform.core.filter(
-      (product) => !retiredClassroomSdkIds.test(product.id),
-    ),
+    core: platform.core.filter((product) => !hiddenSdkIds.test(product.id)),
     ...(platform.addOns
       ? {
           addOns: platform.addOns.filter(
-            (product) => !retiredClassroomSdkIds.test(product.id),
+            (product) => !hiddenSdkIds.test(product.id),
           ),
         }
       : {}),

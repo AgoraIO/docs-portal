@@ -10,6 +10,8 @@
 
 本次补齐原有 11 项占位标签：RTC Electron/Unity 4.6.2、HarmonyOS 4.4.2、C# Windows 4.2.0、Unreal C++/Blueprint 4.5.1；RTC Server C++/Java 4.4.32；Whiteboard Android 2.16.100、iOS 2.16.112、Web 2.16.53。依据是迁移来源固定提交 `697ee0110bb05d4fdc6b3f44dd3979afd7a6c981` 的 [`rtc`](https://github.com/AgoraIO/shengwang-doc-source/blob/697ee0110bb05d4fdc6b3f44dd3979afd7a6c981/docs-api-reference/rtc/_platforms_.meta.js)、[`rtc-server-sdk`](https://github.com/AgoraIO/shengwang-doc-source/blob/697ee0110bb05d4fdc6b3f44dd3979afd7a6c981/docs-api-reference/rtc-server-sdk/_platforms_.meta.js)、[`whiteboard`](https://github.com/AgoraIO/shengwang-doc-source/blob/697ee0110bb05d4fdc6b3f44dd3979afd7a6c981/docs-api-reference/whiteboard/_platforms_.meta.js) 中 `siteVersion: current` 的标签，并与 [已有版本盘点](migration/api-reference-historical-archive-inventory-20261020.md) 交叉核对；不是按其他平台版本或最大版本号推断。
 
+上述版本是修复时核对的迁移来源记录。后续发版以维护中的 `navScope` 配置为准：合入中文分支时，HarmonyOS 当前版本已更新为 4.6.3，4.4.2 保留为历史归档外链，不再作为当前版本收录。
+
 快捷搜索和完整搜索都查询同一个 `/api/search` 与正式 Meilisearch 索引。版本筛选来自索引内记录；应按既有全量快照流程 prepare、验收、promote，不能向正式索引只追加新记录，否则旧记录仍会残留。
 
 ## 下一次 SDK 发版

@@ -424,15 +424,14 @@ Web API Example 项目中包含有丰富的功能模块，你可以参考如下�
 声网提供开源示例项目演示 RTC SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。本文介绍如何快速跑通 HarmonyOS NEXT 示例项目，体验实时音视频功能。
 
 <Cards>
-  <Card title={<RepositoryCardTitle provider="gitee">HarmonyOS_NEXT</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample" />
-  <Card title={<RepositoryCardTitle provider="github">HarmonyOS_NEXT</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample" />
+  <Card title={<RepositoryCardTitle provider="gitee">HarmonyOS</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/HarmonyOS" />
+  <Card title={<RepositoryCardTitle provider="github">HarmonyOS</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/HarmonyOS" />
 </Cards>
 
 ## 前提条件
 
-- DevEco Studio NEXT Beta1 及以上版本。
-- API Version 11 的 HarmonyOS NEXT SDK 及以上版本。
-- API Version 11 的 HarmonyOS NEXT 2.0.0.59 操作系统及以上版本。
+- DevEco Studio 5.1.0 Release 及以上版本，已包含所需的 HarmonyOS SDK。
+- 运行 API 12 及以上版本 HarmonyOS 的设备。
 - 已通过授权的华为开发者账号。可在[华为开发者联盟](https://developer.huawei.com/consumer/cn/)注册账号。
 - 两台支持鸿蒙 NEXT 的设备，建议使用 Mate 60 Pro 及更高性能的设备。
 - 可以访问互联网的计算机。
@@ -444,21 +443,28 @@ Web API Example 项目中包含有丰富的功能模块，你可以参考如下�
 
 ### 获取示例项目
 
-1. 运行以下命令，将 Gitee 或 GitHub 示例项目仓库克隆至本地，然后切换至 `HarmonyOS_NEXT-main` 分支。
+1. 运行以下命令，将 Gitee 或 GitHub 示例项目仓库的 `main` 分支克隆至本地。
 
     ```shell
     # 克隆 Gitee 仓库
     git clone git@gitee.com:agoraio-community/API-Examples.git
 
-    # 克隆 Github 仓库
-    git clone git@github.com:AgoraIO/API-Examples.git
+    # 克隆 GitHub 仓库
+    git clone git@github.com:Shengwang-Community/API-Examples.git
     ```
 
-2. 该仓库中包含声网 RTC SDK 所有 Native 平台的示例项目，其中鸿蒙 NEXT 平台的 API 使用示例位于 `/HarmonyOS_NEXT` 路径下。
+2. 该仓库中包含声网 RTC SDK 所有 Native 平台的示例项目，其中 HarmonyOS 平台的 API 使用示例位于 `/HarmonyOS` 路径下。
+
+3. 运行以下命令，进入克隆的仓库目录，下载并校验 v4.6.3 视频 SDK，将 `AgoraRtcSdk.har` 安装到示例项目的 `entry/libs` 目录中：
+
+   ```shell
+   cd API-Examples
+   bash HarmonyOS/APIExample/prepare_sdk.sh
+   ```
 
 ### 配置示例项目
 
-1. 用 DevEco Studio 打开 `/API-Examples-dev-HarmonyOS_NEXT/HarmonyOS_NEXT/APIExample` 文件夹。
+1. 用 DevEco Studio 打开 `/API-Examples/HarmonyOS/APIExample` 文件夹。
 2. 为你的项目设置自动签名。
 
     点击 **File** > **Project Structure...** > **Project** > **SigningConfigs**，在窗口中勾选 **Support HarmonyOS** 和 **Automatically generate signature**。点击界面提示的 **Sign In** 并使用华为帐号登录。等待自动签名完成后，点击 **OK** 即可。
@@ -467,7 +473,7 @@ Web API Example 项目中包含有丰富的功能模块，你可以参考如下�
 
 2. 设置 App ID 和 App 证书
 
-    打开 `HarmonyOS_NEXT/APIExample/entry/src/main/ets/common/KeyCenter.ets` 文件，在 `YOUR APP ID` 和 `YOUR APP CERTIFICATE` 中填入你从声网控制台获取的 App ID 和 App 证书。
+    打开 `HarmonyOS/APIExample/entry/src/main/ets/common/KeyCenter.ets` 文件，在 `YOUR APP ID` 和 `YOUR APP CERTIFICATE` 中填入你从声网控制台获取的 App ID 和 App 证书。
 
     ```arkts
     // 把 <#Your App ID#> 替换成你的 App ID，并加引号，如 "xxxxxx"
@@ -1006,7 +1012,11 @@ yarn
 
 <PlatformStructured platform="unreal">
 
-声网在 GitHub 上提供开源示例项目 [API-Examples](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example) 演示声网实时互动 SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+声网在 GitHub 上提供开源示例项目演示声网实时互动 SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-CPP-Example" />
+</Cards>
 
 本文介绍如何快速跑通 Unreal C++ 示例项目，体验实时音视频功能。
 
@@ -1102,7 +1112,11 @@ yarn
 
 <PlatformStructured platform="blueprint">
 
-声网在 GitHub 上提供开源示例项目 [API-Examples](https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example) 演示声网实时互动 SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+声网在 GitHub 上提供开源示例项目演示声网实时互动 SDK 的 API 使用示例，以帮助开发者更好地理解和运用声网 SDK 的功能。
+
+<Cards>
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/Agora-Unreal-RTC-SDK/tree/main/Agora-Unreal-SDK-Blueprint-Example" />
+</Cards>
 
 本文介绍如何快速跑通 Unreal Blueprint 示例项目，体验实时音视频功能。
 

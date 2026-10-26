@@ -22,6 +22,7 @@ import { AccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import { isCnPublicDocsPath } from '@/lib/cn-public-routing';
 import {
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
@@ -42,6 +43,8 @@ import {
 } from '@/lib/i18n/i18n-config';
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
 import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
+import { toCnContentSearchUrl } from '@/lib/search/cn-search-urls.mjs';
+import { DOCS_REGION } from '@/lib/site-region';
 import {
   PlatformHeaderTabs,
   PlatformPageProvider,
@@ -698,7 +701,11 @@ function getSafeStoredDocsHref(href: string) {
 }
 
 function getDocsPageKey(url: URL) {
-  const pathname = normalizePathname(url.pathname);
+  const rawPath = normalizePathname(url.pathname);
+  const pathname =
+    DOCS_REGION === 'cn' && isCnPublicDocsPath(rawPath)
+      ? toCnContentSearchUrl(rawPath)
+      : rawPath;
 
   if (!isDocsPagePath(pathname)) {
     return null;

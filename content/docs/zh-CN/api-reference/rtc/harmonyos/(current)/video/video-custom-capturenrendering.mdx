@@ -105,10 +105,6 @@ public abstract pushExternalVideoFrameById(frame: VideoFrame, videoTrackId: numb
 当你需要在频道中发布自定义采集视频时，可参考以下步骤：
 
 1. 调用 [createCustomVideoTrack](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_irtcengine_createcustomvideotrack) 方法创建视频轨道并获得视频轨道 ID。
-
-   :::note
-   注： 如果你只需推送一路自定义采集的视频流到频道中，可以直接调用 [setExternalVideoSource](/zh-CN/api-reference/rtc/harmonyos/video/video-custom-capturenrendering#api_imediaengine_setexternalvideosource) 方法启用外部视频源，此时 SDK 会自动创建一个 videoTrackId 为 0 的视频轨道。
-   :::
 2. 调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 加入频道时，将 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 中的 customVideoTrackId 设置为你想要发布的视频轨道 ID，并将 publishCustomVideoTrack 设置为 `true`。
 3. 调用该方法将 videoTrackId 指定为步骤 2 中指定的视频轨道 ID，即可实现在频道内发布对应的自定义视频源。
 
@@ -133,11 +129,7 @@ public abstract pushExternalVideoFrameById(frame: VideoFrame, videoTrackId: numb
 <a id="videotrackid-1"></a>
 <Parameter name="videoTrackId">
 
-调用 createCustomVideoTrack 方法返回的视频轨道 ID。
-
-:::note
-注： 如果你只需推送一路外部视频流，videoTrackId 设置为 0 即可。
-:::
+调用 createCustomVideoTrack 方法返回的视频轨道 ID。默认值为 0。
 
 </Parameter>
 </ParameterList>

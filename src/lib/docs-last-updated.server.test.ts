@@ -40,7 +40,7 @@ describe('resolveDocsLastUpdatedMetadata', () => {
     expect(statMock).not.toHaveBeenCalled();
   });
 
-  it('falls back to filesystem mtime when generated metadata is unavailable', async () => {
+  it('does not present checkout or build mtimes as content update times', async () => {
     statMock.mockResolvedValue({
       mtime: new Date('2026-07-06T13:32:13.000Z'),
     });
@@ -48,10 +48,11 @@ describe('resolveDocsLastUpdatedMetadata', () => {
     await expect(
       resolveDocsLastUpdatedMetadata(['content/docs/en/not-yet-committed.md']),
     ).resolves.toEqual({
-      formatted: '2026/07/06 13:32:13',
-      iso: '2026-07-06T13:32:13.000Z',
-      source: 'file-mtime',
+      formatted: '1970/01/01 00:00:00',
+      iso: '1970-01-01T00:00:00.000Z',
+      source: 'fallback',
     });
+    expect(statMock).not.toHaveBeenCalled();
   });
 
   it('uses the deterministic fallback timestamp when no metadata source is readable', async () => {

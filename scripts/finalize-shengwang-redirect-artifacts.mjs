@@ -14,6 +14,7 @@ const repoRoot = path.resolve(
   '..',
 );
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
+const retirementPolicyPath = path.join(repoRoot, 'src/lib/retired-cn-docs.mjs');
 const candidatePath = path.join(
   inputRoot,
   'legacy-url-map-candidate-32883e92e9-2026-10-15.json',
@@ -52,6 +53,8 @@ validateRecords(
   applicationRoutes,
 );
 const records = candidate.records.map((record) => {
+  // The historical route snapshot includes products retired since collection.
+  // Keep that evidence immutable; apply the current publication policy explicitly.
   if (
     isRetiredCnLegacyDocsPath(record.legacyPath) ||
     isRetiredCnDocsPath(record.target)
@@ -129,6 +132,10 @@ const finalJson = `${JSON.stringify(
     sourceCandidate: path.relative(repoRoot, candidatePath),
     snapshot: candidate.snapshot,
     targetUrlTransform: 'remove-zh-CN-prefix',
+    retirementPolicy: {
+      path: path.relative(repoRoot, retirementPolicyPath),
+      sha256: await sha256File(retirementPolicyPath),
+    },
     summary: finalSummary,
     records,
   },

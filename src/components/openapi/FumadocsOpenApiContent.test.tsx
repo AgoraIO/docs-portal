@@ -3574,6 +3574,63 @@ describe('FumadocsOpenApiContent', () => {
     expect(screen.getByText('Schema 中没有字段')).toBeInTheDocument();
   });
 
+  it('shows primitive types for titled response references', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'post', path: '/recording/start' }],
+          payload: {
+            bundled: {
+              components: {
+                schemas: {
+                  'cname-r': { title: 'cname-r', type: 'string' },
+                  'resourceId-r': { title: 'resourceId-r', type: 'string' },
+                  'uid-r': { title: 'uid-r', type: 'string' },
+                },
+              },
+              info: { title: 'Cloud recording API' },
+              openapi: '3.2.0',
+              paths: {
+                '/recording/start': {
+                  post: {
+                    responses: {
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                cname: { $ref: '#/components/schemas/cname-r' },
+                                resourceId: {
+                                  $ref: '#/components/schemas/resourceId-r',
+                                },
+                                sid: { type: 'string' },
+                                uid: { $ref: '#/components/schemas/uid-r' },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'Recording started.',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    for (const name of ['cname', 'uid', 'resourceId', 'sid']) {
+      const field = await screen.findByText(name, { selector: 'code' });
+      const row = field.closest('.openapi-schema-field-row') as HTMLElement;
+      expect(within(row).getByText('string', { exact: true })).toBeVisible();
+      expect(within(row).queryByText(`${name}-r`)).not.toBeInTheDocument();
+    }
+  });
+
   it('keeps a real primitive response schema renderable', async () => {
     render(
       <FumadocsOpenApiContent
