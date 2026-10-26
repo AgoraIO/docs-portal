@@ -79,8 +79,8 @@ paths:
                                 "region": {
                                   "x": 0,
                                   "y": 0,
-                                  "width": 100,
-                                  "height": 100,
+                                  "width": 120,
+                                  "height": 120,
                                   "zOrder": 50
                                 }
                               }
@@ -131,7 +131,7 @@ paths:
                                   "codec": "H264",
                                   "bitrate": 800,
                                   "width": 960,
-                                  "height": 48
+                                  "height": 480
                                 }
                               }
                             ]
@@ -189,8 +189,8 @@ paths:
                                             "region": {
                                                 "x": 0,
                                                 "y": 0,
-                                                "width": 100,
-                                                "height": 100,
+                                                "width": 120,
+                                                "height": 120,
                                                 "zOrder": 50
                                             }
                                         }
@@ -303,8 +303,8 @@ paths:
                               region: {
                                 x: 0,
                                 y: 0,
-                                width: 100,
-                                height: 100,
+                                width: 120,
+                                height: 120,
                                 zOrder: 50
                               }
                             }
@@ -1072,10 +1072,10 @@ paths:
         - lang: bash
           label: curl
           source: |-
-            curl --request post \
-                    --url 'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken=' \
+            curl --request patch \
+                    --url 'https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=<actual_token_value>&sequenceId=1&updateMask=services.cloudTranscoder.config' \
                     --header 'Authorization: Basic <credentials>' \
-                    --header 'Content-Type: <string>' \
+                    --header 'Content-Type: application/json' \
                     --data '
                   {
                     "services": {
@@ -1182,11 +1182,11 @@ paths:
             import requests
                 import json
 
-                url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken="
+                url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=<actual_token_value>&sequenceId=1&updateMask=services.cloudTranscoder.config"
 
                 headers = {
                     "Authorization": "Basic <credentials>",
-                    "Content-Type": "<string>"
+                    "Content-Type": "application/json"
                 }
 
                 data = {
@@ -1289,7 +1289,7 @@ paths:
                     }
                 }
 
-                response = requests.post(url, headers=headers, data=json.dumps(data))
+                response = requests.patch(url, headers=headers, data=json.dumps(data))
 
                 print(response.status_code)
                 print(response.json())
@@ -1298,11 +1298,11 @@ paths:
           source: |-
             const axios = require("axios");
 
-                const url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks?builderToken=";
+                const url = "https://api.sd-rtn.com/v1/projects/:appId/rtsc/cloud-transcoder/tasks/:taskId?builderToken=<actual_token_value>&sequenceId=1&updateMask=services.cloudTranscoder.config";
 
                 const headers = {
                   Authorization: "Basic <credentials>",
-                  "Content-Type": "<string>",
+                  "Content-Type": "application/json",
                 };
 
                 const data = {
@@ -1406,7 +1406,7 @@ paths:
                 };
 
                 axios
-                  .post(url, data, { headers })
+                  .patch(url, data, { headers })
                   .then((response) => {
                     console.log(response.status);
                     console.log(response.data);
@@ -1665,7 +1665,8 @@ paths:
             curl --request post \
                   --url https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId \
                   --header 'Authorization: Basic <credentials>' \
-                  --header 'Content-Type: <string>'
+                  --header 'Content-Type: application/json' \
+                  --data '{"enabled": true, "video": {"width": 1280, "height": 720, "fps": 15}}'
         - lang: python
           label: Python
           source: |-
@@ -1675,10 +1676,12 @@ paths:
 
                 headers = {
                     "Authorization": "Basic <credentials>",
-                    "Content-Type": "<string>"
+                    "Content-Type": "application/json"
                 }
 
-                response = requests.request("post", url, headers=headers)
+                data = {"enabled": True, "video": {"width": 1280, "height": 720, "fps": 15}}
+
+                response = requests.request("post", url, headers=headers, json=data)
 
                 print(response.text)
         - lang: javascript
@@ -1687,7 +1690,8 @@ paths:
             const url = 'https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId';
                 const options = {
                   method: 'post',
-                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': '<string>'}
+                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': 'application/json'},
+                  body: JSON.stringify({enabled: true, video: {width: 1280, height: 720, fps: 15}})
                 };
 
                 fetch(url, options)
