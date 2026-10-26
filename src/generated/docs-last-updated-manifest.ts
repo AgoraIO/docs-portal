@@ -636,8 +636,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
     '2026-10-24T09:49:48.000Z',
-  'content/docs/en/ai/platform/index.mdx': '2026-10-24T09:49:48.000Z',
-  'content/docs/en/ai/platform/meta.json': '2026-10-22T12:41:21.000Z',
+  'content/docs/en/ai/platform/index.mdx': '2026-10-26T10:38:15.000Z',
+  'content/docs/en/ai/platform/meta.json': '2026-10-26T10:38:15.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/asr/ares.mdx': '2026-10-24T06:16:23.000Z',
@@ -735,6 +735,8 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/models/tts/typecast.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/tts/xai.mdx': '2026-10-24T06:16:23.000Z',
+  'content/docs/en/ai/platform/reference/event-types.mdx':
+    '2026-10-26T10:38:15.000Z',
   'content/docs/en/ai/platform/release-notes.mdx': '2026-10-22T12:41:21.000Z',
   'content/docs/en/ai/pricing.md': '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/product-overview.md': '2026-05-18T10:29:54.000Z',
