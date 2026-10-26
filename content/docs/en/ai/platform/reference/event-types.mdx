@@ -1,0 +1,531 @@
+---
+title: Notification event types
+description: Webhook notification events that the Conversational AI Platform sends for sessions, RTC, and telephony.
+---
+
+{/* PLATFORM-NEW: new page for the Platform, written from the launch contract on 2026-10-26. Status: drafted, pending review. */}
+
+{/* TODO(platform-confirm): The launch contract describes this event catalog as a design proposal whose numeric event types aren't yet defined in the OpenAPI. Confirm the event numbers, product ID 23, and payloads before the Preview. */}
+
+When you enable Agora message notifications, the Agora notification server (NCS) sends event notifications about your Conversational AI Platform sessions to your server in HTTPS POST requests. This page describes the request format and each event type.
+
+To receive notifications, configure a webhook for your project in Agora Console.
+
+{/* TODO(platform-confirm): Confirm the Agora Console steps for Platform notifications (product ID 23), and add them to this page. Don't link to the Voice Agent webhook page. */}
+
+## Choose event types by goal
+
+The following table helps you find the events for common tasks:
+
+| Goal | Use these event types | What they help you answer |
+| --- | --- | --- |
+| Confirm that a session started or ended | [`1001` Session state changed](#1001-session-state-changed) | Did the agent start? When and why did the session end? |
+| Get what was said in a session | [`1002` Session transcripts](#1002-session-transcripts) | What did the user and the agent say? |
+| Investigate failures | [`1003` Session errors](#1003-session-errors), [`1001` Session state changed](#1001-session-state-changed) | Which component failed? Did the session end because of it? |
+| Measure latency per turn | [`1004` Turns finished](#1004-turns-finished) | How long did each turn take, and in which component? |
+| Renew the agent's RTC token | [`1101` RTC token expiring](#1101-rtc-token-expiring) | Does the agent need a new token? |
+| Track phone call progress | [`1201` Telephony state](#1201-telephony-state) | Was the call answered? How and why did it end? |
+
+For phone calls, the session and the call are reported separately. [`1001` Session state changed](#1001-session-state-changed) reports the agent's session, which can be `running` while the call is still ringing. [`1201` Telephony state](#1201-telephony-state) reports the call itself. A call can also end before the session's post-call results are ready. To follow a phone call, handle both events.
+
+## Request header
+
+Each notification request contains the following headers:
+
+| Header | Description |
+| --- | --- |
+| `Content-Type` | `application/json` |
+| `Agora-Signature-V2` | An HMAC/SHA256 signature over the raw request body. Use this signature when you can. |
+| `Agora-Signature` | An HMAC/SHA1 signature over the raw request body, for compatible integrations. |
+
+Verify the signature against the unchanged raw request body before you accept the notification.
+
+## Request body
+
+The request body is a UTF-8 JSON object with the following fields:
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `noticeId` | String | Yes | The notification ID. It stays the same when NCS retries the same event. Use it to deduplicate notifications. |
+| `productId` | Integer | Yes | The product ID. For the Conversational AI Platform, `23`. |
+| `eventType` | Integer | Yes | The event type. See [Event types](#event-types). |
+| `notifyMs` | Integer | Yes | The time NCS sent the notification, as a Unix timestamp in milliseconds. It can change when NCS retries. |
+| `sid` | String | Yes | The session ID. It's the same as `payload.agent_session_id`. |
+| `payload` | Object | Yes | The event details. Each event type has its own fields. |
+
+The envelope fields use camelCase. The `payload` fields use snake_case, like the Session API. In `payload`, `created_at` and `ended_at` are the session's timestamps in Unix seconds, and `occurred_at_ms` is when the event happened, in Unix milliseconds.
+
+```json
+{
+  "noticeId": "notice-1001-example",
+  "productId": 23,
+  "eventType": 1001,
+  "notifyMs": 1789913402100,
+  "sid": "b42ac95tp25py49fc37hp94vm67ht52h",
+  "payload": {
+    "agent_session_id": "b42ac95tp25py49fc37hp94vm67ht52h",
+    "status": "failed",
+    "occurred_at_ms": 1789913402000,
+    "created_at": 1789913400,
+    "ended_at": 1789913402,
+    "transport": {
+      "type": "telephony",
+      "direction": "outbound",
+      "to_number": "+14155550101"
+    }
+  }
+}
+```
+
+### Respond to notifications
+
+After you verify a notification, return HTTP status `200` with a JSON body within 10 seconds. Keep the following in mind:
+
+- Notifications can be duplicated or arrive out of order. Neither `notifyMs` nor `occurred_at_ms` sets the delivery order. Deduplicate by `noticeId`.
+- Acknowledge event types that you don't recognize, after you verify their signature.
+- If you miss a notification, [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session) returns the session's latest status, not the transition you missed. Phone call state and post-call results can't be recovered this way.
+
+## Event types
+
+Event types are grouped by scope: `10xx` for sessions, `11xx` for RTC, and `12xx` for telephony. Session events apply to both transports.
+
+| Event type | Event name | Event description |
+| :--- | :--- | :--- |
+| [1001](#1001-session-state-changed) | Session state changed | The session status changes, including when the agent joins or leaves an RTC channel and when the session fails to start. |
+| [1002](#1002-session-transcripts) | Session transcripts | Transcript processing for the session finished or failed. |
+| [1003](#1003-session-errors) | Session errors | A component of the agent reported an error. The error doesn't necessarily end the session. |
+| [1004](#1004-turns-finished) | Turns finished | Conversation turn data, including metrics for each turn, after the session ends. |
+| [1101](#1101-rtc-token-expiring) | RTC token expiring | The agent's RTC token is about to expire. |
+| [1201](#1201-telephony-state) | Telephony state | The state of an inbound or outbound phone call changes. |
+
+### 1001 Session state changed
+
+The session status changed. This event applies to both transports, and it includes failures before the agent joins an RTC channel or before a call is answered. For RTC sessions, `running` means the agent joined the channel, and `stopped` or `failed` means it left.
+
+`payload.status` is the status at the transition. A later [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session) request can return a newer status.
+
+{/* TODO(platform-confirm): Event status values are lowercase (`running`), but the Session API and the Platform guides use uppercase (`RUNNING`). Confirm the casing for both. */}
+
+{/* TODO(platform-confirm): The launch contract leaves open whether the initial `idle` status emits an event. Confirm it. */}
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `agent_session_id` | String | Yes | The session ID. It's the same as the envelope `sid`. |
+| `agent_name` | String | No | The agent name, when it's known. |
+| `labels` | `Object<string, string>` | No | The labels you passed when you started the session. |
+| `status` | String | Yes | The session status at this transition: `idle`, `starting`, `running`, `stopping`, `stopped`, or `failed`. |
+| `occurred_at_ms` | Integer | Yes | When the transition happened, as a Unix timestamp in milliseconds. |
+| `created_at` | Integer | Yes | When the session was created, as a Unix timestamp in seconds. |
+| `ended_at` | Integer | No | When the session ended, as a Unix timestamp in seconds, if it's known. |
+| `transport` | Object | Yes | The session's transport. For `rtc`, `type` and `channel`. For `telephony`, `type`, `direction`, and the `from_number` and `to_number` when they're known. It never contains RTC tokens or encryption settings. |
+| `message` | String | No | Details about the status, as free-form text, for example `OK`. Don't rely on a fixed set of values. |
+
+A session can fail before the phone numbers are resolved. In that case, `transport` doesn't contain `from_number` or `to_number`.
+
+The following examples show payloads for RTC and phone sessions:
+
+<Tabs defaultValue="rtc-running">
+  <TabsList>
+    <TabsTrigger value="rtc-running">RTC session running</TabsTrigger>
+    <TabsTrigger value="rtc-stopped">RTC session stopped</TabsTrigger>
+    <TabsTrigger value="telephony-running">Phone session running</TabsTrigger>
+  </TabsList>
+  <TabsContent value="rtc-running">
+
+```json
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "agent_name": "support-agent",
+  "status": "running",
+  "occurred_at_ms": 1789913400000,
+  "created_at": 1789913400,
+  "transport": {
+    "type": "rtc",
+    "channel": "support-4821"
+  },
+  "labels": {
+    "customer_group": "vip"
+  }
+}
+```
+
+  </TabsContent>
+  <TabsContent value="rtc-stopped">
+
+```json
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "agent_name": "support-agent",
+  "status": "stopped",
+  "occurred_at_ms": 1789913470000,
+  "created_at": 1789913400,
+  "ended_at": 1789913470,
+  "transport": {
+    "type": "rtc",
+    "channel": "support-4821"
+  },
+  "message": "OK",
+  "labels": {
+    "customer_group": "vip"
+  }
+}
+```
+
+  </TabsContent>
+  <TabsContent value="telephony-running">
+
+```json
+{
+  "agent_session_id": "c42ac95tp25py49fc37hp94vm67ht52h",
+  "agent_name": "support-agent",
+  "status": "running",
+  "occurred_at_ms": 1789913401000,
+  "created_at": 1789913400,
+  "transport": {
+    "type": "telephony",
+    "direction": "outbound",
+    "from_number": "+14155550100",
+    "to_number": "+14155550101"
+  },
+  "labels": {
+    "customer_group": "vip"
+  }
+}
+```
+
+  </TabsContent>
+</Tabs>
+
+### 1002 Session transcripts
+
+Transcript processing for the session finished or failed. This event applies to both transports. The transcript records what the user and the agent said. It isn't the LLM's context window.
+
+`status` is the result of transcript processing, not the session status. A phone call can end before this event arrives.
+
+{/* TODO(platform-confirm): The launch contract defers transcript features elsewhere (session history, transcripts, and turns through the API). Confirm that event 1002 is delivered in the Preview. */}
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `agent_session_id` | String | Yes | The session ID. It's the same as the envelope `sid`. |
+| `occurred_at_ms` | Integer | Yes | When the event happened, as a Unix timestamp in milliseconds. It isn't the NCS delivery time in `notifyMs`. |
+| `agent_name` | String | No | The agent name, when it's known. |
+| `labels` | `Object<string, string>` | No | The labels you passed when you started the session. |
+| `created_at` | Integer | Yes | When the session was created, as a Unix timestamp in seconds. |
+| `ended_at` | Integer | Yes | When the session ended, as a Unix timestamp in seconds. |
+| `status` | String | Yes | The result of transcript processing: `completed` or `failed`. |
+| `transcript` | `Array<Object>` | Yes | The spoken segments. Empty when processing failed or no speech was captured. |
+| `transcript[].role` | String | Yes | The speaker: `user` or `assistant`. |
+| `transcript[].content` | String | Yes | The words spoken or played. An interrupted agent segment contains only the part that was played. |
+| `transcript[].turn_id` | Integer | Yes | The ID of the turn the segment belongs to. |
+| `transcript[].speech_started_ms` | Integer | No | When the speech or playback started, as a Unix timestamp in milliseconds. |
+| `transcript[].speech_ended_ms` | Integer | No | When the speech or playback ended, as a Unix timestamp in milliseconds. |
+| `transcript[].metadata` | Object | No | The source of the segment in `source`: `greeting`, `asr`, `llm`, or `command`. An interrupted segment also contains `interrupted`, `interrupted_ms`, and `original`, the full text the agent planned to say. |
+
+The following example shows a payload for this event:
+
+```json
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "occurred_at_ms": 1789913471000,
+  "agent_name": "support-agent",
+  "created_at": 1789913400,
+  "ended_at": 1789913470,
+  "status": "completed",
+  "labels": {
+    "customer_group": "vip"
+  },
+  "transcript": [
+    {
+      "role": "assistant",
+      "content": "How can I help you today?",
+      "turn_id": 1,
+      "speech_started_ms": 1789913410000,
+      "speech_ended_ms": 1789913411000,
+      "metadata": {
+        "source": "greeting"
+      }
+    },
+    {
+      "role": "user",
+      "content": "Can you tell me a joke?",
+      "turn_id": 2,
+      "speech_started_ms": 1789913411200,
+      "speech_ended_ms": 1789913411800,
+      "metadata": {
+        "source": "asr"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "Why did the scarecrow ",
+      "turn_id": 2,
+      "speech_started_ms": 1789913412000,
+      "speech_ended_ms": 1789913412700,
+      "metadata": {
+        "source": "llm",
+        "interrupted": true,
+        "interrupted_ms": 1789913412700,
+        "original": "Why did the scarecrow win an award? Because he was outstanding in his field!"
+      }
+    },
+    {
+      "role": "user",
+      "content": "Tell me a story instead.",
+      "turn_id": 3,
+      "speech_started_ms": 1789913412800,
+      "speech_ended_ms": 1789913413400,
+      "metadata": {
+        "source": "asr"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "Once upon a time in a land far away, there lived a brave knight.",
+      "turn_id": 3,
+      "speech_started_ms": 1789913413600,
+      "speech_ended_ms": 1789913417000,
+      "metadata": {
+        "source": "llm"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "Are you still there?",
+      "turn_id": 4,
+      "speech_started_ms": 1789913420000,
+      "speech_ended_ms": 1789913421000,
+      "metadata": {
+        "source": "command"
+      }
+    }
+  ]
+}
+```
+
+### 1003 Session errors
+
+A component of the agent reported an error. The error doesn't necessarily end the session. To find out whether the session ended, use [`1001` Session state changed](#1001-session-state-changed).
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `agent_session_id` | String | Yes | The session ID. It's the same as the envelope `sid`. |
+| `occurred_at_ms` | Integer | Yes | When the event happened, as a Unix timestamp in milliseconds. It isn't the NCS delivery time in `notifyMs`. |
+| `agent_name` | String | No | The agent name, when it's known. |
+| `created_at` | Integer | Yes | When the session was created, as a Unix timestamp in seconds. |
+| `turn_id` | Integer | No | The ID of the turn the error belongs to, if any. |
+| `errors` | `Array<Object>` | Yes | The errors reported in this notification. |
+| `errors[].module` | String | Yes | The component that reported the error, for example `llm`. |
+| `errors[].turn_id` | Integer | No | The ID of the turn the error belongs to, if any. |
+| `errors[].code` | Integer | Yes | The component's error code. |
+| `errors[].message` | String | Yes | A description of the error. |
+
+The following example shows a payload for this event:
+
+```json
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "occurred_at_ms": 1789913430000,
+  "agent_name": "support-agent",
+  "created_at": 1789913400,
+  "turn_id": 2,
+  "errors": [
+    {
+      "module": "llm",
+      "turn_id": 2,
+      "code": 503,
+      "message": "Insufficient balance."
+    }
+  ]
+}
+```
+
+### 1004 Turns finished
+
+The session ended, and its conversation turn data is available. Each turn includes its start, its end, and its latency metrics, if they were collected. The payload can leave out earlier turns. `is_truncated` tells you whether it did.
+
+Session timestamps are in Unix seconds. Turn boundaries are in Unix milliseconds.
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `agent_session_id` | String | Yes | The session ID. It's the same as the envelope `sid`. |
+| `occurred_at_ms` | Integer | Yes | When the event happened, as a Unix timestamp in milliseconds. It isn't the NCS delivery time in `notifyMs`. |
+| `agent_name` | String | No | The agent name, when it's known. |
+| `created_at` | Integer | Yes | When the session was created, as a Unix timestamp in seconds. |
+| `ended_at` | Integer | Yes | When the session ended, as a Unix timestamp in seconds. |
+| `total_turn_count` | Integer | Yes | The total number of turns in the session. |
+| `is_truncated` | Boolean | Yes | Whether `turns` leaves out earlier turns. |
+| `turns` | `Array<Object>` | Yes | The turns in this payload. |
+| `turns[].agent_session_id` | String | Yes | The session ID. |
+| `turns[].turn_id` | Integer | Yes | The turn ID. |
+| `turns[].start` | Object | Yes | The start of the turn and what triggered it. |
+| `turns[].start.started_at_ms` | Integer | Yes | When the turn started, as a Unix timestamp in milliseconds. |
+| `turns[].start.type` | String | Yes | What started the turn: `voice_input`, `greeting`, `silence_timeout`, `api_speak`, or `api_think`. |
+| `turns[].start.metadata` | Object | No | Details about what started the turn. |
+| `turns[].end` | Object | Yes | The end of the turn and its outcome. |
+| `turns[].end.ended_at_ms` | Integer | Yes | When the turn ended, as a Unix timestamp in milliseconds. |
+| `turns[].end.type` | String | Yes | How the turn ended: `ok`, `error`, `ignored`, or `interrupted`. |
+| `turns[].end.metadata` | Object | No | Details about how the turn ended. |
+| `turns[].metrics` | Object | No | Performance metrics for the turn, if collected. |
+| `turns[].metrics.e2e_latency_ms` | Number | No | The end-to-end latency of the turn, in milliseconds. |
+| `turns[].metrics.segmented_latency_ms` | `Object<string, number>` | No | The latency of each component in milliseconds, such as `asr_ttlw_ms`, `llm_ttfb_ms`, and `tts_ttfb_ms`. Components that weren't measured are left out. |
+
+{/* TODO(platform-confirm): The `api_speak` and `api_think` turn start types depend on the Speak and Inject context session actions, which weren't deployed on staging on 2026-10-20. Confirm them. */}
+
+The following example shows a payload for this event:
+
+```json
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "occurred_at_ms": 1789913473000,
+  "agent_name": "support-agent",
+  "created_at": 1789913400,
+  "ended_at": 1789913470,
+  "total_turn_count": 4,
+  "is_truncated": true,
+  "turns": [
+    {
+      "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+      "turn_id": 4,
+      "start": {
+        "started_at_ms": 1789913420000,
+        "type": "silence_timeout"
+      },
+      "end": {
+        "ended_at_ms": 1789913421000,
+        "type": "ok"
+      },
+      "metrics": {
+        "e2e_latency_ms": 1500,
+        "segmented_latency_ms": {
+          "asr_ttlw_ms": 503,
+          "llm_ttfb_ms": 1104,
+          "tts_ttfb_ms": 85
+        }
+      }
+    }
+  ]
+}
+```
+
+### 1101 RTC token expiring
+
+The agent's RTC token is about to expire. This is a warning only: the agent stays in the channel, and the session continues. If you passed the agent's token when you started the session, [update the session](/en/api-reference/api-ref/conversational-ai/platform/update-session) with a new `transport.token` before the token expires.
+
+{/* TODO(platform-confirm): Update a session wasn't deployed on staging on 2026-10-20 (405). Confirm that it ships in the Preview, since it's the only way to renew the token. */}
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `agent_session_id` | String | Yes | The session ID. It's the same as the envelope `sid`. |
+| `occurred_at_ms` | Integer | Yes | When the event happened, as a Unix timestamp in milliseconds. It isn't the NCS delivery time in `notifyMs`. |
+| `agent_name` | String | No | The agent name, when it's known. |
+| `transport` | Object | Yes | The RTC transport. `type` is `rtc`, and `channel` is the channel name. |
+| `created_at` | Integer | Yes | When the session was created, as a Unix timestamp in seconds. |
+| `message` | String | Yes | The warning text: `RTC token will expire soon.` |
+
+The following example shows a payload for this event:
+
+```json
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "occurred_at_ms": 1789913450000,
+  "agent_name": "support-agent",
+  "created_at": 1789913400,
+  "transport": {
+    "type": "rtc",
+    "channel": "support-4821"
+  },
+  "message": "RTC token will expire soon."
+}
+```
+
+### 1201 Telephony state
+
+The state of an inbound or outbound phone call changed. Call state is separate from the session status: a `running` session doesn't mean that the call was answered. Each notification contains the basic call details. You can handle each one on its own, even when notifications arrive out of order.
+
+| Field | Type | Required | Description |
+| --- | --- | --- | --- |
+| `agent_session_id` | String | Yes | The session ID. It's the same as the envelope `sid`. |
+| `custom_id` | String | No | Your own call ID from the SIP `X-switch-id` header, if any. It isn't the session ID or an idempotency key. |
+| `direction` | String | Yes | The call direction: `inbound` or `outbound`. |
+| `from_number` | String | Yes | The caller's number. |
+| `to_number` | String | Yes | The called number. |
+| `occurred_at_ms` | Integer | Yes | When the event happened, as a Unix timestamp in milliseconds. It doesn't guarantee ordering. |
+| `state` | String | Yes | The call state: `starting`, `calling`, `ringing`, `answered`, `transferred`, or `ended`. A call can skip `calling` and `ringing`. Don't assume that a call was answered because it ended. |
+| `hangup_reason` | String | No | Why the call ended, as a normalized reason. Present when `state` is `ended`. See [Hangup reasons](#hangup-reasons). |
+| `hangup_reason_code` | String | No | The raw SIP or gateway reason code. Present when `state` is `ended`. New values can appear. |
+| `duration_seconds` | Number | No | How long the call was connected, in seconds. `0` if it never connected. |
+
+The following example shows a payload for this event:
+
+```json
+{
+  "agent_session_id": "c42ac95tp25py49fc37hp94vm67ht52h",
+  "custom_id": "customer-call-0001",
+  "direction": "outbound",
+  "from_number": "+14155550100",
+  "to_number": "+14155550101",
+  "state": "ended",
+  "occurred_at_ms": 1789913470000,
+  "hangup_reason": "USER_HANGUP",
+  "hangup_reason_code": "NORMAL_CLEARING",
+  "duration_seconds": 60
+}
+```
+
+#### Hangup reasons
+
+The following tables list the documented `hangup_reason` values and the `hangup_reason_code` values they map to, grouped by whether the call connected. Neither field is a closed list. If you get a `hangup_reason_code` you don't recognize, `hangup_reason` is `UNKNOWN_REASON`.
+
+<Accordions>
+<Accordion title="Hangup reasons before the call connects">
+
+| `hangup_reason` | Meaning | `hangup_reason_code` values |
+| --- | --- | --- |
+| `NO_ANSWER` | No answer | `NO_ANSWER`, `NO_USER_RESPONSE` |
+| `POWER_OFF` | The phone is off | `SUBSCRIBER_ABSENT` |
+| `SUSPENDED` | The number is suspended | `USER_NOT_REGISTERED` |
+| `BUSY` | The line is busy | `USER_BUSY`, `LOSE_RACE` |
+| `REJECTED` | The user rejected the call | `CALL_REJECTED` |
+| `NUMBER_NOT_EXIST` | The number doesn't exist | `UNALLOCATED_NUMBER`, `INCOMPATIBLE_DESTINATION`, `DESTINATION_OUT_OF_ORDER`, `INVALID_NUMBER_FORMAT` |
+| `ROUTE_EXCEPTION` | A routing error | `NO_ROUTE_DESTINATION`, `EXCHANGE_ROUTING_ERROR` |
+| `NETWORK_EXCEPTION` | A network error | `NETWORK_OUT_OF_ORDER` |
+| `CALL_TIMEOUT` | The call timed out | `RECOVERY_ON_TIMER_EXPIRE` |
+| `MEDIA_TIMEOUT` | The media timed out | `MEDIA_TIMEOUT` |
+| `TEMPORARY_FAILURE` | A temporary failure | `NORMAL_TEMPORARY_FAILURE` |
+| `GATEWAY_DOWN` | A gateway failure | `GATEWAY_DOWN` |
+| `MESSAGE_EXCEPTION` | A message error | `MANDATORY_IE_MISSING` |
+| `SERVICE_UNSUPPORTED` | The service isn't available | `SERVICE_NOT_IMPLEMENTED` |
+| `CALL_STATE_EXCEPTION` | A call state error | `WRONG_CALL_STATE` |
+| `SYSTEM_SHUTDOWN` | The system service shut down | `SYSTEM_SHUTDOWN` |
+| `FORCED_TERMINATION` | The Platform ended the call | `MANAGER_REQUEST` |
+| `UNKNOWN_REASON` | An unknown reason | `NORMAL_UNSPECIFIED`, or a code you don't recognize |
+| `UNKNOWN_ERROR` | An unknown error | `UNKNOWN` |
+
+</Accordion>
+<Accordion title="Hangup reasons after the call connects">
+
+| `hangup_reason` | Meaning | `hangup_reason_code` values |
+| --- | --- | --- |
+| `USER_HANGUP` | The user hung up | `NORMAL_CLEARING` |
+| `CALLER_CANCEL` | The caller ended the call | `ORIGINATOR_CANCEL` |
+| `MAX_DURATION` | The call reached its maximum duration | `ALLOTTED_TIMEOUT` |
+| `VOICE_MAIL` | The call reached voicemail | `VOICE_MAIL` |
+| `SYSTEM_INTERRUPT` | A system interruption | `INTERNAL_ERROR` |
+| `AI_HANGUP` | The agent hung up | `AI_HANGUP` |
+| `AI_ASSISTANT_HANGUP` | A voice assistant on the other end hung up | `AI_ASSISTANT_HANGUP` |
+| `SILENCE_HANGUP` | The call ended after silence | `SILENCE_HANGUP` |
+
+</Accordion>
+</Accordions>
+
+## Reference
+
+For more information, see the following pages:
+
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
+- [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns)
+
+### API reference
+
+- [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session)
+- [Update a session](/en/api-reference/api-ref/conversational-ai/platform/update-session)
