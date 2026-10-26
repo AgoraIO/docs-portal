@@ -1429,7 +1429,8 @@ paths:
             type: string
           description: >-
             The sequence number of the `Update` request. Each subsequent `Update` request must use a
-            value greater than the previous one.
+            value greater than the previous one. A value equal to or lower than the current one
+            is rejected with a `400` error.
         - name: updateMask
           in: query
           required: true
@@ -1492,10 +1493,35 @@ paths:
                             lowBitrateHighQuality: false
       responses:
         "200":
-          description: The request succeeded and the response body is empty.
+          description: >-
+            The request succeeded and returned task information. `sequenceId` is the value you
+            passed, and `services.cloudTranscoder.config` contains the updated configuration.
           headers:
             X-Request-ID:
               $ref: "#/components/headers/X-Request-ID"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/cloud-transcoder-task"
+              example:
+                createTs: 1661324613
+                eventHandlers: {}
+                execution:
+                  workflows: {}
+                properties: {}
+                sequenceId: "1"
+                services:
+                  cloudTranscoder:
+                    config: {}
+                    createTs: 1661324614
+                    details: {}
+                    message: ""
+                    serviceType: cloudTranscoderV2
+                    status: serviceInProgress
+                status: IN_PROGRESS
+                taskId: 609f28f2644f1ae1ceb041b7047e3***
+                variables: {}
+                workflows: {}
         default:
           $ref: "#/components/responses/not-200"
       x-docs-sections:
