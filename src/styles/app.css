@@ -402,6 +402,10 @@
 
   .prose {
     max-width: var(--content-max);
+  }
+
+  .prose,
+  .openapi-markdown {
     --docs-prose-inline-code-bg: var(--bg-sunken);
     --docs-prose-inline-code-border: var(--line);
     --docs-prose-code-block-bg: #f1efe7;
@@ -439,7 +443,8 @@
     );
   }
 
-  .dark .prose {
+  .dark .prose,
+  .dark .openapi-markdown {
     --docs-prose-inline-code-bg: color-mix(
       in srgb,
       var(--bg-elev) 94%,

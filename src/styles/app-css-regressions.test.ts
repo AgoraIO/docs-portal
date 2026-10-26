@@ -857,8 +857,9 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('defines high-contrast dark code block tokens and chrome variables', () => {
-    const darkProse = getRuleBody('.dark .prose');
+  it('defines dark code block tokens for prose and OpenAPI Markdown', () => {
+    const darkProse = getRuleBody(`.dark .prose,
+      .dark .openapi-markdown`);
 
     expect(darkProse.rule.nodes).toContainEqual(
       expect.objectContaining({
