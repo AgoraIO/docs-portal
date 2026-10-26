@@ -114,7 +114,7 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 describe('FumadocsOpenApiContent', () => {
   it('preserves complete multiline code in crawler HTML and copies it before and after highlighting', async () => {
     const source = [
-      'curl https://example.com/endpoint \\',
+      'curl --request POST https://example.com/endpoint \\',
       ...Array.from(
         { length: 45 },
         (_, i) => `  --header 'X-Example-${i}: <value>&' \\`,
@@ -168,6 +168,13 @@ describe('FumadocsOpenApiContent', () => {
         ).toBeInTheDocument(),
       );
       expect(container.querySelector('pre code')?.textContent).toBe(source);
+      const flags = [...container.querySelectorAll('pre span[style]')].filter(
+        (node) => /^--[a-z-]+$/.test(node.textContent ?? ''),
+      );
+      expect(flags).toHaveLength(47);
+      expect(
+        new Set(flags.map((node) => node.getAttribute('style'))).size,
+      ).toBe(1);
       fireEvent.click(
         screen.getByRole('button', { name: /Copy Text|Copied Text/ }),
       );

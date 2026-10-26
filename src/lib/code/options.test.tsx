@@ -42,6 +42,65 @@ async function renderMarkdown(markdown: string, defaults = false) {
 }
 
 describe('shared code highlighting', () => {
+  it.each([
+    ['curl --location --request POST', 5],
+    ['curl', 3],
+  ] as const)(
+    'keeps options consistent for %s across highlighted continuations',
+    async (command, flagCount) => {
+      const source = String.raw`# [!code highlight:1]
+${command} 'https://api.example.com/recording' \
+--header 'Content-Type: application/json' \
+# [!code highlight:1]
+--header 'Authorization: Basic example' \
+--data '{"message":"literal --header"}'`;
+      const { html } = await renderMarkdown(`\`\`\`bash\n${source}\n\`\`\``);
+      const $ = load(html);
+      const flags = $('pre span[style]').filter((_, node) =>
+        /^--[a-z-]+$/.test($(node).text()),
+      );
+      expect(flags).toHaveLength(flagCount);
+      expect(
+        new Set(flags.map((_, node) => $(node).attr('style')).get()).size,
+      ).toBe(1);
+      expect($('pre').text()).toBe(
+        source
+          .split('\n')
+          .filter((line) => !line.startsWith('# [!code'))
+          .join('\n'),
+      );
+      expect($('.line.highlighted')).toHaveLength(2);
+      expect(
+        $('pre span[style]')
+          .filter((_, node) => $(node).text().includes('literal --header'))
+          .attr('style'),
+      ).not.toBe(flags.first().attr('style'));
+    },
+  );
+
+  it('preserves option-like strings, comments, and heredoc payloads', async () => {
+    const source = `curl --request GET https://example.com
+printf '%s' "literal --quoted"
+# --comment
+cat <<'EOF'
+--payload
+EOF`;
+    const { html } = await renderMarkdown(`\`\`\`bash\n${source}\n\`\`\``);
+    const $ = load(html);
+    const style = $('pre span[style]')
+      .filter((_, node) => $(node).text() === '--request')
+      .attr('style');
+    expect(style).toBeDefined();
+    expect($('pre').text()).toBe(source);
+    for (const literal of ['--quoted', '--comment', '--payload']) {
+      const matches = $('pre span[style]').filter((_, node) =>
+        $(node).text().includes(literal),
+      );
+      expect(matches.length).toBeGreaterThan(0);
+      matches.each((_, node) => expect($(node).attr('style')).not.toBe(style));
+    }
+  });
+
   it('renders legacy emphasis and built-in diff notation in static HTML', async () => {
     const { html } = await renderMarkdown(
       '```ts title="client.ts"\n// highlight-start\nconst old = 1; // [!code --]\n// highlight-end\nconst next = 2; // [!code ++]\n```',
