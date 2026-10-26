@@ -554,9 +554,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/best-practices/manual-turn-control.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/best-practices/meta.json':
-    '2026-10-23T12:26:24.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/best-practices/optimize-latency.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/best-practices/record-agent-conversation.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/best-practices/regional-restrictions.mdx':
@@ -568,28 +568,28 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/custom-model-integration/audio-output.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/custom-model-integration/custom-llm.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/custom-model-integration/custom-tts.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/custom-model-integration/meta.json':
-    '2026-10-23T12:26:24.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/debug-agent-failures.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/event-notifications.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/get-runtime-events.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/meta.json':
-    '2026-10-23T12:26:24.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/monitor-agent-runtime.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/retrieve-session-history.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/handle-runtime-events/webhooks.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/managed-mode.mdx':
     '2026-10-24T06:16:40.000Z',
-  'content/docs/en/ai/platform/build/meta.json': '2026-10-24T09:49:48.000Z',
+  'content/docs/en/ai/platform/build/meta.json': '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/phone-calls/import-phone-numbers.mdx':
     '2026-10-24T09:49:48.000Z',
   'content/docs/en/ai/platform/build/phone-calls/meta.json':
@@ -607,7 +607,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/shape-the-conversation/filler-words.mdx':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/interrupt-agent.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/meta.json':
     '2026-10-24T06:16:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/personalize-conversations.mdx':
@@ -617,11 +617,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/start-stop-agent.mdx':
     '2026-10-23T10:07:24.000Z',
   'content/docs/en/ai/platform/build/tools/custom-tools.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/tools/mcp-tools.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/tools/meta.json':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/transcripts.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/use-your-own-keys.mdx':
@@ -663,21 +663,21 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/asr/xai.mdx': '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/avatar/akool.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/avatar/anam.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/avatar/generic.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/avatar/heygen.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/avatar/lemonslice.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/avatar/meta.json':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/avatar/protoface.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/avatar/tavus.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/llm/amazon.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/llm/azure-openai.mdx':
@@ -707,7 +707,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/models/tts/fish-audio.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/tts/gemini.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/tts/generic-http.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/tts/google.mdx':
@@ -717,7 +717,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/models/tts/humeai.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/tts/meta.json':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/models/tts/microsoft.mdx':
     '2026-10-24T06:16:23.000Z',
   'content/docs/en/ai/platform/models/tts/minimax.mdx':
