@@ -19,11 +19,13 @@ describe('resolveMovedDocsRedirect', () => {
       isPermanentMovedDocsRedirect('zh-CN', 'realtime-media', segments),
     ).toBe(true);
     const deployment = JSON.parse(readFileSync('vercel.base.json', 'utf8'));
-    expect(deployment.redirects).toContainEqual({
-      source: `/zh-CN/realtime-media/${path}/restful`,
-      destination: `/zh-CN/realtime-media/${path}`,
-      statusCode: 301,
-    });
+    for (const localePrefix of ['/zh-CN', '']) {
+      expect(deployment.redirects).toContainEqual({
+        source: `${localePrefix}/realtime-media/${path}/restful`,
+        destination: `${localePrefix}/realtime-media/${path}`,
+        statusCode: 301,
+      });
+    }
     expect(
       resolveMovedDocsRedirect('en', 'realtime-media', segments),
     ).toBeNull();
