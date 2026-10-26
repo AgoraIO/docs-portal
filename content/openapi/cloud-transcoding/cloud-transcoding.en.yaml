@@ -2188,44 +2188,46 @@ components:
         rtcChannel:
           type: string
           description: >-
-            The RTC channel name for the transcoded audio and video.
-
-
-            The RTC channel name for the audio input source. Currently, you can only subscribe to
-            audio and video sources from a single channel; the audio and video sources must belong
-            to the same channel.
-
-
-            The RTC channel name for the video input source. Currently, you can only subscribe to
+            The RTC channel name for the input source. Currently, you can only subscribe to
             audio and video sources from a single channel; the audio and video sources must belong
             to the same channel.
         rtcUid:
           type: number
           description: >-
-            The UID of the RTC channel for the transcoded audio and video streams. Make sure this
-            value is different from the UID of other users in the channel.
-
-
-            The UID corresponding to the audio input source. The same UID must not exist in the RTC
-            channel.
-
-
-            The UID corresponding to the video input source. The same UID must not exist in the RTC
-            channel.
+            The UID of the input source user. This UID uniquely identifies the user whose
+            audio or video stream is being transcoded in the RTC channel.
         rtcToken:
           type: string
+          description: |-
+            The token that Cloud Transcoder uses to join the input RTC channel for transcoding. Using
+            a token ensures channel security and prevents malicious users from disrupting other
+            users in the channel. See [Token authentication](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow) for details.
+
+            Cloud Transcoder's UID in the input RTC channel is randomly assigned by Agora.
+            When generating this token, set `uid` to `0`.
+    rtc-output:
+      type: object
+      required:
+        - rtcChannel
+        - rtcUid
+        - rtcToken
+      properties:
+        rtcChannel:
+          type: string
+          description: The RTC channel name for the transcoded audio and video.
+        rtcUid:
+          type: number
           description: >-
+            The UID of Cloud Transcoder in the output RTC channel. Make sure this value is
+            different from the UID of other users in the channel.
+        rtcToken:
+          type: string
+          description: |-
             The token that the Cloud Transcoder uses to join the output RTC channel. Using a token
             ensures channel security and prevents malicious users from disrupting other users in the
-            channel. See Token authentication for details.
+            channel. See [Token authentication](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow) for details.
 
-             When generating this token, use `outputs.rtc.rtcUid` to generate the token.
-
-            The token that the Cloud Transcoder uses to join the RTC channel for transcoding. Using
-            a token ensures channel security and prevents malicious users from disrupting other
-            users in the channel. See Token authentication for details.
-
-             The UID of Cloud Transcoder in the RTC channel is randomly assigned by Agora. Therefore, when generating a token, set the uid to 0.
+            When generating this token, set `uid` to the value of `outputs.rtc.rtcUid`.
       description: Required for publishing to an RTC channel. Currently, you can publish to only one RTC channel.
     canvas:
       type: object
@@ -2357,14 +2359,12 @@ components:
               description: The layer order of the watermark.
     transcoder-output:
       type: object
-      required:
-        - rtc
       properties:
         streamUrl:
           type: string
           description: CDN streaming address.
         rtc:
-          $ref: "#/components/schemas/rtc-source"
+          $ref: "#/components/schemas/rtc-output"
         audioOption:
           $ref: "#/components/schemas/audio-option"
         videoOption:
@@ -2429,7 +2429,7 @@ components:
           type: string
           enum:
             - H264
-            - H265
+            - VP8
           description: |-
             The codec used to transcode the output video.
 
