@@ -49,6 +49,7 @@ import {
   useEffect,
   useEffectEvent,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -667,11 +668,21 @@ function Tabs({
   defaultValue,
   items,
   onValueChange,
+  onMouseDownCapture,
+  onKeyDownCapture,
+  onFocusCapture,
   ref,
   value,
   ...props
 }: TabsRootProps) {
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const scrollAnchorRef = useRef<{
+    list: HTMLElement;
+    top: number;
+    owner: HTMLElement | null;
+    expiry: number;
+    value: string | undefined;
+  } | null>(null);
   const setRootRef = useCallback(
     (element: HTMLDivElement | null) => {
       rootRef.current = element;
@@ -695,6 +706,84 @@ function Tabs({
     value,
     values,
   });
+
+  function captureScrollAnchor(target: EventTarget | null) {
+    const root = rootRef.current;
+    const tab =
+      target instanceof Element
+        ? target.closest<HTMLElement>('[role="tab"]')
+        : null;
+    if (
+      !props.groupId ||
+      !root ||
+      !tab ||
+      tab.closest('[data-mdx-tabs-root]') !== root ||
+      tab.getAttribute('aria-selected') === 'true' ||
+      scrollAnchorRef.current
+    )
+      return;
+    const list = tab.closest<HTMLElement>('[role="tablist"]');
+    if (!list) return;
+    let owner = list.parentElement;
+    while (
+      owner &&
+      owner !== document.body &&
+      owner !== document.documentElement
+    ) {
+      const style = window.getComputedStyle(owner);
+      if (
+        /(auto|scroll|overlay)/.test(style.overflowY || style.overflow) &&
+        owner.scrollHeight > owner.clientHeight
+      )
+        break;
+      owner = owner.parentElement;
+    }
+    const anchor = {
+      list,
+      top: list.getBoundingClientRect().top,
+      owner:
+        owner === document.body || owner === document.documentElement
+          ? null
+          : owner,
+      expiry: 0,
+      value: safeValue,
+    };
+    scrollAnchorRef.current = anchor;
+    // Only the initiating input's commit may compensate. A later task, storage
+    // update or hash activation must not inherit a stale reading position.
+    anchor.expiry = window.setTimeout(() => {
+      if (scrollAnchorRef.current === anchor) scrollAnchorRef.current = null;
+    }, 0);
+  }
+
+  useLayoutEffect(() => {
+    const anchor = scrollAnchorRef.current;
+    scrollAnchorRef.current = null;
+    if (!anchor) return;
+    window.clearTimeout(anchor.expiry);
+    if (anchor.value === safeValue || !anchor.list.isConnected) return;
+    // Reading layout also lets native scroll anchoring settle. Correct only
+    // the residual displacement, so already-anchored browsers do not jump twice.
+    const delta = anchor.list.getBoundingClientRect().top - anchor.top;
+    if (Math.abs(delta) < 1) return;
+    if (anchor.owner) {
+      anchor.owner.scrollTo({
+        top: anchor.owner.scrollTop + delta,
+        behavior: 'instant',
+      });
+    } else {
+      window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
+    }
+  }, [safeValue]);
+
+  useLayoutEffect(
+    () => () => {
+      if (scrollAnchorRef.current)
+        window.clearTimeout(scrollAnchorRef.current.expiry);
+      scrollAnchorRef.current = null;
+    },
+    [],
+  );
 
   const revealHashTab = useEffectEvent((url: string) => {
     const root = rootRef.current;
@@ -745,6 +834,23 @@ function Tabs({
         defaultValue={defaultValue}
         items={items}
         onValueChange={setSafeValue}
+        onMouseDownCapture={(event) => {
+          onMouseDownCapture?.(event);
+          if (!event.defaultPrevented && event.button === 0 && !event.ctrlKey)
+            captureScrollAnchor(event.target);
+        }}
+        onKeyDownCapture={(event) => {
+          onKeyDownCapture?.(event);
+          if (
+            !event.defaultPrevented &&
+            (event.key === 'Enter' || event.key === ' ')
+          )
+            captureScrollAnchor(event.target);
+        }}
+        onFocusCapture={(event) => {
+          onFocusCapture?.(event);
+          if (!event.defaultPrevented) captureScrollAnchor(event.target);
+        }}
         value={safeValue}
       >
         {children}

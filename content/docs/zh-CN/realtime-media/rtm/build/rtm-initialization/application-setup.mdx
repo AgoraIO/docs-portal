@@ -463,18 +463,38 @@ https://github.com/AgoraIO/AgoraRtm_Apple.git
 
    **场景一**：项目仅使用 RTM 产品，且没有集成声网任何版本的 RTC 产品。
 
-```shell tab="使用 npm" tabGroup="package"
+<Tabs defaultValue="npm" groupId="package" persist>
+<TabsList>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+```shell
 npm install agora-rtm
 ```
 
-```shell tab="使用 pnpm" tabGroup="package"
+</TabsContent>
+
+<TabsContent value="pnpm">
+
+```shell
 pnpm add agora-rtm
 ```
 
-```shell tab="使用 Yarn" tabGroup="package"
+</TabsContent>
+
+<TabsContent value="yarn">
+
+```shell
 yarn add agora-rtm
 yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
 ```
+
+</TabsContent>
+</Tabs>
 
 **场景二**：项目中已经集成了 RTC 产品，需要新接入 RTM 产品。
 
@@ -558,15 +578,32 @@ import AgoraRTC from "agora-rtc-sdk-ng-4.16"
 
 **场景三**：你的项目是全新的，且需要同时集成 RTM 和 RTC，以利用其共频道、数据优先级控制等能力。这种场景下建议你集成融合版本的 SDK。
 
-```shell tab="使用 npm" tabGroup="package"
+<Tabs defaultValue="npm" groupId="package" persist>
+<TabsList>
+  <TabsTrigger value="npm">使用 npm</TabsTrigger>
+  <TabsTrigger value="pnpm">使用 pnpm</TabsTrigger>
+  <TabsTrigger value="yarn">使用 Yarn</TabsTrigger>
+</TabsList>
+
+<TabsContent value="npm">
+
+```shell
 npm install agora-rtx
 ```
 
-```shell tab="使用 pnpm" tabGroup="package"
+</TabsContent>
+
+<TabsContent value="pnpm">
+
+```shell
 pnpm add agora-rtx --shamefully-hoist
 ```
 
-```shell tab="使用 Yarn" tabGroup="package"
+</TabsContent>
+
+<TabsContent value="yarn">
+
+```shell
 # 若版本为 2.2.0
 # yarn add agora-rtx
 # yarn add agora-rtc-sdk-ng@4.22.0 --save-exact
@@ -574,6 +611,9 @@ pnpm add agora-rtx --shamefully-hoist
 # 2.2.0 及之后版本
 yarn add agora-rtx
 ```
+
+</TabsContent>
+</Tabs>
 
 2. 完成安装后，在你的 `app.js` 中引入 RTM：
 

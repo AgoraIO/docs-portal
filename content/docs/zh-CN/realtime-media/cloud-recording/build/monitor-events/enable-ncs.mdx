@@ -230,7 +230,15 @@ print(signature2) # 6d3320c60b11101395b7fc8f9068748808a0aa1bfa064438e39d1bc2c7d7
 
 <Accordion title="Node.js 示例">
 
-```javascript tab="HMAC/SHA1" tabGroup="signature"
+<Tabs defaultValue="1" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+</TabsList>
+
+<TabsContent value="1">
+
+```javascript
 const crypto = require('crypto')
 // 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
 const requestBody = '{"eventMs":1560408533119,"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}'
@@ -239,7 +247,11 @@ const signature = crypto.createHmac('sha1', secret).update(requestBody, 'utf8').
 console.log(signature) // 033c62f40f687675f17f0f41f91a40c71c0f134c
 ```
 
-```javascript tab="HMAC/SHA256" tabGroup="signature"
+</TabsContent>
+
+<TabsContent value="256">
+
+```javascript
 const crypto = require('crypto')
 // 拿到消息通知的 raw request body 并对其计算签名，也就是说下面代码中的 requestBody 是反序列化之前的 binary byte array，不是反序列化之后的 object
 const requestBody = '{"eventMs":1560408533119,"eventType":10,"noticeId":"4eb720f0-8da7-11e9-a43e-53f411c2761f","notifyMs":1560408533119,"payload":{"a":"1","b":2},"productId":1}'
@@ -247,6 +259,9 @@ const secret = 'secret'
 const signature2 = crypto.createHmac('sha256', secret).update(requestBody, 'utf8').digest('hex')
 console.log(signature2) // 6d3320c60b11101395b7fc8f9068748808a0aa1bfa064438e39d1bc2c7d74d99
 ```
+
+</TabsContent>
+</Tabs>
 
 </Accordion>
 
@@ -359,7 +374,15 @@ public class HmacSha {
 
 <Accordion title="PHP 示例">
 
-```php tab="HMAC/SHA1" tabGroup="signature"
+<Tabs defaultValue="1" groupId="signature" persist>
+<TabsList>
+  <TabsTrigger value="1">HMAC/SHA1</TabsTrigger>
+  <TabsTrigger value="256">HMAC/SHA256</TabsTrigger>
+</TabsList>
+
+<TabsContent value="1">
+
+```php
 <?php
 function assertEqual($expect, $actual)
 {
@@ -383,7 +406,11 @@ assertEqual($res1, $sha1);
 ?>
 ```
 
-```php tab="HMAC/SHA256" tabGroup="signature"
+</TabsContent>
+
+<TabsContent value="256">
+
+```php
 <?php
 function assertEqual($expect, $actual)
 {
@@ -406,6 +433,9 @@ $res2 = (hash_hmac('sha256', $request_body, $secret));
 assertEqual($res2, $sha256);
 ?>
 ```
+
+</TabsContent>
+</Tabs>
 
 </Accordion>
 </Accordions>

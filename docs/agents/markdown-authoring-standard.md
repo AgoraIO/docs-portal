@@ -136,6 +136,11 @@ Rules:
 For code-only alternatives, use code fence tabs. Use MDX tabs only when a pane
 contains mixed prose, lists, images, or multiple code blocks.
 
+When several steps share one scenario choice and include mixed content, use
+MDX tabs for every synchronized set, including a step containing only code.
+Give those sets the same `groupId` and stable values (for example, `live` and
+`rtc`) so code, instructions, and expected results switch together.
+
 ````mdx
 <Tabs defaultValue="macos" groupId="install-os" persist>
 <TabsList>
