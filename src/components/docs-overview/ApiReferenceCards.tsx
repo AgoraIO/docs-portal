@@ -322,14 +322,14 @@ function ConversationalAiReferenceGroup({
           <ApiReferenceEntrySection
             entries={clientEntries}
             subtitle="客户端 SDK"
-            title="对话式 AI Toolkit"
+            title="客户端组件 SDK"
           />
         ) : null}
         {serverSdkEntries.length > 0 ? (
           <ApiReferenceEntrySection
             entries={serverSdkEntries}
             subtitle="服务端 SDK"
-            title="Agora Agents"
+            title="Agora Agents SDK"
           />
         ) : null}
         {restfulEntries.length > 0 ? (

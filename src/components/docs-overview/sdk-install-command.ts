@@ -4,10 +4,9 @@ export type InstallCommand = { tool: string; command: string };
 
 /**
  * Derive a copyable install command from a version's package-registry URL.
- * The version is pinned only when the URL itself carries it (Maven, pub, unpkg);
- * npmjs / Swift Package Index / pypi URLs have no version, so those are
- * unpinned. Unknown hosts (github release pages, easemob, etc.) and a missing
- * URL return null, which the UI renders as a download-only product.
+ * Pin versions when the URL carries one, including CocoaPods Specs files.
+ * Other URLs without a supported registry format return null, which the UI
+ * renders as a download-only product.
  */
 export function deriveInstallCommand(
   version: SdkDownloadVersion,
@@ -27,6 +26,17 @@ export function deriveInstallCommand(
   const segments = url.pathname.split('/').filter(Boolean);
 
   switch (url.hostname) {
+    case 'github.com': {
+      const podspec = url.pathname.match(
+        /^\/CocoaPods\/Specs\/blob\/[^/]+\/Specs\/[^/]+\/[^/]+\/[^/]+\/([^/]+)\/([^/]+)\/[^/]+\.podspec\.json$/,
+      );
+      return podspec
+        ? {
+            tool: 'CocoaPods',
+            command: `pod '${podspec[1]}', '${podspec[2]}'`,
+          }
+        : null;
+    }
     case 'central.sonatype.com':
     case 'search.maven.org': {
       // /artifact/<group>/<artifact>/<version>/...
