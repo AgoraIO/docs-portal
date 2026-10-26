@@ -50,6 +50,10 @@ export function OpenApiSchemaFieldRow({
   const isSyntheticVariant =
     node.name === '[key: string]' && Boolean(node.variant);
   const displayName = isSyntheticVariant ? node.variant : node.name;
+  const displayType =
+    node.schema.type === 'primitive'
+      ? node.schema.typeName
+      : node.schema.aliasName;
   const fieldIdentity = (
     <>
       <code
@@ -59,9 +63,9 @@ export function OpenApiSchemaFieldRow({
       >
         {displayName}
       </code>
-      {!isSyntheticVariant && node.schema.aliasName !== displayName ? (
+      {!isSyntheticVariant && displayType !== displayName ? (
         <span className="min-w-0 break-words font-mono text-sm text-muted-foreground [overflow-wrap:anywhere]">
-          {node.schema.aliasName}
+          {displayType}
         </span>
       ) : null}
       {!isSyntheticVariant && node.variant ? (

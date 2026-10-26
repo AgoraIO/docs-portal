@@ -20,6 +20,8 @@ export const appName = getAppBranding().name;
 export const appDescription = getAppBranding().description;
 export const docsRoute = getDocsHomePath();
 
+export const internationalDocsUrl = 'https://docs.agora.io/en/introduction';
+
 export const legacyDocsBannerConfig = {
   hrefs: {
     en: 'https://docs-legacy.agora.io/en',

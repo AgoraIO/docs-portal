@@ -1,5 +1,17 @@
 import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
-import type { SdkDownloadPlatform } from './sdk-downloads-data';
+import type {
+  SdkDownloadPlatform,
+  SdkDownloadVersion,
+} from './sdk-downloads-data';
+
+const latestWebRtcSdkVersion: SdkDownloadVersion = {
+  id: '4.24.9',
+  label: '版本 4.24.9（最新）',
+  downloadLink:
+    'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
+  packageManager: 'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
+  releaseDate: '2026 年 10 月 13 日',
+};
 
 const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
   {
@@ -867,7 +879,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-android',
             label: '版本 3.1.0（最新）',
-            packageManager: 'gradle://io.github.agora-apaas/FcrUIScene/3.1.0',
+            packageManager:
+              'https://central.sonatype.com/artifact/io.github.agora-apaas/FcrUIScene/3.1.0',
           },
         ],
       },
@@ -881,7 +894,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.9.0（最新）',
             packageName: 'io.agora.agents:agora-agent-client-toolkit',
             packageManager:
-              'gradle://io.agora.agents/agora-agent-client-toolkit/2.9.0',
+              'https://central.sonatype.com/artifact/io.agora.agents/agora-agent-client-toolkit/2.9.0',
           },
         ],
       },
@@ -1601,7 +1614,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-ios',
             label: '版本 3.1.0（最新）',
-            packageManager: 'cocoapods://FcrUIScene?version=3.1.0',
+            packageManager:
+              'https://github.com/CocoaPods/Specs/blob/master/Specs/0/7/4/FcrUIScene/3.1.0/FcrUIScene.podspec.json',
           },
         ],
       },
@@ -1615,7 +1629,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
             label: '版本 2.9.0（最新）',
             packageName: 'agent-client-toolkit-swift',
             packageManager:
-              'cocoapods://agent-client-toolkit-swift?version=2.9.0',
+              'https://github.com/CocoaPods/Specs/blob/master/Specs/0/9/0/agent-client-toolkit-swift/2.9.0/agent-client-toolkit-swift.podspec.json',
           },
         ],
       },
@@ -1631,13 +1645,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: '适用于 Web 端音视频通话、互动直播和极速直播的实时互动 SDK',
         versions: [
           {
-            id: '4.24.9-video-sdk-web',
-            label: '版本 4.24.9（最新）',
-            downloadLink:
-              'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_9_FULL.zip',
-            packageManager:
-              'https://www.npmjs.com/package/agora-rtc-sdk-ng/v/4.24.9',
-            releaseDate: '2026 年 10 月 13 日',
+            ...latestWebRtcSdkVersion,
+            id: `${latestWebRtcSdkVersion.id}-video-sdk-web`,
           },
           {
             id: '4.24.6-video-sdk-web',
@@ -2026,8 +2035,12 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Voice Calling, Interactive Live Streaming (voice only), and Broadcast Streaming (voice only)',
         versions: [
           {
+            ...latestWebRtcSdkVersion,
+            id: `${latestWebRtcSdkVersion.id}-voice-sdk-web`,
+          },
+          {
             id: '4.24.6-voice-sdk-web',
-            label: '版本 4.24.6（最新）',
+            label: '版本 4.24.6',
             downloadLink:
               'https://download.agora.io/sdk/release/Agora_Web_SDK_v4_24_6_FULL.zip',
             packageManager:
@@ -4028,7 +4041,8 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           {
             id: '3.1.0-meeting-sdk-electron',
             label: '版本 3.1.0（最新）',
-            packageManager: 'npm://fcr-ui-scene?version=3.1.0',
+            packageManager:
+              'https://www.npmjs.com/package/fcr-ui-scene/v/3.1.0',
           },
         ],
       },

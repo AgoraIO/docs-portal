@@ -490,31 +490,14 @@
   }
 
   .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
-    position: relative;
     margin-top: 3.5rem;
     margin-bottom: 0.875rem;
-    padding-top: 1.75rem;
+    padding-top: 0;
     letter-spacing: -0.012em;
     font-size: 1.375rem;
     font-weight: 600;
     color: var(--ink-1);
     scroll-margin-top: 7rem;
-  }
-
-  .prose :where(h2):not(:where(.not-prose, .not-prose *))::before {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    width: min(18rem, 58%);
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      var(--line),
-      color-mix(in srgb, var(--line) 40%, transparent) 72%,
-      transparent
-    );
-    content: "";
-    pointer-events: none;
   }
 
   .prose
@@ -524,13 +507,6 @@
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
-  }
-
-  .prose
-    :where(h2):not(:where(.not-prose, .not-prose *)):not(
-      :where(:not(a:empty) ~ h2)
-    )::before {
-    content: none;
   }
 
   .prose[data-platform-header-tabs="true"]
@@ -1095,10 +1071,6 @@
     padding-top: 0;
     padding-bottom: 0;
     border-bottom: 0;
-  }
-
-  [data-docs-home] .prose .docs-body > h2::before {
-    display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1874,10 +1846,6 @@
     padding-top: 0;
   }
 
-  .prose .docs-body > .docs-console-api-entry + h2::before {
-    content: none;
-  }
-
   /* Override prose/card utilities only for the teleoperation scenario grid. */
   .docs-teleoperation-scenarios {
     margin-block: 1.25rem;
@@ -2045,16 +2013,6 @@
 }
 
 .prose[data-platform-header-tabs="true"]
-  [data-platform-group="structured"]
-  > [data-platform-panel]:not([hidden])
-  .docs-body
-  > h2:not(:where(.not-prose, .not-prose *)):not(
-    :where(:not(a:empty) ~ h2)
-  )::before {
-  content: none;
-}
-
-.prose[data-platform-header-tabs="true"]
   [data-sdk-compliance="true"]
   + [data-platform-group="structured"]
   > [data-platform-panel]:not([hidden])
@@ -2063,15 +2021,4 @@
   margin-top: 1.25rem;
   padding-top: 0;
   border-top: 0;
-}
-
-.prose[data-platform-header-tabs="true"]
-  [data-sdk-compliance="true"]
-  + [data-platform-group="structured"]
-  > [data-platform-panel]:not([hidden])
-  .docs-body
-  > h2:not(:where(.not-prose, .not-prose *)):not(
-    :where(:not(a:empty) ~ h2)
-  )::before {
-  content: none;
 }

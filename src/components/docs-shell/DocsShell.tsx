@@ -59,6 +59,7 @@ import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSiteFooter } from './DocsSiteFooter';
+import { DocsSiteMenu } from './DocsSiteMenu';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
 import { SiteLogoMark } from './SiteLogoMark';
@@ -406,7 +407,7 @@ export function DocsShell({
                 </div>
               )}
               <div
-                className="hidden items-center gap-2 lg:flex"
+                className="hidden items-center gap-2 text-muted-foreground lg:flex"
                 data-testid="docs-desktop-header-actions"
               >
                 {!isSearchLayout && (
@@ -419,6 +420,7 @@ export function DocsShell({
                     />
                   </div>
                 )}
+                <DocsSiteMenu locale={currentLocale} />
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -706,22 +708,25 @@ function MobileSidebar({
               />
             ) : null}
           </div>
-          <div className="flex flex-col gap-2 border-t border-border pt-4">
-            <div className="flex items-center gap-2">
-              <Button
-                aria-label={themeLabel}
-                aria-pressed={isDarkTheme}
-                onClick={toggleTheme}
-                size="icon"
-                variant="ghost"
-              >
-                {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-                <span className="sr-only">{themeLabel}</span>
-              </Button>
-            </div>
-          </div>
         </div>
       </ScrollArea>
+      <div
+        className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
+        data-testid="docs-mobile-sidebar-tools"
+      >
+        <DocsSiteMenu locale={currentLocale} mobile onNavigate={onSelectPath} />
+        <Button
+          aria-label={themeLabel}
+          aria-pressed={isDarkTheme}
+          className="size-11"
+          onClick={toggleTheme}
+          size="icon"
+          variant="ghost"
+        >
+          {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+          <span className="sr-only">{themeLabel}</span>
+        </Button>
+      </div>
     </div>
   );
 }

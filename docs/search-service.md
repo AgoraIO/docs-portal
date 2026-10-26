@@ -1,6 +1,6 @@
 # 静态文档与搜索服务
 
-文档页面和 API service 使用同一套 TanStack Start 源码，分别构建和发布。文档站由 CDN/静态托管提供页面，同域的 `/api/*` 由独立 Node 服务处理。中文搜索页与快捷搜索都请求 `GET /api/search`；浏览器不需要 Meilisearch 地址或密钥。AI 暂不启用；中文认证接口与其私有运行配置见 [账号服务说明](./account-service.md)。
+文档页面和 API service 使用同一套 TanStack Start 源码，分别构建和发布。文档站由 CDN/静态托管提供页面，同域的 `/api/*` 由独立 Node 服务处理。中文搜索页与快捷搜索都请求 `GET /api/search`；浏览器不需要 Meilisearch 地址或密钥。AI 暂不启用。
 
 本仓库提供构建、运行和索引更新能力。容器、Kubernetes、网关、密钥注入及发布流水线配置由其他项目维护。
 
