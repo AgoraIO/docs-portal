@@ -1238,6 +1238,7 @@ function TabAwareHeading({
   className,
   ...props
 }: ComponentProps<'h2'> & { as: MdxHeadingLevel }) {
+  const { t } = useTranslation('common');
   const tabLabel = useContext(MdxTabLabelContext);
   const activePlatform = usePlatformPageContext()?.activePlatform;
   const hash = id ? `#${id}` : '';
@@ -1303,7 +1304,7 @@ function TabAwareHeading({
           </a>
           <button
             type="button"
-            aria-label="Copy Anchor Link"
+            aria-label={t('docs.copyLink')}
             className={cn(
               buttonVariants({
                 variant: 'ghost',

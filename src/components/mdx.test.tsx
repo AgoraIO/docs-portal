@@ -1448,7 +1448,7 @@ describe('common MDX registry', () => {
       ),
     );
     fireEvent.click(
-      within(heading).getByRole('button', { name: /copy anchor/i }),
+      within(heading).getByRole('button', { name: /copy.?link/i }),
     );
     await waitFor(() =>
       expect(writeText).toHaveBeenCalledWith(
