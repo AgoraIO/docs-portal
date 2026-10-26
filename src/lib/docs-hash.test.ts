@@ -1,8 +1,51 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
+  getDocsHashHref,
   scrollDocsHashTarget,
   scrollDocsHashTargetAfterLayout,
 } from './docs-hash';
+
+describe('getDocsHashHref', () => {
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('keeps ordinary anchors without a platform unchanged', () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/ai/release-notes?from=overview',
+    );
+    document.body.innerHTML = '<h2 id="release">Release</h2>';
+    expect(getDocsHashHref('#release')).toBe('#release');
+  });
+
+  it('preserves explicit platform paths and unrelated query values', () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/realtime-media/rtm/reference/release-notes/web?from=guide%23code&view=all#old',
+    );
+    document.body.innerHTML =
+      '<section data-platform-panel="web"><h2 id="224-版-2">2.2.4</h2></section>';
+    expect(getDocsHashHref('#224-%E7%89%88-2')).toBe(
+      '/realtime-media/rtm/reference/release-notes/web?from=guide%23code&view=all&platform=web#224-%E7%89%88-2',
+    );
+  });
+
+  it('uses the target platform when a stale platform suffix disagrees', () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/realtime-media/rtm/reference/release-notes/android?platform=android&view=all',
+    );
+    document.body.innerHTML =
+      '<section data-platform-panel="web"><h2 id="224-版-2">2.2.4</h2></section>';
+    expect(getDocsHashHref('#224-版-2')).toBe(
+      '/zh-CN/realtime-media/rtm/reference/release-notes/web?platform=web&view=all#224-%E7%89%88-2',
+    );
+  });
+});
 
 describe('scrollDocsHashTarget', () => {
   afterEach(() => {

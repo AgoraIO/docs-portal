@@ -16,6 +16,7 @@ import {
 import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { PlatformPanel } from '@/components/mdx/PlatformTabsGroup';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { i18n } from '@/lib/i18n/i18n';
@@ -1645,6 +1646,87 @@ describe('DocsContent', () => {
 });
 
 describe('DocsTableOfContents', () => {
+  it.each([
+    '/realtime-media/rtm/reference/release-notes',
+    '/zh-CN/realtime-media/rtm/reference/release-notes',
+  ])(
+    'shares the visible platform from a base page TOC (%s)',
+    async (pathname) => {
+      const previousUrl = window.location.href;
+      try {
+        window.history.replaceState({}, '', `${pathname}?from=overview`);
+        render(
+          <AppProviders>
+            <article>
+              <PlatformPanel platform="web">
+                <h2 data-accordion-value="224-版-2" id="224-版-2">
+                  2.2.4 版
+                </h2>
+              </PlatformPanel>
+            </article>
+            <DocsTableOfContents
+              toc={[{ depth: 2, title: '2.2.4 版', url: '#224-版-2' }]}
+            />
+          </AppProviders>,
+        );
+        const link = screen.getByRole('link', { name: '2.2.4 版' });
+        await waitFor(() =>
+          expect(link).toHaveAttribute(
+            'href',
+            `${pathname}?from=overview&platform=web#224-%E7%89%88-2`,
+          ),
+        );
+        fireEvent.click(link);
+        expect(window.location.search).toBe('?from=overview&platform=web');
+        expect(window.location.hash).toBe('#224-%E7%89%88-2');
+      } finally {
+        window.history.replaceState({}, '', previousUrl);
+      }
+    },
+  );
+
+  it('updates shareable TOC links after the visible platform changes', async () => {
+    const previousUrl = window.location.href;
+    window.history.replaceState(
+      {},
+      '',
+      '/realtime-media/rtm/reference/release-notes',
+    );
+    const toc = [{ depth: 2, title: '2.2.4 版', url: '#version' }];
+    const fixture = (activePlatform: 'web' | 'android') => (
+      <AppProviders>
+        <article>
+          <PlatformPanel activePlatform={activePlatform} platform="web">
+            <h2 id="version">2.2.4 版</h2>
+          </PlatformPanel>
+          <PlatformPanel activePlatform={activePlatform} platform="android">
+            <h2 id="version">2.2.4 版</h2>
+          </PlatformPanel>
+        </article>
+        <DocsTableOfContents toc={toc} />
+      </AppProviders>
+    );
+    try {
+      const { rerender } = render(fixture('web'));
+      const link = screen.getByRole('link', { name: '2.2.4 版' });
+      await waitFor(() =>
+        expect(link).toHaveAttribute(
+          'href',
+          '/realtime-media/rtm/reference/release-notes?platform=web#version',
+        ),
+      );
+      rerender(fixture('android'));
+      await waitFor(() =>
+        expect(link).toHaveAttribute(
+          'href',
+          '/realtime-media/rtm/reference/release-notes?platform=android#version',
+        ),
+      );
+    } finally {
+      window.history.replaceState({}, '', previousUrl);
+    }
+  });
+
   it('clears the current item when the last open release is closed', async () => {
     const fixture = (state: 'open' | 'closed') => (
       <AppProviders>

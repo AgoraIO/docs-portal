@@ -1,3 +1,5 @@
+import { isKnownPlatform } from './platforms/registry';
+
 const DESKTOP_SCROLL_SELECTOR = '[data-testid="docs-main-desktop-scroll"]';
 const DOCS_HEADER_SELECTOR = '[data-testid="docs-shell-header"]';
 const HASH_SCROLL_OFFSET = 24;
@@ -14,6 +16,28 @@ const HASH_SCROLL_CANCEL_EVENTS = [
 ] as const;
 let cancelPendingHashScroll: (() => void) | undefined;
 export const DOCS_HASH_TARGET_EVENT = 'docs-portal:hash-target';
+
+/** Keep a heading's platform explicit when sharing a preference-driven page. */
+export function getDocsHashHref(hash: string) {
+  if (typeof window === 'undefined' || !hash.startsWith('#')) return hash;
+
+  const platform = getHeadingForUrl(hash)
+    ?.closest<HTMLElement>('[data-platform-panel]')
+    ?.getAttribute('data-platform-panel');
+  if (!platform || !isKnownPlatform(platform)) return hash;
+
+  const url = new URL(window.location.href);
+  const segments = url.pathname.split('/');
+  let lastSegment = segments.length - 1;
+  while (lastSegment >= 0 && !segments[lastSegment]) lastSegment -= 1;
+  if (isKnownPlatform(segments[lastSegment] ?? '')) {
+    segments[lastSegment] = platform;
+    url.pathname = segments.join('/');
+  }
+  url.searchParams.set('platform', platform);
+  url.hash = hash;
+  return `${url.pathname}${url.search}${url.hash}`;
+}
 
 export function scrollDocsHashTarget(
   url: string,
@@ -243,7 +267,7 @@ function getHeadingForUrl(url: string) {
     return null;
   }
 
-  const selector = `#${escapeCssIdentifier(id)}`;
+  const selector = `[id="${escapeCssIdentifier(id)}"]`;
   const headings = document.querySelectorAll<HTMLElement>(selector);
   const visibleHeading = Array.from(headings).find(
     (heading) =>
@@ -287,10 +311,13 @@ function escapeCssIdentifier(value: string) {
 }
 
 function updateHash(url: string) {
+  const href = getDocsHashHref(url);
   window.history.replaceState(
     null,
     '',
-    `${window.location.pathname}${window.location.search}${url}`,
+    href.startsWith('#')
+      ? `${window.location.pathname}${window.location.search}${href}`
+      : href,
   );
 }
 
