@@ -1,6 +1,6 @@
 'use client';
 
-import { Link, useLocation, useNavigate } from '@tanstack/react-router';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
 import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -45,9 +45,14 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
-import { getCnProductLabel } from '@/lib/search/cn-product-labels';
+import {
+  getCnProductLabel,
+  getCnSearchProductGroups,
+  resolveCnSearchProduct,
+} from '@/lib/search/cn-product-labels';
 import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
 import {
+  getCnSearchPlatformLabel,
   getCnSearchPlatforms,
   getCnSearchSdkLabel,
 } from '@/lib/search/cn-search-context';
@@ -171,9 +176,17 @@ export function DocsSearchDialog({
   // Recently-viewed pages shown (before any query) as a starting point. Loaded
   // from localStorage each time the dialog opens.
   const [recentPages, setRecentPages] = useState<RecentPage[]>([]);
-  const searchScope = productScopes.find(
-    (scope) => scope.id === scopeId,
-  )?.scope;
+  const cnProduct = isCn
+    ? resolveCnSearchProduct(scopeId, productScopes)
+    : undefined;
+  const cnScope = useMemo(
+    () =>
+      cnProduct ? { field: 'product' as const, value: cnProduct } : undefined,
+    [cnProduct],
+  );
+  const searchScope = isCn
+    ? cnScope
+    : productScopes.find((scope) => scope.id === scopeId)?.scope;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
   const pagesPromiseRef = useRef<{
     locale: AppLocale;
@@ -415,26 +428,30 @@ export function DocsSearchDialog({
 
   const productFilterGroups = useMemo<FilterGroup[]>(
     () =>
-      groupProductScopes(productScopes).map((group) => ({
-        label: group.label,
-        options: group.scopes.map((scope) => ({
-          description: scope.description,
-          label: scope.label,
-          value: scope.id,
-        })),
-      })),
-    [productScopes],
+      isCn
+        ? getCnSearchProductGroups()
+        : groupProductScopes(productScopes).map((group) => ({
+            label: group.label,
+            options: group.scopes.map((scope) => ({
+              description: scope.description,
+              label: scope.label,
+              value: scope.id,
+            })),
+          })),
+    [productScopes, isCn],
   );
   const platformFilterGroups = useMemo<FilterGroup[]>(
     () => [
       {
         options: platformOptions.map((platform) => ({
-          label: getPlatformLabel(platform, searchLocale),
+          label: isCn
+            ? getCnSearchPlatformLabel(platform)
+            : getPlatformLabel(platform, searchLocale),
           value: platform,
         })),
       },
     ],
-    [platformOptions, searchLocale],
+    [platformOptions, searchLocale, isCn],
   );
 
   async function handleSelect(url: string) {
@@ -614,7 +631,9 @@ export function DocsSearchDialog({
   )?.scope;
   const fullSearchHref = buildSearchPageHref(searchLocale, {
     q: pageSearch?.query ?? '',
-    product: searchScopeProduct(pageScope),
+    product: isCn
+      ? resolveCnSearchProduct(pageSearch?.scope, productScopes)
+      : searchScopeProduct(pageScope),
     platform: pageSearch?.platform ?? undefined,
   });
   const openFullSearch = () => {
@@ -649,18 +668,8 @@ export function DocsSearchDialog({
           <kbd>⌘K</kbd>
         </Button>
       )}
-      {isCn && mode === 'desktop' ? (
-        <Button
-          asChild
-          className="hidden shrink-0 lg:inline-flex"
-          size="sm"
-          variant="ghost"
-        >
-          <Link to={fullSearchHref}>完整搜索</Link>
-        </Button>
-      ) : null}
       <CommandDialog
-        className="docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-y-auto border-border p-0"
+        className="docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-visible border-border p-0"
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={(value) => {
@@ -731,7 +740,7 @@ export function DocsSearchDialog({
         />
         {remoteSearchEnabled ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
-            {productScopes.length > 0 ? (
+            {isCn || productScopes.length > 0 ? (
               <SearchFilterDropdown
                 allLabel={t('docs.searchAllProducts')}
                 emptyLabel={t('docs.searchFilterNoResults')}
@@ -743,7 +752,7 @@ export function DocsSearchDialog({
                   setScopeId(value);
                 }}
                 searchPlaceholder={t('docs.searchFilterProducts')}
-                value={scopeId}
+                value={isCn ? (cnProduct ?? null) : scopeId}
               />
             ) : null}
             <SearchFilterDropdown
@@ -1001,8 +1010,11 @@ function searchResultToEntry(
       isCn
         ? getCnProductLabel(getString(result.product), productScopes)
         : undefined,
-      ...(sdkLabel ? [sdkLabel] : formatPlatformContext(platforms ?? [])),
-      isCn ? getString(result.version) : undefined,
+      ...(sdkLabel
+        ? [sdkLabel]
+        : isCn
+          ? (platforms ?? []).map(getCnSearchPlatformLabel)
+          : formatPlatformContext(platforms ?? [])),
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'

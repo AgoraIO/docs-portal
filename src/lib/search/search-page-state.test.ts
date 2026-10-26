@@ -6,6 +6,22 @@ import {
 } from './search-page-state';
 
 describe('search page URL state', () => {
+  it('uses one server platform and ignores obsolete version filters', () => {
+    expect(
+      parseSearchPageState({
+        q: '高级美颜',
+        platform: 'restful-api',
+        version: '4.6.0',
+      }),
+    ).toMatchObject({
+      q: '高级美颜',
+      platform: 'restful',
+      version: undefined,
+    });
+    expect(
+      buildSearchPageHref('zh-CN', { q: 'joinChannel', version: '4.6.0' }),
+    ).not.toContain('version');
+  });
   it.each([
     ['cloud-transcoding', 'transcoding'],
     ['signaling', 'rtm'],
@@ -21,7 +37,7 @@ describe('search page URL state', () => {
       product: 'conversational-ai',
       platform: 'web',
       version: '4.6.0',
-      type: 'openapi' as const,
+      type: 'api' as const,
       page: 3,
     };
     const href = buildSearchPageHref('zh-CN', input);
@@ -29,7 +45,7 @@ describe('search page URL state', () => {
       parseSearchPageState(
         Object.fromEntries(new URL(href, 'https://docs.local').searchParams),
       ),
-    ).toEqual({ ...input, q: 'Token 过期' });
+    ).toEqual({ ...input, q: 'Token 过期', version: undefined });
     expect(buildSearchPageHref('zh-CN', { q: '' })).toBe('/zh-CN/search');
   });
 

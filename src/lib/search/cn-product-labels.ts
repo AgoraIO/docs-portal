@@ -1,83 +1,112 @@
-import analytics from '../../../content/docs/zh-CN/api-reference/api-ref/agora-analytics/meta.json';
-import ppt from '../../../content/docs/zh-CN/api-reference/api-ref/ppt-conversion-service/meta.json';
-import voip from '../../../content/docs/zh-CN/api-reference/api-ref/voip-callkit/meta.json';
-import art from '../../../content/docs/zh-CN/api-reference/online-art-teaching/meta.json';
-import music from '../../../content/docs/zh-CN/api-reference/online-music-teaching/meta.json';
-import introduction from '../../../content/docs/zh-CN/introduction/meta.json';
-import usageAnalytics from '../../../content/docs/zh-CN/realtime-media/usage-analytics/meta.json';
-import reference from '../../../content/docs/zh-CN/reference/meta.json';
-import chatroom from '../../../content/docs/zh-CN/solutions/chatroom/meta.json';
-import digitalLearning from '../../../content/docs/zh-CN/solutions/digital-learning/meta.json';
-import privateRoom from '../../../content/docs/zh-CN/solutions/one-to-one-live/meta.json';
 import type { ProductScope } from '../docs-tree';
+import { isExcludedCnProduct, normalizeCnProduct } from './cn-products';
 
-// Some indexed products are absent from the navigation scopes. Reuse their
-// maintained titles; labels must not change the IDs sent to the search service.
-const productNames: Record<string, string> = {
-  'conversational-ai': '对话式 AI 引擎',
-  'device-kit': '对话式 AI 开发套件',
-  rtc: '实时互动 RTC',
-  rtm: '实时消息 RTM',
-  rtsa: '媒体流加速 RTSA',
-  'cloud-recording': '云端录制',
-  'local-server-recording': '本地服务端录制',
-  console: '控制台',
-  whiteboard: '互动白板',
-  transcoding: '云端转码',
-  'agora-analytics': analytics.title,
-  chatroom: chatroom.title,
-  'digital-learning': digitalLearning.title,
-  introduction: introduction.title,
-  'ppt-conversion-service': ppt.title,
-  'ppt-transcoding': ppt.title,
-  'private-room': privateRoom.title,
-  reference: reference.title,
-  'micro-calling': voip.title,
-  'voip-callkit': voip.title,
-  analytics: usageAnalytics.title,
-  'online-art-teaching': art.title,
-  'online-music-teaching': music.title,
-  overview: '产品概览',
-};
+// Preserve the legacy site's product/solution catalog while using this site's
+// canonical IDs. Guides and API references belong to the same product option.
+const productGroups = [
+  {
+    label: '产品',
+    options: [
+      { value: 'conversational-ai', label: '对话式 AI 引擎' },
+      { value: 'rtc', label: '实时互动' },
+      { value: 'rtm', label: '实时消息' },
+      { value: 'fusion-cdn', label: '融合 CDN' },
+      { value: 'rtsa', label: '媒体流加速' },
+      { value: 'flexible-classroom', label: '灵动课堂' },
+      { value: 'local-server-recording', label: '本地服务端录制' },
+      { value: 'rtc-server-sdk', label: 'RTC 服务端 SDK' },
+      { value: 'media-push', label: '旁路推流' },
+      { value: 'media-pull', label: '输入在线媒体流' },
+      { value: 'whiteboard', label: '互动白板' },
+      { value: 'analytics', label: '水晶球' },
+      { value: 'speech-to-text', label: '实时转录翻译' },
+      { value: 'status-page', label: '健康看板' },
+      { value: 'ppt-transcoding', label: 'PPT 转码服务' },
+      { value: 'console', label: '控制台' },
+      { value: 'cloud-recording', label: '云端录制' },
+      { value: 'meeting', label: '灵动会议' },
+      { value: 'transcoding', label: '云端转码' },
+      { value: 'marketplace', label: '云市场' },
+      { value: 'sdk-extensions', label: 'SDK 拓展插件' },
+      { value: 'voip-call', label: '微呼叫' },
+    ],
+  },
+  {
+    label: '解决方案',
+    options: [
+      { value: 'chatroom', label: '声动语聊' },
+      { value: 'showroom', label: '秀场直播' },
+      { value: 'one-to-one-live', label: '1v1 私密房' },
+      { value: 'game-voice', label: '游戏语音' },
+      { value: 'smart-doorbell', label: '智能门铃' },
+      { value: 'smart-watch', label: '智能手表' },
+      { value: 'online-ktv', label: '在线 K 歌房' },
+      { value: 'smart-camera', label: '智能摄像头' },
+      { value: 'teleoperation', label: '平行操控' },
+      { value: 'device-kit', label: '对话式 AI 开发套件' },
+      { value: 'art-class', label: '在线美术教学' },
+      { value: 'online-music-class', label: '在线音乐教学' },
+      { value: 'one-to-one-classroom', label: '一对一互动教学' },
+      { value: 'small-classroom', label: '一对 N 小班课' },
+      { value: 'breakout-classroom', label: '超级小班课' },
+      { value: 'digital-learning', label: '教育信息化' },
+    ],
+  },
+];
+const productLabels = new Map(
+  productGroups.flatMap((group) =>
+    group.options.map(({ value, label }) => [value, label] as const),
+  ),
+);
 
-const scopeLabels: Record<string, string> = {
-  'agora-analytics': 'REST API',
-  analytics: '产品概述',
-  'usage-analytics': '指南',
-  'ppt-conversion-service': 'REST API',
-  'ppt-transcoding': '指南',
-  'private-room': 'API 参考',
-  'one-to-one-live': '指南',
-  'voip-callkit': 'REST API',
-  'voip-call': '指南',
-  'online-art-teaching': 'API 参考',
-  'art-class': '指南',
-  'online-music-teaching': 'API 参考',
-  'online-music-class': '指南',
-};
+export function getCnSearchProductGroups() {
+  return productGroups.map((group) => ({
+    ...group,
+    options: group.options.filter(({ value }) => !isExcludedCnProduct(value)),
+  }));
+}
+
+export function resolveCnSearchProduct(
+  value: string | null | undefined,
+  scopes: ProductScope[] = [],
+) {
+  if (!value) return undefined;
+  const scope = scopes.find((scope) => scope.id === value)?.scope;
+  if (scope && scope.field !== 'product') return undefined;
+  const product = normalizeCnProduct(
+    scope?.value ?? value.replace(/^product:/, ''),
+  );
+  return productLabels.has(product) && !isExcludedCnProduct(product)
+    ? product
+    : undefined;
+}
 
 export function getCnProductOptionLabel(
   product: string,
-  products: string[],
+  _products: string[],
   scopes: ProductScope[],
-): string {
-  const label = getCnProductLabel(product, scopes);
-  const duplicated = products.some(
-    (id) => id !== product && getCnProductLabel(id, scopes) === label,
-  );
-  return duplicated ? `${label}（${scopeLabels[product] ?? product}）` : label;
+) {
+  return getCnProductLabel(product, scopes);
 }
 
 export function getCnProductLabel(
   product: string | undefined,
-  productScopes: ProductScope[],
-): string {
+  scopes: ProductScope[],
+) {
   if (!product) return '';
+  const canonical = normalizeCnProduct(product);
+  const otherLabels: Record<string, string> = {
+    introduction: '介绍',
+    reference: '参考文档',
+    overview: '产品概览',
+  };
   return (
-    productNames[product] ??
-    productScopes.find(
-      (scope) =>
-        scope.scope.field === 'product' && scope.scope.value === product,
+    productLabels.get(canonical) ??
+    otherLabels[canonical] ??
+    scopes.find(
+      ({ scope }) =>
+        scope.field === 'product' &&
+        normalizeCnProduct(scope.value) === canonical,
     )?.label ??
     product
   );

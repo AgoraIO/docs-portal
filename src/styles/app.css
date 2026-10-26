@@ -2039,6 +2039,16 @@
    ends, so an exit animation here would trap the dialog in the DOM. Closing is
    left instant (matching the pre-existing behavior) and the enter is what adds
    the polish. */
+/* Filters portal inside the dialog for scroll locking, but must escape its
+   bounds. Constrain the command surface and scroll its result list instead. */
+.docs-search-dialog > [data-slot="command"] {
+  max-height: calc(100dvh - 2rem);
+}
+
+.docs-search-dialog [cmdk-list] {
+  min-height: 0;
+}
+
 .docs-search-dialog[data-state="open"] {
   animation: search-dialog-enter 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }

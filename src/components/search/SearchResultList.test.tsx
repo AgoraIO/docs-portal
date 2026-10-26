@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi } from 'vitest';
 import type { SearchPageGroup } from '@/lib/search/cn-search-page';
 import { SearchResultList } from './SearchResultList';
 
@@ -38,6 +38,25 @@ const group: SearchPageGroup = {
 };
 
 describe('SearchResultList', () => {
+  it('reports the visible global rank after an earlier result family', () => {
+    const onSelectResult = vi.fn((event: { preventDefault(): void }) =>
+      event.preventDefault(),
+    );
+    render(
+      <SearchResultList
+        groups={[group]}
+        productLabel={() => '实时互动'}
+        onSelectResult={onSelectResult}
+        rankOffset={3}
+      />,
+    );
+    fireEvent.click(screen.getByRole('link', { name: '使用 Token 鉴权' }));
+    expect(onSelectResult).toHaveBeenCalledWith(
+      expect.anything(),
+      group.pageUrl,
+      4,
+    );
+  });
   it('distinguishes the React companion Web reference from the standalone Web SDK', () => {
     render(
       <SearchResultList
@@ -65,8 +84,8 @@ describe('SearchResultList', () => {
     );
     expect(screen.getByText('React SDK 配套 Web SDK')).toBeInTheDocument();
     expect(screen.getByText('Web SDK')).toBeInTheDocument();
-    expect(screen.getByText('4.22.0')).toBeInTheDocument();
-    expect(screen.getByText('4.24.9')).toBeInTheDocument();
+    expect(screen.queryByText('4.22.0')).not.toBeInTheDocument();
+    expect(screen.queryByText('4.24.9')).not.toBeInTheDocument();
   });
 
   it('links unfiltered results to the canonical document and preserves section hash', () => {

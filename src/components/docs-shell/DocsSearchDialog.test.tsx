@@ -1039,7 +1039,7 @@ describe('DocsSearchDialog', () => {
     expect(createCnDocsSearchClient).toHaveBeenCalled();
     const manualSosLabels = await screen.findAllByText('manualSOS');
     expect(manualSosLabels.length).toBeGreaterThan(0);
-    expect(screen.getAllByText('2.9.0').length).toBeGreaterThan(0);
+    expect(screen.queryByText('2.9.0')).not.toBeInTheDocument();
     expect(screen.getAllByText('对话式 AI 引擎').length).toBeGreaterThan(0);
     fireEvent.click(manualSosLabels[0]);
     await waitFor(() => {
@@ -1225,10 +1225,9 @@ describe('DocsSearchDialog', () => {
     fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
     await act(() => router.navigate({ href: '/zh-CN/realtime-media/rtm' }));
-    expect(screen.getByRole('link', { name: '完整搜索' })).toHaveAttribute(
-      'href',
-      '/zh-CN/search',
-    );
+    expect(
+      screen.queryByRole('link', { name: '完整搜索' }),
+    ).not.toBeInTheDocument();
     fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
     expect(
       await screen.findByPlaceholderText('搜索文档、API、指南...'),
@@ -1279,12 +1278,6 @@ describe('DocsSearchDialog', () => {
       { target: { value: 'Token' } },
     );
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
-    await waitFor(() =>
-      expect(screen.getByRole('link', { name: '完整搜索' })).toHaveAttribute(
-        'href',
-        '/zh-CN/search?q=Token',
-      ),
-    );
     fireEvent.click(triggers[0]);
     expect(
       await screen.findByPlaceholderText('搜索文档、API、指南...'),
@@ -1309,7 +1302,7 @@ describe('DocsSearchDialog', () => {
             productScopes={[
               {
                 id: 'rtc',
-                label: '实时互动 RTC',
+                label: '实时互动',
                 scope: { field: 'product', value: 'rtc' },
               },
             ]}
@@ -1327,9 +1320,7 @@ describe('DocsSearchDialog', () => {
     render(<RouterProvider router={router} />);
     fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
     fireEvent.click(await screen.findByRole('combobox', { name: '全部产品' }));
-    fireEvent.click(
-      await screen.findByRole('option', { name: '实时互动 RTC' }),
-    );
+    fireEvent.click(await screen.findByRole('option', { name: '实时互动' }));
     fireEvent.click(await screen.findByRole('combobox', { name: '全部平台' }));
     fireEvent.click(await screen.findByRole('option', { name: 'HarmonyOS' }));
     expect(createCnDocsSearchClient).toHaveBeenCalledWith(

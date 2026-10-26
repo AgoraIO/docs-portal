@@ -33,7 +33,18 @@ export function getCnSearchPlatforms(
   return registered
     .filter(
       (platform) =>
-        !published || platform in available || platform === selected,
+        platform !== 'restful-api' &&
+        (!published ||
+          platform in available ||
+          platform === selected ||
+          (platform === 'restful' && 'restful-api' in available)),
     )
     .sort((a, b) => platformRegistry[a].order - platformRegistry[b].order);
+}
+
+export function getCnSearchPlatformLabel(platform: string) {
+  if (platform === 'restful' || platform === 'restful-api') return '服务端';
+  return platform in platformRegistry
+    ? platformRegistry[platform as PlatformKey].label['zh-CN']
+    : platform;
 }

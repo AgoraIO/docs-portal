@@ -11,15 +11,26 @@ describe('Chinese search product identifiers', () => {
     expect(normalizeCnProduct('ppt-conversion-service')).toBe(
       'ppt-transcoding',
     );
-    expect(normalizeCnProduct('micro-calling')).toBe('voip-callkit');
+    expect(normalizeCnProduct('micro-calling')).toBe('voip-call');
     expect(normalizeCnProduct('cloud-transcoding')).toBe('transcoding');
   });
 
   it('returns canonical and legacy identifiers for compatibility filters', () => {
-    expect(getCnProductAliases('ppt-transcoding')).toEqual([
-      'ppt-transcoding',
-      'ppt-conversion-service',
-    ]);
+    expect(getCnProductAliases('ppt-transcoding')).toEqual(
+      expect.arrayContaining(['ppt-transcoding', 'ppt-conversion-service']),
+    );
+  });
+
+  it.each([
+    ['agora-analytics', 'analytics'],
+    ['usage-analytics', 'analytics'],
+    ['online-art-teaching', 'art-class'],
+    ['online-music-teaching', 'online-music-class'],
+    ['private-room', 'one-to-one-live'],
+    ['voip-callkit', 'voip-call'],
+  ])('unifies guide and API product %s as %s', (alias, canonical) => {
+    expect(normalizeCnProduct(alias)).toBe(canonical);
+    expect(getCnProductAliases(canonical)).toContain(alias);
   });
 
   it('removes excluded products while preserving valid product memberships', () => {

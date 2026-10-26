@@ -7,7 +7,7 @@ export type SearchPageState = {
   product?: string;
   platform?: string;
   version?: string;
-  type: 'all' | 'docs' | 'openapi';
+  type: 'all' | 'docs' | 'api';
   page: number;
 };
 
@@ -20,17 +20,28 @@ export function parseSearchPageState(
   const product = readIdentifier(input.product);
   return {
     q: typeof input.q === 'string' ? input.q.trim().slice(0, 500) : '',
-    product: product ? normalizeCnProduct(product) : undefined,
+    product:
+      product &&
+      !['introduction', 'reference', 'api-reference', 'overview'].includes(
+        product,
+      )
+        ? normalizeCnProduct(product)
+        : undefined,
     platform:
       typeof input.platform === 'string' && isKnownPlatform(input.platform)
-        ? input.platform
+        ? input.platform === 'restful-api'
+          ? 'restful'
+          : input.platform
         : undefined,
-    version:
-      typeof input.version === 'string' && /^[\w.-]{1,80}$/.test(input.version)
-        ? input.version
-        : undefined,
+    // Retain the field for old callers/links, but current-site search always
+    // uses the publication policy rather than a user-selected SDK version.
+    version: undefined,
     type:
-      input.type === 'docs' || input.type === 'openapi' ? input.type : 'all',
+      input.type === 'docs'
+        ? 'docs'
+        : input.type === 'api' || input.type === 'openapi'
+          ? 'api'
+          : 'all',
     page: Number.isSafeInteger(page) && page > 0 ? Math.min(page, 500) : 1,
   };
 }

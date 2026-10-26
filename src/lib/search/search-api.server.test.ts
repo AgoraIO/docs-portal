@@ -11,8 +11,11 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 const empty = { hits: [], totalHits: 0, totalPages: 0, page: 1 };
-const request = (query: string) =>
-  new Request(`https://docs.example/api/search?${query}`);
+const request = (query: string) => {
+  const params = new URLSearchParams(query);
+  if (!params.has('type')) params.set('type', 'docs');
+  return new Request(`https://docs.example/api/search?${params}`);
+};
 
 describe('Start search API', () => {
   it('exposes the deployed full revision without changing the health contract', async () => {
@@ -187,7 +190,7 @@ describe('Start search API', () => {
       Authorization: 'Bearer private-read-key',
     });
     expect(JSON.parse(options?.body as string).filter).toBe(
-      'locale = "zh-CN" AND hidden = false AND status = "published" AND isDefaultPlatform = true AND tab = "ai"',
+      'locale = "zh-CN" AND hidden = false AND status = "published" AND isDefaultPlatform = true AND tab = "ai" AND tab != "api-reference" AND docType = "docs"',
     );
     expect(await response.text()).not.toMatch(
       /private-read-key|meili.internal/,

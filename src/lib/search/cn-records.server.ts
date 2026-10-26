@@ -40,7 +40,9 @@ function getRouteMetadata(route: PublishedDocsRoute) {
       : tab === 'api-reference' && firstProduct === 'api-ref'
         ? secondProduct
         : tab === 'ai'
-          ? 'conversational-ai'
+          ? firstProduct === 'device-kit'
+            ? 'device-kit'
+            : 'conversational-ai'
           : ['realtime-media', 'api-reference'].includes(tab)
             ? firstProduct
             : tab);

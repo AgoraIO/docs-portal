@@ -44,20 +44,24 @@ import {
 } from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 import type { ProductScope } from '@/lib/docs-tree';
-import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
+import { isKnownPlatform } from '@/lib/platforms/registry';
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import {
   getCnProductLabel,
-  getCnProductOptionLabel,
+  getCnSearchProductGroups,
 } from '@/lib/search/cn-product-labels';
-import { normalizeCnProductFacets } from '@/lib/search/cn-products';
-import { getCnSearchPlatforms } from '@/lib/search/cn-search-context';
+import {
+  getCnSearchPlatformLabel,
+  getCnSearchPlatforms,
+} from '@/lib/search/cn-search-context';
 import {
   type CnSearchPageResponse,
+  isCnApiSearchGroup,
   isPublicCnSearchUrl,
   loadCnSearchCatalog,
   mergeSearchPageGroups,
   type SearchFacets,
+  type SearchPageGroup,
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
 import type { SearchPageState } from '@/lib/search/search-page-state';
@@ -77,7 +81,6 @@ export function DocsSearchPage({
   const [draft, setDraft] = useState(state.q);
   const [status, setStatus] = useState<SearchStatus>('loading');
   const [data, setData] = useState<CnSearchPageResponse | null>(null);
-  const [facets, setFacets] = useState<SearchFacets>({});
   const [catalog, setCatalog] = useState<SearchFacets>({});
   const [recent, setRecent] = useState<RecentPage[]>([]);
   const [retry, setRetry] = useState(0);
@@ -151,7 +154,6 @@ export function DocsSearchPage({
     if (loadedPages.current.key !== key) {
       loadedPages.current = { key, pages: new Map() };
       setData(null);
-      setFacets((previous) => ({ product: previous.product ?? {} }));
     }
     const measurement = request.state.q ? getDocsMeasurement() : undefined;
     if (
@@ -185,21 +187,9 @@ export function DocsSearchPage({
           }
         : undefined;
     setStatus('loading');
-    Promise.all([
-      searchCnDocsPage(request.state, controller.signal, headers('results')),
-      request.state.version
-        ? searchCnDocsPage(
-            { ...request.state, version: undefined, page: 1 },
-            controller.signal,
-            headers('facets'),
-          )
-        : Promise.resolve(null),
-    ])
-      .then(([result, availableVersions]) => {
+    searchCnDocsPage(request.state, controller.signal, headers('results'))
+      .then((result) => {
         if (controller.signal.aborted) return;
-        const normalizedProductFacets = normalizeCnProductFacets(
-          result.facets.product ?? {},
-        );
         loadedPages.current.pages.set(request.state.page, result);
         const pages = [...loadedPages.current.pages.entries()]
           .filter(([page]) => page <= request.state.page)
@@ -223,12 +213,6 @@ export function DocsSearchPage({
             }),
           );
         setData(accepted);
-        setFacets((previous) => ({
-          ...result.facets,
-          version:
-            availableVersions?.facets.version ?? result.facets.version ?? {},
-          product: { ...previous.product, ...normalizedProductFacets },
-        }));
         setStatus('loaded');
       })
       .catch(() => {
@@ -243,12 +227,11 @@ export function DocsSearchPage({
   const productLabel = (product?: string) =>
     getCnProductLabel(product, productScopes);
   const hasFilters = Boolean(
-    state.product || state.platform || state.version || state.type !== 'all',
+    state.product || state.platform || state.type !== 'all',
   );
   const filterCount = [
     state.product,
     state.platform,
-    state.version,
     state.type !== 'all',
   ].filter(Boolean).length;
   const controlsState = filterOpen ? filterDraft : state;
@@ -260,30 +243,7 @@ export function DocsSearchPage({
     catalog.platform,
     controlsState.platform,
   );
-  const products = Object.keys(
-    normalizeCnProductFacets({
-      ...catalog.product,
-      ...facets.product,
-      ...Object.fromEntries(
-        [
-          ...productScopes.flatMap(({ scope }) =>
-            scope.field === 'product' ? [scope.value] : [],
-          ),
-          ...(controlsState.product ? [controlsState.product] : []),
-        ].map((product) => [product, 1]),
-      ),
-    }),
-  );
-  const draftScopeChanged =
-    filterOpen &&
-    (filterDraft.product !== state.product ||
-      filterDraft.platform !== state.platform);
-  const versions = [
-    ...new Set([
-      ...Object.keys(draftScopeChanged ? {} : (facets.version ?? {})),
-      ...(controlsState.version ? [controlsState.version] : []),
-    ]),
-  ];
+  const productGroups = getCnSearchProductGroups();
 
   const filterControls = (
     <>
@@ -300,10 +260,14 @@ export function DocsSearchPage({
           value={controlsState.product ?? ''}
         >
           <NativeSelectOption value="">全部产品</NativeSelectOption>
-          {products.map((product) => (
-            <NativeSelectOption key={product} value={product}>
-              {getCnProductOptionLabel(product, products, productScopes)}
-            </NativeSelectOption>
+          {productGroups.map((group) => (
+            <optgroup key={group.label} label={group.label}>
+              {group.options.map(({ value, label }) => (
+                <NativeSelectOption key={value} value={value}>
+                  {label}
+                </NativeSelectOption>
+              ))}
+            </optgroup>
           ))}
         </NativeSelect>
       </div>
@@ -327,48 +291,54 @@ export function DocsSearchPage({
             ]),
           ].map((platform) => (
             <NativeSelectOption key={platform} value={platform}>
-              {isKnownPlatform(platform)
-                ? getPlatformLabel(platform, 'zh-CN')
-                : platform}
+              {getCnSearchPlatformLabel(platform)}
             </NativeSelectOption>
           ))}
         </NativeSelect>
       </div>
-      {versions.length > 0 &&
-      (controlsState.version ||
-        (controlsState.product && controlsState.platform)) ? (
-        <div className="search-page-filter-label">
-          <span>版本</span>
-          <NativeSelect
-            aria-label="版本"
-            onChange={(event) =>
-              changeFilters({ version: event.target.value || undefined })
-            }
-            title="所选产品和平台的 SDK 版本；不同 SDK 可能使用不同版本号"
-            value={controlsState.version ?? ''}
-          >
-            <NativeSelectOption value="">全部版本</NativeSelectOption>
-            {versions.map((version) => (
-              <NativeSelectOption key={version} value={version}>
-                {version}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </div>
-      ) : (
-        <span
-          className="text-xs text-muted-foreground"
-          title="按各 SDK 当前发布文档搜索；历史版本可从 API 文档的版本菜单访问。"
-        >
-          当前发布文档
-        </span>
-      )}
     </>
   );
 
   function submitQuery(query: string) {
     if (query.trim() === state.q) setRetry((value) => value + 1);
     onChange({ q: query.trim(), page: 1 });
+  }
+
+  function renderResults(groups: SearchPageGroup[], rankOffset = 0) {
+    if (!data) return null;
+    return (
+      <SearchResultList
+        groups={groups}
+        rankOffset={rankOffset}
+        productLabel={productLabel}
+        onSelectResult={(event, path, rank, sectionRank) => {
+          if (event.type === 'auxclick' && event.button !== 1) return;
+          const newTab =
+            event.button === 1 ||
+            event.ctrlKey ||
+            event.metaKey ||
+            event.shiftKey;
+          const href = selectDocsResult(
+            resultSnapshots.current.get(data),
+            {
+              id: path,
+              path,
+              rank,
+              kind: sectionRank ? 'section' : 'document',
+              sectionRank,
+              method:
+                event.button === 1
+                  ? 'middle'
+                  : event.detail === 0
+                    ? 'keyboard'
+                    : 'mouse',
+            },
+            newTab,
+          );
+          event.currentTarget.href = href;
+        }}
+      />
+    );
   }
 
   return (
@@ -482,7 +452,7 @@ export function DocsSearchPage({
             aria-label="已选筛选条件"
             className="search-page-selected-filters"
           >
-            {(['product', 'platform', 'version'] as const).map(
+            {(['product', 'platform'] as const).map(
               (field) =>
                 state[field] && (
                   <Button
@@ -501,7 +471,7 @@ export function DocsSearchPage({
                       : field === 'platform' &&
                           state.platform &&
                           isKnownPlatform(state.platform)
-                        ? getPlatformLabel(state.platform, 'zh-CN')
+                        ? getCnSearchPlatformLabel(state.platform)
                         : state[field]}
                     <XIcon data-icon="inline-end" />
                   </Button>
@@ -553,36 +523,40 @@ export function DocsSearchPage({
           {data &&
             (data.groups.length ? (
               <>
-                <SearchResultList
-                  groups={data.groups}
-                  productLabel={productLabel}
-                  onSelectResult={(event, path, rank, sectionRank) => {
-                    if (event.type === 'auxclick' && event.button !== 1) return;
-                    const newTab =
-                      event.button === 1 ||
-                      event.ctrlKey ||
-                      event.metaKey ||
-                      event.shiftKey;
-                    const href = selectDocsResult(
-                      resultSnapshots.current.get(data),
-                      {
-                        id: path,
-                        path,
-                        rank,
-                        kind: sectionRank ? 'section' : 'document',
-                        sectionRank,
-                        method:
-                          event.button === 1
-                            ? 'middle'
-                            : event.detail === 0
-                              ? 'keyboard'
-                              : 'mouse',
-                      },
-                      newTab,
-                    );
-                    event.currentTarget.href = href;
-                  }}
-                />
+                {state.type === 'all'
+                  ? (['docs', 'api'] as const).map((family) => {
+                      const groups = data.groups.filter(
+                        (group) =>
+                          isCnApiSearchGroup(group) === (family === 'api'),
+                      );
+                      if (!groups.length) return null;
+                      const label = family === 'docs' ? '产品文档' : 'API 文档';
+                      return (
+                        <section aria-label={label} key={family}>
+                          <div className="flex items-center justify-between border-b py-2">
+                            <h2 className="text-sm font-semibold">{label}</h2>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() =>
+                                onChange({ type: family, page: 1 })
+                              }
+                            >
+                              查看全部{label}
+                            </Button>
+                          </div>
+                          {renderResults(
+                            groups,
+                            family === 'api'
+                              ? data.groups.filter(
+                                  (group) => !isCnApiSearchGroup(group),
+                                ).length
+                              : 0,
+                          )}
+                        </section>
+                      );
+                    })
+                  : renderResults(data.groups)}
                 <div className="search-page-pagination">
                   <span aria-live="polite">
                     已展示 {data.groups.length} 篇文档

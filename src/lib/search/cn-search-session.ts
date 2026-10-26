@@ -47,7 +47,11 @@ function readSessions(): SavedSession[] {
 export function readCnSearchSession(path: string): CnSearchSession | undefined {
   const item = readSessions().find((item) => item.path === path);
   return item
-    ? { query: item.query, platform: item.platform, scope: item.scope }
+    ? {
+        query: item.query,
+        platform: item.platform === 'restful-api' ? 'restful' : item.platform,
+        scope: item.scope,
+      }
     : undefined;
 }
 

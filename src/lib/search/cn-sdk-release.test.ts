@@ -101,6 +101,7 @@ describe('SDK release search snapshot', () => {
     const state = parseSearchPageState({
       q: 'joinChannel',
       platform: 'android',
+      type: 'api',
     });
     const response = await queryCnSearch(
       {

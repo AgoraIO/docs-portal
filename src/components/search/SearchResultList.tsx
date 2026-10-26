@@ -9,8 +9,10 @@ import {
 } from 'motion/react';
 import { type MouseEvent, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
-import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
-import { getCnSearchSdkLabel } from '@/lib/search/cn-search-context';
+import {
+  getCnSearchPlatformLabel,
+  getCnSearchSdkLabel,
+} from '@/lib/search/cn-search-context';
 import {
   getSearchPageGroupKey,
   getSearchSectionHref,
@@ -43,9 +45,11 @@ export function SearchResultList({
   groups,
   productLabel,
   onSelectResult,
+  rankOffset = 0,
 }: {
   groups: SearchPageGroup[];
   productLabel: (product?: string) => string;
+  rankOffset?: number;
   onSelectResult?: (
     event: MouseEvent<HTMLAnchorElement>,
     path: string,
@@ -113,15 +117,12 @@ export function SearchResultList({
                     {sdkLabel ? (
                       <span>{sdkLabel}</span>
                     ) : (
-                      group.platform.map((platform) => (
-                        <span key={platform}>
-                          {isKnownPlatform(platform)
-                            ? getPlatformLabel(platform, 'zh-CN')
-                            : platform}
-                        </span>
-                      ))
+                      [
+                        ...new Set(
+                          group.platform.map(getCnSearchPlatformLabel),
+                        ),
+                      ].map((label) => <span key={label}>{label}</span>)
                     )}
-                    {group.version && <span>{group.version}</span>}
                   </div>
                 </div>
                 <div className="search-page-result-heading">
@@ -129,10 +130,18 @@ export function SearchResultList({
                     className="search-page-result-title"
                     href={group.pageUrl}
                     onClick={(event) =>
-                      onSelectResult?.(event, group.pageUrl, groupIndex + 1)
+                      onSelectResult?.(
+                        event,
+                        group.pageUrl,
+                        groupIndex + 1 + rankOffset,
+                      )
                     }
                     onAuxClick={(event) =>
-                      onSelectResult?.(event, group.pageUrl, groupIndex + 1)
+                      onSelectResult?.(
+                        event,
+                        group.pageUrl,
+                        groupIndex + 1 + rankOffset,
+                      )
                     }
                   >
                     <h2>{group.title}</h2>
@@ -146,10 +155,20 @@ export function SearchResultList({
                       className="search-page-section"
                       href={firstHref}
                       onClick={(event) =>
-                        onSelectResult?.(event, firstHref, groupIndex + 1, 1)
+                        onSelectResult?.(
+                          event,
+                          firstHref,
+                          groupIndex + 1 + rankOffset,
+                          1,
+                        )
                       }
                       onAuxClick={(event) =>
-                        onSelectResult?.(event, firstHref, groupIndex + 1, 1)
+                        onSelectResult?.(
+                          event,
+                          firstHref,
+                          groupIndex + 1 + rankOffset,
+                          1,
+                        )
                       }
                     >
                       <HashIcon
@@ -181,7 +200,7 @@ export function SearchResultList({
                                   group.pageUrl,
                                   section.url,
                                 ),
-                                groupIndex + 1,
+                                groupIndex + 1 + rankOffset,
                                 sectionIndex + 2,
                               )
                             }
@@ -192,7 +211,7 @@ export function SearchResultList({
                                   group.pageUrl,
                                   section.url,
                                 ),
-                                groupIndex + 1,
+                                groupIndex + 1 + rankOffset,
                                 sectionIndex + 2,
                               )
                             }

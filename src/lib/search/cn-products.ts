@@ -5,7 +5,13 @@ const aliases = new Map<string, string>([
   ['cloud-transcoding', 'transcoding'],
   ['signaling', 'rtm'],
   ['ppt-conversion-service', 'ppt-transcoding'],
-  ['micro-calling', 'voip-callkit'],
+  ['micro-calling', 'voip-call'],
+  ['voip-callkit', 'voip-call'],
+  ['agora-analytics', 'analytics'],
+  ['usage-analytics', 'analytics'],
+  ['online-art-teaching', 'art-class'],
+  ['online-music-teaching', 'online-music-class'],
+  ['private-room', 'one-to-one-live'],
 ]);
 
 const excludedProducts = new Set([
