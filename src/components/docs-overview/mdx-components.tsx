@@ -462,7 +462,8 @@ function HelpHub({
     locale === 'zh-CN'
       ? {
           browseByTopic: '按主题浏览',
-          intro: '选择最快的支持渠道，获取产品问题、服务状态和社区资源帮助。',
+          intro:
+            '根据需要选择支持渠道：咨询产品问题、查看服务状态或浏览技术文章。',
           popularKnowledgeBase: '热门知识库',
           quickAnswers: '快速解答',
         }
