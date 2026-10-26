@@ -5,6 +5,33 @@ description: "查看对话式 AI 引擎的版本更新、问题修复、行为�
 
 <Accordions type="multiple" openFirst>
 
+<Accordion title="v2.14" id="v214" headingLevel={2} value="v214">
+
+该版本于 2026 年 10 月 22 日发布。
+
+### 改进
+
+#### 提升并发对话场景下轮次延迟指标的完整性
+
+修复了并发处理多个对话轮次时，部分轮次的性能指标可能缺失的问题。查询轮次信息时，你可以通过 [GET 查询对话轮次信息](/zh-CN/api-reference/api-ref/conversational-ai/turns) 接口查看每轮的端到端延迟（`e2e_latency_ms`）和分段延迟（`segmented_latency_ms`）。
+
+#### 火山引擎双向流式 TTS 2.0 音色支持逐字字幕
+
+该版本为火山引擎双向流式 TTS 的 2.0 音色适配逐字字幕对齐。使用 2.0 音色时，对话式 AI 引擎可以正常返回与语音对齐的逐字字幕。
+
+#### 被打断轮次新增播放时长数据
+
+该版本在被打断轮次的结束元数据中新增 `playback_duration_ms` 和 `intended_playback_duration_ms`，分别记录中断时已实际播放的音频时长，以及引擎已接收并计划播放的音频总时长。你可以通过 [GET 查询对话轮次信息](/zh-CN/api-reference/api-ref/conversational-ai/turns) 或 [112 turns finished](/zh-CN/api-reference/conversational-ai/rest-api/webhook/ncs-events#112) 事件获取这些数据，分析轮次被打断时的播放情况。正常结束轮次的 `playback_duration_ms` 保持不变。
+
+### API 变更
+
+#### 新增
+
+- [GET 查询对话轮次信息](/zh-CN/api-reference/api-ref/conversational-ai/turns) 和 [112 turns finished](/zh-CN/api-reference/conversational-ai/rest-api/webhook/ncs-events#112) 事件
+  - `turns[].end.metadata` 在 `end.type` 为 `interrupted` 时新增 `playback_duration_ms` 和 `intended_playback_duration_ms`。
+
+</Accordion>
+
 <Accordion title="v2.13" id="v213" headingLevel={2} value="v213">
 
 该版本于 2026 年 9 月 18 日发布。

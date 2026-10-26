@@ -10,6 +10,11 @@ _migration:
   warnings: []
 ---
 
+
+<a id="view"></a>
+
+<a id="surfacetexture"></a>
+
 <a id="class_videocanvas__prototype"></a>
 
 ```text
@@ -43,24 +48,10 @@ export class VideoCanvas{
 发布视频源的用户 ID。
 
 </Parameter>
-<a id="view"></a>
-<Parameter name="view">
+<a id="xcomponentid"></a>
+<Parameter name="xcomponentId">
 
-视频显示窗口。
-
-:::caution
-注意： 在一个 VideoCanvas 中，你只能选择 view 或 surfaceTexture 其中一个进行设置，如果同时设置，只有 view 中的设置会生效。
-:::
-
-</Parameter>
-<a id="surfacetexture"></a>
-<Parameter name="surfaceTexture">
-
-提供视频图像的容器，当你使用该成员时，需要自行实现 OPENGL 中的纹理绘制。详见 SurfaceTexture。
-
-:::caution
-注意： 在一个 VideoCanvas 中，你只能选择 view 或 surfaceTexture 其中一个进行设置，如果同时设置，只有 view 中的设置会生效。
-:::
+XComponent 的 ID。对应 XComponent 的 libraryname 必须设置为 `AGORA_LIB_NAME`。如果你将该成员设置为空，表示取消绑定此前设置的 XComponent。
 
 </Parameter>
 <a id="rendermode"></a>
