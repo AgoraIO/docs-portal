@@ -53,6 +53,7 @@ import {
 import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import { getAppBranding, legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
+import { DocsInternationalLink } from './DocsInternationalLink';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
@@ -419,6 +420,7 @@ export function DocsShell({
                     />
                   </div>
                 )}
+                <DocsInternationalLink locale={currentLocale} />
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -605,6 +607,11 @@ function MobileSidebar({
         data-testid="docs-mobile-sidebar-scroll"
       >
         <div className="flex min-w-0 max-w-full flex-col gap-6 overflow-x-hidden pb-6">
+          <DocsInternationalLink
+            className="h-11 w-full justify-start"
+            locale={currentLocale}
+            onClick={onSelectPath}
+          />
           {currentTab ? (
             <div className="flex min-w-0 flex-col gap-2">
               <p className={mobileSidebarGroupLabelClassName}>

@@ -555,6 +555,89 @@ describe('DocsShell', () => {
     ).toBeNull();
   });
 
+  it.each([
+    { activePath: '/zh-CN/introduction', layoutMode: 'docs' },
+    { activePath: '/zh-CN/introduction/about-agora', layoutMode: 'docs' },
+    { activePath: '/zh-CN/api-reference/example', layoutMode: 'openapi' },
+    { activePath: '/zh-CN/search', layoutMode: 'search' },
+  ] as const)(
+    'links Chinese $layoutMode page $activePath to international docs',
+    async ({ activePath, layoutMode }) => {
+      renderDocsShell({ locale: 'zh-CN', activePath, layoutMode }, activePath);
+
+      const actions = await screen.findByTestId('docs-desktop-header-actions');
+      const link = within(actions).getByRole('link', {
+        name: /国际站 \/ International Docs/,
+      });
+      expect(link).toHaveAttribute(
+        'href',
+        'https://docs.agora.io/en/introduction',
+      );
+      expect(link).toHaveAttribute('target', '_blank');
+      expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+      expect(link).toHaveAccessibleName(/在新标签页打开/);
+      expect(screen.getByTestId('legacy-docs-banner')).toHaveAttribute(
+        'href',
+        'https://doc.shengwang.cn/',
+      );
+    },
+  );
+
+  it('keeps international docs available after dismissing the Chinese legacy banner and remounting', async () => {
+    const { unmount } = renderDocsShell({ locale: 'zh-CN' });
+    fireEvent.click(
+      await screen.findByRole('button', { name: '关闭旧版文档提示' }),
+    );
+    expect(screen.queryByTestId('legacy-docs-banner')).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /International Docs/ }),
+    ).toBeInTheDocument();
+
+    unmount();
+    renderDocsShell({ locale: 'zh-CN' });
+    expect(
+      await screen.findByRole('link', { name: /International Docs/ }),
+    ).toHaveAttribute('href', 'https://docs.agora.io/en/introduction');
+    expect(screen.queryByTestId('legacy-docs-banner')).not.toBeInTheDocument();
+  });
+
+  it('offers international docs near the start of the Chinese mobile menu', async () => {
+    renderDocsShell({ locale: 'zh-CN' });
+    fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
+    const sheet = await screen.findByRole('dialog');
+    const link = within(sheet).getByRole('link', {
+      name: /国际站 \/ International Docs/,
+    });
+    expect(link).toHaveAttribute(
+      'href',
+      'https://docs.agora.io/en/introduction',
+    );
+    expect(link).toHaveAttribute('target', '_blank');
+    expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    expect(
+      link.compareDocumentPosition(
+        within(sheet).getByTestId('docs-mobile-section-picker'),
+      ) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    fireEvent.click(link);
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument(),
+    );
+  });
+
+  it('does not add an international docs link to English desktop or mobile navigation', async () => {
+    renderDocsShell();
+    await screen.findByTestId('docs-desktop-header-actions');
+    expect(
+      screen.queryByRole('link', { name: /International Docs/ }),
+    ).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
+    const sheet = await screen.findByRole('dialog');
+    expect(
+      within(sheet).queryByRole('link', { name: /International Docs/ }),
+    ).not.toBeInTheDocument();
+  });
+
   it('reserves bold width on top tabs so the menu does not shift on activation', async () => {
     renderDocsShell();
 

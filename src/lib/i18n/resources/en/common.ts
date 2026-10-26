@@ -12,6 +12,7 @@ const enCommon = {
       system: 'System',
     },
     site: {
+      internationalDocs: 'International Docs',
       label: 'Site',
       description: 'Product coverage differs between the two sites.',
       global: 'International site',
