@@ -1,4 +1,5 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
@@ -112,6 +113,52 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('does not report a failed clipboard write as copied, including after a successful copy', async () => {
+    const clipboard = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('Clipboard denied'))
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error('Clipboard denied'));
+    const original = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboard },
+    });
+    try {
+      render(
+        <FumadocsOpenApiContent
+          pageProps={makeMinimalOpenApiPageProps('post')}
+        />,
+      );
+      const preview = await screen.findByTestId('openapi-code-preview');
+      const button = within(preview).getByRole('button', { name: 'Copy Text' });
+      const source = preview.querySelector('pre')?.textContent;
+      expect(source).toBeTruthy();
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+      expect(button).toHaveAccessibleName('Copy Text');
+      expect(button).not.toHaveAttribute('data-checked');
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(button).toHaveAccessibleName('Copied Text');
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(clipboard).toHaveBeenCalledTimes(3);
+      expect(button).toHaveAccessibleName('Copy Text');
+      expect(button).not.toHaveAttribute('data-checked');
+    } finally {
+      if (original) Object.defineProperty(navigator, 'clipboard', original);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
   it('preserves complete multiline code in crawler HTML and copies it before and after highlighting', async () => {
     const source = [
       'curl --request POST https://example.com/endpoint \\',

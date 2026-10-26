@@ -1645,6 +1645,11 @@ function OpenApiMarkdownCodeBlock({
         isRequestCode &&
           'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
       )}
+      Actions={({ className, children }) => (
+        <div className={cn('empty:hidden', className)}>
+          {children && <OpenApiCodeCopyButton />}
+        </div>
+      )}
     >
       <Pre>{source === undefined ? children : highlighted}</Pre>
     </CodeBlock>
@@ -1655,6 +1660,36 @@ function getCodeBlockLanguage(className: string | undefined) {
   const match = className?.match(/(?:^|\s)language-([^\s]+)/);
 
   return match?.[1];
+}
+
+/** Keep clipboard rejection handling while using the default code-block frame. */
+function OpenApiCodeCopyButton() {
+  const locale = useContext(OpenApiLocaleContext);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [checked, onClick] = useOpenApiCopyButton(async () => {
+    const pre = buttonRef.current?.closest('figure')?.querySelector('pre');
+    if (!pre) throw new Error('Code block is unavailable');
+    const clone = pre.cloneNode(true) as HTMLPreElement;
+    for (const decoration of clone.querySelectorAll('.nd-copy-ignore'))
+      decoration.replaceWith('\n');
+    await navigator.clipboard.writeText(clone.textContent ?? '');
+  });
+
+  return (
+    <button
+      ref={buttonRef}
+      type="button"
+      aria-label={getOpenApiLabel(
+        checked ? 'Copied Text' : 'Copy Text',
+        locale,
+      )}
+      className="inline-flex items-center justify-center rounded-md p-1 text-sm font-medium text-fd-muted-foreground transition-colors duration-100 hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50 data-checked:text-fd-accent-foreground [&_svg]:size-4"
+      data-checked={checked || undefined}
+      onClick={onClick}
+    >
+      {checked ? <Check /> : <Clipboard />}
+    </button>
+  );
 }
 
 function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
@@ -1680,6 +1715,7 @@ function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
   const onClick = useCallback(() => {
     const requestId = requestRef.current + 1;
     requestRef.current = requestId;
+    setChecked(false);
     if (timeoutRef.current !== undefined) {
       window.clearTimeout(timeoutRef.current);
       timeoutRef.current = undefined;
