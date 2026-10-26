@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 import { getOverviewMDXComponents } from '@/components/docs-overview/mdx-components';
 import { getMDXComponents, MDXAccordionProvider } from '@/components/mdx';
 import { useDocsContent } from '@/lib/source.browser';
@@ -11,15 +11,12 @@ export function DocsContentBody({
   contentPath: string;
   locale?: string;
 }) {
-  const components = useMemo(
-    () =>
-      getMDXComponents(getOverviewMDXComponents(contentPath), {
-        contentPath,
-        locale,
-      }),
-    [contentPath, locale],
-  );
-  const content = useDocsContent(contentPath, { components });
+  const content = useDocsContent(contentPath, {
+    components: getMDXComponents(getOverviewMDXComponents(contentPath), {
+      contentPath,
+      locale,
+    }),
+  });
 
   const root = useRef<HTMLDivElement>(null);
   useMeasuredDocsBody(root);

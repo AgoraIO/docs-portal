@@ -5,7 +5,9 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
@@ -110,6 +112,72 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('preserves complete multiline code in crawler HTML and copies it before and after highlighting', async () => {
+    const source = [
+      'curl https://example.com/endpoint \\',
+      ...Array.from(
+        { length: 45 },
+        (_, i) => `  --header 'X-Example-${i}: <value>&' \\`,
+      ),
+      "  --data '{}'",
+    ].join('\n');
+    const props: OpenAPIPageProps = {
+      operations: [
+        { method: 'post', path: '/example' } as OpenApiOperationItem,
+      ],
+      payload: {
+        bundled: {
+          info: { title: 'Example' },
+          openapi: '3.2.0',
+          paths: {
+            '/example': {
+              post: {
+                responses: { '200': { description: 'OK' } },
+                'x-codeSamples': [{ lang: 'bash', label: 'curl', source }],
+              },
+            },
+          },
+        } as unknown as Document,
+      },
+    };
+    const $ = load(
+      renderToStaticMarkup(<FumadocsOpenApiContent pageProps={props} />),
+    );
+    expect($('pre code').first().text()).toBe(source);
+    expect($('pre code').first().text().split('\n')).toHaveLength(47);
+    expect($('pre code').first().find('value')).toHaveLength(0);
+    expect($('[data-collapsed]')).toHaveLength(0);
+
+    const clipboard = vi.fn().mockResolvedValue(undefined);
+    const original = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboard },
+    });
+    try {
+      const { container } = render(
+        <FumadocsOpenApiContent pageProps={props} />,
+      );
+      const code = container.querySelector('pre code');
+      expect(code?.textContent).toBe(source);
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+      await waitFor(() =>
+        expect(
+          container.querySelector('pre span[style*="--shiki-light"]'),
+        ).toBeInTheDocument(),
+      );
+      expect(container.querySelector('pre code')?.textContent).toBe(source);
+      fireEvent.click(
+        screen.getByRole('button', { name: /Copy Text|Copied Text/ }),
+      );
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+    } finally {
+      if (original) Object.defineProperty(navigator, 'clipboard', original);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
   it('uses one section heading contract for all OpenAPI content sections', async () => {
     render(
       <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
@@ -649,16 +717,18 @@ describe('FumadocsOpenApiContent', () => {
       generatedPanel.querySelector('.fd-scroll-container'),
     ).toHaveAttribute('data-openapi-code-viewport', '');
     expect(generatedPanel.querySelector('figure.shiki')).toHaveClass(
-      'docs-code-block',
+      'bg-fd-secondary',
+      '-mx-px',
+      '-mb-px',
+      'last:rounded-b-xl',
     );
     await waitFor(() =>
-      expect(generatedPanel.querySelector('code')).toHaveAttribute(
-        'data-highlighted',
-        'true',
-      ),
+      expect(
+        generatedPanel.querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
     );
     expect(
-      within(generatedPreview).getByRole('button', { name: '复制代码' }),
+      within(generatedPreview).getByRole('button', { name: '复制文本' }),
     ).toBeInTheDocument();
     expect(
       screen
@@ -758,8 +828,10 @@ describe('FumadocsOpenApiContent', () => {
     );
     await waitFor(() =>
       expect(
-        examplesScope.getByRole('tabpanel').querySelector('code'),
-      ).toHaveAttribute('data-highlighted', 'true'),
+        examplesScope
+          .getByRole('tabpanel')
+          .querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
     );
     const preview = examplesScope.getByTestId('openapi-code-preview');
     expect(
@@ -786,7 +858,7 @@ describe('FumadocsOpenApiContent', () => {
     });
     try {
       fireEvent.click(
-        within(preview).getByRole('button', { name: 'Copy code' }),
+        within(preview).getByRole('button', { name: 'Copy Text' }),
       );
       await waitFor(() => {
         expect(clipboardWriteText).toHaveBeenCalledWith(
@@ -2275,11 +2347,11 @@ describe('FumadocsOpenApiContent', () => {
         '[data-openapi-responses] input[placeholder="Filter Properties"]',
       ),
     ).toBeNull();
-    expect(screen.getByText('cname', { selector: 'code' })).toBeVisible();
+    expect(screen.getByText('cname')).toBeVisible();
     expect(
       screen.getByText('The name of the channel being recorded.'),
     ).toBeVisible();
-    expect(screen.getByText('uid', { selector: 'code' })).toBeVisible();
+    expect(screen.getByText('uid')).toBeVisible();
     expect(
       screen.getByText(
         'The UID used by the cloud recording service in the RTC channel.',
@@ -2293,7 +2365,7 @@ describe('FumadocsOpenApiContent', () => {
     fireEvent.click(
       within(
         screen
-          .getByText('serverResponse', { selector: 'code' })
+          .getByText('serverResponse')
           .closest('div.border-t') as HTMLElement,
       ).getByRole('button', { name: 'Expand serverResponse properties' }),
     );
@@ -3499,14 +3571,10 @@ describe('FumadocsOpenApiContent', () => {
         'The request succeeded and returned the created streaming key.',
       ),
     ).toBeInTheDocument();
-    expect(
-      responseScope.getByText('status', { selector: 'code' }),
-    ).toBeInTheDocument();
+    expect(responseScope.getByText('status')).toBeInTheDocument();
     fireEvent.click(
       within(
-        responseScope
-          .getByText('data', { selector: 'code' })
-          .closest('div.border-t') as HTMLElement,
+        responseScope.getByText('data').closest('div.border-t') as HTMLElement,
       ).getByRole('button', { name: '展开 data 属性' }),
     );
     expect(
@@ -3778,7 +3846,7 @@ describe('FumadocsOpenApiContent', () => {
       screen.queryByRole('heading', { name: 'Response schema' }),
     ).not.toBeInTheDocument();
     expect(screen.queryByPlaceholderText('Filter Properties')).toBeNull();
-    expect(screen.getByText('agent_id', { selector: 'code' })).toBeVisible();
+    expect(screen.getByText('agent_id')).toBeVisible();
   });
 
   it('adds stable official root anchors and nested find paths', async () => {
@@ -3888,13 +3956,11 @@ describe('FumadocsOpenApiContent', () => {
     );
     fireEvent.click(
       within(
-        screen
-          .getByText('data', { selector: 'code' })
-          .closest('div.border-t') as HTMLElement,
+        screen.getByText('data').closest('div.border-t') as HTMLElement,
       ).getByRole('button', { name: 'Expand data properties' }),
     );
     expect(screen.getByText('idleTimeout')).toBeVisible();
-    expect(screen.getByText('agentId', { selector: 'code' })).toBeVisible();
+    expect(screen.getByText('agentId')).toBeVisible();
     expect(
       document.querySelector('[data-openapi-schema-find-index]'),
     ).toBeNull();
@@ -4138,7 +4204,7 @@ describe('FumadocsOpenApiContent', () => {
       }),
     ).toBeVisible();
     expect(
-      screen.getAllByRole('button', { name: '复制代码' }).length,
+      screen.getAllByRole('button', { name: '复制文本' }).length,
     ).toBeGreaterThan(0);
   });
 });

@@ -4,7 +4,11 @@ import {
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
-import type { CodeBlockProps } from 'fumadocs-ui/components/codeblock';
+import {
+  type CodeBlockProps,
+  CodeBlock as FumadocsCodeBlock,
+  Pre as FumadocsCodeBlockPre,
+} from 'fumadocs-ui/components/codeblock';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
 import {
@@ -60,7 +64,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/cn';
-import { codeTabGroupKey } from '@/lib/code/tab-scope';
 import {
   DOCS_HASH_TARGET_EVENT,
   findDocsHeadingForHash,
@@ -73,8 +76,6 @@ import {
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
-import { DocsCodeBlock } from './code/DocsCodeBlock';
-import { HighlightedCode } from './code/HighlightedCode';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -145,7 +146,6 @@ type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   children?: ReactNode;
   defaultValue?: string;
   groupId?: string;
-  scope?: string;
   onValueChange?: (value: string) => void;
   value?: string;
 };
@@ -202,7 +202,9 @@ type ActiveAccordion = {
 type AccordionPageState = {
   accordionResetKey: number;
   activeAccordion?: ActiveAccordion;
+  codeBlockTabValues: Record<string, string>;
   setActiveAccordion: Dispatch<SetStateAction<ActiveAccordion | undefined>>;
+  setCodeBlockTabValues: Dispatch<SetStateAction<Record<string, string>>>;
 };
 
 const AccordionPageStateContext = createContext<AccordionPageState | undefined>(
@@ -332,6 +334,9 @@ function firstVersionValue(children: ReactNode): string | undefined {
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
   const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
   const [accordionResetKey, setAccordionResetKey] = useState(0);
+  const [codeBlockTabValues, setCodeBlockTabValues] = useState<
+    Record<string, string>
+  >({});
 
   useEffect(() => {
     const resetActiveAccordion = () => {
@@ -353,9 +358,11 @@ export function MDXAccordionProvider({ children }: { children: ReactNode }) {
     () => ({
       accordionResetKey,
       activeAccordion,
+      codeBlockTabValues,
       setActiveAccordion,
+      setCodeBlockTabValues,
     }),
-    [accordionResetKey, activeAccordion],
+    [accordionResetKey, activeAccordion, codeBlockTabValues],
   );
 
   return (
@@ -611,8 +618,7 @@ function useSafeTabValue({
   values: string[];
 }) {
   const validValues = useMemo(() => new Set(values), [values]);
-  const fallbackValue =
-    defaultValue && validValues.has(defaultValue) ? defaultValue : values.at(0);
+  const fallbackValue = defaultValue ?? values.at(0);
   const initialValue =
     value ??
     (defaultValue && validValues.has(defaultValue)
@@ -674,12 +680,6 @@ function Tabs({
     [ref],
   );
   const values = useTabValues({ children, items });
-  const scopedGroupId = codeTabGroupKey(
-    typeof window === 'undefined' ? 'docs' : window.location.pathname,
-    props.groupId,
-    values,
-    'tabs',
-  );
   const labels = useMemo(() => {
     const collected = collectTabLabels(children);
 
@@ -710,9 +710,9 @@ function Tabs({
     ) {
       const tabValue = panel.getAttribute('data-mdx-tab-value');
       if (tabValue && panel.closest('[data-mdx-tabs-root]') === root) {
-        if (scopedGroupId) {
-          sessionStorage.setItem(scopedGroupId, tabValue);
-          if (props.persist) localStorage.setItem(scopedGroupId, tabValue);
+        if (props.groupId) {
+          sessionStorage.setItem(props.groupId, tabValue);
+          if (props.persist) localStorage.setItem(props.groupId, tabValue);
         }
         setSafeValue(tabValue);
         return;
@@ -739,7 +739,6 @@ function Tabs({
     <MdxTabLabelsContext value={labels}>
       <ControlledFumadocsTabs
         {...props}
-        groupId={scopedGroupId}
         data-mdx-tabs-root=""
         ref={setRootRef}
         className={cn('bg-fd-card', className)}
@@ -752,6 +751,24 @@ function Tabs({
       </ControlledFumadocsTabs>
     </MdxTabLabelsContext>
   );
+}
+
+function getCodeBlockTabsStateKey({
+  groupId,
+  values,
+}: {
+  groupId?: string;
+  values: string[];
+}) {
+  if (groupId) {
+    return `group:${groupId}`;
+  }
+
+  if (values.length === 0) {
+    return undefined;
+  }
+
+  return `values:${[...values].sort().join('\u001f')}`;
 }
 
 function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
@@ -1087,68 +1104,69 @@ function CodeBlockTabs({
   className,
   defaultValue,
   groupId,
-  scope = 'docs',
   onValueChange,
   value,
-  persist,
-  ref,
   ...props
 }: CodeBlockTabsRootProps) {
-  const rootRef = useRef<HTMLDivElement>(null);
-  const setRootRef = useCallback(
-    (element: HTMLDivElement | null) => {
-      rootRef.current = element;
-      assignRef(ref, element);
-    },
-    [ref],
-  );
+  const pageState = useContext(AccordionPageStateContext);
   const values = useTabValues({ children });
+  const stateKey = useMemo(
+    () => getCodeBlockTabsStateKey({ groupId, values }),
+    [groupId, values],
+  );
+  const sharedValue =
+    value === undefined && stateKey
+      ? pageState?.codeBlockTabValues[stateKey]
+      : undefined;
+  const handleValueChange = useCallback(
+    (nextValue: string) => {
+      if (value === undefined && stateKey) {
+        pageState?.setCodeBlockTabValues((current) => {
+          if (current[stateKey] === nextValue) {
+            return current;
+          }
+
+          return {
+            ...current,
+            [stateKey]: nextValue,
+          };
+        });
+      }
+
+      onValueChange?.(nextValue);
+    },
+    [onValueChange, pageState, stateKey, value],
+  );
   const { safeValue, setSafeValue } = useSafeTabValue({
     defaultValue,
-    onValueChange,
-    value,
+    onValueChange: handleValueChange,
+    value: value ?? sharedValue,
     values,
   });
-  const scopedGroup = codeTabGroupKey(scope, groupId, values);
-  const revealHash = useEffectEvent((url: string) => {
-    const root = rootRef.current;
-    const target = findDocsHeadingForHash(url);
-    if (!root || !target || !root.contains(target)) return;
-    for (
-      let panel: HTMLElement | null = target;
-      panel && panel !== root;
-      panel = panel.parentElement
-    ) {
-      const tab = panel.getAttribute('data-docs-code-tab');
-      if (tab && panel.closest('[data-docs-code-tabs]') === root) {
-        setSafeValue(tab);
-        return;
-      }
-    }
-  });
+
   useEffect(() => {
-    const revealCurrentHash = () => revealHash(window.location.hash);
-    const revealTarget = (event: Event) => {
-      const detail = (event as CustomEvent<string>).detail;
-      revealHash(typeof detail === 'string' ? detail : window.location.hash);
-    };
-    revealCurrentHash();
-    window.addEventListener('hashchange', revealCurrentHash);
-    window.addEventListener(DOCS_HASH_TARGET_EVENT, revealTarget);
-    return () => {
-      window.removeEventListener('hashchange', revealCurrentHash);
-      window.removeEventListener(DOCS_HASH_TARGET_EVENT, revealTarget);
-    };
-  }, []);
+    if (!(pageState && stateKey && value === undefined && safeValue)) {
+      return;
+    }
+
+    pageState.setCodeBlockTabValues((current) => {
+      if (current[stateKey] !== undefined) {
+        return current;
+      }
+
+      return {
+        ...current,
+        [stateKey]: safeValue,
+      };
+    });
+  }, [pageState, safeValue, stateKey, value]);
+
   return (
     <FumadocsCodeBlockTabs
       {...props}
-      ref={setRootRef}
-      data-docs-code-tabs=""
-      className={cn('docs-code-tabs bg-fd-card', className)}
+      className={cn('bg-fd-card', className)}
       defaultValue={defaultValue}
-      groupId={scopedGroup}
-      persist={persist ?? Boolean(scopedGroup)}
+      groupId={groupId}
       onValueChange={setSafeValue}
       value={safeValue}
     >
@@ -1159,8 +1177,20 @@ function CodeBlockTabs({
   );
 }
 
-function Pre(props: PreProps) {
-  return <DocsCodeBlock {...props} />;
+function Pre({ className, ...props }: PreProps) {
+  return (
+    <FumadocsCodeBlock
+      {...props}
+      data-line-numbers
+      className={cn('bg-fd-card shadow-none', className)}
+      viewportProps={{
+        ...props.viewportProps,
+        className: cn('overflow-auto', props.viewportProps?.className),
+      }}
+    >
+      <FumadocsCodeBlockPre>{props.children}</FumadocsCodeBlockPre>
+    </FumadocsCodeBlock>
+  );
 }
 
 function TabsContent({
@@ -1231,7 +1261,6 @@ function CodeBlockTab({
 
   return (
     <FumadocsCodeBlockTab
-      data-docs-code-tab={value}
       className={cn(
         '[&>figure]:m-0 [&>figure]:rounded-none [&>figure]:border-0 [&>figure]:bg-fd-card [&>figure]:shadow-none',
         className,
@@ -1251,10 +1280,30 @@ function CommandBlock({
   code: string;
   language?: string;
 }) {
+  const lineKeys = new Map<string, number>();
+  const lines = code
+    .replace(/\n$/, '')
+    .split('\n')
+    .map((line) => {
+      const occurrence = (lineKeys.get(line) ?? 0) + 1;
+      lineKeys.set(line, occurrence);
+
+      return {
+        id: `${line}:${occurrence}`,
+        line,
+      };
+    });
+
   return (
-    <DocsCodeBlock source={code} language={language} variant="terminal">
-      <HighlightedCode source={code} language={language} />
-    </DocsCodeBlock>
+    <Pre className={cn('shiki', `language-${language}`)}>
+      <code className={cn('language-code', `language-${language}`)}>
+        {lines.map(({ id, line }) => (
+          <span className="line" key={id}>
+            {line}
+          </span>
+        ))}
+      </code>
+    </Pre>
   );
 }
 
@@ -2201,12 +2250,7 @@ export function getMDXComponents(
     TabsContent,
     TabsList: FumadocsTabsList,
     TabsTrigger: FumadocsTabsTrigger,
-    CodeBlockTabs: (props: CodeBlockTabsRootProps) => (
-      <CodeBlockTabs
-        scope={context?.contentPath ?? context?.locale ?? 'docs'}
-        {...props}
-      />
-    ),
+    CodeBlockTabs,
     CodeBlockTabsList,
     CodeBlockTab,
     pre: Pre,

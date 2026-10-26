@@ -23,7 +23,6 @@ import { Route as ApiLogoutRouteImport } from './routes/api/logout'
 import { Route as ApiOauthRouteImport } from './routes/api/oauth'
 import { Route as ApiSearchRouteImport } from './routes/api/search'
 import { Route as ApiUserinfoRouteImport } from './routes/api/userinfo'
-import { Route as DevCodeBlocksRouteImport } from './routes/dev/code-blocks'
 import { Route as DocSplatRouteImport } from './routes/doc/$'
 import { Route as LlmsSplatRouteImport } from './routes/llms/$'
 import { Route as LocaleTabIndexRouteImport } from './routes/$locale/$tab/index'
@@ -101,11 +100,6 @@ const ApiUserinfoRoute = ApiUserinfoRouteImport.update({
   path: '/api/userinfo',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DevCodeBlocksRoute = DevCodeBlocksRouteImport.update({
-  id: '/dev/code-blocks',
-  path: '/dev/code-blocks',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DocSplatRoute = DocSplatRouteImport.update({
   id: '/doc/$',
   path: '/doc/$',
@@ -152,7 +146,6 @@ export interface FileRoutesByFullPath {
   '/api/oauth': typeof ApiOauthRoute
   '/api/search': typeof ApiSearchRoute
   '/api/userinfo': typeof ApiUserinfoRoute
-  '/dev/code-blocks': typeof DevCodeBlocksRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
@@ -174,7 +167,6 @@ export interface FileRoutesByTo {
   '/api/oauth': typeof ApiOauthRoute
   '/api/search': typeof ApiSearchRoute
   '/api/userinfo': typeof ApiUserinfoRoute
-  '/dev/code-blocks': typeof DevCodeBlocksRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale': typeof LocaleIndexRoute
@@ -198,7 +190,6 @@ export interface FileRoutesById {
   '/api/oauth': typeof ApiOauthRoute
   '/api/search': typeof ApiSearchRoute
   '/api/userinfo': typeof ApiUserinfoRoute
-  '/dev/code-blocks': typeof DevCodeBlocksRoute
   '/doc/$': typeof DocSplatRoute
   '/llms/$': typeof LlmsSplatRoute
   '/$locale/': typeof LocaleIndexRoute
@@ -223,7 +214,6 @@ export interface FileRouteTypes {
     | '/api/oauth'
     | '/api/search'
     | '/api/userinfo'
-    | '/dev/code-blocks'
     | '/doc/$'
     | '/llms/$'
     | '/$locale/'
@@ -245,7 +235,6 @@ export interface FileRouteTypes {
     | '/api/oauth'
     | '/api/search'
     | '/api/userinfo'
-    | '/dev/code-blocks'
     | '/doc/$'
     | '/llms/$'
     | '/$locale'
@@ -268,7 +257,6 @@ export interface FileRouteTypes {
     | '/api/oauth'
     | '/api/search'
     | '/api/userinfo'
-    | '/dev/code-blocks'
     | '/doc/$'
     | '/llms/$'
     | '/$locale/'
@@ -292,7 +280,6 @@ export interface RootRouteChildren {
   ApiOauthRoute: typeof ApiOauthRoute
   ApiSearchRoute: typeof ApiSearchRoute
   ApiUserinfoRoute: typeof ApiUserinfoRoute
-  DevCodeBlocksRoute: typeof DevCodeBlocksRoute
   DocSplatRoute: typeof DocSplatRoute
   LlmsSplatRoute: typeof LlmsSplatRoute
   LocaleIndexRoute: typeof LocaleIndexRoute
@@ -400,13 +387,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiUserinfoRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/dev/code-blocks': {
-      id: '/dev/code-blocks'
-      path: '/dev/code-blocks'
-      fullPath: '/dev/code-blocks'
-      preLoaderRoute: typeof DevCodeBlocksRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/doc/$': {
       id: '/doc/$'
       path: '/doc/$'
@@ -480,7 +460,6 @@ const rootRouteChildren: RootRouteChildren = {
   ApiOauthRoute: ApiOauthRoute,
   ApiSearchRoute: ApiSearchRoute,
   ApiUserinfoRoute: ApiUserinfoRoute,
-  DevCodeBlocksRoute: DevCodeBlocksRoute,
   DocSplatRoute: DocSplatRoute,
   LlmsSplatRoute: LlmsSplatRoute,
   LocaleIndexRoute: LocaleIndexRoute,

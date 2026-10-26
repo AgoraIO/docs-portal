@@ -1,4 +1,6 @@
 import { TranslationProvider } from '@fuma-translate/react';
+import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
+import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import type { RenderContext } from 'fumadocs-openapi';
 import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
@@ -8,10 +10,12 @@ import {
   type OpenAPIPageProps,
 } from 'fumadocs-openapi/ui';
 import {
+  CodeBlock,
   CodeBlockTab,
   CodeBlockTabs,
   CodeBlockTabsList,
   CodeBlockTabsTrigger,
+  Pre,
 } from 'fumadocs-ui/components/codeblock';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { toJsxRuntime } from 'hast-util-to-jsx-runtime';
@@ -34,11 +38,11 @@ import * as JsxRuntime from 'react/jsx-runtime';
 import rehypeRaw from 'rehype-raw';
 import { remark } from 'remark';
 import remarkRehype from 'remark-rehype';
-import { DocsCodeBlock } from '@/components/code/DocsCodeBlock';
 import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurement';
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
+import { codeHighlightOptions, codeLanguageAliases } from '@/lib/code/options';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 import {
@@ -46,7 +50,6 @@ import {
   buildUniqueOpenApiAnchorIds,
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
-import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
 import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import {
   buildOpenApiResponseViews,
@@ -90,9 +93,6 @@ const OpenApiLocaleContext = createContext<string | undefined>(undefined);
 const OpenApiContentPathContext = createContext<string | undefined>(undefined);
 const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OpenApiRequestCodeContext = createContext(false);
-const OpenApiCodeVariantContext = createContext<'output' | undefined>(
-  undefined,
-);
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
   'Collapse all': '折叠全部',
@@ -536,7 +536,13 @@ function getOpenApiLabel(label: string, locale?: string) {
 }
 
 function getOpenApiFumaTranslations(locale?: string) {
-  return isZhCnLocale(locale) ? ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS : {};
+  return isZhCnLocale(locale)
+    ? {
+        ...ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS,
+        'Copy Text(code block)(aria-label)': '复制文本',
+        'Copied Text(code block)(aria-label)': '已复制文本',
+      }
+    : {};
 }
 
 function useLocalizedOpenApiGeneratedChrome(
@@ -610,9 +616,7 @@ function OpenApiRightExamplesLayout({
         className="openapi-response-example"
         title={getOpenApiLabel('Response example', locale)}
       >
-        <OpenApiCodeVariantContext value="output">
-          {slots.responseTabs}
-        </OpenApiCodeVariantContext>
+        {slots.responseTabs}
       </OpenApiRightSection>
     </div>
   );
@@ -1057,7 +1061,7 @@ function OpenApiCodeSampleUsageTabs({
 
   return cloneElement(defaultUsageTabs, {
     className: cn(
-      'docs-code-tabs openapi-request-code-tabs my-0',
+      'openapi-request-code-tabs my-0',
       defaultUsageTabs.props.className,
     ),
   });
@@ -1110,7 +1114,7 @@ function OpenApiCodeSampleTabs({
 
   return (
     <CodeBlockTabs
-      className="docs-code-tabs openapi-request-code-tabs my-0"
+      className="openapi-request-code-tabs my-0"
       onValueChange={setSelectedSampleValue}
       value={activeSampleValue}
     >
@@ -1179,7 +1183,7 @@ function OpenApiCodeSampleGroupSelector({
       </select>
       <CodeBlockTabs
         key={selectedGroup.title}
-        className="docs-code-tabs openapi-request-code-tabs my-0"
+        className="openapi-request-code-tabs my-0"
         onValueChange={setSelectedSampleValue}
         value={activeSampleValue}
       >
@@ -1592,22 +1596,11 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
   return <div className="openapi-markdown prose-no-margin">{content}</div>;
 }
 
-function renderOpenApiCodeBlock(
-  lang: string,
-  source: string,
-  variant?: 'output',
-) {
-  const content = (
-    <OpenApiCodeSourceContext value={source}>
+function renderOpenApiCodeBlock(lang: string, source: string) {
+  return (
+    <OpenApiCodeSourceContext.Provider key={source} value={source}>
       {renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``)}
-    </OpenApiCodeSourceContext>
-  );
-  return variant ? (
-    <OpenApiCodeVariantContext value={variant}>
-      {content}
-    </OpenApiCodeVariantContext>
-  ) : (
-    content
+    </OpenApiCodeSourceContext.Provider>
   );
 }
 
@@ -1616,31 +1609,45 @@ function OpenApiMarkdownCodeBlock({
   ...props
 }: ComponentProps<'pre'>) {
   const contextSource = useContext(OpenApiCodeSourceContext);
-  const locale = useContext(OpenApiLocaleContext);
-  const variant = useContext(OpenApiCodeVariantContext);
+  const isRequestCode = useContext(OpenApiRequestCodeContext);
   const childProps = isValidElement(children)
     ? (children.props as { className?: string; children?: ReactNode })
     : undefined;
   const language =
     getCodeBlockLanguage(props.className) ??
-    getCodeBlockLanguage(childProps?.className);
+    getCodeBlockLanguage(childProps?.className) ??
+    'text';
   const source =
     contextSource ??
     (typeof childProps?.children === 'string'
       ? childProps.children
       : undefined);
+  const highlighted = useShikiDynamic(
+    () => defaultShikiFactory.getOrInit(),
+    source ?? '',
+    {
+      ...codeHighlightOptions,
+      lang: codeLanguageAliases[language] ?? language,
+      defaultColor: false,
+      components: { pre: ({ children }) => <>{children}</> },
+      // Preserve every newline in server HTML and before hydration. The default
+      // DynamicCodeBlock placeholder joins line spans without text separators.
+      defaultValue: <code>{source}</code>,
+    },
+    [source, language],
+  );
+
   return (
-    <DocsCodeBlock
+    <CodeBlock
       {...props}
-      source={source}
-      language={language}
-      variant={variant}
-      locale={locale}
+      className={cn(
+        props.className,
+        isRequestCode &&
+          'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
+      )}
     >
-      {source !== undefined && language
-        ? highlightOpenApiCode({ source, language })
-        : children}
-    </DocsCodeBlock>
+      <Pre>{source === undefined ? children : highlighted}</Pre>
+    </CodeBlock>
   );
 }
 
