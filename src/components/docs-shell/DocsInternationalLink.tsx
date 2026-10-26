@@ -21,7 +21,7 @@ export function DocsInternationalLink({
   }
 
   return (
-    <Button asChild className={className} size="sm" variant="ghost">
+    <Button asChild className={className} size="sm" variant="outline">
       <a
         href={internationalDocsUrl}
         onClick={onClick}
