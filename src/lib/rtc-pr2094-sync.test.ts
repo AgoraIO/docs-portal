@@ -304,10 +304,14 @@ describe('RTC PR #2094 frozen source delta', () => {
     },
   );
 
-  it('keeps the Android current title and the upstream macOS/C++ archive snapshot', () => {
+  it('keeps the Android current version in the switcher and the upstream macOS/C++ archive snapshot', () => {
     expect(
-      read('content/docs/zh-CN/api-reference/rtc/android/(current)/meta.json'),
-    ).toContain('v4.7.0');
+      JSON.parse(
+        read('content/docs/zh-CN/api-reference/rtc/android/meta.json'),
+      ).navScope.versions.find(
+        (version: { id: string }) => version.id === 'current',
+      ),
+    ).toMatchObject({ label: 'v4.7.0', path: '(current)' });
     for (const platform of ['macos', 'cpp-all-platforms']) {
       const text = read(
         `content/docs/zh-CN/api-reference/rtc/${platform}/meta.json`,

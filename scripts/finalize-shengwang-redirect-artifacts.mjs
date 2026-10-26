@@ -2,6 +2,11 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {
+  isRetiredCnDocsPath,
+  isRetiredCnLegacyDocsPath,
+  retiredCnLegacyDocsRoute,
+} from '../src/lib/retired-cn-docs.mjs';
 import { toPublicRedirectTarget } from './shengwang-redirect-targets.mjs';
 
 const repoRoot = path.resolve(
@@ -9,6 +14,7 @@ const repoRoot = path.resolve(
   '..',
 );
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
+const retirementPolicyPath = path.join(repoRoot, 'src/lib/retired-cn-docs.mjs');
 const candidatePath = path.join(
   inputRoot,
   'legacy-url-map-candidate-32883e92e9-2026-10-15.json',
@@ -26,6 +32,10 @@ const finalMapPath = path.join(inputRoot, 'legacy-url-map.csv');
 const finalJsonPath = path.join(inputRoot, 'legacy-url-map.json');
 const vercelPath = path.join(inputRoot, 'legacy-url-redirects.vercel.json');
 const nginxPath = path.join(inputRoot, 'legacy-url-redirects.nginx.conf');
+const retiredVercelPath = path.join(
+  inputRoot,
+  'legacy-url-retired.vercel.json',
+);
 
 const candidate = JSON.parse(await readFile(candidatePath, 'utf8'));
 const legacyInventory = JSON.parse(await readFile(legacyInventoryPath, 'utf8'));
@@ -43,6 +53,21 @@ validateRecords(
   applicationRoutes,
 );
 const records = candidate.records.map((record) => {
+  // The historical route snapshot includes products retired since collection.
+  // Keep that evidence immutable; apply the current publication policy explicitly.
+  if (
+    isRetiredCnLegacyDocsPath(record.legacyPath) ||
+    isRetiredCnDocsPath(record.target)
+  ) {
+    return {
+      ...record,
+      target: '',
+      status: 'retired',
+      targetExists: false,
+      mappingType: 'retired-cn-docs',
+      notes: `${record.notes}；按 PR #1248 下线策略直接返回 HTTP 404，不生成 301。原始目标：${record.target || '无'}。`,
+    };
+  }
   const target = toPublicRedirectTarget(record.target);
   if (
     record.status === 'candidate' &&
@@ -79,6 +104,7 @@ if (duplicatePaths.length > 0) {
 }
 
 const redirects = records.filter((record) => record.status === 'candidate');
+const retired = records.filter((record) => record.status === 'retired');
 const missingTargets = redirects.filter(
   (record) => !record.target || !record.targetExists,
 );
@@ -93,6 +119,7 @@ const finalSummary = {
   redirect: redirects.length,
   noRedirect: records.filter((record) => record.status === 'no-redirect')
     .length,
+  retired: retired.length,
   manualReview: manualReview.length,
   uniqueSourcePaths: new Set(records.map((record) => record.legacyPath)).size,
 };
@@ -105,6 +132,10 @@ const finalJson = `${JSON.stringify(
     sourceCandidate: path.relative(repoRoot, candidatePath),
     snapshot: candidate.snapshot,
     targetUrlTransform: 'remove-zh-CN-prefix',
+    retirementPolicy: {
+      path: path.relative(repoRoot, retirementPolicyPath),
+      sha256: await sha256File(retirementPolicyPath),
+    },
     summary: finalSummary,
     records,
   },
@@ -121,18 +152,27 @@ const vercelJson = `${JSON.stringify(
   null,
   2,
 )}\n`;
-const nginxConfig = toNginx(redirects, candidate.targetCommit);
+const nginxConfig = toNginx(redirects, retired, candidate.targetCommit);
+// Vercel redirect entries cannot return 404. Install these routing rules
+// alongside the 301 file, ahead of the site's filesystem / SPA fallback.
+const retiredVercelJson = `${JSON.stringify(
+  { routes: [retiredCnLegacyDocsRoute] },
+  null,
+  2,
+)}\n`;
 
 if (process.argv.includes('--check')) {
   await assertFileMatches(finalMapPath, finalMap);
   await assertFileMatches(finalJsonPath, finalJson);
   await assertFileMatches(vercelPath, vercelJson);
   await assertFileMatches(nginxPath, nginxConfig);
+  await assertFileMatches(retiredVercelPath, retiredVercelJson);
 } else {
   await writeFile(finalMapPath, finalMap);
   await writeFile(finalJsonPath, finalJson);
   await writeFile(vercelPath, vercelJson);
   await writeFile(nginxPath, nginxConfig);
+  await writeFile(retiredVercelPath, retiredVercelJson);
 }
 
 console.log(
@@ -142,6 +182,7 @@ console.log(
       finalJsonPath,
       vercelPath,
       nginxPath,
+      retiredVercelPath,
       summary: finalSummary,
     },
     null,
@@ -312,15 +353,25 @@ function normalizePath(value) {
   return pathname.replace(/\/$/, '') || '/';
 }
 
-function toNginx(items, targetCommit) {
+function toNginx(items, retired, targetCommit) {
   const lines = [
     `# Generated from target commit ${targetCommit}.`,
     '# Target URL transform: remove-zh-CN-prefix.',
     '# Deploy only after the target site serves unprefixed routes.',
     '# Same-path requests such as /search are no-redirect; serve them directly.',
+    '# Retired Chinese product URLs return HTTP 404 (PR #1248).',
     '# Review before loading into the Shengwang legacy host.',
     '',
   ];
+  // Cover old deep links and .html variants beyond the collected sitemap.
+  lines.push(`location ~ ${retiredCnLegacyDocsRoute.src} {`);
+  lines.push('  return 404;');
+  lines.push('}', '');
+  for (const item of retired) {
+    lines.push(`location = ${item.legacyPath} {`);
+    lines.push('  return 404;');
+    lines.push('}', '');
+  }
   for (const item of items) {
     lines.push(`location = ${item.legacyPath} {`);
     lines.push(`  return 301 ${item.target};`);

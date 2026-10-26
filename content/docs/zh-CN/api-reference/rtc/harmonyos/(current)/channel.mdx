@@ -11,9 +11,235 @@ _migration:
 
 <a id="toc_channel"></a>
 
-<a id="api_irtcengine_joinchannel"></a>
+<a id="api_irtcengine_getuserinfobyuid"></a>
 
 <a id="ariaid-title2"></a>
+
+## getUserInfoByUid
+
+通过 UID 获取用户信息。
+
+<a id="api_irtcengine_getuserinfobyuid__prototype"></a>
+
+```text
+public abstract getUserInfoByUid(uid:number,userInfo:UserInfo):number;
+```
+
+<a id="api_irtcengine_getuserinfobyuid__detailed_desc"></a>
+
+<a id="api_irtcengine_getuserinfobyuid__getUserInfo_desc"></a>
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的映射表，并在本地触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到回调后，调用该方法传入 UID 来获取包含了指定用户 User Account 的 [UserInfo](/zh-CN/api-reference/rtc/harmonyos/class-userinfo) 对象。
+
+<a id="api_irtcengine_getuserinfobyuid__timing"></a>
+
+### 调用时机
+
+在收到 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调后调用。
+
+<a id="api_irtcengine_getuserinfobyuid__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_getuserinfobyuid__related"></a>
+
+### 相关回调
+
+[onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated)
+
+<a id="api_irtcengine_getuserinfobyuid__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_getuserinfobyuid__return_values"></a>
+
+### 返回值
+
+<a id="api_irtcengineex_getuserinfobyuidex"></a>
+
+<a id="ariaid-title3"></a>
+
+## getUserInfoByUid
+
+通过 UID 获取用户信息。
+
+<a id="api_irtcengineex_getuserinfobyuidex__prototype"></a>
+
+```text
+public abstract getUserInfoByUidEx(uid:number,userInfo:UserInfo,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_getuserinfobyuidex__detailed_desc"></a>
+
+### 详情
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的映射表，并在本地触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到回调后，调用该方法传入 UID 来获取包含了指定用户 User Account 的 [UserInfo](/zh-CN/api-reference/rtc/harmonyos/class-userinfo) 对象。
+
+<a id="api_irtcengineex_getuserinfobyuidex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-1"></a>
+<Parameter name="uid">
+
+用户 ID。
+
+</Parameter>
+<a id="channelid"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengineex_getuserinfobyuidex__char_support"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="localuseraccount"></a>
+<Parameter name="localUserAccount">
+
+本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_getuserinfobyuidex__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 [UserInfo](/zh-CN/api-reference/rtc/harmonyos/class-userinfo) 对象。
+- 方法调用失败，则返回 NULL。
+
+<a id="api_irtcengine_getuserinfobyuseraccount"></a>
+
+<a id="ariaid-title4"></a>
+
+## getUserInfoByUserAccount
+
+通过 User Account 获取用户信息。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__prototype"></a>
+
+```text
+public abstract getUserInfoByUserAccount(userAccount:string,userInfo:UserInfo):number;
+```
+
+<a id="api_irtcengine_getuserinfobyuseraccount__detailed_desc"></a>
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的映射表，并在本地触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到回调后，调用该方法传入 User Account 来获取包含了指定用户 UID 的 [UserInfo](/zh-CN/api-reference/rtc/harmonyos/class-userinfo) 对象。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__timing"></a>
+
+### 调用时机
+
+在收到 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调后调用。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_getuserinfobyuseraccount__related"></a>
+
+### 相关回调
+
+[onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated)
+
+<a id="api_irtcengine_getuserinfobyuseraccount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="useraccount"></a>
+<Parameter name="userAccount">
+
+用户 User Account。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_getuserinfobyuseraccount__return_values"></a>
+
+### 返回值
+
+<a id="api_irtcengineex_getuserinfobyuseraccountex"></a>
+
+<a id="ariaid-title5"></a>
+
+## getUserInfoByUserAccount
+
+通过 User Account 获取用户信息。
+
+<a id="api_irtcengineex_getuserinfobyuseraccountex__prototype"></a>
+
+```text
+public abstract getUserInfoByUserAccountEx(userAccount:string,userInfo:UserInfo,connection:RtcConnection):number;
+```
+
+<a id="api_irtcengineex_getuserinfobyuseraccountex__detailed_desc"></a>
+
+### 详情
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的映射表，并在本地触发 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。收到回调后，调用该方法传入 UID 来获取包含了指定用户 User Account 的 [UserInfo](/zh-CN/api-reference/rtc/harmonyos/class-userinfo) 对象。
+
+<a id="api_irtcengineex_getuserinfobyuseraccountex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="useraccount-1"></a>
+<Parameter name="userAccount">
+
+用户 User Account。
+
+</Parameter>
+<a id="channelid-1"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengineex_getuserinfobyuseraccountex__char_support"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="localuseraccount-1"></a>
+<Parameter name="localUserAccount">
+
+本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengineex_getuserinfobyuseraccountex__return_values"></a>
+
+### 返回值
+
+- 方法调用成功，返回 [UserInfo](/zh-CN/api-reference/rtc/harmonyos/class-userinfo) 对象。
+- 方法调用失败，则返回 NULL。
+
+<a id="api_irtcengine_joinchannel"></a>
+
+<a id="ariaid-title6"></a>
 
 ## joinChannel
 
@@ -73,7 +299,7 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 :::
 
 </Parameter>
-<a id="channelid"></a>
+<a id="channelid-2"></a>
 <Parameter name="channelId">
 
 <a id="api_irtcengine_joinchannel__channelID_desc"></a>
@@ -94,7 +320,7 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 (非必选项) 预留参数。
 
 </Parameter>
-<a id="uid"></a>
+<a id="uid-2"></a>
 <Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位有符号整数。取值范围为：-231 到 231-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
@@ -123,7 +349,7 @@ public abstract joinChannel(key: string, channel: string, optionalInfo: string, 
 
 <a id="api_irtcengine_joinchannel2"></a>
 
-<a id="ariaid-title3"></a>
+<a id="ariaid-title7"></a>
 
 ## joinChannelWithOptions
 
@@ -183,7 +409,7 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 :::
 
 </Parameter>
-<a id="channelid-1"></a>
+<a id="channelid-3"></a>
 <Parameter name="channelId">
 
 <a id="api_irtcengine_joinchannel2__channelID_desc"></a>
@@ -198,7 +424,7 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 - "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
 
 </Parameter>
-<a id="uid-1"></a>
+<a id="uid-3"></a>
 <Parameter name="uid">
 
 用户 ID。该参数用于标识在实时音视频互动频道中的用户。你需要自行设置和管理用户 ID，并确保同一频道内的每个用户 ID 是唯一的。该参数为 32 位有符号整数。取值范围为：-231 到 231-1。如果不指定（即设为 0），SDK 会自动分配一个，并在 onJoinChannelSuccess 回调中返回， 应用层必须记住该返回值并维护，SDK 不对该返回值进行维护。
@@ -233,7 +459,7 @@ public abstract joinChannelWithOptions(token: string, channelId: string, uid: nu
 
 <a id="api_irtcengineex_joinchannelex"></a>
 
-<a id="ariaid-title4"></a>
+<a id="ariaid-title8"></a>
 
 ## joinChannelEx
 
@@ -340,9 +566,239 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
+<a id="api_irtcengine_joinchannelwithuseraccount2"></a>
+
+<a id="ariaid-title9"></a>
+
+## joinChannelWithUserAccount
+
+使用 User Account 和 Token 加入频道，并设置频道媒体选项。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__prototype"></a>
+
+```text
+public abstract joinChannelWithUserAccount(token:string,channelName:string,userAccount:string,options?:ChannelMediaOptions):number;
+```
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__detailed_desc"></a>
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__account"></a>
+
+调用该方法前，如果你未调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_registerlocaluseraccount) 注册一个 User Account，调用该方法加入频道时，SDK 会自动为你创建一个 User Account。先调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_registerlocaluseraccount) 方法注册 Account，再调用此方法加入频道，可以缩短进入频道的时间。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__note"></a>
+
+:::caution
+注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
+:::
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__timing"></a>
+
+### 调用时机
+
+该方法需要在 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__related"></a>
+
+### 相关回调
+
+成功加入频道后，会触发以下回调：
+
+- 本地：[onLocalUserRegistered](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onlocaluserregistered)、[onJoinChannelSuccess](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 远端：通信场景下的用户和直播场景下的主播加入频道后，远端会分别触发 [onUserJoined](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-3"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+:::note
+注：
+
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
+:::
+
+</Parameter>
+<a id="channelname"></a>
+<Parameter name="channelName">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__char_support"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="useraccount-2"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="options-2"></a>
+<Parameter name="options">
+
+频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_joinchannelwithuseraccount2__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token，uid 参数未设置为整型，或 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3：[RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象初始化失败。你需要重新初始化 RtcEngine 对象。
+  - -7：RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -8：RtcEngine 对象内部状态错误。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex"></a>
+
+<a id="ariaid-title10"></a>
+
+## joinChannelWithUserAccountEx
+
+使用 User Account 和 Token 加入频道，并设置频道媒体选项。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__prototype"></a>
+
+```text
+public abstract joinChannelWithUserAccountEx(token:string,channelId:string,userAccount:string,options:ChannelMediaOptions,eventHandler:IRtcEngineEventHandler):number;
+```
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__detailed_desc"></a>
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__account"></a>
+
+调用该方法前，如果你未调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_registerlocaluseraccount) 注册一个 User Account，调用该方法加入频道时，SDK 会自动为你创建一个 User Account。先调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_registerlocaluseraccount) 方法注册 Account，再调用此方法加入频道，可以缩短进入频道的时间。
+
+用户成功加入频道后，默认订阅频道内所有其他用户的音频流和视频流，因此产生用量并**影响计费**。如果想取消订阅，可以通过设置 参数或调用相应的 mute 方法实现。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__note"></a>
+
+:::caution
+注意： 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
+:::
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__timing"></a>
+
+### 调用时机
+
+该方法需要在 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 之后再调用。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__restriction"></a>
+
+### 调用限制
+
+- 该方法仅支持用户一次加入一个频道。
+- 使用不同 App ID 的 App 不能互通。
+- 加入频道前，请确保用于生成 Token 的 App ID 和调用 [create](/zh-CN/api-reference/rtc/harmonyos/initialize#api_irtcengine_initialize) 方法初始化引擎时使用的是同一个 App ID，否则使用 Token 加入频道会失败。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__related"></a>
+
+### 相关回调
+
+成功加入频道后，会触发以下回调：
+
+- 本地：[onLocalUserRegistered](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onlocaluserregistered)、[onJoinChannelSuccess](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onjoinchannelsuccess) 和 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调。
+- 远端：通信场景下的用户和直播场景下的主播加入频道后，远端会分别触发 [onUserJoined](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserjoined) 和 [onUserInfoUpdated](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onuserinfoupdated) 回调。
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="token-4"></a>
+<Parameter name="token">
+
+在服务端生成的用于鉴权的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
+
+:::note
+注：
+
+- （推荐）如果你的项目开启了安全模式，即选择 APP ID + Token 为鉴权机制，则该参数为必填。
+- 如果你的项目仅开启调试模式，即选择 APP ID 为鉴权机制，则无需填入 Token 即可加入频道。成功加入频道 24 小时后会自动退出该频道。
+- 如果你需要同时加入多个频道或在频道间频繁切换，声网推荐你使用通配 Token 以避免每加入一个新的频道都需向服务端申请一个新的 Token，详见 使用通配 Token。
+:::
+
+</Parameter>
+<a id="channelid-4"></a>
+<Parameter name="channelId">
+
+频道名。该参数标识用户进行实时音视频互动的频道。App ID 一致的前提下，填入相同频道名的用户会进入同一个频道进行音视频互动。该参数为长度在 64 字节以内的字符串。以下为支持的字符集范围（共 89 个字符）:
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__char_support"></a>
+
+- 26 个小写英文字母 a~z
+- 26 个大写英文字母 A~Z
+- 10 个数字 0~9
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+<a id="useraccount-3"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+频道媒体设置选项。详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_joinchannelwithuseraccountex__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，使用了不合法的 Token，uid 参数未设置为整型，或 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions) 成员值不合法。你需要填入有效的参数，重新加入频道。
+  - -3：[RtcEngine](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengine) 对象初始化失败。你需要重新初始化 RtcEngine 对象。
+  - -7：RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -8：RtcEngine 对象内部状态错误。
+  - -17：加入频道被拒绝。可能的原因是用户已经在频道中。建议通过 [onConnectionStateChanged](/zh-CN/api-reference/rtc/harmonyos/network#callback_irtcengineeventhandler_onconnectionstatechanged) 回调判断用户是否在频道中。除收到 DISCONNECTED(1) 状态外，不要再次调用该方法加入频道。
+  - -102：频道名无效。你需要在 channelId 中填入有效的频道名，重新加入频道。
+  - -121：用户 ID 无效。你需要在 uid 中填入有效的用户 ID，重新加入频道。
+
 <a id="api_irtcengine_leavechannel2"></a>
 
-<a id="ariaid-title5"></a>
+<a id="ariaid-title11"></a>
 
 ## leaveChannel
 
@@ -392,7 +848,7 @@ public abstract leaveChannel(options?: LeaveChannelOptions): number;
 <a id="api_irtcengine_leavechannel2__parml_jsr_dky_hqb"></a>
 
 <ParameterList>
-<a id="options-2"></a>
+<a id="options-3"></a>
 <Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/harmonyos/class-leavechanneloptions)。
@@ -413,7 +869,7 @@ public abstract leaveChannel(options?: LeaveChannelOptions): number;
 
 <a id="api_irtcengineex_leavechannelex2"></a>
 
-<a id="ariaid-title6"></a>
+<a id="ariaid-title12"></a>
 
 ## leaveChannelEx
 
@@ -476,7 +932,7 @@ public abstract leaveChannelEx(connection: RtcConnection, options?:LeaveChannelO
 Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/class-rtcconnection)。
 
 </Parameter>
-<a id="options-3"></a>
+<a id="options-4"></a>
 <Parameter name="options">
 
 离开频道的选项，详见 [LeaveChannelOptions](/zh-CN/api-reference/rtc/harmonyos/class-leavechanneloptions)。
@@ -499,9 +955,135 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 - [RtcEngineEx](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineex)
 
+<a id="api_irtcengine_preloadchannelwithuseraccount"></a>
+
+<a id="ariaid-title13"></a>
+
+## preloadChannelWithUserAccount
+
+使用 token、channelName、userAccount 预加载频道。
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__prototype"></a>
+
+```text
+public abstract preloadChannelWithUserAccount(token:string,channelName:string,userAccount:string):number;
+```
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__detailed_desc"></a>
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__timing"></a>
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__restriction"></a>
+
+### 调用限制
+
+-
+- 请确保预加载频道时传入的频道名、用户 User Account、Token 和后续加入频道时传入的值相同，否则预加载不生效。
+-
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="useraccount-4"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。 该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
+
+<a id="api_irtcengine_preloadchannelwithuseraccount__return_values"></a>
+
+### 返回值
+
+- 0：方法调用成功。
+- &lt; 0：方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2：传入的参数无效。例如，User Account 为空。你需要填入有效的参数，重新加入频道。
+  - -7：RtcEngine 对象尚未初始化。你需要在调用该方法前成功初始化 RtcEngine 对象。
+  - -102：频道名无效。你需要填入有效的频道名，重新加入频道。
+
+<a id="api_irtcengine_registerlocaluseraccount"></a>
+
+<a id="ariaid-title14"></a>
+
+## registerLocalUserAccount
+
+注册本地用户 User Account。
+
+<a id="api_irtcengine_registerlocaluseraccount__prototype"></a>
+
+```text
+public abstract registerLocalUserAccount(appId:string,userAccount:string):number;
+```
+
+<a id="api_irtcengine_registerlocaluseraccount__detailed_desc"></a>
+
+该方法为本地用户注册一个 User Account。注册成功后，该 User Account 即可标识该本地用户的身份，用户可以使用它加入频道。
+
+该方法为可选。如果你希望用户使用 User Account 加入频道，可参考下列任意一种方式实现：
+
+- 先调用 registerLocalUserAccount 方法注册 Account，再调用 joinChannelWithUserAccount 或 [joinChannelWithUserAccount](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannelwithuseraccount2) 方法加入频道，可以缩短进入频道的时间。
+- 直接调用 joinChannelWithUserAccount 或 joinChannelWithUserAccount 方法加入频道。
+
+:::caution
+注意：
+
+- 请确保在该方法中设置的 userAccount 在频道中的唯一性。
+- 为保证通信质量，请确保频道内使用同一类型的数据标识用户身份。即同一频道内需要统一使用 UID 或 User Account。如果有用户通过 Web SDK 加入频道，请确保 Web 加入的用户也是同样类型。
+:::
+
+<a id="api_irtcengine_registerlocaluseraccount__restriction"></a>
+
+### 调用限制
+
+无。
+
+<a id="api_irtcengine_registerlocaluseraccount__related"></a>
+
+### 相关回调
+
+成功调用该方法后，本地会触发 [onLocalUserRegistered](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onlocaluserregistered) 回调，告知本地用户的 UID 和 User Account。
+
+<a id="api_irtcengine_registerlocaluseraccount__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="useraccount-5"></a>
+<Parameter name="userAccount">
+
+用户 User Account。该参数用于标识实时音视频互动频道中的用户。你需要自行设置和管理用户的 User Account，并确保同一频道中每个用户的 User Account 是唯一的。该参数为必填，最大不超过 255 字节，不可填 NULL。以下为支持的字符集范围（共 89 个字符）：
+
+- 26 个小写英文字母 a-z
+- 26 个大写英文字母 A-Z
+- 10 个数字 0-9
+- 空格
+- "!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"\{"、"\}"、"|"、"~"、","
+
+</Parameter>
+</ParameterList>
+
+你的项目在控制台注册的 App ID。
+
+<a id="api_irtcengine_registerlocaluseraccount__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
 <a id="api_irtcengine_renewtoken"></a>
 
-<a id="ariaid-title7"></a>
+<a id="ariaid-title15"></a>
 
 ## renewToken
 
@@ -538,7 +1120,7 @@ public abstract renewToken(token: string): number;
 ### 参数
 
 <ParameterList>
-<a id="token-3"></a>
+<a id="token-5"></a>
 <Parameter name="token">
 
 新生成的 Token。
@@ -566,7 +1148,7 @@ public abstract renewToken(token: string): number;
 
 <a id="api_irtcengine_setchannelprofile"></a>
 
-<a id="ariaid-title8"></a>
+<a id="ariaid-title16"></a>
 
 ## setChannelProfile
 
@@ -640,7 +1222,7 @@ public abstract setChannelProfile(profile: number): number;
 
 <a id="api_irtcengine_setclientrole2"></a>
 
-<a id="ariaid-title9"></a>
+<a id="ariaid-title17"></a>
 
 ## setClientRole
 
@@ -711,7 +1293,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 :::
 
 </Parameter>
-<a id="options-4"></a>
+<a id="options-5"></a>
 <Parameter name="options">
 
 用户具体设置，包含用户级别。详见 [ClientRoleOptions](/zh-CN/api-reference/rtc/harmonyos/class-clientroleoptions)。
@@ -737,7 +1319,7 @@ SDK 默认设置用户角色为观众，你可以调用该方法设置用户角�
 
 <a id="api_irtcengine_updatechannelmediaoptions"></a>
 
-<a id="ariaid-title10"></a>
+<a id="ariaid-title18"></a>
 
 ## updateChannelMediaOptions
 
@@ -754,7 +1336,7 @@ public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 ### 参数
 
 <ParameterList>
-<a id="options-5"></a>
+<a id="options-6"></a>
 <Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
@@ -779,7 +1361,7 @@ public abstract updateChannelMediaOptions(options: ChannelMediaOptions): number;
 
 <a id="api_irtcengineex_updatechannelmediaoptionsex"></a>
 
-<a id="ariaid-title11"></a>
+<a id="ariaid-title19"></a>
 
 ## updateChannelMediaOptionsEx
 
@@ -796,7 +1378,7 @@ public abstract updateChannelMediaOptionsEx(options:ChannelMediaOptions,connecti
 ### 参数
 
 <ParameterList>
-<a id="options-6"></a>
+<a id="options-7"></a>
 <Parameter name="options">
 
 频道媒体选项，详见 [ChannelMediaOptions](/zh-CN/api-reference/rtc/harmonyos/class-channelmediaoptions)。
@@ -827,7 +1409,7 @@ Connection 信息。详见 [RtcConnection](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="callback_irtcengineeventhandler_onclientrolechanged"></a>
 
-<a id="ariaid-title12"></a>
+<a id="ariaid-title20"></a>
 
 ## onClientRoleChanged
 
@@ -887,7 +1469,7 @@ onClientRoleChanged?:(oldRole:Constants.ClientRole, newRole:Constants.ClientRole
 
 <a id="callback_irtcengineeventhandler_onclientrolechangefailed"></a>
 
-<a id="ariaid-title13"></a>
+<a id="ariaid-title21"></a>
 
 ## onClientRoleChangeFailed
 
@@ -961,7 +1543,7 @@ onClientRoleChangeFailed?: (reason:number, currentRole:Constants.ClientRole) => 
 
 <a id="callback_irtcengineeventhandler_onerror"></a>
 
-<a id="ariaid-title14"></a>
+<a id="ariaid-title22"></a>
 
 ## onError
 
@@ -1000,7 +1582,7 @@ onError?:(err:Constants.ErrorCode,message:string) => void
 
 <a id="callback_irtcengineeventhandler_onjoinchannelsuccess"></a>
 
-<a id="ariaid-title15"></a>
+<a id="ariaid-title23"></a>
 
 ## onJoinChannelSuccess
 
@@ -1043,7 +1625,7 @@ onJoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 频道名。
 
 </Parameter>
-<a id="uid-2"></a>
+<a id="uid-4"></a>
 <Parameter name="uid">
 
 加入频道的用户 ID。
@@ -1063,7 +1645,7 @@ onJoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 
 <a id="callback_irtcengineeventhandler_onleavechannel"></a>
 
-<a id="ariaid-title16"></a>
+<a id="ariaid-title24"></a>
 
 ## onLeaveChannel
 
@@ -1108,9 +1690,48 @@ onLeaveChannel?:(stats: RtcStats ) => void;
 
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
+<a id="callback_irtcengineeventhandler_onlocaluserregistered"></a>
+
+<a id="ariaid-title25"></a>
+
+## onLocalUserRegistered
+
+本地用户成功注册 User Account 回调。
+
+<a id="callback_irtcengineeventhandler_onlocaluserregistered__prototype"></a>
+
+<a id="callback_irtcengineeventhandler_onlocaluserregistered__detailed_desc"></a>
+
+### 详情
+
+本地用户成功调用 [registerLocalUserAccount](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_registerlocaluseraccount) 方法注册用户 User Account，或调用 joinChannelWithUserAccount 加入频道后，SDK 会触发该回调，并告知本地用户的 UID 和 User Account。
+
+<a id="callback_irtcengineeventhandler_onlocaluserregistered__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-5"></a>
+<Parameter name="uid">
+
+本地用户的 ID。
+
+</Parameter>
+<a id="useraccount-6"></a>
+<Parameter name="userAccount">
+
+本地用户的 User Account。
+
+</Parameter>
+</ParameterList>
+
+### 所属接口类
+
+- [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
+
 <a id="callback_irtcengineeventhandler_onrejoinchannelsuccess"></a>
 
-<a id="ariaid-title17"></a>
+<a id="ariaid-title26"></a>
 
 ## onRejoinChannelSuccess
 
@@ -1149,7 +1770,7 @@ onRejoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 频道名。
 
 </Parameter>
-<a id="uid-3"></a>
+<a id="uid-6"></a>
 <Parameter name="uid">
 
 重新加入频道的用户 ID。
@@ -1169,7 +1790,7 @@ onRejoinChannelSuccess?:(channel:string, uid:number, elapsed:number) => void;
 
 <a id="callback_irtcengineeventhandler_onrequesttoken"></a>
 
-<a id="ariaid-title18"></a>
+<a id="ariaid-title27"></a>
 
 ## onRequestToken
 
@@ -1189,12 +1810,12 @@ onRequestToken?:() => void;
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__renew"></a>
 
-当收到该回调时，你需要重新在服务端生成新的 Token，然后根据场景更新 Token：
+当收到该回调时，你需要在服务端生成新的 Token，并根据场景更新 Token：
 
 - 单频道场景：
 
-  - 调用 [renewToken](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。SDK 会通过 [onRenewTokenResult](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
-  - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
+  - 调用 [renewToken](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 离开频道，然后在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 时传入新的 Token。
 - 多频道场景：调用 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_onrequesttoken__restriction"></a>
@@ -1213,7 +1834,7 @@ onRequestToken?:() => void;
 
 <a id="callback_irtcengineeventhandler_onrtcstats"></a>
 
-<a id="ariaid-title19"></a>
+<a id="ariaid-title28"></a>
 
 ## onRtcStats
 
@@ -1258,7 +1879,7 @@ RTC 引擎统计数据，详见 [RtcStats](/zh-CN/api-reference/rtc/harmonyos/cl
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire"></a>
 
-<a id="ariaid-title20"></a>
+<a id="ariaid-title29"></a>
 
 ## onTokenPrivilegeWillExpire
 
@@ -1272,12 +1893,12 @@ onTokenPrivilegeWillExpire?: (token:string) => void;
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__detailed_desc"></a>
 
-当收到该回调时，你需要重新在服务端生成新的 Token，然后根据场景更新 Token：
+当收到该回调时，你需要在服务端生成新的 Token，并根据场景更新 Token：
 
 - 单频道场景：
 
-  - 调用 [renewToken](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。SDK 会通过 [onRenewTokenResult](/zh-CN/api-reference/rtc/harmonyos/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
-  - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
+  - 调用 [renewToken](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
+  - 如果你的 App 需要离开并重新加入频道，也可以调用 [leaveChannel](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_leavechannel2) 离开频道，然后在调用 [joinChannelWithOptions](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengine_joinchannel2) 时传入新的 Token。
 - 多频道场景：调用 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/harmonyos/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
 <a id="callback_irtcengineeventhandler_ontokenprivilegewillexpire__timing"></a>
@@ -1299,7 +1920,7 @@ onTokenPrivilegeWillExpire?: (token:string) => void;
 ### 参数
 
 <ParameterList>
-<a id="token-4"></a>
+<a id="token-6"></a>
 <Parameter name="token">
 
 即将过期的 Token。
@@ -1311,9 +1932,40 @@ onTokenPrivilegeWillExpire?: (token:string) => void;
 
 - [IRtcEngineEventHandler](/zh-CN/api-reference/rtc/harmonyos/rtc-interface-class#class_irtcengineeventhandler)
 
+<a id="callback_irtcengineeventhandler_onuserinfoupdated"></a>
+
+<a id="ariaid-title30"></a>
+
+## onUserInfoUpdated
+
+远端用户信息已更新回调。
+
+<a id="callback_irtcengineeventhandler_onuserinfoupdated__prototype"></a>
+
+<a id="callback_irtcengineeventhandler_onuserinfoupdated__detailed_desc"></a>
+
+### 详情
+
+远端用户加入频道后，SDK 会获取到该远端用户的 UID 和 User Account，然后缓存一个包含了远端用户 UID 和 User Account 的 Mapping 表，并在本地触发该回调。
+
+<a id="callback_irtcengineeventhandler_onuserinfoupdated__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="uid-7"></a>
+<Parameter name="uid">
+
+远端用户 ID。
+
+标识用户信息的 UserInfo 对象，包含用户 UID 和 User Account。详见 [UserInfo](/zh-CN/api-reference/rtc/harmonyos/class-userinfo) 类。
+
+</Parameter>
+</ParameterList>
+
 <a id="callback_irtcengineeventhandler_onuserjoined"></a>
 
-<a id="ariaid-title21"></a>
+<a id="ariaid-title31"></a>
 
 ## onUserJoined
 
@@ -1353,7 +2005,7 @@ onUserJoined?:(uid:number, elapse:number) => void;
 ### 参数
 
 <ParameterList>
-<a id="uid-4"></a>
+<a id="uid-8"></a>
 <Parameter name="uid">
 
 新加入频道的远端用户/主播 ID。
@@ -1373,7 +2025,7 @@ onUserJoined?:(uid:number, elapse:number) => void;
 
 <a id="callback_irtcengineeventhandler_onuseroffline"></a>
 
-<a id="ariaid-title22"></a>
+<a id="ariaid-title32"></a>
 
 ## onUserOffline
 
@@ -1411,7 +2063,7 @@ onUserOffline?:(uid:number, reason:number) => void;
 ### 参数
 
 <ParameterList>
-<a id="uid-5"></a>
+<a id="uid-9"></a>
 <Parameter name="uid">
 
 离线的远端用户或主播的 ID。

@@ -64,6 +64,8 @@ _migration:
 
 文件名中的单下划线和双下划线均属于命名规则的一部分，不能省略。业务侧应优先使用 `cloud_recording_file_infos` 返回的完整文件名。
 
+<a id="合流和页面录制模式"></a>
+
 ### 合流录制模式
 
 在[合流录制模式](/zh-CN/realtime-media/cloud-recording/reference/concepts#合流录制)下，录制过程中会实时生成一个 M3U8 文件和多个 TS 文件。若在录制配置中将 `avFileType` 设置为 `["hls","mp4"]`，录制服务会同时生成 MP4 文件；若未设置或未包含 `"mp4"`，则仅生成 M3U8/TS，你也可使用[转码脚本](/zh-CN/realtime-media/cloud-recording/build/manage-recorded-files/convert-format)将 M3U8/TS 合并并转换为 MP4 格式。

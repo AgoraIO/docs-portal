@@ -154,6 +154,13 @@ export const zhCNRtsaSdkDownloadPlatform: SdkDownloadPlatform = {
             'https://download.agora.io/rtsasdk/release/Agora-RTSALite-SRmRdRcAuAcAjCF-arm-harmony-eabi-v1.10.1-20260907_142843-1285810.tgz',
           releaseDate: '2026 年 9 月 4 日',
         },
+        {
+          // Previously listed under the mislabeled IoT aPaaS download group.
+          id: '1.8.0-rtsa-x86_64-linux-gnu',
+          label: '版本 1.8.0 x86_64-linux-gnu（历史版本）',
+          downloadLink:
+            'https://download.agora.io/rtsasdk/release/Agora-RTSALite-AutAcAj-x86_64-linux-gnu-v1.8.0.tgz',
+        },
       ],
     },
   ],
