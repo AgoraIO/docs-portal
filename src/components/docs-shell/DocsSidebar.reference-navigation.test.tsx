@@ -88,7 +88,7 @@ describe('DocsSidebar Reference navigation', () => {
       </SidebarProvider>,
     );
 
-    const faqToggle = screen.getByRole('button', { name: '常见问题' });
+    const faqToggle = screen.getByRole('button', { name: '常见问题 子页面' });
     const primaryGroup = faqToggle.closest('[data-sidebar="group"]');
 
     expect(primaryGroup).toBeInstanceOf(HTMLElement);
@@ -98,9 +98,10 @@ describe('DocsSidebar Reference navigation', () => {
     expect(primaryLinks.map((link) => link.textContent)).toEqual([
       'SDK 下载',
       'Demo',
+      '常见问题',
     ]);
 
-    for (const item of [...primaryLinks, faqToggle]) {
+    for (const item of primaryLinks) {
       expect(item.closest('[data-sidebar="menu-button"]')).toHaveClass(
         'text-[13px]',
         'font-medium',

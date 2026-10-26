@@ -292,9 +292,9 @@ func register(incoming: @escaping (String,String, ActionAck) -> Void,memberState
 
 来电设备的信息，包含以下内容：
 
-    - 第一个参数：来电设备的名称。
-    - 第二个参数：来电时附带的信息。
-    - 第三个参数：来电时产生的事件，详见 [ActionAck](#actionack)。
+- 第一个参数：来电设备的名称。
+- 第二个参数：来电时附带的信息。
+- 第三个参数：来电时产生的事件，详见 [ActionAck](#actionack)。
 
 </Slot>
 
@@ -302,8 +302,8 @@ func register(incoming: @escaping (String,String, ActionAck) -> Void,memberState
 
 来电用户的信息，包含以下内容：
 
-    - 第一个参数：来电用户的状态，详见 [MemberState](#memberstate)。
-    - 第二个参数：来电用户的用户 ID。
+- 第一个参数：来电用户的状态，详见 [MemberState](#memberstate)。
+- 第二个参数：来电用户的用户 ID。
 
 </Slot>
 
@@ -334,8 +334,8 @@ func callDial(
 
 其他用户的信息。
 
-    - `state`: 其他用户的状态，详见 [MemberState](#memberstate)。
-    - `uid`: 其他用户的用户 ID。
+- `state`: 其他用户的状态，详见 [MemberState](#memberstate)。
+- `uid`: 其他用户的用户 ID。
 
 </Slot>
 
@@ -378,8 +378,8 @@ func callAnswer(result:@escaping(Int,String)->Void,
 
 其他用户的信息。
 
-    - `state`: 其他用户的状态，详见 [MemberState](#memberstate)。
-    - `uid`: 其他用户的用户 ID。
+- `state`: 其他用户的状态，详见 [MemberState](#memberstate)。
+- `uid`: 其他用户的用户 ID。
 
 </Slot>
 
@@ -444,8 +444,8 @@ func muteLocalVideo(mute: Bool,result:@escaping(Int,String)->Void)
 
 是否停止发布本地视频流：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -472,8 +472,8 @@ func muteLocaAudio(mute: Bool,result:@escaping(Int,String)->Void)
 
 是否停止发布本地音频流：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -500,8 +500,8 @@ func mutePeerVideo(mute: Bool,result:@escaping(Int,String)->Void)
 
 是否停止发布远端视频流：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -528,8 +528,8 @@ func mutePeerAudio(mute: Bool,result:@escaping(Int,String)->Void)
 
 是否停止发布远端音频流：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -832,8 +832,8 @@ func shareDeviceTo(deviceId:String,userId:String,type:String,result:@escaping(In
 
 分享对象的权限：
 
-    - 2：管理员。
-    - 3：成员（默认）。
+- 2：管理员。
+- 3：成员（默认）。
 
 </Slot>
 
@@ -989,8 +989,8 @@ func sendMessageBegin(deviceId:String,result:@escaping(Int,String)->Void,statusU
 <Slot for="full-ios-html-8-2-1">
 
 - `status`：RTM 状态。详见 `MessageChannelStatus`。
-    - `msg`：提示信息。
-    - `data`：提示描述。
+- `msg`：提示信息。
+- `data`：提示描述。
 
 </Slot>
 
@@ -1107,8 +1107,8 @@ func onDeviceOnOffline(online:Bool,deviceId:String,productId:String)
 
 设备上线状态：
 
-    - true: 上线。
-    - false: 下线。
+- true: 上线。
+- false: 下线。
 
 </Slot>
 
@@ -1132,8 +1132,8 @@ func onDeviceActionUpdated(deviceId:String,actionType:String)
 
 行为类型：
 
-    - add: 绑定。
-    - delete: 解绑。
+- add: 绑定。
+- delete: 解绑。
 
 </Slot>
 
@@ -1322,10 +1322,10 @@ func queryCount(productId:String?,deviceId:String?,messageType:Int?,status:Int?,
 
 设备告警信息类型：
 
-    - 0: 声音检测。
-    - 1: 移动侦测。
-    - 99: 其他检测。
-    - nil: 所有设备告警信息。
+- 0: 声音检测。
+- 1: 移动侦测。
+- 99: 其他检测。
+- nil: 所有设备告警信息。
 
 </Slot>
 
@@ -1333,8 +1333,8 @@ func queryCount(productId:String?,deviceId:String?,messageType:Int?,status:Int?,
 
 设备告警消息状态：
 
-    - 0: （默认）未读
-    -  1: 已读。
+- 0: （默认）未读
+-  1: 已读。
 
 </Slot>
 
@@ -1425,11 +1425,11 @@ func querySysCount(productId:String?,deviceIds:[String],messageType:Int?,status:
 
 系统告警信息类型：
 
-    - 1: 设备上线。
-    - 2:设备下线。
-    - 3:设备绑定。
-    - 4:设备解绑。
-    - 99: 其他系统告警信息。
+- 1: 设备上线。
+- 2:设备下线。
+- 3:设备绑定。
+- 4:设备解绑。
+- 99: 其他系统告警信息。
 
 </Slot>
 
@@ -1437,8 +1437,8 @@ func querySysCount(productId:String?,deviceIds:[String],messageType:Int?,status:
 
 设备告警消息状态：
 
-    - 0: （默认）未读
-    -  1: 已读。
+- 0: （默认）未读
+-  1: 已读。
 
 </Slot>
 
@@ -1578,8 +1578,8 @@ func enableNotify(enable:Bool,result:@escaping(Int,String)->Void)
 
 是否要接收推送消息。
 
-    - true: 接收。
-    - false: 不接收。
+- true: 接收。
+- false: 不接收。
 
 </Slot>
 
@@ -1744,8 +1744,8 @@ public class InitParam : NSObject{
 
 通话时是否自动发布本地音频：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -1753,8 +1753,8 @@ public class InitParam : NSObject{
 
 通话时是否自动发布本地视频：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -1762,8 +1762,8 @@ public class InitParam : NSObject{
 
 通话时是否自动订阅对端音频：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -1771,8 +1771,8 @@ public class InitParam : NSObject{
 
 通话时是否自动订阅对端视频：
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -1886,9 +1886,9 @@ public override init(){
 
 性别。
 
-    - 1：男。
-    - 2：女。
-    - 0：未知。
+- 1：男。
+- 2：女。
+- 0：未知。
 
 </Slot>
 
@@ -2003,18 +2003,18 @@ public class IotAlarm : NSObject{
 
 设备告警信息类型：
 
-    - 0: 声音检测。
-    - 1: 移动侦测。
-    - 99: 其他检测。
-    - nil: 所有设备告警信息。
+- 0: 声音检测。
+- 1: 移动侦测。
+- 99: 其他检测。
+- nil: 所有设备告警信息。
 
-    系统告警信息类型：
+系统告警信息类型：
 
-    - 1: 设备上线。
-    - 2:设备下线。
-    - 3:设备绑定。
-    - 4:设备解绑。
-    - 99: 其他系统告警信息。
+- 1: 设备上线。
+- 2:设备下线。
+- 3:设备绑定。
+- 4:设备解绑。
+- 99: 其他系统告警信息。
 
 </Slot>
 
@@ -2022,8 +2022,8 @@ public class IotAlarm : NSObject{
 
 告警信息状态：
 
-    - 0: （默认）未读
-    -  1: 已读。
+- 0: （默认）未读
+-  1: 已读。
 
 </Slot>
 
@@ -2031,8 +2031,8 @@ public class IotAlarm : NSObject{
 
 是否已删除。
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -2075,10 +2075,10 @@ public class AlarmQueryParam : NSObject{
 
 设备告警信息类型：
 
-    - 0: 声音检测。
-    - 1: 移动侦测。
-    - 99: 其他检测。
-    - nil: 所有设备告警信息。
+- 0: 声音检测。
+- 1: 移动侦测。
+- 99: 其他检测。
+- nil: 所有设备告警信息。
 
 </Slot>
 
@@ -2086,8 +2086,8 @@ public class AlarmQueryParam : NSObject{
 
 设备告警消息状态：
 
-    - 0: （默认）未读
-    -  1: 已读。
+- 0: （默认）未读
+-  1: 已读。
 
 </Slot>
 
@@ -2095,8 +2095,8 @@ public class AlarmQueryParam : NSObject{
 
 是否按上报时间升序排序：
 
-    - true: 是。
-    -  false: 否。
+- true: 是。
+-  false: 否。
 
 </Slot>
 
@@ -2137,11 +2137,11 @@ public class SysAlarmQueryParam : NSObject{
 
 系统告警信息类型：
 
-    - 1: 设备上线。
-    - 2:设备下线。
-    - 3:设备绑定。
-    - 4:设备解绑。
-    - 99: 其他系统告警信息。
+- 1: 设备上线。
+- 2:设备下线。
+- 3:设备绑定。
+- 4:设备解绑。
+- 99: 其他系统告警信息。
 
 </Slot>
 
@@ -2149,8 +2149,8 @@ public class SysAlarmQueryParam : NSObject{
 
 告警消息状态：
 
-    - 0: （默认）未读
-    -  1: 已读。
+- 0: （默认）未读
+-  1: 已读。
 
 </Slot>
 
@@ -2158,8 +2158,8 @@ public class SysAlarmQueryParam : NSObject{
 
 是否按上报时间升序排序：
 
-    - true: 是。
-    -  false: 否。
+- true: 是。
+-  false: 否。
 
 </Slot>
 
@@ -2263,9 +2263,9 @@ public class IotDevice : NSObject {
 
 用户角色：
 
-    - 1：所有者。
-    - 2：管理员。
-    - 3：成员。
+- 1：所有者。
+- 2：管理员。
+- 3：成员。
 
 </Slot>
 
@@ -2273,8 +2273,8 @@ public class IotDevice : NSObject {
 
 是否在线。
 
-    - true：在线。
-    - false：离线。
+- true：在线。
+- false：离线。
 
 </Slot>
 
@@ -2364,8 +2364,8 @@ public class ProductInfo:NSObject{
 
 绑定类型：
 
-    - 1: 可重复绑定。
-    - 2: 不可重复绑定。
+- 1: 可重复绑定。
+- 2: 不可重复绑定。
 
 </Slot>
 
@@ -2373,8 +2373,8 @@ public class ProductInfo:NSObject{
 
 网络连接类型：
 
-    - 1: WiFi 连接。
-    - 2: 蜂窝连接。
+- 1: WiFi 连接。
+- 2: 蜂窝连接。
 
 </Slot>
 
@@ -2382,8 +2382,8 @@ public class ProductInfo:NSObject{
 
 是否已删除。
 
-    - true: 是
-    - false: 否
+- true: 是
+- false: 否
 
 </Slot>
 
@@ -2391,8 +2391,8 @@ public class ProductInfo:NSObject{
 
 产品状态：
 
-    - 1: 正常。
-    - 0: 停用。
+- 1: 正常。
+- 0: 停用。
 
 </Slot>
 
@@ -2441,13 +2441,13 @@ public class Property : NSObject{
 
 数据点类型。
 
-    - 1: 整型
-    - 2: 布尔型
-    - 3: 枚举型
-    - 4: 字符串型
-    - 5: 浮点型
-    - 6: 字节型
-    - 7: 原始数据型
+- 1: 整型
+- 2: 布尔型
+- 3: 枚举型
+- 4: 字符串型
+- 5: 浮点型
+- 6: 字节型
+- 7: 原始数据型
 
 </Slot>
 
@@ -2455,8 +2455,8 @@ public class Property : NSObject{
 
 读写类型。
 
-    - 1: 只读
-    - 2: 读写
+- 1: 只读
+- 2: 读写
 
 </Slot>
 
@@ -2464,8 +2464,8 @@ public class Property : NSObject{
 
 属性描述符的启用情况。
 
-    - 1: 启用
-    - 2: 停用
+- 1: 启用
+- 2: 停用
 
 </Slot>
 
@@ -2473,8 +2473,8 @@ public class Property : NSObject{
 
 描述符是否已删除。
 
-    - 0: 未删除
-    - 1: 已删除
+- 0: 未删除
+- 1: 已删除
 
 </Slot>
 
@@ -2550,8 +2550,8 @@ public class DeviceCancelable : NSObject{
 
 是否在线。
 
-    -  true：在线。
-    - false：离线。
+-  true：在线。
+- false：离线。
 
 </Slot>
 
@@ -2559,9 +2559,9 @@ public class DeviceCancelable : NSObject{
 
 用户角色：
 
-    - 1：所有者。
-    - 2：管理员。
-    - 3：成员。
+- 1：所有者。
+- 2：管理员。
+- 3：成员。
 
 </Slot>
 
@@ -2616,8 +2616,8 @@ public class ShareDetial : NSObject{
 
 消息处理状态：
 
-    - t: 已处理。
-    - f: 未处理。
+- t: 已处理。
+- f: 未处理。
 
 </Slot>
 
@@ -2625,8 +2625,8 @@ public class ShareDetial : NSObject{
 
 是否已删除。
 
-    - 1: 已删除。
-    - 0: 未删除。
+- 1: 已删除。
+- 0: 未删除。
 
 </Slot>
 
@@ -2634,7 +2634,7 @@ public class ShareDetial : NSObject{
 
 消息类型：
 
-    - 1: 设备分享消息。
+- 1: 设备分享消息。
 
 </Slot>
 
@@ -2642,8 +2642,8 @@ public class ShareDetial : NSObject{
 
 推送权限：
 
-    - 2：管理员。
-    - 3：成员。
+- 2：管理员。
+- 3：成员。
 
 </Slot>
 
@@ -2651,9 +2651,9 @@ public class ShareDetial : NSObject{
 
 状态：
 
-    - 1：发送成功。
-    - 2：发送失败。
-    - 3：待发送。
+- 1：发送成功。
+- 2：发送失败。
+- 3：待发送。
 
 </Slot>
 
@@ -2661,9 +2661,9 @@ public class ShareDetial : NSObject{
 
 推送类型：
 
-    - 1：App 消息。
-    - 2：短信消息。
-    - 3：邮箱信息。
+- 1：App 消息。
+- 2：短信消息。
+- 3：邮箱信息。
 
 </Slot>
 
@@ -2724,8 +2724,8 @@ public class ShareItem : NSObject{
 
 消息处理状态：
 
-    - t: 已处理。
-    - f: 未处理。
+- t: 已处理。
+- f: 未处理。
 
 </Slot>
 
@@ -2733,8 +2733,8 @@ public class ShareItem : NSObject{
 
 是否已删除。
 
-    - 1: 已删除。
-    - 0: 未删除。
+- 1: 已删除。
+- 0: 未删除。
 
 </Slot>
 
@@ -2742,7 +2742,7 @@ public class ShareItem : NSObject{
 
 消息类型：
 
-    - 1: 设备分享消息。
+- 1: 设备分享消息。
 
 </Slot>
 
@@ -2750,8 +2750,8 @@ public class ShareItem : NSObject{
 
 推送权限：
 
-    - 2：管理员。
-    - 3：成员。
+- 2：管理员。
+- 3：成员。
 
 </Slot>
 
@@ -2759,9 +2759,9 @@ public class ShareItem : NSObject{
 
 状态：
 
-    - 1：发送成功。
-    - 2：发送失败。
-    - 3：待发送。
+- 1：发送成功。
+- 2：发送失败。
+- 3：待发送。
 
 </Slot>
 
@@ -2769,9 +2769,9 @@ public class ShareItem : NSObject{
 
 推送类型：
 
-    - 1：App 消息。
-    - 2：短信消息。
-    - 3：邮箱信息。
+- 1：App 消息。
+- 2：短信消息。
+- 3：邮箱信息。
 
 </Slot>
 
@@ -2868,11 +2868,11 @@ public class FirmwareStatus : NSObject{
 
 设备 OTA 固件的升级状态。
 
-    - 1：升级完成。
-    - 2：升级失败。
-    - 3：升级取消。
-    - 4：待升级。
-    - 5：升级中。
+- 1：升级完成。
+- 2：升级失败。
+- 3：升级取消。
+- 4：待升级。
+- 5：升级中。
 
 </Slot>
 
@@ -2995,8 +2995,8 @@ public class RtcNetworkStatus : NSObject{
 
 是否在呼叫中：
 
-    - `true`: 在呼叫中。
-    - `false`: 未进行呼叫。
+- `true`: 在呼叫中。
+- `false`: 未进行呼叫。
 
 </Slot>
 

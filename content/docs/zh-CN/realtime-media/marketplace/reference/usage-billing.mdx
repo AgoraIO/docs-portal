@@ -59,8 +59,8 @@ GET https://{host}/usage?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}
 
 用量列表是否还有下一页：
 
-        - `true`: 有下一页。声网会继续发送用量请求。
-        - `false`: 没有下一页。声网会停止用量请求。
+  - `true`: 有下一页。声网会继续发送用量请求。
+  - `false`: 没有下一页。声网会停止用量请求。
 
 </Slot>
 
@@ -68,14 +68,14 @@ GET https://{host}/usage?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}
 
 用量信息，包含如下数据：
 
-        - `projectId`：项目 ID。
-        - `amount`：用量。数据格式为 BigDecimal。单位如下：
-           - 如果按时长计算用量，单位默认为分钟。
-           - 如果按次数计算用量，单位默认为次。
-           - 如果需要其它单位，联系声网协商配置。
-        - `description`：用量的详细信息。
+   - `projectId`：项目 ID。
+   - `amount`：用量。数据格式为 BigDecimal。单位如下：
+      - 如果按时长计算用量，单位默认为分钟。
+      - 如果按次数计算用量，单位默认为次。
+      - 如果需要其它单位，联系声网协商配置。
+   - `description`：用量的详细信息。
 
-     `projectId` 为空或者 `amount` 为 0 的数据不需要返回。
+`projectId` 为空或者 `amount` 为 0 的数据不需要返回。
 
 </Slot>
 
@@ -154,8 +154,8 @@ GET https://{host}/bill?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&
 
 费用列表是否还有下一页：
 
-        - `true`: 有下一页。声网会继续发送计费请求。
-        - `false`: 没有下一页。声网会停止计费请求。
+  - `true`: 有下一页。声网会继续发送计费请求。
+  - `false`: 没有下一页。声网会停止计费请求。
 
 </Slot>
 
@@ -163,11 +163,11 @@ GET https://{host}/bill?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&
 
 费用信息，包含如下数据：
 
-        - `projectId`：项目 ID。
-        - `amount`：费用。数据格式为 BigDecimal。
-        - `description`: 费用的详细信息。
+  - `projectId`：项目 ID。
+  - `amount`：费用。数据格式为 BigDecimal。
+  - `description`: 费用的详细信息。
 
-      `projectId` 为空或者 `amount` 为 0 的数据不需要返回。
+`projectId` 为空或者 `amount` 为 0 的数据不需要返回。
 
 </Slot>
 
@@ -239,8 +239,8 @@ GET https://{host}/customers/{customerId}/license&apiKey={apiKey}&signature={sig
 
 请求状态：
 
-        - `success`：请求成功。
-        - `failed`：请求失败。
+  - `success`：请求成功。
+  - `failed`：请求失败。
 
 </Slot>
 

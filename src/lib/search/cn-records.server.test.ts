@@ -8,6 +8,74 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('indexes rendered subheadings inside a non-platform release-note accordion', async () => {
+    const url = '/zh-CN/ai/release-notes';
+    const records = await exportPublishedCnRecords({
+      routes: [{ url, canonicalPath: url, markdownPath: `${url}.md` }],
+      pages: [{ url, title: '发版说明', objectType: 'docs' }],
+      readMarkdown: async () =>
+        '# 发版说明\n\n<Accordions type="multiple">\n\n### v2.13 [#v213]\n\n<Accordion title="v2.13" id="v213" headingLevel="2" value="v213">\n    该版本于 2026 年 9 月 18 日发布。\n\n    ### 改进 [#改进]\n\n    支持多轮对话上下文。\n\n    ### API 变更 [#api-变更]\n\n    新增接口参数。\n  </Accordion>\n</Accordions>',
+      readRenderedHtml: async () =>
+        '<article><h2 id="v213">v2.13</h2><h3 id="改进">改进</h3><p>支持多轮对话上下文。</p><h3 id="api-变更">API 变更</h3><p>新增接口参数。</p></article>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      '/ai/release-notes#v213',
+      '/ai/release-notes#改进',
+      '/ai/release-notes#api-变更',
+    ]);
+    expect(records[0].content).toContain('2026 年 9 月 18 日');
+    expect(records[1].content).toContain('支持多轮对话上下文。');
+    expect(records[2].content).toContain('新增接口参数。');
+  });
+
+  it('keeps fenced examples inside a verified accordion body out of the section index', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n## 版本 [#version]\n\n    ### 改进 [#improved]\n\n    优化连接。\n\n    ```md\n    ## 示例标题 [#not-a-section]\n    ```\n\n    ### 修复 [#fixed]\n\n    修复音频。',
+      readRenderedHtml: async () =>
+        '<h2 id="version">版本</h2><h3 id="improved">改进</h3><pre><code>## 示例标题 [#not-a-section]</code></pre><h3 id="fixed">修复</h3>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#version`,
+      `${url.replace('/zh-CN', '')}#improved`,
+      `${url.replace('/zh-CN', '')}#fixed`,
+    ]);
+    expect(records[1].content).toContain('示例标题 [#not-a-section]');
+  });
+
+  it('indexes the first heading immediately after an Accordion opening tag', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n### v4.6 [#v46]\n\n<Accordion title="v4.6" id="v46" headingLevel="2">\n    ### 升级必看 [#upgrade]\n\n    更新调用方式。\n  </Accordion>',
+      readRenderedHtml: async () =>
+        '<h2 id="v46">v4.6</h2><h3 id="upgrade">升级必看</h3><p>更新调用方式。</p>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      `${url.replace('/zh-CN', '')}#v46`,
+      `${url.replace('/zh-CN', '')}#upgrade`,
+    ]);
+    expect(records[1].content).toContain('更新调用方式。');
+  });
+
+  it('does not promote indented examples just because a non-heading element has the same ID', async () => {
+    const records = await exportPublishedCnRecords({
+      routes: [route],
+      pages: [page],
+      readMarkdown: async () =>
+        '# RTC API\n\n    ## 示例 [#sample]\n    code();',
+      readRenderedHtml: async () =>
+        '<span id="sample"></span><pre><code>## 示例 [#sample]\ncode();</code></pre>',
+    });
+    expect(records.map((record) => record.url)).toEqual([
+      url.replace('/zh-CN', ''),
+    ]);
+    expect(records[0].content).toContain('code();');
+  });
+
   it('keeps recording and transcoding FAQ memberships under the navigation product IDs', () => {
     const url = '/zh-CN/reference/faq/integration/ncs_vs_query';
     const records = extractPublishedCnSections(
@@ -118,7 +186,9 @@ describe('published CN index export', () => {
       readRenderedHtml: async () =>
         '<article><h2 id="heartbeatinterval-and-presencetimeout">Heartbeat Interval 与 Presence Timeout</h2></article>',
     });
-    expect(records[0].url).toBe(`${url}#heartbeatinterval-and-presencetimeout`);
+    expect(records[0].url).toBe(
+      '/api-reference/rtc/web/4.6.0/api#heartbeatinterval-and-presencetimeout',
+    );
   });
   it('preserves all explicit FAQ products and normalizes its platform labels', () => {
     const url = '/zh-CN/reference/faq/account/billing_basis';
@@ -243,7 +313,7 @@ describe('published CN index export', () => {
       docType: 'openapi',
       product: 'conversational-ai',
       content: '请求\nToken',
-      url: canonical,
+      url: '/api-reference/api-ref/conversational-ai/join',
       headingPath: ['Join'],
     });
     expect(records[1].platform).toEqual(['web']);
@@ -286,7 +356,7 @@ describe('published CN index export', () => {
     });
     expect(readMarkdown).toHaveBeenCalledOnce();
     expect(records[0]).toMatchObject({
-      url: `${url}/web#token`,
+      url: '/api-reference/rtc/web/4.6.0/api/web#token',
       platform: ['web'],
     });
   });
@@ -316,13 +386,13 @@ describe('published CN index export', () => {
 
     expect(records).toHaveLength(2);
     expect(records[0]).toMatchObject({
-      canonicalUrl: canonical,
+      canonicalUrl: '/realtime-media/rtc/build/token-authentication',
       availablePlatforms: ['android', 'ios'],
       defaultPlatform: 'ios',
       isDefaultPlatform: false,
     });
     expect(records[1]).toMatchObject({
-      canonicalUrl: canonical,
+      canonicalUrl: '/realtime-media/rtc/build/token-authentication',
       availablePlatforms: ['android', 'ios'],
       defaultPlatform: 'ios',
       isDefaultPlatform: true,

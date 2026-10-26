@@ -74,7 +74,7 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID.FILTER, "template name");
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_irtcengine_createvideoeffectobject"></a>
 
@@ -82,7 +82,7 @@ addOrUpdateVideoEffect(VIDEO_EFFECT_NODE_ID.FILTER, "template name");
 
 ## createVideoEffectObject
 
-创建一个 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject) 视频特效对象。
+创建一个 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject) 视频特效对象。
 
 <a id="api_irtcengine_createvideoeffectobject__prototype"></a>
 
@@ -123,7 +123,7 @@ public abstract IVideoEffectObject createVideoEffectObject(String bundlePath, Co
 
 ### 返回值
 
-方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject) 对象。
+方法调用成功，返回 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject) 对象。
 方法调用失败，返回 `null`。
 
 ### 所属接口类
@@ -162,7 +162,7 @@ public abstract int destroyVideoEffectObject(IVideoEffectObject videoEffectObjec
 <a id="videoeffectobject"></a>
 <Parameter name="videoEffectObject">
 
-要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)。
+要销毁的视频特效对象。详见 [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)。
 
 </Parameter>
 </ParameterList>
@@ -535,7 +535,7 @@ boolean getVideoEffectBoolParam(String option, String key);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectfloatparam"></a>
 
@@ -585,7 +585,7 @@ float getVideoEffectFloatParam(String option, String key);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_getvideoeffectintparam"></a>
 
@@ -635,7 +635,7 @@ int getVideoEffectIntParam(String option, String key);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_performvideoeffectaction"></a>
 
@@ -685,7 +685,7 @@ int performVideoEffectAction(int nodeId, VIDEO_EFFECT_ACTION actionId);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_removevideoeffect"></a>
 
@@ -729,7 +729,7 @@ int removeVideoEffect(int nodeId);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_irtcengine_setbeautyeffectoptions"></a>
 
@@ -1847,7 +1847,7 @@ int setVideoEffectBoolParam(String option, String key, boolean value);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_setvideoeffectfloatparam"></a>
 
@@ -1903,7 +1903,7 @@ int setVideoEffectFloatParam(String option, String key, float value);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
 
 <a id="api_ivideoeffectobject_setvideoeffectintparam"></a>
 
@@ -1959,4 +1959,60 @@ int setVideoEffectIntParam(String option, String key, int value);
 
 ### 所属接口类
 
-- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/rtc-interface-class#class_ivideoeffectobject)
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)
+
+<a id="api_ivideoeffectobject_setvideoeffectstringparam"></a>
+
+<a id="ariaid-title32"></a>
+
+## setVideoEffectStringParam
+
+设置视频效果的字符串参数。
+
+<a id="api_ivideoeffectobject_setvideoeffectstringparam__prototype"></a>
+
+```text
+int setVideoEffectStringParam(String option, String key, String value);
+```
+
+<a id="api_ivideoeffectobject_setvideoeffectstringparam__detailed_desc"></a>
+
+:::info[自从]
+自 v4.6.0 版本新增。
+:::
+
+<a id="api_ivideoeffectobject_setvideoeffectstringparam__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="setvideoeffectstringparam-option"></a>
+<Parameter name="option">
+
+参数的类别标识符。
+
+</Parameter>
+<a id="setvideoeffectstringparam-key"></a>
+<Parameter name="key">
+
+参数的键名。
+
+</Parameter>
+<a id="setvideoeffectstringparam-value"></a>
+<Parameter name="value">
+
+要设置的字符串值。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_ivideoeffectobject_setvideoeffectstringparam__return_values"></a>
+
+### 返回值
+
+- `0`：方法调用成功。
+- `<0`：方法调用失败。
+
+### 所属接口类
+
+- [IVideoEffectObject](/zh-CN/api-reference/rtc/android/class-ivideoeffectobject)

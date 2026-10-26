@@ -50,6 +50,7 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
+import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import { getAppBranding, legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
@@ -58,6 +59,7 @@ import { DocsSidebar } from './DocsSidebar';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSiteFooter } from './DocsSiteFooter';
+import { DocsSiteMenu } from './DocsSiteMenu';
 import { DocsTocRail } from './DocsTocRail';
 import { getDocsSourceLinks } from './docs-source-links';
 import { SiteLogoMark } from './SiteLogoMark';
@@ -405,7 +407,7 @@ export function DocsShell({
                 </div>
               )}
               <div
-                className="hidden items-center gap-2 lg:flex"
+                className="hidden items-center gap-2 text-muted-foreground lg:flex"
                 data-testid="docs-desktop-header-actions"
               >
                 {!isSearchLayout && (
@@ -418,6 +420,7 @@ export function DocsShell({
                     />
                   </div>
                 )}
+                <DocsSiteMenu locale={currentLocale} />
                 <Button
                   aria-label={themeLabel}
                   aria-pressed={isDarkTheme}
@@ -705,22 +708,25 @@ function MobileSidebar({
               />
             ) : null}
           </div>
-          <div className="flex flex-col gap-2 border-t border-border pt-4">
-            <div className="flex items-center gap-2">
-              <Button
-                aria-label={themeLabel}
-                aria-pressed={isDarkTheme}
-                onClick={toggleTheme}
-                size="icon"
-                variant="ghost"
-              >
-                {isDarkTheme ? <SunIcon /> : <MoonIcon />}
-                <span className="sr-only">{themeLabel}</span>
-              </Button>
-            </div>
-          </div>
         </div>
       </ScrollArea>
+      <div
+        className="flex shrink-0 items-center gap-2 border-t border-border px-3 py-2 text-muted-foreground sm:px-4"
+        data-testid="docs-mobile-sidebar-tools"
+      >
+        <DocsSiteMenu locale={currentLocale} mobile onNavigate={onSelectPath} />
+        <Button
+          aria-label={themeLabel}
+          aria-pressed={isDarkTheme}
+          className="size-11"
+          onClick={toggleTheme}
+          size="icon"
+          variant="ghost"
+        >
+          {isDarkTheme ? <SunIcon /> : <MoonIcon />}
+          <span className="sr-only">{themeLabel}</span>
+        </Button>
+      </div>
     </div>
   );
 }
@@ -746,7 +752,13 @@ function MobileSidebarNode({
           {node.title}
         </span>
         {node.method ? (
-          <span className="mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+          <span
+            className={cn(
+              'mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none',
+              getOpenApiMethodBadgeClassName(node.method),
+            )}
+            data-openapi-method={node.method}
+          >
             {node.method}
           </span>
         ) : null}

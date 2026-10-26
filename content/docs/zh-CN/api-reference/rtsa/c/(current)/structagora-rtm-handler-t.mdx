@@ -29,11 +29,13 @@ RTM 事件处理回调。
 
 <a id="aca9b8bc902639a09bf17d0995f5aa828"></a>
 
+<a id="a8c5e9092fcc6702053f25a4e9a437d7e"></a>
+
 ### on_rtm_data
 
 <ApiSignature>
 
-void(* on_rtm_data)(const char *rtm_uid, const void *msg, size_t msg_len)
+void(*) on_rtm_data(const char *rtm_uid, const void *msg, size_t msg_len, [rtm_message_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8d) msg_type, const char *custom_type)
 
 </ApiSignature>
 
@@ -55,9 +57,21 @@ RTM 消息回调。
 消息长度。单位为字节。
 
 </Parameter>
+<Parameter name="msg_type" direction="[in]">
+
+收到的 RTM 消息类型。详见 [rtm_message_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8d) 。
+
+</Parameter>
+<Parameter name="custom_type" direction="[in]">
+
+自定义消息类型；未设置时为 NULL。
+
+</Parameter>
 </ParameterList>
 
 <a id="a25c73cac37a00ac748fa41869838f623"></a>
+
+<a id="ab2549296a558191c8108cc5ca80de6ca"></a>
 
 ### on_rtm_event
 
@@ -89,6 +103,8 @@ RTM 用户 ID。
 
 <a id="a15b2dba380611e1974686f74a3ec0ca7"></a>
 
+<a id="a8b8816e97d0ec1563280cc39fe4d28ca"></a>
+
 ### on_rtm_send_data_result
 
 <ApiSignature>
@@ -97,7 +113,7 @@ void(* on_rtm_send_data_result)(const char *rtm_uid, uint32_t msg_id, [rtm_msg_s
 
 </ApiSignature>
 
-[agora_rtc_send_rtm_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1eaa46ebfb4613c624eef98ae7275319) 方法调用结果回调。
+[agora_rtm_send_data](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab001eda008555d96e4e64dc9e66687bf) 方法调用结果回调。
 
 <ParameterList title="参数">
 <Parameter name="rtm_uid" direction="[in]">
@@ -113,6 +129,106 @@ RTM 用户 ID。
 <Parameter name="state" direction="[in]">
 
 RTM 消息的发送状态。详见 [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="ab4a465f3612760c6b7b74f6b79a5e6f6"></a>
+
+### on_rtm_publish_result
+
+<ApiSignature>
+
+void(*) on_rtm_publish_result(const char *channel_name, uint32_t msg_id, [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) state)
+
+</ApiSignature>
+
+[agora_rtm_publish](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ab3dfb2693ca2cc21a56862065a16d718) 方法调用结果回调。
+
+<ParameterList title="参数">
+<Parameter name="channel_name" direction="[in]">
+
+消息发布到的频道名称。
+
+</Parameter>
+<Parameter name="msg_id" direction="[in]">
+
+由应用定义的消息 ID。
+
+</Parameter>
+<Parameter name="state" direction="[in]">
+
+RTM 消息发送状态。详见 [rtm_msg_state_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#af57ca27ae3585628b148da1406cc9ce6) 。
+
+</Parameter>
+</ParameterList>
+
+<a id="a40440ce1910c685ba80d7116bc289062"></a>
+
+### on_rtm_subscribe_data
+
+<ApiSignature>
+
+void(*) on_rtm_subscribe_data(const char *channel_name, const char *rtm_uid, const void *msg, size_t msg_len, [rtm_message_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8d) msg_type, const char *custom_type)
+
+</ApiSignature>
+
+收到已订阅 RTM 频道的消息时触发的回调。
+
+<ParameterList title="参数">
+<Parameter name="channel_name" direction="[in]">
+
+收到消息的频道名称。
+
+</Parameter>
+<Parameter name="rtm_uid" direction="[in]">
+
+消息发送者的 RTM 用户 ID。
+
+</Parameter>
+<Parameter name="msg" direction="[in]">
+
+收到的消息数据。
+
+</Parameter>
+<Parameter name="msg_len" direction="[in]">
+
+收到的消息数据长度，单位为字节。
+
+</Parameter>
+<Parameter name="msg_type" direction="[in]">
+
+收到的消息类型。详见 [rtm_message_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8d) 。
+
+</Parameter>
+<Parameter name="custom_type" direction="[in]">
+
+自定义消息类型；未设置时为 NULL。
+
+</Parameter>
+</ParameterList>
+
+<a id="a4af3bd1e0ff1e84245e81e7f2cb1fc79"></a>
+
+### on_rtm_subscribe_result
+
+<ApiSignature>
+
+void(*) on_rtm_subscribe_result(const char *channel_name, [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) err_code)
+
+</ApiSignature>
+
+[agora_rtm_subscribe](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30c2d99a514ebd98a4d335685668f595) 方法调用结果回调。
+
+<ParameterList title="参数">
+<Parameter name="channel_name" direction="[in]">
+
+已订阅的频道名称。
+
+</Parameter>
+<Parameter name="err_code" direction="[in]">
+
+订阅结果。详见 [rtm_err_code_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395) 。
 
 </Parameter>
 </ParameterList>

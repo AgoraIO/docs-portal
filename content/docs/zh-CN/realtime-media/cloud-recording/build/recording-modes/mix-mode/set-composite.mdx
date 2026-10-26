@@ -47,7 +47,7 @@ description: "了解如何在云端录制中合流录制，包括适用场景、
       "cname": "httpClient463224",
       "clientRequest": {
         "token": "<token if any>",
-        //highlight-start
+        // [!code highlight:24]
         "recordingConfig": {
           "maxIdleTime": 30,
           "streamTypes": 2,
@@ -72,14 +72,13 @@ description: "了解如何在云端录制中合流录制，包括适用场景、
           ],
           "subscribeUidGroup": 0
         },
-        //highlight-end
         "recordingFileConfig": {
           "avFileType": [
             "hls",
             "mp4"
           ]
         },
-        //highlight-start
+        // [!code highlight:11]
         "storageConfig": {
           "accessKey": "xxxxxxf",
           "region": 3,
@@ -91,7 +90,6 @@ description: "了解如何在云端录制中合流录制，包括适用场景、
             "directory2"
           ]
         }
-        //highlight-end
       }
     }
     ```
@@ -124,7 +122,7 @@ description: "了解如何在云端录制中合流录制，包括适用场景、
 
 合流录制生成的文件如下图所示：
 
-![合流录制生成文件](https://web-cdn.agora.io/doc-cms/uploads/1725865139156-合流生成文件.png)
+<DocsImage alt="合流录制生成文件" src="https://web-cdn.agora.io/doc-cms/uploads/1725865139156-合流生成文件.png" displayWidth="80%" />
 
 ## 开发注意事项
 
@@ -137,14 +135,14 @@ Native 端、Web 端及框架端用户在用户中途停止发流或退出频道
 <Slot for="set-composite-html-0-1-0">
 
 - 3.5 秒内显示视频画面的最后一帧。
-        - 3.5 秒后显示预设的用户背景图或画布背景图。如果未设置背景图，则显示画布背景色。如果画布背景色也未设置，则显示默认的黑色画布背景色。
+- 3.5 秒后显示预设的用户背景图或画布背景图。如果未设置背景图，则显示画布背景色。如果画布背景色也未设置，则显示默认的黑色画布背景色。
 
 </Slot>
 
 <Slot for="set-composite-html-0-1-1">
 
 - 3.5 秒内显示视频画面的最后一帧。
-        - 3.5 秒后显示预设的用户背景图或画布背景图。如果未设置背景图，则显示画布背景色。如果画布背景色也未设置，则显示默认的黑色画布背景色。
+- 3.5 秒后显示预设的用户背景图或画布背景图。如果未设置背景图，则显示画布背景色。如果画布背景色也未设置，则显示默认的黑色画布背景色。
 
 </Slot>
 

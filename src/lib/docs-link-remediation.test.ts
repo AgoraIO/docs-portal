@@ -1,4 +1,5 @@
 import { readFileSync } from 'node:fs';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import { getOpenApiPrerenderPaths } from './openapi/lanes';
 import { isKnownPlatform } from './platforms/registry';
@@ -269,84 +270,108 @@ const legacyAnchorLinkCases = [
   },
   ...[
     [
-      'audio_data_type_e',
+      'a5a0f97a26cd357a5afed482c46360713',
       'audio_data_type_e',
       'content/docs/zh-CN/realtime-media/rtsa/index.mdx',
+      'audio_data_type_e',
     ],
     [
-      'video_data_type_e',
+      'a1ccdeb97ac0c919ca5de750fad95c222',
       'video_data_type_e',
       'content/docs/zh-CN/realtime-media/rtsa/index.mdx',
+      'video_data_type_e',
     ],
     [
-      'agora_rtc_get_rdt_status_info',
+      'a80f16bf3cf9bcdf8a6cecc51f8e584aa',
       'agora_rtc_get_rdt_status_info()',
       'content/docs/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx',
+      'agora_rtc_get_rdt_status_info',
     ],
     [
-      'agora_rtc_join_channel',
+      'a6c29ff27f04623526a164cf6e5dcd738',
       'agora_rtc_join_channel()',
       'content/docs/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx',
+      'agora_rtc_join_channel',
     ],
     [
-      'agora_rtc_send_rdt_msg',
+      'a056de38235f67ad1ea91cfd695ffaf61',
       'agora_rtc_send_rdt_msg()',
       'content/docs/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx',
+      'agora_rtc_send_rdt_msg',
     ],
     [
-      'agora_rtc_create_connection',
+      'adef869ae47e2f1c194af611b57d06394',
       'agora_rtc_create_connection()',
       'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx',
+      'agora_rtc_create_connection',
     ],
     [
-      'agora_rtc_destroy_connection',
+      'ac58d42a331c45233d81085fc13defcaf',
       'agora_rtc_destroy_connection()',
       'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx',
+      'agora_rtc_destroy_connection',
     ],
     [
-      'agora_rtc_leave_channel',
+      'a939878648ce563ef4041da892d478f8b',
       'agora_rtc_leave_channel()',
       'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx',
+      'agora_rtc_leave_channel',
     ],
     [
-      'agora_rtc_send_audio_data',
+      'a0a00045d34a87e7a3798c6c906f9e197',
       'agora_rtc_send_audio_data()',
       'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx',
+      'agora_rtc_send_audio_data',
     ],
     [
-      'agora_rtc_send_video_data',
+      'a05973c4f32a5eb480e52b4f566601bf5',
       'agora_rtc_send_video_data()',
       'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel.mdx',
+      'agora_rtc_send_video_data',
     ],
     [
-      'audio_codec_type_e',
+      'a307c5bae03eb9a318e247a97e6fb5d88',
       'audio_codec_type_e',
       'content/docs/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec.mdx',
+      'audio_codec_type_e',
     ],
     [
-      'agora_err_code_e',
+      'aec639f854206054cb48acde88e998abf',
       'agora_err_code_e',
       'content/docs/zh-CN/realtime-media/rtsa/reference/release-notes.mdx',
+      'agora_err_code_e',
     ],
     [
-      'area_code_e',
+      'a1a483a5b4b02019fa68b46a979ac1d1d',
       'area_code_e',
       'content/docs/zh-CN/realtime-media/rtsa/reference/release-notes.mdx',
+      'area_code_e',
     ],
-  ].map(([fragment, heading, source]) => ({
+  ].map(([fragment, heading, source, legacyFragment]) => ({
     expectedHeading: heading,
     expectedTitle: 'agora_rtc_api.h 文件参考',
     href: `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#${fragment}`,
+    legacyHref: `/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#${legacyFragment}`,
     source,
     target: '/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h',
   })),
   ...[
-    ['on_rdt_state', 'on_rdt_state'],
-    ['on_rdt_msg', 'on_rdt_msg'],
-  ].map(([fragment, heading]) => ({
+    [
+      'afe6c35e916473a1424f28d3fefbdda69',
+      'on_rdt_state',
+      'afa921fa31ea49ef1c97a17949119e386',
+    ],
+    [
+      'a7b5b9ba5f3acaf9b336040e4edd282a5',
+      'on_rdt_msg',
+      'a80dfcd1cd72a006a7b2daae4d7f80eea',
+    ],
+  ].map(([fragment, heading, legacyHash]) => ({
     expectedHeading: heading,
     expectedTitle: 'agora_rtc_event_handler_t结构体 参考',
     href: `/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#${fragment}`,
+    legacyHref: `/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#${heading}`,
+    legacyHash,
     source:
       'content/docs/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel.mdx',
     target: '/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t',
@@ -450,13 +475,14 @@ describe('reported Chinese link destinations', () => {
 
   it.each(legacyAnchorLinkCases)(
     '$source links to the intended heading on $target',
-    async ({
-      expectedHeading,
-      expectedTitle,
-      href,
-      source: sourcePath,
-      target,
-    }) => {
+    async (linkCase) => {
+      const {
+        expectedHeading,
+        expectedTitle,
+        href,
+        source: sourcePath,
+        target,
+      } = linkCase;
       expect(readFileSync(sourcePath, 'utf8').includes(href)).toBe(true);
       const page = await resolvePublishedTarget(target);
       expect(page, target).toBeDefined();
@@ -467,19 +493,70 @@ describe('reported Chinese link destinations', () => {
       expect(page.data.title).toBe(expectedTitle);
       if (expectedHeading) {
         expect(await getProcessedText(page)).toContain(expectedHeading);
+
+        if ('legacyHref' in linkCase) {
+          if (typeof linkCase.legacyHref !== 'string') {
+            throw new Error(`Expected explicit legacy href for ${target}`);
+          }
+          const targetSource = readFileSync(
+            `content/docs/${page.path}`,
+            'utf8',
+          );
+          expectRtsaAnchorAtHeading(
+            targetSource,
+            new URL(href, 'https://docs.example').hash.slice(1),
+            expectedHeading,
+          );
+
+          const legacyFragment = new URL(
+            linkCase.legacyHref,
+            'https://docs.example',
+          ).hash;
+          if (!('load' in page.data) || typeof page.data.load !== 'function') {
+            throw new Error(`Expected loadable RTSA MDX for ${target}`);
+          }
+          const { toc } = await page.data.load();
+          const legacyHeadings = toc.filter(
+            (item) => item.url === legacyFragment,
+          );
+          expect(legacyHeadings).toHaveLength(1);
+          expect(renderToStaticMarkup(legacyHeadings[0].title)).toBe(
+            expectedHeading,
+          );
+
+          if ('legacyHash' in linkCase) {
+            if (typeof linkCase.legacyHash !== 'string') {
+              throw new Error(`Expected explicit legacy hash for ${target}`);
+            }
+            expectRtsaAnchorAtHeading(
+              targetSource,
+              linkCase.legacyHash,
+              expectedHeading,
+            );
+          }
+        }
       }
     },
   );
 
-  it.each(['v4.20.0', 'v4.22.0', 'v4.24.0', 'v4.24.2'])(
-    'keeps the pending RTC release-note anchor %s at its matching version heading',
-    (version) => {
+  it.each([
+    { alias: 'v4.20.0', version: 'v4.20.0' },
+    { alias: 'v4.22.0', version: 'v4.22.0' },
+    { alias: 'v4.24.0', version: 'v4.24.0' },
+    { alias: 'v4.24.2', version: 'v4.24.2' },
+    { alias: 'v4.3.1', version: 'v4.3.1' },
+    { alias: '415', version: 'v4.15.0' },
+    { alias: '410', version: 'v4.10.0' },
+  ])(
+    'keeps the historical RTC release-note anchor $alias at version $version',
+    ({ alias, version }) => {
       const sourcePath =
         'content/docs/zh-CN/realtime-media/rtc/reference/release-notes.mdx';
       const content = readFileSync(sourcePath, 'utf8');
 
-      expect(content).toContain(`<a id="${version}"></a>`);
-      expect(content).toContain(`## ${version}`);
+      expect(content).toContain(
+        `<section id="${alias}">\n\n<Accordion title="${version}"`,
+      );
     },
   );
 
@@ -489,6 +566,20 @@ describe('reported Chinese link destinations', () => {
     ).toBe(true);
   });
 });
+
+function expectRtsaAnchorAtHeading(
+  content: string,
+  fragment: string,
+  expectedHeading: string,
+) {
+  const anchor = `<a id="${fragment}"></a>`;
+  expect(content.split(anchor), fragment).toHaveLength(2);
+  const following = content.slice(content.indexOf(anchor) + anchor.length);
+  expect(
+    following.match(/^\s*(?:<a id="[^"]+"><\/a>\s*)*### ([^\n]+)/)?.[1],
+    fragment,
+  ).toBe(expectedHeading);
+}
 
 async function resolvePublishedTarget(target: string) {
   const path = new URL(target, 'https://docs.example').pathname;

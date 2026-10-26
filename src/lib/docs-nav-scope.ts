@@ -1,6 +1,10 @@
 import type { Folder, Item, Node, Root } from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
-import type { DocsMeta, DocsNavScopeVersion } from './docs-meta-schema';
+import type {
+  DocsMeta,
+  DocsNavScope,
+  DocsNavScopeVersion,
+} from './docs-meta-schema';
 import { isSamePathOrDescendant } from './docs-routing';
 import {
   type DocsSidebarNode,
@@ -59,7 +63,7 @@ type FolderAncestor = {
 };
 
 export function resolveDocsNavScope({
-  activePath,
+  activePath: requestedActivePath,
   getNodeMeta,
   root,
   tab,
@@ -69,6 +73,7 @@ export function resolveDocsNavScope({
   root: Root;
   tab: string;
 }): DocsNavScopeResolution | null {
+  const activePath = requestedActivePath.split(/[?#]/)[0];
   const tabNode = findTabFolder(root, tab);
   if (!tabNode) {
     return null;
@@ -90,10 +95,15 @@ export function resolveDocsNavScope({
   }
 
   const parentScope = findNearestVisibleParentScope(scopedAncestors);
+  const versions = resolveContextVersions(
+    scope.node,
+    scope.meta.navScope,
+    activePath,
+  );
   const activeVersion = resolveActiveVersion({
     activePath,
     scope: scope.node,
-    versions: scope.meta.navScope?.versions,
+    versions,
   });
   const sidebarRoot = activeVersion?.node ?? scope.node;
   const backTarget = parentScope
@@ -117,7 +127,7 @@ export function resolveDocsNavScope({
     activeVersion,
     presentation: scope.meta.navScope?.presentation,
     scope: scope.node,
-    versions: scope.meta.navScope?.versions,
+    versions,
   });
 
   if (versionSwitcher) {
@@ -150,13 +160,17 @@ function findScopeByVersionHref(
   getNodeMeta: GetDocsNodeMeta,
 ): (FolderAncestor & { meta: DocsMeta }) | undefined {
   const meta = getNodeMeta(folder);
+  const contextPath = meta?.navScope?.versionOverrides?.length
+    ? getScopeContextPath(folder, meta.navScope)
+    : undefined;
   if (
+    (contextPath && isSamePathOrDescendant(activePath, contextPath)) ||
     meta?.navScope?.versions?.some(
       (version) =>
         version.href && isSamePathOrDescendant(activePath, version.href),
     )
   ) {
-    return { meta, node: folder };
+    if (meta) return { meta, node: folder };
   }
 
   for (const child of folder.children) {
@@ -171,6 +185,100 @@ function findScopeByVersionHref(
   }
 
   return undefined;
+}
+
+function resolveContextVersions(
+  scope: Folder,
+  navScope: DocsNavScope | undefined,
+  activePath: string,
+): DocsNavScopeVersion[] | undefined {
+  if (!navScope?.versionOverrides?.length) return navScope?.versions;
+
+  const contextPath = getScopeContextPath(scope, navScope);
+  if (!contextPath) return navScope.versions;
+
+  const override = navScope.versionOverrides
+    .filter(({ path }) =>
+      isSamePathOrDescendant(activePath, `${contextPath}/${path}`),
+    )
+    .sort(
+      (left, right) =>
+        right.path.split('/').length - left.path.split('/').length,
+    )
+    .at(0);
+
+  return override?.versions ?? navScope.versions;
+}
+
+function getScopeContextPath(
+  scope: Folder,
+  navScope: DocsNavScope,
+): string | undefined {
+  const urls = getLocalPageUrls(scope);
+  const current = navScope.versions?.find(
+    ({ id, path }) =>
+      path === '.' &&
+      id === (navScope.defaultVersion ?? navScope.versions?.[0]?.id),
+  );
+  const currentHref =
+    current?.href?.startsWith('/') && !current.href.startsWith('//')
+      ? current.href.split(/[?#]/)[0]
+      : undefined;
+  const anchor = currentHref ?? scope.index?.url;
+
+  // A current href may be a landing page rather than the folder itself. Keep
+  // cross-scope sidebar links out of this trusted local boundary calculation.
+  if (anchor?.startsWith('/') && !anchor.startsWith('//')) {
+    const path = anchor.replace(/\/$/, '');
+    // Without an explicit current href, the canonical index is also the
+    // version entry point. Cross-scope sidebar links cannot widen its boundary.
+    if (!currentHref) return path;
+
+    // Explicit override entry points also establish the directory boundary
+    // when its descendants are hidden or absent from the visible page tree.
+    const hasOverrideDescendant = navScope.versionOverrides?.some((override) =>
+      override.versions.some(
+        (version) =>
+          version.path === '.' &&
+          version.href &&
+          isSamePathOrDescendant(
+            version.href.split(/[?#]/)[0],
+            `${path}/${override.path}`,
+          ),
+      ),
+    );
+    return urls.some((url) => url.startsWith(`${path}/`)) ||
+      hasOverrideDescendant
+      ? path
+      : path.slice(0, path.lastIndexOf('/')) || undefined;
+  }
+
+  const [first, ...rest] = urls.map((url) => url.split('/'));
+  if (!first) return undefined;
+
+  const common = first.slice();
+  for (const segments of rest) {
+    while (!common.every((segment, index) => segments[index] === segment)) {
+      common.pop();
+    }
+  }
+  if (urls.length === 1) common.pop();
+  return common.join('/') || undefined;
+}
+
+function getLocalPageUrls(folder: Folder): string[] {
+  const pages = folder.index
+    ? [folder.index, ...folder.children]
+    : folder.children;
+  return pages.flatMap((node) => {
+    if (node.type === 'folder') return getLocalPageUrls(node);
+    return node.type === 'page' &&
+      !node.external &&
+      node.url.startsWith('/') &&
+      !node.url.startsWith('//')
+      ? [node.url.split(/[?#]/)[0]]
+      : [];
+  });
 }
 
 export function getNavScopeSidebarNodes({

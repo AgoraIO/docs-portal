@@ -24,8 +24,8 @@ title: "ConversationalAIAPI 类"
 
 操作完成时调用的回调函数。
 
-    - 成功时返回 `nil`。
-    - 失败时返回错误信息，详见 [`ConversationalAIAPIError`](/zh-CN/api-reference/conversational-ai/ios/struct#conversationalaiapierror)。
+- 成功时返回 `nil`。
+- 失败时返回错误信息，详见 [`ConversationalAIAPIError`](/zh-CN/api-reference/conversational-ai/ios/struct#conversationalaiapierror)。
 
 </Slot>
 
@@ -36,13 +36,17 @@ title: "ConversationalAIAPI 类"
 @objc func speak(agentUserId: String, message: SpeakMessage, completion: @escaping (ConversationalAIAPIError?) -> Void)
 ```
 
-绕过大模型，直接通过智能体的 TTS 流程播报文本。该方法需要 RTM，回调仅表示 RTM 消息是否发布成功。
+绕过大模型，直接通过智能体的 TTS 流程播报文本。
+
+该方法需要 RTM。回调仅表示 RTM 消息是否发布成功，不代表智能体已经完成播报。
+
+#### 参数
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `agentUserId` | `String` | 智能体用户 ID。 |
-| `message` | `SpeakMessage` | 播报内容和播报行为配置。详见 [`SpeakMessage`](struct#speakmessage)。 |
-| `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 调用结果回调。 |
+| `agentUserId` | `String` | 智能体的 RTM 用户 ID，必须全局唯一。 |
+| `message` | `SpeakMessage` | 播报内容和播报行为配置。详见 [`SpeakMessage`](/zh-CN/api-reference/conversational-ai/ios/struct#speakmessage)。 |
+| `completion` | `@escaping (ConversationalAIAPIError?) -> Void` | 操作完成时调用的回调函数。成功时返回 `nil`，失败时返回错误信息。 |
 
 <a id="think"></a>
 ## think
@@ -51,13 +55,17 @@ title: "ConversationalAIAPI 类"
 @objc func think(agentUserId: String, message: ThinkMessage, completion: @escaping (ConversationalAIAPIError?) -> Void)
 ```
 
-将文本作为用户输入注入对话，并交由大模型处理。该方法需要 RTM，回调仅表示 RTM 消息是否发布成功。
+将文本作为用户输入注入对话，并交由大模型处理。
+
+该方法需要 RTM。回调仅表示 RTM 消息是否发布成功，不代表大模型已经完成处理。
+
+#### 参数
 
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
-| `agentUserId` | `String` | 智能体用户 ID。 |
-| `message` | `ThinkMessage` | 指令内容、状态动作和自定义元数据。详见 [`ThinkMessage`](struct#thinkmessage)。 |
-| `completion` | `(error: ConversationalAIAPIError?) -> Unit` | 调用结果回调。 |
+| `agentUserId` | `String` | 智能体的 RTM 用户 ID，必须全局唯一。 |
+| `message` | `ThinkMessage` | 指令内容、状态动作和自定义元数据。详见 [`ThinkMessage`](/zh-CN/api-reference/conversational-ai/ios/struct#thinkmessage)。 |
+| `completion` | `@escaping (ConversationalAIAPIError?) -> Void` | 操作完成时调用的回调函数。成功时返回 `nil`，失败时返回错误信息。 |
 
 <a id="interrupt"></a>
 ## interrupt

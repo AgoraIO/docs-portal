@@ -61,11 +61,11 @@ public class AcquireIndividualResourceClientReq {
 
 指定云端录制服务可访问的区域。
 
-    - 0：距离请求源最近（默认）。
-    - 1：中国。
-    - 2：东南亚。
-    - 3：欧洲。
-    - 4：北美。
+- 0：距离请求源最近（默认）。
+- 1：中国。
+- 2：东南亚。
+- 3：欧洲。
+- 4：北美。
 
 </Slot>
 
@@ -154,11 +154,11 @@ public class AcquireWebRecordingResourceClientReq {
 
 指定页面录制服务可访问的区域。
 
-    - 0：（默认）离发起请求最近的区域。
-    - 1：中国大陆。
-    - 2：东南亚。
-    - 3：欧洲。
-    - 4：北美。
+- 0：（默认）离发起请求最近的区域。
+- 1：中国大陆。
+- 2：东南亚。
+- 3：欧洲。
+- 4：北美。
 
 </Slot>
 
@@ -241,11 +241,11 @@ public class AcquireMixRecordingResourceClientReq {
 
 指定云端录制服务可访问的区域。
 
-    - 0：（默认）最靠近请求源。
-    - 1：中国大陆。
-    - 2：东南亚。
-    - 3：欧洲。
-    - 4：北美。
+- 0：（默认）最靠近请求源。
+- 1：中国大陆。
+- 2：东南亚。
+- 3：欧洲。
+- 4：北美。
 
 </Slot>
 
@@ -334,10 +334,10 @@ public class UpdateLayoutMixRecordingResourceClientReq {
 
 （可选）合流视频布局类型。支持以下取值：
 
-    - 0：（默认）浮动布局。最先加入频道的用户显示为大窗口，填满画布，其他用户的视频以小窗口形式从下往上横向排列，最多支持 4 行，每行 4 个窗口，最多支持 17 个用户的视频窗口。
-    - 1：自适应布局。根据用户数量自动调整每个用户的视频窗口尺寸，所有用户窗口大小一致，最多支持 17 个窗口。
-    - 2：竖屏布局。通过设置 `maxResolutionUID` 显示左侧的大窗口，其他用户的视频窗口在右侧垂直排列，最多 2 列，每列最多 8 个窗口，总共最多 17 个窗口。
-    - 3：自定义布局。通过设置 `layoutConfig` 字段实现自定义合流布局。
+- 0：（默认）浮动布局。最先加入频道的用户显示为大窗口，填满画布，其他用户的视频以小窗口形式从下往上横向排列，最多支持 4 行，每行 4 个窗口，最多支持 17 个用户的视频窗口。
+- 1：自适应布局。根据用户数量自动调整每个用户的视频窗口尺寸，所有用户窗口大小一致，最多支持 17 个窗口。
+- 2：竖屏布局。通过设置 `maxResolutionUID` 显示左侧的大窗口，其他用户的视频窗口在右侧垂直排列，最多 2 列，每列最多 8 个窗口，总共最多 17 个窗口。
+- 3：自定义布局。通过设置 `layoutConfig` 字段实现自定义合流布局。
 
 </Slot>
 
@@ -756,16 +756,16 @@ public static class QueryIndividualRecordingServerResponse {
 
 云服务的当前状态：
 
-    - 0：云服务尚未启动。
-    - 1：云服务初始化完成。
-    - 2：云服务组件正在启动。
-    - 3：部分云服务组件准备就绪。
-    - 4：全部云服务组件准备就绪。
-    - 5：云服务运行中。
-    - 6：云服务接收到停止请求。
-    - 7：云服务的所有组件停止运行。
-    - 8：云服务退出。
-    - 20：云服务异常退出。
+- 0：云服务尚未启动。
+- 1：云服务初始化完成。
+- 2：云服务组件正在启动。
+- 3：部分云服务组件准备就绪。
+- 4：全部云服务组件准备就绪。
+- 5：云服务运行中。
+- 6：云服务接收到停止请求。
+- 7：云服务的所有组件停止运行。
+- 8：云服务退出。
+- 20：云服务异常退出。
 
 </Slot>
 
@@ -773,8 +773,8 @@ public static class QueryIndividualRecordingServerResponse {
 
 fileList 字段的数据格式：
 
-    - "string"：fileList 为字符串类型。在合流录制模式下，若 avFileType 设置为 `["hls"]`，则 fileListMode 为 "string"。
-    - "json"：fileList 为 JSON 数组。当 avFileType 设置为 `["hls", "mp4"]`，在单流录制或合流录制模式下，fileListMode 设置为 "json"。
+- "string"：fileList 为字符串类型。在合流录制模式下，若 avFileType 设置为 `["hls"]`，则 fileListMode 为 "string"。
+- "json"：fileList 为 JSON 数组。当 avFileType 设置为 `["hls", "mp4"]`，在单流录制或合流录制模式下，fileListMode 设置为 "json"。
 
 </Slot>
 
@@ -824,9 +824,9 @@ public static class FileDetail {
 
 录制的文件类型：
 
-    - "audio"：仅音频文件。
-    - "video"：仅视频文件。
-    - "audio_and_video"：音视频文件。
+- "audio"：仅音频文件。
+- "video"：仅视频文件。
+- "audio_and_video"：音视频文件。
 
 </Slot>
 
@@ -834,8 +834,8 @@ public static class FileDetail {
 
 是否为合流录制：
 
-    - true：所有用户的音视频录制在一个文件中。
-    - false：分别录制每个用户的音视频。
+- true：所有用户的音视频录制在一个文件中。
+- false：分别录制每个用户的音视频。
 
 </Slot>
 
@@ -843,8 +843,8 @@ public static class FileDetail {
 
 文件是否支持在线播放：
 
-    - true：支持在线播放。
-    - false：不支持在线播放。
+- true：支持在线播放。
+- false：不支持在线播放。
 
 </Slot>
 
@@ -880,16 +880,16 @@ public static class QueryIndividualVideoScreenshotServerResponse {
 
 云服务的当前状态：
 
-    - 0：云服务未启动。
-    - 1：云服务初始化完成。
-    - 2：云服务组件启动中。
-    - 3：部分云服务组件已就绪。
-    - 4：所有云服务组件已就绪。
-    - 5：云服务运行中。
-    - 6：云服务接收到停止请求。
-    - 7：所有云服务组件已停止。
-    - 8：云服务已退出。
-    - 20：云服务异常退出。
+- 0：云服务未启动。
+- 1：云服务初始化完成。
+- 2：云服务组件启动中。
+- 3：部分云服务组件已就绪。
+- 4：所有云服务组件已就绪。
+- 5：云服务运行中。
+- 6：云服务接收到停止请求。
+- 7：所有云服务组件已停止。
+- 8：云服务已退出。
+- 20：云服务异常退出。
 
 </Slot>
 
@@ -931,16 +931,16 @@ public static class MixRecordingHLSServerResponse {
 
 云服务当前状态：
 
-    - 0：云服务未启动。
-    - 1：云服务初始化完成。
-    - 2：云服务组件启动中。
-    - 3：部分云服务组件就绪。
-    - 4：全部云服务组件就绪。
-    - 5：云服务进行中。
-    - 6：云服务收到停止请求。
-    - 7：全部云服务组件停止。
-    - 8：云服务已退出。
-    - 20：云服务异常退出。
+- 0：云服务未启动。
+- 1：云服务初始化完成。
+- 2：云服务组件启动中。
+- 3：部分云服务组件就绪。
+- 4：全部云服务组件就绪。
+- 5：云服务进行中。
+- 6：云服务收到停止请求。
+- 7：全部云服务组件停止。
+- 8：云服务已退出。
+- 20：云服务异常退出。
 
 </Slot>
 
@@ -948,8 +948,8 @@ public static class MixRecordingHLSServerResponse {
 
 字段 `fileList` 的数据格式：
 
-    - "string"：`fileList` 为字符串类型。在合流录制模式下，如果 `avFileType` 设置为 `["hls"]`，则 `fileListMode` 为 "string"。
-    - "json"：`fileList` 为 JSON 数组。当 `avFileType` 设置为 `["hls", "mp4"]` 时，无论是单流录制还是合流录制模式，`fileListMode` 为 "json"。
+- "string"：`fileList` 为字符串类型。在合流录制模式下，如果 `avFileType` 设置为 `["hls"]`，则 `fileListMode` 为 "string"。
+- "json"：`fileList` 为 JSON 数组。当 `avFileType` 设置为 `["hls", "mp4"]` 时，无论是单流录制还是合流录制模式，`fileListMode` 为 "json"。
 
 </Slot>
 
@@ -991,16 +991,16 @@ public static class MixRecordingHLSAndMP4ServerResponse {
 
 云服务当前的状态：
 
-    - 0：云服务尚未启动。
-    - 1：云服务初始化完成。
-    - 2：云服务组件启动中。
-    - 3：部分云服务组件准备就绪。
-    - 4：所有云服务组件准备就绪。
-    - 5：云服务进行中。
-    - 6：收到停止云服务请求。
-    - 7：所有云服务组件已停止。
-    - 8：云服务已退出。
-    - 20：云服务异常退出。
+- 0：云服务尚未启动。
+- 1：云服务初始化完成。
+- 2：云服务组件启动中。
+- 3：部分云服务组件准备就绪。
+- 4：所有云服务组件准备就绪。
+- 5：云服务进行中。
+- 6：收到停止云服务请求。
+- 7：所有云服务组件已停止。
+- 8：云服务已退出。
+- 20：云服务异常退出。
 
 </Slot>
 
@@ -1008,8 +1008,8 @@ public static class MixRecordingHLSAndMP4ServerResponse {
 
 字段 `fileList` 的数据格式：
 
-    - "string"：`fileList` 为字符串类型。在合流录制模式下，如果 `avFileType` 设置为 `["hls"]`，则 `fileListMode` 为 "string"。
-    - "json"：`fileList` 为 JSON 数组。当 `avFileType` 设置为 `["hls", "mp4"]` 时，在单流录制或合流录制模式下，`fileListMode` 为 "json"。
+- "string"：`fileList` 为字符串类型。在合流录制模式下，如果 `avFileType` 设置为 `["hls"]`，则 `fileListMode` 为 "string"。
+- "json"：`fileList` 为 JSON 数组。当 `avFileType` 设置为 `["hls", "mp4"]` 时，在单流录制或合流录制模式下，`fileListMode` 为 "json"。
 
 </Slot>
 
@@ -1059,9 +1059,9 @@ public static class FileDetail {
 
 （可选）录制的文件类型。
 
-    - "audio"：仅音频文件。
-    - "video"：仅视频文件。
-    - "audio_and_video"：音视频文件。
+- "audio"：仅音频文件。
+- "video"：仅视频文件。
+- "audio_and_video"：音视频文件。
 
 </Slot>
 
@@ -1069,8 +1069,8 @@ public static class FileDetail {
 
 （可选）是否将所有用户的音视频流合并录制。
 
-    - true：所有用户被录制到一个文件中。
-    - false：每个用户分别录制到独立文件中。
+- true：所有用户被录制到一个文件中。
+- false：每个用户分别录制到独立文件中。
 
 </Slot>
 
@@ -1078,8 +1078,8 @@ public static class FileDetail {
 
 （可选）该文件是否支持在线播放。
 
-    - true：支持在线播放。
-    - false：不支持在线播放。
+- true：支持在线播放。
+- false：不支持在线播放。
 
 </Slot>
 
@@ -1112,16 +1112,16 @@ public static class WebRecordingServerResponse {
 
 云服务的当前状态：
 
-    - 0：云服务尚未启动。
-    - 1：云服务初始化完成。
-    - 2：云服务组件启动中。
-    - 3：部分云服务组件已就绪。
-    - 4：全部云服务组件已就绪。
-    - 5：云服务运行中。
-    - 6：云服务已收到停止请求。
-    - 7：全部云服务组件已停止。
-    - 8：云服务已退出。
-    - 20：云服务异常退出。
+- 0：云服务尚未启动。
+- 1：云服务初始化完成。
+- 2：云服务组件启动中。
+- 3：部分云服务组件已就绪。
+- 4：全部云服务组件已就绪。
+- 5：云服务运行中。
+- 6：云服务已收到停止请求。
+- 7：全部云服务组件已停止。
+- 8：云服务已退出。
+- 20：云服务异常退出。
 
 </Slot>
 
@@ -1155,8 +1155,8 @@ public static class ExtensionServiceState {
 
 扩展服务的名称。
 
-    - "web_recorder_service"：表示扩展服务为页面录制。
-    - "rtmp_publish_service"：表示扩展服务为将页面录制推送至 CDN。
+- "web_recorder_service"：表示扩展服务为页面录制。
+- "rtmp_publish_service"：表示扩展服务为将页面录制推送至 CDN。
 
 </Slot>
 
@@ -1194,8 +1194,8 @@ public static class Payload {
 
 页面录制是否处于暂停状态：
 
-    - true：已暂停。
-    - false：正在进行中。
+- true：已暂停。
+- false：正在进行中。
 
 </Slot>
 
@@ -1203,9 +1203,9 @@ public static class Payload {
 
 上传订阅内容到扩展服务的状态：
 
-    - "init"：服务初始化中。
-    - "inProgress"：服务已启动且正在运行。
-    - "exit"：服务退出。
+- "init"：服务初始化中。
+- "inProgress"：服务已启动且正在运行。
+- "exit"：服务退出。
 
 </Slot>
 
@@ -1265,16 +1265,16 @@ public static class WebRecordingRtmpPublishServerResponse {
 
 云服务的当前状态：
 
-    - 0：云服务未启动。
-    - 1：云服务初始化完成。
-    - 2：云服务组件正在启动。
-    - 3：部分云服务组件就绪。
-    - 4：全部云服务组件就绪。
-    - 5：云服务运行中。
-    - 6：云服务接收到停止请求。
-    - 7：全部云服务组件停止。
-    - 8：云服务退出。
-    - 20：云服务异常退出。
+- 0：云服务未启动。
+- 1：云服务初始化完成。
+- 2：云服务组件正在启动。
+- 3：部分云服务组件就绪。
+- 4：全部云服务组件就绪。
+- 5：云服务运行中。
+- 6：云服务接收到停止请求。
+- 7：全部云服务组件停止。
+- 8：云服务退出。
+- 20：云服务异常退出。
 
 </Slot>
 
@@ -1308,8 +1308,8 @@ public static class ExtensionServiceState {
 
 扩展服务的名称：
 
-    - "web_recorder_service"：表示扩展服务为页面录制。
-    - "rtmp_publish_service"：表示扩展服务为将页面录制推流至 CDN。
+- "web_recorder_service"：表示扩展服务为页面录制。
+- "rtmp_publish_service"：表示扩展服务为将页面录制推流至 CDN。
 
 </Slot>
 
@@ -1343,9 +1343,9 @@ public static class Payload {
 
 上传订阅内容至扩展服务的状态。
 
-    - "init"：服务初始化中。
-    - "inProgress"：服务已启动，正在进行中。
-    - "exit"：服务已退出。
+- "init"：服务初始化中。
+- "inProgress"：服务已启动，正在进行中。
+- "exit"：服务已退出。
 
 </Slot>
 
@@ -1379,10 +1379,10 @@ public static class Output {
 
 页面录制推流的当前状态：
 
-    - "connecting"：正在连接 CDN 服务器。
-    - "publishing"：正在进行推流。
-    - "onhold"：暂停推流。
-    - "disconnected"：推流连接失败，建议更换 CDN 地址重新推流。
+- "connecting"：正在连接 CDN 服务器。
+- "publishing"：正在进行推流。
+- "onhold"：暂停推流。
+- "disconnected"：推流连接失败，建议更换 CDN 地址重新推流。
 
 </Slot>
 
@@ -1442,8 +1442,8 @@ public static class AudioUIDList {
 
 指定需要订阅其音频流的 UID 列表。
 
-    - 如果希望订阅所有 UID 的音频流，则无需设置该字段。
-    - 设置为 `[#allstream#]` 表示订阅频道中所有 UID 的音频流。
+- 如果希望订阅所有 UID 的音频流，则无需设置该字段。
+- 设置为 `[#allstream#]` 表示订阅频道中所有 UID 的音频流。
 
 </Slot>
 
@@ -1477,8 +1477,8 @@ public static class VideoUIDList {
 
 指定需订阅视频流的 UID 列表。
 
-    - 如果希望订阅所有 UID 的视频流，无需设置该字段。
-    - 设置为 `#allstream#` 可订阅频道中所有 UID 的视频流。
+- 如果希望订阅所有 UID 的视频流，无需设置该字段。
+- 设置为 `#allstream#` 可订阅频道中所有 UID 的视频流。
 
 </Slot>
 
@@ -1508,9 +1508,9 @@ public static class WebRecordingConfig {
 
 设置是否暂停网页录制。
 
-    - true：暂停网页录制并生成录制文件。
-    - false：（默认）继续网页录制并生成录制文件。
-    如果你想恢复已暂停的网页录制，可以调用更新方法并将 `onHold` 设置为 `false`。
+- true：暂停网页录制并生成录制文件。
+- false：（默认）继续网页录制并生成录制文件。
+如果你想恢复已暂停的网页录制，可以调用更新方法并将 `onHold` 设置为 `false`。
 
 </Slot>
 
@@ -1595,8 +1595,8 @@ public static class AppsCollection {
 
 （可选）云端录制应用程序的组合策略。可设置为：
 
-    - "default"：默认策略，适用于除延迟转码和混音以外的场景。
-    - "postpone_transcoding"：当需要延迟转码或混音时使用该策略。
+- "default"：默认策略，适用于除延迟转码和混音以外的场景。
+- "postpone_transcoding"：当需要延迟转码或混音时使用该策略。
 
 </Slot>
 
@@ -1634,8 +1634,8 @@ public static class RecordingConfig {
 
 （必填）频道场景类型。可设置为：
 
-    - 0：通信场景（默认）。
-    - 1：直播场景。
+- 0：通信场景（默认）。
+- 1：直播场景。
 
 </Slot>
 
@@ -1643,9 +1643,9 @@ public static class RecordingConfig {
 
 （可选）订阅的媒体流类型。可设置为：
 
-    - 0：仅订阅音频流，适用于智能语音审核场景。
-    - 1：仅订阅视频流。
-    - 2：同时订阅音频和视频流（默认）。
+- 0：仅订阅音频流，适用于智能语音审核场景。
+- 1：仅订阅视频流。
+- 2：同时订阅音频和视频流（默认）。
 
 </Slot>
 
@@ -1653,9 +1653,9 @@ public static class RecordingConfig {
 
 （可选）媒体流的输出模式。可设置为：
 
-    - "default"：默认模式。音频转码录制时分别生成 M3U8 音频索引文件和视频索引文件。
-    - "standard"：标准模式，声网推荐使用。音频转码录制时分别生成 M3U8 音频索引文件、视频索引文件以及合并的音视频索引文件。若 Web 端使用 VP8 编码，还会生成合并的 MPD 音视频索引文件。
-    - "original"：原始编码模式，适用于非转码的音频录制，仅当 `streamTypes` 为 0（仅音频）时生效。录制过程中音频不转码，生成 M3U8 音频索引文件。
+- "default"：默认模式。音频转码录制时分别生成 M3U8 音频索引文件和视频索引文件。
+- "standard"：标准模式，声网推荐使用。音频转码录制时分别生成 M3U8 音频索引文件、视频索引文件以及合并的音视频索引文件。若 Web 端使用 VP8 编码，还会生成合并的 MPD 音视频索引文件。
+- "original"：原始编码模式，适用于非转码的音频录制，仅当 `streamTypes` 为 0（仅音频）时生效。录制过程中音频不转码，生成 M3U8 音频索引文件。
 
 </Slot>
 
@@ -1686,10 +1686,10 @@ public static class Container {
 
 （可选）文件的容器格式。可设置为：
 
-    - "mp4"：延迟转码的默认格式，MP4 格式。
-    - "mp3"：延迟混音的默认格式，MP3 格式。
-    - "m4a"：M4A 格式。
-    - "aac"：AAC 格式。
+- "mp4"：延迟转码的默认格式，MP4 格式。
+- "mp3"：延迟混音的默认格式，MP3 格式。
+- "m4a"：M4A 格式。
+- "aac"：AAC 格式。
 
 </Slot>
 
@@ -1749,10 +1749,10 @@ public static class TransConfig {
 
 （必填）转码模式。
 
-    可设置为：
+可设置为：
 
-    - "postponeTranscoding"：延迟转码。
-    - "audioMix"：延迟混音。
+- "postponeTranscoding"：延迟转码。
+- "audioMix"：延迟混音。
 
 </Slot>
 
@@ -1790,9 +1790,9 @@ public static class Audio {
 
 （可选）音频采样率。可设置为：
 
-    - "48000"：48 kHz（默认）
-    - "32000"：32 kHz
-    - "16000"：16 kHz。
+- "48000"：48 kHz（默认）
+- "32000"：32 kHz
+- "16000"：16 kHz。
 
 </Slot>
 
@@ -1800,8 +1800,8 @@ public static class Audio {
 
 （可选）音频声道。可设置为：
 
-    - "1"：单声道
-    - "2"：立体声（默认）。
+- "1"：单声道
+- "2"：立体声（默认）。
 
 </Slot>
 
@@ -1847,10 +1847,10 @@ public static class TranscodingConfig {
 
 （可选）合成视频的布局方式。可设置为：
 
-    - 0：浮动布局（默认）
-    - 1：自适应布局
-    - 2：垂直布局
-    - 3：自定义布局。
+- 0：浮动布局（默认）
+- 1：自适应布局
+- 2：垂直布局
+- 3：自定义布局。
 
 </Slot>
 
@@ -1880,8 +1880,8 @@ public static class RecordingFileConfig {
 
 （可选）录制生成的视频文件类型。可设置为：
 
-    - "hls"：默认值，对应 M3U8 和 TS 文件。
-    - "mp4"：MP4 文件。
+- "hls"：默认值，对应 M3U8 和 TS 文件。
+- "mp4"：MP4 文件。
 
 </Slot>
 
@@ -1959,15 +1959,15 @@ public static class StorageConfig {
 
 （必填）第三方云存储平台。
 
-    可设置的厂商包括：
+可设置的厂商包括：
 
-    - 1：Amazon S3
-    - 2：Alibaba Cloud
-    - 3：Tencent
-    - 5：Microsoft Azure
-    - 6：Google Cloud
-    - 7：Huawei Cloud
-    - 8：Baidu IntelligentCloud。
+- 1：Amazon S3
+- 2：Alibaba Cloud
+- 3：Tencent
+- 5：Microsoft Azure
+- 6：Google Cloud
+- 7：Huawei Cloud
+- 8：Baidu IntelligentCloud。
 
 </Slot>
 
@@ -2001,8 +2001,8 @@ public static class ExtensionParams {
 
 （必填）加密方式。仅适用于 Amazon S3。可设置为：
 
-    - "kms"：使用 KMS 加密。
-    - "aes256"：使用 AES256 加密。
+- "kms"：使用 KMS 加密。
+- "aes256"：使用 AES256 加密。
 
 </Slot>
 
@@ -2066,8 +2066,8 @@ public static class ExtensionService {
 
 （必填）扩展服务的名称。可设置为：
 
-    - `web_recorder_service`：表示扩展服务为页面录制。
-    - `rtmp_publish_service`：表示扩展服务为将页面录制推送到 CDN。
+- `web_recorder_service`：表示扩展服务为页面录制。
+- `rtmp_publish_service`：表示扩展服务为将页面录制推送到 CDN。
 
 </Slot>
 
@@ -2075,8 +2075,8 @@ public static class ExtensionService {
 
 （可选）扩展服务中的错误处理策略。可设置为：
 
-    - `error_abort`：页面录制时的默认值且为唯一值，当前扩展服务遇到错误时，其他扩展服务也会停止。
-    - `error_ignore`：推送页面录制到 CDN 时的默认值且为唯一值，当前扩展服务遇到错误时不影响其他扩展服务。
+- `error_abort`：页面录制时的默认值且为唯一值，当前扩展服务遇到错误时，其他扩展服务也会停止。
+- `error_ignore`：推送页面录制到 CDN 时的默认值且为唯一值，当前扩展服务遇到错误时不影响其他扩展服务。
 
 </Slot>
 
@@ -2136,8 +2136,8 @@ public static class WebRecordingServiceParam implements ServiceParam {
 
 （可选）输出视频的码率（Kbps）。默认值根据输出分辨率而异：
 
-    - 输出分辨率大于或等于 1280 × 720 时，默认值为 2000。
-    - 输出分辨率小于 1280 × 720 时，默认值为 1500。
+- 输出分辨率大于或等于 1280 × 720 时，默认值为 2000。
+- 输出分辨率小于 1280 × 720 时，默认值为 1500。
 
 </Slot>
 
@@ -2197,8 +2197,8 @@ public static class BackgroundConfig {
 
 （可选）用户视频画面的显示模式。
 
-    - 0：裁剪模式（默认），优先保证画面铺满。
-    - 1：适应模式，优先保证显示全部视频内容。
+- 0：裁剪模式（默认），优先保证画面铺满。
+- 1：适应模式，优先保证显示全部视频内容。
 
 </Slot>
 
@@ -2252,8 +2252,8 @@ public static class LayoutConfig {
 
 用户视频窗口的显示模式：
 
-    - 0：裁剪模式（默认），优先保证填满窗口。视频窗口按比例缩放至填满窗口，如果视频宽高与窗口不一致，将按窗口设定的宽高比例从边缘裁剪；
-    - 1：缩放模式，优先保证完整显示视频内容。视频按比例缩放直至一边与窗口边界对齐，但不保证填满窗口，可能出现黑边。
+- 0：裁剪模式（默认），优先保证填满窗口。视频窗口按比例缩放至填满窗口，如果视频宽高与窗口不一致，将按窗口设定的宽高比例从边缘裁剪；
+- 1：缩放模式，优先保证完整显示视频内容。视频按比例缩放直至一边与窗口边界对齐，但不保证填满窗口，可能出现黑边。
 
 </Slot>
 
@@ -2307,8 +2307,8 @@ public static class LayoutConfig {
 
 视频窗口的渲染模式：
 
-    - 0：裁剪模式（默认）。优先保证填满画面，按比例缩放视频，若视频宽高比与窗口不一致，则裁剪边缘以适配窗口。
-    - 1：适应模式。优先保证完整显示视频内容，按比例缩放视频至一边对齐窗口边缘，可能出现黑边。
+- 0：裁剪模式（默认）。优先保证填满画面，按比例缩放视频，若视频宽高比与窗口不一致，则裁剪边缘以适配窗口。
+- 1：适应模式。优先保证完整显示视频内容，按比例缩放视频至一边对齐窗口边缘，可能出现黑边。
 
 </Slot>
 
@@ -2348,8 +2348,8 @@ public static class BackgroundConfig {
 
 （可选）用户视频窗口的显示模式。支持以下取值：
 
-    - 0：裁剪模式（默认），优先填满画面，按比例缩放并裁剪视频边缘以适配窗口；
-    - 1：适配模式，优先完整展示视频内容，按比例缩放至视频某一边与窗口边缘对齐。
+- 0：裁剪模式（默认），优先填满画面，按比例缩放并裁剪视频边缘以适配窗口；
+- 1：适配模式，优先完整展示视频内容，按比例缩放至视频某一边与窗口边缘对齐。
 
 </Slot>
 

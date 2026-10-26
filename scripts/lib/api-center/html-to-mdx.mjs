@@ -31,11 +31,15 @@ export const API_CENTER_GENERATOR_CONVERSION_OPTIONS = Object.freeze({
 });
 
 export const EDU_STORE_TYPEDOC_CONVERSION_PROFILE = 'edu-store-typedoc';
+export const RTC_REACT_TYPEDOC_CONVERSION_PROFILE = 'rtc-react-typedoc';
 
 export function apiCenterHtmlConversionProfile({
   sourcePath = '',
   supplementalGeneratedSource,
 } = {}) {
+  if (/^html-docs\/rtc\/React\//.test(sourcePath)) {
+    return RTC_REACT_TYPEDOC_CONVERSION_PROFILE;
+  }
   if (
     supplementalGeneratedSource?.kind === EDU_STORE_TYPEDOC_CONVERSION_PROFILE
   ) {
@@ -226,7 +230,10 @@ function loadHtmlPage({
       description: '',
     };
   }
-  if (conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE) {
+  if (
+    conversionProfile === EDU_STORE_TYPEDOC_CONVERSION_PROFILE ||
+    conversionProfile === RTC_REACT_TYPEDOC_CONVERSION_PROFILE
+  ) {
     article.children('section.tsd-hierarchy, section.tsd-index-group').remove();
   }
   const selectedTitleNode = titleSelector ? $(titleSelector).first() : null;
@@ -234,9 +241,10 @@ function loadHtmlPage({
     selectedTitleNode?.length > 0
       ? selectedTitleNode
       : article.find('h1').first();
+  // The sidebar version switcher owns the SDK release label.
   const title = cleanText(
     preferredTitle || titleNode.text() || $('title').first().text(),
-  );
+  ).replace(/\s+v?\d+\.\d+(?:\.\d+)*(?:-[\w.-]+)?$/i, '');
   const titleArticle = titleNode.closest('article').get(0);
   const articleNode = article.get(0);
   const descriptionCandidates =

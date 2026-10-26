@@ -160,8 +160,16 @@ function getRuleBodyContainingInContainer(
 }
 
 describe('app prose CSS regressions', () => {
+  it('keeps the console API entry heading compact', () => {
+    const heading = getRuleBody(
+      '.prose .docs-body > .docs-console-api-entry + h2',
+    ).rule;
+    expectDeclaration(heading, 'margin-top', '1.75rem');
+    expectDeclaration(heading, 'padding-top', '0');
+  });
+
   it('keeps heading anchors below the full sticky docs header', () => {
-    const headingAnchor = getRuleBody(
+    const headingAnchor = getRuleBodyContaining(
       '.prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *))',
     ).rule;
     const openApiHeadingAnchor = getRuleBody(
@@ -169,6 +177,9 @@ describe('app prose CSS regressions', () => {
     ).rule;
 
     expect(headingAnchor.parent?.type).toBe('atrule');
+    expect(headingAnchor.selectors).toContain(
+      '.docs-body :is(h2, h3, h4)[data-accordion-value]',
+    );
     expect((headingAnchor.parent as postcss.AtRule).name).toBe('layer');
     expect((headingAnchor.parent as postcss.AtRule).params).toBe('utilities');
     expectDeclaration(
@@ -354,12 +365,6 @@ describe('app prose CSS regressions', () => {
           :where(:not(a:empty) ~ h2)
         )`,
     );
-    const leadingHeadingSeparator = getRuleBody(
-      `.prose
-        :where(h2):not(:where(.not-prose, .not-prose *)):not(
-          :where(:not(a:empty) ~ h2)
-        )::before`,
-    );
     const platformLeadingHeading = getRuleBody(
       `.prose[data-platform-header-tabs="true"]
         [data-platform-group="structured"]
@@ -367,22 +372,10 @@ describe('app prose CSS regressions', () => {
         .docs-body
         > h2:not(:where(.not-prose, .not-prose *)):not(:where(:not(a:empty) ~ h2))`,
     );
-    const platformLeadingHeadingSeparator = getRuleBody(
-      `.prose[data-platform-header-tabs="true"]
-        [data-platform-group="structured"]
-        > [data-platform-panel]:not([hidden])
-        .docs-body
-        > h2:not(:where(.not-prose, .not-prose *)):not(
-          :where(:not(a:empty) ~ h2)
-        )::before`,
-    );
-
     expectDeclaration(leadingHeading.rule, 'margin-top', '0');
     expectDeclaration(leadingHeading.rule, 'padding-top', '0');
-    expectDeclaration(leadingHeadingSeparator.rule, 'content', 'none');
     expectDeclaration(platformLeadingHeading.rule, 'margin-top', '0.75rem');
     expectDeclaration(platformLeadingHeading.rule, 'padding-top', '0');
-    expectDeclaration(platformLeadingHeadingSeparator.rule, 'content', 'none');
   });
 
   it('uses decimal, alpha, and roman markers for nested ordered lists', () => {
@@ -841,8 +834,9 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('defines high-contrast dark code block tokens and chrome variables', () => {
-    const darkProse = getRuleBody('.dark .prose');
+  it('defines dark code block tokens for prose and OpenAPI Markdown', () => {
+    const darkProse = getRuleBody(`.dark .prose,
+      .dark .openapi-markdown`);
 
     expect(darkProse.rule.nodes).toContainEqual(
       expect.objectContaining({

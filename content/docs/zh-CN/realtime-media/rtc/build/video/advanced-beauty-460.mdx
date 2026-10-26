@@ -4,13 +4,18 @@ description: "了解实时互动 RTC 在不同平台上的高级美颜 2.0 方�
 ---
 <PlatformStructured platform="android">
 
-自 RTC SDK v4.6.0 起，SDK 对美颜功能进行了彻底重构，提供了全新的美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+RTC SDK v4.6.x 提供美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
 
 本文介绍如何实现高级美颜功能。
 
 :::info[信息]
-- 当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 如果你的 SDK 版本小于 v4.6.0，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考[高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考本文，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 - 仅使用基础美颜和美型功能时，可以直接调用 API 实现。
 - 如果需要美妆功能，请[联系技术支持](https://ticket.shengwang.cn)获取合适的 SDK 版本及配套素材包。
 :::
@@ -48,7 +53,7 @@ description: "了解实时互动 RTC 在不同平台上的高级美颜 2.0 方�
 
 在实现高级美颜功能前，请确保：
 
-- 已集成 RTC SDK v4.6.0 及以上版本。
+- 已集成 RTC SDK v4.6.x。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -266,8 +271,8 @@ mVideoEffectObject = null;
 声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="高级美颜示例" href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/beauty" />
-  <Card title="高级美颜示例" href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/beauty" />
+  <Card title={<RepositoryCardTitle provider="gitee">高级美颜示例</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/beauty" />
+  <Card title={<RepositoryCardTitle provider="github">高级美颜示例</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/beauty" />
 </Cards>
 
 ### JSON 字段说明
@@ -427,13 +432,18 @@ mVideoEffectObject = null;
 
 <PlatformStructured platform="ios">
 
-自 RTC SDK v4.6.0 起，SDK 对美颜功能进行了彻底重构，提供了全新的美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+RTC SDK v4.6.x 提供美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
 
 本文介绍如何实现高级美颜功能。
 
 :::info[信息]
-- 当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 如果你的 SDK 版本小于 v4.6.0，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考[高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考本文，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 - 仅使用基础美颜和美型功能时，可以直接调用 API 实现。
 - 如果需要美妆功能，请[联系技术支持](https://ticket.shengwang.cn)获取合适的 SDK 版本及配套素材包。
 :::
@@ -471,7 +481,7 @@ mVideoEffectObject = null;
 
 在实现高级美颜功能前，请确保：
 
-- 已集成 RTC SDK v4.6.0 及以上版本。
+- 已集成 RTC SDK v4.6.x。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -690,8 +700,8 @@ videoEffectObject = nil
 声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="VideoProcess" href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
-  <Card title="VideoProcess" href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+  <Card title={<RepositoryCardTitle provider="gitee">VideoProcess</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+  <Card title={<RepositoryCardTitle provider="github">VideoProcess</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/iOS/APIExample/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
 </Cards>
 
 ### JSON 字段说明
@@ -851,13 +861,18 @@ videoEffectObject = nil
 
 <PlatformStructured platform="macos">
 
-自 RTC SDK v4.6.0 起，SDK 对美颜功能进行了彻底重构，提供了全新的美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+RTC SDK v4.6.x 提供美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
 
 本文介绍如何实现高级美颜功能。
 
 :::info[信息]
-- 当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 如果你的 SDK 版本小于 v4.6.0，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考[高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考本文，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 - 仅使用基础美颜和美型功能时，可以直接调用 API 实现。
 - 如果需要美妆功能，请[联系技术支持](https://ticket.shengwang.cn)获取合适的 SDK 版本及配套素材包。
 :::
@@ -895,7 +910,7 @@ videoEffectObject = nil
 
 在实现高级美颜功能前，请确保：
 
-- 已集成 RTC SDK v4.6.0 及以上版本。
+- 已集成 RTC SDK v4.6.x。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -1114,8 +1129,8 @@ videoEffectObject = nil
 声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="VideoProcess" href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
-  <Card title="VideoProcess" href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+  <Card title={<RepositoryCardTitle provider="gitee">VideoProcess</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
+  <Card title={<RepositoryCardTitle provider="github">VideoProcess</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/macOS/APIExample/Examples/Advanced/VideoProcess/VideoProcess.swift" />
 </Cards>
 
 ### JSON 字段说明
@@ -1275,13 +1290,18 @@ videoEffectObject = nil
 
 <PlatformStructured platform="windows">
 
-自 RTC SDK v4.6.0 起，SDK 对美颜功能进行了彻底重构，提供了全新的美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
+RTC SDK v4.6.x 提供美颜 2.0 API。新版美颜 API 通过模板化、对象化的设计，大幅简化了集成流程，提供了更丰富的美颜效果和更灵活的定制能力。
 
 本文介绍如何实现高级美颜功能。
 
 :::info[信息]
-- 当前，高级美颜为限时免费。未来可能会变更为单独计费的增值服务，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 如果你的 SDK 版本小于 v4.6.0，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+- 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考[高级美颜](/zh-CN/realtime-media/rtc/build/video/advanced-beauty)，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考本文，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 - 仅使用基础美颜和美型功能时，可以直接调用 API 实现。
 - 如果需要美妆功能，请[联系技术支持](https://ticket.shengwang.cn)获取合适的 SDK 版本及配套素材包。
 :::
@@ -1319,7 +1339,7 @@ videoEffectObject = nil
 
 在实现高级美颜功能前，请确保：
 
-- 已集成 RTC SDK v4.6.0 及以上版本。
+- 已集成 RTC SDK v4.6.x。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -1523,8 +1543,8 @@ m_videoEffectObject = nullptr;
 声网提供了开源的实现高级美颜示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="高级美颜示例" href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/Beauty" />
-  <Card title="高级美颜示例" href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/Beauty" />
+  <Card title={<RepositoryCardTitle provider="gitee">高级美颜示例</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/Beauty" />
+  <Card title={<RepositoryCardTitle provider="github">高级美颜示例</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/windows/APIExample/APIExample/Advanced/Beauty" />
 </Cards>
 
 ### JSON 字段说明

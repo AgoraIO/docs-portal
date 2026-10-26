@@ -8,7 +8,7 @@ description: "了解如何在内容审核中网易易盾音频审核，包括适
 
 通过[声网云端录制](/zh-CN/api-reference/cloud-recording/restful/api/reference)提供的 RESTful API，你可以对声网频道内的音频流使用第三方语音审核服务。当频道内有用户发送音频流时，审核结果会由第三方直接返回到你的服务器。
 
-![语音审核流程](https://web-cdn.agora.io/docs-files/1669343507453)
+<DocsImage alt="语音审核流程" src="https://web-cdn.agora.io/docs-files/1669343507453" displayWidth="80%" />
 
 对单个频道进行语音审核的流程如下：
 
@@ -32,9 +32,7 @@ description: "了解如何在内容审核中网易易盾音频审核，包括适
    第三方语音审核服务依赖于声网云端录制服务，除了第三方语音审核服务费用，还会产生声网云端录制费用。计费方式详见[云端录制计费说明](/zh-CN/realtime-media/cloud-recording/reference/billing-strategy/billing)。
    :::
 
-3. 联系声网技术支持，提供以下信息：
-   - 公司全称
-   - 邮箱：用于创建审核子账号，登陆审核控台查看用量等信息
+3. 在声网控制台的**内容审核**页面填写邮箱等必要信息，并开启音频审核服务。开通步骤详见[开通服务](/zh-CN/realtime-media/content-moderation/enable-service)，透传字段和回调地址设计建议详见[配置说明](/zh-CN/realtime-media/content-moderation/build/configuration)。
 
 成功开通语音审核服务后，你可以使用邮箱登陆网易易盾控台，进行审核策略配置，获取审核权限信息（如 `SecretId`、`SecretKey` 等），后续调用接口时需要传入。
 
@@ -248,7 +246,7 @@ curl --location --request POST 'https://api.agora.io/v1/apps/{appid}/cloud_recor
 
 #### 配额限制
 
-每秒钟的请求数限制（QPS）为 10 次。如需提高此限制，请[联系技术支持](https://agora-ticket.agora.io/)。
+每秒钟的请求数限制（QPS）为 10 次。如需提高此限制，请[联系技术支持](https://ticket.shengwang.cn/)。
 
 ### 获取审核资源
 

@@ -1535,7 +1535,7 @@ join(appid: string, channel: string, token: string | null, uid?: [UID](/zh-CN/ap
 > 注意事项：
 >
 > - 一个频道内的所有用户必须使用同样类型的 `uid`，即必须都为整数或都为字符串。
-> - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](https://doc.shengwang.cn/faq/integration-issues/string-uid)。
+> - 使用字符串作为用户 ID 支持与 Native SDK 2.8 及以上版本互通，请确保 Native SDK 使用 User Account 加入频道。详见[使用 String 型的用户名](/zh-CN/reference/faq/integration/string_uid)。
 > - 为保证水晶球数据的准确性，建议自行指定 `uid` 并保证唯一性。
 
 </Parameter>
@@ -4297,7 +4297,7 @@ setDualStreamMode(mode: [SIMULCAST_STREAM_MODE](/zh-CN/api-reference/rtc/web/enu
 
 为确保集成逻辑清晰，我们建议你选取一套 API 进行集成。声网规划在后续版本中逐渐废弃原来的 `enableDualStream` 和 `disableDualStream`。
 
-> `setDualStreamMode` 有如下限制，如有需要，可以[联系技术支持](https://tickets.shengwang.cn/)申请开通。
+> `setDualStreamMode` 有如下限制，如有需要，可以[联系技术支持](https://ticket.shengwang.cn/)申请开通。
 >
 > - **观众身份**发送小流申请主播发送端默认无响应；
 > - 在和 Native 互通的场景中，Native 端申请 Web 端主播小流，默认不支持。

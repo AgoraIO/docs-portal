@@ -3,6 +3,7 @@
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-openapi/css/preset.css";
 @import "./search.css";
+@import "./code-block.css";
 
 :root {
   --color-fd-background: var(--background);
@@ -401,6 +402,10 @@
 
   .prose {
     max-width: var(--content-max);
+  }
+
+  .prose,
+  .openapi-markdown {
     --docs-prose-inline-code-bg: var(--bg-sunken);
     --docs-prose-inline-code-border: var(--line);
     --docs-prose-code-block-bg: #f1efe7;
@@ -438,7 +443,8 @@
     );
   }
 
-  .dark .prose {
+  .dark .prose,
+  .dark .openapi-markdown {
     --docs-prose-inline-code-bg: color-mix(
       in srgb,
       var(--bg-elev) 94%,
@@ -484,31 +490,14 @@
   }
 
   .prose :where(h2):not(:where(.not-prose, .not-prose *)) {
-    position: relative;
     margin-top: 3.5rem;
     margin-bottom: 0.875rem;
-    padding-top: 1.75rem;
+    padding-top: 0;
     letter-spacing: -0.012em;
     font-size: 1.375rem;
     font-weight: 600;
     color: var(--ink-1);
     scroll-margin-top: 7rem;
-  }
-
-  .prose :where(h2):not(:where(.not-prose, .not-prose *))::before {
-    position: absolute;
-    inset-block-start: 0;
-    inset-inline-start: 0;
-    width: min(18rem, 58%);
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      var(--line),
-      color-mix(in srgb, var(--line) 40%, transparent) 72%,
-      transparent
-    );
-    content: "";
-    pointer-events: none;
   }
 
   .prose
@@ -518,13 +507,6 @@
     margin-top: 0;
     padding-top: 0;
     border-top: 0;
-  }
-
-  .prose
-    :where(h2):not(:where(.not-prose, .not-prose *)):not(
-      :where(:not(a:empty) ~ h2)
-    )::before {
-    content: none;
   }
 
   .prose[data-platform-header-tabs="true"]
@@ -748,12 +730,6 @@
     background: transparent;
     padding: 0;
     color: inherit;
-  }
-
-  figure.shiki.not-prose .line {
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-    word-break: break-word;
   }
 
   .prose :where(pre.shiki):not(:where(.not-prose, .not-prose *)) {
@@ -1095,10 +1071,6 @@
     padding-top: 0;
     padding-bottom: 0;
     border-bottom: 0;
-  }
-
-  [data-docs-home] .prose .docs-body > h2::before {
-    display: none;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -1548,64 +1520,6 @@
   background: transparent;
 }
 
-.openapi-operation figure.shiki code .token-command {
-  color: var(--shiki-light-token-command, #0f766e);
-}
-
-.openapi-operation figure.shiki code .token-flag {
-  color: var(--shiki-light-token-keyword, #be185d);
-}
-
-.openapi-operation figure.shiki code .token-url,
-.openapi-operation figure.shiki code .token-string {
-  color: var(--shiki-light-token-string, #a16207);
-}
-
-.openapi-operation figure.shiki code .token-key {
-  color: var(--shiki-light-token-key, #0369a1);
-}
-
-.openapi-operation figure.shiki code .token-number {
-  color: var(--shiki-light-token-number, #7c3aed);
-}
-
-.openapi-operation figure.shiki code .token-keyword,
-.openapi-operation figure.shiki code .token-function {
-  color: var(--shiki-light-token-keyword, #7c3aed);
-}
-
-:where(html.dark)
-  .openapi-operation
-  figure.shiki.not-prose
-  code
-  .token-command {
-  color: #f8f8f2;
-}
-
-:where(html.dark) .openapi-operation figure.shiki.not-prose code .token-flag {
-  color: #ff79c6;
-}
-
-:where(html.dark)
-  .openapi-operation
-  figure.shiki.not-prose
-  code
-  :is(.token-url, .token-string) {
-  color: #f1fa8c;
-}
-
-:where(html.dark) .openapi-operation figure.shiki.not-prose code .token-key {
-  color: #8be9fd;
-}
-
-:where(html.dark)
-  .openapi-operation
-  figure.shiki.not-prose
-  code
-  :is(.token-number, .token-keyword, .token-function) {
-  color: #bd93f9;
-}
-
 @container (max-width: 55.999rem) {
   .openapi-code-preview [data-openapi-code-viewport] {
     /* biome-ignore lint/complexity/noImportantStyles: Required to override Fumadocs viewport utility. */
@@ -1927,8 +1841,54 @@
 }
 
 @layer utilities {
+  .prose .docs-body > .docs-console-api-entry + h2 {
+    margin-top: 1.75rem;
+    padding-top: 0;
+  }
+
+  /* Override prose/card utilities only for the teleoperation scenario grid. */
+  .docs-teleoperation-scenarios {
+    margin-block: 1.25rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card] {
+    border-radius: 0.25rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card] > h3 {
+    margin-block: 0 1rem;
+    font-size: 1rem;
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(1) > h3 {
+    color: var(--docs-success);
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(2) > h3 {
+    color: var(--docs-info);
+  }
+
+  .docs-teleoperation-scenarios > [data-card]:nth-child(3) > h3 {
+    color: var(--docs-warning);
+  }
+
+  .docs-teleoperation-scenarios p {
+    margin-block: 0 0.75rem;
+  }
+
+  .docs-teleoperation-scenarios ul {
+    margin-block: 0;
+  }
+
+  .docs-teleoperation-scenarios li {
+    margin-block: 0.25rem;
+  }
+
   /* Keep hash targets below the sticky shell header, including its banner. */
-  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)),
+  .docs-body a[id]:not([href]):empty,
+  .docs-body :is(h2, h3, h4)[data-accordion-value],
+  .docs-body section[id]:has([data-accordion-value]) {
     scroll-margin-top: max(
       7rem,
       calc(var(--docs-shell-header-offset, 0px) + 1.5rem)
@@ -2053,16 +2013,6 @@
 }
 
 .prose[data-platform-header-tabs="true"]
-  [data-platform-group="structured"]
-  > [data-platform-panel]:not([hidden])
-  .docs-body
-  > h2:not(:where(.not-prose, .not-prose *)):not(
-    :where(:not(a:empty) ~ h2)
-  )::before {
-  content: none;
-}
-
-.prose[data-platform-header-tabs="true"]
   [data-sdk-compliance="true"]
   + [data-platform-group="structured"]
   > [data-platform-panel]:not([hidden])
@@ -2071,15 +2021,4 @@
   margin-top: 1.25rem;
   padding-top: 0;
   border-top: 0;
-}
-
-.prose[data-platform-header-tabs="true"]
-  [data-sdk-compliance="true"]
-  + [data-platform-group="structured"]
-  > [data-platform-panel]:not([hidden])
-  .docs-body
-  > h2:not(:where(.not-prose, .not-prose *)):not(
-    :where(:not(a:empty) ~ h2)
-  )::before {
-  content: none;
 }

@@ -41,8 +41,8 @@ type AgoraServiceConfig struct {
 
 是否开启音频处理模块。
 
-    - `true`: (默认) 开启音频处理模块。
-    - `false`: 关闭音频处理模块。你将无法创建音频轨道。
+- `true`: (默认) 开启音频处理模块。
+- `false`: 关闭音频处理模块。你将无法创建音频轨道。
 
 </Slot>
 
@@ -50,10 +50,10 @@ type AgoraServiceConfig struct {
 
 是否开启音频设备模块（Audio Device Module, ADM）。ADM 用来管理音频设备，例如录制和播放音频。
 
-    - `true`: (默认) 开启音频设备模块。你可以录制和播放音频。
-    - `false`: 关闭音频设备模块。你无法录制和播放音频。
+- `true`: (默认) 开启音频设备模块。你可以录制和播放音频。
+- `false`: 关闭音频设备模块。你无法录制和播放音频。
 
-    注意：如果你将 `EnableAudioDevice` 设为 `false` 且将 `EnableAudioProcessor` 设为 `true`，你将无法使用音频设备，但你可以推送 PCM 音频数据。
+注意：如果你将 `EnableAudioDevice` 设为 `false` 且将 `EnableAudioProcessor` 设为 `true`，你将无法使用音频设备，但你可以推送 PCM 音频数据。
 
 </Slot>
 
@@ -61,8 +61,8 @@ type AgoraServiceConfig struct {
 
 是否开启视频。
 
-    - `true`: 开启视频。
-    - `false`: (默认) 关闭视频。
+- `true`: 开启视频。
+- `false`: (默认) 关闭视频。
 
 </Slot>
 
@@ -70,8 +70,8 @@ type AgoraServiceConfig struct {
 
 是否使用 String 用户 ID。
 
-    - `true`: 使用。
-    - `false`: 不使用。
+- `true`: 使用。
+- `false`: 不使用。
 
 </Slot>
 
@@ -79,8 +79,8 @@ type AgoraServiceConfig struct {
 
 是否开启域名限制：
 
-    - `1`：仅连接被 DNS 解析过的服务器。
-    - `0`：（默认）连接服务器无限制。
+- `1`：仅连接被 DNS 解析过的服务器。
+- `0`：（默认）连接服务器无限制。
 
 </Slot>
 
@@ -103,15 +103,15 @@ type AudioEncoderConfiguration struct {
 
 音频场景：
 
-    - `0`: 默认音频场景。
-        - 通信场景下：16 KHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。
-        - 直播场景下：48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
-    - `1`: 指定 32 KHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
-    - `2`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
-    - `3`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。
-    - `4`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。
-    - `5`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
-    - `6`: 指定 16 kHz 采样率，语音编码，单声道，应用回声消除算法 AES。
+- `0`: 默认音频场景。
+    - 通信场景下：16 KHz 采样率，语音编码，单声道，编码码率最大值为 16 Kbps。
+    - 直播场景下：48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+- `1`: 指定 32 KHz 采样率，语音编码，单声道，编码码率最大值为 18 Kbps。
+- `2`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 64 Kbps。
+- `3`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 80 Kbps。
+- `4`: 指定 48 KHz 采样率，音乐编码，单声道，编码码率最大值为 96 Kbps。
+- `5`: 指定 48 KHz 采样率，音乐编码，双声道，编码码率最大值为 128 Kbps。
+- `6`: 指定 16 kHz 采样率，语音编码，单声道，应用回声消除算法 AES。
 
 </Slot>
 
@@ -173,8 +173,8 @@ type EncodedAudioFrameInfo struct {
 
 音频源是否为语音：
 
-    - `0`: 音频源不是语音。
-    - `1`: （默认）音频源是语音。
+- `0`: 音频源不是语音。
+- `1`: （默认）音频源是语音。
 
 </Slot>
 
@@ -182,8 +182,8 @@ type EncodedAudioFrameInfo struct {
 
 是否发送空音频帧：
 
-    - `0`: 不发送空音频帧。
-    - `1`: （默认）发送空音频帧。
+- `0`: 不发送空音频帧。
+- `1`: （默认）发送空音频帧。
 
 </Slot>
 
@@ -226,8 +226,8 @@ type EncodedVideoFrameInfo struct {
 
 视频帧的流类型：
 
-        - `0`: 大流。分辨率和码率较高。
-        - `1`: 小流。分辨率和码率较低。
+- `0`: 大流。分辨率和码率较高。
+- `1`: 小流。分辨率和码率较低。
 
 </Slot>
 
@@ -254,14 +254,14 @@ type EncryptionConfig struct {
 
 加密模式：
 
-    - 1：128 位 AES 加密，XTS 模式。
-    - 2：128 位 AES 加密，ECB 模式。
-    - 3：256 位 AES 加密，XTS 模式。
-    - 4：128 位 SM4 加密，ECB 模式。
-    - 5：128 位 AES 加密，GCM 模式。
-    - 6：256 位 AES 加密，GCM 模式。x
-    - 7：（默认）128 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
-    - 8：256 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
+- 1：128 位 AES 加密，XTS 模式。
+- 2：128 位 AES 加密，ECB 模式。
+- 3：256 位 AES 加密，XTS 模式。
+- 4：128 位 SM4 加密，ECB 模式。
+- 5：128 位 AES 加密，GCM 模式。
+- 6：256 位 AES 加密，GCM 模式。x
+- 7：（默认）128 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
+- 8：256 位 AES 加密，GCM 模式。该加密模式需要设置盐（`EncryptionKdfSalt`）。
 
 </Slot>
 
@@ -322,8 +322,8 @@ type ExternalVideoFrame struct {
 
 该参数仅适用于 Texture 格式的视频数据。
 
-    - 当使用 Khronos 定义的 OpenGL 接口 (javax.microedition.khronos.egl.*)时，需要将 eglContext 设置给这个字段。
-    - 当使用 Android 定义的 OpenGL 接口 (android.opengl.*)时，需要将 eglContext 设置给这个字段。
+- 当使用 Khronos 定义的 OpenGL 接口 (javax.microedition.khronos.egl.*)时，需要将 eglContext 设置给这个字段。
+- 当使用 Android 定义的 OpenGL 接口 (android.opengl.*)时，需要将 eglContext 设置给这个字段。
 
 </Slot>
 
@@ -333,15 +333,15 @@ type ExternalVideoFrame struct {
 v2.2.3 起新增。
 :::
 
-    该参数仅适用于 BGRA 或 RGBA 格式的视频数据。设置提取视频祯中的 Alpha 通道数据并自动填入到 alphaBuffer 中。
+该参数仅适用于 BGRA 或 RGBA 格式的视频数据。设置提取视频祯中的 Alpha 通道数据并自动填入到 alphaBuffer 中。
 
-    - `true`: 提取并填充 Alpha 通道数据。
-    - `false`: （默认）不提取填充 Alpha 通道数据。
+- `true`: 提取并填充 Alpha 通道数据。
+- `false`: （默认）不提取填充 Alpha 通道数据。
 
-    对于 BGRA 或 RGBA 格式的视频数据，你可以任选一种方式设置 Alpha 通道数据：
+对于 BGRA 或 RGBA 格式的视频数据，你可以任选一种方式设置 Alpha 通道数据：
 
-    - 通过将该参数设置为 `true` 自动填写。
-    - 通过 `alphaBuffer` 参数设置。
+- 通过将该参数设置为 `true` 自动填写。
+- 通过 `alphaBuffer` 参数设置。
 
 </Slot>
 
@@ -351,13 +351,13 @@ v2.2.3 起新增。
 v2.2.3 起新增。
 :::
 
-    当视频祯中包含 Alpha 通道数据时，设置 alphaBuffer 和视频祯的相对位置：
+当视频祯中包含 Alpha 通道数据时，设置 alphaBuffer 和视频祯的相对位置：
 
-    - `0`: （默认）仅视频祯，即 alphaBuffer 不和视频祯拼接。
-    - `1`: alphaBuffer 位于视频帧的上方。
-    - `2`: alphaBuffer 位于视频帧的下方。
-    - `3`: alphaBuffer 位于视频帧的左侧。
-    - `4`: alphaBuffer 位于视频帧的右侧。
+- `0`: （默认）仅视频祯，即 alphaBuffer 不和视频祯拼接。
+- `1`: alphaBuffer 位于视频帧的上方。
+- `2`: alphaBuffer 位于视频帧的下方。
+- `3`: alphaBuffer 位于视频帧的左侧。
+- `4`: alphaBuffer 位于视频帧的右侧。
 
 </Slot>
 
@@ -408,8 +408,8 @@ type RtcConnectionConfig struct {
 
 是否自动订阅所有音频轨道。
 
-    - `0`: 不自动订阅所有音频轨道。
-    - `1`: (默认) 自动订阅所有音频轨道。
+- `0`: 不自动订阅所有音频轨道。
+- `1`: (默认) 自动订阅所有音频轨道。
 
 </Slot>
 
@@ -417,8 +417,8 @@ type RtcConnectionConfig struct {
 
 是否自动订阅所有视频轨道。
 
-    - `0`: 不自动订阅所有视频轨道。
-    - `1`: (默认) 自动订阅所有视频轨道。
+- `0`: 不自动订阅所有视频轨道。
+- `1`: (默认) 自动订阅所有视频轨道。
 
 </Slot>
 
@@ -426,8 +426,8 @@ type RtcConnectionConfig struct {
 
 是否开启音频录制或播放。
 
-    - `false`: 关闭音频录制或播放。
-    - `true`: 开启音频录制或播放。
+- `false`: 关闭音频录制或播放。
+- `true`: 开启音频录制或播放。
 
 </Slot>
 
@@ -435,8 +435,8 @@ type RtcConnectionConfig struct {
 
 是否接收音频媒体包。
 
-    - `false`: 不接收。
-    - `true`: 接收。
+- `false`: 不接收。
+- `true`: 接收。
 
 </Slot>
 
@@ -444,8 +444,8 @@ type RtcConnectionConfig struct {
 
 是否接收视频媒体包。
 
-    - `false`: 不接收。
-    - `true`: 接收。
+- `false`: 不接收。
+- `true`: 接收。
 
 </Slot>
 
@@ -474,11 +474,11 @@ type RtcConnectionInfo struct {
 
 连接状态：
 
-    - `1`: 网络连接断开。
-    - `2`: 建立网络连接中。
-    - `3`: 网络已连接。
-    - `4`: 重新建立网络连接中 。
-    - `5`: 网络连接失败 。
+- `1`: 网络连接断开。
+- `2`: 建立网络连接中。
+- `3`: 网络已连接。
+- `4`: 重新建立网络连接中 。
+- `5`: 网络连接失败 。
 
 </Slot>
 
@@ -534,10 +534,10 @@ type VideoEncoderConfiguration struct {
 
 带宽受限时，视频编码降级偏好：
 
-    - `0`: （默认）带宽受限时，视频编码时优先降低视频帧率，维持视频质量不变。该降级偏好适用于画质优先的场景。
-    - `1`: 带宽受限时，视频编码时优先降低视频质量，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
-    - `2`: 带宽受限时，视频编码时同时降低视频帧率和视频质量。`2` 的降幅比 `0` 和 `1` 降幅更低，适用于流畅性和画质均有限的场景。
-    - `3`: 带宽受限时，视频编码时优先降低视频帧率。
+- `0`: （默认）带宽受限时，视频编码时优先降低视频帧率，维持视频质量不变。该降级偏好适用于画质优先的场景。
+- `1`: 带宽受限时，视频编码时优先降低视频质量，维持视频帧率不变。该降级偏好适用于流畅性优先且允许画质降低的场景。
+- `2`: 带宽受限时，视频编码时同时降低视频帧率和视频质量。`2` 的降幅比 `0` 和 `1` 降幅更低，适用于流畅性和画质均有限的场景。
+- `3`: 带宽受限时，视频编码时优先降低视频帧率。
 
 </Slot>
 
@@ -599,8 +599,8 @@ type VideoSubscriptionOptions struct {
 
 是否仅订阅已编码的视频数据：
 
-    - `true`: 仅订阅已编码的视频数据。
-    - `false`: （默认）仅订阅已解码的视频数据。
+- `true`: 仅订阅已编码的视频数据。
+- `false`: （默认）仅订阅已解码的视频数据。
 
 </Slot>
 

@@ -10,9 +10,12 @@ description: "了解实时互动 RTC 在不同平台上的高级美颜 2.1 方�
 
 :::info[信息]
 - 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
-  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
-  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考本文，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 :::
 
 ## 功能介绍
@@ -50,7 +53,7 @@ description: "了解实时互动 RTC 在不同平台上的高级美颜 2.1 方�
 
 在实现高级美颜功能前，请确保：
 
-- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 集成的 RTC SDK 版本为 v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -281,9 +284,9 @@ mVideoEffectObject = null;
 <Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
 
 - float 用 `set/getVideoEffectFloatParam`
-    - bool 用 `set/getVideoEffectBoolParam`
-    - int 用 `set/getVideoEffectIntParam`
-    - string 用 `setVideoEffectStringParam`
+- bool 用 `set/getVideoEffectBoolParam`
+- int 用 `set/getVideoEffectIntParam`
+- string 用 `setVideoEffectStringParam`
 
 </Slot>
 
@@ -406,13 +409,15 @@ mVideoEffectObject = null;
 - [`getVideoEffectFloatParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
 - [`getVideoEffectBoolParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
 - [`getVideoEffectIntParam`](/zh-CN/api-reference/rtc/android/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
-- `setVideoEffectStringParam`
+- `setVideoEffectStringParam`：用于配置美颜人脸检测，检测人脸置信度。
 
 :::info[信息]
-仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+仅 RTC SDK v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本支持 `setVideoEffectStringParam` 方法。
 
 <Accordions>
 <Accordion title="setVideoEffectStringParam">
+
+使用高级美颜功能的客户可以使用该接口配置美颜人脸检测，用于检测人脸置信度。
 
 设置视频特效的字符串参数。
 
@@ -457,9 +462,12 @@ public int setVideoEffectStringParam(String option, String key, String value)
 
 :::info[信息]
 - 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
-  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
-  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考本文，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 :::
 
 ## 功能介绍
@@ -497,7 +505,7 @@ public int setVideoEffectStringParam(String option, String key, String value)
 
 在实现高级美颜功能前，请确保：
 
-- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 集成的 RTC SDK 版本为 v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -729,9 +737,9 @@ videoEffectObject = nil
 <Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
 
 - float 用 `set/getVideoEffectFloatParam`
-    - bool 用 `set/getVideoEffectBoolParam`
-    - int 用 `set/getVideoEffectIntParam`
-    - string 用 `setVideoEffectStringParam`
+- bool 用 `set/getVideoEffectBoolParam`
+- int 用 `set/getVideoEffectIntParam`
+- string 用 `setVideoEffectStringParam`
 
 </Slot>
 
@@ -854,13 +862,15 @@ videoEffectObject = nil
 - [`getVideoEffectFloatParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectfloatparam)
 - [`getVideoEffectBoolParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectboolparam)
 - [`getVideoEffectIntParam`](/zh-CN/api-reference/rtc/ios/video/video-prenpro/video-enhance-option#api_ivideoeffectobject_getvideoeffectintparam)
-- `setVideoEffectStringParam`
+- `setVideoEffectStringParam`：用于配置美颜人脸检测，检测人脸置信度。
 
 :::info[信息]
-仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+仅 RTC SDK v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本支持 `setVideoEffectStringParam` 方法。
 
 <Accordions>
 <Accordion title="setVideoEffectStringParam">
+
+使用高级美颜功能的客户可以使用该接口配置美颜人脸检测，用于检测人脸置信度。
 
 设置视频特效的字符串参数。
 
@@ -908,9 +918,12 @@ NS_SWIFT_NAME(setVideoEffectStringParam(option:key:stringValue:));
 
 :::info[信息]
 - 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
-  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
-  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考本文，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 :::
 
 ## 功能介绍
@@ -948,7 +961,7 @@ NS_SWIFT_NAME(setVideoEffectStringParam(option:key:stringValue:));
 
 在实现高级美颜功能前，请确保：
 
-- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 集成的 RTC SDK 版本为 v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -1180,9 +1193,9 @@ videoEffectObject = nil
 <Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
 
 - float 用 `set/getVideoEffectFloatParam`
-    - bool 用 `set/getVideoEffectBoolParam`
-    - int 用 `set/getVideoEffectIntParam`
-    - string 用 `setVideoEffectStringParam`
+- bool 用 `set/getVideoEffectBoolParam`
+- int 用 `set/getVideoEffectIntParam`
+- string 用 `setVideoEffectStringParam`
 
 </Slot>
 
@@ -1308,10 +1321,12 @@ videoEffectObject = nil
 - `setVideoEffectStringParam`
 
 :::info[信息]
-仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+仅 RTC SDK v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本支持 `setVideoEffectStringParam` 方法。
 
 <Accordions>
 <Accordion title="setVideoEffectStringParam">
+
+使用高级美颜功能的客户可以使用该接口配置美颜人脸检测，用于检测人脸置信度。
 
 设置视频特效的字符串参数。
 
@@ -1359,9 +1374,12 @@ NS_SWIFT_NAME(setVideoEffectStringParam(option:key:stringValue:));
 
 :::info[信息]
 - 当前，高级美颜功能免费开放。后续如有计费调整，将提前通知，届时请以实际计费为准，详见[计费说明](/zh-CN/realtime-media/rtc/reference/billing-strategy)。
-- 本文档仅适用于 SDK 大于等于 v4.5.2.9 且小于 v4.6.0 的版本。
-  - 如果你的 SDK 版本大于或等于 v4.6.0，你可以参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)了解如何使用适用于 v4.6.0 及以上版本的高级美颜 2.0 API。
-  - 如果你的 SDK 版本小于 v4.5.2.9，你可以参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)了解如何使用美颜 1.0 API。
+
+请根据你使用的 RTC SDK 版本选择对应的高级美颜文档：
+
+- 如果你的 SDK 版本为 v4.7.0 或 v4.5.x 中 v4.5.2.9 及以上版本，请参考本文，了解如何使用高级美颜 2.1 API。
+- 如果你的 SDK 版本为 v4.6.x，请参考[高级美颜-4.6.x](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-460)，了解如何使用高级美颜 2.0 API。
+- 如果你的 SDK 版本低于 v4.5.2.9，请参考[高级美颜（Legacy）](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy)，了解如何使用美颜 1.0 API。
 :::
 
 ## 功能介绍
@@ -1399,7 +1417,7 @@ NS_SWIFT_NAME(setVideoEffectStringParam(option:key:stringValue:));
 
 在实现高级美颜功能前，请确保：
 
-- 集成的 RTC SDK 版本大于等于 v4.5.2.9 且小于 v4.6.0。
+- 集成的 RTC SDK 版本为 v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本。
 - 已在应用中实现基本的实时音视频功能。详见[实现音视频互动](/zh-CN/realtime-media/rtc/get-started/quick-start)。
 - SDK 已集成视频增强动态库，删除该动态库会导致无法正常开启高级美颜功能。
 
@@ -1616,9 +1634,9 @@ m_videoEffectObject = nullptr;
 <Slot for="advanced-beauty-windows-android-ios-macos-html-0-3-2">
 
 - float 用 `set/getVideoEffectFloatParam`
-    - bool 用 `set/getVideoEffectBoolParam`
-    - int 用 `set/getVideoEffectIntParam`
-    - string 用 `setVideoEffectStringParam`
+- bool 用 `set/getVideoEffectBoolParam`
+- int 用 `set/getVideoEffectIntParam`
+- string 用 `setVideoEffectStringParam`
 
 </Slot>
 
@@ -1744,10 +1762,12 @@ m_videoEffectObject = nullptr;
 - `setVideoEffectStringParam`
 
 :::info[信息]
-仅大于等于 v4.5.2.9 且小于 v4.6.0 的 SDK 支持 `setVideoEffectStringParam` 方法。
+仅 RTC SDK v4.7.0，或 v4.5.x 中 v4.5.2.9 及以上版本支持 `setVideoEffectStringParam` 方法。
 
 <Accordions>
 <Accordion title="setVideoEffectStringParam">
+
+使用高级美颜功能的客户可以使用该接口配置美颜人脸检测，用于检测人脸置信度。
 
 设置视频特效的字符串参数。
 

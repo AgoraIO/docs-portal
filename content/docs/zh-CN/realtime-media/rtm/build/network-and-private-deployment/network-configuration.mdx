@@ -67,6 +67,8 @@ SDK 不支持将两条链路同时配置为 UDP 协议。
 
 在一些网络服务受限的环境下，你可能需要设置代理服务才能访问外部资源。RTM 支持设置 Cloud Proxy 云端代理服务，你只需要在初始化 RTM 实例的时候开启这项功能即可。
 
+从 v2.3.0 起，SDK 不再自动回退到 Cloud Proxy。需要使用 Cloud Proxy 时，必须在初始化 RTM 实例时显式将 `cloudProxy` 设置为 `true`。建议根据业务需要向终端用户提供开关，由用户决定是否启用 Cloud Proxy。
+
 ```javascript showLineNumbers
 const { RTM } = AgoraRTM;
 const appId = "your_appId";

@@ -28,7 +28,7 @@ data class MessageReceipt(
 
 消息内容信息。需要根据 `type` 字段进行解析：
 
-    - `Context` 类型：通常为包含资源信息的 JSON 字符串。
+- `Context` 类型：通常为包含资源信息的 JSON 字符串。
 
 </Slot>
 
@@ -211,11 +211,13 @@ data class SpeakMessage(
 
 用于绕过大模型，直接通过智能体的 TTS 流程播报文本。
 
+#### 成员参数
+
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `text` | `String` | 要播报的文本。 |
-| `priority` | `Priority` | 播报请求的处理优先级。 |
-| `interruptable` | `Boolean` | 是否允许用户说话打断本次播报。 |
+| `priority` | `Priority` | 播报请求的处理优先级，默认值为 `INTERRUPT`。详见 [`Priority`](/zh-CN/api-reference/conversational-ai/android/enum#priority)。 |
+| `interruptable` | `Boolean` | 是否允许用户说话打断本次播报，默认值为 `true`。 |
 
 <a id="thinkmessage"></a>
 ## ThinkMessage
@@ -233,14 +235,16 @@ data class ThinkMessage(
 
 用于将文本作为用户输入注入对话，并交由大模型处理。
 
+#### 成员参数
+
 | 参数 | 数据类型 | 描述 |
 | --- | --- | --- |
 | `text` | `String` | 要注入大模型的指令文本。 |
-| `onListeningAction` | `ThinkListeningAction` | 倾听状态下的处理动作。 |
-| `onThinkingAction` | `ThinkThinkingAction` | 思考状态下的处理动作。 |
-| `onSpeakingAction` | `ThinkSpeakingAction` | 说话状态下的处理动作。 |
-| `interruptable` | `Boolean` | 是否允许用户说话打断响应。 |
-| `metadata` | `Map<String, String>?` | 可选的业务自定义键值对。 |
+| `onListeningAction` | `ThinkListeningAction` | 智能体处于倾听状态时的处理动作，默认值为 `INTERRUPT`。详见 [`ThinkListeningAction`](/zh-CN/api-reference/conversational-ai/android/enum#thinklisteningaction)。 |
+| `onThinkingAction` | `ThinkThinkingAction` | 智能体处于思考状态时的处理动作，默认值为 `IGNORE`。详见 [`ThinkThinkingAction`](/zh-CN/api-reference/conversational-ai/android/enum#thinkthinkingaction)。 |
+| `onSpeakingAction` | `ThinkSpeakingAction` | 智能体处于说话状态时的处理动作，默认值为 `IGNORE`。详见 [`ThinkSpeakingAction`](/zh-CN/api-reference/conversational-ai/android/enum#thinkspeakingaction)。 |
+| `interruptable` | `Boolean` | 是否允许用户说话打断本次指令生成的响应，默认值为 `true`。 |
+| `metadata` | `Map<String, String>?` | 可选的业务自定义键值对。为 null 时不会写入 RTM 消息。 |
 
 <a id="transcript"></a>
 ## Transcript
@@ -396,9 +400,9 @@ data class ConversationalAIAPIConfig(
 )
 ```
 
-用于配置会话式 AI API 所需的参数。
+用于配置对话式 AI 引擎 API 所需的参数。
 
-该类包含初始化会话式 AI API 所需的参数配置，包括用于音频通信的 `rtcEngine`、用于实时消息传递的 `rtmClient`，以及转写渲染模式设置。
+该类包含初始化对话式 AI 引擎 API 所需的参数配置，包括用于音频通信的 `rtcEngine`、用于实时消息传递的 `rtmClient`，以及转写渲染模式设置。
 
 #### 成员参数
 
@@ -413,8 +417,8 @@ data class ConversationalAIAPIConfig(
 
 是否启用日志记录：
 
-    - `true`：启用日志记录。
-    - `false`：不启用日志记录（默认）。
+- `true`：启用日志记录。
+- `false`：不启用日志记录（默认）。
 
 </Slot>
 
@@ -443,7 +447,7 @@ sealed class ConversationalAIAPIError : Exception() {
 }
 ```
 
-表示会话式 AI API 中的错误类型。
+表示对话式 AI 引擎 API 中的错误类型。
 
 #### 成员参数
 
@@ -456,7 +460,7 @@ sealed class ConversationalAIAPIError : Exception() {
 
 错误码：
 
-    - `RtmError` 或 `RtcError` 返回具体错误码。
-    - `UnknownError` 返回 -100。
+- `RtmError` 或 `RtcError` 返回具体错误码。
+- `UnknownError` 返回 -100。
 
 </Slot>

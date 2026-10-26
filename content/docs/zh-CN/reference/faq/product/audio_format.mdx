@@ -23,7 +23,7 @@ RTC SDK 提供全格式音频解码插件，支持更多格式的音频文件，
 
 RTC SDK 支持如下格式的单音轨文件：
 
-- 在 Android 上，支持 Ogg、3GP、ASF、AVI、TS、MKV、MP4、WMA、WAV、M4A、MP3、AAC、ADTS 格式的本地和在线文件。
+- 在 Android 上，支持 Ogg、3GP、TS、MKV、MP4、WAV、M4A、MP3、AAC、ADTS 格式的本地和在线文件。
 - 在 iOS 和 macOS 上，支持 WAV、M4A、MP3、MP4、AAC、ADTS 格式的本地和在线文件。对于 MP4 和 M4A 格式的在线文件，媒体信息（moov）必须在媒体数据（mdat）之前。
 - 在 Windows 上，支持 MP4、TS、WMA、AAC 格式的本地和在线文件。
 
@@ -47,7 +47,7 @@ RTC SDK 支持如下格式的多音轨文件：
 
 | 平台                                                       |   文件来源                   | 文件音轨                       | 文件容器格式                                                 | 音频编解码器格式                              |
 | ---------------------------------------------------------- | -------------------------- | ------------------------------ | ------------------------------------------------------------ | --------------------------------------------- |
-| Android、iOS、macOS、Windows | 本地、在线 | 单音轨、多音轨 | 3GP、AAC、AMR、ASF、AVI、FLAC、M4A、M4V、MOV、MP3、MP4、TS、Ogg、WAV、WMA | AAC、ARM、FALC、MP2、MP3、PCM、Vorbis、 WMAV2、OPUS |
+| Android、iOS、macOS、Windows | 本地、在线 | 单音轨、多音轨 | 3GP、AAC、AMR、ASF、AVI、FLAC、M4A、M4V、MOV、MP3、MP4、TS、Ogg、WAV、WMA | AAC、AMR、FLAC、MP2、MP3、PCM、Vorbis、 WMAV2、OPUS |
 
 :::info[信息]
 该插件在各平台对应的动态库名称，详见[减少 App 体积](/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size)。
@@ -56,6 +56,5 @@ RTC SDK 支持如下格式的多音轨文件：
 ## 注意事项
 
 - 对于 iOS 平台，RTC Lite SDK 不支持播放无后缀的音频文件。
-- 对于 Android 平台，RTC Lite SDK 不支持播放 Android 系统本身不支持的音频文件。
+- 对于 Android 平台，RTC Lite SDK 不支持播放 Android 系统原生媒体能力不支持的音频文件。部分 Android 设备不支持 WMA 格式，因此在这些设备上调用声网 API 播放 WMA 文件时可能播放失败。
 - 部分 Android 设备（如小米）因系统兼容问题，在使用 `playEffect` 或 `preloadEffect` 读取 3GP 格式的文件时可能会出现问题。
-- 因为部分 Android 设备不支持 WMA 格式，所以在这些设备上使用声网的 API 播放 WMA 文件时会失败。

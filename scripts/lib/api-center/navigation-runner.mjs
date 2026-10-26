@@ -677,6 +677,58 @@ function addRtsaScopeMetaPlans(metaByPath, manifest) {
   });
 }
 
+function addRtcReactScopeMetaPlans(metaByPath, manifest, routeMap) {
+  const rootRoute = '/zh-CN/api-reference/rtc/react-sdk';
+  const entry = (manifest.entries ?? []).find(
+    (candidate) => candidate.targetRoute === `${rootRoute}/overview`,
+  );
+  const overview = entry?.pageGraph?.sourceNavigation?.find(
+    (item) => item.kind === 'category' && item.label === 'API 概览',
+  );
+  const webSdk = overview?.items?.find(
+    (item) => item.kind === 'category' && item.label === 'Web SDK API',
+  );
+  if (!webSdk?.items?.length) return;
+
+  // Show React overview pages directly, without the legacy API 概览 wrapper.
+  // Keep the Web SDK subtree as a real folder so existing URLs stay intact.
+  const sidebarLabels = {};
+  const render = (items) =>
+    renderNavigationItems(items, {
+      plainLocalLeaves: true,
+      rootRoute,
+      routeMap,
+      sidebarLabels,
+    });
+  const pages = overview.items.flatMap((item) =>
+    item === webSdk ? ['web-sdk'] : render([item]),
+  );
+  const metaPath = `content/docs${rootRoute}/meta.json`;
+  const rootPlan = metaByPath.get(metaPath);
+  if (!rootPlan) throw new Error('Missing React API navigation root.');
+  rootPlan.pages = pages;
+  const webRoot = `${rootRoute}/web-sdk`;
+  const webSidebarLabels = {};
+  createMetaAccumulator(metaByPath, {
+    metaPath: `content/docs${webRoot}/meta.json`,
+    rootRoute: webRoot,
+    title: webSdk.label,
+    pages: renderNavigationItems(webSdk.items, {
+      plainLocalLeaves: true,
+      rootRoute: webRoot,
+      routeMap,
+      sidebarLabels: webSidebarLabels,
+    }).concat({
+      type: 'group',
+      title: '其他类型',
+      sidebarHidden: true,
+      pages: ['...'],
+    }),
+    metaPatch: { defaultOpen: true, sidebarLabels: webSidebarLabels },
+  });
+  rootPlan.metaPatch.sidebarLabels = { ...sidebarLabels, ...webSidebarLabels };
+}
+
 function addOnlineKtvScopeMetaPlans(metaByPath, manifest) {
   const prefix = '/zh-CN/api-reference/online-ktv/';
   const platformSolutions = new Map();
@@ -932,6 +984,7 @@ function buildEntryMetaPlans(manifest, routeMap, lanes) {
   addWhiteboardScopeMetaPlans(metaByPath, manifest.entries ?? []);
   addRtcServerSdkScopeMetaPlans(metaByPath, manifest.entries ?? []);
   addRtsaScopeMetaPlans(metaByPath, manifest);
+  addRtcReactScopeMetaPlans(metaByPath, manifest, routeMap);
   addOnlineKtvScopeMetaPlans(metaByPath, manifest);
   addOpenApiLaneRootMetaPlans(metaByPath, lanes);
   addApiReferenceSupplementMetaPlans(metaByPath, manifest);
@@ -2352,9 +2405,21 @@ export async function runApiCenterNavigation({
         ? mergeMetaPages(['index'], plannedPages)
         : plannedPages;
     if (pages.length === 0) continue;
+    // The API Center manifest only describes current content. Historical
+    // archive choices are maintained separately in each platform's metadata.
+    const maintainedScope = meta.navScope?.versions?.some((version) =>
+      version.href?.startsWith('https://doc-archive.shengwang.cn/archive/'),
+    )
+      ? { navScope: meta.navScope }
+      : {};
     run.planFile({
       targetPath: plan.metaPath,
-      contents: serializeJson({ ...meta, ...plan.metaPatch, pages }),
+      contents: serializeJson({
+        ...meta,
+        ...plan.metaPatch,
+        ...maintainedScope,
+        pages,
+      }),
       sourcePath: manifestPath,
       sourceUrl: API_CENTER_URL,
       type: 'navigation-meta',

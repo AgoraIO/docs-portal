@@ -3,6 +3,35 @@ import { describe, expect, it } from 'vitest';
 import { RtcSdkDownloads } from './RtcSdkDownloads';
 
 describe('RtcSdkDownloads', () => {
+  it.each([
+    [
+      'flutter',
+      'Flutter',
+      '6.6.4（对应 Native v4.6.4）',
+      'https://pub.dev/packages/shengwang_rtc_engine/versions/6.6.4',
+    ],
+    [
+      'react-native',
+      'React Native',
+      '4.6.4',
+      'https://www.npmjs.com/package/react-native-shengwang/v/4.6.4',
+    ],
+  ])(
+    'shows the current #2084 %s video package',
+    (platform, label, version, url) => {
+      render(<RtcSdkDownloads platform={platform} product="video" />);
+      const card = screen.getByRole('article', { name: `${label} 视频 SDK` });
+      expect(screen.getAllByRole('article')).toHaveLength(1);
+      expect(within(card).getByText(`v${version}`)).toBeVisible();
+      expect(
+        within(card).getByText('发布日期：2026 年 8 月 31 日'),
+      ).toBeVisible();
+      expect(
+        within(card).getByRole('link', { name: `获取 ${label} 视频 SDK` }),
+      ).toHaveAttribute('href', url);
+    },
+  );
+
   it('shows separate direct-download cards for the latest Android Full and Lite packages', () => {
     render(<RtcSdkDownloads platform="android" product="video" />);
 
@@ -10,27 +39,37 @@ describe('RtcSdkDownloads', () => {
     const lite = screen.getByRole('article', { name: 'Android Lite' });
     expect(screen.getAllByRole('article')).toHaveLength(2);
 
-    expect(within(full).getByText('v4.6.3')).toBeVisible();
+    expect(within(full).getByText('v4.7.0')).toBeVisible();
     expect(
-      within(full).getByText('70cb117df069f30501ca13f5147e3a99'),
+      within(full).getByText('867fb78c2eb1ec8ff02ba073a1fd2e1d'),
     ).toBeVisible();
     expect(within(full).getByText('io.agora.rtc2.video')).toBeVisible();
-    expect(within(full).getByText('发布日期：2026 年 2 月 9 日')).toBeVisible();
+    expect(
+      within(full).getByText(
+        'armeabi-v7a 16.55 MB；arm64-v8a 17.17 MB；x86 17.81 MB；x86_64 17.44 MB',
+      ),
+    ).toBeVisible();
+    expect(
+      within(full).getByText('发布日期：2026 年 9 月 22 日'),
+    ).toBeVisible();
     expect(
       within(full).getByRole('link', { name: '下载 Android Full' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_FULL.zip',
+      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.0_FULL.zip',
     );
     expect(
       within(lite).getByRole('link', { name: '下载 Android Lite' }),
     ).toHaveAttribute(
       'href',
-      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.6.3_LITE.zip',
+      'https://download.shengwang.cn/sdk/release/Shengwang_Native_SDK_for_Android_v4.7.0_LITE.zip',
     );
     expect(screen.queryByRole('tablist')).not.toBeInTheDocument();
     expect(screen.queryByRole('combobox')).not.toBeInTheDocument();
     expect(screen.queryByText('历史版本')).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: '包管理器' }),
+    ).not.toBeInTheDocument();
     expect(
       screen.queryByRole('link', { name: /4\.6\.2/ }),
     ).not.toBeInTheDocument();
@@ -45,6 +84,39 @@ describe('RtcSdkDownloads', () => {
     expect(
       screen.queryByRole('article', { name: 'Android Full' }),
     ).not.toBeInTheDocument();
+  });
+
+  it('shows the Native 4.7.0 iOS variants and release metadata', () => {
+    render(<RtcSdkDownloads platform="ios" product="video" />);
+
+    const full = screen.getByRole('article', { name: 'iOS Full' });
+    const lite = screen.getByRole('article', { name: 'iOS Lite' });
+    expect(within(full).getByText('v4.7.0')).toBeVisible();
+    expect(
+      within(full).getByText('044dafd641e8d44b9e2583c5481aeaa8'),
+    ).toBeVisible();
+    expect(
+      within(lite).getByText('c29b295befc44fe4ab5023e166e93e41'),
+    ).toBeVisible();
+    expect(within(full).getByText('31.69 MB')).toBeVisible();
+    expect(within(lite).getByText('14.97 MB')).toBeVisible();
+    expect(
+      within(full).getByText('发布日期：2026 年 9 月 22 日'),
+    ).toBeVisible();
+  });
+
+  it('shows the Native 4.7.0 macOS and Windows packages', () => {
+    render(<RtcSdkDownloads platform="macos" product="video" />);
+    expect(
+      screen.getByRole('article', { name: 'macOS 视频 SDK' }),
+    ).toBeVisible();
+    expect(screen.getByText('v4.7.0')).toBeVisible();
+
+    render(<RtcSdkDownloads platform="windows" product="video" />);
+    expect(
+      screen.getByRole('article', { name: 'Windows 视频 SDK' }),
+    ).toBeVisible();
+    expect(screen.getAllByText('v4.7.0')).toHaveLength(2);
   });
 
   it('shows the standard Electron SDK and the current UnionTech edition without historical versions', () => {

@@ -1,6 +1,6 @@
 ---
 title: "录制服务事件"
-description: "了解如何在云端录制中录制服务事件，包括适用场景、配置步骤、实现要点和注意事项。"
+description: "了解如何在云端录制中监听录制服务 Webhook 事件，以及各事件的类型、字段含义和回调示例。"
 ---
 当 payload 中的 serviceType 返回 0 时，表示该回调事件的服务类型是云端录制服务。
 
@@ -46,7 +46,7 @@ description: "了解如何在云端录制中录制服务事件，包括适用场
     - `52`：云端录制服务启动超时。
   - 如果 `module` 为其他，请参考[响应状态码和错误码](/zh-CN/realtime-media/cloud-recording/reference/response-code)中的错误码说明。
 
-  如果错误码未在文档中列出，请联系[技术支持](https://agora-ticket.agora.io/)。
+  如果错误码未在文档中列出，请联系[技术支持](https://ticket.shengwang.cn/)。
 
 - `stat`：Number 类型，事件状态，`0` 表示正常，其他值表示异常。
 - `errorMsg`：String 类型，具体的错误信息。

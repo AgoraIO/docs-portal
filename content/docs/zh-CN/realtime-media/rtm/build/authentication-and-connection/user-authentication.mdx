@@ -277,8 +277,16 @@ RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用�
         const client = new AgoraRTM.RTM(appID, uid, { token: rtmToken });
 
         // 显示连接状态变化
-        client.addEventlistener("status", function (state, reason) {
-            console.log("State changed To: " + state + " Reason: " + reason);
+        client.addEventlistener("linkState", function (event) {
+          const currentState = event.currentState;
+          const previousState = event.previousState;
+          const serviceType = event.serviceType;
+          const operation = event.operation;
+          const reason = event.reason;
+          const affectedChannels = event.affectedChannels;
+          const timestamp = event.timestamp;
+          const isResumed = event.isResumed;
+          console.log("Link state changed to: " + currentState + " Reason: " + reason);
         });
 
         // 登录 RTM 系统
@@ -310,8 +318,16 @@ RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用�
             const client = new AgoraRTM.RTM(appID, uid);
 
             // 显示连接状态变化
-            client.on('status', function (state, reason) {
-                console.log("State changed To: " + state + " Reason: " + reason)
+            client.on("linkState", function (event) {
+              const currentState = event.currentState;
+              const previousState = event.previousState;
+              const serviceType = event.serviceType;
+              const operation = event.operation;
+              const reason = event.reason;
+              const affectedChannels = event.affectedChannels;
+              const timestamp = event.timestamp;
+              const isResumed = event.isResumed;
+              console.log("Link state changed to: " + currentState + " Reason: " + reason);
             });
 
             // 登录 RTM 系统
@@ -829,7 +845,7 @@ RTM 提供 Message Channel 和 Stream Channel 两种频道类型，使用不同�
 
 下图展示了 RTM Token 鉴权的基本流程：
 
-![Token 流程](/img/rtm2/token-authentication-javascript.svg)
+![Token 流程](https://web-cdn.agora.io/docs-portal/img/rtm2/token-authentication-javascript.svg)
 
 RTM Token 在 App 服务器上生成，其最长有效期为 24 小时。当用户从你的 App 客户端登录到 RTM 系统时，声网平台会读取该 Token 中包含的信息，并进行校验。Token 包含以下信息：
 

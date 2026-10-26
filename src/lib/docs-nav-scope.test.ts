@@ -193,6 +193,422 @@ function getNodeMeta(node: Folder | Root): DocsMeta | undefined {
 }
 
 describe('docs nav scope', () => {
+  describe('context-specific version lists', () => {
+    const base = '/zh-CN/api-reference/rtc/react-sdk';
+    const reactVersions = [
+      {
+        id: 'current',
+        label: 'React v2.5.0',
+        path: '.',
+        href: `${base}/overview`,
+      },
+      {
+        id: 'react-2.4.0',
+        label: 'React v2.4.0',
+        path: '2.4.0',
+        href: 'https://archive.example.com/react/2.4.0',
+      },
+    ];
+    const webVersions = [
+      {
+        id: 'current',
+        label: 'Web v4.24.0',
+        path: '.',
+        href: `${base}/web-sdk/overview`,
+      },
+      {
+        id: 'web-4.23.0',
+        label: 'Web v4.23.0',
+        path: '4.23.0',
+        href: 'https://archive.example.com/web/4.23.0',
+      },
+    ];
+    const page = (path: string) => ({
+      name: path,
+      type: 'page' as const,
+      url: `${base}/${path}`,
+    });
+    const reactFolder: Folder = {
+      $id: 'react-root',
+      name: 'React API',
+      type: 'folder',
+      // A landing page is not a folder URL; overrides must not append to /overview.
+      index: page('overview'),
+      children: [
+        page('components/LocalVideoTrack'),
+        page('web-sdk-other/overview'),
+        {
+          $id: 'web-folder',
+          name: 'Web SDK',
+          type: 'folder',
+          index: page('web-sdk/overview'),
+          children: [
+            page('web-sdk/interfaces/IAgoraRTCClient'),
+            {
+              $id: 'web-types',
+              name: 'Types',
+              type: 'folder',
+              children: [page('web-sdk/types/VisibleType')],
+            },
+          ],
+        },
+      ],
+    };
+    const root: Root = {
+      name: 'Docs',
+      children: [
+        {
+          $id: 'reference-root',
+          name: 'Reference',
+          type: 'folder',
+          root: true,
+          index: {
+            name: 'Reference',
+            type: 'page',
+            url: '/zh-CN/api-reference',
+          },
+          children: [reactFolder],
+        },
+      ],
+    };
+    const getReactMeta = (node: Folder | Root): DocsMeta | undefined =>
+      node.$id === 'react-root'
+        ? {
+            title: 'React API',
+            navScope: {
+              defaultVersion: 'current',
+              versions: reactVersions,
+              versionOverrides: [{ path: 'web-sdk', versions: webVersions }],
+            },
+          }
+        : node.$id === 'web-types'
+          ? { sidebarHidden: true }
+          : undefined;
+    function resolve(path: string, getNodeMeta = getReactMeta) {
+      return resolveDocsNavScope({
+        activePath: `${base}/${path}`,
+        getNodeMeta,
+        root,
+        tab: 'api-reference',
+      });
+    }
+
+    it.each([
+      ['overview', reactVersions],
+      ['components/LocalVideoTrack', reactVersions],
+      ['web-sdk/overview', webVersions],
+      ['web-sdk/interfaces/IAgoraRTCClient', webVersions],
+      ['web-sdk/types/HiddenType', webVersions],
+      ['web-sdk-other/overview', reactVersions],
+      ['web-sdk/types/VisibleType?query=1#type', webVersions],
+      ['overview?from=web-sdk#intro', reactVersions],
+    ])(
+      'uses the contextual series for %s without narrowing the sidebar',
+      (path, versions) => {
+        const scope = resolve(path);
+        expect(scope?.scope.node).toBe(reactFolder);
+        expect(scope?.sidebarRoot).toBe(reactFolder);
+        expect(scope?.activeVersion).toMatchObject({
+          ...versions[0],
+          node: reactFolder,
+        });
+        expect(scope?.header.versionSwitcher).toEqual({
+          currentId: 'current',
+          versions: versions.map(({ id, label, href }) => ({
+            id,
+            label,
+            href,
+          })),
+        });
+      },
+    );
+
+    it('restores the default list on return without state leaking between resolutions', () => {
+      for (const path of [
+        'overview',
+        'web-sdk/overview',
+        'components/LocalVideoTrack',
+        'web-sdk/types/HiddenType',
+        'overview',
+      ]) {
+        expect(resolve(path)?.header.versionSwitcher?.versions[0].label).toBe(
+          path.startsWith('web-sdk/') ? 'Web v4.24.0' : 'React v2.5.0',
+        );
+      }
+    });
+
+    it.each([false, true])(
+      'uses the most specific complete path regardless of declaration order (%s)',
+      (reversed) => {
+        const typeVersions = [
+          {
+            id: 'current',
+            label: 'Types v1',
+            path: '.',
+            href: `${base}/web-sdk/types/VisibleType`,
+          },
+        ];
+        const versionOverrides = [
+          { path: 'web-sdk', versions: webVersions },
+          { path: 'web-sdk/types', versions: typeVersions },
+        ];
+        if (reversed) versionOverrides.reverse();
+        const getNodeMeta = (node: Folder | Root): DocsMeta | undefined => {
+          const meta = getReactMeta(node);
+          return meta?.navScope
+            ? { ...meta, navScope: { ...meta.navScope, versionOverrides } }
+            : meta;
+        };
+        expect(
+          resolve('web-sdk/types/HiddenType', getNodeMeta)?.header
+            .versionSwitcher?.versions[0].label,
+        ).toBe('Types v1');
+        expect(
+          resolve('web-sdk/types-other/HiddenType', getNodeMeta)?.header
+            .versionSwitcher?.versions[0].label,
+        ).toBe('Web v4.24.0');
+      },
+    );
+
+    it('keeps React and Web entry points in the same sidebar on Web pages', () => {
+      const scope = resolve('web-sdk/interfaces/IAgoraRTCClient');
+      if (!scope) throw new Error('expected React nav scope');
+      const sidebar = getScopedNavScopeSidebarNodes({
+        getNodeMeta: getReactMeta,
+        navScope: scope,
+      });
+      const serialized = JSON.stringify(sidebar);
+      expect(serialized).toContain(`${base}/overview`);
+      expect(serialized).toContain(`${base}/components/LocalVideoTrack`);
+      expect(serialized).toContain(`${base}/web-sdk/overview`);
+    });
+
+    it('finds the scope boundary when it has no index and its first page is overview', () => {
+      const { index: _index, ...withoutIndex } = reactFolder;
+      const tree: Root = {
+        ...root,
+        children: [
+          {
+            ...(root.children[0] as Folder),
+            children: [
+              {
+                ...withoutIndex,
+                children: [page('overview'), ...reactFolder.children],
+              },
+            ],
+          },
+        ],
+      };
+      const scope = resolveDocsNavScope({
+        activePath: `${base}/web-sdk/interfaces/IAgoraRTCClient`,
+        getNodeMeta: getReactMeta,
+        root: tree,
+        tab: 'api-reference',
+      });
+      expect(scope?.header.versionSwitcher?.versions[0].label).toBe(
+        'Web v4.24.0',
+      );
+      expect(scope?.sidebarRoot.$id).toBe('react-root');
+    });
+
+    it.each([false, true])(
+      'anchors single-page scopes and ignores unrelated sidebar links (%s)',
+      (includeUnrelated) => {
+        const folder = {
+          ...reactFolder,
+          children: includeUnrelated
+            ? [
+                ...reactFolder.children,
+                {
+                  name: 'Shared errors',
+                  type: 'page' as const,
+                  url: '/zh-CN/api-reference/shared/errors',
+                },
+                {
+                  name: 'External',
+                  type: 'page' as const,
+                  external: true,
+                  url: 'https://example.com/docs',
+                },
+              ]
+            : [],
+        };
+        const tree: Root = {
+          ...root,
+          children: [{ ...(root.children[0] as Folder), children: [folder] }],
+        };
+        const scope = resolveDocsNavScope({
+          activePath: `${base}/web-sdk/types/HiddenType`,
+          getNodeMeta: getReactMeta,
+          root: tree,
+          tab: 'api-reference',
+        });
+        expect(scope?.header.versionSwitcher?.versions[0].label).toBe(
+          'Web v4.24.0',
+        );
+        expect(scope?.sidebarRoot).toBe(folder);
+      },
+    );
+
+    it('retains a canonical directory index for hidden override pages in an index-only scope', () => {
+      const folder: Folder = {
+        ...reactFolder,
+        index: { name: 'React API', type: 'page', url: base },
+        children: [],
+      };
+      const tree: Root = {
+        ...root,
+        children: [{ ...(root.children[0] as Folder), children: [folder] }],
+      };
+      const scope = resolveDocsNavScope({
+        activePath: `${base}/web-sdk/types/HiddenType`,
+        getNodeMeta(node) {
+          const meta = getReactMeta(node);
+          return meta?.navScope
+            ? {
+                ...meta,
+                navScope: {
+                  ...meta.navScope,
+                  versions: [
+                    { ...reactVersions[0], href: base },
+                    reactVersions[1],
+                  ],
+                },
+              }
+            : meta;
+        },
+        root: tree,
+        tab: 'api-reference',
+      });
+
+      expect(scope?.scope.node).toBe(folder);
+      expect(scope?.sidebarRoot).toBe(folder);
+      expect(scope?.activeVersion?.label).toBe('Web v4.24.0');
+      expect(scope?.header.versionSwitcher?.versions).toEqual(
+        webVersions.map(({ id, label, href }) => ({ id, label, href })),
+      );
+    });
+
+    it.each([
+      [`${base}/web-sdk/types/Hidden`, 'Web v4.24.0', false],
+      ['/zh-CN/api-reference/rtc/android/Hidden', null, false],
+      [`${base}/web-sdk/types/Hidden`, 'Web v4.24.0', true],
+      ['/zh-CN/api-reference/rtc/android/Hidden', null, true],
+    ])(
+      'keeps a canonical index without explicit hrefs bounded for %s (%s, unrelated links: %s)',
+      (activePath, label, includeUnrelated) => {
+        const folder: Folder = {
+          ...reactFolder,
+          index: { name: 'React API', type: 'page', url: base },
+          children: includeUnrelated
+            ? [
+                {
+                  name: 'Shared errors',
+                  type: 'page',
+                  url: '/zh-CN/api-reference/shared/errors',
+                },
+              ]
+            : [],
+        };
+        const tree: Root = {
+          ...root,
+          children: [{ ...(root.children[0] as Folder), children: [folder] }],
+        };
+        const scope = resolveDocsNavScope({
+          activePath,
+          getNodeMeta: (node) =>
+            node.$id === folder.$id
+              ? {
+                  title: 'React API',
+                  navScope: {
+                    defaultVersion: 'current',
+                    versions: [
+                      { id: 'current', label: 'React v2.5.0', path: '.' },
+                    ],
+                    versionOverrides: [
+                      {
+                        path: 'web-sdk',
+                        versions: [
+                          { id: 'current', label: 'Web v4.24.0', path: '.' },
+                        ],
+                      },
+                    ],
+                  },
+                }
+              : undefined,
+          root: tree,
+          tab: 'api-reference',
+        });
+
+        if (label === null) {
+          expect(scope).toBeNull();
+        } else {
+          expect(scope?.activeVersion?.label).toBe(label);
+          expect(scope?.header.versionSwitcher?.versions[0].label).toBe(label);
+          expect(scope?.scope.node).toBe(folder);
+          expect(scope?.sidebarRoot).toBe(folder);
+        }
+      },
+    );
+  });
+
+  it.each(['(current)', '.'])(
+    'keeps %s current selected with archive-only historical options',
+    (currentPath) => {
+      const archiveHref =
+        'https://doc-archive.shengwang.cn/archive/0.0.405/api-ref/rtc/android/API/rtc_api_overview';
+      const activePath = '/en/api-reference/rtc/android/overview';
+      const scope = resolveDocsNavScope({
+        activePath,
+        getNodeMeta(node) {
+          const meta = getNodeMeta(node);
+          return node.$id === 'android-folder'
+            ? {
+                ...meta,
+                navScope: {
+                  defaultVersion: 'current',
+                  versions: [
+                    { id: 'current', label: 'v4.7.0', path: currentPath },
+                    {
+                      id: '4.6.0',
+                      label: 'v4.6.0',
+                      path: '4.6.0',
+                      href: archiveHref,
+                    },
+                    {
+                      id: '4.2.2',
+                      label: 'v4.2.2',
+                      path: '4.2.2',
+                      href: archiveHref.replace('0.0.405', '0.0.14'),
+                    },
+                  ],
+                },
+              }
+            : meta;
+        },
+        root: apiReferenceTree,
+        tab: 'api-reference',
+      });
+
+      expect(scope?.activeVersion?.id).toBe('current');
+      expect(scope?.header.versionSwitcher).toEqual({
+        currentId: 'current',
+        versions: [
+          { id: 'current', label: 'v4.7.0', href: activePath },
+          { id: '4.6.0', label: 'v4.6.0', href: archiveHref },
+          {
+            id: '4.2.2',
+            label: 'v4.2.2',
+            href: archiveHref.replace('0.0.405', '0.0.14'),
+          },
+        ],
+      });
+      expect(scope?.sidebarRoot.$id).toBe(
+        currentPath === '.' ? 'android-folder' : 'android-current-folder',
+      );
+    },
+  );
+
   it('resolves the nearest current-version scope from a clean URL', () => {
     const scope = resolveDocsNavScope({
       activePath: '/en/api-reference/rtc/android/overview',

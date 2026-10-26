@@ -21,7 +21,6 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     '[服务端 API](/zh-CN/api-reference/api-ref/cloud-recording)',
     'api-reference',
     'response-code',
-    'ncs-events',
     'quota',
     'concepts',
   ],
@@ -63,7 +62,6 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
     'quota',
   ],
   'realtime-media/meeting/reference/meta.json': [
-    'downloads',
     {
       type: 'group',
       title: '服务端 API',
@@ -95,12 +93,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
       collapsible: true,
       pages: ['migration-guide', 'after-migrate', 'sunset-plan'],
     },
-    {
-      type: 'group',
-      title: '概念事件',
-      collapsible: true,
-      pages: ['key-concept', 'events'],
-    },
+    'key-concept',
     {
       type: 'group',
       title: '平台兼容性',
@@ -127,6 +120,7 @@ const expectedReferencePages: Record<string, MetaPage[]> = {
   'realtime-media/rtsa/reference/meta.json': [
     'downloads',
     'error-codes',
+    'sunset',
     'supported-platforms',
   ],
   'realtime-media/sdk-extensions/metakit/reference/meta.json': [
@@ -303,10 +297,11 @@ const expectedReferenceFolderMeta: Record<
     title: 'API 使用与限制',
     pages: ['call-api', 'response-code', 'quota'],
   },
-  'solutions/flexible-classroom/reference/capabilities-and-compatibility/meta.json': {
-    title: '能力与兼容性',
-    pages: ['basic-concept', 'platform-support', 'tech-architect'],
-  },
+  'solutions/flexible-classroom/reference/capabilities-and-compatibility/meta.json':
+    {
+      title: '能力与兼容性',
+      pages: ['basic-concept', 'platform-support', 'tech-architect'],
+    },
 };
 
 function readPages(relativePath: string) {

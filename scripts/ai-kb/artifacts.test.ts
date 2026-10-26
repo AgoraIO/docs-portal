@@ -1,6 +1,7 @@
 import { mkdir, readFile, rm, symlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
+import { buildKbCorpus } from '../../src/lib/ai-kb/corpus.server';
 import { readPublishedKbInputs } from './artifacts';
 import { createPublishedFixture, fixtureUrl } from './fixtures.test-utils';
 
@@ -85,6 +86,17 @@ describe('published KB artifact reader', () => {
     const f = await fixture();
     const input = await readPublishedKbInputs(f.root);
     expect(input.sections.map((s) => s.url)).toContain(`${fixtureUrl}#example`);
+    const corpus = await buildKbCorpus({
+      ...input,
+      scope: 'cn-demo',
+      revision: 'test-revision',
+      selectedSourceIds: [fixtureUrl],
+    });
+    expect(corpus.documents[0].sourceId).toBe(fixtureUrl);
+    expect(corpus.documents[0].metadata.canonicalUrl).toBe(fixtureUrl);
+    expect(corpus.documents[0].metadata.sections.map((s) => s.url)).toContain(
+      `${fixtureUrl}#example`,
+    );
     await writeFile(
       path.join(f.root, `.${fixtureUrl}.md`),
       'changed after validation',

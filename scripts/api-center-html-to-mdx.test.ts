@@ -4,8 +4,10 @@ import remarkDirective from 'remark-directive';
 import { describe, expect, it } from 'vitest';
 import { directiveCalloutTypes } from '../src/lib/mdx/directive-callouts';
 import {
+  apiCenterHtmlConversionProfile,
   convertHtmlToMdx,
   EDU_STORE_TYPEDOC_CONVERSION_PROFILE,
+  extractHtmlPageMetadata,
 } from './lib/api-center/html-to-mdx.mjs';
 import { buildLegacyRouteMap } from './lib/api-center/migration-framework.mjs';
 
@@ -28,6 +30,25 @@ async function compileGeneratedMdx(source: string) {
 }
 
 describe('API Center shared HTML to MDX converter', () => {
+  it.each(['v4.24.8', '4.24.9', 'v2.0.0-beta.0'])(
+    'keeps SDK version %s out of generated page titles',
+    async (version) => {
+      const options = {
+        html: `<main><article><h1>Agora Web SDK API Reference ${version}</h1><p>Available since v4.20.0.</p><h2>API v2.0 compatibility</h2></article></main>`,
+        sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/javascript/overview',
+        sourcePath: 'html-docs/rtc/Web/index.html',
+      };
+
+      expect(extractHtmlPageMetadata(options).title).toBe(
+        'Agora Web SDK API Reference',
+      );
+      const result = await convertHtmlToMdx(options);
+      expect(result.title).toBe('Agora Web SDK API Reference');
+      expect(result.body).toContain('Available since v4.20.0.');
+      expect(result.body).toContain('## API v2.0 compatibility');
+    },
+  );
+
   it('converts headings, stable anchors, links, lists, callouts, code, definitions, tables, and images', async () => {
     const html = `<!doctype html><html><head><title>Fallback</title></head><body>
       <main><article>
@@ -294,30 +315,36 @@ describe('API Center shared HTML to MDX converter', () => {
     );
   });
 
-  it('omits TypeDoc hierarchy and index chrome that the old rendered page hides', async () => {
-    const result = await convertHtmlToMdx({
-      html: `<div class="col-content">
+  it.each([
+    ['Edu Store', 'html-docs/flexible-classroom/Electron/classes/store.html'],
+    ['RTC React', 'html-docs/rtc/React/interfaces/ilocaltrack.html'],
+  ])(
+    'omits TypeDoc hierarchy and index chrome for %s',
+    async (_, sourcePath) => {
+      const result = await convertHtmlToMdx({
+        html: `<div class="col-content">
         <section class="tsd-panel tsd-comment"><div class="lead"><p>Store description.</p></div></section>
         <section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3><ul><li>BaseStore</li></ul></section>
         <section class="tsd-panel-group tsd-index-group"><h2>Index</h2><section class="tsd-panel tsd-index-panel"><h3>Methods</h3><ul><li><a href="#run">run</a></li></ul></section></section>
         <section class="tsd-panel-group tsd-member-group"><h2>Methods</h2><section class="tsd-panel tsd-member"><a id="run"></a><h3>run</h3><ul class="tsd-signatures"><li class="tsd-signature">run(): void</li></ul><ul class="tsd-descriptions"><li class="tsd-description"><p>Runs the store.</p><h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></section></section>
       </div>`,
-      sourceUrl:
-        'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/store.html',
-      sourcePath: 'html-docs/flexible-classroom/Electron/classes/store.html',
-      rootSelector: '.col-content',
-      conversionProfile: EDU_STORE_TYPEDOC_CONVERSION_PROFILE,
-    });
+        sourceUrl:
+          'https://doc.shengwang.cn/api-ref/flexible-classroom/electron/classes/store.html',
+        sourcePath,
+        rootSelector: '.col-content',
+        conversionProfile: apiCenterHtmlConversionProfile({ sourcePath }),
+      });
 
-    expect(result.description).toBe('Store description.');
-    expect(result.body).not.toContain('### Hierarchy');
-    expect(result.body).not.toContain('## Index');
-    expect(result.body).not.toContain('[run](#run)');
-    expect(result.body.match(/^## Methods$/gm)).toHaveLength(1);
-    expect(result.body).toContain('### run');
-    expect(result.body).toContain('Runs the store.');
-    expect(result.body).toContain('<ApiReturnType>\n\nvoid');
-  });
+      expect(result.description).toBe('Store description.');
+      expect(result.body).not.toContain('### Hierarchy');
+      expect(result.body).not.toContain('## Index');
+      expect(result.body).not.toContain('[run](#run)');
+      expect(result.body.match(/^## Methods$/gm)).toHaveLength(1);
+      expect(result.body).toContain('### run');
+      expect(result.body).toContain('Runs the store.');
+      expect(result.body).toContain('<ApiReturnType>\n\nvoid');
+    },
+  );
 
   it('keeps rich TypeDoc object types out of remark directive syntax', async () => {
     const result = await convertHtmlToMdx({

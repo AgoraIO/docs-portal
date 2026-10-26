@@ -4,7 +4,7 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
 ---
 [实现合流录制](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)时，云端录制会将频道中指定用户的音视频流混合成一路，这个过程中会需要设置频道内用户**视窗**的大小及其在**画布**上的位置。如下图所示：
 
-![合流布局示意](https://web-cdn.agora.io/doc-cms/uploads/1715395508017-合图示意图.svg)
+<DocsImage alt="合流布局示意" src="https://web-cdn.agora.io/doc-cms/uploads/1715395508017-合图示意图.svg" displayWidth="40%" />
 
 这个过程就是**设置合流布局**。在合流布局中，我们将视频的背景称为**画布**，每个用户的视频占据一个**视窗**。
 
@@ -73,7 +73,7 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
 
 17 人的视窗布局与上面的情况不同，用户视窗没有铺满整个画布：每个用户视窗的宽和高分别为总宽度和总高度的 0.2，前四行每行四个用户，画布左右边距均为总宽度的 0.1。第五行居中显示第 17 个用户视窗。
 
-![自适应布局示意17人](https://web-cdn.agora.io/doc-cms/uploads/1715395112427-自适应-17人.svg)
+<DocsImage alt="自适应布局示意17人" src="https://web-cdn.agora.io/doc-cms/uploads/1715395112427-自适应-17人.svg" displayWidth="50%" />
 
 ### 垂直布局
 
@@ -93,7 +93,7 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
 
 :::info[信息]
 - 下图中，若频道中人数不足，则剩余的布局位置会空着，显示背景色。
-  - 如果某用户只发送音频，仍然会占据布局位，显示背景色。
+- 如果某用户只发送音频，仍然会占据布局位，显示背景色。
 :::
 
 | 人数（人） | 布局效果 | 说明 |
@@ -151,7 +151,7 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
   其中，`x_axis` 和 `y_axis` 字段是以**视频画布左上角为原点**，设置用户视窗在视频画布上的相对位置，分别代表用户视窗左上角到原点的水平相对距离和垂直相对距离。
   `width` 和 `height` 字段用于设置用户视窗的相对宽度和相对高度，即用户视窗的宽度和高度占画布宽度和高度的比例。如下图所示：
 
-![相对位置相对宽高](https://web-cdn.agora.io/docs-files/1562917679008)
+<DocsImage alt="相对位置相对宽高" src="https://web-cdn.agora.io/docs-files/1562917679008" displayWidth="50%" />
 
   :::warning[注意]
   请确保 `x_axis + width <= 1`，且 `y_axis + height <= 1`。
@@ -198,7 +198,7 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
 
 上述示例代码的效果如下：
 
-![代码效果示意](https://web-cdn.agora.io/docs-files/1562917761873)
+<DocsImage alt="代码效果示意" src="https://web-cdn.agora.io/docs-files/1562917761873" displayWidth="35%" />
 
 ### 录制过程中更新合流布局
 
@@ -266,7 +266,7 @@ description: "了解云端录制中设置合流布局相关内容的适用场景
 
 合图效果如下：
 
-![设置背景色或背景图](https://web-cdn.agora.io/doc-cms/uploads/1715394881627-设置背景图.svg)
+<DocsImage alt="设置背景色或背景图" src="https://web-cdn.agora.io/doc-cms/uploads/1715394881627-设置背景图.svg" displayWidth="60%" />
 
 画布上：
 

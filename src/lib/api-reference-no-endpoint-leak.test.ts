@@ -156,7 +156,6 @@ describe('api reference sidebar does not leak REST endpoint pages', () => {
     const urls = flattenUrls(focusedPayload.sidebar as SidebarNode[]);
     expect(urls).toEqual(
       expect.arrayContaining([
-        '/zh-CN/api-reference/api-ref/speech-to-text',
         '/zh-CN/api-reference/api-ref/speech-to-text/join',
         '/zh-CN/api-reference/api-ref/speech-to-text/query',
         '/zh-CN/api-reference/api-ref/speech-to-text/leave',

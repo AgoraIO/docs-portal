@@ -489,6 +489,73 @@ describe('DocsSidebarTree', () => {
     expect(screen.getByText('POST')).toHaveClass('font-mono');
   });
 
+  it.each([
+    ['GET', 'blue'],
+    ['POST', 'green'],
+    ['PUT', 'amber'],
+    ['PATCH', 'amber'],
+    ['DELETE', 'red'],
+  ])(
+    'colors active and inactive %s endpoint badges in both themes',
+    async (method, color) => {
+      const activePath = '/zh-CN/api-reference/api-ref/conversational-ai/join';
+      const inactivePath = '/zh-CN/api-reference/api-ref/cloud-recording/query';
+      renderSidebarTree(
+        [
+          {
+            id: activePath,
+            method,
+            title: 'ConvoAI endpoint',
+            type: 'page',
+            url: activePath,
+          },
+          {
+            id: 'cloud-recording',
+            title: 'Cloud recording',
+            type: 'section',
+            children: [
+              {
+                id: inactivePath,
+                method,
+                title: 'Recording endpoint',
+                type: 'page',
+                url: inactivePath,
+              },
+            ],
+          },
+          {
+            id: '/zh-CN/introduction',
+            title: 'Overview',
+            type: 'page',
+            url: '/zh-CN/introduction',
+          },
+        ],
+        activePath,
+      );
+
+      for (const title of ['ConvoAI endpoint', 'Recording endpoint']) {
+        const link = await screen.findByRole('link', {
+          name: `${title} ${method}`,
+        });
+        const badge = link.querySelector('span:last-child');
+        expect(badge).toHaveClass(
+          `bg-${color}-100`,
+          `text-${color}-800`,
+          `dark:bg-${color}-900`,
+          `dark:text-${color}-100`,
+        );
+        expect(badge).not.toHaveClass('text-[color:var(--ink-4)]');
+        expect(link).toHaveAttribute(
+          'href',
+          title === 'ConvoAI endpoint' ? activePath : inactivePath,
+        );
+      }
+      expect(
+        screen.getByRole('link', { name: 'Overview' }).children,
+      ).toHaveLength(1);
+    },
+  );
+
   it('does not clamp long OpenAPI endpoint labels', async () => {
     const longTitle =
       'Start a conversational AI agent with a very long visible endpoint label';
@@ -781,6 +848,54 @@ describe('DocsSidebarTree', () => {
     expect(
       screen.queryByRole('button', { name: /Conversational AI/i }),
     ).toBeNull();
+  });
+
+  it('keeps an explicitly open root group collapsible beside direct overview links', async () => {
+    const root = '/zh-CN/api-reference/rtc/react-sdk';
+    const overview: DocsSidebarNode = {
+      id: `${root}/overview`,
+      title: '概览',
+      type: 'page',
+      url: `${root}/overview`,
+    };
+    renderSidebarTree(
+      [
+        overview,
+        {
+          id: 'web-sdk',
+          title: 'Web SDK API',
+          type: 'section',
+          collapsible: true,
+          defaultOpen: true,
+          children: [
+            {
+              id: 'client',
+              title: 'IAgoraRTCClient',
+              type: 'page',
+              url: `${root}/web-sdk/interfaces/iagorartcclient`,
+            },
+          ],
+        },
+      ],
+      overview.url,
+    );
+
+    const toggle = await screen.findByRole('button', { name: 'Web SDK API' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('link', { name: 'IAgoraRTCClient' }),
+    ).toBeInTheDocument();
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(
+      screen.queryByRole('link', { name: 'IAgoraRTCClient' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '概览' })).toBeInTheDocument();
+    fireEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(
+      screen.getByRole('link', { name: 'IAgoraRTCClient' }),
+    ).toBeInTheDocument();
   });
 
   it('opens the realtime section by default on the introduction index page', async () => {

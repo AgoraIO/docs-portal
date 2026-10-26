@@ -8,11 +8,11 @@ RTM SDK API 参考介绍了实时消息相关 API 的接口描述、接口方法
 
 #### 方式一：使用 CDN 添加 SDK
 
-[点击此处](https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip)下载最新版本的 JavaScript SDK，并在你的项目中添加以下代码引用它：
+[点击此处](https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip)下载最新版本的 JavaScript SDK，并在你的项目中添加以下代码引用它：
 
 ```javascript
 // 使用 CDN 直接将以下代码添加到你的 Web 应用中，或下载 SDK 文件后在本地引用
-// 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.2
+// 将 x.y.z 替换为具体的 SDK 版本号，如 2.3.0
 // 可通过发版说明获取最新版本号
 <script src="your_path_to_sdk/agora-rtm.x.y.z.min.js"></script>
 ```
@@ -233,8 +233,8 @@ const { RTMConfig } = AgoraRTM;
 
 是否上传日志：
 
-    - `true`: 启用日志上传
-    - `false`: 关闭日志上传。
+- `true`: 启用日志上传
+- `false`: 关闭日志上传。
 
 </Slot>
 
@@ -242,12 +242,12 @@ const { RTMConfig } = AgoraRTM;
 
 是否开启云代理:
 
-    - `true`: 开启。
-    - `false`: 关闭。
+- `true`: 开启。
+- `false`: 关闭。
 
-    :::info[信息]
-    该功能仅适用于 Message Channel。
-    :::
+:::info[信息]
+该功能仅适用于 Message Channel。从 v2.3.0 起，SDK 不再自动回退到 Cloud Proxy。需要使用时，必须在初始化 RTM 实例时将该参数显式设置为 `true`。
+:::
 
 </Slot>
 
@@ -255,8 +255,8 @@ const { RTMConfig } = AgoraRTM;
 
 是否使用 string 类型的用户 ID：
 
-    - `true`: 使用 string 类型的用户 ID。
-    - `false`: 使用 number 类型的用户 ID，SDK 会自动将 string 类型的 `userId` 转换为 number 类型。此时，`userId` 参数必须是数字字符串（例如:"123456")，否则初始化会失败。
+- `true`: 使用 string 类型的用户 ID。
+- `false`: 使用 number 类型的用户 ID，SDK 会自动将 string 类型的 `userId` 转换为 number 类型。此时，`userId` 参数必须是数字字符串（例如:"123456")，否则初始化会失败。
 
 </Slot>
 
@@ -284,8 +284,8 @@ SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM
 
 RTM 私有化场景下 SDK 边缘节点服务器的域名格式。支持以下取值：
 
-      - `1`：(默认) 自定义格式，例如 `ip.**`。
-      - `2`：老版本私有化格式，例如 `ip.edge.**`。
+- `1`：(默认) 自定义格式，例如 `ip.**`。
+- `2`：老版本私有化格式，例如 `ip.edge.**`。
 
 </Slot>
 
@@ -320,7 +320,7 @@ const rtm = new RTM("yourAppId", "Tony", rtmConfig);
 
 ### 接口描述
 
-RTM 总共有 8 种事件通知类型，如下表所示：
+RTM 总共有 7 种事件通知类型，如下表所示：
 
 | 事件类型   | 描述               |
 |--------------| ---------- |
@@ -329,7 +329,6 @@ RTM 总共有 8 种事件通知类型，如下表所示：
 | <code className="index-api-ontopicevent" id="topic">topic</code>               | <span className="index-desc-ontopicevent">接收用户所加入的 Stream Channel 中所有 Topic 变更事件通知。</span>                |
 | <code className="index-api-onstorageevent" id="storage">storage</code>             | <span className="index-desc-onstorageevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Channel Metadata 事件通知，及订阅用户的 User Metadata 事件通知。</span>  |
 | <code className="index-api-onlockevent" id="lock">lock</code>                | <span className="index-desc-onlockevent">接收用户所订阅的 Message Channel 及加入的 Stream Channel 中所有的 Lock 事件通知。</span>   |
-| <code className="index-api-onconnection" id="status">status</code>    | <span className="index-desc-onconnection">（已废弃）接收客户端网络连接状态变更的事件通知。</span> |
 |        <code className="index-api-onlinkstateevent" id="linkState">linkState</code>         | <span className="index-desc-onlinkstateevent">接收客户端网络连接状态变更的事件通知。</span> |
 | <code className="index-api-ontokenwillexpire" id="tokenPrivilegeWillExpire">tokenPrivilegeWillExpire</code> | <span className="index-desc-ontokenwillexpire">接收客户端 Token 将要过期的事件通知。</span>                      |
 
@@ -360,6 +359,7 @@ rtm.addEventListener("presence", event => {
     const publisher = event.publisher;          // Who trigger this event
     const states = event.stateChanged;          // User state payload, only for stateChanged event
     const interval = event.interval;            // Interval payload, only for interval event
+    const totalOccupancy = interval?.totalOccupancy; // Total occupancy of the channel, only for interval event
     const snapshot = event.snapshot;            // Snapshot payload, only for snapshot event
     const timestamp = event.timestamp;          // Event timestamp
 });
@@ -394,12 +394,6 @@ rtm.addEventListener("lock", event => {
     const owner = event.owner;                  // The owner of this lock
     const timestamp = event.timestamp;          // Event timestamp
 });
-// Connection State Change
-rtm.addEventListener("status", event => {
-    const currentState = event.state;                // Which connection state right now
-    const changeReason = event.reason;                // Why trigger this event
-    const timestamp = event.timestamp;          // Event timestamp
-});
 // Link State Change
 rtm.addEventListener('linkState', event => {
     const currentState = event.currentState;
@@ -419,13 +413,25 @@ rtm.addEventListener("tokenPrivilegeWillExpire", (channelName) => {
 });
 ```
 
+`PresenceEvent.interval` 的类型为 `IntervalDetail | null`，仅当 `eventType` 为 `INTERVAL` 时有值。
+
+`IntervalDetail` 数据类型包含以下属性：
+
+| 属性 | 类型 | 描述 |
+| ---- | ---- | ---- |
+| `join` | `UserList` | 在上一个周期内加入频道的用户列表。 |
+| `leave` | `UserList` | 在上一个周期内离开频道的用户列表。 |
+| `timeout` | `UserList` | 在上一个周期内超时的用户列表。 |
+| `userStateList` | `UserState[]` | 在上一个周期内状态变更的用户列表。包含用户 ID 和状态键值对。 |
+| `totalOccupancy` | number | 当前频道的总在线人数。在大频道优化模式下，该值表示频道内所有在线用户的数量，不受最多同步 512 名用户明细的限制；但该值可能有短暂延迟。 |
+
 <a id="删除监听"></a>
 ### 删除监听
 
 你可以调用 `{config. removedelegate["javascript"]}` 方法删除指定的事件监听。示例代码如下：
 
 ```javascript
-rtm.removeEventListener("status", statusHandler);
+rtm.removeEventListener("linkState", linkStateHandler);
 ```
 
 ## login
@@ -460,8 +466,8 @@ rtm.login(options?: object): Promise<LoginResponse>;
 
 初始化 RTM 客户端的 Token。
 
-    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
-    - 如果你的项目未开启 Token 鉴权，你可以不填，或填入开通了 RTM 服务的项目 App ID。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目未开启 Token 鉴权，你可以不填，或填入开通了 RTM 服务的项目 App ID。
 
 </Slot>
 

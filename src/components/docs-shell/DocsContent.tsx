@@ -22,10 +22,11 @@ import { AccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import { isCnPublicDocsPath } from '@/lib/cn-public-routing';
 import {
   findDocsHeadingForHash,
   getActiveDocsScrollContainer,
-  scrollDocsHashTarget,
+  scrollDocsHashTargetAfterLayout,
   syncDocsHashTargetFromLocation,
 } from '@/lib/docs-hash';
 import {
@@ -42,14 +43,19 @@ import {
 } from '@/lib/i18n/i18n-config';
 import { isPublicMarkdownLocale } from '@/lib/machine-readable-docs';
 import { getPlatformLabel, type PlatformKey } from '@/lib/platforms/registry';
+import { toCnContentSearchUrl } from '@/lib/search/cn-search-urls.mjs';
+import { DOCS_REGION } from '@/lib/site-region';
 import {
   PlatformHeaderTabs,
+  PlatformPageProvider,
   PlatformPanel,
   PlatformTabsGroup,
   PlatformTabsPlacementProvider,
+  usePlatformPageContext,
 } from '../mdx/PlatformTabsGroup';
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
+import { DocsMeasurementContext } from './DocsContentMeasurement';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -71,6 +77,46 @@ type DocsArticleReturnLink = {
   href: string;
   title: string;
 };
+
+function PlatformTitleBadges({
+  fallbackPlatforms,
+  locale,
+  platformTabs,
+}: {
+  fallbackPlatforms: PlatformKey[];
+  locale: AppLocale | string;
+  platformTabs?: {
+    initialPlatform?: PlatformKey;
+  };
+}) {
+  const pageContext = usePlatformPageContext();
+  const selectedPlatform =
+    platformTabs?.initialPlatform ?? pageContext?.activePlatform;
+  const platforms = selectedPlatform ? [selectedPlatform] : fallbackPlatforms;
+  const labels = platforms.map((platform) =>
+    getPlatformLabel(platform, normalizeLocale(locale) ?? DEFAULT_LOCALE),
+  );
+
+  if (labels.length === 0) {
+    return null;
+  }
+
+  return (
+    <ul
+      aria-label={locale === 'zh-CN' ? '适用平台' : 'Platforms'}
+      className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
+    >
+      {labels.map((label) => (
+        <li
+          className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
+          key={label}
+        >
+          {label}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function DocsContent({
   body,
@@ -154,10 +200,6 @@ export function DocsContent({
       : false;
   const isMdxBody =
     resolvedBody?.kind === 'mdx' || resolvedBody?.kind === 'platform-group';
-  const titlePlatformLabels = titlePlatforms.map((platform) =>
-    getPlatformLabel(platform, currentLocale),
-  );
-
   useEffect(() => {
     if (!isMdxBody) {
       return;
@@ -176,7 +218,7 @@ export function DocsContent({
     };
   }, [isMdxBody]);
 
-  return (
+  const article = (
     <article
       data-docs-home={isHomePage ? 'true' : undefined}
       className={cn(
@@ -259,23 +301,11 @@ export function DocsContent({
                 <h1 className="min-w-0 text-[2rem] leading-[1.12] font-bold tracking-[-0.022em] text-[color:var(--ink-1)] sm:text-[2.375rem]">
                   {displayTitle}
                 </h1>
-                {titlePlatformLabels.length > 0 ? (
-                  <ul
-                    aria-label={
-                      currentLocale === 'zh-CN' ? '适用平台' : 'Platforms'
-                    }
-                    className="m-0 flex list-none flex-wrap items-center gap-1.5 p-0"
-                  >
-                    {titlePlatformLabels.map((label) => (
-                      <li
-                        className="inline-flex h-6 items-center rounded-md border border-[color:color-mix(in_srgb,var(--accent-brand)_36%,transparent)] bg-[color:color-mix(in_srgb,var(--accent-brand)_12%,transparent)] px-2 text-xs font-semibold leading-none text-[color:var(--accent-brand)]"
-                        key={label}
-                      >
-                        {label}
-                      </li>
-                    ))}
-                  </ul>
-                ) : null}
+                <PlatformTitleBadges
+                  fallbackPlatforms={titlePlatforms}
+                  locale={currentLocale}
+                  platformTabs={platformTabs}
+                />
               </div>
               <p
                 className="mt-2 inline-flex items-center gap-1.5 text-[13px] leading-5 text-[color:var(--ink-4)]"
@@ -416,6 +446,34 @@ export function DocsContent({
         />
       )}
     </article>
+  );
+
+  const measuredArticle = (
+    <DocsMeasurementContext.Provider
+      value={{
+        contentPath,
+        contentType: resolvedBody?.kind ?? 'unknown',
+        platform: titlePlatforms.length === 1 ? titlePlatforms[0] : undefined,
+        version: sidebarHeader?.versionSwitcher?.currentId,
+      }}
+    >
+      {article}
+    </DocsMeasurementContext.Provider>
+  );
+
+  if (!platformTabs) {
+    return measuredArticle;
+  }
+
+  return (
+    <PlatformPageProvider
+      canonicalPlatform={platformTabs.canonicalPlatform}
+      defaultPlatform={platformTabs.defaultPlatform}
+      initialPlatform={platformTabs.initialPlatform}
+      platforms={platformTabs.platforms}
+    >
+      {measuredArticle}
+    </PlatformPageProvider>
   );
 }
 
@@ -643,7 +701,11 @@ function getSafeStoredDocsHref(href: string) {
 }
 
 function getDocsPageKey(url: URL) {
-  const pathname = normalizePathname(url.pathname);
+  const rawPath = normalizePathname(url.pathname);
+  const pathname =
+    DOCS_REGION === 'cn' && isCnPublicDocsPath(rawPath)
+      ? toCnContentSearchUrl(rawPath)
+      : rawPath;
 
   if (!isDocsPagePath(pathname)) {
     return null;
@@ -779,9 +841,16 @@ export function DocsTableOfContents({
   const [derivedItems, setDerivedItems] = useState<TOCItemType[]>([]);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(() => {
-    const source = derivedItems.length > toc.length ? derivedItems : toc;
+    if (derivedItems.length === 0) {
+      return toc.filter((item) => typeof item.title === 'string');
+    }
 
-    return source.filter((item) => typeof item.title === 'string');
+    const sourceByUrl = new Map(toc.map((item) => [item.url, item]));
+
+    // Rendered headings define reading order and the active platform's IDs.
+    return derivedItems
+      .map((item) => sourceByUrl.get(item.url) ?? item)
+      .filter((item) => typeof item.title === 'string');
   }, [derivedItems, toc]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
@@ -798,7 +867,7 @@ export function DocsTableOfContents({
       return next;
     });
     setIsMobileOpen(false);
-    scrollDocsHashTarget(url);
+    scrollDocsHashTargetAfterLayout(url, { behavior: 'auto' });
   }, []);
 
   useEffect(() => {
@@ -816,7 +885,7 @@ export function DocsTableOfContents({
 
     observer.observe(document.body, {
       attributes: true,
-      attributeFilter: ['hidden', 'aria-hidden', 'inert'],
+      attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state'],
       childList: true,
       subtree: true,
     });
@@ -848,8 +917,16 @@ export function DocsTableOfContents({
           (scrollContainer?.getBoundingClientRect().top ?? 0) +
           TOC_ACTIVE_OFFSET;
         const viewportRect = getScrollViewportRect(scrollContainer);
-        const headings = items.map((item) => findDocsHeadingForHash(item.url));
-        let nextActiveUrl = items[0]?.url ?? '';
+        const headings = items.map((item) => {
+          const heading = findDocsHeadingForHash(item.url);
+
+          return heading && isHeadingActiveForToc(heading) ? heading : null;
+        });
+        const firstActiveHeadingIndex = headings.findIndex(Boolean);
+        let nextActiveUrl =
+          firstActiveHeadingIndex >= 0
+            ? (items[firstActiveHeadingIndex]?.url ?? '')
+            : '';
         const nextVisibleUrls = new Set<string>();
 
         for (const [index, item] of items.entries()) {
@@ -889,7 +966,12 @@ export function DocsTableOfContents({
     });
     window.addEventListener('scroll', updateActiveUrl, { passive: true });
     window.addEventListener('resize', updateActiveUrl);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, {
+      attributeFilter: ['data-state'],
+      attributes: true,
+      childList: true,
+      subtree: true,
+    });
     updateActiveUrl();
 
     return () => {
@@ -1088,14 +1170,41 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     return [];
   }
 
-  return Array.from(article.querySelectorAll<HTMLHeadingElement>('h2, h3, h4'))
+  return Array.from(
+    article.querySelectorAll<HTMLHeadingElement>('h2, h3, h4, h5, h6'),
+  )
     .filter((heading) => heading.id && !isHiddenFromToc(heading))
-    .map((heading) => ({
-      depth: Number(heading.tagName.slice(1)),
-      title: heading.textContent?.trim() ?? '',
-      url: `#${heading.id}`,
-    }))
+    .map((heading) => {
+      const headingDepth = Number(heading.tagName.slice(1));
+
+      return {
+        depth: heading.hasAttribute('data-accordion-value')
+          ? Math.min(headingDepth + 1, 4)
+          : headingDepth,
+        title: heading.textContent?.trim() ?? '',
+        url: `#${heading.id}`,
+      };
+    })
     .filter((item) => item.title.length > 0);
+}
+
+function isHeadingActiveForToc(heading: HTMLElement) {
+  return (
+    !heading.hasAttribute('data-accordion-value') ||
+    isOpenAccordionHeading(heading)
+  );
+}
+
+function isOpenAccordionHeading(heading: HTMLElement) {
+  if (!heading.hasAttribute('data-accordion-value')) {
+    return false;
+  }
+
+  return (
+    heading.parentElement
+      ?.closest('[data-state]')
+      ?.getAttribute('data-state') === 'open'
+  );
 }
 
 function isHiddenFromToc(element: HTMLElement) {
@@ -1108,7 +1217,12 @@ function isHiddenFromToc(element: HTMLElement) {
       current.hidden ||
       current.getAttribute('aria-hidden') === 'true' ||
       current.getAttribute('data-toc-hidden') === 'true' ||
-      current.hasAttribute('inert')
+      current.hasAttribute('inert') ||
+      (current.getAttribute('role') === 'tabpanel' &&
+        current.getAttribute('data-state') === 'inactive') ||
+      ((current.getAttribute('role') === 'region' ||
+        current.tagName === 'SECTION') &&
+        current.getAttribute('data-state') === 'closed')
     ) {
       return true;
     }

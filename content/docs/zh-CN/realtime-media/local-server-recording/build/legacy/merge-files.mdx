@@ -53,12 +53,12 @@ description: "了解如何在本地服务端录制中 merge-files，包括适用
 
 设置转码模式，可设为：
 
-      - `0`：默认转码模式，按 Segment 转码，即把同一个 Segment 的音频和视频合成一个音视频文件。
-      - `1`：音视频合并模式。
-      - `2`：音频合并模式。
-      - `3`：视频合并模式。
+- `0`：默认转码模式，按 Segment 转码，即把同一个 Segment 的音频和视频合成一个音视频文件。
+- `1`：音视频合并模式。
+- `2`：音频合并模式。
+- `3`：视频合并模式。
 
-      详见下文 [`-m` 参数介绍](#option)。
+详见下文 [`-m` 参数介绍](#option)。
 
 </Slot>
 
@@ -66,12 +66,12 @@ description: "了解如何在本地服务端录制中 merge-files，包括适用
 
 设置保存模式，表示转码是否需要严格时间同步，即用户离开频道的时间是否占转码文件时长：
 
-      - 不设置 `-s`，则为默认的 `all time recording` 模式。此模式下，如果用户录制中途退出频道后重新加入，用户退出的时间会以黑色的画面呈现在录制文件里。举例来说，用户在频道里 2 分钟后，退出频道 30 分钟，再加入频道 2 分钟，则录制文件长度最终为 34 分钟，其中 30 分钟为黑屏。
-      - 如果设置了 `-s`，则转码文件中删除用户中途退出频道到重新加入频道之间的时长。
+- 不设置 `-s`，则为默认的 `all time recording` 模式。此模式下，如果用户录制中途退出频道后重新加入，用户退出的时间会以黑色的画面呈现在录制文件里。举例来说，用户在频道里 2 分钟后，退出频道 30 分钟，再加入频道 2 分钟，则录制文件长度最终为 34 分钟，其中 30 分钟为黑屏。
+- 如果设置了 `-s`，则转码文件中删除用户中途退出频道到重新加入频道之间的时长。
 
-      :::warning[注意]
-      此参数仅在 `-m` 设为 `1`，`2` 或 `3` 时有效。
-      :::
+:::warning[注意]
+此参数仅在 `-m` 设为 `1`，`2` 或 `3` 时有效。
+:::
 
 </Slot>
 
@@ -91,8 +91,8 @@ description: "了解如何在本地服务端录制中 merge-files，包括适用
 
 同时满足以下条件：
 
-      - 该 UID 加入频道并发流
-      - 录制 SDK 加入频道
+- 该 UID 加入频道并发流
+- 录制 SDK 加入频道
 
 </Slot>
 
@@ -100,9 +100,9 @@ description: "了解如何在本地服务端录制中 merge-files，包括适用
 
 满足以下任一条件：
 
-      - 该 UID 停止发流且 15 秒内没有重新发流
-      - 该 UID 离开频道且 15 秒内没有重新加入
-      - 录制 SDK 离开频道
+- 该 UID 停止发流且 15 秒内没有重新发流
+- 该 UID 离开频道且 15 秒内没有重新加入
+- 录制 SDK 离开频道
 
 </Slot>
 
@@ -110,8 +110,8 @@ description: "了解如何在本地服务端录制中 merge-files，包括适用
 
 同时满足以下条件：
 
-      - 该 UID 加入频道并发流
-      - 录制 SDK 加入频道并手动开始录制
+- 该 UID 加入频道并发流
+- 录制 SDK 加入频道并手动开始录制
 
 </Slot>
 
@@ -119,9 +119,9 @@ description: "了解如何在本地服务端录制中 merge-files，包括适用
 
 满足以下任一条件：
 
-      - 该 UID 停止发流且 15 秒内没有再发流
-      - 该 UID 离开频道且 15 秒内没有重新加入
-      - 录制 SDK 手动暂停录制
+- 该 UID 停止发流且 15 秒内没有再发流
+- 该 UID 离开频道且 15 秒内没有重新加入
+- 录制 SDK 手动暂停录制
 
 </Slot>
 
@@ -200,43 +200,43 @@ video_convert.py -f <待转码文件所在路径> -m 1 -p 30 -r 640 360
 <Slot for="merge-files-html-2-1-1">
 
 - VLC
-      - ffplayer
+- ffplayer
 
 </Slot>
 
 <Slot for="merge-files-html-2-2-1">
 
 - Media Player
-      - KM Player
-      - VLC Player
-      - Chrome (>= 49.0.2623)
+- KM Player
+- VLC Player
+- Chrome (>= 49.0.2623)
 
 </Slot>
 
 <Slot for="merge-files-html-2-3-1">
 
 - Quick Time Player
-      - Movist
-      - MX Player
-      - Chrome (>= 49.0.2623)
-      - Safari (>= 11.0.3)
+- Movist
+- MX Player
+- Chrome (>= 49.0.2623)
+- Safari (>= 11.0.3)
 
 </Slot>
 
 <Slot for="merge-files-html-2-4-1">
 
 - 系统播放器
-      - KM Player
-      - Safari (>= 9.0)
+- KM Player
+- Safari (>= 9.0)
 
 </Slot>
 
 <Slot for="merge-files-html-2-5-1">
 
 - 系统播放器
-      - MX Player
-      - VLC
-      - KM Player
-      - Chrome (>= 49.0.2623)
+- MX Player
+- VLC
+- KM Player
+- Chrome (>= 49.0.2623)
 
 </Slot>

@@ -1,6 +1,6 @@
 import { createLink } from '@tanstack/react-router';
 import {
-  Accordion,
+  type Accordion as FumadocsAccordion,
   Accordions as FumadocsAccordions,
 } from 'fumadocs-ui/components/accordion';
 import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
@@ -18,15 +18,25 @@ import {
   TabsList as FumadocsTabsList,
   TabsTrigger as FumadocsTabsTrigger,
 } from 'fumadocs-ui/components/tabs';
+import {
+  AccordionContent as FumadocsAccordionContent,
+  AccordionHeader as FumadocsAccordionHeader,
+  AccordionItem as FumadocsAccordionItem,
+  AccordionTrigger as FumadocsAccordionTrigger,
+} from 'fumadocs-ui/components/ui/accordion';
+import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
-import { ArrowRightIcon } from 'lucide-react';
+import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
+import { ArrowRightIcon, Check, LinkIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
   Children,
   type ComponentProps,
   type ComponentType,
+  type CSSProperties,
   createContext,
+  createElement,
   type Dispatch,
   isValidElement,
   type MouseEvent,
@@ -37,11 +47,14 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useEffectEvent,
   useId,
+  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useResourceAccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { getChineseAccountGuidanceResource } from '@/components/account-guidance/resource-registry';
 import {
@@ -53,11 +66,17 @@ import {
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/cn';
 import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+  getActiveDocsScrollContainer,
+} from '@/lib/docs-hash';
+import {
   type NormalizedDocsHref,
   normalizeDocsHref,
 } from '@/lib/docs-link-normalize';
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
+import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -65,6 +84,7 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
@@ -88,6 +108,7 @@ const RouterFumadocsCard = createLink(FumadocsCard);
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
 const MdxTabLabelsContext = createContext<Record<string, string>>({});
 const MdxTabLabelContext = createContext<string | undefined>(undefined);
+const MdxAccordionRootContext = createContext(false);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   children?: ReactNode;
@@ -106,9 +127,21 @@ type AccordionsRootProps = Omit<
 > & {
   children?: ReactNode;
   defaultValue?: string | string[];
+  openFirst?: boolean;
   onValueChange?: (value: string | string[]) => void;
   type?: 'single' | 'multiple';
   value?: string | string[];
+};
+type AccordionHeadingLevel = 2 | 3 | 4;
+type AccordionProps = Omit<
+  ComponentProps<typeof FumadocsAccordion>,
+  'children' | 'id' | 'title' | 'value'
+> & {
+  children?: ReactNode;
+  headingLevel?: AccordionHeadingLevel;
+  id?: string;
+  title: ReactNode;
+  value?: string;
 };
 type CodeBlockTabsRootProps = ComponentProps<typeof FumadocsCodeBlockTabs> & {
   children?: ReactNode;
@@ -168,6 +201,7 @@ type ActiveAccordion = {
 };
 
 type AccordionPageState = {
+  accordionResetKey: number;
   activeAccordion?: ActiveAccordion;
   codeBlockTabValues: Record<string, string>;
   setActiveAccordion: Dispatch<SetStateAction<ActiveAccordion | undefined>>;
@@ -182,19 +216,154 @@ const ParameterListVariantContext =
 const ParameterNestingContext = createContext(0);
 const TableParameterDescriptionContext = createContext(false);
 
+function Accordion({
+  children,
+  headingLevel,
+  id,
+  title,
+  value = String(title),
+  ...props
+}: AccordionProps) {
+  const hasAccordionRoot = useContext(MdxAccordionRootContext);
+  const titleContent = (
+    <FumadocsAccordionTrigger>{title}</FumadocsAccordionTrigger>
+  );
+  const headingTag = headingLevel
+    ? (`h${headingLevel}` as 'h2' | 'h3' | 'h4')
+    : undefined;
+  const headingTitle = headingTag
+    ? createElement(
+        headingTag,
+        {
+          className: 'm-0 flex flex-1 text-base font-medium',
+          'data-accordion-value': value,
+          id,
+        },
+        titleContent,
+      )
+    : null;
+  const header = headingTitle ? (
+    <div className="not-prose flex flex-row items-center text-fd-card-foreground font-medium has-focus-visible:bg-fd-accent">
+      {headingTitle}
+      {id ? <AccordionCopyButton id={id} /> : null}
+    </div>
+  ) : (
+    <FumadocsAccordionHeader id={id} data-accordion-value={value}>
+      {titleContent}
+      {id ? <AccordionCopyButton id={id} /> : null}
+    </FumadocsAccordionHeader>
+  );
+
+  const accordionItem = (
+    <FumadocsAccordionItem value={value} {...props}>
+      {header}
+      <FumadocsAccordionContent
+        data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
+        className={
+          headingLevel !== undefined ? 'data-[state=closed]:hidden' : undefined
+        }
+        forceMount={headingLevel !== undefined ? true : undefined}
+      >
+        <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">
+          {children}
+        </div>
+      </FumadocsAccordionContent>
+    </FumadocsAccordionItem>
+  );
+
+  if (!hasAccordionRoot) {
+    return (
+      <ControlledFumadocsAccordions defaultValue={value} type="single">
+        {accordionItem}
+      </ControlledFumadocsAccordions>
+    );
+  }
+
+  return accordionItem;
+}
+
+function AccordionCopyButton({ id }: { id: string }) {
+  const { t } = useTranslation('common');
+  const [checked, onClick] = useCopyButton(() => {
+    const url = new URL(window.location.href);
+    url.hash = id;
+    return navigator.clipboard.writeText(url.toString());
+  });
+
+  return (
+    <button
+      type="button"
+      aria-label={t('docs.copyLink')}
+      className={cn(
+        buttonVariants({
+          color: 'ghost',
+          className: 'text-fd-muted-foreground me-2',
+        }),
+      )}
+      onClick={onClick}
+    >
+      {checked ? (
+        <Check className="size-3.5" />
+      ) : (
+        <LinkIcon className="size-3.5" />
+      )}
+    </button>
+  );
+}
+
+function firstVersionValue(children: ReactNode): string | undefined {
+  let first: string | undefined;
+
+  Children.forEach(children, (child) => {
+    if (first || !isValidElement<{ children?: ReactNode }>(child)) {
+      return;
+    }
+
+    if (child.type === Accordion) {
+      const { headingLevel, title, value } = child.props as AccordionProps;
+      if (headingLevel) {
+        first = value ?? String(title);
+      }
+    } else {
+      first = firstVersionValue(child.props.children);
+    }
+  });
+
+  return first;
+}
+
 export function MDXAccordionProvider({ children }: { children: ReactNode }) {
   const [activeAccordion, setActiveAccordion] = useState<ActiveAccordion>();
+  const [accordionResetKey, setAccordionResetKey] = useState(0);
   const [codeBlockTabValues, setCodeBlockTabValues] = useState<
     Record<string, string>
   >({});
+
+  useEffect(() => {
+    const resetActiveAccordion = () => {
+      setActiveAccordion(undefined);
+      setAccordionResetKey((current) => current + 1);
+    };
+
+    window.addEventListener(PLATFORM_PREFERENCE_EVENT, resetActiveAccordion);
+
+    return () => {
+      window.removeEventListener(
+        PLATFORM_PREFERENCE_EVENT,
+        resetActiveAccordion,
+      );
+    };
+  }, []);
+
   const value = useMemo(
     () => ({
+      accordionResetKey,
       activeAccordion,
       codeBlockTabValues,
       setActiveAccordion,
       setCodeBlockTabValues,
     }),
-    [activeAccordion, codeBlockTabValues],
+    [accordionResetKey, activeAccordion, codeBlockTabValues],
   );
 
   return (
@@ -499,9 +668,28 @@ function Tabs({
   defaultValue,
   items,
   onValueChange,
+  onMouseDownCapture,
+  onKeyDownCapture,
+  onFocusCapture,
+  ref,
   value,
   ...props
 }: TabsRootProps) {
+  const rootRef = useRef<HTMLDivElement | null>(null);
+  const scrollAnchorRef = useRef<{
+    list: HTMLElement;
+    top: number;
+    owner: HTMLElement | null;
+    expiry: number;
+    value: string | undefined;
+  } | null>(null);
+  const setRootRef = useCallback(
+    (element: HTMLDivElement | null) => {
+      rootRef.current = element;
+      assignRef(ref, element);
+    },
+    [ref],
+  );
   const values = useTabValues({ children, items });
   const labels = useMemo(() => {
     const collected = collectTabLabels(children);
@@ -519,14 +707,150 @@ function Tabs({
     values,
   });
 
+  function captureScrollAnchor(target: EventTarget | null) {
+    const root = rootRef.current;
+    const tab =
+      target instanceof Element
+        ? target.closest<HTMLElement>('[role="tab"]')
+        : null;
+    if (
+      !props.groupId ||
+      !root ||
+      !tab ||
+      tab.closest('[data-mdx-tabs-root]') !== root ||
+      tab.getAttribute('aria-selected') === 'true' ||
+      scrollAnchorRef.current
+    )
+      return;
+    const list = tab.closest<HTMLElement>('[role="tablist"]');
+    if (!list) return;
+    let owner = list.parentElement;
+    while (
+      owner &&
+      owner !== document.body &&
+      owner !== document.documentElement
+    ) {
+      const style = window.getComputedStyle(owner);
+      if (
+        /(auto|scroll|overlay)/.test(style.overflowY || style.overflow) &&
+        owner.scrollHeight > owner.clientHeight
+      )
+        break;
+      owner = owner.parentElement;
+    }
+    const anchor = {
+      list,
+      top: list.getBoundingClientRect().top,
+      owner:
+        owner === document.body || owner === document.documentElement
+          ? null
+          : owner,
+      expiry: 0,
+      value: safeValue,
+    };
+    scrollAnchorRef.current = anchor;
+    // Only the initiating input's commit may compensate. A later task, storage
+    // update or hash activation must not inherit a stale reading position.
+    anchor.expiry = window.setTimeout(() => {
+      if (scrollAnchorRef.current === anchor) scrollAnchorRef.current = null;
+    }, 0);
+  }
+
+  useLayoutEffect(() => {
+    const anchor = scrollAnchorRef.current;
+    scrollAnchorRef.current = null;
+    if (!anchor) return;
+    window.clearTimeout(anchor.expiry);
+    if (anchor.value === safeValue || !anchor.list.isConnected) return;
+    // Reading layout also lets native scroll anchoring settle. Correct only
+    // the residual displacement, so already-anchored browsers do not jump twice.
+    const delta = anchor.list.getBoundingClientRect().top - anchor.top;
+    if (Math.abs(delta) < 1) return;
+    if (anchor.owner) {
+      anchor.owner.scrollTo({
+        top: anchor.owner.scrollTop + delta,
+        behavior: 'instant',
+      });
+    } else {
+      window.scrollTo({ top: window.scrollY + delta, behavior: 'instant' });
+    }
+  }, [safeValue]);
+
+  useLayoutEffect(
+    () => () => {
+      if (scrollAnchorRef.current)
+        window.clearTimeout(scrollAnchorRef.current.expiry);
+      scrollAnchorRef.current = null;
+    },
+    [],
+  );
+
+  const revealHashTab = useEffectEvent((url: string) => {
+    const root = rootRef.current;
+    const target = findDocsHeadingForHash(url);
+    if (!root || !target || !root.contains(target)) return;
+
+    // Fumadocs' literal fragment lookup misses percent-encoded Chinese IDs.
+    // Activate this root's ancestor panel, including when tabs are nested.
+    for (
+      let panel: HTMLElement | null = target;
+      panel && panel !== root;
+      panel = panel.parentElement
+    ) {
+      const tabValue = panel.getAttribute('data-mdx-tab-value');
+      if (tabValue && panel.closest('[data-mdx-tabs-root]') === root) {
+        if (props.groupId) {
+          sessionStorage.setItem(props.groupId, tabValue);
+          if (props.persist) localStorage.setItem(props.groupId, tabValue);
+        }
+        setSafeValue(tabValue);
+        return;
+      }
+    }
+  });
+
+  useEffect(() => {
+    const applyCurrentHash = () => revealHashTab(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      revealHashTab(typeof url === 'string' ? url : window.location.hash);
+    };
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, []);
+
   return (
     <MdxTabLabelsContext value={labels}>
       <ControlledFumadocsTabs
         {...props}
+        data-mdx-tabs-root=""
+        ref={setRootRef}
         className={cn('bg-fd-card', className)}
         defaultValue={defaultValue}
         items={items}
         onValueChange={setSafeValue}
+        onMouseDownCapture={(event) => {
+          onMouseDownCapture?.(event);
+          if (!event.defaultPrevented && event.button === 0 && !event.ctrlKey)
+            captureScrollAnchor(event.target);
+        }}
+        onKeyDownCapture={(event) => {
+          onKeyDownCapture?.(event);
+          if (
+            !event.defaultPrevented &&
+            (event.key === 'Enter' || event.key === ' ')
+          )
+            captureScrollAnchor(event.target);
+        }}
+        onFocusCapture={(event) => {
+          onFocusCapture?.(event);
+          if (!event.defaultPrevented) captureScrollAnchor(event.target);
+        }}
         value={safeValue}
       >
         {children}
@@ -564,23 +888,52 @@ function assignRef<T>(ref: Ref<T> | undefined, value: T | null) {
   }
 }
 
+const VERSION_HEADING_SELECTOR =
+  'h2[data-accordion-value], h3[data-accordion-value], h4[data-accordion-value]';
+
 function Accordions({
   defaultValue,
+  openFirst = false,
+  onClickCapture,
   onValueChange,
   ref,
   type = 'single',
   value,
+  children,
   ...props
 }: AccordionsRootProps) {
   const rootId = useId();
   const rootRef = useRef<HTMLDivElement | null>(null);
   const appliedDefaultValueRef = useRef(false);
-  const appliedHashRef = useRef(false);
+  const pendingScrollAnchorRef = useRef<{
+    element: HTMLElement;
+    top: number;
+  } | null>(null);
   const pageState = useContext(AccordionPageStateContext);
+  const setActiveAccordion = pageState?.setActiveAccordion;
+  const firstValue = useMemo(
+    () => (openFirst ? firstVersionValue(children) : undefined),
+    [children, openFirst],
+  );
   const defaultSingleValue =
     typeof defaultValue === 'string' ? defaultValue : undefined;
+  const defaultMultipleValue = useMemo(
+    () =>
+      Array.isArray(defaultValue)
+        ? defaultValue
+        : typeof defaultValue === 'string'
+          ? [defaultValue]
+          : firstValue
+            ? [firstValue]
+            : [],
+    [defaultValue, firstValue],
+  );
   const controlledSingleValue = typeof value === 'string' ? value : undefined;
+  const controlledMultipleValue = Array.isArray(value) ? value : undefined;
   const [localValue, setLocalValue] = useState(defaultSingleValue ?? '');
+  const [localMultipleValue, setLocalMultipleValue] =
+    useState(defaultMultipleValue);
+  const appliedDefaultResetKeyRef = useRef(0);
   const setRootRef = useCallback(
     (element: HTMLDivElement | null) => {
       rootRef.current = element;
@@ -595,8 +948,92 @@ function Accordions({
       : '';
   const selectedValue =
     controlledSingleValue ?? (pageState ? pageControlledValue : localValue);
+  const selectedMultipleValue = controlledMultipleValue ?? localMultipleValue;
+
+  const captureVersionScrollAnchor = useCallback(
+    (event: MouseEvent<HTMLDivElement>) => {
+      if (event.target instanceof Element) {
+        const heading = event.target.closest<HTMLElement>(
+          VERSION_HEADING_SELECTOR,
+        );
+
+        if (heading && rootRef.current?.contains(heading)) {
+          pendingScrollAnchorRef.current = {
+            element: heading,
+            top: heading.getBoundingClientRect().top,
+          };
+        }
+      }
+
+      onClickCapture?.(event);
+    },
+    [onClickCapture],
+  );
+
+  const restoreVersionScrollAnchor = useCallback(() => {
+    const anchor = pendingScrollAnchorRef.current;
+
+    if (!anchor?.element.isConnected) {
+      pendingScrollAnchorRef.current = null;
+      return;
+    }
+
+    const delta = anchor.element.getBoundingClientRect().top - anchor.top;
+
+    if (Math.abs(delta) < 0.5) {
+      return;
+    }
+
+    const scrollContainer = getActiveDocsScrollContainer();
+
+    if (scrollContainer) {
+      scrollContainer.scrollTo({
+        behavior: 'auto',
+        top: scrollContainer.scrollTop + delta,
+      });
+    } else {
+      window.scrollTo({
+        behavior: 'auto',
+        top: window.scrollY + delta,
+      });
+    }
+  }, []);
 
   useEffect(() => {
+    if (type !== 'single' || !pendingScrollAnchorRef.current) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      if (selectedValue !== undefined) {
+        restoreVersionScrollAnchor();
+      }
+    });
+    const finalCorrection = window.setTimeout(() => {
+      if (selectedValue !== undefined) {
+        restoreVersionScrollAnchor();
+      }
+      pendingScrollAnchorRef.current = null;
+    }, 300);
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(finalCorrection);
+    };
+  }, [restoreVersionScrollAnchor, selectedValue, type]);
+
+  useEffect(() => {
+    if (
+      pageState &&
+      pageState.accordionResetKey !== appliedDefaultResetKeyRef.current
+    ) {
+      appliedDefaultValueRef.current = false;
+      appliedDefaultResetKeyRef.current = pageState.accordionResetKey;
+      if (type === 'multiple' && openFirst && value === undefined) {
+        setLocalMultipleValue(defaultMultipleValue);
+      }
+    }
+
     if (
       !(
         type === 'single' &&
@@ -613,46 +1050,114 @@ function Accordions({
     pageState.setActiveAccordion(
       (current) => current ?? { rootId, value: defaultSingleValue },
     );
-  }, [defaultSingleValue, pageState, rootId, type, value]);
+  }, [
+    defaultMultipleValue,
+    defaultSingleValue,
+    openFirst,
+    pageState,
+    rootId,
+    type,
+    value,
+  ]);
 
-  useEffect(() => {
-    if (type !== 'single' || appliedHashRef.current) {
-      return;
-    }
-
-    appliedHashRef.current = true;
-
-    const id = window.location.hash.substring(1);
+  const applyHash = useEffectEvent((url: string) => {
+    const id = url.startsWith('#') ? url.substring(1) : url;
     const element = rootRef.current;
 
     if (!element || id.length === 0) {
       return;
     }
 
-    const selected = document.getElementById(id);
+    const selected = findDocsHeadingForHash(`#${id}`);
 
     if (!selected || !element.contains(selected)) {
       return;
     }
 
-    const hashValue = selected.getAttribute('data-accordion-value');
+    const accordionContent = selected.closest<HTMLElement>(
+      '[role="region"][data-toc-hidden="true"]',
+    );
+    const accordionHeading =
+      accordionContent?.parentElement?.querySelector<HTMLElement>(
+        VERSION_HEADING_SELECTOR,
+      );
+    const sectionHeadings = selected.matches('section')
+      ? selected.querySelectorAll<HTMLElement>(VERSION_HEADING_SELECTOR)
+      : [];
+    const hashValue =
+      selected.getAttribute('data-accordion-value') ??
+      accordionHeading?.getAttribute('data-accordion-value') ??
+      (sectionHeadings.length === 1
+        ? sectionHeadings[0].getAttribute('data-accordion-value')
+        : null);
 
     if (!hashValue) {
       return;
     }
 
+    if (type === 'multiple') {
+      const nextValues = selectedMultipleValue.includes(hashValue)
+        ? selectedMultipleValue
+        : [...selectedMultipleValue, hashValue];
+
+      if (value === undefined) {
+        setLocalMultipleValue(nextValues);
+      }
+
+      onValueChange?.(nextValues);
+      return;
+    }
+
     if (value === undefined) {
-      if (pageState) {
-        pageState.setActiveAccordion({ rootId, value: hashValue });
+      if (setActiveAccordion) {
+        setActiveAccordion((current) =>
+          current?.rootId === rootId && current.value === hashValue
+            ? current
+            : { rootId, value: hashValue },
+        );
       } else {
         setLocalValue(hashValue);
       }
     }
 
     onValueChange?.(hashValue);
-  }, [onValueChange, pageState, rootId, type, value]);
+  });
+
+  useEffect(() => {
+    if (type !== 'single' && type !== 'multiple') {
+      return;
+    }
+
+    const applyCurrentHash = () => {
+      applyHash(window.location.hash);
+    };
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      applyHash(typeof url === 'string' ? url : window.location.hash);
+    };
+
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, [type]);
 
   function handleValueChange(nextValue: string | string[]) {
+    if (type === 'multiple') {
+      const nextMultipleValue = Array.isArray(nextValue) ? nextValue : [];
+
+      if (value === undefined) {
+        setLocalMultipleValue(nextMultipleValue);
+      }
+
+      onValueChange?.(nextMultipleValue);
+      return;
+    }
+
     const nextSingleValue = typeof nextValue === 'string' ? nextValue : '';
 
     if (value === undefined) {
@@ -668,28 +1173,35 @@ function Accordions({
     onValueChange?.(nextSingleValue);
   }
 
-  if (type === 'multiple') {
-    return (
+  const accordionRoot =
+    type === 'multiple' ? (
       <ControlledFumadocsAccordions
         {...props}
-        defaultValue={defaultValue}
-        onValueChange={onValueChange}
+        defaultValue={defaultMultipleValue}
+        onClickCapture={onClickCapture}
+        onValueChange={handleValueChange}
         ref={setRootRef}
         type={type}
-        value={value}
-      />
+        value={selectedMultipleValue}
+      >
+        {children}
+      </ControlledFumadocsAccordions>
+    ) : (
+      <ControlledFumadocsAccordions
+        {...props}
+        defaultValue={defaultSingleValue}
+        onClickCapture={captureVersionScrollAnchor}
+        onValueChange={handleValueChange}
+        ref={setRootRef}
+        type={type}
+        value={selectedValue}
+      >
+        {children}
+      </ControlledFumadocsAccordions>
     );
-  }
 
   return (
-    <ControlledFumadocsAccordions
-      {...props}
-      defaultValue={defaultSingleValue}
-      onValueChange={handleValueChange}
-      ref={setRootRef}
-      type={type}
-      value={selectedValue}
-    />
+    <MdxAccordionRootContext value>{accordionRoot}</MdxAccordionRootContext>
   );
 }
 
@@ -779,15 +1291,10 @@ function Pre({ className, ...props }: PreProps) {
       className={cn('bg-fd-card shadow-none', className)}
       viewportProps={{
         ...props.viewportProps,
-        className: cn(
-          'overflow-x-hidden overflow-y-auto',
-          props.viewportProps?.className,
-        ),
+        className: cn('overflow-auto', props.viewportProps?.className),
       }}
     >
-      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
-        {props.children}
-      </FumadocsCodeBlockPre>
+      <FumadocsCodeBlockPre>{props.children}</FumadocsCodeBlockPre>
     </FumadocsCodeBlock>
   );
 }
@@ -804,6 +1311,7 @@ function TabsContent({
   return (
     <MdxTabLabelContext value={tabLabel}>
       <FumadocsTabsContent
+        data-mdx-tab-value={tabValue}
         className={cn(
           '[&>figure:only-child]:bg-fd-card [&>figure:only-child]:shadow-none',
           className,
@@ -1732,9 +2240,52 @@ function isDocsRouteHref(href: string) {
   );
 }
 
-function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
+function InlineImage({
+  alt,
+  width,
+  height,
+  style,
+  ...props
+}: ComponentProps<'img'>) {
+  return (
+    <img
+      referrerPolicy="no-referrer"
+      {...props}
+      alt={alt}
+      width={width}
+      height={height}
+      style={{ width, height, ...style }}
+      className="not-prose m-0 inline-block h-auto max-w-full align-middle"
+    />
+  );
+}
+
+function ZoomableImage({
+  alt = '',
+  src,
+  displayWidth,
+  displayHeight,
+  style,
+  referrerPolicy = 'no-referrer',
+  ...props
+}: ComponentProps<'img'> & {
+  displayWidth?: CSSProperties['width'];
+  displayHeight?: CSSProperties['maxHeight'];
+}) {
+  const thumbnailStyle =
+    displayHeight === undefined
+      ? style
+      : { ...style, maxHeight: displayHeight, width: 'auto', height: 'auto' };
   if (typeof src !== 'string' || src.length === 0) {
-    return <FumadocsImage alt={alt} src={src} {...props} />;
+    return (
+      <FumadocsImage
+        alt={alt}
+        src={src}
+        referrerPolicy={referrerPolicy}
+        {...props}
+        style={thumbnailStyle}
+      />
+    );
   }
 
   const title = alt || 'Documentation image';
@@ -1745,9 +2296,20 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
         <button
           aria-label={`Zoom image: ${title}`}
           className="block cursor-zoom-in"
+          style={
+            displayWidth === undefined
+              ? undefined
+              : { width: displayWidth, maxWidth: '100%' }
+          }
           type="button"
         >
-          <FumadocsImage alt={alt} src={src} {...props} />
+          <FumadocsImage
+            alt={alt}
+            src={src}
+            referrerPolicy={referrerPolicy}
+            {...props}
+            style={thumbnailStyle}
+          />
         </button>
       </DialogTrigger>
       <DialogContent className="max-h-[calc(100vh-2rem)] w-fit max-w-[calc(100vw-2rem)] justify-items-center border-0 bg-transparent p-0 shadow-none sm:max-w-[calc(100vw-2rem)]">
@@ -1759,6 +2321,7 @@ function ZoomableImage({ alt = '', src, ...props }: ComponentProps<'img'>) {
           alt={alt}
           className="max-h-[calc(100vh-4rem)] max-w-[calc(100vw-4rem)] rounded-md object-contain shadow-2xl"
           src={src}
+          referrerPolicy={referrerPolicy}
         />
       </DialogContent>
     </Dialog>
@@ -1775,6 +2338,8 @@ export function getMDXComponents(
     CalloutContainer: DocsCalloutContainer,
     table: createDocsTableComponent(context?.locale),
     img: ZoomableImage,
+    DocsImage: ZoomableImage,
+    InlineImage,
     h2: (props) => <TabAwareHeading as="h2" {...props} />,
     h3: (props) => <TabAwareHeading as="h3" {...props} />,
     h4: (props) => <TabAwareHeading as="h4" {...props} />,
@@ -1784,6 +2349,7 @@ export function getMDXComponents(
     Link: createLegacyDocsLink(context?.contentPath),
     Card: createDocsCard(context?.contentPath),
     Cards,
+    RepositoryCardTitle,
     CommandBlock,
     Tabs,
     Tab: FumadocsTab,

@@ -1,6 +1,8 @@
 ---
 title: "使用 Expo 实现音视频互动"
 description: "了解如何快速接入实时互动 RTC，完成环境准备、参数配置、示例运行和核心流程验证。"
+titlePlatforms:
+  - react-native
 ---
 本文介绍如何集成声网实时互动 SDK，通过少量代码从 0 开始实现一个简单的实时互动 App，适用于互动直播和视频通话场景。
 
@@ -15,7 +17,7 @@ description: "了解如何快速接入实时互动 RTC，完成环境准备、�
 
 下图展示在 App 中实现音视频互动的基本工作流程：
 
-![实现音视频互动](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-tech.png)
+<DocsImage alt="实现音视频互动" src="https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-tech.png" displayWidth="60%" />
 
 1. 所有用户调用 `joinChannel` 方法加入频道，并根据需要设置用户角色：
 
@@ -790,8 +792,8 @@ agoraEngineRef.current?.release();
 声网提供了开源的 React Native Expo 实时音视频互动示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title="React Native Agora Expo Example" href="https://gitee.com/agoraio-community/react-native-agora/tree/main/examples/expo" />
-  <Card title="React Native Agora Expo Example" href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/examples/expo" />
+  <Card title={<RepositoryCardTitle provider="gitee">React Native Agora Expo Example</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/react-native-agora/tree/main/examples/expo" />
+  <Card title={<RepositoryCardTitle provider="github">React Native Agora Expo Example</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/examples/expo" />
 </Cards>
 
 ### 常见问题

@@ -69,13 +69,13 @@ title: "房间相关"
 
 房间类型，可设为：
 
-      - `0`: 一对一
-      - `2`: 大班课
-      - `4`: 小班课
+- `0`: 一对一
+- `2`: 大班课
+- `4`: 小班课
 
-      :::warning[注意]
-      该字段不可更新。
-      :::
+:::warning[注意]
+该字段不可更新。
+:::
 
 </Slot>
 
@@ -139,8 +139,8 @@ title: "房间相关"
 
 房间内白板组件状态。可设为：
 
-      - `0`: 禁用
-      - `1`: 启用
+- `0`: 禁用
+- `1`: 启用
 
 </Slot>
 
@@ -162,8 +162,8 @@ title: "房间相关"
 
 房间内聊天室组件状态。可设为：
 
-      - `0`: 禁用
-      - `1`: 启用
+- `0`: 禁用
+- `1`: 启用
 
 </Slot>
 
@@ -178,8 +178,8 @@ title: "房间相关"
 
 学生默认流状态。 可设为：
 
-      - `0`: 禁用
-      - `1`: 启用
+- `0`: 禁用
+- `1`: 启用
 
 </Slot>
 
@@ -194,8 +194,8 @@ title: "房间相关"
 
 学生默认流视频状态。 可设为：
 
-      - `0`: 禁用
-      - `1`: 启用
+- `0`: 禁用
+- `1`: 启用
 
 </Slot>
 
@@ -210,8 +210,8 @@ title: "房间相关"
 
 学生默认流音频状态。 可设为：
 
-      - `0`: 禁用
-      - `1`: 启用
+- `0`: 禁用
+- `1`: 启用
 
 </Slot>
 
@@ -372,59 +372,59 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 返回数据，包含以下字段：
 
-      - `roomUuid`: String 型，房间ID。
-      - `roomName`: String 型，房间名。
-      - `createTime`: Integer 型，创建房间时间戳。
-      - `roomProperties`: Object 型，房间属性。
+- `roomUuid`: String 型，房间ID。
+- `roomName`: String 型，房间名。
+- `createTime`: Integer 型，创建房间时间戳。
+- `roomProperties`: Object 型，房间属性。
 
-        - `roomType`: Integer 型，房间类型。
+  - `roomType`: Integer 型，房间类型。
 
-          - `0`: 一对一。
-          - `2`: 大班课。
-          - `4`: 小班课。
+    - `0`: 一对一。
+    - `2`: 大班课。
+    - `4`: 小班课。
 
-        - `schedule`: Object 型，课程计划。
+  - `schedule`: Object 型，课程计划。
 
-          - `state`: Integer 型，房间状态。
+    - `state`: Integer 型，房间状态。
 
-            - `0`: 未开始。
-            - `1`: 开始。
-            - `2`: 结束。
-            - `3`: 关闭。
+      - `0`: 未开始。
+      - `1`: 开始。
+      - `2`: 结束。
+      - `3`: 关闭。
 
-          - `startTime`: Integer 型，开始时间。
-          - `endTime`: Integer 型，结束时间。
-          - `closeTime`: Integer 型，关闭时间。
+    - `startTime`: Integer 型，开始时间。
+    - `endTime`: Integer 型，结束时间。
+    - `closeTime`: Integer 型，关闭时间。
 
-        - `widgets`: Object 型，组件集合。
+  - `widgets`: Object 型，组件集合。
 
-          - `netlessBoard`: Object 型，白板组件。
+    - `netlessBoard`: Object 型，白板组件。
 
-            - `extra`: Object 型，扩展信息。
+      - `extra`: Object 型，扩展信息。
 
-              - `boardAppId`: String 型，白板 App ID。
-              - `boardId`: String 型，白板房间 ID。
-              - `boardToken`: String 型，白板房间 Token。
-              - `boardRegion`: String 型，白板区域。
+        - `boardAppId`: String 型，白板 App ID。
+        - `boardId`: String 型，白板房间 ID。
+        - `boardToken`: String 型，白板房间 Token。
+        - `boardRegion`: String 型，白板区域。
 
-            - `state`: Integer 型，组件状态。
+      - `state`: Integer 型，组件状态。
 
-              - `0`: Integer 型，未激活。
-              - `1`: Integer 型，激活。
+        - `0`: Integer 型，未激活。
+        - `1`: Integer 型，激活。
 
-          - `easemobIM`: Object 型，聊天室组件。
+    - `easemobIM`: Object 型，聊天室组件。
 
-            - `extra`: Object 型，扩展信息。
+      - `extra`: Object 型，扩展信息。
 
-              - `orgName`: String 型，组织名。
-              - `appName`: String 型，app 名。
-              - `chatRoomId`: String 型，聊天室 ID。
-              - `appKey`: String 型，app Key。
+        - `orgName`: String 型，组织名。
+        - `appName`: String 型，app 名。
+        - `chatRoomId`: String 型，聊天室 ID。
+        - `appKey`: String 型，app Key。
 
-            - `state`: Integer 型，组件状态。
+      - `state`: Integer 型，组件状态。
 
-              - `0`: Integer 型，未激活。
-              - `1`: Integer 型，激活。
+        - `0`: Integer 型，未激活。
+        - `1`: Integer 型，激活。
 
 </Slot>
 
@@ -562,10 +562,10 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 课堂状态，可以设置为以下值：
 
-      - `0`: 未开始。
-      - `1`: 开始。
-      - `2`: 结束。课堂时间结束，但在拖堂时间内，用户可以加入课堂和在课堂内逗留。
-      - `3`: 关闭。拖堂时间结束，课堂关闭，所有用户被踢出并无法再进入。
+- `0`: 未开始。
+- `1`: 开始。
+- `2`: 结束。课堂时间结束，但在拖堂时间内，用户可以加入课堂和在课堂内逗留。
+- `3`: 关闭。拖堂时间结束，课堂关闭，所有用户被踢出并无法再进入。
 
 </Slot>
 
@@ -809,8 +809,8 @@ curl -X DELETE 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/te
 
 是否开启分组讨论：
 
-      - `1`: 开启。
-      - `0`: 关闭。
+- `1`: 开启。
+- `0`: 关闭。
 
 </Slot>
 
@@ -826,11 +826,11 @@ curl -X DELETE 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/te
 
 待创建的分组列表。包含：
 
-      - `groupUuid`: （选填）待创建的分组 ID，String 型。如果不填，系统会自动分配一个 ID。
-      - `groupName`: （选填）分组名，String 型。
-      - `users`：（必填）分组内用户列表，Array 型。包含：
+- `groupUuid`: （选填）待创建的分组 ID，String 型。如果不填，系统会自动分配一个 ID。
+- `groupName`: （选填）分组名，String 型。
+- `users`：（必填）分组内用户列表，Array 型。包含：
 
-        - `userUuid`：（必填）用户 UUID。这是用户的唯一标识符，也是登录 RTM 系统时所使用的用户 ID。长度在 64 字符以内。
+  - `userUuid`：（必填）用户 UUID。这是用户的唯一标识符，也是登录 RTM 系统时所使用的用户 ID。长度在 64 字符以内。
 
 </Slot>
 

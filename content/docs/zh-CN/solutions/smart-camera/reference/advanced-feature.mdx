@@ -2,9 +2,9 @@
 title: "告警通知和设备控制"
 description: "查看智能摄像头的告警通知和设备控制，了解关键概念、参数说明、使用限制和接入注意事项。"
 ---
-本文介绍如何实现smart-camera场景的进阶功能：
+本文介绍如何实现智能摄像头场景的进阶功能：
 
-- 告警通知：以人形检测为例。当smart-camera检测识别到有人后，会主动推送告警事件至应用端。
+- 告警通知：以人形检测为例。当智能摄像头检测识别到有人后，会主动推送告警事件至应用端。
 - 设备控制：客户端可以调节摄像头分辨率、设备音量等。
 
 ## 告警通知
@@ -13,7 +13,11 @@ description: "查看智能摄像头的告警通知和设备控制，了解关键
 
 ## 设备控制
 
-客户端需要通过信令系统在设备端调节摄像头分辨率、设备音量等。你可以在客户端集成声网 [RTM SDK](/zh-CN/realtime-media/rtm) 实现设备控制。RTSA Lite SDK 具备云信令接口，可以直接与 RTM SDK 进行通信。
+设备控制通过设备端与客户端之间的信令交互实现。设备端使用 RTSA Lite SDK 内置的 RTM 接口收发信令，无需额外集成独立 RTM SDK；客户端集成 RTM SDK，向设备端发送控制指令并接收响应。
+
+:::info[客户端示例版本]
+以下客户端代码示例使用 RTM 1.x 接口。使用 RTM 2 时，请参考[迁移指南](/zh-CN/realtime-media/rtm/reference/migration-guide)调整初始化、登录和消息收发代码，并确认所选客户端 RTM 版本与设备端 RTSA 版本的互通支持。
+:::
 
 ### 1. 生成 RTM Token
 
@@ -21,10 +25,10 @@ description: "查看智能摄像头的告警通知和设备控制，了解关键
 
 ### 2. 设备端和客户端登录 RTM 系统
 
-设备端通过 RTSA Lite SDK 的 `agora_rtc_login_rtm` 方法登录 RTM 系统。
+设备端通过 RTSA Lite SDK 的 `agora_rtm_login` 方法登录 RTM 系统。
 
 ```c
-rval = agora_rtc_login_rtm(p_config->p_rtm_uid, p_config->p_token, &rtm_handler);
+rval = agora_rtm_login(p_config->p_rtm_uid, p_config->p_token, &rtm_handler);
 if (rval < 0) {
     printf("login rtm failed\n");
     goto EXIT;
@@ -56,18 +60,27 @@ mRtmClient.login(token, uid, new ResultCallback<Void>() {
 
 ### 3. 设备端发送和接收信令
 
-设备端通过 RTSA Lite SDK 的 `agora_rtc_send_rtm_data` 方法和 `_on_rtm_data` 回调发送和接收信令。
+设备端通过 RTSA Lite SDK 的 `agora_rtm_send_data` 方法和 `on_rtm_data` 回调发送和接收信令。
+
+:::caution[注意]
+只有收到 `RTM_EVENT_TYPE_LOGIN` 且 `ERR_RTM_OK` 的成功回调后，才能调用 `agora_rtm_send_data`。
+:::
 
 ```c
 // 接收你登录的 RTM 系统中对端发送信令
-static void __on_rtm_data(const char *user_id, const void *data, size_t data_len) {
+static void __on_rtm_data(const char *user_id, const void *data, size_t data_len,
+                          rtm_message_type_e msg_type, const char *custom_type) {
     app_t *p_app = app_get_instance();
     app_config_t *p_config = &p_app->config;
 
-    if (p_config->rtm_role == 3) {
-        printf("Receive data[%s] length[%d]\n", (char *)data, (int)data_len);
+    if (msg_type == RTM_MESSAGE_TYPE_STRING) {
+        if (p_config->rtm_role == 3) {
+            printf("Receive data[%.*s] length[%zu]\n", (int)data_len, (const char *)data, data_len);
+        } else {
+            printf("data_callback %s data[], length[%zu]\n", user_id, data_len);
+        }
     } else {
-        printf("data_callback %s data[], length[%lu]\n", user_id, data_len);
+        printf("data_callback %s data[], length[%zu]\n", user_id, data_len);
     }
 
     if (p_app->config.rtm_recv_dump_flag && p_app->rtm_recv_file_fd != INVALID_FD) {
@@ -78,19 +91,28 @@ static void __on_rtm_data(const char *user_id, const void *data, size_t data_len
     }
 }
 // 监听本地用户状态
-static void __on_rtm_event(const char *user_id, uint32_t event_id, uint32_t event_code) {
-    LOGD("%s event id[%u], event code[%u]", user_id, event_id, event_code);
-    if (event_id == 0 && event_code == 0) {
+static void __on_rtm_event(const char *user_id, rtm_event_type_e event_type, rtm_err_code_e err_code) {
+    LOGD("%s event type[%d], err code[%d]", user_id, event_type, err_code);
+    if (event_type == RTM_EVENT_TYPE_LOGIN && err_code == ERR_RTM_OK) {
         app_t *p_app = app_get_instance();
         p_app->b_rtm_login_success_flag = 1;
     }
 }
 // 监听本地信令发送结果
-static void __on_rtm_send_data_res(uint32_t msg_id, uint32_t error_code) {
-    LOGD("msg id [%u], error_code[%u]", msg_id, error_code);
+static void __on_rtm_send_data_result(const char *rtm_uid, uint32_t msg_id, rtm_msg_state_e state) {
+    LOGD("user [%s] msg id[%u], state[%d]", rtm_uid, msg_id, state);
 }
 // 向指定 RTM 用户发送信令
-rval = agora_rtc_send_rtm_data(p_app->config.p_peer_uid, ++message_id, buffer, rval);
+app_t *p_app = app_get_instance();
+static uint32_t message_id = 0;
+const char buffer[] = "device control";
+const size_t buffer_len = sizeof(buffer) - 1;
+if (!p_app->b_rtm_login_success_flag) {
+    LOGE("%s RTM login not successful, skip sending data", TAG_API);
+    goto EXIT;
+}
+rval = agora_rtm_send_data(p_app->config.p_peer_uid, buffer, buffer_len, ++message_id,
+                           RTM_MESSAGE_TYPE_STRING, NULL);
 if (rval < 0) {
     LOGE("%s send data failed, rval=%d", TAG_API, rval);
     goto EXIT;

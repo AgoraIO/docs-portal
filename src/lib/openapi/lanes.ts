@@ -1,5 +1,6 @@
 import type { AppLocale } from '../i18n/i18n-config';
 import { SUPPORTED_LOCALES } from '../i18n/i18n-config';
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 
 export type OpenApiLaneOperation = {
   routeLeaf: string;
@@ -1592,7 +1593,9 @@ export const OPENAPI_LANES = [
 export type OpenApiLaneId = (typeof OPENAPI_LANES)[number]['id'];
 
 export function getOpenApiLanes(): readonly OpenApiLane[] {
-  return OPENAPI_LANES;
+  return OPENAPI_LANES.filter(
+    (lane) => !isRetiredCnDocsPath(lane.parentUrl['zh-CN']),
+  );
 }
 
 export function getOpenApiLaneLocales(lane: OpenApiLane) {

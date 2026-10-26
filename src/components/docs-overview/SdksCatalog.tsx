@@ -14,6 +14,7 @@ import {
 } from '@/components/account-guidance/AccountGuidance';
 import { getSdkAccountGuidanceTarget } from '@/components/account-guidance/resource-registry';
 import { cn } from '@/lib/cn';
+import { retiredCnProductIds } from '@/lib/retired-cn-docs.mjs';
 import { SolutionCardIcon, type SolutionCardIconKind } from './mdx-components';
 import { getPlatformIconSrc } from './platform-icon-src';
 import { getRtcDownloadCardEntries } from './rtc-download-card-entries';
@@ -221,6 +222,12 @@ const productFilters = {
     zhLabel: 'RTC 服务端 SDK',
     aliases: ['server-gateway', 'rtc-server-sdk'],
     productIds: ['server-gateway'],
+  },
+  rtsa: {
+    label: 'RTSA SDK',
+    zhLabel: ZH_CN_SDK_DOWNLOAD_PRODUCT_COPY.rtsa.label,
+    aliases: ['rtsa'],
+    productIds: ['rtsa'],
   },
   signaling: {
     label: 'Signaling SDK',
@@ -466,9 +473,15 @@ export function SdksCatalog({
     platformId: normalizePlatformFilter(platform, platforms),
     productId: normalizeProductFilter(product),
   });
-  const productFilter = queryFilters.productId
-    ? productFilters[queryFilters.productId]
-    : null;
+  const hiddenProductFilter =
+    locale === 'zh-CN' &&
+    queryFilters.productId &&
+    (retiredCnProductIds.includes(queryFilters.productId) ||
+      queryFilters.productId === 'iot');
+  const productFilter =
+    queryFilters.productId && !hiddenProductFilter
+      ? productFilters[queryFilters.productId]
+      : null;
   const productFilterProductIds = productFilter
     ? new Set<string>(productFilter.productIds)
     : null;
@@ -557,7 +570,9 @@ export function SdksCatalog({
       enabled={
         locale === 'zh-CN' &&
         typeof window !== 'undefined' &&
-        window.location.pathname === '/zh-CN/reference/sdks'
+        ['/zh-CN/reference/sdks', '/reference/sdks'].includes(
+          window.location.pathname.replace(/\/$/, ''),
+        )
       }
     >
       <section
@@ -605,7 +620,7 @@ export function SdksCatalog({
                   {capability.products.map((group) => (
                     <ProductCard
                       copy={copy}
-                      defaultOpen={false}
+                      defaultOpen={Boolean(productFilter)}
                       group={group}
                       initialPlatformId={queryFilters.platformId}
                       key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
@@ -657,6 +672,10 @@ function ProductCard({
   const [versionIndex, setVersionIndex] = useState('0');
   const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
   const startAccountGuidance = useResourceAccountGuidance();
+
+  useEffect(() => {
+    setIsOpen(defaultOpen ?? false);
+  }, [defaultOpen]);
 
   const activePlatform =
     group.platforms.find((entry) => entry.platformId === platformId) ??

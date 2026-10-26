@@ -7,7 +7,7 @@ first; use MDX only for the repo-approved primitives listed here.
 ## Core Rules
 
 - Put a blank line before and after every block element: headings, lists,
-  callouts, code fences, tabs, platform blocks, tables, and images.
+  callouts, code fences, tabs, accordions, platform blocks, tables, and images.
 - Keep block delimiters aligned with the block they belong to. If a block is
   nested in a list item, align every line of that block to the list content
   column.
@@ -17,6 +17,20 @@ first; use MDX only for the repo-approved primitives listed here.
   they are text, not MDX syntax.
 - Use a code language listed in `source.config.ts`. If no better language
   exists, use `text` for plain output.
+
+## Repository Cards
+
+Use `RepositoryCardTitle` inside a Card's `title` to place a repository host icon
+beside the unchanged repository name. Supported providers are `gitee` and
+`github`. The platform label is screen-reader-only; do not append it to the
+visible title or use the separate Card icon slot.
+
+```mdx
+<Cards>
+  <Card title={<RepositoryCardTitle provider="gitee">API-Examples</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples" />
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO/API-Examples" />
+</Cards>
+```
 
 ## Callouts
 
@@ -122,6 +136,11 @@ Rules:
 For code-only alternatives, use code fence tabs. Use MDX tabs only when a pane
 contains mixed prose, lists, images, or multiple code blocks.
 
+When several steps share one scenario choice and include mixed content, use
+MDX tabs for every synchronized set, including a step containing only code.
+Give those sets the same `groupId` and stable values (for example, `live` and
+`rtc`) so code, instructions, and expected results switch together.
+
 ````mdx
 <Tabs defaultValue="macos" groupId="install-os" persist>
 <TabsList>
@@ -163,6 +182,52 @@ Rules:
   Give these tabs a distinct `groupId`; they must not reuse or replace the
   page-level SDK platform preference.
 - Do not invent `PlatformTabs`, `CodeTabs`, or Docusaurus `TabItem` syntax.
+
+## Accordions
+
+Use `<Accordions>` and `<Accordion>` for collapsible content. For a version
+history, use `type="multiple"` so readers can compare releases, and `openFirst`
+to open the first version in the source when the page or platform changes.
+Keep version heading anchors needed by historical links in `id`; set
+`headingLevel` to the level of the heading it replaces and give each version a
+unique `value`.
+
+```mdx
+### Versions [#versions]
+
+<Accordions type="multiple" openFirst>
+
+<Accordion title="v4.24.8" id="v4248" headingLevel={3} value="v4248">
+
+Released on August 31, 2026.
+
+</Accordion>
+
+<Accordion title="v4.24.7" id="v4247" headingLevel={3} value="v4247">
+
+Released on August 3, 2026.
+
+</Accordion>
+
+</Accordions>
+```
+
+Rules:
+
+- Keep accordion tags at column 0, with blank lines around Markdown blocks
+  inside each `<Accordion>`. Close each accordion before starting the next.
+- Use `openFirst` for a version history instead of hard-coding a release in
+  `defaultValue`. Preserve version IDs and any enclosing `<section id="...">`
+  needed by historical links. Section heading anchors may change intentionally
+  when renaming the section.
+- For other collapsible content, omit `headingLevel` and `openFirst` unless it
+  is a navigable version history. Use plain headings and prose when content
+  does not need to collapse.
+- When the Web release notes need spacing between known issues and the version
+  histories, a top-level `<div className="mt-10 pt-8">` may wrap the Versions
+  and Extensions sections. Close it before Notifications; use Markdown for
+  the content inside. This is a layout exception, not a general-purpose raw
+  HTML pattern.
 
 ## Platform Variants
 
@@ -243,6 +308,25 @@ and keep a blank line before it. Do not use a fixed four-space rule:
 Do not outdent nested media or code unless the list item is finished. Do not
 indent it past the list content column.
 
+When a note is intentionally a standalone callout between list items, close
+the preceding item with a blank line and put both the callout fences and its
+body at column 0. Do not indent only the fences: the body may render outside
+the callout. This pattern is used by the Unreal release notes.
+
+```mdx
+1. **Wildcard token**
+
+   Wildcard tokens work across channels.
+
+:::info[Note]
+All 4.x SDKs support using wildcard tokens.
+:::
+
+1. **Preloading channels**
+
+   Preloading reduces join time.
+```
+
 ## Images
 
 Use Markdown image syntax.
@@ -258,6 +342,28 @@ Rules:
 - If the image belongs to a list item, indent the image line and its surrounding
   blank lines to the list content column.
 - Do not use raw `<img>` tags in docs content.
+
+For small UI icons embedded in a sentence, use the approved `InlineImage`
+primitive with meaningful alt text and an explicit pixel width or height. It preserves
+inline alignment and does not open the screenshot zoom dialog. This is the
+exception to the standalone Markdown image rule.
+
+```mdx
+Click <InlineImage alt="Run" src="https://example.com/run.png" width={25} /> to build.
+Click <InlineImage alt="Play" src="https://example.com/play.png" height={20} /> to start.
+```
+
+Keep screenshots as Markdown unless they require an explicit display width.
+For that case, use `DocsImage` with `displayWidth` (a CSS width), which sizes
+the thumbnail but keeps the full-size zoom preview. For screenshots with a
+legacy height limit, use `displayHeight` (a CSS maximum height); the thumbnail
+keeps its aspect ratio and stays within the available width. Indent it to the list
+content column when it belongs to a list item.
+
+```mdx
+<DocsImage alt="Karaoke room" src="https://example.com/room.png" displayWidth="40%" />
+<DocsImage alt="Unity scenes" src="https://example.com/scenes.png" displayHeight="320px" />
+```
 
 ## Tables
 
@@ -287,6 +393,7 @@ Before finishing a docs content change, scan for these issues:
 
 - Unclosed or misaligned `:::` fences.
 - Consecutive code blocks that should be code tabs, or code tabs split by prose.
+- Accordion tags that are unclosed, nested in lists, or missing version anchors.
 - `PlatformStructured` or `PlatformInline` nested below top-level page flow.
 - Images, callouts, or code blocks after a list marker that are not aligned to
   the list content column.

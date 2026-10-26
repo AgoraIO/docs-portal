@@ -1,5 +1,9 @@
+import { normalizeCnProductFacets } from './cn-products';
+import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
+
+export { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 
 export type SearchFacets = Record<string, Record<string, number>>;
 export type SearchPageGroup = {
@@ -26,6 +30,7 @@ export type CnSearchRequest = SearchPageState & { tab?: string };
 export async function searchCnDocsPage(
   state: CnSearchRequest,
   signal?: AbortSignal,
+  measurementHeaders?: Record<string, string>,
 ): Promise<CnSearchPageResponse> {
   const params = new URLSearchParams({
     q: state.q,
@@ -37,7 +42,7 @@ export async function searchCnDocsPage(
   }
   const response = await fetch(`/api/search?${params}`, {
     signal,
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/json', ...measurementHeaders },
   });
   if (!response.ok)
     throw new Error(`Search unavailable (HTTP ${response.status})`);
@@ -51,7 +56,25 @@ export async function searchCnDocsPage(
   ) {
     throw new Error('Invalid search response');
   }
-  return result;
+  return {
+    ...result,
+    groups: result.groups
+      .filter((group) => isPublicCnSearchUrl(group.pageUrl))
+      .map((group) => ({
+        ...group,
+        sections: group.sections.filter(
+          (section) =>
+            isPublicCnSearchUrl(section.url) &&
+            (!section.canonicalUrl ||
+              isPublicCnSearchUrl(section.canonicalUrl)),
+        ),
+      }))
+      .filter((group) => group.sections.length > 0),
+    facets: {
+      ...result.facets,
+      product: normalizeCnProductFacets(result.facets.product ?? {}),
+    },
+  };
 }
 
 // The current demo index contains Markdown source. Keep highlight tags while
@@ -111,21 +134,6 @@ export function mergeSearchPageGroups(
       }
     }
   return [...groups.values()];
-}
-
-export function isPublicCnSearchUrl(value: string) {
-  if (
-    typeof value !== 'string' ||
-    !value.startsWith('/zh-CN/') ||
-    Array.from(value).some(
-      (character) => character.charCodeAt(0) <= 32 || character === '\\',
-    )
-  )
-    return false;
-  const url = new URL(value, 'https://docs.local');
-  return (
-    url.origin === 'https://docs.local' && url.pathname.startsWith('/zh-CN/')
-  );
 }
 
 export function groupSearchSections(

@@ -10,7 +10,7 @@ description: "查看云市场的服务开通 RESTful API，了解关键概念、
 
 为此，你需要实现一套服务开通 RESTful API。当 App 开发者在声网控制台上购买（目前支持 License 和套餐包两种预付费方式）、激活、或停用插件时，声网会向你提供的接口地址发送请求。收到请求后，你需要在响应中返回指定的内容，详见各个接口的说明。
 
-![使用插件流程](https://web-cdn.agora.io/docs-files/1640772415889)
+<DocsImage alt="使用插件流程" src="https://web-cdn.agora.io/docs-files/1640772415889" displayWidth="80%" />
 
 ## 接口要求
 
@@ -54,13 +54,13 @@ PUT http://{host}/license/customers/{customerId}/activate
 
 App 开发者选择的平台，支持填入以下字段：
 
-        - `android`
-        - `ios`
-        - `windows`
-        - `mac`
-        - `linux`
+  - `android`
+  - `ios`
+  - `windows`
+  - `mac`
+  - `linux`
 
-      多个平台用 `\` 分隔。
+多个平台用 `\` 分隔。
 
 </Slot>
 
@@ -81,7 +81,7 @@ App 开发者选择的平台，支持填入以下字段：
 
 请求状态：- `success`：请求成功。
 
-      - `failed`：请求失败。
+- `failed`：请求失败。
 
 </Slot>
                               |
@@ -150,8 +150,8 @@ POST https://{host}/customers/{customerId}/projects/new
 
 请求状态：
 
-        - `success`：请求成功。
-        - `failed`：请求失败。
+  - `success`：请求成功。
+  - `failed`：请求失败。
 
 </Slot>
 
@@ -159,9 +159,9 @@ POST https://{host}/customers/{customerId}/projects/new
 
 包含以下字段：
 
-        - `appKey`: String 型，长度为 32–255 字节，用于你对 App 开发者进行鉴权。App 开发者必须填入该字段，才能在 App 中使用你的插件。
-        - `appSecret`：String 型，长度为 32–255 字节，用于你对 App 开发者进行鉴权。App 开发者必须填入该字段，才能在 App 中使用你的插件。
-        - `licenseUrl`：（可选）String 型，用于下载插件 license 的 URL。仅适用于使用 license 计费的插件。
+  - `appKey`: String 型，长度为 32–255 字节，用于你对 App 开发者进行鉴权。App 开发者必须填入该字段，才能在 App 中使用你的插件。
+  - `appSecret`：String 型，长度为 32–255 字节，用于你对 App 开发者进行鉴权。App 开发者必须填入该字段，才能在 App 中使用你的插件。
+  - `licenseUrl`：（可选）String 型，用于下载插件 license 的 URL。仅适用于使用 license 计费的插件。
 
 </Slot>
 
@@ -231,8 +231,8 @@ PUT http://{host}/customers/{customerId}/projects/{projectId}/deactivate
 
 请求状态：
 
-        - `success`：请求成功。
-        - `failed`：请求失败。
+  - `success`：请求成功。
+  - `failed`：请求失败。
 
 </Slot>
 

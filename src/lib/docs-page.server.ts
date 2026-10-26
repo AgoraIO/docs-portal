@@ -3,6 +3,7 @@ import { getTableOfContents } from 'fumadocs-core/content/toc';
 import type { Folder, Root } from 'fumadocs-core/page-tree';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import remarkMdx from 'remark-mdx';
 import { resolveZhCnApiReferenceBreadcrumb } from './api-reference-breadcrumb';
 import { resolveZhCnApiReferenceProductDocsHref } from './api-reference-product-docs';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
@@ -39,6 +40,7 @@ import {
 import { type AppLocale, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { resolveLegacySitemapRedirectPath } from './legacy-sitemap/redirects';
 import { getLegacySolutionsRedirectUrl } from './legacy-solutions-routing';
+import { remarkAccordionHeadings } from './mdx/accordion-toc';
 import {
   findOpenApiLaneByUrl,
   getOpenApiEndpointUrl,
@@ -54,6 +56,7 @@ import {
 } from './openapi/lanes';
 import { getOpenApiMarkdownPages } from './openapi/markdown';
 import { getOpenApiOperation } from './openapi/source.server';
+import { resolvePlatformContext } from './platforms/context';
 import {
   filterPlatformGroupPanelNodes,
   getCanonicalSourcePages,
@@ -64,7 +67,7 @@ import {
 } from './platforms/platform-group-pages';
 import {
   buildCanonicalPlatformTocText,
-  buildPlatformMarkdownText,
+  buildPlatformTocText,
   extractStructuredPlatformKeys,
   extractStructuredPlatformTabs,
 } from './platforms/processed-text';
@@ -74,6 +77,7 @@ import {
   type PlatformKey,
 } from './platforms/registry';
 import { resolvePlatformRoutePage } from './platforms/route';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 import { buildDocsSearchNavigation } from './search/docs-search-navigation';
 import { isPublishedDocsLocale, PUBLISHED_DOCS_LOCALES } from './site-region';
 import {
@@ -135,11 +139,6 @@ const TITLE_PLATFORM_SEGMENT_MAP = new Map<string, PlatformKey>([
   ['unreal-blueprint', 'blueprint'],
   ['unreal-cpp', 'unreal'],
 ]);
-const TITLE_PLATFORM_EXCLUDED_KEYS = new Set<PlatformKey>([
-  'restful',
-  'restful-api',
-]);
-
 type DocsSidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type ZhCnRtcRestSidebarLink = readonly [string, string];
 
@@ -488,6 +487,10 @@ export async function loadDocsPagePayload(
   slugSegments: string[],
   search?: string,
 ) {
+  if (isRetiredCnDocsPath(`/${[locale, tab, ...slugSegments].join('/')}`)) {
+    return null;
+  }
+
   const movedDocsRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
   if (movedDocsRedirect) {
     return {
@@ -884,6 +887,7 @@ export async function loadDocsPagePayload(
     ),
   );
   const titlePlatforms = getTitlePlatforms({
+    defaultPlatform: defaultStructuredPlatform,
     locale,
     page,
     processedText,
@@ -983,11 +987,13 @@ export async function loadDocsPagePayload(
 }
 
 function getTitlePlatforms({
+  defaultPlatform,
   locale,
   page,
   processedText,
   requestedPlatform,
 }: {
+  defaultPlatform?: PlatformKey;
   locale: string;
   page: PageWithSource;
   processedText: string;
@@ -997,23 +1003,14 @@ function getTitlePlatforms({
     return [];
   }
 
-  const explicitTitlePlatforms = getExplicitTitlePlatforms(page);
-
-  if (explicitTitlePlatforms.length > 0) {
-    return explicitTitlePlatforms;
-  }
-
-  if (requestedPlatform) {
-    return [requestedPlatform];
-  }
-
   const structuredPlatforms = extractStructuredPlatformKeys(processedText);
-
-  if (structuredPlatforms.length === 1) {
-    return structuredPlatforms;
-  }
-
-  return getPathTitlePlatforms(page);
+  return resolvePlatformContext({
+    availablePlatforms: structuredPlatforms,
+    defaultPlatform,
+    explicitTitlePlatforms: getExplicitTitlePlatforms(page),
+    pathPlatforms: getPathTitlePlatforms(page),
+    requestedPlatform,
+  }).titlePlatforms;
 }
 
 function getExplicitTitlePlatforms(page: PageWithSource): PlatformKey[] {
@@ -1036,11 +1033,7 @@ function getPathTitlePlatforms(page: PageWithSource): PlatformKey[] {
     const mappedPlatform = TITLE_PLATFORM_SEGMENT_MAP.get(segment);
     const platform = mappedPlatform ?? normalizePlatformSlugSegment(segment);
 
-    if (
-      platform &&
-      !TITLE_PLATFORM_EXCLUDED_KEYS.has(platform) &&
-      !platforms.includes(platform)
-    ) {
+    if (platform && !platforms.includes(platform)) {
       platforms.push(platform);
     }
   }
@@ -1956,25 +1949,37 @@ async function resolvePageToc(
 ) {
   const directToc = normalizeToc(getPageToc(page));
 
-  if (directToc.length > 0 && !platform) {
+  if (
+    directToc.length > 0 &&
+    !platform &&
+    !processedText.includes('<Accordion')
+  ) {
     return directToc;
   }
 
   try {
     const tocText = platform
-      ? buildPlatformMarkdownText(processedText, platform)
+      ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getTableOfContents(tocText));
+    return normalizeToc(await getAccordionTableOfContents(tocText));
   } catch {
     try {
       return normalizeToc(
-        await getTableOfContents(buildCanonicalPlatformTocText(processedText)),
+        await getAccordionTableOfContents(
+          buildCanonicalPlatformTocText(processedText),
+        ),
       );
     } catch {
       return directToc;
     }
   }
+}
+
+function getAccordionTableOfContents(markdown: string) {
+  return markdown.includes('<Accordion')
+    ? getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings])
+    : getTableOfContents(markdown);
 }
 
 function normalizeToc(toc: TOCItemType[] | undefined) {
@@ -2630,10 +2635,7 @@ const ZH_CN_RTC_REST_SIDEBAR_GROUPS: readonly {
   },
 ];
 const ZH_CN_RTC_REST_REFERENCE_LINKS: readonly ZhCnRtcRestSidebarLink[] = [
-  [
-    '响应状态码',
-    '/zh-CN/api-reference/rtc/restful/reference/response-code',
-  ],
+  ['响应状态码', '/zh-CN/api-reference/rtc/restful/reference/response-code'],
 ];
 
 async function embedZhCnServiceApiSidebars(

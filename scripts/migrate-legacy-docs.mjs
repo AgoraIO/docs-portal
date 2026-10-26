@@ -4,6 +4,8 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
+import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
 import {
   isRedirectContentRow,
   readControlTable,
@@ -37,13 +39,6 @@ const CODE_LANG_ALIASES = new Map([
   ['md', 'markdown'],
   ['objectivec', 'objc'],
   ['txt', 'text'],
-]);
-const PRODUCT_LABELS = new Map([
-  ['aigc', 'AIGC'],
-  ['art-class', '灵动课堂'],
-  ['marketplace', '云市场'],
-  ['online-music-class', '在线音乐课堂'],
-  ['recording', '本地服务端录制'],
 ]);
 const PLATFORM_LABELS = new Map([
   ['android', 'Android'],
@@ -306,7 +301,9 @@ export async function migrateLegacyPage({
     state,
   });
   const frontmatter = serializeFrontmatter(expanded.frontmatter);
-  const content = `${frontmatter}${expanded.body.trim()}\n`;
+  const content = normalizeLegacyCodeHighlights(
+    `${frontmatter}${expanded.body.trim()}\n`,
+  );
   const residue = findLegacyResidue(content, componentMap);
   const referenceReview = findReferenceReview(content);
   const issues = unique([
@@ -533,12 +530,14 @@ export function transformLegacyMdx(body, state) {
 
 export function transformAdmonitions(value) {
   const blockConverted = value.replace(
-    /^([ \t]*)<Admonition(?=[^>]*>)([^>]*)>\s*\n?([\s\S]*?)\n?[ \t]*<\/Admonition>/gm,
+    /^([ \t]*)<Admonition(?=[^>]*>)([^>]*)>([\s\S]*?)\n?[ \t]*<\/Admonition>/gm,
     (_, indent, attrs = '', body) => {
       const type = mapAdmonitionType(readAttribute(attrs, 'type') ?? 'info');
       const title = readAttribute(attrs, 'title');
       const label = title ? `[${title}]` : '';
-      const normalizedBody = trimCommonIndent(transformHtmlLists(body)).trim();
+      // Capture the first line's indentation before removing the common JSX
+      // padding; consuming it in the tag regex creates a false child list.
+      const normalizedBody = transformHtmlLists(trimCommonIndent(body)).trim();
       return indentBlock(
         `:::${type}${label}\n${normalizedBody}\n:::`,
         indent.length,
@@ -547,12 +546,12 @@ export function transformAdmonitions(value) {
   );
 
   return blockConverted.replace(
-    /<Admonition(?=[^>]*>)([^>]*)>\s*([\s\S]*?)\s*<\/Admonition>/g,
+    /<Admonition(?=[^>]*>)([^>]*)>([\s\S]*?)<\/Admonition>/g,
     (_match, attrs = '', body) => {
       const type = mapAdmonitionType(readAttribute(attrs, 'type') ?? 'info');
       const title = readAttribute(attrs, 'title');
       const label = title ? `[${title}]` : '';
-      const normalizedBody = trimCommonIndent(transformHtmlLists(body)).trim();
+      const normalizedBody = transformHtmlLists(trimCommonIndent(body)).trim();
       return `\n\n:::${type}${label}\n${normalizedBody}\n:::\n\n`;
     },
   );
@@ -859,17 +858,17 @@ function parseExportedObjectMaps(content) {
   while (exportMatch) {
     const values = new Map();
     const propertyPattern =
-      /\b([A-Za-z0-9_]+)\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([^,\n]+))/g;
+      /(?:"([^"]+)"|'([^']+)'|\b([A-Za-z0-9_]+))\s*:\s*(?:"([^"]*)"|'([^']*)'|`([^`]*)`|([^,\n]+))/g;
     let propertyMatch = propertyPattern.exec(exportMatch[2]);
 
     while (propertyMatch) {
       values.set(
-        propertyMatch[1],
+        propertyMatch[1] ?? propertyMatch[2] ?? propertyMatch[3],
         (
-          propertyMatch[2] ??
-          propertyMatch[3] ??
           propertyMatch[4] ??
           propertyMatch[5] ??
+          propertyMatch[6] ??
+          propertyMatch[7] ??
           ''
         ).trim(),
       );
@@ -1253,7 +1252,7 @@ function isWholeLineMatch({ match, offset, source }) {
 
 function transformRuntimeVariables(value, state) {
   const { platform, product } = state.context;
-  const productLabel = getProductLabel(product, state.context.productLabel);
+  const productLabel = () => getProductLabel(product, state);
   const platformLabel = getPlatformLabel(platform, state.context.platformLabel);
   return value
     .replace(/\$\{props\.ag_platform\}/g, platform)
@@ -1271,7 +1270,9 @@ function transformRuntimeVariables(value, state) {
       /\bfrontMatter\.ag_platform_label\b/g,
       JSON.stringify(platformLabel),
     )
-    .replace(/\bfrontMatter\.ag_product_label\b/g, JSON.stringify(productLabel))
+    .replace(/\bfrontMatter\.ag_product_label\b/g, () =>
+      JSON.stringify(productLabel()),
+    )
     .replace(/\bfrontMatter\.ag_product\b/g, JSON.stringify(product))
     .replace(
       /\{props\.([A-Za-z0-9_]+)\}/g,
@@ -1283,8 +1284,11 @@ function transformRuntimeVariables(value, state) {
     );
 }
 
-function getProductLabel(product, sourceLabel) {
-  return sourceLabel ?? PRODUCT_LABELS.get(product) ?? product;
+function getProductLabel(product, state) {
+  return resolveLegacyProductLabel(product, {
+    sourceLabel: state.context.productLabel,
+    sourceRoot: state.sourceRoot,
+  });
 }
 
 function getPlatformLabel(platform, sourceLabel) {
@@ -1312,7 +1316,7 @@ function getRuntimePropValue(name, state) {
   }
 
   if (name === 'ag_product_label') {
-    return getProductLabel(state.context.product, state.context.productLabel);
+    return getProductLabel(state.context.product, state);
   }
 
   if (!state.props) {
@@ -3131,7 +3135,9 @@ function normalizeInlineTableCell(value) {
 
 function normalizeSlotDefinitionContent(value) {
   return ensureBlankLineBeforeList(
-    transformInlineHtml(transformHtmlLists(value)),
+    // JSX container indentation is not Markdown nesting. Remove it from the
+    // whole block before trim() can erase only the first item's indentation.
+    transformInlineHtml(transformHtmlLists(trimCommonIndent(value))),
   )
     .replace(/\n{3,}/g, '\n\n')
     .trim();

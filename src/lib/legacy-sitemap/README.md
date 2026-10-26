@@ -7,8 +7,6 @@ This directory tracks compatibility for URLs from the legacy
 
 - `sitemap.xml`: snapshot downloaded from `https://docs.agora.io/sitemap.xml`
   on 2026-06-29.
-- `new-docs-inventory.json`: generated inventory of new docs routes used for
-  matching legacy paths to article-level targets.
 - `redirects.json`: executable app-level redirect configuration. It stores one
   traceable record for every non-native legacy sitemap URL.
 - `review-report.json`: non-blocking human review report for applied fallback or

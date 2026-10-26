@@ -27,8 +27,8 @@ virtual int initialize(base::IAgoraService* agora_service, bool enable_mix = tru
 
 录制时是否启用合流模式：
 
-    - `true`：（默认）启用合流录制。
-    - `false`：启用单流录制。
+- `true`：（默认）启用合流录制。
+- `false`：启用单流录制。
 
 </Slot>
 
@@ -36,8 +36,8 @@ virtual int initialize(base::IAgoraService* agora_service, bool enable_mix = tru
 
 是否仅录制编码后的视频：
 
-    - `true`：接收到的视频不会被解码，视频数据将以编码格式录制。该模式下仅支持 H264 和 H265。
-    - `false`：（默认）接收到的视频将被解码并重新编码。
+- `true`：接收到的视频不会被解码，视频数据将以编码格式录制。该模式下仅支持 H264 和 H265。
+- `false`：（默认）接收到的视频将被解码并重新编码。
 
 </Slot>
 
@@ -67,11 +67,11 @@ virtual int joinChannel(const char* token,const char* channelId,const char* user
 
 频道名。必须为字符串格式，且长度不超过 64 字节。支持的字符包括：
 
-    - 所有小写英文字母：a 到 z。
-    - 所有大写英文字母：A 到 Z。
-    - 所有数字字符：0 到 9。
-    - 空格字符。
-    - 标点符号和其他符号，包括："!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"&#123;"、"&#125;"、"|"、"~"、","。
+- 所有小写英文字母：a 到 z。
+- 所有大写英文字母：A 到 Z。
+- 所有数字字符：0 到 9。
+- 空格字符。
+- 标点符号和其他符号，包括："!"、"#"、"$"、"%"、"&"、"("、")"、"+"、"-"、":"、";"、"&lt;"、"="、"."、"&gt;"、"?"、"@"、"["、"]"、"^"、"_"、"&#123;"、"&#125;"、"|"、"~"、","。
 
 </Slot>
 
@@ -118,8 +118,8 @@ virtual int enableEncryption(bool enabled, const EncryptionConfig& config) = 0;
 
 是否启用内置加密功能：
 
-    - `true`：启用内置加密功能。
-    - `false`：（默认）禁用内置加密功能。
+- `true`：启用内置加密功能。
+- `false`：（默认）禁用内置加密功能。
 
 </Slot>
 
@@ -302,8 +302,8 @@ virtual int setAudioVolumeIndicationParameters(int intervalInMS) = 0;
 
 设置两次音量回调之间的时间间隔，单位为毫秒（默认值为 500）。
 
-    - 小于或等于 10：关闭音量回调。
-    - 大于 10：设置两次回调之间的时间间隔（毫秒）。
+- 小于或等于 10：关闭音量回调。
+- 大于 10：设置两次回调之间的时间间隔（毫秒）。
 
 </Slot>
 
@@ -626,8 +626,8 @@ virtual int enableRecorderVideoFrameCapture(bool enable, const RecorderVideoFram
 
 是否启用视频帧采集：
 
-    - `true`：启用。
-    - `false`：不启用。
+- `true`：启用。
+- `false`：不启用。
 
 </Slot>
 

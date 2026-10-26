@@ -27,7 +27,9 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 
 ## 核心 API 变更
 
-#### 方法
+<PlatformStructured platform="cpp">
+
+### 方法
 
 | 功能模块 | 录制 4.x API | 老版本 API |
 | --- | --- | --- |
@@ -40,32 +42,32 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 <Slot for="migration-guide-html-0-1-1">
 
 - `createAgoraService`
-    - `IAgoraService::initialize`
-    - `createAgoraMediaComponentFactory`
-    - `createMediaRtcRecorder`
-    - `IAgoraMediaRtcRecorder::initialize`
+- `IAgoraService::initialize`
+- `createAgoraMediaComponentFactory`
+- `createMediaRtcRecorder`
+- `IAgoraMediaRtcRecorder::initialize`
 
 </Slot>
 
 <Slot for="migration-guide-html-0-2-2">
 
 - `joinChannel`
-    - `joinChannelWithUserAccount`
-    - `getUserInfoByUserAccount`
-    - `getUserInfoByUid`
+- `joinChannelWithUserAccount`
+- `getUserInfoByUserAccount`
+- `getUserInfoByUid`
 
 </Slot>
 
 <Slot for="migration-guide-html-0-3-1">
 
 - `subscribeAllAudio`
-    - `unsubscribeAllAudio`
-    - `subscribeAllVideo`
-    - `unsubscribeAllVideo`
-    - `subscribeAudio`
-    - `unsubscribeAudio`
-    - `subscribeVideo`
-    - `unsunscribeVideo`
+- `unsubscribeAllAudio`
+- `subscribeAllVideo`
+- `unsubscribeAllVideo`
+- `subscribeAudio`
+- `unsubscribeAudio`
+- `subscribeVideo`
+- `unsunscribeVideo`
 
 </Slot>
 
@@ -73,9 +75,9 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 
 `joinChannel` 方法中 `RecordingConfig` 对象的如下字段：
 
-    - `autoSubscribe`
-    - `subscribeVideoUids`
-    - `subscribeAudioUids`
+- `autoSubscribe`
+- `subscribeVideoUids`
+- `subscribeAudioUids`
 
 </Slot>
 
@@ -83,17 +85,17 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 
 单流录制：
 
-    - `startSingleRecordingByUid`
-    - `stopSingleRecordingByUid`
-    - `setRecorderConfigByUid`
+- `startSingleRecordingByUid`
+- `stopSingleRecordingByUid`
+- `setRecorderConfigByUid`
 
-    合流录制：
+合流录制：
 
-    - `startRecording`
-    - `stopRecording`
-    - `setRecordingConfig`
+- `startRecording`
+- `stopRecording`
+- `setRecordingConfig`
 
-    搭配 `initialize` 中 `enable_mix` 参数的设置使用。
+搭配 `initialize` 中 `enable_mix` 参数的设置使用。
 
 </Slot>
 
@@ -101,30 +103,30 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 
 单流/合流录制
 
-    - `startService`
-    - `stopService`
+- `startService`
+- `stopService`
 
-    搭配 `RecordingConfig` 中 `isMixingEnabled` 参数的设置使用。
+搭配 `RecordingConfig` 中 `isMixingEnabled` 参数的设置使用。
 
 </Slot>
 
 <Slot for="migration-guide-html-0-5-1">
 
 - `enableAndUpdateVideoWatermarks`
-    - `disableVideoWatermarks`
-    - `enableAndUpdateVideoWatermarksByUid`
-    - `disableVideoWatermarksByUid`
+- `disableVideoWatermarks`
+- `enableAndUpdateVideoWatermarksByUid`
+- `disableVideoWatermarksByUid`
 
 </Slot>
 
 <Slot for="migration-guide-html-0-5-2">
 
 - `VideoMixingLayout` 中的 `wm_num` 和 `wm_configs` 参数
-    - `updateWatermarkConfigs`
+- `updateWatermarkConfigs`
 
 </Slot>
 
-#### 回调
+### 回调
 
 | 功能模块 | 录制 4.x API | 老版本 API |
 | --- | --- | --- |
@@ -136,7 +138,11 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 | 远端用户音频状态发生改变回调 | `onUserAudioStateChanged` | `onRemoteAudioStreamStateChanged` |
 | 远端用户视频状态发生改变回调 | `onUserVideoStateChanged` | `onRemoteVideoStreamStateChanged` |
 
-#### 方法
+</PlatformStructured>
+
+<PlatformStructured platform="java">
+
+### 方法
 
 | 功能模块 | 录制 4.x API | 老版本 API |
 | --- | --- | --- |
@@ -149,31 +155,31 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 <Slot for="migration-guide-html-2-1-1">
 
 - `AgoraService`
-    - `AgoraService.initialize`
-    - `createMediaRtcRecorder`
-    - `AgoraMediaRtcRecorder.initialize`
+- `AgoraService.initialize`
+- `createMediaRtcRecorder`
+- `AgoraMediaRtcRecorder.initialize`
 
 </Slot>
 
 <Slot for="migration-guide-html-2-2-2">
 
 - `createChannel`
-    - `createChannelWithUserAccount`
-    - `getUidByUserAccount`
-    - `getUserAccountByUid`
+- `createChannelWithUserAccount`
+- `getUidByUserAccount`
+- `getUserAccountByUid`
 
 </Slot>
 
 <Slot for="migration-guide-html-2-3-1">
 
 - `subscribeAllAudio`
-    - `unsubscribeAllAudio`
-    - `subscribeAllVideo`
-    - `unsubscribeAllVideo`
-    - `subscribeAudio`
-    - `unsubscribeAudio`
-    - `subscribeVideo`
-    - `unsunscribeVideo`
+- `unsubscribeAllAudio`
+- `subscribeAllVideo`
+- `unsubscribeAllVideo`
+- `subscribeAudio`
+- `unsubscribeAudio`
+- `subscribeVideo`
+- `unsunscribeVideo`
 
 </Slot>
 
@@ -181,9 +187,9 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 
 `create` 方法中 `RecordingConfig` 对象的如下字段：
 
-    - `autoSubscribe`
-    - `subscribeVideoUids`
-    - `subscribeAudioUids`
+- `autoSubscribe`
+- `subscribeVideoUids`
+- `subscribeAudioUids`
 
 </Slot>
 
@@ -191,17 +197,17 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 
 单流录制：
 
-    - `startSingleRecordingByUid`
-    - `stopSingleRecordingByUid`
-    - `setRecorderConfigByUid`
+- `startSingleRecordingByUid`
+- `stopSingleRecordingByUid`
+- `setRecorderConfigByUid`
 
-    合流录制：
+合流录制：
 
-    - `startRecording`
-    - `stopRecording`
-    - `setRecordingConfig`
+- `startRecording`
+- `stopRecording`
+- `setRecordingConfig`
 
-    搭配 `initialize` 中 `enableMix` 参数的设置使用。
+搭配 `initialize` 中 `enableMix` 参数的设置使用。
 
 </Slot>
 
@@ -209,23 +215,23 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 
 单流/合流录制
 
-    - `startService`
-    - `stopService`
+- `startService`
+- `stopService`
 
-    搭配 `RecordingConfig` 中 `isMixingEnabled` 参数的设置使用。
+搭配 `RecordingConfig` 中 `isMixingEnabled` 参数的设置使用。
 
 </Slot>
 
 <Slot for="migration-guide-html-2-5-1">
 
 - `enableAndUpdateVideoWatermarks`
-    - `disableVideoWatermarks`
-    - `enableAndUpdateVideoWatermarksByUid`
-    - `disableVideoWatermarksByUid`
+- `disableVideoWatermarks`
+- `enableAndUpdateVideoWatermarksByUid`
+- `disableVideoWatermarksByUid`
 
 </Slot>
 
-#### 回调
+### 回调
 
 | 功能模块 | 录制 4.x API | 老版本 API |
 | --- | --- | --- |
@@ -236,3 +242,5 @@ description: "查看本地服务端录制的迁移指南，了解关键概念、
 | 收到远端音频首帧回调 | `onFirstRemoteAudioDecoded` | `onFirstRemoteAudioFrame` |
 | 远端用户音频状态发生改变回调 | `onUserAudioStateChanged` | `onRemoteAudioStreamStateChanged` |
 | 远端用户视频状态发生改变回调 | `onUserVideoStateChanged` | `onRemoteVideoStreamStateChanged` |
+
+</PlatformStructured>

@@ -5,7 +5,7 @@ title: "应对防火墙限制"
 
 ## 工作原理
 
-![云代理工作原理](https://web-cdn.agora.io/docs-files/1673942497571)
+<DocsImage alt="云代理工作原理" src="https://web-cdn.agora.io/docs-files/1673942497571" displayWidth="80%" />
 
 1. 声网 SDK 向声网云代理发起请求。声网云代理返回相应代理信息。
 2. 声网 SDK 向声网云代理发送数据。声网云代理接收数据并将数据透传给声网 [SD-RTN™](/zh-CN/introduction/glossary)（Software Defined Real-time Network）。
@@ -32,10 +32,11 @@ title: "应对防火墙限制"
 在加入频道前，调用 `agora_rtc_set_cloud_proxy` 方法开启或关闭云代理：
 
 - 开启：将 `type` 设为 `CLOUD_PROXY_UDP(1)`。
+- TLS：将 `type` 设为 `CLOUD_PROXY_TLS(4)`。
 - 关闭：将 `type` 设为 `CLOUD_PROXY_NONE(0)`。
 
 ## API 参考
 
 开发过程中，你还可以参考如下文档，了解各 API 的详细信息：
 
-- `agora_rtc_set_cloud_proxy`
+- [`agora_rtc_set_cloud_proxy`](/zh-CN/api-reference/rtsa/c/cloud-proxy-reference#l01930)

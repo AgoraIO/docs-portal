@@ -9,12 +9,14 @@ import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/cn';
 
 export type ReferenceFilterOption<TValue extends string = string> = {
+  disabled?: boolean;
   label: string;
   value: TValue;
 };
 
 export function ReferenceFilterSelect<TValue extends string>({
   className,
+  disabled,
   label,
   onChange,
   options,
@@ -22,6 +24,7 @@ export function ReferenceFilterSelect<TValue extends string>({
   value,
 }: {
   className?: string;
+  disabled?: boolean;
   label: string;
   onChange: (value: TValue) => void;
   options: readonly ReferenceFilterOption<TValue>[];
@@ -41,6 +44,7 @@ export function ReferenceFilterSelect<TValue extends string>({
       <span className="h-4 leading-4">{label}</span>
       <NativeSelect
         className={cn('min-w-40', selectClassName)}
+        disabled={disabled}
         id={id}
         onChange={(event) => onChange(event.target.value as TValue)}
         value={value}
@@ -96,6 +100,7 @@ export function ReferenceFilterToggleGroup<TValue extends string>({
         {options.map((option) => (
           <ToggleGroupItem
             className="w-full sm:w-auto"
+            disabled={option.disabled}
             key={option.value}
             value={option.value}
           >

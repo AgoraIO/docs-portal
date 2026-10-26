@@ -118,7 +118,12 @@ paths:
                         enable_tools:
                           type: boolean
                           description: |-
-                            是否启用工具调用功能。启用后，智能体可以调用 MCP 服务器提供的工具，实现更复杂的业务逻辑。
+                            是否启用工具调用功能。启用后，智能体可以调用 `llm.tools` 中声明的自定义工具和 `llm.mcp_servers` 中配置的 MCP 工具，实现查询业务数据、执行外部操作等业务逻辑。
+
+                            - `true`：启用自定义工具和 MCP 工具调用。
+                            - `false`：（默认）不启用工具调用，也不会访问工具端点。
+
+                            > 即使该字段为 `false` 或省略，请求中传入的 `llm.tools` 仍需通过字段类型、大小、模板语法和工具名称重复性校验。
                           default: false
                     asr:
                       type: object
@@ -382,6 +387,18 @@ paths:
                                 type: integer
                                 description: MCP 服务器请求超时时间，单位为毫秒。请求超时后，智能体将不会等待 MCP 服务器响应，而是继续执行后续逻辑。
                                 default: 10000
+                        tools:
+                          type: array
+                          maxItems: 32
+                          description: |-
+                            自定义工具列表。配置后，大模型可以根据对话内容选择工具并生成参数，由对话式 AI 引擎校验参数、调用对应的 HTTPS 端点，再将结果返回给大模型继续生成回复。
+
+                            自定义工具、MCP 工具、内置工具和模型原生工具共用同一个工具名称空间，名称按 ASCII 大小写不敏感的方式比较。完成 MCP 发现和过滤后，向大模型提供的工具总数最多为 32 个；名称冲突或超过上限时，智能体启动失败，不会自动覆盖、重命名或截断工具。
+
+                            > - 使用工具前需将 `advanced_features.enable_tools` 设为 `true`。
+                            > - 当前仅支持同步调用标准文本 LLM，暂不支持自定义 LLM、MLLM、Dify、异步工具和已存储工具引用。
+                          items:
+                            $ref: '#/components/schemas/inline_rest_tool'
                         headers:
                           type: object
                           description: |
@@ -591,45 +608,45 @@ paths:
                     filler_words:
                       type: object
                       description: |-
-                        垫词功能 (Beta) 配置，用于在 LLM 响应等待时播报垫词，缓解用户等待焦虑，提升对话流畅度。
+                        承接词功能 (Beta) 配置，用于在 LLM 响应等待时播报承接词，缓解用户等待焦虑，提升对话流畅度。
                         
-                        垫词播报遵循以下规则：
-                        - **播报顺序**：当多个垫词或 LLM 响应等待播报时，按照文本到达的先后顺序进行播报。
+                        承接词播报遵循以下规则：
+                        - **播报顺序**：当多个承接词或 LLM 响应等待播报时，按照文本到达的先后顺序进行播报。
                         - **打断控制**：继承全局配置中的打断模式设置 (`turn_detection.config`)。
                       properties:
                         enable:
                           type: boolean
                           description: |-
-                            是否启用垫词功能：
+                            是否启用承接词功能：
                             - `true`：启用。
                             - `false`：（默认）不启用。
                           default: false
                         trigger:
                           type: object
-                          description: 垫词触发配置，定义何时触发垫词播报。
+                          description: 承接词触发配置，定义何时触发承接词播报。
                           properties:
-                            mode:
-                              type: string
-                              description: |-
-                                垫词触发模式，支持以下值：
-                                - `"fixed_time"`：固定时间触发。当 LLM 响应等待时间超过设定阈值时触发垫词播报。
-                            '{mode}_config':
-                              $ref: '#/components/schemas/filler_words_trigger_config'
+                            fixed_time_config:
+                              $ref: '#/components/schemas/filler_words_trigger_fixed_time_config'
                               description: |
-                                垫词触发配置参数。根据 `mode` 选择对应的配置。
+                                固定时间触发配置。省略时使用默认的 `1500` ms 等待阈值。
                         content:
                           type: object
-                          description: 垫词内容配置，定义垫词的来源和选择规则。
+                          description: 承接词内容配置，定义承接词的来源和选择规则。
                           properties:
                             mode:
                               type: string
                               description: |-
-                                垫词内容模式，支持以下值：
-                                - `"static"`：静态垫词。使用预定义的垫词列表。
-                            '{mode}_config':
-                              $ref: '#/components/schemas/filler_words_content_config'
+                                承接词内容模式，支持以下值：
+                                - `"static"`：（默认）静态承接词。使用预定义的承接词列表。
+                                - `"generated"`：生成承接词。由声网托管的生成能力根据当前上下文生成一句承接词；当生成结果不可用时，使用 `static_config` 中的静态承接词兜底。
+                            static_config:
+                              $ref: '#/components/schemas/filler_words_content_static_config'
                               description: |
-                                垫词内容配置参数。根据 `mode` 选择对应的配置。
+                                静态承接词配置。启用承接词时必需配置。`mode` 为 `"generated"` 时，该配置用于生成承接词不可用时的静态兜底。
+                            generated_config:
+                              $ref: '#/components/schemas/filler_words_content_generated_config'
+                              description: |
+                                生成承接词配置。仅当 `mode` 为 `"generated"` 时生效。
                     parameters:
                       type: object
                       description: 智能体参数配置。
@@ -1026,17 +1043,19 @@ paths:
                     filler_words:
                       enable: true
                       trigger:
-                        mode: fixed_time
                         fixed_time_config:
                           response_wait_ms: 1500
                       content:
-                        mode: static
+                        mode: generated
                         static_config:
                           phrases:
                             - 请稍等。
-                            - 好的。
-                            - 嗯嗯。
+                            - 我正在看。
                           selection_rule: shuffle
+                        generated_config:
+                          prompt: 生成一句简短自然的中文承接词，表示正在理解用户问题，不要直接回答问题。
+                          context_message_limit: 4
+                          history_character_limit: 1000
                     parameters:
                       silence_config:
                         timeout_ms: 15000
@@ -1587,19 +1606,38 @@ paths:
                     智能体处于倾听状态时的处理动作，支持以下值：
                     - `"inject"`：自定义文本指令注入当前轮次，不打断当前轮次。
                     - `"interrupt"`：（默认）立即打断当前处理流程，并发起新一轮对话。
+                    - `"append"`：不打断当前用户输入。等待当前用户输入对应的 LLM 输出完成后，将自定义文本指令作为独立的 user 消息追加到上下文，并发起新一轮对话。
                     - `"ignore"`：忽略本次请求。
+                  enum:
+                    - inject
+                    - interrupt
+                    - append
+                    - ignore
+                  default: interrupt
                 on_thinking_action:
                   type: string
                   description: |
                     智能体处于思考状态时的处理动作，支持以下值：
                     - `"interrupt"`：（默认）打断当前状态，并发起新一轮对话。
+                    - `"append"`：不打断当前 LLM 推理。等待当前轮次的 LLM 输出完成后，将自定义文本指令作为独立的 user 消息追加到上下文，并发起新一轮对话。
                     - `"ignore"`：忽略本次请求。
+                  enum:
+                    - interrupt
+                    - append
+                    - ignore
+                  default: interrupt
                 on_speaking_action:
                   type: string
                   description: |
                     智能体处于说话状态时的处理动作，支持以下值：
                     - `"interrupt"`：打断当前状态，并发起新一轮对话。
+                    - `"append"`：不打断当前 TTS 播报。等待当前轮次的 LLM 输出完成后，将自定义文本指令作为独立的 user 消息追加到上下文，并发起新一轮对话。
                     - `"ignore"`：（默认）忽略本次请求。
+                  enum:
+                    - interrupt
+                    - append
+                    - ignore
+                  default: ignore
                 interruptable:
                   type: boolean
                   description: |
@@ -1615,9 +1653,9 @@ paths:
               Example 1:
                 value:
                   text: 用户刚才点击了购买按钮
-                  on_listening_action: interrupt
-                  on_thinking_action: interrupt
-                  on_speaking_action: ignore
+                  on_listening_action: append
+                  on_thinking_action: append
+                  on_speaking_action: append
                   interruptable: true
                   metadata:
                     publisher: user123
@@ -1980,6 +2018,8 @@ paths:
                           metadata:
                             caused_by: api_interrupt
                             transport: rtm
+                            playback_duration_ms: 1200
+                            intended_playback_duration_ms: 2400
                         metrics:
                           e2e_latency_ms: 337
                           segmented_latency_ms:
@@ -1994,13 +2034,14 @@ components:
       name: Authorization
       in: header
       description: |
-        发送 HTTP 请求时，你需要使用 Basic Auth。参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。
+        发送 HTTP 请求时，你可以从以下鉴权方式中任选其一：
 
-        传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`
+        1. **使用 Token 认证（推荐）**：参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-token-认证)生成 Token 并填入 `Authorization` Header。传参示例：`Authorization: agora token="007abcxxxxxxx123"`。
+        2. **使用 Basic Auth**：参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-http-基本认证)生成 Base64 编码的 `Authorization` 字段。传参示例：`Authorization: Basic NDI1OTQ3N2I4MzYy...YwZjA=`。
       required: true
       schema:
         type: string
-        example: Basic NDI1OTQ3N2I4MzYy...YwZjA=
+        example: agora token="007abcxxxxxxx123"
     appid:
       name: appid
       in: path
@@ -2324,6 +2365,12 @@ components:
       type: object
       description: 中断附加元数据。
       properties:
+        playback_duration_ms:
+          type: integer
+          description: 中断发生时，当前轮次已实际播放的 PCM 音频时长（ms）。
+        intended_playback_duration_ms:
+          type: integer
+          description: 当前轮次中计划播放的 PCM 音频总时长（ms），包含尚未播放完的排队音频。
         caused_by:
           type: string
           description: |
@@ -2523,15 +2570,195 @@ components:
         - `region`：（可选）String。Spatius 服务节点。中国大陆场景可设为 `cn-beijing`。
         - `sample_rate`：（可选）Integer。音频采样率，建议与 `tts.params.audio_setting.sample_rate` 保持一致，通常为 `16000` 或 `24000`。
         - `session_expire_minutes`：（可选）Integer。Spatius token 有效时长，单位为分钟，默认为 `30`。
-    filler_words_trigger_config:
-      title: config
+    inline_rest_tool:
+      title: inline_rest_tool
+      type: object
+      required:
+        - type
+        - function
+        - server
+      additionalProperties: false
       description: |-
-        垫词触发配置参数。不同触发模式下该参数名称和结构不同。
-        > - 传入的配置类型需要和 `mode` 相匹配。例如 `mode` 为 `"fixed_time"` 时，需传入 `fixed_time_config` 对应的配置。
-        > - 不可同时传入多个模式配置。
-      oneOf:
-        - $ref: '#/components/schemas/filler_words_trigger_fixed_time_config'
-        # - $ref: '#/components/schemas/filler_words_trigger_semantic_config'
+        自定义工具定义。大模型决定是否调用工具并生成参数；对话式 AI 引擎校验参数后发起一次同步 HTTP 请求，并将结果返回给大模型。
+
+        > - 当前仅支持同步 `GET` 和 `POST` 请求，不支持异步调用、自动重试或 HTTP 重定向。
+        > - 响应包体原始大小上限为 1 MiB，且必须是 UTF-8 文本。
+        > - `application/json` 和 `+json` 响应会保留 JSON 原始类型，包括 object、array、scalar 和 `null`；其他响应按 UTF-8 字符串处理。
+        > - 空响应包体返回 `[]`。2xx 响应为 `success`，非 2xx 响应为 `failed`，但均会将响应内容返回给大模型。
+      properties:
+        type:
+          type: string
+          enum:
+            - function
+          description: 工具类型，当前仅支持 `function`。
+        function:
+          $ref: '#/components/schemas/inline_rest_tool_function'
+        execution:
+          $ref: '#/components/schemas/inline_rest_tool_execution'
+        server:
+          $ref: '#/components/schemas/inline_rest_tool_server'
+    inline_rest_tool_function:
+      title: function
+      type: object
+      required:
+        - name
+        - description
+        - parameters
+      additionalProperties: false
+      properties:
+        name:
+          type: string
+          pattern: '^[a-zA-Z][a-zA-Z0-9]{0,63}$'
+          description: |-
+            模型可见的工具名称。需以英文字母开头，仅包含英文字母和数字，长度为 1 到 64 个字符。
+
+            自定义工具、MCP 工具、内置工具和模型原生工具的名称按 ASCII 大小写不敏感的方式比较，不能重复；名称不能使用 `mcp` 前缀或 `ragsearch_tool`。
+        description:
+          type: string
+          minLength: 1
+          maxLength: 1024
+          description: 工具说明，用于帮助大模型判断何时调用工具以及工具返回什么。请勿包含密钥等敏感信息。
+        parameters:
+          $ref: '#/components/schemas/inline_rest_tool_parameters'
+    inline_rest_tool_parameters:
+      title: parameters
+      type: object
+      additionalProperties: true
+      description: |-
+        工具参数定义采用 JSON Schema 格式，并按 OpenAI Function Calling 的 non-strict 模式传递给大模型。详情见 [OpenAI Function Calling](https://platform.openai.com/docs/guides/function-calling)：
+
+        使用规则：
+
+        - 根节点的 `type` 必须为 `object`。
+        - 支持 JSON Schema 的常用类型，包括 `object`、`array`、`string`、`integer`、`number`、`boolean` 和 `null`。
+        - 支持标准 JSON Schema 中与工具参数相关的关键字，例如 `type`、`description`、`enum`、`properties`、`required`、`additionalProperties` 和 `items`。
+        - 对象可使用 `properties`、`required` 和 `additionalProperties`。`additionalProperties` 可以省略；省略时按 JSON Schema 语义允许额外属性。若要禁止未声明的额外参数，请显式设置为 `false`。
+        - 数组参数应通过 `items` 指定元素 schema；是否支持 tuple schema 取决于所选 LLM。
+        - 可选参数不要放入 `required`。不要依赖特定模型对 `$ref`、`$defs`、`format`、`pattern`、范围限制或组合 schema 等高级关键字的支持；如果使用这些关键字，请先确认所选 LLM 的兼容性。
+        - 序列化后的 schema 最大为 64 KiB。
+
+        示例：
+
+        ```json
+        {
+          "type": "object",
+          "properties": {
+            "order_id": {
+              "type": "string",
+              "description": "订单 ID"
+            }
+          },
+          "required": ["order_id"],
+          "additionalProperties": false
+        }
+        ```
+    inline_rest_tool_execution:
+      title: execution
+      type: object
+      additionalProperties: false
+      description: 工具执行方式。
+      properties:
+        mode:
+          type: string
+          enum:
+            - sync
+          default: sync
+          description: 执行模式，当前仅支持同步执行 `sync`。
+    inline_rest_tool_server:
+      title: server
+      type: object
+      required:
+        - method
+        - url
+      additionalProperties: false
+      description: |-
+        自定义工具的 HTTP 请求配置。
+
+        模板采用单次替换，不会递归展开。支持以下变量：
+        - `{{args.<name>}}`：通过校验的大模型工具参数，可用于 URL 的路径或查询参数以及请求体，不可用于 Header。
+        - `{{template_variables.<name>}}`：创建智能体时配置的模板变量，可用于 URL 的路径或查询参数、Header 值以及请求体。
+        - `{{tool_call_id}}`：当前工具调用的关联 ID，可用于 URL、Header 值或请求体。
+
+        模板变量的使用规则如下：
+
+        - **Header 和请求体**：每个值只能填写固定值，或完整填写一个占位符，例如 `{{args.order_id}}`。不支持拼接文本，例如 `order-{{args.order_id}}`；也不支持嵌套字段、数组索引或递归引用。
+        - **URL 路径和查询参数**：可以在固定 URL 中使用占位符，例如 `/orders/{{args.order_id}}`。
+        - 如果占位符引用的变量不存在或值为 `null`，工具调用会返回 `UnresolvedTemplate`。
+        - URL 和 Header 中的变量值只能是字符串、数字或布尔值。
+
+        > 认证信息只能作为完整的 Header 值传入。请勿将认证信息放入 URL 或请求体。所有 Header 值均按敏感信息处理，不会传递给大模型或写入普通日志、事件、字幕和 TTS。
+      properties:
+        method:
+          type: string
+          enum:
+            - GET
+            - POST
+          description: |-
+            HTTP 请求方法，支持：
+            - `GET`：用于查询数据，不支持请求体。配置 `body` 会导致请求校验失败。
+            - `POST`：用于提交数据，可同时配置 URL 查询参数、请求 Header 和请求体。
+        url:
+          type: string
+          minLength: 1
+          maxLength: 2048
+          pattern: '^https://'
+          description: |-
+            自定义工具请求的绝对 HTTPS URL。
+
+            URL 的路径和查询参数支持嵌入以下单层占位符：
+            - `{{args.<name>}}`
+            - `{{template_variables.<name>}}`
+            - `{{tool_call_id}}`
+
+            例如：`https://api.example.com/orders/{{args.order_id}}?tenant={{template_variables.tenant_id}}`。
+
+            使用限制：
+            - 占位符名称必须完整，不支持嵌套字段、数组索引或递归展开。
+            - 仅 URL 的路径和查询参数可以使用占位符；协议、用户信息、主机和端口不可模板化。
+            - 不允许在 URL 中嵌入用户名、密码或其他认证信息。
+            - URL 中的占位符值只能是 string、number 或 boolean。
+            - 每个渲染后的路径变量值最大为 1024 UTF-8 字节，每个查询变量值最大为 4096 UTF-8 字节，最终 URL 最大为 8192 UTF-8 字节。
+        headers:
+          type: object
+          maxProperties: 32
+          description: |-
+            自定义工具请求携带的自定义 Header，最多支持 32 项。
+
+            Header 值支持：
+            - 静态 string、number 或 boolean。
+            - 完整的 `{{template_variables.<name>}}` 占位符。
+            - 完整的 `{{tool_call_id}}` 占位符。
+
+            使用限制：
+            - Header 名长度为 1 到 128 个字符，且必须符合 HTTP token 规范。
+            - Header 名不可模板化，Header 值不支持 `{{args.<name>}}`。
+            - 占位符必须作为完整 Header 值，不支持与其他文本拼接，也不支持嵌套字段、数组索引或递归展开。
+            - 每个渲染后的 Header 值最大为 4096 UTF-8 字节，所有 Header 合计最大为 16 KiB。
+            - 如果自定义 Header 与声网生成的系统 Header 重名，以声网生成的值为准。
+
+            所有 Header 值均按敏感信息处理，不会传递给大模型，也不会写入普通日志、事件、字幕或 TTS。
+          additionalProperties:
+            oneOf:
+              - type: string
+              - type: number
+              - type: boolean
+        body:
+          description: |-
+            自定义工具的 HTTP 请求体，仅支持用于 `POST`。为 `GET` 配置该字段会导致请求校验失败。
+
+            请求体支持 object、array、string、number、boolean 和 `null`，并可使用任意层级的 JSON 结构。请求体中的叶子值可以是：
+            - JSON 常量。
+            - 完整的 `{{args.<name>}}` 占位符。
+            - 完整的 `{{template_variables.<name>}}` 占位符。
+            - 完整的 `{{tool_call_id}}` 占位符。
+
+            占位符必须作为完整的叶子值，不支持与其他文本拼接，也不支持嵌套字段、数组索引或递归展开。占位符替换后会保留变量原始的 JSON 类型；工具参数在序列化为 JSON 请求体时会自动转义。
+        timeout_ms:
+          type: integer
+          minimum: 1000
+          maximum: 100000
+          default: 10000
+          description: HTTP 请求超时时间 (ms)，取值范围为 [1000, 100000]，默认为 10000。
     filler_words_trigger_fixed_time_config:
       title: fixed_time_config
       type: object
@@ -2545,7 +2772,7 @@ components:
       properties:
         response_wait_ms:
           type: integer
-          description: LLM 响应等待阈值 (ms)，取值范围为 [100, 10000]。当 LLM 处于等待状态（例如等待 RAG 检索结果、工具调用结果）的持续时间达到该阈值且未生成响应内容时，触发垫词播报。
+          description: LLM 响应等待阈值 (ms)，取值范围为 [100, 10000]。当 LLM 处于等待状态（例如等待 RAG 检索结果、工具调用结果）的持续时间达到该阈值且未生成响应内容时，触发承接词播报。
           default: 1500
     # filler_words_trigger_semantic_config:
     #   title: semantic_config
@@ -2560,83 +2787,73 @@ components:
     filler_words_content_config:
       title: config
       description: |-
-        垫词内容配置参数。不同内容模式下该参数名称和结构不同。
-        > - 传入的配置类型需要和 `mode` 相匹配。例如 `mode` 为 `"static"` 时，需传入 `static_config` 对应的配置。
-        > - 不可同时传入多个模式配置。
-      oneOf:
-        - $ref: '#/components/schemas/filler_words_content_static_config'
-        # - $ref: '#/components/schemas/filler_words_content_generated_config'
+        承接词内容配置参数。不同内容模式下配置要求如下：
+        > - `mode` 为 `"static"` 或省略时，需传入 `static_config`。
+        > - `mode` 为 `"generated"` 时，需传入 `static_config` 作为兜底承接词配置，并可传入 `generated_config` 配置生成承接词提示词。
+      type: object
+      properties:
+        static_config:
+          $ref: '#/components/schemas/filler_words_content_static_config'
+        generated_config:
+          $ref: '#/components/schemas/filler_words_content_generated_config'
     filler_words_content_static_config:
       title: static_config
       type: object
       description: |-
-        静态垫词配置。以下为示例：
-        ```json
-        "static_config": {
-            "phrases": [
-                "请稍等。",
-                "好的。",
-                "嗯嗯。"
-            ],
-            "selection_rule": "shuffle"
-        }
-        ```
+        静态承接词配置。
       properties:
         phrases:
           type: array
           description: |-
-            垫词短语列表。
-            > - 最多支持 100 个垫词。
-            > - 每个垫词长度不超过 50 个中文字符或 50 个英文单词。
+            承接词短语列表。
+            - 支持 1 到 100 个非空字符串。
+            - 每个短语最多支持 20 个单词（拉丁文字）或 20 个字符（中文及其他非拉丁文字）。
           items:
             type: string
+          minItems: 1
           maxItems: 100
         selection_rule:
           type: string
           description: |-
-            垫词选择规则，支持以下值：
-            - `"shuffle"`：随机打乱。在所有垫词都被使用完一轮前，已使用的垫词不会重复播报；只有所有垫词播报完后，才会重新随机打乱并开始新的一轮。
-            - `"round_robin"`：轮询。从垫词列表中顺序选取并播报，所有垫词播报完一轮后，开始新的循环播报。
+            承接词选择规则，支持以下值：
+            - `"shuffle"`：随机打乱。在所有承接词都被使用完一轮前，已使用的承接词不会重复播报；只有所有承接词播报完后，才会重新随机打乱并开始新的一轮。
+            - `"round_robin"`：轮询。从承接词列表中顺序选取并播报，所有承接词播报完一轮后，开始新的循环播报。
           enum:
             - shuffle
             - round_robin
           default: shuffle
-    # filler_words_content_generated_config:
-    #   title: generated_config
-    #   type: object
-    #   description: |-
-    #     动态生成垫词配置（未来支持）。以下为示例：
-    #     ```json
-    #     "config": {
-    #         "llm_provider": "tongyi_qianwen",
-    #         "prompt": "生成一个5字以内的简短回应，表示正在处理中",
-    #         "fallback_strategy": "none",
-    #         "generation_timeout_ms": 2000
-    #     }
-    #     ```
-    #   properties:
-    #     llm_provider:
-    #       type: string
-    #       description: |-
-    #         用于生成垫词的 LLM 供应商，支持以下值：
-    #         - `"tongyi_qianwen"`：通义千问。
-    #         - `"openai"`：OpenAI。
-    #     prompt:
-    #       type: string
-    #       description: 生成垫词的 Prompt 指令。例如："生成一个 5 字以内的简短回应，表示正在处理中"。
-    #     fallback_strategy:
-    #       type: string
-    #       description: |-
-    #         生成失败时的降级策略，支持以下值：
-    #         - `"none"`：不降级，不播报垫词。
-    #       enum:
-    #         - none
-    #     generation_timeout_ms:
-    #       type: integer
-    #       description: 生成超时时间 (ms)，取值范围为 [100, 5000]。超时后将根据 `fallback_strategy` 处理。
-    #       default: 2000
-    #       minimum: 100
-    #       maximum: 5000
+    filler_words_content_generated_config:
+      title: generated_config
+      type: object
+      description: |-
+        生成承接词配置。
+        - `mode` 为 `"generated"` 时，声网会在主大模型请求开始时并行生成一句上下文相关的承接词。
+        - 默认仅使用触发当前回合的用户消息；显式设置 `context_message_limit` 为 `2` 到 `6` 时，可以同时使用近期对话历史。
+        - 如果达到 `response_wait_ms` 时生成结果不可用，则使用 `static_config` 中的静态承接词兜底。
+        - 当前消息没有有效文本、无法定位当前消息或输入超过托管模型的有效容量时，使用 `static_config` 中的静态承接词兜底。
+        - `mode` 为 `static` 或省略时，如果仍提供 `generated_config`，请求将返回 `InvalidFieldValue`。
+      properties:
+        prompt:
+          type: string
+          description: 生成承接词的 Prompt 指令。该字段为可选非空字符串；如果传入该字段，该 Prompt 会完整替换声网默认 Prompt，并对相同的对话上下文窗口生效。
+        context_message_limit:
+          type: integer
+          minimum: 1
+          maximum: 6
+          default: 1
+          description: |-
+            动态承接词使用的对话消息数量上限，包含触发当前回合的用户消息。
+            - `1`：（默认）仅使用当前用户消息。
+            - `2` 到 `6`：除当前用户消息外，还会按时间顺序使用符合上限的近期用户和智能体文本消息。
+        history_character_limit:
+          type: integer
+          minimum: 0
+          maximum: 10000
+          default: 1000
+          description: |-
+            动态承接词使用的历史消息文本字符数上限，仅统计历史消息的 Unicode code points，不包含当前用户消息。
+            - `0`：不限制历史消息文本字符数，但完整输入仍受托管模型的有效输入容量限制。
+            - `1` 到 `10000`：超过上限时，从最旧的历史消息开始整条移除，不截断消息。
     start_of_speech_config:
       title: '{mode}_config'
       description: |-
@@ -2822,7 +3039,13 @@ components:
     Basic Auth:
       type: http
       scheme: basic
-      description: '发送 HTTP 请求时，你需要通过 Basic HTTP 认证，并将生成的凭证填入 HTTP 请求的 `Authorization` Header。具体生成 `Authorization` 字段的方法请参考[实现 HTTP 安全认证](/zh-CN/ai/build/http-basic-auth)。'
+      description: '使用 HTTP 基本认证时，将由客户 ID 和客户密钥生成的凭证填入 HTTP 请求的 `Authorization` Header。具体生成方法请参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth)。'
+    Agora Token:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: '推荐使用 Token 认证。请参考[实现 HTTP 鉴权](/zh-CN/ai/build/http-basic-auth#使用-token-认证)生成 Token，并填入 HTTP 请求的 `Authorization` Header。传参示例：`Authorization: agora token="007abcxxxxxxx123"`。'
 security:
   - {}
   - Basic Auth: []
+  - Agora Token: []

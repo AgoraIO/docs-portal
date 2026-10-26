@@ -19,6 +19,7 @@ const SDK_PRODUCT_CAPABILITY: Record<string, SdkCapabilityGroup['id']> = {
   video: 'realtime-core',
   signaling: 'realtime-core',
   chat: 'realtime-core',
+  rtsa: 'realtime-core',
   meeting: 'meeting-collaboration',
   whiteboard: 'extensions-ecosystem',
   fastboard: 'extensions-ecosystem',

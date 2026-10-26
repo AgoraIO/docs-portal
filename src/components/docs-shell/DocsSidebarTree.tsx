@@ -27,6 +27,7 @@ import {
 } from '@/components/ui/sidebar';
 import { cn } from '@/lib/cn';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
+import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 
 type SidebarPageNode = Extract<DocsSidebarNode, { type: 'page' }>;
 type SidebarSectionNode = Extract<DocsSidebarNode, { type: 'section' }>;
@@ -728,11 +729,12 @@ function mergeBestPracticesIntoBuild(
 function normalizeRootSections(
   nodes: Array<DocsSidebarNode | RenderableSidebarSectionNode>,
 ) {
-  // Linked sections (those with a url) manage their own collapsible state, so
-  // don't force them always-open here — only plain root sections are flattened.
+  // Linked sections and folders with explicit disclosure defaults keep their
+  // toggles. Only plain root sections become always-open headings.
   return nodes.map((node) =>
     node.type === 'section' &&
     !node.url &&
+    node.defaultOpen === undefined &&
     !shouldKeepRootSectionCollapsible(node)
       ? {
           ...node,
@@ -934,7 +936,13 @@ function SidebarPageLabel({
         {title}
       </span>
       {method ? (
-        <span className="ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none text-[color:var(--ink-4)]">
+        <span
+          className={cn(
+            'ml-auto shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none',
+            getOpenApiMethodBadgeClassName(method),
+          )}
+          data-openapi-method={method}
+        >
           {method}
         </span>
       ) : showNavigationArrow ? (

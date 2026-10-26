@@ -2,6 +2,7 @@
 title: "Presence 基础"
 description: "了解如何在实时消息 RTM 中在线状态基础，包括适用场景、配置步骤、实现要点和注意事项。"
 ---
+
 **Presence** 服务让你具备洞察指定频道中用户状态的能力：
 
 - 获取频道内在线用户列表
@@ -24,19 +25,9 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 </PlatformStructured>
 
-<PlatformStructured platform="swift">
+<PlatformStructured platform="web">
 
-:::info[前提条件]
-从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
-:::
 
-</PlatformStructured>
-
-<PlatformStructured platform="cpp">
-
-:::info[前提条件]
-从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
-:::
 
 </PlatformStructured>
 
@@ -48,17 +39,103 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 </PlatformStructured>
 
+<PlatformStructured platform="unity">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+:::info[前提条件]
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+:::info[前提条件]
+从 v2.3.0 起，声网控制台新增 Presence 服务开关，该开关默认开启。只有在控制台中开启 Presence 服务后，Presence 相关配置项和选项才会生效。若未开启，调用 Presence 相关 API 或启用依赖 Presence 的订阅选项会返回错误。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+
+
+</PlatformStructured>
+
 ## 获取频道内在线用户
 
-在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `presence.whonow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+<PlatformStructured platform="android">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `WhoNowAsync` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+在一些应用场景中，你可能想要知道某个频道有多少在线用户，并获取在线用户列表等。你可以通过 `whoNow` 方法实现此功能。根据你的参数设置，该方法可以返回当前频道在线用户的用户 ID 列表及其临时状态数据或者仅返回当前频道在线用户的数量等。调用此方法无需你加入该频道，只需要将频道名作为参数传入该方法即可。
+
+</PlatformStructured>
 
 :::info[使用参数区分频道类型]
 该方法对 Message Channel 和 Stream  Channel 都适用，你可以使用 `channelType` 参数加以区分。
 :::
 
-获取到这些初始信息后，你可以通过 `config.onpresenceevent` 事件通知实时更新频道中在线用户信息。
-
 <PlatformStructured platform="android">
+
+获取到这些初始信息后，你可以通过 `onPresenceEvent` 事件通知实时更新频道中在线用户信息。
 
 :::info[登录后查询 Presence]
 从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
@@ -68,13 +145,7 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 <PlatformStructured platform="ios">
 
-:::info[登录后查询 Presence]
-从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
-:::
-
-</PlatformStructured>
-
-<PlatformStructured platform="swift">
+获取到这些初始信息后，你可以通过 `didReceivePresenceEvent` 事件通知实时更新频道中在线用户信息。
 
 :::info[登录后查询 Presence]
 从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
@@ -82,7 +153,9 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 </PlatformStructured>
 
-<PlatformStructured platform="cpp">
+<PlatformStructured platform="web">
+
+获取到这些初始信息后，你可以通过 `presence` 事件通知实时更新频道中在线用户信息。
 
 :::info[登录后查询 Presence]
 从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
@@ -92,15 +165,405 @@ description: "了解如何在实时消息 RTM 中在线状态基础，包括适�
 
 <PlatformStructured platform="harmonyos">
 
+获取到这些初始信息后，你可以通过 `presence` 事件通知实时更新频道中在线用户信息。
+
 :::info[登录后查询 Presence]
 从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
 :::
 
 </PlatformStructured>
 
+<PlatformStructured platform="unity">
+
+获取到这些初始信息后，你可以通过 `OnPresenceEvent` 事件通知实时更新频道中在线用户信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="flutter">
+
+获取到这些初始信息后，你可以通过 `presence` 事件通知实时更新频道中在线用户信息。
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+获取到这些初始信息后，你可以通过 `onPresenceEvent` 事件通知实时更新频道中在线用户信息。
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+获取到这些初始信息后，你可以通过 `didReceivePresenceEvent` 事件通知实时更新频道中在线用户信息。
+
+:::info[登录后查询 Presence]
+从 v2.3.0 起，调用 `login` 成功后，如果 Presence 服务仍在准备，SDK 会暂时等待并在服务可用后自动执行 `whoNow`、`whereNow` 和远端用户 `getState` 查询。应用无需增加固定延迟、临时订阅频道或等待 Presence 事件来判断服务是否就绪。处于等待状态的请求可能比正常请求多出一小段初始化等待时间；如果服务在合理时间内仍不可用，或等待期间发生登出、释放实例、连接中断等情况，请求会返回失败。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+获取到这些初始信息后，你可以通过 `presence` 事件通知实时更新频道中在线用户信息。
+
+</PlatformStructured>
+
 下面是查询频道内在线用户列表及其临时状态的示例代码：
 
-```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-1" showLineNumbers
+<PlatformStructured platform="android">
+
+```java
+// 根据实际需求设置 channelType，支持 MESSAGE 和 STREAM 类型
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+PresenceOptions options = new PresenceOptions()
+options.setIncludeUserId(true);
+options.setIncludeState(true);
+
+mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCallback<WhoNowResult>() {
+    @Override
+    public void onSuccess(WhoNowResult result) {
+        log(CALLBACK, "whoNow success");
+        for (UserState state : result.getUserStateList()) {
+            log(INFO, "user id: " + state.getUserId());
+            state.getStates().forEach((key, value) -> {
+                log(INFO, "key: " + key + ", value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `NextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `result.NextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `result.NextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `result.NextPage` 的值为空便是最后一页。例如：
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+```java
+PresenceOptions options = new PresenceOptions();
+options.setIncludeUserId(true);
+options.setIncludeState(true);
+options.setPage("your_Next_Page_Bookmark");
+// 根据实际需求设置 channelType，支持 MESSAGE 和 STREAM 类型
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCallback<WhoNowResult>() {
+    @Override
+    public void onSuccess(WhoNowResult result) {
+        // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
+        log(CALLBACK, "whoNow success");
+        log(INFO, "next page: " + result.getNextPage());
+        for (UserState state : result.getUserStateList()) {
+            log(INFO, "user id: " + state.getUserId());
+            state.getStates().forEach((key, value) -> {
+                log(INFO, "key: " + key + ", value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includeState` 和 `includeUserId` 字段为 `false`。例如：
+
+```java
+PresenceOptions options = new PresenceOptions();
+options.setIncludeUserId(false);
+options.setIncludeState(false);
+
+// 根据实际需求设置 channelType，支持 MESSAGE 和 STREAM 类型
+RtmChannelType channelType = RtmChannelType.MESSAGE;
+mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCallback<WhoNowResult>() {
+    @Override
+    public void onSuccess(WhoNowResult result) {
+        // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
+        log(CALLBACK, "whoNow success");
+        log(INFO, "next page: " + result.nextPage);
+        for (UserState state : result.userStateList) {
+            log(INFO, "user id: " + state.userId);
+            state.getStates().forEach((key, value) -> {
+                log(INFO, "key: " + key + ", value: " + value);
+            });
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+此时返回的 `result` 中只有 `totalOccupancy` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includeState = true` 且 `includeUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+```objc
+AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresenceOptions alloc] init];
+presence_opt.includeState = true;
+presence_opt.includeUserId = true;
+[[rtm getPresence] whoNow:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmWhoNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"whoNow success!!");
+        int user_count = response.totalOccupancy;
+        NSArray<AgoraRtmUserState *> * user_states = response.userStateList;
+
+    } else {
+        NSLog(@"whoNowfailed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+
+    }
+}];
+```
+
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `nextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `response.nextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `response.nextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `response.nextPage` 的值为空便是最后一页。例如：
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+```objc
+AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+presence_opt.includeState = true;
+presence_opt.includeUserId = true;
+presence_opt.page = @"your_Next_Page_Bookmark";
+
+[[rtm getPresence] whoNow:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmWhoNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"whoNow success!!");
+        int user_count = response.totalOccupancy;
+        NSString* next_page = response.nextPage;
+        NSArray<AgoraRtmUserState *> * user_states = response.userStateList;
+    } else {
+        NSLog(@"whoNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+
+    }
+}];
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includeState` 和 `includeUserId` 字段为 `false`。例如：
+
+```objc
+AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
+presence_opt.includeState = false;
+presence_opt.includeUserId = false;
+
+[[rtm getPresence] whoNow:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmWhoNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"whoNow success!!");
+        int user_count = response.totalOccupancy;
+    } else {
+        NSLog(@"whoNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+此时返回的 `response` 中只有 `totalOccupancy` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includeState = true` 且 `includeUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+```javascript
+const options = {
+    includedUserId: true,
+    includedState: true
+};
+try {
+    const result = await rtm.presence.whoNow(channelName, channelType, options);
+    // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
+    const { totalOccupancy, occupants, nextPage } = result;
+    occupants.forEach((userInfo) => {
+        const { states, userId, statesCount } = userInfo;
+        console.log(`${userId} has states: ${states}`);
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `nextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `result.nextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `result.nextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `result.nextPage` 的值为空便是最后一页。例如：
+
+```javascript
+const options = {
+    includedUserId: true,
+    includedState: true,
+    page: "Next_Page_Bookmark"
+};
+try {
+    const result = await rtm.presence.whoNow(channelName, channelType, options);
+    // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
+    const { totalOccupancy, occupants, nextPage } = result;
+    occupants.forEach((userInfo) => {
+        const { states, userId, statesCount } = userInfo;
+        console.log(`${userId} has states: ${states}`);
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includedState` 和 `includedUserId` 字段为 `false`。例如：
+
+```javascript
+const options = {
+    includedUserId: false,
+    includedState: false,
+};
+try {
+    const result = await rtm.presence.whoNow(channelName, channelType, options);
+    // 如果 nextPage 存在，下一次调用 whoNow 时，需要设置为 options 的 page 字段
+    const { totalOccupancy, occupants, nextPage } = whoNowResult;
+    occupants.forEach((userInfo) => {
+        const { states, userId, statesCount } = userInfo;
+        console.log(`${userId} has states: ${states}`);
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+此时返回的 `result` 中只有 `totalOccupancy` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includedState = true` 且 `includedUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+```typescript
+import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const options: PresenceOptions = {
+  includeUserId: true,
+  includeState: true
+};
+
+try {
+  const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
+  console.log(`Total users in channel: ${result.totalOccupancy}`);
+
+  // If nextPage exists, use it for the next whoNow call
+  if (result.nextPage) {
+    console.log("Next page bookmark:", result.nextPage);
+  }
+
+  result.userStateList.forEach(userState => {
+    console.log(`User: ${userState.userId}`);
+    userState.states.forEach(state => {
+      console.log(`  ${state.key}: ${state.value}`);
+    });
+  });
+} catch (error) {
+  console.error("whoNow failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`whoNow failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `nextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `result.nextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `result.nextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `result.nextPage` 的值为空便是最后一页。例如：
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+```typescript
+import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const options: PresenceOptions = {
+  includeUserId: true,
+  includeState: true,
+  page: "your_Next_Page_Bookmark"
+};
+
+try {
+  const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
+  console.log(`Total users in channel: ${result.totalOccupancy}`);
+
+  // If nextPage exists, use it for the next whoNow call
+  if (result.nextPage) {
+    console.log("Next page bookmark:", result.nextPage);
+  }
+
+  result.userStateList.forEach(userState => {
+    console.log(`User: ${userState.userId}`);
+    userState.states.forEach(state => {
+      console.log(`  ${state.key}: ${state.value}`);
+    });
+  });
+} catch (error) {
+  console.error("whoNow failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`whoNow failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includeState` 和 `includeUserId` 字段为 `false`。例如：
+
+```typescript
+import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
+import { RtmError } from '@shengwang/rtm-full';
+
+const channelName = "chat_room";
+const options: PresenceOptions = {
+  includeUserId: false,
+  includeState: false
+};
+
+try {
+  const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
+  console.log(`Total users in channel: ${result.totalOccupancy}`);
+  // userStateList will be empty when includeUserId is false
+} catch (error) {
+  console.error("whoNow failed:", error);
+  if (error instanceof RtmError) {
+    console.error(`whoNow failed: ${error.reason} (code: ${error.errorCode})`);
+  }
+}
+```
+
+此时返回的 `result` 中只有 `totalOccupancy` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includeState = true` 且 `includeUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="unity">
+
+```csharp showLineNumbers
 var channelType = RTM_CHANNEL_TYPE.MESSAGE;
 var options = new PresenceOptions();
 options.withState = true;
@@ -135,118 +598,48 @@ else
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-1"
-const options = {
-    includedUserId: true,
-    includedState: true
-};
-try {
-    const result = await rtm.presence.whoNow(channelName, channelType, options);
-    // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
-    const { totalOccupancy, occupants, nextPage } = result;
-    occupants.forEach((userInfo) => {
-        const { states, userId, statesCount } = userInfo;
-        console.log(`${userId} has states: ${states}`);
-    });
-} catch (status) {
-    const { operation, reason, errorCode } = status;
-    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+`WhoNowAsync` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `NextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `response.NextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `response.NextPage` 的值填入 `WhoNowAsync` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `response.NextPage` 的值为空便是最后一页。例如：
+
+```csharp showLineNumbers
+var options = new PresenceOptions();
+options.withState = true;
+options.withUserId = true;
+options.page = "Next_Page_Bookmark";
+
+var (status,response) = await rtmClient.GetPresence().WhoNowAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, options);
+...
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `WhoNowAsync` 方法中的 `withState` 和 `withUserId` 字段为 `false`。例如：
+
+```csharp showLineNumbers
+var options = new PresenceOptions();
+options.withState = false;
+options.withUserId = false;
+var (status,response) = await rtmClient.GetPresence().WhoNowAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, options);
+if (status.Error)
+{
+    Debug.Log(string.Format("{0} is failed!", status.Operation)   );
+    Debug.Log(string.Format("Error code : {0}", status.ErrorCode));
+    Debug.Log(string.Format("Due to: {0}", status.Reason));
+}
+else
+{
+    Debug.Log(string.Format("{0} users online ", response.totalOccupancy));
 }
 ```
 
-```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-1"
-// 根据实际需求设置 channelType，支持 MESSAGE 和 STREAM 类型
-RtmChannelType channelType = RtmChannelType.MESSAGE;
-PresenceOptions options = new PresenceOptions()
-options.setIncludeUserId(true);
-options.setIncludeState(true);
+此时返回的 `response` 中只有 `totalOccupancy` 字段有效，表示当前频道总人数，而其他字段全部为空。
 
-mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCallback<WhoNowResult>() {
-    @Override
-    public void onSuccess(WhoNowResult result) {
-        log(CALLBACK, "whoNow success");
-        for (UserState state : result.getUserStateList()) {
-            log(INFO, "user id: " + state.getUserId());
-            state.getStates().forEach((key, value) -> {
-                log(INFO, "key: " + key + ", value: " + value);
-            });
-        }
-    }
+:::info[信息]
+不可以同时设置 `withState = true` 且 `withUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
 
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-```
+</PlatformStructured>
 
-```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-1"
-let presenceOptions = AgoraRtmPresenceOptions()
-presenceOptions.includeState = true
-presenceOptions.includeUserId = true
+<PlatformStructured platform="flutter">
 
-// 获取当前频道的用户状态
-rtm.getPresence()?.whoNow(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
-    if errorInfo == nil {
-        print("whoNow success!!")
-        let userCount = response?.totalOccupancy ?? 0
-        let userStates = response?.userStateList ?? []
-
-        // 你可以在这里处理 userCount 和 userStates
-    } else {
-        print("whoNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-    }
-}
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-1"
-AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresenceOptions alloc] init];
-presence_opt.includeState = true;
-presence_opt.includeUserId = true;
-[[rtm getPresence] whoNow:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmWhoNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"whoNow success!!");
-        int user_count = response.totalOccupancy;
-        NSArray<AgoraRtmUserState *> * user_states = response.userStateList;
-
-    } else {
-        NSLog(@"whoNowfailed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-1"
-PresenceOptions options;
-options.includeState = true;
-options.includeUserId =true;
-
-uint64_t requestId;
-rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
-```
-
-调用该方法后，SDK 会触发 `config.onwhonowresult` 回调并返回 API 调用结果。
-
-```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-2"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onWhoNowResult(const uint64_t requestId, const UserState *userStateList, const size_t count, const char *nextPage, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("who now failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("who now success\n");
-            for (int i = 0 ;i < count; i++) {
-                printf("user: %s\n", userStateList[i].userId);
-                for (int j = 0 ; j < userStateList[i].statesCount; j++) {
-                    printf("key: %s value: %s\n", userStateList[i].states[j].key, userStateList[i].states[j].value);
-                }
-            }
-        }
-    }
-};
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-2"
+```dart
 final channelName = 'chat_room';
 try {
     var (status,response) = await rtmClient.getPresence.whoNow(
@@ -270,191 +663,9 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-2"
-import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `nextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `nextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `nextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `nextPage` 的值为空便是最后一页。例如：
 
-const channelName = "chat_room";
-const options: PresenceOptions = {
-  includeUserId: true,
-  includeState: true
-};
-
-try {
-  const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
-  console.log(`Total users in channel: ${result.totalOccupancy}`);
-  
-  // If nextPage exists, use it for the next whoNow call
-  if (result.nextPage) {
-    console.log("Next page bookmark:", result.nextPage);
-  }
-  
-  result.userStateList.forEach(userState => {
-    console.log(`User: ${userState.userId}`);
-    userState.states.forEach(state => {
-      console.log(`  ${state.key}: ${state.value}`);
-    });
-  });
-} catch (error) {
-  console.error("whoNow failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`whoNow failed: ${error.reason} (code: ${error.errorCode})`);
-  }
-}
-```
-
-`presence.whonow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `presence.nextpage` 字段包含下一页数据的书签。你需要在每次查询后判断 `presence.nextpageresult` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `presence.nextpageresult` 的值填入 `presence.whonow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `presence.nextpageresult` 的值为空便是最后一页。例如：
-
-<PlatformStructured platform="android">
-
-:::info[大频道查询]
-从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
-:::
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-:::info[大频道查询]
-从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
-:::
-
-</PlatformStructured>
-
-<PlatformStructured platform="swift">
-
-:::info[大频道查询]
-从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
-:::
-
-</PlatformStructured>
-
-<PlatformStructured platform="cpp">
-
-:::info[大频道查询]
-从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
-:::
-
-</PlatformStructured>
-
-<PlatformStructured platform="harmonyos">
-
-:::info[大频道查询]
-从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
-:::
-
-</PlatformStructured>
-
-```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-3" showLineNumbers
-var options = new PresenceOptions();
-options.withState = true;
-options.withUserId = true;
-options.page = "Next_Page_Bookmark";
-
-var (status,response) = await rtmClient.GetPresence().WhoNowAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, options);
-...
-```
-
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-3"
-const options = {
-    includedUserId: true,
-    includedState: true,
-    page: "Next_Page_Bookmark"
-};
-try {
-    const result = await rtm.presence.whoNow(channelName, channelType, options);
-    // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
-    const { totalOccupancy, occupants, nextPage } = result;
-    occupants.forEach((userInfo) => {
-        const { states, userId, statesCount } = userInfo;
-        console.log(`${userId} has states: ${states}`);
-    });
-} catch (status) {
-    const { operation, reason, errorCode } = status;
-    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
-}
-```
-
-```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-3"
-PresenceOptions options = new PresenceOptions();
-options.setIncludeUserId(true);
-options.setIncludeState(true);
-options.setPage("your_Next_Page_Bookmark");
-// 根据实际需求设置 channelType，支持 MESSAGE 和 STREAM 类型
-RtmChannelType channelType = RtmChannelType.MESSAGE;
-mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCallback<WhoNowResult>() {
-    @Override
-    public void onSuccess(WhoNowResult result) {
-        // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
-        log(CALLBACK, "whoNow success");
-        log(INFO, "next page: " + result.getNextPage());
-        for (UserState state : result.getUserStateList()) {
-            log(INFO, "user id: " + state.getUserId());
-            state.getStates().forEach((key, value) -> {
-                log(INFO, "key: " + key + ", value: " + value);
-            });
-        }
-    }
-
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-```
-
-```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-3"
-let presenceOptions = AgoraRtmPresenceOptions()
-presenceOptions.includeState = true
-presenceOptions.includeUserId = true
-presenceOptions.page = "your_Next_Page_Bookmark"
-
-// 获取当前频道的用户状态
-rtm.getPresence()?.whoNow("your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
-    if errorInfo == nil {
-        print("whoNow success!!")
-        
-        let userCount = response?.totalOccupancy ?? 0
-        let nextPage = response?.nextPage ?? ""
-        let userStates = response?.userStateList ?? []
-
-        // 你可以在这里处理 userCount, nextPage 和 userStates
-    } else {
-        print("whoNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-    }
-}
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-3"
-AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
-presence_opt.includeState = true;
-presence_opt.includeUserId = true;
-presence_opt.page = @"your_Next_Page_Bookmark";
-
-[[rtm getPresence] whoNow:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmWhoNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"whoNow success!!");
-        int user_count = response.totalOccupancy;
-        NSString* next_page = response.nextPage;
-        NSArray<AgoraRtmUserState *> * user_states = response.userStateList;
-    } else {
-        NSLog(@"whoNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-3"
-PresenceOptions options;
-options.includeState = true;
-options.includeUserId =true;
-options.page = "your_Next_Page_Bookmark";
-
-uint64_t requestId;
-rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-3"
+```dart
 final channelName = 'chat_room';
 try {
     var (status,response) = await rtmClient.getPresence.whoNow(
@@ -479,148 +690,9 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-3"
-import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
-import { RtmError } from '@shengwang/rtm-full';
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includeState` 和 `includeUserId` 字段为 `false`。例如：
 
-const channelName = "chat_room";
-const options: PresenceOptions = {
-  includeUserId: true,
-  includeState: true,
-  page: "your_Next_Page_Bookmark"
-};
-
-try {
-  const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
-  console.log(`Total users in channel: ${result.totalOccupancy}`);
-  
-  // If nextPage exists, use it for the next whoNow call
-  if (result.nextPage) {
-    console.log("Next page bookmark:", result.nextPage);
-  }
-  
-  result.userStateList.forEach(userState => {
-    console.log(`User: ${userState.userId}`);
-    userState.states.forEach(state => {
-      console.log(`  ${state.key}: ${state.value}`);
-    });
-  });
-} catch (error) {
-  console.error("whoNow failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`whoNow failed: ${error.reason} (code: ${error.errorCode})`);
-  }
-}
-```
-
-当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `presence.whonow` 方法中的 `presence.withstate` 和 `presence.withuserid` 字段为 `false`。例如：
-
-```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-4" showLineNumbers
-var options = new PresenceOptions();
-options.withState = false;
-options.withUserId = false;
-var (status,response) = await rtmClient.GetPresence().WhoNowAsync("Chat_room", RTM_CHANNEL_TYPE.MESSAGE, options);
-if (status.Error)
-{
-    Debug.Log(string.Format("{0} is failed!", status.Operation)   );
-    Debug.Log(string.Format("Error code : {0}", status.ErrorCode));
-    Debug.Log(string.Format("Due to: {0}", status.Reason));
-}
-else
-{
-    Debug.Log(string.Format("{0} users online ", response.totalOccupancy));
-}
-```
-
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-4"
-const options = {
-    includedUserId: false,
-    includedState: false,
-};
-try {
-    const result = await rtm.presence.whoNow(channelName, channelType, options);
-    // 如果 nextPage 存在，下一次调用 whoNow 时，需要设置为 options 的 page 字段
-    const { totalOccupancy, occupants, nextPage } = whoNowResult;
-    occupants.forEach((userInfo) => {
-        const { states, userId, statesCount } = userInfo;
-        console.log(`${userId} has states: ${states}`);
-    });
-} catch (status) {
-    const { operation, reason, errorCode } = status;
-    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
-}
-```
-
-```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-4"
-PresenceOptions options = new PresenceOptions();
-options.setIncludeUserId(false);
-options.setIncludeState(false);
-
-// 根据实际需求设置 channelType，支持 MESSAGE 和 STREAM 类型
-RtmChannelType channelType = RtmChannelType.MESSAGE;
-mRtmClient.getPresence().whoNow(channelName, channelType, options, new ResultCallback<WhoNowResult>() {
-    @Override
-    public void onSuccess(WhoNowResult result) {
-        // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
-        log(CALLBACK, "whoNow success");
-        log(INFO, "next page: " + result.nextPage);
-        for (UserState state : result.userStateList) {
-            log(INFO, "user id: " + state.userId);
-            state.getStates().forEach((key, value) -> {
-                log(INFO, "key: " + key + ", value: " + value);
-            });
-        }
-    }
-
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-```
-
-```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-4"
-let presenceOptions = AgoraRtmPresenceOptions()
-presenceOptions.includeState = false
-presenceOptions.includeUserId = false
-
-// 获取当前频道的用户状态
-rtm.getPresence()?.whoNow(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
-    if errorInfo == nil {
-        print("whoNow success!!")
-        
-        let userCount = response?.totalOccupancy ?? 0
-    } else {
-        print("whoNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-    }
-}
-```
-
-```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-4"
-AgoraRtmPresenceOptions* presence_opt = [[AgoraRtmPresence alloc] init];
-presence_opt.includeState = false;
-presence_opt.includeUserId = false;
-
-[[rtm getPresence] whoNow:@"your_channel" channelType:AgoraRtmChannelTypeMessage options:presence_opt completion:^(AgoraRtmWhoNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"whoNow success!!");
-        int user_count = response.totalOccupancy;
-    } else {
-        NSLog(@"whoNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-4"
-PresenceOptions options;
-options.includeState = false;
-options.includeUserId =false;
-
-uint64_t requestId;
-rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-4"
+```dart
 final channelName = 'chat_room';
 try {
     var (status,response) = await rtmClient.getPresence.whoNow(
@@ -642,39 +714,330 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-4"
-import { RtmChannelType, PresenceOptions } from '@shengwang/rtm-full';
+此时返回的 `WhoNowResult` 中只有 `count` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includeState = true` 且 `includeUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="cpp">
+
+```cpp
+PresenceOptions options;
+options.includeState = true;
+options.includeUserId =true;
+
+uint64_t requestId;
+rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
+```
+
+调用该方法后，SDK 会触发 `onWhoNowResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onWhoNowResult(const uint64_t requestId, const UserState *userStateList, const size_t count, const char *nextPage, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("who now failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("who now success\n");
+            for (int i = 0 ;i < count; i++) {
+                printf("user: %s\n", userStateList[i].userId);
+                for (int j = 0 ; j < userStateList[i].statesCount; j++) {
+                    printf("key: %s value: %s\n", userStateList[i].states[j].key, userStateList[i].states[j].value);
+                }
+            }
+        }
+    }
+};
+```
+
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `nextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `nextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `nextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `nextPage` 的值为空便是最后一页。例如：
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+```cpp
+PresenceOptions options;
+options.includeState = true;
+options.includeUserId =true;
+options.page = "your_Next_Page_Bookmark";
+
+uint64_t requestId;
+rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includeState` 和 `includedUserId` 字段为 `false`。例如：
+
+```cpp
+PresenceOptions options;
+options.includeState = false;
+options.includeUserId =false;
+
+uint64_t requestId;
+rtmClient->getPresence()->whoNow("channelName", RTM_CHANNEL_TYPE_MESSAGE, options, requestId);
+```
+
+此时返回的 `onWhoNowResult` 中只有 `count` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includeState = true` 且 `includedUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+```swift
+let presenceOptions = AgoraRtmPresenceOptions()
+presenceOptions.includeState = true
+presenceOptions.includeUserId = true
+
+// 获取当前频道的用户状态
+rtm.getPresence()?.whoNow(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+    if errorInfo == nil {
+        print("whoNow success!!")
+        let userCount = response?.totalOccupancy ?? 0
+        let userStates = response?.userStateList ?? []
+
+        // 你可以在这里处理 userCount 和 userStates
+    } else {
+        print("whoNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `nextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `response.nextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `response.nextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `response.nextPage` 的值为空便是最后一页。例如：
+
+:::info[大频道查询]
+从 v2.3.0 起，当频道在线人数超过 512 人时，SDK 会自动采用大频道优化策略，持续同步的成员明细最多包含 512 名成员。该限制只影响客户端持续接收的成员明细，不会截断 `whoNow` 的主动查询结果。如果应用需要完整在线成员列表，请继续使用分页查询。
+:::
+
+```swift
+let presenceOptions = AgoraRtmPresenceOptions()
+presenceOptions.includeState = true
+presenceOptions.includeUserId = true
+presenceOptions.page = "your_Next_Page_Bookmark"
+
+// 获取当前频道的用户状态
+rtm.getPresence()?.whoNow("your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+    if errorInfo == nil {
+        print("whoNow success!!")
+
+        let userCount = response?.totalOccupancy ?? 0
+        let nextPage = response?.nextPage ?? ""
+        let userStates = response?.userStateList ?? []
+
+        // 你可以在这里处理 userCount, nextPage 和 userStates
+    } else {
+        print("whoNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includeState` 和 `includeUserId` 字段为 `false`。例如：
+
+```swift
+let presenceOptions = AgoraRtmPresenceOptions()
+presenceOptions.includeState = false
+presenceOptions.includeUserId = false
+
+// 获取当前频道的用户状态
+rtm.getPresence()?.whoNow(channelName: "your_channel", channelType: .message, options: presenceOptions) { response, errorInfo in
+    if errorInfo == nil {
+        print("whoNow success!!")
+
+        let userCount = response?.totalOccupancy ?? 0
+    } else {
+        print("whoNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
+}
+```
+
+此时返回的 `response` 中只有 `totalOccupancy` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includeState = true` 且 `includeUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+```javascript
+const options = {
+    includedUserId: true,
+    includedState: true
+};
+try {
+    const result = await rtm.presence.whoNow(channelName, channelType, options);
+    // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
+    const { totalOccupancy, occupants, nextPage } = result;
+    occupants.forEach((userInfo) => {
+        const { states, userId, statesCount } = userInfo;
+        console.log(`${userId} has states: ${states}`);
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+`whoNow` 方法一次返回一页数据，一页数据最多包含 100 个在线用户信息，如果频道在线用户超过 100 人，则会在返回结果中的 `nextPage` 字段包含下一页数据的书签。你需要在每次查询后判断 `result.nextPage` 是否为空，从而判断是否还有下一页数据。查询下一页数据时，将 `result.nextPage` 的值填入 `whoNow` 方法的 `page` 字段即可实现分页查询，以此往复，直到 `result.nextPage` 的值为空便是最后一页。例如：
+
+```javascript
+const options = {
+    includedUserId: true,
+    includedState: true,
+    page: "Next_Page_Bookmark"
+};
+try {
+    const result = await rtm.presence.whoNow(channelName, channelType, options);
+    // 如果 nextPage 存在，下一次调用 whoNow 时，需将 nextPage 的值填入 whoNowOptions 的 page 字段
+    const { totalOccupancy, occupants, nextPage } = result;
+    occupants.forEach((userInfo) => {
+        const { states, userId, statesCount } = userInfo;
+        console.log(`${userId} has states: ${states}`);
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, ErrorCode: ${errorCode}, due to: ${reason}.`);
+}
+```
+
+当频道中人数众多时，你可能只关心频道中在线用户数量，而不关心他们是谁及其临时状态如何。此时可以设置 `whoNow` 方法中的 `includedState` 和 `includedUserId` 字段为 `false`。例如：
+
+```javascript
+const options = {
+    includedUserId: false,
+    includedState: false,
+};
+try {
+    const result = await rtm.presence.whoNow(channelName, channelType, options);
+    // 如果 nextPage 存在，下一次调用 whoNow 时，需要设置为 options 的 page 字段
+    const { totalOccupancy, occupants, nextPage } = whoNowResult;
+    occupants.forEach((userInfo) => {
+        const { states, userId, statesCount } = userInfo;
+        console.log(`${userId} has states: ${states}`);
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+此时返回的 `result` 中只有 `totalOccupancy` 字段有效，表示当前频道总人数，而其他字段全部为空。
+
+:::info[信息]
+不可以同时设置 `includedState = true` 且 `includedUserId = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
+:::
+
+</PlatformStructured>
+
+## 获取在线用户所在频道
+
+<PlatformStructured platform="android">
+
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
+
+```java
+mRtmClient.getPresence().whereNow("userid", new ResultCallback<ArrayList<ChannelInfo>>() {
+    @Override
+    public void onSuccess(ArrayList<ChannelInfo> channels) {
+        log(CALLBACK, "get whereNow success");
+        for (ChannelInfo channel : channels) {
+            log(INFO, channel.toString());
+        }
+    }
+
+    @Override
+    public void onFailure(ErrorInfo errorInfo) {
+        log(ERROR, errorInfo.toString());
+    }
+});
+```
+
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
+
+```objc
+[[rtm getPresence] whereNow:@"userId" completion:^(AgoraRtmWhereNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
+    if (errorInfo == nil) {
+        NSLog(@"whereNow success!!");
+        int channel_count = response.totalChannel;
+        NSArray<AgoraRtmChannelInfo *> * channels = response.channels;
+    } else {
+        NSLog(@"whereNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
+    }
+}];
+```
+
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
+
+```javascript
+try {
+    const whereNowResult = await rtmClient.presence.whereNow(userId);
+    const { channels, totalChannel } = whereNowResult;
+    channels.forEach((channelInfo) => {
+        const { channelName, channelType } = channelInfo;
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
+
+```typescript
 import { RtmError } from '@shengwang/rtm-full';
 
-const channelName = "chat_room";
-const options: PresenceOptions = {
-  includeUserId: false,
-  includeState: false
-};
+const userId = "Tony";
 
 try {
-  const result = await rtmClient.presence.whoNow(channelName, RtmChannelType.MESSAGE, options);
-  console.log(`Total users in channel: ${result.totalOccupancy}`);
-  // userStateList will be empty when includeUserId is false
+  const result = await rtmClient.presence.whereNow(userId);
+  console.log(`User is in ${result.channels.length} channels`);
+
+  result.channels.forEach(channel => {
+    console.log(`Channel: ${channel.channelName}, Type: ${channel.channelType}`);
+  });
 } catch (error) {
-  console.error("whoNow failed:", error);
+  console.error("whereNow failed:", error);
   if (error instanceof RtmError) {
-    console.error(`whoNow failed: ${error.reason} (code: ${error.errorCode})`);
+    console.error(`whereNow failed: ${error.reason} (code: ${error.errorCode})`);
   }
 }
 ```
 
-此时返回的 `presence.result` 中只有 `presence.count` 字段有效，表示当前频道总人数，而其他字段全部为空。
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
 
-:::info[信息]
-不可以同时设置 `presence.withstate = true` 且 `presence.withuserid = false`，即获取用户的临时状态就必须要返回用户 ID，否则会设置失败并收到错误码。
-:::
+</PlatformStructured>
 
-## 获取在线用户所在频道
+<PlatformStructured platform="unity">
 
-你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `presence.wherenow` 方法来实现。
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `WhereNowAsync` 方法来实现。
 
-```csharp tab="C#" tabGroup="rtm-build-manage-presence-presence-basic-5" showLineNumbers
+```csharp showLineNumbers
 var (status,response) = await rtmClient.GetPresence().WhereNowAsync("Tony");
 if (status.Error)
 {
@@ -695,86 +1058,15 @@ else
 }
 ```
 
-```javascript tab="JavaScript" tabGroup="rtm-build-manage-presence-presence-basic-5"
-try {
-    const whereNowResult = await rtmClient.presence.whereNow(userId);
-    const { channels, totalChannel } = whereNowResult;
-    channels.forEach((channelInfo) => {
-        const { channelName, channelType } = channelInfo;
-    });
-} catch (status) {
-    const { operation, reason, errorCode } = status;
-    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
-}
-```
+`WhereNowAsync` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
 
-```java tab="Java" tabGroup="rtm-build-manage-presence-presence-basic-5"
-mRtmClient.getPresence().whereNow("userid", new ResultCallback<ArrayList<ChannelInfo>>() {
-    @Override
-    public void onSuccess(ArrayList<ChannelInfo> channels) {
-        log(CALLBACK, "get whereNow success");
-        for (ChannelInfo channel : channels) {
-            log(INFO, channel.toString());
-        }
-    }
+</PlatformStructured>
 
-    @Override
-    public void onFailure(ErrorInfo errorInfo) {
-        log(ERROR, errorInfo.toString());
-    }
-});
-```
+<PlatformStructured platform="flutter">
 
-```swift tab="Swift" tabGroup="rtm-build-manage-presence-presence-basic-5"
-rtm.getPresence()?.whereNow("userId") { response, errorInfo in
-    if errorInfo == nil {
-        print("whereNow success!!")
-        
-        let channelCount = response?.totalChannel ?? 0
-        let channels = response?.channels ?? []
-        
-    } else {
-        print("whereNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
-    }
-}
-```
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
 
-```objc tab="Objective-C" tabGroup="rtm-build-manage-presence-presence-basic-5"
-[[rtm getPresence] whereNow:@"userId" completion:^(AgoraRtmWhereNowResponse * _Nullable response, AgoraRtmErrorInfo * _Nullable errorInfo) {
-    if (errorInfo == nil) {
-        NSLog(@"whereNow success!!");
-        int channel_count = response.totalChannel;
-        NSArray<AgoraRtmChannelInfo *> * channels = response.channels;
-    } else {
-        NSLog(@"whereNow failed, errorCode %d, reason %@", errorInfo.errorCode, errorInfo.reason);
-    }
-}];
-```
-
-```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-5"
-uint64_t requestId;
-rtmClient->getPresence()->whereNow("tony", requestId);
-```
-
-调用该方法后，SDK 会触发 `config.onwherenowresult` 回调并返回 API 调用结果。
-
-```cpp tab="C++" tabGroup="rtm-build-manage-presence-presence-basic-6"
-// 异步回调
-class RtmEventHandler : public IRtmEventHandler {
-    void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
-        if (errorCode != RTM_ERROR_OK) {
-            printf("where now failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
-        } else {
-            printf("where now success\n");
-            for (int i = 0; i < count; i++) {
-                printf("channel: %s channel type: %d\n", channels[i].channelName, channels[i].channelType);
-            }
-        }
-    }
-};
-```
-
-```dart tab="Dart" tabGroup="rtm-build-manage-presence-presence-basic-6"
+```dart
 try {
     var (status,response) = await rtmClient.getPresence.whereNow("Tony");
     if (status == true){
@@ -791,24 +1083,80 @@ try {
 }
 ```
 
-```typescript tab="TypeScript" tabGroup="rtm-build-manage-presence-presence-basic-6"
-import { RtmError } from '@shengwang/rtm-full';
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
 
-const userId = "Tony";
+</PlatformStructured>
 
-try {
-  const result = await rtmClient.presence.whereNow(userId);
-  console.log(`User is in ${result.channels.length} channels`);
-  
-  result.channels.forEach(channel => {
-    console.log(`Channel: ${channel.channelName}, Type: ${channel.channelType}`);
-  });
-} catch (error) {
-  console.error("whereNow failed:", error);
-  if (error instanceof RtmError) {
-    console.error(`whereNow failed: ${error.reason} (code: ${error.errorCode})`);
-  }
+<PlatformStructured platform="cpp">
+
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
+
+```cpp
+uint64_t requestId;
+rtmClient->getPresence()->whereNow("tony", requestId);
+```
+
+调用该方法后，SDK 会触发 `onWhereNowResult` 回调并返回 API 调用结果。
+
+```cpp
+// 异步回调
+class RtmEventHandler : public IRtmEventHandler {
+    void onWhereNowResult(const uint64_t requestId, const ChannelInfo *channels, const size_t count, RTM_ERROR_CODE errorCode) override {
+        if (errorCode != RTM_ERROR_OK) {
+            printf("where now failed error is %d reason is %s\n", errorCode, getErrorReason(errorCode));
+        } else {
+            printf("where now success\n");
+            for (int i = 0; i < count; i++) {
+                printf("channel: %s channel type: %d\n", channels[i].channelName, channels[i].channelType);
+            }
+        }
+    }
+};
+```
+
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
+
+</PlatformStructured>
+
+<PlatformStructured platform="swift">
+
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
+
+```swift
+rtm.getPresence()?.whereNow("userId") { response, errorInfo in
+    if errorInfo == nil {
+        print("whereNow success!!")
+
+        let channelCount = response?.totalChannel ?? 0
+        let channels = response?.channels ?? []
+
+    } else {
+        print("whereNow failed, errorCode \(errorInfo!.errorCode), reason \(errorInfo!.reason)")
+    }
 }
 ```
 
-`presence.wherenow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
+
+</PlatformStructured>
+
+<PlatformStructured platform="mini-program">
+
+你可能需要查询某个用户当前在哪些频道中，例如订阅了哪些 Message Channel 或加入了哪些 Stream Channel。特别是作为 App 管理员想要追踪用户路径时，这个功能就显得特别重要，此时你可以调用 `whereNow` 方法来实现。
+
+```javascript
+try {
+    const whereNowResult = await rtmClient.presence.whereNow(userId);
+    const { channels, totalChannel } = whereNowResult;
+    channels.forEach((channelInfo) => {
+        const { channelName, channelType } = channelInfo;
+    });
+} catch (status) {
+    const { operation, reason, errorCode } = status;
+    console.log(`${operation} failed, the error code is ${errorCode}, because of: ${reason}.`);
+}
+```
+
+`whereNow` 方法会返回查询用户所在频道及其类型的信息。该方法会一次性返回所有查询结果，不会进行分页。
+
+</PlatformStructured>

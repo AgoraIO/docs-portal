@@ -26,6 +26,7 @@ import {
   type PlatformKey,
 } from '@/lib/platforms/registry';
 import { recordRecentPage } from '@/lib/recently-viewed';
+import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 import { createDocsRouteSeoHead } from '@/lib/static-seo';
 
 export const Route = createFileRoute('/$locale/$tab/$')({
@@ -51,6 +52,13 @@ export const Route = createFileRoute('/$locale/$tab/$')({
     }
 
     const slugSegments = (params._splat ?? '').split('/').filter(Boolean);
+    if (
+      isRetiredCnDocsPath(
+        `/${[params.locale, params.tab, ...slugSegments].join('/')}`,
+      )
+    ) {
+      throw notFound();
+    }
     const movedDocsRedirect = resolveMovedDocsRedirect(
       params.locale,
       params.tab,

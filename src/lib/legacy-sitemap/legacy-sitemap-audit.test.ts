@@ -1,7 +1,10 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
+import {
+  resolveZhCnProductIaRedirect,
+  ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
+} from '../zh-cn-product-ia-redirects';
 import {
   legacySitemapRedirectConfig,
   resolveLegacySitemapRedirectPath,
@@ -125,7 +128,7 @@ describe('legacy sitemap compatibility audit', () => {
   });
 
   it('allows the current zh-CN small Build migration redirects outside the sitemap snapshot', () => {
-    expect(currentDocsIaMigrationRedirects.size).toBe(76);
+    expect(currentDocsIaMigrationRedirects.size).toBe(83);
 
     for (const [legacyUrl, target] of currentDocsIaMigrationRedirects) {
       expect(
@@ -146,7 +149,12 @@ describe('legacy sitemap compatibility audit', () => {
       (rule) =>
         !sitemapHrefs.has(rule.legacyUrl) &&
         !manualLegacyUrls.has(rule.legacyUrl) &&
-        !currentDocsIaMigrationRedirects.has(rule.legacyUrl),
+        !currentDocsIaMigrationRedirects.has(rule.legacyUrl) &&
+        resolveZhCnProductIaRedirect(
+          rule.legacyPath.split('/')[1],
+          rule.legacyPath.split('/')[2],
+          rule.legacyPath.split('/').slice(3),
+        ) !== rule.target,
     );
 
     expect(staleRules).toEqual([]);

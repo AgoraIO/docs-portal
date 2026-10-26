@@ -1515,11 +1515,11 @@ self.channelMsg = self.GroupMsgTextField.text;
 
 #### 方式一：使用 CDN 添加 SDK
 
-[点击此处](https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip)下载最新版本的 JavaScript SDK，并在你的项目中添加以下代码引用它：
+[点击此处](https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip)下载最新版本的 JavaScript SDK，并在你的项目中添加以下代码引用它：
 
 ```javascript
 // 使用 CDN 直接将以下代码添加到你的 Web 应用中，或下载 SDK 文件后在本地引用
-// 将 x.y.z 替换为具体的 SDK 版本号，如 2.2.2
+// 将 x.y.z 替换为具体的 SDK 版本号，如 2.3.0
 // 可通过发版说明获取最新版本号
 <script src="your_path_to_sdk/agora-rtm.x.y.z.min.js"></script>
 ```
@@ -1831,12 +1831,16 @@ rtm.addEventListener("presence", event => {
     showMessage("INFO", event.publisher + " is " + event.eventType);
   }
 });
-// Connection state changed event handler.
-rtm.addEventListener("status", event => {
-  // The current connection state.
-  const currentState = event.state;
-  // The reason why the connection state changes.
-  const changeReason = event.reason;
+// Link state changed event handler.
+rtm.addEventListener("linkState", event => {
+  const currentState = event.currentState;
+  const previousState = event.previousState;
+  const serviceType = event.serviceType;
+  const operation = event.operation;
+  const reason = event.reason;
+  const affectedChannels = event.affectedChannels;
+  const timestamp = event.timestamp;
+  const isResumed = event.isResumed;
   showMessage("INFO", JSON.stringify(event));
 });
 ```
@@ -1973,12 +1977,16 @@ try {
           showMessage("INFO", event.publisher + " is " + event.eventType);
         }
       });
-      // Connection state changed event handler.
-      rtm.addEventListener("status", event => {
-        // The current connection state.
-        const currentState = event.state;
-        // The reason why the connection state changes.
-        const changeReason = event.reason;
+      // Link state changed event handler.
+      rtm.addEventListener("linkState", event => {
+        const currentState = event.currentState;
+        const previousState = event.previousState;
+        const serviceType = event.serviceType;
+        const operation = event.operation;
+        const reason = event.reason;
+        const affectedChannels = event.affectedChannels;
+        const timestamp = event.timestamp;
+        const isResumed = event.isResumed;
         showMessage("INFO", JSON.stringify(event));
       });
       // Log in the RTM server.
@@ -2046,7 +2054,7 @@ try {
 相比于介绍如何写出代码，声网更愿意帮助你掌握上述程序编写的过程和逻辑。上述程序依次完成了以下操作，让你可以正确地收发消息：
 
 1. 设置并初始化 RTM 对象。
-2. 添加 `message`、`presence` 和 `status` 事件监听函数。
+2. 添加 `message`、`presence` 和 `linkState` 事件监听函数。
 3. 调用 `login` 登录了 RTM 服务。
 4. 调用 `subscribe` 订阅了一个 Message Channel。
 5. 调用 `publish` 发送消息。
@@ -5725,7 +5733,7 @@ struct ContentView_Previews: PreviewProvider {
 
 本文介绍如何在微信小程序项目中集成 RTM 微信小程序 SDK，并实现基础的 Message Channel 消息收发。
 
-:::warning[注意]
+:::caution[注意]
 本 SDK 专为微信小程序运行环境构建，不能作为 RTM Web SDK 的直接替代品使用。当前小程序 SDK 不支持 `StreamChannel`、Topic、`cloudProxy`，也不支持私有化部署和私有化配置。
 :::
 

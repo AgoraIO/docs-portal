@@ -61,10 +61,10 @@ SDK 心跳时间。单位为秒，取值范围为 [5,1800]。即客户端向 RTM
 
 SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0` 表示从不超时，SDK 会一直尝试重连，直到成功。
 
-    该参数对初次登录 RTM 服务和断线重连均有效：
+该参数对初次登录 RTM 服务和断线重连均有效：
 
-    - 如果初次登录超时，SDK 在返回的 `RtmStatus` 中会报告 `errorCode` 为 `loginTimeout`；同时触发 `linkstate` 事件，其中 `currentState` 为 `failed`，`reason` 为 `loginTimeout`；
-    - 如果断线重连超时，SDK 会触发 `linkstate` 事件，其中 `currentState` 为 `failed`，`reason` 为 `reconnectTimeout`。
+- 如果初次登录超时，SDK 在返回的 `RtmStatus` 中会报告 `errorCode` 为 `loginTimeout`；同时触发 `linkstate` 事件，其中 `currentState` 为 `failed`，`reason` 为 `loginTimeout`；
+- 如果断线重连超时，SDK 会触发 `linkstate` 事件，其中 `currentState` 为 `failed`，`reason` 为 `reconnectTimeout`。
 
 </Slot>
 
@@ -72,10 +72,10 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 是否使用 String 类型的用户 ID：
 
-      - `true`: 使用 String 类型的用户 ID。
-      - `false`: 使用 Int 类型的用户 ID，SDK 会自动将 String 类型的 `userId` 属性转换为 Int 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
+- `true`: 使用 String 类型的用户 ID。
+- `false`: 使用 Int 类型的用户 ID，SDK 会自动将 String 类型的 `userId` 属性转换为 Int 类型。该设置下，你需要在 `userId` 属性中传入内容为数值的字符串（例如 `"1234567"`），否则方法会调用失败。
 
-      当同时使用声网 RTC 和 RTM 产品时，需要确保 `userId` 一致。
+当同时使用声网 RTC 和 RTM 产品时，需要确保 `userId` 一致。
 
 </Slot>
 
@@ -83,8 +83,8 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 是否开启 ISP 域名策略限制。在 IoT 场景下，设备可能受限于互联网服务提供商 (ISP)，你可以通过该字段设置 SDK 的连接模式，连接到已向运营商报备的域名或 IP 白名单中的服务器：
 
-      - `true`: 开启 ISP 域名策略限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
-      - `false`: （默认）关闭 ISP 域名策略限制。该设置适用于大部分普通场景。
+- `true`: 开启 ISP 域名策略限制。该设置适用于 IoT 设备使用物联网卡进行网络访问的场景。SDK 会仅连接到已向运营商报备的域名或 IP 白名单中的服务器。
+- `false`: （默认）关闭 ISP 域名策略限制。该设置适用于大部分普通场景。
 
 </Slot>
 
@@ -110,8 +110,8 @@ RtmLogConfig({
 
 日志文件大小，单位为 KB，取值范围为 [128,1024]。
 
-    - 如果你填入的值小于 128，则 SDK 按照 128 设置。
-    - 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
+- 如果你填入的值小于 128，则 SDK 按照 128 设置。
+- 如果你填入的值大于 1024，则 SDK 按照 1024 设置。
 
 </Slot>
 
@@ -528,8 +528,8 @@ Future<(RtmStatus, LoginResult?)> login(String token);
 
 登录 RTM 系统的 Token。
 
-    - 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
-    - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
 

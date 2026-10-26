@@ -77,7 +77,7 @@ public class ConvoAIConfig {
 
 用于访问声网服务的身份凭据。可用的凭据类型：
 
-    - [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential)，详见 [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential)。
+- [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential)，详见 [`BasicAuthCredential`](/zh-CN/api-reference/conversational-ai/restclient-java/basicauthcredential)。
 
 </Slot>
 
@@ -143,8 +143,8 @@ private Map<String, Object> parameters;
 
 （可选）是否启用字符串 UID。
 
-    - `true`：启用字符串 UID。
-    - `false`：（默认）不启用字符串 UID。
+- `true`：启用字符串 UID。
+- `false`：（默认）不启用字符串 UID。
 
 </Slot>
 
@@ -180,8 +180,8 @@ public static class AdvancedFeatures {
 
 是否启用自然中断功能（AIVAD）。
 
-    - `true`：启用。你可以在任何时候中断智能体并快速响应，实现自然的过渡与流畅的对话。
-    - `false`：（默认）不启用。
+- `true`：启用。你可以在任何时候中断智能体并快速响应，实现自然的过渡与流畅的对话。
+- `false`：（默认）不启用。
 
 </Slot>
 
@@ -189,8 +189,8 @@ public static class AdvancedFeatures {
 
 是否启用 Real-time Messaging（RTM）模块。
 
-    - `true`：启用。智能体可以使用 RTM 提供的能力来实现某些高级功能。
-    - `false`：（默认）不启用。
+- `true`：启用。智能体可以使用 RTM 提供的能力来实现某些高级功能。
+- `false`：（默认）不启用。
 
 </Slot>
 
@@ -198,9 +198,9 @@ public static class AdvancedFeatures {
 
 是否启用多模态大语言模型。
 
-    - `true`：启用。
-    - `false`：禁用（默认）。
-    启用多模态大语言模型将自动禁用 `ASR`、`LLM` 和 `TTS`。当该参数设置为 `true` 时，`enable_aivad` 也将被禁用。
+- `true`：启用。
+- `false`：禁用（默认）。
+启用多模态大语言模型将自动禁用 `ASR`、`LLM` 和 `TTS`。当该参数设置为 `true` 时，`enable_aivad` 也将被禁用。
 
 </Slot>
 
@@ -254,8 +254,8 @@ public static class LLMPayload {
 
 （可选）大型语言模型的输入模态。
 
-    - `["text"]`：仅文本（默认）。
-    - `["text", "image"]`：文本和图像，要求所选模型支持视觉模态输入。
+- `["text"]`：仅文本（默认）。
+- `["text", "image"]`：文本和图像，要求所选模型支持视觉模态输入。
 
 </Slot>
 
@@ -263,9 +263,9 @@ public static class LLMPayload {
 
 （可选）大型语言模型的输出模态。
 
-    - `["text"]`：仅文本（默认）。输出文本将通过 TTS 模块转为语音，并发布到 RTC 频道。
-    - `["audio"]`：仅音频。音频将直接发布到 RTC 频道。
-    - `["text", "audio"]`：文本和音频。你可以根据需要自定义处理 LLM 输出的逻辑。
+- `["text"]`：仅文本（默认）。输出文本将通过 TTS 模块转为语音，并发布到 RTC 频道。
+- `["audio"]`：仅音频。音频将直接发布到 RTC 频道。
+- `["text", "audio"]`：文本和音频。你可以根据需要自定义处理 LLM 输出的逻辑。
 
 </Slot>
 
@@ -435,8 +435,8 @@ public static class ASRPayload {
 
 （可选）用户与智能体之间交互使用的语言。
 
-    - `zh-CN`：中文（支持中英文混说）（默认值）。
-    - `en-US`：英文。
+- `zh-CN`：中文（支持中英文混说）（默认值）。
+- `en-US`：英文。
 
 </Slot>
 
@@ -650,8 +650,8 @@ public static class MinimaxTTSVendorVoiceSettingParam {
 
 是否朗读 LaTeX 内容。
 
-    - `true`：朗读 LaTeX 内容。
-    - `false`：（默认）不朗读 LaTeX 内容。
+- `true`：朗读 LaTeX 内容。
+- `false`：（默认）不朗读 LaTeX 内容。
 
 </Slot>
 
@@ -659,8 +659,8 @@ public static class MinimaxTTSVendorVoiceSettingParam {
 
 是否对英文内容进行标准化处理。
 
-    - `true`：对英文内容进行标准化处理。
-    - `false`：（默认）不进行标准化处理。
+- `true`：对英文内容进行标准化处理。
+- `false`：（默认）不进行标准化处理。
 
 </Slot>
 
@@ -910,8 +910,8 @@ public static class MLLMPayload {
 
 （可选）额外的 MLLM 配置参数。
 
-    - 模态设置覆盖：`params` 中的 `modalities` 设置将被 `inputModalities` 和 `outputModalities` 覆盖。
-    - 轮次检测覆盖：`params` 中的 `turn_detection` 设置将被 `mllm` 外部的 `turn_detection` 设置覆盖。
+- 模态设置覆盖：`params` 中的 `modalities` 设置将被 `inputModalities` 和 `outputModalities` 覆盖。
+- 轮次检测覆盖：`params` 中的 `turn_detection` 设置将被 `mllm` 外部的 `turn_detection` 设置覆盖。
 
 </Slot>
 
@@ -919,8 +919,8 @@ public static class MLLMPayload {
 
 （可选）MLLM 的输入模态。
 
-    - ["audio"]：仅音频（默认）。
-    - ["audio", "text"]：音频和文本。
+- ["audio"]：仅音频（默认）。
+- ["audio", "text"]：音频和文本。
 
 </Slot>
 
@@ -1179,9 +1179,9 @@ public static class TurnDetectionPayload {
 
 当智能体正在交互（说话或思考）时，人类语音打断智能体行为的模式，支持以下取值：
 
-    - [`interrupt`](/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java#interrupt)（默认）：打断模式，用户语音会立即打断智能体当前交互，智能体将中止当前交互并直接处理新的语音输入。
-    - `append`：追加模式，用户语音不会打断当前交互，智能体将在当前交互结束后处理新的语音输入。
-    - `ignore`：忽略模式，智能体会忽略用户语音输入并不将其存入上下文中。
+- [`interrupt`](/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java#interrupt)（默认）：打断模式，用户语音会立即打断智能体当前交互，智能体将中止当前交互并直接处理新的语音输入。
+- `append`：追加模式，用户语音不会打断当前交互，智能体将在当前交互结束后处理新的语音输入。
+- `ignore`：忽略模式，智能体会忽略用户语音输入并不将其存入上下文中。
 
 </Slot>
 
@@ -1189,9 +1189,9 @@ public static class TurnDetectionPayload {
 
 轮次检测机制（可选）：
 
-    - `agora_vad`：声网 VAD。（默认）
-    - `server_vad`：通过音量分析识别用户语音起止，仅在启用 mllm 并使用 OpenAI 时生效。
-    - `semantic_vad`：在 VAD 基础上结合语义检测模型判断用户是否说完，并基于判断结果动态设定超时时间以支持更自然的对话，仅在启用 mllm 并使用 OpenAI 时生效。
+- `agora_vad`：声网 VAD。（默认）
+- `server_vad`：通过音量分析识别用户语音起止，仅在启用 mllm 并使用 OpenAI 时生效。
+- `semantic_vad`：在 VAD 基础上结合语义检测模型判断用户是否说完，并基于判断结果动态设定超时时间以支持更自然的对话，仅在启用 mllm 并使用 OpenAI 时生效。
 
 </Slot>
 
@@ -1199,9 +1199,9 @@ public static class TurnDetectionPayload {
 
 （可选）识别灵敏度，用于判断声音是否为语音活动。取值范围为 (0.0, 1.0)。
 
-    - 值越小越容易检测出语音。
-    - 值越大则会忽略较弱的声音。
-    默认值为 0.5。
+- 值越小越容易检测出语音。
+- 值越大则会忽略较弱的声音。
+默认值为 0.5。
 
 </Slot>
 
@@ -1209,8 +1209,8 @@ public static class TurnDetectionPayload {
 
 （可选）是否在发生 VAD 停止事件时自动生成响应，仅在使用 OpenAI Realtime API 的 `server_vad` 和 `semantic_vad` 模式下可用。
 
-    - `true`：（默认）自动生成响应。
-    - `false`：不自动生成响应。
+- `true`：（默认）自动生成响应。
+- `false`：不自动生成响应。
 
 </Slot>
 
@@ -1218,8 +1218,8 @@ public static class TurnDetectionPayload {
 
 是否在发生 VAD 启动事件时自动打断已有响应，仅在使用 OpenAI Realtime API 的 `server_vad` 和 `semantic_vad` 模式下可用。
 
-    - `true`：（默认）自动打断已有响应。
-    - `false`：不打断已有响应。
+- `true`：（默认）自动打断已有响应。
+- `false`：不打断已有响应。
 
 </Slot>
 
@@ -1227,9 +1227,9 @@ public static class TurnDetectionPayload {
 
 模型响应的积极性（可选），仅在使用 OpenAI Realtime API 的 `semantic_vad` 模式下可用：
 
-    - `auto`（默认）：中等响应速度。
-    - `low`：等待用户更长时间以继续说话。
-    - `high`：更快速地响应。
+- `auto`（默认）：中等响应速度。
+- `low`：等待用户更长时间以继续说话。
+- `high`：更快速地响应。
 
 </Slot>
 
@@ -1348,8 +1348,8 @@ public static class FixedParams {
 
 （可选）智能体数据传输通道：
 
-    - `rtm`：使用 RTM 传输。仅当 `enable_rtm` 为 `true` 时生效。
-    - `datastream`：使用 RTC 数据流传输（默认值）。
+- `rtm`：使用 RTM 传输。仅当 `enable_rtm` 为 `true` 时生效。
+- `datastream`：使用 RTC 数据流传输（默认值）。
 
 </Slot>
 
@@ -1357,8 +1357,8 @@ public static class FixedParams {
 
 （可选）是否接收智能体性能数据。仅当 `enable_rtm` 为 `true` 时生效。
 
-    - `true`：接收智能体性能数据。
-    - `false`：（默认）不接收智能体性能数据。
+- `true`：接收智能体性能数据。
+- `false`：（默认）不接收智能体性能数据。
 
 </Slot>
 
@@ -1366,8 +1366,8 @@ public static class FixedParams {
 
 （可选）是否接收智能体错误事件。仅当 `enable_rtm` 为 `true` 时生效。
 
-    - `true`：接收智能体错误事件。
-    - `false`：（默认）不接收智能体错误事件。
+- `true`：接收智能体错误事件。
+- `false`：（默认）不接收智能体错误事件。
 
 </Slot>
 
@@ -1405,8 +1405,8 @@ public static class SilenceConfig {
 
 （可选）智能体的最大静默时长（毫秒）。当智能体被创建并有用户加入频道后，如果其处于非聆听、思考或说话状态的持续时间达到设定值，将触发静默提示消息。
 
-    - 设置为 0：不启用该功能。
-    - 设置为 (0, 60000]：必须同时设置 `content` 参数，否则该配置无效。
+- 设置为 0：不启用该功能。
+- 设置为 (0, 60000]：必须同时设置 `content` 参数，否则该配置无效。
 
 </Slot>
 
@@ -1414,8 +1414,8 @@ public static class SilenceConfig {
 
 （可选）当静默时间达到设定值后，智能体执行的操作：
 
-    - [`speak`](/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java#speak)：使用 TTS 模块播报静默消息（默认）。
-    - `think`：将静默消息追加至上下文，并传递给 LLM。
+- [`speak`](/zh-CN/api-reference/conversational-ai/restclient-java/convoaiclient.java#speak)：使用 TTS 模块播报静默消息（默认）。
+- `think`：将静默消息追加至上下文，并传递给 LLM。
 
 </Slot>
 
@@ -1486,13 +1486,13 @@ public static class Agent {
 
 当前状态。
 
-    - `IDLE` (0)：智能体空闲。
-    - `STARTING` (1)：智能体正在启动。
-    - `RUNNING` (2)：智能体正在运行。
-    - `STOPPING` (3)：智能体正在停止。
-    - `STOPPED` (4)：智能体已停止。
-    - `RECOVERING` (5)：智能体正在恢复。
-    - `FAILED` (6)：智能体发生故障。
+- `IDLE` (0)：智能体空闲。
+- `STARTING` (1)：智能体正在启动。
+- `RUNNING` (2)：智能体正在运行。
+- `STOPPING` (3)：智能体正在停止。
+- `STOPPED` (4)：智能体已停止。
+- `RECOVERING` (5)：智能体正在恢复。
+- `FAILED` (6)：智能体发生故障。
 
 </Slot>
 
@@ -1552,7 +1552,7 @@ public class ListConvoAIRes {
 }
 ```
 
-用于返回会话式 AI 引擎的 List API 响应。
+用于返回对话式 AI 引擎的 List API 响应。
 
 :::info[信息]
 自 v0.3.0 版本新增。
@@ -1610,13 +1610,13 @@ public class QueryConvoAIRes {
 
 状态，包含以下取值：
 
-    - `IDLE` (0)：智能体空闲。
-    - `STARTING` (1)：智能体启动中。
-    - `RUNNING` (2)：智能体运行中。
-    - `STOPPING` (3)：智能体停止中。
-    - `STOPPED` (4)：智能体已停止。
-    - `RECOVERING` (5)：智能体恢复中。
-    - `FAILED` (6)：智能体异常。
+- `IDLE` (0)：智能体空闲。
+- `STARTING` (1)：智能体启动中。
+- `RUNNING` (2)：智能体运行中。
+- `STOPPING` (3)：智能体停止中。
+- `STOPPED` (4)：智能体已停止。
+- `RECOVERING` (5)：智能体恢复中。
+- `FAILED` (6)：智能体异常。
 
 </Slot>
 
@@ -1651,15 +1651,15 @@ public class UpdateConvoAIRes {
 <Slot for="struct-java-html-28-3-2">
 
 状态。
-    可选状态包括：
+可选状态包括：
 
-    - `IDLE` (0)：智能体空闲。
-    - `STARTING` (1)：智能体正在启动。
-    - `RUNNING` (2)：智能体正在运行。
-    - `STOPPING` (3)：智能体正在停止。
-    - `STOPPED` (4)：智能体已停止。
-    - `RECOVERING` (5)：智能体正在恢复。
-    - `FAILED` (6)：智能体发生故障。
+- `IDLE` (0)：智能体空闲。
+- `STARTING` (1)：智能体正在启动。
+- `RUNNING` (2)：智能体正在运行。
+- `STOPPING` (3)：智能体正在停止。
+- `STOPPED` (4)：智能体已停止。
+- `RECOVERING` (5)：智能体正在恢复。
+- `FAILED` (6)：智能体发生故障。
 
 </Slot>
 
@@ -1694,9 +1694,9 @@ public class SpeakConvoAIReq {
 
 （可选）语音行为的优先级，支持以下取值：
 
-    - `INTERRUPT`（默认）：高优先级，中断并立即播报。智能体将终止当前交互，直接播报该消息。
-    - `APPEND`：中优先级，追加播报。智能体将在当前交互结束后播报该消息。
-    - `IGNORE`：低优先级，仅在空闲时播报。如果智能体当前正在交互中，将忽略并丢弃该消息；仅在未交互时才会播报。
+- `INTERRUPT`（默认）：高优先级，中断并立即播报。智能体将终止当前交互，直接播报该消息。
+- `APPEND`：中优先级，追加播报。智能体将在当前交互结束后播报该消息。
+- `IGNORE`：低优先级，仅在空闲时播报。如果智能体当前正在交互中，将忽略并丢弃该消息；仅在未交互时才会播报。
 
 </Slot>
 
@@ -1704,8 +1704,8 @@ public class SpeakConvoAIReq {
 
 （可选）是否允许用户发言打断智能体的语音播报：
 
-    - `true`（默认）：允许打断。
-    - `false`：不允许打断。
+- `true`（默认）：允许打断。
+- `false`：不允许打断。
 
 </Slot>
 
@@ -1763,8 +1763,8 @@ public static class HistoryContent {
 
 发送消息的角色：
 
-    - `user`：用户。
-    - `assistant`：智能体。
+- `user`：用户。
+- `assistant`：智能体。
 
 </Slot>
 
@@ -1932,13 +1932,13 @@ public class ListConvoAIReq {
 
 要查询的智能体状态，支持以下状态：
 
-    - `0`：空闲状态（IDLE）。
-    - `1`：启动中（STARTING）。
-    - `2`：运行中（RUNNING）。
-    - `3`：停止中（STOPPING）。
-    - `4`：已停止（STOPPED）。
-    - `5`：恢复中（RECOVERING）。
-    - `6`：失败状态（FAILED）。
+- `0`：空闲状态（IDLE）。
+- `1`：启动中（STARTING）。
+- `2`：运行中（RUNNING）。
+- `3`：停止中（STOPPING）。
+- `4`：已停止（STOPPED）。
+- `5`：恢复中（RECOVERING）。
+- `6`：失败状态（FAILED）。
 
 </Slot>
 
@@ -2075,12 +2075,12 @@ public class JoinConvoAIRes {
 
 状态。
 
-    - `IDLE`：智能体空闲。
-    - `STARTING`：智能体启动中。
-    - `RUNNING`：智能体运行中。
-    - `STOPPING`：智能体停止中。
-    - `STOPPED`：智能体已停止。
-    - `RECOVERING`：智能体恢复中。
-    - `FAILED`：智能体失败。
+- `IDLE`：智能体空闲。
+- `STARTING`：智能体启动中。
+- `RUNNING`：智能体运行中。
+- `STOPPING`：智能体停止中。
+- `STOPPED`：智能体已停止。
+- `RECOVERING`：智能体恢复中。
+- `FAILED`：智能体失败。
 
 </Slot>

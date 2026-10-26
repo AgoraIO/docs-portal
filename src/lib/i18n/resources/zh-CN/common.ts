@@ -12,6 +12,9 @@ const zhCnCommon = {
       system: '跟随系统',
     },
     site: {
+      switchSite: '切换站点 / Switch site',
+      chinese: '简体中文',
+      english: 'English',
       label: '站点',
       description: '两个站点覆盖的产品范围并不完全相同。',
       global: '国际站',
@@ -53,6 +56,7 @@ const zhCnCommon = {
     next: '下一页',
     previous: '上一页',
     copyPage: '复制页面',
+    copyLink: '复制链接',
     copyPageMoreActions: '复制页面更多操作',
     viewAsMarkdown: '查看 Markdown',
     openInDeepSeek: '打开 DeepSeek',

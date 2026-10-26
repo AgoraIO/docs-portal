@@ -3,6 +3,7 @@ import path from 'node:path';
 import process from 'node:process';
 import { setTimeout as wait } from 'node:timers/promises';
 import { pathToFileURL } from 'node:url';
+import { isRetiredCnDocsPath } from '../src/lib/retired-cn-docs.mjs';
 import { maskFencedCode } from './lib/markdown-code.mjs';
 
 const DEFAULT_MAX_SAMPLES = 30;
@@ -36,7 +37,9 @@ export function auditDocsLinks({
   openApiSourcePaths,
 } = {}) {
   const stats = createStats();
-  const docsFiles = listMarkdownFiles(docsRoot);
+  const docsFiles = listMarkdownFiles(docsRoot).filter(
+    (file) => !isRetiredCnDocsPath(toContentPath(docsRoot, file)),
+  );
   const existingContentPaths = new Set(
     docsFiles.map((file) => toContentPath(docsRoot, file)),
   );
@@ -89,6 +92,8 @@ export function auditDocsLinks({
 
     for (const filePath of openApiFiles) {
       const sourcePath = toOpenApiSourcePath(openApiRoot, filePath);
+
+      if (isRetiredCnDocsPath(sourcePath)) continue;
 
       if (openApiSourcePathFilter && !openApiSourcePathFilter.has(sourcePath)) {
         continue;
@@ -403,10 +408,12 @@ export function getZhCnOpenApiSourcePaths(openApiRoot) {
 
   return listOpenApiYamlFiles(openApiRoot)
     .map((filePath) => toOpenApiSourcePath(openApiRoot, filePath))
+    .filter((sourcePath) => !isRetiredCnDocsPath(sourcePath))
     .filter(isZhCnOpenApiSourcePath);
 }
 
 function extractLinks(markdown) {
+  markdown = maskMdxComments(markdown);
   const links = [];
   const markdownLinkPattern = /(!?)\[[\s\S]*?\]\((<[^>\n]+>|[^)\n]+)\)/g;
   const referenceLinkPattern = /^\s{0,3}\[[^\]\n]+\]:\s*(\S+)/gm;
@@ -480,7 +487,13 @@ function extractAnchors(markdown) {
 }
 
 function maskMarkdownCode(markdown) {
-  return maskFencedCode(markdown);
+  return maskMdxComments(maskFencedCode(markdown));
+}
+
+function maskMdxComments(markdown) {
+  return markdown.replace(/\{\/\*[\s\S]*?\*\/\}/g, (comment) =>
+    comment.replace(/[^\n]/g, ' '),
+  );
 }
 
 function cleanHeadingText(rawHeading) {
@@ -2433,11 +2446,12 @@ function getRoutePath(contentPath) {
 
 export function getOpenApiRoutePathsForAudit() {
   return getOpenApiRouteLanesForAudit().flatMap((lane) =>
-    lane.locales.flatMap((locale) =>
-      lane.routeLeaves.map(
+    lane.locales.flatMap((locale) => [
+      lane.parentUrls[locale],
+      ...lane.routeLeaves.map(
         (routeLeaf) => `/${locale}/${lane.routePrefix}/${routeLeaf}`,
       ),
-    ),
+    ]),
   );
 }
 
@@ -2510,8 +2524,21 @@ function getOpenApiRouteLanesForAudit() {
       );
     }
 
-    return { locales, routePrefix, routeLeaves, sourcePaths };
-  });
+    const parentUrlsBlock = extractObjectProperty(block, 'parentUrl');
+    const parentUrls = parentUrlsBlock
+      ? Object.fromEntries(
+          [...parentUrlsBlock.matchAll(/'?([A-Za-z-]+)'?:\s*'([^']+)'/g)].map(
+            (match) => [match[1], match[2]],
+          ),
+        )
+      : Object.fromEntries(
+          locales.map((locale) => [
+            locale,
+            block.match(/parentUrl:\s*'([^']+)'/)?.[1],
+          ]),
+        );
+    return { locales, parentUrls, routePrefix, routeLeaves, sourcePaths };
+  }).filter((lane) => !isRetiredCnDocsPath(lane.parentUrls['zh-CN'] ?? ''));
 }
 
 function extractTupleOperationRouteLeaves(raw) {

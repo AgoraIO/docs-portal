@@ -1,3 +1,4 @@
+import { isRetiredCnDocsPath } from '@/lib/retired-cn-docs.mjs';
 import type { FaqCategoryId, FaqItem } from './faq-data';
 
 export const FAQ_ZH_CN_ALL_PRODUCTS = '全部产品';
@@ -59,13 +60,13 @@ export const zhCnFaqProducts = [
   '全部产品',
   '实时互动',
   '实时消息',
-  '灵动课堂',
+  // '灵动课堂', // 已下线，保留历史标签。
   '本地服务端录制',
   '互动白板',
   '旁路推流',
   '声动语聊',
   '水晶球',
-  '融合 CDN',
+  // '融合 CDN', // 已下线，保留历史标签。
   '云端录制',
   '云端转码',
   '对话式 AI 引擎',
@@ -73,7 +74,7 @@ export const zhCnFaqProducts = [
   'Fastboard',
 ];
 
-export const zhCnFaqItems: FaqItem[] = [
+const zhCnFaqSourceItems: FaqItem[] = [
   {
     category: 'account-and-billing',
     href: '/zh-CN/reference/faq/account/billing_account',
@@ -813,15 +814,6 @@ export const zhCnFaqItems: FaqItem[] = [
   },
   {
     category: 'other-issues',
-    href: '/zh-CN/reference/faq/other/macos_15_beta',
-    platforms: ['全部平台', 'macOS'],
-    products: ['全部产品', '实时互动'],
-    summary:
-      '在 macOS 15 Beta 系统上开发时，如果 App 的路径（以及 App 名称）包含非英文字符（例如：中文、日文、韩文等），则编译后的 Metal shader library 中可能不包含任何方法，导致 App 无法正常运行。',
-    title: '如何解决 macOS 15 Beta 不支持路径中包含中文字符的 App 问题？',
-  },
-  {
-    category: 'other-issues',
     href: '/zh-CN/reference/faq/other/privacyinfortm',
     platforms: ['全部平台', 'iOS', 'Unity'],
     products: ['全部产品', '实时消息'],
@@ -1083,3 +1075,12 @@ export const zhCnFaqItems: FaqItem[] = [
     title: '为什么我的视频会出现卡顿？',
   },
 ];
+
+export const zhCnFaqItems: FaqItem[] = zhCnFaqSourceItems
+  .filter((item) => !isRetiredCnDocsPath(item.href))
+  .map((item) => ({
+    ...item,
+    products: item.products.filter(
+      (product) => product !== '融合 CDN' && product !== '灵动课堂',
+    ),
+  }));

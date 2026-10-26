@@ -1,6 +1,36 @@
 import { ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS } from './zh-cn-moved-solution-product-redirects';
 
 const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
+  'realtime-media/rtsa/build/setup-and-access/enable-service':
+    '/zh-CN/realtime-media/rtsa/build/project-preparation/enable-service',
+  'realtime-media/rtsa/build/setup-and-access/license':
+    '/zh-CN/realtime-media/rtsa/build/project-preparation/license',
+  'realtime-media/rtsa/build/setup-and-access/cloud-proxy':
+    '/zh-CN/realtime-media/rtsa/build/network-and-region-access/cloud-proxy',
+  'realtime-media/rtsa/build/setup-and-access/region-limit':
+    '/zh-CN/realtime-media/rtsa/build/network-and-region-access/region-limit',
+  'realtime-media/rtsa/build/implement-core-features/implement-transmission':
+    '/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/implement-transmission',
+  'realtime-media/rtsa/build/implement-core-features/string-uid':
+    '/zh-CN/realtime-media/rtsa/build/media-and-signaling-transmission/string-uid',
+  'realtime-media/rtsa/build/implement-core-features/audio-codec':
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/audio-codec',
+  'realtime-media/rtsa/build/implement-core-features/multi-channel':
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/multi-channel',
+  'realtime-media/rtsa/build/implement-core-features/stream-state':
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/stream-state',
+  'realtime-media/rtsa/build/implement-core-features/bitrate-adaption':
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/bitrate-adaption',
+  'realtime-media/rtsa/build/implement-core-features/key-frame':
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/key-frame',
+  'realtime-media/rtsa/build/implement-core-features/encryption':
+    '/zh-CN/realtime-media/rtsa/build/media-transmission/encryption',
+  'realtime-media/rtsa/build/implement-core-features/data-stream':
+    '/zh-CN/realtime-media/rtsa/build/data-communication/data-stream',
+  'realtime-media/rtsa/build/implement-core-features/send-message-through-rdt-channel':
+    '/zh-CN/realtime-media/rtsa/build/data-communication/send-message-through-rdt-channel',
+  'realtime-media/rtsa/build/optimize-and-operate/interoperate-rtc':
+    '/zh-CN/realtime-media/rtsa/build/rtc-interoperability/interoperate-rtc',
   'api-reference/whiteboard/whiteboard-sdk/restful/fastboard-sdk/solution-compare':
     '/zh-CN/realtime-media/whiteboard/solution-compare',
   'realtime-media/recording': '/zh-CN/realtime-media/cloud-recording',
@@ -653,7 +683,9 @@ const ZH_CN_PRODUCT_IA_REDIRECTS: Record<string, string> = {
   'realtime-media/rtc/user-guides/http-basic-auth':
     '/zh-CN/realtime-media/rtc/build/setup-and-access/http-basic-auth',
   'realtime-media/rtc/webhook/events':
-    '/zh-CN/realtime-media/rtc/reference/events',
+    '/zh-CN/api-reference/rtc/restful/webhook/events',
+  'realtime-media/rtc/reference/events':
+    '/zh-CN/api-reference/rtc/restful/webhook/events',
   'realtime-media/rtc/webhook/receive_webhook':
     '/zh-CN/realtime-media/rtc/build/optimize-and-operate/receive_webhook',
   'realtime-media/rtm/build/manage-channels/channel-basic':

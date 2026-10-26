@@ -28,6 +28,72 @@ afterEach(async () => {
 });
 
 describe('API Center navigation runner', () => {
+  it('regenerates the flat React overview entries and nested Web SDK without promoting hidden types', async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), 'api-center-react-'),
+    );
+    roots.push(repoRoot);
+    const manifestPath = 'docs/migration/api-center-html-manifest.json';
+    const manifest = JSON.parse(await fs.readFile(manifestPath, 'utf8'));
+    manifest.entries = manifest.entries.filter(
+      (entry: { label: string; product: string }) =>
+        entry.product === '实时互动 RTC' && entry.label === 'React',
+    );
+    manifest.pageEvidence = manifest.pageEvidence.filter(
+      (page: { requestedUrl: string }) =>
+        page.requestedUrl.startsWith(
+          'https://doc.shengwang.cn/api-ref/rtc/react/',
+        ),
+    );
+    await fs.mkdir(path.join(repoRoot, 'docs/migration'), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, manifestPath),
+      JSON.stringify(manifest),
+    );
+    const root = 'content/docs/zh-CN/api-reference';
+    const reactRoot = `${root}/rtc/react-sdk`;
+    await fs.mkdir(path.join(repoRoot, reactRoot), { recursive: true });
+    await fs.writeFile(
+      path.join(repoRoot, root, 'meta.json'),
+      JSON.stringify({
+        title: 'API 参考',
+        root: true,
+        pages: ['overview', 'rtc'],
+      }),
+    );
+    await fs.writeFile(
+      path.join(repoRoot, reactRoot, 'meta.json'),
+      JSON.stringify({
+        title: 'React API 参考',
+        // Versions are hand-maintained; the generator owns pages and labels.
+        navScope: JSON.parse(
+          await fs.readFile(`${reactRoot}/meta.json`, 'utf8'),
+        ).navScope,
+      }),
+    );
+    for (const page of manifest.pageEvidence) {
+      const targetPath = page.sourceResolution?.targetPath;
+      if (!targetPath?.endsWith('.mdx')) continue;
+      await fs.mkdir(path.dirname(path.join(repoRoot, targetPath)), {
+        recursive: true,
+      });
+      await fs.writeFile(
+        path.join(repoRoot, targetPath),
+        '---\ntitle: Fixture\n---\n',
+      );
+    }
+
+    const result = await runApiCenterNavigation({ repoRoot, lanes: [] });
+    expect(result.report.counts.errors).toBe(0);
+    for (const relativePath of ['meta.json', 'web-sdk/meta.json']) {
+      const targetPath = `${reactRoot}/${relativePath}`;
+      expect(
+        JSON.parse(await fs.readFile(path.join(repoRoot, targetPath), 'utf8')),
+      ).toEqual(JSON.parse(await fs.readFile(targetPath, 'utf8')));
+    }
+    await runApiCenterNavigation({ repoRoot, lanes: [], mode: 'check' });
+  });
+
   it.each([
     ['java', ['agoraservice.java', 'agoramediartcrecorder.java']],
     [
@@ -38,25 +104,28 @@ describe('API Center navigation runner', () => {
         'iagoramediacomponentfactory.cpp',
       ],
     ],
-  ])('keeps local recording %s API pages inside the platform sidebar scope', async (platform, expectedPages) => {
-    const meta = JSON.parse(
-      await fs.readFile(
-        path.resolve(
-          `content/docs/zh-CN/api-reference/local-server-recording/${platform}/meta.json`,
-        ),
-        'utf8',
-      ),
-    );
-
-    expect(meta.pages).toEqual(expect.arrayContaining(expectedPages));
-    for (const leaf of expectedPages) {
-      expect(meta.pages).not.toContainEqual(
-        expect.stringContaining(
-          `/zh-CN/api-reference/local-server-recording/${leaf}`,
+  ])(
+    'keeps local recording %s API pages inside the platform sidebar scope',
+    async (platform, expectedPages) => {
+      const meta = JSON.parse(
+        await fs.readFile(
+          path.resolve(
+            `content/docs/zh-CN/api-reference/local-server-recording/${platform}/meta.json`,
+          ),
+          'utf8',
         ),
       );
-    }
-  });
+
+      expect(meta.pages).toEqual(expect.arrayContaining(expectedPages));
+      for (const leaf of expectedPages) {
+        expect(meta.pages).not.toContainEqual(
+          expect.stringContaining(
+            `/zh-CN/api-reference/local-server-recording/${leaf}`,
+          ),
+        );
+      }
+    },
+  );
 
   it('keeps external IM entries under the stable catalog product id', () => {
     const catalog = buildApiReferenceCatalogData([
@@ -104,7 +173,8 @@ describe('API Center navigation runner', () => {
         product: '1v1 私密房',
         apiGroup: 'client',
         label: 'Android',
-        targetRoute: '/zh-CN/api-reference/private-room/android/rtm/api/call-api',
+        targetRoute:
+          '/zh-CN/api-reference/private-room/android/rtm/api/call-api',
         urlFamily: 'doc',
       },
     ];
@@ -112,15 +182,13 @@ describe('API Center navigation runner', () => {
     const catalog = buildApiReferenceCatalogData(groups);
 
     expect(
-      catalog.all.map((entry: {
-        apiType: string;
-        product: string;
-        productId: string;
-      }) => ({
-        apiType: entry.apiType,
-        product: entry.product,
-        productId: entry.productId,
-      })),
+      catalog.all.map(
+        (entry: { apiType: string; product: string; productId: string }) => ({
+          apiType: entry.apiType,
+          product: entry.product,
+          productId: entry.productId,
+        }),
+      ),
     ).toEqual([
       {
         apiType: 'server-sdk',
@@ -264,26 +332,29 @@ describe('API Center navigation runner', () => {
     ],
     ['android', 'auikaraoke', ['api/auikaraoke-api', 'api/lyrics-api']],
     ['ios', 'auikaraoke', ['api/auikaraoke-api', 'api/lyrics-api']],
-  ] as const)('keeps only Online KTV API documents in the %s/%s scoped sidebar', async (platform, solution, expectedPages) => {
-    const solutionMeta = JSON.parse(
-      await fs.readFile(
-        path.resolve(
-          `content/docs/zh-CN/api-reference/online-ktv/${platform}/${solution}/meta.json`,
+  ] as const)(
+    'keeps only Online KTV API documents in the %s/%s scoped sidebar',
+    async (platform, solution, expectedPages) => {
+      const solutionMeta = JSON.parse(
+        await fs.readFile(
+          path.resolve(
+            `content/docs/zh-CN/api-reference/online-ktv/${platform}/${solution}/meta.json`,
+          ),
+          'utf8',
         ),
-        'utf8',
-      ),
-    );
-    expect(solutionMeta.navScope).toEqual({});
-    expect(solutionMeta.pages).toEqual(expectedPages);
-    expect(solutionMeta.pages).not.toEqual(
-      expect.arrayContaining([
-        'landing-page',
-        'overview/introduction',
-        'get-started/enable-service',
-        'advanced-features/get-music',
-      ]),
-    );
-  });
+      );
+      expect(solutionMeta.navScope).toEqual({});
+      expect(solutionMeta.pages).toEqual(expectedPages);
+      expect(solutionMeta.pages).not.toEqual(
+        expect.arrayContaining([
+          'landing-page',
+          'overview/introduction',
+          'get-started/enable-service',
+          'advanced-features/get-music',
+        ]),
+      );
+    },
+  );
 
   it('keeps Online KTV product and platform navigation exact', async () => {
     const productMeta = JSON.parse(
@@ -344,7 +415,7 @@ describe('API Center navigation runner', () => {
       ],
     ).toBe('事件类型');
     expect(solutionMeta.pages).toContain(
-      '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events)',
+      '[事件类型](/zh-CN/api-reference/api-ref/cloud-transcoding/ncs-events?from=%2Fzh-CN%2Frealtime-media%2Ftranscoding)',
     );
     expect(solutionMeta.pages).not.toContain('ncs-events');
   });
@@ -1274,6 +1345,83 @@ describe('API Center navigation runner', () => {
         'docs/migration/api-center-navigation-generated-files.json',
     });
     expect(audit.counts).toMatchObject({ errors: 0, metaFiles: 11 });
+
+    // Versions are maintained in platform metadata, not reconstructed from
+    // the API Center manifest (which only describes current content).
+    const maintainedScopes = [
+      {
+        directory: 'rtsa/c',
+        scope: {
+          defaultVersion: 'current',
+          versions: [
+            { id: 'current', label: 'v1.10.1', path: '(current)' },
+            {
+              id: '1.9.7',
+              label: 'v1.9.7',
+              path: '1.9.7',
+              href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtsa/c/overview',
+            },
+          ],
+          versionOverrides: [
+            {
+              path: 'details',
+              versions: [
+                {
+                  id: 'current',
+                  label: 'v1.10.1 (details)',
+                  path: '.',
+                  href: '/zh-CN/api-reference/rtsa/c/overview',
+                },
+                {
+                  id: '1.9.7',
+                  label: 'v1.9.7',
+                  path: '1.9.7',
+                  href: 'https://doc-archive.shengwang.cn/archive/0.0.492/api-ref/rtsa/c/overview',
+                },
+              ],
+            },
+          ],
+        },
+      },
+      {
+        directory: 'whiteboard/whiteboard-sdk/android',
+        scope: {
+          defaultVersion: 'current',
+          versions: [
+            { id: 'current', label: 'v2.16.100', path: '(current)' },
+            {
+              id: '2.16.86',
+              label: 'v2.16.86',
+              path: '2.16.86',
+              href: 'https://doc-archive.shengwang.cn/archive/0.0.275/api-ref/whiteboard/android/overview',
+            },
+          ],
+        },
+      },
+    ];
+    for (const { directory, scope } of maintainedScopes) {
+      const metaPath = path.join(
+        repoRoot,
+        `content/docs/zh-CN/api-reference/${directory}/meta.json`,
+      );
+      const meta = JSON.parse(await fs.readFile(metaPath, 'utf8'));
+      await fs.writeFile(
+        metaPath,
+        `${JSON.stringify({ ...meta, navScope: scope }, null, 2)}\n`,
+      );
+    }
+    await runApiCenterNavigation({ repoRoot, manifestPath, lanes });
+    for (const { directory, scope } of maintainedScopes) {
+      const metaPath = path.join(
+        repoRoot,
+        `content/docs/zh-CN/api-reference/${directory}/meta.json`,
+      );
+      const meta = JSON.parse(await fs.readFile(metaPath, 'utf8'));
+      expect(meta.navScope).toEqual(scope);
+    }
+    await expect(
+      runApiCenterNavigation({ repoRoot, manifestPath, lanes, mode: 'check' }),
+    ).resolves.toBeTruthy();
   });
 
   it('rebuilds the old Edu Store sidebar while keeping other TypeDoc details hidden', async () => {
@@ -1562,7 +1710,8 @@ describe('API Center navigation runner', () => {
         `${eduRoot}/classes/cloud-drive.mdx`.replace('content/docs/', ''),
       ],
     });
-    expect(linkAudit.totalLinks).toBe(2);
+    // Migration retains the source graph, while public audits omit retired docs.
+    expect(linkAudit.totalLinks).toBe(0);
     expect(linkAudit.invalidLinks).toEqual([]);
     await runApiCenterNavigation({
       repoRoot,

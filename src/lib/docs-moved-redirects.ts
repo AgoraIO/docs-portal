@@ -1,10 +1,7 @@
 import { ZH_CN_MOVED_SOLUTION_PRODUCT_REDIRECTS } from './zh-cn-moved-solution-product-redirects';
 
 const ZH_CN_AI_GUIDE_REDIRECTS = new Map([
-  [
-    'user-guides/rest-tool',
-    '/zh-CN/ai/build/shape-the-conversation/rest-tool',
-  ],
+  ['user-guides/rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool'],
   [
     'user-guides/asr-keywords',
     '/zh-CN/ai/build/custom-model-integration/asr-keywords',
@@ -13,6 +10,11 @@ const ZH_CN_AI_GUIDE_REDIRECTS = new Map([
     'user-guides/filler-words',
     '/zh-CN/ai/build/shape-the-conversation/filler-words',
   ],
+]);
+
+const ZH_CN_RTC_EVENTS_REDIRECTS = new Map([
+  ['rtc/reference/events', '/zh-CN/api-reference/rtc/restful/webhook/events'],
+  ['rtc/webhook/events', '/zh-CN/api-reference/rtc/restful/webhook/events'],
 ]);
 
 export function resolveMovedDocsRedirect(
@@ -26,6 +28,13 @@ export function resolveMovedDocsRedirect(
 
   if (tab === 'ai') {
     return ZH_CN_AI_GUIDE_REDIRECTS.get(slugSegments.join('/')) ?? null;
+  }
+
+  if (tab === 'realtime-media') {
+    const rtcEventsRedirect = ZH_CN_RTC_EVENTS_REDIRECTS.get(
+      slugSegments.join('/'),
+    );
+    if (rtcEventsRedirect) return rtcEventsRedirect;
   }
 
   if (
@@ -112,6 +121,8 @@ export function isPermanentMovedDocsRedirect(
   return (
     locale === 'zh-CN' &&
     ((tab === 'ai' && ZH_CN_AI_GUIDE_REDIRECTS.has(slugSegments.join('/'))) ||
+      (tab === 'realtime-media' &&
+        ZH_CN_RTC_EVENTS_REDIRECTS.has(slugSegments.join('/'))) ||
       (tab === 'solutions' &&
         (root === 'ppt-transcoding' || root === 'status-page')))
   );

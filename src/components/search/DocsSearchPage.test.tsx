@@ -7,6 +7,7 @@ import {
 } from '@testing-library/react';
 import { useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { recordRecentPage } from '@/lib/recently-viewed';
 import {
   type CnSearchPageResponse,
   searchCnDocsPage,
@@ -28,6 +29,35 @@ const empty: CnSearchPageResponse = {
 };
 
 describe('DocsSearchPage', () => {
+  it('shows recent CN pages with public or previous URLs and excludes other destinations', async () => {
+    recordRecentPage({ title: '旧中文文档', url: '/zh-CN/realtime-media/rtc' });
+    recordRecentPage({
+      title: '新版中文文档',
+      url: '/realtime-media/rtc/build/token-authentication',
+    });
+    recordRecentPage({ title: '英文文档', url: '/en/introduction' });
+    recordRecentPage({
+      title: '外部链接',
+      url: 'https://example.com/realtime-media/rtc',
+    });
+    render(
+      <DocsSearchPage state={parseSearchPageState({})} onChange={vi.fn()} />,
+    );
+    expect(
+      await screen.findByRole('link', { name: '新版中文文档' }),
+    ).toHaveAttribute('href', '/realtime-media/rtc/build/token-authentication');
+    expect(screen.getByRole('link', { name: '旧中文文档' })).toHaveAttribute(
+      'href',
+      '/zh-CN/realtime-media/rtc',
+    );
+    expect(
+      screen.queryByRole('link', { name: '英文文档' }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('link', { name: '外部链接' }),
+    ).not.toBeInTheDocument();
+  });
+
   it('opens the opt-in answer panel without changing normal search criteria', async () => {
     const onChange = vi.fn();
     render(

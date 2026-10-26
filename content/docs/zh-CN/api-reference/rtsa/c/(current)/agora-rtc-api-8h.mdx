@@ -941,6 +941,14 @@ Token 过期可能的原因有：
 
 </Slot>
 
+| 枚举值 | 说明 |
+| --- | --- |
+| <a id="aec639f854206054cb48acde88e998abfa5777b20d7a0f7dfe7476b6a536a83bf1"></a>`ERR_RTM_CUSTOM_TYPE_OUT_OF_LENGTH` | 1007: 自定义消息类型长度超出限制。 |
+| <a id="aec639f854206054cb48acde88e998abfa6fda7e04b367a5991e5090fa05b3b1fc"></a>`ERR_RTM_CHANNEL_EXCEED_LIMIT` | 1008: RTM 频道订阅数量超过限制。 |
+| <a id="aec639f854206054cb48acde88e998abfa148395c6d831b6a1dad741a037eed1cb"></a>`ERR_RTM_CHANNEL_ALREADY_JOINED` | 1009: 已订阅该 RTM 频道。 |
+| <a id="aec639f854206054cb48acde88e998abfae831b617b71c7372d3c36b9662944007"></a>`ERR_RTM_CHANNEL_NOT_JOINED` | 1010: 未订阅该 RTM 频道。 |
+| <a id="aec639f854206054cb48acde88e998abfab95fb89d9ef9a3a29d726f830c06501e"></a>`ERR_RTM_CHANNEL_SUBSCRIBE_TIMEOUT` | 1011: RTM 频道订阅超时。 |
+
 <a id="a1a483a5b4b02019fa68b46a979ac1d1d"></a>
 
 ### area_code_e
@@ -1466,7 +1474,7 @@ enum [crypto_mode_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de82
 
 加密模式。
 
-建议使用 AES_128_GCM2 或 AES_256_GCM2 加密模式。这两种模式支持使用盐，安全性更高。
+建议使用 [AES_128_GCM2](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44ea23d6a46e00004410b9d00b41aba70e0d) 或 [AES_256_GCM2](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a1e4f35ba0de825f5576535acfbaeb44ea13555f5e3977644e0fb20ee80e9b841a) 加密模式。这两种模式支持使用盐，安全性更高。
 
 | 枚举值 |  |
 | --- | --- |
@@ -1629,7 +1637,7 @@ enum [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863
 
 <Slot for="api-center-table-197">
 
-2: License 过期。你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h) 进行续费。
+2: License 过期。你需要联系 sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn 进行续费。
 
 </Slot>
 
@@ -1641,7 +1649,7 @@ enum [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863
 
 <Slot for="api-center-table-199">
 
-3: License 包含的通话时长已用完。你需要联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h) 购买通话时长更长的 License。
+3: License 包含的通话时长已用完。你需要联系 sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn 购买通话时长更长的 License。
 
 </Slot>
 
@@ -1653,7 +1661,7 @@ enum [license_err_reason_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a618863
 
 <Slot for="api-center-table-201">
 
-4: 当前时间段受 License 限制，不能进行通话。你需要换一个 License 允许的时间段进行通话，或联系 [sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h) 购买通话时间段更长的 License。
+4: 当前时间段受 License 限制，不能进行通话。你需要换一个 License 允许的时间段进行通话，或联系 sales.nosp@m.@she.nosp@m.ngwan.nosp@m.g.cn 购买通话时间段更长的 License。
 
 </Slot>
 
@@ -1733,7 +1741,7 @@ RDT 通道的连接状态。
 
 <Slot for="api-center-table-211">
 
-RDT 通道中的发送缓冲区已满。该状态下用户不可以发送数据消息 (RDT_STREAM_DATA)，但可以发送控制消息 (RDT_STREAM_CMD)。
+RDT 通道中的发送缓冲区已满。该状态下用户不可以发送数据消息 ([RDT_STREAM_DATA](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955a04654c2c006244086c3b455375d10766))，但可以发送控制消息 ([RDT_STREAM_CMD](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955a7f3a2a89aa98975482c02131bd224b46))。
 
 </Slot>
 
@@ -1747,8 +1755,8 @@ RDT 通道中的发送缓冲区已满。该状态下用户不可以发送数据�
 
 正在重新连接 RDT 通道。
 
-- 如果重新连接成功，则连接状态会变为 RDT_STATE_OPENED，SDK 会保留 RDT 通道中发送和接收缓冲区中的历史数据。
-- 如果重新连接失败，则连接状态会变为 RDT_STATE_CLOSED，SDK 会清除 RDT 通道中发送和接收缓冲区中的历史数据。
+- 如果重新连接成功，则连接状态会变为 [RDT_STATE_OPENED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84ae07e035ba0878b81839416a8fde5cf1c)，SDK 会保留 RDT 通道中发送和接收缓冲区中的历史数据。
+- 如果重新连接失败，则连接状态会变为 [RDT_STATE_CLOSED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84a757c5096332a339fdfe10488a955d6f5)，SDK 会清除 RDT 通道中发送和接收缓冲区中的历史数据。
 
 </Slot>
 
@@ -2199,12 +2207,53 @@ RTM RTM 事件类型。
 
 2: 用户退出 RTM 服务。可能得原因是：
 
-- ERR_RTM_SERVER_TIMEOUT：服务器没有收到本地客户端发送的心跳包。
-- ERR_RTM_LOCAL_INTERRUPT：本地用户网络中断。
-- ERR_RTM_LOCAL_TIMEOUT：本地客户端没收到服务端响应的心跳包。
-- ERR_RTM_LOCAL_NETDOWN：检测到网卡出现故障。
+- [ERR_RTM_SERVER_TIMEOUT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a86dfec717916e6a4390117d20a4fe93e)：服务器没有收到本地客户端发送的心跳包。
+- [ERR_RTM_LOCAL_INTERRUPT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a42ee38fc588f057ffa1d6cce5f1a8590)：本地用户网络中断。
+- [ERR_RTM_LOCAL_TIMEOUT](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395a81c8a98baffacb7cef2555975fa91c9d)：本地客户端没收到服务端响应的心跳包。
+- [ERR_RTM_LOCAL_NETDOWN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a67e13664c08581f85cd18c0e36299395aff3cd211a9e47d717330db875292c2c0)：检测到网卡出现故障。
 
 在该状态下，SDK 会自动尝试重连，如果重连成功，则可以恢复登录。
+
+</Slot>
+
+<a id="a35525a9e5a7992d762bf4e9084813f8d"></a>
+
+### rtm_message_type_e
+
+<ApiSignature>
+
+enum [rtm_message_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8d)
+
+</ApiSignature>
+
+RTM 消息类型。
+
+| 枚举值 |  |
+| --- | --- |
+| <Slot name="rtsa2083-message-type-284" /> | <Slot name="rtsa2083-message-type-285" /> |
+| <Slot name="rtsa2083-message-type-286" /> | <Slot name="rtsa2083-message-type-287" /> |
+
+<Slot for="rtsa2083-message-type-284">
+
+<a id="a35525a9e5a7992d762bf4e9084813f8da552385ad8ec29983109d4071662ff77f"></a>RTM_MESSAGE_TYPE_BINARY
+
+</Slot>
+
+<Slot for="rtsa2083-message-type-285">
+
+0: 二进制消息。
+
+</Slot>
+
+<Slot for="rtsa2083-message-type-286">
+
+<a id="a35525a9e5a7992d762bf4e9084813f8da464f052504625125b4d5a0c769a252ad"></a>RTM_MESSAGE_TYPE_STRING
+
+</Slot>
+
+<Slot for="rtsa2083-message-type-287">
+
+1: 字符串消息。
 
 </Slot>
 
@@ -2706,7 +2755,7 @@ Connection ID。
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 </ParameterList>
@@ -2776,7 +2825,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="conn_info" direction="[out]">
@@ -2982,13 +3031,13 @@ const char * agora_rtc_get_version(void)
 
 :::info[注解]
 - 你可以同时加入多个频道，所有你加入的频道都能接收到你发送的音视频数据。
-- 如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要创建不同的 Connection 并在调用 agora_rtc_join_channel 方法时填入对应的 Connection ID。
+- 如需使用同一个用户 ID 加入不同频道，或者使用不同用户 ID 加入同一个频道，则你需要创建不同的 Connection 并在调用 [agora_rtc_join_channel](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a6c29ff27f04623526a164cf6e5dcd738) 方法时填入对应的 Connection ID。
 :::
 
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="channel_name" direction="[in]">
@@ -3047,7 +3096,7 @@ v1.9.5
 
 :::info[注解]
 - 你可以同时加入多个频道，所有你加入的频道都能接收到你发送的音视频数据。
-- 如需使用同一个用户 User account 加入不同频道，或者使用不同用户 User account 加入同一个频道，则你需要创建不同的 Connection 并在调用 agora_rtc_join_channel_with_user_account 方法时填入对应的 Connection ID。
+- 如需使用同一个用户 User account 加入不同频道，或者使用不同用户 User account 加入同一个频道，则你需要创建不同的 Connection 并在调用 [agora_rtc_join_channel_with_user_account](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a64a24029bfaa5408e987122261385013) 方法时填入对应的 Connection ID。
 :::
 
 <ParameterList title="参数">
@@ -3109,7 +3158,7 @@ Connection ID。
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 </ParameterList>
@@ -3151,7 +3200,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 
 缓冲区大小（字节）。
 
-- 输入值用于确认缓冲区的可用长度（字节），需大于 AGORA_CREDENTIAL_MAX_LEN。
+- 输入值用于确认缓冲区的可用长度（字节），需大于 [AGORA_CREDENTIAL_MAX_LEN](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a02e5aee7d86c93a30696a11c2da69fb4)。
 - 输出值为 Credential 的实际长度（字节）。
 
 </Parameter>
@@ -3199,7 +3248,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <a id="弃用-1"></a>
 
 :::error[弃用]
-自 v1.9.0 废弃。改用 [on_license_validation_failure](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#aa05b9b9e42a2018a913ac18bf0022919) 回调获取 License 校验失败的错误码。
+自 v1.9.0 废弃。改用 [on_license_validation_failure](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#af300f9a2a90391ce3ef8bbca2217bd91) 回调获取 License 校验失败的错误码。
 :::
 
 认证 SDK。
@@ -3241,11 +3290,13 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 
 <a id="a577ba22b315e7ec594221fb3f1e89ce7"></a>
 
-### agora_rtc_login_rtm()
+<a id="abd4be43c4d5850c8753ef27c18417c20"></a>
+
+### agora_rtm_login()
 
 <ApiSignature labels="extern">
 
-[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_login_rtm(const char * *rtm_uid*, const char * *rtm_token*, const [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t) * *handler*)
+[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtm_login(const char * *rtm_uid*, const char * *rtm_token*, const [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t) * *handler*)
 
 </ApiSignature>
 
@@ -3282,11 +3333,13 @@ RTM 回调。详见 [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagor
 
 <a id="ab6ec6e5968325a3d24c4352f0b7dafec"></a>
 
-### agora_rtc_logout_rtm()
+<a id="a6775e5f6356091e50328cc5dd7c3f9a1"></a>
+
+### agora_rtm_logout()
 
 <ApiSignature labels="extern">
 
-[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_logout_rtm(void)
+[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtm_logout(void)
 
 </ApiSignature>
 
@@ -3312,7 +3365,7 @@ RTM 回调。详见 [agora_rtm_handler_t](/zh-CN/api-reference/rtsa/c/structagor
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="mute" direction="[in]">
@@ -3345,7 +3398,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="mute" direction="[in]">
@@ -3378,7 +3431,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="remote_uid" direction="[in]">
@@ -3418,7 +3471,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="remote_uid" direction="[in]">
@@ -3456,7 +3509,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="token" direction="[in]">
@@ -3486,7 +3539,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="remote_uid" direction="[in]">
@@ -3521,7 +3574,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="data_ptr" direction="[in]">
@@ -3562,7 +3615,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 1.9.5
 :::
 
-成功调用该方法后，远端会触发 [on_media_ctrl_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#ab0a6462ac391a960f767d2cf6ce8078a) 回调，远端用户可以在该回调中获取接收到的消息。
+成功调用该方法后，远端会触发 [on_media_ctrl_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a2e1c250bc84081128d1c2f4fed26bf92) 回调，远端用户可以在该回调中获取接收到的消息。
 
 :::info[注解]
 调用该方法时，你需要明确指定发送的频道；否则 SDK 会将消息发送到所有你加入的频道。
@@ -3615,13 +3668,13 @@ v1.9.2
 在文件传输、文件下载等需要可靠传输的场景中，你可以参考如下步骤发送 RDT 消息：
 
 1. 在 RDT 通道中建立连接：在加入频道时，将 [rtc_channel_options_t](/zh-CN/api-reference/rtsa/c/structrtc-channel-options-t) 中的 enable_rdt 参数设置为 true，主动与频道内其他用户建立连接。
-2. 获取 RDT 通道的连接状态：监听 [on_rdt_state](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#afa921fa31ea49ef1c97a17949119e386) 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 RDT_STATE_OPENED，此时才可进行下一步。
-3. 调用 agora_rtc_send_rdt_msg 方法发送 RDT 消息：你可以根据需要发送控制消息 (RDT_STREAM_CMD) 或数据消息 (RDT_STREAM_DATA)，二者区别如下：
+2. 获取 RDT 通道的连接状态：监听 [on_rdt_state](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#afe6c35e916473a1424f28d3fefbdda69) 回调。当在 RDT 通道中成功建立连接时，连接状态会变为 [RDT_STATE_OPENED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84ae07e035ba0878b81839416a8fde5cf1c)，此时才可进行下一步。
+3. 调用 [agora_rtc_send_rdt_msg](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a056de38235f67ad1ea91cfd695ffaf61) 方法发送 RDT 消息：你可以根据需要发送控制消息 ([RDT_STREAM_CMD](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955a7f3a2a89aa98975482c02131bd224b46)) 或数据消息 ([RDT_STREAM_DATA](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a39c4148522dd2ce2d729b8f264e7b955a04654c2c006244086c3b455375d10766))，二者区别如下：
 
 - 控制消息。发送优先级高，不受拥塞控制策略影响，不会阻塞发送。每秒至多发送 100 个消息包，每个消息包的长度至多为 256 B。
 - 数据消息。发送优先级低，受拥塞控制策略影响，如果缓冲区满了，则消息会发送失败。每个消息包的长度至多为 128 KB。
 
-成功发送 RDT 消息后，远端用户会收到 [on_rdt_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a80dfcd1cd72a006a7b2daae4d7f80eea) 回调。你可以调用 agora_rtc_get_rdt_status_info 方法获取远端用户是否接收完消息等信息。
+成功发送 RDT 消息后，远端用户会收到 [on_rdt_msg](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7b5b9ba5f3acaf9b336040e4edd282a5) 回调。你可以调用 agora_rtc_get_rdt_status_info 方法获取远端用户是否接收完消息等信息。
 
 :::info[注解]
 每条连接限制传输 4 Mbps。如果超出，会返回如下错误码：
@@ -3664,17 +3717,19 @@ RDT 消息长度。
 - &lt; 0: 方法调用失败。
 
   - RTC_ERR_RDT_USER_NOT_EXIST(600): 频道内不存在该远端用户。
-  - RTC_ERR_RDT_USER_NOT_READY(601): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
-  - RTC_ERR_RDT_DATA_BLOCKED(602): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 RDT_STATE_OPENED 后重新调用该方法。
+  - RTC_ERR_RDT_USER_NOT_READY(601): 未成功与远端用户建立连接。你需要等 RDT 通道的连接状态变为 [RDT_STATE_OPENED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84ae07e035ba0878b81839416a8fde5cf1c) 后重新调用该方法。
+  - RTC_ERR_RDT_DATA_BLOCKED(602): 发送缓冲区已满。你需要等 RDT 通道的连接状态变为 [RDT_STATE_OPENED](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a29a5e8defc6abf737109eb0b5349ac84ae07e035ba0878b81839416a8fde5cf1c) 后重新调用该方法。
   - RTC_ERR_RDT_CMD_EXCEED_LIMIT(603): 控制消息的数量超过限制。每秒发送的控制消息包不能超过 4 Mbps。. - [ERR_RDT_DATA_EXCEED_LIMIT(604)](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#aec639f854206054cb48acde88e998abfad5480174d08af976c9d208da224bb28e): 数据数据大小超出限制。
 
 <a id="a1eaa46ebfb4613c624eef98ae7275319"></a>
 
-### agora_rtc_send_rtm_data()
+<a id="ab001eda008555d96e4e64dc9e66687bf"></a>
+
+### agora_rtm_send_data()
 
 <ApiSignature labels="extern">
 
-[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtc_send_rtm_data(const char * *rtm_uid*, const void * *msg*, size_t *msg_len*, uint32_t *msg_id*)
+[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtm_send_data(const char * *rtm_uid*, const void * *msg*, size_t *msg_len*, uint32_t *msg_id*, [rtm_message_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8d) *msg_type*, const char * *custom_type*)
 
 </ApiSignature>
 
@@ -3683,7 +3738,7 @@ RDT 消息长度。
 RTM 默认开启基于 TLS 加密的传输层安全保护且不可关闭。
 
 :::info[注解]
-成功登录 RTM 服务并收到 [`on_rtm_event`](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a25c73cac37a00ac748fa41869838f623) 回调时才可以发送消息。发送频率不能超过每秒 60 条。
+成功登录 RTM 服务并收到 [agora_rtm_handler_t::on_rtm_event](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#ab2549296a558191c8108cc5ca80de6ca) 回调时才可以发送消息。调用频率不能超过 3 秒 180 次。
 :::
 
 <ParameterList title="参数">
@@ -3694,7 +3749,7 @@ RTM 用户 ID。
 </Parameter>
 <Parameter name="msg" direction="[in]">
 
-消息内容。仅支持 UTF-8 编码。
+消息内容。
 
 </Parameter>
 <Parameter name="msg_len" direction="[in]">
@@ -3707,18 +3762,22 @@ RTM 用户 ID。
 消息 ID。
 
 </Parameter>
+<Parameter name="msg_type" direction="[in]">
+
+消息类型，必须为 [RTM_MESSAGE_TYPE_BINARY](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8da552385ad8ec29983109d4071662ff77f) 或 [RTM_MESSAGE_TYPE_STRING](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8da464f052504625125b4d5a0c769a252ad) 。
+
+</Parameter>
+<Parameter name="custom_type" direction="[in]">
+
+自定义消息类型，仅当 msg_type 为 [RTM_MESSAGE_TYPE_STRING](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8da464f052504625125b4d5a0c769a252ad) 时支持，最长 32 字节；未设置时为 NULL。
+
+</Parameter>
 </ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-29"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。
-
-  - RTM_ERR_NOT_LOGINED (-1001): 未登录 RTM 系统
-  - RTM_ERR_SEND_TO_SELF (-1002): 在 rtm_uid 参数中误填了自己的用户 ID。
-  - RTM_ERR_EXCEED_MSG_SIZE (-1003): RTM 消息长度超出限制。消息长度至多为 31 KB。
-  - RTM_ERR_EXCEED_MSG_CNT (-1004): 发送频率超出限制。每秒至多发送 60 条消息。
-  - RTM_ERR_EXCEED_TCP_SKB (-1005): 消息通道已满。等待一秒后重新发送。
 
 <a id="aee89fa14447b4529d45275afe5b5a86f"></a>
 
@@ -3746,7 +3805,7 @@ v1.9.5
   - 频道内每个客户端最多可以同时拥有 5 个数据通道，每个数据通道每秒最多发送 6 KB 的数据流。所有数据通道共用的总发包码率限制为 30 Kbps。
 :::
 
-成功调用该方法后，远端会触发 [on_stream_message](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a7c73b2bb0558e2b695d8838ee542c87a) 回调，远端用户可以在该回调中获取接收到的流消息。
+成功调用该方法后，远端会触发 [on_stream_message](/zh-CN/api-reference/rtsa/c/structagora-rtc-event-handler-t#a60c9fde781cd1429ed824efeb1cdd7e5) 回调，远端用户可以在该回调中获取接收到的流消息。
 
 <ParameterList title="参数">
 <Parameter name="stream_id" direction="[in]">
@@ -3786,7 +3845,7 @@ v1.9.5
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="data_ptr" direction="[in]">
@@ -3826,7 +3885,7 @@ Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Conne
 <ParameterList title="参数">
 <Parameter name="conn_id" direction="[in]">
 
-Connection ID。设为 CONNECTION_ID_ALL 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
+Connection ID。设为 [CONNECTION_ID_ALL](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a30a294de6c0b971e85edfa7265788772) 表示针对当前创建的所有 Connection 。你可以通过 [agora_rtc_create_connection](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#adef869ae47e2f1c194af611b57d06394) 创建 Connection。
 
 </Parameter>
 <Parameter name="min_bps" direction="[in]">
@@ -3906,6 +3965,110 @@ JSON 字符串形式的参数。
 </ParameterList>
 
 <h4 data-toc-hidden="true" id={"返回值-34"}>返回值</h4>
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。
+
+<a id="ab3dfb2693ca2cc21a56862065a16d718"></a>
+
+### agora_rtm_publish()
+
+<ApiSignature labels="extern">
+
+[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtm_publish(const char * *channel_name*, const void * *message*, size_t *length*, uint32_t *msg_id*, [rtm_message_type_e](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8d) *msg_type*, const char * *custom_type*)
+
+</ApiSignature>
+
+向 RTM 频道发布消息。
+
+无需订阅该频道即可发布消息。最终发送结果通过 [agora_rtm_handler_t::on_rtm_publish_result](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#ab4a465f3612760c6b7b74f6b79a5e6f6) 回调报告。
+
+<ParameterList title="参数">
+<Parameter name="channel_name" direction="[in]">
+
+目标频道名称。
+
+</Parameter>
+<Parameter name="message" direction="[in]">
+
+消息数据。
+
+</Parameter>
+<Parameter name="length" direction="[in]">
+
+消息长度，单位为字节，取值至多为 31 KB。
+
+</Parameter>
+<Parameter name="msg_id" direction="[in]">
+
+由应用定义的消息 ID。
+
+</Parameter>
+<Parameter name="msg_type" direction="[in]">
+
+消息类型，必须为 [RTM_MESSAGE_TYPE_BINARY](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8da552385ad8ec29983109d4071662ff77f) 或 [RTM_MESSAGE_TYPE_STRING](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#a35525a9e5a7992d762bf4e9084813f8da464f052504625125b4d5a0c769a252ad) 。
+
+</Parameter>
+<Parameter name="custom_type" direction="[in]">
+
+自定义消息类型，最长 31 字节；未设置时为 NULL。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"rtsa2083-agora_rtm_publish-return"}>返回值</h4>
+
+- 0: 已接受发布请求。
+- &lt; 0: 方法调用失败。
+
+<a id="a30c2d99a514ebd98a4d335685668f595"></a>
+
+### agora_rtm_subscribe()
+
+<ApiSignature labels="extern">
+
+[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtm_subscribe(const char * *channel_name*)
+
+</ApiSignature>
+
+异步订阅 RTM 频道。
+
+订阅结果通过 [agora_rtm_handler_t::on_rtm_subscribe_result](/zh-CN/api-reference/rtsa/c/structagora-rtm-handler-t#a4af3bd1e0ff1e84245e81e7f2cb1fc79) 回调报告。
+
+<ParameterList title="参数">
+<Parameter name="channel_name" direction="[in]">
+
+要订阅的频道名称。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"rtsa2083-agora_rtm_subscribe-return"}>返回值</h4>
+
+- 0: 已接受订阅请求。
+- &lt; 0: 方法调用失败。
+
+<a id="a80ccd21954a2f23c1fc7d0b540709fe6"></a>
+
+### agora_rtm_unsubscribe()
+
+<ApiSignature labels="extern">
+
+[__agora_api__](/zh-CN/api-reference/rtsa/c/agora-rtc-api-8h#ad2a412e8ee6a8a2002439dda41fcf809) int agora_rtm_unsubscribe(const char * *channel_name*)
+
+</ApiSignature>
+
+同步取消订阅 RTM 频道。
+
+<ParameterList title="参数">
+<Parameter name="channel_name" direction="[in]">
+
+要取消订阅的频道名称。
+
+</Parameter>
+</ParameterList>
+
+<h4 data-toc-hidden="true" id={"rtsa2083-agora_rtm_unsubscribe-return"}>返回值</h4>
 
 - 0: 方法调用成功。
 - &lt; 0: 方法调用失败。

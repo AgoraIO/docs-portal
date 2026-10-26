@@ -10,6 +10,7 @@ import {
 import type { PublishedDocsRoute } from '../../src/lib/published-docs-routes';
 import { exportPublishedCnRecords } from '../../src/lib/search/cn-records.server';
 import { isPublicCnSearchUrl } from '../../src/lib/search/cn-search-page';
+import { toCnContentSearchUrl } from '../../src/lib/search/cn-search-urls.mjs';
 
 function object(value: unknown): Record<string, unknown> {
   if (!value || typeof value !== 'object' || Array.isArray(value))
@@ -118,12 +119,22 @@ export async function readPublishedKbInputs(
       throw new Error('Unregistered Markdown path');
     return read(markdownPath.slice(1));
   };
-  const sections = await exportPublishedCnRecords({
+  const searchSections = await exportPublishedCnRecords({
     routes,
     pages,
     readMarkdown,
     readRenderedHtml: (url) => read(`${url.slice(1)}/index.html`),
   });
+  // Search results expose locale-free URLs; build manifests and existing KB
+  // identities retain the locale. Convert only at this boundary so a site URL
+  // migration does not turn every KB document into a deletion and insertion.
+  const sections = searchSections.map((section) => ({
+    ...section,
+    url: toCnContentSearchUrl(section.url),
+    canonicalUrl: section.canonicalUrl
+      ? toCnContentSearchUrl(section.canonicalUrl)
+      : undefined,
+  }));
   const represented = new Set(
     sections.map((section) => section.url.split('#')[0]),
   );

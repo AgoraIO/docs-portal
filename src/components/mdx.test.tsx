@@ -23,6 +23,7 @@ import type {
   ReactNode,
 } from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { AccountGuidance } from './account-guidance/AccountGuidance';
 import {
@@ -106,9 +107,13 @@ type CardComponent = ComponentType<{
 type AccordionsComponent = ComponentType<{
   children: ReactNode;
   defaultValue?: string;
+  openFirst?: boolean;
+  type?: 'single' | 'multiple';
 }>;
 type AccordionComponent = ComponentType<{
   children: ReactNode;
+  headingLevel?: 2 | 3 | 4;
+  id?: string;
   title: ReactNode;
   value?: string;
 }>;
@@ -384,6 +389,74 @@ describe('common MDX registry', () => {
     );
   });
 
+  it('renders explicitly sized inline icons without a zoom button', () => {
+    const InlineImage = getMDXComponents().InlineImage as ComponentType<
+      ComponentProps<'img'>
+    >;
+
+    expect(InlineImage).toBeTypeOf('function');
+    render(
+      <p>
+        点击{' '}
+        <InlineImage
+          alt="运行"
+          src="https://web-cdn.agora.io/docs-files/1687670569781"
+          width={25}
+        />{' '}
+        开始编译。
+      </p>,
+    );
+
+    const image = screen.getByRole('img', { name: '运行' });
+    expect(image).toHaveAttribute('width', '25');
+    expect(image).toHaveAttribute('referrerpolicy', 'no-referrer');
+    expect(image).toHaveClass('inline-block', 'align-middle', 'm-0', 'h-auto');
+    expect(image.closest('button')).toBeNull();
+  });
+
+  it('honors legacy inline icon heights without a width constraint', () => {
+    const InlineImage = getMDXComponents().InlineImage as ComponentType<
+      ComponentProps<'img'>
+    >;
+    render(
+      <InlineImage
+        alt="开始图标"
+        src="https://web-cdn.agora.io/docs-files/1690171362896"
+        height={20}
+      />,
+    );
+    const image = screen.getByRole('img', { name: '开始图标' });
+    expect(image).toHaveStyle({ height: '20px' });
+    expect(image.style.width).toBe('');
+    expect(image.closest('button')).toBeNull();
+  });
+
+  it('caps a screenshot height without limiting the zoom preview', async () => {
+    const Image = getMDXComponents().DocsImage as ComponentType<
+      ComponentProps<'img'> & { displayHeight?: string }
+    >;
+    render(
+      <Image
+        alt="Unity 场景列表"
+        src="https://web-cdn.agora.io/docs-files/1691054049527"
+        displayHeight="320px"
+      />,
+    );
+    const thumbnail = screen.getByRole('img', { name: 'Unity 场景列表' });
+    expect(thumbnail).toHaveStyle({
+      maxHeight: '320px',
+      width: 'auto',
+      height: 'auto',
+    });
+    fireEvent.click(
+      screen.getByRole('button', { name: 'Zoom image: Unity 场景列表' }),
+    );
+    const preview = within(await screen.findByRole('dialog')).getByRole('img', {
+      name: 'Unity 场景列表',
+    });
+    expect(preview.style.maxHeight).toBe('');
+  });
+
   it('opens MDX images in a zoom dialog', async () => {
     const components = getMDXComponents();
     const Image = components.img as ImageComponent;
@@ -394,6 +467,10 @@ describe('common MDX registry', () => {
         src="https://assets-docs.agora.io/images/product.png"
       />,
     );
+
+    expect(
+      screen.getByRole('img', { name: 'Product Architecture' }),
+    ).toHaveAttribute('referrerpolicy', 'no-referrer');
 
     fireEvent.click(
       screen.getByRole('button', {
@@ -413,9 +490,39 @@ describe('common MDX registry', () => {
       'src',
       'https://assets-docs.agora.io/images/product.png',
     );
+    expect(previewImage).toHaveAttribute('referrerpolicy', 'no-referrer');
     expect(dialog).toHaveClass('w-fit');
     expect(dialog).not.toHaveClass('w-full');
     expect(dialog).toHaveClass('justify-items-center');
+  });
+
+  it('sizes a documentation screenshot without shrinking the zoom preview', async () => {
+    const Image = getMDXComponents().DocsImage as ComponentType<
+      ComponentProps<'img'> & { displayWidth?: string }
+    >;
+    expect(Image).toBeTypeOf('function');
+
+    render(
+      <Image
+        alt="在线 K 歌房界面"
+        src="https://web-cdn.agora.io/docs-files/1696931506007"
+        displayWidth="40%"
+      />,
+    );
+
+    const thumbnail = screen.getByRole('img', { name: '在线 K 歌房界面' });
+    const trigger = screen.getByRole('button', {
+      name: 'Zoom image: 在线 K 歌房界面',
+    });
+    expect(trigger).toHaveStyle({ width: '40%' });
+    expect(thumbnail).toHaveAttribute('referrerpolicy', 'no-referrer');
+    fireEvent.click(trigger);
+    const dialog = await screen.findByRole('dialog');
+    const preview = within(dialog).getByRole('img', {
+      name: '在线 K 歌房界面',
+    });
+    expect(preview).toHaveAttribute('referrerpolicy', 'no-referrer');
+    expect(preview.style.width).toBe('');
   });
 
   it('routes normalized relative docs links through TanStack Router', async () => {
@@ -602,6 +709,148 @@ describe('common MDX registry', () => {
     expect(await screen.findByRole('dialog')).toHaveTextContent('Fastboard');
   });
 
+  it('renders an accordion item included without its original root', () => {
+    const components = getMDXComponents();
+    const Accordion = components.Accordion as AccordionComponent;
+    render(
+      <MDXAccordionProvider>
+        <section id="included-version">
+          <Accordion title="Included version" value="included-version">
+            Included body
+          </Accordion>
+        </section>
+      </MDXAccordionProvider>,
+    );
+    expect(
+      screen.getByRole('button', { name: 'Included version' }),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Included body')).toBeVisible();
+  });
+
+  it('keeps a nested example accordion independent of the version history', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+    render(
+      <MDXAccordionProvider>
+        <Accordions type="multiple" openFirst>
+          <Accordion title="v2" id="v2" headingLevel={2} value="v2">
+            <Accordions>
+              <Accordion title="示例代码" value="example">
+                Example source
+              </Accordion>
+            </Accordions>
+          </Accordion>
+          <Accordion title="v1" id="v1" headingLevel={2} value="v1">
+            Older release
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+    const latest = screen.getByRole('button', { name: 'v2' });
+    const example = screen.getByRole('button', { name: '示例代码' });
+    expect(latest).toHaveAttribute('aria-expanded', 'true');
+    expect(example).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(example);
+    fireEvent.click(screen.getByRole('button', { name: 'v1' }));
+    expect(latest).toHaveAttribute('aria-expanded', 'true');
+    expect(example).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByText('Example source')).toBeVisible();
+  });
+
+  it('expands the version containing an encoded Chinese subsection hash', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/zh-CN/ai/release-notes#%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D-1',
+    );
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+    render(
+      <MDXAccordionProvider>
+        <Accordions type="multiple" openFirst>
+          <Accordion title="v2" id="v2" headingLevel={2} value="v2">
+            Latest release
+          </Accordion>
+          <Accordion title="v1" id="v1" headingLevel={2} value="v1">
+            <h3 id="问题修复-1">问题修复</h3>
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+    await waitFor(() =>
+      expect(screen.getByRole('button', { name: 'v1' })).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      ),
+    );
+    expect(screen.getByRole('heading', { name: '问题修复' })).toBeVisible();
+  });
+
+  it.each(['initial', 'event'])(
+    'reveals the ancestor language tab for an encoded release hash (%s)',
+    async (trigger) => {
+      sessionStorage.setItem('release-hash', 'tongxin');
+      localStorage.setItem('release-hash', 'tongxin');
+      const url = '#%E9%97%AE%E9%A2%98%E4%BF%AE%E5%A4%8D';
+      window.history.replaceState(
+        {},
+        '',
+        '/zh-CN/realtime-media/rtc/reference/release-notes/electron' +
+          (trigger === 'initial' ? url : ''),
+      );
+      const components = getMDXComponents();
+      const Tabs = components.Tabs as TabsComponent;
+      const TabsList = components.TabsList as ComponentType<{
+        children: ReactNode;
+      }>;
+      const TabsTrigger = components.TabsTrigger as TabsChildComponent;
+      const TabsContent = components.TabsContent as TabsChildComponent;
+      const Accordions = components.Accordions as AccordionsComponent;
+      const Accordion = components.Accordion as AccordionComponent;
+      render(
+        <MDXAccordionProvider>
+          <Tabs defaultValue="electron" groupId="release-hash" persist>
+            <TabsList>
+              <TabsTrigger value="electron">Electron</TabsTrigger>
+              <TabsTrigger value="tongxin">统信 OS</TabsTrigger>
+            </TabsList>
+            <TabsContent value="electron">
+              <Accordions type="multiple" openFirst>
+                <Accordion title="v2" id="v2" headingLevel={2} value="v2">
+                  Latest release
+                </Accordion>
+                <Accordion title="v1" id="v1" headingLevel={2} value="v1">
+                  <h3 id="问题修复">问题修复</h3>
+                </Accordion>
+              </Accordions>
+            </TabsContent>
+            <TabsContent value="tongxin">Tongxin release</TabsContent>
+          </Tabs>
+        </MDXAccordionProvider>,
+      );
+      if (trigger === 'event')
+        act(() =>
+          window.dispatchEvent(
+            new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: url }),
+          ),
+        );
+      await waitFor(() =>
+        expect(screen.getByRole('tab', { name: 'Electron' })).toHaveAttribute(
+          'aria-selected',
+          'true',
+        ),
+      );
+      expect(screen.getByRole('button', { name: 'v1' })).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+      expect(screen.getByRole('heading', { name: '问题修复' })).toBeVisible();
+      expect(sessionStorage.getItem('release-hash')).toBe('electron');
+    },
+  );
+
   it('keeps only one MDX accordion open across separate roots', () => {
     const components = getMDXComponents();
     const Accordions = components.Accordions as AccordionsComponent;
@@ -647,6 +896,477 @@ describe('common MDX registry', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Default open' }));
 
     expect(screen.queryByText('Default body')).not.toBeInTheDocument();
+  });
+
+  it('renders an opt-in accordion title as a document heading', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions>
+          <Accordion headingLevel={3} id="v4-6-3" title="v4.6.3" value="v4-6-3">
+            Release body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    const heading = screen.getByRole('heading', {
+      level: 3,
+      name: 'v4.6.3',
+    });
+
+    expect(heading).toHaveAttribute('id', 'v4-6-3');
+    expect(heading).toHaveAttribute('data-accordion-value', 'v4-6-3');
+    expect(screen.getByRole('button', { name: 'v4.6.3' })).toBeInTheDocument();
+  });
+
+  it('opens the visible platform heading when hidden platforms reuse its anchor', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState({}, '', '/en/release-notes/web#v422');
+
+    render(
+      <MDXAccordionProvider>
+        <section aria-hidden="true" hidden>
+          <Accordions>
+            <Accordion headingLevel={3} id="v422" title="v4.2.2" value="v422">
+              Android body
+            </Accordion>
+          </Accordions>
+        </section>
+        <section>
+          <Accordions>
+            <Accordion headingLevel={3} id="v422" title="v4.2.2" value="v422">
+              Web body
+            </Accordion>
+          </Accordions>
+        </section>
+      </MDXAccordionProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Web body')).toBeVisible();
+    });
+    expect(screen.getByText('Android body')).not.toBeVisible();
+  });
+
+  it('resets the active accordion when the platform preference changes', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    const { rerender } = render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="android-latest">
+          <Accordion title="Android latest" value="android-latest">
+            Android body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.getByText('Android body')).toBeVisible();
+
+    rerender(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="ios-latest">
+          <Accordion title="iOS latest" value="ios-latest">
+            iOS body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.queryByText('iOS body')).not.toBeInTheDocument();
+
+    fireEvent(window, new CustomEvent(PLATFORM_PREFERENCE_EVENT));
+
+    expect(screen.getByText('iOS body')).toBeVisible();
+  });
+
+  it('opens a version when the docs TOC publishes its hash target', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            Second body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#v2' }),
+      );
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Second body')).toBeVisible();
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+    expect(
+      screen.getByText('Second body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('keeps previously opened versions expanded when the TOC opens another version', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1" type="multiple">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            Second body
+          </Accordion>
+          <Accordion headingLevel={3} id="v3" title="v3" value="v3">
+            Third body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    fireEvent.click(screen.getByRole('button', { name: 'v2' }));
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#v3' }),
+      );
+    });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText('Third body').closest('[role="region"]'),
+      ).toHaveAttribute('data-state', 'open');
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+    expect(
+      screen.getByText('Second body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('lets readers close a version after following its hash', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState({}, '', '/en/ai/release-notes#v213');
+    render(
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <Accordion headingLevel={3} id="v213" title="v2.13" value="v213">
+            Latest body
+          </Accordion>
+          <Accordion headingLevel={3} id="v212" title="v2.12" value="v212">
+            Previous body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.getByRole('button', { name: 'v2.13' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+    fireEvent.click(screen.getByRole('button', { name: 'v2.13' }));
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'v2.13' })).toHaveAttribute(
+        'aria-expanded',
+        'false',
+      );
+    });
+  });
+
+  it('opens the first release automatically while allowing other versions to stay open', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <section id="latest-release">
+            <Accordion headingLevel={3} id="v213" title="v2.13" value="v213">
+              Latest body
+            </Accordion>
+          </section>
+          <Accordion headingLevel={3} id="v212" title="v2.12" value="v212">
+            Previous body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(
+      screen.getByText('Latest body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+    expect(
+      screen.getByText('Previous body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+    fireEvent.click(screen.getByRole('button', { name: 'v2.12' }));
+    expect(
+      screen.getByText('Latest body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+    expect(
+      screen.getByText('Previous body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('resets the first release when switching platforms', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    const renderPlatform = (latest: string) => (
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <Accordion headingLevel={3} id={latest} title={latest} value={latest}>
+            {latest} body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>
+    );
+
+    const { rerender } = render(renderPlatform('android-latest'));
+    expect(screen.getByText('android-latest body')).toBeVisible();
+
+    rerender(renderPlatform('ios-latest'));
+    fireEvent(window, new CustomEvent(PLATFORM_PREFERENCE_EVENT));
+
+    expect(
+      screen.getByText('ios-latest body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'open');
+  });
+
+  it('opens the containing version for an incoming subsection deep link', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState({}, '', '/en/release-notes/web#fix-details');
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            <h4 id="fix-details">Fix details</h4>
+            Second body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText('Second body')).toBeVisible();
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+  });
+
+  it('opens a release when an old anchor points to its enclosing section', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    window.history.replaceState(
+      {},
+      '',
+      '/en/realtime-media/video/reference/release-notes/web#web-sdk-v4-24-7',
+    );
+    render(
+      <MDXAccordionProvider>
+        <Accordions openFirst type="multiple">
+          <section id="web-sdk-v4-24-8">
+            <Accordion
+              headingLevel={3}
+              id="v4248"
+              title="v4.24.8"
+              value="v4248"
+            >
+              Latest body
+            </Accordion>
+          </section>
+          <section id="web-sdk-v4-24-7">
+            <Accordion
+              headingLevel={3}
+              id="v4247"
+              title="v4.24.7"
+              value="v4247"
+            >
+              Previous body
+            </Accordion>
+          </section>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByRole('button', { name: 'v4.24.7' })).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+    });
+    expect(screen.getByRole('button', { name: 'v4.24.8' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    );
+  });
+
+  it('opens the containing version for a cross-version subsection link', async () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="v1">
+          <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+            First body
+          </Accordion>
+          <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+            <h4 id="compatibility-threshold">Compatibility threshold</h4>
+            Second body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    expect(screen.getByText('First body')).toBeVisible();
+
+    act(() => {
+      window.history.replaceState(
+        {},
+        '',
+        '/en/release-notes/web#compatibility-threshold',
+      );
+      window.dispatchEvent(new Event('hashchange'));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByText('Second body')).toBeVisible();
+    });
+    expect(
+      screen.getByText('First body').closest('[role="region"]'),
+    ).toHaveAttribute('data-state', 'closed');
+  });
+
+  it('keeps closed version content in the DOM without displaying it', () => {
+    const components = getMDXComponents();
+    const Accordions = components.Accordions as AccordionsComponent;
+    const Accordion = components.Accordion as AccordionComponent;
+
+    render(
+      <MDXAccordionProvider>
+        <Accordions defaultValue="open">
+          <Accordion headingLevel={3} id="open" title="Open" value="open">
+            Open body
+          </Accordion>
+          <Accordion headingLevel={3} id="closed" title="Closed" value="closed">
+            Closed body
+          </Accordion>
+        </Accordions>
+      </MDXAccordionProvider>,
+    );
+
+    const closedBody = screen.getByText('Closed body');
+    const closedContent = closedBody.closest('[role="region"]');
+
+    expect(closedBody).toBeInTheDocument();
+    expect(closedContent).toHaveAttribute('data-state', 'closed');
+    expect(closedContent).toHaveClass('data-[state=closed]:hidden');
+  });
+
+  it('keeps the clicked version heading in place while switching versions', async () => {
+    vi.useFakeTimers();
+
+    try {
+      const components = getMDXComponents();
+      const Accordions = components.Accordions as AccordionsComponent;
+      const Accordion = components.Accordion as AccordionComponent;
+      let targetTop = 240;
+      const windowScrollTo = vi.fn();
+
+      Object.defineProperty(window, 'scrollY', {
+        configurable: true,
+        value: 500,
+      });
+      Object.defineProperty(window, 'scrollTo', {
+        configurable: true,
+        value: windowScrollTo,
+        writable: true,
+      });
+
+      render(
+        <MDXAccordionProvider>
+          <Accordions defaultValue="v1">
+            <Accordion headingLevel={3} id="v1" title="v1" value="v1">
+              First body
+            </Accordion>
+            <Accordion headingLevel={3} id="v2" title="v2" value="v2">
+              Second body
+            </Accordion>
+          </Accordions>
+        </MDXAccordionProvider>,
+      );
+
+      const targetHeading = screen.getByRole('heading', {
+        level: 3,
+        name: 'v2',
+      });
+      vi.spyOn(targetHeading, 'getBoundingClientRect').mockImplementation(
+        () =>
+          ({
+            bottom: targetTop + 48,
+            height: 48,
+            left: 0,
+            right: 800,
+            top: targetTop,
+            width: 800,
+            x: 0,
+            y: targetTop,
+            toJSON: () => ({}),
+          }) as DOMRect,
+      );
+
+      fireEvent.click(screen.getByRole('button', { name: 'v2' }));
+      targetTop = 120;
+
+      await act(async () => {
+        vi.advanceTimersByTime(301);
+      });
+
+      expect(windowScrollTo).toHaveBeenCalledWith({
+        behavior: 'auto',
+        top: 380,
+      });
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('renders headings with Fumadocs copy-anchor chrome', () => {
@@ -1101,8 +1821,8 @@ describe('common MDX registry', () => {
     }
   });
 
-  it('uses the canonical page default before stored preference without overwriting it', () => {
-    window.localStorage.setItem('docs-portal:platform:v1', 'flutter');
+  it('uses a supported stored preference before the canonical page default', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'ios');
 
     render(
       <PlatformHeaderTabs
@@ -1112,13 +1832,11 @@ describe('common MDX registry', () => {
       />,
     );
 
-    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
       'aria-selected',
       'true',
     );
-    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe(
-      'flutter',
-    );
+    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe('ios');
   });
 
   it('updates canonical page defaults when the rendered payload changes', async () => {
@@ -1149,6 +1867,73 @@ describe('common MDX registry', () => {
         'true',
       );
     });
+  });
+
+  it('keeps a supported stored preference when the canonical default changes', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'ios');
+
+    const { rerender } = render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    rerender(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="web"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+  });
+
+  it('falls back to the page default when the stored preference is unsupported', () => {
+    window.localStorage.setItem('docs-portal:platform:v1', 'ios');
+
+    render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(window.localStorage.getItem('docs-portal:platform:v1')).toBe('ios');
+  });
+
+  it('ignores unsupported preference events for the current platform group', () => {
+    render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        defaultPlatform="android"
+        platforms='["android","web"]'
+      />,
+    );
+
+    window.dispatchEvent(
+      new CustomEvent(PLATFORM_PREFERENCE_EVENT, { detail: 'ios' }),
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
   it('keeps an initial overflow platform visible as a selected header tab', () => {
@@ -1197,6 +1982,34 @@ describe('common MDX registry', () => {
           .scrollIntoView;
       }
     }
+  });
+
+  it('updates the selected tab when the route platform changes', () => {
+    const { rerender } = render(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        initialPlatform="android"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'Android' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+
+    rerender(
+      <PlatformHeaderTabs
+        canonicalPlatform="web"
+        initialPlatform="ios"
+        platforms='["android","ios","web"]'
+      />,
+    );
+
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
   });
 
   it('shares platform preference updates across multiple rendered groups', () => {
@@ -1293,7 +2106,7 @@ describe('common MDX registry', () => {
     window.history.replaceState(
       {},
       '',
-      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios#token',
+      '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/ios?platform=ios&example=1#token',
     );
 
     const components = getMDXComponents() as Record<string, unknown>;
@@ -1334,7 +2147,8 @@ describe('common MDX registry', () => {
     expect(window.location.pathname).toBe(
       '/en/realtime-media/rtc/quick-start/integrate-with-ai-tools/android',
     );
-    expect(window.location.hash).toBe('#token');
+    expect(window.location.hash).toBe('');
+    expect(window.location.search).toBe('?example=1');
     expect(
       screen.getByText('Android instructions').closest('section'),
     ).toBeVisible();

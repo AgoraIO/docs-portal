@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { isRetiredCnDocsPath } from '../retired-cn-docs.mjs';
 import { ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS } from '../zh-cn-product-ia-redirects';
 import {
   resolveStaticLegacySitemapRedirect,
@@ -28,10 +29,14 @@ describe('static legacy sitemap redirects', () => {
     });
   });
 
-  it('marks all 76 flattened zh-CN Build routes as permanent redirects', () => {
+  it('marks all maintained flattened zh-CN Build routes as permanent redirects', () => {
     for (const [path, redirectUrl] of Object.entries(
       ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS,
     )) {
+      if (isRetiredCnDocsPath(`/zh-CN/${path}`)) {
+        expect(resolveStaticLegacySitemapRedirect(`/zh-CN/${path}`)).toBeNull();
+        continue;
+      }
       expect(
         resolveStaticLegacySitemapRedirect(`/zh-CN/${path}`),
       ).toMatchObject({
@@ -48,9 +53,9 @@ describe('static legacy sitemap redirects', () => {
       ),
     );
     const applicationSources = new Set(
-      Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS).map(
-        (path) => `/zh-CN/${path}`,
-      ),
+      Object.keys(ZH_CN_SMALL_BUILD_FLAT_IA_REDIRECTS)
+        .filter((path) => !isRetiredCnDocsPath(`/zh-CN/${path}`))
+        .map((path) => `/zh-CN/${path}`),
     );
 
     expect(ZH_CN_SMALL_BUILD_FLAT_IA_STATIC_REDIRECT_SOURCES).toEqual(

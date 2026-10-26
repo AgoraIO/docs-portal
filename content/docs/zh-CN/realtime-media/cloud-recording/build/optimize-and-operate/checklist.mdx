@@ -2,7 +2,7 @@
 title: "集成检查清单"
 description: "了解云端录制中集成检查清单相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
-参考以下表格，快速确认每条检查项是否符合集成要求，以保证cloud-recording服务的可靠性。
+参考以下表格，快速确认每条检查项是否符合集成要求，以保证云端录制服务的可靠性。
 
 :::warning[注意]
 声网 RESTful API 仅支持 HTTP 1.1 和 HTTP 2.0 协议。如果使用 HTTPS 连接，请确保使用 TLS 1.0、1.1 或 1.2 版本进行加密通信。使用其他协议版本可能导致连接失败。
@@ -24,37 +24,37 @@ description: "了解云端录制中集成检查清单相关内容的适用场景
 <Slot for="checklist-html-0-2-3">
 
 - 确保除 `query`（查询录制状态）使用 GET 外，其余均使用 POST 请求方式。
-        - 确保所有的请求 URL 和请求 Body 内容都是区分大小写的。
+- 确保所有的请求 URL 和请求 Body 内容都是区分大小写的。
 
 </Slot>
 
 <Slot for="checklist-html-0-3-3">
 
 - 传入的 `uid` 不能与当前频道内的任何用户 ID 重复。
-        - 对于页面录制，确保一个 `appid` + `cname` + `uid` 对应一个 Resource ID。
-        - 确保一个 Resource ID 只用于一次云端录制服务。
-        - 确保获得 Resource ID 后，在 2 秒内调用 `start` 方法开始录制。
+- 对于页面录制，确保一个 `appid` + `cname` + `uid` 对应一个 Resource ID。
+- 确保一个 Resource ID 只用于一次云端录制服务。
+- 确保获得 Resource ID 后，在 2 秒内调用 `start` 方法开始录制。
 
 </Slot>
 
 <Slot for="checklist-html-0-5-3">
 
 - 确保开始录制时传入的所有参数类型、大小写和取值范围正确，且必填的参数均已填写；否则返回错误码 `2`。
-        - 参考[设置合流布局](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite-layout)和[录制码率对照表](/zh-CN/realtime-media/cloud-recording/reference/api-reference)设置合流录制的布局和视频码率。
+- 参考[设置合流布局](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite-layout)和[录制码率对照表](/zh-CN/realtime-media/cloud-recording/reference/api-reference)设置合流录制的布局和视频码率。
 
 </Slot>
 
 <Slot for="checklist-html-0-6-3">
 
 - 确保 `start` 请求成功，即成功获得 `sid`（录制 ID）。
-        - 确保获得 `sid` 之后的 90 秒内 `status` 为 `4` 或 `5`。
+- 确保获得 `sid` 之后的 90 秒内 `status` 为 `4` 或 `5`。
 
 </Slot>
 
 <Slot for="checklist-html-0-7-3">
 
 - 确保每个 App ID 每秒钟的请求数（QPS）不超过 10 次。
-        - 确保国内最大并发任务数（PCW）不超过 1000，其他地区 PCW 不超过 300。如需提升 QPS 和 PCW 限制，请联系技术支持。
+- 确保国内最大并发任务数（PCW）不超过 1000，其他地区 PCW 不超过 300。如需提升 QPS 和 PCW 限制，请联系技术支持。
 
 </Slot>
 
@@ -62,10 +62,10 @@ description: "了解云端录制中集成检查清单相关内容的适用场景
 
 开通[云端录制回调服务](/zh-CN/realtime-media/cloud-recording/build/monitor-events/enable-ncs)并订阅以下事件作为监控录制服务状态的辅助手段：
 
-        - `40 recorder_started`：录制服务已启动。
-        - `11 session_exit`：录制服务结束任务并退出。
-        - `1 cloud_recording_error`：录制服务发生错误。
-        - `12 session_failover`：录制启用高可用机制。
-        - `31 uploaded`：所有录制文件已上传至指定的第三方云存储。
+- `40 recorder_started`：录制服务已启动。
+- `11 session_exit`：录制服务结束任务并退出。
+- `1 cloud_recording_error`：录制服务发生错误。
+- `12 session_failover`：录制启用高可用机制。
+- `31 uploaded`：所有录制文件已上传至指定的第三方云存储。
 
 </Slot>

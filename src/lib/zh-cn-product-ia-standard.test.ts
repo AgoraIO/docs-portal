@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { loadDocsPagePayload } from './docs-page.server';
 import { getContentDocsPrerenderPaths } from './prerender-content-routes';
 import { createPublishedDocsRoutes } from './published-docs-routes';
+import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 import { getPagePlatformKeys, source } from './source.server';
 import {
   resolveZhCnProductIaRedirect,
@@ -659,7 +660,7 @@ const productBuildMetas = [
     {
       title: '开发与集成',
       pages: [
-        'view-live-data',
+        '!view-live-data',
         'monitor-call-quality',
         'investigate-call-problems',
         'analyze-call-data',
@@ -934,8 +935,9 @@ function getRedirectTargetProductRoots() {
   return [...roots].sort();
 }
 
-describe('zh-CN product IA standard', () => {
-  it('keeps every route from the prior staging manifest publishable', async () => {
+// Route publication checks resolve the real content graph, not isolated fixtures.
+describe('zh-CN product IA standard', { timeout: 30_000 }, () => {
+  it('keeps prior staging routes publishable except explicitly retired products', async () => {
     expect(priorStagingRouteUrls).toHaveLength(55);
     expect(new Set(priorStagingRouteUrls).size).toBe(55);
 
@@ -968,10 +970,13 @@ describe('zh-CN product IA standard', () => {
       }).map((route) => route.url),
     );
     const missingRoutes = priorStagingRouteUrls.filter(
-      (url) => !publishedRoutes.has(url),
+      (url) => !isRetiredCnDocsPath(url) && !publishedRoutes.has(url),
     );
 
     expect(missingRoutes).toEqual([]);
+    for (const url of priorStagingRouteUrls.filter(isRetiredCnDocsPath)) {
+      expect(publishedRoutes.has(url)).toBe(false);
+    }
   });
 
   it.each(productBuildMetas)(
@@ -1306,12 +1311,21 @@ describe('zh-CN product IA standard', () => {
   );
 
   it.each(productBuildPageMoves)(
-    'moves %s page %s to %s and redirects the old URL',
+    'moves %s page %s to %s and respects retirement before redirecting',
     async (productRoot, legacyPath, canonicalPath) => {
       expect(pageExistsAtRelativePath(productRoot, legacyPath)).toBe(false);
       expect(pageExistsAtRelativePath(productRoot, canonicalPath)).toBe(true);
 
       const [tab, ...productSegments] = productRoot.split('/');
+      if (isRetiredCnDocsPath(`/zh-CN/${productRoot}/${legacyPath}`)) {
+        await expect(
+          loadDocsPagePayload('zh-CN', tab, [
+            ...productSegments,
+            ...legacyPath.split('/'),
+          ]),
+        ).resolves.toBeNull();
+        return;
+      }
       await expect(
         loadDocsPagePayload('zh-CN', tab, [
           ...productSegments,
@@ -1325,12 +1339,21 @@ describe('zh-CN product IA standard', () => {
   );
 
   it.each(productPageMoves)(
-    'moves %s page %s to %s and redirects the old URL',
+    'moves %s page %s to %s and respects retirement before redirecting',
     async (productRoot, legacyPath, canonicalPath) => {
       expect(pageExistsAtRelativePath(productRoot, legacyPath)).toBe(false);
       expect(pageExistsAtRelativePath(productRoot, canonicalPath)).toBe(true);
 
       const [tab, ...productSegments] = productRoot.split('/');
+      if (isRetiredCnDocsPath(`/zh-CN/${productRoot}/${legacyPath}`)) {
+        await expect(
+          loadDocsPagePayload('zh-CN', tab, [
+            ...productSegments,
+            ...legacyPath.split('/'),
+          ]),
+        ).resolves.toBeNull();
+        return;
+      }
       await expect(
         loadDocsPagePayload('zh-CN', tab, [
           ...productSegments,
@@ -1408,13 +1431,18 @@ describe('zh-CN product IA standard', () => {
   });
 
   it.each(productBuildPageMoves)(
-    'loads the canonical %s page %s at %s without redirecting',
+    'respects publication status for the canonical %s page %s at %s',
     async (productRoot, _legacyPath, canonicalPath) => {
       const [tab, ...productSegments] = productRoot.split('/');
       const payload = await loadDocsPagePayload('zh-CN', tab, [
         ...productSegments,
         ...canonicalPath.split('/'),
       ]);
+
+      if (isRetiredCnDocsPath(`/zh-CN/${productRoot}/${canonicalPath}`)) {
+        expect(payload).toBeNull();
+        return;
+      }
 
       expect(payload).toBeTruthy();
       expect(payload).not.toHaveProperty('redirectUrl');

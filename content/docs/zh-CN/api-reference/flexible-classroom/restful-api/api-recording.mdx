@@ -41,8 +41,8 @@ title: "录制相关"
 
 录制状态：
 
-      - `0`: 结束
-      - `1`: 开始
+- `0`: 结束
+- `1`: 开始
 
 </Slot>
 
@@ -58,32 +58,32 @@ title: "录制相关"
 
 页面录制配置。当 `mode` 设为 `web` 时，你需要通过该参数设置页面录制的详细信息，包含以下字段：
 
-      - `rootUrl`: （必填）String 类型，待录制页面的根地址。实际录制时，灵动课堂 RESTful API 会根据 `rootUrl` 自动拼接上 `roomUuid`、`roomType` 等参数，以便声网页面录制服务可以以一个“隐身用户”的身份加入指定课堂进行录制。
-      - `publishRtmp`: （非必填）是否将页面录制的流推到 CDN：
+- `rootUrl`: （必填）String 类型，待录制页面的根地址。实际录制时，灵动课堂 RESTful API 会根据 `rootUrl` 自动拼接上 `roomUuid`、`roomType` 等参数，以便声网页面录制服务可以以一个“隐身用户”的身份加入指定课堂进行录制。
+- `publishRtmp`: （非必填）是否将页面录制的流推到 CDN：
 
-        - `true`: 推。
-        - `false`: 不推。
+  - `true`: 推。
+  - `false`: 不推。
 
-      - `onhold`:（非必填）Boolean 类型，可设为：
+- `onhold`:（非必填）Boolean 类型，可设为：
 
-        - `true`: 在启动页面录制任务后立即暂停录制。录制服务会打开并渲染待录制页面，但不生成切片文件。
-        - `false`:（默认）启动页面录制任务并开始录制。
+  - `true`: 在启动页面录制任务后立即暂停录制。录制服务会打开并渲染待录制页面，但不生成切片文件。
+  - `false`:（默认）启动页面录制任务并开始录制。
 
-      - `videoBitrate`:（非必填）Number 类型，输出视频的码率，单位为 Kbps，范围为 [50,8000]。针对不同的输出视频分辨率，`videoBitrate` 的默认值不同：
+- `videoBitrate`:（非必填）Number 类型，输出视频的码率，单位为 Kbps，范围为 [50,8000]。针对不同的输出视频分辨率，`videoBitrate` 的默认值不同：
 
-        - 输出视频分辨率大于或等于 1280 × 720：默认值为 2000。
-        - 输出视频分辨率小于 1280 × 720：默认值为 1500。
+  - 输出视频分辨率大于或等于 1280 × 720：默认值为 2000。
+  - 输出视频分辨率小于 1280 × 720：默认值为 1500。
 
-      - `videoFps`:（非必填）Number 类型，输出视频的帧率，单位为 fps，范围为 [5, 60]，默认值为 15。
-      - `audioProfile`: Number 类型，设置输出音频的采样率、码率、编码模式和声道数。
+- `videoFps`:（非必填）Number 类型，输出视频的帧率，单位为 fps，范围为 [5, 60]，默认值为 15。
+- `audioProfile`: Number 类型，设置输出音频的采样率、码率、编码模式和声道数。
 
-        - `0`：（默认）48 kHz 采样率，音乐编码，单声道，编码码率约 48 Kbps
-        - `1`：48 kHz 采样率，音乐编码，单声道，编码码率约 128 Kbps
-        - `2`：48 kHz 采样率，音乐编码，双声道，编码码率约 192 Kbps
+  - `0`：（默认）48 kHz 采样率，音乐编码，单声道，编码码率约 48 Kbps
+  - `1`：48 kHz 采样率，音乐编码，单声道，编码码率约 128 Kbps
+  - `2`：48 kHz 采样率，音乐编码，双声道，编码码率约 192 Kbps
 
-      - `videoWidth`: Number 类型，设置输出视频的宽度，单位为 pixel，范围为 [480,1920]。默认为 1280。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。
-      - `videoHeight`: Number 类型，设置输出视频的高度，单位为 pixel，范围为 [480, 1920]。默认为 720。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。
-      - `maxRecordingHour`: Number 类型，设置最长录制时间，单位为小时，范围为 [1,720]。如果你设置了课堂持续时长和拖堂时长，当开启录制时，会按照二者之和向上取整设置最长录制时间 `maxRecordingHour` 参数。例如，课堂持续时长是 1800 秒，拖堂时长是 600 秒，则最长录制时间为二者之和约 0.66 小时（2400 秒）向上取整的值 1 小时。如果不设置课堂持续时长，则最长录制时间默认为 2 小时。当录制时长超过 `maxRecordingHour`，录制会自动停止。
+- `videoWidth`: Number 类型，设置输出视频的宽度，单位为 pixel，范围为 [480,1920]。默认为 1280。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。
+- `videoHeight`: Number 类型，设置输出视频的高度，单位为 pixel，范围为 [480, 1920]。默认为 720。`videoWidth` 和 `videoHeight` 的乘积需小于等于 1920 × 1080。
+- `maxRecordingHour`: Number 类型，设置最长录制时间，单位为小时，范围为 [1,720]。如果你设置了课堂持续时长和拖堂时长，当开启录制时，会按照二者之和向上取整设置最长录制时间 `maxRecordingHour` 参数。例如，课堂持续时长是 1800 秒，拖堂时长是 600 秒，则最长录制时间为二者之和约 0.66 小时（2400 秒）向上取整的值 1 小时。如果不设置课堂持续时长，则最长录制时间默认为 2 小时。当录制时长超过 `maxRecordingHour`，录制会自动停止。
 
 </Slot>
 
@@ -124,20 +124,20 @@ curl -X PUT 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 返回数据，包含以下字段：
 
-      - `recordId`: String 型，一次录制行为的唯一标识符。调用设置录制状态 API 开始录制到结束录制视为一次录制行为。
-      - `sid`: String 型，声网云端录制服务的 `sid`。
-      - `resourceId`: String 型，声网云端录制服务的 `resourceId`。
-      - `state`: Integer 型，录制状态。
+- `recordId`: String 型，一次录制行为的唯一标识符。调用设置录制状态 API 开始录制到结束录制视为一次录制行为。
+- `sid`: String 型，声网云端录制服务的 `sid`。
+- `resourceId`: String 型，声网云端录制服务的 `resourceId`。
+- `state`: Integer 型，录制状态。
 
-        - `0`: 结束
-        - `1`: 开始
+  - `0`: 结束
+  - `1`: 开始
 
-      - `startTime`: Integer 型，录制开始时间戳，单位为毫秒。
-      - `streamingUrl`: Object 型，CDN 拉流地址，若请求时开启了 `publishRtmp=true` 会返回该对象。学生可以通过该地址观看教学。
+- `startTime`: Integer 型，录制开始时间戳，单位为毫秒。
+- `streamingUrl`: Object 型，CDN 拉流地址，若请求时开启了 `publishRtmp=true` 会返回该对象。学生可以通过该地址观看教学。
 
-        - `rtmp`: String 型，RTMP 协议拉流地址
-        - `flv`: String 型，FLV 协议拉流地址
-        - `hls`: String 型，HLS 协议拉流地址
+  - `rtmp`: String 型，RTMP 协议拉流地址
+  - `flv`: String 型，FLV 协议拉流地址
+  - `hls`: String 型，HLS 协议拉流地址
 
 </Slot>
 
@@ -203,8 +203,8 @@ curl -X PUT 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 页面录制设置，包含 `onhold` 属性，必填，Boolean 类型，可设为：
 
-      - `true`: 在页面录制过程中暂停录制。暂停后，录制服务不再生成切片文件。
-      - `false`: （默认）继续进行页面录制。录制暂停后，你可调用此接口并将 `onhold` 参数设为 `false` 继续页面录制。
+- `true`: 在页面录制过程中暂停录制。暂停后，录制服务不再生成切片文件。
+- `false`: （默认）继续进行页面录制。录制暂停后，你可调用此接口并将 `onhold` 参数设为 `false` 继续页面录制。
 
 </Slot>
 
@@ -319,43 +319,43 @@ curl -X GET 'https://api.sd-rtn.com/{region}/edu/apps/{yourAppId}/v2/rooms/test_
 
 返回数据，包含以下字段：
 
-      - `count`: Integer 型，本批数据条数。
-      - `list`: 由多个 Object 组成的数组。每个 Object 包含以下字段：
+- `count`: Integer 型，本批数据条数。
+- `list`: 由多个 Object 组成的数组。每个 Object 包含以下字段：
 
-        - `appId`: 你的声网 App ID。
-        - `roomUuid`: 课堂 uuid。这是课堂的唯一标识符，也是声网 RTC SDK 和声网 RTM SDK 中使用的频道名。
-        - `recordId`: 一次录制行为的唯一标识符。调用设置录制状态 API 开始录制到结束录制视为一次录制行为。
-        - `startTime`: 录制开始的 UTC 时间戳，单位为毫秒。
-        - `endTime`: 录制结束的 UTC 时间戳，单位为毫秒。录制结束后此字段有值。
-        - `resourceId`: 声网云端录制服务的 `resourceId`。
-        - `sid`: 声网云端录制服务的 `sid`。
-        - `recordUid`: 声网云端录制服务在频道内使用的用户 ID。
-        - `boardAppId`: 声网互动白板服务的 `App Identifier` 的值。
-        - `boardToken`: 声网互动白板服务的 SDK Token。
-        - `boardId`: 白板的唯一标识符。
-        - `type`: Integer 型，录制类型：
+  - `appId`: 你的声网 App ID。
+  - `roomUuid`: 课堂 uuid。这是课堂的唯一标识符，也是声网 RTC SDK 和声网 RTM SDK 中使用的频道名。
+  - `recordId`: 一次录制行为的唯一标识符。调用设置录制状态 API 开始录制到结束录制视为一次录制行为。
+  - `startTime`: 录制开始的 UTC 时间戳，单位为毫秒。
+  - `endTime`: 录制结束的 UTC 时间戳，单位为毫秒。录制结束后此字段有值。
+  - `resourceId`: 声网云端录制服务的 `resourceId`。
+  - `sid`: 声网云端录制服务的 `sid`。
+  - `recordUid`: 声网云端录制服务在频道内使用的用户 ID。
+  - `boardAppId`: 声网互动白板服务的 `App Identifier` 的值。
+  - `boardToken`: 声网互动白板服务的 SDK Token。
+  - `boardId`: 白板的唯一标识符。
+  - `type`: Integer 型，录制类型：
 
-          - `1`: 单流录制
-          - `2`: 合流录制
+    - `1`: 单流录制
+    - `2`: 合流录制
 
-        - `status`: Integer 型，录制状态：
+  - `status`: Integer 型，录制状态：
 
-          - `1`: 录制中
-          - `2`: 录制已结束
+    - `1`: 录制中
+    - `2`: 录制已结束
 
-        - `url`: String 型，合流录制模式下录制文件的访问地址。
-        - `recordDetails`: JSONArray 类型。包含以下字段：
+  - `url`: String 型，合流录制模式下录制文件的访问地址。
+  - `recordDetails`: JSONArray 类型。包含以下字段：
 
-          - `url`: String 型，网页录制模式下录制文件的访问地址。
+    - `url`: String 型，网页录制模式下录制文件的访问地址。
 
-        - `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
-        - `total`: Integer 型，数据总条数。
-        - `unready`: Boolean 型，值为 `true` 表示录制失败。如果在开启录制时设置了 `retryTimeout` 参数，由于超时未报告 `ready` 而被自动终止的录制任务会被添加 `unready` 标记。
-      - `webRecordUrlQuery`: String 型，页面录制中的 query 参数。拼接 [`LaunchOption`](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launchoption) 参数传入的录制页面的 `recordUrl` 的值和 `webRecordUrlQuery` 的值即可得到录制页面的 URL，可用于本地调试。
+  - `nextId`: String 型，下一批数据的起始 ID。如为 null，则表示没有下一批数据。如不为 null，则可用此 `nextId` 继续查询，直到查到 null 为止。
+  - `total`: Integer 型，数据总条数。
+  - `unready`: Boolean 型，值为 `true` 表示录制失败。如果在开启录制时设置了 `retryTimeout` 参数，由于超时未报告 `ready` 而被自动终止的录制任务会被添加 `unready` 标记。
+- `webRecordUrlQuery`: String 型，页面录制中的 query 参数。拼接 [`LaunchOption`](/zh-CN/api-reference/flexible-classroom/web/api-reference/classroom-sdk#launchoption) 参数传入的录制页面的 `recordUrl` 的值和 `webRecordUrlQuery` 的值即可得到录制页面的 URL，可用于本地调试。
 
-      :::warning[注意]
-      本地访问录制页面时，远端开启录制的用户会被踢出，请确保录制停止后再访问录制页面。
-      :::
+:::warning[注意]
+本地访问录制页面时，远端开启录制的用户会被踢出，请确保录制停止后再访问录制页面。
+:::
 
 </Slot>
 

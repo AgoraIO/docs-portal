@@ -12,6 +12,9 @@ const enCommon = {
       system: 'System',
     },
     site: {
+      switchSite: 'Switch site',
+      chinese: '简体中文',
+      english: 'English',
       label: 'Site',
       description: 'Product coverage differs between the two sites.',
       global: 'International site',
@@ -54,6 +57,7 @@ const enCommon = {
     next: 'Next',
     previous: 'Previous',
     copyPage: 'Copy Page',
+    copyLink: 'Copy Link',
     copyPageMoreActions: 'Copy Page more actions',
     viewAsMarkdown: 'View as Markdown',
     openInChatGpt: 'Open in ChatGPT',

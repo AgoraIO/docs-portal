@@ -564,10 +564,10 @@ describe('overview MDX components', () => {
     );
 
     expect(
-      screen.getByText(
-        '选择最快的支持渠道，获取产品问题、服务状态和社区资源帮助。',
+      screen.queryByText(
+        '根据需要选择支持渠道：咨询产品问题、查看服务状态或浏览技术文章。',
       ),
-    ).toBeVisible();
+    ).not.toBeInTheDocument();
     expect(screen.getByText('热门知识库')).toBeVisible();
     expect(screen.getByText('快速解答')).toBeVisible();
     expect(screen.getByText('按主题浏览')).toBeVisible();

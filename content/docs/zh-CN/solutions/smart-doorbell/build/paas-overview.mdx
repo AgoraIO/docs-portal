@@ -23,7 +23,7 @@ description: "了解智能门铃的核心能力、适用场景、接入路径和
 
 ### 方案架构
 
-声网提供 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa)、[RTC SDK](/zh-CN/realtime-media/rtc) 和 [RTM SDK](/zh-CN/realtime-media/rtm) 共同搭建智能门铃场景。
+智能门铃 PaaS 方案在设备端集成 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa)，使用其音视频传输和内置 RTM 信令能力；在客户端集成 [RTC SDK](/zh-CN/realtime-media/rtc) 和 [RTM SDK](/zh-CN/realtime-media/rtm)，实现音视频交互、告警通知和设备控制。
 
 ![智能门铃技术方案图](https://web-cdn.agora.io/docs-portal/img/smart-doorbell/tech.png)
 
@@ -31,32 +31,32 @@ description: "了解智能门铃的核心能力、适用场景、接入路径和
 
 | SDK 或服务 | 实现功能 |
 | --- | --- |
-| 声网 RTSA Lite SDK | <Slot name="paas-overview-html-0-1-1" /> |
-| 声网 RTC SDK | <Slot name="paas-overview-html-0-2-1" /> |
-| 声网云信令（RTM）SDK | <Slot name="paas-overview-html-0-3-1" /> |
+| 声网 RTSA Lite SDK（设备端） | <Slot name="paas-overview-html-0-1-1" /> |
+| 声网 RTC SDK（客户端） | <Slot name="paas-overview-html-0-2-1" /> |
+| 声网 RTM SDK（客户端） | <Slot name="paas-overview-html-0-3-1" /> |
 
 <Slot for="paas-overview-html-0-1-1">
 
 - 设备端加入 RTC 频道
-    - 设备端发送可视化门铃的视频
-    - 设备端和客户端语音双向对讲
-    - 设备端通过内置实时信令功能和客户端进行实时信令交互
+- 设备端发送可视化门铃的视频
+- 设备端和客户端语音双向对讲
+- 设备端通过 RTSA Lite SDK 内置的 RTM 信令能力与客户端交互
 
 </Slot>
 
 <Slot for="paas-overview-html-0-2-1">
 
 - 客户端加入 RTC 频道
-    - 客户端观看设备端的视频
-    - 客户端和设备端语音双向对讲
+- 客户端观看设备端的视频
+- 客户端和设备端语音双向对讲
 
 </Slot>
 
 <Slot for="paas-overview-html-0-3-1">
 
 - 客户端登录 RTM 系统并加入 RTM 频道
-    - 客户端和设备端进行实时信令交互
-    - 客户端远程控制设备
+- 客户端和设备端进行实时信令交互
+- 客户端远程控制设备
 
 </Slot>
 
@@ -76,7 +76,7 @@ description: "了解智能门铃的核心能力、适用场景、接入路径和
 
 ![智能门铃传输架构图](https://web-cdn.agora.io/docs-portal/img/smart-camera/data-transmission-flow.png)
 
-图中视频编码支持 H.264 格式，音频编码支持 AAC、Opus 或 PCM 格式。如果有自研的音频编码器，你可以自行编码 AAC 或 Opus 格式的音频数据，然后通过 RTSA Lite SDK 传输；如果没有自研音频编码能力，你可以直接传输 PCM 音频数据，RTSA Lite SDK 会使用内置的 Opus 编码器完成音频编码并传输。
+图中视频编码格式支持 H.264。音频支持两种接入方式：如果设备端具备音频编码能力，可以将已编码的 AAC 或 Opus 等格式的音频数据交给 RTSA Lite SDK 传输；如果设备端不进行音频编码，可以将 PCM 原始音频数据交给 SDK，由 SDK 使用内置的 Opus 编码器完成编码后传输。
 
 ## 方案优势
 
