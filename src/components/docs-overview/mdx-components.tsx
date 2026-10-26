@@ -462,8 +462,7 @@ function HelpHub({
     locale === 'zh-CN'
       ? {
           browseByTopic: '按主题浏览',
-          intro:
-            '根据需要选择支持渠道：咨询产品问题、查看服务状态或浏览技术文章。',
+          intro: null,
           popularKnowledgeBase: '热门知识库',
           quickAnswers: '快速解答',
         }
@@ -478,13 +477,15 @@ function HelpHub({
   return (
     <section className="not-prose my-8 space-y-5">
       <div>
-        <div className="max-w-2xl">
-          <p className="text-sm leading-6 text-muted-foreground">
-            {copy.intro}
-          </p>
-        </div>
+        {copy.intro ? (
+          <div className="max-w-2xl">
+            <p className="text-sm leading-6 text-muted-foreground">
+              {copy.intro}
+            </p>
+          </div>
+        ) : null}
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className={cn('grid gap-3 sm:grid-cols-3', copy.intro && 'mt-4')}>
           {cards.map((card) => (
             <a
               className="docs-card-surface docs-card-interactive group flex flex-col p-4"
