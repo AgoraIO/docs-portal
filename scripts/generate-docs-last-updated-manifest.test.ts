@@ -132,6 +132,20 @@ describe('documentation update-time generation', { timeout: 15_000 }, () => {
     expect(await readTimes(root)).toEqual({});
   });
 
+  it.each(['unstaged', 'staged'])(
+    'does not certify the old date of %s content in a Git-free snapshot',
+    async (state) => {
+      const root = await createFixture();
+      await initHistory(root);
+      await writeFile(path.join(root, pagePath), '# Uncommitted release\n');
+      if (state === 'staged') git(root, ['add', pagePath]);
+      generate(root);
+      await rm(path.join(root, '.git'), { recursive: true });
+      generate(root);
+      expect(await readTimes(root)).not.toHaveProperty(pagePath);
+    },
+  );
+
   it('uses only actual changes after a shallow boundary when the snapshot is stale', async () => {
     const root = await createFixture();
     await initHistory(root);

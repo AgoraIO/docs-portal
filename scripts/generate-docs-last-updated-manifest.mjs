@@ -18,9 +18,11 @@ async function main() {
   const existingSource = await fs.readFile(OUTPUT_PATH, 'utf8').catch(() => '');
   const hasGitHistory = await isGitHistoryAvailable();
   const incompleteHistory = !hasGitHistory || (await isGitHistoryIncomplete());
+  const dirtyPaths = hasGitHistory ? await getDirtyContentPaths() : new Set();
 
   if (
     incompleteHistory &&
+    dirtyPaths.size === 0 &&
     existingSource.includes(
       `export const DOCS_LAST_UPDATED_CONTENT_HASH = '${contentHash}';`,
     )
@@ -46,6 +48,10 @@ async function main() {
       'Unable to generate docs last-updated manifest from Git history',
     );
   }
+
+  // A content hash may include local edits, but their previous commit dates
+  // cannot describe that edited content in a later Git-free build.
+  for (const filePath of dirtyPaths) manifest.delete(filePath);
 
   await fs.mkdir(path.dirname(OUTPUT_PATH), { recursive: true });
   await fs.writeFile(
@@ -89,7 +95,7 @@ async function loadGitLastUpdatedIndex(incompleteHistory) {
 
 async function isGitHistoryAvailable() {
   try {
-    await execFileAsync('git', ['rev-parse', '--git-dir'], {
+    await execFileAsync('git', ['rev-parse', '--verify', 'HEAD'], {
       cwd: process.cwd(),
       encoding: 'utf8',
     });
@@ -115,6 +121,23 @@ async function isGitHistoryIncomplete() {
   } catch {
     return true;
   }
+}
+
+async function getDirtyContentPaths() {
+  const results = await Promise.all(
+    [
+      ['diff', '--name-only', '--no-renames', '-z', 'HEAD'],
+      ['ls-files', '--others', '--exclude-standard', '-z'],
+    ].map((args) =>
+      execFileAsync('git', [...args, '--', ...GIT_METADATA_ROOTS], {
+        cwd: process.cwd(),
+        encoding: 'utf8',
+      }),
+    ),
+  );
+  return new Set(
+    results.flatMap(({ stdout }) => stdout.split('\0').filter(Boolean)),
+  );
 }
 
 async function getContentHash() {
