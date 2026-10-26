@@ -1,0 +1,18 @@
+/* Apply the same code typography to compiled MDX and OpenAPI examples.
+   :lang(zh) also matches nested Shiki tokens, so set their font explicitly. */
+:root figure.shiki pre,
+:root figure.shiki pre :where(code, span) {
+  font-family: var(--font-mono);
+  font-variant-ligatures: none;
+}
+
+/* Keep Fumadocs scrolling and copy controls visible on touch screens too. */
+:root figure.shiki button[aria-label] {
+  opacity: 1;
+}
+
+:root .prose :where(:not(pre) > code):not(:where(.not-prose, .not-prose *)),
+:root .openapi-markdown :where(:not(pre) > code) {
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}

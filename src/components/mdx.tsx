@@ -1185,15 +1185,10 @@ function Pre({ className, ...props }: PreProps) {
       className={cn('bg-fd-card shadow-none', className)}
       viewportProps={{
         ...props.viewportProps,
-        className: cn(
-          'overflow-x-hidden overflow-y-auto',
-          props.viewportProps?.className,
-        ),
+        className: cn('overflow-auto', props.viewportProps?.className),
       }}
     >
-      <FumadocsCodeBlockPre className="w-full max-w-full min-w-0 whitespace-pre-wrap [overflow-wrap:anywhere] break-words">
-        {props.children}
-      </FumadocsCodeBlockPre>
+      <FumadocsCodeBlockPre>{props.children}</FumadocsCodeBlockPre>
     </FumadocsCodeBlock>
   );
 }
