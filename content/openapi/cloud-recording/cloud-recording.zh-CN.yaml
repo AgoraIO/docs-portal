@@ -664,6 +664,26 @@ components:
   responses:
     not-200:
       description: '如果 HTTP 状态码不为 `200`，请参考[响应状态码](/zh-CN/realtime-media/cloud-recording/reference/response-code)排查问题。'
+      content:
+        application/json:
+          schema:
+            type: object
+            description: '错误响应可能包含 `message`，或 `code` 和 `reason`。具体字段和含义请参阅[响应状态码](/zh-CN/realtime-media/cloud-recording/reference/response-code)。'
+            properties:
+              message:
+                type: string
+                description: HTTP 请求失败的原因，例如鉴权失败、请求路由错误或请求被限流。
+              code:
+                type: integer
+                description: 云端录制 API 返回的错误码，具体取值请参阅响应状态码。
+              reason:
+                type: string
+                description: 与错误码对应的错误原因。
+          examples:
+            authentication-error:
+              summary: '401 Unauthorized：鉴权失败'
+              value:
+                message: Invalid authentication credentials
     ncs-ip:
       description: |-
         如果返回的 HTTP 状态码为 200，表示请求成功。
