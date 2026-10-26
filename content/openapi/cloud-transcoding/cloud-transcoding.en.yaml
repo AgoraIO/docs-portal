@@ -2059,7 +2059,6 @@ components:
       type: object
       required:
         - canvas
-        - watermarks
         - outputs
       properties:
         idleTimeout:
@@ -2118,9 +2117,12 @@ components:
             $ref: "#/components/schemas/video-input"
         canvas:
           $ref: "#/components/schemas/canvas"
-        watermarks:
+        waterMarks:
           type: array
-          description: Watermark list.
+          minItems: 1
+          description: >-
+            Watermark list. To add no watermarks, omit this field. An empty list isn't
+            accepted.
           items:
             $ref: "#/components/schemas/watermark"
         outputs:
