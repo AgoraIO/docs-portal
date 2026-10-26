@@ -1085,7 +1085,7 @@ describe('DocsSearchDialog', () => {
     expect(loadPagesSpy).not.toHaveBeenCalled();
   });
 
-  it('opens full search with query and scope without an AI mode', async () => {
+  it('filters CN quick search by HarmonyOS and carries the query and scope into full search', async () => {
     vi.mocked(createCnDocsSearchClient).mockReturnValue({
       deps: [],
       search: vi.fn().mockResolvedValue([]),
@@ -1124,6 +1124,11 @@ describe('DocsSearchDialog', () => {
     fireEvent.click(
       await screen.findByRole('option', { name: '实时互动 RTC' }),
     );
+    fireEvent.click(await screen.findByRole('combobox', { name: '全部平台' }));
+    fireEvent.click(await screen.findByRole('option', { name: 'HarmonyOS' }));
+    expect(createCnDocsSearchClient).toHaveBeenCalledWith(
+      expect.objectContaining({ platform: 'harmonyos' }),
+    );
     fireEvent.input(
       await screen.findByPlaceholderText('搜索文档、API、指南...'),
       { target: { value: 'Token' } },
@@ -1134,7 +1139,9 @@ describe('DocsSearchDialog', () => {
     fireEvent.click(screen.getByRole('button', { name: '查看全部搜索结果' }));
     await waitFor(() =>
       expect(navigate).toHaveBeenCalledWith(
-        expect.objectContaining({ href: '/zh-CN/search?q=Token&product=rtc' }),
+        expect.objectContaining({
+          href: '/zh-CN/search?q=Token&product=rtc&platform=harmonyos',
+        }),
       ),
     );
   });

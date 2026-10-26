@@ -336,6 +336,7 @@ export function DocsSearchDialog({
           'flutter',
           'react-native',
           'windows',
+          'harmonyos',
           'macos',
           'electron',
           'unity',
