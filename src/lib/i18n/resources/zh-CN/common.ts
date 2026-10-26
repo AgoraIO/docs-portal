@@ -12,7 +12,7 @@ const zhCnCommon = {
       system: '跟随系统',
     },
     site: {
-      internationalDocs: '国际站 / International Docs',
+      internationalDocs: 'English Docs',
       label: '站点',
       description: '两个站点覆盖的产品范围并不完全相同。',
       global: '国际站',

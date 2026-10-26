@@ -567,7 +567,7 @@ describe('DocsShell', () => {
 
       const actions = await screen.findByTestId('docs-desktop-header-actions');
       const link = within(actions).getByRole('link', {
-        name: /国际站 \/ International Docs/,
+        name: /English Docs/,
       });
       expect(link).toHaveAttribute(
         'href',
@@ -590,13 +590,13 @@ describe('DocsShell', () => {
     );
     expect(screen.queryByTestId('legacy-docs-banner')).not.toBeInTheDocument();
     expect(
-      screen.getByRole('link', { name: /International Docs/ }),
+      screen.getByRole('link', { name: /English Docs/ }),
     ).toBeInTheDocument();
 
     unmount();
     renderDocsShell({ locale: 'zh-CN' });
     expect(
-      await screen.findByRole('link', { name: /International Docs/ }),
+      await screen.findByRole('link', { name: /English Docs/ }),
     ).toHaveAttribute('href', 'https://docs.agora.io/en/introduction');
     expect(screen.queryByTestId('legacy-docs-banner')).not.toBeInTheDocument();
   });
@@ -606,7 +606,7 @@ describe('DocsShell', () => {
     fireEvent.click(await screen.findByRole('button', { name: '打开导航' }));
     const sheet = await screen.findByRole('dialog');
     const link = within(sheet).getByRole('link', {
-      name: /国际站 \/ International Docs/,
+      name: /English Docs/,
     });
     expect(link).toHaveAttribute(
       'href',
@@ -629,12 +629,12 @@ describe('DocsShell', () => {
     renderDocsShell();
     await screen.findByTestId('docs-desktop-header-actions');
     expect(
-      screen.queryByRole('link', { name: /International Docs/ }),
+      screen.queryByRole('link', { name: /English Docs/ }),
     ).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: 'Open navigation' }));
     const sheet = await screen.findByRole('dialog');
     expect(
-      within(sheet).queryByRole('link', { name: /International Docs/ }),
+      within(sheet).queryByRole('link', { name: /English Docs/ }),
     ).not.toBeInTheDocument();
   });
 
