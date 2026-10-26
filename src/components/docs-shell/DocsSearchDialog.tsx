@@ -461,12 +461,7 @@ export function DocsSearchDialog({
   const resultEntries: RenderedSearchEntry[] =
     !hasQuery || isSearchUnavailable
       ? []
-      : normalizedSearchResults.map((result) =>
-          searchResultToEntry(result, {
-            current: t('docs.searchCurrentVersion'),
-            historical: t('docs.searchHistoricalVersion'),
-          }),
-        );
+      : normalizedSearchResults.map(searchResultToEntry);
   const showRecent = !hasQuery && recentPages.length > 0;
   // Nothing typed and no history yet → a plain prompt instead of fake results.
   const showPrompt = !hasQuery && recentPages.length === 0;
@@ -809,40 +804,28 @@ type DetailEntry = {
   value: string;
 };
 
-function searchResultToEntry(
-  result: {
-    breadcrumbs?: unknown[];
-    content: unknown;
-    id?: unknown;
-    objectType?: unknown;
-    path?: unknown[];
-    platform?: unknown;
-    product?: unknown;
-    section?: unknown;
-    snippet?: unknown;
-    tab?: unknown;
-    title?: unknown;
-    url: string;
-    version?: unknown;
-    versionStatus?: unknown;
-  },
-  versionLabels: { current: string; historical: string },
-): RenderedSearchEntry {
+function searchResultToEntry(result: {
+  breadcrumbs?: unknown[];
+  content: unknown;
+  id?: unknown;
+  objectType?: unknown;
+  path?: unknown[];
+  platform?: unknown;
+  product?: unknown;
+  section?: unknown;
+  snippet?: unknown;
+  tab?: unknown;
+  title?: unknown;
+  url: string;
+}): RenderedSearchEntry {
   const breadcrumbs = getStringArray(result.breadcrumbs);
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
-  const version = getString(result.version);
-  const versionStatus = getString(result.versionStatus);
-  const versionLabel = version ? `v${version.replace(/^v/i, '')}` : undefined;
 
   return {
     context: uniqueStrings([
       objectType === 'openapi' ? 'API' : undefined,
       ...formatPlatformContext(platforms ?? []),
-      versionLabel &&
-      (versionStatus === 'current' || versionStatus === 'historical')
-        ? `${versionLabel} · ${versionLabels[versionStatus]}`
-        : versionLabel,
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'

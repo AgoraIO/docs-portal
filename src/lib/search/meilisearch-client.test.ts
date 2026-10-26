@@ -1,7 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   createMeilisearchClient,
-  mapSearchHit,
   normalizeMeilisearchHit,
   normalizeMeilisearchQuery,
 } from './meilisearch-client';
@@ -10,34 +9,6 @@ describe('createMeilisearchClient', () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
-
-  it.each([
-    ['/api-reference/rtc/android/4.6.0/channel#joinchannel-12', 'historical'],
-    ['/zh-CN/api-reference/rtc/android/channel#joinchannel-12', 'current'],
-    ['/realtime-media/rtc/reference/release-notes', undefined],
-  ])(
-    'preserves the indexed version and limits version identity to API routes: %s',
-    (url, versionStatus) => {
-      const result = mapSearchHit(
-        normalizeMeilisearchHit({
-          id: 'versioned',
-          url,
-          pageTitle: '频道相关',
-          sectionTitle: 'joinChannel',
-          content: '加入频道。',
-          headingPath: ['频道相关', 'joinChannel'],
-          locale: 'zh-CN',
-          version: '4.6.0',
-          docType: 'docs',
-          audience: ['developer'],
-          status: 'published',
-          hidden: false,
-        }),
-      );
-      expect(result.version).toBe('4.6.0');
-      expect(result.versionStatus).toBe(versionStatus);
-    },
-  );
 
   it('normalizes a section-anchor query before searching', () => {
     expect(normalizeMeilisearchQuery('  #manualsos  ')).toBe('manualsos');
