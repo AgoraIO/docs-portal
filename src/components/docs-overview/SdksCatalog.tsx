@@ -620,7 +620,7 @@ export function SdksCatalog({
                   {capability.products.map((group) => (
                     <ProductCard
                       copy={copy}
-                      defaultOpen={false}
+                      defaultOpen={Boolean(productFilter)}
                       group={group}
                       initialPlatformId={queryFilters.platformId}
                       key={`${group.productId}-${queryFilters.platformId ?? 'default'}`}
@@ -672,6 +672,10 @@ function ProductCard({
   const [versionIndex, setVersionIndex] = useState('0');
   const [isOpen, setIsOpen] = useState(defaultOpen ?? false);
   const startAccountGuidance = useResourceAccountGuidance();
+
+  useEffect(() => {
+    setIsOpen(defaultOpen ?? false);
+  }, [defaultOpen]);
 
   const activePlatform =
     group.platforms.find((entry) => entry.platformId === platformId) ??

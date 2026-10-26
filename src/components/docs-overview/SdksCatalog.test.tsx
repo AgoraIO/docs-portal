@@ -309,6 +309,51 @@ describe('SdksCatalog', () => {
     ).toHaveLength(11);
   });
 
+  it.each(['android', 'ios', 'macos', 'windows'])(
+    'opens the linked video SDK on %s and allows it to be collapsed',
+    async (platform) => {
+      window.history.replaceState(
+        null,
+        '',
+        `/zh-CN/reference/sdks?product=video&platform=${platform}#sdk-download-product-video`,
+      );
+      render(<SdksCatalog locale="zh-CN" />);
+
+      const card = screen.getByRole('article', { name: '视频 SDK' });
+      const details = card.querySelector('details') as HTMLDetailsElement;
+      expect(details).toHaveAttribute('open');
+      expect(
+        within(card).getByRole('combobox', { name: '视频 SDK 平台' }),
+      ).toHaveValue(platform);
+
+      fireEvent.click(details.querySelector('summary') as HTMLElement);
+      await waitFor(() => expect(details).not.toHaveAttribute('open'));
+    },
+  );
+
+  it('opens a product when a product link is followed within the catalog', async () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/reference/sdks?platform=android',
+    );
+    render(<SdksCatalog locale="zh-CN" />);
+    const details = screen
+      .getByRole('article', { name: '视频 SDK' })
+      .querySelector('details');
+    expect(details).not.toHaveAttribute('open');
+
+    act(() => {
+      window.history.pushState(
+        null,
+        '',
+        '/zh-CN/reference/sdks?product=video&platform=android#sdk-download-product-video',
+      );
+    });
+
+    await waitFor(() => expect(details).toHaveAttribute('open'));
+  });
+
   it('does not show product or platform counts in the Chinese catalog', () => {
     render(<SdksCatalog locale="zh-CN" />);
 
