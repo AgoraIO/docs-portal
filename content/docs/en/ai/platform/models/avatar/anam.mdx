@@ -1,95 +1,30 @@
 ---
 title: Anam
 description: >
-  Integrate Anam AI avatars into Conversational AI Engine.
+  Use an Anam avatar to represent your agent on video in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/anam.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/anam.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. */}
 
 Anam provides AI-powered avatars with real-time video rendering, enabling natural video conversations with your AI agents.
 
-### Sample configuration
+## Sample configuration
 
-The following examples show how to configure an Anam avatar when starting a conversational AI agent.
+Add an `avatar` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Anam supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your Anam API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent
-from agora_agent.agentkit.vendors import AnamAvatar
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(...)  # configure your STT vendor
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(...)  # configure your TTS vendor
-    .with_avatar(AnamAvatar(
-        api_key='your-anam-key',
-        persona_id='<anam_persona_id>',
-    ))
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, AnamAvatar } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure your TTS vendor */)
-  .withAvatar(new AnamAvatar({
-    apiKey: 'your-anam-key',
-    personaId: '<anam_persona_id>',
-  }));
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
-  WithLlm(/* configure your LLM vendor */).
-  WithTts(/* configure your TTS vendor */).
-  WithAvatar(
-    vendors.NewAnamAvatar(vendors.AnamAvatarOptions{
-        APIKey:    "your-anam-key",
-        PersonaID: "<anam_persona_id>",
-    }),
-)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `avatar` configuration in your request:
+In the following example, the key is stored as `anam` in the `support-prod` set:
 
 ```json
 "avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.anam"
+  },
   "vendor": "anam",
-  "enable": true,
   "params": {
-    "api_key": "<anam_key>",
     "avatar_id": "960f614f-ea88-47c3-9883-f02094f70874",
     "agora_uid": "<avatar_rtc_uid>",
     "agora_token": "<avatar_rtc_token>",
@@ -100,33 +35,42 @@ Use the following `avatar` configuration in your request:
 }
 ```
 
-</TabsContent>
-</Tabs>
+{/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
 
-### Key parameters
+## Key parameters
 
-<ParameterList title="params" required={true}>
-  <Parameter name="api_key" type="string" required={true}>
-  The API key used for authentication with Anam's services. Get your API key from the Anam console.
+<ParameterList title="avatar" required={true}>
+  <Parameter name="enabled" type="boolean" required={true}>
+  Set to `true` to show the avatar.
   </Parameter>
-  <Parameter name="avatar_id" type="string" required={true}>
-  The unique identifier for the Anam avatar you want to use.
+  <Parameter name="vendor" type="string" required={true}>
+  Set to `anam`.
   </Parameter>
-  <Parameter name="agora_uid" type="string" required={true}>
-  The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+  <Parameter name="credential" type="object" required={true}>
+  Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Anam API key. Get your API key from the Anam console.
   </Parameter>
-  <Parameter name="agora_token" type="string" required={true}>
-  The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
-  </Parameter>
-  <Parameter name="sample_rate" type="number" defaultValue="24000" possibleValues="16000, 24000, 48000" required={false}>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="avatar_id" type="string" required={true}>
+    The unique identifier for the Anam avatar you want to use.
+    </Parameter>
+    <Parameter name="agora_uid" type="string" required={true}>
+    The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+    </Parameter>
+    <Parameter name="agora_token" type="string" required={true}>
+    The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+    </Parameter>
+    <Parameter name="sample_rate" type="number" defaultValue="24000" possibleValues="16000, 24000, 48000" required={false}>
     The audio sample rate in Hz.
-  </Parameter>
-  <Parameter name="quality" type="string" defaultValue="high" possibleValues="high, medium, low" required={false}>
+    </Parameter>
+    <Parameter name="quality" type="string" defaultValue="high" possibleValues="high, medium, low" required={false}>
     The video quality level.
-  </Parameter>
-  <Parameter name="video_encoding" type="string" defaultValue="H264" possibleValues="H264, AV1" required={false}>
+    </Parameter>
+    <Parameter name="video_encoding" type="string" defaultValue="H264" possibleValues="H264, AV1" required={false}>
     The video encoding format.
+    </Parameter>
   </Parameter>
 </ParameterList>
 
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

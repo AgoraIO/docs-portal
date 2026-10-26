@@ -1,148 +1,86 @@
 ---
 title: LiveAvatar
 description: >
- Integrate LiveAvatar AI avatars into Conversational AI Engine.
+ Use a LiveAvatar avatar to represent your agent on video in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/heygen.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/heygen.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. */}
 
 LiveAvatar by HeyGen provides AI-powered avatars with high-quality video rendering and customizable video quality settings, enabling professional video conversations with your AI agents.
 
-### Sample configuration
+## Sample configuration
 
-The following examples show how to configure a LiveAvatar avatar when starting a conversational AI agent.
+Add an `avatar` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). LiveAvatar supports BYOK only. It isn't available in managed mode.
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
+Store your LiveAvatar API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-```python
-from agora_agent import Agent
-from agora_agent.agentkit.vendors import LiveAvatarAvatar
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(...)  # configure your STT vendor
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(...)  # configure a TTS vendor at 24000 Hz
-    .with_avatar(LiveAvatarAvatar(
-        api_key='your-liveavatar-key',
-        quality='high',
-        agora_uid='<avatar_rtc_uid>',
-        avatar_id='65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0',
-    ))
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent, LiveAvatarAvatar } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure a TTS vendor at 24000 Hz */)
-  .withAvatar(new LiveAvatarAvatar({
-    apiKey: 'your-liveavatar-key',
-    quality: 'high',
-    agoraUid: '<avatar_rtc_uid>',
-    avatarId: '65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0',
-  }));
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import (
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-    "github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
-)
-
-// client is your configured Agora client
-agent := agentkit.NewAgent(client).WithStt(/* configure your STT vendor */).
-  WithLlm(/* configure your LLM vendor */).
-  WithTts(/* configure a TTS vendor at 24000 Hz */).
-  WithAvatar(
-    vendors.NewLiveAvatarAvatar(vendors.LiveAvatarAvatarOptions{
-        APIKey:   "your-liveavatar-key",
-        Quality:  "high",
-        AgoraUID: "<avatar_rtc_uid>",
-        AvatarID: "65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0",
-    }),
-)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Use the following `avatar` configuration in your request:
+In the following example, the key is stored as `liveavatar` in the `support-prod` set:
 
 ```json
 "avatar": {
-    "vendor": "liveavatar",
-    "enable": true,
-    "params": {
-        "agora_token": "<avatar_rtc_token>",
-        "agora_uid": "<avatar_rtc_uid>",
-        "quality": "high",
-        "avatar_id": "65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0",
-        "api_key": "<liveavatar_key>"
-    }
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support-prod.liveavatar"
+  },
+  "vendor": "liveavatar",
+  "params": {
+    "agora_token": "<avatar_rtc_token>",
+    "agora_uid": "<avatar_rtc_uid>",
+    "quality": "high",
+    "avatar_id": "65f9e3c9-d48b-4118-b73a-4ae2e3cbb8f0"
+  }
 }
 ```
 
-</TabsContent>
-</Tabs>
+{/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
 
 :::info[Info]
-LiveAvatar only support audio with a sample rate of 24,000 Hz. Using a TTS model configured with a different sample rate will result in an error. Ensure your TTS configuration matches this requirement.
+LiveAvatar only supports audio with a sample rate of 24,000 Hz. Using a TTS model configured with a different sample rate results in an error. Make sure that your TTS configuration matches this requirement.
 :::
 
-### Key parameters
+## Key parameters
 
-<ParameterList title="params" required={true}>
- <Parameter name="api_key" type="string" required={true}>
- The API key used for authentication with LiveAvatar's services. Get your API key from the LiveAvatar console.
+<ParameterList title="avatar" required={true}>
+ <Parameter name="enabled" type="boolean" required={true}>
+ Set to `true` to show the avatar.
  </Parameter>
- <Parameter name="quality" type="string" possibleValues="low, medium high" required={true}>
- The video quality for the avatar rendering.
+ <Parameter name="vendor" type="string" required={true}>
+ Set to `liveavatar`.
+ </Parameter>
+ <Parameter name="credential" type="object" required={true}>
+ Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your LiveAvatar API key. Get your API key from the LiveAvatar console.
+ </Parameter>
+ <Parameter name="params" type="object" required={true}>
+  <Parameter name="quality" type="string" possibleValues="low, medium, high" required={true}>
+  The video quality for the avatar rendering.
 
- - `"high"` (720p)
- - `"medium"` (480p)
- - `"low"` (360p).
+  - `"high"` (720p)
+  - `"medium"` (480p)
+  - `"low"` (360p)
 
- Higher quality provides better visual experience but requires more bandwidth.
- </Parameter>
- <Parameter name="agora_uid" type="string" required={true}>
- The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
- </Parameter>
- <Parameter name="agora_token" type="string" required={false}>
- The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
- </Parameter>
- <Parameter name="avatar_id" type="string" required={false}>
- The unique identifier for the avatar you want to use.
- </Parameter>
- <Parameter name="disable_idle_timeout" type="boolean" defaultValue="false" required={false}>
- Whether to disable the idle timeout feature.
- </Parameter>
- <Parameter name="activity_idle_timeout" type="integer" defaultValue="120" required={false}>
- The number of seconds of inactivity before the avatar session times out. Only applies when `disable_idle_timeout` is `false`.
+  Higher quality provides a better visual experience but requires more bandwidth.
+  </Parameter>
+  <Parameter name="agora_uid" type="string" required={true}>
+  The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+  </Parameter>
+  <Parameter name="agora_token" type="string" required={false}>
+  The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+  </Parameter>
+  <Parameter name="avatar_id" type="string" required={false}>
+  The unique identifier for the avatar you want to use.
+  </Parameter>
+  <Parameter name="disable_idle_timeout" type="boolean" defaultValue="false" required={false}>
+  Whether to disable the idle timeout feature.
+  </Parameter>
+  <Parameter name="activity_idle_timeout" type="integer" defaultValue="120" required={false}>
+  The number of seconds of inactivity before the avatar session times out. Only applies when `disable_idle_timeout` is `false`.
+  </Parameter>
  </Parameter>
 </ParameterList>
 
 For advanced configuration options, refer to the [LiveAvatar official documentation](https://docs.liveavatar.com/reference/create_session_token_v1_sessions_token_post).
 
-This integration is fully supported for use with Conversational AI Engine. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}
