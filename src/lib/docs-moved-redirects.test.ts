@@ -7,6 +7,32 @@ import {
 
 describe('resolveMovedDocsRedirect', () => {
   it.each([
+    'rtc/build/setup-and-access/enable-service',
+    'whiteboard/whiteboard-sdk/build/setup-and-access/generate-token',
+    'whiteboard/fastboard-sdk/build/setup-and-access/generate-token',
+  ])('keeps the merged RESTful guide address for %s reachable', (path) => {
+    const segments = [...path.split('/'), 'restful'];
+    expect(resolveMovedDocsRedirect('zh-CN', 'realtime-media', segments)).toBe(
+      `/zh-CN/realtime-media/${path}`,
+    );
+    expect(
+      isPermanentMovedDocsRedirect('zh-CN', 'realtime-media', segments),
+    ).toBe(true);
+    const deployment = JSON.parse(readFileSync('vercel.base.json', 'utf8'));
+    expect(deployment.redirects).toContainEqual({
+      source: `/zh-CN/realtime-media/${path}/restful`,
+      destination: `/zh-CN/realtime-media/${path}`,
+      statusCode: 301,
+    });
+    expect(
+      resolveMovedDocsRedirect('en', 'realtime-media', segments),
+    ).toBeNull();
+    expect(
+      resolveMovedDocsRedirect('zh-CN', 'realtime-media', path.split('/')),
+    ).toBeNull();
+  });
+
+  it.each([
     ['rest-tool', '/zh-CN/ai/build/shape-the-conversation/rest-tool'],
     ['asr-keywords', '/zh-CN/ai/build/custom-model-integration/asr-keywords'],
     ['filler-words', '/zh-CN/ai/build/shape-the-conversation/filler-words'],
