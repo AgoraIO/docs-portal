@@ -14,6 +14,60 @@ const platforms = [
 ];
 
 describe('SearchBrowseFilters', () => {
+  it('offers and restores the published RTMP gateway product', async () => {
+    const onChange = vi.fn();
+    const { rerender } = render(
+      <SearchBrowseFilters state={{}} platforms={[]} onChange={onChange} />,
+    );
+    fireEvent.keyDown(screen.getByRole('button', { name: '全部产品' }), {
+      key: 'ArrowDown',
+    });
+    fireEvent.click(
+      await screen.findByRole('menuitemradio', { name: 'RTMP 网关' }),
+    );
+    expect(onChange).toHaveBeenCalledWith({
+      product: 'rtmp-gateway',
+      version: undefined,
+    });
+    rerender(
+      <SearchBrowseFilters
+        state={{ product: 'rtmp-gateway' }}
+        platforms={[]}
+        onChange={onChange}
+      />,
+    );
+    expect(
+      screen.getByRole('button', { name: 'RTMP 网关' }),
+    ).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: '全部产品' })).toBeNull();
+  });
+
+  it('keeps an active product outside the catalog readable and selected', async () => {
+    render(
+      <SearchBrowseFilters
+        state={{ product: 'new-product' }}
+        productScopes={[
+          {
+            id: 'product:new-product',
+            label: '新产品',
+            scope: { field: 'product', value: 'new-product' },
+          },
+        ]}
+        platforms={[]}
+        onChange={vi.fn()}
+      />,
+    );
+    fireEvent.keyDown(screen.getByRole('button', { name: '新产品' }), {
+      key: 'ArrowDown',
+    });
+    expect(
+      await screen.findByRole('menuitemradio', { name: '新产品' }),
+    ).toHaveAttribute('aria-checked', 'true');
+    expect(
+      screen.getByRole('menuitemradio', { name: '全部产品' }),
+    ).toHaveAttribute('aria-checked', 'false');
+  });
+
   it('retains a selected platform when collapsing without changing the active filters', () => {
     const onChange = vi.fn();
     render(

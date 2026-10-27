@@ -1092,6 +1092,89 @@ describe('DocsSearchDialog', () => {
     expect(loadPagesSpy).not.toHaveBeenCalled();
   });
 
+  it.each([0, 1])(
+    'closes CN search and restores focus to trigger %s without clearing its query',
+    async (triggerIndex) => {
+      const router = renderCnSearch(vi.fn().mockResolvedValue([]), true);
+      render(<RouterProvider router={router} />);
+      const triggers = await screen.findAllByRole('button', {
+        name: '搜索文档',
+      });
+      const trigger = triggers[triggerIndex];
+      fireEvent.click(trigger);
+      fireEvent.input(
+        await screen.findByPlaceholderText('搜索文档、API、指南...'),
+        { target: { value: 'RTMP' } },
+      );
+      fireEvent.click(screen.getByRole('button', { name: '关闭' }));
+      await waitFor(() => expect(trigger).toHaveFocus());
+      expect(screen.queryByRole('dialog')).toBeNull();
+      fireEvent.click(trigger);
+      expect(
+        await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      ).toHaveValue('RTMP');
+    },
+  );
+
+  it.each(['metaKey', 'ctrlKey'] as const)(
+    'returns to the previously focused element after cancelling a %s shortcut search',
+    async (modifier) => {
+      const router = renderCnSearch(vi.fn().mockResolvedValue([]));
+      render(
+        <>
+          <input aria-label="文档中的输入框" />
+          <RouterProvider router={router} />
+        </>,
+      );
+      await screen.findByRole('button', { name: '搜索文档' });
+      const previous = screen.getByRole('textbox', { name: '文档中的输入框' });
+      previous.focus();
+      fireEvent.keyDown(document, { key: 'k', [modifier]: true });
+      const input = await screen.findByPlaceholderText(
+        '搜索文档、API、指南...',
+      );
+      fireEvent.keyDown(input, { key: 'Escape' });
+      await waitFor(() => expect(previous).toHaveFocus());
+    },
+  );
+
+  it.each(['result', 'full search'])(
+    'does not restore the old trigger focus when navigating to %s',
+    async (destination) => {
+      const router = renderCnSearch(
+        vi.fn().mockResolvedValue([
+          {
+            id: 'gateway',
+            title: 'RTMP 网关',
+            content: 'RTMP 网关',
+            type: 'page',
+            url: '/zh-CN/realtime-media/rtmp-gateway',
+          },
+        ]),
+      );
+      const navigate = vi.spyOn(router, 'navigate');
+      render(<RouterProvider router={router} />);
+      const trigger = await screen.findByRole('button', { name: '搜索文档' });
+      fireEvent.click(trigger);
+      const input = await screen.findByPlaceholderText(
+        '搜索文档、API、指南...',
+      );
+      fireEvent.input(input, { target: { value: 'RTMP' } });
+      const result = await screen.findByRole('option', { name: /RTMP 网关/ });
+      const focus = vi.spyOn(trigger, 'focus');
+      fireEvent.click(
+        destination === 'result'
+          ? result
+          : screen.getByRole('button', { name: '查看全部搜索结果' }),
+      );
+      await waitFor(() => expect(navigate).toHaveBeenCalled());
+      await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+      // Radix restores focus after the content unmounts.
+      await act(() => new Promise((resolve) => setTimeout(resolve, 10)));
+      expect(focus).not.toHaveBeenCalled();
+    },
+  );
+
   it('keeps CN search text and published platform choices when reopening', async () => {
     const router = renderCnSearch(vi.fn().mockResolvedValue([]));
     render(<RouterProvider router={router} />);
@@ -1276,6 +1359,7 @@ describe('DocsSearchDialog', () => {
       expect(
         screen.queryByRole('button', { name: 'Close' }),
       ).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: '关闭' })).toBeInTheDocument();
       const api = screen.getByRole('group', { name: 'API Reference' });
       const faq = screen.getByRole('group', { name: 'FAQ' });
       expect(within(docs).getByText('共 7 条结果')).toBeInTheDocument();

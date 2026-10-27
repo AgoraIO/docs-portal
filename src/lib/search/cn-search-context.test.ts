@@ -37,5 +37,10 @@ describe('legacy-compatible Chinese search options', () => {
     expect(resolveCnSearchProduct('product:agora-analytics')).toBe('analytics');
     expect(resolveCnSearchProduct('private-room')).toBe('one-to-one-live');
     expect(resolveCnSearchProduct('introduction')).toBeUndefined();
+    expect(options).toContainEqual({
+      value: 'rtmp-gateway',
+      label: 'RTMP 网关',
+    });
+    expect(resolveCnSearchProduct('rtmp-gateway')).toBe('rtmp-gateway');
   });
 });

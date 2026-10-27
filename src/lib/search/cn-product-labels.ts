@@ -17,6 +17,7 @@ const productGroups = [
       { value: 'rtc-server-sdk', label: 'RTC 服务端 SDK' },
       { value: 'media-push', label: '旁路推流' },
       { value: 'media-pull', label: '输入在线媒体流' },
+      { value: 'rtmp-gateway', label: 'RTMP 网关' },
       { value: 'whiteboard', label: '互动白板' },
       { value: 'analytics', label: '水晶球' },
       { value: 'speech-to-text', label: '实时转录翻译' },
@@ -59,11 +60,27 @@ const productLabels = new Map(
   ),
 );
 
-export function getCnSearchProductGroups() {
-  return productGroups.map((group) => ({
+export function getCnSearchProductGroups(
+  selected?: string,
+  scopes: ProductScope[] = [],
+) {
+  const groups = productGroups.map((group) => ({
     ...group,
     options: group.options.filter(({ value }) => !isExcludedCnProduct(value)),
   }));
+  if (
+    selected &&
+    !isExcludedCnProduct(selected) &&
+    !groups.some((group) =>
+      group.options.some((option) => option.value === selected),
+    )
+  ) {
+    groups[0].options.push({
+      value: selected,
+      label: getCnProductLabel(selected, scopes),
+    });
+  }
+  return groups;
 }
 
 export function resolveCnSearchProduct(

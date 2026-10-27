@@ -247,7 +247,10 @@ export function DocsSearchPage({
     catalog.platform,
     controlsState.platform,
   );
-  const productGroups = getCnSearchProductGroups();
+  const productGroups = getCnSearchProductGroups(
+    controlsState.product,
+    productScopes,
+  );
 
   const filterControls = (
     <>
@@ -362,6 +365,7 @@ export function DocsSearchPage({
         </div>
         <div className="search-page-desktop-filters">
           <SearchBrowseFilters
+            productScopes={productScopes}
             state={state}
             platforms={getCnSearchPlatforms(catalog.platform, state.platform)}
             onChange={onChange}

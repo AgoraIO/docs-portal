@@ -120,6 +120,9 @@ export function DocsSearchDialog({
   const pathname = useLocation({ select: (location) => location.pathname });
   const isCn = searchLocale === 'zh-CN';
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const navigatingRef = useRef(false);
   const [draftSearch, setDraftSearch] = useState('');
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
@@ -460,6 +463,7 @@ export function DocsSearchDialog({
   );
 
   async function handleSelect(url: string) {
+    navigatingRef.current = true;
     setOpen(false);
     await navigate({
       to: url,
@@ -467,7 +471,15 @@ export function DocsSearchDialog({
   }
 
   const handleOpenChange = useCallback(
-    async (nextOpen: boolean) => {
+    async (nextOpen: boolean, returnFocus?: HTMLElement) => {
+      if (nextOpen && !isOpenRef.current) {
+        returnFocusRef.current =
+          returnFocus ??
+          (document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null);
+        navigatingRef.current = false;
+      }
       isOpenRef.current = nextOpen;
       setOpen(nextOpen);
       // Re-arm the cascade each time the dialog opens; clear it on close.
@@ -669,6 +681,7 @@ export function DocsSearchDialog({
   const openFullSearch = (type: 'all' | CnSearchFamily = 'all') => {
     if (isCn && searchOrigin.current === pathname)
       saveCnSearchSession(pathname, currentSearch.current);
+    navigatingRef.current = true;
     setOpen(false);
     void navigate({
       href: buildSearchPageHref(searchLocale, { ...fullSearchState, type }),
@@ -680,8 +693,10 @@ export function DocsSearchDialog({
       {mode === 'mobile' ? (
         <Button
           aria-label={t('docs.search')}
+          data-docs-search-trigger
+          ref={triggerRef}
           className="size-11"
-          onClick={() => void handleOpenChange(true)}
+          onClick={(event) => void handleOpenChange(true, event.currentTarget)}
           size="icon"
           variant="ghost"
         >
@@ -690,8 +705,10 @@ export function DocsSearchDialog({
       ) : (
         <Button
           aria-label={t('docs.search')}
+          data-docs-search-trigger
+          ref={triggerRef}
           className="docs-shell-search-trigger"
-          onClick={() => void handleOpenChange(true)}
+          onClick={(event) => void handleOpenChange(true, event.currentTarget)}
           size="sm"
           variant="outline"
         >
@@ -706,16 +723,33 @@ export function DocsSearchDialog({
           isCn && 'sm:max-w-3xl',
         )}
         description={t('docs.searchDescription')}
+        closeLabel={t('docs.close')}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          if (navigatingRef.current) return;
+          const target = returnFocusRef.current;
+          if (target?.isConnected) target.focus({ preventScroll: true });
+          if (target && document.activeElement === target) return;
+          triggerRef.current?.focus({ preventScroll: true });
+          if (document.activeElement === triggerRef.current) return;
+          // A responsive layout may have hidden the original trigger.
+          const visibleTrigger = Array.from(
+            document.querySelectorAll<HTMLElement>(
+              '[data-docs-search-trigger]',
+            ),
+          ).find((element) => element.getClientRects().length > 0);
+          visibleTrigger?.focus({ preventScroll: true });
+        }}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={setActiveValue}
         open={open}
         overlayClassName="docs-search-overlay bg-black/30 backdrop-blur-md"
         shouldFilter={false}
-        showCloseButton={!isCn}
         title={t('docs.search')}
         value={activeValue ?? ''}
       >
         <CommandInput
+          className="pr-12"
           onCompositionStart={() => {
             composing.current = true;
           }}
@@ -969,14 +1003,17 @@ export function DocsSearchDialog({
                         ) : null}
                         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                           {isCn ? (
-                            <div className="truncate font-medium">
+                            <>
+                              <HighlightedText
+                                className="font-medium [overflow-wrap:anywhere]"
+                                value={page.title}
+                              />
                               {page.path.length > 1 ? (
-                                <span className="font-normal text-muted-foreground">
-                                  {page.path.slice(0, -1).join(' › ')} ›{' '}
-                                </span>
+                                <div className="line-clamp-1 text-xs text-muted-foreground">
+                                  {page.path.slice(0, -1).join(' › ')}
+                                </div>
                               ) : null}
-                              <HighlightedText value={page.title} />
-                            </div>
+                            </>
                           ) : (
                             <HighlightedText
                               className="line-clamp-1 font-medium"
@@ -1008,7 +1045,7 @@ export function DocsSearchDialog({
                             ) : null}
                             {isCn && page.description ? (
                               <HighlightedText
-                                className="min-w-0 truncate text-xs text-muted-foreground"
+                                className="line-clamp-2 min-w-0 text-xs text-muted-foreground [overflow-wrap:anywhere] sm:line-clamp-1"
                                 value={page.description}
                               />
                             ) : null}

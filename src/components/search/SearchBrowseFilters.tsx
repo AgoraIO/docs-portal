@@ -13,7 +13,11 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { getCnSearchProductGroups } from '@/lib/search/cn-product-labels';
+import type { ProductScope } from '@/lib/docs-tree';
+import {
+  getCnProductLabel,
+  getCnSearchProductGroups,
+} from '@/lib/search/cn-product-labels';
 import { getCnSearchPlatformLabel } from '@/lib/search/cn-search-context';
 import type { SearchPageState } from '@/lib/search/search-page-state';
 
@@ -31,15 +35,14 @@ export function SearchBrowseFilters({
   state,
   platforms,
   onChange,
+  productScopes = [],
 }: {
   state: Pick<SearchPageState, 'product' | 'platform'>;
   platforms: string[];
   onChange: (patch: Partial<SearchPageState>) => void;
+  productScopes?: ProductScope[];
 }) {
-  const groups = getCnSearchProductGroups();
-  const selectedProduct = groups
-    .flatMap((group) => group.options)
-    .find((option) => option.value === state.product);
+  const groups = getCnSearchProductGroups(state.product, productScopes);
   const [expanded, setExpanded] = useState(false);
   const listId = useId();
   const available = [
@@ -59,7 +62,11 @@ export function SearchBrowseFilters({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button className="search-page-product-trigger" variant="outline">
-            <span>{selectedProduct?.label ?? '全部产品'}</span>
+            <span>
+              {state.product
+                ? getCnProductLabel(state.product, productScopes)
+                : '全部产品'}
+            </span>
             <ChevronDownIcon data-icon="inline-end" />
           </Button>
         </DropdownMenuTrigger>
