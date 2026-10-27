@@ -548,7 +548,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/overview/pricing.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/overview/release-notes.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/platform/best-practices/audio-setup.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-27T06:06:11.000Z',
   'content/docs/en/ai/platform/best-practices/get-agent-state.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/best-practices/manual-turn-control.mdx':
@@ -558,7 +558,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/best-practices/optimize-latency.mdx':
     '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/best-practices/record-agent-conversation.mdx':
-    '2026-10-24T06:16:23.000Z',
+    '2026-10-27T06:06:11.000Z',
   'content/docs/en/ai/platform/best-practices/regional-restrictions.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/architecture.mdx':
@@ -601,11 +601,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/send-multimodal-messages.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/asr-keywords.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-27T06:06:11.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/custom-information.mdx':
     '2026-10-24T06:16:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/filler-words.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-27T06:06:11.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/interrupt-agent.mdx':
     '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/meta.json':
@@ -613,7 +613,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/shape-the-conversation/personalize-conversations.mdx':
     '2026-10-24T06:16:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/short-term-memory.mdx':
-    '2026-10-22T06:06:50.000Z',
+    '2026-10-27T06:06:11.000Z',
   'content/docs/en/ai/platform/build/start-stop-agent.mdx':
     '2026-10-23T10:07:24.000Z',
   'content/docs/en/ai/platform/build/tools/custom-tools.mdx':
