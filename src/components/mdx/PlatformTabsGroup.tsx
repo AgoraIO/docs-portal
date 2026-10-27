@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
+import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   getStoredPlatformPreference,
@@ -59,6 +60,7 @@ const useBrowserLayoutEffect =
 const HEADER_TAB_GAP_WIDTH = 24;
 const HEADER_MORE_GAP_WIDTH = 16;
 const HEADER_WIDTH_EPSILON = 0.5;
+const PLATFORM_HASH_TARGET_WAIT_MS = 30_000;
 const HEADER_TAB_BUTTON_CLASS =
   'relative flex h-12 shrink-0 items-center px-0 text-[15px] font-medium text-[color:var(--ink-3)] transition-colors hover:text-[color:var(--ink-1)] after:absolute after:inset-x-0 after:bottom-[-1px] after:h-0.5 after:bg-[color:var(--ink-1)] after:opacity-0 after:transition-opacity';
 const HEADER_MORE_BUTTON_CLASS =
@@ -119,6 +121,7 @@ export function PlatformPageProvider({
     deferStoredPreference: true,
     syncPath: true,
   });
+  useHashPlatformPreference(initialPlatform, parsedPlatforms);
 
   return (
     <PlatformPageContext.Provider value={selection}>
@@ -129,6 +132,65 @@ export function PlatformPageProvider({
 
 export function usePlatformPageContext() {
   return useContext(PlatformPageContext);
+}
+
+function useHashPlatformPreference(
+  initialPlatform: PlatformKey | undefined,
+  platforms: PlatformKey[],
+) {
+  useEffect(() => {
+    // An explicit platform in the URL takes precedence over an old fragment.
+    if (initialPlatform) return;
+    let observer: MutationObserver | undefined;
+    let timeout: number | undefined;
+    const stopWaiting = () => {
+      observer?.disconnect();
+      observer = undefined;
+      window.clearTimeout(timeout);
+      timeout = undefined;
+    };
+    const revealTarget = () => {
+      let id: string;
+      try {
+        id = decodeURIComponent(window.location.hash.slice(1));
+      } catch {
+        stopWaiting();
+        return true;
+      }
+      const target = document.getElementById(id);
+      if (!target) return false;
+      stopWaiting();
+      const platform = target.closest<HTMLElement>('[data-platform-panel]')
+        ?.dataset.platformPanel;
+      if (
+        platform &&
+        isKnownPlatform(platform) &&
+        platforms.includes(platform) &&
+        getStoredPlatformPreference() !== platform
+      ) {
+        setStoredPlatformPreference(platform);
+      }
+      return true;
+    };
+    const requestTarget = () => {
+      stopWaiting();
+      if (!window.location.hash || revealTarget()) return;
+      // MDX can arrive after the page shell; stop observing once it does.
+      observer = new MutationObserver(() => {
+        revealTarget();
+      });
+      observer.observe(document.body, { childList: true, subtree: true });
+      timeout = window.setTimeout(stopWaiting, PLATFORM_HASH_TARGET_WAIT_MS);
+    };
+    window.addEventListener('hashchange', requestTarget);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, requestTarget);
+    requestTarget();
+    return () => {
+      stopWaiting();
+      window.removeEventListener('hashchange', requestTarget);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, requestTarget);
+    };
+  }, [initialPlatform, platforms]);
 }
 
 export function PlatformTabsGroup({
