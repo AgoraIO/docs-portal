@@ -1,92 +1,167 @@
-# Documentation versions
+# Documentation Preview and versions
 
-Documentation versions apply to registered groups of portal pages. They are
-independent of SDK platform tabs, SDK search versions and OpenAPI `info.version`.
-Existing product documentation has not been assigned new releases by this change.
+Status: **in development**. This feature is opt-in. The current configuration
+uses sample content; production guides and APIs have not been enrolled.
 
-## Try the mock API
+## Scope and behavior
 
-Open `/en/api-reference/versioning-demo`, also linked from Reference overview
-and near the top of the Reference sidebar under **API reference**. This family
-is imaginary and labelled **Test current version** or **Test new version**.
+Documentation Preview is a portal feature for ordinary Markdown/MDX guides,
+tutorials, and generated OpenAPI reference pages. It is independent of SDK
+platform tabs, SDK package versions, and OpenAPI `info.version`.
 
-1. The first visit opens v1. Open **List test widgets**, then turn on **Try v2**
-   at the right of the header tab strip. The target is `/en/api-reference/versioning-demo/v2/list-widgets`.
-   Its schema uses `displayName`; v1 uses `legacyName`.
-2. Open authentication and other sidebar links. Only the selected version's
-   navigation appears, including **Migration** in v2 and **Legacy notes** in v1.
-3. Switch versions from one of those exclusive topics. The target version's
-   overview explains that the topic has no equivalent.
-4. Reopen the neutral entry or refresh it. The same browser remembers the choice.
-   A direct v1 link still opens v1 and does not overwrite the saved v2 choice.
-5. Search for `widget`. Both releases appear with their version labels. Search
-   for `widgetbaseline` or `widgetpreview` to find the corresponding release.
-   Browsing preferences do not filter search results. Ordinary docs and SDK API
-   search keep their existing behavior.
-6. Repeat on a narrow viewport. The same switch and **Preview** tag appear beside
-   **Copy Page**, without opening the mobile sidebar. In preview mode, a Fumadocs
-   callout between the article header and body identifies the release. Turn the
-   switch off or click **Turn Preview off to return to v1.** in that callout to
-   return to the matching stable topic and save that choice.
+A document group owns its versioned routes and navigation. A **preference key**
+identifies a rollout across groups. The current key is **`convoai-v3`**: its
+sample API and sample guides share a selection. Another rollout uses another
+key. Pages outside registered roots receive no version UI.
 
-Inspect the current page's Copy/Open Markdown action and these fixed resources:
+Version IDs identify documentation editions, not API protocol versions. The
+route suffix need not equal the version ID: the guide demo uses `new` and
+`previous` URLs, mapped to `v2` and `v1` respectively.
+
+| Arrival or action | Result | Saved preference |
+| --- | --- | --- |
+| First visit to a neutral group entry | Configured default, currently v2 Preview | Unchanged |
+| Neutral entry with a valid saved choice | That edition for the group's key | Unchanged |
+| Explicit version URL, including a shared link | The URL's edition, even if local preference differs | Unchanged |
+| Choose an edition in the sidebar | Matching topic in that edition | Updated for the preference key |
+| Click **Return to previous docs.** | Matching previous topic | Updated for the preference key |
+| Open a version link with a modifier or in a new tab | The link's edition | Unchanged |
+| Topic has no equivalent in the selected edition | Target overview with an explanation | Updated only for a deliberate selection |
+
+The sidebar selector has a **Documentation version** label, a neutral outlined
+button, and a Preview badge when applicable. On desktop it sits above the
+scoped document navigation. Below 1024px it appears **inside the collapsed
+navigation sheet**, above the same page list. It does not appear beside Copy
+Page or elsewhere in the article header.
+
+Preview pages also show a compact Fumadocs notice between the article header
+and body. It identifies the document group and offers a real return link.
+Previous pages have no Preview notice. There is no site-wide Preview banner.
+
+## Configuration
+
+Register groups in `src/lib/doc-versions.ts`. This registry, rather than an
+implicit URL convention or free-form frontmatter tag, is the source of truth.
+The `status: 'preview'` tag belongs to a version record; all pages under that
+record's root inherit the state.
+
+```ts
+{
+  id: 'test-guides',                    // unique group / route owner
+  label: 'Guide demo',
+  preferenceKey: 'convoai-v3',           // shared rollout key
+  entryUrl: '/en/introduction/versioning-demo',
+  defaultVersion: 'v2',                 // Preview enabled by default
+  previousVersion: 'v1',                // explicit return destination
+  versions: [
+    {
+      id: 'v2',
+      label: 'New docs',
+      status: 'preview',
+      rootUrl: '/en/introduction/versioning-demo/new',
+      pages: { overview: '', setup: 'configure' },
+    },
+    {
+      id: 'v1',
+      label: 'Previous docs',
+      rootUrl: '/en/introduction/versioning-demo/previous',
+      pages: { overview: '', setup: 'setup' },
+    },
+  ],
+}
+```
+
+- Use a stable `id` for each document group and a stable `preferenceKey` for
+  each rollout. Without `preferenceKey`, the group ID is its preference key.
+- Groups sharing a key must use the same version IDs, Preview statuses,
+  default, and previous version. Labels, roots, navigation and topic paths
+  can differ. Invalid or inconsistent registrations fail validation.
+- `defaultVersion` and `previousVersion` serve different purposes. A Preview
+  default must never make the return link point back to itself.
+- Each edition owns a distinct canonical `rootUrl`. Add its ordinary content
+  and `meta.json` beneath that root. The shared docs shell handles MDX and
+  generated endpoint bodies through the same version controls.
+- The `pages` map uses stable topic keys. Map renamed pages to the same key;
+  anchors are supported for old single-page guides. Missing keys fall back
+  to the target overview with `?versionFallback=1` and a visible explanation.
+- Add a neutral entry with real version links for readers without JavaScript.
+  Hydration restores the saved/default edition using a history replacement.
+- Link catalogs to the neutral entry. Within-edition links use fixed edition
+  URLs. Keep published legacy URLs pinned; do not redirect them by preference.
+- A locale needs its own registered routes. The feature does not infer
+  translated equivalents or apply Preview to an entire locale or header tab.
+
+For generated endpoints only, add separate OpenAPI sources and lane IDs per
+edition in `src/lib/openapi/lanes.ts`, preserve shared `operationId` identities,
+and register bundled raw sources in `src/lib/openapi/source-text.server.ts`.
+Public YAML paths must be distinct. Ordinary guides need none of this OpenAPI
+configuration.
+
+## Local memory and shared links
+
+The browser stores a map under `agora-docs:document-versions:v1`, for example:
+
+```json
+{ "convoai-v3": "v1" }
+```
+
+Only a deliberate selection writes it. Choosing previous docs in the API demo
+makes the guide demo's next neutral-entry visit open previous docs too. An
+already-open version page stays pinned to its URL; changes in another tab do
+not redirect it. A different preference key remains independent.
+
+Share the canonical edition URL, not a browser-global `preview` query flag.
+For example, a v2 link opens v2 for a reader who saved v1, while their next
+neutral-entry visit still opens v1. Browser preferences are local to an origin;
+production and preview deployments have separate storage. Invalid JSON and
+removed edition IDs fall back to the configured default. When storage is
+blocked, selection memory lasts only for the current page session.
+
+## Try both content types
+
+- API entry: `/en/api-reference/versioning-demo`
+- API topic: `/en/api-reference/versioning-demo/v2/list-widgets`
+- Ordinary guide entry: `/en/introduction/versioning-demo`
+- Ordinary guide topic: `/en/introduction/versioning-demo/new/configure`
+
+Both groups use `convoai-v3`. Start with empty storage to verify Preview is the
+default. Switch the API topic to previous docs, open the guide entry, and check
+that it opens the previous guide. Switch the guide to new docs to verify the
+reverse direction. Confirm `setup` maps to `configure`, then share a new-guide
+URL while the saved choice is previous. Repeat inside the mobile navigation
+sheet and confirm the sheet closes after selecting a version.
+
+The API sample also has edition-only **Migration** and **Legacy notes** topics
+for checking overview fallback. Search for `widget`: both editions remain
+searchable with their labels. `widgetbaseline` and `widgetpreview` identify
+the mock API editions.
+
+## Search, exports and publication
+
+Both editions remain searchable at distinct URLs. Search retains its providers,
+queries and index configuration; browsing preferences do not filter results.
+New published content reaches Algolia through the existing production
+`search:sync` step. PR previews do not sync unpublished content to production.
+Local sample search can use the existing local provider without Algolia
+credentials.
+
+Version identity follows the URL into Markdown, canonical routes, sitemaps,
+and machine-readable exports. These resources never depend on localStorage:
 
 - `/en/api-reference/versioning-demo/v2/list-widgets.md`
+- `/en/introduction/versioning-demo/new/configure.md`
 - `/openapi/versioning-demo/v2.en.yaml`
-- `/llms/doc-versions-test-api-v2.txt` — only v2 discovery links
-- `/llms/doc-versions-test-api-v2-full.txt` — only v2 Markdown content
-- `/llms.txt` and `/llms-full.txt` — all published versions with version labels
+- `/llms/doc-versions-test-api-v2.txt` and its `-full.txt` companion
+- `/llms/doc-versions-test-guides-v2.txt` and its `-full.txt` companion
+- `/llms.txt` and `/llms-full.txt`, which include all published editions
 
-These resources do not depend on localStorage. Share a specific version's URL
-with an AI client when it must use that release. Browser preferences are local
-to the same origin; a preview deployment and production have separate storage.
+External AI/MCP clients must choose a fixed edition URL or export. Changing a
+portal browser preference cannot change an external request.
 
-## Register a real API family
+## Verification
 
-1. Add a `DocVersionScope` in `src/lib/doc-versions.ts`: a stable scope ID,
-   label, neutral `entryUrl`, `defaultVersion`, and version records. Each record
-   owns a distinct `rootUrl` and a map from stable topic keys to relative URLs.
-   Set `status: 'preview'` on prerelease docs to show the preview badge.
-   The map can include anchors to map old single-page topics to new pages.
-   Missing equivalents fall back to the target overview with a visible message.
-2. Add the neutral entry and each version's overview/supporting Markdown pages
-   under `content/docs/<locale>`. Each root needs an index page and `meta.json`
-   listing its own pages. The version resolver selects that root's sidebar,
-   including for nested pages and generated OpenAPI pages.
-3. For generated endpoints, add separate OpenAPI sources and lane IDs per
-   release in `src/lib/openapi/lanes.ts`. Keep `operationId` stable where the
-   logical operation is shared. Register raw imports in
-   `src/lib/openapi/source-text.server.ts`. Public YAML paths must be distinct.
-4. Link product/catalog entry points to the neutral entry. Author ordinary
-   within-version links against that version's URLs. Deliberate cross-version
-   links should say which version they open. Existing legacy URLs can remain
-   fixed to their original version; do not redirect them based on a preference.
-5. Run `bun run test`, `bun run types:check`, `bun run lint`, and
-   `bun run build`. Verify HTML, payload, sidebar, Markdown and OpenAPI assets
-   for both versions, then test persistence and search in a browser.
-
-The neutral entry renders real version links before JavaScript runs. Once
-hydrated, it replaces that history entry with the stored choice, or the
-configured default. Explicit version pages derive their content and navigation
-from their URL. Only an intentional version selection writes the preference.
-
-## Search and publication
-
-Search keeps the existing Algolia and local search flows. Both releases are
-indexed at distinct URLs and remain searchable together. The dialog adds the
-release label from each result's URL, including recently viewed pages. It does
-not add version filters, search scope controls or preview provider overrides.
-SDK version labels keep their existing meaning.
-
-New content reaches Algolia through the existing production `search:sync` step.
-PR previews retain the existing search configuration and do not sync unpublished
-content into the production index. To test mock search before publication, run
-locally without Algolia credentials so the existing local search uses the branch's
-built documents. No remote search index needs to be changed for that test.
-
-LLM discovery groups are separated by family and release. Every version page's
-Markdown identifies its release and links to its release index; each index
-offers a release-specific bulk export. The global bulk export keeps all public
-versions. Each substantive release retains its own canonical URL and sitemap
-entry. External MCP services must explicitly choose a version or use these fixed
-exports; changing portal browser state cannot change an external MCP request.
+Run `bun run test`, `bun run types:check`, `bun run lint`, and `bun run build`
+when integrating a group. Check content, scoped navigation, Markdown and export
+identity for ordinary guides and generated API pages; verify shared-key and
+independent-key behavior, explicit-link precedence, renamed and missing topics,
+keyboard operation, and desktop/mobile navigation in light and dark themes.

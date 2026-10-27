@@ -14,6 +14,41 @@ import { createMachineReadableDocsIndexes } from './llms-index';
 const root = '/en/api-reference/versioning-demo';
 
 describe('documentation releases', () => {
+  it('maps ordinary guides by topic key and rejects incompatible groups sharing a preference key', () => {
+    expect(
+      getDocVersionTarget(
+        '/en/introduction/versioning-demo/new/configure',
+        'v1',
+      ),
+    ).toEqual({
+      href: '/en/introduction/versioning-demo/previous/setup',
+      fallback: false,
+    });
+    expect(() =>
+      validateDocVersionScopes([
+        DOC_VERSION_SCOPES[0],
+        { ...DOC_VERSION_SCOPES[1], defaultVersion: 'v1' },
+      ]),
+    ).toThrow(
+      'Inconsistent documentation releases for preference key: convoai-v3',
+    );
+    expect(
+      resolveDocVersion('/en/introduction/versioning-demo/new/configure')?.scope
+        .preferenceKey,
+    ).toBe('convoai-v3');
+  });
+  it('defaults to preview without changing the explicit previous release', () => {
+    expect(getDocVersionSelections(root)['test-api']).toBe('v2');
+    expect(
+      getDocVersionSelections(root, { 'convoai-v3': 'v1' })['test-api'],
+    ).toBe('v1');
+    expect(DOC_VERSION_SCOPES[0].previousVersion).toBe('v1');
+    expect(() =>
+      validateDocVersionScopes([
+        { ...DOC_VERSION_SCOPES[0], previousVersion: 'removed' },
+      ]),
+    ).toThrow('Missing previous documentation release: test-api/removed');
+  });
   it('rejects an unpublished default before the site can publish invalid entry links', () => {
     expect(() =>
       validateDocVersionScopes([
@@ -51,7 +86,7 @@ describe('documentation releases', () => {
         ],
       },
     });
-    expect(result?.header.title).toBe('Test API (mock docs)');
+    expect(result?.header.title).toBe('Test API');
     expect(result?.header.backHref).toBe('/en/api-reference');
     expect(result?.sidebarRoot.children).toHaveLength(2);
   });
@@ -80,17 +115,17 @@ describe('documentation releases', () => {
     expect(
       getDocVersionSelections(
         `${root}/v1/authentication`,
-        { 'test-api': 'v2', other: 'b' },
+        { 'convoai-v3': 'v2', other: 'b' },
         scopes,
       ),
-    ).toEqual({ 'test-api': 'v1', other: 'b' });
+    ).toEqual({ 'test-api': 'v1', 'test-guides': 'v2', other: 'b' });
     expect(
       getDocVersionSelections(
         root,
-        { 'test-api': 'v2', other: 'removed' },
+        { 'convoai-v3': 'v2', other: 'removed' },
         scopes,
       ),
-    ).toEqual({ 'test-api': 'v2', other: 'a' });
+    ).toEqual({ 'test-api': 'v2', 'test-guides': 'v2', other: 'a' });
     expect(resolveDocVersion(`${root}/v20/widgets`)).toBeUndefined();
   });
 
@@ -139,9 +174,7 @@ describe('documentation releases', () => {
       '# List widgets\n\nMock payload.',
       url,
     );
-    expect(markdown).toContain(
-      'Documentation version: v2 — Test new version (v2)',
-    );
+    expect(markdown).toContain('Documentation version: New docs (v2)');
     expect(markdown).toContain('/llms/doc-versions-test-api-v2.txt');
     expect(withDocVersionMetadata('# Ordinary docs', '/en/introduction')).toBe(
       '# Ordinary docs',

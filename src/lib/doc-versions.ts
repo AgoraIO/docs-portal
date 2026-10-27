@@ -12,23 +12,31 @@ export type DocVersionScope = {
   id: string;
   label: string;
   entryUrl: string;
+  /** Groups in one rollout share this key and use the same release IDs. */
+  preferenceKey?: string;
+  /** Initial choice at the neutral entry; it may be a preview. */
   defaultVersion: string;
+  /** Explicit return destination for preview notices, independent of the default. */
+  previousVersion?: string;
   versions: readonly DocVersion[];
 };
 
 const DEMO_ROOT = '/en/api-reference/versioning-demo';
+const GUIDE_DEMO_ROOT = '/en/introduction/versioning-demo';
 
-/** Register real API families here when their versioned content is available. */
+/** Any Markdown/MDX or generated reference group can opt into documentation versions. */
 export const DOC_VERSION_SCOPES: readonly DocVersionScope[] = [
   {
     id: 'test-api',
-    label: 'Test API (mock docs)',
+    label: 'Test API',
     entryUrl: DEMO_ROOT,
-    defaultVersion: 'v1',
+    preferenceKey: 'convoai-v3',
+    defaultVersion: 'v2',
+    previousVersion: 'v1',
     versions: [
       {
         id: 'v1',
-        label: 'v1 — Test current version',
+        label: 'Previous docs',
         rootUrl: `${DEMO_ROOT}/v1`,
         pages: {
           overview: '',
@@ -39,7 +47,7 @@ export const DOC_VERSION_SCOPES: readonly DocVersionScope[] = [
       },
       {
         id: 'v2',
-        label: 'v2 — Test new version',
+        label: 'New docs',
         status: 'preview',
         rootUrl: `${DEMO_ROOT}/v2`,
         pages: {
@@ -51,6 +59,29 @@ export const DOC_VERSION_SCOPES: readonly DocVersionScope[] = [
       },
     ],
   },
+  {
+    id: 'test-guides',
+    label: 'Guide demo',
+    entryUrl: GUIDE_DEMO_ROOT,
+    preferenceKey: 'convoai-v3',
+    defaultVersion: 'v2',
+    previousVersion: 'v1',
+    versions: [
+      {
+        id: 'v2',
+        label: 'New docs',
+        status: 'preview',
+        rootUrl: `${GUIDE_DEMO_ROOT}/new`,
+        pages: { overview: '', setup: 'configure' },
+      },
+      {
+        id: 'v1',
+        label: 'Previous docs',
+        rootUrl: `${GUIDE_DEMO_ROOT}/previous`,
+        pages: { overview: '', setup: 'setup' },
+      },
+    ],
+  },
 ];
 
 export type DocVersionSelections = Readonly<Record<string, string>>;
@@ -58,6 +89,7 @@ export type DocVersionSelections = Readonly<Record<string, string>>;
 export function validateDocVersionScopes(scopes: readonly DocVersionScope[]) {
   const scopeIds = new Set<string>();
   const roots = new Set<string>();
+  const sharedPreferences = new Map<string, string>();
   for (const scope of scopes) {
     if (!/^[a-z0-9-]+$/.test(scope.id) || scopeIds.has(scope.id)) {
       throw new Error(
@@ -104,6 +136,29 @@ export function validateDocVersionScopes(scopes: readonly DocVersionScope[]) {
         `Missing default documentation release: ${scope.id}/${scope.defaultVersion}`,
       );
     }
+    if (scope.previousVersion && !versionIds.has(scope.previousVersion)) {
+      throw new Error(
+        `Missing previous documentation release: ${scope.id}/${scope.previousVersion}`,
+      );
+    }
+    const preferenceKey = scope.preferenceKey ?? scope.id;
+    if (!/^[a-z0-9-]+$/.test(preferenceKey)) {
+      throw new Error(`Invalid documentation preference key: ${preferenceKey}`);
+    }
+    const signature = JSON.stringify({
+      defaultVersion: scope.defaultVersion,
+      previousVersion: scope.previousVersion,
+      versions: scope.versions
+        .map((version) => `${version.id}:${version.status ?? ''}`)
+        .sort(),
+    });
+    const existing = sharedPreferences.get(preferenceKey);
+    if (existing && existing !== signature) {
+      throw new Error(
+        `Inconsistent documentation releases for preference key: ${preferenceKey}`,
+      );
+    }
+    sharedPreferences.set(preferenceKey, signature);
   }
 }
 
@@ -170,10 +225,9 @@ export function getDocVersionSelections(
   const active = resolveDocVersion(href, scopes);
   return Object.fromEntries(
     scopes.map((scope) => {
-      const preferred = scope.versions.some(
-        (version) => version.id === preferences[scope.id],
-      )
-        ? preferences[scope.id]
+      const saved = preferences[scope.preferenceKey ?? scope.id];
+      const preferred = scope.versions.some((version) => version.id === saved)
+        ? saved
         : scope.defaultVersion;
       return [
         scope.id,

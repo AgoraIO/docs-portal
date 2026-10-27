@@ -170,8 +170,8 @@ describe('DocsSearchDialog', () => {
       screen.getByPlaceholderText('Search docs, APIs, guides...'),
       { target: { value: 'widget' } },
     );
-    expect(await screen.findByText('v1 — Test current version')).toBeVisible();
-    expect(await screen.findByText('v2 — Test new version')).toBeVisible();
+    expect(await screen.findByText('Previous docs')).toBeVisible();
+    expect(await screen.findByText('New docs')).toBeVisible();
     expect(
       screen.queryByRole('button', { name: /documentation versions/i }),
     ).not.toBeInTheDocument();

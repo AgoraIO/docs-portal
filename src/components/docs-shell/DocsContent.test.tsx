@@ -187,7 +187,7 @@ describe('DocsContent', () => {
     expect(screen.queryByLabelText('Breadcrumb')).not.toBeInTheDocument();
   });
 
-  it('keeps preview controls beside page actions and places its callout between the header and body', async () => {
+  it('keeps version selection out of the article and shows only the preview notice below its header', async () => {
     renderWithRouter(
       <DocsContent
         activePath="/en/api-reference/versioning-demo/v2/list-widgets"
@@ -206,10 +206,10 @@ describe('DocsContent', () => {
       name: 'List test widgets',
     });
     const header = heading.closest('header');
-    const toggle = screen.getByRole('switch');
+    expect(
+      screen.queryByRole('button', { name: /^Documentation:/ }),
+    ).not.toBeInTheDocument();
     const note = screen.getByRole('note', { name: 'Preview documentation' });
-    expect(header).toContainElement(toggle);
-    expect(toggle.parentElement).toHaveTextContent('Copy Page');
     expect(header?.nextElementSibling).toBe(note);
     expect(note.nextElementSibling).toHaveAttribute('data-static-docs-body');
     expect(within(note).getByRole('link')).toHaveAttribute(

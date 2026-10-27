@@ -34,17 +34,11 @@ export function parseDocVersionPreferences(
 }
 
 export function setDocVersionPreference(scopeId: string, versionId: string) {
-  if (
-    !DOC_VERSION_SCOPES.some(
-      (scope) =>
-        scope.id === scopeId &&
-        scope.versions.some((version) => version.id === versionId),
-    )
-  )
-    return;
+  const scope = DOC_VERSION_SCOPES.find((item) => item.id === scopeId);
+  if (!scope?.versions.some((version) => version.id === versionId)) return;
   const next = JSON.stringify({
     ...parseDocVersionPreferences(getSnapshot()),
-    [scopeId]: versionId,
+    [scope.preferenceKey ?? scope.id]: versionId,
   });
   memorySnapshot = next;
   try {

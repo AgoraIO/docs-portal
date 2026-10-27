@@ -9,6 +9,7 @@ import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarTree } from './DocsSidebarTree';
+import { DocVersionSelector } from './DocVersionControls';
 import { useTransientScrollbar } from './useTransientScrollbar';
 
 export function DocsSidebar({
@@ -60,6 +61,7 @@ export function DocsSidebar({
               onSelectPath={onSelectPath}
             />
           ) : null}
+          <DocVersionSelector activePath={activePath} className="mx-2 mb-5" />
           <DocsSidebarTree
             activePath={activePath}
             nodes={nodes}

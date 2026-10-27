@@ -55,7 +55,7 @@ import {
 import { FumadocsOpenApiContent } from '../openapi/FumadocsOpenApiContent';
 import { DocsContentBody } from './DocsContentBody';
 import { DocsSearchLandingEngagement } from './DocsSearchLandingEngagement';
-import { DocVersionNotice, DocVersionSwitch } from './DocVersionControls';
+import { DocVersionNotice } from './DocVersionControls';
 import { DocsCopyMenu } from './docs-copy-menu';
 import { getDocsSourceLinks } from './docs-source-links';
 
@@ -312,20 +312,15 @@ export function DocsContent({
               </p>
             ) : null}
           </div>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-2 xl:contents">
-            {canCopyMarkdownContent && markdownUrl ? (
-              <DocsCopyMenu
-                className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
-                locale={currentLocale}
-                markdownUrl={markdownUrl}
-                slug={slug ?? ''}
-                title={displayTitle ?? ''}
-              />
-            ) : null}
-            {activePath ? (
-              <DocVersionSwitch activePath={activePath} className="md:hidden" />
-            ) : null}
-          </div>
+          {canCopyMarkdownContent && markdownUrl ? (
+            <DocsCopyMenu
+              className="self-start xl:ml-auto xl:shrink-0 xl:translate-y-1"
+              locale={currentLocale}
+              markdownUrl={markdownUrl}
+              slug={slug ?? ''}
+              title={displayTitle ?? ''}
+            />
+          ) : null}
         </div>
         {sidebarHeader?.versionSwitcher?.presentation === 'tabs' ? (
           <DocsHeaderScopeTabs header={sidebarHeader} />
