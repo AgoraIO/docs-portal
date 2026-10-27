@@ -399,9 +399,46 @@ describe('DocsSearchPage', () => {
       />,
     );
     expect(oldSignal?.aborted).toBe(true);
-    await screen.findByText('7 个章节匹配');
-    await act(async () => finishOld({ ...empty, totalHits: 99 }));
-    expect(screen.queryByText('99 个章节匹配')).not.toBeInTheDocument();
+    await screen.findByText('没有找到匹配的文档');
+    await act(async () =>
+      finishOld({
+        ...empty,
+        totalHits: 99,
+        groups: [
+          {
+            pageUrl: '/realtime-media/rtc/old',
+            title: '过期结果',
+            platform: [],
+            docType: 'docs',
+            sections: [
+              {
+                id: 'old',
+                sourceId: 'old',
+                url: '/realtime-media/rtc/old',
+                pageTitle: '过期结果',
+                sectionTitle: '过期结果',
+                content: '过期结果',
+                snippet: '过期结果',
+                headingPath: [],
+                locale: 'zh-CN',
+                docType: 'docs',
+                audience: [],
+                status: 'published',
+                hidden: false,
+                highlights: {
+                  sectionTitle: [{ text: '过期结果', highlighted: false }],
+                  content: [{ text: '过期结果', highlighted: false }],
+                },
+              },
+            ],
+          },
+        ],
+      }),
+    );
+    expect(
+      screen.queryByRole('link', { name: '过期结果' }),
+    ).not.toBeInTheDocument();
+    expect(screen.getByText('没有找到匹配的文档')).toBeInTheDocument();
   });
 
   it('offers recovery for service errors and can retry the same URL', async () => {
@@ -473,9 +510,7 @@ describe('DocsSearchPage', () => {
       product: 'rtc',
       version: undefined,
     });
-    await waitFor(() =>
-      expect(screen.getByText('22 个章节匹配')).toBeInTheDocument(),
-    );
+    expect(screen.queryByText(/个章节匹配/)).not.toBeInTheDocument();
     const first = await vi.mocked(searchCnDocsPage).mock.results[0].value;
     const group = first.groups[0];
     vi.mocked(searchCnDocsPage)

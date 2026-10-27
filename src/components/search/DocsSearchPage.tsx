@@ -437,13 +437,9 @@ export function DocsSearchPage({
               </SheetContent>
             </Sheet>
           </div>
-          {state.q && (
+          {state.q && status === 'loading' && (
             <p aria-live="polite" className="search-page-result-count">
-              {status === 'loading'
-                ? '正在搜索…'
-                : status === 'loaded' && data
-                  ? `${data.totalHits} 个章节匹配`
-                  : ''}
+              正在搜索…
             </p>
           )}
         </div>
