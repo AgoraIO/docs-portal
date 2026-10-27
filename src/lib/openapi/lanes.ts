@@ -364,20 +364,6 @@ export const OPENAPI_LANES = [
           'zh-CN': 'Destroy a cloud transcoding task',
         },
       },
-      'create-or-update-transcoding-template': {
-        routeLeaf: 'template-create',
-        title: {
-          en: 'Create or update a transcoding template',
-          'zh-CN': 'Create or update a transcoding template',
-        },
-      },
-      'query-transcoding-templates': {
-        routeLeaf: 'template-query',
-        title: {
-          en: 'Query transcoding templates',
-          'zh-CN': 'Query transcoding templates',
-        },
-      },
       'query-cloud-transcoding-ncs-ip': {
         routeLeaf: 'ncs-query-ip',
         title: {

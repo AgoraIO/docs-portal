@@ -4,9 +4,9 @@ info:
   title: Cloud Transcoding RESTful API
   description: >-
     Agora Cloud Transcoding transcodes media streams on Agora servers and outputs the result to an
-    RTC channel. Send HTTPS requests from your business server to acquire builder tokens, create,
-    query, update, and destroy cloud transcoding tasks, manage transcoding templates, and query
-    message notification server IP addresses.
+    RTC channel or CDN addresses. Send HTTPS requests from your business server to acquire builder
+    tokens, create, query, update, and destroy cloud transcoding tasks, and query message
+    notification server IP addresses.
 
 
     ## Base URL
@@ -480,8 +480,8 @@ paths:
             - If the audio or video configurations differ between the two destinations, create two
             separate tasks.
 
-            - To push to multiple CDN addresses, include all destination addresses within a single
-            `outputs` object.
+            - To push to multiple CDN addresses, include up to 10 addresses in the `streamUrl` array
+            of a single `outputs` object.
 
             - Each transcoding task can push to only one RTC channel. To push to two different RTC
             channels, create two separate tasks.
@@ -940,7 +940,32 @@ paths:
           markdown: >-
             Use this endpoint to create a Cloud Transcoding task. When the task starts, the Agora
             server transcodes multiple input streams you specified and outputs them to the specified
-            Agora RTC channel.
+            Agora RTC channel or CDN addresses.
+        - title: Publish to multiple CDNs
+          position: after-parameters
+          markdown: |-
+            To publish the transcoded stream to several CDN addresses, list up to 10 addresses in the `streamUrl` array of a single `outputs` object. All addresses share the output's `audioOption` and `videoOption` settings. For example:
+
+            ```json
+            "outputs": [
+              {
+                "streamUrl": [
+                  "rtmp://example.com/live/stream1",
+                  "rtmp://example.com/live/stream2"
+                ],
+                "audioOption": {
+                  "profileType": "AUDIO_PROFILE_DEFAULT"
+                },
+                "videoOption": {
+                  "codec": "H264",
+                  "bitrate": 2230,
+                  "fps": 15,
+                  "width": 1280,
+                  "height": 720
+                }
+              }
+            ]
+            ```
         - title: Reference
           position: after-response-body
           markdown: >
@@ -968,8 +993,8 @@ paths:
             - If the audio or video configurations differ between the two destinations, create two
             separate tasks.
 
-            - To push to multiple CDN addresses, include all destination addresses within a single
-            `outputs` object.
+            - To push to multiple CDN addresses, include up to 10 addresses in the `streamUrl` array
+            of a single `outputs` object.
 
             - Each transcoding task can push to only one RTC channel. To push to two different RTC
             channels, create two separate tasks.
@@ -1620,7 +1645,11 @@ paths:
             contains the result of the request.
 
 
-            - If the returned status code is not `200`, the request failed.
+            - If the returned status code is `206`, the server hasn't finished processing the
+            request. Call `Query` with a backoff strategy to confirm the task status.
+
+
+            - If the returned status code is not `200` or `206`, the request failed.
       operationId: destroy-cloud-transcoding-task
       x-codeSamples:
         - lang: bash
@@ -1696,234 +1725,18 @@ paths:
                 taskId: 609f28f2644f1ae1ceb041b7047e3***
                 variables: {}
                 workflows: {}
+        "206":
+          description: >-
+            The server hasn't finished processing the request. Call `Query` with a backoff strategy
+            to confirm the task status.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/error-response"
+              example:
+                message: request not completed
         default:
           $ref: "#/components/responses/not-200"
-  /v1/projects/{appId}/rtls/abr/config/codecs/{codecId}:
-    post:
-      summary: Create or update a transcoding template
-      description: Creates or updates a transcoding template.
-      x-docs-sections:
-        - position: after-description
-          markdown: Create or update a transcoding template under the specified App ID.
-        - title: Response
-          position: before-response-body
-          markdown: >-
-            - If the returned status code is `200`, the request was successful. The response body
-            contains the result of the request.
-
-
-            - If the returned status code is not `200`, the request failed. The response body
-            includes the `detail` and `reason` for failure. Refer to [status
-            codes](/en/api-reference/api-ref/cloud-transcoding/status-codes) to understand the possible reasons
-            for failure.
-        - markdown: |-
-            ```json
-            {
-                  "status": "Status of this request:\n- `success`: Request was successful.\n- `error`: Request failed.\n"
-                }
-            ```
-          position: after-response-example
-          title: Response example
-      operationId: create-or-update-transcoding-template
-      x-codeSamples:
-        - lang: bash
-          label: curl
-          source: |-
-            curl --request POST \
-              --url 'https://api.sd-rtn.com/v1/projects/<app_id>/rtls/abr/config/codecs/<codec_id>' \
-              --header 'Authorization: Basic <credentials>' \
-              --header 'Content-Type: application/json' \
-              --data '{
-                "enabled": true,
-                "video": {
-                  "width": 1280,
-                  "height": 720,
-                  "fps": 15
-                }
-              }'
-        - lang: python
-          label: Python
-          source: |-
-            import requests
-
-            url = "https://api.sd-rtn.com/v1/projects/<app_id>/rtls/abr/config/codecs/<codec_id>"
-
-            headers = {
-                "Authorization": "Basic <credentials>",
-                "Content-Type": "application/json"
-            }
-
-            data = {
-                "enabled": True,
-                "video": {
-                    "width": 1280,
-                    "height": 720,
-                    "fps": 15
-                }
-            }
-
-            response = requests.post(url, headers=headers, json=data)
-
-            print(response.text)
-        - lang: javascript
-          label: Node.js
-          source: |-
-            const url = 'https://api.sd-rtn.com/v1/projects/<app_id>/rtls/abr/config/codecs/<codec_id>';
-            const data = {
-              enabled: true,
-              video: {
-                width: 1280,
-                height: 720,
-                fps: 15,
-              },
-            };
-            const options = {
-              method: 'POST',
-              headers: {
-                Authorization: 'Basic <credentials>',
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(data),
-            };
-
-            fetch(url, options)
-              .then(res => res.json())
-              .then(json => console.log(json))
-              .catch(err => console.error(err));
-      parameters:
-        - $ref: "#/components/parameters/Content-Type"
-        - $ref: "#/components/parameters/appId"
-          description: The App ID of the project
-        - name: codecId
-          in: path
-          required: true
-          schema:
-            type: string
-          description: The ID of the transcoding template.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/transcoding-template"
-            example:
-              enabled: true
-              video:
-                width: 1280
-                height: 720
-                fps: 15
-      responses:
-        "200":
-          description: The request succeeded.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/template-status-response"
-              example:
-                status: success
-        default:
-          $ref: "#/components/responses/template-not-200"
-  /v1/projects/{appId}/rtls/abr/config/codecs:
-    get:
-      summary: Query transcoding templates
-      description: Queries transcoding template configurations under a specified App ID.
-      x-docs-sections:
-        - position: after-description
-          markdown: Query all transcoding template configurations under the specified App ID
-        - title: Response
-          position: before-response-body
-          markdown: >-
-            - If the returned status code is `200`, the request was successful. The response body
-            contains the result of the request.
-
-
-            - If the returned status code is not `200`, the request failed. The response body
-            includes the `detail` and `reason` for failure. Refer to [status
-            codes](/en/api-reference/api-ref/cloud-transcoding/status-codes) to understand the possible reasons
-            for failure.
-        - markdown: |-
-            ```json
-            {
-                  "status": "The status of this request:\n- `success`: The request succeeded.\n- `error`: The request failed.\n",
-                  "data": {
-                    "enabled": true,
-                    "codecs": [
-                      {
-                        "id": "The ID of the transcoding template.",
-                        "enabled": true,
-                        "video": {
-                          "width": 0,
-                          "height": 0,
-                          "fps": 0
-                        }
-                      }
-                    ]
-                  }
-                }
-            ```
-          position: after-response-example
-          title: Response example
-      operationId: query-transcoding-templates
-      x-codeSamples:
-        - lang: bash
-          label: curl
-          source: |-
-            curl --request get \
-                  --url https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs \
-                  --header 'Authorization: Basic <credentials>' \
-                  --header 'Content-Type: <string>'
-        - lang: python
-          label: Python
-          source: |-
-            import requests
-
-                url = "https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs"
-
-                headers = {
-                    "Authorization": "Basic <credentials>",
-                    "Content-Type": "<string>"
-                }
-
-                response = requests.request("get", url, headers=headers)
-
-                print(response.text)
-        - lang: javascript
-          label: Node.js
-          source: |-
-            const url = 'https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs';
-                const options = {
-                  method: 'get',
-                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': '<string>'}
-                };
-
-                fetch(url, options)
-                  .then(res => res.json())
-                  .then(json => console.log(json))
-                  .catch(err => console.error(err));
-      parameters:
-        - $ref: "#/components/parameters/Content-Type"
-        - $ref: "#/components/parameters/appId"
-          description: The App ID of the project
-      responses:
-        "200":
-          description: The request succeeded and returned template data.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/query-templates-response"
-              example:
-                status: success
-                data:
-                  enabled: true
-                  codecs:
-                    - id: The ID of the transcoding template.
-                      enabled: true
-                      video:
-                        width: 0
-                        height: 0
-                        fps: 0
-        default:
-          $ref: "#/components/responses/template-not-200"
   /v1/ncs/ip:
     get:
       summary: Query message notification server IP
@@ -2076,15 +1889,6 @@ components:
             $ref: "#/components/schemas/error-response"
           example:
             message: Describes why the request failed.
-    template-not-200:
-      description: The request failed.
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/template-error-response"
-          example:
-            status: error
-            message: Description of the reason for the request failure.
   schemas:
     acquire-builder-token-request:
       type: object
@@ -2220,9 +2024,9 @@ components:
         outputs:
           type: array
           description: |-
-            Configure output settings to publish to a single RTC channel or CDN address.
+            Configure output settings to publish to a single RTC channel or to CDN addresses.
 
-            You must specify either `streamUrl` or `rtc`, but not both.
+            RTC and CDN outputs are mutually exclusive. You must specify either `streamUrl` or `rtc`, but not both.
           items:
             $ref: "#/components/schemas/transcoder-output"
     audio-input:
@@ -2333,12 +2137,12 @@ components:
         width:
           type: number
           minimum: 120
-          maximum: 3840
+          maximum: 1920
           description: The width of the canvas (px).
         height:
           type: number
           minimum: 120
-          maximum: 3840
+          maximum: 1920
           description: The height of the canvas (px).
         color:
           type: number
@@ -2393,7 +2197,7 @@ components:
         x:
           type: number
           minimum: 0
-          maximum: 3840
+          maximum: 1920
           description: >-
             The x coordinate of the image on the canvas (px). The x coordinate is the horizontal
             displacement of the upper left corner of the image relative to the origin, where the
@@ -2401,7 +2205,7 @@ components:
         "y":
           type: number
           minimum: 0
-          maximum: 3840
+          maximum: 1920
           description: >-
             The y coordinate of the image on the canvas (px). The y coordinate is the vertical
             displacement of the upper left corner of the image relative to the origin, where the
@@ -2409,20 +2213,24 @@ components:
         width:
           type: number
           minimum: 120
-          maximum: 3840
-          description: The width of the video region (px).
+          maximum: 1920
+          description: >-
+            The width of the video region (px). The region must fit within the canvas and can't
+            exceed 1920 × 1080.
         height:
           type: number
           minimum: 120
-          maximum: 3840
-          description: The height of the video region (px).
+          maximum: 1920
+          description: >-
+            The height of the video region (px). The region must fit within the canvas and can't
+            exceed 1920 × 1080.
         zOrder:
           type: number
-          minimum: 2
+          minimum: 0
           maximum: 100
           description: >-
-            The layer order of the host screen. `2` represents the layer above the placeholder layer.
-            `100` represents the top layer.
+            The layer order of the host screen. `0` represents the bottom layer. `100` represents
+            the top layer.
     watermark-region:
       type: object
       required:
@@ -2435,7 +2243,7 @@ components:
         x:
           type: number
           minimum: 0
-          maximum: 3840
+          maximum: 1920
           description: >-
             The x coordinate of the watermark on the canvas (px). The x coordinate is the horizontal
             displacement of the upper left corner of the watermark relative to the upper left corner
@@ -2443,20 +2251,20 @@ components:
         "y":
           type: number
           minimum: 0
-          maximum: 3840
+          maximum: 1920
           description: >-
             The y coordinate of the watermark on the canvas (px). The y coordinate is the vertical
             displacement of the upper left corner of the watermark relative to the upper left corner
             of the canvas.
         width:
           type: number
-          minimum: 120
-          maximum: 3840
+          minimum: 0
+          maximum: 1920
           description: The width of the watermark (px).
         height:
           type: number
-          minimum: 120
-          maximum: 3840
+          minimum: 0
+          maximum: 1920
           description: The height of the watermark (px).
         zOrder:
           type: number
@@ -2469,8 +2277,15 @@ components:
       type: object
       properties:
         streamUrl:
-          type: string
-          description: CDN streaming address.
+          type: array
+          minItems: 1
+          maxItems: 10
+          items:
+            type: string
+          description: >-
+            The CDN addresses to publish the transcoded stream to. You can specify up to 10
+            addresses. All addresses share the `audioOption` and `videoOption` settings of this
+            output.
         rtc:
           $ref: "#/components/schemas/rtc-output"
         audioOption:
@@ -2520,14 +2335,18 @@ components:
       properties:
         width:
           type: number
-          minimum: 120
-          maximum: 3840
-          description: The width of the transcoded output video (px).
+          minimum: 1
+          maximum: 1920
+          description: >-
+            The width of the transcoded output video (px). The output resolution can't exceed
+            1920 × 1080.
         height:
           type: number
-          minimum: 120
-          maximum: 3840
-          description: The height of the transcoded output video (px).
+          minimum: 1
+          maximum: 1920
+          description: >-
+            The height of the transcoded output video (px). The output resolution can't exceed
+            1920 × 1080.
         bitrate:
           type: number
           minimum: 1
@@ -2537,13 +2356,15 @@ components:
           type: string
           enum:
             - H264
+            - H265
             - VP8
           description: |-
             The codec used to transcode the output video.
 
              **Possible values**:
-            - `"H264"`: Standard H.264 encoding.
-            - `"VP8"`: Standard VP8 encoding.
+            - `"H264"`: Standard H.264 encoding. Supported for RTC and CDN outputs.
+            - `"H265"`: Standard H.265 encoding. Supported for RTC and CDN outputs.
+            - `"VP8"`: Standard VP8 encoding. Supported for RTC outputs only.
         fps:
           type: number
           default: 15
@@ -2651,111 +2472,6 @@ components:
         workflows:
           type: object
           additionalProperties: true
-    transcoding-template:
-      type: object
-      required:
-        - enabled
-        - video
-      properties:
-        enabled:
-          type: boolean
-          description: |-
-            Whether to enable this transcoding template:
-            - `true`: Enable the template
-            - `false`: Do not enable the template
-        video:
-          type: object
-          required:
-            - width
-            - height
-            - fps
-          properties:
-            width:
-              type: number
-              description: |-
-                **Maximum value**: `1920`
-
-                 The width of the transcoded output video (px).
-            height:
-              type: number
-              description: |-
-                **Maximum value**: `1920`
-
-                 The height of the transcoded output video (px).
-            fps:
-              type: number
-              description: |-
-                **Maximum value**: `60`
-
-                 The frame rate (fps) of the transcoded output video.
-    template-status-response:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - success
-            - error
-          description: |-
-            The status of the request.
-
-            Status of this request:
-
-             - success: The request was successful.
-             - error: The request failed.
-    query-templates-response:
-      type: object
-      properties:
-        status:
-          type: string
-          enum:
-            - success
-            - error
-          description: |-
-            The status of the request.
-
-            Status of the request.
-
-             - success: The request was successful.
-             - error: The request failed
-        data:
-          type: object
-          properties:
-            enabled:
-              type: boolean
-              description: Whether to enable the multi-bitrate function on the viewer side.
-            codecs:
-              type: array
-              items:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    description: The ID of the transcoding template.
-                  enabled:
-                    type: boolean
-                    description: Whether to enable this transcoding template.
-                  video:
-                    type: object
-                    properties:
-                      width:
-                        type: number
-                        description: |-
-                          The width of the transcoded output video in pixels.
-
-                          The width of the transcoded output video (px).
-                      height:
-                        type: number
-                        description: |-
-                          The height of the transcoded output video in pixels.
-
-                          The height of the transcoded output video (px).
-                      fps:
-                        type: number
-                        description: |-
-                          The frame rate of the transcoded output video.
-
-                          The frame rate (fps) of the transcoded output video.
     ncs-ip-response:
       type: object
       properties:
@@ -2779,11 +2495,3 @@ components:
         message:
           type: string
           description: Describes why the request failed.
-    template-error-response:
-      allOf:
-        - $ref: "#/components/schemas/template-status-response"
-        - type: object
-          properties:
-            message:
-              type: string
-              description: Describes why the request failed.

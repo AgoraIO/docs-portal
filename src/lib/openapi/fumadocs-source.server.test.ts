@@ -43,7 +43,7 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(91);
+    expect(pagePaths).toHaveLength(87);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
