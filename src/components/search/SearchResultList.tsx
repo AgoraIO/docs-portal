@@ -9,6 +9,7 @@ import {
 } from 'motion/react';
 import { type MouseEvent, useId, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/cn';
 import {
   getCnSearchPlatformLabel,
   getCnSearchSdkLabel,
@@ -68,6 +69,8 @@ export function SearchResultList({
           const first = group.sections[0];
           const groupKey = getSearchPageGroupKey(group);
           const firstHref = getSearchSectionHref(group.pageUrl, first.url);
+          const hasSectionTitle = first.sectionTitle !== group.title;
+          const titleHref = hasSectionTitle ? group.pageUrl : firstHref;
           const ancestors = first.headingPath
             .slice(0, -1)
             .filter((heading) => heading !== group.title)
@@ -97,7 +100,7 @@ export function SearchResultList({
                   />
                 )}
               </AnimatePresence>
-              <div className="relative min-w-0">
+              <div className="min-w-0">
                 <div className="search-page-result-context">
                   <div className="search-page-result-path">
                     {group.product && (
@@ -127,19 +130,22 @@ export function SearchResultList({
                 </div>
                 <div className="search-page-result-heading">
                   <a
-                    className="search-page-result-title"
-                    href={group.pageUrl}
+                    className={cn(
+                      'search-page-result-title',
+                      !hasSectionTitle && 'search-page-result-link',
+                    )}
+                    href={titleHref}
                     onClick={(event) =>
                       onSelectResult?.(
                         event,
-                        group.pageUrl,
+                        titleHref,
                         groupIndex + 1 + rankOffset,
                       )
                     }
                     onAuxClick={(event) =>
                       onSelectResult?.(
                         event,
-                        group.pageUrl,
+                        titleHref,
                         groupIndex + 1 + rankOffset,
                       )
                     }
@@ -150,9 +156,9 @@ export function SearchResultList({
                       className="size-4 shrink-0"
                     />
                   </a>
-                  {first.sectionTitle !== group.title && (
+                  {hasSectionTitle && (
                     <a
-                      className="search-page-section"
+                      className="search-page-section search-page-result-link"
                       href={firstHref}
                       onClick={(event) =>
                         onSelectResult?.(

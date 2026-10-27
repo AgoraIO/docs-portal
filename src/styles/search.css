@@ -154,9 +154,29 @@
 }
 .search-page-result {
   position: relative;
+  isolation: isolate;
   padding: 14px 8px;
   border-bottom: 1px solid var(--border);
   overflow-wrap: anywhere;
+}
+/* Stretch the first matching section's native link over the row. Keep the
+   document title and additional-section controls independently interactive. */
+.search-page-result-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.search-page-result-link:focus-visible::after {
+  outline: 2px solid var(--ring);
+  outline-offset: -2px;
+}
+.search-page-result-title:not(.search-page-result-link),
+.search-page-more-sections summary,
+.search-page-more-sections a {
+  position: relative;
+  z-index: 1;
 }
 .search-page-result-hover {
   position: absolute;
