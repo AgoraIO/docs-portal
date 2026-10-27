@@ -1187,10 +1187,7 @@ function HighlightedText({
     <span className={className}>
       {getHighlightParts(value).map((part) =>
         part.highlight ? (
-          <mark
-            className="rounded-[3px] bg-primary/25 px-0.5 font-semibold text-primary"
-            key={part.key}
-          >
+          <mark className="search-page-mark" key={part.key}>
             {part.text}
           </mark>
         ) : (
