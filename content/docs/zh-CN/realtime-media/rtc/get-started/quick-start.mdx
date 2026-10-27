@@ -2018,7 +2018,15 @@ import AgoraRTC from "agora-rtc-sdk-ng"
 
 将以下代码复制到 `index.html` 实现客户端用户界面：
 
-```html tab="互动直播" tabGroup="mode"
+<Tabs defaultValue="live" groupId="mode" persist>
+<TabsList>
+  <TabsTrigger value="live">互动直播</TabsTrigger>
+  <TabsTrigger value="rtc">视频通话</TabsTrigger>
+</TabsList>
+
+<TabsContent value="live">
+
+```html
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -2042,7 +2050,11 @@ import AgoraRTC from "agora-rtc-sdk-ng"
 </html>
 ```
 
-```html tab="视频通话" tabGroup="mode"
+</TabsContent>
+
+<TabsContent value="rtc">
+
+```html
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -2064,6 +2076,9 @@ import AgoraRTC from "agora-rtc-sdk-ng"
     </body>
 </html>
 ```
+
+</TabsContent>
+</Tabs>
 
 ### 4. 复制项目示例代码
 

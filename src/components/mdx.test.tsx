@@ -1390,6 +1390,73 @@ describe('common MDX registry', () => {
     );
   });
 
+  it('copies a platform-specific release link without changing reading location', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/realtime-media/rtm/reference/release-notes?from=overview#latest',
+    );
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+    const components = getMDXComponents();
+    const Accordion = components.Accordion as AccordionComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+    render(
+      <Panel platform="web">
+        <Accordion headingLevel={2} id="224-版-2" title="2.2.4 版">
+          Release body
+        </Accordion>
+      </Panel>,
+    );
+    fireEvent.click(screen.getByRole('button', { name: /copy.?link/i }));
+    await waitFor(() =>
+      expect(writeText).toHaveBeenCalledWith(
+        `${window.location.origin}/realtime-media/rtm/reference/release-notes?from=overview&platform=web#224-%E7%89%88-2`,
+      ),
+    );
+    expect(window.location.search).toBe('?from=overview');
+    expect(window.location.hash).toBe('#latest');
+  });
+
+  it('shares a subsection heading with its platform and existing query', async () => {
+    window.history.replaceState(
+      {},
+      '',
+      '/realtime-media/rtm/reference/release-notes?from=overview',
+    );
+    const writeText = vi.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText },
+    });
+    const components = getMDXComponents();
+    const Heading = components.h3 as HeadingComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+    render(
+      <Panel platform="web">
+        <Heading id="升级必看-2">升级必看</Heading>
+      </Panel>,
+    );
+    const heading = screen.getByRole('heading', { name: '升级必看' });
+    await waitFor(() =>
+      expect(within(heading).getByRole('link')).toHaveAttribute(
+        'href',
+        '/realtime-media/rtm/reference/release-notes?from=overview&platform=web#%E5%8D%87%E7%BA%A7%E5%BF%85%E7%9C%8B-2',
+      ),
+    );
+    fireEvent.click(
+      within(heading).getByRole('button', { name: /copy.?link/i }),
+    );
+    await waitFor(() =>
+      expect(writeText).toHaveBeenCalledWith(
+        `${window.location.origin}/realtime-media/rtm/reference/release-notes?from=overview&platform=web#%E5%8D%87%E7%BA%A7%E5%BF%85%E7%9C%8B-2`,
+      ),
+    );
+  });
+
   it('uses Fumadocs tabs for normal MDX tabs', () => {
     const components = getMDXComponents();
 
