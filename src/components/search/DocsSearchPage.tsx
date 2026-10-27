@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DocsTaskFeedback } from '@/components/docs-shell/DocsTaskFeedback';
+import { SearchBrowseFilters } from '@/components/search/SearchBrowseFilters';
 import { SearchInput } from '@/components/search/SearchInput';
 import { SearchResultList } from '@/components/search/SearchResultList';
 import { SearchTypeTabs } from '@/components/search/SearchTypeTabs';
@@ -348,7 +349,7 @@ export function DocsSearchPage({
     <main className="search-page" id="search-page-main">
       <section aria-label="搜索与筛选" className="search-page-controls">
         <div className="search-page-search-bar">
-          <h1>搜索文档</h1>
+          <h1 className="sr-only">文档检索</h1>
           <SearchInput
             onChange={setDraft}
             onClear={() => {
@@ -359,30 +360,34 @@ export function DocsSearchPage({
             value={draft}
           />
         </div>
+        <div className="search-page-desktop-filters">
+          <SearchBrowseFilters
+            state={state}
+            platforms={getCnSearchPlatforms(catalog.platform, state.platform)}
+            onChange={onChange}
+          />
+          {hasFilters && (
+            <Button
+              onClick={() =>
+                onChange({
+                  product: undefined,
+                  platform: undefined,
+                  version: undefined,
+                  type: 'all',
+                })
+              }
+              size="sm"
+              variant="ghost"
+            >
+              清除筛选
+            </Button>
+          )}
+        </div>
         <div className="search-page-filter-bar">
           <SearchTypeTabs
             onChange={(type) => onChange({ type })}
             value={state.type}
           />
-          <div className="search-page-desktop-filters">
-            {filterControls}
-            {hasFilters && (
-              <Button
-                onClick={() =>
-                  onChange({
-                    product: undefined,
-                    platform: undefined,
-                    version: undefined,
-                    type: 'all',
-                  })
-                }
-                size="sm"
-                variant="ghost"
-              >
-                清除筛选
-              </Button>
-            )}
-          </div>
           <div className="search-page-mobile-filters">
             <Sheet
               onOpenChange={(nextOpen) => {

@@ -15,12 +15,6 @@
   align-items: center;
   gap: 24px;
 }
-.search-page-search-bar h1 {
-  flex-shrink: 0;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.5;
-}
 .search-page-search-bar search {
   min-width: 0;
   flex: 1;
@@ -95,7 +89,78 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
-  margin-left: auto;
+  justify-content: flex-start;
+  width: 100%;
+}
+.search-page-browse-filters {
+  display: flow-root;
+  width: 100%;
+}
+.search-page-product-trigger {
+  float: left;
+  margin: 0 12px 8px 0;
+  width: 240px;
+  min-width: 200px;
+  min-height: 36px;
+  justify-content: space-between;
+}
+.search-page-product-trigger > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.search-page-product-trigger[data-state="open"] > svg {
+  transform: rotate(180deg);
+}
+.search-page-product-menu {
+  width: min(960px, calc(100vw - 32px));
+  max-height: min(70vh, var(--radix-dropdown-menu-content-available-height));
+  padding: 16px;
+}
+.search-page-product-groups {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+.search-page-product-group-label {
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.search-page-product-options {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 2px 8px;
+}
+.search-page-product-options [role="menuitemradio"] {
+  min-height: 36px;
+  overflow-wrap: anywhere;
+}
+.search-page-platform-filters {
+  display: block;
+}
+.search-page-platform-options {
+  /* Inline choices wrap around the first-line controls, then use the full row.
+     Keep a real group box so its accessible platform label is preserved. */
+  display: block;
+  width: auto;
+  line-height: 0;
+}
+.search-page-platform-options [role="radio"] {
+  min-height: 36px;
+  margin: 0 8px 8px 0;
+  vertical-align: top;
+}
+.search-page-platform-expand {
+  float: right;
+  min-height: 36px;
+  margin: 0 0 8px 4px;
+}
+@media (min-width: 641px) and (max-width: 900px) {
+  .search-page-product-options {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 .search-page-filter-label {
   display: flex;

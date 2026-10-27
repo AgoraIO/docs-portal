@@ -127,12 +127,20 @@ describe('DocsSearchPage', () => {
       />,
     );
     expect(
-      await screen.findByRole('option', { name: 'HarmonyOS' }),
+      await screen.findByRole('radio', { name: 'HarmonyOS' }),
     ).toBeEnabled();
-    expect(screen.getByRole('option', { name: '互动白板' })).toBeEnabled();
-    fireEvent.change(screen.getByRole('combobox', { name: '平台' }), {
-      target: { value: 'harmonyos' },
-    });
+    fireEvent.pointerDown(
+      screen.getByRole('button', { name: '实时互动', expanded: false }),
+      {
+        button: 0,
+        ctrlKey: false,
+      },
+    );
+    expect(
+      await screen.findByRole('menuitemradio', { name: '互动白板' }),
+    ).toBeEnabled();
+    fireEvent.keyDown(screen.getByRole('menu'), { key: 'Escape' });
+    fireEvent.click(screen.getByRole('radio', { name: 'HarmonyOS' }));
     expect(onChange).toHaveBeenCalledWith({
       platform: 'harmonyos',
       version: undefined,
@@ -221,6 +229,7 @@ describe('DocsSearchPage', () => {
   });
 
   it('merges legacy product aliases into one canonical option', async () => {
+    const onChange = vi.fn();
     vi.mocked(searchCnDocsPage).mockResolvedValue({
       ...empty,
       facets: {
@@ -240,7 +249,7 @@ describe('DocsSearchPage', () => {
     render(
       <DocsSearchPage
         state={parseSearchPageState({ q: 'Token' })}
-        onChange={vi.fn()}
+        onChange={onChange}
         productScopes={[
           {
             id: 'ppt-transcoding',
@@ -250,36 +259,35 @@ describe('DocsSearchPage', () => {
         ]}
       />,
     );
-    await waitFor(() =>
-      expect(
-        screen.getByRole('option', { name: '在线美术教学' }),
-      ).toBeInTheDocument(),
-    );
-    const labels = screen.getAllByRole('option').map((o) => o.textContent);
+    fireEvent.pointerDown(screen.getByRole('button', { name: '全部产品' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+    await screen.findByRole('menuitemradio', { name: '在线美术教学' });
+    const labels = screen
+      .getAllByRole('menuitemradio')
+      .map((o) => o.textContent);
     expect(
       labels.filter((label) => label?.startsWith('PPT 转码服务')),
     ).toHaveLength(1);
-    expect(screen.getByRole('option', { name: 'PPT 转码服务' })).toHaveValue(
-      'ppt-transcoding',
-    );
-    expect(screen.getByRole('option', { name: '微呼叫' })).toHaveValue(
-      'voip-call',
-    );
-    expect(screen.getByRole('option', { name: '水晶球' })).toHaveValue(
-      'analytics',
-    );
-    expect(screen.getByRole('option', { name: '水晶球' })).toHaveValue(
-      'analytics',
-    );
+    expect(screen.getByRole('menuitemradio', { name: '微呼叫' })).toBeEnabled();
+    expect(screen.getByRole('menuitemradio', { name: '水晶球' })).toBeEnabled();
     expect(
-      screen.queryByRole('option', { name: '产品概览' }),
+      screen.queryByRole('menuitemradio', { name: '产品概览' }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole('option', { name: '介绍' }),
+      screen.queryByRole('menuitemradio', { name: '介绍' }),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByRole('option', { name: '参考文档' }),
+      screen.queryByRole('menuitemradio', { name: '参考文档' }),
     ).not.toBeInTheDocument();
+    fireEvent.click(
+      screen.getByRole('menuitemradio', { name: 'PPT 转码服务' }),
+    );
+    expect(onChange).toHaveBeenCalledWith({
+      product: 'ppt-transcoding',
+      version: undefined,
+    });
   });
   beforeEach(() => {
     vi.mocked(searchCnDocsPage).mockResolvedValue(empty);
@@ -315,17 +323,19 @@ describe('DocsSearchPage', () => {
         onChange={onChange}
       />,
     );
-    for (const [id, label] of labels) {
-      expect(await screen.findByRole('option', { name: label })).toHaveValue(
-        id,
-      );
+    fireEvent.pointerDown(screen.getByRole('button', { name: '全部产品' }), {
+      button: 0,
+      ctrlKey: false,
+    });
+    for (const [, label] of labels) {
+      expect(
+        await screen.findByRole('menuitemradio', { name: label }),
+      ).toBeEnabled();
     }
     expect(
-      screen.queryByRole('option', { name: '弹幕玩法' }),
+      screen.queryByRole('menuitemradio', { name: '弹幕玩法' }),
     ).not.toBeInTheDocument();
-    fireEvent.change(screen.getByRole('combobox', { name: '产品' }), {
-      target: { value: 'analytics' },
-    });
+    fireEvent.click(screen.getByRole('menuitemradio', { name: '水晶球' }));
     expect(onChange).toHaveBeenCalledWith({
       product: 'analytics',
       version: undefined,
@@ -511,9 +521,13 @@ describe('DocsSearchPage', () => {
       />,
     );
     await screen.findByRole('link', { name: 'RTC 指南' });
-    fireEvent.change(screen.getByRole('combobox', { name: '产品' }), {
-      target: { value: 'rtc' },
+    fireEvent.pointerDown(screen.getByRole('button', { name: '全部产品' }), {
+      button: 0,
+      ctrlKey: false,
     });
+    fireEvent.click(
+      await screen.findByRole('menuitemradio', { name: '实时互动' }),
+    );
     expect(onChange).toHaveBeenCalledWith({
       product: 'rtc',
       version: undefined,
