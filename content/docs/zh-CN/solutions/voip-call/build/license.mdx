@@ -12,7 +12,7 @@ License 是声网服务的一种计费模式。
 
 通常 IoT 厂商会预估设备的出货量与音视频用量，向声网采购 License 并激活，再以一机一码的形式将 License 烧录在设备中。完整的 License 获取与使用流程如下：
 
-![License 使用流程](https://web-cdn.agora.io/docs-portal/img/voip-callkit/license-process.svg)
+<DocsImage alt="License 使用流程" src="https://web-cdn.agora.io/docs-portal/img/voip-callkit/license-process.svg" displayWidth="80%" />
 
 <a id="apply"></a>
 ## 使用流程
@@ -80,7 +80,7 @@ License 申请通过后，License 激活标识（PID）会关联到你的 CID �
 :::
 
 ```shell
-curl --location 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=xxxx&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e' \
+curl --location -X POST 'https://api.sd-rtn.com/dabiz/license/v2/active?pid=02F5xxxxxxxxxxxxxxxxxxxxxxxxEC30&licenseKey=xxxx&appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e' \
 --header 'Authorization: Basic <Basic Auth>'
 ```
 
@@ -147,7 +147,7 @@ curl --location 'https://api.sd-rtn.com/dabiz/license/v3/projects/{appId}/pids/{
 如需继续使用声网服务，为不影响你的业务，声网推荐你至少在 License 到期前 30 天联系 sales@shengwang.cn 申请续期。续期申请通过后，声网会生成 `renewId` 并提供给你，你可以调用 [`/renew`](/zh-CN/api-reference/api-ref/voip-callkit/renew-license) 接口续期 License。
 
 ```shell
-curl --location 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e&renewId=4750xxxxxxxxxxxxxxxxxxxxxxxx6270&license=85B3xxxxxxxxxxxxxxxxxxxxxxxx656F' \
+curl --location -X POST 'https://api.sd-rtn.com/dabiz/license/v2/renew?appid=a6d6xxxxxxxxxxxxxxxxxxxxxxxxf75e&renewId=4750xxxxxxxxxxxxxxxxxxxxxxxx6270&license=85B3xxxxxxxxxxxxxxxxxxxxxxxx656F' \
 --header 'Authorization: Basic <Basic Auth>'
 ```
 

@@ -4,6 +4,7 @@ import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { fileURLToPath } from 'node:url';
+import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
 import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
 import {
   isRedirectContentRow,
@@ -300,7 +301,9 @@ export async function migrateLegacyPage({
     state,
   });
   const frontmatter = serializeFrontmatter(expanded.frontmatter);
-  const content = `${frontmatter}${expanded.body.trim()}\n`;
+  const content = normalizeLegacyCodeHighlights(
+    `${frontmatter}${expanded.body.trim()}\n`,
+  );
   const residue = findLegacyResidue(content, componentMap);
   const referenceReview = findReferenceReview(content);
   const issues = unique([

@@ -106,7 +106,7 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
       "uid": "527841",
       "clientRequest": {
         "token": "<your_token>",
-        //highlight-start
+        // [!code highlight:16]
         "extensionServiceConfig": {
           "errorHandlePolicy": "error_abort",
           "extensionServices": [
@@ -123,14 +123,13 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
             }
           ]
         },
-        //highlight-end
         "recordingFileConfig": {
           "avFileType": [
             "hls",
             "mp4"
           ]
         },
-        //highlight-start
+        // [!code highlight:11]
         "storageConfig": {
           "vendor": 2,
           "region": 3,
@@ -142,7 +141,6 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
             "directory2"
           ]
         }
-        //highlight-end
       }
     }
     ```
@@ -176,7 +174,7 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
       "uid": "527841",
       "clientRequest": {
         "token": "<your_token>",
-        //highlight-start
+        // [!code highlight:27]
         "extensionServiceConfig": {
           "extensionServices": [
             {
@@ -204,14 +202,13 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
             }
           ]
         },
-        //highlight-end
         "recordingFileConfig": {
           "avFileType": [
             "hls",
             "mp4"
           ]
         },
-        //highlight-start
+        // [!code highlight:11]
         "storageConfig": {
           "vendor": 2,
           "region": 3,
@@ -223,7 +220,6 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
             "directory2"
           ]
         }
-        //highlight-end
       }
     }
     ```
@@ -298,7 +294,7 @@ description: "了解如何在云端录制中页面录制，包括适用场景、
 
 页面录制生成的文件如下图所示：
 
-![页面录制生成文件](https://web-cdn.agora.io/doc-cms/uploads/1725865524509-页面录制文件.png)
+<DocsImage alt="页面录制生成文件" src="https://web-cdn.agora.io/doc-cms/uploads/1725865524509-页面录制文件.png" displayWidth="80%" />
 
 ## 开发注意事项
 

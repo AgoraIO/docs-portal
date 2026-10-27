@@ -94,6 +94,14 @@ describe('retired Chinese product documentation', () => {
     ['solutions', 'overview'],
     ['solutions', 'one-to-one-classroom'],
     ['solutions', 'small-classroom'],
+    ['solutions', 'online-music-class'],
+    ...['android', 'ios', 'macos', 'cpp-all-platforms'].map((platform) => [
+      'api-reference',
+      'online-music-teaching',
+      platform,
+      'overview',
+      'product-overview',
+    ]),
     ['solutions', 'digital-learning', 'course-resource'],
     ['solutions', 'digital-learning', 'school-resource'],
     ['solutions', 'art-class', 'build', 'enable-service'],
@@ -125,6 +133,7 @@ describe('retired Chinese product documentation', () => {
       const markdown = await getLLMText(page);
       expect(markdown).not.toContain('flexible-classroom');
       expect(markdown).not.toContain('灵动课堂');
+      expect(markdown).not.toMatch(/apaas/i);
     },
   );
   it.each([

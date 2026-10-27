@@ -1,7 +1,12 @@
 import { execFileSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it } from 'vitest';
+import {
+  isRetiredCnDocsPath,
+  isRetiredCnLegacyDocsPath,
+} from '../src/lib/retired-cn-docs.mjs';
 
 const repoRoot = process.cwd();
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
@@ -11,6 +16,82 @@ function readJson<T>(fileName: string): T {
 }
 
 describe('Shengwang redirect artifacts', () => {
+  it('publishes the reviewed RTC mini-program tab move without rewriting its snapshot', () => {
+    const source = '/doc/rtc/mini-program/get-started/enable-service';
+    const target =
+      '/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service';
+    const candidate = readJson<{
+      records: Array<{ legacyPath: string; target: string }>;
+    }>('legacy-url-map-candidate-32883e92e9-2026-10-15.json');
+    const finalMap = readJson<{
+      records: Array<{ legacyPath: string; target: string }>;
+    }>('legacy-url-map.json');
+    expect(
+      candidate.records.find((record) => record.legacyPath === source)?.target,
+    ).toBe('/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service');
+    expect(
+      finalMap.records.find((record) => record.legacyPath === source)?.target,
+    ).toBe(target);
+    expect(readJson('legacy-url-redirects.vercel.json')).toContainEqual({
+      source,
+      destination: target,
+      statusCode: 301,
+      preserveQueryParams: false,
+    });
+    expect(
+      readFileSync(
+        path.join(inputRoot, 'legacy-url-redirects.nginx.conf'),
+        'utf8',
+      ),
+    ).toContain(`location = ${source} {\n  return 301 "${target}";\n}`);
+  });
+
+  it('records the exact publication retirement policy used to derive the map', () => {
+    const finalMap = readJson<{
+      retirementPolicy: { path: string; sha256: string };
+    }>('legacy-url-map.json');
+    expect(finalMap.retirementPolicy).toEqual({
+      path: 'src/lib/retired-cn-docs.mjs',
+      sha256: createHash('sha256')
+        .update(
+          readFileSync(path.join(repoRoot, 'src/lib/retired-cn-docs.mjs')),
+        )
+        .digest('hex'),
+    });
+  });
+  it('keeps retired destinations explicitly unavailable instead of redirecting into a 404', () => {
+    const candidate = readJson<{
+      records: Array<{ legacyPath: string; target: string }>;
+    }>('legacy-url-map-candidate-32883e92e9-2026-10-15.json');
+    const finalMap = readJson<{
+      records: Array<{
+        legacyPath: string;
+        target: string;
+        status: string;
+        mappingType: string;
+      }>;
+    }>('legacy-url-map.json');
+    const bySource = new Map(
+      finalMap.records.map((record) => [record.legacyPath, record]),
+    );
+    const retired = candidate.records.filter((record) =>
+      isRetiredCnDocsPath(record.target),
+    );
+    expect(retired).toHaveLength(1076);
+    for (const record of retired) {
+      expect(bySource.get(record.legacyPath)).toMatchObject({
+        target: '',
+        status: 'retired',
+        mappingType: 'retired-cn-docs',
+      });
+    }
+    expect(
+      finalMap.records
+        .filter((record) => record.status === 'candidate')
+        .some((record) => isRetiredCnDocsPath(`/zh-CN${record.target}`)),
+    ).toBe(false);
+  });
+
   it('marks the unchanged public search path as no-redirect in the final map', () => {
     const finalMap = readJson<{
       summary: { redirect: number; noRedirect: number };
@@ -35,8 +116,8 @@ describe('Shengwang redirect artifacts', () => {
       mappingType: 'same-path-no-redirect',
     });
     expect(search?.notes).toContain('公开路径未变化，由新站直接服务');
-    expect(finalMap.summary.redirect).toBe(8215);
-    expect(finalMap.summary.noRedirect).toBe(6);
+    expect(finalMap.summary.redirect).toBe(7119);
+    expect(finalMap.summary.noRedirect).toBe(2);
   });
 
   it('finalizes a checked candidate into equivalent redirect artifacts', () => {
@@ -83,31 +164,45 @@ describe('Shengwang redirect artifacts', () => {
     expect(finalMap.generatedAt).toBe(candidate.generatedAt);
     expect(finalMap.snapshot).toEqual(candidate.snapshot);
     expect(finalMap.targetUrlTransform).toBe('remove-zh-CN-prefix');
-    expect(finalMap.summary.redirect).toBe(8215);
-    expect(finalMap.summary.noRedirect).toBe(6);
+    expect(finalMap.summary.redirect).toBe(7119);
+    expect(finalMap.summary.noRedirect).toBe(2);
     const expectedRecords = candidate.records.map((record) =>
-      record.legacyPath === '/search'
+      isRetiredCnLegacyDocsPath(record.legacyPath) ||
+      isRetiredCnDocsPath(record.target)
         ? {
             ...record,
             target: '',
-            status: 'no-redirect',
+            status: 'retired',
             targetExists: false,
-            mappingType: 'same-path-no-redirect',
-            notes: `${record.notes}；公开路径未变化，由新站直接服务，无需重定向，查询参数交由应用处理。`,
+            mappingType: 'retired-cn-docs',
+            notes: `${record.notes}；按 PR #1248 下线策略直接返回 HTTP 404，不生成 301。原始目标：${record.target || '无'}。`,
           }
-        : {
-            ...record,
-            target:
-              record.target === '/zh-CN/realtime-media/rtc/reference/events'
-                ? '/api-reference/rtc/restful/webhook/events'
-                : record.target.replace(/^\/zh-CN\//, '/'),
-          },
+        : record.legacyPath === '/search'
+          ? {
+              ...record,
+              target: '',
+              status: 'no-redirect',
+              targetExists: false,
+              mappingType: 'same-path-no-redirect',
+              notes: `${record.notes}；公开路径未变化，由新站直接服务，无需重定向，查询参数交由应用处理。`,
+            }
+          : {
+              ...record,
+              target:
+                record.legacyPath ===
+                '/doc/rtc/mini-program/get-started/enable-service'
+                  ? '/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service'
+                  : record.target ===
+                      '/zh-CN/realtime-media/rtc/reference/events'
+                    ? '/api-reference/rtc/restful/webhook/events'
+                    : record.target.replace(/^\/zh-CN\//, '/'),
+            },
     );
     expect(finalMap.records).toEqual(expectedRecords);
     expect(originalRedirects).toHaveLength(8216);
     expect(
       finalMap.records.filter((record) => record.status === 'no-redirect'),
-    ).toHaveLength(6);
+    ).toHaveLength(2);
     expect(
       finalMap.records.filter((record) => record.status === 'candidate'),
     ).toHaveLength(vercel.length);
@@ -121,7 +216,7 @@ describe('Shengwang redirect artifacts', () => {
     );
     expect(vercel.every((rule) => rule.statusCode === 301)).toBe(true);
     expect(vercel.some((rule) => rule.source === rule.destination)).toBe(false);
-    expect(vercel).toHaveLength(8215);
+    expect(vercel).toHaveLength(7119);
     expect(vercel.every((rule) => rule.preserveQueryParams === false)).toBe(
       true,
     );
@@ -149,7 +244,13 @@ describe('Shengwang redirect artifacts', () => {
       ...nginx.matchAll(
         /^location = ([^\s]+) \{\n {2}return 301 ([^;]+);\n\}$/gm,
       ),
-    ].map((match) => [match[1], match[2]] as const);
+    ].map(
+      (match) =>
+        [
+          match[1],
+          match[2].startsWith('"') ? JSON.parse(match[2]) : match[2],
+        ] as const,
+    );
     expect(new Map(nginxRules).size).toBe(nginxRules.length);
     expect(new Map(nginxRules)).toEqual(expectedRules);
 

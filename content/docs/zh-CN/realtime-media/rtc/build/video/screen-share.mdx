@@ -102,7 +102,7 @@ implementation "io.agora.rtc:full-screen-sharing:${agora_sdk_version}"
 
 本节介绍如何使用 Android SDK 实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg)
+<DocsImage alt="流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg" displayWidth="70%" />
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -360,7 +360,7 @@ engine.stopScreenCapture();
 
 由于 Apple 不支持在 App 主进程采集屏幕，因此你需要为屏幕共享流单独创建一个 Extension，并在 Extension 中使用 iOS 原生的 ReplayKit 框架实现录制屏幕，然后将屏幕共享流发送给主进程、实现屏幕共享。
 
-![屏幕共享原理](https://web-cdn.agora.io/docs-portal/img/rtc/screensharing-ios-tech.png)
+<DocsImage alt="屏幕共享原理" src="https://web-cdn.agora.io/docs-portal/img/rtc/screensharing-ios-tech.png" displayWidth="50%" />
 
 根据实际业务场景的不同，你可以选择以下任一方式调用 API 实现屏幕共享：
 
@@ -391,7 +391,7 @@ engine.stopScreenCapture();
 2. 在弹出的窗口中填写 **Product Name** 等信息，取消勾选 **Include UI Extension**，点击 **Finish**。Xcode 会自动创建该 Extension 的文件夹，其中包含 `SampleHandler.swift` 文件。
 3. 在 **Target** 下选中刚创建的 Extension，点击 **General**，在 **Deployment Info** 下将 iOS 的版本设置为 12.0 或之后。
 
-![设置 Extension 的 Deployment Info](https://web-cdn.agora.io/docs-files/1670580188367)
+<DocsImage alt="设置 Extension 的 Deployment Info" src="https://web-cdn.agora.io/docs-files/1670580188367" displayWidth="35%" />
 
 4. 修改项目设置以实现屏幕共享的代码逻辑，根据实际业务需求选择以下三种方式其中之一即可：
 
@@ -491,7 +491,7 @@ end
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg)
+<DocsImage alt="流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg" displayWidth="70%" />
 
 ### 设置音频场景
 
@@ -745,7 +745,7 @@ agoraKit.updateChannel(with: option)
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg)
+<DocsImage alt="流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg" displayWidth="70%" />
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -1246,7 +1246,7 @@ Promise.all([startScreenCall(), startVideoCall()]).then(() => { /** ... **/ });
 
 自己订阅自己，会产生额外的计费，如图：
 
-![](https://web-cdn.agora.io/doc-cms/uploads/1727173476516-同时共享屏幕和开启视频.png)
+<DocsImage alt="同时共享屏幕和开启视频的订阅计费示意图" src="https://web-cdn.agora.io/doc-cms/uploads/1727173476516-同时共享屏幕和开启视频.png" displayWidth="53%" />
 
 为避免重复计费，有以下注意事项：
 
@@ -1300,7 +1300,7 @@ Promise.all([startScreenCall(), startVideoCall()]).then(() => { /** ... **/ });
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg)
+<DocsImage alt="流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg" displayWidth="70%" />
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -1608,7 +1608,7 @@ ret = m_rtcEngine->stopScreenCapture();
 
 本节介绍如何使用 HarmonyOS SDK 实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg)
+<DocsImage alt="流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-mobile.svg" displayWidth="70%" />
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 
@@ -1744,8 +1744,8 @@ this.rtcEngine?.stopScreenCapture();
 声网提供了开源的示例项目供你参考，你可以前往下载或查看其中的源代码。
 
 <Cards>
-  <Card title={<RepositoryCardTitle provider="gitee">ScreenSharing</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/advance/ScreenSharing.ets" />
-  <Card title={<RepositoryCardTitle provider="github">ScreenSharing</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/HarmonyOS_NEXT-main/HarmonyOS_NEXT/APIExample/entry/src/main/ets/pages/advance/ScreenSharing.ets" />
+  <Card title={<RepositoryCardTitle provider="gitee">ScreenSharing</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/API-Examples/tree/main/HarmonyOS/APIExample/entry/src/main/ets/pages/advance/ScreenSharing.ets" />
+  <Card title={<RepositoryCardTitle provider="github">ScreenSharing</RepositoryCardTitle>} href="https://github.com/Shengwang-Community/API-Examples/tree/main/HarmonyOS/APIExample/entry/src/main/ets/pages/advance/ScreenSharing.ets" />
 </Cards>
 
 ### API 参考
@@ -2517,15 +2517,15 @@ await _engine.stopScreenCapture();
 
 2. 在 Xcode 菜单栏，点击 **File > New > Target...**, 在弹出的窗口中选择 **Broadcast Upload Extension**, 点击 **Next**。
 
-![在 Xcode 中创建 Broadcast Upload Extension](https://web-cdn.agora.io/docs-files/1669197671714)
+<DocsImage alt="在 Xcode 中创建 Broadcast Upload Extension" src="https://web-cdn.agora.io/docs-files/1669197671714" displayWidth="80%" />
 
 3. 在弹出的窗口中填写 **Product Name** 等信息，取消勾选 **Include UI Extension**，点击 **Finish**。Xcode 会自动创建该 Extension 的文件夹，其中包含 `SampleHandler.m` 文件。在本示例中，**Product Name** 命名为 **ScreenSharing**。
 
-![设置 Broadcast Upload Extension 的 Product Name](https://web-cdn.agora.io/docs-files/1669197908653)
+<DocsImage alt="设置 Broadcast Upload Extension 的 Product Name" src="https://web-cdn.agora.io/docs-files/1669197908653" displayWidth="80%" />
 
 4. 在 **Target** 下选中刚创建的 Extension，点击 **General**，在 **Deployment Info** 下将 iOS 的版本设置为 12.0 或以上。
 
-![设置 Extension 的 Deployment Info](https://web-cdn.agora.io/docs-files/1669199079385)
+<DocsImage alt="设置 Extension 的 Deployment Info" src="https://web-cdn.agora.io/docs-files/1669199079385" displayWidth="80%" />
 
     :::warning[注意]
     Broadcast Upload Extension 的内存使用限制为 50 MB，请确保屏幕共享的 Extension 内存使用不超过 50 MB。
@@ -3155,7 +3155,7 @@ await _engine.stopScreenCapture();
 
 本节介绍如何在你的项目中实现屏幕共享，API 调用时序如下图所示。
 
-![流程图](https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg)
+<DocsImage alt="流程图" src="https://web-cdn.agora.io/docs-portal/img/rtc/screen-share/screen-share-process-pc.svg" displayWidth="70%" />
 
 开启屏幕共享有如下两种方案，你可以根据实际场景进行选择：
 

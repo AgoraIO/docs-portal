@@ -1,0 +1,92 @@
+---
+title: 音频设备管理
+description: 介绍跟音频设备管理相关的方法和回调。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/toc_audio_device
+  sourcePath: html-docs/rtc/HarmonyOS/API/toc_audio_device.html
+  generator: oxygen
+  warnings: []
+---
+
+<a id="toc_audio_device"></a>
+
+<a id="api_iaudiodevicemanager_startrecordingdevicetest"></a>
+
+<a id="ariaid-title2"></a>
+
+## startRecordingDeviceTest
+
+启动音频采集设备测试。
+
+<a id="api_iaudiodevicemanager_startrecordingdevicetest__prototype"></a>
+
+```text
+public abstract startRecordingDeviceTest(indicationInterval:number):number;
+```
+
+<a id="api_iaudiodevicemanager_startrecordingdevicetest__detailed_desc"></a>
+
+### 详情
+
+该方法用于测试本地音频采集设备是否能正常工作。调用该方法后，SDK 会按设置的时间间隔触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调，报告 uid = 0 及采集设备的音量信息。
+
+该方法和 startEchoTest 的区别在于该方法检测本地的音频采集设备能否正常工作，后者可以检测音视频设备及网络是否正常。
+
+:::note
+注： 该方法需要在加入频道前调用。测试完成后，如需加入频道，请确保先调用 [stopRecordingDeviceTest](/zh-CN/api-reference/rtc/harmonyos/device-management/audio-device#api_iaudiodevicemanager_stoprecordingdevicetest) 停止设备测试。
+:::
+
+<a id="api_iaudiodevicemanager_startrecordingdevicetest__parameters"></a>
+
+### 参数
+
+<ParameterList>
+<a id="indicationinterval"></a>
+<Parameter name="indicationInterval">
+
+SDK 触发 [onAudioVolumeIndication](/zh-CN/api-reference/rtc/harmonyos/audio/audio-basic#callback_irtcengineeventhandler_onaudiovolumeindication) 回调的时间间隔，单位为毫秒，最小取值为 10，否则会收不到 onAudioVolumeIndication 回调，SDK 会返回错误码 `-2`。声网推荐你将该值设为 100。
+
+</Parameter>
+</ParameterList>
+
+<a id="api_iaudiodevicemanager_startrecordingdevicetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。
+
+  - -2: 参数设置错误，请重新设置参数。
+
+<a id="api_iaudiodevicemanager_stoprecordingdevicetest"></a>
+
+<a id="ariaid-title3"></a>
+
+## stopRecordingDeviceTest
+
+停止音频采集设备测试。
+
+<a id="api_iaudiodevicemanager_stoprecordingdevicetest__prototype"></a>
+
+```text
+public abstract stopRecordingDeviceTest():number;
+```
+
+<a id="api_iaudiodevicemanager_stoprecordingdevicetest__detailed_desc"></a>
+
+### 详情
+
+该方法用于停止音频采集设备测试。调用 [startRecordingDeviceTest](/zh-CN/api-reference/rtc/harmonyos/device-management/audio-device#api_iaudiodevicemanager_startrecordingdevicetest) 后，必须调用该方法停止测试。
+
+:::note
+注： 该方法需要在加入频道前调用。
+:::
+
+<a id="api_iaudiodevicemanager_stoprecordingdevicetest__return_values"></a>
+
+### 返回值
+
+- 0: 方法调用成功。
+- &lt; 0: 方法调用失败。详见[错误码](/zh-CN/api-reference/rtc/error-code)了解详情和解决建议。

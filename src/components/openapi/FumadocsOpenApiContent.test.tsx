@@ -1,11 +1,17 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import {
+  act,
   fireEvent,
   render,
   screen,
   waitFor,
   within,
 } from '@testing-library/react';
+import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import yaml from 'js-yaml';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
@@ -110,6 +116,227 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it.each([
+    {
+      source: 'cloud-recording/cloud-recording.zh-CN.yaml',
+      path: '/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update',
+      method: 'post' as const,
+      heading: '路径参数',
+      expectedItem: '对于页面录制模式，只需输入开通了云端录制服务的 App ID。',
+    },
+    {
+      source: 'conversational-ai/rest-api.zh-CN.yaml',
+      path: '/v2/projects/{appid}/agents',
+      method: 'get' as const,
+      heading: '查询参数',
+      expectedItem: 'IDLE (0)：空闲状态的智能体。',
+    },
+  ])(
+    'renders valid lists from the migrated $source descriptions',
+    async (fixture) => {
+      const document = yaml.load(
+        await readFile(path.resolve('content/openapi', fixture.source), 'utf8'),
+      ) as Document;
+      const { container } = render(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [{ method: fixture.method, path: fixture.path }],
+            payload: { bundled: document },
+          }}
+        />,
+      );
+      await screen.findByRole('heading', { name: fixture.heading });
+      const items = screen.getAllByText(
+        (_text, element) =>
+          element?.tagName === 'LI' &&
+          element.textContent === fixture.expectedItem,
+      );
+      for (const item of items) {
+        expect(item.closest('li')?.parentElement?.tagName).toBe('UL');
+      }
+      for (const listItem of container.querySelectorAll('li')) {
+        expect(['UL', 'OL', 'MENU']).toContain(listItem.parentElement?.tagName);
+      }
+    },
+  );
+
+  it.each([true, false])(
+    'preserves authored authentication names and descriptions: %s',
+    async (alternative) => {
+      render(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [{ method: 'get', path: '/secured' }],
+            payload: {
+              bundled: {
+                openapi: '3.2.0',
+                info: { title: 'Security API' },
+                components: {
+                  securitySchemes: {
+                    basic: {
+                      type: 'http',
+                      scheme: 'basic',
+                      description: '**HTTP 基本认证**：使用客户凭证。',
+                    },
+                    apiKey: {
+                      type: 'apiKey',
+                      name: 'X-API-Key',
+                      in: 'header',
+                      description: '**HTTP HMAC 认证**：保留此说明。',
+                    },
+                  },
+                },
+                security: alternative
+                  ? [{ basic: [] }, { apiKey: [] }]
+                  : [{ basic: [], apiKey: [] }],
+                paths: {
+                  '/secured': {
+                    get: { responses: { '200': { description: 'OK' } } },
+                  },
+                },
+              } as unknown as Document,
+            },
+          }}
+        />,
+      );
+      await screen.findByRole('heading', { name: 'basic' });
+      expect(screen.getByRole('heading', { name: 'apiKey' })).toBeVisible();
+      expect(
+        screen.getByText('HTTP 基本认证', { selector: 'strong' }),
+      ).toBeVisible();
+      expect(
+        screen.getByText('HTTP HMAC 认证', { selector: 'strong' }),
+      ).toBeVisible();
+      expect(screen.getByText(/：使用客户凭证。/)).toBeVisible();
+      expect(screen.getByText(/：保留此说明。/)).toBeVisible();
+      expect(
+        screen.queryByRole('heading', { name: 'HTTP HMAC 认证' }),
+      ).toBeNull();
+      expect(screen.queryByText('使用以下任意一种鉴权方式。')).toBeNull();
+    },
+  );
+
+  it('does not report a failed clipboard write as copied, including after a successful copy', async () => {
+    const clipboard = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('Clipboard denied'))
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error('Clipboard denied'));
+    const original = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboard },
+    });
+    try {
+      render(
+        <FumadocsOpenApiContent
+          pageProps={makeMinimalOpenApiPageProps('post')}
+        />,
+      );
+      const preview = await screen.findByTestId('openapi-code-preview');
+      const button = within(preview).getByRole('button', { name: 'Copy Text' });
+      const source = preview.querySelector('pre')?.textContent;
+      expect(source).toBeTruthy();
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+      expect(button).toHaveAccessibleName('Copy Text');
+      expect(button).not.toHaveAttribute('data-checked');
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(button).toHaveAccessibleName('Copied Text');
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(clipboard).toHaveBeenCalledTimes(3);
+      expect(button).toHaveAccessibleName('Copy Text');
+      expect(button).not.toHaveAttribute('data-checked');
+    } finally {
+      if (original) Object.defineProperty(navigator, 'clipboard', original);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
+  it('preserves complete multiline code in crawler HTML and copies it before and after highlighting', async () => {
+    const source = [
+      'curl --request POST https://example.com/endpoint \\',
+      ...Array.from(
+        { length: 45 },
+        (_, i) => `  --header 'X-Example-${i}: <value>&' \\`,
+      ),
+      "  --data '{}'",
+    ].join('\n');
+    const props: OpenAPIPageProps = {
+      operations: [
+        { method: 'post', path: '/example' } as OpenApiOperationItem,
+      ],
+      payload: {
+        bundled: {
+          info: { title: 'Example' },
+          openapi: '3.2.0',
+          paths: {
+            '/example': {
+              post: {
+                responses: { '200': { description: 'OK' } },
+                'x-codeSamples': [{ lang: 'bash', label: 'curl', source }],
+              },
+            },
+          },
+        } as unknown as Document,
+      },
+    };
+    const $ = load(
+      renderToStaticMarkup(<FumadocsOpenApiContent pageProps={props} />),
+    );
+    expect($('pre code').first().text()).toBe(source);
+    expect($('pre code').first().text().split('\n')).toHaveLength(47);
+    expect($('pre code').first().find('value')).toHaveLength(0);
+    expect($('[data-collapsed]')).toHaveLength(0);
+
+    const clipboard = vi.fn().mockResolvedValue(undefined);
+    const original = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboard },
+    });
+    try {
+      const { container } = render(
+        <FumadocsOpenApiContent pageProps={props} />,
+      );
+      const code = container.querySelector('pre code');
+      expect(code?.textContent).toBe(source);
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+      await waitFor(() =>
+        expect(
+          container.querySelector('pre span[style*="--shiki-light"]'),
+        ).toBeInTheDocument(),
+      );
+      expect(container.querySelector('pre code')?.textContent).toBe(source);
+      const flags = [...container.querySelectorAll('pre span[style]')].filter(
+        (node) => /^--[a-z-]+$/.test(node.textContent ?? ''),
+      );
+      expect(flags).toHaveLength(47);
+      expect(
+        new Set(flags.map((node) => node.getAttribute('style'))).size,
+      ).toBe(1);
+      fireEvent.click(
+        screen.getByRole('button', { name: /Copy Text|Copied Text/ }),
+      );
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+    } finally {
+      if (original) Object.defineProperty(navigator, 'clipboard', original);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
   it('uses one section heading contract for all OpenAPI content sections', async () => {
     render(
       <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
@@ -654,8 +881,11 @@ describe('FumadocsOpenApiContent', () => {
       '-mb-px',
       'last:rounded-b-xl',
     );
-    expect(generatedPanel.querySelector('.token-command')).toBeInTheDocument();
-    expect(generatedPanel.querySelector('.token-flag')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        generatedPanel.querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
+    );
     expect(
       within(generatedPreview).getByRole('button', { name: '复制文本' }),
     ).toBeInTheDocument();
@@ -755,9 +985,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(
-      examplesScope.getByRole('tabpanel').querySelector('.token-command'),
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        examplesScope
+          .getByRole('tabpanel')
+          .querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
+    );
     const preview = examplesScope.getByTestId('openapi-code-preview');
     expect(
       within(preview)
@@ -3572,6 +3806,63 @@ describe('FumadocsOpenApiContent', () => {
       await screen.findByRole('heading', { name: '响应 Body' }),
     ).toBeInTheDocument();
     expect(screen.getByText('Schema 中没有字段')).toBeInTheDocument();
+  });
+
+  it('shows primitive types for titled response references', async () => {
+    render(
+      <FumadocsOpenApiContent
+        locale="zh-CN"
+        pageProps={{
+          operations: [{ method: 'post', path: '/recording/start' }],
+          payload: {
+            bundled: {
+              components: {
+                schemas: {
+                  'cname-r': { title: 'cname-r', type: 'string' },
+                  'resourceId-r': { title: 'resourceId-r', type: 'string' },
+                  'uid-r': { title: 'uid-r', type: 'string' },
+                },
+              },
+              info: { title: 'Cloud recording API' },
+              openapi: '3.2.0',
+              paths: {
+                '/recording/start': {
+                  post: {
+                    responses: {
+                      '200': {
+                        content: {
+                          'application/json': {
+                            schema: {
+                              properties: {
+                                cname: { $ref: '#/components/schemas/cname-r' },
+                                resourceId: {
+                                  $ref: '#/components/schemas/resourceId-r',
+                                },
+                                sid: { type: 'string' },
+                                uid: { $ref: '#/components/schemas/uid-r' },
+                              },
+                              type: 'object',
+                            },
+                          },
+                        },
+                        description: 'Recording started.',
+                      },
+                    },
+                  },
+                },
+              },
+            } as unknown as Document,
+          },
+        }}
+      />,
+    );
+
+    for (const name of ['cname', 'uid', 'resourceId', 'sid']) {
+      const field = await screen.findByText(name, { selector: 'code' });
+      const row = field.closest('.openapi-schema-field-row') as HTMLElement;
+      expect(within(row).getByText('string', { exact: true })).toBeVisible();
+      expect(within(row).queryByText(`${name}-r`)).not.toBeInTheDocument();
+    }
   });
 
   it('keeps a real primitive response schema renderable', async () => {

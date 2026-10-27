@@ -567,11 +567,14 @@ onLocalVideoStateChanged?:(source: Constants.VideoSourceType, state:Constants.Lo
 - 当摄像头输出采集的视频帧时，如果 SDK 检测到连续 15 个重复的视频帧，会触发该回调，且 state 为 CAPTURING，reason 为 CAPTURE_FAILURE。
 
   :::note
-  注：
-
-  - 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
-  - 如果视频采集出现异常，正常情况下可以通过该回调的 `reason` 参数来排查问题。但在部分设备上，采集出现问题时（如卡死） Android 系统不会抛出任何错误回调，因此 SDK 无法报告本地视频状态改变的原因，此时你可以通过下列方式来判断采集是否无帧：该回调报告 `state` 为 `CAPTURING` 或 `ENCODING`，且 [onLocalVideoStats](/zh-CN/api-reference/rtc/harmonyos/video/video-basic#callback_irtcengineeventhandler_onlocalvideostats) 回调的 `captureFrameRate` 为 0。
+  注： 帧重复检测仅针对分辨率大于 200 × 200、帧率大于等于 10 fps、码率小于 20 Kbps 的视频帧。
   :::
+
+<a id="callback_irtcengineeventhandler_onlocalvideostatechanged__restriction"></a>
+
+### 使用限制
+
+对某些机型而言，当本地视频采集设备正在使用中时，SDK 不会在本地视频状态发生改变时触发该回调，你需要自行做超时判断。
 
 <a id="callback_irtcengineeventhandler_onlocalvideostatechanged__parameters"></a>
 

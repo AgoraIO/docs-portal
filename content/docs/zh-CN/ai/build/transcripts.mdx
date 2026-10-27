@@ -242,18 +242,39 @@ const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
 
 调用 `addHandler` 方法，注册并实现字幕转录回调：
 
-```kotlin tab="Android" tabGroup="language"
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+```kotlin
 api.addHandler(covEventHandler)
 ```
 
-```swift tab="iOS" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="ios">
+
+```swift
 convoAIAPI.addHandler(handler: self)
 ```
 
-```typescript tab="Web" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="web">
+
+```typescript
 // 监听转录内容更新，用于实时显示字幕转录内容
 conversationalAIAPI.on(EConversationalAIAPIEvents.TRANSCRIPT_UPDATED, onTextChanged)
 ```
+
+</TabsContent>
+
+</Tabs>
 
 ### 实现字幕数据回调接口
 
@@ -407,7 +428,16 @@ conversationalAIAPI.subscribeMessage(channel_name)
 
 每次智能体会话结束后，你需要取消订阅频道消息，以释放字幕相关资源。
 
-```kotlin tab="Android" tabGroup="language"
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+```kotlin
 api.unsubscribeMessage("channelName") { error ->
     if (error != null) {
         // 处理错误
@@ -415,7 +445,11 @@ api.unsubscribeMessage("channelName") { error ->
 }
 ```
 
-```swift tab="iOS" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="ios">
+
+```swift
 /// 取消订阅频道消息
 convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
     if let error = error {
@@ -426,25 +460,54 @@ convoAIAPI.unsubscribeMessage(channelName: channelName) { error in
 }
 ```
 
-```typescript tab="Web" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="web">
+
+```typescript
 conversationalAIAPI.unsubscribeMessage(channel_name)
 ```
+
+</TabsContent>
+
+</Tabs>
 
 ### 销毁组件实例
 
 结束 AI 对话场景后或关闭 App 前，你需要销毁组件实例，以释放组件的所有资源。
 
-```kotlin tab="Android" tabGroup="language"
+<Tabs defaultValue="android" groupId="language" persist>
+<TabsList>
+  <TabsTrigger value="android">Android</TabsTrigger>
+  <TabsTrigger value="ios">iOS</TabsTrigger>
+  <TabsTrigger value="web">Web</TabsTrigger>
+</TabsList>
+
+<TabsContent value="android">
+
+```kotlin
 api.destroy()
 ```
 
-```swift tab="iOS" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="ios">
+
+```swift
 convoAIAPI.destroy()
 ```
 
-```typescript tab="Web" tabGroup="language"
+</TabsContent>
+
+<TabsContent value="web">
+
+```typescript
 conversationalAIAPI.destroy()
 ```
+
+</TabsContent>
+
+</Tabs>
 
 ## 参考信息
 

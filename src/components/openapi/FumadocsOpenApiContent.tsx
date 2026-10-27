@@ -1,4 +1,6 @@
 import { TranslationProvider } from '@fuma-translate/react';
+import { defaultShikiFactory } from 'fumadocs-core/highlight/shiki/full';
+import { useShikiDynamic } from 'fumadocs-core/highlight/shiki/react';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins/remark-gfm';
 import type { RenderContext } from 'fumadocs-openapi';
 import type { InlineCodeUsageGenerator } from 'fumadocs-openapi/requests/generators';
@@ -40,6 +42,7 @@ import { useMeasuredDocsBody } from '@/components/docs-shell/DocsContentMeasurem
 import { createDocsTableComponent } from '@/components/mdx';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/cn';
+import { codeHighlightOptions, codeLanguageAliases } from '@/lib/code/options';
 import { syncDocsHashTargetFromLocation } from '@/lib/docs-hash';
 import { normalizeDocsHref } from '@/lib/docs-link-normalize';
 import {
@@ -47,7 +50,6 @@ import {
   buildUniqueOpenApiAnchorIds,
   slugOpenApiAnchorSegment,
 } from '@/lib/openapi/anchors';
-import { highlightOpenApiCode } from '@/lib/openapi/code-highlight';
 import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import {
   buildOpenApiResponseViews,
@@ -93,12 +95,12 @@ const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OpenApiRequestCodeContext = createContext(false);
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
-  'Collapse all': '折叠全部',
+  'Collapse all': '收起所有字段',
   Collapse: '折叠',
   'Copied endpoint URL': '已复制接口 URL',
   'Copied Text': '已复制文本',
   'Cookie Parameters': 'Cookie 参数',
-  'Expand all': '展开全部',
+  'Expand all': '展开所有字段',
   Expand: '展开',
   'Copy link to': '复制链接到',
   'Copy endpoint URL': '复制接口 URL',
@@ -138,13 +140,15 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Allowed values(schema UI)': '可选值',
   'Cookie Parameters': 'Cookie 参数',
-  'Collapse all(schema UI)': '折叠全部',
+  'Collapse all(schema UI)': '收起所有字段',
   'Copied link to(schema UI)': '已复制字段链接到',
   'Copy link to(schema UI)': '复制字段链接到',
   'Default(schema UI)': '默认值',
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
-  'Expand all(schema UI)': '展开全部',
+  'Expand all(schema UI)': '展开所有字段',
+  'Fields(schema UI)': '字段',
+  'JSON example(schema UI)': 'JSON 示例',
   'Filter Properties(schema UI)': '筛选属性',
   'Format(schema UI)': '格式',
   'Header Parameters': '请求 Header',
@@ -534,7 +538,13 @@ function getOpenApiLabel(label: string, locale?: string) {
 }
 
 function getOpenApiFumaTranslations(locale?: string) {
-  return isZhCnLocale(locale) ? ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS : {};
+  return isZhCnLocale(locale)
+    ? {
+        ...ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS,
+        'Copy Text(code block)(aria-label)': '复制文本',
+        'Copied Text(code block)(aria-label)': '已复制文本',
+      }
+    : {};
 }
 
 function useLocalizedOpenApiGeneratedChrome(
@@ -698,7 +708,7 @@ function OpenApiInlineAuthorizationSection({
       <h2 className={OPENAPI_SECTION_HEADING_CLASS} id="authorization">
         {getOpenApiLabel('Authorization', locale)}
       </h2>
-      <div className="space-y-4 rounded-xl border border-fd-border bg-fd-card p-4 text-fd-card-foreground">
+      <div className="openapi-authorization-methods space-y-5">
         {schemes.map((scheme) => (
           <div key={scheme.key}>
             <h3 className="mb-2 font-semibold text-fd-foreground text-base">
@@ -979,12 +989,9 @@ function OpenApiStatusResponseHeaders({
       <h3 className="mb-3 font-semibold text-base">
         {getOpenApiLabel('Response Headers', locale)}
       </h3>
-      <div className="openapi-field-list overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
+      <div className="openapi-field-list divide-y divide-fd-border">
         {headers.map((header, index) => (
-          <div
-            className={index === 0 ? '' : 'border-fd-border border-t'}
-            key={anchorIds[index]}
-          >
+          <div key={anchorIds[index]}>
             <OpenApiResponseHeaderRow
               anchorId={anchorIds[index]}
               copyLinkLabel={getOpenApiLabel('Copy link to', locale)}
@@ -1590,7 +1597,7 @@ function renderOpenApiMarkdown(markdown: string): ReactNode {
 
 function renderOpenApiCodeBlock(lang: string, source: string) {
   return (
-    <OpenApiCodeSourceContext.Provider value={source}>
+    <OpenApiCodeSourceContext.Provider key={source} value={source}>
       {renderOpenApiMarkdown(`\`\`\`${lang}\n${source}\n\`\`\``)}
     </OpenApiCodeSourceContext.Provider>
   );
@@ -1600,38 +1607,51 @@ function OpenApiMarkdownCodeBlock({
   children,
   ...props
 }: ComponentProps<'pre'>) {
-  const source = useContext(OpenApiCodeSourceContext);
+  const contextSource = useContext(OpenApiCodeSourceContext);
   const isRequestCode = useContext(OpenApiRequestCodeContext);
-  const childClassName = isValidElement(children)
-    ? (children.props as { className?: string }).className
+  const childProps = isValidElement(children)
+    ? (children.props as { className?: string; children?: ReactNode })
     : undefined;
   const language =
     getCodeBlockLanguage(props.className) ??
-    getCodeBlockLanguage(childClassName);
+    getCodeBlockLanguage(childProps?.className) ??
+    'text';
+  const source =
+    contextSource ??
+    (typeof childProps?.children === 'string'
+      ? childProps.children
+      : undefined);
+  const highlighted = useShikiDynamic(
+    () => defaultShikiFactory.getOrInit(),
+    source ?? '',
+    {
+      ...codeHighlightOptions,
+      lang: codeLanguageAliases[language] ?? language,
+      defaultColor: false,
+      components: { pre: ({ children }) => <>{children}</> },
+      // Preserve every newline in server HTML and before hydration. The default
+      // DynamicCodeBlock placeholder joins line spans without text separators.
+      defaultValue: <code>{source}</code>,
+    },
+    [source, language],
+  );
 
   return (
     <CodeBlock
       {...props}
       className={cn(
         props.className,
+        'shadow-none',
         isRequestCode &&
           'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
       )}
-      Actions={
-        source === undefined
-          ? undefined
-          : ({ className }) => (
-              <div className={cn('empty:hidden', className)}>
-                <OpenApiCodeCopyButton source={source} />
-              </div>
-            )
-      }
+      Actions={({ className, children }) => (
+        <div className={cn('empty:hidden', className)}>
+          {children && <OpenApiCodeCopyButton />}
+        </div>
+      )}
     >
-      <Pre>
-        {source === undefined || language === undefined
-          ? children
-          : highlightOpenApiCode({ language, source })}
-      </Pre>
+      <Pre>{source === undefined ? children : highlighted}</Pre>
     </CodeBlock>
   );
 }
@@ -1642,14 +1662,23 @@ function getCodeBlockLanguage(className: string | undefined) {
   return match?.[1];
 }
 
-function OpenApiCodeCopyButton({ source }: { source: string }) {
+/** Keep clipboard rejection handling while using the default code-block frame. */
+function OpenApiCodeCopyButton() {
   const locale = useContext(OpenApiLocaleContext);
-  const [checked, onClick] = useOpenApiCopyButton(() =>
-    navigator.clipboard.writeText(source),
-  );
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const [checked, onClick] = useOpenApiCopyButton(async () => {
+    const pre = buttonRef.current?.closest('figure')?.querySelector('pre');
+    if (!pre) throw new Error('Code block is unavailable');
+    const clone = pre.cloneNode(true) as HTMLPreElement;
+    for (const decoration of clone.querySelectorAll('.nd-copy-ignore'))
+      decoration.replaceWith('\n');
+    await navigator.clipboard.writeText(clone.textContent ?? '');
+  });
 
   return (
     <button
+      ref={buttonRef}
+      type="button"
       aria-label={getOpenApiLabel(
         checked ? 'Copied Text' : 'Copy Text',
         locale,
@@ -1657,7 +1686,6 @@ function OpenApiCodeCopyButton({ source }: { source: string }) {
       className="inline-flex items-center justify-center rounded-md p-1 text-sm font-medium text-fd-muted-foreground transition-colors duration-100 hover:text-fd-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-fd-ring disabled:pointer-events-none disabled:opacity-50 data-checked:text-fd-accent-foreground [&_svg]:size-4"
       data-checked={checked || undefined}
       onClick={onClick}
-      type="button"
     >
       {checked ? <Check /> : <Clipboard />}
     </button>
@@ -1687,6 +1715,7 @@ function useOpenApiCopyButton(onCopy: () => void | Promise<void>) {
   const onClick = useCallback(() => {
     const requestId = requestRef.current + 1;
     requestRef.current = requestId;
+    setChecked(false);
     if (timeoutRef.current !== undefined) {
       window.clearTimeout(timeoutRef.current);
       timeoutRef.current = undefined;

@@ -2,11 +2,7 @@
 title: 智能摄像头概览
 description: "了解智能摄像头的核心能力、适用场景、接入路径和相关参考资源。"
 ---
-声网智能摄像头场景解决方案为设备端和客户端提供实时音视频和可靠信令的全场景服务。
-
-其中，设备端 SDK 适用于网络摄像机 (IP Camera)、可视门铃、行车记录仪等轻量级嵌入式设备，客户端 SDK 适用于移动端 (Android/iOS)、桌面端 (macOS/Windows) 或 Web 端 App。通过接入声网的 [SD-RTN™](/zh-CN/introduction/glossary#sd-rtn)，可以实现设备端和客户端 App 的实时互动。
-
-例如，在使用网络摄像机的场景中，用户可以在手机上查看摄像机画面，手机客户端还可以与摄像机设备端进行双向语音对讲。
+声网智能摄像头场景解决方案为设备端和客户端提供实时音视频和可靠信令的全场景服务。其中，设备端 SDK 适用于网络摄像机 (IP Camera)、可视门铃、行车记录仪等轻量级嵌入式设备，客户端 SDK 适用于移动端、桌面端或 Web 端 App。通过接入声网的 SD-RTN™，可以实现设备端和客户端 App 的实时互动。
 
 ## 开始构建
 
@@ -36,13 +32,13 @@ description: "了解智能摄像头的核心能力、适用场景、接入路径
 | 异常检测通知 | 设备端通过自身集成的 AI 检测能力（如移动侦测、人形检测、烟雾感知、异声感知、跌倒检测等）检测到异常后实时通知客户端；用户可通过客户端及时浏览现场情况。              |
 | 实时监控 | 用户可以通过客户端 App 或网页查看摄像头的视频画面。一个摄像头的视频画面能同时被多个客户端查看。一个客户端能同时查看多个摄像头的视频画面。 |
 | 双向对讲 | 用户可以通过客户端 App 或网页和设备端进行语音通话。              |
-| 控制信令 | 通过云信令 (RTM) SDK 实现可靠信令交互，用户可通过客户端 App 或网页远程控制设备。例如实时控制摄像头云台转动，全面实时了解摄像头周边状态。一般情况下，网络摄像头产品支持多个分辨率档位，用户可以通过客户端 App 主动选择分辨率。 |
+| 控制信令 | 设备端通过 RTSA Lite SDK 内置的 RTM 能力与客户端 RTM SDK 实现可靠信令交互，用户可通过客户端 App 或网页远程控制设备。例如实时控制摄像头云台转动，全面实时了解摄像头周边状态。一般情况下，网络摄像头产品支持多个分辨率档位，用户可以通过客户端 App 主动选择分辨率。 |
 
 ## 技术方案
 
 ### 方案架构
 
-声网提供 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa)、[RTC SDK](/zh-CN/realtime-media/rtc) 和 [RTM SDK](/zh-CN/realtime-media/rtm) 共同搭建智能摄像头场景。
+智能摄像头方案在设备端集成 [RTSA Lite SDK](/zh-CN/realtime-media/rtsa)，使用其音视频传输和内置 RTM 信令能力；在客户端集成 [RTC SDK](/zh-CN/realtime-media/rtc) 和 [RTM SDK](/zh-CN/realtime-media/rtm)，实现音视频交互、告警通知和设备控制。
 
 ![智能摄像头技术方案图](https://web-cdn.agora.io/docs-portal/img/smart-camera/tech.png)
 
@@ -50,16 +46,16 @@ description: "了解智能摄像头的核心能力、适用场景、接入路径
 
 | SDK 或服务 | 实现功能 |
 | --- | --- |
-| 声网 RTSA Lite SDK | <Slot name="product-overview-html-0-1-1" /> |
-| 声网 RTC SDK | <Slot name="product-overview-html-0-2-1" /> |
-| 声网云信令（RTM）SDK | <Slot name="product-overview-html-0-3-1" /> |
+| 声网 RTSA Lite SDK（设备端） | <Slot name="product-overview-html-0-1-1" /> |
+| 声网 RTC SDK（客户端） | <Slot name="product-overview-html-0-2-1" /> |
+| 声网 RTM SDK（客户端） | <Slot name="product-overview-html-0-3-1" /> |
 
 <Slot for="product-overview-html-0-1-1">
 
 - 设备端加入 RTC 频道
 - 设备端发送摄像头视频
 - 设备端和客户端语音双向对讲
-- 设备端通过内置实时信令功能和客户端进行实时信令交互
+- 设备端通过 RTSA Lite SDK 内置的 RTM 信令能力与客户端交互
 
 </Slot>
 
