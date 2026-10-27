@@ -9,14 +9,14 @@ const base = {
   submittedAt: '2026-10-27T06:00:00.000Z',
 };
 
-it('uses other for comment-only feedback and builds the complete GitHub handoff', () => {
+it('keeps reasons optional for comment-only feedback and builds the GitHub handoff', () => {
   const submission = prepareDocsFeedback({
     ...base,
     reasons: [],
     details: '  第二步需要更新。  ',
   });
   expect(submission).toMatchObject({
-    reasons: ['other'],
+    reasons: [],
     details: '第二步需要更新。',
     pageUrl: 'https://docs.example/realtime-media/rtc',
   });
@@ -27,7 +27,7 @@ it('uses other for comment-only feedback and builds the complete GitHub handoff'
   for (const text of [
     'RTC 概览',
     '是否有帮助：没有',
-    '其他',
+    '未选择',
     '第二步需要更新。',
   ])
     expect(body).toContain(text);
@@ -36,7 +36,7 @@ it('uses other for comment-only feedback and builds the complete GitHub handoff'
   expect(Object.isFrozen(submission?.reasons)).toBe(true);
 });
 
-it('rejects an empty or invalid response and keeps the positive branch free of hidden details', () => {
+it('rejects an empty or invalid response and preserves positive comments', () => {
   expect(
     prepareDocsFeedback({ ...base, reasons: [], details: '   ' }),
   ).toBeNull();
@@ -47,8 +47,8 @@ it('rejects an empty or invalid response and keeps the positive branch free of h
     ...base,
     helpfulness: 'yes',
     reasons: ['useful_examples', 'useful_examples'],
-    details: '负向草稿',
+    details: '  正向说明  ',
   });
   expect(submission?.reasons).toEqual(['useful_examples']);
-  expect(submission?.details).toBe('');
+  expect(submission?.details).toBe('正向说明');
 });

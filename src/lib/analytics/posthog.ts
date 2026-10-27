@@ -1,6 +1,7 @@
 import type { BeforeSendFn } from 'posthog-js';
 import type { AccountFlow, DocsAccount } from '@/lib/auth/contracts';
 import {
+  MAX_FEEDBACK_COMMENT_LENGTH,
   negativeFeedbackReasons,
   positiveFeedbackReasons,
 } from '@/lib/docs-feedback';
@@ -167,7 +168,7 @@ export async function captureDocsFeedbackSubmission(input: {
   submittedAt: string;
   helpfulness: DocsFeedbackValue;
   reasons: readonly string[];
-  hasComment: boolean;
+  details: string;
   pagePath: string;
 }): Promise<boolean> {
   if (
@@ -180,8 +181,9 @@ export async function captureDocsFeedbackSubmission(input: {
     input.helpfulness === 'yes'
       ? positiveFeedbackReasons
       : negativeFeedbackReasons;
+  const comment = input.details.trim().slice(0, MAX_FEEDBACK_COMMENT_LENGTH);
   if (
-    !input.reasons.length ||
+    (!input.reasons.length && !comment) ||
     input.reasons.some((reason) => !Object.hasOwn(labels, reason))
   )
     return false;
@@ -200,13 +202,14 @@ export async function captureDocsFeedbackSubmission(input: {
     canonical_path: measurementPath(input.pagePath),
     value: input.helpfulness,
     response,
-    has_comment: input.hasComment,
-    feedback_destination: input.hasComment ? 'github' : 'analytics',
+    comment,
+    has_comment: Boolean(comment),
+    feedback_destination: comment ? 'github' : 'analytics',
     feedback_scope: 'page',
     feedback_source: 'manual',
     surface: 'content',
     question_id: 'reasons',
-    prompt_version: 'inline-reasons-v1',
+    prompt_version: 'inline-reasons-v2',
     evidence_source: 'self_report',
     traffic_type: 'visitor',
   };

@@ -1,3 +1,5 @@
+export const MAX_FEEDBACK_COMMENT_LENGTH = 2000;
+
 export const negativeFeedbackReasons = {
   not_found: '找不到所需内容',
   wrong_context: '产品、平台或版本不匹配',
@@ -35,11 +37,9 @@ export function prepareDocsFeedback(
       : negativeFeedbackReasons;
   const keys = Object.keys(labels);
   if (input.reasons.some((reason) => !keys.includes(reason))) return null;
-  const details =
-    input.helpfulness === 'no' ? input.details.trim().slice(0, 2000) : '';
+  const details = input.details.trim().slice(0, MAX_FEEDBACK_COMMENT_LENGTH);
   const reasons = keys.filter((reason) => input.reasons.includes(reason));
-  if (!reasons.length && details) reasons.push('other');
-  if (!reasons.length) return null;
+  if (!reasons.length && !details) return null;
   const page = new URL(input.pageUrl);
   return Object.freeze({
     ...input,
@@ -67,7 +67,7 @@ export function buildFeedbackIssueUrl(submission: DocsFeedbackSubmission) {
       `页面：${submission.pageUrl}`,
       `页面标题：${submission.pageTitle || '文档页面'}`,
       `是否有帮助：${submission.helpfulness === 'yes' ? '有' : '没有'}`,
-      `原因：${submission.reasons.map((reason) => feedbackReasonLabel(submission.helpfulness, reason)).join('；')}`,
+      `原因：${submission.reasons.map((reason) => feedbackReasonLabel(submission.helpfulness, reason)).join('；') || '未选择'}`,
       '',
       '补充说明：',
       submission.details,

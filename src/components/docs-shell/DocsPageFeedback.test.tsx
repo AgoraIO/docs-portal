@@ -78,7 +78,8 @@ it('expands follow-up feedback below the votes without opening a modal', async (
   expect(capture).toHaveBeenLastCalledWith({ locale: 'zh-CN', value: 'yes' });
   expect(yes).toHaveTextContent('有');
   expect(screen.queryByText(/已记录/)).not.toBeInTheDocument();
-  expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+  expect(screen.getByRole('textbox')).toBeVisible();
+  expect(screen.getByRole('textbox')).toHaveValue('');
   expect(
     screen.queryByRole('button', { name: '提交' }),
   ).not.toBeInTheDocument();

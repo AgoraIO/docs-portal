@@ -10,6 +10,7 @@ import {
   buildFeedbackIssueUrl,
   type DocsFeedbackSubmission,
   feedbackReasonLabel,
+  MAX_FEEDBACK_COMMENT_LENGTH,
   positiveFeedbackReasons as positiveLabels,
   prepareDocsFeedback,
   negativeFeedbackReasons as problemLabels,
@@ -37,7 +38,7 @@ export function DocsFeedbackForm({
 }) {
   const [problems, setProblems] = useState<ProblemReason[]>([]);
   const [positives, setPositives] = useState<PositiveReason[]>([]);
-  const [details, setDetails] = useState('');
+  const [details, setDetails] = useState({ yes: '', no: '' });
   const [submitted, setSubmitted] = useState<DocsFeedbackSubmission | null>(
     null,
   );
@@ -51,7 +52,7 @@ export function DocsFeedbackForm({
   const isPositive = helpfulness === 'yes';
   const activeProblems = isPositive ? [] : problems;
   const activePositives = isPositive ? positives : [];
-  const activeDetails = isPositive ? '' : details.trim();
+  const activeDetails = helpfulness ? details[helpfulness].trim() : '';
 
   const canSubmit = Boolean(
     helpfulness &&
@@ -105,7 +106,7 @@ export function DocsFeedbackForm({
           submittedAt: submission.submittedAt,
           helpfulness: submission.helpfulness,
           reasons: submission.reasons,
-          hasComment: Boolean(submission.details),
+          details: submission.details,
           pagePath: new URL(submission.pageUrl).pathname,
         }),
         new Promise<boolean>((resolve) => {
@@ -150,14 +151,18 @@ export function DocsFeedbackForm({
       >
         <p role="status" className="font-medium">
           {submitted.details
-            ? '原因已上报。请在 GitHub 创建 Issue，完成文字反馈。'
+            ? '补充反馈已提交，谢谢！也可以在 GitHub 创建 Issue，方便跟进。'
             : '补充反馈已提交，谢谢！'}
         </p>
-        <p className="text-muted-foreground">
-          {submitted.reasons
-            .map((reason) => feedbackReasonLabel(submitted.helpfulness, reason))
-            .join('、')}
-        </p>
+        {submitted.reasons.length ? (
+          <p className="text-muted-foreground">
+            {submitted.reasons
+              .map((reason) =>
+                feedbackReasonLabel(submitted.helpfulness, reason),
+              )
+              .join('、')}
+          </p>
+        ) : null}
         <p className="text-xs text-muted-foreground">
           本条反馈已锁定。再次点击“有”或“没有”可以提交新的反馈。
         </p>
@@ -172,7 +177,7 @@ export function DocsFeedbackForm({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                继续在 GitHub 完成
+                在 GitHub 创建 Issue
               </a>
             </Button>
           ) : null}
@@ -259,32 +264,29 @@ export function DocsFeedbackForm({
             </div>
           </fieldset>
         )}
-        {!isPositive && (
-          <label className="flex flex-col gap-2 font-medium">
-            <span>
-              补充说明
-              <span className="font-normal text-muted-foreground">
-                （选填）
-              </span>
-            </span>
-            <textarea
-              className="min-h-24 w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-base font-normal outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 sm:text-sm"
-              value={details}
-              disabled={pending}
-              maxLength={2000}
-              placeholder="例如：哪一步没有讲清楚，或哪段代码运行不成功。"
-              onChange={(event) => {
-                setDetails(event.target.value);
-                setError('');
-              }}
-            />
-            {activeDetails && !problems.length ? (
-              <span className="text-xs font-normal text-muted-foreground">
-                未选择原因，将按“其他”提交。
-              </span>
-            ) : null}
-          </label>
-        )}
+        <label className="flex flex-col gap-2 font-medium">
+          <span>
+            补充说明
+            <span className="font-normal text-muted-foreground">（选填）</span>
+          </span>
+          <textarea
+            className="min-h-24 w-full resize-y rounded-md border border-input bg-background px-3 py-2 text-base font-normal outline-none placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-2 focus-visible:ring-ring/50 sm:text-sm"
+            value={helpfulness ? details[helpfulness] : ''}
+            disabled={pending}
+            maxLength={MAX_FEEDBACK_COMMENT_LENGTH}
+            placeholder={
+              isPositive
+                ? '例如：哪些说明或示例对你有帮助，或还有什么建议。'
+                : '例如：哪一步没有讲清楚，或哪段代码运行不成功。'
+            }
+            onChange={(event) => {
+              if (!helpfulness) return;
+              const value = event.target.value;
+              setDetails((draft) => ({ ...draft, [helpfulness]: value }));
+              setError('');
+            }}
+          />
+        </label>
       </div>
       <div className="flex flex-col gap-3 border-t pt-3">
         {error ? (
@@ -294,8 +296,8 @@ export function DocsFeedbackForm({
         ) : null}
         {canSubmit && activeDetails ? (
           <p className="text-xs text-muted-foreground">
-            原因会先上报，页面、评价、原因和说明会带到 GitHub。创建公开 Issue
-            需要登录 GitHub。
+            反馈将随当前页面提交，页面、评价、原因和说明也会带到
+            GitHub。创建公开 Issue 需要登录 GitHub。
           </p>
         ) : null}
         <div className="flex flex-wrap items-center justify-end gap-2">
