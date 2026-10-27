@@ -18,19 +18,13 @@ async function resolvePreview(input: string, eventName = 'workflow_dispatch') {
     (step) => step.name === 'Resolve preview context',
   )?.with?.script;
   if (!script) throw new Error('Missing preview context script');
-  // Model expression rendering for the original workflow as well as the fixed
-  // environment-variable input, so this executes the failing production path.
-  const rendered = script.replaceAll(
-    '${{ toJson(inputs.pr_number) }}',
-    JSON.stringify(input),
-  );
   const outputs: Record<string, string> = {};
   const list = vi.fn().mockResolvedValue({
     data: [
       { number: 1309, base: { ref: 'codex/cn-newdoc-html-api-migration' } },
     ],
   });
-  await runInNewContext(`(async () => {${rendered}})()`, {
+  await runInNewContext(`(async () => {${script}})()`, {
     process: { env: { PREVIEW_PR_NUMBER: input } },
     context: {
       eventName,
