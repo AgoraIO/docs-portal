@@ -1974,11 +1974,11 @@ async function resolvePageToc(
       ? buildPlatformTocText(processedText, platform)
       : buildCanonicalPlatformTocText(processedText);
 
-    return normalizeToc(await getAccordionTableOfContents(tocText));
+    return normalizeToc(await getMdxAwareTableOfContents(tocText));
   } catch {
     try {
       return normalizeToc(
-        await getAccordionTableOfContents(
+        await getMdxAwareTableOfContents(
           buildCanonicalPlatformTocText(processedText),
         ),
       );
@@ -1988,9 +1988,12 @@ async function resolvePageToc(
   }
 }
 
-function getAccordionTableOfContents(markdown: string) {
-  return markdown.includes('<Accordion')
-    ? getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings])
+function getMdxAwareTableOfContents(markdown: string) {
+  if (markdown.includes('<Accordion')) {
+    return getTableOfContents(markdown, [remarkMdx, remarkAccordionHeadings]);
+  }
+  return markdown.includes('<Tabs')
+    ? getTableOfContents(markdown, [remarkMdx])
     : getTableOfContents(markdown);
 }
 
