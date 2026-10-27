@@ -59,6 +59,8 @@
 
 浏览器使用 `VITE_POSTHOG_KEY`（Project API Key / project token）和 `VITE_POSTHOG_HOST`；管理 API key 保留在服务端或本地脚本。中文采集需 `VITE_DOCS_REGION=cn`、`VITE_DOCS_MEASUREMENT_ENABLED=true`。
 
+Vercel 中文预览由 CI 显式开启采集，环境标为 `staging`，版本为构建 commit。CI 使用仓库 Secrets `VITE_CN_POSTHOG_KEY`、`VITE_CN_POSTHOG_HOST` 注入中文项目的浏览器配置；全球站预览继续使用原有 Secrets，避免把中文反馈发到其他项目。
+
 传输边界只允许 `docs_feedback_form_submitted` 携带 `comment`，并再次执行 2,000 字符限制，避免通用字符串的 512 字符限制截断反馈。其他事件（包括自动采集和搜索事件）不能携带该字段。页面路径继续去除 query/hash，页面标题和完整 GitHub 链接不进入分析事件。
 
 ## 在 PostHog 查看文字与页面

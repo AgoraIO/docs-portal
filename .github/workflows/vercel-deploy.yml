@@ -189,8 +189,11 @@ jobs:
         if: steps.preview-context.outputs.should_deploy == 'true'
         env:
           VITE_DOCS_REGION: ${{ inputs.docs_region || steps.preview-context.outputs.docs_region || 'global' }}
-          VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
-          VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
+          VITE_DOCS_MEASUREMENT_ENABLED: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && 'true' || 'false' }}
+          VITE_DOCS_ENVIRONMENT: staging
+          VITE_DOCS_APP_RELEASE: ${{ github.event.pull_request.head.sha || github.sha }}
+          VITE_POSTHOG_HOST: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && secrets.VITE_CN_POSTHOG_HOST || secrets.VITE_POSTHOG_HOST }}
+          VITE_POSTHOG_KEY: ${{ (inputs.docs_region || steps.preview-context.outputs.docs_region || 'global') == 'cn' && secrets.VITE_CN_POSTHOG_KEY || secrets.VITE_POSTHOG_KEY }}
           VERCEL_GIT_PROVIDER: github
           VERCEL_GIT_REPO_OWNER: ${{ github.repository_owner }}
           VERCEL_GIT_REPO_SLUG: ${{ github.event.repository.name }}
