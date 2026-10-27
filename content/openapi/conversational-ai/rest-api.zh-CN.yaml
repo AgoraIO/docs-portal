@@ -1388,7 +1388,15 @@ paths:
               - 1734016896
         - name: state
           in: query
-          description: 指定需要查询智能体的状态，单次查询不支持指定多种状态：<li>`IDLE` (0)：空闲状态的智能体。</li><li>`STARTING` (1)：正在启动的智能体。</li><li>`RUNNING` (2)：正在运行的智能体。</li><li>`STOPPING` (3)：正在停止的智能体。</li><li>`STOPPED` (4)：已完成退出的智能体。</li><li>`FAILED` (6)：执行失败的智能体。</li>
+          description: |-
+            指定需要查询智能体的状态，单次查询不支持指定多种状态：
+
+            - `IDLE` (0)：空闲状态的智能体。
+            - `STARTING` (1)：正在启动的智能体。
+            - `RUNNING` (2)：正在运行的智能体。
+            - `STOPPING` (3)：正在停止的智能体。
+            - `STOPPED` (4)：已完成退出的智能体。
+            - `FAILED` (6)：执行失败的智能体。
           schema:
             type: string
             default: '2'

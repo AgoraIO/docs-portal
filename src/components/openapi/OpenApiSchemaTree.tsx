@@ -93,6 +93,7 @@ function getOpenApiSchemaIdentity(schema: OpenApiSchemaViewNode['schema']) {
 export type OpenApiSchemaTreeLabels = OpenApiSchemaFieldRowLabels & {
   collapseAll: string;
   expandAll: string;
+  fields?: string;
 };
 
 export type OpenApiSchemaRevealTarget = {
@@ -390,11 +391,15 @@ export function OpenApiSchemaTree({
       ref={treeRef}
     >
       {expandableNodeIds.length > 0 ? (
-        <div className="flex justify-end pb-2">
+        <div className="openapi-schema-toolbar mb-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-fd-border border-b pb-2">
+          <span className="font-medium text-fd-muted-foreground text-sm">
+            {labels.fields ?? labels.properties}
+          </span>
           <Button
             aria-label={allExpanded ? labels.collapseAll : labels.expandAll}
+            className="min-h-11 sm:min-h-9"
             onClick={handleToggleAll}
-            size="xs"
+            size="sm"
             type="button"
             variant="ghost"
           >
