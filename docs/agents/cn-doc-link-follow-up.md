@@ -4,6 +4,14 @@
 
 本清单整理既有的 2026-10-26／27 核查证据，没有重新进行网络探测。已剔除被替换的旧址、改为代码展示的示例地址，以及已取得有效补证的条目。计数按包含锚点的完整 URL 去重，不按重复引用次数计数。
 
+## GitHub 待办
+
+以下均作为历史遗留问题单独跟踪，不随本次链接修复 PR 自动关闭：
+
+- [#1310：IoT Android 示例工程有效获取地址](https://github.com/AgoraIO/docs-portal/issues/1310) — 等待产品方补充工程与版本信息。
+- [#1312：325 条访问受限或定位未确认的外链](https://github.com/AgoraIO/docs-portal/issues/1312) — 逐条人工复核，完整明细见下方及 CSV。
+- [#1311：Java REST Client 的 OpenAI 链接格式](https://github.com/AgoraIO/docs-portal/issues/1311) — 独立修复地址中混入的 Markdown。
+
 ## 1. IoT Android 示例工程缺失
 
 - 原仓库：[AgoraIO-Community/ag-iot-callkit-android-app](https://github.com/AgoraIO-Community/ag-iot-callkit-android-app)。既有仓库/API检查为 404，未找到可靠的 Android 替代工程。
