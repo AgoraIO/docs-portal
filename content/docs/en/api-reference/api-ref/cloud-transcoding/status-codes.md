@@ -27,7 +27,6 @@ When using Cloud Transcoding, you may receive status codes that indicate the ser
 | --- | --- | --- |
 | `200 OK` | The request was successful. | No troubleshooting is required. |
 | `202 Accepted` | The server has received the task request, but the task execution may not be complete. | Query the execution status before proceeding to the next business operation. |
-| `206 Partial Content` | The server hasn't finished processing the request. `Destroy` can return this code. | Call `Query` with a backoff strategy to confirm the task status. |
 | `400 Bad Request` | The request syntax is incorrect, the parameter value does not meet the requirements, or your App ID does not have Cloud Transcoding enabled. | Investigate based on the `message` field in the response body. |
 | `401 Unauthorized` | The `Authorization` field for HTTP Basic authentication is invalid. | See [RESTful authentication](authentication) or check your `Authorization` credentials. |
 | `403 Forbidden` | Cloud Transcoding is not enabled for your App ID. | [Enable Cloud Transcoding](/en/realtime-media/transcoding/sdk-quickstart#enable-cloud-transcoding) in Agora Console. |

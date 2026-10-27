@@ -1645,11 +1645,7 @@ paths:
             contains the result of the request.
 
 
-            - If the returned status code is `206`, the server hasn't finished processing the
-            request. Call `Query` with a backoff strategy to confirm the task status.
-
-
-            - If the returned status code is not `200` or `206`, the request failed.
+            - If the returned status code is not `200`, the request failed.
       operationId: destroy-cloud-transcoding-task
       x-codeSamples:
         - lang: bash
@@ -1725,16 +1721,6 @@ paths:
                 taskId: 609f28f2644f1ae1ceb041b7047e3***
                 variables: {}
                 workflows: {}
-        "206":
-          description: >-
-            The server hasn't finished processing the request. Call `Query` with a backoff strategy
-            to confirm the task status.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/error-response"
-              example:
-                message: request not completed
         default:
           $ref: "#/components/responses/not-200"
   /v1/ncs/ip:
