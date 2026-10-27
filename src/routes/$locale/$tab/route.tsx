@@ -8,6 +8,7 @@ import {
 import { DocsShell } from '@/components/docs-shell/DocsShell';
 import { getDocsTabIndex } from '@/lib/docs-page';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { isSupportedDocLocale } from '@/lib/docs-routing';
 import { readStaticDocsSearchIndex } from '@/lib/docs-search-index';
 import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
@@ -123,15 +124,4 @@ function DocsTabLayout() {
 
 function normalizePathname(pathname: string) {
   return pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
-}
-
-function preserveRedirectSearch(
-  href: string,
-  location: { hash?: string; searchStr?: string },
-) {
-  if (/[?#]/.test(href)) {
-    return href;
-  }
-
-  return `${href}${location.searchStr ?? ''}${location.hash ?? ''}`;
 }

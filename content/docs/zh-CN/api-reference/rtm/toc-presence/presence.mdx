@@ -78,7 +78,7 @@ void whoNow(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `options` | `PresenceOptions` | 必填 | - | 查询附加选项。 |
 | `resultCallback` | `ResultCallback<WhoNowResult>` | 必填 | - | <Slot name="presence-android-html-0-4-4" /> |
 
@@ -186,7 +186,7 @@ void whereNow(
 | 属性          |     类型      | 描述    |
 | ----------- | --------------- | --------- |
 | `channelName` |    String     | 频道名称。                    |
-| `channelType` | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -233,7 +233,7 @@ void setState(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `items` | `Map<String, String>` | 必填 | - | 用户状态键值对。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="presence-android-html-3-4-4" /> |
 
@@ -287,7 +287,7 @@ void getState(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `userId` | String | 必填 | - | 用户 ID。 |
 | `resultCallback` | `ResultCallback<UserState>` | 必填 | - | <Slot name="presence-android-html-4-4-4" /> |
 
@@ -348,7 +348,7 @@ void removeState(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `keys` | `ArrayList<String>` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="presence-android-html-5-4-4" /> |
 
@@ -420,7 +420,7 @@ Future<(RtmStatus, WhoNowResult?) whoNow(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `includeUserId` | bool | 选填 | `true` | 返回结果中是否包含在线成员的`userId`。 |
 | `includeState` | bool | 选填 | `false` | 返回结果中是否包含在线用户的临时状态数据。 |
 | `page` | String | 选填 | - | 页码书签。如果不填写，则 SDK 默认返回第一页结果。你可以在返回值中查看是否还有下一页。 |
@@ -551,7 +551,7 @@ Future<(RtmStatus, SetStateResult?) setState(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `state` | `Map<String, String>` | 必填 | - | 用户状态键值对。 |
 
 ### 基本用法
@@ -611,7 +611,7 @@ Future<(RtmStatus, GetStateResult?)> getState(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `userId` | String | 必填 | - | 用户 ID。 |
 
 ### 基本用法
@@ -678,7 +678,7 @@ Future<(RtmStatus, RemoveStateResult?)> removeState(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `states` | `List<String>` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
 
 ### 基本用法
@@ -751,7 +751,7 @@ async whoNow(channelName: string, channelType: RtmChannelType, options: Presence
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `options` | `PresenceOptions` | 必填 | - | 查询附加选项。 |
 
 `PresenceOptions` 数据类型包含以下属性：
@@ -874,7 +874,7 @@ async whereNow(userId: string): Promise<WhereNowResponse>
 |  属性  |  类型  | 描述      |
 | ---- | ----- | --------- |
 | `channelName`     | string |  频道名称。         |
-| `channelType` | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -916,7 +916,7 @@ async setState(channelName: string, channelType: RtmChannelType, items: StateIte
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `items` | `StateItem[]` | 必填 | - | 用户状态数组。 |
 
 `StateItem` 数据类型包含以下属性：
@@ -974,7 +974,7 @@ async getState(channelName: string, channelType: RtmChannelType, userId: string)
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `userId` | string | 必填 | - | 用户 ID。 |
 
 ### 返回值
@@ -1040,7 +1040,7 @@ async removeState(channelName: string, channelType: RtmChannelType, keys: string
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `keys` | string[] | 必填 | - | 需要删除状态的 `key` 列表。如果传入空数组，则删除全部状态。 |
 
 ### 返回值
@@ -1118,7 +1118,7 @@ AgoraRtmPresence
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `options` | `AgoraRtmPresenceOptions` | 选填 | - | 查询附加选项。 |
 | `completion` | `AgoraRtmWhoNowBlock` | 选填 | - | <Slot name="presence-ios-html-0-4-4" /> |
 
@@ -1221,7 +1221,7 @@ presence_opt.includeUserId = false;
 |  属性  |  类型  | 描述      |
 | ---- | ----- | --------- |
 | `channelName`     | NSString |  频道名称。         |
-| `channelType` | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -1261,7 +1261,7 @@ presence_opt.includeUserId = false;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `items` | NSDictionary | 必填 | - | 用户状态，类型为 `StateItem` 数组。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-ios-html-3-4-4" /> |
 
@@ -1308,7 +1308,7 @@ NSDictionary *states = @{@"key1": @"value1", @"key2": @"value2"};
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `userId` | NSString | 必填 | - | 用户 ID。 |
 | `completion` | `AgoraRtmPresenceGetStateBlock` | 选填 | - | <Slot name="presence-ios-html-4-4-4" /> |
 
@@ -1367,7 +1367,7 @@ NSDictionary *states = @{@"key1": @"value1", @"key2": @"value2"};
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `keys` | `NSArray<NSString *>` | 必填 | - | 需要删除状态的 `key` 列表。如果不填写，则删除全部状态。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="presence-ios-html-5-4-4" /> |
 
@@ -1823,7 +1823,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `WhoNowResult` 包含以下属性：
 
@@ -1915,7 +1915,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `WhereNowResult` 包含以下属性：
 
@@ -1999,7 +1999,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 ## GetStateAsync
 
@@ -2057,7 +2057,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `GetStateResult` 包含以下属性：
 
@@ -2137,6 +2137,6 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 </PlatformStructured>

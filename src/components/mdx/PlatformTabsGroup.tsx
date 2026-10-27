@@ -10,6 +10,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useEffectEvent,
   useId,
   useLayoutEffect,
   useMemo,
@@ -17,6 +18,10 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+} from '@/lib/docs-hash';
 import { buildDocPath } from '@/lib/docs-routing';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
@@ -52,7 +57,10 @@ const PlatformTabsPlacementContext = createContext<{
 });
 const PlatformPageContext = createContext<{
   activePlatform?: PlatformKey;
-  handlePlatformChange: (value: string) => void;
+  handlePlatformChange: (
+    value: string,
+    options?: { preserveLocation?: boolean },
+  ) => void;
 } | null>(null);
 const useBrowserLayoutEffect =
   typeof window === 'undefined' ? useEffect : useLayoutEffect;
@@ -173,6 +181,44 @@ export function PlatformTabsGroup({
     syncPath: shouldSyncPlatformPath,
   });
 
+  const groupRef = useRef<HTMLDivElement>(null);
+  const revealHashPlatform = useEffectEvent((hash: string) => {
+    const heading = findDocsHeadingForHash(hash);
+    const panel = heading?.closest<HTMLElement>('[data-platform-panel]');
+    const platform = panel?.dataset.platformPanel;
+    if (
+      panel?.closest('[data-platform-group]') === groupRef.current &&
+      platform &&
+      platform !== activePlatform &&
+      isKnownPlatform(platform) &&
+      parsedPlatforms.includes(platform)
+    ) {
+      // Deep links select their containing panel without clearing the hash,
+      // unlike an explicit platform-tab click.
+      handlePlatformChange(platform, { preserveLocation: true });
+    }
+  });
+  useEffect(() => {
+    const applyCurrentHash = () => revealHashPlatform(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const hash = (event as CustomEvent<string>).detail;
+      revealHashPlatform(
+        typeof hash === 'string' ? hash : window.location.hash,
+      );
+    };
+    applyCurrentHash();
+    const observer = new MutationObserver(applyCurrentHash);
+    if (groupRef.current)
+      observer.observe(groupRef.current, { childList: true, subtree: true });
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, []);
+
   if (activePlatform === undefined) {
     return null;
   }
@@ -194,6 +240,7 @@ export function PlatformTabsGroup({
           ? 'flex flex-col gap-4'
           : 'flex flex-col gap-3',
       )}
+      ref={groupRef}
       data-platform-group={groupMode}
       data-platforms={parsedPlatforms.join(' ')}
     >
@@ -898,13 +945,16 @@ function usePlatformSelection({
     };
   }, [parsedPlatforms]);
 
-  function handlePlatformChange(value: string) {
+  function handlePlatformChange(
+    value: string,
+    options: { preserveLocation?: boolean } = {},
+  ) {
     if (!isKnownPlatform(value) || !parsedPlatforms.includes(value)) {
       return;
     }
 
     if (pageContext) {
-      pageContext.handlePlatformChange(value);
+      pageContext.handlePlatformChange(value, options);
       return;
     }
 
@@ -918,7 +968,7 @@ function usePlatformSelection({
       setStoredPlatformPreference(value);
     }
 
-    if (syncPath) {
+    if (syncPath && !options.preserveLocation) {
       syncPlatformPath(value);
     }
   }

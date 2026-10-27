@@ -29,7 +29,7 @@ const linkCases = [
       '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/android',
   },
   {
-    href: '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/ios#%E5%88%A0%E9%99%A4%E4%B8%8D%E9%9C%80%E8%A6%81%E7%9A%84%E6%8F%92%E4%BB%B6',
+    href: '/zh-CN/realtime-media/rtc/build/optimize-and-operate/reduce-app-size/ios#删除不需要的插件-1',
     expectedHeading: '删除不需要的插件',
     expectedTitle: '减小 App 体积',
     source:
@@ -120,7 +120,7 @@ const linkCases = [
     target: '/zh-CN/realtime-media/rtm/build/troubleshooting/android',
   },
   {
-    href: '/zh-CN/realtime-media/rtm/build/troubleshooting/ios#%E9%94%99%E8%AF%AF%E7%A0%81%E5%AF%B9%E7%85%A7%E8%A1%A8',
+    href: '/zh-CN/realtime-media/rtm/build/troubleshooting/ios#错误码对照表-1',
     expectedHeading: '错误码对照表',
     expectedTitle: '错误排查',
     source:

@@ -1038,3 +1038,114 @@ describe('docs route locale guards', () => {
     REAL_DOCS_ROUTE_TIMEOUT,
   );
 });
+
+describe('docs redirect fragments', () => {
+  it.each([
+    ['page', DocPageRoute],
+    ['index', TabIndexRoute],
+    ['layout', TabLayoutRoute],
+  ] as const)(
+    '%s preserves decoded router hashes in a valid Location header',
+    async (_, route) => {
+      const target = '/zh-CN/realtime-media/rtc/reference/error-code';
+      publishedLocaleOverride.value = true;
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      docsPagePayloadOverride.mockReturnValue({ redirectUrl: target });
+      docsTabIndexOverride.mockReturnValue({ url: target });
+
+      try {
+        for (const hash of [
+          'appintoolbar',
+          '其他错误码-1',
+          '%E5%85%B6%E4%BB%96',
+        ]) {
+          const expected = `${target}?from=legacy#${hash.includes('%') ? hash : encodeURIComponent(hash)}`;
+          const result = await Promise.resolve()
+            .then(() =>
+              getLoader(route)({
+                location: {
+                  hash,
+                  pathname: '/zh-CN/api-reference',
+                  searchStr: '?from=legacy',
+                },
+                params: {
+                  locale: 'zh-CN',
+                  tab: 'api-reference',
+                  _splat: 'rtc/error-code',
+                },
+              } as never),
+            )
+            .catch((error: unknown) => error);
+          expect(isRedirect(result)).toBe(true);
+          expect((result as Response).headers.get('Location')).toBe(expected);
+        }
+      } finally {
+        publishedLocaleOverride.value = false;
+        docsPagePayloadOverride.mockReset();
+        docsTabIndexOverride.mockReset();
+      }
+    },
+  );
+});
+
+describe('legacy API deep-link platforms', () => {
+  it.each([
+    [
+      'whiteboard/fastboard/fastboard-api',
+      'appintoolbar',
+      'whiteboard/fastboard/web',
+    ],
+    [
+      'whiteboard/fastboard/fastboard-api',
+      'roomconfig',
+      'whiteboard/fastboard/ios',
+    ],
+    [
+      'rtm/toc-configuration/configuration',
+      'tokenevent',
+      'rtm/harmonyos/configuration',
+    ],
+    [
+      'rtm/toc-configuration/configuration',
+      'agorartmmessageevent',
+      'rtm/ios/configuration',
+    ],
+    ['rtm/toc-storage/storage', 'metadataitem', 'rtm/flutter/storage'],
+    ['rtm/toc-storage/storage', 'agorartmmetadata', 'rtm/ios/storage'],
+  ])('routes %s#%s to %s', async (slug, hash, target) => {
+    publishedLocaleOverride.value = true;
+    try {
+      for (const staticMode of [false, true]) {
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticMode);
+        staticLegacyRedirectOverride.value = null;
+        const fallback = {
+          redirectUrl: '/zh-CN/api-reference/rtm/android/configuration',
+        };
+        docsPagePayloadOverride.mockReturnValue(fallback);
+        vi.mocked(resolvePlatformStaticDocsPayload).mockResolvedValue(fallback);
+        const result = await Promise.resolve()
+          .then(() =>
+            getLoader(DocPageRoute)({
+              location: {
+                hash,
+                searchStr: '?from=legacy',
+                pathname: `/zh-CN/api-reference/${slug}`,
+              },
+              params: { locale: 'zh-CN', tab: 'api-reference', _splat: slug },
+            } as never),
+          )
+          .catch((error: unknown) => error);
+        expect(isRedirect(result)).toBe(true);
+        expect((result as Response).headers.get('Location')).toBe(
+          `/zh-CN/api-reference/${target}?from=legacy#${hash}`,
+        );
+      }
+    } finally {
+      publishedLocaleOverride.value = false;
+      staticLegacyRedirectOverride.value = undefined;
+      docsPagePayloadOverride.mockReset();
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      vi.mocked(resolvePlatformStaticDocsPayload).mockReset();
+    }
+  });
+});

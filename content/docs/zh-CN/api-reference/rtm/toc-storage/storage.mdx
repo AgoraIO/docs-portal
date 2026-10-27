@@ -86,7 +86,7 @@ void setChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -159,7 +159,7 @@ void getChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `resultCallback` | `ResultCallback<Metadata>` | 必填 | - | <Slot name="storage-android-html-1-3-4" /> |
 
 <Slot for="storage-android-html-1-3-4">
@@ -222,7 +222,7 @@ void removeChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -302,7 +302,7 @@ void updateChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata Item。详见 [`Metadata `](#metadata)。 |
 | `options` | `MetadataOptions` | 必填 | - | Channel Metadata 配置选项。 |
 | `lockName` | String | 必填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -812,7 +812,7 @@ Future<(RtmStatus, SetChannelMetadataResult?)> setChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `metadata` | `List<MetadataItem>` | 必填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-0-4-4" /> |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
@@ -908,7 +908,7 @@ Future<(RtmStatus, GetChannelMetadataResult?)> getChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 
 ### 接口方法
 
@@ -986,7 +986,7 @@ Future<(RtmStatus, RemoveChannelMetadataResult?) removeChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-2-3-4" /> |
 | `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `lockName` | String | 选填 | - | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -1093,7 +1093,7 @@ Future<(RtmStatus, UpdateChannelMetadataResult?)> updateChannelMetadata(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `metadata` | `List<MetadataItem>` | 选填 | - | Metadata Item。详见 [`MetadataItem`](#metadataitem)。 |
 | `majorRevision` | int | 选填 | -1 | <Slot name="storage-flutter-html-3-4-4" /> |
 | `recordTs` | bool | 选填 | `false` | 是否记录编辑的时间戳。 |
@@ -1708,7 +1708,7 @@ async setChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
@@ -1730,7 +1730,7 @@ async setChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -1785,7 +1785,7 @@ async getChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 返回值
 
@@ -1797,7 +1797,7 @@ async getChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 
 ### 基本用法
@@ -1853,7 +1853,7 @@ async removeChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
@@ -1875,7 +1875,7 @@ async removeChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -1953,7 +1953,7 @@ async updateChannelMetadata(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `data` | `Metadata` | 必填 | - | Metadata 对象。详见 [`Metadata`](#metadata)。 |
 | `options` | `MetadataOptions` | 选填 | `{}` | Channel Metadata 配置选项。 |
 
@@ -1975,7 +1975,7 @@ async updateChannelMetadata(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -2491,7 +2491,7 @@ Channel Metadata 同时也引进了版本控制逻辑 CAS（Compare And Set）�
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -2565,7 +2565,7 @@ metadata_opt.recordTs = true;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `completion` | `AgoraRtmGetMetadataBlock` | 选填 | - | <Slot name="storage-ios-html-1-3-4" /> |
 
 <Slot for="storage-ios-html-1-3-4">
@@ -2630,7 +2630,7 @@ metadata_opt.recordTs = true;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -2702,7 +2702,7 @@ metadata.majorRevision = 174298100;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `data` | `AgoraRtmMetadata` | 必填 | - | Metadata Item。详见 [`AgoraRtmMetadata`](#agorartmmetadata)。 |
 | `options` | `AgoraRtmMetadataOptions` | 选填 | - | Channel Metadata 配置选项。 |
 | `lock` | NSString | 选填 | 空字符串 `''` | Lock 名称。设置后，只有调用 `acquireLock` 方法获取该锁的用户才能执行操作。 |
@@ -4240,7 +4240,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `SetChannelMetadataResult` 包含以下属性：
 
@@ -4312,7 +4312,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `GetChannelMetadataResult` 包含以下属性：
 
@@ -4486,7 +4486,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `RemoveChannelMetadataResult` 包含以下属性：
 
@@ -4628,7 +4628,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `UpdateChannelMetadataResult` 包含以下属性：
 
@@ -4773,7 +4773,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `SetUserMetadataResult` 包含以下属性：
 
@@ -4840,7 +4840,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `GetUserMetadataResult` 包含以下属性：
 
@@ -4998,7 +4998,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `RemoveUserMetadataResult` 包含以下属性：
 
@@ -5125,7 +5125,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `UpdateUserMetadataResult` 包含以下属性：
 

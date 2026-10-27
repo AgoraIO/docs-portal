@@ -74,7 +74,7 @@ void setLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `ttl` | long | 必填 | - | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `onLockEvent` 事件通知的用户会收到 `RELEASED` 事件。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-0-5-4" /> |
@@ -128,7 +128,7 @@ void acquireLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `retry` | boolean | 必填 | - | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-1-5-4" /> |
@@ -183,7 +183,7 @@ void releaseLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-2-4-4" /> |
 
@@ -237,7 +237,7 @@ void revokeLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `owner` | String | 必填 | - | 拥有锁的用户 ID。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-3-5-4" /> |
@@ -289,7 +289,7 @@ void getLocks(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `resultCallback` | `ResultCallback<ArrayList<LockDetail>>` | 必填 | - | <Slot name="lock-android-html-4-3-4" /> |
 
 <Slot for="lock-android-html-4-3-4">
@@ -351,7 +351,7 @@ void removeLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `resultCallback` | `ResultCallback<Void>` | 必填 | - | <Slot name="lock-android-html-5-4-4" /> |
 
@@ -416,7 +416,7 @@ Future<(RtmStatus, SetLockResult?)> setLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `ttl` | int | 选填 | 10 | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `lock` 事件通知的用户会收到 `lockReleased` 事件。 |
 
@@ -484,7 +484,7 @@ Future<(RtmStatus, AcquireLockResult?)> acquireLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `retry` | bool | 选填 | false | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
 
@@ -552,7 +552,7 @@ Future<(RtmStatus, ReleaseLockResult?)> releaseLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 
 ### 基本用法
@@ -619,7 +619,7 @@ Future<(RtmStatus, RevokeLockResult?)> revokeLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 | `owner` | String | 必填 | - | 拥有锁的用户 ID。 |
 
@@ -682,7 +682,7 @@ Future<(RtmStatus, GetLocksResult?)> getLocks(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 
 ### 基本用法
 
@@ -746,7 +746,7 @@ Future<(RtmStatus, RemoveLockResult?)> removeLock(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `lockName` | String | 必填 | - | 锁的名称。 |
 
 ### 基本用法
@@ -825,7 +825,7 @@ async setLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | 必填 | - | 锁的名称。 |
 | `options` | `SetLockOptions` | 选填 | `{}` | 锁的配置选项。 |
 
@@ -845,7 +845,7 @@ async setLock(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | Lock 名称。 |
 
 ### 基本用法
@@ -889,7 +889,7 @@ async acquireLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | 必填 | - | 锁的名称。 |
 | `options` | `AcquireLockOptions` | 选填 | `{}` | 获取锁的配置选项。 |
 
@@ -909,7 +909,7 @@ async acquireLock(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | Lock 名称。 |
 | `errorDetails` | string | 错误详情。 |
 
@@ -955,7 +955,7 @@ async releaseLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | 必填 | - | 锁的名称。 |
 
 ### 返回值
@@ -968,7 +968,7 @@ async releaseLock(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | Lock 名称。 |
 
 ### 基本用法
@@ -1014,7 +1014,7 @@ async revokeLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | 必填 | - | 锁的名称。 |
 | `owner` | string | 必填 | - | 拥有锁的用户 ID。 |
 
@@ -1028,7 +1028,7 @@ async revokeLock(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | Lock 名称。 |
 
 ### 基本用法
@@ -1068,7 +1068,7 @@ async getLocks(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 
 ### 返回值
 
@@ -1080,7 +1080,7 @@ async getLocks(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockDetails` | `LockDetail[]` | Lock 详情数组。 |
 
 `LockDetail` 数据类型包含以下属性：
@@ -1137,7 +1137,7 @@ async removeLock(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | 必填 | - | 锁的名称。 |
 
 ### 返回值
@@ -1150,7 +1150,7 @@ async removeLock(
 | --- | --- | --- |
 | `timestamp` | number | 操作的时间戳（保留字段，供未来使用）。 |
 | `channelName` | string | 频道名称。 |
-| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 频道类型，详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `lockName` | string | Lock 名称。 |
 
 ### 基本用法
@@ -1203,7 +1203,7 @@ AgoraRtmLock
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `lockName` | NSString | 必填 | - | 锁的名称。 |
 | `ttl` | int | 选填 | `10` | 设置锁的过期时间。单位为秒，取值范围为 [10,300]。当使用这把锁的用户掉线时，如果用户在过期时间之内重新回到频道，则该用户依旧可以使用锁；否则，该用户的锁会被释放，监听了 `didReceiveLockEvent` 事件通知的用户会收到 `AgoraRtmLockEventTypeLockReleased` 事件。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-0-5-4" /> |
@@ -1251,7 +1251,7 @@ long ttl = 30;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `lockName` | NSString | 必填 | - | 锁的名称。 |
 | `retry` | BOOL | 必填 | - | 设置在获取锁失败后是否继续尝试，直到成功获取或退出频道为止。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-1-5-4" /> |
@@ -1300,7 +1300,7 @@ BOOL retry = false;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `lockName` | NSString | 必填 | - | 锁的名称。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-2-4-4" /> |
 
@@ -1348,7 +1348,7 @@ BOOL retry = false;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `lockName` | NSString | 必填 | - | 锁的名称。 |
 | `userId` | NSString | 必填 | - | 拥有锁的用户 ID。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-3-5-4" /> |
@@ -1393,7 +1393,7 @@ BOOL retry = false;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `completion` | `AgoraRtmGetLocksBlock` | 选填 | - | <Slot name="lock-ios-html-4-3-4" /> |
 
 <Slot for="lock-ios-html-4-3-4">
@@ -1456,7 +1456,7 @@ BOOL retry = false;
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `lockName` | NSString | 必填 | - | 锁的名称。 |
 | `completion` | `AgoraRtmOperationBlock` | 选填 | - | <Slot name="lock-ios-html-5-4-4" /> |
 
@@ -1975,7 +1975,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `SetLockResult` 包含以下属性：
 
@@ -2043,7 +2043,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `AcquireLockResult` 包含以下属性：
 
@@ -2111,7 +2111,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `ReleaseLockResult` 包含以下属性：
 
@@ -2181,7 +2181,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `RevokeLockResult` 包含以下属性：
 
@@ -2245,7 +2245,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `GetLockResult` 包含以下属性：
 
@@ -2319,7 +2319,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 `RemoveLockResult` 包含以下属性：
 

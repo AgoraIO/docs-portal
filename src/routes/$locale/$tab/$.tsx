@@ -1,6 +1,7 @@
 import { createFileRoute, notFound, redirect } from '@tanstack/react-router';
 import { useEffect } from 'react';
 import { DocsContent } from '@/components/docs-shell/DocsContent';
+import { resolveLegacyApiHashRedirect } from '@/lib/docs-api-hash-redirects';
 import { ensureDocsLastUpdatedMetadata } from '@/lib/docs-last-updated';
 import {
   isPermanentMovedDocsRedirect,
@@ -11,6 +12,7 @@ import type {
   DocsPagePayload,
   DocsRedirectPayload,
 } from '@/lib/docs-page.server';
+import { preserveRedirectSearch } from '@/lib/docs-redirect-url';
 import { preloadDocsPageContent } from '@/lib/docs-route-preload';
 import { isPublishedDocLocale } from '@/lib/docs-routing';
 import { parseProductSidebarContext } from '@/lib/docs-sidebar-context';
@@ -58,6 +60,17 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       )
     ) {
       throw notFound();
+    }
+    const apiHashRedirect = resolveLegacyApiHashRedirect(
+      params.locale,
+      params.tab,
+      slugSegments,
+      location.hash,
+    );
+    if (apiHashRedirect) {
+      throw redirect({
+        href: preserveRedirectSearch(apiHashRedirect, location),
+      });
     }
     const movedDocsRedirect = resolveMovedDocsRedirect(
       params.locale,
@@ -244,18 +257,6 @@ function Page() {
       toc={toc}
     />
   );
-}
-
-function preserveRedirectSearch(
-  href: string,
-  location: { hash?: string; searchStr?: string },
-  preserveSearch = true,
-) {
-  if (/[?#]/.test(href)) {
-    return href;
-  }
-
-  return `${href}${preserveSearch ? (location.searchStr ?? '') : ''}${location.hash ?? ''}`;
 }
 
 function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {

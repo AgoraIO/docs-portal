@@ -244,7 +244,12 @@ function getHeadingForUrl(url: string) {
   }
 
   const selector = `#${escapeCssIdentifier(id)}`;
-  const headings = document.querySelectorAll<HTMLElement>(selector);
+  const headings = [
+    ...document.querySelectorAll<HTMLElement>(selector),
+    ...Array.from(document.getElementsByName(id)).filter(
+      (element) => element.tagName === 'A',
+    ),
+  ];
   const visibleHeading = Array.from(headings).find(
     (heading) =>
       !isHiddenFromDocs(heading) && heading.getClientRects().length > 0,
@@ -253,7 +258,20 @@ function getHeadingForUrl(url: string) {
     (heading) => !isHiddenFromDocs(heading),
   );
 
-  return visibleHeading ?? renderedHeading ?? headings[0] ?? null;
+  // A repeated release-note ID may be inside a closed accordion on every
+  // platform. Keep the selected platform before asking the accordion to open.
+  const activePlatformHeading = headings.find((heading) => {
+    const panel = heading.closest<HTMLElement>('[data-platform-panel]');
+    return panel && !isHiddenFromDocs(panel);
+  });
+
+  return (
+    visibleHeading ??
+    renderedHeading ??
+    activePlatformHeading ??
+    headings[0] ??
+    null
+  );
 }
 
 function isHiddenFromDocs(element: HTMLElement) {

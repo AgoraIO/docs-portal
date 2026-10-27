@@ -37,6 +37,7 @@ import {
 } from './mdx';
 import {
   PlatformHeaderTabs,
+  PlatformPageProvider,
   PlatformTabsPlacementProvider,
 } from './mdx/PlatformTabsGroup';
 
@@ -2051,6 +2052,96 @@ describe('common MDX registry', () => {
     ).toBeVisible();
     expect(document.documentElement.dataset.docsPlatform).toBe('android');
   });
+
+  it('reveals a hash-selected platform without discarding the deep link', async () => {
+    const url =
+      '/zh-CN/realtime-media/rtc/reference/error-code?from=legacy#%E9%94%99%E8%AF%AF%E7%A0%81';
+    window.history.replaceState({}, '', url);
+    window.localStorage.setItem('docs-portal:platform:v1', 'android');
+    const components = getMDXComponents() as Record<string, unknown>;
+    const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+    const Panel = components._PlatformPanel as PlatformPanelComponent;
+    render(
+      <PlatformPageProvider
+        canonicalPlatform="android"
+        initialPlatform="android"
+        platforms='["android","ios"]'
+      >
+        <Group
+          canonicalPlatform="android"
+          groupMode="structured"
+          tabsPlacement="header"
+          platforms='["android","ios"]'
+        >
+          <Panel platform="android">
+            <h2 id="android-section">Android body</h2>
+          </Panel>
+          <Panel platform="ios">
+            <h2 id="错误码">iOS error codes</h2>
+          </Panel>
+        </Group>
+      </PlatformPageProvider>,
+    );
+    await waitFor(() =>
+      expect(screen.getByText('iOS error codes')).toBeVisible(),
+    );
+    expect(
+      window.location.pathname + window.location.search + window.location.hash,
+    ).toBe(url);
+    act(() => {
+      window.history.replaceState({}, '', '#android-section');
+      window.dispatchEvent(new HashChangeEvent('hashchange'));
+    });
+    await waitFor(() => expect(screen.getByText('Android body')).toBeVisible());
+    expect(window.location.hash).toBe('#android-section');
+  });
+
+  it.each(['lazy content', 'hash target event'])(
+    'reveals the platform after %s arrives',
+    async (trigger) => {
+      window.history.replaceState(
+        {},
+        '',
+        '/zh-CN/realtime-media/rtc/reference/error-code#late-ios',
+      );
+      const components = getMDXComponents() as Record<string, unknown>;
+      const Group = components._PlatformTabsGroup as PlatformGroupComponent;
+      const Panel = components._PlatformPanel as PlatformPanelComponent;
+      const content = (ready: boolean) => (
+        <Group
+          canonicalPlatform="android"
+          groupMode="structured"
+          platforms='["android","ios"]'
+        >
+          <Panel platform="android">Android instructions</Panel>
+          <Panel platform="ios">
+            {ready ? (
+              <h2 id="late-ios">Lazy iOS section</h2>
+            ) : (
+              <span>Loading</span>
+            )}
+          </Panel>
+        </Group>
+      );
+      if (trigger === 'hash target event')
+        window.history.replaceState({}, '', '#unknown');
+      const view = render(content(trigger === 'hash target event'));
+      expect(screen.getByText('Android instructions')).toBeVisible();
+      if (trigger === 'lazy content') view.rerender(content(true));
+      else
+        act(() =>
+          window.dispatchEvent(
+            new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#late-ios' }),
+          ),
+        );
+      await waitFor(() =>
+        expect(screen.getByText('Lazy iOS section')).toBeVisible(),
+      );
+      expect(window.location.hash).toBe(
+        trigger === 'lazy content' ? '#late-ios' : '#unknown',
+      );
+    },
+  );
 
   it('switches structured platform panels on normal click interaction', () => {
     const components = getMDXComponents() as Record<string, unknown>;

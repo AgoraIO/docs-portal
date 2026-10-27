@@ -85,8 +85,8 @@ RtmConfig rtmConfig = new RtmConfig.Builder("appid", "userId")
 | --- | --- | --- | --- | --- |
 | `appId` | String | 必填 | - | 声网控制台创建项目时获得的 App ID。 |
 | `userId` | String | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
-| `areaCode` | `EnumSet<RtmAreaCode>` | 选填 | `GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.android#areacode)。 |
-| `protocolType` | `RtmProtocolType` | 选填 | `TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.android#protocoltype)。 |
+| `areaCode` | `EnumSet<RtmAreaCode>` | 选填 | `GLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/android/enumv#areacode)。 |
+| `protocolType` | `RtmProtocolType` | 选填 | `TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/android/enumv#protocoltype)。 |
 | `presenceTimeout` | int | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `REMOTE_TIMEOUT` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `REMOTE_TIMEOUT` 事件通知，也不会删除该用户的临时用户数据。 |
 | `heartbeatInterval` | int | 选填 | `5` | <Slot name="configuration-android-html-0-6-4" /> |
 | `reconnectTimeout` | int | 选填 | `0` | <Slot name="configuration-android-html-0-7-4" /> |
@@ -146,7 +146,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 | --- | --- | --- | --- | --- |
 | `filePath` | String | 选填 | - | 日志存储路径。 |
 | `fileSizeInKB` | int | 选填 | `1024` | <Slot name="configuration-android-html-1-2-4" /> |
-| `level` | `RtmLogLevel` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.android#loglevel)。 |
+| `level` | `RtmLogLevel` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/android/enumv#loglevel)。 |
 
 <Slot for="configuration-android-html-1-2-4">
 
@@ -169,7 +169,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性  | 类型             |  是否必填  |  默认值  | 描述  |
 |-----------|----------------|--------|-------| ----------- |
-| `proxyType` | `RtmProxyType` |  选填  | `NONE` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.android#proxytype)。 |
+| `proxyType` | `RtmProxyType` |  选填  | `NONE` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/android/enumv#proxytype)。 |
 | `server`    | String           |  选填  | -             | Proxy 服务器域名或 IP 地址。                |
 | `port`      | int              |  选填  | -             | Proxy 监听端口。   |
 | `account`   | String           |  选填  | -            | Proxy 登录账号。   |
@@ -187,7 +187,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性          | 类型                  |  是否必填  |  默认值  | 描述             |
 |-----|-------|--------|------------| -------------- |
-| `encryptionMode`    | `RtmEncryptionMode` |  选填  |`NONE` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.android#encryptionmode)。 |
+| `encryptionMode`    | `RtmEncryptionMode` |  选填  |`NONE` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/android/enumv#encryptionmode)。 |
 | `encryptionKey`     | String                |  选填  |     -                       | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。       |
 | `encryptionKdfSalt` | byte[]              |  选填  | `null`                       | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。    |
 
@@ -199,7 +199,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性          | 类型                  |  是否必填  |  默认值  | 描述              |
 |-----|-------|--------|------------| ------- |
-| `serviceType`    | `EnumSet<RtmServiceType>` |  选填  | - | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.android#rtmservicetype)。 |
+| `serviceType`    | `EnumSet<RtmServiceType>` |  选填  | - | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/android/enumv#rtmservicetype)。 |
 | `accessPointHosts`    | `ArrayList<String>` |  选填  | - | 服务器的地址数组，数组中支持填写域名或 IP 地址。 |
 
 ### 基本用法
@@ -396,7 +396,7 @@ rtmClient.removeEventListener(listener);
 
 | 属性        |  类型  |   描述           |
 |----|-----| -------------- |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。   |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。   |
 | `channelName`            | String                |  频道名称。   |
 | `topicName`           | String                |  Topic 名称。   |
 | `message`                | `RtmMessage`                |  消息。   |
@@ -410,7 +410,7 @@ rtmClient.removeEventListener(listener);
 |----|-----| -------------- |
 | `message`              |        String         |  String 型消息。   |
 | `data`              |       byte[]          |  Byte 型消息。   |
-| `messageType`            | `RtmMessageType`    |  消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/ios/enumv.android#messagetype)。   |
+| `messageType`            | `RtmMessageType`    |  消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/android/enumv#messagetype)。   |
 
 #### PresenceEvent
 
@@ -503,8 +503,8 @@ Lock 事件。
 
 | 属性        |  类型  |   描述                     |
 |----|-----| --------------- |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。   |
-| `eventType`            | `RtmLockEventType`    |  Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.android#locktype)。    |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。   |
+| `eventType`            | `RtmLockEventType`    |  Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/android/enumv#locktype)。    |
 | `channelName`              | String                |  频道名称。   |
 | `lockDetailList`            | `ArrayList<LockDetail>`               |  Lock 的详情。   |
 | `timestamp` | long | 事件发生的时间戳。                |
@@ -565,7 +565,7 @@ void login(String token, ResultCallback<Void> resultCallback);
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication.android)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=android)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -590,7 +590,7 @@ void login(String token, ResultCallback<Void> resultCallback);
   | `reason` | String | 本次操作出错原因。 |
   | `operation` | String | 本次操作类型。 |
 
-  你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.android)了解错误原因，并找到对应的解决方法。
+  你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=android)了解错误原因，并找到对应的解决方法。
 
 ### 基本用法
 
@@ -708,8 +708,8 @@ RtmConfig({
 
 | 属性 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `areaCode` | `RtmAreaCode` | 选填 | `glob` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.flutter#areacode)。 |
-| `protocolType` | `RtmProtocolType` | 选填 | `tcpUdp` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#protocoltype)。 |
+| `areaCode` | `RtmAreaCode` | 选填 | `glob` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/flutter/enumv#areacode)。 |
+| `protocolType` | `RtmProtocolType` | 选填 | `tcpUdp` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/flutter/enumv#protocoltype)。 |
 | `presenceTimeout` | int | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `remoteTimeout` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `remoteTimeout` 事件通知，也不会删除该用户的临时用户数据。 |
 | `heartbeatInterval` | int | 选填 | `5` | <Slot name="configuration-flutter-html-0-4-4" /> |
 | `reconnectTimeout` | int | 选填 | `0` | <Slot name="configuration-flutter-html-0-5-4" /> |
@@ -776,7 +776,7 @@ RtmLogConfig({
 | --- | --- | --- | --- | --- |
 | `filePath` | String | 选填 | - | 日志存储路径。 |
 | `fileSizeInKB` | int | 选填 | `1024` | <Slot name="configuration-flutter-html-1-2-4" /> |
-| `level` | `RtmLogLevel` | 选填 | `info` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.flutter#loglevel)。 |
+| `level` | `RtmLogLevel` | 选填 | `info` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/flutter/enumv#loglevel)。 |
 
 <Slot for="configuration-flutter-html-1-2-4">
 
@@ -809,7 +809,7 @@ RtmProxyConfig({
 
 | 属性        | 类型                 | 必填 |     默认值      | 描述      |
 | ---------- | --------------- | ------ | ---- | ----------- |
-| `proxyType` | `RtmProxyType` |   选填   | `none` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#proxytype)。 |
+| `proxyType` | `RtmProxyType` |   选填   | `none` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/flutter/enumv#proxytype)。 |
 | `server`    | String               |   选填   |        -        | Proxy 服务器域名或 IP 地址。    |
 | `port`      | int                  |   选填   |        -        | Proxy 监听端口。                |
 | `account`   | String               |   选填   |        -        | Proxy 登录账号。                |
@@ -835,7 +835,7 @@ RtmEncryptionConfig({
 
 | 属性                | 类型  | 必填 |        默认值        | 描述          |
 | ---- | ------ | -- | ------ | --------------- |
-| `encryptionMode`    | `RtmEncryptionMode` | 选填 | `none` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.flutter#encryptionmode)。 |
+| `encryptionMode`    | `RtmEncryptionMode` | 选填 | `none` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/flutter/enumv#encryptionmode)。 |
 | `encryptionKey`     | String     | 选填 |    -   | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。                     |
 | `encryptionKdfSalt` | Uint8List  | 选填 | `null`  | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。        |
 
@@ -854,7 +854,7 @@ RtmPrivateConfig({
 
 |        属性        |       类型       | 必填 | 默认值 | 描述          |
 | ---------------- | ----- | ------ | ---- | --------------- |
-|   `serviceType`    | `Set<RtmServiceType>` |   选填   |   -    | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#rtmservicetype)。 |
+|   `serviceType`    | `Set<RtmServiceType>` |   选填   |   -    | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/flutter/enumv#rtmservicetype)。 |
 | `accessPointHosts` |  `List<String>`  |   选填   |   -    | 服务器的地址数组，数组中支持填写域名或 IP 地址。             |
 
 ### 基本用法
@@ -1031,8 +1031,8 @@ rtmClient.removeListener({
 
 | 属性            | 类型                   | 描述    |
 | -------------- | ----------------- | --------- |
-| `channelType`   | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
-| `messageType`   | `RtmMessageType` | 消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#messagetype)。 |
+| `channelType`   | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
+| `messageType`   | `RtmMessageType` | 消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/flutter/enumv#messagetype)。 |
 | `channelName`   | String                 | 频道名称。                    |
 | `channelTopic`  | String                 | Topic 名称。                  |
 | `message`       | Uint8List              | 消息。  |
@@ -1144,8 +1144,8 @@ Lock 事件。
 
 | 属性             | 类型                   | 描述    |
 | --------------- | ----------------- | --------- |
-| `channelType`    | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
-| `eventType`      | `RtmLockEventType`    | Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#locktype)。  |
+| `channelType`    | `RtmChannelType` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
+| `eventType`      | `RtmLockEventType`    | Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/flutter/enumv#locktype)。  |
 | `channelName`    | String                 | 频道名称。                    |
 | `lockDetailList` | `List<LockDetail>`     | Lock 的详情。                 |
 | `timestamp`      | int                    | 事件发生的时间戳。            |
@@ -1170,7 +1170,7 @@ SDK 连接状态事件。
 | `previousState`            | `RtmLinkState`    |  之前的连接状态。详见 [`RtmLinkState`](/zh-CN/api-reference/rtm/flutter/enumv#linkstate)。   |
 | `serviceType`    | `RtmServiceType` | 网络连接类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/flutter/enumv#rtmservicetype)。 |
 | `operation`    | `RtmLinkOperation` | 触发本次状态迁移的操作。详见 [`RtmLinkOperation`](/zh-CN/api-reference/rtm/flutter/enumv#linkoperation)。 |
-| `reason`    | String | 本次状态迁移的原因。 详见 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/ios/enumv.flutter#linkstatechangereason)。 |
+| `reason`    | String | 本次状态迁移的原因。 详见 [`RtmLinkStateChangeReason`](/zh-CN/api-reference/rtm/flutter/enumv#linkstatechangereason)。 |
 | `affectedChannels`    | `List<String>` | 本次状态迁移影响的频道。 |
 | `unrestoredChannels`    | `List<String>` | 未恢复订阅或加入的频道信息，包含频道名、频道类型和频道中的临时状态数据。一般情况下为空。 |
 | `isResumed`    | bool | 在连接断开的 2 分钟内，是否从 `rtmLinkStateDisconnected` 状态恢复成 `rtmLinkStateConnected` 状态。`true` 表示已恢复。 |
@@ -1204,7 +1204,7 @@ Future<(RtmStatus, LoginResult?)> login(String token);
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication.flutter)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=flutter)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -1361,8 +1361,8 @@ const config: RtmConfig = {
 | --- | --- | --- | --- | --- |
 | `appId` | string | 必填 | - | 声网控制台创建项目时获得的 App ID。 |
 | `userId` | string | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
-| `areaCode` | `RtmAreaCode` | 选填 | `GLOBAL` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#areacode)。 |
-| `protocolType` | `RtmProtocolType` | 选填 | `TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#protocoltype)。 |
+| `areaCode` | `RtmAreaCode` | 选填 | `GLOBAL` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`RtmAreaCode`](/zh-CN/api-reference/rtm/harmonyos/enumv#areacode)。 |
+| `protocolType` | `RtmProtocolType` | 选填 | `TCP_UDP` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`RtmProtocolType`](/zh-CN/api-reference/rtm/harmonyos/enumv#protocoltype)。 |
 | `presenceTimeout` | number | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `REMOTE_TIMEOUT` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `REMOTE_TIMEOUT` 事件通知，也不会删除该用户的临时用户数据。 |
 | `heartbeatInterval` | number | 选填 | `5` | <Slot name="configuration-harmonyos-html-0-6-4" /> |
 | `reconnectTimeout` | number | 选填 | `0` | <Slot name="configuration-harmonyos-html-0-7-4" /> |
@@ -1422,7 +1422,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 | --- | --- | --- | --- | --- |
 | `filePath` | string | 选填 | `''` | 日志存储路径。HarmonyOS 推荐使用应用沙箱路径，例如：`/data/app/el2/100/base/your_application/files/rtm_logs`。 |
 | `fileSizeInKB` | number | 选填 | `1024` | <Slot name="configuration-harmonyos-html-1-2-4" /> |
-| `level` | `RtmLogLevel` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#loglevel)。 |
+| `level` | `RtmLogLevel` | 选填 | `INFO` | 日志信息的输出等级，详见 [`RtmLogLevel`](/zh-CN/api-reference/rtm/harmonyos/enumv#loglevel)。 |
 
 <Slot for="configuration-harmonyos-html-1-2-4">
 
@@ -1448,7 +1448,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 | `server`    | string           |  必填  | -             | Proxy 服务器域名或 IP 地址。                |
 | `account`   | string           |  必填  | -            | Proxy 登录账号。   |
 | `password`  | string           |  必填  | -            | Proxy 登录密码。   |
-| `proxyType` | `RtmProxyType` |  选填  | `NONE` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#proxytype)。 |
+| `proxyType` | `RtmProxyType` |  选填  | `NONE` | Proxy 协议类型。详见 [`RtmProxyType`](/zh-CN/api-reference/rtm/harmonyos/enumv#proxytype)。 |
 | `port`      | number              |  选填  | `0`             | Proxy 监听端口。   |
 
 #### RtmEncryptionConfig
@@ -1463,7 +1463,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `encryptionMode` | `RtmEncryptionMode` | 选填 | `NONE` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#encryptionmode)。 |
+| `encryptionMode` | `RtmEncryptionMode` | 选填 | `NONE` | 加密方式。详见 [`RtmEncryptionMode`](/zh-CN/api-reference/rtm/harmonyos/enumv#encryptionmode)。 |
 | `encryptionKey` | string | 选填 | `''` | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。 |
 | `encryptionSalt` | Uint8Array | 选填 | - | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。 |
 
@@ -1475,7 +1475,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性          | 类型                  |  是否必填  |  默认值  | 描述                      |
 |-----|-------|--------|------------| ---------------- |
-| `serviceType`    | `RtmServiceType` |  选填  | - | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#rtmservicetype)。 |
+| `serviceType`    | `RtmServiceType` |  选填  | - | 服务类型。详见 [`RtmServiceType`](/zh-CN/api-reference/rtm/harmonyos/enumv#rtmservicetype)。 |
 | `accessPointHosts`    | string[] |  选填  | - | 服务器的地址数组，数组中支持填写域名或 IP 地址。 |
 
 ### 基本用法
@@ -1710,8 +1710,8 @@ rtmClient.removeEventListener('storage');
 
 | 属性        |  类型  |   描述     |
 |----|-----| ----------------- |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。   |
-| `messageType`            | `RtmMessageType`    |  消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#messagetype)。   |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。   |
+| `messageType`            | `RtmMessageType`    |  消息类型。详见 [`RtmMessageType`](/zh-CN/api-reference/rtm/harmonyos/enumv#messagetype)。   |
 | `channelName`            | string                |  频道名称。   |
 | `channelTopic`           | string                |  Topic 名称。   |
 | `message`                | string \| Uint8Array                |  消息内容。根据 `messageType` 的值，可能是字符串或二进制数据。   |
@@ -1811,8 +1811,8 @@ Lock 事件。
 
 | 属性        |  类型  |   描述                |
 |----|-----| ----- |
-| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。   |
-| `eventType`            | `RtmLockEventType`    |  Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#locktype)。    |
+| `channelType`            | `RtmChannelType`    |  频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。   |
+| `eventType`            | `RtmLockEventType`    |  Lock 事件类型。详见 [`RtmLockEventType`](/zh-CN/api-reference/rtm/harmonyos/enumv#locktype)。    |
 | `channelName`              | string                |  频道名称。   |
 | `lockDetails`            | `LockDetail[]`               |  Lock 的详情。   |
 | `timestamp` | number | 事件发生的时间戳。                |
@@ -1889,7 +1889,7 @@ async login(token?: string): Promise<LoginResponse>
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication.harmonyos)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=harmonyos)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -1899,7 +1899,7 @@ async login(token?: string): Promise<LoginResponse>
 该方法返回一个 Promise：
 
 - Promise resolve：返回 `LoginResponse` 对象。
-- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.harmonyos)。
+- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=harmonyos)。
 
 `LoginResponse` 数据结构如下：
 
@@ -1951,7 +1951,7 @@ async logout(): Promise<LogoutResponse>
 该方法返回一个 Promise：
 
 - Promise resolve：返回 `LogoutResponse` 对象。
-- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting.harmonyos)。
+- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=harmonyos)。
 
 `LogoutResponse` 数据结构如下：
 
@@ -2061,8 +2061,8 @@ __attribute__((visibility("default"))) @interface AgoraRtmClientConfig: NSObject
 | --- | --- | --- | --- | --- |
 | `appId` | NSString | 必填 | - | 你在声网控制台创建项目时获得的 App ID。 |
 | `userId` | NSString | 必填 | - | 用户 ID，用于标识用户或设备。为区分各用户和设备，你需要确保 `userId` 全局唯一，并且在用户或设备的生命周期内保持不变。 |
-| `areaCode` | `AgoraRtmAreaCode` | 选填 | `AgoraRtmAreaCodeGLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`AgoraRtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv.ios#areacode)。 |
-| `protocolType` | `AgoraRtmProtocolType` | 选填 | `AgoraRtmProtocolTypeTcpUdp` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`AgoraRtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv.ios#protocoltype)。 |
+| `areaCode` | `AgoraRtmAreaCode` | 选填 | `AgoraRtmAreaCodeGLOB` | 服务区域代码，你可以根据自己业务部署的区域进行选择，详见 [`AgoraRtmAreaCode`](/zh-CN/api-reference/rtm/ios/enumv#areacode)。 |
+| `protocolType` | `AgoraRtmProtocolType` | 选填 | `AgoraRtmProtocolTypeTcpUdp` | 消息传输协议类型。RTM 默认使用一路 TCP 和一路 UDP 协议进行传输，你可以根据需要修改协议类型。详见 [`AgoraRtmProtocolType`](/zh-CN/api-reference/rtm/ios/enumv#protocoltype)。 |
 | `presenceTimeout` | unsigned int | 选填 | `300` | Presence 的超时时间。单位为秒，取值范围为 [5,300]。即 RTM 服务器在判定客户端超时后，延迟多久向其他用户发送 `AgoraRtmPresenceEventTypeRemoteConnectionTimeout` 事件通知。如果客户端在该参数设置的时间内重新建立连接并返回频道，则 RTM 服务器不会向频道中其他人发送 `AgoraRtmPresenceEventTypeRemoteConnectionTimeout` 事件通知，也不会删除该用户的临时用户数据。 |
 | `heartbeatInterval` | unsigned int | 选填 | `5` | <Slot name="configuration-ios-html-0-6-4" /> |
 | `reconnectTimeout` | uint32_t | 选填 | `0` | <Slot name="configuration-ios-html-0-7-4" /> |
@@ -2131,7 +2131,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 | --- | --- | --- | --- | --- |
 | `filePath` | NSString | 选填 | - | 日志存储路径。 |
 | `fileSizeInKB` | int | 选填 | `1024` | <Slot name="configuration-ios-html-1-2-4" /> |
-| `level` | `AgoraRtmLogLevel` | 选填 | `AgoraRtmLogLevelInfo` | 日志信息的输出等级，详见 [`AgoraRtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv.ios#loglevel)。 |
+| `level` | `AgoraRtmLogLevel` | 选填 | `AgoraRtmLogLevelInfo` | 日志信息的输出等级，详见 [`AgoraRtmLogLevel`](/zh-CN/api-reference/rtm/ios/enumv#loglevel)。 |
 
 <Slot for="configuration-ios-html-1-2-4">
 
@@ -2159,7 +2159,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性  | 类型             |  是否必填  |  默认值  | 描述  |
 |-----------|----------------|--------|-------| ----------- |
-| `proxyType` | `AgoraRtmProxyType` |  选填  | `AgoraRtmProxyTypeNone` | Proxy 协议类型。详见 [`AgoraRtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv.ios#proxytype)。 |
+| `proxyType` | `AgoraRtmProxyType` |  选填  | `AgoraRtmProxyTypeNone` | Proxy 协议类型。详见 [`AgoraRtmProxyType`](/zh-CN/api-reference/rtm/ios/enumv#proxytype)。 |
 | `server`    | NSString           |  必填  | -             | Proxy 服务器域名或 IP 地址。                |
 | `port`      | unsigned short              |  选填  | -             | Proxy 监听端口。   |
 | `account`   | NSString           |  选填  | -            | Proxy 登录账号。   |
@@ -2177,7 +2177,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性          | 类型                  |  是否必填  |  默认值  | 描述             |
 |-----|-------|--------|------------| ------ |
-| `encryptionMode`    | `AgoraRtmEncryptionMode` |  选填  |`AgoraRtmEncryptionNone` | 加密方式。详见 [`AgoraRtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv.ios#encryptionmode)。 |
+| `encryptionMode`    | `AgoraRtmEncryptionMode` |  选填  |`AgoraRtmEncryptionNone` | 加密方式。详见 [`AgoraRtmEncryptionMode`](/zh-CN/api-reference/rtm/ios/enumv#encryptionmode)。 |
 | `encryptionKey`     | NSString                |  选填  |     -                       | 用户自定义加密密钥，长度无限制。声网推荐使用 32 字节的密钥。              |
 | `encryptionKdfSalt` | NSData              |  选填  | -                       | 用户自定义加密盐，长度为 32 字节。声网推荐你在服务端使用 OpenSSL 生成盐。    |
 
@@ -2189,7 +2189,7 @@ SDK 连接超时时间。单位为秒，取值范围为 [15,3600]。默认值 `0
 
 | 属性          | 类型                  |  是否必填  |  默认值  | 描述             |
 |-----|-------|--------|------------| ------ |
-| `serviceType`    | `AgoraRtmServiceType` |  选填  | - | 服务类型。详见 [`AgoraRtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv.ios#rtmservicetype)。 |
+| `serviceType`    | `AgoraRtmServiceType` |  选填  | - | 服务类型。详见 [`AgoraRtmServiceType`](/zh-CN/api-reference/rtm/ios/enumv#rtmservicetype)。 |
 | `accessPointHosts`    | `NSArray<NSString *>` |  选填  | - | 服务器的地址数组，数组中支持填写域名或 IP 地址。 |
 
 ### 接口方法
@@ -2370,7 +2370,7 @@ removeDelegate
 
 | 属性        |  类型  |   描述      |
 |----|-----| ------ |
-| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。   |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。   |
 | `channelName`            | NSString                |  频道名称。   |
 | `channelTopic`           | NSString                |  Topic 名称。   |
 | `message`                | `AgoraRtmMessage`                |  消息。    |
@@ -2470,8 +2470,8 @@ Lock 事件。
 
 | 属性        |  类型  |   描述                |
 |----|-----| ------ |
-| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。   |
-| `eventType`            | `AgoraRtmLockEventType`    |  Lock 事件类型。详见 [`AgoraRtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv.ios#locktype)。    |
+| `channelType`            | `AgoraRtmChannelType`    |  频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。   |
+| `eventType`            | `AgoraRtmLockEventType`    |  Lock 事件类型。详见 [`AgoraRtmLockEventType`](/zh-CN/api-reference/rtm/ios/enumv#locktype)。    |
 | `channelName`              | NSString                |  频道名称。   |
 | `lockDetailList`            | `ArrayList<LockDetail>`               |  Lock 的详情。   |
 | `timestamp` | unsigned long long | 事件发生的时间戳。                |
@@ -2535,7 +2535,7 @@ RTM 客户端实例
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication.ios)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=ios)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -2562,7 +2562,7 @@ RTM 客户端实例
 | `reason` | NSString | 本次操作出错原因。 |
 | `operation` | NSString | 本次操作类型。 |
 
-你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.ios)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=ios)了解错误原因，并找到对应的解决方法。
 
 ### 基本用法
 
@@ -2641,7 +2641,7 @@ RTM 客户端实例
 
 ### 返回值
 
-`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.ios)。
+`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=ios)。
 
 </PlatformStructured>
 
@@ -3749,7 +3749,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 ## LogoutAsync
 
@@ -3782,7 +3782,7 @@ var (status,response) = await rtmClient.LogoutAsync();
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 ## Dispose
 
@@ -3819,6 +3819,6 @@ var status = Dispose();
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
 
 </PlatformStructured>

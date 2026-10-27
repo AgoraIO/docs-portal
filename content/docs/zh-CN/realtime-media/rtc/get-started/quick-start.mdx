@@ -1214,7 +1214,7 @@ override func viewDidLoad() {
     ```
 
     :::error[警告]
-    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-1)。
         - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -1740,7 +1740,7 @@ override func viewDidLoad() {
     ```
 
     :::error[警告]
-    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用该方法后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-2)。
         - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -1950,7 +1950,7 @@ yarn
 yarn dev
 ```
 
-此时，开发服务器将启动，你可以在浏览器中访问 http://localhost:5173/ 查看项目运行情况。
+此时，开发服务器将启动，你可以在浏览器中访问 `http://localhost:5173/` 查看项目运行情况。
 
 :::info[信息]
 在本地服务器 (localhost) 运行 Web 应用仅作为测试用途。部署生产环境时，请确保使用 HTTPS 协议。
@@ -3128,7 +3128,7 @@ LRESULT CAgoraQuickStartDlg::OnEIDUserOffline(WPARAM wParam, LPARAM lParam) {
     如果你不再需要互动，调用 `release` 方法释放引擎资源。
 
     :::warning[注意]
-    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-3)。
         该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -4173,7 +4173,7 @@ Button("Join")
 2. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
 3. 调用 `destroy` 销毁引擎，并释放声网 SDK 中使用的所有资源。
    :::warning[注意]
-   - 调用 `destroy` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+   - 调用 `destroy` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-5)。
        - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
    :::
 
@@ -4961,7 +4961,7 @@ window.onload = () => {
 
 :::info[信息]
 - 将 `renderer.js` 文件中的 `<-- Insert App Id -->`、`<-- Insert Token -->` 和 `<-- Insert Channel Name -->` 分别替换为你在控制台获取到的 App ID、临时 Token，以及生成临时 Token 时填入的频道名。
-- 如果你的目标平台为 macOS v10.14 及以上，还需参考[获取设备权限](#获取设备权限)在 `main.js` 中补充设备权限相关代码。
+- 如果你的目标平台为 macOS v10.14 及以上，还需参考[获取设备权限](#获取设备权限-macos)在 `main.js` 中补充设备权限相关代码。
 :::
 
 ### 设计主进程
@@ -5213,7 +5213,7 @@ rtcEngine.release();
 ```
 
 :::error[警告]
-- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-6)。
 - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
 :::
 
@@ -5323,7 +5323,7 @@ rtcEngine.release();
 
 ## 创建项目
 
-参考以下步骤或 [Unity 官方文档](https://docs.unity3d.com/hub/manual/AddProject.html#add-projects)创建一个 **Unity** 项目。若已有 **Unity** 项目，可略过此步骤至下一步[集成 SDK](#integrate)。
+参考以下步骤或 [Unity 官方文档](https://docs.unity.com/en-us/hub/project-create)创建一个 **Unity** 项目。若已有 **Unity** 项目，可略过此步骤至下一步[集成 SDK](#integrate)。
 
 1. 开始前确保你已安装 Unity。若未安装，点击[此处](https://unity.com/cn/products#plans-individual)下载。
 2. 打开 Unity Editor，点击 **New** 新建一个项目。
@@ -6483,7 +6483,7 @@ void initState() {
 1. 调用 `leaveChannel` 离开当前频道，释放所有会话相关的资源。
 2. 调用 `release` 销毁引擎，并释放声网 SDK 中使用的所有资源。
     :::warning[注意]
-    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+    - 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-8)。
         - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
     :::
 
@@ -6822,7 +6822,7 @@ const styles = StyleSheet.create({
 
 ![实时互动快速开始流程图](https://web-cdn.agora.io/docs-portal/img/rtc/quick-start-sequence.svg)
 
-下面列出了一段实现实时音视频互动基本流程的完整代码以供参考，你可以先复制完整的示例代码到你的项目中，参考[测试项目](#测试项目)中的步骤快速体验实时音视频互动的基础功能，再按照实现流程了解其中的核心 API 调用。
+下面列出了一段实现实时音视频互动基本流程的完整代码以供参考，你可以先复制完整的示例代码到你的项目中，参考[测试项目](#调试项目)中的步骤快速体验实时音视频互动的基础功能，再按照实现流程了解其中的核心 API 调用。
 
 复制以下代码替换 `App.tsx` 文件的全部内容，即可快速体验实时音视频互动基础功能。
 
@@ -7258,7 +7258,7 @@ agoraEngineRef.current?.release();
 ```
 
 :::error[警告]
-- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-9)。
 - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
 :::
 
@@ -7303,7 +7303,7 @@ agoraEngineRef.current?.release();
 
 <Cards>
   <Card title={<RepositoryCardTitle provider="gitee">JoinChannelVideo</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/react-native-agora/blob/3.x/example/src/examples/basic/JoinChannelVideo/JoinChannelVideo.tsx" />
-  <Card title={<RepositoryCardTitle provider="github">JoinChannelVideo</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/basic/JoinChannelVideo/JoinChannelVideo.tsx" />
+  <Card title={<RepositoryCardTitle provider="github">JoinChannelVideo</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/v4.5.2/example/src/examples/basic/JoinChannelVideo/JoinChannelVideo.tsx" />
 </Cards>
 
 ### 常见问题
@@ -8017,7 +8017,7 @@ void UAgoraWidget::onLeaveChannel(const agora::rtc::RtcStats& stats)
 
 :::warning[注意]
 - 该方法为同步调用。需要等待引擎资源释放后才能执行其他操作，因此建议在子线程中调用该方法，避免主线程阻塞。
-- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎)。
+- 调用 `release` 后，你将无法再使用 SDK 的所有方法和回调。如需再次使用实时音视频互动功能，你必须重新创建一个新的引擎。详见[初始化引擎](#初始化引擎-10)。
 :::
 
 ```cpp tab="AgoraWidget.h" tabGroup="ue-quickstart"
@@ -8128,7 +8128,7 @@ void UAgoraWidget::NativeDestruct()
 <a id="project"></a>
 ## 创建项目
 
-参考以下步骤或 [Unreal 官方操作指南](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/create-a-new-project?application_version=4.27)创建一个 **Unreal** 项目。如果已有 **Unreal** 项目，可进行下一步[集成 SDK](#集成-sdk)。
+参考以下步骤或 [Unreal 官方操作指南](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/create-a-new-project?application_version=4.27)创建一个 **Unreal** 项目。如果已有 **Unreal** 项目，可进行下一步[集成 SDK](#集成-sdk-11)。
 
 1. 打开 **Unreal Engine**，在 **New Project Categories** 下选择 **Games**，点击 **Next**。
 2. 在 **SelectTemplate** 页面，选择 **Blank**，点击 **Next**。
