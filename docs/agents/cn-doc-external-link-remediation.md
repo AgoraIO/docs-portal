@@ -16,7 +16,7 @@
 
 | 原问题 | 数量 | 处置 |
 | --- | ---: | --- |
-| GitHub 文档、示例或类型源码 | 25 | 21 项固定到保留原路径的有效版本；白板类型源码逐符号重定位；Android ConvoAI 使用当前工具包源码入口；iOS 旧源码明确标为历史参考；IoT 缺失工程明确说明获取渠道。 |
+| GitHub 文档、示例或类型源码 | 25 | 按对应内容更新到有效源码入口；白板类型源码逐符号重定位；Android ConvoAI 使用当前工具包源码入口；iOS 旧源码明确标为历史参考；IoT 缺失工程明确说明获取渠道。 |
 | 厂商文档、图片、账号入口或服务地址 | 12 | 9 项改到已查证的具体官方目标；账号入口更新为声网现行域名；`uikit-v2` 作为后端 Host 配置值展示，根路径 GET 不能证明服务是否可用。 |
 | 旧声网文档 | 10 | 9 项保留 Legacy 产品和 SDK 版本，改到仍有对应正文的 `docportal.shengwang.cn`；RTC SDK 概念引用改到站内 RTC 概览。 |
 | 标点错误、占位地址或 URL 前缀 | 7 | 腾讯云链接排除句末标点；6 项示例值改为行内代码，保留原参数含义。 |
@@ -25,7 +25,7 @@
 
 ### 版本与源码定位
 
-- CallAPI 使用 `2.0.0` 正式 tag；React Native 示例使用 `v4.5.2`。示例运行指南的克隆命令和目录说明同步到该版本，避免克隆 main 后找不到 `/example/`。
+- CallAPI 环信信令示例使用 `main`。React Native 示例使用 `main/examples/legacy`，获取源码、配置文件路径和 `yarn legacy android/ios` 运行命令同步到当前仓库布局；文案不再指定旧 tag。
 - 白板原类型声明仓库失效，改到同作者的 `Nero-Hu/Whiteboard-Docs`，固定提交 `23e952d7ae62eefb7e95dfb3440c287425d8d328`。380 个旧定位逐符号核对，修正 453 处源码引用及对应的可见行号标签；两个构造函数另按实际声明行校正。该来源仍为原作者个人仓库。
 - Android ConvoAI 的源码入口按维护要求指向工具包 `main` 分支；已通过 GitHub API 核对路径、包名和组件文件。正文及卡片不重复写具体版本号。iOS 历史源码仅供参考，保留历史 tag 链接，当前组件继续通过 CocoaPods/SPM 集成。依赖安装示例中的版本号保留。
 - IoT Android 旧仓库没有找到可靠的同平台替代，文档明确提示先联系技术支持确认工程获取方式；没有改指 iOS、设备端或小程序示例。
@@ -116,3 +116,17 @@ VITE_DOCS_REGION=cn bun run docs:links:cn:full --build --match content --origin 
 ## 补充源文件核查
 
 已在 `shengwang-doc-source` 找到另外五页的对应源文件，并核对本地历史：三个 C# 页面同样没有方法正文，HarmonyOS 类型页及弹幕发版说明页只有简介。详见[五页源文件核查](./cn-empty-page-source-audit.md)。这五项仍需补充上游内容，27 页待补数量未减少。
+
+## 当前源码入口统一核查
+
+对本 PR 新增的固定版本 GitHub 链接和重复版本文案完成复查：除前一轮 Android 工具包入口外，本轮更新 18 个文档文件中的 30 处引用，共 17 个不同目标，均核对 GitHub `main` 的完整目录树。
+
+- React Native：21 处引用改用 `main/examples/legacy`，同步运行指南目录和命令。
+- CallAPI：4 处环信信令客户端引用改用 `main`，核对 Android/iOS 对应类。
+- Android 视频自采集：5 处引用改为主分支现有的 `PushExternalVideoYUV.java`，核对外部视频源及帧推送实现，并同步链接文字。
+- FaceCapture 的四个平台目录已不在 `main`，保留有效历史 tag。iOS 历史源码目录保留历史 tag；当前 Swift 工具包主分支没有等价的公开实现文件。
+- 白板类型源码的精确行号定位继续固定提交，避免代码迭代后指向其他符号。旧版迁移说明中的 `legacy` 分支、发版事实、最低兼容版本和安装依赖版本保留。
+
+核查证据保存在忽略目录 `.agent/artifacts/cn-links/publish/main-source-evidence.json`。本次核对目录、配置和代码，没有运行外部 Android/iOS 示例工程。
+
+本轮统一修改后复测：`bun run test --maxWorkers=2` 共 290 个文件通过、4,608 项通过、2 项跳过；`bun run types:check` 和 `git diff --check` 通过。

@@ -879,10 +879,10 @@ yarn
 
 <Cards>
   <Card title={<RepositoryCardTitle provider="gitee">API-Examples</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example" />
-  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/v4.5.2/example" />
+  <Card title={<RepositoryCardTitle provider="github">API-Examples</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/tree/main/examples/legacy" />
 </Cards>
 
-本文以 GitHub 的 `v4.5.2` 示例项目为准，介绍如何跑通 React Native 示例并体验实时音视频功能。
+本文使用 GitHub 仓库中的 `examples/legacy` 工程，介绍如何跑通 React Native 示例并体验实时音视频功能。
 
 ## 前提条件
 
@@ -930,20 +930,20 @@ yarn
 ### 获取示例项目
 
 1. 从以下两种方式中任选一种获取示例项目：
-    - 打开上方 GitHub 示例项目链接，确认版本为 `v4.5.2`，通过 **Code** 菜单中的 **Download ZIP** 下载源码。
+    - 打开上方 GitHub 示例项目链接，通过 **Code** 菜单中的 **Download ZIP** 下载源码。
     - 运行以下命令将 React Native SDK 克隆至本地。
 
         ```shell
-        git clone --branch v4.5.2 --depth 1 https://github.com/AgoraIO-Extensions/react-native-agora.git
+        git clone --branch main --depth 1 https://github.com/AgoraIO-Extensions/react-native-agora.git
         ```
 
-2. React Native SDK 的 API 使用示例位于 `/example/` 路径下。
+2. React Native SDK 的 API 使用示例位于 `/examples/legacy/` 路径下。
 
     | 路径                        | 描述                           |
     |:---------------------------|:-------------------------------|
-    | `/example/src/examples/basic`      | 基础功能。 |
-    | `/example/src/examples/advanced`   | 进阶功能。 |
-    | `/example/src/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
+    | `/examples/legacy/src/examples/basic`      | 基础功能。 |
+    | `/examples/legacy/src/examples/advanced`   | 进阶功能。 |
+    | `/examples/legacy/src/examples/hook`   | [Hook](https://react.dev/reference/react) 示例。 |
 
 ### 配置示例项目
 
@@ -961,13 +961,13 @@ yarn
 
 2. 设置 App ID 和临时 Token
 
-    打开 `/example/src/config/agora.config.ts` 文件，在指定位置填入控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名并保存修改。
+    打开 `/examples/legacy/src/config/agora.config.ts` 文件，在指定位置填入控制台获取的 App ID、临时 Token 以及生成 Token 时使用的频道名并保存修改。
 
     ```typescript
     // 填入 App ID
     let localAppId = '';
     try {
-    localAppId = require('./appID').default;
+    localAppId = require('./appID')?.appId;
     console.log('appID', localAppId);
     } catch (error) {
     console.warn(error);
@@ -992,10 +992,10 @@ yarn
 
     ```shell
     // 目标平台为 Android
-    yarn example android
+    yarn legacy android
 
     // 目标平台为 iOS
-    yarn example ios
+    yarn legacy ios
     ```
 
 2. 以 Android 为例，运行完成后，你的电脑上会弹出以下应用。

@@ -92,7 +92,7 @@ v4.0.0 内部统一了音视频处理管线，推荐使用集成最简单的 Pus
 
 如果你在 v3.7.0 使用了 MediaIO 方式实现视频自采集、视频自渲染、切换视频源等功能，声网推荐参考如下示例项目更新 App 代码：
 
-* 视频自采集：[CustomVideoSourcePush](https://github.com/Shengwang-Community/API-Examples/blob/4.5.2/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/PushExternalVideo.java)
+* 视频自采集：[PushExternalVideoYUV](https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/PushExternalVideoYUV.java)
 * 视频自渲染：[CustomVideoRender](https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/CustomRemoteVideoRender.java)
 * 切换视频源：[ScreenShare](https://github.com/Shengwang-Community/API-Examples/blob/main/Android/APIExample/app/src/main/java/io/agora/api/example/examples/advanced/SwitchCameraScreenShare.java)
 
@@ -2343,7 +2343,7 @@ this.engine.addListener('onError', (err: ErrorCodeType, msg: string) => {});
 - 将多路音频流混音后通过一个 `localUid` 发布到远端
 - 将多路视频流合图后通过一个 `localUid` 发布到远端
 
-v3.7.0 的 `RtcChannel` 和 `IRtcEngine` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `RtcChannel` 类和 `RtcChannelEvents` 类。你可以参考 [JoinMultiChannel](https://github.com/AgoraIO-Extensions/react-native-agora/blob/v4.5.2/example/src/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx) 示例项目，用 `joinChannelEx` 和 `ChannelMediaOptions` 替代 `RtcChannel`，预计迁移成本在一天以内。如果你需要继续使用 `RtcChannel` 和 `RtcChannelEvents` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
+v3.7.0 的 `RtcChannel` 和 `IRtcEngine` 在功能上有部分重复、不够正交，因此在 v4.0.0 中隐藏了 `RtcChannel` 类和 `RtcChannelEvents` 类。你可以参考 [JoinMultiChannel](https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/examples/legacy/src/examples/advanced/JoinMultipleChannel/JoinMultipleChannel.tsx) 示例项目，用 `joinChannelEx` 和 `ChannelMediaOptions` 替代 `RtcChannel`，预计迁移成本在一天以内。如果你需要继续使用 `RtcChannel` 和 `RtcChannelEvents` 类，请[联系技术支持](https://ticket.shengwang.cn/)，声网会根据反馈情况决定是否在后续版本中保持兼容。
 
 #### 媒体流发布控制
 
