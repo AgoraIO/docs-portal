@@ -10,6 +10,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useEffectEvent,
   useId,
   useLayoutEffect,
   useMemo,
@@ -17,6 +18,10 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+} from '@/lib/docs-hash';
 import { buildDocPath } from '@/lib/docs-routing';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
@@ -119,6 +124,37 @@ export function PlatformPageProvider({
     deferStoredPreference: true,
     syncPath: true,
   });
+
+  const revealHashPlatform = useEffectEvent((url: string) => {
+    const target = findDocsHeadingForHash(url);
+    const platform = target?.closest<HTMLElement>('[data-platform-panel]')
+      ?.dataset.platformPanel;
+    if (
+      platform &&
+      isKnownPlatform(platform) &&
+      parsedPlatforms.includes(platform) &&
+      platform !== selection.activePlatform
+    ) {
+      // Reveal a cross-platform reference without rewriting its hash. The
+      // shared preference event updates the page owner, header and panels.
+      setStoredPlatformPreference(platform);
+    }
+  });
+
+  useEffect(() => {
+    const applyCurrentHash = () => revealHashPlatform(window.location.hash);
+    const handleHashTarget = (event: Event) => {
+      const url = (event as CustomEvent<string>).detail;
+      revealHashPlatform(typeof url === 'string' ? url : window.location.hash);
+    };
+    applyCurrentHash();
+    window.addEventListener('hashchange', applyCurrentHash);
+    window.addEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    return () => {
+      window.removeEventListener('hashchange', applyCurrentHash);
+      window.removeEventListener(DOCS_HASH_TARGET_EVENT, handleHashTarget);
+    };
+  }, []);
 
   return (
     <PlatformPageContext.Provider value={selection}>
