@@ -173,6 +173,41 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('<iframe');
   });
 
+  it.each(['code', 'kbd'])(
+    'preserves linked generic types inside %s without leaking Markdown',
+    async (tag) => {
+      const result = await convertHtmlToMdx({
+        html: `<article><h1>WhiteSdk</h1><p><${tag}>Promise&lt;<a href="/api-ref/whiteboard/android/Room">Room</a>&gt;</${tag}></p><p><${tag}>Map&lt;<a href="/api-ref/whiteboard/android/Room">Room</a>, <a href="/api-ref/whiteboard/android/Player">Player</a>&gt;</${tag}></p><p><code>Promise&lt;[Room](example)&gt;</code></p></article>`,
+        sourceUrl:
+          'https://doc.shengwang.cn/api-ref/whiteboard/android/WhiteSdk',
+        sourcePath: 'html-docs/whiteboard/Android/WhiteSdk.html',
+        routeMap: new Map([
+          [
+            '/api-ref/whiteboard/android/Room',
+            '/zh-CN/api-reference/whiteboard/android/room',
+          ],
+          [
+            '/api-ref/whiteboard/android/Player',
+            '/zh-CN/api-reference/whiteboard/android/player',
+          ],
+        ]),
+      });
+
+      expect(result.body).toContain(
+        '`Promise<`[`Room`](/zh-CN/api-reference/whiteboard/android/room)`>`',
+      );
+      expect(result.body).toContain(
+        '`Map<`[`Room`](/zh-CN/api-reference/whiteboard/android/room)`, `[`Player`](/zh-CN/api-reference/whiteboard/android/player)`>`',
+      );
+      expect(result.body).toContain('`Promise<[Room](example)>`');
+      const compiled = await compileGeneratedMdx(result.body);
+      expect(compiled).toContain(
+        'href="/zh-CN/api-reference/whiteboard/android/room"',
+      );
+      expect(result.warnings).toEqual([]);
+    },
+  );
+
   it('rewrites Markdown links embedded as text in legacy HTML', async () => {
     const result = await convertHtmlToMdx({
       html: `<article><h1>Audio</h1><p>详见[错误码](https://doc.shengwang.cn/api-ref/rtc/android/error-code)了解详情。</p></article>`,

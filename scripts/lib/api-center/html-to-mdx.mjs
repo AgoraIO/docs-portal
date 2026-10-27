@@ -312,6 +312,39 @@ function renderCodeSpan(value) {
   return `${fence}${padding}${content}${padding}${fence}`;
 }
 
+function renderCodeWithLinks($, element, state) {
+  const parts = [];
+  let text = '';
+  const flushText = () => {
+    if (text) parts.push(renderCodeSpan(text));
+    text = '';
+  };
+  const visit = (node) => {
+    if (node.type === 'text') {
+      text += node.data ?? '';
+      return;
+    }
+    if (node.type !== 'tag') return;
+    const child = $(node);
+    if (elementName(node) === 'a' && child.attr('href')) {
+      const rewritten = rewriteLegacyHref(child.attr('href'), state);
+      if (rewritten.warning) state.warnings.push(rewritten.warning);
+      const label = child.text();
+      if (rewritten.href && label) {
+        flushText();
+        parts.push(`[${renderCodeSpan(label)}](${rewritten.href})`);
+      } else {
+        text += label;
+      }
+      return;
+    }
+    for (const nested of child.contents().toArray()) visit(nested);
+  };
+  for (const node of element.contents().toArray()) visit(node);
+  flushText();
+  return parts.join('');
+}
+
 function hasExplicitCodeLineBreak(element) {
   return element.find('br').length > 0;
 }
@@ -434,6 +467,9 @@ async function renderInlineNode($, node, state, options = {}) {
   const element = $(node);
   const name = elementName(node);
   if (name === 'code' || name === 'kbd') {
+    if (element.find('a[href]').length > 0) {
+      return renderCodeWithLinks($, element, state);
+    }
     const codeContent = await renderInlineNodes(
       $,
       element.contents().toArray(),
@@ -481,6 +517,12 @@ async function renderTypeDocInlineNode($, node, state) {
   const element = $(node);
   const name = elementName(node);
   if (name === 'wbr') return '';
+  if (
+    (name === 'code' || name === 'kbd') &&
+    element.find('a[href]').length > 0
+  ) {
+    return renderCodeWithLinks($, element, state);
+  }
   let content = '';
   for (const child of element.contents().toArray()) {
     content += await renderTypeDocInlineNode($, child, state);
