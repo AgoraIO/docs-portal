@@ -91,6 +91,8 @@ jobs:
       - name: Resolve preview context
         id: preview-context
         uses: actions/github-script@v7
+        env:
+          PREVIEW_PR_NUMBER: ${{ inputs.pr_number }}
         with:
           script: |
             if (context.eventName === 'pull_request') {
@@ -102,8 +104,11 @@ jobs:
             }
 
             if (context.eventName === 'workflow_dispatch') {
-              const manualInput = `${{ toJson(inputs.pr_number) }}`;
-              if (manualInput && manualInput !== 'null' && manualInput !== '') {
+              const manualInput = (process.env.PREVIEW_PR_NUMBER || '').trim();
+              if (manualInput) {
+                if (!/^[1-9]\d*$/.test(manualInput) || !Number.isSafeInteger(Number(manualInput))) {
+                  throw new Error('Invalid preview PR number. Expected a positive integer.');
+                }
                 core.setOutput('should_deploy', 'true');
                 core.setOutput('pr_number', manualInput);
                 core.setOutput('reason', 'manual preview deploy');
