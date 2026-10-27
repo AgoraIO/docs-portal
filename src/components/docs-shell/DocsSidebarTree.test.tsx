@@ -151,7 +151,9 @@ describe('DocsSidebarTree', () => {
       'href',
       '/zh-CN/api-reference/api-ref/rtc/create-ban-rule?from=%2Fzh-CN%2Frealtime-media%2Frtc',
     );
-    expect(screen.getByText('POST')).toBeInTheDocument();
+    expect(
+      screen.getByText('POST', { selector: '[data-openapi-method]' }),
+    ).toBeInTheDocument();
   });
 
   it('links the RTC client API entry to the filtered API reference page', async () => {
@@ -486,7 +488,9 @@ describe('DocsSidebarTree', () => {
     });
 
     expect(link).toBeInTheDocument();
-    expect(screen.getByText('POST')).toHaveClass('font-mono');
+    expect(
+      screen.getByText('POST', { selector: '[data-openapi-method]' }),
+    ).toHaveClass('font-mono');
   });
 
   it.each([
@@ -537,7 +541,7 @@ describe('DocsSidebarTree', () => {
         const link = await screen.findByRole('link', {
           name: `${title} ${method}`,
         });
-        const badge = link.querySelector('span:last-child');
+        const badge = link.querySelector('[data-openapi-method]');
         expect(badge).toHaveClass(
           `bg-${color}-100`,
           `text-${color}-800`,
@@ -556,7 +560,7 @@ describe('DocsSidebarTree', () => {
     },
   );
 
-  it('does not clamp long OpenAPI endpoint labels', async () => {
+  it('wraps full endpoint titles inline around a right-aligned method badge', async () => {
     const longTitle =
       'Start a conversational AI agent with a very long visible endpoint label';
     const tree: DocsSidebarNode[] = [
@@ -576,9 +580,17 @@ describe('DocsSidebarTree', () => {
       name: /Start a conversational AI agent with a very long visible endpoint label POST/i,
     });
 
-    expect(label).toHaveClass('whitespace-normal');
-    expect(label).not.toHaveClass('[display:-webkit-box]');
-    expect(label).not.toHaveClass('[-webkit-line-clamp:2]');
+    expect(label.parentElement).toHaveClass(
+      'flow-root',
+      'min-w-0',
+      'flex-1',
+      'whitespace-normal',
+    );
+    expect(label).toHaveClass('[overflow-wrap:anywhere]');
+    expect(link.querySelector('[data-openapi-method]')).toHaveClass(
+      'float-right',
+      'whitespace-nowrap',
+    );
     const linkClasses = link.className.split(/\s+/);
     expect(link.className).toContain('overflow-visible');
     expect(link.className).toContain('min-h-[28px]');

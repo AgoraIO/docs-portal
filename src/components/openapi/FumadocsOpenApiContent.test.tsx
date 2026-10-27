@@ -1,11 +1,14 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
   waitFor,
   within,
 } from '@testing-library/react';
+import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
 
@@ -110,6 +113,125 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it('does not report a failed clipboard write as copied, including after a successful copy', async () => {
+    const clipboard = vi
+      .fn()
+      .mockRejectedValueOnce(new Error('Clipboard denied'))
+      .mockResolvedValueOnce(undefined)
+      .mockRejectedValueOnce(new Error('Clipboard denied'));
+    const original = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboard },
+    });
+    try {
+      render(
+        <FumadocsOpenApiContent
+          pageProps={makeMinimalOpenApiPageProps('post')}
+        />,
+      );
+      const preview = await screen.findByTestId('openapi-code-preview');
+      const button = within(preview).getByRole('button', { name: 'Copy Text' });
+      const source = preview.querySelector('pre')?.textContent;
+      expect(source).toBeTruthy();
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+      expect(button).toHaveAccessibleName('Copy Text');
+      expect(button).not.toHaveAttribute('data-checked');
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(button).toHaveAccessibleName('Copied Text');
+
+      await act(async () => {
+        fireEvent.click(button);
+      });
+      expect(clipboard).toHaveBeenCalledTimes(3);
+      expect(button).toHaveAccessibleName('Copy Text');
+      expect(button).not.toHaveAttribute('data-checked');
+    } finally {
+      if (original) Object.defineProperty(navigator, 'clipboard', original);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
+  it('preserves complete multiline code in crawler HTML and copies it before and after highlighting', async () => {
+    const source = [
+      'curl --request POST https://example.com/endpoint \\',
+      ...Array.from(
+        { length: 45 },
+        (_, i) => `  --header 'X-Example-${i}: <value>&' \\`,
+      ),
+      "  --data '{}'",
+    ].join('\n');
+    const props: OpenAPIPageProps = {
+      operations: [
+        { method: 'post', path: '/example' } as OpenApiOperationItem,
+      ],
+      payload: {
+        bundled: {
+          info: { title: 'Example' },
+          openapi: '3.2.0',
+          paths: {
+            '/example': {
+              post: {
+                responses: { '200': { description: 'OK' } },
+                'x-codeSamples': [{ lang: 'bash', label: 'curl', source }],
+              },
+            },
+          },
+        } as unknown as Document,
+      },
+    };
+    const $ = load(
+      renderToStaticMarkup(<FumadocsOpenApiContent pageProps={props} />),
+    );
+    expect($('pre code').first().text()).toBe(source);
+    expect($('pre code').first().text().split('\n')).toHaveLength(47);
+    expect($('pre code').first().find('value')).toHaveLength(0);
+    expect($('[data-collapsed]')).toHaveLength(0);
+
+    const clipboard = vi.fn().mockResolvedValue(undefined);
+    const original = Object.getOwnPropertyDescriptor(navigator, 'clipboard');
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: clipboard },
+    });
+    try {
+      const { container } = render(
+        <FumadocsOpenApiContent pageProps={props} />,
+      );
+      const code = container.querySelector('pre code');
+      expect(code?.textContent).toBe(source);
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Text' }));
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+      await waitFor(() =>
+        expect(
+          container.querySelector('pre span[style*="--shiki-light"]'),
+        ).toBeInTheDocument(),
+      );
+      expect(container.querySelector('pre code')?.textContent).toBe(source);
+      const flags = [...container.querySelectorAll('pre span[style]')].filter(
+        (node) => /^--[a-z-]+$/.test(node.textContent ?? ''),
+      );
+      expect(flags).toHaveLength(47);
+      expect(
+        new Set(flags.map((node) => node.getAttribute('style'))).size,
+      ).toBe(1);
+      fireEvent.click(
+        screen.getByRole('button', { name: /Copy Text|Copied Text/ }),
+      );
+      expect(clipboard).toHaveBeenLastCalledWith(source);
+    } finally {
+      if (original) Object.defineProperty(navigator, 'clipboard', original);
+      else Reflect.deleteProperty(navigator, 'clipboard');
+    }
+  });
+
   it('uses one section heading contract for all OpenAPI content sections', async () => {
     render(
       <FumadocsOpenApiContent pageProps={makeSectionHeadingPageProps()} />,
@@ -654,8 +776,11 @@ describe('FumadocsOpenApiContent', () => {
       '-mb-px',
       'last:rounded-b-xl',
     );
-    expect(generatedPanel.querySelector('.token-command')).toBeInTheDocument();
-    expect(generatedPanel.querySelector('.token-flag')).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        generatedPanel.querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
+    );
     expect(
       within(generatedPreview).getByRole('button', { name: '复制文本' }),
     ).toBeInTheDocument();
@@ -755,9 +880,13 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(
-      examplesScope.getByRole('tabpanel').querySelector('.token-command'),
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        examplesScope
+          .getByRole('tabpanel')
+          .querySelector('pre span[style*="--shiki-light"]'),
+      ).toBeInTheDocument(),
+    );
     const preview = examplesScope.getByTestId('openapi-code-preview');
     expect(
       within(preview)

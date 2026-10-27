@@ -1879,9 +1879,15 @@ describe('DocsShell', () => {
       'overflow-hidden',
       '[&>span:first-child]:[overflow-wrap:anywhere]',
     );
-    expect(pageTitle).toHaveClass('min-w-0', 'flex-1');
-    expect(within(pageLink).getByText('POST')).toHaveClass(
-      'shrink-0',
+    expect(pageTitle.parentElement).toHaveClass(
+      'flow-root',
+      'min-w-0',
+      'flex-1',
+    );
+    expect(pageTitle).toHaveClass('[overflow-wrap:anywhere]');
+    expect(pageLink.querySelector('[data-openapi-method]')).toHaveClass(
+      'float-right',
+      'whitespace-nowrap',
       'font-mono',
     );
   });
@@ -1913,7 +1919,7 @@ describe('DocsShell', () => {
       const link = within(sheet).getByRole('link', {
         name: `ConvoAI endpoint ${method}`,
       });
-      expect(within(link).getByText(method)).toHaveClass(
+      expect(link.querySelector('[data-openapi-method]')).toHaveClass(
         `bg-${color}-100`,
         `text-${color}-800`,
         `dark:bg-${color}-900`,
