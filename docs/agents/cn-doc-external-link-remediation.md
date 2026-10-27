@@ -34,7 +34,7 @@
 
 第一轮按同平台唯一标题修正 193 处引用；后续结合父章节、方法声明和具体发版版本，再修正 67 处。重复章节里的同一旧 hash 可能需要分别改成不同的新 hash，因此按来源位置处理。
 
-`deliverVideoFrame` 的五处引用指向本章节包含该成员声明的 `Control` 定义，并明确标注用途。HarmonyOS 和 Unreal 的四处不存在的 `onRenewTokenResult` 引用，改为同平台 `renewToken` 返回值说明，只描述方法调用结果。
+`deliverVideoFrame` 的五处引用指向本章节包含该成员声明的 `Control` 定义，并明确标注用途。HarmonyOS 的两处 `onRenewTokenResult` 引用已由上游删除，本 PR 沿用上游正文，不补充返回值说明。Unreal 的两处原回调引用改为同平台 `renewToken` 返回值说明，仅描述方法调用结果。
 
 共用定位逻辑补充了旧式 `a[name]` 锚点，并在同名章节都处于折叠状态时优先选择当前平台。检查器补充：
 
