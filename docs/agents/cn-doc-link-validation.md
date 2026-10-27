@@ -136,3 +136,14 @@ bun run types:check
 - 最终修复及同步上游后未重跑完整生产构建，也未部署；分批浏览器证据不代替部署后全量审计。
 
 历史遗留待办见 [#1310](https://github.com/AgoraIO/docs-portal/issues/1310)、[#1312](https://github.com/AgoraIO/docs-portal/issues/1312)、[#1311](https://github.com/AgoraIO/docs-portal/issues/1311)。27 个源头空页面按用户决定不处理，不计作验证通过。之前各批报告的测试数和待办描述是当时快照；当前待办以[后续事项清单](./cn-doc-link-follow-up.md)为准。
+
+## 完整生产构建复核
+
+在最新修复提交 `29e606410ed50fc613ccff27ad1d3298b17b1c5c` 上执行 `VITE_DOCS_REGION=cn bun run build`，完整命令退出码为 0。显式指定中文区域，覆盖中文站数据、客户端与服务端生产打包、预渲染及路由 HTML 生成。
+
+- 静态数据：5,865 份。
+- 机器可读文档：7,048 份。
+- 路由 HTML：6,799 份。
+- 非阻塞提示：插件耗时、大于 500 kB 的 chunk，以及 Git 历史不完整时保留文档更新时间快照。
+
+此结果替代前文“未重跑完整生产构建”的状态。完整日志保存在忽略目录 `.agent/artifacts/cn-links/publish/build-final-cn.log`。构建通过不代表外链均可达；历史待办仍保持开放，尚未部署。
