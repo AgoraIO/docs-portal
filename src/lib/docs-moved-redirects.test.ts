@@ -10,10 +10,10 @@ describe('resolveMovedDocsRedirect', () => {
     'rtc/build/setup-and-access/enable-service',
     'whiteboard/whiteboard-sdk/build/setup-and-access/generate-token',
     'whiteboard/fastboard-sdk/build/setup-and-access/generate-token',
-  ])('keeps the merged RESTful guide address for %s reachable', (path) => {
+  ])('keeps the source RESTful guide address for %s reachable', (path) => {
     const segments = [...path.split('/'), 'restful'];
     expect(resolveMovedDocsRedirect('zh-CN', 'realtime-media', segments)).toBe(
-      `/zh-CN/realtime-media/${path}`,
+      `/zh-CN/realtime-media/${path}-restful`,
     );
     expect(
       isPermanentMovedDocsRedirect('zh-CN', 'realtime-media', segments),
@@ -22,7 +22,7 @@ describe('resolveMovedDocsRedirect', () => {
     for (const localePrefix of ['/zh-CN', '']) {
       expect(deployment.redirects).toContainEqual({
         source: `${localePrefix}/realtime-media/${path}/restful`,
-        destination: `${localePrefix}/realtime-media/${path}`,
+        destination: `${localePrefix}/realtime-media/${path}-restful`,
         statusCode: 301,
       });
     }

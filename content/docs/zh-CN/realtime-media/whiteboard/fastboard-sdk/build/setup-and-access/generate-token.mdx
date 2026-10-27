@@ -2,40 +2,23 @@
 title: "生成和使用 Token"
 description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token 方式，包括接入流程、关键配置和平台差异。"
 ---
-
-<a id="功能介绍"></a>
-
 本文介绍互动白板 Token 的生成和使用方式。
 
-互动白板 Token，包括不同权限的 SDK Token、Room Token 和 Task Token，是互动白板服务对用户采用的一种鉴权方式。详见[互动白板 Token 类型和权限](#token-的类型和权限)。
-
-- **SDK Token**：与特定的互动白板项目绑定，是级别最高的 Token。持有 SDK Token 的用户可操作该 Token 所绑定项目下的所有房间和文档转换任务。
-- **Room Token**：与特定互动白板项目下的特定房间绑定。持有 Room Token 的用户可操作绑定的房间。
-- **Task Token**：与特定项目下的特定文档转换任务绑定。持有 Task Token 的用户可操作绑定的文档转换任务。
-
-## 前提条件
-
-开始前，确保你已参考[开启和配置互动白板服务](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service)完成了以下准备工作：
-
-- 创建一个开启了互动白板服务的声网项目。
-- 获取访问密钥 Access Key (AK) 和私有访问密钥 Secret Access Key (SK)。
-- 如果你需要生成 Task Token 用于文档转换服务，则需要为项目开启并配置文档转换服务。
-
-<a id="通过其他方式生成-token"></a>
+互动白板 Token，包括不同权限的 SDK Token、Room Token 和 Task Token，是互动白板服务对用户采用的一种鉴权方式。详见[互动白板 Token 类型和权限](/zh-CN/realtime-media/whiteboard/concepts#token)。
 
 ## 生成 Token
 
 你可以通过以下方式在业务服务端生成声网互动白板 Token：
 
-- 在 App 服务端用代码生成 Token，详见[在 App 服务端用代码生成 Token](#在-app-服务端用代码生成-token)（推荐）。
+- 在 App 服务端用代码生成 Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token)（推荐）。
 
 - 在[声网控制台](https://console.shengwang.cn/)生成 SDK Token。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
-  :::warning[注意]
+  :::caution[注意]
   该方法只能生成 `admin` 角色的永久 SDK Token。请勿将该 Token 下发给客户端，否则会有泄露的风险。
   :::
 
-- 在 App 服务端调用互动白板服务端 RESTful API，详见[调用 RESTful API 生成 Token](#调用-restful-api-生成-token)。
+- 在 App 服务端调用互动白板服务端 RESTful API，详见[使用 RESTful API 生成 Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token)。
 
 生成 Token 时，你需要传入以下参数：
 
@@ -61,9 +44,9 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 
 ### 设置 Token 的角色
 
-声网支持对 Token 设置 `admin`、`writer` 或 `reader` 角色，每种角色的 Token 具有的权限详见[互动白板 Token 类型和权限](#token-的类型和权限)。
+声网支持对 Token 设置 `admin`、`writer` 或 `reader` 角色，每种角色的 Token 具有的权限详见[互动白板 Token 类型和权限](/zh-CN/realtime-media/whiteboard/concepts#token)。
 
-:::warning[注意]
+:::caution[注意]
 为提高业务安全，声网建议：
 
 - 尽量避免将权限很高的 Token 下发给客户端。
@@ -76,7 +59,7 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 
 如果你不设置 Token 的有效时长或将有效时长设为 0，生成的 Token 将永不过期。
 
-:::warning[注意]
+:::caution[注意]
 - 永不过期的 Token 可能为你的业务带来安全隐患。
 - 已经加入房间的用户不会因为 Token 过期被移出房间。
 :::
@@ -85,10 +68,10 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 
 生成 Room Token 时，还需要传入房间的 UUID，即房间的全局唯一标识符，使 Room Token 与特定房间绑定。你可以通过以下方式获取房间的 UUID：
 
-- 如果房间已经存在，你可以调用获取房间列表查询已创建的房间列表。请求成功后，响应 Body 中包含查询房间的 UUID。
+- 如果房间已经存在，你可以调用[获取房间列表](/zh-CN/api-reference/api-ref/whiteboard/restful/list-rooms)查询已创建的房间列表。请求成功后，响应 Body 中包含查询房间的 UUID。
 - 如果房间尚未创建，你可以调用[创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)。请求成功后，响应 Body 中包含新创建房间的 UUID。
 
-:::warning[注意]
+:::caution[注意]
 - 如果你调用互动白板 RESTful API 生成 Room Token，请求 Header 中的 SDK Token 必须和创建房间时使用的 SDK Token 相同。
 - 如果你在 App 服务端用代码生成 Room Token，传入的访问密钥对必须和创建房间时使用的 SDK Token 的访问密钥对相同。
 :::
@@ -99,17 +82,19 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 
 要获取文档转换任务的 UUID， 你需要调用互动白板 RESTful API [发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)。请求成功后，响应 Body 会包含转换任务的 UUID。
 
-<a id="在-app-服务端生成-token"></a>
+<a id="在-app-服务端用代码生成-token"></a>
 
-### 在 App 服务端用代码生成 Token
+### 在 App 服务端生成 Token [#在-app-服务端生成-token]
 
 声网在 GitHub 提供一个开源的 netless-token 仓库，支持使用 Java、JavaScript、TypeScript、C#、Go、PHP、Ruby 等语言在你的服务端部署生成 SDK Token、Room Token、Task Token。
 
 本节展示如何使用声网提供的代码和你的访问密钥对（即 AK 和 SK）在业务服务端生成各种类型的互动白板 Token。
 
-:::warning[注意]
+:::caution[注意]
 为提高项目的安全性，请勿将 AK 和 SK 保存或发送给客户端。你需要将 AK 和 SK 保存在 App 服务端，并根据实际业务场景的需求，在 App 服务端签发所需的 Token。
 :::
+
+开始前，请确保你的声网互动白板项目在控制台处于开启状态。
 
 <Tabs defaultValue="javascript" groupId="operating-systems" persist>
 <TabsList>
@@ -943,74 +928,6 @@ description: "了解 Fastboard SDK 在不同平台上的生成和使用 Token �
 </TabsContent>
 </Tabs>
 
-<a id="实现方法"></a>
-
-### 调用 RESTful API 生成 Token
-
-本节介绍如何调用服务端 API 生成互动白板 Token。
-
-调用互动白板服务端 API 生成每种 Token 时，你可以设置 Token 的角色（`role`）和有效时长（`lifespan`）。具体规则见[设置 Token 的角色](#设置-token-的角色)和[设置 Token 的有效时长](#设置-token-的有效时长)。
-
-#### 生成 SDK Token
-
-生成 SDK Token 时，你需要传入项目的 AK 和 SK、Token 的有效时长和角色，详见[生成 SDK Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token)。以 cURL 为例：
-
-```shell
-curl --request POST \
-  --url https://api.netless.link/v5/tokens/teams \
-  --header 'Accept: application/json' \
-  --header 'Content-Type: application/json' \
-  --header 'region: cn-hz' \
-  --data '{
-  "accessKey": "BUxxxxxxrc",
-  "secretAccessKey": "CxxxxxxxauY3",
-  "lifespan": 3600000,
-  "role": "admin"
-}'
-```
-
-:::warning[注意]
-SDK Token 的权限级别很高，如果泄漏，会危害你的业务安全。因此，声网建议：
-
-- 不要将 SDK Token 暴露给客户端、存入数据库或写入配置文件，而是在需要时从业务服务端签出 SDK Token。
-- 不要签出永不过期的 SDK Token，而是根据业务需要，设置 SDK Token 的有效时长。
-:::
-
-#### 生成 Room Token
-
-生成 Room Token 时，你需要传入房间 UUID、SDK Token、Token 的有效时长和角色，其中房间 UUID 需要调用[POST 创建房间](/zh-CN/api-reference/api-ref/whiteboard/restful/create-room)获取，详见[生成 Room Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)。以 cURL 为例：
-
-```shell
-curl --request POST \
-  --url https://api.netless.link/v5/tokens/rooms/9e2xxxxxxxx356 \
-  --header 'Accept: application/json' \
-  --header 'Content-Type: application/json' \
-  --header 'region: cn-hz' \
-  --header 'token: NETLESSSDK_xxxxxxxxx' \
-  --data '{
-  "lifespan": 36000,
-  "role": "admin"
-}'
-```
-
-#### 生成 Task Token
-
-生成 Task Token 时，你需要传入转换任务的 UUID、SDK Token、AK、Token 的有效时长和角色，其中转换任务的 UUID 需要调用[发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)获取，详见[生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token)。以 cURL 为例：
-
-```shell
-curl --request POST \
-  --url https://api.netless.link/v5/tokens/tasks/2fd2dxxxxx367e \
-  --header 'Accept: application/json' \
-  --header 'Content-Type: application/json' \
-  --header 'region: cn-hz' \
-  --header 'token: NETLESSSDK_xxxxxx' \
-  --data '{
-  "role": "writer",
-  "lifespan": 36000,
-  "ak": "T9xxxxxxxwkk"
-}'
-```
-
 ## 使用 Token
 
 你需要根据 App 客户端的请求，在 App 服务端生成相应权限的 Token。当 App 客户端或服务端使用获取的 Token 访问声网互动白板服务时，互动白板服务端会使用该 Token 校验其权限。
@@ -1038,74 +955,9 @@ curl --request POST \
 
 <a id="相关信息-1"></a>
 
-## 相关信息
+## 相关信息 [#相关信息]
 
 本节介绍使用互动白板 Token 的相关信息。
-
-### API 参考
-
-- [生成 SDK Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-sdk-token)
-- [生成 Room Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-room-token)
-- [生成 Task Token](/zh-CN/api-reference/api-ref/whiteboard/restful/generate-task-token)
-
-### Token 的类型和权限
-
-本节介绍不同角色的三种 Token 所具有的权限。
-
-#### SDK Token
-
-| 权限 | admin（管理员） | writer（读写） | reader（只读） |
-| --- | --- | --- | --- |
-| 创建房间 | ✔ | ✔ | ✘ |
-| 以互动模式加入房间 | ✔ | ✔ | ✘ |
-| 以只读模式加入房间 | ✘ | ✘ | ✔ |
-| 获取房间列表 | ✔ | ✔ | ✘ |
-| 获取房间信息 | ✔ | ✔ | ✘ |
-| 封禁房间 | ✔ | ✘ | ✘ |
-| 对指定场景进行截图 | ✔ | ✔ | ✘ |
-| 对场景组下的所有场景进行截图 | ✔ | ✔ | ✘ |
-| 获取房间的场景地址列表 | ✔ | ✔ | ✘ |
-| 插入新场景 | ✔ | ✔ | ✘ |
-| 场景跳转 | ✔ | ✔ | ✘ |
-| 发起文档转换任务 | ✔ | ✔ | ✘ |
-| <Slot name="generate-token-restful-markdown-0-13-0" /> | ✔ | ✔ | ✔ |
-| <Slot name="generate-token-restful-markdown-0-14-0" /> | ✔ | ✔ | ✔ |
-
-<Slot for="generate-token-restful-markdown-0-13-0">
-
-生成同等或以下角色的 Room Token
-（例如，admin 角色的 SDK Token 可以生成
- `admin`、`writer` 或 `reader` 角色的 Room Token）
-
-</Slot>
-
-<Slot for="generate-token-restful-markdown-0-14-0">
-
-生成同等或以下角色的 Task Token
-（例如，admin 角色的 SDK Token 可以生成
- `admin`、`writer` 或 `reader` 角色的 Task Token）
-
-</Slot>
-
-#### Room Token
-
-| 权限                         | admin（管理员） | writer（读写） | reader（只读） |
-| :--------------------------- | :-------------- | :------------- | :------------- |
-| 以[互动模式](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token)加入特定房间       |  ✔               |  ✔             |✘               |
-| 以[订阅模式](/zh-CN/realtime-media/whiteboard/fastboard-sdk/build/setup-and-access/generate-token)加入特定房间       | ✘                | ✘              |  ✔              |
-| 获取特定房间信息             |  ✔             |  ✔              | ✘               |
-| 封禁特定房间                 |  ✔              | ✘               | ✘               |
-| 对指定场景进行截图           |  ✔           |  ✔              | ✘               |
-| 对场景组下的所有场景进行截图 | ✔              |  ✔              | ✘               |
-| 获取特定房间的场景地址列表   |  ✔              |  ✔             | ✘              |
-| 在特定房间内插入新场景       |  ✔               | ✔              | ✘               |
-| 特定房间内的场景跳转         | ✔              |  ✔              | ✘               |
-
-#### Task Token
-
-| 权限                       | admin（管理员）              | writer（读写）               | reader（只读）               |
-| :------------------------- | :--------------------------- | :--------------------------- | :--------------------------- |
-| 查询特定文档转换任务的进度 | ✔ | ✔ | ✔ |
 
 ### Token 失效
 
@@ -1116,7 +968,7 @@ curl --request POST \
 
 <a id="token-相关错误-1"></a>
 
-### Token 相关错误
+### Token 相关错误 [#token-相关错误]
 
 在使用 Token 访问互动白板服务时，你可能会遇到以下报错：
 

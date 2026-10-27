@@ -22,7 +22,7 @@ const ZH_CN_MERGED_RESTFUL_GUIDE_REDIRECTS = new Map(
     'rtc/build/setup-and-access/enable-service',
     'whiteboard/whiteboard-sdk/build/setup-and-access/generate-token',
     'whiteboard/fastboard-sdk/build/setup-and-access/generate-token',
-  ].map((path) => [`${path}/restful`, `/zh-CN/realtime-media/${path}`]),
+  ].map((path) => [`${path}/restful`, `/zh-CN/realtime-media/${path}-restful`]),
 );
 
 export function resolveMovedDocsRedirect(
