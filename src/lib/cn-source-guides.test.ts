@@ -77,7 +77,6 @@ describe('Chinese guides retain the legacy article boundaries', {
         '创建声网项目',
         '获取 App ID',
         '获取临时 Token',
-        '开启小程序服务',
       ],
     ],
   ])(

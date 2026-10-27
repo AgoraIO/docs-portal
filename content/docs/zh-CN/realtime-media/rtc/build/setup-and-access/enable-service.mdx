@@ -3,9 +3,9 @@ title: "开通服务"
 description: "了解如何在声网控制台开通实时互动 RTC，并获取接入所需的项目配置、凭据和服务权限。"
 ---
 
-本文介绍如何开通实时互动服务。
+<a id="登录声网控制台-1"></a>
 
-## 登录声网控制台
+## 登录声网控制台 [#登录声网控制台]
 
 如果你是第一次使用声网服务，点击[注册账号](https://sso.shengwang.cn/cn/v4/signup/with-sms)前往控制台进行注册。注册成功后会自动登录。
 
@@ -15,14 +15,18 @@ description: "了解如何在声网控制台开通实时互动 RTC，并获取�
 注册和登录过程中如果遇到疑问，可以查看[快速开始](/zh-CN/introduction/quickstart)。
 :::
 
-## 创建声网项目
+<a id="创建声网项目-1"></a>
+
+## 创建声网项目 [#创建声网项目]
 
 成功登录控制台后，按照以下步骤创建一个声网项目：
 
 1. 展开控制台左上角下拉框，点击**创建项目**按钮。
 2. 在弹出的对话框内，依次选择**项目类型**，输入**项目名称**，选择**场景标签**和**鉴权机制**。其中鉴权机制推荐选择**安全模式**，**调试模式**的安全性较低。
 
-## 获取 App ID
+<a id="获取-app-id-1"></a>
+
+## 获取 App ID [#获取-app-id]
 
 成功创建项目后，声网会给每个项目自动分配一个 App ID 作为项目唯一标识。你可以直接在**总览**页面的**项目信息**栏，点击 App ID 右侧的复制按钮来获取当前项目的 App ID。
 
@@ -30,19 +34,13 @@ description: "了解如何在声网控制台开通实时互动 RTC，并获取�
 
 <PlatformStructured platform="android">
 
-
-
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
 
-
-
 </PlatformStructured>
 
 <PlatformStructured platform="macos">
-
-
 
 </PlatformStructured>
 
@@ -58,61 +56,41 @@ description: "了解如何在声网控制台开通实时互动 RTC，并获取�
 
 <PlatformStructured platform="windows">
 
-
-
 </PlatformStructured>
 
 <PlatformStructured platform="harmonyos">
-
-
 
 </PlatformStructured>
 
 <PlatformStructured platform="mini-program">
 
-
-
 </PlatformStructured>
 
 <PlatformStructured platform="electron">
-
-
 
 </PlatformStructured>
 
 <PlatformStructured platform="unity">
 
-
-
 </PlatformStructured>
 
 <PlatformStructured platform="flutter">
-
-
 
 </PlatformStructured>
 
 <PlatformStructured platform="react-native">
 
-
-
 </PlatformStructured>
 
 <PlatformStructured platform="unreal">
-
-
 
 </PlatformStructured>
 
 <PlatformStructured platform="blueprint">
 
-
-
 </PlatformStructured>
 
 <PlatformStructured platform="react">
-
-
 
 </PlatformStructured>
 
@@ -130,104 +108,9 @@ description: "了解如何在声网控制台开通实时互动 RTC，并获取�
 4. 点击**确认**。
 5. 成功生成临时 Token 后，点击 Token 右侧的复制按钮，保存好复制的 Token。
 
-<PlatformStructured platform="android">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="ios">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="macos">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="web">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="windows">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="harmonyos">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="mini-program">
-
 <a id="enable"></a>
+<a id="开启小程序服务"></a>
 
-## 开启小程序服务
-
-第一次使用微信小程序时，需要参考如下步骤开通服务：
-
-1. 登录声网[控制台](https://console.shengwang.cn/)，点击左侧导航栏的**全部产品**，选择**实时互动 RTC**，进入实时互动 RTC 页面。
-
-2. 在实时互动 RTC 页面，切换到**功能配置**页签。
-
-   ![开通服务一](https://web-cdn.agora.io/docs-portal/img/rtc/enable-service-mini-program1.png)
-
-3. 选择**小程序**，然后点击下方的**开启**按钮。
-
-   ![开通服务二](https://web-cdn.agora.io/docs-portal/img/rtc/enable-service-mini-program2.png)
-
-   点击后，控制台会自动发出弹窗，提示小程序最大并发频道数。点击**启用**。
-
-4. 成功启用小程序后，你可以通过下方的**前往查看**按钮查看小程序项目的用量。
-
-</PlatformStructured>
-
-<PlatformStructured platform="electron">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="unity">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="flutter">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="react-native">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="unreal">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="blueprint">
-
-
-
-</PlatformStructured>
-
-<PlatformStructured platform="react">
-
-
-
-</PlatformStructured>
+:::info[小程序接入]
+如果你要接入 RTC 小程序 SDK，还需[开通小程序服务](/zh-CN/realtime-media/rtc/build/setup-and-access/enable-mini-program)。
+:::
