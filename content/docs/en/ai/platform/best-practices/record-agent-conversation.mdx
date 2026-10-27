@@ -1,161 +1,57 @@
 ---
 title: Record agent conversations
-description: Configure Cloud Recording to capture Voice Agent conversations without breaking the audio experience.
+description: Record conversations with an agent using Cloud Recording, without interrupting the audio.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/record-agent-conversation.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/record-agent-conversation.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. */}
 
-This guide explains how to configure Agora [Cloud Recording](/en/api-reference/api-ref/cloud-recording) for Voice Agent conversations and avoid audio-scene conflicts when recording starts.
+This guide explains how to record conversations with a Conversational AI Platform agent using Agora [Cloud Recording](/en/api-reference/api-ref/cloud-recording), and how to avoid audio interruptions when recording starts.
 
 ## Why this needs special handling
 
-When you run a Voice Agent and Cloud Recording in the same channel, recording startup can briefly interrupt audio. The issue is usually caused by the agent audio scene falling back to a default mode when Cloud Recording joins the channel.
+When an agent and Cloud Recording are in the same channel, recording startup can briefly interrupt the audio. The issue is usually caused by the agent's audio scenario falling back to a default mode when Cloud Recording joins the channel.
 
-To keep audio stable, set the agent `audio_scenario` to `"chorus"` when you start the agent.
+To keep the audio stable, set the agent's audio scenario to `chorus` when you start the session.
 
-## Configure the agent
+{/* TODO(platform-confirm): This guidance comes from the Voice Agent engine. Confirm that recording still interrupts the audio with the default `aiserver` scenario on the Platform, and that `chorus` is still the recommended fix. */}
 
-Set the agent's RTC audio scenario to `chorus` when you configure the agent:
+## Start the session with the chorus audio scenario
 
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
+When you [start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session), set `transport.audio_scenario` to `chorus`:
 
-<TabsContent value="python">
-
-```python
-from agora_agent import Agent
-
-# client is your configured Agora client
-agent = (
-    Agent(client)
-    .with_stt(...)  # configure your STT vendor
-    .with_llm(...)  # configure your LLM vendor
-    .with_tts(...)  # configure your TTS vendor
-    .with_audio_scenario('chorus')
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-```typescript
-import { Agent } from 'agora-agents';
-
-// client is your configured Agora client
-const agent = new Agent({ client })
-  .withStt(/* configure your STT vendor */)
-  .withLlm(/* configure your LLM vendor */)
-  .withTts(/* configure your TTS vendor */)
-  .withAudioScenario('chorus');
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-```go
-import "github.com/AgoraIO/agora-agents-go/v2/agentkit"
-
-// client is your configured *agentkit.AgoraClient
-agent := agentkit.NewAgent(client).
-    WithStt(/* configure your STT vendor */).
-    WithLlm(/* configure your LLM vendor */).
-    WithTts(/* configure your TTS vendor */).
-    WithAudioScenario(agentkit.AudioScenarioChorus)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-Add or modify the `audio_scenario` field in the agent startup parameters:
-
-```json
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
 {
-  "properties": {
-    "parameters": {
-      "audio_scenario": "chorus"
-    }
+  "agent_id": "agent_k3n9x2",
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"],
+    "audio_scenario": "chorus"
   }
-}
+}'
 ```
 
-</TabsContent>
-</Tabs>
-
-## Complete example
-
-The following example shows an agent launch request with the recommended recording-safe configuration:
-
-```json
-{
-  "name": "TestConvoAgent",
-  "properties": {
-    "channel": "{{AccessChannel}}",
-    "token": "{{token}}",
-    "agent_rtc_uid": "0",
-    "remote_rtc_uids": [
-      "*"
-    ],
-    "idle_timeout": 30,
-    "advanced_features": {
-      "enable_bhvs": true
-    },
-    "llm": {
-      "url": "https://api.openai.com/v1/chat/completions",
-      "api_key": "<your_llm_api_key>",
-      "system_messages": [
-        {
-          "role": "system",
-          "content": "You are a helpful chatbot."
-        }
-      ],
-      "greeting_message": "Hello, how can I help you?",
-      "failure_message": "Sorry, I don't know how to answer this question.",
-      "max_history": 10,
-      "params": {
-        "model": "gpt-4o-mini"
-      }
-    },
-    "tts": {
-      "vendor": "microsoft",
-      "params": {
-        "key": "<your_tts_api_key>",
-        "region": "eastus",
-        "voice_name": "en-US-AndrewMultilingualNeural"
-      }
-    },
-    "turn_detection": {
-      "silence_duration_ms": 640
-    },
-    "parameters": {
-      "enable_dump": true,
-      "enable_error_message": true,
-      "audio_scenario": "chorus",
-      "enable_delay": true
-    }
-  }
-}
-```
+The audio scenario is a session setting, not part of the agent. Set it only for the sessions you record. Other sessions keep the default, `aiserver`. For details, see [Optimize audio quality](/en/ai/platform/best-practices/audio-setup).
 
 ## Start recording
 
-After the agent is running, call the [Start Cloud Recording API](/en/api-reference/api-ref/cloud-recording/start) to begin recording.
+After the session is running, call the [Start Cloud Recording](/en/api-reference/api-ref/cloud-recording/start) API to begin recording. Use a recording UID that's different from the agent's and the user's UIDs.
 
-Example Cloud Recording request body:
+The following example shows a Cloud Recording request body:
 
 ```json
 {
-  "cname": "{{AccessChannel}}",
-  "uid": "{{RecordingUID}}",
+  "cname": "<your_channel_name>",
+  "uid": "<your_recording_uid>",
   "clientRequest": {
-    "token": "{{token}}",
+    "token": "<your_recording_token>",
     "recordingConfig": {
       "maxIdleTime": 120,
       "streamTypes": 0,
@@ -169,17 +65,24 @@ Example Cloud Recording request body:
       ]
     },
     "storageConfig": {
-      "vendor": "{{Vendor}}",
-      "region": "{{Region}}",
-      "bucket": "{{Bucket}}",
-      "accessKey": "{{AccessKey}}",
-      "secretKey": "{{SecretKey}}"
+      "vendor": "<your_storage_vendor>",
+      "region": "<your_storage_region>",
+      "bucket": "<your_bucket>",
+      "accessKey": "<your_access_key>",
+      "secretKey": "<your_secret_key>"
     }
   }
 }
 ```
 
-## Related pages
+## Reference
 
-- [Start and stop an agent](../get-started/start-stop-agent)
+For more information, see the following pages:
+
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
+- [Optimize audio quality](/en/ai/platform/best-practices/audio-setup)
+
+### API reference
+
+- [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session)
 - [Cloud Recording API reference](/en/api-reference/api-ref/cloud-recording)

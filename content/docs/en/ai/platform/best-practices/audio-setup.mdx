@@ -3,15 +3,17 @@ title: Optimize audio quality
 description: Configure audio settings for a better AI-human conversation experience.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/audio-setup.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/audio-setup.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. The client sections are SDK-level and unchanged. */}
 
 In real-time audio interactions, the rhythm, continuity, and intonation of conversations between humans and AI often differ from those between humans. To improve the AI–human conversation experience, it's important to optimize audio settings.
 
-When using the Android, iOS, or Web RTC SDK with the Conversational AI Engine, follow the best practices in this guide to improve conversation fluency and reliability, especially in complex network environments.
+When users talk to a Conversational AI Platform agent from an Android, iOS, or Web app built with the RTC SDK, follow the best practices in this guide to improve conversation fluency and reliability, especially in complex network environments.
 
 ## Server configuration
 
-When calling the server API to create a conversational AI agent, use the default values for audio-related parameters to ensure the best audio experience.
+When you [start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session), `transport.audio_scenario` sets the agent's audio scenario in the channel. Keep the default, `aiserver`, which is optimized for latency and network resilience in conversations with an agent. Use `chorus` only when participants have good network conditions and need ultra-low latency, or when you record the conversation with Cloud Recording. For details, see [Record agent conversations](/en/ai/platform/best-practices/record-agent-conversation).
+
+For other audio-related settings, use the default values.
 
 ## Client configuration
 
@@ -19,7 +21,7 @@ To configure the client app, implement the following:
 
 ### Integrate the required dynamic libraries
 
-For the best Conversational AI Engine audio experience, integrate and load the following dynamic libraries in your project:
+For the best audio experience with an agent, integrate and load the following dynamic libraries in your project:
 
 <Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
@@ -72,6 +74,8 @@ You can optimize audio settings in the following ways:
 ### Use the toolkit APIs
 
 In this solution, you use the toolkit APIs to optimize audio settings.
+
+{/* TODO(platform-confirm): The client toolkit is initialized with an RTM client for client-channel messaging, which the launch contract defers for the Platform. Confirm that `loadAudioSettings` works with Platform agents. */}
 
 <Tabs defaultValue="android" groupId="ai-toolkit-platform" persist>
 <TabsList>
