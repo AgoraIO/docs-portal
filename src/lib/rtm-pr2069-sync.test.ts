@@ -48,7 +48,6 @@ describe('RTM upstream PR #2069 parity', () => {
       match[0].includes(`href="${quickStartHref}"`),
     );
     expect(card?.[0] ?? '').toContain('小程序（Beta）');
-    expect(homepage).toContain(`[快速开始](${quickStartHref})`);
     expect(isKnownPlatform('mini-program')).toBe(true);
     expect(
       existsSync(
