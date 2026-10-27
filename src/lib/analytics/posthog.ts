@@ -1,6 +1,11 @@
 import type { BeforeSendFn } from 'posthog-js';
 import type { AccountFlow, DocsAccount } from '@/lib/auth/contracts';
+import {
+  negativeFeedbackReasons,
+  positiveFeedbackReasons,
+} from '@/lib/docs-feedback';
 import type { MeasurementEvent } from './docs-measurement';
+import { measurementPath } from './measurement-path';
 import { filterCnMeasurementEvent } from './measurement-privacy';
 
 type PostHogClient = typeof import('posthog-js').default;
@@ -154,6 +159,96 @@ export function captureDocsPageFeedback({
       value,
     });
   });
+}
+
+/** True means the SDK accepted this immutable event, not server receipt confirmation. */
+export async function captureDocsFeedbackSubmission(input: {
+  id: string;
+  submittedAt: string;
+  helpfulness: DocsFeedbackValue;
+  reasons: readonly string[];
+  hasComment: boolean;
+  pagePath: string;
+}): Promise<boolean> {
+  if (
+    typeof window === 'undefined' ||
+    import.meta.env.VITE_DOCS_REGION !== 'cn' ||
+    import.meta.env.VITE_DOCS_MEASUREMENT_ENABLED !== 'true'
+  )
+    return false;
+  const labels =
+    input.helpfulness === 'yes'
+      ? positiveFeedbackReasons
+      : negativeFeedbackReasons;
+  if (
+    !input.reasons.length ||
+    input.reasons.some((reason) => !Object.hasOwn(labels, reason))
+  )
+    return false;
+  const response = [...new Set(input.reasons)].sort();
+  const properties: Record<string, unknown> = {
+    event_id: input.id,
+    feedback_id: input.id,
+    occurred_at: input.submittedAt,
+    schema_version: '1',
+    event_source: 'browser',
+    site_id: 'docs_portal',
+    deployment_region: 'cn',
+    locale: 'zh-CN',
+    environment: import.meta.env.VITE_DOCS_ENVIRONMENT || 'local',
+    app_release: import.meta.env.VITE_DOCS_APP_RELEASE || 'unknown',
+    canonical_path: measurementPath(input.pagePath),
+    value: input.helpfulness,
+    response,
+    has_comment: input.hasComment,
+    feedback_destination: input.hasComment ? 'github' : 'analytics',
+    feedback_scope: 'page',
+    feedback_source: 'manual',
+    surface: 'content',
+    question_id: 'reasons',
+    prompt_version: 'inline-reasons-v1',
+    evidence_source: 'self_report',
+    traffic_type: 'visitor',
+  };
+  try {
+    if (import.meta.env.VITE_DOCS_ENVIRONMENT !== 'production') {
+      const testId = sessionStorage.getItem('docs-measurement-test');
+      if (testId && /^[a-zA-Z0-9_-]{1,80}$/.test(testId)) {
+        properties.test_run_id = testId;
+        properties.traffic_type = 'internal_test';
+      }
+    }
+  } catch {
+    /* Storage can be unavailable. */
+  }
+  const account = currentDocsAccount;
+  try {
+    const posthog = await getPostHogClient();
+    if (!posthog) return false;
+    applyDocsAccount(posthog, account);
+    return Boolean(
+      posthog.capture(
+        'docs_feedback_form_submitted',
+        {
+          ...properties,
+          ...(account
+            ? {
+                account_uid: account.accountUid,
+                company_id: account.companyId,
+                $groups: { cid: account.companyId },
+              }
+            : {}),
+        },
+        {
+          uuid: input.id,
+          timestamp: new Date(input.submittedAt),
+          send_instantly: true,
+        },
+      ),
+    );
+  } catch {
+    return false;
+  }
 }
 
 export function captureMeasurementEvent(event: MeasurementEvent) {

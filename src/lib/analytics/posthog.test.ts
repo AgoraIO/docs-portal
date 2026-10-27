@@ -33,6 +33,78 @@ describe('PostHog analytics', () => {
     window.history.replaceState({}, '', '/en/introduction?platform=web#start');
   });
 
+  it('records each form submission with a stable id and no free-text fields', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    vi.stubEnv('VITE_DOCS_REGION', 'cn');
+    vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'true');
+    const { captureDocsFeedbackSubmission } = await import('./posthog');
+    captureMock.mockReturnValueOnce({ event: 'docs_feedback_form_submitted' });
+    const payload = {
+      id: 'b323aa10-d0e6-40e8-a48b-301071409ddc',
+      helpfulness: 'no' as const,
+      reasons: ['other'],
+      hasComment: true,
+      pagePath: '/realtime-media/rtc?token=secret#part',
+      submittedAt: '2026-10-27T06:00:00.000Z',
+      details: 'private@example.test',
+    };
+    expect(await captureDocsFeedbackSubmission(payload)).toBe(true);
+    const [name, properties, options] = captureMock.mock.calls[0];
+    expect(name).toBe('docs_feedback_form_submitted');
+    expect(properties).toMatchObject({
+      event_id: 'b323aa10-d0e6-40e8-a48b-301071409ddc',
+      feedback_id: 'b323aa10-d0e6-40e8-a48b-301071409ddc',
+      value: 'no',
+      response: ['other'],
+      has_comment: true,
+      feedback_destination: 'github',
+      canonical_path: '/zh-CN/realtime-media/rtc',
+    });
+    expect(options).toMatchObject({
+      uuid: 'b323aa10-d0e6-40e8-a48b-301071409ddc',
+      send_instantly: true,
+    });
+    expect(JSON.stringify(properties)).not.toMatch(
+      /private@example|token=secret/,
+    );
+    const filtered = initMock.mock.calls[0][1].before_send({
+      event: name,
+      properties: {
+        ...properties,
+        details: 'private@example.test',
+        $current_url: 'https://docs.example/realtime-media/rtc?token=secret',
+      },
+    });
+    expect(filtered.properties).toMatchObject({
+      feedback_id: 'b323aa10-d0e6-40e8-a48b-301071409ddc',
+      response: ['other'],
+      has_comment: true,
+      feedback_destination: 'github',
+    });
+    expect(JSON.stringify(filtered)).not.toMatch(
+      /private@example|token=secret/,
+    );
+  });
+
+  it('does not report success when collection is disabled or the SDK drops the submission', async () => {
+    vi.stubEnv('VITE_POSTHOG_KEY', 'test-key');
+    vi.stubEnv('VITE_DOCS_REGION', 'cn');
+    vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'false');
+    const { captureDocsFeedbackSubmission } = await import('./posthog');
+    const payload = {
+      id: '2ab8097c-e9f7-46e2-9a82-aa143563b1cc',
+      helpfulness: 'yes' as const,
+      reasons: ['clear'],
+      hasComment: false,
+      pagePath: '/realtime-media/rtc',
+      submittedAt: '2026-10-27T06:00:00.000Z',
+    };
+    expect(await captureDocsFeedbackSubmission(payload)).toBe(false);
+    expect(captureMock).not.toHaveBeenCalled();
+    vi.stubEnv('VITE_DOCS_MEASUREMENT_ENABLED', 'true');
+    expect(await captureDocsFeedbackSubmission(payload)).toBe(false);
+  });
+
   it('does not initialize PostHog without a project key', async () => {
     const { initializePostHog } = await import('./posthog');
 

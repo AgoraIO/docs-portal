@@ -2553,7 +2553,8 @@ describe('DocsMainColumn', () => {
     const pager = within(footer).getByTestId('docs-pager');
     const feedback = within(footer).getByTestId('docs-feedback');
 
-    expect(feedback).toHaveClass('flex-col', 'sm:flex-row');
+    expect(feedback).toHaveClass('flex-col');
+    expect(feedback.firstElementChild).toHaveClass('flex-col', 'sm:flex-row');
     expect(pager).toHaveClass('grid-cols-1', 'sm:grid-cols-2');
   });
 
