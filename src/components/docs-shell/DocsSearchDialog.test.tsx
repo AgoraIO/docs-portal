@@ -12,6 +12,7 @@ import {
   render,
   screen,
   waitFor,
+  within,
 } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
@@ -1213,6 +1214,101 @@ describe('DocsSearchDialog', () => {
         }),
       ),
     );
+  });
+
+  it.each(['docs', 'api'] as const)(
+    'groups CN matches and opens all %s results with the selected filters',
+    async (family) => {
+      const router = renderCnSearch(
+        vi.fn().mockResolvedValue([
+          {
+            id: 'api',
+            title: 'API match',
+            content: 'API match',
+            type: 'page',
+            url: '/api-reference/rtc/android/method#api',
+            snippet: 'API summary',
+            familyTotalHits: 39,
+          },
+          {
+            id: 'guide',
+            title: 'Guide match',
+            content: 'Guide match',
+            type: 'page',
+            url: '/realtime-media/rtc/guide/android#guide',
+            snippet: 'Guide summary',
+            familyTotalHits: 7,
+          },
+        ]),
+      );
+      const navigate = vi.spyOn(router, 'navigate');
+      render(<RouterProvider router={router} />);
+      fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+      fireEvent.input(
+        await screen.findByPlaceholderText('搜索文档、API、指南...'),
+        { target: { value: 'getNtpWallTimeInMs' } },
+      );
+      fireEvent.click(screen.getByRole('combobox', { name: '全部产品' }));
+      fireEvent.click(await screen.findByRole('option', { name: '实时互动' }));
+      fireEvent.click(screen.getByRole('combobox', { name: '全部平台' }));
+      fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
+      const docs = await screen.findByRole('group', { name: '技术文档' });
+      const api = screen.getByRole('group', { name: 'API Reference' });
+      expect(within(docs).getByText('共 7 条结果')).toBeInTheDocument();
+      expect(within(api).getByText('共 39 条结果')).toBeInTheDocument();
+      expect(within(docs).getByText('Guide summary')).toBeInTheDocument();
+      expect(within(api).getByText('API summary')).toBeInTheDocument();
+      expect(screen.getAllByRole('option').map((e) => e.textContent)).toEqual([
+        expect.stringContaining('Guide match'),
+        expect.stringContaining('API match'),
+      ]);
+      expect(
+        screen.queryByTestId('search-active-detail'),
+      ).not.toBeInTheDocument();
+      const action = screen.getByRole('button', {
+        name: family === 'docs' ? '查看全部技术文档' : '查看全部API Reference',
+      });
+      expect(fireEvent.keyDown(action, { key: 'Enter' })).toBe(true);
+      expect(fireEvent.keyDown(action, { key: ' ' })).toBe(true);
+      fireEvent.click(action);
+      await waitFor(() =>
+        expect(navigate).toHaveBeenCalledWith(
+          expect.objectContaining({
+            href: `/zh-CN/search?q=getNtpWallTimeInMs&product=rtc&platform=android&type=${family}`,
+          }),
+        ),
+      );
+    },
+  );
+
+  it('keeps the empty document family visible when only API results match', async () => {
+    const router = renderCnSearch(
+      vi.fn().mockResolvedValue([
+        {
+          id: 'api-only',
+          title: 'manualSOS',
+          content: 'manualSOS',
+          type: 'page',
+          url: '/api-reference/rtc/android/method#manualsos',
+          familyTotalHits: 9,
+        },
+      ]),
+    );
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    fireEvent.input(
+      await screen.findByPlaceholderText('搜索文档、API、指南...'),
+      { target: { value: 'manualSOS' } },
+    );
+    const docs = await screen.findByRole('group', { name: '技术文档' });
+    expect(within(docs).getByText('共 0 条结果')).toBeInTheDocument();
+    expect(within(docs).getByText('暂无相关技术文档')).toBeInTheDocument();
+    expect(
+      within(screen.getByRole('group', { name: 'API Reference' })).getAllByRole(
+        'option',
+      ),
+    ).toHaveLength(1);
+    expect(document.querySelector('[cmdk-empty]')).toBeNull();
   });
 
   it('starts an unfiltered search on another document and restores the source search on return', async () => {

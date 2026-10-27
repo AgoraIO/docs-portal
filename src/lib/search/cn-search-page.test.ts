@@ -88,6 +88,7 @@ describe('full CN search adapter', () => {
       '视频增强',
     ]);
     expect(result.totalHits).toBe(2);
+    expect(result.familyTotalHits).toEqual({ docs: 1, api: 1 });
     const [url, request] = fetchMock.mock.calls[0];
     expect(url).toBe('http://127.0.0.1:7700/multi-search');
     const { queries } = JSON.parse(request?.body as string);

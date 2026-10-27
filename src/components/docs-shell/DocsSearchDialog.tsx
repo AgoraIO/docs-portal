@@ -2,7 +2,7 @@
 
 import { useLocation, useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
+import { ArrowUpRightIcon, BookOpenIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
@@ -57,6 +57,7 @@ import {
   getCnSearchSdkLabel,
 } from '@/lib/search/cn-search-context';
 import {
+  isCnApiSearchGroup,
   loadCnSearchCatalog,
   type SearchFacets,
 } from '@/lib/search/cn-search-page';
@@ -351,7 +352,7 @@ export function DocsSearchDialog({
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
-  const showActiveDetail = searchLocale !== 'zh-CN' || hasQuery;
+  const showActiveDetail = !isCn;
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
   // During that pre-fetch window `isLoading` is false and `results` still holds
@@ -573,13 +574,33 @@ export function DocsSearchDialog({
       : normalizedSearchResults.map((result) =>
           searchResultToEntry(result, searchLocale === 'zh-CN', productScopes),
         );
+  const resultGroups = isCn
+    ? (['docs', 'api'] as const).map((family) => {
+        const entries = resultEntries.filter(
+          (entry) => entry.family === family,
+        );
+        return {
+          family,
+          label: family === 'docs' ? '技术文档' : 'API Reference',
+          entries,
+          total: entries[0]?.familyTotalHits ?? entries.length,
+        };
+      })
+    : [
+        {
+          family: 'all' as const,
+          label: '',
+          entries: resultEntries,
+          total: undefined,
+        },
+      ];
   const showRecent = !hasQuery && recentPages.length > 0;
   // Nothing typed and no history yet → a plain prompt instead of fake results.
   const showPrompt = !hasQuery && recentPages.length === 0;
-  // Only show the loading skeleton when there's nothing else to show. While a
-  // re-query is in flight the previous results stay visible, so the skeleton
-  // must not render on top of them.
-  const showSkeleton = hasQuery && isBusy && resultEntries.length === 0;
+  // CN replaces stale groups and counts while re-querying. Other locales keep
+  // previous rows visible and only need a skeleton for the initial request.
+  const showSkeleton =
+    hasQuery && isBusy && (isCn || resultEntries.length === 0);
 
   // One detail record per rendered item, in render order. `value` matches the
   // cmdk item value set on each CommandItem below. The empty state lists recent
@@ -629,18 +650,20 @@ export function DocsSearchDialog({
   const pageScope = productScopes.find(
     (scope) => scope.id === pageSearch?.scope,
   )?.scope;
-  const fullSearchHref = buildSearchPageHref(searchLocale, {
+  const fullSearchState = {
     q: pageSearch?.query ?? '',
     product: isCn
       ? resolveCnSearchProduct(pageSearch?.scope, productScopes)
       : searchScopeProduct(pageScope),
     platform: pageSearch?.platform ?? undefined,
-  });
-  const openFullSearch = () => {
+  };
+  const openFullSearch = (type: 'all' | 'docs' | 'api' = 'all') => {
     if (isCn && searchOrigin.current === pathname)
       saveCnSearchSession(pathname, currentSearch.current);
     setOpen(false);
-    void navigate({ href: fullSearchHref });
+    void navigate({
+      href: buildSearchPageHref(searchLocale, { ...fullSearchState, type }),
+    });
   };
 
   return (
@@ -669,7 +692,10 @@ export function DocsSearchDialog({
         </Button>
       )}
       <CommandDialog
-        className="docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-visible border-border p-0"
+        className={cn(
+          'docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-visible border-border p-0',
+          isCn && 'sm:max-w-3xl',
+        )}
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={(value) => {
@@ -684,7 +710,7 @@ export function DocsSearchDialog({
         {isCn ? (
           <div className="flex items-center justify-between border-b px-3 py-2 pr-12">
             <span>搜索文档</span>
-            <Button onClick={openFullSearch} size="sm" variant="ghost">
+            <Button onClick={() => openFullSearch()} size="sm" variant="ghost">
               完整搜索
             </Button>
           </div>
@@ -789,17 +815,13 @@ export function DocsSearchDialog({
                 </div>
               ))}
             </div>
-          ) : hasQuery ? (
+          ) : hasQuery &&
+            !isSearchUnavailable &&
+            normalizedSearchResults.length === 0 ? (
             // Only render cmdk's empty slot during an active search. Rendering it
             // in the prompt/recent state adds an empty padded block that throws
             // off the prompt's vertical balance.
-            <CommandEmpty>
-              {isSearchUnavailable
-                ? t('docs.searchUnavailable')
-                : normalizedSearchResults.length === 0
-                  ? t('docs.searchEmpty')
-                  : null}
-            </CommandEmpty>
+            <CommandEmpty>{t('docs.searchEmpty')}</CommandEmpty>
           ) : null}
           {showPrompt ? (
             <div
@@ -836,92 +858,164 @@ export function DocsSearchDialog({
               })}
             </CommandGroup>
           ) : null}
-          {hasQuery ? (
-            <CommandGroup>
-              {isSearchUnavailable ? (
-                <div className="px-2 py-3 text-sm text-muted-foreground">
-                  {t('docs.searchUnavailable')}
-                </div>
-              ) : (
-                resultEntries.map((page, index) => {
-                  const stagger = staggerProps(index);
-                  return (
-                    <CommandItem
-                      className={cn('items-start', stagger.className)}
-                      disabled={isCn && isBusy}
-                      key={page.id ?? page.url}
-                      onSelect={() => {
-                        selectDocsResult(visibleSnapshot, {
-                          id: page.url,
-                          path: page.url,
-                          rank: index + 1,
-                          kind: 'section',
-                          method: selectionMethod.current,
-                        });
-                        void handleSelect(page.url);
-                      }}
-                      onMouseDown={(event) => {
-                        if (isCn && isBusy) return;
-                        if (
-                          event.button !== 1 &&
-                          !(
-                            event.button === 0 &&
-                            (event.metaKey || event.ctrlKey)
-                          )
-                        )
-                          return;
-                        event.preventDefault();
-                        const href = selectDocsResult(
-                          visibleSnapshot,
-                          {
+          {hasQuery && isSearchUnavailable ? (
+            <div className="px-2 py-3 text-sm text-muted-foreground">
+              {t('docs.searchUnavailable')}
+            </div>
+          ) : null}
+          {hasQuery &&
+          !isSearchUnavailable &&
+          (!isCn || (!isBusy && resultEntries.length > 0))
+            ? resultGroups.map((group) => (
+                <CommandGroup
+                  forceMount={isCn}
+                  key={group.family}
+                  heading={isCn ? group.label : undefined}
+                  className={
+                    isCn ? '[&_[cmdk-group-heading]]:sr-only' : undefined
+                  }
+                >
+                  {isCn ? (
+                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 px-2 py-1 text-xs text-muted-foreground">
+                      <span className="text-sm font-medium">{group.label}</span>
+                      <div className="flex items-center gap-2">
+                        {group.total !== undefined ? (
+                          <span>共 {group.total} 条结果</span>
+                        ) : null}
+                        <Button
+                          aria-label={`查看全部${group.label}`}
+                          onClick={() => openFullSearch(group.family)}
+                          onKeyDown={(event) => {
+                            // Let native button activation handle Enter/Space,
+                            // rather than cmdk selecting the active result.
+                            if (event.key === 'Enter' || event.key === ' ')
+                              event.stopPropagation();
+                          }}
+                          size="sm"
+                          variant="link"
+                        >
+                          查看全部
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
+                  {isCn && group.entries.length === 0 ? (
+                    <div className="px-2 py-3 text-xs text-muted-foreground">
+                      暂无相关
+                      {group.label === '技术文档' ? '技术文档' : 'API 文档'}
+                    </div>
+                  ) : null}
+                  {group.entries.map((page) => {
+                    const index = resultEntries.indexOf(page);
+                    const stagger = staggerProps(index);
+                    return (
+                      <CommandItem
+                        className={cn(
+                          'items-start',
+                          isCn && 'mb-2 gap-3 rounded-lg bg-muted/40',
+                          stagger.className,
+                        )}
+                        disabled={isCn && isBusy}
+                        key={page.id ?? page.url}
+                        onSelect={() => {
+                          selectDocsResult(visibleSnapshot, {
                             id: page.url,
                             path: page.url,
                             rank: index + 1,
                             kind: 'section',
-                            method: event.button === 1 ? 'middle' : 'mouse',
-                          },
-                          true,
-                        );
-                        window.open(href, '_blank', 'noopener');
-                      }}
-                      onClickCapture={(event) => {
-                        if (event.metaKey || event.ctrlKey) {
+                            method: selectionMethod.current,
+                          });
+                          void handleSelect(page.url);
+                        }}
+                        onMouseDown={(event) => {
+                          if (isCn && isBusy) return;
+                          if (
+                            event.button !== 1 &&
+                            !(
+                              event.button === 0 &&
+                              (event.metaKey || event.ctrlKey)
+                            )
+                          )
+                            return;
                           event.preventDefault();
-                          event.stopPropagation();
-                        }
-                      }}
-                      style={stagger.style}
-                      value={page.id ?? page.url}
-                    >
-                      <div className="min-w-0 flex-1 space-y-1.5">
-                        <HighlightedText
-                          className="line-clamp-1 font-medium"
-                          value={page.title}
-                        />
-                        {page.path.length > 0 ? (
-                          <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
-                            {page.path.join(' › ')}
-                          </div>
+                          const href = selectDocsResult(
+                            visibleSnapshot,
+                            {
+                              id: page.url,
+                              path: page.url,
+                              rank: index + 1,
+                              kind: 'section',
+                              method: event.button === 1 ? 'middle' : 'mouse',
+                            },
+                            true,
+                          );
+                          window.open(href, '_blank', 'noopener');
+                        }}
+                        onClickCapture={(event) => {
+                          if (event.metaKey || event.ctrlKey) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                          }
+                        }}
+                        style={stagger.style}
+                        value={page.id ?? page.url}
+                      >
+                        {isCn ? (
+                          <BookOpenIcon aria-hidden="true" className="mt-0.5" />
                         ) : null}
-                        {page.context.length > 0 ? (
-                          <div className="flex flex-wrap gap-1">
-                            {page.context.map((item) => (
-                              <span
-                                className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
-                                key={`${page.id ?? page.url}:${item}`}
-                              >
-                                <HighlightedText value={item} />
-                              </span>
-                            ))}
+                        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                          {isCn ? (
+                            <div className="truncate font-medium">
+                              {page.path.length > 1 ? (
+                                <span className="font-normal text-muted-foreground">
+                                  {page.path.slice(0, -1).join(' › ')} ›{' '}
+                                </span>
+                              ) : null}
+                              <HighlightedText value={page.title} />
+                            </div>
+                          ) : (
+                            <HighlightedText
+                              className="line-clamp-1 font-medium"
+                              value={page.title}
+                            />
+                          )}
+                          {!isCn && page.path.length > 0 ? (
+                            <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                              {page.path.join(' › ')}
+                            </div>
+                          ) : null}
+                          <div
+                            className={cn(
+                              isCn &&
+                                'flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:gap-2',
+                            )}
+                          >
+                            {page.context.length > 0 ? (
+                              <div className="flex shrink-0 flex-wrap gap-1">
+                                {page.context.map((item) => (
+                                  <span
+                                    className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
+                                    key={`${page.id ?? page.url}:${item}`}
+                                  >
+                                    <HighlightedText value={item} />
+                                  </span>
+                                ))}
+                              </div>
+                            ) : null}
+                            {isCn && page.description ? (
+                              <HighlightedText
+                                className="min-w-0 truncate text-xs text-muted-foreground"
+                                value={page.description}
+                              />
+                            ) : null}
                           </div>
-                        ) : null}
-                      </div>
-                    </CommandItem>
-                  );
-                })
-              )}
-            </CommandGroup>
-          ) : null}
+                        </div>
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+              ))
+            : null}
         </CommandList>
         {searchLocale === 'zh-CN' && hasQuery && !isBusy ? (
           <div className="px-2 pb-2">
@@ -932,7 +1026,7 @@ export function DocsSearchDialog({
           <div className="border-t p-2">
             <Button
               className="w-full justify-between"
-              onClick={openFullSearch}
+              onClick={() => openFullSearch()}
               variant="ghost"
             >
               查看全部搜索结果
@@ -943,13 +1037,15 @@ export function DocsSearchDialog({
         {/* Active-item detail: floats beside the dialog when there's room,
             otherwise a fixed-height strip in the footer. Either way it's out of
             the height-varying flow, so the dialog doesn't resize on focus change. */}
-        <SearchDetailPanel
-          activeValue={activeValue}
-          description={showActiveDetail ? activeDetail?.primary : undefined}
-          open={open}
-          renderText={(value) => <HighlightedText value={value} />}
-          title={showActiveDetail ? activeDetail?.title : undefined}
-        />
+        {!isCn ? (
+          <SearchDetailPanel
+            activeValue={activeValue}
+            description={showActiveDetail ? activeDetail?.primary : undefined}
+            open={open}
+            renderText={(value) => <HighlightedText value={value} />}
+            title={showActiveDetail ? activeDetail?.title : undefined}
+          />
+        ) : null}
         <SearchKeyboardHints
           closeLabel={t('docs.searchHintClose')}
           navigateLabel={t('docs.searchHintNavigate')}
@@ -965,6 +1061,8 @@ export function DocsSearchDialog({
 }
 
 type RenderedSearchEntry = SearchEntry & {
+  family: 'docs' | 'api';
+  familyTotalHits?: number;
   context: string[];
   id?: string;
   path: string[];
@@ -983,6 +1081,7 @@ type DetailEntry = {
 function searchResultToEntry(
   result: {
     breadcrumbs?: unknown[];
+    familyTotalHits?: unknown;
     content: unknown;
     id?: unknown;
     objectType?: unknown;
@@ -1005,6 +1104,16 @@ function searchResultToEntry(
   const sdkLabel = isCn ? getCnSearchSdkLabel(result.url) : undefined;
 
   return {
+    family: isCnApiSearchGroup({
+      pageUrl: result.url,
+      docType: objectType === 'openapi' ? 'openapi' : 'docs',
+    })
+      ? 'api'
+      : 'docs',
+    familyTotalHits:
+      typeof result.familyTotalHits === 'number'
+        ? result.familyTotalHits
+        : undefined,
     context: uniqueStrings([
       objectType === 'openapi' ? 'API' : undefined,
       isCn

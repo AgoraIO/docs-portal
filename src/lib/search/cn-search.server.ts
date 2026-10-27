@@ -179,6 +179,14 @@ export async function queryCnSearch(
     totalPages: Math.min(result.totalPages, 500),
     page: result.page,
     facets,
+    ...(overview
+      ? {
+          familyTotalHits: {
+            docs: responses[0].totalHits,
+            api: responses[1].totalHits,
+          },
+        }
+      : {}),
   };
 }
 

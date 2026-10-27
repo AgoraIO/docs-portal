@@ -1,11 +1,59 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createCnDocsSearchClient } from './cn-search-client';
 import { loadCnSearchCatalog, searchCnDocsPage } from './cn-search-page';
+import { normalizeMeilisearchHit } from './meilisearch-client';
 import { parseSearchPageState } from './search-page-state';
 
 afterEach(() => vi.restoreAllMocks());
 const empty = { groups: [], totalHits: 0, totalPages: 0, page: 1, facets: {} };
 describe('browser search API transport', () => {
+  it('reserves three preview slots per family and carries full family counts', async () => {
+    const groups = (['api', 'docs'] as const).map((family) => ({
+      pageUrl:
+        family === 'api'
+          ? '/api-reference/rtc/android/method'
+          : '/realtime-media/rtc/guide',
+      title: family,
+      platform: ['android'],
+      docType: 'docs',
+      sections: Array.from({ length: 5 }, (_, i) =>
+        normalizeMeilisearchHit({
+          id: `${family}-${i}`,
+          url: `${family === 'api' ? '/api-reference/rtc/android/method' : '/realtime-media/rtc/guide'}#section-${i}`,
+          pageTitle: family,
+          sectionTitle: `${family}-${i}`,
+          content: 'summary',
+          headingPath: [],
+          locale: 'zh-CN',
+          audience: [],
+          docType: 'docs',
+          status: 'published',
+          hidden: false,
+        }),
+      ),
+    }));
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        ...empty,
+        groups,
+        totalHits: 46,
+        familyTotalHits: { docs: 7, api: 39 },
+      }),
+    );
+    const result = await createCnDocsSearchClient({}).search('method');
+    expect(result).toMatchObject([
+      ...[0, 1, 2].map((i) => ({
+        id: `docs-${i}`,
+        family: 'docs',
+        familyTotalHits: 7,
+      })),
+      ...[0, 1, 2].map((i) => ({
+        id: `api-${i}`,
+        family: 'api',
+        familyTotalHits: 39,
+      })),
+    ]);
+  });
   it('loads the publication catalog without query or selected filters', async () => {
     const facets = {
       platform: { android: 3, harmonyos: 2, swift: 1 },

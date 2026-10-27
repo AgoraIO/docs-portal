@@ -23,6 +23,7 @@ export type CnSearchPageResponse = {
   totalPages: number;
   page: number;
   facets: SearchFacets;
+  familyTotalHits?: { docs: number; api: number };
 };
 
 export type CnSearchRequest = SearchPageState & { tab?: string };

@@ -118,9 +118,9 @@ describe('SDK release search snapshot', () => {
     }).search('joinChannel');
     expect(full.facets.version).toEqual({ '4.7.1': 3, '2.3.0': 1 });
     expect(quick.map((entry) => entry.url)).toEqual(
-      full.groups.flatMap((group) =>
-        group.sections.map((section) => section.url),
-      ),
+      full.groups
+        .flatMap((group) => group.sections.map((section) => section.url))
+        .slice(0, 3),
     );
     expect(quick).toEqual(
       expect.arrayContaining([

@@ -1,5 +1,5 @@
 import type { SearchClient } from 'fumadocs-core/search/client';
-import { searchCnDocsPage } from './cn-search-page';
+import { isCnApiSearchGroup, searchCnDocsPage } from './cn-search-page';
 import { mapSearchHit, normalizeMeilisearchQuery } from './meilisearch-client';
 import { parseSearchPageState } from './search-page-state';
 import type { DocsSearchScope } from './search-provider';
@@ -30,9 +30,17 @@ export function createCnDocsSearchClient({
         undefined,
         requestHeaders?.(),
       );
-      return result.groups
-        .flatMap((group) => group.sections.map(mapSearchHit))
-        .slice(0, 10);
+      return (['docs', 'api'] as const).flatMap((family) =>
+        result.groups
+          .filter((group) => isCnApiSearchGroup(group) === (family === 'api'))
+          .flatMap((group) => group.sections)
+          .slice(0, 3)
+          .map((hit) => ({
+            ...mapSearchHit(hit),
+            family,
+            familyTotalHits: result.familyTotalHits?.[family],
+          })),
+      );
     },
   };
 }
