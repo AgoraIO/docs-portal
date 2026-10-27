@@ -19,10 +19,10 @@ describe('legacy RTC mini-program setup redirect', () => {
   it.each([
     'rtc/mini-program/get-started/enable-service',
     'rtc/mini-program/get-started/enable-service/',
-  ])('permanently redirects %s directly to its dedicated guide', (splat) => {
+  ])('permanently redirects %s directly to the mini-program tab', (splat) => {
     expect(loadLegacyDoc(splat)).toMatchObject({
       options: {
-        href: '/realtime-media/rtc/build/setup-and-access/enable-mini-program',
+        href: '/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service',
         statusCode: 301,
       },
       status: 301,

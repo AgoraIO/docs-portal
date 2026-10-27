@@ -55,50 +55,23 @@ describe('Chinese guides retain the legacy article boundaries', {
     },
   );
 
-  it.each([
-    [
-      'android',
-      ['登录声网控制台', '创建声网项目', '获取 App ID', '获取临时 Token'],
-    ],
-    [
-      'web',
-      [
-        '登录声网控制台',
-        '创建声网项目',
-        '获取 App ID',
-        '获取 App 证书',
-        '获取临时 Token',
-      ],
-    ],
-    [
-      'mini-program',
-      ['登录声网控制台', '创建声网项目', '获取 App ID', '获取临时 Token'],
-    ],
-  ])(
-    'keeps the legacy RTC %s preparation steps',
-    async (platform, headings) => {
-      const page = await guide(
-        `rtc/build/setup-and-access/enable-service/${platform}`,
-      );
-      expect(
-        page.toc.filter((item) => item.depth === 2).map((item) => item.title),
-      ).toEqual(headings);
-    },
-  );
-
-  it('keeps RESTful credentials out of the RTC SDK setup article', async () => {
-    const page = await guide(
-      'rtc/build/setup-and-access/enable-service-restful',
-    );
+  it('keeps all three source workflows in the merged RTC setup article', async () => {
+    const page = await guide('rtc/build/setup-and-access/enable-service');
     expect(page.title).toBe('开通服务');
     expect(
       page.toc.filter((item) => item.depth === 2).map((item) => item.title),
-    ).toEqual([
-      '登录声网控制台',
-      '创建声网项目',
-      '获取 App ID',
-      '获取客户 ID 和客户密钥',
-    ]);
+    ).toEqual(
+      expect.arrayContaining([
+        '登录声网控制台',
+        '创建声网项目',
+        '获取 App ID',
+        '获取 App 证书（Web SDK）',
+        '获取临时 Token',
+        '获取客户 ID 和客户密钥',
+        '前提条件',
+        '开通步骤',
+      ]),
+    );
     expect(page.toc.map((item) => item.url)).toEqual(
       expect.arrayContaining([
         '#登录声网控制台',
@@ -107,4 +80,26 @@ describe('Chinese guides retain the legacy article boundaries', {
       ]),
     );
   });
+
+  it.each([
+    ['enable-service-restful', 'restful-service'],
+    ['enable-mini-program', 'mini-program-service'],
+    ['enable-service/web', 'sdk-service'],
+  ])(
+    'preserves the old RTC %s address as a tab redirect',
+    async (path, hash) => {
+      expect(
+        await loadDocsPagePayload(
+          'zh-CN',
+          'realtime-media',
+          `rtc/build/setup-and-access/${path}`.split('/'),
+        ),
+      ).toEqual({
+        redirectUrl:
+          '/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#' +
+          hash,
+        statusCode: 301,
+      });
+    },
+  );
 });

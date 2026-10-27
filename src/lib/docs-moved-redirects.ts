@@ -19,11 +19,45 @@ const ZH_CN_RTC_EVENTS_REDIRECTS = new Map([
 
 const ZH_CN_MERGED_RESTFUL_GUIDE_REDIRECTS = new Map(
   [
-    'rtc/build/setup-and-access/enable-service',
     'whiteboard/whiteboard-sdk/build/setup-and-access/generate-token',
     'whiteboard/fastboard-sdk/build/setup-and-access/generate-token',
   ].map((path) => [`${path}/restful`, `/zh-CN/realtime-media/${path}-restful`]),
 );
+
+const RTC_SERVICE_SETUP_PATH = 'rtc/build/setup-and-access/enable-service';
+const ZH_CN_RTC_SERVICE_SETUP_REDIRECTS = new Map([
+  [
+    `${RTC_SERVICE_SETUP_PATH}-restful`,
+    `/zh-CN/realtime-media/${RTC_SERVICE_SETUP_PATH}#restful-service`,
+  ],
+  [
+    `${RTC_SERVICE_SETUP_PATH}/restful`,
+    `/zh-CN/realtime-media/${RTC_SERVICE_SETUP_PATH}#restful-service`,
+  ],
+  [
+    'rtc/build/setup-and-access/enable-mini-program',
+    `/zh-CN/realtime-media/${RTC_SERVICE_SETUP_PATH}#mini-program-service`,
+  ],
+  ...[
+    'android',
+    'ios',
+    'macos',
+    'web',
+    'windows',
+    'harmonyos',
+    'mini-program',
+    'electron',
+    'unity',
+    'flutter',
+    'react-native',
+    'unreal',
+    'blueprint',
+    'react',
+  ].map((platform): [string, string] => [
+    `${RTC_SERVICE_SETUP_PATH}/${platform}`,
+    `/zh-CN/realtime-media/${RTC_SERVICE_SETUP_PATH}#sdk-service`,
+  ]),
+]);
 
 export function resolveMovedDocsRedirect(
   locale: string,
@@ -39,6 +73,11 @@ export function resolveMovedDocsRedirect(
   }
 
   if (tab === 'realtime-media') {
+    const rtcServiceSetupRedirect = ZH_CN_RTC_SERVICE_SETUP_REDIRECTS.get(
+      slugSegments.join('/'),
+    );
+    if (rtcServiceSetupRedirect) return rtcServiceSetupRedirect;
+
     const mergedGuideRedirect = ZH_CN_MERGED_RESTFUL_GUIDE_REDIRECTS.get(
       slugSegments.join('/'),
     );
@@ -135,7 +174,8 @@ export function isPermanentMovedDocsRedirect(
     locale === 'zh-CN' &&
     ((tab === 'ai' && ZH_CN_AI_GUIDE_REDIRECTS.has(slugSegments.join('/'))) ||
       (tab === 'realtime-media' &&
-        (ZH_CN_RTC_EVENTS_REDIRECTS.has(slugSegments.join('/')) ||
+        (ZH_CN_RTC_SERVICE_SETUP_REDIRECTS.has(slugSegments.join('/')) ||
+          ZH_CN_RTC_EVENTS_REDIRECTS.has(slugSegments.join('/')) ||
           ZH_CN_MERGED_RESTFUL_GUIDE_REDIRECTS.has(slugSegments.join('/')))) ||
       (tab === 'solutions' &&
         (root === 'ppt-transcoding' || root === 'status-page')))

@@ -61,10 +61,16 @@ validateRecords(
 // Validate those targets against current source instead of rewriting evidence.
 for (const [legacyPath, target] of Object.entries(guideRedirects)) {
   if (!candidate.records.some((record) => record.legacyPath === legacyPath)) {
-    throw new Error(`Reviewed guide redirect has no legacy source: ${legacyPath}`);
+    throw new Error(
+      `Reviewed guide redirect has no legacy source: ${legacyPath}`,
+    );
   }
   await access(
-    path.join(repoRoot, 'content/docs/zh-CN', `${target.slice(1)}.mdx`),
+    path.join(
+      repoRoot,
+      'content/docs/zh-CN',
+      `${target.split(/[?#]/, 1)[0].slice(1)}.mdx`,
+    ),
   );
 }
 const records = candidate.records.map((record) => {
@@ -394,7 +400,10 @@ function toNginx(items, retired, targetCommit) {
   }
   for (const item of items) {
     lines.push(`location = ${item.legacyPath} {`);
-    lines.push(`  return 301 ${item.target};`);
+    const target = item.target.includes('#')
+      ? JSON.stringify(item.target)
+      : item.target;
+    lines.push(`  return 301 ${target};`);
     lines.push('}');
     lines.push('');
   }

@@ -7,7 +7,6 @@ import {
 
 describe('resolveMovedDocsRedirect', () => {
   it.each([
-    'rtc/build/setup-and-access/enable-service',
     'whiteboard/whiteboard-sdk/build/setup-and-access/generate-token',
     'whiteboard/fastboard-sdk/build/setup-and-access/generate-token',
   ])('keeps the source RESTful guide address for %s reachable', (path) => {
@@ -31,6 +30,26 @@ describe('resolveMovedDocsRedirect', () => {
     ).toBeNull();
     expect(
       resolveMovedDocsRedirect('zh-CN', 'realtime-media', path.split('/')),
+    ).toBeNull();
+  });
+
+  it.each([
+    ['enable-service-restful', 'restful-service'],
+    ['enable-service/restful', 'restful-service'],
+    ['enable-mini-program', 'mini-program-service'],
+    ['enable-service/web', 'sdk-service'],
+    ['enable-service/android', 'sdk-service'],
+    ['enable-service/mini-program', 'sdk-service'],
+  ])('redirects RTC setup %s to its merged tab', (page, fragment) => {
+    const segments = `rtc/build/setup-and-access/${page}`.split('/');
+    expect(resolveMovedDocsRedirect('zh-CN', 'realtime-media', segments)).toBe(
+      `/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service#${fragment}`,
+    );
+    expect(
+      isPermanentMovedDocsRedirect('zh-CN', 'realtime-media', segments),
+    ).toBe(true);
+    expect(
+      resolveMovedDocsRedirect('en', 'realtime-media', segments),
     ).toBeNull();
   });
 

@@ -220,7 +220,7 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(redirects[ruleIndex]).toEqual({
       source,
       destination:
-        '/realtime-media/rtc/build/setup-and-access/enable-mini-program',
+        '/realtime-media/rtc/build/setup-and-access/enable-service#mini-program-service',
       statusCode: 301,
     });
     const fallbackIndex = redirects.findIndex((rule) =>
