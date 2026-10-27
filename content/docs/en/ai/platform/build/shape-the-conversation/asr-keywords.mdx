@@ -1,127 +1,71 @@
 ---
 title: Improve ASR accuracy with keywords
-description: Improve speech recognition accuracy for specific terms using ASR keywords.
+description: Improve speech recognition accuracy for brand names, product names, and other specific terms with ASR keywords.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/asr-keywords.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/asr-keywords.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. */}
 
-In a conversational AI scenario, users may say non-dictionary words such as brand names, product names, personal names, place names, or industry-specific terms. You can configure ASR keywords when starting a conversational AI agent to improve ARES's recognition accuracy for these terms.
+In a conversational AI scenario, users may say non-dictionary words such as brand names, product names, personal names, place names, or industry-specific terms. To improve recognition accuracy for these terms, configure ASR keywords in the agent's `asr` block.
+
+:::info
+The ASR `keywords` described on this page apply only to [ARES](/en/ai/platform/models/asr/ares). Other ASR vendors have their own settings for this, for example `keyterm` for [Deepgram](/en/ai/platform/models/asr/deepgram).
+:::
 
 ## Prerequisites
 
-Before you start, make sure you have:
+Before you begin, make sure that you have created an agent and started a session as described in [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
 
-- Implemented the basic logic for talking with an agent, as described in [Quickstart](../../get-started/quickstart).
-- If you configure keywords through the Agent SDK, installed Agent SDK `v2.6.0` or later.
+## Configure ASR keywords
 
-## Implementation
-
-The following examples show how to configure ASR keywords for ARES using the Agent SDK or the REST API.
-
-<Tabs defaultValue="python" groupId="ai-sdk-language" persist>
-<TabsList>
-  <TabsTrigger value="python">Python SDK</TabsTrigger>
-  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
-  <TabsTrigger value="go">Go SDK</TabsTrigger>
-  <TabsTrigger value="rest-api">REST API</TabsTrigger>
-</TabsList>
-<TabsContent value="python">
-
-Pass a list of keywords to `AresSTT`'s `keywords` parameter:
-
-```python
-from agora_agent.agentkit.vendors import AresSTT
-
-agent = agent.with_stt(
-    AresSTT(
-        keywords=[
-            'Agora',
-            'Conversational AI',
-            'RTC',
-        ],
-    )
-)
-```
-
-</TabsContent>
-
-<TabsContent value="typescript">
-
-Pass a list of keywords to the `AresSTT` constructor's `keywords` option:
-
-```typescript
-import { AresSTT } from 'agora-agents';
-
-const agentWithKeywords = agent.withStt(
-  new AresSTT({
-    keywords: [
-      'Agora',
-      'Conversational AI',
-      'RTC',
-    ],
-  })
-);
-```
-
-</TabsContent>
-
-<TabsContent value="go">
-
-Pass a list of keywords to `AresSTTOptions.Keywords`:
-
-```go
-agent := agentkit.NewAgent(client).WithStt(
-    vendors.NewAresSTT(vendors.AresSTTOptions{
-        Keywords: []string{
-            "Agora",
-            "Conversational AI",
-            "RTC",
-        },
-    }),
-)
-```
-
-</TabsContent>
-
-<TabsContent value="rest-api">
-
-When you [Start a conversational AI agent](/en/api-reference/api-ref/conversational-ai/join), pass a list of keywords in the request body's `properties.asr.keywords` field:
+When you [create](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [update](/en/api-reference/api-ref/conversational-ai/platform/update-agent) an agent, pass the keywords in `params.keywords` of its `asr` block. The following example adds three product terms as ARES keywords:
 
 ```json
-{
+"pipeline": {
   "asr": {
-    "language": "en-US",
+    "credential": { "mode": "managed" },
     "vendor": "ares",
-    "keywords": [
-      "Agora",
-      "Conversational AI",
-      "RTC"
-    ]
+    "language": "en-US",
+    "params": {
+      "keywords": [
+        "Agora",
+        "Conversational AI",
+        "RTC"
+      ]
+    }
   }
 }
 ```
 
-</TabsContent>
-</Tabs>
+You can configure up to 128 keywords.
 
-:::info[Info]
-- With the REST API, you can only set `properties.asr.keywords` when you use ARES or when `properties.asr.vendor` is not set.
-- Setting keywords while explicitly using another ASR vendor causes the request to fail.
-- You can configure up to 128 keywords.
-:::
+{/* TODO(platform-confirm): Confirm that ARES takes `keywords` in `params` (in the Voice Agent API, it was a top-level `asr.keywords` field), that the limit is still 128, and what happens if you pass `keywords` to another vendor. The Voice Agent API rejected the request in that case. */}
 
 ## ASR keywords versus keyword interruption
 
-ASR keywords and keyword interruption are separate features that each use their own list of keywords:
+ASR keywords and keyword interruption are separate features, and each uses its own list of keywords:
 
 | Feature | Configuration field | Purpose |
 | :--- | :--- | :--- |
-| ASR keywords | `properties.asr.keywords` | Improves speech recognition accuracy for specific terms. |
-| Keyword interruption | `properties.interruption.keywords_config.trigger_keywords` | Interrupts the agent when the user says a specified keyword. See [Interrupt the agent mid-response](interrupt-agent). |
+| ASR keywords | `pipeline.asr.params.keywords` | Improves speech recognition accuracy for specific terms. |
+| Keyword interruption | `pipeline.turn_detection.interruption.keywords` | Interrupts the agent only when the user says one of the keywords. For details, see [Interrupt only on keywords](/en/ai/platform/build/shape-the-conversation/interrupt-agent#interrupt-only-on-keywords). |
 
 ## Best practices
 
-- Prioritize configuring brand names, product names, personal names, place names, model numbers, and abbreviations that are prone to misrecognition.
-- Avoid configuring too many common words, short words, or overly generic terms, such as "okay" or "start."
+Keep the following tips in mind when choosing keywords:
+
+- Prioritize brand names, product names, personal names, place names, model numbers, and abbreviations that are prone to misrecognition.
+- Avoid configuring too many common words, short words, or generic terms, such as "okay" or "start".
 - For mixed-language scenarios, you can configure terms in multiple languages together, such as a product's name in its local language, its English name, and its abbreviation.
-- Validate recognition results with real production audio before going live, and check both the target keywords and similar-sounding words.
+- Before going live, validate recognition results with real production audio, and check both the target keywords and similar-sounding words.
+
+## Reference
+
+For more information, see the following pages:
+
+- [ARES](/en/ai/platform/models/asr/ares)
+- [Interrupt the agent mid-response](/en/ai/platform/build/shape-the-conversation/interrupt-agent)
+
+### API reference
+
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)

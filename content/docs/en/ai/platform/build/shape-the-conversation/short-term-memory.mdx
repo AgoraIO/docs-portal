@@ -1,278 +1,97 @@
 ---
-title: Memory for Multi-Turn Conversations
-description: Cache the context of the current conversation in short-term memory to ensure that the agent can coherently understand and respond to the user's continuous input.
+title: Memory for multi-turn conversations
+description: Control how much conversation history the agent's LLM receives, seed conversations, and carry context from one session into the next.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/short-term-memory.mdx at e0d27b674 on 2026-10-21. Status: not yet updated for the Platform API. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/short-term-memory.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. */}
 
-Short-term memory enables your conversational agent to maintain context and coherence by storing structured conversation data during a session. This includes not only message content and roles, but also turn tracking, interruption handling, timestamps, and source metadata.
-
-Built on the OpenAI Chat Completions format with conversational AI extensions, short-term memory integrates seamlessly with large language models while providing flexibility for custom implementations, long-term storage, and dynamic memory updates.
-
-This guide shows you how to access, use, and implement short-term memory in your applications.
-
-:::info[Info]
-This guide applies to Conversational AI Engine version 1.4 and above.
-:::
+Short-term memory lets your agent respond coherently across a conversation. During a session, the agent keeps the history of what the user and the agent said, and passes recent messages to the LLM with each request. This page shows how to control that history, seed a conversation with messages, and carry context from one session into the next.
 
 ## Understand the tech
 
-Conversational AI Engine stores short-term memory in JSON format, following the [OpenAI Chat Completions](https://platform.openai.com/docs/api-reference/chat) structure. The following example shows the data structure:
+With each LLM request, the agent sends the following, in order:
+
+1. The agent's `instructions`.
+2. The agent's `messages`, if any. They seed the conversation history.
+3. The most recent messages of the conversation, up to `pipeline.llm.max_history`.
+
+Short-term memory lasts for one session. When the session ends, the agent doesn't keep the conversation. To use it later, save it and pass it to a new session, as described in [Carry context into later sessions](#carry-context-into-later-sessions).
+
+## Prerequisites
+
+Before you begin, make sure that you have created an agent and started a session as described in [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
+
+## Control how much history the LLM receives
+
+In the agent's `llm` block, set `max_history` to the number of recent messages the LLM receives with each request. It counts messages, not pairs of user and agent messages, and the agent's `instructions` don't count toward it. It accepts `1` to `1024`, and the default is `32`.
 
 ```json
-{
-    "contents": [
-        {
-            "role": "assistant",
-            "content": "How can I help you today?",
-            "turn_id": 1,
-            "timestamp": 1678901234,
-            "metadata": {
-                "source": "greeting"
-            }
-        },
-        {
-            "role": "user",
-            "content": "Can you tell me a joke?",
-            "turn_id": 2,
-            "timestamp": 1678901235,
-            "metadata": {
-                "source": "asr",
-                "user": "user123"
-            }
-        },
-        {
-            "role": "assistant",
-            "content": "Why did the scarecrow ",
-            "turn_id": 2,
-            "timestamp": 1678901236,
-            "metadata": {
-                "interrupted": true,
-                "interrupt_timestamp": 1678905225,
-                "original": "Why did the scarecrow win an award? Because he was outstanding in his field!",
-                "source": "llm"
-            }
-        },
-        {
-            "role": "user",
-            "content": "You know what? Tell me a story instead.",
-            "turn_id": 3,
-            "timestamp": 1678905235,
-            "metadata": {
-                "source": "asr",
-                "user": "user123"
-            }
-        },
-        {
-            "role": "assistant",
-            "content": "Once upon a time in a land far away, there lived a brave knight who fought dragons and saved princesses.",
-            "turn_id": 3,
-            "timestamp": 1678905236,
-            "metadata": {
-                "source": "llm"
-            }
-        },
-        {
-            "role": "assistant",
-            "content": "Are you still there?",
-            "turn_id": 4,
-            "timestamp": 1678905236,
-            "metadata": {
-                "source": "command"
-            }
-        }
-    ]
+"pipeline": {
+  "llm": {
+    "max_history": 12
+  }
 }
 ```
 
-Each message contains both standard OpenAI fields and enhanced fields that provide additional context for conversational AI scenarios:
+A lower value keeps each request smaller and faster, but the agent may forget earlier parts of a long conversation. A higher value preserves more context.
 
-- **OpenAI standard fields**:
+## Seed the conversation with messages
 
-    - `role`: Specifies the message sender's role in the conversation. Only `user` and `assistant` (agent) are supported in short-term memory. `system` messages are not included.
-
-    - `content`: The specific text content. Currently, short-term memory does not consider multimodal input.
-
-- **Conversational AI Engine extensions**:
-
-    - `turn_id`: Dialogue turn identifier. Starts from `0` and increments with each dialogue turn between the user and agent.
-
-    - `timestamp`: The timestamp of the corresponding message, with millisecond accuracy.
-
-    - `metadata`: Metadata of the message containing the following fields:
-
-        - `source`: Indicates how the message was generated:
-
-            | Value | Description | `user`<br/>message | `assistant`<br/>message |
-            |--------------|-------------|:----:|:---------:|
-            | `asr` | Speech recognition result | ✓ | ✗ |
-            | `message` | Text message | ✓ | ✗ |
-            | `command` | Messages generated by RESTful API call | ✓ | ✓ |
-            | `llm` | Large Language Model | ✗ | ✓ |
-            | `greeting` | Greeting message | ✗ | ✓ |
-            | `llm_failure` | LLM call failed | ✗ | ✓ |
-            | `silence` | Silent reminder message | ✗ | ✓ |
-
-        - `interrupted`: Whether this `assistant` message was interrupted by human voice:
-            - `true`: This message was interrupted.
-            - `false` (default): This message was not interrupted. The field is hidden when `false`.
-
-        - `interrupt_timestamp`: The timestamp when the agent message was interrupted, with millisecond precision. Only exists when `interrupted` is `true`.
-
-        - `original`: The complete content actually generated by the LLM. Only exists when `interrupted` is `true`.
-
-## Access short-term memory
-
-Conversational AI Engine provides the following methods to access short-term memory:
-
-* **During agent runtime**: Call the [Retrieve agent history](/en/api-reference/api-ref/conversational-ai/history) API to retrieve the agent's complete short-term memory in JSON format. This API returns all short-term memory stored during the agent's lifecycle.
-
-* **After agent stops**: Agora sends short-term memory to your business server through the message notification service. For details, see [Notification event types](/en/ai/reference/event-types#103-agent-history).
-
-## Pass memory content to the LLM
-
-Depending on the `llm.vendor` field you specify when creating the agent, Conversational AI Engine uses different strategies to pass memory content to the LLM.
-
-![Pass memory content to the LLM](https://assets-docs.agora.io/images/conversational-ai/short-term-memory.png)
-
-### Non-custom scenario
-
-When `llm.vendor` is not `"custom"`, the engine only transfers the OpenAI standard fields (`role` and `content`) from short-term memory to ensure compatibility.
+To start each conversation with context, such as an earlier exchange or a worked example, add `messages` to the agent configuration, at the same level as `instructions`. Each message has a `role` (`system`, `user`, or `assistant`) and `content`. The messages follow the agent's `instructions`.
 
 ```json
-{
-    "messages": [
-        {
-            "role": "assistant",
-            "content": "How can I help you today?"
-        },
-        {
-            "role": "user",
-            "content": "Can you tell me a joke?"
-        },
-        {
-            "role": "assistant",
-            "content": "Why did the scarecrow "
-        },
-        {
-            "role": "user",
-            "content": "You know what? Tell me a story instead."
-        },
-        {
-            "role": "assistant",
-            "content": "Once upon a time in a land far away, there lived a brave knight who fought dragons and saved princesses."
-        },
-        {
-            "role": "assistant",
-            "content": "Are you still there?"
-        }
-    ]
-}
-```
-
-### Custom scenario
-
-When `llm.vendor` is set to `"custom"`, the engine transmits all fields in short-term memory to the LLM. You can implement a wrapper to filter or merge extended fields as needed. For implementation details, see [Custom LLM](../custom-model-integration/custom-llm).
-
-**Example use cases:**
-* **Add timestamps**: Include message timestamps in the `content` field
-* **Add user context**: Prepend user information to the `content` field
-* **Handle interruptions**: Provide the complete `original` content for interrupted messages
-
-Combine these enhancements with `system_messages` to give your LLM deeper conversational awareness, allowing it to maintain user context and gracefully handle interrupted responses.
-
-```json
-{
-    "messages": [
-        {
-            "role": "assistant",
-            "content": "How can I help you today?",
-            "turn_id": 1,
-            "timestamp": 1678901234,
-            "metadata": {
-                "source": "greeting"
-            }
-        },
-        {
-            "role": "user",
-            "content": "Can you tell me a joke?",
-            "turn_id": 2,
-            "timestamp": 1678901235,
-            "metadata": {
-                "source": "asr",
-                "user": "user123"
-            }
-        },
-        {
-            "role": "assistant",
-            "content": "Why did the scarecrow ",
-            "turn_id": 2,
-            "timestamp": 1678901236,
-            "metadata": {
-                "interrupted": true,
-                "interrupt_timestamp": 1678905225,
-                "original": "Why did the scarecrow win an award? Because he was outstanding in his field!",
-                "source": "llm"
-            }
-        },
-        {
-            "role": "user",
-            "content": "You know what? Tell me a story instead.",
-            "turn_id": 3,
-            "timestamp": 1678905235,
-            "metadata": {
-                "source": "asr",
-                "user": "user123"
-            }
-        },
-        {
-            "role": "assistant",
-            "content": "Once upon a time in a land far away, there lived a brave knight who fought dragons and saved princesses.",
-            "turn_id": 3,
-            "timestamp": 1678905236,
-            "metadata": {
-                "source": "llm"
-            }
-        },
-        {
-            "role": "assistant",
-            "content": "Are you still there?",
-            "turn_id": 4,
-            "timestamp": 1678905236,
-            "metadata": {
-                "source": "command"
-            }
-        }
-    ],
-    "turn_id": 4,
-    "timestamp": 1678905236,
-    "interruptable": true,
-    "model": "xxxx"
-}
-```
-
-## Convert to long-term memory
-
-Short-term memory disappears when the agent stops. To preserve this data:
-
-1. **Store short-term memory**: Save the short-term memory to your server after the agent stops.
-2. **Inject into new sessions**: When creating a new agent, use `llm.system_messages` to inject either the original memory content or a summarized version.
-
-The following example shows how to inject summarized memory content using the `system_messages` array:
-
-```json
-[
-    {
-        "role": "system",
-        "content": "You are a helpful assistant. xxx"
-    },
-    {
-        "role": "system",
-        "content": "Previously, user has talked about their favorite hobbies with some key topics: xxx"
-    }
+"instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+"messages": [
+  { "role": "user", "content": "What are your opening hours?" },
+  { "role": "assistant", "content": "We're open from 9 AM to 6 PM, Monday to Friday." }
 ]
 ```
 
-## Update memory at runtime
+You can use the agent's variables in `messages`. For details, see [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
 
-Starting with version 1.4, you can call the [Update agent configuration](/en/api-reference/api-ref/conversational-ai/update) API to update the agent's `llm.system_messages` field while the agent is running. This enables you to update the memory content dynamically.
+## Get the conversation after a session
+
+After a session ends, Agora can send its transcript to your server in the [`1002` Session transcripts](/en/ai/platform/reference/event-types#1002-session-transcripts) notification event. Each transcript item contains the speaker's role, what was said, the turn ID, and the source of the message, such as `asr` or `llm`. If the agent was interrupted, the item contains only the part that was played.
+
+{/* TODO(platform-confirm): The Voice Agent API also lets you read short-term memory during a session (Retrieve agent history). The Platform's transcripts and turns APIs are deferred in the launch contract. Confirm whether 1002 is delivered in the Preview, and add an in-session method when one is available. */}
+
+## Carry context into later sessions
+
+The agent doesn't keep memory between sessions. To give a returning user continuity, save what matters from each conversation, and pass it to the next session as a variable:
+
+1. When a session ends, save its transcript, or a summary of it, from the [`1002` Session transcripts](/en/ai/platform/reference/event-types#1002-session-transcripts) event.
+2. In the agent's `instructions`, refer to a variable for the earlier context, and declare it in `variables`:
+
+    ```json
+    "instructions": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
+    "variables": {
+      "previous_context": {
+        "type": "str"
+      }
+    }
+    ```
+
+3. When you start the user's next session, pass the saved summary in `values`:
+
+    ```json
+    "values": {
+      "previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing."
+    }
+    ```
+
+Pass a summary rather than the full transcript when you can. It keeps the instructions short and leaves more room for the current conversation. For details about variables, see [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
+
+{/* TODO(platform-confirm): The Voice Agent page also covers updating memory while the agent is running. On the Platform, that would use Update a session or Inject context, which weren't deployed on staging. Add a section when they're confirmed for the Preview. The Voice Agent page also explains which memory fields a custom LLM receives; add that when the custom LLM page is rewritten. */}
+
+## Reference
+
+For more information, see the following pages:
+
+- [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations)
+- [Notification event types](/en/ai/platform/reference/event-types)
+
+### API reference
+
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)
+- [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session)
