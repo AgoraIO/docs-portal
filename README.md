@@ -74,20 +74,6 @@ rules, and verification guidance.
 See [docs/search-service.md](docs/search-service.md) for separate static-site and
 TanStack Start API builds, private Meilisearch configuration, and index release commands.
 
-### Docker builds and document update times
-
-Build the Docker image from a full Git checkout (CI checkout `fetch-depth: 0`).
-The Dockerfile uses BuildKit's `COPY --exclude` support (Dockerfile frontend
-1.19 or newer) and mounts `.git` read-only during the build. This lets
-`docs:last-updated` read each document's actual commit date without GitHub API
-requests or credentials. Git metadata is excluded from the builder filesystem
-and the final nginx image, which contains only the static site.
-
-For an exported source tree without `.git`, run `bun run docs:last-updated`
-in the original checkout before exporting, then build the static site with
-`bun run build`. The generated snapshot must match the exported content;
-checkout and build times are never substituted for document update times.
-
 ## Authoring Docs
 
 Docs content should follow the repo Markdown and MDX contract in

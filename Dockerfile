@@ -15,8 +15,7 @@ FROM dependencies AS builder
 
 WORKDIR /app
 
-# Git history is mounted only while generating build metadata.
-COPY --exclude=.git . .
+COPY . .
 
 ARG VITE_DOCS_REGION=global
 ARG SITE_URL=
@@ -43,12 +42,7 @@ ENV VITE_DOCS_ENVIRONMENT=${VITE_DOCS_ENVIRONMENT}
 ENV VITE_DOCS_APP_RELEASE=${VITE_DOCS_APP_RELEASE}
 ENV NODE_OPTIONS=--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}
 
-RUN bun run postinstall
-RUN --mount=type=bind,source=.git,target=/app/.git,readonly \
-  GIT_CONFIG_COUNT=1 \
-  GIT_CONFIG_KEY_0=safe.directory \
-  GIT_CONFIG_VALUE_0=/app \
-  bun run build
+RUN bun run postinstall && bun run build
 
 FROM nginx:1.28-alpine AS runtime
 

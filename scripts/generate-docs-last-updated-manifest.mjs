@@ -70,8 +70,6 @@ async function loadGitLastUpdatedIndex(incompleteHistory) {
     const { stdout } = await execFileAsync(
       'git',
       [
-        '-c',
-        'core.quotePath=false',
         'log',
         // The shallow boundary looks like an initial commit containing every
         // file, but it cannot tell us when those files actually changed.
