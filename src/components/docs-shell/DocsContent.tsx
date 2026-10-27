@@ -24,6 +24,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   type ApiReferenceLink,
   appendApiReferenceTrail,
+  isApiReferencePath,
   readApiReferenceTrail,
   withApiReferenceTrail,
 } from '@/lib/api-reference-context';
@@ -182,9 +183,8 @@ export function DocsContent({
       ? null
       : storedArticleReturnLink;
   const sourceLinks = getDocsSourceLinks(contentPath);
-  const handleArticleBodyLinkClick = useTrackDocsArticleLinkNavigation({
-    sourceTitle,
-  });
+  const { bodyRef: articleBodyRef, handleClick: handleArticleBodyLinkClick } =
+    useTrackDocsArticleLinkNavigation({ sourceTitle, currentPageKey });
   // A single crumb that just repeats the page title (the H1 right below) adds no
   // wayfinding — suppress it. Multi-item breadcrumbs always render.
   const showBreadcrumb =
@@ -383,6 +383,7 @@ export function DocsContent({
           <div
             data-static-docs-body
             onClickCapture={handleArticleBodyLinkClick}
+            ref={articleBodyRef}
           >
             <FumadocsOpenApiContent
               contentPath={contentPath}
@@ -396,6 +397,7 @@ export function DocsContent({
             data-platform-header-tabs={platformTabs ? 'true' : undefined}
             data-static-docs-body
             onClickCapture={handleArticleBodyLinkClick}
+            ref={articleBodyRef}
           >
             {resolvedBody?.kind === 'mdx' ? (
               <Suspense fallback={<DocsContentSkeleton />}>
@@ -510,11 +512,59 @@ function useDocsArticleReturnLink(currentPageKey: string | null) {
 
 function useTrackDocsArticleLinkNavigation({
   sourceTitle,
+  currentPageKey,
 }: {
   sourceTitle: string;
+  currentPageKey: string | null;
 }) {
   const router = useRouter();
-  return useCallback(
+  const bodyRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const body = bodyRef.current;
+    const source = getCurrentUrl();
+    if (
+      !currentPageKey ||
+      !body ||
+      !source ||
+      !isApiReferencePath(source.pathname)
+    )
+      return;
+
+    // Populate real hrefs so native new-tab navigation and Copy Link Address
+    // carry the same context as ordinary clicks, including lazily loaded MDX.
+    const prepareLinks = () => {
+      const sourceUrl = new URL(source);
+      for (const element of body.querySelectorAll<HTMLElement>(
+        'a[href], a[id], h2[id], h3[id], h4[id]',
+      )) {
+        if (
+          element instanceof HTMLAnchorElement &&
+          element.hasAttribute('href') &&
+          !element.hasAttribute('download')
+        ) {
+          const href = appendApiReferenceTrail(
+            element.href,
+            sourceUrl,
+            sourceTitle,
+          );
+          if (new URL(href, sourceUrl).href !== element.href)
+            element.href = href;
+        }
+        if (element.id) sourceUrl.hash = element.id;
+      }
+    };
+    prepareLinks();
+    const observer = new MutationObserver(prepareLinks);
+    observer.observe(body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['href'],
+    });
+    return () => observer.disconnect();
+  }, [currentPageKey, sourceTitle]);
+
+  const handleClick = useCallback(
     (event: MouseEvent<HTMLElement>) => {
       if (
         event.defaultPrevented ||
@@ -570,6 +620,7 @@ function useTrackDocsArticleLinkNavigation({
     },
     [router, sourceTitle],
   );
+  return { bodyRef, handleClick };
 }
 
 function trackDocsArticleLinkNavigation(

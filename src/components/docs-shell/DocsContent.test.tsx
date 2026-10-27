@@ -17,7 +17,10 @@ import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AppProviders } from '@/components/providers/AppProviders';
-import { appendApiReferenceTrail } from '@/lib/api-reference-context';
+import {
+  appendApiReferenceTrail,
+  readApiReferenceTrail,
+} from '@/lib/api-reference-context';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { i18n } from '@/lib/i18n/i18n';
 import { PLATFORM_DATASET_KEY } from '@/lib/platforms/preference';
@@ -40,6 +43,25 @@ vi.mock('@/lib/analytics/posthog', () => ({
 
 vi.mock('./DocsContentBody', () => ({
   DocsContentBody: ({ contentPath }: { contentPath: string }) => {
+    if (contentPath === 'zh-CN/api-reference/source-with-api-links.mdx') {
+      return (
+        <div>
+          <h3 id="options">Options</h3>
+          <a href="/zh-CN/api-reference/class-options">Open options</a>
+          <a
+            href="/zh-CN/api-reference/enum-mode"
+            target="_blank"
+            rel="noopener"
+          >
+            Open mode in new tab
+          </a>
+          <a href="/zh-CN/api-reference/class-options" download>
+            Download options
+          </a>
+          <a href="https://other.test/reference">External reference</a>
+        </div>
+      );
+    }
     const articleLink =
       contentPath === 'en/introduction/source-with-docs-link.mdx'
         ? {
@@ -154,6 +176,65 @@ describe('DocsContent', () => {
       'href',
       '/zh-CN/api-reference/class-channelmediaoptions#prefermultipathtype',
     );
+  });
+
+  it('makes native API link destinations shareable before clicking or copying', async () => {
+    renderWithRouter(
+      <DocsContent
+        contentPath="zh-CN/api-reference/source-with-api-links.mdx"
+        locale="zh-CN"
+        title="Channel"
+        toc={[]}
+      />,
+      '/zh-CN/api-reference/channel',
+    );
+    const options = await screen.findByRole('link', { name: 'Open options' });
+    const mode = screen.getByRole('link', { name: 'Open mode in new tab' });
+    for (const link of [options, mode]) {
+      await waitFor(() => {
+        expect(
+          readApiReferenceTrail(
+            new URL(link.getAttribute('href') ?? '', window.location.origin),
+          ),
+        ).toEqual([
+          { href: '/zh-CN/api-reference/channel#options', title: 'Channel' },
+        ]);
+      });
+    }
+    expect(fireEvent.click(options, { ctrlKey: true })).toBe(true);
+    expect(fireEvent.click(options, { metaKey: true })).toBe(true);
+    expect(
+      fireEvent(
+        options,
+        new MouseEvent('auxclick', {
+          button: 1,
+          bubbles: true,
+          cancelable: true,
+        }),
+      ),
+    ).toBe(true);
+    expect(mode).toHaveAttribute('target', '_blank');
+    expect(
+      screen.getByRole('link', { name: 'Download options' }),
+    ).toHaveAttribute('href', '/zh-CN/api-reference/class-options');
+    expect(
+      screen.getByRole('link', { name: 'External reference' }),
+    ).toHaveAttribute('href', 'https://other.test/reference');
+
+    // Lazy MDX and platform content can insert links after the initial render.
+    const marker = document.createElement('a');
+    marker.id = 'marker';
+    options.parentElement?.prepend(marker);
+    const later = document.createElement('a');
+    later.href = '/zh-CN/api-reference/enum-later';
+    later.textContent = 'Later API link';
+    options.parentElement?.append(later);
+    await waitFor(() => {
+      expect(readApiReferenceTrail(new URL(later.href))).toEqual([
+        { href: '/zh-CN/api-reference/channel#options', title: 'Channel' },
+      ]);
+    });
+    expect(marker).not.toHaveAttribute('href');
   });
 
   Object.defineProperty(window.navigator, 'clipboard', {

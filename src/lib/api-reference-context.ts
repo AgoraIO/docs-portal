@@ -71,10 +71,15 @@ export function appendApiReferenceTrail(
   if (
     target.origin !== source.origin ||
     !isApiReferencePath(source.pathname) ||
-    !isApiReferencePath(target.pathname) ||
-    source.pathname === target.pathname
+    !isApiReferencePath(target.pathname)
   )
     return href;
+  if (source.pathname === target.pathname) {
+    const trail = readApiReferenceTrail(source);
+    return trail.length
+      ? withApiReferenceTrail(href, trail, source.origin)
+      : href;
+  }
   const trail = [
     ...readApiReferenceTrail(source),
     { href: withoutApiReferenceTrail(source), title: title.slice(0, 200) },

@@ -42,6 +42,30 @@ describe('shareable API reference navigation', () => {
     expect(back).toBe(`${root}/channel?platform=android#join`);
   });
 
+  it('keeps the return chain when following a full-path link on the current API page', () => {
+    const source = new URL(
+      appendApiReferenceTrail(
+        `${root}/class-options`,
+        new URL(`${root}/channel#join`, origin),
+        'Channel',
+      ),
+      origin,
+    );
+    const destination = new URL(
+      appendApiReferenceTrail(
+        `${root}/class-options?platform=android#field`,
+        source,
+        'Options',
+      ),
+      origin,
+    );
+    expect(destination.hash).toBe('#field');
+    expect(destination.searchParams.get('platform')).toBe('android');
+    expect(readApiReferenceTrail(destination)).toEqual([
+      { href: `${root}/channel#join`, title: 'Channel' },
+    ]);
+  });
+
   it('rejects malformed, external, and non-API shared sources', () => {
     for (const value of [
       'broken',
