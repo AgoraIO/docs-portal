@@ -4,6 +4,10 @@ description: "了解 RTC 服务端 SDK 的核心能力、适用场景、接入�
 ---
 声网 RTC 服务端 SDK 部署在服务端，可与集成了声网 RTC 客户端 SDK 的 App 通过 SD-RTN™ 进行实时通信，实现收发音视频流的功能。
 
+下图展示了 RTC 服务端 SDK 的几种应用，包括在频道中播放本地文件，直推 CDN，以及与企业呼叫中心互通。服务端 SDK 将 SD&#8209;RTN™ 中的媒体流转换为指定格式，输出给其他模块，并将其他模块的媒体流编码，发送到 SD&#8209;RTN™。
+
+![服务端 SDK 架构](https://web-cdn.agora.io/docs-portal/img/rtc-server-sdk/workflow.png)
+
 :::warning[注意]
 - 在 RTC 服务端 SDK 和客户端 SDK 互通的场景中，请确保客户端 SDK 的频道场景设为 `LIVE_BROADCASTING`。
 - RTC 服务端 SDK 不支持 SIP 转码。
