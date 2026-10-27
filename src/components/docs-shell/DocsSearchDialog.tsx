@@ -704,17 +704,10 @@ export function DocsSearchDialog({
         open={open}
         overlayClassName="docs-search-overlay bg-black/30 backdrop-blur-md"
         shouldFilter={false}
+        showCloseButton={!isCn}
         title={t('docs.search')}
         value={activeValue ?? ''}
       >
-        {isCn ? (
-          <div className="flex items-center justify-between border-b px-3 py-2 pr-12">
-            <span>搜索文档</span>
-            <Button onClick={() => openFullSearch()} size="sm" variant="ghost">
-              完整搜索
-            </Button>
-          </div>
-        ) : null}
         <CommandInput
           onCompositionStart={() => {
             composing.current = true;

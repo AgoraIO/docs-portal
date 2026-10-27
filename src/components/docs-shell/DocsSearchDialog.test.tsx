@@ -1103,7 +1103,7 @@ describe('DocsSearchDialog', () => {
     fireEvent.click(screen.getByRole('option', { name: 'C++' }));
     const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
     fireEvent.input(input, { target: { value: 'Token' } });
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.keyDown(document, { key: 'Escape' });
     fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
     expect(
       await screen.findByPlaceholderText('搜索文档、API、指南...'),
@@ -1253,6 +1253,12 @@ describe('DocsSearchDialog', () => {
       fireEvent.click(screen.getByRole('combobox', { name: '全部平台' }));
       fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
       const docs = await screen.findByRole('group', { name: '技术文档' });
+      expect(
+        screen.queryByRole('button', { name: '完整搜索' }),
+      ).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole('button', { name: 'Close' }),
+      ).not.toBeInTheDocument();
       const api = screen.getByRole('group', { name: 'API Reference' });
       expect(within(docs).getByText('共 7 条结果')).toBeInTheDocument();
       expect(within(api).getByText('共 39 条结果')).toBeInTheDocument();
@@ -1319,7 +1325,7 @@ describe('DocsSearchDialog', () => {
     fireEvent.input(input, { target: { value: 'joinChannel' } });
     fireEvent.click(screen.getByRole('combobox', { name: '全部平台' }));
     fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.keyDown(document, { key: 'Escape' });
     await act(() => router.navigate({ href: '/zh-CN/realtime-media/rtm' }));
     expect(
       screen.queryByRole('link', { name: '完整搜索' }),
@@ -1331,7 +1337,7 @@ describe('DocsSearchDialog', () => {
     expect(
       screen.getByRole('combobox', { name: '全部平台' }),
     ).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.keyDown(document, { key: 'Escape' });
     await act(() => router.navigate({ href: '/zh-CN/realtime-media/flutter' }));
     fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
     expect(
@@ -1373,7 +1379,7 @@ describe('DocsSearchDialog', () => {
       await screen.findByPlaceholderText('搜索文档、API、指南...'),
       { target: { value: 'Token' } },
     );
-    fireEvent.click(screen.getByRole('button', { name: 'Close' }));
+    fireEvent.keyDown(document, { key: 'Escape' });
     fireEvent.click(triggers[0]);
     expect(
       await screen.findByPlaceholderText('搜索文档、API、指南...'),
