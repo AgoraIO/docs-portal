@@ -37,11 +37,11 @@ You also need:
 - An RTC token for the agent's UID in the channel. Projects have an App Certificate enabled by default, and the agent can't join the channel without a token. For details, see [Integrate token generation](/en/realtime-media/rtc/build/authenticate-users/integrate-token-generation).
 - A client app that can join an Agora RTC channel, such as the [Voice Calling](/en/realtime-media/rtc/voice-quickstart) or [Video Calling](/en/realtime-media/rtc/get-started-sdk) quickstart.
 
-{/* TODO(platform-confirm): Confirm the REST API credentials the Platform accepts in the Preview (Basic auth, ConvoAI token, or both). The examples on this page use Basic auth. */}
+{/* TODO(platform-confirm): Basic auth works in pre-release testing (2026-10-27), and the API accepts the `agora` token scheme. A valid ConvoAI token is still unverified. The examples on this page use Basic auth. */}
 
 ## Create an agent
 
-Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with the agent's name, instructions, and greeting. This example declares a `customer_name` variable and uses it in the instructions and the greeting. You pass its value when you start a session.
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with the agent's name, instructions, greeting, and models. This example declares a `customer_name` variable and uses it in the instructions and the greeting. You pass its value when you start a session.
 
 In the `Idempotency-Key` header, pass a unique value for each agent you create. If a request times out, retry it with the same key and the same body. The Platform returns the agent it already created instead of creating a duplicate.
 
@@ -65,13 +65,39 @@ curl --request POST \
     "mode": "text",
     "on": "each_join",
     "text": "Hi {{customer_name}}, how can I help you today?"
+  },
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": {
+      "credential": { "mode": "managed" },
+      "vendor": "deepgram",
+      "model": "nova-3",
+      "language": "en-US"
+    },
+    "llm": {
+      "credential": { "mode": "managed" },
+      "vendor": "openai",
+      "style": "openai",
+      "model": "gpt-4.1-mini"
+    },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": {
+        "model": "speech-2.6-turbo",
+        "voice_setting": {
+          "voice_id": "English_captivating_female1",
+          "speed": 1
+        }
+      }
+    }
   }
 }'
 ```
 
-This agent doesn't specify its models. When a session starts, the Platform selects managed ASR, LLM, and TTS models, and you don't need provider API keys. To choose the models yourself, add a `pipeline` to the agent. For details, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+The `pipeline` sets the agent's ASR, LLM, and TTS models. This agent uses managed mode for all three. Agora provides access to the models, and you don't need provider API keys. To use other models or your own provider accounts, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-{/* TODO(platform-confirm): Confirm that omitting `pipeline` selects a managed pipeline at launch, which models it selects, and that variables work in `greeting.text`. Staging accepted an agent without a pipeline on 2026-10-20. */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), an agent without `pipeline` was saved, but sessions for it failed with `502 "Provider request failed"`. The launch contract says the Platform selects a managed pipeline. Confirm whether a default pipeline is planned. Variables in `greeting.text` were accepted. */}
 
 If the request is successful, the response contains the agent ID and the saved configuration:
 
@@ -92,6 +118,7 @@ If the request is successful, the response contains the agent ID and the saved c
     "on": "each_join",
     "text": "Hi {{customer_name}}, how can I help you today?"
   },
+  "pipeline": { ... },  // The pipeline you set in the request.
   "create_ts": 1786543331,
   "update_ts": 1786543331
 }
@@ -135,17 +162,17 @@ curl --request POST \
 If the request is successful, the response contains the session ID and its [status](#check-the-session-status):
 
 ```json
-// 200 OK
+// 201 Created
 {
   "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "create_ts": 1737111452,
-  "status": "STARTING"
+  "status": "running",
+  "created_at": 1737111452
 }
 ```
 
 Store the `agent_session_id`. You use it to check and stop the session.
 
-{/* TODO(platform-confirm): Staging returned `201 Created` with a lowercase status and `created_at` on 2026-10-20. The launch contract specifies `200 OK`, uppercase statuses, and `create_ts`. Confirm the launch response. */}
+{/* TODO(platform-confirm): Staging (2026-10-20) and pre-release testing (2026-10-27) both returned `201 Created` with a lowercase `status` and `created_at`, and the docs follow that. The launch contract specifies `200 OK`, uppercase statuses, and `create_ts`. Retrieve a session returns uppercase. Confirm the launch response. */}
 
 ## Check the session status
 
@@ -163,12 +190,9 @@ When the agent is in the channel, `status` is `RUNNING`:
 // 200 OK
 {
   "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "agent_name": "Support agent",
   "status": "RUNNING",
   "start_ts": 1735035893,
-  "stop_ts": null,
-  "message": null,
-  "analysis": null
+  "message": "ok"
 }
 ```
 
@@ -223,6 +247,16 @@ curl --request POST \
       "mode": "text",
       "on": "each_join",
       "text": "Hi, how can I help you today?"
+    },
+    "pipeline": {
+      "mode": "cascaded",
+      "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+      "llm": { "credential": { "mode": "managed" }, "vendor": "openai", "style": "openai", "model": "gpt-4.1-mini" },
+      "tts": {
+        "credential": { "mode": "managed" },
+        "vendor": "minimax",
+        "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+      }
     }
   },
   "transport": {
@@ -234,8 +268,6 @@ curl --request POST \
   }
 }'
 ```
-
-{/* TODO(platform-confirm): Confirm that an ephemeral session accepts an agent without `pipeline`. */}
 
 The response has the same format as Start a session. Check and stop an ephemeral session the same way as any other session.
 

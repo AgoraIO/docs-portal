@@ -38,7 +38,7 @@ When you [create](/en/api-reference/api-ref/conversational-ai/platform/create-ag
 
 You can configure up to 128 keywords.
 
-{/* TODO(platform-confirm): Confirm that ARES takes `keywords` in `params` (in the Voice Agent API, it was a top-level `asr.keywords` field), that the limit is still 128, and what happens if you pass `keywords` to another vendor. The Voice Agent API rejected the request in that case. */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), ARES with `params.keywords` was accepted. Deepgram with `params.keywords` was also accepted, not rejected. It's unclear whether other vendors ignore it. Confirm the 128 limit and how other vendors handle `keywords`. */}
 
 ## ASR keywords versus keyword interruption
 

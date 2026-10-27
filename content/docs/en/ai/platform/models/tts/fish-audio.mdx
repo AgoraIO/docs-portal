@@ -14,13 +14,13 @@ Add a `tts` block to the `pipeline` when you create or update an agent. For a co
 
 Store your Fish Audio API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `fishaudio` in the `support-prod` set:
+In the following example, the key is stored as `fishaudio` in the `support_prod` set:
 
 ```json
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support-prod.fishaudio"
+    "api_key": "$secrets.support_prod.fishaudio"
   },
   "vendor": "fishaudio",
   "params": {

@@ -10,7 +10,7 @@ To use your own provider accounts for ASR, LLM, or TTS, bring your own key (BYOK
 
 ## Understand the tech
 
-A secret set is a named group of keys in your project, such as `support-prod`. Each key holds one secret value, such as an OpenAI API key. The workflow is as follows:
+A secret set is a named group of keys in your project, such as `support_prod`. Each key holds one secret value, such as an OpenAI API key. The workflow is as follows:
 
 1. You create a secret set that contains your provider keys.
 2. In each `pipeline` block that uses your own provider account, you set `credential.mode` to `byok` and `credential.api_key` to a reference in the format `$secrets.<set>.<key>`. Agora checks that the set and key exist when you create or update the agent.
@@ -30,7 +30,7 @@ Before you begin, make sure that you have:
 
 Send a request to [Create a secret set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set) with a name for the set and your keys. Choose key names that describe their purpose. This example stores an OpenAI API key under the name `llm`.
 
-Set names and key names are case-sensitive, and can contain up to 64 letters, digits, hyphens, and underscores. A set name must be unique in your project. Key names only need to be unique in their set.
+Set names and key names are case-sensitive, and can contain up to 64 letters, digits, and underscores. Hyphens aren't allowed. A set name must be unique in your project. Key names only need to be unique in their set.
 
 ```bash
 curl --request POST \
@@ -39,7 +39,7 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data '
 {
-  "name": "support-prod",
+  "name": "support_prod",
   "secrets": {
     "llm": "<your_openai_api_key>"
   }
@@ -51,7 +51,7 @@ If the request is successful, the response contains the set's name and key names
 ```json
 // 201 Created
 {
-  "name": "support-prod",
+  "name": "support_prod",
   "keys": [
     {
       "key": "llm",
@@ -65,14 +65,14 @@ If the request is successful, the response contains the set's name and key names
 ```
 
 :::tip
-Create one secret set for each environment, such as `support-dev` and `support-prod`, with the same key names in each. To switch an agent between environments, you then only change the set name in its references.
+Create one secret set for each environment, such as `support_dev` and `support_prod`, with the same key names in each. To switch an agent between environments, you then only change the set name in its references.
 :::
 
 ## Use the key in an agent
 
 Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with a `pipeline`. For each block that uses your own key, set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Don't put keys in `params` or anywhere else in the agent.
 
-In the following example, the `llm` block uses the OpenAI key stored as `llm` in the `support-prod` set. The `asr` and `tts` blocks use managed mode, which doesn't accept an `api_key`.
+In the following example, the `llm` block uses the OpenAI key stored as `llm` in the `support_prod` set. The `asr` and `tts` blocks use managed mode, which doesn't accept an `api_key`.
 
 ```bash
 curl --request POST \
@@ -96,7 +96,7 @@ curl --request POST \
 # [!code highlight:4]
       "credential": {
         "mode": "byok",
-        "api_key": "$secrets.support-prod.llm"
+        "api_key": "$secrets.support_prod.llm"
       },
       "vendor": "openai",
       "style": "openai",
@@ -117,7 +117,7 @@ curl --request POST \
 }'
 ```
 
-{/* TODO(platform-confirm): Staging required `voice_setting.speed` for managed MiniMax TTS on 2026-10-20. Confirm that it's still required at launch, and confirm the managed models in this example. */}
+{/* TODO(platform-confirm): Managed MiniMax TTS without `voice_setting.speed` was rejected in pre-release testing (2026-10-27). The example includes it for that reason. */}
 
 If the request is successful, the response contains the agent ID and the saved configuration. In the response, each block's `credential` contains only `mode`. Neither the reference nor the key is returned.
 
@@ -129,7 +129,7 @@ To replace a key's value, send a request to [Set a secret key](/en/api-reference
 
 ```bash
 curl --request PUT \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/secrets/support-prod/keys/llm \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/secrets/support_prod/keys/llm \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
   --data '

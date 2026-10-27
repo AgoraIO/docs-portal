@@ -369,7 +369,7 @@ Session timestamps are in Unix seconds. Turn boundaries are in Unix milliseconds
 | `turns[].metrics.e2e_latency_ms` | Number | No | The end-to-end latency of the turn, in milliseconds. |
 | `turns[].metrics.segmented_latency_ms` | `Object<string, number>` | No | The latency of each component in milliseconds, such as `asr_ttlw_ms`, `llm_ttfb_ms`, and `tts_ttfb_ms`. Components that weren't measured are left out. |
 
-{/* TODO(platform-confirm): The `api_speak` and `api_think` turn start types depend on the Speak and Inject context session actions, which weren't deployed on staging on 2026-10-20. Confirm them. */}
+{/* TODO(platform-confirm): The `api_speak` and `api_think` turn start types depend on the Speak and Inject context session actions, which returned `404 ResourceNotFound` on a running session in pre-release testing (2026-10-27). Confirm them. */}
 
 The following example shows a payload for this event:
 
@@ -411,7 +411,7 @@ The following example shows a payload for this event:
 
 The agent's RTC token is about to expire. This is a warning only: the agent stays in the channel, and the session continues. If you passed the agent's token when you started the session, [update the session](/en/api-reference/api-ref/conversational-ai/platform/update-session) with a new `transport.token` before the token expires.
 
-{/* TODO(platform-confirm): Update a session wasn't deployed on staging on 2026-10-20 (405). Confirm that it ships in the Preview, since it's the only way to renew the token. */}
+{/* TODO(platform-confirm): Update a session, the only way to renew the token, worked in pre-release testing (2026-10-27), including a `transport.token` change. Confirm the event payload. */}
 
 | Field | Type | Required | Description |
 | --- | --- | --- | --- |

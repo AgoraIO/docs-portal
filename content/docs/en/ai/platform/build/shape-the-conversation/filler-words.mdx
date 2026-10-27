@@ -18,7 +18,7 @@ Common use cases for filler words include:
 You configure filler words in the agent's `filler_words` object, at the same level as its `pipeline`. When the LLM hasn't responded within a wait threshold, the agent plays a filler word. The filler word comes from one of the following sources:
 
 - **Static**: The agent picks a phrase from a list you provide.
-- **Generated**: Agora generates a short phrase that fits the conversation, based on instructions you provide. If a generated phrase isn't ready in time, the agent falls back to a static phrase. Generation is Agora-hosted, and you don't configure a model, endpoint, or credentials for it.
+- **Generated**: Agora generates a short phrase that fits the conversation, based on instructions you provide. If a generated phrase isn't ready in time, the agent falls back to a static phrase. Generated mode requires the agent's LLM to use your own provider key with OpenAI, Groq, or xAI.
 
 Playing a filler word doesn't cancel or restart the LLM request. The agent continues with its reply once the LLM responds. The agent plays at most one filler word per turn, and if the LLM responds before the wait threshold, the agent doesn't play a filler word.
 
@@ -64,7 +64,7 @@ Add a `filler_words` object to the agent configuration, at the same level as `in
 
 ## Configure generated filler words
 
-To have Agora generate a phrase that fits the conversation, use the same `filler_words` object with `content.mode` set to `generated`. In `content.instructions`, describe the kind of phrase to generate. Set `content.fallback_strategy` to `static` to use a static phrase when a generated one isn't ready in time.
+To have Agora generate a phrase that fits the conversation, use the same `filler_words` object with `content.mode` set to `generated`. Generated mode requires a cascaded `pipeline` whose `llm` block uses BYOK with OpenAI, Groq, or xAI. With a managed LLM, the request is rejected. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys). In `content.instructions`, describe the kind of phrase to generate. Set `content.fallback_strategy` to `static` to use a static phrase when a generated one isn't ready in time.
 
 ```json
 "filler_words": {
@@ -89,7 +89,7 @@ To have Agora generate a phrase that fits the conversation, use the same `filler
 
 The `enable` and `trigger` fields work the same way as for static filler words.
 
-{/* TODO(platform-confirm): The launch contract says to "include only fields for the selected variant", but `fallback_strategy: "static"` falls back to static phrases. Confirm where the fallback phrases come from in generated mode: whether `phrases` is allowed or required alongside `instructions`, or whether Agora uses built-in phrases. The Voice Agent API also had `context_message_limit` and `history_character_limit` for the generation window, which aren't in the Platform spec. Confirm whether they're supported. */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), generated mode was rejected with a managed LLM ("Generated fillers require a cascaded OpenAI, Groq or XAI BYOK LLM") and accepted with a BYOK OpenAI LLM. Adding `phrases` alongside `instructions` was rejected (`InvalidRequestBody`). Confirm where the static fallback phrases come from in generated mode, and whether the Voice Agent API's `context_message_limit` and `history_character_limit` are supported. */}
 
 ## Best practices
 

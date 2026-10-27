@@ -14,13 +14,13 @@ Add an `asr` block to the `pipeline` when you create or update an agent. For a c
 
 Store your Google Cloud service account credentials in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the credentials are stored as `google` in the `support-prod` set:
+In the following example, the credentials are stored as `google` in the `support_prod` set:
 
 ```json
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support-prod.google"
+    "api_key": "$secrets.support_prod.google"
   },
   "vendor": "google",
   "model": "long",

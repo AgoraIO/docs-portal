@@ -61,6 +61,16 @@ curl --request POST \
       "extract": true,
       "description": "The date the customer wants to reschedule to, if they can't attend."
     }
+  },
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+    "llm": { "credential": { "mode": "managed" }, "vendor": "openai", "style": "openai", "model": "gpt-4.1-mini" },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+    }
   }
 }'
 ```

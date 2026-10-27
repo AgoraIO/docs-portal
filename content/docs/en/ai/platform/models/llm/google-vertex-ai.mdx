@@ -14,13 +14,13 @@ Add an `llm` block to the `pipeline` when you create or update an agent. For a c
 
 Store your Google Cloud credential in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to it. Your project ID and region aren't secret. Pass them in the `url`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the credential is stored as `vertex-ai` in the `support-prod` set:
+In the following example, the credential is stored as `vertex_ai` in the `support_prod` set:
 
 ```json
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support-prod.vertex-ai"
+    "api_key": "$secrets.support_prod.vertex_ai"
   },
   "vendor": "vertexai",
   "style": "gemini",

@@ -37,13 +37,13 @@ Set `credential.mode` to `managed`. Agora provides access to MiniMax, and you do
 
 Store your MiniMax API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your MiniMax group ID isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `minimax` in the `support-prod` set:
+In the following example, the key is stored as `minimax` in the `support_prod` set:
 
 ```json
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support-prod.minimax"
+    "api_key": "$secrets.support_prod.minimax"
   },
   "vendor": "minimax",
   "url": "wss://api-uw.minimax.io/ws/v1/t2a_v2",
@@ -92,7 +92,7 @@ In the following example, the key is stored as `minimax` in the `support-prod` s
   </Parameter>
 </ParameterList>
 
-{/* TODO(platform-confirm): Staging required `voice_setting.speed` for managed MiniMax TTS on 2026-10-20. It is listed as required here for that reason. Also confirm whether BYOK needs `url`, or whether Agora uses a default MiniMax endpoint. */}
+{/* TODO(platform-confirm): Managed MiniMax TTS without `voice_setting.speed` was rejected in pre-release testing (2026-10-27). It's listed as required for that reason. Confirm whether BYOK needs `url`, or whether Agora uses a default MiniMax endpoint. */}
 
 :::caution[Caution]
 The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to MiniMax without validation. For a full list of supported options, refer to the [MiniMax documentation](https://www.minimax.io/platform/document/t2a_http).

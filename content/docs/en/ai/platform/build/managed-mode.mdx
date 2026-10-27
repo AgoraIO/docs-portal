@@ -13,7 +13,7 @@ An agent's `pipeline` has an `asr`, `llm`, and `tts` block. To use managed mode 
 
 You choose the credential mode for each model. For example, an agent can use managed ASR and TTS with your own LLM key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-If you create an agent without a `pipeline`, the Platform selects managed ASR, LLM, and TTS models. For an example, see [Create an agent](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+For a complete agent example, see [Create an agent](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
 ## Choose managed models
 
@@ -65,15 +65,13 @@ In this example:
 - The `llm` block uses OpenAI GPT-4.1 Mini.
 - The `tts` block uses MiniMax Speech 2.6 Turbo, with the voice and speaking speed in `params`.
 
-{/* TODO(platform-confirm): Staging required `voice_setting.speed` for managed MiniMax TTS on 2026-10-20. Confirm that it's still required at launch. */}
-
 You then start sessions with the agent as usual. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
 
 ## Supported vendors and models
 
 The following vendors and models are available in managed mode.
 
-{/* TODO(platform-confirm): Confirm the managed vendors and models for the Preview. This list is copied from the Voice Agent API, with `gpt-5.6-luna` added from staging on 2026-10-20. Staging rejected managed Microsoft TTS. Also confirm that ARES is available in the Platform. */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), every model in these tables was accepted when creating an agent, and managed Microsoft TTS was rejected. Acceptance at create time doesn't guarantee that a model works in a session. Confirm the list for the Preview. */}
 
 ### ASR
 

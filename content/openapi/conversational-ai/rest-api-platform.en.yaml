@@ -59,9 +59,8 @@ paths:
         - position: after-description
           markdown: >-
             Use this endpoint to save an agent that you can then use to start sessions and
-            campaigns. Only `agent_name` is required. If you omit `pipeline`, the platform selects
-            a managed pipeline when a session starts. If you omit `greeting`, the agent doesn't
-            greet participants automatically.
+            campaigns. Only `agent_name` is required. If you omit `greeting`, the agent doesn't greet
+            participants automatically.
 
 
             Saving or updating an agent doesn't change sessions that are already running.
@@ -111,7 +110,7 @@ paths:
                 llm:
                   credential:
                     mode: byok
-                    api_key: $secrets.support-prod.llm
+                    api_key: $secrets.support_prod.llm
                   vendor: openai
                   style: openai
                   model: <model_name>
@@ -428,7 +427,7 @@ paths:
             session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session).
 
 
-            A `200` response confirms that the session exists. It doesn't confirm that the agent
+            A `201` response confirms that the session exists. It doesn't confirm that the agent
             has joined the RTC channel or that an outbound call was answered. To follow the
             session, [retrieve it](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session).
             The session ends when you [stop it](/en/api-reference/api-ref/conversational-ai/platform/stop-session),
@@ -477,7 +476,7 @@ paths:
                       voicemail:
                         mode: hangup
       responses:
-        "200":
+        "201":
           description: The session was created.
           headers:
             Agora-Request-Id:
@@ -488,8 +487,8 @@ paths:
                 $ref: "#/components/schemas/SessionStarted"
               example:
                 agent_session_id: a42ac95tp25py49fc37hp94vm67ht52h
-                create_ts: 1737111452
-                status: STARTING
+                status: running
+                created_at: 1737111452
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
@@ -642,7 +641,7 @@ paths:
                   llm:
                     credential:
                       mode: byok
-                      api_key: $secrets.support-prod.llm
+                      api_key: $secrets.support_prod.llm
                     vendor: openai
                     style: openai
                     model: <model_name>
@@ -660,7 +659,7 @@ paths:
                 subscribe_uids:
                   - "1001"
       responses:
-        "200":
+        "201":
           description: The session was created.
           headers:
             Agora-Request-Id:
@@ -671,8 +670,8 @@ paths:
                 $ref: "#/components/schemas/SessionStarted"
               example:
                 agent_session_id: a42al97tw77hv93ja98dm74fk56lw97x
-                create_ts: 1737111452
-                status: STARTING
+                status: running
+                created_at: 1737111452
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
@@ -1068,8 +1067,8 @@ paths:
         - position: after-description
           markdown: >-
             Use secret sets to keep provider API keys out of your agent configurations. To use a
-            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.api_key` or a
-            number's SIP password. Agora resolves references when each session starts.
+            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.api_key`. Agora
+            resolves references when each session starts.
 
 
             If a set with the same name exists, the request fails with `SecretSetAlreadyExists`.
@@ -1086,7 +1085,7 @@ paths:
             schema:
               $ref: "#/components/schemas/SecretSetCreate"
             example:
-              name: support-prod
+              name: support_prod
               secrets:
                 asr: <your_asr_api_key>
                 llm: <your_llm_api_key>
@@ -1108,7 +1107,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SecretSet"
               example:
-                name: support-prod
+                name: support_prod
                 keys:
                   - key: asr
                     create_ts: 1789898400
@@ -1170,7 +1169,7 @@ paths:
                 data:
                   count: 1
                   list:
-                    - name: support-prod
+                    - name: support_prod
                       keys:
                         - key: llm
                           create_ts: 1789898400
@@ -1208,7 +1207,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/SecretSet"
               example:
-                name: support-prod
+                name: support_prod
                 keys:
                   - key: llm
                     create_ts: 1789898400
@@ -1541,7 +1540,7 @@ paths:
                 transport: tls
                 auth:
                   username: acme
-                  password: $secrets.support-prod.sip_password
+                  password: <your_sip_password>
               inbound:
                 agent: agent_k3n9x2
                 call_policy:
@@ -1550,9 +1549,6 @@ paths:
                   end_call:
                     on_user_request: true
                     on_fax: true
-                  transfer:
-                    phone_number: "+14155550199"
-                    description: when the caller asks for a human
       responses:
         "201":
           description: The number was created. The response body contains the saved number.
@@ -1611,9 +1607,10 @@ paths:
           description: "`ResourceQuotaLimitExceeded`: The project has reached its number quota."
         default:
           $ref: "#/components/responses/Error"
-      # TODO(platform-confirm): Staging (10 Oct) rejected allowed_ips, secret-reference SIP passwords,
-      # and inbound end_call and transfer with NotImplemented, and a 503 left a hidden pending
-      # record. The contract lists all four fields at launch. Confirm the launch build.
+      # TODO(platform-confirm): In pre-release testing (27 Oct), allowed_ips and inbound end_call were
+      # accepted, but secret-reference SIP passwords and inbound transfer returned NotImplemented, and
+      # inbound.agent without call_policy returned MissingRequiredField. The contract lists secret SIP
+      # passwords and transfer at launch. Restore them in the docs when supported.
     get:
       tags:
         - Phone numbers
@@ -2351,7 +2348,7 @@ components:
         type: string
       description: >-
         The name of the key in the secret set. When you add a key, use 1 to 64 characters from
-        `A-Z`, `a-z`, `0-9`, `_`, and `-`.
+        `A-Z`, `a-z`, `0-9`, and `_`.
     NumberId:
       name: number_id
       in: path
@@ -3317,8 +3314,9 @@ components:
       required:
         - mode
       description: >-
-        The models that power the agent: separate ASR, LLM, and TTS stages. If you omit the
-        pipeline, the platform selects a managed pipeline when a session starts.
+        The models that power the agent: separate ASR, LLM, and TTS stages.
+      # TODO(platform-confirm): The launch contract says an omitted pipeline gets a managed default. In
+      # pre-release testing (2026-10-27), sessions for an agent without a pipeline failed with 502. Confirm.
       properties:
         mode:
           type: string
@@ -3808,24 +3806,24 @@ components:
       type: object
       required:
         - agent_session_id
-        - create_ts
         - status
+        - created_at
       properties:
         agent_session_id:
           type: string
           description: The ID of the session.
-        create_ts:
-          type: integer
-          description: The time the session was created, as a Unix timestamp in seconds.
         status:
           type: string
-          enum:
-            - STARTING
-            - RUNNING
           description: >-
-            The status of the session. `RUNNING` means the agent is live. For a phone call, it
-            doesn't mean the call was answered.
-      # TODO(platform-confirm): Staging (13 Oct) returned 201 with lowercase `running` and `created_at`.
+            The status of the session when it starts, in lowercase, for example `running`. For a
+            phone call, `running` doesn't mean the call was answered. Retrieve a session reports
+            the status in uppercase.
+        created_at:
+          type: integer
+          description: The time the session was created, as a Unix timestamp in seconds.
+      # TODO(platform-confirm): Staging (13 Oct) and pre-release testing (27 Oct) returned 201 with lowercase
+      # `running` and `created_at`, and the spec follows that. The launch contract specifies 200 with
+      # uppercase `STARTING`/`RUNNING` and `create_ts`. Confirm the launch response.
     SessionUpdated:
       type: object
       required:
@@ -4205,7 +4203,7 @@ components:
         writeOnly: true
       description: >-
         The secrets, as key-value pairs. Each key is 1 to 64 characters from `A-Z`, `a-z`, `0-9`,
-        `_`, and `-`, and must be unique within the set. Values are write-only and are never
+        and `_`, and must be unique within the set. Values are write-only and are never
         returned.
     SecretSetCreate:
       type: object
@@ -4219,7 +4217,7 @@ components:
           maxLength: 64
           description: >-
             A name for the secret set, unique in the project. Use 1 to 64 characters from `A-Z`,
-            `a-z`, `0-9`, `_`, and `-`. Names are case-sensitive.
+            `a-z`, `0-9`, and `_`. Names are case-sensitive.
         secrets:
           $ref: "#/components/schemas/SecretValues"
     SecretSetReplace:
@@ -4339,8 +4337,8 @@ components:
           type: string
           writeOnly: true
           description: >-
-            The SIP password, as a reference to a secret set, for example
-            `$secrets.support-prod.sip_password`.
+            The SIP password. Referring to a secret set, such as
+            `$secrets.support_prod.sip_password`, isn't supported in the Preview.
     SipTrunk:
       type: object
       required:
@@ -4425,8 +4423,10 @@ components:
       type: object
       required:
         - agent
+        - call_policy
       description: >-
         What happens when someone calls this number. If you omit it, inbound calls are rejected.
+        `call_policy` is required whenever you set `agent`.
       properties:
         agent:
           type:

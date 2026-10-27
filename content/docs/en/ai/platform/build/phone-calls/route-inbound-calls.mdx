@@ -17,7 +17,7 @@ Before you begin, make sure that you have:
 
 ## Route a number to an agent
 
-In the number's `inbound` object, set `agent` to the ID of the agent that answers calls. You can set it when you [import the number](/en/ai/platform/build/phone-calls/import-phone-numbers#import-a-number), or later with [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number).
+In the number's `inbound` object, set `agent` to the ID of the agent that answers calls, and set a `call_policy`. A `call_policy` is required whenever you set an agent. For its fields, see [Set limits and behavior for inbound calls](#set-limits-and-behavior-for-inbound-calls). You can set both when you [import the number](/en/ai/platform/build/phone-calls/import-phone-numbers#import-a-number), or later with [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number).
 
 To update a number, pass its `ETag` from your last create or retrieve request in the `If-Match` header:
 
@@ -30,7 +30,10 @@ curl --request PATCH \
   --data '
 {
   "inbound": {
-    "agent": "agent_m8w4z1"
+    "agent": "agent_m8w4z1",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
   }
 }'
 ```
@@ -43,7 +46,7 @@ To reject inbound calls to a number, set `inbound.agent` to `null`. A number wit
 
 ## Set limits and behavior for inbound calls
 
-In `inbound`, add a `call_policy`:
+The `call_policy` in `inbound` sets limits and behavior for inbound calls:
 
 ```json
 "inbound": {
@@ -54,10 +57,6 @@ In `inbound`, add a `call_policy`:
     "end_call": {
       "on_user_request": true,
       "on_fax": true
-    },
-    "transfer": {
-      "phone_number": "+14155550199",
-      "description": "when the caller asks for a human"
     }
   }
 }
@@ -68,11 +67,10 @@ In `inbound`, add a `call_policy`:
 | `max_call_duration_seconds` | The maximum length of a call in seconds, from when it's answered. |
 | `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
 | `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
-| `transfer` | Lets the agent transfer the call to a person at `phone_number`. The agent decides when to transfer based on `description`, and then leaves the call. Omit it to turn off transfers. |
 
-If you omit a limit, it doesn't apply.
+If you omit a limit, it doesn't apply. Transferring calls to a person isn't available in the Preview.
 
-{/* TODO(platform-confirm): Staging rejected inbound `end_call` and `transfer` with NotImplemented on 2026-10-10. The launch contract lists both. Confirm the launch build. */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), inbound `end_call` was accepted, `transfer` returned `400 NotImplemented` ("Transfer policy is not supported"), and `inbound.agent` without `call_policy` returned `400 MissingRequiredField`. The launch contract lists `transfer`. Add it back when it's supported. */}
 
 ## Reference
 

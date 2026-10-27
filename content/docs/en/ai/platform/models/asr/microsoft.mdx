@@ -14,13 +14,13 @@ Add an `asr` block to the `pipeline` when you create or update an agent. For a c
 
 Store your Azure Speech key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your Azure region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `microsoft` in the `support-prod` set:
+In the following example, the key is stored as `microsoft` in the `support_prod` set:
 
 ```json
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support-prod.microsoft"
+    "api_key": "$secrets.support_prod.microsoft"
   },
   "vendor": "microsoft",
   "language": "en-US",

@@ -23,13 +23,9 @@ Before you begin, make sure that you have:
 - A phone number from a carrier that supports SIP trunking, in E.164 format, for example `+14155550100`.
 - Your SIP trunk's hostname, transport protocol, username, and password.
 
-## Store your SIP password in a secret set
-
-The SIP password is a secret. Store it in a secret set, and refer to it when you import the number. For example, store it as `sip_password` in the `support-prod` set. For details, see [Store your keys in a secret set](/en/ai/platform/build/use-your-own-keys#store-your-keys-in-a-secret-set).
-
 ## Import a number
 
-Send a request to [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) with the number and its SIP trunk. To have an agent answer calls to the number, also add `inbound`, as in the following example. For details, see [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
+Send a request to [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) with the number and its SIP trunk. To have an agent answer calls to the number, also add `inbound` with the agent and a `call_policy`, as in the following example. For details, see [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
 
 ```bash
 curl --request POST \
@@ -47,11 +43,14 @@ curl --request POST \
     "transport": "tls",
     "auth": {
       "username": "acme",
-      "password": "$secrets.support-prod.sip_password"
+      "password": "<your_sip_password>"
     }
   },
   "inbound": {
-    "agent": "agent_k3n9x2"
+    "agent": "agent_k3n9x2",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
   }
 }'
 ```
@@ -63,11 +62,11 @@ In `sip_trunk`, set the following fields:
 | `hostname` | Required. Your carrier's SIP hostname, without a scheme or port, for example `acme.pstn.example.com`. |
 | `transport` | The transport protocol: `tls`, `tcp`, or `udp`. The default is `tls`. |
 | `port` | The SIP signaling port. The default is `5061` for `tls`, and `5060` for `udp` and `tcp`. |
-| `auth` | Your SIP username, and your SIP password as a `$secrets.<set>.<key>` reference. The API never returns them. |
+| `auth` | Your SIP username and password. The API never returns them. Referring to a secret set for the password isn't supported in the Preview. |
 | `allowed_ips` | The CIDR ranges allowed to send inbound SIP traffic, for example `54.172.60.0/23`. Omit it to accept your carrier's published ranges. |
 | `name` | A name that helps you identify the carrier connection. |
 
-{/* TODO(platform-confirm): Staging rejected `allowed_ips` and secret-reference SIP passwords with NotImplemented on 2026-10-10. The launch contract lists both. Confirm the launch build, and verify this example end to end. */}
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), a plain SIP password and `allowed_ips` were accepted, and a `$secrets` SIP password returned `400 NotImplemented` ("SIP password secret references are not supported"). The launch contract lists secret references. Switch the example back to a `$secrets` reference when it's supported. */}
 
 If the request is successful, the response contains the number's ID and its configuration. The `auth` credentials aren't returned.
 
@@ -84,7 +83,10 @@ If the request is successful, the response contains the number's ID and its conf
     "transport": "tls"
   },
   "inbound": {
-    "agent": "agent_k3n9x2"
+    "agent": "agent_k3n9x2",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
   },
   "create_ts": 1786543331
 }
@@ -98,7 +100,6 @@ For more information, see the following pages:
 
 - [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls)
 - [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns)
-- [Use your own provider keys](/en/ai/platform/build/use-your-own-keys)
 
 ### API reference
 

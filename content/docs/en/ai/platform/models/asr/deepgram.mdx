@@ -32,13 +32,13 @@ Set `credential.mode` to `managed`. Agora provides access to Deepgram, and you d
 
 Store your Deepgram API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `deepgram` in the `support-prod` set:
+In the following example, the key is stored as `deepgram` in the `support_prod` set:
 
 ```json
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support-prod.deepgram"
+    "api_key": "$secrets.support_prod.deepgram"
   },
   "vendor": "deepgram",
   "model": "nova-3",

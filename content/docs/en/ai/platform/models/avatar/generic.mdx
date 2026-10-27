@@ -14,14 +14,14 @@ Add an `avatar` block to the `pipeline` when you create or update an agent. For 
 
 Store your avatar provider's API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `avatar` in the `support-prod` set:
+In the following example, the key is stored as `avatar` in the `support_prod` set:
 
 ```json
 "avatar": {
   "enabled": true,
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support-prod.avatar"
+    "api_key": "$secrets.support_prod.avatar"
   },
   "vendor": "generic",
   "params": {
