@@ -61,7 +61,7 @@ describe('PostHog analytics', () => {
         response: [],
         comment: payload.details.trim(),
         has_comment: true,
-        feedback_destination: 'github',
+        feedback_destination: 'analytics',
         canonical_path: '/zh-CN/realtime-media/rtc',
       });
       expect(options).toMatchObject({
@@ -82,7 +82,7 @@ describe('PostHog analytics', () => {
         response: [],
         comment: payload.details.trim(),
         has_comment: true,
-        feedback_destination: 'github',
+        feedback_destination: 'analytics',
       });
       expect(JSON.stringify(filtered)).not.toMatch(
         /unknown-field-not-allowed|token=secret/,

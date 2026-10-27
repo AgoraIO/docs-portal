@@ -1,10 +1,4 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-} from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { useState } from 'react';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { DocsFeedbackForm } from './DocsFeedbackForm';
@@ -97,14 +91,8 @@ it.each([
 ] as const)(
   'reports comments with their page and optional reasons (%s, selected=%s)',
   async (helpfulness, selected) => {
-    const replace = vi.fn();
-    const popup = {
-      opener: 'parent',
-      closed: false,
-      location: { replace },
-      close: vi.fn(),
-    };
-    vi.spyOn(window, 'open').mockReturnValue(popup as unknown as Window);
+    const open = vi.spyOn(window, 'open').mockReturnValue(null);
+    const pageUrl = window.location.href;
     render(<FeedbackHarness helpfulness={helpfulness} />);
     if (selected)
       fireEvent.click(
@@ -115,8 +103,8 @@ it.each([
     fireEvent.change(screen.getByRole('textbox'), {
       target: { value: '  示例反馈\n第二行说明  ' },
     });
-    fireEvent.click(screen.getByRole('button', { name: '提交并前往 GitHub' }));
-    await waitFor(() => expect(replace).toHaveBeenCalledTimes(1));
+    fireEvent.click(screen.getByRole('button', { name: '提交' }));
+    await screen.findByText('补充反馈已提交，谢谢！');
     const payload = report.mock.calls[0][0];
     expect(payload).toMatchObject({
       reasons: selected
@@ -126,38 +114,40 @@ it.each([
       helpfulness,
       pagePath: '/realtime-media/rtc',
     });
-    const body = new URL(replace.mock.calls[0][0]).searchParams.get('body');
-    expect(body).toContain(
-      selected
-        ? helpfulness === 'yes'
-          ? '示例实用'
-          : '内容错误或过时'
-        : '未选择',
+    expect(report).toHaveBeenCalledTimes(1);
+    expect(open).not.toHaveBeenCalled();
+    expect(window.location.href).toBe(pageUrl);
+    const link = screen.getByRole('link', { name: '在 GitHub 创建 Issue' });
+    const issueBody = new URL(link.getAttribute('href') ?? '').searchParams.get(
+      'body',
     );
-    expect(body).toContain('示例反馈\n第二行说明');
-    expect(body).not.toContain('token=secret');
-    expect(popup.opener).toBeNull();
+    expect(issueBody).toContain('示例反馈\n第二行说明');
+    expect(issueBody).toContain('/realtime-media/rtc');
+    expect(issueBody).not.toContain('token=secret');
     expect(screen.getByRole('status')).toHaveTextContent('补充反馈已提交');
-    expect(screen.getByRole('status')).toHaveTextContent('GitHub');
+    expect(screen.getByText(/需要进一步跟进/)).toBeVisible();
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
   },
 );
 
-it('keeps a manual GitHub continuation link when the browser blocks a new tab', async () => {
-  vi.spyOn(window, 'open').mockReturnValue(null);
+it('retains comment drafts after a failed submission without opening another page', async () => {
+  const open = vi.spyOn(window, 'open').mockReturnValue(null);
+  report.mockResolvedValueOnce(false).mockResolvedValueOnce(true);
   render(<FeedbackHarness helpfulness="no" />);
   fireEvent.change(screen.getByRole('textbox'), {
     target: { value: '需要补充说明' },
   });
-  fireEvent.click(screen.getByRole('button', { name: '提交并前往 GitHub' }));
-  const link = await screen.findByRole('link', {
-    name: '在 GitHub 创建 Issue',
-  });
+  fireEvent.click(screen.getByRole('button', { name: '提交' }));
+  await screen.findByRole('alert');
+  expect(screen.getByRole('textbox')).toHaveValue('需要补充说明');
+  expect(open).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole('button', { name: '提交' }));
+  await screen.findByText('补充反馈已提交，谢谢！');
+  expect(report.mock.calls[0][0]).toEqual(report.mock.calls[1][0]);
   expect(
-    new URL(link.getAttribute('href') ?? '').searchParams.get('body'),
-  ).toContain('需要补充说明');
-  fireEvent.click(link);
-  expect(report).toHaveBeenCalledTimes(1);
+    screen.getByRole('link', { name: '在 GitHub 创建 Issue' }),
+  ).toBeVisible();
+  expect(open).not.toHaveBeenCalled();
 });
 
 it.each(['yes', 'no'] as const)(

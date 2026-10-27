@@ -87,16 +87,6 @@ export function DocsFeedbackForm({
     setPending(true);
     setError('');
     onPendingChange?.(true);
-    let githubWindow: Window | null = null;
-    if (submission.details) {
-      // Reserve the tab during the click gesture; the SDK may load asynchronously.
-      try {
-        githubWindow = window.open('about:blank', '_blank');
-        if (githubWindow) githubWindow.opener = null;
-      } catch {
-        /* A manual continuation link remains available after submission. */
-      }
-    }
     let timer: ReturnType<typeof setTimeout> | undefined;
     let recorded = false;
     try {
@@ -121,19 +111,7 @@ export function DocsFeedbackForm({
     if (recorded) {
       setSubmitted(submission);
       onSubmitted?.();
-      if (submission.details && githubWindow && !githubWindow.closed) {
-        try {
-          githubWindow.location.replace(buildFeedbackIssueUrl(submission));
-        } catch {
-          /* The saved continuation link can reopen the same prefilled draft. */
-        }
-      }
     } else {
-      try {
-        githubWindow?.close();
-      } catch {
-        /* The window may already be closed. */
-      }
       setError('暂时无法上报，请稍后重试。填写内容已保留。');
     }
     busy.current = false;
@@ -150,9 +128,7 @@ export function DocsFeedbackForm({
         className="not-prose flex flex-col gap-2 border-t pt-3 text-sm"
       >
         <p role="status" className="font-medium">
-          {submitted.details
-            ? '补充反馈已提交，谢谢！也可以在 GitHub 创建 Issue，方便跟进。'
-            : '补充反馈已提交，谢谢！'}
+          补充反馈已提交，谢谢！
         </p>
         {submitted.reasons.length ? (
           <p className="text-muted-foreground">
@@ -164,23 +140,25 @@ export function DocsFeedbackForm({
           </p>
         ) : null}
         <p className="text-xs text-muted-foreground">
-          本条反馈已锁定。再次点击“有”或“没有”可以提交新的反馈。
+          如需补充其他反馈，可以再次点击“有”或“没有”。
+        </p>
+        <p className="text-xs text-muted-foreground">
+          需要进一步跟进？可在 GitHub 创建 Issue，公开讨论并查看处理进展。需要
+          GitHub 账号。
         </p>
         <div className="flex flex-wrap justify-end gap-2">
           <Button variant="ghost" size="sm" onClick={onCollapse}>
             收起
           </Button>
-          {submitted.details ? (
-            <Button asChild size="sm">
-              <a
-                href={buildFeedbackIssueUrl(submitted)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                在 GitHub 创建 Issue
-              </a>
-            </Button>
-          ) : null}
+          <Button asChild size="sm" variant="outline">
+            <a
+              href={buildFeedbackIssueUrl(submitted)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              在 GitHub 创建 Issue
+            </a>
+          </Button>
         </div>
       </section>
     );
@@ -294,12 +272,6 @@ export function DocsFeedbackForm({
             {error}
           </p>
         ) : null}
-        {canSubmit && activeDetails ? (
-          <p className="text-xs text-muted-foreground">
-            反馈将随当前页面提交，页面、评价、原因和说明也会带到
-            GitHub。创建公开 Issue 需要登录 GitHub。
-          </p>
-        ) : null}
         <div className="flex flex-wrap items-center justify-end gap-2">
           <Button
             variant="ghost"
@@ -311,11 +283,7 @@ export function DocsFeedbackForm({
           </Button>
           {canSubmit ? (
             <Button size="sm" onClick={() => void submit()} disabled={pending}>
-              {pending
-                ? '提交中…'
-                : activeDetails
-                  ? '提交并前往 GitHub'
-                  : '提交'}
+              {pending ? '提交中…' : '提交'}
             </Button>
           ) : null}
         </div>

@@ -204,7 +204,7 @@ export async function captureDocsFeedbackSubmission(input: {
     response,
     comment,
     has_comment: Boolean(comment),
-    feedback_destination: comment ? 'github' : 'analytics',
+    feedback_destination: 'analytics',
     feedback_scope: 'page',
     feedback_source: 'manual',
     surface: 'content',
