@@ -8,7 +8,11 @@ import type { SearchEntry } from '../docs-search';
 import { isKnownPlatform, platformRegistry } from '../platforms/registry';
 import type { PublishedDocsRoute } from '../published-docs-routes';
 import { getCnFaqMetadata } from './cn-faq-metadata';
-import { normalizeCnProduct, normalizeCnProductList } from './cn-products';
+import {
+  getCnSearchPathProduct,
+  normalizeCnProduct,
+  normalizeCnProductList,
+} from './cn-products';
 import { isPublicCnSearchUrl } from './cn-search-page';
 import {
   toCnContentSearchUrl,
@@ -30,22 +34,8 @@ function getRouteMetadata(route: PublishedDocsRoute) {
   );
   const inheritedPlatform =
     scopePlatforms.size === 1 ? [...scopePlatforms][0] : undefined;
-  const [, tab, firstProduct, secondProduct] = route.canonicalPath
-    .split('/')
-    .filter(Boolean);
   const product =
-    card?.productId ??
-    (tab === 'solutions'
-      ? firstProduct
-      : tab === 'api-reference' && firstProduct === 'api-ref'
-        ? secondProduct
-        : tab === 'ai'
-          ? firstProduct === 'device-kit'
-            ? 'device-kit'
-            : 'conversational-ai'
-          : ['realtime-media', 'api-reference'].includes(tab)
-            ? firstProduct
-            : tab);
+    card?.productId ?? getCnSearchPathProduct(route.canonicalPath);
   const platform =
     route.platform ??
     (card?.platformId && isKnownPlatform(card.platformId)

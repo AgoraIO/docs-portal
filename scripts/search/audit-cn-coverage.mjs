@@ -4,6 +4,7 @@ import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { load } from 'cheerio';
 import { isPublicCnSearchUrl, toCnPublicSearchUrl } from '../../src/lib/search/cn-search-urls.mjs';
+import { getCnSearchPathProduct, isExcludedCnProduct } from '../../src/lib/search/cn-product-policy.mjs';
 
 // 仅审计已构建的文件；不会构建、查询或写入 Meilisearch。
 const { values, positionals } = parseArgs({
@@ -56,12 +57,13 @@ for (const record of records) {
   if (!pages.has(url)) pages.set(url, []);
   pages.get(url).push(record);
 }
-const exclusions = { notPublished: [], notNavigation: [], canonicalReplacedByVariants: [], eligibleWithoutRecords: [] };
+const exclusions = { notPublished: [], notNavigation: [], canonicalReplacedByVariants: [], excludedProducts: [], eligibleWithoutRecords: [] };
 for (const route of routes) {
   if (pages.has(route.url)) continue;
   const category = !published.has(route.url) ? 'notPublished'
     : !navigationUrls.has(route.canonicalPath) ? 'notNavigation'
     : !route.platform && variantCanonical.has(route.canonicalPath) ? 'canonicalReplacedByVariants'
+    : isExcludedCnProduct(getCnSearchPathProduct(route.canonicalPath)) ? 'excludedProducts'
     : 'eligibleWithoutRecords';
   exclusions[category].push(route.url);
 }
@@ -69,6 +71,7 @@ const findings = {
   missingHtml: [], unknownRoutes: [], invalidIndexedAnchors: [], brokenTocTargets: [],
   genuineMissingToc: [], otherPlatformToc: [], platformMetadataMismatch: [],
   wrongPanelAnchors: [], duplicateIdsAcrossPanels: [], routeVersionMismatch: [],
+  excludedProductRecords: [],
 };
 let fragments = 0;
 let tocAnchors = 0;
@@ -92,6 +95,11 @@ for (const [url, rows] of pages) {
   const scopesFor = id => [...new Set(ids.get(id).map(e => $(e).closest('[data-platform-panel]').attr('data-platform-panel') ?? 'outside-panel'))];
   const indexed = new Set();
   for (const record of rows) {
+    const products = record.products ?? (record.product ? [record.product] : []);
+    if (isExcludedCnProduct(getCnSearchPathProduct(record.url)) ||
+      (products.length > 0 && products.every(isExcludedCnProduct))) {
+      findings.excludedProductRecords.push(record.url);
+    }
     if (route.platform && (record.platform?.length !== 1 || record.platform[0] !== route.platform)) {
       findings.platformMetadataMismatch.push({ url: record.url, expected: route.platform, actual: record.platform });
     }
@@ -162,4 +170,5 @@ console.log(`Coverage report: ${values.out}`);
 if (report.counts.uniqueIds !== records.length || [
   'missingHtml', 'unknownRoutes', 'invalidIndexedAnchors', 'genuineMissingToc',
   'platformMetadataMismatch', 'wrongPanelAnchors', 'routeVersionMismatch',
+  'excludedProductRecords',
 ].some(key => findings[key].length) || navigationWithoutRoutes.length || report.coverageExceptions.unexpectedEligibleWithoutRecords.length) process.exitCode = 1;
