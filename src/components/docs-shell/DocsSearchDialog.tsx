@@ -356,7 +356,7 @@ export function DocsSearchDialog({
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
-  const showActiveDetail = !isCn;
+  const showActiveDetail = !isCn || hasQuery;
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
   // During that pre-fetch window `isLoading` is false and `results` still holds
@@ -707,9 +707,7 @@ export function DocsSearchDialog({
         )}
         description={t('docs.searchDescription')}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
-        onValueChange={(value) => {
-          if (!isCn || manualSelection.current) setActiveValue(value);
-        }}
+        onValueChange={setActiveValue}
         open={open}
         overlayClassName="docs-search-overlay bg-black/30 backdrop-blur-md"
         shouldFilter={false}
@@ -1043,12 +1041,13 @@ export function DocsSearchDialog({
         {/* Active-item detail: floats beside the dialog when there's room,
             otherwise a fixed-height strip in the footer. Either way it's out of
             the height-varying flow, so the dialog doesn't resize on focus change. */}
-        {!isCn ? (
+        {!isCn || (hasQuery && !isBusy && !isSearchUnavailable) ? (
           <SearchDetailPanel
             activeValue={activeValue}
             description={showActiveDetail ? activeDetail?.primary : undefined}
             open={open}
             renderText={(value) => <HighlightedText value={value} />}
+            showStrip={!isCn}
             title={showActiveDetail ? activeDetail?.title : undefined}
           />
         ) : null}

@@ -1257,8 +1257,15 @@ describe('DocsSearchDialog', () => {
         await screen.findByPlaceholderText('搜索文档、API、指南...'),
         { target: { value: 'getNtpWallTimeInMs' } },
       );
+      await screen.findByRole('option', { name: /Guide match/ });
       fireEvent.click(screen.getByRole('combobox', { name: '全部产品' }));
       fireEvent.click(await screen.findByRole('option', { name: '实时互动' }));
+      await screen.findByRole('combobox', { name: /实时互动/ });
+      await waitFor(() =>
+        expect(
+          screen.queryByPlaceholderText('筛选产品…'),
+        ).not.toBeInTheDocument(),
+      );
       fireEvent.click(screen.getByRole('combobox', { name: '全部平台' }));
       fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
       await screen.findByRole('combobox', { name: /Android/ });
@@ -1281,9 +1288,7 @@ describe('DocsSearchDialog', () => {
         expect.stringContaining('API match'),
         expect.stringContaining('FAQ match'),
       ]);
-      expect(
-        screen.queryByTestId('search-active-detail'),
-      ).not.toBeInTheDocument();
+      expect(screen.queryByTestId('search-active-detail')).toBeInTheDocument();
       const action = screen.getByRole('button', {
         name:
           family === 'docs'
@@ -1304,6 +1309,59 @@ describe('DocsSearchDialog', () => {
       );
     },
   );
+
+  it('updates the CN floating preview from mouse and keyboard selection and removes it on close', async () => {
+    const router = renderCnSearch(
+      vi.fn().mockResolvedValue([
+        {
+          id: 'first',
+          title: '返回值 A',
+          content: '返回值 A',
+          type: 'page',
+          url: '/api-reference/rtc/flutter/screen#first',
+          snippet: '返回 <mark>ScreenCaptureSourceInfo</mark> 数组。',
+        },
+        {
+          id: 'second',
+          title: '返回值 B',
+          content: '返回值 B',
+          type: 'page',
+          url: '/api-reference/rtc/electron/screen#second',
+          snippet: 'Electron 屏幕来源说明。',
+        },
+      ]),
+    );
+    render(<RouterProvider router={router} />);
+    fireEvent.click(await screen.findByRole('button', { name: '搜索文档' }));
+    const input = await screen.findByPlaceholderText('搜索文档、API、指南...');
+    fireEvent.input(input, { target: { value: 'ScreenCaptureSourceInfo' } });
+    await waitFor(() =>
+      expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
+        '返回 ScreenCaptureSourceInfo 数组。',
+      ),
+    );
+    fireEvent.pointerMove(screen.getByRole('option', { name: /返回值 B/ }), {
+      pointerType: 'mouse',
+    });
+    await waitFor(() =>
+      expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
+        'Electron 屏幕来源说明。',
+      ),
+    );
+    fireEvent.keyDown(input, { key: 'ArrowUp' });
+    await waitFor(() =>
+      expect(screen.getByTestId('search-active-detail')).toHaveTextContent(
+        '返回 ScreenCaptureSourceInfo 数组。',
+      ),
+    );
+    expect(
+      screen.getByTestId('search-active-detail').querySelector('mark'),
+    ).toHaveClass('search-page-mark');
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(
+      screen.queryByTestId('search-active-detail'),
+    ).not.toBeInTheDocument();
+  });
 
   it('keeps the empty document family visible when only API results match', async () => {
     const router = renderCnSearch(
