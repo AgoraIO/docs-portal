@@ -95,12 +95,12 @@ const OpenApiCodeSourceContext = createContext<string | undefined>(undefined);
 const OpenApiRequestCodeContext = createContext(false);
 const ZH_CN_OPENAPI_LABELS: Record<string, string> = {
   Authorization: '鉴权',
-  'Collapse all': '折叠全部',
+  'Collapse all': '收起所有字段',
   Collapse: '折叠',
   'Copied endpoint URL': '已复制接口 URL',
   'Copied Text': '已复制文本',
   'Cookie Parameters': 'Cookie 参数',
-  'Expand all': '展开全部',
+  'Expand all': '展开所有字段',
   Expand: '展开',
   'Copy link to': '复制链接到',
   'Copy endpoint URL': '复制接口 URL',
@@ -140,13 +140,15 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
   'Allowed values(schema UI)': '可选值',
   'Cookie Parameters': 'Cookie 参数',
-  'Collapse all(schema UI)': '折叠全部',
+  'Collapse all(schema UI)': '收起所有字段',
   'Copied link to(schema UI)': '已复制字段链接到',
   'Copy link to(schema UI)': '复制字段链接到',
   'Default(schema UI)': '默认值',
   'Deprecated(schema UI)': '已废弃',
   'Example(schema UI)': '示例',
-  'Expand all(schema UI)': '展开全部',
+  'Expand all(schema UI)': '展开所有字段',
+  'Fields(schema UI)': '字段',
+  'JSON example(schema UI)': 'JSON 示例',
   'Filter Properties(schema UI)': '筛选属性',
   'Format(schema UI)': '格式',
   'Header Parameters': '请求 Header',
@@ -706,7 +708,7 @@ function OpenApiInlineAuthorizationSection({
       <h2 className={OPENAPI_SECTION_HEADING_CLASS} id="authorization">
         {getOpenApiLabel('Authorization', locale)}
       </h2>
-      <div className="space-y-4 rounded-xl border border-fd-border bg-fd-card p-4 text-fd-card-foreground">
+      <div className="openapi-authorization-methods space-y-5">
         {schemes.map((scheme) => (
           <div key={scheme.key}>
             <h3 className="mb-2 font-semibold text-fd-foreground text-base">
@@ -987,12 +989,9 @@ function OpenApiStatusResponseHeaders({
       <h3 className="mb-3 font-semibold text-base">
         {getOpenApiLabel('Response Headers', locale)}
       </h3>
-      <div className="openapi-field-list overflow-hidden rounded-xl border border-fd-border bg-fd-card text-fd-card-foreground">
+      <div className="openapi-field-list divide-y divide-fd-border">
         {headers.map((header, index) => (
-          <div
-            className={index === 0 ? '' : 'border-fd-border border-t'}
-            key={anchorIds[index]}
-          >
+          <div key={anchorIds[index]}>
             <OpenApiResponseHeaderRow
               anchorId={anchorIds[index]}
               copyLinkLabel={getOpenApiLabel('Copy link to', locale)}
@@ -1642,6 +1641,7 @@ function OpenApiMarkdownCodeBlock({
       {...props}
       className={cn(
         props.className,
+        'shadow-none',
         isRequestCode &&
           'my-0 -mx-px -mb-px rounded-none bg-fd-secondary last:rounded-b-xl',
       )}

@@ -624,7 +624,11 @@ components:
     appid:
       name: appid
       in: path
-      description: '你的项目使用的 [App ID](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service#获取-app-id)。<li>对于页面录制模式，只需输入开通了云端录制服务的 App ID。</li><li>对于单流和合流录制模式，必须使用和待录制的频道相同的 App ID，且该 App ID 需要开通云端录制服务。</li>'
+      description: |-
+        你的项目使用的 [App ID](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service#获取-app-id)。
+
+        - 对于页面录制模式，只需输入开通了云端录制服务的 App ID。
+        - 对于单流和合流录制模式，必须使用和待录制的频道相同的 App ID，且该 App ID 需要开通云端录制服务。
       required: true
       schema:
         type: string
@@ -645,7 +649,12 @@ components:
     mode:
       name: mode
       in: path
-      description: '录制模式：<li>`raw`：[单流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。</li><li>`mix`：[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。</li><li>`web`：[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。</li>'
+      description: |-
+        录制模式：
+
+        - `raw`：[单流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。
+        - `mix`：[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。
+        - `web`：[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。
       required: true
       schema:
         type: string
@@ -773,10 +782,11 @@ components:
           type: string
           description: |
             用于鉴权的动态密钥（Token）。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
-            <p><b>注意</b>：
-            <li>仅需在<b>单流录制</b>和<b>合流录制</b>模式下设置。</li>
-            <li>云端录制服务暂不支持更新 Token。为保证录制正常，请确保 Token 有效时长大于你预计的录制时长，以避免 Token 过期导致录制任务退出频道而结束录制。</li>
-            </p>
+
+            **注意**：
+
+            - 仅需在**单流录制**和**合流录制**模式下设置。
+            - 云端录制服务暂不支持更新 Token。为保证录制正常，请确保 Token 有效时长大于你预计的录制时长，以避免 Token 过期导致录制任务退出频道而结束录制。
         storageConfig:
           $ref: '#/components/schemas/storageConfig'
         recordingConfig:
@@ -963,11 +973,12 @@ components:
       title: sub-audio-uid
       description: |-
         指定订阅哪几个 UID 的音频流。如需订阅全部 UID 的音频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeAudioUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。
-        <p><b>注意：</b>
-        <li>该字段仅适用于 <b>streamTypes</b> 设为音频，或音频和视频的情况。</li>
-        <li>如果你设置了音频的订阅名单，但没有设置视频的订阅名单，云端录制服务不会订阅任何视频流。反之亦然。</li>
-        <li>设为 <b>["#allstream#"]</b> 可订阅频道内所有 UID 的音频流。</li>
-        </p>
+
+        **注意：**
+
+        - 该字段仅适用于 **streamTypes** 设为音频，或音频和视频的情况。
+        - 如果你设置了音频的订阅名单，但没有设置视频的订阅名单，云端录制服务不会订阅任何视频流。反之亦然。
+        - 设为 **["#allstream#"]** 可订阅频道内所有 UID 的音频流。
       items:
         type: string
       x-stoplight:
@@ -985,11 +996,12 @@ components:
       title: sub-video-uid
       description: |-
         指定订阅哪几个 UID 的视频流。如需订阅全部 UID 的视频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeVideoUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。
-        <p><b>注意：</b>
-        <li>该字段仅适用于 <b>streamTypes</b> 设为视频，或音频和视频的情况。</li>
-        <li>如果你设置了视频的订阅名单，但没有设置音频的订阅名单，云端录制服务不会订阅任何音频流。反之亦然。</li>
-        <li>设为 <b>["#allstream#"]</b> 可订阅频道内所有 UID 的视频流。</li>
-        </p>
+
+        **注意：**
+
+        - 该字段仅适用于 **streamTypes** 设为视频，或音频和视频的情况。
+        - 如果你设置了视频的订阅名单，但没有设置音频的订阅名单，云端录制服务不会订阅任何音频流。反之亦然。
+        - 设为 **["#allstream#"]** 可订阅频道内所有 UID 的视频流。
       items:
         type: string
       x-stoplight:
@@ -1173,11 +1185,12 @@ components:
       type: object
       description: |-
         录制文件配置项。
-        <p><b>注意</b>：<b>仅截图时不可设置</b>该字段，其他情况都需要设置该字段。其他情况包含如下：
-        <li>单流录制模式下，不转码录制，转码录制，或同时录制和截图。</li>
-        <li>合流录制。</li>
-        <li>页面录制模式下，仅页面录制，或同时页面录制和转推到 CDN。</li>
-        </p>
+
+        **注意**：**仅截图时不可设置**该字段，其他情况都需要设置该字段。其他情况包含如下：
+
+        - 单流录制模式下，不转码录制，转码录制，或同时录制和截图。
+        - 合流录制。
+        - 页面录制模式下，仅页面录制，或同时页面录制和转推到 CDN。
       properties:
         avFileType:
           type: array
@@ -1621,10 +1634,11 @@ components:
                 type: string
                 description: |-
                   CDN 推流 URL。
-                  <p><b>注意</b>：
-                  <li>URL 仅支持 RTMP 和 RTMPS 协议。</li>
-                  <li>支持的最大转推 CDN 路数为 1。</li>
-                  </p>
+
+                  **注意**：
+
+                  - URL 仅支持 RTMP 和 RTMPS 协议。
+                  - 支持的最大转推 CDN 路数为 1。
       x-stoplight:
         id: d6q00tanvnw7h
     storageConfig_upd:
