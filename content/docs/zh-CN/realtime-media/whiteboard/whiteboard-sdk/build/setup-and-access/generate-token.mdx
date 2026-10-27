@@ -10,7 +10,7 @@ description: "了解互动白板 SDK 在不同平台上的生成 Token 方式，
 
 你可以通过以下方式在业务服务端生成声网互动白板 Token：
 
-- 在 App 服务端用代码生成 Token，详见[在 App 服务端生成 Token](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/generate-token)（推荐）。
+- 在 App 服务端用代码生成 Token，详见[在 App 服务端生成 Token](#在-app-服务端生成-token)（推荐）。
 
 - 在[声网控制台](https://console.shengwang.cn/)生成 SDK Token。详见[获取互动白板项目的安全密钥](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
 
@@ -82,9 +82,9 @@ description: "了解互动白板 SDK 在不同平台上的生成 Token 方式，
 
 要获取文档转换任务的 UUID，你需要调用互动白板 RESTful API [发起文档转换](/zh-CN/api-reference/api-ref/whiteboard/restful/start-file-conversion)。请求成功后，响应包体会包含转换任务的 UUID。
 
-<a id="在-app-服务端用代码生成-token"></a>
+<a id="在-app-服务端用代码生成-token" aria-hidden="true"></a>
 
-### 在 App 服务端生成 Token [#在-app-服务端生成-token]
+### 在 App 服务端生成 Token
 
 声网在 GitHub 提供一个开源的 netless-token 仓库，支持使用 Java、JavaScript、TypeScript、C#、Go、PHP、Ruby 等语言在你的服务端部署生成 SDK Token、Room Token、Task Token。
 
@@ -953,9 +953,9 @@ description: "了解互动白板 SDK 在不同平台上的生成 Token 方式，
 5. App 服务端使用 Task Token 和转换任务 UUID 调用互动白板 RESTful API 查询转换任务的进度。
 6. 声网互动白板服务端收到 App 服务端的请求后，会根据 Task Token 等信息校验用户权限。如果验证通过且请求成功，会向 App 服务端返回文档转换任务的进度。
 
-<a id="相关信息-1"></a>
+<a id="相关信息-1" aria-hidden="true"></a>
 
-## 相关信息 [#相关信息]
+## 相关信息
 
 本节介绍使用互动白板 Token 的相关信息。
 
@@ -966,9 +966,9 @@ description: "了解互动白板 SDK 在不同平台上的生成 Token 方式，
 - 禁用或删除项目。项目被禁用或删除后，与之关联的访问密钥对也会被禁用或删除，所有使用该访问密钥对生成的 Token 都会失效。
 - Token 过期。Token 过期后，用户将无法再使用该 Token 加入互动白板房间或使用互动白板服务。
 
-<a id="token-相关错误-1"></a>
+<a id="token-相关错误-1" aria-hidden="true"></a>
 
-### Token 相关错误 [#token-相关错误]
+### Token 相关错误
 
 在使用 Token 访问互动白板服务时，你可能会遇到以下报错：
 

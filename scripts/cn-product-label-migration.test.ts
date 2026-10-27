@@ -229,7 +229,14 @@ describe('approved Chinese product label content repairs', () => {
   it.each(manifest.documents)(
     'restores display names in $path',
     ({ path: file, replacements }) => {
-      const content = readFileSync(path.resolve(file), 'utf8');
+      // The SDK introduction was removed; the original text remains in the
+      // independent RESTful guide after restoring the source article boundary.
+      const currentFile =
+        file ===
+        'content/docs/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service.mdx'
+          ? file.replace('enable-service.mdx', 'enable-service-restful.mdx')
+          : file;
+      const content = readFileSync(path.resolve(currentFile), 'utf8');
       for (const replacement of replacements)
         expect(content).toContain(replacement.after);
     },

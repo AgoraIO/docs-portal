@@ -72,12 +72,7 @@ describe('Chinese guides retain the legacy article boundaries', {
     ],
     [
       'mini-program',
-      [
-        '登录声网控制台',
-        '创建声网项目',
-        '获取 App ID',
-        '获取临时 Token',
-      ],
+      ['登录声网控制台', '创建声网项目', '获取 App ID', '获取临时 Token'],
     ],
   ])(
     'keeps the legacy RTC %s preparation steps',
