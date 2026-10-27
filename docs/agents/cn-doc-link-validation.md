@@ -124,3 +124,15 @@ bun run types:check
 ```
 
 网络用例使用本地 HTTP fixture；浏览器 collector 有 DOM 回归测试，真实 agent-browser 的状态遍历与深链场景另做本地 smoke 验证。不要将 fixture 通过描述为整站或公网所有链接通过。
+
+## 提交 PR 前复核（2026-10-27）
+
+工作分支已同步迁移分支 `af6819858`，保留上游最新页签、锚点及 API 链接。此前分批报告中的两个 RTM 基线测试失败已由上游修正；以下为同步后的实际结果：
+
+- `bun run test --maxWorkers=2`：290 个测试文件通过，4,608 项通过、2 项跳过、0 项失败。
+- `bun run types:check`：通过。
+- `bun run lint`：通过，0 errors、19 warnings、5 infos。
+- `git diff --check`：通过；独立复核未发现同步上游引入的整合回归。
+- 最终修复及同步上游后未重跑完整生产构建，也未部署；分批浏览器证据不代替部署后全量审计。
+
+历史遗留待办见 [#1310](https://github.com/AgoraIO/docs-portal/issues/1310)、[#1312](https://github.com/AgoraIO/docs-portal/issues/1312)、[#1311](https://github.com/AgoraIO/docs-portal/issues/1311)。27 个源头空页面按用户决定不处理，不计作验证通过。之前各批报告的测试数和待办描述是当时快照；当前待办以[后续事项清单](./cn-doc-link-follow-up.md)为准。
