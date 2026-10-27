@@ -16,6 +16,33 @@ function readJson<T>(fileName: string): T {
 }
 
 describe('Shengwang redirect artifacts', () => {
+  it('publishes the reviewed RTC mini-program guide move without rewriting its snapshot', () => {
+    const source = '/doc/rtc/mini-program/get-started/enable-service';
+    const target =
+      '/realtime-media/rtc/build/setup-and-access/enable-mini-program';
+    const candidate = readJson<{
+      records: Array<{ legacyPath: string; target: string }>;
+    }>('legacy-url-map-candidate-32883e92e9-2026-10-15.json');
+    const finalMap = readJson<{
+      records: Array<{ legacyPath: string; target: string }>;
+    }>('legacy-url-map.json');
+    expect(
+      candidate.records.find((record) => record.legacyPath === source)?.target,
+    ).toBe('/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service');
+    expect(
+      finalMap.records.find((record) => record.legacyPath === source)?.target,
+    ).toBe(target);
+    expect(readJson('legacy-url-redirects.vercel.json')).toContainEqual({
+      source,
+      destination: target,
+      statusCode: 301,
+      preserveQueryParams: false,
+    });
+    expect(
+      readFileSync(path.join(inputRoot, 'legacy-url-redirects.nginx.conf'), 'utf8'),
+    ).toContain(`location = ${source} {\n  return 301 ${target};\n}`);
+  });
+
   it('records the exact publication retirement policy used to derive the map', () => {
     const finalMap = readJson<{
       retirementPolicy: { path: string; sha256: string };
@@ -159,9 +186,12 @@ describe('Shengwang redirect artifacts', () => {
           : {
               ...record,
               target:
-                record.target === '/zh-CN/realtime-media/rtc/reference/events'
-                  ? '/api-reference/rtc/restful/webhook/events'
-                  : record.target.replace(/^\/zh-CN\//, '/'),
+                record.legacyPath ===
+                '/doc/rtc/mini-program/get-started/enable-service'
+                  ? '/realtime-media/rtc/build/setup-and-access/enable-mini-program'
+                  : record.target === '/zh-CN/realtime-media/rtc/reference/events'
+                    ? '/api-reference/rtc/restful/webhook/events'
+                    : record.target.replace(/^\/zh-CN\//, '/'),
             },
     );
     expect(finalMap.records).toEqual(expectedRecords);

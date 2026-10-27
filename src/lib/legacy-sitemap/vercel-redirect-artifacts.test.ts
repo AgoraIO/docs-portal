@@ -213,6 +213,22 @@ describe('legacy redirect Vercel artifacts', () => {
     expect(vercelConfig.rewrites).toBeUndefined();
   });
 
+  it('redirects RTC mini-program setup before the generic old-host fallback', () => {
+    const source = '/doc/rtc/mini-program/get-started/enable-service';
+    const redirects = vercelConfig.redirects ?? [];
+    const ruleIndex = redirects.findIndex((rule) => rule.source === source);
+    expect(redirects[ruleIndex]).toEqual({
+      source,
+      destination:
+        '/realtime-media/rtc/build/setup-and-access/enable-mini-program',
+      statusCode: 301,
+    });
+    const fallbackIndex = redirects.findIndex((rule) =>
+      rule.source.startsWith('/doc/:path'),
+    );
+    expect(ruleIndex).toBeLessThan(fallbackIndex);
+  });
+
   it('negotiates canonical docs URLs to markdown before filesystem routing', () => {
     expect(vercelConfig.routes).toContainEqual({
       dest: '/en/$1.md',
