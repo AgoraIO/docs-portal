@@ -1,4 +1,5 @@
 import { createRootRoute, createRouter } from '@tanstack/react-router';
+import { Route as aiAnswerRoute } from './routes/api/ai/answer';
 import { Route as loginRoute } from './routes/api/auth/login';
 import { Route as healthRoute } from './routes/api/health';
 import { Route as logoutRoute } from './routes/api/logout';
@@ -10,6 +11,11 @@ import { Route as userinfoRoute } from './routes/api/userinfo';
 // The static site and development server continue to use router.tsx.
 const rootRoute = createRootRoute();
 const routeTree = rootRoute.addChildren([
+  aiAnswerRoute.update({
+    id: '/api/ai/answer',
+    path: '/api/ai/answer',
+    getParentRoute: () => rootRoute,
+  } as never),
   loginRoute.update({
     id: '/api/auth/login',
     path: '/api/auth/login',

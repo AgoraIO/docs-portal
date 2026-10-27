@@ -58,6 +58,27 @@ describe('DocsSearchPage', () => {
     ).not.toBeInTheDocument();
   });
 
+  it('opens the opt-in answer panel without changing normal search criteria', async () => {
+    const onChange = vi.fn();
+    render(
+      <DocsSearchPage
+        aiDemoEnabled
+        state={parseSearchPageState({ q: 'Token', platform: 'web' })}
+        onChange={onChange}
+      />,
+    );
+    await screen.findByText('没有找到匹配的文档');
+    fireEvent.click(screen.getByRole('button', { name: 'AI 问答' }));
+    expect(
+      screen.getByRole('textbox', { name: '你的问题' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('searchbox')).toHaveValue('Token');
+    expect(onChange).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole('button', { name: '关闭 AI 问答' }));
+    expect(
+      screen.queryByRole('textbox', { name: '你的问题' }),
+    ).not.toBeInTheDocument();
+  });
   it('keeps alternative versions available when a version is selected', async () => {
     vi.mocked(searchCnDocsPage).mockImplementation(
       async (state): Promise<CnSearchPageResponse> => ({
