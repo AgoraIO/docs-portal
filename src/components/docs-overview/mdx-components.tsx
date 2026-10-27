@@ -356,6 +356,7 @@ export function DemoMedia({
         className="h-auto max-h-[500px] min-w-0 max-w-full shrink rounded-lg object-contain object-left"
         decoding="async"
         loading="lazy"
+        referrerPolicy="no-referrer"
         src={imageSrc}
       />
       <figure className="m-0 w-[120px] shrink-0">
@@ -364,6 +365,7 @@ export function DemoMedia({
           className="block size-[120px]"
           decoding="async"
           loading="lazy"
+          referrerPolicy="no-referrer"
           src={qrCodeSrc}
         />
         <figcaption className="mt-2 text-center text-xs text-muted-foreground">
@@ -1339,6 +1341,7 @@ export function DemoGallery({
                   alt={item.imageAlt}
                   className="size-full object-cover transition-transform duration-200 group-hover:scale-[1.02]"
                   loading="lazy"
+                  referrerPolicy="no-referrer"
                   src={item.imageSrc}
                 />
               </div>

@@ -138,6 +138,26 @@ describe('API Center shared HTML to MDX converter', () => {
     }
   });
 
+  it.each(['aside', 'section'])(
+    'keeps a %s callout separate inside a parameter list',
+    async (tag) => {
+      const result = await convertHtmlToMdx({
+        html: `<article><h1>setDestChannelInfo</h1><ul><li>token：目标频道的 Token。<ul><li>未启用 App Certificate 时可以为空。</li><li>启用时必须传入有效 Token。</li></ul><${tag} class="admonition warning"><strong>注意</strong><p>Token 必须使用目标频道名生成。</p></${tag}></li></ul></article>`,
+        sourceUrl:
+          'https://doc.shengwang.cn/api-ref/rtc/harmonyos/API/channelmediarelayconfiguration-setdestchannelinfo',
+        sourcePath: 'html-docs/rtc/HarmonyOS/setDestChannelInfo.html',
+      });
+
+      expect(result.body).toContain(
+        '\n\n  :::warning[注意]\n  Token 必须使用目标频道名生成。\n  :::',
+      );
+      expect(result.body).toContain('  - 启用时必须传入有效 Token。');
+      const compiled = await compileGeneratedMdx(result.body);
+      expect(compiled).toContain('Callout');
+      expect(compiled).not.toContain(':::warning');
+    },
+  );
+
   it('records unsupported embeds and unresolved internal links as warnings', async () => {
     const result = await convertHtmlToMdx({
       html: '<article><h1>Page</h1><p><a href="/api-ref/missing">Missing</a></p><iframe src="old"></iframe></article>',

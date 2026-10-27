@@ -1030,6 +1030,7 @@ async function renderList($, element, state, ordered) {
         );
       } else if (
         [
+          'aside',
           'blockquote',
           'div',
           'dl',
@@ -1037,6 +1038,7 @@ async function renderList($, element, state, ordered) {
           'img',
           'p',
           'pre',
+          'section',
           'table',
         ].includes(name)
       ) {
