@@ -401,6 +401,14 @@ paths:
                         width: 960
                         height: 480
                         color: 0
+                      waterMarks:
+                        - imageUrl: https://example.com/watermark.png
+                          region:
+                            x: 0
+                            "y": 0
+                            width: 120
+                            height: 120
+                            zOrder: 50
                       videoInputs:
                         - rtc:
                             rtcChannel: test01
@@ -863,6 +871,14 @@ paths:
                         color: 0
                         backgroundImage: https://example.jpg
                         fillMode: FIT
+                      waterMarks:
+                        - imageUrl: https://example.com/watermark.png
+                          region:
+                            x: 0
+                            "y": 0
+                            width: 120
+                            height: 120
+                            zOrder: 50
                       videoInputs:
                         - rtc:
                             rtcChannel: test01
@@ -1482,6 +1498,14 @@ paths:
                         color: 0
                         backgroundImage: https://example.jpg
                         fillMode: FIT
+                      waterMarks:
+                        - imageUrl: https://example.com/watermark.png
+                          region:
+                            x: 0
+                            "y": 0
+                            width: 120
+                            height: 120
+                            zOrder: 50
                       videoInputs:
                         - rtc:
                             rtcChannel: test01
@@ -1705,42 +1729,67 @@ paths:
         - lang: bash
           label: curl
           source: |-
-            curl --request post \
-                  --url https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId \
-                  --header 'Authorization: Basic <credentials>' \
-                  --header 'Content-Type: application/json' \
-                  --data '{"enabled": true, "video": {"width": 1280, "height": 720, "fps": 15}}'
+            curl --request POST \
+              --url 'https://api.sd-rtn.com/v1/projects/<app_id>/rtls/abr/config/codecs/<codec_id>' \
+              --header 'Authorization: Basic <credentials>' \
+              --header 'Content-Type: application/json' \
+              --data '{
+                "enabled": true,
+                "video": {
+                  "width": 1280,
+                  "height": 720,
+                  "fps": 15
+                }
+              }'
         - lang: python
           label: Python
           source: |-
             import requests
 
-                url = "https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId"
+            url = "https://api.sd-rtn.com/v1/projects/<app_id>/rtls/abr/config/codecs/<codec_id>"
 
-                headers = {
-                    "Authorization": "Basic <credentials>",
-                    "Content-Type": "application/json"
+            headers = {
+                "Authorization": "Basic <credentials>",
+                "Content-Type": "application/json"
+            }
+
+            data = {
+                "enabled": True,
+                "video": {
+                    "width": 1280,
+                    "height": 720,
+                    "fps": 15
                 }
+            }
 
-                data = {"enabled": True, "video": {"width": 1280, "height": 720, "fps": 15}}
+            response = requests.post(url, headers=headers, json=data)
 
-                response = requests.request("post", url, headers=headers, json=data)
-
-                print(response.text)
+            print(response.text)
         - lang: javascript
           label: Node.js
           source: |-
-            const url = 'https://api.sd-rtn.com/v1/projects/:appId/rtls/abr/config/codecs/:codecId';
-                const options = {
-                  method: 'post',
-                  headers: {Authorization: 'Basic <credentials>', 'Content-Type': 'application/json'},
-                  body: JSON.stringify({enabled: true, video: {width: 1280, height: 720, fps: 15}})
-                };
+            const url = 'https://api.sd-rtn.com/v1/projects/<app_id>/rtls/abr/config/codecs/<codec_id>';
+            const data = {
+              enabled: true,
+              video: {
+                width: 1280,
+                height: 720,
+                fps: 15,
+              },
+            };
+            const options = {
+              method: 'POST',
+              headers: {
+                Authorization: 'Basic <credentials>',
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            };
 
-                fetch(url, options)
-                  .then(res => res.json())
-                  .then(json => console.log(json))
-                  .catch(err => console.error(err));
+            fetch(url, options)
+              .then(res => res.json())
+              .then(json => console.log(json))
+              .catch(err => console.error(err));
       parameters:
         - $ref: "#/components/parameters/Content-Type"
         - $ref: "#/components/parameters/appId"
@@ -2346,10 +2395,6 @@ components:
           minimum: 0
           maximum: 3840
           description: >-
-            The x coordinate of the watermark on the canvas (px). The x coordinate is the horizontal
-            displacement of the upper left corner of the image relative to the origin.
-
-
             The x coordinate of the image on the canvas (px). The x coordinate is the horizontal
             displacement of the upper left corner of the image relative to the origin, where the
             upper left corner of the canvas is the origin.
@@ -2358,10 +2403,6 @@ components:
           minimum: 0
           maximum: 3840
           description: >-
-            The y coordinate of the watermark on the canvas (px). The y coordinate is the vertical
-            displacement of the upper left corner of the image relative to the origin.
-
-
             The y coordinate of the image on the canvas (px). The y coordinate is the vertical
             displacement of the upper left corner of the image relative to the origin, where the
             upper left corner of the canvas is the origin.
@@ -2369,39 +2410,61 @@ components:
           type: number
           minimum: 120
           maximum: 3840
-          description: |-
-            The width of the watermark (px).
-
-            The width of the screen (px).
+          description: The width of the video region (px).
         height:
           type: number
           minimum: 120
           maximum: 3840
-          description: |-
-            The height of the watermark (px).
-
-            The height of the screen (px).
+          description: The height of the video region (px).
         zOrder:
           type: number
           minimum: 2
           maximum: 100
           description: >-
+            The layer order of the host screen. `2` represents the layer above the placeholder layer.
+            `100` represents the top layer.
+    watermark-region:
+      type: object
+      required:
+        - x
+        - "y"
+        - width
+        - height
+        - zOrder
+      properties:
+        x:
+          type: number
+          minimum: 0
+          maximum: 3840
+          description: >-
+            The x coordinate of the watermark on the canvas (px). The x coordinate is the horizontal
+            displacement of the upper left corner of the watermark relative to the upper left corner
+            of the canvas.
+        "y":
+          type: number
+          minimum: 0
+          maximum: 3840
+          description: >-
+            The y coordinate of the watermark on the canvas (px). The y coordinate is the vertical
+            displacement of the upper left corner of the watermark relative to the upper left corner
+            of the canvas.
+        width:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The width of the watermark (px).
+        height:
+          type: number
+          minimum: 120
+          maximum: 3840
+          description: The height of the watermark (px).
+        zOrder:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: >-
             The layer order of the watermark. `0` represents the bottom layer. `100` represents the
             top layer.
-
-
-            The layer order of the host screen. 2 represents the layer above the placeholder layer.
-            100 represents the top layer.
-    watermark-region:
-      allOf:
-        - $ref: "#/components/schemas/region"
-        - type: object
-          properties:
-            zOrder:
-              type: number
-              minimum: 0
-              maximum: 100
-              description: The layer order of the watermark.
     transcoder-output:
       type: object
       properties:
@@ -2672,7 +2735,7 @@ components:
                   enabled:
                     type: boolean
                     description: Whether to enable this transcoding template.
-                  Video:
+                  video:
                     type: object
                     properties:
                       width:
