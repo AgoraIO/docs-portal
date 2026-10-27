@@ -8,18 +8,20 @@ afterEach(() => vi.restoreAllMocks());
 const empty = { groups: [], totalHits: 0, totalPages: 0, page: 1, facets: {} };
 describe('browser search API transport', () => {
   it('reserves three preview slots per family and carries full family counts', async () => {
-    const groups = (['api', 'docs'] as const).map((family) => ({
-      pageUrl:
-        family === 'api'
-          ? '/api-reference/rtc/android/method'
-          : '/realtime-media/rtc/guide',
+    const paths = {
+      api: '/api-reference/rtc/android/method',
+      docs: '/realtime-media/rtc/guide',
+      faq: '/reference/faq/integration/set_log_file',
+    };
+    const groups = (['api', 'docs', 'faq'] as const).map((family) => ({
+      pageUrl: paths[family],
       title: family,
       platform: ['android'],
       docType: 'docs',
       sections: Array.from({ length: 5 }, (_, i) =>
         normalizeMeilisearchHit({
           id: `${family}-${i}`,
-          url: `${family === 'api' ? '/api-reference/rtc/android/method' : '/realtime-media/rtc/guide'}#section-${i}`,
+          url: `${paths[family]}#section-${i}`,
           pageTitle: family,
           sectionTitle: `${family}-${i}`,
           content: 'summary',
@@ -36,8 +38,8 @@ describe('browser search API transport', () => {
       Response.json({
         ...empty,
         groups,
-        totalHits: 46,
-        familyTotalHits: { docs: 7, api: 39 },
+        totalHits: 57,
+        familyTotalHits: { docs: 7, api: 39, faq: 11 },
       }),
     );
     const result = await createCnDocsSearchClient({}).search('method');
@@ -51,6 +53,11 @@ describe('browser search API transport', () => {
         id: `api-${i}`,
         family: 'api',
         familyTotalHits: 39,
+      })),
+      ...[0, 1, 2].map((i) => ({
+        id: `faq-${i}`,
+        family: 'faq',
+        familyTotalHits: 11,
       })),
     ]);
   });

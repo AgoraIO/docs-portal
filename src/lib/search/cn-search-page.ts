@@ -1,5 +1,6 @@
 import { normalizeCnProductFacets } from './cn-products';
-import { isPublicCnSearchUrl, toCnPublicSearchUrl } from './cn-search-urls.mjs';
+import { type CnSearchFamily, getCnSearchFamily } from './cn-search-family';
+import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
 
@@ -23,7 +24,7 @@ export type CnSearchPageResponse = {
   totalPages: number;
   page: number;
   facets: SearchFacets;
-  familyTotalHits?: { docs: number; api: number };
+  familyTotalHits?: Partial<Record<CnSearchFamily, number>>;
 };
 
 export type CnSearchRequest = SearchPageState & { tab?: string };
@@ -81,10 +82,7 @@ export async function searchCnDocsPage(
 export function isCnApiSearchGroup(
   group: Pick<SearchPageGroup, 'pageUrl' | 'docType'>,
 ) {
-  return (
-    group.docType === 'openapi' ||
-    toCnPublicSearchUrl(group.pageUrl).startsWith('/api-reference/')
-  );
+  return getCnSearchFamily(group) === 'api';
 }
 
 // A stable, publication-wide catalog: keyword matches and a previously selected

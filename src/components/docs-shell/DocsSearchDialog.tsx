@@ -57,7 +57,11 @@ import {
   getCnSearchSdkLabel,
 } from '@/lib/search/cn-search-context';
 import {
-  isCnApiSearchGroup,
+  type CnSearchFamily,
+  cnSearchFamilies,
+  getCnSearchFamily,
+} from '@/lib/search/cn-search-family';
+import {
   loadCnSearchCatalog,
   type SearchFacets,
 } from '@/lib/search/cn-search-page';
@@ -575,13 +579,18 @@ export function DocsSearchDialog({
           searchResultToEntry(result, searchLocale === 'zh-CN', productScopes),
         );
   const resultGroups = isCn
-    ? (['docs', 'api'] as const).map((family) => {
+    ? cnSearchFamilies.map((family) => {
         const entries = resultEntries.filter(
           (entry) => entry.family === family,
         );
         return {
           family,
-          label: family === 'docs' ? '技术文档' : 'API Reference',
+          label:
+            family === 'docs'
+              ? '技术文档'
+              : family === 'api'
+                ? 'API Reference'
+                : 'FAQ',
           entries,
           total: entries[0]?.familyTotalHits ?? entries.length,
         };
@@ -657,7 +666,7 @@ export function DocsSearchDialog({
       : searchScopeProduct(pageScope),
     platform: pageSearch?.platform ?? undefined,
   };
-  const openFullSearch = (type: 'all' | 'docs' | 'api' = 'all') => {
+  const openFullSearch = (type: 'all' | CnSearchFamily = 'all') => {
     if (isCn && searchOrigin.current === pathname)
       saveCnSearchSession(pathname, currentSearch.current);
     setOpen(false);
@@ -895,7 +904,11 @@ export function DocsSearchDialog({
                   {isCn && group.entries.length === 0 ? (
                     <div className="px-2 py-3 text-xs text-muted-foreground">
                       暂无相关
-                      {group.label === '技术文档' ? '技术文档' : 'API 文档'}
+                      {group.label === '技术文档'
+                        ? '技术文档'
+                        : group.family === 'faq'
+                          ? 'FAQ'
+                          : 'API 文档'}
                     </div>
                   ) : null}
                   {group.entries.map((page) => {
@@ -1054,7 +1067,7 @@ export function DocsSearchDialog({
 }
 
 type RenderedSearchEntry = SearchEntry & {
-  family: 'docs' | 'api';
+  family: CnSearchFamily;
   familyTotalHits?: number;
   context: string[];
   id?: string;
@@ -1097,12 +1110,10 @@ function searchResultToEntry(
   const sdkLabel = isCn ? getCnSearchSdkLabel(result.url) : undefined;
 
   return {
-    family: isCnApiSearchGroup({
+    family: getCnSearchFamily({
       pageUrl: result.url,
       docType: objectType === 'openapi' ? 'openapi' : 'docs',
-    })
-      ? 'api'
-      : 'docs',
+    }),
     familyTotalHits:
       typeof result.familyTotalHits === 'number'
         ? result.familyTotalHits

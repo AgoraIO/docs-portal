@@ -5,6 +5,7 @@ import {
   normalizeCnProductFacets,
   normalizeCnProductList,
 } from './cn-products';
+import { type CnSearchFamily, cnSearchFamilies } from './cn-search-family';
 import {
   type CnSearchPageResponse,
   cleanSearchSnippet,
@@ -53,11 +54,8 @@ export async function queryCnSearch(
   }
   const query = normalizeMeilisearchQuery(state.q);
   const overview = state.type === 'all' && query.length > 0;
-  const familyFilter = (family: 'docs' | 'api') =>
-    family === 'docs'
-      ? 'tab != "api-reference" AND docType = "docs"'
-      : '(tab = "api-reference" OR docType = "openapi")';
-  const makeQuery = (family?: 'docs' | 'api') => ({
+  const familyFilter = (family: CnSearchFamily) => `searchFamily = "${family}"`;
+  const makeQuery = (family?: CnSearchFamily) => ({
     q: query,
     filter: [...filter, ...(family ? [familyFilter(family)] : [])].join(
       ' AND ',
@@ -86,7 +84,7 @@ export async function queryCnSearch(
       body: JSON.stringify(
         overview
           ? {
-              queries: (['docs', 'api'] as const).map((family) => ({
+              queries: cnSearchFamilies.map((family) => ({
                 indexUid: config.indexUid,
                 ...makeQuery(family),
               })),
@@ -101,7 +99,7 @@ export async function queryCnSearch(
   const responses: EngineResponse[] = overview ? payload.results : [payload];
   if (
     !Array.isArray(responses) ||
-    (overview && responses.length !== 2) ||
+    (overview && responses.length !== cnSearchFamilies.length) ||
     responses.some(
       (item) =>
         !item ||
@@ -184,6 +182,7 @@ export async function queryCnSearch(
           familyTotalHits: {
             docs: responses[0].totalHits,
             api: responses[1].totalHits,
+            faq: responses[2].totalHits,
           },
         }
       : {}),

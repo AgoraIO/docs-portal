@@ -31,23 +31,26 @@ describe('search page URL state', () => {
       expect(parseSearchPageState({ product }).product).toBe(canonical);
     },
   );
-  it('round trips a shareable query, filters, and page without defaults', () => {
-    const input = {
-      q: ' Token 过期 ',
-      product: 'conversational-ai',
-      platform: 'web',
-      version: '4.6.0',
-      type: 'api' as const,
-      page: 3,
-    };
-    const href = buildSearchPageHref('zh-CN', input);
-    expect(
-      parseSearchPageState(
-        Object.fromEntries(new URL(href, 'https://docs.local').searchParams),
-      ),
-    ).toEqual({ ...input, q: 'Token 过期', version: undefined });
-    expect(buildSearchPageHref('zh-CN', { q: '' })).toBe('/zh-CN/search');
-  });
+  it.each(['api', 'faq'] as const)(
+    'round trips a shareable %s query, filters, and page without defaults',
+    (type) => {
+      const input = {
+        q: ' Token 过期 ',
+        product: 'conversational-ai',
+        platform: 'web',
+        version: '4.6.0',
+        type,
+        page: 3,
+      };
+      const href = buildSearchPageHref('zh-CN', input);
+      expect(
+        parseSearchPageState(
+          Object.fromEntries(new URL(href, 'https://docs.local').searchParams),
+        ),
+      ).toEqual({ ...input, q: 'Token 过期', version: undefined });
+      expect(buildSearchPageHref('zh-CN', { q: '' })).toBe('/zh-CN/search');
+    },
+  );
 
   it('rejects malformed filters and bounds query and page input', () => {
     expect(

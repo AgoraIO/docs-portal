@@ -82,9 +82,12 @@ describe('Start search API', () => {
         facetDistribution: { products: { rtc: 1, analytics: 1 } },
       }),
     );
-    const response = await handleSearchRequest(request('q=计时&product=rtc'));
+    const response = await handleSearchRequest(
+      request('q=计时&product=rtc&type=faq'),
+    );
     const body = JSON.parse(fetchMock.mock.calls[0][1]?.body as string);
     expect(body.filter).toContain('(product = "rtc" OR products = "rtc")');
+    expect(body.filter).toContain('searchFamily = "faq"');
     const data = await response.json();
     expect(data.groups[0].sections[0].products).toEqual([
       'local-server-recording',
@@ -190,7 +193,7 @@ describe('Start search API', () => {
       Authorization: 'Bearer private-read-key',
     });
     expect(JSON.parse(options?.body as string).filter).toBe(
-      'locale = "zh-CN" AND hidden = false AND status = "published" AND isDefaultPlatform = true AND tab = "ai" AND tab != "api-reference" AND docType = "docs"',
+      'locale = "zh-CN" AND hidden = false AND status = "published" AND isDefaultPlatform = true AND tab = "ai" AND searchFamily = "docs"',
     );
     expect(await response.text()).not.toMatch(
       /private-read-key|meili.internal/,

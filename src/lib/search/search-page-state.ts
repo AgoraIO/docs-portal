@@ -1,5 +1,6 @@
 import { isKnownPlatform } from '@/lib/platforms/registry';
 import { normalizeCnProduct } from './cn-products';
+import type { CnSearchFamily } from './cn-search-family';
 import type { DocsSearchScope } from './search-provider';
 
 export type SearchPageState = {
@@ -7,7 +8,7 @@ export type SearchPageState = {
   product?: string;
   platform?: string;
   version?: string;
-  type: 'all' | 'docs' | 'api';
+  type: 'all' | CnSearchFamily;
   page: number;
 };
 
@@ -37,8 +38,8 @@ export function parseSearchPageState(
     // uses the publication policy rather than a user-selected SDK version.
     version: undefined,
     type:
-      input.type === 'docs'
-        ? 'docs'
+      input.type === 'docs' || input.type === 'faq'
+        ? input.type
         : input.type === 'api' || input.type === 'openapi'
           ? 'api'
           : 'all',

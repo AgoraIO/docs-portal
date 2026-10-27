@@ -42,6 +42,10 @@ describe('DocsSearchPage', () => {
         pageUrl: '/realtime-media/rtc/build/video/advanced-beauty/android',
         title: '高级美颜',
       },
+      {
+        pageUrl: '/reference/faq/integration/set_log_file',
+        title: '如何设置日志文件？',
+      },
     ].map((page) => ({
       ...page,
       product: 'rtc',
@@ -72,7 +76,7 @@ describe('DocsSearchPage', () => {
     vi.mocked(searchCnDocsPage).mockResolvedValue({
       ...empty,
       groups,
-      totalHits: 2,
+      totalHits: 3,
       totalPages: 1,
     });
     const onChange = vi.fn();
@@ -86,16 +90,20 @@ describe('DocsSearchPage', () => {
     const sections = screen
       .getAllByRole('region')
       .filter((region) =>
-        ['产品文档', 'API 文档'].includes(
+        ['产品文档', 'API 文档', 'FAQ'].includes(
           region.getAttribute('aria-label') ?? '',
         ),
       );
     expect(
       sections.map((section) => section.getAttribute('aria-label')),
-    ).toEqual(['产品文档', 'API 文档']);
+    ).toEqual(['产品文档', 'API 文档', 'FAQ']);
     expect(screen.queryByText('4.7.0')).not.toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: '查看全部API 文档' }));
     expect(onChange).toHaveBeenCalledWith({ type: 'api', page: 1 });
+    fireEvent.click(screen.getByRole('button', { name: '查看全部FAQ' }));
+    expect(onChange).toHaveBeenCalledWith({ type: 'faq', page: 1 });
+    fireEvent.click(screen.getByRole('radio', { name: 'FAQ' }));
+    expect(onChange).toHaveBeenCalledWith({ type: 'faq', page: 1 });
   });
 
   it('keeps published alternatives selectable after a filtered direct visit', async () => {

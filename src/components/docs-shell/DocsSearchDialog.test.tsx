@@ -1216,7 +1216,7 @@ describe('DocsSearchDialog', () => {
     );
   });
 
-  it.each(['docs', 'api'] as const)(
+  it.each(['docs', 'api', 'faq'] as const)(
     'groups CN matches and opens all %s results with the selected filters',
     async (family) => {
       const router = renderCnSearch(
@@ -1239,6 +1239,15 @@ describe('DocsSearchDialog', () => {
             snippet: 'Guide summary',
             familyTotalHits: 7,
           },
+          {
+            id: 'faq',
+            title: 'FAQ match',
+            content: 'FAQ match',
+            type: 'page',
+            url: '/reference/faq/integration/set_log_file#native',
+            snippet: 'FAQ summary',
+            familyTotalHits: 1,
+          },
         ]),
       );
       const navigate = vi.spyOn(router, 'navigate');
@@ -1252,6 +1261,7 @@ describe('DocsSearchDialog', () => {
       fireEvent.click(await screen.findByRole('option', { name: '实时互动' }));
       fireEvent.click(screen.getByRole('combobox', { name: '全部平台' }));
       fireEvent.click(await screen.findByRole('option', { name: 'Android' }));
+      await screen.findByRole('combobox', { name: /Android/ });
       const docs = await screen.findByRole('group', { name: '技术文档' });
       expect(
         screen.queryByRole('button', { name: '完整搜索' }),
@@ -1260,19 +1270,27 @@ describe('DocsSearchDialog', () => {
         screen.queryByRole('button', { name: 'Close' }),
       ).not.toBeInTheDocument();
       const api = screen.getByRole('group', { name: 'API Reference' });
+      const faq = screen.getByRole('group', { name: 'FAQ' });
       expect(within(docs).getByText('共 7 条结果')).toBeInTheDocument();
       expect(within(api).getByText('共 39 条结果')).toBeInTheDocument();
       expect(within(docs).getByText('Guide summary')).toBeInTheDocument();
       expect(within(api).getByText('API summary')).toBeInTheDocument();
+      expect(within(faq).getByText('FAQ summary')).toBeInTheDocument();
       expect(screen.getAllByRole('option').map((e) => e.textContent)).toEqual([
         expect.stringContaining('Guide match'),
         expect.stringContaining('API match'),
+        expect.stringContaining('FAQ match'),
       ]);
       expect(
         screen.queryByTestId('search-active-detail'),
       ).not.toBeInTheDocument();
       const action = screen.getByRole('button', {
-        name: family === 'docs' ? '查看全部技术文档' : '查看全部API Reference',
+        name:
+          family === 'docs'
+            ? '查看全部技术文档'
+            : family === 'api'
+              ? '查看全部API Reference'
+              : '查看全部FAQ',
       });
       expect(fireEvent.keyDown(action, { key: 'Enter' })).toBe(true);
       expect(fireEvent.keyDown(action, { key: ' ' })).toBe(true);

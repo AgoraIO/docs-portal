@@ -76,6 +76,20 @@ describe('full CN search adapter', () => {
             page: 1,
             facetDistribution: { products: { rtc: 1 } },
           },
+          {
+            hits: [
+              {
+                ...hit,
+                id: 'faq',
+                url: '/reference/faq/integration/set_log_file',
+                pageTitle: '如何设置日志文件？',
+                sectionTitle: '设置日志文件',
+              },
+            ],
+            totalHits: 1,
+            totalPages: 1,
+            page: 1,
+          },
         ],
       }),
     );
@@ -86,14 +100,16 @@ describe('full CN search adapter', () => {
     expect(result.groups.map((group) => group.title)).toEqual([
       '高级美颜',
       '视频增强',
+      '如何设置日志文件？',
     ]);
-    expect(result.totalHits).toBe(2);
-    expect(result.familyTotalHits).toEqual({ docs: 1, api: 1 });
+    expect(result.totalHits).toBe(3);
+    expect(result.familyTotalHits).toEqual({ docs: 1, api: 1, faq: 1 });
     const [url, request] = fetchMock.mock.calls[0];
     expect(url).toBe('http://127.0.0.1:7700/multi-search');
     const { queries } = JSON.parse(request?.body as string);
-    expect(queries[0].filter).toContain('tab != "api-reference"');
-    expect(queries[1].filter).toContain('tab = "api-reference"');
+    expect(queries[0].filter).toContain('searchFamily = "docs"');
+    expect(queries[1].filter).toContain('searchFamily = "api"');
+    expect(queries[2].filter).toContain('searchFamily = "faq"');
     expect(
       queries.every(
         (query: { filter: string }) => !query.filter.includes('version ='),
@@ -379,7 +395,7 @@ describe('full CN search adapter', () => {
       page: 2,
       hitsPerPage: 20,
       filter:
-        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND platform = "web" AND tab != "api-reference" AND docType = "docs"',
+        'locale = "zh-CN" AND hidden = false AND status = "published" AND (product = "conversational-ai" OR products = "conversational-ai") AND platform = "web" AND searchFamily = "docs"',
     });
     expect(result.groups).toHaveLength(1);
     expect(

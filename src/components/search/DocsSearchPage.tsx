@@ -55,8 +55,11 @@ import {
   getCnSearchPlatforms,
 } from '@/lib/search/cn-search-context';
 import {
+  cnSearchFamilies,
+  getCnSearchFamily,
+} from '@/lib/search/cn-search-family';
+import {
   type CnSearchPageResponse,
-  isCnApiSearchGroup,
   isPublicCnSearchUrl,
   loadCnSearchCatalog,
   mergeSearchPageGroups,
@@ -520,13 +523,17 @@ export function DocsSearchPage({
             (data.groups.length ? (
               <>
                 {state.type === 'all'
-                  ? (['docs', 'api'] as const).map((family) => {
+                  ? cnSearchFamilies.map((family, familyIndex) => {
                       const groups = data.groups.filter(
-                        (group) =>
-                          isCnApiSearchGroup(group) === (family === 'api'),
+                        (group) => getCnSearchFamily(group) === family,
                       );
                       if (!groups.length) return null;
-                      const label = family === 'docs' ? '产品文档' : 'API 文档';
+                      const label =
+                        family === 'docs'
+                          ? '产品文档'
+                          : family === 'api'
+                            ? 'API 文档'
+                            : 'FAQ';
                       return (
                         <section aria-label={label} key={family}>
                           <div className="flex items-center justify-between border-b py-2">
@@ -543,11 +550,11 @@ export function DocsSearchPage({
                           </div>
                           {renderResults(
                             groups,
-                            family === 'api'
-                              ? data.groups.filter(
-                                  (group) => !isCnApiSearchGroup(group),
-                                ).length
-                              : 0,
+                            data.groups.filter((group) =>
+                              cnSearchFamilies
+                                .slice(0, familyIndex)
+                                .includes(getCnSearchFamily(group)),
+                            ).length,
                           )}
                         </section>
                       );
