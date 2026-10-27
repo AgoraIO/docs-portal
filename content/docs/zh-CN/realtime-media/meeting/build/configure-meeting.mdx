@@ -1,8 +1,8 @@
 ---
-title: "配置灵动会议"
-description: "了解灵动会议中配置灵动会议相关内容的适用场景、配置步骤、实现要点和注意事项。"
+title: "配置智能云会议引擎"
+description: "了解智能云会议引擎中配置智能云会议引擎相关内容的适用场景、配置步骤、实现要点和注意事项。"
 ---
-在声网控制台中[开通灵动会议](/zh-CN/realtime-media/meeting/build/enable-service)后，你可以参考本文在控制台中进一步配置灵动会议的高频使用功能：
+在声网控制台中[开通智能云会议引擎](/zh-CN/realtime-media/meeting/build/enable-service)后，你可以参考本文在控制台中进一步配置智能云会议引擎的高频使用功能：
 
 - 互动白板。
 - 云端录制。
@@ -106,7 +106,7 @@ description: "了解灵动会议中配置灵动会议相关内容的适用场景
 
 ## 配置云端录制
 
-在灵动会议中，默认录制会议中主持人的发言。具体的录制配置如下：
+在智能云会议引擎中，默认录制会议中主持人的发言。具体的录制配置如下：
 
 | 配置项      | 默认行为                              | 是否支持自定义      |
 | ----------- | ---------------------------------------------------------------- | --------------------- |
@@ -158,7 +158,7 @@ description: "了解灵动会议中配置灵动会议相关内容的适用场景
 | 字段 | 类型 | 描述 | 备注 |
 | --- | --- | --- | --- |
 | `endpoint` | 必填 String | 由 Bucket 名称和访问域名拼成的完整路径。 例如，Bucket 名称为 `agora-recording`，OSS 访问域名为 `oss-cn-shanghai.aliyuncs.com`，则 `endpoint` 字段应设为 `https://agora-recording.oss-cn-shanghai.aliyuncs.com`。 | <Slot name="configure-meeting-html-0-1-3" /> |
-| `fileNamePrefix` | 选填 String 数组 | <Slot name="configure-meeting-html-0-2-2" /> | 你可使用变量来指定一个动态路径。你发起录制时，灵动会议云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/reference/faq/integration/dynamic_storage_path)。 |
+| `fileNamePrefix` | 选填 String 数组 | <Slot name="configure-meeting-html-0-2-2" /> | 你可使用变量来指定一个动态路径。你发起录制时，智能云会议引擎云服务会用真实的值替换变量。详见[如何指定动态存储路径](/zh-CN/reference/faq/integration/dynamic_storage_path)。 |
 
 <Slot for="configure-meeting-html-0-1-3">
 
@@ -183,7 +183,7 @@ description: "了解灵动会议中配置灵动会议相关内容的适用场景
 
 ## 配置环信 IM
 
-灵动会议集成了实时消息 RTM SDK 和即时通讯环信 IM SDK 来实现信令和实时消息功能。RTM 无需你手动配置，IM 需要你自行配置。IM 配置步骤如下：
+智能云会议引擎集成了实时消息 RTM SDK 和即时通讯环信 IM SDK 来实现信令和实时消息功能。RTM 无需你手动配置，IM 需要你自行配置。IM 配置步骤如下：
 
 1. 注册[环信即时通讯云](https://console.easemob.com/user/register)。
 
@@ -206,7 +206,7 @@ description: "了解灵动会议中配置灵动会议相关内容的适用场景
     | `clientSecret`| 开发者密钥，由环信开发者管理后台生成。   |
 
     :::warning[注意]
-    `superAdmin`（超级管理员用户名前缀）只支持数字或字母，不支持特殊字符，灵动会议将以 `${superAdmin}-${timestamp}` 作为超级管理员创建 IM 房间。
+    `superAdmin`（超级管理员用户名前缀）只支持数字或字母，不支持特殊字符，智能云会议引擎将以 `${superAdmin}-${timestamp}` 作为超级管理员创建 IM 房间。
     :::
 
 ![环信 IM 参数位置示意图](https://web-cdn.agora.io/docs-portal/img/meeting/console-im-1.png)
