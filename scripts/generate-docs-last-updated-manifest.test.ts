@@ -17,6 +17,10 @@ const scriptPath = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
   'generate-docs-last-updated-manifest.mjs',
 );
+const dockerIgnorePath = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  '../.dockerignore',
+);
 const manifestPath = 'src/generated/docs-last-updated-manifest.ts';
 const pagePath = 'content/docs/zh-CN/page.mdx';
 const tempDirs: string[] = [];
@@ -98,6 +102,41 @@ describe('documentation update-time generation', { timeout: 15_000 }, () => {
     generate(root);
     expect(await readTimes(root)).toMatchObject({
       [pagePath]: '2026-09-22T10:37:43.000Z',
+    });
+  });
+
+  it('keeps Docker build update times current after the committed snapshot goes stale', async () => {
+    const root = await createFixture();
+    await initHistory(root);
+    generate(root);
+    await writeFile(path.join(root, pagePath), '# New release\n');
+    await commitPage(root, '2026-10-27T03:04:05Z');
+
+    // Reproduce the build context: the snapshot predates the latest content,
+    // and excluding Git leaves the generator without a valid date source.
+    const ignoredPaths = (await readFile(dockerIgnorePath, 'utf8'))
+      .split(/\r?\n/)
+      .map((line) => line.trim());
+    if (ignoredPaths.includes('.git')) {
+      await rm(path.join(root, '.git'), { recursive: true });
+    }
+    generate(root);
+    expect(await readTimes(root)).toMatchObject({
+      [pagePath]: '2026-10-27T03:04:05.000Z',
+    });
+  });
+
+  it('matches source paths containing Chinese characters without Git quoting', async () => {
+    const root = await createFixture();
+    await initHistory(root);
+    const localizedPath = 'content/docs/zh-CN/中文术语.mdx';
+    await writeFile(path.join(root, localizedPath), '# 术语\n');
+    git(root, ['config', 'core.quotePath', 'true']);
+    git(root, ['add', localizedPath]);
+    git(root, ['commit', '-m', 'Add terms'], '2026-10-26T03:04:05Z');
+    generate(root);
+    expect(await readTimes(root)).toMatchObject({
+      [localizedPath]: '2026-10-26T03:04:05.000Z',
     });
   });
 
