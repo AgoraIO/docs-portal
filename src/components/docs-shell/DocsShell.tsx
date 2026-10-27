@@ -50,12 +50,12 @@ import {
   DEFAULT_LOCALE,
   normalizeLocale,
 } from '@/lib/i18n/i18n-config';
-import { getOpenApiMethodBadgeClassName } from '@/lib/openapi/method-badge';
 import { getAppBranding, legacyDocsBannerConfig } from '@/lib/shared';
 import { DocsConfiguredIcon } from './DocsConfiguredIcon';
 import { DocsMainColumn } from './DocsMainColumn';
 import { DocsSearchDialog } from './DocsSearchDialog';
 import { DocsSidebar } from './DocsSidebar';
+import { DocsSidebarEndpointLabel } from './DocsSidebarEndpointLabel';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
 import { DocsSidebarProductLink } from './DocsSidebarProductLink';
 import { DocsSiteFooter } from './DocsSiteFooter';
@@ -748,20 +748,13 @@ function MobileSidebarNode({
     const isActive = node.url === activePath;
     const content = (
       <>
-        <span className="block min-w-0 flex-1 break-words whitespace-normal [overflow-wrap:anywhere]">
-          {node.title}
-        </span>
         {node.method ? (
-          <span
-            className={cn(
-              'mt-0.5 shrink-0 rounded border border-current/20 px-1.5 py-0.5 font-mono text-[10px] leading-none',
-              getOpenApiMethodBadgeClassName(node.method),
-            )}
-            data-openapi-method={node.method}
-          >
-            {node.method}
+          <DocsSidebarEndpointLabel method={node.method} title={node.title} />
+        ) : (
+          <span className="block min-w-0 flex-1 break-words whitespace-normal [overflow-wrap:anywhere]">
+            {node.title}
           </span>
-        ) : null}
+        )}
         {node.showNavigationArrow ? (
           <ArrowRightIcon
             aria-hidden="true"
