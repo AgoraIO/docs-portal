@@ -9,7 +9,6 @@ import {
 import {
   buildFeedbackIssueUrl,
   type DocsFeedbackSubmission,
-  feedbackReasonLabel,
   MAX_FEEDBACK_COMMENT_LENGTH,
   positiveFeedbackReasons as positiveLabels,
   prepareDocsFeedback,
@@ -130,15 +129,6 @@ export function DocsFeedbackForm({
         <p role="status" className="font-medium">
           补充反馈已提交，谢谢！
         </p>
-        {submitted.reasons.length ? (
-          <p className="text-muted-foreground">
-            {submitted.reasons
-              .map((reason) =>
-                feedbackReasonLabel(submitted.helpfulness, reason),
-              )
-              .join('、')}
-          </p>
-        ) : null}
         <p className="text-xs text-muted-foreground">
           如需补充其他反馈，可以再次点击“有”或“没有”。
         </p>
