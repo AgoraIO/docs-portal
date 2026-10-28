@@ -170,6 +170,7 @@ describe('ConvoAI documentation integration', () => {
               name: 'Platform',
               index: { type: 'page', name: 'Platform', url: '/en/ai/platform' },
               children: [
+                { type: 'separator', name: 'API operations' },
                 {
                   type: 'page',
                   name: 'Managed mode',

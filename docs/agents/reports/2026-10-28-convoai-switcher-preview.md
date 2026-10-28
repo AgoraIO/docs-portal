@@ -1,6 +1,6 @@
 # ENDOC-1074: ConvoAI integrated preview
 
-This integration combines PR #1210 (`codex/api-doc-versioning`) and Saud's PR #1208 (`convoai-v3-openapi`) on current main. Branch: `codex/convoai-switcher-preview`. It is an English review preview, not a production release or a Chinese-branch change.
+This integration combines PR #1210 (`codex/api-doc-versioning`) and Saud's PR #1208 (`convoai-v3-openapi`) on current main. Branch: `codex/convoai-switcher-preview`. Review PR: https://github.com/AgoraIO/docs-portal/pull/1339. It is an English review preview, not a production release or a Chinese-branch change.
 
 ## Review entry points
 
@@ -33,9 +33,11 @@ The existing global catalog/header entry placement is preserved for review. The 
 - Type checking passed; sidebar manifest check passed.
 - The combined upstream baseline had 43 failures; one merge-order expectation was corrected. Final integration run: 42 inherited failures and 1870 passes (1912 tests total). Compared failing test names against the baseline: no new failures.
 - Repository lint is not green: existing errors in untouched provider, sitemap/static-manifest and formatting files. Changed implementation files pass focused Biome checks; existing optional-chain warnings remain in the large payload test file.
-- Desktop browser: neutral default, direct legacy entry, renamed guide switch, hidden-page fallback, edition sidebars and shared guide/API preference checked. Further production/remote verification is recorded with the PR delivery.
+- Desktop browser: neutral default, direct legacy entry, renamed guide switch, hidden-page fallback, edition sidebars and shared guide/API preference checked. Mobile navigation and switching passed at 390px without horizontal overflow. Local production build passed (2142 route HTML files); generated Markdown/llms/OpenAPI/search artifacts were checked. Remote verification is recorded with the PR delivery.
 
 ![Platform guide with its own version selector and sidebar](convoai-switcher-preview/desktop.png)
+
+![Mobile version selector](convoai-switcher-preview/mobile.png)
 
 ## Decisions still needed before release
 

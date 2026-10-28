@@ -106,7 +106,11 @@ export function resolveDocsNavScope({
         });
         const { index, ...folder } = node;
         const visibleIndex = index && ownsUrl(index.url) ? index : undefined;
-        if (!visibleIndex && children.length === 0) return undefined;
+        if (
+          !visibleIndex &&
+          !children.some((child) => child.type !== 'separator')
+        )
+          return undefined;
         return {
           ...folder,
           ...(visibleIndex ? { index: visibleIndex } : {}),
