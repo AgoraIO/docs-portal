@@ -21,6 +21,8 @@ K8s 的 Meilisearch 数据目录必须使用持久化存储，重启 Pod 不能�
 
 ## 流水线必须执行的顺序
 
+优先使用[统一发布入口](cn-search-release-pipeline.md)的 `bundle → prepare → 部署 → promote`，将下述步骤变成不可跳过的发布门禁，并绑定站点、API 与索引回执。现有低层命令继续兼容；单独调用它们不代表已经执行新入口的产物与部署版本校验。实际外部流水线仍需接入，构建 workflow 不执行正式部署。
+
 1. 检出同一个发布提交，执行完整 CN build:static。
 2. `bun run search:export:cn`，使用 dist/client 同次构建结果。
 3. `node scripts/search/audit-cn-coverage.mjs --records=dist/search/cn-records.json`。审计与导出共用搜索产品规则，明确排除的无记录页面单独列在 `exclusions.excludedProducts`。未知无记录页、排除产品混入索引、缺失路由/章节/锚点和平台/版本错误会阻止验收；已列明的无正文目录豁免仍需维护。部署层覆盖门禁也须检查 `findings.excludedProductRecords`，不得仅凭报告文件存在而放行。

@@ -1,0 +1,82 @@
+name: CN search release bundle
+
+# This workflow produces a gated bundle. The external CN deployment pipeline
+# consumes it and serializes prepare -> deploy -> promote; this job has no keys.
+on:
+  push:
+    branches: [codex/cn-newdoc-html-api-migration]
+  pull_request:
+    branches: [codex/cn-newdoc-html-api-migration]
+    paths:
+      - 'scripts/search/**'
+      - 'src/**'
+      - '.github/workflows/cn-search-bundle.yml'
+      - 'package.json'
+      - 'bun.lock'
+      - 'content/docs/zh-CN/**'
+      - 'content/openapi/**'
+      - 'public/**'
+      - 'source.config.ts'
+      - 'vite.config.ts'
+  workflow_call:
+    inputs:
+      revision:
+        description: Full docs release commit SHA
+        required: true
+        type: string
+    outputs:
+      artifact:
+        description: Site, service, records, manifest and audit bundle
+        value: ${{ jobs.bundle.outputs.artifact }}
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    concurrency:
+      group: cn-search-bundle-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    outputs:
+      artifact: cn-search-${{ steps.revision.outputs.sha }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: AgoraIO/docs-portal
+          ref: ${{ inputs.revision || github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.3.14'
+      - run: bun install --frozen-lockfile
+      - id: revision
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Check release contracts
+        run: bun run test scripts/search/cn-release.test.ts src/lib/search/cn-sdk-publication.test.ts src/lib/search/cn-sdk-release.test.ts src/lib/search/meilisearch-index.server.test.ts --maxWorkers=2
+      - name: Build and seal one CN release
+        env:
+          RELEASE_SHA: ${{ steps.revision.outputs.sha }}
+        run: bun run search:release:cn bundle --revision="$RELEASE_SHA"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cn-search-${{ steps.revision.outputs.sha }}
+          path: |
+            dist/client
+            .output
+            dist/search
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
+      - name: Preserve failed coverage evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cn-search-failed-audit-${{ steps.revision.outputs.sha }}
+          path: dist/search/cn-coverage-audit.json
+          if-no-files-found: ignore
+          retention-days: 7
