@@ -244,7 +244,7 @@ describe('approved Chinese product label content repairs', () => {
           const expected = file.startsWith(
             'content/docs/zh-CN/realtime-media/meeting/',
           )
-            ? replacement.after.replaceAll('灵动会议', '智能云会议引擎')
+            ? replacement.after.replaceAll('灵动会议', '智能云会议')
             : replacement.after;
           expect(content).toContain(expected);
         }

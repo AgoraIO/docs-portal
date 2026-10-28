@@ -1,23 +1,23 @@
 ---
-title: "集成智能云会议引擎"
-description: "了解如何快速接入智能云会议引擎，完成环境准备、参数配置、示例运行和核心流程验证。"
+title: "集成智能云会议"
+description: "了解如何快速接入智能云会议，完成环境准备、参数配置、示例运行和核心流程验证。"
 ---
 <PlatformStructured platform="android">
 
 ## 前提条件
 
-本文介绍如何将智能云会议引擎集成到你的 Android 项目中。开始前，请确保满足以下前提条件：
+本文介绍如何将智能云会议集成到你的 Android 项目中。开始前，请确保满足以下前提条件：
 
 - `Android Studio Jellyfish | 2023.3.1 Patch 1` 或以上版本。
 - Android 手机，版本 Android 7.0 或以上。
 - Gradle 8.1.1 或以上版本。
 - JDK 17 或以上版本。
 - 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
-- 已[开通智能云会议引擎服务](/zh-CN/realtime-media/meeting/build/enable-service)。
+- 已[开通智能云会议服务](/zh-CN/realtime-media/meeting/build/enable-service)。
 
 ## （可选）创建项目
 
-如需创建一个新的 Android 项目来集成智能云会议引擎，你可以在 **Android Studio** 里，依次选择 **Phone and Tablet > Empty Activity**，创建 [Android 项目](https://developer.android.com/studio/projects/create-project)。
+如需创建一个新的 Android 项目来集成智能云会议，你可以在 **Android Studio** 里，依次选择 **Phone and Tablet > Empty Activity**，创建 [Android 项目](https://developer.android.com/studio/projects/create-project)。
 
 :::warning[注意]
 创建项目后，**Android Studio** 会自动开始同步 Gradle，稍等片刻至同步成功后再进行下一步操作。
@@ -59,14 +59,14 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
 
 ## 动态申请权限
 
-智能云会议引擎需要你动态申请如下权限：
+智能云会议需要你动态申请如下权限：
 
 - 摄像头权限：`Manifest.permission.CAMERA`
 - 麦克风权限：`Manifest.permission.RECORD_AUDIO`
 
-## 启动智能云会议引擎 [#启动灵动会议]
+## 启动智能云会议 [#启动灵动会议]
 
-本节介绍如何调用客户端 API 启动智能云会议引擎。开始前，请确保已通过[服务端 RESTful API](/zh-CN/api-reference/meeting/restful/api/create-room) 创建了房间。
+本节介绍如何调用客户端 API 启动智能云会议。开始前，请确保已通过[服务端 RESTful API](/zh-CN/api-reference/meeting/restful/api/create-room) 创建了房间。
 
 1. 在 `Application` 的 `onCreate` 方法中，添加如下代码初始化 SDK：
 
@@ -74,7 +74,7 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
     FcrSDKInitUtils.initSDK(this)
     ```
 
-2. 调用 [`init`](/zh-CN/api-reference/meeting/android#init) 和 [`launch`](/zh-CN/api-reference/meeting/android#launch) 初始化和启动智能云会议引擎。
+2. 调用 [`init`](/zh-CN/api-reference/meeting/android#init) 和 [`launch`](/zh-CN/api-reference/meeting/android#launch) 初始化和启动智能云会议。
 
     ```kotlin
     val creatorConfig = FcrUISceneCreatorConfig(appId, userId)
@@ -111,7 +111,7 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
 
 </Slot>
 
-3. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/android#exit) 退出智能云会议引擎。
+3. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/android#exit) 退出智能云会议。
 
     ```kotlin
     FcrUISceneCreator.exit()
@@ -119,13 +119,13 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
 
 ## 日志文件路径
 
-智能云会议引擎默认的日志文件在 `sdcard/Android/obb/{your_app_package_name}/FcrCore/logs/` 目录下。
+智能云会议默认的日志文件在 `sdcard/Android/obb/{your_app_package_name}/FcrCore/logs/` 目录下。
 
 </PlatformStructured>
 
 <PlatformStructured platform="ios">
 
-本文介绍如何将智能云会议引擎集成到你的 iOS 项目中。
+本文介绍如何将智能云会议集成到你的 iOS 项目中。
 ## 前提条件
 
 开始前，请确保满足以下前提条件：
@@ -134,11 +134,11 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
 - 有效的 Apple 开发者账号。
 - iOS 设备，版本 11.0 或以上。
 - 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
-- 已[开通智能云会议引擎服务](/zh-CN/realtime-media/meeting/build/enable-service)。
+- 已[开通智能云会议服务](/zh-CN/realtime-media/meeting/build/enable-service)。
 
 ## （可选）创建项目
 
-如需创建一个新的 iOS 项目来集成智能云会议引擎，你可以参考如下步骤在 Xcode 创建项目：
+如需创建一个新的 iOS 项目来集成智能云会议，你可以参考如下步骤在 Xcode 创建项目：
 
 1. [创建一个新的项目](https://help.apple.com/xcode/mac/current/#/dev07db0e578)，**Application** 选择 **App**，**Interface** 选择 **Storyboard**，**Language** 选择 **Swift**。
 
@@ -166,7 +166,7 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
 
 2. 在终端里进入项目文件夹（即 `*.xcodeproj` 文件所在目录），并运行 `pod init` 命令。项目文件夹下会生成一个 `Podfile` 文本文件。
 
-3. 打开 `Podfile` 文件，修改文件为如下内容，以引用智能云会议引擎所依赖的库：
+3. 打开 `Podfile` 文件，修改文件为如下内容，以引用智能云会议所依赖的库：
 
     ```ruby
     platform :ios, '11.0'
@@ -199,7 +199,7 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
 
 ## 添加设备权限
 
-为确保智能云会议引擎能正常使用，你需要添加必要的设备权限。在 Xcode 项目导航栏中打开 `Info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
+为确保智能云会议能正常使用，你需要添加必要的设备权限。在 Xcode 项目导航栏中打开 `Info.plist` 文件，编辑[属性列表](https://help.apple.com/xcode/mac/current/#/dev3f399a2a6)，添加以下属性：
 
 | key                                         | type   | value                                           |
 | ------------------------------------------- | ------ | ----------------------------------------------- |
@@ -208,11 +208,11 @@ description: "了解如何快速接入智能云会议引擎，完成环境准备
 | Privacy - Photo Library Additions Usage Description | String | 填写访问和添加照片或视频到图库的目的 |
 | Privacy - Photo Library Usage Description   | String | 填写访问图库的目的     |
 
-## 启动智能云会议引擎 [#启动灵动会议-1]
+## 启动智能云会议 [#启动灵动会议-1]
 
-本节介绍如何调用客户端 API 启动智能云会议引擎。开始前，请确保已通过[服务端 RESTful API](/zh-CN/api-reference/meeting/restful/api/create-room) 创建了房间。
+本节介绍如何调用客户端 API 启动智能云会议。开始前，请确保已通过[服务端 RESTful API](/zh-CN/api-reference/meeting/restful/api/create-room) 创建了房间。
 
-1. 创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/zh-CN/api-reference/meeting/ios#launch) 启动智能云会议引擎。
+1. 创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/zh-CN/api-reference/meeting/ios#launch) 启动智能云会议。
 
 ```swift tab="Swift" tabGroup="language"
 import FcrUIScene
@@ -291,7 +291,7 @@ FcrUISceneConfig *sceneConfig = [[FcrUISceneConfig alloc] initWithRoomId:roomId
 
 </Slot>
 
-2. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/ios#exit) 退出智能云会议引擎。
+2. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/ios#exit) 退出智能云会议。
 
 ```swift tab="Swift" tabGroup="language"
 // 退出会议
@@ -311,7 +311,7 @@ scene.exit()
 
 ## 日志文件路径
 
-智能云会议引擎默认的日志文件在 `App Sandbox/Library/Caches/AgoraLog/` 目录下。
+智能云会议默认的日志文件在 `App Sandbox/Library/Caches/AgoraLog/` 目录下。
 
 ## 开发注意事项
 
@@ -363,7 +363,7 @@ end
 
 <PlatformStructured platform="electron">
 
-本文介绍如何将智能云会议引擎集成到你的 Electron 项目中。
+本文介绍如何将智能云会议集成到你的 Electron 项目中。
 ## 前提条件
 
 开始前，请确保满足以下前提条件：
@@ -382,11 +382,11 @@ node --version
 
 
 - 可以访问互联网的计算机。确保你的网络环境没有部署防火墙，否则无法正常使用声网服务。
-- 已[开通智能云会议引擎服务](/zh-CN/realtime-media/meeting/build/enable-service)。
+- 已[开通智能云会议服务](/zh-CN/realtime-media/meeting/build/enable-service)。
 
 ## （可选）创建项目
 
-如需创建一个新的 Electron 项目来集成智能云会议引擎，在本地创建一个项目文件夹，并在文件夹下新建以下文件：
+如需创建一个新的 Electron 项目来集成智能云会议，在本地创建一个项目文件夹，并在文件夹下新建以下文件：
 
 - `package.json`：用于安装和管理项目依赖项。
 - `tsconfig.json`：TypeScript 配置文件。
@@ -424,7 +424,7 @@ node --version
     版本要求：
 
     - `electron`：当前仅支持 24.8.8 版本，不要修改成其他版本。
-    - `fcr-ui-scene`、`agora-edu-core`、`agora-rte-sdk`：均为智能云会议引擎依赖库，当前支持 3.1.0 版本。如果智能云会议引擎发布更新版本，你可以按需升级。
+    - `fcr-ui-scene`、`agora-edu-core`、`agora-rte-sdk`：均为智能云会议依赖库，当前支持 3.1.0 版本。如果智能云会议发布更新版本，你可以按需升级。
 
 2. 执行以下命令安装依赖：
 
@@ -452,7 +452,7 @@ node --version
 
 如果你的开发目标平台为 Windows，则无需添加设备权限。
 
-如果你的开发目标平台为 macOS，那么打包 macOS 应用时，你需要在 `installer/mac/entitlements.mac.plist` 文件中增加以下内容，以获取运行智能云会议引擎所需权限。
+如果你的开发目标平台为 macOS，那么打包 macOS 应用时，你需要在 `installer/mac/entitlements.mac.plist` 文件中增加以下内容，以获取运行智能云会议所需权限。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -482,9 +482,9 @@ node --version
 </plist>
 ```
 
-## 启动智能云会议引擎 [#启动灵动会议-2]
+## 启动智能云会议 [#启动灵动会议-2]
 
-本节介绍如何调用客户端 API 启动智能云会议引擎。开始前，请确保已通过[服务端 RESTful API](/zh-CN/api-reference/meeting/restful/api/create-room) 创建了房间。
+本节介绍如何调用客户端 API 启动智能云会议。开始前，请确保已通过[服务端 RESTful API](/zh-CN/api-reference/meeting/restful/api/create-room) 创建了房间。
 
 1. 在 Electron 主进程文件（例如 `main/bootstrap.ts`）中添加如下代码，以初始化 Electron 应用，挂载 `fcr-ui-scene` 钩子函数，创建并启动会议窗口。
 
@@ -523,7 +523,7 @@ node --version
     });
     ```
 
-2. 在渲染进程代码中引入 `fcr-ui-scene` 模块，创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/zh-CN/api-reference/meeting/electron#launch) 启动智能云会议引擎。
+2. 在渲染进程代码中引入 `fcr-ui-scene` 模块，创建一个 `FcrUISceneCreator` 对象，并调用 [`launch`](/zh-CN/api-reference/meeting/electron#launch) 启动智能云会议。
 
     ```javascript
     const { FcrUISceneCreator } = require('fcr-ui-scene');
@@ -581,7 +581,7 @@ node --version
 
 </Slot>
 
-3. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/electron#exit) 退出智能云会议引擎。
+3. （可选）如需主动退出会议，调用 [`exit`](/zh-CN/api-reference/meeting/electron#exit) 退出智能云会议。
 
     ```javascript
     scene.exit();
@@ -667,7 +667,7 @@ node --version
 
 ## 日志文件路径
 
-智能云会议引擎默认的日志文件在如下目录中：
+智能云会议默认的日志文件在如下目录中：
 
 - macOS：`/Users/{your_system_user_name}/Library/Logs/{your_app_name}/logs/`
 - Windows 11：`C:\Users\{your_system_username}\AppData\Roaming\{your_app_name}\logs\logs\`
