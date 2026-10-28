@@ -3,6 +3,7 @@ import GithubSlugger from 'github-slugger';
 import type { Root, RootContent } from 'mdast';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
 import { zhCNApiReferenceCards } from '../api-reference-cards-data.zh-cn';
 import type { SearchEntry } from '../docs-search';
 import { isKnownPlatform, platformRegistry } from '../platforms/registry';
@@ -56,13 +57,24 @@ const markdownParser = unified().use(remarkParse);
 // when an example itself contains component-looking text.
 function normalizeSearchContainers(markdown: string) {
   if (!/<(?:CodeBlockTabs|CalloutContainer)\b/.test(markdown)) return markdown;
+  const literals: [number, number][] = [];
+  visit(markdownParser.parse(markdown), 'inlineCode', (node) => {
+    const start = node.position?.start.offset;
+    const end = node.position?.end.offset;
+    if (start !== undefined && end !== undefined) literals.push([start, end]);
+  });
+  const isLiteral = (offset: number) =>
+    literals.some(([start, end]) => start <= offset && offset < end);
   const output: string[] = [];
   let original: string[] = [];
   let normalized: string[] = [];
   const stack: { name: string; indent: number }[] = [];
   let fence = '';
   let tableFence = false;
+  let offset = 0;
   for (const line of markdown.split('\n')) {
+    const lineOffset = offset;
+    offset += line.length + 1;
     const indent = line.match(/^[ \t]*/)?.[0].length ?? 0;
     const marker = line.match(/^[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
     const tableOpening =
@@ -71,11 +83,13 @@ function normalizeSearchContainers(markdown: string) {
       !fence &&
       !marker &&
       !tableOpening &&
-      /<(CodeBlockTabs|CalloutContainer)\b/.test(
-        line.replace(/(`+).*?\1/g, ''),
+      [...line.matchAll(/<(CodeBlockTabs|CalloutContainer)\b/g)].some(
+        (match) => !isLiteral(lineOffset + (match.index ?? 0)),
       );
     const active = stack.length > 0 || opening;
-    const contentIndent = stack.length ? stack[stack.length - 1].indent + 2 : 0;
+    const contentIndent = stack.length
+      ? stack[stack.length - 1].indent + 2 - stack[0].indent
+      : 0;
     const content = line.slice(Math.min(indent, contentIndent));
     const tableClosing =
       tableFence &&
@@ -105,6 +119,7 @@ function normalizeSearchContainers(markdown: string) {
       continue;
     }
     if (marker) {
+      const openingFence = !fence;
       if (!fence) fence = marker[1];
       else if (
         marker[1][0] === fence[0] &&
@@ -113,7 +128,14 @@ function normalizeSearchContainers(markdown: string) {
       )
         fence = '';
       if (!fence) tableFence = false;
-      (active ? normalized : output).push(active ? content : line);
+      const language = marker[2].trim().split(/[ \t]/, 1)[0];
+      const rendered =
+        active && openingFence
+          ? `${padding}${marker[1]}${language.includes('=') ? '' : language}`
+          : active
+            ? content
+            : line;
+      (active ? normalized : output).push(rendered);
       if (active) original.push(line);
       continue;
     }
@@ -129,7 +151,11 @@ function normalizeSearchContainers(markdown: string) {
     normalized.push(
       content.replace(
         /<(\/?)(CodeBlockTabs(?:List|Trigger)?|CodeBlockTab|CalloutContainer|CalloutTitle|CalloutDescription)\b(?:[^"'>]|"[^"]*"|'[^']*')*>/g,
-        (tag, closing: string, name: string) => {
+        (tag, closing: string, name: string, tagOffset: number) => {
+          if (
+            isLiteral(lineOffset + Math.min(indent, contentIndent) + tagOffset)
+          )
+            return tag;
           if (closing) {
             const index = stack.map((entry) => entry.name).lastIndexOf(name);
             if (index >= 0) stack.splice(index);

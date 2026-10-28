@@ -8,6 +8,30 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('keeps later platform headings after an indented callout list', () => {
+    const records = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      '# RTC API\n\n    ## 前一节 [#before]\n\n    引导正文。\n\n    <CalloutContainer type="info">\n      <CalloutDescription>\n        * 第一条提示\n        * 第二条提示\n      </CalloutDescription>\n    </CalloutContainer>\n\n    ## 后一节 [#after]\n\n    后续步骤。',
+    );
+    expect(records.map((record) => record.url)).toEqual([
+      `${url}#before`,
+      `${url}#after`,
+    ]);
+    expect(records[0].content).toContain('第一条提示');
+    expect(records[0].content).toContain('第二条提示');
+    expect(records[1].content).toContain('后续步骤。');
+  });
+  it('preserves renderer tags inside a multiline inline-code span', () => {
+    const [record] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n示例： `<CalloutContainer>\n<CalloutTitle>literal</CalloutTitle>\n</CalloutContainer>`',
+    );
+    expect(record.content).toBe(
+      '示例： <CalloutContainer>\n<CalloutTitle>literal</CalloutTitle>\n</CalloutContainer>',
+    );
+  });
   it('does not treat a component name in fence metadata as a container opening', () => {
     const [record] = extractPublishedCnSections(
       route,
