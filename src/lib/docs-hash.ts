@@ -156,7 +156,14 @@ export function scrollDocsHashTargetAfterLayout(
   cancelPendingHashScroll = cancel;
   observer.observe(document.body, {
     attributes: true,
-    attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state', 'id'],
+    attributeFilter: [
+      'hidden',
+      'aria-hidden',
+      'inert',
+      'data-state',
+      'id',
+      'name',
+    ],
     childList: true,
     subtree: true,
   });
@@ -243,8 +250,11 @@ function getHeadingForUrl(url: string) {
     return null;
   }
 
-  const selector = `#${escapeCssIdentifier(id)}`;
-  const headings = document.querySelectorAll<HTMLElement>(selector);
+  const escapedId = escapeCssIdentifier(id);
+  const idHeadings = document.querySelectorAll<HTMLElement>(`#${escapedId}`);
+  const headings = idHeadings.length
+    ? idHeadings
+    : document.querySelectorAll<HTMLElement>(`a[name="${escapedId}"]`);
   const visibleHeading = Array.from(headings).find(
     (heading) =>
       !isHiddenFromDocs(heading) && heading.getClientRects().length > 0,
