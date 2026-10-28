@@ -2,7 +2,10 @@ import { getPlatformIconSrc } from './platform-icon-src';
 import { zhCNRtsaSdkDownloadPlatform } from './rtsa-sdk-downloads-data.zh-cn';
 import { SdkDownloadCard } from './SdkDownloadCard';
 import { getSdkDownloadProductCatalogId } from './sdk-download-navigation';
-import { getZhCNSdkDownloadProductCopy } from './sdk-download-products';
+import {
+  getZhCNSdkDownloadProductCopy,
+  getZhCNSdkDownloadTarget,
+} from './sdk-download-products';
 import type { SdkDownloadVersion } from './sdk-downloads-data';
 import { zhCNSdkDownloadPlatforms } from './sdk-downloads-data.zh-cn';
 
@@ -25,15 +28,24 @@ export function ProductSdkDownloads({
   versionIds?: string[];
   versionIdPrefixes?: string[];
 }) {
+  const productId = product === 'whiteboard-sdk' ? 'whiteboard' : product;
+  const sourceIds =
+    productId === 'signaling' && platform === 'cpp'
+      ? ['windows', 'linux']
+      : [productId === 'signaling' && platform === 'swift' ? 'ios' : platform];
   const platformData =
     product === 'rtsa' && platform === 'c'
       ? zhCNRtsaSdkDownloadPlatform
-      : zhCNSdkDownloadPlatforms.find((item) => item.id === platform);
-  const productId = product === 'whiteboard-sdk' ? 'whiteboard' : product;
-  const matchingProducts = [
-    ...(platformData?.core ?? []),
-    ...(platformData?.addOns ?? []),
-  ].filter((item) => getSdkDownloadProductCatalogId(item) === productId);
+      : zhCNSdkDownloadPlatforms.find((item) => item.id === sourceIds[0]);
+  const matchingProducts = sourceIds.flatMap((id) => {
+    const data =
+      id === platformData?.id
+        ? platformData
+        : zhCNSdkDownloadPlatforms.find((item) => item.id === id);
+    return [...(data?.core ?? []), ...(data?.addOns ?? [])].filter(
+      (item) => getSdkDownloadProductCatalogId(item) === productId,
+    );
+  });
   const versions = matchingProducts.flatMap((item) => {
     // A solution can require a specific release rather than the catalog latest.
     // Merge duplicate catalog records so pinned cards retain download metadata.
@@ -74,23 +86,39 @@ export function ProductSdkDownloads({
 
   if (!platformData || versions.length === 0) return null;
 
-  const iconSrc = getPlatformIconSrc(platform);
+  const target = getZhCNSdkDownloadTarget(productId, platform);
+  const platformLabel = target?.label ?? platformData.label;
+  const iconSrc = getPlatformIconSrc(target?.iconPlatformId ?? platform);
   const label =
     getZhCNSdkDownloadProductCopy(productId)?.label ??
     matchingProducts[0]?.label;
 
   return (
     <section
-      aria-label={`${platformData.label} ${label} 下载`}
+      aria-label={`${platformLabel} ${label} 下载`}
       className="not-prose my-6"
     >
       <div className="grid gap-4 md:grid-cols-2">
         {versions.map(({ item, version }) => {
-          const detail = variant(version);
-          const title = `${platformData.label} ${label}${detail ? ` ${detail}` : ''}`;
+          const versionDetail = variant(version);
+          const detail =
+            productId === 'signaling' && versionDetail === 'C++'
+              ? ''
+              : versionDetail;
+          const title =
+            productId === 'signaling' && platform === 'cpp'
+              ? `${version.id.includes('linux') ? 'Linux' : 'Windows'} C++ ${label}`
+              : `${platformLabel} ${label}${detail ? ` ${detail}` : ''}`;
+          const language = version.id
+            .split('-')
+            .find((part) => ['java', 'cpp', 'python', 'go'].includes(part));
+          const cardIconSrc =
+            platform === 'linux' && productId !== 'signaling' && language
+              ? getPlatformIconSrc(language)
+              : iconSrc;
           return (
             <SdkDownloadCard
-              iconSrc={iconSrc}
+              iconSrc={cardIconSrc}
               key={`${item.id}-${version.id}`}
               title={title}
               version={version}

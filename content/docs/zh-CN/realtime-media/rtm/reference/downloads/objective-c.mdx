@@ -1,0 +1,24 @@
+## 下载 SDK
+
+<ProductSdkDownloads product="signaling" platform="ios" />
+
+## 通过 CocoaPods 集成 SDK
+
+Objective-C 和 Swift 使用同一套 SDK。在项目的 `Podfile` 中添加以下配置，将 `Your App` 替换为目标名称：
+
+```ruby
+platform :ios, '11.0'
+target 'Your App' do
+    pod 'ShengWang-Rtm', '2.3.0', :subspecs => ['RtmKit']
+end
+```
+
+执行 `pod install`，安装完成后使用 Xcode 打开生成的 `.xcworkspace` 文件。
+
+## 通过 SPM 集成 SDK
+
+在 Xcode 的 Swift Package Manager 中添加以下仓库：
+
+```text
+https://github.com/AgoraIO/AgoraRtm_Apple.git
+```

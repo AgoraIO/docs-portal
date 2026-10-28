@@ -3,6 +3,34 @@ import { describe, expect, it } from 'vitest';
 import { ProductSdkDownloads } from './ProductSdkDownloads';
 
 describe('ProductSdkDownloads', () => {
+  it('uses the shared Apple package for the legacy Swift entry', () => {
+    render(<ProductSdkDownloads platform="swift" product="signaling" />);
+    const card = screen.getByRole('article', { name: 'Swift 实时消息 SDK' });
+    expect(
+      within(card).getByRole('link', { name: '下载 Swift 实时消息 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://download.shengwang.cn/rtm2/release/RTM_OC_SDK_v2.3.0.zip',
+    );
+    expect(card.querySelector('img')).toHaveAttribute(
+      'src',
+      '/img/platforms/swift.svg',
+    );
+  });
+
+  it('retains both operating-system downloads on the C++ RTM page', () => {
+    render(<ProductSdkDownloads platform="cpp" product="signaling" />);
+    expect(screen.getAllByRole('article')).toHaveLength(2);
+    for (const os of ['Windows', 'Linux']) {
+      expect(
+        screen.getByRole('link', { name: `下载 ${os} C++ 实时消息 SDK` }),
+      ).toHaveAttribute(
+        'href',
+        `https://download.shengwang.cn/rtm2/release/RTM_C%2B%2B_SDK_for_${os}_v2.3.0.zip`,
+      );
+    }
+  });
+
   it('retains the pinned historical Web RTM package and metadata', () => {
     render(
       <ProductSdkDownloads
@@ -11,7 +39,9 @@ describe('ProductSdkDownloads', () => {
         versionIds={['2.2.4-rtm-sdk-web']}
       />,
     );
-    const card = screen.getByRole('article', { name: 'Web 实时消息 SDK' });
+    const card = screen.getByRole('article', {
+      name: 'JavaScript 实时消息 SDK',
+    });
     expect(within(card).getByText('v2.2.4')).toBeVisible();
     expect(
       within(card).getByText('6043262f5e5999a06e12d83c3c40a943'),
@@ -20,7 +50,7 @@ describe('ProductSdkDownloads', () => {
       within(card).getByText('发布日期：2026 年 4 月 13 日'),
     ).toBeVisible();
     expect(
-      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
+      within(card).getByRole('link', { name: '下载 JavaScript 实时消息 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.2.4.zip',
@@ -29,7 +59,9 @@ describe('ProductSdkDownloads', () => {
 
   it('shows Web RTM 2.3.0 with its source checksum and release date', () => {
     render(<ProductSdkDownloads platform="web" product="signaling" />);
-    const card = screen.getByRole('article', { name: 'Web 实时消息 SDK' });
+    const card = screen.getByRole('article', {
+      name: 'JavaScript 实时消息 SDK',
+    });
     expect(within(card).getByText('v2.3.0')).toBeVisible();
     expect(
       within(card).getByText('13f63c0322c49b1edd3f7a0e2c8c89fc'),
@@ -38,7 +70,7 @@ describe('ProductSdkDownloads', () => {
       within(card).getByText('发布日期：2026 年 8 月 10 日'),
     ).toBeVisible();
     expect(
-      within(card).getByRole('link', { name: '下载 Web 实时消息 SDK' }),
+      within(card).getByRole('link', { name: '下载 JavaScript 实时消息 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.agora.io/rtm2/release/Agora_RTM_JavaScript_SDK_for_Web_v2.3.0.zip',
@@ -62,7 +94,7 @@ describe('ProductSdkDownloads', () => {
       expect(screen.getAllByRole('article')).toHaveLength(1);
       expect(screen.getByText(`v${version}`)).toBeVisible();
       expect(screen.getByText('发布日期：2025 年 7 月 11 日')).toBeVisible();
-      const link = screen.getByRole('link');
+      const link = screen.getByRole('link', { name: /^获取 / });
       expect(link.getAttribute('href')).toContain(version);
     },
   );
@@ -174,12 +206,12 @@ describe('ProductSdkDownloads', () => {
     render(<ProductSdkDownloads platform="android" product="signaling" />);
 
     const card = screen.getByRole('article', {
-      name: 'Android 实时消息 SDK',
+      name: 'Java 实时消息 SDK',
     });
     expect(card).toHaveClass('bg-background');
     expect(within(card).getByText('v2.3.0')).toBeVisible();
     expect(
-      within(card).getByRole('link', { name: '下载 Android 实时消息 SDK' }),
+      within(card).getByRole('link', { name: '下载 Java 实时消息 SDK' }),
     ).toHaveAttribute(
       'href',
       'https://download.shengwang.cn/rtm2/release/RTM_JAVA_SDK_for_Android_v2.3.0.zip',
@@ -188,13 +220,26 @@ describe('ProductSdkDownloads', () => {
     expect(screen.queryByText('历史版本')).not.toBeInTheDocument();
   });
 
-  it('uses package-manager links for SDKs without ZIP downloads', () => {
+  it('retains the old whiteboard ZIP and metadata without needing a pinned version', () => {
     render(<ProductSdkDownloads platform="android" product="whiteboard-sdk" />);
     expect(
-      screen.getByRole('link', { name: '获取 Android 互动白板 SDK' }),
+      screen.getByRole('link', { name: '下载 Android 互动白板 SDK' }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/netless-io/whiteboard-android/releases/tag/2.16.100',
+      'https://github.com/netless-io/whiteboard-android/archive/refs/tags/2.16.100.zip',
+    );
+    expect(screen.getByText('ecf0c9d1f35124d93264dc46810d3e28')).toBeVisible();
+    expect(screen.getByText('com.herewhite.sdk')).toBeVisible();
+    expect(screen.getByText('发布日期：2025 年 4 月 7 日')).toBeVisible();
+  });
+
+  it('uses package-manager links for SDKs without ZIP downloads', () => {
+    render(<ProductSdkDownloads platform="flutter" product="signaling" />);
+    expect(
+      screen.getByRole('link', { name: '获取 Flutter 实时消息 SDK' }),
+    ).toHaveAttribute(
+      'href',
+      'https://pub.dev/packages/agora_rtm/versions/2.2.6',
     );
   });
 

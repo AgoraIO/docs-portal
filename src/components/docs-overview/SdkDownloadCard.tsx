@@ -1,4 +1,5 @@
 import { DownloadIcon, ExternalLinkIcon } from 'lucide-react';
+import { DownloadCardIcon } from './DownloadCardIcon';
 import type { SdkDownloadVersion } from './sdk-downloads-data';
 
 export function SdkDownloadCard({
@@ -26,9 +27,12 @@ export function SdkDownloadCard({
     >
       <div className="flex-1 px-5 py-5">
         <div className="flex items-start justify-between gap-3">
-          <h3 className="m-0 text-base font-semibold text-foreground">
-            {title}
-          </h3>
+          <div className="flex min-w-0 items-center gap-3">
+            <DownloadCardIcon src={iconSrc} />
+            <h3 className="m-0 min-w-0 break-words text-base font-semibold text-foreground">
+              {title}
+            </h3>
+          </div>
           {download ? (
             <a
               aria-label={
@@ -76,29 +80,9 @@ export function SdkDownloadCard({
             </div>
           ) : null}
         </dl>
-        {version.packageManager && version.downloadLink ? (
-          <a
-            className="mt-4 inline-flex items-center gap-1 text-sm text-primary hover:underline"
-            href={version.packageManager}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            包管理器{' '}
-            <ExternalLinkIcon aria-hidden="true" className="size-3.5" />
-          </a>
-        ) : null}
       </div>
       {version.releaseDate ? (
         <div className="flex items-center gap-2 border-border border-t px-5 py-3 text-sm text-muted-foreground">
-          <span className="flex size-7 shrink-0 items-center justify-center overflow-hidden rounded-md">
-            <img
-              alt=""
-              aria-hidden
-              className="size-7"
-              loading="lazy"
-              src={iconSrc}
-            />
-          </span>
           <span>发布日期：{version.releaseDate}</span>
         </div>
       ) : null}
