@@ -230,8 +230,18 @@ describe('approved Chinese product label content repairs', () => {
     'restores display names in $path',
     ({ path: file, replacements }) => {
       const content = readFileSync(path.resolve(file), 'utf8');
-      for (const replacement of replacements)
-        expect(content).toContain(replacement.after);
+      for (const replacement of replacements) {
+        if (
+          file ===
+          'content/docs/zh-CN/realtime-media/rtc/build/setup-and-access/enable-service.mdx'
+        ) {
+          // The user removed this introduction, including its legacy placeholder.
+          expect(content).not.toContain(replacement.before);
+          expect(content).not.toContain(replacement.after);
+        } else {
+          expect(content).toContain(replacement.after);
+        }
+      }
     },
   );
 

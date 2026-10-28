@@ -77,13 +77,18 @@ import {
 import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
+import { buildPlatformPathname } from '@/lib/platforms/route';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
   PlatformProcessedMarker,
   PlatformStructured,
 } from './mdx/PlatformContent';
-import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import {
+  PlatformPanel,
+  PlatformTabsGroup,
+  usePlatformPageContext,
+} from './mdx/PlatformTabsGroup';
 import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
@@ -284,8 +289,13 @@ function Accordion({
 
 function AccordionCopyButton({ id }: { id: string }) {
   const { t } = useTranslation('common');
+  const platform = usePlatformPageContext()?.activePlatform;
   const [checked, onClick] = useCopyButton(() => {
     const url = new URL(window.location.href);
+    if (platform) {
+      url.pathname = buildPlatformPathname(url.pathname, platform);
+      url.searchParams.delete('platform');
+    }
     url.hash = id;
     return navigator.clipboard.writeText(url.toString());
   });

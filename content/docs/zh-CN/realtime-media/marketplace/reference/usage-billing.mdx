@@ -30,7 +30,7 @@ GET https://{host}/usage?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}
 | 参数 | 是否必需 | 类型 | 数据长度 | 描述 |
 | --- | --- | --- | --- | --- |
 | `fromTs` | 必需 | 时间戳 | 10 | 要查询的时间段的起点，必须在当天 UTC 时间的 0 点之后。 |
-| `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当天 UTC 时间的 23:59:59 之前。 |
+| `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当天 UTC 时间的 `23:59:59` 之前。 |
 | `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-3-3-4" /> |
 | `limit` | 可选 | Int | N/A | 每次响应最多包含多少条数据。请确保你为该字段设置了一个默认值。 |
 | `apiKey` | 必需 | String | 32 | 你的 API Key，用于和声网之间的鉴权。你需要向声网提供自行生成的 API Key。 |
@@ -125,7 +125,7 @@ GET https://{host}/bill?fromTs={ts}&toTs={ts}&pageNum={pageNum}&apiKey={apiKey}&
 | 参数 | 是否必需 | 类型 | 数据长度 | 描述 |
 | --- | --- | --- | --- | --- |
 | `fromTs` | 必需 | 时间戳 | 10 | 要查询的时间段的起点，必须在当月第一天的 UTC 时间 0 点之后。 |
-| `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当月最后一天的 UTC 时间 23:59:59 之前。 |
+| `toTs` | 必需 | 时间戳 | 10 | 要查询的时间段的终点，必须在当月最后一天的 UTC 时间 `23:59:59` 之前。 |
 | `pageNum` | 必需 | Int | N/A | <Slot name="usage-billing-markdown-4-3-4" /> |
 | `limit` | 可选 | Int | N/A | 每次响应最多包含多少条数据。请确保你给该字段设置了一个默认值。 |
 | `apiKey` | 必需 | String | 32 | 你的 API Key，用于和声网之间的鉴权。你需要向声网提供自行生成的 API Key。 |
