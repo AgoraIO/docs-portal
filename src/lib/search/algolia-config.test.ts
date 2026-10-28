@@ -6,6 +6,15 @@ describe('getAlgoliaSearchConfig', () => {
     vi.unstubAllEnvs();
   });
 
+  it('uses the build-local index for preview deployments even with production credentials', async () => {
+    vi.stubEnv('VITE_DOCS_REGION', 'global');
+    vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
+    vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-search-key');
+    vi.stubEnv('VITE_DEPLOY_ENVIRONMENT', 'preview');
+    const { getAlgoliaSearchConfig } = await import('./algolia-config');
+    expect(getAlgoliaSearchConfig()).toBeNull();
+  });
+
   it('disables ranking v2 when the feature flag is missing', async () => {
     vi.stubEnv('VITE_DOCS_REGION', 'global');
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');

@@ -1,9 +1,13 @@
+import { CONVOAI_DOC_VERSION_SCOPES } from './convoai-doc-versions';
+
 /** A documentation release is independent of SDK platforms and API info.version. */
 export type DocVersion = {
   id: string;
   label: string;
   status?: 'preview';
   rootUrl: string;
+  /** Use sidebar-enrolled pages when a legacy root also contains other products. */
+  restrictToMappedPages?: boolean;
   /** Stable topic keys map to relative URLs, including anchors when needed. */
   pages: Readonly<Record<string, string>>;
 };
@@ -18,6 +22,8 @@ export type DocVersionScope = {
   defaultVersion: string;
   /** Explicit return destination for preview notices, independent of the default. */
   previousVersion?: string;
+  /** Shared articles retain their fixed URLs and have no edition identity. */
+  sharedUrls?: readonly string[];
   versions: readonly DocVersion[];
 };
 
@@ -82,6 +88,7 @@ export const DOC_VERSION_SCOPES: readonly DocVersionScope[] = [
       },
     ],
   },
+  ...CONVOAI_DOC_VERSION_SCOPES,
 ];
 
 export type DocVersionSelections = Readonly<Record<string, string>>;
@@ -177,7 +184,14 @@ export function resolveDocVersion(
   // Prefer the most specific owner when version roots are nested.
   const matches = scopes.flatMap((scope) =>
     scope.versions.flatMap((version) =>
-      pathname === version.rootUrl || pathname.startsWith(`${version.rootUrl}/`)
+      (pathname === version.rootUrl ||
+        pathname.startsWith(`${version.rootUrl}/`)) &&
+      (!version.restrictToMappedPages ||
+        Object.values(version.pages).some(
+          (relative) =>
+            `${version.rootUrl}${relative && !relative.startsWith('#') ? `/${relative.split('#')[0]}` : ''}` ===
+            pathname,
+        ))
         ? [{ scope, version }]
         : [],
     ),

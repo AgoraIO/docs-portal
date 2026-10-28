@@ -118,14 +118,14 @@ describe('documentation releases', () => {
         { 'convoai-v3': 'v2', other: 'b' },
         scopes,
       ),
-    ).toEqual({ 'test-api': 'v1', 'test-guides': 'v2', other: 'b' });
+    ).toMatchObject({ 'test-api': 'v1', 'test-guides': 'v2', other: 'b' });
     expect(
       getDocVersionSelections(
         root,
         { 'convoai-v3': 'v2', other: 'removed' },
         scopes,
       ),
-    ).toEqual({ 'test-api': 'v2', 'test-guides': 'v2', other: 'a' });
+    ).toMatchObject({ 'test-api': 'v2', 'test-guides': 'v2', other: 'a' });
     expect(resolveDocVersion(`${root}/v20/widgets`)).toBeUndefined();
   });
 

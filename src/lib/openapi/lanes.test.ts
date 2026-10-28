@@ -73,11 +73,6 @@ describe('openapi lanes', () => {
         tab: 'api-reference',
       }),
       expect.objectContaining({
-        id: 'convoai-platform',
-        routePrefix: 'api-reference/api-ref/conversational-ai/platform',
-        tab: 'api-reference',
-      }),
-      expect.objectContaining({
         id: 'test-api-v1',
         locales: ['en'],
         routePrefix: 'api-reference/versioning-demo/v1',
@@ -86,6 +81,11 @@ describe('openapi lanes', () => {
         id: 'test-api-v2',
         locales: ['en'],
         routePrefix: 'api-reference/versioning-demo/v2',
+      }),
+      expect.objectContaining({
+        id: 'convoai-platform',
+        routePrefix: 'api-reference/api-ref/conversational-ai/platform',
+        tab: 'api-reference',
       }),
     ]);
   });

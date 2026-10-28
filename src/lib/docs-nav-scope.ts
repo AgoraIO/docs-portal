@@ -87,14 +87,47 @@ export function resolveDocsNavScope({
     };
     const versionRoot = findVersionRoot(tabNode);
     if (versionRoot) {
+      // Legacy ConvoAI roots contain Platform and independent products. Keep
+      // only this edition's pages plus explicitly shared articles in its tree.
+      const filterVersionNode = (node: Node): Node | undefined => {
+        const ownsUrl = (url: string) => {
+          const owner = resolveDocVersion(url);
+          return (
+            (owner?.scope.preferenceKey === scope.preferenceKey &&
+              owner?.version.id === version.id) ||
+            scope.sharedUrls?.includes(url)
+          );
+        };
+        if (node.type === 'page') return ownsUrl(node.url) ? node : undefined;
+        if (node.type !== 'folder') return node;
+        const children = node.children.flatMap((child) => {
+          const filtered = filterVersionNode(child);
+          return filtered ? [filtered] : [];
+        });
+        const { index, ...folder } = node;
+        const visibleIndex = index && ownsUrl(index.url) ? index : undefined;
+        if (!visibleIndex && children.length === 0) return undefined;
+        return {
+          ...folder,
+          ...(visibleIndex ? { index: visibleIndex } : {}),
+          children,
+        };
+      };
+      const sidebarRoot = version.restrictToMappedPages
+        ? (filterVersionNode(versionRoot) as Folder)
+        : versionRoot;
       return {
         header: {
-          backHref: scope.entryUrl.split('/').slice(0, 3).join('/'),
-          backLabel: normalizeLabel(tabNode.name, tab),
+          backHref: version.restrictToMappedPages
+            ? scope.entryUrl
+            : scope.entryUrl.split('/').slice(0, 3).join('/'),
+          backLabel: version.restrictToMappedPages
+            ? 'Documentation versions'
+            : normalizeLabel(tabNode.name, tab),
           title: scope.label,
         },
         scope: { meta: getNodeMeta(versionRoot) ?? {}, node: versionRoot },
-        sidebarRoot: versionRoot,
+        sidebarRoot,
       };
     }
   }
