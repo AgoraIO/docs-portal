@@ -3,6 +3,7 @@ import {
   findDocsHeadingForHash,
   scrollDocsHashTarget,
   scrollDocsHashTargetAfterLayout,
+  syncDocsHashTargetFromLocation,
 } from './docs-hash';
 
 describe('scrollDocsHashTarget', () => {
@@ -262,6 +263,99 @@ describe('scrollDocsHashTarget', () => {
       top: 204,
     });
   });
+
+  it('resolves legacy named anchors in the visible page-level platform', () => {
+    document.body.innerHTML = `
+      <section data-platform-panel="android" hidden aria-hidden="true" inert>
+        <a name="rate"> </a>
+        <h3>Android quality ratings</h3>
+      </section>
+      <section data-platform-panel="ios" aria-hidden="false">
+        <a name="rate"> </a>
+        <h3>iOS quality ratings</h3>
+      </section>
+    `;
+    const visibleAnchor = document.querySelector(
+      '[data-platform-panel="ios"] a',
+    );
+
+    expect(findDocsHeadingForHash('#rate')).toBe(visibleAnchor);
+  });
+
+  it('keeps canonical id targets ahead of legacy name aliases', () => {
+    document.body.innerHTML = `
+      <a name="rate">Legacy alias</a>
+      <h3 id="rate">Canonical quality rating</h3>
+    `;
+
+    expect(findDocsHeadingForHash('#rate')).toBe(
+      document.getElementById('rate'),
+    );
+  });
+
+  it('revisits a legacy named link and uses the newly visible platform after switching', () => {
+    document.body.innerHTML = `
+      <section data-platform-panel="android" hidden>
+        <a name="rate"> </a>
+        <h3>Android quality ratings</h3>
+      </section>
+      <section data-platform-panel="ios">
+        <a name="rate"> </a>
+        <h3>iOS quality ratings</h3>
+      </section>
+    `;
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/realtime-media/rtc/build/optimize-and-operate/in-call-quality/ios?from=guide',
+    );
+    Object.defineProperty(window, 'scrollY', {
+      configurable: true,
+      value: 0,
+    });
+    const android = document.querySelector<HTMLElement>(
+      '[data-platform-panel="android"]',
+    );
+    const ios = document.querySelector<HTMLElement>(
+      '[data-platform-panel="ios"]',
+    );
+    const androidAnchor = android?.querySelector('a');
+    const iosAnchor = ios?.querySelector('a');
+    if (!android || !ios || !androidAnchor || !iosAnchor) {
+      throw new Error('expected platform switching fixture nodes');
+    }
+    vi.spyOn(androidAnchor, 'getBoundingClientRect').mockReturnValue({
+      top: 1200,
+      height: 0,
+    } as DOMRect);
+    vi.spyOn(iosAnchor, 'getBoundingClientRect').mockReturnValue({
+      top: 300,
+      height: 0,
+    } as DOMRect);
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+
+    expect(scrollDocsHashTarget('#rate', { behavior: 'auto' })).toBe(true);
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 204,
+    });
+    scrollTo.mockClear();
+    expect(scrollDocsHashTarget('#rate', { behavior: 'auto' })).toBe(true);
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 204,
+    });
+
+    ios.hidden = true;
+    android.hidden = false;
+    expect(scrollDocsHashTarget('#rate', { behavior: 'auto' })).toBe(true);
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 1104,
+    });
+    expect(window.location.hash).toBe('#rate');
+    expect(window.location.search).toBe('?from=guide');
+  });
 });
 
 describe('scrollDocsHashTargetAfterLayout', () => {
@@ -286,6 +380,53 @@ describe('scrollDocsHashTargetAfterLayout', () => {
     document.body.innerHTML = '';
     vi.restoreAllMocks();
     vi.useRealTimers();
+  });
+
+  it('reaches a legacy deep link after hydration names the anchor beneath a taller sticky header', async () => {
+    window.history.replaceState(
+      null,
+      '',
+      '/zh-CN/realtime-media/rtc/build/optimize-and-operate/in-call-quality/ios#rate',
+    );
+    document.body.innerHTML = `
+      <header data-testid="docs-shell-header" style="position: sticky"></header>
+      <section data-platform-panel="ios">
+        <a> </a>
+        <h3>Quality ratings</h3>
+      </section>
+    `;
+    const header = document.querySelector<HTMLElement>(
+      '[data-testid="docs-shell-header"]',
+    );
+    const anchor = document.querySelector<HTMLElement>(
+      '[data-platform-panel="ios"] a',
+    );
+    if (!header || !anchor) {
+      throw new Error('expected deep link fixture nodes');
+    }
+    let headerHeight = 64;
+    vi.spyOn(header, 'getBoundingClientRect').mockImplementation(
+      () => ({ top: 0, height: headerHeight }) as DOMRect,
+    );
+    vi.spyOn(anchor, 'getBoundingClientRect').mockReturnValue({
+      top: 1200,
+      height: 0,
+    } as DOMRect);
+    const scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
+
+    syncDocsHashTargetFromLocation('auto');
+    await vi.advanceTimersByTimeAsync(200);
+    expect(scrollTo).not.toHaveBeenCalled();
+
+    headerHeight = 131;
+    anchor.setAttribute('name', 'rate');
+    await vi.advanceTimersByTimeAsync(200);
+
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      top: 1045,
+    });
+    expect(window.location.hash).toBe('#rate');
   });
 
   it.each([120, 6000])(

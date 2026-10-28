@@ -156,7 +156,14 @@ export function scrollDocsHashTargetAfterLayout(
   cancelPendingHashScroll = cancel;
   observer.observe(document.body, {
     attributes: true,
-    attributeFilter: ['hidden', 'aria-hidden', 'inert', 'data-state', 'id'],
+    attributeFilter: [
+      'hidden',
+      'aria-hidden',
+      'inert',
+      'data-state',
+      'id',
+      'name',
+    ],
     childList: true,
     subtree: true,
   });
