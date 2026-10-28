@@ -32,12 +32,11 @@ on:
 permissions:
   contents: read
 
-concurrency:
-  group: cn-search-bundle-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
-
 jobs:
   bundle:
+    concurrency:
+      group: cn-search-bundle-${{ github.event.pull_request.number || github.ref }}
+      cancel-in-progress: true
     runs-on: ubuntu-latest
     timeout-minutes: 45
     outputs:
