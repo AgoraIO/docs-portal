@@ -57,7 +57,7 @@ describe('Chinese documentation platform applicability', () => {
     expect(body).not.toContain('linkState');
   });
 
-  it.each([
+  it.each<[string, string | string[]]>([
     [
       'realtime-media/rtc/build/optimize-and-operate/optimization-mode.mdx',
       'web',
@@ -90,7 +90,7 @@ describe('Chinese documentation platform applicability', () => {
     ],
     [
       'realtime-media/whiteboard/whiteboard-sdk/build/manage-whiteboard/use-tools-wb.mdx',
-      'web',
+      ['web', 'harmonyos'],
     ],
   ])(
     'resolves the page badge for %s from its documented SDK scope',
@@ -105,7 +105,7 @@ describe('Chinese documentation platform applicability', () => {
         resolvePlatformContext({
           explicitTitlePlatforms: metadata.titlePlatforms,
         }).titlePlatforms,
-      ).toEqual([platform]);
+      ).toEqual(typeof platform === 'string' ? [platform] : platform);
     },
   );
 

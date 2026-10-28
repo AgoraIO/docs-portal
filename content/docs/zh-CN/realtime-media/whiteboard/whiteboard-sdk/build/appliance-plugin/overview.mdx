@@ -1,0 +1,296 @@
+---
+title: 教具插件介绍与启用
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Whiteboard Android SDK 2.16.134**，内嵌 **Appliance Plugin 1.1.45**。本章的 `Version` 条件指插件版本。
+
+推荐在新接入房间中开启 `enableAppliancePlugin`，使用内嵌的高性能教具插件。插件负责笔迹绘制、元素选中和编辑、图片交互、文字编辑、撤销重做及多窗口中的教具显示，业务继续使用 SDK 的公开接口。
+
+## 开启插件
+
+```java
+import com.herewhite.sdk.RoomParams;
+import com.herewhite.sdk.WhiteSdkConfiguration;
+import com.herewhite.sdk.domain.Region;
+
+WhiteSdkConfiguration config = new WhiteSdkConfiguration("APP_IDENTIFIER", true);
+config.setRegion(Region.cn);
+config.setUseMultiViews(true);
+config.setEnableAppliancePlugin(true);
+
+RoomParams params = new RoomParams("ROOM_UUID", "ROOM_TOKEN", "CLIENT_UID");
+params.setRegion(Region.cn);
+params.setWritable(true);
+params.setUsingFloatBar(true);
+// config 传给 WhiteSdk 构造函数，params 传给 joinRoom。
+```
+
+插件开关在创建 `WhiteSdk` 前配置。`appliancePluginOptions` 放在 `RoomParams`，在调用 `joinRoom` 前设置。房间方法在 `Promise<Room>.then` 中取得 `Room` 后调用。
+
+当前版本需同时配置 `useMultiViews=true` 与 `enableAppliancePlugin=true`。未启用动态配置且本地未设置时，插件开关默认 `false`；启用动态配置时，未显式配置的字段允许继承远端值。同一房间的互动端和只读显示端应一致启用插件，保证插件内容的同步显示；迁移已有房间时先核对已有内容的显示和编辑效果。
+
+SDK 已内嵌插件和绘制资源，无需在本端工程单独安装 npm 包或配置 Worker URL。插件为白板提供绘制与编辑交互，业务应用仍需提供自己的教具切换按钮。
+
+## 教具与操作
+
+| 教具 | 用途 | 主要配置 |
+| --- | --- | --- |
+| Pencil | 自由书写和标注 | 线条颜色、粗细；扩展线型见自定义教具 |
+| Selector | 选中、移动、缩放元素；符合条件的单个图片可使用旋转手柄 | 内置属性栏与选择框样式 |
+| Rectangle / Ellipse / Straight / Arrow | 绘制矩形、椭圆、直线和箭头 | 线条颜色与粗细 |
+| Shape | 绘制三角形、菱形、五角星和气泡框 | shapeType；填充色和透明度见自定义教具 |
+| Text | 输入和编辑文字 | 文字颜色、字号、文字编辑器选项 |
+| Eraser | 擦除命中的整个可擦除元素 | 通过 `Appliance.ERASER` 选择 |
+| Pencil Eraser | 擦除局部笔迹 | 通过本端教具入口选择 |
+| Hand / Clicker | 移动视角、点击课件 | 通过本端教具入口选择 |
+
+例如，入房成功后切换铅笔并设置颜色、粗细：
+
+```java
+import com.herewhite.sdk.domain.Appliance;
+import com.herewhite.sdk.domain.MemberState;
+
+MemberState pencil = new MemberState();
+pencil.setCurrentApplianceName(Appliance.PENCIL);
+pencil.setStrokeColor(new int[]{32, 102, 255});
+pencil.setStrokeWidth(4);
+room.setMemberState(pencil);
+```
+
+复制、删除、撤销和重做仍使用 SDK 的对应公开接口。只读用户用于显示内容，不开放写入或编辑操作。
+
+## 扩展能力
+
+| 功能 | 本端接入方式 |
+| --- | --- |
+| 铅笔、选择、图形、文字、图片及局部笔迹擦除 | 通过本端教具、元素和撤销重做接口操作 |
+| 背景图加载状态、查询和失败恢复 | 本端提供查询、恢复及加载回调；插入接口见背景图文档 |
+| Auto Shape | 通过业务自定义 MemberState 传递 autoShape 开关，见 Auto Shape 文档 |
+
+## 按需求继续配置
+
+- [自定义教具与样式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/custom-tools)
+- [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)
+- [Auto Shape：一笔绘制图形](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/extended-features)
+
+公开方法签名见[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/overview)。插件能力和具体接入选项以本章所标版本为准。
+
+## 动态配置
+
+需要远程调整教具参数时，参见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。本地显式 extras 优先；未提供的字段允许继承远端 appliancePlugin.extras。SDK 内嵌绘制资源，回调继续在本端绑定。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.147**。插件及 Worker 已内嵌，使用 Objective-C 或 Swift 原生接口配置。
+
+## 初始化前开启
+
+```objc
+WhiteSdkConfiguration *config = [[WhiteSdkConfiguration alloc] initWithApp:appIdentifier];
+config.useMultiViews = YES;
+config.enableAppliancePlugin = YES;
+
+WhiteRoomConfig *roomConfig = [[WhiteRoomConfig alloc] initWithUUID:uuid roomToken:roomToken uid:uid];
+WhiteAppliancePluginOptions *options = [WhiteAppliancePluginOptions new];
+options.extras = @{ @"useBackgroundThread": @YES };
+roomConfig.appliancePluginOptions = options;
+```
+
+在创建 `WhiteSDK` 前设置 config，入房前设置 roomConfig。同房间各端保持启用状态一致；不要注入额外 Web 插件脚本。布尔/数字 extras 使用 NSNumber，函数回调使用本端 delegate。
+
+## 教具与操作
+
+| 教具 | 用途 |
+| --- | --- |
+| Selector | 框选、移动、缩放和旋转可编辑元素 |
+| Pencil | 自由书写，可设置颜色、粗细、线型与透明度 |
+| Eraser | 整元素擦除 |
+| Pencil Eraser | 局部笔迹擦除 |
+| Shape | 直线、箭头、矩形、椭圆、三角形、菱形、多边形与星形 |
+| Text | 文字输入、排版和样式设置 |
+| Hand | 移动视角 |
+
+同一房间各端应一致开启插件；建议先在测试房间验证已有笔迹的显示、编辑与撤销重做。操作类 API 需要可写权限，教具配置应在入房和初始化完成后使用。
+
+## 扩展能力
+
+| 功能 | 本端接入 |
+| --- | --- |
+| Selector/Pencil/Shape 与 extras | [自定义教具与样式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/custom-tools) |
+| 背景图加载、查询和恢复 | [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery) |
+| Auto Shape | [Auto Shape：一笔绘制图形](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/extended-features) |
+
+## 动态配置
+
+需要远程调整教具参数时，参见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。本地显式 extras 优先；未提供的字段允许继承远端 appliancePlugin.extras。SDK 内嵌绘制资源，回调继续在本端绑定。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Appliance Plugin 1.1.45**。插件负责教具绘制、选中、文字编辑、撤销重做及多窗口 View 绑定。
+
+## 安装和 Worker 资源
+
+```shell
+npm install white-web-sdk@2.16.59 @netless/window-manager@1.0.25 @netless/appliance-plugin@1.1.45
+```
+
+将同一插件版本的 `dist/fullWorker.js`、`dist/subWorker.js` 复制到站点静态资源目录 `/appliance-1.1.45/`，确保以 JavaScript MIME 返回，并按站点 CSP 允许 Worker 加载。两份 Worker 与主线程插件必须来自同一版本。
+
+```shell
+mkdir -p public/appliance-1.1.45
+cp node_modules/@netless/appliance-plugin/dist/fullWorker.js public/appliance-1.1.45/
+cp node_modules/@netless/appliance-plugin/dist/subWorker.js public/appliance-1.1.45/
+```
+
+## 启用插件
+
+```typescript
+import { WhiteWebSdk, type InvisiblePluginClass } from 'white-web-sdk';
+import { WindowManager } from '@netless/window-manager';
+import { ApplianceMultiPlugin } from '@netless/appliance-plugin';
+import '@netless/window-manager/dist/style.css';
+import '@netless/appliance-plugin/dist/style.css';
+
+const sdk = new WhiteWebSdk({ appIdentifier, region: 'cn-hz', useMobXState: true });
+const room = await sdk.joinRoom({
+  uuid, roomToken, uid, region: 'cn-hz',
+  useMultiViews: true,
+  disableMagixEventDispatchLimit: true,
+  invisiblePlugins: [WindowManager as unknown as InvisiblePluginClass<string, object, object>, ApplianceMultiPlugin]
+});
+const manager = await WindowManager.mount({
+  room, container, cursor: true, supportAppliancePlugin: true
+});
+const plugin = await ApplianceMultiPlugin.getInstance(manager, {
+  options: {
+    cdn: {
+      fullWorkerUrl: '/appliance-1.1.45/fullWorker.js',
+      subWorkerUrl: '/appliance-1.1.45/subWorker.js'
+    },
+    extras: { useBackgroundThread: true }
+  },
+  callbacks: {
+    onInitLoadingChange: info => console.log(info),
+    onBackgroundImageLoadEvent: event => console.log(event)
+  }
+});
+```
+
+Web 多窗口通过注册 `ApplianceMultiPlugin`、设置 `supportAppliancePlugin` 和创建插件实例启用教具插件。应用与这些插件使用同一份 `white-web-sdk`。
+
+先 mount 主 View，再初始化插件。离开页面时先解除业务监听，等待 `plugin.destroy()`，再等待 `manager.destroy()`、`room.disconnect()`；若使用 Blob Worker URL，完成销毁后再 revoke URL。插件初始化返回不表示每个 App 的所有资源和首帧均已完成。
+
+## 教具与操作
+
+| 教具 | 用途 |
+| --- | --- |
+| Selector | 框选、移动、缩放和旋转可编辑元素 |
+| Pencil | 自由书写，可设置颜色、粗细、线型与透明度 |
+| Eraser | 整元素擦除 |
+| Pencil Eraser | 局部笔迹擦除 |
+| Shape | 直线、箭头、矩形、椭圆、三角形、菱形、多边形与星形 |
+| Text | 文字输入、排版和样式设置 |
+| Hand | 移动视角 |
+
+同一房间各端应一致开启插件；建议先在测试房间验证已有笔迹的显示、编辑与撤销重做。操作类 API 需要可写权限，教具配置应在入房和初始化完成后使用。
+
+## 扩展能力
+
+| 功能 | 接入入口 |
+| --- | --- |
+| 背景图 | [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery) |
+| Selector、Pencil、Shape 与 extras | [自定义教具与样式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/custom-tools) |
+| 小地图、Auto Shape、过滤笔记 | [扩展功能](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/extended-features) |
+| PublicListener、元素查询、Selector 事件 | [事件监听与元素查询](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/events-and-query) |
+
+## 动态配置
+
+需要远程调整教具参数时，参见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。本地显式 extras 优先；未提供的字段允许继承远端 appliancePlugin.extras。DOM 容器、回调函数和 Worker 资源地址仍由本地接入提供。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+适用于 **Whiteboard HarmonyOS SDK 0.2.11**，内嵌 **Appliance Plugin 1.1.45**。本章的 `Version` 条件指插件版本。
+
+推荐在新接入房间中开启 `enableAppliancePlugin`，使用内嵌的高性能教具插件。插件负责笔迹绘制、元素选中和编辑、图片交互、文字编辑、撤销重做及多窗口中的教具显示，业务继续使用 SDK 的公开接口。
+
+## 开启插件
+
+```typescript
+import { WhiteboardOptions, Region } from '@shengwang/whiteboard';
+
+const options: WhiteboardOptions = {
+  appIdentifier: 'APP_IDENTIFIER',
+  roomUuid: 'ROOM_UUID',
+  roomToken: 'ROOM_TOKEN',
+  uid: 'CLIENT_UID',
+  region: Region.CN_HZ,
+  writable: true,
+  useMultiViews: true,
+  enableAppliancePlugin: true,
+  floatBar: true
+};
+```
+
+将 `options` 传给 `Whiteboard` 组件，在 `callbacks.onRoomReady` 后使用 `WhiteboardController`。插件选项通过 `WhiteboardOptions.appliancePluginOptions.extras` 配置，在创建组件前填写。
+
+当前版本需同时配置 `useMultiViews=true` 与 `enableAppliancePlugin=true`。未启用动态配置且本地未设置时，插件开关默认 `false`；启用动态配置时，未显式配置的字段允许继承远端值。同一房间的互动端和只读显示端应一致启用插件，保证插件内容的同步显示；迁移已有房间时先核对已有内容的显示和编辑效果。
+
+SDK 已内嵌插件和绘制资源，无需在本端工程单独安装 npm 包或配置 Worker URL。插件为白板提供绘制与编辑交互，业务应用仍需提供自己的教具切换按钮。
+
+## 教具与操作
+
+| 教具 | 用途 | 主要配置 |
+| --- | --- | --- |
+| Pencil | 自由书写和标注 | 线条颜色、粗细 |
+| Selector | 选中、移动、缩放元素；符合条件的单个图片可使用旋转手柄 | 内置选择框与属性栏 |
+| Rectangle / Ellipse / Straight / Arrow | 绘制矩形、椭圆、直线和箭头 | 线条颜色与粗细 |
+| Shape | 绘制三角形、菱形、五角星和气泡框 | 通过 shapeType 选择图形 |
+| Text | 输入和编辑文字 | 文字颜色、字号、文字编辑器选项 |
+| Eraser | 擦除命中的整个可擦除元素 | 通过 `Appliance.ERASER` 选择 |
+| Pencil Eraser | 擦除局部笔迹 | 通过本端教具入口选择 |
+| Hand / Clicker | 移动视角、点击课件 | 通过本端教具入口选择 |
+
+例如，入房成功后切换铅笔并设置颜色、粗细：
+
+```typescript
+import { Appliance, MemberState } from '@shengwang/whiteboard';
+
+const pencil: MemberState = {
+  currentApplianceName: Appliance.PENCIL,
+  strokeColor: [32, 102, 255],
+  strokeWidth: 4
+};
+controller.setMemberState(pencil);
+```
+
+复制、删除、撤销和重做仍使用 SDK 的对应公开接口。只读用户用于显示内容，不开放写入或编辑操作。
+
+## 扩展能力
+
+| 功能 | 本端接入方式 |
+| --- | --- |
+| 铅笔、选择、图形、文字、图片及局部笔迹擦除 | 通过本端教具、元素和撤销重做接口操作 |
+| 背景图加载状态、查询和失败恢复 | 通过本端查询、恢复及加载回调管理插件背景资源 |
+| Auto Shape | 通过业务扩展 MemberState 传递 autoShape 开关，见 Auto Shape 文档 |
+
+## 按需求继续配置
+
+- [自定义教具与样式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/custom-tools)
+- [背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)
+- [Auto Shape：一笔绘制图形](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/extended-features)
+
+公开方法签名见[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。插件能力和具体接入选项以本章所标版本为准。
+
+## 动态配置
+
+需要远程调整教具参数时，参见[动态配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/dynamic-config)。本地显式 extras 优先；未提供的字段允许继承远端 appliancePlugin.extras。SDK 内嵌绘制资源，回调继续在本端绑定。
+
+</PlatformStructured>

@@ -123,7 +123,7 @@ whiteWebSdk
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://sdk.netless.link/white-web-sdk/2.13.11.js"></script>
+        <script src="https://sdk.netless.link/white-web-sdk/2.16.59.js"></script>
         <script src="./index.js"></script>
  
     </head>
@@ -164,3 +164,9 @@ whiteWebSdk
 
 - [文档转换服务](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/convert-files)
 - [为什么插入白板的图片或 PPT 资源无法显示？](/zh-CN/reference/faq/integration/whiteboard_cors)
+
+## 多窗口与插件背景
+
+使用 Window Manager 的当前版本可添加 Slide、DocsViewer、Presentation 等课件 App；统一页状态与命令见[扩展 API 与配置](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)。多窗口参考尺寸、页码、缩放和可等待焦点由 Window Manager 管理。
+
+背景图由插件 insertBackgroundImage 插入后，通过 hasBackgroundImage、reloadBackgroundImage 查询和恢复；普通图片仍通过 insertImage/completeImageUpload 插入。接入、加载回调与恢复方式见[背景图加载与恢复](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/background-image-recovery)。

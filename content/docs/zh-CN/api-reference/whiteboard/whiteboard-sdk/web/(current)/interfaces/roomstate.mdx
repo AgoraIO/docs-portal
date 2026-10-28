@@ -1,0 +1,25 @@
+---
+title: RoomState
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/roomstate
+  sourcePath: html-docs/whiteboard/Web/interfaces/roomstate.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type RoomState = DisplayerState & {
+    /**
+     * 我自己的自定义状态，归我所有，我可以读取或修改。
+     * 房间里其他人只能读取，不能修改。
+     */
+    memberState: MemberState;
+    /**
+     * 视角跟随状态
+     */
+    broadcastState: Readonly<BroadcastState>;
+};
+```

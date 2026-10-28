@@ -1,0 +1,88 @@
+---
+title: UnifiedPageState interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_unified_page_state
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_unified_page_state.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+统一页状态；page 从 1 开始，scale 为相对适配尺寸的倍率。
+
+可从 @shengwang/whiteboard 直接导入 UnifiedPageState。仅用于类型声明，不能作为构造函数调用 new。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export interface UnifiedPageState
+```
+
+| [target](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state#a9b2b161fe5a0d6fd1997dfc3caa2d69c) | `target: "mainView" \| "DocsViewer" \| "Slide" \| "Presentation"` |
+| --- | --- |
+| [appId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state#ad565893377fde7e35845ad071c7e2381) | `appId?: string` |
+| [page](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state#a83e9590533885bf35071aeb34b3e77c3) | `page: number` |
+| [pageCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state#a28063e448ad6b29454790036668951e3) | `pageCount: number` |
+| [scale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-unified-page-state#a598c7f90ec97f6cf3b71e24367927ba4) | `scale?: number` |
+
+## 变量说明
+
+<a id="a9b2b161fe5a0d6fd1997dfc3caa2d69c"></a>
+
+### target
+
+```text
+target: "mainView" | "DocsViewer" | "Slide" | "Presentation"
+```
+
+状态所属类型：mainView、DocsViewer、Slide 或 Presentation；具体 App 由 appId 标识。
+
+<a id="ad565893377fde7e35845ad071c7e2381"></a>
+
+### appId
+
+```text
+appId?: string
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="a83e9590533885bf35071aeb34b3e77c3"></a>
+
+### page
+
+```text
+page: number
+```
+
+统一课件与 Slide 页码从 1 开始；不是主白板场景的零基索引。
+
+<a id="a28063e448ad6b29454790036668951e3"></a>
+
+### pageCount
+
+```text
+pageCount: number
+```
+
+页面总数。
+
+<a id="a598c7f90ec97f6cf3b71e24367927ba4"></a>
+
+### scale
+
+```text
+scale?: number
+```
+
+相对页面适配尺寸的倍率，1 表示适配尺寸；不是相机 scale。DocsViewer 不提供此字段。

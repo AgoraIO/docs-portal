@@ -1,0 +1,88 @@
+---
+title: SharedState interface 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/interface_shared_state
+  sourcePath: html-docs/whiteboard/HarmonyOS/interface_shared_state.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+RoomState 的继承结构；roomMembers、sceneState、windowBoxState、pageState、cameraState 均可通过 RoomState 读取。
+
+当前版本未从 SDK 包入口单独导出此类型名；通过所述配置、参数或返回值使用其结构。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+interface SharedState
+```
+
+| [roomMembers](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-shared-state#ad98a99b03bc67b22e4ba892606e36ed6) | `roomMembers?: RoomMember[]` |
+| --- | --- |
+| [sceneState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-shared-state#ab9810a16ed64a6b4a9316540e9c78d6d) | `sceneState?: SceneState` |
+| [windowBoxState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-shared-state#a15f734cf3a768462f5e765f61342873a) | `windowBoxState?: object` |
+| [pageState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-shared-state#acb552803c2b009af516fde62dde285dc) | `pageState?: PageState` |
+| [cameraState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/interface-shared-state#abe27f4dde321d0d8a69931b21954dc96) | `cameraState?: CameraState` |
+
+## 变量说明
+
+<a id="ad98a99b03bc67b22e4ba892606e36ed6"></a>
+
+### roomMembers
+
+```text
+roomMembers?: RoomMember[]
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="ab9810a16ed64a6b4a9316540e9c78d6d"></a>
+
+### sceneState
+
+```text
+sceneState?: SceneState
+```
+
+场景状态，包含当前场景组和零基场景索引。
+
+<a id="a15f734cf3a768462f5e765f61342873a"></a>
+
+### windowBoxState
+
+```text
+windowBoxState?: object
+```
+
+类型成员，必填性和返回类型以声明为准。
+
+<a id="acb552803c2b009af516fde62dde285dc"></a>
+
+### pageState
+
+```text
+pageState?: PageState
+```
+
+多窗口 MainView 页面状态，包含零基 index 和页面总数 length。
+
+<a id="abe27f4dde321d0d8a69931b21954dc96"></a>
+
+### cameraState
+
+```text
+cameraState?: CameraState
+```
+
+白板相机状态，RoomState 继承此字段；scale 是视角缩放比例。

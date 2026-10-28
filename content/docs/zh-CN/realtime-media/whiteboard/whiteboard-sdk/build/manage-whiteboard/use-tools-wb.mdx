@@ -1,8 +1,12 @@
 ---
-title: "使用白板工具"
-titlePlatforms: [web]
-description: "了解如何在互动白板 SDK 中白板工具，包括适用场景、配置步骤、实现要点和注意事项。"
+title: 使用白板工具
+titlePlatforms:
+  - web
+  - harmonyos
+description: 了解如何在互动白板 SDK 中白板工具，包括适用场景、配置步骤、实现要点和注意事项。
 ---
+
+<PlatformStructured platform="web">
 
 成功加入互动白板实时房间后，你就可以用 SDK 默认的工具在白板上写写画画了。互动白板 SDK 提供丰富的基础编辑工具，如铅笔、箭头、直线、橡皮擦、各种图形等，并支持修改字体的大小、线条的颜色和粗细。
 
@@ -187,7 +191,7 @@ whiteWebSdk
 <!DOCTYPE html>
 <html>
     <head>
-        <script src="https://sdk.netless.link/white-web-sdk/2.12.20.js"></script>
+        <script src="https://sdk.netless.link/white-web-sdk/2.16.59.js"></script>
         <script src="./index.js"></script>
     </head>
     <body>
@@ -227,3 +231,40 @@ whiteWebSdk
 | [`disableDeviceInputs`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/room#disabledeviceinputs) | 禁止/允许用户操作白板工具   |
 
 上述方法也是 `room` 类的成员方法，也没有提供直接的 UI。你可以根据业务需要，自行设计 UI 并调用上述方法，实现相应的功能。
+
+## 教具插件模式
+
+推荐新接入使用多窗口与 Appliance Plugin，接入方式见[教具插件介绍](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/overview)。插件提供 Eraser 整元素擦除与 Pencil Eraser 局部笔迹擦除；Selector、Pencil、Shape 的扩展状态和 extras 配置见[自定义教具与样式](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/appliance-plugin/custom-tools)。使用插件扩展字段时调用插件 setMemberState，采用插件导出的 MemberState 类型。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+在[成功加入房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)后，通过 Controller 使用工具和状态接口。
+
+```typescript
+import { Appliance, MemberState } from '@shengwang/whiteboard';
+
+controller.setAppliance(Appliance.PENCIL);
+controller.setStrokeWidth(4);
+controller.setStrokeColor('#ff0000');
+```
+
+| 能力 | 公开接口 |
+| --- | --- |
+| 工具和文本样式 | setAppliance、setStrokeColor、setStrokeWidth、setTextSize、setTextColor、setMemberState |
+| 读写权限 | `setWritable(boolean): Promise<boolean>`、`getWritable(): boolean` |
+| 选择和历史操作 | copy、paste、duplicate、deleteOperation、undo、redo；需要可写并开启序列化 |
+| 状态查询 | getRoomState、getRoomPhase、getRoomMembers、getMemberState、getGlobalState、getBroadcastState |
+| 场景 | getSceneState、getEntireScenes、setScenePath、setSceneIndex、putScenes、moveScene、removeScenes、cleanScene |
+| 图片 / 文本 | `insertImage(ImageInformation)`、`insertText(x,y,text): Promise<string>`、`updateText(identifier,text)` |
+| 主白板页 | addPage、removePage、prevPage、nextPage；场景 index 从 0 开始 |
+| 输入与视角 | disableDeviceInputs、disableCameraTransform、disableWindowOperation、refreshViewSize |
+
+`getWritable` 返回 Controller 已知的本地读写状态，其他状态查询为 Promise。回调 `onRoomStateChanged` 通常为变化字段补丁，按需合并或重新查询。
+
+房间阶段枚举从包入口导出：`RoomPhase.CONNECTING/CONNECTED/RECONNECTING/DISCONNECTING/DISCONNECTED`。房间断开错误通过 `onDisconnectWithError`，被踢原因通过 `onKickedWithReason` 处理。
+
+`ViewMode` 出现在 setViewMode 的签名中，但本版包入口未单独导出，无法从包名导入该枚举对象。完整参数、模型字段、方法和回调见[客户端 API](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/overview)。
+
+</PlatformStructured>

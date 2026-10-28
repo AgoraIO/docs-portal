@@ -1,0 +1,168 @@
+---
+title: 课件按需加载
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Whiteboard Android SDK 2.16.134**。
+
+课件按需加载减少最大化房间中非焦点课件的初始化和资源占用。它控制本端 App runtime，不是白板服务端的文件转码，也不是资源下载完成通知。
+
+## 入房前配置
+
+```java
+WindowParams windows = new WindowParams()
+    .setForceMaximized(true)
+    .setLazySetupInMaximizedMode(true)
+    .setMaxCachedAppsInMaximizedMode(4)
+    .setUseBoxesStatus(false);
+roomParams.setWindowParams(windows);
+// 在 joinRoom 之前完成配置。
+```
+
+| 配置 | 默认值与作用 |
+| --- | --- |
+| forceMaximized | 默认关闭。可写端设为 true 时同步房间级强制最大化，支持此协议的客户端不能切回 normal |
+| lazySetupInMaximizedMode | 默认关闭。本端开关；房间已 forceMaximized 且处于 maximized/minimized 时按焦点初始化，否则使用 eager |
+| maxCachedAppsInMaximizedMode | 默认 4。本端 App runtime 的 LRU 缓存容量，不限制房间课件数量 |
+| useBoxesStatus | 独立窗口状态。房间强制最大化或有效 lazy 模式下被忽略；否则本端同时请求独立状态与强制最大化时，独立状态优先。建议明确设 false |
+
+## 添加与切换课件
+
+完成入房后正常使用 addApp 添加课件，以返回的 appId 聚焦课件。焦点变化触发对应 runtime 初始化，缓存满时按 LRU 协调非活动 runtime。
+
+```java
+room.focusApp(appId, new Promise<Boolean>() {
+    @Override public void then(Boolean committed) { /* 焦点提交结果 */ }
+    @Override public void catchEx(SDKError error) { /* 处理异常 */ }
+});
+```
+
+`focusApp` 的布尔回调表示共享焦点、窗口焦点及层级提交结果，不能据此判断 setup 成功或全部资源就绪。lazy/最小化状态下 addApp 可以先返回 ID；eager 模式尝试等待 setup，但失败可能仅记录日志，返回 ID 仍不保证渲染成功。
+
+Slide 可能在移出 LRU 或最小化后保留 runtime，由活动状态协调播放器资源，因此不能把容量直接解释为“最多创建/销毁几个 Slide”。播放中的媒体、频繁切换和长课件应结合实际设备内存测试。
+
+主动观察课件页状态见[统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)，诊断初始化失败见[本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.147**。
+
+课件按需加载减少最大化房间中非焦点课件的初始化和资源占用。它控制本端 App runtime，不是白板服务端的文件转码，也不是资源下载完成通知。
+
+## 入房前配置
+
+```objc
+WhiteWindowParams *windows = [WhiteWindowParams new];
+windows.forceMaximized = YES;
+windows.lazySetupInMaximizedMode = YES;
+windows.maxCachedAppsInMaximizedMode = @4;
+windows.useBoxesStatus = NO;
+roomConfig.windowParams = windows; // joinRoom 前设置。
+```
+
+| 配置 | 默认值与作用 |
+| --- | --- |
+| forceMaximized | 默认关闭。可写端设为 true 时同步房间级强制最大化，支持此协议的客户端不能切回 normal |
+| lazySetupInMaximizedMode | 默认关闭。本端开关；房间已 forceMaximized 且处于 maximized/minimized 时按焦点初始化，否则使用 eager |
+| maxCachedAppsInMaximizedMode | 默认 4。本端 App runtime 的 LRU 缓存容量，不限制房间课件数量 |
+| useBoxesStatus | 独立窗口状态。房间强制最大化或有效 lazy 模式下被忽略；否则本端同时请求独立状态与强制最大化时，独立状态优先。建议明确设 false |
+
+## 添加与切换课件
+
+完成入房后正常使用 addApp 添加课件，以返回的 appId 聚焦课件。焦点变化触发对应 runtime 初始化，缓存满时按 LRU 协调非活动 runtime。
+
+```objc
+[room focusApp:appId completionHandler:^(BOOL committed) { NSLog(@"%d", committed); }];
+```
+
+`focusApp` 的布尔回调表示共享焦点、窗口焦点及层级提交结果，不能据此判断 setup 成功或全部资源就绪。lazy/最小化状态下 addApp 可以先返回 ID；eager 模式尝试等待 setup，但失败可能仅记录日志，返回 ID 仍不保证渲染成功。
+
+Slide 可能在移出 LRU 或最小化后保留 runtime，由活动状态协调播放器资源，因此不能把容量直接解释为“最多创建/销毁几个 Slide”。播放中的媒体、频繁切换和长课件应结合实际设备内存测试。
+
+主动观察课件页状态见[统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)，诊断初始化失败见[本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Whiteboard Web SDK 2.16.59**。
+
+课件按需加载减少最大化房间中非焦点课件的初始化和资源占用。它控制本端 App runtime，不是白板服务端的文件转码，也不是资源下载完成通知。
+
+## 入房前配置
+
+```typescript
+const managerConfig = {
+  forceMaximized: true,
+  lazySetupInMaximizedMode: true,
+  maxCachedAppsInMaximizedMode: 4,
+  useBoxesStatus: false
+};
+const manager = await WindowManager.mount({ room, container, ...managerConfig });
+```
+
+| 配置 | 默认值与作用 |
+| --- | --- |
+| forceMaximized | 默认关闭。可写端设为 true 时同步房间级强制最大化，支持此协议的客户端不能切回 normal |
+| lazySetupInMaximizedMode | 默认关闭。本端开关；房间已 forceMaximized 且处于 maximized/minimized 时按焦点初始化，否则使用 eager |
+| maxCachedAppsInMaximizedMode | 默认 4。本端 App runtime 的 LRU 缓存容量，不限制房间课件数量 |
+| useBoxesStatus | 独立窗口状态。房间强制最大化或有效 lazy 模式下被忽略；否则本端同时请求独立状态与强制最大化时，独立状态优先。建议明确设 false |
+
+## 添加与切换课件
+
+完成入房后正常使用 addApp 添加课件，以返回的 appId 聚焦课件。焦点变化触发对应 runtime 初始化，缓存满时按 LRU 协调非活动 runtime。
+
+```typescript
+await manager.focusApp(appId);
+```
+
+`focusApp` 的布尔回调表示共享焦点、窗口焦点及层级提交结果，不能据此判断 setup 成功或全部资源就绪。lazy/最小化状态下 addApp 可以先返回 ID；eager 模式尝试等待 setup，但失败可能仅记录日志，返回 ID 仍不保证渲染成功。
+
+Slide 可能在移出 LRU 或最小化后保留 runtime，由活动状态协调播放器资源，因此不能把容量直接解释为“最多创建/销毁几个 Slide”。播放中的媒体、频繁切换和长课件应结合实际设备内存测试。
+
+主动观察课件页状态见[统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)，诊断初始化失败见[本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+适用于 **Whiteboard HarmonyOS SDK 0.2.11**。
+
+课件按需加载减少最大化房间中非焦点课件的初始化和资源占用。它控制本端 App runtime，不是白板服务端的文件转码，也不是资源下载完成通知。
+
+## 入房前配置
+
+```typescript
+const windowParams = new WindowParams()
+  .setForceMaximized(true)
+  .setLazySetupInMaximizedMode(true)
+  .setMaxCachedAppsInMaximizedMode(4)
+  .setUseBoxesStatus(false);
+// 将 windowParams 传入 WhiteboardOptions，在组件创建/入房前设置。
+```
+
+| 配置 | 默认值与作用 |
+| --- | --- |
+| forceMaximized | 默认关闭。可写端设为 true 时同步房间级强制最大化，支持此协议的客户端不能切回 normal |
+| lazySetupInMaximizedMode | 默认关闭。本端开关；房间已 forceMaximized 且处于 maximized/minimized 时按焦点初始化，否则使用 eager |
+| maxCachedAppsInMaximizedMode | 默认 4。本端 App runtime 的 LRU 缓存容量，不限制房间课件数量 |
+| useBoxesStatus | 独立窗口状态。房间强制最大化或有效 lazy 模式下被忽略；否则本端同时请求独立状态与强制最大化时，独立状态优先。建议明确设 false |
+
+## 添加与切换课件
+
+完成入房后正常使用 addApp 添加课件，以返回的 appId 聚焦课件。焦点变化触发对应 runtime 初始化，缓存满时按 LRU 协调非活动 runtime。
+
+```typescript
+const committed = await controller.focusApp(appId);
+```
+
+`focusApp` 的布尔回调表示共享焦点、窗口焦点及层级提交结果，不能据此判断 setup 成功或全部资源就绪。lazy/最小化状态下 addApp 可以先返回 ID；eager 模式尝试等待 setup，但失败可能仅记录日志，返回 ID 仍不保证渲染成功。
+
+Slide 可能在移出 LRU 或最小化后保留 runtime，由活动状态协调播放器资源，因此不能把容量直接解释为“最多创建/销毁几个 Slide”。播放中的媒体、频繁切换和长课件应结合实际设备内存测试。
+
+主动观察课件页状态见[统一页面控制](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/unified-page-control)，诊断初始化失败见[本地日志](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/extend-whiteboard/local-log)。
+
+</PlatformStructured>

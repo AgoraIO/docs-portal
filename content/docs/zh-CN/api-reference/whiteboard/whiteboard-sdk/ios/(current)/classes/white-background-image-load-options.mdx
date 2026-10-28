@@ -1,0 +1,68 @@
+---
+title: WhiteBackgroundImageLoadOptions Class Reference
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Classes/WhiteBackgroundImageLoadOptions
+  sourcePath: html-docs/whiteboard/iOS/Classes/WhiteBackgroundImageLoadOptions.html
+  generator: appledoc
+  warnings: []
+---
+
+Whiteboard iOS SDK 2.16.147 公开接口。
+
+@interface WhiteBackgroundImageLoadOptions: WhiteObject
+
+## 成员
+
+- [maxRetries](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-background-image-load-options#//api/name/maxRetries)
+- [timeoutMs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-background-image-load-options#//api/name/timeoutMs)
+- [retryIntervalMs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-background-image-load-options#//api/name/retryIntervalMs)
+
+<a id="//api/name/maxRetries"></a>
+
+### `maxRetries`
+
+<ApiSignature>
+
+@property (nonatomic, assign) NSInteger maxRetries;
+
+</ApiSignature>
+
+```text
+背景图片加载重试次数。`-1` 表示无限重试（内部映射为 Infinity），取值范围为 -1 或 0~10。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
+
+<a id="//api/name/timeoutMs"></a>
+
+### `timeoutMs`
+
+<ApiSignature>
+
+@property (nonatomic, assign) NSInteger timeoutMs;
+
+</ApiSignature>
+
+```text
+背景图片加载超时时间，单位为毫秒，取值范围 1000~120000。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h
+
+<a id="//api/name/retryIntervalMs"></a>
+
+### `retryIntervalMs`
+
+<ApiSignature>
+
+@property (nonatomic, assign) NSInteger retryIntervalMs;
+
+</ApiSignature>
+
+```text
+背景图片加载失败后的重试间隔，单位为毫秒，取值范围 0~30000。
+```
+
+Declared in SDK/WhiteSdkConfiguration.h

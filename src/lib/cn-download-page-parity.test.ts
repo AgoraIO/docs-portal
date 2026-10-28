@@ -36,9 +36,9 @@ describe('Chinese download page release constraints', () => {
   );
 
   it.each([
-    ['android', '1.7.2-fastboard-android'],
-    ['ios', '1.4.2-fastboard-ios'],
-    ['web', '1.1.0-interactive-whiteboard-web'],
+    ['android', '1.8.2-fastboard-android'],
+    ['ios', '1.4.6-fastboard-ios'],
+    ['web', '1.1.10-fastboard-web'],
   ])(
     'keeps Fastboard %s downloads aligned with the latest release notes',
     (platform, id) => {

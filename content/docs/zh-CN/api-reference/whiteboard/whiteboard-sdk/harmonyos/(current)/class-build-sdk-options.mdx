@@ -1,0 +1,28 @@
+---
+title: buildSdkOptions 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: warning
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/class_build_sdk_options
+  sourcePath: html-docs/whiteboard/HarmonyOS/class_build_sdk_options.html
+  generator: doxygen
+  warnings:
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/harmonyos/interface_sdk_options.html.
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用于 @shengwang/whiteboard 0.2.11。
+
+从包入口导出的参数构造函数，保留 dynamicConfig 和未显式字段的继承语义。一般由 Whiteboard 组件调用；返回的 SdkOptions 类型本身未从包入口单独导出，不要按类型名直接 import。
+
+```text
+export function buildSdkOptions(options: WhiteboardOptions): SdkOptions;
+```
+
+完整返回字段见 SdkOptions。函数只构造参数，不创建 SDK 或发起入房；未显式配置的可选开关保持缺省。

@@ -189,12 +189,12 @@ describe('ProductSdkDownloads', () => {
   });
 
   it('uses package-manager links for SDKs without ZIP downloads', () => {
-    render(<ProductSdkDownloads platform="android" product="whiteboard-sdk" />);
+    render(<ProductSdkDownloads platform="web" product="whiteboard-sdk" />);
     expect(
-      screen.getByRole('link', { name: '获取 Android 互动白板 SDK' }),
+      screen.getByRole('link', { name: '获取 Web 互动白板 SDK' }),
     ).toHaveAttribute(
       'href',
-      'https://github.com/netless-io/whiteboard-android/releases/tag/2.16.100',
+      'https://www.npmjs.com/package/white-web-sdk/v/2.16.59',
     );
   });
 

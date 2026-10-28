@@ -1,6 +1,6 @@
 ---
-title: Enumeration RoomPhase
-description: 房间连接状态。
+title: RoomPhase
+description: Whiteboard Web SDK 2.16.59 公开 enum。
 _migration:
   type: generated-html
   status: migrated
@@ -10,64 +10,85 @@ _migration:
   warnings: []
 ---
 
-## Index
+```ts
+export declare enum RoomPhase {
+    /**
+     * 连接中
+     */
+    Connecting = "connecting",
+    /**
+     * 已连接
+     */
+    Connected = "connected",
+    /**
+     * 正在重连
+     */
+    Reconnecting = "reconnecting",
+    /**
+     * 断开连接中
+     */
+    Disconnecting = "disconnecting",
+    /**
+     * 已断开连接
+     */
+    Disconnected = "disconnected",
+}
+```
 
-### Enumeration members
+## 成员
 
-- [Connected](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#connected)
 - [Connecting](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#connecting)
-- [Disconnected](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#disconnected)
-- [Disconnecting](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#disconnecting)
+- [Connected](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#connected)
 - [Reconnecting](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#reconnecting)
-
-## Enumeration members
-
-<a id="connected"></a>
-
-### Connected
-
-Connected: = "connected"
-
-- Defined in [index-zh.d.ts\:2618](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2618)
-
-已连接。
+- [Disconnecting](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#disconnecting)
+- [Disconnected](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/roomphase#disconnected)
 
 <a id="connecting"></a>
 
 ### Connecting
 
-Connecting: = "connecting"
+`Connecting = "connecting";`
 
-- Defined in [index-zh.d.ts\:2614](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2614)
+```text
+连接中
+```
 
-连接中。
+<a id="connected"></a>
 
-<a id="disconnected"></a>
+### Connected
 
-### Disconnected
+`Connected = "connected";`
 
-Disconnected: = "disconnected"
-
-- Defined in [index-zh.d.ts\:2630](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2630)
-
-已断开连接。
-
-<a id="disconnecting"></a>
-
-### Disconnecting
-
-Disconnecting: = "disconnecting"
-
-- Defined in [index-zh.d.ts\:2626](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2626)
-
-正在断开连接。
+```text
+已连接
+```
 
 <a id="reconnecting"></a>
 
 ### Reconnecting
 
-Reconnecting: = "reconnecting"
+`Reconnecting = "reconnecting";`
 
-- Defined in [index-zh.d.ts\:2622](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L2622)
+```text
+正在重连
+```
 
-正在重连。
+<a id="disconnecting"></a>
+
+### Disconnecting
+
+`Disconnecting = "disconnecting";`
+
+```text
+断开连接中
+```
+
+<a id="disconnected"></a>
+
+### Disconnected
+
+`Disconnected = "disconnected";`
+
+```text
+已断开连接
+```

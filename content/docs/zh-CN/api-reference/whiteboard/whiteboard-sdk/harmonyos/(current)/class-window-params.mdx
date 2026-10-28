@@ -1,0 +1,365 @@
+---
+title: WindowParams class 参考
+tocMaxDepth: 3
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/harmonyos/class_window_params
+  sourcePath: html-docs/whiteboard/HarmonyOS/class_window_params.html
+  generator: doxygen
+  warnings: []
+---
+
+<a id="details"></a>
+
+## 详细描述
+
+适用版本：**@shengwang/whiteboard 0.2.11**。
+
+多窗口入房配置；支持属性和链式 setter。
+
+可从 @shengwang/whiteboard 直接导入 WindowParams。
+
+## 类型结构（源码声明）
+
+下方源码文件的 export 声明不等同于 SDK 包入口导出；业务导入方式以上方说明为准。
+
+```text
+export class WindowParams
+```
+
+| [containerSizeRatio](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a997d1d272371471cde939eb1d6584515) | `containerSizeRatio?: number` |
+| --- | --- |
+| [chessboard](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a3d78a48246b5e96114bfa4a2052cf3b6) | `chessboard?: boolean` |
+| [collectorStyles](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a6991047500369f16cddef87c7e65bd0d) | `collectorStyles?: Record<string, string>` |
+| [overwriteStyles](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ac298db20eb019d2226a99d20575e2662) | `overwriteStyles?: string` |
+| [debug](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#afa40b9c7c578d43b9f432e0c380faf60) | `debug?: boolean` |
+| [prefersColorScheme](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a94c1b4395e5a92edc6d9b550089fc404) | `prefersColorScheme?: WindowPrefersColorScheme` |
+| [fullscreen](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a4201ea4cd8e2a5540600e19085ec44de) | `fullscreen?: boolean` |
+| [polling](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a067402c886461dc74c6c924e3f5a4f24) | `polling?: boolean` |
+| [useBoxesStatus](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#aa24eab00830ec2055814f7849804f457) | `useBoxesStatus?: boolean` |
+| [forceMaximized](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ab1e7a35c57e68503c3ab13b5ce0e7a26) | `forceMaximized?: boolean` |
+| [lazySetupInMaximizedMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ad47df3866cf955bc0564863a4fe138c0) | `lazySetupInMaximizedMode?: boolean` |
+| [maxCachedAppsInMaximizedMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a017d8967d3f39c050211ab96df674c45) | `maxCachedAppsInMaximizedMode?: number` |
+| [builtinAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ae235ff050e954fe0ffd525dc64ebc133) | `builtinAppOptions?: BuiltinAppOptions` |
+| [originSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a2d309b158606df79270e2427bbce5cc7) | `originSize?: WindowOriginSize` |
+| [pageScaleRange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ab23cb72b7d4cbb0467517c8c9a57eb5d) | `pageScaleRange?: PageScaleRange` |
+| [setContainerSizeRatio](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a6b01ba18c3f15db7f9c3e85a5203a1ac) | `setContainerSizeRatio(containerSizeRatio: number) : WindowParams` |
+| [setChessboard](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a4edefc885a636cc4c9456c3d3d9eb611) | `setChessboard(chessboard: boolean) : WindowParams` |
+| [setDebug](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#aa72a99ea6b133987e85b651ab21a44ac) | `setDebug(debug: boolean) : WindowParams` |
+| [setCollectorStyles](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a958071891113c42739eabef2b45df0a4) | `setCollectorStyles(collectorStyles: Record<string, string>) : WindowParams` |
+| [setOverwriteStyles](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a81de4652dd0f89087a759586b53aa014) | `setOverwriteStyles(overwriteStyles: string) : WindowParams` |
+| [setPrefersColorScheme](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ab3598e5c2d28d166de8e33ba0a7c6577) | `setPrefersColorScheme(prefersColorScheme: WindowPrefersColorScheme) : WindowParams` |
+| [setFullscreen](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ad845a8d56feeab8f8224f96d857e483f) | `setFullscreen(fullscreen: boolean) : WindowParams` |
+| [setPolling](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a173def2f13e4429bc1a851e167e270c9) | `setPolling(polling: boolean) : WindowParams` |
+| [setUseBoxesStatus](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a4532380efbecae7df58d5d27072b0d4a) | `setUseBoxesStatus(useBoxesStatus: boolean) : WindowParams` |
+| [setForceMaximized](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a8df213ed8c855704d496d49262e04253) | `setForceMaximized(forceMaximized: boolean) : WindowParams` |
+| [setLazySetupInMaximizedMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a5b15e09b0d9dd136bb6b862bab344546) | `setLazySetupInMaximizedMode(lazySetupInMaximizedMode: boolean) : WindowParams` |
+| [setMaxCachedAppsInMaximizedMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ad9c5990088ff829956d14f2d6d11d223) | `setMaxCachedAppsInMaximizedMode(maxCachedAppsInMaximizedMode: number) : WindowParams` |
+| [setBuiltinAppOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#a44b03b00f0fc68f1bc8407ee63f0bda2) | `setBuiltinAppOptions(builtinAppOptions: BuiltinAppOptions) : WindowParams` |
+| [setOriginSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ac8ea3904ac7c81547b8c63deefca3aa5) | `setOriginSize(originSize: WindowOriginSize) : WindowParams` |
+| [setPageScaleRange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/class-window-params#ae7f57e95df345ebd84b2f500cb1436b6) | `setPageScaleRange(pageScaleRange: PageScaleRange) : WindowParams` |
+
+## 变量说明
+
+<a id="a997d1d272371471cde939eb1d6584515"></a>
+
+### containerSizeRatio
+
+```text
+containerSizeRatio?: number
+```
+
+各个端本地显示多窗口内容时，高与宽比例，默认为 9\:16
+
+<a id="a3d78a48246b5e96114bfa4a2052cf3b6"></a>
+
+### chessboard
+
+```text
+chessboard?: boolean
+```
+
+多窗口区域（主窗口）以外的空间显示 PS 棋盘背景，默认 true
+
+<a id="a6991047500369f16cddef87c7e65bd0d"></a>
+
+### collectorStyles
+
+```text
+collectorStyles?: Record<string, string>
+```
+
+驼峰形式的 CSS，透传给多窗口时，最小化 div 的 css
+
+<a id="ac298db20eb019d2226a99d20575e2662"></a>
+
+### overwriteStyles
+
+```text
+overwriteStyles?: string
+```
+
+窗口样式覆盖
+
+<a id="afa40b9c7c578d43b9f432e0c380faf60"></a>
+
+### debug
+
+```text
+debug?: boolean
+```
+
+是否在网页控制台打印日志
+
+<a id="a94c1b4395e5a92edc6d9b550089fc404"></a>
+
+### prefersColorScheme
+
+```text
+prefersColorScheme?: WindowPrefersColorScheme
+```
+
+窗口配色模式
+
+<a id="a4201ea4cd8e2a5540600e19085ec44de"></a>
+
+### fullscreen
+
+```text
+fullscreen?: boolean
+```
+
+是否全屏
+
+<a id="a067402c886461dc74c6c924e3f5a4f24"></a>
+
+### polling
+
+```text
+polling?: boolean
+```
+
+是否轮询
+
+<a id="aa24eab00830ec2055814f7849804f457"></a>
+
+### useBoxesStatus
+
+```text
+useBoxesStatus?: boolean
+```
+
+每个窗口独立同步最大化/最小化状态；在入房前配置，同房间客户端保持一致。与 forceMaximized 策略不兼容。
+
+<a id="ab1e7a35c57e68503c3ab13b5ce0e7a26"></a>
+
+### forceMaximized
+
+```text
+forceMaximized?: boolean
+```
+
+房间级强制最大化；可写端开启后同步到房间。两者不能同时生效；继承房间强制最大化或有效 lazy 模式时忽略本地 useBoxesStatus，否则同时请求两者时独立窗口状态优先。
+
+<a id="ad47df3866cf955bc0564863a4fe138c0"></a>
+
+### lazySetupInMaximizedMode
+
+```text
+lazySetupInMaximizedMode?: boolean
+```
+
+本地按焦点初始化 App；仅在房间已强制最大化且处于 maximized/minimized 时生效，否则使用 eager 初始化。默认关闭。
+
+<a id="a017d8967d3f39c050211ab96df674c45"></a>
+
+### maxCachedAppsInMaximizedMode
+
+```text
+maxCachedAppsInMaximizedMode?: number
+```
+
+lazy 模式本地 App runtime 缓存容量；内嵌 Window Manager 默认 4，按 LRU 管理。不是房间 App 数量上限，Slide 保留 runtime 的行为由播放器活动状态管理。
+
+<a id="ae235ff050e954fe0ffd525dc64ebc133"></a>
+
+### builtinAppOptions
+
+```text
+builtinAppOptions?: BuiltinAppOptions
+```
+
+本地内置 App 配置，不同步到房间；其中 Presentation 配置用于恢复存量 App 前注册。
+
+<a id="a2d309b158606df79270e2427bbce5cc7"></a>
+
+### originSize
+
+```text
+originSize?: WindowOriginSize
+```
+
+正数 width/height 组成的归一化参考尺寸。WindowParams 用于 MainView；WindowAppParam 用于 Slide/Presentation 并写入 attributes.originSize。
+
+<a id="ab23cb72b7d4cbb0467517c8c9a57eb5d"></a>
+
+### pageScaleRange
+
+```text
+pageScaleRange?: PageScaleRange
+```
+
+相对适配尺寸的 minScale/maxScale 范围；未配置边界不增加业务限制。
+
+## 函数说明
+
+<a id="a6b01ba18c3f15db7f9c3e85a5203a1ac"></a>
+
+### setContainerSizeRatio
+
+```text
+setContainerSizeRatio(containerSizeRatio: number) : WindowParams
+```
+
+setContainerSizeRatio：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a4edefc885a636cc4c9456c3d3d9eb611"></a>
+
+### setChessboard
+
+```text
+setChessboard(chessboard: boolean) : WindowParams
+```
+
+setChessboard：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="aa72a99ea6b133987e85b651ab21a44ac"></a>
+
+### setDebug
+
+```text
+setDebug(debug: boolean) : WindowParams
+```
+
+setDebug：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a958071891113c42739eabef2b45df0a4"></a>
+
+### setCollectorStyles
+
+```text
+setCollectorStyles(collectorStyles: Record<string, string>) : WindowParams
+```
+
+setCollectorStyles：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a81de4652dd0f89087a759586b53aa014"></a>
+
+### setOverwriteStyles
+
+```text
+setOverwriteStyles(overwriteStyles: string) : WindowParams
+```
+
+setOverwriteStyles：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="ab3598e5c2d28d166de8e33ba0a7c6577"></a>
+
+### setPrefersColorScheme
+
+```text
+setPrefersColorScheme(prefersColorScheme: WindowPrefersColorScheme) : WindowParams
+```
+
+setPrefersColorScheme：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="ad845a8d56feeab8f8224f96d857e483f"></a>
+
+### setFullscreen
+
+```text
+setFullscreen(fullscreen: boolean) : WindowParams
+```
+
+setFullscreen：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a173def2f13e4429bc1a851e167e270c9"></a>
+
+### setPolling
+
+```text
+setPolling(polling: boolean) : WindowParams
+```
+
+setPolling：WindowParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a4532380efbecae7df58d5d27072b0d4a"></a>
+
+### setUseBoxesStatus
+
+```text
+setUseBoxesStatus(useBoxesStatus: boolean) : WindowParams
+```
+
+每个窗口独立同步最大化/最小化状态；在入房前配置，同房间客户端保持一致。与 forceMaximized 策略不兼容。
+
+<a id="a8df213ed8c855704d496d49262e04253"></a>
+
+### setForceMaximized
+
+```text
+setForceMaximized(forceMaximized: boolean) : WindowParams
+```
+
+房间级强制最大化；可写端开启后同步到房间。两者不能同时生效；继承房间强制最大化或有效 lazy 模式时忽略本地 useBoxesStatus，否则同时请求两者时独立窗口状态优先。
+
+<a id="a5b15e09b0d9dd136bb6b862bab344546"></a>
+
+### setLazySetupInMaximizedMode
+
+```text
+setLazySetupInMaximizedMode(lazySetupInMaximizedMode: boolean) : WindowParams
+```
+
+本地按焦点初始化 App；仅在房间已强制最大化且处于 maximized/minimized 时生效，否则使用 eager 初始化。默认关闭。
+
+<a id="ad9c5990088ff829956d14f2d6d11d223"></a>
+
+### setMaxCachedAppsInMaximizedMode
+
+```text
+setMaxCachedAppsInMaximizedMode(maxCachedAppsInMaximizedMode: number) : WindowParams
+```
+
+lazy 模式本地 App runtime 缓存容量；内嵌 Window Manager 默认 4，按 LRU 管理。不是房间 App 数量上限，Slide 保留 runtime 的行为由播放器活动状态管理。
+
+<a id="a44b03b00f0fc68f1bc8407ee63f0bda2"></a>
+
+### setBuiltinAppOptions
+
+```text
+setBuiltinAppOptions(builtinAppOptions: BuiltinAppOptions) : WindowParams
+```
+
+本地内置 App 配置，不同步到房间；其中 Presentation 配置用于恢复存量 App 前注册。
+
+<a id="ac8ea3904ac7c81547b8c63deefca3aa5"></a>
+
+### setOriginSize
+
+```text
+setOriginSize(originSize: WindowOriginSize) : WindowParams
+```
+
+正数 width/height 组成的归一化参考尺寸。WindowParams 用于 MainView；WindowAppParam 用于 Slide/Presentation 并写入 attributes.originSize。
+
+<a id="ae7f57e95df345ebd84b2f500cb1436b6"></a>
+
+### setPageScaleRange
+
+```text
+setPageScaleRange(pageScaleRange: PageScaleRange) : WindowParams
+```
+
+相对适配尺寸的 minScale/maxScale 范围；未配置边界不增加业务限制。

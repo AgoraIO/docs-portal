@@ -2,229 +2,199 @@
 title: WhitePlayerEventDelegate Protocol Reference
 _migration:
   type: generated-html
-  status: migrated
+  status: warning
   sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/ios/Protocols/WhitePlayerEventDelegate
   sourcePath: html-docs/whiteboard/iOS/Protocols/WhitePlayerEventDelegate.html
   generator: appledoc
-  warnings: []
+  warnings:
+    - code: empty-source-code
+      severity: info
+      message: >-
+        The legacy source code block is empty; its stable anchor was preserved and the empty fence
+        was omitted.
 ---
 
-| Conforms to | NSObject |
-| --- | --- |
-| Declared in | WhitePlayerEvent.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@protocol WhitePlayerEventDelegate &lt;NSObject&gt;
 
-## Overview
+## 成员
 
-白板回放的回调。
-
-<a id="tasks"></a>
+- [phaseChanged:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/phaseChanged:)
+- [loadFirstFrame](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/loadFirstFrame)
+- [sliceChanged:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/sliceChanged:)
+- [playerStateChanged:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/playerStateChanged:)
+- [stoppedWithError:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/stoppedWithError:)
+- [scheduleTimeChanged:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/scheduleTimeChanged:)
+- [errorWhenAppendFrame:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/errorWhenAppendFrame:)
+- [errorWhenRender:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/errorWhenRender:)
+- [fireMagixEvent:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/fireMagixEvent:)
+- [fireHighFrequencyEvent:](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/protocols/white-player-event-delegate#//api/name/fireHighFrequencyEvent:)
 
 <a id="//api/name/phaseChanged:"></a>
 
-### `– phaseChanged:`
 
-播放状态切换回调。
+<a id="tasks"></a>
+
+### `– phaseChanged:`
 
 <ApiSignature>
 
-\- (void)phaseChanged:(WhitePlayerPhase)*phase*
+\- (void)phaseChanged:(WhitePlayerPhase)phase;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="phase">
+```text
+播放状态切换回调。
+ @param phase 白板回放的播放状态。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
+```
 
-白板回放的播放状态。详见 [WhitePlayer](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player)。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/loadFirstFrame"></a>
 
 ### `– loadFirstFrame`
 
-首帧加载回调。
-
 <ApiSignature>
 
-\- (void)loadFirstFrame
+\- (void)loadFirstFrame;
 
 </ApiSignature>
 
-#### Declared In
+```text
+首帧加载回调。
+```
 
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
+
+<a id="//api/name/sliceChanged:"></a>
+
+### `– sliceChanged:`
+
+<ApiSignature>
+
+\- (void)sliceChanged:(NSString *)slice;
+
+</ApiSignature>
+
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/playerStateChanged:"></a>
 
 ### `– playerStateChanged:`
 
-回放状态发生变化的回调，只会包含实际发生改变的属性。
-
 <ApiSignature>
 
-\- (void)playerStateChanged:(WhitePlayerState *)*modifyState*
+\- (void)playerStateChanged:(WhitePlayerState *)modifyState;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="modifyState">
+```text
+回放状态发生变化的回调，只会包含实际发生改变的属性。
+ @param modifyState 白板回放已经改变的的状态。详见 [WhitePlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-state)。
+```
 
-白板回放已经改变的的状态。详见 [WhitePlayerState](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-player-state)。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/stoppedWithError:"></a>
 
 ### `– stoppedWithError:`
 
-出错导致回放暂停的回调。
-
 <ApiSignature>
 
-\- (void)stoppedWithError:(NSError *)*error*
+\- (void)stoppedWithError:(NSError *)error;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="error">
+```text
+出错导致回放暂停的回调。
+ @param error 错误信息。
+```
 
-错误信息。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/scheduleTimeChanged:"></a>
 
 ### `– scheduleTimeChanged:`
 
-回放进度发生变化回调。
-
 <ApiSignature>
 
-\- (void)scheduleTimeChanged:(NSTimeInterval)*time*
+\- (void)scheduleTimeChanged:(NSTimeInterval)time;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="time">
+```text
+回放进度发生变化回调。
+ @param time 回放进度（s）。
+```
 
-回放进度（s）。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/errorWhenAppendFrame:"></a>
 
 ### `– errorWhenAppendFrame:`
 
-添加帧出错的回调。
-
 <ApiSignature>
 
-\- (void)errorWhenAppendFrame:(NSError *)*error*
+\- (void)errorWhenAppendFrame:(NSError *)error;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="error">
+```text
+添加帧出错的回调。
+ @param error 错误信息。
+```
 
-错误信息。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/errorWhenRender:"></a>
 
 ### `– errorWhenRender:`
 
-渲染时出错的回调。
-
 <ApiSignature>
 
-\- (void)errorWhenRender:(NSError *)*error*
+\- (void)errorWhenRender:(NSError *)error;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="error">
+```text
+渲染时出错的回调。
+ @param error 错误信息。
+```
 
-错误信息。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/fireMagixEvent:"></a>
 
 ### `– fireMagixEvent:`
 
-白板自定义事件回调。
-
 <ApiSignature>
 
-\- (void)fireMagixEvent:(WhiteEvent *)*event*
+\- (void)fireMagixEvent:(WhiteEvent *)event;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="event">
+```text
+白板自定义事件回调。
+ @param event 白板自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
+```
 
-白板自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
-
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h
 
 <a id="//api/name/fireHighFrequencyEvent:"></a>
 
 ### `– fireHighFrequencyEvent:`
 
-高频自定义事件一次性回调。
-
 <ApiSignature>
 
-\- (void)fireHighFrequencyEvent:(NSArray&lt;WhiteEvent*&gt; *)*events*
+\- (void)fireHighFrequencyEvent:(NSArray&lt;WhiteEvent *&gt;*)events;
 
 </ApiSignature>
 
-<ParameterList title="Parameters">
-<Parameter name="events">
+```text
+高频自定义事件一次性回调。
 
-高频自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
+ @param events 高频自定义事件。详见 [WhiteEvent](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-event)。
+```
 
-</Parameter>
-</ParameterList>
-
-#### Declared In
-
-`WhitePlayerEvent.h`
+Declared in Replayer/WhitePlayerEvent.h

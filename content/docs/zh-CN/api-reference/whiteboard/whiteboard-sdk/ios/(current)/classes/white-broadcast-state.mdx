@@ -9,66 +9,65 @@ _migration:
   warnings: []
 ---
 
-| Inherits from | WhiteObject |
-| --- | --- |
-| Declared in | WhiteBroadcastState.h |
+Whiteboard iOS SDK 2.16.147 公开接口。
 
-<a id="overview"></a>
+@interface WhiteBroadcastState: WhiteObject
 
-## Overview
+## 成员
 
-视角状态，包含视角为主播模式的用户信息。
-
-<a id="tasks"></a>
+- [viewMode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcast-state#//api/name/viewMode)
+- [broadcasterId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcast-state#//api/name/broadcasterId)
+- [broadcasterInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcast-state#//api/name/broadcasterInformation)
 
 <a id="//api/name/viewMode"></a>
 
-### `viewMode`
 
-主播模式用户的视角模式。
+<a id="tasks"></a>
+
+### `viewMode`
 
 <ApiSignature>
 
-@property (nonatomic, assign, readonly) WhiteViewMode viewMode
+@property (nonatomic, assign, readonly) WhiteViewMode viewMode;
 
 </ApiSignature>
 
-#### Declared In
+```text
+主播模式用户的视角模式。
+```
 
-`WhiteBroadcastState.h`
+Declared in Room/WhiteBroadcastState.h
 
 <a id="//api/name/broadcasterId"></a>
 
 ### `broadcasterId`
 
-主播模式用户在房间中的用户 ID。详见 [WhiteBroadcasterInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcaster-information)。
-
 <ApiSignature>
 
-@property (nonatomic, assign, nullable, readonly) NSNumber *broadcasterId
+@property (nonatomic, assign, nullable, readonly) NSNumber *broadcasterId;
 
 </ApiSignature>
 
-#### Availability
+```text
+主播模式用户在房间中的用户 ID。详见 [WhiteBroadcasterInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcaster-information)。
 
-2.4.7
+ @since 2.4.7
+```
 
-#### Declared In
-
-`WhiteBroadcastState.h`
+Declared in Room/WhiteBroadcastState.h
 
 <a id="//api/name/broadcasterInformation"></a>
 
 ### `broadcasterInformation`
 
-主播模式用户的用户信息。详见 [WhiteBroadcasterInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcaster-information)。
-
 <ApiSignature>
 
-@property (nonatomic, strong, nullable, readonly) WhiteBroadcasterInformation *broadcasterInformation
+@property (nonatomic, strong, nullable, readonly) WhiteBroadcasterInformation *broadcasterInformation;
 
 </ApiSignature>
 
-#### Declared In
+```text
+主播模式用户的用户信息。详见 [WhiteBroadcasterInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/classes/white-broadcaster-information)。
+```
 
-`WhiteBroadcastState.h`
+Declared in Room/WhiteBroadcastState.h

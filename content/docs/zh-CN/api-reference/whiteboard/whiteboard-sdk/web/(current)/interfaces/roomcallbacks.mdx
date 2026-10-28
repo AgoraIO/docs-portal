@@ -1,0 +1,80 @@
+---
+title: RoomCallbacks
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/roomcallbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/roomcallbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type RoomCallbacks = DisplayerCallbacks & {
+    /**
+     * 已经建立 WebSocket 连接，将要进入初始化阶段。
+     *
+     * @param duration 建立连接的时间，单位是毫秒
+     */
+    onConnection: (duration: number)=>void;
+    /**
+     * 表明 ``room.phase`` 发生了变化。
+     * 它会传一个 ``phase`` 参数，其含义可参考[《实时房间状态管理》](/document-zh/home/room-state-management)。
+     */
+    onPhaseChanged: (phase: RoomPhase)=>void;
+    /**
+     * 表明 ``room.state`` 发生了变化。
+     * 具体参考[《房间与回放的业务状态管理》](/javascript-zh/home/business-state-management)。
+     */
+    onRoomStateChanged: (modifyState: Partial<RoomState>)=>void;
+    /**
+     * 实时房间出错了，并因此断开了连接
+     */
+    onDisconnectWithError: (error: Error)=>void;
+    /**
+     * 当前场景里的元素数量触发了限制，当 ``soft`` 为 ``true`` 时触发软限制（此时仍可插入元素），否则无法再添加元素且房间状态会被强制回退。
+     */
+    onObjectsLimit: (limit: number, soft: boolean)=>void;
+    /**
+     * 被提出房间，并因此断开了连接。
+     *
+     * @param reason 被踢出房间的原因
+     *
+     * | ``reason`` 字段 | 描述                          |
+     * | :--------------| :--------------------------- |
+     * | kickByAdmin    | 被管理员踢出                   |
+     * | roomDelete     | 房间被删除                     |
+     * | roomZombie     | 房间不活跃                     |
+     * | roomBan        | 房间被封禁                     |
+     * | GatewayAdjust  | 网关调整                       |
+     * | replaceByOther | 被另一个用户顶替，当前用户被迫下线 |
+     * | crash          | 服务器崩溃                     |
+     */
+    onKickedWithReason: (reason: string)=>void;
+    /**
+     * 表明 ``room.canUndoSteps`` 发生了变化
+     */
+    onCanUndoStepsUpdate: (canUndoSteps: number)=>void;
+    /**
+     * 表明 ``room.canRedoSteps`` 发生了变化
+     */
+    onCanRedoStepsUpdate: (canUndoSteps: number)=>void;
+    /**
+     * 拦截器，声明是否拦截掉白板的监听的键盘事件，若返回 ``true`` 则拦截掉。拦截掉后，该键盘事件不会引发白板的业务响应。
+     */
+    willInterceptKeyboardEvent: (event: KeyboardEvent)=>boolean;
+    /**
+     * 白板监听到了键盘按下事件。
+     */
+    onKeyDown: (event: KeyboardEvent)=>void;
+    /**
+     * 白板监听到了键盘松开事件。
+     */
+    onKeyUp: (event: KeyboardEvent)=>void;
+    /**
+     * 白板监听到了快捷键事件
+     */
+    onActiveHotkey: (hotKey: string)=>void;
+};
+```

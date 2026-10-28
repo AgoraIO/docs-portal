@@ -1,0 +1,28 @@
+---
+title: PPTTaskCallbacks
+description: Whiteboard Web SDK 2.16.59 公开 type。
+_migration:
+  type: generated-html
+  status: migrated
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/ppttaskcallbacks
+  sourcePath: html-docs/whiteboard/Web/interfaces/ppttaskcallbacks.html
+  generator: typedoc
+  warnings: []
+---
+
+```ts
+export declare type PPTTaskCallbacks = {
+    /**
+     * 转换任务的进度状态更新
+     */
+    onProgressUpdated: (progress: PPTTaskProgress)=>void;
+    /**
+     * 转换任务成功
+     */
+    onTaskSuccess: (result: PPT)=>void;
+    /**
+     * 转换任务失败
+     */
+    onTaskFail: (error: Error)=>void;
+};
+```

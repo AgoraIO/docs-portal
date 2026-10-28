@@ -1,5 +1,5 @@
 ---
-title: com.herewhite.sdk.RoomParams类 参考
+title: com.herewhite.sdk.RoomParams class 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
@@ -8,59 +8,465 @@ _migration:
   sourcePath: html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1_room_params.html
   generator: doxygen
   warnings:
-    - code: missing-source-text
+    - code: unresolved-link
       severity: warning
-      message: >-
-        The source image classcom_1_1herewhite_1_1sdk_1_1_room_params.png has no meaningful alt or
-        title text; the converter used contextual alt text "com.herewhite.sdk.RoomParams类 参考 图示".
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000021 as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000020 as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000022 as local text.
-    - code: source-only-link-removed
-      severity: info
-      message: >-
-        Rendered unresolved generated-source link
-        /api-ref/whiteboard/android/deprecated.html#_deprecated000023 as local text.
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
+    - code: unresolved-link
+      severity: warning
+      message: No local target route for /api-ref/whiteboard/android/deprecated.html.
     - code: unresolved-link
       severity: warning
       message: No local target route for /cn/global-accelerator/agora_ga_overview.
 ---
 
-类 com.herewhite.sdk.RoomParams 继承关系图:
-
-![com.herewhite.sdk.RoomParams类 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/750ceb162861-classcom_1_1herewhite_1_1sdk_1_1_room_params.png)
-
 <a id="details"></a>
 
 ## 详细描述
 
-[`RoomParams`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params) 类，用于配置实时房间的参数。
+适用版本：**Whiteboard Android SDK 2.16.134**。
 
-### 注解
+`RoomParams` 类，用于配置实时房间的参数。
 
-[`RoomParams`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params) 类中所有的方法都必须在 `joinRoom` 前调用；成功加入房间后，调用该类中的任何方法都不会生效。
+@note `RoomParams` 类中所有的方法都必须在 `joinRoom` 前调用；成功加入房间后，调用该类中的任何方法都不会生效。
 
-## 构造及析构函数说明
+父类：[WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object)；继承接口详见父类。
+
+## 属性与 JSON 字段
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+| 字段 | 声明 | 源码初值 | 说明 |
+| --- | --- | --- | --- |
+| [uuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ad7d4698cb6a3a5676124447d28560beb) | `String uuid` | 未显式赋值 | <Slot name="api-center-table-0" /> |
+| [roomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ab6123b30eb47ead6fd7bbdb01fde8814) | `String roomToken` | 未显式赋值 | <Slot name="api-center-table-1" /> |
+| [region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a342241d425fd0a5e5cc7eeeb273e1a12) | `Region region` | 未显式赋值 | <Slot name="api-center-table-2" /> |
+| [cameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#aede89d2dad6b4fd7b557619a93b61f11) | `CameraBound cameraBound` | 未显式赋值 | <Slot name="api-center-table-3" /> |
+| [timeout](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#add95df760cc5f007418221ef816434e8) | `long timeout` | 45000 | <Slot name="api-center-table-4" /> |
+| [disableEraseImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#abaf4f91c4b914cd3d2e3266ef2034521) | `boolean disableEraseImage` | false | <Slot name="api-center-table-5" /> |
+| [disableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a577b480f592987fb02ec87de2767792b) | `boolean disableDeviceInputs` | false | <Slot name="api-center-table-6" /> |
+| [disableOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ae4808f289f77f57f918fb4df0b6250f0) | `boolean disableOperations` | false | <Slot name="api-center-table-7" /> |
+| [disableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ae2b8e2130140b095221983699ae25190) | `boolean disableCameraTransform` | false | <Slot name="api-center-table-8" /> |
+| [disableBezier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a2ed278b17e69bee23c6cd6f547ce2169) | `boolean disableBezier` | false | <Slot name="api-center-table-9" /> |
+| [disableNewPencil](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a6db99428eeb4c84ba5db3d1bbcee8c1e) | `boolean disableNewPencil` | true | <Slot name="api-center-table-10" /> |
+| [userPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a337845d163db233df199fa6628e5ae1e) | `Object userPayload` | 未显式赋值 | <Slot name="api-center-table-11" /> |
+| [undoCacheScenesCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a1f125ca75e3e9090eee2e22f9df5be25) | `Integer undoCacheScenesCount` | 未显式赋值 | <Slot name="api-center-table-12" /> |
+| [windowParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#afb6f36176a24f59415f67d0ed32e5c59) | `WindowParams windowParams` | 未显式赋值 | <Slot name="api-center-table-13" /> |
+| [disableTextOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#aa0f5eb36b29d6b3ec313acd71a9c987a) | `boolean disableTextOperations` | false | <Slot name="api-center-table-14" /> |
+| [modulesOrigin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#aae3f8b8816661dbb74ca6137c9f37808) | `String modulesOrigin` | 未显式赋值 | <Slot name="api-center-table-15" /> |
+| [optimizeOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a98a34291ea2338c65c9e1ffa311aafa2) | `RoomOptimizeOptions optimizeOptions` | 未显式赋值 | <Slot name="api-center-table-16" /> |
+| [appliancePluginOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#addd3da5b2adab7f7b78b435af95fe42b) | `AppliancePluginOptions appliancePluginOptions` | 未显式赋值 | <Slot name="api-center-table-17" /> |
+| [disableInitialStateCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a945b25c82203df4a7da5b4a6292bea3f) | `boolean disableInitialStateCallback` | false | <Slot name="api-center-table-18" /> |
+
+<Slot for="api-center-table-0">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-3">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-4">
+
+重连时，最大重连尝试时间，单位：毫秒，默认 45 秒。
+
+</Slot>
+
+<Slot for="api-center-table-5">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-6">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-7">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-8">
+
+禁止设备输入引发的视角变化；不会禁止程序调用支持的视角接口。
+
+</Slot>
+
+<Slot for="api-center-table-9">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-10">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-11">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-12">
+
+撤销/重做保留的场景缓存数量；在入房前配置，未设置时交由内嵌 Web SDK 决定。
+
+</Slot>
+
+<Slot for="api-center-table-13">
+
+多窗口属性
+
+</Slot>
+
+<Slot for="api-center-table-14">
+
+是否关闭 ``insertText``与``updateText`` 操作权限
+
+</Slot>
+
+<Slot for="api-center-table-15">
+
+模型属性；通过对应 getter/setter 访问。
+
+</Slot>
+
+<Slot for="api-center-table-16">
+
+白板渲染优化配置项。
+
+</Slot>
+
+<Slot for="api-center-table-17">
+
+本地绘制插件参数，extras 为配置嵌套层；与启用开关配合使用。
+
+</Slot>
+
+<Slot for="api-center-table-18">
+
+是否禁止初始化时的回调
+
+</Slot>
+
+| 公开成员签名 |  |
+| --- | --- |
+|  | [RoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ada87eefb4b25310cfa6df81038417f58) (String uuid, String roomToken, String uid) |
+|  | [RoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a5aa8c28b510f899e97cf2b26c56e5f48) (String uuid, String roomToken, String uid, MemberInformation memberInfo) |
+|  | [RoomParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a625545247367efb54b7d799dd19bffc2) (String uuid, String roomToken, String uid, Object userPayload) |
+| Region | [getRegion](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a7b068e0e3ab5e20b3ba216d2e6156124) () |
+| void | [setRegion](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#affd817d704b87cee8c9aa38697d459c7) (Region region) |
+| boolean | [isWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a46ee2c4da1611653b0d20e5080bc7636) () |
+| void | [setWritable](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a9dbc3e05cc1229492c3f91ce48b305cd) (boolean writable) |
+| boolean | [getDisableEraseImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a35f2724130ce493f7bbbdaa8665e28de) () |
+| void | [setDisableEraseImage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a580315c5bf3976be29a97acb90261331) (boolean disableEraseImage) |
+| void | [setTimeout](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a3f7054556c1f72ac03f754538b55e5c0) (long timeout, TimeUnit timeUnit) |
+| boolean | [isDisableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a02b980237de8d8e9d91b4ebc5bf63887) () |
+| void | [setDisableDeviceInputs](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a0be8c01908f2826302fb50ce5c98c0e1) (boolean disableDeviceInputs) |
+| boolean | [isDisableOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a94cc0f493d873a3ba55caffb70b0f0cf) () |
+| void | [setDisableOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#acf4a08b32a536804e91c4dd22f476a04) (boolean disableOperations) |
+| boolean | [isDisableBezier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ac4ed37a313c3087cb24170ca6435ff2f) () |
+| void | [setDisableBezier](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a6190fcaaf5dbea2b394cf5c73c9fa411) (boolean disableBezier) |
+| boolean | [isDisableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ade13f69996cb32fd94120c46d8b0af0c) () |
+| void | [setDisableCameraTransform](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a891549135084e1b843281a099c2c0561) (boolean disableCameraTransform) |
+| boolean | [isDisableNewPencil](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a3b6b4fd252c282c685e217109eeb60c5) () |
+| void | [setDisableNewPencil](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a49c41b2dfd21f764d6e3ff63ca09f19d) (boolean disableNewPencil) |
+| CameraBound | [getCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#afd4fb99429b98be70014888b7a9286b6) () |
+| void | [setCameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a068607b4928ceef7265db739fa4e3cb8) (CameraBound cameraBound) |
+| Object | [getUserPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a9b6f02c4298339cc91ce8f88576f3049) () |
+| void | [setUserPayload](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a17c8130727ea71cdeca6c3c2362cc0b7) (Object userPayload) |
+| MemberInformation | [getMemberInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#abb2f190ee04cbfcb95001ee3cd29c1d1) () |
+| void | [setMemberInfo](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ac3d609dd67f195eb947fa4a19abcfa37) (MemberInformation memberInfo) |
+| String | [getUuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a0f9c1507ca1f9e7c35d0b11f6801eb60) () |
+| void | [setUuid](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a59c71a74ef95003eb7fe1a3a1783c290) (String uuid) |
+| String | [getRoomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a5752788874ff70d8e732c3105be828fb) () |
+| void | [setRoomToken](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a6630be6ab3d486467c80ae7d8ee2c4a8) (String roomToken) |
+| Integer | [getUndoCacheScenesCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a1e14e97d7d1b5055ecf3d819ad3920af) () |
+| void | [setUndoCacheScenesCount](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#af271a742fcbce32a60b15db9871a63c0) (Integer undoCacheScenesCount) |
+| WindowParams | [getWindowParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a4a60b886a9e4149256d78df36a51be4c) () |
+| void | [setWindowParams](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a8d2a306a66f7f2a7f4f3d32a987b8f63) (WindowParams windowParams) |
+| boolean | [isDisableTextOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a4c580bf300660445105a94e18217108a) () |
+| void | [setDisableTextOperations](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a638a9fe6f428d2821f0b3a07de0bed71) (boolean disableTextOperations) |
+| boolean | [isUseNativeWebSocket](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ad5a9e486b8d4729382f3e4b4d8895859) () |
+| void | [setUseNativeWebSocket](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a366cbea6a84e8c73e8425153fd40fe16) (boolean nativeWebSocket) |
+| boolean | [isUsingFloatBar](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a3f7bff7cbb7a7f7fb5e7b185a9bd8eac) () |
+| void | [setUsingFloatBar](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a62a0c199916003f9745a509081fc64ab) (boolean floatBar) |
+| String | [getModulesOrigin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#aa8e1d1c2aa0e00f942d91c01e1bc751a) () |
+| void | [setModulesOrigin](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ab55b1761e938355bb3fecf6ea3418bb5) (String modulesOrigin) |
+| RoomOptimizeOptions | [getOptimizeOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#abdf298203235b04c112f30e453f0e748) () |
+| void | [setOptimizeOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a31d0567336c0fd36819ecc7091d69663) (RoomOptimizeOptions optimizeOptions) |
+| boolean | [isDisableInitialStateCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a6623f523165cea86c4d0b91595c8f62b) () |
+| void | [setDisableInitialStateCallback](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ad400a36cae5a169fbd2e3b50df6d8e50) (boolean disableInitialStateCallback) |
+| AppliancePluginOptions | [getAppliancePluginOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#ab93b46b37acf427c12c74d4e7cfd192e) () |
+| void | [setAppliancePluginOptions](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-room-params#a5121f17e30594201381fec68dbd02250) (AppliancePluginOptions appliancePluginOptions) |
+
+## 变量说明
+
+<a id="ad7d4698cb6a3a5676124447d28560beb"></a>
+
+### uuid
+
+```text
+String uuid
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ab6123b30eb47ead6fd7bbdb01fde8814"></a>
+
+### roomToken
+
+```text
+String roomToken
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a342241d425fd0a5e5cc7eeeb273e1a12"></a>
+
+### region
+
+```text
+Region region
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="aede89d2dad6b4fd7b557619a93b61f11"></a>
+
+### cameraBound
+
+```text
+CameraBound cameraBound
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="add95df760cc5f007418221ef816434e8"></a>
+
+### timeout
+
+```text
+long timeout
+```
+
+源码初值：45000
+
+重连时，最大重连尝试时间，单位：毫秒，默认 45 秒。
+
+<a id="abaf4f91c4b914cd3d2e3266ef2034521"></a>
+
+### disableEraseImage
+
+```text
+boolean disableEraseImage
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a577b480f592987fb02ec87de2767792b"></a>
+
+### disableDeviceInputs
+
+```text
+boolean disableDeviceInputs
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ae4808f289f77f57f918fb4df0b6250f0"></a>
+
+### disableOperations
+
+```text
+boolean disableOperations
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="ae2b8e2130140b095221983699ae25190"></a>
+
+### disableCameraTransform
+
+```text
+boolean disableCameraTransform
+```
+
+源码初值：false
+
+禁止设备输入引发的视角变化；不会禁止程序调用支持的视角接口。
+
+<a id="a2ed278b17e69bee23c6cd6f547ce2169"></a>
+
+### disableBezier
+
+```text
+boolean disableBezier
+```
+
+源码初值：false
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a6db99428eeb4c84ba5db3d1bbcee8c1e"></a>
+
+### disableNewPencil
+
+```text
+boolean disableNewPencil
+```
+
+源码初值：true
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a337845d163db233df199fa6628e5ae1e"></a>
+
+### userPayload
+
+```text
+Object userPayload
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a1f125ca75e3e9090eee2e22f9df5be25"></a>
+
+### undoCacheScenesCount
+
+```text
+Integer undoCacheScenesCount
+```
+
+源码初值：未显式赋值
+
+撤销/重做保留的场景缓存数量；在入房前配置，未设置时交由内嵌 Web SDK 决定。
+
+<a id="afb6f36176a24f59415f67d0ed32e5c59"></a>
+
+### windowParams
+
+```text
+WindowParams windowParams
+```
+
+源码初值：未显式赋值
+
+多窗口属性
+
+<a id="aa0f5eb36b29d6b3ec313acd71a9c987a"></a>
+
+### disableTextOperations
+
+```text
+boolean disableTextOperations
+```
+
+源码初值：false
+
+是否关闭 ``insertText``与``updateText`` 操作权限
+
+<a id="aae3f8b8816661dbb74ca6137c9f37808"></a>
+
+### modulesOrigin
+
+```text
+String modulesOrigin
+```
+
+源码初值：未显式赋值
+
+模型属性；通过对应 getter/setter 访问。
+
+<a id="a98a34291ea2338c65c9e1ffa311aafa2"></a>
+
+### optimizeOptions
+
+```text
+RoomOptimizeOptions optimizeOptions
+```
+
+源码初值：未显式赋值
+
+白板渲染优化配置项。
+
+<a id="addd3da5b2adab7f7b78b435af95fe42b"></a>
+
+### appliancePluginOptions
+
+```text
+AppliancePluginOptions appliancePluginOptions
+```
+
+源码初值：未显式赋值
+
+本地绘制插件参数，extras 为配置嵌套层；与启用开关配合使用。
+
+<a id="a945b25c82203df4a7da5b4a6292bea3f"></a>
+
+### disableInitialStateCallback
+
+```text
+boolean disableInitialStateCallback
+```
+
+源码初值：false
+
+是否禁止初始化时的回调
+
+## 函数说明
 
 <a id="ada87eefb4b25310cfa6df81038417f58"></a>
 
-### RoomParams() [1/3]
+### RoomParams()
 
 <ApiSignature>
 
-com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, String *uid*)
+RoomParams(String uuid, String roomToken, String uid)
 
 </ApiSignature>
 
@@ -86,11 +492,11 @@ com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, Strin
 
 <a id="a5aa8c28b510f899e97cf2b26c56e5f48"></a>
 
-### RoomParams() [2/3]
+### RoomParams()
 
 <ApiSignature>
 
-com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, String *uid*, [MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) *memberInfo*)
+RoomParams(String uuid, String roomToken, String uid, MemberInformation memberInfo)
 
 </ApiSignature>
 
@@ -127,11 +533,11 @@ com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, Strin
 
 <a id="a625545247367efb54b7d799dd19bffc2"></a>
 
-### RoomParams() [3/3]
+### RoomParams()
 
 <ApiSignature>
 
-com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, String *uid*, Object *userPayload*)
+RoomParams(String uuid, String roomToken, String uid, Object userPayload)
 
 </ApiSignature>
 
@@ -164,7 +570,21 @@ com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, Strin
 </Parameter>
 </ParameterList>
 
-## 成员函数说明
+<a id="a7b068e0e3ab5e20b3ba216d2e6156124"></a>
+
+### getRegion()
+
+<ApiSignature>
+
+Region getRegion()
+
+</ApiSignature>
+
+获取设置的数据中心。
+
+<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
+
+设置的数据中心，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。
 
 <a id="affd817d704b87cee8c9aa38697d459c7"></a>
 
@@ -172,7 +592,7 @@ com.herewhite.sdk.RoomParams.RoomParams(String *uuid*, String *roomToken*, Strin
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setRegion([Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) *region*)
+void setRegion(Region region)
 
 </ApiSignature>
 
@@ -191,29 +611,13 @@ void com.herewhite.sdk.RoomParams.setRegion([Region](/zh-CN/api-reference/whiteb
 </Parameter>
 </ParameterList>
 
-<a id="a7b068e0e3ab5e20b3ba216d2e6156124"></a>
-
-### getRegion()
-
-<ApiSignature>
-
-[Region](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region) com.herewhite.sdk.RoomParams.getRegion()
-
-</ApiSignature>
-
-获取设置的数据中心。
-
-<h4 data-toc-hidden="true" id={"返回值"}>返回值</h4>
-
-设置的数据中心，详见 [`Region`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/enumcom-1-1herewhite-1-1sdk-1-1domain-1-1-region)。
-
 <a id="a46ee2c4da1611653b0d20e5080bc7636"></a>
 
 ### isWritable()
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.isWritable()
+boolean isWritable()
 
 </ApiSignature>
 
@@ -232,7 +636,7 @@ boolean com.herewhite.sdk.RoomParams.isWritable()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setWritable(boolean *writable*)
+void setWritable(boolean writable)
 
 </ApiSignature>
 
@@ -260,7 +664,7 @@ void com.herewhite.sdk.RoomParams.setWritable(boolean *writable*)
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.getDisableEraseImage()
+boolean getDisableEraseImage()
 
 </ApiSignature>
 
@@ -279,7 +683,7 @@ boolean com.herewhite.sdk.RoomParams.getDisableEraseImage()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setDisableEraseImage(boolean *disableEraseImage*)
+void setDisableEraseImage(boolean disableEraseImage)
 
 </ApiSignature>
 
@@ -304,7 +708,7 @@ void com.herewhite.sdk.RoomParams.setDisableEraseImage(boolean *disableEraseImag
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setTimeout(long *timeout*, TimeUnit *timeUnit*)
+void setTimeout(long timeout, TimeUnit timeUnit)
 
 </ApiSignature>
 
@@ -329,7 +733,7 @@ void com.herewhite.sdk.RoomParams.setTimeout(long *timeout*, TimeUnit *timeUnit*
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.isDisableDeviceInputs()
+boolean isDisableDeviceInputs()
 
 </ApiSignature>
 
@@ -348,7 +752,7 @@ boolean com.herewhite.sdk.RoomParams.isDisableDeviceInputs()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setDisableDeviceInputs(boolean *disableDeviceInputs*)
+void setDisableDeviceInputs(boolean disableDeviceInputs)
 
 </ApiSignature>
 
@@ -375,7 +779,7 @@ void com.herewhite.sdk.RoomParams.setDisableDeviceInputs(boolean *disableDeviceI
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.isDisableOperations()
+boolean isDisableOperations()
 
 </ApiSignature>
 
@@ -394,7 +798,7 @@ boolean com.herewhite.sdk.RoomParams.isDisableOperations()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setDisableOperations(boolean *disableOperations*)
+void setDisableOperations(boolean disableOperations)
 
 </ApiSignature>
 
@@ -429,7 +833,7 @@ void com.herewhite.sdk.RoomParams.setDisableOperations(boolean *disableOperation
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.isDisableBezier()
+boolean isDisableBezier()
 
 </ApiSignature>
 
@@ -448,7 +852,7 @@ boolean com.herewhite.sdk.RoomParams.isDisableBezier()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setDisableBezier(boolean *disableBezier*)
+void setDisableBezier(boolean disableBezier)
 
 </ApiSignature>
 
@@ -475,7 +879,7 @@ void com.herewhite.sdk.RoomParams.setDisableBezier(boolean *disableBezier*)
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.isDisableCameraTransform()
+boolean isDisableCameraTransform()
 
 </ApiSignature>
 
@@ -494,7 +898,7 @@ boolean com.herewhite.sdk.RoomParams.isDisableCameraTransform()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setDisableCameraTransform(boolean *disableCameraTransform*)
+void setDisableCameraTransform(boolean disableCameraTransform)
 
 </ApiSignature>
 
@@ -517,7 +921,7 @@ void com.herewhite.sdk.RoomParams.setDisableCameraTransform(boolean *disableCame
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.isDisableNewPencil()
+boolean isDisableNewPencil()
 
 </ApiSignature>
 
@@ -536,7 +940,7 @@ boolean com.herewhite.sdk.RoomParams.isDisableNewPencil()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setDisableNewPencil(boolean *disableNewPencil*)
+void setDisableNewPencil(boolean disableNewPencil)
 
 </ApiSignature>
 
@@ -572,7 +976,7 @@ void com.herewhite.sdk.RoomParams.setDisableNewPencil(boolean *disableNewPencil*
 
 <ApiSignature>
 
-[CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) com.herewhite.sdk.RoomParams.getCameraBound()
+CameraBound getCameraBound()
 
 </ApiSignature>
 
@@ -588,7 +992,7 @@ void com.herewhite.sdk.RoomParams.setDisableNewPencil(boolean *disableNewPencil*
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setCameraBound([CameraBound](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-camera-bound) *cameraBound*)
+void setCameraBound(CameraBound cameraBound)
 
 </ApiSignature>
 
@@ -612,7 +1016,7 @@ void com.herewhite.sdk.RoomParams.setCameraBound([CameraBound](/zh-CN/api-refere
 
 <ApiSignature>
 
-Object com.herewhite.sdk.RoomParams.getUserPayload()
+Object getUserPayload()
 
 </ApiSignature>
 
@@ -628,7 +1032,7 @@ Object com.herewhite.sdk.RoomParams.getUserPayload()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setUserPayload(Object *userPayload*)
+void setUserPayload(Object userPayload)
 
 </ApiSignature>
 
@@ -658,7 +1062,7 @@ void com.herewhite.sdk.RoomParams.setUserPayload(Object *userPayload*)
 
 <ApiSignature>
 
-[MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) com.herewhite.sdk.RoomParams.getMemberInfo()
+MemberInformation getMemberInfo()
 
 </ApiSignature>
 
@@ -680,7 +1084,7 @@ void com.herewhite.sdk.RoomParams.setUserPayload(Object *userPayload*)
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setMemberInfo([MemberInformation](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-member-information) *memberInfo*)
+void setMemberInfo(MemberInformation memberInfo)
 
 </ApiSignature>
 
@@ -706,7 +1110,7 @@ void com.herewhite.sdk.RoomParams.setMemberInfo([MemberInformation](/zh-CN/api-r
 
 <ApiSignature>
 
-String com.herewhite.sdk.RoomParams.getUuid()
+String getUuid()
 
 </ApiSignature>
 
@@ -722,7 +1126,7 @@ String com.herewhite.sdk.RoomParams.getUuid()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setUuid(String *uuid*)
+void setUuid(String uuid)
 
 </ApiSignature>
 
@@ -742,7 +1146,7 @@ void com.herewhite.sdk.RoomParams.setUuid(String *uuid*)
 
 <ApiSignature>
 
-String com.herewhite.sdk.RoomParams.getRoomToken()
+String getRoomToken()
 
 </ApiSignature>
 
@@ -758,7 +1162,7 @@ String com.herewhite.sdk.RoomParams.getRoomToken()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setRoomToken(String *roomToken*)
+void setRoomToken(String roomToken)
 
 </ApiSignature>
 
@@ -772,13 +1176,104 @@ void com.herewhite.sdk.RoomParams.setRoomToken(String *roomToken*)
 </Parameter>
 </ParameterList>
 
+<a id="a1e14e97d7d1b5055ecf3d819ad3920af"></a>
+
+### getUndoCacheScenesCount()
+
+<ApiSignature>
+
+Integer getUndoCacheScenesCount()
+
+</ApiSignature>
+
+撤销/重做保留的场景缓存数量；在入房前配置，未设置时交由内嵌 Web SDK 决定。
+
+<a id="af271a742fcbce32a60b15db9871a63c0"></a>
+
+### setUndoCacheScenesCount()
+
+<ApiSignature>
+
+void setUndoCacheScenesCount(Integer undoCacheScenesCount)
+
+</ApiSignature>
+
+撤销/重做保留的场景缓存数量；在入房前配置，未设置时交由内嵌 Web SDK 决定。
+
+<a id="a4a60b886a9e4149256d78df36a51be4c"></a>
+
+### getWindowParams()
+
+<ApiSignature>
+
+WindowParams getWindowParams()
+
+</ApiSignature>
+
+getWindowParams：com.herewhite.sdk.RoomParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a8d2a306a66f7f2a7f4f3d32a987b8f63"></a>
+
+### setWindowParams()
+
+<ApiSignature>
+
+void setWindowParams(WindowParams windowParams)
+
+</ApiSignature>
+
+setWindowParams：com.herewhite.sdk.RoomParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a4c580bf300660445105a94e18217108a"></a>
+
+### isDisableTextOperations()
+
+<ApiSignature>
+
+boolean isDisableTextOperations()
+
+</ApiSignature>
+
+isDisableTextOperations：com.herewhite.sdk.RoomParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a638a9fe6f428d2821f0b3a07de0bed71"></a>
+
+### setDisableTextOperations()
+
+<ApiSignature>
+
+void setDisableTextOperations(boolean disableTextOperations)
+
+</ApiSignature>
+
+setDisableTextOperations：com.herewhite.sdk.RoomParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="ad5a9e486b8d4729382f3e4b4d8895859"></a>
+
+### isUseNativeWebSocket()
+
+<ApiSignature>
+
+boolean isUseNativeWebSocket()
+
+</ApiSignature>
+
+获取是否开启全链路加速功能。
+
+<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
+
+是否开启全链路加速功能：
+
+- `true`：开启。
+- `false`：关闭。
+
 <a id="a366cbea6a84e8c73e8425153fd40fe16"></a>
 
 ### setUseNativeWebSocket()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setUseNativeWebSocket(boolean *nativeWebSocket*)
+void setUseNativeWebSocket(boolean nativeWebSocket)
 
 </ApiSignature>
 
@@ -797,32 +1292,13 @@ Agora 互动白板服务集成了 Agora 全链路加速（FPA）服务。 集成
 </Parameter>
 </ParameterList>
 
-<a id="ad5a9e486b8d4729382f3e4b4d8895859"></a>
-
-### isUseNativeWebSocket()
-
-<ApiSignature>
-
-boolean com.herewhite.sdk.RoomParams.isUseNativeWebSocket()
-
-</ApiSignature>
-
-获取是否开启全链路加速功能。
-
-<h4 data-toc-hidden="true" id={"返回值-13"}>返回值</h4>
-
-是否开启全链路加速功能：
-
-- `true`：开启。
-- `false`：关闭。
-
 <a id="a3f7bff7cbb7a7f7fb5e7b185a9bd8eac"></a>
 
 ### isUsingFloatBar()
 
 <ApiSignature>
 
-boolean com.herewhite.sdk.RoomParams.isUsingFloatBar()
+boolean isUsingFloatBar()
 
 </ApiSignature>
 
@@ -841,7 +1317,7 @@ boolean com.herewhite.sdk.RoomParams.isUsingFloatBar()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setUsingFloatBar(boolean *floatBar*)
+void setUsingFloatBar(boolean floatBar)
 
 </ApiSignature>
 
@@ -864,7 +1340,7 @@ void com.herewhite.sdk.RoomParams.setUsingFloatBar(boolean *floatBar*)
 
 <ApiSignature>
 
-String com.herewhite.sdk.RoomParams.getModulesOrigin()
+String getModulesOrigin()
 
 </ApiSignature>
 
@@ -880,7 +1356,7 @@ String com.herewhite.sdk.RoomParams.getModulesOrigin()
 
 <ApiSignature>
 
-void com.herewhite.sdk.RoomParams.setModulesOrigin(String *modulesOrigin*)
+void setModulesOrigin(String modulesOrigin)
 
 </ApiSignature>
 
@@ -895,3 +1371,89 @@ modules 地址。示例 [https://modules.example.com。](https://modules.example
 </ParameterList>
 
 白板渲染优化配置项。详见 [`RoomOptimizeOptions`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-room-optimize-options)。
+
+<a id="abdf298203235b04c112f30e453f0e748"></a>
+
+### getOptimizeOptions()
+
+<ApiSignature>
+
+RoomOptimizeOptions getOptimizeOptions()
+
+</ApiSignature>
+
+getOptimizeOptions：com.herewhite.sdk.RoomParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a31d0567336c0fd36819ecc7091d69663"></a>
+
+### setOptimizeOptions()
+
+<ApiSignature>
+
+void setOptimizeOptions(RoomOptimizeOptions optimizeOptions)
+
+</ApiSignature>
+
+setOptimizeOptions：com.herewhite.sdk.RoomParams 的公开成员。参数和返回类型见下方签名。
+
+<a id="a6623f523165cea86c4d0b91595c8f62b"></a>
+
+### isDisableInitialStateCallback()
+
+<ApiSignature>
+
+boolean isDisableInitialStateCallback()
+
+</ApiSignature>
+
+获取是否禁止初始化状态回调。
+
+<h4 data-toc-hidden="true" id={"返回值-16"}>返回值</h4>
+
+方法返回值，类型为 boolean。
+
+<a id="ad400a36cae5a169fbd2e3b50df6d8e50"></a>
+
+### setDisableInitialStateCallback()
+
+<ApiSignature>
+
+void setDisableInitialStateCallback(boolean disableInitialStateCallback)
+
+</ApiSignature>
+
+禁止初始化状态回调
+
+#### 参数
+
+<ParameterList title="参数">
+<Parameter name="disableInitialStateCallback">
+
+- `true`：禁止。 - `false`：（默认）不禁止。
+
+</Parameter>
+</ParameterList>
+
+<a id="ab93b46b37acf427c12c74d4e7cfd192e"></a>
+
+### getAppliancePluginOptions()
+
+<ApiSignature>
+
+AppliancePluginOptions getAppliancePluginOptions()
+
+</ApiSignature>
+
+本地绘制插件参数，extras 为配置嵌套层；与启用开关配合使用。
+
+<a id="a5121f17e30594201381fec68dbd02250"></a>
+
+### setAppliancePluginOptions()
+
+<ApiSignature>
+
+void setAppliancePluginOptions(AppliancePluginOptions appliancePluginOptions)
+
+</ApiSignature>
+
+本地绘制插件参数，extras 为配置嵌套层；与启用开关配合使用。

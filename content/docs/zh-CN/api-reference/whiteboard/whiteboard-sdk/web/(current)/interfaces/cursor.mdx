@@ -1,209 +1,142 @@
 ---
-title: Interface Cursor
-description: 光标。
+title: Cursor
+description: Whiteboard Web SDK 2.16.59 公开 interface。
 _migration:
   type: generated-html
   status: migrated
-  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursor.html
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/interfaces/cursor
   sourcePath: html-docs/whiteboard/Web/interfaces/cursor.html
   generator: typedoc
   warnings: []
 ---
 
-### Hierarchy
+```ts
+export declare interface Cursor
+```
 
-- Cursor
+## 成员
 
-## Index
-
-### Properties
-
-- [cursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#cursormember)
 - [divElement](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#divelement)
-- [height](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#height)
 - [memberId](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#memberid)
-- [onCursorMemberChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#oncursormemberchanged)
-- [width](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#width)
+- [eraserSize](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#erasersize)
+- [cursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#cursormember)
 - [x](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#x)
 - [y](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#y)
-
-### Methods
-
-- [setCursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#setcursordescription)
+- [width](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#width)
+- [height](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#height)
+- [onCursorMemberChanged](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#oncursormemberchanged)
 - [setReactNode](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#setreactnode)
+- [setCursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursor#setcursordescription)
 
 ## Properties
-
-<a id="cursormember"></a>
-
-### cursorMember
-
-cursorMember: [CursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember)
-
-- Defined in [index-zh.d.ts\:389](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L389)
-
-光标所属用户的信息。
 
 <a id="divelement"></a>
 
 ### divElement
 
-divElement: HTMLDivElement
+readonly divElement: HTMLDivElement;
 
-- Defined in [index-zh.d.ts\:379](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L379)
-
+````text
 光标的容器，在创建之初为空。
- 你可以通过如下代码向容器中添加 HTML 元素，以改变光标的外观。
+你可以通过如下代码向容器中添加 HTML 元素，以改变光标的外观。
 
-### example
-
-```ts
+@example
+```typescript
 const icon = document.createElement("img");
 icon.src = "https://my-resources.com/icon.png";
 cursor.divElement.append(icon);
+```
+````
+
+<a id="memberid"></a>
+
+### memberId
+
+readonly memberId: number;
+
+```text
+光标所属用户的 ID
+```
+
+<a id="erasersize"></a>
+
+### eraserSize
+
+readonly eraserSize: number;
+
+```text
+当教具是铅笔橡皮时，橡皮的尺寸，值为 1~3
+```
+
+<a id="cursormember"></a>
+
+### cursorMember
+
+readonly cursorMember: CursorMember;
+
+```text
+光标所属用户的一些属性封装
+```
+
+<a id="x"></a>
+
+### x
+
+readonly x: number;
+
+```text
+光标指示中心点的 x 坐标（相对于白板左上角）
+```
+
+<a id="y"></a>
+
+### y
+
+readonly y: number;
+
+```text
+光标指示中心点的 y 坐标（相对于白板左上角）
+```
+
+<a id="width"></a>
+
+### width
+
+readonly width: number;
+
+```text
+光标图形的宽度
 ```
 
 <a id="height"></a>
 
 ### height
 
-height: number
+readonly height: number;
 
-- Defined in [index-zh.d.ts\:409](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L409)
-
-光标图形的高度。
-
-<a id="memberid"></a>
-
-### memberId
-
-memberId: number
-
-- Defined in [index-zh.d.ts\:384](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L384)
-
-光标所属用户的 ID。
+```text
+光标图形的高度
+```
 
 <a id="oncursormemberchanged"></a>
 
 ### onCursorMemberChanged
 
-onCursorMemberChanged: (cursorMember:[CursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember))=&gt;void
+onCursorMemberChanged: (cursorMember: CursorMember)=&gt;void;
 
-- Defined in [index-zh.d.ts\:411](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L411)
+````text
+成员 cursorMember 改变后的回调。可以用如下代码监听。
+@params cursorMember 更新后的
 
-#### Type declaration
-
-<ApiSignature>
-
-(cursorMember: [CursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember)): void
-
-</ApiSignature>
-
-`cursorMember` 改变后的回调。
-
-你可以用如下代码监听该回调：
-
-### example
-
-```ts
+@example
+```typescript
 cursor.onCursorMemberChanged = function(cursorMember) {
-     // cursorMember 改变了
+    // cursorMember 改变了
 }
 ```
-
-<ParameterList title="Parameters">
-<Parameter name="cursorMember" required>
-
-<ParameterType>
-
-[CursorMember](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/interfaces/cursormember)
-
-</ParameterType>
-
-更新后的 `cursorMember`。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-void
-
-</ApiReturnType>
-
-</ApiReturns>
-
-<a id="width"></a>
-
-### width
-
-width: number
-
-- Defined in [index-zh.d.ts\:404](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L404)
-
-光标图形的宽度。
-
-<a id="x"></a>
-
-### x
-
-x: number
-
-- Defined in [index-zh.d.ts\:394](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L394)
-
-光标指示区域中心的 X 轴坐标（以白板左上角为原点）。
-
-<a id="y"></a>
-
-### y
-
-y: number
-
-- Defined in [index-zh.d.ts\:399](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L399)
-
-光标指示区域中心的 Y 轴坐标（以白板左上角为原点）。
+````
 
 ## Methods
-
-<a id="setcursordescription"></a>
-
-### setCursorDescription
-
-<ApiSignature>
-
-setCursorDescription(description: Partial&lt;[CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription)&gt;): void
-
-</ApiSignature>
-
-- Defined in [index-zh.d.ts\:445](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L445)
-
-修改光标的描述。
-
-<ParameterList title="Parameters">
-<Parameter name="description" required>
-
-<ParameterType>
-
-Partial & lt;[CursorDescription](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/globals#cursordescription) & gt;
-
-</ParameterType>
-
-光标的描述。
-
-</Parameter>
-</ParameterList>
-
-<ApiReturns>
-
-<ApiReturnType>
-
-void
-
-</ApiReturnType>
-
-</ApiReturns>
 
 <a id="setreactnode"></a>
 
@@ -211,29 +144,45 @@ void
 
 <ApiSignature>
 
-setReactNode(reactNode: any): void
+setReactNode(reactNode: any): void;
 
 </ApiSignature>
 
-- Defined in [index-zh.d.ts\:438](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L438)
-
+````text
 通过注入 JSX 结构来改变光标的外观。
-
-### example
-
-```ts
+@param reactNode 描述光标外观的 JSX
+@example
+```tsx
 cursor.setReactNode(
     <img src="https://my-resources.com/icon.png"/>
 );
 ```
+````
 
-<ParameterList title="Parameters">
-<Parameter name="reactNode" type="any" required>
+<ApiReturns>
 
-描述光标外观的 JSX。
+<ApiReturnType>
 
-</Parameter>
-</ParameterList>
+void
+
+</ApiReturnType>
+
+</ApiReturns>
+
+<a id="setcursordescription"></a>
+
+### setCursorDescription
+
+<ApiSignature>
+
+setCursorDescription(description: Partial&lt;CursorDescription&gt;): void;
+
+</ApiSignature>
+
+```text
+中途修改光标的描述
+@param description 光标的描述
+```
 
 <ApiReturns>
 

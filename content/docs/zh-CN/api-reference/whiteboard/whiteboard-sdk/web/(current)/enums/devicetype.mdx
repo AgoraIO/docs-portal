@@ -1,51 +1,64 @@
 ---
-title: Enumeration DeviceType
-description: 设备类型。
+title: DeviceType
+description: Whiteboard Web SDK 2.16.59 公开 enum。
 _migration:
   type: generated-html
   status: migrated
-  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/enums/devicetype.html
+  sourceUrl: https://doc.shengwang.cn/api-ref/whiteboard/javascript/enums/devicetype
   sourcePath: html-docs/whiteboard/Web/enums/devicetype.html
   generator: typedoc
   warnings: []
 ---
 
-## Index
+```ts
+export declare enum DeviceType {
+    /**
+     * 桌面设备，使用键盘鼠标
+     */
+    Desktop = "desktop",
+    /**
+     * 触碰板设备，比如只能手机、平板电脑
+     */
+    Touch = "touch",
+    /**
+     * 同时支持键盘、鼠标、触碰板的设备
+     */
+    Surface = "surface",
+}
+```
 
-### Enumeration members
+## 成员
 
 - [Desktop](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype#desktop)
-- [Surface](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype#surface)
 - [Touch](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype#touch)
-
-## Enumeration members
+- [Surface](/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/enums/devicetype#surface)
 
 <a id="desktop"></a>
 
 ### Desktop
 
-Desktop: = "desktop"
+`Desktop = "desktop";`
 
-- Defined in [index-zh.d.ts\:152](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L152)
-
-桌面设备，即使用键盘和鼠标的设备。
-
-<a id="surface"></a>
-
-### Surface
-
-Surface: = "surface"
-
-- Defined in [index-zh.d.ts\:160](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L160)
-
-同时支持键盘、鼠标、触碰板的设备。
+```text
+桌面设备，使用键盘鼠标
+```
 
 <a id="touch"></a>
 
 ### Touch
 
-Touch: = "touch"
+`Touch = "touch";`
 
-- Defined in [index-zh.d.ts\:156](https://github.com/Nero-Hu/Whiteboard-Web-doc/blob/a349dd9/webdoc_full/index-zh.d.ts#L156)
+```text
+触碰板设备，比如只能手机、平板电脑
+```
 
-触碰板设备，例如智能手机、平板电脑。
+<a id="surface"></a>
+
+### Surface
+
+`Surface = "surface";`
+
+```text
+同时支持键盘、鼠标、触碰板的设备
+```

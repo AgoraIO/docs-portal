@@ -766,8 +766,16 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Interactive Whiteboard',
         versions: [
           {
+            id: '2.16.134-interactive-whiteboard-android',
+            label: '版本 2.16.134（最新）',
+            downloadLink:
+              'https://github.com/netless-io/whiteboard-android/archive/refs/tags/2.16.134.zip',
+            packageName: 'com.herewhite.sdk',
+            releaseDate: '2026 年 10 月 21 日',
+          },
+          {
             id: '2.16.100-interactive-whiteboard-android',
-            label: '版本 2.16.100 （最新）',
+            label: '版本 2.16.100',
             packageManager:
               'https://github.com/netless-io/whiteboard-android/releases/tag/2.16.100',
           },
@@ -791,7 +799,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '2.16.100-interactive-whiteboard-android',
-            label: '版本 2.16.100（最新）',
+            label: '版本 2.16.100',
             downloadLink:
               'https://github.com/netless-io/whiteboard-android/archive/refs/tags/2.16.100.zip',
             md5: 'ecf0c9d1f35124d93264dc46810d3e28',
@@ -806,8 +814,16 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard Fastboard',
         versions: [
           {
+            id: '1.8.2-fastboard-android',
+            label: '版本 1.8.2（最新）',
+            downloadLink:
+              'https://github.com/netless-io/fastboard-android/archive/refs/tags/1.8.2.zip',
+            packageName: 'io.agora.board.fast',
+            releaseDate: '2026 年 9 月 28 日',
+          },
+          {
             id: '1.7.2-fastboard-android',
-            label: '版本 1.7.2 （最新）',
+            label: '版本 1.7.2',
             releaseDate: '2025 年 7 月 11 日',
             packageManager:
               'https://github.com/netless-io/fastboard-android/releases/tag/1.7.2',
@@ -832,7 +848,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '1.6.2-fastboard-android',
-            label: '版本 1.6.2（最新）',
+            label: '版本 1.6.2',
             downloadLink:
               'https://github.com/netless-io/fastboard-android/archive/refs/tags/1.6.2.zip',
             md5: '92a2240199faa74dc2bea46830623404',
@@ -1511,8 +1527,16 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for Interactive Whiteboard',
         versions: [
           {
+            id: '2.16.147-interactive-whiteboard-ios',
+            label: '版本 2.16.147（最新）',
+            downloadLink:
+              'https://github.com/netless-io/Whiteboard-iOS/archive/refs/tags/2.16.147.zip',
+            packageName: 'Whiteboard',
+            releaseDate: '2026 年 10 月 21 日',
+          },
+          {
             id: '2.16.112-interactive-whiteboard-ios',
-            label: '版本 2.16.112 （最新）',
+            label: '版本 2.16.112',
             packageManager:
               'https://github.com/netless-io/Whiteboard-iOS/releases/tag/2.16.112',
           },
@@ -1536,7 +1560,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '2.16.112-interactive-whiteboard-ios',
-            label: '版本 2.16.112（最新）',
+            label: '版本 2.16.112',
             downloadLink:
               'https://github.com/netless-io/Whiteboard-iOS/archive/refs/tags/2.16.112.zip',
             md5: '5446cb723f59e7626db8ec1472ec6dc8',
@@ -1551,8 +1575,16 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard Fastboard',
         versions: [
           {
+            id: '1.4.6-fastboard-ios',
+            label: '版本 1.4.6（最新）',
+            downloadLink:
+              'https://github.com/netless-io/fastboard-iOS/archive/refs/tags/1.4.6.zip',
+            packageName: 'Fastboard',
+            releaseDate: '2026 年 9 月 28 日',
+          },
+          {
             id: '1.4.2-fastboard-ios',
-            label: '版本 1.4.2 （最新）',
+            label: '版本 1.4.2',
             packageManager:
               'https://github.com/netless-io/fastboard-iOS/releases/tag/1.4.2',
           },
@@ -1570,7 +1602,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: '1.4.2-fastboard-ios',
-            label: '版本 1.4.2（最新）',
+            label: '版本 1.4.2',
             downloadLink:
               'https://github.com/netless-io/fastboard-iOS/archive/refs/tags/1.4.2.zip',
             md5: 'b6366d11ab62b055b1ccd055290111e2',
@@ -2361,8 +2393,15 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard',
         versions: [
           {
+            id: '2.16.59-interactive-whiteboard-web',
+            label: '版本 2.16.59（最新）',
+            packageManager:
+              'https://www.npmjs.com/package/white-web-sdk/v/2.16.59',
+            releaseDate: '2026 年 10 月 10 日',
+          },
+          {
             id: '2.16.53-interactive-whiteboard-web',
-            label: '版本 2.16.53 （最新）',
+            label: '版本 2.16.53',
             packageManager:
               'https://www.npmjs.com/package/white-web-sdk/v/2.16.53',
           },
@@ -2386,7 +2425,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: 'white-web-sdk',
-            label: 'npm 包（最新）',
+            label: 'npm 包',
             packageName: 'white-web-sdk',
             packageManager: 'https://www.npmjs.com/package/white-web-sdk',
             releaseDate: '2025 年 4 月 7 日',
@@ -2399,8 +2438,15 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
         info: 'SDK for: Interactive Whiteboard Fastboard',
         versions: [
           {
+            id: '1.1.10-fastboard-web',
+            label: '版本 1.1.10（最新）',
+            downloadLink:
+              'https://github.com/netless-io/fastboard/archive/refs/tags/v1.1.10.zip',
+            releaseDate: '2026 年 10 月 12 日',
+          },
+          {
             id: '1.1.0-interactive-whiteboard-web',
-            label: '版本 1.1.0 （最新）',
+            label: '版本 1.1.0',
             releaseDate: '2025 年 7 月 11 日',
             packageManager:
               'https://www.npmjs.com/package/@netless/fastboard/v/1.1.0',
@@ -2425,7 +2471,7 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
           },
           {
             id: 'fastboard-web',
-            label: 'GitHub 源码（最新）',
+            label: 'GitHub 源码',
             downloadLink: 'https://github.com/netless-io/fastboard',
             releaseDate: '2024 年 12 月 12 日',
           },
@@ -3714,6 +3760,23 @@ const zhCNSdkDownloadSourcePlatforms: readonly SdkDownloadPlatform[] = [
     id: 'harmonyos',
     label: 'HarmonyOS',
     core: [
+      {
+        id: 'interactive-whiteboard-harmonyos',
+        label: '互动白板 SDK',
+        info: 'Whiteboard HarmonyOS SDK',
+        versions: [
+          {
+            id: '0.2.11-interactive-whiteboard-harmonyos',
+            label: '版本 0.2.11（最新）',
+            downloadLink:
+              'https://github.com/netless-io/whiteboard-harmony/archive/refs/tags/0.2.11.zip',
+            packageManager:
+              'https://ohpm.openharmony.cn/#/cn/detail/@shengwang%2Fwhiteboard',
+            packageName: '@shengwang/whiteboard',
+            releaseDate: '2026 年 10 月 21 日',
+          },
+        ],
+      },
       {
         id: 'voice-sdk-harmonyos',
         label: '语音 SDK',

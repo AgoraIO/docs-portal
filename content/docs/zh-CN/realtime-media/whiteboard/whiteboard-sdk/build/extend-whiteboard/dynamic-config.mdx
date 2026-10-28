@@ -1,0 +1,311 @@
+---
+title: 动态配置
+---
+
+<PlatformStructured platform="android">
+
+适用于 **Whiteboard Android SDK 2.16.134**。
+
+动态配置在每次加入房间前加载指定地址的参数，减少为了调整兼容性配置而重新发布客户端的需要。它不提供对已加入房间的热更新；修改发布后，应在后续入房时验证效果。
+
+## 配置平台操作流程
+
+打开[白板动态配置管理](https://whiteboard-config.netless.group/whiteboard-config)，使用获授权的账号登录。每份草稿选择一个平台，本页选择 **android**；四个平台需要分别保存和发布。
+
+1. 选择交付方式。“导入与下载”适合自行维护配置地址；“托管配置”先在“我的 OSS”登记连接，选择平台并读取当前配置。配置地址由 Bucket、Endpoint、前缀和平台目录生成。
+2. 从 JSON 或通用模板载入配置。编辑器分为 `joinRoom`、`windowManager`、`appliancePlugin.extras` 三组，可按需展开；字段旁说明给出类型、作用和约束。完整 JSON 可在高级编辑器核对。
+3. 编辑默认参数和按运行时版本覆盖的参数，点击“保存草稿”。不需要下发的字段选择“不配置”；false、0 等显式值不是缺省。
+4. 点击“提交审核”。保存不会触发 AI；提交会等待本次审核结果。失败或要求修改时查看原因、修改后再提交，刷新状态不会重新发起 AI。
+5. 导入模式审核通过后下载冻结配置，自行上传到可读取的 HTTPS 地址。托管模式审核通过后选择“直接发布”或“提交管理员审核”；进入人工审核后等待处理。管理员可审核通过并发布或给出修改意见。
+6. 确认发布已完成后，在“我的 OSS”的 SDK 接入信息中复制当前平台的 region → URL 映射。托管地址通常以 `/android/latest.json` 结尾；SDK 使用此 JSON 地址，不使用管理网页或 version.json。
+7. 需要回退时，在“版本路径历史”读取历史版本并生成回退草稿，重新审核发布；不要把历史地址原地改写成另一份内容。
+
+以下交互图根据配置服务现行设计整理，省略服务端存储细节：
+
+![动态配置从编辑、审核、发布到 SDK 接入的用户流程](/img/whiteboard/dynamic-config-flow.svg)
+
+## 当前平台接入
+
+```java
+Map<String, String> urls = new HashMap<>();
+urls.put("cn-hz", "https://YOUR_CONFIG_HOST/config/android/latest.json");
+urls.put("sg", "https://YOUR_CONFIG_HOST/config-sg/android/latest.json");
+WhiteSdkConfiguration config = new WhiteSdkConfiguration(appIdentifier, true);
+config.setRegion(Region.cn);
+config.setDynamicConfig(urls);
+// 在创建 WhiteSdk 前设置 config，然后按正常流程 joinRoom。
+```
+
+接入前核对 URL 中的平台目录和发布文档的 platforms。未配置的 region 使用本地参数，不自动跨区取其他地址。URL 应可由客户端直接读取；浏览器/WebView 请求还需要资源域的跨域策略支持。管理平台账号或 OSS 写入凭证不应传入客户端。
+
+## 配置内容与匹配规则
+
+| 分组 | 用途 |
+| --- | --- |
+| joinRoom | 加入房间时的可配置参数，例如撤销缓存、原生剪贴板 |
+| windowManager | 多窗口配置，例如强制最大化、课件按需加载、参考尺寸 |
+| appliancePlugin.extras | 教具插件的扩展配置，例如背景图重试、笔宽与 Worker 策略 |
+
+平台生成的发布文件使用 schemaVersion=2、runtimeContractVersion=1，以及 profiles["whiteboard-1.0"]。SDK 读取配置后求值，再交给对应组件；不能把 `{ defaults, webviewVersion }` 包装直接作为 Native 方法参数。
+
+配置编辑器中的单字段示例（不是完整发布文件）：
+
+```json
+{
+  "useNativeClipboard": {
+    "defaults": false,
+    "webviewVersion": { "androidWebView": { "80": true } }
+  }
+}
+```
+
+版本表的 key 表示版本上限，选择能覆盖当前运行时版本的最小上限；例如 Android WebView 79 命中 80，81 使用 defaults。支持 androidWebView、iosWebView、harmonyArkWeb，以及 web 下按 chrome/edge/firefox/safari 分类的版本表。最终 null 表示不下发字段；不是字符串 "null"。
+
+## 优先级与失败回退
+
+显式业务本地配置优先于远端；远端优先于宿主默认和 SDK 默认。未设置或 undefined 允许继承，false 是明确覆盖。普通对象递归合并，数组、实例对象、hotKeys、floatBar 等按整体处理。若希望平台管理某字段，业务侧就不要同时把该字段写死。
+
+每次入房前按实际 region 加载，默认最长等待 5 秒。网络、超时、格式或平台不匹配时使用本地参数；本地配置应保持可独立入房。当前实现成功读取（含有效 304）记为 remote，失败记为 local；不承诺请求失败后继续使用上一份缓存。
+
+`WhiteSdkConfiguration.getDynamicConfig()` 返回本地 URL 映射，不是服务端 JSON 或生效快照。通过日志和实际行为核对配置是否应用；不要调用 Web Room 的 dynamicConfigState。
+
+配置发布完成不等于某客户端已经生效。先用测试房间确认对应版本、平台、region 的实际配置，再观察课件按需加载、光标或教具行为。配置平台的审核与包版本元数据不能替代对应 SDK 的能力验证。
+
+</PlatformStructured>
+
+<PlatformStructured platform="ios">
+
+适用于 **Whiteboard iOS SDK 2.16.147**。
+
+动态配置在每次加入房间前加载指定地址的参数，减少为了调整兼容性配置而重新发布客户端的需要。它不提供对已加入房间的热更新；修改发布后，应在后续入房时验证效果。
+
+## 配置平台操作流程
+
+打开[白板动态配置管理](https://whiteboard-config.netless.group/whiteboard-config)，使用获授权的账号登录。每份草稿选择一个平台，本页选择 **ios**；四个平台需要分别保存和发布。
+
+1. 选择交付方式。“导入与下载”适合自行维护配置地址；“托管配置”先在“我的 OSS”登记连接，选择平台并读取当前配置。配置地址由 Bucket、Endpoint、前缀和平台目录生成。
+2. 从 JSON 或通用模板载入配置。编辑器分为 `joinRoom`、`windowManager`、`appliancePlugin.extras` 三组，可按需展开；字段旁说明给出类型、作用和约束。完整 JSON 可在高级编辑器核对。
+3. 编辑默认参数和按运行时版本覆盖的参数，点击“保存草稿”。不需要下发的字段选择“不配置”；false、0 等显式值不是缺省。
+4. 点击“提交审核”。保存不会触发 AI；提交会等待本次审核结果。失败或要求修改时查看原因、修改后再提交，刷新状态不会重新发起 AI。
+5. 导入模式审核通过后下载冻结配置，自行上传到可读取的 HTTPS 地址。托管模式审核通过后选择“直接发布”或“提交管理员审核”；进入人工审核后等待处理。管理员可审核通过并发布或给出修改意见。
+6. 确认发布已完成后，在“我的 OSS”的 SDK 接入信息中复制当前平台的 region → URL 映射。托管地址通常以 `/ios/latest.json` 结尾；SDK 使用此 JSON 地址，不使用管理网页或 version.json。
+7. 需要回退时，在“版本路径历史”读取历史版本并生成回退草稿，重新审核发布；不要把历史地址原地改写成另一份内容。
+
+以下交互图根据配置服务现行设计整理，省略服务端存储细节：
+
+![动态配置从编辑、审核、发布到 SDK 接入的用户流程](/img/whiteboard/dynamic-config-flow.svg)
+
+## 当前平台接入
+
+```objc
+WhiteSdkConfiguration *config = [[WhiteSdkConfiguration alloc] initWithApp:appIdentifier];
+config.region = WhiteRegionCN;
+config.dynamicConfig = @{
+    @"cn-hz": @"https://YOUR_CONFIG_HOST/config/ios/latest.json",
+    @"sg": @"https://YOUR_CONFIG_HOST/config-sg/ios/latest.json"
+};
+// 在创建 WhiteSDK 前设置 config，再按正常流程加入房间。
+```
+
+Swift 使用相同的初始化配置属性：
+
+```swift
+let config = WhiteSdkConfiguration(app: appIdentifier)
+config.dynamicConfig = [
+    "cn-hz": "https://YOUR_CONFIG_HOST/config/ios/latest.json",
+    "sg": "https://YOUR_CONFIG_HOST/config-sg/ios/latest.json"
+]
+// 在创建 WhiteSDK 前设置；nil 表示不提供远端配置地址。
+```
+
+接入前核对 URL 中的平台目录和发布文档的 platforms。未配置的 region 使用本地参数，不自动跨区取其他地址。URL 应可由客户端直接读取；浏览器/WebView 请求还需要资源域的跨域策略支持。管理平台账号或 OSS 写入凭证不应传入客户端。
+
+## 配置内容与匹配规则
+
+| 分组 | 用途 |
+| --- | --- |
+| joinRoom | 加入房间时的可配置参数，例如撤销缓存、原生剪贴板 |
+| windowManager | 多窗口配置，例如强制最大化、课件按需加载、参考尺寸 |
+| appliancePlugin.extras | 教具插件的扩展配置，例如背景图重试、笔宽与 Worker 策略 |
+
+平台生成的发布文件使用 schemaVersion=2、runtimeContractVersion=1，以及 profiles["whiteboard-1.0"]。SDK 读取配置后求值，再交给对应组件；不能把 `{ defaults, webviewVersion }` 包装直接作为 Native 方法参数。
+
+配置编辑器中的单字段示例（不是完整发布文件）：
+
+```json
+{
+  "useNativeClipboard": {
+    "defaults": false,
+    "webviewVersion": { "androidWebView": { "80": true } }
+  }
+}
+```
+
+版本表的 key 表示版本上限，选择能覆盖当前运行时版本的最小上限；例如 Android WebView 79 命中 80，81 使用 defaults。支持 androidWebView、iosWebView、harmonyArkWeb，以及 web 下按 chrome/edge/firefox/safari 分类的版本表。最终 null 表示不下发字段；不是字符串 "null"。
+
+## 优先级与失败回退
+
+显式业务本地配置优先于远端；远端优先于宿主默认和 SDK 默认。未设置或 undefined 允许继承，false 是明确覆盖。普通对象递归合并，数组、实例对象、hotKeys、floatBar 等按整体处理。若希望平台管理某字段，业务侧就不要同时把该字段写死。
+
+每次入房前按实际 region 加载，默认最长等待 5 秒。网络、超时、格式或平台不匹配时使用本地参数；本地配置应保持可独立入房。当前实现成功读取（含有效 304）记为 remote，失败记为 local；不承诺请求失败后继续使用上一份缓存。
+
+`config.dynamicConfig` 的类型为可空 `NSDictionary<NSString *, NSString *> *`，只保存地址映射。通过日志和业务效果核对是否生效，不存在可直接照搬的 Web Room.dynamicConfigState 属性。
+
+配置发布完成不等于某客户端已经生效。先用测试房间确认对应版本、平台、region 的实际配置，再观察课件按需加载、光标或教具行为。配置平台的审核与包版本元数据不能替代对应 SDK 的能力验证。
+
+</PlatformStructured>
+
+<PlatformStructured platform="web">
+
+适用于 **Whiteboard Web SDK 2.16.59**。
+
+动态配置在每次加入房间前加载指定地址的参数，减少为了调整兼容性配置而重新发布客户端的需要。它不提供对已加入房间的热更新；修改发布后，应在后续入房时验证效果。
+
+## 配置平台操作流程
+
+打开[白板动态配置管理](https://whiteboard-config.netless.group/whiteboard-config)，使用获授权的账号登录。每份草稿选择一个平台，本页选择 **web**；四个平台需要分别保存和发布。
+
+1. 选择交付方式。“导入与下载”适合自行维护配置地址；“托管配置”先在“我的 OSS”登记连接，选择平台并读取当前配置。配置地址由 Bucket、Endpoint、前缀和平台目录生成。
+2. 从 JSON 或通用模板载入配置。编辑器分为 `joinRoom`、`windowManager`、`appliancePlugin.extras` 三组，可按需展开；字段旁说明给出类型、作用和约束。完整 JSON 可在高级编辑器核对。
+3. 编辑默认参数和按运行时版本覆盖的参数，点击“保存草稿”。不需要下发的字段选择“不配置”；false、0 等显式值不是缺省。
+4. 点击“提交审核”。保存不会触发 AI；提交会等待本次审核结果。失败或要求修改时查看原因、修改后再提交，刷新状态不会重新发起 AI。
+5. 导入模式审核通过后下载冻结配置，自行上传到可读取的 HTTPS 地址。托管模式审核通过后选择“直接发布”或“提交管理员审核”；进入人工审核后等待处理。管理员可审核通过并发布或给出修改意见。
+6. 确认发布已完成后，在“我的 OSS”的 SDK 接入信息中复制当前平台的 region → URL 映射。托管地址通常以 `/web/latest.json` 结尾；SDK 使用此 JSON 地址，不使用管理网页或 version.json。
+7. 需要回退时，在“版本路径历史”读取历史版本并生成回退草稿，重新审核发布；不要把历史地址原地改写成另一份内容。
+
+以下交互图根据配置服务现行设计整理，省略服务端存储细节：
+
+![动态配置从编辑、审核、发布到 SDK 接入的用户流程](/img/whiteboard/dynamic-config-flow.svg)
+
+## 当前平台接入
+
+将 dynamicConfig 加到[加入白板房间](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/get-started/join-room-wb)教程已有的 SDK 初始化配置中，保留既有插件注册和多窗口挂载流程。下方重点展示地址配置，room 指该流程成功返回的房间。
+
+```typescript
+import { WhiteWebSdk } from 'white-web-sdk';
+const dynamicConfig = {
+  'cn-hz': 'https://YOUR_CONFIG_HOST/config/web/latest.json',
+  'sg': 'https://YOUR_CONFIG_HOST/config-sg/web/latest.json'
+};
+const sdk = new WhiteWebSdk({
+  appIdentifier, region: 'cn-hz', useMobXState: true, dynamicConfig
+});
+// 后续沿用加入房间教程中的完整 joinRoom、WindowManager 和教具插件流程。
+```
+
+接入前核对 URL 中的平台目录和发布文档的 platforms。未配置的 region 使用本地参数，不自动跨区取其他地址。URL 应可由客户端直接读取；浏览器/WebView 请求还需要资源域的跨域策略支持。管理平台账号或 OSS 写入凭证不应传入客户端。
+
+## 配置内容与匹配规则
+
+| 分组 | 用途 |
+| --- | --- |
+| joinRoom | 加入房间时的可配置参数，例如撤销缓存、原生剪贴板 |
+| windowManager | 多窗口配置，例如强制最大化、课件按需加载、参考尺寸 |
+| appliancePlugin.extras | 教具插件的扩展配置，例如背景图重试、笔宽与 Worker 策略 |
+
+平台生成的发布文件使用 schemaVersion=2、runtimeContractVersion=1，以及 profiles["whiteboard-1.0"]。SDK 读取配置后求值，再交给对应组件；不能把 `{ defaults, webviewVersion }` 包装直接作为 Native 方法参数。
+
+配置编辑器中的单字段示例（不是完整发布文件）：
+
+```json
+{
+  "useNativeClipboard": {
+    "defaults": false,
+    "webviewVersion": { "androidWebView": { "80": true } }
+  }
+}
+```
+
+版本表的 key 表示版本上限，选择能覆盖当前运行时版本的最小上限；例如 Android WebView 79 命中 80，81 使用 defaults。支持 androidWebView、iosWebView、harmonyArkWeb，以及 web 下按 chrome/edge/firefox/safari 分类的版本表。最终 null 表示不下发字段；不是字符串 "null"。
+
+## 优先级与失败回退
+
+显式业务本地配置优先于远端；远端优先于宿主默认和 SDK 默认。未设置或 undefined 允许继承，false 是明确覆盖。普通对象递归合并，数组、实例对象、hotKeys、floatBar 等按整体处理。若希望平台管理某字段，业务侧就不要同时把该字段写死。
+
+每次入房前按实际 region 加载，默认最长等待 5 秒。网络、超时、格式或平台不匹配时使用本地参数；本地配置应保持可独立入房。当前实现成功读取（含有效 304）记为 remote，失败记为 local；不承诺请求失败后继续使用上一份缓存。
+
+```typescript
+console.log(room.dynamicConfig);
+console.log(room.dynamicConfigState);
+```
+
+`dynamicConfig` 是已求值的只读快照，包含 joinRoom/windowManager/appliancePlugin.extras；`dynamicConfigState` 给出 source、可选 configVersion、runtime、fieldSources、fallbackReason。原生 SDK 没有同名房间查询属性，不应跨端照搬。
+直接组合 WindowManager 与 Appliance Plugin 时，按各自当前公开接入入口使用该房间；Fastboard Web 1.1.10 会把解析后的配置传递给内部组件。
+
+配置发布完成不等于某客户端已经生效。先用测试房间确认对应版本、平台、region 的实际配置，再观察课件按需加载、光标或教具行为。配置平台的审核与包版本元数据不能替代对应 SDK 的能力验证。
+
+</PlatformStructured>
+
+<PlatformStructured platform="harmonyos">
+
+适用于 **Whiteboard HarmonyOS SDK 0.2.11**。
+
+动态配置在每次加入房间前加载指定地址的参数，减少为了调整兼容性配置而重新发布客户端的需要。它不提供对已加入房间的热更新；修改发布后，应在后续入房时验证效果。
+
+## 配置平台操作流程
+
+打开[白板动态配置管理](https://whiteboard-config.netless.group/whiteboard-config)，使用获授权的账号登录。每份草稿选择一个平台，本页选择 **harmony**；四个平台需要分别保存和发布。
+
+1. 选择交付方式。“导入与下载”适合自行维护配置地址；“托管配置”先在“我的 OSS”登记连接，选择平台并读取当前配置。配置地址由 Bucket、Endpoint、前缀和平台目录生成。
+2. 从 JSON 或通用模板载入配置。编辑器分为 `joinRoom`、`windowManager`、`appliancePlugin.extras` 三组，可按需展开；字段旁说明给出类型、作用和约束。完整 JSON 可在高级编辑器核对。
+3. 编辑默认参数和按运行时版本覆盖的参数，点击“保存草稿”。不需要下发的字段选择“不配置”；false、0 等显式值不是缺省。
+4. 点击“提交审核”。保存不会触发 AI；提交会等待本次审核结果。失败或要求修改时查看原因、修改后再提交，刷新状态不会重新发起 AI。
+5. 导入模式审核通过后下载冻结配置，自行上传到可读取的 HTTPS 地址。托管模式审核通过后选择“直接发布”或“提交管理员审核”；进入人工审核后等待处理。管理员可审核通过并发布或给出修改意见。
+6. 确认发布已完成后，在“我的 OSS”的 SDK 接入信息中复制当前平台的 region → URL 映射。托管地址通常以 `/harmony/latest.json` 结尾；SDK 使用此 JSON 地址，不使用管理网页或 version.json。
+7. 需要回退时，在“版本路径历史”读取历史版本并生成回退草稿，重新审核发布；不要把历史地址原地改写成另一份内容。
+
+以下交互图根据配置服务现行设计整理，省略服务端存储细节：
+
+![动态配置从编辑、审核、发布到 SDK 接入的用户流程](/img/whiteboard/dynamic-config-flow.svg)
+
+## 当前平台接入
+
+```typescript
+import { DynamicConfigOptions, WhiteboardOptions, Region } from '@shengwang/whiteboard';
+const urls: DynamicConfigOptions = {
+  'cn-hz': 'https://YOUR_CONFIG_HOST/config/harmony/latest.json',
+  'sg': 'https://YOUR_CONFIG_HOST/config-sg/harmony/latest.json'
+};
+const options: WhiteboardOptions = {
+  appIdentifier: appIdentifier, roomUuid: roomUuid, roomToken: roomToken,
+  uid: uid, region: Region.CN_HZ, dynamicConfig: urls
+};
+// 将 options 交给 Whiteboard 组件。
+```
+
+接入前核对 URL 中的平台目录和发布文档的 platforms。未配置的 region 使用本地参数，不自动跨区取其他地址。URL 应可由客户端直接读取；浏览器/WebView 请求还需要资源域的跨域策略支持。管理平台账号或 OSS 写入凭证不应传入客户端。
+
+## 配置内容与匹配规则
+
+| 分组 | 用途 |
+| --- | --- |
+| joinRoom | 加入房间时的可配置参数，例如撤销缓存、原生剪贴板 |
+| windowManager | 多窗口配置，例如强制最大化、课件按需加载、参考尺寸 |
+| appliancePlugin.extras | 教具插件的扩展配置，例如背景图重试、笔宽与 Worker 策略 |
+
+平台生成的发布文件使用 schemaVersion=2、runtimeContractVersion=1，以及 profiles["whiteboard-1.0"]。SDK 读取配置后求值，再交给对应组件；不能把 `{ defaults, webviewVersion }` 包装直接作为 Native 方法参数。
+
+配置编辑器中的单字段示例（不是完整发布文件）：
+
+```json
+{
+  "useNativeClipboard": {
+    "defaults": false,
+    "webviewVersion": { "androidWebView": { "80": true } }
+  }
+}
+```
+
+版本表的 key 表示版本上限，选择能覆盖当前运行时版本的最小上限；例如 Android WebView 79 命中 80，81 使用 defaults。支持 androidWebView、iosWebView、harmonyArkWeb，以及 web 下按 chrome/edge/firefox/safari 分类的版本表。最终 null 表示不下发字段；不是字符串 "null"。
+
+## 优先级与失败回退
+
+显式业务本地配置优先于远端；远端优先于宿主默认和 SDK 默认。未设置或 undefined 允许继承，false 是明确覆盖。普通对象递归合并，数组、实例对象、hotKeys、floatBar 等按整体处理。若希望平台管理某字段，业务侧就不要同时把该字段写死。
+
+每次入房前按实际 region 加载，默认最长等待 5 秒。网络、超时、格式或平台不匹配时使用本地参数；本地配置应保持可独立入房。当前实现成功读取（含有效 304）记为 remote，失败记为 local；不承诺请求失败后继续使用上一份缓存。
+
+`DynamicConfigOptions` 已从包入口导出，是 `Record<string, string>`。`buildSdkOptions(options)` 可用于 SDK 参数构造；通常组件会完成这一步。未显式设置 useMultiViews/userCursor/enableAppliancePlugin 时保持可继承语义；显式 false 会覆盖远端值。不要直接从包入口导入未单独导出的 SdkOptions 类型。
+
+配置发布完成不等于某客户端已经生效。先用测试房间确认对应版本、平台、region 的实际配置，再观察课件按需加载、光标或教具行为。配置平台的审核与包版本元数据不能替代对应 SDK 的能力验证。
+
+</PlatformStructured>

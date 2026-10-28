@@ -1,24 +1,183 @@
 ---
-title: com.herewhite.sdk.domain.WindowDocsEvent.Options类 参考
+title: com.herewhite.sdk.domain.WindowDocsEvent.Options class 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: >-
-    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_window_docs_event_1_1_options.html
+    https://doc.shengwang.cn/api-ref/whiteboard/android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_window_docs_event_1_1_options
   sourcePath: >-
     html-docs/whiteboard/Android/classcom_1_1herewhite_1_1sdk_1_1domain_1_1_window_docs_event_1_1_options.html
   generator: doxygen
-  warnings:
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image
-        classcom_1_1herewhite_1_1sdk_1_1domain_1_1_window_docs_event_1_1_options.png has no
-        meaningful alt or title text; the converter used contextual alt text
-        "com.herewhite.sdk.domain.WindowDocsEvent.Options类 参考 图示".
+  warnings: []
 ---
 
-类 com.herewhite.sdk.domain.WindowDocsEvent.Options 继承关系图:
+<a id="details"></a>
 
-![com.herewhite.sdk.domain.WindowDocsEvent.Options类 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/98255110697a-classcom_1_1herewhite_1_1sdk_1_1domain_1_1_window_docs_event_1_1_options.png)
+## 详细描述
+
+适用版本：**Whiteboard Android SDK 2.16.134**。
+
+父类：[WhiteObject](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-white-object)；继承接口详见父类。
+
+## 属性与 JSON 字段
+
+Java 非公开字段通过对应 getter/setter 访问；可选包装类型未设置时通常不写入 JSON。初值包含字段声明及无参构造中的直接赋值；其他构造参数以签名为准。
+
+| 字段 | 声明 | 源码初值 | 说明 |
+| --- | --- | --- | --- |
+| [target](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#a81467fb8c94ac2869cb78b323538c976) | `String target` | 未显式赋值 | <Slot name="api-center-table-0" /> |
+| [page](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#ab1e7c4b364acaada9eb8d612c6a92b83) | `Integer page` | 未显式赋值 | <Slot name="api-center-table-1" /> |
+| [scale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#aff0b7a9c7ab3d6fbaf213674250ec722) | `Double scale` | 未显式赋值 | <Slot name="api-center-table-2" /> |
+
+<Slot for="api-center-table-0">
+
+命令目标：mainView 或具体 appId。省略时跟随焦点，无 App 焦点时回退 MainView。
+
+</Slot>
+
+<Slot for="api-center-table-1">
+
+统一课件与 Slide 页码从 1 开始；不是主白板场景的零基索引。
+
+</Slot>
+
+<Slot for="api-center-table-2">
+
+scalePage 命令的相对适配倍率，1 表示适配尺寸；DocsViewer 不支持此命令。
+
+</Slot>
+
+| 公开成员签名 |  |
+| --- | --- |
+| Options | [Options](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#a54b10c618af6901a3f24246596beaece) () |
+| String | [getTarget](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#aaca2825cea86ff705f05b7b9c267a5bd) () |
+| void | [setTarget](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#a66bab9acc2f2cfce4948dcc6df4de9bd) (String target) |
+| Integer | [getPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#a0e514c12244a2f293a39ad38a237a4ca) () |
+| void | [setPage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#a415563a76e07a1e3dcdd50ac606817df) (Integer page) |
+| Double | [getScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#a1359fbe7407363de7be5a293f8756501) () |
+| void | [setScale](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1domain-1-1-window-docs-event-1-1-options#a31218c748602e6682a985785cf9a0876) (Double scale) |
+
+## 变量说明
+
+<a id="a81467fb8c94ac2869cb78b323538c976"></a>
+
+### target
+
+```text
+String target
+```
+
+源码初值：未显式赋值
+
+命令目标：mainView 或具体 appId。省略时跟随焦点，无 App 焦点时回退 MainView。
+
+<a id="ab1e7c4b364acaada9eb8d612c6a92b83"></a>
+
+### page
+
+```text
+Integer page
+```
+
+源码初值：未显式赋值
+
+统一课件与 Slide 页码从 1 开始；不是主白板场景的零基索引。
+
+<a id="aff0b7a9c7ab3d6fbaf213674250ec722"></a>
+
+### scale
+
+```text
+Double scale
+```
+
+源码初值：未显式赋值
+
+scalePage 命令的相对适配倍率，1 表示适配尺寸；DocsViewer 不支持此命令。
+
+## 函数说明
+
+<a id="a54b10c618af6901a3f24246596beaece"></a>
+
+### Options()
+
+<ApiSignature>
+
+Options()
+
+</ApiSignature>
+
+Options：com.herewhite.sdk.domain.WindowDocsEvent.Options 的公开成员。参数和返回类型见下方签名。
+
+<a id="aaca2825cea86ff705f05b7b9c267a5bd"></a>
+
+### getTarget()
+
+<ApiSignature>
+
+String getTarget()
+
+</ApiSignature>
+
+命令目标：mainView 或具体 appId。省略时跟随焦点，无 App 焦点时回退 MainView。
+
+<a id="a66bab9acc2f2cfce4948dcc6df4de9bd"></a>
+
+### setTarget()
+
+<ApiSignature>
+
+void setTarget(String target)
+
+</ApiSignature>
+
+命令目标：mainView 或具体 appId。省略时跟随焦点，无 App 焦点时回退 MainView。
+
+<a id="a0e514c12244a2f293a39ad38a237a4ca"></a>
+
+### getPage()
+
+<ApiSignature>
+
+Integer getPage()
+
+</ApiSignature>
+
+统一课件与 Slide 页码从 1 开始；不是主白板场景的零基索引。
+
+<a id="a415563a76e07a1e3dcdd50ac606817df"></a>
+
+### setPage()
+
+<ApiSignature>
+
+void setPage(Integer page)
+
+</ApiSignature>
+
+统一课件与 Slide 页码从 1 开始；不是主白板场景的零基索引。
+
+<a id="a1359fbe7407363de7be5a293f8756501"></a>
+
+### getScale()
+
+<ApiSignature>
+
+Double getScale()
+
+</ApiSignature>
+
+scalePage 命令的相对适配倍率，1 表示适配尺寸；DocsViewer 不支持此命令。
+
+<a id="a31218c748602e6682a985785cf9a0876"></a>
+
+### setScale()
+
+<ApiSignature>
+
+void setScale(Double scale)
+
+</ApiSignature>
+
+scalePage 命令的相对适配倍率，1 表示适配尺寸；DocsViewer 不支持此命令。

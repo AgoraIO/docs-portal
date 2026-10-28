@@ -1,39 +1,42 @@
 ---
-title: com.herewhite.sdk.CommonCallback接口 参考
+title: com.herewhite.sdk.CommonCallback interface 参考
 tocMaxDepth: 3
 _migration:
   type: generated-html
-  status: warning
+  status: migrated
   sourceUrl: >-
     https://doc.shengwang.cn/api-ref/whiteboard/android/interfacecom_1_1herewhite_1_1sdk_1_1_common_callback
   sourcePath: html-docs/whiteboard/Android/interfacecom_1_1herewhite_1_1sdk_1_1_common_callback.html
   generator: doxygen
-  warnings:
-    - code: missing-source-text
-      severity: warning
-      message: >-
-        The source image interfacecom_1_1herewhite_1_1sdk_1_1_common_callback.png has no meaningful
-        alt or title text; the converter used contextual alt text
-        "com.herewhite.sdk.CommonCallback接口 参考 图示".
+  warnings: []
 ---
-
-类 com.herewhite.sdk.CommonCallback 继承关系图:
-
-![com.herewhite.sdk.CommonCallback接口 参考 图示](https://web-cdn.agora.io/docs-portal/img/api-center-generated/b3b5af5f6e2e-interfacecom_1_1herewhite_1_1sdk_1_1_common_callback.png)
 
 <a id="details"></a>
 
 ## 详细描述
 
-[`CommonCallback`](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback)，用于 SDK 向 app 发送回调事件通知。
+适用版本：**Whiteboard Android SDK 2.16.134**。
 
+`CommonCallback`，用于 SDK 向 app 发送回调事件通知。
+&lt;p&gt;
 实时房间和回放房间都可以继承该接口下的回调方法。
 
-:::info[自从]
-2.9.13
-:::
+@since 2.9.13
 
-## 成员函数说明
+| 公开成员签名 |  |
+| --- | --- |
+| void | [throwError](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a721b4489c52b2740f233a1742f555916) (Object args) |
+| String | [urlInterrupter](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a28839222c6e4b44a001da833300991d4) (String sourceUrl) |
+| void | [onPPTMediaPlay](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a695dc7abd40851cd0ffe0e573566e8f1) () |
+| void | [onPPTMediaPause](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a9967d9cd3eb16c0db3024f7a6a8c7d64) () |
+| void | [onMessage](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a2a843f00164c64d248143d2194beecae) (JSONObject object) |
+| void | [onBackgroundImageLoad](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a88366f40f1db79a7428623bd0ee12ca3) (BackgroundImageLoadEvent event) |
+| void | [onApplianceInitLoadingChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a50b38e364a3817b1de357fe022b493bf) (ApplianceInitLoadingChangeEvent event) |
+| void | [sdkSetupFail](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a0a988489c8559923f178eef3ba322704) (SDKError error) |
+| void | [onLogger](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#a9ccc2cfa4bf7288dd894347454eaead7) (JSONObject object) |
+| void | [onLocalLogStateChange](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/interfacecom-1-1herewhite-1-1sdk-1-1-common-callback#aa44a2e63f238617b93ec282f23d4c47e) (JSONObject state) |
+
+## 函数说明
 
 <a id="a721b4489c52b2740f233a1742f555916"></a>
 
@@ -41,7 +44,7 @@ _migration:
 
 <ApiSignature>
 
-default void com.herewhite.sdk.CommonCallback.throwError(Object *args*)
+void throwError(Object args)
 
 </ApiSignature>
 
@@ -63,7 +66,7 @@ SDK 出现未捕获的全局错误回调。
 
 <ApiSignature>
 
-default String com.herewhite.sdk.CommonCallback.urlInterrupter(String *sourceUrl*)
+String urlInterrupter(String sourceUrl)
 
 </ApiSignature>
 
@@ -101,7 +104,7 @@ default String com.herewhite.sdk.CommonCallback.urlInterrupter(String *sourceUrl
 
 <ApiSignature>
 
-default void com.herewhite.sdk.CommonCallback.onPPTMediaPlay()
+void onPPTMediaPlay()
 
 </ApiSignature>
 
@@ -119,7 +122,7 @@ default void com.herewhite.sdk.CommonCallback.onPPTMediaPlay()
 
 <ApiSignature>
 
-default void com.herewhite.sdk.CommonCallback.onPPTMediaPause()
+void onPPTMediaPause()
 
 </ApiSignature>
 
@@ -137,7 +140,7 @@ default void com.herewhite.sdk.CommonCallback.onPPTMediaPause()
 
 <ApiSignature>
 
-default void com.herewhite.sdk.CommonCallback.onMessage(JSONObject *object*)
+void onMessage(JSONObject object)
 
 </ApiSignature>
 
@@ -163,36 +166,41 @@ JSON 格式的消息。只有当消息为 JSON 格式时，本地用户才能收
 
 在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#a569de82a2548a7fb84c80845cae67767) 内被实现.
 
+<a id="a88366f40f1db79a7428623bd0ee12ca3"></a>
+
+### onBackgroundImageLoad()
+
+<ApiSignature>
+
+void onBackgroundImageLoad(BackgroundImageLoadEvent event)
+
+</ApiSignature>
+
+背景图加载事件：name、state(success/failed/cancelled)、source(appliance)、resourceId、resourceUrl、viewId、scenePath。
+
+<a id="a50b38e364a3817b1de357fe022b493bf"></a>
+
+### onApplianceInitLoadingChange()
+
+<ApiSignature>
+
+void onApplianceInitLoadingChange(ApplianceInitLoadingChangeEvent event)
+
+</ApiSignature>
+
+教具初始化进度事件：name、loading、phase(plugin/worker/scene/ready)、status(start/success/timeout/error)。loading=false、phase=ready、status=success 表示就绪。
+
 <a id="a0a988489c8559923f178eef3ba322704"></a>
 
 ### sdkSetupFail()
 
 <ApiSignature>
 
-default void com.herewhite.sdk.CommonCallback.sdkSetupFail(SDKError *error*)
+void sdkSetupFail(SDKError error)
 
 </ApiSignature>
 
-SDK 初始化失败回调。
-
-:::info[自从]
-2.9.14
-:::
-
-如果 SDK 初始化失败，调用加入实时房间或回放房间时会处于一直无响应状态，需要重新初始化 SDK。 SDK 初始化失败可能由以下原因导致：
-
-- 初始化 SDK 时候，网络异常，导致获取配置信息失败。
-- 传入了不合法的 App Identifier。
-
-<ParameterList title="参数">
-<Parameter name="error">
-
-错误信息。
-
-</Parameter>
-</ParameterList>
-
-在 [com.herewhite.sdk.AbstractCommonCallbacks](/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/classcom-1-1herewhite-1-1sdk-1-1-abstract-common-callbacks#abbcf9b3946c0bf5ff20f1d3ba9cebdce) 内被实现.
+SDK 初始化失败。收到错误后重新创建/初始化 SDK，再重新入房；这不是普通房间断线重连事件。
 
 <a id="a9ccc2cfa4bf7288dd894347454eaead7"></a>
 
@@ -200,7 +208,7 @@ SDK 初始化失败回调。
 
 <ApiSignature>
 
-default void com.herewhite.sdk.CommonCallback.onLogger(JSONObject *object*)
+void onLogger(JSONObject object)
 
 </ApiSignature>
 
@@ -230,3 +238,15 @@ JSON 对象格式的日志消息，每条日志消息包含以下 key：
 </ParameterList>
 
 例如，`{"funName": "joinRoom", "params": {"isWritable": 1, "region": "cn-hz"}}`。
+
+<a id="aa44a2e63f238617b93ec282f23d4c47e"></a>
+
+### onLocalLogStateChange()
+
+<ApiSignature>
+
+void onLocalLogStateChange(JSONObject state)
+
+</ApiSignature>
+
+WebView 内本地日志状态变更，回调参数为 JSON 状态对象。
