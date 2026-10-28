@@ -35,7 +35,7 @@ Set `credential.mode` to `managed`. Agora provides access to MiniMax, and you do
 
 ### BYOK
 
-Store your MiniMax API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your MiniMax group ID isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your MiniMax API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.key` to a reference to the key. Your MiniMax group ID isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `minimax` in the `support_prod` set:
 
@@ -43,7 +43,7 @@ In the following example, the key is stored as `minimax` in the `support_prod` s
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.minimax"
+    "fields": { "key": "$secrets.support_prod.minimax" }
   },
   "vendor": "minimax",
   "url": "wss://api-uw.minimax.io/ws/v1/t2a_v2",
@@ -68,7 +68,7 @@ In the following example, the key is stored as `minimax` in the `support_prod` s
     Set to `minimax`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    How the agent authenticates with MiniMax. Set `mode` to `managed`, or to `byok` with `api_key` set to a `$secrets.<set>.<key>` reference to your MiniMax API key.
+    How the agent authenticates with MiniMax. Set `mode` to `managed`, or to `byok` with `fields.key` set to a `$secrets.<set>.<key>` reference to your MiniMax API key.
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     A custom WebSocket endpoint for streaming TTS output, for example `wss://api-uw.minimax.io/ws/v1/t2a_v2`. Not needed in managed mode.

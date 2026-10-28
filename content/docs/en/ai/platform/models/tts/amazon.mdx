@@ -12,27 +12,27 @@ Amazon provides natural-sounding text-to-speech with customizable voice instruct
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Amazon Polly supports BYOK only. It isn't available in managed mode.
 
-Store your AWS secret access key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your AWS access key ID and region aren't stored as secrets. Pass them in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your AWS access key ID and secret access key in a secret set. Then set `credential.mode` to `byok`, and set `credential.fields.aws_access_key_id` and `credential.fields.aws_secret_access_key` to references to them. Your AWS region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `amazon` in the `support_prod` set:
+In the following example, the keys are stored as `aws_access_key_id` and `aws_secret_access_key` in the `support_prod` set:
 
 ```json
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.amazon"
+    "fields": {
+      "aws_access_key_id": "$secrets.support_prod.aws_access_key_id",
+      "aws_secret_access_key": "$secrets.support_prod.aws_secret_access_key"
+    }
   },
   "vendor": "amazon",
   "params": {
-    "aws_access_key_id": "<your_aws_access_key_id>",
     "region_name": "<your_aws_region>",
     "voice": "Joanna",
     "engine": "neural"
   }
 }
 ```
-
-{/* TODO(platform-confirm): Amazon Polly uses two credentials (access key ID and secret access key). Confirm how the Platform expects them: secret access key in `credential.api_key` with the access key ID in `params` (as shown), both as `$secrets` references, or another format. */}
 
 ## Key parameters
 
@@ -41,12 +41,9 @@ In the following example, the key is stored as `amazon` in the `support_prod` se
     Set to `amazon`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your AWS secret access key. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+    Set `mode` to `byok`, and set `fields.aws_access_key_id` and `fields.aws_secret_access_key` to `$secrets.<set>.<key>` references to your AWS access key ID and secret access key. Get your keys from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
   </Parameter>
   <Parameter name="params" type="object" required={true}>
-    <Parameter name="aws_access_key_id" type="string" required={true}>
-      The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
-    </Parameter>
     <Parameter name="region_name" type="string" required={true}>
       The AWS region where the Polly service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/pol.html) for available regions.
     </Parameter>

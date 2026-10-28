@@ -12,7 +12,7 @@ Tavus provides lifelike AI avatars that see, hear, and respond in real time, ena
 
 Add an `avatar` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Tavus supports BYOK only. It isn't available in managed mode.
 
-Tavus uses the `generic` avatar vendor. Store your Tavus API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Tavus uses the `generic` avatar vendor. Store your Tavus API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `tavus` in the `support_prod` set:
 
@@ -21,7 +21,7 @@ In the following example, the key is stored as `tavus` in the `support_prod` set
   "enabled": true,
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.tavus"
+    "fields": { "api_key": "$secrets.support_prod.tavus" }
   },
   "vendor": "generic",
   "params": {
@@ -45,7 +45,7 @@ In the following example, the key is stored as `tavus` in the `support_prod` set
     Set to `generic`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Tavus API key. Get your API key from your Tavus account. For details, refer to [Tavus authentication](https://docs.tavus.io/api-reference/authentication).
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Tavus API key. Get your API key from your Tavus account. For details, refer to [Tavus authentication](https://docs.tavus.io/api-reference/authentication).
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="api_base_url" type="string" required={true}>

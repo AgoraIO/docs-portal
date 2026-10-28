@@ -12,7 +12,7 @@ Anam provides AI-powered avatars with real-time video rendering, enabling natura
 
 Add an `avatar` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Anam supports BYOK only. It isn't available in managed mode.
 
-Store your Anam API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Anam API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `anam` in the `support_prod` set:
 
@@ -21,7 +21,7 @@ In the following example, the key is stored as `anam` in the `support_prod` set:
   "enabled": true,
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.anam"
+    "fields": { "api_key": "$secrets.support_prod.anam" }
   },
   "vendor": "anam",
   "params": {
@@ -47,7 +47,7 @@ In the following example, the key is stored as `anam` in the `support_prod` set:
   Set to `anam`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-  Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Anam API key. Get your API key from the Anam console.
+  Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Anam API key. Get your API key from the Anam console.
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="avatar_id" type="string" required={true}>

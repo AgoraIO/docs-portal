@@ -26,7 +26,7 @@ Set `interruption.mode` to one of the following:
 
 ### Interrupt only on keywords
 
-Use `keywords` mode when background speech or short acknowledgments, such as "uh-huh", shouldn't stop the agent. Pass 1 to 128 phrases in `keywords`:
+Use `keywords` mode when background speech or short acknowledgments, such as "uh-huh", shouldn't stop the agent. Pass up to 128 phrases in `keywords`:
 
 ```json
 "pipeline": {
@@ -80,37 +80,12 @@ In `start_of_speech` mode, `turn_detection.start_of_speech` controls how quickly
 
 | Field | Description |
 |---|---|
-| `speaking_interrupt_duration_ms` | How long in milliseconds the user must speak to interrupt the agent while it's speaking. The default is `160`. Increase it to make the agent harder to interrupt. Applies to `semantic` and `vad`. |
-| `interrupt_duration_ms` | Speech shorter than this, in milliseconds, is ignored. The default is `160`. Applies to `vad`. |
-| `prefix_padding_ms` | How many milliseconds of audio to keep from before the detected start of speech. This keeps the beginning of the speech from being clipped. The default is `800`. Applies to `vad`. |
+| `speaking_interrupt_duration_ms` | How long in milliseconds the user must speak to interrupt the agent while it's speaking. The default is `160`. Increase it to make the agent harder to interrupt. Applies to `semantic` and `vad`. With `vad`, the range is 120 to 1,200. |
+| `interrupt_duration_ms` | Speech shorter than this, in milliseconds, is ignored. The range is 120 to 1,200, and the default is `160`. Applies to `vad`. |
+| `prefix_padding_ms` | How many milliseconds of audio to keep from before the detected start of speech. This keeps the beginning of the speech from being clipped. The range is 0 to 5,000, and the default is `800`. Applies to `vad`. |
 | `speech_threshold` | The speech detection threshold, between `0` and `1`. Lower values detect speech more easily, and higher values ignore weak speech. The default is `0.5`. Set it in `turn_detection`, not in `start_of_speech`. |
 
-## Interrupt the agent from your server
-
-To stop the agent while it's speaking or thinking, send a request to [Interrupt the agent](/en/api-reference/api-ref/conversational-ai/platform/interrupt) with an empty JSON object as the body:
-
-```bash
-curl --request POST \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id>/actions/interrupt \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
-  --header 'Content-Type: application/json' \
-  --data '{}'
-```
-
-If the request is successful, the response confirms that the action was accepted:
-
-```json
-// 200 OK
-{
-  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "channel": "support-4821",
-  "start_ts": 1737111460
-}
-```
-
-If the session has ended or isn't running yet, the request fails with `409 TaskNotRunning`.
-
-{/* TODO(platform-confirm): In pre-release testing (2026-10-27), Interrupt the agent returned `404 ResourceNotFound` on a running session, while Update a session worked. Confirm that Interrupt ships in the Preview, or hide this section. */}
+{/* PLATFORM-DEFERRED: The Interrupt the agent API (and Speak and Inject context) is deferred beyond the Oct 29 Preview, so the "Interrupt the agent from your server" section is removed. Restore it from the Voice Agent page when the session actions ship. */}
 
 ## Reference
 
@@ -122,4 +97,3 @@ For more information, see the following pages:
 
 - [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
 - [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)
-- [Interrupt the agent](/en/api-reference/api-ref/conversational-ai/platform/interrupt)

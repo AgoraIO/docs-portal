@@ -12,7 +12,7 @@ Hume AI provides emotion-aware text-to-speech technology that generates natural,
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Hume AI supports BYOK only. It isn't available in managed mode.
 
-Store your Hume AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Hume AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `humeai` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `humeai` in the `support_prod` se
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.humeai"
+    "fields": { "key": "$secrets.support_prod.humeai" }
   },
   "vendor": "humeai",
   "url": "https://api.hume.ai",
@@ -42,7 +42,7 @@ In the following example, the key is stored as `humeai` in the `support_prod` se
     Set to `humeai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Hume AI API key. Get your API key from the Hume AI console.
+    Set `mode` to `byok` and `fields.key` to a `$secrets.<set>.<key>` reference to your Hume AI API key. Get your API key from the Hume AI console.
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     The base URL for the Hume AI API. For example, `https://api.hume.ai`.

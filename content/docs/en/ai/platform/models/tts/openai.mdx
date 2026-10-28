@@ -31,7 +31,7 @@ Set `credential.mode` to `managed`. Agora provides access to OpenAI, and you don
 
 ### BYOK
 
-Store your OpenAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your OpenAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `openai` in the `support_prod` set:
 
@@ -39,7 +39,7 @@ In the following example, the key is stored as `openai` in the `support_prod` se
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.openai"
+    "fields": { "api_key": "$secrets.support_prod.openai" }
   },
   "vendor": "openai",
   "url": "https://api.openai.com/v1/audio/speech",
@@ -61,7 +61,7 @@ In the following example, the key is stored as `openai` in the `support_prod` se
     Set to `openai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    How the agent authenticates with OpenAI. Set `mode` to `managed`, or to `byok` with `api_key` set to a `$secrets.<set>.<key>` reference to your OpenAI API key. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
+    How the agent authenticates with OpenAI. Set `mode` to `managed`, or to `byok` with `fields.api_key` set to a `$secrets.<set>.<key>` reference to your OpenAI API key. Get your API key from the [OpenAI Console](https://platform.openai.com/api-keys).
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     The full endpoint URL for the OpenAI speech API, for example `https://api.openai.com/v1/audio/speech`. Not needed in managed mode. See [How to use data residency](https://platform.openai.com/docs/guides/your-data#how-to-use-data-residency).

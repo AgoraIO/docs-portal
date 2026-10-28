@@ -12,7 +12,7 @@ Groq provides state-of-the-art language models optimized for different use cases
 
 Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Groq supports BYOK only. It isn't available in managed mode.
 
-Store your Groq API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Groq API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `groq` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `groq` in the `support_prod` set:
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.groq"
+    "fields": { "api_key": "$secrets.support_prod.groq" }
   },
   "vendor": "groq",
   "style": "openai",
@@ -42,7 +42,7 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
     Set to `groq`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Groq API key. Create and manage your API key from [Groq console](https://console.groq.com/keys).
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Groq API key. Create and manage your API key from [Groq console](https://console.groq.com/keys).
   </Parameter>
   <Parameter name="style" type="string" required={false}>
     Set to `openai`. Groq uses an OpenAI-compatible API.

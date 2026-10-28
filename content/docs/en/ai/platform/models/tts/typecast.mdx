@@ -12,7 +12,7 @@ Typecast provides text-to-speech (TTS) with expressive, natural-sounding voices.
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Typecast supports BYOK only. It isn't available in managed mode.
 
-Store your Typecast API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Typecast API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `typecast` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `typecast` in the `support_prod` 
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.typecast"
+    "fields": { "api_key": "$secrets.support_prod.typecast" }
   },
   "vendor": "typecast",
   "params": {
@@ -37,7 +37,7 @@ In the following example, the key is stored as `typecast` in the `support_prod` 
     Set to `typecast`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Typecast API key.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Typecast API key.
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="voice_id" type="string" required={true}>

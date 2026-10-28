@@ -18,7 +18,7 @@ ElevenLabs may restrict or disable free-tier accounts due to abuse-detection mec
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). ElevenLabs supports BYOK only. It isn't available in managed mode.
 
-Store your ElevenLabs API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your ElevenLabs API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `elevenlabs` in the `support_prod` set:
 
@@ -26,7 +26,7 @@ In the following example, the key is stored as `elevenlabs` in the `support_prod
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.elevenlabs"
+    "fields": { "key": "$secrets.support_prod.elevenlabs" }
   },
   "vendor": "elevenlabs",
   "url": "wss://api.elevenlabs.io/v1",
@@ -47,7 +47,7 @@ In the following example, the key is stored as `elevenlabs` in the `support_prod
     Set to `elevenlabs`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your ElevenLabs API key. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
+    Set `mode` to `byok` and `fields.key` to a `$secrets.<set>.<key>` reference to your ElevenLabs API key. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
   </Parameter>
   <Parameter name="url" type="string" required={true}>
     The endpoint URL for the ElevenLabs TTS service. See [Data residency](https://elevenlabs.io/docs/product-guides/administration/data-residency).

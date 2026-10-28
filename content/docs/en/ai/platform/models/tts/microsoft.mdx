@@ -12,7 +12,7 @@ Microsoft Azure offers neural voices in multiple languages with options for diff
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Microsoft Azure supports BYOK only. It isn't available in managed mode.
 
-Store your Azure Speech key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your Azure region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Azure Speech key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.key` to a reference to the key. Your Azure region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `microsoft` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `microsoft` in the `support_prod`
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.microsoft"
+    "fields": { "key": "$secrets.support_prod.microsoft" }
   },
   "vendor": "microsoft",
   "params": {
@@ -40,7 +40,7 @@ In the following example, the key is stored as `microsoft` in the `support_prod`
     Set to `microsoft`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Azure Speech key. Get your key from the [Azure Portal](https://portal.azure.com/).
+    Set `mode` to `byok` and `fields.key` to a `$secrets.<set>.<key>` reference to your Azure Speech key. Get your key from the [Azure Portal](https://portal.azure.com/).
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="region" type="string" required={true}>

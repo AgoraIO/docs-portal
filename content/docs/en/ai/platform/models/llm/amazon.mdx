@@ -12,7 +12,7 @@ Amazon Bedrock provides access to a variety of foundation models (FMs) from lead
 
 Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Amazon Bedrock supports BYOK only. It isn't available in managed mode.
 
-Store your Bedrock API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your AWS region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Bedrock API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. To use an AWS access key pair instead, set `credential.fields.access_key` and `credential.fields.secret_key`. Your AWS region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `bedrock` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `bedrock` in the `support_prod` s
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.bedrock"
+    "fields": { "api_key": "$secrets.support_prod.bedrock" }
   },
   "vendor": "bedrock",
   "style": "bedrock",
@@ -34,7 +34,7 @@ In the following example, the key is stored as `bedrock` in the `support_prod` s
 
 Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
-{/* TODO(platform-confirm): Confirm the `vendor` value for Amazon Bedrock (`bedrock` is assumed), and whether `url` is required. The Voice Agent API also accepts an AWS access key ID and secret access key pair (`access_key` and `secret_key`) instead of a Bedrock API key. Confirm how the Platform accepts that pair (for example, two `$secrets` references) before documenting it. Also confirm that `region` belongs in `params`. */}
+{/* TODO(platform-confirm): Confirm the `vendor` value for Amazon Bedrock (`bedrock` is assumed), and whether `url` is required. Also confirm that `region` belongs in `params`. */}
 
 ## Key parameters
 
@@ -43,7 +43,7 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
     Set to `bedrock`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Bedrock API key.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Bedrock API key, or set `fields.access_key` and `fields.secret_key` to references to an AWS access key pair.
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     The API style to use. Set to `bedrock` for Amazon Bedrock models.

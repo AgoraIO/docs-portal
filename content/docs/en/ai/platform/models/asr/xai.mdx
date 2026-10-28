@@ -12,7 +12,7 @@ xAI provides real-time automatic speech recognition (ASR) over WebSocket for con
 
 Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). xAI supports BYOK only. It isn't available in managed mode.
 
-Store your xAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your xAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `xai` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `xai` in the `support_prod` set:
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.xai"
+    "fields": { "api_key": "$secrets.support_prod.xai" }
   },
   "vendor": "xai",
   "language": "en",
@@ -38,7 +38,7 @@ In the following example, the key is stored as `xai` in the `support_prod` set:
     Set to `xai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    How the agent authenticates with xAI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your xAI API key.
+    How the agent authenticates with xAI. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your xAI API key.
   </Parameter>
   <Parameter name="language" type="string" required={false}>
     The language code to use for transcription. For example, use `en` for English. Setting this enables text formatting of numbers, currencies, and units. For supported language codes, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/speech-to-text#supported-languages).

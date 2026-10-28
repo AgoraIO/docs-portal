@@ -12,7 +12,7 @@ Google Vertex AI provides enterprise-grade access to Google's generative AI mode
 
 Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google Vertex AI supports BYOK only. It isn't available in managed mode.
 
-Store your Google Cloud credential in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to it. Your project ID and region aren't secret. Pass them in the `url`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Google Cloud credential in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to it. Your project ID and region aren't secret. Pass them in the `url`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the credential is stored as `vertex_ai` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the credential is stored as `vertex_ai` in the `suppor
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.vertex_ai"
+    "fields": { "api_key": "$secrets.support_prod.vertex_ai" }
   },
   "vendor": "vertexai",
   "style": "gemini",
@@ -42,7 +42,7 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
     Set to `vertexai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud credential. Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud credential. Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `gemini` to use Gemini's message format.

@@ -12,7 +12,7 @@ Sarvam provides fast, reliable text-to-speech (TTS) with support for Indian lang
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Sarvam supports BYOK only. It isn't available in managed mode.
 
-Store your Sarvam API subscription key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Sarvam API subscription key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_subscription_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `sarvam` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `sarvam` in the `support_prod` se
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.sarvam"
+    "fields": { "api_subscription_key": "$secrets.support_prod.sarvam" }
   },
   "vendor": "sarvam",
   "params": {
@@ -30,8 +30,6 @@ In the following example, the key is stored as `sarvam` in the `support_prod` se
 }
 ```
 
-{/* TODO(platform-confirm): The Voice Agent API takes the Sarvam key in `params.api_subscription_key`. This page passes it in `credential.api_key`. Confirm that the Platform maps it to Sarvam's subscription key. */}
-
 ## Key parameters
 
 <ParameterList title="tts">
@@ -39,7 +37,7 @@ In the following example, the key is stored as `sarvam` in the `support_prod` se
     Set to `sarvam`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Sarvam API subscription key. Get your key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+    Set `mode` to `byok` and `fields.api_subscription_key` to a `$secrets.<set>.<key>` reference to your Sarvam API subscription key. Get your key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="speaker" type="string" required={true}>

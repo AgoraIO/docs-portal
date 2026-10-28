@@ -30,7 +30,7 @@ Set `credential.mode` to `managed`. Agora provides access to Deepgram, and you d
 
 ### BYOK
 
-Store your Deepgram API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Deepgram API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `deepgram` in the `support_prod` set:
 
@@ -38,7 +38,7 @@ In the following example, the key is stored as `deepgram` in the `support_prod` 
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.deepgram"
+    "fields": { "api_key": "$secrets.support_prod.deepgram" }
   },
   "vendor": "deepgram",
   "model": "nova-3",
@@ -56,7 +56,7 @@ In the following example, the key is stored as `deepgram` in the `support_prod` 
  Set to `deepgram`.
  </Parameter>
  <Parameter name="credential" type="object" required={true}>
- How the agent authenticates with Deepgram. Set `mode` to `managed`, or to `byok` with `api_key` set to a `$secrets.<set>.<key>` reference to your Deepgram API key. Get your API key from the [Deepgram Console](https://console.deepgram.com/).
+ How the agent authenticates with Deepgram. Set `mode` to `managed`, or to `byok` with `fields.api_key` set to a `$secrets.<set>.<key>` reference to your Deepgram API key. Get your API key from the [Deepgram Console](https://console.deepgram.com/).
  </Parameter>
  <Parameter name="model" type="string" required={false}>
  The speech recognition model to use. For managed mode, use `nova-2` or `nova-3`.

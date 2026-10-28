@@ -30,7 +30,7 @@ curl --request PATCH \
   --data '
 {
   "inbound": {
-    "agent": "agent_m8w4z1",
+    "agent": "c8a1e5d2-6f3b-4a9c-b7e0-2d4f6a8c1e3b",
     "call_policy": {
       "max_call_duration_seconds": 1800
     }
@@ -50,7 +50,7 @@ The `call_policy` in `inbound` sets limits and behavior for inbound calls:
 
 ```json
 "inbound": {
-  "agent": "agent_k3n9x2",
+  "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
   "call_policy": {
     "max_call_duration_seconds": 1800,
     "max_silence_duration_ms": 60000,
@@ -66,7 +66,7 @@ The `call_policy` in `inbound` sets limits and behavior for inbound calls:
 |---|---|
 | `max_call_duration_seconds` | The maximum length of a call in seconds, from when it's answered. |
 | `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
-| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
+| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
 
 If you omit a limit, it doesn't apply. Transferring calls to a person isn't available in the Preview.
 

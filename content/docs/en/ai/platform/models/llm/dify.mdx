@@ -48,7 +48,7 @@ To integrate Dify with Agora Conversational AI, install the plugin, configure yo
 
 Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Dify supports BYOK only. It isn't available in managed mode.
 
-Store your Dify endpoint API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Dify endpoint API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `dify` in the `support_prod` set:
 
@@ -56,7 +56,7 @@ In the following example, the key is stored as `dify` in the `support_prod` set:
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.dify"
+    "fields": { "api_key": "$secrets.support_prod.dify" }
   },
   "vendor": "dify",
   "style": "dify",
@@ -78,7 +78,7 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
     Set to `dify`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to the same API key configured in your Dify endpoint setup.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to the same API key configured in your Dify endpoint setup.
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `dify` to use Dify's message format and workflow processing.

@@ -32,7 +32,6 @@ curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
-  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
   "number": "+14155550100",
@@ -47,7 +46,7 @@ curl --request POST \
     }
   },
   "inbound": {
-    "agent": "agent_k3n9x2",
+    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
     "call_policy": {
       "max_call_duration_seconds": 1800
     }
@@ -73,7 +72,7 @@ If the request is successful, the response contains the number's ID and its conf
 ```json
 // 201 Created
 {
-  "number_id": "num_2v9c4q",
+  "number_id": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
   "number": "+14155550100",
   "description": "Customer support line",
   "sip_trunk": {
@@ -83,7 +82,7 @@ If the request is successful, the response contains the number's ID and its conf
     "transport": "tls"
   },
   "inbound": {
-    "agent": "agent_k3n9x2",
+    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
     "call_policy": {
       "max_call_duration_seconds": 1800
     }

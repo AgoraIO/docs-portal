@@ -12,7 +12,7 @@ Smallest AI provides real-time streaming transcription through its Pulse model. 
 
 Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Smallest AI supports BYOK only. It isn't available in managed mode.
 
-Store your Smallest AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Smallest AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `smallestai` in the `support_prod` set. Only `credential` and `vendor` are required:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `smallestai` in the `support_prod
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.smallestai"
+    "fields": { "api_key": "$secrets.support_prod.smallestai" }
   },
   "vendor": "smallestai",
   "language": "zh",
@@ -59,7 +59,7 @@ Smallest AI expects its boolean options as the strings `"true"` and `"false"`, a
  Set to `smallestai`.
  </Parameter>
  <Parameter name="credential" type="object" required={true}>
- How the agent authenticates with Smallest AI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
+ How the agent authenticates with Smallest AI. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
  </Parameter>
  <Parameter name="language" type="string" required={false}>
   The language code for speech recognition, for example, `zh`.

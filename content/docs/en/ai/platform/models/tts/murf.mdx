@@ -12,7 +12,7 @@ Murf provides enterprise-grade AI voice generation with text-to-speech (TTS) mod
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Murf supports BYOK only. It isn't available in managed mode.
 
-Store your Murf API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Murf API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `murf` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `murf` in the `support_prod` set:
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.murf"
+    "fields": { "api_key": "$secrets.support_prod.murf" }
   },
   "vendor": "murf",
   "url": "wss://global.api.murf.ai/v1/speech/stream-input",
@@ -44,7 +44,7 @@ In the following example, the key is stored as `murf` in the `support_prod` set:
     Set to `murf`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Murf API key.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Murf API key.
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     The WebSocket endpoint for streaming TTS output, for example `wss://global.api.murf.ai/v1/speech/stream-input`.

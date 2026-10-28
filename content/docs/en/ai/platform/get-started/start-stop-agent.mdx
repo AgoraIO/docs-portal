@@ -43,14 +43,11 @@ You also need:
 
 Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with the agent's name, instructions, greeting, and models. This example declares a `customer_name` variable and uses it in the instructions and the greeting. You pass its value when you start a session.
 
-In the `Idempotency-Key` header, pass a unique value for each agent you create. If a request times out, retry it with the same key and the same body. The Platform returns the agent it already created instead of creating a duplicate.
-
 ```bash
 curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
-  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
   "agent_name": "Support agent",
@@ -104,7 +101,7 @@ If the request is successful, the response contains the agent ID and the saved c
 ```json
 // 201 Created
 {
-  "agent_id": "agent_k3n9x2",
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
   "agent_name": "Support agent",
   "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
   "variables": {
@@ -133,19 +130,22 @@ When a user joins a channel, send a request to [Start a session](/en/api-referen
 - `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
 - `channel`: The channel the user joined.
 - `token`: The RTC token for the agent's UID.
-- `uid`: The UID the agent uses in the channel. It must be different from the user's UID.
+- `uid`: The UID the agent uses in the channel, as a string. It must be different from the user's UID. If you omit it, Agora assigns one.
 - `subscribe_uids`: The UID of the user the agent talks to.
 
 In `values`, pass a value for each required variable.
+
+In the `Idempotency-Key` header, pass a unique value for each session you start. If a request times out, retry it with the same key and the same body. The Platform returns the session it already started instead of starting a second one.
 
 ```bash
 curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
+  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
-  "agent_id": "agent_k3n9x2",
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
   "values": {
     "customer_name": "Ada"
   },
@@ -162,17 +162,15 @@ curl --request POST \
 If the request is successful, the response contains the session ID and its [status](#check-the-session-status):
 
 ```json
-// 201 Created
+// 200 OK
 {
   "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "status": "running",
-  "created_at": 1737111452
+  "create_ts": 1737111452,
+  "status": "STARTING"
 }
 ```
 
 Store the `agent_session_id`. You use it to check and stop the session.
-
-{/* TODO(platform-confirm): Staging (2026-10-20) and pre-release testing (2026-10-27) both returned `201 Created` with a lowercase `status` and `created_at`, and the docs follow that. The launch contract specifies `200 OK`, uppercase statuses, and `create_ts`. Retrieve a session returns uppercase. Confirm the launch response. */}
 
 ## Check the session status
 

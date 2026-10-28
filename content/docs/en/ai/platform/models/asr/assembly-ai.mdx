@@ -12,7 +12,7 @@ AssemblyAI provides advanced automatic speech recognition with high accuracy and
 
 Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). AssemblyAI supports BYOK only. It isn't available in managed mode.
 
-Store your AssemblyAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your AssemblyAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `assemblyai` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `assemblyai` in the `support_prod
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.assemblyai"
+    "fields": { "api_key": "$secrets.support_prod.assemblyai" }
   },
   "vendor": "assemblyai",
   "language": "en-US",
@@ -35,7 +35,7 @@ In the following example, the key is stored as `assemblyai` in the `support_prod
  Set to `assemblyai`.
  </Parameter>
  <Parameter name="credential" type="object" required={true}>
- How the agent authenticates with AssemblyAI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your AssemblyAI API key. Get your API key from the [AssemblyAI Dashboard](https://www.assemblyai.com/dashboard/signup).
+ How the agent authenticates with AssemblyAI. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your AssemblyAI API key. Get your API key from the [AssemblyAI Dashboard](https://www.assemblyai.com/dashboard/signup).
  </Parameter>
  <Parameter name="language" type="string" required={true}>
  The language code for speech recognition.

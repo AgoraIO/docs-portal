@@ -12,7 +12,7 @@ Claude from Anthropic provides helpful, harmless, and honest AI assistance with 
 
 Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Claude supports BYOK only. It isn't available in managed mode.
 
-Store your Anthropic API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Anthropic API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `anthropic` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `anthropic` in the `support_prod`
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.anthropic"
+    "fields": { "api_key": "$secrets.support_prod.anthropic" }
   },
   "vendor": "anthropic",
   "style": "anthropic",
@@ -48,7 +48,7 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
     Set to `anthropic`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Anthropic API key. Get your API key from the [Anthropic Console](https://console.anthropic.com/).
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Anthropic API key. Get your API key from the [Anthropic Console](https://console.anthropic.com/).
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `anthropic` to use Claude's message format.

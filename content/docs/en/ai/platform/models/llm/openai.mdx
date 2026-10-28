@@ -29,7 +29,7 @@ Set `credential.mode` to `managed`. Agora provides access to OpenAI, and you don
 
 ### BYOK
 
-Store your OpenAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your OpenAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `openai` in the `support_prod` set:
 
@@ -37,7 +37,7 @@ In the following example, the key is stored as `openai` in the `support_prod` se
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.openai"
+    "fields": { "api_key": "$secrets.support_prod.openai" }
   },
   "vendor": "openai",
   "style": "openai",
@@ -59,7 +59,7 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
     Set to `openai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    How the agent authenticates with OpenAI. Set `mode` to `managed`, or to `byok` with `api_key` set to a `$secrets.<set>.<key>` reference to your OpenAI API key. Create or manage your API key from [OpenAI organization settings](https://platform.openai.com/settings/organization/api-keys).
+    How the agent authenticates with OpenAI. Set `mode` to `managed`, or to `byok` with `fields.api_key` set to a `$secrets.<set>.<key>` reference to your OpenAI API key. Create or manage your API key from [OpenAI organization settings](https://platform.openai.com/settings/organization/api-keys).
   </Parameter>
   <Parameter name="style" type="string" required={false}>
     Set to `openai`.

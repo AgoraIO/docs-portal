@@ -12,28 +12,30 @@ Amazon provides advanced automatic speech recognition with high accuracy and sup
 
 Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Amazon Transcribe supports BYOK only. It isn't available in managed mode.
 
-Store your AWS secret access key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your AWS access key ID and secret access key in a secret set. Then set `credential.mode` to `byok`, and set `credential.fields.access_key_id` and `credential.fields.secret_access_key` to references to them. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `amazon` in the `support_prod` set:
+In the following example, the keys are stored as `aws_access_key_id` and `aws_secret_access_key` in the `support_prod` set:
 
 ```json
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.amazon"
+    "fields": {
+      "access_key_id": "$secrets.support_prod.aws_access_key_id",
+      "secret_access_key": "$secrets.support_prod.aws_secret_access_key"
+    }
   },
   "vendor": "amazon",
   "language": "en-US",
   "params": {
     "region": "<AWS_ASR_REGION>",
-    "access_key_id": "<AWS_ASR_ACCESS_KEY_ID>",
     "media_sample_rate_hz": 16000,
     "media_encoding": "pcm"
   }
 }
 ```
 
-{/* TODO(platform-confirm): AWS needs two credentials, an access key ID and a secret access key. Confirm how the Platform takes them: the secret access key in `credential.api_key` with `access_key_id` in `params` (as shown), or another format. The contract says authentication fields don't belong in `params`. Also confirm that block-level `language` replaces the Voice Agent `params.language_code`. */}
+{/* TODO(platform-confirm): Confirm that block-level `language` replaces the Voice Agent `params.language_code`. */}
 
 ## Key parameters
 
@@ -42,7 +44,7 @@ In the following example, the key is stored as `amazon` in the `support_prod` se
   Set to `amazon`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-  How the agent authenticates with Amazon Transcribe. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your AWS secret access key. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  How the agent authenticates with Amazon Transcribe. Set `mode` to `byok`, and set `fields.access_key_id` and `fields.secret_access_key` to `$secrets.<set>.<key>` references to your AWS access key ID and secret access key. Get your keys from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
   </Parameter>
   <Parameter name="language" type="string" required={true}>
   The language code for speech recognition, for example, `en-US`, `es-US`, or `fr-FR`. See [supported languages](https://docs.aws.amazon.com/transcribe/latest/dg/supported-languages.html) for available language codes.
@@ -50,9 +52,6 @@ In the following example, the key is stored as `amazon` in the `support_prod` se
   <Parameter name="params" type="object" required={true}>
     <Parameter name="region" type="string" required={true}>
     The AWS region where the Transcribe service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/transcribe.html) for available regions.
-    </Parameter>
-    <Parameter name="access_key_id" type="string" required={true}>
-    The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
     </Parameter>
     <Parameter name="media_sample_rate_hz" type="integer" required={false}>
     The sample rate in Hertz for the audio input, for example, `16000` or `8000`.

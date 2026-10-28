@@ -12,7 +12,7 @@ Google provides fast, reliable text-to-speech (TTS) with customizable voices.
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google TTS supports BYOK only. It isn't available in managed mode.
 
-Store your Google Cloud service account credentials JSON string in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the credentials. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Google Cloud service account credentials JSON string in a secret set. Then set `credential.mode` to `byok` and `credential.fields.credentials` to a reference to the credentials. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the credentials are stored as `google` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the credentials are stored as `google` in the `support
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.google"
+    "fields": { "credentials": "$secrets.support_prod.google" }
   },
   "vendor": "google",
   "params": {
@@ -35,8 +35,6 @@ In the following example, the credentials are stored as `google` in the `support
 }
 ```
 
-{/* TODO(platform-confirm): The Voice Agent API takes a Google Cloud service account JSON string in `params.credentials`, not an API key. Confirm how the Platform expects it: the JSON string stored as a secret and referenced from `credential.api_key` (as shown), or another format. */}
-
 ## Key parameters
 
 <ParameterList title="tts">
@@ -44,7 +42,7 @@ In the following example, the credentials are stored as `google` in the `support
     Set to `google`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud service account credentials JSON string. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
+    Set `mode` to `byok` and `fields.credentials` to a `$secrets.<set>.<key>` reference to your Google Cloud service account credentials JSON string. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="VoiceSelectionParams" type="object" required={true}>

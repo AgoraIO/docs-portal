@@ -12,7 +12,7 @@ Rime provides high-quality text-to-speech (TTS) with low latency, supporting mul
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Rime supports BYOK only. It isn't available in managed mode.
 
-Store your Rime API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Rime API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `rime` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `rime` in the `support_prod` set:
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.rime"
+    "fields": { "api_key": "$secrets.support_prod.rime" }
   },
   "vendor": "rime",
   "url": "wss://users.rime.ai/ws2",
@@ -40,7 +40,7 @@ In the following example, the key is stored as `rime` in the `support_prod` set:
     Set to `rime`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Rime API key.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Rime API key.
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     The WebSocket URL for the Rime streaming API, for example `wss://users.rime.ai/ws2`.

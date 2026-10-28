@@ -1,19 +1,19 @@
 ---
 analyticsPageType: task-guide
-title: Personalize conversations and get structured results
-description: Use variables to personalize an agent for each session, and extract structured values from each conversation after it ends.
+title: Personalize conversations
+description: Use variables to personalize an agent for each session.
 ---
 
 {/* PLATFORM-NEW: new page for the Platform, replaces the copied custom-information page. Status: drafted on 2026-10-23, pending review. Required variables and MissingRequiredField were verified on staging on 2026-10-20. Extraction results weren't verified. */}
 
-Variables let you customize an agent for each conversation and capture its key outcomes. You declare variables when you create an agent, pass their values when you start a session, and read the values the agent extracts after the session ends. You can also choose whether Agora retains each session's conversation data.
+Variables let you customize an agent for each conversation and capture its key outcomes. You declare variables when you create an agent and pass their values when you start a session. You can also choose whether Agora retains each session's conversation data.
 
 ## Understand the tech
 
 A variable is a named value that the agent declares in `variables`. Each variable has a type, and you use it in one or both of the following ways:
 
 - **Personalize the conversation**: Refer to the variable as `{{variable_name}}` in the agent's `instructions`, `messages`, or `greeting.text`. When you start a session, you pass its value in `values`, and the Platform replaces each placeholder with that value. The agent doesn't store values. You pass them for every session.
-- **Get structured results**: In the variable declaration, set `extract` to `true` and describe what the variable means. After the session ends, the Platform extracts the value from the conversation transcript and returns it in the session's `analysis.result`.
+- **Extract outcomes**: In the variable declaration, set `extract` to `true` and describe what the variable means. After the session ends, the Platform extracts the value from the conversation transcript. The Preview API doesn't return the extracted values yet.
 
 You can also use variables in `pipeline.llm.failure_message`, `pipeline.silence_config.content`, and generated filler word instructions.
 
@@ -32,7 +32,6 @@ curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
-  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
   "agent_name": "Appointment agent",
@@ -96,7 +95,7 @@ curl --request POST \
   --header 'Content-Type: application/json' \
   --data '
 {
-  "agent_id": "agent_k3n9x2",
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
   "values": {
     "customer_name": "Ada",
     "plan": "pro"
@@ -124,59 +123,14 @@ Expansion runs once. A value that contains a placeholder isn't expanded again.
 
 When you [create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign), you pass `values` for each contact instead. An [ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session) takes `values` in the same way, for the variables declared in its `agent`.
 
-## Get the extracted results
-
-Extraction runs after the session ends. To get the results, send a request to [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session):
-
-```bash
-curl --request GET \
-  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id> \
-  --header 'Authorization: Basic <your_base64_encoded_credentials>'
-```
-
-When extraction finishes, `analysis.status` is `completed`, and `analysis.result` contains a value for each extract variable:
-
-```json
-// 200 OK
-{
-  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "agent_name": "Appointment agent",
-  "status": "STOPPED",
-  "start_ts": 1735035893,
-  "stop_ts": 1735036193,
-  "message": null,
-  "analysis": {
-    "status": "completed",
-    "skip_reason": null,
-    "complete_ts": 1735036201,
-    "result": {
-      "appointment_confirmed": false,
-      "follow_up_date": "2026-11-04"
-    },
-    "error": null
-  }
-}
-```
-
-If the conversation doesn't establish a value, the variable's value in `result` is `null`.
-
-`analysis.status` is one of the following:
-
-| Status | Description |
-|---|---|
-| `pending` | The session hasn't ended, or extraction hasn't finished. `result` is `null`. Retrieve the session again later. |
-| `completed` | Extraction finished. The values are in `result`. |
-| `failed` | Extraction failed. The reason is in `error`. |
-| `skipped` | Extraction didn't run. The reason is in `skip_reason`: `no_user_turns` if the user didn't speak, or `retention_none` if Agora didn't retain the conversation data. |
-
-{/* TODO(platform-confirm): Confirm how long extraction usually takes after a session ends, and whether a notification event reports when results are ready, to replace polling. */}
+{/* PLATFORM-DEFERRED: The "Get the extracted results" section is removed because the Preview session responses don't include `analysis`. Restore it when extraction results are delivered. */}
 
 ## Choose whether Agora retains conversation data
 
 When you start a session, set `data_policy.retention` to choose how Agora handles the session's conversation data:
 
 - `30_days`: Agora retains the data for 30 days. This is the default.
-- `none`: Agora doesn't retain the data. Extraction doesn't run, and `analysis.status` is `skipped` with `skip_reason` set to `retention_none`.
+- `none`: Agora doesn't retain the data, and extraction doesn't run.
 
 For example, use `none` when a caller declines to have the conversation recorded:
 

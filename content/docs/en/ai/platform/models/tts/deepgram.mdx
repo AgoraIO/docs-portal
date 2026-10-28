@@ -12,7 +12,7 @@ Deepgram provides low-latency text-to-speech with a wide range of voices, optimi
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Deepgram TTS supports BYOK only. It isn't available in managed mode.
 
-Store your Deepgram API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Deepgram API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `deepgram` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `deepgram` in the `support_prod` 
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.deepgram"
+    "fields": { "api_key": "$secrets.support_prod.deepgram" }
   },
   "vendor": "deepgram",
   "url": "wss://api.deepgram.com/v1/speak",
@@ -40,7 +40,7 @@ In the following example, the key is stored as `deepgram` in the `support_prod` 
     Set to `deepgram`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Deepgram API key. Get your API key from the [Deepgram Console](https://console.deepgram.com/).
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Deepgram API key. Get your API key from the [Deepgram Console](https://console.deepgram.com/).
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     The WebSocket URL for the Deepgram streaming API. Defaults to `wss://api.deepgram.com/v1/speak`.

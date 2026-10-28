@@ -12,7 +12,7 @@ The `generic_http` TTS vendor lets you integrate a custom TTS service that imple
 
 Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Generic TTS uses your own TTS service. It isn't available in managed mode.
 
-Set `url` to your service endpoint. Store the API key for your service in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Set `url` to your service endpoint. Store the API key for your service in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `custom_tts` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `custom_tts` in the `support_prod
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.custom_tts"
+    "fields": { "api_key": "$secrets.support_prod.custom_tts" }
   },
   "vendor": "generic_http",
   "url": "https://your-tts-service.example.com/v1/audio/speech",
@@ -38,7 +38,7 @@ In the following example, the key is stored as `custom_tts` in the `support_prod
 
 To send other custom headers to your service, add a `headers` object to the block. Headers are write-only and are never returned.
 
-{/* TODO(platform-confirm): Confirm the Platform `vendor` value for a custom TTS service (`generic_http` as in the Voice Agent API, or `generic`). The Voice Agent API authenticates with `headers.Authorization` or `params.api_key`. Confirm whether the Platform sends `credential.api_key` as a bearer token, and how a secret goes into an `Authorization` header (for example, a `$secrets` reference inside the header value). */}
+{/* TODO(platform-confirm): Confirm the Platform `vendor` value for a custom TTS service (`generic_http` as in the Voice Agent API, or `generic`). The Voice Agent API authenticates with `headers.Authorization` or `params.api_key`. Confirm whether the Platform sends `credential.fields.api_key` as a bearer token, and how a secret goes into an `Authorization` header (for example, a `$secrets` reference inside the header value). */}
 
 ## Key parameters
 
@@ -47,7 +47,7 @@ To send other custom headers to your service, add a `headers` object to the bloc
     Set to `generic_http`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to the API key for your TTS service.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to the API key for your TTS service.
   </Parameter>
   <Parameter name="url" type="string" required={true}>
     The OpenAI TTS protocol compatible service endpoint.

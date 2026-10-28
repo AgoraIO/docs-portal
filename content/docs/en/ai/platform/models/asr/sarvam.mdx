@@ -12,7 +12,7 @@ Sarvam ASR provides real-time speech-to-text with low latency and reliable perfo
 
 Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Sarvam supports BYOK only. It isn't available in managed mode.
 
-Store your Sarvam API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Sarvam API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `sarvam` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `sarvam` in the `support_prod` se
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.sarvam"
+    "fields": { "api_key": "$secrets.support_prod.sarvam" }
   },
   "vendor": "sarvam",
   "language": "hi-IN"
@@ -36,7 +36,7 @@ In the following example, the key is stored as `sarvam` in the `support_prod` se
   Set to `sarvam`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-  How the agent authenticates with Sarvam. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+  How the agent authenticates with Sarvam. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Sarvam API key. Get your API key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
   </Parameter>
   <Parameter name="language" type="string" required={true}>
   The language code for transcription, for example, `hi-IN`. Set to `unknown` for automatic language detection.

@@ -24,7 +24,6 @@ curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
-  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
   "agent_name": "Support agent",
@@ -60,7 +59,7 @@ curl --request POST \
 
 In this example:
 
-- Each block sets `credential.mode` to `managed`. A managed block doesn't accept an `api_key`, and it doesn't need a provider endpoint `url`.
+- Each block sets `credential.mode` to `managed`. A managed block doesn't accept `fields` or a custom provider endpoint `url`.
 - The `asr` block uses Deepgram Nova 3 for US English.
 - The `llm` block uses OpenAI GPT-4.1 Mini.
 - The `tts` block uses MiniMax Speech 2.6 Turbo, with the voice and speaking speed in `params`.

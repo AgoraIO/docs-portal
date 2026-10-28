@@ -12,7 +12,7 @@ Google Gemini provides advanced multimodal AI capabilities with fast performance
 
 Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google Gemini supports BYOK only. It isn't available in managed mode.
 
-Store your Gemini API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Don't put the key in the `url` query string. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Gemini API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. Don't put the key in the `url` query string. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `gemini` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `gemini` in the `support_prod` se
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.gemini"
+    "fields": { "api_key": "$secrets.support_prod.gemini" }
   },
   "vendor": "gemini",
   "style": "gemini",
@@ -33,7 +33,7 @@ In the following example, the key is stored as `gemini` in the `support_prod` se
 
 Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
-{/* TODO(platform-confirm): Confirm the `vendor` value for Google Gemini (`gemini` is assumed), and whether `url` is required. The Voice Agent API passes the key in the `url` query string (`&key=<api_key>`). Confirm that the Platform sends `credential.api_key` to Gemini without it. Also confirm where `ignore_empty` goes. It isn't a block field in the Platform spec. This page lists it in `params`. */}
+{/* TODO(platform-confirm): Confirm the `vendor` value for Google Gemini (`gemini` is assumed), and whether `url` is required. The Voice Agent API passes the key in the `url` query string (`&key=<api_key>`). Confirm that the Platform sends `credential.fields.api_key` to Gemini without it. Also confirm where `ignore_empty` goes. It isn't a block field in the Platform spec. This page lists it in `params`. */}
 
 ## Key parameters
 
@@ -42,7 +42,7 @@ Set the system prompt and the greeting with the agent's `instructions` and `gree
     Set to `gemini`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Gemini API key. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Gemini API key. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `gemini` to use Gemini's message format.

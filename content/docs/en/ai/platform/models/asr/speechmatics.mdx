@@ -12,7 +12,7 @@ Speechmatics provides real-time automatic speech recognition (ASR) with flexible
 
 Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Speechmatics supports BYOK only. It isn't available in managed mode.
 
-Store your Speechmatics API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Store your Speechmatics API key in a secret set. Then set `credential.mode` to `byok` and `credential.fields.key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
 In the following example, the key is stored as `speechmatics` in the `support_prod` set:
 
@@ -20,7 +20,7 @@ In the following example, the key is stored as `speechmatics` in the `support_pr
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.speechmatics"
+    "fields": { "key": "$secrets.support_prod.speechmatics" }
   },
   "vendor": "speechmatics",
   "language": "en",
@@ -35,7 +35,7 @@ In the following example, the key is stored as `speechmatics` in the `support_pr
     Set to `speechmatics`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    How the agent authenticates with Speechmatics. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Speechmatics API key.
+    How the agent authenticates with Speechmatics. Set `mode` to `byok` and `fields.key` to a `$secrets.<set>.<key>` reference to your Speechmatics API key.
   </Parameter>
   <Parameter name="language" type="string" required={true}>
     The language code to use for transcription. For example, use `en` for English.
