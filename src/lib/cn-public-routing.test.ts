@@ -7,6 +7,10 @@ import {
 import { describe, expect, it } from 'vitest';
 import { getCnPublicRouteRewrite } from './cn-public-routing';
 import { createPlatformQueryIndex } from './platforms/query-route';
+import {
+  parseDocsSearch,
+  stringifyDocsSearch,
+} from './search/search-url-state';
 
 function fixture(entry: string, region: 'cn' | 'global' = 'cn') {
   const root = createRootRoute();
@@ -38,13 +42,23 @@ describe('CN public route navigation', () => {
     const router = fixture(
       '/realtime-media/rtc/guide?platform=ios&from=legacy#details',
     );
-    router.update({ rewrite: getCnPublicRouteRewrite('cn', index) });
+    router.update({
+      rewrite: getCnPublicRouteRewrite('cn', index),
+      parseSearch: parseDocsSearch,
+      stringifySearch: stringifyDocsSearch,
+    });
     // Use a fresh history entry after installing the rewrite in this fixture.
     await router.navigate({
-      href: '/realtime-media/rtc/guide?platform=ios&from=legacy#details',
+      href: '/realtime-media/rtc/guide?platform=ios&from=legacy&tag=a&tag=b#details',
     });
     expect(router.state.location.pathname).toBe(`${canonicalPath}/ios`);
-    expect(router.state.location.search).toEqual({ from: 'legacy' });
+    expect(router.state.location.search).toEqual({
+      from: 'legacy',
+      tag: ['a', 'b'],
+    });
+    expect(
+      new URLSearchParams(router.state.location.searchStr).getAll('tag'),
+    ).toEqual(['a', 'b']);
     expect(router.state.location.hash).toBe('details');
     await router.navigate({
       to: '/$locale/$tab/$',

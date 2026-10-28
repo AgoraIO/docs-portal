@@ -6,7 +6,10 @@ import {
   normalizeInitialPlatformLocation,
   type PlatformQueryIndex,
 } from '@/lib/platforms/query-route';
-import { parseDocsSearch } from '@/lib/search/search-url-state';
+import {
+  parseDocsSearch,
+  stringifyDocsSearch,
+} from '@/lib/search/search-url-state';
 import { DOCS_REGION } from '@/lib/site-region';
 import { installVitePreloadErrorHandler } from '@/lib/vite-preload-error';
 import { routeTree } from './routeTree.gen';
@@ -20,6 +23,7 @@ export function getRouter() {
   return createTanStackRouter({
     routeTree,
     parseSearch: parseDocsSearch,
+    stringifySearch: stringifyDocsSearch,
     rewrite: getCnPublicRouteRewrite(DOCS_REGION, platformQueryIndex),
     defaultPreload: 'intent',
     scrollRestoration: true,

@@ -1125,3 +1125,44 @@ it('rejects a platform query redirect that drops its hash even when the original
     reason: 'browser-page-identity-or-body-missing',
   });
 });
+
+describe('query identity and legacy search text encoding', () => {
+  it.each([
+    ['q=110', 'q=%22110%22'],
+    ['q=hello', 'q=%22hello%22'],
+    ['q=%22hello%22&tag=a&tag=b', 'tag=b&q=hello&tag=a'],
+  ])(
+    'recognizes equivalent single search terms: %s and %s',
+    async (left, right) => {
+      const { sameQuery } = await import('./lib/cn-link-audit/browser.mjs');
+      expect(
+        sameQuery(
+          new URL(`https://docs.test/ai?${left}`),
+          new URL(`https://docs.test/ai?${right}`),
+        ),
+      ).toBe(true);
+    },
+  );
+
+  it.each([
+    ['q=110', 'q=%22111%22'],
+    ['q=%22hello%22', 'q=world'],
+    ['q=110&q=110', 'q=%22110%22&q=110'],
+    ['q=110&q=110', 'q=%22110%22'],
+    ['tag=a&tag=b', 'tag=%5B%22a%22%2C%22b%22%5D'],
+    ['tag=110', 'tag=%22110%22'],
+    ['q=%5B%22a%22%2C%22b%22%5D', 'q=a&q=b'],
+    ['q=%22%5C%22110%5C%22%22', 'q=110'],
+  ])(
+    'keeps changed search terms, repeated terms and business literals distinct: %s and %s',
+    async (left, right) => {
+      const { sameQuery } = await import('./lib/cn-link-audit/browser.mjs');
+      expect(
+        sameQuery(
+          new URL(`https://docs.test/ai?${left}`),
+          new URL(`https://docs.test/ai?${right}`),
+        ),
+      ).toBe(false);
+    },
+  );
+});

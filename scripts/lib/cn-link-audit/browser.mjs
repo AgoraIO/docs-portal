@@ -4,6 +4,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
+import { decodeSearchQueryText } from '../../../src/lib/search/search-url-state.ts';
 import { getPlatformForUrl } from '../../../src/lib/platforms/query-route.ts';
 import {
   normalizePlatformKey,
@@ -536,9 +537,19 @@ const normalizePath = (value) => value.replace(/\/+$/, '') || '/';
 const pagePath = (url) =>
   normalizePath(new URL(url).pathname.replace(/^\/zh-CN(?=\/|$)/, '') || '/');
 export function sameQuery(actual, expected) {
+  const singleSearchTerm =
+    actual.searchParams.getAll('q').length === 1 &&
+    expected.searchParams.getAll('q').length === 1;
   const entries = (url) =>
     [...url.searchParams]
-      .map(([key, value]) => JSON.stringify([key, value]))
+      .map(([key, value]) =>
+        JSON.stringify([
+          key,
+          key === 'q' && singleSearchTerm
+            ? decodeSearchQueryText(value)
+            : value,
+        ]),
+      )
       .sort();
   return JSON.stringify(entries(actual)) === JSON.stringify(entries(expected));
 }
