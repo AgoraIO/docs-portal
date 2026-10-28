@@ -64,16 +64,19 @@ function normalizeSearchContainers(markdown: string) {
   let tableFence = false;
   for (const line of markdown.split('\n')) {
     const indent = line.match(/^[ \t]*/)?.[0].length ?? 0;
+    const marker = line.match(/^[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
+    const tableOpening =
+      !fence && line.match(/^[ \t]*\|[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
     const opening =
       !fence &&
+      !marker &&
+      !tableOpening &&
       /<(CodeBlockTabs|CalloutContainer)\b/.test(
         line.replace(/(`+).*?\1/g, ''),
       );
     const active = stack.length > 0 || opening;
     const contentIndent = stack.length ? stack[stack.length - 1].indent + 2 : 0;
     const content = line.slice(Math.min(indent, contentIndent));
-    const tableOpening =
-      !fence && line.match(/^[ \t]*\|[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
     const tableClosing =
       tableFence &&
       line.match(
@@ -101,7 +104,6 @@ function normalizeSearchContainers(markdown: string) {
       if (active) original.push(line);
       continue;
     }
-    const marker = line.match(/^[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
     if (marker) {
       if (!fence) fence = marker[1];
       else if (

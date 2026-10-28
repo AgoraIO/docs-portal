@@ -8,6 +8,14 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('does not treat a component name in fence metadata as a container opening', () => {
+    const [record] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n```ts title="<CalloutContainer>"\nconst id = 1;\n```',
+    );
+    expect(record.content).toBe('const id = 1;');
+  });
   it('leaves table-fence syntax inside a longer fenced example unchanged', () => {
     const example =
       '| ```json\n{"new": true}\n``` | ```json\n{"old": true}\n``` |';
