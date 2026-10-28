@@ -97,12 +97,13 @@ export async function loadCnSearchCatalog(signal?: AbortSignal) {
 
 // The current demo index contains Markdown source. Keep highlight tags while
 // removing authoring syntax from the cropped, text-only search preview.
+// Meilisearch may prepend its crop marker directly to an opening fence.
 export function cleanSearchSnippet(value: string): string {
   return value
     .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
     .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
     .replace(/(^|\s)\|(?=\s|$)/gm, '$1')
-    .replace(/(^|\n)[ \t]*(?:`{3,}|~{3,})[^\r\n]*/g, '$1')
+    .replace(/(^|\n)([ \t]*(?:…[ \t]*)?)(?:`{3,}|~{3,})[^\r\n]*/g, '$1$2')
     .replace(/```[\w+-]*\s*/g, ' ')
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]*)\]\([^)]*(?:\)|$)/g, '$1')

@@ -358,6 +358,50 @@ describe('full CN search adapter', () => {
       '生成 <mark>Token</mark>。 const char* tabGroup = "app"; print("Token")',
     );
   });
+  it.each(['```cpp', '~~~~cpp'])(
+    'removes fence metadata after the Meilisearch crop marker (%s)',
+    (fence) => {
+      expect(
+        cleanSearchSnippet(
+          `…${fence} tab="C++" tabGroup="token-sample-code"\nconst char* tabGroup = "app"; // <mark>Token</mark>\n…`,
+        ),
+      ).toBe('… const char* tabGroup = "app"; // <mark>Token</mark> …');
+    },
+  );
+  it('cleans cropped indented fences without removing literal metadata in prose or code', () => {
+    expect(
+      cleanSearchSnippet(
+        '正文 tab="C++" tabGroup="example"\n  …  ```cpp tab="C++" tabGroup="token-sample-code"\nconst char* tabGroup = "app";\n```',
+      ),
+    ).toBe('正文 tab="C++" tabGroup="example" … const char* tabGroup = "app";');
+  });
+  it('cleans a cropped old-index result through the search adapter while preserving highlights', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(
+      Response.json({
+        hits: [
+          {
+            ...hit,
+            _formatted: {
+              content:
+                '…```cpp tab="C++" tabGroup="token-sample-code"\nconst char* token = "<mark>Token</mark>";\n```…',
+            },
+          },
+        ],
+        totalHits: 1,
+        totalPages: 1,
+        page: 1,
+      }),
+    );
+    const result = await queryCnSearch(
+      config,
+      parseSearchPageState({ q: 'Token', type: 'docs' }),
+    );
+    expect(result.groups[0].sections[0].highlights?.content).toEqual([
+      { text: '… const char* token = "', highlighted: false },
+      { text: 'Token', highlighted: true },
+      { text: '";', highlighted: false },
+    ]);
+  });
   it('uses exact pagination and filters, groups sections in ranking order, and discards non-public results', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(
