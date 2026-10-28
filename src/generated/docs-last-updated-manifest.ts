@@ -588,7 +588,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/handle-runtime-events/webhooks.mdx':
     '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/managed-mode.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T09:16:44.000Z',
   'content/docs/en/ai/platform/build/meta.json': '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/phone-calls/import-phone-numbers.mdx':
     '2026-10-27T09:58:06.000Z',
@@ -625,7 +625,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/transcripts.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/use-your-own-keys.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T09:16:44.000Z',
   'content/docs/en/ai/platform/get-started/mcp-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/meta.json':
@@ -635,7 +635,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
-    '2026-10-28T07:22:46.000Z',
+    '2026-10-28T09:16:44.000Z',
   'content/docs/en/ai/platform/index.mdx': '2026-10-27T09:58:06.000Z',
   'content/docs/en/ai/platform/meta.json': '2026-10-26T10:38:15.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':

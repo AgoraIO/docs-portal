@@ -17,7 +17,7 @@ For a complete agent example, see [Create an agent](/en/ai/platform/get-started/
 
 ## Choose managed models
 
-To choose the managed models, create an agent with them. This example uses Deepgram Nova 3 for ASR and OpenAI GPT-4.1 Mini for the LLM. The SDK examples use the `client` that you create in [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+Set the managed models when you create an agent. This example uses Deepgram Nova 3 for ASR, OpenAI GPT-4.1 Mini for the LLM, and OpenAI TTS-1 for TTS. The SDK examples use the `client` that you create in [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
 
 <Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
 <TabsList>
@@ -57,13 +57,10 @@ curl --request POST \
     },
     "tts": {
       "credential": { "mode": "managed" },
-      "vendor": "minimax",
+      "vendor": "openai",
       "params": {
-        "model": "speech-2.6-turbo",
-        "voice_setting": {
-          "voice_id": "English_captivating_female1",
-          "speed": 1
-        }
+        "model": "tts-1",
+        "voice": "alloy"
       }
     }
   }
@@ -75,7 +72,7 @@ In this example:
 - Each block sets `credential.mode` to `managed`. A managed block doesn't accept an `api_key`, and it doesn't need a provider endpoint `url`.
 - The `asr` block uses Deepgram Nova 3 for US English.
 - The `llm` block uses OpenAI GPT-4.1 Mini.
-- The `tts` block uses MiniMax Speech 2.6 Turbo, with the voice and speaking speed in `params`.
+- The `tts` block uses OpenAI TTS-1, with the voice in `params`.
 
 </TabsContent>
 
@@ -153,7 +150,7 @@ if err != nil {
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): The SDK examples use managed OpenAI `tts-1` instead of MiniMax, because the SDKs can't set MiniMax `voice_setting.speed`, which managed MiniMax requires. The managed OpenAI LLM fails in all three SDKs until they send `vendor` (SDK bug list #1 and #2). */}
+{/* TODO(platform-confirm): All examples use managed OpenAI `tts-1`, not MiniMax, because the SDKs can't set MiniMax `voice_setting.speed`, which managed MiniMax requires (SDK bug list #2). The managed OpenAI LLM fails in all three SDKs until they send `vendor` (SDK bug list #1). */}
 
 You then start sessions with the agent as usual. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
 

@@ -81,7 +81,10 @@ If the request is successful, the response contains the set's name and key names
 <TabsContent value="python">
 
 ```python
-client.secrets.create(name="support_prod", secrets={"llm": "<your_openai_api_key>"})
+client.secrets.create(
+    name="support_prod",
+    secrets={"llm": "<your_openai_api_key>"},
+)
 ```
 
 </TabsContent>
@@ -89,7 +92,10 @@ client.secrets.create(name="support_prod", secrets={"llm": "<your_openai_api_key
 <TabsContent value="typescript">
 
 ```ts
-await client.secrets.create({ name: 'support_prod', secrets: { llm: '<your_openai_api_key>' } });
+await client.secrets.create({
+  name: 'support_prod',
+  secrets: { llm: '<your_openai_api_key>' },
+});
 ```
 
 </TabsContent>
@@ -99,17 +105,20 @@ await client.secrets.create({ name: 'support_prod', secrets: { llm: '<your_opena
 The last argument is an idempotency key. Secret set creation doesn't support one, so pass an empty string.
 
 ```go
-_, err := client.Secrets.Create(ctx, agentkit.SecretCreate{
+secretSet, err := client.Secrets.Create(ctx, agentkit.SecretCreate{
 	Name:    "support_prod",
 	Secrets: map[string]string{"llm": "<your_openai_api_key>"},
 }, "")
 if err != nil {
 	log.Fatal(err)
 }
+fmt.Println(secretSet.Body.Name) // The secret set name
 ```
 
 </TabsContent>
 </Tabs>
+
+{/* TODO(platform-confirm): The response examples follow the launch contract. Pre-release testing (2026-10-28) returned `keys` as a list of names (`["llm"]`), and Set a secret key returned only `{"key": "llm"}`. The Go SDK models those shapes. */}
 
 :::tip
 Create one secret set for each environment, such as `support_dev` and `support_prod`, with the same key names in each. To switch an agent between environments, you then only change the set name in its references.
@@ -194,6 +203,7 @@ agent = (
     .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
     .with_llm(
         OpenAI(
+            # [!code highlight]
             api_key=secret_ref("support_prod", "llm"),
             vendor="openai",
             base_url="https://api.openai.com/v1/chat/completions",
@@ -222,6 +232,7 @@ const agent = new Agent({ client })
   .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
   .withLlm(
     new OpenAI({
+      // [!code highlight]
       apiKey: secretRef('support_prod', 'llm'),
       vendor: 'openai',
       url: 'https://api.openai.com/v1/chat/completions',
@@ -246,6 +257,7 @@ Pass the reference that `agentkit.SecretRef()` returns as the API key. With your
 agent := agentkit.NewAgent(client).
 	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
 	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+		// [!code highlight]
 		APIKey:  agentkit.SecretRef("support_prod", "llm"),
 		Vendor:  "openai",
 		BaseURL: "https://api.openai.com/v1/chat/completions",
@@ -312,7 +324,11 @@ If the request is successful, the response contains the key's name and timestamp
 <TabsContent value="python">
 
 ```python
-client.secrets.set_key(name="support_prod", key="llm", value="<your_new_openai_api_key>")
+client.secrets.set_key(
+    name="support_prod",
+    key="llm",
+    value="<your_new_openai_api_key>",
+)
 ```
 
 </TabsContent>
@@ -320,7 +336,11 @@ client.secrets.set_key(name="support_prod", key="llm", value="<your_new_openai_a
 <TabsContent value="typescript">
 
 ```ts
-await client.secrets.setKey({ name: 'support_prod', key: 'llm', value: '<your_new_openai_api_key>' });
+await client.secrets.setKey({
+  name: 'support_prod',
+  key: 'llm',
+  value: '<your_new_openai_api_key>',
+});
 ```
 
 </TabsContent>
@@ -330,11 +350,12 @@ await client.secrets.setKey({ name: 'support_prod', key: 'llm', value: '<your_ne
 This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
 
 ```go
-_, err := client.Secrets.SetKey(ctx, "support_prod", "llm",
+secretKey, err := client.Secrets.SetKey(ctx, "support_prod", "llm",
 	v3.SecretKeyWrite{Value: "<your_new_openai_api_key>"}, v3.SecretKeyOptions{})
 if err != nil {
 	log.Fatal(err)
 }
+fmt.Println(secretKey.Body.Key) // The key name
 ```
 
 </TabsContent>
