@@ -145,7 +145,7 @@ describe('DocsSearchDialog', () => {
   it('shows both release labels regardless of the saved browsing version', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-key');
-    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"test-api":"v2"}');
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai-v3":"v2"}');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: [],
       getLastStatus: successfulAlgoliaStatus,
@@ -697,7 +697,8 @@ describe('DocsSearchDialog', () => {
     expect(screen.queryByText('No matching pages found.')).toBeNull();
     await waitFor(() => expect(loadPagesFailure).toHaveBeenCalledOnce());
     await act(async () => {
-      resolveLocalSearch[1]?.([]);
+      // An index-state change can restart the active query in Fumadocs.
+      resolveLocalSearch.at(-1)?.([]);
     });
     await waitFor(() => {
       expect(analyticsMocks.captureDocsSearchCompleted).toHaveBeenCalledOnce();

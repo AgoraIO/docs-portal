@@ -55,12 +55,13 @@ async function createLaneSource(lane: OpenApiLane, locale: AppLocale) {
   ) as OpenAPI.Document;
   const documentId = getOpenApiDocumentId(lane, locale);
   const openapi = createOpenAPI({
+    includeDocument: true,
     input: {
       [documentId]: document as unknown as OpenApiSchemaRecord[string],
     },
   });
 
-  return openapi.staticSource({
+  const source = await openapi.staticSource({
     baseDir: `${locale}/${lane.routePrefix}`,
     meta: false,
     name(output) {
@@ -82,4 +83,10 @@ async function createLaneSource(lane: OpenApiLane, locale: AppLocale) {
     },
     per: 'operation',
   });
+
+  // Generated OpenAPI files default to all locales in v12. Let the portal's
+  // directory parser apply each lane's publication locale instead.
+  return {
+    files: source.files.map((file) => ({ ...file, locale: undefined })),
+  };
 }

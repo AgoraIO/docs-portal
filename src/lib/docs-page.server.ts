@@ -360,8 +360,9 @@ export async function loadDocsPagePayload(
   const toc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText, artifactPlatform);
-  const layoutMode: DocsLayoutMode =
-    isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
+  // Only generated OpenAPI operation pages need the wide layout. Hand-written
+  // pages inside an OpenAPI lane keep the docs layout and its TOC.
+  const layoutMode: DocsLayoutMode = isOpenApiPage ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
     activePath: page.url,
     locale: supportedLocale,

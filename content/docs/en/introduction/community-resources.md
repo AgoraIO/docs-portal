@@ -24,8 +24,8 @@ After logging in to Console, the overview dashboard provides quick access to:
 - [Support](/en/introduction/support)
 - [Release Notes](/en/ai/release-notes)
 - [Usage Analytics](/en/introduction/usage-analytics)
-- [AI best practices](/en/ai/best-practices)
-- [AI product map](/en/ai/domain-overview)
+- [AI best practices](/en/ai/best-practices/audio-setup)
+- [Voice Agent overview](/en/ai)
 
 ## Status and operations
 

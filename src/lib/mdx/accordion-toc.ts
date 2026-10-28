@@ -1,9 +1,11 @@
-import type { Root } from 'mdast';
+import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
+import type { Heading, Root } from 'mdast';
 import type { MdxJsxFlowElement } from 'mdast-util-mdx-jsx';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
+import type { VFile } from 'vfile';
 
 const parser = unified().use(remarkParse).use(remarkMdx);
 
@@ -45,7 +47,7 @@ export function addAccordionHeadingsToTocText(markdown: string) {
 }
 
 export function remarkAccordionHeadings() {
-  return (tree: Root) => {
+  return (tree: Root, file: VFile) => {
     visit(tree, 'mdxJsxFlowElement', (node, index, parent) => {
       if (index === undefined || !parent) {
         return;
@@ -56,12 +58,19 @@ export function remarkAccordionHeadings() {
         return;
       }
 
-      parent.children.splice(index, 0, {
+      const position = node.position && {
+        start: node.position.start,
+        end: node.children[0]?.position?.start ?? node.position.end,
+      };
+      const heading: Heading = {
         type: 'heading',
         depth: version.depth,
-        children: [{ type: 'text', value: version.title }],
+        children: [{ type: 'text', value: version.title, position }],
         data: { hProperties: { id: version.id } },
-      });
+        position,
+      };
+      replaceSource(file, heading.children[0], version.title, 'search');
+      parent.children.splice(index, 0, heading);
       return index + 2;
     });
   };

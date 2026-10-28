@@ -1,6 +1,7 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
 import { llms } from 'fumadocs-core/source';
+import { toDocsMarkdown } from '../src/lib/mdx/to-markdown.ts';
 import { withAgentDocsDirective } from '../src/lib/agent-docs-directive.ts';
 import { getDocVersionBulkExports } from '../src/lib/doc-version-exports.server.ts';
 import { withDocVersionMetadata } from '../src/lib/doc-versions.ts';
@@ -388,9 +389,10 @@ async function getStaticLLMText(page) {
   try {
     return await getLLMText(page);
   } catch {
-    return withDocVersionMetadata(`# ${page.data.title ?? page.url} (${page.url})
+    const markdown = toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url})
 
-${await readSourceMarkdown(page.path)}`, page.url);
+${await readSourceMarkdown(page.path)}`);
+    return withDocVersionMetadata(markdown, page.url);
   }
 }
 
@@ -419,9 +421,10 @@ async function buildRawPlatformLLMText(page, platform) {
     return null;
   }
 
-  return withDocVersionMetadata(`# ${page.data.title ?? page.url} (${page.url}/${platform})
+  const markdown = toDocsMarkdown(`# ${page.data.title ?? page.url} (${page.url}/${platform})
 
-${body}`, page.url);
+${body}`);
+  return withDocVersionMetadata(markdown, page.url);
 }
 
 function getRawPagePlatformKeys(page) {

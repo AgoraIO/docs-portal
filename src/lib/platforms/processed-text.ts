@@ -208,7 +208,22 @@ function dedentMarkdownBlock(markdown: string) {
 }
 
 function stripGeneratedHeadingAnchors(markdown: string) {
-  return markdown.replace(/ \[#[^\]\n]+\](?=\n|$)/g, '');
+  let fence: { char: string; length: number } | undefined;
+  return markdown
+    .split('\n')
+    .map((line) => {
+      const marker = /^\s*(`{3,}|~{3,})/.exec(line)?.[1];
+      if (marker) {
+        if (!fence) fence = { char: marker[0], length: marker.length };
+        else if (marker[0] === fence.char && marker.length >= fence.length)
+          fence = undefined;
+        return line;
+      }
+      return !fence && /^ {0,3}#{1,6}\s/.test(line)
+        ? line.replace(/ \[#[^\]\n]+\]$/, '')
+        : line;
+    })
+    .join('\n');
 }
 
 export function extractStructuredPlatformTabs(

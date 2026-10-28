@@ -3,7 +3,7 @@ import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
 import { withDocVersionMetadata } from './doc-versions';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
-import { addAccordionHeadingsToTocText } from './mdx/accordion-toc';
+import { toDocsMarkdown } from './mdx/to-markdown';
 import {
   createLocalizedOpenApiSource,
   getOpenApiLoaderPlugin,
@@ -110,10 +110,13 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
-  return withDocVersionMetadata(await getPageLLMText(page), page.url);
+  return withDocVersionMetadata(
+    toDocsMarkdown(await readLLMText(page)),
+    page.url,
+  );
 }
 
-async function getPageLLMText(page: InferPageType<typeof source>) {
+async function readLLMText(page: InferPageType<typeof source>) {
   const locale = page.path.split('/').filter(Boolean)[0] ?? DEFAULT_LOCALE;
   const platformGroupText = await getPlatformGroupLLMText(page);
 
@@ -147,11 +150,13 @@ export async function getPlatformLLMText(
   page: InferPageType<typeof source>,
   platform: PlatformKey,
 ) {
-  const markdown = await getPagePlatformLLMText(page, platform);
-  return markdown ? withDocVersionMetadata(markdown, page.url) : null;
+  const markdown = await readPlatformLLMText(page, platform);
+  return markdown === null
+    ? null
+    : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 
-async function getPagePlatformLLMText(
+async function readPlatformLLMText(
   page: InferPageType<typeof source>,
   platform: PlatformKey,
 ) {
@@ -210,7 +215,7 @@ ${[parentText, panelText].filter((text) => text.trim()).join('\n\n')}`;
 }
 
 function normalizeAgentMarkdown(markdown: string) {
-  return addAccordionHeadingsToTocText(markdown).replace(
+  return markdown.replace(
     /(\]\()(https?:\/\/(?:\\.|[^\\)])+)(\))/g,
     (_match, opening: string, destination: string, closing: string) =>
       `${opening}${destination.replaceAll('\\(', '%28').replaceAll('\\)', '%29')}${closing}`,
