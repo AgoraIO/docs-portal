@@ -788,11 +788,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/cloud-transcoding/authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/cloud-transcoding/index.mdx':
-    '2026-10-27T10:42:32.000Z',
+    '2026-10-27T11:17:23.000Z',
   'content/docs/en/api-reference/api-ref/cloud-transcoding/meta.json':
-    '2026-10-27T10:42:32.000Z',
+    '2026-10-27T11:17:23.000Z',
   'content/docs/en/api-reference/api-ref/cloud-transcoding/status-codes.md':
-    '2026-10-27T10:42:32.000Z',
+    '2026-10-28T09:38:51.000Z',
   'content/docs/en/api-reference/api-ref/console/meta.json':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/console/solutions-agora-console-rest-api.md':
@@ -6508,7 +6508,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/transcoding/rest-quickstart.md':
     '2026-09-08T07:22:12.000Z',
   'content/docs/en/realtime-media/transcoding/sdk-quickstart.md':
-    '2026-10-27T10:42:32.000Z',
+    '2026-10-27T11:17:23.000Z',
   'content/docs/en/realtime-media/transcoding/skills.mdx':
     '2026-06-22T06:39:47.000Z',
   'content/docs/en/realtime-media/video/account-settlement.mdx':
@@ -8335,9 +8335,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/authentication.md':
     '2026-06-24T07:15:37.000Z',
   'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/index.mdx':
-    '2026-10-27T10:42:32.000Z',
+    '2026-10-27T11:17:23.000Z',
   'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/meta.json':
-    '2026-10-27T10:42:32.000Z',
+    '2026-10-27T11:17:23.000Z',
   'content/docs/zh-CN/api-reference/api-ref/meta.json':
     '2026-06-24T07:15:37.000Z',
   'content/docs/zh-CN/api-reference/api-ref/rtmp-gateway/meta.json':
@@ -11685,7 +11685,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/cloud-recording/cloud-recording.en.yaml':
     '2026-10-16T02:35:23.000Z',
   'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml':
-    '2026-10-27T10:42:32.000Z',
+    '2026-10-28T09:38:51.000Z',
   'content/openapi/cloud-transcoding/openapi.meta.json':
     '2026-06-24T07:15:37.000Z',
   'content/openapi/conversational-ai/convoai.en.yaml':
