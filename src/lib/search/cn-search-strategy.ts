@@ -3,6 +3,7 @@ import {
   normalizeCnProduct,
   normalizeCnProductList,
 } from './cn-products';
+import { getCnSearchFamily } from './cn-search-family';
 import { toCnPublicSearchUrl } from './cn-search-urls.mjs';
 import type { SearchSection } from './kb-record';
 
@@ -148,6 +149,10 @@ export function buildCnSearchDocument(record: SearchSection) {
     .map(([alias]) => alias);
   return {
     ...record,
+    searchFamily: getCnSearchFamily({
+      pageUrl: record.url,
+      docType: record.docType,
+    }),
     product,
     products,
     ...(pageEntry ? { entryTitle: [...entryAliases, entryTitle] } : {}),

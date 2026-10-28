@@ -146,7 +146,7 @@ describe('CN search public URL migration', () => {
           indexUid: 'docs_cn',
           searchOnlyKey: 'search',
         },
-        parseSearchPageState({ q: 'Token', platform }),
+        parseSearchPageState({ q: 'Token', platform, type: 'docs' }),
       );
       expect(result.groups).toHaveLength(1);
       expect(result.groups[0].pageUrl).toBe(

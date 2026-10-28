@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { readFile, writeFile } from 'node:fs/promises';
+import { access, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
@@ -15,6 +15,10 @@ const repoRoot = path.resolve(
 );
 const inputRoot = path.join(repoRoot, 'docs/migration/redirect-inputs');
 const retirementPolicyPath = path.join(repoRoot, 'src/lib/retired-cn-docs.mjs');
+const guideRedirectsPath = path.join(
+  repoRoot,
+  'src/lib/shengwang-guide-redirects.json',
+);
 const candidatePath = path.join(
   inputRoot,
   'legacy-url-map-candidate-32883e92e9-2026-10-15.json',
@@ -41,6 +45,7 @@ const candidate = JSON.parse(await readFile(candidatePath, 'utf8'));
 const legacyInventory = JSON.parse(await readFile(legacyInventoryPath, 'utf8'));
 const targetRoutes = JSON.parse(await readFile(targetRoutesPath, 'utf8'));
 const targetMeta = JSON.parse(await readFile(targetMetaPath, 'utf8'));
+const guideRedirects = JSON.parse(await readFile(guideRedirectsPath, 'utf8'));
 const targetRouteSet = new Set(targetRoutes.map((route) => route.url));
 const applicationRoutes = new Set(['/zh-CN/search']);
 validateSnapshots(candidate, legacyInventory, targetRoutes, targetMeta);
@@ -52,6 +57,22 @@ validateRecords(
   targetRouteSet,
   applicationRoutes,
 );
+// Reviewed moves may target pages created after the immutable route snapshot.
+// Validate those targets against current source instead of rewriting evidence.
+for (const [legacyPath, target] of Object.entries(guideRedirects)) {
+  if (!candidate.records.some((record) => record.legacyPath === legacyPath)) {
+    throw new Error(
+      `Reviewed guide redirect has no legacy source: ${legacyPath}`,
+    );
+  }
+  await access(
+    path.join(
+      repoRoot,
+      'content/docs/zh-CN',
+      `${target.split(/[?#]/, 1)[0].slice(1)}.mdx`,
+    ),
+  );
+}
 const records = candidate.records.map((record) => {
   // The historical route snapshot includes products retired since collection.
   // Keep that evidence immutable; apply the current publication policy explicitly.
@@ -68,7 +89,8 @@ const records = candidate.records.map((record) => {
       notes: `${record.notes}；按 PR #1248 下线策略直接返回 HTTP 404，不生成 301。原始目标：${record.target || '无'}。`,
     };
   }
-  const target = toPublicRedirectTarget(record.target);
+  const target =
+    guideRedirects[record.legacyPath] ?? toPublicRedirectTarget(record.target);
   if (
     record.status === 'candidate' &&
     record.legacyPath === target.split(/[?#]/, 1)[0]
@@ -135,6 +157,10 @@ const finalJson = `${JSON.stringify(
     retirementPolicy: {
       path: path.relative(repoRoot, retirementPolicyPath),
       sha256: await sha256File(retirementPolicyPath),
+    },
+    reviewedGuideRedirects: {
+      path: path.relative(repoRoot, guideRedirectsPath),
+      sha256: await sha256File(guideRedirectsPath),
     },
     summary: finalSummary,
     records,
@@ -374,7 +400,10 @@ function toNginx(items, retired, targetCommit) {
   }
   for (const item of items) {
     lines.push(`location = ${item.legacyPath} {`);
-    lines.push(`  return 301 ${item.target};`);
+    const target = item.target.includes('#')
+      ? JSON.stringify(item.target)
+      : item.target;
+    lines.push(`  return 301 ${target};`);
     lines.push('}');
     lines.push('');
   }

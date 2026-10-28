@@ -5,6 +5,20 @@ import { expect, it } from 'vitest';
 import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
 import { migrateLegacyPage } from './migrate-legacy-docs.mjs';
 
+it.each(['ruby', 'python'])(
+  'regenerates hash highlight ranges in %s',
+  (language) => {
+    const result = normalizeLegacyCodeHighlights(
+      `\`\`\`${language}\n# ordinary comment\n# highlight-start\nvalue = "# highlight-start"\n# highlight-end\n\`\`\``,
+    );
+    expect(result).toContain('# [!code highlight:1]');
+    expect(result).toContain('# ordinary comment');
+    expect(result).toContain('value = "# highlight-start"');
+    expect(result).not.toMatch(/^# highlight-(?:start|end)$/m);
+    expect(normalizeLegacyCodeHighlights(result)).toBe(result);
+  },
+);
+
 it('converts ranges only inside fences, retaining blank highlighted lines and code', () => {
   const input = [
     '// highlight-start',

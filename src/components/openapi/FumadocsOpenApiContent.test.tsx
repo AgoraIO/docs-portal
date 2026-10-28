@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 import {
   act,
   fireEvent,
@@ -8,6 +10,7 @@ import {
 } from '@testing-library/react';
 import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
+import yaml from 'js-yaml';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
@@ -113,6 +116,108 @@ function makeSectionHeadingPageProps(): OpenAPIPageProps {
 }
 
 describe('FumadocsOpenApiContent', () => {
+  it.each([
+    {
+      source: 'cloud-recording/cloud-recording.zh-CN.yaml',
+      path: '/v1/apps/{appid}/cloud_recording/resourceid/{resourceid}/sid/{sid}/mode/{mode}/update',
+      method: 'post' as const,
+      heading: '路径参数',
+      expectedItem: '对于页面录制模式，只需输入开通了云端录制服务的 App ID。',
+    },
+    {
+      source: 'conversational-ai/rest-api.zh-CN.yaml',
+      path: '/v2/projects/{appid}/agents',
+      method: 'get' as const,
+      heading: '查询参数',
+      expectedItem: 'IDLE (0)：空闲状态的智能体。',
+    },
+  ])(
+    'renders valid lists from the migrated $source descriptions',
+    async (fixture) => {
+      const document = yaml.load(
+        await readFile(path.resolve('content/openapi', fixture.source), 'utf8'),
+      ) as Document;
+      const { container } = render(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [{ method: fixture.method, path: fixture.path }],
+            payload: { bundled: document },
+          }}
+        />,
+      );
+      await screen.findByRole('heading', { name: fixture.heading });
+      const items = screen.getAllByText(
+        (_text, element) =>
+          element?.tagName === 'LI' &&
+          element.textContent === fixture.expectedItem,
+      );
+      for (const item of items) {
+        expect(item.closest('li')?.parentElement?.tagName).toBe('UL');
+      }
+      for (const listItem of container.querySelectorAll('li')) {
+        expect(['UL', 'OL', 'MENU']).toContain(listItem.parentElement?.tagName);
+      }
+    },
+  );
+
+  it.each([true, false])(
+    'preserves authored authentication names and descriptions: %s',
+    async (alternative) => {
+      render(
+        <FumadocsOpenApiContent
+          locale="zh-CN"
+          pageProps={{
+            operations: [{ method: 'get', path: '/secured' }],
+            payload: {
+              bundled: {
+                openapi: '3.2.0',
+                info: { title: 'Security API' },
+                components: {
+                  securitySchemes: {
+                    basic: {
+                      type: 'http',
+                      scheme: 'basic',
+                      description: '**HTTP 基本认证**：使用客户凭证。',
+                    },
+                    apiKey: {
+                      type: 'apiKey',
+                      name: 'X-API-Key',
+                      in: 'header',
+                      description: '**HTTP HMAC 认证**：保留此说明。',
+                    },
+                  },
+                },
+                security: alternative
+                  ? [{ basic: [] }, { apiKey: [] }]
+                  : [{ basic: [], apiKey: [] }],
+                paths: {
+                  '/secured': {
+                    get: { responses: { '200': { description: 'OK' } } },
+                  },
+                },
+              } as unknown as Document,
+            },
+          }}
+        />,
+      );
+      await screen.findByRole('heading', { name: 'basic' });
+      expect(screen.getByRole('heading', { name: 'apiKey' })).toBeVisible();
+      expect(
+        screen.getByText('HTTP 基本认证', { selector: 'strong' }),
+      ).toBeVisible();
+      expect(
+        screen.getByText('HTTP HMAC 认证', { selector: 'strong' }),
+      ).toBeVisible();
+      expect(screen.getByText(/：使用客户凭证。/)).toBeVisible();
+      expect(screen.getByText(/：保留此说明。/)).toBeVisible();
+      expect(
+        screen.queryByRole('heading', { name: 'HTTP HMAC 认证' }),
+      ).toBeNull();
+      expect(screen.queryByText('使用以下任意一种鉴权方式。')).toBeNull();
+    },
+  );
+
   it('does not report a failed clipboard write as copied, including after a successful copy', async () => {
     const clipboard = vi
       .fn()

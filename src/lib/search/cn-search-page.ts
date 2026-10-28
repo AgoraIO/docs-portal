@@ -1,4 +1,5 @@
 import { normalizeCnProductFacets } from './cn-products';
+import { type CnSearchFamily, getCnSearchFamily } from './cn-search-family';
 import { isPublicCnSearchUrl } from './cn-search-urls.mjs';
 import type { SearchHit } from './meilisearch-client';
 import type { SearchPageState } from './search-page-state';
@@ -23,6 +24,7 @@ export type CnSearchPageResponse = {
   totalPages: number;
   page: number;
   facets: SearchFacets;
+  familyTotalHits?: Partial<Record<CnSearchFamily, number>>;
 };
 
 export type CnSearchRequest = SearchPageState & { tab?: string };
@@ -37,7 +39,7 @@ export async function searchCnDocsPage(
     page: String(state.page),
     type: state.type,
   });
-  for (const field of ['product', 'platform', 'version', 'tab'] as const) {
+  for (const field of ['product', 'platform', 'tab'] as const) {
     if (state[field]) params.set(field, state[field]);
   }
   const response = await fetch(`/api/search?${params}`, {
@@ -75,6 +77,22 @@ export async function searchCnDocsPage(
       product: normalizeCnProductFacets(result.facets.product ?? {}),
     },
   };
+}
+
+export function isCnApiSearchGroup(
+  group: Pick<SearchPageGroup, 'pageUrl' | 'docType'>,
+) {
+  return getCnSearchFamily(group) === 'api';
+}
+
+// A stable, publication-wide catalog: keyword matches and a previously selected
+// platform must not remove the user's next product/platform from the controls.
+export async function loadCnSearchCatalog(signal?: AbortSignal) {
+  const result = await searchCnDocsPage(
+    { q: '', type: 'all', page: 1 },
+    signal,
+  );
+  return result.facets;
 }
 
 // The current demo index contains Markdown source. Keep highlight tags while

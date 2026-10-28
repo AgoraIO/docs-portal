@@ -1,4 +1,5 @@
 import type { BeforeSendFn } from 'posthog-js';
+import { MAX_FEEDBACK_COMMENT_LENGTH } from '@/lib/docs-feedback';
 
 // The SDK adds URL, referrer and persisted values after capture(). Keep this
 // allowlist at the final transport boundary, including for automatic events.
@@ -89,6 +90,9 @@ const allowedProperties = new Set([
   'question_id',
   'feedback_scope',
   'feedback_source',
+  'feedback_id',
+  'has_comment',
+  'feedback_destination',
   'response_revision',
   'response',
   'failure_reasons',
@@ -159,6 +163,16 @@ export const filterCnMeasurementEvent: BeforeSendFn = (event) => {
   if (!event) return event;
   const properties: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(event.properties)) {
+    // Only explicitly submitted page feedback may carry free-form comments.
+    // Preserve line breaks and the full UI limit instead of the generic 512 cap.
+    if (key === 'comment') {
+      if (
+        event.event === 'docs_feedback_form_submitted' &&
+        typeof value === 'string'
+      )
+        properties[key] = value.trim().slice(0, MAX_FEEDBACK_COMMENT_LENGTH);
+      continue;
+    }
     if (!allowedProperties.has(key)) continue;
     if (key === '$current_url' || key === '$referrer') {
       const safe = safeUrl(value, key === '$referrer');

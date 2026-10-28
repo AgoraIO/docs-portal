@@ -2,6 +2,7 @@
 title: "账号与计费"
 description: "了解实时消息 RTM 的账号准备、项目隔离方式和计费模型。"
 ---
+
 ## 注册账号
 
 使用 RTM 构建全球范围内安全、可靠、性能优异的实时互动应用程序，第一步是注册声网账号，点击此处[注册账号](https://sso.shengwang.cn/cn/v4/signup/with-sms)。注册成功后，[登录](https://console.shengwang.cn/)声网控制台即可创建声网项目。
@@ -15,8 +16,8 @@ description: "了解实时消息 RTM 的账号准备、项目隔离方式和计�
 | 应用名称 | 项目名称 | `appId` | 用途 |
 | --- | --- | --- | --- |
 | Play with Me | PWM-DEV | cd1f5580fba8496caef1db648f08**** | 用于开发阶段，开发和验证新功能及问题修复情况。 |
-| PWM-QA | fba8cd1f5231496caef1db648f07**** | 用于测试阶段，更全面地验证新功能和问题修复情况并进行灰度测试。 |  |
-| PWM-PRD | bfbacd1f5444caef1d8496648f07**** | 用于生产环境，项目正式上线，面向终端用户。 |  |
+|  | PWM-QA | fba8cd1f5231496caef1db648f07**** | 用于测试阶段，更全面地验证新功能和问题修复情况并进行灰度测试。 |
+|  | PWM-PRD | bfbacd1f5444caef1d8496648f07**** | 用于生产环境，项目正式上线，面向终端用户。 |
 
 ## 计费模型
 
@@ -26,8 +27,21 @@ RTM 采用了基于**峰值 PCU + 消息数 + 存储占用**计量模式，其�
 - **消息数**：一个自然月中所有用户发送和收到的消息总数。
 - **存储占用**：一个自然月中所有因业务数据存储所占用的云端空间大小加权和。
 
-用户可以登录声网[控制台](https://console.shengwang.cn)，在账单中查询当前及历史用量数据。如果你想了解各计量项的统计口径，查看[计量规则](/zh-CN/realtime-media/rtm/reference/billing/billing-rules)。
+用户可以登录声网[控制台](https://console.shengwang.cn/)，在账单中查询当前及历史用量数据。如果你想了解计量规则，查看[计量规则](/zh-CN/realtime-media/rtm/reference/billing/billing-rules)。
 
-基于上述计量模型，RTM 提供体验套餐、自助套餐和企业套餐。套餐配额、超额价格和服务权益详见[计费说明](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy)。
+基于上述计量模型，RTM 为用户提供了如下几种服务套餐：
 
-采用上述计费模型后，你可以根据当前业务进展灵活配置资源。与按 DAU 或 MAU 计费的模式相比，该模型按实际用量计费，更适合消息量和并发峰值随业务阶段变化的实时互动应用。
+| 配额/套餐类型        | 体验套餐          |  Startup 套餐         |  Business 套餐           | 企业套餐    |
+| ------------- | ---- | ------- | --------- | ----- |
+| 峰值 PCU      | 20               | 500                  | 2500                 | 无限制 |
+| 每月消息数 | 1,000,000 | 30,000,000 | 150,000,000 | 无限制 |
+| 存储容量 | 1 GB | 2 GB | 10 GB | 无限制 |
+| 套餐价格（/月） | 0 | 399 RMB  | 1499 RMB | 按照实际用量计费 |
+
+超出套餐额度的费用，声网会按照一定的策略收费，详情可以参考[超额价格](/zh-CN/realtime-media/rtm/reference/billing/billing-strategy#%E8%B6%85%E9%A2%9D%E4%BB%B7%E6%A0%BC)。
+
+:::info[套餐升级/降级]
+套餐之间可以自由升级或降级，升级套餐立即生效，降级套餐下月生效。
+:::
+
+采用上述计费模型后，你可以根据当前业务进展灵活配置资源。与按 DAU 或 MAU 计费的模式相比，该模型按实际用量计费。点击查看[计费说明](/zh-CN/realtime-media/rtm/reference/billing/billing-rules)了解更多信息。

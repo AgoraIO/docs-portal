@@ -553,6 +553,13 @@ paths:
           - 新增或删除 `audioInputs[]`、`videoInputs[]` 中的 `rtc` 成员，用于订阅或取消订阅频道内主播的音视频流。
           - 修改 `videoInputs[]` 中的 `region` 字段，用于更新主播的合图布局。
           - 修改 `outputs[]` 中的 `audioOption`、`videoOption` 字段，用于更新转码输出的音频和视频配置。
+      x-docs-callouts:
+      - type: info
+        title: 注意
+        position: after-description
+        markdown: |-
+          - 使用 `Update` 更新 Cloud transcoder 时，你的请求包体中需含有 [`Create`](create) 请求包体中的所有字段，对于不需要更新的字段，请维持原来的取值。
+          - `Create` 请求创建 Cloud transcoder 时，支持音视频、纯音频、全频道混音三种场景。调用 `Update` 更新 Cloud transcoder 时，请保持使用场景一致，否则会发生异常。
     delete:
       tags:
       - 云端转码

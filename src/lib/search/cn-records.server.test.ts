@@ -86,6 +86,8 @@ describe('published CN index export', () => {
     expect(records[0].products).toEqual(['cloud-recording', 'transcoding']);
   });
   it.each([
+    ['/zh-CN/ai/device-kit/build/run-r1-demo', 'docs', 'device-kit'],
+    ['/zh-CN/ai/get-started/quick-start', 'docs', 'conversational-ai'],
     ['/zh-CN/realtime-media/transcoding', 'docs', 'transcoding'],
     [
       '/zh-CN/api-reference/api-ref/cloud-transcoding/acquire',

@@ -845,6 +845,10 @@ describe('overview MDX components', () => {
       'src',
       'https://assets-docs.agora.io/images/demo/shengdong-entertainment-cover.jpg',
     );
+    expect(screen.getByAltText('声动互娱 Demo 封面')).toHaveAttribute(
+      'referrerpolicy',
+      'no-referrer',
+    );
     expect(screen.getByRole('link', { name: /声动互娱/ })).toHaveAttribute(
       'href',
       '/zh-CN/reference/demo/shengdong-entertainment',
@@ -939,6 +943,14 @@ describe('overview MDX components', () => {
       'https://assets-docs.agora.io/images/demo/agora-lab-ios-qr.png',
     );
     expect(screen.getByText('iOS 平台扫码体验')).toBeVisible();
+    expect(screen.getByAltText('声网实验室 iOS Demo 界面')).toHaveAttribute(
+      'referrerpolicy',
+      'no-referrer',
+    );
+    expect(screen.getByAltText('声网实验室 iOS Demo 二维码')).toHaveAttribute(
+      'referrerpolicy',
+      'no-referrer',
+    );
   });
 
   it('omits the recipe count when the gallery has no results', () => {

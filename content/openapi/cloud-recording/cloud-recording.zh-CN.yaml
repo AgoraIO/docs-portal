@@ -41,6 +41,7 @@ paths:
             - 在每次 `acquire` 请求获取到 Resource ID 后的 2 秒内立即发起对应的 [`start`](start) 请求。批量获取 Resource ID 后进行批量 `start` 请求可能导致请求失败。如请求失败，请再次调用 `acquire` 获得一个新的 Resource ID，并用该 Resource ID 再次调用 `start` 方法。
       operationId: acquire-cloud-recording-resource
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
       requestBody:
@@ -97,6 +98,7 @@ paths:
           markdown: 发起 `start` 请求后，你还需要依据[保障录制成功启动](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#monitor_status)检查录制服务是否已经成功启动。
       operationId: start-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -363,6 +365,7 @@ paths:
             - 如果需要连续调用 `update` 方法更新录制设置，请在收到上一次 `update` 响应后再进行调用，否则可能导致请求结果与预期不一致。
       operationId: update-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -447,6 +450,7 @@ paths:
             - 如果需要连续调用 `updateLayout` 方法更新合流布局，请在收到上一次 `updateLayout` 响应后再进行调用，否则可能导致请求结果与预期不一致。
       operationId: update-cloud-recording-layout
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -526,6 +530,7 @@ paths:
           markdown: '`query` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `query` 将返回 `404`。'
       operationId: query-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -564,6 +569,7 @@ paths:
             - 录制结束后，正常情况下录制文件会在 20 分钟内上传至第三方云存储，但在网络异常等特殊情况下上传时间会达到 24 小时以上。
       operationId: stop-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -610,6 +616,8 @@ paths:
         - position: after-description
           markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
       operationId: get-ncs-ip
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
       responses:
         '200':
           $ref: '#/components/responses/ncs-ip'
@@ -621,10 +629,22 @@ paths:
         - Basic Auth: []
 components:
   parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      description: 'HTTP 基本认证凭证。将客户 ID 和客户密钥以 `客户ID:客户密钥` 的格式拼接并进行 Base64 编码，再填入 `Basic <credentials>` 中的占位值。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。'
+      required: true
+      example: 'Basic <credentials>'
+      schema:
+        type: string
     appid:
       name: appid
       in: path
-      description: '你的项目使用的 [App ID](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service#获取-app-id)。<li>对于页面录制模式，只需输入开通了云端录制服务的 App ID。</li><li>对于单流和合流录制模式，必须使用和待录制的频道相同的 App ID，且该 App ID 需要开通云端录制服务。</li>'
+      description: |-
+        你的项目使用的 [App ID](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/enable-service#获取-app-id)。
+
+        - 对于页面录制模式，只需输入开通了云端录制服务的 App ID。
+        - 对于单流和合流录制模式，必须使用和待录制的频道相同的 App ID，且该 App ID 需要开通云端录制服务。
       required: true
       schema:
         type: string
@@ -645,7 +665,12 @@ components:
     mode:
       name: mode
       in: path
-      description: '录制模式：<li>`raw`：[单流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。</li><li>`mix`：[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。</li><li>`web`：[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。</li>'
+      description: |-
+        录制模式：
+
+        - `raw`：[单流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/individual-mode/set-individual)。
+        - `mix`：[合流录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/mix-mode/set-composite)。
+        - `web`：[页面录制模式](/zh-CN/realtime-media/cloud-recording/build/recording-modes/web-mode/set-webpage-recording)。
       required: true
       schema:
         type: string
@@ -773,10 +798,11 @@ components:
           type: string
           description: |
             用于鉴权的动态密钥（Token）。如果你的项目已启用 App 证书，则务必在该字段中传入你项目的动态密钥。详见[使用 Token 鉴权](/zh-CN/realtime-media/rtc/build/setup-and-access/token-authentication)。
-            <p><b>注意</b>：
-            <li>仅需在<b>单流录制</b>和<b>合流录制</b>模式下设置。</li>
-            <li>云端录制服务暂不支持更新 Token。为保证录制正常，请确保 Token 有效时长大于你预计的录制时长，以避免 Token 过期导致录制任务退出频道而结束录制。</li>
-            </p>
+
+            **注意**：
+
+            - 仅需在**单流录制**和**合流录制**模式下设置。
+            - 云端录制服务暂不支持更新 Token。为保证录制正常，请确保 Token 有效时长大于你预计的录制时长，以避免 Token 过期导致录制任务退出频道而结束录制。
         storageConfig:
           $ref: '#/components/schemas/storageConfig'
         recordingConfig:
@@ -963,11 +989,12 @@ components:
       title: sub-audio-uid
       description: |-
         指定订阅哪几个 UID 的音频流。如需订阅全部 UID 的音频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeAudioUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。
-        <p><b>注意：</b>
-        <li>该字段仅适用于 <b>streamTypes</b> 设为音频，或音频和视频的情况。</li>
-        <li>如果你设置了音频的订阅名单，但没有设置视频的订阅名单，云端录制服务不会订阅任何视频流。反之亦然。</li>
-        <li>设为 <b>["#allstream#"]</b> 可订阅频道内所有 UID 的音频流。</li>
-        </p>
+
+        **注意：**
+
+        - 该字段仅适用于 **streamTypes** 设为音频，或音频和视频的情况。
+        - 如果你设置了音频的订阅名单，但没有设置视频的订阅名单，云端录制服务不会订阅任何视频流。反之亦然。
+        - 设为 **["#allstream#"]** 可订阅频道内所有 UID 的音频流。
       items:
         type: string
       x-stoplight:
@@ -985,11 +1012,12 @@ components:
       title: sub-video-uid
       description: |-
         指定订阅哪几个 UID 的视频流。如需订阅全部 UID 的视频流，则无需设置该字段。数组长度不得超过 32，不推荐使用空数组。该字段和 `unSubscribeVideoUids` 只能设一个。详见[设置订阅名单](/zh-CN/realtime-media/cloud-recording/reference/api-reference#订阅名单设置)。
-        <p><b>注意：</b>
-        <li>该字段仅适用于 <b>streamTypes</b> 设为视频，或音频和视频的情况。</li>
-        <li>如果你设置了视频的订阅名单，但没有设置音频的订阅名单，云端录制服务不会订阅任何音频流。反之亦然。</li>
-        <li>设为 <b>["#allstream#"]</b> 可订阅频道内所有 UID 的视频流。</li>
-        </p>
+
+        **注意：**
+
+        - 该字段仅适用于 **streamTypes** 设为视频，或音频和视频的情况。
+        - 如果你设置了视频的订阅名单，但没有设置音频的订阅名单，云端录制服务不会订阅任何音频流。反之亦然。
+        - 设为 **["#allstream#"]** 可订阅频道内所有 UID 的视频流。
       items:
         type: string
       x-stoplight:
@@ -1173,11 +1201,12 @@ components:
       type: object
       description: |-
         录制文件配置项。
-        <p><b>注意</b>：<b>仅截图时不可设置</b>该字段，其他情况都需要设置该字段。其他情况包含如下：
-        <li>单流录制模式下，不转码录制，转码录制，或同时录制和截图。</li>
-        <li>合流录制。</li>
-        <li>页面录制模式下，仅页面录制，或同时页面录制和转推到 CDN。</li>
-        </p>
+
+        **注意**：**仅截图时不可设置**该字段，其他情况都需要设置该字段。其他情况包含如下：
+
+        - 单流录制模式下，不转码录制，转码录制，或同时录制和截图。
+        - 合流录制。
+        - 页面录制模式下，仅页面录制，或同时页面录制和转推到 CDN。
       properties:
         avFileType:
           type: array
@@ -1621,10 +1650,11 @@ components:
                 type: string
                 description: |-
                   CDN 推流 URL。
-                  <p><b>注意</b>：
-                  <li>URL 仅支持 RTMP 和 RTMPS 协议。</li>
-                  <li>支持的最大转推 CDN 路数为 1。</li>
-                  </p>
+
+                  **注意**：
+
+                  - URL 仅支持 RTMP 和 RTMPS 协议。
+                  - 支持的最大转推 CDN 路数为 1。
       x-stoplight:
         id: d6q00tanvnw7h
     storageConfig_upd:

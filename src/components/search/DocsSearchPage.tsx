@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { DocsTaskFeedback } from '@/components/docs-shell/DocsTaskFeedback';
+import { SearchBrowseFilters } from '@/components/search/SearchBrowseFilters';
 import { SearchInput } from '@/components/search/SearchInput';
 import { SearchResultList } from '@/components/search/SearchResultList';
 import { SearchTypeTabs } from '@/components/search/SearchTypeTabs';
@@ -44,18 +45,27 @@ import {
 } from '@/lib/analytics/measurement';
 import { observeVisible } from '@/lib/analytics/visibility';
 import type { ProductScope } from '@/lib/docs-tree';
-import { getPlatformLabel, isKnownPlatform } from '@/lib/platforms/registry';
+import { isKnownPlatform } from '@/lib/platforms/registry';
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import {
   getCnProductLabel,
-  getCnProductOptionLabel,
+  getCnSearchProductGroups,
 } from '@/lib/search/cn-product-labels';
-import { normalizeCnProductFacets } from '@/lib/search/cn-products';
+import {
+  getCnSearchPlatformLabel,
+  getCnSearchPlatforms,
+} from '@/lib/search/cn-search-context';
+import {
+  cnSearchFamilies,
+  getCnSearchFamily,
+} from '@/lib/search/cn-search-family';
 import {
   type CnSearchPageResponse,
   isPublicCnSearchUrl,
+  loadCnSearchCatalog,
   mergeSearchPageGroups,
   type SearchFacets,
+  type SearchPageGroup,
   searchCnDocsPage,
 } from '@/lib/search/cn-search-page';
 import type { SearchPageState } from '@/lib/search/search-page-state';
@@ -75,10 +85,20 @@ export function DocsSearchPage({
   const [draft, setDraft] = useState(state.q);
   const [status, setStatus] = useState<SearchStatus>('loading');
   const [data, setData] = useState<CnSearchPageResponse | null>(null);
-  const [facets, setFacets] = useState<SearchFacets>({});
+  const [catalog, setCatalog] = useState<SearchFacets>({});
   const [recent, setRecent] = useState<RecentPage[]>([]);
   const [retry, setRetry] = useState(0);
   const [filterOpen, setFilterOpen] = useState(false);
+  const [filterDraft, setFilterDraft] = useState(state);
+  useEffect(() => {
+    const controller = new AbortController();
+    loadCnSearchCatalog(controller.signal)
+      .then((result) => {
+        if (!controller.signal.aborted) setCatalog(result);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   const logicalSearch = useRef<{
     key: string;
     snapshot: SearchSnapshot;
@@ -138,7 +158,6 @@ export function DocsSearchPage({
     if (loadedPages.current.key !== key) {
       loadedPages.current = { key, pages: new Map() };
       setData(null);
-      setFacets((previous) => ({ product: previous.product ?? {} }));
     }
     const measurement = request.state.q ? getDocsMeasurement() : undefined;
     if (
@@ -172,21 +191,9 @@ export function DocsSearchPage({
           }
         : undefined;
     setStatus('loading');
-    Promise.all([
-      searchCnDocsPage(request.state, controller.signal, headers('results')),
-      request.state.version
-        ? searchCnDocsPage(
-            { ...request.state, version: undefined, page: 1 },
-            controller.signal,
-            headers('facets'),
-          )
-        : Promise.resolve(null),
-    ])
-      .then(([result, availableVersions]) => {
+    searchCnDocsPage(request.state, controller.signal, headers('results'))
+      .then((result) => {
         if (controller.signal.aborted) return;
-        const normalizedProductFacets = normalizeCnProductFacets(
-          result.facets.product ?? {},
-        );
         loadedPages.current.pages.set(request.state.page, result);
         const pages = [...loadedPages.current.pages.entries()]
           .filter(([page]) => page <= request.state.page)
@@ -210,12 +217,6 @@ export function DocsSearchPage({
             }),
           );
         setData(accepted);
-        setFacets((previous) => ({
-          ...result.facets,
-          version:
-            availableVersions?.facets.version ?? result.facets.version ?? {},
-          product: { ...previous.product, ...normalizedProductFacets },
-        }));
         setStatus('loaded');
       })
       .catch(() => {
@@ -230,30 +231,26 @@ export function DocsSearchPage({
   const productLabel = (product?: string) =>
     getCnProductLabel(product, productScopes);
   const hasFilters = Boolean(
-    state.product || state.platform || state.version || state.type !== 'all',
+    state.product || state.platform || state.type !== 'all',
   );
   const filterCount = [
     state.product,
     state.platform,
-    state.version,
     state.type !== 'all',
   ].filter(Boolean).length;
-  const platforms = useMemo(
-    () => Object.keys(facets.platform ?? {}).filter(isKnownPlatform),
-    [facets.platform],
+  const controlsState = filterOpen ? filterDraft : state;
+  const changeFilters = (patch: Partial<SearchPageState>) => {
+    if (filterOpen) setFilterDraft((previous) => ({ ...previous, ...patch }));
+    else onChange(patch);
+  };
+  const platforms = getCnSearchPlatforms(
+    catalog.platform,
+    controlsState.platform,
   );
-  const products = [
-    ...new Set([
-      ...Object.keys(facets.product ?? {}),
-      ...(state.product ? [state.product] : []),
-    ]),
-  ];
-  const versions = [
-    ...new Set([
-      ...Object.keys(facets.version ?? {}),
-      ...(state.version ? [state.version] : []),
-    ]),
-  ];
+  const productGroups = getCnSearchProductGroups(
+    controlsState.product,
+    productScopes,
+  );
 
   const filterControls = (
     <>
@@ -262,18 +259,22 @@ export function DocsSearchPage({
         <NativeSelect
           aria-label="产品"
           onChange={(event) =>
-            onChange({
+            changeFilters({
               product: event.target.value || undefined,
               version: undefined,
             })
           }
-          value={state.product ?? ''}
+          value={controlsState.product ?? ''}
         >
           <NativeSelectOption value="">全部产品</NativeSelectOption>
-          {products.map((product) => (
-            <NativeSelectOption key={product} value={product}>
-              {getCnProductOptionLabel(product, products, productScopes)}
-            </NativeSelectOption>
+          {productGroups.map((group) => (
+            <optgroup key={group.label} label={group.label}>
+              {group.options.map(({ value, label }) => (
+                <NativeSelectOption key={value} value={value}>
+                  {label}
+                </NativeSelectOption>
+              ))}
+            </optgroup>
           ))}
         </NativeSelect>
       </div>
@@ -282,47 +283,26 @@ export function DocsSearchPage({
         <NativeSelect
           aria-label="平台"
           onChange={(event) =>
-            onChange({
+            changeFilters({
               platform: event.target.value || undefined,
               version: undefined,
             })
           }
-          value={state.platform ?? ''}
+          value={controlsState.platform ?? ''}
         >
           <NativeSelectOption value="">全部平台</NativeSelectOption>
           {[
             ...new Set([
               ...platforms,
-              ...(state.platform ? [state.platform] : []),
+              ...(controlsState.platform ? [controlsState.platform] : []),
             ]),
           ].map((platform) => (
             <NativeSelectOption key={platform} value={platform}>
-              {isKnownPlatform(platform)
-                ? getPlatformLabel(platform, 'zh-CN')
-                : platform}
+              {getCnSearchPlatformLabel(platform)}
             </NativeSelectOption>
           ))}
         </NativeSelect>
       </div>
-      {versions.length > 0 && (
-        <div className="search-page-filter-label">
-          <span>版本</span>
-          <NativeSelect
-            aria-label="版本"
-            onChange={(event) =>
-              onChange({ version: event.target.value || undefined })
-            }
-            value={state.version ?? ''}
-          >
-            <NativeSelectOption value="">全部版本</NativeSelectOption>
-            {versions.map((version) => (
-              <NativeSelectOption key={version} value={version}>
-                {version}
-              </NativeSelectOption>
-            ))}
-          </NativeSelect>
-        </div>
-      )}
     </>
   );
 
@@ -331,11 +311,48 @@ export function DocsSearchPage({
     onChange({ q: query.trim(), page: 1 });
   }
 
+  function renderResults(groups: SearchPageGroup[], rankOffset = 0) {
+    if (!data) return null;
+    return (
+      <SearchResultList
+        groups={groups}
+        rankOffset={rankOffset}
+        productLabel={productLabel}
+        onSelectResult={(event, path, rank, sectionRank) => {
+          if (event.type === 'auxclick' && event.button !== 1) return;
+          const newTab =
+            event.button === 1 ||
+            event.ctrlKey ||
+            event.metaKey ||
+            event.shiftKey;
+          const href = selectDocsResult(
+            resultSnapshots.current.get(data),
+            {
+              id: path,
+              path,
+              rank,
+              kind: sectionRank ? 'section' : 'document',
+              sectionRank,
+              method:
+                event.button === 1
+                  ? 'middle'
+                  : event.detail === 0
+                    ? 'keyboard'
+                    : 'mouse',
+            },
+            newTab,
+          );
+          event.currentTarget.href = href;
+        }}
+      />
+    );
+  }
+
   return (
     <main className="search-page" id="search-page-main">
       <section aria-label="搜索与筛选" className="search-page-controls">
         <div className="search-page-search-bar">
-          <h1>搜索文档</h1>
+          <h1 className="sr-only">文档检索</h1>
           <SearchInput
             onChange={setDraft}
             onClear={() => {
@@ -346,32 +363,43 @@ export function DocsSearchPage({
             value={draft}
           />
         </div>
+        <div className="search-page-desktop-filters">
+          <SearchBrowseFilters
+            productScopes={productScopes}
+            state={state}
+            platforms={getCnSearchPlatforms(catalog.platform, state.platform)}
+            onChange={onChange}
+          />
+          {hasFilters && (
+            <Button
+              onClick={() =>
+                onChange({
+                  product: undefined,
+                  platform: undefined,
+                  version: undefined,
+                  type: 'all',
+                })
+              }
+              size="sm"
+              variant="ghost"
+            >
+              清除筛选
+            </Button>
+          )}
+        </div>
         <div className="search-page-filter-bar">
           <SearchTypeTabs
             onChange={(type) => onChange({ type })}
             value={state.type}
           />
-          <div className="search-page-desktop-filters">
-            {filterControls}
-            {hasFilters && (
-              <Button
-                onClick={() =>
-                  onChange({
-                    product: undefined,
-                    platform: undefined,
-                    version: undefined,
-                    type: 'all',
-                  })
-                }
-                size="sm"
-                variant="ghost"
-              >
-                清除筛选
-              </Button>
-            )}
-          </div>
           <div className="search-page-mobile-filters">
-            <Sheet onOpenChange={setFilterOpen} open={filterOpen}>
+            <Sheet
+              onOpenChange={(nextOpen) => {
+                if (nextOpen) setFilterDraft(state);
+                setFilterOpen(nextOpen);
+              }}
+              open={filterOpen}
+            >
               <SheetTrigger asChild>
                 <Button size="sm" variant="ghost">
                   <SlidersHorizontalIcon data-icon="inline-start" />
@@ -382,7 +410,7 @@ export function DocsSearchPage({
                 <SheetHeader>
                   <SheetTitle>筛选文档</SheetTitle>
                   <SheetDescription>
-                    选择适用的产品、平台和版本。
+                    调整产品和平台后，点击“查看结果”应用筛选。
                   </SheetDescription>
                 </SheetHeader>
                 <div className="search-page-sheet-filters">
@@ -391,30 +419,39 @@ export function DocsSearchPage({
                 <div className="flex gap-2 p-4">
                   <Button
                     onClick={() => {
-                      onChange({
+                      setFilterDraft({
+                        ...state,
                         product: undefined,
                         platform: undefined,
                         version: undefined,
                         type: 'all',
                       });
-                      setFilterOpen(false);
                     }}
                     variant="outline"
                   >
                     清除筛选
                   </Button>
-                  <Button onClick={() => setFilterOpen(false)}>查看结果</Button>
+                  <Button
+                    onClick={() => {
+                      onChange({
+                        product: filterDraft.product,
+                        platform: filterDraft.platform,
+                        version: filterDraft.version,
+                        type: filterDraft.type,
+                        page: 1,
+                      });
+                      setFilterOpen(false);
+                    }}
+                  >
+                    查看结果
+                  </Button>
                 </div>
               </SheetContent>
             </Sheet>
           </div>
-          {state.q && (
+          {state.q && status === 'loading' && (
             <p aria-live="polite" className="search-page-result-count">
-              {status === 'loading'
-                ? '正在搜索…'
-                : status === 'loaded' && data
-                  ? `${data.totalHits} 个章节匹配`
-                  : ''}
+              正在搜索…
             </p>
           )}
         </div>
@@ -423,7 +460,7 @@ export function DocsSearchPage({
             aria-label="已选筛选条件"
             className="search-page-selected-filters"
           >
-            {(['product', 'platform', 'version'] as const).map(
+            {(['product', 'platform'] as const).map(
               (field) =>
                 state[field] && (
                   <Button
@@ -442,7 +479,7 @@ export function DocsSearchPage({
                       : field === 'platform' &&
                           state.platform &&
                           isKnownPlatform(state.platform)
-                        ? getPlatformLabel(state.platform, 'zh-CN')
+                        ? getCnSearchPlatformLabel(state.platform)
                         : state[field]}
                     <XIcon data-icon="inline-end" />
                   </Button>
@@ -494,36 +531,44 @@ export function DocsSearchPage({
           {data &&
             (data.groups.length ? (
               <>
-                <SearchResultList
-                  groups={data.groups}
-                  productLabel={productLabel}
-                  onSelectResult={(event, path, rank, sectionRank) => {
-                    if (event.type === 'auxclick' && event.button !== 1) return;
-                    const newTab =
-                      event.button === 1 ||
-                      event.ctrlKey ||
-                      event.metaKey ||
-                      event.shiftKey;
-                    const href = selectDocsResult(
-                      resultSnapshots.current.get(data),
-                      {
-                        id: path,
-                        path,
-                        rank,
-                        kind: sectionRank ? 'section' : 'document',
-                        sectionRank,
-                        method:
-                          event.button === 1
-                            ? 'middle'
-                            : event.detail === 0
-                              ? 'keyboard'
-                              : 'mouse',
-                      },
-                      newTab,
-                    );
-                    event.currentTarget.href = href;
-                  }}
-                />
+                {state.type === 'all'
+                  ? cnSearchFamilies.map((family, familyIndex) => {
+                      const groups = data.groups.filter(
+                        (group) => getCnSearchFamily(group) === family,
+                      );
+                      if (!groups.length) return null;
+                      const label =
+                        family === 'docs'
+                          ? '产品文档'
+                          : family === 'api'
+                            ? 'API 文档'
+                            : 'FAQ';
+                      return (
+                        <section aria-label={label} key={family}>
+                          <div className="flex items-center justify-between border-b py-2">
+                            <h2 className="text-sm font-semibold">{label}</h2>
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={() =>
+                                onChange({ type: family, page: 1 })
+                              }
+                            >
+                              查看全部{label}
+                            </Button>
+                          </div>
+                          {renderResults(
+                            groups,
+                            data.groups.filter((group) =>
+                              cnSearchFamilies
+                                .slice(0, familyIndex)
+                                .includes(getCnSearchFamily(group)),
+                            ).length,
+                          )}
+                        </section>
+                      );
+                    })
+                  : renderResults(data.groups)}
                 <div className="search-page-pagination">
                   <span aria-live="polite">
                     已展示 {data.groups.length} 篇文档

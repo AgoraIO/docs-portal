@@ -444,7 +444,24 @@ describe('OpenApiSchema', () => {
       within(row as HTMLElement).getByText('property-value'),
     ).toBeVisible();
     expect(screen.getByText(/"enum": "default-data"/)).toBeVisible();
-    expect(screen.getByText(/"enum": "example-data"/)).toBeVisible();
+    const example = screen.getByText(/"enum": "example-data"/);
+    expect(example).not.toBeVisible();
+    const disclosure = example.closest('details');
+    expect(disclosure).not.toHaveAttribute('open');
+    expect(
+      (row as HTMLElement).compareDocumentPosition(disclosure as Node) &
+        Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    fireEvent.click(
+      within(disclosure as HTMLElement).getByText('JSON example'),
+    );
+    expect(example).toBeVisible();
+    expect(example.closest('.openapi-schema-value-container')).toBeNull();
+    expect(
+      screen
+        .getByText(/"enum": "default-data"/)
+        .closest('.openapi-schema-value-container'),
+    ).toBeNull();
   });
 
   it('keeps oneOf and anyOf branch values in their own generated branches', () => {

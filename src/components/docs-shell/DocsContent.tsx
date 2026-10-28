@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useRouter } from '@tanstack/react-router';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
 import {
@@ -21,6 +21,13 @@ import { useTranslation } from 'react-i18next';
 import { AccountGuidance } from '@/components/account-guidance/AccountGuidance';
 import { IntroductionSdkDemoActions } from '@/components/docs-overview/IntroductionSdkDemoActions';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  type ApiReferenceLink,
+  appendApiReferenceTrail,
+  isApiReferencePath,
+  readApiReferenceTrail,
+  withApiReferenceTrail,
+} from '@/lib/api-reference-context';
 import { cn } from '@/lib/cn';
 import { isCnPublicDocsPath } from '@/lib/cn-public-routing';
 import {
@@ -158,14 +165,29 @@ export function DocsContent({
   const sourceTitle = displayTitle ?? t('app.name');
   const currentPageKey = getCurrentDocsPageKey();
   const storedArticleReturnLink = useDocsArticleReturnLink(currentPageKey);
-  const articleReturnLink =
-    storedArticleReturnLink?.href === breadcrumb[0]?.url
+  const [apiTrail, setApiTrail] = useState<ApiReferenceLink[]>([]);
+  useEffect(() => {
+    const url = currentPageKey
+      ? new URL(currentPageKey, window.location.origin)
+      : null;
+    setApiTrail(url ? readApiReferenceTrail(url) : []);
+  }, [currentPageKey]);
+  const sharedReturnLink = apiTrail.at(-1);
+  const articleReturnLink = sharedReturnLink
+    ? {
+        ...sharedReturnLink,
+        href: withApiReferenceTrail(
+          sharedReturnLink.href,
+          apiTrail.slice(0, -1),
+          window.location.origin,
+        ),
+      }
+    : storedArticleReturnLink?.href === breadcrumb[0]?.url
       ? null
       : storedArticleReturnLink;
   const sourceLinks = getDocsSourceLinks(contentPath);
-  const handleArticleBodyLinkClick = useTrackDocsArticleLinkNavigation({
-    sourceTitle,
-  });
+  const { bodyRef: articleBodyRef, handleClick: handleArticleBodyLinkClick } =
+    useTrackDocsArticleLinkNavigation({ sourceTitle, currentPageKey });
   // A single crumb that just repeats the page title (the H1 right below) adds no
   // wayfinding — suppress it. Multi-item breadcrumbs always render.
   const showBreadcrumb =
@@ -364,6 +386,7 @@ export function DocsContent({
           <div
             data-static-docs-body
             onClickCapture={handleArticleBodyLinkClick}
+            ref={articleBodyRef}
           >
             <FumadocsOpenApiContent
               contentPath={contentPath}
@@ -377,6 +400,7 @@ export function DocsContent({
             data-platform-header-tabs={platformTabs ? 'true' : undefined}
             data-static-docs-body
             onClickCapture={handleArticleBodyLinkClick}
+            ref={articleBodyRef}
           >
             {resolvedBody?.kind === 'mdx' ? (
               <Suspense fallback={<DocsContentSkeleton />}>
@@ -491,10 +515,59 @@ function useDocsArticleReturnLink(currentPageKey: string | null) {
 
 function useTrackDocsArticleLinkNavigation({
   sourceTitle,
+  currentPageKey,
 }: {
   sourceTitle: string;
+  currentPageKey: string | null;
 }) {
-  return useCallback(
+  const router = useRouter();
+  const bodyRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const body = bodyRef.current;
+    const source = getCurrentUrl();
+    if (
+      !currentPageKey ||
+      !body ||
+      !source ||
+      !isApiReferencePath(source.pathname)
+    )
+      return;
+
+    // Populate real hrefs so native new-tab navigation and Copy Link Address
+    // carry the same context as ordinary clicks, including lazily loaded MDX.
+    const prepareLinks = () => {
+      const sourceUrl = new URL(source);
+      for (const element of body.querySelectorAll<HTMLElement>(
+        'a[href], a[id], h2[id], h3[id], h4[id]',
+      )) {
+        if (
+          element instanceof HTMLAnchorElement &&
+          element.hasAttribute('href') &&
+          !element.hasAttribute('download')
+        ) {
+          const href = appendApiReferenceTrail(
+            element.href,
+            sourceUrl,
+            sourceTitle,
+          );
+          if (new URL(href, sourceUrl).href !== element.href)
+            element.href = href;
+        }
+        if (element.id) sourceUrl.hash = element.id;
+      }
+    };
+    prepareLinks();
+    const observer = new MutationObserver(prepareLinks);
+    observer.observe(body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['href'],
+    });
+    return () => observer.disconnect();
+  }, [currentPageKey, sourceTitle]);
+
+  const handleClick = useCallback(
     (event: MouseEvent<HTMLElement>) => {
       if (
         event.defaultPrevented ||
@@ -520,9 +593,37 @@ function useTrackDocsArticleLinkNavigation({
       }
 
       trackDocsArticleLinkNavigation(anchor, sourceTitle);
+      if (
+        anchor.hasAttribute('download') ||
+        (anchor.target && anchor.target !== '_self')
+      )
+        return;
+      const sourceUrl = getCurrentUrl();
+      if (!sourceUrl) return;
+      // Return to the field/section containing the clicked type, even if the
+      // reader scrolled there without changing the address bar's hash.
+      const precedingAnchor = Array.from(
+        event.currentTarget.querySelectorAll<HTMLElement>(
+          'a[id], h2[id], h3[id], h4[id]',
+        ),
+      )
+        .filter((element) =>
+          Boolean(
+            element.compareDocumentPosition(anchor) &
+              Node.DOCUMENT_POSITION_FOLLOWING,
+          ),
+        )
+        .at(-1);
+      if (precedingAnchor) sourceUrl.hash = precedingAnchor.id;
+      const href = appendApiReferenceTrail(anchor.href, sourceUrl, sourceTitle);
+      if (href !== anchor.href) {
+        event.preventDefault();
+        void router.navigate({ href });
+      }
     },
-    [sourceTitle],
+    [router, sourceTitle],
   );
+  return { bodyRef, handleClick };
 }
 
 function trackDocsArticleLinkNavigation(

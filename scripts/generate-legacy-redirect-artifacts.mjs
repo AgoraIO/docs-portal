@@ -22,10 +22,17 @@ const staticRedirectsPath = path.join(
 const bulkRedirectsPath = path.join(repoRoot, 'vercel-legacy-redirects.json');
 const vercelBasePath = path.join(repoRoot, 'vercel.base.json');
 const vercelPath = path.join(repoRoot, 'vercel.json');
+const shengwangGuideRedirectsPath = path.join(
+  repoRoot,
+  'src/lib/shengwang-guide-redirects.json',
+);
 const checkOnly = process.argv.includes('--check');
 
 const redirectsConfig = JSON.parse(await readFile(redirectsPath, 'utf8'));
 const baseConfig = JSON.parse(await readFile(vercelBasePath, 'utf8'));
+const shengwangGuideRedirects = JSON.parse(
+  await readFile(shengwangGuideRedirectsPath, 'utf8'),
+);
 
 const publishedRules = redirectsConfig.rules.filter(
   (rule) =>
@@ -128,7 +135,17 @@ function createVercelRedirects(rules) {
 }
 
 function createRedirectsConfig(baseRedirects = [], queryRedirects) {
-  const redirects = [...baseRedirects, ...queryRedirects].filter(
+  // Reviewed guide moves must precede the generic Shengwang old-host fallback.
+  const guideRedirects = Object.entries(shengwangGuideRedirects).map(
+    ([source, destination]) => ({ source, destination, statusCode: 301 }),
+  );
+  const redirects = [
+    ...guideRedirects,
+    ...baseRedirects.filter(
+      (rule) => !Object.hasOwn(shengwangGuideRedirects, rule.source),
+    ),
+    ...queryRedirects,
+  ].filter(
     (rule) => !isRetiredCnDocsPath(rule.destination),
   );
   return redirects.length > 0 ? { redirects } : {};

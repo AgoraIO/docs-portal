@@ -23,7 +23,7 @@ K8s 的 Meilisearch 数据目录必须使用持久化存储，重启 Pod 不能�
 
 1. 检出同一个发布提交，执行完整 CN build:static。
 2. `bun run search:export:cn`，使用 dist/client 同次构建结果。
-3. `node scripts/search/audit-cn-coverage.mjs --records=dist/search/cn-records.json`。未知无记录页、缺失路由/章节/锚点和平台/版本错误会阻止验收；已列明的无正文目录豁免仍需维护。
+3. `node scripts/search/audit-cn-coverage.mjs --records=dist/search/cn-records.json`。审计与导出共用搜索产品规则，明确排除的无记录页面单独列在 `exclusions.excludedProducts`。未知无记录页、排除产品混入索引、缺失路由/章节/锚点和平台/版本错误会阻止验收；已列明的无正文目录豁免仍需维护。部署层覆盖门禁也须检查 `findings.excludedProductRecords`，不得仅凭报告文件存在而放行。
 4. `bun run search:prepare:cn --revision="$RELEASE_SHA"`。正式索引继续服务，Job 写临时快照。
 5. 对临时快照运行明确目标的质量查询；检查 FAQ 多产品归属、平台、版本、OpenAPI、拆词和章节跳转。不要用本地索引可搜代替这一步。
 6. 发布同提交静态站并检查。使用无 `/zh-CN` 前缀索引时，先运行 `bun run search:verify:urls:cn --origin="$FRONTEND_ORIGIN" --records=dist/search/cn-records.json --html=dist/client`，确认公开页面与本次构建一致后，再执行 `bun run search:promote:cn --revision="$RELEASE_SHA"`。

@@ -5,6 +5,42 @@ import { SearchDetailPanel } from './SearchDetailPanel';
 const renderText = (value: string) => <span>{value}</span>;
 
 describe('SearchDetailPanel', () => {
+  it('hides a narrow-screen strip when only a floating preview is requested', () => {
+    render(
+      <SearchDetailPanel
+        activeValue="a"
+        description="Preview"
+        open
+        placement="strip"
+        renderText={renderText}
+        showStrip={false}
+      />,
+    );
+    expect(screen.queryByTestId('search-active-detail')).toBeNull();
+  });
+
+  it('removes the floating preview when its dialog closes', () => {
+    const view = render(
+      <SearchDetailPanel
+        activeValue="a"
+        description="Preview"
+        open
+        placement="right"
+        renderText={renderText}
+      />,
+    );
+    expect(screen.getByTestId('search-active-detail')).toBeInTheDocument();
+    view.rerender(
+      <SearchDetailPanel
+        activeValue="a"
+        description="Preview"
+        open={false}
+        placement="right"
+        renderText={renderText}
+      />,
+    );
+    expect(screen.queryByTestId('search-active-detail')).toBeNull();
+  });
   it('renders a floating card with title + description when placement is beside (right)', () => {
     render(
       <SearchDetailPanel

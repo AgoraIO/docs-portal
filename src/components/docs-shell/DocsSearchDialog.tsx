@@ -1,8 +1,8 @@
 'use client';
 
-import { useNavigate } from '@tanstack/react-router';
+import { useLocation, useNavigate } from '@tanstack/react-router';
 import { useDocsSearch } from 'fumadocs-core/search/client';
-import { ArrowUpRightIcon, SearchIcon } from 'lucide-react';
+import { ArrowUpRightIcon, BookOpenIcon, SearchIcon } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SearchDetailPanel } from '@/components/docs-shell/SearchDetailPanel';
@@ -45,7 +45,32 @@ import {
 import { getRecentPages, type RecentPage } from '@/lib/recently-viewed';
 import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
+import {
+  getCnProductLabel,
+  getCnSearchProductGroups,
+  resolveCnSearchProduct,
+} from '@/lib/search/cn-product-labels';
 import { createCnDocsSearchClient } from '@/lib/search/cn-search-client';
+import {
+  getCnSearchPlatformLabel,
+  getCnSearchPlatforms,
+  getCnSearchSdkLabel,
+} from '@/lib/search/cn-search-context';
+import {
+  type CnSearchFamily,
+  cnSearchFamilies,
+  getCnSearchFamily,
+} from '@/lib/search/cn-search-family';
+import {
+  loadCnSearchCatalog,
+  type SearchFacets,
+} from '@/lib/search/cn-search-page';
+import {
+  CN_SEARCH_SESSION_CHANGED,
+  type CnSearchSession,
+  readCnSearchSession,
+  saveCnSearchSession,
+} from '@/lib/search/cn-search-session';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
 import {
   buildSearchPageHref,
@@ -92,13 +117,64 @@ export function DocsSearchDialog({
   const searchLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
   const t = i18n.getFixedT(searchLocale, 'common');
   const navigate = useNavigate();
+  const pathname = useLocation({ select: (location) => location.pathname });
+  const isCn = searchLocale === 'zh-CN';
   const [open, setOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const returnFocusRef = useRef<HTMLElement | null>(null);
+  const navigatingRef = useRef(false);
   const [draftSearch, setDraftSearch] = useState('');
   const [platformFilter, setPlatformFilter] = useState<PlatformKey | null>(
     null,
   );
   // Selected scope id (e.g. `product:video`), or null for all products.
   const [scopeId, setScopeId] = useState<string | null>(null);
+  const [catalog, setCatalog] = useState<SearchFacets>();
+  const manualSelection = useRef(false);
+  const searchOrigin = useRef<string | undefined>(undefined);
+  const [savedPage, setSavedPage] = useState<{
+    path: string;
+    value?: CnSearchSession;
+  }>();
+  useEffect(() => {
+    if (!isCn) return;
+    const synchronize = () => {
+      setSavedPage({ path: pathname, value: readCnSearchSession(pathname) });
+    };
+    synchronize();
+    window.addEventListener(CN_SEARCH_SESSION_CHANGED, synchronize);
+    return () =>
+      window.removeEventListener(CN_SEARCH_SESSION_CHANGED, synchronize);
+  }, [isCn, pathname]);
+  const currentSearch = useRef({
+    query: draftSearch,
+    platform: platformFilter,
+    scope: scopeId,
+  });
+  currentSearch.current = {
+    query: draftSearch,
+    platform: platformFilter,
+    scope: scopeId,
+  };
+  useEffect(() => {
+    if (isCn && open && searchOrigin.current === pathname) {
+      saveCnSearchSession(pathname, {
+        query: draftSearch,
+        platform: platformFilter,
+        scope: scopeId,
+      });
+    }
+  }, [isCn, open, pathname, draftSearch, platformFilter, scopeId]);
+  useEffect(() => {
+    if (!isCn || !open || catalog) return;
+    const controller = new AbortController();
+    loadCnSearchCatalog(controller.signal)
+      .then((result) => {
+        if (!controller.signal.aborted) setCatalog(result);
+      })
+      .catch(() => {});
+    return () => controller.abort();
+  }, [isCn, open, catalog]);
   // Mirrors cmdk's highlighted item (keyboard ↑/↓ AND mouse hover both set it)
   // so the footer can describe the active result without a focus-based tooltip.
   const [activeValue, setActiveValue] = useState<string | null>(null);
@@ -108,9 +184,17 @@ export function DocsSearchDialog({
   // Recently-viewed pages shown (before any query) as a starting point. Loaded
   // from localStorage each time the dialog opens.
   const [recentPages, setRecentPages] = useState<RecentPage[]>([]);
-  const searchScope = productScopes.find(
-    (scope) => scope.id === scopeId,
-  )?.scope;
+  const cnProduct = isCn
+    ? resolveCnSearchProduct(scopeId, productScopes)
+    : undefined;
+  const cnScope = useMemo(
+    () =>
+      cnProduct ? { field: 'product' as const, value: cnProduct } : undefined,
+    [cnProduct],
+  );
+  const searchScope = isCn
+    ? cnScope
+    : productScopes.find((scope) => scope.id === scopeId)?.scope;
   const [pagesState, setPagesState] = useState<PagesState | null>(null);
   const pagesPromiseRef = useRef<{
     locale: AppLocale;
@@ -275,7 +359,7 @@ export function DocsSearchDialog({
   const normalizedSearchResults =
     !searchResults || searchResults === 'empty' ? [] : searchResults;
   const hasQuery = search.trim() !== '';
-  const showActiveDetail = searchLocale !== 'zh-CN' || hasQuery;
+  const showActiveDetail = !isCn || hasQuery;
   const isSearchUnavailable = searchIndexFailed || Boolean(searchError);
   // fumadocs only flips `isLoading` once the debounced query fires (delayMs).
   // During that pre-fetch window `isLoading` is false and `results` still holds
@@ -285,8 +369,12 @@ export function DocsSearchDialog({
   // The remote config objects are recreated on render, so depend on a stable
   // boolean to avoid re-running this effect (and re-arming the timer) endlessly.
   const remoteSearchConfigured = remoteSearchEnabled;
+  const debounceRequest = useMemo(
+    () => ({ query: search, platform: platformFilter, scope: scopeId }),
+    [search, platformFilter, scopeId],
+  );
   useEffect(() => {
-    if (!remoteSearchConfigured || search.trim() === '') {
+    if (!remoteSearchConfigured || debounceRequest.query.trim() === '') {
       setDebouncePending(false);
       return;
     }
@@ -296,7 +384,7 @@ export function DocsSearchDialog({
       SEARCH_DEBOUNCE_MS + 30,
     );
     return () => window.clearTimeout(id);
-  }, [remoteSearchConfigured, search]);
+  }, [remoteSearchConfigured, debounceRequest]);
   useEffect(() => {
     if (isLoading) {
       setDebouncePending(false);
@@ -326,48 +414,56 @@ export function DocsSearchDialog({
   }, [open, hasQuery, visibleSnapshot, searchError]);
   const platformOptions = useMemo(
     () =>
-      (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
-        [
-          'web',
-          'android',
-          'ios',
-          'javascript',
-          'flutter',
-          'react-native',
-          'windows',
-          'macos',
-          'electron',
-          'unity',
-        ].includes(platform),
-      ),
-    [],
+      isCn
+        ? getCnSearchPlatforms(catalog?.platform, platformFilter)
+        : (Object.keys(platformRegistry) as PlatformKey[]).filter((platform) =>
+            [
+              'web',
+              'android',
+              'ios',
+              'javascript',
+              'flutter',
+              'react-native',
+              'windows',
+              'harmonyos',
+              'macos',
+              'electron',
+              'unity',
+            ].includes(platform),
+          ),
+    [isCn, catalog, platformFilter],
   );
 
   const productFilterGroups = useMemo<FilterGroup[]>(
     () =>
-      groupProductScopes(productScopes).map((group) => ({
-        label: group.label,
-        options: group.scopes.map((scope) => ({
-          description: scope.description,
-          label: scope.label,
-          value: scope.id,
-        })),
-      })),
-    [productScopes],
+      isCn
+        ? getCnSearchProductGroups()
+        : groupProductScopes(productScopes).map((group) => ({
+            label: group.label,
+            options: group.scopes.map((scope) => ({
+              description: scope.description,
+              label: scope.label,
+              value: scope.id,
+            })),
+          })),
+    [productScopes, isCn],
   );
   const platformFilterGroups = useMemo<FilterGroup[]>(
     () => [
       {
         options: platformOptions.map((platform) => ({
-          label: getPlatformLabel(platform, searchLocale),
+          label: isCn
+            ? getCnSearchPlatformLabel(platform)
+            : getPlatformLabel(platform, searchLocale),
           value: platform,
         })),
       },
     ],
-    [platformOptions, searchLocale],
+    [platformOptions, searchLocale, isCn],
   );
 
   async function handleSelect(url: string) {
+    navigatingRef.current = true;
     setOpen(false);
     await navigate({
       to: url,
@@ -375,13 +471,35 @@ export function DocsSearchDialog({
   }
 
   const handleOpenChange = useCallback(
-    async (nextOpen: boolean) => {
+    async (nextOpen: boolean, returnFocus?: HTMLElement) => {
+      if (nextOpen && !isOpenRef.current) {
+        returnFocusRef.current =
+          returnFocus ??
+          (document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : null);
+        navigatingRef.current = false;
+      }
       isOpenRef.current = nextOpen;
       setOpen(nextOpen);
       // Re-arm the cascade each time the dialog opens; clear it on close.
       setStaggerArmed(nextOpen);
 
       if (nextOpen) {
+        if (isCn) {
+          const saved =
+            readCnSearchSession(pathname) ??
+            (searchOrigin.current === pathname
+              ? currentSearch.current
+              : undefined);
+          setSearch(saved?.query ?? '');
+          setDraftSearch(saved?.query ?? '');
+          setPlatformFilter(saved?.platform ?? null);
+          setScopeId(saved?.scope ?? null);
+          setActiveValue(null);
+          manualSelection.current = false;
+          searchOrigin.current = pathname;
+        }
         // Refresh the recent list from storage on each open, dropping the page
         // the user is currently on (offering it back to them makes no sense).
         const currentPath =
@@ -393,7 +511,7 @@ export function DocsSearchDialog({
         );
       }
 
-      if (!nextOpen) {
+      if (!nextOpen && !isCn) {
         setActiveValue(null);
         // Reset the query on close so reopening lands on the recent list / prompt
         // rather than the previous search's (possibly empty) results.
@@ -427,7 +545,15 @@ export function DocsSearchDialog({
         });
       }
     },
-    [loadPages, pages.length, remoteSearchEnabled, searchLocale, setSearch],
+    [
+      loadPages,
+      pages.length,
+      remoteSearchEnabled,
+      searchLocale,
+      setSearch,
+      isCn,
+      pathname,
+    ],
   );
 
   useEffect(() => {
@@ -461,14 +587,41 @@ export function DocsSearchDialog({
   const resultEntries: RenderedSearchEntry[] =
     !hasQuery || isSearchUnavailable
       ? []
-      : normalizedSearchResults.map(searchResultToEntry);
+      : normalizedSearchResults.map((result) =>
+          searchResultToEntry(result, searchLocale === 'zh-CN', productScopes),
+        );
+  const resultGroups = isCn
+    ? cnSearchFamilies.map((family) => {
+        const entries = resultEntries.filter(
+          (entry) => entry.family === family,
+        );
+        return {
+          family,
+          label:
+            family === 'docs'
+              ? '技术文档'
+              : family === 'api'
+                ? 'API Reference'
+                : 'FAQ',
+          entries,
+          total: entries[0]?.familyTotalHits ?? entries.length,
+        };
+      })
+    : [
+        {
+          family: 'all' as const,
+          label: '',
+          entries: resultEntries,
+          total: undefined,
+        },
+      ];
   const showRecent = !hasQuery && recentPages.length > 0;
   // Nothing typed and no history yet → a plain prompt instead of fake results.
   const showPrompt = !hasQuery && recentPages.length === 0;
-  // Only show the loading skeleton when there's nothing else to show. While a
-  // re-query is in flight the previous results stay visible, so the skeleton
-  // must not render on top of them.
-  const showSkeleton = hasQuery && isBusy && resultEntries.length === 0;
+  // CN replaces stale groups and counts while re-querying. Other locales keep
+  // previous rows visible and only need a skeleton for the initial request.
+  const showSkeleton =
+    hasQuery && isBusy && (isCn || resultEntries.length === 0);
 
   // One detail record per rendered item, in render order. `value` matches the
   // cmdk item value set on each CommandItem below. The empty state lists recent
@@ -507,13 +660,43 @@ export function DocsSearchDialog({
         }
       : { className: undefined, style: undefined };
 
+  const pageSearch =
+    open && searchOrigin.current === pathname
+      ? currentSearch.current
+      : savedPage?.path === pathname
+        ? savedPage.value
+        : searchOrigin.current === pathname
+          ? currentSearch.current
+          : undefined;
+  const pageScope = productScopes.find(
+    (scope) => scope.id === pageSearch?.scope,
+  )?.scope;
+  const fullSearchState = {
+    q: pageSearch?.query ?? '',
+    product: isCn
+      ? resolveCnSearchProduct(pageSearch?.scope, productScopes)
+      : searchScopeProduct(pageScope),
+    platform: pageSearch?.platform ?? undefined,
+  };
+  const openFullSearch = (type: 'all' | CnSearchFamily = 'all') => {
+    if (isCn && searchOrigin.current === pathname)
+      saveCnSearchSession(pathname, currentSearch.current);
+    navigatingRef.current = true;
+    setOpen(false);
+    void navigate({
+      href: buildSearchPageHref(searchLocale, { ...fullSearchState, type }),
+    });
+  };
+
   return (
     <>
       {mode === 'mobile' ? (
         <Button
           aria-label={t('docs.search')}
+          data-docs-search-trigger
+          ref={triggerRef}
           className="size-11"
-          onClick={() => void handleOpenChange(true)}
+          onClick={(event) => void handleOpenChange(true, event.currentTarget)}
           size="icon"
           variant="ghost"
         >
@@ -522,8 +705,10 @@ export function DocsSearchDialog({
       ) : (
         <Button
           aria-label={t('docs.search')}
+          data-docs-search-trigger
+          ref={triggerRef}
           className="docs-shell-search-trigger"
-          onClick={() => void handleOpenChange(true)}
+          onClick={(event) => void handleOpenChange(true, event.currentTarget)}
           size="sm"
           variant="outline"
         >
@@ -533,8 +718,28 @@ export function DocsSearchDialog({
         </Button>
       )}
       <CommandDialog
-        className="docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-y-auto border-border p-0"
+        className={cn(
+          'docs-search-dialog max-h-[calc(100dvh-2rem)] max-w-2xl overflow-visible border-border p-0',
+          isCn && 'sm:max-w-3xl',
+        )}
         description={t('docs.searchDescription')}
+        closeLabel={t('docs.close')}
+        onCloseAutoFocus={(event) => {
+          event.preventDefault();
+          if (navigatingRef.current) return;
+          const target = returnFocusRef.current;
+          if (target?.isConnected) target.focus({ preventScroll: true });
+          if (target && document.activeElement === target) return;
+          triggerRef.current?.focus({ preventScroll: true });
+          if (document.activeElement === triggerRef.current) return;
+          // A responsive layout may have hidden the original trigger.
+          const visibleTrigger = Array.from(
+            document.querySelectorAll<HTMLElement>(
+              '[data-docs-search-trigger]',
+            ),
+          ).find((element) => element.getClientRects().length > 0);
+          visibleTrigger?.focus({ preventScroll: true });
+        }}
         onOpenChange={(nextOpen) => void handleOpenChange(nextOpen)}
         onValueChange={setActiveValue}
         open={open}
@@ -544,38 +749,70 @@ export function DocsSearchDialog({
         value={activeValue ?? ''}
       >
         <CommandInput
+          className="pr-12"
           onCompositionStart={() => {
             composing.current = true;
           }}
           onCompositionEnd={(event) => {
             composing.current = false;
+            manualSelection.current = false;
+            setActiveValue(null);
             inputAt.current = Date.now();
+            setDraftSearch(event.currentTarget.value);
             setSearch(event.currentTarget.value);
           }}
           onValueChange={(value) => {
+            if (isCn) {
+              manualSelection.current = false;
+              setActiveValue(null);
+            }
             inputAt.current = Date.now();
             setDraftSearch(value);
             if (!composing.current) setSearch(value);
           }}
-          onKeyDown={() => {
+          onKeyDownCapture={(event) => {
             selectionMethod.current = 'keyboard';
+            if (!isCn) return;
+            if (composing.current || event.nativeEvent.isComposing) {
+              event.stopPropagation();
+              return;
+            }
+            if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+              if (isBusy) {
+                event.preventDefault();
+                event.stopPropagation();
+              } else manualSelection.current = true;
+            }
+            if (
+              event.key === 'Enter' &&
+              (!manualSelection.current ||
+                isBusy ||
+                event.metaKey ||
+                event.ctrlKey)
+            ) {
+              event.preventDefault();
+              event.stopPropagation();
+              if (draftSearch.trim()) openFullSearch();
+            }
           }}
           placeholder={t('docs.searchPlaceholder')}
           value={draftSearch}
         />
         {remoteSearchEnabled ? (
           <div className="flex flex-wrap items-center gap-1 border-b px-3 py-2">
-            {productScopes.length > 0 ? (
+            {isCn || productScopes.length > 0 ? (
               <SearchFilterDropdown
                 allLabel={t('docs.searchAllProducts')}
                 emptyLabel={t('docs.searchFilterNoResults')}
                 groups={productFilterGroups}
                 onChange={(value) => {
+                  manualSelection.current = false;
+                  setActiveValue(null);
                   inputAt.current = Date.now();
                   setScopeId(value);
                 }}
                 searchPlaceholder={t('docs.searchFilterProducts')}
-                value={scopeId}
+                value={isCn ? (cnProduct ?? null) : scopeId}
               />
             ) : null}
             <SearchFilterDropdown
@@ -583,6 +820,8 @@ export function DocsSearchDialog({
               emptyLabel={t('docs.searchFilterNoResults')}
               groups={platformFilterGroups}
               onChange={(next) => {
+                manualSelection.current = false;
+                setActiveValue(null);
                 inputAt.current = Date.now();
                 setPlatformFilter(next as PlatformKey | null);
               }}
@@ -610,17 +849,13 @@ export function DocsSearchDialog({
                 </div>
               ))}
             </div>
-          ) : hasQuery ? (
+          ) : hasQuery &&
+            !isSearchUnavailable &&
+            normalizedSearchResults.length === 0 ? (
             // Only render cmdk's empty slot during an active search. Rendering it
             // in the prompt/recent state adds an empty padded block that throws
             // off the prompt's vertical balance.
-            <CommandEmpty>
-              {isSearchUnavailable
-                ? t('docs.searchUnavailable')
-                : normalizedSearchResults.length === 0
-                  ? t('docs.searchEmpty')
-                  : null}
-            </CommandEmpty>
+            <CommandEmpty>{t('docs.searchEmpty')}</CommandEmpty>
           ) : null}
           {showPrompt ? (
             <div
@@ -657,90 +892,171 @@ export function DocsSearchDialog({
               })}
             </CommandGroup>
           ) : null}
-          {hasQuery ? (
-            <CommandGroup>
-              {isSearchUnavailable ? (
-                <div className="px-2 py-3 text-sm text-muted-foreground">
-                  {t('docs.searchUnavailable')}
-                </div>
-              ) : (
-                resultEntries.map((page, index) => {
-                  const stagger = staggerProps(index);
-                  return (
-                    <CommandItem
-                      className={cn('items-start', stagger.className)}
-                      key={page.id ?? page.url}
-                      onSelect={() => {
-                        selectDocsResult(visibleSnapshot, {
-                          id: page.url,
-                          path: page.url,
-                          rank: index + 1,
-                          kind: 'section',
-                          method: selectionMethod.current,
-                        });
-                        void handleSelect(page.url);
-                      }}
-                      onMouseDown={(event) => {
-                        if (
-                          event.button !== 1 &&
-                          !(
-                            event.button === 0 &&
-                            (event.metaKey || event.ctrlKey)
-                          )
-                        )
-                          return;
-                        event.preventDefault();
-                        const href = selectDocsResult(
-                          visibleSnapshot,
-                          {
+          {hasQuery && isSearchUnavailable ? (
+            <div className="px-2 py-3 text-sm text-muted-foreground">
+              {t('docs.searchUnavailable')}
+            </div>
+          ) : null}
+          {hasQuery &&
+          !isSearchUnavailable &&
+          (!isCn || (!isBusy && resultEntries.length > 0))
+            ? resultGroups.map((group) => (
+                <CommandGroup
+                  forceMount={isCn}
+                  key={group.family}
+                  heading={isCn ? group.label : undefined}
+                  className={
+                    isCn ? '[&_[cmdk-group-heading]]:sr-only' : undefined
+                  }
+                >
+                  {isCn ? (
+                    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 px-2 py-1 text-xs text-muted-foreground">
+                      <span className="text-sm font-medium">{group.label}</span>
+                      <div className="flex items-center gap-2">
+                        {group.total !== undefined ? (
+                          <span>共 {group.total} 条结果</span>
+                        ) : null}
+                        <Button
+                          aria-label={`查看全部${group.label}`}
+                          onClick={() => openFullSearch(group.family)}
+                          onKeyDown={(event) => {
+                            // Let native button activation handle Enter/Space,
+                            // rather than cmdk selecting the active result.
+                            if (event.key === 'Enter' || event.key === ' ')
+                              event.stopPropagation();
+                          }}
+                          size="sm"
+                          variant="link"
+                        >
+                          查看全部
+                        </Button>
+                      </div>
+                    </div>
+                  ) : null}
+                  {isCn && group.entries.length === 0 ? (
+                    <div className="px-2 py-3 text-xs text-muted-foreground">
+                      暂无相关
+                      {group.label === '技术文档'
+                        ? '技术文档'
+                        : group.family === 'faq'
+                          ? 'FAQ'
+                          : 'API 文档'}
+                    </div>
+                  ) : null}
+                  {group.entries.map((page) => {
+                    const index = resultEntries.indexOf(page);
+                    const stagger = staggerProps(index);
+                    return (
+                      <CommandItem
+                        className={cn(
+                          'items-start',
+                          isCn && 'mb-2 gap-3 rounded-lg bg-muted/40',
+                          stagger.className,
+                        )}
+                        disabled={isCn && isBusy}
+                        key={page.id ?? page.url}
+                        onSelect={() => {
+                          selectDocsResult(visibleSnapshot, {
                             id: page.url,
                             path: page.url,
                             rank: index + 1,
                             kind: 'section',
-                            method: event.button === 1 ? 'middle' : 'mouse',
-                          },
-                          true,
-                        );
-                        window.open(href, '_blank', 'noopener');
-                      }}
-                      onClickCapture={(event) => {
-                        if (event.metaKey || event.ctrlKey) {
+                            method: selectionMethod.current,
+                          });
+                          void handleSelect(page.url);
+                        }}
+                        onMouseDown={(event) => {
+                          if (isCn && isBusy) return;
+                          if (
+                            event.button !== 1 &&
+                            !(
+                              event.button === 0 &&
+                              (event.metaKey || event.ctrlKey)
+                            )
+                          )
+                            return;
                           event.preventDefault();
-                          event.stopPropagation();
-                        }
-                      }}
-                      style={stagger.style}
-                      value={page.id ?? page.url}
-                    >
-                      <div className="min-w-0 flex-1 space-y-1.5">
-                        <HighlightedText
-                          className="line-clamp-1 font-medium"
-                          value={page.title}
-                        />
-                        {page.path.length > 0 ? (
-                          <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
-                            {page.path.join(' › ')}
-                          </div>
+                          const href = selectDocsResult(
+                            visibleSnapshot,
+                            {
+                              id: page.url,
+                              path: page.url,
+                              rank: index + 1,
+                              kind: 'section',
+                              method: event.button === 1 ? 'middle' : 'mouse',
+                            },
+                            true,
+                          );
+                          window.open(href, '_blank', 'noopener');
+                        }}
+                        onClickCapture={(event) => {
+                          if (event.metaKey || event.ctrlKey) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                          }
+                        }}
+                        style={stagger.style}
+                        value={page.id ?? page.url}
+                      >
+                        {isCn ? (
+                          <BookOpenIcon aria-hidden="true" className="mt-0.5" />
                         ) : null}
-                        {page.context.length > 0 ? (
-                          <div className="flex flex-wrap gap-1">
-                            {page.context.map((item) => (
-                              <span
-                                className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
-                                key={`${page.id ?? page.url}:${item}`}
-                              >
-                                <HighlightedText value={item} />
-                              </span>
-                            ))}
+                        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                          {isCn ? (
+                            <>
+                              <HighlightedText
+                                className="font-medium [overflow-wrap:anywhere]"
+                                value={page.title}
+                              />
+                              {page.path.length > 1 ? (
+                                <div className="line-clamp-1 text-xs text-muted-foreground">
+                                  {page.path.slice(0, -1).join(' › ')}
+                                </div>
+                              ) : null}
+                            </>
+                          ) : (
+                            <HighlightedText
+                              className="line-clamp-1 font-medium"
+                              value={page.title}
+                            />
+                          )}
+                          {!isCn && page.path.length > 0 ? (
+                            <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
+                              {page.path.join(' › ')}
+                            </div>
+                          ) : null}
+                          <div
+                            className={cn(
+                              isCn &&
+                                'flex min-w-0 flex-col gap-1 sm:flex-row sm:items-center sm:gap-2',
+                            )}
+                          >
+                            {page.context.length > 0 ? (
+                              <div className="flex shrink-0 flex-wrap gap-1">
+                                {page.context.map((item) => (
+                                  <span
+                                    className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
+                                    key={`${page.id ?? page.url}:${item}`}
+                                  >
+                                    <HighlightedText value={item} />
+                                  </span>
+                                ))}
+                              </div>
+                            ) : null}
+                            {isCn && page.description ? (
+                              <HighlightedText
+                                className="line-clamp-2 min-w-0 text-xs text-muted-foreground [overflow-wrap:anywhere] sm:line-clamp-1"
+                                value={page.description}
+                              />
+                            ) : null}
                           </div>
-                        ) : null}
-                      </div>
-                    </CommandItem>
-                  );
-                })
-              )}
-            </CommandGroup>
-          ) : null}
+                        </div>
+                      </CommandItem>
+                    );
+                  })}
+                </CommandGroup>
+              ))
+            : null}
         </CommandList>
         {searchLocale === 'zh-CN' && hasQuery && !isBusy ? (
           <div className="px-2 pb-2">
@@ -751,16 +1067,7 @@ export function DocsSearchDialog({
           <div className="border-t p-2">
             <Button
               className="w-full justify-between"
-              onClick={() => {
-                setOpen(false);
-                void navigate({
-                  href: buildSearchPageHref(searchLocale, {
-                    q: search,
-                    product: searchScopeProduct(searchScope),
-                    platform: platformFilter ?? undefined,
-                  }),
-                });
-              }}
+              onClick={() => openFullSearch()}
               variant="ghost"
             >
               查看全部搜索结果
@@ -771,17 +1078,24 @@ export function DocsSearchDialog({
         {/* Active-item detail: floats beside the dialog when there's room,
             otherwise a fixed-height strip in the footer. Either way it's out of
             the height-varying flow, so the dialog doesn't resize on focus change. */}
-        <SearchDetailPanel
-          activeValue={activeValue}
-          description={showActiveDetail ? activeDetail?.primary : undefined}
-          open={open}
-          renderText={(value) => <HighlightedText value={value} />}
-          title={showActiveDetail ? activeDetail?.title : undefined}
-        />
+        {!isCn || (hasQuery && !isBusy && !isSearchUnavailable) ? (
+          <SearchDetailPanel
+            activeValue={activeValue}
+            description={showActiveDetail ? activeDetail?.primary : undefined}
+            open={open}
+            renderText={(value) => <HighlightedText value={value} />}
+            showStrip={!isCn}
+            title={showActiveDetail ? activeDetail?.title : undefined}
+          />
+        ) : null}
         <SearchKeyboardHints
           closeLabel={t('docs.searchHintClose')}
           navigateLabel={t('docs.searchHintNavigate')}
-          selectLabel={t('docs.searchHintSelect')}
+          selectLabel={
+            isCn && !manualSelection.current
+              ? '完整搜索'
+              : t('docs.searchHintSelect')
+          }
         />
       </CommandDialog>
     </>
@@ -789,6 +1103,8 @@ export function DocsSearchDialog({
 }
 
 type RenderedSearchEntry = SearchEntry & {
+  family: CnSearchFamily;
+  familyTotalHits?: number;
   context: string[];
   id?: string;
   path: string[];
@@ -804,28 +1120,50 @@ type DetailEntry = {
   value: string;
 };
 
-function searchResultToEntry(result: {
-  breadcrumbs?: unknown[];
-  content: unknown;
-  id?: unknown;
-  objectType?: unknown;
-  path?: unknown[];
-  platform?: unknown;
-  product?: unknown;
-  section?: unknown;
-  snippet?: unknown;
-  tab?: unknown;
-  title?: unknown;
-  url: string;
-}): RenderedSearchEntry {
+function searchResultToEntry(
+  result: {
+    breadcrumbs?: unknown[];
+    familyTotalHits?: unknown;
+    content: unknown;
+    id?: unknown;
+    objectType?: unknown;
+    path?: unknown[];
+    platform?: unknown;
+    product?: unknown;
+    section?: unknown;
+    snippet?: unknown;
+    tab?: unknown;
+    title?: unknown;
+    url: string;
+    version?: unknown;
+  },
+  isCn: boolean,
+  productScopes: ProductScope[],
+): RenderedSearchEntry {
   const breadcrumbs = getStringArray(result.breadcrumbs);
   const platforms = getStringArray(result.platform);
   const objectType = getString(result.objectType);
+  const sdkLabel = isCn ? getCnSearchSdkLabel(result.url) : undefined;
 
   return {
+    family: getCnSearchFamily({
+      pageUrl: result.url,
+      docType: objectType === 'openapi' ? 'openapi' : 'docs',
+    }),
+    familyTotalHits:
+      typeof result.familyTotalHits === 'number'
+        ? result.familyTotalHits
+        : undefined,
     context: uniqueStrings([
       objectType === 'openapi' ? 'API' : undefined,
-      ...formatPlatformContext(platforms ?? []),
+      isCn
+        ? getCnProductLabel(getString(result.product), productScopes)
+        : undefined,
+      ...(sdkLabel
+        ? [sdkLabel]
+        : isCn
+          ? (platforms ?? []).map(getCnSearchPlatformLabel)
+          : formatPlatformContext(platforms ?? [])),
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'
@@ -885,10 +1223,7 @@ function HighlightedText({
     <span className={className}>
       {getHighlightParts(value).map((part) =>
         part.highlight ? (
-          <mark
-            className="rounded-[3px] bg-primary/25 px-0.5 font-semibold text-primary"
-            key={part.key}
-          >
+          <mark className="search-page-mark" key={part.key}>
             {part.text}
           </mark>
         ) : (
