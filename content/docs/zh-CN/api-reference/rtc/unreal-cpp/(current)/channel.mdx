@@ -2357,7 +2357,7 @@ virtual void onRequestToken()
 
 - 单频道场景：
 
-  - 调用 [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。SDK 会通过 [onRenewTokenResult](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
+  - 调用 [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
   - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
 - 多频道场景：调用 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
@@ -2444,7 +2444,7 @@ virtual void onTokenPrivilegeWillExpire(const char* token) {
 
 - 单频道场景：
 
-  - 调用 [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。SDK 会通过 [onRenewTokenResult](/zh-CN/api-reference/rtc/unreal-cpp/channel#callback_irtcengineeventhandler_onrenewtokenresult) 回调报告更新结果。
+  - 调用 [renewToken](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengine_renewtoken) 传入新的 Token，无需先离开频道。
   - 如果你的 App 需要离开并重新加入频道，也可以调用 `leaveChannel` 离开频道，然后在调用 `joinChannel` 时传入新的 Token。
 - 多频道场景：调用 [updateChannelMediaOptionsEx](/zh-CN/api-reference/rtc/unreal-cpp/channel#api_irtcengineex_updatechannelmediaoptionsex) 传入新的 Token。
 
