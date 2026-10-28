@@ -48,21 +48,25 @@ const digest = (value: string | Buffer) =>
 // Include names as well as bytes; reject symlinks so a release is self-contained.
 async function hashArtifact(root: string): Promise<string> {
   const hash = createHash('sha256');
+  let files = 0;
   const visit = async (file: string) => {
     const stat = await lstat(file);
     assert.ok(!stat.isSymbolicLink(), `Release artifact is a symlink: ${file}`);
-    hash.update(`${path.relative(root, file).split(path.sep).join('/')}\0`);
     if (stat.isDirectory()) {
-      hash.update('directory\0');
+      // File-only artifact stores omit empty directories. Bind deployment
+      // files, whose relative names also preserve the meaningful hierarchy.
       for (const name of (await readdir(file)).sort())
         await visit(path.join(file, name));
     } else {
       assert.ok(stat.isFile(), `Not a release file: ${file}`);
+      files++;
+      hash.update(`${path.relative(root, file).split(path.sep).join('/')}\0`);
       hash.update(`file:${stat.size}\0`);
       for await (const bytes of createReadStream(file)) hash.update(bytes);
     }
   };
   await visit(root);
+  assert.ok(files > 0, `Release artifact is empty: ${root}`);
   return hash.digest('hex');
 }
 

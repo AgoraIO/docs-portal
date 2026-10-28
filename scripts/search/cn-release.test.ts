@@ -1,5 +1,12 @@
 import { createHash } from 'node:crypto';
-import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import {
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  symlink,
+  writeFile,
+} from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
@@ -141,6 +148,7 @@ describe('CN release entry point', () => {
 
   it('does not seal a bundle or prepare an index when the coverage gate fails', async () => {
     const f = await fixture();
+    await f.run('bundle');
     const run = f.command.getMockImplementation();
     if (!run) throw new Error('Missing fixture command');
     f.command.mockImplementation(async (args, env) => {
@@ -152,6 +160,27 @@ describe('CN release entry point', () => {
     await expect(
       readFile(path.join(f.root, 'dist/search/cn-publication.json')),
     ).rejects.toThrow();
+    expect(f.calls.some((args) => args.includes('prepare'))).toBe(false);
+  });
+
+  it('accepts a transported bundle when empty directories were not preserved', async () => {
+    const f = await fixture();
+    const empty = path.join(f.root, '.output/unused');
+    await mkdir(empty);
+    await f.run('bundle');
+    // File-only artifact stores preserve all deployment files but omit empty directories.
+    await rm(empty, { recursive: true });
+    await expect(f.run('prepare')).resolves.toBeUndefined();
+    expect(f.calls.some((args) => args.includes('prepare'))).toBe(true);
+  });
+
+  it('rejects symbolic links instead of depending on files outside the bundle', async () => {
+    const f = await fixture();
+    await symlink(
+      'server/index.mjs',
+      path.join(f.root, '.output/service-link'),
+    );
+    await expect(f.run('bundle')).rejects.toThrow('artifact is a symlink');
     expect(f.calls.some((args) => args.includes('prepare'))).toBe(false);
   });
 

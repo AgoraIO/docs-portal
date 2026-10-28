@@ -21,7 +21,7 @@ bun run search:release:cn promote --revision="$RELEASE_SHA" --origin="$FRONTEND_
 - `prepare`：核对检出 SHA、发布清单、全部产物与发布配置，重新执行维护中的覆盖门禁，再调用既有全量临时索引流程。在 `cn-release.json` 回执中增加本发布包摘要；正式索引继续服务。
 - `promote`：重复核对产物与门禁，要求回执对应同一发布包、提交和数量；检查同域 `/api/health` 返回相同 `revision`，再逐个检查公开结果 HTML 与本构建字节一致，最后调用既有索引交换。缺少部署版本、站点过旧或回执混用都会在交换前失败。
 
-所有源文件、产物和发布配置必须来自同一受信任构建；摘要用于发现串包和意外变动，不是跨信任域的签名或证明。产物不允许依赖外部符号链接。构建产物上传/下载时保留目录结构：`dist/client`、`.output`、`dist/search`。不要重新构建或改写静态 HTML、API 文件和原始审计报告；运行时另行注入配置。
+所有源文件、产物和发布配置必须来自同一受信任构建；摘要用于发现串包和意外变动，不是跨信任域的签名或证明。摘要绑定实际文件的相对路径和字节，文件型存储不保留的空目录不影响核对；空产物和符号链接会被拒绝。构建产物上传/下载时保留文件路径：`dist/client`、`.output`、`dist/search`。不要重新构建或改写静态 HTML、API 文件和原始审计报告；运行时另行注入配置。
 
 `cn-preflight-audit.json` 保存 prepare/promote 重新审计的结果，不修改已经绑定摘要的原始 `cn-coverage-audit.json`。低层 `search:prepare:cn` / `search:promote:cn` 继续存在以便兼容既有使用者；部署平台应统一调用新入口，避免绕过前置门禁。
 
