@@ -12,7 +12,7 @@ import {
   createDocsPrerenderPaths,
   selectStaticDocsPrerenderPaths,
 } from './src/lib/prerender-pages';
-import { readPublishedDocsRoutes } from './src/lib/published-docs-routes.server';
+import { readDocsPrerenderPaths } from './src/lib/published-docs-routes.server';
 
 const isTest = process.env.VITEST === 'true';
 const buildTarget = process.env.DOCS_BUILD_TARGET;
@@ -33,7 +33,7 @@ const docsPrerenderPaths =
     ? []
     : isStaticDeployment
       ? [
-          ...readPublishedDocsRoutes().map((route) => route.url),
+          ...readDocsPrerenderPaths(),
           ...(process.env.VITE_DOCS_REGION === 'cn' ? ['/zh-CN/search'] : []),
         ]
       : createDocsPrerenderPaths({

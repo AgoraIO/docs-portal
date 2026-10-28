@@ -349,6 +349,15 @@ describe('full CN search adapter', () => {
       '参考生成 Token',
     );
   });
+  it('removes code-tab fence metadata from old-index snippets without dropping code or highlights', () => {
+    expect(
+      cleanSearchSnippet(
+        '生成 <mark>Token</mark>。\n```cpp tab="C++" tabGroup="token-sample-code"\nconst char* tabGroup = "app";\n```\n```python tab="Python3" tabGroup="token-sample-code"\nprint("Token")\n```',
+      ),
+    ).toBe(
+      '生成 <mark>Token</mark>。 const char* tabGroup = "app"; print("Token")',
+    );
+  });
   it('uses exact pagination and filters, groups sections in ranking order, and discards non-public results', async () => {
     const fetchMock = vi.spyOn(globalThis, 'fetch').mockResolvedValue(
       new Response(

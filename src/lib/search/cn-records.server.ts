@@ -1,6 +1,7 @@
 import { load } from 'cheerio';
 import GithubSlugger from 'github-slugger';
 import type { Root, RootContent } from 'mdast';
+import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { zhCNApiReferenceCards } from '../api-reference-cards-data.zh-cn';
@@ -50,7 +51,67 @@ function getRouteMetadata(route: PublishedDocsRoute) {
   };
 }
 
+const markdownParser = unified().use(remarkParse);
+const mdxParser = unified().use(remarkParse).use(remarkMdx);
+
+function parsePublishedMarkdown(markdown: string): Root {
+  const tree = markdownParser.parse(markdown);
+  if (!/<(?:CodeBlockTabs|CalloutContainer)\b/.test(markdown)) return tree;
+  let mdxTree: Root;
+  try {
+    mdxTree = mdxParser.parse(markdown);
+  } catch {
+    // OpenAPI and legacy exports can contain HTML that is not valid JSX.
+    return tree;
+  }
+  const unwrap = (node: RootContent): RootContent[] => {
+    if (node.type !== 'mdxJsxFlowElement') return [node];
+    return node.children.flatMap((child) => {
+      if (
+        node.name === 'CodeBlockTab' &&
+        child.type === 'code' &&
+        !child.lang &&
+        /^\s*(?:`{3,}|~{3,})/.test(child.value)
+      ) {
+        return markdownParser.parse(child.value).children;
+      }
+      return unwrap(child);
+    });
+  };
+  const containsSearchContainer = (node: RootContent): boolean =>
+    (node.type === 'mdxJsxFlowElement' &&
+      (node.name === 'CodeBlockTabs' || node.name === 'CalloutContainer')) ||
+    ('children' in node && node.children.some(containsSearchContainer));
+  // MDX disables ordinary indented code. Only replace renderer containers,
+  // leaving all other Markdown and its existing heading normalization intact.
+  for (const node of [...mdxTree.children].reverse()) {
+    if (node.type !== 'mdxJsxFlowElement' || !containsSearchContainer(node))
+      continue;
+    const start = node.position?.start.offset;
+    const end = node.position?.end.offset;
+    if (start === undefined || end === undefined) continue;
+    const first = tree.children.findIndex(
+      (child) => (child.position?.end.offset ?? 0) > start,
+    );
+    if (first < 0) continue;
+    let count = 0;
+    while (
+      first + count < tree.children.length &&
+      (tree.children[first + count].position?.start.offset ?? end) < end
+    )
+      count++;
+    tree.children.splice(first, count, ...unwrap(node));
+  }
+  return tree;
+}
+
 function text(node: Root | RootContent): string {
+  if (
+    node.type === 'mdxFlowExpression' ||
+    node.type === 'mdxTextExpression' ||
+    node.type === 'mdxjsEsm'
+  )
+    return '';
   if ('value' in node) {
     return node.type === 'html' ? load(node.value).text() : node.value;
   }
@@ -72,7 +133,7 @@ export function extractPublishedCnSections(
     ...route,
     canonicalPath: toCnContentSearchUrl(route.canonicalPath),
   };
-  let tree = unified().use(remarkParse).parse(markdown);
+  let tree = parsePublishedMarkdown(markdown);
   // 平台和折叠容器导出后可能保留四空格缩进，remark 会把正文误当代码。
   // 非平台页必须由真实 HTML 标题确认锚点，不能把普通代码示例提升成章节。
   if (route.platform || renderedHeadingIds?.size) {
@@ -128,7 +189,7 @@ export function extractPublishedCnSections(
           value +
           markdown.slice(node.position.end.offset);
       }
-      tree = unified().use(remarkParse).parse(markdown);
+      tree = parsePublishedMarkdown(markdown);
     }
   }
   const slugger = new GithubSlugger();

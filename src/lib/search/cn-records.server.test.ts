@@ -8,6 +8,62 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('extracts serialized code tabs and callouts without indexing renderer metadata', () => {
+    const markdown = [
+      '# RTC API',
+      '',
+      '    ## 示例标题 [#not-a-section]',
+      '    keepIndentedExample();',
+      '',
+      '<CodeBlockTabs defaultValue="C++">',
+      '  <CodeBlockTabsList>',
+      '    <CodeBlockTabsTrigger value="C++">',
+      '      C++',
+      '    </CodeBlockTabsTrigger>',
+      '',
+      '    <CodeBlockTabsTrigger value="Python3">',
+      '      Python3',
+      '    </CodeBlockTabsTrigger>',
+      '  </CodeBlockTabsList>',
+      '',
+      '  <CodeBlockTab value="C++">',
+      '    ```cpp tabGroup="token-sample-code"',
+      '    #include <cstdlib>',
+      '    const char* tabGroup = "app";',
+      '    const char* example = "<CalloutTitle>value</CalloutTitle>";',
+      '    ```',
+      '  </CodeBlockTab>',
+      '',
+      '  <CodeBlockTab value="Python3">',
+      '    ```python tabGroup="token-sample-code"',
+      '    print("Token")',
+      '    ```',
+      '  </CodeBlockTab>',
+      '</CodeBlockTabs>',
+      '',
+      '<CalloutContainer type="warning">',
+      '  <CalloutTitle>',
+      '    注意',
+      '  </CalloutTitle>',
+      '',
+      '  <CalloutDescription>',
+      '    在服务端生成 Token。',
+      '  </CalloutDescription>',
+      '</CalloutContainer>',
+    ].join('\n');
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records).toHaveLength(1);
+    const [record] = records;
+    expect(record.content).toContain('keepIndentedExample();');
+    expect(record.content).toContain('#include <cstdlib>');
+    expect(record.content).toContain('const char* tabGroup = "app";');
+    expect(record.content).toContain('"<CalloutTitle>value</CalloutTitle>"');
+    expect(record.content).toContain('print("Token")');
+    expect(record.content).toContain('在服务端生成 Token。');
+    expect(record.content).not.toContain('CodeBlockTabs');
+    expect(record.content).not.toContain('CalloutContainer');
+    expect(record.content).not.toContain('tabGroup=');
+  });
   it('indexes rendered subheadings inside a non-platform release-note accordion', async () => {
     const url = '/zh-CN/ai/release-notes';
     const records = await exportPublishedCnRecords({

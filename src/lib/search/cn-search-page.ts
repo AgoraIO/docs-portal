@@ -102,6 +102,7 @@ export function cleanSearchSnippet(value: string): string {
     .replace(/\bOpenAPI:\s*\/openapi\/\S*/gi, '')
     .replace(/\|?\s*:?-{3,}:?\s*(?=\||$)/gm, ' ')
     .replace(/(^|\s)\|(?=\s|$)/gm, '$1')
+    .replace(/(^|\n)[ \t]*(?:`{3,}|~{3,})[^\r\n]*/g, '$1')
     .replace(/```[\w+-]*\s*/g, ' ')
     .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
     .replace(/\[([^\]]*)\]\([^)]*(?:\)|$)/g, '$1')
