@@ -4,7 +4,7 @@ title: Create an agent and start a session
 description: Define an agent in your project, then start and stop sessions that run it in an RTC channel.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/start-stop-agent.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. TypeScript SDK tabs added on 2026-10-28 from the agora-agents-ts preview branch (feat/v3-api-preview), and run in pre-release testing on 2026-10-28 (passes except for the SDK `vendor` bug noted in Create an agent). */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/start-stop-agent.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. TypeScript, Python, and Go SDK tabs added on 2026-10-28 from the SDK preview branches (feat/v3-api-preview), and run in pre-release testing on 2026-10-28 (all pass except for the SDK `vendor` bug noted in Create an agent). */}
 
 On the Conversational AI Platform, you create an agent once and save it in your project. For each conversation, you start a session that runs the agent in an RTC channel, and you stop the session when the conversation ends. This page shows the code for each step. In a production environment, run this code on your business server.
 
@@ -38,7 +38,9 @@ You also need:
 <Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
 </TabsList>
 
 <TabsContent value="rest-api">
@@ -47,9 +49,37 @@ Get REST API credentials for the Platform. For details, see [Authentication](/en
 
 </TabsContent>
 
+<TabsContent value="python">
+
+Install the SDK in your project's virtual environment. You need Python 3.8 or later. On Windows, clone the repository to a short path, such as `C:\src`, because some of its file paths are long.
+
+```bash
+git clone --branch feat/v3-api-preview https://github.com/AgoraIO/agora-agents-python.git
+cd <your_project_folder>
+pip install <path_to>/agora-agents-python
+```
+
+{/* TODO(platform-confirm): Replace the clone-and-install steps with `pip install agora-agents==<version>` when the SDK team publishes the Platform release. Tested on 2026-10-28 (Windows, Python 3.14, branch commit 8edae82). A clone under a deep folder fails to check out 437 files on Windows (path over 260 characters), and the import then fails with ModuleNotFoundError. Importing the package prints a pydantic UserWarning about renamed config keys. */}
+
+Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Python examples on this page use this `client`:
+
+```python
+import os
+from agora_agent import Agora, Area
+
+client = Agora(
+    area=Area.US,
+    app_id=os.environ["AGORA_APP_ID"],
+    app_certificate=os.environ["AGORA_APP_CERTIFICATE"],
+)
+```
+
+</TabsContent>
+
 <TabsContent value="typescript">
 
 Build the SDK and install it in your project. You need Node.js 18 or later and [pnpm](https://pnpm.io/installation). On Windows, run the commands in Git Bash or WSL.
+
 ```bash
 git clone --branch feat/v3-api-preview https://github.com/AgoraIO/agora-agents-ts.git
 cd agora-agents-ts
@@ -74,11 +104,48 @@ const client = new AgoraClient({
 ```
 
 </TabsContent>
+
+<TabsContent value="go">
+
+Clone the SDK and point your Go module to it. You need Go 1.21 or later.
+
+```bash
+git clone --branch feat/v3-api-preview https://github.com/AgoraIO/agora-agents-go.git
+cd <your_project_folder>
+go mod edit -replace github.com/AgoraIO/agora-agents-go/v2=<path_to>/agora-agents-go
+go get github.com/AgoraIO/agora-agents-go/v2
+```
+
+{/* TODO(platform-confirm): Replace the clone-and-replace steps with `go get github.com/AgoraIO/agora-agents-go/v2@<version>` when the SDK team publishes the Platform release. `go get ...@feat/v3-api-preview` fails because Go doesn't allow `/` in a version, so the steps use a `replace` directive. Tested on 2026-10-28 (Windows, Go 1.26.3, branch commit 72032cd). */}
+
+Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Go examples on this page use this `client` and `ctx`, and these imports:
+
+```go
+import (
+	"context"
+	"fmt"
+	"log"
+	"os"
+
+	"github.com/AgoraIO/agora-agents-go/v2/agentkit"
+	"github.com/AgoraIO/agora-agents-go/v2/agentkit/vendors"
+	"github.com/AgoraIO/agora-agents-go/v2/option"
+)
+
+ctx := context.Background()
+client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
+	Area:           option.AreaUS,
+	AppID:          os.Getenv("AGORA_APP_ID"),
+	AppCertificate: os.Getenv("AGORA_APP_CERTIFICATE"),
+})
+```
+
+</TabsContent>
 </Tabs>
 
-{/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The TypeScript SDK supports only token auth. */}
+{/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The SDKs support only token auth. */}
 
-{/* TODO(platform-confirm): Platform support is on the agora-agents-ts preview branch (feat/v3-api-preview) and isn't in a published package yet (npm has 2.12.0). Add the minimum package version when it's released. */}
+{/* TODO(platform-confirm): Platform support is on the preview branches (feat/v3-api-preview) of agora-agents-ts, agora-agents-python, and agora-agents-go, and isn't in a published package yet (npm, PyPI, and Go all have 2.12.0). Add the minimum package versions when they're released. */}
 
 ## Create an agent
 
@@ -87,7 +154,9 @@ Create an agent with its name, instructions, greeting, and models. This example 
 <Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
 </TabsList>
 
 <TabsContent value="rest-api">
@@ -171,6 +240,37 @@ If the request is successful, the response contains the agent ID and the saved c
 
 </TabsContent>
 
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, DeepgramSTT, OpenAI, OpenAITTS
+
+agent = (
+    Agent(client=client)
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
+    .with_llm(
+        OpenAI(
+            model="gpt-4.1-mini",
+            system_messages=[
+                {
+                    "role": "system",
+                    "content": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
+                }
+            ],
+            greeting_message="Hi {{customer_name}}, how can I help you today?",
+            greeting_configs={"on": "each_join"},
+        )
+    )
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
+    .with_variable("customer_name", type="str", required=True)
+)
+
+saved_agent = agent.save(name="Support agent")
+print(saved_agent.id)  # The agent ID
+```
+
+</TabsContent>
+
 <TabsContent value="typescript">
 
 ```ts
@@ -200,9 +300,37 @@ console.log(savedAgent.id); // The agent ID
 ```
 
 </TabsContent>
+
+<TabsContent value="go">
+
+```go
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
+	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+		Model: "gpt-4.1-mini",
+		SystemMessages: []map[string]interface{}{
+			{
+				"role":    "system",
+				"content": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
+			},
+		},
+		GreetingMessage: "Hi {{customer_name}}, how can I help you today?",
+		GreetingConfigs: map[string]interface{}{"on": "each_join"},
+	})).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"})).
+	WithVariable("customer_name", agentkit.VariableDefinition{Type: "str", Required: true})
+
+savedAgent, err := agent.Save(ctx, agentkit.SaveOptions{Name: "Support agent"})
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(savedAgent.ID) // The agent ID
+```
+
+</TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): SDK bug found in pre-release testing (2026-10-28, branch commit 739feba): a managed `OpenAI` LLM is sent without `vendor`, and the API rejects it with `400 InvalidFieldValue "Provider vendor is not supported"`. The SDK doesn't allow `vendor` in managed mode, so this example fails until the SDK is fixed. With `vendor: "openai"` added to the request, every example on this page worked. The TypeScript example uses managed OpenAI `tts-1` instead of MiniMax. The SDK's `MiniMaxTTS` has no option for `voice_setting.speed`, and pre-release testing (2026-10-27) rejected managed MiniMax without it. The SDK sends Deepgram `language` in `params`, not at the top level of the `asr` block. The SDK doesn't send `Idempotency-Key` when it creates an agent. */}
+{/* TODO(platform-confirm): SDK bug found in pre-release testing (2026-10-28) in all three SDKs (TypeScript 739feba, Python 8edae82, Go 72032cd): a managed `OpenAI` LLM is sent without `vendor`, and the API rejects it with `400 InvalidFieldValue "Provider vendor is not supported"`. The SDKs don't allow `vendor` in managed mode, so these examples fail until the SDKs are fixed. With `vendor: "openai"` added to the request, every SDK example on this page worked. The SDK examples use managed OpenAI `tts-1` instead of MiniMax: the SDKs' MiniMax TTS classes have no option for `voice_setting.speed`, and pre-release testing (2026-10-27) rejected managed MiniMax without it. TypeScript and Python send Deepgram `language` both at the top level of the `asr` block and in `params`; Go sends it only in `params`. The SDKs don't send `Idempotency-Key` when they create an agent. */}
 
 Store the agent ID. You use it to start every session that runs this agent.
 
@@ -223,7 +351,9 @@ To start a conversation, start a session with the agent ID and the following det
 <Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
 </TabsList>
 
 <TabsContent value="rest-api">
@@ -272,6 +402,28 @@ If the request is successful, the response contains the session ID and its [stat
 
 </TabsContent>
 
+<TabsContent value="python">
+
+Load the saved agent and call `create_session()`.
+
+```python
+from agora_agent import SavedAgent
+
+saved_agent = SavedAgent.get(client, "agent_k3n9x2")
+session = saved_agent.create_session(
+    channel="<your_channel_name>",
+    token="<your_rtc_token>",
+    agent_uid="1002",
+    remote_uids=["1001"],
+    values={"customer_name": "Ada"},
+)
+
+session_id = session.start()
+print(session_id)  # The agent_session_id
+```
+
+</TabsContent>
+
 <TabsContent value="typescript">
 
 Load the saved agent and call `createSession()`.
@@ -293,6 +445,32 @@ console.log(sessionId); // The agent_session_id
 ```
 
 </TabsContent>
+
+<TabsContent value="go">
+
+Load the saved agent and call `CreateSession()`.
+
+```go
+savedAgent, err := agentkit.GetSavedAgent(ctx, client, "agent_k3n9x2")
+if err != nil {
+	log.Fatal(err)
+}
+session := savedAgent.CreateSession(agentkit.CreateSessionOptions{
+	Channel:    "<your_channel_name>",
+	Token:      "<your_rtc_token>",
+	AgentUID:   "1002",
+	RemoteUIDs: []string{"1001"},
+	Values:     map[string]any{"customer_name": "Ada"},
+})
+
+sessionID, err := session.Start(ctx)
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(sessionID) // The agent_session_id
+```
+
+</TabsContent>
 </Tabs>
 
 Store the session ID. You use it to check and stop the session.
@@ -306,7 +484,9 @@ A session starts asynchronously. Starting a session successfully confirms that t
 <Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
 </TabsList>
 
 <TabsContent value="rest-api">
@@ -333,6 +513,17 @@ When the agent is in the channel, the response looks like this:
 
 </TabsContent>
 
+<TabsContent value="python">
+
+```python
+info = client.v3.sessions.get(agent_session_id="<agent_session_id>")
+print(info["status"])
+```
+
+If you still have the `session` object from Start a session, you can call `session.get_info()` instead.
+
+</TabsContent>
+
 <TabsContent value="typescript">
 
 ```ts
@@ -341,6 +532,20 @@ console.log(info.status);
 ```
 
 If you still have the `session` object from Start a session, you can call `await session.getInfo()` instead.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+info, err := client.V3.Sessions.Get(ctx, "<agent_session_id>")
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(info.Body.Status)
+```
+
+If you still have the `session` object from Start a session, you can call `session.GetInfo(ctx)` instead.
 
 </TabsContent>
 </Tabs>
@@ -365,7 +570,9 @@ When the conversation ends, stop the session with its session ID. The agent leav
 <Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
 </TabsList>
 
 <TabsContent value="rest-api">
@@ -387,6 +594,16 @@ If the request is successful, the response is an empty JSON object:
 
 </TabsContent>
 
+<TabsContent value="python">
+
+```python
+client.v3.sessions.stop(agent_session_id="<agent_session_id>")
+```
+
+If you still have the `session` object from Start a session, you can call `session.stop()` instead.
+
+</TabsContent>
+
 <TabsContent value="typescript">
 
 ```ts
@@ -394,6 +611,18 @@ await client.v3.sessions.stop({ agentSessionId: '<agent_session_id>' });
 ```
 
 If you still have the `session` object from Start a session, you can call `await session.stop()` instead.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+if _, err := client.V3.Sessions.Stop(ctx, "<agent_session_id>"); err != nil {
+	log.Fatal(err)
+}
+```
+
+If you still have the `session` object from Start a session, you can call `session.Stop(ctx)` instead.
 
 </TabsContent>
 </Tabs>
@@ -409,7 +638,9 @@ To try a configuration before you save it, start an ephemeral session. You pass 
 <Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
 <TabsList>
   <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
   <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
 </TabsList>
 
 <TabsContent value="rest-api">
@@ -455,6 +686,41 @@ The response has the same format as Start a session.
 
 </TabsContent>
 
+<TabsContent value="python">
+
+Call `create_session()` on an `Agent` instead of a saved agent. The SDK starts an ephemeral session when you set a Platform session option, such as `max_duration` in seconds.
+
+```python
+from agora_agent import Agent, DeepgramSTT, OpenAI, OpenAITTS
+
+test_agent = (
+    Agent(client=client)
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
+    .with_llm(
+        OpenAI(
+            model="gpt-4.1-mini",
+            system_messages=[
+                {"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."}
+            ],
+            greeting_message="Hi, how can I help you today?",
+            greeting_configs={"on": "each_join"},
+        )
+    )
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
+)
+
+session = test_agent.create_session(
+    channel="<your_channel_name>",
+    token="<your_rtc_token>",
+    agent_uid="1002",
+    remote_uids=["1001"],
+    max_duration=600,
+)
+session_id = session.start()
+```
+
+</TabsContent>
+
 <TabsContent value="typescript">
 
 Call `createSession()` on an `Agent` instead of a saved agent. The SDK starts an ephemeral session when you set a Platform session option, such as `maxDuration` in seconds.
@@ -487,9 +753,42 @@ const sessionId = await session.start();
 ```
 
 </TabsContent>
+
+<TabsContent value="go">
+
+Call `CreateSession()` on an `Agent` instead of a saved agent. The SDK starts an ephemeral session when you set a Platform session option, such as `MaxDuration` in seconds.
+
+```go
+testAgent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
+	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+		Model: "gpt-4.1-mini",
+		SystemMessages: []map[string]interface{}{
+			{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+		},
+		GreetingMessage: "Hi, how can I help you today?",
+		GreetingConfigs: map[string]interface{}{"on": "each_join"},
+	})).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"}))
+
+maxDuration := 600
+session := testAgent.CreateSession(agentkit.CreateSessionOptions{
+	Channel:     "<your_channel_name>",
+	Token:       "<your_rtc_token>",
+	AgentUID:    "1002",
+	RemoteUIDs:  []string{"1001"},
+	MaxDuration: &maxDuration,
+})
+sessionID, err := session.Start(ctx)
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+</TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): The TypeScript SDK has no explicit ephemeral option. Without a secret reference, a variable, or a Platform session option such as `maxDuration`, `values`, or `dataPolicy`, `Agent.createSession()` uses the Voice Agent API instead. `idleTimeout` alone doesn't select the Platform. */}
+{/* TODO(platform-confirm): None of the SDKs has an explicit ephemeral option. Without a secret reference, a variable, or a Platform session option such as max duration, values, or data policy, `Agent.createSession()` (and its Python and Go equivalents) uses the Voice Agent API instead. In TypeScript, `idleTimeout` alone doesn't select the Platform. All three SDKs ran this example in pre-release testing on 2026-10-28 with `lifecycle.max_duration_ms: 600000`. Retrieving a session right after stopping it intermittently returned `404 TaskNotFound` before `STOPPED` appeared (2 of 6 runs). */}
 
 Check and stop an ephemeral session the same way as any other session.
 

@@ -635,7 +635,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T07:22:46.000Z',
   'content/docs/en/ai/platform/index.mdx': '2026-10-27T09:58:06.000Z',
   'content/docs/en/ai/platform/meta.json': '2026-10-26T10:38:15.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
@@ -1005,7 +1005,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
     '2026-10-21T05:55:36.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/authentication.mdx':
-    '2026-10-23T10:07:24.000Z',
+    '2026-10-28T07:22:46.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/index.mdx':
     '2026-10-23T10:07:24.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/meta.json':
