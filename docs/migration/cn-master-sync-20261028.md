@@ -2,7 +2,7 @@
 
 ## 固定基线与范围
 
-- PR：[docs-portal #1338](https://github.com/AgoraIO/docs-portal/pull/1338)。
+- PR：[docs-portal #1338](https://github.com/AgoraIO/docs-portal/pull/1338)。整合实现提交：`2be79d0b69996d3d3f120afafa99c49c60854513`（后续仅补验证记录）。
 - 源仓库 `shengwang-doc-source/master`：`427a27358efd3f2eeb1b9dc6e841e828b9a53366 → 72dd878e3703f154f26d9fb1bf5274b465a6c2cb`。
 - 源提交：`2e3b8ab5e`（研发 Whiteboard/Fastboard 合并 #2121）、`ffdeb9142`（Release 0.0.536）、`5c828f8f0`（历史 API 入口 #2131）及 `72dd878e3`（Release 0.0.537）。四个提交逐文件对账，共 1270 个净变化文件；后两个提交只涉及前一阶段已纳入的两份平台元数据和发布计数。
 - 上一批 #1291 已实际合并为 `6b9a602e83a9a1bcd112c0856fe77e32aa7ff369`，本轮从其源终点继续，不重复采用更早的历史审计起点。
