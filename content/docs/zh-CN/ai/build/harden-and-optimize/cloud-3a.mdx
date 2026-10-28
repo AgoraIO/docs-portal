@@ -1,0 +1,302 @@
+---
+title: 配置云端 3A
+---
+
+本文面向使用 RTSA SDK 接入声网对话式 AI 引擎的设备开发者，介绍如何配置云端 3A（AEC、ANS 和 AGC），减少扬声器播放声音对麦克风采集造成的回声干扰。内容包括 RTSA 设备侧的音频参数配置，以及创建智能体请求中的服务端参数。
+
+云端 3A 的基本链路如下：设备同步采集 Mic 和 Ref，将两路信号交织为双声道 PCM 后通过 RTSA SDK 上行；ConvoAI 在云端完成 AEC、ANS 和 AGC，再将处理后的音频交给 Voice Engine。Voice Engine 生成的回复音频经 RTSA SDK 下发到设备播放，实际播放链路的参考信号继续作为后续音频帧的 Ref。
+
+本文中的服务端参数和 RTSA 参数需要结合实际的 ConvoAI 服务版本、RTSA SDK 版本及对应 API 参考确认。尤其是音频编解码参数，不要仅根据字段名称推断其收发方向或声道含义。
+
+## 1. 配置 RTSA 设备侧音频
+
+### 1.1 采集和交织 Mic/Ref
+
+设备需要同步采集麦克风信号（Mic）和扬声器参考回采信号（Ref），并按采样点交织为双声道 PCM：
+
+| 项目 | 要求 |
+| --- | --- |
+| 上行采样率 | 16000 Hz |
+| 上行采样位宽 | 16-bit signed PCM，小端字节序 |
+| 上行声道数 | 2 |
+| 左声道 | Mic |
+| 右声道 | Ref |
+| 单帧时长 | 20 ms |
+| 每声道采样点数 | 320 |
+| 单帧数据长度 | 1280 字节 |
+
+双声道数据需要按以下顺序交织：
+
+```text
+Mic[0], Ref[0], Mic[1], Ref[1], ... , Mic[319], Ref[319]
+```
+
+C 语言交织示例：
+
+```c
+#include <stddef.h>
+#include <stdint.h>
+
+#define SAMPLE_RATE_HZ       16000
+#define FRAME_DURATION_MS    20
+#define SAMPLES_PER_CHANNEL  (SAMPLE_RATE_HZ * FRAME_DURATION_MS / 1000)
+#define CHANNEL_COUNT        2
+
+static void interleave_mic_ref(const int16_t *mic,
+                               const int16_t *ref,
+                               int16_t *stereo,
+                               size_t samples_per_channel) {
+  for (size_t i = 0; i < samples_per_channel; ++i) {
+    stereo[2 * i] = mic[i];
+    stereo[2 * i + 1] = ref[i];
+  }
+}
+```
+
+Ref 应来自实际扬声器播放链路的参考信号或硬件回采，并与最终播放信号保持可对齐。请勿交换左右声道，也不要将两个声道混音后再发送。Mic 和 Ref 需要使用相同的采样率、位宽和帧长，并尽量保持在同一时钟域内。
+
+### 1.2 发送上行 PCM
+
+RTSA SDK 的音频发送接口如下：
+
+```c
+/**
+ * @brief Send an audio frame to all channels OR specific channel.
+ *        All remote users in this channel will receive the audio frame.
+ * @note All channels that you joined will receive the audio frame that you send
+ *       unless you stop sending the local audio to a specific channel.
+ * @param[in] conn_id   Connection identification
+ * @param[in] data_ptr  Audio frame buffer
+ * @param[in] data_len  Audio frame buffer length (bytes)
+ * @param[in] info_ptr  Audio frame info, see #audio_frame_info_t
+ * @return
+ * - = 0: Success
+ * - < 0: Failure
+ */
+extern agora_api int agora_rtc_send_audio_data(connection_id_t conn_id,
+                                               const void *data_ptr,
+                                               size_t data_len,
+                                               audio_frame_info_t *info_ptr);
+```
+
+音频帧信息定义如下：
+
+```c
+typedef struct {
+  /** Audio data type, reference #audio_data_type_e. */
+  audio_data_type_e data_type;
+} audio_frame_info_t;
+```
+
+发送 PCM 数据时，将 `data_type` 设置为 `AUDIO_DATA_TYPE_PCM`：
+
+```c
+int16_t stereo_frame[SAMPLES_PER_CHANNEL * CHANNEL_COUNT];
+audio_frame_info_t frame_info = {
+    .data_type = AUDIO_DATA_TYPE_PCM,
+};
+
+interleave_mic_ref(mic_frame, ref_frame, stereo_frame, SAMPLES_PER_CHANNEL);
+
+int ret = agora_rtc_send_audio_data(conn_id,
+                                    stereo_frame,
+                                    sizeof(stereo_frame),
+                                    &frame_info);
+if (ret < 0) {
+  /* 按业务需要记录日志或执行重试/恢复。 */
+}
+```
+
+设备应以稳定的 20 ms 周期发送，每次传入一帧完整数据。不要把多帧不规则地合并发送，也不要在输入不足时重复发送旧帧。
+
+### 1.3 加入 RTC 频道
+
+RTSA SDK 加入频道的接口如下：
+
+```c
+/**
+ * @brief Local user joins channel.
+ * @note Users in the same channel with the same App ID can send data to each other.
+ *   You can join more than one channel at the same time. All channels that
+ *   you join will receive the audio/video data stream that you send unless
+ *   you stop sending the audio/video data stream in a specific channel.
+ * @param[in] conn_id      Connection identification
+ * @param[in] channel_name Channel name, whose length must be less than 64 bytes
+ * @param[in] uid          User ID in [1, 2^32-1], or 0 for SDK assignment
+ * @param[in] token        Token in [32, 512] bytes, or NULL if authorization is disabled
+ * @param[in] options      Channel options; use NULL if no options are required
+ * @return
+ * - = 0: Success
+ * - < 0: Failure
+ */
+extern agora_api int agora_rtc_join_channel(connection_id_t conn_id,
+                                            const char *channel_name,
+                                            uint32_t uid,
+                                            const char *token,
+                                            rtc_channel_options_t *options);
+```
+
+`rtc_channel_options_t` 中与本接入流程相关的字段如下。结构体的完整定义和字段语义请以所用 RTSA SDK 版本的 API 参考为准：
+
+```c
+typedef struct {
+  bool auto_subscribe_audio;
+  bool auto_subscribe_video;
+  bool enable_audio_jitter_buffer;
+  bool enable_audio_mixer;
+  bool enable_audio_decode;
+  bool enable_audio_ai_qos;
+  bool enable_audio_downlink_aec;
+  bool enable_audio_downlink_aec_pcm_dump;
+  audio_codec_option_t audio_codec_opt;
+} rtc_channel_options_t;
+```
+
+音频编解码配置定义如下：
+
+```c
+typedef struct {
+  audio_codec_type_e audio_codec_type;
+  int pcm_sample_rate;
+  int pcm_channel_num;
+  int pcm_duration;
+} audio_codec_option_t;
+```
+
+云端 3A 场景的配置示例：
+
+```c
+rtc_channel_options_t options = {0};
+
+options.auto_subscribe_audio = true;
+options.enable_audio_downlink_aec = true;
+options.enable_audio_decode = true;
+options.enable_audio_jitter_buffer = true;
+
+options.audio_codec_opt.audio_codec_type = AUDIO_CODEC_TYPE_G722;
+options.audio_codec_opt.pcm_sample_rate = 16000;
+options.audio_codec_opt.pcm_channel_num = 1;
+options.audio_codec_opt.pcm_duration = 20;
+
+int ret = agora_rtc_join_channel(conn_id,
+                                 channel_name,
+                                 uid,
+                                 token,
+                                 &options);
+if (ret < 0) {
+  /* 加入频道失败，按错误码处理。 */
+}
+```
+
+如果 `uid` 传入 `0`，SDK 会在 `on_join_channel_success` 回调中返回分配的 UID。应用需要记录并维护该 UID。
+
+> 注意：设备发送给云端 3A 的业务输入仍是“左 Mic、右 Ref”的双声道交织数据。`audio_codec_opt` 中各 PCM 参数的收发方向和声道语义可能随 RTSA SDK 版本或接入方案变化，请以目标版本 API 参考和已验证示例为准，不要仅根据字段名称推断配置。
+
+### 1.4 解码并播放下行音频
+
+在接收下行音频前，先将 RTSA 侧配置为：
+
+| 配置 | 推荐值 |
+| --- | --- |
+| `enable_audio_downlink_aec` | `true` |
+| `enable_audio_decode` | `true` |
+| `enable_audio_jitter_buffer` | `true` |
+| 音频编解码类型 | `AUDIO_CODEC_TYPE_G722` |
+| PCM 采样率 | `16000` |
+| PCM 声道数 | `1` |
+| PCM 帧长 | `20` ms |
+
+云端 AEC 由服务端参数 `properties.parameters.audio3a_downstream.enable_aec` 开启。RTSA 的 `enable_audio_downlink_aec` 是设备侧 RTSA 配置项。两个参数位于不同的音频链路；是否需要同时开启以及各自的处理顺序，请以目标 SDK/服务版本的集成说明为准。
+
+设备收到服务端下发的 G.722 音频后，由 RTSA SDK 完成解码和抖动缓冲，再向播放器输出单声道 PCM：
+
+- `enable_audio_decode = true`：启用 SDK 内置解码器。
+- `enable_audio_jitter_buffer = true`：启用音频抖动缓冲，按稳定的帧间隔输出 PCM。
+- `audio_codec_opt` 的具体收发方向和 PCM 声道语义请以目标 RTSA SDK 版本的 API 参考为准；不要将其默认理解为下行解码配置。
+- 播放器的实际 PCM 格式、回调方式和播放线程处理应以 SDK 的音频接收接口为准。
+
+播放器播放的音频信号需要继续作为下一帧的 Ref 输入。`subscribe_audio_num_of_channels` 表示服务端订阅的设备上行音频声道数；`pcm_channel_num` 的具体收发方向和声道含义以目标 RTSA SDK 版本的 API 参考为准，两者不要仅根据字段名称联动修改。
+
+以上配置属于 RTSA/设备侧配置。`enable_audio_downlink_aec` 不应直接添加到创建智能体请求中。
+
+## 2. 配置服务端参数
+
+在创建智能体请求的 `properties.parameters` 中添加以下配置。以下参数是否对当前服务账号和版本开放，需要在联调前确认；如果服务端不接受这些字段，请联系声网技术支持确认开通条件。
+
+以下示例包含云端 3A 的推荐初始值。完成基础接入后，再根据设备的扬声器音量、Mic 灵敏度和实际回声情况调整 AEC、ANS 和 AGC 参数。
+
+```json
+{
+  "parameters": {
+    "output_audio_codec": "G722",
+    "audio3a_downstream": {
+      "interleaved_reverse_stream": true,
+      "sample_rate": 16000,
+      "passthrough": false,
+      "enable_aec": true,
+      "aec_filter_length": "normal",
+      "aec_model_type": "std_aiaec",
+      "enable_aec_auto_reset": false,
+      "aec_startup_max_suppress_time_in_ms": 1000,
+      "aiaec_suppression_mode": "chat",
+      "aec_suppression_mode": "aggressive",
+      "enable_ans": true,
+      "ans_mode_type": "std_aians",
+      "ans_suppression_mode": "moderate",
+      "enable_agc": true,
+      "agc_max_digital_gain_db": 12,
+      "agc_target_level_db": 6,
+      "agc_curve_slope": 17,
+      "enable_algorithm_log": false,
+      "algorithm_log_level": "error",
+      "algorithm_log_verbose": false
+    },
+    "rtc": {
+      "subscribe_audio_num_of_channels": 2
+    }
+  }
+}
+```
+
+### 服务端参数说明
+
+| 参数 | 说明 |
+| --- | --- |
+| `output_audio_codec` | 下行音频编码格式。云端 3A 场景使用 `G722`，需要与设备侧解码配置一致。 |
+| `audio3a_downstream.interleaved_reverse_stream` | 声明输入采用按采样点交织的 Mic/Ref 双声道布局。设为 `true`。 |
+| `audio3a_downstream.sample_rate` | 云端 3A 输入采样率，设为 `16000`。 |
+| `audio3a_downstream.passthrough` | 是否透传原始输入。设为 `false`，让后续链路使用 3A 处理后的音频。 |
+| `audio3a_downstream.enable_aec` | 是否开启服务端 AEC。设为 `true`。 |
+| `audio3a_downstream.enable_ans` | 是否开启服务端 ANS。设为 `true`。 |
+| `audio3a_downstream.enable_agc` | 是否开启服务端 AGC。设为 `true`。 |
+| `properties.parameters.rtc.subscribe_audio_num_of_channels` | 服务端订阅的设备上行声道数。设为 `2`，以获取 Mic 和 Ref 两路信号。 |
+
+`properties.parameters.rtc` 与 `properties.rtc` 是两个独立配置对象：
+
+- `properties.parameters.rtc.subscribe_audio_num_of_channels` 用于云端 3A 订阅设备上行音频。
+- `properties.rtc` 用于 RTC 媒体内容加密。
+
+除上述关键字段外，AEC、ANS 和 AGC 的其余参数是推荐初始值，不代表所有设备的最佳值。完成基础接入后，应根据设备的扬声器音量、Mic 灵敏度、声学结构和典型噪声环境进行回声、双讲、降噪和音量测试，再调整相关参数。
+
+## 3. 联调检查
+
+完成配置后，按以下顺序检查：
+
+1. 确认 Mic 和 Ref 都是 16 kHz、16-bit PCM，每路每帧包含 320 个采样点。
+2. 抓取发送前的音频数据，确认左声道为 Mic，右声道为 Ref，交织顺序正确，单帧长度为 1280 字节。
+3. 确认 Ref 来自实际的扬声器播放链路，不是麦克风信号或静音数据。
+4. 确认设备每 20 ms 发送一帧完整音频，并检查发送接口返回值。
+5. 确认 Start 请求中的采样率、输出编码和订阅声道数与设备配置一致。
+6. 在安静、持续噪声、近端讲话、远端播放和双方同时讲话等场景下测试回声抑制、降噪、音量稳定性和打断效果。
+
+## 4. 常见问题
+
+| 现象 | 检查项 |
+| --- | --- |
+| 仍能听到明显回声 | Ref 是否有效；左右声道是否交换；Mic 和 Ref 是否同步；`enable_aec` 是否为 `true` |
+| 对话侧收到静音或异常音频 | PCM 位宽、字节序、帧长度、采样率、`data_type` 和发送接口返回值 |
+| 回复音频无法播放 | `output_audio_codec` 是否为 `G722`；RTSA 是否开启 `enable_audio_decode`；播放器格式是否匹配 SDK 输出 |
+| 播放卡顿或帧间隔不均 | RTSA 是否开启 `enable_audio_jitter_buffer`；音频接收回调和播放线程是否被阻塞 |
+| AEC 效果随时间下降 | Mic 和 Ref 的时钟是否持续漂移；采集与播放链路是否发生动态延迟变化 |
+
+完整的创建智能体请求字段说明请参考[创建对话式智能体](/zh-CN/api-reference/api-ref/conversational-ai/join)。
