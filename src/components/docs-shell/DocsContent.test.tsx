@@ -16,6 +16,7 @@ import {
 import type { ReactNode } from 'react';
 import { renderToString } from 'react-dom/server';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { DocsHeading } from '@/components/mdx/DocsHeading';
 import { AppProviders } from '@/components/providers/AppProviders';
 import { DOCS_MAIN_SCROLL_RESTORATION_ID } from '@/lib/docs-scroll-restoration';
 import { DocsContent, DocsTableOfContents } from './DocsContent';
@@ -727,6 +728,53 @@ describe('DocsContent', () => {
       screen.queryByText('No headings on this page.'),
     ).not.toBeInTheDocument();
   });
+
+  it.each(['rail', 'mobile'] as const)(
+    'keeps copy-anchor announcements out of the derived %s TOC',
+    async (variant) => {
+      renderWithRouter(
+        <article>
+          <DocsHeading as="h2" id="rtc-sdk">
+            RTC <code>SDK</code>
+            <span className="sr-only"> (Android)</span>
+          </DocsHeading>
+          <h3 data-accordion-value="v470" id="v470">
+            <button type="button">v4.7.0</button>
+          </h3>
+          <DocsTableOfContents toc={[]} variant={variant} />
+        </article>,
+      );
+
+      if (variant === 'mobile') {
+        fireEvent.click(
+          await screen.findByRole('button', { name: 'On this page' }),
+        );
+      }
+
+      const toc = await screen.findByRole('navigation');
+      expect(
+        await within(toc).findByRole('link', { name: 'RTC SDK (Android)' }),
+      ).toHaveAttribute('href', '#rtc-sdk');
+      expect(within(toc).getByRole('link', { name: 'v4.7.0' })).toHaveAttribute(
+        'href',
+        '#v470',
+      );
+      expect(toc).not.toHaveTextContent('Copy Anchor Link');
+
+      fireEvent.click(screen.getByRole('button', { name: 'Copy Anchor Link' }));
+      await screen.findByRole('button', { name: 'Copied Anchor Link' });
+
+      await waitFor(() => {
+        expect(
+          within(toc).getByRole('link', { name: 'RTC SDK (Android)' }),
+        ).toHaveAttribute('href', '#rtc-sdk');
+        expect(toc).not.toHaveTextContent('Copied Anchor Link');
+      });
+      expect(clipboardWriteText).toHaveBeenLastCalledWith(
+        'http://localhost:3000/en/introduction/about-agora#rtc-sdk',
+      );
+    },
+  );
 
   it('uses rendered headings when the payload TOC is incomplete', async () => {
     renderWithRouter(

@@ -1121,12 +1121,15 @@ function getVisibleArticleHeadingItems(): TOCItemType[] {
     .filter((heading) => heading.id && !isHiddenFromToc(heading))
     .map((heading) => {
       const headingDepth = Number(heading.tagName.slice(1));
+      // Fumadocs renders the heading label and copy-button announcement as siblings.
+      const headingLabel =
+        heading.querySelector(':scope > a[data-card]') ?? heading;
 
       return {
         depth: heading.hasAttribute('data-accordion-value')
           ? Math.min(headingDepth + 1, 4)
           : headingDepth,
-        title: heading.textContent?.trim() ?? '',
+        title: headingLabel.textContent?.trim() ?? '',
         url: `#${heading.id}`,
       };
     })

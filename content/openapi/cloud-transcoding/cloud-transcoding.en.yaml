@@ -1617,8 +1617,8 @@ paths:
         - title: Response
           position: before-response-body
           markdown: >-
-            - If the returned status code is `2XX`, the request was successful. The response body is
-            empty.
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the updated task.
 
 
             - If the returned status code is not `200`, the request failed.
@@ -2023,8 +2023,11 @@ components:
             $ref: "#/components/schemas/watermark"
         outputs:
           type: array
+          minItems: 1
+          maxItems: 1
           description: |-
             Configure output settings to publish to a single RTC channel or to CDN addresses.
+            The array can contain only one output.
 
             RTC and CDN outputs are mutually exclusive. You must specify either `streamUrl` or `rtc`, but not both.
           items:
@@ -2258,12 +2261,12 @@ components:
             of the canvas.
         width:
           type: number
-          minimum: 0
+          minimum: 120
           maximum: 1920
           description: The width of the watermark (px).
         height:
           type: number
-          minimum: 0
+          minimum: 120
           maximum: 1920
           description: The height of the watermark (px).
         zOrder:
@@ -2335,14 +2338,14 @@ components:
       properties:
         width:
           type: number
-          minimum: 1
+          minimum: 120
           maximum: 1920
           description: >-
             The width of the transcoded output video (px). The output resolution can't exceed
             1920 × 1080.
         height:
           type: number
-          minimum: 1
+          minimum: 120
           maximum: 1920
           description: >-
             The height of the transcoded output video (px). The output resolution can't exceed

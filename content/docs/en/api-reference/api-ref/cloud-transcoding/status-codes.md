@@ -9,15 +9,30 @@ This page lists the response status codes for the Cloud Transcoding REST API, al
 
 When you call the Cloud Transcoding REST API, you receive an HTTP response status code:
 
-- If the HTTP status code is `2XX`, the request is successful.
-- If the HTTP status code is not `2XX`, the request failed.
+- If the HTTP status code is `200`, the request is successful.
+- If `Destroy` returns `206`, the server hasn't finished processing the request. Call `Query` to confirm the task status.
+- Any other status code means the request failed.
 
-The following example shows a failed request:
+The following examples show responses to failed requests:
 
 ```json
-// 400 Bad Request
+// 400 Bad Request: invalid parameter
 {
-  "message": "appid is invalid"
+  "message": "#/transcoder/outputs is invalid after minItems schema validate"
+}
+```
+
+```json
+// 401 Unauthorized: authentication failure
+{
+  "message": "Invalid authentication credentials"
+}
+```
+
+```json
+// 404 Not Found: task not found
+{
+  "message": "The task is not found"
 }
 ```
 
@@ -26,7 +41,6 @@ When using Cloud Transcoding, you may receive status codes that indicate the ser
 | Status code | Description | Suggested action |
 | --- | --- | --- |
 | `200 OK` | The request was successful. | No troubleshooting is required. |
-| `202 Accepted` | The server has received the task request, but the task execution may not be complete. | Query the execution status before proceeding to the next business operation. |
 | `206 Partial Content` | The server hasn't finished processing the request. `Destroy` can return this code. | Call `Query` with a backoff strategy to confirm the task status. |
 | `400 Bad Request` | The request syntax is incorrect, the parameter value does not meet the requirements, or your App ID does not have Cloud Transcoding enabled. | Investigate based on the `message` field in the response body. |
 | `401 Unauthorized` | The `Authorization` field for HTTP Basic authentication is invalid. | See [RESTful authentication](authentication) or check your `Authorization` credentials. |
