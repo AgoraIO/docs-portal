@@ -71,7 +71,7 @@ const findings = {
   missingHtml: [], unknownRoutes: [], invalidIndexedAnchors: [], brokenTocTargets: [],
   genuineMissingToc: [], otherPlatformToc: [], platformMetadataMismatch: [],
   wrongPanelAnchors: [], duplicateIdsAcrossPanels: [], routeVersionMismatch: [],
-  excludedProductRecords: [],
+  excludedProductRecords: [], nonSearchableRecords: [],
 };
 let fragments = 0;
 let tocAnchors = 0;
@@ -95,6 +95,11 @@ for (const [url, rows] of pages) {
   const scopesFor = id => [...new Set(ids.get(id).map(e => $(e).closest('[data-platform-panel]').attr('data-platform-panel') ?? 'outside-panel'))];
   const indexed = new Set();
   for (const record of rows) {
+    // Retained SDK history may have valid routes/HTML while the same build's
+    // publication policy deliberately omits it from the searchable snapshot.
+    if (!navigationUrls.has(route.canonicalPath)) {
+      findings.nonSearchableRecords.push(toCnPublicSearchUrl(record.url));
+    }
     const products = record.products ?? (record.product ? [record.product] : []);
     if (isExcludedCnProduct(getCnSearchPathProduct(record.url)) ||
       (products.length > 0 && products.every(isExcludedCnProduct))) {
@@ -170,5 +175,5 @@ console.log(`Coverage report: ${values.out}`);
 if (report.counts.uniqueIds !== records.length || [
   'missingHtml', 'unknownRoutes', 'invalidIndexedAnchors', 'genuineMissingToc',
   'platformMetadataMismatch', 'wrongPanelAnchors', 'routeVersionMismatch',
-  'excludedProductRecords',
+  'excludedProductRecords', 'nonSearchableRecords',
 ].some(key => findings[key].length) || navigationWithoutRoutes.length || report.coverageExceptions.unexpectedEligibleWithoutRecords.length) process.exitCode = 1;
