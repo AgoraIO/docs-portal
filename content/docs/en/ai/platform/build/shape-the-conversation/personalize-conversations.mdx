@@ -1,0 +1,203 @@
+---
+analyticsPageType: task-guide
+title: Personalize conversations and get structured results
+description: Use variables to personalize an agent for each session, and extract structured values from each conversation after it ends.
+---
+
+{/* PLATFORM-NEW: new page for the Platform, replaces the copied custom-information page. Status: drafted on 2026-10-23, pending review. Required variables and MissingRequiredField were verified on staging on 2026-10-20. Extraction results weren't verified. */}
+
+Variables let you customize an agent for each conversation and capture its key outcomes. You declare variables when you create an agent, pass their values when you start a session, and read the values the agent extracts after the session ends. You can also choose whether Agora retains each session's conversation data.
+
+## Understand the tech
+
+A variable is a named value that the agent declares in `variables`. Each variable has a type, and you use it in one or both of the following ways:
+
+- **Personalize the conversation**: Refer to the variable as `{{variable_name}}` in the agent's `instructions`, `messages`, or `greeting.text`. When you start a session, you pass its value in `values`, and the Platform replaces each placeholder with that value. The agent doesn't store values. You pass them for every session.
+- **Get structured results**: In the variable declaration, set `extract` to `true` and describe what the variable means. After the session ends, the Platform extracts the value from the conversation transcript and returns it in the session's `analysis.result`.
+
+You can also use variables in `pipeline.llm.failure_message`, `pipeline.silence_config.content`, and generated filler word instructions.
+
+## Prerequisites
+
+Before you begin, make sure that you have created an agent and started a session as described in [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
+
+## Declare variables
+
+When you send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent), list every variable the agent uses in `variables`, keyed by name. A variable name starts with a lowercase letter and contains up to 64 lowercase letters, digits, and underscores.
+
+In the following example, `customer_name` and `plan` personalize the conversation, and `appointment_confirmed` and `follow_up_date` are extracted after it ends:
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --header 'Idempotency-Key: <your_unique_key>' \
+  --data '
+{
+  "agent_name": "Appointment agent",
+  "instructions": "You confirm appointments for Acme customers. The customer is {{customer_name}}, on the {{plan}} plan. Ask whether they can attend their appointment, and if not, when they want to reschedule.",
+  "greeting": {
+    "mode": "text",
+    "on": "each_join",
+    "text": "Hi {{customer_name}}, I am calling about your upcoming appointment."
+  },
+  "variables": {
+    "customer_name": {
+      "type": "str",
+      "required": true
+    },
+    "plan": {
+      "type": "str",
+      "options": ["basic", "pro"]
+    },
+    "appointment_confirmed": {
+      "type": "bool",
+      "extract": true,
+      "description": "Whether the customer confirmed that they can attend the appointment."
+    },
+    "follow_up_date": {
+      "type": "date",
+      "extract": true,
+      "description": "The date the customer wants to reschedule to, if they can't attend."
+    }
+  },
+  "pipeline": {
+    "mode": "cascaded",
+    "asr": { "credential": { "mode": "managed" }, "vendor": "deepgram", "model": "nova-3", "language": "en-US" },
+    "llm": { "credential": { "mode": "managed" }, "vendor": "openai", "style": "openai", "model": "gpt-4.1-mini" },
+    "tts": {
+      "credential": { "mode": "managed" },
+      "vendor": "minimax",
+      "params": { "model": "speech-2.6-turbo", "voice_setting": { "voice_id": "English_captivating_female1", "speed": 1 } }
+    }
+  }
+}'
+```
+
+Each variable takes the following fields:
+
+| Field | Description |
+|---|---|
+| `type` | Required. The data type: `str`, `int`, `float`, `bool`, `date`, or `datetime`. Pass `date` and `datetime` values as ISO 8601 strings, for example `"2026-09-30"` and `"2026-09-30T14:00:00Z"`. |
+| `required` | Whether you must pass a value when you start a session. The default is `false`. |
+| `options` | The allowed values, 1 to 100 unique items of the declared type. Values you pass must be one of them, and extraction chooses one of them. |
+| `extract` | Whether to extract the variable from the conversation after the session ends. The default is `false`. An agent can have up to 50 extract variables. |
+| `description` | Required when `extract` is `true`. Up to 2,000 characters. Describe what the variable means as a clear extraction instruction, such as "Whether the customer confirmed that they can attend the appointment." |
+
+## Pass values when you start a session
+
+When you send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session), pass the values in `values`, keyed by variable name. The values apply to this session only.
+
+```bash
+curl --request POST \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --data '
+{
+  "agent_id": "agent_k3n9x2",
+  "values": {
+    "customer_name": "Ada",
+    "plan": "pro"
+  },
+  "transport": {
+    "type": "rtc",
+    "channel": "<your_channel_name>",
+    "token": "<your_rtc_token>",
+    "uid": "1002",
+    "subscribe_uids": ["1001"]
+  }
+}'
+```
+
+The Platform checks the values when the session starts:
+
+- Each key must be a variable that the agent declares.
+- Each value must match the variable's `type`, and one of its `options` if it has any.
+- You must pass a value for every variable with `required` set to `true`. If one is missing, the request fails with `400 MissingRequiredField`, and no session starts.
+- `null` values are rejected.
+
+Expansion runs once. A value that contains a placeholder isn't expanded again.
+
+{/* TODO(platform-confirm): Confirm what the agent says for a placeholder whose optional variable has no value (left as the literal `{{plan}}`, or removed). */}
+
+When you [create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign), you pass `values` for each contact instead. An [ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session) takes `values` in the same way, for the variables declared in its `agent`.
+
+## Get the extracted results
+
+Extraction runs after the session ends. To get the results, send a request to [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session):
+
+```bash
+curl --request GET \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions/<agent_session_id> \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>'
+```
+
+When extraction finishes, `analysis.status` is `completed`, and `analysis.result` contains a value for each extract variable:
+
+```json
+// 200 OK
+{
+  "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
+  "agent_name": "Appointment agent",
+  "status": "STOPPED",
+  "start_ts": 1735035893,
+  "stop_ts": 1735036193,
+  "message": null,
+  "analysis": {
+    "status": "completed",
+    "skip_reason": null,
+    "complete_ts": 1735036201,
+    "result": {
+      "appointment_confirmed": false,
+      "follow_up_date": "2026-11-04"
+    },
+    "error": null
+  }
+}
+```
+
+If the conversation doesn't establish a value, the variable's value in `result` is `null`.
+
+`analysis.status` is one of the following:
+
+| Status | Description |
+|---|---|
+| `pending` | The session hasn't ended, or extraction hasn't finished. `result` is `null`. Retrieve the session again later. |
+| `completed` | Extraction finished. The values are in `result`. |
+| `failed` | Extraction failed. The reason is in `error`. |
+| `skipped` | Extraction didn't run. The reason is in `skip_reason`: `no_user_turns` if the user didn't speak, or `retention_none` if Agora didn't retain the conversation data. |
+
+{/* TODO(platform-confirm): Confirm how long extraction usually takes after a session ends, and whether a notification event reports when results are ready, to replace polling. */}
+
+## Choose whether Agora retains conversation data
+
+When you start a session, set `data_policy.retention` to choose how Agora handles the session's conversation data:
+
+- `30_days`: Agora retains the data for 30 days. This is the default.
+- `none`: Agora doesn't retain the data. Extraction doesn't run, and `analysis.status` is `skipped` with `skip_reason` set to `retention_none`.
+
+For example, use `none` when a caller declines to have the conversation recorded:
+
+```json
+"data_policy": {
+  "retention": "none"
+}
+```
+
+You set the data policy when the session starts, and you can't change it afterward.
+
+## Reference
+
+For more information, see the following pages:
+
+- [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent)
+
+### API reference
+
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)
+- [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session)
+- [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session)
+- [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign)

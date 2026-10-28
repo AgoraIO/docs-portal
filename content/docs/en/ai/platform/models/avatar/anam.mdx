@@ -1,0 +1,76 @@
+---
+title: Anam
+description: >
+  Use an Anam avatar to represent your agent on video in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/anam.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. */}
+
+Anam provides AI-powered avatars with real-time video rendering, enabling natural video conversations with your AI agents.
+
+## Sample configuration
+
+Add an `avatar` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Anam supports BYOK only. It isn't available in managed mode.
+
+Store your Anam API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `anam` in the `support_prod` set:
+
+```json
+"avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.anam"
+  },
+  "vendor": "anam",
+  "params": {
+    "avatar_id": "960f614f-ea88-47c3-9883-f02094f70874",
+    "agora_uid": "<avatar_rtc_uid>",
+    "agora_token": "<avatar_rtc_token>",
+    "sample_rate": 24000,
+    "quality": "high",
+    "video_encoding": "H264"
+  }
+}
+```
+
+{/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
+
+## Key parameters
+
+<ParameterList title="avatar" required={true}>
+  <Parameter name="enabled" type="boolean" required={true}>
+  Set to `true` to show the avatar.
+  </Parameter>
+  <Parameter name="vendor" type="string" required={true}>
+  Set to `anam`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+  Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Anam API key. Get your API key from the Anam console.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="avatar_id" type="string" required={true}>
+    The unique identifier for the Anam avatar you want to use.
+    </Parameter>
+    <Parameter name="agora_uid" type="string" required={true}>
+    The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+    </Parameter>
+    <Parameter name="agora_token" type="string" required={true}>
+    The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+    </Parameter>
+    <Parameter name="sample_rate" type="number" defaultValue="24000" possibleValues="16000, 24000, 48000" required={false}>
+    The audio sample rate in Hz.
+    </Parameter>
+    <Parameter name="quality" type="string" defaultValue="high" possibleValues="high, medium, low" required={false}>
+    The video quality level.
+    </Parameter>
+    <Parameter name="video_encoding" type="string" defaultValue="H264" possibleValues="H264, AV1" required={false}>
+    The video encoding format.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

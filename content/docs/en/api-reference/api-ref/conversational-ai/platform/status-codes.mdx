@@ -1,0 +1,109 @@
+---
+title: Status codes and error reasons
+description: HTTP status codes, error reasons, and retry guidance for Conversational AI Platform REST API requests.
+---
+
+Use the HTTP status code together with the `reason` and `detail` fields in the response body to troubleshoot failed Conversational AI Platform REST API requests.
+
+## Error response format
+
+When a request fails, the response body contains a machine-readable `reason` and a human-readable `detail`:
+
+```json
+{
+  "detail": "Secret set support_prod is referenced by agent agent_k3n9x2. Remove the reference before deleting the set.",
+  "reason": "SecretSetInUse"
+}
+```
+
+- `reason` is stable. Branch your error handling on it, not on `detail`. New reasons may be added, so handle an unknown `reason` by its HTTP status.
+- `detail` names the field or resource involved, when there is one. Validation stops at the first problem, so fix it and retry to find any others.
+- Every response includes an `Agora-Request-Id` header. Include its value when you contact Agora support.
+
+A model provider that times out or rejects a key doesn't fail the request that starts a session. The session starts, and the failure surfaces at runtime.
+
+## HTTP status codes
+
+| Status code | Description | Suggested action |
+| --- | --- | --- |
+| `200` | OK | The request was successful. |
+| `201` | Created | The resource was created. The `Location` header contains its path. |
+| `400` | Invalid request | Fix the request based on `reason` and `detail`, then send it again. |
+| `401` | Authentication failed | Check your credentials. |
+| `403` | Access denied | Check that the service is enabled for the project and that your credentials can access it. |
+| `404` | Not found | Check the ID or name in the request. |
+| `409` | Conflict | Check the state of the resource. For example, cancel a campaign before you delete it. |
+| `412` | Precondition failed | Retrieve the resource, apply your change again, and retry with the new `ETag`. |
+| `422` | Quota exceeded | Delete resources you no longer need, or contact Agora support to raise your quota. |
+| `429` | Too many requests | Wait for the number of seconds in the `Retry-After` header, then retry. |
+| `500` | Internal error | Retry with exponential backoff. If the problem persists, contact Agora support. |
+| `502` | Upstream error | Retry with exponential backoff. |
+| `503` | Service unavailable | Wait for the number of seconds in the `Retry-After` header, then retry. |
+| `504` | Operation timeout | Retrieve or list sessions before you retry, because the operation may still complete. |
+
+## Error reasons
+
+### Request errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `InvalidRequestBody` | `400` | The body isn't valid JSON, doesn't match the request format, or contains an unknown field. |
+| `MissingRequiredField` | `400` | A required field, query parameter, or header, such as `If-Match`, is missing. Also returned when a session or campaign contact has no value for a required variable. |
+| `InvalidFieldValue` | `400` | A value has the wrong type, is out of range, has the wrong format, or isn't allowed. |
+| `InvalidModuleParameter` | `400` | A pipeline stage has an invalid or unsupported provider, model, credential mode, or parameter. |
+| `UnknownSecretReference` | `400` | A `$secrets.<set>.<key>` reference names a secret set or key that doesn't exist in the project. |
+| `NotImplemented` | `400` | The field, value, or operation isn't available yet, or the provider doesn't support the action. Don't retry. |
+
+### Access errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `InvalidPermission` | `401` | Authentication is missing or invalid. |
+| `InvalidPermission` | `403` | The credentials can't access this project or resource. |
+| `ServiceNotEnabled` | `403` | Conversational AI isn't enabled for the project. |
+| `AccountSuspended` | `403` | The account is suspended. |
+
+### Resource errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `ResourceNotFound` | `404` | The agent, secret set, secret key, phone number, or campaign in the path doesn't exist. |
+| `TaskNotFound` | `404` | The session in the path doesn't exist. |
+| `AgentNotFound` | `404` | An agent in the request body, in `agent_id` or `inbound.agent`, doesn't exist. |
+| `NumberNotFound` | `404` | A number in `transport.from` doesn't exist in the project. |
+| `ResourceQuotaLimitExceeded` | `422` | The project has reached a quota, such as its number of agents, phone numbers, sessions, or campaigns. |
+
+### Conflict and precondition errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `TaskConflict` | `409` | Another operation on the session is in progress. For example, an agent is already running with the same RTC channel and UID, or the session is already stopping. Retry after the other operation finishes. |
+| `TaskNotRunning` | `409` | The session has ended or isn't running yet, so you can't update it or send it actions. |
+| `IdempotencyKeyConflict` | `409` | The `Idempotency-Key` is bound to a request with a different body, or its original request is still in progress. Retry with the original body, or wait. |
+| `SecretSetAlreadyExists` | `409` | A secret set with this name already exists. To change its values, [update the set](update-secret-set). |
+| `SecretSetInUse` | `409` | An agent references the secret set, or a key you're removing from it. `detail` names the agent. Remove the reference first. |
+| `SecretSetEmpty` | `409` | The change would remove every key from the secret set. To remove every key, [delete the set](delete-secret-set). |
+| `NumberAlreadyExists` | `409` | The phone number is already registered in the project. |
+| `AgentInUse` | `409` | A phone number's inbound routing or an unfinished campaign references the agent. `detail` names the reference. Remove it first. |
+| `CampaignNotEditable` | `409` | The campaign has started dialing, so only `pacing` can change. |
+| `CampaignActive` | `409` | The campaign is `scheduled`, `running`, or `paused`. [Cancel it](cancel-campaign) before you delete it. |
+| `CampaignInvalidState` | `409` | The action isn't allowed in the campaign's current status. For example, you can only pause a `running` campaign. |
+| `PreconditionFailed` | `412` | The `If-Match` value doesn't match the current `ETag`, or you sent `If-None-Match: *` for a key that exists. |
+
+### Limit and server errors
+
+| Reason | Status | Description |
+| --- | --- | --- |
+| `RateLimitExceeded` | `429` | Too many requests. Retry after `Retry-After` seconds. |
+| `ConcurrencyLimitExceeded` | `429` | The project has reached its concurrent session limit. Retry after `Retry-After` seconds. |
+| `InternalError` | `500` | Something failed on Agora's side. Retry with exponential backoff, and report the `Agora-Request-Id` if it persists. |
+| `ServiceUnavailable` | `502` | An upstream Agora service returned an invalid response. Retry with exponential backoff. |
+| `ServiceUnavailable` | `503` | A required service is temporarily unavailable. Retry after `Retry-After` seconds. |
+| `ResourceAllocationFailed` | `503` | No capacity is available to start the session. Retry after `Retry-After` seconds. |
+| `TaskOperationTimeout` | `504` | Starting or stopping the session didn't finish in time, and it may still complete. Retrieve or list sessions before you retry. |
+
+## Retry safely
+
+- For `4xx` errors, don't retry the same request. Fix it, or change the state it conflicts with. The exceptions are `409 TaskConflict`, `409 IdempotencyKeyConflict` while the original request is in progress, and `429`.
+- For `500`, `502`, and `503` errors, retry with exponential backoff, and wait for `Retry-After` when the response includes it. On endpoints that accept an `Idempotency-Key`, keep the same key when you retry, so the operation can't run twice.
+- For `504 TaskOperationTimeout`, retrieve or list sessions before you retry, so that you don't start a duplicate session.

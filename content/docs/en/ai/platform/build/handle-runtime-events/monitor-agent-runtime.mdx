@@ -1,0 +1,159 @@
+---
+title: Monitor agent status, errors, and performance
+description: Choose the right runtime events to display agent status, handle errors, and monitor performance.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/handle-runtime-events/monitor-agent-runtime.mdx at e0d27b674 on 2026-10-21. Status: DEFERRED on 2026-10-26, hidden from the Platform sidebar for the Oct 29 Preview. Reason: built on webhooks, session history, and client-channel events, most of which the launch contract defers. Not updated for the Platform API. */}
+
+This page helps you choose the right path for common monitoring goals, then links you to the detailed setup guides.
+
+Runtime event handling on client apps usually serves one of the following goals:
+
+- Update the app UI according to the agent's current state
+- Capture errors and debug logs during a live session
+- Collect lifecycle and latency data on your server
+
+## Choose a path for each goal
+
+| Goal | Best path | Use these events |
+| --- | --- | --- |
+| Update the in-call UI with the agent's current state | Toolkit callbacks in the client | `onAgentStateChanged`, `onAgentListeningChanged`, `onAgentThinkingChanged`, `onAgentSpeakingChanged` |
+| Handle interruptions during a live session | Toolkit callbacks in the client | `onAgentInterrupted` |
+| Show immediate failures in the app | Toolkit callbacks in the client | `onAgentError`, `onDebugLog` (Android), `DEBUG_LOG` (Web) |
+| Alert on agent failures from your backend | Webhooks | [`110 agent error`](/en/ai/reference/event-types#110-agent-error), [`102 agent left`](/en/ai/reference/event-types#102-agent-left) |
+| Monitor latency and runtime health | Toolkit for live UX, webhooks for aggregation | `onAgentMetrics`, [`111 agent metrics`](/en/ai/reference/event-types#111-agent-metrics) |
+| Track when sessions start and stop | Webhooks | [`101 agent joined`](/en/ai/reference/event-types#101-agent-joined), [`102 agent left`](/en/ai/reference/event-types#102-agent-left) |
+| Retrieve conversation history and turn data after a session | Webhooks or REST API | [`103 agent history`](/en/ai/reference/event-types#103-agent-history), [`112 turns finished`](/en/ai/reference/event-types#112-turns-finished), `history`, `turns` |
+
+## Use client callbacks for live state and local debugging
+
+Use the toolkit when the event must arrive during the current session:
+
+- `onAgentStateChanged` is the main UI state callback for `silent`, `listening`, `thinking`, and `speaking`.
+- `onAgentListeningChanged`, `onAgentThinkingChanged`, and `onAgentSpeakingChanged` are better when you need separate loading, waveform, or avatar behaviors.
+- `onAgentInterrupted` is useful for turn-level UX, for example when you need to stop playback or show that a user barged in.
+- `onAgentError` is the primary callback for module failures such as LLM or TTS errors.
+- `onDebugLog` on Android and `DEBUG_LOG` on Web are useful when you want extra client-side diagnostics while reproducing issues.
+
+To receive these events, start the agent with RTM enabled and subscribe to channel messages before the session starts:
+
+```json
+{
+  "advanced_features": {
+    "enable_rtm": true
+  },
+  "properties": {
+    "channel": "voice-demo"
+  },
+  "parameters": {
+    "data_channel": "rtm",
+    "enable_metrics": true,
+    "enable_error_message": true
+  }
+}
+```
+
+For the first-step setup of both client and server paths, see [Get runtime events](get-runtime-events). For the full client integration flow, see [Client-side events](event-notifications).
+
+## Use webhooks for durable monitoring and alerting
+
+Use webhook events when the data must leave the device and be available for dashboards, alerts, and post-session analysis:
+
+- `101 agent joined` confirms that the agent started successfully.
+- `102 agent left` tells you how the session ended, including failed or idle-timeout exits.
+- `103 agent history` and `112 turns finished` deliver post-session records for history, archiving, and turn analytics.
+- `104 agent expire` warns your backend that the agent's RTC token is about to expire.
+- `110 agent error` captures structured module errors with vendor-specific codes and messages.
+- `111 agent metrics` reports latency and other runtime metrics that are better suited to backend aggregation.
+
+If you need to answer questions such as why a session failed, which customers are seeing LLM errors, or how long TTS takes in production, webhook events are the better primary source.
+
+For the first-step setup of both client and server paths, see [Get runtime events](get-runtime-events). For the full server integration flow, setup steps, request headers, request body, and signature verification, see [Webhooks](webhooks). For complete webhook payloads, see [Notification event types](/en/ai/reference/event-types).
+
+## Choose the right path for shared goals
+
+Some runtime goals are available through both client and server paths. Use the tabs below to choose the implementation that matches your use case.
+
+### Errors
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="client-errors">Client toolkit</TabsTrigger>
+  <TabsTrigger value="server-errors">Webhook</TabsTrigger>
+</TabsList>
+
+<TabsContent value="client-errors">
+
+Use client events when you need to react during the current session:
+
+- `onAgentError` for immediate module failures such as LLM or TTS errors
+- `onDebugLog` on Android and `DEBUG_LOG` on Web for local diagnostics during reproduction
+- UI updates, retries, graceful degradation, and session-local logging
+
+This path is best when the user is still in the call and the app needs to respond immediately.
+
+</TabsContent>
+
+<TabsContent value="server-errors">
+
+Use webhook events when you need durable backend observability:
+
+- [`110 agent error`](/en/ai/reference/event-types#110-agent-error) for structured module failures
+- [`102 agent left`](/en/ai/reference/event-types#102-agent-left) to understand whether the session terminated abnormally
+- Alerting, dashboards, incident review, and cross-session aggregation
+
+This path is best when the problem must be visible outside the current device or session.
+
+</TabsContent>
+</Tabs>
+
+### Performance
+
+<Tabs>
+<TabsList>
+  <TabsTrigger value="client-performance">Client toolkit</TabsTrigger>
+  <TabsTrigger value="server-performance">Webhook</TabsTrigger>
+</TabsList>
+
+<TabsContent value="client-performance">
+
+Use `onAgentMetrics` when performance must shape the live experience:
+
+- Show current latency or quality indicators in the UI
+- React to degraded experience during the session
+- Compare what the user feels with what the client observes
+
+</TabsContent>
+
+<TabsContent value="server-performance">
+
+Use [`111 agent metrics`](/en/ai/reference/event-types#111-agent-metrics) when performance must be monitored over time:
+
+- Store metrics for dashboards and alerts
+- Compare cohorts by `labels`
+- Analyze regression patterns across sessions and environments
+
+</TabsContent>
+</Tabs>
+
+## Recommended monitoring pattern
+
+For most production apps, use both channels together:
+
+1. Use toolkit callbacks to update the local UI and react during the live session.
+2. Use webhooks to store durable records for alerts, analytics, and debugging.
+3. Correlate both streams with shared fields such as `agent_id`, `name`, `channel`, `turn_id`, and `labels`.
+
+`labels` are especially useful when you want to group runtime data by customer segment, campaign, environment, or experiment.
+
+## Related resources
+
+- [Debug agent failures with runtime events](debug-agent-failures)
+- [Retrieve conversation history after a session ends](retrieve-session-history)
+- [Get runtime events](get-runtime-events)
+- [Client-side events](event-notifications)
+- [Webhooks](webhooks)
+- [Notification event types](/en/ai/reference/event-types)
+- [Android toolkit API](/en/api-reference/api-ref/conversational-ai/client-toolkit/android)
+- [iOS toolkit API](/en/api-reference/api-ref/conversational-ai/client-toolkit/ios)
+- [Web toolkit API](/en/api-reference/api-ref/conversational-ai/client-toolkit/web)

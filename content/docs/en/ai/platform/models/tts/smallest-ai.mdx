@@ -1,0 +1,94 @@
+---
+title: Smallest AI
+description: >
+ Use Smallest AI for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/smallest-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Smallest AI provides low-latency streaming text-to-speech (TTS) through its Lightning model family, with voices across a broad set of languages.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Smallest AI supports BYOK only. It isn't available in managed mode.
+
+Store your Smallest AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `smallestai` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.smallestai"
+  },
+  "vendor": "smallestai",
+  "url": "https://api.smallest.ai/waves/v1/tts/live",
+  "params": {
+    "model": "lightning_v3.1_pro",
+    "voice_id": "hazel",
+    "sample_rate": 16000,
+    "speed": 1.0,
+    "language": "zh",
+    "number_pronunciation_language": "zh",
+    "math_notation": true,
+    "pronunciation_dicts": [],
+    "session_id": "session_001",
+    "request_id": "request_001"
+  }
+}
+```
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `smallestai`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The Smallest AI streaming TTS endpoint, for example `https://api.smallest.ai/waves/v1/tts/live`.
+  </Parameter>
+  <Parameter name="params" type="object" required={false}>
+    <Parameter name="model" type="string" required={false}>
+      The Smallest AI TTS model to use, such as `lightning_v3.1_pro` or `lightning_v3.1`. Voice identifiers are model-specific. Make sure `voice_id` belongs to the model you select.
+    </Parameter>
+    <Parameter name="voice_id" type="string" required={false}>
+      The Smallest AI voice identifier to use, for example `hazel`.
+    </Parameter>
+    <Parameter name="sample_rate" type="integer" required={false}>
+      Output audio sample rate in Hz, for example `16000`.
+    </Parameter>
+    <Parameter name="speed" type="number" required={false}>
+      Speech rate multiplier, where `1.0` is the model's default pace.
+    </Parameter>
+    <Parameter name="language" type="string" required={false}>
+      Language code used for speech synthesis, for example `zh`.
+    </Parameter>
+    <Parameter name="number_pronunciation_language" type="string" required={false}>
+      Language code used when reading numbers aloud. Set this when numbers should be spoken in a different language from the surrounding text.
+    </Parameter>
+    <Parameter name="math_notation" type="boolean" required={false}>
+      Whether to read mathematical notation as spoken mathematics rather than as literal symbols.
+    </Parameter>
+    <Parameter name="pronunciation_dicts" type="array[string]" required={false}>
+      Identifiers of Smallest AI pronunciation dictionaries to apply, used to override how specific terms are spoken.
+    </Parameter>
+    <Parameter name="session_id" type="string" required={false}>
+      Caller-supplied session identifier, passed through to Smallest AI for tracing.
+    </Parameter>
+    <Parameter name="request_id" type="string" required={false}>
+      Caller-supplied request identifier, passed through to Smallest AI for tracing.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Smallest AI without validation. For a full list of supported options, refer to the [Smallest AI documentation](https://docs.smallest.ai/models/documentation/text-to-speech-lightning/overview).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

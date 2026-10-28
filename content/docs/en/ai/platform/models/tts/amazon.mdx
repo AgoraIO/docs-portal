@@ -1,0 +1,68 @@
+---
+title: Amazon Polly
+description: >
+ Use Amazon Polly for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/amazon.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Amazon provides natural-sounding text-to-speech with customizable voice instructions and multiple voice options.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Amazon Polly supports BYOK only. It isn't available in managed mode.
+
+Store your AWS secret access key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your AWS access key ID and region aren't stored as secrets. Pass them in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `amazon` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.amazon"
+  },
+  "vendor": "amazon",
+  "params": {
+    "aws_access_key_id": "<your_aws_access_key_id>",
+    "region_name": "<your_aws_region>",
+    "voice": "Joanna",
+    "engine": "neural"
+  }
+}
+```
+
+{/* TODO(platform-confirm): Amazon Polly uses two credentials (access key ID and secret access key). Confirm how the Platform expects them: secret access key in `credential.api_key` with the access key ID in `params` (as shown), both as `$secrets` references, or another format. */}
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `amazon`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your AWS secret access key. Get your secret key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="aws_access_key_id" type="string" required={true}>
+      The AWS access key ID used for authentication. Get your access key from the [AWS IAM Console](https://console.aws.amazon.com/iam/).
+    </Parameter>
+    <Parameter name="region_name" type="string" required={true}>
+      The AWS region where the Polly service is hosted, for example, `us-east-1`, `us-west-2`, or `eu-west-1`. See [AWS regions](https://docs.aws.amazon.com/general/latest/gr/pol.html) for available regions.
+    </Parameter>
+    <Parameter name="voice" type="string" required={true}>
+      The voice ID to use for speech synthesis, for example, `Joanna`, `Matthew`, or `Ivy`. See [available voices](https://docs.aws.amazon.com/polly/latest/dg/voicelist.html) for supported voice IDs.
+    </Parameter>
+    <Parameter name="engine" type="string" required={true}>
+      The engine type to use for speech synthesis. Supported values: `standard`, `neural`, `long-form`, `generative`. See [engine documentation](https://docs.aws.amazon.com/polly/latest/dg/voicelist.html) for details on each engine type.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Amazon Polly without validation. For a full list of supported options, refer to the [Amazon Polly documentation](https://docs.aws.amazon.com/polly/latest/dg/what-is.html).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

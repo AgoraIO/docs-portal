@@ -1,0 +1,75 @@
+---
+title: OpenAI
+description: >
+  Use OpenAI as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/openai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+OpenAI provides frontier models ranging from lightweight to high-capability.
+
+## Sample configuration
+
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). OpenAI supports managed mode and BYOK.
+
+### Managed mode
+
+Set `credential.mode` to `managed`. Agora provides access to OpenAI, and you don't need an OpenAI account. For details, see [Use managed mode](/en/ai/platform/build/managed-mode).
+
+```json
+"llm": {
+  "credential": { "mode": "managed" },
+  "vendor": "openai",
+  "style": "openai",
+  "model": "gpt-4.1-mini",
+  "max_history": 32,
+  "failure_message": "Please hold on a second."
+}
+```
+
+### BYOK
+
+Store your OpenAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `openai` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.openai"
+  },
+  "vendor": "openai",
+  "style": "openai",
+  "model": "gpt-4o-mini",
+  "url": "https://api.openai.com/v1/chat/completions",
+  "max_history": 32,
+  "failure_message": "Please hold on a second."
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+{/* TODO(platform-confirm): Confirm whether a BYOK OpenAI block needs `url`, or whether Agora uses OpenAI's endpoint by default. */}
+
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `openai`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    How the agent authenticates with OpenAI. Set `mode` to `managed`, or to `byok` with `api_key` set to a `$secrets.<set>.<key>` reference to your OpenAI API key. Create or manage your API key from [OpenAI organization settings](https://platform.openai.com/settings/organization/api-keys).
+  </Parameter>
+  <Parameter name="style" type="string" required={false}>
+    Set to `openai`.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Refer to [OpenAI models](https://platform.openai.com/docs/models) for available models. For managed mode, use `gpt-4o-mini`, `gpt-4.1-mini`, `gpt-5-nano`, `gpt-5-mini`, or `gpt-5.6-luna`.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The chat completions endpoint. Not needed in managed mode.
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For OpenAI-specific options and model capabilities, see the [OpenAI API documentation](https://platform.openai.com/docs/api-reference/chat).

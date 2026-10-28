@@ -1,0 +1,97 @@
+---
+title: Memory for multi-turn conversations
+description: Control how much conversation history the agent's LLM receives, seed conversations, and carry context from one session into the next.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/short-term-memory.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. */}
+
+Short-term memory lets your agent respond coherently across a conversation. During a session, the agent keeps the history of what the user and the agent said, and passes recent messages to the LLM with each request. This page shows how to control that history, seed a conversation with messages, and carry context from one session into the next.
+
+## Understand the tech
+
+With each LLM request, the agent sends the following, in order:
+
+1. The agent's `instructions`.
+2. The agent's `messages`, if any. They seed the conversation history.
+3. The most recent messages of the conversation, up to `pipeline.llm.max_history`.
+
+Short-term memory lasts for one session. When the session ends, the agent doesn't keep the conversation. To use it later, save it and pass it to a new session, as described in [Carry context into later sessions](#carry-context-into-later-sessions).
+
+## Prerequisites
+
+Before you begin, make sure that you have created an agent and started a session as described in [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
+
+## Control how much history the LLM receives
+
+In the agent's `llm` block, set `max_history` to the number of recent messages the LLM receives with each request. It counts messages, not pairs of user and agent messages, and the agent's `instructions` don't count toward it. It accepts `1` to `1024`, and the default is `32`.
+
+```json
+"pipeline": {
+  "llm": {
+    "max_history": 12
+  }
+}
+```
+
+A lower value keeps each request smaller and faster, but the agent may forget earlier parts of a long conversation. A higher value preserves more context.
+
+## Seed the conversation with messages
+
+To start each conversation with context, such as an earlier exchange or a worked example, add `messages` to the agent configuration, at the same level as `instructions`. Each message has a `role` (`system`, `user`, or `assistant`) and `content`. The messages follow the agent's `instructions`.
+
+```json
+"instructions": "You are a friendly support agent for Acme. Keep your answers short.",
+"messages": [
+  { "role": "user", "content": "What are your opening hours?" },
+  { "role": "assistant", "content": "We're open from 9 AM to 6 PM, Monday to Friday." }
+]
+```
+
+You can use the agent's variables in `messages`. For details, see [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
+
+## Get the conversation after a session
+
+After a session ends, Agora can send its transcript to your server in the [`1002` Session transcripts](/en/ai/platform/reference/event-types#1002-session-transcripts) notification event. Each transcript item contains the speaker's role, what was said, the turn ID, and the source of the message, such as `asr` or `llm`. If the agent was interrupted, the item contains only the part that was played.
+
+{/* TODO(platform-confirm): The Voice Agent API also lets you read short-term memory during a session (Retrieve agent history). The Platform's transcripts and turns APIs are deferred in the launch contract. Confirm whether 1002 is delivered in the Preview, and add an in-session method when one is available. */}
+
+## Carry context into later sessions
+
+The agent doesn't keep memory between sessions. To give a returning user continuity, save what matters from each conversation, and pass it to the next session as a variable:
+
+1. When a session ends, save its transcript, or a summary of it, from the [`1002` Session transcripts](/en/ai/platform/reference/event-types#1002-session-transcripts) event.
+2. In the agent's `instructions`, refer to a variable for the earlier context, and declare it in `variables`:
+
+    ```json
+    "instructions": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
+    "variables": {
+      "previous_context": {
+        "type": "str"
+      }
+    }
+    ```
+
+3. When you start the user's next session, pass the saved summary in `values`:
+
+    ```json
+    "values": {
+      "previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing."
+    }
+    ```
+
+Pass a summary rather than the full transcript when you can. It keeps the instructions short and leaves more room for the current conversation. For details about variables, see [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
+
+{/* TODO(platform-confirm): The Voice Agent page also covers updating memory while the agent is running. In pre-release testing (2026-10-27), Update a session accepted `agent.overrides.messages` (200), while Inject context returned 404. Add a section on updating memory with Update a session once its behavior is confirmed. The Voice Agent page also explains which memory fields a custom LLM receives; add that when the custom LLM page is rewritten. */}
+
+## Reference
+
+For more information, see the following pages:
+
+- [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations)
+- [Notification event types](/en/ai/platform/reference/event-types)
+
+### API reference
+
+- [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent)
+- [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent)
+- [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session)

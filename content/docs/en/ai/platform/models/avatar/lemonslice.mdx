@@ -1,0 +1,84 @@
+---
+title: LemonSlice
+description: >
+ Use a LemonSlice avatar to represent your agent on video in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/lemonslice.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. */}
+
+LemonSlice provides AI-powered avatar agents that generate synchronized video and audio responses in real time, enabling natural video conversations with your AI agents.
+
+## Sample configuration
+
+Add an `avatar` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). LemonSlice supports BYOK only. It isn't available in managed mode.
+
+LemonSlice uses the `generic` avatar vendor. Store your LemonSlice API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `lemonslice` in the `support_prod` set:
+
+```json
+"avatar": {
+  "enabled": true,
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.lemonslice"
+  },
+  "vendor": "generic",
+  "params": {
+    "api_base_url": "https://lemonslice.com/api/liveai/agora",
+    "avatar_id": "lemonslice",
+    "agent_image_url": "<image_url>",
+    "agora_token": "<avatar_rtc_token>",
+    "agora_uid": "<avatar_rtc_uid>",
+    "aspect_ratio": "2x3"
+  }
+}
+```
+
+{/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
+
+## Key parameters
+
+<ParameterList title="avatar" required={true}>
+  <Parameter name="enabled" type="boolean" required={true}>
+  Set to `true` to show the avatar.
+  </Parameter>
+  <Parameter name="vendor" type="string" required={true}>
+  Set to `generic`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+  Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your LemonSlice API key. Get your API key from your LemonSlice account.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="api_base_url" type="string" required={true}>
+    The base URL of the LemonSlice API endpoint. Set to `https://lemonslice.com/api/liveai/agora`.
+    </Parameter>
+    <Parameter name="avatar_id" type="string" required={true}>
+    Fixed value that identifies the vendor integration. Always set to `lemonslice`.
+    </Parameter>
+    <Parameter name="agent_image_url" type="string" required={false}>
+    A publicly accessible URL to the avatar image. Provide exactly one of `agent_id`, `agent_image_url`, or `agent_image_base64`.
+    </Parameter>
+    <Parameter name="agent_id" type="string" required={false}>
+    The ID of a LemonSlice agent to use as the avatar. Provide exactly one of `agent_id`, `agent_image_url`, or `agent_image_base64`. If you provide `agent_id`, LemonSlice also uses that agent's configured settings as defaults for `agent_prompt` and `agent_idle_prompt`.
+    </Parameter>
+    <Parameter name="agent_image_base64" type="string" required={false}>
+    A base64-encoded avatar image. Provide exactly one of `agent_id`, `agent_image_url`, or `agent_image_base64`.
+    </Parameter>
+    <Parameter name="aspect_ratio" type="string" required={false}>
+    The output aspect ratio for the avatar video. One of `2x3`, `9x16`, or `1x1`. Defaults to `2x3`.
+    </Parameter>
+    <Parameter name="agora_token" type="string" required={false}>
+    The RTC token that authorizes the avatar to join the video channel. Generate this token using your Agora project credentials.
+    </Parameter>
+    <Parameter name="agora_uid" type="string" required={true}>
+    The unique identifier for the avatar's RTC connection. This must be different from other participants in the channel.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For advanced configuration options, refer to the [LemonSlice Agora integration](https://lemonslice.com/docs/agora) page or the [LemonSlice API documentation](https://lemonslice.com/docs/api-reference/create-self-managed-session).
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

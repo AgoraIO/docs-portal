@@ -1,0 +1,64 @@
+---
+title: xAI
+description: >
+  Use xAI for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/xai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+xAI provides real-time automatic speech recognition (ASR) over WebSocket for conversational AI applications.
+
+## Sample configuration
+
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). xAI supports BYOK only. It isn't available in managed mode.
+
+Store your xAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `xai` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.xai"
+  },
+  "vendor": "xai",
+  "language": "en",
+  "url": "wss://api.x.ai/v1/stt",
+  "params": {
+    "sample_rate": 16000
+  }
+}
+```
+
+## Key parameters
+
+<ParameterList title="asr" required={true}>
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `xai`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    How the agent authenticates with xAI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your xAI API key.
+  </Parameter>
+  <Parameter name="language" type="string" required={false}>
+    The language code to use for transcription. For example, use `en` for English. Setting this enables text formatting of numbers, currencies, and units. For supported language codes, refer to the [xAI documentation](https://docs.x.ai/developers/model-capabilities/audio/speech-to-text#supported-languages).
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket endpoint URL for the xAI streaming STT API. Defaults to `wss://api.x.ai/v1/stt`.
+  </Parameter>
+  <Parameter name="params" type="object" required={false}>
+    <Parameter name="sample_rate" type="integer" required={false}>
+      The audio sample rate in Hz. Supported values: `8000`, `16000`, `22050`, `24000`, `44100`, `48000`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+{/* TODO(platform-confirm): The Voice Agent API took this endpoint as `params.base_url`. Confirm that the block-level `url` replaces it for xAI. */}
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to xAI without validation. For a full list of supported options, refer to the [xAI Speech to Text documentation](https://docs.x.ai/developers/model-capabilities/audio/speech-to-text#streaming-speech-to-text-websocket).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

@@ -1,0 +1,64 @@
+---
+title: Rime
+description: >
+ Use Rime for text-to-speech (TTS) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/rime.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Rime provides high-quality text-to-speech (TTS) with low latency, supporting multiple speakers and models.
+
+## Sample configuration
+
+Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Rime supports BYOK only. It isn't available in managed mode.
+
+Store your Rime API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `rime` in the `support_prod` set:
+
+```json
+"tts": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.rime"
+  },
+  "vendor": "rime",
+  "url": "wss://users.rime.ai/ws2",
+  "params": {
+    "speaker": "cove",
+    "modelId": "mistv2"
+  }
+}
+```
+
+{/* TODO(platform-confirm): The Voice Agent API takes Rime's endpoint in `params.base_url`. This page moves it to the block `url`, following the contract's mapping table. Confirm that the Platform accepts it there. */}
+
+## Key parameters
+
+<ParameterList title="tts">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `rime`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Rime API key.
+  </Parameter>
+  <Parameter name="url" type="string" required={false}>
+    The WebSocket URL for the Rime streaming API, for example `wss://users.rime.ai/ws2`.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="speaker" type="string" required={true}>
+      The speaker voice to use for TTS output, for example `cove`.
+    </Parameter>
+    <Parameter name="modelId" type="string" required={true}>
+      The Rime TTS model to use, for example `mistv2`. Different models provide different voice qualities and capabilities.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Rime without validation. For a full list of supported options, refer to the Rime documentation for [Arcana](https://docs.rime.ai/api-reference/arcana/streaming-pcm) and [Mist v2](https://docs.rime.ai/api-reference/endpoint/streaming-pcm).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

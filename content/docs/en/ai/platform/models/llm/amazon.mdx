@@ -1,0 +1,64 @@
+---
+title: Amazon Bedrock
+description: >
+  Use Amazon Bedrock as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/amazon.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Amazon Bedrock provides access to a variety of foundation models (FMs) from leading AI providers through a fully managed AWS service.
+
+## Sample configuration
+
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Amazon Bedrock supports BYOK only. It isn't available in managed mode.
+
+Store your Bedrock API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Your AWS region isn't secret. Pass it in `params`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `bedrock` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.bedrock"
+  },
+  "vendor": "bedrock",
+  "style": "bedrock",
+  "model": "us.anthropic.claude-sonnet-4-20250514-v1:0",
+  "url": "https://bedrock-runtime.us-east-1.amazonaws.com/model/us.anthropic.claude-sonnet-4-20250514-v1:0/converse-stream",
+  "params": {
+    "region": "us-east-1"
+  }
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+{/* TODO(platform-confirm): Confirm the `vendor` value for Amazon Bedrock (`bedrock` is assumed), and whether `url` is required. The Voice Agent API also accepts an AWS access key ID and secret access key pair (`access_key` and `secret_key`) instead of a Bedrock API key. Confirm how the Platform accepts that pair (for example, two `$secrets` references) before documenting it. Also confirm that `region` belongs in `params`. */}
+
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `bedrock`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Bedrock API key.
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>
+    The API style to use. Set to `bedrock` for Amazon Bedrock models.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    The Bedrock model ID, for example `us.anthropic.claude-sonnet-4-20250514-v1:0`.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    The Amazon Bedrock runtime endpoint for the target region and model. See [Amazon Bedrock endpoints and quotas](https://docs.aws.amazon.com/general/latest/gr/bedrock.html#bedrock_region) for the correct endpoint format.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="region" type="string" required={true}>
+      The AWS region hosting the Bedrock model, for example, `us-east-1` or `us-west-2`. See [Supported Regions and models](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html) for available regions.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Amazon Bedrock documentation](https://docs.aws.amazon.com/bedrock/latest/userguide/what-is-bedrock.html).

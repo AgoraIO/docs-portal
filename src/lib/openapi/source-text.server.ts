@@ -4,6 +4,7 @@ import channelManagementQueryChannelInformationEnYaml from '../../../content/ope
 import cloudRecordingRestEnYaml from '../../../content/openapi/cloud-recording/cloud-recording.en.yaml?raw';
 import cloudTranscodingRestEnYaml from '../../../content/openapi/cloud-transcoding/cloud-transcoding.en.yaml?raw';
 import convoAiRestEnYaml from '../../../content/openapi/conversational-ai/rest-api.en.yaml?raw';
+import convoAiRestPlatformEnYaml from '../../../content/openapi/conversational-ai/rest-api-platform.en.yaml?raw';
 import mediaGatewayRestEnYaml from '../../../content/openapi/media-gateway/media-gateway.en.yaml?raw';
 import rtcRestEnYaml from '../../../content/openapi/rtc/channel-management.en.yaml?raw';
 import signalingRestEnYaml from '../../../content/openapi/rtm/signaling-rest.en.yaml?raw';
@@ -25,6 +26,8 @@ const OPENAPI_SOURCE_TEXT: Record<string, string> = {
   'content/openapi/channel-management/query-channel-information.en.yaml':
     channelManagementQueryChannelInformationEnYaml,
   'content/openapi/conversational-ai/rest-api.en.yaml': convoAiRestEnYaml,
+  'content/openapi/conversational-ai/rest-api-platform.en.yaml':
+    convoAiRestPlatformEnYaml,
   'content/openapi/cloud-recording/cloud-recording.en.yaml':
     cloudRecordingRestEnYaml,
   'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml':

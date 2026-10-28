@@ -1,0 +1,58 @@
+---
+title: Groq
+description: >
+  Use Groq as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/groq.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Groq provides state-of-the-art language models optimized for different use cases.
+
+## Sample configuration
+
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Groq supports BYOK only. It isn't available in managed mode.
+
+Store your Groq API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `groq` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.groq"
+  },
+  "vendor": "groq",
+  "style": "openai",
+  "model": "llama-3.3-70b-versatile",
+  "url": "https://api.groq.com/openai/v1/chat/completions",
+  "max_history": 32,
+  "failure_message": "Please hold on a second."
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+{/* TODO(platform-confirm): Confirm the `vendor` value for Groq (`groq` is assumed; the Voice Agent API sets no vendor and uses the default `openai` style), and whether `url` is required. */}
+
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `groq`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Groq API key. Create and manage your API key from [Groq console](https://console.groq.com/keys).
+  </Parameter>
+  <Parameter name="style" type="string" required={false}>
+    Set to `openai`. Groq uses an OpenAI-compatible API.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Refer to [Groq models](https://console.groq.com/docs/models) for available models.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    Use the completions endpoint.
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For advanced configuration options, model capabilities, and detailed parameter descriptions, see the [Groq API Documentation](https://console.groq.com/docs/api-reference).

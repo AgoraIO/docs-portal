@@ -1,0 +1,72 @@
+---
+title: Claude Anthropic
+description: >
+  Use Anthropic Claude as the LLM in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/claude.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Pattern page for the LLM vendor conversion. */}
+
+Claude from Anthropic provides helpful, harmless, and honest AI assistance with strong reasoning capabilities and natural conversational abilities.
+
+## Sample configuration
+
+Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Claude supports BYOK only. It isn't available in managed mode.
+
+Store your Anthropic API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the key is stored as `anthropic` in the `support_prod` set:
+
+```json
+"llm": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.anthropic"
+  },
+  "vendor": "anthropic",
+  "style": "anthropic",
+  "model": "claude-opus-4-8",
+  "url": "https://api.anthropic.com/v1/messages",
+  "headers": {
+    "anthropic-version": "2023-06-01"
+  },
+  "max_history": 32,
+  "failure_message": "Please hold on a second.",
+  "params": {
+    "max_tokens": 1024
+  }
+}
+```
+
+Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
+
+{/* TODO(platform-confirm): Confirm the `vendor` value for Claude (`anthropic` is assumed), and whether `url` is required or Agora uses Anthropic's endpoint by default. */}
+
+## Key parameters
+
+<ParameterList title="llm">
+  <Parameter name="vendor" type="string" required={true}>
+    Set to `anthropic`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Anthropic API key. Get your API key from the [Anthropic Console](https://console.anthropic.com/).
+  </Parameter>
+  <Parameter name="style" type="string" required={true}>
+    Set to `anthropic` to use Claude's message format.
+  </Parameter>
+  <Parameter name="model" type="string" required={true}>
+    Refer to [Claude models](https://docs.anthropic.com/en/docs/about-claude/models) for available models.
+  </Parameter>
+  <Parameter name="url" type="string" required={true}>
+    Use Anthropic's messages endpoint.
+  </Parameter>
+  <Parameter name="headers" type="object" required={true}>
+    Must include the `anthropic-version` header for API compatibility.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="max_tokens" type="integer" required={true}>
+      The maximum number of tokens to generate in the response.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+For complete `llm` block options, see [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). For Claude-specific options and model capabilities, see the [Claude API documentation](https://docs.anthropic.com/en/api/messages).

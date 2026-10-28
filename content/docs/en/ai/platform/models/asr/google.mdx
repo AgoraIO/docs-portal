@@ -1,0 +1,68 @@
+---
+title: Google
+description: >
+ Use Google for speech recognition (ASR) in a Conversational AI Platform agent.
+---
+
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/google.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+
+Google provides advanced automatic speech recognition with high accuracy and support for multiple languages, designed for real-time conversational AI applications.
+
+## Sample configuration
+
+Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google supports BYOK only. It isn't available in managed mode.
+
+Store your Google Cloud service account credentials in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+In the following example, the credentials are stored as `google` in the `support_prod` set:
+
+```json
+"asr": {
+  "credential": {
+    "mode": "byok",
+    "api_key": "$secrets.support_prod.google"
+  },
+  "vendor": "google",
+  "model": "long",
+  "language": "en-US",
+  "params": {
+    "project_id": "<GOOGLE_ASR_PROJECT_ID>",
+    "location": "global"
+  }
+}
+```
+
+{/* TODO(platform-confirm): Google authenticates with a service account credentials JSON string (Voice Agent `params.adc_credentials_string`), not an API key. Confirm that the Platform takes it in `credential.api_key` as a secret reference, or give the correct format. */}
+
+## Key parameters
+
+<ParameterList title="asr" required={true}>
+  <Parameter name="vendor" type="string" required={true}>
+  Set to `google`.
+  </Parameter>
+  <Parameter name="credential" type="object" required={true}>
+  How the agent authenticates with Google. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud service account credentials JSON string. Get your credentials from the [Google Cloud Console](https://console.cloud.google.com/).
+  </Parameter>
+  <Parameter name="model" type="string" required={false}>
+  The recognition model to use.
+  </Parameter>
+  <Parameter name="language" type="string" required={true}>
+  The language code for speech recognition, for example, `en-US`, `es-ES`, or `fr-FR`. See [supported languages](https://cloud.google.com/speech-to-text/docs/speech-to-text-supported-languages) for available language codes.
+  </Parameter>
+  <Parameter name="params" type="object" required={true}>
+    <Parameter name="project_id" type="string" required={true}>
+    The Google Cloud project ID where the Speech-to-Text API is enabled. Get your project ID from the [Google Cloud Console](https://console.cloud.google.com/).
+    </Parameter>
+    <Parameter name="location" type="string" required={true}>
+    The Google Cloud region where the speech service is hosted, for example, `global`, `us-central1`, or `europe-west1`.
+    </Parameter>
+  </Parameter>
+</ParameterList>
+
+:::caution[Caution]
+The parameters listed on this page are validated for use with the Conversational AI Platform. Required parameters must be provided as documented. Any additional parameters in `params` are passed through directly to Google without validation. For a full list of supported options, refer to the [Google official documentation](https://docs.cloud.google.com/speech-to-text/v2/docs).
+:::
+
+This integration is fully supported for use with the Conversational AI Platform. While it has completed functional validation, it is newer to the platform, and additional provider-specific edge cases may be identified as usage scales across a broader range of applications and workloads.
+
+{/* TODO(platform-confirm): The support note is carried over from the Voice Agent page. Confirm that it applies to the Platform. */}

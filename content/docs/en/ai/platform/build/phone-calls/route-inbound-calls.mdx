@@ -1,0 +1,85 @@
+---
+analyticsPageType: task-guide
+title: Route inbound calls to an agent
+description: Assign an agent to answer calls to a phone number, and set limits and behavior for those calls.
+---
+
+{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-24, pending review. Written from the launch contract. Not verified on staging: Create Number returned 503 on 2026-10-20 and wasn't retried. */}
+
+When someone calls one of your phone numbers, the Platform starts a session with the agent you route the number to, and the agent answers the call. You assign an agent to each number, and set limits and behavior for its calls.
+
+## Prerequisites
+
+Before you begin, make sure that you have:
+
+- An agent to answer the calls. For details, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
+- A phone number in your project. For details, see [Import phone numbers](/en/ai/platform/build/phone-calls/import-phone-numbers).
+
+## Route a number to an agent
+
+In the number's `inbound` object, set `agent` to the ID of the agent that answers calls, and set a `call_policy`. A `call_policy` is required whenever you set an agent. For its fields, see [Set limits and behavior for inbound calls](#set-limits-and-behavior-for-inbound-calls). You can set both when you [import the number](/en/ai/platform/build/phone-calls/import-phone-numbers#import-a-number), or later with [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number).
+
+To update a number, pass its `ETag` from your last create or retrieve request in the `If-Match` header:
+
+```bash
+curl --request PATCH \
+  --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers/<number_id> \
+  --header 'Authorization: Basic <your_base64_encoded_credentials>' \
+  --header 'Content-Type: application/json' \
+  --header 'If-Match: <etag>' \
+  --data '
+{
+  "inbound": {
+    "agent": "agent_m8w4z1",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
+  }
+}'
+```
+
+If the number has changed since you read its `ETag`, the request fails with `412 PreconditionFailed`. Retrieve the number again, and retry with its current `ETag`.
+
+To reject inbound calls to a number, set `inbound.agent` to `null`. A number without `inbound` also rejects inbound calls.
+
+{/* TODO(platform-confirm): Callers can't pass `values`. Confirm what happens when the routed agent has `required` variables (inbound calls rejected, or variables left empty), and add guidance. */}
+
+## Set limits and behavior for inbound calls
+
+The `call_policy` in `inbound` sets limits and behavior for inbound calls:
+
+```json
+"inbound": {
+  "agent": "agent_k3n9x2",
+  "call_policy": {
+    "max_call_duration_seconds": 1800,
+    "max_silence_duration_ms": 60000,
+    "end_call": {
+      "on_user_request": true,
+      "on_fax": true
+    }
+  }
+}
+```
+
+| Field | Description |
+|---|---|
+| `max_call_duration_seconds` | The maximum length of a call in seconds, from when it's answered. |
+| `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
+| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
+
+If you omit a limit, it doesn't apply. Transferring calls to a person isn't available in the Preview.
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), inbound `end_call` was accepted, `transfer` returned `400 NotImplemented` ("Transfer policy is not supported"), and `inbound.agent` without `call_policy` returned `400 MissingRequiredField`. The launch contract lists `transfer`. Add it back when it's supported. */}
+
+## Reference
+
+For more information, see the following pages:
+
+- [Import phone numbers](/en/ai/platform/build/phone-calls/import-phone-numbers)
+- [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns)
+
+### API reference
+
+- [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number)
+- [Retrieve a phone number](/en/api-reference/api-ref/conversational-ai/platform/retrieve-number)

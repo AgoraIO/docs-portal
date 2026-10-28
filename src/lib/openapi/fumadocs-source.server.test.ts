@@ -49,7 +49,10 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/versioning-demo/v2/list-widgets.mdx',
     );
-    expect(pagePaths).toHaveLength(89);
+    expect(pagePaths).toContain(
+      'en/api-reference/api-ref/conversational-ai/platform/create-agent.mdx',
+    );
+    expect(pagePaths).toHaveLength(124);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {
@@ -112,6 +115,12 @@ describe('fumadocs openapi source', () => {
       'speech-to-text-rest': {
         BasicAuth:
           '/en/api-reference/api-ref/speech-to-text/authentication#recommended-pattern',
+      },
+      'convoai-platform': {
+        basicAuth:
+          '/en/api-reference/api-ref/conversational-ai/platform/authentication#basic-http-authentication',
+        tokenAuth:
+          '/en/api-reference/api-ref/conversational-ai/platform/authentication#token-authentication',
       },
     } as const;
 
@@ -275,8 +284,19 @@ describe('fumadocs openapi source', () => {
         file.path.startsWith('en/api-reference/api-ref/'),
     );
     const overloaded: string[] = [];
+    // Match "call this endpoint"-style instructions, not "call" as a noun such
+    // as "phone call", which Platform telephony summaries legitimately use.
     const proceduralPattern =
-      /\b(if|only|required|must|cannot|valid|invalid|success|failed|error|returns?|before|after|wait|call|use this endpoint|use this method)\b/i;
+      /\b(if|only|required|must|cannot|valid|invalid|success|failed|error|returns?|before|after|wait|call (this|the|that) (endpoint|api|method|operation)|use this endpoint|use this method)\b/i;
+
+    expect(
+      proceduralPattern.test('Call this endpoint to stop the agent.'),
+    ).toBe(true);
+    expect(
+      proceduralPattern.test(
+        'Starts a session in an RTC channel or a phone call.',
+      ),
+    ).toBe(false);
 
     for (const page of englishPages) {
       if (page.type !== 'page') {

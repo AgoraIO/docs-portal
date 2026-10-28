@@ -1,0 +1,93 @@
+---
+title: Conversational AI Platform REST API overview
+description: Save agents, secrets, and phone numbers, and use them to run agent sessions and outbound call campaigns.
+---
+
+The Conversational AI Platform REST API (Preview) lets you save agents, secrets, and phone numbers in your project, and use them to run agent sessions and outbound call campaigns from your server.
+
+:::info
+During the Preview, agent sessions run in North America (US). Geofencing isn't supported.
+:::
+
+## API basics
+
+- **Base URL**: `https://preview.ai.agora.io/conversational-ai/v1/projects/<appid>`, where `<appid>` is the App ID of your Agora project. Every resource belongs to one project.
+- **Authentication**: Use [token authentication](authentication#token-authentication) or [Basic HTTP authentication](authentication#basic-http-authentication) for every request.
+- **Request**: Request and response bodies use JSON. Request URLs and request bodies are case-sensitive.
+- **IDs**: Each resource returns its ID in a `<resource>_id` field, such as `agent_id`, `number_id`, and `campaign_id`. Agent, number, and campaign IDs start with `agent_`, `num_`, and `camp_`. Session IDs are 32 lowercase letters and digits.
+- **Timestamps**: Timestamps are Unix times in seconds, in fields that end in `_ts`. Durations have a unit suffix, such as `_ms` or `_seconds`. Campaign schedules are the exception: they use local times in the schedule's time zone.
+
+## Conventions
+
+The following conventions apply to every endpoint:
+
+- **Pagination**: List endpoints return `data`, `has_more`, and `next_cursor`. To get the next page, pass `next_cursor` in the `cursor` query parameter. `next_cursor` is `null` on the last page.
+- **Concurrency control**: Responses for agents, secret sets, phone numbers, and campaigns include an `ETag` header. To make sure you don't overwrite a concurrent change, pass that value in the `If-Match` header of an update or delete request. If the resource has changed, the request fails with `412`.
+- **Idempotency**: Endpoints that create a resource or perform an action accept an `Idempotency-Key` header. If you retry with the same key and body within 24 hours, the API returns the original response instead of repeating the operation. Starting and stopping a session don't accept this header.
+- **Rate limits**: Every response includes the `RateLimit-Limit`, `RateLimit-Remaining`, and `RateLimit-Reset` headers. A `429` response also includes `Retry-After`, the number of seconds to wait before you retry.
+- **Errors**: Every error response contains `detail` and `reason`. For all reasons, see [Status codes and error reasons](status-codes).
+- **Request ID**: Every response includes an `Agora-Request-Id` header. Include it when you contact Agora support.
+
+## REST APIs
+
+The Platform APIs are organized by resource. You save agents, secrets, and phone numbers in your project, then reference them when you start sessions and campaigns.
+
+### Agents
+
+An agent is a saved configuration that defines how your agent behaves, including its instructions, variables, greeting, and the models in its pipeline. Use these endpoints to manage agents that you start sessions and campaigns from.
+
+- [Create an agent](create-agent): Save an agent configuration.
+- [List agents](list-agents): Retrieve the agents in your project.
+- [Retrieve an agent](retrieve-agent): Retrieve the configuration of an agent.
+- [Update an agent](update-agent): Change the configuration of an agent.
+- [Delete an agent](delete-agent): Delete an agent.
+
+### Sessions
+
+A session runs one agent in an RTC channel or a phone call. Use these endpoints to start sessions from a saved or inline agent, control them while they run, and stop them.
+
+- [Start a session](start-session): Start a session with a saved agent.
+- [Start an ephemeral session](start-ephemeral-session): Start a session with an agent configuration you pass in the request.
+- [List sessions](list-sessions): Retrieve the sessions that match your filters.
+- [Retrieve a session](retrieve-session): Retrieve the status of a session.
+- [Update a session](update-session): Renew the RTC token, or replace the messages or LLM parameters of a running session.
+- [Stop a session](stop-session): Stop a running session.
+- [Speak](speak): Make the agent say a line of text.
+- [Inject context](inject-context): Add messages to the conversation context.
+- [Interrupt the agent](interrupt): Stop the agent while it speaks or thinks.
+
+### Secrets
+
+A secret set stores provider API keys and other credentials, so your agent configurations reference secrets instead of containing them. Secret values are write-only and are never returned.
+
+- [Create a secret set](create-secret-set): Store credentials in a named secret set.
+- [List secret sets](list-secret-sets): Retrieve the secret sets in your project.
+- [Retrieve a secret set](retrieve-secret-set): Retrieve the key names in a secret set.
+- [Update a secret set](update-secret-set): Add, change, or remove several keys in one change.
+- [Replace a secret set](replace-secret-set): Replace all the keys in a set.
+- [Delete a secret set](delete-secret-set): Delete a set and all its keys.
+- [Set a secret key](set-secret-key): Add a key or replace its value.
+- [Delete a secret key](delete-secret-key): Remove a key from a set.
+
+### Phone numbers
+
+A phone number connects your agents to the phone network through your carrier's SIP trunk. Agents call from a registered number, and you can choose the agent that answers inbound calls to it.
+
+- [Create a phone number](create-number): Import a phone number with its SIP trunk and inbound routing.
+- [List phone numbers](list-numbers): Retrieve the phone numbers in your project.
+- [Retrieve a phone number](retrieve-number): Retrieve a number and its SIP and inbound settings.
+- [Update a phone number](update-number): Change the SIP trunk or inbound routing of a number.
+- [Delete a phone number](delete-number): Remove a number from your project.
+
+### Campaigns
+
+A campaign calls a list of contacts with a saved agent, on a schedule or right away. Each call starts a telephony session. Use these endpoints to create campaigns and control them while they run.
+
+- [Create a campaign](create-campaign): Dial a list of contacts with a saved agent.
+- [List campaigns](list-campaigns): Retrieve the campaigns in your project.
+- [Retrieve a campaign](retrieve-campaign): Retrieve a campaign and its contact counts.
+- [Update a campaign](update-campaign): Change the pacing, schedule, or dialing limits.
+- [Pause a campaign](pause-campaign): Stop placing new calls.
+- [Resume a campaign](resume-campaign): Continue dialing a paused campaign.
+- [Cancel a campaign](cancel-campaign): End a campaign permanently.
+- [Delete a campaign](delete-campaign): Delete a finished campaign.
