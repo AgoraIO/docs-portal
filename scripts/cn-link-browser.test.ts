@@ -449,7 +449,13 @@ describe('lightweight navigation evidence', () => {
         query.mock.calls.filter(
           ([selector]) => selector !== 'style,link[rel="stylesheet"]',
         ),
-      ).toEqual([['[id="target"], a[name="target"]']]);
+      ).toEqual([
+        ['[id="target"], a[name="target"]'],
+        [
+          '[data-platform-header-tabs] [data-platform-tab][aria-selected="true"]',
+        ],
+        ['[data-platform-panel]'],
+      ]);
       expect(readable).toHaveBeenCalledTimes(1);
       expect(styles.mock.calls.length).toBeLessThan(10);
     } finally {
@@ -598,6 +604,9 @@ describe('OpenAPI legacy-anchor query rewrites', () => {
         rowId: 'field',
       });
       expect(matchesBrowserPage(evidence, expected)).toBe(true);
+      expect(
+        matchesBrowserPage(evidence, expected, { requireHash: true }),
+      ).toBe(true);
       for (const url of [
         actual.replace('mode=one', 'mode=changed'),
         actual.replace('&mode=two', ''),
@@ -914,4 +923,205 @@ describe('GitHub visible code layer accessibility markup', () => {
       }
     },
   );
+});
+
+describe('page platform evidence without fragments', () => {
+  const index = {
+    targets: { '/guide': { ios: '/guide/ios', android: '/guide/android' } },
+    platforms: { '/guide/ios': 'ios', '/guide/android': 'android' },
+  };
+  it('rejects a wrong selected platform even when the page body exists', async () => {
+    const { collectNavigationEvidence, browserPlatformFailure } = await import(
+      './lib/cn-link-audit/browser.mjs'
+    );
+    document.body.innerHTML =
+      '<main data-static-docs-body><div data-platform-header-tabs><button data-platform-tab="android" aria-selected="true">Android</button><button data-platform-tab="ios" aria-selected="false">iOS</button></div><section data-platform-panel="android">Android</section><section data-platform-panel="ios" hidden>iOS</section></main>';
+    expect(
+      browserPlatformFailure(
+        collectNavigationEvidence(''),
+        'https://docs.test/guide?platform=ios',
+        index,
+      ),
+    ).toMatchObject({ status: 'unverified', reason: 'page-platform-mismatch' });
+  });
+  it('accepts independently selected groups when the requested platform is visible in its own group', async () => {
+    const { collectNavigationEvidence, browserPlatformFailure } = await import(
+      './lib/cn-link-audit/browser.mjs'
+    );
+    document.body.innerHTML =
+      '<main data-static-docs-body><div data-platform-group><section data-platform-panel="ios">iOS</section><section data-platform-panel="android" hidden>Android</section></div><div data-platform-group><section data-platform-panel="web">Web</section><section data-platform-panel="windows" hidden>Windows</section></div></main>';
+    expect(
+      browserPlatformFailure(
+        collectNavigationEvidence(''),
+        'https://docs.test/guide/ios',
+        index,
+      ),
+    ).toBeUndefined();
+  });
+  it('does not certify unknown or unsupported queries as selected platforms', async () => {
+    const { collectNavigationEvidence, browserPlatformFailure } = await import(
+      './lib/cn-link-audit/browser.mjs'
+    );
+    document.body.innerHTML =
+      '<main data-static-docs-body><section data-platform-panel="android">Android</section></main>';
+    for (const platform of ['unknown', 'web'])
+      expect(
+        browserPlatformFailure(
+          collectNavigationEvidence(''),
+          `https://docs.test/guide?platform=${platform}`,
+          index,
+        ),
+      ).toMatchObject({
+        status: 'unverified',
+        reason: 'unsupported-platform-query',
+      });
+  });
+});
+
+it('opens the original query entry and checks the final canonical identity and platform', async () => {
+  const { createPlatformQueryIndex } = await import(
+    '../src/lib/platforms/query-route'
+  );
+  const { verifyBrowserTargets } = await import(
+    './lib/cn-link-audit/browser.mjs'
+  );
+  const entry = 'https://docs.test/ai?platform=ios&mode=compact';
+  const canonical = 'https://docs.test/ai/ios?mode=compact';
+  const index = createPlatformQueryIndex([
+    { canonicalPath: '/zh-CN/ai', url: '/zh-CN/ai/ios', platform: 'ios' },
+  ]);
+  const evidence = {
+    url: canonical,
+    documentUrl: canonical,
+    responseStatus: 200,
+    hasDocsBody: true,
+    hasReadableBody: true,
+    anchors: [],
+    visibleAnchors: [],
+    selectedPlatforms: ['ios'],
+    platformGroups: [],
+  };
+  const driver = {
+    run: vi.fn(),
+    evaluate: vi.fn(),
+    navigationSnapshot: vi.fn().mockResolvedValue(evidence),
+    navigationSettle: vi.fn().mockResolvedValue(evidence),
+    close: vi.fn(),
+  };
+  const options = {
+    driver,
+    origin: 'https://docs.test',
+    platformIndex: index,
+    expectedUrls: new Map([[entry, canonical]]),
+    timeoutMs: 1,
+  };
+  expect(
+    (await verifyBrowserTargets([entry], options)).get(entry),
+  ).toMatchObject({ status: 'valid' });
+  expect(driver.run).toHaveBeenCalledWith('open', entry);
+  expect(driver.run).not.toHaveBeenCalledWith('open', canonical);
+  driver.navigationSettle.mockResolvedValue({ ...evidence, url: entry });
+  expect(
+    (await verifyBrowserTargets([entry], options)).get(entry),
+  ).toMatchObject({
+    status: 'unverified',
+    reason: 'browser-page-identity-or-body-missing',
+  });
+  driver.navigationSettle.mockResolvedValue({
+    ...evidence,
+    selectedPlatforms: ['android'],
+  });
+  driver.navigationSnapshot.mockResolvedValue({
+    ...evidence,
+    selectedPlatforms: ['android'],
+  });
+  expect(
+    (await verifyBrowserTargets([entry], options)).get(entry),
+  ).toMatchObject({ status: 'unverified', reason: 'page-platform-mismatch' });
+});
+
+it('ignores an entirely hidden platform group when proving the visible page selection', async () => {
+  const { collectNavigationEvidence, browserPlatformFailure } = await import(
+    './lib/cn-link-audit/browser.mjs'
+  );
+  document.body.innerHTML =
+    '<main data-static-docs-body><div data-platform-group><section data-platform-panel="ios">iOS</section><section data-platform-panel="android" hidden>Android</section></div><div data-platform-group hidden><section data-platform-panel="ios">Collapsed iOS example</section></div></main>';
+  const index = { targets: {}, platforms: { '/guide/ios': 'ios' } };
+  expect(
+    browserPlatformFailure(
+      collectNavigationEvidence(''),
+      'https://docs.test/guide/ios',
+      index,
+    ),
+  ).toBeUndefined();
+});
+
+it('does not require a selected platform for SDK business filters outside the variant index', async () => {
+  const { browserPlatformFailure } = await import(
+    './lib/cn-link-audit/browser.mjs'
+  );
+  const index = {
+    targets: { '/zh-CN/ai': { ios: '/zh-CN/ai/ios' } },
+    platforms: { '/zh-CN/ai/ios': 'ios' },
+  };
+  for (const prefix of ['', '/zh-CN']) {
+    expect(
+      browserPlatformFailure(
+        { selectedPlatforms: [], platformGroups: [] },
+        `https://docs.test${prefix}/reference/sdks?product=video&platform=android`,
+        index,
+      ),
+    ).toBeUndefined();
+    expect(
+      browserPlatformFailure(
+        { selectedPlatforms: [], platformGroups: [] },
+        `https://docs.test${prefix}/ai?platform=android`,
+        index,
+      ),
+    ).toMatchObject({
+      status: 'unverified',
+      reason: 'unsupported-platform-query',
+    });
+  }
+});
+
+it('rejects a platform query redirect that drops its hash even when the original anchor remains visible', async () => {
+  const { verifyBrowserTargets } = await import(
+    './lib/cn-link-audit/browser.mjs'
+  );
+  const entry = 'https://docs.test/ai?platform=ios#heading';
+  const canonical = 'https://docs.test/ai/ios#heading';
+  const evidence = {
+    url: canonical.split('#')[0],
+    documentUrl: canonical,
+    responseStatus: 200,
+    hasDocsBody: true,
+    hasReadableBody: true,
+    anchors: ['heading'],
+    visibleAnchors: ['heading'],
+    selectedPlatforms: ['ios'],
+    platformGroups: [],
+  };
+  const driver = {
+    run: vi.fn(),
+    evaluate: vi.fn(),
+    navigationSnapshot: vi.fn().mockResolvedValue(evidence),
+    navigationSettle: vi.fn().mockResolvedValue(evidence),
+    close: vi.fn(),
+  };
+  const index = {
+    targets: { '/zh-CN/ai': { ios: '/zh-CN/ai/ios' } },
+    platforms: { '/zh-CN/ai/ios': 'ios' },
+  };
+  const results = await verifyBrowserTargets([entry], {
+    driver,
+    origin: 'https://docs.test',
+    platformIndex: index,
+    expectedUrls: new Map([[entry, canonical]]),
+    timeoutMs: 1,
+  });
+  expect(results.get(entry)).toMatchObject({
+    status: 'unverified',
+    reason: 'browser-page-identity-or-body-missing',
+  });
 });

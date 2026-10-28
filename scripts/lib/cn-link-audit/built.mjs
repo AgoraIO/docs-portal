@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { load } from 'cheerio';
 import { resolveLegacyApiHashRedirect } from '../../../src/lib/docs-api-hash-redirects.ts';
+import { preserveRedirectSearch } from '../../../src/lib/docs-redirect-url.ts';
 import { resolveMovedDocsRedirect } from '../../../src/lib/docs-moved-redirects.ts';
 import { resolveStaticLegacySitemapRedirect } from '../../../src/lib/legacy-sitemap/static-redirects.ts';
 import { isRetiredCnDocsPath } from '../../../src/lib/retired-cn-docs.mjs';
@@ -514,6 +515,13 @@ export function validateLocalTarget(
 
 const redirectCache = new Map();
 export function declaredRedirectTarget(target) {
+  const destination = declaredRedirectUrl(target);
+  return destination
+    ? new URL(destination, 'https://cn-link-audit.invalid').pathname
+    : undefined;
+}
+
+export function declaredRedirectUrl(target) {
   if (redirectCache.has(target)) return redirectCache.get(target);
   let current = new URL(target, 'https://cn-link-audit.invalid');
   const seen = new Set();
@@ -538,12 +546,21 @@ export function declaredRedirectTarget(target) {
       legacy?.redirectUrl ??
       resolveZhCnProductIaRedirect('zh-CN', tab, segments);
     if (!destination) {
-      const result = changed ? publicPath(current.pathname) : undefined;
+      const result = changed
+        ? `${publicPath(current.pathname)}${current.search}${current.hash}`
+        : undefined;
       redirectCache.set(target, result);
       return result;
     }
     changed = true;
-    current = new URL(destination, current);
+    current = new URL(
+      preserveRedirectSearch(
+        destination,
+        { searchStr: current.search, hash: current.hash },
+        legacy?.preserveSearch ?? true,
+      ),
+      current,
+    );
   }
   return undefined;
 }

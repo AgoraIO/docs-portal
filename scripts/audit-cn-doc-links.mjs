@@ -5,9 +5,18 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { parseArgs } from 'node:util';
+import {
+  createPlatformQueryIndex,
+  getPlatformForUrl,
+  resolvePlatformQueryUrl,
+} from '../src/lib/platforms/query-route.ts';
 import { normalizePlatformKey } from '../src/lib/platforms/registry.ts';
 import {
-  declaredRedirectTarget,
+  hasPlatformQueryScope,
+  sameQuery,
+} from './lib/cn-link-audit/browser.mjs';
+import {
+  declaredRedirectUrl,
   loadBuiltSite,
   validateLocalTarget,
 } from './lib/cn-link-audit/built.mjs';
@@ -336,6 +345,7 @@ export async function runAudit({
           expectedRoutes: inventory.routes,
           onProgress,
         }));
+  const platformIndex = createPlatformQueryIndex(site?.routes?.values() ?? []);
   const sourceLinks = bindSourcePlatformContexts(inventory.links, site, gaps);
   const coverage = {
     ...inventory.counts,
@@ -476,12 +486,33 @@ export async function runAudit({
   const records = [];
   for (const link of [...sourceLinks, ...rendered]) {
     const resolved = normalizedLink(link, origin);
+    const platformTarget =
+      site &&
+      !resolved.external &&
+      !resolved.status &&
+      link.kind !== 'resource' &&
+      resolved.target
+        ? resolvePlatformQueryUrl(
+            new URL(resolved.target, origin ?? LOCAL_ORIGIN),
+            platformIndex,
+          )
+        : null;
+    const localResolved = platformTarget
+      ? {
+          ...resolved,
+          pathname: decodeURIComponent(platformTarget.pathname),
+          hash: platformTarget.hash,
+        }
+      : resolved;
     const local = resolved.status
       ? resolved
       : resolved.external
         ? { status: 'unverified', reason: 'network-not-checked' }
         : site
-          ? validateLocalTarget(link, resolved, site, { repoRoot, htmlRoot })
+          ? validateLocalTarget(link, localResolved, site, {
+              repoRoot,
+              htmlRoot,
+            })
           : staticResult(link, resolved, inventory, repoRoot);
     const record = {
       ...link,
@@ -492,7 +523,7 @@ export async function runAudit({
         link.kind === 'resource' ||
         Boolean(
           local.filePath &&
-            !site?.pages.has(trimSlash(resolved.pathname ?? '')),
+            !site?.pages.has(trimSlash(localResolved.pathname ?? '')),
         ),
     };
     if (site && link.source !== 'rendered') {
@@ -566,6 +597,7 @@ export async function runAudit({
       ),
     );
     const browserTargets = new Set();
+    const browserExpectedUrls = new Map();
     for (const row of records) {
       if (!row.target || row.status === 'not-applicable') continue;
       const url = networkUrlFor(row, origin);
@@ -573,7 +605,9 @@ export async function runAudit({
       const localFailure =
         row.status === 'broken' ||
         (row.resourceTarget &&
-          ['empty-local-resource', 'html-in-local-resource'].includes(row.reason));
+          ['empty-local-resource', 'html-in-local-resource'].includes(
+            row.reason,
+          ));
       const evidence = network.get(url);
       if (!evidence) {
         row.networkStatus = 'unverified';
@@ -594,37 +628,55 @@ export async function runAudit({
       // A preview may retain resources absent from this build. HTTP evidence
       // supplements, but cannot erase, deterministic source/build failures.
       if (localFailure) continue;
-      const expectedPath = !row.external
-        ? (row.expectedPath ?? declaredRedirectTarget(row.target))
-        : undefined;
+      const original = new URL(url);
+      const declared =
+        !row.external && !row.resourceTarget
+          ? declaredRedirectUrl(row.target)
+          : undefined;
+      const destination = declared ? new URL(declared, origin) : original;
+      const canonical =
+        !row.external && !row.resourceTarget
+          ? (resolvePlatformQueryUrl(destination, platformIndex) ?? destination)
+          : destination;
+      const requestedPlatform =
+        !row.external && !row.resourceTarget
+          ? getPlatformForUrl(destination, platformIndex)
+          : undefined;
       const expected = !row.external
-        ? (site?.pages.get(routeKey(row.target)) ??
-          (expectedPath ? site?.pages.get(expectedPath) : undefined))
+        ? site?.pages.get(routeKey(canonical.href))
         : undefined;
       let pageMatches = false;
       if (expected) {
         const final = new URL(evidence.finalUrl ?? url);
+        const finalIdentity = !row.resourceTarget
+          ? (resolvePlatformQueryUrl(final, platformIndex) ?? final)
+          : final;
+        // Static query entries can serve the canonical base HTML before the
+        // client selects a variant. Verify the actual HTTP route's artifact;
+        // browser verification below must still prove the requested variant.
+        const responsePage = site.pages.get(routeKey(final.href)) ?? expected;
         row.artifactMatches = Boolean(
-          expected.digest && evidence.digest === expected.digest,
+          responsePage.digest && evidence.digest === responsePage.digest,
         );
         row.contentMatches = Boolean(
-          expected.hasDocsBody &&
+          responsePage.hasDocsBody &&
             evidence.hasDocsBody &&
-            expected.contentDigest &&
-            evidence.contentDigest === expected.contentDigest &&
-            expected.contentTitle &&
-            evidence.contentTitle === expected.contentTitle &&
-            (!expected.canonicalPath ||
+            responsePage.contentDigest &&
+            evidence.contentDigest === responsePage.contentDigest &&
+            responsePage.contentTitle &&
+            evidence.contentTitle === responsePage.contentTitle &&
+            (!responsePage.canonicalPath ||
               (evidence.canonicalPath &&
                 routeKey(evidence.canonicalPath) ===
-                  routeKey(expected.canonicalPath))),
+                  routeKey(responsePage.canonicalPath))),
         );
         row.pathMatches =
           final.origin === origin &&
-          routeKey(final.href) === routeKey(expected.pageUrl);
-        row.expectedDigest = expected.digest;
-        row.expectedContentDigest = expected.contentDigest;
-        row.expectedContentTitle = expected.contentTitle;
+          routeKey(finalIdentity.href) === routeKey(expected.pageUrl) &&
+          sameQuery(finalIdentity, canonical);
+        row.expectedDigest = responsePage.digest;
+        row.expectedContentDigest = responsePage.contentDigest;
+        row.expectedContentTitle = responsePage.contentTitle;
         pageMatches = Boolean(
           row.pathMatches &&
             evidence.hasDocsBody &&
@@ -675,6 +727,21 @@ export async function runAudit({
         row.reason = 'html-returned-for-resource';
       }
       if (
+        !row.external &&
+        !row.resourceTarget &&
+        expected &&
+        destination.searchParams.has('platform') &&
+        hasPlatformQueryScope(destination, platformIndex) &&
+        !requestedPlatform &&
+        row.status === 'valid'
+      ) {
+        row.status = 'unverified';
+        row.reason = 'unsupported-platform-query';
+      }
+      if (
+        (requestedPlatform &&
+          pageMatches &&
+          (row.status === 'valid' || /fragment|anchor/.test(row.reason))) ||
         (new URL(url).hash &&
           expected?.interactive &&
           (row.status === 'valid' ||
@@ -686,9 +753,12 @@ export async function runAudit({
           ))
       ) {
         row.status = 'unverified';
-        row.reason = 'deep-link-needs-browser';
-        row.browserVerificationUrl = row.expectedPath ? evidence.finalUrl : url;
-        browserTargets.add(row.browserVerificationUrl);
+        row.reason = requestedPlatform
+          ? 'platform-link-needs-browser'
+          : 'deep-link-needs-browser';
+        row.browserVerificationUrl = url;
+        browserTargets.add(url);
+        browserExpectedUrls.set(url, canonical.href);
       }
     }
     if (browserTargets.size && browser) {
@@ -699,9 +769,16 @@ export async function runAudit({
         origin,
         timeoutMs,
         onProgress,
+        platformIndex,
+        expectedUrls: browserExpectedUrls,
       });
       for (const row of records) {
-        if (row.reason !== 'deep-link-needs-browser') continue;
+        if (
+          !['deep-link-needs-browser', 'platform-link-needs-browser'].includes(
+            row.reason,
+          )
+        )
+          continue;
         const result = results.get(
           row.browserVerificationUrl ?? new URL(row.target, origin).href,
         );

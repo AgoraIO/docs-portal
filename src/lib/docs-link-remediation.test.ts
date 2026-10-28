@@ -135,11 +135,11 @@ const linkCases = [
     target: '/zh-CN/realtime-media/rtc/reference/browser-compatibility',
   },
   {
-    href: '/zh-CN/realtime-media/rtc/get-started/quick-start?platform=web',
+    href: '/zh-CN/realtime-media/rtc/get-started/quick-start/web',
     expectedTitle: '实现音视频互动',
     source:
       'content/docs/zh-CN/realtime-media/rtc/build/extensions/web/image-enhancement.mdx',
-    target: '/zh-CN/realtime-media/rtc/get-started/quick-start',
+    target: '/zh-CN/realtime-media/rtc/get-started/quick-start/web',
   },
   {
     href: '/zh-CN/realtime-media/local-server-recording/build/recording-preparation/cloud-proxy',

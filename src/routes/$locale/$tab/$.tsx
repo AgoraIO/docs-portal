@@ -23,6 +23,10 @@ import {
 } from '@/lib/docs-static-manifest';
 import { resolveStaticLegacySitemapRedirect } from '@/lib/legacy-sitemap/static-redirects';
 import {
+  createPlatformQueryIndex,
+  resolvePlatformQueryUrl,
+} from '@/lib/platforms/query-route';
+import {
   isKnownPlatform,
   normalizePlatformKey,
   type PlatformKey,
@@ -130,6 +134,10 @@ export const Route = createFileRoute('/$locale/$tab/$')({
           });
 
     let payload = await loadPayload(slugSegments);
+    const currentPath = `/${[params.locale, params.tab, ...slugSegments].join('/')}`;
+    let platformRoute:
+      | { canonicalPath: string; platform: PlatformKey; url: string }
+      | undefined;
     const queryPlatform = getKnownPlatformSearchParam(location.searchStr);
 
     if (
@@ -144,8 +152,41 @@ export const Route = createFileRoute('/$locale/$tab/$')({
       ]);
 
       if (platformPayload && !('redirectUrl' in platformPayload)) {
-        payload = platformPayload;
+        platformRoute = {
+          canonicalPath: currentPath,
+          platform: queryPlatform,
+          url: `${currentPath}/${queryPlatform}`,
+        };
       }
+    }
+
+    const explicitPlatform = payload
+      ? getPayloadPlatformTabs(payload)?.initialPlatform
+      : undefined;
+    if (
+      payload &&
+      explicitPlatform &&
+      slugSegments.at(-1) === explicitPlatform &&
+      payloadSupportsPlatform(payload, explicitPlatform)
+    ) {
+      platformRoute = {
+        canonicalPath: currentPath.slice(0, currentPath.lastIndexOf('/')),
+        platform: explicitPlatform,
+        url: currentPath,
+      };
+    }
+    if (platformRoute) {
+      const target = resolvePlatformQueryUrl(
+        new URL(
+          preserveRedirectSearch(currentPath, location),
+          'https://docs.invalid',
+        ),
+        createPlatformQueryIndex([platformRoute]),
+      );
+      if (target)
+        throw redirect({
+          href: `${target.pathname}${target.search}${target.hash}`,
+        });
     }
 
     if (!payload) {
@@ -268,7 +309,9 @@ function normalizeDocsPagePayload(payload: DocsPagePayload): DocsPagePayload {
 
 export function getKnownPlatformSearchParam(searchStr?: string) {
   const platform = new URLSearchParams(searchStr ?? '').get('platform');
-  const normalizedPlatform = platform ? normalizePlatformKey(platform) : null;
+  const normalizedPlatform = platform
+    ? normalizePlatformKey(platform.trim().toLowerCase())
+    : null;
 
   return normalizedPlatform && isKnownPlatform(normalizedPlatform)
     ? normalizedPlatform

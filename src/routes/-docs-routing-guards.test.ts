@@ -521,6 +521,7 @@ describe('docs route locale guards', () => {
   });
 
   it('recognizes legacy query-string platform values for docs pages', () => {
+    expect(getKnownPlatformSearchParam('?platform=iOS')).toBe('ios');
     expect(getKnownPlatformSearchParam('?platform=macos')).toBe('macos');
     expect(getKnownPlatformSearchParam('?foo=bar&platform=react-native')).toBe(
       'react-native',
@@ -529,6 +530,55 @@ describe('docs route locale guards', () => {
       'javascript',
     );
     expect(getKnownPlatformSearchParam('?platform=all')).toBeUndefined();
+  });
+
+  it('redirects a supported platform query to its platform path with other URL state', async () => {
+    docsPagePayloadOverride.mockReturnValue(
+      createPlatformPayload('["web","ios"]'),
+    );
+    try {
+      await expect(
+        getLoader(DocPageRoute)({
+          location: { hash: 'details', searchStr: '?platform=iOS&from=legacy' },
+          params: {
+            locale: 'en',
+            tab: 'realtime-media',
+            _splat: 'rtm/build/presence',
+          },
+        } as never),
+      ).rejects.toMatchObject({
+        options: {
+          href: '/en/realtime-media/rtm/build/presence/ios?from=legacy#details',
+        },
+      });
+    } finally {
+      docsPagePayloadOverride.mockReset();
+    }
+  });
+
+  it('cleans a conflicting query on an explicit platform route', async () => {
+    const payload = createPlatformPayload('["web","ios"]');
+    if (payload.body.kind !== 'openapi' && payload.body.platformTabs)
+      payload.body.platformTabs.initialPlatform = 'ios';
+    docsPagePayloadOverride.mockReturnValue(payload);
+    try {
+      await expect(
+        getLoader(DocPageRoute)({
+          location: { hash: '', searchStr: '?platform=web&from=legacy' },
+          params: {
+            locale: 'en',
+            tab: 'realtime-media',
+            _splat: 'rtm/build/presence/ios',
+          },
+        } as never),
+      ).rejects.toMatchObject({
+        options: {
+          href: '/en/realtime-media/rtm/build/presence/ios?from=legacy',
+        },
+      });
+    } finally {
+      docsPagePayloadOverride.mockReset();
+    }
   });
 
   it('checks whether a docs payload supports a requested platform', () => {

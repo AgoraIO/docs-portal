@@ -565,7 +565,7 @@ void login(String token, ResultCallback<Void> resultCallback);
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=android)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication/android)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -590,7 +590,7 @@ void login(String token, ResultCallback<Void> resultCallback);
   | `reason` | String | 本次操作出错原因。 |
   | `operation` | String | 本次操作类型。 |
 
-  你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=android)了解错误原因，并找到对应的解决方法。
+  你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/android)了解错误原因，并找到对应的解决方法。
 
 ### 基本用法
 
@@ -1204,7 +1204,7 @@ Future<(RtmStatus, LoginResult?)> login(String token);
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=flutter)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication/flutter)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -1889,7 +1889,7 @@ async login(token?: string): Promise<LoginResponse>
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=harmonyos)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication/harmonyos)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -1899,7 +1899,7 @@ async login(token?: string): Promise<LoginResponse>
 该方法返回一个 Promise：
 
 - Promise resolve：返回 `LoginResponse` 对象。
-- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=harmonyos)。
+- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting/harmonyos)。
 
 `LoginResponse` 数据结构如下：
 
@@ -1951,7 +1951,7 @@ async logout(): Promise<LogoutResponse>
 该方法返回一个 Promise：
 
 - Promise resolve：返回 `LogoutResponse` 对象。
-- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=harmonyos)。
+- Promise reject：抛出 `RtmError` 异常，包含错误码和错误原因。详见[错误排查](/zh-CN/realtime-media/rtm/build/troubleshooting/harmonyos)。
 
 `LogoutResponse` 数据结构如下：
 
@@ -2535,7 +2535,7 @@ RTM 客户端实例
 
 登录 RTM 系统的 Token。
 
-- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication?platform=ios)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
+- 如果你的项目开启了 Token 鉴权，你可以填入 [RTM 临时 Token](/zh-CN/realtime-media/rtm/build/rtm-initialization/enable-service#5-获取临时-token) 或 Token 服务器生成的 RTM 正式 Token。详见[客户端鉴权](/zh-CN/realtime-media/rtm/build/authentication-and-connection/user-authentication/ios)和[部署 RTM Token 服务器](/zh-CN/realtime-media/rtm/build/authentication-and-connection/token-generation)。
 - 如果你的项目未开启 Token 鉴权，你可以填入空字符串或开通了 RTM 服务的项目 App ID。
 
 </Slot>
@@ -2562,7 +2562,7 @@ RTM 客户端实例
 | `reason` | NSString | 本次操作出错原因。 |
 | `operation` | NSString | 本次操作类型。 |
 
-你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=ios)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段所包含的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/ios)了解错误原因，并找到对应的解决方法。
 
 ### 基本用法
 
@@ -2641,7 +2641,7 @@ RTM 客户端实例
 
 ### 返回值
 
-`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=ios)。
+`destroy` 操作会返回一个 `AgoraRtmErrorCode` 数据结构，详见[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/ios)。
 
 </PlatformStructured>
 
@@ -3749,7 +3749,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 ## LogoutAsync
 
@@ -3782,7 +3782,7 @@ var (status,response) = await rtmClient.LogoutAsync();
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 ## Dispose
 
@@ -3819,6 +3819,6 @@ var status = Dispose();
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting?platform=unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 </PlatformStructured>

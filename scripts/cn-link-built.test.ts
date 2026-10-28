@@ -471,3 +471,15 @@ it('uses the same hash-specific API destination as the router', () => {
     ),
   ).toBe('/api-reference/rtm/flutter/storage');
 });
+
+it('retains declared redirect query and hash semantics separately from its pathname', async () => {
+  const { declaredRedirectUrl } = await import('./lib/cn-link-audit/built.mjs');
+  const source =
+    '/realtime-media/rtsa/build/implement-core-features/string-uid?mode=compact&tag=a&tag=a#heading';
+  expect(declaredRedirectUrl(source)).toBe(
+    '/realtime-media/rtsa/build/media-and-signaling-transmission/string-uid?mode=compact&tag=a&tag=a#heading',
+  );
+  expect(declaredRedirectTarget(source)).toBe(
+    '/realtime-media/rtsa/build/media-and-signaling-transmission/string-uid',
+  );
+});

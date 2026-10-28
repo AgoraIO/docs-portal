@@ -4,6 +4,7 @@ import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { promisify } from 'node:util';
+import { getPlatformForUrl } from '../../../src/lib/platforms/query-route.ts';
 import {
   normalizePlatformKey,
   platformRegistry,
@@ -384,6 +385,25 @@ export function collectNavigationEvidence(rawHash = '') {
         .filter(Boolean),
     ),
   ];
+  const selectedPlatforms = [
+    ...document.querySelectorAll(
+      '[data-platform-header-tabs] [data-platform-tab][aria-selected="true"]',
+    ),
+  ]
+    .filter(visible)
+    .map((tab) => tab.getAttribute('data-platform-tab'));
+  const platformGroups = new Map();
+  for (const panel of document.querySelectorAll('[data-platform-panel]')) {
+    if (panel.parentElement?.closest('[data-platform-panel]')) continue;
+    const group = panel.closest('[data-platform-group]');
+    if (group && !visible(group)) continue;
+    if (!platformGroups.has(group))
+      platformGroups.set(group, { platforms: [], visible: [] });
+    const entry = platformGroups.get(group);
+    const platform = panel.getAttribute('data-platform-panel');
+    entry.platforms.push(platform);
+    if (visible(panel)) entry.visible.push(platform);
+  }
   const navigation = performance.getEntriesByType?.('navigation')?.[0];
   return {
     url: location.href,
@@ -414,6 +434,8 @@ export function collectNavigationEvidence(rawHash = '') {
     visibleAnchors: targetVisible ? [fragment] : [],
     hasPlatformPanels: Boolean(document.querySelector('[data-platform-panel]')),
     targetPlatforms,
+    selectedPlatforms,
+    platformGroups: [...platformGroups.values()],
     sharedTarget: targetPanels.some((panel) => !panel),
     ...(openApiLegacyTarget ? { openApiLegacyTarget } : {}),
   };
@@ -513,18 +535,39 @@ async function createDriver({
 const normalizePath = (value) => value.replace(/\/+$/, '') || '/';
 const pagePath = (url) =>
   normalizePath(new URL(url).pathname.replace(/^\/zh-CN(?=\/|$)/, '') || '/');
+export function sameQuery(actual, expected) {
+  const entries = (url) =>
+    [...url.searchParams]
+      .map(([key, value]) => JSON.stringify([key, value]))
+      .sort();
+  return JSON.stringify(entries(actual)) === JSON.stringify(entries(expected));
+}
 const samePage = (actual, expected) => {
   const a = new URL(actual),
     b = new URL(expected);
   return (
     a.origin === b.origin &&
     normalizePath(a.pathname) === normalizePath(b.pathname) &&
-    a.search === b.search
+    sameQuery(a, b)
   );
 };
 // Preserve strict page identity except for a proven OpenAPI legacy-field reveal.
-export function matchesBrowserPage(evidence, expected) {
-  if (samePage(evidence.url, expected)) return true;
+export function matchesBrowserPage(
+  evidence,
+  expected,
+  { requireHash = false } = {},
+) {
+  let matchingHash = true;
+  if (requireHash) {
+    try {
+      matchingHash =
+        decodeURIComponent(new URL(evidence.url).hash.slice(1)) ===
+        decodeURIComponent(new URL(expected).hash.slice(1));
+    } catch {
+      matchingHash = false;
+    }
+  }
+  if (samePage(evidence.url, expected) && matchingHash) return true;
   const actual = new URL(evidence.url),
     original = new URL(expected);
   const target = evidence.openApiLegacyTarget;
@@ -558,7 +601,12 @@ export function matchesBrowserPage(evidence, expected) {
   );
 }
 
-export function browserFragmentFailure(fragment, evidence, expectedUrl) {
+export function browserFragmentFailure(
+  fragment,
+  evidence,
+  expectedUrl,
+  platformIndex,
+) {
   if (fragment === null)
     return { status: 'broken', reason: 'malformed-anchor' };
   if (fragment?.startsWith('/'))
@@ -582,9 +630,11 @@ export function browserFragmentFailure(fragment, evidence, expectedUrl) {
     const requested = new URL(expectedUrl);
     const suffix = requested.pathname.split('/').filter(Boolean).at(-1);
     const pathPlatform = normalizePlatformKey(suffix ?? '');
-    const platform = Object.hasOwn(platformRegistry, pathPlatform)
-      ? pathPlatform
-      : normalizePlatformKey(requested.searchParams.get('platform') ?? '');
+    const platform = platformIndex
+      ? getPlatformForUrl(requested, platformIndex)
+      : Object.hasOwn(platformRegistry, pathPlatform)
+        ? pathPlatform
+        : normalizePlatformKey(requested.searchParams.get('platform') ?? '');
     if (
       Object.hasOwn(platformRegistry, platform) &&
       !evidence.targetPlatforms?.some(
@@ -593,6 +643,47 @@ export function browserFragmentFailure(fragment, evidence, expectedUrl) {
     )
       return { status: 'unverified', reason: 'fragment-platform-mismatch' };
   }
+  return undefined;
+}
+
+// `platform` is also a business filter on pages such as the SDK downloads.
+// Interpret it as page selection only for a published platform family.
+export function hasPlatformQueryScope(url, index) {
+  let pathname;
+  try {
+    pathname = decodeURI(url.pathname).replace(/\/+$/, '') || '/';
+  } catch {
+    return false;
+  }
+  const publicPath = pathname.replace(/^\/zh-CN(?=\/|$)/, '') || '/';
+  return [pathname, publicPath, `/zh-CN${publicPath}`].some(
+    (key) =>
+      Object.hasOwn(index.targets, key) || Object.hasOwn(index.platforms, key),
+  );
+}
+
+export function browserPlatformFailure(evidence, expectedUrl, platformIndex) {
+  if (!platformIndex) return undefined;
+  const requested = new URL(expectedUrl);
+  const platform = getPlatformForUrl(requested, platformIndex);
+  if (!platform)
+    return requested.searchParams.has('platform') &&
+      hasPlatformQueryScope(requested, platformIndex)
+      ? { status: 'unverified', reason: 'unsupported-platform-query' }
+      : undefined;
+  const normalized = (values) =>
+    (values ?? []).map((value) => normalizePlatformKey(value.toLowerCase()));
+  const selected = normalized(evidence.selectedPlatforms);
+  const groups = (evidence.platformGroups ?? []).filter((group) =>
+    normalized(group.platforms).includes(platform),
+  );
+  if (
+    (selected.length && !selected.includes(platform)) ||
+    groups.some((group) => !normalized(group.visible).includes(platform))
+  )
+    return { status: 'unverified', reason: 'page-platform-mismatch' };
+  if (!selected.includes(platform) && !groups.length)
+    return { status: 'unverified', reason: 'page-platform-evidence-missing' };
   return undefined;
 }
 
@@ -801,7 +892,7 @@ export async function navigateBrowserTarget(driver, target, result) {
 export async function verifyBrowserTargets(urls, options = {}) {
   const results = new Map();
   const targets = [...new Set(urls)];
-  const driver = await createDriver(options);
+  const driver = options.driver ?? (await createDriver(options));
   try {
     for (const target of targets) {
       let result = {
@@ -811,16 +902,16 @@ export async function verifyBrowserTargets(urls, options = {}) {
         checkedAt: new Date().toISOString(),
       };
       try {
-        const expected = new URL(target, options.origin);
+        const entry = new URL(target, options.origin);
+        const expected = new URL(
+          options.expectedUrls?.get(target) ?? target,
+          options.origin,
+        );
         if (!['http:', 'https:'].includes(expected.protocol))
           throw new Error('unsupported-url');
         const internal =
           options.origin && expected.origin === new URL(options.origin).origin;
-        let evidence = await navigateBrowserTarget(
-          driver,
-          expected.href,
-          result,
-        );
+        let evidence = await navigateBrowserTarget(driver, entry.href, result);
         if (internal) evidence = await driver.navigationSettle(expected.hash);
         let fragment;
         try {
@@ -832,10 +923,26 @@ export async function verifyBrowserTargets(urls, options = {}) {
         // Observe that direct-navigation behavior without clicking any controls.
         const fragmentDeadline = Date.now() + (options.timeoutMs ?? 15000);
         while (
-          fragment &&
-          !fragment.startsWith('/') &&
+          (fragment ||
+            (internal &&
+              getPlatformForUrl(
+                expected,
+                options.platformIndex ?? { targets: {}, platforms: {} },
+              ))) &&
+          !fragment?.startsWith('/') &&
           !browserNavigationFailure(evidence) &&
-          browserFragmentFailure(fragment, evidence, expected.href) &&
+          (browserFragmentFailure(
+            fragment,
+            evidence,
+            expected.href,
+            options.platformIndex,
+          ) ||
+            (internal &&
+              browserPlatformFailure(
+                evidence,
+                expected.href,
+                options.platformIndex,
+              ))) &&
           Date.now() < fragmentDeadline
         ) {
           await sleep(
@@ -850,6 +957,8 @@ export async function verifyBrowserTargets(urls, options = {}) {
         result.hasPlatformPanels = evidence.hasPlatformPanels;
         result.targetPlatforms = evidence.targetPlatforms;
         result.sharedTarget = evidence.sharedTarget;
+        result.selectedPlatforms = evidence.selectedPlatforms;
+        result.platformGroups = evidence.platformGroups;
         const navigationFailure = browserNavigationFailure(evidence);
         if (navigationFailure) Object.assign(result, navigationFailure);
         else if (
@@ -875,13 +984,42 @@ export async function verifyBrowserTargets(urls, options = {}) {
         else if (
           internal &&
           (!evidence.hasDocsBody ||
-            !matchesBrowserPage(evidence, expected.href))
+            !matchesBrowserPage(evidence, expected.href, {
+              requireHash: Boolean(
+                options.platformIndex &&
+                  getPlatformForUrl(expected, options.platformIndex),
+              ),
+            }))
         )
           result.reason = 'browser-page-identity-or-body-missing';
-        else if (browserFragmentFailure(fragment, evidence, expected.href))
+        else if (
+          internal &&
+          browserPlatformFailure(evidence, expected.href, options.platformIndex)
+        )
           Object.assign(
             result,
-            browserFragmentFailure(fragment, evidence, expected.href),
+            browserPlatformFailure(
+              evidence,
+              expected.href,
+              options.platformIndex,
+            ),
+          );
+        else if (
+          browserFragmentFailure(
+            fragment,
+            evidence,
+            expected.href,
+            options.platformIndex,
+          )
+        )
+          Object.assign(
+            result,
+            browserFragmentFailure(
+              fragment,
+              evidence,
+              expected.href,
+              options.platformIndex,
+            ),
           );
         else {
           if (evidence.accessChallenge) result.reason = 'access-challenge';

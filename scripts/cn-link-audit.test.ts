@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, expect, it } from 'vitest';
 import {
   formatCsv,
@@ -220,7 +221,10 @@ describe('audit integration', () => {
       setup.inventory.links[0].kind = 'resource';
       setup.site.links[0].kind = 'resource';
       fs.mkdirSync(path.join(setup.site.buildRoot, 'assets'));
-      fs.writeFileSync(path.join(setup.site.buildRoot, 'assets/example.png'), body);
+      fs.writeFileSync(
+        path.join(setup.site.buildRoot, 'assets/example.png'),
+        body,
+      );
 
       const report = await runAudit({
         ...setup,
@@ -895,3 +899,242 @@ it.each(['all', 'fragment'])(
     expect(report.coverage.checkedPages).toBe(missing === 'all' ? 0 : 1);
   },
 );
+
+describe('platform query HTTP identity', () => {
+  it('rejects a real 302 that silently changes iOS to Android with identical HTML', async () => {
+    const { createServer } = await import('node:http');
+    const html =
+      '<article data-static-docs-body><h1>Guide</h1><p>Same HTML</p></article>';
+    const server = createServer((request, response) => {
+      if (request.url === '/ai?platform=ios') {
+        response.writeHead(302, { location: '/ai?platform=android' });
+        response.end();
+        return;
+      }
+      response.writeHead(200, { 'content-type': 'text/html' });
+      response.end(html);
+    });
+    await new Promise<void>((resolve) =>
+      server.listen(0, '127.0.0.1', resolve),
+    );
+    const address = server.address();
+    if (!address || typeof address === 'string')
+      throw new Error('Missing port');
+    try {
+      const setup = fixture('/ai?platform=ios');
+      const page = setup.site.pages.get('/ai');
+      if (page) page.digest = createHash('sha256').update(html).digest('hex');
+      const report = await runAudit({
+        ...setup,
+        mode: 'full',
+        origin: `http://127.0.0.1:${address.port}`,
+        retries: 0,
+      });
+      expect(report.summary.status).toBe('INCOMPLETE');
+      expect(
+        report.records.find((row) => row.source === 'source'),
+      ).toMatchObject({
+        reason: 'unexpected-redirect-target',
+        status: 'unverified',
+      });
+    } finally {
+      await new Promise<void>((resolve) => server.close(() => resolve()));
+    }
+  });
+
+  it.each([
+    ['?mode=compact&tag=a&tag=b', '?tag=b&mode=compact&tag=a', 'PASS'],
+    ['?mode=compact&tag=a&tag=a', '?mode=compact&tag=a', 'INCOMPLETE'],
+    ['?mode=compact', '?mode=wide', 'INCOMPLETE'],
+  ])(
+    'compares business query multiplicities ignoring order: %s -> %s',
+    async (query, finalQuery, status) => {
+      const report = await runAudit({
+        ...fixture(`/ai${query}`),
+        mode: 'full',
+        origin: 'https://preview.example',
+        networkProbe: async (urls: string[]) => {
+          const rows = await successfulProbe(urls);
+          const row = rows.get(`https://preview.example/ai${query}`);
+          if (row) row.finalUrl = `https://preview.example/ai${finalQuery}`;
+          return rows;
+        },
+      });
+      expect(report.summary.status).toBe(status);
+    },
+  );
+
+  it.each(['/ai?platform=ios', '/ai/ios', '/ai/ios?platform=android'])(
+    'requires browser platform evidence without a hash: %s',
+    async (href) => {
+      const setup = fixture(href);
+      const base = setup.site.pages.get('/ai');
+      if (!base) throw new Error('Missing page');
+      setup.site.routes.set('/ai', {
+        canonicalPath: '/zh-CN/ai',
+        url: '/zh-CN/ai',
+      });
+      setup.site.routes.set('/ai/ios', {
+        canonicalPath: '/zh-CN/ai',
+        url: '/zh-CN/ai/ios',
+        platform: 'ios',
+      });
+      setup.site.pages.set('/ai/ios', { ...base, pageUrl: '/ai/ios' });
+      const report = await runAudit({
+        ...setup,
+        mode: 'full',
+        origin: 'https://preview.example',
+        networkProbe: async (urls: string[]) => {
+          const rows = await successfulProbe(urls);
+          const row = rows.get(`https://preview.example${href}`);
+          if (row) row.finalUrl = 'https://preview.example/ai/ios';
+          return rows;
+        },
+      });
+      expect(
+        report.records.find((row) => row.source === 'source'),
+      ).toMatchObject({
+        status: 'unverified',
+        reason: 'platform-link-needs-browser',
+        browserVerificationUrl: `https://preview.example${href}`,
+      });
+      expect(report.summary.status).toBe('INCOMPLETE');
+    },
+  );
+});
+
+it('checks the HTTP entry artifact before requiring the query-selected browser variant', async () => {
+  const setup = fixture('/ai?platform=ios&mode=compact');
+  const base = setup.site.pages.get('/ai');
+  if (!base) throw new Error('Missing page');
+  setup.site.routes.set('/ai/ios', {
+    canonicalPath: '/zh-CN/ai',
+    url: '/zh-CN/ai/ios',
+    platform: 'ios',
+  });
+  setup.site.pages.set('/ai/ios', {
+    ...base,
+    pageUrl: '/ai/ios',
+    digest: 'ios-artifact',
+  });
+  const report = await runAudit({
+    ...setup,
+    mode: 'full',
+    origin: 'https://preview.example',
+    networkProbe: async (urls: string[]) => {
+      const rows = await successfulProbe(urls);
+      const ios = rows.get('https://preview.example/ai/ios');
+      if (ios) ios.digest = 'ios-artifact';
+      return rows;
+    },
+  });
+  expect(report.records.find((row) => row.source === 'source')).toMatchObject({
+    reason: 'platform-link-needs-browser',
+  });
+});
+
+it('checks platform-query fragments against the published variant rather than the default page', async () => {
+  const setup = fixture('/ai?platform=ios#ios-only');
+  const base = setup.site.pages.get('/ai');
+  if (!base) throw new Error('Missing page');
+  setup.site.routes.set('/ai/ios', {
+    canonicalPath: '/zh-CN/ai',
+    url: '/zh-CN/ai/ios',
+    platform: 'ios',
+  });
+  setup.site.pages.set('/ai/ios', {
+    ...base,
+    pageUrl: '/ai/ios',
+    anchors: new Set(['ios-only']),
+  });
+  const report = await runAudit({
+    ...setup,
+    mode: 'full',
+    origin: 'https://preview.example',
+    networkProbe: async (urls: string[]) => {
+      const rows = await successfulProbe(urls);
+      const entry = rows.get(
+        'https://preview.example/ai?platform=ios#ios-only',
+      );
+      if (entry)
+        Object.assign(entry, {
+          status: 'unverified',
+          reason: 'fragment-not-in-html',
+        });
+      return rows;
+    },
+  });
+  expect(report.records.find((row) => row.source === 'source')).toMatchObject({
+    target: '/ai?platform=ios#ios-only',
+    reason: 'platform-link-needs-browser',
+    status: 'unverified',
+  });
+});
+
+it.each(['unknown', 'web'])(
+  'keeps an unsupported platform query unresolved: %s',
+  async (platform) => {
+    const setup = fixture(`/ai?platform=${platform}`);
+    setup.site.routes.set('/ai/ios', {
+      canonicalPath: '/zh-CN/ai',
+      url: '/zh-CN/ai/ios',
+      platform: 'ios',
+    });
+    const report = await runAudit({
+      ...setup,
+      mode: 'full',
+      origin: 'https://preview.example',
+      networkProbe: successfulProbe,
+    });
+    expect(report.records.find((row) => row.source === 'source')).toMatchObject(
+      { status: 'unverified', reason: 'unsupported-platform-query' },
+    );
+  },
+);
+
+it('leaves platform query filtering on network resources intact', async () => {
+  const setup = fixture('https://cdn.example/file.zip?platform=ios');
+  setup.inventory.links[0].kind = 'resource';
+  setup.site.links[0].kind = 'resource';
+  const report = await runAudit({
+    ...setup,
+    mode: 'full',
+    origin: 'https://preview.example',
+    networkProbe: async (urls: string[]) => {
+      expect(urls).toContain('https://cdn.example/file.zip?platform=ios');
+      const rows = await successfulProbe(urls);
+      const resource = rows.get('https://cdn.example/file.zip?platform=ios');
+      if (resource)
+        Object.assign(resource, {
+          contentType: 'application/zip',
+          hasDocsBody: false,
+        });
+      return rows;
+    },
+  });
+  expect(report.summary.status).toBe('PASS');
+});
+
+it('treats platform on the SDK download page as a business filter without requiring variant evidence', async () => {
+  const setup = fixture('/reference/sdks?product=video&platform=android');
+  const base = setup.site.pages.get('/ai');
+  if (!base) throw new Error('Missing page');
+  setup.site.routes.set('/reference/sdks', {
+    canonicalPath: '/zh-CN/reference/sdks',
+    url: '/zh-CN/reference/sdks',
+  });
+  setup.site.pages.set('/reference/sdks', {
+    ...base,
+    pageUrl: '/reference/sdks',
+  });
+  const report = await runAudit({
+    ...setup,
+    mode: 'full',
+    origin: 'https://preview.example',
+    networkProbe: successfulProbe,
+  });
+  expect(report.summary.status).toBe('PASS');
+  expect(report.records.find((row) => row.source === 'source')).toMatchObject({
+    status: 'valid',
+  });
+});
