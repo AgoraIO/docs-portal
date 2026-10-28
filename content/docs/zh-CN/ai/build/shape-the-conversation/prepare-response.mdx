@@ -1,0 +1,89 @@
+---
+title: 让智能体更快回复
+---
+
+为了缩短回复等待时间，系统可以在用户结束说话前提前请求大模型生成回复。系统支持以下两种触发方式：
+
+- `asr_auto`：由支持自动触发能力的语音识别服务根据中间识别结果触发。
+- `eager_eos`：由系统预测用户即将结束说话时触发。
+
+用户结束说话后，系统会将提前请求使用的文本与本轮语音识别得到的完整文本进行匹配。匹配成功时，系统复用提前生成的回复；匹配失败时，系统根据完整文本重新生成回复。
+
+:::info[信息]
+
+- 可能会增加请求和资源消耗。候选文本发生变化时，系统可能取消旧的提前请求并发起新的请求；如果提前生成的结果未命中，正式流程仍可能再次请求大模型，因此大模型 Token 消耗和实际请求次数可能增加。
+- 每轮不保证都能复用提前结果。如果候选文本未产生、提前请求未完成或最终文本与候选文本不匹配，系统会根据最终文本重新生成回复。
+
+:::
+
+## 前提条件
+
+- 已参考[使用 RESTful API 实现对话式 AI 引擎](/zh-CN/ai/get-started/quick-start)完成基本接入。
+
+## 实现方式
+
+### 使用 `asr_auto` 提前回复
+
+`asr_auto` 目前仅支持 `vendor` 为 `bytedance_bigmodel` 的语音识别服务。系统会根据中间识别结果自动发起提前请求。使用此方式不要求将结束说话方式设为 `semantic`。
+
+创建智能体时，在 `properties` 中加入以下配置：
+
+```json
+{
+  "properties": {
+    "parameters": {
+      "eager_llm_response": true,
+      "turn_detector": {
+        "prefetch": {
+          "trigger_by": ["asr_auto"]
+        }
+      }
+    }
+  }
+}
+```
+
+### 使用 `eager_eos` 提前回复
+
+`eager_eos` 由系统根据结束说话信号预测用户即将结束说话时触发提前请求。当前实现要求将正式结束说话方式设为 `semantic`。
+
+创建智能体时，在 `properties` 中加入以下配置：
+
+```json
+{
+  "properties": {
+    "turn_detection": {
+      "config": {
+        "end_of_speech": {
+          "mode": "semantic"
+        }
+      }
+    },
+    "parameters": {
+      "eager_llm_response": true,
+      "turn_detector": {
+        "prefetch": {
+          "trigger_by": ["eager_eos"]
+        }
+      }
+    }
+  }
+}
+```
+
+## 参数说明
+
+| 字段 | 类型 | 说明 |
+| --- | --- | --- |
+| `properties.turn_detection.config.end_of_speech.mode` | String | `eager_eos` 方式的正式结束说话检测方式。目前仅支持设为 `semantic`。`asr_auto` 不要求此项设为 `semantic`。 |
+| `properties.parameters.eager_llm_response` | Boolean | 是否开启大模型提前回复总开关。设为 `true` 才会启用提前准备，默认值为 `false`。 |
+| `properties.parameters.turn_detector.prefetch.trigger_by` | String[] | 提前回复的触发方式。可配置 `asr_auto` 或 `eager_eos`。默认值为 `asr_auto`。 |
+
+`trigger_by` 支持以下配置：
+
+| 配置 | 行为 |
+| --- | --- |
+| `["asr_auto"]` | 仅使用 ASR 自动触发提前请求。 |
+| `["eager_eos"]` | 仅使用 `eager_eos` 触发提前请求。 |
+| `["asr_auto", "eager_eos"]` | 同时使用两种触发方式。相同候选文本只发起一次请求。 |
+| 未配置或 `[]` | 使用默认值 `asr_auto`。 |
