@@ -4374,12 +4374,12 @@ setEncryptionConfig(encryptionMode: [EncryptionMode](/zh-CN/api-reference/rtc/we
 </Parameter>
 <Parameter name="secret" type="string" required>
 
-ASCII 字符。当用户设置的密码为弱密码时，SDK 会在控制台打印警告信息，提醒用户设置强密码，即密码必须包含大写字母、小写字母、数字和特殊字符，以及长度至少 8 个字符。由于浏览器加密算法限制，密钥长度不能超过 62 个字符。声网推荐你在服务端使用 OpenSSL 生成密钥，详见[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption?platform=web)。
+ASCII 字符。当用户设置的密码为弱密码时，SDK 会在控制台打印警告信息，提醒用户设置强密码，即密码必须包含大写字母、小写字母、数字和特殊字符，以及长度至少 8 个字符。由于浏览器加密算法限制，密钥长度不能超过 62 个字符。声网推荐你在服务端使用 OpenSSL 生成密钥，详见[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption/web)。
 
 </Parameter>
 <Parameter name="salt" type="Uint8Array" optional>
 
-盐值，仅当加密模式为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"` 时有效。声网推荐你在服务端使用 OpenSSL 生成盐值，详见[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption?platform=web)。
+盐值，仅当加密模式为 `"aes-128-gcm2"` 或 `"aes-256-gcm2"` 时有效。声网推荐你在服务端使用 OpenSSL 生成盐值，详见[媒体流加密](/zh-CN/realtime-media/rtc/build/advanced-channel/channel-encryption/web)。
 
 </Parameter>
 <Parameter name="encryptDataStream" type="boolean" optional>

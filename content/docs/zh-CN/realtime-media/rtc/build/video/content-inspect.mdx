@@ -48,11 +48,11 @@ description: "了解实时互动 RTC 在不同平台上的本地截图上传方�
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -266,11 +266,11 @@ mRtcEngine.enableContentInspect(true, config);
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -473,11 +473,11 @@ mRtcEngine.enableContentInspect(true, config);
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -664,7 +664,7 @@ agoraKit.enableContentInspect(true, config:inspectExtraConfig)
 
 ## 前提条件
 
-实现声网本地截图上传功能前，请确保已在你的项目中集成 Web SDK **4.14.0 或以上版本**，加入频道并发布视频流。详见[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start?platform=web)。
+实现声网本地截图上传功能前，请确保已在你的项目中集成 Web SDK **4.14.0 或以上版本**，加入频道并发布视频流。详见[快速开始](/zh-CN/realtime-media/rtc/get-started/quick-start/web)。
 
 ## 开通本地截图上传服务
 
@@ -702,11 +702,11 @@ agoraKit.enableContentInspect(true, config:inspectExtraConfig)
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -812,7 +812,7 @@ client.enableContentInspect(inspectConfig)
 | `callbackData` | String | SDK 本地截图上传模块透传的字符串数据。 |
 | `checksum` | String | 由 `callbackAddr`、`code`、`object` 和 `requestId` 四个参数值计算出的 MD5 值，用于校验此次回调通知是否来自于本地截图上传服务。 |
 | `object` | String | <Slot name="content-inspect-javascript-markdown-1-5-2" /> |
-| `code` | Number | 此次截图的状态码。`200` 表示截图完成。其它详见 [HTTP 状态码](#http-状态码)。 |
+| `code` | Number | 此次截图的状态码。`200` 表示截图完成。其它详见 [HTTP 状态码](#http-状态码-3)。 |
 | `msg` | String | 此次截图的状态。`"Supervise complete"` 表示此次截图完成。 |
 | `channelName` | String | 此次被截图用户所属的频道名。与 `object.cname` 一致。 |
 | `userId` | String | 此次被截图用户的 user ID。与 `object.uid` 一致。 |
@@ -929,11 +929,11 @@ client.enableContentInspect(inspectConfig)
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -1156,11 +1156,11 @@ void CMainFrame::OnBtnEnableContentInspect() {
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -1388,11 +1388,11 @@ rtcEngine.enableContentInspect(
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -1613,11 +1613,11 @@ private void OnStartButtonClick()
 
 - **截图回调地址**：截图回调地址，用于接收本地截图上传结果的服务器地址。
 - **存储**：第三方云存储供应商。请选择 AWS。
-- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **区域**：第三方云存储数据中心区域设置，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Access Key**：String 类型，第三方云存储的 access key。在一般情况下，建议提供只写权限的访问密钥。
 - **Secret Key**：String 类型，第三方云存储的 secret key。
 - **Bucket name**：String 类型，第三方云存储的 bucket 名称，bucket 名称需要符合对应第三方云存储服务的命名规则。
-- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region)。
+- **End point**：指定 bucket 的访问域名 (Endpoint)，详见 [AWS 官方文档](https://docs.aws.amazon.com/general/latest/gr/s3.html)。
 - **Filename prefix**：（选填）String 类型，截图在第三方云存储中的存储位置。举个例子，`fileNamePrefix` = `directory1/directory2`，将在截图文件名前加上前缀 "`directory1/directory2/`"，即 `directory1/directory2/xxx.jpg`。前缀长度（包括斜杠）不得超过 128 个字符。字符串中不得出现下划线、括号等符号字符。以下为支持的字符集范围：
   - 26 个小写英文字母 a-z
   - 26 个大写英文字母 A-Z
@@ -1773,7 +1773,7 @@ rtcEngine.enableContentInspect(
 
 <Cards>
   <Card title={<RepositoryCardTitle provider="gitee">ChannelMediaRelay</RepositoryCardTitle>} href="https://gitee.com/agoraio-community/react-native-agora/tree/main/example/src/examples/advanced/ChannelMediaRelay/ChannelMediaRelay.tsx" />
-  <Card title={<RepositoryCardTitle provider="github">ChannelMediaRelay</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/example/src/examples/advanced/ChannelMediaRelay/ChannelMediaRelay.tsx" />
+  <Card title={<RepositoryCardTitle provider="github">ChannelMediaRelay</RepositoryCardTitle>} href="https://github.com/AgoraIO-Extensions/react-native-agora/blob/main/examples/legacy/src/examples/advanced/ChannelMediaRelay/ChannelMediaRelay.tsx" />
 </Cards>
 
 ### API 参考

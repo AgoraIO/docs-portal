@@ -4,7 +4,7 @@
   "sourceRepository": "AgoraIO/shengwang-doc-source",
   "sourceBranch": "master",
   "sourceBase": "427a27358efd3f2eeb1b9dc6e841e828b9a53366",
-  "sourceHead": "ffdeb9142617c117fc25803dd47f01b7642c99fc",
+  "sourceHead": "72dd878e3703f154f26d9fb1bf5274b465a6c2cb",
   "previousTargetPr": 1291,
   "previousTargetMerge": "6b9a602e83a9a1bcd112c0856fe77e32aa7ff369",
   "targetRepository": "AgoraIO/docs-portal",
@@ -15,22 +15,36 @@
   "targetPrUrl": "https://github.com/AgoraIO/docs-portal/pull/1338",
   "implementationCommit": "e2d6a9cf59554161c5c69252e1ab53ccbee0655a",
   "status": "implemented-pending-merge",
-  "verifiedTargetTip": "204c5de2412c8a0ea0873f6535dc8e9187cfac2c",
-  "targetTipOverlap": "none; only two IoT API type-link files added after fixed target; merge-tree verified without conflicts",
+  "verifiedTargetTip": "d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1",
+  "targetTipOverlap": "44 content conflicts resolved; kept newest complete source API and still-applicable upstream link fixes, routing and query behavior; integrated validation passed",
   "verification": {
-    "mdxCompiled": 559,
+    "status": "passed-with-manual-follow-ups",
+    "mdxCompiled": 662,
+    "mdxScope": "initial target 3bb8afbf2 through integrated working tree, including upstream content changes",
     "apiParagraphsChecked": 3141,
     "apiTableCellsChecked": 3136,
     "guideAndManualApiExamplesChecked": 535,
     "webApiDeclarationBlocksChecked": 420,
-    "testsPassed": 4551,
+    "testsPassed": 4890,
     "testsSkipped": 2,
     "testsFailed": 0,
+    "testFiles": 311,
     "cnProductionBuild": "passed",
     "contentPayloadFiles": 6253,
     "machineReadableFiles": 7535,
     "routeHtmlFiles": 7285,
-    "builtHtmlPagesChecked": 11
+    "mappedArticlePayloadsChecked": 554,
+    "builtHtmlPagesChecked": 554,
+    "emptyBodies": 0,
+    "typesCheck": "passed",
+    "lint": {
+      "errors": 0,
+      "warnings": 19,
+      "infos": 5
+    },
+    "knownInternalReaderLinkIssues": 1,
+    "sourceHashesChecked": 1270,
+    "sourceHashMismatches": 0
   },
   "ledger": "cn-master-sync-20261028-ledger.json",
   "fileMap": "cn-master-sync-20261028-file-map.csv",
@@ -58,5 +72,201 @@
     "Upload the one dynamic-config-flow.svg figure to the Chinese image host; replace five local references only after receiving and validating the actual URL.",
     "Confirm the source HarmonyOS 0.2.11 date: release notes say October 22, while downloads say October 21.",
     "Fix the historical source FastLogger link: the retained 1.7.2 release note points at an anchor absent from the current Android API."
-  ]
+  ],
+  "apiHistoricalAdditions": [
+    {
+      "directory": "whiteboard/whiteboard-sdk/android",
+      "label": "v2.16.100",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/android/overview",
+      "placement": "append"
+    },
+    {
+      "directory": "whiteboard/whiteboard-sdk/ios",
+      "label": "v2.16.112",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/ios/docs/headers/Agora-Interactive-Whiteboard-Objective-C-Overview",
+      "placement": "append"
+    },
+    {
+      "directory": "whiteboard/whiteboard-sdk/web",
+      "label": "v2.16.53",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/javascript/overview",
+      "placement": "append"
+    },
+    {
+      "directory": "whiteboard/fastboard/android",
+      "label": "v1.7.2",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/android/fastboard-api",
+      "placement": "prepend"
+    },
+    {
+      "directory": "whiteboard/fastboard/ios",
+      "label": "v1.4.2",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/ios/fastboard-api",
+      "placement": "prepend"
+    },
+    {
+      "directory": "whiteboard/fastboard/web",
+      "label": "v1.1.0",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/javascript/fastboard-api",
+      "placement": "prepend"
+    }
+  ],
+  "sourceRelease": "0.0.537",
+  "previousVerification": {
+    "mdxCompiled": 559,
+    "apiParagraphsChecked": 3141,
+    "apiTableCellsChecked": 3136,
+    "guideAndManualApiExamplesChecked": 535,
+    "webApiDeclarationBlocksChecked": 420,
+    "testsPassed": 4551,
+    "testsSkipped": 2,
+    "testsFailed": 0,
+    "cnProductionBuild": "passed",
+    "contentPayloadFiles": 6253,
+    "machineReadableFiles": 7535,
+    "routeHtmlFiles": 7285,
+    "builtHtmlPagesChecked": 11,
+    "implementationCommit": "e2d6a9cf59554161c5c69252e1ab53ccbee0655a"
+  },
+  "targetIntegration": {
+    "upstreamCommit": "d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1",
+    "upstreamPr": 1313,
+    "mode": "merge",
+    "status": "verified-pending-merge"
+  },
+  "apiHistoricalVerification": [
+    {
+      "sourceFile": "docs-api-reference/whiteboard/_platforms_.meta.js",
+      "platform": "android",
+      "label": "v2.16.100",
+      "siteVersion": "0.0.527",
+      "targetFile": "content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/android/meta.json",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/android/overview",
+      "alreadyPresent": false,
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/android/overview",
+      "hasHtml": true,
+      "hasBody": true,
+      "byteLength": 75223,
+      "expectedVersionPresent": false,
+      "title": "Agora Interactive Whiteboard Java API Reference | 文档中心 | 声网",
+      "notFound": false,
+      "verification": "HTTP 200 and correct product API HTML title; source metadata declares SDK/archive pairing; response body does not expose a version string, so runtime SDK version not independently confirmed."
+    },
+    {
+      "sourceFile": "docs-api-reference/whiteboard/_platforms_.meta.js",
+      "platform": "ios",
+      "label": "v2.16.112",
+      "siteVersion": "0.0.527",
+      "targetFile": "content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/ios/meta.json",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/ios/docs/headers/Agora-Interactive-Whiteboard-Objective-C-Overview",
+      "alreadyPresent": false,
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/ios/docs/headers/Agora-Interactive-Whiteboard-Objective-C-Overview",
+      "hasHtml": true,
+      "hasBody": true,
+      "byteLength": 67715,
+      "expectedVersionPresent": false,
+      "title": "Agora Interactive Whiteboard Objective-C Overview Document | 文档中心 | 声网",
+      "notFound": false,
+      "verification": "HTTP 200 and correct product API HTML title; source metadata declares SDK/archive pairing; response body does not expose a version string, so runtime SDK version not independently confirmed."
+    },
+    {
+      "sourceFile": "docs-api-reference/whiteboard/_platforms_.meta.js",
+      "platform": "javascript",
+      "label": "v2.16.53",
+      "siteVersion": "0.0.527",
+      "targetFile": "content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/web/meta.json",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/javascript/overview",
+      "alreadyPresent": false,
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/whiteboard/javascript/overview",
+      "hasHtml": true,
+      "hasBody": true,
+      "byteLength": 61056,
+      "expectedVersionPresent": false,
+      "title": "Agora Interactive Whiteboard Web SDK API Reference | 文档中心 | 声网",
+      "notFound": false,
+      "verification": "HTTP 200 and correct product API HTML title; source metadata declares SDK/archive pairing; response body does not expose a version string, so runtime SDK version not independently confirmed."
+    },
+    {
+      "sourceFile": "docs-api-reference/fastboard/_platforms_.meta.js",
+      "platform": "android",
+      "label": "v1.7.2",
+      "siteVersion": "0.0.527",
+      "targetFile": "content/docs/zh-CN/api-reference/whiteboard/fastboard/android/meta.json",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/android/fastboard-api",
+      "alreadyPresent": false,
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/android/fastboard-api",
+      "hasHtml": true,
+      "hasBody": true,
+      "byteLength": 302312,
+      "expectedVersionPresent": false,
+      "title": "Fastboard Android SDK API 参考 | 文档中心 | 声网",
+      "notFound": false,
+      "verification": "HTTP 200 and correct product API HTML title; source metadata declares SDK/archive pairing; response body does not expose a version string, so runtime SDK version not independently confirmed."
+    },
+    {
+      "sourceFile": "docs-api-reference/fastboard/_platforms_.meta.js",
+      "platform": "ios",
+      "label": "v1.4.2",
+      "siteVersion": "0.0.527",
+      "targetFile": "content/docs/zh-CN/api-reference/whiteboard/fastboard/ios/meta.json",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/ios/fastboard-api",
+      "alreadyPresent": false,
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/ios/fastboard-api",
+      "hasHtml": true,
+      "hasBody": true,
+      "byteLength": 173210,
+      "expectedVersionPresent": false,
+      "title": "Fastboard iOS SDK API 参考 | 文档中心 | 声网",
+      "notFound": false,
+      "verification": "HTTP 200 and correct product API HTML title; source metadata declares SDK/archive pairing; response body does not expose a version string, so runtime SDK version not independently confirmed."
+    },
+    {
+      "sourceFile": "docs-api-reference/fastboard/_platforms_.meta.js",
+      "platform": "javascript",
+      "label": "v1.1.0",
+      "siteVersion": "0.0.527",
+      "targetFile": "content/docs/zh-CN/api-reference/whiteboard/fastboard/web/meta.json",
+      "href": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/javascript/fastboard-api",
+      "alreadyPresent": false,
+      "status": 200,
+      "contentType": "text/html; charset=UTF-8",
+      "finalUrl": "https://doc-archive.shengwang.cn/archive/0.0.527/api-ref/fastboard/javascript/fastboard-api",
+      "hasHtml": true,
+      "hasBody": true,
+      "byteLength": 283526,
+      "expectedVersionPresent": false,
+      "title": "Fastboard Web SDK API 参考 | 文档中心 | 声网",
+      "notFound": false,
+      "verification": "HTTP 200 and correct product API HTML title; source metadata declares SDK/archive pairing; response body does not expose a version string, so runtime SDK version not independently confirmed."
+    }
+  ],
+  "verificationAttempts": [
+    {
+      "check": "initial integrated full suite",
+      "result": "6 history-inventory failures; expected archive additions updated, then covered by 74 scoped and final full-suite passes"
+    },
+    {
+      "check": "full suite while build was running",
+      "result": "interrupted exit 130 after module-loading errors; not counted as pass; replaced by final serial run"
+    },
+    {
+      "check": "old-head preview workflow 40693870472",
+      "result": "cancelled because integration superseded head 5ac6ff8d2; not counted as build or deployment pass"
+    }
+  ],
+  "previewWorkflow": {
+    "status": "pending-new-head-push",
+    "region": "cn",
+    "productionDeployment": "not-requested"
+  }
 }

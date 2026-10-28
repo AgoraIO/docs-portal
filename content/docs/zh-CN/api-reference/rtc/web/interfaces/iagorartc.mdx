@@ -353,7 +353,7 @@ onAudioAutoplayFailed: function
 
 该回调在音频轨道自动播放失败的时候触发。如果短时间内有多个音频轨道对象都调用了 `play`，SDK 会触发多次 `onAudioAutoplayFailed`。
 
-音频自动播放失败是浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide#Autoplay_and_autoplay_blocking)导致的，视频轨道的播放不受此影响。
+音频自动播放失败是浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay#autoplay_and_autoplay_blocking)导致的，视频轨道的播放不受此影响。
 
 在 Agora Web SDK 中，只要用户和页面发生过一次点击交互，就会自动解锁浏览器音频自动播放的限制，所以针对音频自动播放有两种解决方案：
 
@@ -414,7 +414,7 @@ onAutoplayFailed: function
 
 SDK 在音频或视频轨道自动播放失败时触发该回调。
 
-- 音频自动播放失败是由浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Autoplay_guide#Autoplay_and_autoplay_blocking)导致的。
+- 音频自动播放失败是由浏览器的[自动播放策略](https://developer.mozilla.org/en-US/docs/Web/Media/Guides/Autoplay#autoplay_and_autoplay_blocking)导致的。
 - 在大部分浏览器中，纯视频不受到自动播放策略的限制，但是在低电量模式下的 iOS Safari 浏览器中以及开启自定义自动播放限制的 iOS `WKWebView` 中（如 iOS 微信浏览器），纯视频的自动播放也会受到限制。
 
 在 Agora Web SDK 中，只要用户和页面发生过一次点击交互，就会自动解锁浏览器音频或视频的自动播放限制，所以针对自动播放有两种解决方案：

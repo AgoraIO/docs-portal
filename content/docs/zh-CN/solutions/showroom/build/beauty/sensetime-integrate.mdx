@@ -57,7 +57,7 @@ description: "了解秀场直播在不同平台上的商汤美颜方式，包括
         ```
 
         :::warning[注意]
-        如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/declaring_repositories.html#sub:centralized-repository-declaration)，添加 Maven Central 依赖的方式可能存在差异。
+        如果你的 Android 项目设置了 [dependencyResolutionManagement](https://docs.gradle.org/current/userguide/centralizing_repositories.html)，添加 Maven Central 依赖的方式可能存在差异。
         :::
 
    2. 在 `/Gradle Scripts/build.gradle(Module: <projectname>.app)` 文件中添加如下代码，将声网 RTC SDK 集成到你的 Android 项目中：
@@ -479,7 +479,7 @@ RtcEngine.destroy()
 
 ## 实现美颜
 
-本节展示如何在直播间内实现美颜功能，参考 [API 时序图](#api-时序图)可查看总览。声网 RTC SDK 承担实时音视频的业务，商汤美颜 SDK 提供美颜功能，声网 Beauty API 封装了两个 SDK 中的 API 调用逻辑以简化你需要实现的代码逻辑。通过 Beauty API，你可以实现基础美颜功能，但是如果你还需要更丰富的美颜效果，例如贴纸、美妆风格，请直接调用美颜 SDK 中的 API。
+本节展示如何在直播间内实现美颜功能，参考 [API 时序图](#api-时序图-1)可查看总览。声网 RTC SDK 承担实时音视频的业务，商汤美颜 SDK 提供美颜功能，声网 Beauty API 封装了两个 SDK 中的 API 调用逻辑以简化你需要实现的代码逻辑。通过 Beauty API，你可以实现基础美颜功能，但是如果你还需要更丰富的美颜效果，例如贴纸、美妆风格，请直接调用美颜 SDK 中的 API。
 
 ### 1. 初始化 AgoraRtcEngineKit
 

@@ -6,6 +6,11 @@ import {
 } from '@tanstack/react-router';
 import { describe, expect, it } from 'vitest';
 import { getCnPublicRouteRewrite } from './cn-public-routing';
+import { createPlatformQueryIndex } from './platforms/query-route';
+import {
+  parseDocsSearch,
+  stringifyDocsSearch,
+} from './search/search-url-state';
 
 function fixture(entry: string, region: 'cn' | 'global' = 'cn') {
   const root = createRootRoute();
@@ -25,6 +30,48 @@ function fixture(entry: string, region: 'cn' | 'global' = 'cn') {
 }
 
 describe('CN public route navigation', () => {
+  it('normalizes query links before route matching and during SPA navigation', async () => {
+    const canonicalPath = '/zh-CN/realtime-media/rtc/guide';
+    const index = createPlatformQueryIndex(
+      ['ios', 'android'].map((platform) => ({
+        canonicalPath,
+        platform,
+        url: `${canonicalPath}/${platform}`,
+      })),
+    );
+    const router = fixture(
+      '/realtime-media/rtc/guide?platform=ios&from=legacy#details',
+    );
+    router.update({
+      rewrite: getCnPublicRouteRewrite('cn', index),
+      parseSearch: parseDocsSearch,
+      stringifySearch: stringifyDocsSearch,
+    });
+    // Use a fresh history entry after installing the rewrite in this fixture.
+    await router.navigate({
+      href: '/realtime-media/rtc/guide?platform=ios&from=legacy&tag=a&tag=b#details',
+    });
+    expect(router.state.location.pathname).toBe(`${canonicalPath}/ios`);
+    expect(router.state.location.search).toEqual({
+      from: 'legacy',
+      tag: ['a', 'b'],
+    });
+    expect(
+      new URLSearchParams(router.state.location.searchStr).getAll('tag'),
+    ).toEqual(['a', 'b']);
+    expect(router.state.location.hash).toBe('details');
+    await router.navigate({
+      to: '/$locale/$tab/$',
+      params: { locale: 'zh-CN', tab: 'realtime-media', _splat: 'rtc/guide' },
+      search: { platform: 'android', from: 'legacy' },
+    });
+    expect(router.state.location.pathname).toBe(`${canonicalPath}/android`);
+    expect(
+      new URL(router.state.location.publicHref, 'https://docs.example')
+        .pathname,
+    ).toBe('/realtime-media/rtc/guide/android');
+  });
+
   it.each([
     '/solutions/iot-apaas/reference/restful',
     '/api-reference/iot-apaas/client-api/call',

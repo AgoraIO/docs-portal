@@ -7,12 +7,12 @@ Last updated: 2026-10-28
 - Target branch: `codex/cn-newdoc-html-api-migration`.
 - Last confirmed merged incremental batch: [#1291](https://github.com/AgoraIO/docs-portal/pull/1291), squash merge `6b9a602e83a9a1bcd112c0856fe77e32aa7ff369` on 2026-10-26.
 - Effective source baseline: `427a27358efd3f2eeb1b9dc6e841e828b9a53366` (0.0.535).
-- Current pending batch: [`cn-master-sync-20261028.json`](./cn-master-sync-20261028.json), source `427a27358..ffdeb9142` (Whiteboard/Fastboard #2121 and Release 0.0.536), fixed target `3bb8afbf2a2b5dff6ec52ba39f6fd7fb7b95ba9e`.
+- Current pending batch: [`cn-master-sync-20261028.json`](./cn-master-sync-20261028.json), source `427a27358..72dd878e3` (Whiteboard/Fastboard #2121, historical API entries #2131, releases 0.0.536/0.0.537), initial fixed target `3bb8afbf2a2b5dff6ec52ba39f6fd7fb7b95ba9e`; subsequently integrated target #1313 at `d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1`.
 - Pending PR: [#1338](https://github.com/AgoraIO/docs-portal/pull/1338), working branch `codex/cn-whiteboard-hotfix-20261028`. The JSON checkpoint records final verification state; do not treat the pending source head as effective until that PR merges.
-- All 1270 source files and both source commits are recorded in [`cn-master-sync-20261028-ledger.json`](./cn-master-sync-20261028-ledger.json). Image upload and source-issue follow-ups remain explicit.
+- All 1270 source files and four source commits are recorded in [`cn-master-sync-20261028-ledger.json`](./cn-master-sync-20261028-ledger.json). Image upload and source-issue follow-ups remain explicit.
 - The two earlier AI deferrals were restored by target #1324 with hidden navigation entries. Their present-but-hidden state has been checked and preserved; they are not missing public guides in this batch.
 
-After the pending batch merges, the next source comparison may start at `ffdeb9142617c117fc25803dd47f01b7642c99fc`, carrying its image-host and source-consistency follow-ups.
+After the pending batch merges, the next source comparison may start at `72dd878e3703f154f26d9fb1bf5274b465a6c2cb`, carrying its image-host and source-consistency follow-ups.
 
 ## Previous handoff (2026-10-23; superseded)
 

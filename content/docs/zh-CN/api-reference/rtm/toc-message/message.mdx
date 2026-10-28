@@ -131,7 +131,7 @@ void publish(
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `customType` | String | 选填 | - | 用户自定义字段。仅支持 String 型。 |
 | `storeInHistory` | boolean | 选填 | `false` | <Slot name="message-android-html-1-3-4" /> |
 
@@ -252,7 +252,7 @@ void getMessages(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.android#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/android/enumv#channeltype)。 |
 | `options` | `GetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
 | `resultCallback` | `ResultCallback<GetMessagesResult>` | 必填 | - | <Slot name="message-android-html-2-4-4" /> |
 
@@ -419,7 +419,7 @@ Future<(RtmStatus, PublishResult?)> publish(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | <Slot name="message-flutter-html-0-1-4" /> |
 | `message` | String | 必填 | - | 消息负载。 |
-| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `customType` | String | 选填 | - | 用户自定义字段。仅支持字符串型。 |
 | `storeInHistory` | bool | 选填 | false | <Slot name="message-flutter-html-0-5-4" /> |
 
@@ -540,7 +540,7 @@ Future<PublishResult> publishBinaryMessage(
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | <Slot name="message-flutter-html-1-1-4" /> |
 | `message` | Uint8List | 必填 | - | 消息负载。 |
-| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 选填 | `message` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `customType` | String | 选填 | - | 用户自定义字段。仅支持字符串型。 |
 | `storeInHistory` | bool | 选填 | false | <Slot name="message-flutter-html-1-5-4" /> |
 
@@ -639,7 +639,7 @@ Future<(RtmStatus, GetMessagesResult?)> getMessages(
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | String | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.flutter#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/flutter/enumv#channeltype)。 |
 | `options` | `GetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
 
 `GetHistoryMessagesOptions` 数据类型包含以下属性：
@@ -775,7 +775,7 @@ async publish(channelName: string, message: string | Uint8Array, options: Publis
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `channelType` | `RtmChannelType` | 选填 | `MESSAGE` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 选填 | `MESSAGE` | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `customType` | string | 选填 | `''` | 用户自定义字段。仅支持字符串型。 |
 | `storeInHistory` | boolean | 选填 | `false` | <Slot name="message-harmonyos-html-1-3-4" /> |
 
@@ -912,7 +912,7 @@ async getMessages(channelName: string, channelType: RtmChannelType, options?: Ge
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | string | 必填 | - | 频道名称。 |
-| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#channeltype)。 |
+| `channelType` | `RtmChannelType` | 必填 | - | 频道类型。详见 [`RtmChannelType`](/zh-CN/api-reference/rtm/harmonyos/enumv#channeltype)。 |
 | `options` | `GetHistoryMessagesOptions` | 选填 | `{}` | 查询选项。 |
 
 `GetHistoryMessagesOptions` 数据类型包含以下属性：
@@ -1096,7 +1096,7 @@ AgoraRtmClientKit
 
 | 属性 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `customType` | NSString | 必填 | - | 用户自定义字段。仅支持 String 型。 |
 | `storeInHistory` | BOOL | 选填 | `false` | <Slot name="message-ios-html-1-3-4" /> |
 
@@ -1209,7 +1209,7 @@ AgoraRtmHistory
 | 参数 | 类型 | 是否必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `channelName` | NSString | 必填 | - | 频道名称。 |
-| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv.ios#channeltype)。 |
+| `channelType` | `AgoraRtmChannelType` | 必填 | - | 频道类型。详见 [`AgoraRtmChannelType`](/zh-CN/api-reference/rtm/ios/enumv#channeltype)。 |
 | `options` | `AgoraRtmGetHistoryMessagesOptions` | 必填 | - | 查询选项。 |
 | `completion` | `AgoraRtmGetHistoryMessagesBlock` | 选填 | - | <Slot name="message-ios-html-2-4-4" /> |
 
@@ -1683,7 +1683,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `PublishResult` 包含以下属性：
 

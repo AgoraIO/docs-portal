@@ -21,6 +21,16 @@ type ArchiveOverride = {
   href: string;
   renderedVersion: string;
 };
+const { apiHistoricalAdditions: whiteboardAdditions } = JSON.parse(
+  readFileSync('docs/migration/cn-master-sync-20261028.json', 'utf8'),
+) as {
+  apiHistoricalAdditions: {
+    directory: string;
+    label: string;
+    href: string;
+    placement: 'prepend' | 'append';
+  }[];
+};
 const { overrides } = JSON.parse(
   readFileSync(
     'docs/migration/api-reference-archive-url-overrides-20261020.json',
@@ -138,10 +148,22 @@ describe('Chinese API Reference historical archives', () => {
         versions.slice(1).map(({ label, href }) => ({ label, href })),
       ).toEqual(
         [
+          ...whiteboardAdditions
+            .filter(
+              (entry) =>
+                entry.directory === directory && entry.placement === 'prepend',
+            )
+            .map(({ label, href }) => ({ label, href })),
           ...apiHistoricalAdditions
             .filter((entry) => entry.directory === directory)
             .map(({ label, href }) => ({ label, href })),
           ...history,
+          ...whiteboardAdditions
+            .filter(
+              (entry) =>
+                entry.directory === directory && entry.placement === 'append',
+            )
+            .map(({ label, href }) => ({ label, href })),
         ].map((entry) => ({
           ...entry,
           href:

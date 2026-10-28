@@ -593,9 +593,9 @@ request(options, function (error, response) {
 编辑 `ViewController.m`，实现从添加 View、初始化 SDK 到加入房间的基本操作。你需要传入以下参数：
 
 - `appIdentifier`：互动白板项目的唯一标识符。详见[获取 AppIdentifier](/zh-CN/realtime-media/whiteboard/whiteboard-sdk/build/setup-and-access/enable-service#获取互动白板项目的安全密钥)。
-- `uuid`：房间的唯一标识符。详见[创建房间](#1-创建房间)。
+- `uuid`：房间的唯一标识符。详见[创建房间](#1-创建房间-1)。
 - `uid`：用户的唯一标识符，字符串格式，长度不能超过 1024 字节。如果你使用 2.15.0 或之后版本的 SDK，必须传入该参数；如果你使用 2.15.0 之前版本的 SDK，则不需要传入该参数。
-- `roomToken`：用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#2-生成-room-token)。
+- `roomToken`：用于鉴权的 Room Token。生成该 Room Token 使用的房间 UUID 必须和上面的房间 UUID 一致。详见[生成 Room Token](#2-生成-room-token-1)。
 - `region`：数据中心，必须和创建房间时设置的数据中心一致。
 
 ```objc tab="Objective-C"
@@ -836,7 +836,7 @@ Whiteboard iOS 2.16.147 可用 `leaveRoomWithCompletionHandler:` 等待所属 Ro
 本文介绍如何创建 Web 项目、加入白板房间，并接入多窗口、动态 PPT 和新教具。示例采用 npm 与 Vite，使用 TypeScript 编写浏览器端模块。
 
 :::warning[注意]
-由于浏览器的安全策略对除 127.0.0.1 以外的 HTTP 地址作了限制，声网互动白板 SDK 仅支持 HTTPS 协议或者 http://localhost ( http://127.0.0.1 ) ，请勿使用 HTTP 协议部署你的项目。
+由于浏览器的安全策略对除 127.0.0.1 以外的 HTTP 地址作了限制，声网互动白板 SDK 仅支持 HTTPS 协议或者 `http://localhost`（`http://127.0.0.1`） ，请勿使用 HTTP 协议部署你的项目。
 :::
 
 ## 技术原理
