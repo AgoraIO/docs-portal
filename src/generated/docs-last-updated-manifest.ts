@@ -548,7 +548,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/overview/pricing.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/overview/release-notes.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/platform/best-practices/audio-setup.mdx':
-    '2026-10-27T06:06:11.000Z',
+    '2026-10-28T13:27:15.000Z',
   'content/docs/en/ai/platform/best-practices/get-agent-state.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/best-practices/manual-turn-control.mdx':
@@ -558,7 +558,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/best-practices/optimize-latency.mdx':
     '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/best-practices/record-agent-conversation.mdx':
-    '2026-10-27T06:06:11.000Z',
+    '2026-10-28T13:27:15.000Z',
   'content/docs/en/ai/platform/best-practices/regional-restrictions.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/architecture.mdx':
@@ -591,13 +591,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/build/meta.json': '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/phone-calls/import-phone-numbers.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T13:27:15.000Z',
   'content/docs/en/ai/platform/build/phone-calls/meta.json':
     '2026-10-24T09:49:48.000Z',
   'content/docs/en/ai/platform/build/phone-calls/outbound-calls-campaigns.mdx':
-    '2026-10-24T09:49:48.000Z',
+    '2026-10-28T13:27:15.000Z',
   'content/docs/en/ai/platform/build/phone-calls/route-inbound-calls.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T13:27:15.000Z',
   'content/docs/en/ai/platform/build/send-multimodal-messages.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/asr-keywords.mdx':
@@ -635,7 +635,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
-    '2026-10-28T09:16:44.000Z',
+    '2026-10-28T13:27:15.000Z',
   'content/docs/en/ai/platform/index.mdx': '2026-10-27T09:58:06.000Z',
   'content/docs/en/ai/platform/meta.json': '2026-10-26T10:38:15.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
@@ -11903,7 +11903,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api-platform.en.yaml':
-    '2026-10-28T12:19:24.000Z',
+    '2026-10-28T13:27:15.000Z',
   'content/openapi/conversational-ai/rest-api-v3.en.yaml':
     '2026-10-18T10:19:52.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':

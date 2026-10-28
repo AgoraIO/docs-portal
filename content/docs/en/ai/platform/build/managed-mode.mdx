@@ -69,7 +69,7 @@ curl --request POST \
 
 In this example:
 
-- Each block sets `credential.mode` to `managed`. A managed block doesn't accept an `api_key`, and it doesn't need a provider endpoint `url`.
+- Each block sets `credential.mode` to `managed`. A managed block doesn't accept credential `fields`, and it doesn't need a provider endpoint `url`.
 - The `asr` block uses Deepgram Nova 3 for US English.
 - The `llm` block uses OpenAI GPT-4.1 Mini.
 - The `tts` block uses OpenAI TTS-1, with the voice in `params`.
@@ -150,7 +150,7 @@ if err != nil {
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): All examples use managed OpenAI `tts-1`, not MiniMax, because the SDKs can't set MiniMax `voice_setting.speed`, which managed MiniMax requires (SDK bug list #2). The managed OpenAI LLM fails in all three SDKs until they send `vendor` (SDK bug list #1). */}
+{/* TODO(platform-confirm): All examples use managed OpenAI `tts-1`, not MiniMax, because the TypeScript SDK can't set MiniMax `voice_setting.speed`, which MiniMax requires, and every tab builds the same agent (SDK bug list #2). The managed OpenAI LLM fails in all three SDKs until they send `vendor` (SDK bug list #1). */}
 
 You then start sessions with the agent as usual. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
 

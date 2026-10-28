@@ -4,23 +4,35 @@ description: >
  Use Smallest AI for text-to-speech (TTS) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/smallest-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/smallest-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 Smallest AI provides low-latency streaming text-to-speech (TTS) through its Lightning model family, with voices across a broad set of languages.
 
 ## Sample configuration
 
-Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Smallest AI supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure Smallest AI as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your Smallest AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Smallest AI supports BYOK only. It isn't available in managed mode. Store your Smallest AI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `smallestai` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Smallest AI API key in a secret set. In the following example, the key is stored as `smallestai` in the `support_prod` set:
 
 ```json
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.smallestai"
+    "fields": {
+      "api_key": "$secrets.support_prod.smallestai"
+    }
   },
   "vendor": "smallestai",
   "url": "https://api.smallest.ai/waves/v1/tts/live",
@@ -39,14 +51,107 @@ In the following example, the key is stored as `smallestai` in the `support_prod
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, SmallestAITTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        SmallestAITTS(
+            api_key=secret_ref("support_prod", "smallestai"),
+            url="https://api.smallest.ai/waves/v1/tts/live",
+            model="lightning_v3.1_pro",
+            voice_id="hazel",
+            sample_rate=16000,
+            speed=1.0,
+            language="zh",
+            number_pronunciation_language="zh",
+            math_notation=True,
+            pronunciation_dicts=[],
+            session_id="session_001",
+            request_id="request_001",
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, SmallestAITTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new SmallestAITTS({
+      apiKey: secretRef('support_prod', 'smallestai'),
+      url: 'https://api.smallest.ai/waves/v1/tts/live',
+      model: 'lightning_v3.1_pro',
+      voiceId: 'hazel',
+      sampleRate: 16000,
+      speed: 1.0,
+      language: 'zh',
+      numberPronunciationLanguage: 'zh',
+      mathNotation: true,
+      pronunciationDicts: [],
+      sessionId: 'session_001',
+      requestId: 'request_001',
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+sampleRate, speed, mathNotation := 16000, 1.0, true
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewSmallestAITTS(vendors.SmallestAITTSOptions{
+		APIKey:                      agentkit.SecretRef("support_prod", "smallestai"),
+		URL:                         "https://api.smallest.ai/waves/v1/tts/live",
+		Model:                       "lightning_v3.1_pro",
+		VoiceID:                     "hazel",
+		SampleRate:                  &sampleRate,
+		Speed:                       &speed,
+		Language:                    "zh",
+		NumberPronunciationLanguage: "zh",
+		MathNotation:                &mathNotation,
+		PronunciationDicts:          []string{},
+		SessionID:                   "session_001",
+		RequestID:                   "request_001",
+	}))
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go BYOK examples saved as written. */}
+
 ## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, the Smallest AI TTS class sets them from its options.
 
 <ParameterList title="tts">
   <Parameter name="vendor" type="string" required={true}>
     Set to `smallestai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     The Smallest AI streaming TTS endpoint, for example `https://api.smallest.ai/waves/v1/tts/live`.

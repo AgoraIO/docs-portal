@@ -4,23 +4,35 @@ description: >
  Use Hume AI for text-to-speech (TTS) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/humeai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/humeai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 Hume AI provides emotion-aware text-to-speech technology that generates natural, expressive voices with emotional intelligence. The platform offers both curated voices from the Voice Library and support for custom voice creation, enabling personalized audio experiences.
 
 ## Sample configuration
 
-Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Hume AI supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure Hume AI as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your Hume AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Hume AI supports BYOK only. It isn't available in managed mode. Store your Hume AI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `humeai` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your Hume AI API key. In the following example, the key is stored as `humeai` in the `support_prod` set:
 
 ```json
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.humeai"
+    "fields": {
+      "key": "$secrets.support_prod.humeai"
+    }
   },
   "vendor": "humeai",
   "url": "https://api.hume.ai",
@@ -33,16 +45,91 @@ In the following example, the key is stored as `humeai` in the `support_prod` se
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, HumeAITTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        HumeAITTS(
+            key=secret_ref("support_prod", "humeai"),
+            base_url="https://api.hume.ai",
+            voice_id="<your_voice_id>",
+            provider="HUME_AI",
+            speed=1.0,
+            trailing_silence=0.35,
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, HumeAITTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new HumeAITTS({
+      key: secretRef('support_prod', 'humeai'),
+      baseUrl: 'https://api.hume.ai',
+      voiceId: '<your_voice_id>',
+      provider: 'HUME_AI',
+      speed: 1.0,
+      trailingSilence: 0.35,
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+speed, trailingSilence := 1.0, 0.35
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewHumeAITTS(vendors.HumeAITTSOptions{
+		Key:             agentkit.SecretRef("support_prod", "humeai"),
+		BaseURL:         "https://api.hume.ai",
+		VoiceID:         "<your_voice_id>",
+		Provider:        "HUME_AI",
+		Speed:           &speed,
+		TrailingSilence: &trailingSilence,
+	}))
+```
+
+</TabsContent>
+</Tabs>
+
 {/* TODO(platform-confirm): The Voice Agent API takes the Hume AI endpoint as `params.base_url`. Confirm that the Platform takes it as the block `url`, and that it's optional. */}
 
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go examples saved as written, and the stored `tts` block matched the REST example. The SDKs send the endpoint option as the block's `url`. */}
+
 ## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, `HumeAITTS` sets them from its options.
 
 <ParameterList title="tts">
   <Parameter name="vendor" type="string" required={true}>
     Set to `humeai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Hume AI API key. Get your API key from the Hume AI console.
+    Set `mode` to `byok` and `fields.key` to a `$secrets.<set>.<key>` reference to your Hume AI API key. Get your API key from the Hume AI console.
   </Parameter>
   <Parameter name="url" type="string" required={false}>
     The base URL for the Hume AI API. For example, `https://api.hume.ai`.

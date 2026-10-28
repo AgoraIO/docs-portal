@@ -4,23 +4,35 @@ description: >
  Use OpenAI for speech recognition (ASR) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/openai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/openai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 OpenAI provides real-time speech-to-text with low latency and reliable performance, making it ideal for conversational AI applications.
 
 ## Sample configuration
 
-Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). OpenAI ASR supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure OpenAI ASR as the agent's ASR when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your OpenAI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+OpenAI ASR supports BYOK only. It isn't available in managed mode. Store your OpenAI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `openai` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your OpenAI API key in a secret set. In the following example, the key is stored as `openai` in the `support_prod` set:
 
 ```json
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.openai"
+    "fields": {
+      "api_key": "$secrets.support_prod.openai"
+    }
   },
   "vendor": "openai",
   "language": "en-US",
@@ -34,16 +46,84 @@ In the following example, the key is stored as `openai` in the `support_prod` se
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, OpenAISTT, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(
+        OpenAISTT(
+            api_key=secret_ref("support_prod", "openai"),
+            model="gpt-4o-mini-transcribe",
+            prompt="Please transcribe the following audio into text. Output in English.",
+            language="en",
+        )
+    )
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, OpenAISTT, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(
+    new OpenAISTT({
+      apiKey: secretRef('support_prod', 'openai'),
+      model: 'gpt-4o-mini-transcribe',
+      prompt: 'Please transcribe the following audio into text. Output in English.',
+      language: 'en',
+    }),
+  )
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewOpenAISTT(vendors.OpenAISTTOptions{
+		APIKey:   agentkit.SecretRef("support_prod", "openai"),
+		Model:    "gpt-4o-mini-transcribe",
+		Prompt:   "Please transcribe the following audio into text. Output in English.",
+		Language: "en",
+	})).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+</Tabs>
+
 {/* TODO(platform-confirm): OpenAI ASR sets its model and language inside `params.input_audio_transcription`. Confirm whether the Platform expects them there, or in the block-level `model` and `language` fields. */}
 
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example. The SDKs put the model, prompt, and language in `params.input_audio_transcription`. TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
+
 ## Key parameters
+
+The `asr` block takes the following fields. In the SDKs, `OpenAISTT` sets the transcription model, prompt, and language in `params.input_audio_transcription`, and passes any other OpenAI ASR parameters from its additional parameters option to `params`.
 
 <ParameterList title="asr" required={true}>
   <Parameter name="vendor" type="string" required={true}>
     Set to `openai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    How the agent authenticates with OpenAI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your OpenAI API key.
+    How the agent authenticates with OpenAI. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your OpenAI API key.
   </Parameter>
   <Parameter name="language" type="string" required={false}>
     The language of the user's speech, for example, `en-US`.

@@ -69,10 +69,11 @@ paths:
           title: Keep provider keys in secrets
           position: after-description
           markdown: >-
-            Set `credential` on each pipeline stage. With `byok`, pass your provider key in
-            `credential.api_key` as a `$secrets.<set>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). Agora checks
-            that the reference exists when you create the agent. Keep credentials out of `params`.
+            Set `credential` on each pipeline stage. With `byok`, pass your provider keys in
+            `credential.fields` as `$secrets.<set>.<key>` references to a [secret
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). Most
+            providers take one field, `api_key`. Agora checks that each reference exists when you
+            create the agent. Keep credentials out of `params`.
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/IdempotencyKey"
@@ -110,7 +111,8 @@ paths:
                 llm:
                   credential:
                     mode: byok
-                    api_key: $secrets.support_prod.llm
+                    fields:
+                      api_key: $secrets.support_prod.llm
                   vendor: openai
                   style: openai
                   model: <model_name>
@@ -641,7 +643,8 @@ paths:
                   llm:
                     credential:
                       mode: byok
-                      api_key: $secrets.support_prod.llm
+                      fields:
+                        api_key: $secrets.support_prod.llm
                     vendor: openai
                     style: openai
                     model: <model_name>
@@ -1067,8 +1070,8 @@ paths:
         - position: after-description
           markdown: >-
             Use secret sets to keep provider API keys out of your agent configurations. To use a
-            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.api_key`. Agora
-            resolves references when each session starts.
+            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.fields`, for example
+            in `credential.fields.api_key`. Agora resolves references when each session starts.
 
 
             If a set with the same name exists, the request fails with `SecretSetAlreadyExists`.
@@ -2848,17 +2851,26 @@ components:
           description: |-
             The credential mode:
 
-            - `byok`: Bring your own key. Pass your provider API key in `api_key`.
-            - `managed`: Agora provides the provider authentication. Don't pass `api_key`.
-        api_key:
-          type: string
-          minLength: 1
+            - `byok`: Bring your own key. Pass your provider credentials in `fields`.
+            - `managed`: Agora provides the provider authentication. Don't pass `fields`.
+        fields:
+          type: object
+          minProperties: 1
+          maxProperties: 8
+          additionalProperties:
+            type: string
+            minLength: 1
           writeOnly: true
           description: >-
-            Your provider API key, as a `$secrets.<set_name>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set) or as the key
-            itself. Required when `mode` is `byok`, and not accepted when `mode` is `managed`. Agora
-            resolves references when each session starts. This value is never returned.
+            Your provider credentials, keyed by the provider's field name. Most providers take one
+            field, `api_key`. Some use other names, such as `key` or `credentials`, or take more than
+            one field, such as an AWS access key ID and secret access key. Each model page lists its
+            provider's fields. In an agent, each value must be a `$secrets.<set_name>.<key>`
+            reference to a [secret
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). An
+            ephemeral session also accepts the values themselves. Required when `mode` is `byok`,
+            and not accepted when `mode` is `managed`. Agora resolves references when each session
+            starts. The values are never returned.
     StageHeaders:
       type: object
       additionalProperties:

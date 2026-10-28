@@ -4,23 +4,35 @@ description: >
  Use Smallest AI for speech recognition (ASR) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/smallest-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/asr/smallest-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 Smallest AI provides real-time streaming transcription through its Pulse model. Use it as the ASR model in a cascading pipeline with any supported LLM and TTS vendor.
 
 ## Sample configuration
 
-Add an `asr` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Smallest AI supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure Smallest AI as the agent's ASR when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your Smallest AI API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Smallest AI supports BYOK only. It isn't available in managed mode. Store your Smallest AI API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `smallestai` in the `support_prod` set. Only `credential` and `vendor` are required:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Smallest AI API key in a secret set. In the following example, the key is stored as `smallestai` in the `support_prod` set. Only `credential` and `vendor` are required:
 
 ```json
 "asr": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.smallestai"
+    "fields": {
+      "api_key": "$secrets.support_prod.smallestai"
+    }
   },
   "vendor": "smallestai",
   "language": "zh",
@@ -48,18 +60,143 @@ In the following example, the key is stored as `smallestai` in the `support_prod
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+The SDK converts the boolean options to the `"true"` and `"false"` strings that Smallest AI expects.
+
+```python
+from agora_agent import Agent, SmallestAISTT, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(
+        SmallestAISTT(
+            api_key=secret_ref("support_prod", "smallestai"),
+            language="zh",
+            url="wss://api.us.smallest.ai/waves/v1/stt/live",
+            sample_rate=16000,
+            encoding="linear16",
+            word_timestamps=True,
+            sentence_timestamps=True,
+            diarize=True,
+            vad_events=True,
+            endpointing=True,
+            eou_timeout_ms=480,
+            format=True,
+            finalize_on_words=True,
+            max_words="100",
+            punctuate=True,
+            capitalize=True,
+            itn_normalize=True,
+            full_transcript=True,
+            keywords="Codex:2,Smallest AI:2",
+            redact_pii=False,
+            redact_pci=False,
+        )
+    )
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+The SDK converts the boolean options to the `"true"` and `"false"` strings that Smallest AI expects.
+
+```ts
+import { Agent, SmallestAISTT, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(
+    new SmallestAISTT({
+      apiKey: secretRef('support_prod', 'smallestai'),
+      language: 'zh',
+      url: 'wss://api.us.smallest.ai/waves/v1/stt/live',
+      sampleRate: 16000,
+      encoding: 'linear16',
+      wordTimestamps: true,
+      sentenceTimestamps: true,
+      diarize: true,
+      vadEvents: true,
+      endpointing: true,
+      eouTimeoutMs: 480,
+      format: true,
+      finalizeOnWords: true,
+      maxWords: '100',
+      punctuate: true,
+      capitalize: true,
+      itnNormalize: true,
+      fullTranscript: true,
+      keywords: 'Codex:2,Smallest AI:2',
+      redactPii: false,
+      redactPci: false,
+    }),
+  )
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The SDK converts the boolean options to the `"true"` and `"false"` strings that Smallest AI expects.
+
+```go
+sampleRate, eouTimeoutMs := 16000, 480
+
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewSmallestAISTT(vendors.SmallestAISTTOptions{
+		APIKey:             agentkit.SecretRef("support_prod", "smallestai"),
+		Language:           "zh",
+		URL:                "wss://api.us.smallest.ai/waves/v1/stt/live",
+		SampleRate:         &sampleRate,
+		Encoding:           "linear16",
+		WordTimestamps:     true,
+		SentenceTimestamps: true,
+		Diarize:            true,
+		VADEvents:          true,
+		Endpointing:        true,
+		EOUTimeoutMs:       &eouTimeoutMs,
+		Format:             true,
+		FinalizeOnWords:    true,
+		MaxWords:           "100",
+		Punctuate:          true,
+		Capitalize:         true,
+		ITNNormalize:       true,
+		FullTranscript:     true,
+		Keywords:           "Codex:2,Smallest AI:2",
+	})).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+</Tabs>
+
 :::info[Info]
 Smallest AI expects its boolean options as the strings `"true"` and `"false"`, as shown in the example.
 :::
 
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing on 2026-10-28. All three SDKs saved the BYOK example, with `url` at the block level and the boolean options sent as strings. TypeScript and Python also set the block-level `language` to `en-US` (their default interaction language) instead of the vendor's language, while Go leaves it unset (SDK bug list #31). */}
+
 ## Key parameters
+
+The `asr` block takes the following fields. In the SDKs, `SmallestAISTT` sets them from its options, and passes any other Smallest AI parameters from its additional parameters option to `params`.
 
 <ParameterList title="asr" required={true}>
  <Parameter name="vendor" type="string" required={true}>
  Set to `smallestai`.
  </Parameter>
  <Parameter name="credential" type="object" required={true}>
- How the agent authenticates with Smallest AI. Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
+ How the agent authenticates with Smallest AI. Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Smallest AI API key.
  </Parameter>
  <Parameter name="language" type="string" required={false}>
   The language code for speech recognition, for example, `zh`.
