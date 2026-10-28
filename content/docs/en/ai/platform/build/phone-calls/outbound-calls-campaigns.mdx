@@ -65,7 +65,7 @@ In `call_policy`, set limits and behavior for the call. If you omit a limit, it 
 | `max_call_duration_seconds` | The maximum length of the call in seconds, from when it's answered. The session's `lifecycle` limits can end the call earlier. |
 | `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. In a campaign, the minimum is `30000`. |
 | `voicemail` | What the agent does when it reaches voicemail: `hangup` ends the call, and `continue` keeps it going. |
-| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
+| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
 | `transfer` | Lets the agent transfer the call to a person at `phone_number`. The agent decides when to transfer based on `description`, and then leaves the call. |
 
 ## Run a campaign

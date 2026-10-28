@@ -55,8 +55,7 @@ The `call_policy` in `inbound` sets limits and behavior for inbound calls:
     "max_call_duration_seconds": 1800,
     "max_silence_duration_ms": 60000,
     "end_call": {
-      "on_user_request": true,
-      "on_fax": true
+      "on_user_request": true
     }
   }
 }
@@ -66,7 +65,7 @@ The `call_policy` in `inbound` sets limits and behavior for inbound calls:
 |---|---|
 | `max_call_duration_seconds` | The maximum length of a call in seconds, from when it's answered. |
 | `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
-| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
+| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
 
 If you omit a limit, it doesn't apply. Transferring calls to a person isn't available in the Preview.
 

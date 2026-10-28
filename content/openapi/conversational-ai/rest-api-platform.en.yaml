@@ -1371,7 +1371,6 @@ paths:
                   max_silence_duration_ms: 60000
                   end_call:
                     on_user_request: true
-                    on_fax: true
       responses:
         "201":
           description: The number was created. The response body contains the saved number.
@@ -1402,7 +1401,6 @@ paths:
                     max_silence_duration_ms: 60000
                     end_call:
                       on_user_request: true
-                      on_fax: true
                     transfer:
                       phone_number: "+14155550199"
                       description: when the caller asks for a human
@@ -3373,10 +3371,6 @@ components:
           type: boolean
           default: false
           description: End the call when voicemail is on the other end.
-        on_fax:
-          type: boolean
-          default: false
-          description: End the call when a fax machine is on the other end.
         on_ai_assistant:
           type: boolean
           default: false
