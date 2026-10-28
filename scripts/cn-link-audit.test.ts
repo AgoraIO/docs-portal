@@ -207,6 +207,52 @@ describe('audit integration', () => {
     },
   );
 
+  it.each([
+    { body: '', reason: 'empty-local-resource' },
+    {
+      body: '<!doctype html><html><body>Fallback</body></html>',
+      reason: 'html-in-local-resource',
+    },
+  ])(
+    'retains $reason despite successful HTTP evidence',
+    async ({ body, reason }) => {
+      const setup = fixture('/assets/example.png');
+      setup.inventory.links[0].kind = 'resource';
+      setup.site.links[0].kind = 'resource';
+      fs.mkdirSync(path.join(setup.site.buildRoot, 'assets'));
+      fs.writeFileSync(path.join(setup.site.buildRoot, 'assets/example.png'), body);
+
+      const report = await runAudit({
+        ...setup,
+        mode: 'full',
+        origin: 'https://preview.example',
+        networkProbe: async (urls: string[]) => {
+          const rows = await successfulProbe(urls);
+          for (const [url, row] of rows)
+            if (url.endsWith('.png'))
+              Object.assign(row, {
+                contentType: 'image/png',
+                reason: 'reachable-resource',
+                hasDocsBody: false,
+              });
+          return rows;
+        },
+      });
+
+      expect(report.summary.status).toBe('INCOMPLETE');
+      const resources = report.records.filter((row) => row.resourceTarget);
+      expect(resources).toHaveLength(2);
+      for (const row of resources)
+        expect(row).toMatchObject({
+          status: 'unverified',
+          reason,
+          httpStatus: 200,
+          networkStatus: 'valid',
+          networkReason: 'reachable-resource',
+        });
+    },
+  );
+
   it('retains a missing built resource even when HTTP evidence is unavailable', async () => {
     const setup = fixture('/assets/deleted.png');
     setup.inventory.links[0].kind = 'resource';

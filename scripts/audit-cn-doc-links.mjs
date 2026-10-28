@@ -570,7 +570,10 @@ export async function runAudit({
       if (!row.target || row.status === 'not-applicable') continue;
       const url = networkUrlFor(row, origin);
       if (!url) continue;
-      const localFailure = row.status === 'broken';
+      const localFailure =
+        row.status === 'broken' ||
+        (row.resourceTarget &&
+          ['empty-local-resource', 'html-in-local-resource'].includes(row.reason));
       const evidence = network.get(url);
       if (!evidence) {
         row.networkStatus = 'unverified';
