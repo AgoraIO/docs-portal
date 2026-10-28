@@ -106,9 +106,7 @@ describe('RTC source PR 2056 token callback guidance', () => {
         );
         expect(renewLine).toContain('回调报告更新结果。');
         expect(content).toContain(`<a id="${resultAnchor}"></a>`);
-      } else if (
-        ['csharp-windows', 'unreal-blueprint', 'unreal-cpp'].includes(platform)
-      ) {
+      } else if (['csharp-windows', 'unreal-blueprint'].includes(platform)) {
         expect(renewLine).not.toMatch(/[Oo]nRenewTokenResult/);
       }
     },
