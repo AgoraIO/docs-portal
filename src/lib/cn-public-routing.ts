@@ -1,4 +1,8 @@
 import type { LocationRewrite } from '@tanstack/react-router';
+import {
+  type PlatformQueryIndex,
+  resolvePlatformQueryUrl,
+} from './platforms/query-route';
 import { toCnPublicSearchUrl } from './search/cn-search-urls.mjs';
 import type { DocsRegion } from './site-region';
 
@@ -12,13 +16,15 @@ export function isCnPublicDocsPath(pathname: string) {
 
 export function getCnPublicRouteRewrite(
   region: DocsRegion,
+  platformIndex?: PlatformQueryIndex,
 ): LocationRewrite | undefined {
-  if (region !== 'cn') return undefined;
+  if (region !== 'cn' && !platformIndex) return undefined;
 
   return {
     input: ({ url }) => {
       // Content payloads and route parameters keep their existing locale.
       if (
+        region === 'cn' &&
         !url.pathname.startsWith('/zh-CN/') &&
         (url.pathname === '/search' ||
           url.pathname === '/search/' ||
@@ -26,12 +32,18 @@ export function getCnPublicRouteRewrite(
       ) {
         url.pathname = `/zh-CN${url.pathname}`;
       }
-      return url;
+      return platformIndex
+        ? (resolvePlatformQueryUrl(url, platformIndex) ?? url)
+        : url;
     },
     output: ({ url }) => {
+      const result = platformIndex
+        ? (resolvePlatformQueryUrl(url, platformIndex) ?? url)
+        : url;
       // Change only the path. Search state and heading fragments stay intact.
-      url.pathname = toCnPublicSearchUrl(url.pathname);
-      return url;
+      if (region === 'cn')
+        result.pathname = toCnPublicSearchUrl(result.pathname);
+      return result;
     },
   };
 }

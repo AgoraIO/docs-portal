@@ -99,8 +99,8 @@ void StreamChannel.joinTopic(
 
 |      属性       |     类型     | 是否必填 | 默认值               |    描述    |
 | ------------ | -------------- | ----- | ---------------- | ----------- |
-|  `messageQos`   | `RtmMessageQos` |   选填   | `UNORDERED` |                  定义此 Topic 中传输数据是否保序。详见 [`RtmMessageQos`](/zh-CN/api-reference/rtm/ios/enumv.android#messageqos)。                  |
-|   `priority`    |  `RtmMessagePriority`  |   选填   | `NORMAL`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RtmMessagePriority`](/zh-CN/api-reference/rtm/ios/enumv.android#messagepriority)。 |
+|  `messageQos`   | `RtmMessageQos` |   选填   | `UNORDERED` |                  定义此 Topic 中传输数据是否保序。详见 [`RtmMessageQos`](/zh-CN/api-reference/rtm/android/enumv#messageqos)。                  |
+|   `priority`    |  `RtmMessagePriority`  |   选填   | `NORMAL`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RtmMessagePriority`](/zh-CN/api-reference/rtm/android/enumv#messagepriority)。 |
 |   `topicMeta`   |    String    |   选填   | -                    |         加入 Topic 时携带的其他辅助信息。          |
 | `syncWithMedia` |   boolean    |   选填   | `false`              |        此 Topic 中发送的数据是否与共频道的 RTC 音视频数据流实现数据同步（时间戳对齐）。        |
 
@@ -476,8 +476,8 @@ Future<(RtmStatus, JoinTopicResult?)> joinTopic(
 | 参数 | 类型 | 必填 | 默认值 | 描述 |
 | --- | --- | --- | --- | --- |
 | `topic` | String | 必填 | - | Topic 名称。 |
-| `qos` | `RtmMessageQos` | 选填 | `unordered` | 定义此 Topic 中传输数据是否保序。详见 [`RtmMessageQos`](/zh-CN/api-reference/rtm/ios/enumv.flutter#messageqos)。 |
-| `priority` | `RtmMessagePriority` | 选填 | `normal` | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RtmMessagePriority`](/zh-CN/api-reference/rtm/ios/enumv.flutter#messagepriority)。 |
+| `qos` | `RtmMessageQos` | 选填 | `unordered` | 定义此 Topic 中传输数据是否保序。详见 [`RtmMessageQos`](/zh-CN/api-reference/rtm/flutter/enumv#messageqos)。 |
+| `priority` | `RtmMessagePriority` | 选填 | `normal` | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RtmMessagePriority`](/zh-CN/api-reference/rtm/flutter/enumv#messagepriority)。 |
 | `meta` | String | 选填 | - | 加入 Topic 时携带的其他辅助信息。 |
 | `syncWithMedia` | bool | 选填 | `false` | 此 Topic 中发送的数据是否与共频道的 RTC 音视频数据流实现数据同步（时间戳对齐）。 |
 
@@ -936,8 +936,8 @@ async joinTopic(topicName: string, options?: JoinTopicOptions): Promise<JoinTopi
 
 |      属性       |     类型     | 是否必填 | 默认值               |    描述    |
 | ------------ | -------------- | ----- | ---------------- | ----------- |
-|  `qos`   | `RtmMessageQos` |   选填   | `UNORDERED` |                  定义此 Topic 中传输数据是否保序。详见 [`RtmMessageQos`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#messageqos)。                  |
-|   `priority`    |  `RtmMessagePriority`  |   选填   | `NORMAL`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RtmMessagePriority`](/zh-CN/api-reference/rtm/ios/enumv.harmonyos#messagepriority)。 |
+|  `qos`   | `RtmMessageQos` |   选填   | `UNORDERED` |                  定义此 Topic 中传输数据是否保序。详见 [`RtmMessageQos`](/zh-CN/api-reference/rtm/harmonyos/enumv#messageqos)。                  |
+|   `priority`    |  `RtmMessagePriority`  |   选填   | `NORMAL`    | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`RtmMessagePriority`](/zh-CN/api-reference/rtm/harmonyos/enumv#messagepriority)。 |
 |   `meta`   |    string    |   选填   | `''`                    |         加入 Topic 时携带的其他辅助信息。          |
 | `syncWithMedia` |   boolean    |   选填   | `false`              |        此 Topic 中发送的数据是否与共频道的 RTC 音视频数据流实现数据同步（时间戳对齐）。        |
 
@@ -1356,8 +1356,8 @@ AgoraRtmStreamChannel
 
 |     属性     |  类型  |  是否必填  |  默认值  |                     描述                     |
 | -------------- | ---- | ----- | --- | ---------- |
-| `qos` | `AgoraRtmMessageQos` |  选填  | `AgoraRtmMessageQosUnordered`    | 定义此 Topic 中传输数据是否保序。详见 [`AgoraRtmMessageQos`](/zh-CN/api-reference/rtm/ios/enumv.ios#messageqos)。 |
-|     `priority`     |  `AgoraRtmMessagePriority` |  选填  |   `AgoraRtmMessagePriorityNormal`      | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`AgoraRtmMessagePriority`](/zh-CN/api-reference/rtm/ios/enumv.ios#messagepriority)。 |
+| `qos` | `AgoraRtmMessageQos` |  选填  | `AgoraRtmMessageQosUnordered`    | 定义此 Topic 中传输数据是否保序。详见 [`AgoraRtmMessageQos`](/zh-CN/api-reference/rtm/ios/enumv#messageqos)。 |
+|     `priority`     |  `AgoraRtmMessagePriority` |  选填  |   `AgoraRtmMessagePriorityNormal`      | 定义此 Topic 中传输数据的优先级（相比于同频道中的其他 Topic）。详见 [`AgoraRtmMessagePriority`](/zh-CN/api-reference/rtm/ios/enumv#messagepriority)。 |
 |  `meta`  |  NSString |  选填  |     -     |    加入 Topic 时携带的其他辅助信息。                    |
 |  `syncWithMedia`  |  BOOL |  选填  |     `false`     |  此 Topic 中发送的数据是否与共频道的 RTC 音视频数据流实现数据同步（时间戳对齐）。     |
 
@@ -2121,7 +2121,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `JoinTopicResult` 包含以下属性：
 
@@ -2201,7 +2201,7 @@ if (status.Error)
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 ## LeaveTopicAsync
 
@@ -2256,7 +2256,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `LeaveTopicResult` 包含以下属性：
 
@@ -2335,7 +2335,7 @@ else
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 `SubscribeTopicResult` 包含以下属性：
 
@@ -2407,6 +2407,6 @@ if (status.Error)
 | `Operation` | string | 本次操作类型。     |
 |  `Reason`   | string | 本次操作出错原因。 |
 
-你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting.unity)了解错误原因，并找到对应的解决方法。
+你可以通过检索 `errorCode` 字段的[错误码](/zh-CN/realtime-media/rtm/build/troubleshooting/unity)了解错误原因，并找到对应的解决方法。
 
 </PlatformStructured>
