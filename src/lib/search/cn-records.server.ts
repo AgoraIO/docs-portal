@@ -1,7 +1,6 @@
 import { load } from 'cheerio';
 import GithubSlugger from 'github-slugger';
 import type { Root, RootContent } from 'mdast';
-import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { zhCNApiReferenceCards } from '../api-reference-cards-data.zh-cn';
@@ -52,66 +51,101 @@ function getRouteMetadata(route: PublishedDocsRoute) {
 }
 
 const markdownParser = unified().use(remarkParse);
-const mdxParser = unified().use(remarkParse).use(remarkMdx);
-
-function parsePublishedMarkdown(markdown: string): Root {
-  const tree = markdownParser.parse(markdown);
-  if (!/<(?:CodeBlockTabs|CalloutContainer)\b/.test(markdown)) return tree;
-  let mdxTree: Root;
-  try {
-    mdxTree = mdxParser.parse(markdown);
-  } catch {
-    // OpenAPI and legacy exports can contain HTML that is not valid JSX.
-    return tree;
-  }
-  const unwrap = (node: RootContent): RootContent[] => {
-    if (node.type !== 'mdxJsxFlowElement') return [node];
-    return node.children.flatMap((child) => {
-      if (
-        node.name === 'CodeBlockTab' &&
-        child.type === 'code' &&
-        !child.lang &&
-        /^\s*(?:`{3,}|~{3,})/.test(child.value)
-      ) {
-        return markdownParser.parse(child.value).children;
-      }
-      return unwrap(child);
-    });
-  };
-  const containsSearchContainer = (node: RootContent): boolean =>
-    (node.type === 'mdxJsxFlowElement' &&
-      (node.name === 'CodeBlockTabs' || node.name === 'CalloutContainer')) ||
-    ('children' in node && node.children.some(containsSearchContainer));
-  // MDX disables ordinary indented code. Only replace renderer containers,
-  // leaving all other Markdown and its existing heading normalization intact.
-  for (const node of [...mdxTree.children].reverse()) {
-    if (node.type !== 'mdxJsxFlowElement' || !containsSearchContainer(node))
+// Fumadocs serializes these renderer containers with two spaces per level.
+// Unwrap complete generated blocks, preserving ordinary fenced examples even
+// when an example itself contains component-looking text.
+function normalizeSearchContainers(markdown: string) {
+  if (!/<(?:CodeBlockTabs|CalloutContainer)\b/.test(markdown)) return markdown;
+  const output: string[] = [];
+  let original: string[] = [];
+  let normalized: string[] = [];
+  const stack: { name: string; indent: number }[] = [];
+  let fence = '';
+  let tableFence = false;
+  for (const line of markdown.split('\n')) {
+    const indent = line.match(/^[ \t]*/)?.[0].length ?? 0;
+    const opening =
+      !fence &&
+      /<(CodeBlockTabs|CalloutContainer)\b/.test(
+        line.replace(/(`+).*?\1/g, ''),
+      );
+    const active = stack.length > 0 || opening;
+    const contentIndent = stack.length ? stack[stack.length - 1].indent + 2 : 0;
+    const content = line.slice(Math.min(indent, contentIndent));
+    const tableOpening =
+      !fence && line.match(/^[ \t]*\|[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
+    const tableClosing =
+      tableFence &&
+      line.match(
+        /^[ \t]*(`{3,}|~{3,})[ \t]*\|(?:[ \t]*(`{3,}|~{3,})([^\r\n]*))?[ \t]*$/,
+      );
+    const padding = ' '.repeat(Math.max(0, indent - contentIndent));
+    let renderedTable: string | undefined;
+    if (tableOpening) {
+      renderedTable = `${padding}${tableOpening[1]}${tableOpening[2]}`;
+      fence = tableOpening[1];
+      tableFence = true;
+    } else if (
+      tableClosing &&
+      tableClosing[1][0] === fence[0] &&
+      tableClosing[1].length >= fence.length
+    ) {
+      renderedTable = `${padding}${tableClosing[1]}`;
+      if (tableClosing[2])
+        renderedTable += `\n\n${padding}${tableClosing[2]}${tableClosing[3]}`;
+      fence = tableClosing[2] ?? '';
+      tableFence = Boolean(fence);
+    }
+    if (renderedTable !== undefined) {
+      (active ? normalized : output).push(renderedTable);
+      if (active) original.push(line);
       continue;
-    const start = node.position?.start.offset;
-    const end = node.position?.end.offset;
-    if (start === undefined || end === undefined) continue;
-    const first = tree.children.findIndex(
-      (child) => (child.position?.end.offset ?? 0) > start,
+    }
+    const marker = line.match(/^[ \t]*(`{3,}|~{3,})([^\r\n]*)$/);
+    if (marker) {
+      if (!fence) fence = marker[1];
+      else if (
+        marker[1][0] === fence[0] &&
+        marker[1].length >= fence.length &&
+        !marker[2].trim()
+      )
+        fence = '';
+      if (!fence) tableFence = false;
+      (active ? normalized : output).push(active ? content : line);
+      if (active) original.push(line);
+      continue;
+    }
+    if (!active) {
+      output.push(line);
+      continue;
+    }
+    original.push(line);
+    if (fence) {
+      normalized.push(content);
+      continue;
+    }
+    normalized.push(
+      content.replace(
+        /<(\/?)(CodeBlockTabs(?:List|Trigger)?|CodeBlockTab|CalloutContainer|CalloutTitle|CalloutDescription)\b(?:[^"'>]|"[^"]*"|'[^']*')*>/g,
+        (tag, closing: string, name: string) => {
+          if (closing) {
+            const index = stack.map((entry) => entry.name).lastIndexOf(name);
+            if (index >= 0) stack.splice(index);
+          } else if (!tag.endsWith('/>')) stack.push({ name, indent });
+          return '';
+        },
+      ),
     );
-    if (first < 0) continue;
-    let count = 0;
-    while (
-      first + count < tree.children.length &&
-      (tree.children[first + count].position?.start.offset ?? end) < end
-    )
-      count++;
-    tree.children.splice(first, count, ...unwrap(node));
+    if (!stack.length) {
+      output.push('', ...normalized, '');
+      original = [];
+      normalized = [];
+    }
   }
-  return tree;
+  // A truncated container must not cause the rest of the source to disappear.
+  return [...output, ...original].join('\n');
 }
-
 function text(node: Root | RootContent): string {
-  if (
-    node.type === 'mdxFlowExpression' ||
-    node.type === 'mdxTextExpression' ||
-    node.type === 'mdxjsEsm'
-  )
-    return '';
   if ('value' in node) {
     return node.type === 'html' ? load(node.value).text() : node.value;
   }
@@ -133,7 +167,8 @@ export function extractPublishedCnSections(
     ...route,
     canonicalPath: toCnContentSearchUrl(route.canonicalPath),
   };
-  let tree = parsePublishedMarkdown(markdown);
+  markdown = normalizeSearchContainers(markdown);
+  let tree = markdownParser.parse(markdown);
   // 平台和折叠容器导出后可能保留四空格缩进，remark 会把正文误当代码。
   // 非平台页必须由真实 HTML 标题确认锚点，不能把普通代码示例提升成章节。
   if (route.platform || renderedHeadingIds?.size) {
@@ -189,7 +224,7 @@ export function extractPublishedCnSections(
           value +
           markdown.slice(node.position.end.offset);
       }
-      tree = parsePublishedMarkdown(markdown);
+      tree = markdownParser.parse(markdown);
     }
   }
   const slugger = new GithubSlugger();

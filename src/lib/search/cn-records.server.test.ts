@@ -8,6 +8,90 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('leaves table-fence syntax inside a longer fenced example unchanged', () => {
+    const example =
+      '| ```json\n{"new": true}\n``` | ```json\n{"old": true}\n``` |';
+    const records = extractPublishedCnSections(
+      route,
+      page,
+      `# RTC API\n\n\`\`\`\`md\n${example}\n\`\`\`\`\n\n<CalloutContainer type="info">\n  <CalloutDescription>\n    说明。\n  </CalloutDescription>\n</CalloutContainer>`,
+    );
+    expect(records[0].content).toContain(example);
+    expect(records[0].content).toContain('说明。');
+  });
+
+  it('preserves all text after an incomplete serialized container', () => {
+    const [record] = extractPublishedCnSections(
+      route,
+      page,
+      '# RTC API\n\n<CalloutContainer type="info">\n  <CalloutDescription>\n    必须保留这段配置说明。',
+    );
+    expect(record.content).toContain('必须保留这段配置说明。');
+  });
+  it('preserves table-cell examples and clears later callouts after serialized table fences', () => {
+    const markdown =
+      '# RTC API\n\n## 配置 [#config]\n\n| 新 | 旧 |\n| --- | --- |\n| ```json\n{"new": true}\n``` | ```json\n{"old": true}\n``` |\n\n<CalloutContainer type="warning">\n  <CalloutDescription>\n    保持配置一致。\n  </CalloutDescription>\n</CalloutContainer>\n\n## 后续步骤 [#next]\n\n重新连接。';
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records.map((record) => record.url)).toEqual([
+      `${url}#config`,
+      `${url}#next`,
+    ]);
+    expect(records[0].content).toContain('{"new": true}');
+    expect(records[0].content).toContain('{"old": true}');
+    expect(records[0].content).toContain('保持配置一致。');
+    expect(records[0].content).not.toContain('Callout');
+    expect(records[1].content).toContain('重新连接。');
+  });
+
+  it('keeps a renderer-looking example inside a platform-indented fence literal', () => {
+    const markdown =
+      '# RTC API\n\n    ## 示例 [#sample]\n\n    ```text\n    <CalloutContainer type="info">\n      <CalloutDescription>literal</CalloutDescription>\n    </CalloutContainer>\n    ```';
+    const [record] = extractPublishedCnSections(
+      { ...route, platform: 'android' },
+      page,
+      markdown,
+    );
+    expect(record.content).toContain('<CalloutContainer type="info">');
+    expect(record.content).toContain(
+      '<CalloutDescription>literal</CalloutDescription>',
+    );
+  });
+  it('normalizes a code-tab container even when an earlier table is not valid MDX', () => {
+    const markdown =
+      '# RTC API\n\n| 参数 | 说明 |\n| --- | --- |\n| channel | 频道说明。<CalloutContainer type="info">\n  <CalloutDescription>\n    长度限制。\n  </CalloutDescription>\n</CalloutContainer> |\n\n## 用法 [#usage]\n\n<CodeBlockTabs defaultValue="cURL">\n  <CodeBlockTab value="cURL">\n    ```shell tabGroup="language"\n    run();\n    ```\n  </CodeBlockTab>\n</CodeBlockTabs>';
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records.map((record) => record.url)).toEqual([url, `${url}#usage`]);
+    const content = records.map((record) => record.content).join('\n');
+    expect(content).toContain('长度限制。');
+    expect(content).toContain('run();');
+    expect(content).not.toContain('CodeBlockTab');
+    expect(content).not.toContain('tabGroup=');
+    expect(content).not.toContain('CalloutDescription');
+  });
+
+  it('preserves literal renderer tags in a fenced example without a language', () => {
+    const markdown =
+      '# RTC API\n\n示例：\n\n```\n<CalloutContainer type="info">\n  <CalloutDescription>literal</CalloutDescription>\n</CalloutContainer>\n```\n\n正文中的 `<CalloutContainer>` 是名称。';
+    const [record] = extractPublishedCnSections(route, page, markdown);
+    expect(record.content).toContain('<CalloutContainer type="info">');
+    expect(record.content).toContain(
+      '<CalloutDescription>literal</CalloutDescription>',
+    );
+    expect(record.content).toContain('正文中的 <CalloutContainer> 是名称。');
+  });
+
+  it('normalizes code tabs nested in a list without losing surrounding instructions', () => {
+    const markdown =
+      '# RTC API\n\n- 安装依赖\n\n  <CodeBlockTabs defaultValue="npm">\n    <CodeBlockTabsList>\n      <CodeBlockTabsTrigger value="npm">\n        npm\n      </CodeBlockTabsTrigger>\n    </CodeBlockTabsList>\n\n    <CodeBlockTab value="npm">\n      ```bash tabGroup="install"\n      npm install agora-rtc-sdk-ng\n      ```\n    </CodeBlockTab>\n  </CodeBlockTabs>\n\n  配置后运行。\n\n- 再次构建';
+    const records = extractPublishedCnSections(route, page, markdown);
+    expect(records).toHaveLength(1);
+    expect(records[0].content).toContain('安装依赖');
+    expect(records[0].content).toContain('npm install agora-rtc-sdk-ng');
+    expect(records[0].content).toContain('配置后运行。');
+    expect(records[0].content).toContain('再次构建');
+    expect(records[0].content).not.toContain('CodeBlockTab');
+    expect(records[0].content).not.toContain('tabGroup=');
+  });
   it('extracts serialized code tabs and callouts without indexing renderer metadata', () => {
     const markdown = [
       '# RTC API',
