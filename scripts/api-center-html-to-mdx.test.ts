@@ -373,6 +373,10 @@ describe('API Center shared HTML to MDX converter', () => {
   it.each([
     ['Edu Store', 'html-docs/flexible-classroom/Electron/classes/store.html'],
     ['RTC React', 'html-docs/rtc/React/interfaces/ilocaltrack.html'],
+    ['RTC Web', 'html-docs/rtc/Web/interfaces/ilocaltrack.html'],
+    ['RTC mini-program', 'html-docs/rtc/mini-program/classes/client.html'],
+    ['Whiteboard Web', 'html-docs/whiteboard/Web/classes/whitewebsdk.html'],
+    ['another product', 'html-docs/new-product/classes/client.html'],
   ])(
     'omits TypeDoc hierarchy and index chrome for %s',
     async (_, sourcePath) => {
@@ -447,20 +451,72 @@ describe('API Center shared HTML to MDX converter', () => {
     expect(result.body).not.toContain('## Index');
   });
 
-  it('does not apply the Edu Store TypeDoc body profile to other TypeDoc pages', async () => {
+  it('filters nested TypeDoc navigation without requiring a product profile', async () => {
     const result = await convertHtmlToMdx({
-      html: `<div class="col-content">
+      html: `<div class="col-content"><div>
         <section class="tsd-panel tsd-hierarchy"><h3>Hierarchy</h3><p>Base</p></section>
         <section class="tsd-panel-group tsd-index-group"><h2>Index</h2><p>Member index</p></section>
-      </div>`,
+      <section><h2>Methods</h2><a id="run"></a><h3>run</h3><p>Runs the client.</p></section>
+      </div></div>`,
       sourceUrl: 'https://doc.shengwang.cn/api-ref/rtc/web/classes/client.html',
       sourcePath: 'html-docs/rtc/Web/classes/client.html',
       rootSelector: '.col-content',
     });
 
-    expect(result.body).toContain('### Hierarchy');
-    expect(result.body).toContain('## Index');
+    expect(result.body).not.toContain('Hierarchy');
+    expect(result.body).not.toContain('Index');
+    expect(result.body).toContain('Runs the client.');
+    expect(result.fragments).toContain('run');
   });
+
+  it.each([
+    ['globals.html', 'globals'],
+    ['index.html', 'index'],
+    ['index.html', 'overview'],
+  ])(
+    'keeps cross-page API navigation in %s (published as %s) without duplicate member indexes',
+    async (file, publishedPath) => {
+      const result = await convertHtmlToMdx({
+        html: `<div class="col-content">
+          <section class="tsd-index-group"><h2>Index</h2>
+            <section class="tsd-index-panel"><div class="tsd-index-content">
+              <section class="tsd-index-section"><h3>Interfaces</h3><ul>
+                <li><a href="interfaces/client.html">Client</a></li>
+              </ul></section>
+              <section class="tsd-index-section"><h3>Type aliases</h3><ul>
+                <li><a href="${file}#uid">UID</a></li>
+                <li><a href="#mode">Mode</a></li>
+              </ul></section>
+            </div></section>
+          </section>
+          <section class="tsd-member-group"><h2>Type aliases</h2>
+            <a id="uid"></a><h3>UID</h3><p>UID: string</p>
+            <a id="mode"></a><h3>Mode</h3><p>Mode: number</p>
+          </section>
+        </div>`,
+        sourceUrl: `https://doc.shengwang.cn/api-ref/example/${publishedPath}`,
+        sourcePath: `html-docs/example/${file}`,
+        rootSelector: '.col-content',
+        routeMap: new Map([
+          [
+            'https://doc.shengwang.cn/api-ref/example/interfaces/client.html',
+            '/zh-CN/api-reference/example/interfaces/client',
+          ],
+        ]),
+      });
+
+      expect(result.body).not.toContain('## Index');
+      expect(result.body).toContain('## Interfaces');
+      expect(result.body).toContain(
+        '[Client](/zh-CN/api-reference/example/interfaces/client)',
+      );
+      expect(result.body.match(/^## Type aliases$/gm)).toHaveLength(1);
+      expect(result.body).not.toContain('[UID]');
+      expect(result.body).toContain('UID: string');
+      expect(result.fragments).toEqual(['uid', 'mode']);
+      await expect(compileGeneratedMdx(result.body)).resolves.toBeDefined();
+    },
+  );
 
   it('renders TypeDoc signatures and returns as structured API member blocks', async () => {
     const result = await convertHtmlToMdx({
