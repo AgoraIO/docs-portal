@@ -69,10 +69,11 @@ paths:
           title: Keep provider keys in secrets
           position: after-description
           markdown: >-
-            Set `credential` on each pipeline stage. With `byok`, pass your provider key in
-            `credential.api_key` as a `$secrets.<set>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). Agora checks
-            that the reference exists when you create the agent. Keep credentials out of `params`.
+            Set `credential` on each pipeline stage. With `byok`, pass your provider keys in
+            `credential.fields` as `$secrets.<set>.<key>` references to a [secret
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). Most
+            providers take one field, `api_key`. Agora checks that each reference exists when you
+            create the agent. Keep credentials out of `params`.
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/IdempotencyKey"
@@ -110,7 +111,8 @@ paths:
                 llm:
                   credential:
                     mode: byok
-                    api_key: $secrets.support_prod.llm
+                    fields:
+                      api_key: $secrets.support_prod.llm
                   vendor: openai
                   style: openai
                   model: <model_name>
@@ -427,7 +429,7 @@ paths:
             session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session).
 
 
-            A `201` response confirms that the session exists. It doesn't confirm that the agent
+            A `200` response confirms that the session exists. It doesn't confirm that the agent
             has joined the RTC channel or that an outbound call was answered. To follow the
             session, [retrieve it](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session).
             The session ends when you [stop it](/en/api-reference/api-ref/conversational-ai/platform/stop-session),
@@ -476,7 +478,7 @@ paths:
                       voicemail:
                         mode: hangup
       responses:
-        "201":
+        "200":
           description: The session was created.
           headers:
             Agora-Request-Id:
@@ -487,8 +489,8 @@ paths:
                 $ref: "#/components/schemas/SessionStarted"
               example:
                 agent_session_id: a42ac95tp25py49fc37hp94vm67ht52h
-                status: running
-                created_at: 1737111452
+                create_ts: 1737111452
+                status: RUNNING
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
@@ -641,7 +643,8 @@ paths:
                   llm:
                     credential:
                       mode: byok
-                      api_key: $secrets.support_prod.llm
+                      fields:
+                        api_key: $secrets.support_prod.llm
                     vendor: openai
                     style: openai
                     model: <model_name>
@@ -659,7 +662,7 @@ paths:
                 subscribe_uids:
                   - "1001"
       responses:
-        "201":
+        "200":
           description: The session was created.
           headers:
             Agora-Request-Id:
@@ -670,8 +673,8 @@ paths:
                 $ref: "#/components/schemas/SessionStarted"
               example:
                 agent_session_id: a42al97tw77hv93ja98dm74fk56lw97x
-                status: running
-                created_at: 1737111452
+                create_ts: 1737111452
+                status: RUNNING
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
@@ -1067,8 +1070,8 @@ paths:
         - position: after-description
           markdown: >-
             Use secret sets to keep provider API keys out of your agent configurations. To use a
-            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.api_key`. Agora
-            resolves references when each session starts.
+            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.fields`, for example
+            in `credential.fields.api_key`. Agora resolves references when each session starts.
 
 
             If a set with the same name exists, the request fails with `SecretSetAlreadyExists`.
@@ -2848,17 +2851,26 @@ components:
           description: |-
             The credential mode:
 
-            - `byok`: Bring your own key. Pass your provider API key in `api_key`.
-            - `managed`: Agora provides the provider authentication. Don't pass `api_key`.
-        api_key:
-          type: string
-          minLength: 1
+            - `byok`: Bring your own key. Pass your provider credentials in `fields`.
+            - `managed`: Agora provides the provider authentication. Don't pass `fields`.
+        fields:
+          type: object
+          minProperties: 1
+          maxProperties: 8
+          additionalProperties:
+            type: string
+            minLength: 1
           writeOnly: true
           description: >-
-            Your provider API key, as a `$secrets.<set_name>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set) or as the key
-            itself. Required when `mode` is `byok`, and not accepted when `mode` is `managed`. Agora
-            resolves references when each session starts. This value is never returned.
+            Your provider credentials, keyed by the provider's field name. Most providers take one
+            field, `api_key`. Some use other names, such as `key` or `credentials`, or take more than
+            one field, such as an AWS access key ID and secret access key. Each model page lists its
+            provider's fields. In an agent, each value must be a `$secrets.<set_name>.<key>`
+            reference to a [secret
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). An
+            ephemeral session also accepts the values themselves. Required when `mode` is `byok`,
+            and not accepted when `mode` is `managed`. Agora resolves references when each session
+            starts. The values are never returned.
     StageHeaders:
       type: object
       additionalProperties:
@@ -3806,24 +3818,26 @@ components:
       type: object
       required:
         - agent_session_id
+        - create_ts
         - status
-        - created_at
       properties:
         agent_session_id:
           type: string
           description: The ID of the session.
-        status:
-          type: string
-          description: >-
-            The status of the session when it starts, in lowercase, for example `running`. For a
-            phone call, `running` doesn't mean the call was answered. Retrieve a session reports
-            the status in uppercase.
-        created_at:
+        create_ts:
           type: integer
           description: The time the session was created, as a Unix timestamp in seconds.
-      # TODO(platform-confirm): Staging (13 Oct) and pre-release testing (27 Oct) returned 201 with lowercase
-      # `running` and `created_at`, and the spec follows that. The launch contract specifies 200 with
-      # uppercase `STARTING`/`RUNNING` and `create_ts`. Confirm the launch response.
+        status:
+          type: string
+          enum:
+            - STARTING
+            - RUNNING
+          description: >-
+            The status of the session. `RUNNING` means the agent is live. For a phone call, it
+            doesn't mean the call was answered.
+      # Pre-release testing (28 Oct) returned 200 with `create_ts` and uppercase `RUNNING` for Start a
+      # session and Start an ephemeral session, matching the launch contract. Earlier builds returned 201
+      # with lowercase `running` and `created_at`.
     SessionUpdated:
       type: object
       required:
@@ -4286,8 +4300,8 @@ components:
         update_ts:
           type: integer
           description: The time the set was last updated, as a Unix timestamp in seconds.
-      # TODO(platform-confirm): Staging (10 Oct) returned `keys` as a list of names and Set Key as
-      # `{key}` only. The contract returns key objects with timestamps.
+      # TODO(platform-confirm): Staging (10 Oct) and pre-release testing (28 Oct) returned `keys` as a
+      # list of names and Set Key as `{key}` only. The contract returns key objects with timestamps.
     SecretSetList:
       type: object
       allOf:

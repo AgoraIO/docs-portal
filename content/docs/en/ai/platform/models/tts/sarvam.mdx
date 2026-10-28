@@ -4,23 +4,35 @@ description: >
  Use Sarvam for text-to-speech (TTS) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/sarvam.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/sarvam.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 Sarvam provides fast, reliable text-to-speech (TTS) with support for Indian languages and customizable voices.
 
 ## Sample configuration
 
-Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Sarvam supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure Sarvam as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your Sarvam API subscription key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Sarvam supports BYOK only. It isn't available in managed mode. Store your Sarvam API subscription key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `sarvam` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_subscription_key` to a reference to your Sarvam API subscription key in a secret set. In the following example, the key is stored as `sarvam` in the `support_prod` set:
 
 ```json
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.sarvam"
+    "fields": {
+      "api_subscription_key": "$secrets.support_prod.sarvam"
+    }
   },
   "vendor": "sarvam",
   "params": {
@@ -30,16 +42,81 @@ In the following example, the key is stored as `sarvam` in the `support_prod` se
 }
 ```
 
-{/* TODO(platform-confirm): The Voice Agent API takes the Sarvam key in `params.api_subscription_key`. This page passes it in `credential.api_key`. Confirm that the Platform maps it to Sarvam's subscription key. */}
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, SarvamTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        SarvamTTS(
+            key=secret_ref("support_prod", "sarvam"),
+            speaker="anushka",
+            target_language_code="en-IN",
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, SarvamTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new SarvamTTS({
+      key: secretRef('support_prod', 'sarvam'),
+      speaker: 'anushka',
+      targetLanguageCode: 'en-IN',
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewSarvamTTS(vendors.SarvamTTSOptions{
+		Key:                agentkit.SecretRef("support_prod", "sarvam"),
+		Speaker:            "anushka",
+		TargetLanguageCode: "en-IN",
+	}))
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go BYOK examples saved as written. The SDKs send the key as `credential.fields.api_subscription_key`, and the API accepted it. */}
+
+{/* TODO(platform-confirm): The Voice Agent API takes the Sarvam key in `params.api_subscription_key`. This page passes it in `credential.fields.api_subscription_key`. Confirm that the Platform maps it to Sarvam's subscription key. */}
 
 ## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, the Sarvam TTS class sets them from its options.
 
 <ParameterList title="tts">
   <Parameter name="vendor" type="string" required={true}>
     Set to `sarvam`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Sarvam API subscription key. Get your key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
+    Set `mode` to `byok` and `fields.api_subscription_key` to a `$secrets.<set>.<key>` reference to your Sarvam API subscription key. Get your key from the [Sarvam dashboard](https://dashboard.sarvam.ai/signin).
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="speaker" type="string" required={true}>

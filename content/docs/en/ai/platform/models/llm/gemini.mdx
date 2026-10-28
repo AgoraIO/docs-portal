@@ -4,23 +4,35 @@ description: >
   Use Google Gemini as the LLM in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/gemini.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/gemini.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 Google Gemini provides advanced multimodal AI capabilities with fast performance and efficient processing for conversational AI applications.
 
 ## Sample configuration
 
-Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google Gemini supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure Google Gemini as the agent's LLM when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your Gemini API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. Don't put the key in the `url` query string. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Google Gemini supports BYOK only. It isn't available in managed mode. Store your Gemini API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `gemini` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to the key. In the following example, the key is stored as `gemini` in the `support_prod` set: Don't put the key in the `url` query string.
 
 ```json
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.gemini"
+    "fields": {
+      "api_key": "$secrets.support_prod.gemini"
+    }
   },
   "vendor": "gemini",
   "style": "gemini",
@@ -33,16 +45,41 @@ In the following example, the key is stored as `gemini` in the `support_prod` se
 
 Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
-{/* TODO(platform-confirm): Confirm the `vendor` value for Google Gemini (`gemini` is assumed), and whether `url` is required. The Voice Agent API passes the key in the `url` query string (`&key=<api_key>`). Confirm that the Platform sends `credential.api_key` to Gemini without it. Also confirm where `ignore_empty` goes. It isn't a block field in the Platform spec. This page lists it in `params`. */}
+</TabsContent>
+
+<TabsContent value="python">
+
+The Python SDK doesn't support Google Gemini on the Platform yet. Use the REST API.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+The TypeScript SDK doesn't support Google Gemini on the Platform yet. Use the REST API.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The Go SDK doesn't support Google Gemini on the Platform yet. Use the REST API.
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): Confirm the `vendor` value for Google Gemini (`gemini` is assumed), and whether `url` is required. The Voice Agent API passes the key in the `url` query string (`&key=<api_key>`). Confirm that the Platform sends `credential.fields.api_key` to Gemini without it. Also confirm where `ignore_empty` goes. It isn't a block field in the Platform spec. This page lists it in `params`. */}
+
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-28). No SDK can express a BYOK Gemini LLM. The `Gemini` class never sends the key as a credential: by default it appends the key to the URL query string (`&key=...`), and with an explicit `url` it drops the key. The SDK then sends the block as managed, and the API rejects it (`InvalidFieldValue`, "gemini does not support managed mode"). Checked in Python; the TypeScript and Go classes build the same config (SDK bug list #26). Add SDK examples when the SDKs send `credential.fields.api_key`. */}
 
 ## Key parameters
+
+The `llm` block takes the following fields.
 
 <ParameterList title="llm">
   <Parameter name="vendor" type="string" required={true}>
     Set to `gemini`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Gemini API key. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Gemini API key. Get your API key from [Google AI Studio](https://aistudio.google.com/app/apikey).
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `gemini` to use Gemini's message format.

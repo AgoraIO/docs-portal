@@ -4,24 +4,36 @@ description: >
   Use a generic avatar provider to represent your agent on video in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/generic.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/avatar/generic.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 The `generic` avatar vendor lets you integrate a custom avatar provider into the Conversational AI Platform.
 
 ## Sample configuration
 
-Add an `avatar` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Generic avatar providers support BYOK only. They aren't available in managed mode.
+The following example shows how to configure a generic avatar provider as the agent's avatar when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your avatar provider's API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Generic avatar providers support BYOK only. They aren't available in managed mode. Store your avatar provider's API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `avatar` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Add an `avatar` block to the `pipeline`. Set `credential.mode` to `byok` and `credential.fields.api_key` to the reference. In the following example, the key is stored as `avatar` in the `support_prod` set:
 
 ```json
 "avatar": {
   "enabled": true,
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.avatar"
+    "fields": {
+      "api_key": "$secrets.support_prod.avatar"
+    }
   },
   "vendor": "generic",
   "params": {
@@ -33,9 +45,66 @@ In the following example, the key is stored as `avatar` in the `support_prod` se
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, GenericAvatar, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+    .with_avatar(
+        GenericAvatar(
+            api_key=secret_ref("support_prod", "avatar"),
+            api_base_url="<avatar_api_base_url>",
+            avatar_id="<avatar_id>",
+            agora_uid="<avatar_rtc_uid>",
+            agora_token="<avatar_rtc_token>",
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+The TypeScript SDK doesn't support generic avatars on the Platform yet. Use the REST API.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ ).
+	WithAvatar(vendors.NewGenericAvatar(vendors.GenericAvatarOptions{
+		APIKey:     agentkit.SecretRef("support_prod", "avatar"),
+		APIBaseURL: "<avatar_api_base_url>",
+		AvatarID:   "<avatar_id>",
+		AgoraUID:   "<avatar_rtc_uid>",
+		AgoraToken: "<avatar_rtc_token>",
+	}))
+```
+
+</TabsContent>
+</Tabs>
+
 {/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
 
+{/* TODO(platform-confirm): SDK examples tested in pre-release testing on 2026-10-28 (BYOK only; agents saved and the stored `avatar` block checked). Python and Go saved this avatar as written. TypeScript fails before sending a request ("Unsupported v3 fields: agent.pipeline.avatar.url"): its Platform mapping moves `params.api_base_url` to a top-level `url`, which the avatar schema doesn't allow, and `apiBaseUrl` is required (SDK bug list #24). Add the TypeScript example when that's fixed. */}
+
 ## Key parameters
+
+The `avatar` block takes the following fields. In the SDKs, `GenericAvatar` sets them from its options, and passes any other parameters from its additional parameters option to `params`.
 
 <ParameterList title="avatar" required={true}>
   <Parameter name="enabled" type="boolean" required={true}>
@@ -45,7 +114,7 @@ In the following example, the key is stored as `avatar` in the `support_prod` se
     Set to `generic`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to the API key for your avatar provider.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to the API key for your avatar provider.
   </Parameter>
   <Parameter name="params" type="object" required={true}>
     <Parameter name="api_base_url" type="string" required={true}>

@@ -3,7 +3,7 @@ title: Improve ASR accuracy with keywords
 description: Improve speech recognition accuracy for brand names, product names, and other specific terms with ASR keywords.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/asr-keywords.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/asr-keywords.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 In a conversational AI scenario, users may say non-dictionary words such as brand names, product names, personal names, place names, or industry-specific terms. To improve recognition accuracy for these terms, configure ASR keywords in the agent's `asr` block.
 
@@ -17,7 +17,19 @@ Before you begin, make sure that you have created an agent and started a session
 
 ## Configure ASR keywords
 
-When you [create](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [update](/en/api-reference/api-ref/conversational-ai/platform/update-agent) an agent, pass the keywords in `params.keywords` of its `asr` block. The following example adds three product terms as ARES keywords:
+When you [create](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [update](/en/api-reference/api-ref/conversational-ai/platform/update-agent) an agent, pass the keywords in its ARES configuration. The following example adds three product terms as ARES keywords:
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Pass the keywords in `params.keywords` of the agent's `asr` block:
 
 ```json
 "pipeline": {
@@ -35,6 +47,29 @@ When you [create](/en/api-reference/api-ref/conversational-ai/platform/create-ag
   }
 }
 ```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+The Python SDK can't send ARES keywords to the Platform yet. Use the REST API.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+The TypeScript SDK can't send ARES keywords to the Platform yet. Use the REST API.
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The Go SDK can't send ARES keywords to the Platform yet. Use the REST API.
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), `AresSTT` with `keywords` failed in all three SDKs before sending a request ("Unsupported v3 fields: asr.keywords"), and `AresSTT` rejects `keywords` in `additionalParams` (SDK bug list #15). Add SDK examples when the SDKs map it to `params.keywords`. */}
 
 You can configure up to 128 keywords.
 
