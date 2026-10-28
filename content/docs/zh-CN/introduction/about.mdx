@@ -23,8 +23,6 @@ title: 声网接入基础
 | RTC 与 [SD-RTN™](/zh-CN/introduction/glossary#sd-rtn)  | 在参与者之间传输实时音视频。 | 在用户与语音智能体之间传输实时音频。 |
 | 对话式 AI 引擎 | 通常不需要。 | 结合配置的模型和工具处理用户输入、生成回复并驱动对话流程。 |
 
-在人与人互动场景中，客户端通过 RTC SDK 加入频道，与其他参与者交换音视频。在人与智能体互动场景中，业务服务端通过 Agents SDK 或 RESTful API 管理智能体会话，对话式 AI 引擎驱动智能体进行对话，RTC 则负责用户与智能体之间的实时音频传输。
-
 ## 连接方式
 
 ### 人与人互动
@@ -34,20 +32,20 @@ title: 声网接入基础
 * **发布**：发送自己的音频或视频。
 * **订阅**：接收其他人的音频或视频。
 
-加入频道后，客户端可以根据应用需求发布本地音视频，并订阅其他参与者发布的音视频。在语音通话和视频通话中，参与者通常可以双向交流；在互动直播中，主播主要负责发布音视频，观众主要负责接收音视频。具体行为取决于应用的业务逻辑和频道配置。集成细节详见[实时互动 RTC 概览](/zh-CN/realtime-media/rtc)。
+在语音通话和视频通话中，参与者可以双向交流；在互动直播中，主播发布音视频，观众观看或收听直播。集成细节详见[实时互动 RTC 概览](/zh-CN/realtime-media/rtc)。
 
 ### 人与智能体互动
 
 你的后端可以使用 Agents SDK 或直接调用 RESTful API 创建和停止智能体会话。对话式 AI 引擎托管在声网云端，会话启动后，引擎会把智能体加入指定的 RTC 频道，并使用你配置的模型和工具生成回复。用户客户端与智能体通过 RTC 交换实时音频。
 
-你可以通过 Agents SDK 或 RESTful API 在后端控制对话式 AI 引擎。如果你需要让自己的服务端应用在频道中收发音视频，请使用 RTC 服务端 SDK。
+如果你需要让自己的服务端应用在频道中收发音视频，请使用 RTC 服务端 SDK。
 
 了解模型选项、工具和 App 或设备集成方式，详见[对话式 AI 引擎概览](/zh-CN/ai)。
 
 
 ## 接入前准备
 
-使用声网服务前，你需要在[声网控制台](https://console.shengwang.cn/)创建项目，并了解以下三个参数：
+使用声网服务前，你需要在[声网控制台](https://console.shengwang.cn/)创建项目，并按所选产品的要求开通服务。以下是 RTC 接入常用的项目标识和鉴权参数：
 
 | 参数 | 含义 | 使用方式 |
 | --- | --- | --- |
@@ -57,27 +55,27 @@ title: 声网接入基础
 
 生产环境中，请使用服务端生成的 Token。控制台生成的临时 Token 仅用于测试。各服务的鉴权要求不同，请参考各服务的快速开始文档。
 
-## 开发方式
+## 选择接入路径
 
-先确认应用需要哪种互动方式，再选择开发方式。
+先确认应用需要哪种互动方式，再选择适合你的接入路径。
 
-### 使用 AI 编程助手
+### 借助 AI 编程助手接入
+
+你可以借助 AI 编程助手，结合声网 Skills、CLI 和 MCP，快速完成项目配置与应用开发，通过 SDK 或 API 接入声网服务。
 
 以下工具可以辅助你的 AI 编程助手完成接入：
 
 | 工具 | 作用 |
 | --- | --- |
 | [声网 Skills](/zh-CN/introduction/skills-integrate) | 为 AI 编程助手提供声网的开发流程和实现指导。 |
-| [声网 CLI](/zh-CN/introduction/agora-cli) | 创建示例项目、配置声网项目，并诊断接入问题。 |
+| [声网 CLI](/zh-CN/introduction/agora-cli) | 管理声网项目、启用服务、导出本地环境变量，并检查接入状态。 |
 | [声网 MCP](/zh-CN/introduction/mcp-integrate) | 让 AI 编程助手查询声网文档。 |
 
-AI 编程助手帮你编写应用，语音智能体则在应用中与用户对话。
-
-### 使用 SDK 或 API
+### 直接集成 SDK 或调用 API
 
 在客户端使用 [RTC SDK](/zh-CN/realtime-media/rtc/get-started/quick-start) 接入实时音视频，在后端使用 [Agents SDK](/zh-CN/ai/get-started/quick-start-agent) 或 [RESTful API](/zh-CN/ai/get-started/quick-start) 控制对话式 AI 引擎会话。
 
-### 在控制台体验
+### 在控制台体验语音智能体
 
 声网控制台的 [Playground](https://console.shengwang.cn/product/ConversationAI?tab=Playground) 支持可视化配置和测试语音智能体，适用于对话式 AI 引擎。
 
