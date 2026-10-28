@@ -22,6 +22,7 @@ import type {
   ComponentType,
   ReactNode,
 } from 'react';
+import { renderToString } from 'react-dom/server';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
@@ -759,6 +760,61 @@ describe('common MDX registry', () => {
     expect(screen.getByText('Example source')).toBeVisible();
   });
 
+  it.each(['single', 'multiple'] as const)(
+    'reveals a browser-find match through the %s version history state',
+    async (type) => {
+      const components = getMDXComponents();
+      const Accordions = components.Accordions as AccordionsComponent;
+      const Accordion = components.Accordion as AccordionComponent;
+      const content = (
+        <MDXAccordionProvider>
+          <Accordions type={type} defaultValue="new">
+            <Accordion title="Latest" id="new" headingLevel={2} value="new">
+              Latest release
+            </Accordion>
+            <Accordion title="Older" id="old" headingLevel={2} value="old">
+              Historical identifier
+            </Accordion>
+          </Accordions>
+        </MDXAccordionProvider>
+      );
+      expect(renderToString(content)).toContain('hidden="until-found"');
+      render(content);
+      const older = screen
+        .getByText('Historical identifier')
+        .closest('docs-accordion-body');
+      expect(older).toHaveAttribute('hidden', 'until-found');
+      fireEvent(
+        older as HTMLElement,
+        new Event('beforematch', { bubbles: true }),
+      );
+      await waitFor(() => {
+        expect(screen.getByRole('button', { name: 'Older' })).toHaveAttribute(
+          'aria-expanded',
+          'true',
+        );
+        expect(older).not.toHaveAttribute('hidden');
+      });
+      expect(screen.getByRole('button', { name: 'Latest' })).toHaveAttribute(
+        'aria-expanded',
+        type === 'multiple' ? 'true' : 'false',
+      );
+      fireEvent.click(screen.getByRole('button', { name: 'Latest' }));
+      if (type === 'multiple') {
+        fireEvent.click(screen.getByRole('button', { name: 'Older' }));
+      }
+      expect(older).toHaveAttribute('hidden', 'until-found');
+      fireEvent(
+        older as HTMLElement,
+        new Event('beforematch', { bubbles: true }),
+      );
+      expect(screen.getByRole('button', { name: 'Older' })).toHaveAttribute(
+        'aria-expanded',
+        'true',
+      );
+    },
+  );
+
   it.each([
     '/zh-CN/realtime-media/rtc/reference/release-notes',
     '/realtime-media/rtc/reference/release-notes/',
@@ -1406,7 +1462,10 @@ describe('common MDX registry', () => {
 
     expect(closedBody).toBeInTheDocument();
     expect(closedContent).toHaveAttribute('data-state', 'closed');
-    expect(closedContent).toHaveClass('data-[state=closed]:hidden');
+    expect(closedBody.closest('docs-accordion-body')).toHaveAttribute(
+      'hidden',
+      'until-found',
+    );
   });
 
   it('keeps the clicked version heading in place while switching versions', async () => {

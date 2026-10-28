@@ -16,7 +16,6 @@ import {
 } from '@/lib/search/cn-search-context';
 import {
   getSearchPageGroupKey,
-  getSearchSectionHref,
   type SearchPageGroup,
 } from '@/lib/search/cn-search-page';
 import type { HighlightSegment } from '@/lib/search/meilisearch-client';
@@ -68,7 +67,7 @@ export function SearchResultList({
           const sdkLabel = getCnSearchSdkLabel(group.pageUrl);
           const first = group.sections[0];
           const groupKey = getSearchPageGroupKey(group);
-          const firstHref = getSearchSectionHref(group.pageUrl, first.url);
+          const firstHref = first.url;
           const hasSectionTitle = first.sectionTitle !== group.title;
           const titleHref = hasSectionTitle ? group.pageUrl : firstHref;
           const ancestors = first.headingPath
@@ -202,10 +201,7 @@ export function SearchResultList({
                             onClick={(event) =>
                               onSelectResult?.(
                                 event,
-                                getSearchSectionHref(
-                                  group.pageUrl,
-                                  section.url,
-                                ),
+                                section.url,
                                 groupIndex + 1 + rankOffset,
                                 sectionIndex + 2,
                               )
@@ -213,19 +209,13 @@ export function SearchResultList({
                             onAuxClick={(event) =>
                               onSelectResult?.(
                                 event,
-                                getSearchSectionHref(
-                                  group.pageUrl,
-                                  section.url,
-                                ),
+                                section.url,
                                 groupIndex + 1 + rankOffset,
                                 sectionIndex + 2,
                               )
                             }
                             className="search-page-section"
-                            href={getSearchSectionHref(
-                              group.pageUrl,
-                              section.url,
-                            )}
+                            href={section.url}
                           >
                             <HashIcon
                               aria-hidden="true"

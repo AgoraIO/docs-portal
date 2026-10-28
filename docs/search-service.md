@@ -33,13 +33,15 @@ HOST=0.0.0.0 PORT=3000 bun run start:service
 
 `GET /api/search?q=Token&product=rtc&platform=web&type=docs&page=1`
 
-参数为 `q`、`product`、`platform`、`version`、`type`、`page` 和快捷搜索使用的 `tab`。关键词最多 500 个字符，页码为 1–500，每页 20 个章节；`type` 为 `all`、`docs` 或 `openapi`。API 只接受规定参数，始终附加中文、公开、已发布条件，不接受 Meilisearch 原始过滤表达式。
+参数为 `q`、`product`、`platform`、`type`、`page` 和快捷搜索使用的 `tab`。关键词最多 500 个字符，页码为 1–500；`type` 为 `all`、`docs`、`api` 或 `faq`，兼容旧 `openapi` 类型链接。旧链接的 `version` 参数不产生过滤，API 最新版本由[发布配置](search-sdk-publication.md)控制。API 只接受规定参数，始终附加中文、公开、已发布条件，不接受 Meilisearch 原始过滤表达式。
 
-响应使用 `CnSearchPageResponse`：`groups` 按文档聚合章节，`totalHits` 统计章节，`totalPages`、`page` 与 `facets` 用于分页及筛选。分页发生在章节聚合之前，因此每页文档数量可以少于 20。响应不缓存；请求会在 10 秒后超时。参数错误返回 400，缺少服务配置返回 503，上游失败返回 502，均不暴露上游错误或凭据。
+响应使用 `CnSearchPageResponse`：`groups` 按文档聚合章节，`totalHits` 统计去重后的章节，`totalPages`、`page` 与 `facets` 用于分页及筛选。非空查询的 `all` 概览分别查询文档、API、FAQ 各五个章节；单类型每页二十个章节。分页发生在文档聚合之前，因此每页文档数量可以少于二十。响应不缓存；请求会在 10 秒后超时。参数错误返回 400，缺少服务配置返回 503，上游失败返回 502，均不暴露上游错误或凭据。
 
-未选择平台时，搜索引擎在分页前仅检索 `isDefaultPlatform = true` 的记录，避免同一文档的其他平台副本占用结果名额；选择平台时仅使用该平台过滤。普通文档、FAQ 和独立 API 页面同样标为默认记录。章节仍按相关性排序，同一文档可以命中多个不同章节，所以这不保证每批返回 20 篇不同文档。
+未选择平台时查询所有平台，选择后只查询该平台。索引准备阶段为文档入口、标题路径、正文及发布元数据相同的章节生成稳定 `distinctKey`，由 Meilisearch 在计数和分页前去重；同名但正文不同的章节分别保留。同一文档仍可命中多个不同章节，所以这不保证每批返回二十篇不同文档。
 
-平台文档的默认值来自同次静态构建的 `body.platformTabs.defaultPlatform`，通过路由清单写入索引的 `defaultPlatform`、`isDefaultPlatform` 字段；不根据 URL 或固定的平台顺序猜测。所有平台的章节仍保留在索引里。未筛选时链接使用 canonical 文档入口，筛选时使用对应平台入口；同一最终章节链接在卡片内及跨页加载时只显示一次。
+平台文档的默认值仍来自同次静态构建的 `body.platformTabs.defaultPlatform`，保留 `defaultPlatform`、`isDefaultPlatform` 字段用于发布校验，不再用默认平台缩小搜索范围。结果按 canonical 文档聚合，卡片入口和章节链接保留实际命中平台；跨页加载使用相同的章节身份去重。
+
+组合查询要求所有查询词参与匹配，避免无匹配时悄悄丢弃末尾的 API 名称。`headingPath` 与正文共同参与检索，支持“版本号＋功能/API”；发布历史中的版本由真实标题层级保留在章节祖先路径中，不与 API 文档快照的 `version` 字段混用。
 
 `GET /api/health` 返回 `{ "status": "ok" }`，用于进程存活检查，不表示 Meilisearch 可用。未配置或不可用的搜索服务会在搜索界面显示错误和重试入口。
 
@@ -77,7 +79,9 @@ bun run search:promote:cn --revision="$RELEASE_SHA"
 
 这些字段和设置变更需要重新 `prepare`、验收并 `promote` 整个快照；升级 API 代码也要同步，以支持 FAQ 多产品筛选。用户每次搜索只查询现有索引，不重新构建。
 
-默认平台过滤属于索引结构升级，旧记录没有 `isDefaultPlatform`，旧设置也没有这个可过滤字段。需重新构建静态产物、导出并准备新索引，先用新代码连接临时索引验收；不要把新后端直接连接旧正式索引。正式发布需协调索引切换和新后端启用，保证新后端接收搜索请求前已接入新结构的索引；回滚时也必须配套恢复后端和索引。单纯重启本地服务或更新索引设置不能补齐旧记录。
+全平台去重需要重新准备索引的 `distinctKey` 和 `distinctAttribute`；版本检索需要重新构建并导出正确的标题路径。先用新代码连接同提交临时索引验收，再协调静态站、后端及索引切换，回滚也必须成套恢复。单纯更新设置、重启服务或部署前端，不能补齐旧记录的去重键和版本祖先。
+
+本地真实引擎回归：启动隔离的 Meilisearch 后，运行 `MEILI_INTEGRATION_URL=http://127.0.0.1:7700 bun run test src/lib/search/cn-search.integration.test.ts`；需要鉴权时另传 `MEILI_INTEGRATION_KEY`。测试只允许回环地址，创建并清理独立临时索引，覆盖非默认平台召回、平台筛选、分页前去重、同名不同正文以及版本与标识符组合查询。
 
 覆盖审计命令：`node scripts/search/audit-cn-coverage.mjs --records=dist/search/cn-records.json`。它同时检查导航到发布路由的覆盖，新增无记录页必须审查；现有组件目录和 C# 空壳页面的具体豁免列在脚本中。部署输入和完整发布检查见 [中文搜索部署交接](./cn-search-deployment-handoff.md)。
 
