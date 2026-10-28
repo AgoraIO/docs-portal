@@ -1,5 +1,6 @@
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
 import {
   PlatformHeaderTabs,
   PlatformPageProvider,
@@ -113,6 +114,27 @@ describe('unscoped legacy platform anchors', () => {
       'true',
     );
     expect(screen.getByText('Shared heading')).toBeVisible();
+  });
+
+  it('reveals a lazy cross-platform target after arriving at an explicit platform URL', async () => {
+    window.history.replaceState({}, '', '/solutions/example/windows#shared');
+    const view = render(<Page initialPlatform="windows" targetReady={false} />);
+    await act(async () => {
+      window.dispatchEvent(
+        new CustomEvent(DOCS_HASH_TARGET_EVENT, { detail: '#legacy-ios' }),
+      );
+    });
+    view.rerender(<Page initialPlatform="windows" />);
+    await waitFor(() =>
+      expect(screen.getByText('Legacy iOS details')).toBeVisible(),
+    );
+    expect(screen.getByRole('tab', { name: 'iOS' })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    );
+    expect(location.pathname + location.hash).toBe(
+      '/solutions/example/windows#shared',
+    );
   });
 
   it('does not change the saved platform when content arrives after the page unmounts', async () => {

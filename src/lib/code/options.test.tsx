@@ -42,6 +42,22 @@ async function renderMarkdown(markdown: string, defaults = false) {
 }
 
 describe('shared code highlighting', () => {
+  it.each(['ruby', 'python'])(
+    'consumes hash highlight controls in %s without changing executable lines',
+    async (language) => {
+      const source =
+        '# ordinary comment\n# highlight-start\nvalue = "# highlight-start"\n# highlight-end\n# highlight-next-line\nprint(value)';
+      const { html } = await renderMarkdown(
+        `\`\`\`${language}\n${source}\n\`\`\``,
+      );
+      const $ = load(html);
+      expect($('pre').text()).toBe(
+        '# ordinary comment\nvalue = "# highlight-start"\nprint(value)',
+      );
+      expect($('.line.highlighted')).toHaveLength(2);
+    },
+  );
+
   it.each([
     ['curl --location --request POST', 5],
     ['curl', 3],

@@ -41,6 +41,7 @@ paths:
             - 在每次 `acquire` 请求获取到 Resource ID 后的 2 秒内立即发起对应的 [`start`](start) 请求。批量获取 Resource ID 后进行批量 `start` 请求可能导致请求失败。如请求失败，请再次调用 `acquire` 获得一个新的 Resource ID，并用该 Resource ID 再次调用 `start` 方法。
       operationId: acquire-cloud-recording-resource
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
       requestBody:
@@ -97,6 +98,7 @@ paths:
           markdown: 发起 `start` 请求后，你还需要依据[保障录制成功启动](/zh-CN/realtime-media/cloud-recording/build/optimize-and-operate/recording-status#monitor_status)检查录制服务是否已经成功启动。
       operationId: start-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -363,6 +365,7 @@ paths:
             - 如果需要连续调用 `update` 方法更新录制设置，请在收到上一次 `update` 响应后再进行调用，否则可能导致请求结果与预期不一致。
       operationId: update-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -447,6 +450,7 @@ paths:
             - 如果需要连续调用 `updateLayout` 方法更新合流布局，请在收到上一次 `updateLayout` 响应后再进行调用，否则可能导致请求结果与预期不一致。
       operationId: update-cloud-recording-layout
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -526,6 +530,7 @@ paths:
           markdown: '`query` 请求仅在会话内有效。如果录制启动错误，或录制已结束，调用 `query` 将返回 `404`。'
       operationId: query-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -564,6 +569,7 @@ paths:
             - 录制结束后，正常情况下录制文件会在 20 分钟内上传至第三方云存储，但在网络异常等特殊情况下上传时间会达到 24 小时以上。
       operationId: stop-cloud-recording
       parameters:
+        - $ref: '#/components/parameters/Authorization'
         - $ref: '#/components/parameters/Content-Type'
         - $ref: '#/components/parameters/appid'
         - $ref: '#/components/parameters/resourceid'
@@ -610,6 +616,8 @@ paths:
         - position: after-description
           markdown: 我们强烈推荐你至少每 24 小时进行一次查询，并自动更新防火墙配置，否则可能会影响你接收通知。
       operationId: get-ncs-ip
+      parameters:
+        - $ref: '#/components/parameters/Authorization'
       responses:
         '200':
           $ref: '#/components/responses/ncs-ip'
@@ -621,6 +629,14 @@ paths:
         - Basic Auth: []
 components:
   parameters:
+    Authorization:
+      name: Authorization
+      in: header
+      description: 'HTTP 基本认证凭证。将客户 ID 和客户密钥以 `客户ID:客户密钥` 的格式拼接并进行 Base64 编码，再填入 `Basic <credentials>` 中的占位值。详见[实现 HTTP 基本认证](/zh-CN/realtime-media/cloud-recording/build/setup-and-access/http-basic-auth)。'
+      required: true
+      example: 'Basic <credentials>'
+      schema:
+        type: string
     appid:
       name: appid
       in: path

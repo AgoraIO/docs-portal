@@ -17,7 +17,10 @@ import {
   useState,
 } from 'react';
 import { cn } from '@/lib/cn';
-import { DOCS_HASH_TARGET_EVENT } from '@/lib/docs-hash';
+import {
+  DOCS_HASH_TARGET_EVENT,
+  findDocsHeadingForHash,
+} from '@/lib/docs-hash';
 import { type AppLocale, DEFAULT_LOCALE } from '@/lib/i18n/i18n-config';
 import {
   getStoredPlatformPreference,
@@ -139,10 +142,9 @@ function useHashPlatformPreference(
   platforms: PlatformKey[],
 ) {
   useEffect(() => {
-    // An explicit platform in the URL takes precedence over an old fragment.
-    if (initialPlatform) return;
     let observer: MutationObserver | undefined;
     let timeout: number | undefined;
+    let targetHash = '';
     const stopWaiting = () => {
       observer?.disconnect();
       observer = undefined;
@@ -150,14 +152,13 @@ function useHashPlatformPreference(
       timeout = undefined;
     };
     const revealTarget = () => {
-      let id: string;
+      let target: HTMLElement | null;
       try {
-        id = decodeURIComponent(window.location.hash.slice(1));
+        target = findDocsHeadingForHash(targetHash);
       } catch {
         stopWaiting();
         return true;
       }
-      const target = document.getElementById(id);
       if (!target) return false;
       stopWaiting();
       const platform = target.closest<HTMLElement>('[data-platform-panel]')
@@ -172,9 +173,14 @@ function useHashPlatformPreference(
       }
       return true;
     };
-    const requestTarget = () => {
+    const requestTarget = (event?: Event) => {
       stopWaiting();
-      if (!window.location.hash || revealTarget()) return;
+      // Preserve an explicit URL platform on arrival, but allow subsequent
+      // fragment navigation to reveal another panel without rewriting the URL.
+      if (initialPlatform && !event) return;
+      const detail = (event as CustomEvent<string> | undefined)?.detail;
+      targetHash = typeof detail === 'string' ? detail : window.location.hash;
+      if (!targetHash || revealTarget()) return;
       // MDX can arrive after the page shell; stop observing once it does.
       observer = new MutationObserver(() => {
         revealTarget();
