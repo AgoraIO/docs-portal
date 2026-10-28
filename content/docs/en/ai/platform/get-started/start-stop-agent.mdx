@@ -4,18 +4,17 @@ title: Create an agent and start a session
 description: Define an agent in your project, then start and stop sessions that run it in an RTC channel.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/start-stop-agent.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. REST API only until the Platform SDKs ship. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/start-stop-agent.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. TypeScript SDK tabs added on 2026-10-28 from the agora-agents-ts preview branch (feat/v3-api-preview), and run in pre-release testing on 2026-10-28 (passes except for the SDK `vendor` bug noted in Create an agent). */}
 
-On the Conversational AI Platform, you create an agent once and save it in your project. For each conversation, you start a session that runs the agent in an RTC channel, and you stop the session when the conversation ends. This page shows the REST API requests for each step. In a production environment, send these requests from your business server.
+On the Conversational AI Platform, you create an agent once and save it in your project. For each conversation, you start a session that runs the agent in an RTC channel, and you stop the session when the conversation ends. This page shows the code for each step. In a production environment, run this code on your business server.
 
 ## Understand the tech
 
 An agent is a saved configuration. A session is a single conversation that runs it. The workflow is as follows:
 
 1. Your server creates an agent and stores the agent ID that the Platform returns. You do this once, not for every conversation.
-2. A user joins an RTC channel from your app.
-3. Your server starts a session with the agent ID, the channel name, and the user's UID. The agent joins the channel and talks to the user, using the agent's ASR, LLM, and TTS models and Agora's low-latency Software-Defined Real-Time Network (SDRTN®).
-4. When the conversation ends, your server stops the session, and the agent leaves the channel.
+2. Your server starts a session with the agent ID, the channel name, and the user's UID. The agent and the user, through your app, join the same RTC channel. The agent talks to the user, using the agent's ASR, LLM, and TTS models and Agora's low-latency Software-Defined Real-Time Network (SDRTN®).
+3. When the conversation ends, your server stops the session, and the agent leaves the channel.
 
 {/* TODO(platform-docs): Add a workflow diagram for the Platform (create agent, start session, stop session). The Voice Agent diagram shows the `join` flow and doesn't apply. */}
 
@@ -33,17 +32,67 @@ agora project env --format shell --with-secrets
 
 You also need:
 
-- REST API credentials for the Platform. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
-- An RTC token for the agent's UID in the channel. Projects have an App Certificate enabled by default, and the agent can't join the channel without a token. For details, see [Integrate token generation](/en/realtime-media/rtc/build/authenticate-users/integrate-token-generation).
+- An [RTC token](/en/realtime-media/rtc/build/authenticate-users/integrate-token-generation) for the agent's UID in the channel.
 - A client app that can join an Agora RTC channel, such as the [Voice Calling](/en/realtime-media/rtc/voice-quickstart) or [Video Calling](/en/realtime-media/rtc/get-started-sdk) quickstart.
 
-{/* TODO(platform-confirm): Basic auth works in pre-release testing (2026-10-27), and the API accepts the `agora` token scheme. A valid ConvoAI token is still unverified. The examples on this page use Basic auth. */}
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Get REST API credentials for the Platform. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Build the SDK and install it in your project. You need Node.js 18 or later and [pnpm](https://pnpm.io/installation). On Windows, run the commands in Git Bash or WSL.
+```bash
+git clone --branch feat/v3-api-preview https://github.com/AgoraIO/agora-agents-ts.git
+cd agora-agents-ts
+pnpm install
+pnpm build
+cd <your_project_folder>
+npm install <path_to>/agora-agents-ts
+```
+
+{/* TODO(platform-confirm): Replace the clone-and-build steps with `npm install agora-agents@<version>` when the SDK team publishes the Platform release. Tested on 2026-10-28 (Windows, Node 24, pnpm 10.20.0, branch commit 739feba): the steps work in Git Bash. In PowerShell, `pnpm build` fails because the script runs `rm -rf`. `corepack enable` fails with EPERM without admin rights, so the steps don't use it. */}
+
+Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The TypeScript examples on this page use this `client`:
+
+```ts
+import { AgoraClient, Area } from 'agora-agents';
+
+const client = new AgoraClient({
+  area: Area.US,
+  appId: process.env.AGORA_APP_ID!,
+  appCertificate: process.env.AGORA_APP_CERTIFICATE!,
+});
+```
+
+</TabsContent>
+</Tabs>
+
+{/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The TypeScript SDK supports only token auth. */}
+
+{/* TODO(platform-confirm): Platform support is on the agora-agents-ts preview branch (feat/v3-api-preview) and isn't in a published package yet (npm has 2.12.0). Add the minimum package version when it's released. */}
 
 ## Create an agent
 
-Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) with the agent's name, instructions, greeting, and models. This example declares a `customer_name` variable and uses it in the instructions and the greeting. You pass its value when you start a session.
+Create an agent with its name, instructions, greeting, and models. This example declares a `customer_name` variable and uses it in the instructions and the greeting. You pass its value when you start a session.
 
-In the `Idempotency-Key` header, pass a unique value for each agent you create. If a request times out, retry it with the same key and the same body. The Platform returns the agent it already created instead of creating a duplicate.
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). The `pipeline` sets the agent's ASR, LLM, and TTS models. In the `Idempotency-Key` header, pass a unique value for each agent you create. If a request times out, retry it with the same key and the same body. The Platform returns the agent it already created instead of creating a duplicate.
 
 ```bash
 curl --request POST \
@@ -95,10 +144,6 @@ curl --request POST \
 }'
 ```
 
-The `pipeline` sets the agent's ASR, LLM, and TTS models. This agent uses managed mode for all three. Agora provides access to the models, and you don't need provider API keys. To use other models or your own provider accounts, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
-
-{/* TODO(platform-confirm): In pre-release testing (2026-10-27), an agent without `pipeline` was saved, but sessions for it failed with `502 "Provider request failed"`. The launch contract says the Platform selects a managed pipeline. Confirm whether a default pipeline is planned. Variables in `greeting.text` were accepted. */}
-
 If the request is successful, the response contains the agent ID and the saved configuration:
 
 ```json
@@ -124,19 +169,74 @@ If the request is successful, the response contains the agent ID and the saved c
 }
 ```
 
-Store the `agent_id`. You use it to start every session that runs this agent.
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, DeepgramSTT, OpenAI, OpenAITTS } from 'agora-agents';
+
+const agent = new Agent({ client })
+  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
+  .withLlm(
+    new OpenAI({
+      model: 'gpt-4.1-mini',
+      systemMessages: [
+        {
+          role: 'system',
+          content:
+            'You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.',
+        },
+      ],
+      greetingMessage: 'Hi {{customer_name}}, how can I help you today?',
+      greetingConfigs: { on: 'each_join' },
+    }),
+  )
+  .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }))
+  .withVariable('customer_name', { type: 'str', required: true });
+
+const savedAgent = await agent.save({ name: 'Support agent' });
+console.log(savedAgent.id); // The agent ID
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): SDK bug found in pre-release testing (2026-10-28, branch commit 739feba): a managed `OpenAI` LLM is sent without `vendor`, and the API rejects it with `400 InvalidFieldValue "Provider vendor is not supported"`. The SDK doesn't allow `vendor` in managed mode, so this example fails until the SDK is fixed. With `vendor: "openai"` added to the request, every example on this page worked. The TypeScript example uses managed OpenAI `tts-1` instead of MiniMax. The SDK's `MiniMaxTTS` has no option for `voice_setting.speed`, and pre-release testing (2026-10-27) rejected managed MiniMax without it. The SDK sends Deepgram `language` in `params`, not at the top level of the `asr` block. The SDK doesn't send `Idempotency-Key` when it creates an agent. */}
+
+Store the agent ID. You use it to start every session that runs this agent.
+
+This agent uses managed mode for its ASR, LLM, and TTS models. Agora provides access to the models, and you don't need provider API keys. To use other models or your own provider accounts, see [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+
+{/* TODO(platform-confirm): In pre-release testing (2026-10-27), an agent without `pipeline` was saved, but sessions for it failed with `502 "Provider request failed"`. The launch contract says the Platform selects a managed pipeline. Confirm whether a default pipeline is planned. Variables in `greeting.text` were accepted. */}
 
 ## Start a session
 
-When a user joins a channel, send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) with the agent ID and the channel details. In `transport`, set:
+To start a conversation, start a session with the agent ID and the following details:
+
+- The RTC channel for the conversation.
+- The RTC token for the agent's UID.
+- The UID the agent uses in the channel. It must be different from the user's UID.
+- The UID of the user the agent talks to.
+- A value for each required variable that you defined when you created the agent, such as `customer_name`.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session). In `transport`, set:
 
 - `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
-- `channel`: The channel the user joined.
+- `channel`: The RTC channel for the conversation.
 - `token`: The RTC token for the agent's UID.
-- `uid`: The UID the agent uses in the channel. It must be different from the user's UID.
-- `subscribe_uids`: The UID of the user the agent talks to.
+- `uid`: The agent's UID.
+- `subscribe_uids`: The user's UID.
 
-In `values`, pass a value for each required variable.
+In `values`, pass the variable values.
 
 ```bash
 curl --request POST \
@@ -170,13 +270,48 @@ If the request is successful, the response contains the session ID and its [stat
 }
 ```
 
-Store the `agent_session_id`. You use it to check and stop the session.
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Load the saved agent and call `createSession()`.
+
+```ts
+import { SavedAgent } from 'agora-agents';
+
+const savedAgent = await SavedAgent.get(client, 'agent_k3n9x2');
+const session = savedAgent.createSession({
+  channel: '<your_channel_name>',
+  token: '<your_rtc_token>',
+  agentUid: '1002',
+  remoteUids: ['1001'],
+  values: { customer_name: 'Ada' },
+});
+
+const sessionId = await session.start();
+console.log(sessionId); // The agent_session_id
+```
+
+</TabsContent>
+</Tabs>
+
+Store the session ID. You use it to check and stop the session.
 
 {/* TODO(platform-confirm): Staging (2026-10-20) and pre-release testing (2026-10-27) both returned `201 Created` with a lowercase `status` and `created_at`, and the docs follow that. The launch contract specifies `200 OK`, uppercase statuses, and `create_ts`. Retrieve a session returns uppercase. Confirm the launch response. */}
 
 ## Check the session status
 
-A session starts asynchronously. A successful response to Start a session confirms that the session exists, not that the agent has joined the channel. To follow the session, send a request to [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session):
+A session starts asynchronously. Starting a session successfully confirms that the session exists, not that the agent has joined the channel. To follow the session, retrieve it with its session ID:
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session):
 
 ```bash
 curl --request GET \
@@ -184,7 +319,7 @@ curl --request GET \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
-When the agent is in the channel, `status` is `RUNNING`:
+When the agent is in the channel, the response looks like this:
 
 ```json
 // 200 OK
@@ -196,7 +331,21 @@ When the agent is in the channel, `status` is `RUNNING`:
 }
 ```
 
-A session has one of the following statuses:
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+const info = await client.v3.sessions.get({ agentSessionId: '<agent_session_id>' });
+console.log(info.status);
+```
+
+If you still have the `session` object from Start a session, you can call `await session.getInfo()` instead.
+
+</TabsContent>
+</Tabs>
+
+When the agent is in the channel, `status` is `RUNNING`. A session has one of the following statuses:
 
 | Status | Description |
 |---|---|
@@ -211,7 +360,17 @@ A session has one of the following statuses:
 
 ## Stop the session
 
-When the conversation ends, send a request to [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) without a body. The agent leaves the channel.
+When the conversation ends, stop the session with its session ID. The agent leaves the channel.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) without a body:
 
 ```bash
 curl --request POST \
@@ -226,13 +385,36 @@ If the request is successful, the response is an empty JSON object:
 {}
 ```
 
-A session also stops asynchronously. To confirm that the session has ended, retrieve it and check that `status` is `STOPPED`. If you don't stop a session, it ends when it reaches a limit you set in `lifecycle` when you start it, such as `idle_timeout_ms` or `max_duration_ms`.
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+await client.v3.sessions.stop({ agentSessionId: '<agent_session_id>' });
+```
+
+If you still have the `session` object from Start a session, you can call `await session.stop()` instead.
+
+</TabsContent>
+</Tabs>
+
+A session also stops asynchronously. To confirm that the session has ended, retrieve it and check that `status` is `STOPPED`. If you don't stop a session, it ends when it reaches a limit you set when you start it, such as an idle timeout or a maximum duration.
 
 {/* TODO(platform-confirm): Confirm the default `lifecycle` limits that apply when you don't set them. */}
 
 ## Test a configuration without saving an agent
 
-To try a configuration before you save it, send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). The request is the same as Start a session, but you pass the agent configuration in `agent` instead of `agent_id`. The Platform doesn't save the configuration.
+To try a configuration before you save it, start an ephemeral session. You pass the agent configuration instead of an agent ID, and the Platform doesn't save the configuration.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session). The request is the same as Start a session, but you pass the agent configuration in `agent` instead of `agent_id`.
 
 ```bash
 curl --request POST \
@@ -269,7 +451,47 @@ curl --request POST \
 }'
 ```
 
-The response has the same format as Start a session. Check and stop an ephemeral session the same way as any other session.
+The response has the same format as Start a session.
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Call `createSession()` on an `Agent` instead of a saved agent. The SDK starts an ephemeral session when you set a Platform session option, such as `maxDuration` in seconds.
+
+```ts
+import { Agent, DeepgramSTT, OpenAI, OpenAITTS } from 'agora-agents';
+
+const testAgent = new Agent({ client })
+  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
+  .withLlm(
+    new OpenAI({
+      model: 'gpt-4.1-mini',
+      systemMessages: [
+        { role: 'system', content: 'You are a friendly support agent for Acme. Keep your answers short.' },
+      ],
+      greetingMessage: 'Hi, how can I help you today?',
+      greetingConfigs: { on: 'each_join' },
+    }),
+  )
+  .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }));
+
+const session = testAgent.createSession({
+  channel: '<your_channel_name>',
+  token: '<your_rtc_token>',
+  agentUid: '1002',
+  remoteUids: ['1001'],
+  maxDuration: 600,
+});
+const sessionId = await session.start();
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): The TypeScript SDK has no explicit ephemeral option. Without a secret reference, a variable, or a Platform session option such as `maxDuration`, `values`, or `dataPolicy`, `Agent.createSession()` uses the Voice Agent API instead. `idleTimeout` alone doesn't select the Platform. */}
+
+Check and stop an ephemeral session the same way as any other session.
 
 When the configuration works as you want, save it with [Create an agent](#create-an-agent), or apply it to an existing agent with [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent).
 
