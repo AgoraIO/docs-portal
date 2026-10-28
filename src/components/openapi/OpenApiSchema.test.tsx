@@ -9,12 +9,14 @@ import {
   waitFor,
   within,
 } from '@testing-library/react';
+import { load } from 'js-yaml';
 import type { ComponentProps } from 'react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   buildOpenApiSchemaView,
   flattenOpenApiSchemaView,
 } from '@/lib/openapi/schema-view';
+import cloudTranscodingSource from '../../../content/openapi/cloud-transcoding/cloud-transcoding.en.yaml?raw';
 import {
   appendOpenApiSchemaAllowedValues,
   buildOpenApiSchemaFindTargets,
@@ -82,6 +84,50 @@ function getRenderedSchemaText(text: string) {
 }
 
 describe('OpenApiSchema', () => {
+  it('expands Cloud Transcoding output fields with conditional destinations', () => {
+    const api = load(cloudTranscodingSource) as {
+      components: { schemas: Record<string, unknown> };
+    };
+    render(
+      <AnchorSection segments={['request-body', 'application-json']}>
+        <OpenApiSchema
+          client={{ as: 'body', name: 'body' }}
+          document={api}
+          renderCodeblock={({ code }) => <pre>{code}</pre>}
+          renderMarkdown={(markdown) => <p>{markdown}</p>}
+          root={api.components.schemas['transcoder-config']}
+          writeOnly
+        />
+      </AnchorSection>,
+    );
+    const toggle = screen.getByRole('button', {
+      name: /^(Expand|Collapse) outputs properties$/,
+    });
+    if (toggle.getAttribute('aria-expanded') === 'false')
+      fireEvent.click(toggle);
+    for (const name of ['streamUrl', 'rtc', 'audioOption', 'videoOption']) {
+      const rows = document.querySelectorAll(
+        `[data-openapi-schema-path="outputs.${name}"]`,
+      );
+      expect(rows).toHaveLength(name === 'rtc' || name === 'streamUrl' ? 1 : 2);
+      for (const row of rows) {
+        expect(row).toBeVisible();
+        const variant = row.querySelector('[data-openapi-schema-variant]');
+        expect(variant?.textContent).toMatch(/RTC output|CDN output/);
+        const required = within(row as HTMLElement)
+          .queryAllByText('Required')
+          .filter(
+            (badge) => badge.closest('[data-openapi-schema-path]') === row,
+          );
+        const expectedRequired =
+          (name === 'rtc' && variant?.textContent?.includes('RTC output')) ||
+          (name === 'streamUrl' &&
+            variant?.textContent?.includes('CDN output'));
+        expect(required).toHaveLength(expectedRequired ? 1 : 0);
+      }
+    }
+  });
+
   it('does not render a custom filter for a request schema', () => {
     renderSchema();
 
