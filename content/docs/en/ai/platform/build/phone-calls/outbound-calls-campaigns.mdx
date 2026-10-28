@@ -4,7 +4,7 @@ title: Make outbound calls and run campaigns
 description: Have an agent call a phone number, or call a list of contacts on a schedule with a campaign.
 ---
 
-{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-24, pending review. Written from the launch contract. Not verified on staging: no phone number could be created (Create Number returned 503 on 2026-10-20). */}
+{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-24, pending review. Written from the launch contract. Not verified on staging: no phone number could be created (Create Number returned 503 on 2026-10-20). Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 Your agent can call people from a phone number in your project. To place a single call, start a session that dials the number. To call a list of contacts, create a campaign that dials each contact on a schedule you set.
 
@@ -23,7 +23,19 @@ Before you begin, make sure that you have:
 
 ## Make an outbound call
 
-Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) with `telephony` transport. In `transport`, set `from` to your number's ID and `to` to the number to call, in E.164 format. In `values`, pass the values for the agent's variables, as for any session.
+Start a session with telephony transport. Set the number to call from, by its ID, and the number to call, in E.164 format. Pass the values for the agent's variables, as for any session.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session). In `transport`, set `type` to `telephony`, `from` to your number's ID, and `to` to the number to call:
 
 ```bash
 curl --request POST \
@@ -51,13 +63,92 @@ curl --request POST \
 }'
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+The SDK's session helpers start RTC sessions only. To place a call, use the low-level `client.v3.sessions.start()`:
+
+```python
+session = client.v3.sessions.start(
+    agent_id="agent_k3n9x2",
+    values={"customer_name": "Ada"},
+    transport={
+        "type": "telephony",
+        "from": "num_2v9c4q",
+        "to": "+14155550123",
+        "call_policy": {
+            "max_ring_duration_ms": 30000,
+            "max_call_duration_seconds": 600,
+            "voicemail": {"mode": "hangup"},
+        },
+    },
+)
+print(session["agent_session_id"])  # The agent_session_id
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+The SDK's session helpers start RTC sessions only. To place a call, use the low-level `client.v3.sessions.start()`:
+
+```ts
+const session = await client.v3.sessions.start({
+  agent_id: 'agent_k3n9x2',
+  values: { customer_name: 'Ada' },
+  transport: {
+    type: 'telephony',
+    from: 'num_2v9c4q',
+    to: '+14155550123',
+    call_policy: {
+      max_ring_duration_ms: 30000,
+      max_call_duration_seconds: 600,
+      voicemail: { mode: 'hangup' },
+    },
+  },
+});
+console.log(session.agent_session_id); // The agent_session_id
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The SDK's session helpers start RTC sessions only. To place a call, use the low-level `client.V3.Sessions.Start()`: This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
+
+```go
+maxRing, maxCall := 30000, 600
+session, err := client.V3.Sessions.Start(ctx, v3.SessionStartRequest{
+	AgentID: "agent_k3n9x2",
+	Values:  map[string]any{"customer_name": "Ada"},
+	Transport: v3.SessionTransport{
+		Type: "telephony",
+		From: "num_2v9c4q",
+		To:   "+14155550123",
+		CallPolicy: &v3.CampaignCallPolicy{
+			MaxRingDurationMS:      &maxRing,
+			MaxCallDurationSeconds: &maxCall,
+			Voicemail:              &v3.CampaignVoicemailPolicy{Mode: "hangup"},
+		},
+	},
+})
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(session.Body.AgentSessionID) // The agent_session_id
+```
+
+</TabsContent>
+</Tabs>
+
 The response contains the session ID and its status, as for an RTC session. A session status of `RUNNING` doesn't mean that the call was answered. To end the call, [stop the session](/en/ai/platform/get-started/start-stop-agent#stop-the-session).
 
 {/* TODO(platform-confirm): Staging rejected `call_policy.voicemail` with NotImplemented on 2026-10-14. The launch contract includes it. Also confirm how developers can tell whether a call was answered (for example a telephony notification event), and add it here. */}
 
 ### Set call limits and behavior
 
-In `call_policy`, set limits and behavior for the call. If you omit a limit, it doesn't apply.
+In the call policy, set limits and behavior for the call. If you omit a limit, it doesn't apply.
 
 | Field | Description |
 |---|---|
@@ -70,9 +161,21 @@ In `call_policy`, set limits and behavior for the call. If you omit a limit, it 
 
 ## Run a campaign
 
-Send a request to [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign) with the agent, the number to call from, the contacts, and a schedule. For each contact, pass the phone number and the values for the agent's variables.
+Create a campaign with the agent, the number to call from, the contacts, and a schedule. For each contact, pass the phone number and the values for the agent's variables.
 
 The following example calls customers on weekday mornings and afternoons in New York time for two weeks:
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign):
 
 ```bash
 curl --request POST \
@@ -125,8 +228,6 @@ curl --request POST \
 }'
 ```
 
-You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
-
 If the request is successful, the response contains the campaign, including its ID and status:
 
 ```json
@@ -170,11 +271,135 @@ If the request is successful, the response contains the campaign, including its 
 }
 ```
 
-The response returns `transport.from` as a list, and fills in the default `lifecycle` values for the settings you didn't pass. Store the `campaign_id`. You use it to check and control the campaign.
+The response returns `transport.from` as a list, and fills in the default `lifecycle` values for the settings you didn't pass.
+
+</TabsContent>
+
+<TabsContent value="python">
+
+Pass the number to call from as a list. The SDK doesn't support the retry settings `max_attempts` and `retry_backoff_ms`.
+
+```python
+ranges = [{"start": "09:00", "end": "12:00"}, {"start": "13:00", "end": "17:00"}]
+
+campaign = client.campaigns.create(
+    name="november-appointments",
+    agent_id="agent_k3n9x2",
+    transport={
+        "type": "telephony",
+        "from": ["num_2v9c4q"],
+        "call_policy": {"max_ring_duration_ms": 30000, "voicemail": {"mode": "hangup"}},
+    },
+    contacts=[
+        {"phone": "+12025550123", "values": {"customer_name": "Ava", "plan": "pro"}},
+        {"phone": "+12025550124", "values": {"customer_name": "Ben", "plan": "basic"}},
+    ],
+    schedule={
+        "mode": "scheduled",
+        "timezone": "America/New_York",
+        "start": "2026-11-02T09:00",
+        "end": "2026-11-13T17:00",
+        "days": [{"weekday": day, "ranges": ranges} for day in ("mon", "tue", "wed", "thu", "fri")],
+    },
+    pacing={"max_concurrent": 10},
+    idempotency_key="<your_unique_key>",
+)
+print(campaign["campaign_id"], campaign["status"])
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Pass the number to call from as a list. The SDK doesn't support the retry settings `max_attempts` and `retry_backoff_ms`.
+
+```ts
+const ranges = [
+  { start: '09:00', end: '12:00' },
+  { start: '13:00', end: '17:00' },
+];
+
+const campaign = await client.campaigns.create({
+  name: 'november-appointments',
+  agent_id: 'agent_k3n9x2',
+  transport: {
+    type: 'telephony',
+    from: ['num_2v9c4q'],
+    call_policy: { max_ring_duration_ms: 30000, voicemail: { mode: 'hangup' } },
+  },
+  contacts: [
+    { phone: '+12025550123', values: { customer_name: 'Ava', plan: 'pro' } },
+    { phone: '+12025550124', values: { customer_name: 'Ben', plan: 'basic' } },
+  ],
+  schedule: {
+    mode: 'scheduled',
+    timezone: 'America/New_York',
+    start: '2026-11-02T09:00',
+    end: '2026-11-13T17:00',
+    days: (['mon', 'tue', 'wed', 'thu', 'fri'] as const).map((weekday) => ({ weekday, ranges })),
+  },
+  pacing: { max_concurrent: 10 },
+  idempotencyKey: '<your_unique_key>',
+});
+console.log(campaign.campaign_id, campaign.status);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Pass the number to call from as a list. The SDK doesn't support the retry settings `max_attempts` and `retry_backoff_ms`. This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
+
+```go
+ranges := []v3.CampaignTimeRange{{Start: "09:00", End: "12:00"}, {Start: "13:00", End: "17:00"}}
+var days []v3.CampaignCallingDay
+for _, weekday := range []string{"mon", "tue", "wed", "thu", "fri"} {
+	days = append(days, v3.CampaignCallingDay{Weekday: weekday, Ranges: ranges})
+}
+maxRing, maxConcurrent := 30000, 10
+
+campaign, err := client.Campaigns.Create(ctx, v3.CampaignCreate{
+	Name:    "november-appointments",
+	AgentID: "agent_k3n9x2",
+	Transport: v3.CampaignTransport{
+		Type: "telephony",
+		From: []string{"num_2v9c4q"},
+		CallPolicy: &v3.CampaignCallPolicy{
+			MaxRingDurationMS: &maxRing,
+			Voicemail:         &v3.CampaignVoicemailPolicy{Mode: "hangup"},
+		},
+	},
+	Contacts: []v3.CampaignContact{
+		{Phone: "+12025550123", Values: map[string]any{"customer_name": "Ava", "plan": "pro"}},
+		{Phone: "+12025550124", Values: map[string]any{"customer_name": "Ben", "plan": "basic"}},
+	},
+	Schedule: v3.CampaignSchedule{
+		Mode:     "scheduled",
+		Timezone: "America/New_York",
+		Start:    "2026-11-02T09:00",
+		End:      "2026-11-13T17:00",
+		Days:     days,
+	},
+	Pacing: &v3.CampaignPacing{MaxConcurrent: &maxConcurrent},
+}, v3.CampaignWriteOptions{IdempotencyKey: "<your_unique_key>"})
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(campaign.Body.CampaignID, campaign.Body.Status)
+```
+
+</TabsContent>
+</Tabs>
+
+{/* TODO(platform-confirm): The SDKs (2026-10-28) don't generate the campaign retry fields `max_attempts` and `retry_backoff_ms`; their schema says these were removed from the public contract. The launch contract and this page's REST example include them. Confirm with engineering, and remove them from the REST example and the pacing table if they're gone. Campaign SDK examples couldn't run end to end in pre-release testing on 2026-10-28, because Create a phone number returned `503`; request validation accepted `from` as a string or a list. */}
+
+You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
+
+Store the campaign ID. You use it to check and control the campaign.
 
 ### Set the schedule
 
-In `schedule`, set `mode` to one of the following:
+In the schedule, set `mode` to one of the following:
 
 - `immediate`: The campaign starts dialing as soon as you create it. Don't pass `start` or `end`.
 - `scheduled`: The campaign dials from `start` until `end`. Pass both as local dates and times in `YYYY-MM-DDTHH:MM` format, and set `timezone` to an IANA time zone, such as `America/New_York`.
@@ -183,7 +408,7 @@ To limit dialing to certain hours, add `days`. For each weekday, pass up to 10 t
 
 ### Set the pacing
 
-In `pacing`, control how fast the campaign dials and how often it retries:
+In the pacing settings, control how fast the campaign dials and how often it retries:
 
 | Field | Description |
 |---|---|
@@ -194,13 +419,58 @@ In `pacing`, control how fast the campaign dials and how often it retries:
 
 ## Monitor and control a campaign
 
-To check a campaign's progress, send a request to [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign). The response contains its `status` and `counts`, the number of contacts that are pending, calling, completed, failed, or canceled.
+To check a campaign's progress, retrieve it. The response contains its `status` and `counts`, the number of contacts that are pending, calling, completed, failed, or canceled.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign):
 
 ```bash
 curl --request GET \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id> \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+campaign = client.campaigns.get(campaign_id="<campaign_id>")
+print(campaign["status"], campaign["counts"])
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+const campaign = await client.campaigns.get({ id: '<campaign_id>' });
+console.log(campaign.status, campaign.counts);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+campaign, err := client.Campaigns.Get(ctx, "<campaign_id>")
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(campaign.Body.Status, campaign.Body.Counts)
+```
+
+</TabsContent>
+</Tabs>
 
 A campaign has one of the following statuses:
 
@@ -213,7 +483,7 @@ A campaign has one of the following statuses:
 | `canceled` | You canceled the campaign. |
 | `failed` | The campaign failed. The details are in `failure`. |
 
-To control a running campaign, send one of the following requests:
+To control a running campaign, use one of the following operations:
 
 - [Pause a campaign](/en/api-reference/api-ref/conversational-ai/platform/pause-campaign): Stops new calls. Calls in progress continue.
 - [Resume a campaign](/en/api-reference/api-ref/conversational-ai/platform/resume-campaign): Continues dialing a paused campaign.
@@ -221,15 +491,54 @@ To control a running campaign, send one of the following requests:
 
 For example, to pause a campaign:
 
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
 ```bash
 curl --request POST \
   --url 'https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/campaigns/<campaign_id>:pause' \
   --header 'Authorization: Basic <your_base64_encoded_credentials>'
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+client.campaigns.pause(campaign_id="<campaign_id>")
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+await client.campaigns.pause({ id: '<campaign_id>' });
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+if _, err := client.Campaigns.Pause(ctx, "<campaign_id>"); err != nil {
+	log.Fatal(err)
+}
+```
+
+</TabsContent>
+</Tabs>
+
 {/* TODO(platform-confirm): Confirm whether canceling a campaign hangs up calls in progress. */}
 
-To change a campaign, send a request to [Update a campaign](/en/api-reference/api-ref/conversational-ai/platform/update-campaign). Before the campaign starts dialing, you can change `pacing`, `schedule`, `lifecycle`, and `transport.call_policy`. After it starts, you can change only `pacing`.
+To change a campaign, [update it](/en/api-reference/api-ref/conversational-ai/platform/update-campaign). Before the campaign starts dialing, you can change `pacing`, `schedule`, `lifecycle`, and `transport.call_policy`. After it starts, you can change only `pacing`.
 
 ## Reference
 

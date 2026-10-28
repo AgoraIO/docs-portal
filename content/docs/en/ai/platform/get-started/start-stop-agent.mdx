@@ -392,11 +392,11 @@ curl --request POST \
 If the request is successful, the response contains the session ID and its [status](#check-the-session-status):
 
 ```json
-// 201 Created
+// 200 OK
 {
   "agent_session_id": "a42ac95tp25py49fc37hp94vm67ht52h",
-  "status": "running",
-  "created_at": 1737111452
+  "create_ts": 1737111452,
+  "status": "RUNNING"
 }
 ```
 
@@ -474,8 +474,6 @@ fmt.Println(sessionID) // The agent_session_id
 </Tabs>
 
 Store the session ID. You use it to check and stop the session.
-
-{/* TODO(platform-confirm): Staging (2026-10-20) and pre-release testing (2026-10-27) both returned `201 Created` with a lowercase `status` and `created_at`, and the docs follow that. The launch contract specifies `200 OK`, uppercase statuses, and `create_ts`. Retrieve a session returns uppercase. Confirm the launch response. */}
 
 ## Check the session status
 

@@ -588,7 +588,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/handle-runtime-events/webhooks.mdx':
     '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/managed-mode.mdx':
-    '2026-10-28T09:16:44.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/build/meta.json': '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/phone-calls/import-phone-numbers.mdx':
     '2026-10-27T09:58:06.000Z',
@@ -601,19 +601,19 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/send-multimodal-messages.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/asr-keywords.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/custom-information.mdx':
     '2026-10-24T06:16:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/filler-words.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/interrupt-agent.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/meta.json':
     '2026-10-24T06:16:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/personalize-conversations.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/short-term-memory.mdx':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/build/start-stop-agent.mdx':
     '2026-10-23T10:07:24.000Z',
   'content/docs/en/ai/platform/build/tools/custom-tools.mdx':
@@ -625,7 +625,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/transcripts.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/use-your-own-keys.mdx':
-    '2026-10-28T09:16:44.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/docs/en/ai/platform/get-started/mcp-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/meta.json':
@@ -11903,7 +11903,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api-platform.en.yaml':
-    '2026-10-27T09:58:06.000Z',
+    '2026-10-28T12:19:24.000Z',
   'content/openapi/conversational-ai/rest-api-v3.en.yaml':
     '2026-10-18T10:19:52.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':

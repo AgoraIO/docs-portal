@@ -3,7 +3,7 @@ title: Record agent conversations
 description: Record conversations with an agent using Cloud Recording, without interrupting the audio.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/record-agent-conversation.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/best-practices/record-agent-conversation.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 This guide explains how to record conversations with a Conversational AI Platform agent using Agora [Cloud Recording](/en/api-reference/api-ref/cloud-recording), and how to avoid audio interruptions when recording starts.
 
@@ -17,7 +17,19 @@ To keep the audio stable, set the agent's audio scenario to `chorus` when you st
 
 ## Start the session with the chorus audio scenario
 
-When you [start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session), set `transport.audio_scenario` to `chorus`:
+When you [start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session), set its audio scenario to `chorus`. The SDK examples use the saved agent from [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+In the request to [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session), set `transport.audio_scenario`:
 
 ```bash
 curl --request POST \
@@ -27,6 +39,9 @@ curl --request POST \
   --data '
 {
   "agent_id": "agent_k3n9x2",
+  "values": {
+    "customer_name": "Ada"
+  },
   "transport": {
     "type": "rtc",
     "channel": "<your_channel_name>",
@@ -37,6 +52,60 @@ curl --request POST \
   }
 }'
 ```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+session = saved_agent.create_session(
+    channel="<your_channel_name>",
+    token="<your_rtc_token>",
+    agent_uid="1002",
+    remote_uids=["1001"],
+    values={"customer_name": "Ada"},
+    audio_scenario="chorus",
+)
+session_id = session.start()
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+const session = savedAgent.createSession({
+  channel: '<your_channel_name>',
+  token: '<your_rtc_token>',
+  agentUid: '1002',
+  remoteUids: ['1001'],
+  values: { customer_name: 'Ada' },
+  audioScenario: 'chorus',
+});
+const sessionId = await session.start();
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+session := savedAgent.CreateSession(agentkit.CreateSessionOptions{
+	Channel:       "<your_channel_name>",
+	Token:         "<your_rtc_token>",
+	AgentUID:      "1002",
+	RemoteUIDs:    []string{"1001"},
+	Values:        map[string]any{"customer_name": "Ada"},
+	AudioScenario: "chorus",
+})
+sessionID, err := session.Start(ctx)
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+</TabsContent>
+</Tabs>
 
 The audio scenario is a session setting, not part of the agent. Set it only for the sessions you record. Other sessions keep the default, `aiserver`. For details, see [Optimize audio quality](/en/ai/platform/best-practices/audio-setup).
 
