@@ -201,6 +201,7 @@ enableLegacyAudio 修复。
 
   it('matches the release and identifier together without silently dropping query terms', async () => {
     expect((await search('v3.2 enableBrowserAudio')).totalHits).toBe(1);
+    expect((await search('3.2 enableBrowserAudio')).totalHits).toBe(1);
     expect((await search('v3.2 nonexistentIdentifier')).totalHits).toBe(0);
   });
 });

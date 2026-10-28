@@ -147,8 +147,18 @@ export function buildCnSearchDocument(record: SearchSection) {
   const entryAliases = Object.entries(cnSearchSynonyms)
     .filter(([, titles]) => titles.includes(entryTitle))
     .map(([alias]) => alias);
+  // Keep displayed release labels while also accepting numeric versions:
+  // Meilisearch tokenizes a leading "v" together with the major number.
+  const versionAliases = record.headingPath
+    .map((heading) => heading.replace(/\bv(?=\d+\.\d)/gi, ''))
+    .filter((heading, index) => heading !== record.headingPath[index]);
   return {
     ...record,
+    ...(versionAliases.length
+      ? {
+          aliases: [...new Set([...(record.aliases ?? []), ...versionAliases])],
+        }
+      : {}),
     searchFamily: getCnSearchFamily({
       pageUrl: record.url,
       docType: record.docType,

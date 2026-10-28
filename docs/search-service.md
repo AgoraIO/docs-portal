@@ -41,7 +41,7 @@ HOST=0.0.0.0 PORT=3000 bun run start:service
 
 平台文档的默认值仍来自同次静态构建的 `body.platformTabs.defaultPlatform`，保留 `defaultPlatform`、`isDefaultPlatform` 字段用于发布校验，不再用默认平台缩小搜索范围。结果按 canonical 文档聚合，卡片入口和章节链接保留实际命中平台；跨页加载使用相同的章节身份去重。
 
-组合查询要求所有查询词参与匹配，避免无匹配时悄悄丢弃末尾的 API 名称。`headingPath` 与正文共同参与检索，支持“版本号＋功能/API”；发布历史中的版本由真实标题层级保留在章节祖先路径中，不与 API 文档快照的 `version` 字段混用。
+组合查询要求所有查询词参与匹配，避免无匹配时悄悄丢弃末尾的 API 名称。`headingPath` 与正文共同参与检索，支持“版本号＋功能/API”；索引准备时从标题中的带 `v` 点分版本标签生成无前缀别名，兼容两种写法，原显示标题和已有别名保留。发布历史中的版本由真实标题层级保留在章节祖先路径中，不与 API 文档快照的 `version` 字段混用。
 
 `GET /api/health` 返回 `{ "status": "ok" }`，用于进程存活检查，不表示 Meilisearch 可用。未配置或不可用的搜索服务会在搜索界面显示错误和重试入口。
 
