@@ -944,27 +944,83 @@ paths:
         - title: Publish to multiple CDNs
           position: after-parameters
           markdown: |-
-            To publish the transcoded stream to several CDN addresses, list up to 10 addresses in the `streamUrl` array of a single `outputs` object. All addresses share the output's `audioOption` and `videoOption` settings. For example:
+            To publish to multiple CDNs, put 1 to 10 addresses in the `streamUrl` array of one output. All addresses share that output's `audioOption` and `videoOption`. Do not include `rtc` in the output.
 
-            ```json
-            "outputs": [
-              {
-                "streamUrl": [
-                  "rtmp://example.com/live/stream1",
-                  "rtmp://example.com/live/stream2"
-                ],
-                "audioOption": {
-                  "profileType": "AUDIO_PROFILE_DEFAULT"
-                },
-                "videoOption": {
-                  "codec": "H264",
-                  "bitrate": 2230,
-                  "fps": 15,
-                  "width": 1280,
-                  "height": 720
+            The following complete Create request subscribes to audio and video from UID `123` in `input-channel` and publishes the result to two CDNs. Replace the input channel, publisher UID, input RTC token, and CDN URLs with your values. Generate the input RTC token with UID `0`, as described in [Token authentication](/en/realtime-media/rtc/build/authenticate-users/authentication-workflow).
+
+            Save this request body as `create-multi-cdn.json`:
+
+            ```json title="create-multi-cdn.json"
+            {
+              "services": {
+                "cloudTranscoder": {
+                  "serviceType": "cloudTranscoderV2",
+                  "config": {
+                    "transcoder": {
+                      "idleTimeout": 300,
+                      "audioInputs": [
+                        {
+                          "rtc": {
+                            "rtcChannel": "input-channel",
+                            "rtcUid": 123,
+                            "rtcToken": "<input_rtc_token>"
+                          }
+                        }
+                      ],
+                      "videoInputs": [
+                        {
+                          "rtc": {
+                            "rtcChannel": "input-channel",
+                            "rtcUid": 123,
+                            "rtcToken": "<input_rtc_token>"
+                          },
+                          "region": {
+                            "x": 0,
+                            "y": 0,
+                            "width": 1280,
+                            "height": 720,
+                            "zOrder": 0
+                          }
+                        }
+                      ],
+                      "canvas": {
+                        "width": 1280,
+                        "height": 720,
+                        "color": 0
+                      },
+                      "outputs": [
+                        {
+                          "streamUrl": [
+                            "rtmp://cdn-a.example.com/live/stream",
+                            "rtmp://cdn-b.example.com/live/stream"
+                          ],
+                          "audioOption": {
+                            "profileType": "AUDIO_PROFILE_DEFAULT"
+                          },
+                          "videoOption": {
+                            "codec": "H264",
+                            "bitrate": 2230,
+                            "fps": 15,
+                            "width": 1280,
+                            "height": 720
+                          }
+                        }
+                      ]
+                    }
+                  }
                 }
               }
-            ]
+            }
+            ```
+
+            Acquire a builder token using the same configuration. Set `APP_ID`, `BASIC_AUTH` (the Base64-encoded REST credentials), and `BUILDER_TOKEN` in your shell, then run this command within the builder token's validity period:
+
+            ```bash
+            curl --request POST \
+              --url "https://api.sd-rtn.com/v1/projects/${APP_ID}/rtsc/cloud-transcoder/tasks?builderToken=${BUILDER_TOKEN}" \
+              --header "Authorization: Basic ${BASIC_AUTH}" \
+              --header 'Content-Type: application/json' \
+              --data-binary @create-multi-cdn.json
             ```
         - title: Reference
           position: after-response-body
@@ -1617,11 +1673,8 @@ paths:
         - title: Response
           position: before-response-body
           markdown: >-
-            - If the returned status code is `2XX`, the request was successful. The response body is
-            empty.
-
-
-            - If the returned status code is not `200`, the request failed.
+            - If the returned status code is `200`, the request was successful. The response body
+            contains the complete task JSON, including the updated `sequenceId` and task status.
 
 
             - If the request fails, use the `X-Request-ID` value in the log to troubleshoot the
@@ -2023,12 +2076,26 @@ components:
             $ref: "#/components/schemas/watermark"
         outputs:
           type: array
+          minItems: 1
           description: |-
             Configure output settings to publish to a single RTC channel or to CDN addresses.
 
             RTC and CDN outputs are mutually exclusive. You must specify either `streamUrl` or `rtc`, but not both.
           items:
             $ref: "#/components/schemas/transcoder-output"
+          if:
+            contains:
+              required:
+                - rtc
+          then:
+            maxItems: 1
+            items:
+              required:
+                - rtc
+          else:
+            items:
+              required:
+                - streamUrl
     audio-input:
       type: object
       properties:
@@ -2274,7 +2341,32 @@ components:
             The layer order of the watermark. `0` represents the bottom layer. `100` represents the
             top layer.
     transcoder-output:
+      oneOf:
+        - $ref: "#/components/schemas/transcoder-rtc-output"
+        - $ref: "#/components/schemas/transcoder-cdn-output"
+    transcoder-rtc-output:
+      title: RTC output
       type: object
+      required:
+        - rtc
+      not:
+        required:
+          - streamUrl
+      properties:
+        rtc:
+          $ref: "#/components/schemas/rtc-output"
+        audioOption:
+          $ref: "#/components/schemas/audio-option"
+        videoOption:
+          $ref: "#/components/schemas/video-option"
+    transcoder-cdn-output:
+      title: CDN output
+      type: object
+      required:
+        - streamUrl
+      not:
+        required:
+          - rtc
       properties:
         streamUrl:
           type: array
@@ -2286,8 +2378,6 @@ components:
             The CDN addresses to publish the transcoded stream to. You can specify up to 10
             addresses. All addresses share the `audioOption` and `videoOption` settings of this
             output.
-        rtc:
-          $ref: "#/components/schemas/rtc-output"
         audioOption:
           $ref: "#/components/schemas/audio-option"
         videoOption:

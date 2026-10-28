@@ -348,12 +348,21 @@ function mergeComposedSchemas(
       continue;
     }
 
-    for (const item of items) {
-      if (!isRecord(item)) {
-        continue;
-      }
+    const children = items.map((item) =>
+      isRecord(item) ? mergeComposedSchemas(item, document) : {},
+    );
+    const alternativeRequired = children.map((child) =>
+      arrayOfStrings(child.required),
+    );
+    const requiredNames =
+      key === 'allOf'
+        ? alternativeRequired.flat()
+        : (alternativeRequired[0] ?? []).filter((name) =>
+            alternativeRequired.every((required) => required.includes(name)),
+          );
+    merged.required = [...arrayOfStrings(merged.required), ...requiredNames];
 
-      const child = mergeComposedSchemas(item, document);
+    for (const child of children) {
       for (const [childKey, childValue] of Object.entries(child)) {
         if (
           childKey === 'properties' ||
@@ -368,10 +377,6 @@ function mergeComposedSchemas(
         ...(isRecord(child.properties) ? child.properties : {}),
         ...(isRecord(merged.properties) ? merged.properties : {}),
       };
-      merged.required = [
-        ...arrayOfStrings(child.required),
-        ...arrayOfStrings(merged.required),
-      ];
     }
   }
 

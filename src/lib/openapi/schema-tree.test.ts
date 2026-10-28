@@ -10,6 +10,30 @@ import {
 import { getOpenApiOperation } from './source.server';
 
 describe('openapi schema tree', () => {
+  it.each(['oneOf', 'anyOf'])(
+    'only marks fields required in every %s alternative',
+    (composition) => {
+      const rows = buildOpenApiSchemaRows({
+        type: 'object',
+        required: ['outer'],
+        properties: {
+          outer: { type: 'string' },
+          common: { type: 'string' },
+          rtc: { type: 'object' },
+          streamUrl: { type: 'array', items: { type: 'string' } },
+        },
+        [composition]: [
+          { required: ['common', 'rtc'] },
+          { required: ['common', 'streamUrl'] },
+        ],
+      });
+
+      expect(rows.filter((row) => row.required).map((row) => row.path)).toEqual(
+        ['outer', 'common'],
+      );
+    },
+  );
+
   it('preserves siblings through a chained dangling local reference', () => {
     const document = {
       components: {
