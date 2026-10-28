@@ -193,7 +193,7 @@ describe('Start search API', () => {
       Authorization: 'Bearer private-read-key',
     });
     expect(JSON.parse(options?.body as string).filter).toBe(
-      'locale = "zh-CN" AND hidden = false AND status = "published" AND isDefaultPlatform = true AND tab = "ai" AND searchFamily = "docs"',
+      'locale = "zh-CN" AND hidden = false AND status = "published" AND tab = "ai" AND searchFamily = "docs"',
     );
     expect(await response.text()).not.toMatch(
       /private-read-key|meili.internal/,
