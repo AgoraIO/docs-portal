@@ -1,6 +1,6 @@
 ---
 title: Integrate with MCP
-description: Use an AI coding agent to integrate Agora products more efficiently. By configuring the Agora Doc MCP Server, your coding agent can directly search and read Agora official documentation before answering questions or generating code, so it can work with the latest official content and provide more accurate support.
+description: Connect your AI coding assistant to search Agora documentation and API references with the tools exposed by the server.
 ---
 
 ## Connect to the Agora Doc MCP Server
@@ -121,27 +121,43 @@ Create or edit `.vscode/mcp.json` in the root directory, then add the following 
 
 ## MCP tools
 
-- `search-docs`: Search for relevant documentation.
-- `list-docs`: Browse documentation categories and document lists.
-- `get-doc-content`: Read the full content of a specified document.
+The server supports documentation lookup:
+
+- Search Agora product guides.
+- Search SDK API references.
+- Discover available filter values when a tool exposes this capability.
+
+Your MCP client discovers tools through `tools/list`. It exposes each tool's name, description, and input schema to your assistant.
+Use these definitions as the source of truth for tool names and arguments.
+
+Before calling a tool, the assistant should:
+
+1. Inspect the tools exposed by the connected server.
+2. Select a tool whose description matches the product, platform, and task.
+3. Read its input schema. Supply every required field and use the declared types for queries and filters.
+4. Read the result before deciding whether another search is needed.
+
+Search results can contain excerpts rather than complete pages. Open the returned documentation URL when you need the full guide.
+For pages on `docs.agora.io`, append `.md` to read the Markdown version.
 
 ## Use MCP tools
 
-**Automatically called by the coding agent**
-
-In Agent Mode, you can describe your requirement directly and let the coding agent decide when to call MCP tools.
-
-For example:
+Describe the task in natural language. Let the assistant select tools from the connected server.
 
 ```text
-Search the relevant Agora documentation, read the document content, and tell me how to build the simplest possible 1v1 real-time audio and video call.
+Use the connected Agora documentation tools to find the Web video calling quickstart.
+Inspect the tool descriptions and input schemas before calling a tool.
+Read the matching guide and explain how two people can join the same call.
 ```
-**Specify tool calls in the prompt**
 
-You can also specify which MCP tools to use in the prompt through the tool-calling syntax supported by your AI IDE.
-
-For example:
+For a voice agent:
 
 ```text
-#search-docs #get-doc-content Use search-docs to find relevant Agora documentation, then use get-doc-content to read the full content of the matched document and tell me how to build an interactive experience with an AI agent.
+Use the connected Agora documentation tools to find the Web Conversational AI quickstart.
+Read the guide and explain the required setup for a browser voice demo.
+Include links to the documentation you use.
 ```
+
+If a tool is unavailable, refresh the tool list before selecting another tool.
+If MCP is unavailable or returns no useful content, use [llms.txt](https://docs.agora.io/llms.txt) to find the relevant documentation.
+Follow the index links and fetch the matching page as Markdown.
