@@ -1,0 +1,76 @@
+diff --git a/dist/cjs/ssr/renderRouterToStream.cjs b/dist/cjs/ssr/renderRouterToStream.cjs
+index e28fc70399a6f687bb468d02b1182f13a8b05be2..fbe4bb104c3d833fae04a501bfda4ec68dd71f30 100644
+--- a/dist/cjs/ssr/renderRouterToStream.cjs
++++ b/dist/cjs/ssr/renderRouterToStream.cjs
+@@ -24,16 +24,14 @@ var renderRouterToStream = async ({ request, router, responseHeaders, children }
+ 				progressiveChunkSize: Number.POSITIVE_INFINITY,
+ 				onError: onError("renderToReadableStream")
+ 			});
+-			const rendererAbort = bot ? new AbortController() : void 0;
++			if (bot) await (0, _tanstack_router_core_ssr_server.waitForRequest)(stream.allReady, signal);
+ 			const responseStream = (0, _tanstack_router_core_ssr_server.transformReadableStreamWithRouter)(router, stream, {
+ 				rendererSafePoint: "script-close",
+ 				signal,
+-				onAbort: (reason) => {
++				onAbort: () => {
+ 					rendererTeardown = true;
+-					rendererAbort?.abort(reason);
+ 				}
+ 			});
+-			if (rendererAbort) await (0, _tanstack_router_core_ssr_server.waitForRequest)(stream.allReady, rendererAbort.signal);
+ 			return (0, _tanstack_router_core_ssr_server.createSsrStreamResponse)(router, new Response(responseStream, {
+ 				status: (0, _tanstack_router_core_ssr_server.getSsrStatus)(router),
+ 				headers: responseHeaders
+diff --git a/dist/esm/ssr/renderRouterToStream.js b/dist/esm/ssr/renderRouterToStream.js
+index ed6527857971b81f809921b1e255cf924cf19072..1b4e78f271721eb5aa324c816b8845af286ad4b9 100644
+--- a/dist/esm/ssr/renderRouterToStream.js
++++ b/dist/esm/ssr/renderRouterToStream.js
+@@ -22,16 +22,14 @@ var renderRouterToStream = async ({ request, router, responseHeaders, children }
+ 				progressiveChunkSize: Number.POSITIVE_INFINITY,
+ 				onError: onError("renderToReadableStream")
+ 			});
+-			const rendererAbort = bot ? new AbortController() : void 0;
++			if (bot) await waitForRequest(stream.allReady, signal);
+ 			const responseStream = transformReadableStreamWithRouter(router, stream, {
+ 				rendererSafePoint: "script-close",
+ 				signal,
+-				onAbort: (reason) => {
++				onAbort: () => {
+ 					rendererTeardown = true;
+-					rendererAbort?.abort(reason);
+ 				}
+ 			});
+-			if (rendererAbort) await waitForRequest(stream.allReady, rendererAbort.signal);
+ 			return createSsrStreamResponse(router, new Response(responseStream, {
+ 				status: getSsrStatus(router),
+ 				headers: responseHeaders
+diff --git a/src/ssr/renderRouterToStream.tsx b/src/ssr/renderRouterToStream.tsx
+index b55fc35405e2392f3dde2e88ac6c3c180ea10b56..abecbafce174092d6784539a7e913cd1e49c5c5a 100644
+--- a/src/ssr/renderRouterToStream.tsx
++++ b/src/ssr/renderRouterToStream.tsx
+@@ -46,19 +46,18 @@ export const renderRouterToStream = async ({
+         progressiveChunkSize: Number.POSITIVE_INFINITY,
+         onError: onError('renderToReadableStream'),
+       })
+-      // The transform owns the reader and bounds bot readiness by its lifetime.
+-      const rendererAbort = bot ? new AbortController() : undefined
++      // Wait before the transform reads React's shell. Reading first flushes
++      // Suspense fallbacks even when allReady is awaited before responding.
++      if (bot) {
++        await waitForRequest(stream.allReady, signal)
++      }
+       const responseStream = transformReadableStreamWithRouter(router, stream, {
+         rendererSafePoint: 'script-close',
+         signal,
+-        onAbort: (reason) => {
++        onAbort: () => {
+           rendererTeardown = true
+-          rendererAbort?.abort(reason)
+         },
+       })
+-      if (rendererAbort) {
+-        await waitForRequest(stream.allReady, rendererAbort.signal)
+-      }
+       return createSsrStreamResponse(
+         router,
+         new Response(responseStream, {

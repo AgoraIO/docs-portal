@@ -61,6 +61,8 @@ export default defineConfig({
           tanstackStart({
             pages: prerenderPages,
             prerender: {
+              // The stream renderer waits for all Suspense content for crawlers.
+              headers: { 'User-Agent': 'DocsPortal Prerender' },
               crawlLinks: false,
               enabled: true,
               filter: shouldPrerenderPage,

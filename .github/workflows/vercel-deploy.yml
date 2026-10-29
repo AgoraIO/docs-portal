@@ -82,7 +82,7 @@ jobs:
     steps:
       - name: Resolve preview context
         id: preview-context
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9.0.0
         env:
           MANUAL_PR_NUMBER: ${{ inputs.pr_number }}
         with:
@@ -150,19 +150,19 @@ jobs:
 
       - name: Checkout
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
 
       - name: Setup Bun
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Setup Node.js
         if: steps.preview-context.outputs.should_deploy == 'true'
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 26.13.0
 
       - name: Install Vercel CLI
         if: steps.preview-context.outputs.should_deploy == 'true'
@@ -255,7 +255,7 @@ jobs:
 
       - name: Comment preview URL
         if: steps.preview-context.outputs.should_deploy == 'true' && steps.preview-context.outputs.pr_number != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9.0.0
         env:
           DEPLOY_URL: ${{ steps.vercel-deploy.outputs.url }}
           PR_NUMBER: ${{ steps.preview-context.outputs.pr_number }}
@@ -313,7 +313,7 @@ jobs:
 
       - name: Upload Global search replay evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: global-search-replay-preview
           path: global-search-replay-preview.json
@@ -333,7 +333,7 @@ jobs:
       VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           ref: ${{ github.event_name == 'workflow_dispatch' && 'release/prod' || github.ref }}
 
@@ -361,14 +361,14 @@ jobs:
           echo "verified=true" >> "$GITHUB_OUTPUT"
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+        uses: oven-sh/setup-bun@v2.2.0
         with:
-          bun-version: latest
+          bun-version: 1.4.4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7.1.0
         with:
-          node-version: 24
+          node-version: 26.13.0
 
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
@@ -419,7 +419,7 @@ jobs:
 
       - name: Upload Global search replay evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.2
         with:
           name: global-search-replay
           path: global-search-replay.json

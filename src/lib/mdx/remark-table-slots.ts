@@ -1,3 +1,5 @@
+import { replaceSource } from 'fumadocs-core/mdx-plugins/stringifier';
+import GithubSlugger from 'github-slugger';
 import type { Html, List, ListItem, Root, Table, TableCell } from 'mdast';
 import type {
   MdxJsxAttribute,
@@ -5,6 +7,7 @@ import type {
   MdxJsxTextElement,
 } from 'mdast-util-mdx-jsx';
 import { visit } from 'unist-util-visit';
+import type { VFile } from 'vfile';
 
 const SLOT_COMPONENT_NAME = 'Slot';
 
@@ -15,6 +18,7 @@ type SlotDefinition = {
 
 type SlotPlaceholder = {
   cell: TableCell;
+  source: TableCell['children'][number];
   syntax: 'html' | 'mdx';
   name: string;
 };
@@ -37,9 +41,9 @@ type ParsedHtmlSlot = {
 class UnsupportedRawSlotDefinitionError extends Error {}
 
 export function remarkTableSlots() {
-  return (tree: Root) => {
+  return (tree: Root, file: VFile) => {
     validateSlotUsage(tree);
-    processFlowContainer(tree);
+    processFlowContainer(tree, file, new GithubSlugger());
   };
 }
 
@@ -88,7 +92,11 @@ function validateSlotUsage(tree: Root) {
   });
 }
 
-function processFlowContainer(container: FlowContainer) {
+function processFlowContainer(
+  container: FlowContainer,
+  file: VFile,
+  slugger: GithubSlugger,
+) {
   const nextChildren: typeof container.children = [];
 
   for (let index = 0; index < container.children.length; index += 1) {
@@ -96,10 +104,10 @@ function processFlowContainer(container: FlowContainer) {
 
     if (isList(node)) {
       for (const listItem of node.children) {
-        processFlowContainer(listItem);
+        processFlowContainer(listItem, file, slugger);
       }
     } else if (isFlowContainer(node)) {
-      processFlowContainer(node);
+      processFlowContainer(node, file, slugger);
     }
 
     if (node.type !== 'table') {
@@ -143,7 +151,37 @@ function processFlowContainer(container: FlowContainer) {
       continue;
     }
 
-    applySlotDefinitions(placeholders, definitions);
+    const labels = new Map(
+      [...definitions.keys()].map((name) => {
+        const title = `${name} details`;
+        return [name, { title, id: `table-slot-${slugger.slug(name)}` }];
+      }),
+    );
+    applySlotDefinitions(placeholders, definitions, file, labels);
+    // Export rich slot content after the Markdown table. Use plain anchors
+    // and bold labels so it does not create headings absent from the visual AST.
+    const firstDefinition = container.children[index + 1];
+    const lastDefinition = container.children[endIndex - 1];
+    if (firstDefinition.position && lastDefinition.position) {
+      replaceSource(
+        file,
+        {
+          type: 'html',
+          value: '',
+          position: {
+            start: firstDefinition.position.start,
+            end: lastDefinition.position.end,
+          },
+        },
+        (s) =>
+          [...definitions]
+            .map(([name, definition]) => {
+              const label = labels.get(name);
+              return `<a id="${label?.id}"></a>\n\n**${label?.title ?? name}**\n\n${definition.children.map((child) => s.stringify(child)).join('\n\n')}`;
+            })
+            .join('\n\n'),
+      );
+    }
     ensureNoUnusedDefinitions(definitions);
 
     nextChildren.push(node);
@@ -183,6 +221,7 @@ function collectTablePlaceholders(table: Table) {
 
       placeholders.push({
         cell,
+        source: slotNodes[0],
         name: getRequiredSlotAttribute(slotNodes[0], 'name'),
         syntax: isMdxJsxSlotNode(slotNodes[0]) ? 'mdx' : 'html',
       });
@@ -290,6 +329,8 @@ function hasDefinitionsForEveryPlaceholder(
 function applySlotDefinitions(
   placeholders: SlotPlaceholder[],
   definitions: Map<string, SlotDefinition>,
+  file: VFile,
+  labels: Map<string, { title: string; id: string }>,
 ) {
   for (const placeholder of placeholders) {
     const definition = definitions.get(placeholder.name);
@@ -300,6 +341,9 @@ function applySlotDefinitions(
       );
     }
 
+    const label = labels.get(placeholder.name);
+    if (label)
+      replaceSource(file, placeholder.source, `[${label.title}](#${label.id})`);
     placeholder.cell.children = cloneChildren(definition.children);
     definition.consumed = true;
   }

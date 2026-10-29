@@ -125,6 +125,11 @@ const ZH_CN_OPENAPI_GENERATED_HEADING_LABELS: Record<string, string> = {
   'response-body': '响应 Body',
 };
 const ZH_CN_FUMADOCS_SCHEMA_TRANSLATIONS = {
+  'Code language(operation page)': '代码语言',
+  'Example request(operation page)': '请求示例场景',
+  'Response status(operation page)': '响应状态',
+  'Copy Anchor Link(heading anchor)(aria-label)': '复制锚点链接',
+  'Copied Anchor Link(heading anchor)(aria-label)': '已复制锚点链接',
   'Allowed values(schema UI)': '可选值',
   'Cookie Parameters': 'Cookie 参数',
   'Collapse all(schema UI)': '折叠全部',

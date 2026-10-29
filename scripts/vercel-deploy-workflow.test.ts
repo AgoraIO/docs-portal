@@ -67,7 +67,7 @@ describe('Vercel preview deployment workflow', () => {
     expect(uploadIndex).toBeGreaterThan(replayIndex);
 
     expect(upload.if).toBe('always()');
-    expect(upload.uses).toBe('actions/upload-artifact@v4');
+    expect(upload.uses).toBe('actions/upload-artifact@v7.0.2');
     expect(upload.with).toMatchObject({
       name: 'global-search-replay-preview',
       path: 'global-search-replay-preview.json',
