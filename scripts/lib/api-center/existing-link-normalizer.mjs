@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { auditDocsLinks } from '../../audit-doc-links.mjs';
 import { buildApiReferenceRehomePlan } from './api-reference-ownership.mjs';
 import {

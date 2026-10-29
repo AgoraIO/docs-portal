@@ -10,7 +10,7 @@ import {
 } from '@testing-library/react';
 import { load } from 'cheerio';
 import type { OpenAPIPageProps } from 'fumadocs-openapi/ui';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { renderToStaticMarkup } from 'react-dom/server';
 import { describe, expect, it, vi } from 'vitest';
 import { FumadocsOpenApiContent } from './FumadocsOpenApiContent';
@@ -372,7 +372,8 @@ describe('FumadocsOpenApiContent', () => {
       ['parameters-header', 'traceId'],
       ['parameters-cookie', 'sessionId'],
     ]) {
-      const section = document.getElementById(id)?.nextElementSibling;
+      const section =
+        document.getElementById(id)?.parentElement?.nextElementSibling;
       expect(section).toBeTruthy();
       expect(section).toHaveTextContent(name);
       expect(section).not.toHaveTextContent('Filter Properties');
@@ -810,7 +811,7 @@ describe('FumadocsOpenApiContent', () => {
     );
   });
 
-  it('keeps generated language tabs when an operation does not define x-codeSamples', async () => {
+  it('keeps the official generated language selector when an operation does not define x-codeSamples', async () => {
     render(
       <FumadocsOpenApiContent
         locale="zh-CN"
@@ -862,40 +863,37 @@ describe('FumadocsOpenApiContent', () => {
       />,
     );
 
+    const generatedPreview = await screen.findByTestId('openapi-code-preview');
+    const language = within(generatedPreview).getByRole('combobox', {
+      name: '代码语言',
+    });
+    fireEvent.click(language);
     expect(
-      await screen.findByRole('tab', { name: 'cURL' }),
+      await screen.findByRole('option', { name: 'JavaScript' }),
     ).toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: 'JavaScript' })).toBeInTheDocument();
-    const generatedPreview = screen.getByTestId('openapi-code-preview');
-    const generatedPanel = within(generatedPreview).getByRole('tabpanel');
-    expect(generatedPanel.closest('.openapi-request-code-tabs')).toHaveClass(
-      'openapi-request-code-tabs',
-      'my-0',
-    );
-    expect(
-      generatedPanel.querySelector('.fd-scroll-container'),
-    ).toHaveAttribute('data-openapi-code-viewport', '');
-    expect(generatedPanel.querySelector('figure.shiki')).toHaveClass(
-      'bg-fd-secondary',
-      '-mx-px',
-      '-mb-px',
-      'last:rounded-b-xl',
+    fireEvent.click(screen.getByRole('option', { name: 'cURL' }));
+    const generatedCode = generatedPreview.querySelector('pre');
+    expect(generatedCode).toHaveTextContent('curl');
+    await waitFor(() =>
+      expect(
+        generatedPreview.querySelector('.fd-scroll-container'),
+      ).toHaveAttribute('data-openapi-code-viewport', ''),
     );
     await waitFor(() =>
       expect(
-        generatedPanel.querySelector('pre span[style*="--shiki-light"]'),
+        generatedPreview.querySelector('pre span[style*="--shiki-light"]'),
       ).toBeInTheDocument(),
     );
     expect(
       within(generatedPreview).getByRole('button', { name: '复制文本' }),
     ).toBeInTheDocument();
     expect(
-      screen
-        .getByRole('tab', { name: 'cURL' })
-        .closest('.openapi-request-examples'),
+      generatedPreview.closest('.openapi-request-examples'),
     ).not.toHaveAttribute('data-markdown-ignore');
     expect(
-      screen.getByText('响应示例').closest('.openapi-response-example'),
+      screen
+        .getByText(/^(Response example|响应示例)$/)
+        .closest('.openapi-response-example'),
     ).not.toHaveAttribute('data-markdown-ignore');
   });
 
@@ -2157,10 +2155,10 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = screen.getByRole('heading', {
       name: 'Path Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
 
     expect(within(pathSection).getByText('appid')).toBeInTheDocument();
     expect(within(pathSection).getByText('resourceid')).toBeInTheDocument();
@@ -2736,10 +2734,11 @@ describe('FumadocsOpenApiContent', () => {
     const pathParameters = await screen.findByRole('heading', {
       name: 'Path Parameters',
     });
-    const pathSection = pathParameters.nextElementSibling as HTMLElement;
+    const pathSection = pathParameters.parentElement
+      ?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const responseHeaderSection = screen
       .getByRole('heading', { name: 'Response Headers' })
       .closest('section') as HTMLElement;
@@ -2763,7 +2762,7 @@ describe('FumadocsOpenApiContent', () => {
 
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     expect(within(querySection).getByText('page_size')).toBeInTheDocument();
     expect(within(querySection).getAllByText('Range:')).toHaveLength(2);
     expect(
@@ -3404,7 +3403,11 @@ describe('FumadocsOpenApiContent', () => {
     expect(examplesScope.getByRole('tabpanel')).not.toHaveTextContent(
       'curl --request POST https://example.com/join',
     );
-    expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
+    expect(
+      screen
+        .getByText(/^(Response example|响应示例)$/)
+        .closest('.openapi-response-example'),
+    ).toHaveTextContent('200');
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
     ).not.toBeInTheDocument();
@@ -3537,7 +3540,11 @@ describe('FumadocsOpenApiContent', () => {
         'Sends a custom text instruction to a specified Conversational AI agent instance.',
       ),
     ).not.toBeInTheDocument();
-    expect(screen.getByRole('tab', { name: '200' })).toBeInTheDocument();
+    expect(
+      screen
+        .getByText(/^(Response example|响应示例)$/)
+        .closest('.openapi-response-example'),
+    ).toHaveTextContent('200');
     expect(
       screen.queryByText('x-docs-code-sample-groups'),
     ).not.toBeInTheDocument();
@@ -4216,7 +4223,7 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: 'Path Parameters' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
 
     expect(
       within(pathSection).getByText('The App ID used by this request.'),
@@ -4305,16 +4312,16 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: 'Path Parameters' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
     const querySection = screen.getByRole('heading', {
       name: 'Query Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const headerSection = screen.getByRole('heading', {
       name: 'Header Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     const cookieSection = screen.getByRole('heading', {
       name: 'Cookie Parameters',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
 
     const pathRow = within(pathSection)
       .getByText('itemId')
@@ -4408,10 +4415,10 @@ describe('FumadocsOpenApiContent', () => {
 
     const pathSection = (
       await screen.findByRole('heading', { name: '路径参数' })
-    ).nextElementSibling as HTMLElement;
+    ).parentElement?.nextElementSibling as HTMLElement;
     const querySection = screen.getByRole('heading', {
       name: '查询参数',
-    }).nextElementSibling as HTMLElement;
+    }).parentElement?.nextElementSibling as HTMLElement;
     expect(within(pathSection).getByText('必填')).toBeVisible();
     expect(within(querySection).queryByText('可选')).not.toBeInTheDocument();
     expect(

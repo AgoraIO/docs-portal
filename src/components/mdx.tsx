@@ -78,6 +78,7 @@ import { normalizeLocale } from '@/lib/i18n/i18n-config';
 import { resources } from '@/lib/i18n/resources';
 import { PLATFORM_PREFERENCE_EVENT } from '@/lib/platforms/preference';
 import { buildPlatformPathname } from '@/lib/platforms/route';
+import { DocsHeading } from './mdx/DocsHeading';
 import { PlanCards, PricingCards } from './mdx/PlanCards';
 import {
   PlatformInline,
@@ -1343,15 +1344,11 @@ function TabAwareHeading({
   ...props
 }: ComponentProps<'h2'> & { as: MdxHeadingLevel }) {
   const tabLabel = useContext(MdxTabLabelContext);
-  const Heading = (defaultMdxComponents[as] ?? as) as ComponentType<
-    ComponentProps<'h2'>
-  >;
-
   return (
-    <Heading {...props}>
+    <DocsHeading {...props} as={as}>
       {children}
       {tabLabel ? <span className="sr-only"> ({tabLabel})</span> : null}
-    </Heading>
+    </DocsHeading>
   );
 }
 

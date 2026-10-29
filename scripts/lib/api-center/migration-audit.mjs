@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { analyzeMdxBuildSyntax } from '../../audit-mdx-build-syntax.mjs';
 
 const LEGACY_ORIGIN_PATTERN =

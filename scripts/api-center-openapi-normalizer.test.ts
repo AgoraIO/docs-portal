@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   normalizeOpenApiShortDescription,

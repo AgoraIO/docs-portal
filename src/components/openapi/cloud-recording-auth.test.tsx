@@ -34,16 +34,28 @@ it('generates all seven Cloud Recording request languages with Basic Auth from t
   const examples = rail.querySelector(
     '.openapi-request-examples',
   ) as HTMLElement;
-  const tabs = within(examples).getAllByRole('tab');
-  expect(tabs).toHaveLength(7);
-  for (const tab of tabs) {
-    fireEvent.mouseDown(tab);
-    await waitFor(() => expect(tab).toHaveAttribute('aria-selected', 'true'));
+  for (const language of [
+    'cURL',
+    'JavaScript',
+    'Go',
+    'Python',
+    'Java',
+    'C#',
+    'Rust',
+  ]) {
+    fireEvent.click(
+      within(examples).getByRole('combobox', { name: '代码语言' }),
+    );
+    const option = await screen.findByRole('option', { name: language });
+    fireEvent.click(option);
     await waitFor(() => {
-      const panel = within(examples).getByRole('tabpanel');
-      expect(panel).toHaveTextContent('Authorization');
-      expect(panel).toHaveTextContent('Basic <credentials>');
-      expect(panel).toHaveTextContent('cloud_recording/acquire');
+      expect(examples.querySelector('pre')).toHaveTextContent('Authorization');
+      expect(examples.querySelector('pre')).toHaveTextContent(
+        'Basic <credentials>',
+      );
+      expect(examples.querySelector('pre')).toHaveTextContent(
+        'cloud_recording/acquire',
+      );
     });
   }
 });

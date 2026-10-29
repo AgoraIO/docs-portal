@@ -95,6 +95,8 @@ export default defineConfig({
               : {}),
             pages: prerenderPages,
             prerender: {
+              // The stream renderer waits for all Suspense content for crawlers.
+              headers: { 'User-Agent': 'DocsPortal Prerender' },
               crawlLinks: false,
               enabled: !isServiceDeployment,
               filter: shouldPrerenderPage,

@@ -3,7 +3,7 @@ import path from 'node:path';
 import { load } from 'cheerio';
 import { remarkGfm } from 'fumadocs-core/mdx-plugins';
 import GithubSlugger from 'github-slugger';
-import yaml from 'js-yaml';
+import * as yaml from 'js-yaml';
 import remarkDirective from 'remark-directive';
 import remarkMdx from 'remark-mdx';
 import remarkParse from 'remark-parse';
@@ -605,21 +605,14 @@ export function parseSrcset(value) {
 export function extractOpenApiDocument(raw, { sourcePath, lane }) {
   const links = [],
     gaps = [],
-    scalarRanges = new Map(),
-    stack = [];
-  const data = yaml.load(raw, {
-    listener(event, state) {
-      if (event === 'open') stack.push(state.position);
-      else {
-        const start = stack.pop();
-        if (typeof state.result === 'string') {
-          if (!scalarRanges.has(state.result))
-            scalarRanges.set(state.result, []);
-          scalarRanges.get(state.result).push([start, state.position]);
-        }
-      }
-    },
-  });
+    scalarRanges = new Map();
+  const data = yaml.load(raw);
+  for (const event of yaml.parseEvents(raw, {})) {
+    if (event.type !== yaml.EVENT_ID.SCALAR) continue;
+    const value = yaml.getScalarValue(raw, event);
+    if (!scalarRanges.has(value)) scalarRanges.set(value, []);
+    scalarRanges.get(value).push([event.valueStart, event.valueEnd]);
+  }
   const lookup = (ref) =>
     ref
       .slice(2)
