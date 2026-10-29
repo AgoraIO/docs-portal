@@ -103,9 +103,9 @@ export const GLOBAL_GOLDEN_SEARCH_CASES: readonly GoldenSearchCase[] = [
     query: 'enable adaptive bitrate',
     expectedIntent: 'task',
     expectedKind: 'guide',
-    expectedTitle: 'Enable adaptive bitrate',
+    expectedTitle: 'Adaptive bitrate',
     expectedUrl:
-      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/enable-adaptive-bitrate',
+      '/en/realtime-media/rtmp-gateway/build/process-media/enable-adaptive-bitrate',
   },
   {
     query: 'stream channels',
