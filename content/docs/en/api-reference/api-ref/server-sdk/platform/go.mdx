@@ -5,7 +5,7 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-go preview branch (feat/v3-api-preview, commit 72032cd) and its docs/guides/v3-preview.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* TODO(platform-confirm): Platform support isn't in a published release of `github.com/AgoraIO/agora-agents-go/v2` yet (the latest tag is v2.12.0). Add the minimum version when it's released, and recheck this page against that release. */}
+{/* TODO(platform-confirm): Platform support isn't in a tagged release of `github.com/AgoraIO/agora-agents-go/v2` yet (the latest tag is v2.12.0). The TypeScript and Python previews are published as v3.0.0-alpha.2, and the Go v3.0.0-alpha.2 changelog is ready on feat/v3-api-preview. Replace `@v3-api-preview` with the tag when it's published, and recheck this page against that release. */}
 
 The `github.com/AgoraIO/agora-agents-go/v2` Go SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.V3` client.
 
@@ -13,7 +13,14 @@ The vendor constructors, such as `vendors.NewOpenAI()` and `vendors.NewDeepgramS
 
 ## Install
 
-To install the SDK, see [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+Platform support is on the SDK's `v3-api-preview` branch. You need Go 1.21 or later. Add the SDK to your Go module:
+
+```bash
+go get github.com/AgoraIO/agora-agents-go/v2@v3-api-preview
+go mod tidy
+```
+
+Import the packages you use:
 
 ```go
 import (

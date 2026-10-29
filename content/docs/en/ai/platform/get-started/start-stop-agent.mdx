@@ -51,15 +51,13 @@ Get REST API credentials for the Platform. For details, see [Authentication](/en
 
 <TabsContent value="python">
 
-Install the SDK in your project's virtual environment. You need Python 3.8 or later. On Windows, clone the repository to a short path, such as `C:\src`, because some of its file paths are long.
+Install the SDK preview in your project's virtual environment. You need Python 3.8 or later. Specify the version, because the default `agora-agents` release doesn't support the Platform API.
 
 ```bash
-git clone --branch feat/v3-api-preview https://github.com/AgoraIO/agora-agents-python.git
-cd <your_project_folder>
-pip install <path_to>/agora-agents-python
+pip install agora-agents==3.0.0a2
 ```
 
-{/* TODO(platform-confirm): Replace the clone-and-install steps with `pip install agora-agents==<version>` when the SDK team publishes the Platform release. Tested on 2026-10-28 (Windows, Python 3.14, branch commit 8edae82): a clone under a deep folder fails to check out 437 files on Windows (path over 260 characters), and the import then fails with ModuleNotFoundError. The SDK team documents a long-path workaround. On 2026-10-29 (commit ed4466c), the import no longer prints a pydantic warning. */}
+{/* TODO(platform-confirm): Update the version when the SDK team publishes the Platform release. Tested on 2026-10-29 (Windows, Python 3.14): `agora-agents==3.0.0a2` installed from PyPI, and this page's client setup and Create an agent example ran as written. PyPI's default version is still 2.12.0. 3.0.0a2 has the same code as preview commit ed4466c, which the other SDK examples were tested against. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Python examples on this page use this `client`:
 
@@ -78,18 +76,14 @@ client = Agora(
 
 <TabsContent value="typescript">
 
-Build the SDK and install it in your project. You need Node.js 18 or later and [pnpm](https://pnpm.io/installation). On Windows, run the commands in Git Bash or WSL.
+Install the SDK preview in your project. You need Node.js 18 or later. Specify the version, because the default `agora-agents` release doesn't support the Platform API.
 
 ```bash
-git clone --branch feat/v3-api-preview https://github.com/AgoraIO/agora-agents-ts.git
-cd agora-agents-ts
-pnpm install
-pnpm build
 cd <your_project_folder>
-npm install <path_to>/agora-agents-ts
+npm install agora-agents@3.0.0-alpha.2
 ```
 
-{/* TODO(platform-confirm): Replace the clone-and-build steps with `npm install agora-agents@<version>` when the SDK team publishes the Platform release. Tested on 2026-10-28 (Windows, Node 24, pnpm 10.20.0, branch commit 739feba): the steps work in Git Bash, and `pnpm build` failed in PowerShell. On 2026-10-29 (commit 4900f4c), the SDK team made the build portable and added a prepare script for Git installs. Check whether `npm install` from the Git branch now works, and whether the Git Bash note can go. */}
+{/* TODO(platform-confirm): Update the version when the SDK team publishes the Platform release. Tested on 2026-10-29 (Windows, Node 24): `agora-agents@3.0.0-alpha.2` installed from npm, and this page's client setup and Create an agent example ran as written. The npm `latest` tag is still 2.12.0; 3.0.0-alpha.2 is under the `alpha` tag. It has the same code as preview commit 4900f4c, which the other SDK examples were tested against. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The TypeScript examples on this page use this `client`:
 
@@ -115,7 +109,7 @@ go get github.com/AgoraIO/agora-agents-go/v2@v3-api-preview
 go mod tidy
 ```
 
-{/* TODO(platform-confirm): Replace `@v3-api-preview` with the release version when the SDK team publishes the Platform release. Tested on 2026-10-29 (Windows, Go 1.26.3): `go get` resolved to commit 362ce9a, and a build then needed `go mod tidy` to add the token builder dependency to go.sum. */}
+{/* TODO(platform-confirm): Replace `@v3-api-preview` with the Go v3.0.0-alpha.2 tag when the SDK team publishes it (the changelog is ready on feat/v3-api-preview, with no code changes since 362ce9a). Tested on 2026-10-29 (Windows, Go 1.26.3): `go get` resolved to commit 362ce9a, and a build then needed `go mod tidy` to add the token builder dependency to go.sum. */}
 
 Create a client with your App ID and App Certificate. The SDK uses them to generate a token for each request. The Go examples on this page use this `client` and `ctx`, and these imports:
 
@@ -144,7 +138,7 @@ client := agentkit.NewAgoraClient(agentkit.AgoraClientOptions{
 
 {/* Verified in pre-release testing: Basic auth (2026-10-27) and ConvoAI token auth (2026-10-28) both work. A quoted or unquoted token header and a token with or without a channel scope were all accepted. The REST examples on this page use Basic auth. The SDKs support only token auth. */}
 
-{/* TODO(platform-confirm): Platform support is on the preview branches (feat/v3-api-preview) of agora-agents-ts, agora-agents-python, and agora-agents-go, and isn't in a published package yet (npm, PyPI, and Go all have 2.12.0). Add the minimum package versions when they're released. */}
+{/* TODO(platform-confirm): The TypeScript and Python SDK previews are published as v3.0.0-alpha.2 (npm 3.0.0-alpha.2, PyPI 3.0.0a2). The Go preview isn't tagged yet and installs from the v3-api-preview branch. Update the versions when the Platform release is published. */}
 
 ## Create an agent
 

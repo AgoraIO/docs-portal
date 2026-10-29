@@ -5,7 +5,7 @@ description: API reference for the Conversational AI Platform (Preview) features
 
 {/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-python preview branch (feat/v3-api-preview, commit 8edae82) and its docs/reference/v3.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
 
-{/* TODO(platform-confirm): Platform support isn't in a published `agora-agents` package yet (PyPI has 2.12.0). Add the minimum package version when it's released, and recheck this page against that release. */}
+{/* TODO(platform-confirm): Platform support is in the SDK preview `agora-agents` 3.0.0a2 (Git tag v3.0.0-alpha.2, published 2026-10-29). It has the same code as preview commit ed4466c. Update the version when the Platform release is published, and recheck this page against that release. */}
 
 The `agora-agents` Python SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.v3` namespace.
 
@@ -13,7 +13,13 @@ The vendor classes, such as `OpenAI` and `DeepgramSTT`, and the builder methods,
 
 ## Install
 
-To install the SDK, see [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+Platform support is in the SDK preview, version 3.0.0a2. You need Python 3.8 or later. Install the SDK in your project's virtual environment, and specify the version, because the default `agora-agents` release doesn't support the Platform API:
+
+```bash
+pip install agora-agents==3.0.0a2
+```
+
+The package imports as `agora_agent`. Import the classes you use, for example:
 
 ```python
 from agora_agent import Agent, Agora, Area, SavedAgent, secret_ref
