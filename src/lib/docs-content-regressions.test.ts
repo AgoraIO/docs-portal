@@ -789,7 +789,7 @@ describe('docs content regressions', () => {
     );
 
     const srtStreaming = readDoc(
-      'realtime-media/rtmp-gateway/reference/srt-streaming.md',
+      'realtime-media/rtmp-gateway/build/push-streams/srt-streaming.md',
     );
 
     expect(srtStreaming).toContain(
@@ -953,15 +953,13 @@ describe('docs content regressions', () => {
       '<Accordion title="Why is my applied billing rate for Ultra-HD when all users subscribe to 360 × 640 video streams?">',
     );
 
-    const rtmpCoreConcepts = readDoc(
-      'realtime-media/rtmp-gateway/reference/core-concepts.md',
-    );
+    const rtmpCoreConcepts = readDoc('introduction/core-concepts.mdx');
 
     expect(rtmpCoreConcepts).toContain('| Channel profile | Description |');
     expect(rtmpCoreConcepts).toContain('| `LIVE_BROADCASTING` |');
 
     const rtmpNotifications = readDoc(
-      'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
+      'realtime-media/rtmp-gateway/build/receive-notifications.md',
     );
 
     expect(rtmpNotifications).toContain(
@@ -1844,21 +1842,21 @@ describe('docs content regressions', () => {
     const abr = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/enable-adaptive-bitrate.md',
+        'realtime-media/rtmp-gateway/build/process-media/enable-adaptive-bitrate.md',
       ),
       'utf8',
     );
     const notifications = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications.md',
+        'realtime-media/rtmp-gateway/build/receive-notifications.md',
       ),
       'utf8',
     );
     const features = readFileSync(
       resolve(
         docsRoot,
-        'realtime-media/rtmp-gateway/reference/media-gateway-features.md',
+        'realtime-media/rtmp-gateway/index.mdx',
       ),
       'utf8',
     );

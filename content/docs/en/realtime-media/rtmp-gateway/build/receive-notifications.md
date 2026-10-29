@@ -22,7 +22,7 @@ To set up and use Notifications, you must have:
 - An [active Agora project](/en/introduction/account)
 - A computer with Internet access
 
-If your network access is restricted by a firewall, call the IP address query API to retrieve the Notifications IP addresses, then configure the firewall to allow those IP addresses. The REST API reference for that endpoint remains out of scope for this prose migration.
+If your network access is restricted by a firewall, call the IP address query API to retrieve the Notifications IP addresses, then configure the firewall to allow those IP addresses.
 
 ## Handle notifications for specific events
 
@@ -219,20 +219,9 @@ Notification callbacks include the following headers and body fields.
 | `Agora-Signature` | Signature generated with the secret and the HMAC/SHA1 algorithm. Use it to verify the callback body. |
 | `Agora-Signature-V2` | Signature generated with the secret and the HMAC/SHA256 algorithm. Use it to verify the callback body. |
 
-### Request body
-
-| Field name | Type | Description |
-| --- | --- | --- |
-| `noticeId` | String | Unique ID of the notification callback. |
-| `productId` | Number | Product ID. When this value is `10`, the callback belongs to Media Gateway. |
-| `eventType` | Number | Event type code for the current callback. |
-| `notifyMs` | Number | Callback timestamp in milliseconds. |
-| `sid` | String | Streaming session ID. Each streaming task gets a unique SID. |
-| `payload` | Object | Event-specific data. The fields depend on `eventType`. |
-
-The callback payload also contains common fields such as `noticeId`, `productId`, `eventType`, `notifyMs`, `sid`, and `payload`.
-
 ### Common callback fields
+
+Every callback body includes the following fields, regardless of event type.
 
 | Field | Type | Description |
 | --- | --- | --- |
@@ -245,20 +234,12 @@ The callback payload also contains common fields such as `noticeId`, `productId`
 
 ### Media Gateway event types
 
-| Event type | Description | Payload highlights |
-| --- | --- | --- |
-| `live_stream_connected` | The gateway has received the RTMP or SRT stream and successfully entered the channel. | `rtcInfo`, `transcoding`, `beginAt` |
-| `live_stream_disconnected` | The gateway has actively or passively disconnected and left the channel. | `rtcInfo`, `streamStats`, `beginAt`, `endAt` |
-| `live_stream_aborted` | The gateway received a stream but terminated it because of an error. | `rtcInfo`, `beginAt`, `errorCode`, `reason` |
-| `live_profile_updated` | Stream properties have been updated, for example after the first audio or video frame is received. | `rtcInfo`, `videoProfile`, `audioProfile`, `beginAt` |
-
-For Media Gateway events, payload objects commonly include:
-
-- `rtcInfo`: RTC information such as `channel` and `uid`
-- `transcoding`: The transcoding configuration used for the stream
-- `streamStats`: Statistics such as total input and output bytes
-- `videoProfile`: Video properties such as codec, width, height, and GOP
-- `audioProfile`: Audio properties such as sample rate and channel count
+| `eventType` | Event name | Description | Payload highlights |
+| --- | --- | --- | --- |
+| `1` | `live_stream_connected` | The gateway has received the RTMP or SRT stream and successfully entered the channel. | `rtcInfo`, `transcoding`, `beginAt` |
+| `2` | `live_stream_disconnected` | The gateway has actively or passively disconnected and left the channel. | `rtcInfo`, `streamStats`, `beginAt`, `endAt` |
+| `3` | `live_stream_aborted` | The gateway received a stream but terminated it because of an error. | `rtcInfo`, `beginAt`, `errorCode`, `reason` |
+| `4` | `live_profile_updated` | Stream properties have been updated, for example after the first audio or video frame is received. | `rtcInfo`, `videoProfile`, `audioProfile`, `beginAt` |
 
 ### Media Gateway payload objects
 
@@ -289,19 +270,6 @@ For Media Gateway events, payload objects commonly include:
 | `9` | Disconnected from the main network. | Retry several times. If the problem persists, contact technical support to confirm whether the app certificate provided during activation is valid. |
 | `10` | Unknown internal service error. | Retry several times. If the problem persists, contact technical support. |
 
-The detailed REST and webhook field reference remains outside this prose migration scope.
-
-### Media Gateway event types
-
-Notifications can notify your server of the following Media Gateway events:
-
-| `eventType` | Event name | Description |
-| --- | --- | --- |
-| `1` | `live_stream_connected` | The gateway has received the RTMP or SRT stream and successfully entered the channel. |
-| `2` | `live_stream_disconnected` | The gateway has actively or passively disconnected and left the channel. |
-| `3` | `live_stream_aborted` | The gateway has received an RTMP or SRT stream but terminated it for some reason. |
-| `4` | `live_profile_updated` | Stream properties have been updated, such as the first audio or video frame, or an audio or video profile change. |
-
 ## IP address query API
 
 If your server that receives notification callbacks is behind a firewall, call the IP address query API to retrieve the IP addresses of Notifications and configure your firewall to trust those IP addresses.
@@ -311,8 +279,6 @@ Relevant details:
 - Method: `GET`
 - Endpoint: `https://api.agora.io/v2/ncs/ip`
 - Body: none
-
-The REST API reference for this endpoint remains out of scope for this prose migration.
 
 ## Considerations
 

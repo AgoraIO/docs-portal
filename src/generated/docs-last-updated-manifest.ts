@@ -6245,15 +6245,15 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtmp-gateway/product-overview.md':
     '2026-06-18T09:52:26.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/quickstart.md':
-    '2026-09-14T03:44:50.000Z',
+    '2026-10-20T10:32:27.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/core-concepts.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/glossary.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/integration.md':
-    '2026-07-21T03:37:31.000Z',
+    '2026-10-20T10:32:27.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/media-gateway-features.md':
-    '2026-10-12T08:16:51.000Z',
+    '2026-10-20T10:32:27.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/meta.json':
     '2026-08-27T03:13:28.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/placeholder.md':
@@ -6263,7 +6263,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtmp-gateway/reference/release-notes.md':
     '2026-06-27T08:57:33.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/release-notes.mdx':
-    '2026-09-28T07:48:11.000Z',
+    '2026-10-20T10:32:27.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/rest-api.md':
     '2026-08-26T06:38:28.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/rest-api/authentication.md':
@@ -6283,7 +6283,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/rtmp-gateway/reference/security.md':
     '2026-09-04T12:16:57.000Z',
   'content/docs/en/realtime-media/rtmp-gateway/reference/srt-streaming.md':
-    '2026-07-21T03:37:31.000Z',
+    '2026-10-20T10:32:27.000Z',
   'content/docs/en/realtime-media/rtsa.md': '2026-05-14T11:07:52.000Z',
   'content/docs/en/realtime-media/rtsa/index.md': '2026-07-21T03:37:31.000Z',
   'content/docs/en/realtime-media/sdk-extensions.md':

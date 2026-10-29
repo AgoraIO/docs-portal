@@ -328,13 +328,13 @@ const PRODUCT_SPECIFIC_TARGETS = {
   },
   'media-gateway': {
     'advanced/abr':
-      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/enable-adaptive-bitrate',
+      '/en/realtime-media/rtmp-gateway/build/process-media/enable-adaptive-bitrate',
     'advanced/low-bitrate-hd':
-      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/pvc-and-super-quality-configuration',
+      '/en/realtime-media/rtmp-gateway/build/process-media/pvc-and-super-quality-configuration',
     'best-practices/best-practice':
       '/en/realtime-media/rtmp-gateway/quickstart',
     'overview/product-features':
-      '/en/realtime-media/rtmp-gateway/reference/media-gateway-features',
+      '/en/realtime-media/rtmp-gateway',
     'overview/product-overview': '/en/realtime-media/rtmp-gateway',
     'reference/rest-api/endpoints/flow-configuration-template/create-reset-template':
       '/en/realtime-media/rtmp-gateway/reference/rest-api',
@@ -345,7 +345,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'reference/rest-api/endpoints/flow-configuration-template/update-template':
       '/en/realtime-media/rtmp-gateway/reference/rest-api',
     'reference/rest-api/endpoints/message-notification-service/query-ip-address':
-      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications',
+      '/en/realtime-media/rtmp-gateway/build/receive-notifications',
     'reference/rest-api/endpoints/streaming-information/force-disconnection':
       '/en/realtime-media/rtmp-gateway/reference/rest-api',
     'reference/rest-api/endpoints/streaming-information/mute':
@@ -367,7 +367,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
     'reference/rest-api/response-status-codes':
       '/en/realtime-media/rtmp-gateway/reference/rest-api',
     'reference/rest-api/webhooks/media-gateway-event-type':
-      '/en/realtime-media/rtmp-gateway/build/optimize-quality-and-monitor-events/receive-notifications',
+      '/en/realtime-media/rtmp-gateway/build/receive-notifications',
     'reference/restful-authentication':
       '/en/realtime-media/rtmp-gateway/reference/rest-api',
   },
