@@ -80,6 +80,7 @@ import {
   PlatformStructured,
 } from './mdx/PlatformContent';
 import { PlatformPanel, PlatformTabsGroup } from './mdx/PlatformTabsGroup';
+import { RepositoryCardTitle } from './mdx/RepositoryCardTitle';
 import { RTCMinutesCalculator } from './mdx/RTCMinutesCalculator';
 
 type MDXContext = {
@@ -1577,6 +1578,7 @@ export function getMDXComponents(
     Folder,
     Step,
     Steps,
+    RepositoryCardTitle,
     RTCMinutesCalculator,
     PlanCards: DocsPlanCards,
     PricingCards: DocsPricingCards,
