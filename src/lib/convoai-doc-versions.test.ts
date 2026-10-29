@@ -103,10 +103,18 @@ describe('ConvoAI documentation integration', () => {
     ).toBe('/en/ai/platform/reference/event-types');
   });
 
+  it('switches between the Main and Preview pricing pages', () => {
+    expect(getDocVersionTarget('/en/ai/reference/pricing', 'v2')?.href).toBe(
+      '/en/ai/platform/reference/pricing',
+    );
+    expect(
+      getDocVersionTarget('/en/ai/platform/reference/pricing', 'v1')?.href,
+    ).toBe('/en/ai/reference/pricing');
+  });
+
   it.each([
     '/en/ai/studio',
     '/en/ai/device-kit',
-    '/en/ai/reference/pricing',
     '/en/ai/ten-agent',
     '/zh-CN/ai',
   ])('does not claim the shared or independent product %s', (path) => {

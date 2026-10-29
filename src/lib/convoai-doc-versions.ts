@@ -45,7 +45,6 @@ export const CONVOAI_DOC_VERSION_SCOPES = [
     entryLinks: [GUIDE_ROOT],
     defaultVersion: 'v1',
     previousVersion: 'v1',
-    sharedUrls: [`${GUIDE_ROOT}/reference/pricing`],
     previewMessage:
       "You're reading the Conversational AI Platform (Preview) docs.",
     versions: [

@@ -35,7 +35,6 @@ function guidePages(root, relative = '') {
         : [];
     }
     const path = relative ? `${relative}/${entry}` : entry;
-    if (path === 'reference/pricing') return [];
     if (existsSync(join(root, path, 'meta.json')))
       return guidePages(root, path);
     if (

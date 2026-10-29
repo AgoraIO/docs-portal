@@ -86,6 +86,7 @@ export const CONVOAI_GUIDE_PAGES = {
     'models/avatar/lemonslice',
     'models/avatar/protoface',
     'models/avatar/tavus',
+    'reference/pricing',
     'reference/event-types',
     'reference/ten-agent/create-asr-extension',
     'reference/ten-agent/create-tts-extension',
@@ -153,6 +154,7 @@ export const CONVOAI_GUIDE_PAGES = {
     'models/avatar/protoface',
     'models/avatar/tavus',
     'reference/event-types',
+    'reference/pricing',
   ],
 } as const;
 export const CONVOAI_API_PAGES = {

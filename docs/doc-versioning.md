@@ -122,14 +122,15 @@ section. The ConvoAI catalog is `separator-Voice Agents` under
 `/en/api-reference`. It remaps REST and all three SDK links for the shared key.
 On an explicit SDK page, selecting switches the current language's document.
 
-`sharedUrls` retains fixed shared articles such as Pricing. `navigationUrls`
+`sharedUrls` retains fixed shared articles that belong to no edition. `navigationUrls`
 retains an edition's related links outside its root. Links do not register a
 new group. The other edition's subtree must be removed even if it contains a
 shared link. Independent products and unregistered pages have no version UI.
 
 Main retains its overview, app, Studio and dedicated-device navigation without
 the Platform subtree. Preview has its own topics and corresponding REST/SDK
-links. Pricing remains a shared fixed URL using the normal Main navigation.
+links. Each edition has its own Pricing page (`reference/pricing` under its
+root), and the switcher pairs them as one topic.
 Main and Platform release notes are displayed separately while preserving the
 source content.
 

@@ -81,6 +81,8 @@ describe('real ConvoAI edition sidebars', () => {
     expect(urls).toContain(
       '/en/api-reference/api-ref/conversational-ai/platform',
     );
+    expect(urls).toContain('/en/ai/platform/reference/pricing');
+    expect(urls).not.toContain('/en/ai/reference/pricing');
     expect(urls).not.toContain('/en/ai/platform/get-started/quickstart');
     expect(urls).not.toContain('/en/ai/platform/models/tts/generic-http');
     expect(urls.some((url) => url.startsWith('/en/ai/studio'))).toBe(false);
