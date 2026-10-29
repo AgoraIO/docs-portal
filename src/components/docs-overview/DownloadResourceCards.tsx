@@ -1,5 +1,6 @@
 import { DownloadIcon, ExternalLinkIcon, QrCodeIcon } from 'lucide-react';
 import { useState } from 'react';
+import { DownloadCardIcon } from './DownloadCardIcon';
 import { getPlatformIconSrc } from './platform-icon-src';
 
 type DownloadResource = {
@@ -48,9 +49,18 @@ export function DownloadResourceCards({
             >
               <div className="flex-1 px-5 py-5">
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="m-0 min-w-0 break-words text-base font-semibold text-foreground">
-                    {item.title}
-                  </h3>
+                  <div className="flex min-w-0 items-center gap-3">
+                    <DownloadCardIcon
+                      src={
+                        item.platform
+                          ? getPlatformIconSrc(item.platform)
+                          : undefined
+                      }
+                    />
+                    <h3 className="m-0 min-w-0 break-words text-base font-semibold text-foreground">
+                      {item.title}
+                    </h3>
+                  </div>
                   {item.href ? (
                     <a
                       aria-label={`${action} ${item.title}`}
@@ -92,13 +102,6 @@ export function DownloadResourceCards({
                 </div>
               ) : item.platform ? (
                 <div className="flex items-center gap-2 border-border border-t px-5 py-3 text-sm text-muted-foreground">
-                  <img
-                    alt=""
-                    aria-hidden
-                    className="size-7"
-                    loading="lazy"
-                    src={getPlatformIconSrc(item.platform)}
-                  />
                   <span>
                     {item.platform === 'ios'
                       ? 'iOS'
@@ -147,9 +150,16 @@ function DemoResourceCard({
       <div className="flex min-w-0 flex-1 flex-col gap-3 sm:flex-row sm:items-center">
         <div className="flex min-w-0 flex-1 flex-col">
           <div className="flex items-start justify-between gap-1">
-            <h3 className="m-0 min-w-0 break-words text-base font-semibold text-foreground">
-              {item.title}
-            </h3>
+            <div className="flex min-w-0 items-center gap-3">
+              <DownloadCardIcon
+                src={
+                  item.platform ? getPlatformIconSrc(item.platform) : undefined
+                }
+              />
+              <h3 className="m-0 min-w-0 break-words text-base font-semibold text-foreground">
+                {item.title}
+              </h3>
+            </div>
             {qrCodes.length > 0 && links.length > 0 && !item.qrExpanded ? (
               <details className="relative shrink-0">
                 <summary

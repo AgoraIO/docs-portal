@@ -87,6 +87,30 @@ export const platformRegistry = {
     },
     order: 65,
   },
+  'objective-c': {
+    label: { en: 'Objective-C', 'zh-CN': 'Objective-C' },
+    order: 66,
+  },
+  'mini-program-beta': {
+    label: { en: 'Mini Program (Beta)', 'zh-CN': '小程序（Beta）' },
+    order: 67,
+  },
+  'server-cpp': {
+    label: { en: 'Server C++', 'zh-CN': '服务端 C++' },
+    order: 68,
+  },
+  'server-java': {
+    label: { en: 'Server Java', 'zh-CN': '服务端 Java' },
+    order: 69,
+  },
+  'unreal-cpp': {
+    label: { en: 'Unreal (C++)', 'zh-CN': 'Unreal (C++)' },
+    order: 70,
+  },
+  'unreal-blueprint': {
+    label: { en: 'Unreal (Blueprint)', 'zh-CN': 'Unreal (Blueprint)' },
+    order: 71,
+  },
   csharp: {
     label: {
       en: 'C#',

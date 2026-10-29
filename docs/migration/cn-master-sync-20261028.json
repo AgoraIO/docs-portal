@@ -15,36 +15,36 @@
   "targetPrUrl": "https://github.com/AgoraIO/docs-portal/pull/1338",
   "implementationCommit": "2be79d0b69996d3d3f120afafa99c49c60854513",
   "status": "implemented-pending-merge",
-  "verifiedTargetTip": "d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1",
-  "targetTipOverlap": "44 content conflicts resolved; kept newest complete source API and still-applicable upstream link fixes, routing and query behavior; integrated validation passed",
+  "verifiedTargetTip": "837c5f58f5b8a59105e7c083a39d627d5032cb31",
+  "targetTipOverlap": "Merged target through #1326 and #1334; 39 Web API conflicts retain current full source bodies without old Hierarchy/Index blocks; download test preserves both restored historical metadata and current source version coverage.",
   "verification": {
-    "status": "passed-with-manual-follow-ups",
-    "mdxCompiled": 662,
-    "mdxScope": "initial target 3bb8afbf2 through integrated working tree, including upstream content changes",
-    "apiParagraphsChecked": 3141,
-    "apiTableCellsChecked": 3136,
-    "guideAndManualApiExamplesChecked": 535,
-    "webApiDeclarationBlocksChecked": 420,
-    "testsPassed": 4890,
-    "testsSkipped": 2,
-    "testsFailed": 0,
-    "testFiles": 311,
-    "cnProductionBuild": "passed",
-    "contentPayloadFiles": 6253,
-    "machineReadableFiles": 7535,
-    "routeHtmlFiles": 7285,
-    "mappedArticlePayloadsChecked": 554,
-    "builtHtmlPagesChecked": 554,
-    "emptyBodies": 0,
+    "date": "2026-10-29",
+    "status": "passed-content-and-navigation-checks-local-production-build-not-rerun",
     "typesCheck": "passed",
+    "diffCheck": "passed",
     "lint": {
       "errors": 0,
       "warnings": 19,
       "infos": 5
     },
-    "knownInternalReaderLinkIssues": 1,
-    "sourceHashesChecked": 1270,
-    "sourceHashMismatches": 0
+    "scopedNavigationTestsPassed": 61,
+    "testFiles": 315,
+    "testsPassed": 4959,
+    "testsSkipped": 2,
+    "testsFailed": 0,
+    "apiParagraphsChecked": 3141,
+    "apiTableCellsChecked": 3136,
+    "guideAndManualApiExamplesChecked": 535,
+    "webApiDeclarationBlocksChecked": 420,
+    "sourceFidelityMissing": 0,
+    "harmonyosMdxFilesPreserved": 92,
+    "harmonyosBodiesChanged": 0,
+    "navigationHttpRoutesChecked": 7,
+    "cnProductionBuild": "not-rerun-locally-after-navigation-follow-up",
+    "previousLocalProductionBuildCommit": "2be79d0b69996d3d3f120afafa99c49c60854513",
+    "previousCloudPreviewHead": "3aae4c1aee9e0f0e13d6391c11fcf9fe8d74dbb7",
+    "previousCloudPreviewRun": 40700243282,
+    "previousCloudPreviewConclusion": "success"
   },
   "ledger": "cn-master-sync-20261028-ledger.json",
   "fileMap": "cn-master-sync-20261028-file-map.csv",
@@ -129,11 +129,14 @@
     "implementationCommit": "e2d6a9cf59554161c5c69252e1ab53ccbee0655a"
   },
   "targetIntegration": {
-    "upstreamCommit": "d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1",
-    "upstreamPr": 1313,
+    "upstreamCommit": "837c5f58f5b8a59105e7c083a39d627d5032cb31",
+    "upstreamPrs": [
+      1313,
+      1326,
+      1334
+    ],
     "mode": "merge",
-    "status": "verified-pending-merge",
-    "localMergeCommit": "2be79d0b69996d3d3f120afafa99c49c60854513"
+    "status": "verified-pending-merge"
   },
   "apiHistoricalVerification": [
     {
@@ -263,13 +266,85 @@
     {
       "check": "old-head preview workflow 40693870472",
       "result": "cancelled because integration superseded head 5ac6ff8d2; not counted as build or deployment pass"
+    },
+    {
+      "date": "2026-10-29",
+      "check": "first integrated full test run",
+      "result": "4958 passed, 2 skipped, 1 default-5000ms timeout in chinese-support-links scan"
+    },
+    {
+      "date": "2026-10-29",
+      "check": "default-budget isolated retry then unchanged full command retry",
+      "result": "isolated 2 passed; final full run 315 files, 4959 passed, 2 skipped, 0 failures; no timeout or test changes"
     }
   ],
   "previewWorkflow": {
-    "status": "not-yet-verified",
+    "status": "pending-next-push",
     "region": "cn",
     "productionDeployment": "not-requested",
-    "trigger": "branch push after verification record"
+    "previousSuccessfulRun": 40700243282,
+    "previousSuccessfulHead": "3aae4c1aee9e0f0e13d6391c11fcf9fe8d74dbb7"
   },
-  "initialImplementationCommit": "e2d6a9cf59554161c5c69252e1ab53ccbee0655a"
+  "initialImplementationCommit": "e2d6a9cf59554161c5c69252e1ab53ccbee0655a",
+  "lastUpdated": "2026-10-29",
+  "verificationHistory": [
+    {
+      "commit": "2be79d0b69996d3d3f120afafa99c49c60854513",
+      "date": "2026-10-28",
+      "results": {
+        "status": "passed-with-manual-follow-ups",
+        "mdxCompiled": 662,
+        "mdxScope": "initial target 3bb8afbf2 through integrated working tree, including upstream content changes",
+        "apiParagraphsChecked": 3141,
+        "apiTableCellsChecked": 3136,
+        "guideAndManualApiExamplesChecked": 535,
+        "webApiDeclarationBlocksChecked": 420,
+        "testsPassed": 4890,
+        "testsSkipped": 2,
+        "testsFailed": 0,
+        "testFiles": 311,
+        "cnProductionBuild": "passed",
+        "contentPayloadFiles": 6253,
+        "machineReadableFiles": 7535,
+        "routeHtmlFiles": 7285,
+        "mappedArticlePayloadsChecked": 554,
+        "builtHtmlPagesChecked": 554,
+        "emptyBodies": 0,
+        "typesCheck": "passed",
+        "lint": {
+          "errors": 0,
+          "warnings": 19,
+          "infos": 5
+        },
+        "knownInternalReaderLinkIssues": 1,
+        "sourceHashesChecked": 1270,
+        "sourceHashMismatches": 0
+      }
+    }
+  ],
+  "integrationHistory": [
+    {
+      "upstreamCommit": "d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1",
+      "upstreamPr": 1313,
+      "mode": "merge",
+      "status": "verified-pending-merge",
+      "localMergeCommit": "2be79d0b69996d3d3f120afafa99c49c60854513"
+    }
+  ],
+  "navigationFollowUp": {
+    "date": "2026-10-29",
+    "commit": "5aeb16845",
+    "userDecision": "按鸿蒙实际公开接口整理精简目录",
+    "oldSiteFinding": "All five article entries in the old live HarmonyOS sidebar point to Android. This accidental Android sidebar is not reproduced.",
+    "targetFile": "content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/(current)/meta.json",
+    "entries": [
+      "API 概览",
+      "Whiteboard",
+      "WhiteboardController",
+      "WhiteboardCallbacks",
+      "WhiteboardOptions",
+      "DynamicConfigOptions"
+    ],
+    "remainingTypes": "Full overview tables and body links retain access. No API body was changed."
+  }
 }

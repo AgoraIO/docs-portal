@@ -1,6 +1,6 @@
 # CN Hotfix Migration Checkpoint
 
-Last updated: 2026-10-28
+Last updated: 2026-10-29
 
 ## Latest handoff (2026-10-28)
 
@@ -9,6 +9,7 @@ Last updated: 2026-10-28
 - Effective source baseline: `427a27358efd3f2eeb1b9dc6e841e828b9a53366` (0.0.535).
 - Current pending batch: [`cn-master-sync-20261028.json`](./cn-master-sync-20261028.json), source `427a27358..72dd878e3` (Whiteboard/Fastboard #2121, historical API entries #2131, releases 0.0.536/0.0.537), initial fixed target `3bb8afbf2a2b5dff6ec52ba39f6fd7fb7b95ba9e`; subsequently integrated target #1313 at `d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1`.
 - Pending PR: [#1338](https://github.com/AgoraIO/docs-portal/pull/1338), working branch `codex/cn-whiteboard-hotfix-20261028`. The JSON checkpoint records final verification state; do not treat the pending source head as effective until that PR merges.
+- 2026-10-29 follow-up: user chose a compact HarmonyOS sidebar based on actual public exports after confirming the old site incorrectly reused Android links. All 92 API bodies are retained. Target #1326/#1334 through `837c5f58f` is integrated; current checks and earlier production-build evidence are separately scoped in the batch JSON.
 - All 1270 source files and four source commits are recorded in [`cn-master-sync-20261028-ledger.json`](./cn-master-sync-20261028-ledger.json). Image upload and source-issue follow-ups remain explicit.
 - The two earlier AI deferrals were restored by target #1324 with hidden navigation entries. Their present-but-hidden state has been checked and preserved; they are not missing public guides in this batch.
 

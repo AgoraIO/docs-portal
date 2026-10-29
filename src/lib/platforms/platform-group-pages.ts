@@ -114,10 +114,9 @@ export function isPlatformGroupPanelPage(
   return resolvePlatformGroupParentPage(page, pages) !== null;
 }
 
-export function resolvePlatformGroupParentPage(
-  page: PlatformGroupSourcePage,
-  pages: readonly PlatformGroupSourcePage[],
-) {
+export function resolvePlatformGroupParentPage<
+  T extends PlatformGroupSourcePage,
+>(page: T, pages: readonly T[]) {
   const parentPaths = getPlatformGroupParentIndexPathCandidates(page.path);
 
   if (parentPaths.length === 0) {

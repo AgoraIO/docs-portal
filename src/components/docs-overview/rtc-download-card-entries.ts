@@ -39,7 +39,7 @@ export function getRtcDownloadCardEntries(
     return {
       iconPlatformId:
         platformId === 'react-js'
-          ? 'web'
+          ? 'react-native'
           : platformId === 'unreal-engine'
             ? 'unreal-cpp'
             : platformId,

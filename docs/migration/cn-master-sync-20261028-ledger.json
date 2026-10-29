@@ -329,6 +329,14 @@
           "route": null,
           "sha256": "d6ae880ae0f1de71eeaba9c96dceb83651697d1f1f23a423f7fb7420165b0ea4",
           "existedAtBase": true
+        },
+        {
+          "path": "content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/(current)/meta.json",
+          "route": null,
+          "sha256": "ff44af385b287dd050dde89d1fe3a9f7d16747e2b68866baa39293704ccf6e6e",
+          "existedAtBase": false,
+          "artifactRole": "navigation-metadata",
+          "publishedAsStandalone": false
         }
       ],
       "images": [],
@@ -1807,7 +1815,7 @@
           "artifactRole": "platform-fragment",
           "platform": "android",
           "publishedAsStandalone": false,
-          "sha256": "2ead5e1109cef62fe0c987665194c80ac34f4917a744fe146ee2dd0c6646fc11",
+          "sha256": "20a869a43d59f9843071c6dcb83a310e7340f040e84ed18fbc0d0b09d0ee66a2",
           "existedAtBase": true
         },
         {
@@ -1816,7 +1824,7 @@
           "artifactRole": "platform-fragment",
           "platform": "ios",
           "publishedAsStandalone": false,
-          "sha256": "4554a51d696dffc5ba0d84368e9f4e113586676ea469b67add98dee246724e14",
+          "sha256": "05feb63539f7d3b1c08a7ecbee6fccfcd4304769a62cea0cd81e6f561f4afc64",
           "existedAtBase": true
         },
         {
@@ -1825,13 +1833,13 @@
           "artifactRole": "platform-fragment",
           "platform": "web",
           "publishedAsStandalone": false,
-          "sha256": "acc6b06488428431f678542c0671b854a56e3749d989b712817ea02dbb3b0ece",
+          "sha256": "1a4737dc22033567f19e26e47c43f3c49a892efd42e9203ad57be2ca50835e04",
           "existedAtBase": true
         },
         {
           "path": "src/components/docs-overview/sdk-downloads-data.zh-cn.ts",
           "route": null,
-          "sha256": "87b39142ea9b54d078c592920f27f799f816053e7947297d5d8b26d5a2b090b9",
+          "sha256": "76e8be2d625acabd60cb0759f8cf416cde4e876f5b3d9a375c03dc4345f4aa95",
           "existedAtBase": true
         }
       ],
@@ -4271,7 +4279,7 @@
         {
           "path": "src/components/docs-overview/sdk-downloads-data.zh-cn.ts",
           "route": null,
-          "sha256": "87b39142ea9b54d078c592920f27f799f816053e7947297d5d8b26d5a2b090b9",
+          "sha256": "76e8be2d625acabd60cb0759f8cf416cde4e876f5b3d9a375c03dc4345f4aa95",
           "existedAtBase": true
         }
       ],
@@ -4310,7 +4318,7 @@
           "artifactRole": "platform-fragment",
           "platform": "android",
           "publishedAsStandalone": false,
-          "sha256": "04ed3448589fdc38cf03e2545215c3e822bd86872eb39dfb0a38bdcdefe86fb0",
+          "sha256": "ba0f7c18dffce07eeed827117d62791f0b329ed681d43cc6746ecf5c8d74484f",
           "existedAtBase": true
         },
         {
@@ -4319,7 +4327,7 @@
           "artifactRole": "platform-fragment",
           "platform": "ios",
           "publishedAsStandalone": false,
-          "sha256": "972144d108416934e3fa3fcd4ad6fc1c3e3601287e7faabd47c7b4be37baba91",
+          "sha256": "04487f2e3cf5de3fe40e39ad005052273395c7a43cf60df7f13c15ecb03a243b",
           "existedAtBase": true
         },
         {
@@ -4328,13 +4336,13 @@
           "artifactRole": "platform-fragment",
           "platform": "web",
           "publishedAsStandalone": false,
-          "sha256": "8c4040dfef2ee5e79ac093e5192a4b76d4a8bbceecb4132514eb1125975d4d2d",
+          "sha256": "23736d38167862fc445015120ce560e48913707821bfc9ff4455f3931dc94961",
           "existedAtBase": true
         },
         {
           "path": "src/components/docs-overview/sdk-downloads-data.zh-cn.ts",
           "route": null,
-          "sha256": "87b39142ea9b54d078c592920f27f799f816053e7947297d5d8b26d5a2b090b9",
+          "sha256": "76e8be2d625acabd60cb0759f8cf416cde4e876f5b3d9a375c03dc4345f4aa95",
           "existedAtBase": true
         }
       ],
@@ -38470,9 +38478,36 @@
     }
   ],
   "targetIntegration": {
-    "commit": "d3baceb3717b8cf0491ae87e2fcaf04a7caf81b1",
-    "pullRequest": 1313,
+    "commit": "837c5f58f5b8a59105e7c083a39d627d5032cb31",
+    "pullRequests": [
+      1313,
+      1326,
+      1334
+    ],
     "mode": "merge",
-    "resolution": "Retained current source API bodies; obsolete older-version source-location/example changes do not apply. Preserved upstream routing, platform query and link-audit changes; replayed still-applicable tutorial links and retained Android API link fixes."
-  }
+    "resolution": "Preserved latest upstream routing, renderer and historical download fixes. Retained new-source Whiteboard Web API bodies, which have no old Hierarchy/Index blocks, rather than restoring older-version bodies. Historical download test explicitly pins the restored old version; current SDK versions stay unchanged."
+  },
+  "targetAdaptations": [
+    {
+      "date": "2026-10-29",
+      "targetFile": "content/docs/zh-CN/api-reference/whiteboard/whiteboard-sdk/harmonyos/(current)/meta.json",
+      "sha256": "ff44af385b287dd050dde89d1fe3a9f7d16747e2b68866baa39293704ccf6e6e",
+      "sourceFiles": [
+        "html-docs/whiteboard/HarmonyOS/index.html",
+        "docs-api-reference/whiteboard/_sidebar_.meta.js"
+      ],
+      "userDecision": "按鸿蒙实际公开接口整理精简目录",
+      "reason": "The old live HarmonyOS page reuses Android sidebar links. The user chose navigation based on actual HarmonyOS public exports. All 92 MDX bodies are retained; six primary entries are grouped into API overview, core interfaces and configuration. Other types remain reachable from overview and body links.",
+      "entries": [
+        "API 概览",
+        "Whiteboard",
+        "WhiteboardController",
+        "WhiteboardCallbacks",
+        "WhiteboardOptions",
+        "DynamicConfigOptions"
+      ],
+      "images": [],
+      "validation": "types:check and 61 scoped schema/navigation tests passed; six primary routes and a non-navigation type route returned HTTP 200; browser confirmed HarmonyOS links and full controller body."
+    }
+  ]
 }
