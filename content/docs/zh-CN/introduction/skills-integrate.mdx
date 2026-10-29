@@ -44,6 +44,9 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 <TabsList>
   <TabsTrigger value="trae">TRAE</TabsTrigger>
   <TabsTrigger value="kimi-code">Kimi Code</TabsTrigger>
+  <TabsTrigger value="codex">Codex</TabsTrigger>
+  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
+  <TabsTrigger value="cursor">Cursor</TabsTrigger>
   <TabsTrigger value="other-tools">其他工具</TabsTrigger>
 </TabsList>
 
@@ -65,6 +68,45 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 
 </TabsContent>
 
+<TabsContent value="codex">
+
+将克隆后的 `skills/agora/` 目录复制到项目中的 `.agents/skills/agora/`，并保留 `SKILL.md` 以及关联脚本和参考文件。
+
+如果希望在所有项目中使用，将该目录放到 `~/.agents/skills/agora/`。已通过 Skills CLI 安装到上述位置时，无需重复复制。
+
+在 Codex 中输入 `$agora` 调用技能；如果尚未显示，重新启动 Codex。目录和调用方式见 [Codex 官方 Skills 文档](https://learn.chatgpt.com/docs/build-skills)。
+
+</TabsContent>
+
+<TabsContent value="claude-code">
+
+将克隆后的 `skills/agora/` 目录复制到项目中的 `.claude/skills/agora/`，并保留 `SKILL.md` 以及关联脚本和参考文件。如果希望在所有项目中使用，将该目录放到 `~/.claude/skills/agora/`。
+
+也可以在 Claude Code 会话中通过插件安装，无需手动复制技能目录：
+
+```text
+/plugin marketplace add AgoraIO/skills
+/plugin install agora@agora-skills
+```
+
+插件默认安装到用户级。若需要项目级安装，在第二条命令末尾添加 `--scope project`。
+
+插件附带的 MCP 服务使用国际站地址 `https://mcp.agora.io`。查询声网中文文档时，请按[声网 MCP 配置说明](/zh-CN/introduction/mcp-integrate)另行添加 `shengwang-docs`，并在提示词中指定使用该服务。
+
+安装后，让助手“使用声网 Skills”处理声网任务。配置方式见 [Claude Code 官方 Skills 文档](https://code.claude.com/docs/en/skills)和[插件安装说明](https://code.claude.com/docs/en/discover-plugins)。
+
+</TabsContent>
+
+<TabsContent value="cursor">
+
+将克隆后的 `skills/agora/` 目录复制到项目中的 `.cursor/skills/agora/`，并保留 `SKILL.md` 以及关联脚本和参考文件。Cursor 也会读取项目中的 `.agents/skills/`；已通过 Skills CLI 安装到该位置时，无需重复复制。
+
+如果希望在本机的所有项目中使用，可以将该目录放到 `~/.cursor/skills/agora/`。
+
+在 Cursor 的技能列表中确认已识别 `agora`，再让助手“使用声网 Skills”处理声网任务。目录和调用方式见 [Cursor 官方 Skills 文档](https://cursor.com/docs/skills)。
+
+</TabsContent>
+
 <TabsContent value="other-tools">
 
 将工具指向 `skills/agora/` 或顶层 `SKILL.md`。
@@ -82,3 +124,11 @@ git clone https://github.com/AgoraIO/skills.git ~/agora-skills
 ```
 
 接下来，让 AI Coding Agent 先确认 Starter 和接入路径，再开始创建项目或编辑代码。
+
+## 参考资源
+
+在 GitHub 仓库中查看声网 Skills 的技能定义、脚本和参考资料。
+
+<Cards>
+  <Card title={<RepositoryCardTitle provider="github">skills</RepositoryCardTitle>} href="https://github.com/AgoraIO/skills" />
+</Cards>
