@@ -1534,6 +1534,68 @@ describe('common MDX registry', () => {
     expect(components.TabsContent).not.toBe(fumadocsTabs.TabsContent);
   });
 
+  it.each([
+    ['新增特性', 'feature'],
+    ['升级必看', 'compatibility'],
+    ['改进', 'improve'],
+    ['问题修复', 'bugfix'],
+    ['已知问题和局限性', 'fix'],
+    ['API 变更', 'api'],
+  ])(
+    'restores the legacy icon for %s without changing its anchor or accessible label',
+    (label, category) => {
+      const Heading = getMDXComponents(undefined, {
+        contentPath: 'zh-CN/realtime-media/rtc/reference/release-notes.mdx',
+      }).h3 as HeadingComponent;
+      render(
+        <Heading id="category">
+          <strong>{label}</strong>
+        </Heading>,
+      );
+      const heading = screen.getByRole('heading', { name: label, level: 3 });
+      expect(heading).toHaveAttribute('id', 'category');
+      expect(within(heading).getByRole('link')).toHaveAttribute(
+        'href',
+        '#category',
+      );
+      expect(heading.querySelector('img')).toHaveAttribute(
+        'src',
+        `/img/release-notes/version-${category}.png`,
+      );
+      expect(heading.querySelector('img')).toHaveAttribute('alt', '');
+      expect(heading.querySelector('img')).toHaveAttribute(
+        'aria-hidden',
+        'true',
+      );
+      expect(
+        within(heading).getByRole('button', { name: /copy anchor/i }),
+      ).toBeInTheDocument();
+    },
+  );
+
+  it('keeps release icons out of ordinary guides and feature detail headings', () => {
+    const GuideHeading = getMDXComponents(undefined, {
+      contentPath: 'zh-CN/realtime-media/rtc/build/quickstart.mdx',
+    }).h3 as HeadingComponent;
+    const ReleaseHeading = getMDXComponents(undefined, {
+      contentPath: 'zh-CN/realtime-media/rtc/reference/release-notes.mdx',
+    }).h4 as HeadingComponent;
+    render(
+      <>
+        <GuideHeading>问题修复</GuideHeading>
+        <ReleaseHeading>视频首帧体验优化</ReleaseHeading>
+      </>,
+    );
+    expect(
+      screen.getByRole('heading', { name: '问题修复' }).querySelector('img'),
+    ).toBeNull();
+    expect(
+      screen
+        .getByRole('heading', { name: '视频首帧体验优化' })
+        .querySelector('img'),
+    ).toBeNull();
+  });
+
   it('renders structured parameter lists with nested fields and badges', () => {
     const components = getMDXComponents() as Record<string, unknown>;
     const ParameterList = components.ParameterList as ParameterListComponent;

@@ -752,7 +752,7 @@ describe('app prose CSS regressions', () => {
     expect(link.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'color',
-        value: 'var(--docs-link)',
+        value: 'var(--foreground)',
       }),
     );
     expect(link.rule.nodes).toContainEqual(
@@ -787,7 +787,7 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('keeps rendered prose links blue after Fumadocs prose styles', () => {
+  it('keeps rendered prose links foreground-colored after Fumadocs prose styles', () => {
     const linkOverride = getRuleBodyContaining(
       ':where(html) .prose :where([data-parameter-description] a)',
     );
@@ -801,18 +801,18 @@ describe('app prose CSS regressions', () => {
     expect(linkOverride.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'color',
-        value: 'var(--docs-link)',
+        value: 'var(--foreground)',
       }),
     );
     expectDeclaration(
       linkOverride.rule,
       '-webkit-text-decoration-color',
-      'color-mix(in srgb, var(--docs-link) 42%, transparent)',
+      'color-mix(in srgb, var(--foreground) 42%, transparent)',
     );
     expectDeclaration(
       linkOverride.rule,
       'text-decoration-color',
-      'color-mix(in srgb, var(--docs-link) 42%, transparent)',
+      'color-mix(in srgb, var(--foreground) 42%, transparent)',
     );
     expect(linkHoverOverride.rule.nodes).toContainEqual(
       expect.objectContaining({
@@ -823,7 +823,7 @@ describe('app prose CSS regressions', () => {
     expect(linkHoverOverride.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'text-decoration-color',
-        value: 'var(--docs-link)',
+        value: 'var(--foreground)',
       }),
     );
     expect(linkOverride.sourceStart).toBeLessThan(
