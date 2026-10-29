@@ -151,7 +151,13 @@ export function DocsShell({
   const sourceLinks = getDocsSourceLinks(contentPath);
   const t = i18n.getFixedT(currentLocale, 'common');
   const { resolvedTheme, setTheme } = useTheme();
-  const isDarkTheme = resolvedTheme === 'dark';
+  const [hasMounted, setHasMounted] = useState(false);
+  // next-themes cannot know the browser theme during static rendering.
+  const isDarkTheme = hasMounted && resolvedTheme === 'dark';
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
   const themeLabel = `${t('controls.theme.label')}: ${
     isDarkTheme ? t('controls.theme.dark') : t('controls.theme.light')
   }`;
