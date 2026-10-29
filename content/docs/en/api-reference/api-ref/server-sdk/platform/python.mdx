@@ -213,7 +213,6 @@ etag = raw.etag
 | `sessions.update(agent_session_id, transport=..., agent=...)` | [Update a session](/en/api-reference/api-ref/conversational-ai/platform/update-session) |
 | `sessions.stop(agent_session_id)` | [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) |
 
-The SDK doesn't support [Speak](/en/api-reference/api-ref/conversational-ai/platform/speak), [Inject context](/en/api-reference/api-ref/conversational-ai/platform/inject-context), or [Interrupt the agent](/en/api-reference/api-ref/conversational-ai/platform/interrupt). The session response types don't include `analysis`.
 
 ### Secrets
 
@@ -266,7 +265,7 @@ for session in client.v3.sessions.iter_all(status="STOPPED", limit=100):
 
 Updates to agents, numbers, and campaigns, and deletes and replacements of secret sets, require the resource's current `ETag` in `if_match`. Get it from a raw response. If the resource changed since you read it, the request raises a `PreconditionFailedError`. Call `error.latest()` to reload the resource. It doesn't retry the write.
 
-The SDK can retry `GET` requests. It never retries writes. To retry a session or campaign start safely, pass the same `idempotency_key`. Creating an agent, a secret set, or a number doesn't support idempotency keys.
+The SDK can retry `GET` requests. It never retries writes. To retry a session start safely, pass the same `idempotency_key`. Other operations don't support idempotency keys.
 
 ## Errors
 

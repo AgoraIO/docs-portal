@@ -24,7 +24,7 @@ Amazon Bedrock supports BYOK only. It isn't available in managed mode. Store you
 
 <TabsContent value="rest-api">
 
-Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Bedrock API key. Your AWS region isn't secret. Pass it in `params`. In the following example, the key is stored as `bedrock` in the `support_prod` set:
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to your Bedrock API key. To use an AWS access key pair instead, set `credential.fields.access_key` and `credential.fields.secret_key`. Your AWS region isn't secret. Pass it in `params`. In the following example, the key is stored as `bedrock` in the `support_prod` set:
 
 ```json
 "llm": {
@@ -138,7 +138,7 @@ The `llm` block takes the following fields. In the SDKs, the LLM class sets them
     Set to `amazon`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Bedrock API key.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Bedrock API key, or set `fields.access_key` and `fields.secret_key` to references to an AWS access key pair.
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     The API style to use. Set to `bedrock` for Amazon Bedrock models.

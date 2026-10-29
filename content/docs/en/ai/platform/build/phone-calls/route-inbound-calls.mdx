@@ -40,7 +40,7 @@ curl --request PATCH \
   --data '
 {
   "inbound": {
-    "agent": "agent_m8w4z1",
+    "agent": "c8a1e5d2-6f3b-4a9c-b7e0-2d4f6a8c1e3b",
     "call_policy": {
       "max_call_duration_seconds": 1800
     }
@@ -59,8 +59,8 @@ Load the agent and call `assign_number()` with the number's ID or its E.164 numb
 ```python
 from agora_agent import SavedAgent
 
-saved_agent = SavedAgent.get(client, "agent_m8w4z1")
-saved_agent.assign_number("num_2v9c4q", max_call_duration_seconds=1800)
+saved_agent = SavedAgent.get(client, "c8a1e5d2-6f3b-4a9c-b7e0-2d4f6a8c1e3b")
+saved_agent.assign_number("92e68758-3d3a-4f27-8b93-3fd8d834467c", max_call_duration_seconds=1800)
 ```
 
 </TabsContent>
@@ -72,8 +72,8 @@ Load the agent and call `assignNumber()` with the number's ID or its E.164 numbe
 ```ts
 import { SavedAgent } from 'agora-agents';
 
-const savedAgent = await SavedAgent.get(client, 'agent_m8w4z1');
-await savedAgent.assignNumber('num_2v9c4q', { maxCallDurationSeconds: 1800 });
+const savedAgent = await SavedAgent.get(client, 'c8a1e5d2-6f3b-4a9c-b7e0-2d4f6a8c1e3b');
+await savedAgent.assignNumber('92e68758-3d3a-4f27-8b93-3fd8d834467c', { maxCallDurationSeconds: 1800 });
 ```
 
 </TabsContent>
@@ -83,12 +83,12 @@ await savedAgent.assignNumber('num_2v9c4q', { maxCallDurationSeconds: 1800 });
 Load the agent and call `AssignNumber()` with the number's ID or its E.164 number. The SDK reads the number's ETag for you, and retries once if the number changed in the meantime.
 
 ```go
-savedAgent, err := agentkit.GetSavedAgent(ctx, client, "agent_m8w4z1")
+savedAgent, err := agentkit.GetSavedAgent(ctx, client, "c8a1e5d2-6f3b-4a9c-b7e0-2d4f6a8c1e3b")
 if err != nil {
 	log.Fatal(err)
 }
 maxCallDuration := 1800
-_, err = savedAgent.AssignNumber(ctx, "num_2v9c4q", agentkit.AssignNumberOptions{
+_, err = savedAgent.AssignNumber(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c", agentkit.AssignNumberOptions{
 	MaxCallDurationSeconds: &maxCallDuration,
 })
 if err != nil {
@@ -118,7 +118,7 @@ Set `inbound.agent` to `null` in a request to [Update a phone number](/en/api-re
 <TabsContent value="python">
 
 ```python
-saved_agent.unassign_number("num_2v9c4q")
+saved_agent.unassign_number("92e68758-3d3a-4f27-8b93-3fd8d834467c")
 ```
 
 </TabsContent>
@@ -126,7 +126,7 @@ saved_agent.unassign_number("num_2v9c4q")
 <TabsContent value="typescript">
 
 ```ts
-await savedAgent.unassignNumber('num_2v9c4q');
+await savedAgent.unassignNumber('92e68758-3d3a-4f27-8b93-3fd8d834467c');
 ```
 
 </TabsContent>
@@ -134,7 +134,7 @@ await savedAgent.unassignNumber('num_2v9c4q');
 <TabsContent value="go">
 
 ```go
-_, err = savedAgent.UnassignNumber(ctx, "num_2v9c4q")
+_, err = savedAgent.UnassignNumber(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c")
 if err != nil {
 	log.Fatal(err)
 }
@@ -163,13 +163,12 @@ Set `call_policy` in the number's `inbound` object:
 
 ```json
 "inbound": {
-  "agent": "agent_k3n9x2",
+  "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
   "call_policy": {
     "max_call_duration_seconds": 1800,
     "max_silence_duration_ms": 60000,
     "end_call": {
-      "on_user_request": true,
-      "on_fax": true
+      "on_user_request": true
     }
   }
 }
@@ -182,16 +181,16 @@ Set `call_policy` in the number's `inbound` object:
 `assign_number()` sets only the duration limits. To set `end_call`, update the number with the low-level API, and pass its current ETag:
 
 ```python
-current = client.v3.numbers.with_raw_response.get(number_id="num_2v9c4q")
+current = client.v3.numbers.with_raw_response.get(number_id="92e68758-3d3a-4f27-8b93-3fd8d834467c")
 client.v3.numbers.update(
-    number_id="num_2v9c4q",
+    number_id="92e68758-3d3a-4f27-8b93-3fd8d834467c",
     if_match=current.etag,
     inbound={
-        "agent": "agent_k3n9x2",
+        "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
         "call_policy": {
             "max_call_duration_seconds": 1800,
             "max_silence_duration_ms": 60000,
-            "end_call": {"on_user_request": True, "on_fax": True},
+            "end_call": {"on_user_request": True},
         },
     },
 )
@@ -204,16 +203,16 @@ client.v3.numbers.update(
 `assignNumber()` sets only the duration limits. To set `end_call`, update the number with the low-level API, and pass its current ETag:
 
 ```ts
-const { rawResponse } = await client.v3.numbers.get({ id: 'num_2v9c4q' }).withRawResponse();
+const { rawResponse } = await client.v3.numbers.get({ id: '92e68758-3d3a-4f27-8b93-3fd8d834467c' }).withRawResponse();
 await client.v3.numbers.update({
-  id: 'num_2v9c4q',
+  id: '92e68758-3d3a-4f27-8b93-3fd8d834467c',
   ifMatch: rawResponse.headers.get('etag') ?? '',
   inbound: {
-    agent: 'agent_k3n9x2',
+    agent: '3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10',
     call_policy: {
       max_call_duration_seconds: 1800,
       max_silence_duration_ms: 60000,
-      end_call: { on_user_request: true, on_fax: true },
+      end_call: { on_user_request: true },
     },
   },
 });
@@ -223,7 +222,7 @@ await client.v3.numbers.update({
 
 <TabsContent value="go">
 
-`AssignNumber()` sets only the duration limits. To set `end_call`, update the number with the low-level API, and pass its current ETag: This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
+`AssignNumber()` sets only the duration limits. To set `end_call`, update the number with the low-level API, and pass its current ETag. This example also imports `github.com/AgoraIO/agora-agents-go/v2/v3`.
 
 ```go
 callPolicy := map[string]any{
@@ -231,17 +230,16 @@ callPolicy := map[string]any{
 	"max_silence_duration_ms":   60000,
 	"end_call": map[string]any{
 		"on_user_request": true,
-		"on_fax":          true,
 	},
 }
 
-current, err := client.V3.Numbers.Get(ctx, "num_2v9c4q")
+current, err := client.V3.Numbers.Get(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c")
 if err != nil {
 	log.Fatal(err)
 }
-_, err = client.V3.Numbers.Update(ctx, "num_2v9c4q", current.ETag, v3.NumberPatch{
+_, err = client.V3.Numbers.Update(ctx, "92e68758-3d3a-4f27-8b93-3fd8d834467c", current.ETag, v3.NumberPatch{
 	"inbound": map[string]any{
-		"agent":       "agent_k3n9x2",
+		"agent":       "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
 		"call_policy": callPolicy,
 	},
 })
@@ -257,7 +255,7 @@ if err != nil {
 |---|---|
 | `max_call_duration_seconds` | The maximum length of a call in seconds, from when it's answered. |
 | `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. |
-| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_fax`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
+| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
 
 If you omit a limit, it doesn't apply. Transferring calls to a person isn't available in the Preview.
 

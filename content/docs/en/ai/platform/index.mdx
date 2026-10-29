@@ -31,12 +31,11 @@ Together, these building blocks let one agent handle conversations across your a
 With the Platform, you can:
 
 - **Personalize every conversation**: Declare variables in an agent, such as a customer's name, and use them in its instructions and greeting. You pass the values when you start a session, or for each contact in a campaign.
-- **Get structured results**: Ask an agent to extract values from each conversation after it ends, such as whether a customer confirmed an appointment. You get the results when you retrieve the session.
 - **Use managed mode or BYOK**: Use managed mode to let Agora provide access to supported ASR, LLM, and TTS models, or bring your own key to use your provider account. Store your keys in secret sets.
 - **Update agents safely**: When you update an agent, every subsequent session uses the new configuration. Sessions that are already running keep the configuration they started with.
-- **Control conversation data**: For each session, choose whether Agora retains its conversation data or discards it. If you discard the data, structured results aren't available for that session.
+- **Control conversation data**: For each session, choose whether Agora retains its conversation data or discards it.
 
-{/* TODO(platform-confirm): Add runtime session control once it ships. In pre-release testing (2026-10-27), Update a session worked, but Speak, Inject context, and Interrupt returned `404 ResourceNotFound` on a running session. */}
+{/* PLATFORM-DEFERRED: Speak, Inject context, and Interrupt are deferred beyond the Preview. Update a session (token renewal, messages, and LLM params) is available. */}
 
 ## Choose your path
 
@@ -65,12 +64,14 @@ Choose the path that matches where your users talk to your agent:
   />
 </Cards>
 
-
 ## What's not in the Preview
 
 The Preview supports agents that use separate ASR, LLM, and TTS models, in apps and over the phone. The following aren't available in the Preview:
 
 - Realtime agents built on a multimodal LLM (MLLM).
+- Session actions: making the agent speak, injecting context, and interrupting the agent through the API.
+- Structured results: the API doesn't return the values extracted from a conversation.
+- Automatic campaign retries. A campaign calls each contact once.
 - Session history through the API, such as transcripts, turns, and recordings.
 - Managing webhooks and reading an event log through the API. [Notification events](/en/ai/platform/reference/event-types) for sessions, RTC, and telephony are available.
 

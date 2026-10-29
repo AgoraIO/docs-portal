@@ -23,7 +23,7 @@ The following conventions apply to every endpoint:
 
 - **Pagination**: List endpoints return `data`, `has_more`, and `next_cursor`. To get the next page, pass `next_cursor` in the `cursor` query parameter. `next_cursor` is `null` on the last page.
 - **Concurrency control**: Responses for agents, secret sets, phone numbers, and campaigns include an `ETag` header. To make sure you don't overwrite a concurrent change, pass that value in the `If-Match` header of an update or delete request. If the resource has changed, the request fails with `412`.
-- **Idempotency**: Endpoints that create a resource or perform an action accept an `Idempotency-Key` header. If you retry with the same key and body within 24 hours, the API returns the original response instead of repeating the operation. Starting and stopping a session don't accept this header.
+- **Idempotency**: [Start a session](start-session) and [Start an ephemeral session](start-ephemeral-session) accept an `Idempotency-Key` header. If you retry with the same key and body within 24 hours, the API returns the original response instead of starting a second session. No other endpoint accepts this header.
 - **Rate limits**: Every response includes the `RateLimit-Limit`, `RateLimit-Remaining`, and `RateLimit-Reset` headers. A `429` response also includes `Retry-After`, the number of seconds to wait before you retry.
 - **Errors**: Every error response contains `detail` and `reason`. For all reasons, see [Status codes and error reasons](status-codes).
 - **Request ID**: Every response includes an `Agora-Request-Id` header. Include it when you contact Agora support.
@@ -52,9 +52,6 @@ A session runs one agent in an RTC channel or a phone call. Use these endpoints 
 - [Retrieve a session](retrieve-session): Retrieve the status of a session.
 - [Update a session](update-session): Renew the RTC token, or replace the messages or LLM parameters of a running session.
 - [Stop a session](stop-session): Stop a running session.
-- [Speak](speak): Make the agent say a line of text.
-- [Inject context](inject-context): Add messages to the conversation context.
-- [Interrupt the agent](interrupt): Stop the agent while it speaks or thinks.
 
 ### Secrets
 
