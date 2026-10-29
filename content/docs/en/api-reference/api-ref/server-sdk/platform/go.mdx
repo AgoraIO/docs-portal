@@ -115,7 +115,7 @@ Creates a session from the builder without saving it. The SDK starts an [ephemer
 - **Unsupported fields**: Builder settings without a Platform equivalent, such as SAL, advanced features, labels, RTC settings, and pipeline IDs, make `Save()` return an error that wraps `agentkit.ErrUnsupportedField` and lists them.
 - **Generated types**: Interruption, turn detection, and filler word settings use generated types from the root package. Where `agentkit` has a shorter alias, such as `agentkit.FillerWordsContent` or `agentkit.InterruptionModeKeywords`, use it.
 
-{/* TODO(platform-confirm): SDK bug list #1: the managed `OpenAI` LLM is sent without `vendor`, which the API rejects. #15: `AresSTT` keywords can't be sent. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes, and some types have no `agentkit` alias. */}
+{/* TODO(platform-confirm): SDK bug list #1 and #15 are fixed in the SDK preview commits of 2026-10-29. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes, and some types have no `agentkit` alias. */}
 
 ## Secret references
 

@@ -77,7 +77,6 @@ agent = (
         OpenAI(
             api_key=secret_ref("support_prod", "openai"),  # omit to use managed mode
             base_url="https://api.openai.com/v1/chat/completions",  # omit to use managed mode
-            vendor="openai",  # omit to use managed mode
             model="gpt-4.1-mini",
             max_history=32,
             failure_message="Please hold on a second.",
@@ -104,7 +103,6 @@ const agent = new Agent({ client })
     new OpenAI({
       apiKey: secretRef('support_prod', 'openai'), // omit to use managed mode
       url: 'https://api.openai.com/v1/chat/completions', // omit to use managed mode
-      vendor: 'openai', // omit to use managed mode
       model: 'gpt-4.1-mini',
       maxHistory: 32,
       failureMessage: 'Please hold on a second.',
@@ -128,7 +126,6 @@ agent := agentkit.NewAgent(client).
 	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
 		APIKey:         agentkit.SecretRef("support_prod", "openai"), // omit to use managed mode
 		BaseURL:        "https://api.openai.com/v1/chat/completions", // omit to use managed mode
-		Vendor:         "openai",                                     // omit to use managed mode
 		Model:          "gpt-4.1-mini",
 		MaxHistory:     &maxHistory,
 		FailureMessage: "Please hold on a second.",
@@ -144,7 +141,7 @@ agent := agentkit.NewAgent(client).
 
 {/* TODO(platform-confirm): Confirm whether a BYOK OpenAI block needs `url`, or whether Agora uses OpenAI's endpoint by default. */}
 
-{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-28). BYOK saved as written in all three SDKs. Managed mode (the snippet without the three marked lines) saved only after `vendor: "openai"` was added to the request: the SDKs send a managed OpenAI LLM without `vendor`, and the API rejects it (SDK bug list #1). */}
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing. BYOK saved as written in all three SDKs (2026-10-28). Managed mode (the snippet without the two marked lines) saved as written on 2026-10-29 with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a, which send `vendor: "openai"` by default (SDK bug list #1, fixed). */}
 
 ## Key parameters
 

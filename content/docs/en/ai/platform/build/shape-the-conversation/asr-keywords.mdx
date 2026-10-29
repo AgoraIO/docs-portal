@@ -52,24 +52,56 @@ Pass the keywords in `params.keywords` of the agent's `asr` block:
 
 <TabsContent value="python">
 
-The Python SDK can't send ARES keywords to the Platform yet. Use the REST API.
+Pass the keywords to `AresSTT`:
+
+```python
+from agora_agent import Agent, AresSTT
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(AresSTT(keywords=["Agora", "Conversational AI", "RTC"]))
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(...)  # configure your TTS vendor
+)
+```
 
 </TabsContent>
 
 <TabsContent value="typescript">
 
-The TypeScript SDK can't send ARES keywords to the Platform yet. Use the REST API.
+Pass the keywords to `AresSTT`:
+
+```ts
+import { Agent, AresSTT } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(new AresSTT({ keywords: ['Agora', 'Conversational AI', 'RTC'] }))
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */);
+```
 
 </TabsContent>
 
 <TabsContent value="go">
 
-The Go SDK can't send ARES keywords to the Platform yet. Use the REST API.
+Pass the keywords to `NewAresSTT`:
+
+```go
+// client is your configured Agora client
+agent := agentkit.NewAgent(client).
+	WithStt(vendors.NewAresSTT(vendors.AresSTTOptions{
+		Keywords: []string{"Agora", "Conversational AI", "RTC"},
+	})).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts( /* configure your TTS vendor */ )
+```
 
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): In pre-release testing (2026-10-28), `AresSTT` with `keywords` failed in all three SDKs before sending a request ("Unsupported v3 fields: asr.keywords"), and `AresSTT` rejects `keywords` in `additionalParams` (SDK bug list #15). Add SDK examples when the SDKs map it to `params.keywords`. */}
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-29) against the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. All three saved as written and stored the same `asr` block as the REST example (SDK bug list #15, fixed). */}
 
 You can configure up to 128 keywords.
 
