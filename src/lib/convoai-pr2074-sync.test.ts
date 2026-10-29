@@ -25,11 +25,7 @@ const installationPages = [
   `${aiRoot}/build/handle-runtime-events/event-notifications.mdx`,
   `${aiRoot}/build/shape-the-conversation/manual-turn-control.mdx`,
   `${aiRoot}/build/send-multimodal-messages.mdx`,
-  `${apiRoot}/rest-api/best-practice/audio-settings.mdx`,
-  `${apiRoot}/rest-api/user-guides/interrupt-agent.mdx`,
-  `${apiRoot}/rest-api/user-guides/listen-agent-events.mdx`,
-  `${apiRoot}/rest-api/user-guides/realtime-sub.mdx`,
-  `${apiRoot}/rest-api/user-guides/send-multimodal-message.mdx`,
+  `${aiRoot}/build/transcripts.mdx`,
 ];
 
 describe('ConvoAI source PR 2074 Agents SDK contracts', () => {

@@ -62,7 +62,7 @@ Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新
 
 调用 `RtmClient.renewToken` 方法更新 RTM Token。
 
-为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
 
 ### 接口方法
 
@@ -108,7 +108,7 @@ rtmClient.renewToken("your_token", new ResultCallback<Void>() {
 
 调用 `StreamChannel.renewToken` 方法更新 RTC Token。
 
-为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `onTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `onTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
 
 ### 接口方法
 
@@ -169,7 +169,7 @@ streamChannel.renewToken("your_token", new ResultCallback<Void>() {
 
 ### 接口描述
 
-为保证及时更新 Token，声网推荐你监听 `token` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 Token 还有 30 秒过期时，SDK 会触发 `token` 回调，提醒用户及时更新。
+为保证及时更新 Token，声网推荐你监听 `token` 回调，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。成功添加事件监听后，当 Token 还有 30 秒过期时，SDK 会触发 `token` 回调，提醒用户及时更新。
 
 - 通过调用 `rtmClient.renewToken(String token)` 为 `MESSAGE` 服务更新 Token。
 - 通过调用 `streamChannel.renewToken(String token)` 为 `STREAM` 服务更新 Token。
@@ -272,7 +272,7 @@ rtmClient.addListener({
 
 ### 接口描述
 
-为保证及时更新 Token，声网推荐你监听 `token` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 Token 还有 30 秒过期时，SDK 会触发 `token` 回调，提醒用户及时更新。
+为保证及时更新 Token，声网推荐你监听 `token` 回调，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。成功添加事件监听后，当 Token 还有 30 秒过期时，SDK 会触发 `token` 回调，提醒用户及时更新。
 
 - 通过调用 `rtmClient.renewToken(token: string)` 为 `MESSAGE` 服务更新 Token。
 - 通过调用 `streamChannel.renewToken(token: string)` 为 `STREAM` 服务更新 Token。
@@ -359,7 +359,7 @@ Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新
 
 调用 `AgoraRtmClientKit.renewToken` 方法更新 RTM Token。
 
-为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
 
 ### 接口方法
 
@@ -402,7 +402,7 @@ Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新
 
 调用 `AgoraRtmStreamChannel.renewToken` 方法更新 RTC Token。
 
-为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `renewToken` 方法，将新生成的 RTC Token 传给 SDK。
 
 ### 接口方法
 
@@ -467,7 +467,7 @@ Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新
 - RTM Token：更新时只需填写 `token` 参数。
 - RTC Token：更新时需填写 `token` 和 `channelName` 参数
 
-为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `tokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `tokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `renewToken` 方法，将新生成的 RTM Token 传给 SDK。
 
 ### 接口方法
 
@@ -562,7 +562,7 @@ Token 的有效期最长为 24 小时，声网推荐你在 Token 过期前更新
 
 调用 `IRtmClient::RenewTokenAsync` 方法更新 RTM Token。
 
-为保证及时更新 Token，声网推荐你监听 `OnTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `OnTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `RenewTokenAsync` 方法，将新生成的 RTM Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `OnTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。成功添加事件监听后，当 RTM Token 还有 30 秒过期时，SDK 会触发 `OnTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTM Token，然后调用 `RenewTokenAsync` 方法，将新生成的 RTM Token 传给 SDK。
 
 ### 接口方法
 
@@ -617,7 +617,7 @@ else
 
 调用 `IStreamChannel::RenewTokenAsync` 方法更新 RTC Token。
 
-为保证及时更新 Token，声网推荐你监听 `OnTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `OnTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `RenewTokenAsync` 方法，将新生成的 RTC Token 传给 SDK。
+为保证及时更新 Token，声网推荐你监听 `OnTokenPrivilegeWillExpire` 回调，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。成功添加事件监听后，当 RTC Token 还有 30 秒过期时，SDK 会触发 `OnTokenPrivilegeWillExpire` 回调，提醒用户 Token 即将过期。收到该回调时，你可以在服务端重新生成 RTC Token，然后调用 `RenewTokenAsync` 方法，将新生成的 RTC Token 传给 SDK。
 
 ### 接口方法
 

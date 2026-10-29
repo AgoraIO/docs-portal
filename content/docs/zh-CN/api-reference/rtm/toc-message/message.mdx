@@ -77,7 +77,7 @@ RtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并且开启了事件监听的用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并且开启了事件监听的用户会通过 `onMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)。
 
 ### 接口方法
 
@@ -362,7 +362,7 @@ RTM 提供消息、状态、事件变更等信息的事件通知。通过设置�
 
   ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/android/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -397,7 +397,7 @@ RtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -518,7 +518,7 @@ class RtmStatus {
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)。
 
 ### 接口方法
 
@@ -713,7 +713,7 @@ rtm.addListener(
 String message = utf8.decode(event.message!);
 ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/flutter/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -748,7 +748,7 @@ IRtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1014,7 +1014,7 @@ rtmClient.addEventListener('message', (event: object) => {
 });
 ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/harmonyos/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -1045,7 +1045,7 @@ AgoraRtmClientKit
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `didReceiveMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `didReceiveMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1184,7 +1184,7 @@ publish_option.storeInHistory = YES;
 ```
 
 :::info[信息]
-成功调用该方法后，SDK 会触发 `didReceiveMessageEvent` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，SDK 会触发 `didReceiveMessageEvent` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)。
 :::
 
 AgoraRtmHistory
@@ -1321,7 +1321,7 @@ RTM 提供消息、状态、事件变更等信息的事件通知。通过设置�
   [rtm addDelegate:handler];
   ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/ios/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -1354,7 +1354,7 @@ RTM 有 3 种频道类型，分别是 Message Channel、User Channel 和 Stream 
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `message` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1454,7 +1454,7 @@ try {
 ```
 
 :::info[信息]
-成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，SDK 会触发 `message` 事件通知。订阅了该频道并且开启了事件监听的用户将会收到该事件通知，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)。
 :::
 
 ### 返回值
@@ -1582,7 +1582,7 @@ rtm.addEventListener("message", event => {
 });
 ```
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/web/configuration#事件监听)章节。
 
 </PlatformStructured>
 
@@ -1616,7 +1616,7 @@ IRtmClient
 - 向单个频道发送消息的速率上限为 60 QPS。如果发送速率超限，将会有部分消息被丢弃。在满足要求的情况下，速率越低越好。
 :::
 
-成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `OnMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)。
+成功调用该方法后，订阅了该频道并开启了事件监听的其他用户会通过 `OnMessageEvent` 收到这条消息，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)。
 
 ### 接口方法
 
@@ -1696,6 +1696,6 @@ else
 
 RTM 提供消息、状态、事件变更等信息的事件通知。通过设置事件监听，你可以接收已订阅频道中的消息和事件。
 
-关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/toc-configuration/configuration#事件监听)章节。
+关于如何添加和设置事件监听，详见[事件监听](/zh-CN/api-reference/rtm/unity/configuration#事件监听)章节。
 
 </PlatformStructured>

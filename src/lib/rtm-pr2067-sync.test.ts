@@ -121,12 +121,9 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
     }
   });
 
-  const configuration = () => [
-    read(`${api}web/configuration.mdx`),
-    platform(read(`${api}toc-configuration/configuration.mdx`), 'javascript'),
-  ];
+  const configuration = () => [read(`${api}web/configuration.mdx`)];
 
-  it.each([0, 1])(
+  it.each([0])(
     'updates configuration consumer %i, including Slot and interval contract',
     (index) => {
       const text = configuration()[index];
@@ -167,25 +164,19 @@ describe('RTM source PR #2067: scoped Web 2.3.0 migration', () => {
     },
   );
 
-  it.each([0, 1])(
-    'updates subscription semantics in channel consumer %i',
-    (index) => {
-      const text =
-        index === 0
-          ? read(`${api}web/channel.mdx`)
-          : platform(read(`${api}toc-channel/channel.mdx`), 'javascript');
-      const subscribe = between(text, '## subscribe\n', '## unsubscribe\n');
-      for (const state of ['CONNECTING', 'DISCONNECTED', 'SUSPENDED'])
-        expect(subscribe).toContain(`\`${state}\``);
-      expect(subscribe).toContain('缓存订阅请求');
-      expect(subscribe).toContain('Presence 加入可能仍在异步执行');
-      const unsubscribe = between(text, '## unsubscribe\n', '## join\n');
-      expect(unsubscribe).toContain('RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED');
-      expect(unsubscribe).toContain('-11040');
-      expect(unsubscribe).toContain('随后 SDK 完成取消订阅');
-      expect(unsubscribe).toContain('迟到消息不会再透传');
-    },
-  );
+  it.each([0])('updates subscription semantics in channel consumer %i', () => {
+    const text = read(`${api}web/channel.mdx`);
+    const subscribe = between(text, '## subscribe\n', '## unsubscribe\n');
+    for (const state of ['CONNECTING', 'DISCONNECTED', 'SUSPENDED'])
+      expect(subscribe).toContain(`\`${state}\``);
+    expect(subscribe).toContain('缓存订阅请求');
+    expect(subscribe).toContain('Presence 加入可能仍在异步执行');
+    const unsubscribe = between(text, '## unsubscribe\n', '## join\n');
+    expect(unsubscribe).toContain('RTM_ERROR_CHANNEL_SUBSCRIBE_CANCELED');
+    expect(unsubscribe).toContain('-11040');
+    expect(unsubscribe).toContain('随后 SDK 完成取消订阅');
+    expect(unsubscribe).toContain('迟到消息不会再透传');
+  });
 
   it('removes old connection enums while preserving legacy fragments', () => {
     const text = read(`${api}web/enumv.mdx`);

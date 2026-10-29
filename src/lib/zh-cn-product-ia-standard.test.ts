@@ -6,6 +6,21 @@ import { getContentDocsPrerenderPaths } from './prerender-content-routes';
 import { createPublishedDocsRoutes } from './published-docs-routes';
 import { isRetiredCnDocsPath } from './retired-cn-docs.mjs';
 import { getPagePlatformKeys, source } from './source.server';
+
+const consolidatedRoutes = new Set(
+  (
+    JSON.parse(
+      readFileSync('docs/migration/cn-document-ownership.json', 'utf8'),
+    ).documents as Array<{ supersededSource: string }>
+  ).map(
+    ({ supersededSource }) =>
+      `/${supersededSource
+        .replace(/^content\/docs\//, '')
+        .replace(/\.mdx?$/, '')
+        .replace(/\/index$/, '')}`,
+  ),
+);
+
 import {
   resolveZhCnProductIaRedirect,
   ZH_CN_PRODUCT_IA_REDIRECTS,
@@ -970,10 +985,15 @@ describe('zh-CN product IA standard', { timeout: 30_000 }, () => {
       }).map((route) => route.url),
     );
     const missingRoutes = priorStagingRouteUrls.filter(
-      (url) => !isRetiredCnDocsPath(url) && !publishedRoutes.has(url),
+      (url) =>
+        !isRetiredCnDocsPath(url) &&
+        !consolidatedRoutes.has(url) &&
+        !publishedRoutes.has(url),
     );
 
     expect(missingRoutes).toEqual([]);
+    for (const url of consolidatedRoutes)
+      expect(publishedRoutes.has(url), url).toBe(false);
     for (const url of priorStagingRouteUrls.filter(isRetiredCnDocsPath)) {
       expect(publishedRoutes.has(url)).toBe(false);
     }

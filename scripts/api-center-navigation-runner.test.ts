@@ -344,7 +344,14 @@ describe('API Center navigation runner', () => {
         ),
       );
       expect(solutionMeta.navScope).toEqual({});
-      expect(solutionMeta.pages).toEqual(expectedPages);
+      expect(solutionMeta.pages).toEqual(
+        expectedPages.map((page) =>
+          page === 'api/music-content-center' &&
+          (platform !== 'android' || solution !== 'ktv-scenario')
+            ? '[服务端 API](/zh-CN/api-reference/online-ktv/android/ktv-scenario/api/music-content-center)'
+            : page,
+        ),
+      );
       expect(solutionMeta.pages).not.toEqual(
         expect.arrayContaining([
           'landing-page',
