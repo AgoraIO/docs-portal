@@ -4,10 +4,13 @@ import { CONVOAI_DOC_VERSION_SCOPES } from './convoai-doc-versions';
 export type DocVersion = {
   id: string;
   label: string;
+  description?: string;
   status?: 'preview';
   rootUrl: string;
   /** Use sidebar-enrolled pages when a legacy root also contains other products. */
   restrictToMappedPages?: boolean;
+  /** Edition-specific links to related docs outside this version's route root. */
+  navigationUrls?: readonly string[];
   /** Stable topic keys map to relative URLs, including anchors when needed. */
   pages: Readonly<Record<string, string>>;
 };
@@ -16,6 +19,10 @@ export type DocVersionScope = {
   id: string;
   label: string;
   entryUrl: string;
+  /** Ordinary navigation entries restore a choice; canonical content links stay fixed. */
+  entryLinks?: readonly string[];
+  /** A catalog section can select this rollout without leaving its current page. */
+  catalog?: { rootUrl: string; sectionId: string };
   /** Groups in one rollout share this key and use the same release IDs. */
   preferenceKey?: string;
   /** Initial choice at the neutral entry; it may be a preview. */
@@ -24,6 +31,8 @@ export type DocVersionScope = {
   previousVersion?: string;
   /** Shared articles retain their fixed URLs and have no edition identity. */
   sharedUrls?: readonly string[];
+  /** Product-specific copy for the Preview notice. */
+  previewMessage?: string;
   versions: readonly DocVersion[];
 };
 
@@ -221,12 +230,15 @@ export function getDocVersionTarget(
     scopes.find((item) => item.entryUrl === localUrl(href).pathname);
   const target = scope?.versions.find((item) => item.id === targetId);
   if (!scope || !target) return undefined;
-  const relative = current?.pageKey ? target.pages[current.pageKey] : '';
+  const relative = current?.pageKey
+    ? target.pages[current.pageKey]
+    : target.pages.overview;
   const fallback = Boolean(
     current && (!current.pageKey || relative === undefined),
   );
+  const destination = relative ?? target.pages.overview;
   return {
-    href: `${target.rootUrl}${relative ? `${relative.startsWith('#') ? '' : '/'}${relative}` : ''}${fallback ? '?versionFallback=1' : ''}`,
+    href: `${target.rootUrl}${destination ? `${destination.startsWith('#') ? '' : '/'}${destination}` : ''}${fallback ? '?versionFallback=1' : ''}`,
     fallback,
   };
 }
@@ -245,7 +257,11 @@ export function getDocVersionSelections(
         : scope.defaultVersion;
       return [
         scope.id,
-        active?.scope.id === scope.id ? active.version.id : preferred,
+        active &&
+        (active.scope.preferenceKey ?? active.scope.id) ===
+          (scope.preferenceKey ?? scope.id)
+          ? active.version.id
+          : preferred,
       ];
     }),
   );
@@ -263,8 +279,8 @@ export function withDocVersionMetadata(markdown: string, href: string) {
   if (!context) return markdown;
   const { scope, version } = context;
   const metadata = [
-    `> Documentation family: ${scope.label} (${scope.id}).`,
-    `> Documentation version: ${version.label} (${version.id}).`,
+    `> Documentation: ${scope.label}.`,
+    `> Documentation version: ${version.label}.`,
     `> This document describes only this version. [Version index](${getDocVersionIndexPath(scope, version)}).`,
   ].join('\n');
   const titleEnd = markdown.indexOf('\n');

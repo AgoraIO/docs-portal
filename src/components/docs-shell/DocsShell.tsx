@@ -33,6 +33,10 @@ import {
 import { SidebarProvider } from '@/components/ui/sidebar';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/cn';
+import {
+  getDocVersionEntryHref,
+  hasDocVersionCatalog,
+} from '@/lib/doc-version-navigation';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import { buildDocPath } from '@/lib/docs-routing';
@@ -435,7 +439,7 @@ export function DocsShell({
                         className="group/tab h-10 rounded-none px-3.5 text-[13.5px] font-medium after:!bottom-[-3px]"
                         params={{}}
                         search={{}}
-                        to={tab.url}
+                        to={getDocVersionEntryHref(tab.url)}
                       >
                         {tab.icon ? (
                           <span className="docs-tab-icon">
@@ -602,7 +606,7 @@ function MobileSidebar({
                             onClick={onSelectPath}
                             params={{}}
                             search={{}}
-                            to={tab.url}
+                            to={getDocVersionEntryHref(tab.url)}
                           >
                             <span className="min-w-0 truncate">
                               {tab.title}
@@ -633,11 +637,13 @@ function MobileSidebar({
                 onSelectPath={onSelectPath}
               />
             ) : null}
-            <DocVersionSelector
-              activePath={activePath}
-              className="mb-2"
-              onSelectPath={onSelectPath}
-            />
+            {!hasDocVersionCatalog(sidebar, activePath) ? (
+              <DocVersionSelector
+                activePath={activePath}
+                className="mb-2"
+                onSelectPath={onSelectPath}
+              />
+            ) : null}
             <DocsSidebarTree
               activePath={activePath}
               nodes={sidebar}

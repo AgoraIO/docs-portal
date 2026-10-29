@@ -1,5 +1,11 @@
 # ENDOC-1074: ConvoAI integrated preview
 
+> Historical snapshot for remote head `26ebbc5f7`, before the October 29
+> feedback was applied. Its Preview default, entry placement, SDK behavior
+> and release-note anchor statements do not describe the current local work.
+> Use the [current local review](2026-10-29-convoai-switcher-local-review.md)
+> and [copy audit](2026-10-29-pr1339-copy-audit.md) for the updated behavior.
+
 This integration combines PR #1210 (`codex/api-doc-versioning`) and Saud's PR #1208 (`convoai-v3-openapi`) on current main. Branch: `codex/convoai-switcher-preview`. Review PR: https://github.com/AgoraIO/docs-portal/pull/1339. It is an English review preview, not a production release or a Chinese-branch change.
 
 ## Review entry points

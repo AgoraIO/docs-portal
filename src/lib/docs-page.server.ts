@@ -1248,7 +1248,7 @@ async function getDocsSidebarNodes({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (tab === 'ai' && !resolveDocVersion(activePath ?? pageUrl ?? '')) {
+  if (tab === 'ai' && usesAiProductSidebar(activePath ?? pageUrl ?? '')) {
     const aiNodes = getNavScopeSidebarNodes({
       getNodeMeta: (node) =>
         getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
@@ -1265,7 +1265,14 @@ async function getDocsSidebarNodes({
             tab: OPENAPI_TAB,
           });
 
-    return buildAiProductSidebar(aiNodes, apiReferenceNodes);
+    return buildAiProductSidebar(
+      aiNodes.filter(
+        (node) =>
+          node.type !== 'section' ||
+          node.title !== 'Conversational AI Platform (Preview)',
+      ),
+      apiReferenceNodes,
+    );
   }
 
   if (
@@ -1593,9 +1600,6 @@ function buildAiProductSidebar(
   const agentStudioSection = findTopLevelSidebarSection(nodes, [
     'Agent Studio',
   ]);
-  const platformSection = findTopLevelSidebarSection(nodes, [
-    'Conversational AI Platform (Preview)',
-  ]);
 
   if (
     !aiOverview ||
@@ -1725,20 +1729,6 @@ function buildAiProductSidebar(
       title: isZhCn ? 'Voice Agent in apps' : 'Voice agent in apps',
       type: 'section',
     },
-    ...(platformSection
-      ? [
-          {
-            ...stripSidebarSectionMeta(platformSection),
-            children: stripSidebarSectionMetaFromNodes(
-              platformSection.children,
-            ),
-            icon: 'Layers',
-            id: 'ai-product-platform',
-            title: 'Conversational AI Platform (Preview)',
-            type: 'section',
-          } satisfies DocsSidebarSectionNode,
-        ]
-      : []),
     ...(agentStudioSection
       ? [
           {
@@ -1954,6 +1944,14 @@ function stripSidebarSectionMeta(
   return rest;
 }
 
+function usesAiProductSidebar(activePath: string) {
+  const context = resolveDocVersion(activePath);
+  return (
+    !context ||
+    (context.scope.id === 'convoai-guides' && context.version.id === 'v1')
+  );
+}
+
 function resolveDocsSidebarHeader({
   activePath,
   hidePlatformTabs,
@@ -1971,7 +1969,7 @@ function resolveDocsSidebarHeader({
   source: typeof docsSource;
   tab: string;
 }) {
-  if (tab === 'ai' && !resolveDocVersion(activePath)) {
+  if (tab === 'ai' && usesAiProductSidebar(activePath)) {
     return undefined;
   }
 

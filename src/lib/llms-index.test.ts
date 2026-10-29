@@ -51,9 +51,7 @@ describe('machine-readable docs indexes', () => {
     expect(rootTargets).toEqual(
       sectionFiles.map((file) => `https://docs.example.com${file.path}`),
     );
-    expect(files[0]?.content).toContain(
-      '[Conversational AI — Voice Agent API](',
-    );
+    expect(files[0]?.content).toContain('[Conversational AI — Main](');
 
     const allSectionTargets = sectionFiles.flatMap((file) =>
       getMarkdownTargets(file.content),

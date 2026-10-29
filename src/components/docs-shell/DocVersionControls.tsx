@@ -1,8 +1,7 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { Callout } from 'fumadocs-ui/components/callout';
 import { CheckIcon, ChevronDownIcon, InfoIcon } from 'lucide-react';
-import { type MouseEvent, useEffect } from 'react';
-import { Badge } from '@/components/ui/badge';
+import { type MouseEvent, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -17,14 +16,18 @@ import {
 } from '@/lib/doc-version-preference';
 import {
   DOC_VERSION_SCOPES,
+  type DocVersionScope,
   getDocVersionTarget,
   resolveDocVersion,
 } from '@/lib/doc-versions';
+import { DocVersionBadge, getDocVersionLabel } from './DocVersionBadge';
+import { useDocVersionSelections } from './useDocVersionSelections';
 
 type DocVersionProps = { activePath: string };
 type DocVersionSelectorProps = DocVersionProps & {
   className?: string;
   onSelectPath?: () => void;
+  scopeId?: string;
 };
 
 function saveSelection(
@@ -50,14 +53,19 @@ export function DocVersionSelector({
   activePath,
   className,
   onSelectPath,
+  scopeId,
 }: DocVersionSelectorProps) {
   const context = resolveDocVersion(activePath);
-  if (!context) return null;
+  const scope = scopeId
+    ? DOC_VERSION_SCOPES.find((item) => item.id === scopeId)
+    : context?.scope;
+  if (!scope) return null;
   return (
     <RegisteredDocVersionSelector
       activePath={activePath}
       className={className}
-      context={context}
+      scope={scope}
+      scopeId={scopeId}
       onSelectPath={onSelectPath}
     />
   );
@@ -66,24 +74,35 @@ export function DocVersionSelector({
 function RegisteredDocVersionSelector({
   activePath,
   className,
-  context,
+  scope,
+  scopeId,
   onSelectPath,
 }: DocVersionSelectorProps & {
-  context: NonNullable<ReturnType<typeof resolveDocVersion>>;
+  scope: DocVersionScope;
 }) {
   const location = useLocation();
-
-  const { scope, version } = context;
-  const isPreview = version.status === 'preview';
-  const currentHref = `${activePath}${location.hash ? `#${location.hash.replace(/^#/, '')}` : ''}`;
-  const label = `${version.label}${isPreview ? ' · Preview' : ''}`;
+  const [open, setOpen] = useState(false);
+  const selections = useDocVersionSelections(activePath);
+  const version =
+    scope.versions.find((item) => item.id === selections[scope.id]) ??
+    scope.versions[0];
+  const active = resolveDocVersion(activePath);
+  const isCatalog =
+    scopeId !== undefined &&
+    (!active ||
+      (active.scope.preferenceKey ?? active.scope.id) !==
+        (scope.preferenceKey ?? scope.id));
+  const currentHref = isCatalog
+    ? scope.entryUrl
+    : `${activePath}${location.hash ? `#${location.hash.replace(/^#/, '')}` : ''}`;
+  const label = getDocVersionLabel(version);
 
   return (
     <div className={className} data-doc-version-selector>
       <p className="mb-2 text-xs font-medium leading-5 text-muted-foreground">
         Documentation version
       </p>
-      <DropdownMenu modal={false}>
+      <DropdownMenu modal={false} open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild>
           <Button
             aria-label={`Documentation: ${label}`}
@@ -91,14 +110,7 @@ function RegisteredDocVersionSelector({
             size="sm"
             variant="outline"
           >
-            <span className="flex min-w-0 items-center gap-2">
-              <span className="truncate">{version.label}</span>
-              {isPreview ? (
-                <Badge size="sm" variant="preview">
-                  Preview
-                </Badge>
-              ) : null}
-            </span>
+            <DocVersionBadge version={version} />
             <ChevronDownIcon
               aria-hidden="true"
               className="opacity-60"
@@ -122,20 +134,29 @@ function RegisteredDocVersionSelector({
                   key={item.id}
                 >
                   <Link
-                    aria-current={item.id === version.id ? 'page' : undefined}
-                    aria-label={`${item.label}${item.status === 'preview' ? ' · Preview' : ''}`}
+                    aria-current={
+                      item.id === version.id
+                        ? isCatalog
+                          ? 'true'
+                          : 'page'
+                        : undefined
+                    }
+                    aria-label={getDocVersionLabel(item)}
                     onClick={(event) => {
-                      if (saveSelection(event, scope.id, item.id))
-                        onSelectPath?.();
+                      if (saveSelection(event, scope.id, item.id)) {
+                        setOpen(false);
+                        if (isCatalog) event.preventDefault();
+                        else onSelectPath?.();
+                      }
                     }}
                     to={target.href}
                   >
-                    <span className="flex min-w-0 items-center gap-2">
-                      <span className="truncate">{item.label}</span>
-                      {item.status === 'preview' ? (
-                        <Badge size="sm" variant="preview">
-                          Preview
-                        </Badge>
+                    <span className="flex min-w-0 flex-col items-start gap-1.5 py-1">
+                      <DocVersionBadge version={item} />
+                      {item.description ? (
+                        <span className="text-xs text-muted-foreground">
+                          {item.description}
+                        </span>
                       ) : null}
                     </span>
                     {item.id === version.id ? (
@@ -175,6 +196,7 @@ export function DocVersionNotice({ activePath }: DocVersionProps) {
   );
   const currentHref = `${activePath}${location.hash ? `#${location.hash.replace(/^#/, '')}` : ''}`;
   const previousVersion = scope.previousVersion;
+  const previous = scope.versions.find((item) => item.id === previousVersion);
   const returnTarget =
     previousVersion && previousVersion !== version.id
       ? getDocVersionTarget(currentHref, previousVersion)
@@ -196,7 +218,8 @@ export function DocVersionNotice({ activePath }: DocVersionProps) {
           title="Preview documentation"
           type="info"
         >
-          You’re reading the new {scope.label} docs.{' '}
+          {scope.previewMessage ??
+            `You’re reading the new ${scope.label} docs.`}{' '}
           {returnTarget && previousVersion ? (
             <Link
               className="rounded-sm text-[color:var(--docs-info)] underline decoration-current/40 underline-offset-4 hover:decoration-current focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
@@ -205,15 +228,14 @@ export function DocVersionNotice({ activePath }: DocVersionProps) {
               }
               to={returnTarget.href}
             >
-              Return to previous docs.
+              Switch to {previous?.label}.
             </Link>
           ) : null}
         </Callout>
       ) : null}
       {fallback ? (
         <p className="text-sm text-muted-foreground" role="status">
-          This topic is not available in this version. Showing its overview
-          instead.
+          No matching page in {version.label}. Showing its overview.
         </p>
       ) : null}
     </>

@@ -19,8 +19,8 @@ export type DocsSidebarHeaderVersion = {
 };
 
 export type DocsSidebarHeader = {
-  backHref: string;
-  backLabel: string;
+  backHref?: string;
+  backLabel?: string;
   title: string;
   versionSwitcher?: {
     currentId: string;
@@ -93,13 +93,21 @@ export function resolveDocsNavScope({
         const ownsUrl = (url: string) => {
           const owner = resolveDocVersion(url);
           return (
-            (owner?.scope.preferenceKey === scope.preferenceKey &&
+            ((owner?.scope.preferenceKey ?? owner?.scope.id) ===
+              (scope.preferenceKey ?? scope.id) &&
               owner?.version.id === version.id) ||
+            version.navigationUrls?.includes(url) ||
             scope.sharedUrls?.includes(url)
           );
         };
         if (node.type === 'page') return ownsUrl(node.url) ? node : undefined;
         if (node.type !== 'folder') return node;
+        const folderVersion = resolveDocVersion(getFolderHref(node));
+        if (
+          folderVersion?.scope.id === scope.id &&
+          folderVersion.version.id !== version.id
+        )
+          return undefined;
         const children = node.children.flatMap((child) => {
           const filtered = filterVersionNode(child);
           return filtered ? [filtered] : [];
@@ -122,12 +130,12 @@ export function resolveDocsNavScope({
         : versionRoot;
       return {
         header: {
-          backHref: version.restrictToMappedPages
-            ? scope.entryUrl
-            : scope.entryUrl.split('/').slice(0, 3).join('/'),
-          backLabel: version.restrictToMappedPages
-            ? 'Documentation versions'
-            : normalizeLabel(tabNode.name, tab),
+          ...(!version.restrictToMappedPages
+            ? {
+                backHref: scope.entryUrl.split('/').slice(0, 3).join('/'),
+                backLabel: normalizeLabel(tabNode.name, tab),
+              }
+            : {}),
           title: scope.label,
         },
         scope: { meta: getNodeMeta(versionRoot) ?? {}, node: versionRoot },

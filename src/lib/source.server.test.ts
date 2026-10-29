@@ -41,10 +41,8 @@ Web instructions only.
       expect(markdown).toContain('```java\nif (ready) {\n  connect();\n}\n```');
       expect(markdown).not.toMatch(/<\/?(?:Tabs|Tab|_Platform)/);
       expect(markdown).not.toContain('Web instructions only.');
-      expect(markdown).toContain(
-        'Documentation family: Guide demo (test-guides).',
-      );
-      expect(markdown).toContain('Documentation version: New docs (v2).');
+      expect(markdown).toContain('Documentation: Guide demo.');
+      expect(markdown).toContain('Documentation version: New docs.');
       expect(markdown).toContain('/llms/doc-versions-test-guides-v2.txt');
       expect(markdown?.match(/Documentation version:/g)).toHaveLength(1);
     },

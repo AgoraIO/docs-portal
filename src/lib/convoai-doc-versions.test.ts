@@ -9,22 +9,27 @@ import {
 import { resolveDocsNavScope } from './docs-nav-scope';
 
 describe('ConvoAI documentation integration', () => {
-  it('defaults the review entry to Platform while keeping legacy links pinned', () => {
+  it('defaults to Main, restores a saved Preview choice and keeps explicit links pinned', () => {
     expect(
       getDocVersionSelections('/en/ai/documentation-versions')[
         'convoai-guides'
       ],
-    ).toBe('v2');
+    ).toBe('v1');
     expect(resolveDocVersion('/en/ai/build/managed-mode')?.version.label).toBe(
-      'Voice Agent API',
+      'Main',
     );
     expect(
       resolveDocVersion('/en/ai/platform/build/managed-mode')?.version.status,
     ).toBe('preview');
     expect(
       getDocVersionSelections('/en/ai/documentation-versions', {
-        convoai: 'v1',
+        convoai: 'v2',
       })['convoai-guides'],
+    ).toBe('v2');
+    expect(
+      getDocVersionSelections(
+        '/en/api-reference/api-ref/conversational-ai/documentation-versions',
+      )['convoai-api'],
     ).toBe('v1');
     expect(
       getDocVersionSelections('/en/ai/platform/build/managed-mode', {
@@ -140,7 +145,7 @@ describe('ConvoAI documentation integration', () => {
     ).toBeUndefined();
   });
 
-  it('prunes other editions and independent products from the legacy sidebar', () => {
+  it('excludes the other edition even when it contains a shared Pricing link', () => {
     const root: Root = {
       name: 'Docs',
       children: [
@@ -173,6 +178,11 @@ describe('ConvoAI documentation integration', () => {
                 { type: 'separator', name: 'API operations' },
                 {
                   type: 'page',
+                  name: 'Pricing',
+                  url: '/en/ai/reference/pricing',
+                },
+                {
+                  type: 'page',
                   name: 'Managed mode',
                   url: '/en/ai/platform/build/managed-mode',
                 },
@@ -199,6 +209,7 @@ describe('ConvoAI documentation integration', () => {
       '/en/ai/reference/pricing',
       '/en/api-reference/api-ref/conversational-ai',
     ]);
+    expect(scope?.header).not.toHaveProperty('backHref');
   });
 
   it('gives fixed Markdown URLs the correct edition identity', () => {
@@ -207,7 +218,7 @@ describe('ConvoAI documentation integration', () => {
         '# Managed mode\n\nBody',
         '/en/ai/build/managed-mode',
       ),
-    ).toContain('Documentation version: Voice Agent API (v1)');
+    ).toContain('Documentation version: Main');
     expect(
       withDocVersionMetadata(
         '# Managed mode\n\nBody',

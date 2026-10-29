@@ -5,6 +5,7 @@ import {
   Sidebar as ShadcnSidebar,
   SidebarContent,
 } from '@/components/ui/sidebar';
+import { hasDocVersionCatalog } from '@/lib/doc-version-navigation';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
 import type { DocsSidebarNode } from '@/lib/docs-tree';
 import { DocsSidebarHeaderBlock } from './DocsSidebarHeaderBlock';
@@ -61,7 +62,9 @@ export function DocsSidebar({
               onSelectPath={onSelectPath}
             />
           ) : null}
-          <DocVersionSelector activePath={activePath} className="mx-2 mb-5" />
+          {!hasDocVersionCatalog(nodes, activePath) ? (
+            <DocVersionSelector activePath={activePath} className="mx-2 mb-5" />
+          ) : null}
           <DocsSidebarTree
             activePath={activePath}
             nodes={nodes}

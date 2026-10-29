@@ -78,9 +78,10 @@ Docs content should follow the repo Markdown and MDX contract in
 Use standard Markdown first, and use only the documented MDX primitives for
 callouts, tabs, platform variants, images, tables, and list continuations.
 
-For opt-in Preview editions of guides and API references, see
-[Documentation Preview and versions](docs/doc-versioning.md), including the
-`convoai-v3` preference key, route configuration, and sharing rules.
+For Main/Preview documentation across guides, REST and SDK references, see
+[Documentation Preview and versions](docs/doc-versioning.md). It covers group
+configuration, saved selections and shared links. Real ConvoAI groups use
+`convoai`; the isolated samples use `convoai-v3`.
 
 For docs-owned screenshots and other static assets, upload to S3 with
 `bun run assets:upload`. Follow the security and bucket-prefix rules in

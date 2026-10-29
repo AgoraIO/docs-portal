@@ -615,7 +615,7 @@ describe('DocsShell', () => {
       'dark:hover:bg-[color:var(--docs-soft-fill)]',
     );
     expect(tabsIntroductionLink).toHaveAttribute('href', '/en/introduction');
-    expect(tabsAiLink).toHaveAttribute('href', '/en/ai');
+    expect(tabsAiLink).toHaveAttribute('href', '/en/ai/documentation-versions');
     expect(tabsIntroductionLink.className).toContain('after:!bottom-[-3px]');
     expect(tabsIntroductionLink.className).toContain('after:h-0.5');
 

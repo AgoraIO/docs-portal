@@ -1610,7 +1610,7 @@ describe('loadDocsPagePayload', () => {
               item(`${voice}/device-kit`),
               {
                 type: 'folder',
-                name: 'Platform',
+                name: 'Conversational AI Platform (Preview)',
                 index: item(platform),
                 children: [item(`${platform}/build/managed-mode`)],
               },
@@ -1629,14 +1629,18 @@ describe('loadDocsPagePayload', () => {
       );
       if (!payload || 'redirectUrl' in payload)
         throw new Error('expected AI payload');
-      expect(flattenSidebarPageUrls(payload.sidebar)).toEqual([
-        current,
-        `${current}/build/managed-mode`,
-      ]);
-      expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(other);
-      expect(payload.sidebarHeader?.backHref).toBe(
-        '/en/ai/documentation-versions',
+      expect(flattenSidebarPageUrls(payload.sidebar)).toEqual(
+        current === voice
+          ? [
+              current,
+              `${current}/build/managed-mode`,
+              `${voice}/studio`,
+              `${voice}/device-kit`,
+            ]
+          : [current, `${current}/build/managed-mode`],
       );
+      expect(flattenSidebarPageUrls(payload.sidebar)).not.toContain(other);
+      expect(payload.sidebarHeader?.backHref).toBeUndefined();
     },
   );
 

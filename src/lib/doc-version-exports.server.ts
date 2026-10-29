@@ -34,7 +34,7 @@ export async function getDocVersionBulkExports(): Promise<
       ),
       content: [
         `# ${scope.label} — ${version.label}`,
-        `> Only documentation version ${version.id} is included in this export.`,
+        `> Only ${version.label} documentation is included in this export.`,
         ...pages
           .filter((page) => {
             const context = resolveDocVersion(page.url);

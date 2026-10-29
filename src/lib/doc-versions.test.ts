@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+import * as versionRegistry from './doc-versions';
 import {
   DOC_VERSION_SCOPES,
   type DocVersionScope,
@@ -90,6 +91,76 @@ describe('documentation releases', () => {
     expect(result?.header.backHref).toBe('/en/api-reference');
     expect(result?.sidebarRoot.children).toHaveLength(2);
   });
+  it('isolates restricted sidebars when independent groups omit a preference key', () => {
+    const scopes: DocVersionScope[] = ['alpha', 'beta'].map((id) => ({
+      id,
+      label: id,
+      entryUrl: `/en/api-reference/${id}/versions`,
+      defaultVersion: 'v1',
+      versions: [
+        {
+          id: 'v1',
+          label: 'Main',
+          rootUrl: `/en/api-reference/${id}`,
+          restrictToMappedPages: true,
+          pages: { overview: '', guide: 'guide' },
+        },
+      ],
+    }));
+    const originalResolver = versionRegistry.resolveDocVersion;
+    const resolver = vi
+      .spyOn(versionRegistry, 'resolveDocVersion')
+      .mockImplementation((href) => originalResolver(href, scopes));
+    try {
+      const result = resolveDocsNavScope({
+        activePath: '/en/api-reference/alpha/guide',
+        tab: 'api-reference',
+        getNodeMeta: () => undefined,
+        root: {
+          name: 'Docs',
+          children: [
+            {
+              type: 'folder',
+              name: 'Reference',
+              children: [
+                { type: 'page', name: 'Reference', url: '/en/api-reference' },
+                {
+                  type: 'folder',
+                  name: 'Alpha',
+                  index: {
+                    type: 'page',
+                    name: 'Alpha overview',
+                    url: '/en/api-reference/alpha',
+                  },
+                  children: [
+                    {
+                      type: 'page',
+                      name: 'Alpha guide',
+                      url: '/en/api-reference/alpha/guide',
+                    },
+                    {
+                      type: 'page',
+                      name: 'Beta guide',
+                      url: '/en/api-reference/beta/guide',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      });
+      expect(result?.sidebarRoot.children).toEqual([
+        {
+          type: 'page',
+          name: 'Alpha guide',
+          url: '/en/api-reference/alpha/guide',
+        },
+      ]);
+    } finally {
+      resolver.mockRestore();
+    }
+  });
   it('pins explicit links while remembering each independent family at its entry', () => {
     const other: DocVersionScope = {
       id: 'other',
@@ -118,7 +189,7 @@ describe('documentation releases', () => {
         { 'convoai-v3': 'v2', other: 'b' },
         scopes,
       ),
-    ).toMatchObject({ 'test-api': 'v1', 'test-guides': 'v2', other: 'b' });
+    ).toMatchObject({ 'test-api': 'v1', 'test-guides': 'v1', other: 'b' });
     expect(
       getDocVersionSelections(
         root,
@@ -174,7 +245,7 @@ describe('documentation releases', () => {
       '# List widgets\n\nMock payload.',
       url,
     );
-    expect(markdown).toContain('Documentation version: New docs (v2)');
+    expect(markdown).toContain('Documentation version: New docs');
     expect(markdown).toContain('/llms/doc-versions-test-api-v2.txt');
     expect(withDocVersionMetadata('# Ordinary docs', '/en/introduction')).toBe(
       '# Ordinary docs',

@@ -171,7 +171,7 @@ describe('DocsSearchDialog', () => {
       { target: { value: 'widget' } },
     );
     expect(await screen.findByText('Previous docs')).toBeVisible();
-    expect(await screen.findByText('New docs')).toBeVisible();
+    expect(await screen.findByText('New docs · Preview')).toBeVisible();
     expect(
       screen.queryByRole('button', { name: /documentation versions/i }),
     ).not.toBeInTheDocument();

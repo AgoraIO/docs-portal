@@ -116,7 +116,7 @@ describe('documentation preview controls', () => {
     expect(
       screen.getByRole('note', { name: 'Preview documentation' }),
     ).toHaveTextContent('You’re reading the new Test API docs.');
-    const back = screen.getByRole('link', { name: 'Return to previous docs.' });
+    const back = screen.getByRole('link', { name: 'Switch to Previous docs.' });
     expect(back).toHaveAttribute('href', `${root}/v1/widgets`);
     fireEvent.click(back, { ctrlKey: true });
     expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
@@ -136,7 +136,7 @@ describe('documentation preview controls', () => {
       `${root}/v1?versionFallback=1`,
     );
     expect(screen.getByRole('status')).toHaveTextContent(
-      'This topic is not available in this version. Showing its overview instead.',
+      'No matching page in New docs. Showing its overview.',
     );
   });
 
@@ -148,5 +148,105 @@ describe('documentation preview controls', () => {
       </>,
     );
     expect(container).toBeEmptyDOMElement();
+  });
+
+  it.each([
+    ['/en/ai/documentation-versions', '/en/ai'],
+    [
+      '/en/api-reference/api-ref/conversational-ai/documentation-versions',
+      '/en/api-reference/api-ref/conversational-ai',
+    ],
+  ])('opens Main by default at %s', async (entry, target) => {
+    const replace = vi
+      .spyOn(window.location, 'replace')
+      .mockImplementation(() => {});
+    render(<DocVersionNotice activePath={entry} />);
+    await waitFor(() =>
+      expect(replace).toHaveBeenCalledExactlyOnceWith(target),
+    );
+    expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBeNull();
+  });
+
+  it('identifies Platform Preview without repeating its label and remembers Main', async () => {
+    const path = '/en/ai/platform/build/managed-mode';
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai":"v1"}');
+    render(
+      <>
+        <DocVersionSelector activePath={path} />
+        <DocVersionNotice activePath={path} />
+      </>,
+    );
+    const trigger = screen.getByRole('button', {
+      name: 'Documentation: Preview',
+    });
+    expect(trigger).toHaveTextContent(/^Preview$/);
+    expect(screen.getByRole('note')).toHaveTextContent(
+      "You're reading the Conversational AI Platform (Preview) docs.",
+    );
+    expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
+      '{"convoai":"v1"}',
+    );
+    await openSelector();
+    const main = screen.getByRole('menuitem', { name: 'Main' });
+    expect(main).toHaveAttribute('href', '/en/ai/build/managed-mode');
+    fireEvent.click(main);
+    expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
+      '{"convoai":"v1"}',
+    );
+  });
+
+  it('changes the catalog choice in place and updates every subscribed selector', async () => {
+    render(
+      <>
+        <DocVersionSelector
+          activePath="/en/api-reference"
+          scopeId="convoai-api"
+        />
+        <DocVersionSelector
+          activePath="/en/api-reference"
+          scopeId="convoai-sdk"
+        />
+      </>,
+    );
+    const triggers = screen.getAllByRole('button', {
+      name: 'Documentation: Main',
+    });
+    expect(triggers).toHaveLength(2);
+    fireEvent.keyDown(triggers[0], { key: 'ArrowDown' });
+    await screen.findByRole('menu');
+    expect(
+      fireEvent.click(screen.getByRole('menuitem', { name: 'Preview' })),
+    ).toBe(false);
+    await waitFor(() =>
+      expect(
+        screen.getAllByRole('button', { name: 'Documentation: Preview' }),
+      ).toHaveLength(2),
+    );
+    expect(screen.queryByRole('menu')).not.toBeInTheDocument();
+    expect(
+      JSON.parse(localStorage.getItem(DOC_VERSION_STORAGE_KEY) ?? '{}'),
+    ).toEqual({ convoai: 'v2' });
+  });
+
+  it('switches an explicit SDK page instead of treating its catalog selector as a filter', async () => {
+    const onSelect = vi.fn();
+    render(
+      <DocVersionSelector
+        activePath="/en/api-reference/api-ref/server-sdk/platform/go"
+        scopeId="convoai-api"
+        onSelectPath={onSelect}
+      />,
+    );
+    await openSelector();
+    const main = screen.getByRole('menuitem', { name: 'Main' });
+    expect(main).toHaveAttribute(
+      'href',
+      '/en/api-reference/api-ref/server-sdk/go',
+    );
+    fireEvent.click(main);
+    expect(onSelect).toHaveBeenCalledOnce();
+    expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
+      '{"convoai":"v1"}',
+    );
   });
 });

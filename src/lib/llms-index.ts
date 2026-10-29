@@ -217,7 +217,7 @@ function createSectionFiles({
     const content = [
       `# ${group.label}`,
       '',
-      '> Documentation index for this release only. Read the sections below.',
+      '> Index for this documentation version only. Read the sections below.',
       '',
       `[Download only this documentation version](${baseUrl}${INDEX_DIRECTORY}/${group.slug}-full.txt)`,
       '',
