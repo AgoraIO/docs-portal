@@ -1,6 +1,6 @@
 ---
 title: "声网 MCP"
-description: "在 TRAE 或 Kimi Code 中配置声网 MCP，让 AI 编程助手搜索和读取最新声网官方文档。"
+description: "配置声网 MCP，让 AI 编程助手搜索和读取最新声网官方文档。"
 ---
 
 配置声网 MCP 后，AI 编程助手可以在回答问题、生成代码或排查问题前搜索声网官方文档，确认当前 SDK 方法、参数、快速开始流程和平台差异。
@@ -19,12 +19,17 @@ description: "在 TRAE 或 Kimi Code 中配置声网 MCP，让 AI 编程助手�
 
 ## 连接声网 MCP
 
-声网 MCP 的服务地址为 `https://doc-mcp.shengwang.cn/mcp`。
+声网 MCP 的服务地址为 `https://doc-mcp.shengwang.cn/mcp`，使用 Streamable HTTP 传输。选择你的 AI 编程工具，按以下示例配置；其他支持该传输方式的 MCP 客户端也可以使用同一地址。
 
 <Tabs defaultValue="trae">
 <TabsList>
   <TabsTrigger value="trae">TRAE</TabsTrigger>
   <TabsTrigger value="kimi-code">Kimi Code</TabsTrigger>
+  <TabsTrigger value="codex">Codex</TabsTrigger>
+  <TabsTrigger value="claude-code">Claude Code</TabsTrigger>
+  <TabsTrigger value="cursor">Cursor</TabsTrigger>
+  <TabsTrigger value="vscode">VS Code / Copilot</TabsTrigger>
+  <TabsTrigger value="kiro">Kiro</TabsTrigger>
 </TabsList>
 
 <TabsContent value="trae">
@@ -66,6 +71,115 @@ description: "在 TRAE 或 Kimi Code 中配置声网 MCP，让 AI 编程助手�
 保存后新建 Kimi Code 会话。在终端界面中运行 `/mcp`，检查 `shengwang-docs` 的连接状态；也可以使用 `/mcp-config` 交互式添加或编辑服务。
 
 配置方式见 [Kimi Code 官方 MCP 文档](https://www.kimi.com/code/docs/kimi-code-cli/customization/mcp.html)。
+
+</TabsContent>
+
+<TabsContent value="codex">
+
+在终端中运行以下命令添加服务：
+
+```bash
+codex mcp add shengwang-docs --url https://doc-mcp.shengwang.cn/mcp
+```
+
+也可以将以下配置加入用户级配置文件 `~/.codex/config.toml`：
+
+```text title="config.toml"
+[mcp_servers.shengwang-docs]
+url = "https://doc-mcp.shengwang.cn/mcp"
+```
+
+如果只在当前项目中使用，将配置加入项目根目录的 `.codex/config.toml`；项目级配置仅在受信任的项目中加载。
+
+运行 `codex mcp list` 确认服务已配置，并在 Codex 会话中使用 `/mcp` 查看连接状态。配置方式见 [Codex 官方 MCP 文档](https://developers.openai.com/codex/mcp/)。
+
+</TabsContent>
+
+<TabsContent value="claude-code">
+
+在终端中运行以下命令，将服务添加到当前项目的 `.mcp.json`：
+
+```bash
+claude mcp add --transport http --scope project shengwang-docs https://doc-mcp.shengwang.cn/mcp
+```
+
+也可以手动将以下配置加入项目根目录的 `.mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "shengwang-docs": {
+      "type": "http",
+      "url": "https://doc-mcp.shengwang.cn/mcp"
+    }
+  }
+}
+```
+
+如果希望在所有项目中使用，将命令中的 `--scope project` 改为 `--scope user`。在 Claude Code 中确认启用项目 MCP 服务后，使用 `/mcp` 查看连接状态。
+
+配置方式见 [Claude Code 官方 MCP 文档](https://code.claude.com/docs/en/mcp)。
+
+</TabsContent>
+
+<TabsContent value="cursor">
+
+将以下配置加入项目根目录的 `.cursor/mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "shengwang-docs": {
+      "url": "https://doc-mcp.shengwang.cn/mcp"
+    }
+  }
+}
+```
+
+如果希望在所有项目中使用，可以将配置加入 `~/.cursor/mcp.json`。保存后，在 Cursor 的 MCP 设置中确认服务已启用，并检查是否列出文档查询工具。
+
+配置方式见 [Cursor 官方 MCP 文档](https://cursor.com/docs/mcp)。
+
+</TabsContent>
+
+<TabsContent value="vscode">
+
+将以下配置加入项目根目录的 `.vscode/mcp.json`。VS Code 的这个配置文件使用 `servers` 作为顶层字段：
+
+```json
+{
+  "servers": {
+    "shengwang-docs": {
+      "type": "http",
+      "url": "https://doc-mcp.shengwang.cn/mcp"
+    }
+  }
+}
+```
+
+保存后，在 VS Code 中启动并信任该 MCP 服务，然后在 Copilot 聊天的工具列表中启用文档查询工具。
+
+配置方式见 [VS Code 官方 MCP 文档](https://code.visualstudio.com/docs/agents/reference/mcp-configuration)。
+
+</TabsContent>
+
+<TabsContent value="kiro">
+
+将以下配置加入项目根目录的 `.kiro/settings/mcp.json`：
+
+```json
+{
+  "mcpServers": {
+    "shengwang-docs": {
+      "url": "https://doc-mcp.shengwang.cn/mcp"
+    }
+  }
+}
+```
+
+如果希望在所有项目中使用，可以将配置加入 `~/.kiro/settings/mcp.json`。保存后，在 Kiro 的 MCP 服务列表中检查连接状态和可用工具。
+
+配置方式见 [Kiro 官方 MCP 文档](https://kiro.dev/docs/mcp/configuration/)。
 
 </TabsContent>
 </Tabs>
