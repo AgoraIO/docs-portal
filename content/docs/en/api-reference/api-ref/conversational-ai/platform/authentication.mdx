@@ -7,7 +7,7 @@ description: Set up RESTful authentication for Conversational AI Platform REST A
 
 Conversational AI Platform REST API requests require authentication. Use one of the following methods:
 
-- **[Token authentication](#token-authentication) (recommended)**: Generate a token with your App ID and App Certificate, and set `Authorization: agora token=<your_token>`.
+- **[Token authentication](#token-authentication) (recommended)**: Generate a token with your App ID and App Certificate, and set `Authorization: agora token="<your_token>"`.
 - **[Basic HTTP authentication](#basic-http-authentication)**: Generate a Base64-encoded credential from your customer ID and customer secret, and set `Authorization: Basic <base64_credentials>`.
 
 :::info
@@ -19,10 +19,8 @@ Implement authentication on the server to mitigate the risk of data leakage.
 Token authentication uses a token generated on your server with your App ID and App Certificate. To authenticate with a token, include the `Authorization` header in each request:
 
 ```text
-Authorization: agora token=<your_token>
+Authorization: agora token="<your_token>"
 ```
-
-{/* TODO(platform-confirm): The internal CN authentication draft shows the token in quotes (agora token="<token>"). In pre-release testing (2026-10-28), a valid ConvoAI token worked both quoted and unquoted on the Platform API and on the Voice Agent API. The TypeScript SDK sends it unquoted. Confirm with engineering which form to document, and align this page and the Voice Agent API page. */}
 
 ### Prerequisites
 
@@ -32,31 +30,21 @@ Before you begin, get the following values from [Agora Console](https://console.
 - **App Certificate**: A string used to generate tokens.
 
 :::warning
-Never expose your App Certificate in client-side code or public repositories. Generate tokens on your server only.
+Never expose your App Certificate in client-side code or public repositories. Generate tokens on your server only, and don't write tokens to public logs.
 :::
 
 Tokens expire after a maximum of 86400 seconds.
 
 ### Choose the token services
 
-A token grants access to one or more services. The services you need depend on where you use the token:
+The services a token needs depend on the request:
 
-- **`Authorization` header**: The token authenticates the REST API request. Every request needs this.
-- **`transport.token` in the request body**: The token lets the agent join the RTC channel. You pass it when you [start a session](start-session) or [start an ephemeral session](start-ephemeral-session) with an RTC transport, and when you renew it with [Update a session](update-session). Only a token that includes the RTC service with the join channel privilege works here.
+- **Requests that start an RTC session**: Use a token with the ConvoAI, RTC, and RTM services, such as one from [`ConvoAITokenBuilder.buildToken`](#build-a-convoai-token). Put the same token in the `Authorization` header and in `transport.token`, which lets the agent join the channel. This applies when you [start a session](start-session) or [start an ephemeral session](start-ephemeral-session) with an RTC transport, and when you renew the token with [Update a session](update-session).
+- **All other requests**: A token with only the ConvoAI service is enough. These include managing agents, secrets, phone numbers, and campaigns; listing, retrieving, and stopping sessions; and starting telephony sessions. See [Build a token with specific services](#build-a-token-with-specific-services).
 
-| Services | Authenticates REST requests | Lets the agent join the channel | How to generate |
-| --- | --- | --- | --- |
-| ConvoAI | Yes | No | [Build a token with specific services](#build-a-token-with-specific-services) |
-| ConvoAI + RTC | Yes | Yes | [Build a token with specific services](#build-a-token-with-specific-services) |
-| ConvoAI + RTC + RTM | Yes | Yes | [Build a ConvoAI token](#build-a-convoai-token) (recommended for RTC sessions) |
+{/* TODO(platform-confirm): In pre-release testing (2026-10-29), a ConvoAI-only token authenticated agent, secret, number, campaign, and session list requests and agent create, retrieve, and delete. An RTC-only token was also accepted for List agents, so the ConvoAI service requirement isn't enforced yet. Session starts were refused for the test projects, so the RTC session rules here are untested. */}
 
-A token with the ConvoAI service is enough for every request that doesn't join an RTC channel. These include:
-
-- Managing agents, secrets, phone numbers, and campaigns.
-- Listing, retrieving, and stopping sessions.
-- Starting telephony sessions.
-
-To start an RTC session, you can use the same token in both places, or generate a separate token for each. If you use separate tokens, put the REST authentication token in the `Authorization` header and the RTC token in `transport.token`.
+To start an RTC session, you can also generate a separate token for each place. Put the REST authentication token in the `Authorization` header and a token with the RTC service in `transport.token`.
 
 When the token includes the RTC service, the token parameters must match the session request:
 
@@ -83,7 +71,7 @@ npm install agora-token
 
 ```bash tab="Golang"
 # Pins the latest commit on the feature/access-token2-convoai-stt-services branch
-go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src@b75635c32d30
+go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src@v0.0.0-20261010073935-b75635c32d30
 ```
 
 ```bash tab="Python"
@@ -95,7 +83,16 @@ cd Tools/DynamicKey/AgoraDynamicKey/python3
 
 `ConvoAITokenBuilder.buildToken` generates a token with the ConvoAI, RTC, and RTM services. Use it to start an RTC session, with the same token in the `Authorization` header and in `transport.token`:
 
-```js tab="Node.js"
+<Tabs defaultValue="nodejs">
+<TabsList>
+  <TabsTrigger value="nodejs">Node.js</TabsTrigger>
+  <TabsTrigger value="go">Golang</TabsTrigger>
+  <TabsTrigger value="python">Python</TabsTrigger>
+</TabsList>
+
+<TabsContent value="nodejs">
+
+```js
 const { ConvoAITokenBuilder } = require('agora-token');
 
 const appId = '<your_app_id>';
@@ -115,26 +112,60 @@ const token = ConvoAITokenBuilder.buildToken(
 );
 ```
 
-```go tab="Golang"
-import "github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/convoaitokenbuilder"
+</TabsContent>
 
-const tokenExpire = 24 * 60 * 60 // Token lifetime, 24 hours, in seconds
-const privilegeExpire = 60 * 60 // RTC and RTM privilege lifetime, 1 hour, in seconds
+<TabsContent value="go">
 
-token, err := convoaitokenbuilder.BuildToken(
-	appID,
-	appCertificate,
-	channelName,
-	agentUID,
-	tokenExpire,
-	privilegeExpire,
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src/convoaitokenbuilder"
 )
-if err != nil {
-	// Handle the error
+
+func main() {
+	appID := "<your_app_id>"
+	appCertificate := "<your_app_certificate>"
+	channelName := "<your_channel_name>"
+	agentUID := "<your_agent_uid>"
+
+	tokenExpire := uint32(24 * 60 * 60) // Token lifetime, 24 hours, in seconds
+	privilegeExpire := uint32(60 * 60)  // RTC and RTM privilege lifetime, 1 hour, in seconds
+
+	token, err := convoaitokenbuilder.BuildToken(
+		appID,
+		appCertificate,
+		channelName,
+		agentUID,
+		tokenExpire,
+		privilegeExpire,
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(token)
 }
 ```
 
-```python tab="Python"
+To run the example, save it as `main.go` in an empty folder, and run the following commands:
+
+```bash
+go mod init example.com/convoai-token-generator
+go get github.com/AgoraIO/Tools/DynamicKey/AgoraDynamicKey/go/src@v0.0.0-20261010073935-b75635c32d30
+go run main.go
+```
+
+The program prints a token that starts with `007`.
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
 from src.convoai_token_builder import ConvoAITokenBuilder
 
 token_expire = 86400     # Token lifetime, 24 hours, in seconds
@@ -144,6 +175,9 @@ token = ConvoAITokenBuilder.build_token(
     app_id, app_certificate, channel_name, agent_uid, token_expire, privilege_expire
 )
 ```
+
+</TabsContent>
+</Tabs>
 
 The privilege lifetime must not exceed the token lifetime. To set the RTC role or each RTC and RTM privilege separately, use `buildTokenWithPrivilege` (`BuildTokenWithPrivilege` in Go, `build_token_with_privilege` in Python). It also adds the ConvoAI service automatically.
 
@@ -181,7 +215,7 @@ access_token.add_service(ServiceConvoAI())
 token = access_token.build()
 ```
 
-The following examples build a token with the ConvoAI and RTC services. You can use this token in the `Authorization` header and in `transport.token`. Each RTC privilege lifetime must not exceed the token lifetime:
+To set the RTC privileges yourself, add the RTC service. The following examples build a token with the ConvoAI and RTC services, which works in the `Authorization` header and in `transport.token`. Each RTC privilege lifetime must not exceed the token lifetime:
 
 ```js tab="Node.js"
 const { AccessToken2, ServiceConvoAI, ServiceRtc } = require('agora-token/src/AccessToken2');
@@ -247,7 +281,7 @@ The following example lists the agents in your project. It works with a token th
 ```bash
 curl --request GET \
   --url 'https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents?limit=20' \
-  --header 'Authorization: agora token=<your_token>'
+  --header 'Authorization: agora token="<your_token>"'
 ```
 
 The following example starts an RTC session with a saved agent, using a token with the ConvoAI, RTC, and RTM services, such as one from [`ConvoAITokenBuilder.buildToken`](#build-a-convoai-token). It uses the same token in the `Authorization` header and in `transport.token`:
@@ -255,7 +289,7 @@ The following example starts an RTC session with a saved agent, using a token wi
 ```bash
 curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
-  --header 'Authorization: agora token=<your_token>' \
+  --header 'Authorization: agora token="<your_token>"' \
   --header 'Content-Type: application/json' \
   --data '{
     "agent_id": "<your_agent_id>",

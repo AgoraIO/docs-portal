@@ -6,7 +6,6 @@
 #
 # Authentication: Basic HTTP authentication and the ConvoAI token (confirmed by the PM, 20 Oct
 # 2026). See the RESTful authentication page in the Platform reference.
-# TODO(platform-confirm): Whether the token value in the Authorization header is quoted.
 openapi: 3.1.0
 info:
   version: ""
@@ -2114,7 +2113,7 @@ components:
       name: Authorization
       description: >-
         Use a token generated with your App ID and App Certificate, in the format
-        `agora token=<your_token>`. A token with the ConvoAI service authenticates any request.
+        `agora token="<your_token>"`. A token with the ConvoAI service authenticates any request.
         To start an RTC session, also include the RTC service and pass the same token in
         `transport.token`.
   parameters:
