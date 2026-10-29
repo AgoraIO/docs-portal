@@ -11,10 +11,12 @@ export function DocsTocRail({
   locale,
   sourceLinks,
   toc,
+  tocMaxDepth,
 }: {
   locale?: AppLocale | string;
   sourceLinks?: DocsSourceLinks | null;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { isScrollbarVisible, scrollContainerRef } =
     useTransientScrollbar<HTMLDivElement>();
@@ -36,6 +38,7 @@ export function DocsTocRail({
           locale={locale}
           sourceLinks={sourceLinks}
           toc={toc}
+          tocMaxDepth={tocMaxDepth}
         />
       </div>
     </aside>

@@ -25,6 +25,7 @@ import {
 import { getSourceSlugs, isSamePathOrDescendant } from './docs-routing';
 import { getSearchEntryMetadata, type SearchEntry } from './docs-search';
 import { parseProductSidebarContext } from './docs-sidebar-context';
+import { filterDocsToc, resolveDocsTocMaxDepth } from './docs-toc';
 import {
   type DocsSidebarNode,
   type DocsSidebarSectionNode,
@@ -787,7 +788,8 @@ export async function loadDocsPagePayload(
   const unboundedToc = isOpenApiPage
     ? normalizeToc(getPageToc(page))
     : await resolvePageToc(page, processedText, artifactPlatform);
-  const toc = applyPageTocDepthLimit(page, unboundedToc);
+  const tocMaxDepth = resolveDocsTocMaxDepth(page.data, tab === OPENAPI_TAB);
+  const toc = filterDocsToc(unboundedToc, tocMaxDepth);
   const layoutMode: DocsLayoutMode =
     isOpenApiPage || openApiLaneRoute !== null ? 'openapi' : 'docs';
   const sidebar = await getDocsSidebarNodes({
@@ -954,6 +956,7 @@ export async function loadDocsPagePayload(
     title: page.data.title,
     ...(titlePlatforms.length > 0 ? { titlePlatforms } : {}),
     toc,
+    ...(tocMaxDepth === undefined ? {} : { tocMaxDepth }),
   };
 
   const productSidebarContext =
@@ -2009,18 +2012,6 @@ function normalizeToc(toc: TOCItemType[] | undefined) {
       },
     ];
   });
-}
-
-function applyPageTocDepthLimit<T extends { depth: number }>(
-  page: PageWithSource,
-  toc: T[],
-) {
-  const maxDepth =
-    'tocMaxDepth' in page.data && typeof page.data.tocMaxDepth === 'number'
-      ? page.data.tocMaxDepth
-      : null;
-
-  return maxDepth === null ? toc : toc.filter((item) => item.depth <= maxDepth);
 }
 
 function hasPageText(page: PageWithSource): page is PageWithSource & {

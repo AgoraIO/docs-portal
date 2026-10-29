@@ -139,6 +139,7 @@ export function DocsShell({
   sidebarHeader,
   tabs,
   toc,
+  tocMaxDepth,
   layoutMode = 'docs',
   hideToc = false,
 }: {
@@ -158,6 +159,7 @@ export function DocsShell({
   sidebarHeader?: DocsSidebarHeader;
   tabs: TabSummary[];
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
@@ -539,6 +541,7 @@ export function DocsShell({
                   locale={currentLocale}
                   sourceLinks={sourceLinks}
                   toc={toc}
+                  tocMaxDepth={tocMaxDepth}
                 />
               )}
             </>
