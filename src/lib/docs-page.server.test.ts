@@ -2144,6 +2144,35 @@ Web body
     });
   });
 
+  it('keeps the requested panel when source slugs already exclude the locale', async () => {
+    const parentPage = {
+      ...createPlatformGroupPage(),
+      slugs: ['ai', 'get-started', 'platform-split'],
+    };
+    const iosPage = {
+      ...createPlatformPanelPage('ios'),
+      slugs: ['ai', 'get-started', 'platform-split', 'ios'],
+    };
+    const pages = [parentPage, iosPage];
+    mockedGetPage.mockImplementation((slugs) =>
+      pages.find((page) => page.slugs.join('/') === slugs?.join('/')),
+    );
+    mockedGetPages.mockReturnValue(pages);
+    mockedGetPageTree.mockReturnValue(pageTree);
+
+    const payload = await loadDocsPagePayload('en', 'ai', [
+      'get-started',
+      'platform-split',
+      'ios',
+    ]);
+    expect(payload).toMatchObject({
+      body: {
+        kind: 'platform-group',
+        platformTabs: { initialPlatform: 'ios' },
+      },
+    });
+  });
+
   it('infers zh-CN title platform badges from API reference platform paths', async () => {
     const page = {
       ...createZhPage(),
