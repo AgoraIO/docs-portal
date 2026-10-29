@@ -636,7 +636,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-29T12:23:49.000Z',
   'content/docs/en/ai/platform/index.mdx': '2026-10-29T02:43:49.000Z',
   'content/docs/en/ai/platform/meta.json': '2026-10-29T11:27:57.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
@@ -1186,13 +1186,13 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/go.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-29T12:23:49.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/meta.json':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/python.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-29T12:23:49.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/typescript.mdx':
-    '2026-10-29T03:58:29.000Z',
+    '2026-10-29T12:23:49.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
