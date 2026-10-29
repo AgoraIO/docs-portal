@@ -1506,6 +1506,29 @@ Chat UI kit workflow
 
 ## Implement peer-to-peer messaging
 
+This section shows how to use the Chat UI Kit to implement peer-to-peer messaging in your app.
+
+The `agora_chat_uikit` library provides the logic and UI to implement the following Chat functions:
+
+- Send, receive, and display messages
+- Shows the unread message count, and clear messages. Text, image, emoji, file, and audio messages are supported
+- Delete conversations and messages
+- Customize the UI
+
+### Chat UI Kit widgets
+
+| Widget | Function | Description |
+| --- | --- | --- |
+| `ChatUIKit` |  | The root of all widgets in Chat UI Kit. |
+| `ChatConversationsView` | Conversation list | Presents the conversation information, including the user's avatar, nickname, content of the last message, unread message count, and the time when the last message was sent or received. |
+| `ChatConversationsView` | Delete conversation | Deletes the conversation from the conversation list. |
+| `ChatMessagesView` | Message sender | Sends text, emoji, image, file, and voice messages. |
+| `ChatMessagesView` | Delete messages | Deletes messages. |
+| `ChatMessagesView` | Recall message | Recalls message that were sent within 120 seconds. |
+| `ChatMessagesView` | Read mark | You receive a read receipt after retrieving your message. |
+| `ChatMessagesView` | Message sent state | Display the status after the message is sent. |
+| `ChatMessagesView` | Display message | Displays one-to-one messages and group messages, including the user's avatar, nickname, the message content, sending or reception time, sending status, and read status. Text, image, emoji, file, voice, and video messages can be displayed. |
+
 ## Test your app
 
 ## Next steps

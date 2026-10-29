@@ -165,11 +165,13 @@ The following table shows the calculations for the aggregate resolution for each
 
 The following table shows the calculation of the total cost of the live video streaming session:
 
-| Billed service (video type) | Total usage (minutes) = Sum of all individual usage | Unit price (US$/1,000 minutes) | Cost of each service (US$) | Total cost (US$) |
-| --- | --- | --- | --- | --- |
-| Full HD | 60 | 8.99 | (60/1000) x 8.99 = 0.5394 | **6.777**<br>**≈ 6.78** |
-| 2K | 60 x 2 = 120 | 15.99 | (120/1000) x 15.99 = 1.9188 |  |
-| 2K+ | 60 x 2 = 120 | 35.99 | (120/1000) x 35.99 = 4.3188 |  |
+| Billed service (video type) | Total usage (minutes) = Sum of all individual usage | Unit price (US$/1,000 minutes) | Cost of each service (US$) |
+| --- | --- | --- | --- |
+| Full HD | 60 | 8.99 | (60/1000) x 8.99 = 0.5394 |
+| 2K | 60 x 2 = 120 | 15.99 | (120/1000) x 15.99 = 1.9188 |
+| 2K+ | 60 x 2 = 120 | 35.99 | (120/1000) x 35.99 = 4.3188 |
+
+Total cost (US$): **6.777** **≈ 6.78**
 
 Agora rounds the total cost up to two decimal places.
 

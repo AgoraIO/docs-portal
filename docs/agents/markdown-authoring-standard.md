@@ -385,7 +385,17 @@ Rules:
   the tabular shape matters.
 - For table slots, put `<Slot name="..." />` alone in the table cell, then put
   the matching `<Slot for="...">...</Slot>` block immediately after the table.
+- Put totals or other prose after all of the table's Slot definitions; text
+  between the table and those definitions prevents rich cells from rendering.
 - Keep table rows single-line whenever possible.
+- Flatten legacy merged cells before publication: repeat vertical group labels
+  in their related rows and combine multi-level column headers into explicit
+  labels. Keep shared allowances and aggregate totals outside detail rows so
+  flattening does not imply separate allowances or duplicate charges.
+- Escape literal pipes as `\|`, including inside inline code. Every body row
+  must have the same number of cells as its header. Run `bun run docs:tables`
+  to check all Chinese and English documents for unsupported HTML tables and
+  mismatched column counts, and validate rich-cell Slot placement.
 
 ## Agent Checklist
 

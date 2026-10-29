@@ -309,37 +309,37 @@ mVideoEffectObject = null;
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
-| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
-| `lightness` | float | 美白 | 0.0-1.0 |  |
-| `redness` | float | 红润 | 0.0-1.0 |  |
-| `sharpness` | float | 锐化 | 0.0-1.0 |  |
-| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+| `beauty_effect_option` | `smoothness` | float | 磨皮 | 0.0-1.0 |
+| `beauty_effect_option` | `lightness` | float | 美白 | 0.0-1.0 |
+| `beauty_effect_option` | `redness` | float | 红润 | 0.0-1.0 |
+| `beauty_effect_option` | `sharpness` | float | 锐化 | 0.0-1.0 |
+| `beauty_effect_option` | `contrast_strength` | float | 清晰度 | 0.0-1.0 |
 
 #### 美颜模板-画质
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
-| `temperature` | float | 色温 | -1.0-1.0 |  |
-| `hue` | float | 色调 | -1.0-1.0 |  |
-| `brightness` | float | 亮度 | -1.0-1.0 |  |
+| `beauty_effect_option` | `temperature` | float | 色温 | -1.0-1.0 |
+| `beauty_effect_option` | `hue` | float | 色调 | -1.0-1.0 |
+| `beauty_effect_option` | `brightness` | float | 亮度 | -1.0-1.0 |
 
 #### 美颜模板-美肤
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
-| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
-| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
-| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+| `face_buffing_option` | `brighten_eye` | float | 亮眼 | 0.0-1.0 |
+| `face_buffing_option` | `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |
+| `face_buffing_option` | `whiten_teeth` | float | 白牙 | 0.0-1.0 |
 
 #### 美颜模板-美型
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
-| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
-| `intensity` | int | 强度 | 0-100 |  |
+| `face_shape_beauty_option` | `style` | int | 风格 | 0=男, 1=女, 2=自然 |
+| `face_shape_beauty_option` | `intensity` | int | 强度 | 0-100 |
 
 :::info[信息]
 目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy#微调单个部位)。
@@ -358,37 +358,37 @@ mVideoEffectObject = null;
 | option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- | --- |
 | `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
-| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
-| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
-| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
-| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
-| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
-| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
-| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
-| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
-| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
-| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
-| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
-| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
-| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
-| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
-| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+| `makeup_options` | `browColor` | int | 眉毛 (Brow) | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `browStrength` | float | 眉毛 (Brow) | 眉毛强度 | 0.0~1.0 |
+| `makeup_options` | `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |
+| `makeup_options` | `lashColor` | int | 睫毛 (Lash) | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `lashStrength` | float | 睫毛 (Lash) | 睫毛强度 | 0.0~1.0 |
+| `makeup_options` | `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |
+| `makeup_options` | `shadowStrength` | float | 眼影 (Shadow) | 眼影强度 | 0.0~1.0 |
+| `makeup_options` | `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |
+| `makeup_options` | `pupilStrength` | float | 美瞳 (Pupil) | 美瞳强度 | 0.0~1.0 |
+| `makeup_options` | `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |
+| `makeup_options` | `blushColor` | int | 腮红 (Blush) | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |
+| `makeup_options` | `blushStrength` | float | 腮红 (Blush) | 腮红强度 | 0.0~1.0 |
+| `makeup_options` | `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |
+| `makeup_options` | `lipColor` | int | 唇妆 (Lip) | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |
+| `makeup_options` | `lipStrength` | float | 唇妆 (Lip) | 唇妆强度 | 0.0~1.0 |
+| `makeup_options` | `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |
+| `makeup_options` | `facialStrength` | float | 修容 (Facial) | 修容强度 | 0.0~1.0 |
 
 #### 滤镜模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
-| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+| `filter_effect_option` | `strength` | float | 滤镜强度 | 0.0~1.0 |
 
 #### 贴纸模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
-| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+| `sticker_effect_option` | `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |
 
 ### API 参考
 
@@ -762,37 +762,37 @@ videoEffectObject = nil
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
-| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
-| `lightness` | float | 美白 | 0.0-1.0 |  |
-| `redness` | float | 红润 | 0.0-1.0 |  |
-| `sharpness` | float | 锐化 | 0.0-1.0 |  |
-| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+| `beauty_effect_option` | `smoothness` | float | 磨皮 | 0.0-1.0 |
+| `beauty_effect_option` | `lightness` | float | 美白 | 0.0-1.0 |
+| `beauty_effect_option` | `redness` | float | 红润 | 0.0-1.0 |
+| `beauty_effect_option` | `sharpness` | float | 锐化 | 0.0-1.0 |
+| `beauty_effect_option` | `contrast_strength` | float | 清晰度 | 0.0-1.0 |
 
 #### 美颜模板-画质
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
-| `temperature` | float | 色温 | -1.0-1.0 |  |
-| `hue` | float | 色调 | -1.0-1.0 |  |
-| `brightness` | float | 亮度 | -1.0-1.0 |  |
+| `beauty_effect_option` | `temperature` | float | 色温 | -1.0-1.0 |
+| `beauty_effect_option` | `hue` | float | 色调 | -1.0-1.0 |
+| `beauty_effect_option` | `brightness` | float | 亮度 | -1.0-1.0 |
 
 #### 美颜模板-美肤
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
-| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
-| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
-| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+| `face_buffing_option` | `brighten_eye` | float | 亮眼 | 0.0-1.0 |
+| `face_buffing_option` | `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |
+| `face_buffing_option` | `whiten_teeth` | float | 白牙 | 0.0-1.0 |
 
 #### 美颜模板-美型
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
-| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
-| `intensity` | int | 强度 | 0-100 |  |
+| `face_shape_beauty_option` | `style` | int | 风格 | 0=男, 1=女, 2=自然 |
+| `face_shape_beauty_option` | `intensity` | int | 强度 | 0-100 |
 
 :::info[信息]
 目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy#微调单个部位)。
@@ -811,37 +811,37 @@ videoEffectObject = nil
 | option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- | --- |
 | `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
-| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
-| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
-| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
-| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
-| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
-| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
-| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
-| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
-| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
-| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
-| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
-| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
-| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
-| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
-| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+| `makeup_options` | `browColor` | int | 眉毛 (Brow) | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `browStrength` | float | 眉毛 (Brow) | 眉毛强度 | 0.0~1.0 |
+| `makeup_options` | `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |
+| `makeup_options` | `lashColor` | int | 睫毛 (Lash) | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `lashStrength` | float | 睫毛 (Lash) | 睫毛强度 | 0.0~1.0 |
+| `makeup_options` | `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |
+| `makeup_options` | `shadowStrength` | float | 眼影 (Shadow) | 眼影强度 | 0.0~1.0 |
+| `makeup_options` | `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |
+| `makeup_options` | `pupilStrength` | float | 美瞳 (Pupil) | 美瞳强度 | 0.0~1.0 |
+| `makeup_options` | `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |
+| `makeup_options` | `blushColor` | int | 腮红 (Blush) | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |
+| `makeup_options` | `blushStrength` | float | 腮红 (Blush) | 腮红强度 | 0.0~1.0 |
+| `makeup_options` | `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |
+| `makeup_options` | `lipColor` | int | 唇妆 (Lip) | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |
+| `makeup_options` | `lipStrength` | float | 唇妆 (Lip) | 唇妆强度 | 0.0~1.0 |
+| `makeup_options` | `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |
+| `makeup_options` | `facialStrength` | float | 修容 (Facial) | 修容强度 | 0.0~1.0 |
 
 #### 滤镜模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
-| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+| `filter_effect_option` | `strength` | float | 滤镜强度 | 0.0~1.0 |
 
 #### 贴纸模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
-| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+| `sticker_effect_option` | `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |
 
 ### API 参考
 
@@ -1218,37 +1218,37 @@ videoEffectObject = nil
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
-| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
-| `lightness` | float | 美白 | 0.0-1.0 |  |
-| `redness` | float | 红润 | 0.0-1.0 |  |
-| `sharpness` | float | 锐化 | 0.0-1.0 |  |
-| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+| `beauty_effect_option` | `smoothness` | float | 磨皮 | 0.0-1.0 |
+| `beauty_effect_option` | `lightness` | float | 美白 | 0.0-1.0 |
+| `beauty_effect_option` | `redness` | float | 红润 | 0.0-1.0 |
+| `beauty_effect_option` | `sharpness` | float | 锐化 | 0.0-1.0 |
+| `beauty_effect_option` | `contrast_strength` | float | 清晰度 | 0.0-1.0 |
 
 #### 美颜模板-画质
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
-| `temperature` | float | 色温 | -1.0-1.0 |  |
-| `hue` | float | 色调 | -1.0-1.0 |  |
-| `brightness` | float | 亮度 | -1.0-1.0 |  |
+| `beauty_effect_option` | `temperature` | float | 色温 | -1.0-1.0 |
+| `beauty_effect_option` | `hue` | float | 色调 | -1.0-1.0 |
+| `beauty_effect_option` | `brightness` | float | 亮度 | -1.0-1.0 |
 
 #### 美颜模板-美肤
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
-| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
-| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
-| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+| `face_buffing_option` | `brighten_eye` | float | 亮眼 | 0.0-1.0 |
+| `face_buffing_option` | `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |
+| `face_buffing_option` | `whiten_teeth` | float | 白牙 | 0.0-1.0 |
 
 #### 美颜模板-美型
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
-| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
-| `intensity` | int | 强度 | 0-100 |  |
+| `face_shape_beauty_option` | `style` | int | 风格 | 0=男, 1=女, 2=自然 |
+| `face_shape_beauty_option` | `intensity` | int | 强度 | 0-100 |
 
 :::info[信息]
 目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy#微调单个部位)。
@@ -1267,37 +1267,37 @@ videoEffectObject = nil
 | option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- | --- |
 | `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
-| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
-| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
-| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
-| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
-| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
-| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
-| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
-| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
-| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
-| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
-| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
-| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
-| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
-| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
-| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+| `makeup_options` | `browColor` | int | 眉毛 (Brow) | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `browStrength` | float | 眉毛 (Brow) | 眉毛强度 | 0.0~1.0 |
+| `makeup_options` | `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |
+| `makeup_options` | `lashColor` | int | 睫毛 (Lash) | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `lashStrength` | float | 睫毛 (Lash) | 睫毛强度 | 0.0~1.0 |
+| `makeup_options` | `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |
+| `makeup_options` | `shadowStrength` | float | 眼影 (Shadow) | 眼影强度 | 0.0~1.0 |
+| `makeup_options` | `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |
+| `makeup_options` | `pupilStrength` | float | 美瞳 (Pupil) | 美瞳强度 | 0.0~1.0 |
+| `makeup_options` | `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |
+| `makeup_options` | `blushColor` | int | 腮红 (Blush) | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |
+| `makeup_options` | `blushStrength` | float | 腮红 (Blush) | 腮红强度 | 0.0~1.0 |
+| `makeup_options` | `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |
+| `makeup_options` | `lipColor` | int | 唇妆 (Lip) | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |
+| `makeup_options` | `lipStrength` | float | 唇妆 (Lip) | 唇妆强度 | 0.0~1.0 |
+| `makeup_options` | `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |
+| `makeup_options` | `facialStrength` | float | 修容 (Facial) | 修容强度 | 0.0~1.0 |
 
 #### 滤镜模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
-| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+| `filter_effect_option` | `strength` | float | 滤镜强度 | 0.0~1.0 |
 
 #### 贴纸模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
-| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+| `sticker_effect_option` | `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |
 
 ### API 参考
 
@@ -1659,37 +1659,37 @@ m_videoEffectObject = nullptr;
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `enable` | bool | 美颜开关 | true/false |
-| `smoothness` | float | 磨皮 | 0.0-1.0 |  |
-| `lightness` | float | 美白 | 0.0-1.0 |  |
-| `redness` | float | 红润 | 0.0-1.0 |  |
-| `sharpness` | float | 锐化 | 0.0-1.0 |  |
-| `contrast_strength` | float | 清晰度 | 0.0-1.0 |  |
+| `beauty_effect_option` | `smoothness` | float | 磨皮 | 0.0-1.0 |
+| `beauty_effect_option` | `lightness` | float | 美白 | 0.0-1.0 |
+| `beauty_effect_option` | `redness` | float | 红润 | 0.0-1.0 |
+| `beauty_effect_option` | `sharpness` | float | 锐化 | 0.0-1.0 |
+| `beauty_effect_option` | `contrast_strength` | float | 清晰度 | 0.0-1.0 |
 
 #### 美颜模板-画质
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `beauty_effect_option` | `saturation` | float | 饱和度 | -1.0-1.0 |
-| `temperature` | float | 色温 | -1.0-1.0 |  |
-| `hue` | float | 色调 | -1.0-1.0 |  |
-| `brightness` | float | 亮度 | -1.0-1.0 |  |
+| `beauty_effect_option` | `temperature` | float | 色温 | -1.0-1.0 |
+| `beauty_effect_option` | `hue` | float | 色调 | -1.0-1.0 |
+| `beauty_effect_option` | `brightness` | float | 亮度 | -1.0-1.0 |
 
 #### 美颜模板-美肤
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_buffing_option` | `eye_pouch` | float | 去黑眼圈 | 0.0-1.0 |
-| `brighten_eye` | float | 亮眼 | 0.0-1.0 |  |
-| `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |  |
-| `whiten_teeth` | float | 白牙 | 0.0-1.0 |  |
+| `face_buffing_option` | `brighten_eye` | float | 亮眼 | 0.0-1.0 |
+| `face_buffing_option` | `nasolabial_fold` | float | 去法令纹 | 0.0-1.0 |
+| `face_buffing_option` | `whiten_teeth` | float | 白牙 | 0.0-1.0 |
 
 #### 美颜模板-美型
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `face_shape_beauty_option` | `enable` | bool | 美型开关 | true/false |
-| `style` | int | 风格 | 0=男, 1=女, 2=自然 |  |
-| `intensity` | int | 强度 | 0-100 |  |
+| `face_shape_beauty_option` | `style` | int | 风格 | 0=男, 1=女, 2=自然 |
+| `face_shape_beauty_option` | `intensity` | int | 强度 | 0-100 |
 
 :::info[信息]
 目前美颜 2.1 API 不支持对美型部位进行参数设置或参数获取，需要使用美颜 1.0 的 API 来设置或获取参数，详见[微调美型部位](/zh-CN/realtime-media/rtc/build/video/advanced-beauty-legacy#微调单个部位)。
@@ -1708,37 +1708,37 @@ m_videoEffectObject = nullptr;
 | option | key | 类型 | 美妆部位 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- | --- |
 | `makeup_options` | `browStyle` | int | 眉毛 (Brow) | 眉毛样式编号 | 1~10 |
-| `browColor` | int | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `browStrength` | float | 眉毛强度 | 0.0~1.0 |  |  |
-| `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |  |
-| `lashColor` | int | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |  |  |
-| `lashStrength` | float | 睫毛强度 | 0.0~1.0 |  |  |
-| `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |  |
-| `shadowStrength` | float | 眼影强度 | 0.0~1.0 |  |  |
-| `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |  |
-| `pupilStrength` | float | 美瞳强度 | 0.0~1.0 |  |  |
-| `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |  |
-| `blushColor` | int | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |  |  |
-| `blushStrength` | float | 腮红强度 | 0.0~1.0 |  |  |
-| `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |  |
-| `lipColor` | int | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |  |  |
-| `lipStrength` | float | 唇妆强度 | 0.0~1.0 |  |  |
-| `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |  |
-| `facialStrength` | float | 修容强度 | 0.0~1.0 |  |  |
+| `makeup_options` | `browColor` | int | 眉毛 (Brow) | 眉毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `browStrength` | float | 眉毛 (Brow) | 眉毛强度 | 0.0~1.0 |
+| `makeup_options` | `lashStyle` | int | 睫毛 (Lash) | 睫毛样式编号 | 2/3/4/5/7/8/9/10 |
+| `makeup_options` | `lashColor` | int | 睫毛 (Lash) | 睫毛色号：0 原色，1 深棕，2 浅棕 | 0~2 |
+| `makeup_options` | `lashStrength` | float | 睫毛 (Lash) | 睫毛强度 | 0.0~1.0 |
+| `makeup_options` | `shadowStyle` | int | 眼影 (Shadow) | 眼影样式编号 | 1~11 |
+| `makeup_options` | `shadowStrength` | float | 眼影 (Shadow) | 眼影强度 | 0.0~1.0 |
+| `makeup_options` | `pupilStyle` | int | 美瞳 (Pupil) | 美瞳样式编号 | 1~7 |
+| `makeup_options` | `pupilStrength` | float | 美瞳 (Pupil) | 美瞳强度 | 0.0~1.0 |
+| `makeup_options` | `blushStyle` | int | 腮红 (Blush) | 腮红样式编号 | 1~11 |
+| `makeup_options` | `blushColor` | int | 腮红 (Blush) | 腮红色号：0 原色，1 粉嫩，2 蜜桃橘，3 珊瑚橙，4 樱花粉，5 玫瑰粉 | 0~5 |
+| `makeup_options` | `blushStrength` | float | 腮红 (Blush) | 腮红强度 | 0.0~1.0 |
+| `makeup_options` | `lipStyle` | int | 唇妆 (Lip) | 唇妆样式编号 | 1~6 |
+| `makeup_options` | `lipColor` | int | 唇妆 (Lip) | 唇妆色号：0 原色，1 豆沙粉，2 复古红，3 梅子色，4 珊瑚色，5 少女粉，6 丝绒红，7 西瓜红，8 西柚色，9 元气橘，10 脏橘色 | 0~10 |
+| `makeup_options` | `lipStrength` | float | 唇妆 (Lip) | 唇妆强度 | 0.0~1.0 |
+| `makeup_options` | `facialStyle` | int | 修容 (Facial) | 修容样式编号 | 1/2/3/4/6/8/9 |
+| `makeup_options` | `facialStrength` | float | 修容 (Facial) | 修容强度 | 0.0~1.0 |
 
 #### 滤镜模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `filter_effect_option` | `enable` | bool | 滤镜模板开关 | true/false |
-| `strength` | float | 滤镜强度 | 0.0~1.0 |  |
+| `filter_effect_option` | `strength` | float | 滤镜强度 | 0.0~1.0 |
 
 #### 贴纸模板
 
 | option | key | 类型 | 说明 | 取值范围 |
 | --- | --- | --- | --- | --- |
 | `sticker_effect_option` | `enable` | bool | 贴纸模板开关 | true/false |
-| `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |  |
+| `sticker_effect_option` | `strength` | float | 贴纸透明度（一般保持素材默认效果） | 0.0~1.0 |
 
 ### API 参考
 

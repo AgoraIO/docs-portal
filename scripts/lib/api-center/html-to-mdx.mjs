@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio';
 import { getTableOfContents } from 'fumadocs-core/content/toc';
+import { normalizeTableGrid } from '../table-grid.mjs';
 import { rewriteLegacyBodyLinks } from './legacy-links.mjs';
 import {
   createWarning,
@@ -1168,49 +1169,62 @@ async function renderTable($, table, state) {
   if (rows.length === 0) return '';
   const values = [];
   const definitions = [];
-  let width = 0;
+  const firstHeaderSpan = Math.max(
+    1,
+    ...$(rows[0])
+      .children('th')
+      .toArray()
+      .map((cell) => Number.parseInt($(cell).attr('rowspan') ?? '1', 10) || 1),
+  );
   for (const [rowIndex, row] of rows.entries()) {
     const cells = $(row).children('th, td').toArray();
     const renderedCells = [];
     for (const cell of cells) {
       const element = $(cell);
-      const span = Math.max(
-        1,
-        Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
-      );
+      const metadata = {
+        kind:
+          element.is('th') ||
+          $(row).parent().is('thead') ||
+          rowIndex < firstHeaderSpan
+            ? 'h'
+            : 'd',
+        colspan: Number.parseInt(element.attr('colspan') ?? '1', 10) || 1,
+        rowspan: Number.parseInt(element.attr('rowspan') ?? '1', 10) || 1,
+      };
       const rich =
         rowIndex > 0 &&
+        metadata.kind !== 'h' &&
         element.find(
           'table, ul, ol, pre, blockquote, img, div, section, p, dl, figure, [id], a[name]',
         ).length > 0;
       if (!rich) {
-        renderedCells.push(
-          cleanText(
+        renderedCells.push({
+          ...metadata,
+          raw: cleanText(
             await renderInlineNodes($, element.contents().toArray(), state),
           ),
-        );
-        renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+        });
         continue;
       }
       const body = await renderChildren($, element, state);
       if (!body) {
-        renderedCells.push('');
+        renderedCells.push({ ...metadata, raw: '' });
         continue;
       }
       const slotName = `api-center-table-${state.tableSlotCounter++}`;
-      renderedCells.push(`<Slot name="${slotName}" />`);
-      renderedCells.push(...Array.from({ length: span - 1 }, () => ''));
+      renderedCells.push({ ...metadata, raw: `<Slot name="${slotName}" />` });
       definitions.push(`<Slot for="${slotName}">\n\n${body}\n\n</Slot>`);
     }
-    width = Math.max(width, renderedCells.length);
     values.push(renderedCells);
   }
-  const normalized = values.map((row) => [
-    ...row,
-    ...Array.from({ length: width - row.length }, () => ''),
-  ]);
-  const headerRow = normalized.shift();
-  return [renderSimpleTable(headerRow, normalized), ...definitions]
+  const { header, bodyRows } = normalizeTableGrid(values);
+  return [
+    renderSimpleTable(
+      header.map((cell) => cell.raw),
+      bodyRows.map((row) => row.map((cell) => cell.raw)),
+    ),
+    ...definitions,
+  ]
     .filter(Boolean)
     .join('\n\n');
 }

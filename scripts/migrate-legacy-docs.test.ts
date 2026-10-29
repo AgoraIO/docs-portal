@@ -1695,10 +1695,33 @@ export const FaceCapture = [
     expect(migrated).toContain(
       '| Plus 独占功能 | 多维度交叉分析 | ✘ | ✔ | ✔ |',
     );
-    expect(migrated).toContain('|  | 对比分析 | ✘ | ✔ | ✔ |');
+    expect(migrated).toContain('| Plus 独占功能 | 对比分析 | ✘ | ✔ | ✔ |');
     expect(migrated).not.toContain('Column 5');
     expect(state.issues).toContain('normalized-html-table');
     expect(state.issues).toContain('normalized-table-span');
+  });
+
+  it('does not double-escape a literal pipe when reprocessing Markdown tables', () => {
+    const state = createState();
+    const source =
+      '| Name | Description |\n| --- | --- |\n| channel | `appname\\|channelname` |';
+    const migrated = transformLegacyMdx(source, state);
+    expect(migrated).toContain('`appname\\|channelname`');
+    expect(migrated).not.toContain('appname\\\\|channelname');
+  });
+
+  it('keeps nested custom row groups aligned with their keys and values', () => {
+    const state = createState();
+    state.tableHeaders.set('columns', ['option', 'part', 'key', 'type']);
+    const migrated = transformLegacyMdx(
+      `<Table header={columns}>
+    <Tr><Td row={3}>makeup</Td><Td row={2}>lip</Td><Td>enable</Td><Td>bool</Td></Tr>
+    <Tr><Td>strength</Td><Td>float</Td></Tr>
+    <Tr><Td>brow</Td><Td>enable</Td><Td>bool</Td></Tr></Table>`,
+      state,
+    );
+    expect(migrated).toContain('| makeup | lip | strength | float |');
+    expect(migrated).toContain('| makeup | brow | enable | bool |');
   });
 
   it('uses exported TableHeader labels for legacy Table components', () => {
@@ -1753,7 +1776,7 @@ export const FaceCapture = [
     expect(migrated).toContain('|  |  | Fastboard SDK | Whiteboard SDK |');
     expect(migrated).toContain('| 产品定位 |  | 支持 | 不支持 |');
     expect(migrated).toContain('| 产品边界 | UI | 支持 | 不支持 |');
-    expect(migrated).toContain('|  | 插件 | 支持 | 不支持 |');
+    expect(migrated).toContain('| 产品边界 | 插件 | 支持 | 不支持 |');
     expect(migrated).not.toContain('Column');
     expect(findLegacyResidue(migrated)).toEqual([]);
   });

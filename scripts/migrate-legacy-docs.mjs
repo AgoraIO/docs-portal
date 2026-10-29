@@ -6,6 +6,7 @@ import process from 'node:process';
 import { fileURLToPath } from 'node:url';
 import { normalizeLegacyCodeHighlights } from './lib/legacy-code-highlights.mjs';
 import { resolveLegacyProductLabel } from './lib/legacy-product-labels.mjs';
+import { normalizeTableGrid } from './lib/table-grid.mjs';
 import {
   isRedirectContentRow,
   readControlTable,
@@ -2649,7 +2650,11 @@ function transformHtmlTables(value, state) {
 
           return cells.map((cellMatch) => ({
             colspan: readNumericAttribute(cellMatch[2], 'colspan', 'col'),
-            kind: cellMatch[1].toLowerCase(),
+            kind:
+              /<thead\b[^>]*>[\s\S]*$/i.test(body.slice(0, rowMatch.index)) &&
+              !/<\/thead>[\s\S]*$/i.test(body.slice(0, rowMatch.index))
+                ? 'h'
+                : cellMatch[1].toLowerCase(),
             raw: cellMatch[3],
             rowspan: readNumericAttribute(cellMatch[2], 'rowspan', 'row'),
           }));
@@ -2658,10 +2663,7 @@ function transformHtmlTables(value, state) {
       const hasSpans = rawRows.some((row) =>
         row.some((cell) => cell.colspan > 1 || cell.rowspan > 1),
       );
-      const rows = expandHtmlTableSpans(rawRows);
-      const nonEmptyRows = rows.filter((row) => row.length > 0);
-
-      if (nonEmptyRows.length === 0) {
+      if (!rawRows.some((row) => row.length > 0)) {
         return match;
       }
 
@@ -2673,22 +2675,10 @@ function transformHtmlTables(value, state) {
       const configuredHeader = headerName
         ? state.tableHeaders.get(headerName)
         : null;
-      const headerIndex = nonEmptyRows.findIndex((row) =>
-        row.some((cell) => cell.kind === 'h'),
+      const { header, bodyRows } = normalizeTableGrid(
+        rawRows,
+        configuredHeader,
       );
-      const header = configuredHeader
-        ? configuredHeader.map((label) => ({
-            kind: 'h',
-            raw: label,
-          }))
-        : headerIndex >= 0
-          ? nonEmptyRows[headerIndex]
-          : nonEmptyRows[0];
-      const bodyRows = configuredHeader
-        ? nonEmptyRows
-        : nonEmptyRows.filter((_, index) =>
-            headerIndex >= 0 ? index !== headerIndex : index !== 0,
-          );
 
       if (configuredHeader) {
         state.issues.push(`normalized-table-header:${headerName}`);
@@ -2705,69 +2695,6 @@ function transformHtmlTables(value, state) {
       return rendered;
     },
   );
-}
-
-function expandHtmlTableSpans(rows) {
-  const pendingRowspans = new Map();
-  const expandedRows = [];
-
-  for (const row of rows) {
-    const expanded = [];
-    let columnIndex = 0;
-
-    const fillPending = () => {
-      while (pendingRowspans.has(columnIndex)) {
-        const pending = pendingRowspans.get(columnIndex);
-        expanded[columnIndex] = {
-          kind: pending.kind,
-          raw: '',
-        };
-        pending.remaining -= 1;
-        if (pending.remaining <= 0) {
-          pendingRowspans.delete(columnIndex);
-        }
-        columnIndex += 1;
-      }
-    };
-
-    for (const cell of row) {
-      fillPending();
-
-      for (let offset = 0; offset < cell.colspan; offset += 1) {
-        const targetColumn = columnIndex + offset;
-        expanded[targetColumn] = {
-          kind: cell.kind,
-          raw: offset === 0 || cell.kind === 'h' ? cell.raw : '',
-        };
-
-        if (cell.rowspan > 1) {
-          pendingRowspans.set(targetColumn, {
-            kind: cell.kind,
-            remaining: cell.rowspan - 1,
-          });
-        }
-      }
-
-      columnIndex += cell.colspan;
-    }
-
-    const maxPendingColumn = Math.max(-1, ...pendingRowspans.keys());
-    while (columnIndex <= maxPendingColumn) {
-      if (pendingRowspans.has(columnIndex)) {
-        fillPending();
-      } else {
-        expanded[columnIndex] = {
-          kind: 'd',
-          raw: '',
-        };
-        columnIndex += 1;
-      }
-    }
-
-    expandedRows.push(expanded);
-  }
-
-  return expandedRows;
 }
 
 function transformMarkdownTableSlots(value, state) {
@@ -3130,7 +3057,10 @@ function isComplexTableCell(value = '') {
 }
 
 function normalizeInlineTableCell(value) {
-  return collapseInline(transformInlineHtml(value)).replace(/\|/g, '\\|');
+  return collapseInline(transformInlineHtml(value)).replace(
+    /(\\*)\|/g,
+    (_, slashes) => `${slashes}${slashes.length % 2 ? '' : '\\'}|`,
+  );
 }
 
 function normalizeSlotDefinitionContent(value) {
