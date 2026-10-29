@@ -105,6 +105,53 @@ describe('consolidated English MCP routes', () => {
   );
 });
 
+describe('consolidated English Skills routes', () => {
+  it.each([false, true])(
+    'returns 301 with query and hash preserved (static payload: %s)',
+    async (staticPayload) => {
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticPayload);
+      try {
+        for (const path of [
+          'ai/get-started/skills-integrate',
+          'ai/device-kit/get-started/skills',
+          'realtime-media/on-premise-recording/skills',
+          'realtime-media/broadcast-streaming/skills',
+          'realtime-media/transcoding/skills',
+          'realtime-media/video/skills',
+          'realtime-media/rtc/skills',
+          'realtime-media/rtmp-gateway/build/skills',
+          'realtime-media/cloud-recording/skills',
+          'realtime-media/im/get-started/skills',
+          'realtime-media/voice/skills',
+          'realtime-media/media-pull/build/skills',
+          'realtime-media/media-push/build/skills',
+          'realtime-media/whiteboard/build/skills',
+        ]) {
+          const [tab, ...segments] = path.split('/');
+          await expect(
+            getLoader(DocPageRoute)({
+              location: {
+                pathname: `/en/${path}`,
+                searchStr: '?from=legacy',
+                hash: '#installation',
+              },
+              params: { locale: 'en', tab, _splat: segments.join('/') },
+            } as never),
+          ).rejects.toMatchObject({
+            options: {
+              href: '/en/introduction/agora-skills?from=legacy#installation',
+              statusCode: 301,
+            },
+            status: 301,
+          });
+        }
+      } finally {
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+    },
+  );
+});
+
 function getLoader(route: { options: { loader?: unknown } }) {
   return route.options.loader as (context: never) => Promise<unknown> | unknown;
 }
