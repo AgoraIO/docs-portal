@@ -161,14 +161,13 @@ Create an agent with its name, instructions, greeting, and models. This example 
 
 <TabsContent value="rest-api">
 
-Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). The `pipeline` sets the agent's ASR, LLM, and TTS models. In the `Idempotency-Key` header, pass a unique value for each agent you create. If a request times out, retry it with the same key and the same body. The Platform returns the agent it already created instead of creating a duplicate.
+Send a request to [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent). The `pipeline` sets the agent's ASR, LLM, and TTS models.
 
 ```bash
 curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/agents \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
-  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
   "agent_name": "Support agent",
@@ -218,7 +217,7 @@ If the request is successful, the response contains the agent ID and the saved c
 ```json
 // 201 Created
 {
-  "agent_id": "agent_k3n9x2",
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
   "agent_name": "Support agent",
   "instructions": "You are a friendly support agent for Acme. Address the user as {{customer_name}}. Keep your answers short.",
   "variables": {
@@ -363,19 +362,22 @@ Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/
 - `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
 - `channel`: The RTC channel for the conversation.
 - `token`: The RTC token for the agent's UID.
-- `uid`: The agent's UID.
-- `subscribe_uids`: The user's UID.
+- `uid`: The UID the agent uses in the channel, as a string. It must be different from the user's UID. If you omit it, Agora assigns one.
+- `subscribe_uids`: The UID of the user the agent talks to.
 
 In `values`, pass the variable values.
+
+In the `Idempotency-Key` header, pass a unique value for each session you start. If a request times out, retry it with the same key and the same body. The Platform returns the session it already started instead of starting a second one.
 
 ```bash
 curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/sessions \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
+  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
-  "agent_id": "agent_k3n9x2",
+  "agent_id": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
   "values": {
     "customer_name": "Ada"
   },
@@ -409,7 +411,7 @@ Load the saved agent and call `create_session()`.
 ```python
 from agora_agent import SavedAgent
 
-saved_agent = SavedAgent.get(client, "agent_k3n9x2")
+saved_agent = SavedAgent.get(client, "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10")
 session = saved_agent.create_session(
     channel="<your_channel_name>",
     token="<your_rtc_token>",
@@ -431,7 +433,7 @@ Load the saved agent and call `createSession()`.
 ```ts
 import { SavedAgent } from 'agora-agents';
 
-const savedAgent = await SavedAgent.get(client, 'agent_k3n9x2');
+const savedAgent = await SavedAgent.get(client, '3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10');
 const session = savedAgent.createSession({
   channel: '<your_channel_name>',
   token: '<your_rtc_token>',
@@ -451,7 +453,7 @@ console.log(sessionId); // The agent_session_id
 Load the saved agent and call `CreateSession()`.
 
 ```go
-savedAgent, err := agentkit.GetSavedAgent(ctx, client, "agent_k3n9x2")
+savedAgent, err := agentkit.GetSavedAgent(ctx, client, "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10")
 if err != nil {
 	log.Fatal(err)
 }

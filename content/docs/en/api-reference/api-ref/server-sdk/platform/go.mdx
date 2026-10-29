@@ -216,7 +216,6 @@ etag := current.ETag
 | `Sessions.Update(ctx, id, patch)` | [Update a session](/en/api-reference/api-ref/conversational-ai/platform/update-session) |
 | `Sessions.Stop(ctx, id)` | [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) |
 
-The SDK doesn't support [Speak](/en/api-reference/api-ref/conversational-ai/platform/speak), [Inject context](/en/api-reference/api-ref/conversational-ai/platform/inject-context), or [Interrupt the agent](/en/api-reference/api-ref/conversational-ai/platform/interrupt). The `v3.Session` type doesn't include `analysis`.
 
 ### Secrets
 
@@ -283,7 +282,7 @@ for {
 
 Updates to agents, numbers, and campaigns, and deletes and replacements of secret sets, require the resource's current ETag in `ifMatch`. Get it from `Response.ETag`. If the resource changed since you read it, the method returns a `*v3.PreconditionFailedError`. Call its `Latest(ctx)` method to reload the resource and its new ETag. It doesn't retry the write.
 
-The SDK makes one attempt for every write. To retry a session or campaign start safely, pass the same idempotency key. Creating an agent, a secret set, or a number doesn't support idempotency keys.
+The SDK makes one attempt for every write. To retry a session start safely, pass the same idempotency key. Other operations don't support idempotency keys.
 
 ## Errors
 
