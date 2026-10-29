@@ -46,8 +46,8 @@ This is not the same as building on Agora's managed Conversational AI Engine. If
 ## Related pages
 
 - [Conversational AI quickstart](/en/ai/get-started/quickstart)
-- [MCP integration](/en/ai/get-started/mcp-integrate)
-- [Agora skills](/en/ai/get-started/skills-integrate)
+- [Agora MCP](/en/introduction/agora-mcp)
+- [Agora skills](/en/introduction/agora-skills)
 - [Security and privacy](/en/introduction/security-privacy)
 - [Firewall requirements](/en/introduction/firewall)
 - [Glossary](/en/introduction/glossary)

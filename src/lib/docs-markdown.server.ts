@@ -1,5 +1,6 @@
 import { notFound } from '@tanstack/react-router';
 import { withAgentDocsDirective } from './agent-docs-directive';
+import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
   getSourceSlugs,
   getSourceSlugsFromContentPath,
@@ -37,6 +38,14 @@ export async function getPublicDocsMarkdownResponse({
 
   if (!isSupportedDocLocale(locale) || !isMachineReadableLocale(locale)) {
     throw notFound();
+  }
+
+  const movedRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
+  if (movedRedirect) {
+    return new Response(null, {
+      status: 301,
+      headers: { Location: movedRedirect },
+    });
   }
 
   const { getLLMText, getPlatformLLMText, source } = await import(
