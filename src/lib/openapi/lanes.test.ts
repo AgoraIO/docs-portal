@@ -188,7 +188,7 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/versioning-demo/v2/list-widgets',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(124);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(121);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

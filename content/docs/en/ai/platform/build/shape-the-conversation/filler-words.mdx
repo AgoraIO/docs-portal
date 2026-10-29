@@ -3,7 +3,7 @@ title: Talking while waiting
 description: Keep conversations natural by playing short phrases, such as "Let me check", while the agent waits for the LLM to respond.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/filler-words.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/filler-words.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-26, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 In conversational AI, delays in LLM responses may cause users to wonder if the agent is still processing, repeat their question, or disengage entirely. Filler words address this by playing short phrases while the agent waits for the LLM to generate a response.
 
@@ -15,7 +15,7 @@ Common use cases for filler words include:
 
 ## Understand the tech
 
-You configure filler words in the agent's `filler_words` object, at the same level as its `pipeline`. When the LLM hasn't responded within a wait threshold, the agent plays a filler word. The filler word comes from one of the following sources:
+You configure filler words on the agent. When the LLM hasn't responded within a wait threshold, the agent plays a filler word. The filler word comes from one of the following sources:
 
 - **Static**: The agent picks a phrase from a list you provide.
 - **Generated**: Agora generates a short phrase that fits the conversation, based on instructions you provide. If a generated phrase isn't ready in time, the agent falls back to a static phrase. Generated mode requires the agent's LLM to use your own provider key with OpenAI, Groq, or xAI.
@@ -30,7 +30,19 @@ Before you begin, make sure that you have created an agent and started a session
 
 ## Configure static filler words
 
-Add a `filler_words` object to the agent configuration, at the same level as `instructions` and `pipeline`, when you [create](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [update](/en/api-reference/api-ref/conversational-ai/platform/update-agent) the agent. In the following example, the agent plays a phrase from the list when the LLM hasn't responded within 1.5 seconds:
+Configure filler words when you [create](/en/api-reference/api-ref/conversational-ai/platform/create-agent) or [update](/en/api-reference/api-ref/conversational-ai/platform/update-agent) the agent. In the following example, the agent plays a phrase from the list when the LLM hasn't responded within 1.5 seconds. The SDK examples start from the `agent` builder in [Create an agent](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Add a `filler_words` object to the agent configuration, at the same level as `instructions` and `pipeline`:
 
 ```json
 "filler_words": {
@@ -53,6 +65,100 @@ Add a `filler_words` object to the agent configuration, at the same level as `in
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+Set the wait time in `fixed_time_config`, and the phrases and selection rule in `static_config`:
+
+```python
+filler_agent = agent.with_filler_words(
+    {
+        "enable": True,
+        "trigger": {
+            "mode": "fixed_time",
+            "fixed_time_config": {"response_wait_ms": 1500},
+        },
+        "content": {
+            "mode": "static",
+            "static_config": {
+                "phrases": [
+                    "Please wait.",
+                    "Okay.",
+                    "Uh-huh.",
+                    "Let me look into that.",
+                    "One moment.",
+                ],
+                "selection_rule": "shuffle",
+            },
+        },
+    }
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Set the wait time in `fixed_time_config`, and the phrases and selection rule in `static_config`:
+
+```ts
+const fillerAgent = agent.withFillerWords({
+  enable: true,
+  trigger: {
+    mode: 'fixed_time',
+    fixed_time_config: { response_wait_ms: 1500 },
+  },
+  content: {
+    mode: 'static',
+    static_config: {
+      phrases: [
+        'Please wait.',
+        'Okay.',
+        'Uh-huh.',
+        'Let me look into that.',
+        'One moment.',
+      ],
+      selection_rule: 'shuffle',
+    },
+  },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Set the wait time in `FixedTimeConfig`, and the phrases and selection rule in `StaticConfig`. The Go examples on this page also import the SDK's root package as `Agora "github.com/AgoraIO/agora-agents-go/v2"`.
+
+```go
+fillerAgent := agent.WithFillerWords(&agentkit.FillerWordsConfig{
+	Enable: Agora.Bool(true),
+	Trigger: &agentkit.FillerWordsTrigger{
+		Mode: Agora.String("fixed_time"),
+		FixedTimeConfig: &agentkit.FillerWordsTriggerFixedTimeConfig{
+			ResponseWaitMs: Agora.Int(1500),
+		},
+	},
+	Content: &agentkit.FillerWordsContent{
+		Mode: agentkit.FillerWordsContentModeStatic.Ptr(),
+		StaticConfig: &agentkit.FillerWordsContentStaticConfig{
+			Phrases: []string{
+				"Please wait.",
+				"Okay.",
+				"Uh-huh.",
+				"Let me look into that.",
+				"One moment.",
+			},
+			SelectionRule: agentkit.FillerWordsSelectionRuleShuffle.Ptr(),
+		},
+	},
+})
+```
+
+</TabsContent>
+</Tabs>
+
 | Field | Description |
 |---|---|
 | `enable` | Whether to play filler words. |
@@ -64,7 +170,17 @@ Add a `filler_words` object to the agent configuration, at the same level as `in
 
 ## Configure generated filler words
 
-To have Agora generate a phrase that fits the conversation, use the same `filler_words` object with `content.mode` set to `generated`. Generated mode requires a cascaded `pipeline` whose `llm` block uses BYOK with OpenAI, Groq, or xAI. With a managed LLM, the request is rejected. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys). In `content.instructions`, describe the kind of phrase to generate. Set `content.fallback_strategy` to `static` to use a static phrase when a generated one isn't ready in time.
+To have Agora generate a phrase that fits the conversation, use the same settings with the content mode set to `generated`. Generated mode requires the agent's LLM to use your own key with OpenAI, Groq, or xAI. With a managed LLM, the request is rejected. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys). In the instructions, describe the kind of phrase to generate. Set the fallback strategy to `static` to use a static phrase when a generated one isn't ready in time.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
 
 ```json
 "filler_words": {
@@ -81,13 +197,91 @@ To have Agora generate a phrase that fits the conversation, use the same `filler
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+Put the instructions in `generated_config.prompt`. This example assumes that `agent` uses your own OpenAI key, as in [Use the key in an agent](/en/ai/platform/build/use-your-own-keys#use-the-key-in-an-agent).
+
+```python
+generated_filler_agent = agent.with_filler_words(
+    {
+        "enable": True,
+        "trigger": {
+            "mode": "fixed_time",
+            "fixed_time_config": {"response_wait_ms": 1500},
+        },
+        "content": {
+            "mode": "generated",
+            "generated_config": {
+                "prompt": "Generate a short, natural filler phrase that shows you're working on the request. Don't answer the question.",
+                "fallback_strategy": "static",
+            },
+        },
+    }
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Put the instructions in `generated_config.prompt`. This example assumes that `agent` uses your own OpenAI key, as in [Use the key in an agent](/en/ai/platform/build/use-your-own-keys#use-the-key-in-an-agent).
+
+```ts
+const generatedFillerAgent = agent.withFillerWords({
+  enable: true,
+  trigger: {
+    mode: 'fixed_time',
+    fixed_time_config: { response_wait_ms: 1500 },
+  },
+  content: {
+    mode: 'generated',
+    generated_config: {
+      prompt: "Generate a short, natural filler phrase that shows you're working on the request. Don't answer the question.",
+      fallback_strategy: 'static',
+    },
+  },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Put the instructions in `GeneratedConfig.Prompt`. This example assumes that `agent` uses your own OpenAI key, as in [Use the key in an agent](/en/ai/platform/build/use-your-own-keys#use-the-key-in-an-agent).
+
+```go
+generatedFillerAgent := agent.WithFillerWords(&agentkit.FillerWordsConfig{
+	Enable: Agora.Bool(true),
+	Trigger: &agentkit.FillerWordsTrigger{
+		Mode: Agora.String("fixed_time"),
+		FixedTimeConfig: &agentkit.FillerWordsTriggerFixedTimeConfig{
+			ResponseWaitMs: Agora.Int(1500),
+		},
+	},
+	Content: &agentkit.FillerWordsContent{
+		Mode: agentkit.FillerWordsContentModeGenerated.Ptr(),
+		GeneratedConfig: &agentkit.FillerWordsContentGeneratedConfig{
+			Prompt:           Agora.String("Generate a short, natural filler phrase that shows you're working on the request. Don't answer the question."),
+			FallbackStrategy: agentkit.FillerWordsFallbackStrategyStatic.Ptr(),
+		},
+	},
+})
+```
+
+</TabsContent>
+</Tabs>
+
 | Field | Description |
 |---|---|
 | `content.mode` | Set to `generated`. |
-| `content.instructions` | Required. The instructions used to generate filler phrases. You can use the agent's variables in them, for example `{{customer_name}}`. For details, see [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations). |
+| `content.instructions` | Required. The instructions used to generate filler phrases. You can use the agent's variables in them, for example `{{customer_name}}`. For details, see [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations). |
 | `content.fallback_strategy` | What to use when a generated phrase isn't available. Set to `static`. |
 
 The `enable` and `trigger` fields work the same way as for static filler words.
+
+{/* TODO(platform-confirm): The SDK examples use the Voice Agent field shapes the SDKs accept (`fixed_time_config`, `static_config`, `generated_config.prompt`), and the SDKs convert them to the Platform fields (SDK bug list #18). All SDK examples on this page were saved and checked in pre-release testing on 2026-10-28. */}
 
 {/* TODO(platform-confirm): In pre-release testing (2026-10-27), generated mode was rejected with a managed LLM ("Generated fillers require a cascaded OpenAI, Groq or XAI BYOK LLM") and accepted with a BYOK OpenAI LLM. Adding `phrases` alongside `instructions` was rejected (`InvalidRequestBody`). Confirm where the static fallback phrases come from in generated mode, and whether the Voice Agent API's `context_message_limit` and `history_character_limit` are supported. */}
 
@@ -104,7 +298,7 @@ Keep the following tips in mind when configuring filler words:
 
 For more information, see the following pages:
 
-- [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations)
+- [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations)
 
 ### API reference
 

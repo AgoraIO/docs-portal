@@ -4,7 +4,7 @@ title: Import phone numbers
 description: Import a phone number and its SIP trunk from your carrier, and use it for your agents' phone calls.
 ---
 
-{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-24, pending review. Written from the launch contract. Not verified on staging: Create Number returned 503 on 2026-10-20 and wasn't retried. */}
+{/* PLATFORM-NEW: new page for the Platform, no Voice Agent equivalent. Status: drafted on 2026-10-24, pending review. Written from the launch contract. Not verified on staging: Create Number returned 503 on 2026-10-20 and wasn't retried. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 To let your agents make and receive phone calls, import the phone numbers your carrier assigned to you. Each number connects to the phone network through your SIP trunk. Importing a number doesn't purchase one.
 
@@ -19,20 +19,31 @@ After you import a number, you can use it in both directions:
 
 Before you begin, make sure that you have:
 
-- An Agora project and REST API credentials for the Platform. For details, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+- An Agora project, and REST API credentials or an SDK client. For details, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#prerequisites).
 - A phone number from a carrier that supports SIP trunking, in E.164 format, for example `+14155550100`.
 - Your SIP trunk's hostname, transport protocol, username, and password.
 
 ## Import a number
 
-Send a request to [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) with the number and its SIP trunk. To have an agent answer calls to the number, also add `inbound` with the agent and a `call_policy`, as in the following example. For details, see [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
+Import the number with its SIP trunk. To have an agent answer calls to the number, also set the inbound agent and a call policy, as in the following example. For details, see [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Send a request to [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number):
 
 ```bash
 curl --request POST \
   --url https://preview.ai.agora.io/conversational-ai/v1/projects/<your_app_id>/numbers \
   --header 'Authorization: Basic <your_base64_encoded_credentials>' \
   --header 'Content-Type: application/json' \
-  --header 'Idempotency-Key: <your_unique_key>' \
   --data '
 {
   "number": "+14155550100",
@@ -47,13 +58,115 @@ curl --request POST \
     }
   },
   "inbound": {
-    "agent": "agent_k3n9x2",
+    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
     "call_policy": {
       "max_call_duration_seconds": 1800
     }
   }
 }'
 ```
+
+If the request is successful, the response contains the number's ID and its configuration. The `auth` credentials aren't returned.
+
+```json
+// 201 Created
+{
+  "number_id": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
+  "number": "+14155550100",
+  "description": "Customer support line",
+  "sip_trunk": {
+    "name": "support-line",
+    "hostname": "acme.pstn.example.com",
+    "port": 5061,
+    "transport": "tls"
+  },
+  "inbound": {
+    "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+    "call_policy": {
+      "max_call_duration_seconds": 1800
+    }
+  },
+  "create_ts": 1786543331
+}
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+number = client.numbers.create(
+    number="+14155550100",
+    description="Customer support line",
+    sip_trunk={
+        "name": "support-line",
+        "hostname": "acme.pstn.example.com",
+        "transport": "tls",
+        "auth": {"username": "acme", "password": "<your_sip_password>"},
+    },
+    inbound={
+        "agent": "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10",
+        "call_policy": {"max_call_duration_seconds": 1800},
+    },
+)
+print(number["number_id"])  # The number ID
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+const number = await client.numbers.create({
+  number: '+14155550100',
+  description: 'Customer support line',
+  sip_trunk: {
+    name: 'support-line',
+    hostname: 'acme.pstn.example.com',
+    transport: 'tls',
+    auth: { username: 'acme', password: '<your_sip_password>' },
+  },
+  inbound: {
+    agent: '3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10',
+    call_policy: { max_call_duration_seconds: 1800 },
+  },
+});
+console.log(number.number_id); // The number ID
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+The last argument is an idempotency key. Number creation doesn't support one, so pass an empty string.
+
+```go
+description := "Customer support line"
+trunkName := "support-line"
+agentID := "3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10"
+
+number, err := client.Numbers.Create(ctx, agentkit.NumberCreate{
+	Number:      "+14155550100",
+	Description: &description,
+	SipTrunk: agentkit.SipTrunk{
+		Name:      &trunkName,
+		Hostname:  "acme.pstn.example.com",
+		Transport: "tls",
+		Auth:      &agentkit.SipAuth{Username: "acme", Password: "<your_sip_password>"},
+	},
+	Inbound: &agentkit.Inbound{
+		Agent:      &agentID,
+		CallPolicy: map[string]any{"max_call_duration_seconds": 1800},
+	},
+}, "")
+if err != nil {
+	log.Fatal(err)
+}
+fmt.Println(number.Body.NumberID) // The number ID
+```
+
+</TabsContent>
+</Tabs>
 
 In `sip_trunk`, set the following fields:
 
@@ -68,31 +181,7 @@ In `sip_trunk`, set the following fields:
 
 {/* TODO(platform-confirm): In pre-release testing (2026-10-27), a plain SIP password and `allowed_ips` were accepted, and a `$secrets` SIP password returned `400 NotImplemented` ("SIP password secret references are not supported"). The launch contract lists secret references. Switch the example back to a `$secrets` reference when it's supported. */}
 
-If the request is successful, the response contains the number's ID and its configuration. The `auth` credentials aren't returned.
-
-```json
-// 201 Created
-{
-  "number_id": "num_2v9c4q",
-  "number": "+14155550100",
-  "description": "Customer support line",
-  "sip_trunk": {
-    "name": "support-line",
-    "hostname": "acme.pstn.example.com",
-    "port": 5061,
-    "transport": "tls"
-  },
-  "inbound": {
-    "agent": "agent_k3n9x2",
-    "call_policy": {
-      "max_call_duration_seconds": 1800
-    }
-  },
-  "create_ts": 1786543331
-}
-```
-
-Store the `number_id`. You use it to place outbound calls from the number and to update it. You can't change the phone number itself. To use a different number, import it.
+Store the number ID. You use it to place outbound calls from the number and to update it. You can't change the phone number itself. To use a different number, import it.
 
 ## Reference
 

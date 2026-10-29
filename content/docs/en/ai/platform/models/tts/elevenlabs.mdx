@@ -4,7 +4,7 @@ description: >
  Use ElevenLabs for text-to-speech (TTS) in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/elevenlabs.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/tts/elevenlabs.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 ElevenLabs provides highly realistic AI voices with advanced prosody and natural speech patterns, delivering lifelike audio synthesis with emotional nuance and conversational flow.
 
@@ -16,17 +16,29 @@ ElevenLabs may restrict or disable free-tier accounts due to abuse-detection mec
 
 ## Sample configuration
 
-Add a `tts` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). ElevenLabs supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure ElevenLabs as the agent's TTS when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your ElevenLabs API key in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to the key. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+ElevenLabs supports BYOK only. It isn't available in managed mode. Store your ElevenLabs API key in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the key is stored as `elevenlabs` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.key` to a reference to your ElevenLabs API key. In the following example, the key is stored as `elevenlabs` in the `support_prod` set:
 
 ```json
 "tts": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.elevenlabs"
+    "fields": {
+      "key": "$secrets.support_prod.elevenlabs"
+    }
   },
   "vendor": "elevenlabs",
   "url": "wss://api.elevenlabs.io/v1",
@@ -38,16 +50,88 @@ In the following example, the key is stored as `elevenlabs` in the `support_prod
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, ElevenLabsTTS, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(...)  # configure your LLM vendor
+    .with_tts(
+        ElevenLabsTTS(
+            key=secret_ref("support_prod", "elevenlabs"),
+            base_url="wss://api.elevenlabs.io/v1",
+            model_id="eleven_flash_v2_5",
+            voice_id="pNInz6obpgDQGcFmaJgB",
+            sample_rate=24000,
+        )
+    )
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, ElevenLabsTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new ElevenLabsTTS({
+      key: secretRef('support_prod', 'elevenlabs'),
+      baseUrl: 'wss://api.elevenlabs.io/v1',
+      modelId: 'eleven_flash_v2_5',
+      voiceId: 'pNInz6obpgDQGcFmaJgB',
+      sampleRate: 24000,
+    }),
+  );
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+sampleRate := vendors.SampleRate24kHz
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm( /* configure your LLM vendor */ ).
+	WithTts(vendors.NewElevenLabsTTS(vendors.ElevenLabsTTSOptions{
+		Key:        agentkit.SecretRef("support_prod", "elevenlabs"),
+		BaseURL:    "wss://api.elevenlabs.io/v1",
+		ModelID:    "eleven_flash_v2_5",
+		VoiceID:    "pNInz6obpgDQGcFmaJgB",
+		SampleRate: &sampleRate,
+	}))
+```
+
+</TabsContent>
+</Tabs>
+
 {/* TODO(platform-confirm): The Voice Agent API requires the ElevenLabs endpoint as `params.base_url` (it selects data residency). Confirm that the Platform takes it as the block `url`, and whether it's still required. */}
 
+{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python, TypeScript, and Go examples saved as written, and the stored `tts` block matched the REST example. The SDKs send the endpoint option as the block's `url`. */}
+
 ## Key parameters
+
+The `tts` block takes the following fields. In the SDKs, `ElevenLabsTTS` sets them from its options.
 
 <ParameterList title="tts">
   <Parameter name="vendor" type="string" required={true}>
     Set to `elevenlabs`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your ElevenLabs API key. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
+    Set `mode` to `byok` and `fields.key` to a `$secrets.<set>.<key>` reference to your ElevenLabs API key. Get your API key from the [ElevenLabs Console](https://elevenlabs.io/).
   </Parameter>
   <Parameter name="url" type="string" required={true}>
     The endpoint URL for the ElevenLabs TTS service. See [Data residency](https://elevenlabs.io/docs/product-guides/administration/data-residency).

@@ -4,28 +4,40 @@ description: >
   Use Google Vertex AI as the LLM in a Conversational AI Platform agent.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/google-vertex-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/models/llm/google-vertex-ai.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-23, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
 Google Vertex AI provides enterprise-grade access to Google's generative AI models with enhanced security, scaling capabilities, and integration with Google Cloud services.
 
 ## Sample configuration
 
-Add an `llm` block to the `pipeline` when you create or update an agent. For a complete request, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent). Google Vertex AI supports BYOK only. It isn't available in managed mode.
+The following example shows how to configure Google Vertex AI as the agent's LLM when you create or update an agent. For a complete example, see [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent#create-an-agent).
 
-Store your Google Cloud credential in a secret set. Then set `credential.mode` to `byok` and `credential.api_key` to a reference to it. Your project ID and region aren't secret. Pass them in the `url`. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
+Google Vertex AI supports BYOK only. It isn't available in managed mode. Store your Google Cloud credential in a secret set, and refer to it from the agent. For details, see [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
 
-In the following example, the credential is stored as `vertex_ai` in the `support_prod` set:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Set `credential.mode` to `byok` and `credential.fields.api_key` to a reference to it. Your project ID and region aren't secret. Pass them in the `url`, replacing `your-project-id` and `us-central1`. In the following example, the credential is stored as `vertex_ai` in the `support_prod` set:
 
 ```json
 "llm": {
   "credential": {
     "mode": "byok",
-    "api_key": "$secrets.support_prod.vertex_ai"
+    "fields": {
+      "api_key": "$secrets.support_prod.vertex_ai"
+    }
   },
   "vendor": "vertexai",
   "style": "gemini",
   "model": "gemini-2.0-flash-001",
-  "url": "https://{region}-aiplatform.googleapis.com/v1/projects/{project}/locations/{region}/publishers/google/models/{model}:streamGenerateContent?alt=sse",
+  "url": "https://us-central1-aiplatform.googleapis.com/v1/projects/your-project-id/locations/us-central1/publishers/google/models/gemini-2.0-flash-001:streamGenerateContent?alt=sse",
   "max_history": 32,
   "failure_message": "Hold on a second."
 }
@@ -33,16 +45,105 @@ In the following example, the credential is stored as `vertex_ai` in the `suppor
 
 Set the system prompt and the greeting with the agent's `instructions` and `greeting`, not in the `llm` block.
 
+</TabsContent>
+
+<TabsContent value="python">
+
+```python
+from agora_agent import Agent, VertexAILLM, secret_ref
+
+# client is your configured Agora client
+agent = (
+    Agent(client=client)
+    .with_stt(...)  # configure your ASR vendor
+    .with_llm(
+        VertexAILLM(
+            api_key=secret_ref("support_prod", "vertex_ai"),
+            vendor="vertexai",
+            project_id="<your_project_id>",
+            location="us-central1",
+            model="gemini-2.0-flash-001",
+            max_history=32,
+            failure_message="Hold on a second.",
+            system_messages=[
+                {"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."}
+            ],
+        )
+    )
+    .with_tts(...)  # configure your TTS vendor
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+```ts
+import { Agent, VertexAILLM, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(
+    new VertexAILLM({
+      apiKey: secretRef('support_prod', 'vertex_ai'),
+      vendor: 'vertexai',
+      projectId: '<your_project_id>',
+      location: 'us-central1',
+      model: 'gemini-2.0-flash-001',
+      maxHistory: 32,
+      failureMessage: 'Hold on a second.',
+      systemMessages: [
+        { role: 'system', content: 'You are a friendly support agent for Acme. Keep your answers short.' },
+      ],
+    }),
+  )
+  .withTts(/* configure your TTS vendor */);
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+```go
+// client is your configured Agora client
+maxHistory := 32
+agent := agentkit.NewAgent(client).
+	WithStt( /* configure your ASR vendor */ ).
+	WithLlm(vendors.NewVertexAILLM(vendors.VertexAILLMOptions{
+		GeminiOptions: vendors.GeminiOptions{
+			APIKey:         agentkit.SecretRef("support_prod", "vertex_ai"),
+			Vendor:         "vertexai",
+			Model:          "gemini-2.0-flash-001",
+			MaxHistory:     &maxHistory,
+			FailureMessage: "Hold on a second.",
+			SystemMessages: []map[string]interface{}{
+				{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+			},
+		},
+		ProjectID: "<your_project_id>",
+		Location:  "us-central1",
+	})).
+	WithTts( /* configure your TTS vendor */ )
+```
+
+</TabsContent>
+</Tabs>
+
 {/* TODO(platform-confirm): Confirm the `vendor` value for Google Vertex AI (`vertexai` is assumed, matching the Voice Agent API's MLLM vendor), and whether `url` is required. The Voice Agent API example passes a short-lived access token (`gcloud auth print-access-token`) as `api_key`. A stored secret can't refresh itself. Confirm which Google Cloud credential the Platform accepts in a secret set (for example, a service account key) and how it's refreshed. */}
 
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-28). BYOK saved in all three SDKs with a real project ID in place of `<your_project_id>`, which otherwise ends up inside the generated URL (`InvalidRequestBody`). The SDKs build the URL from the project ID, location, and model, and don't default `vendor`, so the examples set it. */}
+
 ## Key parameters
+
+The `llm` block takes the following fields. In the SDKs, the LLM class sets them from its options. Use the `VertexAILLM` class. The SDK builds the endpoint URL from the project ID, the location, and the model.
 
 <ParameterList title="llm">
   <Parameter name="vendor" type="string" required={true}>
     Set to `vertexai`.
   </Parameter>
   <Parameter name="credential" type="object" required={true}>
-    Set `mode` to `byok` and `api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud credential. Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
+    Set `mode` to `byok` and `fields.api_key` to a `$secrets.<set>.<key>` reference to your Google Cloud credential. Refer to Google Cloud [REST authentication](https://cloud.google.com/docs/authentication/rest) to get your GCP credentials.
   </Parameter>
   <Parameter name="style" type="string" required={true}>
     Set to `gemini` to use Gemini's message format.

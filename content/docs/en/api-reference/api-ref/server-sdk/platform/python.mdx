@@ -1,0 +1,280 @@
+---
+title: Python SDK
+description: API reference for the Conversational AI Platform (Preview) features of the Agora agents Python SDK, including saved agents, sessions, secrets, numbers, and campaigns.
+---
+
+{/* PLATFORM-NEW: new page for the Platform SDK reference. Status: drafted on 2026-10-28 from the agora-agents-python preview branch (feat/v3-api-preview, commit 8edae82) and its docs/reference/v3.md, pending review. Signatures were checked against the SDK source; the examples on the Platform guide pages were run in pre-release testing. */}
+
+{/* TODO(platform-confirm): Platform support isn't in a published `agora-agents` package yet (PyPI has 2.12.0). Add the minimum package version when it's released, and recheck this page against that release. */}
+
+The `agora-agents` Python SDK supports the Conversational AI Platform (Preview) alongside the Voice Agent API. This page covers the Platform features: saved agents, Platform sessions, secret sets, phone numbers, campaigns, and the low-level `client.v3` namespace.
+
+The vendor classes, such as `OpenAI` and `DeepgramSTT`, and the builder methods, such as `with_llm()`, are shared with the Voice Agent API. For those, see the [Python SDK reference for Voice Agents](/en/api-reference/api-ref/server-sdk/python).
+
+## Install
+
+To install the SDK, see [Prerequisites](/en/ai/platform/get-started/start-stop-agent#prerequisites).
+
+```python
+from agora_agent import Agent, Agora, Area, SavedAgent, secret_ref
+```
+
+## Agora
+
+Create a client with your App ID and App Certificate. The SDK generates a ConvoAI token for each Platform request.
+
+```python
+import os
+from agora_agent import Agora, Area
+
+client = Agora(
+    area=Area.US,
+    app_id=os.environ["AGORA_APP_ID"],
+    app_certificate=os.environ["AGORA_APP_CERTIFICATE"],
+)
+```
+
+| Parameter | Type | Description |
+|---|---|---|
+| `area` | `Area` | Required. The region for Voice Agent API routing. Platform requests use the Platform origin. |
+| `app_id` | `str` | Required. Your Agora App ID. |
+| `app_certificate` | `str` | Your App Certificate. The SDK uses it to generate a token for each request. |
+| `auth_token` | `str` | A token you generated yourself, instead of `app_certificate`. The SDK sends `Authorization: agora token=<auth_token>`. |
+| `v3` | `V3Options` | Platform request settings: `V3Options(base_url=None, headers={})`. `base_url` overrides the Platform origin, which defaults to `https://preview.ai.agora.io`. You can also set the `AGORA_AGENTS_V3_BASE_URL` environment variable. The option takes precedence. |
+
+Platform requests support token authentication only. Basic auth isn't supported. For details, see [Authentication](/en/api-reference/api-ref/conversational-ai/platform/authentication).
+
+For `asyncio` applications, use `AsyncAgora`. It takes the same parameters, and its methods are awaitable.
+
+The client exposes the following Platform resources:
+
+| Attribute | Description |
+|---|---|
+| `client.v3` | The low-level Platform namespace: `agents`, `secrets`, `numbers`, `sessions`, and `campaigns`. See [Low-level API](#low-level-api). |
+| `client.secrets` | The same object as `client.v3.secrets`. |
+| `client.numbers` | The same object as `client.v3.numbers`. |
+| `client.campaigns` | The same object as `client.v3.campaigns`. |
+
+## Agent
+
+`Agent` is an immutable builder. Each builder method returns a new `Agent`. To save a configuration on the Platform, build it with the vendor classes and call `save()`.
+
+```python
+from agora_agent import Agent, DeepgramSTT, OpenAI, OpenAITTS
+
+agent = (
+    Agent(client=client)
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
+    .with_llm(OpenAI(model="gpt-4.1-mini"))
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
+    .with_variable("customer_name", type="str", required=True)
+)
+
+saved_agent = agent.save(name="Support agent")
+```
+
+### Variables
+
+```python
+with_variable(name, definition=None, **fields) -> Agent
+```
+
+Declares a [variable](/en/ai/platform/build/shape-the-conversation/personalize-conversations) and returns a new `Agent`. Pass the fields as keyword arguments, or as a dictionary in `definition`. The definition is validated locally.
+
+| Field | Type | Description |
+|---|---|---|
+| `type` | `str` | Required. The data type: `"str"`, `"int"`, `"float"`, `"bool"`, `"date"`, or `"datetime"`. |
+| `required` | `bool` | Whether every session must pass a value. |
+| `options` | `list` | The allowed values, 1 to 100 unique items. |
+| `extract` | `bool` | Whether to extract the value after the session ends. Requires `description`. |
+| `description` | `str` | Up to 2,000 characters. Required when `extract` is `True`. |
+
+A variable name starts with a lowercase letter and contains up to 64 lowercase letters, digits, and underscores.
+
+### Save an agent
+
+```python
+save(*, name=None, agent_id=None) -> SavedAgent
+```
+
+Saves the configuration and returns a [`SavedAgent`](#savedagent). Without `agent_id`, it creates a new agent. Names aren't unique, so saving twice creates two agents. To update a saved agent, prefer [`saved_agent.update()`](#savedagent). With `AsyncAgora`, use `await agent.save_async(...)`.
+
+### Start a session without saving
+
+```python
+create_session(*, channel, agent_uid=None, remote_uids=None, ...) -> AgentSession
+```
+
+Creates a session from the builder without saving it. The SDK starts an [ephemeral session](/en/ai/platform/get-started/start-stop-agent#test-a-configuration-without-saving-an-agent) on the Platform when the configuration has a secret reference or a variable, or when you set a Platform session option such as `max_duration`, `values`, `labels`, or `data_policy`. Otherwise, it uses the Voice Agent API. For the parameters, see [Session parameters](#session-parameters).
+
+### How the builder maps to the Platform
+
+- **Credentials**: A model without an API key uses [managed mode](/en/ai/platform/build/managed-mode). A model with an API key uses BYOK. A saved agent must use a [`secret_ref()`](#secret-references) as the key. An ephemeral session also accepts a key value.
+- **Instructions and messages**: The LLM's system messages become the agent's `instructions`. Its other messages become `messages`. `greeting_message` and `greeting_configs` become the agent's `greeting`.
+- **Pipeline**: Only cascaded ASR, LLM, and TTS pipelines are supported. An MLLM configuration can't be saved or used in a Platform session.
+- **Unsupported fields**: Builder settings without a Platform equivalent, such as SAL, advanced features, labels, RTC settings, and pipeline IDs, make `save()` raise an `UnsupportedFieldError` that lists them.
+
+{/* TODO(platform-confirm): SDK bug list #1: the managed `OpenAI` LLM is sent without `vendor`, which the API rejects. #15: `AresSTT` keywords can't be sent. #18: interruption, turn detection, and filler word options take the Voice Agent field shapes. */}
+
+## Secret references
+
+```python
+secret_ref(secret_set: str, key: str) -> SecretRef
+```
+
+Returns the reference `$secrets.<set>.<key>` for a key in a [secret set](/en/ai/platform/build/use-your-own-keys). It validates both names locally and makes no request. Each name contains 1 to 64 letters, digits, and underscores.
+
+## SavedAgent
+
+A handle to an agent saved on the Platform. With `AsyncAgora`, the handle is `AsyncSavedAgent`, and its methods are awaitable.
+
+| Member | Description |
+|---|---|
+| `id` | The agent ID. |
+| `name` | The agent name. |
+| `etag` | The agent's ETag when the handle was loaded or saved. |
+| `data` | The saved configuration, as returned by the Platform. |
+| `raw` | The `client.v3.agents` resource. |
+| `SavedAgent.get(client, agent_id)` | Class method. Loads a saved agent. |
+| `create_session(...)` | Creates a session that runs this agent. Returns an [`AgentSession`](#agentsession). See [Session parameters](#session-parameters). |
+| `update(config, *, name=None)` | Saves a revised `Agent` to this agent ID, and keeps its name unless you pass `name`. The `Agent` must use the same client. Returns a new `SavedAgent`. |
+| `delete()` | Deletes the agent. |
+| `assign_number(number, *, max_call_duration_seconds=None, max_silence_duration_ms=None)` | Routes inbound calls on a phone number to this agent. `number` is an E.164 string, a number ID, or a number dictionary. Returns the updated number. |
+| `unassign_number(number)` | Removes this agent from a number's inbound routing. |
+| `list_numbers()` | Returns the numbers assigned to this agent. Scans all project numbers. |
+
+A handle is a snapshot. If another process changes the agent, load it again with `SavedAgent.get()`.
+
+## Session parameters
+
+`saved_agent.create_session()` and `agent.create_session()` take keyword arguments. The following apply to Platform sessions:
+
+| Parameter | Type | Description |
+|---|---|---|
+| `channel` | `str` | Required. The RTC channel. |
+| `token` | `str` | The RTC token for the agent's UID. The SDK doesn't generate it for Platform sessions. |
+| `agent_uid` | `str` | The agent's UID in the channel. Omit it, or pass `"0"`, to have the Platform assign one. |
+| `remote_uids` | `list[str]` | Required. The UID of the user the agent talks to. Pass exactly one. |
+| `values` | `dict` | Values for the agent's variables. |
+| `labels` | `dict[str, str]` | Labels returned in notification events. |
+| `idle_timeout` | `int` | Seconds without a user before the session ends, `0` to `3600`. |
+| `max_duration` | `int` | The maximum session length in seconds, `1` to `3600`. |
+| `graceful_stop` | `dict` | Lets the agent finish speaking before it stops: `{"enabled": True, "timeout_ms": 10000}`. `timeout_ms` is `0` to `120000`. |
+| `data_policy` | `dict` | Whether Agora retains the session's conversation data: `{"retention": "30_days"}` or `{"retention": "none"}`. |
+| `encryption` | `dict` | RTC media encryption settings. |
+| `audio_scenario` | `str` | The RTC audio scenario, such as `"aiserver"`. |
+| `geofence` | `dict` | Restricts the regions the session connects through: `{"area": ..., "exclude_area": ...}`. |
+| `idempotency_key` | `str` | An `Idempotency-Key` for the start request, kept for 24 hours. Retry an uncertain start with the same key. Use a new key for a new session. |
+
+## AgentSession
+
+A session handle. On the Platform, the following methods are available:
+
+| Method | Description |
+|---|---|
+| `start()` | Starts the session. Returns the session ID. |
+| `get_info()` | Retrieves the session. The result includes `status`. |
+| `update(properties)` | Updates a running session. Accepts only the RTC `token`, the conversation messages, and the LLM `params`. A `params` object replaces the current one. |
+| `stop()` | Stops the session. |
+
+`say()`, `interrupt()`, `think()`, and the history and turns methods raise on Platform sessions.
+
+To read or stop a session by ID without a handle, use `client.v3.sessions.get(agent_session_id=...)` and `client.v3.sessions.stop(agent_session_id=...)`.
+
+## Low-level API
+
+`client.v3` has one resource for each part of the [Platform REST API](/en/api-reference/api-ref/conversational-ai/platform). All arguments are keyword-only, and body fields use the REST API names, such as `agent_name`. Each method returns the parsed response as a dictionary.
+
+To read response headers, such as `ETag`, call the method through `with_raw_response`. The result has `.data`, `.headers`, `.etag`, and `.status_code`.
+
+```python
+raw = client.v3.agents.with_raw_response.get(agent_id=agent_id)
+etag = raw.etag
+```
+
+### Agents
+
+| Method | REST API |
+|---|---|
+| `agents.create(agent_name, ...)` | [Create an agent](/en/api-reference/api-ref/conversational-ai/platform/create-agent) |
+| `agents.list(limit=None, cursor=None, order=None)` | [List agents](/en/api-reference/api-ref/conversational-ai/platform/list-agents) |
+| `agents.get(agent_id)` | [Retrieve an agent](/en/api-reference/api-ref/conversational-ai/platform/retrieve-agent) |
+| `agents.update(agent_id, if_match, ...)` | [Update an agent](/en/api-reference/api-ref/conversational-ai/platform/update-agent) |
+| `agents.delete(agent_id)` | [Delete an agent](/en/api-reference/api-ref/conversational-ai/platform/delete-agent) |
+
+### Sessions
+
+| Method | REST API |
+|---|---|
+| `sessions.start(agent_id, transport, ...)` | [Start a session](/en/api-reference/api-ref/conversational-ai/platform/start-session) |
+| `sessions.start_ephemeral(agent, transport, ...)` | [Start an ephemeral session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session) |
+| `sessions.list(channel=None, status=None, started_after=None, started_before=None, limit=None, cursor=None)` | [List sessions](/en/api-reference/api-ref/conversational-ai/platform/list-sessions) |
+| `sessions.get(agent_session_id)` | [Retrieve a session](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session) |
+| `sessions.update(agent_session_id, transport=..., agent=...)` | [Update a session](/en/api-reference/api-ref/conversational-ai/platform/update-session) |
+| `sessions.stop(agent_session_id)` | [Stop a session](/en/api-reference/api-ref/conversational-ai/platform/stop-session) |
+
+
+### Secrets
+
+| Method | REST API |
+|---|---|
+| `secrets.create(name, secrets)` | [Create a secret set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set) |
+| `secrets.list(limit=None, cursor=None, order=None)` | [List secret sets](/en/api-reference/api-ref/conversational-ai/platform/list-secret-sets) |
+| `secrets.get(name)` | [Retrieve a secret set](/en/api-reference/api-ref/conversational-ai/platform/retrieve-secret-set) |
+| `secrets.update(name, secrets, if_match=None)` | [Update a secret set](/en/api-reference/api-ref/conversational-ai/platform/update-secret-set) |
+| `secrets.replace(name, if_match, secrets)` | [Replace a secret set](/en/api-reference/api-ref/conversational-ai/platform/replace-secret-set) |
+| `secrets.delete(name, if_match)` | [Delete a secret set](/en/api-reference/api-ref/conversational-ai/platform/delete-secret-set) |
+| `secrets.set_key(name, key, value, if_match=None, if_none_match=None)` | [Set a secret key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key) |
+| `secrets.delete_key(name, key, if_match=None)` | [Delete a secret key](/en/api-reference/api-ref/conversational-ai/platform/delete-secret-key) |
+
+### Phone numbers
+
+| Method | REST API |
+|---|---|
+| `numbers.create(number, sip_trunk, description=..., inbound=...)` | [Create a phone number](/en/api-reference/api-ref/conversational-ai/platform/create-number) |
+| `numbers.list(limit=None, cursor=None, order=None)` | [List phone numbers](/en/api-reference/api-ref/conversational-ai/platform/list-numbers) |
+| `numbers.get(number_id)` | [Retrieve a phone number](/en/api-reference/api-ref/conversational-ai/platform/retrieve-number) |
+| `numbers.update(number_id, if_match, ...)` | [Update a phone number](/en/api-reference/api-ref/conversational-ai/platform/update-number) |
+| `numbers.delete(number_id)` | [Delete a phone number](/en/api-reference/api-ref/conversational-ai/platform/delete-number) |
+
+### Campaigns
+
+| Method | REST API |
+|---|---|
+| `campaigns.create(name, agent_id, transport, contacts, schedule, ...)` | [Create a campaign](/en/api-reference/api-ref/conversational-ai/platform/create-campaign) |
+| `campaigns.list(status=None, limit=None, cursor=None, order=None)` | [List campaigns](/en/api-reference/api-ref/conversational-ai/platform/list-campaigns) |
+| `campaigns.get(campaign_id)` | [Retrieve a campaign](/en/api-reference/api-ref/conversational-ai/platform/retrieve-campaign) |
+| `campaigns.update(campaign_id, if_match, ...)` | [Update a campaign](/en/api-reference/api-ref/conversational-ai/platform/update-campaign) |
+| `campaigns.delete(campaign_id)` | [Delete a campaign](/en/api-reference/api-ref/conversational-ai/platform/delete-campaign) |
+| `campaigns.pause(campaign_id, idempotency_key=None)` | [Pause a campaign](/en/api-reference/api-ref/conversational-ai/platform/pause-campaign) |
+| `campaigns.resume(campaign_id, idempotency_key=None)` | [Resume a campaign](/en/api-reference/api-ref/conversational-ai/platform/resume-campaign) |
+| `campaigns.cancel(campaign_id, idempotency_key=None)` | [Cancel a campaign](/en/api-reference/api-ref/conversational-ai/platform/cancel-campaign) |
+
+### Pagination
+
+Each `list()` method returns one page: `{"data": {"count", "list"}, "has_more", "next_cursor"}`. To continue, pass `next_cursor` as `cursor`. Each resource also has `iter_pages(...)` and `iter_all(...)`, which follow the cursors for you.
+
+```python
+for session in client.v3.sessions.iter_all(status="STOPPED", limit=100):
+    print(session["agent_session_id"])
+```
+
+`sessions.list()` returns running sessions by default. To list others, pass `status`, for example `"STOPPED,FAILED"`.
+
+### Conditional writes and retries
+
+Updates to agents, numbers, and campaigns, and deletes and replacements of secret sets, require the resource's current `ETag` in `if_match`. Get it from a raw response. If the resource changed since you read it, the request raises a `PreconditionFailedError`. Call `error.latest()` to reload the resource. It doesn't retry the write.
+
+The SDK can retry `GET` requests. It never retries writes. To retry a session start safely, pass the same `idempotency_key`. Other operations don't support idempotency keys.
+
+## Errors
+
+Import the following errors from `agora_agent`, except `ApiError`.
+
+| Error | Raised when |
+|---|---|
+| `ApiError` | The Platform returns an error. It has `status_code`, `headers`, and `body`, which usually has `reason` and `detail`. Import it from `agora_agent.core.api_error`. For the reasons, see [Status codes](/en/api-reference/api-ref/conversational-ai/platform/status-codes). |
+| `PreconditionFailedError` | A conditional write fails with `412`. Subclass of `ApiError`. |
+| `UnsupportedFieldError` | The builder has settings with no Platform equivalent. `fields` lists them. Raised before any request. |
+| `SecretRefNotSupportedError` | A secret reference is used on the Voice Agent API. |
+| `NumberNotFoundError` | `assign_number()` or `unassign_number()` can't find the number in the project. |

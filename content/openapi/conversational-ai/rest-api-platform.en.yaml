@@ -69,13 +69,13 @@ paths:
           title: Keep provider keys in secrets
           position: after-description
           markdown: >-
-            Set `credential` on each pipeline stage. With `byok`, pass your provider key in
-            `credential.api_key` as a `$secrets.<set>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). Agora checks
-            that the reference exists when you create the agent. Keep credentials out of `params`.
+            Set `credential` on each pipeline stage. With `byok`, pass your provider keys in
+            `credential.fields` as `$secrets.<set>.<key>` references to a [secret
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). Most
+            providers take one field, `api_key`. Agora checks that each reference exists when you
+            create the agent. Keep credentials out of `params`.
       parameters:
         - $ref: "#/components/parameters/AppId"
-        - $ref: "#/components/parameters/IdempotencyKey"
       requestBody:
         required: true
         content:
@@ -110,7 +110,8 @@ paths:
                 llm:
                   credential:
                     mode: byok
-                    api_key: $secrets.support_prod.llm
+                    fields:
+                      api_key: $secrets.support_prod.llm
                   vendor: openai
                   style: openai
                   model: <model_name>
@@ -142,14 +143,12 @@ paths:
               $ref: "#/components/headers/ETag"
             Location:
               $ref: "#/components/headers/Location"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Agent"
               example:
-                agent_id: agent_k3n9x2
+                agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                 agent_name: Customer Support Agent
                 instructions: >-
                   You are a support agent for Acme. Address the caller as {{customer_name}}. Be
@@ -209,9 +208,6 @@ paths:
             when a field isn't available yet.
         "401":
           $ref: "#/components/responses/Unauthorized"
-        "409":
-          $ref: "#/components/responses/Conflict"
-          description: "`IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request."
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its agent quota."
@@ -253,7 +249,7 @@ paths:
                 data:
                   count: 1
                   list:
-                    - agent_id: agent_k3n9x2
+                    - agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                       agent_name: Customer Support Agent
                       create_ts: 1786543331
                       update_ts: 1787733713
@@ -293,7 +289,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Agent"
               example:
-                agent_id: agent_k3n9x2
+                agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                 agent_name: Customer Support Agent
                 instructions: You are a support agent for Acme. Be concise.
                 pipeline:
@@ -427,13 +423,14 @@ paths:
             session](/en/api-reference/api-ref/conversational-ai/platform/start-ephemeral-session).
 
 
-            A `201` response confirms that the session exists. It doesn't confirm that the agent
+            A `200` response confirms that the session exists. It doesn't confirm that the agent
             has joined the RTC channel or that an outbound call was answered. To follow the
             session, [retrieve it](/en/api-reference/api-ref/conversational-ai/platform/retrieve-session).
             The session ends when you [stop it](/en/api-reference/api-ref/conversational-ai/platform/stop-session),
             or when it reaches a limit in `lifecycle`.
       parameters:
         - $ref: "#/components/parameters/AppId"
+        - $ref: "#/components/parameters/IdempotencyKey"
       requestBody:
         required: true
         content:
@@ -444,8 +441,7 @@ paths:
               rtc:
                 summary: RTC channel
                 value:
-                  agent_id: agent_k3n9x2
-                  client_reference: support-ticket-4821
+                  agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                   values:
                     customer_name: Ada
                   labels:
@@ -463,12 +459,12 @@ paths:
               telephony:
                 summary: Outbound phone call
                 value:
-                  agent_id: agent_k3n9x2
+                  agent_id: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                   values:
                     customer_name: Ada
                   transport:
                     type: telephony
-                    from: num_2v9c4q
+                    from: 92e68758-3d3a-4f27-8b93-3fd8d834467c
                     to: "+14155550100"
                     call_policy:
                       max_ring_duration_ms: 30000
@@ -476,19 +472,21 @@ paths:
                       voicemail:
                         mode: hangup
       responses:
-        "201":
+        "200":
           description: The session was created.
           headers:
             Agora-Request-Id:
               $ref: "#/components/headers/Agora-Request-Id"
+            Idempotent-Replayed:
+              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SessionStarted"
               example:
                 agent_session_id: a42ac95tp25py49fc37hp94vm67ht52h
-                status: running
-                created_at: 1737111452
+                create_ts: 1737111452
+                status: RUNNING
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
@@ -505,7 +503,10 @@ paths:
             `transport.from` isn't in the project.
         "409":
           $ref: "#/components/responses/Conflict"
-          description: "`TaskConflict`: An agent is already running with the same RTC channel and UID."
+          description: >-
+            `TaskConflict`: An agent is already running with the same RTC channel and UID.
+            `IdempotencyKeyConflict`: The `Idempotency-Key` was used with a different body, or its
+            original request is still in progress.
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its session quota."
@@ -621,6 +622,7 @@ paths:
             agent configuration in `agent` instead of `agent_id`. The configuration isn't saved.
       parameters:
         - $ref: "#/components/parameters/AppId"
+        - $ref: "#/components/parameters/IdempotencyKey"
       requestBody:
         required: true
         content:
@@ -641,7 +643,8 @@ paths:
                   llm:
                     credential:
                       mode: byok
-                      api_key: $secrets.support_prod.llm
+                      fields:
+                        api_key: $secrets.support_prod.llm
                     vendor: openai
                     style: openai
                     model: <model_name>
@@ -659,19 +662,21 @@ paths:
                 subscribe_uids:
                   - "1001"
       responses:
-        "201":
+        "200":
           description: The session was created.
           headers:
             Agora-Request-Id:
               $ref: "#/components/headers/Agora-Request-Id"
+            Idempotent-Replayed:
+              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/SessionStarted"
               example:
                 agent_session_id: a42al97tw77hv93ja98dm74fk56lw97x
-                status: running
-                created_at: 1737111452
+                create_ts: 1737111452
+                status: RUNNING
         "400":
           $ref: "#/components/responses/BadRequest"
           description: >-
@@ -685,7 +690,10 @@ paths:
           description: "`NumberNotFound`: The number in `transport.from` isn't in the project."
         "409":
           $ref: "#/components/responses/Conflict"
-          description: "`TaskConflict`: An agent is already running with the same RTC channel and UID."
+          description: >-
+            `TaskConflict`: An agent is already running with the same RTC channel and UID.
+            `IdempotencyKeyConflict`: The `Idempotency-Key` was used with a different body, or its
+            original request is still in progress.
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its session quota."
@@ -717,8 +725,7 @@ paths:
         - position: after-description
           markdown: >-
             Starting and stopping a session happen asynchronously. Retrieve the session to follow
-            its `status`. After the session ends, the response includes `stop_ts` and, if the agent
-            declares variables with `extract: true`, the extracted values in `analysis`.
+            its `status`. After the session ends, the response includes `stop_ts`.
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/AgentSessionId"
@@ -742,9 +749,8 @@ paths:
                     start_ts: 1735035893
                     stop_ts: null
                     message: null
-                    analysis: null
                 ended:
-                  summary: Ended session with extracted variables
+                  summary: Ended session
                   value:
                     agent_session_id: a42ac95tp25py49fc37hp94vm67ht52h
                     agent_name: Customer Support Agent
@@ -752,13 +758,6 @@ paths:
                     start_ts: 1735035893
                     stop_ts: 1735036193
                     message: null
-                    analysis:
-                      status: completed
-                      skip_reason: null
-                      complete_ts: 1735036201
-                      result:
-                        resolution_status: follow_up
-                      error: null
         "401":
           $ref: "#/components/responses/Unauthorized"
         "404":
@@ -886,176 +885,6 @@ paths:
           $ref: "#/components/responses/Error"
       # TODO(platform-confirm): Staging (14 Oct) returned 404 TaskNotFound for an ended session, not
       # 409 TaskNotRunning.
-  /v1/projects/{appid}/sessions/{agent_session_id}/actions/speak:
-    post:
-      tags:
-        - Sessions
-      summary: Speak
-      description: Makes the agent say a line of text in a running session.
-      operationId: speak
-      x-docs-sections:
-        - position: after-description
-          markdown: >-
-            The agent converts `text` to speech with the session's TTS stage. Use `if_busy` to
-            choose what happens when the agent is already listening, thinking, or speaking.
-
-
-            A `200` response means the action was accepted. It doesn't confirm that the line was
-            played.
-      parameters:
-        - $ref: "#/components/parameters/AppId"
-        - $ref: "#/components/parameters/AgentSessionId"
-        - $ref: "#/components/parameters/IdempotencyKey"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SpeakAction"
-            example:
-              text: Sorry, I can't help with that request.
-              if_busy: interrupt
-              interruptible: false
-      responses:
-        "200":
-          description: The action was accepted.
-          headers:
-            Agora-Request-Id:
-              $ref: "#/components/headers/Agora-Request-Id"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ActionAccepted"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-          description: "`NotImplemented`: The request uses a field that isn't available yet."
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-          description: "`TaskNotFound`: No session has this `agent_session_id`."
-        "409":
-          $ref: "#/components/responses/Conflict"
-          description: >-
-            `TaskNotRunning`: The session has ended or isn't running yet.
-            `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
-        default:
-          $ref: "#/components/responses/Error"
-  /v1/projects/{appid}/sessions/{agent_session_id}/actions/inject:
-    post:
-      tags:
-        - Sessions
-      summary: Inject context
-      description: Adds messages to the conversation context of a running session.
-      operationId: inject-context
-      x-docs-sections:
-        - position: after-description
-          markdown: >-
-            Use a `system` message to give the agent silent context, such as "The user clicked
-            Buy", or a `user` message to treat the text as if the user said it. By default, the
-            agent responds to the injected messages. Set `respond` to `false` to only add them to
-            the context.
-
-
-            A `200` response means the action was accepted. It doesn't confirm that the agent
-            responded.
-      parameters:
-        - $ref: "#/components/parameters/AppId"
-        - $ref: "#/components/parameters/AgentSessionId"
-        - $ref: "#/components/parameters/IdempotencyKey"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/InjectAction"
-            example:
-              messages:
-                - role: system
-                  content: The user just clicked the purchase button.
-              respond: true
-              if_busy: queue
-      responses:
-        "200":
-          description: The action was accepted.
-          headers:
-            Agora-Request-Id:
-              $ref: "#/components/headers/Agora-Request-Id"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ActionAccepted"
-        "400":
-          $ref: "#/components/responses/BadRequest"
-          description: "`NotImplemented`: The provider doesn't support injected messages."
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-          description: "`TaskNotFound`: No session has this `agent_session_id`."
-        "409":
-          $ref: "#/components/responses/Conflict"
-          description: >-
-            `TaskNotRunning`: The session has ended or isn't running yet.
-            `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
-        default:
-          $ref: "#/components/responses/Error"
-  /v1/projects/{appid}/sessions/{agent_session_id}/actions/interrupt:
-    post:
-      tags:
-        - Sessions
-      summary: Interrupt the agent
-      description: Stops the agent while it is speaking or thinking.
-      operationId: interrupt
-      x-docs-sections:
-        - position: after-description
-          markdown: >-
-            Send an empty JSON object as the request body. A `200` response means the action was
-            accepted.
-      parameters:
-        - $ref: "#/components/parameters/AppId"
-        - $ref: "#/components/parameters/AgentSessionId"
-        - $ref: "#/components/parameters/IdempotencyKey"
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              additionalProperties: false
-            example: {}
-      responses:
-        "200":
-          description: The action was accepted.
-          headers:
-            Agora-Request-Id:
-              $ref: "#/components/headers/Agora-Request-Id"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/ActionAccepted"
-        "401":
-          $ref: "#/components/responses/Unauthorized"
-        "404":
-          $ref: "#/components/responses/NotFound"
-          description: "`TaskNotFound`: No session has this `agent_session_id`."
-        "409":
-          $ref: "#/components/responses/Conflict"
-          description: >-
-            `TaskNotRunning`: The session has ended or isn't running yet.
-            `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
-        default:
-          $ref: "#/components/responses/Error"
-
-  # -----------------------------------------------------------------------------------------------
-  # Secrets
-  # -----------------------------------------------------------------------------------------------
   /v1/projects/{appid}/secrets:
     post:
       tags:
@@ -1067,8 +896,8 @@ paths:
         - position: after-description
           markdown: >-
             Use secret sets to keep provider API keys out of your agent configurations. To use a
-            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.api_key`. Agora
-            resolves references when each session starts.
+            secret, pass `$secrets.<set_name>.<key>` in an agent's `credential.fields`, for example
+            in `credential.fields.api_key`. Agora resolves references when each session starts.
 
 
             If a set with the same name exists, the request fails with `SecretSetAlreadyExists`.
@@ -1077,7 +906,6 @@ paths:
             key](/en/api-reference/api-ref/conversational-ai/platform/set-secret-key).
       parameters:
         - $ref: "#/components/parameters/AppId"
-        - $ref: "#/components/parameters/IdempotencyKey"
       requestBody:
         required: true
         content:
@@ -1100,8 +928,6 @@ paths:
               $ref: "#/components/headers/ETag"
             Location:
               $ref: "#/components/headers/Location"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
@@ -1127,8 +953,7 @@ paths:
         "409":
           $ref: "#/components/responses/Conflict"
           description: >-
-            `SecretSetAlreadyExists`: A set with this name exists. `IdempotencyKeyConflict`: The
-            `Idempotency-Key` is bound to a different request.
+            `SecretSetAlreadyExists`: A set with this name exists.
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its secret set quota."
@@ -1524,7 +1349,6 @@ paths:
             their caller ID, and `inbound` chooses the agent that answers calls to it.
       parameters:
         - $ref: "#/components/parameters/AppId"
-        - $ref: "#/components/parameters/IdempotencyKey"
       requestBody:
         required: true
         content:
@@ -1542,13 +1366,12 @@ paths:
                   username: acme
                   password: <your_sip_password>
               inbound:
-                agent: agent_k3n9x2
+                agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                 call_policy:
                   max_call_duration_seconds: 1800
                   max_silence_duration_ms: 60000
                   end_call:
                     on_user_request: true
-                    on_fax: true
       responses:
         "201":
           description: The number was created. The response body contains the saved number.
@@ -1559,14 +1382,12 @@ paths:
               $ref: "#/components/headers/ETag"
             Location:
               $ref: "#/components/headers/Location"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Number"
               example:
-                number_id: num_2v9c4q
+                number_id: 92e68758-3d3a-4f27-8b93-3fd8d834467c
                 number: "+14155550100"
                 description: Primary customer support line for North America.
                 sip_trunk:
@@ -1575,13 +1396,12 @@ paths:
                   port: 5061
                   transport: tls
                 inbound:
-                  agent: agent_k3n9x2
+                  agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                   call_policy:
                     max_call_duration_seconds: 1800
                     max_silence_duration_ms: 60000
                     end_call:
                       on_user_request: true
-                      on_fax: true
                     transfer:
                       phone_number: "+14155550199"
                       description: when the caller asks for a human
@@ -1601,7 +1421,6 @@ paths:
           $ref: "#/components/responses/Conflict"
           description: >-
             `NumberAlreadyExists`: The number is already registered in the project.
-            `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its number quota."
@@ -1645,7 +1464,7 @@ paths:
                 data:
                   count: 1
                   list:
-                    - number_id: num_2v9c4q
+                    - number_id: 92e68758-3d3a-4f27-8b93-3fd8d834467c
                       number: "+14155550100"
                       description: Primary customer support line for North America.
                       sip_trunk:
@@ -1654,7 +1473,7 @@ paths:
                         port: 5061
                         transport: tls
                       inbound:
-                        agent: agent_k3n9x2
+                        agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                       create_ts: 1787223852
                 has_more: false
                 next_cursor: null
@@ -1687,7 +1506,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/Number"
               example:
-                number_id: num_2v9c4q
+                number_id: 92e68758-3d3a-4f27-8b93-3fd8d834467c
                 number: "+14155550100"
                 description: Primary customer support line for North America.
                 sip_trunk:
@@ -1696,7 +1515,7 @@ paths:
                   port: 5061
                   transport: tls
                 inbound:
-                  agent: agent_k3n9x2
+                  agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
                 create_ts: 1787223852
         "401":
           $ref: "#/components/responses/Unauthorized"
@@ -1727,7 +1546,7 @@ paths:
               $ref: "#/components/schemas/NumberUpdate"
             example:
               inbound:
-                agent: agent_k3n9x2
+                agent: 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10
       responses:
         "200":
           description: The number was updated. The response body contains the full number.
@@ -1817,7 +1636,6 @@ paths:
             it](/en/api-reference/api-ref/conversational-ai/platform/cancel-campaign).
       parameters:
         - $ref: "#/components/parameters/AppId"
-        - $ref: "#/components/parameters/IdempotencyKey"
       requestBody:
         required: true
         content:
@@ -1832,7 +1650,7 @@ paths:
                   agent_id: agent_renewals
                   transport:
                     type: telephony
-                    from: num_2v9c4q
+                    from: 92e68758-3d3a-4f27-8b93-3fd8d834467c
                   contacts:
                     - phone: "+12025550123"
                       values:
@@ -1843,8 +1661,6 @@ paths:
                   pacing:
                     max_concurrent: 10
                     max_calls_per_second: 2
-                    max_attempts: 3
-                    retry_backoff_ms: 600000
                   schedule:
                     mode: scheduled
                     timezone: America/New_York
@@ -1868,7 +1684,7 @@ paths:
                   agent_id: agent_renewals
                   transport:
                     type: telephony
-                    from: num_2v9c4q
+                    from: 92e68758-3d3a-4f27-8b93-3fd8d834467c
                   contacts:
                     - phone: "+12025550123"
                       values:
@@ -1886,21 +1702,19 @@ paths:
               $ref: "#/components/headers/ETag"
             Location:
               $ref: "#/components/headers/Location"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Campaign"
               example:
-                campaign_id: camp_7r2n9k
+                campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                 name: q3-renewals
                 status: scheduled
                 agent_id: agent_renewals
                 transport:
                   type: telephony
                   from:
-                    - num_2v9c4q
+                    - 92e68758-3d3a-4f27-8b93-3fd8d834467c
                 lifecycle:
                   idle_timeout_ms: 30000
                   max_duration_ms: 259200000
@@ -1936,9 +1750,6 @@ paths:
           description: >-
             `AgentNotFound`: No agent has this `agent_id`. `NumberNotFound`: A number in
             `transport.from` isn't in the project.
-        "409":
-          $ref: "#/components/responses/Conflict"
-          description: "`IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request."
         "422":
           $ref: "#/components/responses/Error"
           description: "`ResourceQuotaLimitExceeded`: The project has reached its campaign quota."
@@ -1983,14 +1794,14 @@ paths:
                 data:
                   count: 1
                   list:
-                    - campaign_id: camp_7r2n9k
+                    - campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                       name: q3-renewals
                       status: running
                       agent_id: agent_renewals
                       transport:
                         type: telephony
                         from:
-                          - num_2v9c4q
+                          - 92e68758-3d3a-4f27-8b93-3fd8d834467c
                       schedule:
                         mode: immediate
                       counts:
@@ -2034,14 +1845,14 @@ paths:
               schema:
                 $ref: "#/components/schemas/Campaign"
               example:
-                campaign_id: camp_7r2n9k
+                campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                 name: q3-renewals
                 status: running
                 agent_id: agent_renewals
                 transport:
                   type: telephony
                   from:
-                    - num_2v9c4q
+                    - 92e68758-3d3a-4f27-8b93-3fd8d834467c
                 lifecycle:
                   idle_timeout_ms: 30000
                   max_duration_ms: 259200000
@@ -2170,7 +1981,6 @@ paths:
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/CampaignId"
-        - $ref: "#/components/parameters/IdempotencyKey"
       responses:
         "200":
           description: The campaign was paused. The response body contains the campaign.
@@ -2179,8 +1989,6 @@ paths:
               $ref: "#/components/headers/Agora-Request-Id"
             ETag:
               $ref: "#/components/headers/ETag"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
@@ -2192,8 +2000,7 @@ paths:
         "409":
           $ref: "#/components/responses/Conflict"
           description: >-
-            `CampaignInvalidState`: The campaign isn't `running`. `IdempotencyKeyConflict`: The
-            `Idempotency-Key` is bound to a different request.
+            `CampaignInvalidState`: The campaign isn't `running`.
         default:
           $ref: "#/components/responses/Error"
   /v1/projects/{appid}/campaigns/{campaign_id}:resume:
@@ -2209,7 +2016,6 @@ paths:
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/CampaignId"
-        - $ref: "#/components/parameters/IdempotencyKey"
       responses:
         "200":
           description: The campaign was resumed. The response body contains the campaign.
@@ -2218,8 +2024,6 @@ paths:
               $ref: "#/components/headers/Agora-Request-Id"
             ETag:
               $ref: "#/components/headers/ETag"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
@@ -2231,8 +2035,7 @@ paths:
         "409":
           $ref: "#/components/responses/Conflict"
           description: >-
-            `CampaignInvalidState`: The campaign isn't `paused`. `IdempotencyKeyConflict`: The
-            `Idempotency-Key` is bound to a different request.
+            `CampaignInvalidState`: The campaign isn't `paused`.
         default:
           $ref: "#/components/responses/Error"
   /v1/projects/{appid}/campaigns/{campaign_id}:cancel:
@@ -2250,7 +2053,6 @@ paths:
       parameters:
         - $ref: "#/components/parameters/AppId"
         - $ref: "#/components/parameters/CampaignId"
-        - $ref: "#/components/parameters/IdempotencyKey"
       responses:
         "200":
           description: The campaign was canceled. The response body contains the campaign.
@@ -2259,21 +2061,19 @@ paths:
               $ref: "#/components/headers/Agora-Request-Id"
             ETag:
               $ref: "#/components/headers/ETag"
-            Idempotent-Replayed:
-              $ref: "#/components/headers/Idempotent-Replayed"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Campaign"
               example:
-                campaign_id: camp_7r2n9k
+                campaign_id: b4f0581e-f138-43a2-851c-a8f8d228bb37
                 name: q3-renewals
                 status: canceled
                 agent_id: agent_renewals
                 transport:
                   type: telephony
                   from:
-                    - num_2v9c4q
+                    - 92e68758-3d3a-4f27-8b93-3fd8d834467c
                 schedule:
                   mode: scheduled
                   timezone: America/New_York
@@ -2298,7 +2098,6 @@ paths:
           $ref: "#/components/responses/Conflict"
           description: >-
             `CampaignInvalidState`: The campaign has already finished or been canceled.
-            `IdempotencyKeyConflict`: The `Idempotency-Key` is bound to a different request.
         default:
           $ref: "#/components/responses/Error"
       # TODO(platform-confirm): Whether calls in progress are hung up on cancel, and whether
@@ -2397,12 +2196,16 @@ components:
       required: false
       schema:
         type: string
+        minLength: 1
+        maxLength: 256
+        pattern: ^[\x21-\x7E]+$
       description: >-
         A unique key that makes the request safe to retry for 24 hours. If you retry with the same
         key and body, the API returns the original response with the `Idempotent-Replayed: true`
         header and doesn't repeat the operation. If you reuse the key with a different body, or
         while the original request is still in progress, the request fails with `409` and reason
-        `IdempotencyKeyConflict`. Keep the same key when you retry; never switch keys.
+        `IdempotencyKeyConflict`. Keep the same key when you retry; never switch keys. Only Start a
+        session and Start an ephemeral session accept this header.
     Cursor:
       name: cursor
       in: query
@@ -2676,7 +2479,6 @@ components:
             the agent speaks `text` instead. Applies only when `mode` is `audio`.
         pcm_sample_rate:
           type: integer
-          minimum: 1
           default: 16000
           description: >-
             The sample rate in Hz of the audio file when its format is raw PCM. Not needed for MP3
@@ -2723,8 +2525,7 @@ components:
           default: false
           description: >-
             Whether to extract this variable from the transcript after the session ends. The
-            extracted values appear in the session's `analysis.result`. When `true`, `description`
-            is required. An agent can have up to 50 extract variables.
+            Preview API doesn't return the extracted values. When `true`, `description` is required. An agent can have up to 50 extract variables.
         description:
           type: string
           maxLength: 2000
@@ -2848,17 +2649,27 @@ components:
           description: |-
             The credential mode:
 
-            - `byok`: Bring your own key. Pass your provider API key in `api_key`.
-            - `managed`: Agora provides the provider authentication. Don't pass `api_key`.
-        api_key:
-          type: string
-          minLength: 1
+            - `byok`: Bring your own key. Pass your provider credentials in `fields`.
+            - `managed`: Agora provides the provider authentication. Don't pass `fields`, and don't
+              set a custom `url` on the stage.
+        fields:
+          type: object
+          minProperties: 1
+          maxProperties: 8
+          additionalProperties:
+            type: string
+            minLength: 1
           writeOnly: true
           description: >-
-            Your provider API key, as a `$secrets.<set_name>.<key>` reference to a [secret
-            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set) or as the key
-            itself. Required when `mode` is `byok`, and not accepted when `mode` is `managed`. Agora
-            resolves references when each session starts. This value is never returned.
+            Your provider credentials, keyed by the provider's field name. Most providers take one
+            field, `api_key`. Some use other names, such as `key` or `credentials`, or take more than
+            one field, such as an AWS access key ID and secret access key. Each model page lists its
+            provider's fields. In an agent, each value must be a `$secrets.<set_name>.<key>`
+            reference to a [secret
+            set](/en/api-reference/api-ref/conversational-ai/platform/create-secret-set). An
+            ephemeral session also accepts the values themselves. Required when `mode` is `byok`,
+            and not accepted when `mode` is `managed`. Agora resolves references when each session
+            starts. The values are never returned.
     StageHeaders:
       type: object
       additionalProperties:
@@ -3078,6 +2889,10 @@ components:
         vendor:
           type: string
           description: The TTS provider, for example `microsoft`.
+        model:
+          type: string
+          readOnly: true
+          description: The TTS model the agent uses. Returned in responses only.
         url:
           type: string
           description: >-
@@ -3127,6 +2942,8 @@ components:
             - akool
             - liveavatar
             - anam
+            - sensetime
+            - spatius
             - generic
           description: >-
             The avatar provider. `generic` passes provider-neutral parameters through.
@@ -3163,14 +2980,18 @@ components:
           default: 160
           description: >-
             How long in milliseconds the user must speak to interrupt the agent while it's
-            speaking. Applies when `type` is `semantic` or `vad`.
+            speaking. Applies when `type` is `semantic` or `vad`. With `vad`, 120 to 1,200.
         interrupt_duration_ms:
           type: integer
+          minimum: 120
+          maximum: 1200
           default: 160
           description: >-
             Speech shorter than this, in milliseconds, is ignored. Applies when `type` is `vad`.
         prefix_padding_ms:
           type: integer
+          minimum: 0
+          maximum: 5000
           default: 800
           description: >-
             How many milliseconds of audio before the detected start of speech to keep, so the
@@ -3205,13 +3026,16 @@ components:
             The silence in milliseconds that ends the turn. Defaults to `320` when `type` is
             `semantic` and `640` when `type` is `vad`. Not valid when `type` is `manual`.
         max_wait_ms:
-          type: integer
-          minimum: 500
-          maximum: 10000
+          oneOf:
+            - type: integer
+              minimum: 500
+              maximum: 10000
+            - type: integer
+              const: -1
           default: 3000
           description: >-
-            The maximum time in milliseconds to wait before ending the turn. Applies when `type` is
-            `semantic`.
+            The maximum time in milliseconds to wait before ending the turn, from 500 to 10,000. Set
+            to `-1` to wait without a timeout. Applies when `type` is `semantic`.
         pause_state_enabled:
           type: boolean
           default: true
@@ -3241,14 +3065,11 @@ components:
               the user's speech.
         keywords:
           type: array
-          minItems: 1
           maxItems: 128
           items:
             type: string
-            minLength: 1
           description: >-
-            The phrases that interrupt the agent, 1 to 128 non-empty strings. Required when `mode`
-            is `keywords`.
+            The phrases that interrupt the agent, up to 128. Required when `mode` is `keywords`.
         when_off:
           type: string
           enum:
@@ -3267,8 +3088,8 @@ components:
       properties:
         speech_threshold:
           type: number
-          exclusiveMinimum: 0
-          exclusiveMaximum: 1
+          minimum: 0
+          maximum: 1
           default: 0.5
           description: >-
             The speech detection threshold. Lower values detect speech more easily. Higher values
@@ -3459,6 +3280,27 @@ components:
         update_ts:
           type: integer
           description: The time the agent was last updated, as a Unix timestamp in seconds.
+    AgentSummary:
+      type: object
+      required:
+        - agent_id
+        - agent_name
+        - create_ts
+        - update_ts
+      properties:
+        agent_id:
+          type: string
+          format: uuid
+          description: The ID of the agent.
+        agent_name:
+          type: string
+          description: The name of the agent.
+        create_ts:
+          type: integer
+          description: The time the agent was created, as a Unix timestamp in seconds.
+        update_ts:
+          type: integer
+          description: The time the agent was last updated, as a Unix timestamp in seconds.
     AgentList:
       type: object
       allOf:
@@ -3473,8 +3315,8 @@ components:
                 list:
                   type: array
                   items:
-                    $ref: "#/components/schemas/Agent"
-                  description: The agents on this page.
+                    $ref: "#/components/schemas/AgentSummary"
+                  description: The agents on this page. Retrieve an agent to get its configuration.
         - $ref: "#/components/schemas/ListPageInfo"
 
     # ---------------------------------------------------------------------------------------------
@@ -3527,10 +3369,10 @@ components:
           type: boolean
           default: false
           description: End the call when the caller asks to hang up.
-        on_fax:
+        on_voicemail:
           type: boolean
           default: false
-          description: End the call when a fax machine is on the other end.
+          description: End the call when voicemail is on the other end.
         on_ai_assistant:
           type: boolean
           default: false
@@ -3599,13 +3441,55 @@ components:
           $ref: "#/components/schemas/EndCallPolicy"
         transfer:
           $ref: "#/components/schemas/TransferPolicy"
+    CampaignCallPolicy:
+      type: object
+      description: >-
+        Limits and behavior for each call the campaign places. Each limit you omit adds no limit.
+      properties:
+        max_ring_duration_ms:
+          type: integer
+          minimum: 1
+          description: >-
+            The maximum time in milliseconds from starting the dial until the call is answered. If
+            the call isn't answered in time, the dial attempt ends.
+        max_call_duration_seconds:
+          type: integer
+          minimum: 1
+          description: >-
+            The maximum length of the call in seconds, measured from when it's answered. The
+            session's `lifecycle` limits can end the call earlier.
+        max_silence_duration_ms:
+          type: integer
+          minimum: 30000
+          description: >-
+            Hang up when nobody on the call has spoken for this many milliseconds. This is separate
+            from `pipeline.silence_config`, which only prompts the user.
+        voicemail:
+          type: object
+          required:
+            - mode
+          description: What the agent does when it detects voicemail.
+          properties:
+            mode:
+              type: string
+              enum:
+                - continue
+                - hangup
+              description: |-
+                The voicemail behavior:
+
+                - `continue`: The agent continues the call.
+                - `hangup`: The agent ends the call.
+        end_call:
+          $ref: "#/components/schemas/EndCallPolicy"
+        transfer:
+          $ref: "#/components/schemas/TransferPolicy"
     RtcTransport:
       type: object
       title: RTC
       required:
         - type
         - channel
-        - uid
         - subscribe_uids
       description: Joins the agent to an RTC channel.
       properties:
@@ -3625,15 +3509,19 @@ components:
             session](/en/api-reference/api-ref/conversational-ai/platform/update-session).
         uid:
           type: string
+          minLength: 1
+          maxLength: 255
           description: >-
-            The user ID the agent uses in the channel. Pass numeric user IDs as strings, for
-            example `"1002"`.
+            The user ID the agent uses in the channel, as a string of up to 255 characters, for
+            example `"1002"` or `"agent-bot"`. Omit it to let Agora assign a user ID.
         subscribe_uids:
           type: array
           minItems: 1
           maxItems: 1
           items:
             type: string
+            minLength: 1
+            maxLength: 255
           description: >-
             The user ID of the participant the agent talks to. Pass exactly one user ID.
         audio_scenario:
@@ -3665,9 +3553,11 @@ components:
           description: "`telephony`: The agent places a phone call."
         from:
           type: string
+          format: uuid
           description: >-
-            The number to call from: the `number_id` of a number in the project, or the number
-            itself in E.164 format.
+            The `number_id` of the number in the project to call from. Phone numbers aren't
+            accepted. [Import the number](/en/api-reference/api-ref/conversational-ai/platform/create-number)
+            first.
         to:
           type: string
           description: The phone number to call, in E.164 format, for example `+14155550100`.
@@ -3687,6 +3577,44 @@ components:
     SessionLifecycle:
       type: object
       description: When the session ends on its own.
+      properties:
+        idle_timeout_ms:
+          type: integer
+          minimum: 0
+          maximum: 3600000
+          default: 30000
+          description: >-
+            How long in milliseconds the session continues with no participant present: after the
+            subscribed user leaves the RTC channel, or after the other side of a phone call hangs
+            up. It isn't silence detection. Set to `0` to turn off the idle timer. Can't be greater
+            than `max_duration_ms`.
+        max_duration_ms:
+          type: integer
+          minimum: 1000
+          maximum: 3600000
+          default: 3600000
+          description: >-
+            The maximum length of the session in milliseconds, measured from `start_ts`. Defaults to
+            1 hour, which is also the maximum. Campaign sessions allow up to 72 hours.
+        graceful_stop:
+          type: object
+          description: >-
+            How the agent finishes when you stop the session, or when the idle timer expires. It
+            doesn't extend `max_duration_ms`, and it doesn't add a farewell message.
+          properties:
+            enabled:
+              type: boolean
+              default: false
+              description: Whether the agent finishes what it's saying before it leaves.
+            timeout_ms:
+              type: integer
+              minimum: 0
+              maximum: 120000
+              default: 30000
+              description: The longest time in milliseconds the agent can take to finish.
+    CampaignLifecycle:
+      type: object
+      description: When each session the campaign starts ends on its own.
       properties:
         idle_timeout_ms:
           type: integer
@@ -3738,9 +3666,8 @@ components:
             How long Agora keeps the conversation data:
 
             - `30_days`: Agora keeps the data for 30 days.
-            - `none`: Agora doesn't keep the data. Variable extraction doesn't run, and the session
-              reports `analysis.skip_reason: "retention_none"`. Use it, for example, when a caller
-              declines recording.
+            - `none`: Agora doesn't keep the data, and variable extraction doesn't run. Use it, for
+              example, when a caller declines recording.
     SessionValues:
       type: object
       additionalProperties: true
@@ -3750,10 +3677,6 @@ components:
         Pass a value for every `required` variable. `null` values are rejected.
       example:
         customer_name: Ada
-    ClientReference:
-      type: string
-      maxLength: 256
-      description: Your own identifier for the session, such as a ticket ID. It doesn't need to be unique.
     SessionLabels:
       type: object
       additionalProperties:
@@ -3778,8 +3701,6 @@ components:
           $ref: "#/components/schemas/SessionLifecycle"
         data_policy:
           $ref: "#/components/schemas/SessionDataPolicy"
-        client_reference:
-          $ref: "#/components/schemas/ClientReference"
         labels:
           $ref: "#/components/schemas/SessionLabels"
     EphemeralSessionStart:
@@ -3798,32 +3719,33 @@ components:
           $ref: "#/components/schemas/SessionLifecycle"
         data_policy:
           $ref: "#/components/schemas/SessionDataPolicy"
-        client_reference:
-          $ref: "#/components/schemas/ClientReference"
         labels:
           $ref: "#/components/schemas/SessionLabels"
     SessionStarted:
       type: object
       required:
         - agent_session_id
+        - create_ts
         - status
-        - created_at
       properties:
         agent_session_id:
           type: string
+          pattern: ^[a-z0-9]{32}$
           description: The ID of the session.
-        status:
-          type: string
-          description: >-
-            The status of the session when it starts, in lowercase, for example `running`. For a
-            phone call, `running` doesn't mean the call was answered. Retrieve a session reports
-            the status in uppercase.
-        created_at:
+        create_ts:
           type: integer
           description: The time the session was created, as a Unix timestamp in seconds.
-      # TODO(platform-confirm): Staging (13 Oct) and pre-release testing (27 Oct) returned 201 with lowercase
-      # `running` and `created_at`, and the spec follows that. The launch contract specifies 200 with
-      # uppercase `STARTING`/`RUNNING` and `create_ts`. Confirm the launch response.
+        status:
+          type: string
+          enum:
+            - STARTING
+            - RUNNING
+          description: >-
+            The status of the session when it starts. For a phone call, `RUNNING` doesn't mean the
+            call was answered.
+      # Pre-release testing (28 Oct) returned 200 with `create_ts` and uppercase `RUNNING` for Start a
+      # session and Start an ephemeral session, matching the launch contract. Earlier builds returned 201
+      # with lowercase `running` and `created_at`.
     SessionUpdated:
       type: object
       required:
@@ -3839,173 +3761,6 @@ components:
           description: The time the session was created, as a Unix timestamp in seconds.
         status:
           $ref: "#/components/schemas/SessionStatus"
-    IfBusy:
-      description: >-
-        What happens if the agent is busy. Pass one policy for every state, or an object with a
-        policy for each state:
-
-        - `interrupt`: Cut in now.
-
-        - `queue`: Wait until the current turn finishes.
-
-        - `drop`: Skip the action if the agent isn't idle.
-      oneOf:
-        - type: string
-          title: One policy for every state
-          enum:
-            - interrupt
-            - queue
-            - drop
-        - type: object
-          title: A policy for each state
-          properties:
-            listening:
-              type: string
-              enum:
-                - interrupt
-                - queue
-                - drop
-              description: The policy while the agent is listening.
-            thinking:
-              type: string
-              enum:
-                - interrupt
-                - queue
-                - drop
-              description: The policy while the agent is generating a response.
-            speaking:
-              type: string
-              enum:
-                - interrupt
-                - queue
-                - drop
-              description: The policy while the agent is speaking.
-    InjectIfBusy:
-      description: >-
-        What happens if the agent is busy. Pass one policy for every state, or an object with a
-        policy for each state. Defaults to `{"listening": "interrupt", "thinking": "interrupt",
-        "speaking": "drop"}`.
-
-        - `interrupt`: Cut in now.
-
-        - `queue`: Wait until the current turn finishes.
-
-        - `drop`: Skip the action if the agent isn't idle.
-
-        - `merge`: Add the messages to the current turn without interrupting. Only valid for
-        `listening`, in the object form.
-      oneOf:
-        - type: string
-          title: One policy for every state
-          enum:
-            - interrupt
-            - queue
-            - drop
-        - type: object
-          title: A policy for each state
-          properties:
-            listening:
-              type: string
-              enum:
-                - interrupt
-                - queue
-                - drop
-                - merge
-              default: interrupt
-              description: The policy while the agent is listening.
-            thinking:
-              type: string
-              enum:
-                - interrupt
-                - queue
-                - drop
-              default: interrupt
-              description: The policy while the agent is generating a response.
-            speaking:
-              type: string
-              enum:
-                - interrupt
-                - queue
-                - drop
-              default: drop
-              description: The policy while the agent is speaking.
-    SpeakAction:
-      type: object
-      required:
-        - text
-      properties:
-        text:
-          type: string
-          maxLength: 2000
-          description: What the agent says, up to 2,000 characters.
-        if_busy:
-          $ref: "#/components/schemas/IfBusy"
-          default: interrupt
-        interruptible:
-          type: boolean
-          default: true
-          description: Whether user speech can interrupt the line.
-    InjectAction:
-      type: object
-      required:
-        - messages
-      properties:
-        messages:
-          type: array
-          minItems: 1
-          items:
-            type: object
-            required:
-              - role
-              - content
-            properties:
-              role:
-                type: string
-                enum:
-                  - system
-                  - user
-                description: |-
-                  How the agent treats the message:
-
-                  - `system`: Silent context for the agent.
-                  - `user`: As if the user said it.
-              content:
-                type: string
-                description: The text of the message.
-          description: The messages to add, in order.
-        respond:
-          type: boolean
-          default: true
-          description: >-
-            Whether the agent responds to the messages. When `false`, the messages are only added
-            to the context.
-        if_busy:
-          $ref: "#/components/schemas/InjectIfBusy"
-        interruptible:
-          type: boolean
-          default: true
-          description: Whether user speech can interrupt the agent's response.
-    ActionAccepted:
-      type: object
-      required:
-        - agent_session_id
-        - channel
-        - start_ts
-      description: Confirms that the action was accepted.
-      properties:
-        agent_session_id:
-          type: string
-          description: The ID of the session.
-        channel:
-          type: string
-          description: The RTC channel of the session.
-        start_ts:
-          type: integer
-          description: The time the session started, as a Unix timestamp in seconds.
-      example:
-        agent_session_id: a42ac95tp25py49fc37hp94vm67ht52h
-        channel: support-4821
-        start_ts: 1737111460
     SessionUpdate:
       type: object
       properties:
@@ -4064,63 +3819,6 @@ components:
         - `STOPPING`: The session is stopping.
         - `STOPPED`: The session has ended.
         - `FAILED`: The session failed.
-    SessionAnalysis:
-      type: object
-      description: >-
-        The values extracted after the session ends, for the agent's variables with `extract: true`.
-      properties:
-        status:
-          type: string
-          enum:
-            - pending
-            - completed
-            - failed
-            - skipped
-          description: |-
-            The status of the extraction:
-
-            - `pending`: The session hasn't ended, or extraction hasn't finished.
-            - `completed`: Extraction finished. The values are in `result`.
-            - `failed`: Extraction failed. The reason is in `error`.
-            - `skipped`: Extraction didn't run. The reason is in `skip_reason`.
-        skip_reason:
-          type:
-            - string
-            - "null"
-          enum:
-            - no_user_turns
-            - retention_none
-            - null
-          description: |-
-            Why extraction was skipped. `null` unless `status` is `skipped`.
-
-            - `no_user_turns`: The user didn't speak during the session.
-            - `retention_none`: The session's `data_policy.retention` is `none`.
-        complete_ts:
-          type:
-            - integer
-            - "null"
-          description: >-
-            The time extraction finished, as a Unix timestamp in seconds. `null` while it's
-            pending.
-        result:
-          type:
-            - object
-            - "null"
-          additionalProperties:
-            type:
-              - string
-              - number
-              - boolean
-              - "null"
-          description: >-
-            The extracted values, keyed by variable name. A value the transcript doesn't establish
-            is `null`. The whole object is `null` until `status` is `completed`.
-        error:
-          type:
-            - string
-            - "null"
-          description: Why extraction failed. `null` unless `status` is `failed`.
     Session:
       type: object
       properties:
@@ -4149,13 +3847,6 @@ components:
           description: >-
             Additional details about the status, such as a failure diagnosis. `null` when there are
             none.
-        analysis:
-          oneOf:
-            - $ref: "#/components/schemas/SessionAnalysis"
-            - type: "null"
-          description: >-
-            The values extracted for the agent's variables with `extract: true`. `null` when the
-            agent declares no extract variables.
       # TODO(platform-confirm): On staging, `agent_name` returned the engine's task name
       # (`session-...` or `ephemeral-...`), not the agent's name.
     SessionSummary:
@@ -4196,7 +3887,7 @@ components:
       propertyNames:
         minLength: 1
         maxLength: 64
-        pattern: ^[A-Za-z0-9_-]+$
+        pattern: ^[A-Za-z0-9_]+$
       additionalProperties:
         type: string
         format: password
@@ -4238,7 +3929,7 @@ components:
           propertyNames:
             minLength: 1
             maxLength: 64
-            pattern: ^[A-Za-z0-9_-]+$
+            pattern: ^[A-Za-z0-9_]+$
           additionalProperties:
             type:
               - string
@@ -4252,18 +3943,10 @@ components:
       type: object
       required:
         - key
-        - create_ts
-        - update_ts
       properties:
         key:
           type: string
           description: The name of the key.
-        create_ts:
-          type: integer
-          description: The time the key was added, as a Unix timestamp in seconds.
-        update_ts:
-          type: integer
-          description: The time the key's value last changed, as a Unix timestamp in seconds.
     SecretSet:
       type: object
       required:
@@ -4278,16 +3961,14 @@ components:
         keys:
           type: array
           items:
-            $ref: "#/components/schemas/SecretKey"
-          description: The keys in the set. Values are never returned.
+            type: string
+          description: The names of the keys in the set. Values are never returned.
         create_ts:
           type: integer
           description: The time the set was created, as a Unix timestamp in seconds.
         update_ts:
           type: integer
           description: The time the set was last updated, as a Unix timestamp in seconds.
-      # TODO(platform-confirm): Staging (10 Oct) returned `keys` as a list of names and Set Key as
-      # `{key}` only. The contract returns key objects with timestamps.
     SecretSetList:
       type: object
       allOf:
@@ -4540,7 +4221,7 @@ components:
             The `number_id` of the number to call from, or a list of `number_id` values. With a
             list, the campaign rotates across the numbers.
         call_policy:
-          $ref: "#/components/schemas/CallPolicy"
+          $ref: "#/components/schemas/CampaignCallPolicy"
     CampaignContact:
       type: object
       required:
@@ -4552,34 +4233,30 @@ components:
           description: The phone number to call, in E.164 format, for example `+12025550123`.
         values:
           type: object
+          maxProperties: 100
           additionalProperties: true
           description: >-
-            Values for the agent's variables for this contact, keyed by variable name. Pass a value
+            Values for the agent's variables for this contact, keyed by variable name, up to 100. Pass a value
             for every `required` variable, or the contact is rejected before it's dialed. `null`
             values are rejected.
     CampaignPacing:
       type: object
-      description: How fast the campaign dials, and how many times it retries.
+      description: How fast the campaign dials. Each contact is called once.
       properties:
         max_concurrent:
           type: integer
+          minimum: 1
+          maximum: 10000
           default: 10
           description: The maximum number of calls in progress at the same time.
         max_calls_per_second:
           type: integer
           minimum: 1
+          maximum: 1000
           description: >-
             The maximum number of new dials in any one-second window. Omit it to dial as fast as
             `max_concurrent` and the project's carrier limits allow. A value above the project's
             limit is rejected with `InvalidFieldValue`.
-        max_attempts:
-          type: integer
-          default: 3
-          description: The number of attempts for each contact before it's marked `failed`.
-        retry_backoff_ms:
-          type: integer
-          default: 600000
-          description: How long in milliseconds to wait between attempts to the same contact.
     CampaignScheduleWindow:
       type: object
       required:
@@ -4686,10 +4363,11 @@ components:
         contacts:
           type: array
           minItems: 1
+          maxItems: 50000
           items:
             $ref: "#/components/schemas/CampaignContact"
           description: >-
-            The contacts to call. Pass at least one. You can't change the list after you create the
+            The contacts to call, from 1 to 50,000. The whole request body can be at most 10 MiB. You can't change the list after you create the
             campaign. A phone number that appears more than once is called once for each entry.
         schedule:
           $ref: "#/components/schemas/CampaignSchedule"
@@ -4701,6 +4379,9 @@ components:
             and limits.
         pacing:
           $ref: "#/components/schemas/CampaignPacing"
+        data_policy:
+          $ref: "#/components/schemas/SessionDataPolicy"
+          description: The data policy for each session the campaign starts. Defaults to 30-day retention.
     CampaignUpdate:
       type: object
       description: >-
@@ -4722,16 +4403,10 @@ components:
               type: integer
               minimum: 1
               description: The maximum number of new dials in any one-second window.
-            max_attempts:
-              type: integer
-              description: The number of attempts for each contact before it's marked `failed`.
-            retry_backoff_ms:
-              type: integer
-              description: How long in milliseconds to wait between attempts to the same contact.
         schedule:
           $ref: "#/components/schemas/CampaignSchedule"
         lifecycle:
-          $ref: "#/components/schemas/SessionLifecycle"
+          $ref: "#/components/schemas/CampaignLifecycle"
           description: >-
             The lifecycle settings for each session the campaign starts. They replace the saved
             settings, and fields you omit use their defaults.
@@ -4740,7 +4415,7 @@ components:
           description: The transport settings that can change. You can't change `type` or `from`.
           properties:
             call_policy:
-              $ref: "#/components/schemas/CallPolicy"
+              $ref: "#/components/schemas/CampaignCallPolicy"
     CampaignStatus:
       type: string
       enum:
@@ -4808,9 +4483,9 @@ components:
                 type: string
               description: The `number_id` values of the numbers the campaign calls from.
             call_policy:
-              $ref: "#/components/schemas/CallPolicy"
+              $ref: "#/components/schemas/CampaignCallPolicy"
         lifecycle:
-          $ref: "#/components/schemas/SessionLifecycle"
+          $ref: "#/components/schemas/CampaignLifecycle"
         schedule:
           $ref: "#/components/schemas/CampaignSchedule"
         counts:

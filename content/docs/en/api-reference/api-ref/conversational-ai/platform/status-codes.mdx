@@ -11,7 +11,7 @@ When a request fails, the response body contains a machine-readable `reason` and
 
 ```json
 {
-  "detail": "Secret set support_prod is referenced by agent agent_k3n9x2. Remove the reference before deleting the set.",
+  "detail": "Secret set support_prod is referenced by agent 3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10. Remove the reference before deleting the set.",
   "reason": "SecretSetInUse"
 }
 ```
@@ -27,14 +27,18 @@ A model provider that times out or rejects a key doesn't fail the request that s
 | Status code | Description | Suggested action |
 | --- | --- | --- |
 | `200` | OK | The request was successful. |
-| `201` | Created | The resource was created. The `Location` header contains its path. |
+| `201` | Created | The resource was created. The `Location` header contains its path. Starting a session returns `200` instead. |
 | `400` | Invalid request | Fix the request based on `reason` and `detail`, then send it again. |
 | `401` | Authentication failed | Check your credentials. |
 | `403` | Access denied | Check that the service is enabled for the project and that your credentials can access it. |
 | `404` | Not found | Check the ID or name in the request. |
 | `409` | Conflict | Check the state of the resource. For example, cancel a campaign before you delete it. |
+| `405` | Method not allowed | Check the HTTP method for the endpoint. |
 | `412` | Precondition failed | Retrieve the resource, apply your change again, and retry with the new `ETag`. |
+| `413` | Payload too large | Send a smaller request body. |
+| `415` | Unsupported media type | Send the body as JSON with `Content-Type: application/json`. |
 | `422` | Quota exceeded | Delete resources you no longer need, or contact Agora support to raise your quota. |
+| `428` | Precondition required | Send the `If-Match` header with the resource's current `ETag`. |
 | `429` | Too many requests | Wait for the number of seconds in the `Retry-After` header, then retry. |
 | `500` | Internal error | Retry with exponential backoff. If the problem persists, contact Agora support. |
 | `502` | Upstream error | Retry with exponential backoff. |
@@ -53,6 +57,9 @@ A model provider that times out or rejects a key doesn't fail the request that s
 | `InvalidModuleParameter` | `400` | A pipeline stage has an invalid or unsupported provider, model, credential mode, or parameter. |
 | `UnknownSecretReference` | `400` | A `$secrets.<set>.<key>` reference names a secret set or key that doesn't exist in the project. |
 | `NotImplemented` | `400` | The field, value, or operation isn't available yet, or the provider doesn't support the action. Don't retry. |
+| `MethodNotAllowed` | `405` | The HTTP method isn't supported for this path. |
+| `PayloadTooLarge` | `413` | The request body is too large. Create a campaign accepts at most 10 MiB. |
+| `UnsupportedMediaType` | `415` | The request body isn't sent as `application/json`. |
 
 ### Access errors
 
@@ -78,17 +85,18 @@ A model provider that times out or rejects a key doesn't fail the request that s
 | Reason | Status | Description |
 | --- | --- | --- |
 | `TaskConflict` | `409` | Another operation on the session is in progress. For example, an agent is already running with the same RTC channel and UID, or the session is already stopping. Retry after the other operation finishes. |
-| `TaskNotRunning` | `409` | The session has ended or isn't running yet, so you can't update it or send it actions. |
+| `TaskNotRunning` | `409` | The session has ended or isn't running yet, so you can't update it. |
 | `IdempotencyKeyConflict` | `409` | The `Idempotency-Key` is bound to a request with a different body, or its original request is still in progress. Retry with the original body, or wait. |
 | `SecretSetAlreadyExists` | `409` | A secret set with this name already exists. To change its values, [update the set](update-secret-set). |
 | `SecretSetInUse` | `409` | An agent references the secret set, or a key you're removing from it. `detail` names the agent. Remove the reference first. |
 | `SecretSetEmpty` | `409` | The change would remove every key from the secret set. To remove every key, [delete the set](delete-secret-set). |
 | `NumberAlreadyExists` | `409` | The phone number is already registered in the project. |
-| `AgentInUse` | `409` | A phone number's inbound routing or an unfinished campaign references the agent. `detail` names the reference. Remove it first. |
+| `ResourceConflict` | `409` | The request conflicts with another resource. For example, a phone number's inbound routing or an unfinished campaign references the agent you're deleting. `detail` names the reference. Remove it first. |
 | `CampaignNotEditable` | `409` | The campaign has started dialing, so only `pacing` can change. |
 | `CampaignActive` | `409` | The campaign is `scheduled`, `running`, or `paused`. [Cancel it](cancel-campaign) before you delete it. |
 | `CampaignInvalidState` | `409` | The action isn't allowed in the campaign's current status. For example, you can only pause a `running` campaign. |
 | `PreconditionFailed` | `412` | The `If-Match` value doesn't match the current `ETag`, or you sent `If-None-Match: *` for a key that exists. |
+| `PreconditionRequired` | `428` | The operation requires a precondition header, such as `If-Match`, that wasn't sent. |
 
 ### Limit and server errors
 
@@ -105,5 +113,5 @@ A model provider that times out or rejects a key doesn't fail the request that s
 ## Retry safely
 
 - For `4xx` errors, don't retry the same request. Fix it, or change the state it conflicts with. The exceptions are `409 TaskConflict`, `409 IdempotencyKeyConflict` while the original request is in progress, and `429`.
-- For `500`, `502`, and `503` errors, retry with exponential backoff, and wait for `Retry-After` when the response includes it. On endpoints that accept an `Idempotency-Key`, keep the same key when you retry, so the operation can't run twice.
+- For `500`, `502`, and `503` errors, retry with exponential backoff, and wait for `Retry-After` when the response includes it. When you retry a session start, keep the same `Idempotency-Key`, so the session can't start twice.
 - For `504 TaskOperationTimeout`, retrieve or list sessions before you retry, so that you don't start a duplicate session.

@@ -3,9 +3,9 @@ title: Memory for multi-turn conversations
 description: Control how much conversation history the agent's LLM receives, seed conversations, and carry context from one session into the next.
 ---
 
-{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/short-term-memory.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. */}
+{/* PLATFORM-COPY: copied from content/docs/en/ai/build/shape-the-conversation/short-term-memory.mdx at e0d27b674 on 2026-10-21. Status: rewritten for the Platform API on 2026-10-27, pending review. Python, TypeScript, and Go SDK tabs added on 2026-10-28. */}
 
-Short-term memory lets your agent respond coherently across a conversation. During a session, the agent keeps the history of what the user and the agent said, and passes recent messages to the LLM with each request. This page shows how to control that history, seed a conversation with messages, and carry context from one session into the next.
+Short-term memory lets your agent respond coherently across a conversation. During a session, the agent keeps the history of what the user and the agent said, and passes recent messages to the LLM with each request. This page shows how to control that history, seed a conversation with messages, and carry context from one session into the next. The SDK examples start from the `agent` builder and saved agent in [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
 
 ## Understand the tech
 
@@ -13,7 +13,7 @@ With each LLM request, the agent sends the following, in order:
 
 1. The agent's `instructions`.
 2. The agent's `messages`, if any. They seed the conversation history.
-3. The most recent messages of the conversation, up to `pipeline.llm.max_history`.
+3. The most recent messages of the conversation, up to the LLM's maximum history.
 
 Short-term memory lasts for one session. When the session ends, the agent doesn't keep the conversation. To use it later, save it and pass it to a new session, as described in [Carry context into later sessions](#carry-context-into-later-sessions).
 
@@ -23,7 +23,19 @@ Before you begin, make sure that you have created an agent and started a session
 
 ## Control how much history the LLM receives
 
-In the agent's `llm` block, set `max_history` to the number of recent messages the LLM receives with each request. It counts messages, not pairs of user and agent messages, and the agent's `instructions` don't count toward it. It accepts `1` to `1024`, and the default is `32`.
+Set the LLM's maximum history to the number of recent messages the LLM receives with each request. It counts messages, not pairs of user and agent messages, and the agent's instructions don't count toward it. It accepts `1` to `1024`, and the default is `32`.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+In the agent's `llm` block, set `max_history`:
 
 ```json
 "pipeline": {
@@ -33,11 +45,66 @@ In the agent's `llm` block, set `max_history` to the number of recent messages t
 }
 ```
 
+</TabsContent>
+
+<TabsContent value="python">
+
+Set `max_history` on the LLM that you pass to `with_llm()`:
+
+```python
+llm = OpenAI(
+    model="gpt-4.1-mini",
+    max_history=12,
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Set `maxHistory` on the LLM that you pass to `withLlm()`:
+
+```ts
+const llm = new OpenAI({
+  model: 'gpt-4.1-mini',
+  maxHistory: 12,
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Set `MaxHistory` on the LLM that you pass to `WithLlm()`:
+
+```go
+maxHistory := 12
+llm := vendors.NewOpenAI(vendors.OpenAIOptions{
+	Model:      "gpt-4.1-mini",
+	MaxHistory: &maxHistory,
+})
+```
+
+</TabsContent>
+</Tabs>
+
 A lower value keeps each request smaller and faster, but the agent may forget earlier parts of a long conversation. A higher value preserves more context.
 
 ## Seed the conversation with messages
 
-To start each conversation with context, such as an earlier exchange or a worked example, add `messages` to the agent configuration, at the same level as `instructions`. Each message has a `role` (`system`, `user`, or `assistant`) and `content`. The messages follow the agent's `instructions`.
+To start each conversation with context, such as an earlier exchange or a worked example, add messages to the agent. Each message has a `role` (`system`, `user`, or `assistant`) and `content`. The messages follow the agent's instructions.
+
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
+
+<TabsContent value="rest-api">
+
+Add `messages` to the agent configuration, at the same level as `instructions`:
 
 ```json
 "instructions": "You are a friendly support agent for Acme. Keep your answers short.",
@@ -47,7 +114,61 @@ To start each conversation with context, such as an earlier exchange or a worked
 ]
 ```
 
-You can use the agent's variables in `messages`. For details, see [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
+</TabsContent>
+
+<TabsContent value="python">
+
+Add the messages to the LLM's system messages, after the system message. The SDK sends system messages as the agent's instructions, and the other messages as its `messages`.
+
+```python
+llm = OpenAI(
+    model="gpt-4.1-mini",
+    system_messages=[
+        {"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+        {"role": "user", "content": "What are your opening hours?"},
+        {"role": "assistant", "content": "We're open from 9 AM to 6 PM, Monday to Friday."},
+    ],
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Add the messages to the LLM's system messages, after the system message. The SDK sends system messages as the agent's instructions, and the other messages as its `messages`.
+
+```ts
+const llm = new OpenAI({
+  model: 'gpt-4.1-mini',
+  systemMessages: [
+    { role: 'system', content: 'You are a friendly support agent for Acme. Keep your answers short.' },
+    { role: 'user', content: 'What are your opening hours?' },
+    { role: 'assistant', content: "We're open from 9 AM to 6 PM, Monday to Friday." },
+  ],
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Add the messages to the LLM's system messages, after the system message. The SDK sends system messages as the agent's instructions, and the other messages as its `messages`.
+
+```go
+llm := vendors.NewOpenAI(vendors.OpenAIOptions{
+	Model: "gpt-4.1-mini",
+	SystemMessages: []map[string]interface{}{
+		{"role": "system", "content": "You are a friendly support agent for Acme. Keep your answers short."},
+		{"role": "user", "content": "What are your opening hours?"},
+		{"role": "assistant", "content": "We're open from 9 AM to 6 PM, Monday to Friday."},
+	},
+})
+```
+
+</TabsContent>
+</Tabs>
+
+You can use the agent's variables in `messages`. For details, see [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
 
 ## Get the conversation after a session
 
@@ -60,26 +181,167 @@ After a session ends, Agora can send its transcript to your server in the [`1002
 The agent doesn't keep memory between sessions. To give a returning user continuity, save what matters from each conversation, and pass it to the next session as a variable:
 
 1. When a session ends, save its transcript, or a summary of it, from the [`1002` Session transcripts](/en/ai/platform/reference/event-types#1002-session-transcripts) event.
-2. In the agent's `instructions`, refer to a variable for the earlier context, and declare it in `variables`:
+2. In the agent's instructions, refer to a variable for the earlier context, and declare the variable.
+3. When you start the user's next session, pass the saved summary as the variable's value.
 
-    ```json
-    "instructions": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
-    "variables": {
-      "previous_context": {
-        "type": "str"
-      }
-    }
-    ```
+For example:
 
-3. When you start the user's next session, pass the saved summary in `values`:
+<Tabs defaultValue="rest-api" groupId="ai-sdk-language" persist>
+<TabsList>
+  <TabsTrigger value="rest-api">REST API</TabsTrigger>
+  <TabsTrigger value="python">Python SDK</TabsTrigger>
+  <TabsTrigger value="typescript">TypeScript SDK</TabsTrigger>
+  <TabsTrigger value="go">Go SDK</TabsTrigger>
+</TabsList>
 
-    ```json
-    "values": {
-      "previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing."
-    }
-    ```
+<TabsContent value="rest-api">
 
-Pass a summary rather than the full transcript when you can. It keeps the instructions short and leaves more room for the current conversation. For details about variables, see [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
+Declare the variable when you create the agent:
+
+```json
+"instructions": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
+"variables": {
+  "previous_context": {
+    "type": "str"
+  }
+}
+```
+
+Pass the value when you start the session:
+
+```json
+"values": {
+  "previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing."
+}
+```
+
+</TabsContent>
+
+<TabsContent value="python">
+
+Declare the variable when you create the agent:
+
+```python
+context_agent = (
+    Agent(client=client)
+    .with_stt(DeepgramSTT(model="nova-3", language="en-US"))
+    .with_llm(
+        OpenAI(
+            model="gpt-4.1-mini",
+            system_messages=[
+                {
+                    "role": "system",
+                    "content": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
+                }
+            ],
+        )
+    )
+    .with_tts(OpenAITTS(model="tts-1", voice="alloy"))
+    .with_variable("previous_context", type="str")
+)
+
+saved_agent = context_agent.save(name="Support agent")
+```
+
+Pass the value when you start a session with that agent:
+
+```python
+session = saved_agent.create_session(
+    channel="<your_channel_name>",
+    token="<your_rtc_token>",
+    agent_uid="1002",
+    remote_uids=["1001"],
+    values={
+        "previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing.",
+    },
+)
+```
+
+</TabsContent>
+
+<TabsContent value="typescript">
+
+Declare the variable when you create the agent:
+
+```ts
+const contextAgent = new Agent({ client })
+  .withStt(new DeepgramSTT({ model: 'nova-3', language: 'en-US' }))
+  .withLlm(
+    new OpenAI({
+      model: 'gpt-4.1-mini',
+      systemMessages: [
+        {
+          role: 'system',
+          content: "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
+        },
+      ],
+    }),
+  )
+  .withTts(new OpenAITTS({ model: 'tts-1', voice: 'alloy' }))
+  .withVariable('previous_context', { type: 'str' });
+
+const savedAgent = await contextAgent.save({ name: 'Support agent' });
+```
+
+Pass the value when you start a session with that agent:
+
+```ts
+const session = savedAgent.createSession({
+  channel: '<your_channel_name>',
+  token: '<your_rtc_token>',
+  agentUid: '1002',
+  remoteUids: ['1001'],
+  values: {
+    previous_context: "The user asked about upgrading to the pro plan and wanted a callback about pricing.",
+  },
+});
+```
+
+</TabsContent>
+
+<TabsContent value="go">
+
+Declare the variable when you create the agent:
+
+```go
+contextAgent := agentkit.NewAgent(client).
+	WithStt(vendors.NewDeepgramSTT(vendors.DeepgramSTTOptions{Model: "nova-3", Language: "en-US"})).
+	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
+		Model: "gpt-4.1-mini",
+		SystemMessages: []map[string]interface{}{
+			{
+				"role":    "system",
+				"content": "You are a friendly support agent for Acme. Here is what the user discussed in earlier conversations: {{previous_context}}",
+			},
+		},
+	})).
+	WithTts(vendors.NewOpenAITTS(vendors.OpenAITTSOptions{Model: "tts-1", Voice: "alloy"})).
+	WithVariable("previous_context", agentkit.VariableDefinition{Type: "str"})
+
+savedAgent, err := contextAgent.Save(ctx, agentkit.SaveOptions{Name: "Support agent"})
+if err != nil {
+	log.Fatal(err)
+}
+```
+
+Pass the value when you start a session with that agent:
+
+```go
+session := savedAgent.CreateSession(agentkit.CreateSessionOptions{
+	Channel:    "<your_channel_name>",
+	Token:      "<your_rtc_token>",
+	AgentUID:   "1002",
+	RemoteUIDs: []string{"1001"},
+	Values: map[string]any{
+		"previous_context": "The user asked about upgrading to the pro plan and wanted a callback about pricing.",
+	},
+})
+```
+
+</TabsContent>
+</Tabs>
+
+Pass a summary rather than the full transcript when you can. It keeps the instructions short and leaves more room for the current conversation. For details about variables, see [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
 
 {/* TODO(platform-confirm): The Voice Agent page also covers updating memory while the agent is running. In pre-release testing (2026-10-27), Update a session accepted `agent.overrides.messages` (200), while Inject context returned 404. Add a section on updating memory with Update a session once its behavior is confirmed. The Voice Agent page also explains which memory fields a custom LLM receives; add that when the custom LLM page is rewritten. */}
 
@@ -87,7 +349,7 @@ Pass a summary rather than the full transcript when you can. It keeps the instru
 
 For more information, see the following pages:
 
-- [Personalize conversations and get structured results](/en/ai/platform/build/shape-the-conversation/personalize-conversations)
+- [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations)
 - [Notification event types](/en/ai/platform/reference/event-types)
 
 ### API reference

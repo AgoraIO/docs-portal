@@ -22,7 +22,7 @@ Token authentication uses a token generated on your server with your App ID and 
 Authorization: agora token=<your_token>
 ```
 
-{/* TODO(platform-confirm): The internal CN authentication draft shows the token in quotes (agora token="<token>"). Confirm with engineering which form the API accepts, and align this page and the Voice Agent API page. */}
+{/* TODO(platform-confirm): The internal CN authentication draft shows the token in quotes (agora token="<token>"). In pre-release testing (2026-10-28), a valid ConvoAI token worked both quoted and unquoted on the Platform API and on the Voice Agent API. The TypeScript SDK sends it unquoted. Confirm with engineering which form to document, and align this page and the Voice Agent API page. */}
 
 ### Prerequisites
 
@@ -54,7 +54,6 @@ A token with the ConvoAI service is enough for every request that doesn't join a
 
 - Managing agents, secrets, phone numbers, and campaigns.
 - Listing, retrieving, and stopping sessions.
-- Sending session actions, such as Speak.
 - Starting telephony sessions.
 
 To start an RTC session, you can use the same token in both places, or generate a separate token for each. If you use separate tokens, put the REST authentication token in the `Authorization` header and the RTC token in `transport.token`.
