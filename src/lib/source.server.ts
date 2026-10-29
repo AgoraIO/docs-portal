@@ -1,5 +1,6 @@
 import { docs } from 'collections/server';
 import { type InferPageType, loader, multiple } from 'fumadocs-core/source';
+import { withDocVersionMetadata } from './doc-versions';
 import { buildDocPath, parseSourceSlugs } from './docs-routing';
 import { DEFAULT_LOCALE, SUPPORTED_LOCALES } from './i18n/i18n-config';
 import { toDocsMarkdown } from './mdx/to-markdown';
@@ -109,7 +110,10 @@ function resolveCanonicalMarkdownPageUrl(page: InferPageType<typeof source>) {
 }
 
 export async function getLLMText(page: InferPageType<typeof source>) {
-  return toDocsMarkdown(await readLLMText(page));
+  return withDocVersionMetadata(
+    toDocsMarkdown(await readLLMText(page)),
+    page.url,
+  );
 }
 
 async function readLLMText(page: InferPageType<typeof source>) {
@@ -147,7 +151,9 @@ export async function getPlatformLLMText(
   platform: PlatformKey,
 ) {
   const markdown = await readPlatformLLMText(page, platform);
-  return markdown === null ? null : toDocsMarkdown(markdown);
+  return markdown === null
+    ? null
+    : withDocVersionMetadata(toDocsMarkdown(markdown), page.url);
 }
 
 async function readPlatformLLMText(

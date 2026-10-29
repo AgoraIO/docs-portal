@@ -43,7 +43,16 @@ describe('fumadocs openapi source', () => {
     expect(pagePaths).toContain(
       'en/api-reference/api-ref/speech-to-text/join.mdx',
     );
-    expect(pagePaths).toHaveLength(123);
+    expect(pagePaths).not.toContain(
+      'en/api-reference/versioning-demo/v1/widgets.mdx',
+    );
+    expect(pagePaths).not.toContain(
+      'en/api-reference/versioning-demo/v2/list-widgets.mdx',
+    );
+    expect(pagePaths).toContain(
+      'en/api-reference/api-ref/conversational-ai/platform/create-agent.mdx',
+    );
+    expect(pagePaths).toHaveLength(119);
   });
 
   it('uses locale-specific document IDs in client page props', async () => {

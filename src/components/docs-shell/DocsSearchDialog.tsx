@@ -29,6 +29,7 @@ import {
 } from '@/lib/analytics/posthog';
 import { savePendingSearchLanding } from '@/lib/analytics/search-attribution';
 import { cn } from '@/lib/cn';
+import { resolveDocVersion } from '@/lib/doc-versions';
 import type { SearchEntry } from '@/lib/docs-search';
 import type { ProductScope } from '@/lib/docs-tree';
 import {
@@ -46,6 +47,7 @@ import { createAlgoliaDocsClient } from '@/lib/search/algolia-client';
 import { getAlgoliaSearchConfig } from '@/lib/search/algolia-config';
 import { createOramaDocsClient } from '@/lib/search/orama-client';
 import { classifySearchIntent } from '@/lib/search/search-intent';
+import { DocVersionBadge } from './DocVersionBadge';
 
 // Delay before an Algolia query fires after the last keystroke. The skeleton
 // "busy" bridge below runs slightly longer so it always outlasts this window.
@@ -953,6 +955,7 @@ export function DocsSearchDialog({
             <CommandGroup heading={t('docs.searchRecent')}>
               {recentPages.map((page, index) => {
                 const stagger = staggerProps(index);
+                const docVersion = resolveDocVersion(page.url)?.version;
                 return (
                   <CommandItem
                     className={cn('items-start', stagger.className)}
@@ -965,6 +968,9 @@ export function DocsSearchDialog({
                       <span className="line-clamp-1 font-medium">
                         {page.title}
                       </span>
+                      {docVersion ? (
+                        <DocVersionBadge version={docVersion} />
+                      ) : null}
                       {page.description ? (
                         <div className="line-clamp-1 text-[0.7rem] text-muted-foreground">
                           {page.description}
@@ -994,6 +1000,7 @@ export function DocsSearchDialog({
                       const platformOptions = Object.entries(platformUrls);
                       const selectedUrl =
                         resultPlatformSelections[resultKey] ?? page.url;
+                      const docVersion = resolveDocVersion(page.url)?.version;
                       return (
                         <div key={resultKey}>
                           <CommandItem
@@ -1027,14 +1034,21 @@ export function DocsSearchDialog({
                               ) : null}
                               {page.context.length > 0 ? (
                                 <div className="flex flex-wrap gap-1">
-                                  {page.context.map((item) => (
-                                    <span
-                                      className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
-                                      key={`${resultKey}:${item}`}
-                                    >
-                                      <HighlightedText value={item} />
-                                    </span>
-                                  ))}
+                                  {docVersion ? (
+                                    <DocVersionBadge version={docVersion} />
+                                  ) : null}
+                                  {page.context
+                                    .filter(
+                                      (item) => item !== docVersion?.label,
+                                    )
+                                    .map((item) => (
+                                      <span
+                                        className="rounded border border-border bg-background/70 px-1.5 py-0.5 text-[0.68rem] leading-none text-muted-foreground"
+                                        key={`${resultKey}:${item}`}
+                                      >
+                                        <HighlightedText value={item} />
+                                      </span>
+                                    ))}
                                 </div>
                               ) : null}
                             </div>
@@ -1137,6 +1151,7 @@ function searchResultToEntry(result: {
       objectType === 'openapi' ? 'API' : undefined,
       ...formatPlatformContext(platforms ?? []),
       version,
+      resolveDocVersion(result.url)?.version.label,
     ]),
     description: truncateSearchSnippet(
       typeof result.snippet === 'string'

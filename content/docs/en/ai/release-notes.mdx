@@ -1,65 +1,11 @@
 ---
 title: Release notes
-description: Information about changes in each release of Conversational AI.
+description: Information about changes in each release of the Conversational AI Engine.
 ---
 
-This document tracks notable changes and improvements to Conversational AI.
+This document tracks notable changes and improvements to the Conversational AI Engine.
 
-## Conversational AI Platform (Preview)
-
-The Conversational AI Platform is a new API for building and running voice agents in apps and over the phone, from agent configurations that you save once and reuse. For details, see the [Conversational AI Platform overview](/en/ai/platform) and the [REST API reference](/en/api-reference/api-ref/conversational-ai/platform).
-
-<Accordions type="multiple" openFirst>
-
-<Accordion title="v1.0 (Preview)" id="platform-v10" headingLevel={3} value="platform-v10">
-
-{/* TODO(platform-confirm): Release date (planned for October 29, 2026). The ticket draft also mentions Agent Studio; add it once the Agent Studio scope for this release is confirmed. */}
-
-Released on October 29, 2026.
-
-Conversational AI Platform v1.0 (Preview) introduces a new API for building and running voice agents in apps and over the phone from shared agent configuration.
-
-#### New features
-
-Included in this release:
-
-- **Reusable agents**
-
-  Save an agent's instructions, variables, greeting, and models once, and use the agent to start any number of sessions and campaigns. See [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent).
-
-- **Personalization**
-
-  Personalize each session with variables in the agent's instructions and greeting. See [Personalize conversations](/en/ai/platform/build/shape-the-conversation/personalize-conversations).
-
-- **Managed mode and BYOK**
-
-  Choose separate ASR, LLM, and TTS models for each agent. Use managed mode to let Agora provide access to supported models, or bring your own provider keys. See [Use managed mode](/en/ai/platform/build/managed-mode) and [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
-
-- **Project-scoped secrets**
-
-  Store provider API keys in named secret sets, and reference them by name from your agents instead of including the keys in each configuration. See [Use your own provider keys](/en/ai/platform/build/use-your-own-keys).
-
-- **App and phone sessions**
-
-  Run an agent in an RTC channel in your app, or in an inbound or outbound phone call. See [Create an agent and start a session](/en/ai/platform/get-started/start-stop-agent) and [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
-
-- **Phone numbers and campaigns**
-
-  Import your SIP phone numbers and route their inbound calls to an agent. Run scheduled outbound campaigns that you can pause, resume, and cancel. See [Import phone numbers](/en/ai/platform/build/phone-calls/import-phone-numbers) and [Route inbound calls to an agent](/en/ai/platform/build/phone-calls/route-inbound-calls).
-
-- **Notification events**
-
-  Receive webhook notifications for session state, transcripts, errors, turns, RTC tokens, and telephony state. See [Notification event types](/en/ai/platform/reference/event-types).
-
-#### Notes
-
-- During the Preview, agent sessions run in North America (US). Geofencing isn't supported.
-- Some Voice Agent API features aren't available in the Preview yet. For details, see [What's not in the Preview](/en/ai/platform#whats-not-in-the-preview).
-
-</Accordion>
-</Accordions>
-
-## Voice Agent API
+## Versions
 
 <Accordions type="multiple" openFirst>
 

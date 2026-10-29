@@ -115,7 +115,7 @@ describe('docs journeys', () => {
 
     expect(intro).toContain('## Build a Voice Agent');
     expect(intro).toMatch(
-      /title="Explore Voice Agents"[\s\S]*?href="\/en\/ai"[\s\S]*?title="Build a Voice Agent App"[\s\S]*?href="\/en\/ai\/get-started\/quickstart"/,
+      /title="Explore Voice Agents"[\s\S]*?href="\/en\/ai\/documentation-versions"[\s\S]*?title="Build a Voice Agent App"[\s\S]*?href="\/en\/ai\/get-started\/quickstart"/,
     );
   });
 

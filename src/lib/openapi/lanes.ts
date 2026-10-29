@@ -364,20 +364,6 @@ export const OPENAPI_LANES = [
           'zh-CN': 'Destroy a cloud transcoding task',
         },
       },
-      'create-or-update-transcoding-template': {
-        routeLeaf: 'template-create',
-        title: {
-          en: 'Create or update a transcoding template',
-          'zh-CN': 'Create or update a transcoding template',
-        },
-      },
-      'query-transcoding-templates': {
-        routeLeaf: 'template-query',
-        title: {
-          en: 'Query transcoding templates',
-          'zh-CN': 'Query transcoding templates',
-        },
-      },
       'query-cloud-transcoding-ncs-ip': {
         routeLeaf: 'ncs-query-ip',
         title: {
@@ -835,7 +821,9 @@ export function resolveOpenApiEndpointRoute(
   tab: string,
   slugSegments: string[],
 ) {
-  for (const lane of getOpenApiLanes()) {
+  for (const lane of [...getOpenApiLanes()].sort(
+    (a, b) => b.routePrefix.length - a.routePrefix.length,
+  )) {
     if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
       continue;
     }
@@ -877,11 +865,9 @@ export function resolveOpenApiLaneRoute(
   tab: string,
   slugSegments: string[],
 ) {
-  // Prefer the longest matching prefix so a nested lane (for example a
-  // `conversational-ai/platform` lane) wins over its parent lane.
-  let match: { lane: OpenApiLane; length: number } | null = null;
-
-  for (const lane of getOpenApiLanes()) {
+  for (const lane of [...getOpenApiLanes()].sort(
+    (a, b) => b.routePrefix.length - a.routePrefix.length,
+  )) {
     if (lane.tab !== tab || !getOpenApiLaneLocales(lane).includes(locale)) {
       continue;
     }
@@ -895,12 +881,10 @@ export function resolveOpenApiLaneRoute(
       continue;
     }
 
-    if (!match || prefixSegments.length > match.length) {
-      match = { lane, length: prefixSegments.length };
-    }
+    return lane;
   }
 
-  return match?.lane ?? null;
+  return null;
 }
 
 export function findOpenApiLaneBySourcePath(sourcePath: string) {

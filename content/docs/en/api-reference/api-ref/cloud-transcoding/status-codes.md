@@ -3,21 +3,36 @@ title: Status and error codes
 description: Troubleshoot common Cloud Transcoding REST API issues.
 ---
 
-This page lists response status codes for Cloud Transcoding and Multi-bitrate streaming, along with their descriptions and recommended actions.
+This page lists the response status codes for the Cloud Transcoding REST API, along with their descriptions and recommended actions.
 
-## Cloud Transcoding
+## Response status codes
 
 When you call the Cloud Transcoding REST API, you receive an HTTP response status code:
 
-- If the HTTP status code is `2XX`, the request is successful.
-- If the HTTP status code is not `2XX`, the request failed.
+- If the HTTP status code is `200`, the request is successful.
+- If `Destroy` returns `206`, the server hasn't finished processing the request. Call `Query` to confirm the task status.
+- Any other status code means the request failed.
 
-The following example shows a failed request:
+The following examples show responses to failed requests:
 
 ```json
-// 400 Bad Request
+// 400 Bad Request: invalid parameter
 {
-  "message": "appid is invalid"
+  "message": "#/transcoder/outputs is invalid after minItems schema validate"
+}
+```
+
+```json
+// 401 Unauthorized: authentication failure
+{
+  "message": "Invalid authentication credentials"
+}
+```
+
+```json
+// 404 Not Found: task not found
+{
+  "message": "The task is not found"
 }
 ```
 
@@ -26,8 +41,7 @@ When using Cloud Transcoding, you may receive status codes that indicate the ser
 | Status code | Description | Suggested action |
 | --- | --- | --- |
 | `200 OK` | The request was successful. | No troubleshooting is required. |
-| `201 Created` (Deprecated) | The task is already in progress. Do not use the same `builderToken` to start the task again. | No troubleshooting is required. |
-| `202 Accepted` | The server has received the task request, but the task execution may not be complete. | Query the execution status before proceeding to the next business operation. |
+| `206 Partial Content` | The server hasn't finished processing the request. `Destroy` can return this code. | Call `Query` with a backoff strategy to confirm the task status. |
 | `400 Bad Request` | The request syntax is incorrect, the parameter value does not meet the requirements, or your App ID does not have Cloud Transcoding enabled. | Investigate based on the `message` field in the response body. |
 | `401 Unauthorized` | The `Authorization` field for HTTP Basic authentication is invalid. | See [RESTful authentication](authentication) or check your `Authorization` credentials. |
 | `403 Forbidden` | Cloud Transcoding is not enabled for your App ID. | [Enable Cloud Transcoding](/en/realtime-media/transcoding/sdk-quickstart#enable-cloud-transcoding) in Agora Console. |
@@ -45,37 +59,3 @@ When using the Cloud Transcoding response status code for troubleshooting, keep 
 - If the troubleshooting methods in the table do not resolve the issue, contact [technical support](mailto:support@agora.io) with the values of the `X-Request-ID` and `X-Resource-ID` fields in the response header.
 - If you receive a `404` status code after a `Create` request has returned successfully and you have not called `Delete`, or if the transcoder remains idle beyond the `idleTimeout` value in the request, use a backoff algorithm. Retry at increasing intervals of 5, 10, and 15 seconds to call `Query` for confirmation.
 - A `5XX` response status code usually indicates an issue in the server response process. Use a backoff strategy for query requests, retrying at increasing intervals of 5, 10, and 15 seconds, or contact [technical support](mailto:support@agora.io).
-
-## Multi-Bitrate
-
-When you call the Multi-Bitrate REST API, you receive an HTTP response status code:
-
-- If the HTTP status code is `2XX`, the request is successful.
-- If the HTTP status code is not `2XX`, the request failed.
-
-The following example shows a failed request:
-
-```json
-// 400 Bad Request
-{
-  "status": "string",
-  "data": {},
-  "message": "string"
-}
-```
-
-When using Cloud Transcoding Multi-Bitrate, you may receive status codes that indicate the service status.
-
-| Status code | Description | Suggested action |
-| --- | --- | --- |
-| `200 OK` | The operation was successful. | No troubleshooting is required. |
-| `400 Bad Request` | The request is invalid. | Check whether the request parameters are valid. |
-| `401 Unauthorized` | The authentication is invalid. | Check whether the `Authorization` parameters used for HTTP authentication are correct. |
-| `404 Not Found` | The requested resource was not found. | Check that the `appId` and `codecId` parameter values are correct. |
-| `415 Unsupported Media Type` | Unsupported media type. | Ensure that the `Content-Type` field in the request header is set to `application/json`. |
-| `429 Too Many Requests` | Requests are too frequent. | Wait for a while and try again. |
-| `500 Internal Server Error` | Internal server error. | Retry a few times. |
-
-:::info
-If the troubleshooting methods above do not resolve the issue, contact [technical support](mailto:support@agora.io) with the `X-Request-ID` and `X-Resource-ID` field values from the response header.
-:::

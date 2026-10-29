@@ -48,9 +48,7 @@ You cannot disable Cloud Transcoding for a project after you enable it.
 3. Read the confirmation dialog, then confirm. 
 
 :::tip[Tips]
-- Select the settings icon next to Cloud Transcoding to view your current usage and quota, or to open Postman and test the Cloud Transcoding APIs.
-
-- If you want viewers to receive multiple bitrates, contact [Agora technical support](mailto:support@agora.io) to enable the multi-bitrate service.
+Select the settings icon next to Cloud Transcoding to view your current usage and quota, or to open Postman and test the Cloud Transcoding APIs.
 :::
 
 ## Set up your project

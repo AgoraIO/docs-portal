@@ -172,7 +172,13 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(123);
+    expect(getOpenApiPrerenderPaths()).not.toContain(
+      '/en/api-reference/versioning-demo/v1/widgets',
+    );
+    expect(getOpenApiPrerenderPaths()).not.toContain(
+      '/en/api-reference/versioning-demo/v2/list-widgets',
+    );
+    expect(getOpenApiPrerenderPaths()).toHaveLength(119);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {
