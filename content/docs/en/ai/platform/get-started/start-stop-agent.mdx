@@ -355,12 +355,12 @@ Send a request to [Start a session](/en/api-reference/api-ref/conversational-ai/
 - `type`: `rtc`, to run the session in an RTC channel. To run the session in a phone call, you use `telephony` instead. For details, see [Make outbound calls and run campaigns](/en/ai/platform/build/phone-calls/outbound-calls-campaigns).
 - `channel`: The RTC channel for the conversation.
 - `token`: The RTC token for the agent's UID.
-- `uid`: The UID the agent uses in the channel, as a string. It must be different from the user's UID. If you omit it, Agora assigns one.
-- `subscribe_uids`: The UID of the user the agent talks to.
+- `uid`: The UID the agent uses in the channel, as a string or an integer. It must be different from the user's UID. If you omit it, Agora assigns one.
+- `subscribe_uids`: The UID of the user the agent talks to, as a string or an integer.
 
 In `values`, pass the variable values.
 
-In the `Idempotency-Key` header, pass a unique value for each session you start. If a request times out, retry it with the same key and the same body. The Platform returns the session it already started instead of starting a second one.
+In the `Idempotency-Key` header, pass a unique value for each session you start. If a request times out, retry it with the same key and the same body. If the first request already started the session, the retry fails with `409 IdempotencyKeyConflict` instead of starting a second one. To get the session ID, [list sessions](/en/api-reference/api-ref/conversational-ai/platform/list-sessions) filtered by your channel.
 
 ```bash
 curl --request POST \
@@ -620,9 +620,7 @@ If you still have the `session` object from Start a session, you can call `sessi
 </TabsContent>
 </Tabs>
 
-A session also stops asynchronously. To confirm that the session has ended, retrieve it and check that `status` is `STOPPED`. If you don't stop a session, it ends when it reaches a limit you set when you start it, such as an idle timeout or a maximum duration.
-
-{/* TODO(platform-confirm): Confirm the default `lifecycle` limits that apply when you don't set them. */}
+A session also stops asynchronously. To confirm that the session has ended, retrieve it and check that `status` is `STOPPED`. If you don't stop a session, it ends when it reaches a `lifecycle` limit. By default, a session ends 30 seconds after no participant is present, or 5 minutes after it starts. You can set `lifecycle.max_duration_ms` up to 1 hour when you start the session.
 
 ## Test a configuration without saving an agent
 

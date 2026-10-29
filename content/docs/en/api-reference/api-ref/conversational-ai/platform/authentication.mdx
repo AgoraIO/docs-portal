@@ -51,7 +51,7 @@ When the token includes the RTC service, the token parameters must match the ses
 - `channelName` must match `transport.channel`.
 - The account or UID must match `transport.uid`.
 
-{/* TODO(platform-confirm): The Voice Agent API uses enable_string_uid to tell numeric and string UIDs apart when it checks the token. The Platform transport has no such field and always sends uid as a string. Confirm how the Platform handles string UIDs in tokens. */}
+{/* TODO(platform-confirm): The Voice Agent API uses enable_string_uid to tell numeric and string UIDs apart when it checks the token. The Platform transport has no such field, and `uid` can be a string or an integer. Confirm how the Platform handles string UIDs in tokens. */}
 
 ### Use a temporary token for testing
 

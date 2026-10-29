@@ -14,7 +14,7 @@ During the Preview, agent sessions run in North America (US). Geofencing isn't s
 - **Base URL**: `https://preview.ai.agora.io/conversational-ai/v1/projects/<appid>`, where `<appid>` is the App ID of your Agora project. Every resource belongs to one project.
 - **Authentication**: Use [token authentication](authentication#token-authentication) or [Basic HTTP authentication](authentication#basic-http-authentication) for every request.
 - **Request**: Request and response bodies use JSON. Request URLs and request bodies are case-sensitive.
-- **IDs**: Each resource returns its ID in a `<resource>_id` field, such as `agent_id`, `number_id`, and `campaign_id`. Agent, number, and campaign IDs start with `agent_`, `num_`, and `camp_`. Session IDs are 32 lowercase letters and digits.
+- **IDs**: Each resource returns its ID in a `<resource>_id` field, such as `agent_id`, `number_id`, and `campaign_id`. Agent, number, and campaign IDs are UUIDs, such as `3f6c2a9e-8d1b-4e7a-9c55-0b2f7d1e4a10`. Session IDs are 32 lowercase letters and digits.
 - **Timestamps**: Timestamps are Unix times in seconds, in fields that end in `_ts`. Durations have a unit suffix, such as `_ms` or `_seconds`. Campaign schedules are the exception: they use local times in the schedule's time zone.
 
 ## Conventions
@@ -22,9 +22,6 @@ During the Preview, agent sessions run in North America (US). Geofencing isn't s
 The following conventions apply to every endpoint:
 
 - **Pagination**: List endpoints return `data`, `has_more`, and `next_cursor`. To get the next page, pass `next_cursor` in the `cursor` query parameter. `next_cursor` is `null` on the last page.
-- **Concurrency control**: Responses for agents, secret sets, phone numbers, and campaigns include an `ETag` header. To make sure you don't overwrite a concurrent change, pass that value in the `If-Match` header of an update or delete request. If the resource has changed, the request fails with `412`.
-- **Idempotency**: [Start a session](start-session) and [Start an ephemeral session](start-ephemeral-session) accept an `Idempotency-Key` header. If you retry with the same key and body within 24 hours, the API returns the original response instead of starting a second session. No other endpoint accepts this header.
-- **Rate limits**: Every response includes the `RateLimit-Limit`, `RateLimit-Remaining`, and `RateLimit-Reset` headers. A `429` response also includes `Retry-After`, the number of seconds to wait before you retry.
 - **Errors**: Every error response contains `detail` and `reason`. For all reasons, see [Status codes and error reasons](status-codes).
 - **Request ID**: Every response includes an `Agora-Request-Id` header. Include it when you contact Agora support.
 

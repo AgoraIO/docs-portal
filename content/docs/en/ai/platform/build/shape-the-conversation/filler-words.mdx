@@ -163,7 +163,7 @@ fillerAgent := agent.WithFillerWords(&agentkit.FillerWordsConfig{
 |---|---|
 | `enable` | Whether to play filler words. |
 | `trigger.mode` | When to play a filler word. Set to `fixed_time`. |
-| `trigger.response_wait_ms` | How long in milliseconds to wait for the LLM before playing a filler word, from `100` to `10000`. The default is `1500`. |
+| `trigger.response_wait_ms` | How long in milliseconds to wait for the LLM before playing a filler word, from `100` to `10000`. Required. |
 | `content.mode` | Set to `static`. |
 | `content.phrases` | The filler phrases, 1 to 100 non-empty strings. |
 | `content.selection_rule` | How the agent picks the next phrase: `shuffle` (random order, the default) or `round_robin` (list order, starting over after the last phrase). |

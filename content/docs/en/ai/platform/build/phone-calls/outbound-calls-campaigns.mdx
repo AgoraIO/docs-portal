@@ -55,8 +55,8 @@ curl --request POST \
     "call_policy": {
       "max_ring_duration_ms": 30000,
       "max_call_duration_seconds": 600,
-      "voicemail": {
-        "mode": "hangup"
+      "end_call": {
+        "on_voicemail": true
       }
     }
   }
@@ -80,7 +80,7 @@ session = client.v3.sessions.start(
         "call_policy": {
             "max_ring_duration_ms": 30000,
             "max_call_duration_seconds": 600,
-            "voicemail": {"mode": "hangup"},
+            "end_call": {"on_voicemail": True},
         },
     },
 )
@@ -104,7 +104,7 @@ const session = await client.v3.sessions.start({
     call_policy: {
       max_ring_duration_ms: 30000,
       max_call_duration_seconds: 600,
-      voicemail: { mode: 'hangup' },
+      end_call: { on_voicemail: true },
     },
   },
 });
@@ -129,7 +129,7 @@ session, err := client.V3.Sessions.Start(ctx, v3.SessionStartRequest{
 		CallPolicy: &v3.CampaignCallPolicy{
 			MaxRingDurationMS:      &maxRing,
 			MaxCallDurationSeconds: &maxCall,
-			Voicemail:              &v3.CampaignVoicemailPolicy{Mode: "hangup"},
+			EndCall:                &v3.CampaignEndCallPolicy{OnVoicemail: true},
 		},
 	},
 })
@@ -144,7 +144,7 @@ fmt.Println(session.Body.AgentSessionID) // The agent_session_id
 
 The response contains the session ID and its status, as for an RTC session. A session status of `RUNNING` doesn't mean that the call was answered. To end the call, [stop the session](/en/ai/platform/get-started/start-stop-agent#stop-the-session).
 
-{/* TODO(platform-confirm): Staging rejected `call_policy.voicemail` with NotImplemented on 2026-10-14. The launch contract includes it. Also confirm how developers can tell whether a call was answered (for example a telephony notification event), and add it here. */}
+{/* TODO(platform-confirm): `end_call.on_voicemail` replaces the `call_policy.voicemail` object, and `on_conversation_complete` is removed. Both depend on the backend end-call changes. The SDK types predate `on_voicemail`, so verify the Python, TypeScript, and Go examples after the SDKs are regenerated. Also confirm how developers can tell whether a call was answered (for example a telephony notification event), and add it here. */}
 
 ### Set call limits and behavior
 
@@ -155,9 +155,7 @@ In the call policy, set limits and behavior for the call. If you omit a limit, i
 | `max_ring_duration_ms` | The maximum time in milliseconds from starting the dial until the call is answered. If nobody answers in time, the dial attempt ends. |
 | `max_call_duration_seconds` | The maximum length of the call in seconds, from when it's answered. The session's `lifecycle` limits can end the call earlier. |
 | `max_silence_duration_ms` | Hang up when nobody on the call has spoken for this many milliseconds. In a campaign, the minimum is `30000`. |
-| `voicemail` | What the agent does when it reaches voicemail: `hangup` ends the call, and `continue` keeps it going. |
-| `end_call` | The conditions under which the agent can end the call itself: `on_conversation_complete`, `on_user_request`, `on_voicemail`, and `on_ai_assistant`. Each condition is off unless you set it to `true`. |
-| `transfer` | Lets the agent transfer the call to a person at `phone_number`. The agent decides when to transfer based on `description`, and then leaves the call. |
+| `end_call` | The conditions under which the agent can end the call itself. Each condition is off unless you set it to `true`. `on_user_request`: the caller clearly says goodbye or asks to hang up. `on_voicemail`: the call reaches voicemail. `on_ai_assistant`: an AI assistant or another automated system answers. |
 
 ## Run a campaign
 
@@ -191,8 +189,8 @@ curl --request POST \
     "from": "92e68758-3d3a-4f27-8b93-3fd8d834467c",
     "call_policy": {
       "max_ring_duration_ms": 30000,
-      "voicemail": {
-        "mode": "hangup"
+      "end_call": {
+        "on_voicemail": true
       }
     }
   },
@@ -225,7 +223,7 @@ curl --request POST \
 }'
 ```
 
-You can pass up to 50,000 contacts, and the whole request body can be at most 10 MiB. You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
+You can pass up to 50,000 contacts, and the whole request body can be at most 10 MiB. You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If any contact is missing a value for a `required` variable, or has a value that doesn't match the variable's `type` or `options`, the whole request fails with `400`, and no campaign is created.
 
 If the request is successful, the response contains the campaign, including its ID and status:
 
@@ -241,14 +239,14 @@ If the request is successful, the response contains the campaign, including its 
     "from": ["92e68758-3d3a-4f27-8b93-3fd8d834467c"],
     "call_policy": {
       "max_ring_duration_ms": 30000,
-      "voicemail": {
-        "mode": "hangup"
+      "end_call": {
+        "on_voicemail": true
       }
     }
   },
   "lifecycle": {
     "idle_timeout_ms": 30000,
-    "max_duration_ms": 259200000,
+    "max_duration_ms": 300000,
     "graceful_stop": {
       "enabled": false,
       "timeout_ms": 30000
@@ -287,7 +285,7 @@ campaign = client.campaigns.create(
     transport={
         "type": "telephony",
         "from": ["92e68758-3d3a-4f27-8b93-3fd8d834467c"],
-        "call_policy": {"max_ring_duration_ms": 30000, "voicemail": {"mode": "hangup"}},
+        "call_policy": {"max_ring_duration_ms": 30000, "end_call": {"on_voicemail": True}},
     },
     contacts=[
         {"phone": "+12025550123", "values": {"customer_name": "Ava", "plan": "pro"}},
@@ -323,7 +321,7 @@ const campaign = await client.campaigns.create({
   transport: {
     type: 'telephony',
     from: ['92e68758-3d3a-4f27-8b93-3fd8d834467c'],
-    call_policy: { max_ring_duration_ms: 30000, voicemail: { mode: 'hangup' } },
+    call_policy: { max_ring_duration_ms: 30000, end_call: { on_voicemail: true } },
   },
   contacts: [
     { phone: '+12025550123', values: { customer_name: 'Ava', plan: 'pro' } },
@@ -363,7 +361,7 @@ campaign, err := client.Campaigns.Create(ctx, v3.CampaignCreate{
 		From: []string{"92e68758-3d3a-4f27-8b93-3fd8d834467c"},
 		CallPolicy: &v3.CampaignCallPolicy{
 			MaxRingDurationMS: &maxRing,
-			Voicemail:         &v3.CampaignVoicemailPolicy{Mode: "hangup"},
+			EndCall:           &v3.CampaignEndCallPolicy{OnVoicemail: true},
 		},
 	},
 	Contacts: []v3.CampaignContact{
@@ -388,7 +386,7 @@ fmt.Println(campaign.Body.CampaignID, campaign.Body.Status)
 </TabsContent>
 </Tabs>
 
-You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If a contact is missing a value for a `required` variable, that contact is rejected before it's dialed.
+You can't change the contacts after you create the campaign. A phone number that appears more than once is called once for each entry. If any contact is missing a value for a `required` variable, or has a value that doesn't match the variable's `type` or `options`, the whole request fails with `400`, and no campaign is created.
 
 Store the campaign ID. You use it to check and control the campaign.
 
@@ -408,7 +406,7 @@ In the pacing settings, control how fast the campaign dials. The campaign calls 
 | Field | Description |
 |---|---|
 | `max_concurrent` | The maximum number of calls in progress at the same time, from 1 to 10,000. The default is `10`. |
-| `max_calls_per_second` | The maximum number of new dials in any one-second window, up to 1,000. Omit it to dial as fast as `max_concurrent` and your project's carrier limits allow. |
+| `max_calls_per_second` | The maximum number of new dials in any one-second window, up to 1,000. If you omit it, the campaign uses your project's default dial rate. |
 
 ## Monitor and control a campaign
 
