@@ -152,7 +152,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/best-practices/regional-restrictions.md':
     '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/best-practices/regional-restrictions.mdx':
-    '2026-08-07T06:52:10.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/ai/billing.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/build/architecture.mdx': '2026-06-27T03:50:05.000Z',
   'content/docs/en/ai/build/audio-output.md': '2026-05-19T10:33:06.000Z',
@@ -354,6 +354,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-01T08:28:26.000Z',
   'content/docs/en/ai/device-kit/start-here/quickstart.md':
     '2026-06-30T08:35:58.000Z',
+  'content/docs/en/ai/documentation-versions.mdx': '2026-10-29T10:45:04.000Z',
   'content/docs/en/ai/domain-overview.md': '2026-06-26T06:09:50.000Z',
   'content/docs/en/ai/enable-service.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/get-started/_shared-mdx-fixture.mdx':
@@ -560,7 +561,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/best-practices/record-agent-conversation.mdx':
     '2026-10-29T02:43:49.000Z',
   'content/docs/en/ai/platform/best-practices/regional-restrictions.mdx':
-    '2026-10-23T12:26:24.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/ai/platform/build/architecture.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/build-server-client.mdx':
@@ -588,7 +589,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/handle-runtime-events/webhooks.mdx':
     '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/managed-mode.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/build/meta.json': '2026-10-26T06:29:18.000Z',
   'content/docs/en/ai/platform/build/phone-calls/import-phone-numbers.mdx':
     '2026-10-29T02:43:49.000Z',
@@ -601,7 +602,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/send-multimodal-messages.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/asr-keywords.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/custom-information.mdx':
     '2026-10-24T06:16:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/filler-words.mdx':
@@ -611,7 +612,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/shape-the-conversation/meta.json':
     '2026-10-24T06:16:24.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/personalize-conversations.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/build/shape-the-conversation/short-term-memory.mdx':
     '2026-10-29T02:43:49.000Z',
   'content/docs/en/ai/platform/build/start-stop-agent.mdx':
@@ -625,7 +626,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/build/transcripts.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/build/use-your-own-keys.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/get-started/mcp-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/meta.json':
@@ -635,49 +636,49 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/get-started/skills-integrate.mdx':
     '2026-10-23T12:26:24.000Z',
   'content/docs/en/ai/platform/get-started/start-stop-agent.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/index.mdx': '2026-10-29T02:43:49.000Z',
-  'content/docs/en/ai/platform/meta.json': '2026-10-28T15:51:55.000Z',
+  'content/docs/en/ai/platform/meta.json': '2026-10-29T11:27:57.000Z',
   'content/docs/en/ai/platform/models/asr/amazon.mdx':
     '2026-10-28T15:51:55.000Z',
-  'content/docs/en/ai/platform/models/asr/ares.mdx': '2026-10-28T15:51:55.000Z',
+  'content/docs/en/ai/platform/models/asr/ares.mdx': '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/asr/assembly-ai.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/asr/deepgram.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/gemini.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/google.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/asr/meta.json':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/asr/microsoft.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/asr/openai.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/sarvam.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/asr/smallest-ai.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/asr/speechmatics.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/asr/xai.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/avatar/akool.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/avatar/anam.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/avatar/generic.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/avatar/heygen.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/avatar/lemonslice.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/avatar/meta.json':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/avatar/protoface.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/avatar/tavus.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/llm/amazon.mdx':
     '2026-10-29T02:43:49.000Z',
   'content/docs/en/ai/platform/models/llm/azure-openai.mdx':
@@ -686,14 +687,14 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/llm/dify.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/llm/gemini.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/llm/google-vertex-ai.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/llm/groq.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/llm/meta.json':
     '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/llm/openai.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/llm/xai.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/meta.json': '2026-10-22T06:06:50.000Z',
   'content/docs/en/ai/platform/models/tts/amazon.mdx':
@@ -721,7 +722,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/models/tts/microsoft.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/minimax.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/tts/mistral.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/murf.mdx': '2026-10-28T15:51:55.000Z',
@@ -729,7 +730,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/rime.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/sarvam.mdx':
-    '2026-10-28T15:51:55.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/ai/platform/models/tts/smallest-ai.mdx':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/models/tts/typecast.mdx':
@@ -737,7 +738,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/platform/models/tts/xai.mdx': '2026-10-28T15:51:55.000Z',
   'content/docs/en/ai/platform/reference/event-types.mdx':
     '2026-10-27T09:58:06.000Z',
-  'content/docs/en/ai/platform/release-notes.mdx': '2026-10-22T12:41:21.000Z',
+  'content/docs/en/ai/platform/reference/pricing.mdx':
+    '2026-10-29T11:27:57.000Z',
+  'content/docs/en/ai/platform/release-notes.mdx': '2026-10-29T11:27:57.000Z',
   'content/docs/en/ai/pricing.md': '2026-07-02T09:19:20.000Z',
   'content/docs/en/ai/product-overview.md': '2026-05-18T10:29:54.000Z',
   'content/docs/en/ai/production-checklist.md': '2026-05-19T10:33:06.000Z',
@@ -750,7 +753,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/enable-conversational-ai.md':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/ai/reference/event-types.mdx': '2026-07-31T07:35:49.000Z',
-  'content/docs/en/ai/reference/meta.json': '2026-07-03T14:28:36.000Z',
+  'content/docs/en/ai/reference/meta.json': '2026-10-29T10:45:04.000Z',
   'content/docs/en/ai/reference/openai-realtime-integration.md':
     '2026-08-07T06:52:10.000Z',
   'content/docs/en/ai/reference/pricing.mdx': '2026-07-31T07:35:49.000Z',
@@ -762,7 +765,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/ai/reference/ten-agent/meta.json':
     '2026-06-30T02:52:09.000Z',
   'content/docs/en/ai/release-notes.md': '2026-06-26T08:32:37.000Z',
-  'content/docs/en/ai/release-notes.mdx': '2026-10-29T02:43:49.000Z',
+  'content/docs/en/ai/release-notes.mdx': '2026-10-29T10:45:04.000Z',
   'content/docs/en/ai/resources.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.md': '2026-05-19T10:33:06.000Z',
   'content/docs/en/ai/send-multimodal-message.mdx': '2026-06-24T07:15:37.000Z',
@@ -979,11 +982,11 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/api-reference/api-ref/cloud-transcoding/authentication.mdx':
     '2026-08-10T15:28:51.000Z',
   'content/docs/en/api-reference/api-ref/cloud-transcoding/index.mdx':
-    '2026-10-27T11:17:23.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/api-reference/api-ref/cloud-transcoding/meta.json':
-    '2026-10-27T11:17:23.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/api-reference/api-ref/cloud-transcoding/status-codes.md':
-    '2026-10-28T09:38:51.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/api-reference/api-ref/console/meta.json':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/console/solutions-agora-console-rest-api.md':
@@ -1000,16 +1003,18 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-26T08:32:37.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/client-toolkit/web.mdx':
     '2026-09-11T14:11:21.000Z',
+  'content/docs/en/api-reference/api-ref/conversational-ai/documentation-versions.mdx':
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/index.mdx':
     '2026-06-30T08:35:58.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/meta.json':
     '2026-10-21T05:55:36.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/authentication.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T11:27:57.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/index.mdx':
     '2026-10-29T02:43:49.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/meta.json':
-    '2026-10-21T05:55:36.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/platform/status-codes.mdx':
     '2026-10-29T02:43:49.000Z',
   'content/docs/en/api-reference/api-ref/conversational-ai/status-codes.md':
@@ -1112,7 +1117,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-08-14T11:03:51.000Z',
   'content/docs/en/api-reference/api-ref/im/user-system-registration.md':
     '2026-08-14T11:03:51.000Z',
-  'content/docs/en/api-reference/api-ref/index.mdx': '2026-10-21T05:55:36.000Z',
+  'content/docs/en/api-reference/api-ref/index.mdx': '2026-10-29T10:45:04.000Z',
   'content/docs/en/api-reference/api-ref/iot-channel-management-rest-api.md':
     '2026-06-25T09:57:31.000Z',
   'content/docs/en/api-reference/api-ref/media-pull/index.md':
@@ -1174,18 +1179,20 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
     '2026-06-22T08:39:26.000Z',
   'content/docs/en/api-reference/api-ref/server-gateway/meta.json':
     '2026-06-22T08:39:26.000Z',
+  'content/docs/en/api-reference/api-ref/server-sdk/documentation-versions.mdx':
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/go.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/meta.json':
     '2026-06-28T07:39:07.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/go.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/meta.json':
     '2026-10-28T15:51:55.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/python.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/platform/typescript.mdx':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T03:58:29.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/python.mdx':
     '2026-10-09T04:05:18.000Z',
   'content/docs/en/api-reference/api-ref/server-sdk/typescript.mdx':
@@ -3550,7 +3557,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/introduction/glossary.md': '2026-08-07T06:52:10.000Z',
   'content/docs/en/introduction/image.png': '2026-08-10T15:28:51.000Z',
   'content/docs/en/introduction/index.md': '2026-05-21T03:00:26.000Z',
-  'content/docs/en/introduction/index.mdx': '2026-08-27T06:25:50.000Z',
+  'content/docs/en/introduction/index.mdx': '2026-10-29T10:45:04.000Z',
   'content/docs/en/introduction/media-services.md': '2026-05-18T10:29:54.000Z',
   'content/docs/en/introduction/members-roles.md': '2026-06-01T06:30:44.000Z',
   'content/docs/en/introduction/messaging-presence.mdx':
@@ -6721,7 +6728,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/en/realtime-media/transcoding/rest-quickstart.md':
     '2026-09-08T07:22:12.000Z',
   'content/docs/en/realtime-media/transcoding/sdk-quickstart.md':
-    '2026-10-27T11:17:23.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/en/realtime-media/transcoding/skills.mdx':
     '2026-06-22T06:39:47.000Z',
   'content/docs/en/realtime-media/video/account-settlement.mdx':
@@ -8548,9 +8555,9 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/authentication.md':
     '2026-06-24T07:15:37.000Z',
   'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/index.mdx':
-    '2026-10-27T11:17:23.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/zh-CN/api-reference/api-ref/cloud-transcoding/meta.json':
-    '2026-10-27T11:17:23.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/docs/zh-CN/api-reference/api-ref/meta.json':
     '2026-06-24T07:15:37.000Z',
   'content/docs/zh-CN/api-reference/api-ref/rtmp-gateway/meta.json':
@@ -11898,7 +11905,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/cloud-recording/cloud-recording.en.yaml':
     '2026-10-16T02:35:23.000Z',
   'content/openapi/cloud-transcoding/cloud-transcoding.en.yaml':
-    '2026-10-28T09:38:51.000Z',
+    '2026-10-29T10:45:04.000Z',
   'content/openapi/cloud-transcoding/openapi.meta.json':
     '2026-06-24T07:15:37.000Z',
   'content/openapi/conversational-ai/convoai.en.yaml':
@@ -11911,7 +11918,7 @@ export const DOCS_LAST_UPDATED_BY_PATH: Record<string, string> = {
   'content/openapi/conversational-ai/overrides/.gitkeep':
     '2026-05-22T09:51:26.000Z',
   'content/openapi/conversational-ai/rest-api-platform.en.yaml':
-    '2026-10-29T02:43:49.000Z',
+    '2026-10-29T11:27:57.000Z',
   'content/openapi/conversational-ai/rest-api-v3.en.yaml':
     '2026-10-18T10:19:52.000Z',
   'content/openapi/conversational-ai/rest-api.en.yaml':
