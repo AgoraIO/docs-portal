@@ -1,6 +1,13 @@
 import { isNotFound, isRedirect } from '@tanstack/react-router';
 import { describe, expect, it, vi } from 'vitest';
 import type { DocsPagePayload } from '@/lib/docs-page.server';
+import { shouldUseStaticDocsPayload } from '@/lib/docs-static-manifest';
+
+vi.mock('@/lib/docs-static-manifest', async (importOriginal) => {
+  const actual =
+    await importOriginal<typeof import('@/lib/docs-static-manifest')>();
+  return { ...actual, shouldUseStaticDocsPayload: vi.fn(() => false) };
+});
 
 vi.mock('@/lib/docs-route-preload', () => ({
   preloadDocsPageContent: vi.fn(),
@@ -50,6 +57,53 @@ import { Route as LlmsSectionRoute } from './llms/$';
 import { Route as LlmsTextRoute } from './llms[.]txt';
 
 const REAL_DOCS_ROUTE_TIMEOUT = 300_000;
+
+describe('consolidated English MCP routes', () => {
+  it.each([false, true])(
+    'returns 301 with query and hash preserved (static payload: %s)',
+    async (staticPayload) => {
+      vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(staticPayload);
+      try {
+        for (const path of [
+          'ai/get-started/mcp-integrate',
+          'ai/device-kit/get-started/mcp',
+          'realtime-media/on-premise-recording/mcp',
+          'realtime-media/broadcast-streaming/mcp',
+          'realtime-media/transcoding/mcp',
+          'realtime-media/video/mcp',
+          'realtime-media/rtc/mcp',
+          'realtime-media/rtmp-gateway/build/mcp',
+          'realtime-media/cloud-recording/mcp',
+          'realtime-media/im/get-started/mcp',
+          'realtime-media/voice/mcp',
+          'realtime-media/media-pull/build/mcp',
+          'realtime-media/media-push/build/mcp',
+          'realtime-media/whiteboard/build/mcp',
+        ]) {
+          const [tab, ...segments] = path.split('/');
+          await expect(
+            getLoader(DocPageRoute)({
+              location: {
+                pathname: `/en/${path}`,
+                searchStr: '?from=legacy',
+                hash: '#installation',
+              },
+              params: { locale: 'en', tab, _splat: segments.join('/') },
+            } as never),
+          ).rejects.toMatchObject({
+            options: {
+              href: '/en/introduction/agora-mcp?from=legacy#installation',
+              statusCode: 301,
+            },
+            status: 301,
+          });
+        }
+      } finally {
+        vi.mocked(shouldUseStaticDocsPayload).mockReturnValue(false);
+      }
+    },
+  );
+});
 
 function getLoader(route: { options: { loader?: unknown } }) {
   return route.options.loader as (context: never) => Promise<unknown> | unknown;

@@ -417,7 +417,7 @@ const PRODUCT_SPECIFIC_TARGETS = {
   'open-ai-integration': {
     'get-started/manage-agora-account':
       '/en/ai/reference/openai-realtime-integration',
-    'get-started/mcp': '/en/ai/get-started/mcp-integrate',
+    'get-started/mcp': '/en/introduction/agora-mcp',
     'get-started/quickstart': '/en/ai/reference/openai-realtime-integration',
     'get-started/skills': '/en/ai/get-started/skills-integrate',
     'overview/core-concepts': '/en/ai/reference/openai-realtime-integration',
@@ -935,6 +935,21 @@ function leafTarget(info, candidates) {
 }
 
 function curatedTarget(info, routeSet) {
+  if (
+    ['mcp', 'mcp-integrate'].includes(info.leaf) &&
+    PRODUCT_MAPPINGS[info.product] &&
+    routeSet.has('/en/introduction/agora-mcp')
+  ) {
+    return {
+      target: '/en/introduction/agora-mcp',
+      type: 'semantic-page-match',
+      confidence: 'high',
+      evidence: [
+        'English product MCP guides are consolidated into Introduction / Agora MCP',
+      ],
+    };
+  }
+
   const platformTarget = platformTargetFor(info);
   const productTarget =
     PRODUCT_SPECIFIC_TARGETS[info.product]?.[info.rest.join('/')];

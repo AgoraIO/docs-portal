@@ -9,6 +9,7 @@ import {
 } from './analytics/docs-page-type';
 import { resolveDocsLastUpdatedMetadata } from './docs-last-updated.server';
 import type { DocsLayoutMode } from './docs-layout';
+import { resolveMovedDocsRedirect } from './docs-moved-redirects';
 import {
   type DocsNavScopeResolution,
   getNavScopeSidebarNodes,
@@ -155,6 +156,11 @@ export async function loadDocsPagePayload(
   slugSegments: string[],
   search?: string,
 ) {
+  const movedRedirect = resolveMovedDocsRedirect(locale, tab, slugSegments);
+  if (movedRedirect) {
+    return { redirectUrl: movedRedirect, statusCode: 301 as const };
+  }
+
   const apiReferenceRedirect = resolveApiReferenceRedirect(
     locale,
     tab,
@@ -1121,6 +1127,7 @@ export type DocsPagePayload = Exclude<
 export type DocsRedirectPayload = {
   preserveSearch?: boolean;
   redirectUrl: string;
+  statusCode?: 301;
 };
 
 async function readProcessedText(page: PageWithSource) {
