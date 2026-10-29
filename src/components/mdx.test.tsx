@@ -584,6 +584,32 @@ describe('common MDX registry', () => {
       'href',
       'https://example.com/page.md',
     );
+    expect(
+      screen.getByRole('link', { name: 'External' }).querySelector('svg'),
+    ).toHaveAttribute('aria-hidden', 'true');
+  });
+
+  it('marks web links without adding icons to hashes or non-web protocols', () => {
+    const Anchor = getMDXComponents().a as AnchorComponent;
+    render(
+      <>
+        <Anchor href="//example.com">Web link</Anchor>
+        <Anchor href="#overview">Overview</Anchor>
+        <Anchor href="mailto:help@example.com">Email</Anchor>
+        <Anchor href="/downloads/sdk.zip" download>
+          Download
+        </Anchor>
+      </>,
+    );
+
+    expect(
+      screen.getByRole('link', { name: 'Web link' }).querySelector('svg'),
+    ).toHaveAttribute('aria-hidden', 'true');
+    for (const name of ['Overview', 'Email', 'Download']) {
+      expect(
+        screen.getByRole('link', { name }).querySelector('svg'),
+      ).toBeNull();
+    }
   });
 
   it('keeps hash-only and opted-out links compatible with standard anchors', () => {

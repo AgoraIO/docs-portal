@@ -27,7 +27,7 @@ import {
 import { buttonVariants } from 'fumadocs-ui/components/ui/button';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { useCopyButton } from 'fumadocs-ui/utils/use-copy-button';
-import { ArrowRightIcon, Check, LinkIcon } from 'lucide-react';
+import { ArrowRightIcon, Check, ExternalLink, LinkIcon } from 'lucide-react';
 import type { MDXComponents } from 'mdx/types';
 import {
   type AnchorHTMLAttributes,
@@ -2064,6 +2064,7 @@ function getRequiredState({
 function createDocsAnchor(contentPath?: string) {
   function DocsAnchor({
     href,
+    children,
     ...props
   }: AnchorHTMLAttributes<HTMLAnchorElement>) {
     const normalized =
@@ -2073,10 +2074,28 @@ function createDocsAnchor(contentPath?: string) {
     const normalizedHref = normalized?.href ?? href;
 
     if (normalized && shouldUseRouterLink(normalized, props)) {
-      return <RouterFumadocsAnchor {...props} to={normalized.href} />;
+      return (
+        <RouterFumadocsAnchor {...props} to={normalized.href}>
+          {children}
+        </RouterFumadocsAnchor>
+      );
     }
 
-    return <FumadocsAnchor href={normalizedHref} {...props} />;
+    const isWebLink =
+      typeof normalizedHref === 'string' &&
+      /^(?:https?:)?\/\//i.test(normalizedHref);
+
+    return (
+      <FumadocsAnchor href={normalizedHref} {...props}>
+        {children}
+        {isWebLink && children && (
+          <ExternalLink
+            aria-hidden="true"
+            className="docs-external-link-icon"
+          />
+        )}
+      </FumadocsAnchor>
+    );
   }
 
   return DocsAnchor;
