@@ -414,7 +414,7 @@ describe('app prose CSS regressions', () => {
     );
   });
 
-  it('keeps wrapped prose tables intrinsic while raw tables retain scroll fallback', () => {
+  it('keeps wrapped prose tables fluid with native column sizing while raw tables retain scroll fallback', () => {
     const table = getRuleBody(
       '.prose :where(table):not(:where(.not-prose, .not-prose *))',
     );
@@ -505,7 +505,7 @@ describe('app prose CSS regressions', () => {
     expect(wrappedTable.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'width',
-        value: 'auto',
+        value: '100%',
       }),
     );
     expect(wrappedTable.rule.nodes).toContainEqual(
@@ -547,7 +547,7 @@ describe('app prose CSS regressions', () => {
     expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'width',
-        value: 'auto',
+        value: '100%',
       }),
     );
     expect(wrappedTableOverflowOverride.rule.nodes).toContainEqual(
@@ -582,7 +582,7 @@ describe('app prose CSS regressions', () => {
     expect(cells.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'min-width',
-        value: '7.5rem',
+        value: '6ch',
       }),
     );
     expect(cells.rule.nodes).toContainEqual(
@@ -606,7 +606,7 @@ describe('app prose CSS regressions', () => {
     expect(firstColumn.rule.nodes).toContainEqual(
       expect.objectContaining({
         prop: 'min-width',
-        value: '9.5rem',
+        value: '12ch',
       }),
     );
     expect(cellFirstChild.rule.nodes).toContainEqual(

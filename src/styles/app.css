@@ -2,6 +2,7 @@
 @import "fumadocs-ui/css/lib/default-colors.css";
 @import "fumadocs-ui/css/preset.css";
 @import "fumadocs-openapi/css/preset.css";
+@import "./reference.css";
 
 :root {
   --color-fd-background: var(--background);
@@ -789,7 +790,7 @@
       :where(.not-prose, .not-prose *)
     ) {
     display: table;
-    width: auto;
+    width: 100%;
     max-width: none;
     min-width: 0;
     overflow: visible;
@@ -800,9 +801,9 @@
   }
 
   .prose :where(th, td):not(:where(.not-prose, .not-prose *)) {
-    min-width: 7.5rem;
+    min-width: 6ch;
     border-bottom: 1px solid var(--docs-prose-table-border);
-    padding: 0.85rem 1rem;
+    padding: 0.625rem 0.75rem;
     text-align: left;
     vertical-align: top;
     word-break: normal;
@@ -837,7 +838,7 @@
     :where(th:first-child, td:first-child):not(
       :where(.not-prose, .not-prose *)
     ) {
-    min-width: 9.5rem;
+    min-width: 12ch;
     white-space: normal;
   }
 
@@ -1582,7 +1583,7 @@
     :where(.not-prose, .not-prose *)
   ) {
   display: table;
-  width: auto;
+  width: 100%;
   max-width: none;
   min-width: 0;
   overflow: visible;
@@ -1867,8 +1868,7 @@
      adds a row), so anchor targets clear whatever the header currently is.
      Must live in `utilities` to beat the flat 7rem `scroll-m-28` utility
      fumadocs puts on every heading: layer order outranks specificity. */
-  .prose
-    :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
+  .prose :is(h1, h2, h3, h4, h5, h6):not(:where(.not-prose, .not-prose *)) {
     scroll-margin-top: max(
       7rem,
       calc(var(--docs-shell-header-offset, 0px) + 1.5rem)

@@ -120,6 +120,7 @@ function TabIndexPage() {
     sidebarHeader,
     slug,
     toc,
+    tocMaxDepth,
     title,
   } = Route.useLoaderData();
 
@@ -142,6 +143,7 @@ function TabIndexPage() {
       slug={slug}
       title={title}
       toc={toc}
+      tocMaxDepth={tocMaxDepth}
     />
   );
 }

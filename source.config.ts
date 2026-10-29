@@ -24,10 +24,12 @@ const rawDocSchema = z.object({
   icon: z.string().optional(),
   hidePlatformTabs: z.boolean().optional(),
   hideToc: z.boolean().optional(),
+  tocMaxDepth: z.number().int().min(1).max(6).optional(),
   layout: z.enum(['platform-group']).optional(),
   platforms: z.array(z.string()).optional(),
   defaultPlatform: z.string().optional(),
   _openapi: z.looseObject({}).optional(),
+  _migration: z.object({ generator: z.string().optional() }).optional(),
 });
 
 export const docs = defineDocs({

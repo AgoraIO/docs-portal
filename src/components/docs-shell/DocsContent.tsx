@@ -38,6 +38,7 @@ import {
 } from '@/lib/docs-last-updated';
 import type { DocsLayoutMode } from '@/lib/docs-layout';
 import type { DocsSidebarHeader } from '@/lib/docs-nav-scope';
+import { filterDocsToc } from '@/lib/docs-toc';
 import type { DocsBreadcrumbItem } from '@/lib/docs-tree';
 import {
   type AppLocale,
@@ -95,6 +96,7 @@ export function DocsContent({
   slug,
   title,
   toc,
+  tocMaxDepth,
 }: {
   activePath?: string;
   activeTab?: string;
@@ -113,6 +115,7 @@ export function DocsContent({
   slug?: string;
   title?: string;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
 }) {
   const { i18n } = useTranslation('common');
   const currentLocale = normalizeLocale(locale) ?? DEFAULT_LOCALE;
@@ -403,6 +406,7 @@ export function DocsContent({
           locale={currentLocale}
           sourceLinks={sourceLinks}
           toc={toc}
+          tocMaxDepth={tocMaxDepth}
           variant="mobile"
         />
       )}
@@ -760,12 +764,14 @@ export function DocsTableOfContents({
   locale = DEFAULT_LOCALE,
   sourceLinks = null,
   toc,
+  tocMaxDepth,
   variant = 'rail',
 }: {
   className?: string;
   locale?: AppLocale | string;
   sourceLinks?: ReturnType<typeof getDocsSourceLinks>;
   toc: TOCItemType[];
+  tocMaxDepth?: number;
   variant?: 'mobile' | 'rail';
 }) {
   const { i18n } = useTranslation('common');
@@ -775,17 +781,19 @@ export function DocsTableOfContents({
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const items = useMemo(() => {
     if (derivedItems.length === 0) {
-      return toc.filter((item) => typeof item.title === 'string');
+      return filterDocsToc(toc, tocMaxDepth).filter(
+        (item) => typeof item.title === 'string',
+      );
     }
 
     const sourceByUrl = new Map(toc.map((item) => [item.url, item]));
 
     // Rendered headings define the reading order, including versions missing
     // from the payload TOC and platform headings with different generated IDs.
-    return derivedItems
+    return filterDocsToc(derivedItems, tocMaxDepth)
       .map((item) => sourceByUrl.get(item.url) ?? item)
       .filter((item) => typeof item.title === 'string');
-  }, [derivedItems, toc]);
+  }, [derivedItems, toc, tocMaxDepth]);
   const [primaryActiveUrl, setPrimaryActiveUrl] = useState(
     () => items[0]?.url ?? '',
   );

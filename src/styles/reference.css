@@ -1,0 +1,99 @@
+/* Signatures can contain Markdown paragraphs and type links. Keep their code
+   face explicit so locale typography cannot override the inherited monospace. */
+[data-api-signature] > :last-child,
+[data-api-signature] > :last-child :where(*) {
+  font-family: var(--font-mono);
+}
+
+/* Keep multi-column tables readable on narrow screens. The existing scroll
+   wrapper exposes the remaining columns without squeezing prose into a strip. */
+.prose
+  table:not(.im-pricing-api-table):has(tr > :nth-child(4)):not(
+    :where(.not-prose, .not-prose *)
+  ),
+.openapi-operation
+  .openapi-markdown
+  table:not(.im-pricing-api-table):has(tr > :nth-child(4)) {
+  min-width: 42rem;
+}
+
+/* Share the existing OpenAPI Markdown table treatment across site regions. */
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(.prose-no-margin.overflow-auto > table) {
+  display: table;
+  width: 100%;
+  max-width: none;
+  min-width: 100%;
+  overflow: visible;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid
+    var(--docs-openapi-table-border, var(--docs-prose-table-border));
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  box-shadow: var(--docs-shadow-sm);
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(thead) {
+  background: var(
+    --docs-openapi-table-head-bg,
+    var(--docs-prose-table-head-bg)
+  );
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(th, td) {
+  min-width: 6ch;
+  border-bottom: 1px solid
+    var(--docs-openapi-table-border, var(--docs-prose-table-border));
+  padding: 0.625rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(th) {
+  color: var(--docs-text-primary);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td) {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(th:first-child, td:first-child) {
+  min-width: 12ch;
+  white-space: normal;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(tbody tr:last-child td) {
+  border-bottom: 0;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td > :first-child) {
+  margin-top: 0;
+}
+
+:where(html) .openapi-operation .openapi-markdown :where(td > :last-child) {
+  margin-bottom: 0;
+}
+
+:where(html)
+  .openapi-operation
+  .openapi-markdown
+  :where(tbody tr:nth-child(even)) {
+  background: var(--docs-openapi-table-row-bg);
+}
