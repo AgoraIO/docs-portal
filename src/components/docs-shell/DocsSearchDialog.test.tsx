@@ -145,7 +145,7 @@ describe('DocsSearchDialog', () => {
   it('shows both release labels regardless of the saved browsing version', async () => {
     vi.stubEnv('VITE_ALGOLIA_APP_ID', 'test-app');
     vi.stubEnv('VITE_ALGOLIA_SEARCH_API_KEY', 'test-key');
-    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai-v3":"v2"}');
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai":"v2"}');
     vi.mocked(createAlgoliaDocsClient).mockReturnValue({
       deps: [],
       getLastStatus: successfulAlgoliaStatus,
@@ -154,13 +154,13 @@ describe('DocsSearchDialog', () => {
           id: 'old',
           type: 'page',
           content: 'Old widget documentation',
-          url: '/en/api-reference/versioning-demo/v1/widgets',
+          url: '/en/ai/build/managed-mode',
         },
         {
           id: 'new',
           type: 'page',
           content: 'New widget documentation',
-          url: '/en/api-reference/versioning-demo/v2/list-widgets',
+          url: '/en/ai/platform/build/managed-mode',
         },
       ]),
     });
@@ -170,8 +170,8 @@ describe('DocsSearchDialog', () => {
       screen.getByPlaceholderText('Search docs, APIs, guides...'),
       { target: { value: 'widget' } },
     );
-    expect(await screen.findByText('Previous docs')).toBeVisible();
-    expect(await screen.findByText('New docs · Preview')).toBeVisible();
+    expect(await screen.findByText('Main')).toBeVisible();
+    expect(await screen.findByText('Preview')).toBeVisible();
     expect(
       screen.queryByRole('button', { name: /documentation versions/i }),
     ).not.toBeInTheDocument();

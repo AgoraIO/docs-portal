@@ -1,11 +1,8 @@
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
+import { TEST_DOC_VERSION_SCOPES as DOC_VERSION_SCOPES } from '@/test/fixtures/doc-versions';
 import * as versionRegistry from './doc-versions';
 import {
-  DOC_VERSION_SCOPES,
   type DocVersionScope,
-  getDocVersionSelections,
-  getDocVersionTarget,
-  resolveDocVersion,
   validateDocVersionScopes,
   withDocVersionMetadata,
 } from './doc-versions';
@@ -13,8 +10,32 @@ import { resolveDocsNavScope } from './docs-nav-scope';
 import { createMachineReadableDocsIndexes } from './llms-index';
 
 const root = '/en/api-reference/versioning-demo';
+const getDocVersionTarget: typeof versionRegistry.getDocVersionTarget = (
+  href,
+  target,
+  scopes = DOC_VERSION_SCOPES,
+) => versionRegistry.getDocVersionTarget(href, target, scopes);
+const getDocVersionSelections: typeof versionRegistry.getDocVersionSelections =
+  (href, preferences = {}, scopes = DOC_VERSION_SCOPES) =>
+    versionRegistry.getDocVersionSelections(href, preferences, scopes);
+const resolveDocVersion: typeof versionRegistry.resolveDocVersion = (
+  href,
+  scopes = DOC_VERSION_SCOPES,
+) => versionRegistry.resolveDocVersion(href, scopes);
+
+afterEach(() => vi.restoreAllMocks());
 
 describe('documentation releases', () => {
+  it('does not register demonstration routes in the application', () => {
+    expect(
+      versionRegistry.resolveDocVersion(`${root}/v2/list-widgets`),
+    ).toBeUndefined();
+    expect(
+      versionRegistry.DOC_VERSION_SCOPES.some((scope) =>
+        scope.id.startsWith('test-'),
+      ),
+    ).toBe(false);
+  });
   it('maps ordinary guides by topic key and rejects incompatible groups sharing a preference key', () => {
     expect(
       getDocVersionTarget(
@@ -58,6 +79,10 @@ describe('documentation releases', () => {
     ).toThrow('Missing default documentation release: test-api/unpublished');
   });
   it('owns a version sidebar without relying on product-specific metadata', () => {
+    const originalResolver = versionRegistry.resolveDocVersion;
+    vi.spyOn(versionRegistry, 'resolveDocVersion').mockImplementation((href) =>
+      originalResolver(href, DOC_VERSION_SCOPES),
+    );
     const result = resolveDocsNavScope({
       activePath: `${root}/v2/list-widgets`,
       tab: 'api-reference',
@@ -240,17 +265,17 @@ describe('documentation releases', () => {
   });
 
   it('gives Markdown and discovery indexes a fixed version identity', () => {
-    const url = `${root}/v2/list-widgets`;
+    const url = '/en/ai/platform/build/managed-mode';
     const markdown = withDocVersionMetadata(
       '# List widgets\n\nMock payload.',
       url,
     );
-    expect(markdown).toContain('Documentation version: New docs');
-    expect(markdown).toContain('/llms/doc-versions-test-api-v2.txt');
+    expect(markdown).toContain('Documentation version: Preview');
+    expect(markdown).toContain('/llms/doc-versions-convoai-guides-v2.txt');
     expect(withDocVersionMetadata('# Ordinary docs', '/en/introduction')).toBe(
       '# Ordinary docs',
     );
-    const urls = [`${root}/v1/widgets`, url];
+    const urls = ['/en/ai/build/managed-mode', url];
     const files = createMachineReadableDocsIndexes({
       baseUrl: 'https://docs.example',
       locale: 'en',
@@ -262,28 +287,40 @@ describe('documentation releases', () => {
       })),
     });
     const newIndex = files.find(
-      (file) => file.path === '/llms/doc-versions-test-api-v2.txt',
+      (file) => file.path === '/llms/doc-versions-convoai-guides-v2.txt',
     );
     expect(newIndex?.content).toContain(`${url}.md`);
-    expect(newIndex?.content).not.toContain('/v1/');
-    expect(newIndex?.content).toContain('doc-versions-test-api-v2-full.txt');
+    expect(newIndex?.content).not.toContain(
+      'https://docs.example/en/ai/build/managed-mode.md',
+    );
+    expect(newIndex?.content).toContain(
+      'doc-versions-convoai-guides-v2-full.txt',
+    );
   });
 
-  it('keeps the advertised release index stable when a large API needs shards', () => {
+  it('keeps the advertised release index stable when a large group needs shards', () => {
+    const preview = versionRegistry.DOC_VERSION_SCOPES.find(
+      (scope) => scope.id === 'convoai-guides',
+    )?.versions.find((version) => version.id === 'v2');
+    if (!preview) throw new Error('Missing registered Preview guides');
     const files = createMachineReadableDocsIndexes({
       baseUrl: 'https://docs.example',
       docsIndex: '',
       locale: 'en',
       maxCharacters: 1000,
-      publishedRoutes: Array.from({ length: 12 }, (_, index) => {
-        const url = `${root}/v2/long-reference-topic-${index}`;
-        return { url, canonicalPath: url, markdownPath: `${url}.md` };
-      }),
+      publishedRoutes: Object.values(preview.pages)
+        .slice(0, 12)
+        .map((relative) => {
+          const url = `${preview.rootUrl}${relative ? `/${relative}` : ''}`;
+          return { url, canonicalPath: url, markdownPath: `${url}.md` };
+        }),
     });
     const stable = files.find(
-      (file) => file.path === '/llms/doc-versions-test-api-v2.txt',
+      (file) => file.path === '/llms/doc-versions-convoai-guides-v2.txt',
     );
-    expect(stable?.content).toContain('/llms/doc-versions-test-api-v2-1.txt');
+    expect(stable?.content).toContain(
+      '/llms/doc-versions-convoai-guides-v2-1.txt',
+    );
     expect(
       files.filter((file) => /v2-\d+\.txt$/.test(file.path)).length,
     ).toBeGreaterThan(1);

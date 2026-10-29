@@ -73,16 +73,6 @@ describe('openapi lanes', () => {
         tab: 'api-reference',
       }),
       expect.objectContaining({
-        id: 'test-api-v1',
-        locales: ['en'],
-        routePrefix: 'api-reference/versioning-demo/v1',
-      }),
-      expect.objectContaining({
-        id: 'test-api-v2',
-        locales: ['en'],
-        routePrefix: 'api-reference/versioning-demo/v2',
-      }),
-      expect.objectContaining({
         id: 'convoai-platform',
         routePrefix: 'api-reference/api-ref/conversational-ai/platform',
         tab: 'api-reference',
@@ -182,13 +172,13 @@ describe('openapi lanes', () => {
     expect(getOpenApiPrerenderPaths()).toContain(
       '/en/api-reference/api-ref/speech-to-text/join',
     );
-    expect(getOpenApiPrerenderPaths()).toContain(
+    expect(getOpenApiPrerenderPaths()).not.toContain(
       '/en/api-reference/versioning-demo/v1/widgets',
     );
-    expect(getOpenApiPrerenderPaths()).toContain(
+    expect(getOpenApiPrerenderPaths()).not.toContain(
       '/en/api-reference/versioning-demo/v2/list-widgets',
     );
-    expect(getOpenApiPrerenderPaths()).toHaveLength(121);
+    expect(getOpenApiPrerenderPaths()).toHaveLength(119);
   });
 
   it('resolves RTC REST endpoint routes in the api-reference tab', () => {

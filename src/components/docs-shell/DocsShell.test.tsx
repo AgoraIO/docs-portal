@@ -481,7 +481,7 @@ describe('DocsShell', () => {
 
   it('keeps documentation preview controls out of the global navigation', async () => {
     renderDocsShell({
-      activePath: '/en/api-reference/versioning-demo/v1/widgets',
+      activePath: '/en/api-reference/api-ref/conversational-ai/authentication',
       activeTab: 'api-reference',
     });
     const strip = await screen.findByTestId('docs-tabs-strip');
@@ -490,15 +490,15 @@ describe('DocsShell', () => {
     ).not.toBeInTheDocument();
     expect(
       within(screen.getByTestId('docs-sidebar')).getByRole('button', {
-        name: 'Documentation: Previous docs',
+        name: 'Documentation: Main',
       }),
     ).toBeInTheDocument();
   });
 
   it('switches ordinary documentation from the collapsed mobile sidebar and closes it after selection', async () => {
-    const currentPath = '/en/introduction/versioning-demo/new/configure';
+    const currentPath = '/en/ai/platform/get-started/start-stop-agent';
     const { router } = renderDocsShell(
-      { activePath: currentPath },
+      { activePath: currentPath, activeTab: 'ai' },
       currentPath,
     );
     fireEvent.click(
@@ -506,23 +506,20 @@ describe('DocsShell', () => {
     );
     const dialog = await screen.findByRole('dialog');
     const selector = within(dialog).getByRole('button', {
-      name: 'Documentation: New docs · Preview',
+      name: 'Documentation: Preview',
     });
     expect(
       within(dialog).getByText('Documentation version'),
     ).toBeInTheDocument();
     fireEvent.keyDown(selector, { key: 'ArrowDown' });
     const previous = await screen.findByRole('menuitem', {
-      name: 'Previous docs',
+      name: 'Main',
     });
-    expect(previous).toHaveAttribute(
-      'href',
-      '/en/introduction/versioning-demo/previous/setup',
-    );
+    expect(previous).toHaveAttribute('href', '/en/ai/build/start-stop-agent');
     fireEvent.click(previous);
     await waitFor(() =>
       expect(router.state.location.pathname).toBe(
-        '/en/introduction/versioning-demo/previous/setup',
+        '/en/ai/build/start-stop-agent',
       ),
     );
     await waitFor(() =>

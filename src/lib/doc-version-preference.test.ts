@@ -13,53 +13,53 @@ describe('documentation release preference', () => {
   });
 
   it('restores the saved version at the entry but preserves explicit old links', () => {
-    setDocVersionPreference('test-api', 'v2');
+    setDocVersionPreference('convoai-api', 'v2');
     expect(
       JSON.parse(localStorage.getItem(DOC_VERSION_STORAGE_KEY) ?? '{}'),
-    ).toEqual({ 'convoai-v3': 'v2' });
+    ).toEqual({ convoai: 'v2' });
     expect(
-      getStoredDocVersionSelections('/en/api-reference/versioning-demo')[
-        'test-api'
-      ],
+      getStoredDocVersionSelections(
+        '/en/api-reference/api-ref/conversational-ai/documentation-versions',
+      )['convoai-api'],
     ).toBe('v2');
     expect(
-      getStoredDocVersionSelections('/en/api-reference/versioning-demo/v1')[
-        'test-api'
-      ],
+      getStoredDocVersionSelections(
+        '/en/api-reference/api-ref/conversational-ai/authentication',
+      )['convoai-api'],
     ).toBe('v1');
   });
 
   it('ignores corrupt or unpublished choices', () => {
     expect(parseDocVersionPreferences('{broken')).toEqual({});
     expect(parseDocVersionPreferences('null')).toEqual({});
-    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai-v3":"removed"}');
-    expect(getStoredDocVersionSelections('')['test-api']).toBe('v2');
-    setDocVersionPreference('test-api', 'unpublished');
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai":"removed"}');
+    expect(getStoredDocVersionSelections('')['convoai-api']).toBe('v1');
+    setDocVersionPreference('convoai-api', 'unpublished');
     expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
-      '{"convoai-v3":"removed"}',
+      '{"convoai":"removed"}',
     );
   });
 
   it('shares a rollout key between ordinary guides and API docs without rewriting it on a shared-link arrival', () => {
-    setDocVersionPreference('test-api', 'v1');
+    setDocVersionPreference('convoai-api', 'v1');
     expect(
-      getStoredDocVersionSelections('/en/introduction/versioning-demo')[
-        'test-guides'
+      getStoredDocVersionSelections('/en/ai/documentation-versions')[
+        'convoai-guides'
       ],
     ).toBe('v1');
     expect(
-      getStoredDocVersionSelections(
-        '/en/introduction/versioning-demo/new/configure',
-      )['test-guides'],
+      getStoredDocVersionSelections('/en/ai/platform/build/managed-mode')[
+        'convoai-guides'
+      ],
     ).toBe('v2');
     expect(
       JSON.parse(localStorage.getItem(DOC_VERSION_STORAGE_KEY) ?? '{}'),
-    ).toEqual({ 'convoai-v3': 'v1' });
-    setDocVersionPreference('test-guides', 'v2');
+    ).toEqual({ convoai: 'v1' });
+    setDocVersionPreference('convoai-guides', 'v2');
     expect(
-      getStoredDocVersionSelections('/en/api-reference/versioning-demo')[
-        'test-api'
-      ],
+      getStoredDocVersionSelections(
+        '/en/api-reference/api-ref/conversational-ai/documentation-versions',
+      )['convoai-api'],
     ).toBe('v2');
   });
 });

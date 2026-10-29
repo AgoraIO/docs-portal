@@ -191,12 +191,12 @@ describe('DocsContent', () => {
   it('keeps version selection out of the article and shows only the preview notice below its header', async () => {
     renderWithRouter(
       <DocsContent
-        activePath="/en/api-reference/versioning-demo/v2/list-widgets"
+        activePath="/en/api-reference/api-ref/conversational-ai/platform/authentication"
         breadcrumb={[]}
-        contentPath="en/api-reference/versioning-demo/v2/index.md"
-        markdownUrl="/en/api-reference/versioning-demo/v2/list-widgets.md"
-        slug="versioning-demo/v2/list-widgets"
-        title="List test widgets"
+        contentPath="en/api-reference/api-ref/conversational-ai/platform/authentication.mdx"
+        markdownUrl="/en/api-reference/api-ref/conversational-ai/platform/authentication.md"
+        slug="api-ref/conversational-ai/platform/authentication"
+        title="RESTful authentication"
         toc={[]}
       />,
       '/en/api-reference/widgets',
@@ -204,7 +204,7 @@ describe('DocsContent', () => {
 
     const heading = await screen.findByRole('heading', {
       level: 1,
-      name: 'List test widgets',
+      name: 'RESTful authentication',
     });
     const header = heading.closest('header');
     expect(
@@ -215,7 +215,7 @@ describe('DocsContent', () => {
     expect(note.nextElementSibling).toHaveAttribute('data-static-docs-body');
     expect(within(note).getByRole('link')).toHaveAttribute(
       'href',
-      '/en/api-reference/versioning-demo/v1/widgets',
+      '/en/api-reference/api-ref/conversational-ai/authentication',
     );
   });
 

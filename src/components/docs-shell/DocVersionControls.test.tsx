@@ -15,7 +15,7 @@ vi.mock('@tanstack/react-router', () => ({
   ),
 }));
 
-const root = '/en/api-reference/versioning-demo';
+const root = '/en/api-reference/api-ref/conversational-ai';
 
 function openSelector() {
   fireEvent.keyDown(screen.getByRole('button', { name: /^Documentation:/ }), {
@@ -33,49 +33,50 @@ describe('documentation preview controls', () => {
   });
 
   it.each([
-    ['fresh browser', null, 'v2'],
-    ['saved previous docs', 'v1', 'v1'],
+    ['fresh browser', null, root],
+    ['saved preview', 'v2', `${root}/platform`],
   ])('restores %s only at the neutral entry', async (_, saved, expected) => {
     if (saved)
       localStorage.setItem(
         DOC_VERSION_STORAGE_KEY,
-        JSON.stringify({ 'convoai-v3': saved }),
+        JSON.stringify({ convoai: saved }),
       );
     const replace = vi
       .spyOn(window.location, 'replace')
       .mockImplementation(() => {});
-    render(<DocVersionNotice activePath={root} />);
+    render(<DocVersionNotice activePath={`${root}/documentation-versions`} />);
     await waitFor(() =>
-      expect(replace).toHaveBeenCalledExactlyOnceWith(`${root}/${expected}`),
+      expect(replace).toHaveBeenCalledExactlyOnceWith(expected),
     );
   });
 
   it('keeps a shared old URL pinned without overwriting the saved preview choice', async () => {
-    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai-v3":"v2"}');
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai":"v2"}');
     const replace = vi
       .spyOn(window.location, 'replace')
       .mockImplementation(() => {});
     render(
       <>
-        <DocVersionSelector activePath={`${root}/v1/widgets`} />
-        <DocVersionNotice activePath={`${root}/v1/widgets`} />
+        <DocVersionSelector activePath={`${root}/authentication`} />
+        <DocVersionNotice activePath={`${root}/authentication`} />
       </>,
     );
     expect(replace).not.toHaveBeenCalled();
     expect(
-      screen.getByRole('button', { name: 'Documentation: Previous docs' }),
+      screen.getByRole('button', { name: 'Documentation: Main' }),
     ).toBeInTheDocument();
     expect(screen.queryByRole('note')).not.toBeInTheDocument();
     await openSelector();
-    expect(
-      screen.getByRole('menuitem', { name: 'Previous docs' }),
-    ).toHaveAttribute('aria-current', 'page');
+    expect(screen.getByRole('menuitem', { name: 'Main' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
     const preview = screen.getByRole('menuitem', {
-      name: 'New docs · Preview',
+      name: 'Preview',
     });
-    expect(preview).toHaveAttribute('href', `${root}/v2/list-widgets`);
+    expect(preview).toHaveAttribute('href', `${root}/platform/authentication`);
     expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
-      '{"convoai-v3":"v2"}',
+      '{"convoai":"v2"}',
     );
     localStorage.clear();
     fireEvent.click(preview, { metaKey: true });
@@ -83,60 +84,63 @@ describe('documentation preview controls', () => {
   });
 
   it('saves a deliberate selection of preview docs', async () => {
-    render(<DocVersionSelector activePath={`${root}/v1/widgets`} />);
+    render(<DocVersionSelector activePath={`${root}/authentication`} />);
     await openSelector();
-    fireEvent.click(
-      screen.getByRole('menuitem', { name: 'New docs · Preview' }),
-    );
+    fireEvent.click(screen.getByRole('menuitem', { name: 'Preview' }));
     expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
-      '{"convoai-v3":"v2"}',
+      '{"convoai":"v2"}',
     );
   });
 
   it('shows the current preview and maps selection to the matching previous topic', async () => {
-    render(<DocVersionSelector activePath={`${root}/v2/list-widgets`} />);
+    render(
+      <DocVersionSelector activePath={`${root}/platform/authentication`} />,
+    );
     expect(
-      screen.getByRole('button', { name: 'Documentation: New docs · Preview' }),
+      screen.getByRole('button', { name: 'Documentation: Preview' }),
     ).toBeInTheDocument();
     await openSelector();
-    expect(
-      screen.getByRole('menuitem', { name: 'New docs · Preview' }),
-    ).toHaveAttribute('aria-current', 'page');
-    const previous = screen.getByRole('menuitem', { name: 'Previous docs' });
-    expect(previous).toHaveAttribute('href', `${root}/v1/widgets`);
+    expect(screen.getByRole('menuitem', { name: 'Preview' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+    const previous = screen.getByRole('menuitem', { name: 'Main' });
+    expect(previous).toHaveAttribute('href', `${root}/authentication`);
     fireEvent.click(previous);
     expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
-      '{"convoai-v3":"v1"}',
+      '{"convoai":"v1"}',
     );
   });
 
   it('makes the notice return link independent of the preview default and saves only a normal click', () => {
-    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai-v3":"v2"}');
-    render(<DocVersionNotice activePath={`${root}/v2/list-widgets`} />);
+    localStorage.setItem(DOC_VERSION_STORAGE_KEY, '{"convoai":"v2"}');
+    render(<DocVersionNotice activePath={`${root}/platform/authentication`} />);
     expect(
       screen.getByRole('note', { name: 'Preview documentation' }),
-    ).toHaveTextContent('You’re reading the new Test API docs.');
-    const back = screen.getByRole('link', { name: 'Switch to Previous docs.' });
-    expect(back).toHaveAttribute('href', `${root}/v1/widgets`);
+    ).toHaveTextContent(
+      "You're reading the Conversational AI Platform (Preview) docs.",
+    );
+    const back = screen.getByRole('link', { name: 'Switch to Main.' });
+    expect(back).toHaveAttribute('href', `${root}/authentication`);
     fireEvent.click(back, { ctrlKey: true });
     expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
-      '{"convoai-v3":"v2"}',
+      '{"convoai":"v2"}',
     );
     fireEvent.click(back);
     expect(localStorage.getItem(DOC_VERSION_STORAGE_KEY)).toBe(
-      '{"convoai-v3":"v1"}',
+      '{"convoai":"v1"}',
     );
   });
 
   it('falls back to the overview for an exclusive topic and explains a missing-topic arrival', () => {
     location.searchStr = '?versionFallback=1';
-    render(<DocVersionNotice activePath={`${root}/v2/migration`} />);
+    render(<DocVersionNotice activePath={`${root}/platform/create-agent`} />);
     expect(screen.getByRole('link')).toHaveAttribute(
       'href',
-      `${root}/v1?versionFallback=1`,
+      `${root}?versionFallback=1`,
     );
     expect(screen.getByRole('status')).toHaveTextContent(
-      'No matching page in New docs. Showing its overview.',
+      'No matching page in Preview. Showing its overview.',
     );
   });
 

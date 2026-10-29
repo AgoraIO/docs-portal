@@ -15,12 +15,14 @@ recorded for the content owners and do not gate this implementation delivery.
   TypeScript #124 at `4900f4c`, and Go #117 at `362ce9a`.
 - Both merges preserve the source content. The retired Platform Speak, Inject
   context and Interrupt operations remain absent from the source contract and
-  generated sidebar. The endpoint registry has 121 entries including samples.
+  generated sidebar. The endpoint registry now has 119 real entries after
+  demonstration removal.
 
 ## Implemented behavior
 
 - Real guide, REST and SDK entries default to Main and share the existing
-  `convoai` preference key. Isolated samples use `convoai-v3`.
+  `convoai` preference key. The application registry contains product groups
+  only; sample registrations are isolated under `src/test/fixtures`.
 - Main and Preview use the same bordered badge, option check and product
   descriptions in selectors and search. The SDK heading uses the repository's
   Voice Agents name; options identify the two APIs, not two SDK products.
@@ -83,7 +85,7 @@ The local build is served at `http://127.0.0.1:3022`.
   exactly match the pre-follow-up baseline; there are no newly failing tests.
 - Final type checking and changed-source Biome checks passed. Existing
   full-repository lint errors remain outside this implementation.
-- Production build passed with 2143 route HTML files. All six real bulk exports
+- Production build passed with 2129 route HTML files after demo removal. All six real bulk exports
   identify Main/Preview by label. Published OpenAPI and all three source SDK
   references match the latest #1208 byte-for-byte. Platform release-note prose
   matches its source section, and Main release notes match main.
@@ -98,8 +100,32 @@ The local build is served at `http://127.0.0.1:3022`.
 
 ![Unified Main/Preview guide control](convoai-switcher-preview/unified-desktop.jpg)
 
-[Reference catalog](convoai-switcher-preview/unified-reference.jpg) ·
+[Reference catalog](convoai-switcher-preview/reference-products-only.jpg) ·
 [Mobile navigation](convoai-switcher-preview/unified-mobile.jpg)
+
+## Demonstration removal follow-up
+
+The API versioning demo and ordinary-guide demo have been removed entirely
+from published content: 18 content/metadata files and two mock OpenAPI YAML
+files. Their navigation links, Reference callout, runtime version registrations,
+OpenAPI lanes and bundled imports are also removed. Test-only registrations
+live in `src/test/fixtures`; controls, preference and export integration tests
+now use real ConvoAI documents. Regression checks assert the old pages and
+generated endpoints are absent.
+
+The removal's focused run passed 199 tests. The full run remains 1888 passed /
+42 inherited failures (1930 total), with no newly failing tests. Type checking
+and changed-source Biome passed. Independent Standards and Spec review found
+no additional source-level issues. The build emits 2129 route HTML files and
+119 real generated endpoint pages. A scan of all 10,952 text artifacts under
+`public` and `dist/client` found no demonstration paths, mock search tokens,
+mock version indexes or test copy. Root Reference content/navigation and the
+Introduction navigation match main after removing the demos.
+
+Browser checks confirm the former API and guide demo URLs return 404 on the
+local build, Reference has no Test API entry/callout, and its real Preview
+choice still opens the Platform Go SDK with the correct notice. Updated
+Reference evidence is in `convoai-switcher-preview/reference-products-only.jpg`.
 
 ## Delivery scope
 
