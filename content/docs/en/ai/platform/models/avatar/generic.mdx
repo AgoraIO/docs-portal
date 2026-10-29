@@ -74,7 +74,24 @@ agent = (
 
 <TabsContent value="typescript">
 
-The TypeScript SDK doesn't support generic avatars on the Platform yet. Use the REST API.
+```ts
+import { Agent, GenericAvatar, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(/* configure your TTS vendor */)
+  .withAvatar(
+    new GenericAvatar({
+      apiKey: secretRef('support_prod', 'avatar'),
+      apiBaseUrl: '<avatar_api_base_url>',
+      avatarId: '<avatar_id>',
+      agoraUid: '<avatar_rtc_uid>',
+      agoraToken: '<avatar_rtc_token>',
+    }),
+  );
+```
 
 </TabsContent>
 
@@ -100,7 +117,7 @@ agent := agentkit.NewAgent(client).
 
 {/* TODO(platform-confirm): The avatar block is saved with the agent, but `agora_uid` and `agora_token` identify the avatar in one session's RTC channel, and RTC tokens expire. Confirm how the Platform supplies the avatar's UID and token for each session, and update this example. */}
 
-{/* TODO(platform-confirm): SDK examples tested in pre-release testing on 2026-10-28 (BYOK only; agents saved and the stored `avatar` block checked). Python and Go saved this avatar as written. TypeScript fails before sending a request ("Unsupported v3 fields: agent.pipeline.avatar.url"): its Platform mapping moves `params.api_base_url` to a top-level `url`, which the avatar schema doesn't allow, and `apiBaseUrl` is required (SDK bug list #24). Add the TypeScript example when that's fixed. */}
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-29) against the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. BYOK only; agents saved and the stored `avatar` block checked. All three saved this avatar as written and stored the same `avatar` block as the REST example (SDK bug list #24, fixed). */}
 
 ## Key parameters
 

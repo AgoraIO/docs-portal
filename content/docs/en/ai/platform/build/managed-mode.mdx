@@ -149,7 +149,7 @@ if err != nil {
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): All examples use managed OpenAI `tts-1`, not MiniMax, because the TypeScript SDK can't set MiniMax `voice_setting.speed`, which MiniMax requires, and every tab builds the same agent (SDK bug list #2). The managed OpenAI LLM fails in all three SDKs until they send `vendor` (SDK bug list #1). */}
+{/* TODO(platform-confirm): All examples use managed OpenAI `tts-1`. In pre-release testing (2026-10-29) with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a, all three SDK examples saved as written, and the SDKs now send `vendor` for managed OpenAI (SDK bug list #1, fixed). */}
 
 You then start sessions with the agent as usual. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
 

@@ -206,7 +206,6 @@ agent = (
         OpenAI(
             # [!code highlight]
             api_key=secret_ref("support_prod", "llm"),
-            vendor="openai",
             base_url="https://api.openai.com/v1/chat/completions",
             model="gpt-4.1-mini",
             system_messages=[
@@ -235,7 +234,6 @@ const agent = new Agent({ client })
     new OpenAI({
       // [!code highlight]
       apiKey: secretRef('support_prod', 'llm'),
-      vendor: 'openai',
       url: 'https://api.openai.com/v1/chat/completions',
       model: 'gpt-4.1-mini',
       systemMessages: [
@@ -260,7 +258,6 @@ agent := agentkit.NewAgent(client).
 	WithLlm(vendors.NewOpenAI(vendors.OpenAIOptions{
 		// [!code highlight]
 		APIKey:  agentkit.SecretRef("support_prod", "llm"),
-		Vendor:  "openai",
 		BaseURL: "https://api.openai.com/v1/chat/completions",
 		Model:   "gpt-4.1-mini",
 		SystemMessages: []map[string]interface{}{
@@ -278,7 +275,7 @@ if err != nil {
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): The SDK examples use managed OpenAI `tts-1` instead of MiniMax, because the TypeScript SDK can't set MiniMax `voice_setting.speed`, which MiniMax requires, and every tab builds the same agent (SDK bug list #2). Since the afternoon of 2026-10-28, the pre-release API accepts only `credential.fields` and rejects `credential.api_key`. The REST examples use `fields`. The SDK examples set `vendor` to `openai` because the SDKs don't default it (SDK bug list #1). All three SDK examples on this page (create the set, create the agent, rotate the key) passed in pre-release testing on 2026-10-28 with no workaround. */}
+{/* TODO(platform-confirm): The SDK examples use managed OpenAI `tts-1`. Since the afternoon of 2026-10-28, the pre-release API accepts only `credential.fields` and rejects `credential.api_key`. The REST examples use `fields`. All three SDK examples on this page (create the set, create the agent, rotate the key) passed in pre-release testing on 2026-10-29 with the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. */}
 
 You then start sessions with the agent as usual. The session request doesn't change. For details, see [Start a session](/en/ai/platform/get-started/start-stop-agent#start-a-session).
 

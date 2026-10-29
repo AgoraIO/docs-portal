@@ -103,7 +103,25 @@ agent = (
 
 <TabsContent value="typescript">
 
-The TypeScript SDK doesn't support MiniMax on the Platform yet. Use the REST API.
+```ts
+import { Agent, MiniMaxTTS, secretRef } from 'agora-agents';
+
+// client is your configured Agora client
+const agent = new Agent({ client })
+  .withStt(/* configure your ASR vendor */)
+  .withLlm(/* configure your LLM vendor */)
+  .withTts(
+    new MiniMaxTTS({
+      key: secretRef('support_prod', 'minimax'), // omit to use managed mode
+      groupId: '<your_minimax_group_id>', // omit to use managed mode
+      url: 'wss://api-uw.minimax.io/ws/v1/t2a_v2', // omit to use managed mode
+      model: 'speech-2.8-turbo',
+      voiceId: 'English_captivating_female1',
+      speed: 1.0,
+      sampleRate: 44100,
+    }),
+  );
+```
 
 </TabsContent>
 
@@ -111,25 +129,25 @@ The TypeScript SDK doesn't support MiniMax on the Platform yet. Use the REST API
 
 ```go
 // client is your configured Agora client
+speed, sampleRate := 1.0, 44100
 agent := agentkit.NewAgent(client).
 	WithStt( /* configure your ASR vendor */ ).
 	WithLlm( /* configure your LLM vendor */ ).
 	WithTts(vendors.NewMiniMaxTTS(vendors.MiniMaxTTSOptions{
-		Key:     agentkit.SecretRef("support_prod", "minimax"), // omit to use managed mode
-		GroupID: "<your_minimax_group_id>",                     // omit to use managed mode
-		URL:     "wss://api-uw.minimax.io/ws/v1/t2a_v2",        // omit to use managed mode
-		Model:   "speech-2.8-turbo",
-		AdditionalParams: map[string]interface{}{
-			"voice_setting": map[string]interface{}{"voice_id": "English_captivating_female1", "speed": 1.0},
-			"audio_setting": map[string]interface{}{"sample_rate": 44100},
-		},
+		Key:        agentkit.SecretRef("support_prod", "minimax"), // omit to use managed mode
+		GroupID:    "<your_minimax_group_id>",                     // omit to use managed mode
+		URL:        "wss://api-uw.minimax.io/ws/v1/t2a_v2",        // omit to use managed mode
+		Model:      "speech-2.8-turbo",
+		VoiceID:    "English_captivating_female1",
+		Speed:      &speed,
+		SampleRate: &sampleRate,
 	}))
 ```
 
 </TabsContent>
 </Tabs>
 
-{/* TODO(platform-confirm): In pre-release testing (2026-10-28), the Python and Go examples saved in both managed mode and BYOK. Go passes `voice_setting` and `audio_setting` through `AdditionalParams`, because `MiniMaxTTSOptions` has no speed or sample rate field. The TypeScript `MiniMaxTTS` can't send `voice_setting.speed` (no option and no additional parameters), and the API rejected it in both modes with `400 InvalidModuleParameter` (SDK bug list #2, which affects TypeScript only). All three SDKs send the key as `credential.fields.key`, which the API accepted. */}
+{/* TODO(platform-confirm): SDK tabs tested in pre-release testing (2026-10-29) against the SDK preview commits TypeScript 4900f4c, Python ed4466c, and Go 362ce9a. All three saved in managed mode, sent `voice_setting.speed` and `audio_setting.sample_rate`, and stored the same `tts` block as the REST example (SDK bug list #2, fixed). In pre-release testing (2026-10-28), BYOK saved in Python and Go, with the key sent as `credential.fields.key`. */}
 
 ## Key parameters
 
