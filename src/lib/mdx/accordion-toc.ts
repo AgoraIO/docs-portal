@@ -81,7 +81,7 @@ function getAccordionVersion(node: MdxJsxFlowElement) {
   }
 
   return {
-    depth: Math.min(headingLevel + 1, 4) as 3 | 4,
+    depth: headingLevel as 2 | 3 | 4,
     id,
     title,
   };

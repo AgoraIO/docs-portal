@@ -1,4 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
+import { addAccordionHeadingsToTocText } from '../mdx/accordion-toc';
 import {
   exportPublishedCnRecords,
   extractPublishedCnSections,
@@ -8,6 +9,50 @@ const url = '/zh-CN/api-reference/rtc/web/4.6.0/api';
 const route = { url, canonicalPath: url, markdownPath: `${url}.md` };
 const page = { url, title: 'RTC API', objectType: 'docs' as const };
 describe('published CN index export', () => {
+  it('keeps each release as the ancestor of its indexed subsections', async () => {
+    const url = '/zh-CN/ai/release-notes';
+    const markdown = addAccordionHeadingsToTocText(`# 发版说明
+
+<Accordions type="multiple">
+<Accordion title="v3.2" id="v32" headingLevel={2}>
+
+发布说明。
+
+### 新增特性 [#features]
+
+#### 自动接收 [#receive]
+
+enableAutoReceive 配置。
+
+</Accordion>
+<Accordion title="v3.1" id="v31" headingLevel={2}>
+
+历史发布说明。
+
+### 问题修复 [#fixes]
+
+恢复音频。
+
+</Accordion>
+</Accordions>`);
+    const records = await exportPublishedCnRecords({
+      routes: [{ url, canonicalPath: url, markdownPath: `${url}.md` }],
+      pages: [{ url, title: '发版说明', objectType: 'docs' }],
+      readMarkdown: async () => markdown,
+      readRenderedHtml: async () =>
+        '<h2 id="v32">v3.2</h2><h3 id="features">新增特性</h3><h4 id="receive">自动接收</h4><h2 id="v31">v3.1</h2><h3 id="fixes">问题修复</h3>',
+    });
+    expect(
+      records.find((record) => record.url.endsWith('#receive')),
+    ).toMatchObject({
+      headingPath: ['发版说明', 'v3.2', '新增特性', '自动接收'],
+      content: expect.stringContaining('enableAutoReceive'),
+    });
+    expect(
+      records.find((record) => record.url.endsWith('#fixes')),
+    ).toMatchObject({ headingPath: ['发版说明', 'v3.1', '问题修复'] });
+  });
+
   it('indexes rendered subheadings inside a non-platform release-note accordion', async () => {
     const url = '/zh-CN/ai/release-notes';
     const records = await exportPublishedCnRecords({

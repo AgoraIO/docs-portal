@@ -88,7 +88,7 @@ describe('SearchResultList', () => {
     expect(screen.queryByText('4.24.9')).not.toBeInTheDocument();
   });
 
-  it('links unfiltered results to the canonical document and preserves section hash', () => {
+  it('preserves the matched platform and section hash without a platform filter', () => {
     render(
       <SearchResultList groups={[group]} productLabel={() => '实时互动 RTC'} />,
     );
@@ -105,7 +105,7 @@ describe('SearchResultList', () => {
         .find((link) => link.getAttribute('href')?.includes('#token')),
     ).toHaveAttribute(
       'href',
-      '/zh-CN/realtime-media/rtc/build/token-authentication#token',
+      '/zh-CN/realtime-media/rtc/build/token-authentication/android#token',
     );
     expect(screen.getByText('Android')).toBeInTheDocument();
     expect(screen.getByText('iOS')).toBeInTheDocument();

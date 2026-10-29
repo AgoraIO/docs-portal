@@ -113,7 +113,10 @@ const RouterFumadocsCard = createLink(FumadocsCard);
 const CodeBlockTabsValueContext = createContext<string | undefined>(undefined);
 const MdxTabLabelsContext = createContext<Record<string, string>>({});
 const MdxTabLabelContext = createContext<string | undefined>(undefined);
-const MdxAccordionRootContext = createContext(false);
+const MdxAccordionRootContext = createContext<{
+  values: string[];
+  reveal: (value: string) => void;
+} | null>(null);
 
 type TabsRootProps = ComponentProps<typeof FumadocsTabs> & {
   children?: ReactNode;
@@ -229,7 +232,25 @@ function Accordion({
   value = String(title),
   ...props
 }: AccordionProps) {
-  const hasAccordionRoot = useContext(MdxAccordionRootContext);
+  const accordionRoot = useContext(MdxAccordionRootContext);
+  const [standaloneValue, setStandaloneValue] = useState(value);
+  const contentRef = useRef<HTMLElement>(null);
+  const expanded = accordionRoot
+    ? accordionRoot.values.includes(value)
+    : standaloneValue === value;
+  const reveal = useEffectEvent(() => {
+    if (accordionRoot) accordionRoot.reveal(value);
+    else setStandaloneValue(value);
+  });
+  useLayoutEffect(() => {
+    const element = contentRef.current;
+    if (headingLevel === undefined || !element) return;
+    if (expanded) element.removeAttribute('hidden');
+    else element.setAttribute('hidden', 'until-found');
+    const handleBeforeMatch = () => reveal();
+    element.addEventListener('beforematch', handleBeforeMatch);
+    return () => element.removeEventListener('beforematch', handleBeforeMatch);
+  }, [expanded, headingLevel]);
   const titleContent = (
     <FumadocsAccordionTrigger>{title}</FumadocsAccordionTrigger>
   );
@@ -259,26 +280,42 @@ function Accordion({
     </FumadocsAccordionHeader>
   );
 
+  const body = (
+    <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">{children}</div>
+  );
   const accordionItem = (
     <FumadocsAccordionItem value={value} {...props}>
       {header}
       <FumadocsAccordionContent
         data-toc-hidden={headingLevel !== undefined ? 'true' : undefined}
-        className={
-          headingLevel !== undefined ? 'data-[state=closed]:hidden' : undefined
-        }
         forceMount={headingLevel !== undefined ? true : undefined}
       >
-        <div className="px-4 pb-2 text-[0.9375rem] prose-no-margin">
-          {children}
-        </div>
+        {headingLevel === undefined
+          ? body
+          : // React serializes hidden as a boolean on built-in elements. A custom
+            // element preserves until-found in SSR, as in the OpenAPI schema tree.
+            createElement(
+              'docs-accordion-body',
+              {
+                className: 'block',
+                hidden: expanded ? undefined : 'until-found',
+                ref: contentRef,
+              },
+              body,
+            )}
       </FumadocsAccordionContent>
     </FumadocsAccordionItem>
   );
 
-  if (!hasAccordionRoot) {
+  if (!accordionRoot) {
     return (
-      <ControlledFumadocsAccordions defaultValue={value} type="single">
+      <ControlledFumadocsAccordions
+        onValueChange={(next) =>
+          setStandaloneValue(typeof next === 'string' ? next : '')
+        }
+        type="single"
+        value={standaloneValue}
+      >
         {accordionItem}
       </ControlledFumadocsAccordions>
     );
@@ -1211,7 +1248,21 @@ function Accordions({
     );
 
   return (
-    <MdxAccordionRootContext value>{accordionRoot}</MdxAccordionRootContext>
+    <MdxAccordionRootContext
+      value={{
+        values: type === 'multiple' ? selectedMultipleValue : [selectedValue],
+        reveal: (target) =>
+          handleValueChange(
+            type === 'multiple'
+              ? selectedMultipleValue.includes(target)
+                ? selectedMultipleValue
+                : [...selectedMultipleValue, target]
+              : target,
+          ),
+      }}
+    >
+      {accordionRoot}
+    </MdxAccordionRootContext>
   );
 }
 
