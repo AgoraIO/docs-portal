@@ -117,6 +117,7 @@ const docsNavScopeVersionOverrideSchema = z.object({
 
 export const docsNavScopeSchema = z.object({
   defaultVersion: z.string().min(1).optional(),
+  sidebar: z.array(docsNavScopeSidebarEntrySchema).min(1).optional(),
   platformTabs: z.boolean().optional(),
   presentation: z.enum(['dropdown', 'tabs']).optional(),
   sharedSidebar: z.boolean().optional(),

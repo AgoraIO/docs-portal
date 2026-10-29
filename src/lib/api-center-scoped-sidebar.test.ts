@@ -62,6 +62,84 @@ async function loadReferencePayload(slugs: string[]) {
 // These integration tests load the real MDX/OpenAPI graph under parallel suite load.
 describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
   it.each([
+    ['android', 'android'],
+    ['csharp-windows', 'windows'],
+    ['unreal-blueprint', 'blueprint'],
+  ])(
+    'retains the source error-code link for the %s API sidebar',
+    async (platform, guidePlatform) => {
+      const payload = await loadApiReferencePayload([
+        'rtc',
+        platform,
+        'rtc-api-overview',
+      ]);
+      expect(
+        findNode(payload.sidebar as SidebarNode[], '错误码'),
+      ).toMatchObject({
+        external: true,
+        url: `/zh-CN/realtime-media/rtc/reference/error-code/${guidePlatform}`,
+      });
+    },
+  );
+
+  it('keeps the first RTM API page aligned with its source sidebar and page navigation', async () => {
+    const payload = await loadApiReferencePayload([
+      'rtm',
+      'android',
+      'configuration',
+    ]);
+    expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([
+      'API 参考',
+      '初始配置',
+      '用户鉴权',
+      '频道',
+      'Topic',
+      '消息',
+      'Presence',
+      'Storage',
+      'Lock',
+      '枚举类',
+    ]);
+    expect(payload.navigation.previous).toBeUndefined();
+    expect(payload.navigation.next).toMatchObject({
+      title: '用户鉴权',
+      url: '/zh-CN/api-reference/rtm/android/token',
+    });
+  });
+
+  it('keeps declared API pagination independent of the ordinary-docs sidebar context', async () => {
+    const route = ['rtm', 'android', 'configuration'];
+    const standalone = await loadApiReferencePayload(route);
+    const contextual = await loadDocsPagePayload(
+      'zh-CN',
+      'api-reference',
+      route,
+      '?from=%2Fzh-CN%2Frealtime-media%2Frtm&fromScope=%2Fzh-CN%2Frealtime-media%2Frtm',
+    );
+    if (!contextual || 'redirectUrl' in contextual)
+      throw new Error('expected API payload');
+    expect(contextual.navigation).toEqual(standalone.navigation);
+  });
+
+  it.each([
+    [['whiteboard', 'fastboard', 'web'], 'Fastboard SDK', true],
+    [['meeting', 'android'], '会议 SDK API', false],
+  ] as const)(
+    'keeps the single-page %s SDK label without additional pages or versions',
+    async (route, label, hasVersion) => {
+      const payload = await loadApiReferencePayload([...route]);
+      expect(collectTitles(payload.sidebar as SidebarNode[])).toEqual([
+        'API 参考',
+        label,
+      ]);
+      expect(payload.navigation.previous).toBeUndefined();
+      expect(payload.navigation.next).toBeUndefined();
+      if (!hasVersion)
+        expect(payload.sidebarHeader?.versionSwitcher).toBeUndefined();
+    },
+  );
+
+  it.each([
     [
       ['api-ref', 'console'],
       '/zh-CN/api-reference/api-ref/console/create-project',
@@ -263,16 +341,24 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     },
   );
 
-  it.each([
-    [['conversational-ai', 'agent-go'], 'Go'],
-    [['conversational-ai', 'agent-python'], 'Python'],
-    [['conversational-ai', 'agent-typescript'], 'TypeScript'],
-    [['whiteboard', 'fastboard', 'android'], 'Android'],
-    [['whiteboard', 'fastboard', 'ios'], 'iOS'],
-    [['whiteboard', 'fastboard', 'web'], 'Web'],
-    [['meeting', 'android'], 'Android'],
-    [['meeting', 'ios'], 'iOS'],
-    [['meeting', 'electron'], 'Electron'],
+  it.each<[string[], string, string[]?]>([
+    [['conversational-ai', 'agent-go'], 'Go', ['API 参考', 'Go']],
+    [['conversational-ai', 'agent-python'], 'Python', ['API 参考', 'Python']],
+    [
+      ['conversational-ai', 'agent-typescript'],
+      'TypeScript',
+      ['API 参考', 'TypeScript'],
+    ],
+    [
+      ['whiteboard', 'fastboard', 'android'],
+      'Android',
+      ['API 参考', 'Fastboard SDK'],
+    ],
+    [['whiteboard', 'fastboard', 'ios'], 'iOS', ['API 参考', 'Fastboard SDK']],
+    [['whiteboard', 'fastboard', 'web'], 'Web', ['API 参考', 'Fastboard SDK']],
+    [['meeting', 'android'], 'Android', ['API 参考', '会议 SDK API']],
+    [['meeting', 'ios'], 'iOS', ['API 参考', '会议 SDK API']],
+    [['meeting', 'electron'], 'Electron', ['API 参考', '会议 SDK API']],
     [['private-room', 'android', 'rtm', 'api', 'call-api'], 'Android'],
     [['private-room', 'ios', 'rtm', 'api', 'call-api'], 'iOS'],
     [
@@ -298,11 +384,11 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     [['teleoperation', 'iot', 'api', 'operator'], '操控端'],
   ])(
     'uses a focused %s sidebar for a single-document card',
-    async (route, label) => {
+    async (route, label, expectedSidebar) => {
       const payload = await loadApiReferencePayload(route);
       const titles = collectTitles(payload.sidebar as SidebarNode[]);
 
-      expect(titles).toEqual([label]);
+      expect(titles).toEqual(expectedSidebar ?? [label]);
       expect(payload.sidebarHeader).toMatchObject({
         backHref: '/zh-CN/api-reference/api',
         backLabel: 'API 参考',
@@ -319,15 +405,14 @@ describe('API Center scoped sidebars', { timeout: 30_000 }, () => {
     ]);
     const titles = collectTitles(sidebar);
 
-    expect(titles).toEqual(
-      expect.arrayContaining([
-        'API 概览',
-        '枚举类',
-        'IConversationalAIAPI 类',
-        'IConversationalAIAPIEventHandler 类',
-        '结构体',
-      ]),
-    );
+    expect(titles).toEqual([
+      'API 参考',
+      'API 概览',
+      'IConversationalAIAPI 类',
+      'IConversationalAIAPIEventHandler 类',
+      '结构体',
+      '枚举类',
+    ]);
     expect(titles).not.toContain('创建对话式智能体');
   });
 

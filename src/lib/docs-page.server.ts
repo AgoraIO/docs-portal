@@ -886,6 +886,25 @@ export async function loadDocsPagePayload(
     processedText,
     requestedPlatform,
   });
+  const declaredSidebar =
+    navScope?.activeVersion?.sidebar ?? navScope?.scope.meta.navScope?.sidebar;
+  const navigationRoot =
+    declaredSidebar && navScope
+      ? {
+          name: 'Scoped navigation',
+          children: flattenSidebarPageNodes(
+            getScopedNavScopeSidebarNodes({
+              getNodeMeta: (node) =>
+                getDocsMetaData(source.getNodeMeta(node, locale ?? undefined)),
+              navScope,
+            }),
+          ).map(({ title, url }) => ({
+            type: 'page' as const,
+            name: title,
+            url,
+          })),
+        }
+      : (navScope?.sidebarRoot ?? pageTree);
 
   const apiPayload = {
     activePath: page.url,
@@ -942,7 +961,7 @@ export async function loadDocsPagePayload(
             openApiRoute.operationId,
           )
         : getPrevNextLinksFromNode(
-            navScope?.sidebarRoot ?? pageTree,
+            navigationRoot,
             page.url,
             sourcePageUrls ? (url) => sourcePageUrls.has(url) : undefined,
           ),
@@ -1879,6 +1898,24 @@ function resolveMergedPlatformSuffixRedirect({
 
   const targetSegments = [...slugSegments.slice(0, -1), baseSlug];
   const targetUrl = `/${[locale, tab, ...targetSegments].join('/')}`;
+
+  const canonicalApiUrl =
+    locale === 'zh-CN' && tab === OPENAPI_TAB
+      ? ZH_CN_API_REFERENCE_PLACEHOLDER_REDIRECTS[targetSegments.join('/')]
+      : undefined;
+  if (canonicalApiUrl) {
+    const canonicalSegments = canonicalApiUrl.split('/').filter(Boolean);
+    const platformIndex = canonicalSegments.findIndex(
+      (segment, index) => index >= 3 && isKnownPlatform(segment),
+    );
+    if (platformIndex >= 0) {
+      canonicalSegments[platformIndex] = platform;
+      const platformUrl = `/${canonicalSegments.join('/')}`;
+      if (hasDocsPageForUrl(source, platformUrl)) {
+        return { preserveSearch: true, redirectUrl: platformUrl };
+      }
+    }
+  }
 
   if (!hasDocsPageForUrl(source, targetUrl)) {
     return null;

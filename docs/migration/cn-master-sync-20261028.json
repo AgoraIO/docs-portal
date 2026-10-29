@@ -29,7 +29,7 @@
     },
     "scopedNavigationTestsPassed": 61,
     "testFiles": 315,
-    "testsPassed": 4959,
+    "testsPassed": 4973,
     "testsSkipped": 2,
     "testsFailed": 0,
     "apiParagraphsChecked": 3141,
@@ -44,7 +44,8 @@
     "previousLocalProductionBuildCommit": "2be79d0b69996d3d3f120afafa99c49c60854513",
     "previousCloudPreviewHead": "3aae4c1aee9e0f0e13d6391c11fcf9fe8d74dbb7",
     "previousCloudPreviewRun": 40700243282,
-    "previousCloudPreviewConclusion": "success"
+    "previousCloudPreviewConclusion": "success",
+    "scopeNote": "Latest checks include the cross-product API sidebar parity follow-up; no MDX body changed."
   },
   "ledger": "cn-master-sync-20261028-ledger.json",
   "fileMap": "cn-master-sync-20261028-file-map.csv",
@@ -320,6 +321,40 @@
         "sourceHashesChecked": 1270,
         "sourceHashMismatches": 0
       }
+    },
+    {
+      "commit": "6c435fbe68e8c30bb13d6065386d9a4e6ee87b73",
+      "date": "2026-10-29",
+      "results": {
+        "date": "2026-10-29",
+        "status": "passed-content-and-navigation-checks-local-production-build-not-rerun",
+        "typesCheck": "passed",
+        "diffCheck": "passed",
+        "lint": {
+          "errors": 0,
+          "warnings": 19,
+          "infos": 5
+        },
+        "scopedNavigationTestsPassed": 61,
+        "testFiles": 315,
+        "testsPassed": 4973,
+        "testsSkipped": 2,
+        "testsFailed": 0,
+        "apiParagraphsChecked": 3141,
+        "apiTableCellsChecked": 3136,
+        "guideAndManualApiExamplesChecked": 535,
+        "webApiDeclarationBlocksChecked": 420,
+        "sourceFidelityMissing": 0,
+        "harmonyosMdxFilesPreserved": 92,
+        "harmonyosBodiesChanged": 0,
+        "navigationHttpRoutesChecked": 7,
+        "cnProductionBuild": "not-rerun-locally-after-navigation-follow-up",
+        "previousLocalProductionBuildCommit": "2be79d0b69996d3d3f120afafa99c49c60854513",
+        "previousCloudPreviewHead": "3aae4c1aee9e0f0e13d6391c11fcf9fe8d74dbb7",
+        "previousCloudPreviewRun": 40700243282,
+        "previousCloudPreviewConclusion": "success",
+        "scopeNote": "Latest checks include the cross-product API sidebar parity follow-up; no MDX body changed."
+      }
     }
   ],
   "integrationHistory": [
@@ -346,5 +381,36 @@
       "DynamicConfigOptions"
     ],
     "remainingTypes": "Full overview tables and body links retain access. No API body was changed."
+  },
+  "sidebarParityAudit": {
+    "date": "2026-10-29",
+    "report": "docs/agents/reports/2026-10-29-cn-api-sidebar-parity.md",
+    "machineReport": "docs/agents/reports/2026-10-29-cn-api-sidebar-parity.json",
+    "metadataConfigurationsChanged": 32,
+    "dedicatedApiEntryChecks": 50,
+    "currentPublishedDedicatedEntries": 48,
+    "oldLiveSamples": 16,
+    "catalogStoredEntries": 102,
+    "catalogCurrentEntries": 96,
+    "catalogRetiredEntriesPreserved": 6,
+    "otherLocalPublishedViews": 38,
+    "mdxBodiesChanged": 0,
+    "imageChanges": 0,
+    "runtimeFixes": [
+      "scope-level sidebar declarations",
+      "pagination follows declared sidebar",
+      "preserve external flags",
+      "canonical platform for legacy suffix aliases"
+    ],
+    "checks": {
+      "types": "passed",
+      "lintErrors": 0,
+      "diff": "passed",
+      "fullTestsPassed": 4973,
+      "fullTestsSkipped": 2,
+      "fullTestsFailed": 0,
+      "testFiles": 315
+    },
+    "productionBuild": "not-rerun-locally-new-head-CI-pending"
   }
 }
