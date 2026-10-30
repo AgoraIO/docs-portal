@@ -104,7 +104,7 @@ export const platformRegistry = {
     order: 69,
   },
   'unreal-cpp': {
-    label: { en: 'Unreal (C++)', 'zh-CN': 'Unreal (C++)' },
+    label: { en: 'Unreal (C++)', 'zh-CN': 'Unreal C++' },
     order: 70,
   },
   'unreal-blueprint': {
@@ -170,7 +170,7 @@ export const platformRegistry = {
   unreal: {
     label: {
       en: 'Unreal Engine',
-      'zh-CN': 'Unreal Engine',
+      'zh-CN': 'Unreal C++',
     },
     order: 100,
   },
